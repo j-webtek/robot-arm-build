@@ -21,7 +21,6 @@ def output() -> dict:
         "phone_state": "not_visible", "lighting": "acceptable", "blur": "low",
         "glare": "none", "occlusion_source": "arm", "occlusion_fraction": 0.1,
         "critical_targets_visible": True, "confidence": 0.91,
-        "abstain": False, "abstain_reasons": [],
     }
 
 
@@ -44,6 +43,8 @@ class VisionRuntimeTests(unittest.TestCase):
         validate_observation(result, frame=self.frame)
         self.assertEqual(captured["url"], "http://127.0.0.1:11434/api/chat")
         self.assertFalse(captured["payload"]["stream"])
+        self.assertFalse(captured["payload"]["think"])
+        self.assertEqual(captured["payload"]["options"]["num_ctx"], 8192)
         self.assertEqual(captured["payload"]["format"]["additionalProperties"], False)
         self.assertEqual(result["runtime"], "ollama")
         self.assertFalse(result["abstain"])
@@ -74,7 +75,7 @@ class VisionRuntimeTests(unittest.TestCase):
         result = observer.observe(self.frame)
         validate_observation(result, frame=self.frame)
         self.assertTrue(result["abstain"])
-        self.assertEqual(result["abstain_reasons"], ["invalid_output"])
+        self.assertIn("invalid_output", result["abstain_reasons"])
         self.assertEqual(result["confidence"], 0.0)
 
     def test_transport_failure_becomes_bound_abstention(self) -> None:
@@ -86,7 +87,7 @@ class VisionRuntimeTests(unittest.TestCase):
             post_json=fail,
         )
         result = observer.observe(self.frame)
-        self.assertEqual(result["abstain_reasons"], ["runtime_error"])
+        self.assertIn("runtime_error", result["abstain_reasons"])
         self.assertEqual(result["image_sha256"], self.frame.image_sha256)
 
     def test_endpoint_and_timeout_are_bounded(self) -> None:
@@ -94,6 +95,8 @@ class VisionRuntimeTests(unittest.TestCase):
             OllamaVisionObserver(endpoint="file:///tmp/socket", model="m", model_identity="i")
         with self.assertRaises(ValueError):
             OllamaVisionObserver(endpoint="http://localhost", model="m", model_identity="i", timeout_seconds=0)
+        with self.assertRaises(ValueError):
+            OllamaVisionObserver(endpoint="http://localhost", model="m", model_identity="i", context_tokens=512)
 
 
 if __name__ == "__main__":

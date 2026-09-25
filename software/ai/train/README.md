@@ -92,3 +92,11 @@ records the first photo-texture run; v1 adds mixed appearance augmentation
 and has its own [result](synthetic_pose_photo_v1_result.json). The selected
 checkpoint is kept in ignored `runs/` and bound by SHA-256. It was not
 trained on measured key coordinates or real overhead-camera frames.
+
+The first local multimodal comparison is recorded separately from the text
+SFT experiments. [`gemma3_4b_vision_candidate.json`](gemma3_4b_vision_candidate.json)
+pins the provisional 4B Q4 scene observer. The smaller
+[`qwen3_vl_2b_rejected_candidate.json`](qwen3_vl_2b_rejected_candidate.json)
+records its structured-output failure with the current Ollama adapter. Model
+weights remain local and are not committed. Neither candidate produces servo
+commands or has physical authorization.

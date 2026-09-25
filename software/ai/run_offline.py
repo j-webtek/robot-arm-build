@@ -26,6 +26,7 @@ from rocell_ai.visual_observation import simulate as simulate_visual_observation
 from rocell_ai.review import review_benchmark  # noqa: E402
 from rocell_ai.scene_observation import FrameEvidence  # noqa: E402
 from rocell_ai.vision_runtime import LlamaCppVisionObserver, OllamaVisionObserver  # noqa: E402
+from rocell_ai.scene_evaluation import evaluate_photo_seed  # noqa: E402
 
 
 def main() -> int:
@@ -94,7 +95,19 @@ def main() -> int:
     observe.add_argument("--model", required=True)
     observe.add_argument("--model-identity", required=True)
     observe.add_argument("--timeout-seconds", type=float, default=60.0)
+    observe.add_argument("--context-tokens", type=int, default=8192)
     observe.add_argument("--output", type=Path)
+    scene_eval = sub.add_parser("evaluate-scene-observer", help="Evaluate a local observer on the real photo seed")
+    scene_eval.add_argument("--runtime", choices=("ollama", "llama-cpp"), required=True)
+    scene_eval.add_argument("--endpoint", required=True)
+    scene_eval.add_argument("--model", required=True)
+    scene_eval.add_argument("--model-identity", required=True)
+    scene_eval.add_argument("--timeout-seconds", type=float, default=60.0)
+    scene_eval.add_argument("--context-tokens", type=int, default=8192)
+    scene_eval.add_argument("--manifest", type=Path, default=AI_DIR / "data" / "real_photo_seed_v0.manifest.json")
+    scene_eval.add_argument("--labels", type=Path, default=AI_DIR / "data" / "real_photo_seed_v0.labels.json")
+    scene_eval.add_argument("--raw-directory", type=Path, default=AI_DIR / "data" / "raw" / "real_photo_seed_v0")
+    scene_eval.add_argument("--output", type=Path)
     args = parser.parse_args()
 
     if args.command in {"propose", "inspect"}:
@@ -150,8 +163,20 @@ def main() -> int:
         observer_class = OllamaVisionObserver if args.runtime == "ollama" else LlamaCppVisionObserver
         observer = observer_class(endpoint=args.endpoint, model=args.model,
                                   model_identity=args.model_identity,
-                                  timeout_seconds=args.timeout_seconds)
+                                  timeout_seconds=args.timeout_seconds,
+                                  context_tokens=args.context_tokens)
         result = observer.observe(frame)
+        if args.output:
+            args.output.parent.mkdir(parents=True, exist_ok=True)
+            args.output.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    elif args.command == "evaluate-scene-observer":
+        observer_class = OllamaVisionObserver if args.runtime == "ollama" else LlamaCppVisionObserver
+        observer = observer_class(endpoint=args.endpoint, model=args.model,
+                                  model_identity=args.model_identity,
+                                  timeout_seconds=args.timeout_seconds,
+                                  context_tokens=args.context_tokens)
+        result = evaluate_photo_seed(observer=observer, manifest_path=args.manifest,
+                                     labels_path=args.labels, raw_directory=args.raw_directory)
         if args.output:
             args.output.parent.mkdir(parents=True, exist_ok=True)
             args.output.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8")

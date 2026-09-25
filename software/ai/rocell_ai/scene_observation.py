@@ -82,7 +82,7 @@ def model_output_schema() -> dict[str, Any]:
         "required": [
             "device_presence", "keyboard_layout", "phone_state", "lighting", "blur",
             "glare", "occlusion_source", "occlusion_fraction", "critical_targets_visible",
-            "confidence", "abstain", "abstain_reasons",
+            "confidence",
         ],
         "properties": {
             "device_presence": {"type": "string", "enum": sorted(DEVICE_PRESENCE)},
@@ -95,11 +95,6 @@ def model_output_schema() -> dict[str, Any]:
             "occlusion_fraction": {"type": "number", "minimum": 0, "maximum": 1},
             "critical_targets_visible": {"type": "boolean"},
             "confidence": {"type": "number", "minimum": 0, "maximum": 1},
-            "abstain": {"type": "boolean"},
-            "abstain_reasons": {
-                "type": "array", "uniqueItems": True,
-                "items": {"type": "string", "enum": sorted(ABSTAIN_REASONS)},
-            },
         },
     }
 
@@ -107,7 +102,7 @@ def model_output_schema() -> dict[str, Any]:
 MODEL_FIELDS = set(model_output_schema()["required"])
 OBSERVATION_FIELDS = MODEL_FIELDS | {
     "schema", "frame_id", "captured_at_utc", "image_sha256", "runtime",
-    "model", "model_identity", "observation_sha256",
+    "model", "model_identity", "abstain", "abstain_reasons", "observation_sha256",
 }
 
 
@@ -128,25 +123,45 @@ def validate_model_output(value: Any) -> dict[str, Any]:
             raise ValueError(f"invalid {key}")
     value["occlusion_fraction"] = _bounded_number(value["occlusion_fraction"], "occlusion_fraction")
     value["confidence"] = _bounded_number(value["confidence"], "confidence")
-    for key in ("critical_targets_visible", "abstain"):
+    for key in ("critical_targets_visible",):
         if not isinstance(value[key], bool):
             raise ValueError(f"{key} must be boolean")
-    reasons = value["abstain_reasons"]
-    if (not isinstance(reasons, list) or len(reasons) > len(ABSTAIN_REASONS)
-            or len(set(reasons)) != len(reasons)
-            or any(not isinstance(reason, str) or reason not in ABSTAIN_REASONS for reason in reasons)):
-        raise ValueError("invalid abstain_reasons")
-    if value["abstain"] != bool(reasons):
-        raise ValueError("abstain must match abstain_reasons")
     return value
 
 
+def _derived_abstain_reasons(value: dict[str, Any]) -> list[str]:
+    reasons: list[str] = []
+    if value["device_presence"] == "absent":
+        reasons.append("device_absent")
+    elif value["device_presence"] == "uncertain":
+        reasons.append("device_uncertain")
+    if value["device_presence"] in {"keyboard", "both"} and value["keyboard_layout"] != "us_qwerty":
+        reasons.append("layout_uncertain")
+    if value["device_presence"] in {"phone", "both"} and value["phone_state"] == "unknown":
+        reasons.append("state_uncertain")
+    if value["lighting"] != "acceptable":
+        reasons.append("lighting_adverse")
+    if value["blur"] not in {"none", "low"}:
+        reasons.append("blur_adverse")
+    if value["glare"] not in {"none", "low"}:
+        reasons.append("glare_adverse")
+    if value["occlusion_fraction"] > 0.20:
+        reasons.append("occluded")
+    if not value["critical_targets_visible"]:
+        reasons.append("critical_targets_hidden")
+    return reasons
+
+
 def build_observation(*, frame: FrameEvidence, runtime: str, model: str,
-                      model_identity: str, model_output: dict[str, Any]) -> dict[str, Any]:
+                      model_identity: str, model_output: dict[str, Any],
+                      forced_abstain_reasons: tuple[str, ...] = ()) -> dict[str, Any]:
     validated = validate_model_output(dict(model_output))
     for label, item in (("runtime", runtime), ("model", model), ("model_identity", model_identity)):
         if not isinstance(item, str) or not item.strip() or len(item) > 256:
             raise ValueError(f"{label} must be nonempty and bounded")
+    if any(reason not in ABSTAIN_REASONS for reason in forced_abstain_reasons):
+        raise ValueError("invalid forced abstain reason")
+    reasons = list(dict.fromkeys([*_derived_abstain_reasons(validated), *forced_abstain_reasons]))
     core = {
         "schema": SCHEMA,
         "frame_id": frame.frame_id,
@@ -156,6 +171,8 @@ def build_observation(*, frame: FrameEvidence, runtime: str, model: str,
         "model": model,
         "model_identity": model_identity,
         **validated,
+        "abstain": bool(reasons),
+        "abstain_reasons": reasons,
     }
     return {**core, "observation_sha256": canonical_hash(core)}
 
@@ -164,6 +181,19 @@ def validate_observation(value: Any, *, frame: FrameEvidence | None = None) -> d
     if not isinstance(value, dict) or set(value) != OBSERVATION_FIELDS or value.get("schema") != SCHEMA:
         raise ValueError("scene observation has invalid schema or fields")
     validate_model_output({key: value[key] for key in MODEL_FIELDS})
+    reasons = value["abstain_reasons"]
+    if (not isinstance(reasons, list) or len(reasons) > len(ABSTAIN_REASONS)
+            or len(set(reasons)) != len(reasons)
+            or any(not isinstance(reason, str) or reason not in ABSTAIN_REASONS for reason in reasons)):
+        raise ValueError("invalid scene abstain_reasons")
+    derived = _derived_abstain_reasons(value)
+    externally_forced = {"model_refusal", "invalid_output", "runtime_error"}
+    if any(reason not in reasons for reason in derived) or any(
+        reason not in derived and reason not in externally_forced for reason in reasons
+    ):
+        raise ValueError("scene abstain_reasons do not match classifications")
+    if not isinstance(value["abstain"], bool) or value["abstain"] != bool(value["abstain_reasons"]):
+        raise ValueError("scene abstain must match abstain_reasons")
     if not isinstance(value["frame_id"], str) or not value["frame_id"].strip():
         raise ValueError("scene frame_id is required")
     parse_utc(value["captured_at_utc"], "captured_at_utc")
@@ -198,4 +228,3 @@ class FixtureVisionObserver:
             model_identity=canonical_hash(self._model_output),
             model_output=self._model_output,
         )
-

@@ -1,0 +1,22 @@
+{
+  "schema": "rocell.ai_local_vision_candidate.v0",
+  "runtime": "ollama",
+  "runtime_version": "0.34.0",
+  "model": "gemma3:4b",
+  "ollama_digest": "a2af6cc3eb7fa8be8504abaf9b04e88f17a119ec3f04a3addf55f92841195f5a",
+  "parameter_size": "4.3B",
+  "quantization": "Q4_K_M",
+  "local_artifact_size_gb": 3.3,
+  "configured_context_tokens": 8192,
+  "input_modalities": ["text", "image"],
+  "role": "scene_observer_only",
+  "offline_after_install": true,
+  "license": "Gemma Terms of Use",
+  "source": "https://ollama.com/library/gemma3:4b",
+  "physical_execution_authorized": false,
+  "notes": [
+    "The 270M and 1B Gemma 3 variants are text-only; 4B is the smallest vision variant",
+    "The local model is not committed to Git and must be installed separately",
+    "Selection remains provisional until adverse-scene and held-out physical evaluation"
+  ]
+}

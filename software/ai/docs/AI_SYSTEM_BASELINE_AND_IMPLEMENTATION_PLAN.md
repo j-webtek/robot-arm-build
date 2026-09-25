@@ -70,10 +70,30 @@ physical input events.
 
 ### Multimodal vision status
 
-No Ollama or llama.cpp vision-language model is currently running in the
-pipeline. The existing Llama 3.2 1B candidate is text-only. Vision cannot be
-added to that checkpoint with the existing text LoRA; a multimodal base model
-and its matching projector are required.
+The P0 and P1 offline integration now exists. A strict scene-observation
+contract binds every result to the exact image bytes, an Ollama adapter and a
+llama.cpp-compatible adapter implement the same interface, and a fail-closed
+fusion gate combines scene classification with precision coordinates.
+
+`gemma3:4b` is the provisional local observer. The installed Q4_K_M artifact
+is 3.3 GB, used about 3.0 GB of GPU memory with an 8,192-token context, and
+works offline after installation. On the ten user-supplied setup photos it
+matched the agent-authored keyboard-presence label 10/10 times, with 1.692 s
+median and 1.993 s maximum latency. These correlated handheld photos contain
+no negative device cases, phone states, measured coordinates, or deployment
+camera captures.
+
+The smaller `qwen3-vl:2b` artifact was evaluated and rejected for this runtime:
+with Ollama 0.34.0 it placed repeated structured output in the thinking field
+until truncation rather than returning the required JSON record. That is a
+measured adapter/runtime failure, not a general judgment of the model family.
+
+A six-case deterministic stress run accepted the unchanged control and
+rejected severe darkness, blur, glare, central obstruction, and a uniform
+absent-device image. The multimodal model itself still reported a keyboard
+with high confidence on several adverse edits. The combined result therefore
+depends on the deterministic pixel-quality gate. The development thresholds
+are not calibrated physical thresholds.
 
 ## Target architecture
 
@@ -132,7 +152,7 @@ occlusion, adverse image quality, or observer/pose disagreement.
 
 ## Prioritized implementation
 
-### P0: contracts and fail-closed fusion
+### P0: contracts and fail-closed fusion — implemented offline
 
 1. Add versioned scene-observation and fused-decision data contracts.
 2. Add canonical hashing and exact frame-byte binding.
@@ -142,7 +162,7 @@ occlusion, adverse image quality, or observer/pose disagreement.
 5. Prove with unit tests that malformed or conflicting records cannot reach
    coordinate preview.
 
-### P1: local multimodal observer
+### P1: local multimodal observer — implemented and provisionally benchmarked
 
 1. Add an Ollama HTTP adapter with explicit endpoint, model, timeout, prompt,
    and JSON schema configuration.
@@ -157,7 +177,7 @@ Model selection is a benchmark decision. Candidate size and quantization must
 fit the intended vision host's GPU memory and system RAM. A model is not
 promoted based on conversational quality alone.
 
-### P2: stress data and benchmark
+### P2: stress data and benchmark — initial seed only
 
 Generate a frozen, provenance-marked synthetic set varying:
 
@@ -219,4 +239,3 @@ held-out real captures and measured geometry:
 
 Until those gates pass, outputs remain offline observations, candidate
 coordinates, or simulated routes.
-

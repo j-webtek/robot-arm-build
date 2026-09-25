@@ -7,6 +7,7 @@ import re
 from typing import Any, Iterable
 
 from .scene_observation import FrameEvidence, canonical_hash, parse_utc, validate_observation
+from .pixel_quality import assess as assess_pixel_quality
 from .visual_observation import MODEL_SCHEMA, validate as validate_visual_targets
 
 
@@ -16,6 +17,7 @@ REASONS = {
     "lighting_adverse", "blur_adverse", "glare_adverse", "excessive_occlusion",
     "critical_targets_hidden", "layout_unverified", "phone_state_unverified",
     "precision_frame_mismatch", "precision_image_mismatch", "missing_precision_target",
+    "pixel_quality_rejected",
 }
 
 
@@ -47,9 +49,12 @@ def fuse(*, frame: FrameEvidence, scene_observation: dict[str, Any],
     captured = parse_utc(frame.captured_at_utc, "captured_at_utc")
     age_seconds = (evaluated - captured).total_seconds()
     reasons: list[str] = []
+    pixel_quality = assess_pixel_quality(frame)
 
     if age_seconds < 0 or age_seconds > maximum_age_seconds:
         reasons.append("stale_frame")
+    if not pixel_quality["accepted"]:
+        reasons.append("pixel_quality_rejected")
     allowed_presence = {device, "both"}
     if scene["device_presence"] not in allowed_presence:
         reasons.append("device_mismatch")
@@ -96,7 +101,7 @@ def fuse(*, frame: FrameEvidence, scene_observation: dict[str, Any],
             "minimum_scene_confidence": minimum_scene_confidence,
             "maximum_occlusion_fraction": maximum_occlusion_fraction,
         },
+        "pixel_quality": pixel_quality,
         "execution_authorized": False,
     }
     return {**core, "decision_sha256": canonical_hash(core)}
-

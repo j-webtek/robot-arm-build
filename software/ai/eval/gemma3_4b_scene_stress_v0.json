@@ -1,0 +1,318 @@
+{
+  "case_count": 6,
+  "control_accept_count": 1,
+  "deployment_camera_evaluation": false,
+  "expectation_matches": 6,
+  "hardware_commands": 0,
+  "limitations": [
+    "The adverse cases are deterministic image edits, not new physical captures",
+    "The edits are intentionally severe and do not define deployment thresholds",
+    "The single source belongs to one handheld development capture group"
+  ],
+  "physical_execution_authorized": false,
+  "report_sha256": "80ba59b48d11e0a15d7abf5024c905961c63621e543f84bd8d7b51813ba8756a",
+  "rows": [
+    {
+      "case": "control",
+      "expectation_match": true,
+      "expected_usable": true,
+      "latency_ms": 1976.556,
+      "observation": {
+        "abstain": false,
+        "abstain_reasons": [],
+        "blur": "none",
+        "captured_at_utc": "2026-09-25T19:52:05.441013Z",
+        "confidence": 0.95,
+        "critical_targets_visible": true,
+        "device_presence": "keyboard",
+        "frame_id": "scene-stress-v0-control",
+        "glare": "none",
+        "image_sha256": "eff8e7362d0edb5da33800cb17e1966b6964abfb58c4afecb5e7e12821aa0513",
+        "keyboard_layout": "us_qwerty",
+        "lighting": "acceptable",
+        "model": "gemma3:4b",
+        "model_identity": "ollama:a2af6cc3eb7fa8be8504abaf9b04e88f17a119ec3f04a3addf55f92841195f5a",
+        "observation_sha256": "664c748d18c981ca151b53af98646819906550bebe261cb152651d1cb3074a25",
+        "occlusion_fraction": 0.0,
+        "occlusion_source": "none",
+        "phone_state": "unknown",
+        "runtime": "ollama",
+        "schema": "rocell.ai_scene_observation.v0"
+      },
+      "observed_usable": true,
+      "pixel_quality": {
+        "accepted": true,
+        "assessment_sha256": "6a6bbb2719751a622b37798c1828051745ec6e91b21e7ee5730584c67f908f40",
+        "frame_id": "scene-stress-v0-control",
+        "image_sha256": "eff8e7362d0edb5da33800cb17e1966b6964abfb58c4afecb5e7e12821aa0513",
+        "metrics": {
+          "bright_pixel_fraction": 7.6e-05,
+          "dark_pixel_fraction": 0.151169,
+          "edge_variance": 2185.301119,
+          "luminance_stddev": 81.471097,
+          "mean_luminance": 127.483042
+        },
+        "physical_calibration": false,
+        "reasons": [],
+        "schema": "rocell.ai_pixel_quality.v0",
+        "threshold_profile": "development_stress_v0"
+      },
+      "transform": "unchanged_source"
+    },
+    {
+      "case": "dark",
+      "expectation_match": true,
+      "expected_usable": false,
+      "latency_ms": 1634.122,
+      "observation": {
+        "abstain": true,
+        "abstain_reasons": [
+          "occluded"
+        ],
+        "blur": "none",
+        "captured_at_utc": "2026-09-25T19:52:05.441013Z",
+        "confidence": 0.95,
+        "critical_targets_visible": true,
+        "device_presence": "keyboard",
+        "frame_id": "scene-stress-v0-dark",
+        "glare": "none",
+        "image_sha256": "10738c3d28a4f0c72ed9b4afe245cee7407bbf7994f492ef2cf44ace21462b42",
+        "keyboard_layout": "us_qwerty",
+        "lighting": "acceptable",
+        "model": "gemma3:4b",
+        "model_identity": "ollama:a2af6cc3eb7fa8be8504abaf9b04e88f17a119ec3f04a3addf55f92841195f5a",
+        "observation_sha256": "282e6a72961ee3ee183bde74c8b5a02f76739698c8aa26fcc9194304ea1cd75f",
+        "occlusion_fraction": 0.8,
+        "occlusion_source": "none",
+        "phone_state": "unknown",
+        "runtime": "ollama",
+        "schema": "rocell.ai_scene_observation.v0"
+      },
+      "observed_usable": false,
+      "pixel_quality": {
+        "accepted": false,
+        "assessment_sha256": "b91cba7a58a891180afdb4dccf3218c00d42eb3c03475cef130238a5d928c084",
+        "frame_id": "scene-stress-v0-dark",
+        "image_sha256": "10738c3d28a4f0c72ed9b4afe245cee7407bbf7994f492ef2cf44ace21462b42",
+        "metrics": {
+          "bright_pixel_fraction": 0.0,
+          "dark_pixel_fraction": 1.0,
+          "edge_variance": 20.805772,
+          "luminance_stddev": 6.495736,
+          "mean_luminance": 9.630503
+        },
+        "physical_calibration": false,
+        "reasons": [
+          "mean_too_dark",
+          "low_dynamic_range",
+          "low_edge_energy",
+          "excessive_dark_area"
+        ],
+        "schema": "rocell.ai_pixel_quality.v0",
+        "threshold_profile": "development_stress_v0"
+      },
+      "transform": "brightness_0p08"
+    },
+    {
+      "case": "blur",
+      "expectation_match": true,
+      "expected_usable": false,
+      "latency_ms": 1704.056,
+      "observation": {
+        "abstain": false,
+        "abstain_reasons": [],
+        "blur": "low",
+        "captured_at_utc": "2026-09-25T19:52:05.441013Z",
+        "confidence": 0.95,
+        "critical_targets_visible": true,
+        "device_presence": "keyboard",
+        "frame_id": "scene-stress-v0-blur",
+        "glare": "low",
+        "image_sha256": "5d15f0c85e16f1a922b3e5e86ad63aa9e9a4f772eadf2a68b79d6262a46737b6",
+        "keyboard_layout": "us_qwerty",
+        "lighting": "acceptable",
+        "model": "gemma3:4b",
+        "model_identity": "ollama:a2af6cc3eb7fa8be8504abaf9b04e88f17a119ec3f04a3addf55f92841195f5a",
+        "observation_sha256": "43a17d5bbf284ae36726f298314cd32156dccb19af694d4af2419debfb3339ac",
+        "occlusion_fraction": 0.0,
+        "occlusion_source": "none",
+        "phone_state": "unknown",
+        "runtime": "ollama",
+        "schema": "rocell.ai_scene_observation.v0"
+      },
+      "observed_usable": false,
+      "pixel_quality": {
+        "accepted": false,
+        "assessment_sha256": "ab8e5efcb1d88300b0df73ec54bb67d30fbe26f626ce891b8f03e71d713d6b49",
+        "frame_id": "scene-stress-v0-blur",
+        "image_sha256": "5d15f0c85e16f1a922b3e5e86ad63aa9e9a4f772eadf2a68b79d6262a46737b6",
+        "metrics": {
+          "bright_pixel_fraction": 0.0,
+          "dark_pixel_fraction": 0.106934,
+          "edge_variance": 188.581799,
+          "luminance_stddev": 77.073198,
+          "mean_luminance": 127.555766
+        },
+        "physical_calibration": false,
+        "reasons": [
+          "low_edge_energy"
+        ],
+        "schema": "rocell.ai_pixel_quality.v0",
+        "threshold_profile": "development_stress_v0"
+      },
+      "transform": "gaussian_radius_22"
+    },
+    {
+      "case": "glare",
+      "expectation_match": true,
+      "expected_usable": false,
+      "latency_ms": 1739.771,
+      "observation": {
+        "abstain": false,
+        "abstain_reasons": [],
+        "blur": "none",
+        "captured_at_utc": "2026-09-25T19:52:05.441013Z",
+        "confidence": 0.95,
+        "critical_targets_visible": true,
+        "device_presence": "keyboard",
+        "frame_id": "scene-stress-v0-glare",
+        "glare": "none",
+        "image_sha256": "ace5236378fe4959ae645edecb905a02f54a5b3b754eb19dce51ea4bc97f94f9",
+        "keyboard_layout": "us_qwerty",
+        "lighting": "acceptable",
+        "model": "gemma3:4b",
+        "model_identity": "ollama:a2af6cc3eb7fa8be8504abaf9b04e88f17a119ec3f04a3addf55f92841195f5a",
+        "observation_sha256": "1bcdf38a8e119d3e8e460110a2f142bea1e52e70a77c15f0ea1b4faf14a68431",
+        "occlusion_fraction": 0.0,
+        "occlusion_source": "none",
+        "phone_state": "unknown",
+        "runtime": "ollama",
+        "schema": "rocell.ai_scene_observation.v0"
+      },
+      "observed_usable": false,
+      "pixel_quality": {
+        "accepted": false,
+        "assessment_sha256": "192e8195b815aaab8042a89fd643559475621b286cc13f0a973864e8aaa2e16b",
+        "frame_id": "scene-stress-v0-glare",
+        "image_sha256": "ace5236378fe4959ae645edecb905a02f54a5b3b754eb19dce51ea4bc97f94f9",
+        "metrics": {
+          "bright_pixel_fraction": 0.243968,
+          "dark_pixel_fraction": 0.120036,
+          "edge_variance": 1412.955375,
+          "luminance_stddev": 89.820072,
+          "mean_luminance": 162.740499
+        },
+        "physical_calibration": false,
+        "reasons": [
+          "excessive_bright_area"
+        ],
+        "schema": "rocell.ai_pixel_quality.v0",
+        "threshold_profile": "development_stress_v0"
+      },
+      "transform": "opaque_white_ellipse_over_center"
+    },
+    {
+      "case": "occluded",
+      "expectation_match": true,
+      "expected_usable": false,
+      "latency_ms": 1688.079,
+      "observation": {
+        "abstain": false,
+        "abstain_reasons": [],
+        "blur": "none",
+        "captured_at_utc": "2026-09-25T19:52:05.441013Z",
+        "confidence": 0.95,
+        "critical_targets_visible": true,
+        "device_presence": "keyboard",
+        "frame_id": "scene-stress-v0-occluded",
+        "glare": "none",
+        "image_sha256": "6cc414252341dc65aabe1e509f955eb58ee1f0055518c2fd9a68928911175104",
+        "keyboard_layout": "us_qwerty",
+        "lighting": "acceptable",
+        "model": "gemma3:4b",
+        "model_identity": "ollama:a2af6cc3eb7fa8be8504abaf9b04e88f17a119ec3f04a3addf55f92841195f5a",
+        "observation_sha256": "6d69c8fdce4898cdf74d2fb877583e1a8ef3adbf05b0ad50d1aa906b22bf826c",
+        "occlusion_fraction": 0.0,
+        "occlusion_source": "none",
+        "phone_state": "unknown",
+        "runtime": "ollama",
+        "schema": "rocell.ai_scene_observation.v0"
+      },
+      "observed_usable": false,
+      "pixel_quality": {
+        "accepted": false,
+        "assessment_sha256": "b0353f274d07ba60035b28392728f93c435c6b22483f61c3dde3c3bc133d6429",
+        "frame_id": "scene-stress-v0-occluded",
+        "image_sha256": "6cc414252341dc65aabe1e509f955eb58ee1f0055518c2fd9a68928911175104",
+        "metrics": {
+          "bright_pixel_fraction": 5e-06,
+          "dark_pixel_fraction": 0.472605,
+          "edge_variance": 1428.843544,
+          "luminance_stddev": 80.289229,
+          "mean_luminance": 83.076218
+        },
+        "physical_calibration": false,
+        "reasons": [
+          "excessive_dark_area"
+        ],
+        "schema": "rocell.ai_pixel_quality.v0",
+        "threshold_profile": "development_stress_v0"
+      },
+      "transform": "dark_rectangle_over_center_70x50_percent"
+    },
+    {
+      "case": "absent",
+      "expectation_match": true,
+      "expected_usable": false,
+      "latency_ms": 1622.474,
+      "observation": {
+        "abstain": false,
+        "abstain_reasons": [],
+        "blur": "none",
+        "captured_at_utc": "2026-09-25T19:52:05.441013Z",
+        "confidence": 0.95,
+        "critical_targets_visible": true,
+        "device_presence": "keyboard",
+        "frame_id": "scene-stress-v0-absent",
+        "glare": "none",
+        "image_sha256": "3f96c8ddf49ef9a411a29c7bc6adc3c3cae0e4972e89b057dfcc326b141fba27",
+        "keyboard_layout": "us_qwerty",
+        "lighting": "acceptable",
+        "model": "gemma3:4b",
+        "model_identity": "ollama:a2af6cc3eb7fa8be8504abaf9b04e88f17a119ec3f04a3addf55f92841195f5a",
+        "observation_sha256": "df4b5ecb4affc2a3fca1802cf61496efc56bf1a68dd5b6bc066f2a12b2ec29de",
+        "occlusion_fraction": 0.0,
+        "occlusion_source": "none",
+        "phone_state": "unknown",
+        "runtime": "ollama",
+        "schema": "rocell.ai_scene_observation.v0"
+      },
+      "observed_usable": false,
+      "pixel_quality": {
+        "accepted": false,
+        "assessment_sha256": "992c52c6d987a598ba49a6e6ee32cf78e565f9c8304a59af79794c9feff0d397",
+        "frame_id": "scene-stress-v0-absent",
+        "image_sha256": "3f96c8ddf49ef9a411a29c7bc6adc3c3cae0e4972e89b057dfcc326b141fba27",
+        "metrics": {
+          "bright_pixel_fraction": 0.0,
+          "dark_pixel_fraction": 0.0,
+          "edge_variance": 378.709679,
+          "luminance_stddev": 0.0,
+          "mean_luminance": 205.0
+        },
+        "physical_calibration": false,
+        "reasons": [
+          "low_dynamic_range"
+        ],
+        "schema": "rocell.ai_pixel_quality.v0",
+        "threshold_profile": "development_stress_v0"
+      },
+      "transform": "uniform_background_no_device"
+    }
+  ],
+  "schema": "rocell.ai_scene_stress_evaluation.v0",
+  "source_file": "photo_02.jpg",
+  "source_sha256": "5c90b0b73e149683111fa0bf8d190a3cf36394aa32dce84a6294270bd8bd157f",
+  "synthetic_perturbations": true,
+  "unsafe_accept_count": 0
+}

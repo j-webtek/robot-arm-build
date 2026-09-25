@@ -136,6 +136,23 @@ and one wrong plan (`v9_c10`), where an extra emailing operation was dropped.
 The grounded result is a narrow offline measurement, not proof of general
 request safety or physical typing. Keep both paths out of arm control.
 
+## Offline vision seed
+
+`gemma3_4b_real_photo_seed_v0.json` records the provisional 4B scene observer
+on the ten provenance-marked user photos. It matches the agent-authored
+keyboard-presence label on 10/10 images with 1.692 seconds median latency. All
+ten images come from one correlated handheld setup session and all contain a
+keyboard. There are no negative device cases, phone scenes, calibrated target
+coordinates, or deployment-camera captures, so this is a connectivity and
+positive-detection check rather than an accuracy qualification.
+
+`gemma3_4b_scene_stress_v0.json` records six deterministic variants of one
+photo. The combined gate accepts the unchanged control and rejects severe
+darkness, blur, glare, central obstruction, and a uniform no-device image.
+The vision model still reports a keyboard in several rejected variants; the
+deterministic pixel-quality checks cause those safe rejections. These severe
+edits are development probes and do not establish physical thresholds.
+
 From the repository root, repeat the checks with:
 
 ```powershell
@@ -146,4 +163,6 @@ python software/ai/run_offline.py review --cases software/ai/eval/benchmark_v2.j
 python software/ai/run_offline.py admit-score --cases software/ai/eval/benchmark_v3.jsonl --manifest software/ai/eval/benchmark_v3.manifest.json --raw-scorecard software/ai/eval/llama32_1b_sft_v0_v3_scorecard.json
 python software/ai/run_offline.py admit-score --cases software/ai/eval/benchmark_v4.jsonl --manifest software/ai/eval/benchmark_v4.manifest.json --raw-scorecard software/ai/eval/llama32_1b_sft_v0_v4_scorecard.json
 python software/ai/run_offline.py evaluate-grounded --cases software/ai/eval/benchmark_v9.jsonl --manifest software/ai/eval/benchmark_v9.manifest.json
+python software/ai/run_offline.py evaluate-scene-observer --runtime ollama --endpoint http://127.0.0.1:11434 --model gemma3:4b --model-identity ollama:YOUR_PINNED_DIGEST --output software/ai/eval/local_scene_report.json
+python software/ai/vision/evaluate_scene_stress.py --source software/ai/data/raw/real_photo_seed_v0/photo_02.jpg --model gemma3:4b --model-identity ollama:YOUR_PINNED_DIGEST --output software/ai/eval/local_scene_stress.json
 ```

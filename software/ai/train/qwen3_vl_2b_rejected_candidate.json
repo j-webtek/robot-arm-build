@@ -1,0 +1,23 @@
+{
+  "schema": "rocell.ai_local_vision_candidate.v0",
+  "runtime": "ollama",
+  "runtime_version": "0.34.0",
+  "model": "qwen3-vl:2b",
+  "ollama_digest": "0635d9d857d497aeadba3d7d27485746c50554446f9f6ec01ef39788221adbe8",
+  "parameter_size": "2B",
+  "local_artifact_size_gb": 1.9,
+  "input_modalities": [
+    "text",
+    "image"
+  ],
+  "role": "rejected_scene_observer_candidate",
+  "offline_after_install": true,
+  "source": "https://ollama.com/library/qwen3-vl",
+  "physical_execution_authorized": false,
+  "result": "rejected_for_current_runtime_adapter",
+  "reason": "On Ollama 0.34.0 the structured response was repeated in message.thinking until truncation and the required JSON content was not returned",
+  "limitations": [
+    "This is one local runtime and adapter result, not a general model-family evaluation",
+    "No physical execution, coordinate evaluation, or redistribution decision was performed"
+  ]
+}

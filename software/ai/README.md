@@ -11,10 +11,14 @@ authorization, controller feedback, and independent input verification.
 - **First milestone:** offline intent-to-plan for supported keyboard and phone
   text. Return clarification or `unsupported_by_profile` for requests the
   current semantic profiles cannot compile.
-- **Current experiment:** a local small Llama response-SFT adapter trained on
-  compiler-checked synthetic labels and evaluated against frozen benchmarks.
-- **Future:** feedback-driven planning, physically verified typing, dialer
-  workflows, and camera observations as RoCell releases those capabilities.
+- **Current intent reference:** deterministic grounded parsing backed by the
+  existing RoCell compiler. The response-SFT checkpoints remain research
+  comparisons because they have produced wrong executable proposals.
+- **Current vision reference:** the offline `gemma3:4b` Ollama artifact is a
+  provisional scene observer. It describes device presence and image quality;
+  the separate `KeyboardPoseNet` branch proposes target coordinates.
+- **Next:** collect static-camera keyboard and phone captures with measured
+  board coordinates, then calibrate abstention and coordinate-error thresholds.
 
 The current system baseline and the prioritized multimodal implementation are
 tracked in the [AI system baseline and implementation plan](docs/AI_SYSTEM_BASELINE_AND_IMPLEMENTATION_PLAN.md).
@@ -40,6 +44,8 @@ python software/ai/run_offline.py coordinate-preview --request 'Type "test" on t
 python software/ai/run_offline.py simulate-vision --device keyboard --frame-id manual-offline --offset-x-mm 2 --output visual.json
 python software/ai/run_offline.py coordinate-preview --request 'Type "test" on the keyboard' --visual-observation visual.json
 python software/ai/run_offline.py observe-image --image frame.jpg --frame-id frame-001 --runtime ollama --endpoint http://127.0.0.1:11434 --model YOUR_VISION_MODEL --model-identity YOUR_PINNED_MODEL_ID --output scene.json
+python software/ai/run_offline.py evaluate-scene-observer --runtime ollama --endpoint http://127.0.0.1:11434 --model gemma3:4b --model-identity ollama:YOUR_PINNED_DIGEST --output software/ai/eval/local_scene_report.json
+python software/ai/vision/evaluate_scene_stress.py --source software/ai/data/raw/real_photo_seed_v0/photo_02.jpg --model gemma3:4b --model-identity ollama:YOUR_PINNED_DIGEST --output software/ai/eval/local_scene_stress.json
 python -m unittest discover -s software/ai/tests
 ```
 
@@ -48,6 +54,16 @@ runtime. It never opens a camera or arm. Replace the model placeholders with a
 multimodal model installed on the deployment host and a pinned identity from
 that installation. A transport or validation failure produces an explicit,
 image-bound abstention record.
+
+The current small offline vision candidate is pinned in
+[`train/gemma3_4b_vision_candidate.json`](train/gemma3_4b_vision_candidate.json).
+On the ten supplied setup photos it detected the visible keyboard in 10/10
+agent-labeled cases at 1.692 seconds median latency. This set has no absent
+device examples, phone examples, static-camera captures, or coordinate truth.
+In the six-case severe synthetic stress run, the fused scene gate rejected all
+five adverse cases. The vision model itself still described a keyboard in
+several corrupted or device-absent edits, so the deterministic pixel gate is
+essential and this candidate is not authorized for physical control.
 
 The `propose` command uses caller-supplied fixture state only. Its phone state
 defaults to `UNKNOWN`; pass `--phone-state KEYBOARD_LOWER` only for an offline

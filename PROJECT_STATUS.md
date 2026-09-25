@@ -37,6 +37,14 @@ they do not yet demonstrate AI-directed operation.
   gripper-control interface; a verified gripper-only path and mounted-tool
   measurements are still needed.
 - Camera mounting/integration and physical stylus contact remain deferred.
+- The AI work area now has an offline scene-observation contract, Ollama and
+  llama.cpp adapters, exact image-byte binding, a deterministic image-quality
+  gate, and fail-closed fusion with the existing precision-coordinate branch.
+  The provisional `gemma3:4b` observer detected the keyboard in all ten
+  supplied, correlated handheld photos, but it hallucinated keyboard presence
+  on several severe synthetic corruptions. No phone data, static-camera
+  evaluation, or measured coordinate truth exists, so vision output remains
+  offline and cannot authorize motion.
 
 The authoritative detail and remaining checklist are in
 [the r91 recovery plan](software/docs/R91_HOVER_RECOVERY_AND_A_CYCLE_PLAN.md).

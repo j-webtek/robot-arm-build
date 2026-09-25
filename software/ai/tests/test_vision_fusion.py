@@ -3,11 +3,14 @@
 from __future__ import annotations
 
 import copy
+from io import BytesIO
 import hashlib
 import json
 from pathlib import Path
 import sys
 import unittest
+
+from PIL import Image, ImageDraw
 
 
 AI_DIR = Path(__file__).resolve().parents[1]
@@ -18,7 +21,7 @@ sys.path.insert(0, str(AI_DIR.parent / "src"))
 from rocell.targets.nominal import load_nominal_target_catalog  # noqa: E402
 from rocell_ai.multimodal_preview import guarded_preview  # noqa: E402
 from rocell_ai.scene_observation import (  # noqa: E402
-    FixtureVisionObserver, FrameEvidence, build_observation, validate_observation,
+    FixtureVisionObserver, FrameEvidence, build_observation, canonical_hash, validate_observation,
 )
 from rocell_ai.vision_fusion import fuse  # noqa: E402
 from rocell_ai.visual_observation import MODEL_SCHEMA  # noqa: E402
@@ -36,14 +39,19 @@ def good_output() -> dict:
         "occlusion_fraction": 0.0,
         "critical_targets_visible": True,
         "confidence": 0.97,
-        "abstain": False,
-        "abstain_reasons": [],
     }
 
 
 class VisionFusionTests(unittest.TestCase):
     def setUp(self) -> None:
-        self.frame = FrameEvidence("frame-1", "2026-09-25T12:00:00Z", b"encoded-image")
+        image = Image.new("RGB", (256, 192), (170, 160, 150))
+        draw = ImageDraw.Draw(image)
+        for y in range(20, 170, 20):
+            for x in range(20, 235, 20):
+                draw.rectangle((x, y, x + 12, y + 12), fill=(40 + x % 80, 50, 80))
+        stream = BytesIO()
+        image.save(stream, format="PNG")
+        self.frame = FrameEvidence("frame-1", "2026-09-25T12:00:00Z", stream.getvalue())
         self.scene = FixtureVisionObserver(good_output()).observe(self.frame)
         catalog = load_nominal_target_catalog(WORKSPACE)
         self.catalog = catalog
@@ -86,6 +94,19 @@ class VisionFusionTests(unittest.TestCase):
         other = FrameEvidence("frame-2", self.frame.captured_at_utc, self.frame.image_bytes)
         with self.assertRaisesRegex(ValueError, "supplied frame"):
             validate_observation(self.scene, frame=other)
+
+    def test_rehashed_record_cannot_suppress_derived_abstention(self) -> None:
+        scene = build_observation(
+            frame=self.frame, runtime="fixture", model="dark", model_identity="dark-v1",
+            model_output={**good_output(), "lighting": "dark"},
+        )
+        scene["abstain"] = False
+        scene["abstain_reasons"] = []
+        scene["observation_sha256"] = canonical_hash({
+            key: value for key, value in scene.items() if key != "observation_sha256"
+        })
+        with self.assertRaisesRegex(ValueError, "do not match classifications"):
+            validate_observation(scene, frame=self.frame)
 
     def test_precision_image_mismatch_is_a_fusion_rejection(self) -> None:
         changed = copy.deepcopy(self.precision)
@@ -151,8 +172,7 @@ class VisionFusionTests(unittest.TestCase):
         blocked_scene = build_observation(
             frame=self.frame, runtime="fixture", model="blocked", model_identity="blocked-v1",
             model_output={**good_output(), "occlusion_source": "arm", "occlusion_fraction": 0.8,
-                          "critical_targets_visible": False, "abstain": True,
-                          "abstain_reasons": ["occluded", "critical_targets_hidden"]},
+                          "critical_targets_visible": False},
         )
         blocked = guarded_preview(
             'Type "hi" on the keyboard', observation, request_id="r2", workspace=WORKSPACE,
