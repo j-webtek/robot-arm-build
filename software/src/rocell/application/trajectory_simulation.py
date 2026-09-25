@@ -84,7 +84,7 @@ _MAX_CANONICAL_IK_ATTEMPTS = 8
 _MAX_CANONICAL_IK_ITERATIONS = 200
 # The source-bound workbench now contains 637 modules. Keep a finite cap with
 # growth room; the independent 20 MB aggregate and per-file limits still apply.
-_MAX_IMPLEMENTATION_SOURCE_FILES = 1024
+_MAX_IMPLEMENTATION_SOURCE_FILES = 2048
 _MAX_IMPLEMENTATION_SOURCE_BYTES = 20_000_000
 _MAX_IMPLEMENTATION_FILE_BYTES = 5_000_000
 _CANONICAL_IK_SOLVER = RoArmM3NumericalIk

@@ -76,10 +76,12 @@ gap. The next value comes from the system that connects observations to decision
 
 ## 3. Non-negotiable design rules
 
-1. **AI proposes meaning, not motor commands.** The AI layer may emit a grounded
-   operation, device, text, named target, or clarification. It may not emit joint
-   values, PWM values, controller JSON, Cartesian coordinates, or an execution
-   permit. This preserves the boundary in
+1. **AI proposes meaning and bounded coordinates, not transport writes.** The AI
+   layer may emit a grounded operation, device, text, named target, clarification,
+   or coordinate proposal in an approved device-local or board frame. It may not
+   emit joint values, PWM values, controller JSON, an execution permit, or write to
+   the transport. Deterministic code validates and transforms every coordinate
+   before trajectory generation. This preserves the boundary in
    [the AI contract](../ai/docs/CONTRACT.md).
 2. **Deterministic code owns geometry and safety.** Target resolution, transforms,
    inverse kinematics, limits, collision checks, route generation, admission, and
@@ -106,9 +108,9 @@ gap. The next value comes from the system that connects observations to decision
 
 | Component | Owns | Must not own |
 |---|---|---|
-| Intent adapter | English-to-structured task proposal and clarification | Coordinates, joints, permits |
+| Intent adapter | English-to-structured task proposal and clarification | Joints, protocol commands, permits |
 | Observation service | Synchronized camera frame, joint snapshot, health, epochs | Target choice or motion |
-| Perception service | Keyboard/device pose, visible landmarks, confidence | Physical execution |
+| Perception/model service | Device pose, named targets, bounded coordinate proposals, confidence | Joints, permits, physical execution |
 | Target resolver | Named key/region to board-frame point and hover/contact semantics | Arm commands |
 | Calibration registry | Versioned transforms and held-out validation evidence | Silent online mutation |
 | Trajectory planner | IK candidates, full route, timing, modeled clearances | Permission to execute |
@@ -171,10 +173,26 @@ The accepted output of the existing AI proposal and grounding gate:
 - requested mode such as `HOVER`, `CONTACT`, or `OBSERVE_ONLY`;
 - ambiguity/clarification result;
 - proposal model/version and grounding evidence;
-- explicit prohibition on coordinates, joints, PWM, protocol commands, and permits.
+- explicit prohibition on joints, PWM, protocol commands, and permits. Coordinate
+  output uses the separate model-motion proposal contract below.
 
 Reuse the current AI proposal/result contracts where they already meet these
 requirements; add an adapter rather than a competing intent language.
+
+### 5.2a `rocell.model_motion_proposal.v1`
+
+The strict internal handoff from the user's coordinate-producing model:
+
+- named keyboard or phone target;
+- coordinate in `keyboard_local`, `phone_screen_local`, or `board`;
+- hover/contact intent, approach clearance, speed class, and confidence;
+- exact model, frame, and image hash provenance;
+- no joint values, protocol fields, permit, or transport authority.
+
+The deterministic bridge compares the proposal with the named target's safe region
+and converts device-local coordinates into a board-frame planning request. Nominal
+maps can support offline training and screening; measured transforms remain required
+before physical compilation.
 
 ### 5.3 `rocell.scene_targets.v1`
 
@@ -521,6 +539,8 @@ Implement the following before any additional general-purpose arm movement:
 - [ ] Add canonical JSON hashing and parent-lineage validation.
 - [ ] Implement `observation_bundle` for stored image + stored telemetry inputs.
 - [ ] Adapt the current grounded-intent result into `task_intent`.
+- [x] Add the strict model coordinate proposal and nominal-map bridge. The bridge
+      emits board-frame planning candidates only and produces zero controller writes.
 - [ ] Adapt current visual targets and keyboard layout into `scene_targets`.
 - [ ] Wrap `static_task_rehearsal` as a `trajectory_candidate` producer.
 - [ ] Implement the safety report with explicit reject reason codes.

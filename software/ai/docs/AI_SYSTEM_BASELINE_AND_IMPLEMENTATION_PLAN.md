@@ -19,6 +19,11 @@ The learned models do not own servo commands. Device geometry, calibration,
 motion limits, collision checks, and execution authority remain explicit
 runtime contracts.
 
+Models may propose named target coordinates through the strict
+[`model_motion_proposal_v1`](../schemas/model_motion_proposal_v1.schema.json)
+contract. Those coordinates remain candidates until deterministic map checks,
+measured transforms, IK, full-route screening, and execution admission succeed.
+
 ## What exists today
 
 ### Intent path

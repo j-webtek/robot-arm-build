@@ -1,10 +1,17 @@
 # RoCell AI work area
 
+The coordinate-producing model handoff is documented in
+[`docs/MODEL_MOTION_PROPOSAL.md`](docs/MODEL_MOTION_PROPOSAL.md). It accepts
+image-bound keyboard/phone coordinates for deterministic offline screening; it
+does not grant a model direct serial or motion authority.
+
 This folder is the small, reviewable AI addition to the
 [`robot-arm-build`](https://github.com/j-webtek/robot-arm-build) repository. It
-will translate English requests into RoCell's existing semantic typing plans.
-RoCell remains the owner of target geometry, motion, calibration, physical
-authorization, controller feedback, and independent input verification.
+translates English requests into RoCell's existing semantic typing plans and can
+hand image-bound coordinate proposals to the deterministic model-motion bridge.
+RoCell remains the owner of coordinate validation, transforms, trajectory
+generation, motion calibration, physical authorization, controller feedback, and
+independent input verification.
 
 ## Current scope
 

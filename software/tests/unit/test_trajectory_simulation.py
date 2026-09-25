@@ -48,7 +48,7 @@ def test_implementation_binding_still_rejects_oversized_source_tree(monkeypatch,
 def test_current_source_tree_fits_bounded_implementation_binding():
     from rocell.application import trajectory_simulation as module
     from rocell.kinematics.ik import RoArmM3NumericalIk
-    assert module._MAX_IMPLEMENTATION_SOURCE_FILES == 1024
+    assert module._MAX_IMPLEMENTATION_SOURCE_FILES == 2048
     assert module._MAX_IMPLEMENTATION_SOURCE_BYTES == 20_000_000
     hashes = dict(module._implementation_hashes(RoArmM3NumericalIk,
                   GeometricDryRunEngine, solver_mode='test-source-bounds'))

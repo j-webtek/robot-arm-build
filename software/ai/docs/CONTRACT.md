@@ -29,7 +29,17 @@ A predicted phone `resulting_state` cannot authorize the next tap until
 [keyboard](../../src/rocell/typing/keyboard_compiler.py) and
 [phone](../../src/rocell/typing/phone_compiler.py) compilers own character-to-
 target mapping. The AI does not emit coordinates, joint targets, PWM, dwell,
-or arbitrary controller commands.
+or arbitrary controller commands through the semantic intent contract.
+
+A separate, image-bound
+[`rocell.model_motion_proposal.v1`](../schemas/model_motion_proposal_v1.schema.json)
+contract may propose a named target plus coordinates in `keyboard_local`,
+`phone_screen_local`, or `board`. This is an internal model-to-planner proposal,
+not a user-boundary robot command. Deterministic RoCell code must validate the
+frame and confidence, compare the point with the versioned target map, apply
+measured transforms, generate and screen the complete trajectory, and issue a
+separate permit before a controller command can exist. The model may not emit
+joint targets, PWM, protocol JSON, permits, or transport writes.
 
 ## Proposed first request
 

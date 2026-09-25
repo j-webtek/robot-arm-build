@@ -2,8 +2,11 @@
 
 Version the AI task proposal and adapter result here. A schema must distinguish
 `type_text`, `clarify`, and `unsupported`, preserve exact text when supported,
-and bind a source observation. The task proposal contains no robot coordinates
-or raw controller command. RoCell's existing `ActionPlan` remains authoritative.
+and bind a source observation. The semantic task proposal contains no robot
+coordinates or raw controller command. The separate model-motion proposal may
+contain device-local or board coordinates but never joints, wire commands, or
+transport authority. RoCell's existing `ActionPlan` remains authoritative for
+semantic typing actions.
 
 The first implementation work package is in [the roadmap](../docs/ROADMAP.md).
 The initial proposal shape is [`task_proposal_v0.schema.json`](task_proposal_v0.schema.json).
@@ -21,3 +24,7 @@ image quality and cannot contain coordinates or controller commands.
 The [shadow-preview schema](shadow_preview_v0.schema.json) binds one request,
 image, scene observation, precision observation, and guarded preview into a
 replayable offline record with zero hardware writes and no permit.
+The [model-motion proposal schema](model_motion_proposal_v1.schema.json) lets a
+model propose a named keyboard or phone coordinate in a declared frame. The
+proposal still has no transport authority; deterministic code must resolve,
+plan, screen, and admit it before any controller command can exist.

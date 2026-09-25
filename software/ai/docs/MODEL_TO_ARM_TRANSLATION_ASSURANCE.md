@@ -147,7 +147,12 @@ synthetic and agent-authored evaluation.
 
 The repository currently implements grounded intent, semantic compilation,
 hash-bound scene observations, a synthetic precision-coordinate contract,
-fail-closed vision fusion, and replayable zero-write shadow previews. The
+fail-closed vision fusion, replayable zero-write shadow previews, and a strict
+`rocell.model_motion_proposal.v1` bridge for bounded coordinate hypotheses.
+That bridge checks the named target, coordinate frame, target envelope, plane,
+confidence, and provenance; transforms approved device-local coordinates into
+the board frame; and deliberately emits no controller command or physical
+authority. The
 provisional offline Gemma 3 4B observer supplies scene classifications. The
 real-photo shadow example stops at `precision_observation_missing` because no
 calibrated real-image coordinate observation exists.

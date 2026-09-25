@@ -1,0 +1,21 @@
+{
+  "schema": "rocell.model_motion_proposal.v1",
+  "proposal_id": "keyboard-h-001",
+  "device": "keyboard",
+  "target_id": "H",
+  "coordinate_frame": "keyboard_local",
+  "target_mm": {
+    "x": 131.55,
+    "y": 69.0,
+    "z": 0.0
+  },
+  "interaction": "HOVER",
+  "approach_clearance_mm": 25.0,
+  "speed_class": "SLOW",
+  "confidence": 0.98,
+  "source": {
+    "model_id": "candidate-model-v1",
+    "frame_id": "frame-001",
+    "image_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  }
+}

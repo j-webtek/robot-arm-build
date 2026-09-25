@@ -151,6 +151,10 @@ class NominalTargetCatalog:
     phone_semantic_profile_id: str
     keyboard_semantic_profile_sha256: str
     phone_semantic_profile_sha256: str
+    keyboard_origin_board_xy_mm: tuple[float, float]
+    phone_origin_board_xy_mm: tuple[float, float]
+    keyboard_target_plane_z_board_mm: float
+    phone_target_plane_z_board_mm: float
     keyboard_targets: Mapping[str, TargetRegion]
     phone_targets: Mapping[str, TargetRegion]
     content_sha256: str
@@ -183,6 +187,27 @@ class NominalTargetCatalog:
                 field_name,
                 _sha256(getattr(self, field_name), field_name),
             )
+        for field_name in (
+            "keyboard_origin_board_xy_mm",
+            "phone_origin_board_xy_mm",
+        ):
+            value = getattr(self, field_name)
+            if not isinstance(value, tuple) or len(value) != 2:
+                raise TargetMapError(f"{field_name} must be an immutable XY pair")
+            object.__setattr__(
+                self,
+                field_name,
+                tuple(_number(item, field_name) for item in value),
+            )
+        for field_name in (
+            "keyboard_target_plane_z_board_mm",
+            "phone_target_plane_z_board_mm",
+        ):
+            object.__setattr__(
+                self,
+                field_name,
+                _number(getattr(self, field_name), field_name),
+            )
         object.__setattr__(self, "keyboard_targets", MappingProxyType(dict(self.keyboard_targets)))
         object.__setattr__(self, "phone_targets", MappingProxyType(dict(self.phone_targets)))
 
@@ -204,6 +229,37 @@ class NominalTargetCatalog:
             return self.phone_semantic_profile_id
         raise TargetMapError(f"Unknown device {device!r}")
 
+    def local_to_board(self, point: Point3Mm, *, device: str) -> Point3Mm:
+        """Project a nominal device-local surface point into the board frame.
+
+        This translation-only mapping is suitable for simulation and model-contract
+        evaluation. It is not a measured placement transform and grants no physical
+        authority.
+        """
+
+        if not isinstance(point, Point3Mm):
+            raise TypeError("point must be a Point3Mm")
+        if device == "keyboard":
+            expected_frame = "keyboard_local"
+            origin = self.keyboard_origin_board_xy_mm
+            plane_z = self.keyboard_target_plane_z_board_mm
+        elif device == "phone":
+            expected_frame = "phone_screen_local"
+            origin = self.phone_origin_board_xy_mm
+            plane_z = self.phone_target_plane_z_board_mm
+        else:
+            raise TargetMapError(f"Unknown device {device!r}")
+        if point.frame != expected_frame:
+            raise TargetMapError(
+                f"{device} local point must use frame {expected_frame!r}, got {point.frame!r}"
+            )
+        return Point3Mm(
+            "board",
+            origin[0] + point.x,
+            origin[1] + point.y,
+            plane_z + point.z,
+        )
+
     def to_dict(self) -> dict[str, Any]:
         return {
             "schema": self.schema,
@@ -218,12 +274,16 @@ class NominalTargetCatalog:
                     "semantic_profile_id": self.keyboard_semantic_profile_id,
                     "semantic_profile_sha256": self.keyboard_semantic_profile_sha256,
                     "target_count": len(self.keyboard_targets),
+                    "origin_board_xy_mm": list(self.keyboard_origin_board_xy_mm),
+                    "target_plane_z_board_mm": self.keyboard_target_plane_z_board_mm,
                 },
                 "phone": {
                     "profile_id": self.phone_profile_id,
                     "semantic_profile_id": self.phone_semantic_profile_id,
                     "semantic_profile_sha256": self.phone_semantic_profile_sha256,
                     "target_count": len(self.phone_targets),
+                    "origin_board_xy_mm": list(self.phone_origin_board_xy_mm),
+                    "target_plane_z_board_mm": self.phone_target_plane_z_board_mm,
                 },
             },
         }
@@ -252,7 +312,14 @@ def _device_targets(
     device_name: str,
     profile: Mapping[str, Any],
     layout_device: Mapping[str, Any],
-) -> tuple[str, str, str, Mapping[str, TargetRegion]]:
+) -> tuple[
+    str,
+    str,
+    str,
+    tuple[float, float],
+    float,
+    Mapping[str, TargetRegion],
+]:
     profile_id = _text(profile.get("profile_id"), f"{device_name}.profile_id")
     semantic_profile_id = _text(
         profile.get("semantic_profile_id"),
@@ -407,7 +474,14 @@ def _device_targets(
             positive=True,
         )
         add(_text(identifier, "explicit target id"), center, half_extent)
-    return profile_id, semantic_profile_id, semantic_profile_sha256, MappingProxyType(result)
+    return (
+        profile_id,
+        semantic_profile_id,
+        semantic_profile_sha256,
+        profile_origin,
+        target_z,
+        MappingProxyType(result),
+    )
 
 
 def load_nominal_target_catalog(
@@ -449,6 +523,8 @@ def load_nominal_target_catalog(
         keyboard_profile,
         keyboard_semantic_profile,
         keyboard_semantic_profile_sha256,
+        keyboard_origin,
+        keyboard_target_plane_z,
         keyboard_targets,
     ) = _device_targets(
         device_name="keyboard",
@@ -459,6 +535,8 @@ def load_nominal_target_catalog(
         phone_profile,
         phone_semantic_profile,
         phone_semantic_profile_sha256,
+        phone_origin,
+        phone_target_plane_z,
         phone_targets,
     ) = _device_targets(
         device_name="phone",
@@ -475,6 +553,10 @@ def load_nominal_target_catalog(
         phone_semantic_profile_id=phone_semantic_profile,
         keyboard_semantic_profile_sha256=keyboard_semantic_profile_sha256,
         phone_semantic_profile_sha256=phone_semantic_profile_sha256,
+        keyboard_origin_board_xy_mm=keyboard_origin,
+        phone_origin_board_xy_mm=phone_origin,
+        keyboard_target_plane_z_board_mm=keyboard_target_plane_z,
+        phone_target_plane_z_board_mm=phone_target_plane_z,
         keyboard_targets=keyboard_targets,
         phone_targets=phone_targets,
         content_sha256=hashlib.sha256(raw).hexdigest(),

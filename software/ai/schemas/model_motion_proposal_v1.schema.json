@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/j-webtek/robot-arm-build/software/ai/schemas/model_motion_proposal_v1.schema.json",
+  "title": "RoCell model-authored coordinate motion proposal v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "proposal_id", "device", "target_id", "coordinate_frame", "target_mm", "interaction", "approach_clearance_mm", "speed_class", "confidence", "source"],
+  "properties": {
+    "schema": {"const": "rocell.model_motion_proposal.v1"},
+    "proposal_id": {"type": "string", "minLength": 1},
+    "device": {"enum": ["keyboard", "phone"]},
+    "target_id": {"type": "string", "minLength": 1},
+    "coordinate_frame": {"enum": ["keyboard_local", "phone_screen_local", "board"]},
+    "target_mm": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["x", "y", "z"],
+      "properties": {
+        "x": {"type": "number"},
+        "y": {"type": "number"},
+        "z": {"type": "number"}
+      }
+    },
+    "interaction": {"enum": ["HOVER", "CONTACT"]},
+    "approach_clearance_mm": {"type": "number", "exclusiveMinimum": 0, "maximum": 250},
+    "speed_class": {"enum": ["SLOW", "NOMINAL"]},
+    "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["model_id", "frame_id", "image_sha256"],
+      "properties": {
+        "model_id": {"type": "string", "minLength": 1},
+        "frame_id": {"type": "string", "minLength": 1},
+        "image_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    }
+  }
+}
