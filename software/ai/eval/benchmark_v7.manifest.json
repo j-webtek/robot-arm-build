@@ -1,0 +1,11 @@
+{
+  "schema": "rocell.ai_benchmark_manifest.v0",
+  "benchmark_id": "rocell_ai_intent_v7",
+  "source_commit": "ae5dace3f115c8ad9a55d5a100cab83b10e895c2",
+  "case_count": 30,
+  "cases_sha256": "b703914077c12e5ceb2a287a7e28bb5848fa0820c8ab5f6a0ec3d314da223a48",
+  "review_state": "simulated_semantic_crosscheck_no_human_review",
+  "scope": "offline intent challenge frozen before balanced SFT v3 data generation",
+  "held_out_policy": "Keep v7 requests and normalized templates out of training; score the fixed SFT v3 candidate and unchanged admission policy once, then create a new set for any further tuning.",
+  "result_classes": ["type_text", "clarify", "unsupported"]
+}
