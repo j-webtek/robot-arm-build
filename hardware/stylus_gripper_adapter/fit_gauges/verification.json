@@ -1,0 +1,115 @@
+{
+  "units": "mm",
+  "revision": "barrel-gauge-v1",
+  "purpose": "Barrel fitting coupons only; not a stylus holder",
+  "hidden_clearance_mm": 0,
+  "product_asin": "B08Q7L85X2",
+  "parts": [
+    {
+      "group": "A",
+      "nominal_size_mm": [
+        111.0,
+        36.0,
+        4.0
+      ],
+      "slots": [
+        {
+          "nominal_gap_mm": 8.0,
+          "center_x_mm": 7.0
+        },
+        {
+          "nominal_gap_mm": 8.25,
+          "center_x_mm": 18.125
+        },
+        {
+          "nominal_gap_mm": 8.5,
+          "center_x_mm": 29.5
+        },
+        {
+          "nominal_gap_mm": 8.75,
+          "center_x_mm": 41.125
+        },
+        {
+          "nominal_gap_mm": 9.0,
+          "center_x_mm": 53.0
+        },
+        {
+          "nominal_gap_mm": 9.25,
+          "center_x_mm": 65.125
+        },
+        {
+          "nominal_gap_mm": 9.5,
+          "center_x_mm": 77.5
+        },
+        {
+          "nominal_gap_mm": 9.75,
+          "center_x_mm": 90.125
+        },
+        {
+          "nominal_gap_mm": 10.0,
+          "center_x_mm": 103.0
+        }
+      ],
+      "stl_watertight": true,
+      "stl_single_solid": true,
+      "step_reimport_valid": true,
+      "throat_checks_passed": true,
+      "volume_mm3": 10903.316989812325,
+      "files": {
+        "barrel_gap_gauge_A.step": "2675c1e9f05d35246d187b71947fb9e11c66dbb8e1736e44e87f170108ae4bdf",
+        "barrel_gap_gauge_A.stl": "8be5ce50e8c412ef7e244c3cba9747afa9ce077df5465f10053c4a322a5db4fa"
+      }
+    },
+    {
+      "group": "B",
+      "nominal_size_mm": [
+        116.0,
+        36.0,
+        4.0
+      ],
+      "slots": [
+        {
+          "nominal_gap_mm": 10.25,
+          "center_x_mm": 8.125
+        },
+        {
+          "nominal_gap_mm": 10.5,
+          "center_x_mm": 21.5
+        },
+        {
+          "nominal_gap_mm": 10.75,
+          "center_x_mm": 35.125
+        },
+        {
+          "nominal_gap_mm": 11.0,
+          "center_x_mm": 49.0
+        },
+        {
+          "nominal_gap_mm": 11.25,
+          "center_x_mm": 63.125
+        },
+        {
+          "nominal_gap_mm": 11.5,
+          "center_x_mm": 77.5
+        },
+        {
+          "nominal_gap_mm": 11.75,
+          "center_x_mm": 92.125
+        },
+        {
+          "nominal_gap_mm": 12.0,
+          "center_x_mm": 107.0
+        }
+      ],
+      "stl_watertight": true,
+      "stl_single_solid": true,
+      "step_reimport_valid": true,
+      "throat_checks_passed": true,
+      "volume_mm3": 10831.682754223482,
+      "files": {
+        "barrel_gap_gauge_B.step": "dfe88ce0f8af5111305f23144eda6218eb2452b96156ea2a571decb01f40d4de",
+        "barrel_gap_gauge_B.stl": "37acf97d3ce190603b0bdc670259ef245fec8d2e9fcf3685bea72c7606febf12"
+      }
+    }
+  ]
+}

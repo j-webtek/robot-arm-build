@@ -1,0 +1,4 @@
+fit_gauges/*.step binary
+fit_gauges/*.stl binary
+fit_gauges/*.png binary
+fit_gauges/*.json text eol=lf

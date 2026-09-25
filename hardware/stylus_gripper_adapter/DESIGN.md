@@ -74,6 +74,13 @@ separately before treating it as a robot-operated touchscreen tool.
 
 ## Measurements needed for the first fitting coupon
 
+Open-sided barrel gauges and print/use instructions are now provided in
+`FIT_GAUGE_README.md`. Their nominal gaps span 8.00–12.00 mm in 0.25 mm steps;
+this is an exploratory range, not a claimed stylus diameter. Confirm fit at
+two separated barrel locations before finalizing the split clamp. Use screws
+and captive nuts on clamp flanges, with a separate fitted depth collar; keep
+screw tips off the pen and leave tightening travel between the clamp halves.
+
 All dimensions are millimeters. Record the measurement method and uncertainty.
 
 | Dimension | Purpose | Current evidence |
