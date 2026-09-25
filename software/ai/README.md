@@ -1,0 +1,54 @@
+# RoCell AI work area
+
+This folder is the small, reviewable AI addition to the
+[`robot-arm-build`](https://github.com/j-webtek/robot-arm-build) repository. It
+will translate English requests into RoCell's existing semantic typing plans.
+RoCell remains the owner of target geometry, motion, calibration, physical
+authorization, controller feedback, and independent input verification.
+
+## Current scope
+
+- **First milestone:** offline intent-to-plan for supported keyboard and phone
+  text. Return clarification or `unsupported_by_profile` for requests the
+  current semantic profiles cannot compile.
+- **Later:** train a small Llama student only after comparing it with a
+  deterministic baseline and unmodified models on a frozen benchmark.
+- **Future:** feedback-driven planning, physically verified typing, dialer
+  workflows, and camera observations as RoCell releases those capabilities.
+
+No file here authorizes arm motion. The current RoCell development runtime has
+live hardware and contact disabled. See [project status](../../PROJECT_STATUS.md)
+before treating any simulated or controller-feedback result as a physical
+typing result.
+
+## Run the offline baseline
+
+From the repository root with Python 3.10 or newer:
+
+```powershell
+python software/ai/run_offline.py propose --request 'Type "test" on the keyboard'
+python software/ai/run_offline.py inspect --request 'Type "test" on the keyboard'
+python software/ai/run_offline.py evaluate
+python -m unittest discover -s software/ai/tests
+```
+
+The `propose` command uses caller-supplied fixture state only. Its phone state
+defaults to `UNKNOWN`; pass `--phone-state KEYBOARD_LOWER` only for an offline
+case where that state is part of the fixture. These commands do not open an arm
+or camera and do not authorize typing. The committed
+[baseline scorecard](eval/baseline_v0_scorecard.json) records the first 28-case
+sanity benchmark and its limits.
+
+## Folder map
+
+| Path | Purpose |
+| --- | --- |
+| [`docs/`](docs/README.md) | AI contract, source boundary, and implementation plan |
+| [`schemas/`](schemas/README.md) | Versioned English-to-task proposal and result formats |
+| [`eval/`](eval/README.md) | Frozen offline cases, scoring, and baseline comparisons |
+| [`data/`](data/README.md) | Dataset manifests and reviewed examples only |
+| [`train/`](train/README.md) | Pinned model and training manifests after baseline evidence |
+
+The existing `software/src/rocell/models/actions.py` and
+`software/src/rocell/typing/` are the integration boundary. Do not copy the
+older ADB-agent source tree or model artifacts into this folder.

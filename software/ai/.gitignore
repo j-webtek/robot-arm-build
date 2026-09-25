@@ -1,0 +1,16 @@
+# Reviewed schemas, configs, manifests, and small sanitized examples are tracked.
+# Keep private evidence and generated artifacts out of the RoCell repository.
+/data/raw/
+/data/processed/
+/data/private/
+/eval/results/
+/train/runs/
+/artifacts/
+/checkpoints/
+*.gguf
+*.safetensors
+*.pt
+*.pth
+*.onnx
+*.parquet
+*.log

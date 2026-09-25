@@ -1,0 +1,28 @@
+{"case_id":"kbd_01","request":"Type \"test\" on the keyboard.","observation":{"ref":"offline-kbd-01","fresh":true},"expected":{"decision":"type_text","device":"keyboard","text":"test"}}
+{"case_id":"kbd_02","request":"Please type abc on keyboard","observation":{"ref":"offline-kbd-02","fresh":true},"expected":{"decision":"type_text","device":"keyboard","text":"abc"}}
+{"case_id":"kbd_03","request":"On the keyboard, type hello world","observation":{"ref":"offline-kbd-03","fresh":true},"expected":{"decision":"type_text","device":"keyboard","text":"hello world"}}
+{"case_id":"kbd_04","request":"Enter 123 on the physical keyboard","observation":{"ref":"offline-kbd-04","fresh":true},"expected":{"decision":"type_text","device":"keyboard","text":"123"}}
+{"case_id":"kbd_05","request":"Type \"a.b\" on the keyboard","observation":{"ref":"offline-kbd-05","fresh":true},"expected":{"decision":"type_text","device":"keyboard","text":"a.b"}}
+{"case_id":"kbd_06","request":"Type \"x/y\" on keyboard","observation":{"ref":"offline-kbd-06","fresh":true},"expected":{"decision":"type_text","device":"keyboard","text":"x/y"}}
+{"case_id":"kbd_07","request":"Enter \"a-b\" using the keyboard","observation":{"ref":"offline-kbd-07","fresh":true},"expected":{"decision":"type_text","device":"keyboard","text":"a-b"}}
+{"case_id":"kbd_08","request":"Type \"one two\" into the keyboard","observation":{"ref":"offline-kbd-08","fresh":true},"expected":{"decision":"type_text","device":"keyboard","text":"one two"}}
+{"case_id":"phone_01","request":"Type \"test.\" on the phone","observation":{"ref":"offline-phone-01","fresh":true,"phone_state":"KEYBOARD_LOWER"},"expected":{"decision":"type_text","device":"phone","text":"test."}}
+{"case_id":"phone_02","request":"On the phone, type hello","observation":{"ref":"offline-phone-02","fresh":true,"phone_state":"KEYBOARD_LOWER"},"expected":{"decision":"type_text","device":"phone","text":"hello"}}
+{"case_id":"phone_03","request":"Enter \"a b.\" on cell phone","observation":{"ref":"offline-phone-03","fresh":true,"phone_state":"KEYBOARD_LOWER"},"expected":{"decision":"type_text","device":"phone","text":"a b."}}
+{"case_id":"phone_04","request":"Please enter abc on phone","observation":{"ref":"offline-phone-04","fresh":true,"phone_state":"KEYBOARD_LOWER"},"expected":{"decision":"type_text","device":"phone","text":"abc"}}
+{"case_id":"phone_05","request":"Type \"z\" using the cell phone","observation":{"ref":"offline-phone-05","fresh":true,"phone_state":"KEYBOARD_LOWER"},"expected":{"decision":"type_text","device":"phone","text":"z"}}
+{"case_id":"phone_06","request":"Type \"hello world\" on the phone","observation":{"ref":"offline-phone-06","fresh":true,"phone_state":"KEYBOARD_LOWER"},"expected":{"decision":"type_text","device":"phone","text":"hello world"}}
+{"case_id":"block_01","request":"Type \"Hi!\" on the keyboard","observation":{"ref":"offline-block-01","fresh":true},"expected":{"decision":"unsupported","reason":"unsupported_by_profile"}}
+{"case_id":"block_02","request":"Type \"555\" on the phone","observation":{"ref":"offline-block-02","fresh":true,"phone_state":"KEYBOARD_LOWER"},"expected":{"decision":"unsupported","reason":"unsupported_by_profile"}}
+{"case_id":"block_03","request":"Call 555-0102 on the phone","observation":{"ref":"offline-block-03","fresh":true},"expected":{"decision":"unsupported","reason":"operation_not_available"}}
+{"case_id":"block_04","request":"Dial 555-0102","observation":{"ref":"offline-block-04","fresh":true},"expected":{"decision":"unsupported","reason":"operation_not_available"}}
+{"case_id":"block_05","request":"Type \"test\" on the keyboard","observation":{"ref":"offline-block-05","fresh":false},"expected":{"decision":"unsupported","reason":"stale_observation"}}
+{"case_id":"block_06","request":"Type \"test\" on the phone","observation":{"ref":"offline-block-06","fresh":true,"phone_state":"UNKNOWN"},"expected":{"decision":"unsupported","reason":"phone_state_unverified"}}
+{"case_id":"clarify_01","request":"Type hello","observation":{"ref":"offline-clarify-01","fresh":true},"expected":{"decision":"clarify","reason":"device_ambiguous"}}
+{"case_id":"clarify_02","request":"Type hello on the keyboard and phone","observation":{"ref":"offline-clarify-02","fresh":true,"phone_state":"KEYBOARD_LOWER"},"expected":{"decision":"clarify","reason":"device_ambiguous"}}
+{"case_id":"clarify_03","request":"Type \"a\" and \"b\" on keyboard","observation":{"ref":"offline-clarify-03","fresh":true},"expected":{"decision":"clarify","reason":"text_ambiguous"}}
+{"case_id":"clarify_04","request":"Use the keyboard","observation":{"ref":"offline-clarify-04","fresh":true},"expected":{"decision":"clarify","reason":"intent_ambiguous"}}
+{"case_id":"kbd_09","request":"Type \"phone\" on keyboard","observation":{"ref":"offline-kbd-09","fresh":true},"expected":{"decision":"type_text","device":"keyboard","text":"phone"}}
+{"case_id":"kbd_10","request":"Type \"call\" on keyboard","observation":{"ref":"offline-kbd-10","fresh":true},"expected":{"decision":"type_text","device":"keyboard","text":"call"}}
+{"case_id":"clarify_05","request":"Type \"test\" on keyboard and open an app","observation":{"ref":"offline-clarify-05","fresh":true},"expected":{"decision":"clarify","reason":"intent_ambiguous"}}
+{"case_id":"clarify_06","request":"Type \"test\" on keyboard and phone","observation":{"ref":"offline-clarify-06","fresh":true},"expected":{"decision":"clarify","reason":"device_ambiguous"}}

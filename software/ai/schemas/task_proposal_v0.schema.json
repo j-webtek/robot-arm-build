@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/j-webtek/robot-arm-build/software/ai/schemas/task_proposal_v0.schema.json",
+  "title": "RoCell AI task proposal v0",
+  "oneOf": [
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema", "request_id", "observation_ref", "decision", "device", "text"],
+      "properties": {
+        "schema": {"const": "rocell.ai_task_proposal.v0"},
+        "request_id": {"type": "string", "minLength": 1},
+        "observation_ref": {"type": "string", "minLength": 1},
+        "decision": {"const": "type_text"},
+        "device": {"enum": ["keyboard", "phone"]},
+        "text": {"type": "string", "minLength": 1}
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema", "request_id", "observation_ref", "decision", "reason"],
+      "properties": {
+        "schema": {"const": "rocell.ai_task_proposal.v0"},
+        "request_id": {"type": "string", "minLength": 1},
+        "observation_ref": {"type": "string", "minLength": 1},
+        "decision": {"const": "clarify"},
+        "reason": {"enum": ["device_ambiguous", "text_ambiguous", "intent_ambiguous"]}
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema", "request_id", "observation_ref", "decision", "reason"],
+      "properties": {
+        "schema": {"const": "rocell.ai_task_proposal.v0"},
+        "request_id": {"type": "string", "minLength": 1},
+        "observation_ref": {"type": "string", "minLength": 1},
+        "decision": {"const": "unsupported"},
+        "reason": {"enum": ["operation_not_available", "unsupported_by_profile", "stale_observation", "phone_state_unverified"]}
+      }
+    }
+  ]
+}

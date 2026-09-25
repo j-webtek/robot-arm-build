@@ -1,0 +1,11 @@
+{
+  "schema": "rocell.ai_benchmark_manifest.v0",
+  "benchmark_id": "rocell_ai_intent_v0",
+  "source_commit": "bb5d4afa689f1823b949ce769f28c3e9becef712",
+  "review_state": "agent_authored_pending_human_review",
+  "case_count": 28,
+  "cases_sha256": "50fab69606f9a80f5ca22f60fd56d49374d1118dae3702c4aee4110fdf89e798",
+  "scope": "offline intent-to-RoCell semantic compiler only",
+  "held_out_policy": "Do not train on these exact requests or their paraphrase families.",
+  "result_classes": ["type_text", "clarify", "unsupported"]
+}

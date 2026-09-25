@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/j-webtek/robot-arm-build/software/ai/schemas/plan_result_v0.schema.json",
+  "title": "RoCell AI offline plan inspection result v0",
+  "oneOf": [
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema", "request_id", "observation_ref", "status", "profile_id", "plan_hash", "action_plan"],
+      "properties": {
+        "schema": {"const": "rocell.ai_plan_result.v0"},
+        "request_id": {"type": "string", "minLength": 1},
+        "observation_ref": {"type": "string", "minLength": 1},
+        "status": {"const": "accepted"},
+        "profile_id": {"type": "string", "minLength": 1},
+        "plan_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "action_plan": {"type": "object", "properties": {"schema": {"const": "rocell.action_plan.v1"}}, "required": ["schema"]}
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema", "request_id", "observation_ref", "status", "reason"],
+      "properties": {
+        "schema": {"const": "rocell.ai_plan_result.v0"},
+        "request_id": {"type": "string", "minLength": 1},
+        "observation_ref": {"type": "string", "minLength": 1},
+        "status": {"const": "blocked"},
+        "reason": {"enum": ["device_ambiguous", "text_ambiguous", "intent_ambiguous", "operation_not_available", "unsupported_by_profile", "stale_observation", "phone_state_unverified"]}
+      }
+    }
+  ]
+}
