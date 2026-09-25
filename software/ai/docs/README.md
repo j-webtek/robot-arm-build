@@ -4,6 +4,11 @@ Read [the integration contract](CONTRACT.md), then [the roadmap](ROADMAP.md).
 The [model research note](MODEL_RESEARCH.md) records the published Llama
 methods and what still needs a baseline experiment.
 
+The [AI system baseline and implementation plan](AI_SYSTEM_BASELINE_AND_IMPLEMENTATION_PLAN.md)
+records what is implemented, what the evidence establishes, how an Ollama or
+llama.cpp multimodal observer fits beside the precision pose model, and the
+prioritized path to a physically qualified system.
+
 These documents describe the proposed AI work. The authoritative RoCell
 capabilities and physical status remain in the repository's
 [project status](../../../PROJECT_STATUS.md),

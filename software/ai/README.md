@@ -16,6 +16,9 @@ authorization, controller feedback, and independent input verification.
 - **Future:** feedback-driven planning, physically verified typing, dialer
   workflows, and camera observations as RoCell releases those capabilities.
 
+The current system baseline and the prioritized multimodal implementation are
+tracked in the [AI system baseline and implementation plan](docs/AI_SYSTEM_BASELINE_AND_IMPLEMENTATION_PLAN.md).
+
 No file here authorizes arm motion. The current RoCell development runtime has
 live hardware and contact disabled. See [project status](../../PROJECT_STATUS.md)
 before treating any simulated or controller-feedback result as a physical
