@@ -21,6 +21,10 @@ metadata and labels, not the raw captures or their EXIF.
 - The ten images are correlated views of one setup. No phone or on-screen
   keyboard is present. The loose camera visible in one view is not evidence
   that these frames came from the final fixed overhead camera.
+- RoCell's earlier photo-estimated keyboard registration references a different
+  SHA-256 for a file also named `10-Photo-10.jpg`. Its board geometry and
+  approximate half-turn are useful simulation priors, but those annotations
+  cannot be treated as labels for this newly supplied Photo 10.
 
 ## Current training status
 

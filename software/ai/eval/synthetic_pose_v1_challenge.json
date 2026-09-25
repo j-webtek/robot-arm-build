@@ -1,0 +1,22 @@
+{
+  "schema": "rocell.ai_synthetic_keyboard_pose_challenge.v0",
+  "checkpoint_sha256": "2cc9d770fe9816b1e7f717413996e78d3e440eb6d7b2a02414f229d11ed5671f",
+  "challenge_source_sha256": "1ba33a1a2d38b1216a5e1708e17b99c3d9dba9fd2c40af46a084da8065102983",
+  "photo_texture_sha256": "84f4b69d9b891432f3344f777c6ddddaad162aa9243d0db83c5d6dfea9eda638",
+  "seed_range": [
+    3000000,
+    3000299
+  ],
+  "case_count": 300,
+  "metrics": {
+    "center_error_mm_mean": 4.764,
+    "center_error_mm_p95": 24.246,
+    "yaw_error_deg_mean": 0.95,
+    "yaw_error_deg_p95": 4.077,
+    "selected_key_error_mm_mean": 5.096,
+    "selected_key_error_mm_p95": 24.832
+  },
+  "real_camera_evaluation": false,
+  "physical_execution_authorized": false,
+  "hardware_commands": 0
+}

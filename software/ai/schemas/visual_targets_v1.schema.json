@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/j-webtek/robot-arm-build/software/ai/schemas/visual_targets_v1.schema.json",
+  "title": "RoCell synthetic image-model target prediction v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "frame_id", "device", "coordinate_frame", "coordinate_unit", "source", "target_catalog_sha256", "image_sha256", "model_sha256", "targets", "observation_sha256"],
+  "properties": {
+    "schema": {"const": "rocell.ai_visual_targets.v1"},
+    "frame_id": {"type": "string", "minLength": 1},
+    "device": {"const": "keyboard"},
+    "coordinate_frame": {"const": "board"},
+    "coordinate_unit": {"const": "mm"},
+    "source": {"const": "SYNTHETIC_IMAGE_MODEL_PREDICTION"},
+    "target_catalog_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "image_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "model_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "observation_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "targets": {
+      "type": "object", "minProperties": 1, "maxProperties": 256,
+      "additionalProperties": {
+        "type": "object", "additionalProperties": false,
+        "required": ["center_board_mm"],
+        "properties": {
+          "center_board_mm": {"type": "array", "minItems": 3, "maxItems": 3,
+            "items": {"type": "number", "minimum": -1000, "maximum": 1000}}
+        }
+      }
+    }
+  }
+}

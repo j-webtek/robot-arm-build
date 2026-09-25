@@ -84,3 +84,11 @@ adapter in an ignored folder with the filenames required by this Ollama
 installation. Model weights, adapter weights, and raw run files are not
 committed. This SFT pilot teaches the output contract from compiler-checked
 labels; it is not teacher-logit distillation or evidence of robot typing.
+
+The [synthetic keyboard vision pilot](../docs/SYNTHETIC_VISION_TRAINING.md)
+trains a separate small CNN for keyboard center/yaw from rendered pixels.
+[`synthetic_pose_photo_v0_result.json`](synthetic_pose_photo_v0_result.json)
+records the first photo-texture run; v1 adds mixed appearance augmentation
+and has its own [result](synthetic_pose_photo_v1_result.json). The selected
+checkpoint is kept in ignored `runs/` and bound by SHA-256. It was not
+trained on measured key coordinates or real overhead-camera frames.

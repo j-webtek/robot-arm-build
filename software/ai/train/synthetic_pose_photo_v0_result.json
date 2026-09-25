@@ -1,0 +1,123 @@
+{
+  "schema": "rocell.ai_synthetic_keyboard_pose_result.v0",
+  "training_source": "procedurally_rendered_images_with_nominal_key_geometry",
+  "photo_use": "one_agent_rectified_photo_05_crop_mixed_with_procedural_keyboard",
+  "photo_texture_sha256": "84f4b69d9b891432f3344f777c6ddddaad162aa9243d0db83c5d6dfea9eda638",
+  "model": "KeyboardPoseNet",
+  "device": "cuda",
+  "seed": 260925,
+  "train_count": 1800,
+  "validation_count": 300,
+  "validation_seed_range": [
+    1000000,
+    1000299
+  ],
+  "epochs": 16,
+  "target_catalog_sha256": "6779213e832ab27eeda1e7fb245f57ff8cb0d56707b5aa73a8f31ec483a620f2",
+  "renderer_sha256": "b9a1662ea348ba78093909844e5e8bed86f4996babc289bfd63858b6b54f692c",
+  "model_source_sha256": "7eccc2a3cabf3a37217b4a1c3114c439ffc740a917c08e4ef378065ff85c6ec5",
+  "photo_study_config_sha256": "273205ab073212395fd67c3fe43da46dbf06eaaf95937710a530cfe0b57d5098",
+  "new_photo_10_sha256": "3ccec3b2fad7113f1185e19d16c5c2a64c58f79423bc658751e1781182bbbda7",
+  "checkpoint_sha256": "661b907f65f26de483caac7e76a47204f4c2e8ba50afb4de3bc91f6cab3f41b4",
+  "history": [
+    {
+      "epoch": 1,
+      "train_mse": 0.283493,
+      "validation_mse": 0.195516
+    },
+    {
+      "epoch": 2,
+      "train_mse": 0.079476,
+      "validation_mse": 0.027606
+    },
+    {
+      "epoch": 3,
+      "train_mse": 0.021622,
+      "validation_mse": 0.023496
+    },
+    {
+      "epoch": 4,
+      "train_mse": 0.014241,
+      "validation_mse": 0.014735
+    },
+    {
+      "epoch": 5,
+      "train_mse": 0.009122,
+      "validation_mse": 0.007291
+    },
+    {
+      "epoch": 6,
+      "train_mse": 0.00608,
+      "validation_mse": 0.004778
+    },
+    {
+      "epoch": 7,
+      "train_mse": 0.004423,
+      "validation_mse": 0.004619
+    },
+    {
+      "epoch": 8,
+      "train_mse": 0.003897,
+      "validation_mse": 0.003114
+    },
+    {
+      "epoch": 9,
+      "train_mse": 0.003109,
+      "validation_mse": 0.003611
+    },
+    {
+      "epoch": 10,
+      "train_mse": 0.002909,
+      "validation_mse": 0.006849
+    },
+    {
+      "epoch": 11,
+      "train_mse": 0.00326,
+      "validation_mse": 0.002602
+    },
+    {
+      "epoch": 12,
+      "train_mse": 0.002186,
+      "validation_mse": 0.002924
+    },
+    {
+      "epoch": 13,
+      "train_mse": 0.002069,
+      "validation_mse": 0.002487
+    },
+    {
+      "epoch": 14,
+      "train_mse": 0.002052,
+      "validation_mse": 0.002412
+    },
+    {
+      "epoch": 15,
+      "train_mse": 0.001829,
+      "validation_mse": 0.001898
+    },
+    {
+      "epoch": 16,
+      "train_mse": 0.0018,
+      "validation_mse": 0.00378
+    }
+  ],
+  "validation": {
+    "center_error_mm_mean": 1.761,
+    "center_error_mm_p95": 3.215,
+    "yaw_error_deg_mean": 0.754,
+    "yaw_error_deg_p95": 1.521,
+    "selected_key_error_mm_mean": 1.829,
+    "selected_key_error_mm_p95": 3.507
+  },
+  "appearance_shift_validation": {
+    "center_error_mm_mean": 5.608,
+    "center_error_mm_p95": 12.301,
+    "yaw_error_deg_mean": 1.324,
+    "yaw_error_deg_p95": 3.684,
+    "selected_key_error_mm_mean": 5.692,
+    "selected_key_error_mm_p95": 12.939
+  },
+  "evaluated_on_real_photos": false,
+  "physical_execution_authorized": false,
+  "hardware_commands": 0
+}

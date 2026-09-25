@@ -17,6 +17,9 @@ sys.path.insert(0, str(AI_DIR.parent / "src"))
 
 from rocell_ai.coordinate_preview import preview  # noqa: E402
 from rocell_ai.visual_observation import simulate  # noqa: E402
+from rocell_ai.visual_observation import MODEL_SCHEMA  # noqa: E402
+from rocell.targets.nominal import load_nominal_target_catalog  # noqa: E402
+from vision.synthetic_keyboard import render, transform_target  # noqa: E402
 
 
 class VisualCoordinateTests(unittest.TestCase):
@@ -83,6 +86,43 @@ class VisualCoordinateTests(unittest.TestCase):
         self.assertEqual(result["targets"][1]["target_id"], "key_a")
         self.assertEqual(result["targets"][1]["center_board_mm"][1],
                          result["targets"][1]["nominal_center_board_mm"][1] + 1)
+
+    def test_synthetic_pixels_and_pose_are_seed_reproducible(self) -> None:
+        catalog = load_nominal_target_catalog(WORKSPACE)
+        first_image, first_pose = render(123, catalog)
+        second_image, second_pose = render(123, catalog)
+        self.assertEqual(first_pose, second_pose)
+        self.assertEqual(first_image.tobytes(), second_image.tobytes())
+
+    def test_image_model_observation_binds_selected_key_coordinates(self) -> None:
+        catalog = load_nominal_target_catalog(WORKSPACE)
+        center, angle = (235.0, 154.0), 3.141592653589793
+        targets = {}
+        for target_id, region in catalog.keyboard_targets.items():
+            x, y = transform_target(region.center.x, region.center.y, center, angle)
+            targets[target_id] = {"center_board_mm": [x, y, region.center.z]}
+        core = {
+            "schema": MODEL_SCHEMA, "frame_id": "frame-1", "device": "keyboard",
+            "coordinate_frame": "board", "coordinate_unit": "mm",
+            "source": "SYNTHETIC_IMAGE_MODEL_PREDICTION",
+            "target_catalog_sha256": catalog.content_sha256,
+            "image_sha256": "a" * 64, "model_sha256": "b" * 64,
+            "targets": targets,
+        }
+        visual = {**core, "observation_sha256": hashlib.sha256(
+            json.dumps(core, sort_keys=True, separators=(",", ":"), allow_nan=False).encode()
+        ).hexdigest()}
+        result = preview('Type "a" on the keyboard', self.observation, request_id="r7",
+                         workspace=WORKSPACE, visual_observation=visual)
+        self.assertEqual(result["status"], "coordinate_preview")
+        self.assertEqual(result["coordinate_source"], "SYNTHETIC_IMAGE_MODEL_PREDICTION")
+        self.assertEqual(result["image_sha256"], "a" * 64)
+        self.assertNotEqual(result["targets"][0]["center_board_mm"],
+                            result["targets"][0]["nominal_center_board_mm"])
+        visual["model_sha256"] = "c" * 64
+        with self.assertRaisesRegex(ValueError, "hash mismatch"):
+            preview('Type "a" on the keyboard', self.observation, request_id="r7",
+                    workspace=WORKSPACE, visual_observation=visual)
 
 
 if __name__ == "__main__":

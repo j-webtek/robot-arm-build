@@ -119,6 +119,13 @@ and explicit execution blockers. It contains no controller commands. This is
 the first integration seam for a future image detector, calibrated motion
 planner, and result observer; see [vision/motion integration](docs/VISION_MOTION_INTEGRATION.md).
 
+A [synthetic keyboard vision pilot](docs/SYNTHETIC_VISION_TRAINING.md) now
+trains a small image-to-keyboard-pose CNN using procedural scenes mixed with
+a crop from the user-provided Photo 5. A joined offline command runs text
+intent through image-predicted keyboard pose to candidate key coordinates.
+The separate synthetic challenge has a 24.83 mm 95th-percentile key-position
+error; no real-camera accuracy is known and no arm commands are emitted.
+
 ## Folder map
 
 | Path | Purpose |

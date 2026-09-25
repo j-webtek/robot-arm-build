@@ -17,6 +17,7 @@ from rocell.targets.nominal import load_nominal_target_catalog
 
 
 SCHEMA = "rocell.ai_visual_targets.v0"
+MODEL_SCHEMA = "rocell.ai_visual_targets.v1"
 MIN_CONFIDENCE = 0.95
 
 
@@ -64,24 +65,37 @@ def simulate(workspace: Path, *, device: str, frame_id: str, offset_x_mm: float 
 
 def validate(value: Any, *, device: str, catalog_sha256: str) -> dict[str, Any]:
     """Reject malformed, mixed-source, ambiguous, or weak observations."""
-    if not isinstance(value, dict) or set(value) != {
+    common_keys = {
         "schema", "frame_id", "device", "coordinate_frame", "coordinate_unit",
         "source", "target_catalog_sha256", "targets", "observation_sha256",
-    }:
+    }
+    if not isinstance(value, dict) or value.get("schema") not in {SCHEMA, MODEL_SCHEMA}:
+        raise ValueError("visual observation has invalid schema")
+    model_prediction = value["schema"] == MODEL_SCHEMA
+    if model_prediction and device != "keyboard":
+        raise ValueError("v1 synthetic image model supports keyboard only")
+    expected_keys = common_keys | ({"image_sha256", "model_sha256"} if model_prediction else set())
+    if set(value) != expected_keys:
         raise ValueError("visual observation has invalid fields")
-    if value["schema"] != SCHEMA or value["device"] != device or value["target_catalog_sha256"] != catalog_sha256:
+    if value["device"] != device or value["target_catalog_sha256"] != catalog_sha256:
         raise ValueError("visual observation identity mismatch")
     if value["coordinate_frame"] != "board" or value["coordinate_unit"] != "mm":
         raise ValueError("visual observation must use board millimetres")
-    if value["source"] != "SYNTHETIC_DISPLACED_NOMINAL_TARGETS":
+    expected_source = "SYNTHETIC_IMAGE_MODEL_PREDICTION" if model_prediction else "SYNTHETIC_DISPLACED_NOMINAL_TARGETS"
+    if value["source"] != expected_source:
         raise ValueError("unqualified visual source")
+    if model_prediction:
+        for key in ("image_sha256", "model_sha256"):
+            if not isinstance(value[key], str) or len(value[key]) != 64 or any(c not in "0123456789abcdef" for c in value[key]):
+                raise ValueError(f"invalid {key}")
     if not isinstance(value["frame_id"], str) or not value["frame_id"].strip():
         raise ValueError("visual frame_id is required")
     targets = value["targets"]
     if not isinstance(targets, dict) or not targets or len(targets) > 256:
         raise ValueError("visual targets must be a bounded object")
     for name, target in targets.items():
-        if not isinstance(name, str) or not name or not isinstance(target, dict) or set(target) != {"center_board_mm", "confidence"}:
+        target_fields = {"center_board_mm"} if model_prediction else {"center_board_mm", "confidence"}
+        if not isinstance(name, str) or not name or not isinstance(target, dict) or set(target) != target_fields:
             raise ValueError("visual target has invalid fields")
         point = target["center_board_mm"]
         if not isinstance(point, list) or len(point) != 3:
@@ -89,9 +103,10 @@ def validate(value: Any, *, device: str, catalog_sha256: str) -> dict[str, Any]:
         for index, coordinate in enumerate(point):
             if abs(_finite(coordinate, f"visual coordinate {index}")) > 1000:
                 raise ValueError("visual coordinate outside workcell bound")
-        confidence = _finite(target["confidence"], "visual confidence")
-        if not MIN_CONFIDENCE <= confidence <= 1.0:
-            raise ValueError("visual confidence below threshold")
+        if not model_prediction:
+            confidence = _finite(target["confidence"], "visual confidence")
+            if not MIN_CONFIDENCE <= confidence <= 1.0:
+                raise ValueError("visual confidence below threshold")
     core = {key: item for key, item in value.items() if key != "observation_sha256"}
     if value["observation_sha256"] != _hash(core):
         raise ValueError("visual observation hash mismatch")

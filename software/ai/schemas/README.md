@@ -12,3 +12,6 @@ The read-only compiler inspection response is
 contains RoCell's own semantic `ActionPlan`; it is not an execution receipt.
 The [synthetic visual target schema](visual_targets_v0.schema.json) is a
 separate board-coordinate observation contract. It has no motion authority.
+The [synthetic image-model prediction schema](visual_targets_v1.schema.json)
+binds pixel and checkpoint hashes to predicted keyboard target coordinates;
+its model scores are uncalibrated and it also has no motion authority.

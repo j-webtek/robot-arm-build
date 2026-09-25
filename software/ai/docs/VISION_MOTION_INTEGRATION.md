@@ -49,6 +49,10 @@ placement so near-identical frames cannot leak between training and test.
 The first ten [real setup photos](REAL_PHOTO_SEED_ASSESSMENT.md) are now
 inventoried as one development-only capture group. They establish appearance
 and scene context but lack target-coordinate and camera-calibration labels.
+The [synthetic keyboard vision pilot](SYNTHETIC_VISION_TRAINING.md) uses one
+photo crop as appearance texture and trains a pose CNN on simulated images.
+Its pixel-derived coordinate preview is a research path with no physical
+authority; a harsher synthetic challenge exposes a large error tail.
 
 Train and score intent and vision components separately, then score their
 combined target selection and coordinate error. Report detection recall,

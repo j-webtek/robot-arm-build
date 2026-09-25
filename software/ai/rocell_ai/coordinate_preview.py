@@ -59,7 +59,10 @@ def preview(request: str, observation: dict[str, Any], *, request_id: str, works
             if target_id not in visual["targets"]:
                 raise ValueError(f"visual observation missing {target_id!r}")
             center = visual["targets"][target_id]["center_board_mm"]
-            if any(abs(center[index] - nominal) > 30.0 for index, nominal in enumerate((region.center.x, region.center.y))):
+            if visual["schema"] == "rocell.ai_visual_targets.v0" and any(
+                abs(center[index] - nominal) > 30.0
+                for index, nominal in enumerate((region.center.x, region.center.y))
+            ):
                 raise ValueError(f"visual target {target_id!r} exceeds displacement bound")
             if center[2] != region.center.z:
                 raise ValueError(f"visual target {target_id!r} has unregistered height")
@@ -78,6 +81,8 @@ def preview(request: str, observation: dict[str, Any], *, request_id: str, works
         "target_catalog_sha256": catalog.content_sha256,
         "coordinate_source": TARGET_STATUS if visual is None else visual["source"],
         "visual_observation_sha256": None if visual is None else visual["observation_sha256"],
+        "image_sha256": None if visual is None else visual.get("image_sha256"),
+        "model_sha256": None if visual is None else visual.get("model_sha256"),
         "targets": targets,
         "missing_before_execution": [
             "measured_target_registration",
