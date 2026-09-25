@@ -1,12 +1,23 @@
 # RoCell — Robot Arm Build
 
-RoCell is a work-in-progress system that uses a Waveshare RoArm-M3 to operate
-a physical keyboard and tap a phone with a stylus. This repository contains
-the arm-control software, simulations, test records, and printable workcell
-designs.
+RoCell is an experimental robotics project with a long-term goal: let you
+give an AI a task in plain language and have a robot arm carry out the
+keyboard and phone actions on your behalf.
 
-The aim is simple: turn a requested key or screen position into a planned
-movement, check what the arm actually did, and build toward reliable typing.
+Using a Waveshare RoArm-M3, we are first building reliable physical control:
+positioning the arm, pressing keyboard keys, and tapping a phone with a
+stylus. This repository contains the control software, simulations, test
+records, and printable workcell designs that support that work.
+
+AI integration will come later. The aim is to train or adapt an AI to
+translate your intent into device actions, use the arm's verified control
+interface, observe the results, and determine whether the task succeeded.
+For example, a future request to enter text or navigate a phone app would
+become a sequence of planned, checked physical actions.
+
+Today's movement and feedback tests build the foundation for that future
+system. Reliable typing, phone interaction, and AI-directed task execution
+are development goals, not completed capabilities.
 
 ## Where we are
 

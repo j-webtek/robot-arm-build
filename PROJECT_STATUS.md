@@ -2,10 +2,17 @@
 
 ## Objective
 
-Build a reliable command-to-motion interface for a Waveshare RoArm-M3, progressing
-from verified joint movements to ghost-keyboard sequences, then mounted-stylus
-typing and Android tapping. Keep requested commands, actual transmissions, fresh
-servo feedback, modeled coordinates, and externally measured accuracy distinct.
+Build a robot that can carry out keyboard and phone tasks on a person's behalf
+from a plain-language request to an AI. AI integration is a later phase: the
+long-term aim is to train or adapt an AI to translate intent into device actions,
+use the arm's verified control interface, observe results, and check task success.
+
+The immediate objective is reliable command-to-motion control for a Waveshare
+RoArm-M3, progressing from verified joint movements to ghost-keyboard sequences,
+then mounted-stylus typing and Android tapping. Keep requested commands, actual
+transmissions, fresh servo feedback, modeled coordinates, and externally measured
+accuracy distinct. These tests establish the control and evidence foundation;
+they do not yet demonstrate AI-directed operation.
 
 ## Current checkpoint
 
