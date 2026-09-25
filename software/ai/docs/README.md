@@ -1,6 +1,8 @@
 # AI documentation
 
-Read [the integration contract](CONTRACT.md), then [the roadmap](ROADMAP.md).
+Read [the integration contract](CONTRACT.md), then the
+[model-to-arm translation assurance process](MODEL_TO_ARM_TRANSLATION_ASSURANCE.md),
+then [the roadmap](ROADMAP.md).
 The [model research note](MODEL_RESEARCH.md) records the published Llama
 methods and what still needs a baseline experiment.
 

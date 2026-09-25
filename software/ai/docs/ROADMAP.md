@@ -6,6 +6,11 @@ This AI roadmap owns intent-model evidence and gating; it does not grant the AI
 layer ownership of coordinates, joints, protocol commands, safety admission, or
 physical execution.
 
+Every implementation increment must also satisfy the
+[model-to-arm translation assurance process](MODEL_TO_ARM_TRANSLATION_ASSURANCE.md),
+including its ownership boundaries, lineage trace, rejection tests, and
+zero-write requirements.
+
 The first deliverable is an **offline** English-to-RoCell plan loop. Physical
 typing, phone calling, and vision-guided contact depend on separate RoCell
 capability and evidence gates. See [the contract](CONTRACT.md).

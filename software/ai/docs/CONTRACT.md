@@ -1,8 +1,14 @@
 # AI-to-RoCell integration contract
 
-**Status:** proposed adapter; no AI execution service or live arm path exists.
-**Source baseline:** RoCell commit `bb5d4afa689f1823b949ce769f28c3e9becef712`
-(2026-09-25). Recheck before implementation.
+**Status:** grounded intent, compiler inspection, scene fusion, and zero-write
+shadow preview are implemented; no AI-authorized live arm path exists.
+**Source baseline:** pin the exact repository commit in every evaluation or
+execution record. Recheck contracts before implementation.
+
+All workers must follow the
+[model-to-arm translation assurance process](MODEL_TO_ARM_TRANSLATION_ASSURANCE.md).
+It defines ownership, translation invariants, evidence lineage, the minimum
+test matrix, and the conditions required before controller encoding.
 
 ## Division of work
 

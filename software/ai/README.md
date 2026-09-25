@@ -22,6 +22,8 @@ authorization, controller feedback, and independent input verification.
 
 The current system baseline and the prioritized multimodal implementation are
 tracked in the [AI system baseline and implementation plan](docs/AI_SYSTEM_BASELINE_AND_IMPLEMENTATION_PLAN.md).
+The required handoff from learned outputs to deterministic robot control is
+defined in the [model-to-arm translation assurance process](docs/MODEL_TO_ARM_TRANSLATION_ASSURANCE.md).
 
 No file here authorizes arm motion. The current RoCell development runtime has
 live hardware and contact disabled. See [project status](../../PROJECT_STATUS.md)

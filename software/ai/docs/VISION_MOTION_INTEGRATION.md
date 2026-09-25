@@ -1,5 +1,11 @@
 # Intent, vision, and arm motion integration
 
+Implementation and review must follow the
+[model-to-arm translation assurance process](MODEL_TO_ARM_TRANSLATION_ASSURANCE.md).
+That process is the authoritative checklist for proving that semantic model
+outputs remain correctly bound through target resolution, planning, encoding,
+feedback, and outcome observation.
+
 ## Desired runtime path
 
 1. Capture a timestamped overhead image and controller state.
