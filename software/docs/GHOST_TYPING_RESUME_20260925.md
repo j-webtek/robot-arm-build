@@ -257,3 +257,24 @@ campaign is a high-clear registration ladder with widely separated observed
 landmarks, followed by held-out hover checks. r95 is exhausted, so any live
 ladder requires a separately reviewed finite app and a new controller startup;
 no such startup or movement is authorized by this offline analysis.
+
+### r96 one-leg registration candidate
+
+The next finite candidate is now staged and compiled offline. It starts only
+from the verified r95 final positions
+`[2041,2081,2033,2609,2233,2041,1900]` and goals
+`[2047,2075,2039,2600,2233,2040,1897]`. Its sole target changes base goal
+2047 to 2107 counts and leaves all other goals unchanged. The pinned firmware
+reference predicts 17.019 mm of lateral travel. The meshless interpolation
+screen reports minimum hand-TCP height 79.957 mm and minimum link-axis
+separation 55.750 mm.
+
+The r96 app SHA-256 is
+`e3ccc4cbd5693bab8116ba65b63be88c186c19e6b44f9a59a7a9e9e07ea9d033`;
+its verified compile export is
+`wizard-20260925T190926813115Z-a2f4df52393f4e938f28b442c10a1982`.
+Linked-image review finds exactly one fixed registration leg and no generic
+motion parser. There is no startup motion, gripper write, hover/downstroke,
+return, retry or automatic continuation. It remains uninstalled. A soft catch
+must be confirmed beneath the arm for the one controller startup, then removed
+from the entire sweep before the one attended leg.
