@@ -278,3 +278,26 @@ motion parser. There is no startup motion, gripper write, hover/downstroke,
 return, retry or automatic continuation. It remains uninstalled. A soft catch
 must be confirmed beneath the arm for the one controller startup, then removed
 from the entire sweep before the one attended leg.
+
+### r96 installed and registration leg completed
+
+With the operator-confirmed soft catch beneath the arm, the r96 app slot was
+written once and fully read back. The controller identity and r95 predecessor
+matched, protected flash regions remained unchanged, and exactly one startup
+was sent. Boot `4390cfab5cd74a16fd5048406c1b5adf` reported the expected
+registration-ladder identity, zero consumed legs, and the exact verified r95
+source snapshot. No startup movement occurred.
+
+After the operator removed the catch and confirmed the full sweep clear,
+exactly one registration leg was sent. Base position moved from 2041 to 2100
+counts toward goal 2107; all six other reported positions remained unchanged.
+The final goal residual was seven counts. The verified final export is
+`wizard-20260925T192321044325Z-585d3a0f6d1c4669ade120dae20dfd47`.
+The operator reported no keyboard, cable or surrounding-object contact.
+
+r96 is exhausted on this boot. The arm remains at this high-clear landmark;
+no retry, return or follow-on movement occurred. One overhead photograph of
+this unchanged pose, showing the gripper, keyboard and board marks, is the
+next registration input. That photograph may support a provisional landmark
+estimate but does not alone establish a calibrated 3D tool point or grant
+key-contact authority.
