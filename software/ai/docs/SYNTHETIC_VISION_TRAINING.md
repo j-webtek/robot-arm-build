@@ -151,3 +151,35 @@ intent, image-derived key coordinates, a declared robot-layout hypothesis, and
 sequential IK. The base pose and 120 mm tool are unmeasured sensitivity values;
 the result does not establish mechanical fit, continuous motion, full-arm
 collision clearance, calibration, or physical typing.
+
+## Multi-placement and multi-text campaign
+
+[`run_keyboard_campaign.py`](../vision/run_keyboard_campaign.py) runs a bounded
+six-case integration campaign through the same full rehearsal. It uses unique
+seeds and the requests `hi`, `robot`, `123`, `arm`, `test`, and `safe`. Three
+images use the standard synthetic domain and three use the altered-appearance
+domain. The campaign fixes park `(290, 10)` mm and the source-bound promoted
+layout so that image pose and requested key sequence vary while the arm-layout
+hypothesis remains stable.
+
+```powershell
+python software/ai/vision/run_keyboard_campaign.py --checkpoint software/ai/train/runs/synthetic_pose_photo_v1/pose_model.pt --output software/ai/eval/keyboard_rehearsal_campaign_v1.json
+```
+
+The [v1 campaign report](../eval/keyboard_rehearsal_campaign_v1.json) covers 14
+distinct requested keys and 381 sampled route waypoints. All six cases placed
+every predicted contact inside its intended hidden key rectangle, all six dense
+routes accepted every sampled waypoint, and all six virtual strings matched.
+The observed pose errors were:
+
+| Metric | Mean | Maximum |
+| --- | ---: | ---: |
+| Keyboard-center error | 1.34 mm | 2.35 mm |
+| Keyboard-yaw error | 0.27 degrees | 0.69 degrees |
+
+This 6/6 result is a pipeline regression result over one renderer family and a
+single unmeasured robot-layout hypothesis. It is too small and too synthetic to
+estimate real reliability. The previously recorded 300-image challenge still
+has a 24.83 mm selected-key-error tail, and no real-camera frame has measured
+ground truth. The campaign report therefore retains zero physical authority
+and reports virtual outcomes separately from observed input events.

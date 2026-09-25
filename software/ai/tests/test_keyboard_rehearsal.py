@@ -5,6 +5,7 @@ from __future__ import annotations
 from pathlib import Path
 import sys
 import unittest
+from unittest.mock import patch
 
 AI_DIR = Path(__file__).resolve().parents[1]
 ROOT = AI_DIR.parents[1]
@@ -16,6 +17,7 @@ from rocell.application.robot_layout_overlay import promoted_rank1_robot_layout 
 from rocell.application.static_simulation_context import load_static_simulation_context  # noqa: E402
 from rocell.application.static_task_rehearsal import run_static_task_rehearsal  # noqa: E402
 from vision.run_keyboard_rehearsal import evaluate_virtual_typing  # noqa: E402
+from vision.run_keyboard_campaign import run as run_campaign  # noqa: E402
 from vision.synthetic_keyboard import transform_target  # noqa: E402
 
 
@@ -80,6 +82,40 @@ class KeyboardRehearsalTests(unittest.TestCase):
         self.assertEqual(report["task_summary"]["evaluated_waypoint_count"], 45)
         self.assertEqual(report["task_summary"]["requested_targets"], ["H", "I"])
         self.assertFalse(report["physical_authority"])
+
+    def test_campaign_keeps_key_and_route_failures_separate(self) -> None:
+        def fake_rehearsal(**kwargs):
+            text = kwargs["request"].split('"')[1]
+            passed = kwargs["seed"] == 1
+            failure = None if passed else {"phase": "HOVER", "reason": "IK_NO_CONVERGED_SOLUTION"}
+            return {
+                "seed": kwargs["seed"], "synthetic_domain": kwargs["domain"],
+                "requested_text": text, "status": (
+                    "VIRTUAL_SUCCESS_ROUTE_SCREENED" if passed else "ROUTE_BLOCKED"),
+                "image_sha256": str(kwargs["seed"]) * 64,
+                "model_sha256": "c" * 64,
+                "vision": {"truth_pose_board": [1, 2, 3], "predicted_pose_board": [1, 2, 3],
+                           "center_error_mm": float(kwargs["seed"]), "yaw_error_deg": 0.1},
+                "virtual_typing": {"events": [{"intended_key": text.upper(),
+                                                  "virtual_hit_key": text.upper()}],
+                                   "virtual_text_if_all_contacts_reached": text,
+                                   "all_intended_keys_hit": True},
+                "rocell_route": {"dense_route_all_waypoints_accepted": passed,
+                                 "task_summary": {"first_failure": failure,
+                                                  "evaluated_waypoint_count": 2,
+                                                  "planned_waypoint_count": 3},
+                                 "rehearsal_sha256": "d" * 64},
+                "virtual_text_after_screened_route": text if passed else None,
+            }
+        cases = ((1, "a", "standard"), (2, "b", "appearance_shift"))
+        with patch("vision.run_keyboard_campaign.run_rehearsal", side_effect=fake_rehearsal):
+            report = run_campaign(Path("unused-checkpoint.pt"), cases)
+        self.assertEqual(report["metrics"]["all_intended_keys_hit_rate"], 1.0)
+        self.assertEqual(report["metrics"]["dense_route_pass_rate"], 0.5)
+        self.assertEqual(report["metrics"]["end_to_end_success_rate"], 0.5)
+        self.assertEqual(report["metrics"]["route_failure_reasons"],
+                         {"IK_NO_CONVERGED_SOLUTION": 1})
+        self.assertFalse(report["physical_execution_authorized"])
 
 
 if __name__ == "__main__":

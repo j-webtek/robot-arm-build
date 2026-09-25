@@ -1,0 +1,312 @@
+{
+  "schema": "rocell.ai_keyboard_rehearsal_campaign.v1",
+  "campaign_id": "synthetic-multitext-promoted-layout-v1",
+  "status": "ALL_CASES_VIRTUAL_SUCCESS_ROUTE_SCREENED",
+  "case_count": 6,
+  "distinct_seed_count": 6,
+  "distinct_requested_key_count": 14,
+  "requested_key_ids": [
+    "1",
+    "2",
+    "3",
+    "A",
+    "B",
+    "E",
+    "F",
+    "H",
+    "I",
+    "M",
+    "O",
+    "R",
+    "S",
+    "T"
+  ],
+  "model_sha256": "2cc9d770fe9816b1e7f717413996e78d3e440eb6d7b2a02414f229d11ed5671f",
+  "source_sha256": {
+    "campaign_runner": "9790262a5478dd05ac93687a1389c9afb867dc4047605c926c5df766d6749305",
+    "rehearsal_runner": "614d7f8d4bc1b95fad7f67c0b920d2ca049c29576edaba1f027b4642a70416d9",
+    "joint_preview": "f58eba9be4622414609d70246deadbe8707c503b4a505d4cbf4ba8ceb89d188c",
+    "layout_profile": "c8f8440e9e4d2bdd8eaf61b5755d8c57235b5b1a0fb2f62c6953f9b6e20338cf"
+  },
+  "metrics": {
+    "center_error_mm": {
+      "mean": 1.342467212323671,
+      "p95_nearest_rank": 2.3515034850248933,
+      "maximum": 2.3515034850248933
+    },
+    "yaw_error_deg": {
+      "mean": 0.2697933585973203,
+      "p95_nearest_rank": 0.6850296368009088,
+      "maximum": 0.6850296368009088
+    },
+    "all_intended_keys_hit_count": 6,
+    "all_intended_keys_hit_rate": 1.0,
+    "dense_route_pass_count": 6,
+    "dense_route_pass_rate": 1.0,
+    "end_to_end_success_count": 6,
+    "end_to_end_success_rate": 1.0,
+    "total_evaluated_waypoints": 381,
+    "total_planned_waypoints": 381,
+    "route_failure_reasons": {},
+    "by_domain": {
+      "standard": {
+        "case_count": 3,
+        "all_intended_keys_hit_count": 3,
+        "dense_route_pass_count": 3,
+        "end_to_end_success_count": 3
+      },
+      "appearance_shift": {
+        "case_count": 3,
+        "all_intended_keys_hit_count": 3,
+        "dense_route_pass_count": 3,
+        "end_to_end_success_count": 3
+      }
+    }
+  },
+  "cases": [
+    {
+      "seed": 1100001,
+      "synthetic_domain": "standard",
+      "requested_text": "hi",
+      "status": "VIRTUAL_SUCCESS_ROUTE_SCREENED",
+      "image_sha256": "2b3b026e7f82e4092a545f90dc809d695e6baed5184c0ca0bae62d77027e98e9",
+      "model_sha256": "2cc9d770fe9816b1e7f717413996e78d3e440eb6d7b2a02414f229d11ed5671f",
+      "truth_pose_board": [
+        205.78518660373228,
+        157.1656767836598,
+        3.1733260383227964
+      ],
+      "predicted_pose_board": [
+        207.35912799835205,
+        156.9833543896675,
+        3.171916242437907
+      ],
+      "center_error_mm": 1.5844661463877003,
+      "yaw_error_deg": 0.08077535417906927,
+      "intended_keys": [
+        "H",
+        "I"
+      ],
+      "virtual_hit_keys": [
+        "H",
+        "I"
+      ],
+      "virtual_text_if_all_contacts_reached": "hi",
+      "all_intended_keys_hit": true,
+      "dense_route_all_waypoints_accepted": true,
+      "evaluated_waypoint_count": 44,
+      "planned_waypoint_count": 44,
+      "first_route_failure": null,
+      "virtual_text_after_screened_route": "hi",
+      "rehearsal_sha256": "aeab7941ba64b574b81ba95909060de0378819ed57288e0600f1f325d51a945d"
+    },
+    {
+      "seed": 1100002,
+      "synthetic_domain": "standard",
+      "requested_text": "robot",
+      "status": "VIRTUAL_SUCCESS_ROUTE_SCREENED",
+      "image_sha256": "539eb35195f9054ebe1bb9eb9aae0617d8d57ce18d9a6cfd2bed4efe51420379",
+      "model_sha256": "2cc9d770fe9816b1e7f717413996e78d3e440eb6d7b2a02414f229d11ed5671f",
+      "truth_pose_board": [
+        218.77405326755732,
+        161.34838916190463,
+        3.285140076740384
+      ],
+      "predicted_pose_board": [
+        218.83063912391663,
+        160.6501181125641,
+        3.2787621219926555
+      ],
+      "center_error_mm": 0.7005600741457263,
+      "yaw_error_deg": 0.36542988897026923,
+      "intended_keys": [
+        "R",
+        "O",
+        "B",
+        "O",
+        "T"
+      ],
+      "virtual_hit_keys": [
+        "R",
+        "O",
+        "B",
+        "O",
+        "T"
+      ],
+      "virtual_text_if_all_contacts_reached": "robot",
+      "all_intended_keys_hit": true,
+      "dense_route_all_waypoints_accepted": true,
+      "evaluated_waypoint_count": 89,
+      "planned_waypoint_count": 89,
+      "first_route_failure": null,
+      "virtual_text_after_screened_route": "robot",
+      "rehearsal_sha256": "d440082386ec5c88a5d6eb35f9c53ee62ff679bd5fc73b66ff3f97b68dec7d91"
+    },
+    {
+      "seed": 1100003,
+      "synthetic_domain": "standard",
+      "requested_text": "123",
+      "status": "VIRTUAL_SUCCESS_ROUTE_SCREENED",
+      "image_sha256": "c1f5fae7ec000ecef87503dbe5b78df8320ceb758c2201c6847729ffbaa39d73",
+      "model_sha256": "2cc9d770fe9816b1e7f717413996e78d3e440eb6d7b2a02414f229d11ed5671f",
+      "truth_pose_board": [
+        241.00624776388474,
+        177.9019067225609,
+        3.1215479198673717
+      ],
+      "predicted_pose_board": [
+        240.5184756219387,
+        178.44681453704834,
+        3.125930284457751
+      ],
+      "center_error_mm": 0.7313317911509758,
+      "yaw_error_deg": 0.25109099531631335,
+      "intended_keys": [
+        "1",
+        "2",
+        "3"
+      ],
+      "virtual_hit_keys": [
+        "1",
+        "2",
+        "3"
+      ],
+      "virtual_text_if_all_contacts_reached": "123",
+      "all_intended_keys_hit": true,
+      "dense_route_all_waypoints_accepted": true,
+      "evaluated_waypoint_count": 53,
+      "planned_waypoint_count": 53,
+      "first_route_failure": null,
+      "virtual_text_after_screened_route": "123",
+      "rehearsal_sha256": "a5529d27b19e83e71a69a27b01d4dca075fafe88b5ba80898e0edc80a4e6d6e1"
+    },
+    {
+      "seed": 2100001,
+      "synthetic_domain": "appearance_shift",
+      "requested_text": "arm",
+      "status": "VIRTUAL_SUCCESS_ROUTE_SCREENED",
+      "image_sha256": "49c664c19b659cc12cece77b290439a93fbdf8113ba343e8b826bd1e07230b92",
+      "model_sha256": "2cc9d770fe9816b1e7f717413996e78d3e440eb6d7b2a02414f229d11ed5671f",
+      "truth_pose_board": [
+        214.1553625411601,
+        155.2185402937764,
+        3.246965704521025
+      ],
+      "predicted_pose_board": [
+        213.17138195037842,
+        155.42965871095657,
+        3.2470974047952375
+      ],
+      "center_error_mm": 1.0063740801052556,
+      "yaw_error_deg": 0.007545869873091791,
+      "intended_keys": [
+        "A",
+        "R",
+        "M"
+      ],
+      "virtual_hit_keys": [
+        "A",
+        "R",
+        "M"
+      ],
+      "virtual_text_if_all_contacts_reached": "arm",
+      "all_intended_keys_hit": true,
+      "dense_route_all_waypoints_accepted": true,
+      "evaluated_waypoint_count": 63,
+      "planned_waypoint_count": 63,
+      "first_route_failure": null,
+      "virtual_text_after_screened_route": "arm",
+      "rehearsal_sha256": "ea10b69e3cfd21ab89b5977fdd04f36829eff26765b3346733732e36bd9ff5af"
+    },
+    {
+      "seed": 2100002,
+      "synthetic_domain": "appearance_shift",
+      "requested_text": "test",
+      "status": "VIRTUAL_SUCCESS_ROUTE_SCREENED",
+      "image_sha256": "a365fee58fbf601d31eaddb3df01c9de4d0cd29cf2662352247fe2cb72f61f1f",
+      "model_sha256": "2cc9d770fe9816b1e7f717413996e78d3e440eb6d7b2a02414f229d11ed5671f",
+      "truth_pose_board": [
+        215.99231177269525,
+        170.24047079453322,
+        3.2532496312887753
+      ],
+      "predicted_pose_board": [
+        215.65224826335907,
+        171.88627290725708,
+        3.257244487600871
+      ],
+      "center_error_mm": 1.6805676971274752,
+      "yaw_error_deg": 0.22888840644426936,
+      "intended_keys": [
+        "T",
+        "E",
+        "S",
+        "T"
+      ],
+      "virtual_hit_keys": [
+        "T",
+        "E",
+        "S",
+        "T"
+      ],
+      "virtual_text_if_all_contacts_reached": "test",
+      "all_intended_keys_hit": true,
+      "dense_route_all_waypoints_accepted": true,
+      "evaluated_waypoint_count": 68,
+      "planned_waypoint_count": 68,
+      "first_route_failure": null,
+      "virtual_text_after_screened_route": "test",
+      "rehearsal_sha256": "f68d3eb3af2885b039c39af56d0c7834dd0996285dc1b17ce6fc5e83fc1463b3"
+    },
+    {
+      "seed": 2100003,
+      "synthetic_domain": "appearance_shift",
+      "requested_text": "safe",
+      "status": "VIRTUAL_SUCCESS_ROUTE_SCREENED",
+      "image_sha256": "c58979c75b7f1b9b0a30b6581186614f6c01307cbab42e17c0b17b9e9a59daf0",
+      "model_sha256": "2cc9d770fe9816b1e7f717413996e78d3e440eb6d7b2a02414f229d11ed5671f",
+      "truth_pose_board": [
+        222.61306022439658,
+        139.01144333749835,
+        3.133778978677122
+      ],
+      "predicted_pose_board": [
+        222.71165519952774,
+        141.36087894439697,
+        3.1457350013130387
+      ],
+      "center_error_mm": 2.3515034850248933,
+      "yaw_error_deg": 0.6850296368009088,
+      "intended_keys": [
+        "S",
+        "A",
+        "F",
+        "E"
+      ],
+      "virtual_hit_keys": [
+        "S",
+        "A",
+        "F",
+        "E"
+      ],
+      "virtual_text_if_all_contacts_reached": "safe",
+      "all_intended_keys_hit": true,
+      "dense_route_all_waypoints_accepted": true,
+      "evaluated_waypoint_count": 64,
+      "planned_waypoint_count": 64,
+      "first_route_failure": null,
+      "virtual_text_after_screened_route": "safe",
+      "rehearsal_sha256": "a7e678640529db62e54c6451da353003f8d14c06e962d0542a75567c64a77dc4"
+    }
+  ],
+  "real_camera_evaluation": false,
+  "physical_execution_authorized": false,
+  "hardware_commands": 0,
+  "physical_input_events_observed": 0,
+  "limitations": [
+    "All images, target truth, contacts, and outcomes are synthetic",
+    "The selected robot base pose and 120 mm tool are unmeasured sensitivity values",
+    "Sampled IK does not prove continuous or full-arm collision-free motion"
+  ],
+  "report_sha256": "914f740226fd9c364c4698728da0420346d3e24857f00d2a2a1f3381a7226f0b"
+}

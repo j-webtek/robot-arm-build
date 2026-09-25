@@ -33,11 +33,11 @@ def _hash(value: dict) -> str:
 
 
 def run(*, request: str, checkpoint: Path, seed: int, frame_id: str, image_output: Path | None = None,
-        photo_path: Path | None = None) -> dict:
+        photo_path: Path | None = None, domain: str = "standard") -> dict:
     catalog = catalog_for_workspace(ROOT)
     photo_sha256 = json.loads((AI_DIR / "data" / "real_photo_seed_v0.manifest.json").read_text())["photos"][4]["sha256"]
     texture = None if photo_path is None else load_photo_texture(photo_path, photo_sha256)
-    image, truth = render(seed, catalog, photo_texture=texture)
+    image, truth = render(seed, catalog, domain=domain, photo_texture=texture)
     stream = BytesIO()
     image.save(stream, format="PNG")
     image_bytes = stream.getvalue()
@@ -78,6 +78,7 @@ def run(*, request: str, checkpoint: Path, seed: int, frame_id: str, image_outpu
     return {
         "schema": "rocell.ai_joint_synthetic_preview.v0",
         "seed": seed,
+        "synthetic_domain": domain,
         "image_sha256": core["image_sha256"],
         "model_sha256": core["model_sha256"],
         "simulator_truth_keyboard_pose_board": [*truth],
@@ -98,10 +99,11 @@ def main() -> None:
     parser.add_argument("--frame-id", default="synthetic-camera-frame-001")
     parser.add_argument("--image-output", type=Path)
     parser.add_argument("--photo-path", type=Path)
+    parser.add_argument("--domain", choices=("standard", "appearance_shift"), default="standard")
     args = parser.parse_args()
     print(json.dumps(run(request=args.request, checkpoint=args.checkpoint, seed=args.seed,
                          frame_id=args.frame_id, image_output=args.image_output,
-                         photo_path=args.photo_path), indent=2))
+                         photo_path=args.photo_path, domain=args.domain), indent=2))
 
 
 if __name__ == "__main__":

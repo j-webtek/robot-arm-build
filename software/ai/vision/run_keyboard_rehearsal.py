@@ -59,12 +59,14 @@ def evaluate_virtual_typing(targets: list[dict], catalog, truth_pose: tuple[floa
 def run(*, request: str, checkpoint: Path, seed: int, frame_id: str,
         image_output: Path | None = None, photo_path: Path | None = None,
         park_xy_board_mm: tuple[float, float] | None = None,
-        use_promoted_layout: bool = False) -> dict:
+        use_promoted_layout: bool = False, domain: str = "standard") -> dict:
     joint = joint_preview(request=request, checkpoint=checkpoint, seed=seed,
-                          frame_id=frame_id, image_output=image_output, photo_path=photo_path)
+                          frame_id=frame_id, image_output=image_output, photo_path=photo_path,
+                          domain=domain)
     coordinates = joint["coordinate_preview"]
     base = {"schema": "rocell.ai_offline_keyboard_rehearsal.v1", "seed": seed,
-            "request": request, "image_sha256": joint["image_sha256"],
+            "request": request, "synthetic_domain": domain,
+            "image_sha256": joint["image_sha256"],
             "model_sha256": joint["model_sha256"],
             "physical_execution_authorized": False, "hardware_commands": 0,
             "physical_input_events_observed": 0}
@@ -150,6 +152,7 @@ def main() -> None:
     parser.add_argument("--park-x-mm", type=float)
     parser.add_argument("--park-y-mm", type=float)
     parser.add_argument("--use-promoted-layout", action="store_true")
+    parser.add_argument("--domain", choices=("standard", "appearance_shift"), default="standard")
     args = parser.parse_args()
     if (args.park_x_mm is None) != (args.park_y_mm is None):
         parser.error("--park-x-mm and --park-y-mm must be supplied together")
@@ -158,7 +161,7 @@ def main() -> None:
                  photo_path=args.photo_path,
                  park_xy_board_mm=None if args.park_x_mm is None else
                  (args.park_x_mm, args.park_y_mm),
-                 use_promoted_layout=args.use_promoted_layout)
+                 use_promoted_layout=args.use_promoted_layout, domain=args.domain)
     payload = json.dumps(result, indent=2)
     if args.report_output is not None:
         args.report_output.parent.mkdir(parents=True, exist_ok=True)
