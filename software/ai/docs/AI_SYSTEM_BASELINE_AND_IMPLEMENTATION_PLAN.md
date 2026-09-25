@@ -95,6 +95,11 @@ with high confidence on several adverse edits. The combined result therefore
 depends on the deterministic pixel-quality gate. The development thresholds
 are not calibrated physical thresholds.
 
+The offline `shadow-preview` command now composes a request and saved
+observations into one canonical zero-write record. When precision coordinates
+are unavailable it records `precision_observation_missing` and exposes no
+targets. The first real-photo replay demonstrates that blocked path on Photo 2.
+
 ## Target architecture
 
 ```text

@@ -6,7 +6,10 @@ from pathlib import Path
 from typing import Any
 
 from .multimodal_preview import guarded_preview
-from .scene_observation import FrameEvidence, SHA256_PATTERN, canonical_hash, parse_utc
+from .pixel_quality import assess as assess_pixel_quality
+from .scene_observation import (
+    FrameEvidence, SHA256_PATTERN, canonical_hash, parse_utc, validate_observation,
+)
 
 
 SCHEMA = "rocell.ai_shadow_preview.v0"
@@ -25,9 +28,14 @@ def validate(value: Any) -> dict[str, Any]:
             raise ValueError(f"shadow {key} is required")
     parse_utc(value["captured_at_utc"], "captured_at_utc")
     parse_utc(value["evaluated_at_utc"], "evaluated_at_utc")
-    for key in ("image_sha256", "scene_observation_sha256", "precision_observation_sha256", "shadow_sha256"):
+    for key in ("image_sha256", "scene_observation_sha256", "shadow_sha256"):
         if not isinstance(value[key], str) or SHA256_PATTERN.fullmatch(value[key]) is None:
             raise ValueError(f"invalid shadow {key}")
+    precision_hash = value["precision_observation_sha256"]
+    if precision_hash is not None and (
+        not isinstance(precision_hash, str) or SHA256_PATTERN.fullmatch(precision_hash) is None
+    ):
+        raise ValueError("invalid shadow precision_observation_sha256")
     if (value["mode"] != "OFFLINE_SHADOW" or type(value["hardware_writes"]) is not int
             or value["hardware_writes"] != 0
             or value["execution_permit_created"] is not False
@@ -42,19 +50,33 @@ def validate(value: Any) -> dict[str, Any]:
 
 
 def build(*, request: str, request_id: str, workspace: Path, frame: FrameEvidence,
-          scene_observation: dict[str, Any], precision_observation: dict[str, Any],
+          scene_observation: dict[str, Any], precision_observation: dict[str, Any] | None,
           evaluated_at_utc: str, phone_state: str = "UNKNOWN") -> dict[str, Any]:
     """Compose existing read-only components and record their exact lineage."""
-    result = guarded_preview(
-        request,
-        {"ref": frame.frame_id, "fresh": True, "phone_state": phone_state},
-        request_id=request_id,
-        workspace=workspace,
-        frame=frame,
-        scene_observation=scene_observation,
-        precision_observation=precision_observation,
-        evaluated_at_utc=evaluated_at_utc,
-    )
+    validate_observation(scene_observation, frame=frame)
+    if precision_observation is None:
+        result = {
+            "schema": "rocell.ai_multimodal_coordinate_preview.v0",
+            "request_id": request_id,
+            "status": "blocked",
+            "reason": "precision_observation_missing",
+            "scene_observation_sha256": scene_observation["observation_sha256"],
+            "pixel_quality": assess_pixel_quality(frame),
+            "targets": [],
+            "controller_commands": [],
+            "execution_authorized": False,
+        }
+    else:
+        result = guarded_preview(
+            request,
+            {"ref": frame.frame_id, "fresh": True, "phone_state": phone_state},
+            request_id=request_id,
+            workspace=workspace,
+            frame=frame,
+            scene_observation=scene_observation,
+            precision_observation=precision_observation,
+            evaluated_at_utc=evaluated_at_utc,
+        )
     core = {
         "schema": SCHEMA,
         "request_id": request_id,
@@ -64,7 +86,9 @@ def build(*, request: str, request_id: str, workspace: Path, frame: FrameEvidenc
         "evaluated_at_utc": evaluated_at_utc,
         "image_sha256": frame.image_sha256,
         "scene_observation_sha256": scene_observation.get("observation_sha256"),
-        "precision_observation_sha256": precision_observation.get("observation_sha256"),
+        "precision_observation_sha256": (
+            None if precision_observation is None else precision_observation.get("observation_sha256")
+        ),
         "result": result,
         "mode": "OFFLINE_SHADOW",
         "hardware_writes": 0,

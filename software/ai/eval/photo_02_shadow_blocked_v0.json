@@ -1,0 +1,43 @@
+{
+  "captured_at_utc": "2026-09-25T19:49:02.948393Z",
+  "evaluated_at_utc": "2026-09-25T19:49:03.948393Z",
+  "execution_authorized": false,
+  "execution_permit_created": false,
+  "frame_id": "photo_02",
+  "hardware_writes": 0,
+  "image_sha256": "5c90b0b73e149683111fa0bf8d190a3cf36394aa32dce84a6294270bd8bd157f",
+  "mode": "OFFLINE_SHADOW",
+  "precision_observation_sha256": null,
+  "request": "Type \"hi\" on the keyboard",
+  "request_id": "photo-02-shadow-v0",
+  "result": {
+    "controller_commands": [],
+    "execution_authorized": false,
+    "pixel_quality": {
+      "accepted": true,
+      "assessment_sha256": "a0459355f77fdd2032a41943415eac81e60a14b5f8f50af3655bc567705f3284",
+      "frame_id": "photo_02",
+      "image_sha256": "5c90b0b73e149683111fa0bf8d190a3cf36394aa32dce84a6294270bd8bd157f",
+      "metrics": {
+        "bright_pixel_fraction": 7.6e-05,
+        "dark_pixel_fraction": 0.151204,
+        "edge_variance": 2186.976177,
+        "luminance_stddev": 81.4692,
+        "mean_luminance": 127.480392
+      },
+      "physical_calibration": false,
+      "reasons": [],
+      "schema": "rocell.ai_pixel_quality.v0",
+      "threshold_profile": "development_stress_v0"
+    },
+    "reason": "precision_observation_missing",
+    "request_id": "photo-02-shadow-v0",
+    "scene_observation_sha256": "0ef86c0b4c3ba84e4d01abf22dab204d2572f6c7fbb2f5d741a93729725cc153",
+    "schema": "rocell.ai_multimodal_coordinate_preview.v0",
+    "status": "blocked",
+    "targets": []
+  },
+  "scene_observation_sha256": "0ef86c0b4c3ba84e4d01abf22dab204d2572f6c7fbb2f5d741a93729725cc153",
+  "schema": "rocell.ai_shadow_preview.v0",
+  "shadow_sha256": "76814386387b40e3e338c46a63add1183ed0def358d26a819766ac850373aab4"
+}

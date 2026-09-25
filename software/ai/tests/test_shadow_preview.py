@@ -68,6 +68,27 @@ class ShadowPreviewTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "cannot authorize"):
             validate(changed)
 
+    def test_missing_precision_produces_hashed_blocked_record(self) -> None:
+        image = Image.effect_noise((128, 96), 60).convert("RGB")
+        stream = BytesIO()
+        image.save(stream, format="PNG")
+        frame = FrameEvidence("no-precision", "2026-09-25T20:00:00Z", stream.getvalue())
+        scene = FixtureVisionObserver({
+            "device_presence": "keyboard", "keyboard_layout": "us_qwerty",
+            "phone_state": "not_visible", "lighting": "acceptable", "blur": "none",
+            "glare": "none", "occlusion_source": "none", "occlusion_fraction": 0,
+            "critical_targets_visible": True, "confidence": 0.98,
+        }).observe(frame)
+        record = build(
+            request='Type "hi" on the keyboard', request_id="shadow-missing", workspace=WORKSPACE,
+            frame=frame, scene_observation=scene, precision_observation=None,
+            evaluated_at_utc="2026-09-25T20:00:01Z",
+        )
+        self.assertEqual(record["result"]["reason"], "precision_observation_missing")
+        self.assertEqual(record["result"]["targets"], [])
+        self.assertIsNone(record["precision_observation_sha256"])
+        validate(record)
+
 
 if __name__ == "__main__":
     unittest.main()

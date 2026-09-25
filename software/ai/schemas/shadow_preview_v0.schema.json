@@ -14,7 +14,7 @@
     "evaluated_at_utc": {"type": "string", "format": "date-time"},
     "image_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
     "scene_observation_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
-    "precision_observation_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "precision_observation_sha256": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"},
     "result": {"type": "object"},
     "mode": {"const": "OFFLINE_SHADOW"},
     "hardware_writes": {"const": 0},

@@ -71,7 +71,8 @@ records, runs grounded intent plus fail-closed fusion, and writes one canonical
 lineage record. The command contains no camera or controller adapter, reports
 zero hardware writes, and cannot create an execution permit. The current
 precision record is still synthetic until a calibrated static-camera pipeline
-replaces it.
+replaces it. Omit `--precision-observation` to create a replayable blocked
+record for a real image that does not yet have trustworthy coordinates.
 
 The `propose` command uses caller-supplied fixture state only. Its phone state
 defaults to `UNKNOWN`; pass `--phone-state KEYBOARD_LOWER` only for an offline

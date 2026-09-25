@@ -117,7 +117,7 @@ def main() -> int:
     shadow.add_argument("--captured-at-utc", required=True)
     shadow.add_argument("--evaluated-at-utc", required=True)
     shadow.add_argument("--scene-observation", type=Path, required=True)
-    shadow.add_argument("--precision-observation", type=Path, required=True)
+    shadow.add_argument("--precision-observation", type=Path)
     shadow.add_argument("--phone-state", default="UNKNOWN")
     shadow.add_argument("--output", type=Path)
     args = parser.parse_args()
@@ -195,7 +195,9 @@ def main() -> int:
     elif args.command == "shadow-preview":
         frame = FrameEvidence(args.frame_id, args.captured_at_utc, args.image.read_bytes())
         scene = json.loads(args.scene_observation.read_text(encoding="utf-8"))
-        precision = json.loads(args.precision_observation.read_text(encoding="utf-8"))
+        precision = None if args.precision_observation is None else json.loads(
+            args.precision_observation.read_text(encoding="utf-8")
+        )
         result = build_shadow_preview(
             request=args.request, request_id=args.request_id, workspace=AI_DIR.parents[1],
             frame=frame, scene_observation=scene, precision_observation=precision,

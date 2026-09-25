@@ -153,6 +153,12 @@ The vision model still reports a keyboard in several rejected variants; the
 deterministic pixel-quality checks cause those safe rejections. These severe
 edits are development probes and do not establish physical thresholds.
 
+`photo_02_shadow_blocked_v0.json` is the first replayable real-photo shadow
+record. It binds the request, source image hash, Gemma scene record, pixel
+quality, and decision. It correctly stops at `precision_observation_missing`
+because the handheld photo has no calibrated coordinate observation. It
+contains no targets, commands, permit, or hardware writes.
+
 From the repository root, repeat the checks with:
 
 ```powershell
