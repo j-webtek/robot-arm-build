@@ -26,17 +26,21 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Local, offline LoRA SFT pilot; no arm access")
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--device", default="cuda:0")
+    parser.add_argument("--data-version", choices=("v0", "v1"), default="v0")
     args = parser.parse_args()
+    train_seed = SEED if args.data_version == "v0" else 2110
     if args.output.exists():
         raise ValueError("output directory already exists; use a new run path")
     data_dir = AI_DIR / "data"
-    manifest = json.loads((data_dir / "synthetic_sft_v0.manifest.json").read_text(encoding="utf-8"))
+    data_prefix = f"synthetic_sft_{args.data_version}"
+    manifest_path = data_dir / f"{data_prefix}.manifest.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     for version, expected in manifest["benchmark_sha256"].items():
         path = AI_DIR / "eval" / f"benchmark_{version}.jsonl"
         if hashlib.sha256(path.read_bytes()).hexdigest() != expected:
             raise ValueError(f"benchmark {version} changed after data generation")
-    train = _verified_rows(data_dir / "synthetic_sft_v0_train.jsonl", manifest["train_sha256"])
-    validation = _verified_rows(data_dir / "synthetic_sft_v0_validation.jsonl", manifest["validation_sha256"])
+    train = _verified_rows(data_dir / f"{data_prefix}_train.jsonl", manifest["train_sha256"])
+    validation = _verified_rows(data_dir / f"{data_prefix}_validation.jsonl", manifest["validation_sha256"])
     if (len(train), len(validation)) != (manifest["counts"]["train"], manifest["counts"]["validation"]):
         raise ValueError("data count mismatch")
 
@@ -49,9 +53,9 @@ def main() -> None:
 
     if not args.device.startswith("cuda") or not torch.cuda.is_available() or not torch.cuda.is_bf16_supported():
         raise ValueError("this pilot requires a CUDA GPU with bfloat16 support")
-    random.seed(SEED)
-    torch.manual_seed(SEED)
-    torch.cuda.manual_seed_all(SEED)
+    random.seed(train_seed)
+    torch.manual_seed(train_seed)
+    torch.cuda.manual_seed_all(train_seed)
     tokenizer = AutoTokenizer.from_pretrained(REPO, revision=REVISION, local_files_only=True)
     model = AutoModelForCausalLM.from_pretrained(
         REPO, revision=REVISION, local_files_only=True, torch_dtype=torch.bfloat16,
@@ -90,7 +94,7 @@ def main() -> None:
         }
 
     loader = DataLoader(train_encoded, batch_size=4, shuffle=True, collate_fn=collate,
-                        generator=torch.Generator().manual_seed(SEED))
+                        generator=torch.Generator().manual_seed(train_seed))
     valid_loader = DataLoader(valid_encoded, batch_size=4, shuffle=False, collate_fn=collate)
     optimizer = torch.optim.AdamW((p for p in model.parameters() if p.requires_grad), lr=2e-4, weight_decay=0.0)
     losses: list[dict[str, float]] = []
@@ -130,12 +134,12 @@ def main() -> None:
         "schema": "rocell.ai_sft_run.v0",
         "base_repo": REPO,
         "base_revision": REVISION,
-        "data_manifest_sha256": hashlib.sha256((data_dir / "synthetic_sft_v0.manifest.json").read_bytes()).hexdigest(),
+        "data_manifest_sha256": hashlib.sha256(manifest_path.read_bytes()).hexdigest(),
         "train_sha256": manifest["train_sha256"],
         "validation_sha256": manifest["validation_sha256"],
         "prompt_sha256": PROMPT_SHA256,
         "adapter_sha256": hashlib.sha256(adapter_path.read_bytes()).hexdigest(),
-        "configuration": {"seed": SEED, "epochs": 2, "batch_size": 4, "gradient_accumulation": 4,
+        "configuration": {"seed": train_seed, "epochs": 2, "batch_size": 4, "gradient_accumulation": 4,
                           "learning_rate": 2e-4, "max_sequence_length": 512,
                           "lora_r": 8, "lora_alpha": 16, "lora_dropout": 0.05,
                           "target_modules": ["q_proj", "v_proj"], "dtype": "bfloat16", "device": args.device},
