@@ -224,3 +224,36 @@ r95 has now consumed all five finite legs on boot
 `818844fc46074ad9e965c8a4e61f33ee`; no retry, lateral return, restart or
 follow-on movement occurred. The final arm state is the A-region high-clear
 pose, not a calibrated physical key coordinate.
+
+### r95 completed-cycle analysis
+
+`scripts/analyze_r95_bare_hover_cycle.py` now verifies all five immutable
+same-boot exports and their exact before/after chain. The largest selected
+goal residual was nine counts. The non-base hover shape repeated between the
+two base angles within one count, the high-clear shape repeated exactly in
+the reported counts, and the base-only transition left all six unselected
+joints unchanged. The verified analysis export is
+`wizard-20260925T185242309029Z-4490f3e3d6c74c6fbee16729a93b3adc`.
+
+The pinned Waveshare firmware equations put the *nominal* clear-to-hover
+stroke at 6.05 mm and the two nominal regional hover endpoints 15.05 mm
+apart. Those values are controller-reference calculations, not measurements
+in the installed board frame. They explain why this was a small movement
+exercise rather than broad keyboard travel.
+
+The pre-existing B-clear photograph is also an important negative result:
+the bare gripper appears behind the keyboard, near the phone, rather than at
+a demonstrated physical B-key center. Therefore the historical labels
+`REGION_A` and `REGION_B` remain controller-relative identifiers only. The
+cycle proves that a lateral base component and a repeatable vertical component
+compose; it does not prove physical A/B targeting, number-row coverage, or
+punctuation coverage.
+
+Before generating larger key-to-key trajectories, establish one provisional
+board-to-controller transform and a bare-gripper reference point. Keep the
+existing 46-center keyboard-to-board photo map as one side of that bridge,
+but do not infer the other side from the 15 mm controller move. A useful next
+campaign is a high-clear registration ladder with widely separated observed
+landmarks, followed by held-out hover checks. r95 is exhausted, so any live
+ladder requires a separately reviewed finite app and a new controller startup;
+no such startup or movement is authorized by this offline analysis.
