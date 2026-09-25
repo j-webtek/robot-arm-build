@@ -61,7 +61,12 @@ A future LFS migration requires available quota and coordination before rewritin
 shared history. Text files retain original bytes to preserve release hashes.
 
 Invite collaborators through repository access settings. Do not make the repo
-public without a separate privacy and third-party license review. Existing
-vendor license notices remain authoritative; no blanket license is added here.
+public without a separate privacy and third-party license review. Original
+project contributions are licensed under the [Apache License, Version 2.0](LICENSE).
+Third-party code and vendor assets retain their respective licenses and
+attribution notices. Contributions intentionally submitted for inclusion are
+under Apache 2.0 unless explicitly stated otherwise, as described in its
+contribution terms. Preserve the source and license information for any
+third-party material you add.
 Hardware release/deployment remains a separate reviewed action, not an automatic
 consequence of a commit, pull request, or passing software test.
