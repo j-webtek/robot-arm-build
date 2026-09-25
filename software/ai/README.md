@@ -46,6 +46,7 @@ python software/ai/run_offline.py coordinate-preview --request 'Type "test" on t
 python software/ai/run_offline.py observe-image --image frame.jpg --frame-id frame-001 --runtime ollama --endpoint http://127.0.0.1:11434 --model YOUR_VISION_MODEL --model-identity YOUR_PINNED_MODEL_ID --output scene.json
 python software/ai/run_offline.py evaluate-scene-observer --runtime ollama --endpoint http://127.0.0.1:11434 --model gemma3:4b --model-identity ollama:YOUR_PINNED_DIGEST --output software/ai/eval/local_scene_report.json
 python software/ai/vision/evaluate_scene_stress.py --source software/ai/data/raw/real_photo_seed_v0/photo_02.jpg --model gemma3:4b --model-identity ollama:YOUR_PINNED_DIGEST --output software/ai/eval/local_scene_stress.json
+python software/ai/run_offline.py shadow-preview --request 'Type "hi" on the keyboard' --image frame.png --frame-id frame-001 --captured-at-utc 2026-09-25T20:00:00Z --evaluated-at-utc 2026-09-25T20:00:01Z --scene-observation scene.json --precision-observation targets.json --output shadow.json
 python -m unittest discover -s software/ai/tests
 ```
 
@@ -64,6 +65,13 @@ In the six-case severe synthetic stress run, the fused scene gate rejected all
 five adverse cases. The vision model itself still described a keyboard in
 several corrupted or device-absent edits, so the deterministic pixel gate is
 essential and this candidate is not authorized for physical control.
+
+`shadow-preview` joins an already captured image with its scene and precision
+records, runs grounded intent plus fail-closed fusion, and writes one canonical
+lineage record. The command contains no camera or controller adapter, reports
+zero hardware writes, and cannot create an execution permit. The current
+precision record is still synthetic until a calibrated static-camera pipeline
+replaces it.
 
 The `propose` command uses caller-supplied fixture state only. Its phone state
 defaults to `UNKNOWN`; pass `--phone-state KEYBOARD_LOWER` only for an offline

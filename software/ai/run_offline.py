@@ -27,6 +27,7 @@ from rocell_ai.review import review_benchmark  # noqa: E402
 from rocell_ai.scene_observation import FrameEvidence  # noqa: E402
 from rocell_ai.vision_runtime import LlamaCppVisionObserver, OllamaVisionObserver  # noqa: E402
 from rocell_ai.scene_evaluation import evaluate_photo_seed  # noqa: E402
+from rocell_ai.shadow_preview import build as build_shadow_preview  # noqa: E402
 
 
 def main() -> int:
@@ -108,6 +109,17 @@ def main() -> int:
     scene_eval.add_argument("--labels", type=Path, default=AI_DIR / "data" / "real_photo_seed_v0.labels.json")
     scene_eval.add_argument("--raw-directory", type=Path, default=AI_DIR / "data" / "raw" / "real_photo_seed_v0")
     scene_eval.add_argument("--output", type=Path)
+    shadow = sub.add_parser("shadow-preview", help="Bind intent and saved vision records without hardware access")
+    shadow.add_argument("--request", required=True)
+    shadow.add_argument("--request-id", default="manual-shadow-001")
+    shadow.add_argument("--image", type=Path, required=True)
+    shadow.add_argument("--frame-id", required=True)
+    shadow.add_argument("--captured-at-utc", required=True)
+    shadow.add_argument("--evaluated-at-utc", required=True)
+    shadow.add_argument("--scene-observation", type=Path, required=True)
+    shadow.add_argument("--precision-observation", type=Path, required=True)
+    shadow.add_argument("--phone-state", default="UNKNOWN")
+    shadow.add_argument("--output", type=Path)
     args = parser.parse_args()
 
     if args.command in {"propose", "inspect"}:
@@ -180,6 +192,18 @@ def main() -> int:
         if args.output:
             args.output.parent.mkdir(parents=True, exist_ok=True)
             args.output.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    elif args.command == "shadow-preview":
+        frame = FrameEvidence(args.frame_id, args.captured_at_utc, args.image.read_bytes())
+        scene = json.loads(args.scene_observation.read_text(encoding="utf-8"))
+        precision = json.loads(args.precision_observation.read_text(encoding="utf-8"))
+        result = build_shadow_preview(
+            request=args.request, request_id=args.request_id, workspace=AI_DIR.parents[1],
+            frame=frame, scene_observation=scene, precision_observation=precision,
+            evaluated_at_utc=args.evaluated_at_utc, phone_state=args.phone_state,
+        )
+        if args.output:
+            args.output.parent.mkdir(parents=True, exist_ok=True)
+            args.output.write_bytes((json.dumps(result, indent=2, sort_keys=True) + "\n").encode("utf-8"))
     else:
         result = review_benchmark(args.cases, args.manifest, args.prior or [AI_DIR / "eval" / "benchmark_v0.jsonl"])
         if args.output:

@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/j-webtek/robot-arm-build/software/ai/schemas/shadow_preview_v0.schema.json",
+  "title": "RoCell offline AI shadow preview v0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "request_id", "request", "frame_id", "captured_at_utc", "evaluated_at_utc", "image_sha256", "scene_observation_sha256", "precision_observation_sha256", "result", "mode", "hardware_writes", "execution_permit_created", "execution_authorized", "shadow_sha256"],
+  "properties": {
+    "schema": {"const": "rocell.ai_shadow_preview.v0"},
+    "request_id": {"type": "string", "minLength": 1},
+    "request": {"type": "string", "minLength": 1},
+    "frame_id": {"type": "string", "minLength": 1},
+    "captured_at_utc": {"type": "string", "format": "date-time"},
+    "evaluated_at_utc": {"type": "string", "format": "date-time"},
+    "image_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "scene_observation_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "precision_observation_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "result": {"type": "object"},
+    "mode": {"const": "OFFLINE_SHADOW"},
+    "hardware_writes": {"const": 0},
+    "execution_permit_created": {"const": false},
+    "execution_authorized": {"const": false},
+    "shadow_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

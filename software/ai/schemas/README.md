@@ -18,3 +18,6 @@ its model scores are uncalibrated and it also has no motion authority.
 The [scene-observation schema](scene_observation_v0.schema.json) binds a strict
 multimodal scene assessment to exact image bytes. It describes visibility and
 image quality and cannot contain coordinates or controller commands.
+The [shadow-preview schema](shadow_preview_v0.schema.json) binds one request,
+image, scene observation, precision observation, and guarded preview into a
+replayable offline record with zero hardware writes and no permit.
