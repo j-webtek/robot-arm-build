@@ -234,3 +234,11 @@ did not authorize a reset, install, or movement by itself.
   confirm the board and cables are clear. Then the live host must independently
   apply its fresh source, health, and clearance gates. No movement has yet
   been sent on this boot.
+- Added `scripts/run_r91_recovery_cycle.py` as a boot- and evidence-pinned
+  launcher. Its default invocation performs only a public-capabilities GET and
+  exports a read-only preflight. It checks the one-use installation journal,
+  retained three-snapshot source evidence, exact r91 release/boot and absent
+  live-claim marker. Live mode requires both an explicit noncontact-cycle flag
+  and a catch-outside-swept-path flag; the controller still independently
+  rechecks its source before writing. The preflight ran against the actual
+  controller with no movement. The focused r91 suite passes 81 tests.
