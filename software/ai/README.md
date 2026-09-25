@@ -32,6 +32,7 @@ python software/ai/run_offline.py evaluate
 python software/ai/run_offline.py review
 python software/ai/run_offline.py evaluate-model --model llama-3.1-8b-instruct-q4_k_m:latest
 python software/ai/run_offline.py evaluate-model --model llama32-1b-meta-92131767:latest
+python software/ai/run_offline.py ground --request 'Type "test" on the keyboard'
 python -m unittest discover -s software/ai/tests
 ```
 
@@ -96,6 +97,14 @@ held out by template family. On frozen v7, it still trails SFT v1: six
 correct gate-admitted plans versus eight, with four wrong raw plans the
 compiler would accept. SFT v1 remains the strongest measured offline
 reference, and every model remains blocked from arm control.
+
+The [grounded intent path](rocell_ai/grounded.py) is a new offline alternative:
+it extracts one target and exact payload from the request, then asks RoCell's
+compiler whether the text is supported. It does not use model-generated text
+or device slots. On the frozen 30-case v9 set it accepts all 12 supported
+requests with no wrong accepted plans, compared with eight correct and one
+wrong admitted plan for SFT v1 plus the older gate. These cases are
+agent-authored and small; the grounded path is still blocked from arm control.
 
 ## Folder map
 

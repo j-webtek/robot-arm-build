@@ -1,0 +1,42 @@
+{
+  "schema": "rocell.ai_grounded_result.v0",
+  "architecture": "model_independent_request_slot_extraction_then_rocell_semantic_compiler",
+  "policy_sha256": "bca164a482a08a181f83762e62e343bcd29ec3573724080b7404149165d79558",
+  "development_replay": {
+    "benchmarks": ["v0", "v1", "v2", "v3", "v4", "v5", "v6", "v7"],
+    "total_cases": 233,
+    "accepted_correct": 84,
+    "false_execution": 0,
+    "blocked_supported": 14,
+    "source": "Reproduce with run_offline.py evaluate-grounded on each pinned benchmark; older per-case replay files are ignored run outputs."
+  },
+  "v8_exploratory": {
+    "scorecard": "grounded_v0_pre_pronoun_fix_v8_scorecard.json",
+    "exact": 30,
+    "false_execution": 0,
+    "limitation": "The first policy was changed after replay exposed six wrong accepted pronoun/vague-text plans in older benchmarks. v8 is not a clean holdout for the revised policy."
+  },
+  "v9_frozen": {
+    "scorecard": "grounded_v0_v9_scorecard.json",
+    "case_count": 30,
+    "exact": 30,
+    "accepted_correct": 12,
+    "false_execution": 0,
+    "blocked_supported": 0,
+    "human_reviewed": false
+  },
+  "v9_comparisons": {
+    "deterministic_v0": {"scorecard": "baseline_v9_scorecard.json", "exact": 16, "false_execution": 2},
+    "sft_v1_raw": {"scorecard": "llama32_1b_sft_v1_v9_scorecard.json", "exact": 14, "false_execution": 4},
+    "sft_v1_admission": {
+      "scorecard": "llama32_1b_sft_v1_v9_admission.json",
+      "accepted_correct": 8,
+      "false_execution": 1,
+      "wrong_case_id": "v9_c10",
+      "failure": "The model proposal dropped an extra emailing operation and the older gate admitted typing."
+    }
+  },
+  "promotion_status": "blocked",
+  "reason": "V9 is a small agent-authored offline set. The grounded grammar has no physical vision, target registration, controller authorization, or independent typing evidence, and zero observed false plans is not a general safety guarantee.",
+  "hardware_commands": 0
+}

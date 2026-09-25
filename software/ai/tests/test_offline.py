@@ -318,6 +318,29 @@ class OfflineContractTests(unittest.TestCase):
                                           folder / f"benchmark_{version}.manifest.json")
                 self.assertEqual(score["counts"]["false_execution"], 0)
 
+    def test_grounded_v9_pinned_result_and_legacy_gate_failure(self) -> None:
+        folder = AI_DIR / "eval"
+        review = review_benchmark(
+            folder / "benchmark_v9.jsonl", folder / "benchmark_v9.manifest.json",
+            [folder / f"benchmark_{version}.jsonl" for version in ("v0", "v1", "v2", "v3", "v4", "v5", "v6", "v7", "v8")],
+        )
+        self.assertEqual(review["passed"], 30)
+        self.assertEqual(review["issues"], [])
+        self.assertFalse(review["human_reviewed"])
+        score = evaluate_grounded(folder / "benchmark_v9.jsonl", folder / "benchmark_v9.manifest.json")
+        manifest = json.loads((folder / "benchmark_v9.manifest.json").read_text(encoding="utf-8"))
+        recorded = json.loads((folder / "grounded_v0_v9_scorecard.json").read_text(encoding="utf-8"))
+        self.assertEqual(score["policy_sha256"], manifest["grounded_policy_sha256"])
+        self.assertEqual(score["counts"], recorded["counts"])
+        self.assertEqual(score["counts"]["accepted_correct"], 12)
+        self.assertEqual(score["counts"]["false_execution"], 0)
+        self.assertEqual(score["hardware_commands"], 0)
+        old_gate = json.loads((folder / "llama32_1b_sft_v1_v9_admission.json").read_text(encoding="utf-8"))
+        self.assertEqual([row["case_id"] for row in old_gate["cases"] if row["false_execution"]], ["v9_c10"])
+        result = json.loads((folder / "grounded_v0_result.json").read_text(encoding="utf-8"))
+        self.assertEqual(result["promotion_status"], "blocked")
+        self.assertEqual(result["v9_frozen"]["accepted_correct"], score["counts"]["accepted_correct"])
+
     def test_admission_replay_keeps_raw_accuracy_separate(self) -> None:
         folder = AI_DIR / "eval"
         for version in ("v1", "v2"):

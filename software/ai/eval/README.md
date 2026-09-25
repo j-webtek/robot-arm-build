@@ -125,6 +125,17 @@ records that initial policy hash; its v8 result is exploratory. The revised
 policy blocks those replay failures and scores 30/30 on consumed v7. Do not
 use v8 as a clean test of the revision; freeze a new challenge first.
 
+`benchmark_v9.jsonl` pins the revised grounded policy hash and was committed
+before scoring. Its simulated review passes 30/30 consistency and exact
+request-reuse checks, with `human_reviewed: false`. The grounded path is
+30/30 exact, accepts 12 correct typing plans, and has no wrong accepted plans
+on this set. The original deterministic parser is 16/30 exact with two wrong
+compiler-accepted plans. SFT v1 is 14/30 raw exact with four wrong
+compiler-accepted plans; its older admission gate accepts eight correct plans
+and one wrong plan (`v9_c10`), where an extra emailing operation was dropped.
+The grounded result is a narrow offline measurement, not proof of general
+request safety or physical typing. Keep both paths out of arm control.
+
 From the repository root, repeat the checks with:
 
 ```powershell
@@ -134,4 +145,5 @@ python software/ai/run_offline.py evaluate-model --model llama-3.1-8b-instruct-q
 python software/ai/run_offline.py review --cases software/ai/eval/benchmark_v2.jsonl --manifest software/ai/eval/benchmark_v2.manifest.json --prior software/ai/eval/benchmark_v0.jsonl --prior software/ai/eval/benchmark_v1.jsonl
 python software/ai/run_offline.py admit-score --cases software/ai/eval/benchmark_v3.jsonl --manifest software/ai/eval/benchmark_v3.manifest.json --raw-scorecard software/ai/eval/llama32_1b_sft_v0_v3_scorecard.json
 python software/ai/run_offline.py admit-score --cases software/ai/eval/benchmark_v4.jsonl --manifest software/ai/eval/benchmark_v4.manifest.json --raw-scorecard software/ai/eval/llama32_1b_sft_v0_v4_scorecard.json
+python software/ai/run_offline.py evaluate-grounded --cases software/ai/eval/benchmark_v9.jsonl --manifest software/ai/eval/benchmark_v9.manifest.json
 ```

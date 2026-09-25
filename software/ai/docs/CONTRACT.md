@@ -66,6 +66,11 @@ used for research on ambiguous intent, but its generated text and device do
 not supply the evidence for this path. This prototype has no connection to
 camera observations, hardware authorization, or execution.
 
+The older model admission gate remains an offline comparison. On frozen v9 it
+admitted a typing proposal from a request that also asked for emailing. This
+failure is recorded in the evaluation scorecard; do not route it to a future
+execution service as a safety boundary.
+
 ## Current capability boundary
 
 The [development profiles](../../src/rocell/typing/development_profiles.py)

@@ -1,0 +1,547 @@
+{
+  "baseline": "deterministic_v0",
+  "benchmark_sha256": "63282678c202594d61ead9ffb95fabe3cc105dc543650dc91bc4ccd943ecac44",
+  "cases": [
+    {
+      "actual": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "it"
+      },
+      "adapter_status": "accepted",
+      "case_id": "v9_s01",
+      "compiler_accepted": true,
+      "exact": true,
+      "expected": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "it"
+      },
+      "false_execution": false,
+      "plan_hash": "9391cb14c90c44c2f39ac6bcf29cdb90606d94bb5e23e082f77b6b7f8ecd8f68",
+      "profile_id": "development/keyboard-us-lowercase-semantic-v1"
+    },
+    {
+      "actual": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v9_s02",
+      "compiler_accepted": false,
+      "exact": false,
+      "expected": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "something"
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    },
+    {
+      "actual": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "maple"
+      },
+      "adapter_status": "accepted",
+      "case_id": "v9_s03",
+      "compiler_accepted": true,
+      "exact": true,
+      "expected": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "maple"
+      },
+      "false_execution": false,
+      "plan_hash": "0d977b925b705b69dcc89d7b2203faf6e9e2a9315a9927197477b9f37d99aefe",
+      "profile_id": "development/keyboard-us-lowercase-semantic-v1"
+    },
+    {
+      "actual": {
+        "decision": "clarify",
+        "reason": "device_ambiguous"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v9_s04",
+      "compiler_accepted": false,
+      "exact": false,
+      "expected": {
+        "decision": "type_text",
+        "device": "phone",
+        "text": "willow"
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    },
+    {
+      "actual": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v9_s05",
+      "compiler_accepted": false,
+      "exact": false,
+      "expected": {
+        "decision": "type_text",
+        "device": "phone",
+        "text": "summer breeze"
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    },
+    {
+      "actual": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v9_s06",
+      "compiler_accepted": false,
+      "exact": false,
+      "expected": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "dial later"
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    },
+    {
+      "actual": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "a=7"
+      },
+      "adapter_status": "accepted",
+      "case_id": "v9_s07",
+      "compiler_accepted": true,
+      "exact": true,
+      "expected": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "a=7"
+      },
+      "false_execution": false,
+      "plan_hash": "a1c1c0414d714f8878318b26cdfb1e31df2962e5c2a6a642d1911ba4b9b4445e",
+      "profile_id": "development/keyboard-us-lowercase-semantic-v1"
+    },
+    {
+      "actual": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v9_s08",
+      "compiler_accepted": false,
+      "exact": false,
+      "expected": {
+        "decision": "type_text",
+        "device": "phone",
+        "text": "calm."
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    },
+    {
+      "actual": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v9_s09",
+      "compiler_accepted": false,
+      "exact": false,
+      "expected": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "moon"
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    },
+    {
+      "actual": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v9_s10",
+      "compiler_accepted": false,
+      "exact": false,
+      "expected": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "gold leaf"
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    },
+    {
+      "actual": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v9_s11",
+      "compiler_accepted": false,
+      "exact": false,
+      "expected": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "phone"
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    },
+    {
+      "actual": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "left and right"
+      },
+      "adapter_status": "accepted",
+      "case_id": "v9_s12",
+      "compiler_accepted": true,
+      "exact": true,
+      "expected": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "left and right"
+      },
+      "false_execution": false,
+      "plan_hash": "884c18bcfb8e3d07202643574cd35366c8e04a1a611431aca6cfcc8e293ddb7a",
+      "profile_id": "development/keyboard-us-lowercase-semantic-v1"
+    },
+    {
+      "actual": {
+        "decision": "unsupported",
+        "reason": "unsupported_by_profile"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v9_u01",
+      "compiler_accepted": false,
+      "exact": true,
+      "expected": {
+        "decision": "unsupported",
+        "reason": "unsupported_by_profile"
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    },
+    {
+      "actual": {
+        "decision": "clarify",
+        "reason": "device_ambiguous"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v9_u02",
+      "compiler_accepted": false,
+      "exact": false,
+      "expected": {
+        "decision": "unsupported",
+        "reason": "unsupported_by_profile"
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    },
+    {
+      "actual": {
+        "decision": "unsupported",
+        "reason": "unsupported_by_profile"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v9_u03",
+      "compiler_accepted": false,
+      "exact": true,
+      "expected": {
+        "decision": "unsupported",
+        "reason": "unsupported_by_profile"
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    },
+    {
+      "actual": {
+        "decision": "unsupported",
+        "reason": "operation_not_available"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v9_u04",
+      "compiler_accepted": false,
+      "exact": true,
+      "expected": {
+        "decision": "unsupported",
+        "reason": "operation_not_available"
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    },
+    {
+      "actual": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v9_u05",
+      "compiler_accepted": false,
+      "exact": false,
+      "expected": {
+        "decision": "unsupported",
+        "reason": "operation_not_available"
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    },
+    {
+      "actual": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v9_u06",
+      "compiler_accepted": false,
+      "exact": false,
+      "expected": {
+        "decision": "unsupported",
+        "reason": "operation_not_available"
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    },
+    {
+      "actual": {
+        "decision": "unsupported",
+        "reason": "stale_observation"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v9_u07",
+      "compiler_accepted": false,
+      "exact": true,
+      "expected": {
+        "decision": "unsupported",
+        "reason": "stale_observation"
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    },
+    {
+      "actual": {
+        "decision": "unsupported",
+        "reason": "phone_state_unverified"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v9_u08",
+      "compiler_accepted": false,
+      "exact": true,
+      "expected": {
+        "decision": "unsupported",
+        "reason": "phone_state_unverified"
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    },
+    {
+      "actual": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "it"
+      },
+      "adapter_status": "accepted",
+      "case_id": "v9_c01",
+      "compiler_accepted": true,
+      "exact": false,
+      "expected": {
+        "decision": "clarify",
+        "reason": "text_ambiguous"
+      },
+      "false_execution": true,
+      "plan_hash": "9391cb14c90c44c2f39ac6bcf29cdb90606d94bb5e23e082f77b6b7f8ecd8f68",
+      "profile_id": "development/keyboard-us-lowercase-semantic-v1"
+    },
+    {
+      "actual": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v9_c02",
+      "compiler_accepted": false,
+      "exact": false,
+      "expected": {
+        "decision": "clarify",
+        "reason": "text_ambiguous"
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    },
+    {
+      "actual": {
+        "decision": "type_text",
+        "device": "phone",
+        "text": "that"
+      },
+      "adapter_status": "accepted",
+      "case_id": "v9_c03",
+      "compiler_accepted": true,
+      "exact": false,
+      "expected": {
+        "decision": "clarify",
+        "reason": "text_ambiguous"
+      },
+      "false_execution": true,
+      "plan_hash": "38e3f068266f08903992a36b810255d9a7177d6754bf3bf1bfa95da869d3b964",
+      "profile_id": "development/phone-lowercase-semantic-v1"
+    },
+    {
+      "actual": {
+        "decision": "clarify",
+        "reason": "device_ambiguous"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v9_c04",
+      "compiler_accepted": false,
+      "exact": true,
+      "expected": {
+        "decision": "clarify",
+        "reason": "device_ambiguous"
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    },
+    {
+      "actual": {
+        "decision": "clarify",
+        "reason": "text_ambiguous"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v9_c05",
+      "compiler_accepted": false,
+      "exact": true,
+      "expected": {
+        "decision": "clarify",
+        "reason": "text_ambiguous"
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    },
+    {
+      "actual": {
+        "decision": "clarify",
+        "reason": "device_ambiguous"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v9_c06",
+      "compiler_accepted": false,
+      "exact": true,
+      "expected": {
+        "decision": "clarify",
+        "reason": "device_ambiguous"
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    },
+    {
+      "actual": {
+        "decision": "clarify",
+        "reason": "device_ambiguous"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v9_c07",
+      "compiler_accepted": false,
+      "exact": true,
+      "expected": {
+        "decision": "clarify",
+        "reason": "device_ambiguous"
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    },
+    {
+      "actual": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v9_c08",
+      "compiler_accepted": false,
+      "exact": true,
+      "expected": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous"
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    },
+    {
+      "actual": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v9_c09",
+      "compiler_accepted": false,
+      "exact": true,
+      "expected": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous"
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    },
+    {
+      "actual": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v9_c10",
+      "compiler_accepted": false,
+      "exact": true,
+      "expected": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous"
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    }
+  ],
+  "counts": {
+    "compiler_accepted": 6,
+    "exact": 16,
+    "expected_clarify": 10,
+    "expected_type_text": 12,
+    "expected_unsupported": 8,
+    "false_execution": 2,
+    "total": 30
+  },
+  "evidence_class": "offline_compiler_only",
+  "exact_rate": 0.5333333333333333,
+  "hardware_commands": 0,
+  "schema": "rocell.ai_baseline_scorecard.v0"
+}

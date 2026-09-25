@@ -66,6 +66,17 @@ model path blocked. Another template-only SFT round is unlikely to resolve
 the observed generalization gap without better independent labels or a
 different intent architecture; evaluate that choice with a newly frozen set.
 
+The grounded intent prototype implements that alternate path. It extracts
+one exact payload and device from the request without trusting model-generated
+slots, then calls the read-only RoCell compiler. A replay found and fixed
+unquoted pronoun/vague-word false plans before v9 was frozen. The revised
+policy scores 30/30 on the agent-authored v9 set with 12 correct accepted
+plans and no wrong accepted plans. SFT v1 plus the older gate admits one wrong
+plan on v9 after dropping an extra emailing action. Continue with broader,
+independently labeled offline tests and explicit observation binding before
+considering any runtime integration; no current AI path is cleared for arm
+motion or contact.
+
 | Order | Deliverable | Check before advancing |
 | --- | --- | --- |
 | 1. Versioned proposal | Define `type_text`, `clarify`, and `unsupported` result shapes; pin the RoCell source/profile identity. | Every supported proposal maps to the existing compiler; no coordinate or hardware command field exists. |

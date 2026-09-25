@@ -1,0 +1,562 @@
+{
+  "benchmark_sha256": "63282678c202594d61ead9ffb95fabe3cc105dc543650dc91bc4ccd943ecac44",
+  "cases": [
+    {
+      "accepted_correct": true,
+      "admission_reason": null,
+      "admission_status": "accepted",
+      "case_id": "v9_s01",
+      "expected": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "it"
+      },
+      "false_execution": false,
+      "raw_actual": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "it"
+      },
+      "raw_exact": true,
+      "raw_false_execution": false
+    },
+    {
+      "accepted_correct": true,
+      "admission_reason": null,
+      "admission_status": "accepted",
+      "case_id": "v9_s02",
+      "expected": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "something"
+      },
+      "false_execution": false,
+      "raw_actual": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "something"
+      },
+      "raw_exact": true,
+      "raw_false_execution": false
+    },
+    {
+      "accepted_correct": false,
+      "admission_reason": "text_ambiguous",
+      "admission_status": "blocked",
+      "case_id": "v9_s03",
+      "expected": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "maple"
+      },
+      "false_execution": false,
+      "raw_actual": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "maple"
+      },
+      "raw_exact": true,
+      "raw_false_execution": false
+    },
+    {
+      "accepted_correct": false,
+      "admission_reason": "text_ambiguous",
+      "admission_status": "blocked",
+      "case_id": "v9_s04",
+      "expected": {
+        "decision": "type_text",
+        "device": "phone",
+        "text": "willow"
+      },
+      "false_execution": false,
+      "raw_actual": {
+        "decision": "type_text",
+        "device": "phone",
+        "text": "willow"
+      },
+      "raw_exact": true,
+      "raw_false_execution": false
+    },
+    {
+      "accepted_correct": true,
+      "admission_reason": null,
+      "admission_status": "accepted",
+      "case_id": "v9_s05",
+      "expected": {
+        "decision": "type_text",
+        "device": "phone",
+        "text": "summer breeze"
+      },
+      "false_execution": false,
+      "raw_actual": {
+        "decision": "type_text",
+        "device": "phone",
+        "text": "summer breeze"
+      },
+      "raw_exact": true,
+      "raw_false_execution": false
+    },
+    {
+      "accepted_correct": true,
+      "admission_reason": null,
+      "admission_status": "accepted",
+      "case_id": "v9_s06",
+      "expected": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "dial later"
+      },
+      "false_execution": false,
+      "raw_actual": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "dial later"
+      },
+      "raw_exact": true,
+      "raw_false_execution": false
+    },
+    {
+      "accepted_correct": true,
+      "admission_reason": null,
+      "admission_status": "accepted",
+      "case_id": "v9_s07",
+      "expected": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "a=7"
+      },
+      "false_execution": false,
+      "raw_actual": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "a=7"
+      },
+      "raw_exact": true,
+      "raw_false_execution": false
+    },
+    {
+      "accepted_correct": true,
+      "admission_reason": null,
+      "admission_status": "accepted",
+      "case_id": "v9_s08",
+      "expected": {
+        "decision": "type_text",
+        "device": "phone",
+        "text": "calm."
+      },
+      "false_execution": false,
+      "raw_actual": {
+        "decision": "type_text",
+        "device": "phone",
+        "text": "calm."
+      },
+      "raw_exact": true,
+      "raw_false_execution": false
+    },
+    {
+      "accepted_correct": true,
+      "admission_reason": null,
+      "admission_status": "accepted",
+      "case_id": "v9_s09",
+      "expected": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "moon"
+      },
+      "false_execution": false,
+      "raw_actual": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "moon"
+      },
+      "raw_exact": true,
+      "raw_false_execution": false
+    },
+    {
+      "accepted_correct": true,
+      "admission_reason": null,
+      "admission_status": "accepted",
+      "case_id": "v9_s10",
+      "expected": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "gold leaf"
+      },
+      "false_execution": false,
+      "raw_actual": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "gold leaf"
+      },
+      "raw_exact": true,
+      "raw_false_execution": false
+    },
+    {
+      "accepted_correct": false,
+      "admission_reason": "device_ambiguous",
+      "admission_status": "blocked",
+      "case_id": "v9_s11",
+      "expected": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "phone"
+      },
+      "false_execution": false,
+      "raw_actual": {
+        "decision": "clarify",
+        "reason": "device_ambiguous"
+      },
+      "raw_exact": false,
+      "raw_false_execution": false
+    },
+    {
+      "accepted_correct": false,
+      "admission_reason": "device_ambiguous",
+      "admission_status": "blocked",
+      "case_id": "v9_s12",
+      "expected": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "left and right"
+      },
+      "false_execution": false,
+      "raw_actual": {
+        "decision": "clarify",
+        "reason": "device_ambiguous"
+      },
+      "raw_exact": false,
+      "raw_false_execution": false
+    },
+    {
+      "accepted_correct": false,
+      "admission_reason": "unsupported_by_profile",
+      "admission_status": "blocked",
+      "case_id": "v9_u01",
+      "expected": {
+        "decision": "unsupported",
+        "reason": "unsupported_by_profile"
+      },
+      "false_execution": false,
+      "raw_actual": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "UPPER"
+      },
+      "raw_exact": false,
+      "raw_false_execution": false
+    },
+    {
+      "accepted_correct": false,
+      "admission_reason": "unsupported_by_profile",
+      "admission_status": "blocked",
+      "case_id": "v9_u02",
+      "expected": {
+        "decision": "unsupported",
+        "reason": "unsupported_by_profile"
+      },
+      "false_execution": false,
+      "raw_actual": {
+        "decision": "unsupported",
+        "reason": "unsupported_by_profile"
+      },
+      "raw_exact": true,
+      "raw_false_execution": false
+    },
+    {
+      "accepted_correct": false,
+      "admission_reason": "unsupported_by_profile",
+      "admission_status": "blocked",
+      "case_id": "v9_u03",
+      "expected": {
+        "decision": "unsupported",
+        "reason": "unsupported_by_profile"
+      },
+      "false_execution": false,
+      "raw_actual": {
+        "decision": "type_text",
+        "device": "phone",
+        "text": "wow!"
+      },
+      "raw_exact": false,
+      "raw_false_execution": false
+    },
+    {
+      "accepted_correct": false,
+      "admission_reason": "phone_state_unverified",
+      "admission_status": "blocked",
+      "case_id": "v9_u04",
+      "expected": {
+        "decision": "unsupported",
+        "reason": "operation_not_available"
+      },
+      "false_execution": false,
+      "raw_actual": {
+        "decision": "unsupported",
+        "reason": "phone_state_unverified"
+      },
+      "raw_exact": false,
+      "raw_false_execution": false
+    },
+    {
+      "accepted_correct": false,
+      "admission_reason": "operation_not_available",
+      "admission_status": "blocked",
+      "case_id": "v9_u05",
+      "expected": {
+        "decision": "unsupported",
+        "reason": "operation_not_available"
+      },
+      "false_execution": false,
+      "raw_actual": {
+        "decision": "unsupported",
+        "reason": "operation_not_available"
+      },
+      "raw_exact": true,
+      "raw_false_execution": false
+    },
+    {
+      "accepted_correct": false,
+      "admission_reason": "operation_not_available",
+      "admission_status": "blocked",
+      "case_id": "v9_u06",
+      "expected": {
+        "decision": "unsupported",
+        "reason": "operation_not_available"
+      },
+      "false_execution": false,
+      "raw_actual": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "ready"
+      },
+      "raw_exact": false,
+      "raw_false_execution": true
+    },
+    {
+      "accepted_correct": false,
+      "admission_reason": "stale_observation",
+      "admission_status": "blocked",
+      "case_id": "v9_u07",
+      "expected": {
+        "decision": "unsupported",
+        "reason": "stale_observation"
+      },
+      "false_execution": false,
+      "raw_actual": {
+        "decision": "unsupported",
+        "reason": "operation_not_available"
+      },
+      "raw_exact": false,
+      "raw_false_execution": false
+    },
+    {
+      "accepted_correct": false,
+      "admission_reason": "phone_state_unverified",
+      "admission_status": "blocked",
+      "case_id": "v9_u08",
+      "expected": {
+        "decision": "unsupported",
+        "reason": "phone_state_unverified"
+      },
+      "false_execution": false,
+      "raw_actual": {
+        "decision": "unsupported",
+        "reason": "phone_state_unverified"
+      },
+      "raw_exact": true,
+      "raw_false_execution": false
+    },
+    {
+      "accepted_correct": false,
+      "admission_reason": "text_ambiguous",
+      "admission_status": "blocked",
+      "case_id": "v9_c01",
+      "expected": {
+        "decision": "clarify",
+        "reason": "text_ambiguous"
+      },
+      "false_execution": false,
+      "raw_actual": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "Please type it on the keyboard."
+      },
+      "raw_exact": false,
+      "raw_false_execution": false
+    },
+    {
+      "accepted_correct": false,
+      "admission_reason": "operation_not_available",
+      "admission_status": "blocked",
+      "case_id": "v9_c02",
+      "expected": {
+        "decision": "clarify",
+        "reason": "text_ambiguous"
+      },
+      "false_execution": false,
+      "raw_actual": {
+        "decision": "unsupported",
+        "reason": "operation_not_available"
+      },
+      "raw_exact": false,
+      "raw_false_execution": false
+    },
+    {
+      "accepted_correct": false,
+      "admission_reason": "text_ambiguous",
+      "admission_status": "blocked",
+      "case_id": "v9_c03",
+      "expected": {
+        "decision": "clarify",
+        "reason": "text_ambiguous"
+      },
+      "false_execution": false,
+      "raw_actual": {
+        "decision": "type_text",
+        "device": "phone",
+        "text": "Type that on the phone."
+      },
+      "raw_exact": false,
+      "raw_false_execution": false
+    },
+    {
+      "accepted_correct": false,
+      "admission_reason": "phone_state_unverified",
+      "admission_status": "blocked",
+      "case_id": "v9_c04",
+      "expected": {
+        "decision": "clarify",
+        "reason": "device_ambiguous"
+      },
+      "false_execution": false,
+      "raw_actual": {
+        "decision": "type_text",
+        "device": "phone",
+        "text": "phone"
+      },
+      "raw_exact": false,
+      "raw_false_execution": false
+    },
+    {
+      "accepted_correct": false,
+      "admission_reason": "intent_ambiguous",
+      "admission_status": "blocked",
+      "case_id": "v9_c05",
+      "expected": {
+        "decision": "clarify",
+        "reason": "text_ambiguous"
+      },
+      "false_execution": false,
+      "raw_actual": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "moon"
+      },
+      "raw_exact": false,
+      "raw_false_execution": true
+    },
+    {
+      "accepted_correct": false,
+      "admission_reason": "intent_ambiguous",
+      "admission_status": "blocked",
+      "case_id": "v9_c06",
+      "expected": {
+        "decision": "clarify",
+        "reason": "device_ambiguous"
+      },
+      "false_execution": false,
+      "raw_actual": {
+        "decision": "type_text",
+        "device": "phone",
+        "text": "moon"
+      },
+      "raw_exact": false,
+      "raw_false_execution": true
+    },
+    {
+      "accepted_correct": false,
+      "admission_reason": "device_ambiguous",
+      "admission_status": "blocked",
+      "case_id": "v9_c07",
+      "expected": {
+        "decision": "clarify",
+        "reason": "device_ambiguous"
+      },
+      "false_execution": false,
+      "raw_actual": {
+        "decision": "clarify",
+        "reason": "device_ambiguous"
+      },
+      "raw_exact": true,
+      "raw_false_execution": false
+    },
+    {
+      "accepted_correct": false,
+      "admission_reason": "device_ambiguous",
+      "admission_status": "blocked",
+      "case_id": "v9_c08",
+      "expected": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous"
+      },
+      "false_execution": false,
+      "raw_actual": {
+        "decision": "clarify",
+        "reason": "device_ambiguous"
+      },
+      "raw_exact": false,
+      "raw_false_execution": false
+    },
+    {
+      "accepted_correct": false,
+      "admission_reason": "device_ambiguous",
+      "admission_status": "blocked",
+      "case_id": "v9_c09",
+      "expected": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous"
+      },
+      "false_execution": false,
+      "raw_actual": {
+        "decision": "clarify",
+        "reason": "device_ambiguous"
+      },
+      "raw_exact": false,
+      "raw_false_execution": false
+    },
+    {
+      "accepted_correct": false,
+      "admission_reason": null,
+      "admission_status": "accepted",
+      "case_id": "v9_c10",
+      "expected": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous"
+      },
+      "false_execution": true,
+      "raw_actual": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "moon"
+      },
+      "raw_exact": false,
+      "raw_false_execution": true
+    }
+  ],
+  "counts": {
+    "accepted": 9,
+    "accepted_correct": 8,
+    "blocked_supported": 4,
+    "blocked_unsupported_or_ambiguous": 17,
+    "false_execution": 1,
+    "total": 30
+  },
+  "evidence_class": "offline_admission_only",
+  "hardware_commands": 0,
+  "model": "llama32-1b-rocell-sft-v1:latest",
+  "model_digest": "d424a6d8dd20a021fa1da30d23213b450405c750a504dbbc96dd42d6aff9b25e",
+  "policy_sha256": "d49d4c59063efa8cb0b5a05d455a27b82d844f66d2a29700db0d7faae3591613",
+  "prompt_sha256": "ff5faa8c5e52bed95a3172b1ca1b0a6534052d71591b66d04ef954b9a25bf81a",
+  "raw_scorecard_sha256": "d2c5259022db73c69b656dce2dae84a2d38a1dde486c4e1b34d87a5da866f370",
+  "schema": "rocell.ai_admission_scorecard.v0"
+}
