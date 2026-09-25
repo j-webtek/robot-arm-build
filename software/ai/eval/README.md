@@ -31,9 +31,24 @@ of that baseline to arm control. Keep v1 and its paraphrase families out of
 training data. Model candidates should be evaluated against this frozen set
 without changing its labels or examples.
 
+The first local model comparison uses the installed
+`llama-3.1-8b-instruct-q4_k_m:latest` Ollama artifact. Its exact digest,
+runtime version, prompt hash, generation settings, per-case latency, invalid
+responses, and false execution count are in `llama31_8b_q4_v1_scorecard.json`.
+This is one locally served quantized candidate, not a result for every Llama
+3.1 release. The installed tag carries a translation-oriented default system
+prompt; the evaluator supplies an explicit task system message. Local
+metadata does not establish the weights' origin or license, so do not treat
+this run as a verified unmodified base-model result. It matched
+17/31, made five false execution proposals, and returned one invalid response.
+The five accepted wrong proposals all concern ambiguous requests. The runner
+records response hashes rather than full generated text. Latency depends on
+local model loading and cache state; it is not a deployment benchmark.
+
 From the repository root, repeat the checks with:
 
 ```powershell
 python software/ai/run_offline.py review
 python software/ai/run_offline.py evaluate --cases software/ai/eval/benchmark_v1.jsonl --manifest software/ai/eval/benchmark_v1.manifest.json
+python software/ai/run_offline.py evaluate-model --model llama-3.1-8b-instruct-q4_k_m:latest
 ```

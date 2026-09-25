@@ -33,7 +33,7 @@ This is an AI adapter proposal, **not** an existing RoCell schema:
 {
   "schema": "rocell.ai_task_proposal.v0",
   "request_id": "example-001",
-  "operation": "type_text",
+  "decision": "type_text",
   "device": "keyboard",
   "text": "test",
   "observation_ref": "offline-context-001"

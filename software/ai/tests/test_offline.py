@@ -8,6 +8,7 @@ import json
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 
 
 AI_DIR = Path(__file__).resolve().parents[1]
@@ -19,6 +20,7 @@ from rocell_ai.adapter import inspect  # noqa: E402
 from rocell_ai.contract import validate_proposal  # noqa: E402
 from rocell_ai.evaluation import evaluate, load_benchmark  # noqa: E402
 from rocell_ai.review import review_benchmark  # noqa: E402
+from rocell_ai.model_eval import _proposal_from_response, evaluate_model  # noqa: E402
 
 
 class OfflineContractTests(unittest.TestCase):
@@ -124,6 +126,35 @@ class OfflineContractTests(unittest.TestCase):
             manifest.write_text(json.dumps(metadata), encoding="utf-8")
             report = review_benchmark(cases, manifest, folder / "benchmark_v0.jsonl")
         self.assertIn({"case_id": "v1_k01", "issue": "compiler_verdict_mismatch"}, report["issues"])
+
+    def test_model_output_cannot_supply_request_binding(self) -> None:
+        case = {"case_id": "fixed", "observation": {"ref": "source", "fresh": True}}
+        with self.assertRaisesRegex(ValueError, "reserved"):
+            _proposal_from_response('{"decision":"type_text","device":"keyboard","text":"test","request_id":"other"}', case)
+
+    def test_model_scoring_counts_unsafe_valid_proposal(self) -> None:
+        folder = AI_DIR / "eval"
+        all_rows = [json.loads(line) for line in (folder / "benchmark_v1.jsonl").read_text(encoding="utf-8").splitlines()]
+        rows = [next(row for row in all_rows if row["case_id"] == case_id) for case_id in ("v1_k01", "v1_c02")]
+        with tempfile.TemporaryDirectory() as temp_dir:
+            cases = Path(temp_dir) / "cases.jsonl"
+            manifest = Path(temp_dir) / "manifest.json"
+            raw = ("\n".join(json.dumps(row) for row in rows) + "\n").encode("utf-8")
+            cases.write_bytes(raw)
+            metadata = json.loads((folder / "benchmark_v1.manifest.json").read_text(encoding="utf-8"))
+            metadata["cases_sha256"] = hashlib.sha256(raw).hexdigest()
+            metadata["case_count"] = 2
+            manifest.write_text(json.dumps(metadata), encoding="utf-8")
+            responses = [
+                {"message": {"content": '{"decision":"type_text","device":"keyboard","text":"hello"}'}},
+                {"message": {"content": '{"decision":"type_text","device":"keyboard","text":"it"}'}},
+            ]
+            with patch("rocell_ai.model_eval._model_digest", return_value="a" * 64), patch("rocell_ai.model_eval._runtime_version", return_value="fixture"), patch("rocell_ai.model_eval._post", side_effect=responses):
+                score = evaluate_model(cases, manifest, "fixture-model")
+        self.assertEqual(score["counts"]["exact"], 1)
+        self.assertEqual(score["counts"]["false_execution"], 1)
+        self.assertEqual(score["counts"]["invalid_output"], 0)
+        self.assertEqual(score["hardware_commands"], 0)
 
 
 if __name__ == "__main__":

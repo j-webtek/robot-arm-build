@@ -30,6 +30,7 @@ python software/ai/run_offline.py propose --request 'Type "test" on the keyboard
 python software/ai/run_offline.py inspect --request 'Type "test" on the keyboard'
 python software/ai/run_offline.py evaluate
 python software/ai/run_offline.py review
+python software/ai/run_offline.py evaluate-model --model llama-3.1-8b-instruct-q4_k_m:latest
 python -m unittest discover -s software/ai/tests
 ```
 
@@ -42,6 +43,12 @@ sanity benchmark. The [simulated review](eval/simulated_review_v1.json) and
 [v1 scorecard](eval/baseline_v1_scorecard.json) cover the frozen 31-case
 paraphrase set. No person reviewed the v1 labels; the baseline has one false
 execution proposal, so it is not ready for arm control.
+
+The local Llama 3.1 8B Q4 candidate is evaluated with `evaluate-model` using
+an explicit task prompt and a pinned Ollama model digest. Its
+[v1 scorecard](eval/llama31_8b_q4_v1_scorecard.json) is offline evidence only.
+The installed artifact's weight origin and license are unverified; this run
+does not authorize hardware execution or model redistribution.
 
 ## Folder map
 
