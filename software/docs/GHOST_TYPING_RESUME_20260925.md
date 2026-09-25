@@ -1,8 +1,8 @@
 # Resume non-contact ghost typing after gripper loading
 
-Status: offline B-key candidate screened; r94 installed; **B_CLEAR leg 1,
-B_HOVER leg 2, B_VIRTUAL_DOWN leg 3, and B_RETRACT leg 4 sent and verified**.
-No final B_CLEAR or automatic return was sent.
+Status: offline B-key candidate screened; r94 installed; **all five bounded
+non-contact B-cycle legs sent and verified**. The app permits no sixth leg or
+automatic repeat. No physical keypress has been established.
 
 The previous r91 A cycle ended at A_CLEAR. r93 then served the stylus-loading
 attempt; its physical retention and protrusion were not verified. The operator
@@ -27,7 +27,7 @@ separation was 55.75 mm. The verified export is
 Two focused tests pass. These results are numerical screening only; the model
 omits the mounted stylus, keyboard, fixture, cable loops and full link meshes.
 
-## r94 installation and first four live legs
+## r94 installation and five live legs
 
 A dedicated r94 app compiled with SHA-256
 `31bceb8f7eb92f220d5221549916d26c4ce0958d269b864600d1dca0d9416c59`.
@@ -67,24 +67,32 @@ before pose matched the verified leg-3 endpoint. The four selected joints
 counts of their respective goals 2093, 2021, 2618 and 2197. Base and gripper
 readings remained unchanged. The verified before/after export is
 `wizard-20260925T163316562825Z-9726886cc32842d49a7b4cf183498937`.
-No B_CLEAR_FINAL command followed.
+The operator confirmed clearance for this retract leg.
+
+One `B_CLEAR_FINAL` leg 5 request was then sent on the same boot. The fresh
+before pose matched the verified leg-4 endpoint. The four selected joints
+(indices 1–4) reported positions 2082, 2033, 2609 and 2233, within nine
+counts of their respective goals 2075, 2039, 2600 and 2233. Base and gripper
+readings remained unchanged. The verified before/after export is
+`wizard-20260925T165306016823Z-d79a8b491ee847888bc0d52e1a07899d`.
+No additional movement command followed.
 
 This is controller feedback and an operator clearance setup, not independently
-measured TCP motion or physical key accuracy. The B_RETRACT visual
+measured TCP motion or physical key accuracy. The final B_CLEAR visual
 clearance assessment is still pending from the operator.
 
-## Boundary before each remaining live B-key leg
+## Boundary before another ghost-key exercise
 
 1. Confirm the stylus remains removed and the bare gripper and full swept
    region are clear. If the stylus is remounted, qualify retention and its
    envelope and re-screen first; do not substitute the hypothetical 100 mm
    tool offset.
-2. Obtain fresh seven-joint feedback. For leg 5, bind to the verified leg-4
-   endpoint on the same r94 boot. Reject a changed source or controller boot;
-   never replay a stale pose.
-3. Before each live command, check the actual keyboard/objects/cables and confirm
-   the complete path remains non-contact. Photo placement is approximate, not
-   a collision or key-center certificate.
+2. Obtain fresh seven-joint feedback and establish a new reviewed source and
+   targets. r94's five-leg sequence is exhausted and cannot be restarted on
+   the same boot. Do not use a controller restart merely to replay it.
+3. Check the actual keyboard/objects/cables and confirm the complete path
+   remains non-contact. Photo placement is approximate, not a collision or
+   key-center certificate.
 4. Use one bounded leg at a time, with fresh source/health checks, a durable
    command reservation, readback and export before advancing. On a failed or
    uncertain leg, stop without retry, automatic return or next movement.
