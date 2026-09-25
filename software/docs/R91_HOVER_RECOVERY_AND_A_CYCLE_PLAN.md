@@ -72,10 +72,14 @@ gripper, cables, support, or position drift since the saved endpoint.
    matching receipt. Stop at leg 5 with no continuation route.
 5. Compile/review the image, app-only flash boundary, settings/credential
    preservation and readback hashes offline. Before any installation or
-   startup, explicitly account for brief torque loss: the arm must be in a
-   position where a reset cannot let it strike the board, or physically
-   supported for that interval. Existing r90 credentials/settings remain
-   untouched.
+   startup, explicitly account for possible torque loss: maintain the external
+   servo supply, send no torque-off command, and provide a temporary physical
+   catch/support at the present pose during the controller reset. Controller
+   reset is not the same event as disconnecting the external supply, which
+   previously caused a fall, but continuous torque through reset is not
+   established for this exact unit. A clear movement area alone is not a
+   support, and an uncontrolled gripper strike on the board is not an
+   acceptable substitute. Existing r90 credentials/settings remain untouched.
 6. After one reviewed install/startup, use read-only identity/capability
    checks. Start r91 only if source, clearance and health gates pass. Export
    all five endpoints and report controller counts, timing and faults. Do not
@@ -174,3 +178,31 @@ retry.
   startup verification, a fresh A_HOVER source observation, and the live
   five-leg trial. No firmware was uploaded, no startup was performed, and no
   movement was sent here.
+
+## Current reset decision (2026-09-25)
+
+The user confirms that the movement area is clear but the arm is **not
+physically supported**. Do not invoke `install(..., supported_for_reset=True)`
+under that condition. The installer performs a controller download-mode reset
+and one startup while keeping the external supply connected; it does not
+deliberately release servo torque. The staged firmware's `setup()` likewise
+does not send a torque-off command. Those code and wiring facts reduce the
+likelihood of the full-supply-loss fall seen earlier, but they do not prove
+uninterrupted holding torque through a real reset or flash fault. The
+installer's support guard remains in force.
+
+Preferred next action: with the external supply and USB still connected,
+place a temporary stable support or soft catch immediately below the lowest
+arm assembly at its **current** pose, without lifting, forcing, or changing
+joint angles. Keep it clear of cables and the eventual five-leg path; remove
+or reposition it only after the new boot's read-only pose and torque checks
+and a fresh clearance review. If such a support cannot be placed without
+touching the arm or obstructing the path, defer the install and plan a
+separate, controlled repositioning procedure.
+
+Do not lower the arm toward the board merely to shorten a possible fall.
+The r90 one-use movement route on the present boot is consumed. A manual
+pose change would invalidate r91's fixed `A_HOVER` source and require a new
+read-only baseline, clearance screen, route/release and reviewed image. It
+also risks uncontrolled contact during the change. No reset, install, or
+movement is authorized by this documentation update alone.
