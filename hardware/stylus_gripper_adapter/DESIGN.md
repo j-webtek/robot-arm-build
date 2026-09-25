@@ -54,6 +54,24 @@ its own directory. Defer the spring/plunger mechanism until rigid mounting and
 tip geometry are established; any later compliance needs measured travel and
 force before contact work.
 
+## Selected stylus
+
+The operator identified [Amazon ASIN B08Q7L85X2](https://www.amazon.com/dp/B08Q7L85X2)
+as the exact stylus on 2026-09-25. The listing identifies OASO model 1010B,
+an aluminum-bodied, battery-free capacitive disc stylus with a magnetic cap.
+Mount on the barrel with the cap removed and leave the disc/stem clear.
+
+The listing gives overall item dimensions of 6.3 x 3.54 x 0.39 inches, but does
+not identify a barrel diameter. These dimensions are not a mechanical drawing:
+do not substitute 0.39 inches (9.906 mm) for the clamp bore, or treat the listed
+length as the uncapped mounted length. The older CAD's nominal 9 mm barrel
+remains unverified. Set the final bore from the actual barrel or a fitting
+coupon; keep bore and liner thickness independently adjustable.
+
+Battery-free operation does not establish whether this stylus will register
+when held only by a printed mount. Verify hands-free touchscreen response
+separately before treating it as a robot-operated touchscreen tool.
+
 ## Measurements needed for the first fitting coupon
 
 All dimensions are millimeters. Record the measurement method and uncertainty.
