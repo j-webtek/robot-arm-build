@@ -1,10 +1,13 @@
 # Stylus loading and measurement procedure
 
 Status: procedure prepared; **not executed**. No stylus is yet calibrated or
-approved for keyboard contact. The current r91 diagnostic application is a
-five-leg A-cycle owner, not a general gripper-control interface. Its completion
-does not grant a new gripper movement. Do not send generic SDK or `/js`
-commands to that application by assumption.
+approved for keyboard contact. The r91 five-leg A-cycle image was replaced by
+a restricted r92 gripper-loader app on 2026-09-25. Its app-slot readback and
+settings-preservation checks passed, but **no gripper movement has been sent**.
+r92 can make one bounded open step and read feedback; it has no close path.
+Do not begin loading a stylus with r92 alone. A manually gated, stepwise close
+path must be built, verified, and installed before the first jaw opening so a
+pen need not remain unsupported through another controller restart.
 
 ## Intent and controller prerequisite
 
