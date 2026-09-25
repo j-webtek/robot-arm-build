@@ -125,3 +125,29 @@ separate reviewed app, startup/drop precautions and one attended leg at a time.
 After B is established, expand by explicit layout/key hypotheses for other
 letters, number row, and punctuation. Do not label a virtual pose as a physical
 keypress or an accurate stylus-tip position.
+
+## Next bare-gripper hover checkpoint (2026-09-25)
+
+The r94 app is still on boot `e39ad70582b67cec3b0f846b9d3f0486`, with
+`STATUS:...:5:0:0`: all five allowed legs are consumed. A fresh read-only USB
+snapshot repeated its verified final positions
+`[2001,2082,2033,2609,2233,2041,1900]` and goals
+`[1994,2075,2039,2600,2233,2040,1897]`. No actuator command was issued.
+
+The new photo fit locates 46 *nominal* keyboard centers on the board, but does
+not register those points to the controller or establish the lower edge of
+the bare gripper. In particular, the older A/B servo-count recipe is **not**
+an 85 mm physical A-to-B key mapping. Do not relabel its poses as key centers.
+
+`application/bare_gripper_hover_preview.py` now screens a manually gated,
+five-leg two-region hover candidate from the verified r94 endpoint:
+`B_CLEAR → B_HOVER → B_CLEAR → A_CLEAR → A_HOVER → A_CLEAR` (five target
+legs after the initial B_CLEAR). It commands neither the gripper nor a
+virtual downstroke. The largest selected-joint goal change is 53 counts.
+The meshless interpolation's minimum modeled hand-TCP height is 77.50 mm,
+and minimum link-axis separation is 55.75 mm. This is an **offline pass, not
+a physical clearance certificate**: the gripper volume, keyboard, cables,
+fixtures and installed board-to-arm transform are missing. Any physical
+trial needs a newly reviewed, dedicated app, fresh same-pose checks,
+controller-only startup catch precautions, catch removal before movement,
+and one attended exported leg at a time. r94 cannot take another leg.
