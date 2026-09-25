@@ -275,3 +275,14 @@ did not authorize a reset, install, or movement by itself.
   correctly refused before serial access and created no reset claim. It keeps
   external power on and sends no torque-off or movement command. The focused
   r91 suite now passes 84 tests.
+- The user restored the soft cloth catch, and the exact-boot controller-only
+  reset was sent once. Reset result export:
+  `wizard-20260925T140230104094Z-7c61adc069d54d2aafa083a1d76ba276`.
+  Public r91 capabilities then returned a new boot
+  `fd1421c7f4737db0e21fa16e0cdf85eb` with the expected release. The
+  corrected read-only movement preflight passed and exported
+  `wizard-20260925T140242900468Z-4d20caf1fa1649c3aafbf1277d8a3cae`.
+  This new boot has neither a pose-observation reservation nor a movement
+  claim. No pose capture, servo write, or movement was sent after reset.
+  The cloth remains in place until the user confirms it is outside the
+  complete five-leg swept path.
