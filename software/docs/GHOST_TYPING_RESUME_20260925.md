@@ -1,13 +1,12 @@
 # Resume non-contact ghost typing after gripper loading
 
-Status: offline B-key candidate screened; **no arm movement authorized or sent**.
+Status: offline B-key candidate screened; r94 installed; **only B_CLEAR leg 1
+sent and verified**. No later leg or automatic return was sent.
 
-The previous r91 A cycle ended at A_CLEAR. r93 is now installed for stylus
-loading; it has only gripper control, not an arm-motion route. The stylus has
-been seated and the gripper has completed one small closing step, but physical
-retention and protrusion are unverified. The operator is handling stylus
-qualification separately. Do not treat the stylus as a known tool transform or
-move the arm with it merely because the gripper reached a servo count.
+The previous r91 A cycle ended at A_CLEAR. r93 then served the stylus-loading
+attempt; its physical retention and protrusion were not verified. The operator
+is handling stylus qualification separately and reported the stylus removed
+before this bare-gripper ghost test. Do not treat it as a known tool transform.
 
 ## Offline candidate completed
 
@@ -27,22 +26,39 @@ separation was 55.75 mm. The verified export is
 Two focused tests pass. These results are numerical screening only; the model
 omits the mounted stylus, keyboard, fixture, cable loops and full link meshes.
 
-## Boundary before any live B-key cycle
+## r94 installation and first live leg
 
-1. For a tool-free test, remove the loose/unqualified stylus with the arm
-   stationary and confirm the bare gripper and full swept region are clear.
-   If the stylus remains mounted instead, qualify retention and measured
-   protrusion and re-screen the entire sweep with its envelope first. Do not
-   substitute the earlier hypothetical 100 mm tool offset.
-2. Obtain fresh seven-joint feedback after any manual change. Reject a source
-   that differs from the exported close-step source; never replay the old pose.
-3. Build a new, separately reviewed arm-motion app/host route. The installed
-   r93 loader cannot execute the B cycle. Preserve protected settings and
-   credentials on any app change, and account for arm drop risk on restart.
-4. Before live command, check the actual keyboard/objects/cables and confirm
+A dedicated r94 app compiled with SHA-256
+`31bceb8f7eb92f220d5221549916d26c4ce0958d269b864600d1dca0d9416c59`.
+The linked-image review found no generic serial/web command route. The r94
+installer verified the r93 predecessor, wrote only the app slot once, read back
+the complete app, verified protected regions unchanged, and started once with
+the operator's soft catch beneath the arm. A read-only startup check returned
+the reviewed source pose and zero completed legs. The operator then removed
+the catch and confirmed the bare-gripper sweep clear.
+
+One request for `B_CLEAR` leg 1 was sent on boot
+`e39ad70582b67cec3b0f846b9d3f0486`. Controller-reported base position
+moved from 2046 to 2001 counts toward goal 1994 (seven-count residual).
+The other six reported positions and goals were unchanged. The command and
+before/after seven-joint feedback were exported and verified at
+`wizard-20260925T154253781204Z-6226d1d9fb574acc9f27a377de802e22`.
+This is controller feedback and an operator clearance setup, not independently
+measured TCP motion or physical key accuracy. No B_HOVER command followed.
+
+## Boundary before each remaining live B-key leg
+
+1. Confirm the stylus remains removed and the bare gripper and full swept
+   region are clear. If the stylus is remounted, qualify retention and its
+   envelope and re-screen first; do not substitute the hypothetical 100 mm
+   tool offset.
+2. Obtain fresh seven-joint feedback. For leg 2, bind to the verified leg-1
+   endpoint on the same r94 boot. Reject a changed source or controller boot;
+   never replay a stale pose.
+3. Before each live command, check the actual keyboard/objects/cables and confirm
    the complete path remains non-contact. Photo placement is approximate, not
    a collision or key-center certificate.
-5. Use one bounded leg at a time, with fresh source/health checks, a durable
+4. Use one bounded leg at a time, with fresh source/health checks, a durable
    command reservation, readback and export before advancing. On a failed or
    uncertain leg, stop without retry, automatic return or next movement.
 
