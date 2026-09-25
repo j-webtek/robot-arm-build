@@ -1,0 +1,12 @@
+{
+  "schema": "rocell.ai_benchmark_manifest.v0",
+  "benchmark_id": "rocell_ai_intent_v9",
+  "source_commit": "40e2a8588be699f3fde6c728e38ff0a5461f6bb7",
+  "grounded_policy_sha256": "bca164a482a08a181f83762e62e343bcd29ec3573724080b7404149165d79558",
+  "case_count": 30,
+  "cases_sha256": "63282678c202594d61ead9ffb95fabe3cc105dc543650dc91bc4ccd943ecac44",
+  "review_state": "simulated_semantic_crosscheck_no_human_review",
+  "scope": "offline grounded intent challenge frozen after pronoun fix and before score",
+  "held_out_policy": "Do not change this benchmark or grounded policy after seeing v9 results; freeze a new set for further tuning.",
+  "result_classes": ["type_text", "clarify", "unsupported"]
+}
