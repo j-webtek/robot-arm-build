@@ -8,6 +8,12 @@ r92 can make one bounded open step and read feedback; it has no close path.
 Do not begin loading a stylus with r92 alone. A manually gated, stepwise close
 path must be built, verified, and installed before the first jaw opening so a
 pen need not remain unsupported through another controller restart.
+An r93 candidate with one bounded open step and up to four separately requested
+close steps has compiled offline; it is **not installed**. Each close step is
+limited to 50 servo counts and cannot exceed the pre-open count. It has no
+timer-driven closure. This is an actuator-position bound, not a grip-force
+qualification. Its hardware loading sequence still needs an explicit install
+approval and an attended hand-clear/retention check.
 
 ## Intent and controller prerequisite
 
