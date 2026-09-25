@@ -1,7 +1,11 @@
 from pathlib import Path
 import pytest
 from rocell.application.static_simulation_context import load_static_simulation_context
-from rocell.application.keyboard_placement_overlay import translate_keyboard, half_turn_keyboard
+from rocell.application.keyboard_placement_overlay import (
+    translate_keyboard, half_turn_keyboard, photo_estimated_keyboard)
+from rocell.application.photo_keyboard_registration import estimate
+import hashlib
+import json
 
 
 @pytest.fixture(scope='module')
@@ -47,3 +51,22 @@ def test_photo_half_turn_preserves_footprint_and_reverses_key_rows(context):
     _,twice,_=half_turn_keyboard(scene,targets)
     assert twice.resolve('keyboard','A').center.x==pytest.approx(a.x)
     assert twice.resolve('keyboard','A').center.y==pytest.approx(a.y)
+
+
+def test_photo_estimate_maps_keys_and_expands_obstacle_without_authorizing_motion(context):
+    root=Path(__file__).resolve().parents[2]
+    annotation=json.loads((root/'config/photo_keyboard_registration_20260925.json').read_text())
+    profile_bytes=(root/'config/static_nominal_target_profiles.json').read_bytes()
+    profile=json.loads(profile_bytes)['keyboard']
+    result=estimate(annotation,profile,profile_sha256=hashlib.sha256(profile_bytes).hexdigest())
+    scene,targets,record=photo_estimated_keyboard(context.scene,context.targets,result)
+    assert targets.resolve('keyboard','B').center.x==pytest.approx(271.17,abs=0.01)
+    assert targets.resolve('keyboard','B').center.y==pytest.approx(177.94,abs=0.01)
+    assert scene.devices['keyboard'].envelope.minimum.x < 78.7
+    assert scene.devices['keyboard'].envelope.maximum.x > 393.7
+    assert scene.devices['phone']==context.scene.devices['phone']
+    assert targets.phone_targets==context.targets.phone_targets
+    assert not record['installed_position_verified'] and not record['motion_authorized']
+    assert next(b for b in scene.obstacles if b.obstacle_id=='keyboard')==scene.devices['keyboard'].envelope
+    with pytest.raises(ValueError,match='offline-only'):
+        photo_estimated_keyboard(context.scene,context.targets,{**result,'motion_authorized':True})

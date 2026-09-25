@@ -63,3 +63,72 @@ def half_turn_keyboard(scene, targets):
         frozen_geometry_modified=False, fixture_geometry_relocated=False)
     selection['overlay_sha256']=hashlib.sha256(canonical(selection)).hexdigest()
     return turned_scene,turned_targets,selection
+
+
+def photo_estimated_keyboard(scene, targets, estimate):
+    """Place the nominal key layout using an offline, photo-estimated board pose.
+
+    The keyboard obstacle is expanded by the study margin, while key centers
+    remain hypotheses. This overlay must never be interpreted as calibration.
+    """
+    if (not isinstance(estimate, dict) or
+            estimate.get('schema') != 'rocell.photo_keyboard_registration_estimate.v1' or
+            estimate.get('status') != 'PHOTO_ESTIMATE_OFFLINE_NOT_MOTION_AUTHORITY' or
+            estimate.get('motion_authorized') is not False or
+            estimate.get('keyboard_registered') is not False or
+            estimate.get('arm_board_transform_verified') is not False):
+        raise ValueError('Photo estimate is not an offline-only registration result')
+    margin=estimate.get('study_xy_margin_mm')
+    if type(margin) not in (int,float) or not math.isfinite(margin) or not 10<=margin<=50:
+        raise ValueError('Photo estimate requires a bounded study margin')
+    pose=estimate.get('fitted_front_left_board_xy_mm')
+    yaw=estimate.get('fitted_footprint_yaw_deg')
+    if (type(pose) not in (tuple,list) or len(pose)!=2 or
+            any(type(v) not in (int,float) or not math.isfinite(v) for v in pose) or
+            type(yaw) not in (int,float) or not math.isfinite(yaw)):
+        raise ValueError('Photo estimate has no finite board pose')
+    original=scene.devices['keyboard']
+    source=original.envelope
+    width=source.maximum.x-source.minimum.x
+    depth=source.maximum.y-source.minimum.y
+    theta=math.radians(yaw)
+    c,s=math.cos(theta),math.sin(theta)
+    corners=[(pose[0]+x*c-y*s,pose[1]+x*s+y*c)
+             for x,y in ((0,0),(width,0),(width,depth),(0,depth))]
+    xmin=min(x for x,_ in corners)-margin
+    xmax=max(x for x,_ in corners)+margin
+    ymin=min(y for _,y in corners)-margin
+    ymax=max(y for _,y in corners)+margin
+    envelope=replace(source,
+        minimum=replace(source.minimum,x=xmin,y=ymin),
+        maximum=replace(source.maximum,x=xmax,y=ymax))
+    if not (scene.board.minimum.x<=xmin<xmax<=scene.board.maximum.x and
+            scene.board.minimum.y<=ymin<ymax<=scene.board.maximum.y):
+        raise ValueError('Photo-estimated keyboard with margin leaves board')
+    estimated_keys=estimate.get('nominal_key_centers_board_xy_mm')
+    if not isinstance(estimated_keys,dict) or set(estimated_keys)!=set(targets.keyboard_targets):
+        raise ValueError('Photo-estimated keys differ from nominal target identities')
+    mapped={}
+    for name,region in targets.keyboard_targets.items():
+        xy=estimated_keys[name]
+        if (type(xy) not in (list,tuple) or len(xy)!=2 or
+                any(type(v) not in (int,float) or not math.isfinite(v) for v in xy) or
+                not xmin<=xy[0]<=xmax or not ymin<=xy[1]<=ymax):
+            raise ValueError('Photo-estimated key leaves study envelope')
+        mapped[name]=replace(region,center=replace(region.center,x=xy[0],y=xy[1]))
+    devices=dict(scene.devices); devices['keyboard']=replace(original,envelope=envelope)
+    studied_scene=replace(scene,devices=devices,obstacles=tuple(
+        envelope if box.obstacle_id=='keyboard' else box for box in scene.obstacles),
+        assumptions=(*scene.assumptions,
+            'Photo-estimated keyboard pose is simulation-only; board-to-arm and TCP are unverified.'))
+    studied_targets=replace(targets,keyboard_targets=mapped)
+    selection=dict(schema='rocell.keyboard_photo_estimate_overlay.v1',
+        photo_sha256=estimate['photo_sha256'],profile_sha256=estimate['profile_sha256'],
+        source_target_sha256=targets.content_sha256,
+        fitted_footprint_yaw_deg=yaw,study_xy_margin_mm=margin,
+        conservative_envelope=envelope.to_dict(),
+        installed_position_verified=False,arm_board_transform_verified=False,
+        motion_authorized=False,frozen_geometry_modified=False,
+        fixture_geometry_relocated=False)
+    selection['overlay_sha256']=hashlib.sha256(canonical(selection)).hexdigest()
+    return studied_scene,studied_targets,selection
