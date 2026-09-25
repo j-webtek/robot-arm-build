@@ -1,0 +1,70 @@
+{
+  "assurance_sha256": "8372e76549a8b256fc412167d57a83950bf3786e8992066ddf72b8d4b97820a7",
+  "counts": {
+    "commands": 0,
+    "permits": 0,
+    "retries": 0,
+    "writes": 0
+  },
+  "disposition": "BLOCKED",
+  "physical_execution_authorized": false,
+  "request_id": "photo-02-shadow-v0",
+  "schema": "rocell.ai_translation_assurance.v0",
+  "shadow_sha256": "185813d862522a39f59da5174f793aa9b962a326d18e5806e25bdc80d187b691",
+  "stages": [
+    {
+      "artifact_sha256": "025da6e61fde7fd2bc3407bee0af83a05cdf0753cee8cd833be0610defa09e59",
+      "reason": null,
+      "stage": "intent_grounding",
+      "status": "passed"
+    },
+    {
+      "artifact_sha256": "29bd07486821b3f41c47532f7f369727d8ed928aebf5f6d5074a04a69e5ca3ff",
+      "reason": null,
+      "stage": "semantic_compilation",
+      "status": "passed"
+    },
+    {
+      "artifact_sha256": "0ef86c0b4c3ba84e4d01abf22dab204d2572f6c7fbb2f5d741a93729725cc153",
+      "reason": null,
+      "stage": "scene_assessment",
+      "status": "passed"
+    },
+    {
+      "artifact_sha256": null,
+      "reason": "precision_observation_missing",
+      "stage": "target_localization",
+      "status": "blocked"
+    },
+    {
+      "artifact_sha256": null,
+      "reason": "upstream_blocked",
+      "stage": "physical_calibration",
+      "status": "not_run"
+    },
+    {
+      "artifact_sha256": null,
+      "reason": "upstream_blocked",
+      "stage": "trajectory_planning",
+      "status": "not_run"
+    },
+    {
+      "artifact_sha256": null,
+      "reason": "upstream_blocked",
+      "stage": "safety_admission",
+      "status": "not_run"
+    },
+    {
+      "artifact_sha256": null,
+      "reason": "upstream_blocked",
+      "stage": "command_encoding",
+      "status": "not_run"
+    },
+    {
+      "artifact_sha256": null,
+      "reason": "upstream_blocked",
+      "stage": "outcome_verification",
+      "status": "not_run"
+    }
+  ]
+}

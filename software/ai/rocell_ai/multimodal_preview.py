@@ -24,6 +24,8 @@ def guarded_preview(request: str, observation: dict[str, Any], *, request_id: st
     base = {
         "schema": "rocell.ai_multimodal_coordinate_preview.v0",
         "request_id": request_id,
+        "proposal": proposal,
+        "plan_result": plan,
         "execution_authorized": False,
         "controller_commands": [],
     }
@@ -56,4 +58,3 @@ def guarded_preview(request: str, observation: dict[str, Any], *, request_id: st
     )
     return {**base, "status": "coordinate_preview", "fusion": decision, "coordinates": coordinates,
             "targets": coordinates["targets"]}
-

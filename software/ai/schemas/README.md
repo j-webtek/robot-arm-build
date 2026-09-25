@@ -28,3 +28,6 @@ The [model-motion proposal schema](model_motion_proposal_v1.schema.json) lets a
 model propose a named keyboard or phone coordinate in a declared frame. The
 proposal still has no transport authority; deterministic code must resolve,
 plan, screen, and admit it before any controller command can exist.
+The [translation-assurance schema](translation_assurance_v0.schema.json)
+records the ordered stage disposition and proves that no downstream stage can
+pass after the first blocker in the current offline path.

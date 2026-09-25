@@ -5,6 +5,8 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
+from .adapter import inspect
+from .grounded import propose
 from .multimodal_preview import guarded_preview
 from .pixel_quality import assess as assess_pixel_quality
 from .scene_observation import (
@@ -55,11 +57,20 @@ def build(*, request: str, request_id: str, workspace: Path, frame: FrameEvidenc
     """Compose existing read-only components and record their exact lineage."""
     validate_observation(scene_observation, frame=frame)
     if precision_observation is None:
+        observation = {"ref": frame.frame_id, "fresh": True, "phone_state": phone_state}
+        proposal = propose(request_id=request_id, request=request, observation=observation)
+        plan_result = inspect(proposal, observation)
+        reason = (
+            "precision_observation_missing" if plan_result["status"] == "accepted"
+            else plan_result["reason"]
+        )
         result = {
             "schema": "rocell.ai_multimodal_coordinate_preview.v0",
             "request_id": request_id,
             "status": "blocked",
-            "reason": "precision_observation_missing",
+            "reason": reason,
+            "proposal": proposal,
+            "plan_result": plan_result,
             "scene_observation_sha256": scene_observation["observation_sha256"],
             "pixel_quality": assess_pixel_quality(frame),
             "targets": [],

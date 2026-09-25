@@ -54,7 +54,13 @@ Permitted learned outputs:
 - `type_text`, `clarify`, or `unsupported` intent decisions;
 - keyboard or phone identity and visible state;
 - image quality, obstruction, and target visibility classifications;
-- bounded perception hypotheses that deterministic geometry validates.
+- a named target plus bounded device-local or board-coordinate hypothesis under
+  `rocell.model_motion_proposal.v1`;
+- other bounded perception hypotheses that deterministic geometry validates.
+
+Coordinate hypotheses never become arm coordinates by themselves. The motion
+bridge must verify the named target, frame, surface plane, safe region,
+confidence, image provenance, and catalog identity before calibrated planning.
 
 Forbidden learned outputs:
 
@@ -118,6 +124,13 @@ trace covering every affected boundary:
 
 Shadow and simulation work must report all four counts as zero. A physical
 test must bind each nonzero count to an approved permit and reviewed receipt.
+
+The current machine-checkable implementation is
+[`translation_assurance.py`](../rocell_ai/translation_assurance.py), with its
+versioned [JSON schema](../schemas/translation_assurance_v0.schema.json). Run
+`python software/ai/run_offline.py assure-shadow --shadow shadow.json` to
+validate stage ordering and produce a hash-bound assurance record. In v0,
+exactly one stage blocks progression and all later stages must be `not_run`.
 
 ## Minimum test matrix
 

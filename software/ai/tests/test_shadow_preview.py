@@ -20,6 +20,7 @@ sys.path.insert(0, str(AI_DIR.parent / "src"))
 from rocell.targets.nominal import load_nominal_target_catalog  # noqa: E402
 from rocell_ai.scene_observation import FixtureVisionObserver, FrameEvidence  # noqa: E402
 from rocell_ai.shadow_preview import build, validate  # noqa: E402
+from rocell_ai.translation_assurance import build as assure, validate as validate_assurance  # noqa: E402
 from rocell_ai.visual_observation import MODEL_SCHEMA  # noqa: E402
 
 
@@ -63,6 +64,10 @@ class ShadowPreviewTests(unittest.TestCase):
         self.assertFalse(record["execution_permit_created"])
         self.assertFalse(record["execution_authorized"])
         self.assertEqual(record["image_sha256"], frame.image_sha256)
+        assurance = assure(record)
+        self.assertEqual(assurance["disposition"], "COORDINATE_PREVIEW_ONLY")
+        self.assertEqual(assurance["stages"][3]["status"], "passed")
+        self.assertEqual(assurance["stages"][4]["reason"], "commissioned_calibration_missing")
         changed = dict(record)
         changed["hardware_writes"] = 1
         with self.assertRaisesRegex(ValueError, "cannot authorize"):
@@ -88,6 +93,17 @@ class ShadowPreviewTests(unittest.TestCase):
         self.assertEqual(record["result"]["targets"], [])
         self.assertIsNone(record["precision_observation_sha256"])
         validate(record)
+        assurance = assure(record)
+        self.assertEqual(assurance["disposition"], "BLOCKED")
+        self.assertEqual(assurance["stages"][3]["reason"], "precision_observation_missing")
+        self.assertTrue(all(count == 0 for count in assurance["counts"].values()))
+        changed = json.loads(json.dumps(assurance))
+        changed["stages"][5] = {
+            "stage": "trajectory_planning", "status": "passed",
+            "artifact_sha256": "b" * 64, "reason": None,
+        }
+        with self.assertRaisesRegex(ValueError, "after a blocker"):
+            validate_assurance(changed)
 
 
 if __name__ == "__main__":

@@ -28,6 +28,7 @@ from rocell_ai.scene_observation import FrameEvidence  # noqa: E402
 from rocell_ai.vision_runtime import LlamaCppVisionObserver, OllamaVisionObserver  # noqa: E402
 from rocell_ai.scene_evaluation import evaluate_photo_seed  # noqa: E402
 from rocell_ai.shadow_preview import build as build_shadow_preview  # noqa: E402
+from rocell_ai.translation_assurance import build as build_translation_assurance  # noqa: E402
 
 
 def main() -> int:
@@ -120,6 +121,9 @@ def main() -> int:
     shadow.add_argument("--precision-observation", type=Path)
     shadow.add_argument("--phone-state", default="UNKNOWN")
     shadow.add_argument("--output", type=Path)
+    assure = sub.add_parser("assure-shadow", help="Validate a shadow record and emit its stage assurance trace")
+    assure.add_argument("--shadow", type=Path, required=True)
+    assure.add_argument("--output", type=Path)
     args = parser.parse_args()
 
     if args.command in {"propose", "inspect"}:
@@ -203,6 +207,11 @@ def main() -> int:
             frame=frame, scene_observation=scene, precision_observation=precision,
             evaluated_at_utc=args.evaluated_at_utc, phone_state=args.phone_state,
         )
+        if args.output:
+            args.output.parent.mkdir(parents=True, exist_ok=True)
+            args.output.write_bytes((json.dumps(result, indent=2, sort_keys=True) + "\n").encode("utf-8"))
+    elif args.command == "assure-shadow":
+        result = build_translation_assurance(json.loads(args.shadow.read_text(encoding="utf-8")))
         if args.output:
             args.output.parent.mkdir(parents=True, exist_ok=True)
             args.output.write_bytes((json.dumps(result, indent=2, sort_keys=True) + "\n").encode("utf-8"))

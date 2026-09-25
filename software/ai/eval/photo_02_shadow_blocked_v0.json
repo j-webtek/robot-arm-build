@@ -30,6 +30,49 @@
       "schema": "rocell.ai_pixel_quality.v0",
       "threshold_profile": "development_stress_v0"
     },
+    "plan_result": {
+      "action_plan": {
+        "actions": [
+          {
+            "key": "H",
+            "type": "press_key"
+          },
+          {
+            "key": "I",
+            "type": "press_key"
+          }
+        ],
+        "device": "keyboard",
+        "device_profile": "development/keyboard-us-lowercase-semantic-v1",
+        "requested_text_sha256": "8f434346648f6b96df89dda901c5176b10a6d83961dd3c1ac88b59b2dc327aa4",
+        "required_calibrations": [
+          "camera_intrinsics",
+          "eye_on_arm_extrinsic",
+          "measured_tag_map",
+          "robot_reference",
+          "arm_board",
+          "controller_correlation",
+          "keyboard_pose",
+          "keyboard_tcp",
+          "keyboard_outcome_observer"
+        ],
+        "schema": "rocell.action_plan.v1"
+      },
+      "observation_ref": "photo_02",
+      "plan_hash": "29bd07486821b3f41c47532f7f369727d8ed928aebf5f6d5074a04a69e5ca3ff",
+      "profile_id": "development/keyboard-us-lowercase-semantic-v1",
+      "request_id": "photo-02-shadow-v0",
+      "schema": "rocell.ai_plan_result.v0",
+      "status": "accepted"
+    },
+    "proposal": {
+      "decision": "type_text",
+      "device": "keyboard",
+      "observation_ref": "photo_02",
+      "request_id": "photo-02-shadow-v0",
+      "schema": "rocell.ai_task_proposal.v0",
+      "text": "hi"
+    },
     "reason": "precision_observation_missing",
     "request_id": "photo-02-shadow-v0",
     "scene_observation_sha256": "0ef86c0b4c3ba84e4d01abf22dab204d2572f6c7fbb2f5d741a93729725cc153",
@@ -39,5 +82,5 @@
   },
   "scene_observation_sha256": "0ef86c0b4c3ba84e4d01abf22dab204d2572f6c7fbb2f5d741a93729725cc153",
   "schema": "rocell.ai_shadow_preview.v0",
-  "shadow_sha256": "76814386387b40e3e338c46a63add1183ed0def358d26a819766ac850373aab4"
+  "shadow_sha256": "185813d862522a39f59da5174f793aa9b962a326d18e5806e25bdc80d187b691"
 }

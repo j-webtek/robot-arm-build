@@ -159,6 +159,12 @@ quality, and decision. It correctly stops at `precision_observation_missing`
 because the handheld photo has no calibrated coordinate observation. It
 contains no targets, commands, permit, or hardware writes.
 
+`photo_02_translation_assurance_v0.json` validates that same record against
+the model-to-arm stage order. Intent grounding, semantic compilation, and
+scene assessment pass; target localization blocks; calibration, planning,
+admission, encoding, and outcome verification remain `not_run`. Permit,
+command, write, and retry counts are all zero.
+
 From the repository root, repeat the checks with:
 
 ```powershell

@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/j-webtek/robot-arm-build/software/ai/schemas/translation_assurance_v0.schema.json",
+  "title": "RoCell offline model-to-arm translation assurance v0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "request_id", "shadow_sha256", "disposition", "stages", "counts", "physical_execution_authorized", "assurance_sha256"],
+  "properties": {
+    "schema": {"const": "rocell.ai_translation_assurance.v0"},
+    "request_id": {"type": "string", "minLength": 1},
+    "shadow_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "disposition": {"enum": ["BLOCKED", "COORDINATE_PREVIEW_ONLY"]},
+    "stages": {"type": "array", "minItems": 9, "maxItems": 9,
+      "items": {"type": "object", "additionalProperties": false,
+        "required": ["stage", "status", "artifact_sha256", "reason"],
+        "properties": {
+          "stage": {"type": "string"},
+          "status": {"enum": ["passed", "blocked", "not_run"]},
+          "artifact_sha256": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"},
+          "reason": {"type": ["string", "null"]}
+        }}},
+    "counts": {"type": "object", "additionalProperties": false,
+      "required": ["permits", "commands", "writes", "retries"],
+      "properties": {"permits": {"const": 0}, "commands": {"const": 0}, "writes": {"const": 0}, "retries": {"const": 0}}},
+    "physical_execution_authorized": {"const": false},
+    "assurance_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}
