@@ -75,11 +75,11 @@ before pose matched the verified leg-4 endpoint. The four selected joints
 counts of their respective goals 2075, 2039, 2600 and 2233. Base and gripper
 readings remained unchanged. The verified before/after export is
 `wizard-20260925T165306016823Z-d79a8b491ee847888bc0d52e1a07899d`.
-No additional movement command followed.
+No additional movement command followed. The operator confirmed the final
+move stayed clear of the keyboard, cables and nearby objects.
 
-This is controller feedback and an operator clearance setup, not independently
-measured TCP motion or physical key accuracy. The final B_CLEAR visual
-clearance assessment is still pending from the operator.
+This is controller feedback plus operator-reported visual clearance, not
+independently measured TCP motion or physical key accuracy.
 
 ## Boundary before another ghost-key exercise
 
