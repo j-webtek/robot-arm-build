@@ -2,6 +2,11 @@
 
 Status: active roadmap, 2026-09-20.
 
+Forward implementation now follows
+[AI_SHADOW_EXECUTION_IMPLEMENTATION_PLAN.md](AI_SHADOW_EXECUTION_IMPLEMENTATION_PLAN.md).
+This document remains the historical control-to-typing roadmap and evidence index;
+it must not be read as authorization to continue firmware-per-pose ghost routines.
+
 ## Objective and scope
 
 Build one understandable path from a requested destination to a measured result,

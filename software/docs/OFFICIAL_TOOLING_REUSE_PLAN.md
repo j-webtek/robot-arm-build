@@ -1,5 +1,9 @@
 # Official tooling reuse and host-driven characterization
 
+The host-side integration and promotion order are now defined by
+[AI_SHADOW_EXECUTION_IMPLEMENTATION_PLAN.md](AI_SHADOW_EXECUTION_IMPLEMENTATION_PLAN.md).
+This document remains the authority for official SDK/protocol reuse decisions.
+
 Updated 2026-09-20. This is the current architectural direction for the bounded
 motion characterization work. It does not authorize motion or replace fresh
 pose/clearance checks. Preserve installed firmware, credentials and settings.

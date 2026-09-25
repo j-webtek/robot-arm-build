@@ -1,5 +1,11 @@
 # AI implementation roadmap
 
+The cross-system implementation sequence is governed by
+[the AI-guided shadow execution plan](../../docs/AI_SHADOW_EXECUTION_IMPLEMENTATION_PLAN.md).
+This AI roadmap owns intent-model evidence and gating; it does not grant the AI
+layer ownership of coordinates, joints, protocol commands, safety admission, or
+physical execution.
+
 The first deliverable is an **offline** English-to-RoCell plan loop. Physical
 typing, phone calling, and vision-guided contact depend on separate RoCell
 capability and evidence gates. See [the contract](CONTRACT.md).
