@@ -2,13 +2,15 @@
 
 The catch must be outside the swept path and the board/cables clear before
 --authorized-a-cycle is supplied. The controller independently samples its
-source pose before any servo write. This launcher never retries.
+source pose before any servo write. Do not use the pose-capture route on the
+movement boot: it exclusively reserves that boot. This launcher never retries.
 """
 
 import argparse
 import hashlib
 import json
 from pathlib import Path
+import re
 
 from observe_r33_campaign import load_reviewed_key
 from run_r90_pose_observation import get
@@ -71,8 +73,6 @@ def preflight(root: Path, address: str) -> dict:
                 joint.get("controls_unchanged") is not True or
                 joint.get("position_span") != 0):
             raise ValueError("Post-install joint/source evidence differs")
-    if (exports / f"recovery-hover-live-{BOOT}.json").exists():
-        raise ValueError("This r91 boot is already claimed")
     status, raw = get(address, "/rocell/recovery-hover/capabilities", 512)
     if status != 200:
         raise ValueError("r91 capabilities unavailable")
@@ -81,15 +81,22 @@ def preflight(root: Path, address: str) -> dict:
             "schema", "boot_id", "live_release_available", "motion_authorized",
             "maximum_legs", "stamped_release_sha256"} or
             caps["schema"] != "rocell.reviewed_hover_recovery_capabilities.v1" or
-            caps["boot_id"] != BOOT or
+            type(caps["boot_id"]) is not str or
+            re.fullmatch(r"[0-9a-f]{32}", caps["boot_id"]) is None or
+            caps["boot_id"] == "0" * 32 or
             caps["stamped_release_sha256"] != R91_RELEASE_SHA or
             caps["live_release_available"] is not True or
             caps["motion_authorized"] is not False or
             caps["maximum_legs"] != 5):
         raise ValueError("Current r91 boot/release differs")
+    boot = caps["boot_id"]
+    if boot == BOOT or (exports / f"pose-observation-{boot}.json").exists():
+        raise ValueError("Movement boot already reserved by pose observation")
+    if (exports / f"recovery-hover-live-{boot}.json").exists():
+        raise ValueError("This r91 boot is already claimed")
     return dict(schema="rocell.r91_recovery_live_preflight.v1",
                 status="READY_FOR_PHYSICAL_CLEARANCE_CONFIRMATION",
-                boot_id=BOOT, release_sha256=R91_RELEASE_SHA,
+                boot_id=boot, release_sha256=R91_RELEASE_SHA,
                 app_sha256=R91_APP_SHA,
                 install_journal_sha256=hashlib.sha256(journal.read_bytes()).hexdigest(),
                 pose_export_id=POSE_EXPORT, capture_export_id=CAPTURE_EXPORT,
@@ -118,9 +125,9 @@ def main(argv=None) -> None:
     if not args.catch_outside_swept_path:
         raise ValueError("Physical catch/path clearance confirmation required")
     key = load_reviewed_key(root)
-    client = CharacterizationHTTP(args.address, key=key, boot=BOOT,
+    client = CharacterizationHTTP(args.address, key=key, boot=report["boot_id"],
         recovery_hover_live_release_sha256=R91_RELEASE_SHA)
-    host = ReviewedHoverRecoveryLiveHost(client, boot=BOOT,
+    host = ReviewedHoverRecoveryLiveHost(client, boot=report["boot_id"],
         export_root=root / "runs/wizard-exports",
         authorize_noncontact_motion=True)
     print(json.dumps(host.run_once()))

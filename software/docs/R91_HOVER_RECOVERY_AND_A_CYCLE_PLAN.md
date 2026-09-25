@@ -242,3 +242,36 @@ did not authorize a reset, install, or movement by itself.
   and a catch-outside-swept-path flag; the controller still independently
   rechecks its source before writing. The preflight ran against the actual
   controller with no movement. The focused r91 suite passes 81 tests.
+
+## Rejected first start and corrected sequencing (2026-09-25)
+
+- After the catch was removed, the r91 read-only preflight passed. The first
+  authenticated `start` received a verified non-2xx response. The host stopped,
+  exported fault
+  `wizard-20260925T135506905728Z-d67f59792812420184e904b5f2fcfa65`,
+  and sent no receipt, next leg, retry or servo write. A one-use signed
+  sequence-one **GET only** returned `RESERVATION_FAILED|1`; result export:
+  `wizard-20260925T135702313279Z-63065a25d9334fcd85a2ea1ea004acb6`.
+- Root cause is the same-boot pose capture, not a directional/endpoint error.
+  `rocellReservePose()` sets `rocellPoseReserved` and `rocellDiagnosticOwned`
+  for the lifetime of the boot. The recovery service's `reserve()` explicitly
+  rejects either flag. Thus the acquisition-only post-install capture was a
+  valid diagnostic but consumed the exclusive owner needed for movement.
+- The live launcher now refuses this boot and any fresh boot with a
+  same-boot `pose-observation-<boot>.json` reservation. On a **new** r91 boot,
+  it uses the new public boot identity, retains the prior pose export only as
+  historical evidence, and lets the recovery owner collect its own three
+  fresh source samples before any write. No firmware rebuild or app
+  installation is required for this fix.
+- Next live sequence: provide the temporary soft catch again for one
+  controller-only restart while external DC stays on; verify the new r91
+  public boot/release; do **not** call `/rocell/pose/capture`; remove the catch
+  from the swept path; run the corrected read-only preflight and then at most
+  one one-use recovery cycle. No restart or further movement has been sent
+  after this rejection.
+- Added a one-use controller-reset launcher for this exact claimed boot. Its
+  read-only preflight verified the signed `RESERVATION_FAILED|1` export and
+  public r91 identity. The live flag without physical-support confirmation
+  correctly refused before serial access and created no reset claim. It keeps
+  external power on and sends no torque-off or movement command. The focused
+  r91 suite now passes 84 tests.
