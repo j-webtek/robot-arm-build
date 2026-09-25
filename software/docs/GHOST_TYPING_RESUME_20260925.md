@@ -185,3 +185,21 @@ against goals `2093,2021,2618,2197`; base, wrist roll and gripper readings
 were unchanged. The arm is now at the hover pose. This is joint feedback,
 not evidence of physical key-center alignment or visual clearance. Await the
 operator's observation before any retract or other leg.
+
+The operator reported no issues with leg 1. Exactly one r95
+`REGION_B_CLEAR` retract leg 2 then ran on the same boot. Its fresh before
+snapshot matched the verified leg-1 endpoint. Four selected joints returned
+to positions `2081,2033,2609,2233` against goals
+`2075,2039,2600,2233`; the largest selected-joint residual was nine counts.
+Base, wrist roll and gripper readings were unchanged. The verified export is
+`wizard-20260925T184230842590Z-c53992896fce4d4f99d27db7cad107a8`.
+No lateral base or subsequent leg was commanded. Await operator-observed
+clearance before the base-only A-region clear leg 3.
+
+The operator confirmed leg 2 stayed clear. Exactly one base-only
+`REGION_A_CLEAR` leg 3 was sent. Its fresh before pose matched the verified
+leg-2 endpoint. Base position moved from 2001 to 2041 counts toward goal
+2047, a six-count residual. All six other reported positions and goals were
+unchanged. The verified export is
+`wizard-20260925T184309529486Z-0ef21c5ddcdc4d9492cdd8b564cb9bf3`.
+No A-region hover was sent; await visual confirmation of the lateral sweep.
