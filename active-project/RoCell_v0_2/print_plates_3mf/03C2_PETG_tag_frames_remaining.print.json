@@ -1,0 +1,163 @@
+{
+  "schema_version": 2,
+  "design_revision": "RC02-PRO-R1",
+  "job_id": "03C2",
+  "plate_file": "03C2_PETG_tag_frames_remaining.3mf",
+  "printer": {
+    "model": "QIDI Plus4",
+    "nominal_build_volume_mm": [
+      305.0,
+      305.0,
+      280.0
+    ],
+    "safe_plate_envelope_mm": [
+      295.0,
+      295.0,
+      280.0
+    ],
+    "edge_margin_mm": 5.0,
+    "default_nozzle_mm": 0.4
+  },
+  "stage": "production",
+  "selection": "required",
+  "purpose": "Remaining ID1-ID5 tag frames after first-article acceptance",
+  "parts": {
+    "tag_frame_ID1_55mm.stl": 1,
+    "tag_frame_ID2_55mm.stl": 1,
+    "tag_frame_ID3_55mm.stl": 1,
+    "tag_frame_ID4_55mm.stl": 1,
+    "tag_frame_ID5_55mm.stl": 1
+  },
+  "prerequisites": [
+    "plus4_machine_confirmed",
+    "nozzle_0p4_confirmed",
+    "petg_general_profile_calibrated",
+    "tag_stock_measured",
+    "tag_artwork_scale_pass",
+    "tag_frame_first_article_pass",
+    "qidi_studio_roundtrip_confirmed"
+  ],
+  "process_profile_name": "petg_general_0p4",
+  "process_profile": {
+    "material": "PETG",
+    "nozzle_mm": 0.4,
+    "layer_height_mm": 0.2,
+    "walls": 4,
+    "top_layers": 5,
+    "bottom_layers": 5,
+    "infill_percent": 25,
+    "infill_pattern": "gyroid",
+    "supports": "off unless a job override says otherwise",
+    "bed_adhesion": "Clean textured PEI; use a 5 mm brim only after observed corner lift",
+    "dimensional_controls": "Use calibrated elephant-foot and XY-hole compensation from the diagnostic coupons",
+    "purpose": "Trays, cradle, clamps, frames, puck, and camera plate"
+  },
+  "slicer_warning": "Use a calibrated QIDI Studio filament preset for the exact brand and material; temperatures are deliberately not embedded in geometry-only 3MF files.",
+  "geometry_only_3mf": true,
+  "qidi_studio_native_project_required": true,
+  "qidi_studio_roundtrip_gate": "qidi_studio_roundtrip_confirmed",
+  "plate_envelope_mm": [
+    244.0,
+    161.0,
+    4.0
+  ],
+  "absolute_bed_bounds_mm": {
+    "min": [
+      30.5,
+      72.0,
+      0.0
+    ],
+    "max": [
+      274.5,
+      233.0,
+      4.0
+    ]
+  },
+  "centered_on_nominal_bed": true,
+  "source_stl_sha256": {
+    "tag_frame_ID1_55mm.stl": "e0abf77eec5661404b9776d84090b0f9d60234c0b9655d5670aab756da242742",
+    "tag_frame_ID2_55mm.stl": "9aad4d845438f978a565afeb6b67f0cd8d24e9fe70a0bffdc6efb67b5d56bbf9",
+    "tag_frame_ID3_55mm.stl": "e3acb03f9d9f6bd6b7ce6493551ad4fdccd78ea69c3a55c68eedc82e2bfd145d",
+    "tag_frame_ID4_55mm.stl": "94aeecbe6349d9f7587772b1025e6de6f7df2033f9163f737230b0417f434a9c",
+    "tag_frame_ID5_55mm.stl": "35339aecc93f8a394a555d959c66e9da67a21f1e4fe8f313759dc3798c7a1c6b"
+  },
+  "process_profile_sha256": "ecd7e9e90881087b4ef04779c3717bc972489d689924d8602b5cae9d4855408c",
+  "plate_sha256": "0ff8bff94b0a1bb09bb9f6a5bf50a8ded326c1cd9ae79e79aa3188f38fe18dcb",
+  "objects": [
+    {
+      "name": "tag_frame_ID1_55mm_1",
+      "bounds_mm": [
+        [
+          30.5,
+          72.0,
+          0.0
+        ],
+        [
+          108.5,
+          150.0,
+          4.0
+        ]
+      ]
+    },
+    {
+      "name": "tag_frame_ID2_55mm_1",
+      "bounds_mm": [
+        [
+          113.5,
+          72.0,
+          0.0
+        ],
+        [
+          191.5,
+          150.0,
+          4.0
+        ]
+      ]
+    },
+    {
+      "name": "tag_frame_ID3_55mm_1",
+      "bounds_mm": [
+        [
+          196.5,
+          72.0,
+          0.0
+        ],
+        [
+          274.5,
+          150.0,
+          4.0
+        ]
+      ]
+    },
+    {
+      "name": "tag_frame_ID4_55mm_1",
+      "bounds_mm": [
+        [
+          30.5,
+          155.0,
+          0.0
+        ],
+        [
+          108.5,
+          233.0,
+          4.0
+        ]
+      ]
+    },
+    {
+      "name": "tag_frame_ID5_55mm_1",
+      "bounds_mm": [
+        [
+          113.5,
+          155.0,
+          0.0
+        ],
+        [
+          191.5,
+          233.0,
+          4.0
+        ]
+      ]
+    }
+  ]
+}

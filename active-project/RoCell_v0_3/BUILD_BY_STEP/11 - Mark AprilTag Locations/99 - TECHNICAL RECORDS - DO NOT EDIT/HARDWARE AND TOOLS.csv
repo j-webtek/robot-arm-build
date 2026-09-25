@@ -1,0 +1,7 @@
+source,type,qty,item,critical_condition,status
+required_physical_input,Required input,As specified,"Cured, clean board with FRONT and +Y/rear known",Present and accepted before work,NOT_VERIFIED
+required_physical_input,Required input,As specified,The same accepted physical 1:1 guide recorded in Step 00: either output/pdf/RC03_BOARD_DRILL_GUIDE_LETTER_1TO1.pdf or output/pdf/RC03_BOARD_DRILL_GUIDE_24X36_FULL_SIZE_1TO1.pdf; do not mix the two routes,Present and accepted before work,NOT_VERIFIED
+required_physical_input,Required input,As specified,Accepted reusable 55 mm application frame,Present and accepted before work,NOT_VERIFIED
+required_physical_input,Required input,As specified,"Fine removable pencil, low-tack tape, steel rule, and lint-free cleaning supplies; do not puncture or score an adhesive site",Present and accepted before work,NOT_VERIFIED
+structured_register,Printed tool,1,55 mm tag application frame,Accepted Job 03C2; it is removed after each application,NOT_VERIFIED
+structured_register,Paper,1 accepted guide,Released Letter tiled guide or released 24 x 36 inch full-size guide,Path/hash matches the Step 00 record; both 100 mm scale bars are reverified immediately before use; Letter pages 1-3 are reference only and pages 4-12 form the 1:1 field with 12 mm overlaps,NOT_VERIFIED

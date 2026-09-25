@@ -1,0 +1,3586 @@
+{
+  "schema": "rocell.printable_camera_portal.generated_manifest.v1",
+  "design_id": "ROCELL-PRINTABLE-CAMERA-PORTAL-PROTOTYPE-003",
+  "state": "PARAMETRIC_PROTOTYPE_NOT_RELEASED_FOR_FABRICATION_OR_ROBOT_OPERATION",
+  "authority": {
+    "cad_generation": true,
+    "printer_envelope_validation": true,
+    "fabrication_authority": false,
+    "physical_installation_authority": false,
+    "robot_motion_authority": false,
+    "note": "This is an all-printed alternative requested by the user. It has not passed load, creep, vibration, collision, optical, or received-camera fit qualification."
+  },
+  "procurement_constraints": {
+    "m6_x25_flange_head_clamp_bolt": {
+      "quantity": 4,
+      "thread": "M6",
+      "finished_length_mm": 25.0,
+      "head_style": "integral flange head",
+      "drive_style": "external hex",
+      "wrench_size_mm": 10.0,
+      "maximum_head_outer_diameter_mm": 13.5,
+      "modeled_cap_boss_outer_diameter_mm": 16.0,
+      "modeled_cap_base_top_height_mm": 8.0,
+      "modeled_cap_boss_bearing_height_mm": 9.8,
+      "maximum_shank_to_bore_lateral_decenter_mm": 0.3,
+      "minimum_nominal_head_support_diameter_margin_mm": 2.0,
+      "minimum_worst_case_radial_support_mm": 0.8,
+      "release_gate": "Seat the actual first bolt head fully and concentrically on the first printed 16.0 mm raised cap boss without force. Confirm the complete flange bears flat on the boss without bridging, rocking, gouging, or overhanging before using the remaining caps."
+    },
+    "m6_din985_nyloc_nut": {
+      "quantity": 5,
+      "thread": "M6",
+      "standard": "DIN 985 or ISO 10511 low-pattern prevailing-torque nyloc",
+      "wrench_size_mm": 10.0,
+      "maximum_height_mm": 6.0,
+      "modeled_hex_pocket_circumscribed_diameter_mm": 12.3,
+      "modeled_channel_width_mm": 12.2,
+      "modeled_channel_height_mm": 7.2,
+      "release_gate": "Use the dedicated sacrificial received nut in 00G in the same hex orientation it will use when seated, confirm it traverses the channel and reaches the hex seat without force, then confirm the sacrificial retainer snaps fully home without touching the nut and the bolt develops prevailing torque. Discard that test nut after the gate; reserve four fresh nuts for the final board clamps."
+    },
+    "independent_camera_safety_tether": {
+      "quantity": 1,
+      "supply_form": "single complete factory-terminated assembly",
+      "load_path": "all load-bearing cable, eyes, swages, and connector parts are metal; polymer cable coating is permitted",
+      "finished_length_nominal_mm": 500.0,
+      "finished_length_tolerance_mm": 25.0,
+      "finished_length_measurement": "load-bearing cable centerline from the cage-connector bearing point through the complete choker-eye circumference",
+      "installed_slack_minimum_mm": 20.0,
+      "installed_slack_maximum_mm": 105.0,
+      "cable_material": "stainless steel",
+      "cable_construction": "7x7",
+      "bare_cable_diameter_min_mm": 1.5,
+      "bare_cable_diameter_max_mm": 2.0,
+      "coated_finished_outer_diameter_max_mm": 3.0,
+      "boom_choker_eye_laid_flat_minimum_mm": 130.0,
+      "cage_connector": "captive screw-lock connector",
+      "cage_connector_stock_or_pin_maximum_mm": 5.0,
+      "cage_connector_opening_minimum_mm": 9.0,
+      "manufacturer_working_load_limit_minimum_kg": 10.0,
+      "manufacturer_minimum_breaking_load_minimum_kg": 50.0,
+      "evidence_required": "manufacturer datasheet, permanent marking, or certificate traceable to the received finished assembly; seller-only unverified claims are insufficient"
+    }
+  },
+  "contract_validation": {
+    "status": "PASS",
+    "checks": [
+      {
+        "check": "left_axis_locked",
+        "status": "PASS",
+        "detail": "[-60.0, -100.0]"
+      },
+      {
+        "check": "right_axis_locked",
+        "status": "PASS",
+        "detail": "[670.0, -100.0]"
+      },
+      {
+        "check": "camera_axis_locked",
+        "status": "PASS",
+        "detail": "[305.0, 228.5]"
+      },
+      {
+        "check": "camera_carriage_size_locked",
+        "status": "PASS",
+        "detail": "250.0 x 130.0 mm"
+      },
+      {
+        "check": "camera_x_indices_locked",
+        "status": "PASS",
+        "detail": "three positive-lock round-bore indices=(-12.0, 0.0, 12.0)"
+      },
+      {
+        "check": "camera_y_indices_locked",
+        "status": "PASS",
+        "detail": "installed=(0.0, 21.0); carriage hole rows=(-0.0, -21.0)"
+      },
+      {
+        "check": "crossbar_span",
+        "status": "PASS",
+        "detail": "730.000000 mm"
+      },
+      {
+        "check": "four_equal_crossbar_modules",
+        "status": "PASS",
+        "detail": "count=4; length=182.500"
+      },
+      {
+        "check": "boom_roots_centered_on_inner_crossbar_modules",
+        "status": "PASS",
+        "detail": "actual=(213.75, 396.25); expected=(213.75, 396.25)"
+      },
+      {
+        "check": "boom_gap_clears_camera_cage_at_all_x_indices",
+        "status": "PASS",
+        "detail": "inner gap=132.500; centered side clearance=18.250; worst indexed clearance=6.250"
+      },
+      {
+        "check": "boom_end",
+        "status": "PASS",
+        "detail": "end y=253.500"
+      },
+      {
+        "check": "boom_attachment_at_optical_y",
+        "status": "PASS",
+        "detail": "vertical collar holes y=228.500"
+      },
+      {
+        "check": "boom_butts_crossbar_without_overlap",
+        "status": "PASS",
+        "detail": "boom root/crossbar rear face y=-75.000"
+      },
+      {
+        "check": "boom_root_sandwich_straps_locked",
+        "status": "PASS",
+        "detail": "strap=80.0x84.0x8.0; x offsets=(-17.0, 17.0); y rows=(-99.0,-51.0)"
+      },
+      {
+        "check": "root_strap_to_crossbar_splice_gap",
+        "status": "PASS",
+        "detail": "nominal gap=5.250 mm"
+      },
+      {
+        "check": "tether_station_centered_in_exposed_window",
+        "status": "PASS",
+        "detail": "axis=(396.25, 152.5); clear window y=141.250..163.500"
+      },
+      {
+        "check": "low_structure_front_only",
+        "status": "PASS",
+        "detail": "[-250.0, -100.0]"
+      },
+      {
+        "check": "no_rear_side_stays",
+        "status": "PASS",
+        "detail": "rear/side structural stays disabled"
+      },
+      {
+        "check": "clamp_lip_intrusion_limit",
+        "status": "PASS",
+        "detail": "both <=10 mm"
+      },
+      {
+        "check": "bench_clearance_exact",
+        "status": "PASS",
+        "detail": "[-120.0, -250.0, 730.0, 0.0]"
+      },
+      {
+        "check": "board_and_feet_coplanar",
+        "status": "PASS",
+        "detail": "board underside and saddle feet z=-18.000"
+      },
+      {
+        "check": "clamp_hard_stop_includes_pad",
+        "status": "PASS",
+        "detail": "nominal compressed stack=18.650"
+      },
+      {
+        "check": "m6_integrated_boss_rise",
+        "status": "PASS",
+        "detail": "cap base top local z=8.000; boss bearing local z=9.800"
+      },
+      {
+        "check": "m6_bolt_tip_clearance_above_bench",
+        "status": "PASS",
+        "detail": "bolt end z=-14.550; bench z=-18.000; clearance=3.450 mm"
+      },
+      {
+        "check": "m6_bolt_tip_clearance_above_blind_bore_floor",
+        "status": "PASS",
+        "detail": "bolt end z=-14.550; bore floor z=-17.250; clearance=2.700 mm"
+      },
+      {
+        "check": "m6_full_nyloc_thread_projection",
+        "status": "PASS",
+        "detail": "bolt projects 3.100 mm past the modeled lower face of the 6.0 mm DIN 985 nyloc"
+      },
+      {
+        "check": "m6_channel_and_covered_tunnel_locked",
+        "status": "PASS",
+        "detail": "channels=12.2 mm; tunnel=20.0 x 14.6 mm; worst roof=1.9 mm"
+      },
+      {
+        "check": "top_tool_access_outside_board",
+        "status": "PASS",
+        "detail": "all four M6 axes at B y=-12; driven vertically from above"
+      },
+      {
+        "check": "upright_positive_bearing_seat",
+        "status": "PASS",
+        "detail": "saddle ledge top and upright bottom both B z=50; M5 bolt is registration, not gravity support"
+      },
+      {
+        "check": "crossbar_boom_elevation_aligned",
+        "status": "PASS",
+        "detail": "bottom z=1010.000"
+      },
+      {
+        "check": "carriage_bears_on_boom_top",
+        "status": "PASS",
+        "detail": "boom top/carriage bottom z=1074.000"
+      },
+      {
+        "check": "planar_keeper_bears_below_carriage",
+        "status": "PASS",
+        "detail": "planar keeper top and carriage bottom share z=1074; four bolts provide positive retention without slide hooks"
+      },
+      {
+        "check": "installed_camera_hardware_above_robot_screen",
+        "status": "PASS",
+        "detail": "minimum modeled camera/lens/bolt/tether z=1000.000"
+      },
+      {
+        "check": "production_printed_piece_target",
+        "status": "PASS",
+        "detail": "52 production pieces including loose shim stock and excluding three print-first coupons and one sacrificial retainer"
+      },
+      {
+        "check": "hardware_piece_target",
+        "status": "PASS",
+        "detail": "147 hardware pieces including one sacrificial M6 coupon nut, four sacrificial proof-test carriage nylocs, eight M5x90 boom-root sandwich bolts, and four M4 keeper closures"
+      },
+      {
+        "check": "m5_bolt_nyloc_reconciliation",
+        "status": "PASS",
+        "detail": "bolts=48; final installed nylocs=48; proof-test-only sacrificial nylocs=4; total nylocs=52"
+      },
+      {
+        "check": "leveling_jam_nut_wrench_contract",
+        "status": "PASS",
+        "detail": "{'item': 'thin 7 mm open-end wrench', 'maximum_head_width_mm': 18.0, 'maximum_head_thickness_mm': 5.5, 'use': \"tighten the three M4 leveling jam nuts through the keeper's edge-open wrench bays\"}"
+      },
+      {
+        "check": "m5_thin_wall_socket_contract",
+        "status": "PASS",
+        "detail": "{'item': 'two thin-wall 8 mm sockets or nut drivers', 'maximum_socket_outer_diameter_mm': 13.0, 'use': 'hold and tighten the M5 flange-head bolts and flanged locknuts; the portal diagonal bolt pattern is validated against this maximum socket diameter'}"
+      },
+      {
+        "check": "m4_hex_key_contract",
+        "status": "PASS",
+        "detail": "{'item': '2.5 mm hex key', 'use': 'drive all seven M4 button-head socket bolts'}"
+      },
+      {
+        "check": "m6_thin_wall_socket_contract",
+        "status": "PASS",
+        "detail": "{'item': 'one thin-wall 10 mm socket or nut driver', 'maximum_socket_outer_diameter_mm': 18.0, 'use': 'drive each top-access M6 clamp bolt; the side-loaded DIN 985 nyloc is antirotation-captured and does not need a second driver'}"
+      },
+      {
+        "check": "m6_flange_head_procurement_limit",
+        "status": "PASS",
+        "detail": "qty=4; length=25.0 mm; maximum head OD=13.5 mm"
+      },
+      {
+        "check": "m6_nyloc_capture_contract",
+        "status": "PASS",
+        "detail": "{'quantity': 5, 'thread': 'M6', 'standard': 'DIN 985 or ISO 10511 low-pattern prevailing-torque nyloc', 'wrench_size_mm': 10.0, 'maximum_height_mm': 6.0, 'modeled_hex_pocket_circumscribed_diameter_mm': 12.3, 'modeled_channel_width_mm': 12.2, 'modeled_channel_height_mm': 7.2, 'release_gate': 'Use the dedicated sacrificial received nut in 00G in the same hex orientation it will use when seated, confirm it traverses the channel and reaches the hex seat without force, then confirm the sacrificial retainer snaps fully home without touching the nut and the bolt develops prevailing torque. Discard that test nut after the gate; reserve four fresh nuts for the final board clamps.'}"
+      },
+      {
+        "check": "m6_cap_boss_head_support_margin",
+        "status": "PASS",
+        "detail": "16.0 mm boss - 13.5 mm maximum head = 2.500 mm diameter margin; worst-case supported radial rim=0.950 mm after permitted decenter; physical first-boss seating remains mandatory"
+      },
+      {
+        "check": "factory_terminated_tether_procurement_contract",
+        "status": "PASS",
+        "detail": "qty1; 500+/-25 mm cable-centerline length; 20-105 mm installed slack; 1.5-2.0 mm 7x7 stainless; coated OD<=3.0; eye>=130; screw-lock pin<=5/opening>=9; manufacturer WLL>=10 kg/MBL>=50 kg"
+      },
+      {
+        "check": "four_bolt_keeper",
+        "status": "PASS",
+        "detail": "{'item': 'M4 x 60 button-head bolt', 'quantity': 4, 'use': 'four perimeter keeper bolts installed downward; washer and head fully recessed in keeper; nyloc and washer below cage base'}"
+      },
+      {
+        "check": "three_point_leveling",
+        "status": "PASS",
+        "detail": "{'item': 'M4 x 70 button-head socket bolt', 'quantity': 3, 'use': '2.5 mm internal hex; leveling screws installed downward from above carriage into captured cage-base nuts'}"
+      },
+      {
+        "check": "front_lips_clear_T0_T1",
+        "status": "PASS",
+        "detail": "none"
+      }
+    ]
+  },
+  "assembly_interface_validation": {
+    "status": "PASS",
+    "scope": "selected unintended-overlap checks; deliberate bolted/contact/compression interfaces excluded",
+    "nominal_camera_cage_side_clearance_mm": 18.25,
+    "tested_carriage_x_index_offsets_mm": [
+      -12.0,
+      0.0,
+      12.0
+    ],
+    "tested_carriage_y_index_offsets_mm": [
+      0.0,
+      21.0
+    ],
+    "tether_choker_station_B_mm": [
+      396.25,
+      152.5
+    ],
+    "checks": [
+      {
+        "check": "crossbar_to_boom_butt_no_volume_overlap",
+        "status": "PASS",
+        "intersection_volume_mm3": 0,
+        "limit_mm3": 0.5
+      },
+      {
+        "check": "boom_root_straps_touch_without_member_overlap",
+        "status": "PASS",
+        "intersection_volume_mm3": 0,
+        "limit_mm3": 0.1
+      },
+      {
+        "check": "boom_root_straps_clear_crossbar_splices",
+        "status": "PASS",
+        "intersection_volume_mm3": 0,
+        "limit_mm3": 0.01
+      },
+      {
+        "check": "portal_gusset_markings_clear_members",
+        "status": "PASS",
+        "intersection_volume_mm3": 0,
+        "limit_mm3": 0.5
+      },
+      {
+        "check": "carriage_index_X-12_Y+0_touches_booms_without_overlap",
+        "status": "PASS",
+        "intersection_volume_mm3": 0,
+        "limit_mm3": 0.5
+      },
+      {
+        "check": "cage_index_X-12_Y+0_tangent_below_carriage",
+        "status": "PASS",
+        "intersection_volume_mm3": 0,
+        "limit_mm3": 0.01
+      },
+      {
+        "check": "keeper_index_X-12_Y+0_tangent_below_carriage",
+        "status": "PASS",
+        "intersection_volume_mm3": 0,
+        "limit_mm3": 0.01
+      },
+      {
+        "check": "camera_group_index_X-12_Y+0_clear_booms",
+        "status": "PASS",
+        "intersection_volume_mm3": 0,
+        "limit_mm3": 0.01
+      },
+      {
+        "check": "carriage_index_X-12_Y+21_touches_booms_without_overlap",
+        "status": "PASS",
+        "intersection_volume_mm3": 0,
+        "limit_mm3": 0.5
+      },
+      {
+        "check": "cage_index_X-12_Y+21_tangent_below_carriage",
+        "status": "PASS",
+        "intersection_volume_mm3": 0,
+        "limit_mm3": 0.01
+      },
+      {
+        "check": "keeper_index_X-12_Y+21_tangent_below_carriage",
+        "status": "PASS",
+        "intersection_volume_mm3": 0,
+        "limit_mm3": 0.01
+      },
+      {
+        "check": "camera_group_index_X-12_Y+21_clear_booms",
+        "status": "PASS",
+        "intersection_volume_mm3": 0,
+        "limit_mm3": 0.01
+      },
+      {
+        "check": "carriage_index_X+0_Y+0_touches_booms_without_overlap",
+        "status": "PASS",
+        "intersection_volume_mm3": 0,
+        "limit_mm3": 0.5
+      },
+      {
+        "check": "cage_index_X+0_Y+0_tangent_below_carriage",
+        "status": "PASS",
+        "intersection_volume_mm3": 0,
+        "limit_mm3": 0.01
+      },
+      {
+        "check": "keeper_index_X+0_Y+0_tangent_below_carriage",
+        "status": "PASS",
+        "intersection_volume_mm3": 0,
+        "limit_mm3": 0.01
+      },
+      {
+        "check": "camera_group_index_X+0_Y+0_clear_booms",
+        "status": "PASS",
+        "intersection_volume_mm3": 0,
+        "limit_mm3": 0.01
+      },
+      {
+        "check": "carriage_index_X+0_Y+21_touches_booms_without_overlap",
+        "status": "PASS",
+        "intersection_volume_mm3": 0,
+        "limit_mm3": 0.5
+      },
+      {
+        "check": "cage_index_X+0_Y+21_tangent_below_carriage",
+        "status": "PASS",
+        "intersection_volume_mm3": 0,
+        "limit_mm3": 0.01
+      },
+      {
+        "check": "keeper_index_X+0_Y+21_tangent_below_carriage",
+        "status": "PASS",
+        "intersection_volume_mm3": 0,
+        "limit_mm3": 0.01
+      },
+      {
+        "check": "camera_group_index_X+0_Y+21_clear_booms",
+        "status": "PASS",
+        "intersection_volume_mm3": 0,
+        "limit_mm3": 0.01
+      },
+      {
+        "check": "carriage_index_X+12_Y+0_touches_booms_without_overlap",
+        "status": "PASS",
+        "intersection_volume_mm3": 0,
+        "limit_mm3": 0.5
+      },
+      {
+        "check": "cage_index_X+12_Y+0_tangent_below_carriage",
+        "status": "PASS",
+        "intersection_volume_mm3": 0,
+        "limit_mm3": 0.01
+      },
+      {
+        "check": "keeper_index_X+12_Y+0_tangent_below_carriage",
+        "status": "PASS",
+        "intersection_volume_mm3": 0,
+        "limit_mm3": 0.01
+      },
+      {
+        "check": "camera_group_index_X+12_Y+0_clear_booms",
+        "status": "PASS",
+        "intersection_volume_mm3": 0,
+        "limit_mm3": 0.01
+      },
+      {
+        "check": "carriage_index_X+12_Y+21_touches_booms_without_overlap",
+        "status": "PASS",
+        "intersection_volume_mm3": 0,
+        "limit_mm3": 0.5
+      },
+      {
+        "check": "cage_index_X+12_Y+21_tangent_below_carriage",
+        "status": "PASS",
+        "intersection_volume_mm3": 0,
+        "limit_mm3": 0.01
+      },
+      {
+        "check": "keeper_index_X+12_Y+21_tangent_below_carriage",
+        "status": "PASS",
+        "intersection_volume_mm3": 0,
+        "limit_mm3": 0.01
+      },
+      {
+        "check": "camera_group_index_X+12_Y+21_clear_booms",
+        "status": "PASS",
+        "intersection_volume_mm3": 0,
+        "limit_mm3": 0.01
+      },
+      {
+        "check": "u_splice_nominal_clearance",
+        "status": "PASS",
+        "intersection_volume_mm3": 0,
+        "limit_mm3": 0.1
+      },
+      {
+        "check": "usb_route_index_X-12_Y+0_clears_frame_and_carriage",
+        "status": "PASS",
+        "intersection_volume_mm3": 0,
+        "limit_mm3": 0.01
+      },
+      {
+        "check": "usb_route_index_X-12_Y+21_clears_frame_and_carriage",
+        "status": "PASS",
+        "intersection_volume_mm3": 0,
+        "limit_mm3": 0.01
+      },
+      {
+        "check": "usb_route_index_X+0_Y+0_clears_frame_and_carriage",
+        "status": "PASS",
+        "intersection_volume_mm3": 0,
+        "limit_mm3": 0.01
+      },
+      {
+        "check": "usb_route_index_X+0_Y+21_clears_frame_and_carriage",
+        "status": "PASS",
+        "intersection_volume_mm3": 0,
+        "limit_mm3": 0.01
+      },
+      {
+        "check": "usb_route_index_X+12_Y+0_clears_frame_and_carriage",
+        "status": "PASS",
+        "intersection_volume_mm3": 0,
+        "limit_mm3": 0.01
+      },
+      {
+        "check": "usb_route_index_X+12_Y+21_clears_frame_and_carriage",
+        "status": "PASS",
+        "intersection_volume_mm3": 0,
+        "limit_mm3": 0.01
+      },
+      {
+        "check": "tether_connector_index_X-12_Y+0_clears_wing_hole",
+        "status": "PASS",
+        "intersection_volume_mm3": 0,
+        "limit_mm3": 0.01
+      },
+      {
+        "check": "tether_route_index_X-12_Y+0_clears_structure_and_carriage",
+        "status": "PASS",
+        "intersection_volume_mm3": 0,
+        "limit_mm3": 0.01
+      },
+      {
+        "check": "tether_connector_index_X-12_Y+21_clears_wing_hole",
+        "status": "PASS",
+        "intersection_volume_mm3": 0,
+        "limit_mm3": 0.01
+      },
+      {
+        "check": "tether_route_index_X-12_Y+21_clears_structure_and_carriage",
+        "status": "PASS",
+        "intersection_volume_mm3": 0,
+        "limit_mm3": 0.01
+      },
+      {
+        "check": "tether_connector_index_X+0_Y+0_clears_wing_hole",
+        "status": "PASS",
+        "intersection_volume_mm3": 0,
+        "limit_mm3": 0.01
+      },
+      {
+        "check": "tether_route_index_X+0_Y+0_clears_structure_and_carriage",
+        "status": "PASS",
+        "intersection_volume_mm3": 0,
+        "limit_mm3": 0.01
+      },
+      {
+        "check": "tether_connector_index_X+0_Y+21_clears_wing_hole",
+        "status": "PASS",
+        "intersection_volume_mm3": 0,
+        "limit_mm3": 0.01
+      },
+      {
+        "check": "tether_route_index_X+0_Y+21_clears_structure_and_carriage",
+        "status": "PASS",
+        "intersection_volume_mm3": 0,
+        "limit_mm3": 0.01
+      },
+      {
+        "check": "tether_connector_index_X+12_Y+0_clears_wing_hole",
+        "status": "PASS",
+        "intersection_volume_mm3": 0,
+        "limit_mm3": 0.01
+      },
+      {
+        "check": "tether_route_index_X+12_Y+0_clears_structure_and_carriage",
+        "status": "PASS",
+        "intersection_volume_mm3": 0,
+        "limit_mm3": 0.01
+      },
+      {
+        "check": "tether_connector_index_X+12_Y+21_clears_wing_hole",
+        "status": "PASS",
+        "intersection_volume_mm3": 0,
+        "limit_mm3": 0.01
+      },
+      {
+        "check": "tether_route_index_X+12_Y+21_clears_structure_and_carriage",
+        "status": "PASS",
+        "intersection_volume_mm3": 0,
+        "limit_mm3": 0.01
+      },
+      {
+        "check": "tether_proxy_matches_procured_length_and_eye",
+        "status": "PASS",
+        "modeled_centerline_length_range_mm": [
+          423.41,
+          448.587
+        ],
+        "modeled_laid_flat_eye_mm": 134.0,
+        "procurement_finished_length_range_mm": [
+          475.0,
+          525.0
+        ],
+        "minimum_slack_at_worst_index_mm": 26.413,
+        "maximum_slack_at_best_index_mm": 101.59,
+        "required_minimum_slack_mm": 20.0,
+        "allowed_maximum_slack_mm": 105.0,
+        "tested_x_index_offsets_mm": [
+          -12.0,
+          0.0,
+          12.0
+        ],
+        "tested_y_index_offsets_mm": [
+          0.0,
+          21.0
+        ]
+      },
+      {
+        "check": "all_four_m6_nyloc_exterior_to_seat_sweeps",
+        "status": "PASS",
+        "maximum_intersection_mm3": 0,
+        "samples_per_channel": 101,
+        "channel_count": 4
+      },
+      {
+        "check": "all_four_m6_nyloc_seats_and_retainers_clear",
+        "status": "PASS",
+        "maximum_intersection_mm3": 0
+      },
+      {
+        "check": "all_four_m6_nut_pocket_structural_roofs",
+        "status": "PASS",
+        "minimum_annular_solid_fill_ratio": 1.0,
+        "tested_roof_z_range_mm": [
+          12.7,
+          18.4
+        ]
+      },
+      {
+        "check": "all_four_m6_covered_channel_tunnels",
+        "status": "PASS",
+        "minimum_roof_fill_ratio": 1.0,
+        "minimum_floor_fill_ratio": 1.0,
+        "minimum_latch_sidewall_fill_ratio": 1.0,
+        "modeled_tunnel_outer_width_mm": 20.0,
+        "modeled_minimum_roof_mm": 1.9,
+        "maximum_support_free_bridge_mm": 13.6
+      },
+      {
+        "check": "saddle_stops_touch_but_do_not_overlap_board",
+        "status": "PASS",
+        "intersection_volume_mm3": 0,
+        "limit_mm3": 0.01
+      }
+    ]
+  },
+  "fastener_interface_validation": {
+    "status": "PASS",
+    "checks": [
+      {
+        "check": "m6_cap_boss_support_and_full_head_clearance",
+        "status": "PASS",
+        "maximum_intersection_mm3": 0,
+        "minimum_boss_top_solid_fill_ratio": 1.0,
+        "modeled_maximum_head_outer_diameter_mm": 13.5,
+        "modeled_boss_outer_diameter_mm": 16.0,
+        "modeled_boss_bearing_height_mm": 9.8
+      },
+      {
+        "check": "left_saddle_receiver_bore_alignment",
+        "status": "PASS",
+        "maximum_test_cylinder_intersection_mm3": 0.0,
+        "test_radius_mm": 2.6
+      },
+      {
+        "check": "right_saddle_receiver_bore_alignment",
+        "status": "PASS",
+        "maximum_test_cylinder_intersection_mm3": 0.0,
+        "test_radius_mm": 2.6
+      },
+      {
+        "check": "saddle_receiver_flange_envelope_separation",
+        "status": "PASS",
+        "maximum_pair_intersection_mm3": 0,
+        "modeled_flange_diameter_mm": 12.0
+      },
+      {
+        "check": "left_portal_node_bore_alignment",
+        "status": "PASS",
+        "maximum_test_cylinder_intersection_mm3": 0.0,
+        "test_radius_mm": 2.6
+      },
+      {
+        "check": "right_portal_node_bore_alignment",
+        "status": "PASS",
+        "maximum_test_cylinder_intersection_mm3": 0.0,
+        "test_radius_mm": 2.6
+      },
+      {
+        "check": "portal_diagonal_flange_and_socket_separation",
+        "status": "PASS",
+        "maximum_neighbor_flange_intersection_mm3": 0,
+        "maximum_gusset_intersection_mm3": 0,
+        "modeled_socket_outer_diameter_mm": 13.0,
+        "modeled_flange_outer_diameter_mm": 12.0,
+        "same_member_axis_spacing_mm": 16.971
+      },
+      {
+        "check": "boom_root_complete_m5x90_shaft_clearance",
+        "status": "PASS",
+        "maximum_test_cylinder_intersection_mm3": 0.0,
+        "test_radius_mm": 2.6
+      },
+      {
+        "check": "boom_root_head_envelope",
+        "status": "PASS",
+        "maximum_intersection_mm3": 0
+      },
+      {
+        "check": "boom_root_nyloc_envelope",
+        "status": "PASS",
+        "maximum_intersection_mm3": 0
+      },
+      {
+        "check": "boom_root_top_bottom_tool_access",
+        "status": "PASS",
+        "maximum_intersection_mm3": 0
+      },
+      {
+        "check": "boom_root_full_height_column_annular_support",
+        "status": "PASS",
+        "minimum_solid_fill_ratio": 1.0,
+        "nominal_radial_ligament_mm": 5.25
+      },
+      {
+        "check": "external_splice_bore_alignment",
+        "status": "PASS",
+        "maximum_test_cylinder_intersection_mm3": 0.0,
+        "test_radius_mm": 2.6
+      },
+      {
+        "check": "crossbar_outer_splice_bore_alignment",
+        "status": "PASS",
+        "maximum_test_cylinder_intersection_mm3": 0.0,
+        "test_radius_mm": 2.6
+      },
+      {
+        "check": "crossbar_center_4bolt_splice_alignment",
+        "status": "PASS",
+        "maximum_test_cylinder_intersection_mm3": 0.0,
+        "test_radius_mm": 2.6
+      },
+      {
+        "check": "center_splice_flange_envelope_separation",
+        "status": "PASS",
+        "maximum_pair_intersection_mm3": 0,
+        "modeled_flange_diameter_mm": 12.0
+      },
+      {
+        "check": "carriage_to_boom_bore_alignment",
+        "status": "PASS",
+        "maximum_test_cylinder_intersection_mm3": 0.0,
+        "test_radius_mm": 2.6
+      },
+      {
+        "check": "carriage_boom_full_height_column_annular_support",
+        "status": "PASS",
+        "minimum_solid_fill_ratio": 1.0,
+        "nominal_radial_ligament_mm": 5.25
+      },
+      {
+        "check": "three_point_leveling_round_bore_alignment_X-12_Y+0",
+        "status": "PASS",
+        "maximum_test_cylinder_intersection_mm3": 0.0,
+        "test_radius_mm": 2.1
+      },
+      {
+        "check": "three_point_leveling_round_bore_alignment_X-12_Y+21",
+        "status": "PASS",
+        "maximum_test_cylinder_intersection_mm3": 0.0,
+        "test_radius_mm": 2.1
+      },
+      {
+        "check": "three_point_leveling_round_bore_alignment_X+0_Y+0",
+        "status": "PASS",
+        "maximum_test_cylinder_intersection_mm3": 0.0,
+        "test_radius_mm": 2.1
+      },
+      {
+        "check": "three_point_leveling_round_bore_alignment_X+0_Y+21",
+        "status": "PASS",
+        "maximum_test_cylinder_intersection_mm3": 0.0,
+        "test_radius_mm": 2.1
+      },
+      {
+        "check": "three_point_leveling_round_bore_alignment_X+12_Y+0",
+        "status": "PASS",
+        "maximum_test_cylinder_intersection_mm3": 0.0,
+        "test_radius_mm": 2.1
+      },
+      {
+        "check": "three_point_leveling_round_bore_alignment_X+12_Y+21",
+        "status": "PASS",
+        "maximum_test_cylinder_intersection_mm3": 0.0,
+        "test_radius_mm": 2.1
+      },
+      {
+        "check": "keeper_bolt_bore_alignment_X-12_Y+0",
+        "status": "PASS",
+        "maximum_test_cylinder_intersection_mm3": 0.0,
+        "test_radius_mm": 2.1
+      },
+      {
+        "check": "keeper_bolt_bore_alignment_X-12_Y+21",
+        "status": "PASS",
+        "maximum_test_cylinder_intersection_mm3": 0.0,
+        "test_radius_mm": 2.1
+      },
+      {
+        "check": "keeper_bolt_bore_alignment_X+0_Y+0",
+        "status": "PASS",
+        "maximum_test_cylinder_intersection_mm3": 0.0,
+        "test_radius_mm": 2.1
+      },
+      {
+        "check": "keeper_bolt_bore_alignment_X+0_Y+21",
+        "status": "PASS",
+        "maximum_test_cylinder_intersection_mm3": 0.0,
+        "test_radius_mm": 2.1
+      },
+      {
+        "check": "keeper_bolt_bore_alignment_X+12_Y+0",
+        "status": "PASS",
+        "maximum_test_cylinder_intersection_mm3": 0.0,
+        "test_radius_mm": 2.1
+      },
+      {
+        "check": "keeper_bolt_bore_alignment_X+12_Y+21",
+        "status": "PASS",
+        "maximum_test_cylinder_intersection_mm3": 0.0,
+        "test_radius_mm": 2.1
+      },
+      {
+        "check": "keeper_recessed_head_envelope_all_indices",
+        "status": "PASS",
+        "maximum_intersection_mm3": 0
+      },
+      {
+        "check": "keeper_hex_key_service_access_all_indices",
+        "status": "PASS",
+        "maximum_intersection_mm3": 0
+      },
+      {
+        "check": "leveling_jam_nut_washer_envelope_all_indices",
+        "status": "PASS",
+        "maximum_intersection_mm3": 0
+      },
+      {
+        "check": "leveling_jam_nut_edge_wrench_sweeps_all_indices",
+        "status": "PASS",
+        "maximum_intersection_mm3": 0,
+        "tool_head_envelope_mm": [
+          18.0,
+          5.5
+        ],
+        "modeled_handle_length_mm": 80.0,
+        "modeled_bay_width_mm": 19.0,
+        "front_approach": "-Y between booms",
+        "rear_approach": "+Y between booms"
+      },
+      {
+        "check": "all_indexed_carriage_shafts_clear_camera_envelope",
+        "status": "PASS",
+        "maximum_intersection_mm3": 0,
+        "tested_x_index_offsets_mm": [
+          -12.0,
+          0.0,
+          12.0
+        ],
+        "tested_y_index_offsets_mm": [
+          0.0,
+          21.0
+        ]
+      },
+      {
+        "check": "all_camera_x_index_leveling_bore_annular_support",
+        "status": "PASS",
+        "minimum_solid_fill_ratio": 1.0,
+        "tested_bore_count": 9,
+        "bearing_ring_outer_diameter_mm": 9.5
+      },
+      {
+        "check": "all_camera_x_index_leveling_top_washer_seats",
+        "status": "PASS",
+        "minimum_below_spotface_solid_fill_ratio": 1.0,
+        "maximum_above_spotface_intersection_mm3": 0,
+        "tested_bore_count": 9,
+        "spotface_diameter_mm": 10.0,
+        "spotface_depth_mm": 0.2
+      },
+      {
+        "check": "leveling_captive_nut_load_roof",
+        "status": "PASS",
+        "minimum_solid_fill_ratio": 1.0,
+        "roof_thickness_mm": 4.3
+      }
+    ],
+    "fastener_classes": [
+      {
+        "fastener_class": "M5x80 saddle receiver",
+        "axes_B_mm": [
+          [
+            -59.0,
+            -100.0,
+            60.0
+          ],
+          [
+            -47.0,
+            -100.0,
+            72.0
+          ],
+          [
+            671.0,
+            -100.0,
+            60.0
+          ],
+          [
+            683.0,
+            -100.0,
+            72.0
+          ]
+        ],
+        "printed_grip_mm": 68.0,
+        "nominal_bolt_length_mm": 80.0,
+        "nut_or_head_stack_allowance_mm": 6.0,
+        "nominal_thread_projection_after_stack_mm": 6.0,
+        "stack_status": "PASS",
+        "note": "Two diagonal axes per saddle through both 8 mm receiver cheeks and reinforced upright bands; insert front-to-rear with flanged nylocs on the rear face."
+      },
+      {
+        "fastener_class": "M5x75 portal corner",
+        "axes_B_mm": [
+          [
+            -47.0,
+            -100.0,
+            988.0
+          ],
+          [
+            -59.0,
+            -100.0,
+            1000.0
+          ],
+          [
+            -38.0,
+            -100.0,
+            1029.0
+          ],
+          [
+            -50.0,
+            -100.0,
+            1041.0
+          ],
+          [
+            683.0,
+            -100.0,
+            988.0
+          ],
+          [
+            671.0,
+            -100.0,
+            1000.0
+          ],
+          [
+            648.0,
+            -100.0,
+            1029.0
+          ],
+          [
+            660.0,
+            -100.0,
+            1041.0
+          ]
+        ],
+        "printed_grip_mm": 66.0,
+        "nominal_bolt_length_mm": 75.0,
+        "nut_or_head_stack_allowance_mm": 6.0,
+        "nominal_thread_projection_after_stack_mm": 3.0,
+        "stack_status": "PASS",
+        "note": "Eight axes total; each member uses a 16.97 mm diagonal bore pair so one <=13 mm socket clears the neighboring 12 mm flange."
+      },
+      {
+        "fastener_class": "M5x90 boom root sandwich",
+        "axes_B_mm": [
+          [
+            196.75,
+            -99.0,
+            "Z"
+          ],
+          [
+            196.75,
+            -51.0,
+            "Z"
+          ],
+          [
+            230.75,
+            -99.0,
+            "Z"
+          ],
+          [
+            230.75,
+            -51.0,
+            "Z"
+          ],
+          [
+            379.25,
+            -99.0,
+            "Z"
+          ],
+          [
+            379.25,
+            -51.0,
+            "Z"
+          ],
+          [
+            413.25,
+            -99.0,
+            "Z"
+          ],
+          [
+            413.25,
+            -51.0,
+            "Z"
+          ]
+        ],
+        "printed_grip_mm": 80.0,
+        "nominal_bolt_length_mm": 90.0,
+        "nut_or_head_stack_allowance_mm": 6.0,
+        "nominal_thread_projection_after_stack_mm": 4.0,
+        "stack_status": "PASS",
+        "note": "Eight axes total: four per root through 8 mm top strap + 64 mm full-height bearing column + 8 mm bottom strap; flange heads above and flanged nylocs below."
+      },
+      {
+        "fastener_class": "M5x75 external U splice",
+        "axes_B_mm": [
+          [
+            "joint-22",
+            "member center",
+            31.0
+          ],
+          [
+            "joint+22",
+            "member center",
+            31.0
+          ]
+        ],
+        "printed_grip_mm": 62.8,
+        "nominal_bolt_length_mm": 75.0,
+        "nut_or_head_stack_allowance_mm": 6.0,
+        "nominal_thread_projection_after_stack_mm": 6.2,
+        "stack_status": "PASS",
+        "note": "Repeated at eight upright/boom joints (16 bolts); nominal post-nut projection is 6.2 mm."
+      },
+      {
+        "fastener_class": "M5x75 crossbar splice",
+        "axes_B_mm": [
+          [
+            "outer joints",
+            4,
+            "axes"
+          ],
+          [
+            "center joint",
+            4,
+            "axes"
+          ]
+        ],
+        "printed_grip_mm": 62.8,
+        "nominal_bolt_length_mm": 75.0,
+        "nut_or_head_stack_allowance_mm": 6.0,
+        "nominal_thread_projection_after_stack_mm": 6.2,
+        "stack_status": "PASS",
+        "note": "Eight axes total: two per outer joint and four diagonal axes at the torsion-critical center joint."
+      },
+      {
+        "fastener_class": "M5x85 carriage to boom",
+        "axes_B_mm": [
+          [
+            196.75,
+            228.5,
+            "Z"
+          ],
+          [
+            230.75,
+            228.5,
+            "Z"
+          ],
+          [
+            379.25,
+            228.5,
+            "Z"
+          ],
+          [
+            413.25,
+            228.5,
+            "Z"
+          ]
+        ],
+        "printed_grip_mm": 74.0,
+        "nominal_bolt_length_mm": 85.0,
+        "nut_or_head_stack_allowance_mm": 6.0,
+        "nominal_thread_projection_after_stack_mm": 5.0,
+        "stack_status": "PASS",
+        "note": "Four axes through 10 mm carriage and 64 mm solid boom end side collars."
+      },
+      {
+        "fastener_class": "M4x70 leveling",
+        "axes_B_mm": [
+          [
+            273.0,
+            198.5,
+            "Z"
+          ],
+          [
+            337.0,
+            198.5,
+            "Z"
+          ],
+          [
+            305.0,
+            264.5,
+            "Z"
+          ]
+        ],
+        "printed_grip_mm": 58.0,
+        "nominal_bolt_length_mm": 70.0,
+        "nut_or_head_stack_allowance_mm": 7.0,
+        "nominal_thread_projection_after_stack_mm": 5.0,
+        "stack_status": "PASS",
+        "note": "Head+washer above carriage; washer+jam nut below carriage; screw engages underside-loaded captured base nut beneath 4.3 mm roof."
+      },
+      {
+        "fastener_class": "M4x60 keeper",
+        "axes_B_mm": [
+          [
+            271.0,
+            218.5,
+            "-Z"
+          ],
+          [
+            339.0,
+            218.5,
+            "-Z"
+          ],
+          [
+            271.0,
+            254.5,
+            "-Z"
+          ],
+          [
+            339.0,
+            254.5,
+            "-Z"
+          ]
+        ],
+        "printed_grip_mm": 48.0,
+        "nominal_bolt_length_mm": 60.0,
+        "nut_or_head_stack_allowance_mm": 7.0,
+        "nominal_thread_projection_after_stack_mm": 5.0,
+        "stack_status": "PASS",
+        "note": "Button head+washer recessed flush in keeper; nyloc+washer below cage base; service key passes through carriage."
+      }
+    ],
+    "note": "CAD axes and nominal stacks only; physical coupons, torque limits, proof load, and received-part checks remain mandatory."
+  },
+  "part_validation_status": "PASS",
+  "plate_allocation_validation": {
+    "status": "PASS",
+    "subplate_count": 21,
+    "configured_piece_count": 56,
+    "allocated_piece_count": 56,
+    "allocated_quantities": {
+      "board_corner_cap_left": 1,
+      "board_corner_cap_right": 1,
+      "board_corner_saddle_left": 1,
+      "board_corner_saddle_right": 1,
+      "board_pressure_pad": 4,
+      "board_saddle_fit_coupon": 1,
+      "boom_camera_truss_segment_164p25": 2,
+      "boom_crossbar_node": 4,
+      "boom_root_truss_segment_164p25": 2,
+      "camera_cage_body": 1,
+      "camera_cage_keeper": 1,
+      "camera_case_fit_gauge": 1,
+      "camera_case_shim_ladder": 1,
+      "camera_top_compression_pad": 1,
+      "camera_xy_carriage": 1,
+      "crossbar_truss_segment_182p5": 4,
+      "m6_nut_retainer": 5,
+      "portal_corner_node_left": 2,
+      "portal_corner_node_right": 2,
+      "u_splice_fit_coupon": 1,
+      "u_truss_splice": 8,
+      "u_truss_splice_center_4bolt": 1,
+      "u_truss_splice_crossbar_2bolt": 2,
+      "upright_truss_segment_240": 8
+    },
+    "quantity_differences": {},
+    "unexpected_parts": {},
+    "note": "The accepted 00G production splice transfers to the left tower. The single 00G barbed M6 retainer is sacrificial; two fresh retainers are allocated to each side. No installed production piece is duplicated."
+  },
+  "plate_validation": {
+    "status": "PASS",
+    "subplate_count": 21,
+    "object_count": 56,
+    "report": "cad/output/PLATE_VALIDATION.json",
+    "csv": "cad/output/PLATE_VALIDATION.csv",
+    "subplates": [
+      {
+        "subplate_id": "00G-S1",
+        "filename": "00G-S1_ABS_board_splice_fit_tests.3mf",
+        "profile_key": "abs_structural",
+        "object_count": 4,
+        "resource_object_count": 4,
+        "build_item_count": 4,
+        "roundtrip_geometry_count": 4,
+        "extent_x_mm": 210.0,
+        "extent_y_mm": 140.8,
+        "extent_z_mm": 74.0,
+        "fits_protected_295x295x275": true,
+        "sha256": "6100bdd78e7574755b1fd4c0c8d6327f0a6e6ff96f9c918f43141cc7a4c0a421",
+        "validation": "PASS",
+        "objects": [
+          {
+            "object": "u_truss_splice__01",
+            "part": "u_truss_splice",
+            "rotation_z_deg": 0.0,
+            "translation_mm": [
+              10.0,
+              10.0,
+              -0.0
+            ],
+            "bounds_mm": [
+              [
+                10.0,
+                10.0,
+                0.0
+              ],
+              [
+                114.0,
+                85.8,
+                74.0
+              ]
+            ]
+          },
+          {
+            "object": "u_splice_fit_coupon__01",
+            "part": "u_splice_fit_coupon",
+            "rotation_z_deg": 0.0,
+            "translation_mm": [
+              134.0,
+              10.0,
+              -0.0
+            ],
+            "bounds_mm": [
+              [
+                134.0,
+                10.0,
+                0.0
+              ],
+              [
+                220.0,
+                60.0,
+                64.0
+              ]
+            ]
+          },
+          {
+            "object": "board_saddle_fit_coupon__01",
+            "part": "board_saddle_fit_coupon",
+            "rotation_z_deg": 0.0,
+            "translation_mm": [
+              10.0,
+              105.8,
+              -0.0
+            ],
+            "bounds_mm": [
+              [
+                10.0,
+                105.8,
+                0.0
+              ],
+              [
+                114.0,
+                150.8,
+                19.5
+              ]
+            ]
+          },
+          {
+            "object": "m6_nut_retainer__01",
+            "part": "m6_nut_retainer",
+            "rotation_z_deg": 90.0,
+            "translation_mm": [
+              159.8,
+              112.4,
+              -2.0
+            ],
+            "bounds_mm": [
+              [
+                134.0,
+                105.8,
+                0.0
+              ],
+              [
+                159.8,
+                119.0,
+                6.0
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "subplate_id": "00G-C1",
+        "filename": "00G-C1_ABS_received_camera_fit_tests.3mf",
+        "profile_key": "abs_holder_precision",
+        "object_count": 2,
+        "resource_object_count": 2,
+        "build_item_count": 2,
+        "roundtrip_geometry_count": 2,
+        "extent_x_mm": 268.0,
+        "extent_y_mm": 86.0,
+        "extent_z_mm": 8.8,
+        "fits_protected_295x295x275": true,
+        "sha256": "c56f828d3babeb368e9ed10d927c1f957c664a9eae745dd8924afbd055456ded",
+        "validation": "PASS",
+        "objects": [
+          {
+            "object": "camera_case_fit_gauge__01",
+            "part": "camera_case_fit_gauge",
+            "rotation_z_deg": 0.0,
+            "translation_mm": [
+              10.0,
+              10.0,
+              -0.0
+            ],
+            "bounds_mm": [
+              [
+                10.0,
+                10.0,
+                0.0
+              ],
+              [
+                196.0,
+                96.0,
+                8.8
+              ]
+            ]
+          },
+          {
+            "object": "camera_case_shim_ladder__01",
+            "part": "camera_case_shim_ladder",
+            "rotation_z_deg": 90.0,
+            "translation_mm": [
+              278.0,
+              10.5908,
+              -0.0
+            ],
+            "bounds_mm": [
+              [
+                216.0,
+                10.0,
+                0.0
+              ],
+              [
+                278.0,
+                65.5908,
+                2.0
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "subplate_id": "00G-P1",
+        "filename": "00G-P1_TPU_camera_portal_pads.3mf",
+        "profile_key": "tpu_pads",
+        "object_count": 5,
+        "resource_object_count": 5,
+        "build_item_count": 5,
+        "roundtrip_geometry_count": 5,
+        "extent_x_mm": 270.0,
+        "extent_y_mm": 38.0,
+        "extent_z_mm": 9.2,
+        "fits_protected_295x295x275": true,
+        "sha256": "2dd31d5b10b814dc7a6280c10e10443189984572e606ba84d0aeecb448ce2957",
+        "validation": "PASS",
+        "objects": [
+          {
+            "object": "camera_top_compression_pad__01",
+            "part": "camera_top_compression_pad",
+            "rotation_z_deg": 0.0,
+            "translation_mm": [
+              10.0,
+              10.0,
+              -0.0
+            ],
+            "bounds_mm": [
+              [
+                10.0,
+                10.0,
+                0.0
+              ],
+              [
+                48.0,
+                48.0,
+                9.2
+              ]
+            ]
+          },
+          {
+            "object": "board_pressure_pad__01",
+            "part": "board_pressure_pad",
+            "rotation_z_deg": 0.0,
+            "translation_mm": [
+              68.0,
+              10.0,
+              -0.0
+            ],
+            "bounds_mm": [
+              [
+                68.0,
+                10.0,
+                0.0
+              ],
+              [
+                106.0,
+                19.0,
+                3.15
+              ]
+            ]
+          },
+          {
+            "object": "board_pressure_pad__02",
+            "part": "board_pressure_pad",
+            "rotation_z_deg": 0.0,
+            "translation_mm": [
+              126.0,
+              10.0,
+              -0.0
+            ],
+            "bounds_mm": [
+              [
+                126.0,
+                10.0,
+                0.0
+              ],
+              [
+                164.0,
+                19.0,
+                3.15
+              ]
+            ]
+          },
+          {
+            "object": "board_pressure_pad__03",
+            "part": "board_pressure_pad",
+            "rotation_z_deg": 0.0,
+            "translation_mm": [
+              184.0,
+              10.0,
+              -0.0
+            ],
+            "bounds_mm": [
+              [
+                184.0,
+                10.0,
+                0.0
+              ],
+              [
+                222.0,
+                19.0,
+                3.15
+              ]
+            ]
+          },
+          {
+            "object": "board_pressure_pad__04",
+            "part": "board_pressure_pad",
+            "rotation_z_deg": 0.0,
+            "translation_mm": [
+              242.0,
+              10.0,
+              -0.0
+            ],
+            "bounds_mm": [
+              [
+                242.0,
+                10.0,
+                0.0
+              ],
+              [
+                280.0,
+                19.0,
+                3.15
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "subplate_id": "08A-S1",
+        "filename": "08A-S1_ABS_left_bench_saddle.3mf",
+        "profile_key": "abs_structural",
+        "object_count": 1,
+        "resource_object_count": 1,
+        "build_item_count": 1,
+        "roundtrip_geometry_count": 1,
+        "extent_x_mm": 250.0,
+        "extent_y_mm": 190.0,
+        "extent_z_mm": 104.0,
+        "fits_protected_295x295x275": true,
+        "sha256": "abaef2a07bd4e60e16e037f1282bb0ee47a4eafa18886594bb0a1313feb63ee6",
+        "validation": "PASS",
+        "objects": [
+          {
+            "object": "board_corner_saddle_left__01",
+            "part": "board_corner_saddle_left",
+            "rotation_z_deg": 90.0,
+            "translation_mm": [
+              170.0,
+              10.0,
+              -0.0
+            ],
+            "bounds_mm": [
+              [
+                10.0,
+                10.0,
+                0.0
+              ],
+              [
+                260.0,
+                200.0,
+                104.0
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "subplate_id": "08A-S2",
+        "filename": "08A-S2_ABS_left_cap_and_splices.3mf",
+        "profile_key": "abs_structural",
+        "object_count": 5,
+        "resource_object_count": 5,
+        "build_item_count": 5,
+        "roundtrip_geometry_count": 5,
+        "extent_x_mm": 209.0,
+        "extent_y_mm": 180.8,
+        "extent_z_mm": 74.0,
+        "fits_protected_295x295x275": true,
+        "sha256": "4ee50a9be7fd929f1d6d16ad4b58c4dd5a0f686733300129ce00d0e23f6e8fb2",
+        "validation": "PASS",
+        "objects": [
+          {
+            "object": "board_corner_cap_left__01",
+            "part": "board_corner_cap_left",
+            "rotation_z_deg": 0.0,
+            "translation_mm": [
+              10.0,
+              10.0,
+              -0.0
+            ],
+            "bounds_mm": [
+              [
+                10.0,
+                10.0,
+                0.0
+              ],
+              [
+                95.0,
+                95.0,
+                9.8
+              ]
+            ]
+          },
+          {
+            "object": "u_truss_splice__01",
+            "part": "u_truss_splice",
+            "rotation_z_deg": 0.0,
+            "translation_mm": [
+              115.0,
+              10.0,
+              -0.0
+            ],
+            "bounds_mm": [
+              [
+                115.0,
+                10.0,
+                0.0
+              ],
+              [
+                219.0,
+                85.8,
+                74.0
+              ]
+            ]
+          },
+          {
+            "object": "u_truss_splice__02",
+            "part": "u_truss_splice",
+            "rotation_z_deg": 0.0,
+            "translation_mm": [
+              10.0,
+              115.0,
+              -0.0
+            ],
+            "bounds_mm": [
+              [
+                10.0,
+                115.0,
+                0.0
+              ],
+              [
+                114.0,
+                190.8,
+                74.0
+              ]
+            ]
+          },
+          {
+            "object": "m6_nut_retainer__01",
+            "part": "m6_nut_retainer",
+            "rotation_z_deg": 90.0,
+            "translation_mm": [
+              159.8,
+              121.6,
+              -2.0
+            ],
+            "bounds_mm": [
+              [
+                134.0,
+                115.0,
+                0.0
+              ],
+              [
+                159.8,
+                128.2,
+                6.0
+              ]
+            ]
+          },
+          {
+            "object": "m6_nut_retainer__02",
+            "part": "m6_nut_retainer",
+            "rotation_z_deg": 90.0,
+            "translation_mm": [
+              205.6,
+              121.6,
+              -2.0
+            ],
+            "bounds_mm": [
+              [
+                179.8,
+                115.0,
+                0.0
+              ],
+              [
+                205.6,
+                128.2,
+                6.0
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "subplate_id": "08A-J1",
+        "filename": "08A-J1_ABS_left_portal_corner_pair.3mf",
+        "profile_key": "abs_structural",
+        "object_count": 2,
+        "resource_object_count": 2,
+        "build_item_count": 2,
+        "roundtrip_geometry_count": 2,
+        "extent_x_mm": 268.0,
+        "extent_y_mm": 110.0,
+        "extent_z_mm": 8.8,
+        "fits_protected_295x295x275": true,
+        "sha256": "52c12cd08deed89a396d2f6117d2f4c5375fd44678e944c3667674942a815b63",
+        "validation": "PASS",
+        "objects": [
+          {
+            "object": "portal_corner_node_left__01",
+            "part": "portal_corner_node_left",
+            "rotation_z_deg": 90.0,
+            "translation_mm": [
+              120.0,
+              10.0,
+              -0.0
+            ],
+            "bounds_mm": [
+              [
+                10.0,
+                10.0,
+                0.0
+              ],
+              [
+                134.0,
+                120.0,
+                8.8
+              ]
+            ]
+          },
+          {
+            "object": "portal_corner_node_left__02",
+            "part": "portal_corner_node_left",
+            "rotation_z_deg": 90.0,
+            "translation_mm": [
+              264.0,
+              10.0,
+              -0.0
+            ],
+            "bounds_mm": [
+              [
+                154.0,
+                10.0,
+                0.0
+              ],
+              [
+                278.0,
+                120.0,
+                8.8
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "subplate_id": "08A-T1",
+        "filename": "08A-T1_ABS_left_uprights_1_2.3mf",
+        "profile_key": "abs_structural",
+        "object_count": 2,
+        "resource_object_count": 2,
+        "build_item_count": 2,
+        "roundtrip_geometry_count": 2,
+        "extent_x_mm": 240.0,
+        "extent_y_mm": 120.0,
+        "extent_z_mm": 64.0,
+        "fits_protected_295x295x275": true,
+        "sha256": "eeaab711a08ebbd438e649ebdad7b425a001fa6f7fa6f744434eb828d4aae706",
+        "validation": "PASS",
+        "objects": [
+          {
+            "object": "upright_truss_segment_240__01",
+            "part": "upright_truss_segment_240",
+            "rotation_z_deg": 0.0,
+            "translation_mm": [
+              10.0,
+              10.0,
+              -0.0
+            ],
+            "bounds_mm": [
+              [
+                10.0,
+                10.0,
+                0.0
+              ],
+              [
+                250.0,
+                60.0,
+                64.0
+              ]
+            ]
+          },
+          {
+            "object": "upright_truss_segment_240__02",
+            "part": "upright_truss_segment_240",
+            "rotation_z_deg": 0.0,
+            "translation_mm": [
+              10.0,
+              80.0,
+              -0.0
+            ],
+            "bounds_mm": [
+              [
+                10.0,
+                80.0,
+                0.0
+              ],
+              [
+                250.0,
+                130.0,
+                64.0
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "subplate_id": "08A-T2",
+        "filename": "08A-T2_ABS_left_uprights_3_4.3mf",
+        "profile_key": "abs_structural",
+        "object_count": 2,
+        "resource_object_count": 2,
+        "build_item_count": 2,
+        "roundtrip_geometry_count": 2,
+        "extent_x_mm": 240.0,
+        "extent_y_mm": 120.0,
+        "extent_z_mm": 64.0,
+        "fits_protected_295x295x275": true,
+        "sha256": "60b002ad6989c338777478ce5b5af0c1a77c62f8e6b853b0e35142c7e60d9e5b",
+        "validation": "PASS",
+        "objects": [
+          {
+            "object": "upright_truss_segment_240__01",
+            "part": "upright_truss_segment_240",
+            "rotation_z_deg": 0.0,
+            "translation_mm": [
+              10.0,
+              10.0,
+              -0.0
+            ],
+            "bounds_mm": [
+              [
+                10.0,
+                10.0,
+                0.0
+              ],
+              [
+                250.0,
+                60.0,
+                64.0
+              ]
+            ]
+          },
+          {
+            "object": "upright_truss_segment_240__02",
+            "part": "upright_truss_segment_240",
+            "rotation_z_deg": 0.0,
+            "translation_mm": [
+              10.0,
+              80.0,
+              -0.0
+            ],
+            "bounds_mm": [
+              [
+                10.0,
+                80.0,
+                0.0
+              ],
+              [
+                250.0,
+                130.0,
+                64.0
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "subplate_id": "08B-S1",
+        "filename": "08B-S1_ABS_right_bench_saddle.3mf",
+        "profile_key": "abs_structural",
+        "object_count": 1,
+        "resource_object_count": 1,
+        "build_item_count": 1,
+        "roundtrip_geometry_count": 1,
+        "extent_x_mm": 250.0,
+        "extent_y_mm": 190.0,
+        "extent_z_mm": 104.0,
+        "fits_protected_295x295x275": true,
+        "sha256": "ead6d13c8aeabf0afd8cf903e4997c2734bfb28fa24d29c8ae61d71848d7a6a5",
+        "validation": "PASS",
+        "objects": [
+          {
+            "object": "board_corner_saddle_right__01",
+            "part": "board_corner_saddle_right",
+            "rotation_z_deg": 90.0,
+            "translation_mm": [
+              170.0,
+              10.0,
+              -0.0
+            ],
+            "bounds_mm": [
+              [
+                10.0,
+                10.0,
+                0.0
+              ],
+              [
+                260.0,
+                200.0,
+                104.0
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "subplate_id": "08B-S2",
+        "filename": "08B-S2_ABS_right_cap_and_splices.3mf",
+        "profile_key": "abs_structural",
+        "object_count": 6,
+        "resource_object_count": 6,
+        "build_item_count": 6,
+        "roundtrip_geometry_count": 6,
+        "extent_x_mm": 273.8,
+        "extent_y_mm": 214.0,
+        "extent_z_mm": 74.0,
+        "fits_protected_295x295x275": true,
+        "sha256": "a573a7360479c3e76fd40ab020dacbfe8b13106cb58045b2faca64c192b47b78",
+        "validation": "PASS",
+        "objects": [
+          {
+            "object": "board_corner_cap_right__01",
+            "part": "board_corner_cap_right",
+            "rotation_z_deg": 0.0,
+            "translation_mm": [
+              10.0,
+              10.0,
+              -0.0
+            ],
+            "bounds_mm": [
+              [
+                10.0,
+                10.0,
+                0.0
+              ],
+              [
+                95.0,
+                95.0,
+                9.8
+              ]
+            ]
+          },
+          {
+            "object": "u_truss_splice__01",
+            "part": "u_truss_splice",
+            "rotation_z_deg": 0.0,
+            "translation_mm": [
+              115.0,
+              10.0,
+              -0.0
+            ],
+            "bounds_mm": [
+              [
+                115.0,
+                10.0,
+                0.0
+              ],
+              [
+                219.0,
+                85.8,
+                74.0
+              ]
+            ]
+          },
+          {
+            "object": "u_truss_splice__02",
+            "part": "u_truss_splice",
+            "rotation_z_deg": 0.0,
+            "translation_mm": [
+              10.0,
+              115.0,
+              -0.0
+            ],
+            "bounds_mm": [
+              [
+                10.0,
+                115.0,
+                0.0
+              ],
+              [
+                114.0,
+                190.8,
+                74.0
+              ]
+            ]
+          },
+          {
+            "object": "u_truss_splice__03",
+            "part": "u_truss_splice",
+            "rotation_z_deg": 0.0,
+            "translation_mm": [
+              134.0,
+              115.0,
+              -0.0
+            ],
+            "bounds_mm": [
+              [
+                134.0,
+                115.0,
+                0.0
+              ],
+              [
+                238.0,
+                190.8,
+                74.0
+              ]
+            ]
+          },
+          {
+            "object": "m6_nut_retainer__01",
+            "part": "m6_nut_retainer",
+            "rotation_z_deg": 90.0,
+            "translation_mm": [
+              283.8,
+              121.6,
+              -2.0
+            ],
+            "bounds_mm": [
+              [
+                258.0,
+                115.0,
+                0.0
+              ],
+              [
+                283.8,
+                128.2,
+                6.0
+              ]
+            ]
+          },
+          {
+            "object": "m6_nut_retainer__02",
+            "part": "m6_nut_retainer",
+            "rotation_z_deg": 90.0,
+            "translation_mm": [
+              35.8,
+              217.4,
+              -2.0
+            ],
+            "bounds_mm": [
+              [
+                10.0,
+                210.8,
+                0.0
+              ],
+              [
+                35.8,
+                224.0,
+                6.0
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "subplate_id": "08B-J1",
+        "filename": "08B-J1_ABS_right_portal_corner_pair.3mf",
+        "profile_key": "abs_structural",
+        "object_count": 2,
+        "resource_object_count": 2,
+        "build_item_count": 2,
+        "roundtrip_geometry_count": 2,
+        "extent_x_mm": 268.0,
+        "extent_y_mm": 110.0,
+        "extent_z_mm": 8.8,
+        "fits_protected_295x295x275": true,
+        "sha256": "3e38d081b7f64fbf30790a1412952a84b055efe15fb42a38a9ffb9f265bb7e54",
+        "validation": "PASS",
+        "objects": [
+          {
+            "object": "portal_corner_node_right__01",
+            "part": "portal_corner_node_right",
+            "rotation_z_deg": 90.0,
+            "translation_mm": [
+              120.0,
+              10.0,
+              -0.0
+            ],
+            "bounds_mm": [
+              [
+                10.0,
+                10.0,
+                0.0
+              ],
+              [
+                134.0,
+                120.0,
+                8.8
+              ]
+            ]
+          },
+          {
+            "object": "portal_corner_node_right__02",
+            "part": "portal_corner_node_right",
+            "rotation_z_deg": 90.0,
+            "translation_mm": [
+              264.0,
+              10.0,
+              -0.0
+            ],
+            "bounds_mm": [
+              [
+                154.0,
+                10.0,
+                0.0
+              ],
+              [
+                278.0,
+                120.0,
+                8.8
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "subplate_id": "08B-T1",
+        "filename": "08B-T1_ABS_right_uprights_1_2.3mf",
+        "profile_key": "abs_structural",
+        "object_count": 2,
+        "resource_object_count": 2,
+        "build_item_count": 2,
+        "roundtrip_geometry_count": 2,
+        "extent_x_mm": 240.0,
+        "extent_y_mm": 120.0,
+        "extent_z_mm": 64.0,
+        "fits_protected_295x295x275": true,
+        "sha256": "748d2bc2f3f3e5ab0539602e74f63002a4b9fd72e0cc92e1a591cd9e9b78a3c4",
+        "validation": "PASS",
+        "objects": [
+          {
+            "object": "upright_truss_segment_240__01",
+            "part": "upright_truss_segment_240",
+            "rotation_z_deg": 0.0,
+            "translation_mm": [
+              10.0,
+              10.0,
+              -0.0
+            ],
+            "bounds_mm": [
+              [
+                10.0,
+                10.0,
+                0.0
+              ],
+              [
+                250.0,
+                60.0,
+                64.0
+              ]
+            ]
+          },
+          {
+            "object": "upright_truss_segment_240__02",
+            "part": "upright_truss_segment_240",
+            "rotation_z_deg": 0.0,
+            "translation_mm": [
+              10.0,
+              80.0,
+              -0.0
+            ],
+            "bounds_mm": [
+              [
+                10.0,
+                80.0,
+                0.0
+              ],
+              [
+                250.0,
+                130.0,
+                64.0
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "subplate_id": "08B-T2",
+        "filename": "08B-T2_ABS_right_uprights_3_4.3mf",
+        "profile_key": "abs_structural",
+        "object_count": 2,
+        "resource_object_count": 2,
+        "build_item_count": 2,
+        "roundtrip_geometry_count": 2,
+        "extent_x_mm": 240.0,
+        "extent_y_mm": 120.0,
+        "extent_z_mm": 64.0,
+        "fits_protected_295x295x275": true,
+        "sha256": "4f93f099c7018e1f2d17c0a710add6e10950069f7c1e737d8e9b69ae5f83bd75",
+        "validation": "PASS",
+        "objects": [
+          {
+            "object": "upright_truss_segment_240__01",
+            "part": "upright_truss_segment_240",
+            "rotation_z_deg": 0.0,
+            "translation_mm": [
+              10.0,
+              10.0,
+              -0.0
+            ],
+            "bounds_mm": [
+              [
+                10.0,
+                10.0,
+                0.0
+              ],
+              [
+                250.0,
+                60.0,
+                64.0
+              ]
+            ]
+          },
+          {
+            "object": "upright_truss_segment_240__02",
+            "part": "upright_truss_segment_240",
+            "rotation_z_deg": 0.0,
+            "translation_mm": [
+              10.0,
+              80.0,
+              -0.0
+            ],
+            "bounds_mm": [
+              [
+                10.0,
+                80.0,
+                0.0
+              ],
+              [
+                250.0,
+                130.0,
+                64.0
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "subplate_id": "08C-X1",
+        "filename": "08C-X1_ABS_crossbar_1_2.3mf",
+        "profile_key": "abs_structural",
+        "object_count": 2,
+        "resource_object_count": 2,
+        "build_item_count": 2,
+        "roundtrip_geometry_count": 2,
+        "extent_x_mm": 182.5,
+        "extent_y_mm": 120.0,
+        "extent_z_mm": 64.0,
+        "fits_protected_295x295x275": true,
+        "sha256": "19f52a50b82a5db4eed9301760c13947c7992adf5d32c883cad4c2fd461b0309",
+        "validation": "PASS",
+        "objects": [
+          {
+            "object": "crossbar_truss_segment_182p5__01",
+            "part": "crossbar_truss_segment_182p5",
+            "rotation_z_deg": 0.0,
+            "translation_mm": [
+              10.0,
+              10.0,
+              -0.0
+            ],
+            "bounds_mm": [
+              [
+                10.0,
+                10.0,
+                0.0
+              ],
+              [
+                192.5,
+                60.0,
+                64.0
+              ]
+            ]
+          },
+          {
+            "object": "crossbar_truss_segment_182p5__02",
+            "part": "crossbar_truss_segment_182p5",
+            "rotation_z_deg": 0.0,
+            "translation_mm": [
+              10.0,
+              80.0,
+              -0.0
+            ],
+            "bounds_mm": [
+              [
+                10.0,
+                80.0,
+                0.0
+              ],
+              [
+                192.5,
+                130.0,
+                64.0
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "subplate_id": "08C-X2",
+        "filename": "08C-X2_ABS_crossbar_3_4.3mf",
+        "profile_key": "abs_structural",
+        "object_count": 2,
+        "resource_object_count": 2,
+        "build_item_count": 2,
+        "roundtrip_geometry_count": 2,
+        "extent_x_mm": 182.5,
+        "extent_y_mm": 120.0,
+        "extent_z_mm": 64.0,
+        "fits_protected_295x295x275": true,
+        "sha256": "d75d4c9daffa22b7d1fec891efcd7b633f51fb8aafe5386ed1c9c4cac885ff03",
+        "validation": "PASS",
+        "objects": [
+          {
+            "object": "crossbar_truss_segment_182p5__01",
+            "part": "crossbar_truss_segment_182p5",
+            "rotation_z_deg": 0.0,
+            "translation_mm": [
+              10.0,
+              10.0,
+              -0.0
+            ],
+            "bounds_mm": [
+              [
+                10.0,
+                10.0,
+                0.0
+              ],
+              [
+                192.5,
+                60.0,
+                64.0
+              ]
+            ]
+          },
+          {
+            "object": "crossbar_truss_segment_182p5__02",
+            "part": "crossbar_truss_segment_182p5",
+            "rotation_z_deg": 0.0,
+            "translation_mm": [
+              10.0,
+              80.0,
+              -0.0
+            ],
+            "bounds_mm": [
+              [
+                10.0,
+                80.0,
+                0.0
+              ],
+              [
+                192.5,
+                130.0,
+                64.0
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "subplate_id": "08C-B1",
+        "filename": "08C-B1_ABS_booms_1_2.3mf",
+        "profile_key": "abs_structural",
+        "object_count": 2,
+        "resource_object_count": 2,
+        "build_item_count": 2,
+        "roundtrip_geometry_count": 2,
+        "extent_x_mm": 164.25,
+        "extent_y_mm": 120.0,
+        "extent_z_mm": 64.0,
+        "fits_protected_295x295x275": true,
+        "sha256": "ead11099c0df6335e013fc935fe4fa93427b1c1c494926de14aa3bbfb78705d6",
+        "validation": "PASS",
+        "objects": [
+          {
+            "object": "boom_root_truss_segment_164p25__01",
+            "part": "boom_root_truss_segment_164p25",
+            "rotation_z_deg": 0.0,
+            "translation_mm": [
+              10.0,
+              10.0,
+              -0.0
+            ],
+            "bounds_mm": [
+              [
+                10.0,
+                10.0,
+                0.0
+              ],
+              [
+                174.25,
+                60.0,
+                64.0
+              ]
+            ]
+          },
+          {
+            "object": "boom_root_truss_segment_164p25__02",
+            "part": "boom_root_truss_segment_164p25",
+            "rotation_z_deg": 0.0,
+            "translation_mm": [
+              10.0,
+              80.0,
+              -0.0
+            ],
+            "bounds_mm": [
+              [
+                10.0,
+                80.0,
+                0.0
+              ],
+              [
+                174.25,
+                130.0,
+                64.0
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "subplate_id": "08C-B2",
+        "filename": "08C-B2_ABS_booms_3_4.3mf",
+        "profile_key": "abs_structural",
+        "object_count": 2,
+        "resource_object_count": 2,
+        "build_item_count": 2,
+        "roundtrip_geometry_count": 2,
+        "extent_x_mm": 164.25,
+        "extent_y_mm": 120.0,
+        "extent_z_mm": 64.0,
+        "fits_protected_295x295x275": true,
+        "sha256": "961af0b3cc90a49e155f78344114e5e626bb775fabe9709c97ca50ea97d9e4ca",
+        "validation": "PASS",
+        "objects": [
+          {
+            "object": "boom_camera_truss_segment_164p25__01",
+            "part": "boom_camera_truss_segment_164p25",
+            "rotation_z_deg": 0.0,
+            "translation_mm": [
+              10.0,
+              10.0,
+              -0.0
+            ],
+            "bounds_mm": [
+              [
+                10.0,
+                10.0,
+                0.0
+              ],
+              [
+                174.25,
+                60.0,
+                64.0
+              ]
+            ]
+          },
+          {
+            "object": "boom_camera_truss_segment_164p25__02",
+            "part": "boom_camera_truss_segment_164p25",
+            "rotation_z_deg": 0.0,
+            "translation_mm": [
+              10.0,
+              80.0,
+              -0.0
+            ],
+            "bounds_mm": [
+              [
+                10.0,
+                80.0,
+                0.0
+              ],
+              [
+                174.25,
+                130.0,
+                64.0
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "subplate_id": "08C-J1",
+        "filename": "08C-J1_ABS_crossbar_boom_splices.3mf",
+        "profile_key": "abs_structural",
+        "object_count": 5,
+        "resource_object_count": 5,
+        "build_item_count": 5,
+        "roundtrip_geometry_count": 5,
+        "extent_x_mm": 228.0,
+        "extent_y_mm": 267.4,
+        "extent_z_mm": 74.0,
+        "fits_protected_295x295x275": true,
+        "sha256": "99eb9c04b03cfb51bd5e48653bf1a11c227dc01928780c9dce844784c60a5ed5",
+        "validation": "PASS",
+        "objects": [
+          {
+            "object": "u_truss_splice__01",
+            "part": "u_truss_splice",
+            "rotation_z_deg": 0.0,
+            "translation_mm": [
+              10.0,
+              10.0,
+              -0.0
+            ],
+            "bounds_mm": [
+              [
+                10.0,
+                10.0,
+                0.0
+              ],
+              [
+                114.0,
+                85.8,
+                74.0
+              ]
+            ]
+          },
+          {
+            "object": "u_truss_splice__02",
+            "part": "u_truss_splice",
+            "rotation_z_deg": 0.0,
+            "translation_mm": [
+              134.0,
+              10.0,
+              -0.0
+            ],
+            "bounds_mm": [
+              [
+                134.0,
+                10.0,
+                0.0
+              ],
+              [
+                238.0,
+                85.8,
+                74.0
+              ]
+            ]
+          },
+          {
+            "object": "u_truss_splice_center_4bolt__01",
+            "part": "u_truss_splice_center_4bolt",
+            "rotation_z_deg": 0.0,
+            "translation_mm": [
+              10.0,
+              105.8,
+              -0.0
+            ],
+            "bounds_mm": [
+              [
+                10.0,
+                105.8,
+                0.0
+              ],
+              [
+                102.0,
+                181.6,
+                74.0
+              ]
+            ]
+          },
+          {
+            "object": "u_truss_splice_crossbar_2bolt__01",
+            "part": "u_truss_splice_crossbar_2bolt",
+            "rotation_z_deg": 0.0,
+            "translation_mm": [
+              122.0,
+              105.8,
+              -0.0
+            ],
+            "bounds_mm": [
+              [
+                122.0,
+                105.8,
+                0.0
+              ],
+              [
+                214.0,
+                181.6,
+                74.0
+              ]
+            ]
+          },
+          {
+            "object": "u_truss_splice_crossbar_2bolt__02",
+            "part": "u_truss_splice_crossbar_2bolt",
+            "rotation_z_deg": 0.0,
+            "translation_mm": [
+              10.0,
+              201.6,
+              -0.0
+            ],
+            "bounds_mm": [
+              [
+                10.0,
+                201.6,
+                0.0
+              ],
+              [
+                102.0,
+                277.4,
+                74.0
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "subplate_id": "08C-J2",
+        "filename": "08C-J2_ABS_boom_root_nodes.3mf",
+        "profile_key": "abs_structural",
+        "object_count": 4,
+        "resource_object_count": 4,
+        "build_item_count": 4,
+        "roundtrip_geometry_count": 4,
+        "extent_x_mm": 188.0,
+        "extent_y_mm": 180.0,
+        "extent_z_mm": 8.85,
+        "fits_protected_295x295x275": true,
+        "sha256": "da785bb7535f2bc0211390fb85ba7f5c30367be5f4c8463e463e6e3c84097232",
+        "validation": "PASS",
+        "objects": [
+          {
+            "object": "boom_crossbar_node__01",
+            "part": "boom_crossbar_node",
+            "rotation_z_deg": 90.0,
+            "translation_mm": [
+              94.0,
+              10.0,
+              -0.0
+            ],
+            "bounds_mm": [
+              [
+                10.0,
+                10.0,
+                0.0
+              ],
+              [
+                94.0,
+                90.0,
+                8.85
+              ]
+            ]
+          },
+          {
+            "object": "boom_crossbar_node__02",
+            "part": "boom_crossbar_node",
+            "rotation_z_deg": 90.0,
+            "translation_mm": [
+              198.0,
+              10.0,
+              -0.0
+            ],
+            "bounds_mm": [
+              [
+                114.0,
+                10.0,
+                0.0
+              ],
+              [
+                198.0,
+                90.0,
+                8.85
+              ]
+            ]
+          },
+          {
+            "object": "boom_crossbar_node__03",
+            "part": "boom_crossbar_node",
+            "rotation_z_deg": 90.0,
+            "translation_mm": [
+              94.0,
+              110.0,
+              -0.0
+            ],
+            "bounds_mm": [
+              [
+                10.0,
+                110.0,
+                0.0
+              ],
+              [
+                94.0,
+                190.0,
+                8.85
+              ]
+            ]
+          },
+          {
+            "object": "boom_crossbar_node__04",
+            "part": "boom_crossbar_node",
+            "rotation_z_deg": 90.0,
+            "translation_mm": [
+              198.0,
+              110.0,
+              -0.0
+            ],
+            "bounds_mm": [
+              [
+                114.0,
+                110.0,
+                0.0
+              ],
+              [
+                198.0,
+                190.0,
+                8.85
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "subplate_id": "08C-C1",
+        "filename": "08C-C1_ABS_camera_xy_carriage.3mf",
+        "profile_key": "abs_structural",
+        "object_count": 1,
+        "resource_object_count": 1,
+        "build_item_count": 1,
+        "roundtrip_geometry_count": 1,
+        "extent_x_mm": 250.0,
+        "extent_y_mm": 130.0,
+        "extent_z_mm": 16.9,
+        "fits_protected_295x295x275": true,
+        "sha256": "40064de5888d51099edbc0295548ad7d0298ba565c7495e61da185a562fa4f3e",
+        "validation": "PASS",
+        "objects": [
+          {
+            "object": "camera_xy_carriage__01",
+            "part": "camera_xy_carriage",
+            "rotation_z_deg": 0.0,
+            "translation_mm": [
+              10.0,
+              10.0,
+              -0.0
+            ],
+            "bounds_mm": [
+              [
+                10.0,
+                10.0,
+                0.0
+              ],
+              [
+                260.0,
+                140.0,
+                16.9
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "subplate_id": "08D-C1",
+        "filename": "08D-C1_ABS_camera_cage_and_keeper.3mf",
+        "profile_key": "abs_holder_precision",
+        "object_count": 2,
+        "resource_object_count": 2,
+        "build_item_count": 2,
+        "roundtrip_geometry_count": 2,
+        "extent_x_mm": 250.0,
+        "extent_y_mm": 96.0,
+        "extent_z_mm": 42.0,
+        "fits_protected_295x295x275": true,
+        "sha256": "df6fe44839036c29f89b49fec790096d2a44db61a0a63ac05627ac5154b5cdfc",
+        "validation": "PASS",
+        "objects": [
+          {
+            "object": "camera_cage_body__01",
+            "part": "camera_cage_body",
+            "rotation_z_deg": 90.0,
+            "translation_mm": [
+              144.0,
+              10.0,
+              -0.0
+            ],
+            "bounds_mm": [
+              [
+                10.0,
+                10.0,
+                0.0
+              ],
+              [
+                144.0,
+                106.0,
+                42.0
+              ]
+            ]
+          },
+          {
+            "object": "camera_cage_keeper__01",
+            "part": "camera_cage_keeper",
+            "rotation_z_deg": 0.0,
+            "translation_mm": [
+              164.0,
+              3.0,
+              -0.0
+            ],
+            "bounds_mm": [
+              [
+                164.0,
+                10.0,
+                0.0
+              ],
+              [
+                260.0,
+                92.0,
+                6.0
+              ]
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "printed_parts_only_assembly_validation": {
+    "status": "PASS",
+    "installed_printed_body_count": 51,
+    "part_tally": {
+      "board_corner_cap_left": 1,
+      "board_corner_cap_right": 1,
+      "board_corner_saddle_left": 1,
+      "board_corner_saddle_right": 1,
+      "board_pressure_pad": 4,
+      "boom_camera_truss_segment_164p25": 2,
+      "boom_crossbar_node": 4,
+      "boom_root_truss_segment_164p25": 2,
+      "camera_cage_body": 1,
+      "camera_cage_keeper": 1,
+      "camera_top_compression_pad": 1,
+      "camera_xy_carriage": 1,
+      "crossbar_truss_segment_182p5": 4,
+      "m6_nut_retainer": 4,
+      "portal_corner_node_left": 2,
+      "portal_corner_node_right": 2,
+      "u_truss_splice": 8,
+      "u_truss_splice_center_4bolt": 1,
+      "u_truss_splice_crossbar_2bolt": 2,
+      "upright_truss_segment_240": 8
+    },
+    "excluded_printed_items": {
+      "print_first_coupons": [
+        "camera_case_fit_gauge",
+        "board_saddle_fit_coupon",
+        "u_splice_fit_coupon"
+      ],
+      "camera_case_shim_ladder": "breakaway fit stock; install only the dimension-selected shim after received-camera gate"
+    },
+    "reference_and_hardware_solids": "omitted",
+    "step": "cad/output/assembly/printable_camera_portal_printed_parts_only.step",
+    "stl": "cad/output/assembly/printable_camera_portal_printed_parts_only.stl",
+    "step_sha256": "6305a4dc1e862e38b9d5b1f9383e17b150f03d6ef994bb8321f18d49ae51f37b",
+    "stl_sha256": "999f60da097a3ca6c99a1c25219ae143d86120df52eb7ef9531d4b0076c5e637"
+  },
+  "managed_output_inventory_validation": {
+    "status": "PASS",
+    "removed_obsolete_files_this_run": [],
+    "expected_part_type_count": 24,
+    "step_file_count": 24,
+    "stl_file_count": 24,
+    "assembly_file_count": 5,
+    "plate_file_count": 21,
+    "differences": {
+      "step_missing": [],
+      "step_unexpected": [],
+      "stl_missing": [],
+      "stl_unexpected": [],
+      "assembly_missing": [],
+      "assembly_unexpected": [],
+      "plate_missing": [],
+      "plate_unexpected": []
+    }
+  },
+  "printable_geometry_fingerprint": {
+    "part_type_count": 24,
+    "aggregate_stl_file_sha256": "fa17db25a8d180144d918ffdd2e4a4efebce4a75059c34a1c65acafb1dafeadc",
+    "aggregate_geometry_identifier_sha256": "a6b34dd83a24bc1c8ffa7050878428aedc62ecbf4f2ac9d298bd0e3adfffd8c9",
+    "algorithm": "SHA-256 over sorted '<filename>:<per-file-or-geometry-hash>\\n' records",
+    "parts": [
+      {
+        "part": "board_corner_cap_left",
+        "stl_sha256": "731e13e235eb602fd2b99ea98e05138ab73ad2eed3a0923a7e2dd20553530dc5",
+        "geometry_identifier_sha256": "b7b759e39e1d12d0dbea6aeb35b78cdf96fd949a6d1ffde515d4d99d4a668003"
+      },
+      {
+        "part": "board_corner_cap_right",
+        "stl_sha256": "f792c4c42f94506dcc7031916138f1f73a002119966efa6334313b8341fab368",
+        "geometry_identifier_sha256": "b3616bba9114c2e7e28a84ec9e5f0663b125d7657e9943d41fac8633b2099bd8"
+      },
+      {
+        "part": "board_corner_saddle_left",
+        "stl_sha256": "12b24a0ac415b5672a2ccf40d782201a33b3a194f8283d6933c3083d74e64eb1",
+        "geometry_identifier_sha256": "23407c438aac9120bd785e17a35f8ce0c14f0e44f86f9dae247f330eb38335af"
+      },
+      {
+        "part": "board_corner_saddle_right",
+        "stl_sha256": "26763204db3fcf93368579571d3308999c8703bb8fea8709ea993fcb8ee1e6cf",
+        "geometry_identifier_sha256": "f33c04aa04f9ae845f8f5fa3dc43ada68f2698bccdbc567131c1d39377200ded"
+      },
+      {
+        "part": "board_pressure_pad",
+        "stl_sha256": "da761474d09f90d5dcf0640f4e6f7e13ce6570e79b1d7ae90d29e6577916e019",
+        "geometry_identifier_sha256": "aa5cb58331ac73873e24fdb03b721691fb23fc07730ceb697bb9a19f9e7aef67"
+      },
+      {
+        "part": "board_saddle_fit_coupon",
+        "stl_sha256": "b4e48871f1a26553d8ae50c74d91151807f6f1bf5b20f6d30eee24a1780627f8",
+        "geometry_identifier_sha256": "4011f287d66ea6bda9c4a9645c5d05074aab9786e51f5316544c249f19ec064f"
+      },
+      {
+        "part": "boom_camera_truss_segment_164p25",
+        "stl_sha256": "6257b08e54bbb85e61699b90bdaa8c873f73d1dcec3dc199e47e3fb46eafa9ed",
+        "geometry_identifier_sha256": "dbc53eca0eee3f9aa259721da3681c6a056e96a50e05f81e7025466ff37e6f30"
+      },
+      {
+        "part": "boom_crossbar_node",
+        "stl_sha256": "165b2acf91d97b246fcaea7447c78e8054dc9672ac970f2343ce0d32941adf58",
+        "geometry_identifier_sha256": "aaf113a28624b15d6a116dad0c0e835a19d8a067bfdcd1ef17732e14254a8c0d"
+      },
+      {
+        "part": "boom_root_truss_segment_164p25",
+        "stl_sha256": "c90c48b5d0b714622cd4d91792e7af9904ae1dbc68848ad0b35e3d04d83e03fd",
+        "geometry_identifier_sha256": "bb5f832db82110e3f87658289d19b65c1dab1fa3cb1d9b0dc90a45c08d7b4b1e"
+      },
+      {
+        "part": "camera_cage_body",
+        "stl_sha256": "ded4d2b85fadeaca7c27b9c2a34f34203ebb02f2e730d8377fb1bca953e90052",
+        "geometry_identifier_sha256": "a07f01666f71283a759c24aa2e61e5a6d760827ba150a6d4ac442d0dfb91e02f"
+      },
+      {
+        "part": "camera_cage_keeper",
+        "stl_sha256": "74a829cfe1f8f57f3801bcf2eacf97e3afeebd448aca96709fbf2016aa20a730",
+        "geometry_identifier_sha256": "26e1f2c1bcfb0e5e971f16a667b9255b269677f92216292f9e40e08301b7d486"
+      },
+      {
+        "part": "camera_case_fit_gauge",
+        "stl_sha256": "52a50542b8b6455480f7c905114b826f2ce46ba1a475dca3ad5c16c9ab984b8d",
+        "geometry_identifier_sha256": "5d627c43593277d1d455d157d966de654ebdded8f2aedede9acdd9eebf1d1262"
+      },
+      {
+        "part": "camera_case_shim_ladder",
+        "stl_sha256": "ea8e466d4d411f57319f04c68a086418cc0cb4165b75e49943c61e85ff3a49b0",
+        "geometry_identifier_sha256": "5632d67feef05d2d32f2d7ff8bccb4e8e0615e726df0af188676715201606399"
+      },
+      {
+        "part": "camera_top_compression_pad",
+        "stl_sha256": "a0a7c15dbdf1d72bfb345f285fab97360ad0cde692963a8ffdc2556d77474a79",
+        "geometry_identifier_sha256": "04819f08e25478c41bf53215bc94be4f1c5bb5d788dde071d89db3cd3816cbc6"
+      },
+      {
+        "part": "camera_xy_carriage",
+        "stl_sha256": "3de3b975d353a062d257c74445a93e1e2d6570c723f1922db1a0182b162b511b",
+        "geometry_identifier_sha256": "4936eb15cb0390559d317822e2e828693834a837f3b3897dcf3180a0bb34ed4b"
+      },
+      {
+        "part": "crossbar_truss_segment_182p5",
+        "stl_sha256": "05e4304f9c49e490cdf44ca09c4ce3385384c53684b0db84cf2675b3e0ccc6c3",
+        "geometry_identifier_sha256": "32961e0b014128fe90f2993e7a5c1d049e63ec3292c832571e668b03ee5c0c42"
+      },
+      {
+        "part": "m6_nut_retainer",
+        "stl_sha256": "05fca3dabba207b0068df1838e23c23fbf7afc68c593110115dd98b42ffa896c",
+        "geometry_identifier_sha256": "ac7886b789fdf3d70bf813dc35caaa8c3f4d92e452a25b70a69736b59bb7f34d"
+      },
+      {
+        "part": "portal_corner_node_left",
+        "stl_sha256": "7243fd2c7ccba1b4dfe38c71d44c858efe23e484f90185b9e4f8028bab65b649",
+        "geometry_identifier_sha256": "5cd6f578595e2d5fe57ca4070ba37864d1eb08c00d165b03d18c4d02aec427f6"
+      },
+      {
+        "part": "portal_corner_node_right",
+        "stl_sha256": "fc6be2f51398eb53a2b2dfb2bc26ee448e55099f131a7881be11e4f314218186",
+        "geometry_identifier_sha256": "b2d77713f7779296db5aaa555898727a3d48c0f186fced72b9f4e0dbf4d85d2f"
+      },
+      {
+        "part": "u_splice_fit_coupon",
+        "stl_sha256": "767e0358db1301a35516e9b9e3a1d5aabf03bd8c89fa444b5700d16c69471654",
+        "geometry_identifier_sha256": "dbab66ae657003fef7b5cc548a083963ffa409718415184eb9a062fd6720c7ae"
+      },
+      {
+        "part": "u_truss_splice",
+        "stl_sha256": "14e9333330cee534e29283f605d6ef0b5e8486c0aed0e7561fd9864c1494413a",
+        "geometry_identifier_sha256": "180eb0e9a403204789e697301079ecebc96154a932b03b8221e5a7306140400c"
+      },
+      {
+        "part": "u_truss_splice_center_4bolt",
+        "stl_sha256": "49a1483cfee4d5eb148cd2104431705d66bdf43012a069ecfb2c3ad92ead9cd2",
+        "geometry_identifier_sha256": "ba2dcace3bb0a236ef258f92120a364f2a546fc3aa854246bc399d8c1b0acbaf"
+      },
+      {
+        "part": "u_truss_splice_crossbar_2bolt",
+        "stl_sha256": "e5492b1ba6cf288761132bf6e79b2d7c22983864904ead8e95aa1242f6c346de",
+        "geometry_identifier_sha256": "4c808cbe67135655c51e44f3bd2f063d07fbdb2c20270ba7b807f17692077cd6"
+      },
+      {
+        "part": "upright_truss_segment_240",
+        "stl_sha256": "af557a1913e9aa7dbab72161c7430cbda9648574352438867d866437a70f434a",
+        "geometry_identifier_sha256": "cefff236b2c94c8633838fd82f87dd0928f3c89ec233f216170526b606b6a1c0"
+      }
+    ]
+  },
+  "parts": [
+    {
+      "part": "board_corner_saddle_left",
+      "quantity": 1,
+      "step": "cad/output/step/board_corner_saddle_left.step",
+      "stl": "cad/output/stl/board_corner_saddle_left.stl",
+      "stl_sha256": "12b24a0ac415b5672a2ccf40d782201a33b3a194f8283d6933c3083d74e64eb1",
+      "geometry_identifier_sha256": "23407c438aac9120bd785e17a35f8ce0c14f0e44f86f9dae247f330eb38335af",
+      "extent_x_mm": 190.0,
+      "extent_y_mm": 250.0,
+      "extent_z_mm": 104.0,
+      "watertight": true,
+      "winding_consistent": true,
+      "connected_components": 1,
+      "single_body": true,
+      "positive_volume": true,
+      "volume_cm3_each": 567.35,
+      "fits_protected_295x295x275": true,
+      "validation": "PASS"
+    },
+    {
+      "part": "board_corner_saddle_right",
+      "quantity": 1,
+      "step": "cad/output/step/board_corner_saddle_right.step",
+      "stl": "cad/output/stl/board_corner_saddle_right.stl",
+      "stl_sha256": "26763204db3fcf93368579571d3308999c8703bb8fea8709ea993fcb8ee1e6cf",
+      "geometry_identifier_sha256": "f33c04aa04f9ae845f8f5fa3dc43ada68f2698bccdbc567131c1d39377200ded",
+      "extent_x_mm": 190.0,
+      "extent_y_mm": 250.0,
+      "extent_z_mm": 104.0,
+      "watertight": true,
+      "winding_consistent": true,
+      "connected_components": 1,
+      "single_body": true,
+      "positive_volume": true,
+      "volume_cm3_each": 567.67,
+      "fits_protected_295x295x275": true,
+      "validation": "PASS"
+    },
+    {
+      "part": "board_corner_cap_left",
+      "quantity": 1,
+      "step": "cad/output/step/board_corner_cap_left.step",
+      "stl": "cad/output/stl/board_corner_cap_left.stl",
+      "stl_sha256": "731e13e235eb602fd2b99ea98e05138ab73ad2eed3a0923a7e2dd20553530dc5",
+      "geometry_identifier_sha256": "b7b759e39e1d12d0dbea6aeb35b78cdf96fd949a6d1ffde515d4d99d4a668003",
+      "extent_x_mm": 85.0,
+      "extent_y_mm": 85.0,
+      "extent_z_mm": 9.8,
+      "watertight": true,
+      "winding_consistent": true,
+      "connected_components": 1,
+      "single_body": true,
+      "positive_volume": true,
+      "volume_cm3_each": 37.7,
+      "fits_protected_295x295x275": true,
+      "validation": "PASS"
+    },
+    {
+      "part": "board_corner_cap_right",
+      "quantity": 1,
+      "step": "cad/output/step/board_corner_cap_right.step",
+      "stl": "cad/output/stl/board_corner_cap_right.stl",
+      "stl_sha256": "f792c4c42f94506dcc7031916138f1f73a002119966efa6334313b8341fab368",
+      "geometry_identifier_sha256": "b3616bba9114c2e7e28a84ec9e5f0663b125d7657e9943d41fac8633b2099bd8",
+      "extent_x_mm": 85.0,
+      "extent_y_mm": 85.0,
+      "extent_z_mm": 9.8,
+      "watertight": true,
+      "winding_consistent": true,
+      "connected_components": 1,
+      "single_body": true,
+      "positive_volume": true,
+      "volume_cm3_each": 37.7,
+      "fits_protected_295x295x275": true,
+      "validation": "PASS"
+    },
+    {
+      "part": "board_pressure_pad",
+      "quantity": 4,
+      "step": "cad/output/step/board_pressure_pad.step",
+      "stl": "cad/output/stl/board_pressure_pad.stl",
+      "stl_sha256": "da761474d09f90d5dcf0640f4e6f7e13ce6570e79b1d7ae90d29e6577916e019",
+      "geometry_identifier_sha256": "aa5cb58331ac73873e24fdb03b721691fb23fc07730ceb697bb9a19f9e7aef67",
+      "extent_x_mm": 38.0,
+      "extent_y_mm": 9.0,
+      "extent_z_mm": 3.15,
+      "watertight": true,
+      "winding_consistent": true,
+      "connected_components": 1,
+      "single_body": true,
+      "positive_volume": true,
+      "volume_cm3_each": 0.31,
+      "fits_protected_295x295x275": true,
+      "validation": "PASS"
+    },
+    {
+      "part": "m6_nut_retainer",
+      "quantity": 5,
+      "step": "cad/output/step/m6_nut_retainer.step",
+      "stl": "cad/output/stl/m6_nut_retainer.stl",
+      "stl_sha256": "05fca3dabba207b0068df1838e23c23fbf7afc68c593110115dd98b42ffa896c",
+      "geometry_identifier_sha256": "ac7886b789fdf3d70bf813dc35caaa8c3f4d92e452a25b70a69736b59bb7f34d",
+      "extent_x_mm": 13.2,
+      "extent_y_mm": 25.8,
+      "extent_z_mm": 6.0,
+      "watertight": true,
+      "winding_consistent": true,
+      "connected_components": 1,
+      "single_body": true,
+      "positive_volume": true,
+      "volume_cm3_each": 1.82,
+      "fits_protected_295x295x275": true,
+      "validation": "PASS"
+    },
+    {
+      "part": "upright_truss_segment_240",
+      "quantity": 8,
+      "step": "cad/output/step/upright_truss_segment_240.step",
+      "stl": "cad/output/stl/upright_truss_segment_240.stl",
+      "stl_sha256": "af557a1913e9aa7dbab72161c7430cbda9648574352438867d866437a70f434a",
+      "geometry_identifier_sha256": "cefff236b2c94c8633838fd82f87dd0928f3c89ec233f216170526b606b6a1c0",
+      "extent_x_mm": 240.0,
+      "extent_y_mm": 50.0,
+      "extent_z_mm": 64.0,
+      "watertight": true,
+      "winding_consistent": true,
+      "connected_components": 1,
+      "single_body": true,
+      "positive_volume": true,
+      "volume_cm3_each": 268.0,
+      "fits_protected_295x295x275": true,
+      "validation": "PASS"
+    },
+    {
+      "part": "crossbar_truss_segment_182p5",
+      "quantity": 4,
+      "step": "cad/output/step/crossbar_truss_segment_182p5.step",
+      "stl": "cad/output/stl/crossbar_truss_segment_182p5.stl",
+      "stl_sha256": "05e4304f9c49e490cdf44ca09c4ce3385384c53684b0db84cf2675b3e0ccc6c3",
+      "geometry_identifier_sha256": "32961e0b014128fe90f2993e7a5c1d049e63ec3292c832571e668b03ee5c0c42",
+      "extent_x_mm": 182.5,
+      "extent_y_mm": 50.0,
+      "extent_z_mm": 64.0,
+      "watertight": true,
+      "winding_consistent": true,
+      "connected_components": 1,
+      "single_body": true,
+      "positive_volume": true,
+      "volume_cm3_each": 243.88,
+      "fits_protected_295x295x275": true,
+      "validation": "PASS"
+    },
+    {
+      "part": "boom_root_truss_segment_164p25",
+      "quantity": 2,
+      "step": "cad/output/step/boom_root_truss_segment_164p25.step",
+      "stl": "cad/output/stl/boom_root_truss_segment_164p25.stl",
+      "stl_sha256": "c90c48b5d0b714622cd4d91792e7af9904ae1dbc68848ad0b35e3d04d83e03fd",
+      "geometry_identifier_sha256": "bb5f832db82110e3f87658289d19b65c1dab1fa3cb1d9b0dc90a45c08d7b4b1e",
+      "extent_x_mm": 164.25,
+      "extent_y_mm": 50.0,
+      "extent_z_mm": 64.0,
+      "watertight": true,
+      "winding_consistent": true,
+      "connected_components": 1,
+      "single_body": true,
+      "positive_volume": true,
+      "volume_cm3_each": 217.63,
+      "fits_protected_295x295x275": true,
+      "validation": "PASS"
+    },
+    {
+      "part": "boom_camera_truss_segment_164p25",
+      "quantity": 2,
+      "step": "cad/output/step/boom_camera_truss_segment_164p25.step",
+      "stl": "cad/output/stl/boom_camera_truss_segment_164p25.stl",
+      "stl_sha256": "6257b08e54bbb85e61699b90bdaa8c873f73d1dcec3dc199e47e3fb46eafa9ed",
+      "geometry_identifier_sha256": "dbc53eca0eee3f9aa259721da3681c6a056e96a50e05f81e7025466ff37e6f30",
+      "extent_x_mm": 164.25,
+      "extent_y_mm": 50.0,
+      "extent_z_mm": 64.0,
+      "watertight": true,
+      "winding_consistent": true,
+      "connected_components": 1,
+      "single_body": true,
+      "positive_volume": true,
+      "volume_cm3_each": 218.59,
+      "fits_protected_295x295x275": true,
+      "validation": "PASS"
+    },
+    {
+      "part": "u_truss_splice",
+      "quantity": 8,
+      "step": "cad/output/step/u_truss_splice.step",
+      "stl": "cad/output/stl/u_truss_splice.stl",
+      "stl_sha256": "14e9333330cee534e29283f605d6ef0b5e8486c0aed0e7561fd9864c1494413a",
+      "geometry_identifier_sha256": "180eb0e9a403204789e697301079ecebc96154a932b03b8221e5a7306140400c",
+      "extent_x_mm": 104.0,
+      "extent_y_mm": 75.8,
+      "extent_z_mm": 74.0,
+      "watertight": true,
+      "winding_consistent": true,
+      "connected_components": 1,
+      "single_body": true,
+      "positive_volume": true,
+      "volume_cm3_each": 108.32,
+      "fits_protected_295x295x275": true,
+      "validation": "PASS"
+    },
+    {
+      "part": "u_truss_splice_crossbar_2bolt",
+      "quantity": 2,
+      "step": "cad/output/step/u_truss_splice_crossbar_2bolt.step",
+      "stl": "cad/output/stl/u_truss_splice_crossbar_2bolt.stl",
+      "stl_sha256": "e5492b1ba6cf288761132bf6e79b2d7c22983864904ead8e95aa1242f6c346de",
+      "geometry_identifier_sha256": "4c808cbe67135655c51e44f3bd2f063d07fbdb2c20270ba7b807f17692077cd6",
+      "extent_x_mm": 92.0,
+      "extent_y_mm": 75.8,
+      "extent_z_mm": 74.0,
+      "watertight": true,
+      "winding_consistent": true,
+      "connected_components": 1,
+      "single_body": true,
+      "positive_volume": true,
+      "volume_cm3_each": 96.09,
+      "fits_protected_295x295x275": true,
+      "validation": "PASS"
+    },
+    {
+      "part": "u_truss_splice_center_4bolt",
+      "quantity": 1,
+      "step": "cad/output/step/u_truss_splice_center_4bolt.step",
+      "stl": "cad/output/stl/u_truss_splice_center_4bolt.stl",
+      "stl_sha256": "49a1483cfee4d5eb148cd2104431705d66bdf43012a069ecfb2c3ad92ead9cd2",
+      "geometry_identifier_sha256": "ba2dcace3bb0a236ef258f92120a364f2a546fc3aa854246bc399d8c1b0acbaf",
+      "extent_x_mm": 92.0,
+      "extent_y_mm": 75.8,
+      "extent_z_mm": 74.0,
+      "watertight": true,
+      "winding_consistent": true,
+      "connected_components": 1,
+      "single_body": true,
+      "positive_volume": true,
+      "volume_cm3_each": 95.53,
+      "fits_protected_295x295x275": true,
+      "validation": "PASS"
+    },
+    {
+      "part": "portal_corner_node_left",
+      "quantity": 2,
+      "step": "cad/output/step/portal_corner_node_left.step",
+      "stl": "cad/output/stl/portal_corner_node_left.stl",
+      "stl_sha256": "7243fd2c7ccba1b4dfe38c71d44c858efe23e484f90185b9e4f8028bab65b649",
+      "geometry_identifier_sha256": "5cd6f578595e2d5fe57ca4070ba37864d1eb08c00d165b03d18c4d02aec427f6",
+      "extent_x_mm": 110.0,
+      "extent_y_mm": 124.0,
+      "extent_z_mm": 8.8,
+      "watertight": true,
+      "winding_consistent": true,
+      "connected_components": 1,
+      "single_body": true,
+      "positive_volume": true,
+      "volume_cm3_each": 101.36,
+      "fits_protected_295x295x275": true,
+      "validation": "PASS"
+    },
+    {
+      "part": "portal_corner_node_right",
+      "quantity": 2,
+      "step": "cad/output/step/portal_corner_node_right.step",
+      "stl": "cad/output/stl/portal_corner_node_right.stl",
+      "stl_sha256": "fc6be2f51398eb53a2b2dfb2bc26ee448e55099f131a7881be11e4f314218186",
+      "geometry_identifier_sha256": "b2d77713f7779296db5aaa555898727a3d48c0f186fced72b9f4e0dbf4d85d2f",
+      "extent_x_mm": 110.0,
+      "extent_y_mm": 124.0,
+      "extent_z_mm": 8.8,
+      "watertight": true,
+      "winding_consistent": true,
+      "connected_components": 1,
+      "single_body": true,
+      "positive_volume": true,
+      "volume_cm3_each": 101.36,
+      "fits_protected_295x295x275": true,
+      "validation": "PASS"
+    },
+    {
+      "part": "boom_crossbar_node",
+      "quantity": 4,
+      "step": "cad/output/step/boom_crossbar_node.step",
+      "stl": "cad/output/stl/boom_crossbar_node.stl",
+      "stl_sha256": "165b2acf91d97b246fcaea7447c78e8054dc9672ac970f2343ce0d32941adf58",
+      "geometry_identifier_sha256": "aaf113a28624b15d6a116dad0c0e835a19d8a067bfdcd1ef17732e14254a8c0d",
+      "extent_x_mm": 80.0,
+      "extent_y_mm": 84.0,
+      "extent_z_mm": 8.85,
+      "watertight": true,
+      "winding_consistent": true,
+      "connected_components": 1,
+      "single_body": true,
+      "positive_volume": true,
+      "volume_cm3_each": 52.9,
+      "fits_protected_295x295x275": true,
+      "validation": "PASS"
+    },
+    {
+      "part": "camera_xy_carriage",
+      "quantity": 1,
+      "step": "cad/output/step/camera_xy_carriage.step",
+      "stl": "cad/output/stl/camera_xy_carriage.stl",
+      "stl_sha256": "3de3b975d353a062d257c74445a93e1e2d6570c723f1922db1a0182b162b511b",
+      "geometry_identifier_sha256": "4936eb15cb0390559d317822e2e828693834a837f3b3897dcf3180a0bb34ed4b",
+      "extent_x_mm": 250.0,
+      "extent_y_mm": 130.0,
+      "extent_z_mm": 16.9,
+      "watertight": true,
+      "winding_consistent": true,
+      "connected_components": 1,
+      "single_body": true,
+      "positive_volume": true,
+      "volume_cm3_each": 316.84,
+      "fits_protected_295x295x275": true,
+      "validation": "PASS"
+    },
+    {
+      "part": "camera_cage_body",
+      "quantity": 1,
+      "step": "cad/output/step/camera_cage_body.step",
+      "stl": "cad/output/stl/camera_cage_body.stl",
+      "stl_sha256": "ded4d2b85fadeaca7c27b9c2a34f34203ebb02f2e730d8377fb1bca953e90052",
+      "geometry_identifier_sha256": "a07f01666f71283a759c24aa2e61e5a6d760827ba150a6d4ac442d0dfb91e02f",
+      "extent_x_mm": 96.0,
+      "extent_y_mm": 134.0,
+      "extent_z_mm": 42.0,
+      "watertight": true,
+      "winding_consistent": true,
+      "connected_components": 1,
+      "single_body": true,
+      "positive_volume": true,
+      "volume_cm3_each": 126.66,
+      "fits_protected_295x295x275": true,
+      "validation": "PASS"
+    },
+    {
+      "part": "camera_cage_keeper",
+      "quantity": 1,
+      "step": "cad/output/step/camera_cage_keeper.step",
+      "stl": "cad/output/stl/camera_cage_keeper.stl",
+      "stl_sha256": "74a829cfe1f8f57f3801bcf2eacf97e3afeebd448aca96709fbf2016aa20a730",
+      "geometry_identifier_sha256": "26e1f2c1bcfb0e5e971f16a667b9255b269677f92216292f9e40e08301b7d486",
+      "extent_x_mm": 96.0,
+      "extent_y_mm": 82.0,
+      "extent_z_mm": 6.0,
+      "watertight": true,
+      "winding_consistent": true,
+      "connected_components": 1,
+      "single_body": true,
+      "positive_volume": true,
+      "volume_cm3_each": 34.64,
+      "fits_protected_295x295x275": true,
+      "validation": "PASS"
+    },
+    {
+      "part": "camera_top_compression_pad",
+      "quantity": 1,
+      "step": "cad/output/step/camera_top_compression_pad.step",
+      "stl": "cad/output/stl/camera_top_compression_pad.stl",
+      "stl_sha256": "a0a7c15dbdf1d72bfb345f285fab97360ad0cde692963a8ffdc2556d77474a79",
+      "geometry_identifier_sha256": "04819f08e25478c41bf53215bc94be4f1c5bb5d788dde071d89db3cd3816cbc6",
+      "extent_x_mm": 38.0,
+      "extent_y_mm": 38.0,
+      "extent_z_mm": 9.2,
+      "watertight": true,
+      "winding_consistent": true,
+      "connected_components": 1,
+      "single_body": true,
+      "positive_volume": true,
+      "volume_cm3_each": 7.92,
+      "fits_protected_295x295x275": true,
+      "validation": "PASS"
+    },
+    {
+      "part": "camera_case_shim_ladder",
+      "quantity": 1,
+      "step": "cad/output/step/camera_case_shim_ladder.step",
+      "stl": "cad/output/stl/camera_case_shim_ladder.stl",
+      "stl_sha256": "ea8e466d4d411f57319f04c68a086418cc0cb4165b75e49943c61e85ff3a49b0",
+      "geometry_identifier_sha256": "5632d67feef05d2d32f2d7ff8bccb4e8e0615e726df0af188676715201606399",
+      "extent_x_mm": 55.591,
+      "extent_y_mm": 62.0,
+      "extent_z_mm": 2.0,
+      "watertight": true,
+      "winding_consistent": true,
+      "connected_components": 1,
+      "single_body": true,
+      "positive_volume": true,
+      "volume_cm3_each": 1.77,
+      "fits_protected_295x295x275": true,
+      "validation": "PASS"
+    },
+    {
+      "part": "camera_case_fit_gauge",
+      "quantity": 1,
+      "step": "cad/output/step/camera_case_fit_gauge.step",
+      "stl": "cad/output/stl/camera_case_fit_gauge.stl",
+      "stl_sha256": "52a50542b8b6455480f7c905114b826f2ce46ba1a475dca3ad5c16c9ab984b8d",
+      "geometry_identifier_sha256": "5d627c43593277d1d455d157d966de654ebdded8f2aedede9acdd9eebf1d1262",
+      "extent_x_mm": 186.0,
+      "extent_y_mm": 86.0,
+      "extent_z_mm": 8.8,
+      "watertight": true,
+      "winding_consistent": true,
+      "connected_components": 1,
+      "single_body": true,
+      "positive_volume": true,
+      "volume_cm3_each": 93.14,
+      "fits_protected_295x295x275": true,
+      "validation": "PASS"
+    },
+    {
+      "part": "board_saddle_fit_coupon",
+      "quantity": 1,
+      "step": "cad/output/step/board_saddle_fit_coupon.step",
+      "stl": "cad/output/stl/board_saddle_fit_coupon.stl",
+      "stl_sha256": "b4e48871f1a26553d8ae50c74d91151807f6f1bf5b20f6d30eee24a1780627f8",
+      "geometry_identifier_sha256": "4011f287d66ea6bda9c4a9645c5d05074aab9786e51f5316544c249f19ec064f",
+      "extent_x_mm": 104.0,
+      "extent_y_mm": 45.0,
+      "extent_z_mm": 19.5,
+      "watertight": true,
+      "winding_consistent": true,
+      "connected_components": 1,
+      "single_body": true,
+      "positive_volume": true,
+      "volume_cm3_each": 35.27,
+      "fits_protected_295x295x275": true,
+      "validation": "PASS"
+    },
+    {
+      "part": "u_splice_fit_coupon",
+      "quantity": 1,
+      "step": "cad/output/step/u_splice_fit_coupon.step",
+      "stl": "cad/output/stl/u_splice_fit_coupon.stl",
+      "stl_sha256": "767e0358db1301a35516e9b9e3a1d5aabf03bd8c89fa444b5700d16c69471654",
+      "geometry_identifier_sha256": "dbab66ae657003fef7b5cc548a083963ffa409718415184eb9a062fd6720c7ae",
+      "extent_x_mm": 86.0,
+      "extent_y_mm": 50.0,
+      "extent_z_mm": 64.0,
+      "watertight": true,
+      "winding_consistent": true,
+      "connected_components": 1,
+      "single_body": true,
+      "positive_volume": true,
+      "volume_cm3_each": 131.12,
+      "fits_protected_295x295x275": true,
+      "validation": "PASS"
+    }
+  ],
+  "hardware": [
+    {
+      "item": "M6 x 25 external-hex flange-head bolt",
+      "quantity": 4,
+      "use": "10 mm wrench size; top-driven board corner clamps; head OD must be <=13.5 mm and must bear fully on the integrated 16.0 mm raised cap boss; first-cap physical seating remains mandatory"
+    },
+    {
+      "item": "M6 DIN 985 nyloc nut",
+      "quantity": 5,
+      "use": "four fresh final board-clamp nuts plus one sacrificial 00G nut-pocket/prevailing-torque test nut; 10 mm across flats and <=6.0 mm high; side-loaded captured saddle pockets"
+    },
+    {
+      "item": "M5 x 75 flange-head bolt",
+      "quantity": 32,
+      "use": "sixteen standard-splice positions, four outer-crossbar splice positions, four center-crossbar splice positions, and eight portal-corner positions"
+    },
+    {
+      "item": "M5 x 80 flange-head bolt",
+      "quantity": 4,
+      "use": "two diagonally separated saddle tower receiver cross-bolts per tower"
+    },
+    {
+      "item": "M5 x 85 flange-head bolt",
+      "quantity": 4,
+      "use": "four carriage-to-boom end-collar positions"
+    },
+    {
+      "item": "M5 x 90 flange-head bolt",
+      "quantity": 8,
+      "use": "four vertical top/bottom sandwich-strap bolts per boom root"
+    },
+    {
+      "item": "M5 flanged nyloc nut",
+      "quantity": 52,
+      "use": "48 final installed M5 joints plus four sacrificial carriage nuts used only for the empty-frame proof/creep test; use four fresh nuts for final overhead carriage installation; no loose M5 washers required"
+    },
+    {
+      "item": "M4 x 60 button-head bolt",
+      "quantity": 4,
+      "use": "four perimeter keeper bolts installed downward; washer and head fully recessed in keeper; nyloc and washer below cage base"
+    },
+    {
+      "item": "M4 x 70 button-head socket bolt",
+      "quantity": 3,
+      "use": "2.5 mm internal hex; leveling screws installed downward from above carriage into captured cage-base nuts"
+    },
+    {
+      "item": "M4 standard hex nut",
+      "quantity": 6,
+      "use": "three underside-loaded cage-base captured nuts beneath intact load-bearing roofs plus three accessible jam nuts directly below carriage"
+    },
+    {
+      "item": "M4 nyloc nut",
+      "quantity": 4,
+      "use": "four-point keeper closure below cage base"
+    },
+    {
+      "item": "M4 washer",
+      "quantity": 14,
+      "use": "three under leveling heads, three above leveling jam nuts, four under recessed keeper heads, and four above keeper nylocs"
+    },
+    {
+      "item": "5.0 mm maximum-width cable tie",
+      "quantity": 6,
+      "use": "two integrated cage slots, two boom floor tie stations, and two right-upright floor tie stations"
+    },
+    {
+      "item": "complete factory-terminated independent metal camera safety tether assembly",
+      "quantity": 1,
+      "use": "500 +/- 25 mm finished cable-centerline length; 1.5-2.0 mm 7x7 stainless cable; coated OD <=3.0 mm; >=130 mm laid-flat choker eye around the exposed right distal boom station B (396.25,152.5); captive screw-lock cage connector stock/pin <=5 mm and opening >=9 mm; manufacturer WLL >=10 kg and MBL >=50 kg"
+    }
+  ],
+  "assemblies": [
+    "cad/output/assembly/printable_camera_portal_prototype.step",
+    "cad/output/assembly/printable_camera_portal_prototype_reference.stl",
+    "cad/output/assembly/printable_camera_portal_printed_parts_only.step",
+    "cad/output/assembly/printable_camera_portal_printed_parts_only.stl",
+    "cad/output/assembly/camera_cage_nominal_subassembly.step"
+  ],
+  "geometry_only_3mf_subplates": [
+    "cad/output/plates_3mf/00G-S1_ABS_board_splice_fit_tests.3mf",
+    "cad/output/plates_3mf/00G-C1_ABS_received_camera_fit_tests.3mf",
+    "cad/output/plates_3mf/00G-P1_TPU_camera_portal_pads.3mf",
+    "cad/output/plates_3mf/08A-S1_ABS_left_bench_saddle.3mf",
+    "cad/output/plates_3mf/08A-S2_ABS_left_cap_and_splices.3mf",
+    "cad/output/plates_3mf/08A-J1_ABS_left_portal_corner_pair.3mf",
+    "cad/output/plates_3mf/08A-T1_ABS_left_uprights_1_2.3mf",
+    "cad/output/plates_3mf/08A-T2_ABS_left_uprights_3_4.3mf",
+    "cad/output/plates_3mf/08B-S1_ABS_right_bench_saddle.3mf",
+    "cad/output/plates_3mf/08B-S2_ABS_right_cap_and_splices.3mf",
+    "cad/output/plates_3mf/08B-J1_ABS_right_portal_corner_pair.3mf",
+    "cad/output/plates_3mf/08B-T1_ABS_right_uprights_1_2.3mf",
+    "cad/output/plates_3mf/08B-T2_ABS_right_uprights_3_4.3mf",
+    "cad/output/plates_3mf/08C-X1_ABS_crossbar_1_2.3mf",
+    "cad/output/plates_3mf/08C-X2_ABS_crossbar_3_4.3mf",
+    "cad/output/plates_3mf/08C-B1_ABS_booms_1_2.3mf",
+    "cad/output/plates_3mf/08C-B2_ABS_booms_3_4.3mf",
+    "cad/output/plates_3mf/08C-J1_ABS_crossbar_boom_splices.3mf",
+    "cad/output/plates_3mf/08C-J2_ABS_boom_root_nodes.3mf",
+    "cad/output/plates_3mf/08C-C1_ABS_camera_xy_carriage.3mf",
+    "cad/output/plates_3mf/08D-C1_ABS_camera_cage_and_keeper.3mf"
+  ],
+  "print_orientation": {
+    "truss_segments_and_flat_plates": "as exported: largest flat face on build plate",
+    "corner_saddles": "120 x 120 bench foot on build plate; receiver slot open upward",
+    "camera_cage_body": "lens ring/base on build plate; USB notch open upward",
+    "keeper_and_carriage": "flat as exported",
+    "supports": "none intended; verify slicer preview before every print"
+  },
+  "raised_marking_policy": "All part IDs and orientation cues are raised. No functional instruction relies on engraving.",
+  "mandatory_prototype_gates": [
+    "Print camera_case_fit_gauge first and compare the received camera and lens without forcing either feature.",
+    "Install the square camera with its USB connector facing the rear USB opening, then verify the plug and bend radius pass behind the boom end, enter the right open-U channel, rise ahead of the root straps, and clear every boom, strap, keeper, and carriage surface.",
+    "Dry-assemble the empty portal and apply a static proof load greater than the camera/cage mass before installing the camera.",
+    "Verify that neither top clamp lip intersects T0, T1, or any direct tag artwork.",
+    "Verify the complete portal, fasteners, cable, and camera remain outside every robot route; generated proxy geometry is not collision proof.",
+    "Measure entrance-pupil height and lock the four carriage bolts and three leveling screws with witness marks.",
+    "Before installing all clamps, physically seat one received M6x25 flange head with measured head OD <=13.5 mm on the first integrated 16.0 mm raised cap boss and confirm full, concentric, flat, force-free seating with no flange overhang.",
+    "Before any overhead installation, verify the received complete factory-terminated tether and manufacturer evidence against every procurement constraint, then confirm both terminated connections close and lock without modifying the cable or fittings.",
+    "Do not power or move the robot until a superseding controlled build release authorizes this physical support."
+  ]
+}

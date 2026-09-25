@@ -1,0 +1,62 @@
+{
+  "plate": "08C-X2",
+  "file": "PRINT_ABS_frame/08C-X2_ABS_crossbar_3_4_WELDED_v1.3mf",
+  "geometry_source": "C:\\Users\\Jack\\Desktop\\robot-arm-build\\hardware\\static_overhead_camera\\cad\\output\\plates_3mf\\08C-X2_ABS_crossbar_3_4.3mf",
+  "geometry_revision": null,
+  "source_sha256": "d75d4c9daffa22b7d1fec891efcd7b633f51fb8aafe5386ed1c9c4cac885ff03",
+  "output_sha256": "510ec87141be8932ce48bc3c012cde7cec5a3d48b4b45efad9aa702439315b28",
+  "status": "PASS_MESH",
+  "expected_objects": 2,
+  "objects": [
+    {
+      "name": "crossbar_truss_segment_182p5__01",
+      "original_vertices": 10095,
+      "welded_vertices": 10095,
+      "triangles": 20394,
+      "open_edges": 0,
+      "nonmanifold_edges": 0,
+      "geometry_unchanged": true
+    },
+    {
+      "name": "crossbar_truss_segment_182p5__02",
+      "original_vertices": 10095,
+      "welded_vertices": 10095,
+      "triangles": 20394,
+      "open_edges": 0,
+      "nonmanifold_edges": 0,
+      "geometry_unchanged": true
+    }
+  ],
+  "placed_bounds_mm": [
+    [
+      [
+        10.0,
+        10.0,
+        0.0
+      ],
+      [
+        192.5,
+        60.0,
+        64.0
+      ]
+    ],
+    [
+      [
+        10.0,
+        80.0,
+        0.0
+      ],
+      [
+        192.5,
+        130.0,
+        64.0
+      ]
+    ]
+  ],
+  "triangle_coordinates": "EXACTLY_PRESERVED_FROM_NAMED_GEOMETRY_SOURCE",
+  "build_transforms": "EXACTLY_PRESERVED",
+  "excluded_objects": [],
+  "namespace": "DEFAULT_UNPREFIXED_CORE",
+  "native_slicer_preview": "PENDING",
+  "physical_fit_and_strength": "NOT_QUALIFIED"
+}

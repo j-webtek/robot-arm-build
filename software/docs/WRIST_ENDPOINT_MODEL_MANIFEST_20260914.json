@@ -1,0 +1,13 @@
+{
+  "schema": "rocell.offline_endpoint_model_selection.v1",
+  "split_kind": "RETROSPECTIVE_CAMPAIGN_DISJOINT",
+  "exports": [
+    {"campaign_id":"campaign-37c6f91ee84a4fe4ab057fb0df2a1d48","split":"train","report_sha256":"203b3a9a5427e2ea9d86fd76ccf401f9aefde0fef9ef5160ef87f7855d47d3c4"},
+    {"campaign_id":"campaign-b722539816a44cbd957f35fc62877d4b","split":"train","report_sha256":"d40dfa473010ec6ebb9921a16d4ebae9711ed4464a374518e8de311d7ccb2052"},
+    {"campaign_id":"campaign-8692dabab46d4826a5cac99ec2c76386","split":"validation","report_sha256":"d2093816b428258aca84e6c952c84d335fde76e3702bd4e206789a670cae7341"},
+    {"campaign_id":"campaign-5b875a109ce645d5b93e852de572c240","split":"validation","report_sha256":"e20c7721144b629a2c1c671cdc14d47ab17b29082d44810565aba6891c9174ed"},
+    {"campaign_id":"campaign-bafc0b37ef7645efa021270829cca972","split":"validation","report_sha256":"7b3ca9009d2d61bf612018c10f0d4270284f97f7f550d7bd3bf8d514efd9124e"},
+    {"campaign_id":"campaign-abf46afb0e8d4e40999dd26e4f77f4bb","split":"validation","report_sha256":"6ca97eacc1ffc06e4b7c56a90bb412042d0ed9012539625db23129ecc8e0a464"},
+    {"campaign_id":"campaign-aa183c275d524a60901f29af951575de","split":"validation","report_sha256":"a85630b5f1d6f3abd109afb684fbce96965f796cc965cea37a1bfcfe37e45d4d"}
+  ]
+}

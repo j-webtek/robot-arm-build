@@ -1,0 +1,7 @@
+release_revision,layout_sha256,name,id,role,mounting,tile_origin_x_mm,tile_origin_y_mm,tile_size_mm,detection_center_x_mm,detection_center_y_mm,detection_edge_mm,expected_yaw_deg,board_z_reference,nominal_plane_z_mm
+RC03-INT-R1,e84db9aa7b88db442f042c6f546196e350c822a2e7609cb4b652b3da535df2e1,T0,0,world,direct_adhesive,19.5,12.5,55.0,47.0,40.0,40.0,0.0,finished sealed board top surface,
+RC03-INT-R1,e84db9aa7b88db442f042c6f546196e350c822a2e7609cb4b652b3da535df2e1,T1,1,world,direct_adhesive,412.5,12.5,55.0,440.0,40.0,40.0,0.0,finished sealed board top surface,
+RC03-INT-R1,e84db9aa7b88db442f042c6f546196e350c822a2e7609cb4b652b3da535df2e1,T2,2,world,direct_adhesive,19.5,382.5,55.0,47.0,410.0,40.0,0.0,finished sealed board top surface,
+RC03-INT-R1,e84db9aa7b88db442f042c6f546196e350c822a2e7609cb4b652b3da535df2e1,T3,3,world,direct_adhesive,535.5,382.5,55.0,563.0,410.0,40.0,0.0,finished sealed board top surface,
+RC03-INT-R1,e84db9aa7b88db442f042c6f546196e350c822a2e7609cb4b652b3da535df2e1,K0,4,station_check,direct_adhesive,296.5,281.5,55.0,324.0,309.0,40.0,0.0,finished sealed board top surface,
+RC03-INT-R1,e84db9aa7b88db442f042c6f546196e350c822a2e7609cb4b652b3da535df2e1,P0,5,station_check,direct_adhesive,431.5,281.5,55.0,459.0,309.0,40.0,0.0,finished sealed board top surface,

@@ -1,0 +1,27 @@
+{
+  "status": "PASS",
+  "method": "0.20 mm cross-section sampling at layer midplanes; new regions >0.1 mm2 must intersect previous layer with 0.02 mm numerical buffer",
+  "limitations": "Geometric island screen, not QIDI toolpath validation. Does not qualify bridge performance, support-free printing, or physical strength.",
+  "objects": [
+    {
+      "object": "u_truss_splice__01",
+      "sampled_layer_count": 370,
+      "unanchored_islands": []
+    },
+    {
+      "object": "u_splice_fit_coupon__01",
+      "sampled_layer_count": 320,
+      "unanchored_islands": []
+    },
+    {
+      "object": "board_saddle_fit_coupon__01",
+      "sampled_layer_count": 99,
+      "unanchored_islands": []
+    },
+    {
+      "object": "m6_nut_retainer__01",
+      "sampled_layer_count": 30,
+      "unanchored_islands": []
+    }
+  ]
+}

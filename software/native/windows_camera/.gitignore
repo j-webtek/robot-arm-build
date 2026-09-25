@@ -1,0 +1,3 @@
+# Local compilation output is not an approved distributed native package.
+/build/
+/build-*/

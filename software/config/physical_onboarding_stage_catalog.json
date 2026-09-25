@@ -1,0 +1,329 @@
+{
+  "schema": "rocell.physical_onboarding_stage_catalog.v2",
+  "catalog_id": "ROCELL-PHYSICAL-ONBOARDING-STAGES-001",
+  "revision": 3,
+  "status": "DESIGN_REVIEWED_RUNTIME_MIGRATION_PENDING",
+  "runtime_activation": false,
+  "canonical_stage_order_source": "rocell.application.physical_onboarding.STAGE_ORDER",
+  "canonical_stage_order_sha256": "b42056193766d48d13e94ec11f9697c03bb989acb578c8437d565af6801a3746",
+  "duplicate_stage_catalog_allowed": false,
+  "v1_session_policy_after_v2_activation": "READ_ONLY_VERIFY_EXPORT_ONLY",
+  "new_effectful_session_schema": "rocell.physical_onboarding_header.v2",
+  "post_diagnostic_intake_record_ids": ["INT-055"],
+  "deferred_acceptance": [
+    {
+      "record_id": "INT-005",
+      "observation_owner_stage": "camera_receipt",
+      "observation_requirement": "MEASUREMENT_AND_EVIDENCE_REQUIRED",
+      "observation_acceptance_allowed": false,
+      "acceptance_owner_stage": "noncontact_acceptance",
+      "acceptance_prerequisites": ["TARGET_ACCURACY_BUDGET_CLOSED"]
+    }
+  ],
+  "effect_composition_policy": {
+    "required_effect_classes_are_complete_ordered_domains": true,
+    "one_permit_has_exactly_one_primary_effect_class": true,
+    "separable_external_effects_require_predecessor_linked_attempts": true,
+    "causally_inseparable_effects_are_facets_of_one_attempt": true,
+    "effect_facets_do_not_authorize_a_second_dispatch_or_retry": true,
+    "effect_class_count_does_not_imply_operation_count": true
+  },
+  "state_model": {
+    "stage_review_states": [
+      "PENDING",
+      "WAITING_OPERATOR",
+      "REVIEW_PENDING",
+      "PASS",
+      "BLOCKED",
+      "INVALIDATED",
+      "COMPLETE_DIAGNOSTIC",
+      "INCIDENT_HOLD",
+      "SIDE_EFFECT_UNCERTAIN"
+    ],
+    "attempt_states": [
+      "INTENT_DURABLE",
+      "ABORTED_PRE_EFFECT",
+      "EFFECT_ARMED",
+      "EFFECT_OBSERVED",
+      "CLEANUP_CONFIRMED",
+      "SEALED_KNOWN",
+      "SEALED_UNCERTAIN"
+    ],
+    "attempt_records_are_append_only": true,
+    "automatic_attempt_replay_allowed": false,
+    "global_quarantine_latches": ["INCIDENT_HOLD", "SIDE_EFFECT_UNCERTAIN"],
+    "quarantine_allows_only": [
+      "READ_ONLY_VERIFY",
+      "SAFING_NOTE",
+      "INCIDENT_EVIDENCE",
+      "EXPORT"
+    ]
+  },
+  "stages": [
+    {
+      "stage": "workspace_sources",
+      "required_effect_classes": ["NO_DEVICE_IO"],
+      "actuator_power_requirement": "DISCONNECTED_REQUIRED",
+      "intake_record_ids": [],
+      "owned_artifacts": ["controlled_source_binding"],
+      "produced_bundle_components": [
+        "controlled_source_binding",
+        "provider_implementation_hashes",
+        "runner_implementation_hashes"
+      ],
+      "hazard_banner_ids": ["HZ-012"]
+    },
+    {
+      "stage": "static_camera_contract",
+      "required_effect_classes": ["NO_DEVICE_IO"],
+      "actuator_power_requirement": "DISCONNECTED_REQUIRED",
+      "intake_record_ids": [],
+      "owned_artifacts": ["static_camera_design_contract"],
+      "produced_bundle_components": [],
+      "hazard_banner_ids": ["HZ-007", "HZ-010"]
+    },
+    {
+      "stage": "camera_receipt",
+      "required_effect_classes": ["NO_DEVICE_IO"],
+      "actuator_power_requirement": "DISCONNECTED_REQUIRED",
+      "intake_record_ids": [
+        "INT-001",
+        "INT-002",
+        "INT-003",
+        "INT-004",
+        "INT-005",
+        "INT-006",
+        "INT-007",
+        "INT-008",
+        "INT-009",
+        "INT-017",
+        "INT-019",
+        "INT-020",
+        "INT-021",
+        "INT-022",
+        "INT-023",
+        "INT-024"
+      ],
+      "owned_artifacts": ["passive_workcell_receipt", "camera_receipt"],
+      "produced_bundle_components": [
+        "camera_receipt",
+        "passive_workcell_receipt"
+      ],
+      "hazard_banner_ids": ["HZ-007", "HZ-008", "HZ-009"]
+    },
+    {
+      "stage": "camera_identity",
+      "required_effect_classes": ["READ_ONLY_OS_INVENTORY"],
+      "actuator_power_requirement": "DISCONNECTED_REQUIRED",
+      "intake_record_ids": ["INT-018"],
+      "owned_artifacts": ["camera_identity"],
+      "produced_bundle_components": ["camera_identity"],
+      "hazard_banner_ids": ["HZ-009"]
+    },
+    {
+      "stage": "camera_mode_controls",
+      "required_effect_classes": ["BOUNDED_CAMERA_CAMPAIGN"],
+      "actuator_power_requirement": "DISCONNECTED_REQUIRED",
+      "intake_record_ids": ["INT-028", "INT-029"],
+      "owned_artifacts": ["camera_mode_controls"],
+      "produced_bundle_components": ["camera_mode_controls"],
+      "hazard_banner_ids": ["HZ-009", "HZ-011", "HZ-015"]
+    },
+    {
+      "stage": "camera_frame_freshness",
+      "required_effect_classes": ["BOUNDED_CAMERA_CAMPAIGN"],
+      "actuator_power_requirement": "DISCONNECTED_REQUIRED",
+      "intake_record_ids": [],
+      "owned_artifacts": ["camera_freshness"],
+      "produced_bundle_components": ["camera_frame_freshness"],
+      "hazard_banner_ids": ["HZ-009", "HZ-011", "HZ-015"]
+    },
+    {
+      "stage": "optics_intrinsics",
+      "required_effect_classes": ["BOUNDED_CAMERA_CAMPAIGN"],
+      "actuator_power_requirement": "DISCONNECTED_REQUIRED",
+      "intake_record_ids": ["INT-025", "INT-026", "INT-027"],
+      "owned_artifacts": ["preliminary_optics_screen", "physical_capture_plan"],
+      "produced_bundle_components": [],
+      "hazard_banner_ids": ["HZ-007", "HZ-010", "HZ-011", "HZ-015"]
+    },
+    {
+      "stage": "static_registration",
+      "required_effect_classes": ["BOUNDED_CAMERA_CAMPAIGN"],
+      "actuator_power_requirement": "DISCONNECTED_REQUIRED",
+      "intake_record_ids": [
+        "INT-030",
+        "INT-031",
+        "INT-032",
+        "INT-033",
+        "INT-034",
+        "INT-035",
+        "INT-036",
+        "INT-037",
+        "INT-038",
+        "INT-039",
+        "INT-040",
+        "INT-041",
+        "INT-042",
+        "INT-043",
+        "INT-046",
+        "INT-047",
+        "INT-048",
+        "INT-050",
+        "INT-051",
+        "INT-052",
+        "INT-053"
+      ],
+      "owned_artifacts": [
+        "installed_camera_intrinsics",
+        "measured_tag_map",
+        "static_camera_to_board_transform",
+        "passive_visibility_atlas",
+        "installed_optical_stability"
+      ],
+      "produced_bundle_components": [
+        "installed_camera_intrinsics",
+        "measured_tag_map",
+        "static_camera_to_board_transform",
+        "installed_optical_stability",
+        "passive_visibility_atlas",
+        "dataset_partition_manifests"
+      ],
+      "hazard_banner_ids": ["HZ-007", "HZ-008", "HZ-010", "HZ-011", "HZ-015"]
+    },
+    {
+      "stage": "arm_identity",
+      "required_effect_classes": ["READ_ONLY_OS_INVENTORY"],
+      "actuator_power_requirement": "DISCONNECTED_REQUIRED",
+      "intake_record_ids": ["INT-010"],
+      "owned_artifacts": ["arm_physical_identity", "controller_inventory_candidate"],
+      "produced_bundle_components": ["exact_arm_physical_identity"],
+      "hazard_banner_ids": ["HZ-006", "HZ-009"]
+    },
+    {
+      "stage": "power_safety",
+      "required_effect_classes": ["MANUAL_ENERGY_CHANGE"],
+      "actuator_power_requirement": "DISCONNECTED_REQUIRED_EXCEPT_INERT_LOAD_TEST",
+      "intake_record_ids": [
+        "INT-012",
+        "INT-013",
+        "INT-014",
+        "INT-015",
+        "INT-016",
+        "INT-044",
+        "INT-045"
+      ],
+      "owned_artifacts": ["power_safety_review", "startup_swept_volume_screen"],
+      "produced_bundle_components": ["power_safety_review"],
+      "hazard_banner_ids": [
+        "HZ-001",
+        "HZ-002",
+        "HZ-003",
+        "HZ-004",
+        "HZ-005",
+        "HZ-007",
+        "HZ-008",
+        "HZ-012",
+        "HZ-013",
+        "HZ-016"
+      ]
+    },
+    {
+      "stage": "power_on_observation",
+      "required_effect_classes": [
+        "MANUAL_ENERGY_CHANGE",
+        "MANUAL_POSSIBLE_MOTION"
+      ],
+      "actuator_power_requirement": "FRESH_MANUAL_PERMIT_END_DISCONNECTED",
+      "intake_record_ids": [],
+      "owned_artifacts": ["first_power_observation"],
+      "produced_bundle_components": [
+        "first_power_observation",
+        "startup_sweep_evidence"
+      ],
+      "hazard_banner_ids": ["HZ-001", "HZ-002", "HZ-003", "HZ-004", "HZ-005", "HZ-012", "HZ-016"]
+    },
+    {
+      "stage": "feedback_only_connection",
+      "required_effect_classes": [
+        "MANUAL_ENERGY_CHANGE",
+        "SERIAL_OPEN_OR_WRITE"
+      ],
+      "actuator_power_requirement": "FRESH_MANUAL_PERMIT_END_DISCONNECTED",
+      "intake_record_ids": ["INT-011"],
+      "owned_artifacts": ["feedback_only_exchange", "qualified_controller_identity"],
+      "produced_bundle_components": [
+        "feedback_only_exchange",
+        "qualified_controller_identity"
+      ],
+      "hazard_banner_ids": ["HZ-001", "HZ-002", "HZ-003", "HZ-004", "HZ-006", "HZ-009", "HZ-011", "HZ-012", "HZ-016"]
+    },
+    {
+      "stage": "reference_frame_calibration",
+      "required_effect_classes": [
+        "MANUAL_ENERGY_CHANGE",
+        "NONCONTACT_ARM_MOTION_EXTERNAL"
+      ],
+      "actuator_power_requirement": "EXTERNAL_NONCONTACT_PERMIT_END_DISCONNECTED",
+      "intake_record_ids": ["INT-049"],
+      "owned_artifacts": [
+        "arm_to_board_transform",
+        "controller_model_correlation",
+        "free_state_tool_tcp",
+        "keyboard_target_map",
+        "phone_target_map",
+        "outcome_observer_candidates",
+        "reference_calibrated_bundle"
+      ],
+      "produced_bundle_components": [
+        "bootstrap_phase_receipt",
+        "reference_characterization_phase_receipt",
+        "arm_to_board_transform",
+        "controller_model_correlation",
+        "free_state_tool_tcp",
+        "keyboard_target_map",
+        "phone_target_map",
+        "outcome_observer_candidates"
+      ],
+      "hazard_banner_ids": ["HZ-001", "HZ-002", "HZ-003", "HZ-004", "HZ-008", "HZ-010", "HZ-011", "HZ-013", "HZ-014", "HZ-016"]
+    },
+    {
+      "stage": "noncontact_acceptance",
+      "required_effect_classes": [
+        "MANUAL_ENERGY_CHANGE",
+        "NONCONTACT_ARM_MOTION_EXTERNAL"
+      ],
+      "actuator_power_requirement": "EXTERNAL_NONCONTACT_PERMIT_END_DISCONNECTED",
+      "intake_record_ids": ["INT-054"],
+      "owned_artifacts": [
+        "collision_configuration",
+        "arm_induced_visibility_atlas",
+        "noncontact_acceptance_report"
+      ],
+      "produced_bundle_components": [
+        "noncontact_qualification_phase_receipt",
+        "untouched_final_acceptance_phase_receipt",
+        "noncontact_acceptance_report",
+        "arm_induced_visibility_atlas",
+        "collision_configuration",
+        "accuracy_budget_assessment"
+      ],
+      "hazard_banner_ids": ["HZ-001", "HZ-002", "HZ-003", "HZ-004", "HZ-007", "HZ-008", "HZ-010", "HZ-011", "HZ-014", "HZ-016"]
+    },
+    {
+      "stage": "physical_handoff",
+      "required_effect_classes": ["NO_DEVICE_IO"],
+      "actuator_power_requirement": "NO_POWER_CHANGE_NO_IO",
+      "intake_record_ids": [],
+      "owned_artifacts": ["diagnostic_export", "commissioning_bundle_candidate"],
+      "produced_bundle_components": [
+        "configuration_epoch_vector",
+        "global_attempt_ledger_head",
+        "global_quarantine_ledger_head",
+        "reviewer_decisions",
+        "open_blockers"
+      ],
+      "hazard_banner_ids": ["HZ-010", "HZ-014", "HZ-016"]
+    }
+  ]
+}

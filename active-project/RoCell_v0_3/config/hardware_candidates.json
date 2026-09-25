@@ -1,0 +1,1366 @@
+{
+  "schema_version": 1,
+  "document_type": "rocell.hardware_candidate_registry",
+  "registry_revision": "RC03-INT-R1",
+  "as_of": "2026-09-01",
+  "status": "CANDIDATE_UNVERIFIED",
+  "release_authority": false,
+  "route_selection_authority": false,
+  "status_policy": [
+    "Every item in this registry is an engineering purchasing and qualification candidate only.",
+    "A vendor specification, nominal calculation, digital fit, or source link is not physical qualification or customer release authority.",
+    "Only controlled physical evidence may promote a selected item through the existing measurement, lifecycle, commissioning, and release workflows.",
+    "Alternative candidates are not interchangeable until one complete configuration is selected and qualified."
+  ],
+  "allowed_candidate_statuses": [
+    "CANDIDATE_UNVERIFIED"
+  ],
+  "fastener_stack_screening": {
+    "status": "CANDIDATE_UNVERIFIED",
+    "cad_modified": true,
+    "digital_correction_applied": true,
+    "dependent_cad_stl_step_3mf_regenerated": true,
+    "digital_exact_fit_result": "PASS",
+    "physical_qualification_complete": false,
+    "method": "Nominal thread engagement = screw length - effective printed screw-seat stack - washer thickness - (board thickness - insert reach into board).",
+    "nominal_assumptions_mm": {
+      "board_thickness": 18.0,
+      "insert_reach": 10.0,
+      "washer_thickness": 0.8
+    },
+    "stacks": [
+      {
+        "stack_id": "STATION-4MM-M4X20",
+        "location_count": 4,
+        "effective_printed_seat_mm": 4.0,
+        "screw_length_mm": 20.0,
+        "nominal_engagement_mm": 7.2,
+        "disposition": "CANDIDATE_STACK"
+      },
+      {
+        "stack_id": "STATION-8MM-M4X25",
+        "location_count": 4,
+        "effective_printed_seat_mm": 8.0,
+        "screw_length_mm": 25.0,
+        "nominal_engagement_mm": 8.2,
+        "disposition": "CANDIDATE_STACK"
+      },
+      {
+        "stack_id": "TCP-HISTORICAL-10P5MM-M4X25",
+        "location_count": 0,
+        "historical_only": true,
+        "effective_printed_seat_mm": 10.5,
+        "screw_length_mm": 25.0,
+        "nominal_engagement_mm": 5.7,
+        "conservative_screening_assumptions_mm": {
+          "board_thickness": 18.3,
+          "usable_insert_reach": 9.36,
+          "washer_thickness": 0.9,
+          "effective_printed_seat": 10.8
+        },
+        "conservative_screening_engagement_mm": 4.36,
+        "disposition": "SUPERSEDED_BY_DIGITAL_RECESS_CORRECTION"
+      },
+      {
+        "stack_id": "TCP-CURRENT-9P0MM-M4X25",
+        "location_count": 1,
+        "island_height_mm": 10.5,
+        "washer_recess_depth_mm": 1.5,
+        "effective_printed_seat_mm": 9.0,
+        "maximum_accepted_effective_printed_seat_mm": 9.5,
+        "screw_length_mm": 25.0,
+        "nominal_engagement_mm": 7.2,
+        "conservative_screening_assumptions_mm": {
+          "board_thickness": 18.3,
+          "usable_insert_reach": 9.36,
+          "washer_thickness": 0.9,
+          "maximum_effective_printed_seat": 9.5
+        },
+        "conservative_screening_engagement_mm": 5.66,
+        "disposition": "DIGITALLY_CORRECTED_PHYSICAL_QUALIFICATION_REQUIRED"
+      }
+    ],
+    "physical_acceptance": [
+      "Measure the received board, insert, washer, screw, and cooled printed seat rather than accepting nominal values.",
+      "Require at least 5.0 mm actual thread engagement at all nine locations.",
+      "Require no insert or screw bottoming and no underside projection.",
+      "Tighten dry with one flat washer at 0.30 N m using the qualified preset driver, then apply a witness mark."
+    ]
+  },
+  "reinforcement_screening": {
+    "status": "CANDIDATE_UNVERIFIED",
+    "candidate_id": "ARM-PLATE-B02-R1",
+    "candidate_placement_mm": {
+      "board_coordinate_system": "Origin at board front-left; +Y toward rear edge and robot.",
+      "x_min": 228.8,
+      "x_max": 381.2,
+      "y_min": 330.0,
+      "y_max": 457.0
+    },
+    "calculated_mass_kg": 0.166,
+    "calculation": "0.1524 m x 0.1270 m x 0.003175 m x 2700 kg/m^3",
+    "screening_notes": [
+      "The candidate remains inside the current x=225-385 mm clamp zone with about 3.8 mm side margin.",
+      "Its front edge is 75.5 mm behind the nearest current board-anchor center at y=254.5 mm.",
+      "These coordinate checks do not prove coverage of the received clamp pad, board flatness, slip resistance, or clamp preload."
+    ]
+  },
+  "camera_architecture_boundary": {
+    "status": "CANDIDATE_UNVERIFIED",
+    "user_intended_primary_architecture": "Arm-mounted eye-in-hand camera used according to its intended specification.",
+    "exact_arm_camera_specification_present": false,
+    "release_effect": "ENGINEERING_ALIGNMENT_HOLD",
+    "current_fallback_route": "camera_mast_optional",
+    "fallback_route_selected": false,
+    "fallback_candidate_ids": [
+      "CAMERA-LOGITECH-960-001401",
+      "CAMERA-SUPPORT-8020-20-2020-MAST"
+    ],
+    "additional_fixed_support_evaluation_candidate_ids": [
+      "CAMERA-ARDUCAM-B0495C",
+      "CAMERA-SUPPORT-SMALLRIG-4304"
+    ],
+    "required_before_arm_mount_design": [
+      "Exact camera manufacturer, model, lens, interface, mass, center of mass, and intended-use specification.",
+      "Exact robot link or frame, mounting interface, mount geometry, fasteners, retention, cable-flex route, and strain relief.",
+      "Revised payload, reach, collision, occlusion, calibration, and eye-in-hand transform requirements.",
+      "Controlled CAD, instructions, software, commissioning, and Step 13 acceptance revision."
+    ],
+    "boundary_note": "The unselected fixed-mast route remains an unqualified fallback and does not substitute for, implement, or authorize the missing arm-mounted architecture."
+  },
+  "route_scope_snapshot": {
+    "status": "CANDIDATE_UNVERIFIED",
+    "source": "config/measurement_record.json",
+    "selected_routes": {
+      "phone_stylus_route": true,
+      "keyboard_rod_route": true,
+      "camera_mast_optional": false
+    },
+    "exact_passive_stylus_candidate_registered": false,
+    "boundary_note": "The two tool routes are selected and the fixed-mast camera fallback is unselected. The exact passive stylus remains an open candidate decision, and this registry does not change route authority or provide qualification evidence."
+  },
+  "reach_screening": {
+    "status": "CANDIDATE_UNVERIFIED",
+    "digitally_proven_reachable": false,
+    "official_nominal_envelope_mm": {
+      "horizontal_diameter": 1120.0,
+      "screening_radius": 560.0,
+      "vertical_max": 798.0
+    },
+    "official_payload_and_repeatability": {
+      "payload_kg_at_500_mm": 0.2,
+      "repeatability_mm_approx": 5.0
+    },
+    "hypothetical_base_axis_board_xy_mm": [
+      305.0,
+      457.0
+    ],
+    "hypothetical_radial_screening_mm": [
+      {
+        "target": "board_front_corner",
+        "board_xy_mm": [0.0, 0.0],
+        "radius_mm": 549.3
+      },
+      {
+        "target": "keyboard_front_left",
+        "board_xy_mm": [85.0, 85.0],
+        "radius_mm": 432.2
+      },
+      {
+        "target": "phone_actual_front_right",
+        "board_xy_mm": [577.1, 84.2],
+        "radius_mm": 461.6
+      },
+      {
+        "target": "phone_station_outer_front_right",
+        "board_xy_mm": [597.3, 80.0],
+        "radius_mm": 477.1
+      },
+      {
+        "target": "configured_tcp_target",
+        "board_xy_mm": [441.0, 180.0],
+        "radius_mm": 308.6
+      },
+      {
+        "target": "phone_station_outer_front_right_with_100mm_rear_setback",
+        "hypothetical_base_axis_board_xy_mm": [305.0, 557.0],
+        "board_xy_mm": [597.3, 80.0],
+        "radius_mm": 559.5
+      }
+    ],
+    "limitations": [
+      "The layout defines only a rear clamp zone, not the robot base-axis position or a full board-to-base transform.",
+      "A maximum workspace envelope is not proof that an oriented approach, contact, and retreat pose is reachable without collision or singularity.",
+      "The published repeatability is approximately plus or minus 5 mm, much larger than the intended fixture repeatability; vision correction and compliant contact remain required.",
+      "The 0.2 kg at 0.5 m payload must include the tool, adapter, moving mass, and cable drag."
+    ],
+    "required_release_evidence": [
+      "Freeze and measure the installed clamp edge-to-base-axis offset and full T_board_base transform: x, y, z, roll, pitch, and yaw.",
+      "Record robot and clamp revisions, table and board planes, clamp deflection, physical joint-zero calibration, and uncertainty.",
+      "Define the custom tool TCP transform, total moving mass, center of mass, cable load, and collision geometry.",
+      "Run inverse kinematics for every approach, contact, and retreat pose with joint-limit, singularity, payload, and collision margins.",
+      "Complete reduced-speed physical empty-cell sweeps before compliant, force-limited first contact."
+    ]
+  },
+  "candidates": [
+    {
+      "candidate_id": "ANCHOR-EZLOK-900407-10",
+      "category": "board_anchor",
+      "candidate_role": "primary_board_anchor",
+      "manufacturer": "E-Z LOK",
+      "mpn": "900407-10",
+      "description": "E-Z Hex flanged zinc-alloy threaded insert for wood",
+      "status": "CANDIDATE_UNVERIFIED",
+      "quantity": {
+        "installed": 9,
+        "customer_spares": 3,
+        "minimum_engineering_purchase": 30
+      },
+      "spec": {
+        "internal_thread": "M4 x 0.7",
+        "nominal_length_mm": 10.0,
+        "nominal_pilot_in": "15/64",
+        "nominal_pilot_mm": 5.953,
+        "drive_hex_mm": 4.0,
+        "flange_od_mm": 8.36,
+        "body_od_mm_approx": 8.31,
+        "flange_thickness_mm_approx": 0.508,
+        "candidate_installation": "Underside installation with flange seated against the underside of the exact sealed 18 mm plywood."
+      },
+      "source_ids": [
+        "EZLOK-900407-10",
+        "EZLOK-HEX-DRAWING",
+        "EZLOK-APPLICATION-TESTING"
+      ],
+      "qualification_gates": [
+        {
+          "gate_id": "ANCHOR-ID-01",
+          "requirement": "Verify received MPN, thread, dimensions, lot, and installation tool."
+        },
+        {
+          "gate_id": "ANCHOR-COUPON-01",
+          "requirement": "Section exact sealed-board interior and 21.2 mm edge-location coupons; reject veneer breakout, delamination, tilt, or flange stand-off."
+        },
+        {
+          "gate_id": "ANCHOR-PROOF-01",
+          "requirement": "Complete service cycles at 0.30 N m and a 50 N axial proof for 60 seconds without rotation, pullout, damage, or migration."
+        }
+      ],
+      "caveats": [
+        "The manufacturer states drill requirements vary by application; 15/64 inch is a starting candidate, not a released board process.",
+        "Do not impact-drive and do not drill the production board until coupon evidence is accepted."
+      ]
+    },
+    {
+      "candidate_id": "ANCHOR-INSTALL-KIT-EZ-900407-10",
+      "category": "board_anchor_tooling",
+      "candidate_role": "installation_tooling",
+      "manufacturer": "E-Z LOK",
+      "mpn": "EZ-900407-10",
+      "description": "Ten-insert installation kit with drill and installation tool",
+      "status": "CANDIDATE_UNVERIFIED",
+      "quantity": {
+        "engineering_purchase": 1
+      },
+      "spec": {
+        "included_insert_count": 10,
+        "included_insert_mpn": "900407-10",
+        "installation_tool_mpn": "8500"
+      },
+      "source_ids": [
+        "EZLOK-KIT-EZ-900407-10"
+      ],
+      "qualification_gates": [
+        {
+          "gate_id": "ANCHOR-TOOL-01",
+          "requirement": "Inventory the supplied drill and tool and verify they install the received inserts square without impact driving."
+        }
+      ],
+      "caveats": [
+        "One kit does not provide enough inserts for nine installed anchors, three customer spares, and destructive engineering coupons."
+      ]
+    },
+    {
+      "candidate_id": "FASTENER-BELMETRIC-SB4X20SS",
+      "category": "station_fastener",
+      "candidate_role": "four_millimeter_station_stacks",
+      "manufacturer": "BelMetric",
+      "mpn": "SB4X20SS",
+      "description": "M4 x 20 mm A2 stainless ISO 7380-1 button-head socket screw",
+      "status": "CANDIDATE_UNVERIFIED",
+      "quantity": {
+        "installed": 4,
+        "seller_pack": 6
+      },
+      "spec": {
+        "thread": "M4 x 0.7",
+        "length_mm": 20.0,
+        "material": "A2 stainless steel",
+        "drive_hex_mm": 2.5,
+        "standard": "ISO 7380-1"
+      },
+      "source_ids": [
+        "BELMETRIC-SB4-FAMILY"
+      ],
+      "qualification_gates": [
+        {
+          "gate_id": "M4-20-ID-01",
+          "requirement": "Measure length, thread, head, and drive on the received lot."
+        },
+        {
+          "gate_id": "M4-20-STACK-01",
+          "requirement": "Prove the four nominal 4 mm station stacks achieve at least 5 mm engagement with no bottoming or underside projection."
+        }
+      ],
+      "caveats": [
+        "The two shared keyboard clamp locations may use this common button-head approach only after driver access and clamp preload are qualified."
+      ]
+    },
+    {
+      "candidate_id": "FASTENER-BELMETRIC-SB4X25SS",
+      "category": "station_fastener",
+      "candidate_role": "eight_millimeter_and_tcp_station_stacks",
+      "manufacturer": "BelMetric",
+      "mpn": "SB4X25SS",
+      "description": "M4 x 25 mm A2 stainless ISO 7380-1 button-head socket screw",
+      "status": "CANDIDATE_UNVERIFIED",
+      "quantity": {
+        "installed": 5,
+        "seller_pack": 7
+      },
+      "spec": {
+        "thread": "M4 x 0.7",
+        "length_mm": 25.0,
+        "material": "A2 stainless steel",
+        "head_od_mm": 7.6,
+        "head_height_mm": 2.2,
+        "drive_hex_mm": 2.5,
+        "standard": "ISO 7380-1"
+      },
+      "source_ids": [
+        "BELMETRIC-SB4-FAMILY",
+        "BELMETRIC-SB4X25-DRAWING"
+      ],
+      "qualification_gates": [
+        {
+          "gate_id": "M4-25-ID-01",
+          "requirement": "Measure length, thread, head, and drive on the received lot."
+        },
+        {
+          "gate_id": "M4-25-STACK-01",
+          "requirement": "Prove the four nominal 8 mm stacks and corrected TCP stack achieve at least 5 mm engagement with no bottoming or projection."
+        }
+      ],
+      "caveats": [
+        "The current TCP geometry retains a 10.5 mm island but applies a 1.5 mm washer recess, producing a 9.0 mm effective seat in the regenerated digital artifacts.",
+        "Digital exact-fit evidence does not qualify received screws, washers, inserts, board stock, or printed geometry."
+      ]
+    },
+    {
+      "candidate_id": "WASHER-BELMETRIC-WF4SS",
+      "category": "station_fastener",
+      "candidate_role": "station_flat_washer",
+      "manufacturer": "BelMetric",
+      "mpn": "WF4SS",
+      "description": "M4 A2 stainless DIN 125A flat washer",
+      "status": "CANDIDATE_UNVERIFIED",
+      "quantity": {
+        "installed": 9,
+        "seller_pack": 12
+      },
+      "spec": {
+        "id_mm": 4.3,
+        "od_mm": 9.0,
+        "thickness_mm": 0.8,
+        "material": "A2 stainless steel",
+        "standard": "DIN 125A"
+      },
+      "source_ids": [
+        "BELMETRIC-WF4SS-DRAWING"
+      ],
+      "qualification_gates": [
+        {
+          "gate_id": "M4-WASHER-ID-01",
+          "requirement": "Measure ID, OD, and thickness on the received lot."
+        },
+        {
+          "gate_id": "M4-WASHER-SEAT-01",
+          "requirement": "Verify flat seating and tool clearance in every applicable printed recess."
+        }
+      ],
+      "caveats": [
+        "Use exactly one flat washer per station screw; no lock washer or threadlocker is part of this candidate stack."
+      ]
+    },
+    {
+      "candidate_id": "TORQUE-WERA-05074715001",
+      "category": "assembly_tooling",
+      "candidate_role": "preset_station_torque_driver",
+      "manufacturer": "Wera",
+      "mpn": "05074715001",
+      "description": "Series 7400 preset torque screwdriver configured to 0.30 N m",
+      "status": "CANDIDATE_UNVERIFIED",
+      "quantity": {
+        "engineering_and_assembly_tool": 1
+      },
+      "spec": {
+        "candidate_setting_nm": 0.3,
+        "published_accuracy_percent": 6.0,
+        "calculated_setting_band_nm": [0.282, 0.318]
+      },
+      "source_ids": [
+        "WERA-05074715001"
+      ],
+      "qualification_gates": [
+        {
+          "gate_id": "TORQUE-DRIVER-ID-01",
+          "requirement": "Verify exact part number, current calibration evidence, and preset locking."
+        },
+        {
+          "gate_id": "TORQUE-DRIVER-USE-01",
+          "requirement": "Demonstrate repeatable 0.30 N m station assembly without insert rotation or print damage."
+        }
+      ],
+      "caveats": [
+        "A preset tool does not replace anchor and printed-stack proof testing."
+      ]
+    },
+    {
+      "candidate_id": "BIT-WERA-05056310001",
+      "category": "assembly_tooling",
+      "candidate_role": "m4_button_head_driver_bit",
+      "manufacturer": "Wera",
+      "mpn": "05056310001",
+      "description": "2.5 mm Hex-Plus driver bit",
+      "status": "CANDIDATE_UNVERIFIED",
+      "quantity": {
+        "working": 1,
+        "spare": 1
+      },
+      "spec": {
+        "hex_size_mm": 2.5,
+        "interface": "Compatible with the selected Wera torque-driver chuck"
+      },
+      "source_ids": [
+        "WERA-05056310001"
+      ],
+      "qualification_gates": [
+        {
+          "gate_id": "M4-BIT-FIT-01",
+          "requirement": "Verify full drive engagement without cam-out or head damage on both selected screw lengths."
+        }
+      ],
+      "caveats": []
+    },
+    {
+      "candidate_id": "ARM-PLATE-B02-R1",
+      "category": "robot_arm_reinforcement",
+      "candidate_role": "seller_supplied_underside_load_spreader",
+      "manufacturer": "Seller-supplied custom part; candidate fabricator SendCutSend",
+      "mpn": "B02-ARM-PLATE-R1",
+      "description": "Precut deburred 6061-T6 underside reinforcement plate",
+      "status": "CANDIDATE_UNVERIFIED",
+      "quantity": {
+        "installed": 1,
+        "incoming_inspection_sample": 1
+      },
+      "spec": {
+        "material": "6061-T6 aluminum sheet",
+        "thickness_in": 0.125,
+        "thickness_mm": 3.175,
+        "width_mm": 152.4,
+        "depth_mm": 127.0,
+        "corner_radius_mm": 6.35,
+        "holes": 0,
+        "finish": "Raw or mill finish",
+        "edge_condition": "Deburr both faces; break edges 0.25-0.5 mm",
+        "drawing_outline_tolerance_mm": 0.25,
+        "incoming_flatness_limit_mm": 0.25
+      },
+      "source_ids": [
+        "SENDCUTSEND-6061",
+        "SENDCUTSEND-TOLERANCES"
+      ],
+      "qualification_gates": [
+        {
+          "gate_id": "PLATE-INCOMING-01",
+          "requirement": "Verify material certification or order record, dimensions, flatness, edge condition, and absence of rocking."
+        },
+        {
+          "gate_id": "PLATE-CLAMP-01",
+          "requirement": "Measure the received RoArm clamp pad and retain at least 10 mm pad-to-plate-edge margin."
+        },
+        {
+          "gate_id": "PLATE-CREEP-01",
+          "requirement": "Record board flatness, crushing, clamp slip, and 24-hour and 7-day creep with the final clamp method."
+        }
+      ],
+      "caveats": [
+        "The factory clamp remains the load-bearing interface; the plate only spreads underside load.",
+        "Do not place unqualified foam in the clamp pressure path."
+      ]
+    },
+    {
+      "candidate_id": "BOARD-FEET-3M-SJ-5023-BLACK",
+      "category": "board_support",
+      "candidate_role": "plate_clearance_and_surface_protection",
+      "manufacturer": "3M",
+      "mpn": "SJ-5023-BLACK",
+      "description": "Adhesive-backed square polyurethane Bumpon feet",
+      "status": "CANDIDATE_UNVERIFIED",
+      "quantity": {
+        "installed": 6,
+        "spares": 2
+      },
+      "spec": {
+        "width_mm": 20.57,
+        "depth_mm": 20.57,
+        "height_mm": 7.62,
+        "hardness_shore_m": 72,
+        "material": "Polyurethane"
+      },
+      "source_ids": [
+        "3M-BUMPON-DATA",
+        "DIGIKEY-SJ-5023"
+      ],
+      "qualification_gates": [
+        {
+          "gate_id": "FEET-LAYOUT-01",
+          "requirement": "Freeze a placement that clears the plate, anchors, tags, cables, and bench edge."
+        },
+        {
+          "gate_id": "FEET-SHIFT-01",
+          "requirement": "Verify support, adhesion, compression, and board shift under worst-case robot motion."
+        }
+      ],
+      "caveats": [
+        "Feet are not a proven anti-shift restraint; mechanical bench clamping remains mandatory if the motion test shows movement."
+      ]
+    },
+    {
+      "candidate_id": "POWER-PROTOTYPE-POWERTEC-71755",
+      "category": "power_cutoff",
+      "candidate_role": "prototype_emergency_power_off_evaluation_only",
+      "manufacturer": "POWERTEC",
+      "mpn": "71755",
+      "description": "Prewired magnetic paddle power cutoff with standard cords",
+      "status": "CANDIDATE_UNVERIFIED",
+      "quantity": {
+        "prototype_evaluation": 1
+      },
+      "spec": {
+        "input_voltage_vac": 120,
+        "rated_current_a": 9,
+        "phase": 1,
+        "input_cord_ft": 5.5,
+        "output_cord_ft": 1.5,
+        "cord": "14 AWG SJT, three-prong male and female",
+        "candidate_connection_order": "Wall receptacle to POWERTEC 71755 to received Waveshare 12 V / 5 A power adapter to RoArm."
+      },
+      "source_ids": [
+        "POWERTEC-71755"
+      ],
+      "qualification_gates": [
+        {
+          "gate_id": "POWERTEC-IDENTITY-01",
+          "requirement": "Verify the received device label, cords, grounding, ratings, condition, and exact RoArm power-supply input."
+        },
+        {
+          "gate_id": "POWERTEC-STOP-01",
+          "requirement": "Measure power removal, stop time, residual travel, gravity drop, USB back-power, and access from every operator position."
+        },
+        {
+          "gate_id": "POWERTEC-RESTART-01",
+          "requirement": "Verify no automatic re-energization after cutoff reset or mains interruption in ten consecutive trials."
+        }
+      ],
+      "caveats": [
+        "This is a prototype emergency power-off candidate, not a safety-rated emergency-stop system.",
+        "No published performance level, stop category, STO function, or system stop-time claim has been established for the RoArm application."
+      ]
+    },
+    {
+      "candidate_id": "POWER-PRODUCT-DIRECTION-MAKESAFE-IRE",
+      "category": "power_cutoff",
+      "candidate_role": "product_safety_vendor_application_review_direction",
+      "manufacturer": "MAKESafe Tools",
+      "mpn": "IRE-V120-P1-HP1",
+      "description": "Quote-configured industrial anti-restart and E-stop system direction",
+      "status": "CANDIDATE_UNVERIFIED",
+      "quantity": {
+        "quote_and_application_review": 1,
+        "purchase_before_written_approval": 0
+      },
+      "spec": {
+        "input_voltage_vac": 120,
+        "phase": 1,
+        "candidate_connectors": "NEMA 5-15P input and NEMA 5-15R output requested",
+        "candidate_configuration": "Prewired enclosed upstream power control for the exact received Waveshare power adapter and controller load.",
+        "published_product_family_approvals": "UL 508A industrial control panel; CSA #14-13 industrial control equipment"
+      },
+      "source_ids": [
+        "MAKESAFE-SPECS",
+        "MAKESAFE-IRE-MANUAL"
+      ],
+      "qualification_gates": [
+        {
+          "gate_id": "MAKESAFE-APPLICATION-01",
+          "requirement": "Obtain written manufacturer approval and exact quoted configuration for the received switching power supply and always-on digital RoArm controller."
+        },
+        {
+          "gate_id": "MAKESAFE-SAFETY-DESIGN-01",
+          "requirement": "Have a competent reviewer confirm required channels, stop category, reset behavior, diagnostics, connector retention, and risk-reduction claim."
+        },
+        {
+          "gate_id": "MAKESAFE-SYSTEM-TEST-01",
+          "requirement": "Repeat stop, drop, USB back-power, anti-restart, bypass, and automatic-middle-on-power-up tests in the final system."
+        }
+      ],
+      "caveats": [
+        "The published IRE manual assumes an existing machine off/run control and uses machine-switch detection; RoArm compatibility is not established.",
+        "Do not purchase, install, or describe this as the selected V1 system without written application approval and a completed system risk assessment."
+      ]
+    },
+    {
+      "candidate_id": "CAMERA-ARDUCAM-B0495C",
+      "category": "vision_camera",
+      "candidate_role": "global_shutter_camera_option",
+      "manufacturer": "Arducam",
+      "mpn": "B0495C",
+      "description": "Enclosed AR0234 color global-shutter USB3 UVC camera",
+      "status": "CANDIDATE_UNVERIFIED",
+      "quantity": {
+        "engineering_reference": 1,
+        "installed_if_selected": 1
+      },
+      "spec": {
+        "sensor": "AR0234 color global shutter",
+        "maximum_candidate_mode": "1920 x 1200 at 50 fps YUY2",
+        "lens_mount": "Manual-focus M12",
+        "published_fov_deg_by_source": {
+          "current_product_page": {
+            "diagonal": 98.0,
+            "horizontal": 85.0,
+            "vertical": 69.0
+          },
+          "b0495_datasheet": {
+            "diagonal": 95.0,
+            "horizontal": 82.0,
+            "vertical": 66.0
+          }
+        },
+        "conservative_preliminary_fov_deg": {
+          "horizontal": 82.0,
+          "vertical": 66.0
+        },
+        "interface": "USB-C, USB3 UVC",
+        "included_cable_length_m": 1.0,
+        "published_default_focus_range": "2 m to infinity"
+      },
+      "source_ids": [
+        "ARDUCAM-B0495C",
+        "ARDUCAM-B0495-DATASHEET"
+      ],
+      "qualification_gates": [
+        {
+          "gate_id": "ARDUCAM-FOCUS-01",
+          "requirement": "Prove sharp, stable focus at the final 400-600 mm working distance."
+        },
+        {
+          "gate_id": "ARDUCAM-CAL-01",
+          "requirement": "Acquire at least 30 ChArUco views, accept at least 20, and achieve RMS reprojection error no greater than 1 pixel."
+        },
+        {
+          "gate_id": "ARDUCAM-TAGS-01",
+          "requirement": "Detect all six tags in 20 of 20 required trials with locked focus, exposure, and white balance."
+        }
+      ],
+      "caveats": [
+        "The default published focus range does not cover the intended close working distance; close focus is a physical gate.",
+        "The product page and B0495 datasheet publish different FOV values; keep the values source-scoped and use the smaller 82 degree horizontal by 66 degree vertical pair for preliminary framing.",
+        "The calculated field of view is screening only and does not prove calibration, lighting, or occlusion performance."
+      ]
+    },
+    {
+      "candidate_id": "CAMERA-LOGITECH-960-001401",
+      "category": "vision_camera",
+      "candidate_role": "existing_prehardware_camera_option",
+      "manufacturer": "Logitech",
+      "mpn": "960-001401",
+      "description": "C920e Business Webcam",
+      "status": "CANDIDATE_UNVERIFIED",
+      "quantity": {
+        "engineering_reference": 1,
+        "installed_if_selected": 1
+      },
+      "spec": {
+        "published_mode": "1920 x 1080 at 30 fps",
+        "focus": "Autofocus",
+        "lens": "Glass",
+        "published_diagonal_fov_deg": 78.0,
+        "published_envelope_with_clip_mm": [94.0, 43.3, 71.0],
+        "published_weight_g": 162.0,
+        "published_cable": "Attached 1.5 m USB-A",
+        "mount": "Integrated tripod thread; usable blind depth unpublished"
+      },
+      "source_ids": [
+        "LOGITECH-C920E",
+        "LOGITECH-C920E-SUPPORT"
+      ],
+      "qualification_gates": [
+        {
+          "gate_id": "C920E-MOUNT-01",
+          "requirement": "Measure the camera, usable blind thread depth, and a non-bottoming retention stack."
+        },
+        {
+          "gate_id": "C920E-CONTROL-01",
+          "requirement": "Prove focus and exposure settings remain controlled after disconnect, reconnect, and application restart."
+        },
+        {
+          "gate_id": "C920E-TAGS-01",
+          "requirement": "Prove calibrated coverage and all-six-tag detection in every required pose."
+        }
+      ],
+      "caveats": [
+        "This remains an alternative to the global-shutter candidate; do not combine camera-specific calibration evidence."
+      ]
+    },
+    {
+      "candidate_id": "CAMERA-SUPPORT-SMALLRIG-4304",
+      "category": "vision_support",
+      "candidate_role": "commercial_bench_clamped_support_option",
+      "manufacturer": "SmallRig",
+      "mpn": "4304",
+      "description": "Desktop overhead photography and live-streaming bracket",
+      "status": "CANDIDATE_UNVERIFIED",
+      "quantity": {
+        "engineering_reference": 1,
+        "installed_if_selected": 1
+      },
+      "spec": {
+        "published_load_capacity_kg": 3.0,
+        "published_max_table_clamp_mm": 71.0,
+        "boom_range_in": [16.5, 27.0],
+        "boom_range_mm_approx": [420.0, 685.0],
+        "published_extended_envelope_mm": [746.8, 665.5],
+        "published_mass_kg_approx": 1.3,
+        "camera_interface": "1/4-20 ball head",
+        "mounting_boundary": "Clamp independently to the bench behind the board and outside the robot sweep."
+      },
+      "source_ids": [
+        "SMALLRIG-4304",
+        "BH-SMALLRIG-4304"
+      ],
+      "qualification_gates": [
+        {
+          "gate_id": "SMALLRIG-BENCH-01",
+          "requirement": "Verify the exact bench edge and thickness, clamp retention, camera fastener engagement, and a secondary safety tether."
+        },
+        {
+          "gate_id": "SMALLRIG-DRIFT-01",
+          "requirement": "Measure sag, cable disturbance, 24-hour drift, and remove/reinstall calibration recovery."
+        },
+        {
+          "gate_id": "SMALLRIG-COLLISION-01",
+          "requirement": "Demonstrate support, camera, tether, and service-loop clearance from every approved robot path."
+        }
+      ],
+      "caveats": [
+        "This is consumer photographic support hardware, not a released metrology frame.",
+        "If drift or collision clearance fails, use a separately qualified rigid stand."
+      ]
+    },
+    {
+      "candidate_id": "CAMERA-SUPPORT-8020-20-2020-MAST",
+      "category": "vision_support",
+      "candidate_role": "existing_prehardware_paired_mast_option",
+      "manufacturer": "80/20 Inc. extrusion with seller-integrated hardware",
+      "mpn": "20-2020",
+      "description": "Paired mast candidate using exact 80/20 20-2020 extrusion",
+      "status": "CANDIDATE_UNVERIFIED",
+      "quantity": {
+        "vertical_posts": 2,
+        "crossbar": 1,
+        "complete_candidate_assembly": 1
+      },
+      "spec": {
+        "vertical_post_length_mm_each": 700.0,
+        "crossbar_length_mm": 650.0,
+        "printed_foot_part": "mast_foot_2020.stl",
+        "printed_foot_material": "ASA exact SKU unresolved",
+        "extrusion_profile": "20 mm x 20 mm, four open slots, 6063-T6 clear anodized",
+        "architecture": "Independent from robot and board vibration path",
+        "complete_support_identity": false
+      },
+      "source_ids": [
+        "8020-20-2020",
+        "LOCAL-V1-PREHARDWARE",
+        "LOCAL-BOM"
+      ],
+      "qualification_gates": [
+        {
+          "gate_id": "MAST-BOM-01",
+          "requirement": "Select exact extrusion, brackets, T-nuts, M5 hardware, base attachment, ASA SKU, and camera retention before purchase release."
+        },
+        {
+          "gate_id": "MAST-MECHANICAL-01",
+          "requirement": "Qualify extrusion fit, feet, bolt stacks, crossbar level, base retention, static rigidity, disturbance recovery, and 24-hour drift."
+        }
+      ],
+      "caveats": [
+        "The extrusion is exact, but the complete support is not: brackets, T-nuts, base anchors, fastener lengths, support base, ASA SKU, and supplier cut tolerances remain unresolved.",
+        "It does not select measurement_record camera_mast_optional."
+      ]
+    },
+    {
+      "candidate_id": "MATERIAL-QIDI-PETG-BLACK",
+      "category": "print_material",
+      "candidate_role": "rigid_print_material",
+      "manufacturer": "QIDI",
+      "mpn": "PETG-BLACK",
+      "description": "QIDI PETG-Tough filament, black",
+      "status": "CANDIDATE_UNVERIFIED",
+      "quantity": {
+        "engineering_reference_spools": 2,
+        "spool_mass_kg_each": 1.0
+      },
+      "spec": {
+        "material": "PETG-Tough",
+        "nominal_diameter_mm": 1.75,
+        "published_diameter_tolerance_mm": 0.02,
+        "color": "Black",
+        "candidate_printer": "QIDI Plus4 with standard 0.4 mm nozzle"
+      },
+      "source_ids": [
+        "QIDI-PETG-TOUGH",
+        "QIDI-PLUS4-SPECS"
+      ],
+      "qualification_gates": [
+        {
+          "gate_id": "PETG-LOT-01",
+          "requirement": "Record exact SKU, color, spool lot, drying history, storage, printer serial, firmware, nozzle, plate side, and QIDI Studio/profile version."
+        },
+        {
+          "gate_id": "PETG-PRINT-01",
+          "requirement": "Qualify verification coupons, dimensional features, holes, inserts, nut captures, bridges, first layer, warp, and support removal."
+        },
+        {
+          "gate_id": "PETG-BUILD-01",
+          "requirement": "Complete two consecutive full accepted print sets and 24-hour and 7-day fixture creep checks without profile or CAD changes."
+        }
+      ],
+      "caveats": [
+        "Dry before qualification according to the manufacturer guidance.",
+        "The exact customer spool quantity must be established from accepted slicer mass plus scrap and spare allowance."
+      ]
+    },
+    {
+      "candidate_id": "MATERIAL-QIDI-TPUHS",
+      "category": "print_material",
+      "candidate_role": "soft_tip_material",
+      "manufacturer": "QIDI",
+      "mpn": "TPUHS",
+      "description": "QIDI TPU95A-HF filament, black, 1 kg",
+      "status": "CANDIDATE_UNVERIFIED",
+      "quantity": {
+        "engineering_reference_spools": 1,
+        "spool_mass_kg_each": 1.0
+      },
+      "spec": {
+        "material": "TPU95A-HF",
+        "shore_hardness": "95A",
+        "nominal_diameter_mm": 1.75,
+        "color": "Black",
+        "candidate_printer": "QIDI Plus4 with standard 0.4 mm nozzle"
+      },
+      "source_ids": [
+        "QIDI-TPU95A-HF",
+        "QIDI-PLUS4-SPECS"
+      ],
+      "qualification_gates": [
+        {
+          "gate_id": "TPU-LOT-01",
+          "requirement": "Record exact SKU, color, lot, drying history, storage, feed route, printer, firmware, nozzle, and frozen profile."
+        },
+        {
+          "gate_id": "TPU-FUNCTION-01",
+          "requirement": "Qualify dimensional fit, pull-off, compression set, creep, cycle wear, and device-contact performance."
+        }
+      ],
+      "caveats": [
+        "Use the physically qualified feed route; do not assume an accessory material box is suitable for TPU."
+      ]
+    },
+    {
+      "candidate_id": "DEVICE-KEYBOARD-PERIBOARD-409U",
+      "category": "reference_device",
+      "candidate_role": "v1_keyboard",
+      "manufacturer": "Perixx",
+      "mpn": "PERIBOARD-409U",
+      "description": "USB Type-A, English-US, black compact keyboard candidate",
+      "status": "CANDIDATE_UNVERIFIED",
+      "quantity": {
+        "reference_and_installed": 1
+      },
+      "spec": {
+        "nominal_envelope_mm": [315.0, 147.0, 21.0],
+        "connection": "Attached USB Type-A cable",
+        "published_cable_length_m": 1.8,
+        "published_mass_g": 386.0,
+        "switch_and_body_material": "Membrane keyboard; ABS body",
+        "layout": "English US",
+        "color": "Black"
+      },
+      "source_ids": [
+        "PERIXX-409"
+      ],
+      "qualification_gates": [
+        {
+          "gate_id": "KEYBOARD-ID-01",
+          "requirement": "Confirm exact label, layout, cable, connector, underside feet, key field, and full envelope."
+        },
+        {
+          "gate_id": "KEYBOARD-FIXTURE-01",
+          "requirement": "Prove retention, datum repeatability, cable clearance, required key actuation, and repeated removal without housing distortion."
+        }
+      ],
+      "caveats": [
+        "No other PERIBOARD-409 connector or regional-layout variant is compatible without separate evidence."
+      ]
+    },
+    {
+      "candidate_id": "DEVICE-PHONE-SAMSUNG-SM-A166B",
+      "category": "reference_device",
+      "candidate_role": "v1_bare_phone",
+      "manufacturer": "Samsung",
+      "mpn": "SM-A166BZKDEUB",
+      "description": "Galaxy A16 5G bare-phone candidate",
+      "status": "CANDIDATE_UNVERIFIED",
+      "quantity": {
+        "reference_and_installed": 1
+      },
+      "spec": {
+        "nominal_body_length_mm": 164.4,
+        "nominal_body_width_mm": 77.9,
+        "nominal_body_thickness_mm": 7.9,
+        "model_family": "SM-A166B",
+        "reference_region_variant": "UK, Blue Black, 128 GB",
+        "published_mass_g": 200.0,
+        "published_usb_interface": "USB-C, USB 2.0",
+        "installed_case_state": "Bare phone; no case"
+      },
+      "source_ids": [
+        "SAMSUNG-A16-5G"
+      ],
+      "qualification_gates": [
+        {
+          "gate_id": "PHONE-ID-01",
+          "requirement": "Confirm exact regional model and measure body, buttons, glass edge, camera bump, USB-C port, and installed orientation."
+        },
+        {
+          "gate_id": "PHONE-FIXTURE-01",
+          "requirement": "Complete clamp, no-go, cable, device-function, damage, and repeated insertion/removal tests."
+        }
+      ],
+      "caveats": [
+        "This full order code is a UK reference variant; it cannot become a US commercial reference without a regional decision and physical comparison.",
+        "A case is outside this V1 candidate and requires a separate geometry and compatibility configuration."
+      ]
+    },
+    {
+      "candidate_id": "CABLE-STARTECH-R2CCR-1M",
+      "category": "device_cable",
+      "candidate_role": "phone_usb_cable",
+      "manufacturer": "StarTech.com",
+      "mpn": "R2CCR-1M-USB-CABLE",
+      "description": "One-meter right-angle USB-C to straight USB-C cable",
+      "status": "CANDIDATE_UNVERIFIED",
+      "quantity": {
+        "installed": 1,
+        "qualification_spare": 1
+      },
+      "spec": {
+        "length_m": 1.0,
+        "device_end": "Right-angle USB-C",
+        "host_end": "Straight USB-C",
+        "published_usb_rate_mbps": 480,
+        "published_power": "Up to 60 W / 3 A",
+        "published_cable_od_mm": 3.1,
+        "published_overall_product_width_height_mm": [28.0, 6.0],
+        "upc": "065030893572",
+        "published_mass_g": 26.0,
+        "published_construction": "TPE jacket with aramid reinforcement"
+      },
+      "source_ids": [
+        "STARTECH-R2CCR",
+        "STARTECH-R2CCR-DATASHEET"
+      ],
+      "qualification_gates": [
+        {
+          "gate_id": "PHONE-CABLE-ID-01",
+          "requirement": "Verify part number, connector direction, connector bodies, overall length, and cable OD."
+        },
+        {
+          "gate_id": "PHONE-CABLE-FUNCTION-01",
+          "requirement": "Prove the intended host and power function, relaxed bend, service loop, docking cycles, strain relief, and zero lateral phone-port load."
+        }
+      ],
+      "caveats": [
+        "The manufacturer does not publish the installed bend radius needed by this fixture; it must be measured.",
+        "Manufacturer-direct US stock was reported as unavailable during the candidate review; qualify a traceable reseller source or alternate before release."
+      ]
+    },
+    {
+      "candidate_id": "TOOL-SPRING-LEE-LP022J01S316",
+      "category": "compliant_tool",
+      "candidate_role": "compression_spring",
+      "manufacturer": "Lee Spring",
+      "mpn": "LP022J01S316",
+      "description": "Lite Pressure Type 316 stainless compression spring",
+      "status": "CANDIDATE_UNVERIFIED",
+      "quantity": {
+        "installed": 1,
+        "customer_spare": 1,
+        "minimum_engineering_purchase": 3
+      },
+      "spec": {
+        "catalog_label": "LP 022J 01 S316",
+        "material": "Type 316 stainless steel",
+        "ends": "Not ground",
+        "published_od_mm": 12.19,
+        "published_work_over_rod_mm": 10.31,
+        "published_free_length_mm": 19.05,
+        "published_wire_diameter_mm": 0.56,
+        "published_rate_n_per_mm": 0.143,
+        "published_solid_height_mm": 3.76,
+        "published_approximate_load_at_solid_n": 2.18,
+        "calculated_incremental_load_n_at_3mm": 0.429,
+        "calculated_incremental_load_n_at_6mm": 0.858
+      },
+      "source_ids": [
+        "LEE-LP022J01S316",
+        "LEE-COMPRESSION-CATALOG"
+      ],
+      "qualification_gates": [
+        {
+          "gate_id": "SPRING-INCOMING-01",
+          "requirement": "Measure OD, ID or work-over-rod clearance, free length, wire, solid height, and lot force-rate curve."
+        },
+        {
+          "gate_id": "SPRING-ASSEMBLY-01",
+          "requirement": "Prove 1-6 mm travel, preload, no coil bind, no guide rub, full return, creep, and approved contact force."
+        }
+      ],
+      "caveats": [
+        "Calculated incremental load excludes assembly preload, friction, tolerances, off-axis forces, and tool mass.",
+        "Reject or redesign if the final contact-force envelope cannot be met."
+      ]
+    },
+    {
+      "candidate_id": "TOOL-ROD-MCM-4143N11",
+      "category": "compliant_tool",
+      "candidate_role": "keyboard_contact_rod",
+      "manufacturer": "McMaster-Carr",
+      "mpn": "4143N11",
+      "description": "Six-millimeter by 100-millimeter unhardened 303 stainless precision shaft",
+      "status": "CANDIDATE_UNVERIFIED",
+      "quantity": {
+        "installed": 1,
+        "qualification_spare": 1
+      },
+      "spec": {
+        "diameter_mm": 6.0,
+        "length_mm": 100.0,
+        "material": "303 stainless steel",
+        "diameter_tolerance_mm": [-0.005, 0.0],
+        "published_straightness_mm_per_300mm": 0.18,
+        "published_hardness": "Rockwell B83"
+      },
+      "source_ids": [
+        "MCM-4143N11"
+      ],
+      "qualification_gates": [
+        {
+          "gate_id": "ROD-INCOMING-01",
+          "requirement": "Measure diameter at several locations, length, straightness, end condition, mass, and surface condition."
+        },
+        {
+          "gate_id": "ROD-TOOL-01",
+          "requirement": "Deburr safely and prove printed-bushing retention, TPU pull-off, 24-hour creep, cycle wear, keyboard function, spring travel, and TCP repeatability."
+        }
+      ],
+      "caveats": [
+        "This exact SKU is a proposed replacement for the prior generic 6 mm by 90-110 mm rod purchasing description only after physical qualification and controlled configuration selection.",
+        "No canonical route or CAD parameter is changed by listing it here."
+      ]
+    },
+    {
+      "candidate_id": "ROBOT-WAVESHARE-ROARM-M3-PRO",
+      "category": "robot",
+      "candidate_role": "existing_robot_platform",
+      "manufacturer": "Waveshare",
+      "mpn": "RoArm-M3 Pro",
+      "description": "Five-plus-one degree-of-freedom serial robot arm with factory table clamp",
+      "status": "CANDIDATE_UNVERIFIED",
+      "quantity": {
+        "existing_reference_and_installed": 1
+      },
+      "spec": {
+        "power_supply_output": "12 V / 5 A nominal; verify received label and AC input",
+        "published_horizontal_workspace_diameter_mm": 1120.0,
+        "published_vertical_workspace_mm": 798.0,
+        "published_payload_kg_at_500_mm": 0.2,
+        "published_repeatability_mm_approx": 5.0,
+        "published_max_table_thickness_mm": 72.0,
+        "published_pro_mass_g": "1020.8 +/- 15 excluding clamp",
+        "published_clamp_mass_g": "290 +/- 10"
+      },
+      "source_ids": [
+        "WAVESHARE-ROARM-M3",
+        "WAVESHARE-ROARM-XACRO"
+      ],
+      "qualification_gates": [
+        {
+          "gate_id": "ROBOT-ID-01",
+          "requirement": "Record exact robot, controller, clamp, firmware, power-adapter, and connector revisions."
+        },
+        {
+          "gate_id": "ROBOT-DATUM-01",
+          "requirement": "Measure T_board_base and tool TCP with uncertainty; validate the official model against physical joint zeros."
+        },
+        {
+          "gate_id": "ROBOT-PATH-01",
+          "requirement": "Complete IK, payload, singularity, collision, empty-cell, and compliant first-contact evidence for every released path."
+        }
+      ],
+      "caveats": [
+        "Waveshare warns the arm moves joints toward a middle pose at power-on.",
+        "No documented safety-rated STO or emergency-stop input has been established for this product configuration."
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "source_id": "EZLOK-900407-10",
+      "type": "manufacturer",
+      "uri": "https://www.ezlok.com/ezhex-insert-900407-10",
+      "supports": "Insert identity, M4 thread, length, drill, and wood application."
+    },
+    {
+      "source_id": "EZLOK-KIT-EZ-900407-10",
+      "type": "manufacturer",
+      "uri": "https://www.ezlok.com/ezhex-kit-EZ-900407-10",
+      "supports": "Kit identity, insert count, drill, and installation tool."
+    },
+    {
+      "source_id": "EZLOK-HEX-DRAWING",
+      "type": "manufacturer_drawing",
+      "uri": "https://www.ezlok.com/assets/documents/dimensional_drawings/Dimensional%20Dwg%20-%20HexDriveFlanged.pdf",
+      "supports": "Insert and flange dimensions and drawing tolerance."
+    },
+    {
+      "source_id": "EZLOK-APPLICATION-TESTING",
+      "type": "manufacturer",
+      "uri": "https://www.ezlok.com/testing",
+      "supports": "Application-specific testing and drill-selection caveat."
+    },
+    {
+      "source_id": "BELMETRIC-SB4-FAMILY",
+      "type": "vendor",
+      "uri": "https://belmetric.com/m4x0-7-button-head-cap-screw-a2-stainless-iso-7380-1/",
+      "supports": "SB4X20SS and SB4X25SS identities, thread, material, and standard."
+    },
+    {
+      "source_id": "BELMETRIC-SB4X25-DRAWING",
+      "type": "vendor_drawing",
+      "uri": "https://belmetric.com/content/A-PDF_Drawings/SB4X25SS.pdf",
+      "supports": "M4 x 25 button-head dimensions."
+    },
+    {
+      "source_id": "BELMETRIC-WF4SS-DRAWING",
+      "type": "vendor_drawing",
+      "uri": "https://belmetric.com/content/A-PDF_Drawings/WF4SS.pdf",
+      "supports": "WF4SS washer dimensions and standard."
+    },
+    {
+      "source_id": "WERA-05074715001",
+      "type": "manufacturer",
+      "uri": "https://www.wera.de/en/tools/series-7400-kraftform-adjustable-torque-screwdrivers-01-30-nm-with-rapidaptor-quick-release-chuck",
+      "supports": "Torque-driver product identity, range, and accuracy."
+    },
+    {
+      "source_id": "WERA-05056310001",
+      "type": "manufacturer",
+      "uri": "https://www.wera.de/en/05056310001",
+      "supports": "2.5 mm Hex-Plus bit identity."
+    },
+    {
+      "source_id": "SENDCUTSEND-6061",
+      "type": "fabricator",
+      "uri": "https://sendcutsend.com/materials/6061-aluminum/",
+      "supports": "Availability of 0.125 inch 6061-T6 aluminum."
+    },
+    {
+      "source_id": "SENDCUTSEND-TOLERANCES",
+      "type": "fabricator",
+      "uri": "https://sendcutsend.com/materials/processing-min-max/",
+      "supports": "Published laser-processing tolerance capability."
+    },
+    {
+      "source_id": "3M-BUMPON-DATA",
+      "type": "manufacturer_datasheet",
+      "uri": "https://multimedia.3m.com/mws/media/175691O/3m-tm-bumpon-tm-protective-products.pdf",
+      "supports": "Bumpon family material, hardness, and dimensions."
+    },
+    {
+      "source_id": "DIGIKEY-SJ-5023",
+      "type": "authorized_vendor",
+      "uri": "https://www.digikey.com/en/products/detail/3m/SJ-5023-BLACK/3866054",
+      "supports": "Exact SJ-5023-BLACK ordering identity."
+    },
+    {
+      "source_id": "POWERTEC-71755",
+      "type": "manufacturer",
+      "uri": "https://powertecproducts.com/71755-120v-9a-on-off-magnetic-paddle-switch-with-standard-cords/",
+      "supports": "Cutoff identity, electrical rating, cord construction, and plug-compatible form."
+    },
+    {
+      "source_id": "MAKESAFE-SPECS",
+      "type": "manufacturer",
+      "uri": "https://makesafetools.com/documents-specifications/",
+      "supports": "IRE product family, approvals, voltage, enclosure, and cord options."
+    },
+    {
+      "source_id": "MAKESAFE-IRE-MANUAL",
+      "type": "manufacturer_manual",
+      "uri": "https://makesafetools.com/wp-content/uploads/2023/06/IRE-Control-Panel-Manual.pdf",
+      "supports": "IRE intended use, machine-switch detection, installation, anti-restart, and application-test requirements."
+    },
+    {
+      "source_id": "ARDUCAM-B0495C",
+      "type": "manufacturer",
+      "uri": "https://www.arducam.com/arducam-2-3mp-ar0234-color-global-shutter-usb-3-0-camera-module-with-enclosure.html",
+      "supports": "B0495C identity, sensor, UVC mode, lens, FOV, interface, enclosure, and cable."
+    },
+    {
+      "source_id": "ARDUCAM-B0495-DATASHEET",
+      "type": "manufacturer_datasheet",
+      "uri": "https://www.arducam.com/downloads/datasheet/B0495_AR0234_Global_Shutter_USB3.0_Camera_Module_Datasheet.pdf",
+      "supports": "B0495 camera-family technical data and its separately published FOV values."
+    },
+    {
+      "source_id": "LOGITECH-C920E",
+      "type": "manufacturer",
+      "uri": "https://www.logitech.com/en-us/products/webcams/c920e-business-webcam.960-001401.html",
+      "supports": "C920e part number, dimensions, mass, video mode, lens, cable, and tripod thread."
+    },
+    {
+      "source_id": "LOGITECH-C920E-SUPPORT",
+      "type": "manufacturer_support",
+      "uri": "https://hub.sync.logitech.com/c920e",
+      "supports": "C920e support route and published field-of-view data."
+    },
+    {
+      "source_id": "SMALLRIG-4304",
+      "type": "manufacturer",
+      "uri": "https://www.smallrig.com/Desktop-Overhead-Photography-Live-Streaming-Bracket.html?noRedirect=1&skuId=1801105372421861378",
+      "supports": "Support identity, configuration, and included interfaces."
+    },
+    {
+      "source_id": "BH-SMALLRIG-4304",
+      "type": "authorized_vendor",
+      "uri": "https://www.bhphotovideo.com/c/product/1838251-REG/smallrig_4304_desktop_overhead_photography_live_streaming.html/overview",
+      "supports": "Current exact model specifications including load, table clamp, boom, and 1/4-20 interface."
+    },
+    {
+      "source_id": "8020-20-2020",
+      "type": "manufacturer",
+      "uri": "https://8020.net/20-2020.html",
+      "supports": "Exact 20-2020 extrusion profile identity, material, finish, and cross-section."
+    },
+    {
+      "source_id": "QIDI-PETG-TOUGH",
+      "type": "manufacturer",
+      "uri": "https://us.qidi3d.com/products/qidi-tech-petg-tough-filament",
+      "supports": "PETG-Tough SKU, diameter, tolerance, and drying guidance."
+    },
+    {
+      "source_id": "QIDI-TPU95A-HF",
+      "type": "manufacturer",
+      "uri": "https://us.qidi3d.com/products/qidi-tpu95a-hf-filament",
+      "supports": "TPU95A-HF SKU, hardness, color, and spool configuration."
+    },
+    {
+      "source_id": "QIDI-PLUS4-SPECS",
+      "type": "manufacturer",
+      "uri": "https://us.qidi3d.com/pages/qidi-plus-4-techspecs",
+      "supports": "Plus4 build volume, standard nozzle, print surface, and supported material families."
+    },
+    {
+      "source_id": "PERIXX-409",
+      "type": "manufacturer",
+      "uri": "https://perixx.com/products/periboard-409",
+      "supports": "PERIBOARD-409 dimensions and available USB-A US-layout configuration."
+    },
+    {
+      "source_id": "SAMSUNG-A16-5G",
+      "type": "manufacturer",
+      "uri": "https://www.samsung.com/uk/smartphones/galaxy-a/galaxy-a16-5g-blue-black-128gb-sm-a166bzkdeub/",
+      "supports": "Galaxy A16 5G SM-A166B bare-body dimensions and USB-C interface."
+    },
+    {
+      "source_id": "STARTECH-R2CCR",
+      "type": "manufacturer",
+      "uri": "https://www.startech.com/en-us/cables/r2ccr-1m-usb-cable",
+      "supports": "Cable identity and right-angle USB-C configuration."
+    },
+    {
+      "source_id": "STARTECH-R2CCR-DATASHEET",
+      "type": "manufacturer_datasheet",
+      "uri": "https://media.startech.com/cms/pdfs/r2ccr-1m-usb-cable_datasheet.pdf",
+      "supports": "Cable length, OD, overall envelope, USB rate, and power rating."
+    },
+    {
+      "source_id": "LEE-LP022J01S316",
+      "type": "manufacturer",
+      "uri": "https://www.leespring.com/product/compression-spring-lp022j01s316-stainless-steel-type-316",
+      "supports": "Exact spring stock code and product identity."
+    },
+    {
+      "source_id": "LEE-COMPRESSION-CATALOG",
+      "type": "manufacturer_catalog",
+      "uri": "https://www.leespring.com/sites/default/files/2020-03/Lee_Spring_Catalog_US_Eng.pdf",
+      "supports": "Spring dimensions, material, rate, solid height, and load data."
+    },
+    {
+      "source_id": "MCM-4143N11",
+      "type": "vendor",
+      "uri": "https://www.mcmaster.com/4143N11",
+      "supports": "Exact shaft order code, diameter, length, 303 stainless material, tolerance, straightness, and hardness."
+    },
+    {
+      "source_id": "WAVESHARE-ROARM-M3",
+      "type": "manufacturer",
+      "uri": "https://www.waveshare.com/product/ai/robots/roarm-m3.htm",
+      "supports": "RoArm workspace, payload, repeatability, mass, clamp, power, and power-on-motion information."
+    },
+    {
+      "source_id": "WAVESHARE-ROARM-XACRO",
+      "type": "manufacturer_model",
+      "uri": "https://raw.githubusercontent.com/waveshareteam/roarm_ws/ros2-humble/src/roarm_main/roarm_description/urdf/roarm_m3/roarm_m3.xacro",
+      "supports": "Official kinematic link and joint model for digital screening."
+    },
+    {
+      "source_id": "LOCAL-V1-PREHARDWARE",
+      "type": "controlled_local",
+      "uri": "config/v1_prehardware_configuration.json",
+      "supports": "Existing paired-2020 mast architecture and device candidate record."
+    },
+    {
+      "source_id": "LOCAL-BOM",
+      "type": "controlled_local",
+      "uri": "BOM.csv",
+      "supports": "Existing paired-mast quantities and candidate hardware envelope."
+    }
+  ]
+}

@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "design_revision": "RC03-INT-R1",
+  "package_definition_hash": "7a6947f2de52f63133c5b9647b9b479ccd9d896906c2b575e76c106e1e5dccca",
+  "canonical_snapshot_hash": "05d11599e6d4a2937e0207535b298aa809ff08c79840350c7716666ce6d12755",
+  "canonical_input_hash": "05d11599e6d4a2937e0207535b298aa809ff08c79840350c7716666ce6d12755",
+  "step_id": "01",
+  "build_id": "2026-09-01_CELL-A",
+  "operator": null,
+  "started_at": null,
+  "instrument_ids": [],
+  "measurements": [
+    {
+      "test_id": "01-A",
+      "criterion": "Local board flatness",
+      "value_or_observation": null,
+      "unit": null,
+      "instrument_id": null,
+      "evidence_files": [],
+      "result": "NOT_TESTED",
+      "notes": null
+    },
+    {
+      "test_id": "01-B",
+      "criterion": "Overall board bow",
+      "value_or_observation": null,
+      "unit": null,
+      "instrument_id": null,
+      "evidence_files": [],
+      "result": "NOT_TESTED",
+      "notes": null
+    },
+    {
+      "test_id": "01-C",
+      "criterion": "Locator bores preserve a blind floor and pins have controlled projection",
+      "value_or_observation": null,
+      "unit": null,
+      "instrument_id": null,
+      "evidence_files": [],
+      "result": "NOT_TESTED",
+      "notes": null
+    },
+    {
+      "test_id": "01-D",
+      "criterion": "All qualified station interfaces dry fit",
+      "value_or_observation": null,
+      "unit": null,
+      "instrument_id": null,
+      "evidence_files": [],
+      "result": "NOT_TESTED",
+      "notes": null
+    },
+    {
+      "test_id": "01-E",
+      "criterion": "Board finish coverage and cure",
+      "value_or_observation": null,
+      "unit": null,
+      "instrument_id": null,
+      "evidence_files": [],
+      "result": "NOT_TESTED",
+      "notes": null
+    },
+    {
+      "test_id": "01-F",
+      "criterion": "Board geometry and selected drill-guide registration pass before center transfer",
+      "value_or_observation": null,
+      "unit": null,
+      "instrument_id": null,
+      "evidence_files": [],
+      "result": "NOT_TESTED",
+      "notes": null
+    },
+    {
+      "test_id": "01-G",
+      "criterion": "All thirteen transferred centers match the controlled coordinate schedule",
+      "value_or_observation": null,
+      "unit": null,
+      "instrument_id": null,
+      "evidence_files": [],
+      "result": "NOT_TESTED",
+      "notes": null
+    }
+  ],
+  "evidence_files": [],
+  "corrections_and_retests": []
+}

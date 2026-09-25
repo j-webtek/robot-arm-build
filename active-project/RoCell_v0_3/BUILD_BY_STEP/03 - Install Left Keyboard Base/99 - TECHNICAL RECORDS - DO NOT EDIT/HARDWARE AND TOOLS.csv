@@ -1,0 +1,10 @@
+source,type,qty,item,critical_condition,status
+required_physical_input,Required input,As specified,Accepted RC03-L master station and one accepted padded rear-clamp slider,Present and accepted before work,NOT_VERIFIED
+required_physical_input,Required input,As specified,Two installed keyboard locator pins,Present and accepted before work,NOT_VERIFIED
+required_physical_input,Required input,As specified,"KBL-HOLD-F, KBL-HOLD-R, and KBL-CLAMP hardware stacks selected by the cutoff test",Present and accepted before work,NOT_VERIFIED
+required_physical_input,Required input,As specified,Retained job 00A seam ladder and the accepted master first-article record,Present and accepted before work,NOT_VERIFIED
+required_physical_input,Required input,As specified,"Low-range torque driver, feeler gauges, lint-free cleaning supplies, and camera for evidence",Present and accepted before work,NOT_VERIFIED
+structured_register,Printed part,1,Keyboard station left/master,Accepted Job 01,NOT_VERIFIED
+structured_register,Printed part,1,Keyboard rear-clamp slider,Accepted Job 03B with one face pad,NOT_VERIFIED
+structured_register,Locator,2,Installed 6 mm pins,Round fixes XY; radial slot relieves one axis,NOT_VERIFIED
+structured_register,Fastener,2 + 1 shared,M4 retainers and washers,Front and rear conventional stacks plus the low-profile slider/station stack,NOT_VERIFIED

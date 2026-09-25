@@ -1,0 +1,109 @@
+{
+  "schema": "rocell.static_simulation_bundle_lock.v1",
+  "bundle_id": "ROCELL-STATIC-B0477-SIM-BUNDLE-001",
+  "simulation_only": true,
+  "physical_authority": false,
+  "physical_freeze_promoted": false,
+  "geometry_scope": "UNCHANGED_FROZEN_ROBOT_AND_NOMINAL_WORKCELL_GEOMETRY",
+  "optical_scope": "EXISTING_B0477_SYNTHETIC_PROXY_NOT_INSTALLED_CALIBRATION",
+  "graph_id": "static-overhead-b0477-phase1.v1",
+  "graph_sha256": "048ec086935692fb9698f7e44f43e8addc489bacf0f4909b0dfb3691ef397981",
+  "semantic_bindings": {
+    "keyboard": {
+      "schema": "rocell.static_development_semantic_binding.v1",
+      "device": "keyboard",
+      "profile_id": "development/static-overhead-b0477-keyboard-semantic-v1",
+      "semantic_content_sha256": "1c981795f4800141fbe28c06b776032b034ff7c0dbc5aaf61813463955916b01",
+      "required_calibrations": [
+        "phase1_b0477_identity",
+        "phase1_b0477_mode",
+        "phase1_b0477_settings",
+        "phase1_static_intrinsics",
+        "phase1_measured_tag_map",
+        "phase1_static_extrinsic",
+        "phase1_robot_reference",
+        "phase1_controller_correlation",
+        "phase1_arm_board",
+        "phase1_keyboard_target_map",
+        "phase1_keyboard_tcp",
+        "phase1_keyboard_outcome_observer"
+      ],
+      "graph_id": "static-overhead-b0477-phase1.v1",
+      "graph_sha256": "048ec086935692fb9698f7e44f43e8addc489bacf0f4909b0dfb3691ef397981",
+      "architecture": "RIGID_STATIC_OVERHEAD_EYE_TO_HAND",
+      "camera_catalog_configuration": "ARDUCAM_B0477_IMX283_16MM",
+      "geometry_bound": false,
+      "installed_calibration_bound": false,
+      "physical_authority": false,
+      "hardware_commands_generated": 0,
+      "binding_sha256": "6dee54f8d83abc3c1a23448793bb588cc6636aa60f464f4d6cbffa783859922d"
+    },
+    "phone": {
+      "schema": "rocell.static_development_semantic_binding.v1",
+      "device": "phone",
+      "profile_id": "development/static-overhead-b0477-phone-semantic-v1",
+      "semantic_content_sha256": "8f0f680bde9a23d05271ff827ce7f9fd51ddd1cf4f029d96603ee47cb937ed9c",
+      "required_calibrations": [
+        "phase1_b0477_identity",
+        "phase1_b0477_mode",
+        "phase1_b0477_settings",
+        "phase1_static_intrinsics",
+        "phase1_measured_tag_map",
+        "phase1_static_extrinsic",
+        "phase1_robot_reference",
+        "phase1_controller_correlation",
+        "phase1_arm_board",
+        "phase1_phone_target_map",
+        "phase1_phone_tcp",
+        "phase1_phone_outcome_observer"
+      ],
+      "graph_id": "static-overhead-b0477-phase1.v1",
+      "graph_sha256": "048ec086935692fb9698f7e44f43e8addc489bacf0f4909b0dfb3691ef397981",
+      "architecture": "RIGID_STATIC_OVERHEAD_EYE_TO_HAND",
+      "camera_catalog_configuration": "ARDUCAM_B0477_IMX283_16MM",
+      "geometry_bound": false,
+      "installed_calibration_bound": false,
+      "physical_authority": false,
+      "hardware_commands_generated": 0,
+      "binding_sha256": "b2d114a2417899561cb67e9afe0c51d38ca83163ccc0bcbf19715db36c3d74a1"
+    }
+  },
+  "artifacts": {
+    "system_manifest": {
+      "path": "software/config/system_manifest.json",
+      "sha256": "e85120de64b2128a2f5ab0f4e9f8868f6070e485f747234f89c813d910b5b0f1"
+    },
+    "robot_numerical_seed": {
+      "path": "software/config/simulation_hardware_profile.json",
+      "sha256": "b79ca2653fe0c95ecd328412a44b160d2d0beae1a0dc5c3e2fd09bb94a487990"
+    },
+    "static_targets": {
+      "path": "software/config/static_nominal_target_profiles.json",
+      "sha256": "0cc4b46ce6a7b94f32ba1d64f9818c094f6005636c4d56480f5907b773cd5276"
+    },
+    "legacy_geometry_seed": {
+      "path": "software/config/nominal_target_profiles.json",
+      "sha256": "6779213e832ab27eeda1e7fb245f57ff8cb0d56707b5aa73a8f31ec483a620f2"
+    },
+    "architecture": {
+      "path": "software/config/camera_architecture_plan.json",
+      "sha256": "e5414dc7295ab8a4c9c1e7e813bedf38e336755b73b9fad9431572da6e1913bf"
+    },
+    "purchased_camera": {
+      "path": "software/config/camera_profiles/arducam_b0477_imx283_16mm.json",
+      "sha256": "c15264f866d81b99cc1155171e21d3416d3a1fa7a244b5ae97642cc989f2e024"
+    },
+    "support_design": {
+      "path": "hardware/static_overhead_camera/config/support_design.json",
+      "sha256": "2392257405b54022039be1da96e005690fe74df32256607a61d374d7c1720d1b"
+    },
+    "kinematic_model": {
+      "path": "software/models/roarm_m3/roarm_m3_kinematic_40dbd84.urdf",
+      "sha256": "a565718e7d74b07702802cf41eb9549a6e38e50b5e80aa9b887ab1ae3d0d8190"
+    },
+    "arm_frame_contract": {
+      "path": "software/config/arm_frame_contract.json",
+      "sha256": "5e3d39388149bdd191855e0bdd8c5eb7387f0419da9bc31a15cf3d807f1b9d6d"
+    }
+  }
+}

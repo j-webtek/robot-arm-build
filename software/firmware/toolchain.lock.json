@@ -1,0 +1,19 @@
+{
+  "purpose": "Compile-only reference qualification; not installed firmware identity",
+  "arduino_cli": "1.5.1",
+  "arduino_cli_windows_zip_sha256": "fabe42e0eb04d00e776a66178299ff95a46c623dbc260f997e58fd514853dd40",
+  "platform": "esp32:esp32@3.0.7",
+  "fqbn": "esp32:esp32:esp32:PartitionScheme=huge_app,PSRAM=enabled",
+  "libraries": {
+    "ArduinoJson": "7.3.1",
+    "INA219_WE": "1.3.8",
+    "Adafruit SSD1306": "2.5.17",
+    "Adafruit GFX Library": "1.12.6",
+    "Adafruit BusIO": "1.17.4"
+  },
+  "SCServo_archive_sha256": "b8b377642b3eb45610226fdf96fbc61d7c012a512bdd7f8c904a9c1ac88328af",
+  "SCServo_candidate_SCS_cpp_sha256": "3428d9bafceec76121d7cbdb5acc37a31b6f9babc74957dfa54d26e30ea0ed3d",
+  "firmware_reference_archive_sha256": "d627e180c4814776ef0ccf78f237482d48dcd3745be1e37378c25fd9005fd6a9",
+  "hardware_validated": false,
+  "deployment_authorized": false
+}

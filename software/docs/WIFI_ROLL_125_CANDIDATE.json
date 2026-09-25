@@ -1,0 +1,36 @@
+{
+  "schema": "rocell.offline_roll_candidate.v1",
+  "enabled": false,
+  "motion_authorized": false,
+  "scope": "ROLL_ONLY_DESIRED_1_25_DEG_SPEED_20_ACC_1",
+  "desired_endpoint_deg": 1.25,
+  "model": "LOCAL_DIRECTION_CONDITIONED_ADDITIVE_MEAN_ERROR",
+  "rule": "candidate_command_deg = desired_endpoint_deg - mean_training_error_deg",
+  "ascending": {
+    "training_errors_deg": [-0.10742188889499049, -0.019531251741732945],
+    "mean_training_error_deg": -0.06347657031836172,
+    "candidate_command_deg": 1.3134765703183617,
+    "training_exports": [
+      "wizard-20260916T161335874219Z-2361a48da18b4a0384d012cb739e59d8",
+      "wizard-20260916T161756980743Z-a0cafe710f944f17834b3e9e0c25c9f1"
+    ]
+  },
+  "descending": {
+    "training_errors_deg": [0.24414060242226002, 0.15625002256478196],
+    "mean_training_error_deg": 0.200195312493521,
+    "candidate_command_deg": 1.049804687506479,
+    "training_exports": [
+      "wizard-20260916T161426845181Z-64867a5dd3f94813b70de7bd1d4aed78",
+      "wizard-20260916T161704104373Z-8d1f137f6aab4873887e7227841a3582"
+    ]
+  },
+  "physical_corrected_trials": 0,
+  "held_out_validation": "NOT_PERFORMED",
+  "limitations": [
+    "Only two training trials per direction; not statistical qualification.",
+    "Starting pose, distance, prior path and ordering are not fully controlled.",
+    "Additive response to a changed command is an untested hypothesis.",
+    "Do not extrapolate to other targets, joints, speeds, loads or Cartesian accuracy.",
+    "This documentation artifact is not loaded by a native command action."
+  ]
+}

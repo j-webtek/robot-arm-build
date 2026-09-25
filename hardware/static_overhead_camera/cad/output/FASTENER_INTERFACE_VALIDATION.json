@@ -1,0 +1,518 @@
+{
+  "status": "PASS",
+  "checks": [
+    {
+      "check": "m6_cap_boss_support_and_full_head_clearance",
+      "status": "PASS",
+      "maximum_intersection_mm3": 0,
+      "minimum_boss_top_solid_fill_ratio": 1.0,
+      "modeled_maximum_head_outer_diameter_mm": 13.5,
+      "modeled_boss_outer_diameter_mm": 16.0,
+      "modeled_boss_bearing_height_mm": 9.8
+    },
+    {
+      "check": "left_saddle_receiver_bore_alignment",
+      "status": "PASS",
+      "maximum_test_cylinder_intersection_mm3": 0.0,
+      "test_radius_mm": 2.6
+    },
+    {
+      "check": "right_saddle_receiver_bore_alignment",
+      "status": "PASS",
+      "maximum_test_cylinder_intersection_mm3": 0.0,
+      "test_radius_mm": 2.6
+    },
+    {
+      "check": "saddle_receiver_flange_envelope_separation",
+      "status": "PASS",
+      "maximum_pair_intersection_mm3": 0,
+      "modeled_flange_diameter_mm": 12.0
+    },
+    {
+      "check": "left_portal_node_bore_alignment",
+      "status": "PASS",
+      "maximum_test_cylinder_intersection_mm3": 0.0,
+      "test_radius_mm": 2.6
+    },
+    {
+      "check": "right_portal_node_bore_alignment",
+      "status": "PASS",
+      "maximum_test_cylinder_intersection_mm3": 0.0,
+      "test_radius_mm": 2.6
+    },
+    {
+      "check": "portal_diagonal_flange_and_socket_separation",
+      "status": "PASS",
+      "maximum_neighbor_flange_intersection_mm3": 0,
+      "maximum_gusset_intersection_mm3": 0,
+      "modeled_socket_outer_diameter_mm": 13.0,
+      "modeled_flange_outer_diameter_mm": 12.0,
+      "same_member_axis_spacing_mm": 16.971
+    },
+    {
+      "check": "boom_root_complete_m5x90_shaft_clearance",
+      "status": "PASS",
+      "maximum_test_cylinder_intersection_mm3": 0.0,
+      "test_radius_mm": 2.6
+    },
+    {
+      "check": "boom_root_head_envelope",
+      "status": "PASS",
+      "maximum_intersection_mm3": 0
+    },
+    {
+      "check": "boom_root_nyloc_envelope",
+      "status": "PASS",
+      "maximum_intersection_mm3": 0
+    },
+    {
+      "check": "boom_root_top_bottom_tool_access",
+      "status": "PASS",
+      "maximum_intersection_mm3": 0
+    },
+    {
+      "check": "boom_root_full_height_column_annular_support",
+      "status": "PASS",
+      "minimum_solid_fill_ratio": 1.0,
+      "nominal_radial_ligament_mm": 5.25
+    },
+    {
+      "check": "external_splice_bore_alignment",
+      "status": "PASS",
+      "maximum_test_cylinder_intersection_mm3": 0.0,
+      "test_radius_mm": 2.6
+    },
+    {
+      "check": "crossbar_outer_splice_bore_alignment",
+      "status": "PASS",
+      "maximum_test_cylinder_intersection_mm3": 0.0,
+      "test_radius_mm": 2.6
+    },
+    {
+      "check": "crossbar_center_4bolt_splice_alignment",
+      "status": "PASS",
+      "maximum_test_cylinder_intersection_mm3": 0.0,
+      "test_radius_mm": 2.6
+    },
+    {
+      "check": "center_splice_flange_envelope_separation",
+      "status": "PASS",
+      "maximum_pair_intersection_mm3": 0,
+      "modeled_flange_diameter_mm": 12.0
+    },
+    {
+      "check": "carriage_to_boom_bore_alignment",
+      "status": "PASS",
+      "maximum_test_cylinder_intersection_mm3": 0.0,
+      "test_radius_mm": 2.6
+    },
+    {
+      "check": "carriage_boom_full_height_column_annular_support",
+      "status": "PASS",
+      "minimum_solid_fill_ratio": 1.0,
+      "nominal_radial_ligament_mm": 5.25
+    },
+    {
+      "check": "three_point_leveling_round_bore_alignment_X-12_Y+0",
+      "status": "PASS",
+      "maximum_test_cylinder_intersection_mm3": 0.0,
+      "test_radius_mm": 2.1
+    },
+    {
+      "check": "three_point_leveling_round_bore_alignment_X-12_Y+21",
+      "status": "PASS",
+      "maximum_test_cylinder_intersection_mm3": 0.0,
+      "test_radius_mm": 2.1
+    },
+    {
+      "check": "three_point_leveling_round_bore_alignment_X+0_Y+0",
+      "status": "PASS",
+      "maximum_test_cylinder_intersection_mm3": 0.0,
+      "test_radius_mm": 2.1
+    },
+    {
+      "check": "three_point_leveling_round_bore_alignment_X+0_Y+21",
+      "status": "PASS",
+      "maximum_test_cylinder_intersection_mm3": 0.0,
+      "test_radius_mm": 2.1
+    },
+    {
+      "check": "three_point_leveling_round_bore_alignment_X+12_Y+0",
+      "status": "PASS",
+      "maximum_test_cylinder_intersection_mm3": 0.0,
+      "test_radius_mm": 2.1
+    },
+    {
+      "check": "three_point_leveling_round_bore_alignment_X+12_Y+21",
+      "status": "PASS",
+      "maximum_test_cylinder_intersection_mm3": 0.0,
+      "test_radius_mm": 2.1
+    },
+    {
+      "check": "keeper_bolt_bore_alignment_X-12_Y+0",
+      "status": "PASS",
+      "maximum_test_cylinder_intersection_mm3": 0.0,
+      "test_radius_mm": 2.1
+    },
+    {
+      "check": "keeper_bolt_bore_alignment_X-12_Y+21",
+      "status": "PASS",
+      "maximum_test_cylinder_intersection_mm3": 0.0,
+      "test_radius_mm": 2.1
+    },
+    {
+      "check": "keeper_bolt_bore_alignment_X+0_Y+0",
+      "status": "PASS",
+      "maximum_test_cylinder_intersection_mm3": 0.0,
+      "test_radius_mm": 2.1
+    },
+    {
+      "check": "keeper_bolt_bore_alignment_X+0_Y+21",
+      "status": "PASS",
+      "maximum_test_cylinder_intersection_mm3": 0.0,
+      "test_radius_mm": 2.1
+    },
+    {
+      "check": "keeper_bolt_bore_alignment_X+12_Y+0",
+      "status": "PASS",
+      "maximum_test_cylinder_intersection_mm3": 0.0,
+      "test_radius_mm": 2.1
+    },
+    {
+      "check": "keeper_bolt_bore_alignment_X+12_Y+21",
+      "status": "PASS",
+      "maximum_test_cylinder_intersection_mm3": 0.0,
+      "test_radius_mm": 2.1
+    },
+    {
+      "check": "keeper_recessed_head_envelope_all_indices",
+      "status": "PASS",
+      "maximum_intersection_mm3": 0
+    },
+    {
+      "check": "keeper_hex_key_service_access_all_indices",
+      "status": "PASS",
+      "maximum_intersection_mm3": 0
+    },
+    {
+      "check": "leveling_jam_nut_washer_envelope_all_indices",
+      "status": "PASS",
+      "maximum_intersection_mm3": 0
+    },
+    {
+      "check": "leveling_jam_nut_edge_wrench_sweeps_all_indices",
+      "status": "PASS",
+      "maximum_intersection_mm3": 0,
+      "tool_head_envelope_mm": [
+        18.0,
+        5.5
+      ],
+      "modeled_handle_length_mm": 80.0,
+      "modeled_bay_width_mm": 19.0,
+      "front_approach": "-Y between booms",
+      "rear_approach": "+Y between booms"
+    },
+    {
+      "check": "all_indexed_carriage_shafts_clear_camera_envelope",
+      "status": "PASS",
+      "maximum_intersection_mm3": 0,
+      "tested_x_index_offsets_mm": [
+        -12.0,
+        0.0,
+        12.0
+      ],
+      "tested_y_index_offsets_mm": [
+        0.0,
+        21.0
+      ]
+    },
+    {
+      "check": "all_camera_x_index_leveling_bore_annular_support",
+      "status": "PASS",
+      "minimum_solid_fill_ratio": 1.0,
+      "tested_bore_count": 9,
+      "bearing_ring_outer_diameter_mm": 9.5
+    },
+    {
+      "check": "all_camera_x_index_leveling_top_washer_seats",
+      "status": "PASS",
+      "minimum_below_spotface_solid_fill_ratio": 1.0,
+      "maximum_above_spotface_intersection_mm3": 0,
+      "tested_bore_count": 9,
+      "spotface_diameter_mm": 10.0,
+      "spotface_depth_mm": 0.2
+    },
+    {
+      "check": "leveling_captive_nut_load_roof",
+      "status": "PASS",
+      "minimum_solid_fill_ratio": 1.0,
+      "roof_thickness_mm": 4.3
+    }
+  ],
+  "fastener_classes": [
+    {
+      "fastener_class": "M5x80 saddle receiver",
+      "axes_B_mm": [
+        [
+          -59.0,
+          -100.0,
+          60.0
+        ],
+        [
+          -47.0,
+          -100.0,
+          72.0
+        ],
+        [
+          671.0,
+          -100.0,
+          60.0
+        ],
+        [
+          683.0,
+          -100.0,
+          72.0
+        ]
+      ],
+      "printed_grip_mm": 68.0,
+      "nominal_bolt_length_mm": 80.0,
+      "nut_or_head_stack_allowance_mm": 6.0,
+      "nominal_thread_projection_after_stack_mm": 6.0,
+      "stack_status": "PASS",
+      "note": "Two diagonal axes per saddle through both 8 mm receiver cheeks and reinforced upright bands; insert front-to-rear with flanged nylocs on the rear face."
+    },
+    {
+      "fastener_class": "M5x75 portal corner",
+      "axes_B_mm": [
+        [
+          -47.0,
+          -100.0,
+          988.0
+        ],
+        [
+          -59.0,
+          -100.0,
+          1000.0
+        ],
+        [
+          -38.0,
+          -100.0,
+          1029.0
+        ],
+        [
+          -50.0,
+          -100.0,
+          1041.0
+        ],
+        [
+          683.0,
+          -100.0,
+          988.0
+        ],
+        [
+          671.0,
+          -100.0,
+          1000.0
+        ],
+        [
+          648.0,
+          -100.0,
+          1029.0
+        ],
+        [
+          660.0,
+          -100.0,
+          1041.0
+        ]
+      ],
+      "printed_grip_mm": 66.0,
+      "nominal_bolt_length_mm": 75.0,
+      "nut_or_head_stack_allowance_mm": 6.0,
+      "nominal_thread_projection_after_stack_mm": 3.0,
+      "stack_status": "PASS",
+      "note": "Eight axes total; each member uses a 16.97 mm diagonal bore pair so one <=13 mm socket clears the neighboring 12 mm flange."
+    },
+    {
+      "fastener_class": "M5x90 boom root sandwich",
+      "axes_B_mm": [
+        [
+          196.75,
+          -99.0,
+          "Z"
+        ],
+        [
+          196.75,
+          -51.0,
+          "Z"
+        ],
+        [
+          230.75,
+          -99.0,
+          "Z"
+        ],
+        [
+          230.75,
+          -51.0,
+          "Z"
+        ],
+        [
+          379.25,
+          -99.0,
+          "Z"
+        ],
+        [
+          379.25,
+          -51.0,
+          "Z"
+        ],
+        [
+          413.25,
+          -99.0,
+          "Z"
+        ],
+        [
+          413.25,
+          -51.0,
+          "Z"
+        ]
+      ],
+      "printed_grip_mm": 80.0,
+      "nominal_bolt_length_mm": 90.0,
+      "nut_or_head_stack_allowance_mm": 6.0,
+      "nominal_thread_projection_after_stack_mm": 4.0,
+      "stack_status": "PASS",
+      "note": "Eight axes total: four per root through 8 mm top strap + 64 mm full-height bearing column + 8 mm bottom strap; flange heads above and flanged nylocs below."
+    },
+    {
+      "fastener_class": "M5x75 external U splice",
+      "axes_B_mm": [
+        [
+          "joint-22",
+          "member center",
+          31.0
+        ],
+        [
+          "joint+22",
+          "member center",
+          31.0
+        ]
+      ],
+      "printed_grip_mm": 62.8,
+      "nominal_bolt_length_mm": 75.0,
+      "nut_or_head_stack_allowance_mm": 6.0,
+      "nominal_thread_projection_after_stack_mm": 6.2,
+      "stack_status": "PASS",
+      "note": "Repeated at eight upright/boom joints (16 bolts); nominal post-nut projection is 6.2 mm."
+    },
+    {
+      "fastener_class": "M5x75 crossbar splice",
+      "axes_B_mm": [
+        [
+          "outer joints",
+          4,
+          "axes"
+        ],
+        [
+          "center joint",
+          4,
+          "axes"
+        ]
+      ],
+      "printed_grip_mm": 62.8,
+      "nominal_bolt_length_mm": 75.0,
+      "nut_or_head_stack_allowance_mm": 6.0,
+      "nominal_thread_projection_after_stack_mm": 6.2,
+      "stack_status": "PASS",
+      "note": "Eight axes total: two per outer joint and four diagonal axes at the torsion-critical center joint."
+    },
+    {
+      "fastener_class": "M5x85 carriage to boom",
+      "axes_B_mm": [
+        [
+          196.75,
+          228.5,
+          "Z"
+        ],
+        [
+          230.75,
+          228.5,
+          "Z"
+        ],
+        [
+          379.25,
+          228.5,
+          "Z"
+        ],
+        [
+          413.25,
+          228.5,
+          "Z"
+        ]
+      ],
+      "printed_grip_mm": 74.0,
+      "nominal_bolt_length_mm": 85.0,
+      "nut_or_head_stack_allowance_mm": 6.0,
+      "nominal_thread_projection_after_stack_mm": 5.0,
+      "stack_status": "PASS",
+      "note": "Four axes through 10 mm carriage and 64 mm solid boom end side collars."
+    },
+    {
+      "fastener_class": "M4x70 leveling",
+      "axes_B_mm": [
+        [
+          273.0,
+          198.5,
+          "Z"
+        ],
+        [
+          337.0,
+          198.5,
+          "Z"
+        ],
+        [
+          305.0,
+          264.5,
+          "Z"
+        ]
+      ],
+      "printed_grip_mm": 58.0,
+      "nominal_bolt_length_mm": 70.0,
+      "nut_or_head_stack_allowance_mm": 7.0,
+      "nominal_thread_projection_after_stack_mm": 5.0,
+      "stack_status": "PASS",
+      "note": "Head+washer above carriage; washer+jam nut below carriage; screw engages underside-loaded captured base nut beneath 4.3 mm roof."
+    },
+    {
+      "fastener_class": "M4x60 keeper",
+      "axes_B_mm": [
+        [
+          271.0,
+          218.5,
+          "-Z"
+        ],
+        [
+          339.0,
+          218.5,
+          "-Z"
+        ],
+        [
+          271.0,
+          254.5,
+          "-Z"
+        ],
+        [
+          339.0,
+          254.5,
+          "-Z"
+        ]
+      ],
+      "printed_grip_mm": 48.0,
+      "nominal_bolt_length_mm": 60.0,
+      "nut_or_head_stack_allowance_mm": 7.0,
+      "nominal_thread_projection_after_stack_mm": 5.0,
+      "stack_status": "PASS",
+      "note": "Button head+washer recessed flush in keeper; nyloc+washer below cage base; service key passes through carriage."
+    }
+  ],
+  "note": "CAD axes and nominal stacks only; physical coupons, torque limits, proof load, and received-part checks remain mandatory."
+}

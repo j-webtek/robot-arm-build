@@ -1,0 +1,9 @@
+source,type,qty,item,critical_condition,status
+required_physical_input,Required input,As specified,Finished and accepted structural board,Present and accepted before work,NOT_VERIFIED
+required_physical_input,Required input,As specified,Factory RoArm clamp and measured factory-clamp footprint,Present and accepted before work,NOT_VERIFIED
+required_physical_input,Required input,As specified,Precut reinforcement plate sized from the physical clamp,Present and accepted before work,NOT_VERIFIED
+required_physical_input,Required input,As specified,"Feet, safety cutoff, straightedge, feelers, and force gauge or traceable weights",Present and accepted before work,NOT_VERIFIED
+structured_register,Arm,1,Waveshare RoArm-M3 Pro and factory clamp,Factory clamp remains load-bearing,NOT_VERIFIED
+structured_register,Reinforcement,1,Precut metal underside plate,"Minimum 3 mm aluminum or 2 mm steel; footprint is measured, not taken from the schematic image",NOT_VERIFIED
+structured_register,Safety,1,Latching power cutoff / E-stop,Keep outside robot reach,NOT_VERIFIED
+structured_register,Support,6,Board feet,"Clear anchors, plate, and clamp loads",NOT_VERIFIED

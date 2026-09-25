@@ -1,0 +1,39 @@
+{
+  "status": "PASS",
+  "installed_printed_body_count": 51,
+  "part_tally": {
+    "board_corner_cap_left": 1,
+    "board_corner_cap_right": 1,
+    "board_corner_saddle_left": 1,
+    "board_corner_saddle_right": 1,
+    "board_pressure_pad": 4,
+    "boom_camera_truss_segment_164p25": 2,
+    "boom_crossbar_node": 4,
+    "boom_root_truss_segment_164p25": 2,
+    "camera_cage_body": 1,
+    "camera_cage_keeper": 1,
+    "camera_top_compression_pad": 1,
+    "camera_xy_carriage": 1,
+    "crossbar_truss_segment_182p5": 4,
+    "m6_nut_retainer": 4,
+    "portal_corner_node_left": 2,
+    "portal_corner_node_right": 2,
+    "u_truss_splice": 8,
+    "u_truss_splice_center_4bolt": 1,
+    "u_truss_splice_crossbar_2bolt": 2,
+    "upright_truss_segment_240": 8
+  },
+  "excluded_printed_items": {
+    "print_first_coupons": [
+      "camera_case_fit_gauge",
+      "board_saddle_fit_coupon",
+      "u_splice_fit_coupon"
+    ],
+    "camera_case_shim_ladder": "breakaway fit stock; install only the dimension-selected shim after received-camera gate"
+  },
+  "reference_and_hardware_solids": "omitted",
+  "step": "cad/output/assembly/printable_camera_portal_printed_parts_only.step",
+  "stl": "cad/output/assembly/printable_camera_portal_printed_parts_only.stl",
+  "step_sha256": "6305a4dc1e862e38b9d5b1f9383e17b150f03d6ef994bb8321f18d49ae51f37b",
+  "stl_sha256": "999f60da097a3ca6c99a1c25219ae143d86120df52eb7ef9531d4b0076c5e637"
+}

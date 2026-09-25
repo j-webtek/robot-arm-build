@@ -1,0 +1,35 @@
+{
+  "schema": "rocell.controller_startup.v1",
+  "controller_policy": {
+    "schema": "rocell.controller_diagnostics.v1",
+    "policy_id": "r6-first-elbow-review-20260918",
+    "conversion_version": "roarm-m3-example20260115-elbow-v1",
+    "start_port": 8081,
+    "challenge_lifetime_us": 10000000,
+    "elbow_bounds": {
+      "minimum_rad": 2.5,
+      "maximum_rad": 2.7,
+      "maximum_speed": 40,
+      "maximum_acceleration": 1
+    },
+    "whole_arm_policy": {
+      "joints": [[1983,2111],[2326,2454],[1663,1791],[2659,2787],[1977,2105],[1978,2106],[1987,2115]],
+      "tracking_tolerance": 2,
+      "maximum_pair_us": 10000,
+      "maximum_scan_us": 100000,
+      "maximum_age_us": 250000
+    }
+  },
+  "startup_policy": {
+    "policy_id": "r6-first-elbow-review-20260918",
+    "mode": "ZERO_GOAL_TWO_SCAN",
+    "reviewed_mode": 0,
+    "joints": [[1983,2111],[2326,2454],[1663,1791],[2659,2787],[1977,2105],[1978,2106],[1987,2115]],
+    "drift_tolerance": 2,
+    "minimum_separation_us": 100000,
+    "maximum_wait_us": 1000000,
+    "maximum_pair_us": 10000,
+    "maximum_scan_us": 100000,
+    "maximum_age_us": 250000
+  }
+}

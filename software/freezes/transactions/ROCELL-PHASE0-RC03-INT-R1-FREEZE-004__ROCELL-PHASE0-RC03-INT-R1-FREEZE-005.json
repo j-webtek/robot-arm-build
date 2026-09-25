@@ -1,0 +1,225 @@
+{
+  "schema": "rocell.refreeze_transaction.v1",
+  "schema_version": 1,
+  "transaction_id": "ROCELL-REFREEZE-004-TO-005",
+  "commit_state": "APPLIED_AND_POSTCOMMIT_AUDIT_RECONSTRUCTED",
+  "physical_release_effect": "NONE",
+  "old_manifest_id": "ROCELL-PHASE0-RC03-INT-R1-FREEZE-004",
+  "new_manifest_id": "ROCELL-PHASE0-RC03-INT-R1-FREEZE-005",
+  "freeze_date": "2026-09-01",
+  "reason": "Synchronize the complete coherent 14-source RC03 change set after package validation.",
+  "approval_reference": "User instruction 'proceed' in the active Codex build thread; external signer identity was not captured.",
+  "original_reviewed_plan_sha256": "d567aea93b481876e53c42ebbc53b809209f8b9a420741ac7d1615562248a839",
+  "original_apply_tool_sha256": null,
+  "audit_reconstruction": {
+    "required": true,
+    "reason": "Append-only archival was added only after the first Freeze-005 transaction audit.",
+    "method": "Deterministic reverse projection from active Freeze 005 plus the captured Freeze-004 source and bundle hashes.",
+    "recovery_tool": "software/tools/restore_freeze004_audit.py",
+    "recovery_tool_sha256": "990d90f57a211f28f42d435c0b60d29d4ccb8c21e5b7ab59a7099243b9addba2",
+    "hardened_refreeze_tool_sha256": "96da828839b00352c6cbf605a97fd59cfc0195a5b1f7df66a03e553cbdd2b06f"
+  },
+  "old_alias_archive": {
+    "system_manifest": {
+      "path": "software/freezes/ROCELL-PHASE0-RC03-INT-R1-FREEZE-004/system_manifest.json",
+      "sha256": "9bfa157b2082c158ff870bd78d9c3327f0185bbca8bd58ca6cb2ecb5dad23fda"
+    },
+    "camera_manifest": {
+      "path": "software/freezes/ROCELL-PHASE0-RC03-INT-R1-FREEZE-004/camera_manifest.json",
+      "sha256": "bd8bd83f2382463d3541c55e68c24c0d358c8ee8fd64f07cf1498ddc87fbef26"
+    },
+    "simulation_hardware_profile": {
+      "path": "software/freezes/ROCELL-PHASE0-RC03-INT-R1-FREEZE-004/simulation_hardware_profile.json",
+      "sha256": "b9387b9f7f3b92284ed049d42cfa4ddbac6d6a3179bc7923a55fbff1cfeb090f"
+    },
+    "gate_projection": {
+      "path": "software/freezes/ROCELL-PHASE0-RC03-INT-R1-FREEZE-004/gate_projection.json",
+      "sha256": "a2e4b3bf49b4a7c00ac27caab32722457f2cd4d1a24b3eff1117bb3f40205e35"
+    },
+    "simulation_bundle_lock": {
+      "path": "software/freezes/ROCELL-PHASE0-RC03-INT-R1-FREEZE-004/simulation_bundle_lock.json",
+      "sha256": "99265e8aea034c789fe8fa83a51e69838ffe3c1a3d7d3843f86df99f76652d08"
+    },
+    "calibration_registry": {
+      "path": "software/freezes/ROCELL-PHASE0-RC03-INT-R1-FREEZE-004/calibration_registry.json",
+      "sha256": "97a4dfbb97d5cd111bac2adec87ccda010bd94dd110c453ae09cba4a9360e9a5"
+    }
+  },
+  "new_active_aliases": {
+    "system_manifest": {
+      "path": "software/config/system_manifest.json",
+      "sha256": "18d898977a62b2222f9a953548f262dc46eebe8ff5a4c5acb47bfd6aa7cd284e"
+    },
+    "camera_manifest": {
+      "path": "software/config/camera_manifest.json",
+      "sha256": "b47ed370aa0f66f8ff460647d1eb4eaa5d395e41bddef3fc25bd6677f8bfd374"
+    },
+    "simulation_hardware_profile": {
+      "path": "software/config/simulation_hardware_profile.json",
+      "sha256": "2b219a1be8d9f74005d63d7909bdc2301a71f872b0211671c95734755b2ce0e6"
+    },
+    "gate_projection": {
+      "path": "software/config/gate_projection.json",
+      "sha256": "69ae56a0e309e884574178b26d4fbf4fcb7f1cacb4d9b96bf8aa2aa4a786e9dd"
+    },
+    "simulation_bundle_lock": {
+      "path": "software/config/simulation_bundle_lock.json",
+      "sha256": "330fc09fb03927223abb32c3b55e5a22e0d2c8ddcd6e24777241c90bff0a3f5f"
+    },
+    "calibration_registry": {
+      "path": "software/calibrations/registry.json",
+      "sha256": "edc7d7c1153b81e3c591a9a8905c7bbcbc362b5612eeffc63bd9cb9f0267dd7d"
+    }
+  },
+  "source_changes": [
+    {
+      "path": "BOM.csv",
+      "old_sha256": "30055b6924826e709035ae0adc0c5c3ae49348ae314a7a4c2cc3256cc6b88d14",
+      "new_sha256": "e2bed9c43f56212c53eaea69899243834f75c1b9222945523c3782ca43a852bf",
+      "changed": true
+    },
+    {
+      "path": "config/workcell_layout.json",
+      "old_sha256": "fa8ce087d091318d8770e2f274e21b8547ee21e6b1582e34c37983341375b0fa",
+      "new_sha256": "fe54bf689ee06bdb6f6c8ba0d254c49a30b755cf78c8b03c6bc8a9ac67c7eb84",
+      "changed": true
+    },
+    {
+      "path": "config/parameters.json",
+      "old_sha256": "32ba6a7a887ced0e5ef5b5b8d7710a71fefdefebc43223bc8a4c25d41e059136",
+      "new_sha256": "32ba6a7a887ced0e5ef5b5b8d7710a71fefdefebc43223bc8a4c25d41e059136",
+      "changed": false
+    },
+    {
+      "path": "config/print_profiles.json",
+      "old_sha256": "5de3272e5b0ebe82575f7cec94e07bb7f0cd99f2a9d48478be48d8926ab4c17e",
+      "new_sha256": "5886a55b3fbdca28bf0d67ea8718a366333e78f2801e1884db00cc9f010ffc5e",
+      "changed": true
+    },
+    {
+      "path": "config/print_jobs.json",
+      "old_sha256": "8e82aa18177843ee97b135fd1b08f5983a44761980371d4df0606cd4500ed5b5",
+      "new_sha256": "460d509b780c563ca21c2f7aa994aa4aff00d5bfa3a7d9c65bc2708282602a96",
+      "changed": true
+    },
+    {
+      "path": "config/measurement_record.json",
+      "old_sha256": "0b93bae0c9691a78b2d3552b3d47fdb2f2c9884c10b40cfb51c356e94e2e0359",
+      "new_sha256": "e523377db0d834590e8333f42efac38ef1e7ff9bf7d6a110a5f8132ddf12db65",
+      "changed": true
+    },
+    {
+      "path": "config/assembly_steps.json",
+      "old_sha256": "cfe04dd3a2434a6ec3c8cb00ed7047fed1fa971ae14940793506d539747a3a8e",
+      "new_sha256": "3bc21082549bfcfbe31bcf0b2d300103647f56b3861bf426c7d2ea4eb61d819b",
+      "changed": true
+    },
+    {
+      "path": "config/v1_prehardware_configuration.json",
+      "old_sha256": "04c4e394e8ded36106811a1626b9e2265d7e652869b03c5c0cf76770932b3f63",
+      "new_sha256": "04c4e394e8ded36106811a1626b9e2265d7e652869b03c5c0cf76770932b3f63",
+      "changed": false
+    },
+    {
+      "path": "config/camera_architecture_decision.json",
+      "old_sha256": "93b51f5635373c7a2a3d561e5a6ed0eb23c5b20c5243f158261a144e78c63c6b",
+      "new_sha256": "93b51f5635373c7a2a3d561e5a6ed0eb23c5b20c5243f158261a144e78c63c6b",
+      "changed": false
+    },
+    {
+      "path": "config/hardware_candidates.json",
+      "old_sha256": "1e33702b54e54ba41789b8c50362eecc19977cf534f848e50a7231e70a546e2b",
+      "new_sha256": "1e33702b54e54ba41789b8c50362eecc19977cf534f848e50a7231e70a546e2b",
+      "changed": false
+    },
+    {
+      "path": "config/digital_fit_report.json",
+      "old_sha256": "1d7be5b0148d13d06875025af0531991feb94b3c63096742e616d450f9ba1deb",
+      "new_sha256": "1d7be5b0148d13d06875025af0531991feb94b3c63096742e616d450f9ba1deb",
+      "changed": false
+    },
+    {
+      "path": "config/robot_reach_screening.json",
+      "old_sha256": "348fccf9be88fc32299ab10fce14e764869422191a43963631e4f5f0ccb9e53b",
+      "new_sha256": "348fccf9be88fc32299ab10fce14e764869422191a43963631e4f5f0ccb9e53b",
+      "changed": false
+    },
+    {
+      "path": "fiducials/apriltag_map.json",
+      "old_sha256": "538680cb2343ec551daa5bf5be8ce50019efea56a51d4f9c0b3866ff09f21696",
+      "new_sha256": "1e974df2d80c9133ba4cb0c79f6300ef8c420133a7972c22f5d3d36e49923624",
+      "changed": true
+    },
+    {
+      "path": "BUILD_BY_STEP/ACTIVE_BUILD.json",
+      "old_sha256": "0f6193f3ea96dba21ac42386c0e3d605d20e7471dc44ff72734eaccbd330d774",
+      "new_sha256": "0f6193f3ea96dba21ac42386c0e3d605d20e7471dc44ff72734eaccbd330d774",
+      "changed": false
+    },
+    {
+      "path": "BUILD_BY_STEP/INDEX.json",
+      "old_sha256": "f335fcec8b4f299a6e5e72cd2275a11591b0f2f0038b2c5d64528d3dbd531137",
+      "new_sha256": "c45b290c9a2d46d0d108a1cc40f62d5b5ad467905d262bef80bcf7a2bf03e4ce",
+      "changed": true
+    },
+    {
+      "path": "BUILD_BY_STEP/PACKAGE_VALIDATION.json",
+      "old_sha256": "f22e1af98e6207076ba933ec5de53e4de485fe5fa8fbf91a7ef41913e6afb15e",
+      "new_sha256": "bd17d6be4dd78b57120c6de8de3242163a91435d152f24c1cf14e38d634a6024",
+      "changed": true
+    },
+    {
+      "path": "drawings/documentation_sync.json",
+      "old_sha256": "e0f2639c985bf0f58ea81c617a889fe4b3a3c84c894ca28fb5a9ff68c35d2397",
+      "new_sha256": "7894132a1cff4aac842f509454056a73733ae636a2e1a379062bd35e77bd293a",
+      "changed": true
+    },
+    {
+      "path": "RELEASE_VALIDATION.json",
+      "old_sha256": "b384f45b0fec68eb2e208b2d3bd388173d412d48300bbf5f4fd3f7a531cf2a5c",
+      "new_sha256": "dd9bf47d751429c013fc7b0d975df5033b6ae4eb9928438b5b5831356f9f0614",
+      "changed": true
+    },
+    {
+      "path": "PRINT_READINESS.json",
+      "old_sha256": "4157d65930072ac39ce2704baa06e4b2318aff3ddbe6b973ba3a04dc94fd7f58",
+      "new_sha256": "c3dceced0516cb684cb6931b3fcb4f8e3a860063ca49cff62aa84ee991d92bd6",
+      "changed": true
+    },
+    {
+      "path": "BUILD_TRACKER.json",
+      "old_sha256": "0e7760e4de4de3db7d4842d6c374ac1d306e25c9d92fee9f01d4fd9e4ff788c1",
+      "new_sha256": "86bc6e03fac86efc89336ce74a96bdbedf21e943a0a52d6f4ec4be1aa6902980",
+      "changed": true
+    },
+    {
+      "path": "PREHARDWARE_READINESS.json",
+      "old_sha256": "cda1c678f1be9e4f3863703d397a525690d4408395102b3cdd277e5e380cd403",
+      "new_sha256": "6e8a8fa63cc0573c47b4dd5518798e6ea6966013c61342d42e1a751bd41491a2",
+      "changed": true
+    }
+  ],
+  "preflight": {
+    "rc03_release_status": "PASS",
+    "build_step_package_status": "PASS",
+    "physical_release": "UNRELEASED",
+    "active_build_id": "2026-09-01_CELL-A",
+    "print_readiness_summary": {
+      "ready": 5,
+      "waiting": 15,
+      "not_selected": 4,
+      "total_jobs": 24
+    },
+    "measurement_gate_status_counts": {
+      "NA": 4,
+      "NOT_TESTED": 72,
+      "PASS": 8
+    },
+    "prehardware_state": "DIGITALLY_CONSISTENT_ENGINEERING_AND_PHYSICAL_RELEASE_BLOCKED"
+  },
+  "postcommit_alignment_validation": {
+    "status": "ALIGNED_CAMERA_HOLD_CONTACT_BLOCKED",
+    "errors": [],
+    "contact_enabled": false
+  }
+}

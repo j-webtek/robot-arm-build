@@ -1,0 +1,146 @@
+{
+  "schema": "rocell.windows_usb_identity_component_build_record.v1",
+  "recorded_at_utc": "2026-09-09T04:02:09Z",
+  "inputs": [
+    {
+      "path": ".clang-format",
+      "bytes": 196,
+      "sha256": "ba34612b6489365401d6b785395b508110e7e6df6f863e5c3612d54cb28a9a81"
+    },
+    {
+      "path": "admission_entry.cpp",
+      "bytes": 3637,
+      "sha256": "71792093f48a9f95a74bbe8171c9176a0408188623b952e30f9ae0a8f614afa4"
+    },
+    {
+      "path": "admission.cpp",
+      "bytes": 10072,
+      "sha256": "73307d377de8258d00f0173e3d97feeee77de1e586503250f7acdb0f618c6b24"
+    },
+    {
+      "path": "admission.h",
+      "bytes": 1634,
+      "sha256": "ef44380e4aeea889c4e27ac73da1ae5655c4a85818ee70a291f5fc1bb117d17d"
+    },
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 2245,
+      "sha256": "af881fb54ed3b682f0f1df18ec2501104f58a483dd6cec7ceb5c778865db1e67"
+    },
+    {
+      "path": "entry_test.py",
+      "bytes": 3300,
+      "sha256": "2187bb1a1ebe8e13ade88093dba8dbb6554f9abdb39a42cb2a0441bdbc285804"
+    },
+    {
+      "path": "entry_tests.cpp",
+      "bytes": 1019,
+      "sha256": "e992032713a527a09d71180aef5bf1aa18d47193c7c31ed3b63c3c869bdafa1d"
+    },
+    {
+      "path": "fake_api.h",
+      "bytes": 7274,
+      "sha256": "4543d12958308bcc18bf210c02f377cd7b5735901cdacec0c50c872429b7f9ff"
+    },
+    {
+      "path": "main.cpp",
+      "bytes": 1373,
+      "sha256": "226dc5c3a449275ace2a1b1ccd95d691d77bb4d92a63e4d9b0a4db528df9cac4"
+    },
+    {
+      "path": "observation.cpp",
+      "bytes": 14890,
+      "sha256": "a2716ea39bd0d50dd0d4571423a89e520a50f0785bc6d0554a755fd1cade00d1"
+    },
+    {
+      "path": "observation.h",
+      "bytes": 3128,
+      "sha256": "4adc940ebd96abfd917459bdcb88b2efab0d025d6a7cf1d0089e73df38915e42"
+    },
+    {
+      "path": "README.md",
+      "bytes": 5976,
+      "sha256": "b003fc96cac92478f96635e91f2b6386add84b716781a76d3f3e9a405dbfc646"
+    },
+    {
+      "path": "serialize.cpp",
+      "bytes": 12787,
+      "sha256": "c760b1f15f256f7f92221bec7365617a61eb39abc5d45cc02170f98a6a2e8d83"
+    },
+    {
+      "path": "tests.cpp",
+      "bytes": 5180,
+      "sha256": "1614344c33bfedce7febe1dd0a689297c197dca1611232eadb07ed214cafd04c"
+    },
+    {
+      "path": "windows_api.cpp",
+      "bytes": 11962,
+      "sha256": "ca26eb68b9b229f50379efe12936b3de4734d7c8e40fdf7a5539f8a3e8c2a718"
+    },
+    {
+      "path": "windows_api.h",
+      "bytes": 427,
+      "sha256": "02ff29f5f97fc4a49c06624f7cdfbc5ebb93aed9ea966ebbbf4ccb329720e077"
+    },
+    {
+      "path": "wire_test.py",
+      "bytes": 2558,
+      "sha256": "35a0dc12b8eed2559774c8977cbf43a7a1c67b1fb10e00b8652aa1c3999c0fd2"
+    },
+    {
+      "path": "WIRE.md",
+      "bytes": 7874,
+      "sha256": "dbd41224b15f1c3d8f085ba24d48be4711ed6d02e559dea739dc9578b7fdf7b3"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "build/Release/rocell_usb_identity_entry_tests.exe",
+      "bytes": 153088,
+      "sha256": "56d383b6f741eff6e11fdf8fa9c7f2e32eedc1b2d06d5aee1d6020b227a8d88c",
+      "execution": "INCAPABLE_TEST_ONLY"
+    },
+    {
+      "path": "build/Release/rocell_usb_identity_tests.exe",
+      "bytes": 163840,
+      "sha256": "7bc0961ed0b3f130744d8e32b2b506d4d8cedbbd62826f8f4a8a4ccec70e0f64",
+      "execution": "INCAPABLE_TEST_ONLY"
+    },
+    {
+      "path": "build/Release/rocell_windows_usb_identity.exe",
+      "bytes": 157184,
+      "sha256": "0f5555ac77835cee3d21d969085b355128006c18b5c4819051137fa5b18ec8c1",
+      "execution": "NOT_RUN"
+    }
+  ],
+  "meaning": "Observed build/test inventory only; not an accepted runtime registration, device qualification or release grant.",
+  "hardware_execution": "NOT_RUN",
+  "physical_authority": false,
+  "hardware_qualified": false,
+  "native_release_allowed": false,
+  "toolchain": {
+    "cmake": "3.31.3",
+    "compiler": "MSVC 19.42.34435.0",
+    "architecture": "x64",
+    "configuration": "Release",
+    "windows_sdk": "10.0.22621.0",
+    "clang_format": "21.1.6"
+  },
+  "build_command": "cmake --build software/native/windows_usb_identity/build --config Release --parallel 2",
+  "verification": {
+    "ctest_command": "ctest --test-dir software/native/windows_usb_identity/build -C Release --output-on-failure",
+    "ctest_passed": 3,
+    "ctest_failed": 0,
+    "ctest_elapsed_seconds": 5.81,
+    "incapable_native_assertions": 94,
+    "incapable_wire_scenarios": 21,
+    "incapable_pipe_admission_cases": 7,
+    "python_consumer": "software/src/rocell/providers/windows/usb_identity_protocol.py",
+    "original_producer_bytes_verified": true,
+    "unicode_bound_to_original_request": true,
+    "actual_owned_result_parser_exercised": true,
+    "production_executable_executed": false,
+    "nominal_wire_bytes_including_line_ending": 24549,
+    "maximum_raw_held_wire_bytes_including_line_ending": 33263
+  }
+}

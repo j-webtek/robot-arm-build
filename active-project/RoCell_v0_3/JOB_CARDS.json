@@ -1,0 +1,854 @@
+{
+  "schema_version": 1,
+  "design_revision": "RC03-INT-R1",
+  "jobs": [
+    {
+      "job_id": "00A",
+      "design_revision": "RC03-INT-R1",
+      "lifecycle_status": "POSTPRINT_PASS",
+      "kit": "KIT-CAL",
+      "plate_file": "00A_ABS_keyboard_station_fit_tests.3mf",
+      "plate_sha256": "cdedea55ccdf765a78d35b976cbd18ea153dc8caf6fb91ce08e507c9be837237",
+      "profile": "abs_rapido_tray_structural_0p4",
+      "profile_sha256": "4cc77d229e3f397c7f8d7c1a793ace5ba9490cafe2ef9d31f16e7ffa4c28123f",
+      "filament_preset": "qidi_abs_rapido_xplus4_0p4",
+      "filament_preset_sha256": "ce549e11c71d71294ae086694987ac99842a14ba8fc26e24a879f7dd31b65bd4",
+      "preset_data_status": "EXACT_REPRODUCIBLE",
+      "settings_file": "print_plates_3mf/00A_ABS_keyboard_station_fit_tests.PRINT_SETTINGS.md",
+      "settings_sha256": "86498dd72c486e0df6386a8b96cd48884270c5c05b8efeaf4f41921e3919e323",
+      "qidi_process_profile_file": "slicer_profiles/QIDI_PLUS4/abs_rapido_tray_structural_0p4.process.json",
+      "qidi_process_profile_sha256": "c89e92d6af33cb676d7200e34937ec05c7cec9b55f2d0700b07b89a57cbd81c6",
+      "resolved_preset_sha256": "ba7c7bb09cea3d44840bb5ddda5815d01765de8391e5daab1791b41f428975f6",
+      "parts": {
+        "keyboard_corner_fit_test.stl": 1,
+        "station_locator_fit_gauge.stl": 1,
+        "hardware_fit_gauge.stl": 1,
+        "m4_washer_fit_gauge.stl": 1
+      },
+      "prerequisites": [
+        "plus4_machine_confirmed",
+        "plus4_protected_envelope_verified",
+        "nozzle_0p4_confirmed",
+        "abs_rapido_tray_profile_calibrated"
+      ],
+      "postconditions": [
+        "keyboard_corner_coupon_pass",
+        "keyboard_station_registration_coupon_pass",
+        "tray_clearance_holes_coupon_pass"
+      ]
+    },
+    {
+      "job_id": "00B",
+      "design_revision": "RC03-INT-R1",
+      "lifecycle_status": "PRINTED",
+      "kit": "KIT-CAL",
+      "plate_file": "00B_ABS_phone_station_fit_tests.3mf",
+      "plate_sha256": "cd7d1eddac818cb7268d3b6b71a21c72f609bcd2dfd66834d00fe2f31f668a76",
+      "profile": "abs_rapido_cradle_0p4",
+      "profile_sha256": "0dca510bbadec73f611b731a8fd24f22310b3ba113759f58f0ed7f1cdc33c545",
+      "filament_preset": "qidi_abs_rapido_xplus4_0p4",
+      "filament_preset_sha256": "ce549e11c71d71294ae086694987ac99842a14ba8fc26e24a879f7dd31b65bd4",
+      "preset_data_status": "EXACT_REPRODUCIBLE",
+      "settings_file": "print_plates_3mf/00B_ABS_phone_station_fit_tests.PRINT_SETTINGS.md",
+      "settings_sha256": "5dde496287138dc5f8bf01eab3a3217fcf332374e092a4c46f49ae3a9ffda544",
+      "qidi_process_profile_file": "slicer_profiles/QIDI_PLUS4/abs_rapido_cradle_0p4.process.json",
+      "qidi_process_profile_sha256": "9276ce2983256d815925224e7d8fc45032a531678dc336713fc88fa96137e259",
+      "resolved_preset_sha256": "b5d48128c85aa81c03f3e6a3a0effd2c1273b6b13ba2561cc4c00e32866c1da8",
+      "parts": {
+        "phone_width_fit_test.stl": 1,
+        "station_locator_fit_gauge.stl": 1,
+        "m4_captive_nut_fit_gauge.stl": 1,
+        "phone_m3_insert_fit_gauge.stl": 1,
+        "cable_tie_saddle_fit_gauge.stl": 1,
+        "m4_washer_fit_gauge.stl": 1
+      },
+      "prerequisites": [
+        "plus4_machine_confirmed",
+        "plus4_protected_envelope_verified",
+        "nozzle_0p4_confirmed",
+        "abs_rapido_cradle_profile_calibrated"
+      ],
+      "postconditions": [
+        "phone_width_coupon_pass",
+        "phone_station_registration_coupon_pass",
+        "phone_station_m3_insert_coupon_pass",
+        "cradle_m4_washer_coupon_pass"
+      ]
+    },
+    {
+      "job_id": "00C",
+      "design_revision": "RC03-INT-R1",
+      "lifecycle_status": "UNRELEASED",
+      "kit": "KIT-CAL",
+      "plate_file": "00C_ABS_tool_profile_fit_tests.3mf",
+      "plate_sha256": "53f14d77ecbebc10860a80122d53860c8789249c29f6af2eecd455855fa14af5",
+      "profile": "abs_rapido_precision_0p4",
+      "profile_sha256": "60827c142c2f8e88c0a45ace71712cf2c94f84d66dc796880352ab32de1e7195",
+      "filament_preset": "qidi_abs_rapido_xplus4_0p4",
+      "filament_preset_sha256": "ce549e11c71d71294ae086694987ac99842a14ba8fc26e24a879f7dd31b65bd4",
+      "preset_data_status": "EXACT_REPRODUCIBLE",
+      "settings_file": "print_plates_3mf/00C_ABS_tool_profile_fit_tests.PRINT_SETTINGS.md",
+      "settings_sha256": "59acdd097bba18a034df2e96cb271f7766e73d40de35bf780a890d1ac3727c66",
+      "qidi_process_profile_file": "slicer_profiles/QIDI_PLUS4/abs_rapido_precision_0p4.process.json",
+      "qidi_process_profile_sha256": "c115ad0ca8acafa86bc303973bbbae27578fdd57db8cbf437a7c8175710ba90a",
+      "resolved_preset_sha256": "c50226a292699926b12c6d5e5aea7ec7bc42628a554e45a6ab950648f3125741",
+      "parts": {
+        "compliant_tool_grip_fit_test.stl": 1,
+        "spring_fit_gauge.stl": 1,
+        "tool_m3_insert_fit_gauge.stl": 1,
+        "m3_head_fit_gauge.stl": 1
+      },
+      "prerequisites": [
+        "plus4_machine_confirmed",
+        "plus4_protected_envelope_verified",
+        "nozzle_0p4_confirmed",
+        "abs_rapido_precision_profile_calibrated"
+      ],
+      "postconditions": [
+        "gripper_coupon_pass",
+        "spring_fit_coupon_pass",
+        "compliant_tool_m3_insert_coupon_pass",
+        "precision_m3_head_coupon_pass"
+      ]
+    },
+    {
+      "job_id": "00D",
+      "design_revision": "RC03-INT-R1",
+      "lifecycle_status": "UNRELEASED",
+      "kit": "KIT-CAL",
+      "plate_file": "00D_PETG_adapter_profile_fit_tests.3mf",
+      "plate_sha256": "bc6e9d9ec7a6702c2d640f1d43b68eec33864f6398adbb37bb6a0d5fc79f4642",
+      "profile": "petg_adapter_0p4",
+      "profile_sha256": "ce4f08af3ad5623c70bc5bb65dc086ae69cb51b98410dd26e85dbd0c1f693747",
+      "filament_preset": "exact_petg_spool_xplus4_0p4",
+      "filament_preset_sha256": "e4af446b19a2425a1f87b49feb022fb06e525dc92f670689940c8dade2908fc4",
+      "preset_data_status": "EXACT_PROCESS_SPOOL_PRESET_REQUIRED",
+      "settings_file": "print_plates_3mf/00D_PETG_adapter_profile_fit_tests.PRINT_SETTINGS.md",
+      "settings_sha256": "555dd4276ec5dc8cdda79dd8a9c845436e6d3b72e73449048f07954f2dd16bbb",
+      "qidi_process_profile_file": "slicer_profiles/QIDI_PLUS4/petg_adapter_0p4.process.json",
+      "qidi_process_profile_sha256": "0eac339f7768fb799fa420cd300710e080134d0c0737652fd9afd51d9bc4fa91",
+      "resolved_preset_sha256": "13f92ee97bdb5a9d652e943c052bacd7be2ecb3321ceef6c7a19d7e465249e0a",
+      "parts": {
+        "stylus_diameter_gauge.stl": 1
+      },
+      "prerequisites": [
+        "plus4_machine_confirmed",
+        "plus4_protected_envelope_verified",
+        "nozzle_0p4_confirmed",
+        "petg_adapter_profile_calibrated"
+      ],
+      "postconditions": [
+        "stylus_gauge_coupon_pass",
+        "adapter_retention_method_selected"
+      ]
+    },
+    {
+      "job_id": "00E",
+      "design_revision": "RC03-INT-R1",
+      "lifecycle_status": "UNRELEASED",
+      "kit": "KIT-CAL",
+      "plate_file": "00E_ABS_general_setup_tests.3mf",
+      "plate_sha256": "67073d37df50d0329a6b77ba5aed00166fff9cc850c9f6225b00abeba54661d7",
+      "profile": "abs_rapido_general_0p4",
+      "profile_sha256": "4d9038f98da0892dca1031e59696babbbf913c0947f9e4cbac288c6182d1bede",
+      "filament_preset": "qidi_abs_rapido_xplus4_0p4",
+      "filament_preset_sha256": "ce549e11c71d71294ae086694987ac99842a14ba8fc26e24a879f7dd31b65bd4",
+      "preset_data_status": "EXACT_REPRODUCIBLE",
+      "settings_file": "print_plates_3mf/00E_ABS_general_setup_tests.PRINT_SETTINGS.md",
+      "settings_sha256": "0a1da7fcba38d7c228f9d681e467961e3bfe3069356d0591eab0a5fbbee8cbe5",
+      "qidi_process_profile_file": "slicer_profiles/QIDI_PLUS4/abs_rapido_general_0p4.process.json",
+      "qidi_process_profile_sha256": "756895e547ed186ab4b0d532d6d66fc3e2ad31376bc342a0150cbd4667a5d239",
+      "resolved_preset_sha256": "40860f3c2b9992ca64e8b43746f6a8746a91724e78f6339e16cda41b943971d8",
+      "parts": {
+        "hardware_fit_gauge.stl": 1,
+        "setup_hardware_fit_gauge.stl": 1,
+        "tpu_tip_retention_gauge.stl": 1
+      },
+      "prerequisites": [
+        "plus4_machine_confirmed",
+        "plus4_protected_envelope_verified",
+        "nozzle_0p4_confirmed",
+        "abs_rapido_general_profile_calibrated"
+      ],
+      "postconditions": [
+        "general_clearance_holes_coupon_pass",
+        "setup_hardware_coupon_pass"
+      ]
+    },
+    {
+      "job_id": "00F",
+      "design_revision": "RC03-INT-R1",
+      "lifecycle_status": "UNRELEASED",
+      "kit": "KIT-CAL",
+      "plate_file": "00F_ABS_calibration_profile_clearance_test.3mf",
+      "plate_sha256": "dc2f6af58b927da87ae6a2469ab8ce8a00ce029e550b5d171833d2152e2b6b9c",
+      "profile": "abs_rapido_calibration_0p4",
+      "profile_sha256": "f3c6513d491cad5e3fc611549c640439ac58189ddea5c79fe01725e3a846b114",
+      "filament_preset": "qidi_abs_rapido_xplus4_0p4",
+      "filament_preset_sha256": "ce549e11c71d71294ae086694987ac99842a14ba8fc26e24a879f7dd31b65bd4",
+      "preset_data_status": "EXACT_REPRODUCIBLE",
+      "settings_file": "print_plates_3mf/00F_ABS_calibration_profile_clearance_test.PRINT_SETTINGS.md",
+      "settings_sha256": "9d808f626a6a47e7609fdd206e314f5e69c06c4972844e791dcdba86262a47e9",
+      "qidi_process_profile_file": "slicer_profiles/QIDI_PLUS4/abs_rapido_calibration_0p4.process.json",
+      "qidi_process_profile_sha256": "c069454369dc8abe726d0db4359928e9fa870c694cdfdf7b044a3debeeb2d564",
+      "resolved_preset_sha256": "ea278c6407c49cc9ba94d5e049c0bd57477967465bdd1dcf00ba998ae8c04de0",
+      "parts": {
+        "hardware_fit_gauge.stl": 1,
+        "m3_head_fit_gauge.stl": 1
+      },
+      "prerequisites": [
+        "plus4_machine_confirmed",
+        "plus4_protected_envelope_verified",
+        "nozzle_0p4_confirmed",
+        "abs_rapido_calibration_profile_calibrated"
+      ],
+      "postconditions": [
+        "calibration_clearance_holes_coupon_pass"
+      ]
+    },
+    {
+      "job_id": "01",
+      "design_revision": "RC03-INT-R1",
+      "lifecycle_status": "UNRELEASED",
+      "kit": "KIT-KB",
+      "plate_file": "01_ABS_keyboard_station_left.3mf",
+      "plate_sha256": "dbcb685037402a8ce90e39c216f00888c9abeb341829ff529248ac6f485e65f3",
+      "profile": "abs_rapido_tray_structural_0p4",
+      "profile_sha256": "4cc77d229e3f397c7f8d7c1a793ace5ba9490cafe2ef9d31f16e7ffa4c28123f",
+      "filament_preset": "qidi_abs_rapido_xplus4_0p4",
+      "filament_preset_sha256": "ce549e11c71d71294ae086694987ac99842a14ba8fc26e24a879f7dd31b65bd4",
+      "preset_data_status": "EXACT_REPRODUCIBLE",
+      "settings_file": "print_plates_3mf/01_ABS_keyboard_station_left.PRINT_SETTINGS.md",
+      "settings_sha256": "54b2f8cc73105131175af762ec6b2f49b8f3c8dc25966d2a06a024d15b8c4688",
+      "qidi_process_profile_file": "slicer_profiles/QIDI_PLUS4/abs_rapido_tray_structural_0p4.process.json",
+      "qidi_process_profile_sha256": "c89e92d6af33cb676d7200e34937ec05c7cec9b55f2d0700b07b89a57cbd81c6",
+      "resolved_preset_sha256": "ba7c7bb09cea3d44840bb5ddda5815d01765de8391e5daab1791b41f428975f6",
+      "parts": {
+        "keyboard_station_left.stl": 1
+      },
+      "prerequisites": [
+        "plus4_machine_confirmed",
+        "plus4_protected_envelope_verified",
+        "nozzle_0p4_confirmed",
+        "abs_rapido_tray_profile_calibrated",
+        "keyboard_dimensions_measured",
+        "keyboard_corner_coupon_pass",
+        "keyboard_station_registration_coupon_pass",
+        "tray_clearance_holes_coupon_pass",
+        "geometry_matches_measurements",
+        "qidi_studio_roundtrip_confirmed"
+      ],
+      "postconditions": [
+        "keyboard_left_first_article_pass",
+        "keyboard_seam_coupon_pass"
+      ]
+    },
+    {
+      "job_id": "02",
+      "design_revision": "RC03-INT-R1",
+      "lifecycle_status": "UNRELEASED",
+      "kit": "KIT-KB",
+      "plate_file": "02_ABS_keyboard_station_right.3mf",
+      "plate_sha256": "bc8e2fffd5f004678e47ac33c5fca41b3366cab17931cbcd5565f9bf9c2969d0",
+      "profile": "abs_rapido_tray_structural_0p4",
+      "profile_sha256": "4cc77d229e3f397c7f8d7c1a793ace5ba9490cafe2ef9d31f16e7ffa4c28123f",
+      "filament_preset": "qidi_abs_rapido_xplus4_0p4",
+      "filament_preset_sha256": "ce549e11c71d71294ae086694987ac99842a14ba8fc26e24a879f7dd31b65bd4",
+      "preset_data_status": "EXACT_REPRODUCIBLE",
+      "settings_file": "print_plates_3mf/02_ABS_keyboard_station_right.PRINT_SETTINGS.md",
+      "settings_sha256": "e384ebb2785694ebef13fdbcedf547ea7c1730028a0b115350ac93b1d78c7b3e",
+      "qidi_process_profile_file": "slicer_profiles/QIDI_PLUS4/abs_rapido_tray_structural_0p4.process.json",
+      "qidi_process_profile_sha256": "c89e92d6af33cb676d7200e34937ec05c7cec9b55f2d0700b07b89a57cbd81c6",
+      "resolved_preset_sha256": "ba7c7bb09cea3d44840bb5ddda5815d01765de8391e5daab1791b41f428975f6",
+      "parts": {
+        "keyboard_station_right.stl": 1
+      },
+      "prerequisites": [
+        "plus4_machine_confirmed",
+        "plus4_protected_envelope_verified",
+        "nozzle_0p4_confirmed",
+        "abs_rapido_tray_profile_calibrated",
+        "keyboard_dimensions_measured",
+        "keyboard_corner_coupon_pass",
+        "keyboard_seam_coupon_pass",
+        "keyboard_station_registration_coupon_pass",
+        "tray_clearance_holes_coupon_pass",
+        "geometry_matches_measurements",
+        "keyboard_left_first_article_pass",
+        "qidi_studio_roundtrip_confirmed"
+      ],
+      "postconditions": [
+        "keyboard_station_pair_postprint_pass",
+        "station_remove_reinstall_repeatability_pass",
+        "keyboard_fixture_assembly_pass"
+      ]
+    },
+    {
+      "job_id": "03A",
+      "design_revision": "RC03-INT-R1",
+      "lifecycle_status": "UNRELEASED",
+      "kit": "KIT-PHONE",
+      "plate_file": "03A_ABS_phone_TCP_station.3mf",
+      "plate_sha256": "63cf85413ed08193b08445859bfcc8116c2e47064f2a086fdbfdb8bd7339e565",
+      "profile": "abs_rapido_cradle_0p4",
+      "profile_sha256": "0dca510bbadec73f611b731a8fd24f22310b3ba113759f58f0ed7f1cdc33c545",
+      "filament_preset": "qidi_abs_rapido_xplus4_0p4",
+      "filament_preset_sha256": "ce549e11c71d71294ae086694987ac99842a14ba8fc26e24a879f7dd31b65bd4",
+      "preset_data_status": "EXACT_REPRODUCIBLE",
+      "settings_file": "print_plates_3mf/03A_ABS_phone_TCP_station.PRINT_SETTINGS.md",
+      "settings_sha256": "c3fd921347d91842d1f16728e8e88a45d25a776aa3aedd6d8810c9db9773c7b9",
+      "qidi_process_profile_file": "slicer_profiles/QIDI_PLUS4/abs_rapido_cradle_0p4.process.json",
+      "qidi_process_profile_sha256": "9276ce2983256d815925224e7d8fc45032a531678dc336713fc88fa96137e259",
+      "resolved_preset_sha256": "b5d48128c85aa81c03f3e6a3a0effd2c1273b6b13ba2561cc4c00e32866c1da8",
+      "parts": {
+        "phone_tcp_station.stl": 1
+      },
+      "prerequisites": [
+        "plus4_machine_confirmed",
+        "plus4_protected_envelope_verified",
+        "nozzle_0p4_confirmed",
+        "abs_rapido_cradle_profile_calibrated",
+        "phone_dimensions_measured",
+        "phone_side_features_measured",
+        "phone_cable_measured",
+        "phone_width_coupon_pass",
+        "phone_station_registration_coupon_pass",
+        "phone_m4_captive_nut_coupon_pass",
+        "phone_station_m3_insert_coupon_pass",
+        "cable_tie_saddle_coupon_pass",
+        "cradle_m4_washer_coupon_pass",
+        "geometry_matches_measurements",
+        "qidi_studio_roundtrip_confirmed"
+      ],
+      "postconditions": [
+        "phone_tcp_station_postprint_pass",
+        "station_remove_reinstall_repeatability_pass",
+        "phone_fixture_assembly_pass"
+      ]
+    },
+    {
+      "job_id": "03B",
+      "design_revision": "RC03-INT-R1",
+      "lifecycle_status": "UNRELEASED",
+      "kit": "KIT-KB",
+      "plate_file": "03B_ABS_keyboard_clamps.3mf",
+      "plate_sha256": "0f6e0900c6aec772e790d796ae389aa4506b5080550be71430cd05093acafbed",
+      "profile": "abs_rapido_general_0p4",
+      "profile_sha256": "4d9038f98da0892dca1031e59696babbbf913c0947f9e4cbac288c6182d1bede",
+      "filament_preset": "qidi_abs_rapido_xplus4_0p4",
+      "filament_preset_sha256": "ce549e11c71d71294ae086694987ac99842a14ba8fc26e24a879f7dd31b65bd4",
+      "preset_data_status": "EXACT_REPRODUCIBLE",
+      "settings_file": "print_plates_3mf/03B_ABS_keyboard_clamps.PRINT_SETTINGS.md",
+      "settings_sha256": "005ea3f467f64abc7f1e1af070e3436d1d90822e25b22b82c776b7baa24f7c3c",
+      "qidi_process_profile_file": "slicer_profiles/QIDI_PLUS4/abs_rapido_general_0p4.process.json",
+      "qidi_process_profile_sha256": "756895e547ed186ab4b0d532d6d66fc3e2ad31376bc342a0150cbd4667a5d239",
+      "resolved_preset_sha256": "40860f3c2b9992ca64e8b43746f6a8746a91724e78f6339e16cda41b943971d8",
+      "parts": {
+        "keyboard_rear_clamp.stl": 2
+      },
+      "prerequisites": [
+        "plus4_machine_confirmed",
+        "plus4_protected_envelope_verified",
+        "nozzle_0p4_confirmed",
+        "abs_rapido_general_profile_calibrated",
+        "keyboard_dimensions_measured",
+        "keyboard_corner_coupon_pass",
+        "general_clearance_holes_coupon_pass",
+        "setup_hardware_coupon_pass",
+        "geometry_matches_measurements",
+        "qidi_studio_roundtrip_confirmed"
+      ],
+      "postconditions": [
+        "keyboard_clamps_postprint_pass",
+        "keyboard_fixture_assembly_pass"
+      ]
+    },
+    {
+      "job_id": "03C1",
+      "design_revision": "RC03-INT-R1",
+      "lifecycle_status": "UNRELEASED",
+      "kit": "KIT-PHONE",
+      "plate_file": "03C1_ABS_phone_clamp_rail.3mf",
+      "plate_sha256": "e992ea3f29097bd346095a5c5ac08c33c9e2d35d7e9c27bce6041e43e3a9ef39",
+      "profile": "abs_rapido_cradle_0p4",
+      "profile_sha256": "0dca510bbadec73f611b731a8fd24f22310b3ba113759f58f0ed7f1cdc33c545",
+      "filament_preset": "qidi_abs_rapido_xplus4_0p4",
+      "filament_preset_sha256": "ce549e11c71d71294ae086694987ac99842a14ba8fc26e24a879f7dd31b65bd4",
+      "preset_data_status": "EXACT_REPRODUCIBLE",
+      "settings_file": "print_plates_3mf/03C1_ABS_phone_clamp_rail.PRINT_SETTINGS.md",
+      "settings_sha256": "0a0a5ea8323faf956099084619fece6f7c8e879f6d7ae8baa2aff406effec156",
+      "qidi_process_profile_file": "slicer_profiles/QIDI_PLUS4/abs_rapido_cradle_0p4.process.json",
+      "qidi_process_profile_sha256": "9276ce2983256d815925224e7d8fc45032a531678dc336713fc88fa96137e259",
+      "resolved_preset_sha256": "b5d48128c85aa81c03f3e6a3a0effd2c1273b6b13ba2561cc4c00e32866c1da8",
+      "parts": {
+        "phone_clamp_rail.stl": 1
+      },
+      "prerequisites": [
+        "plus4_machine_confirmed",
+        "plus4_protected_envelope_verified",
+        "nozzle_0p4_confirmed",
+        "abs_rapido_cradle_profile_calibrated",
+        "phone_width_coupon_pass",
+        "cradle_m4_washer_coupon_pass",
+        "geometry_matches_measurements",
+        "qidi_studio_roundtrip_confirmed"
+      ],
+      "postconditions": [
+        "phone_m4_captive_nut_coupon_pass",
+        "cable_tie_saddle_coupon_pass",
+        "phone_clamp_rail_first_article_pass",
+        "phone_fixture_assembly_pass"
+      ]
+    },
+    {
+      "job_id": "03C2",
+      "design_revision": "RC03-INT-R1",
+      "lifecycle_status": "UNRELEASED",
+      "kit": "KIT-BOARD-SETUP",
+      "plate_file": "03C2_ABS_board_setup_tools.3mf",
+      "plate_sha256": "6f84a4addac525d32ebe0685c5f11764a15270caf11d29bd6bda20338e1e3b6b",
+      "profile": "abs_rapido_general_0p4",
+      "profile_sha256": "4d9038f98da0892dca1031e59696babbbf913c0947f9e4cbac288c6182d1bede",
+      "filament_preset": "qidi_abs_rapido_xplus4_0p4",
+      "filament_preset_sha256": "ce549e11c71d71294ae086694987ac99842a14ba8fc26e24a879f7dd31b65bd4",
+      "preset_data_status": "EXACT_REPRODUCIBLE",
+      "settings_file": "print_plates_3mf/03C2_ABS_board_setup_tools.PRINT_SETTINGS.md",
+      "settings_sha256": "fad0b88672c052346ceff5fd3fcc86caac6565b081497eeb372ffd4bf6b64416",
+      "qidi_process_profile_file": "slicer_profiles/QIDI_PLUS4/abs_rapido_general_0p4.process.json",
+      "qidi_process_profile_sha256": "756895e547ed186ab4b0d532d6d66fc3e2ad31376bc342a0150cbd4667a5d239",
+      "resolved_preset_sha256": "40860f3c2b9992ca64e8b43746f6a8746a91724e78f6339e16cda41b943971d8",
+      "parts": {
+        "tag_application_frame_55mm.stl": 1
+      },
+      "prerequisites": [
+        "plus4_machine_confirmed",
+        "plus4_protected_envelope_verified",
+        "nozzle_0p4_confirmed",
+        "abs_rapido_general_profile_calibrated",
+        "tag_stock_measured",
+        "tag_artwork_scale_pass",
+        "board_setup_template_scale_pass",
+        "geometry_matches_measurements",
+        "qidi_studio_roundtrip_confirmed"
+      ],
+      "postconditions": [
+        "tag_application_tool_postprint_pass"
+      ]
+    },
+    {
+      "job_id": "03C3",
+      "design_revision": "RC03-INT-R1",
+      "lifecycle_status": "UNRELEASED",
+      "kit": "KIT-VISION-CAM",
+      "plate_file": "03C3_PETG_camera_plate.3mf",
+      "plate_sha256": "b659444974c21f27d0832b97b0511edd4a879c2049d81ae010cb28d61c8eae42",
+      "profile": "petg_general_0p4",
+      "profile_sha256": "00f5efa4c8c65c9857564a255fdec4d4eaa571962c83d77095a470a20942edc6",
+      "filament_preset": "exact_petg_spool_xplus4_0p4",
+      "filament_preset_sha256": "e4af446b19a2425a1f87b49feb022fb06e525dc92f670689940c8dade2908fc4",
+      "preset_data_status": "EXACT_PROCESS_SPOOL_PRESET_REQUIRED",
+      "settings_file": "print_plates_3mf/03C3_PETG_camera_plate.PRINT_SETTINGS.md",
+      "settings_sha256": "736c5f8666a3beae5a87cf685c04831499f5510dacdec9e17ab651da5af8e214",
+      "qidi_process_profile_file": "slicer_profiles/QIDI_PLUS4/petg_general_0p4.process.json",
+      "qidi_process_profile_sha256": "4e3fcda86460e9823234db1eff750e880a8b43bcb916dc2b584038b97376b605",
+      "resolved_preset_sha256": "160b234cf8bc1509030601f0ecfaf61b123c7bf746a8921b5e7bb7e9b38beb04",
+      "parts": {
+        "camera_plate_universal.stl": 1
+      },
+      "prerequisites": [
+        "fixed_camera_fallback_architecture_released",
+        "plus4_machine_confirmed",
+        "plus4_protected_envelope_verified",
+        "nozzle_0p4_confirmed",
+        "petg_general_profile_calibrated",
+        "camera_mount_interface_measured",
+        "general_clearance_holes_coupon_pass",
+        "setup_hardware_coupon_pass",
+        "geometry_matches_measurements",
+        "qidi_studio_roundtrip_confirmed"
+      ],
+      "postconditions": [
+        "camera_plate_hardware_pass"
+      ]
+    },
+    {
+      "job_id": "03D",
+      "design_revision": "RC03-INT-R1",
+      "lifecycle_status": "UNRELEASED",
+      "kit": "KIT-PUCK",
+      "plate_file": "03D_ABS_TCP_datum_cartridges.3mf",
+      "plate_sha256": "597423729e6d84ed39847ef9093fec57dcce2d5a51fee3c1bf17228d5045c8f7",
+      "profile": "abs_rapido_calibration_0p4",
+      "profile_sha256": "f3c6513d491cad5e3fc611549c640439ac58189ddea5c79fe01725e3a846b114",
+      "filament_preset": "qidi_abs_rapido_xplus4_0p4",
+      "filament_preset_sha256": "ce549e11c71d71294ae086694987ac99842a14ba8fc26e24a879f7dd31b65bd4",
+      "preset_data_status": "EXACT_REPRODUCIBLE",
+      "settings_file": "print_plates_3mf/03D_ABS_TCP_datum_cartridges.PRINT_SETTINGS.md",
+      "settings_sha256": "3e05dc8654924984aeb3fba467e18864eb5797ea8703391043aee9a286f29546",
+      "qidi_process_profile_file": "slicer_profiles/QIDI_PLUS4/abs_rapido_calibration_0p4.process.json",
+      "qidi_process_profile_sha256": "c069454369dc8abe726d0db4359928e9fa870c694cdfdf7b044a3debeeb2d564",
+      "resolved_preset_sha256": "ea278c6407c49cc9ba94d5e049c0bd57477967465bdd1dcf00ba998ae8c04de0",
+      "parts": {
+        "calibration_puck.stl": 2
+      },
+      "prerequisites": [
+        "plus4_machine_confirmed",
+        "plus4_protected_envelope_verified",
+        "nozzle_0p4_confirmed",
+        "abs_rapido_calibration_profile_calibrated",
+        "calibration_clearance_holes_coupon_pass",
+        "phone_station_registration_coupon_pass",
+        "geometry_matches_measurements",
+        "qidi_studio_roundtrip_confirmed"
+      ],
+      "postconditions": [
+        "calibration_puck_datum_pass"
+      ]
+    },
+    {
+      "job_id": "04A",
+      "design_revision": "RC03-INT-R1",
+      "lifecycle_status": "UNRELEASED",
+      "kit": "KIT-TOOL-COMMON",
+      "plate_file": "04A_ABS_shared_compliant_tool.3mf",
+      "plate_sha256": "91a9be9ec968c66b10543d13faae269d991b176fffd105d801a07f4a08107882",
+      "profile": "abs_rapido_precision_0p4",
+      "profile_sha256": "60827c142c2f8e88c0a45ace71712cf2c94f84d66dc796880352ab32de1e7195",
+      "filament_preset": "qidi_abs_rapido_xplus4_0p4",
+      "filament_preset_sha256": "ce549e11c71d71294ae086694987ac99842a14ba8fc26e24a879f7dd31b65bd4",
+      "preset_data_status": "EXACT_REPRODUCIBLE",
+      "settings_file": "print_plates_3mf/04A_ABS_shared_compliant_tool.PRINT_SETTINGS.md",
+      "settings_sha256": "a5f98db5e0bd54f803e6b623cfd587be6cadb2b5f7ef55ea192664edb244027a",
+      "qidi_process_profile_file": "slicer_profiles/QIDI_PLUS4/abs_rapido_precision_0p4.process.json",
+      "qidi_process_profile_sha256": "c115ad0ca8acafa86bc303973bbbae27578fdd57db8cbf437a7c8175710ba90a",
+      "resolved_preset_sha256": "c50226a292699926b12c6d5e5aea7ec7bc42628a554e45a6ab950648f3125741",
+      "parts": {
+        "compliant_tool_body.stl": 1,
+        "compliant_tool_top_cap.stl": 2
+      },
+      "prerequisites": [
+        "plus4_machine_confirmed",
+        "plus4_protected_envelope_verified",
+        "nozzle_0p4_confirmed",
+        "abs_rapido_precision_profile_calibrated",
+        "compliant_tool_m3_insert_coupon_pass",
+        "gripper_interface_measured",
+        "gripper_coupon_pass",
+        "spring_dimensions_measured",
+        "spring_fit_coupon_pass",
+        "precision_m3_head_coupon_pass",
+        "geometry_matches_measurements",
+        "qidi_studio_roundtrip_confirmed"
+      ],
+      "postconditions": [
+        "tool_body_postprint_pass",
+        "tool_assembled_motion_pass"
+      ]
+    },
+    {
+      "job_id": "04B",
+      "design_revision": "RC03-INT-R1",
+      "lifecycle_status": "UNRELEASED",
+      "kit": "KIT-TOOL-PHONE",
+      "plate_file": "04B_PETG_phone_stylus_adapters.3mf",
+      "plate_sha256": "e0c0f7e0a4d634347490cde4653329ea7c9527be5a967a2379077e1ad925c76f",
+      "profile": "petg_adapter_0p4",
+      "profile_sha256": "ce4f08af3ad5623c70bc5bb65dc086ae69cb51b98410dd26e85dbd0c1f693747",
+      "filament_preset": "exact_petg_spool_xplus4_0p4",
+      "filament_preset_sha256": "e4af446b19a2425a1f87b49feb022fb06e525dc92f670689940c8dade2908fc4",
+      "preset_data_status": "EXACT_PROCESS_SPOOL_PRESET_REQUIRED",
+      "settings_file": "print_plates_3mf/04B_PETG_phone_stylus_adapters.PRINT_SETTINGS.md",
+      "settings_sha256": "ceeca6a3cb6645b879ff3253f9cab91267a663253bb12e421abd1dc7f421b2db",
+      "qidi_process_profile_file": "slicer_profiles/QIDI_PLUS4/petg_adapter_0p4.process.json",
+      "qidi_process_profile_sha256": "0eac339f7768fb799fa420cd300710e080134d0c0737652fd9afd51d9bc4fa91",
+      "resolved_preset_sha256": "13f92ee97bdb5a9d652e943c052bacd7be2ecb3321ceef6c7a19d7e465249e0a",
+      "parts": {
+        "stylus_collar_9mm.stl": 2
+      },
+      "prerequisites": [
+        "plus4_machine_confirmed",
+        "plus4_protected_envelope_verified",
+        "nozzle_0p4_confirmed",
+        "petg_adapter_profile_calibrated",
+        "stylus_diameter_measured",
+        "stylus_gauge_coupon_pass",
+        "adapter_retention_method_selected",
+        "qidi_studio_roundtrip_confirmed"
+      ],
+      "postconditions": [
+        "stylus_collar_retention_pass",
+        "stylus_function_pass"
+      ]
+    },
+    {
+      "job_id": "04C",
+      "design_revision": "RC03-INT-R1",
+      "lifecycle_status": "UNRELEASED",
+      "kit": "KIT-TOOL-KB",
+      "plate_file": "04C_PETG_keyboard_rod_adapters.3mf",
+      "plate_sha256": "39b706d658b093fe29c7cd845412ba2082dacdb6cf321b97d9cb6209a5e81427",
+      "profile": "petg_adapter_0p4",
+      "profile_sha256": "ce4f08af3ad5623c70bc5bb65dc086ae69cb51b98410dd26e85dbd0c1f693747",
+      "filament_preset": "exact_petg_spool_xplus4_0p4",
+      "filament_preset_sha256": "e4af446b19a2425a1f87b49feb022fb06e525dc92f670689940c8dade2908fc4",
+      "preset_data_status": "EXACT_PROCESS_SPOOL_PRESET_REQUIRED",
+      "settings_file": "print_plates_3mf/04C_PETG_keyboard_rod_adapters.PRINT_SETTINGS.md",
+      "settings_sha256": "f4e96b64f789e345ba7dabbf4052e35498e57c95c64de12a87374e971eeb32fd",
+      "qidi_process_profile_file": "slicer_profiles/QIDI_PLUS4/petg_adapter_0p4.process.json",
+      "qidi_process_profile_sha256": "0eac339f7768fb799fa420cd300710e080134d0c0737652fd9afd51d9bc4fa91",
+      "resolved_preset_sha256": "13f92ee97bdb5a9d652e943c052bacd7be2ecb3321ceef6c7a19d7e465249e0a",
+      "parts": {
+        "rod_bushing_6_to_9mm.stl": 2
+      },
+      "prerequisites": [
+        "plus4_machine_confirmed",
+        "plus4_protected_envelope_verified",
+        "nozzle_0p4_confirmed",
+        "petg_adapter_profile_calibrated",
+        "keyboard_rod_measured",
+        "adapter_retention_method_selected",
+        "geometry_matches_measurements",
+        "qidi_studio_roundtrip_confirmed"
+      ],
+      "postconditions": [
+        "rod_bushing_retention_pass"
+      ]
+    },
+    {
+      "job_id": "05A",
+      "design_revision": "RC03-INT-R1",
+      "lifecycle_status": "UNRELEASED",
+      "kit": "KIT-PHONE",
+      "plate_file": "05A_TPU_phone_tip_first_article.3mf",
+      "plate_sha256": "4171263d706936cee8f393d2b7be90f299f8a362ceb1ecf3a32732f6c45f1899",
+      "profile": "tpu95a_0p4",
+      "profile_sha256": "4d655c7387b95cece3d27151ae8a7283688bbf87db088790376aa3156d5afd4b",
+      "filament_preset": "exact_tpu95a_spool_xplus4_0p4",
+      "filament_preset_sha256": "945d923a44ad2a09516d5ae3dceffc8bcd567a4e4c25b408ff4879c2435bb9cf",
+      "preset_data_status": "EXACT_PROCESS_SPOOL_PRESET_REQUIRED",
+      "settings_file": "print_plates_3mf/05A_TPU_phone_tip_first_article.PRINT_SETTINGS.md",
+      "settings_sha256": "9cf56d40d7cc29bf233cdce02e3376e324ad6462c7422435b77992b7a2942008",
+      "qidi_process_profile_file": "slicer_profiles/QIDI_PLUS4/tpu95a_0p4.process.json",
+      "qidi_process_profile_sha256": "547c6502ce8d5f4b04a5d247b50fcafb884dbe587b1df9c43935dfa6d297e6ba",
+      "resolved_preset_sha256": "f64a085bf3b87253b51e2b5c837bea6bec0ce13dc98bd1e4f779c41acf3624a4",
+      "parts": {
+        "phone_clamp_tip_TPU_M4.stl": 1
+      },
+      "prerequisites": [
+        "plus4_machine_confirmed",
+        "plus4_protected_envelope_verified",
+        "nozzle_0p4_confirmed",
+        "tpu_profile_calibrated",
+        "qidi_studio_roundtrip_confirmed"
+      ],
+      "postconditions": [
+        "phone_tpu_retention_coupon_pass"
+      ]
+    },
+    {
+      "job_id": "05B",
+      "design_revision": "RC03-INT-R1",
+      "lifecycle_status": "UNRELEASED",
+      "kit": "KIT-PHONE",
+      "plate_file": "05B_TPU_phone_tips_and_spares.3mf",
+      "plate_sha256": "ba8da269c5c0363efaa344e161f7e2678265b8b4aebb2c541c396dfa0c435747",
+      "profile": "tpu95a_0p4",
+      "profile_sha256": "4d655c7387b95cece3d27151ae8a7283688bbf87db088790376aa3156d5afd4b",
+      "filament_preset": "exact_tpu95a_spool_xplus4_0p4",
+      "filament_preset_sha256": "945d923a44ad2a09516d5ae3dceffc8bcd567a4e4c25b408ff4879c2435bb9cf",
+      "preset_data_status": "EXACT_PROCESS_SPOOL_PRESET_REQUIRED",
+      "settings_file": "print_plates_3mf/05B_TPU_phone_tips_and_spares.PRINT_SETTINGS.md",
+      "settings_sha256": "05ecdb00d5d89c5d971407a6d432ad7a8fd5e0b53a004beb1b01963c3da63fe3",
+      "qidi_process_profile_file": "slicer_profiles/QIDI_PLUS4/tpu95a_0p4.process.json",
+      "qidi_process_profile_sha256": "547c6502ce8d5f4b04a5d247b50fcafb884dbe587b1df9c43935dfa6d297e6ba",
+      "resolved_preset_sha256": "f64a085bf3b87253b51e2b5c837bea6bec0ce13dc98bd1e4f779c41acf3624a4",
+      "parts": {
+        "phone_clamp_tip_TPU_M4.stl": 3
+      },
+      "prerequisites": [
+        "plus4_machine_confirmed",
+        "plus4_protected_envelope_verified",
+        "nozzle_0p4_confirmed",
+        "tpu_profile_calibrated",
+        "phone_tpu_retention_coupon_pass",
+        "qidi_studio_roundtrip_confirmed"
+      ],
+      "postconditions": [
+        "phone_tpu_batch_postprint_pass"
+      ]
+    },
+    {
+      "job_id": "05C",
+      "design_revision": "RC03-INT-R1",
+      "lifecycle_status": "UNRELEASED",
+      "kit": "KIT-TOOL-KB",
+      "plate_file": "05C_TPU_keyboard_tip_first_article.3mf",
+      "plate_sha256": "1b6b6f5803d89ac00eb31cebc09e470365938842edfb7a748d278d81e5791c76",
+      "profile": "tpu95a_0p4",
+      "profile_sha256": "4d655c7387b95cece3d27151ae8a7283688bbf87db088790376aa3156d5afd4b",
+      "filament_preset": "exact_tpu95a_spool_xplus4_0p4",
+      "filament_preset_sha256": "945d923a44ad2a09516d5ae3dceffc8bcd567a4e4c25b408ff4879c2435bb9cf",
+      "preset_data_status": "EXACT_PROCESS_SPOOL_PRESET_REQUIRED",
+      "settings_file": "print_plates_3mf/05C_TPU_keyboard_tip_first_article.PRINT_SETTINGS.md",
+      "settings_sha256": "8256bf1ff0f030d8023a16f9f4a299c115b0bf3a151e6fe933cbc1cb919aca4f",
+      "qidi_process_profile_file": "slicer_profiles/QIDI_PLUS4/tpu95a_0p4.process.json",
+      "qidi_process_profile_sha256": "547c6502ce8d5f4b04a5d247b50fcafb884dbe587b1df9c43935dfa6d297e6ba",
+      "resolved_preset_sha256": "f64a085bf3b87253b51e2b5c837bea6bec0ce13dc98bd1e4f779c41acf3624a4",
+      "parts": {
+        "keyboard_tip_TPU_6mm.stl": 1
+      },
+      "prerequisites": [
+        "plus4_machine_confirmed",
+        "plus4_protected_envelope_verified",
+        "nozzle_0p4_confirmed",
+        "tpu_profile_calibrated",
+        "keyboard_rod_measured",
+        "qidi_studio_roundtrip_confirmed"
+      ],
+      "postconditions": [
+        "keyboard_tpu_retention_coupon_pass"
+      ]
+    },
+    {
+      "job_id": "05D",
+      "design_revision": "RC03-INT-R1",
+      "lifecycle_status": "UNRELEASED",
+      "kit": "KIT-TOOL-KB",
+      "plate_file": "05D_TPU_keyboard_tips_and_spares.3mf",
+      "plate_sha256": "63efc560b375ce5a6abbd5092f51632a51de8771b90aca70794ec6b7e999e843",
+      "profile": "tpu95a_0p4",
+      "profile_sha256": "4d655c7387b95cece3d27151ae8a7283688bbf87db088790376aa3156d5afd4b",
+      "filament_preset": "exact_tpu95a_spool_xplus4_0p4",
+      "filament_preset_sha256": "945d923a44ad2a09516d5ae3dceffc8bcd567a4e4c25b408ff4879c2435bb9cf",
+      "preset_data_status": "EXACT_PROCESS_SPOOL_PRESET_REQUIRED",
+      "settings_file": "print_plates_3mf/05D_TPU_keyboard_tips_and_spares.PRINT_SETTINGS.md",
+      "settings_sha256": "c2f91ab16e4faeea96945bdef95eba4cfb142430f44302565ebee51ca891ce9f",
+      "qidi_process_profile_file": "slicer_profiles/QIDI_PLUS4/tpu95a_0p4.process.json",
+      "qidi_process_profile_sha256": "547c6502ce8d5f4b04a5d247b50fcafb884dbe587b1df9c43935dfa6d297e6ba",
+      "resolved_preset_sha256": "f64a085bf3b87253b51e2b5c837bea6bec0ce13dc98bd1e4f779c41acf3624a4",
+      "parts": {
+        "keyboard_tip_TPU_6mm.stl": 3
+      },
+      "prerequisites": [
+        "plus4_machine_confirmed",
+        "plus4_protected_envelope_verified",
+        "nozzle_0p4_confirmed",
+        "tpu_profile_calibrated",
+        "keyboard_rod_measured",
+        "keyboard_tpu_retention_coupon_pass",
+        "qidi_studio_roundtrip_confirmed"
+      ],
+      "postconditions": [
+        "keyboard_tpu_batch_postprint_pass"
+      ]
+    },
+    {
+      "job_id": "06",
+      "design_revision": "RC03-INT-R1",
+      "lifecycle_status": "UNRELEASED",
+      "kit": "KIT-MAST",
+      "plate_file": "06_ASA_mast_fit_tests.3mf",
+      "plate_sha256": "02525021bb7f82f1d5c04946222ef5d898551181deb6bedda3b60a54cede6daa",
+      "profile": "asa_structural_0p4",
+      "profile_sha256": "f1e5cb6562054f5363ffbb34572181e1e52fad37aea3595c4a7c5a9cfa8ec7c9",
+      "filament_preset": "exact_asa_spool_xplus4_0p4",
+      "filament_preset_sha256": "568d1ecd4a7a2acf80e0789ea89a8513e51af7d415c8d0e24041669682cb5953",
+      "preset_data_status": "EXACT_PROCESS_SPOOL_PRESET_REQUIRED",
+      "settings_file": "print_plates_3mf/06_ASA_mast_fit_tests.PRINT_SETTINGS.md",
+      "settings_sha256": "a0201228b703bd3c1c282ab8fd0fd3124acebf9b68c1abbdbbf65ce502e3a461",
+      "qidi_process_profile_file": "slicer_profiles/QIDI_PLUS4/asa_structural_0p4.process.json",
+      "qidi_process_profile_sha256": "a6116150e09eb3212b6d4d76b7def11495593f564f497d2e8e5799ec6e69f7de",
+      "resolved_preset_sha256": "0709fd6261009b4b349152683fcbabd20c1c27739deda3aa24f5afd303f2ee81",
+      "parts": {
+        "mast_socket_fit_test.stl": 1,
+        "m5_nut_trap_fit_gauge.stl": 1
+      },
+      "prerequisites": [
+        "fixed_camera_fallback_architecture_released",
+        "plus4_machine_confirmed",
+        "plus4_protected_envelope_verified",
+        "nozzle_0p4_confirmed",
+        "asa_profile_calibrated"
+      ],
+      "postconditions": [
+        "asa_mast_socket_coupon_pass",
+        "asa_m5_nut_coupon_pass",
+        "asa_m5_clearance_coupon_pass"
+      ]
+    },
+    {
+      "job_id": "07A",
+      "design_revision": "RC03-INT-R1",
+      "lifecycle_status": "UNRELEASED",
+      "kit": "KIT-MAST",
+      "plate_file": "07A_ASA_mast_foot_first_article.3mf",
+      "plate_sha256": "fe98242302efb943e0fba6fb4db4e38f0008ecda19e306688be844dd162af84a",
+      "profile": "asa_structural_0p4",
+      "profile_sha256": "f1e5cb6562054f5363ffbb34572181e1e52fad37aea3595c4a7c5a9cfa8ec7c9",
+      "filament_preset": "exact_asa_spool_xplus4_0p4",
+      "filament_preset_sha256": "568d1ecd4a7a2acf80e0789ea89a8513e51af7d415c8d0e24041669682cb5953",
+      "preset_data_status": "EXACT_PROCESS_SPOOL_PRESET_REQUIRED",
+      "settings_file": "print_plates_3mf/07A_ASA_mast_foot_first_article.PRINT_SETTINGS.md",
+      "settings_sha256": "e8d47f729bd0c125a7e9804dac2f342484c0f536f0c5f83a1bffeab28398e7ff",
+      "qidi_process_profile_file": "slicer_profiles/QIDI_PLUS4/asa_structural_0p4.process.json",
+      "qidi_process_profile_sha256": "a6116150e09eb3212b6d4d76b7def11495593f564f497d2e8e5799ec6e69f7de",
+      "resolved_preset_sha256": "0709fd6261009b4b349152683fcbabd20c1c27739deda3aa24f5afd303f2ee81",
+      "parts": {
+        "mast_foot_2020.stl": 1
+      },
+      "prerequisites": [
+        "fixed_camera_fallback_architecture_released",
+        "plus4_machine_confirmed",
+        "plus4_protected_envelope_verified",
+        "nozzle_0p4_confirmed",
+        "asa_profile_calibrated",
+        "asa_mast_socket_coupon_pass",
+        "asa_m5_nut_coupon_pass",
+        "asa_m5_clearance_coupon_pass",
+        "geometry_matches_measurements",
+        "qidi_studio_roundtrip_confirmed"
+      ],
+      "postconditions": [
+        "mast_foot_first_article_pass"
+      ]
+    },
+    {
+      "job_id": "07B",
+      "design_revision": "RC03-INT-R1",
+      "lifecycle_status": "UNRELEASED",
+      "kit": "KIT-MAST",
+      "plate_file": "07B_ASA_mast_foot_second.3mf",
+      "plate_sha256": "1212bdb01b8d4fb140b8eeb7a6e68fdfc604696662d27a199120def6b2260658",
+      "profile": "asa_structural_0p4",
+      "profile_sha256": "f1e5cb6562054f5363ffbb34572181e1e52fad37aea3595c4a7c5a9cfa8ec7c9",
+      "filament_preset": "exact_asa_spool_xplus4_0p4",
+      "filament_preset_sha256": "568d1ecd4a7a2acf80e0789ea89a8513e51af7d415c8d0e24041669682cb5953",
+      "preset_data_status": "EXACT_PROCESS_SPOOL_PRESET_REQUIRED",
+      "settings_file": "print_plates_3mf/07B_ASA_mast_foot_second.PRINT_SETTINGS.md",
+      "settings_sha256": "46c56c393526bef5911b0ab604e85f36aeceee2892195a473b9d7931589c97ec",
+      "qidi_process_profile_file": "slicer_profiles/QIDI_PLUS4/asa_structural_0p4.process.json",
+      "qidi_process_profile_sha256": "a6116150e09eb3212b6d4d76b7def11495593f564f497d2e8e5799ec6e69f7de",
+      "resolved_preset_sha256": "0709fd6261009b4b349152683fcbabd20c1c27739deda3aa24f5afd303f2ee81",
+      "parts": {
+        "mast_foot_2020.stl": 1
+      },
+      "prerequisites": [
+        "fixed_camera_fallback_architecture_released",
+        "plus4_machine_confirmed",
+        "plus4_protected_envelope_verified",
+        "nozzle_0p4_confirmed",
+        "asa_profile_calibrated",
+        "asa_mast_socket_coupon_pass",
+        "asa_m5_nut_coupon_pass",
+        "asa_m5_clearance_coupon_pass",
+        "geometry_matches_measurements",
+        "mast_foot_first_article_pass",
+        "qidi_studio_roundtrip_confirmed"
+      ],
+      "postconditions": [
+        "mast_second_foot_postprint_pass",
+        "mast_pair_installation_pass"
+      ]
+    }
+  ]
+}

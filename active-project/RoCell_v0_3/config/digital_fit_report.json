@@ -1,0 +1,166 @@
+{
+  "schema_version": 1,
+  "design_revision": "RC03-INT-R1",
+  "scope": "exact generated solids at nominal configured coordinates; physical qualification still required",
+  "intersection_volume_limit_mm3": 1e-06,
+  "status": "PASS",
+  "checks": [
+    {
+      "check_id": "keyboard_master_slave_no_solid_collision",
+      "intersection_volume_mm3": 0.0,
+      "limit_mm3": 1e-06,
+      "status": "PASS"
+    },
+    {
+      "check_id": "keyboard_nominal_envelope_clear_of_master_station",
+      "intersection_volume_mm3": 0.0,
+      "limit_mm3": 1e-06,
+      "status": "PASS"
+    },
+    {
+      "check_id": "keyboard_nominal_envelope_clear_of_slave_station",
+      "intersection_volume_mm3": 0.0,
+      "limit_mm3": 1e-06,
+      "status": "PASS"
+    },
+    {
+      "check_id": "keyboard_left_rear_clamp_clear_of_station",
+      "intersection_volume_mm3": 0.0,
+      "limit_mm3": 1e-06,
+      "status": "PASS"
+    },
+    {
+      "check_id": "keyboard_right_rear_clamp_clear_of_station",
+      "intersection_volume_mm3": 0.0,
+      "limit_mm3": 1e-06,
+      "status": "PASS"
+    },
+    {
+      "check_id": "KBL-CLAMP_m4_shank_clear_of_rear_clamp",
+      "intersection_volume_mm3": 0.0,
+      "limit_mm3": 1e-06,
+      "status": "PASS"
+    },
+    {
+      "check_id": "KBR-CLAMP_m4_shank_clear_of_rear_clamp",
+      "intersection_volume_mm3": 0.0,
+      "limit_mm3": 1e-06,
+      "status": "PASS"
+    },
+    {
+      "check_id": "phone_nominal_envelope_clear_of_service_station",
+      "intersection_volume_mm3": 0.0,
+      "limit_mm3": 1e-06,
+      "status": "PASS"
+    },
+    {
+      "check_id": "phone_nominal_envelope_clear_of_replaceable_rail",
+      "intersection_volume_mm3": 0.0,
+      "limit_mm3": 1e-06,
+      "status": "PASS"
+    },
+    {
+      "check_id": "phone_service_rail_clear_of_master_station",
+      "intersection_volume_mm3": 0.0,
+      "limit_mm3": 1e-06,
+      "status": "PASS"
+    },
+    {
+      "check_id": "tcp_target_cartridge_clear_of_master_station",
+      "intersection_volume_mm3": 0.0,
+      "limit_mm3": 1e-06,
+      "status": "PASS"
+    },
+    {
+      "check_id": "PT-HOLD-R1_m4_shank_clear_of_service_rail",
+      "intersection_volume_mm3": 0.0,
+      "limit_mm3": 1e-06,
+      "status": "PASS"
+    },
+    {
+      "check_id": "PT-HOLD-R2_m4_shank_clear_of_service_rail",
+      "intersection_volume_mm3": 0.0,
+      "limit_mm3": 1e-06,
+      "status": "PASS"
+    },
+    {
+      "check_id": "KBL-LOC-ROUND_nominal_pin_clear_of_keyboard_left_solid",
+      "intersection_volume_mm3": 0.0,
+      "limit_mm3": 1e-06,
+      "status": "PASS"
+    },
+    {
+      "check_id": "KBL-LOC-RADIAL_nominal_pin_clear_of_keyboard_left_solid",
+      "intersection_volume_mm3": 0.0,
+      "limit_mm3": 1e-06,
+      "status": "PASS"
+    },
+    {
+      "check_id": "KBL-HOLD-F_m4_shank_clear_of_keyboard_left_solid",
+      "intersection_volume_mm3": 0.0,
+      "limit_mm3": 1e-06,
+      "status": "PASS"
+    },
+    {
+      "check_id": "KBL-HOLD-R_m4_shank_clear_of_keyboard_left_solid",
+      "intersection_volume_mm3": 0.0,
+      "limit_mm3": 1e-06,
+      "status": "PASS"
+    },
+    {
+      "check_id": "KBL-CLAMP_m4_shank_clear_of_keyboard_left_solid",
+      "intersection_volume_mm3": 0.0,
+      "limit_mm3": 1e-06,
+      "status": "PASS"
+    },
+    {
+      "check_id": "KBR-HOLD-F_m4_shank_clear_of_keyboard_right_solid",
+      "intersection_volume_mm3": 0.0,
+      "limit_mm3": 1e-06,
+      "status": "PASS"
+    },
+    {
+      "check_id": "KBR-HOLD-R_m4_shank_clear_of_keyboard_right_solid",
+      "intersection_volume_mm3": 0.0,
+      "limit_mm3": 1e-06,
+      "status": "PASS"
+    },
+    {
+      "check_id": "KBR-CLAMP_m4_shank_clear_of_keyboard_right_solid",
+      "intersection_volume_mm3": 0.0,
+      "limit_mm3": 1e-06,
+      "status": "PASS"
+    },
+    {
+      "check_id": "PT-LOC-ROUND_nominal_pin_clear_of_phone_tcp_solid",
+      "intersection_volume_mm3": 0.0,
+      "limit_mm3": 1e-06,
+      "status": "PASS"
+    },
+    {
+      "check_id": "PT-LOC-RADIAL_nominal_pin_clear_of_phone_tcp_solid",
+      "intersection_volume_mm3": 0.0,
+      "limit_mm3": 1e-06,
+      "status": "PASS"
+    },
+    {
+      "check_id": "PT-HOLD-TCP_m4_shank_clear_of_phone_tcp_solid",
+      "intersection_volume_mm3": 0.0,
+      "limit_mm3": 1e-06,
+      "status": "PASS"
+    },
+    {
+      "check_id": "PT-HOLD-R1_m4_shank_clear_of_phone_tcp_solid",
+      "intersection_volume_mm3": 0.0,
+      "limit_mm3": 1e-06,
+      "status": "PASS"
+    },
+    {
+      "check_id": "PT-HOLD-R2_m4_shank_clear_of_phone_tcp_solid",
+      "intersection_volume_mm3": 0.0,
+      "limit_mm3": 1e-06,
+      "status": "PASS"
+    }
+  ],
+  "failures": []
+}

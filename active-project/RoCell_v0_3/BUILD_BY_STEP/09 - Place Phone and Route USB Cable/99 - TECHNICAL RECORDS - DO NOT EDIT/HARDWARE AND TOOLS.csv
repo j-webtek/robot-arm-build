@@ -1,0 +1,12 @@
+source,type,qty,item,critical_condition,status
+required_physical_input,Required input,As specified,"Actual phone in the exact measured case state plus the accepted no-go map for glass edge, camera bump, buttons, and connector envelope",Present and accepted before work,NOT_VERIFIED
+required_physical_input,Required input,As specified,Actual USB cable and accepted cable tie,Present and accepted before work,NOT_VERIFIED
+required_physical_input,Required input,As specified,Two accepted phone TPU tips plus two labeled spares,Present and accepted before work,NOT_VERIFIED
+required_physical_input,Required input,As specified,Two hand-adjustable M4 clamp screws,Present and accepted before work,NOT_VERIFIED
+required_physical_input,Required input,As specified,"PASS engineering-release records for the phone no-go clearance and TPU pull-off force/duration, plus the matching Job 05A qualification; operators may not alter the approved limits",Present and accepted before work,NOT_VERIFIED
+required_physical_input,Required input,As specified,"Calipers or the recorded pose fixture, calibrated low-range force gauge, retention fixture, timer, and camera",Present and accepted before work,NOT_VERIFIED
+structured_register,Device,1,Measured phone/case,Same state used by the accepted dimensions and no-go map,NOT_VERIFIED
+structured_register,Cable,1,Measured USB lead,"Preserve connector body, straight projection, and minimum bend radius",NOT_VERIFIED
+structured_register,Printed part,2 + 2 spares,Phone TPU clamp tips,Accepted Jobs 05A/05B; label INSTALL and SPARE,NOT_VERIFIED
+structured_register,Fastener,2,M4 hand-adjustable clamp screws,Advance only to gentle TPU contact,NOT_VERIFIED
+structured_register,Cable retention,1,Accepted tie in the rail saddle,"Snug enough to retain, never crush or kink the cable",NOT_VERIFIED

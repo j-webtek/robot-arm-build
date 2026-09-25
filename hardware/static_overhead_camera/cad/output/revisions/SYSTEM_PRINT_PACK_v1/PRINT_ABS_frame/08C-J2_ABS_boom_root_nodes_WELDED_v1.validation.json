@@ -1,0 +1,104 @@
+{
+  "plate": "08C-J2",
+  "file": "PRINT_ABS_frame/08C-J2_ABS_boom_root_nodes_WELDED_v1.3mf",
+  "geometry_source": "C:\\Users\\Jack\\Desktop\\robot-arm-build\\hardware\\static_overhead_camera\\cad\\output\\plates_3mf\\08C-J2_ABS_boom_root_nodes.3mf",
+  "geometry_revision": null,
+  "source_sha256": "da785bb7535f2bc0211390fb85ba7f5c30367be5f4c8463e463e6e3c84097232",
+  "output_sha256": "747032fd2d2030c1c9d19af9b9bb8873fabccc7131d0dba5584ce24884066ecc",
+  "status": "PASS_MESH",
+  "expected_objects": 4,
+  "objects": [
+    {
+      "name": "boom_crossbar_node__01",
+      "original_vertices": 10670,
+      "welded_vertices": 10670,
+      "triangles": 21352,
+      "open_edges": 0,
+      "nonmanifold_edges": 0,
+      "geometry_unchanged": true
+    },
+    {
+      "name": "boom_crossbar_node__02",
+      "original_vertices": 10670,
+      "welded_vertices": 10670,
+      "triangles": 21352,
+      "open_edges": 0,
+      "nonmanifold_edges": 0,
+      "geometry_unchanged": true
+    },
+    {
+      "name": "boom_crossbar_node__03",
+      "original_vertices": 10670,
+      "welded_vertices": 10670,
+      "triangles": 21352,
+      "open_edges": 0,
+      "nonmanifold_edges": 0,
+      "geometry_unchanged": true
+    },
+    {
+      "name": "boom_crossbar_node__04",
+      "original_vertices": 10670,
+      "welded_vertices": 10670,
+      "triangles": 21352,
+      "open_edges": 0,
+      "nonmanifold_edges": 0,
+      "geometry_unchanged": true
+    }
+  ],
+  "placed_bounds_mm": [
+    [
+      [
+        10.0,
+        10.0,
+        0.0
+      ],
+      [
+        94.0,
+        90.0,
+        8.850000381469727
+      ]
+    ],
+    [
+      [
+        114.0,
+        110.0,
+        0.0
+      ],
+      [
+        198.0,
+        190.0,
+        8.850000381469727
+      ]
+    ],
+    [
+      [
+        10.0,
+        110.0,
+        0.0
+      ],
+      [
+        94.0,
+        190.0,
+        8.850000381469727
+      ]
+    ],
+    [
+      [
+        114.0,
+        10.0,
+        0.0
+      ],
+      [
+        198.0,
+        90.0,
+        8.850000381469727
+      ]
+    ]
+  ],
+  "triangle_coordinates": "EXACTLY_PRESERVED_FROM_NAMED_GEOMETRY_SOURCE",
+  "build_transforms": "EXACTLY_PRESERVED",
+  "excluded_objects": [],
+  "namespace": "DEFAULT_UNPREFIXED_CORE",
+  "native_slicer_preview": "PENDING",
+  "physical_fit_and_strength": "NOT_QUALIFIED"
+}

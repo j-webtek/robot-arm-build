@@ -1,0 +1,434 @@
+{
+  "schema_version": 2,
+  "design_revision": "RC03-INT-R1",
+  "job_id": "00C",
+  "plate_file": "00C_ABS_tool_profile_fit_tests.3mf",
+  "printer": {
+    "model": "QIDI Plus4",
+    "nominal_build_volume_mm": [
+      305.0,
+      305.0,
+      280.0
+    ],
+    "safe_plate_envelope_mm": [
+      295.0,
+      295.0,
+      275.0
+    ],
+    "edge_margin_mm": 5.0,
+    "default_nozzle_mm": 0.4
+  },
+  "stage": "diagnostic",
+  "selection": "required",
+  "purpose": "ABS RoArm grip, stepped spring seat, profile-specific M3 insert, and M3 head tests using the exact tool profile",
+  "parts": {
+    "compliant_tool_grip_fit_test.stl": 1,
+    "spring_fit_gauge.stl": 1,
+    "tool_m3_insert_fit_gauge.stl": 1,
+    "m3_head_fit_gauge.stl": 1
+  },
+  "prerequisites": [
+    "plus4_machine_confirmed",
+    "plus4_protected_envelope_verified",
+    "nozzle_0p4_confirmed",
+    "abs_rapido_precision_profile_calibrated"
+  ],
+  "process_profile_name": "abs_rapido_precision_0p4",
+  "process_profile": {
+    "material": "QIDI ABS Rapido",
+    "filament_preset": "qidi_abs_rapido_xplus4_0p4",
+    "preset_data_status": "EXACT_REPRODUCIBLE",
+    "nozzle_mm": 0.4,
+    "layer_height_mm": 0.16,
+    "walls": 5,
+    "top_layers": 6,
+    "bottom_layers": 6,
+    "infill_percent": 40,
+    "infill_pattern": "gyroid",
+    "supports": "off",
+    "bed_adhesion": "5 mm outer brim with 0.05 mm object gap on clean textured PEI",
+    "dimensional_controls": "Keep the seam off gripper flats, spring seats, insert pockets, and the sliding guide bore; zero XY compensation pending Job 00C",
+    "purpose": "ABS compliant tool body, caps, and exact-profile qualification coupons",
+    "qidi_studio": {
+      "base_process_preset": "0.16mm High Quality @XPlus4",
+      "import_name": "RC03 ABS Rapido Precision 0.16",
+      "native_overrides": {
+        "layer_height": "0.16",
+        "initial_layer_print_height": "0.2",
+        "line_width": "0.42",
+        "initial_layer_line_width": "0.5",
+        "outer_wall_line_width": "0.42",
+        "inner_wall_line_width": "0.45",
+        "top_surface_line_width": "0.42",
+        "sparse_infill_line_width": "0.45",
+        "internal_solid_infill_line_width": "0.42",
+        "wall_loops": "5",
+        "top_shell_layers": "6",
+        "bottom_shell_layers": "6",
+        "sparse_infill_density": "40%",
+        "sparse_infill_pattern": "gyroid",
+        "internal_solid_infill_pattern": "zig-zag",
+        "wall_generator": "classic",
+        "wall_sequence": "inner wall/outer wall",
+        "initial_layer_speed": [
+          "25"
+        ],
+        "initial_layer_infill_speed": [
+          "40"
+        ],
+        "outer_wall_speed": [
+          "45"
+        ],
+        "inner_wall_speed": [
+          "90"
+        ],
+        "sparse_infill_speed": [
+          "100"
+        ],
+        "internal_solid_infill_speed": [
+          "80"
+        ],
+        "top_surface_speed": [
+          "40"
+        ],
+        "bridge_speed": [
+          "30"
+        ],
+        "gap_infill_speed": [
+          "60"
+        ],
+        "travel_speed": [
+          "450"
+        ],
+        "default_acceleration": [
+          "4000"
+        ],
+        "travel_acceleration": [
+          "7000"
+        ],
+        "initial_layer_travel_acceleration": [
+          "2500"
+        ],
+        "initial_layer_acceleration": [
+          "400"
+        ],
+        "outer_wall_acceleration": [
+          "1500"
+        ],
+        "inner_wall_acceleration": [
+          "2500"
+        ],
+        "top_surface_acceleration": [
+          "1000"
+        ],
+        "enable_support": "0",
+        "ironing_type": "no ironing",
+        "brim_type": "outer_only",
+        "brim_width": "5",
+        "brim_object_gap": "0.05",
+        "skirt_loops": "0",
+        "enable_prime_tower": "0",
+        "xy_hole_compensation": "0",
+        "xy_contour_compensation": "0",
+        "elefant_foot_compensation": "0.15",
+        "seam_position": "aligned",
+        "enable_arc_fitting": "1",
+        "resolution": "0.012",
+        "print_sequence": "by layer",
+        "fuzzy_skin": "none"
+      }
+    }
+  },
+  "preset_contract": {
+    "schema_version": 1,
+    "slicer": {
+      "application": "QIDI Studio",
+      "verified_config_version": "2.7.2.60",
+      "machine_preset": "X-Plus 4 0.4 nozzle",
+      "build_surface": "Textured PEI Plate",
+      "units": "millimetres, degrees Celsius, millimetres per second, and millimetres per second squared",
+      "rule": "The per-job .print.json and .PRINT_SETTINGS.md files are the released setup records. The 3MF remains geometry-only until a native QIDI Studio project is saved and reviewed."
+    },
+    "preset_data_status": "EXACT_REPRODUCIBLE",
+    "filament_preset_name": "qidi_abs_rapido_xplus4_0p4",
+    "filament_preset": {
+      "material": "QIDI ABS Rapido",
+      "manufacturer": "QIDI",
+      "commercial_name": "ABS Rapido",
+      "filament_type": "ABS",
+      "resolution_status": "CONFIRMED_EXACT",
+      "qidi_studio_preset": "QIDI ABS Rapido @Qidi X-Plus 4 0.4 nozzle",
+      "settings": {
+        "nozzle_temperature_c": {
+          "initial_layer": 250,
+          "other_layers": 260,
+          "allowed_range": [
+            240,
+            280
+          ]
+        },
+        "textured_bed_temperature_c": {
+          "initial_layer": 90,
+          "other_layers": 90
+        },
+        "chamber_temperature_c": 55,
+        "enclosure": "sealed",
+        "flow_ratio": 0.95,
+        "pressure_advance": {
+          "enabled": true,
+          "value": 0.03
+        },
+        "max_volumetric_speed_mm3_s": 24.5,
+        "cooling": {
+          "fan_off_first_layers": 3,
+          "model_fan_min_percent": 20,
+          "model_fan_max_percent": 80,
+          "overhang_fan_percent": 80,
+          "overhang_threshold_percent": 25,
+          "auxiliary_fan_percent": 0,
+          "exhaust_during_print_percent": 0,
+          "exhaust_after_print_percent": 0
+        }
+      },
+      "unresolved_fields": [],
+      "source": "Installed QIDI Studio X 4 Series system preset, verified 2026-09-01; QIDITECH/QIDIStudio official preset"
+    },
+    "process_preset_name": "abs_rapido_precision_0p4",
+    "process_preset": {
+      "material": "QIDI ABS Rapido",
+      "filament_preset": "qidi_abs_rapido_xplus4_0p4",
+      "preset_data_status": "EXACT_REPRODUCIBLE",
+      "nozzle_mm": 0.4,
+      "layer_height_mm": 0.16,
+      "walls": 5,
+      "top_layers": 6,
+      "bottom_layers": 6,
+      "infill_percent": 40,
+      "infill_pattern": "gyroid",
+      "supports": "off",
+      "bed_adhesion": "5 mm outer brim with 0.05 mm object gap on clean textured PEI",
+      "dimensional_controls": "Keep the seam off gripper flats, spring seats, insert pockets, and the sliding guide bore; zero XY compensation pending Job 00C",
+      "purpose": "ABS compliant tool body, caps, and exact-profile qualification coupons",
+      "qidi_studio": {
+        "base_process_preset": "0.16mm High Quality @XPlus4",
+        "import_name": "RC03 ABS Rapido Precision 0.16",
+        "native_overrides": {
+          "layer_height": "0.16",
+          "initial_layer_print_height": "0.2",
+          "line_width": "0.42",
+          "initial_layer_line_width": "0.5",
+          "outer_wall_line_width": "0.42",
+          "inner_wall_line_width": "0.45",
+          "top_surface_line_width": "0.42",
+          "sparse_infill_line_width": "0.45",
+          "internal_solid_infill_line_width": "0.42",
+          "wall_loops": "5",
+          "top_shell_layers": "6",
+          "bottom_shell_layers": "6",
+          "sparse_infill_density": "40%",
+          "sparse_infill_pattern": "gyroid",
+          "internal_solid_infill_pattern": "zig-zag",
+          "wall_generator": "classic",
+          "wall_sequence": "inner wall/outer wall",
+          "initial_layer_speed": [
+            "25"
+          ],
+          "initial_layer_infill_speed": [
+            "40"
+          ],
+          "outer_wall_speed": [
+            "45"
+          ],
+          "inner_wall_speed": [
+            "90"
+          ],
+          "sparse_infill_speed": [
+            "100"
+          ],
+          "internal_solid_infill_speed": [
+            "80"
+          ],
+          "top_surface_speed": [
+            "40"
+          ],
+          "bridge_speed": [
+            "30"
+          ],
+          "gap_infill_speed": [
+            "60"
+          ],
+          "travel_speed": [
+            "450"
+          ],
+          "default_acceleration": [
+            "4000"
+          ],
+          "travel_acceleration": [
+            "7000"
+          ],
+          "initial_layer_travel_acceleration": [
+            "2500"
+          ],
+          "initial_layer_acceleration": [
+            "400"
+          ],
+          "outer_wall_acceleration": [
+            "1500"
+          ],
+          "inner_wall_acceleration": [
+            "2500"
+          ],
+          "top_surface_acceleration": [
+            "1000"
+          ],
+          "enable_support": "0",
+          "ironing_type": "no ironing",
+          "brim_type": "outer_only",
+          "brim_width": "5",
+          "brim_object_gap": "0.05",
+          "skirt_loops": "0",
+          "enable_prime_tower": "0",
+          "xy_hole_compensation": "0",
+          "xy_contour_compensation": "0",
+          "elefant_foot_compensation": "0.15",
+          "seam_position": "aligned",
+          "enable_arc_fitting": "1",
+          "resolution": "0.012",
+          "print_sequence": "by layer",
+          "fuzzy_skin": "none"
+        }
+      }
+    },
+    "human_settings_file": "00C_ABS_tool_profile_fit_tests.PRINT_SETTINGS.md",
+    "human_settings_sha256": "59acdd097bba18a034df2e96cb271f7766e73d40de35bf780a890d1ac3727c66",
+    "qidi_process_profile_file": "slicer_profiles/QIDI_PLUS4/abs_rapido_precision_0p4.process.json",
+    "qidi_process_profile_sha256": "c115ad0ca8acafa86bc303973bbbae27578fdd57db8cbf437a7c8175710ba90a",
+    "filament_preset_sha256": "ce549e11c71d71294ae086694987ac99842a14ba8fc26e24a879f7dd31b65bd4",
+    "resolved_preset_sha256": "c50226a292699926b12c6d5e5aea7ec7bc42628a554e45a6ab950648f3125741",
+    "unresolved_fields": [],
+    "part_assignments": [
+      {
+        "stl": "compliant_tool_grip_fit_test.stl",
+        "quantity": 1,
+        "filament_preset": "qidi_abs_rapido_xplus4_0p4",
+        "process_preset": "abs_rapido_precision_0p4"
+      },
+      {
+        "stl": "m3_head_fit_gauge.stl",
+        "quantity": 1,
+        "filament_preset": "qidi_abs_rapido_xplus4_0p4",
+        "process_preset": "abs_rapido_precision_0p4"
+      },
+      {
+        "stl": "spring_fit_gauge.stl",
+        "quantity": 1,
+        "filament_preset": "qidi_abs_rapido_xplus4_0p4",
+        "process_preset": "abs_rapido_precision_0p4"
+      },
+      {
+        "stl": "tool_m3_insert_fit_gauge.stl",
+        "quantity": 1,
+        "filament_preset": "qidi_abs_rapido_xplus4_0p4",
+        "process_preset": "abs_rapido_precision_0p4"
+      }
+    ]
+  },
+  "slicer_warning": "QIDI ABS Rapido uses the exact installed X-Plus 4 preset recorded here. PETG, TPU, and ASA jobs remain blocked until the exact physical spool and calibrated filament preset are recorded.",
+  "geometry_only_3mf": true,
+  "qidi_studio_native_project_required": true,
+  "qidi_studio_roundtrip_gate": "qidi_studio_roundtrip_confirmed",
+  "plate_envelope_mm": [
+    156.0,
+    70.0,
+    34.0
+  ],
+  "absolute_bed_bounds_mm": {
+    "min": [
+      74.5,
+      117.5,
+      0.0
+    ],
+    "max": [
+      230.5,
+      187.5,
+      34.0
+    ]
+  },
+  "centered_on_nominal_bed": true,
+  "source_stl_sha256": {
+    "compliant_tool_grip_fit_test.stl": "2c892ebeccd9d4512bf877cac3c1d56c87329c1a30a47165221480021104d935",
+    "m3_head_fit_gauge.stl": "7d1206ee09722d99cff871031562943e405c263ea5d1d1f5d82e193bf403cb2e",
+    "spring_fit_gauge.stl": "0b8464e8506bea26cc8972ce32fcfc4e7366c800eac4ee23e6fcd16677672f4c",
+    "tool_m3_insert_fit_gauge.stl": "8ff0775cb466170e0749bf125b4b2743f134df072f75ac17090d61854fbc7d8d"
+  },
+  "process_profile_sha256": "60827c142c2f8e88c0a45ace71712cf2c94f84d66dc796880352ab32de1e7195",
+  "filament_preset_sha256": "ce549e11c71d71294ae086694987ac99842a14ba8fc26e24a879f7dd31b65bd4",
+  "resolved_preset_sha256": "c50226a292699926b12c6d5e5aea7ec7bc42628a554e45a6ab950648f3125741",
+  "human_settings_file": "00C_ABS_tool_profile_fit_tests.PRINT_SETTINGS.md",
+  "human_settings_sha256": "59acdd097bba18a034df2e96cb271f7766e73d40de35bf780a890d1ac3727c66",
+  "qidi_process_profile_file": "slicer_profiles/QIDI_PLUS4/abs_rapido_precision_0p4.process.json",
+  "qidi_process_profile_sha256": "c115ad0ca8acafa86bc303973bbbae27578fdd57db8cbf437a7c8175710ba90a",
+  "plate_sha256": "53f14d77ecbebc10860a80122d53860c8789249c29f6af2eecd455855fa14af5",
+  "objects": [
+    {
+      "name": "compliant_tool_grip_fit_test_1",
+      "bounds_mm": [
+        [
+          74.5,
+          117.5,
+          0.0
+        ],
+        [
+          102.5,
+          141.5,
+          34.0
+        ]
+      ]
+    },
+    {
+      "name": "spring_fit_gauge_1",
+      "bounds_mm": [
+        [
+          112.5,
+          117.5,
+          0.0
+        ],
+        [
+          142.5,
+          147.5,
+          14.0
+        ]
+      ]
+    },
+    {
+      "name": "tool_m3_insert_fit_gauge_1",
+      "bounds_mm": [
+        [
+          152.5,
+          117.5,
+          0.0
+        ],
+        [
+          230.5,
+          143.5,
+          8.6
+        ]
+      ]
+    },
+    {
+      "name": "m3_head_fit_gauge_1",
+      "bounds_mm": [
+        [
+          74.5,
+          157.5,
+          0.0
+        ],
+        [
+          152.5,
+          187.5,
+          6.6
+        ]
+      ]
+    }
+  ]
+}

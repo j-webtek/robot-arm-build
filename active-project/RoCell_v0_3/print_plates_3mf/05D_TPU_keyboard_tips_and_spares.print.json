@@ -1,0 +1,369 @@
+{
+  "schema_version": 2,
+  "design_revision": "RC03-INT-R1",
+  "job_id": "05D",
+  "plate_file": "05D_TPU_keyboard_tips_and_spares.3mf",
+  "printer": {
+    "model": "QIDI Plus4",
+    "nominal_build_volume_mm": [
+      305.0,
+      305.0,
+      280.0
+    ],
+    "safe_plate_envelope_mm": [
+      295.0,
+      295.0,
+      275.0
+    ],
+    "edge_margin_mm": 5.0,
+    "default_nozzle_mm": 0.4
+  },
+  "stage": "production",
+  "selection": "keyboard_rod_route",
+  "purpose": "Three additional keyboard TPU tips, yielding two installed and two total spares",
+  "parts": {
+    "keyboard_tip_TPU_6mm.stl": 3
+  },
+  "prerequisites": [
+    "plus4_machine_confirmed",
+    "plus4_protected_envelope_verified",
+    "nozzle_0p4_confirmed",
+    "tpu_profile_calibrated",
+    "keyboard_rod_measured",
+    "keyboard_tpu_retention_coupon_pass",
+    "qidi_studio_roundtrip_confirmed"
+  ],
+  "process_profile_name": "tpu95a_0p4",
+  "process_profile": {
+    "material": "TPU 95A",
+    "filament_preset": "exact_tpu95a_spool_xplus4_0p4",
+    "preset_data_status": "EXACT_PROCESS_SPOOL_PRESET_REQUIRED",
+    "nozzle_mm": 0.4,
+    "layer_height_mm": 0.16,
+    "walls": 3,
+    "top_layers": 5,
+    "bottom_layers": 5,
+    "infill_percent": 100,
+    "infill_pattern": "rectilinear",
+    "supports": "off",
+    "bed_adhesion": "3 mm outer brim with 0.10 mm object gap after the exact dry TPU spool is qualified",
+    "dimensional_controls": "Keep first-layer flow calibrated so flared bore entries remain open; do not force a failed tip onto hardware",
+    "purpose": "Phone and keyboard compliant contact tips",
+    "qidi_studio": {
+      "base_process_preset": "0.16mm High Quality @XPlus4",
+      "import_name": "RC03 TPU 95A Contact Tips 0.16",
+      "native_overrides": {
+        "layer_height": "0.16",
+        "initial_layer_print_height": "0.2",
+        "wall_loops": "3",
+        "top_shell_layers": "5",
+        "bottom_shell_layers": "5",
+        "sparse_infill_density": "100%",
+        "sparse_infill_pattern": "rectilinear",
+        "outer_wall_speed": [
+          "30"
+        ],
+        "inner_wall_speed": [
+          "45"
+        ],
+        "sparse_infill_speed": [
+          "45"
+        ],
+        "internal_solid_infill_speed": [
+          "40"
+        ],
+        "top_surface_speed": [
+          "30"
+        ],
+        "bridge_speed": [
+          "20"
+        ],
+        "gap_infill_speed": [
+          "30"
+        ],
+        "initial_layer_speed": [
+          "20"
+        ],
+        "initial_layer_infill_speed": [
+          "25"
+        ],
+        "travel_speed": [
+          "250"
+        ],
+        "default_acceleration": [
+          "2000"
+        ],
+        "travel_acceleration": [
+          "3500"
+        ],
+        "initial_layer_travel_acceleration": [
+          "1500"
+        ],
+        "initial_layer_acceleration": [
+          "300"
+        ],
+        "outer_wall_acceleration": [
+          "800"
+        ],
+        "inner_wall_acceleration": [
+          "1200"
+        ],
+        "top_surface_acceleration": [
+          "800"
+        ],
+        "enable_support": "0",
+        "ironing_type": "no ironing",
+        "brim_type": "outer_only",
+        "brim_width": "3",
+        "brim_object_gap": "0.1",
+        "skirt_loops": "0",
+        "enable_prime_tower": "0",
+        "xy_hole_compensation": "0",
+        "xy_contour_compensation": "0",
+        "elefant_foot_compensation": "0.1",
+        "seam_position": "aligned",
+        "enable_arc_fitting": "1",
+        "resolution": "0.012",
+        "print_sequence": "by layer",
+        "fuzzy_skin": "none"
+      }
+    }
+  },
+  "preset_contract": {
+    "schema_version": 1,
+    "slicer": {
+      "application": "QIDI Studio",
+      "verified_config_version": "2.7.2.60",
+      "machine_preset": "X-Plus 4 0.4 nozzle",
+      "build_surface": "Textured PEI Plate",
+      "units": "millimetres, degrees Celsius, millimetres per second, and millimetres per second squared",
+      "rule": "The per-job .print.json and .PRINT_SETTINGS.md files are the released setup records. The 3MF remains geometry-only until a native QIDI Studio project is saved and reviewed."
+    },
+    "preset_data_status": "EXACT_PROCESS_SPOOL_PRESET_REQUIRED",
+    "filament_preset_name": "exact_tpu95a_spool_xplus4_0p4",
+    "filament_preset": {
+      "material": "TPU 95A",
+      "filament_type": "TPU",
+      "resolution_status": "EXACT_SPOOL_PRESET_REQUIRED",
+      "suggested_starting_preset": "Generic TPU 95A @Qidi X-Plus 4 0.4 nozzle",
+      "process_settings_status": "EXACT",
+      "thermal_settings_status": "UNRESOLVED",
+      "required_operator_inputs": [
+        "manufacturer",
+        "product name",
+        "Shore hardness",
+        "spool lot",
+        "vendor preset name and revision",
+        "drying record",
+        "flow calibration",
+        "pressure advance calibration"
+      ],
+      "unresolved_fields": [
+        "nozzle temperature",
+        "bed temperature",
+        "flow ratio",
+        "pressure advance",
+        "maximum volumetric speed",
+        "cooling"
+      ]
+    },
+    "process_preset_name": "tpu95a_0p4",
+    "process_preset": {
+      "material": "TPU 95A",
+      "filament_preset": "exact_tpu95a_spool_xplus4_0p4",
+      "preset_data_status": "EXACT_PROCESS_SPOOL_PRESET_REQUIRED",
+      "nozzle_mm": 0.4,
+      "layer_height_mm": 0.16,
+      "walls": 3,
+      "top_layers": 5,
+      "bottom_layers": 5,
+      "infill_percent": 100,
+      "infill_pattern": "rectilinear",
+      "supports": "off",
+      "bed_adhesion": "3 mm outer brim with 0.10 mm object gap after the exact dry TPU spool is qualified",
+      "dimensional_controls": "Keep first-layer flow calibrated so flared bore entries remain open; do not force a failed tip onto hardware",
+      "purpose": "Phone and keyboard compliant contact tips",
+      "qidi_studio": {
+        "base_process_preset": "0.16mm High Quality @XPlus4",
+        "import_name": "RC03 TPU 95A Contact Tips 0.16",
+        "native_overrides": {
+          "layer_height": "0.16",
+          "initial_layer_print_height": "0.2",
+          "wall_loops": "3",
+          "top_shell_layers": "5",
+          "bottom_shell_layers": "5",
+          "sparse_infill_density": "100%",
+          "sparse_infill_pattern": "rectilinear",
+          "outer_wall_speed": [
+            "30"
+          ],
+          "inner_wall_speed": [
+            "45"
+          ],
+          "sparse_infill_speed": [
+            "45"
+          ],
+          "internal_solid_infill_speed": [
+            "40"
+          ],
+          "top_surface_speed": [
+            "30"
+          ],
+          "bridge_speed": [
+            "20"
+          ],
+          "gap_infill_speed": [
+            "30"
+          ],
+          "initial_layer_speed": [
+            "20"
+          ],
+          "initial_layer_infill_speed": [
+            "25"
+          ],
+          "travel_speed": [
+            "250"
+          ],
+          "default_acceleration": [
+            "2000"
+          ],
+          "travel_acceleration": [
+            "3500"
+          ],
+          "initial_layer_travel_acceleration": [
+            "1500"
+          ],
+          "initial_layer_acceleration": [
+            "300"
+          ],
+          "outer_wall_acceleration": [
+            "800"
+          ],
+          "inner_wall_acceleration": [
+            "1200"
+          ],
+          "top_surface_acceleration": [
+            "800"
+          ],
+          "enable_support": "0",
+          "ironing_type": "no ironing",
+          "brim_type": "outer_only",
+          "brim_width": "3",
+          "brim_object_gap": "0.1",
+          "skirt_loops": "0",
+          "enable_prime_tower": "0",
+          "xy_hole_compensation": "0",
+          "xy_contour_compensation": "0",
+          "elefant_foot_compensation": "0.1",
+          "seam_position": "aligned",
+          "enable_arc_fitting": "1",
+          "resolution": "0.012",
+          "print_sequence": "by layer",
+          "fuzzy_skin": "none"
+        }
+      }
+    },
+    "human_settings_file": "05D_TPU_keyboard_tips_and_spares.PRINT_SETTINGS.md",
+    "human_settings_sha256": "c2f91ab16e4faeea96945bdef95eba4cfb142430f44302565ebee51ca891ce9f",
+    "qidi_process_profile_file": "slicer_profiles/QIDI_PLUS4/tpu95a_0p4.process.json",
+    "qidi_process_profile_sha256": "547c6502ce8d5f4b04a5d247b50fcafb884dbe587b1df9c43935dfa6d297e6ba",
+    "filament_preset_sha256": "945d923a44ad2a09516d5ae3dceffc8bcd567a4e4c25b408ff4879c2435bb9cf",
+    "resolved_preset_sha256": "f64a085bf3b87253b51e2b5c837bea6bec0ce13dc98bd1e4f779c41acf3624a4",
+    "unresolved_fields": [
+      "nozzle temperature",
+      "bed temperature",
+      "flow ratio",
+      "pressure advance",
+      "maximum volumetric speed",
+      "cooling"
+    ],
+    "part_assignments": [
+      {
+        "stl": "keyboard_tip_TPU_6mm.stl",
+        "quantity": 3,
+        "filament_preset": "exact_tpu95a_spool_xplus4_0p4",
+        "process_preset": "tpu95a_0p4"
+      }
+    ]
+  },
+  "slicer_warning": "QIDI ABS Rapido uses the exact installed X-Plus 4 preset recorded here. PETG, TPU, and ASA jobs remain blocked until the exact physical spool and calibrated filament preset are recorded.",
+  "geometry_only_3mf": true,
+  "qidi_studio_native_project_required": true,
+  "qidi_studio_roundtrip_gate": "qidi_studio_roundtrip_confirmed",
+  "plate_envelope_mm": [
+    52.0,
+    12.0,
+    14.0
+  ],
+  "absolute_bed_bounds_mm": {
+    "min": [
+      126.5,
+      146.501,
+      0.0
+    ],
+    "max": [
+      178.5,
+      158.499,
+      14.0
+    ]
+  },
+  "centered_on_nominal_bed": true,
+  "source_stl_sha256": {
+    "keyboard_tip_TPU_6mm.stl": "22ba42201e769ff4ed146b125d69d585b7188b7f274a1b3430b741ad62931d37"
+  },
+  "process_profile_sha256": "4d655c7387b95cece3d27151ae8a7283688bbf87db088790376aa3156d5afd4b",
+  "filament_preset_sha256": "945d923a44ad2a09516d5ae3dceffc8bcd567a4e4c25b408ff4879c2435bb9cf",
+  "resolved_preset_sha256": "f64a085bf3b87253b51e2b5c837bea6bec0ce13dc98bd1e4f779c41acf3624a4",
+  "human_settings_file": "05D_TPU_keyboard_tips_and_spares.PRINT_SETTINGS.md",
+  "human_settings_sha256": "c2f91ab16e4faeea96945bdef95eba4cfb142430f44302565ebee51ca891ce9f",
+  "qidi_process_profile_file": "slicer_profiles/QIDI_PLUS4/tpu95a_0p4.process.json",
+  "qidi_process_profile_sha256": "547c6502ce8d5f4b04a5d247b50fcafb884dbe587b1df9c43935dfa6d297e6ba",
+  "plate_sha256": "63efc560b375ce5a6abbd5092f51632a51de8771b90aca70794ec6b7e999e843",
+  "objects": [
+    {
+      "name": "keyboard_tip_TPU_6mm_1",
+      "bounds_mm": [
+        [
+          126.5,
+          146.501,
+          0.0
+        ],
+        [
+          138.5,
+          158.499,
+          14.0
+        ]
+      ]
+    },
+    {
+      "name": "keyboard_tip_TPU_6mm_2",
+      "bounds_mm": [
+        [
+          146.5,
+          146.501,
+          0.0
+        ],
+        [
+          158.5,
+          158.499,
+          14.0
+        ]
+      ]
+    },
+    {
+      "name": "keyboard_tip_TPU_6mm_3",
+      "bounds_mm": [
+        [
+          166.5,
+          146.501,
+          0.0
+        ],
+        [
+          178.5,
+          158.499,
+          14.0
+        ]
+      ]
+    }
+  ]
+}

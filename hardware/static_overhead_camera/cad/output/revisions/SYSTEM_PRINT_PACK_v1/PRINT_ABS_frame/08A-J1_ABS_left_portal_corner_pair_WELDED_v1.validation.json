@@ -1,0 +1,62 @@
+{
+  "plate": "08A-J1",
+  "file": "PRINT_ABS_frame/08A-J1_ABS_left_portal_corner_pair_WELDED_v1.3mf",
+  "geometry_source": "C:\\Users\\Jack\\Desktop\\robot-arm-build\\hardware\\static_overhead_camera\\cad\\output\\plates_3mf\\08A-J1_ABS_left_portal_corner_pair.3mf",
+  "geometry_revision": null,
+  "source_sha256": "52c12cd08deed89a396d2f6117d2f4c5375fd44678e944c3667674942a815b63",
+  "output_sha256": "e8d17a66085d69202d2920247dc980297f2a210dca235c1b9bb35b2ecd87413e",
+  "status": "PASS_MESH",
+  "expected_objects": 2,
+  "objects": [
+    {
+      "name": "portal_corner_node_left__01",
+      "original_vertices": 5814,
+      "welded_vertices": 5814,
+      "triangles": 11640,
+      "open_edges": 0,
+      "nonmanifold_edges": 0,
+      "geometry_unchanged": true
+    },
+    {
+      "name": "portal_corner_node_left__02",
+      "original_vertices": 5814,
+      "welded_vertices": 5814,
+      "triangles": 11640,
+      "open_edges": 0,
+      "nonmanifold_edges": 0,
+      "geometry_unchanged": true
+    }
+  ],
+  "placed_bounds_mm": [
+    [
+      [
+        10.0,
+        10.0,
+        0.0
+      ],
+      [
+        134.0,
+        120.0,
+        8.800000190734863
+      ]
+    ],
+    [
+      [
+        154.0,
+        10.0,
+        0.0
+      ],
+      [
+        278.0,
+        120.0,
+        8.800000190734863
+      ]
+    ]
+  ],
+  "triangle_coordinates": "EXACTLY_PRESERVED_FROM_NAMED_GEOMETRY_SOURCE",
+  "build_transforms": "EXACTLY_PRESERVED",
+  "excluded_objects": [],
+  "namespace": "DEFAULT_UNPREFIXED_CORE",
+  "native_slicer_preview": "PENDING",
+  "physical_fit_and_strength": "NOT_QUALIFIED"
+}

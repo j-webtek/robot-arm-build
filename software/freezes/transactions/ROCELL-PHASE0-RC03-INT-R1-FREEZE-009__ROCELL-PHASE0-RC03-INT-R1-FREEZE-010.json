@@ -1,0 +1,263 @@
+{
+  "schema": "rocell.refreeze_transaction.v1",
+  "schema_version": 1,
+  "transaction_id": "ROCELL-REFREEZE-009-TO-010",
+  "commit_state": "APPLIED_WHEN_ACTIVE_MANIFEST_MATCHES_NEW_MANIFEST_SHA256",
+  "physical_release_effect": "NONE",
+  "old_manifest_id": "ROCELL-PHASE0-RC03-INT-R1-FREEZE-009",
+  "new_manifest_id": "ROCELL-PHASE0-RC03-INT-R1-FREEZE-010",
+  "freeze_date": "2026-09-06",
+  "reason": "Synchronize the approved static-overhead-camera planning baseline and the operator-confirmed Job 00B to 03C1 ABS rework: retain passed 6.2 mm locator and 9.2 mm washer fits, widen production cable-tie paths to 5.6 x 2.2 mm for nominal 4.8 mm ties, and replace the loose N7.4 pocket with a true 7.2 mm captive M4 nut seat.",
+  "approval_reference": "Builder decisions recorded in the active Codex task through 2026-09-06; latest direction explicitly accepts the wider ties without a separate retest, confirms the rail lies flat and the middle rod fits, and requires the loose spinning M4 nut fit to be tightened.",
+  "companion_change_reason": null,
+  "tool": {
+    "path": "software/tools/refreeze_build_alignment.py",
+    "sha256": "f4414d68d83a3e4f6af45dea80f23d5ef17bdace060fb07417f61b8ab20e1bc0"
+  },
+  "reviewed_active_output_set_sha256": "a3c3e388ba1fd2f86f7fa035aef63d8ceffb359aad92d1f03bf1fc73be7d0534",
+  "planning_input_set_sha256": "b319a60f894767a7ef2ac556a08fe9deeaa8fc833c35be9d225137a7b80cbebf",
+  "old_alias_archive": {
+    "system_manifest": {
+      "path": "software/freezes/ROCELL-PHASE0-RC03-INT-R1-FREEZE-009/system_manifest.json",
+      "sha256": "b8059837ab89137918d29524d34637721cab7d9a093bf2ddf37b5f7365817ebc"
+    },
+    "camera_manifest": {
+      "path": "software/freezes/ROCELL-PHASE0-RC03-INT-R1-FREEZE-009/camera_manifest.json",
+      "sha256": "645c8f0037ab161b3fb541acd9f1c445f9450d94588e6ca4b892e35558c60b64"
+    },
+    "simulation_hardware_profile": {
+      "path": "software/freezes/ROCELL-PHASE0-RC03-INT-R1-FREEZE-009/simulation_hardware_profile.json",
+      "sha256": "097f83c5a9b6d62d296dd30a5b579bbceb7339e81c1b250e8028a5824de4c8d6"
+    },
+    "virtual_commissioning_profile": {
+      "path": "software/freezes/ROCELL-PHASE0-RC03-INT-R1-FREEZE-009/virtual_commissioning_profile.json",
+      "sha256": "8f64c08293abd6fd4303ed1e2c6e6e2d64a792c52a7e075129070f2f95cf244e"
+    },
+    "gate_projection": {
+      "path": "software/freezes/ROCELL-PHASE0-RC03-INT-R1-FREEZE-009/gate_projection.json",
+      "sha256": "fbfefcd5b0ab0063dbc56552943503457b0cd7e1fbfddaebfd498377b5e6bfa8"
+    },
+    "simulation_bundle_lock": {
+      "path": "software/freezes/ROCELL-PHASE0-RC03-INT-R1-FREEZE-009/simulation_bundle_lock.json",
+      "sha256": "7a41b5edddd7d4965004ba00922cbd401a969c6f09c0899a7558d064a1fd6430"
+    },
+    "calibration_registry": {
+      "path": "software/freezes/ROCELL-PHASE0-RC03-INT-R1-FREEZE-009/calibration_registry.json",
+      "sha256": "8676c379a77c90e84888f72b5ba7fc1b9e4f5a9f4ae91a0786acf81be10193e2"
+    }
+  },
+  "new_active_aliases": {
+    "system_manifest": {
+      "path": "software/config/system_manifest.json",
+      "sha256": "d2067ad537f34a0c378cf50999766b15960bab29d258c3d75bddbb008301d420"
+    },
+    "camera_manifest": {
+      "path": "software/config/camera_manifest.json",
+      "sha256": "1b5009d1e35ccffa3f8d9fff67dba18389c842494dcf32ee79bcb5ee67e52b50"
+    },
+    "simulation_hardware_profile": {
+      "path": "software/config/simulation_hardware_profile.json",
+      "sha256": "0146518226056bac4ce346dfd7a039f161327856e6a835600bb079d405fcd4c5"
+    },
+    "virtual_commissioning_profile": {
+      "path": "software/config/virtual_commissioning_profile.json",
+      "sha256": "a2a5aa05ec9e546ac96fe2ebb7af17a4b8baad0b2e5e6ec946fc0d2b4b416ab7"
+    },
+    "gate_projection": {
+      "path": "software/config/gate_projection.json",
+      "sha256": "361c01d1b4f7a6d9134353d63f7575dc124dd914b7bb41fb34d635c02abf1b3d"
+    },
+    "simulation_bundle_lock": {
+      "path": "software/config/simulation_bundle_lock.json",
+      "sha256": "2a06573ee4a082e2d9e612cd61b0669e8bfdddb16b92d51d155dead75af8a388"
+    },
+    "calibration_registry": {
+      "path": "software/calibrations/registry.json",
+      "sha256": "de8e19f2c9b3e86e6aefee718345c22b882995a66a18fc543a4b1d29b3ba580c"
+    }
+  },
+  "source_changes": [
+    {
+      "path": "BOM.csv",
+      "old_sha256": "e2bed9c43f56212c53eaea69899243834f75c1b9222945523c3782ca43a852bf",
+      "new_sha256": "c9362cf401ca66f4e584c7fc294f6c54853c8ea546e610d551bc841782d6bcd0",
+      "changed": true
+    },
+    {
+      "path": "config/workcell_layout.json",
+      "old_sha256": "fe54bf689ee06bdb6f6c8ba0d254c49a30b755cf78c8b03c6bc8a9ac67c7eb84",
+      "new_sha256": "e84db9aa7b88db442f042c6f546196e350c822a2e7609cb4b652b3da535df2e1",
+      "changed": true
+    },
+    {
+      "path": "config/parameters.json",
+      "old_sha256": "32ba6a7a887ced0e5ef5b5b8d7710a71fefdefebc43223bc8a4c25d41e059136",
+      "new_sha256": "769808d9094672ff2f281d39eeafff68c1aa0e4e9ec9b552f22084334b1bb6fc",
+      "changed": true
+    },
+    {
+      "path": "config/print_profiles.json",
+      "old_sha256": "5886a55b3fbdca28bf0d67ea8718a366333e78f2801e1884db00cc9f010ffc5e",
+      "new_sha256": "5886a55b3fbdca28bf0d67ea8718a366333e78f2801e1884db00cc9f010ffc5e",
+      "changed": false
+    },
+    {
+      "path": "config/print_jobs.json",
+      "old_sha256": "460d509b780c563ca21c2f7aa994aa4aff00d5bfa3a7d9c65bc2708282602a96",
+      "new_sha256": "429bca9542193388581eee5266af57b2e7460881f87b23b34693eee3b77c66f4",
+      "changed": true
+    },
+    {
+      "path": "config/measurement_record.json",
+      "old_sha256": "1e946700cd02e282d83deec240d0aa98911dd664302a52d6c43ab550f5a2894e",
+      "new_sha256": "1fb400eae3104547b9bc75a6824bb137f37acc8274e68d718db7a6d77e734ec9",
+      "changed": true
+    },
+    {
+      "path": "config/assembly_steps.json",
+      "old_sha256": "3bc21082549bfcfbe31bcf0b2d300103647f56b3861bf426c7d2ea4eb61d819b",
+      "new_sha256": "af1920ac851d18c09ad749df5da2ed58dda6c9a40b066966e737430c448a546d",
+      "changed": true
+    },
+    {
+      "path": "config/v1_prehardware_configuration.json",
+      "old_sha256": "04c4e394e8ded36106811a1626b9e2265d7e652869b03c5c0cf76770932b3f63",
+      "new_sha256": "04c4e394e8ded36106811a1626b9e2265d7e652869b03c5c0cf76770932b3f63",
+      "changed": false
+    },
+    {
+      "path": "config/camera_architecture_decision.json",
+      "old_sha256": "93b51f5635373c7a2a3d561e5a6ed0eb23c5b20c5243f158261a144e78c63c6b",
+      "new_sha256": "93b51f5635373c7a2a3d561e5a6ed0eb23c5b20c5243f158261a144e78c63c6b",
+      "changed": false
+    },
+    {
+      "path": "config/hardware_candidates.json",
+      "old_sha256": "1e33702b54e54ba41789b8c50362eecc19977cf534f848e50a7231e70a546e2b",
+      "new_sha256": "1e33702b54e54ba41789b8c50362eecc19977cf534f848e50a7231e70a546e2b",
+      "changed": false
+    },
+    {
+      "path": "config/digital_fit_report.json",
+      "old_sha256": "1d7be5b0148d13d06875025af0531991feb94b3c63096742e616d450f9ba1deb",
+      "new_sha256": "1d7be5b0148d13d06875025af0531991feb94b3c63096742e616d450f9ba1deb",
+      "changed": false
+    },
+    {
+      "path": "config/robot_reach_screening.json",
+      "old_sha256": "348fccf9be88fc32299ab10fce14e764869422191a43963631e4f5f0ccb9e53b",
+      "new_sha256": "348fccf9be88fc32299ab10fce14e764869422191a43963631e4f5f0ccb9e53b",
+      "changed": false
+    },
+    {
+      "path": "fiducials/apriltag_map.json",
+      "old_sha256": "1e974df2d80c9133ba4cb0c79f6300ef8c420133a7972c22f5d3d36e49923624",
+      "new_sha256": "81c867d28660cdade79cb8024104d82e5568effa0736f07f0947c1007ac23700",
+      "changed": true
+    },
+    {
+      "path": "BUILD_BY_STEP/ACTIVE_BUILD.json",
+      "old_sha256": "0f6193f3ea96dba21ac42386c0e3d605d20e7471dc44ff72734eaccbd330d774",
+      "new_sha256": "0f6193f3ea96dba21ac42386c0e3d605d20e7471dc44ff72734eaccbd330d774",
+      "changed": false
+    },
+    {
+      "path": "BUILD_BY_STEP/INDEX.json",
+      "old_sha256": "7d4b4ad2e8d77f3f5db88305bf3867c5932c364cfebfed4864f3b59b6208c204",
+      "new_sha256": "602f21afcbeab01222fab00d9e830663ed7b7079819db34a163a9ed9364454ee",
+      "changed": true
+    },
+    {
+      "path": "BUILD_BY_STEP/PACKAGE_VALIDATION.json",
+      "old_sha256": "9d144f0d8e748966860f270f962ad734b881b4207bcd637255a85063fdc612fd",
+      "new_sha256": "7a46d2ba3f98e5122f54213b04961bc09c5369ef15c9eb7df968d074a6eb6e5d",
+      "changed": true
+    },
+    {
+      "path": "drawings/documentation_sync.json",
+      "old_sha256": "7894132a1cff4aac842f509454056a73733ae636a2e1a379062bd35e77bd293a",
+      "new_sha256": "c80bea60c22db98e00ce6a095bf53186f0b8bca24366eba3e41d06023c1335a6",
+      "changed": true
+    },
+    {
+      "path": "RELEASE_VALIDATION.json",
+      "old_sha256": "252cc1e177c491cc7bb73ecc8e1575920e3f498ebb19aedb2826d377dc329046",
+      "new_sha256": "645bfa25e16720dce2937e93a2ded5ca6e8e31664a034e49bb97de2234f60c50",
+      "changed": true
+    },
+    {
+      "path": "PRINT_READINESS.json",
+      "old_sha256": "74c398f580cafd946db05a87cafcc11e6e98d8d0a8c96f0a58c7b287565d02f5",
+      "new_sha256": "a8c75f05f727fa899c1f873ffea9852b5e6d343cdd302d5c4e02ee4124f74fc3",
+      "changed": true
+    },
+    {
+      "path": "BUILD_TRACKER.json",
+      "old_sha256": "be7251fac164df4b6ede6ef7926c7640c4433617d5e005edb8889fa8c1ac4b59",
+      "new_sha256": "a92c501f5703103894fd97d16d9378ec91795cebb05b8d3c7b0dc5629dcf3aff",
+      "changed": true
+    },
+    {
+      "path": "PREHARDWARE_READINESS.json",
+      "old_sha256": "f7c842bdeb053efc8b01d054be908846e1b8bb12513bf1eed068759580011afa",
+      "new_sha256": "2f00bba3bbc17b24c5c64f9f2d49e6633fc25511c3da1b4732a0852cf019c3cc",
+      "changed": true
+    }
+  ],
+  "preflight": {
+    "rc03_release_status": "PASS",
+    "build_step_package_status": "PASS",
+    "physical_release": "UNRELEASED",
+    "active_build_id": "2026-09-01_CELL-A",
+    "print_readiness_summary": {
+      "ready": 5,
+      "waiting": 15,
+      "not_selected": 4,
+      "total_jobs": 24
+    },
+    "measurement_gate_status_counts": {
+      "FAIL": 2,
+      "NA": 4,
+      "NOT_TESTED": 63,
+      "PASS": 15
+    },
+    "prehardware_state": "DIGITALLY_CONSISTENT_ENGINEERING_AND_PHYSICAL_RELEASE_BLOCKED",
+    "prehardware_summary": {
+      "digital_pass": 9,
+      "digital_fail": 0,
+      "engineering_hold": 2,
+      "physical_hold": 8,
+      "decision_open": 0,
+      "checks": 21
+    }
+  },
+  "prospective_alignment_validation": {
+    "manifest_id": "ROCELL-PHASE0-RC03-INT-R1-FREEZE-010",
+    "camera_manifest_id": "ROCELL-CAMERA-BINDING-001",
+    "simulation_bundle_id": "ROCELL-SIM-BUNDLE-RC03-INT-R1-FREEZE-010-010",
+    "status": "ALIGNED_CAMERA_HOLD_CONTACT_BLOCKED",
+    "contact_enabled": false,
+    "errors": [],
+    "blockers": [
+      "FIXED_CAMERA_FALLBACK_ARCHITECTURE_NOT_RELEASED",
+      "CAMERA_ARCHITECTURE_ALIGNMENT_HOLD",
+      "MEASURED_TAG_MAP_MISSING",
+      "PHYSICAL_GATES_INCOMPLETE",
+      "PHYSICAL_RELEASE_UNRELEASED",
+      "EXACT_PHYSICAL_IDENTITIES_UNRECORDED",
+      "ARM_MOUNTED_CAMERA_RC03_ADDENDUM_MISSING",
+      "ARM_CAMERA_CARRIER_FRAME_AND_EXTRINSIC_MISSING",
+      "ARM_CAMERA_PAYLOAD_CABLE_COLLISION_ACCEPTANCE_MISSING",
+      "ARM_CAMERA_FRAME_JOINT_SYNC_AND_ZONE_VISIBILITY_MISSING",
+      "ROBOT_REACH_SCREENING_ONLY_NOT_PROVEN",
+      "ARM_FRAME_AND_REFERENCE_CONTRACT_MISSING",
+      "CAMERA_INTRINSICS_AND_INSTALLATION_MISSING",
+      "DEVICE_AND_STATION_ACCEPTANCE_MISSING",
+      "TOOL_ROUTE_ACCEPTANCE_MISSING",
+      "CONTACT_GUARD_CONTROLLED_ADDENDUM_MISSING",
+      "GRAVITY_SAFE_POWER_LOSS_CONTROLLED_ADDENDUM_MISSING",
+      "MOTION_AND_CONTACT_LIMIT_APPROVAL_MISSING",
+      "FINAL_COMMISSIONING_MISSING"
+    ]
+  }
+}

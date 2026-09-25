@@ -1,0 +1,707 @@
+{
+  "schema_version": 3,
+  "release_revision": "RC03-INT-R1",
+  "units": "mm",
+  "origin": "front-left corner of board top surface",
+  "axes": {
+    "+x": "right",
+    "+y": "rear/toward arm",
+    "+z": "up"
+  },
+  "board": {
+    "width": 610.0,
+    "depth": 457.0,
+    "thickness": 18.0,
+    "top_surface_z": 0.0,
+    "bottom_surface_z": -18.0
+  },
+  "printer": {
+    "model": "QIDI Plus4",
+    "nominal_envelope": [
+      305.0,
+      305.0,
+      280.0
+    ],
+    "protected_envelope": [
+      295.0,
+      295.0,
+      275.0
+    ]
+  },
+  "architecture": {
+    "type": "open_indexed_stations",
+    "keyboard_support": "structural_board_top_direct",
+    "keyboard_interface": "left_master_right_seam_slave",
+    "phone_tcp_interface": "board_indexed_master_with_service_rail_and_target_cartridge",
+    "direct_tags": true,
+    "board_feature_count": 13,
+    "locator_pin_count": 4,
+    "m4_retention_count": 9
+  },
+  "devices": {
+    "keyboard": {
+      "nominal_origin_xy": [
+        85.0,
+        85.0
+      ],
+      "nominal_size": [
+        315.0,
+        147.0,
+        21.0
+      ],
+      "support_plane_z": 0.0,
+      "fit_clearance_per_side": 1.0,
+      "support": "direct board contact; station solids stay outside nominal footprint"
+    },
+    "phone": {
+      "nominal_origin_xy": [
+        499.2,
+        84.2
+      ],
+      "configured_size": [
+        77.9,
+        164.4,
+        7.9
+      ],
+      "fit_envelope": [
+        79.9,
+        166.4
+      ],
+      "support_plane_z": 4.0,
+      "nominal_screen_plane_z": 11.9
+    },
+    "tcp_target": {
+      "center_xy": [
+        441.0,
+        180.0
+      ],
+      "target_plane_z": 10.5,
+      "replaceable_part": "calibration_puck"
+    }
+  },
+  "stations": {
+    "keyboard_left": {
+      "part": "keyboard_station_left",
+      "origin_xy": [
+        80.0,
+        72.0
+      ],
+      "outer_envelope": [
+        184.5,
+        192.0
+      ],
+      "installed_z": 0.0,
+      "role": "master",
+      "production_profile": "abs_rapido_tray_structural_0p4",
+      "board_locator_ids": [
+        "KBL-LOC-ROUND",
+        "KBL-LOC-RADIAL"
+      ],
+      "retention_ids": [
+        "KBL-HOLD-F",
+        "KBL-HOLD-R",
+        "KBL-CLAMP"
+      ],
+      "service_parts": [
+        "keyboard_rear_clamp"
+      ]
+    },
+    "keyboard_right": {
+      "part": "keyboard_station_right",
+      "origin_xy": [
+        242.5,
+        72.0
+      ],
+      "outer_envelope": [
+        162.5,
+        192.0
+      ],
+      "installed_z": 0.0,
+      "role": "slave",
+      "production_profile": "abs_rapido_tray_structural_0p4",
+      "board_locator_ids": [],
+      "retention_ids": [
+        "KBR-HOLD-F",
+        "KBR-HOLD-R",
+        "KBR-CLAMP"
+      ],
+      "located_by": "interfaces.keyboard_master_slave",
+      "service_parts": [
+        "keyboard_rear_clamp"
+      ]
+    },
+    "phone_tcp": {
+      "part": "phone_tcp_station",
+      "origin_xy": [
+        411.0,
+        80.0
+      ],
+      "outer_envelope": [
+        186.3,
+        172.8
+      ],
+      "installed_z": 0.0,
+      "role": "master",
+      "production_profile": "abs_rapido_cradle_0p4",
+      "board_locator_ids": [
+        "PT-LOC-ROUND",
+        "PT-LOC-RADIAL"
+      ],
+      "retention_ids": [
+        "PT-HOLD-TCP",
+        "PT-HOLD-R1",
+        "PT-HOLD-R2"
+      ],
+      "service_parts": [
+        "phone_clamp_rail",
+        "calibration_puck"
+      ]
+    }
+  },
+  "interfaces": {
+    "keyboard_master_slave": {
+      "master_station": "keyboard_left",
+      "slave_station": "keyboard_right",
+      "front_post_board_xy": [
+        253.5,
+        78.0
+      ],
+      "front_post_master_local_xy": [
+        173.5,
+        6.0
+      ],
+      "front_socket_slave_local_xy": [
+        11.0,
+        6.0
+      ],
+      "front_socket": "round",
+      "rear_post_board_xy": [
+        253.5,
+        248.0
+      ],
+      "rear_post_master_local_xy": [
+        173.5,
+        176.0
+      ],
+      "rear_socket_slave_local_xy": [
+        11.0,
+        176.0
+      ],
+      "rear_socket": "radial_slot_y",
+      "post_diameter": 8.0,
+      "round_socket_diameter": 8.3,
+      "radial_slot_length": 12.0,
+      "radial_slot_width": 8.3,
+      "post_height": 3.0
+    },
+    "board_locator": {
+      "pin": "steel dowel 6.0 x 20.0",
+      "blind_bore_depth": 15.0,
+      "projection": 5.0,
+      "radial_slot_length": 10.0,
+      "entry_leadin_diameter": 7.2,
+      "fit_release_part": "station_locator_fit_gauge",
+      "keyboard_tray_profile": {
+        "round_socket_diameter_candidate": 6.2,
+        "radial_slot_width_candidate": 6.2
+      },
+      "phone_cradle_profile": {
+        "round_socket_diameter_candidate": 6.2,
+        "radial_slot_width_candidate": 6.2
+      }
+    },
+    "m4_captive_nut": {
+      "nut_thickness_candidate": 3.2,
+      "fit_release_part": "m4_captive_nut_fit_gauge",
+      "phone_cradle_profile_ac_candidate": 7.2,
+      "production_consumer": "phone_clamp_rail"
+    },
+    "m3_insert_pockets": {
+      "phone_station": {
+        "parameter": "phone_station_m3_insert_pocket_d",
+        "diameter_candidate": 4.6,
+        "fit_release_part": "phone_m3_insert_fit_gauge",
+        "production_consumer": "phone_tcp_station",
+        "production_profile": "abs_rapido_cradle_0p4",
+        "pocket_depth_mm": 6.2,
+        "residual_floor_mm": 0.3
+      },
+      "compliant_tool": {
+        "parameter": "compliant_tool_m3_insert_pocket_d",
+        "diameter_candidate": 4.6,
+        "fit_release_part": "tool_m3_insert_fit_gauge",
+        "production_consumer": "compliant_tool_body",
+        "production_profile": "abs_rapido_precision_0p4",
+        "pocket_depth_mm": 6.2,
+        "edge_ligament_mm": 5.0
+      }
+    }
+  },
+  "profile_selected_dimensions": {
+    "abs_rapido_tray_structural_0p4": {
+      "keyboard_locator_socket_d": 6.2,
+      "keyboard_locator_slot_w": 6.2,
+      "seam_post_d": 8.0,
+      "seam_round_socket_d": 8.3,
+      "seam_radial_slot_w": 8.3,
+      "seam_slot_length": 12.0
+    },
+    "abs_rapido_cradle_0p4": {
+      "phone_locator_socket_d": 6.2,
+      "phone_locator_slot_w": 6.2,
+      "phone_m4_nut_ac": 7.2,
+      "m4_nut_thickness": 3.2,
+      "phone_station_m3_insert_pocket_d": 4.6
+    },
+    "abs_rapido_precision_0p4": {
+      "compliant_tool_m3_insert_pocket_d": 4.6
+    }
+  },
+  "direct_tags": {
+    "mount": "direct_adhesive",
+    "tile_size_mm": 55.0,
+    "detection_edge_mm": 40.0,
+    "nominal_plane_z_mm": null,
+    "plane_z_status": "MEASURE_AFTER_ADHESIVE_AND_MATTE_LAMINATE",
+    "application_tool": "tag_application_frame_55mm",
+    "tags": {
+      "T0": {
+        "id": 0,
+        "tile_origin_xy": [
+          19.5,
+          12.5
+        ],
+        "detection_center_xy": [
+          47.0,
+          40.0
+        ],
+        "expected_yaw_deg_in_board_frame": 0.0,
+        "marked_top_edge_faces": "+Y / board rear"
+      },
+      "T1": {
+        "id": 1,
+        "tile_origin_xy": [
+          412.5,
+          12.5
+        ],
+        "detection_center_xy": [
+          440.0,
+          40.0
+        ],
+        "expected_yaw_deg_in_board_frame": 0.0,
+        "marked_top_edge_faces": "+Y / board rear"
+      },
+      "T2": {
+        "id": 2,
+        "tile_origin_xy": [
+          19.5,
+          382.5
+        ],
+        "detection_center_xy": [
+          47.0,
+          410.0
+        ],
+        "expected_yaw_deg_in_board_frame": 0.0,
+        "marked_top_edge_faces": "+Y / board rear"
+      },
+      "T3": {
+        "id": 3,
+        "tile_origin_xy": [
+          535.5,
+          382.5
+        ],
+        "detection_center_xy": [
+          563.0,
+          410.0
+        ],
+        "expected_yaw_deg_in_board_frame": 0.0,
+        "marked_top_edge_faces": "+Y / board rear"
+      },
+      "K0": {
+        "id": 4,
+        "tile_origin_xy": [
+          296.5,
+          281.5
+        ],
+        "detection_center_xy": [
+          324.0,
+          309.0
+        ],
+        "expected_yaw_deg_in_board_frame": 0.0,
+        "marked_top_edge_faces": "+Y / board rear"
+      },
+      "P0": {
+        "id": 5,
+        "tile_origin_xy": [
+          431.5,
+          281.5
+        ],
+        "detection_center_xy": [
+          459.0,
+          309.0
+        ],
+        "expected_yaw_deg_in_board_frame": 0.0,
+        "marked_top_edge_faces": "+Y / board rear"
+      }
+    }
+  },
+  "arm_clamp_zone": {
+    "rear_edge_x_range": [
+      225,
+      385
+    ],
+    "note": "No fixed holes; use factory table-edge clamp."
+  },
+  "board_features": [
+    {
+      "id": "KBL-LOC-ROUND",
+      "type": "locator_pin_blind",
+      "station": "keyboard_left",
+      "board_xy": [
+        102.0,
+        78.0
+      ],
+      "local_xy": [
+        22.0,
+        6.0
+      ],
+      "x": 102.0,
+      "y": 78.0,
+      "diameter": 6.0,
+      "depth": 15.0,
+      "protrusion": 5.0,
+      "interface": "round",
+      "slot_axis": null,
+      "instruction": "6 mm blind bore, 15 mm deep; epoxy 6x20 dowel with 5 mm projection"
+    },
+    {
+      "id": "KBL-LOC-RADIAL",
+      "type": "locator_pin_blind",
+      "station": "keyboard_left",
+      "board_xy": [
+        220.5,
+        78.0
+      ],
+      "local_xy": [
+        140.5,
+        6.0
+      ],
+      "x": 220.5,
+      "y": 78.0,
+      "diameter": 6.0,
+      "depth": 15.0,
+      "protrusion": 5.0,
+      "interface": "radial_slot",
+      "slot_axis": "x",
+      "instruction": "6 mm blind bore, 15 mm deep; station socket relieves X axis"
+    },
+    {
+      "id": "KBL-HOLD-F",
+      "type": "m4_retention_through",
+      "station": "keyboard_left",
+      "board_xy": [
+        165.0,
+        78.0
+      ],
+      "local_xy": [
+        85.0,
+        6.0
+      ],
+      "x": 165.0,
+      "y": 78.0,
+      "diameter": 4.6,
+      "station_clearance_d": 4.6,
+      "instruction": "M4 through retention; washer/hand knob above, threaded anchor below"
+    },
+    {
+      "id": "KBL-HOLD-R",
+      "type": "m4_retention_through",
+      "station": "keyboard_left",
+      "board_xy": [
+        102.0,
+        246.0
+      ],
+      "local_xy": [
+        22.0,
+        174.0
+      ],
+      "x": 102.0,
+      "y": 246.0,
+      "diameter": 4.6,
+      "station_clearance_d": 4.6,
+      "instruction": "M4 through retention; washer/hand knob above, threaded anchor below"
+    },
+    {
+      "id": "KBL-CLAMP",
+      "type": "m4_retention_through",
+      "station": "keyboard_left",
+      "board_xy": [
+        165.0,
+        254.5
+      ],
+      "local_xy": [
+        85.0,
+        182.5
+      ],
+      "x": 165.0,
+      "y": 254.5,
+      "diameter": 4.6,
+      "station_clearance_d": 4.6,
+      "instruction": "Shared station retention and adjustable rear-clamp hand knob"
+    },
+    {
+      "id": "KBR-HOLD-F",
+      "type": "m4_retention_through",
+      "station": "keyboard_right",
+      "board_xy": [
+        323.75,
+        78.0
+      ],
+      "local_xy": [
+        81.25,
+        6.0
+      ],
+      "x": 323.75,
+      "y": 78.0,
+      "diameter": 4.6,
+      "station_clearance_d": 5.6,
+      "interface": "relieved_clamp_only",
+      "instruction": "M4 through retention; 5.6 mm station relief, seam owns XY/yaw"
+    },
+    {
+      "id": "KBR-HOLD-R",
+      "type": "m4_retention_through",
+      "station": "keyboard_right",
+      "board_xy": [
+        383.0,
+        246.0
+      ],
+      "local_xy": [
+        140.5,
+        174.0
+      ],
+      "x": 383.0,
+      "y": 246.0,
+      "diameter": 4.6,
+      "station_clearance_d": 5.6,
+      "interface": "relieved_clamp_only",
+      "instruction": "M4 through retention; 5.6 mm station relief, seam owns XY/yaw"
+    },
+    {
+      "id": "KBR-CLAMP",
+      "type": "m4_retention_through",
+      "station": "keyboard_right",
+      "board_xy": [
+        320.0,
+        254.5
+      ],
+      "local_xy": [
+        77.5,
+        182.5
+      ],
+      "x": 320.0,
+      "y": 254.5,
+      "diameter": 4.6,
+      "station_clearance_d": 5.6,
+      "interface": "relieved_clamp_only",
+      "instruction": "Shared slave-station retention and adjustable rear-clamp hand knob"
+    },
+    {
+      "id": "PT-LOC-ROUND",
+      "type": "locator_pin_blind",
+      "station": "phone_tcp",
+      "board_xy": [
+        487.5,
+        115.0
+      ],
+      "local_xy": [
+        76.5,
+        35.0
+      ],
+      "x": 487.5,
+      "y": 115.0,
+      "diameter": 6.0,
+      "depth": 15.0,
+      "protrusion": 5.0,
+      "interface": "round",
+      "slot_axis": null,
+      "instruction": "6 mm blind bore, 15 mm deep; epoxy 6x20 dowel with 5 mm projection"
+    },
+    {
+      "id": "PT-LOC-RADIAL",
+      "type": "locator_pin_blind",
+      "station": "phone_tcp",
+      "board_xy": [
+        487.5,
+        217.8
+      ],
+      "local_xy": [
+        76.5,
+        137.8
+      ],
+      "x": 487.5,
+      "y": 217.8,
+      "diameter": 6.0,
+      "depth": 15.0,
+      "protrusion": 5.0,
+      "interface": "radial_slot",
+      "slot_axis": "y",
+      "instruction": "6 mm blind bore, 15 mm deep; station socket relieves Y axis"
+    },
+    {
+      "id": "PT-HOLD-TCP",
+      "type": "m4_retention_through",
+      "station": "phone_tcp",
+      "board_xy": [
+        423.0,
+        160.0
+      ],
+      "local_xy": [
+        12.0,
+        80.0
+      ],
+      "x": 423.0,
+      "y": 160.0,
+      "diameter": 4.6,
+      "station_clearance_d": 4.6,
+      "instruction": "M4 through retention at TCP island"
+    },
+    {
+      "id": "PT-HOLD-R1",
+      "type": "m4_retention_through",
+      "station": "phone_tcp",
+      "board_xy": [
+        588.8,
+        149.12
+      ],
+      "local_xy": [
+        177.8,
+        69.12
+      ],
+      "x": 588.8,
+      "y": 149.12,
+      "diameter": 4.6,
+      "station_clearance_d": 4.6,
+      "instruction": "M4 through retention clamps service rail and station to board"
+    },
+    {
+      "id": "PT-HOLD-R2",
+      "type": "m4_retention_through",
+      "station": "phone_tcp",
+      "board_xy": [
+        588.8,
+        192.32
+      ],
+      "local_xy": [
+        177.8,
+        112.32
+      ],
+      "x": 588.8,
+      "y": 192.32,
+      "diameter": 4.6,
+      "station_clearance_d": 4.6,
+      "instruction": "M4 through retention clamps service rail and station to board"
+    }
+  ],
+  "pilot_holes": [
+    {
+      "id": "KBL-LOC-ROUND",
+      "x": 102.0,
+      "y": 78.0,
+      "diameter": 6.0,
+      "type": "locator_pin_blind"
+    },
+    {
+      "id": "KBL-LOC-RADIAL",
+      "x": 220.5,
+      "y": 78.0,
+      "diameter": 6.0,
+      "type": "locator_pin_blind"
+    },
+    {
+      "id": "KBL-HOLD-F",
+      "x": 165.0,
+      "y": 78.0,
+      "diameter": 4.6,
+      "type": "m4_retention_through"
+    },
+    {
+      "id": "KBL-HOLD-R",
+      "x": 102.0,
+      "y": 246.0,
+      "diameter": 4.6,
+      "type": "m4_retention_through"
+    },
+    {
+      "id": "KBL-CLAMP",
+      "x": 165.0,
+      "y": 254.5,
+      "diameter": 4.6,
+      "type": "m4_retention_through"
+    },
+    {
+      "id": "KBR-HOLD-F",
+      "x": 323.75,
+      "y": 78.0,
+      "diameter": 4.6,
+      "type": "m4_retention_through"
+    },
+    {
+      "id": "KBR-HOLD-R",
+      "x": 383.0,
+      "y": 246.0,
+      "diameter": 4.6,
+      "type": "m4_retention_through"
+    },
+    {
+      "id": "KBR-CLAMP",
+      "x": 320.0,
+      "y": 254.5,
+      "diameter": 4.6,
+      "type": "m4_retention_through"
+    },
+    {
+      "id": "PT-LOC-ROUND",
+      "x": 487.5,
+      "y": 115.0,
+      "diameter": 6.0,
+      "type": "locator_pin_blind"
+    },
+    {
+      "id": "PT-LOC-RADIAL",
+      "x": 487.5,
+      "y": 217.8,
+      "diameter": 6.0,
+      "type": "locator_pin_blind"
+    },
+    {
+      "id": "PT-HOLD-TCP",
+      "x": 423.0,
+      "y": 160.0,
+      "diameter": 4.6,
+      "type": "m4_retention_through"
+    },
+    {
+      "id": "PT-HOLD-R1",
+      "x": 588.8,
+      "y": 149.12,
+      "diameter": 4.6,
+      "type": "m4_retention_through"
+    },
+    {
+      "id": "PT-HOLD-R2",
+      "x": 588.8,
+      "y": 192.32,
+      "diameter": 4.6,
+      "type": "m4_retention_through"
+    }
+  ],
+  "physical_measurements_required": [
+    "actual 18 mm board thickness, flatness, and blind-drill depth margin",
+    "actual 6 mm dowel diameter and selected printed socket candidate",
+    "keyboard underside foot/boss map and direct-board rocking check",
+    "phone/case width, length, thickness, camera bump, buttons, USB and cable bend radius",
+    "M4 nut across-flats/thickness and selected captive pocket candidate",
+    "direct tag adhesive plus matte laminate stack thickness and glare"
+  ]
+}

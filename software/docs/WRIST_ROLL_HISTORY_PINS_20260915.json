@@ -1,0 +1,101 @@
+{
+  "schema": "rocell.roll_history_pins.v1",
+  "scope": "All 19 retained roll campaign exports found at the offline inventory checkpoint; missing or changed originals fail replay.",
+  "campaigns": [
+    {
+      "campaign_id": "campaign-43a7e9a656904344bfa8e5922b4e8045",
+      "report_sha256": "07575808693c889b9fb8932f8426ed1f46da5e51458d8f1cc8db46073bb0728a",
+      "issued_ns": 60019093000000
+    },
+    {
+      "campaign_id": "campaign-a03bb73fa3ac40589769699ff6ae6907",
+      "report_sha256": "f656340e95049f6e9f12f6b3547bcf66fda06c492c0b7d3a90f5f4a354a050df",
+      "issued_ns": 60550625000000
+    },
+    {
+      "campaign_id": "campaign-24dd1038334743dfb570705d0707069d",
+      "report_sha256": "d86062f2b0e8b07fb9b2efabef9bdfddd5e0a2e0ff9b29d331f331e393ff6e25",
+      "issued_ns": 63204093000000
+    },
+    {
+      "campaign_id": "campaign-ebf4113d3221479ab8db7c1a4e290414",
+      "report_sha256": "a1baa51afe16ff961324aab0f644610bc71d6adbb4d644bbd7f4ae2b8440cadc",
+      "issued_ns": 63277281000000
+    },
+    {
+      "campaign_id": "campaign-d1cc3f8a7eb24cb1ac779e74f494e6ce",
+      "report_sha256": "75e5008bd3a597de2a25d4dffcf09f8fcaaae75f904f83b053493d8cda4f830f",
+      "issued_ns": 63318250000000
+    },
+    {
+      "campaign_id": "campaign-3f8bd7e08cbe4d54ab8a7291c536431f",
+      "report_sha256": "71ea2ce907cdafb3e060e100987a7dfa72ea653625789478507cbc02b742da3a",
+      "issued_ns": 63359203000000
+    },
+    {
+      "campaign_id": "campaign-7f6aa44cee654b4c88dc7b77ca129564",
+      "report_sha256": "05c456aa946170a3a6f3d9ccb9f6ed5a06da315d45e3167dce68eb10c22a3c61",
+      "issued_ns": 64015312000000
+    },
+    {
+      "campaign_id": "campaign-86a06585eeb04c529b108bdd89562714",
+      "report_sha256": "d652074e4b3db6546c72aaca627a34287c985482c611a026000c8b510240b34c",
+      "issued_ns": 67099953000000
+    },
+    {
+      "campaign_id": "campaign-2f1f627662f740948dca6f70b3145105",
+      "report_sha256": "f601f654983cc11fc8c85b6447b3564a8b81332399668bdd01a9f2cb412a91ec",
+      "issued_ns": 67487093000000
+    },
+    {
+      "campaign_id": "campaign-8e69010a84ae4ad2b8775c6cf1fd9df9",
+      "report_sha256": "0c6a85363feff26896b40f96dc9f2a9302d78ebccd3837eb1e877c0254923402",
+      "issued_ns": 67737421000000
+    },
+    {
+      "campaign_id": "campaign-ddd0578c2a554851bca029b2f496a2f7",
+      "report_sha256": "06afb04e693e352d320dd57177bbe3555d5c31f7cc8633ab33cf3bea70d0f3dd",
+      "issued_ns": 68224703000000
+    },
+    {
+      "campaign_id": "campaign-83563fca6ffc425ab12d94061c3c7bb0",
+      "report_sha256": "dd29aad9a417490e5c277246e3824b0bdaa1ec8443d9b0b6f0bc3a08d202585f",
+      "issued_ns": 71022578000000
+    },
+    {
+      "campaign_id": "campaign-e621169d1a9147158c32c043e17022f8",
+      "report_sha256": "262df257dd73f9e0f79d3fb825d6a885fea3053ae2d6fd89a21220cdc3b28017",
+      "issued_ns": 71308296000000
+    },
+    {
+      "campaign_id": "campaign-562c2a5eb4c043899a583ec0c4da329e",
+      "report_sha256": "532bbf41a2f41f11bb9dc9176fe34068668031c85243129b5c51bf0898d8dfe5",
+      "issued_ns": 71512765000000
+    },
+    {
+      "campaign_id": "campaign-20bc8b3f7d764bc599e8fc0ac6d03f97",
+      "report_sha256": "3bee0038fe2b0710dc1034dd84f08d95db3f760b52e46f36e52804f67ed36e49",
+      "issued_ns": 71616578000000
+    },
+    {
+      "campaign_id": "campaign-8162e80bb7d446f1b7a994d4e1ce65c3",
+      "report_sha256": "53a8b1ccde41dae37ef556879d40c43b46f8f6ac1382f3313ee8e4935423e2f0",
+      "issued_ns": 72006734000000
+    },
+    {
+      "campaign_id": "campaign-aba218bc89224e91a0c3a830d56d0f39",
+      "report_sha256": "b7944c052b571dc65cc84544ead6d83b3afdb7fb50c885aa7949a1a286480a8e",
+      "issued_ns": 72222250000000
+    },
+    {
+      "campaign_id": "campaign-ace739d6a5d3488e950f0c01ba28e354",
+      "report_sha256": "99656b9153743d82ad154809d12f2e42962fa701b167d4ce626a488847f9d186",
+      "issued_ns": 72661671000000
+    },
+    {
+      "campaign_id": "campaign-503fa3f0796a441d9866bfa614ea9a59",
+      "report_sha256": "596f7a796a9685f09a65750e19ff3564ca6ad235bb4cdc5621ba36bc4d7a812a",
+      "issued_ns": 72788625000000
+    }
+  ]
+}

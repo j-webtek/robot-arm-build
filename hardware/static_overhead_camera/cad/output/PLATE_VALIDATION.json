@@ -1,0 +1,1604 @@
+{
+  "status": "PASS",
+  "format": "3MF geometry only; no material or process metadata embedded",
+  "protected_envelope_mm": [
+    295.0,
+    295.0,
+    275.0
+  ],
+  "outer_margin_mm": 10.0,
+  "inter_object_gap_mm": 20.0,
+  "subplate_count": 21,
+  "object_count": 56,
+  "subplates": [
+    {
+      "subplate_id": "00G-S1",
+      "filename": "00G-S1_ABS_board_splice_fit_tests.3mf",
+      "profile_key": "abs_structural",
+      "object_count": 4,
+      "resource_object_count": 4,
+      "build_item_count": 4,
+      "roundtrip_geometry_count": 4,
+      "extent_x_mm": 210.0,
+      "extent_y_mm": 140.8,
+      "extent_z_mm": 74.0,
+      "fits_protected_295x295x275": true,
+      "sha256": "6100bdd78e7574755b1fd4c0c8d6327f0a6e6ff96f9c918f43141cc7a4c0a421",
+      "validation": "PASS",
+      "objects": [
+        {
+          "object": "u_truss_splice__01",
+          "part": "u_truss_splice",
+          "rotation_z_deg": 0.0,
+          "translation_mm": [
+            10.0,
+            10.0,
+            -0.0
+          ],
+          "bounds_mm": [
+            [
+              10.0,
+              10.0,
+              0.0
+            ],
+            [
+              114.0,
+              85.8,
+              74.0
+            ]
+          ]
+        },
+        {
+          "object": "u_splice_fit_coupon__01",
+          "part": "u_splice_fit_coupon",
+          "rotation_z_deg": 0.0,
+          "translation_mm": [
+            134.0,
+            10.0,
+            -0.0
+          ],
+          "bounds_mm": [
+            [
+              134.0,
+              10.0,
+              0.0
+            ],
+            [
+              220.0,
+              60.0,
+              64.0
+            ]
+          ]
+        },
+        {
+          "object": "board_saddle_fit_coupon__01",
+          "part": "board_saddle_fit_coupon",
+          "rotation_z_deg": 0.0,
+          "translation_mm": [
+            10.0,
+            105.8,
+            -0.0
+          ],
+          "bounds_mm": [
+            [
+              10.0,
+              105.8,
+              0.0
+            ],
+            [
+              114.0,
+              150.8,
+              19.5
+            ]
+          ]
+        },
+        {
+          "object": "m6_nut_retainer__01",
+          "part": "m6_nut_retainer",
+          "rotation_z_deg": 90.0,
+          "translation_mm": [
+            159.8,
+            112.4,
+            -2.0
+          ],
+          "bounds_mm": [
+            [
+              134.0,
+              105.8,
+              0.0
+            ],
+            [
+              159.8,
+              119.0,
+              6.0
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "subplate_id": "00G-C1",
+      "filename": "00G-C1_ABS_received_camera_fit_tests.3mf",
+      "profile_key": "abs_holder_precision",
+      "object_count": 2,
+      "resource_object_count": 2,
+      "build_item_count": 2,
+      "roundtrip_geometry_count": 2,
+      "extent_x_mm": 268.0,
+      "extent_y_mm": 86.0,
+      "extent_z_mm": 8.8,
+      "fits_protected_295x295x275": true,
+      "sha256": "c56f828d3babeb368e9ed10d927c1f957c664a9eae745dd8924afbd055456ded",
+      "validation": "PASS",
+      "objects": [
+        {
+          "object": "camera_case_fit_gauge__01",
+          "part": "camera_case_fit_gauge",
+          "rotation_z_deg": 0.0,
+          "translation_mm": [
+            10.0,
+            10.0,
+            -0.0
+          ],
+          "bounds_mm": [
+            [
+              10.0,
+              10.0,
+              0.0
+            ],
+            [
+              196.0,
+              96.0,
+              8.8
+            ]
+          ]
+        },
+        {
+          "object": "camera_case_shim_ladder__01",
+          "part": "camera_case_shim_ladder",
+          "rotation_z_deg": 90.0,
+          "translation_mm": [
+            278.0,
+            10.5908,
+            -0.0
+          ],
+          "bounds_mm": [
+            [
+              216.0,
+              10.0,
+              0.0
+            ],
+            [
+              278.0,
+              65.5908,
+              2.0
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "subplate_id": "00G-P1",
+      "filename": "00G-P1_TPU_camera_portal_pads.3mf",
+      "profile_key": "tpu_pads",
+      "object_count": 5,
+      "resource_object_count": 5,
+      "build_item_count": 5,
+      "roundtrip_geometry_count": 5,
+      "extent_x_mm": 270.0,
+      "extent_y_mm": 38.0,
+      "extent_z_mm": 9.2,
+      "fits_protected_295x295x275": true,
+      "sha256": "2dd31d5b10b814dc7a6280c10e10443189984572e606ba84d0aeecb448ce2957",
+      "validation": "PASS",
+      "objects": [
+        {
+          "object": "camera_top_compression_pad__01",
+          "part": "camera_top_compression_pad",
+          "rotation_z_deg": 0.0,
+          "translation_mm": [
+            10.0,
+            10.0,
+            -0.0
+          ],
+          "bounds_mm": [
+            [
+              10.0,
+              10.0,
+              0.0
+            ],
+            [
+              48.0,
+              48.0,
+              9.2
+            ]
+          ]
+        },
+        {
+          "object": "board_pressure_pad__01",
+          "part": "board_pressure_pad",
+          "rotation_z_deg": 0.0,
+          "translation_mm": [
+            68.0,
+            10.0,
+            -0.0
+          ],
+          "bounds_mm": [
+            [
+              68.0,
+              10.0,
+              0.0
+            ],
+            [
+              106.0,
+              19.0,
+              3.15
+            ]
+          ]
+        },
+        {
+          "object": "board_pressure_pad__02",
+          "part": "board_pressure_pad",
+          "rotation_z_deg": 0.0,
+          "translation_mm": [
+            126.0,
+            10.0,
+            -0.0
+          ],
+          "bounds_mm": [
+            [
+              126.0,
+              10.0,
+              0.0
+            ],
+            [
+              164.0,
+              19.0,
+              3.15
+            ]
+          ]
+        },
+        {
+          "object": "board_pressure_pad__03",
+          "part": "board_pressure_pad",
+          "rotation_z_deg": 0.0,
+          "translation_mm": [
+            184.0,
+            10.0,
+            -0.0
+          ],
+          "bounds_mm": [
+            [
+              184.0,
+              10.0,
+              0.0
+            ],
+            [
+              222.0,
+              19.0,
+              3.15
+            ]
+          ]
+        },
+        {
+          "object": "board_pressure_pad__04",
+          "part": "board_pressure_pad",
+          "rotation_z_deg": 0.0,
+          "translation_mm": [
+            242.0,
+            10.0,
+            -0.0
+          ],
+          "bounds_mm": [
+            [
+              242.0,
+              10.0,
+              0.0
+            ],
+            [
+              280.0,
+              19.0,
+              3.15
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "subplate_id": "08A-S1",
+      "filename": "08A-S1_ABS_left_bench_saddle.3mf",
+      "profile_key": "abs_structural",
+      "object_count": 1,
+      "resource_object_count": 1,
+      "build_item_count": 1,
+      "roundtrip_geometry_count": 1,
+      "extent_x_mm": 250.0,
+      "extent_y_mm": 190.0,
+      "extent_z_mm": 104.0,
+      "fits_protected_295x295x275": true,
+      "sha256": "abaef2a07bd4e60e16e037f1282bb0ee47a4eafa18886594bb0a1313feb63ee6",
+      "validation": "PASS",
+      "objects": [
+        {
+          "object": "board_corner_saddle_left__01",
+          "part": "board_corner_saddle_left",
+          "rotation_z_deg": 90.0,
+          "translation_mm": [
+            170.0,
+            10.0,
+            -0.0
+          ],
+          "bounds_mm": [
+            [
+              10.0,
+              10.0,
+              0.0
+            ],
+            [
+              260.0,
+              200.0,
+              104.0
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "subplate_id": "08A-S2",
+      "filename": "08A-S2_ABS_left_cap_and_splices.3mf",
+      "profile_key": "abs_structural",
+      "object_count": 5,
+      "resource_object_count": 5,
+      "build_item_count": 5,
+      "roundtrip_geometry_count": 5,
+      "extent_x_mm": 209.0,
+      "extent_y_mm": 180.8,
+      "extent_z_mm": 74.0,
+      "fits_protected_295x295x275": true,
+      "sha256": "4ee50a9be7fd929f1d6d16ad4b58c4dd5a0f686733300129ce00d0e23f6e8fb2",
+      "validation": "PASS",
+      "objects": [
+        {
+          "object": "board_corner_cap_left__01",
+          "part": "board_corner_cap_left",
+          "rotation_z_deg": 0.0,
+          "translation_mm": [
+            10.0,
+            10.0,
+            -0.0
+          ],
+          "bounds_mm": [
+            [
+              10.0,
+              10.0,
+              0.0
+            ],
+            [
+              95.0,
+              95.0,
+              9.8
+            ]
+          ]
+        },
+        {
+          "object": "u_truss_splice__01",
+          "part": "u_truss_splice",
+          "rotation_z_deg": 0.0,
+          "translation_mm": [
+            115.0,
+            10.0,
+            -0.0
+          ],
+          "bounds_mm": [
+            [
+              115.0,
+              10.0,
+              0.0
+            ],
+            [
+              219.0,
+              85.8,
+              74.0
+            ]
+          ]
+        },
+        {
+          "object": "u_truss_splice__02",
+          "part": "u_truss_splice",
+          "rotation_z_deg": 0.0,
+          "translation_mm": [
+            10.0,
+            115.0,
+            -0.0
+          ],
+          "bounds_mm": [
+            [
+              10.0,
+              115.0,
+              0.0
+            ],
+            [
+              114.0,
+              190.8,
+              74.0
+            ]
+          ]
+        },
+        {
+          "object": "m6_nut_retainer__01",
+          "part": "m6_nut_retainer",
+          "rotation_z_deg": 90.0,
+          "translation_mm": [
+            159.8,
+            121.6,
+            -2.0
+          ],
+          "bounds_mm": [
+            [
+              134.0,
+              115.0,
+              0.0
+            ],
+            [
+              159.8,
+              128.2,
+              6.0
+            ]
+          ]
+        },
+        {
+          "object": "m6_nut_retainer__02",
+          "part": "m6_nut_retainer",
+          "rotation_z_deg": 90.0,
+          "translation_mm": [
+            205.6,
+            121.6,
+            -2.0
+          ],
+          "bounds_mm": [
+            [
+              179.8,
+              115.0,
+              0.0
+            ],
+            [
+              205.6,
+              128.2,
+              6.0
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "subplate_id": "08A-J1",
+      "filename": "08A-J1_ABS_left_portal_corner_pair.3mf",
+      "profile_key": "abs_structural",
+      "object_count": 2,
+      "resource_object_count": 2,
+      "build_item_count": 2,
+      "roundtrip_geometry_count": 2,
+      "extent_x_mm": 268.0,
+      "extent_y_mm": 110.0,
+      "extent_z_mm": 8.8,
+      "fits_protected_295x295x275": true,
+      "sha256": "52c12cd08deed89a396d2f6117d2f4c5375fd44678e944c3667674942a815b63",
+      "validation": "PASS",
+      "objects": [
+        {
+          "object": "portal_corner_node_left__01",
+          "part": "portal_corner_node_left",
+          "rotation_z_deg": 90.0,
+          "translation_mm": [
+            120.0,
+            10.0,
+            -0.0
+          ],
+          "bounds_mm": [
+            [
+              10.0,
+              10.0,
+              0.0
+            ],
+            [
+              134.0,
+              120.0,
+              8.8
+            ]
+          ]
+        },
+        {
+          "object": "portal_corner_node_left__02",
+          "part": "portal_corner_node_left",
+          "rotation_z_deg": 90.0,
+          "translation_mm": [
+            264.0,
+            10.0,
+            -0.0
+          ],
+          "bounds_mm": [
+            [
+              154.0,
+              10.0,
+              0.0
+            ],
+            [
+              278.0,
+              120.0,
+              8.8
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "subplate_id": "08A-T1",
+      "filename": "08A-T1_ABS_left_uprights_1_2.3mf",
+      "profile_key": "abs_structural",
+      "object_count": 2,
+      "resource_object_count": 2,
+      "build_item_count": 2,
+      "roundtrip_geometry_count": 2,
+      "extent_x_mm": 240.0,
+      "extent_y_mm": 120.0,
+      "extent_z_mm": 64.0,
+      "fits_protected_295x295x275": true,
+      "sha256": "eeaab711a08ebbd438e649ebdad7b425a001fa6f7fa6f744434eb828d4aae706",
+      "validation": "PASS",
+      "objects": [
+        {
+          "object": "upright_truss_segment_240__01",
+          "part": "upright_truss_segment_240",
+          "rotation_z_deg": 0.0,
+          "translation_mm": [
+            10.0,
+            10.0,
+            -0.0
+          ],
+          "bounds_mm": [
+            [
+              10.0,
+              10.0,
+              0.0
+            ],
+            [
+              250.0,
+              60.0,
+              64.0
+            ]
+          ]
+        },
+        {
+          "object": "upright_truss_segment_240__02",
+          "part": "upright_truss_segment_240",
+          "rotation_z_deg": 0.0,
+          "translation_mm": [
+            10.0,
+            80.0,
+            -0.0
+          ],
+          "bounds_mm": [
+            [
+              10.0,
+              80.0,
+              0.0
+            ],
+            [
+              250.0,
+              130.0,
+              64.0
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "subplate_id": "08A-T2",
+      "filename": "08A-T2_ABS_left_uprights_3_4.3mf",
+      "profile_key": "abs_structural",
+      "object_count": 2,
+      "resource_object_count": 2,
+      "build_item_count": 2,
+      "roundtrip_geometry_count": 2,
+      "extent_x_mm": 240.0,
+      "extent_y_mm": 120.0,
+      "extent_z_mm": 64.0,
+      "fits_protected_295x295x275": true,
+      "sha256": "60b002ad6989c338777478ce5b5af0c1a77c62f8e6b853b0e35142c7e60d9e5b",
+      "validation": "PASS",
+      "objects": [
+        {
+          "object": "upright_truss_segment_240__01",
+          "part": "upright_truss_segment_240",
+          "rotation_z_deg": 0.0,
+          "translation_mm": [
+            10.0,
+            10.0,
+            -0.0
+          ],
+          "bounds_mm": [
+            [
+              10.0,
+              10.0,
+              0.0
+            ],
+            [
+              250.0,
+              60.0,
+              64.0
+            ]
+          ]
+        },
+        {
+          "object": "upright_truss_segment_240__02",
+          "part": "upright_truss_segment_240",
+          "rotation_z_deg": 0.0,
+          "translation_mm": [
+            10.0,
+            80.0,
+            -0.0
+          ],
+          "bounds_mm": [
+            [
+              10.0,
+              80.0,
+              0.0
+            ],
+            [
+              250.0,
+              130.0,
+              64.0
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "subplate_id": "08B-S1",
+      "filename": "08B-S1_ABS_right_bench_saddle.3mf",
+      "profile_key": "abs_structural",
+      "object_count": 1,
+      "resource_object_count": 1,
+      "build_item_count": 1,
+      "roundtrip_geometry_count": 1,
+      "extent_x_mm": 250.0,
+      "extent_y_mm": 190.0,
+      "extent_z_mm": 104.0,
+      "fits_protected_295x295x275": true,
+      "sha256": "ead6d13c8aeabf0afd8cf903e4997c2734bfb28fa24d29c8ae61d71848d7a6a5",
+      "validation": "PASS",
+      "objects": [
+        {
+          "object": "board_corner_saddle_right__01",
+          "part": "board_corner_saddle_right",
+          "rotation_z_deg": 90.0,
+          "translation_mm": [
+            170.0,
+            10.0,
+            -0.0
+          ],
+          "bounds_mm": [
+            [
+              10.0,
+              10.0,
+              0.0
+            ],
+            [
+              260.0,
+              200.0,
+              104.0
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "subplate_id": "08B-S2",
+      "filename": "08B-S2_ABS_right_cap_and_splices.3mf",
+      "profile_key": "abs_structural",
+      "object_count": 6,
+      "resource_object_count": 6,
+      "build_item_count": 6,
+      "roundtrip_geometry_count": 6,
+      "extent_x_mm": 273.8,
+      "extent_y_mm": 214.0,
+      "extent_z_mm": 74.0,
+      "fits_protected_295x295x275": true,
+      "sha256": "a573a7360479c3e76fd40ab020dacbfe8b13106cb58045b2faca64c192b47b78",
+      "validation": "PASS",
+      "objects": [
+        {
+          "object": "board_corner_cap_right__01",
+          "part": "board_corner_cap_right",
+          "rotation_z_deg": 0.0,
+          "translation_mm": [
+            10.0,
+            10.0,
+            -0.0
+          ],
+          "bounds_mm": [
+            [
+              10.0,
+              10.0,
+              0.0
+            ],
+            [
+              95.0,
+              95.0,
+              9.8
+            ]
+          ]
+        },
+        {
+          "object": "u_truss_splice__01",
+          "part": "u_truss_splice",
+          "rotation_z_deg": 0.0,
+          "translation_mm": [
+            115.0,
+            10.0,
+            -0.0
+          ],
+          "bounds_mm": [
+            [
+              115.0,
+              10.0,
+              0.0
+            ],
+            [
+              219.0,
+              85.8,
+              74.0
+            ]
+          ]
+        },
+        {
+          "object": "u_truss_splice__02",
+          "part": "u_truss_splice",
+          "rotation_z_deg": 0.0,
+          "translation_mm": [
+            10.0,
+            115.0,
+            -0.0
+          ],
+          "bounds_mm": [
+            [
+              10.0,
+              115.0,
+              0.0
+            ],
+            [
+              114.0,
+              190.8,
+              74.0
+            ]
+          ]
+        },
+        {
+          "object": "u_truss_splice__03",
+          "part": "u_truss_splice",
+          "rotation_z_deg": 0.0,
+          "translation_mm": [
+            134.0,
+            115.0,
+            -0.0
+          ],
+          "bounds_mm": [
+            [
+              134.0,
+              115.0,
+              0.0
+            ],
+            [
+              238.0,
+              190.8,
+              74.0
+            ]
+          ]
+        },
+        {
+          "object": "m6_nut_retainer__01",
+          "part": "m6_nut_retainer",
+          "rotation_z_deg": 90.0,
+          "translation_mm": [
+            283.8,
+            121.6,
+            -2.0
+          ],
+          "bounds_mm": [
+            [
+              258.0,
+              115.0,
+              0.0
+            ],
+            [
+              283.8,
+              128.2,
+              6.0
+            ]
+          ]
+        },
+        {
+          "object": "m6_nut_retainer__02",
+          "part": "m6_nut_retainer",
+          "rotation_z_deg": 90.0,
+          "translation_mm": [
+            35.8,
+            217.4,
+            -2.0
+          ],
+          "bounds_mm": [
+            [
+              10.0,
+              210.8,
+              0.0
+            ],
+            [
+              35.8,
+              224.0,
+              6.0
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "subplate_id": "08B-J1",
+      "filename": "08B-J1_ABS_right_portal_corner_pair.3mf",
+      "profile_key": "abs_structural",
+      "object_count": 2,
+      "resource_object_count": 2,
+      "build_item_count": 2,
+      "roundtrip_geometry_count": 2,
+      "extent_x_mm": 268.0,
+      "extent_y_mm": 110.0,
+      "extent_z_mm": 8.8,
+      "fits_protected_295x295x275": true,
+      "sha256": "3e38d081b7f64fbf30790a1412952a84b055efe15fb42a38a9ffb9f265bb7e54",
+      "validation": "PASS",
+      "objects": [
+        {
+          "object": "portal_corner_node_right__01",
+          "part": "portal_corner_node_right",
+          "rotation_z_deg": 90.0,
+          "translation_mm": [
+            120.0,
+            10.0,
+            -0.0
+          ],
+          "bounds_mm": [
+            [
+              10.0,
+              10.0,
+              0.0
+            ],
+            [
+              134.0,
+              120.0,
+              8.8
+            ]
+          ]
+        },
+        {
+          "object": "portal_corner_node_right__02",
+          "part": "portal_corner_node_right",
+          "rotation_z_deg": 90.0,
+          "translation_mm": [
+            264.0,
+            10.0,
+            -0.0
+          ],
+          "bounds_mm": [
+            [
+              154.0,
+              10.0,
+              0.0
+            ],
+            [
+              278.0,
+              120.0,
+              8.8
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "subplate_id": "08B-T1",
+      "filename": "08B-T1_ABS_right_uprights_1_2.3mf",
+      "profile_key": "abs_structural",
+      "object_count": 2,
+      "resource_object_count": 2,
+      "build_item_count": 2,
+      "roundtrip_geometry_count": 2,
+      "extent_x_mm": 240.0,
+      "extent_y_mm": 120.0,
+      "extent_z_mm": 64.0,
+      "fits_protected_295x295x275": true,
+      "sha256": "748d2bc2f3f3e5ab0539602e74f63002a4b9fd72e0cc92e1a591cd9e9b78a3c4",
+      "validation": "PASS",
+      "objects": [
+        {
+          "object": "upright_truss_segment_240__01",
+          "part": "upright_truss_segment_240",
+          "rotation_z_deg": 0.0,
+          "translation_mm": [
+            10.0,
+            10.0,
+            -0.0
+          ],
+          "bounds_mm": [
+            [
+              10.0,
+              10.0,
+              0.0
+            ],
+            [
+              250.0,
+              60.0,
+              64.0
+            ]
+          ]
+        },
+        {
+          "object": "upright_truss_segment_240__02",
+          "part": "upright_truss_segment_240",
+          "rotation_z_deg": 0.0,
+          "translation_mm": [
+            10.0,
+            80.0,
+            -0.0
+          ],
+          "bounds_mm": [
+            [
+              10.0,
+              80.0,
+              0.0
+            ],
+            [
+              250.0,
+              130.0,
+              64.0
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "subplate_id": "08B-T2",
+      "filename": "08B-T2_ABS_right_uprights_3_4.3mf",
+      "profile_key": "abs_structural",
+      "object_count": 2,
+      "resource_object_count": 2,
+      "build_item_count": 2,
+      "roundtrip_geometry_count": 2,
+      "extent_x_mm": 240.0,
+      "extent_y_mm": 120.0,
+      "extent_z_mm": 64.0,
+      "fits_protected_295x295x275": true,
+      "sha256": "4f93f099c7018e1f2d17c0a710add6e10950069f7c1e737d8e9b69ae5f83bd75",
+      "validation": "PASS",
+      "objects": [
+        {
+          "object": "upright_truss_segment_240__01",
+          "part": "upright_truss_segment_240",
+          "rotation_z_deg": 0.0,
+          "translation_mm": [
+            10.0,
+            10.0,
+            -0.0
+          ],
+          "bounds_mm": [
+            [
+              10.0,
+              10.0,
+              0.0
+            ],
+            [
+              250.0,
+              60.0,
+              64.0
+            ]
+          ]
+        },
+        {
+          "object": "upright_truss_segment_240__02",
+          "part": "upright_truss_segment_240",
+          "rotation_z_deg": 0.0,
+          "translation_mm": [
+            10.0,
+            80.0,
+            -0.0
+          ],
+          "bounds_mm": [
+            [
+              10.0,
+              80.0,
+              0.0
+            ],
+            [
+              250.0,
+              130.0,
+              64.0
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "subplate_id": "08C-X1",
+      "filename": "08C-X1_ABS_crossbar_1_2.3mf",
+      "profile_key": "abs_structural",
+      "object_count": 2,
+      "resource_object_count": 2,
+      "build_item_count": 2,
+      "roundtrip_geometry_count": 2,
+      "extent_x_mm": 182.5,
+      "extent_y_mm": 120.0,
+      "extent_z_mm": 64.0,
+      "fits_protected_295x295x275": true,
+      "sha256": "19f52a50b82a5db4eed9301760c13947c7992adf5d32c883cad4c2fd461b0309",
+      "validation": "PASS",
+      "objects": [
+        {
+          "object": "crossbar_truss_segment_182p5__01",
+          "part": "crossbar_truss_segment_182p5",
+          "rotation_z_deg": 0.0,
+          "translation_mm": [
+            10.0,
+            10.0,
+            -0.0
+          ],
+          "bounds_mm": [
+            [
+              10.0,
+              10.0,
+              0.0
+            ],
+            [
+              192.5,
+              60.0,
+              64.0
+            ]
+          ]
+        },
+        {
+          "object": "crossbar_truss_segment_182p5__02",
+          "part": "crossbar_truss_segment_182p5",
+          "rotation_z_deg": 0.0,
+          "translation_mm": [
+            10.0,
+            80.0,
+            -0.0
+          ],
+          "bounds_mm": [
+            [
+              10.0,
+              80.0,
+              0.0
+            ],
+            [
+              192.5,
+              130.0,
+              64.0
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "subplate_id": "08C-X2",
+      "filename": "08C-X2_ABS_crossbar_3_4.3mf",
+      "profile_key": "abs_structural",
+      "object_count": 2,
+      "resource_object_count": 2,
+      "build_item_count": 2,
+      "roundtrip_geometry_count": 2,
+      "extent_x_mm": 182.5,
+      "extent_y_mm": 120.0,
+      "extent_z_mm": 64.0,
+      "fits_protected_295x295x275": true,
+      "sha256": "d75d4c9daffa22b7d1fec891efcd7b633f51fb8aafe5386ed1c9c4cac885ff03",
+      "validation": "PASS",
+      "objects": [
+        {
+          "object": "crossbar_truss_segment_182p5__01",
+          "part": "crossbar_truss_segment_182p5",
+          "rotation_z_deg": 0.0,
+          "translation_mm": [
+            10.0,
+            10.0,
+            -0.0
+          ],
+          "bounds_mm": [
+            [
+              10.0,
+              10.0,
+              0.0
+            ],
+            [
+              192.5,
+              60.0,
+              64.0
+            ]
+          ]
+        },
+        {
+          "object": "crossbar_truss_segment_182p5__02",
+          "part": "crossbar_truss_segment_182p5",
+          "rotation_z_deg": 0.0,
+          "translation_mm": [
+            10.0,
+            80.0,
+            -0.0
+          ],
+          "bounds_mm": [
+            [
+              10.0,
+              80.0,
+              0.0
+            ],
+            [
+              192.5,
+              130.0,
+              64.0
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "subplate_id": "08C-B1",
+      "filename": "08C-B1_ABS_booms_1_2.3mf",
+      "profile_key": "abs_structural",
+      "object_count": 2,
+      "resource_object_count": 2,
+      "build_item_count": 2,
+      "roundtrip_geometry_count": 2,
+      "extent_x_mm": 164.25,
+      "extent_y_mm": 120.0,
+      "extent_z_mm": 64.0,
+      "fits_protected_295x295x275": true,
+      "sha256": "ead11099c0df6335e013fc935fe4fa93427b1c1c494926de14aa3bbfb78705d6",
+      "validation": "PASS",
+      "objects": [
+        {
+          "object": "boom_root_truss_segment_164p25__01",
+          "part": "boom_root_truss_segment_164p25",
+          "rotation_z_deg": 0.0,
+          "translation_mm": [
+            10.0,
+            10.0,
+            -0.0
+          ],
+          "bounds_mm": [
+            [
+              10.0,
+              10.0,
+              0.0
+            ],
+            [
+              174.25,
+              60.0,
+              64.0
+            ]
+          ]
+        },
+        {
+          "object": "boom_root_truss_segment_164p25__02",
+          "part": "boom_root_truss_segment_164p25",
+          "rotation_z_deg": 0.0,
+          "translation_mm": [
+            10.0,
+            80.0,
+            -0.0
+          ],
+          "bounds_mm": [
+            [
+              10.0,
+              80.0,
+              0.0
+            ],
+            [
+              174.25,
+              130.0,
+              64.0
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "subplate_id": "08C-B2",
+      "filename": "08C-B2_ABS_booms_3_4.3mf",
+      "profile_key": "abs_structural",
+      "object_count": 2,
+      "resource_object_count": 2,
+      "build_item_count": 2,
+      "roundtrip_geometry_count": 2,
+      "extent_x_mm": 164.25,
+      "extent_y_mm": 120.0,
+      "extent_z_mm": 64.0,
+      "fits_protected_295x295x275": true,
+      "sha256": "961af0b3cc90a49e155f78344114e5e626bb775fabe9709c97ca50ea97d9e4ca",
+      "validation": "PASS",
+      "objects": [
+        {
+          "object": "boom_camera_truss_segment_164p25__01",
+          "part": "boom_camera_truss_segment_164p25",
+          "rotation_z_deg": 0.0,
+          "translation_mm": [
+            10.0,
+            10.0,
+            -0.0
+          ],
+          "bounds_mm": [
+            [
+              10.0,
+              10.0,
+              0.0
+            ],
+            [
+              174.25,
+              60.0,
+              64.0
+            ]
+          ]
+        },
+        {
+          "object": "boom_camera_truss_segment_164p25__02",
+          "part": "boom_camera_truss_segment_164p25",
+          "rotation_z_deg": 0.0,
+          "translation_mm": [
+            10.0,
+            80.0,
+            -0.0
+          ],
+          "bounds_mm": [
+            [
+              10.0,
+              80.0,
+              0.0
+            ],
+            [
+              174.25,
+              130.0,
+              64.0
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "subplate_id": "08C-J1",
+      "filename": "08C-J1_ABS_crossbar_boom_splices.3mf",
+      "profile_key": "abs_structural",
+      "object_count": 5,
+      "resource_object_count": 5,
+      "build_item_count": 5,
+      "roundtrip_geometry_count": 5,
+      "extent_x_mm": 228.0,
+      "extent_y_mm": 267.4,
+      "extent_z_mm": 74.0,
+      "fits_protected_295x295x275": true,
+      "sha256": "99eb9c04b03cfb51bd5e48653bf1a11c227dc01928780c9dce844784c60a5ed5",
+      "validation": "PASS",
+      "objects": [
+        {
+          "object": "u_truss_splice__01",
+          "part": "u_truss_splice",
+          "rotation_z_deg": 0.0,
+          "translation_mm": [
+            10.0,
+            10.0,
+            -0.0
+          ],
+          "bounds_mm": [
+            [
+              10.0,
+              10.0,
+              0.0
+            ],
+            [
+              114.0,
+              85.8,
+              74.0
+            ]
+          ]
+        },
+        {
+          "object": "u_truss_splice__02",
+          "part": "u_truss_splice",
+          "rotation_z_deg": 0.0,
+          "translation_mm": [
+            134.0,
+            10.0,
+            -0.0
+          ],
+          "bounds_mm": [
+            [
+              134.0,
+              10.0,
+              0.0
+            ],
+            [
+              238.0,
+              85.8,
+              74.0
+            ]
+          ]
+        },
+        {
+          "object": "u_truss_splice_center_4bolt__01",
+          "part": "u_truss_splice_center_4bolt",
+          "rotation_z_deg": 0.0,
+          "translation_mm": [
+            10.0,
+            105.8,
+            -0.0
+          ],
+          "bounds_mm": [
+            [
+              10.0,
+              105.8,
+              0.0
+            ],
+            [
+              102.0,
+              181.6,
+              74.0
+            ]
+          ]
+        },
+        {
+          "object": "u_truss_splice_crossbar_2bolt__01",
+          "part": "u_truss_splice_crossbar_2bolt",
+          "rotation_z_deg": 0.0,
+          "translation_mm": [
+            122.0,
+            105.8,
+            -0.0
+          ],
+          "bounds_mm": [
+            [
+              122.0,
+              105.8,
+              0.0
+            ],
+            [
+              214.0,
+              181.6,
+              74.0
+            ]
+          ]
+        },
+        {
+          "object": "u_truss_splice_crossbar_2bolt__02",
+          "part": "u_truss_splice_crossbar_2bolt",
+          "rotation_z_deg": 0.0,
+          "translation_mm": [
+            10.0,
+            201.6,
+            -0.0
+          ],
+          "bounds_mm": [
+            [
+              10.0,
+              201.6,
+              0.0
+            ],
+            [
+              102.0,
+              277.4,
+              74.0
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "subplate_id": "08C-J2",
+      "filename": "08C-J2_ABS_boom_root_nodes.3mf",
+      "profile_key": "abs_structural",
+      "object_count": 4,
+      "resource_object_count": 4,
+      "build_item_count": 4,
+      "roundtrip_geometry_count": 4,
+      "extent_x_mm": 188.0,
+      "extent_y_mm": 180.0,
+      "extent_z_mm": 8.85,
+      "fits_protected_295x295x275": true,
+      "sha256": "da785bb7535f2bc0211390fb85ba7f5c30367be5f4c8463e463e6e3c84097232",
+      "validation": "PASS",
+      "objects": [
+        {
+          "object": "boom_crossbar_node__01",
+          "part": "boom_crossbar_node",
+          "rotation_z_deg": 90.0,
+          "translation_mm": [
+            94.0,
+            10.0,
+            -0.0
+          ],
+          "bounds_mm": [
+            [
+              10.0,
+              10.0,
+              0.0
+            ],
+            [
+              94.0,
+              90.0,
+              8.85
+            ]
+          ]
+        },
+        {
+          "object": "boom_crossbar_node__02",
+          "part": "boom_crossbar_node",
+          "rotation_z_deg": 90.0,
+          "translation_mm": [
+            198.0,
+            10.0,
+            -0.0
+          ],
+          "bounds_mm": [
+            [
+              114.0,
+              10.0,
+              0.0
+            ],
+            [
+              198.0,
+              90.0,
+              8.85
+            ]
+          ]
+        },
+        {
+          "object": "boom_crossbar_node__03",
+          "part": "boom_crossbar_node",
+          "rotation_z_deg": 90.0,
+          "translation_mm": [
+            94.0,
+            110.0,
+            -0.0
+          ],
+          "bounds_mm": [
+            [
+              10.0,
+              110.0,
+              0.0
+            ],
+            [
+              94.0,
+              190.0,
+              8.85
+            ]
+          ]
+        },
+        {
+          "object": "boom_crossbar_node__04",
+          "part": "boom_crossbar_node",
+          "rotation_z_deg": 90.0,
+          "translation_mm": [
+            198.0,
+            110.0,
+            -0.0
+          ],
+          "bounds_mm": [
+            [
+              114.0,
+              110.0,
+              0.0
+            ],
+            [
+              198.0,
+              190.0,
+              8.85
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "subplate_id": "08C-C1",
+      "filename": "08C-C1_ABS_camera_xy_carriage.3mf",
+      "profile_key": "abs_structural",
+      "object_count": 1,
+      "resource_object_count": 1,
+      "build_item_count": 1,
+      "roundtrip_geometry_count": 1,
+      "extent_x_mm": 250.0,
+      "extent_y_mm": 130.0,
+      "extent_z_mm": 16.9,
+      "fits_protected_295x295x275": true,
+      "sha256": "40064de5888d51099edbc0295548ad7d0298ba565c7495e61da185a562fa4f3e",
+      "validation": "PASS",
+      "objects": [
+        {
+          "object": "camera_xy_carriage__01",
+          "part": "camera_xy_carriage",
+          "rotation_z_deg": 0.0,
+          "translation_mm": [
+            10.0,
+            10.0,
+            -0.0
+          ],
+          "bounds_mm": [
+            [
+              10.0,
+              10.0,
+              0.0
+            ],
+            [
+              260.0,
+              140.0,
+              16.9
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "subplate_id": "08D-C1",
+      "filename": "08D-C1_ABS_camera_cage_and_keeper.3mf",
+      "profile_key": "abs_holder_precision",
+      "object_count": 2,
+      "resource_object_count": 2,
+      "build_item_count": 2,
+      "roundtrip_geometry_count": 2,
+      "extent_x_mm": 250.0,
+      "extent_y_mm": 96.0,
+      "extent_z_mm": 42.0,
+      "fits_protected_295x295x275": true,
+      "sha256": "df6fe44839036c29f89b49fec790096d2a44db61a0a63ac05627ac5154b5cdfc",
+      "validation": "PASS",
+      "objects": [
+        {
+          "object": "camera_cage_body__01",
+          "part": "camera_cage_body",
+          "rotation_z_deg": 90.0,
+          "translation_mm": [
+            144.0,
+            10.0,
+            -0.0
+          ],
+          "bounds_mm": [
+            [
+              10.0,
+              10.0,
+              0.0
+            ],
+            [
+              144.0,
+              106.0,
+              42.0
+            ]
+          ]
+        },
+        {
+          "object": "camera_cage_keeper__01",
+          "part": "camera_cage_keeper",
+          "rotation_z_deg": 0.0,
+          "translation_mm": [
+            164.0,
+            3.0,
+            -0.0
+          ],
+          "bounds_mm": [
+            [
+              164.0,
+              10.0,
+              0.0
+            ],
+            [
+              260.0,
+              92.0,
+              6.0
+            ]
+          ]
+        }
+      ]
+    }
+  ]
+}

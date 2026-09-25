@@ -1,0 +1,93 @@
+{
+  "schema_version": 2,
+  "design_revision": "RC02-PRO-R1",
+  "job_id": "05C",
+  "plate_file": "05C_TPU_keyboard_tip_first_article.3mf",
+  "printer": {
+    "model": "QIDI Plus4",
+    "nominal_build_volume_mm": [
+      305.0,
+      305.0,
+      280.0
+    ],
+    "safe_plate_envelope_mm": [
+      295.0,
+      295.0,
+      280.0
+    ],
+    "edge_margin_mm": 5.0,
+    "default_nozzle_mm": 0.4
+  },
+  "stage": "first_article",
+  "selection": "keyboard_rod_route",
+  "purpose": "One keyboard TPU tip for dimensional and pull-off acceptance",
+  "parts": {
+    "keyboard_tip_TPU_6mm.stl": 1
+  },
+  "prerequisites": [
+    "plus4_machine_confirmed",
+    "nozzle_0p4_confirmed",
+    "tpu_profile_calibrated",
+    "keyboard_rod_measured",
+    "qidi_studio_roundtrip_confirmed"
+  ],
+  "process_profile_name": "tpu95a_0p4",
+  "process_profile": {
+    "material": "TPU 95A",
+    "nozzle_mm": 0.4,
+    "layer_height_mm": 0.16,
+    "walls": 3,
+    "top_layers": 5,
+    "bottom_layers": 5,
+    "infill_percent": 100,
+    "infill_pattern": "rectilinear",
+    "supports": "off",
+    "bed_adhesion": "Clean PEI with no glue unless required by the exact TPU; use a 3 mm brim if a tip rocks",
+    "dimensional_controls": "Dry filament and keep first-layer flow calibrated so the flared bore entries remain open",
+    "purpose": "Phone and keyboard contact tips"
+  },
+  "slicer_warning": "Use a calibrated QIDI Studio filament preset for the exact brand and material; temperatures are deliberately not embedded in geometry-only 3MF files.",
+  "geometry_only_3mf": true,
+  "qidi_studio_native_project_required": true,
+  "qidi_studio_roundtrip_gate": "qidi_studio_roundtrip_confirmed",
+  "plate_envelope_mm": [
+    12.0,
+    12.0,
+    14.0
+  ],
+  "absolute_bed_bounds_mm": {
+    "min": [
+      146.5,
+      146.501,
+      0.0
+    ],
+    "max": [
+      158.5,
+      158.499,
+      14.0
+    ]
+  },
+  "centered_on_nominal_bed": true,
+  "source_stl_sha256": {
+    "keyboard_tip_TPU_6mm.stl": "22ba42201e769ff4ed146b125d69d585b7188b7f274a1b3430b741ad62931d37"
+  },
+  "process_profile_sha256": "59b69f285f6bead89753b66a3fa1005b3db9b065b58905e3dd84fa684dfa9e49",
+  "plate_sha256": "41396e0ed39b6662629bb10a23993eab7496816cb65cd709d81f16c8415b2c67",
+  "objects": [
+    {
+      "name": "keyboard_tip_TPU_6mm_1",
+      "bounds_mm": [
+        [
+          146.5,
+          146.501,
+          0.0
+        ],
+        [
+          158.5,
+          158.499,
+          14.0
+        ]
+      ]
+    }
+  ]
+}

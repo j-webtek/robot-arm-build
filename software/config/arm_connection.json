@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "profile_id": "ROCELL-ROARM-M3-PRO-SERIAL-001",
+  "model": "Waveshare RoArm-M3 Pro",
+  "transport": "usb_serial",
+  "port": null,
+  "baud": 115200,
+  "wire_format": "newline_terminated_json",
+  "transmit_terminator": "LF",
+  "accepted_receive_terminators": [
+    "LF",
+    "CRLF"
+  ],
+  "rts": false,
+  "dtr": false,
+  "read_timeout_s": 1.0,
+  "write_timeout_s": 1.0,
+  "blind_retry": false,
+  "auto_connect": false,
+  "auto_initialize": false,
+  "exclusive_owner_required": true,
+  "identity": {
+    "controller_usb_identity": null,
+    "arm_serial_number": null,
+    "firmware_revision": null,
+    "state": "OPEN_BLOCKING"
+  },
+  "live_access_gate": "current_build_state.safe_to_power_robot must be true and the projected capability must pass before the serial port is opened"
+}

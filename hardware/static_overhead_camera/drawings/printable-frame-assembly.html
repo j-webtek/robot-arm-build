@@ -1,0 +1,262 @@
+<div id="camera-portal-assembly-map">
+  <h2>Printable camera portal — assembly sequence</h2>
+
+  <div class="viz-controls" role="group" aria-label="Assembly step">
+    <button class="btn btn-primary" type="button" data-step-button="1" aria-pressed="true">1 · Saddles</button>
+    <button class="btn" type="button" data-step-button="2" aria-pressed="false">2 · Towers</button>
+    <button class="btn" type="button" data-step-button="3" aria-pressed="false">3 · Booms</button>
+    <button class="btn" type="button" data-step-button="4" aria-pressed="false">4 · Camera</button>
+  </div>
+
+  <div class="portal-diagram">
+    <svg viewBox="0 0 760 430" role="img" aria-labelledby="portal-map-title portal-map-desc">
+      <title id="portal-map-title">No-drill printable overhead-camera portal</title>
+      <desc id="portal-map-desc">A perspective assembly map showing the board, handed front saddles, left and right towers, crossbar, paired ROOT and CAMERA boom segments, camera carriage and cage, USB route, and independent tether.</desc>
+
+      <g class="base-structure">
+        <path class="board-top" d="M150 285 L565 285 L675 362 L44 362 Z" />
+        <path class="board-edge" d="M44 362 L675 362 L675 380 L44 380 Z" />
+        <text class="diagram-label board-label" x="360" y="346">610 × 457 × 18 BOARD</text>
+        <path class="clear-zone" d="M26 392 L694 392" />
+        <text class="diagram-label secondary-label" x="360" y="416">KEEP FRONT BENCH AREA CLEAR</text>
+      </g>
+
+      <g data-assembly-group="1" class="assembly-group is-active">
+        <path class="part-fill" d="M48 336 L100 336 L132 359 L132 389 L67 389 L39 368 Z" />
+        <path class="part-fill" d="M628 336 L680 336 L702 359 L693 389 L628 389 L604 368 Z" />
+        <text class="diagram-label" x="36" y="326">LEFT</text>
+        <text class="diagram-label" x="658" y="326">RIGHT</text>
+        <path class="leader" d="M81 332 L81 306" />
+        <path class="leader" d="M655 332 L655 306" />
+        <text class="diagram-label" x="360" y="394">BENCH-BEARING SADDLES · TOP-DRIVEN M6</text>
+      </g>
+
+      <g data-assembly-group="2" class="assembly-group">
+        <path class="structure-line" d="M80 339 L80 80" />
+        <path class="structure-line" d="M655 339 L655 80" />
+        <path class="structure-line" d="M80 80 L655 80" />
+        <path class="joint" d="M61 188 L99 188" />
+        <path class="joint" d="M61 295 L99 295" />
+        <path class="joint" d="M636 188 L674 188" />
+        <path class="joint" d="M636 295 L674 295" />
+        <path class="joint" d="M205 61 L205 99" />
+        <path class="joint" d="M368 61 L368 99" />
+        <path class="joint" d="M530 61 L530 99" />
+        <text class="diagram-label" x="105" y="115">4 × 240 LEFT</text>
+        <text class="diagram-label" x="520" y="115">4 × 240 RIGHT</text>
+        <text class="diagram-label" x="368" y="55">4 × CROSS 182.5</text>
+      </g>
+
+      <g data-assembly-group="3" class="assembly-group">
+        <path class="structure-line" d="M280 80 L349 146 L426 220" />
+        <path class="structure-line" d="M455 80 L407 146 L352 220" />
+        <path class="joint" d="M327 126 L349 146 L371 126" />
+        <path class="joint" d="M385 126 L407 146 L429 126" />
+        <text class="diagram-label" x="272" y="120">ROOT</text>
+        <text class="diagram-label" x="438" y="120">ROOT</text>
+        <text class="diagram-label" x="307" y="186">CAMERA</text>
+        <text class="diagram-label" x="425" y="186">CAMERA</text>
+      </g>
+
+      <g data-assembly-group="4" class="assembly-group">
+        <rect class="part-fill" x="323" y="213" width="103" height="29" rx="4" />
+        <path class="camera-cage" d="M342 242 L407 242 L413 307 L336 307 Z" />
+        <circle class="lens" cx="375" cy="276" r="15" />
+        <path class="usb-route" d="M407 264 C470 248 530 218 578 164" />
+        <path class="tether-route" d="M327 232 C255 206 174 169 105 103" />
+        <text class="diagram-label" x="375" y="330">CARRIAGE + CAGE</text>
+        <text class="diagram-label secondary-label" x="526" y="205">USB ≤ 5 mm TIES</text>
+        <text class="diagram-label secondary-label" x="132" y="156">METAL TETHER</text>
+      </g>
+    </svg>
+  </div>
+
+  <div class="card portal-step" aria-live="polite">
+    <span class="text-muted">Current gate</span>
+    <strong data-step-title>Seat LEFT and RIGHT saddles</strong>
+    <span data-step-detail>Confirm the board coupon, captured M6 nuts, TPU pads, and unobstructed 850 × 250 mm front bench footprint before printing the towers.</span>
+  </div>
+</div>
+
+<style>
+  #camera-portal-assembly-map {
+    color: var(--foreground);
+    width: 100%;
+  }
+
+  #camera-portal-assembly-map .viz-controls {
+    margin-block: 0.75rem;
+  }
+
+  #camera-portal-assembly-map .portal-diagram {
+    width: 100%;
+  }
+
+  #camera-portal-assembly-map svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 430px;
+    overflow: visible;
+  }
+
+  #camera-portal-assembly-map .board-top {
+    fill: color-mix(in srgb, var(--muted) 55%, transparent);
+    stroke: var(--border);
+    stroke-width: 2;
+  }
+
+  #camera-portal-assembly-map .board-edge {
+    fill: color-mix(in srgb, var(--muted) 78%, transparent);
+    stroke: var(--border);
+    stroke-width: 2;
+  }
+
+  #camera-portal-assembly-map .clear-zone {
+    fill: none;
+    stroke: var(--muted-foreground);
+    stroke-width: 2;
+    stroke-dasharray: 8 7;
+  }
+
+  #camera-portal-assembly-map .assembly-group {
+    color: var(--muted-foreground);
+    opacity: 0.24;
+    transition: opacity 180ms ease, color 180ms ease;
+  }
+
+  #camera-portal-assembly-map .assembly-group.is-active {
+    color: var(--viz-series-1);
+    opacity: 1;
+  }
+
+  #camera-portal-assembly-map .structure-line,
+  #camera-portal-assembly-map .joint,
+  #camera-portal-assembly-map .leader,
+  #camera-portal-assembly-map .camera-cage {
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  #camera-portal-assembly-map .structure-line {
+    stroke-width: 18;
+  }
+
+  #camera-portal-assembly-map .joint {
+    stroke-width: 7;
+  }
+
+  #camera-portal-assembly-map .leader {
+    stroke-width: 2;
+  }
+
+  #camera-portal-assembly-map .part-fill,
+  #camera-portal-assembly-map .lens {
+    fill: color-mix(in srgb, currentColor 32%, transparent);
+    stroke: currentColor;
+    stroke-width: 3;
+  }
+
+  #camera-portal-assembly-map .camera-cage {
+    stroke-width: 7;
+  }
+
+  #camera-portal-assembly-map .usb-route,
+  #camera-portal-assembly-map .tether-route {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 4;
+    stroke-dasharray: 8 7;
+  }
+
+  #camera-portal-assembly-map .tether-route {
+    stroke-dasharray: 3 6;
+  }
+
+  #camera-portal-assembly-map .diagram-label {
+    fill: var(--foreground);
+    font-weight: 500;
+    text-anchor: middle;
+  }
+
+  #camera-portal-assembly-map .secondary-label {
+    fill: var(--muted-foreground);
+    font-weight: 400;
+  }
+
+  #camera-portal-assembly-map .board-label {
+    fill: var(--muted-foreground);
+  }
+
+  #camera-portal-assembly-map .portal-step {
+    display: grid;
+    gap: 0.2rem;
+    margin-top: 0.75rem;
+  }
+
+  @media (max-width: 480px) {
+    #camera-portal-assembly-map .diagram-label {
+      display: none;
+    }
+
+    #camera-portal-assembly-map .portal-step {
+      margin-top: 0.25rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #camera-portal-assembly-map .assembly-group {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  (() => {
+    const root = document.getElementById('camera-portal-assembly-map');
+    if (!root) return;
+
+    const steps = {
+      1: {
+        title: 'Seat LEFT and RIGHT saddles',
+        detail: 'Confirm the board coupon, captured M6 nuts, TPU pads, and unobstructed 850 × 250 mm front bench footprint before printing the towers.'
+      },
+      2: {
+        title: 'Build both four-segment towers and the four-segment crossbar',
+        detail: 'Use the raised IDs, external splice collars, the center four-bolt collar, handed portal-node pairs, positive bearing ledges, and two gussets at each portal corner.'
+      },
+      3: {
+        title: 'Install paired ROOT then CAMERA boom segments',
+        detail: 'Do not swap ROOT and CAMERA pieces: their bore layouts are intentionally different. Clamp each boom root with the matching top/bottom four-bolt sandwich straps before fitting the distal carriage.'
+      },
+      4: {
+        title: 'Qualify the empty arm, then mount the camera module and tether',
+        detail: 'First proof and creep-test an empty carriage with a caught dummy mass. Then bench-build the camera module with its flat four-bolt keeper, selected shim, three M4 leveling points, six cable ties, and independent metal tether.'
+      }
+    };
+
+    const buttons = [...root.querySelectorAll('[data-step-button]')];
+    const groups = [...root.querySelectorAll('[data-assembly-group]')];
+    const title = root.querySelector('[data-step-title]');
+    const detail = root.querySelector('[data-step-detail]');
+
+    function selectStep(step) {
+      buttons.forEach((button) => {
+        const selected = Number(button.dataset.stepButton) === step;
+        button.setAttribute('aria-pressed', String(selected));
+        button.classList.toggle('btn-primary', selected);
+      });
+      groups.forEach((group) => {
+        group.classList.toggle('is-active', Number(group.dataset.assemblyGroup) === step);
+      });
+      title.textContent = steps[step].title;
+      detail.textContent = steps[step].detail;
+    }
+
+    buttons.forEach((button) => {
+      button.addEventListener('click', () => selectStep(Number(button.dataset.stepButton)));
+    });
+  })();
+</script>

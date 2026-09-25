@@ -1,0 +1,53 @@
+{
+  "name": "08B-S1_ABS_right_bench_saddle_GROUNDED_v2",
+  "status": "PASS_CAD_MESH_AND_LAYER_START_CHECKS",
+  "topology": [
+    {
+      "name": "08B-S1_ABS_right_bench_saddle_GROUNDED_v2",
+      "original_vertices": 17183,
+      "welded_vertices": 17183,
+      "triangles": 34410,
+      "open_edges": 0,
+      "nonmanifold_edges": 0,
+      "geometry_unchanged": true
+    }
+  ],
+  "added_material_mm3": 6524.910279416114,
+  "removed_receiver_intrusion_mm3": 5119.697111648693,
+  "nominal_upright_interference_mm3": 0,
+  "original_interfaces": "UNCHANGED outside explicit feet and insertion pocket",
+  "first_layer_contact": "Both rib feet begin at z=0 and overlap original base by 4mm in Y",
+  "layer_checks": [
+    {
+      "layer_height_mm": 0.2,
+      "first_layer_mm": 0.2,
+      "sampled_layers": 520,
+      "unsupported_new_regions": [],
+      "max_slice_components": 14,
+      "status": "PASS_NO_NEW_ISLANDS"
+    },
+    {
+      "layer_height_mm": 0.16,
+      "first_layer_mm": 0.2,
+      "sampled_layers": 650,
+      "unsupported_new_regions": [],
+      "max_slice_components": 14,
+      "status": "PASS_NO_NEW_ISLANDS"
+    }
+  ],
+  "placed_bounds_mm": [
+    [
+      10.0,
+      10.0,
+      0.0
+    ],
+    [
+      260.0,
+      200.0,
+      104.0
+    ]
+  ],
+  "sha256": "7daa657e1b4d58fe5690ff3a174789692c27ef45c6d451bf36a0a66f21d0c1b6",
+  "native_QIDI_slice": "PENDING: reopen and reslice revised model; do not ignore residual warnings",
+  "limitations": "Layer-overlap checks detect new floating regions, not all overhang, bridge, adhesion, strength or creep failures. Physical qualification remains required."
+}

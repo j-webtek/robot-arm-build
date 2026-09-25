@@ -1,0 +1,100 @@
+{
+  "schema_version": 2,
+  "design_revision": "RC02-PRO-R1",
+  "job_id": "03A",
+  "plate_file": "03A_PETG_phone_cradle.3mf",
+  "printer": {
+    "model": "QIDI Plus4",
+    "nominal_build_volume_mm": [
+      305.0,
+      305.0,
+      280.0
+    ],
+    "safe_plate_envelope_mm": [
+      295.0,
+      295.0,
+      280.0
+    ],
+    "edge_margin_mm": 5.0,
+    "default_nozzle_mm": 0.4
+  },
+  "stage": "production",
+  "selection": "required",
+  "purpose": "Phone cradle with closed mounting ears and raised cable saddle",
+  "parts": {
+    "phone_cradle_a16.stl": 1
+  },
+  "prerequisites": [
+    "plus4_machine_confirmed",
+    "nozzle_0p4_confirmed",
+    "petg_cradle_profile_calibrated",
+    "phone_dimensions_measured",
+    "phone_side_features_measured",
+    "phone_cable_measured",
+    "phone_width_coupon_pass",
+    "m4_horizontal_insert_coupon_pass",
+    "cable_tie_saddle_coupon_pass",
+    "cradle_m4_washer_coupon_pass",
+    "geometry_matches_measurements",
+    "qidi_studio_roundtrip_confirmed"
+  ],
+  "process_profile_name": "petg_cradle_0p4",
+  "process_profile": {
+    "material": "PETG",
+    "nozzle_mm": 0.4,
+    "layer_height_mm": 0.2,
+    "walls": 5,
+    "top_layers": 5,
+    "bottom_layers": 5,
+    "infill_percent": 30,
+    "infill_pattern": "gyroid",
+    "supports": "build-plate only under horizontal clamp bores if needed",
+    "bed_adhesion": "5 mm brim recommended around the asymmetric cradle and clamp towers",
+    "dimensional_controls": "Use the horizontal M4 insert coupon; ream the 4.6 mm passages by hand after printing",
+    "purpose": "Phone cradle"
+  },
+  "slicer_warning": "Use a calibrated QIDI Studio filament preset for the exact brand and material; temperatures are deliberately not embedded in geometry-only 3MF files.",
+  "geometry_only_3mf": true,
+  "qidi_studio_native_project_required": true,
+  "qidi_studio_roundtrip_gate": "qidi_studio_roundtrip_confirmed",
+  "plate_envelope_mm": [
+    117.3,
+    172.8,
+    20.0
+  ],
+  "absolute_bed_bounds_mm": {
+    "min": [
+      93.85,
+      66.1,
+      0.0
+    ],
+    "max": [
+      211.15,
+      238.9,
+      20.0
+    ]
+  },
+  "centered_on_nominal_bed": true,
+  "source_stl_sha256": {
+    "phone_cradle_a16.stl": "a6a9af5f1c350002bee9752ac4aa1f30642138d3e656f903ef064baefd2e9c18"
+  },
+  "process_profile_sha256": "874f2e964792b58d533f2fd659f5ad595af5759c7acba9d2244d5fc5b20e841c",
+  "plate_sha256": "4de7e4f3e5161e070e629d4e408fecdc307a33639ed3791bc98a0c3fb8119e5b",
+  "objects": [
+    {
+      "name": "phone_cradle_a16_1",
+      "bounds_mm": [
+        [
+          93.85,
+          66.1,
+          0.0
+        ],
+        [
+          211.15,
+          238.9,
+          20.0
+        ]
+      ]
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "design_revision": "RC02-PRO-R1",
+  "status": "PASS",
+  "printable_stls": 37,
+  "configured_jobs": 24,
+  "plate_objects": 52,
+  "all_stls_watertight_single_body": true,
+  "all_parts_and_plates_fit_protected_plus4_envelope": true,
+  "all_3mf_files_roundtrip_in_independent_reader": true,
+  "all_sidecar_and_source_hashes_match": true,
+  "all_non_diagnostic_jobs_require_native_qidi_roundtrip": true,
+  "layout_nonoverlap_and_edge_checks": true
+}

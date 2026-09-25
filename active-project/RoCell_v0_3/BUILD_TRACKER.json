@@ -1,0 +1,574 @@
+{
+  "schema_version": 1,
+  "design_revision": "RC03-INT-R1",
+  "lifecycle_states": [
+    "UNRELEASED",
+    "READY_TO_SLICE",
+    "SLICE_REVIEWED",
+    "PRINTED",
+    "POSTPRINT_PASS",
+    "KITTED",
+    "ASSEMBLY_PASS",
+    "IN_SERVICE"
+  ],
+  "summary": {
+    "total_jobs": 24,
+    "selected_jobs": 20,
+    "qidi_qualified_jobs": 0,
+    "state_counts": {
+      "NOT_SELECTED": 4,
+      "UNRELEASED": 15,
+      "READY_TO_SLICE": 3,
+      "SLICE_REVIEWED": 0,
+      "PRINTED": 1,
+      "POSTPRINT_PASS": 1,
+      "KITTED": 0,
+      "ASSEMBLY_PASS": 0,
+      "IN_SERVICE": 0
+    }
+  },
+  "jobs": [
+    {
+      "job_id": "00A",
+      "design_revision": "RC03-INT-R1",
+      "selected": true,
+      "selection": "required",
+      "stage": "diagnostic",
+      "plate_file": "00A_ABS_keyboard_station_fit_tests.3mf",
+      "kit_id": "KIT-CAL",
+      "recorded_state": "POSTPRINT_PASS",
+      "effective_state": "POSTPRINT_PASS",
+      "native_qidi_project_status": "NOT_REQUIRED",
+      "missing_prerequisites": [],
+      "postprint_gate_ids": [
+        "keyboard_corner_coupon_pass",
+        "keyboard_station_registration_coupon_pass",
+        "tray_clearance_holes_coupon_pass"
+      ],
+      "assembly_gate_ids": []
+    },
+    {
+      "job_id": "00B",
+      "design_revision": "RC03-INT-R1",
+      "selected": true,
+      "selection": "required",
+      "stage": "diagnostic",
+      "plate_file": "00B_ABS_phone_station_fit_tests.3mf",
+      "kit_id": "KIT-CAL",
+      "recorded_state": "PRINTED",
+      "effective_state": "PRINTED",
+      "native_qidi_project_status": "NOT_REQUIRED",
+      "missing_prerequisites": [],
+      "postprint_gate_ids": [
+        "phone_width_coupon_pass",
+        "phone_station_registration_coupon_pass",
+        "phone_station_m3_insert_coupon_pass",
+        "cradle_m4_washer_coupon_pass"
+      ],
+      "assembly_gate_ids": []
+    },
+    {
+      "job_id": "00C",
+      "design_revision": "RC03-INT-R1",
+      "selected": true,
+      "selection": "required",
+      "stage": "diagnostic",
+      "plate_file": "00C_ABS_tool_profile_fit_tests.3mf",
+      "kit_id": "KIT-CAL",
+      "recorded_state": "UNRELEASED",
+      "effective_state": "READY_TO_SLICE",
+      "native_qidi_project_status": "NOT_REQUIRED",
+      "missing_prerequisites": [],
+      "postprint_gate_ids": [
+        "compliant_tool_m3_insert_coupon_pass",
+        "gripper_coupon_pass",
+        "spring_fit_coupon_pass",
+        "precision_m3_head_coupon_pass"
+      ],
+      "assembly_gate_ids": []
+    },
+    {
+      "job_id": "00D",
+      "design_revision": "RC03-INT-R1",
+      "selected": true,
+      "selection": "phone_stylus_route",
+      "stage": "diagnostic",
+      "plate_file": "00D_PETG_adapter_profile_fit_tests.3mf",
+      "kit_id": "KIT-CAL",
+      "recorded_state": "UNRELEASED",
+      "effective_state": "UNRELEASED",
+      "native_qidi_project_status": "NOT_REQUIRED",
+      "missing_prerequisites": [
+        "petg_adapter_profile_calibrated"
+      ],
+      "postprint_gate_ids": [
+        "stylus_gauge_coupon_pass"
+      ],
+      "assembly_gate_ids": []
+    },
+    {
+      "job_id": "00E",
+      "design_revision": "RC03-INT-R1",
+      "selected": true,
+      "selection": "required",
+      "stage": "diagnostic",
+      "plate_file": "00E_ABS_general_setup_tests.3mf",
+      "kit_id": "KIT-CAL",
+      "recorded_state": "UNRELEASED",
+      "effective_state": "READY_TO_SLICE",
+      "native_qidi_project_status": "NOT_REQUIRED",
+      "missing_prerequisites": [],
+      "postprint_gate_ids": [
+        "general_clearance_holes_coupon_pass",
+        "setup_hardware_coupon_pass"
+      ],
+      "assembly_gate_ids": []
+    },
+    {
+      "job_id": "00F",
+      "design_revision": "RC03-INT-R1",
+      "selected": true,
+      "selection": "required",
+      "stage": "diagnostic",
+      "plate_file": "00F_ABS_calibration_profile_clearance_test.3mf",
+      "kit_id": "KIT-CAL",
+      "recorded_state": "UNRELEASED",
+      "effective_state": "READY_TO_SLICE",
+      "native_qidi_project_status": "NOT_REQUIRED",
+      "missing_prerequisites": [],
+      "postprint_gate_ids": [
+        "calibration_clearance_holes_coupon_pass"
+      ],
+      "assembly_gate_ids": []
+    },
+    {
+      "job_id": "01",
+      "design_revision": "RC03-INT-R1",
+      "selected": true,
+      "selection": "required",
+      "stage": "first_article",
+      "plate_file": "01_ABS_keyboard_station_left.3mf",
+      "kit_id": "KIT-KB",
+      "recorded_state": "UNRELEASED",
+      "effective_state": "UNRELEASED",
+      "native_qidi_project_status": "MISSING",
+      "missing_prerequisites": [
+        "keyboard_dimensions_measured",
+        "qidi_studio_roundtrip_confirmed"
+      ],
+      "postprint_gate_ids": [
+        "keyboard_left_first_article_pass",
+        "keyboard_seam_coupon_pass"
+      ],
+      "assembly_gate_ids": []
+    },
+    {
+      "job_id": "02",
+      "design_revision": "RC03-INT-R1",
+      "selected": true,
+      "selection": "required",
+      "stage": "production",
+      "plate_file": "02_ABS_keyboard_station_right.3mf",
+      "kit_id": "KIT-KB",
+      "recorded_state": "UNRELEASED",
+      "effective_state": "UNRELEASED",
+      "native_qidi_project_status": "MISSING",
+      "missing_prerequisites": [
+        "keyboard_dimensions_measured",
+        "keyboard_seam_coupon_pass",
+        "keyboard_left_first_article_pass",
+        "qidi_studio_roundtrip_confirmed"
+      ],
+      "postprint_gate_ids": [
+        "keyboard_station_pair_postprint_pass"
+      ],
+      "assembly_gate_ids": [
+        "station_remove_reinstall_repeatability_pass",
+        "keyboard_fixture_assembly_pass"
+      ]
+    },
+    {
+      "job_id": "03A",
+      "design_revision": "RC03-INT-R1",
+      "selected": true,
+      "selection": "required",
+      "stage": "first_article",
+      "plate_file": "03A_ABS_phone_TCP_station.3mf",
+      "kit_id": "KIT-PHONE",
+      "recorded_state": "UNRELEASED",
+      "effective_state": "UNRELEASED",
+      "native_qidi_project_status": "MISSING",
+      "missing_prerequisites": [
+        "phone_dimensions_measured",
+        "phone_side_features_measured",
+        "phone_cable_measured",
+        "phone_m4_captive_nut_coupon_pass",
+        "phone_station_m3_insert_coupon_pass",
+        "cable_tie_saddle_coupon_pass",
+        "qidi_studio_roundtrip_confirmed"
+      ],
+      "postprint_gate_ids": [
+        "phone_tcp_station_postprint_pass"
+      ],
+      "assembly_gate_ids": [
+        "station_remove_reinstall_repeatability_pass",
+        "phone_fixture_assembly_pass"
+      ]
+    },
+    {
+      "job_id": "03B",
+      "design_revision": "RC03-INT-R1",
+      "selected": true,
+      "selection": "required",
+      "stage": "production",
+      "plate_file": "03B_ABS_keyboard_clamps.3mf",
+      "kit_id": "KIT-KB",
+      "recorded_state": "UNRELEASED",
+      "effective_state": "UNRELEASED",
+      "native_qidi_project_status": "MISSING",
+      "missing_prerequisites": [
+        "keyboard_dimensions_measured",
+        "general_clearance_holes_coupon_pass",
+        "setup_hardware_coupon_pass",
+        "qidi_studio_roundtrip_confirmed"
+      ],
+      "postprint_gate_ids": [
+        "keyboard_clamps_postprint_pass"
+      ],
+      "assembly_gate_ids": [
+        "keyboard_fixture_assembly_pass"
+      ]
+    },
+    {
+      "job_id": "03C1",
+      "design_revision": "RC03-INT-R1",
+      "selected": true,
+      "selection": "required",
+      "stage": "first_article",
+      "plate_file": "03C1_ABS_phone_clamp_rail.3mf",
+      "kit_id": "KIT-PHONE",
+      "recorded_state": "UNRELEASED",
+      "effective_state": "UNRELEASED",
+      "native_qidi_project_status": "MISSING",
+      "missing_prerequisites": [
+        "qidi_studio_roundtrip_confirmed"
+      ],
+      "postprint_gate_ids": [
+        "phone_m4_captive_nut_coupon_pass",
+        "cable_tie_saddle_coupon_pass",
+        "phone_clamp_rail_first_article_pass"
+      ],
+      "assembly_gate_ids": [
+        "phone_fixture_assembly_pass"
+      ]
+    },
+    {
+      "job_id": "03C2",
+      "design_revision": "RC03-INT-R1",
+      "selected": true,
+      "selection": "required",
+      "stage": "production",
+      "plate_file": "03C2_ABS_board_setup_tools.3mf",
+      "kit_id": "KIT-BOARD-SETUP",
+      "recorded_state": "UNRELEASED",
+      "effective_state": "UNRELEASED",
+      "native_qidi_project_status": "MISSING",
+      "missing_prerequisites": [
+        "tag_stock_measured",
+        "tag_artwork_scale_pass",
+        "board_setup_template_scale_pass",
+        "qidi_studio_roundtrip_confirmed"
+      ],
+      "postprint_gate_ids": [
+        "tag_application_tool_postprint_pass"
+      ],
+      "assembly_gate_ids": [
+        "board_fabrication_pass",
+        "tag_direct_installation_pass",
+        "tag_plane_placement_measured"
+      ]
+    },
+    {
+      "job_id": "03C3",
+      "design_revision": "RC03-INT-R1",
+      "selected": false,
+      "selection": "camera_mast_optional",
+      "stage": "production",
+      "plate_file": "03C3_PETG_camera_plate.3mf",
+      "kit_id": "KIT-VISION-CAM",
+      "recorded_state": "UNRELEASED",
+      "effective_state": "NOT_SELECTED",
+      "native_qidi_project_status": "MISSING",
+      "missing_prerequisites": [
+        "fixed_camera_fallback_architecture_released",
+        "petg_general_profile_calibrated",
+        "camera_mount_interface_measured",
+        "general_clearance_holes_coupon_pass",
+        "setup_hardware_coupon_pass",
+        "qidi_studio_roundtrip_confirmed"
+      ],
+      "postprint_gate_ids": [
+        "camera_plate_hardware_pass"
+      ],
+      "assembly_gate_ids": []
+    },
+    {
+      "job_id": "03D",
+      "design_revision": "RC03-INT-R1",
+      "selected": true,
+      "selection": "required",
+      "stage": "first_article",
+      "plate_file": "03D_ABS_TCP_datum_cartridges.3mf",
+      "kit_id": "KIT-PUCK",
+      "recorded_state": "UNRELEASED",
+      "effective_state": "UNRELEASED",
+      "native_qidi_project_status": "MISSING",
+      "missing_prerequisites": [
+        "calibration_clearance_holes_coupon_pass",
+        "qidi_studio_roundtrip_confirmed"
+      ],
+      "postprint_gate_ids": [
+        "calibration_puck_datum_pass"
+      ],
+      "assembly_gate_ids": []
+    },
+    {
+      "job_id": "04A",
+      "design_revision": "RC03-INT-R1",
+      "selected": true,
+      "selection": "any_tool_route",
+      "stage": "route",
+      "plate_file": "04A_ABS_shared_compliant_tool.3mf",
+      "kit_id": "KIT-TOOL-COMMON",
+      "recorded_state": "UNRELEASED",
+      "effective_state": "UNRELEASED",
+      "native_qidi_project_status": "MISSING",
+      "missing_prerequisites": [
+        "compliant_tool_m3_insert_coupon_pass",
+        "gripper_interface_measured",
+        "gripper_coupon_pass",
+        "spring_dimensions_measured",
+        "spring_fit_coupon_pass",
+        "precision_m3_head_coupon_pass",
+        "qidi_studio_roundtrip_confirmed"
+      ],
+      "postprint_gate_ids": [
+        "tool_body_postprint_pass"
+      ],
+      "assembly_gate_ids": [
+        "tool_assembled_motion_pass"
+      ]
+    },
+    {
+      "job_id": "04B",
+      "design_revision": "RC03-INT-R1",
+      "selected": true,
+      "selection": "phone_stylus_route",
+      "stage": "route",
+      "plate_file": "04B_PETG_phone_stylus_adapters.3mf",
+      "kit_id": "KIT-TOOL-PHONE",
+      "recorded_state": "UNRELEASED",
+      "effective_state": "UNRELEASED",
+      "native_qidi_project_status": "MISSING",
+      "missing_prerequisites": [
+        "petg_adapter_profile_calibrated",
+        "stylus_diameter_measured",
+        "stylus_gauge_coupon_pass",
+        "adapter_retention_method_selected",
+        "qidi_studio_roundtrip_confirmed"
+      ],
+      "postprint_gate_ids": [
+        "stylus_collar_retention_pass"
+      ],
+      "assembly_gate_ids": [
+        "stylus_function_pass",
+        "tool_assembled_motion_pass"
+      ]
+    },
+    {
+      "job_id": "04C",
+      "design_revision": "RC03-INT-R1",
+      "selected": true,
+      "selection": "keyboard_rod_route",
+      "stage": "route",
+      "plate_file": "04C_PETG_keyboard_rod_adapters.3mf",
+      "kit_id": "KIT-TOOL-KB",
+      "recorded_state": "UNRELEASED",
+      "effective_state": "UNRELEASED",
+      "native_qidi_project_status": "MISSING",
+      "missing_prerequisites": [
+        "petg_adapter_profile_calibrated",
+        "keyboard_rod_measured",
+        "adapter_retention_method_selected",
+        "qidi_studio_roundtrip_confirmed"
+      ],
+      "postprint_gate_ids": [
+        "rod_bushing_retention_pass"
+      ],
+      "assembly_gate_ids": [
+        "tool_assembled_motion_pass"
+      ]
+    },
+    {
+      "job_id": "05A",
+      "design_revision": "RC03-INT-R1",
+      "selected": true,
+      "selection": "required",
+      "stage": "first_article",
+      "plate_file": "05A_TPU_phone_tip_first_article.3mf",
+      "kit_id": "KIT-PHONE",
+      "recorded_state": "UNRELEASED",
+      "effective_state": "UNRELEASED",
+      "native_qidi_project_status": "MISSING",
+      "missing_prerequisites": [
+        "tpu_profile_calibrated",
+        "qidi_studio_roundtrip_confirmed"
+      ],
+      "postprint_gate_ids": [
+        "phone_tpu_retention_coupon_pass"
+      ],
+      "assembly_gate_ids": []
+    },
+    {
+      "job_id": "05B",
+      "design_revision": "RC03-INT-R1",
+      "selected": true,
+      "selection": "required",
+      "stage": "production",
+      "plate_file": "05B_TPU_phone_tips_and_spares.3mf",
+      "kit_id": "KIT-PHONE",
+      "recorded_state": "UNRELEASED",
+      "effective_state": "UNRELEASED",
+      "native_qidi_project_status": "MISSING",
+      "missing_prerequisites": [
+        "tpu_profile_calibrated",
+        "phone_tpu_retention_coupon_pass",
+        "qidi_studio_roundtrip_confirmed"
+      ],
+      "postprint_gate_ids": [
+        "phone_tpu_batch_postprint_pass"
+      ],
+      "assembly_gate_ids": [
+        "phone_fixture_assembly_pass"
+      ]
+    },
+    {
+      "job_id": "05C",
+      "design_revision": "RC03-INT-R1",
+      "selected": true,
+      "selection": "keyboard_rod_route",
+      "stage": "first_article",
+      "plate_file": "05C_TPU_keyboard_tip_first_article.3mf",
+      "kit_id": "KIT-TOOL-KB",
+      "recorded_state": "UNRELEASED",
+      "effective_state": "UNRELEASED",
+      "native_qidi_project_status": "MISSING",
+      "missing_prerequisites": [
+        "tpu_profile_calibrated",
+        "keyboard_rod_measured",
+        "qidi_studio_roundtrip_confirmed"
+      ],
+      "postprint_gate_ids": [
+        "keyboard_tpu_retention_coupon_pass"
+      ],
+      "assembly_gate_ids": []
+    },
+    {
+      "job_id": "05D",
+      "design_revision": "RC03-INT-R1",
+      "selected": true,
+      "selection": "keyboard_rod_route",
+      "stage": "production",
+      "plate_file": "05D_TPU_keyboard_tips_and_spares.3mf",
+      "kit_id": "KIT-TOOL-KB",
+      "recorded_state": "UNRELEASED",
+      "effective_state": "UNRELEASED",
+      "native_qidi_project_status": "MISSING",
+      "missing_prerequisites": [
+        "tpu_profile_calibrated",
+        "keyboard_rod_measured",
+        "keyboard_tpu_retention_coupon_pass",
+        "qidi_studio_roundtrip_confirmed"
+      ],
+      "postprint_gate_ids": [
+        "keyboard_tpu_batch_postprint_pass"
+      ],
+      "assembly_gate_ids": [
+        "tool_assembled_motion_pass"
+      ]
+    },
+    {
+      "job_id": "06",
+      "design_revision": "RC03-INT-R1",
+      "selected": false,
+      "selection": "camera_mast_optional",
+      "stage": "diagnostic",
+      "plate_file": "06_ASA_mast_fit_tests.3mf",
+      "kit_id": "KIT-MAST",
+      "recorded_state": "UNRELEASED",
+      "effective_state": "NOT_SELECTED",
+      "native_qidi_project_status": "NOT_REQUIRED",
+      "missing_prerequisites": [
+        "fixed_camera_fallback_architecture_released",
+        "asa_profile_calibrated"
+      ],
+      "postprint_gate_ids": [
+        "asa_mast_socket_coupon_pass",
+        "asa_m5_nut_coupon_pass",
+        "asa_m5_clearance_coupon_pass"
+      ],
+      "assembly_gate_ids": []
+    },
+    {
+      "job_id": "07A",
+      "design_revision": "RC03-INT-R1",
+      "selected": false,
+      "selection": "camera_mast_optional",
+      "stage": "first_article",
+      "plate_file": "07A_ASA_mast_foot_first_article.3mf",
+      "kit_id": "KIT-MAST",
+      "recorded_state": "UNRELEASED",
+      "effective_state": "NOT_SELECTED",
+      "native_qidi_project_status": "MISSING",
+      "missing_prerequisites": [
+        "fixed_camera_fallback_architecture_released",
+        "asa_profile_calibrated",
+        "asa_mast_socket_coupon_pass",
+        "asa_m5_nut_coupon_pass",
+        "asa_m5_clearance_coupon_pass",
+        "qidi_studio_roundtrip_confirmed"
+      ],
+      "postprint_gate_ids": [
+        "mast_foot_first_article_pass"
+      ],
+      "assembly_gate_ids": []
+    },
+    {
+      "job_id": "07B",
+      "design_revision": "RC03-INT-R1",
+      "selected": false,
+      "selection": "camera_mast_optional",
+      "stage": "optional",
+      "plate_file": "07B_ASA_mast_foot_second.3mf",
+      "kit_id": "KIT-MAST",
+      "recorded_state": "UNRELEASED",
+      "effective_state": "NOT_SELECTED",
+      "native_qidi_project_status": "MISSING",
+      "missing_prerequisites": [
+        "fixed_camera_fallback_architecture_released",
+        "asa_profile_calibrated",
+        "asa_mast_socket_coupon_pass",
+        "asa_m5_nut_coupon_pass",
+        "asa_m5_clearance_coupon_pass",
+        "mast_foot_first_article_pass",
+        "qidi_studio_roundtrip_confirmed"
+      ],
+      "postprint_gate_ids": [
+        "mast_second_foot_postprint_pass"
+      ],
+      "assembly_gate_ids": [
+        "mast_pair_installation_pass"
+      ]
+    }
+  ]
+}

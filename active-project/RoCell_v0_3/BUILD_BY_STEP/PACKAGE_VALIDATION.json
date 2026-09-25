@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "design_revision": "RC03-INT-R1",
+  "status": "PASS",
+  "physical_release": "UNRELEASED",
+  "package_definition_hash": "7a6947f2de52f63133c5b9647b9b479ccd9d896906c2b575e76c106e1e5dccca",
+  "canonical_snapshot_hash": "05d11599e6d4a2937e0207535b298aa809ff08c79840350c7716666ce6d12755",
+  "canonical_input_hash": "05d11599e6d4a2937e0207535b298aa809ff08c79840350c7716666ce6d12755",
+  "step_count": 16,
+  "assembly_panel_count": 15,
+  "print_job_count": 24,
+  "print_job_single_owner": true,
+  "canonical_artifact_coverage": {
+    "stl": {
+      "expected": 33,
+      "referenced": 33
+    },
+    "step": {
+      "expected": 34,
+      "referenced": 34
+    },
+    "print_plate": {
+      "expected": 24,
+      "referenced": 24
+    },
+    "print_sidecar": {
+      "expected": 24,
+      "referenced": 24
+    },
+    "print_settings": {
+      "expected": 24,
+      "referenced": 24
+    },
+    "qidi_process_profile": {
+      "expected": 9,
+      "referenced": 9
+    },
+    "job_card": {
+      "expected": 24,
+      "referenced": 24
+    },
+    "drawing": {
+      "expected": 6,
+      "referenced": 6
+    },
+    "fiducial": {
+      "expected": 18,
+      "referenced": 18
+    },
+    "assembly_panel": {
+      "expected": 15,
+      "referenced": 15
+    }
+  },
+  "canonical_files_are_links_not_copies": true,
+  "local_stl_copies_verified": 118,
+  "operator_evidence_preserved_on_regeneration": true,
+  "readiness_summary": {
+    "ready": 5,
+    "waiting": 15,
+    "not_selected": 4,
+    "total_jobs": 24
+  },
+  "errors": [],
+  "warnings": [
+    "The fixed-mast camera fallback is not selected. Step 13 still requires a controlled, released arm-mounted architecture; do not infer or improvise a support from the fallback files.",
+    "Board fastener selections remain physically unresolved for: KBL-HOLD-F, KBL-HOLD-R, KBL-CLAMP, KBR-HOLD-F, KBR-HOLD-R, KBR-CLAMP, PT-HOLD-TCP, PT-HOLD-R1, PT-HOLD-R2"
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "schema": "rocell.usb_presence_development_build.v1",
+  "date": "2026-09-09",
+  "configuration": "x64 Release",
+  "compiler": "MSVC 19.42.34435.0",
+  "windows_sdk": "10.0.22621.0",
+  "production_executed": false,
+  "runtime_qualified": false,
+  "physical_authority": false,
+  "verification": {
+    "ctest_groups_passed": 3,
+    "duration_seconds": 6.53,
+    "scope": "Separately linked incapable native, wire and admission tests only. Not Job/M1/device qualification."
+  },
+  "sources": {
+    "CMakeLists.txt": "7969bdbd4407957811b825faabbf20a174b67d813491f9b78eb741b2f9aaaea2",
+    "entry.cpp": "2d00ada6f62536bc0647db08c8b85e7481bbce03b07be06eeaeb2f62b7fb03d4",
+    "fixture_api.h": "f6fc2781222713037fe8642af5212d60529cf93129de3644e8fc0008b44c7495",
+    "fixture_main.cpp": "0f5e0b6c53beb19aa0da9b41aa1ea2c62fe2cfca5c22588e0aa80ae1ab9317d0",
+    "main.cpp": "bf96560748b01684e4c6888a8a038c4bcdcad986884856fb693b02f9809eaac1",
+    "presence.cpp": "c86589ac1d6df90464b36bed5a67bff9d8e6ec2f0d26061300d5f7e9c49bf6b2",
+    "presence.h": "7e485bac19683688f9af79b7f3ef16038f87111ecceac3999a29e796ef3f5ef6",
+    "tests.cpp": "f94ff1c34c4725f5497918d34449ae18ac53be140681c81c541adfe39c610d49",
+    "windows_api.cpp": "f97f70267f8950bc1ffa655c6cb5b0991cca0393b0a8d1123004d10ff72ff5d0",
+    "windows_api.h": "03e4c40172852a08397267081e70164bcf2c1c5c353d8151ffaca04c5e29c990",
+    "../windows_usb_identity/admission.cpp": "73307d377de8258d00f0173e3d97feeee77de1e586503250f7acdb0f618c6b24",
+    "../windows_usb_identity/admission.h": "ef44380e4aeea889c4e27ac73da1ae5655c4a85818ee70a291f5fc1bb117d17d"
+  },
+  "artifacts": {
+    "build/Release/rocell_usb_presence_entry_tests.exe": "6e98572194a04d82b4e79d22c8ba63f9afd08ad5044d70a34d4c2b35aefc9739",
+    "build/Release/rocell_usb_presence_tests.exe": "f2b6aa8127bd57a5c6f88e333d263d4c8ccd309315f7611407a18c1f1bb7c68c",
+    "build/Release/rocell_windows_usb_presence.exe": "98e997b09f3343dd20caa1da4391bb19556ad212be6b2128e858ec32167fec4c"
+  },
+  "historical_usb_identity_build_record_sha256": "5e570a8d583eff9b8cb663a02f37bbcc15a0e915cee747b8bbe7785e3441135a"
+}

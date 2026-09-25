@@ -1,0 +1,108 @@
+{
+  "schema_version": 2,
+  "design_revision": "RC02-PRO-R1",
+  "job_id": "00F",
+  "plate_file": "00F_PETG_calibration_profile_clearance_test.3mf",
+  "printer": {
+    "model": "QIDI Plus4",
+    "nominal_build_volume_mm": [
+      305.0,
+      305.0,
+      280.0
+    ],
+    "safe_plate_envelope_mm": [
+      295.0,
+      295.0,
+      280.0
+    ],
+    "edge_margin_mm": 5.0,
+    "default_nozzle_mm": 0.4
+  },
+  "stage": "diagnostic",
+  "selection": "required",
+  "purpose": "M4 clearance and washer verification using the exact fine-layer calibration-puck profile",
+  "parts": {
+    "hardware_fit_gauge.stl": 1,
+    "m4_washer_fit_gauge.stl": 1
+  },
+  "prerequisites": [
+    "plus4_machine_confirmed",
+    "nozzle_0p4_confirmed",
+    "petg_calibration_profile_calibrated"
+  ],
+  "process_profile_name": "petg_calibration_0p4",
+  "process_profile": {
+    "material": "PETG",
+    "nozzle_mm": 0.4,
+    "layer_height_mm": 0.16,
+    "walls": 4,
+    "top_layers": 6,
+    "bottom_layers": 6,
+    "infill_percent": 40,
+    "infill_pattern": "gyroid",
+    "supports": "off",
+    "bed_adhesion": "Skirt normally sufficient on clean textured PEI",
+    "dimensional_controls": "Do not enable ironing over the crosshair or central divot",
+    "purpose": "TCP calibration puck"
+  },
+  "slicer_warning": "Use a calibrated QIDI Studio filament preset for the exact brand and material; temperatures are deliberately not embedded in geometry-only 3MF files.",
+  "geometry_only_3mf": true,
+  "qidi_studio_native_project_required": true,
+  "qidi_studio_roundtrip_gate": "qidi_studio_roundtrip_confirmed",
+  "plate_envelope_mm": [
+    160.0,
+    70.0,
+    6.0
+  ],
+  "absolute_bed_bounds_mm": {
+    "min": [
+      72.5,
+      117.5,
+      0.0
+    ],
+    "max": [
+      232.5,
+      187.5,
+      6.0
+    ]
+  },
+  "centered_on_nominal_bed": true,
+  "source_stl_sha256": {
+    "hardware_fit_gauge.stl": "beb9ecb2cd3b6020c998dc74d284e7639af7ac7b5040f7ab857d9c3fc3212c26",
+    "m4_washer_fit_gauge.stl": "8594207f90b7b1e08a7e91e665fcc29d9a92100835ad2fed3fa172585cb4d08f"
+  },
+  "process_profile_sha256": "8bfef01f473a15368eb72901b0b8e472315afb089b489388fd077fff02eb0a06",
+  "plate_sha256": "0038168c44cd1e614ce979d368855489c8852ba79b2a0565fcccbddffe700cd3",
+  "objects": [
+    {
+      "name": "hardware_fit_gauge_1",
+      "bounds_mm": [
+        [
+          72.5,
+          117.5,
+          0.0
+        ],
+        [
+          232.5,
+          147.5,
+          6.0
+        ]
+      ]
+    },
+    {
+      "name": "m4_washer_fit_gauge_1",
+      "bounds_mm": [
+        [
+          72.5,
+          157.5,
+          0.0
+        ],
+        [
+          150.5,
+          187.5,
+          6.0
+        ]
+      ]
+    }
+  ]
+}

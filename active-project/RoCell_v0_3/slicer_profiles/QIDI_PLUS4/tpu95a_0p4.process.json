@@ -1,0 +1,83 @@
+{
+  "from": "User",
+  "inherits": "0.16mm High Quality @XPlus4",
+  "name": "RC03 TPU 95A Contact Tips 0.16",
+  "print_settings_id": "RC03 TPU 95A Contact Tips 0.16",
+  "version": "2.7.2.60",
+  "compatible_printers": [
+    "X-Plus 4 0.4 nozzle"
+  ],
+  "layer_height": "0.16",
+  "initial_layer_print_height": "0.2",
+  "wall_loops": "3",
+  "top_shell_layers": "5",
+  "bottom_shell_layers": "5",
+  "sparse_infill_density": "100%",
+  "sparse_infill_pattern": "rectilinear",
+  "outer_wall_speed": [
+    "30"
+  ],
+  "inner_wall_speed": [
+    "45"
+  ],
+  "sparse_infill_speed": [
+    "45"
+  ],
+  "internal_solid_infill_speed": [
+    "40"
+  ],
+  "top_surface_speed": [
+    "30"
+  ],
+  "bridge_speed": [
+    "20"
+  ],
+  "gap_infill_speed": [
+    "30"
+  ],
+  "initial_layer_speed": [
+    "20"
+  ],
+  "initial_layer_infill_speed": [
+    "25"
+  ],
+  "travel_speed": [
+    "250"
+  ],
+  "default_acceleration": [
+    "2000"
+  ],
+  "travel_acceleration": [
+    "3500"
+  ],
+  "initial_layer_travel_acceleration": [
+    "1500"
+  ],
+  "initial_layer_acceleration": [
+    "300"
+  ],
+  "outer_wall_acceleration": [
+    "800"
+  ],
+  "inner_wall_acceleration": [
+    "1200"
+  ],
+  "top_surface_acceleration": [
+    "800"
+  ],
+  "enable_support": "0",
+  "ironing_type": "no ironing",
+  "brim_type": "outer_only",
+  "brim_width": "3",
+  "brim_object_gap": "0.1",
+  "skirt_loops": "0",
+  "enable_prime_tower": "0",
+  "xy_hole_compensation": "0",
+  "xy_contour_compensation": "0",
+  "elefant_foot_compensation": "0.1",
+  "seam_position": "aligned",
+  "enable_arc_fitting": "1",
+  "resolution": "0.012",
+  "print_sequence": "by layer",
+  "fuzzy_skin": "none"
+}

@@ -1,0 +1,47 @@
+{
+  "schema": "rocell.windows_camera_development_build.v1",
+  "record_status": "HISTORICAL_SUPERSEDED",
+  "superseded_by": "integrated_build_manifest.json",
+  "source_scope_note": "This pre-identity record is preserved historically. Its source/CMake/executable hashes do not represent the integrated current build or runtime registration.",
+  "recorded_date": "2026-09-07",
+  "protocol_schema": "rocell.windows_camera.v1",
+  "provider_version": "0.1.0",
+  "architecture": "windows-x64",
+  "configuration": "Release",
+  "cmake_version": "3.31.3",
+  "compiler": "MSVC 19.42.34435.0",
+  "msvc_tool_directory_version": "14.42.34433",
+  "windows_sdk_version": "10.0.22621.0",
+  "executable_relative_path": "build/Release/rocell_windows_camera.exe",
+  "executable_sha256": "7868953ce435012a6a8f923b944c2dc111146db486f253907cfa81bc540de4b7",
+  "source_sha256": {
+    "camera_worker.cpp": "39d49d8609764a93860cc886a8caba8dfcfbefb6294a13971d369403f78c12e2",
+    "CMakeLists.txt": "b62f0e49ff9ac627eb8e2b5c33ad9377c1acf049453d9bd8c98d56091fc9c128"
+  },
+  "build_result": "COMPILED_WITH_WARNINGS_AS_ERRORS",
+  "native_self_test": {
+    "result": "PASSED",
+    "ctest_tests_passed": 1,
+    "pure_contract_assertions": 12,
+    "com_or_media_foundation_initialized": false,
+    "device_operations": 0
+  },
+  "python_worker_fixture_tests": {
+    "result": "PASSED",
+    "passed": 52,
+    "native_processes_started": 0,
+    "device_operations": 0
+  },
+  "mypy_boundary_check": "PASSED",
+  "black_boundary_check": "PASSED",
+  "received_B0477_verification": "NOT_RUN",
+  "instrumented_native_driver_fault_qualification": "NOT_RUN",
+  "byte_identical_cross_machine_reproducibility": "NOT_RUN",
+  "trusted_release_registration": false,
+  "physical_authority": "NONE",
+  "notes": [
+    "This is a dated local development build record, not an activation permit or signed release.",
+    "Any source/build change requires a new executable hash and reviewed registration.",
+    "No native inventory, probe, capture, control write or camera activation was run."
+  ]
+}

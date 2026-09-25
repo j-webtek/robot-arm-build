@@ -1,0 +1,1002 @@
+{
+  "schema_version": 1,
+  "design_revision": "RC03-INT-R1",
+  "package_directory": "BUILD_BY_STEP",
+  "orientation": {
+    "origin": "front-left corner of the finished board top",
+    "+x": "right",
+    "+y": "rear, toward the arm",
+    "+z": "up",
+    "front_rule": "Keep the FRONT edge and +Y/rear arrow visible before placing any station, tag, or device."
+  },
+  "steps": [
+    {
+      "id": "00",
+      "slug": "preflight_and_print_qualification",
+      "operator_folder": "00 - Measure Hardware and Print Approved Parts",
+      "operator_title": "Measure Hardware and Print Approved Parts",
+      "title": "Preflight, measurement, print qualification, and kitting",
+      "purpose": "Measure the real hardware, qualify each exact material/profile, print only released jobs, and stage accepted parts before touching the finished board.",
+      "expected_result": "All required coupons, first articles, production parts, hardware kits, and native QIDI Studio records are accepted and traceable.",
+      "panel": null,
+      "prerequisite_steps": [],
+      "input_gates": ["plus4_machine_confirmed"],
+      "completion_gates": [
+        "nozzle_0p4_confirmed",
+        "abs_rapido_general_profile_calibrated",
+        "abs_rapido_tray_profile_calibrated",
+        "abs_rapido_cradle_profile_calibrated",
+        "abs_rapido_precision_profile_calibrated",
+        "petg_adapter_profile_calibrated",
+        "abs_rapido_calibration_profile_calibrated",
+        "tpu_profile_calibrated",
+        "keyboard_dimensions_measured",
+        "phone_dimensions_measured",
+        "phone_side_features_measured",
+        "phone_cable_measured",
+        "phone_no_go_clearance_limit_approved",
+        "phone_tpu_retention_limits_approved",
+        "tag_stock_measured",
+        "camera_mount_interface_measured",
+        "keyboard_corner_coupon_pass",
+        "keyboard_station_registration_coupon_pass",
+        "tray_clearance_holes_coupon_pass",
+        "phone_width_coupon_pass",
+        "phone_station_registration_coupon_pass",
+        "phone_m4_captive_nut_coupon_pass",
+        "phone_station_m3_insert_coupon_pass",
+        "cable_tie_saddle_coupon_pass",
+        "cradle_m4_washer_coupon_pass",
+        "general_clearance_holes_coupon_pass",
+        "setup_hardware_coupon_pass",
+        "calibration_clearance_holes_coupon_pass",
+        "tag_artwork_scale_pass",
+        "board_setup_template_scale_pass",
+        "geometry_matches_measurements",
+        "qidi_studio_roundtrip_confirmed",
+        "keyboard_station_pair_postprint_pass",
+        "keyboard_clamps_postprint_pass",
+        "phone_tcp_station_postprint_pass",
+        "phone_clamp_rail_first_article_pass",
+        "phone_tpu_batch_postprint_pass",
+        "tag_application_tool_postprint_pass",
+        "calibration_puck_datum_pass"
+      ],
+      "completion_requires_any_route": ["phone_stylus_route", "keyboard_rod_route"],
+      "conditional_completion_gates": {
+        "phone_stylus_route": ["tool_force_tcp_limits_approved", "gripper_interface_measured", "spring_dimensions_measured", "gripper_coupon_pass", "spring_fit_coupon_pass", "compliant_tool_m3_insert_coupon_pass", "precision_m3_head_coupon_pass", "tool_body_postprint_pass", "stylus_diameter_measured", "stylus_gauge_coupon_pass", "adapter_retention_method_selected", "stylus_collar_retention_pass"],
+        "keyboard_rod_route": ["tool_force_tcp_limits_approved", "gripper_interface_measured", "spring_dimensions_measured", "gripper_coupon_pass", "spring_fit_coupon_pass", "compliant_tool_m3_insert_coupon_pass", "precision_m3_head_coupon_pass", "tool_body_postprint_pass", "keyboard_rod_measured", "adapter_retention_method_selected", "rod_bushing_retention_pass", "keyboard_tpu_retention_coupon_pass", "keyboard_tpu_batch_postprint_pass"],
+        "camera_mast_optional": ["fixed_camera_fallback_architecture_released", "petg_general_profile_calibrated", "camera_plate_hardware_pass", "asa_profile_calibrated", "asa_mast_socket_coupon_pass", "asa_m5_nut_coupon_pass", "asa_m5_clearance_coupon_pass", "mast_foot_first_article_pass", "mast_second_foot_postprint_pass"]
+      },
+      "print_action": "produce_here",
+      "print_jobs": ["00A", "00B", "00C", "00D", "00E", "00F", "01", "02", "03A", "03B", "03C1", "03C2", "03C3", "03D", "04A", "04B", "04C", "05A", "05B", "05C", "05D", "06", "07A", "07B"],
+      "required_inputs": [
+        "QIDI Plus4 with the installed 0.4 mm nozzle physically verified",
+        "Dry, identified QIDI ABS Rapido for active rigid jobs, an identified PETG lot for adapter jobs 00D/04B/04C, and an identified TPU lot for jobs 05A-05D; PETG general and ASA are additionally required only if the optional fixed-mast fallback is formally released",
+        "Actual keyboard, phone/case, cable, camera, RoArm gripper, spring, pins, inserts, nuts, screws, washers, and selected tool-route hardware",
+        "One selected board drill guide: output/pdf/RC03_BOARD_DRILL_GUIDE_LETTER_1TO1.pdf for a tiled Letter-size print or output/pdf/RC03_BOARD_DRILL_GUIDE_24X36_FULL_SIZE_1TO1.pdf for a single 24 x 36 inch sheet, printed at Actual Size / 100 percent, plus a steel rule and scale-control evidence photos",
+        "Responsible engineering approval records for phone clearance/TPU retention and every selected tool route; operators may not invent limits",
+        "Digital calipers, flatness tools, low-range torque driver, and an evidence folder",
+        "A selected tool route plus an explicit camera decision: camera_mast_optional means the independent fixed eye-to-hand fallback only, never the intended arm-mounted route; selection records scope but the fixed_camera_fallback_architecture_released gate still controls all fallback printing"
+      ],
+      "hardware": [
+        {"type": "Printer", "qty": "1", "item": "QIDI Plus4", "condition": "305 x 305 x 280 mm nominal; physically verify the provisional 295 x 295 x 275 mm protected envelope before production printing"},
+        {"type": "Tool", "qty": "1", "item": "Digital calipers", "condition": "Record tool ID and measure only after parts cool"},
+        {"type": "Tool", "qty": "1", "item": "Straightedge and feeler gauges", "condition": "Required for board and station flatness"},
+        {"type": "Tool", "qty": "1", "item": "Low-range torque driver", "condition": "Must cover the controlled station-retainer range"},
+        {"type": "Material", "qty": "By job", "item": "QIDI ABS Rapido, PETG adapter filament, TPU, and optional fixed-mast PETG/ASA", "condition": "Use the exact job-card profile; track brand, lot, drying record, and saved profile revision"},
+        {"type": "Storage", "qty": "8 kits", "item": "Labeled job/assembly kits", "condition": "Use JOB_KITS.csv; segregate INSTALL, SPARE, HOLD, and REJECT"}
+      ],
+      "procedure": [
+        "Phase 00.1 — Decide and initialize: read PRINT_READINESS.md; select one or both tool routes; record camera_mast_optional only as the independent fixed-mast fallback qualification scope, not as the intended arm-camera route or print authorization; run `python scripts/set_active_build.py --build-id YYYY-MM-DD_CELL-A`, regenerate this package, then run `python scripts/initialize_step_evidence.py --step 00` exactly once before recording any measurement or QIDI file.",
+        "Phase 00.2 — Measure real hardware before diagnostics: record the exact keyboard; phone/case; side buttons, camera bump, glass edge, and cable/connector envelope; camera mount and blind-thread depth; RoArm gripper; spring; pins; inserts; nuts; screws; washers; board blank; factory clamp footprint; material lots; nozzle; printer; and measurement-tool IDs in the active-build evidence and canonical measurement workflow. First set the required shared context with `python scripts/record_print_measurement.py --context operator=NAME --context date=YYYY-MM-DD --context printer_serial=SERIAL --context measurement_tool_id=CALIPER_ID --context \"evidence_directory=BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_HERE\" --context qidi_studio_version=VERSION`, replacing every uppercase placeholder. Obtain responsible engineering approval IDs for the phone no-go margin, phone TPU proof, and every selected tool-route proof before accepting dependent measurements or coupons.",
+        "Phase 00.2A — Select one board drill guide: use output/pdf/RC03_BOARD_DRILL_GUIDE_LETTER_1TO1.pdf for a normal Letter printer, or output/pdf/RC03_BOARD_DRILL_GUIDE_24X36_FULL_SIZE_1TO1.pdf only when a print shop can produce one true 24 x 36 inch sheet. Do not combine pages from the two guides. For the Letter guide, pages 1-3 are reference pages marked not for drilling and pages 4-12 are the nine 1:1 tiles; print one-sided, at Actual Size / 100 percent, with no Fit, Shrink, Crop, borderless enlargement, or duplex option. Assemble the 3 x 3 field with the printed 12 mm overlaps and matching registration IDs; never butt paper edges or printer margins. For the full-size guide, print the single page at Actual Size / 100 percent on 24 x 36 inch media without scaling. Measure the independent X and Y 100 mm controls on every physical drilling sheet with a steel rule; each must measure 100.0 +/- 0.2 mm. Verify all matching registration marks on a tiled guide, or the board-edge/orientation controls on the full-size guide. Save ruler and registration/edge photos in the active-build Step 00 evidence folder. From the project root, set `$guidePath=\"output/pdf/RC03_BOARD_DRILL_GUIDE_LETTER_1TO1.pdf\"` or the full-size path, then run `$guideHash=(Get-FileHash $guidePath -Algorithm SHA256).Hash.ToLowerInvariant(); $layoutHash=(Get-FileHash config/workcell_layout.json -Algorithm SHA256).Hash.ToLowerInvariant()` and `python scripts/record_print_measurement.py --gate board_setup_template_scale_pass --status PASS --value template_revision=RC03-INT-R1 --value \"selected_guide_path=$guidePath\" --value \"selected_guide_sha256=$guideHash\" --value \"source_layout_sha256=$layoutHash\" --value x_scale_bar_mm=100.0 --value y_scale_bar_mm=100.0 --value \"page_scaling_setting=Actual Size / 100 percent\" --value all_sheet_registration_marks_result=PASS --evidence-note \"Step 00 evidence: ruler and registration/edge photos for the selected drill guide\"`, replacing both numeric values with the actual worst-case readings. A scale-control PASS checks print scale only; it is not a released hand-transfer position tolerance and does not replace the independent center audit or full station dry fit in Step 01.",
+        "Phase 00.3 — Print diagnostics first: print required jobs 00A, 00B, 00C, 00E, and 00F in order with the exact profile on each job card. Print job 00D only when `phone_stylus_route` is explicitly selected. The as-built 00B nut and cable-saddle features are superseded screening evidence and do not qualify the revised interfaces.",
+        "Phase 00.3A — Print Job 03C1 before Job 03A: after its listed prerequisites pass, print the small production-equivalent phone rail. On the loose rail, bench-qualify both redesigned captive-nut seats with the actual M4 nuts and screws, then feed the adopted nominal 4.8 mm tie around the actual USB cable through the 5.6 x 2.2 mm saddle. This is the authorized production first-article path; no separate replacement nut or tie coupon is required.",
+        "Save every diagnostic native QIDI project and layer-preview capture inside the Step 00 build-ID evidence folder. The canonical --qidi-job recording option is reserved for non-diagnostic release jobs.",
+        "Measure every coupon objectively and record raw values, units, instrument IDs, and evidence. If an accepted selection changes geometry, apply the controlled override and regenerate CAD, drawings, plates, readiness, tracker, job cards, and this step package.",
+        "Record and transfer the seam round-socket diameter, seam radial-slot width, phone-station M3 pocket diameter, and compliant-tool M3 pocket diameter independently. If any accepted value is not represented by its dedicated CAD parameter, stop and regenerate before production.",
+        "Phase 00.4 — Validate release: run the readiness validator after all measurement updates. A geometry-only 3MF and a digitally valid package are not permission to print a WAITING or NOT_SELECTED job.",
+        "Phase 00.5 — Slice and print released jobs: open each READY plate in QIDI Studio at 100 percent scale; do not auto-orient, globally scale, merge, or alter the object count.",
+        "Save the native QIDI Studio project and record QIDI version, profile revision, object count, critical layer-preview acceptance, mass, time, and project hash before starting the printer.",
+        "Print first articles before dependent production jobs: Job 03C1 before Job 03A, master before slave, first TPU tip before its batch, and mast first article before an optional second foot.",
+        "Phase 00.6 — Inspect and kit: cool, inspect, measure, label, and kit accepted parts. Quarantine anything warped, cracked, bridged shut, dimensionally out of limit, or untraceable.",
+        "Reconcile every accepted part, spare, fastener, device, and tool against JOB_KITS.csv, then confirm every Step 01-15 kit is staged before board fabrication begins."
+      ],
+      "acceptance": [
+        {"test_id": "00-A", "criterion": "Every selected job is READY before print", "method": "Run validate_print_readiness.py and retain PRINT_READINESS.json", "limit": "No selected job may be WAITING", "gate_id": "qidi_studio_roundtrip_confirmed", "evidence": "Readiness report plus native QIDI project records"},
+        {"test_id": "00-B", "criterion": "All required fits use the matching production profile or production-equivalent first article", "method": "Check the actual hardware in its controlled diagnostic or Job 03C1 production interface", "limit": "Every required coupon gate is PASS and every selected value is regenerated into CAD", "gate_id": "geometry_matches_measurements", "evidence": "Raw observations, photos, selected values, and first-article identity"},
+        {"test_id": "00-C", "criterion": "Printed parts are accepted and kitted", "method": "Count, inspect, label, and reconcile against JOB_KITS.csv", "limit": "No missing required part, spare, or traceability record", "gate_id": "keyboard_station_pair_postprint_pass", "evidence": "Signed job cards and kit photos"},
+        {"test_id": "00-D", "criterion": "One named board drill guide is printed at verified 1:1 scale and remains traceable", "method": "Print either the nine Letter drilling tiles or the single 24 x 36 inch guide at Actual Size / 100 percent; measure the independent X and Y 100 mm controls on every physical drilling sheet; verify every matching tiled registration mark or the full-size board-edge/orientation controls; record the selected path plus guide and source-layout SHA-256 values", "limit": "Every X and Y control is 100.0 +/- 0.2 mm, all applicable registration/edge controls agree, and the recorded path and hashes match the exact files used; this scale check alone does not release hole positions", "gate_id": "board_setup_template_scale_pass", "evidence": "Ruler photos for every drilling sheet, registration/edge photos, selected guide path, print settings, revision, guide SHA-256, and source-layout SHA-256"}
+      ],
+      "extra_files": [
+        {"path": "PRINT_PLAN.csv", "role": "manufacturing control", "action": "read"},
+        {"path": "PLATE_MANIFEST.csv", "role": "plate control", "action": "verify"},
+        {"path": "PART_VALIDATION.csv", "role": "geometry control", "action": "verify"},
+        {"path": "PRINT_ENHANCEMENT_PLAN.md", "role": "per-job guidance", "action": "read"},
+        {"path": "drawings/documentation_sync.json", "role": "generated documentation/layout synchronization record", "action": "verify"},
+        {"path": "JOB_CARDS.pdf", "role": "print travelers", "action": "complete"},
+        {"path": "images/parts_montage.png", "role": "visual inventory", "action": "inspect"},
+        {"path": "output/pdf/RC03_BOARD_DRILL_GUIDE_LETTER_1TO1.pdf", "role": "friendly tiled Letter-size 1:1 board drill guide", "action": "print_or_verify"},
+        {"path": "output/pdf/RC03_BOARD_DRILL_GUIDE_24X36_FULL_SIZE_1TO1.pdf", "role": "friendly single-sheet 24 x 36 inch 1:1 board drill guide", "action": "print_or_verify"},
+        {"path": "drawings/board_drill_template_letter_1to1.pdf", "role": "legacy compatibility alias of the friendly Letter-size guide", "action": "reference_only"},
+        {"path": "outputs/*/PRINT_COMPATIBILITY_WORKBOOK.xlsx", "role": "operator workbook", "action": "use"}
+      ],
+      "stop_gate": "Do not fabricate the board or install a station while any required core job is WAITING, any first article is unaccepted, any actual-device measurement is missing, or any independently selected coupon value is not represented by its dedicated CAD parameter.",
+      "handoff": [
+        "All core parts are accepted, labeled, and assigned to their step kits.",
+        "The retained 00A seam coupon remains with the keyboard master kit.",
+        "The accepted 00B phone-width, locator, M3-insert, and washer results remain with the phone/TCP kit; the failed 00B nut and cable-saddle objects remain labeled as superseded evidence.",
+        "The accepted Job 03C1 rail and its captive-nut and wide-tie evidence remain with the phone/TCP kit.",
+        "Every selected job has a native QIDI Studio evidence record."
+      ]
+    },
+    {
+      "id": "01",
+      "slug": "prepare_board",
+      "operator_folder": "01 - Seal Mark and Drill the Board",
+      "operator_title": "Seal Mark and Drill the Board",
+      "title": "Prepare and drill the structural board",
+      "purpose": "Create the flat, sealed, accurately indexed structural board using only a 1:1 paper template, hand drill, guides, and depth stops.",
+      "expected_result": "A cured 610 x 457 x 18 mm board with four blind locator interfaces and nine qualified M4 anchor interfaces, all inspected and labeled.",
+      "panel": "output/assembly_guide/images/01_prepare_board.png",
+      "prerequisite_steps": ["00"],
+      "input_gates": ["keyboard_station_pair_postprint_pass", "phone_tcp_station_postprint_pass", "board_setup_template_scale_pass", "geometry_matches_measurements"],
+      "completion_gates": ["board_fabrication_pass"],
+      "print_action": "consume_accepted_output",
+      "print_jobs": ["00A", "00B", "01", "02", "03A"],
+      "required_inputs": [
+        "Accepted keyboard master/slave and phone/TCP stations for the full dry fit",
+        "610 x 457 x 18 mm board blank cut to final size; it may be unsealed, or already sealed equally on both faces and fully cured",
+        "Step-00 accepted copy of exactly one friendly 1:1 drill guide: the correctly overlapped nine-tile Letter guide or the single-sheet 24 x 36 inch guide, with its recorded path, hashes, print settings, and scale-control evidence",
+        "drawings/board_hole_coordinates.csv available for an independent left/front and right/rear edge-distance audit of all thirteen centers",
+        "Four selected 6 mm pins and nine board anchors qualified in an 18 mm cutoff",
+        "Hand drill, square drilling guide, awl/transfer punch, brad-point bit, pilot/anchor bits, and positive depth stops",
+        "Steel rule, 300 mm straightedge, feeler gauges, depth gauge, digital calipers, camera, and low-range torque driver",
+        "Board finish compatible with the selected plywood, applicators, mixing tray, lint-free cleanup supplies, gloves, eye protection, and the ventilation/PPE required by the finish SDS"
+      ],
+      "hardware": [
+        {"type": "Board", "qty": "1", "item": "610 x 457 x 18 mm structural board", "condition": "Birch plywood preferred; finish fully cured and flat"},
+        {"type": "Locator", "qty": "4 + 2 spares", "item": "6 x 20 mm precision dowel pins", "condition": "Final selection comes from the matching 00A/00B coupons"},
+        {"type": "Anchor", "qty": "9 + 3 spares", "item": "M4 board threaded interfaces", "condition": "Bore follows the chosen anchor maker and scrap-board test, not the template circle diameter"},
+        {"type": "Adhesive", "qty": "Small kit", "item": "Slow-cure structural epoxy", "condition": "Locator pins only; use after the complete dry fit passes"},
+        {"type": "Finish", "qty": "As required", "item": "Selected board sealer/finish and applicators", "condition": "Record product, batch, coat/application times, and manufacturer full-cure requirement; apply equally to both faces and every edge"},
+        {"type": "PPE", "qty": "1 set", "item": "Finish-rated gloves, eye protection, and ventilation", "condition": "Follow the selected finish SDS; keep the curing board away from ignition and contamination sources"},
+        {"type": "Tool", "qty": "1 set", "item": "Hand-drill depth-control set", "condition": "Locator bores are blind; prevent underside breakout"},
+        {"type": "Layout", "qty": "1 set", "item": "Flat assembly surface, transparent tape, low-stretch board tape, sharp awl or transfer punch, steel rule, and long straightedge", "condition": "For a tiled guide, overlap adjacent sheets by the printed 12 mm amount and match registration IDs; never butt paper or printer margins"},
+        {"type": "Support", "qty": "6", "item": "Board feet", "condition": "Install after drilling; keep clear of anchors, reinforcement, and clamp load paths"}
+      ],
+      "procedure": [
+        "Inspect the blank for damage. Measure and record the front and rear widths, left and right depths, board thickness near every named locator, both corner-to-corner diagonals, local flatness, and overall bow before layout. Accept only 610.0 +/- 0.5 mm width, 457.0 +/- 0.5 mm depth, and 17.50-18.50 mm thickness. Front/rear widths and left/right depths may differ by no more than 0.50 mm. Compute the expected diagonal from the mean measured width and depth; each diagonal must be within 1.00 mm of that value and the two diagonals must be within 1.00 mm of each other. Reject or obtain a controlled engineering disposition before layout if any limit fails.",
+        "If the board is unsealed, seal both faces and all edges equally and allow the finish to cure fully before taping paper or drilling. If it arrived sealed, verify equal coverage and full cure; do not apply an unnecessary second finish coat.",
+        "Retrieve the exact Step-00 accepted friendly guide and confirm its recorded path and SHA-256. Do not substitute the overview page, schedule page, assembly-map page, legacy alias, or pages from the other guide after acceptance. If a replacement is printed, repeat Step 00 acceptance and record the new exact file hash before use.",
+        "For the Letter guide, use pages 4-12 only as the 1:1 drilling field. On a flat surface, arrange the pages in the printed 3 x 3 map, overlap adjacent sheets by exactly the printed 12 mm zones, and align every duplicated registration mark and ID before taping the seams. Never butt sheet edges or unprinted printer margins; that creates a 12 mm error at one seam and a 24 mm cumulative error across two seams. Pages 1-3 are reference pages and must never be punched or drilled from. Skip this tiled-assembly action when using the accepted one-page 24 x 36 inch guide.",
+        "Before the guide touches the board, remeasure the independent X and Y 100 mm controls on every physical drilling sheet with a steel rule. Both directions on every sheet must be 100.0 +/- 0.2 mm. Reject any page with the wrong scale, missing marks, wrinkling, moisture distortion, stretched tape, or mismatched registration IDs. Scale controls prove print scale only; they are not a released final hole-position tolerance.",
+        "Place the finished guide on the cured board top. Register the board outline, FRONT, +X/right, and +Y/rear without stretching the paper. Confirm the guide's front-left origin sits at the board's front-left corner and that the opposite board edges, orientation arrow, clamp no-drill area, and tag-only symbols agree before taping the guide to the board.",
+        "Using drawings/board_hole_coordinates.csv, independently verify all thirteen feature IDs and centers from two directions: X from the left and right-edge remainder, and Y from the front and rear-edge remainder. Do not average conflicting marks. Stop and correct the guide registration if the paper mark and edge measurements disagree. Pay particular attention to PT-HOLD-R1 and PT-HOLD-R2, whose centers are only 21.2 mm from the right board edge; the selected anchor bore, flange, and installation tool still require physical edge-clearance proof.",
+        "Transfer exactly four blue round locator centers and nine orange square M4 anchor centers with a sharp awl or transfer punch. Do not transfer station outlines, dimensions, registration marks, clamp no-drill shading, or any TAG ONLY / NO DRILL symbol. Photograph the registered guide and all thirteen transferred centers before removing the paper.",
+        "Remove every paper fragment before drilling, then re-audit all thirteen center punches against drawings/board_hole_coordinates.csv. A printed M4 station/CAD passage reference is not a universal final board bore; the nine orange targets authorize center-punching only until FASTENER_MAP.csv is complete for the actual qualified anchor.",
+        "Pilot the four locator centers square using the hand-drill guide and a positive depth stop. At each named locator, record local thickness and set the final 6 mm brad-point operation to 15.00 +/- 0.20 mm while also preserving at least 2.00 mm of local board floor. If both conditions cannot be met, stop instead of accepting a thinner floor or underside breakout.",
+        "Drill the four locator bores only, deburr without enlarging them, measure every actual blind depth, and inspect the underside for breakout before any anchor bore is drilled.",
+        "Complete FASTENER_MAP.csv for all nine M4 interfaces using the actual anchor maker/part, qualified scrap-board result, selected screw length, bore mode, final board bore, bore depth or through condition, install face, pilot diameter, and qualification reference required by the controlled map. Do not leave a required selection blank and do not infer a bit size from the guide artwork.",
+        "Only after the complete fastener map is qualified, drill each of the nine final anchor bores square with the recorded pilot/final bits and depth/through control. Protect the two right-edge phone-rail locations from breakout, veneer splitting, and inadequate flange or tool clearance.",
+        "Install temporary anchors and pins; dry-fit all three stations, all nine retainers, the seam, and the rail-sharing stacks.",
+        "Only after the complete dry fit passes, epoxy the four locator pins, set and record each named exposed projection at 5.00 +/- 0.15 mm, allow full cure, and repeat the fit checks.",
+        "Run `(Get-FileHash FASTENER_MAP.csv -Algorithm SHA256).Hash.ToLowerInvariant()` from the project root and record the result as board_fabrication_pass.selected_fastener_map_sha256; any later map change reopens this step.",
+        "Mark FRONT and the revision on the underside; install feet clear of all anchors and reinforcement hardware."
+      ],
+      "acceptance": [
+        {"test_id": "01-A", "criterion": "Local board flatness", "method": "300 mm straightedge and feelers", "limit": "No more than 0.50 mm over any 300 mm span", "gate_id": "board_fabrication_pass", "evidence": "Worst measured span and photo"},
+        {"test_id": "01-B", "criterion": "Overall board bow", "method": "Straightedge on cured board", "limit": "No more than 1.50 mm over the full board", "gate_id": "board_fabrication_pass", "evidence": "Measured bow and photo"},
+        {"test_id": "01-C", "criterion": "Locator bores preserve a blind floor and pins have controlled projection", "method": "Record thickness, depth, and cured projection by the four named locator IDs; inspect the underside", "limit": "Each depth is 15.00 +/- 0.20 mm and leaves at least 2.00 mm local floor; no breakout; each exposed projection is 5.00 +/- 0.15 mm", "gate_id": "board_fabrication_pass", "evidence": "ID-keyed local thicknesses, actual depths, underside photos, depth-stop setup, and cured projections"},
+        {"test_id": "01-D", "criterion": "All qualified station interfaces dry fit", "method": "Verify all nine anchor rows are complete, then install all stations and nine stacks by hand", "limit": "Every final bore is traceable to its actual qualified anchor; no rocking, binding, bottoming, base lift, veneer damage, or underside projection", "gate_id": "board_fabrication_pass", "evidence": "Dry-fit photos, fully completed FASTENER_MAP.csv, scrap-board qualification references, and recorded map SHA-256"},
+        {"test_id": "01-E", "criterion": "Board finish coverage and cure", "method": "Inspect both faces and every edge; compare elapsed cure time/conditions with the selected finish instructions", "limit": "Both faces and every edge evenly sealed and fully cured; no tack, print transfer, contamination, or finish-induced warping", "gate_id": "board_fabrication_pass", "evidence": "Finish product/batch, SDS/PPE record, application and cure timestamps, and face/edge photos"},
+        {"test_id": "01-F", "criterion": "Board geometry and selected drill-guide registration pass before center transfer", "method": "Measure front/rear widths, left/right depths, thicknesses, and both diagonals; calculate the edge-derived diagonal; verify guide path/hash, FRONT/origin, board edges, every X/Y scale control, and all applicable registration IDs", "limit": "Width 610.0 +/- 0.5 mm; depth 457.0 +/- 0.5 mm; thickness 17.50-18.50 mm; opposite like edges differ by no more than 0.50 mm; each diagonal is within 1.00 mm of the edge-derived value and the pair differs by no more than 1.00 mm; every X/Y scale control is 100.0 +/- 0.2 mm; no guide-edge or registration disagreement", "gate_id": "board_fabrication_pass", "evidence": "Six board-dimension readings, four local thickness readings, diagonal calculation, selected-guide record, ruler photos, assembled-guide photo, and registration/edge-control photos"},
+        {"test_id": "01-G", "criterion": "All thirteen transferred centers match the controlled coordinate schedule", "method": "Before drilling, identify each punch by feature ID and cross-check X from left/right plus Y from front/rear against drawings/board_hole_coordinates.csv", "limit": "Exactly four locator and nine anchor centers are present; all four edge-distance checks agree for every ID; no tag, outline, dimension, or registration mark is transferred; any disagreement is corrected before drilling", "gate_id": "board_fabrication_pass", "evidence": "Signed thirteen-row center audit and overhead photos before and after paper removal"}
+      ],
+      "extra_files": [
+        {"path": "drawings/board_610x457_drill_layout.dxf", "role": "fabrication reference", "action": "reference_only"},
+        {"path": "drawings/board_610x457_drill_layout.svg", "role": "fabrication reference", "action": "reference_only"},
+        {"path": "output/pdf/RC03_BOARD_DRILL_GUIDE_LETTER_1TO1.pdf", "role": "friendly tiled Letter-size 1:1 drill guide; choose this or the full-size guide", "action": "use"},
+        {"path": "output/pdf/RC03_BOARD_DRILL_GUIDE_24X36_FULL_SIZE_1TO1.pdf", "role": "friendly single-sheet 24 x 36 inch 1:1 drill guide; choose this or the Letter guide", "action": "use"},
+        {"path": "drawings/board_drill_template_letter_1to1.pdf", "role": "legacy compatibility alias; use the selected friendly guide named in the Step-00 acceptance record", "action": "reference_only"},
+        {"path": "drawings/board_hole_coordinates.csv", "role": "inspection coordinates", "action": "verify"},
+        {"path": "images/board_layout_dimensioned.png", "role": "visual reference", "action": "inspect"},
+        {"path": "cad/step/board_610x457x18_RC03.step", "role": "neutral board reference", "action": "reference_only"},
+        {"path": "stl/BOARD_REFERENCE_DO_NOT_PRINT.stl", "role": "visualization reference", "action": "DO_NOT_PRINT"}
+      ],
+      "stop_gate": "Stop before center transfer or drilling if the board misses any released cut-size, thickness, opposite-edge, diagonal, flatness, or bow limit; any X/Y scale control is wrong; a Letter tile is butted instead of overlapped by 12 mm; registration or edge checks disagree; a station first article is unaccepted; a locator cannot meet both 15.00 +/- 0.20 mm depth and 2.00 mm minimum floor; or any anchor lacks a completed qualified FASTENER_MAP row and scrap-board proof.",
+      "handoff": [
+        "The exact selected guide, its hash, every scale-control reading, tiled registration or full-sheet edge verification, and the thirteen-row coordinate audit are retained with Step 01 evidence.",
+        "All thirteen board interfaces are identified and inspected.",
+        "Four pins have controlled projection and no breakout.",
+        "Nine anchors accept the chosen stacks without bottoming or underside projection.",
+        "All three stations complete a dry-fit cycle, then are removed before Step 02.",
+        "All six feet are installed clear of every anchor and future reinforcement/clamp load path."
+      ]
+    },
+    {
+      "id": "02",
+      "slug": "reinforce_and_clamp_arm",
+      "operator_folder": "02 - Reinforce Board and Clamp Robot Arm",
+      "operator_title": "Reinforce Board and Clamp Robot Arm",
+      "title": "Reinforce the board and clamp the arm",
+      "purpose": "Spread the factory RoArm clamp load with measured precut metal while keeping the factory clamp as the load-bearing interface.",
+      "expected_result": "The board remains flat and stable under the factory clamp, with reinforcement, feet, anchors, and motion volume clear of one another.",
+      "panel": "output/assembly_guide/images/02_reinforce_and_clamp_arm.png",
+      "prerequisite_steps": ["01"],
+      "input_gates": ["board_fabrication_pass"],
+      "completion_gates": [],
+      "print_action": "none",
+      "print_jobs": [],
+      "required_inputs": [
+        "Finished and accepted structural board",
+        "Factory RoArm clamp and measured factory-clamp footprint",
+        "Precut reinforcement plate sized from the physical clamp",
+        "Feet, safety cutoff, straightedge, feelers, and force gauge or traceable weights"
+      ],
+      "hardware": [
+        {"type": "Arm", "qty": "1", "item": "Waveshare RoArm-M3 Pro and factory clamp", "condition": "Factory clamp remains load-bearing"},
+        {"type": "Reinforcement", "qty": "1", "item": "Precut metal underside plate", "condition": "Minimum 3 mm aluminum or 2 mm steel; footprint is measured, not taken from the schematic image"},
+        {"type": "Safety", "qty": "1", "item": "Latching power cutoff / E-stop", "condition": "Keep outside robot reach"},
+        {"type": "Support", "qty": "6", "item": "Board feet", "condition": "Clear anchors, plate, and clamp loads"}
+      ],
+      "procedure": [
+        "Measure the actual factory-clamp contact footprint and confirm the precut plate covers that load path.",
+        "Deburr the metal plate and protect the board finish from sharp edges.",
+        "Position the plate under the rear arm-clamp zone, clear of feet, board anchors, locator bores, and station screws.",
+        "Install the factory clamp over the reinforced zone and tighten evenly without crushing the board or inducing twist.",
+        "Recheck local board flatness near the clamp and verify every board foot remains supported.",
+        "Keep the arm de-energized and do not manually force or back-drive any joint. Use the CAD envelope and static visual checks only at this step. Defer all powered envelope sampling to final commissioning after the E-stop, controller/firmware identity, approved motion limits, and empty-cell program are in place.",
+        "Install and test the accessible latching power cutoff before powered commissioning."
+      ],
+      "acceptance": [
+        {"test_id": "02-A", "criterion": "Board stays flat after clamping", "method": "Straightedge and feelers before and after clamp load", "limit": "No new local lift above the board acceptance limit", "gate_id": null, "evidence": "Before/after measurements and underside photo"},
+        {"test_id": "02-B", "criterion": "Reinforcement clears all interfaces", "method": "Visual and tactile inspection from the underside", "limit": "No contact with anchors, feet, station hardware, or cable paths", "gate_id": null, "evidence": "Underside overview photo"},
+        {"test_id": "02-C", "criterion": "Factory arm clamp is installed and stable", "method": "Record the clamp model/instructions and manufacturer-approved tightening setting, then perform static before/after mounting inspections without forcing or back-driving the arm", "limit": "Installation matches the clamp manufacturer; no clamp movement, board crushing, new bow, or permanent board shift", "gate_id": null, "evidence": "Clamp model/instruction reference, tightening setting, and before/after reference measurements"}
+      ],
+      "extra_files": [
+        {"path": "cad/step/RoCell_RC03_INT_R1_full_assembly.step", "role": "assembly visualization", "action": "reference_only"},
+        {"path": "images/assembly_isometric.png", "role": "visual reference", "action": "inspect"},
+        {"path": "RC03_INTEGRATED_BUILD_PLAN.md", "role": "engineering rationale", "action": "read"}
+      ],
+      "stop_gate": "The clamp illustration is schematic and there is no released plate CAD. Do not fabricate from the picture; use the measured physical clamp footprint and stop if the board bows or any anchor is obstructed.",
+      "handoff": [
+        "Factory clamp and measured metal spreader are installed and photographed.",
+        "Board flatness remains within the Step 01 limits.",
+        "E-stop is installed and accessible.",
+        "The robot remains de-energized and the empty fixture area is ready for the keyboard master."
+      ]
+    },
+    {
+      "id": "03",
+      "slug": "install_keyboard_master",
+      "operator_folder": "03 - Install Left Keyboard Base",
+      "operator_title": "Install Left Keyboard Base",
+      "title": "Install the keyboard master station",
+      "purpose": "Establish the keyboard coordinate system from the left/master station's round and radial locator pair.",
+      "expected_result": "The left station is squarely seated on two pins and three board interfaces, with its padded slider captured, parked fully rearward, and not loading a keyboard.",
+      "panel": "output/assembly_guide/images/03_install_keyboard_master.png",
+      "prerequisite_steps": ["02"],
+      "input_gates": ["board_fabrication_pass", "keyboard_left_first_article_pass", "keyboard_seam_coupon_pass", "keyboard_clamps_postprint_pass"],
+      "completion_gates": [],
+      "print_action": "consume_accepted_output",
+      "print_jobs": ["00A", "01", "03B"],
+      "required_inputs": [
+        "Accepted RC03-L master station and one accepted padded rear-clamp slider",
+        "Two installed keyboard locator pins",
+        "KBL-HOLD-F, KBL-HOLD-R, and KBL-CLAMP hardware stacks selected by the cutoff test",
+        "Retained job 00A seam ladder and the accepted master first-article record",
+        "Low-range torque driver, feeler gauges, lint-free cleaning supplies, and camera for evidence"
+      ],
+      "hardware": [
+        {"type": "Printed part", "qty": "1", "item": "Keyboard station left/master", "condition": "Accepted Job 01"},
+        {"type": "Printed part", "qty": "1", "item": "Keyboard rear-clamp slider", "condition": "Accepted Job 03B with one face pad"},
+        {"type": "Locator", "qty": "2", "item": "Installed 6 mm pins", "condition": "Round fixes XY; radial slot relieves one axis"},
+        {"type": "Fastener", "qty": "2 + 1 shared", "item": "M4 retainers and washers", "condition": "Front and rear conventional stacks plus the low-profile slider/station stack"}
+      ],
+      "procedure": [
+        "Confirm FRONT and +Y/rear, then clean the board contact plane and station underside.",
+        "Place the accepted padded slider in the master guide, park it fully rearward, and hold it there before installing the shared third retainer.",
+        "Align both locator sockets over the round and radial pins; lower the station squarely without rocking or prying.",
+        "Start KBL-HOLD-F and KBL-HOLD-R with washers by hand and leave them loose.",
+        "Pass the KBL-CLAMP low-profile screw and washer through the slider and station into its board interface; leave it loose.",
+        "Press the continuous base gently against the board and tighten all three in stages to 0.25-0.35 N m while the slider remains parked rearward.",
+        "Verify the station is fully seated, the slider is captured in the parked position, and the seam posts remain clean and undamaged. The shared screw may lock slider motion until Step 05."
+      ],
+      "acceptance": [
+        {"test_id": "03-A", "criterion": "Station seats freely on both locators", "method": "Install/remove by hand without retainers", "limit": "No cracks, whitening, pry force, or measurable rocking", "gate_id": "keyboard_left_first_article_pass", "evidence": "Close photos of both sockets and seated base"},
+        {"test_id": "03-B", "criterion": "Free-state corner lift", "method": "Feeler measurement before clamping", "limit": "No more than 0.75 mm", "gate_id": "keyboard_left_first_article_pass", "evidence": "Worst corner value"},
+        {"test_id": "03-C", "criterion": "Retainer stacks", "method": "Torque driver and underside inspection", "limit": "At least 5 mm engagement; no bottoming or underside projection; 0.25-0.35 N m final torque", "gate_id": null, "evidence": "Selected lengths and three torque values"}
+      ],
+      "extra_files": [
+        {"path": "KEYBOARD_STATION_ENGINEERING_REVIEW.md", "role": "load-path review", "action": "read"},
+        {"path": "drawings/board_hole_coordinates.csv", "role": "feature control", "action": "verify"}
+      ],
+      "stop_gate": "Do not force either locator, omit the slider from the shared stack, or tighten the shared screw as a device clamp before the keyboard is loaded.",
+      "handoff": [
+        "The master station is fully seated and torqued.",
+        "The master slider is captured, padded, and parked fully rearward for Step 05 adjustment.",
+        "The seam posts are clean and ready to receive the slave station."
+      ]
+    },
+    {
+      "id": "04",
+      "slug": "join_keyboard_slave",
+      "operator_folder": "04 - Install Right Keyboard Base",
+      "operator_title": "Install Right Keyboard Base",
+      "title": "Join and retain the keyboard slave station",
+      "purpose": "Extend the keyboard support from the master seam without creating a second, conflicting locator system.",
+      "expected_result": "The right/slave station is seam-located, held by three relieved board interfaces, flush with the master, and free of rocking.",
+      "panel": "output/assembly_guide/images/04_join_keyboard_slave.png",
+      "prerequisite_steps": ["03"],
+      "input_gates": ["keyboard_station_pair_postprint_pass", "keyboard_clamps_postprint_pass", "board_fabrication_pass"],
+      "completion_gates": [],
+      "print_action": "consume_accepted_output",
+      "print_jobs": ["00A", "01", "02", "03B"],
+      "required_inputs": [
+        "Installed master station",
+        "Accepted RC03-R slave station and second padded slider",
+        "KBR-HOLD-F, KBR-HOLD-R, and KBR-CLAMP hardware stacks",
+        "Feeler gauges, straightedge, low-range torque driver, and camera for seam, support-plane, torque, and evidence checks"
+      ],
+      "hardware": [
+        {"type": "Printed part", "qty": "1", "item": "Keyboard station right/slave", "condition": "Accepted Job 02 after the master first article"},
+        {"type": "Printed part", "qty": "1", "item": "Keyboard rear-clamp slider", "condition": "Accepted Job 03B with one face pad"},
+        {"type": "Fastener", "qty": "2 + 1 shared", "item": "M4 retainers and washers", "condition": "Relieved holes clamp only; the seam owns XY and yaw"}
+      ],
+      "procedure": [
+        "Place the second padded slider in the slave guide, park it fully rearward, and hold it there before the shared third retainer is installed.",
+        "Align both slave seam sockets with the master's round post and Y-relieving feature before lowering.",
+        "Lower the slave straight down and seat the seam by hand; there are no independent right-side locator pins.",
+        "Start KBR-HOLD-F and KBR-HOLD-R with washers loosely.",
+        "Pass KBR-CLAMP through the slider and relieved station hole into the board anchor; leave it loose.",
+        "Before final tightening, verify the selected screw in each of the three stacks has at least 5 mm of thread engagement and cannot bottom in a blind interface or project below the board; change only to a separately verified length if any stack fails this check.",
+        "Confirm the seam is fully seated, then tighten all three stacks incrementally to 0.25-0.35 N m with a low-range torque driver while the slider remains parked rearward; record the final torque for each named stack.",
+        "With the board unloaded, measure seam gap, flush mismatch, and the combined support plane, then press alternate slave-station corners and use a feeler gauge at any lifting corner to check for rocking."
+      ],
+      "acceptance": [
+        {"test_id": "04-A", "criterion": "Installed seam gap", "method": "Feeler gauges along the seam", "limit": "No more than 0.40 mm", "gate_id": "keyboard_station_pair_postprint_pass", "evidence": "Worst gap and location"},
+        {"test_id": "04-B", "criterion": "Seam flush mismatch", "method": "Straightedge and feeler", "limit": "No more than 0.25 mm", "gate_id": "keyboard_station_pair_postprint_pass", "evidence": "Worst mismatch and photo"},
+        {"test_id": "04-C", "criterion": "Combined support plane", "method": "Straightedge across both stations", "limit": "No more than 0.40 mm variation", "gate_id": "keyboard_station_pair_postprint_pass", "evidence": "Measured range"},
+        {"test_id": "04-D", "criterion": "Slave retainer stacks", "method": "Verify selected screw length and engagement before final tightening; record each stack with a low-range torque driver and inspect the underside/interface after tightening", "limit": "At least 5 mm thread engagement in every stack; no blind-interface bottoming or underside projection; 0.25-0.35 N m final torque for KBR-HOLD-F, KBR-HOLD-R, and KBR-CLAMP", "gate_id": null, "evidence": "Selected screw lengths, engagement check, three named final torque values, and underside/interface photos"},
+        {"test_id": "04-E", "criterion": "Installed slave-station rocking", "method": "With the board unloaded, press alternate slave-station corners and check any lifting corner with a feeler gauge", "limit": "No measurable rocking or corner lift after final torque", "gate_id": null, "evidence": "Alternating-corner check result, worst measured lift if any, and short video or sequential photos"}
+      ],
+      "extra_files": [
+        {"path": "KEYBOARD_STATION_ENGINEERING_REVIEW.md", "role": "master/slave datum review", "action": "read"},
+        {"path": "drawings/board_hole_coordinates.csv", "role": "feature control", "action": "verify"}
+      ],
+      "stop_gate": "Do not drill or add right-side locator pins. If the seam does not seat by hand, remove the slave and find the interference instead of pulling it together with screws.",
+      "handoff": [
+        "The slave is seam-located and all three relieved stacks are torqued.",
+        "Seam gap, flushness, support-plane variation, and rocking are recorded.",
+        "Both sliders are captured and parked rearward; each shared screw may be loosened only as described in Step 05."
+      ]
+    },
+    {
+      "id": "05",
+      "slug": "load_keyboard_and_clamps",
+      "operator_folder": "05 - Place and Secure Keyboard",
+      "operator_title": "Place and Secure Keyboard",
+      "title": "Load and gently clamp the keyboard",
+      "purpose": "Seat the keyboard directly on the finished board and use the two guided sliders only for gentle retention.",
+      "expected_result": "The keyboard rests without rock or case distortion, both pads touch gently, and the cable remains clear.",
+      "panel": "output/assembly_guide/images/05_load_keyboard_and_clamps.png",
+      "prerequisite_steps": ["04"],
+      "input_gates": ["keyboard_station_pair_postprint_pass", "keyboard_clamps_postprint_pass", "keyboard_dimensions_measured"],
+      "completion_gates": ["keyboard_fixture_assembly_pass"],
+      "print_action": "consume_accepted_output",
+      "print_jobs": ["01", "02", "03B"],
+      "required_inputs": [
+        "Installed and accepted keyboard station pair",
+        "Actual keyboard in the measured final configuration",
+        "Two installed face pads and movable rear sliders",
+        "Cable route kept clear of the seam, tags, and robot envelope",
+        "Low-range torque driver, calipers or rule, and camera for retainer and repeatability checks"
+      ],
+      "hardware": [
+        {"type": "Device", "qty": "1", "item": "Measured compact keyboard", "condition": "Same model/state used for the accepted measurement record"},
+        {"type": "Pad", "qty": "2", "item": "Rear-clamp face pads", "condition": "42 x 10 x 0.8-1.0 mm; clean and fully adhered"},
+        {"type": "Fastener", "qty": "2", "item": "Shared low-profile M4 clamp/retention screws", "condition": "Already retain the stations; adjust only until padded contact"}
+      ],
+      "procedure": [
+        "Verify the four fixed station retainers remain at 0.25-0.35 N m. Work on only one shared slider screw at a time so the other retainers continue to seat the stations.",
+        "Loosen the first shared slider/station screw only enough for its slider to move; do not remove the screw or lift the station. Park both sliders away from the keyboard envelope.",
+        "Lower the keyboard onto the sealed board between the fixed front/side datums; do not rest it on printed ledges.",
+        "Confirm all existing keyboard feet contact the board and the case does not rock.",
+        "Route the keyboard cable with a relaxed bend and clearance from the seam, fasteners, tags, and arm motion.",
+        "Slide the loosened padded clamp forward until it just contacts the case, hold it at contact, and retorque that shared screw to 0.25-0.35 N m without bowing the keyboard shell.",
+        "Repeat the loosen-slide-retorque sequence on the other side, again changing only one shared screw at a time.",
+        "Remove and reinstall the keyboard ten times, verifying repeatable seating and gentle contact."
+      ],
+      "acceptance": [
+        {"test_id": "05-A", "criterion": "Keyboard device pose", "method": "Measure against recorded reference datums", "limit": "No more than 0.50 mm from the accepted reference", "gate_id": "keyboard_fixture_assembly_pass", "evidence": "Ten-cycle pose results"},
+        {"test_id": "05-B", "criterion": "Device support", "method": "Corner press and visual inspection", "limit": "No rocking, shell bow, lifted feet, or pad damage", "gate_id": "keyboard_fixture_assembly_pass", "evidence": "Loaded-device photos"},
+        {"test_id": "05-C", "criterion": "Clamp behavior", "method": "Mark slider positions and cycle the device", "limit": "Pads touch gently and remain repeatable through ten cycles", "gate_id": "keyboard_fixture_assembly_pass", "evidence": "Slider marks and cycle log"}
+      ],
+      "extra_files": [
+        {"path": "KEYBOARD_STATION_ENGINEERING_REVIEW.md", "role": "device/load review", "action": "read"}
+      ],
+      "stop_gate": "The sliders are retainers, not force clamps. Stop immediately if the keyboard bows, a foot lifts, a cable is pinched, or either slider binds.",
+      "handoff": [
+        "Keyboard pose and ten load/unload cycles are accepted.",
+        "Both clamp positions are marked and pads are undamaged.",
+        "The phone/TCP area remains clear for Step 06."
+      ]
+    },
+    {
+      "id": "06",
+      "slug": "install_phone_tcp_station",
+      "operator_folder": "06 - Install Phone and Tool Station",
+      "operator_title": "Install Phone and Tool Station",
+      "title": "Install the phone and TCP service station",
+      "purpose": "Establish the phone/TCP coordinate system from its round and radial locator pair before the shared service rail is added.",
+      "expected_result": "The combined station is seated on two pins with only the TCP-side retainer installed; both rail-side interfaces remain open.",
+      "panel": "output/assembly_guide/images/06_install_phone_tcp_station.png",
+      "prerequisite_steps": ["05"],
+      "input_gates": ["phone_tcp_station_postprint_pass", "phone_station_registration_coupon_pass", "phone_station_m3_insert_coupon_pass", "board_fabrication_pass"],
+      "completion_gates": [],
+      "print_action": "consume_accepted_output",
+      "print_jobs": ["00B", "03A"],
+      "required_inputs": [
+        "Accepted phone/TCP service station with two M3 inserts installed square off-board",
+        "Two installed phone-station locator pins",
+        "PT-HOLD-TCP M4 retainer and washer",
+        "Rail-side board interfaces kept empty for Steps 07 and 08",
+        "Low-range torque driver, straightedge, feeler gauges, height gauge, cleaning supplies, and camera"
+      ],
+      "hardware": [
+        {"type": "Printed part", "qty": "1", "item": "Phone/TCP service station", "condition": "Accepted Job 03A"},
+        {"type": "Insert", "qty": "2", "item": "M3 heat-set inserts", "condition": "Installed square in the TCP receiver while the station is off-board"},
+        {"type": "Locator", "qty": "2", "item": "Installed 6 mm pins", "condition": "Round fixes XY; radial slot relieves one axis"},
+        {"type": "Fastener", "qty": "1", "item": "PT-HOLD-TCP M4 screw and washer", "condition": "Candidate M4x25; washer must seat fully in the modeled 1.5 mm recess; final length remains FASTENER_MAP-qualified"}
+      ],
+      "procedure": [
+        "Confirm the station's M3 inserts are square, flush to the selected depth, and free of debris before board installation.",
+        "Clean the board and continuous station base, then align the round and radial sockets over the two phone-station pins.",
+        "Lower the station squarely without twisting or prying.",
+        "Install PT-HOLD-TCP with its washer by hand. Confirm the washer lies flat at the bottom of the 1.5 mm recess, gauge at least 5.0 mm useful thread engagement, and confirm there is no bottoming or underside projection before tightening to 0.25-0.35 N m.",
+        "Leave PT-HOLD-R1 and PT-HOLD-R2 empty; those fasteners pass through the service rail in Step 08.",
+        "Verify the rail interface, cable-saddle approach, phone datums, and TCP receiver are unobstructed."
+      ],
+      "acceptance": [
+        {"test_id": "06-A", "criterion": "Station locator fit", "method": "Tool-free install/remove cycle", "limit": "No more than 0.15 mm lateral play; no cracking or whitening", "gate_id": "phone_station_registration_coupon_pass", "evidence": "Cycle count and play measurement"},
+        {"test_id": "06-B", "criterion": "Phone support plane", "method": "Straightedge and feelers", "limit": "No more than 0.30 mm variation", "gate_id": "phone_tcp_station_postprint_pass", "evidence": "Measured range"},
+        {"test_id": "06-C", "criterion": "TCP receiver seat", "method": "Straightedge/height comparison", "limit": "No more than 0.15 mm seat error", "gate_id": "phone_tcp_station_postprint_pass", "evidence": "Measured error"},
+        {"test_id": "06-D", "criterion": "PT-HOLD-TCP effective stack", "method": "Inspect washer recess and gauge the selected screw/anchor stack before torque", "limit": "Washer fully seated in 1.5 mm recess; 9.0 mm nominal effective printed stack; at least 5.0 mm useful thread engagement; no bottoming or underside projection; 0.25-0.35 N m", "gate_id": null, "evidence": "Selected length, measured engagement, washer-seat photo, underside/interface photo, and final torque"}
+      ],
+      "extra_files": [
+        {"path": "drawings/board_hole_coordinates.csv", "role": "feature control", "action": "verify"},
+        {"path": "RC03_INTEGRATED_BUILD_PLAN.md", "role": "station architecture", "action": "read"}
+      ],
+      "stop_gate": "Do not install either rail-side board screw before the rail is fully seated. Do not heat-set inserts while the station is mounted on the finished board.",
+      "handoff": [
+        "Station is seated on two locators and retained only at PT-HOLD-TCP.",
+        "Two M3 receiver inserts are accepted and clear.",
+        "PT-HOLD-R1/R2 remain visibly empty for the rail installation."
+      ]
+    },
+    {
+      "id": "07",
+      "slug": "seat_phone_rail_and_cartridge",
+      "operator_folder": "07 - Fit Phone Rail and Tool Cartridge",
+      "operator_title": "Fit Phone Rail and Tool Cartridge",
+      "title": "Seat the phone rail and TCP cartridge",
+      "purpose": "Locate the replaceable phone rail on its keys and place the keyed TCP cartridge before any shared or cartridge fastener is installed.",
+      "expected_result": "The rail lies flat on both keys and the cartridge is fully seated in its only valid orientation, with all holes aligned.",
+      "panel": "output/assembly_guide/images/07_seat_phone_rail_and_cartridge.png",
+      "prerequisite_steps": ["06"],
+      "input_gates": ["phone_clamp_rail_first_article_pass", "calibration_puck_datum_pass", "phone_tcp_station_postprint_pass"],
+      "completion_gates": [],
+      "print_action": "consume_accepted_output",
+      "print_jobs": ["00B", "00F", "03A", "03C1", "03D"],
+      "required_inputs": [
+        "Installed phone/TCP station",
+        "Accepted replaceable phone rail",
+        "Job 03D cartridge labeled INSTALL and the accepted cartridge labeled SPARE - TCP RECALIBRATION REQUIRED",
+        "PT-HOLD-R1/R2 and both TCP M3 fasteners kept aside until seating is proven",
+        "Thin feeler gauges, dial indicator with rigid stand, and height gauge with 0.01 mm resolution or better"
+      ],
+      "hardware": [
+        {"type": "Printed part", "qty": "1", "item": "Phone clamp rail", "condition": "Accepted Job 03C1"},
+        {"type": "Printed part", "qty": "1 + 1 spare", "item": "Keyed TCP datum cartridges", "condition": "Both passed Job 03D; use only the recorded INSTALL cartridge and keep the other labeled SPARE - TCP RECALIBRATION REQUIRED"}
+      ],
+      "procedure": [
+        "Inspect and clean both rail locating keys, the rail underside, cartridge receiver, and cartridge datum face.",
+        "Approach the rail squarely, engage both keys, and lower it until the entire seating interface lies flat.",
+        "Do not use PT-HOLD-R1/R2 to pull an unseated rail into place.",
+        "Match the INSTALL label to calibration_puck_datum_pass.installed_cartridge_id. Keep the SPARE cartridge protected; do not substitute it by feel.",
+        "Orient the cartridge by its clipped corner and lower it fully into the keyed receiver.",
+        "Confirm both cartridge screw holes align without shifting the cartridge.",
+        "Check that the rail cable saddle faces the intended front exit and both clamp towers are clear."
+      ],
+      "acceptance": [
+        {"test_id": "07-A", "criterion": "Rail seating", "method": "Visual inspection and thin feeler around both keys", "limit": "Rail fully flat; no gap, rocking, or forced alignment", "gate_id": "phone_clamp_rail_first_article_pass", "evidence": "Top and side photos"},
+        {"test_id": "07-B", "criterion": "Recorded INSTALL cartridge lateral play", "method": "Confirm the cartridge ID, then perform a dial/feeler displacement check", "limit": "Installed ID matches the Job 03D record; lateral play no more than 0.15 mm", "gate_id": "calibration_puck_datum_pass", "evidence": "Installed cartridge ID and measured play"},
+        {"test_id": "07-C", "criterion": "Recorded INSTALL cartridge height repeatability", "method": "Ten remove/reinstall cycles and height measurement", "limit": "No more than 0.10 mm range", "gate_id": "calibration_puck_datum_pass", "evidence": "Installed cartridge ID and ten measured heights"}
+      ],
+      "extra_files": [
+        {"path": "RC03_INTEGRATED_BUILD_PLAN.md", "role": "service-interface definition", "action": "read"}
+      ],
+      "stop_gate": "Do not install shared rail screws or cartridge screws until both parts sit fully flush by hand. Never pull a misaligned part into place with hardware.",
+      "handoff": [
+        "Rail is flat on both keys.",
+        "The cartridge ID recorded as INSTALL is seated in the only valid orientation; the protected spare is labeled TCP RECALIBRATION REQUIRED.",
+        "Shared M4 and TCP M3 holes align freely for Step 08."
+      ]
+    },
+    {
+      "id": "08",
+      "slug": "install_phone_service_hardware",
+      "operator_folder": "08 - Secure Phone Rail and Tool Cartridge",
+      "operator_title": "Secure Phone Rail and Tool Cartridge",
+      "title": "Install the phone service hardware",
+      "purpose": "Lock the already seated rail and cartridge with the correct shared board, clamp-nut, and TCP fastener sequence.",
+      "expected_result": "All three station anchors, both clamp nuts, and both TCP screws are installed without lifting the rail or distorting the cartridge datum.",
+      "panel": "output/assembly_guide/images/08_install_phone_service_hardware.png",
+      "prerequisite_steps": ["07"],
+      "input_gates": ["phone_clamp_rail_first_article_pass", "calibration_puck_datum_pass", "phone_m4_captive_nut_coupon_pass"],
+      "completion_gates": [],
+      "print_action": "consume_accepted_output",
+      "print_jobs": ["03A", "03C1", "03D"],
+      "required_inputs": [
+        "Seated rail and cartridge from Step 07",
+        "PT-HOLD-R1 and PT-HOLD-R2 M4 station stacks",
+        "Two selected M4 captive clamp nuts",
+        "Two M3 x 10 mm TCP screws, two M4 hand-adjustable clamp screws for the 20-cycle nut test, and the low-range torque driver",
+        "Thin feeler gauges plus a dial indicator or height gauge with 0.01 mm resolution or better"
+      ],
+      "hardware": [
+        {"type": "Fastener", "qty": "2", "item": "PT-HOLD-R1/R2 M4 screws and washers", "condition": "Pass through the seated rail and station into board anchors"},
+        {"type": "Nut", "qty": "2 + 2 spares", "item": "Measured M4 clamp nuts", "condition": "Drop into the coupon-selected top-loading channels"},
+        {"type": "Fastener", "qty": "2 + 2 spares", "item": "M3 x 10 mm button-head screws", "condition": "Retain the TCP cartridge without distorting its datum face"},
+        {"type": "Test hardware", "qty": "2", "item": "M4 hand-adjustable phone clamp screws", "condition": "Required in this step to prove both captive nuts through 20 full cycles"}
+      ],
+      "procedure": [
+        "Reconfirm the rail and cartridge are flush before touching any fastener.",
+        "Start PT-HOLD-R1 and PT-HOLD-R2 with washers by hand through the rail and station.",
+        "Tighten PT-HOLD-TCP, R1, and R2 incrementally to 0.25-0.35 N m while watching for rail lift.",
+        "Drop the two measured M4 clamp nuts from the top into their selected channels and verify the horizontal screw axes remain clear.",
+        "Install both M3 TCP screws evenly; stop as soon as the cartridge is retained and remains flush.",
+        "Recheck rail seating, cartridge height, cable-saddle access, and all three board-retainer stacks."
+      ],
+      "acceptance": [
+        {"test_id": "08-A", "criterion": "All three station retainers", "method": "Torque and stack inspection", "limit": "At least 5 mm engagement; no bottoming or underside projection; 0.25-0.35 N m final torque", "gate_id": null, "evidence": "Lengths, three torque values, and underside photos"},
+        {"test_id": "08-B", "criterion": "Clamp-nut retention recheck", "method": "Confirm the previously qualified nuts still accept both clamp screws after final installation", "limit": "Nut does not spin, crack the tower, or obstruct the screw axis", "gate_id": null, "evidence": "Close photos and confirmation against the Job 03C1 cycle record"},
+        {"test_id": "08-C", "criterion": "Cartridge remains a datum", "method": "Measure height and play after fastening", "limit": "Still within the Step 07 play and height limits", "gate_id": "calibration_puck_datum_pass", "evidence": "Post-fastening measurements"}
+      ],
+      "extra_files": [
+        {"path": "drawings/board_hole_coordinates.csv", "role": "feature control", "action": "verify"}
+      ],
+      "stop_gate": "Stop if a shared M4 stack lifts the rail, a clamp nut spins or cracks its tower, or an M3 screw changes cartridge height or flushness.",
+      "handoff": [
+        "Three station-retainer stacks are complete and recorded.",
+        "Two clamp nuts accept their screws without spin.",
+        "TCP cartridge remains flush, repeatable, and removable."
+      ]
+    },
+    {
+      "id": "09",
+      "slug": "load_phone_and_route_cable",
+      "operator_folder": "09 - Place Phone and Route USB Cable",
+      "operator_title": "Place Phone and Route USB Cable",
+      "title": "Load the phone and route its cable",
+      "purpose": "Seat the measured phone/case, retain the USB lead with a relaxed bend, and advance only accepted soft clamp tips.",
+      "expected_result": "The phone is repeatably seated, the USB connector is unstressed, the cable exits forward through the saddle, and the soft tips touch safe case regions.",
+      "panel": "output/assembly_guide/images/09_load_phone_and_route_cable.png",
+      "prerequisite_steps": ["08"],
+      "input_gates": ["phone_dimensions_measured", "phone_side_features_measured", "phone_cable_measured", "phone_no_go_clearance_limit_approved", "phone_tpu_retention_limits_approved", "phone_tpu_retention_coupon_pass", "phone_tpu_batch_postprint_pass", "cable_tie_saddle_coupon_pass"],
+      "completion_gates": [],
+      "print_action": "consume_accepted_output",
+      "print_jobs": ["00B", "00E", "03A", "03C1", "05A", "05B"],
+      "required_inputs": [
+        "Actual phone in the exact measured case state plus the accepted no-go map for glass edge, camera bump, buttons, and connector envelope",
+        "Actual USB cable and accepted cable tie",
+        "Two accepted phone TPU tips plus two labeled spares",
+        "Two hand-adjustable M4 clamp screws",
+        "PASS engineering-release records for the phone no-go clearance and TPU pull-off force/duration, plus the matching Job 05A qualification; operators may not alter the approved limits",
+        "Calipers or the recorded pose fixture, calibrated low-range force gauge, retention fixture, timer, and camera"
+      ],
+      "hardware": [
+        {"type": "Device", "qty": "1", "item": "Measured phone/case", "condition": "Same state used by the accepted dimensions and no-go map"},
+        {"type": "Cable", "qty": "1", "item": "Measured USB lead", "condition": "Preserve connector body, straight projection, and minimum bend radius"},
+        {"type": "Printed part", "qty": "2 + 2 spares", "item": "Phone TPU clamp tips", "condition": "Accepted Jobs 05A/05B; label INSTALL and SPARE"},
+        {"type": "Fastener", "qty": "2", "item": "M4 hand-adjustable clamp screws", "condition": "Advance only to gentle TPU contact"},
+        {"type": "Cable retention", "qty": "1", "item": "Accepted tie in the rail saddle", "condition": "Snug enough to retain, never crush or kink the cable"}
+      ],
+      "procedure": [
+        "Fit one accepted TPU tip to each clamp screw and confirm the pull-off witness band remains intact.",
+        "Back both clamp screws fully away from the phone envelope.",
+        "Connect the USB lead and seat the phone against the fixed front and side datums without trapping the cable.",
+        "Route the cable toward the front through the rail saddle, preserving the measured straight projection and bend radius.",
+        "Close the tie only enough to retain the lead while allowing service removal.",
+        "Advance each soft tip until it just touches the approved case region; do not use clamp force to reposition the phone.",
+        "Cycle phone removal, cable connection, seating, and gentle retention ten times."
+      ],
+      "acceptance": [
+        {"test_id": "09-A", "criterion": "Phone device pose", "method": "Measure against the recorded station reference", "limit": "No more than 0.35 mm from the accepted reference", "gate_id": null, "evidence": "Ten-cycle pose results"},
+        {"test_id": "09-B", "criterion": "Cable strain relief", "method": "Inspect connected phone through ten cycles", "limit": "No connector load, kink, saddle crack, or violated bend radius", "gate_id": null, "evidence": "Side photos and cycle log"},
+        {"test_id": "09-C", "criterion": "TPU retention", "method": "Force-gauge pull to the engineering-approved proof load/duration plus ten load cycles", "limit": "Approved force and duration are achieved; tips remain retained and undamaged", "gate_id": "phone_tpu_retention_coupon_pass", "evidence": "Approval ID, gauge ID, measured load/duration, cycle result, and witness photos"}
+      ],
+      "extra_files": [],
+      "stop_gate": "Stop if the connector carries load, the tie changes the bend radius, a tip approaches glass or a side feature, or clamp pressure shifts the phone.",
+      "handoff": [
+        "Phone pose and cable routing pass ten cycles.",
+        "Both soft tips make gentle contact only.",
+        "The device remains loaded for the explicit no-go inspection in Step 10."
+      ]
+    },
+    {
+      "id": "10",
+      "slug": "verify_phone_no_go_zones",
+      "operator_folder": "10 - Check Phone Clearances",
+      "operator_title": "Check Phone Clearances",
+      "title": "Verify every phone no-go zone",
+      "purpose": "Prove the actual clamp and cable positions clear the screen edge, camera bump, side buttons, and USB connector envelope.",
+      "expected_result": "Measured keepout margins are recorded for the real phone/case, and both clamp axes and the cable route remain outside all no-go zones.",
+      "panel": "output/assembly_guide/images/10_verify_phone_no_go_zones.png",
+      "prerequisite_steps": ["09"],
+      "input_gates": ["phone_side_features_measured", "phone_cable_measured", "phone_no_go_clearance_limit_approved"],
+      "completion_gates": ["phone_fixture_assembly_pass"],
+      "print_action": "consume_accepted_output",
+      "print_jobs": ["03A", "03C1", "05A", "05B"],
+      "required_inputs": [
+        "Loaded phone and routed cable from Step 09",
+        "Measured side-feature and connector map for the exact phone/case",
+        "Calipers, thin rule, inspection light, and camera for evidence",
+        "PASS engineering-release record `phone_no_go_clearance_limit_approved` with approval ID, minimum clearance in mm, and maximum measurement uncertainty in mm"
+      ],
+      "hardware": [
+        {"type": "Inspection", "qty": "1 set", "item": "Calipers, rule, and inspection light", "condition": "Measure real clearances; the red overlay is only a reminder"}
+      ],
+      "procedure": [
+        "Verify both TPU tips remain below and outside the screen/glass edge.",
+        "Measure the actual camera-bump protrusion and confirm no tower, screw, cable, or tip enters its envelope.",
+        "Map the power and volume controls in the loaded pose and measure margin from both clamp axes.",
+        "Inspect the USB connector body, straight projection, bend, saddle, and exit path from the front and side.",
+        "Operate every side button manually and lightly disturb the cable; confirm neither clamp nor cable causes an input.",
+        "Record the minimum measured keepout margin and photograph all four no-go regions."
+      ],
+      "acceptance": [
+        {"test_id": "10-A", "criterion": "Screen-edge clearance", "method": "Visual and measured tip position", "limit": "Both TPU contacts remain below/outside glass and bezel", "gate_id": "phone_fixture_assembly_pass", "evidence": "Front and side close photos"},
+        {"test_id": "10-B", "criterion": "Camera and button clearance", "method": "Measure closest approach and operate controls", "limit": "No contact or unintended input; measured margin minus uncertainty is at or above the engineering-approved minimum", "gate_id": "phone_fixture_assembly_pass", "evidence": "Approval ID, approved limit, uncertainty, minimum margins, and control test video/photo"},
+        {"test_id": "10-C", "criterion": "USB keepout", "method": "Inspect connector and bend under light cable disturbance", "limit": "No body contact, strain, kink, or bend-radius violation", "gate_id": "phone_cable_measured", "evidence": "Connector and saddle photos"}
+      ],
+      "extra_files": [],
+      "stop_gate": "The red regions in the illustration are not released dimensions. Stop and revise the measured clamp centers or cable route if any actual feature lacks a positive recorded margin.",
+      "handoff": [
+        "All four no-go checks have raw measurements and photos.",
+        "Minimum clearance is recorded for the final case and cable state.",
+        "After evidence is complete, the phone and keyboard are unloaded and protected from the clean tag-transfer work in Step 11."
+      ]
+    },
+    {
+      "id": "11",
+      "slug": "transfer_tag_marks",
+      "operator_folder": "11 - Mark AprilTag Locations",
+      "operator_title": "Mark AprilTag Locations",
+      "title": "Transfer the AprilTag centers and +Y direction",
+      "purpose": "Use the verified paper template only to transfer six centers and orientation marks onto the cured board.",
+      "expected_result": "All six tag centers and +Y/rear orientation marks are visible on the board, and all paper has been removed before adhesive work.",
+      "panel": "output/assembly_guide/images/11_transfer_tag_marks.png",
+      "prerequisite_steps": ["10"],
+      "input_gates": ["board_setup_template_scale_pass", "tag_artwork_scale_pass", "tag_application_tool_postprint_pass", "board_fabrication_pass"],
+      "completion_gates": [],
+      "print_action": "consume_accepted_output",
+      "print_jobs": ["03C2"],
+      "required_inputs": [
+        "Cured, clean board with FRONT and +Y/rear known",
+        "The same accepted physical 1:1 guide recorded in Step 00: either output/pdf/RC03_BOARD_DRILL_GUIDE_LETTER_1TO1.pdf or output/pdf/RC03_BOARD_DRILL_GUIDE_24X36_FULL_SIZE_1TO1.pdf; do not mix the two routes",
+        "Accepted reusable 55 mm application frame",
+        "Fine removable pencil, low-tack tape, steel rule, and lint-free cleaning supplies; do not puncture or score an adhesive site"
+      ],
+      "hardware": [
+        {"type": "Printed tool", "qty": "1", "item": "55 mm tag application frame", "condition": "Accepted Job 03C2; it is removed after each application"},
+        {"type": "Paper", "qty": "1 accepted guide", "item": "Released Letter tiled guide or released 24 x 36 inch full-size guide", "condition": "Path/hash matches the Step 00 record; both 100 mm scale bars are reverified immediately before use; Letter pages 1-3 are reference only and pages 4-12 form the 1:1 field with 12 mm overlaps"}
+      ],
+      "procedure": [
+        "Unload devices or protect them from paper, marking, and cleaning debris.",
+        "Retrieve the same accepted physical guide recorded in Step 00 and confirm its route, file path, SHA-256, FRONT, and +Y/rear orientation. Do not substitute a newly printed or rebuilt guide without repeating the Step 00 scale and registration acceptance.",
+        "For the Letter guide, pages 1-3 are overview/schedule/tile-map reference pages and must not be used for transfer. Use only pages 4-12 as the 3 x 3 full-scale field; overlap every adjacent tile by the printed 12 mm zones, align each duplicated registration cross and matching ID, and never butt paper edges or printer margins.",
+        "For the 24 x 36 inch full-size alternative, use its one full-size page only at Actual Size / 100 percent; do not tile, crop, or combine it with any Letter page.",
+        "Reverify both independent 100 mm scale bars with a steel rule. For the Letter route also reverify every 12 mm overlap and matching registration ID; for the full-size route reverify the board-edge and orientation controls.",
+        "Register and tape the accepted transfer field to the board outline, FRONT, +X/right, and +Y/rear without stretching it.",
+        "Transfer the center and +Y/rear direction mark for T0, T1, T2, T3, K0, and P0.",
+        "Confirm the logical labels map to AprilTag IDs 0, 1, 2, 3, 4, and 5 respectively.",
+        "Remove every piece of paper and tape; do not place adhesive through the template.",
+        "Place the square application frame on each transferred center and verify the +Y witness before proceeding."
+      ],
+      "acceptance": [
+        {"test_id": "11-A", "criterion": "Selected transfer-guide identity, scale, and registration", "method": "Compare route/path/hash to the Step 00 record; check both scale bars with a steel rule; inspect every Letter overlap/registration ID or the full-size board-edge/orientation controls", "limit": "Accepted route and hash match Step 00; both bars measure 100.0 +/- 0.2 mm at Actual Size; every Letter seam has the printed 12 mm overlap with matching IDs and no butted edge, or the one-page 24 x 36 guide passes its edge/orientation controls", "gate_id": "board_setup_template_scale_pass", "evidence": "Selected route/path/hash plus photos of both ruler checks and all Letter seams or full-size edge/orientation controls"},
+        {"test_id": "11-B", "criterion": "Six controlled marks", "method": "Cross-check against tag_application_coordinates.csv", "limit": "All six centers and +Y marks present with no extra ambiguous marks", "gate_id": null, "evidence": "Board overview and coordinate checklist"},
+        {"test_id": "11-C", "criterion": "Clean adhesive surface", "method": "Visual inspection after paper removal", "limit": "No paper, tape, gloss residue, or loose finish at any tag location", "gate_id": null, "evidence": "Six cleaned-location photos"}
+      ],
+      "extra_files": [
+        {"path": "output/pdf/RC03_BOARD_DRILL_GUIDE_LETTER_1TO1.pdf", "role": "released Letter 1:1 tiled transfer guide; pages 1-3 reference only, pages 4-12 transfer field", "action": "use_only_if_selected_and_accepted_in_step_00"},
+        {"path": "output/pdf/RC03_BOARD_DRILL_GUIDE_24X36_FULL_SIZE_1TO1.pdf", "role": "released one-page 24 x 36 inch full-size transfer-guide alternative", "action": "use_only_if_selected_and_accepted_in_step_00"},
+        {"path": "drawings/tag_application_coordinates.csv", "role": "tag-coordinate control", "action": "verify"},
+        {"path": "fiducials/apriltag_map.json", "role": "runtime ID/role control", "action": "reference_only"}
+      ],
+      "stop_gate": "Do not glue through the paper. Stop if the guide route/path/hash differs from Step 00, either scale bar is wrong, a Letter tile uses pages 1-3 or is butted instead of overlapped by 12 mm with matching IDs, the full-size page is cropped/scaled, the template is stretched, FRONT/+Y is ambiguous, or any transferred center cannot be reconciled to the coordinate CSV.",
+      "handoff": [
+        "Six centers and six +Y marks are transferred and photographed.",
+        "All paper and tape are removed.",
+        "Each location is clean, dry, and ready for a direct-applied tag."
+      ]
+    },
+    {
+      "id": "12",
+      "slug": "apply_apriltags",
+      "operator_folder": "12 - Attach and Measure AprilTags",
+      "operator_title": "Attach and Measure AprilTags",
+      "title": "Apply and measure the six AprilTags",
+      "purpose": "Apply IDs 0-5 directly to the cured board with full-surface matte adhesive and measure their installed optical geometry.",
+      "expected_result": "Six correctly oriented tags are flat and physically measured, and a measured-installation runtime map is generated for Step 13; the application frame is removed and stored.",
+      "panel": "output/assembly_guide/images/12_apply_apriltags.png",
+      "prerequisite_steps": ["11"],
+      "input_gates": ["tag_artwork_scale_pass", "tag_stock_measured", "tag_application_tool_postprint_pass", "board_setup_template_scale_pass"],
+      "completion_gates": ["tag_plane_placement_measured"],
+      "print_action": "consume_accepted_output",
+      "print_jobs": ["03C2"],
+      "required_inputs": [
+        "Transferred centers and +Y marks from Step 11",
+        "One measured set of six matte full-surface adhesive tiles plus a complete spare set",
+        "Accepted 55 mm application frame",
+        "Verified long-range digital scale/caliper system with resolution no worse than 0.05 mm and stated uncertainty no worse than 0.10 mm over the required board span; machinist square, depth/height gauge, feelers, removable fine pencil, camera, lint-free wipes, and finish-compatible cleaner",
+        "A recorded physical metrology method and uncertainty budget: measure X/Y from the board origin to two tile edges and calculate center; calculate yaw from two edge offsets over a measured baseline; measure optical-plane Z from the finished board top"
+      ],
+      "hardware": [
+        {"type": "Fiducial", "qty": "6 + 6 spares", "item": "AprilTag tiles IDs 0-5", "condition": "55.0 mm tile, 40.0 mm detection edge, matte full-surface adhesive"},
+        {"type": "Printed tool", "qty": "1", "item": "55 mm application frame", "condition": "Placement aid only; remove after every tag"}
+      ],
+      "procedure": [
+        "Verify every tile's physical size, detection-edge size, ID, print quality, and top orientation before exposing adhesive.",
+        "At T0, align the application frame to the transferred center and +Y/rear mark.",
+        "Apply ID 0 directly to the cured board with full-surface pressure and no trapped bubbles.",
+        "Remove the frame and repeat exactly for T1/ID1, T2/ID2, T3/ID3, K0/ID4, and P0/ID5.",
+        "For every tag, use the verified long-range digital system to measure two perpendicular edges from the board origin and calculate center X/Y; measure two edge offsets over a recorded baseline to calculate yaw; use a feeler/straightedge for edge lift; and use a depth/height method from the finished board top for optical-plane Z. Record raw values, resolution, uncertainty, and calculations.",
+        "Capture a straight-on evidence image of each tag and a full-board image showing all IDs and orientation.",
+        "After every Step 12 physical criterion passes, record `tag_plane_placement_measured` as PASS with the six exact center X/Y, optical-plane Z, and yaw values plus nonblank measurement method, tool ID, and evidence reference. Do not generate or use a measured map while this gate is NOT_TESTED or HOLD.",
+        "From the project root run `python scripts/generate_fiducials.py --map-only`, then run `python -c \"import json; from pathlib import Path; p=json.loads(Path('fiducials/apriltag_map.json').read_text(encoding='utf-8')); assert p['coordinate_source']=='measured_installation' and p['measurement']['status']=='PASS' and set(p['tags'])=={'T0','T1','T2','T3','K0','P0'}; print('measured map PASS')\"`. Stop if either command fails or the generator summary does not report `coordinate_source` as `measured_installation` and `direct_tags` as 6. Record `(Get-FileHash fiducials/apriltag_map.json -Algorithm SHA256).Hash.ToLowerInvariant()` with the Step 12 evidence for Step 13.",
+        "Store the clean application frame and the labeled spare tag set away from the board."
+      ],
+      "acceptance": [
+        {"test_id": "12-A", "criterion": "Printed tile geometry", "method": "Calipers/rule on every installed and spare tile", "limit": "Tile 55.0 +/- 0.2 mm; detection edge 40.0 +/- 0.2 mm", "gate_id": "tag_artwork_scale_pass", "evidence": "Measured tile table"},
+        {"test_id": "12-B", "criterion": "Installed tag placement", "method": "Verified <=0.05 mm-resolution origin-to-edge center measurement, two-offset baseline yaw calculation, and straightedge/feeler edge-lift check", "limit": "Center no more than 0.50 mm; yaw no more than 0.30 degrees; edge lift no more than 0.20 mm; measurement uncertainty no more than 0.10 mm", "gate_id": null, "evidence": "Instrument verification/uncertainty, raw edge distances, calculations, six-row metrology table, and photos"},
+        {"test_id": "12-C", "criterion": "Optical-plane record", "method": "Measure tag-stock plus compressed adhesive Z for each tile", "limit": "All six installed Z values recorded", "gate_id": "tag_plane_placement_measured", "evidence": "Six optical-plane values"},
+        {"test_id": "12-D", "criterion": "Measured runtime-map handoff", "method": "After the physical measurement gate is PASS, regenerate fiducials/apriltag_map.json with scripts/generate_fiducials.py --map-only and run the six-name/source assertion", "limit": "coordinate_source is measured_installation; measurement status is PASS; T0, T1, T2, T3, K0, and P0 are present exactly once with the recorded measured geometry", "gate_id": null, "evidence": "Generator and assertion console output plus the generated apriltag_map.json SHA-256"}
+      ],
+      "extra_files": [
+        {"path": "fiducials/apriltag36h11_ID0-5_40mm_detection_edge.pdf", "role": "convenience tag sheet", "action": "print_actual_size"},
+        {"path": "fiducials/apriltag36h11_ID0-5_sheet.svg", "role": "vector tag sheet", "action": "reference_only"},
+        {"path": "fiducials/tag36h11_id*_tile55_marker40.png", "role": "canonical tile artwork", "action": "print_or_verify"},
+        {"path": "fiducials/tag36h11_id*_tile55_marker40.svg", "role": "canonical vector artwork", "action": "reference_only"},
+        {"path": "scripts/generate_fiducials.py", "role": "measured runtime-map generator", "action": "run_map_only_after_measurement_gate_pass"},
+        {"path": "fiducials/apriltag_map.json", "role": "generated measured runtime map for Step 13", "action": "verify_source_names_and_hash"},
+        {"path": "drawings/tag_application_coordinates.csv", "role": "placement control", "action": "verify"}
+      ],
+      "failure_recovery": "If artwork scale, tag stock, or the application-frame print is invalid, return to Step 00 and requalify it. If a transferred center/orientation mark is wrong, return to Step 11. If one tag is damaged or misapplied, keep Step 12 on HOLD, replace that tag, and repeat all affected physical measurements before continuing.",
+      "stop_gate": "Stop if a tile is glossy, scaled, damaged, rotated, misidentified, only spot-taped, or outside placement limits. Do not leave the printed application frame on the board.",
+      "handoff": [
+        "All six direct-applied tags pass size and physical placement metrology; vision detection remains pending Step 13.",
+        "Installed center, yaw, edge lift, and optical Z are recorded per ID.",
+        "After `tag_plane_placement_measured` is PASS, fiducials/apriltag_map.json is regenerated, verified as measured_installation for exactly T0-T3/K0/P0, and its SHA-256 is handed to Step 13.",
+        "The application frame and spare set are labeled and stored."
+      ]
+    },
+    {
+      "id": "13",
+      "slug": "mount_camera_and_check_fov",
+      "operator_folder": "13 - Mount and Calibrate Camera",
+      "operator_title": "Mount and Calibrate Camera",
+      "title": "Resolve the camera architecture, then mount and prove route-specific vision",
+      "purpose": "After the camera architecture is formally aligned, mount the exact measured camera, calibrate it with the route-specific transform method, and prove the required view, timing, cable, payload, and collision envelope. The fixed six-tag eye-to-hand procedure below is retained only as the current independent-mast fallback.",
+      "expected_result": "The camera architecture no longer conflicts with config/camera_architecture_decision.json; the exact mount, camera, cable, calibration chain, visibility set, and motion consequences are controlled and physically accepted.",
+      "panel": "output/assembly_guide/images/13_mount_camera_and_check_fov.png",
+      "prerequisite_steps": ["12"],
+      "input_gates": ["camera_mount_interface_measured", "tag_plane_placement_measured"],
+      "completion_gates": ["tag_direct_installation_pass"],
+      "conditional_input_gates": {
+        "camera_mast_optional": ["fixed_camera_fallback_architecture_released", "camera_plate_hardware_pass", "mast_foot_first_article_pass", "mast_second_foot_postprint_pass"]
+      },
+      "conditional_completion_gates": {
+        "camera_mast_optional": ["mast_pair_installation_pass"]
+      },
+      "print_action": "consume_accepted_output",
+      "print_jobs": ["00E", "03C3", "06", "07A", "07B"],
+      "required_inputs": [
+        "A controlled camera-architecture revision that closes config/camera_architecture_decision.json; the current ENGINEERING_ALIGNMENT_HOLD prohibits applying the fixed-camera procedure to an arm-mounted camera",
+        "Actual measured USB camera and the formally released route-specific mount; the accepted Job 03C3 plate applies only to the fixed-mast fallback",
+        "Selected, measured camera support; the independent mast/stand is fallback-only and does not implement the intended arm mount",
+        "ChArUco calibration print and definition file",
+        "Step 12 measured-installation fiducials/apriltag_map.json plus its recorded SHA-256; coordinate_source must be measured_installation and measurement status PASS",
+        "USB cable with a service loop and routing clear of arm motion",
+        "Python 3.10 plus an isolated .venv-vision environment installed from requirements-vision.txt; do not use an unrelated global OpenCV installation",
+        "Steel rule for the ChArUco scale check, rigid camera-support adjustment tools, and camera-settings access"
+      ],
+      "hardware": [
+        {"type": "Vision", "qty": "1", "item": "1080p manual/fixed-exposure USB camera", "condition": "Mounting interface and blind-thread depth physically measured"},
+        {"type": "Printed part", "qty": "0 or 1", "item": "Universal camera plate", "condition": "Fixed-mast fallback only; accepted Job 03C3; omit for the released arm-mounted architecture"},
+        {"type": "Mounting", "qty": "As selected", "item": "Route-specific camera support", "condition": "Primary intent is a controlled arm mount; optional fallback mast uses accepted Jobs 06/07A/07B and the illustration position is schematic"},
+        {"type": "Fastener", "qty": "Measured set", "item": "Camera screw/strap and support hardware", "condition": "No blind-thread bottoming; washers and T-slot engagement verified"}
+      ],
+      "procedure": [
+        "Read config/camera_architecture_decision.json first. If status is ENGINEERING_ALIGNMENT_HOLD, stop this step: do not print or improvise an arm adapter and do not run the fixed eye-to-hand procedure as though it calibrates a moving arm-mounted camera.",
+        "Select and document the actual camera-support route; do not infer an arm adapter, mast placement, or fastener length from the fallback illustration.",
+        "For the fixed-mast fallback only, attach the camera to the accepted Job 03C3 plate with measured hardware or straps and verify no screw bottoms in the camera body.",
+        "For the fixed-mast fallback only, mount the plate rigidly on the independent support so arm vibration cannot move the view.",
+        "Route USB with architecture-specific service loop, strain relief, bend, flex-life, snag, and clearance controls. A moving arm cable requires full-joint sweep evidence; the fixed fallback cable must remain clear of the robot and loading paths.",
+        "Create the known vision environment from the project root: run `py -3.10 -m venv .venv-vision`, `./.venv-vision/Scripts/python.exe -m pip install --upgrade pip`, and `./.venv-vision/Scripts/python.exe -m pip install -r requirements-vision.txt`. Then run `./.venv-vision/Scripts/python.exe software_helpers/capture_camera_frames.py --help`, `./.venv-vision/Scripts/python.exe software_helpers/calibrate_camera_charuco.py --help`, and `./.venv-vision/Scripts/python.exe software_helpers/detect_apriltags.py --help`. Stop if any command fails.",
+        "Print the ChArUco board at 100 percent and verify its scale. Replace `BUILD_ID_HERE`, then capture 30 varied views at the locked 1920 x 1080 runtime resolution with `./.venv-vision/Scripts/python.exe software_helpers/capture_camera_frames.py --camera-index 0 --width 1920 --height 1080 --count 30 --prefix charuco --output-dir \"BUILD_BY_STEP/13 - Mount and Calibrate Camera/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_HERE/photos/charuco\"`. Press SPACE only for a sharp, distinct pose; vary distance and tilt and cover the center, edges, and corners. If the camera index or runtime resolution differs, use the measured locked values consistently for both capture sets and calibration. Retain `capture_session.json`.",
+        "Calibrate with `./.venv-vision/Scripts/python.exe software_helpers/calibrate_camera_charuco.py --images \"BUILD_BY_STEP/13 - Mount and Calibrate Camera/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_HERE/photos/charuco/*.png\" --definition fiducials/charuco_board_definition.json --output \"BUILD_BY_STEP/13 - Mount and Calibrate Camera/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_HERE/reports/camera_intrinsics.json\" --preview-dir \"BUILD_BY_STEP/13 - Mount and Calibrate Camera/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_HERE/reports/charuco_previews\"`. Retain the JSON and previews; at least 20 distinct views must be accepted and RMS reprojection must be no more than 1.0 px.",
+        "Frame the board so T0, T1, T2, T3, K0, and P0 remain visible, then capture the 20-pose acceptance set with `./.venv-vision/Scripts/python.exe software_helpers/capture_camera_frames.py --camera-index 0 --width 1920 --height 1080 --count 20 --prefix fov --output-dir \"BUILD_BY_STEP/13 - Mount and Calibrate Camera/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_HERE/photos/fov\"`. Span the required empty-cell envelope plus the closest edge and corner views, use the same locked settings as calibration, and retain the second `capture_session.json`.",
+        "Run the detector over every FOV PNG with the accepted intrinsics and measured Step 12 map. Replace `BUILD_ID_HERE` and choose a new attempt name once, then run this complete PowerShell batch from the project root: `$step13 = \"BUILD_BY_STEP/13 - Mount and Calibrate Camera/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_HERE\"; $attempt = \"apriltag_attempt_01\"; $sourceDir = Join-Path $step13 \"photos/fov\"; $reportDir = Join-Path $step13 (\"reports/\" + $attempt); $annotatedDir = Join-Path $step13 (\"photos/\" + $attempt); if ((Test-Path -LiteralPath $reportDir) -or (Test-Path -LiteralPath $annotatedDir)) { throw \"Choose a new attempt name; existing evidence is never overwritten.\" }; $frames = @(Get-ChildItem -LiteralPath $sourceDir -Filter \"*.png\" | Sort-Object Name); if ($frames.Count -lt 20) { throw \"At least 20 FOV PNG files are required; found $($frames.Count).\" }; New-Item -ItemType Directory -Path $reportDir,$annotatedDir | Out-Null; $failed = @(); foreach ($frame in $frames) { $report = Join-Path $reportDir ($frame.BaseName + \".json\"); $annotated = Join-Path $annotatedDir ($frame.BaseName + \".png\"); & ./.venv-vision/Scripts/python.exe software_helpers/detect_apriltags.py --image $frame.FullName --calibration (Join-Path $step13 \"reports/camera_intrinsics.json\") --tag-map fiducials/apriltag_map.json --output $report --annotated $annotated --min-world-tags 4 --require-board-pose --require-tag T0 --require-tag T1 --require-tag T2 --require-tag T3 --require-tag K0 --require-tag P0; if ($LASTEXITCODE -ne 0) { $failed += $frame.Name } }; if ($failed.Count -gt 0) { throw (\"AprilTag acceptance failed for: \" + ($failed -join \", \")) }`. This produces one JSON report and one annotated image per source PNG, fails on fewer than 20 inputs or any nonzero detector result, and refuses to overwrite an earlier attempt. Every report must show an empty `missing_required_tags` list and a solved `board_pose`.",
+        "Lock focus, exposure, white balance if available, resolution, camera index, and support position. Record all settings, calibration-file SHA-256, valid/rejected view counts, reprojection errors, and the 20-pose detection table."
+      ],
+      "acceptance": [
+        {"test_id": "13-B", "criterion": "Six-tag field of view and world-pose solve", "method": "Run the required-tag detector batch across at least 20 saved poses spanning the required empty-cell view", "limit": "T0, T1, T2, T3, K0, and P0 are present in every pose; board pose is solved from T0-T3 every time; K0/P0 remain held-out station-region checks", "gate_id": "tag_direct_installation_pass", "evidence": "FOV capture_session.json, pose list, 20 or more JSON reports with empty missing_required_tags and solved board_pose, annotated frames, and representative video"},
+        {"test_id": "13-C", "criterion": "Calibration and six-tag vision quality", "method": "Calibrate from 20-30 varied ChArUco views, then evaluate all six installed tags across the same 20-pose acceptance set", "limit": "At least 20 valid calibration views; 20/20 detections for each of T0, T1, T2, T3, K0, and P0; ChArUco RMS reprojection no more than 1.0 px", "gate_id": "tag_direct_installation_pass", "evidence": "ChArUco capture_session.json, camera intrinsics JSON, preview set, per-pose reports, and six-ID detection table"}
+      ],
+      "conditional_acceptance": {
+        "camera_mast_optional": [
+          {"test_id": "13-A", "criterion": "Fixed-fallback camera-plate retention", "method": "Inspect and lightly disturb the plate, cable, and independent support", "limit": "No camera shift, screw bottoming, strap slip, or cable-driven motion", "gate_id": "camera_plate_hardware_pass", "evidence": "Fallback plate, support, and cable photos"},
+          {"test_id": "13-D", "criterion": "Optional mast pair installation", "method": "Inspect both accepted feet, extrusion engagement, fastener stacks, support rigidity, and cable disturbance", "limit": "Both feet seated and retained with no slip, rocking, cracking, fastener bottoming, or camera shift", "gate_id": "mast_pair_installation_pass", "evidence": "Mast measurements, fastener record, disturbance result, and photos"}
+        ]
+      },
+      "extra_files": [
+        {"path": "fiducials/charuco_5x7_square25_marker17_5_1to1.pdf", "role": "lens-calibration target", "action": "print_actual_size"},
+        {"path": "fiducials/charuco_5x7_square25_marker17_5.png", "role": "calibration artwork", "action": "reference_only"},
+        {"path": "fiducials/charuco_board_definition.json", "role": "calibration control", "action": "use_with_helper"},
+        {"path": "fiducials/apriltag_map.json", "role": "runtime tag map", "action": "use_with_helper"},
+        {"path": "software_helpers/capture_camera_frames.py", "role": "traceable non-overwriting camera capture", "action": "run_from_project_root_in_venv"},
+        {"path": "software_helpers/calibrate_camera_charuco.py", "role": "lens calibration", "action": "run_from_project_root"},
+        {"path": "software_helpers/detect_apriltags.py", "role": "tag verification", "action": "run_from_project_root"},
+        {"path": "requirements-vision.txt", "role": "vision dependency versions", "action": "install_in_isolated_environment"},
+        {"path": "config/camera_architecture_decision.json", "role": "camera architecture alignment hold", "action": "resolve_by_controlled_revision_before_step"}
+      ],
+      "failure_recovery": "If installed-tag geometry or detection is the cause, return to Step 12. If the camera plate, mast feet, or other printed support hardware is invalid, return to Step 00. Keep local mounting, cable, focus/exposure, capture, or calibration rework in Step 13. Reopen every downstream signoff affected by the correction.",
+      "stop_gate": "Stop while config/camera_architecture_decision.json is ENGINEERING_ALIGNMENT_HOLD. The user-intended arm-mounted architecture is not released by the fixed-camera illustration, mast files, plate, or eye-to-hand commands. After formal alignment, also stop if the exact support is unmeasured, the camera moves, a screw can bottom, the moving cable is unqualified, the calibrated transform method does not match the mount architecture, or any route-required target leaves its accepted view.",
+      "handoff": [
+        "Camera hardware and cable route are photographed and measured.",
+        "Focus/exposure/resolution/support settings are locked; ChArUco intrinsics, previews, hashes, and runtime settings are retained.",
+        "All six tags are visible in every required acceptance pose; T0-T3 solve board pose and K0/P0 pass their held-out station-region checks."
+      ]
+    },
+    {
+      "id": "14",
+      "slug": "assemble_compliant_tool",
+      "operator_folder": "14 - Assemble and Test Spring-Loaded Tool",
+      "operator_title": "Assemble and Test Spring-Loaded Tool",
+      "title": "Assemble and qualify the compliant tool",
+      "purpose": "Build and qualify every selected contact-tool route around the shared compliant body, one configuration at a time, and verify travel, force, retention, function, and TCP repeatability.",
+      "expected_result": "Each selected rod/TPU and/or stylus configuration has smooth controlled travel, returns freely, remains retained, functions correctly, and has a recorded calibrated TCP.",
+      "panel": "output/assembly_guide/images/14_assemble_compliant_tool.png",
+      "prerequisite_steps": ["13"],
+      "input_gates": ["gripper_interface_measured", "spring_dimensions_measured", "gripper_coupon_pass", "spring_fit_coupon_pass", "compliant_tool_m3_insert_coupon_pass", "tool_body_postprint_pass", "tool_force_tcp_limits_approved"],
+      "completion_gates": ["tool_assembled_motion_pass"],
+      "requires_any_route": ["phone_stylus_route", "keyboard_rod_route"],
+      "conditional_input_gates": {
+        "phone_stylus_route": ["stylus_diameter_measured", "stylus_gauge_coupon_pass", "stylus_collar_retention_pass"],
+        "keyboard_rod_route": ["keyboard_rod_measured", "adapter_retention_method_selected", "rod_bushing_retention_pass", "keyboard_tpu_retention_coupon_pass", "keyboard_tpu_batch_postprint_pass"]
+      },
+      "conditional_completion_gates": {
+        "phone_stylus_route": ["stylus_function_pass"],
+        "keyboard_rod_route": []
+      },
+      "print_action": "consume_accepted_output",
+      "print_jobs": ["00C", "00D", "00E", "04A", "04B", "04C", "05C", "05D"],
+      "required_inputs": [
+        "Accepted shared compliant body and keyed cap",
+        "Selected and accepted compression spring",
+        "One or both configured routes selected: keyboard rod/TPU, phone stylus, or both; never install both route stacks simultaneously",
+        "Two M3 inserts and two M3 x 10 cap screws",
+        "Calipers, calibrated low-range force gauge, retention-test fixture, and a TCP probe method",
+        "PASS engineering-release record `tool_force_tcp_limits_approved` containing numeric route-specific compression-force, retention-proof, and TCP-repeatability limits; operators may not choose arbitrary limits"
+      ],
+      "hardware": [
+        {"type": "Printed part", "qty": "1 + 1 spare cap", "item": "Compliant body and keyed top caps", "condition": "Accepted Job 04A"},
+        {"type": "Spring", "qty": "1", "item": "Selected compression spring", "condition": "OD, ID, free length, and rate qualified by Job 00C"},
+        {"type": "Fastener", "qty": "2", "item": "M3 inserts and M3 x 10 button-head screws", "condition": "Insert and head fits selected by the exact tool profile"},
+        {"type": "Route", "qty": "1 per selected route", "item": "6 mm rod + bushing + TPU tip and/or measured stylus + collar", "condition": "Build and test each selected configuration separately; do not combine route-specific stacks"},
+        {"type": "Inspection", "qty": "1", "item": "Calibrated low-range force gauge", "condition": "Range and resolution must meet the engineering-approved compression and retention proof record"}
+      ],
+      "procedure": [
+        "Confirm every selected route in the canonical measurement record. Label and segregate unselected-route parts; if both routes are selected, stage two labeled configurations and test them one at a time.",
+        "Install the two M3 inserts square in the compliant body using the accepted pocket and installation method.",
+        "Fit the selected spring and confirm it is centered, unbound, and clear of the sliding member.",
+        "Install the first selected route: either the accepted 6 mm rod/bushing/TPU tip stack or the accepted measured stylus/collar stack.",
+        "Align the keyed cap and install both M3 screws evenly without washers unless the released design is revised.",
+        "Cycle full compliant travel at least 20 times; measure travel and compression force at the engineering-approved checkpoints, and verify full return, no coil bind, no scraping, and secure route retention.",
+        "Install in the RoArm gripper using the accepted grip interface. Perform at least ten remove/reinstall/probe cycles and compare the XYZ range with the numeric TCP limit selected before assembly.",
+        "If a second route is selected, remove and label the first configuration, assemble the second route, and repeat every travel, force, retention, function, and TCP test."
+      ],
+      "acceptance": [
+        {"test_id": "14-A", "criterion": "Compliant travel and force for every selected route", "method": "Measure axial travel and force through at least 20 cycles", "limit": "3-6 mm smooth travel, free return, no coil bind, and force within the approved route-specific engineering-release envelope", "gate_id": "tool_assembled_motion_pass", "evidence": "Approval ID, travel/force table, gauge ID, and cycle video"},
+        {"test_id": "14-D", "criterion": "TCP repeatability for every selected route", "method": "Ten remove/reinstall/probe cycles using the approved probe and reference frame", "limit": "XYZ range is at or below the approved route-specific engineering-release limit", "gate_id": "tool_assembled_motion_pass", "evidence": "Approval ID, ten XYZ results per route, probe method, and calibrated TCP record"}
+      ],
+      "conditional_acceptance": {
+        "keyboard_rod_route": [
+          {"test_id": "14-BK", "criterion": "Keyboard rod/bushing/TPU retention and creep", "method": "Qualified axial force-gauge pull plus 24-hour creep check", "limit": "Meets both engineering-approved rod-bushing and keyboard-TPU proof loads/durations with no slip, permanent set, brittle adhesive, or loss of removability", "gate_id": "rod_bushing_retention_pass", "evidence": "Approval ID, gauge ID, loads, durations, displacement, and before/after photos"},
+          {"test_id": "14-CK", "criterion": "Keyboard contact function", "method": "Hand key-contact test before robot use", "limit": "Reliable key input through the TPU tip without hard-stop loading", "gate_id": "keyboard_tpu_batch_postprint_pass", "evidence": "Functional test record"}
+        ],
+        "phone_stylus_route": [
+          {"test_id": "14-BP", "criterion": "Phone stylus/collar retention", "method": "Qualified axial force-gauge pull and repeated removal check", "limit": "Meets the engineering-approved stylus-collar proof load/duration with no slip, permanent set, or loss of serviceability", "gate_id": "stylus_collar_retention_pass", "evidence": "Approval ID, gauge ID, load, duration, and before/after measurements"},
+          {"test_id": "14-CP", "criterion": "Phone stylus function", "method": "Hand capacitive-contact test before robot use", "limit": "Reliable touch response without hard-stop loading", "gate_id": "stylus_function_pass", "evidence": "Manual tap count, successful taps, and video"}
+        ]
+      },
+      "extra_files": [
+        {"path": "RC03_INTEGRATED_BUILD_PLAN.md", "role": "route architecture", "action": "read"}
+      ],
+      "failure_recovery": "Return to Step 00 for any failed printed body, cap, adapter, bushing, collar, TPU tip, hardware fit, spring/gripper measurement, or route-retention qualification. Keep reversible assembly, force/travel, functional-contact, or TCP calibration rework in Step 14. Reopen downstream signoffs after either correction.",
+      "stop_gate": "This is a contact tool, not a hard stop. Stop if travel binds, the spring coil-binds, the cap distorts, the adapter slips, or the selected contact route is not explicitly recorded.",
+      "handoff": [
+        "Every selected route is labeled; unselected parts are segregated, not mistaken for accepted hardware.",
+        "Travel, force, return, retention, creep, function, and ten-cycle TCP results pass for every selected route.",
+        "Each selected route's installed-tool TCP and configuration record are saved."
+      ]
+    },
+    {
+      "id": "15",
+      "slug": "final_cell",
+      "operator_folder": "15 - Final Safety Test and Release",
+      "operator_title": "Final Safety Test and Release",
+      "title": "Final proof, calibration, and commissioning",
+      "purpose": "Prove the assembled cell mechanically, visually, and functionally before any automatic contact with the keyboard or phone.",
+      "expected_result": "Every acceptance gate has measured evidence, the cell passes empty motion and controlled first contact, and a responsible person signs the physical release decision.",
+      "panel": "output/assembly_guide/images/15_final_cell.png",
+      "prerequisite_steps": ["14"],
+      "input_gates": ["board_fabrication_pass", "keyboard_fixture_assembly_pass", "phone_fixture_assembly_pass", "tag_direct_installation_pass", "tag_plane_placement_measured", "tool_assembled_motion_pass", "commissioning_motion_contact_limits_approved"],
+      "completion_gates": ["station_remove_reinstall_repeatability_pass", "workcell_commissioning_pass"],
+      "print_action": "none",
+      "print_jobs": [],
+      "required_inputs": [
+        "Complete installed cell with devices initially removed",
+        "Signed evidence from Steps 00 through 14",
+        "Calibrated camera, board transform, accepted TCP cartridge, and compliant tool TCP",
+        "E-stop, calibrated force gauge or traceable weights, torque driver, measurement tools, and an observer",
+        "PASS engineering-release record `commissioning_motion_contact_limits_approved` for TCP speed (mm/s), TCP acceleration (mm/s^2), contact force (N), travel/clearance (mm), and 20 N/10 N proof durations (s); plus the fixed 50 N axial anchor proof for 60 seconds",
+        "Approved controller/firmware, E-stop and board anti-shift implementations, and existing project-relative homing/reference, empty-cell motion, and final-process files whose SHA-256 values match the approval record"
+      ],
+      "hardware": [
+        {"type": "Safety", "qty": "1", "item": "Functional E-stop / power cutoff", "condition": "Test before robot enable"},
+        {"type": "Inspection", "qty": "1 set", "item": "Force, torque, dimensional, and vision tools", "condition": "IDs and calibration status recorded"},
+        {"type": "Reference", "qty": "1", "item": "Accepted TCP cartridge and labeled spare", "condition": "Installed cartridge remains flush and repeatable"}
+      ],
+      "procedure": [
+        "Before robot enable, verify the engineering-approved controller/firmware, E-stop implementation, board anti-shift implementation, homing/reference procedure, empty-cell program, final-process program, TCP speed (mm/s), TCP acceleration (mm/s^2), contact force (N), travel/clearance (mm), and 20 N/10 N proof-duration (s) record is PASS; verify every artifact SHA-256 and confirm the 50 N axial anchor proof duration is fixed at 60 seconds. If any approved field is blank, missing, stale, or changed by an operator, place commissioning on HOLD.",
+        "Reconcile every prior step folder: required evidence present, no unresolved HOLD, installed/spare counts correct, and no unapproved rework.",
+        "Torque-audit all nine board interfaces and inspect for bottoming, underside projection, veneer damage, base lift, and rail or slider mis-seating.",
+        "Remove and reinstall each station ten times; record X/Y, yaw, and Z repeatability and recheck the keyboard seam and TCP cartridge.",
+        "Run the board-tag detector and confirm all six tags meet detection and reprojection limits with the final camera settings.",
+        "Proof board anchors and station loads with the defined instruments and durations; record permanent shift.",
+        "Remove devices and removable tools, follow the approved homing/reference procedure, test the approved E-stop cutoff/reset and board anti-shift implementation, apply the recorded commissioning speed/force limits, and run only the SHA-256-bound empty-cell program.",
+        "Measure minimum clearance to the board, clamp proxy, camera support, cables, stations, and tag plane.",
+        "Load and verify one device at a time; perform first contact at controlled speed and force with an observer at the E-stop.",
+        "Run only the SHA-256-bound final-process program, then complete the physical release decision, responsible signature, date, revision, and evidence archive.",
+        "Update config/measurement_record.json through the controlled recording workflow and update sequential job lifecycle evidence in config/job_build_record.json. Regenerate BUILD_TRACKER.md/.json, JOB_KITS.csv-derived kit status, job cards, and this step package; verify the final records, then archive the immutable build-ID evidence."
+      ],
+      "acceptance": [
+        {"test_id": "15-A", "criterion": "Station reinstall repeatability", "method": "Ten remove/reinstall cycles per station", "limit": "X/Y no more than 0.25 mm; yaw no more than 0.20 degrees; Z no more than 0.20 mm", "gate_id": "station_remove_reinstall_repeatability_pass", "evidence": "Cycle table and worst values"},
+        {"test_id": "15-B", "criterion": "Structure and anchors", "method": "Apply 20 N lateral and 10 N functional station proofs for the recorded durations, plus 50 N axial at every board anchor for 60 seconds", "limit": "Every load/duration is achieved; permanent shift no more than 0.10 mm; no damage or rotation", "gate_id": "workcell_commissioning_pass", "evidence": "Force-tool ID, durations, before/after values, and photos"},
+        {"test_id": "15-C", "criterion": "Empty-cell motion", "method": "Run the full path at the engineering-approved TCP speed/acceleration with devices removed", "limit": "No collision and measured clearance never below the engineering-approved minimum", "gate_id": "workcell_commissioning_pass", "evidence": "Approval ID, actual mm/s and mm/s^2, motion log/video, cycle count, and clearance table"},
+        {"test_id": "15-D", "criterion": "Controlled first contact and final process", "method": "One device at a time at the engineering-approved first-contact TCP speed/force/travel with an observer at the E-stop", "limit": "All approved numeric limits respected; no device shift, hard stop, unintended input, or cable load", "gate_id": "workcell_commissioning_pass", "evidence": "Approval ID, actual mm/s, N and mm values, and signed commissioning record"}
+      ],
+      "extra_files": [
+        {"path": "cad/step/RoCell_RC03_INT_R1_full_assembly.step", "role": "assembly reference", "action": "reference_only"},
+        {"path": "output/pdf/RC03_ILLUSTRATED_ASSEMBLY_GUIDE.pdf", "role": "visual procedure and signoff", "action": "complete"},
+        {"path": "ASSEMBLY_MANUAL.pdf", "role": "controlled procedure", "action": "complete"},
+        {"path": "RELEASE_VALIDATION.json", "role": "digital package validation", "action": "verify_not_physical_release"},
+        {"path": "software_helpers/detect_apriltags.py", "role": "final vision verification", "action": "run_from_project_root"},
+        {"path": "fiducials/apriltag_map.json", "role": "runtime tag map", "action": "use_with_helper"}
+      ],
+      "failure_recovery": "Return to the earliest affected source step: board/anchors to Step 01, arm clamp/reinforcement to Step 02, keyboard to Steps 03-05, phone/TCP to Steps 06-10, tag placement to Steps 11-12, camera/vision to Step 13, or compliant tool/TCP to Step 14. Reopen and repeat every downstream acceptance affected by that change before commissioning resumes.",
+      "stop_gate": "Digital PASS is not physical release. Do not enable automatic device contact until every measured gate is in limit, evidence is archived, the E-stop works, and the physical release decision is signed.",
+      "handoff": [
+        "All acceptance measurements and evidence are archived by revision.",
+        "The responsible release decision is signed and dated.",
+        "Installed parts, matched spares, tool route, camera settings, TCPs, and minimum clearance are recorded.",
+        "Any later part, device, camera, board, or tool change reopens the affected steps and commissioning gates."
+      ]
+    }
+  ]
+}

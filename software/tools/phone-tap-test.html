@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RoCell benign tap test</title>
+<style>
+body {font:16px system-ui;margin:16px;background:#eef3f6;color:#172b3a}
+button,input {font:inherit;padding:12px} #zone {height:40vh;display:grid;place-items:center;
+border:2px solid #758895;margin:12px 0;touch-action:none} #target {width:120px;height:120px;
+background:#155da5;color:white;border:0} textarea {width:95%;height:150px}
+</style>
+<h1>Phone tap test</h1>
+<p>Local test only. No arm control, network requests or calibration. Keep the phone
+stationary. Start with one manual tap; this does not identify who caused input.</p>
+<label>Expected taps <input id="count" type="number" min="1" max="8" value="1"></label>
+<button id="start">Start capture</button><button id="stop" disabled>Stop capture</button>
+<div id="zone"><button id="target" type="button">Tap here</button></div>
+<p id="status">Not recording.</p>
+<button id="download" disabled>Download JSON</button>
+<p>Transfer the JSON to the computer and use the wizard's phone tap review action.
+Do not expose the wizard on your network. Coordinates are CSS pixels, not millimeters.</p>
+<textarea id="result" readonly aria-label="Capture JSON"></textarea>
+<script>
+"use strict";
+const el=id=>document.getElementById(id);
+let capture=null, active=false, timer=null, started=0;
+function stop(reason="STOPPED") {
+  if(!active)return;
+  active=false;clearTimeout(timer);capture.stop_reason=reason;
+  el("result").value=JSON.stringify(capture,null,2);
+  el("status").textContent=`Stopped: ${reason}. Review the JSON in the wizard.`;
+  el("start").disabled=false;el("stop").disabled=true;el("download").disabled=false;
+}
+el("start").onclick=()=>{
+  const n=Number(el("count").value);
+  if(!Number.isInteger(n)||n<1||n>8)return;
+  const r=el("target").getBoundingClientRect();
+  // UUID generation also works in local-file contexts without randomUUID().
+  const id=typeof crypto.randomUUID==="function"?crypto.randomUUID():
+    Array.from(crypto.getRandomValues(new Uint8Array(16)),x=>x.toString(16).padStart(2,"0")).join("")
+      .replace(/^(.{8})(.{4})(.{4})(.{4})(.{12})$/,"$1-$2-$3-$4-$5");
+  capture={schema:"rocell.tap_capture.v1",capture_id:id,expected_taps:n,
+    viewport:{width:innerWidth,height:innerHeight},
+    target:{left:r.left,top:r.top,right:r.right,bottom:r.bottom},stop_reason:null,events:[]};
+  started=performance.now();active=true;el("result").value="";
+  el("start").disabled=true;el("stop").disabled=false;el("download").disabled=true;
+  el("status").textContent="Recording test area only. Tap and release, then Stop.";
+  timer=setTimeout(()=>stop("TIME_LIMIT"),60000);
+};
+for(const [name,kind] of [["pointerdown","down"],["pointerup","up"],["click","click"],["pointercancel","cancel"]]) {
+  el("zone").addEventListener(name,event=>{
+    if(!active)return;
+    const ms=Math.floor(performance.now()-started);
+    if(ms>60000){stop("TIME_LIMIT");return;}
+    if(capture.events.length>=32){stop("EVENT_LIMIT");return;}
+    capture.events.push({kind,x:event.clientX,y:event.clientY,at_ms:ms,trusted:event.isTrusted});
+  });
+}
+el("stop").onclick=()=>stop();
+window.addEventListener("resize",()=>stop("INTERRUPTED"));
+window.addEventListener("scroll",()=>stop("INTERRUPTED"));
+window.addEventListener("blur",()=>stop("INTERRUPTED"));
+document.addEventListener("visibilitychange",()=>{if(document.hidden)stop("INTERRUPTED");});
+el("download").onclick=()=>{
+  if(active||!capture)return;
+  const url=URL.createObjectURL(new Blob([JSON.stringify(capture,null,2)],{type:"application/json"}));
+  const link=document.createElement("a");link.href=url;link.download=`tap-${capture.capture_id}.json`;
+  link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+};
+</script></html>

@@ -1,0 +1,142 @@
+{
+  "schema_version": 2,
+  "design_revision": "RC02-PRO-R1",
+  "job_id": "00C",
+  "plate_file": "00C_PETG_tool_profile_fit_tests.3mf",
+  "printer": {
+    "model": "QIDI Plus4",
+    "nominal_build_volume_mm": [
+      305.0,
+      305.0,
+      280.0
+    ],
+    "safe_plate_envelope_mm": [
+      295.0,
+      295.0,
+      280.0
+    ],
+    "edge_margin_mm": 5.0,
+    "default_nozzle_mm": 0.4
+  },
+  "stage": "diagnostic",
+  "selection": "required",
+  "purpose": "RoArm grip, stepped spring seat, M3 insert, and M3 head tests using the exact tool profile",
+  "parts": {
+    "compliant_tool_grip_fit_test.stl": 1,
+    "spring_fit_gauge.stl": 1,
+    "m3_insert_fit_gauge.stl": 1,
+    "m3_head_fit_gauge.stl": 1
+  },
+  "prerequisites": [
+    "plus4_machine_confirmed",
+    "nozzle_0p4_confirmed",
+    "petg_precision_profile_calibrated"
+  ],
+  "process_profile_name": "petg_precision_0p4",
+  "process_profile": {
+    "material": "PETG",
+    "nozzle_mm": 0.4,
+    "layer_height_mm": 0.16,
+    "walls": 5,
+    "top_layers": 6,
+    "bottom_layers": 6,
+    "infill_percent": 40,
+    "infill_pattern": "gyroid",
+    "supports": "off",
+    "bed_adhesion": "5 mm brim around the upright tool body; remove carefully from the cap",
+    "dimensional_controls": "Keep the slicer seam off the gripper flats and sliding guide bore",
+    "purpose": "Compliant tool body and cap"
+  },
+  "slicer_warning": "Use a calibrated QIDI Studio filament preset for the exact brand and material; temperatures are deliberately not embedded in geometry-only 3MF files.",
+  "geometry_only_3mf": true,
+  "qidi_studio_native_project_required": true,
+  "qidi_studio_roundtrip_gate": "qidi_studio_roundtrip_confirmed",
+  "plate_envelope_mm": [
+    156.0,
+    70.0,
+    34.0
+  ],
+  "absolute_bed_bounds_mm": {
+    "min": [
+      74.5,
+      117.5,
+      0.0
+    ],
+    "max": [
+      230.5,
+      187.5,
+      34.0
+    ]
+  },
+  "centered_on_nominal_bed": true,
+  "source_stl_sha256": {
+    "compliant_tool_grip_fit_test.stl": "2c892ebeccd9d4512bf877cac3c1d56c87329c1a30a47165221480021104d935",
+    "m3_head_fit_gauge.stl": "66d4f5ed4100304d44daa624f532a757b2b73ff6dea84858bdb8f33dfc3c4165",
+    "m3_insert_fit_gauge.stl": "8726a5fcd79151256bed4b4e77829ce1970d5769aa8f1d8529be8c271d3cbf43",
+    "spring_fit_gauge.stl": "0b8464e8506bea26cc8972ce32fcfc4e7366c800eac4ee23e6fcd16677672f4c"
+  },
+  "process_profile_sha256": "8a7d27cd2258c97d838fb416cc07a3e8842b840cc0868221bba343297b05e304",
+  "plate_sha256": "072fe182dd1689a3574b62e7a864fa86d0d54d8e614a3d7c0be092192c76a9a6",
+  "objects": [
+    {
+      "name": "compliant_tool_grip_fit_test_1",
+      "bounds_mm": [
+        [
+          74.5,
+          117.5,
+          0.0
+        ],
+        [
+          102.5,
+          141.5,
+          34.0
+        ]
+      ]
+    },
+    {
+      "name": "spring_fit_gauge_1",
+      "bounds_mm": [
+        [
+          112.5,
+          117.5,
+          0.0
+        ],
+        [
+          142.5,
+          147.5,
+          14.0
+        ]
+      ]
+    },
+    {
+      "name": "m3_insert_fit_gauge_1",
+      "bounds_mm": [
+        [
+          152.5,
+          117.5,
+          0.0
+        ],
+        [
+          230.5,
+          147.5,
+          8.0
+        ]
+      ]
+    },
+    {
+      "name": "m3_head_fit_gauge_1",
+      "bounds_mm": [
+        [
+          74.5,
+          157.5,
+          0.0
+        ],
+        [
+          152.5,
+          187.5,
+          6.0
+        ]
+      ]
+    }
+  ]
+}

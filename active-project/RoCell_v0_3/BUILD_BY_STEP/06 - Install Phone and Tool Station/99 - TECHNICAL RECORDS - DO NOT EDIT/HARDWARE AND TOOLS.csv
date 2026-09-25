@@ -1,0 +1,10 @@
+source,type,qty,item,critical_condition,status
+required_physical_input,Required input,As specified,Accepted phone/TCP service station with two M3 inserts installed square off-board,Present and accepted before work,NOT_VERIFIED
+required_physical_input,Required input,As specified,Two installed phone-station locator pins,Present and accepted before work,NOT_VERIFIED
+required_physical_input,Required input,As specified,PT-HOLD-TCP M4 retainer and washer,Present and accepted before work,NOT_VERIFIED
+required_physical_input,Required input,As specified,Rail-side board interfaces kept empty for Steps 07 and 08,Present and accepted before work,NOT_VERIFIED
+required_physical_input,Required input,As specified,"Low-range torque driver, straightedge, feeler gauges, height gauge, cleaning supplies, and camera",Present and accepted before work,NOT_VERIFIED
+structured_register,Printed part,1,Phone/TCP service station,Accepted Job 03A,NOT_VERIFIED
+structured_register,Insert,2,M3 heat-set inserts,Installed square in the TCP receiver while the station is off-board,NOT_VERIFIED
+structured_register,Locator,2,Installed 6 mm pins,Round fixes XY; radial slot relieves one axis,NOT_VERIFIED
+structured_register,Fastener,1,PT-HOLD-TCP M4 screw and washer,Candidate M4x25; washer must seat fully in the modeled 1.5 mm recess; final length remains FASTENER_MAP-qualified,NOT_VERIFIED

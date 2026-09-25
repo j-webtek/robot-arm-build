@@ -1,0 +1,41 @@
+{
+  "plate": "08A-S1",
+  "file": "PRINT_ABS_frame/08A-S1_ABS_left_bench_saddle_GROUNDED_v2.3mf",
+  "geometry_source": "C:\\Users\\Jack\\Desktop\\robot-arm-build\\hardware\\static_overhead_camera\\cad\\output\\revisions\\SADDLES_GROUNDED_v2\\08A-S1_ABS_left_bench_saddle_GROUNDED_v2.3mf",
+  "geometry_revision": "GROUNDED_v2: permanent rib feet and cleared upright pocket",
+  "source_sha256": "41f05263543988c9ecf7cec22d5a3d022ad5df1999d30e3cec573a385464e80d",
+  "output_sha256": "a5a22b0745b6f488642abbaf2f08df46727f0e1e55b48758c05e290fdef73a1a",
+  "status": "PASS_MESH",
+  "expected_objects": 1,
+  "objects": [
+    {
+      "name": "08A-S1_ABS_left_bench_saddle_GROUNDED_v2",
+      "original_vertices": 13506,
+      "welded_vertices": 13506,
+      "triangles": 27056,
+      "open_edges": 0,
+      "nonmanifold_edges": 0,
+      "geometry_unchanged": true
+    }
+  ],
+  "placed_bounds_mm": [
+    [
+      [
+        10.0,
+        10.0,
+        0.0
+      ],
+      [
+        260.0,
+        200.0,
+        104.0
+      ]
+    ]
+  ],
+  "triangle_coordinates": "EXACTLY_PRESERVED_FROM_NAMED_GEOMETRY_SOURCE",
+  "build_transforms": "EXACTLY_PRESERVED",
+  "excluded_objects": [],
+  "namespace": "DEFAULT_UNPREFIXED_CORE",
+  "native_slicer_preview": "PENDING",
+  "physical_fit_and_strength": "NOT_QUALIFIED"
+}

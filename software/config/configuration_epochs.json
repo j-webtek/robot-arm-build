@@ -1,0 +1,87 @@
+{
+  "schema": "rocell.configuration_epoch_policy.v1",
+  "policy_id": "ROCELL-CONFIGURATION-EPOCHS-001",
+  "revision": 1,
+  "status": "DESIGN_REVIEWED_RUNTIME_MIGRATION_PENDING",
+  "runtime_activation": false,
+  "authority": {
+    "planning_authority": true,
+    "simulation_authority": true,
+    "robot_power_authorized": false,
+    "motion_authorized": false,
+    "contact_authorized": false,
+    "physical_release_effect": "NONE"
+  },
+  "transition_policy": {
+    "records_are_append_only": true,
+    "predecessor_hash_required": true,
+    "reason_code_required": true,
+    "affected_artifacts_must_be_invalidated": true,
+    "cross_epoch_artifact_reuse_requires_exact_dependency_hashes": true,
+    "freeze_number_alone_identifies_epoch": false
+  },
+  "epochs": [
+    {
+      "id": "software_build",
+      "description": "Controlled source, dependency, policy, provider, host-runtime, and build identity.",
+      "change_triggers": ["source", "dependency", "policy", "provider_implementation", "host_runtime"],
+      "invalidates_from_stage": "workspace_sources",
+      "required_bindings": ["build_snapshot", "source_binding", "dependency_receipt", "provider_hashes"]
+    },
+    {
+      "id": "camera_support_optics",
+      "description": "Static camera, lens, focus, aperture, support, lighting, cable, host port, and driver identity.",
+      "change_triggers": ["camera", "lens", "focus", "aperture", "support", "lighting", "camera_data_cable", "camera_host_port", "camera_driver"],
+      "invalidates_from_stage": "camera_receipt",
+      "required_bindings": ["camera_receipt", "camera_identity", "camera_mode_controls", "support_witnesses"]
+    },
+    {
+      "id": "board_tags_bench",
+      "description": "Placemat board, tag plane and corners, bench, and board locating fixture.",
+      "change_triggers": ["board", "tag", "tag_print", "tag_adhesion", "bench", "board_fixture"],
+      "invalidates_from_stage": "camera_receipt",
+      "required_bindings": ["board_measurement", "tag_map", "bench_identity", "board_reseat_test"]
+    },
+    {
+      "id": "arm_controller_tool",
+      "description": "Arm, ESP32 controller, firmware, arm base, installed tool, and moving cable harness.",
+      "change_triggers": ["arm", "controller", "firmware", "arm_base", "tool", "tool_harness"],
+      "invalidates_from_stage": "arm_identity",
+      "required_bindings": ["arm_identity", "controller_identity", "firmware_identity", "tool_identity"]
+    },
+    {
+      "id": "power_system",
+      "description": "Actuator supply, E-stop, cutoff path, containment, and power cabling.",
+      "change_triggers": ["supply", "estop", "cutoff", "containment", "power_cable"],
+      "invalidates_from_stage": "power_safety",
+      "required_bindings": ["power_topology", "cutoff_test", "containment_review", "discharge_test"]
+    },
+    {
+      "id": "keyboard_station",
+      "description": "Keyboard article, fixture, layout, key geometry, height, and travel.",
+      "change_triggers": ["keyboard", "keyboard_fixture", "keyboard_layout", "key_geometry", "key_height", "key_travel"],
+      "invalidates_from_stage": "reference_frame_calibration",
+      "required_bindings": ["keyboard_identity", "keyboard_pose", "keyboard_target_map"]
+    },
+    {
+      "id": "phone_station",
+      "description": "Phone, case, protector, fixture, Android build, IME, orientation, scale, insets, and theme.",
+      "change_triggers": ["phone", "case", "screen_protector", "phone_fixture", "android_build", "ime", "orientation", "display_scale", "insets", "theme"],
+      "invalidates_from_stage": "reference_frame_calibration",
+      "required_bindings": ["phone_identity", "phone_pose", "screen_homography", "phone_target_map", "ui_state"]
+    },
+    {
+      "id": "empty_cell_safety",
+      "description": "Keepouts, gantry, obstacles, cable routes, swept volumes, and the installed empty-cell configuration.",
+      "change_triggers": ["keepout", "gantry", "obstacle", "cable_route", "swept_volume", "installed_object"],
+      "invalidates_from_stage": "power_safety",
+      "required_bindings": ["installed_object_inventory", "collision_geometry", "startup_sweep", "empty_cell_witness"]
+    }
+  ],
+  "physical_blockers": [
+    "v2_epoch_record_schema_not_implemented",
+    "no_received_hardware_identities",
+    "no_measured_calibration_closure",
+    "no_reviewed_promotion_workflow"
+  ]
+}

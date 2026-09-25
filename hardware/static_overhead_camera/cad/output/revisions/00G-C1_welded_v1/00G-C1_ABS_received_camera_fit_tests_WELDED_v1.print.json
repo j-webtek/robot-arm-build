@@ -1,0 +1,35 @@
+{
+  "schema": "rocell.printable_camera_portal.print_sidecar.v1",
+  "schema_version": 1,
+  "design_id": "ROCELL-PRINTABLE-CAMERA-PORTAL-PROTOTYPE-003",
+  "state": "PROTOTYPE_NOT_RELEASED_FOR_ROBOT_OPERATION",
+  "subplate_id": "00G-C1",
+  "geometry_3mf": "00G-C1_ABS_received_camera_fit_tests_WELDED_v1.3mf",
+  "geometry_sha256": "c033b1bfb2fd42aa0b327cb1b04ad4c6dd79370baa85c5f7c85e026ba7bd385e",
+  "expected_object_count": 2,
+  "sidecar": "00G-C1_ABS_received_camera_fit_tests_WELDED_v1.print.json",
+  "profile": "abs_holder_precision",
+  "native_save_as_pattern": "00G-C1_WELDED_QIDI_native_vNN.3mf",
+  "objects": [
+    {
+      "part": "camera_case_fit_gauge",
+      "stl": "../../stl/camera_case_fit_gauge.stl",
+      "quantity": 1
+    },
+    {
+      "part": "camera_case_shim_ladder",
+      "stl": "../../stl/camera_case_shim_ladder.stl",
+      "quantity": 1
+    }
+  ],
+  "print": {
+    "profile_key": "abs_holder_precision",
+    "process_name": "RoCell ABS Rapido Camera Holder Precision 0.16",
+    "process_file": "../../../../slicer_profiles/QIDI_PLUS4/abs_rapido_camera_holder_precision_0p4.process.json",
+    "filament_preset": "QIDI ABS Rapido @Qidi X-Plus 4 0.4 nozzle",
+    "scale_percent": 100.0,
+    "supports": false,
+    "fuzzy_skin": "none",
+    "orientation": "use stored 3MF orientation and placement; do not auto-arrange"
+  }
+}

@@ -1,0 +1,112 @@
+{
+  "schema_version": 2,
+  "design_revision": "RC02-PRO-R1",
+  "job_id": "03B",
+  "plate_file": "03B_PETG_keyboard_clamps.3mf",
+  "printer": {
+    "model": "QIDI Plus4",
+    "nominal_build_volume_mm": [
+      305.0,
+      305.0,
+      280.0
+    ],
+    "safe_plate_envelope_mm": [
+      295.0,
+      295.0,
+      280.0
+    ],
+    "edge_margin_mm": 5.0,
+    "default_nozzle_mm": 0.4
+  },
+  "stage": "production",
+  "selection": "required",
+  "purpose": "Two scaled, gusseted keyboard rear clamps",
+  "parts": {
+    "keyboard_rear_clamp.stl": 2
+  },
+  "prerequisites": [
+    "plus4_machine_confirmed",
+    "nozzle_0p4_confirmed",
+    "petg_general_profile_calibrated",
+    "keyboard_dimensions_measured",
+    "keyboard_corner_coupon_pass",
+    "general_clearance_holes_coupon_pass",
+    "setup_hardware_coupon_pass",
+    "geometry_matches_measurements",
+    "qidi_studio_roundtrip_confirmed"
+  ],
+  "process_profile_name": "petg_general_0p4",
+  "process_profile": {
+    "material": "PETG",
+    "nozzle_mm": 0.4,
+    "layer_height_mm": 0.2,
+    "walls": 4,
+    "top_layers": 5,
+    "bottom_layers": 5,
+    "infill_percent": 25,
+    "infill_pattern": "gyroid",
+    "supports": "off unless a job override says otherwise",
+    "bed_adhesion": "Clean textured PEI; use a 5 mm brim only after observed corner lift",
+    "dimensional_controls": "Use calibrated elephant-foot and XY-hole compensation from the diagnostic coupons",
+    "purpose": "Trays, cradle, clamps, frames, puck, and camera plate"
+  },
+  "slicer_warning": "Use a calibrated QIDI Studio filament preset for the exact brand and material; temperatures are deliberately not embedded in geometry-only 3MF files.",
+  "geometry_only_3mf": true,
+  "qidi_studio_native_project_required": true,
+  "qidi_studio_roundtrip_gate": "qidi_studio_roundtrip_confirmed",
+  "plate_envelope_mm": [
+    112.0,
+    34.0,
+    25.0
+  ],
+  "absolute_bed_bounds_mm": {
+    "min": [
+      96.5,
+      135.5,
+      0.0
+    ],
+    "max": [
+      208.5,
+      169.5,
+      25.0
+    ]
+  },
+  "centered_on_nominal_bed": true,
+  "source_stl_sha256": {
+    "keyboard_rear_clamp.stl": "07d94bcdb65be80d3002e9489ec659e127004d48233c895e6569a4da5dfdc938"
+  },
+  "process_profile_sha256": "ecd7e9e90881087b4ef04779c3717bc972489d689924d8602b5cae9d4855408c",
+  "plate_sha256": "bac9fd7c9acc6a1e715f0ca2b26c6f5f6b1c8e4a0dc3d7c30630db8556f48311",
+  "objects": [
+    {
+      "name": "keyboard_rear_clamp_1",
+      "bounds_mm": [
+        [
+          96.5,
+          135.5,
+          0.0
+        ],
+        [
+          148.5,
+          169.5,
+          25.0
+        ]
+      ]
+    },
+    {
+      "name": "keyboard_rear_clamp_2",
+      "bounds_mm": [
+        [
+          156.5,
+          135.5,
+          0.0
+        ],
+        [
+          208.5,
+          169.5,
+          25.0
+        ]
+      ]
+    }
+  ]
+}

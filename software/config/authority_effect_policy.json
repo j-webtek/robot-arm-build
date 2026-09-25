@@ -1,0 +1,75 @@
+{
+  "schema": "rocell.authority_effect_policy.v1",
+  "policy_id": "ROCELL-AUTHORITY-EFFECT-001",
+  "scope": "STAGE_AGNOSTIC_DESIGN_ONLY",
+  "runtime_activation": false,
+  "authority": {
+    "hardware_accessed": false,
+    "hardware_commands_generated": 0,
+    "device_io_authorized": false,
+    "robot_power_authorized": false,
+    "live_motion_authorized": false,
+    "physical_contact_authorized": false,
+    "build_promotion_authorized": false,
+    "physical_release_effect": "NONE"
+  },
+  "effect_certainty": {
+    "values": [
+      "CONFIRMED",
+      "UNCERTAIN"
+    ],
+    "uncertain_requires_manual_reconciliation": true,
+    "automatic_retry_after_uncertain_effect": false
+  },
+  "effect_classes": [
+    {
+      "id": "NO_DEVICE_IO",
+      "device_open_allowed": false,
+      "external_physical_effect_possible": false,
+      "durable_attempt_required": false,
+      "automatic_retry_allowed": false
+    },
+    {
+      "id": "READ_ONLY_OS_INVENTORY",
+      "device_open_allowed": false,
+      "external_physical_effect_possible": false,
+      "durable_attempt_required": false,
+      "automatic_retry_allowed": false
+    },
+    {
+      "id": "BOUNDED_CAMERA_CAMPAIGN",
+      "device_open_allowed": true,
+      "external_physical_effect_possible": true,
+      "durable_attempt_required": true,
+      "automatic_retry_allowed": false
+    },
+    {
+      "id": "MANUAL_ENERGY_CHANGE",
+      "device_open_allowed": false,
+      "external_physical_effect_possible": true,
+      "durable_attempt_required": true,
+      "automatic_retry_allowed": false
+    },
+    {
+      "id": "MANUAL_POSSIBLE_MOTION",
+      "device_open_allowed": false,
+      "external_physical_effect_possible": true,
+      "durable_attempt_required": true,
+      "automatic_retry_allowed": false
+    },
+    {
+      "id": "SERIAL_OPEN_OR_WRITE",
+      "device_open_allowed": true,
+      "external_physical_effect_possible": true,
+      "durable_attempt_required": true,
+      "automatic_retry_allowed": false
+    },
+    {
+      "id": "NONCONTACT_ARM_MOTION_EXTERNAL",
+      "device_open_allowed": true,
+      "external_physical_effect_possible": true,
+      "durable_attempt_required": true,
+      "automatic_retry_allowed": false
+    }
+  ]
+}

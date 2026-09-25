@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rocell"
+version = "0.1.0"
+description = "Simulation-first control and calibration software for the RoCell typing workcell"
+readme = "README.md"
+requires-python = ">=3.10"
+# The default hardware-free commissioning path crosses a real JPEG pixel
+# boundary, while packaging supplies the standards-compliant PEP 440 checks
+# used to bind onboarding evidence to approved dependency versions. Live
+# camera and OpenCV adapters remain optional and are never imported by that
+# path.
+dependencies = ["Pillow>=10,<13", "packaging>=24,<27"]
+
+[project.optional-dependencies]
+serial = ["pyserial>=3.5,<4"]
+vision = ["numpy>=2,<2.3", "opencv-contrib-python>=4.12,<5"]
+calibration = ["numpy>=2,<2.3"]
+test = ["pytest>=8,<9"]
+
+[project.scripts]
+rocell = "rocell.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["rocell*"]
+
+[tool.setuptools.package-data]
+"rocell.ui" = ["static/*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = "-ra"
+markers = [
+    "slow: multi-minute deterministic integration coverage excluded from normal runs",
+]

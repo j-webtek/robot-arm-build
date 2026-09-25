@@ -1,0 +1,112 @@
+{
+  "schema": "rocell.windows_camera_activation_build.v2",
+  "status": "COMPILED_INCAPABLE_TESTS_PASSED",
+  "purpose": "probe",
+  "configuration": "Release",
+  "compiler": "MSVC 19.42.34435.0 x64",
+  "windows_sdk": "10.0.22621.0",
+  "cmake": "3.31.3",
+  "compile_policy": "/W4 /WX /permissive- /utf-8 /guard:cf",
+  "link_policy": "/DYNAMICBASE /NXCOMPAT /guard:cf",
+  "request_schema": "rocell.native_camera_admission_request.v2",
+  "result_schema": "rocell.owned_native_camera_result.v2",
+  "launch_flag": "--owned-probe-v2",
+  "admission_timeout_ms": 2000,
+  "native_duration_ms": 5000,
+  "native_helper_executed": false,
+  "hardware_or_metadata_access_performed": false,
+  "hardware_qualified": false,
+  "physical_authority": false,
+  "runtime_dispatch_enabled": false,
+  "source_files": {
+    "activation_v2/camera_activation_entry.cpp": "b29ba3b10fe502593201af2d6cf36832eb9106e584ef5740d5958c5a43c672c3",
+    "activation_v2/camera_activation_entry.h": "2d32f8183d6c7d33906564cc83e80e546da021c0a408183c934d0e9e8e5420e8",
+    "activation_v2/camera_activation_gate_tests.cpp": "d9a95d608808ea6152f1a4f1f280818aa46a1c9f6957dd631ce7d05f2b09ce42",
+    "activation_v2/camera_activation_gate.h": "ae0e9856d9f617aeb325bae850caafc4eb2bde4ac662e69635e6d6fe8670a9e6",
+    "activation_v2/camera_activation_identity_tests.cpp": "d82480cfda43389ce62babe8762e9e410c75de6390761ca50b7d29ad7c013c6b",
+    "activation_v2/camera_activation_identity.h": "54ce90ca46cb26d40a44a2c71bda691f7329b57bc55e93dc2b77f01aace7883e",
+    "activation_v2/camera_activation_launch_tests.cpp": "b88e58c57ac6e7db794a102c745b95424a636e21cc9790d7afc0881ea4d68bb4",
+    "activation_v2/camera_activation_launch.h": "566be7beb557df1d9c004c1f8246f30b49496b8ddea85fbb406917fdf5f5e94a",
+    "activation_v2/camera_activation_protocol_tests.cpp": "dd1169ee583e7fd767fd1b997ee16052d98766038b89e34459ac6d6772e9206c",
+    "activation_v2/camera_activation_protocol.cpp": "e2a553420bd2e1fd187d2d04e91c273012c49dd83fe07e63fa451aaa3d258862",
+    "activation_v2/camera_activation_protocol.h": "7305629e922a3c545cf56784e330cc96e7a4d72542754adbb4d4720604942b9a",
+    "activation_v2/camera_activation_result_tests.cpp": "fda0c33348c20a2afce08c65edcf74a84574ff8ab945ebf85d5edb102260d90a",
+    "activation_v2/camera_activation_result.cpp": "6e05a992631eaff48b10b3bbfb3d593cc2e80f5758ef271082f1bf6d36c98f5c",
+    "activation_v2/camera_worker.cpp": "b36e17ea42bebb24d3899455d60032d34c4a84710de6a8fe37bcdf3efef9cfda",
+    "activation_v2/CMakeLists.txt": "aad99e92a653b6d08c92ff7a5564a86f49af09b52db471b5912a4ac8437bde33",
+    "activation_v2/identity_serialization_incapable.cpp": "8ece062f489c0a1195b2bc517d6c875dcb930028c93d3e694a42a87c38fc6089",
+    "admission_protocol.cpp": "54124fbef5eba9e3d3f3484123c280231b9178fd30f5b353dddddc86e876f800",
+    "admission_protocol.h": "2f171649b196c8eb18dbf2f57eeb34787e58b8ca50a8d3f6bb015b0988d95a3f",
+    "camera_cleanup_tests.cpp": "77458ebbad41a652016dc12c1b2c8b7a04c3ee9b10690f481f7bf2986b984406",
+    "camera_cleanup.h": "f6262373862550e64e0822ce089a2cf8314a0b1f24243106b4d6fbf195bde6d9",
+    "capture_admission_protocol.cpp": "3bcfb08f3d655812442d4befeb002c8f6454dcd97fc1adb93aad2fdbddfb976e",
+    "capture_admission_protocol.h": "16ab6d599f108bc3eee8bb11cfc48c899558f3ccc6a59650bd6e2f4bd9fc32e6",
+    "identity_metadata.cpp": "7c122cd638346a9a4761f504f3560f9d49c1baf7716d7321bdd1538c6e8f2cfd",
+    "identity_metadata.h": "e4f39f7156f66b5fe2f2e8f812d9c1a6ab6e3e69d530aad59f50c4166545b3f0"
+  },
+  "artifacts": [
+    {
+      "path": "build-owned-activation-probe/Release/rocell_activation_cleanup_tests.exe",
+      "sha256": "b2edd27ed7fd9f4a25f92a7a6518ba600b727f34650357860ccf8c3ff4be0782",
+      "length_bytes": 38912,
+      "executed": true
+    },
+    {
+      "path": "build-owned-activation-probe/Release/rocell_activation_gate_tests.exe",
+      "sha256": "26ad3f9bc367b596b7fd8075f99b0850400db95f422c4d221c8e51ff110828e7",
+      "length_bytes": 61952,
+      "executed": true
+    },
+    {
+      "path": "build-owned-activation-probe/Release/rocell_activation_identity_tests.exe",
+      "sha256": "ac2619211c5673797e621af9be7e24defc98d8db9eb541118b6570b92cc5d2fe",
+      "length_bytes": 60928,
+      "executed": true
+    },
+    {
+      "path": "build-owned-activation-probe/Release/rocell_activation_launch_tests.exe",
+      "sha256": "adbba110621feb243a62339bbd0938d07b83172ed94a59c25faaacde1187b1d1",
+      "length_bytes": 28672,
+      "executed": true
+    },
+    {
+      "path": "build-owned-activation-probe/Release/rocell_activation_protocol_tests.exe",
+      "sha256": "2d277405ba095d0c9d6e5a8e30e6f6fbbf7e67a69824a2b6cfcf9b3a615cac48",
+      "length_bytes": 137216,
+      "executed": true
+    },
+    {
+      "path": "build-owned-activation-probe/Release/rocell_activation_result_tests.exe",
+      "sha256": "a76552b19d0f337ce92fadb0edeca634ee9a5bc55fd0c156bf4a70ad4a3aa70c",
+      "length_bytes": 140800,
+      "executed": true
+    },
+    {
+      "path": "build-owned-activation-probe/Release/rocell_windows_camera.exe",
+      "sha256": "ce097ad0257a1c4a4d026dbaa90582840496b00389e72642069947b4e530aaf5",
+      "length_bytes": 243712,
+      "executed": false
+    }
+  ],
+  "verification": {
+    "ctest": {
+      "path": ".codex-preserved/activation-installed-probe-20260910-01.xml",
+      "sha256": "703fe28d32b5a79b3dc3b626f2def763d41958b31ceaad095d7afad64e4716b5",
+      "passed": 5,
+      "scope": "INCAPABLE_IDENTITY_GATE_LAUNCH_PROTOCOL_CLEANUP"
+    },
+    "interop": {
+      "path": ".codex-preserved/activation-installed-interop-20260910-01.xml",
+      "sha256": "0b752feeadbddaf052e94b4d938d06e2c5cdb237ab81f4115efe9b325e7f6626",
+      "passed": 25,
+      "scope": "TWO_INCAPABLE_HELPERS_MODELED_CAMERA_REAL_PIPES_AND_SERIALIZER_EXTRACTION"
+    }
+  },
+  "limitations": [
+    "COMPILED_CAMERA_WORKER_NOT_EXECUTED",
+    "TEST_HELPER_RESULTS_MODEL_DEVICE_OBSERVATIONS",
+    "CURRENT_ORIGINAL_SCOPE_AND_DEVICE_IDENTITY_REQUIRED_SEPARATELY",
+    "RECEIVED_DRIVER_USB_OPTICS_AND_CLEANUP_UNQUALIFIED",
+    "PREVIEW_PIXELS_AND_ARM_CONTROL_NOT_IMPLEMENTED_HERE"
+  ]
+}

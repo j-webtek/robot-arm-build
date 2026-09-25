@@ -1,0 +1,131 @@
+{
+  "schema_version": 2,
+  "design_revision": "RC02-PRO-R1",
+  "job_id": "04A",
+  "plate_file": "04A_PETG_shared_compliant_tool.3mf",
+  "printer": {
+    "model": "QIDI Plus4",
+    "nominal_build_volume_mm": [
+      305.0,
+      305.0,
+      280.0
+    ],
+    "safe_plate_envelope_mm": [
+      295.0,
+      295.0,
+      280.0
+    ],
+    "edge_margin_mm": 5.0,
+    "default_nozzle_mm": 0.4
+  },
+  "stage": "route",
+  "selection": "any_tool_route",
+  "purpose": "Shared compliant tool body with keyed cap and one spare cap",
+  "parts": {
+    "compliant_tool_body.stl": 1,
+    "compliant_tool_top_cap.stl": 2
+  },
+  "prerequisites": [
+    "plus4_machine_confirmed",
+    "nozzle_0p4_confirmed",
+    "petg_precision_profile_calibrated",
+    "m3_insert_coupon_pass",
+    "gripper_interface_measured",
+    "gripper_coupon_pass",
+    "spring_dimensions_measured",
+    "spring_fit_coupon_pass",
+    "precision_m3_head_coupon_pass",
+    "geometry_matches_measurements",
+    "qidi_studio_roundtrip_confirmed"
+  ],
+  "process_profile_name": "petg_precision_0p4",
+  "process_profile": {
+    "material": "PETG",
+    "nozzle_mm": 0.4,
+    "layer_height_mm": 0.16,
+    "walls": 5,
+    "top_layers": 6,
+    "bottom_layers": 6,
+    "infill_percent": 40,
+    "infill_pattern": "gyroid",
+    "supports": "off",
+    "bed_adhesion": "5 mm brim around the upright tool body; remove carefully from the cap",
+    "dimensional_controls": "Keep the slicer seam off the gripper flats and sliding guide bore",
+    "purpose": "Compliant tool body and cap"
+  },
+  "slicer_warning": "Use a calibrated QIDI Studio filament preset for the exact brand and material; temperatures are deliberately not embedded in geometry-only 3MF files.",
+  "geometry_only_3mf": true,
+  "qidi_studio_native_project_required": true,
+  "qidi_studio_roundtrip_gate": "qidi_studio_roundtrip_confirmed",
+  "plate_envelope_mm": [
+    100.0,
+    24.0,
+    66.2
+  ],
+  "absolute_bed_bounds_mm": {
+    "min": [
+      102.5,
+      140.5,
+      0.0
+    ],
+    "max": [
+      202.5,
+      164.5,
+      66.2
+    ]
+  },
+  "centered_on_nominal_bed": true,
+  "source_stl_sha256": {
+    "compliant_tool_body.stl": "18c8d7ff2d57c0785b324c58e93b3c6558db7c56c339270ab183307b991225ba",
+    "compliant_tool_top_cap.stl": "e7adbf51fd9382a4eb2b9a9dd25df677d43fd488c4584c2bf3e3e7d1599b9081"
+  },
+  "process_profile_sha256": "8a7d27cd2258c97d838fb416cc07a3e8842b840cc0868221bba343297b05e304",
+  "plate_sha256": "50d98e0061d42ba35f312e69871376c6867c0d63f44b66c210ff00f584b56b62",
+  "objects": [
+    {
+      "name": "compliant_tool_body_1",
+      "bounds_mm": [
+        [
+          102.5,
+          140.5,
+          0.0
+        ],
+        [
+          130.5,
+          164.5,
+          66.2
+        ]
+      ]
+    },
+    {
+      "name": "compliant_tool_top_cap_1",
+      "bounds_mm": [
+        [
+          140.5,
+          140.5,
+          0.0
+        ],
+        [
+          168.5,
+          164.5,
+          5.0
+        ]
+      ]
+    },
+    {
+      "name": "compliant_tool_top_cap_2",
+      "bounds_mm": [
+        [
+          174.5,
+          140.5,
+          0.0
+        ],
+        [
+          202.5,
+          164.5,
+          5.0
+        ]
+      ]
+    }
+  ]
+}

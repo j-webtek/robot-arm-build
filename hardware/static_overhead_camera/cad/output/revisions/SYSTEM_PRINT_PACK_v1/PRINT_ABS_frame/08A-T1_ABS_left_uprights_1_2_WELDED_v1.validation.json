@@ -1,0 +1,62 @@
+{
+  "plate": "08A-T1",
+  "file": "PRINT_ABS_frame/08A-T1_ABS_left_uprights_1_2_WELDED_v1.3mf",
+  "geometry_source": "C:\\Users\\Jack\\Desktop\\robot-arm-build\\hardware\\static_overhead_camera\\cad\\output\\plates_3mf\\08A-T1_ABS_left_uprights_1_2.3mf",
+  "geometry_revision": null,
+  "source_sha256": "eeaab711a08ebbd438e649ebdad7b425a001fa6f7fa6f744434eb828d4aae706",
+  "output_sha256": "1ffdda54d7cc3ea1011fd7470c6dcf719c69428e824077270bd16468188b4393",
+  "status": "PASS_MESH",
+  "expected_objects": 2,
+  "objects": [
+    {
+      "name": "upright_truss_segment_240__01",
+      "original_vertices": 7644,
+      "welded_vertices": 7644,
+      "triangles": 15532,
+      "open_edges": 0,
+      "nonmanifold_edges": 0,
+      "geometry_unchanged": true
+    },
+    {
+      "name": "upright_truss_segment_240__02",
+      "original_vertices": 7644,
+      "welded_vertices": 7644,
+      "triangles": 15532,
+      "open_edges": 0,
+      "nonmanifold_edges": 0,
+      "geometry_unchanged": true
+    }
+  ],
+  "placed_bounds_mm": [
+    [
+      [
+        10.0,
+        10.0,
+        0.0
+      ],
+      [
+        250.0,
+        60.0,
+        64.0
+      ]
+    ],
+    [
+      [
+        10.0,
+        80.0,
+        0.0
+      ],
+      [
+        250.0,
+        130.0,
+        64.0
+      ]
+    ]
+  ],
+  "triangle_coordinates": "EXACTLY_PRESERVED_FROM_NAMED_GEOMETRY_SOURCE",
+  "build_transforms": "EXACTLY_PRESERVED",
+  "excluded_objects": [],
+  "namespace": "DEFAULT_UNPREFIXED_CORE",
+  "native_slicer_preview": "PENDING",
+  "physical_fit_and_strength": "NOT_QUALIFIED"
+}

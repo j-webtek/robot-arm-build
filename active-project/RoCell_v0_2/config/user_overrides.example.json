@@ -1,0 +1,16 @@
+{
+  "phone_case_extra_w": 3.0,
+  "phone_case_extra_l": 3.0,
+  "phone_case_extra_t": 2.0,
+  "phone_clearance": 1.0,
+  "keyboard_w": 315.0,
+  "keyboard_d": 147.0,
+  "keyboard_h": 21.0,
+  "printer_x": 305.0,
+  "printer_y": 305.0,
+  "printer_z": 280.0,
+  "printer_safe_x": 295.0,
+  "printer_safe_y": 295.0,
+  "printer_safe_z": 280.0,
+  "printer_edge_margin": 5.0
+}

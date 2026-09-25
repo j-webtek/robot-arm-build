@@ -1,0 +1,125 @@
+{
+  "plate": "08A-S2",
+  "file": "PRINT_ABS_frame/08A-S2_ABS_left_cap_and_splices_WELDED_v1.3mf",
+  "geometry_source": "C:\\Users\\Jack\\Desktop\\robot-arm-build\\hardware\\static_overhead_camera\\cad\\output\\plates_3mf\\08A-S2_ABS_left_cap_and_splices.3mf",
+  "geometry_revision": null,
+  "source_sha256": "4ee50a9be7fd929f1d6d16ad4b58c4dd5a0f686733300129ce00d0e23f6e8fb2",
+  "output_sha256": "d2fc33c532a13c3542d9235b7d6cbbb0d2c2fdab66a037fa5bc052622cb01f9f",
+  "status": "PASS_MESH",
+  "expected_objects": 5,
+  "objects": [
+    {
+      "name": "board_corner_cap_left__01",
+      "original_vertices": 9984,
+      "welded_vertices": 9984,
+      "triangles": 19972,
+      "open_edges": 0,
+      "nonmanifold_edges": 0,
+      "geometry_unchanged": true
+    },
+    {
+      "name": "u_truss_splice__01",
+      "original_vertices": 5628,
+      "welded_vertices": 5628,
+      "triangles": 11268,
+      "open_edges": 0,
+      "nonmanifold_edges": 0,
+      "geometry_unchanged": true
+    },
+    {
+      "name": "u_truss_splice__02",
+      "original_vertices": 5628,
+      "welded_vertices": 5628,
+      "triangles": 11268,
+      "open_edges": 0,
+      "nonmanifold_edges": 0,
+      "geometry_unchanged": true
+    },
+    {
+      "name": "m6_nut_retainer__01",
+      "original_vertices": 340,
+      "welded_vertices": 340,
+      "triangles": 676,
+      "open_edges": 0,
+      "nonmanifold_edges": 0,
+      "geometry_unchanged": true
+    },
+    {
+      "name": "m6_nut_retainer__02",
+      "original_vertices": 340,
+      "welded_vertices": 340,
+      "triangles": 676,
+      "open_edges": 0,
+      "nonmanifold_edges": 0,
+      "geometry_unchanged": true
+    }
+  ],
+  "placed_bounds_mm": [
+    [
+      [
+        10.0,
+        10.0,
+        0.0
+      ],
+      [
+        95.0,
+        95.0,
+        9.800000190734863
+      ]
+    ],
+    [
+      [
+        179.79999923706055,
+        115.0,
+        0.0
+      ],
+      [
+        205.5999984741211,
+        128.19999980926514,
+        6.0
+      ]
+    ],
+    [
+      [
+        134.0,
+        115.0,
+        0.0
+      ],
+      [
+        159.79999923706055,
+        128.19999980926514,
+        6.0
+      ]
+    ],
+    [
+      [
+        10.0,
+        115.0,
+        0.0
+      ],
+      [
+        114.0,
+        190.8000030517578,
+        74.0
+      ]
+    ],
+    [
+      [
+        115.0,
+        10.0,
+        0.0
+      ],
+      [
+        219.0,
+        85.80000305175781,
+        74.0
+      ]
+    ]
+  ],
+  "triangle_coordinates": "EXACTLY_PRESERVED_FROM_NAMED_GEOMETRY_SOURCE",
+  "build_transforms": "EXACTLY_PRESERVED",
+  "excluded_objects": [],
+  "namespace": "DEFAULT_UNPREFIXED_CORE",
+  "native_slicer_preview": "PENDING",
+  "physical_fit_and_strength": "NOT_QUALIFIED"
+}

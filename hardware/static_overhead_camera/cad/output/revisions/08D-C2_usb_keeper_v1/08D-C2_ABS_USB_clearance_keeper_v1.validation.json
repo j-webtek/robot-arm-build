@@ -1,0 +1,51 @@
+{
+  "status": "PASS_GEOMETRY_ONLY",
+  "objects": [
+    {
+      "name": "08D-C2_ABS_USB_clearance_keeper_v1",
+      "original_vertices": 4468,
+      "welded_vertices": 4468,
+      "triangles": 8952,
+      "open_edges": 0,
+      "nonmanifold_edges": 0,
+      "geometry_unchanged": true
+    }
+  ],
+  "revision": "Cover only; existing cage and selected physical shims unchanged",
+  "relief_bounds_xy_mm": [
+    [
+      31,
+      20
+    ],
+    [
+      65,
+      48
+    ]
+  ],
+  "relief_corner_radius_mm": 2,
+  "lower_extension_mm": 13.5,
+  "widening_total_mm": 5,
+  "design_plug_envelope_mm": [
+    30,
+    16
+  ],
+  "design_plug_envelope_bounds_xy_mm": [
+    [
+      33,
+      23
+    ],
+    [
+      63,
+      39
+    ]
+  ],
+  "dimension_basis": "Oblique tape photos; thickness approximately 10-12 mm, not metrology. Envelope includes design allowance.",
+  "preserved_features": "All closure and leveling/tool features; verified local Boolean equality",
+  "original_volume_mm3": 34640.48514385667,
+  "revised_volume_mm3": 31448.90992181744,
+  "sha256": "d16952b8564914162dc4e21955a1b07abab12c10b6bb5e01a0039f081f4e02d8",
+  "physical_plug_insertion_and_thumb_access": "PENDING",
+  "native_QIDI_preview": "PENDING",
+  "full_carriage_route": "NOT_VALIDATED: old 56 mm carriage aperture must be reviewed for back-exiting plug at all offsets",
+  "retention": "User reports spacers secure camera; no load or overhead qualification implied"
+}

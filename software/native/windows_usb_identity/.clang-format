@@ -1,0 +1,4 @@
+BasedOnStyle: LLVM
+# Windows SDK headers require windows.h before dependent declarations and
+# initguid.h before the headers whose GUID definitions this translation unit owns.
+SortIncludes: Never

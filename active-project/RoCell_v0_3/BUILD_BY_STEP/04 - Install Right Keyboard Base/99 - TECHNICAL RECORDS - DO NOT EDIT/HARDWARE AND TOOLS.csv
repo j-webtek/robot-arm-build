@@ -1,0 +1,8 @@
+source,type,qty,item,critical_condition,status
+required_physical_input,Required input,As specified,Installed master station,Present and accepted before work,NOT_VERIFIED
+required_physical_input,Required input,As specified,Accepted RC03-R slave station and second padded slider,Present and accepted before work,NOT_VERIFIED
+required_physical_input,Required input,As specified,"KBR-HOLD-F, KBR-HOLD-R, and KBR-CLAMP hardware stacks",Present and accepted before work,NOT_VERIFIED
+required_physical_input,Required input,As specified,"Feeler gauges, straightedge, low-range torque driver, and camera for seam, support-plane, torque, and evidence checks",Present and accepted before work,NOT_VERIFIED
+structured_register,Printed part,1,Keyboard station right/slave,Accepted Job 02 after the master first article,NOT_VERIFIED
+structured_register,Printed part,1,Keyboard rear-clamp slider,Accepted Job 03B with one face pad,NOT_VERIFIED
+structured_register,Fastener,2 + 1 shared,M4 retainers and washers,Relieved holes clamp only; the seam owns XY and yaw,NOT_VERIFIED

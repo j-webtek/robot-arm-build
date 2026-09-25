@@ -1,0 +1,8 @@
+source,type,qty,item,critical_condition,status
+required_physical_input,Required input,As specified,Transferred centers and +Y marks from Step 11,Present and accepted before work,NOT_VERIFIED
+required_physical_input,Required input,As specified,One measured set of six matte full-surface adhesive tiles plus a complete spare set,Present and accepted before work,NOT_VERIFIED
+required_physical_input,Required input,As specified,Accepted 55 mm application frame,Present and accepted before work,NOT_VERIFIED
+required_physical_input,Required input,As specified,"Verified long-range digital scale/caliper system with resolution no worse than 0.05 mm and stated uncertainty no worse than 0.10 mm over the required board span; machinist square, depth/height gauge, feelers, removable fine pencil, camera, lint-free wipes, and finish-compatible cleaner",Present and accepted before work,NOT_VERIFIED
+required_physical_input,Required input,As specified,A recorded physical metrology method and uncertainty budget: measure X/Y from the board origin to two tile edges and calculate center; calculate yaw from two edge offsets over a measured baseline; measure optical-plane Z from the finished board top,Present and accepted before work,NOT_VERIFIED
+structured_register,Fiducial,6 + 6 spares,AprilTag tiles IDs 0-5,"55.0 mm tile, 40.0 mm detection edge, matte full-surface adhesive",NOT_VERIFIED
+structured_register,Printed tool,1,55 mm application frame,Placement aid only; remove after every tag,NOT_VERIFIED

@@ -1,0 +1,142 @@
+{
+  "schema_version": 2,
+  "design_revision": "RC02-PRO-R1",
+  "job_id": "00B",
+  "plate_file": "00B_PETG_phone_profile_fit_tests.3mf",
+  "printer": {
+    "model": "QIDI Plus4",
+    "nominal_build_volume_mm": [
+      305.0,
+      305.0,
+      280.0
+    ],
+    "safe_plate_envelope_mm": [
+      295.0,
+      295.0,
+      280.0
+    ],
+    "edge_margin_mm": 5.0,
+    "default_nozzle_mm": 0.4
+  },
+  "stage": "diagnostic",
+  "selection": "required",
+  "purpose": "Phone width, horizontal M4 insert, cable-saddle, and washer tests using the exact cradle profile",
+  "parts": {
+    "phone_width_fit_test.stl": 1,
+    "m4_horizontal_insert_fit_gauge.stl": 1,
+    "cable_tie_saddle_fit_gauge.stl": 1,
+    "m4_washer_fit_gauge.stl": 1
+  },
+  "prerequisites": [
+    "plus4_machine_confirmed",
+    "nozzle_0p4_confirmed",
+    "petg_cradle_profile_calibrated"
+  ],
+  "process_profile_name": "petg_cradle_0p4",
+  "process_profile": {
+    "material": "PETG",
+    "nozzle_mm": 0.4,
+    "layer_height_mm": 0.2,
+    "walls": 5,
+    "top_layers": 5,
+    "bottom_layers": 5,
+    "infill_percent": 30,
+    "infill_pattern": "gyroid",
+    "supports": "build-plate only under horizontal clamp bores if needed",
+    "bed_adhesion": "5 mm brim recommended around the asymmetric cradle and clamp towers",
+    "dimensional_controls": "Use the horizontal M4 insert coupon; ream the 4.6 mm passages by hand after printing",
+    "purpose": "Phone cradle"
+  },
+  "slicer_warning": "Use a calibrated QIDI Studio filament preset for the exact brand and material; temperatures are deliberately not embedded in geometry-only 3MF files.",
+  "geometry_only_3mf": true,
+  "qidi_studio_native_project_required": true,
+  "qidi_studio_roundtrip_gate": "qidi_studio_roundtrip_confirmed",
+  "plate_envelope_mm": [
+    216.0,
+    80.0,
+    16.0
+  ],
+  "absolute_bed_bounds_mm": {
+    "min": [
+      44.5,
+      112.5,
+      0.0
+    ],
+    "max": [
+      260.5,
+      192.5,
+      16.0
+    ]
+  },
+  "centered_on_nominal_bed": true,
+  "source_stl_sha256": {
+    "cable_tie_saddle_fit_gauge.stl": "c00cd708d208909996e38fab9653f2b991335407dbd38fbb7d7089fc98232158",
+    "m4_horizontal_insert_fit_gauge.stl": "47b228a28e1847036e8ebbac43e3d926d815aed85bf14d3a0d1fb07050a3d414",
+    "m4_washer_fit_gauge.stl": "8594207f90b7b1e08a7e91e665fcc29d9a92100835ad2fed3fa172585cb4d08f",
+    "phone_width_fit_test.stl": "96aaf6fe04d5be4ab6eb9c01f810583198dcc250f86f5d316134f385ce633c77"
+  },
+  "process_profile_sha256": "874f2e964792b58d533f2fd659f5ad595af5759c7acba9d2244d5fc5b20e841c",
+  "plate_sha256": "8df377ad10c14faa25363c9b48b95b021ef0474aad656b0ea7001c201fa382f9",
+  "objects": [
+    {
+      "name": "phone_width_fit_test_1",
+      "bounds_mm": [
+        [
+          44.5,
+          112.5,
+          0.0
+        ],
+        [
+          130.8,
+          148.5,
+          9.0
+        ]
+      ]
+    },
+    {
+      "name": "m4_horizontal_insert_fit_gauge_1",
+      "bounds_mm": [
+        [
+          140.5,
+          112.5,
+          0.0
+        ],
+        [
+          166.5,
+          192.5,
+          16.0
+        ]
+      ]
+    },
+    {
+      "name": "cable_tie_saddle_fit_gauge_1",
+      "bounds_mm": [
+        [
+          176.5,
+          112.5,
+          0.0
+        ],
+        [
+          260.5,
+          142.5,
+          7.0
+        ]
+      ]
+    },
+    {
+      "name": "m4_washer_fit_gauge_1",
+      "bounds_mm": [
+        [
+          44.5,
+          158.5,
+          0.0
+        ],
+        [
+          122.5,
+          188.5,
+          6.0
+        ]
+      ]
+    }
+  ]
+}

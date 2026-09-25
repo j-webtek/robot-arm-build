@@ -1,0 +1,108 @@
+{
+  "schema_version": 2,
+  "design_revision": "RC02-PRO-R1",
+  "job_id": "00D",
+  "plate_file": "00D_PETG_adapter_profile_fit_tests.3mf",
+  "printer": {
+    "model": "QIDI Plus4",
+    "nominal_build_volume_mm": [
+      305.0,
+      305.0,
+      280.0
+    ],
+    "safe_plate_envelope_mm": [
+      295.0,
+      295.0,
+      280.0
+    ],
+    "edge_margin_mm": 5.0,
+    "default_nozzle_mm": 0.4
+  },
+  "stage": "diagnostic",
+  "selection": "required",
+  "purpose": "Stylus sliding-fit and horizontal thread-pilot tests using the exact adapter profile",
+  "parts": {
+    "stylus_diameter_gauge.stl": 1,
+    "thread_pilot_fit_gauge.stl": 1
+  },
+  "prerequisites": [
+    "plus4_machine_confirmed",
+    "nozzle_0p4_confirmed",
+    "petg_adapter_profile_calibrated"
+  ],
+  "process_profile_name": "petg_adapter_0p4",
+  "process_profile": {
+    "material": "PETG",
+    "nozzle_mm": 0.4,
+    "layer_height_mm": 0.12,
+    "walls": 4,
+    "top_layers": 5,
+    "bottom_layers": 5,
+    "infill_percent": 100,
+    "infill_pattern": "rectilinear",
+    "supports": "off",
+    "bed_adhesion": "Use an 8 mm brim for the upright rod bushing; skirt is sufficient for the short collar",
+    "dimensional_controls": "Calibrate elephant-foot compensation so split bores remain open at the first layer",
+    "purpose": "Fit-sensitive stylus collar and rod bushing"
+  },
+  "slicer_warning": "Use a calibrated QIDI Studio filament preset for the exact brand and material; temperatures are deliberately not embedded in geometry-only 3MF files.",
+  "geometry_only_3mf": true,
+  "qidi_studio_native_project_required": true,
+  "qidi_studio_roundtrip_gate": "qidi_studio_roundtrip_confirmed",
+  "plate_envelope_mm": [
+    128.0,
+    106.0,
+    18.0
+  ],
+  "absolute_bed_bounds_mm": {
+    "min": [
+      88.5,
+      99.5,
+      0.0
+    ],
+    "max": [
+      216.5,
+      205.5,
+      18.0
+    ]
+  },
+  "centered_on_nominal_bed": true,
+  "source_stl_sha256": {
+    "stylus_diameter_gauge.stl": "556c8114547de14b36d8990444de96f3229f99c93f6d06fb62216880c6f72c77",
+    "thread_pilot_fit_gauge.stl": "308470eee0a96263d9e279bf6a6098d41f64eb7ce98f849e9a3de8e0435d06c7"
+  },
+  "process_profile_sha256": "5addad813637abbe2dbc969afe8fde8637973498ff1f2439e590e070d62a2308",
+  "plate_sha256": "cd8931b9b17661cafa9da8cdb222c6ac21634988b89676a45fe949d7b7bbcee2",
+  "objects": [
+    {
+      "name": "stylus_diameter_gauge_1",
+      "bounds_mm": [
+        [
+          88.5,
+          99.5,
+          0.0
+        ],
+        [
+          180.5,
+          127.5,
+          4.0
+        ]
+      ]
+    },
+    {
+      "name": "thread_pilot_fit_gauge_1",
+      "bounds_mm": [
+        [
+          190.5,
+          99.5,
+          0.0
+        ],
+        [
+          216.5,
+          205.5,
+          18.0
+        ]
+      ]
+    }
+  ]
+}

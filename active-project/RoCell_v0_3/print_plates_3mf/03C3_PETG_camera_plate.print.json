@@ -1,0 +1,317 @@
+{
+  "schema_version": 2,
+  "design_revision": "RC03-INT-R1",
+  "job_id": "03C3",
+  "plate_file": "03C3_PETG_camera_plate.3mf",
+  "printer": {
+    "model": "QIDI Plus4",
+    "nominal_build_volume_mm": [
+      305.0,
+      305.0,
+      280.0
+    ],
+    "safe_plate_envelope_mm": [
+      295.0,
+      295.0,
+      275.0
+    ],
+    "edge_margin_mm": 5.0,
+    "default_nozzle_mm": 0.4
+  },
+  "stage": "production",
+  "selection": "camera_mast_optional",
+  "purpose": "Fixed-mast fallback camera plate; not an arm-camera adapter and not released while the camera architecture hold is open",
+  "parts": {
+    "camera_plate_universal.stl": 1
+  },
+  "prerequisites": [
+    "fixed_camera_fallback_architecture_released",
+    "plus4_machine_confirmed",
+    "plus4_protected_envelope_verified",
+    "nozzle_0p4_confirmed",
+    "petg_general_profile_calibrated",
+    "camera_mount_interface_measured",
+    "general_clearance_holes_coupon_pass",
+    "setup_hardware_coupon_pass",
+    "geometry_matches_measurements",
+    "qidi_studio_roundtrip_confirmed"
+  ],
+  "process_profile_name": "petg_general_0p4",
+  "process_profile": {
+    "material": "PETG",
+    "filament_preset": "exact_petg_spool_xplus4_0p4",
+    "preset_data_status": "EXACT_PROCESS_SPOOL_PRESET_REQUIRED",
+    "nozzle_mm": 0.4,
+    "layer_height_mm": 0.2,
+    "walls": 4,
+    "top_layers": 5,
+    "bottom_layers": 5,
+    "infill_percent": 25,
+    "infill_pattern": "gyroid",
+    "supports": "off",
+    "bed_adhesion": "5 mm outer brim after the exact PETG spool is qualified",
+    "dimensional_controls": "Use only with same-spool coupons",
+    "purpose": "Unselected fixed-camera fallback plate only",
+    "qidi_studio": {
+      "base_process_preset": "0.20mm Standard @XPlus4",
+      "import_name": "RC03 PETG General 0.20",
+      "native_overrides": {
+        "layer_height": "0.2",
+        "initial_layer_print_height": "0.2",
+        "wall_loops": "4",
+        "top_shell_layers": "5",
+        "bottom_shell_layers": "5",
+        "sparse_infill_density": "25%",
+        "sparse_infill_pattern": "gyroid",
+        "outer_wall_speed": [
+          "60"
+        ],
+        "inner_wall_speed": [
+          "120"
+        ],
+        "sparse_infill_speed": [
+          "130"
+        ],
+        "internal_solid_infill_speed": [
+          "100"
+        ],
+        "top_surface_speed": [
+          "50"
+        ],
+        "bridge_speed": [
+          "30"
+        ],
+        "gap_infill_speed": [
+          "70"
+        ],
+        "initial_layer_speed": [
+          "25"
+        ],
+        "initial_layer_infill_speed": [
+          "40"
+        ],
+        "default_acceleration": [
+          "4000"
+        ],
+        "travel_acceleration": [
+          "7000"
+        ],
+        "outer_wall_acceleration": [
+          "1600"
+        ],
+        "inner_wall_acceleration": [
+          "2600"
+        ],
+        "top_surface_acceleration": [
+          "1100"
+        ],
+        "enable_support": "0",
+        "ironing_type": "no ironing",
+        "brim_type": "outer_only",
+        "brim_width": "5",
+        "brim_object_gap": "0.1",
+        "enable_prime_tower": "0",
+        "xy_hole_compensation": "0",
+        "xy_contour_compensation": "0",
+        "elefant_foot_compensation": "0.15",
+        "print_sequence": "by layer",
+        "fuzzy_skin": "none"
+      }
+    }
+  },
+  "preset_contract": {
+    "schema_version": 1,
+    "slicer": {
+      "application": "QIDI Studio",
+      "verified_config_version": "2.7.2.60",
+      "machine_preset": "X-Plus 4 0.4 nozzle",
+      "build_surface": "Textured PEI Plate",
+      "units": "millimetres, degrees Celsius, millimetres per second, and millimetres per second squared",
+      "rule": "The per-job .print.json and .PRINT_SETTINGS.md files are the released setup records. The 3MF remains geometry-only until a native QIDI Studio project is saved and reviewed."
+    },
+    "preset_data_status": "EXACT_PROCESS_SPOOL_PRESET_REQUIRED",
+    "filament_preset_name": "exact_petg_spool_xplus4_0p4",
+    "filament_preset": {
+      "material": "PETG",
+      "filament_type": "PETG",
+      "resolution_status": "EXACT_SPOOL_PRESET_REQUIRED",
+      "suggested_starting_preset": "Generic PETG @Qidi X-Plus 4 0.4 nozzle",
+      "process_settings_status": "EXACT",
+      "thermal_settings_status": "UNRESOLVED",
+      "required_operator_inputs": [
+        "manufacturer",
+        "product name",
+        "spool lot",
+        "vendor preset name and revision",
+        "drying record",
+        "flow calibration",
+        "pressure advance calibration"
+      ],
+      "unresolved_fields": [
+        "nozzle temperature",
+        "bed temperature",
+        "chamber temperature",
+        "flow ratio",
+        "pressure advance",
+        "maximum volumetric speed",
+        "cooling"
+      ]
+    },
+    "process_preset_name": "petg_general_0p4",
+    "process_preset": {
+      "material": "PETG",
+      "filament_preset": "exact_petg_spool_xplus4_0p4",
+      "preset_data_status": "EXACT_PROCESS_SPOOL_PRESET_REQUIRED",
+      "nozzle_mm": 0.4,
+      "layer_height_mm": 0.2,
+      "walls": 4,
+      "top_layers": 5,
+      "bottom_layers": 5,
+      "infill_percent": 25,
+      "infill_pattern": "gyroid",
+      "supports": "off",
+      "bed_adhesion": "5 mm outer brim after the exact PETG spool is qualified",
+      "dimensional_controls": "Use only with same-spool coupons",
+      "purpose": "Unselected fixed-camera fallback plate only",
+      "qidi_studio": {
+        "base_process_preset": "0.20mm Standard @XPlus4",
+        "import_name": "RC03 PETG General 0.20",
+        "native_overrides": {
+          "layer_height": "0.2",
+          "initial_layer_print_height": "0.2",
+          "wall_loops": "4",
+          "top_shell_layers": "5",
+          "bottom_shell_layers": "5",
+          "sparse_infill_density": "25%",
+          "sparse_infill_pattern": "gyroid",
+          "outer_wall_speed": [
+            "60"
+          ],
+          "inner_wall_speed": [
+            "120"
+          ],
+          "sparse_infill_speed": [
+            "130"
+          ],
+          "internal_solid_infill_speed": [
+            "100"
+          ],
+          "top_surface_speed": [
+            "50"
+          ],
+          "bridge_speed": [
+            "30"
+          ],
+          "gap_infill_speed": [
+            "70"
+          ],
+          "initial_layer_speed": [
+            "25"
+          ],
+          "initial_layer_infill_speed": [
+            "40"
+          ],
+          "default_acceleration": [
+            "4000"
+          ],
+          "travel_acceleration": [
+            "7000"
+          ],
+          "outer_wall_acceleration": [
+            "1600"
+          ],
+          "inner_wall_acceleration": [
+            "2600"
+          ],
+          "top_surface_acceleration": [
+            "1100"
+          ],
+          "enable_support": "0",
+          "ironing_type": "no ironing",
+          "brim_type": "outer_only",
+          "brim_width": "5",
+          "brim_object_gap": "0.1",
+          "enable_prime_tower": "0",
+          "xy_hole_compensation": "0",
+          "xy_contour_compensation": "0",
+          "elefant_foot_compensation": "0.15",
+          "print_sequence": "by layer",
+          "fuzzy_skin": "none"
+        }
+      }
+    },
+    "human_settings_file": "03C3_PETG_camera_plate.PRINT_SETTINGS.md",
+    "human_settings_sha256": "736c5f8666a3beae5a87cf685c04831499f5510dacdec9e17ab651da5af8e214",
+    "qidi_process_profile_file": "slicer_profiles/QIDI_PLUS4/petg_general_0p4.process.json",
+    "qidi_process_profile_sha256": "4e3fcda86460e9823234db1eff750e880a8b43bcb916dc2b584038b97376b605",
+    "filament_preset_sha256": "e4af446b19a2425a1f87b49feb022fb06e525dc92f670689940c8dade2908fc4",
+    "resolved_preset_sha256": "160b234cf8bc1509030601f0ecfaf61b123c7bf746a8921b5e7bb7e9b38beb04",
+    "unresolved_fields": [
+      "nozzle temperature",
+      "bed temperature",
+      "chamber temperature",
+      "flow ratio",
+      "pressure advance",
+      "maximum volumetric speed",
+      "cooling"
+    ],
+    "part_assignments": [
+      {
+        "stl": "camera_plate_universal.stl",
+        "quantity": 1,
+        "filament_preset": "exact_petg_spool_xplus4_0p4",
+        "process_preset": "petg_general_0p4"
+      }
+    ]
+  },
+  "slicer_warning": "QIDI ABS Rapido uses the exact installed X-Plus 4 preset recorded here. PETG, TPU, and ASA jobs remain blocked until the exact physical spool and calibrated filament preset are recorded.",
+  "geometry_only_3mf": true,
+  "qidi_studio_native_project_required": true,
+  "qidi_studio_roundtrip_gate": "qidi_studio_roundtrip_confirmed",
+  "plate_envelope_mm": [
+    90.0,
+    55.0,
+    6.0
+  ],
+  "absolute_bed_bounds_mm": {
+    "min": [
+      107.5,
+      125.0,
+      0.0
+    ],
+    "max": [
+      197.5,
+      180.0,
+      6.0
+    ]
+  },
+  "centered_on_nominal_bed": true,
+  "source_stl_sha256": {
+    "camera_plate_universal.stl": "7fb63205ddc37b517ee452eda352893c7912cebe74086d977ef0beb8ec2d006f"
+  },
+  "process_profile_sha256": "00f5efa4c8c65c9857564a255fdec4d4eaa571962c83d77095a470a20942edc6",
+  "filament_preset_sha256": "e4af446b19a2425a1f87b49feb022fb06e525dc92f670689940c8dade2908fc4",
+  "resolved_preset_sha256": "160b234cf8bc1509030601f0ecfaf61b123c7bf746a8921b5e7bb7e9b38beb04",
+  "human_settings_file": "03C3_PETG_camera_plate.PRINT_SETTINGS.md",
+  "human_settings_sha256": "736c5f8666a3beae5a87cf685c04831499f5510dacdec9e17ab651da5af8e214",
+  "qidi_process_profile_file": "slicer_profiles/QIDI_PLUS4/petg_general_0p4.process.json",
+  "qidi_process_profile_sha256": "4e3fcda86460e9823234db1eff750e880a8b43bcb916dc2b584038b97376b605",
+  "plate_sha256": "b659444974c21f27d0832b97b0511edd4a879c2049d81ae010cb28d61c8eae42",
+  "objects": [
+    {
+      "name": "camera_plate_universal_1",
+      "bounds_mm": [
+        [
+          107.5,
+          125.0,
+          0.0
+        ],
+        [
+          197.5,
+          180.0,
+          6.0
+        ]
+      ]
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "schema": "rocell.roll_direction_comparison.v1",
+  "motion_authorized": false,
+  "physical_accuracy_verified": false,
+  "candidate_updated": false,
+  "speed": 20,
+  "acceleration": 1,
+  "legs": [
+    {
+      "role": "zero_positioning",
+      "export": "wizard-20260917T023236485605Z-be2d2f06a4664d56bfa79fc78cfc6b5d",
+      "manifest_file_sha256": "31884105d5bd8835d23d2009c53ef18a4de68a4eca4740802b94d8269511fc8d",
+      "command_deg": 0,
+      "desired_deg": 0,
+      "hold_final_deg": 0.26367185416399314,
+      "endpoint_and_unchanged_hold_verified": true
+    },
+    {
+      "role": "ascending_control",
+      "export": "wizard-20260917T023325948213Z-762519e94939479d8b0b3035745d0381",
+      "manifest_file_sha256": "944f59c37ab92ae9572b6d7db272583956e952ed4a7489377bace41371e06658",
+      "command_deg": 1.25,
+      "desired_deg": 1.25,
+      "hold_final_deg": 1.230468748258267,
+      "endpoint_and_unchanged_hold_verified": true
+    },
+    {
+      "role": "high_positioning",
+      "export": "wizard-20260917T023425816059Z-6a5822d1d71c4decade99177cb7655eb",
+      "manifest_file_sha256": "9d142309dd310e4c70d6cf8f58514c86fcbecdc3f3f1f890fe3f3de8a6922722",
+      "command_deg": 2.5,
+      "desired_deg": 2.5,
+      "hold_final_deg": 2.285156222210019,
+      "endpoint_and_unchanged_hold_verified": true
+    },
+    {
+      "role": "descending_control",
+      "export": "wizard-20260917T023527668617Z-9d6dd7e612e04a6eb2bb1d47d0b717a8",
+      "manifest_file_sha256": "601bcad8110a01784f883902af2eb34aee0b91b3130f9dc2293cba6caa42a4f9",
+      "command_deg": 1.25,
+      "desired_deg": 1.25,
+      "hold_final_deg": 1.4941406024222599,
+      "endpoint_and_unchanged_hold_verified": true
+    }
+  ],
+  "comparison": {
+    "ascending_error_deg": -0.019531251741732945,
+    "descending_error_deg": 0.24414060242226002,
+    "descending_minus_ascending_deg": 0.26367185416399286,
+    "scope": "One reverse-order pair; controller joint feedback only",
+    "earlier_lookup_validation_counts_changed": false
+  }
+}

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000" role="img" aria-labelledby="title desc">
+  <title id="title">RoCell static camera board and camera mounting interface details</title>
+  <desc id="desc">Screening details for the reversible board edge registration and the positive-retention B0477 camera cage.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#334155"/></marker>
+    <style>
+      .title{font:700 28px 'Segoe UI',Arial,sans-serif;fill:#0f172a}.subtitle{font:500 15px 'Segoe UI',Arial,sans-serif;fill:#334155}
+      .head{font:700 20px 'Segoe UI',Arial,sans-serif;fill:#0f172a}.label{font:500 14px 'Segoe UI',Arial,sans-serif;fill:#1e293b}
+      .small{font:500 12px 'Segoe UI',Arial,sans-serif;fill:#334155}.tiny{font:500 10px 'Segoe UI',Arial,sans-serif;fill:#475569}
+      .panel{fill:#fff;stroke:#cbd5e1;stroke-width:1.5}.board{fill:#f4e4c1;stroke:#7c5a2b;stroke-width:2}.metal{fill:#64748b;stroke:#0f172a;stroke-width:2}
+      .datum{fill:#f59e0b;stroke:#92400e;stroke-width:2}.clamp{fill:#fb923c;stroke:#9a3412;stroke-width:2}.camera{fill:#475569;stroke:#0f172a;stroke-width:2}
+      .dim{stroke:#334155;stroke-width:1.5;fill:none;marker-start:url(#arrow);marker-end:url(#arrow)}.ext{stroke:#64748b;stroke-width:1;stroke-dasharray:3 3}
+      .force{stroke:#dc2626;stroke-width:4;fill:none;marker-end:url(#arrow)}.open{fill:none;stroke:#7c3aed;stroke-width:4;stroke-dasharray:10 6}
+    </style>
+  </defs>
+  <rect width="1600" height="1000" fill="#f8fafc"/>
+  <text x="48" y="48" class="title">G002 — BOARD REGISTRATION + CAMERA RETENTION DETAILS</text>
+  <text x="48" y="77" class="subtitle">Concept geometry only • derive final brackets and holes from measured board, bench, and received B0477 STEP</text>
+  <rect x="48" y="94" width="1504" height="48" rx="7" fill="#fff7ed" stroke="#f59e0b"/>
+  <text x="70" y="124" class="label">NO NEW RC03 BOARD HOLES. No structural camera load through plywood. Exact fasteners, slots, cage fit, and anchor loads remain open.</text>
+
+  <rect x="48" y="175" width="735" height="730" rx="8" class="panel"/>
+  <text x="72" y="210" class="head">A — Reversible 3-2-1 board-to-frame interface</text>
+  <text x="72" y="234" class="small">Plan view; board shown 610 × 457. Contacts touch vertical edge/underside only and remain at or below Z=0.</text>
+
+  <!-- Scale 0.86; board origin screen 125,760, +Y upward. -->
+  <rect x="125" y="366.98" width="524.6" height="393.02" rx="2" class="board"/>
+  <text x="338" y="575" class="head" fill="#7c5a2b">RC03 BOARD</text>
+  <text x="322" y="599" class="small">top remains unobstructed</text>
+
+  <!-- Front datum stops at X=150,460. -->
+  <rect x="246" y="754" width="16" height="18" class="datum"/>
+  <rect x="513" y="754" width="16" height="18" class="datum"/>
+  <text x="214" y="799" class="small">front datum 1</text><text x="489" y="799" class="small">front datum 2</text>
+  <!-- Left stop at Y=260. -->
+  <rect x="113" y="524" width="18" height="16" class="datum"/>
+  <text x="72" y="514" class="small">left datum</text>
+
+  <!-- Opposed clamps. -->
+  <rect x="643" y="524" width="18" height="16" class="clamp"/>
+  <line x1="690" y1="532" x2="663" y2="532" class="force"/>
+  <text x="669" y="510" class="small">right clamp</text>
+  <rect x="203" y="355" width="16" height="18" class="clamp"/>
+  <rect x="555" y="355" width="16" height="18" class="clamp"/>
+  <line x1="211" y1="326" x2="211" y2="351" class="force"/>
+  <line x1="563" y1="326" x2="563" y2="351" class="force"/>
+
+  <!-- Factory clamp keepout. -->
+  <line x1="318.5" y1="367" x2="456.1" y2="367" class="open"/>
+  <path d="M318.5 345 L318.5 380 M456.1 345 L456.1 380" class="open"/>
+  <text x="287" y="308" class="label" fill="#6d28d9">KEEP OPEN: rear X=225..385</text>
+  <text x="307" y="330" class="small" fill="#6d28d9">factory RoArm table clamp</text>
+
+  <!-- Dimensions. -->
+  <line x1="125" y1="760" x2="125" y2="835" class="ext"/><line x1="649.6" y1="760" x2="649.6" y2="835" class="ext"/>
+  <line x1="125" y1="825" x2="649.6" y2="825" class="dim"/><text x="361" y="849" class="label">610 nominal</text>
+  <line x1="649.6" y1="367" x2="718" y2="367" class="ext"/><line x1="649.6" y1="760" x2="718" y2="760" class="ext"/>
+  <line x1="708" y1="367" x2="708" y2="760" class="dim"/><text x="727" y="587" class="label" transform="rotate(-90 727 587)">457 nominal</text>
+
+  <rect x="72" y="252" width="650" height="39" rx="5" fill="#ecfeff" stroke="#06b6d4"/>
+  <text x="88" y="277" class="small">Interface accommodation target: 610±0.5 × 457±0.5 × 17.5..18.5; use slots/shims, then accept only measured build criteria.</text>
+  <text x="80" y="879" class="small">Two front stops constrain Y+yaw • one left stop constrains X • opposed clamps seat the board • anti-lift clips act below the top plane.</text>
+
+  <rect x="817" y="175" width="735" height="730" rx="8" class="panel"/>
+  <text x="841" y="210" class="head">B — Positive-retention B0477 carriage</text>
+  <text x="841" y="234" class="small">Front and side concept. Enclosure/lens dimensions are supplier envelopes; hole placement is intentionally not released.</text>
+
+  <!-- Front view plate 100x80, scale 4.2. -->
+  <rect x="873" y="315" width="420" height="336" rx="5" fill="#dbeafe" stroke="#2563eb" stroke-width="3"/>
+  <text x="889" y="341" class="label" fill="#1d4ed8">100 × 80 × 3 aluminium plate</text>
+  <rect x="1003" y="398" width="160" height="160" class="camera"/>
+  <circle cx="1083" cy="478" r="82" fill="#94a3b8" stroke="#0f172a" stroke-width="4"/>
+  <circle cx="1083" cy="478" r="42" fill="#0f172a" stroke="#38bdf8" stroke-width="3"/>
+  <path d="M980 380 L1186 380 L1186 576 L980 576 Z" fill="none" stroke="#f59e0b" stroke-width="10"/>
+  <rect x="967" y="367" width="232" height="22" class="metal"/>
+  <rect x="967" y="567" width="232" height="22" class="metal"/>
+  <text x="1000" y="614" class="small">cage captures 38 × 38 enclosure</text>
+  <text x="998" y="634" class="tiny">keeper + rear shoulder prevent gravity release</text>
+
+  <!-- Plate dimensions. -->
+  <line x1="873" y1="683" x2="1293" y2="683" class="dim"/><line x1="873" y1="651" x2="873" y2="691" class="ext"/><line x1="1293" y1="651" x2="1293" y2="691" class="ext"/>
+  <text x="1066" y="708" class="label">100</text>
+  <line x1="1327" y1="315" x2="1327" y2="651" class="dim"/><line x1="1293" y1="315" x2="1335" y2="315" class="ext"/><line x1="1293" y1="651" x2="1335" y2="651" class="ext"/>
+  <text x="1345" y="500" class="label" transform="rotate(-90 1345 500)">80</text>
+
+  <!-- Side view. -->
+  <text x="1395" y="290" class="label">SIDE</text>
+  <rect x="1380" y="340" width="28" height="300" fill="#dbeafe" stroke="#2563eb" stroke-width="3"/>
+  <rect x="1352" y="405" width="28" height="160" class="camera"/>
+  <path d="M1352 430 L1280 448 L1280 522 L1352 540 Z" fill="#94a3b8" stroke="#0f172a" stroke-width="3"/>
+  <line x1="1280" y1="485" x2="1234" y2="485" stroke="#0ea5e9" stroke-width="4"/>
+  <text x="1218" y="471" class="tiny">lens/front</text>
+  <text x="1380" y="668" class="tiny">plate 3 mm</text>
+
+  <!-- Tether and USB. -->
+  <path d="M1186 380 C1255 270, 1370 275, 1410 330" fill="none" stroke="#dc2626" stroke-width="4" stroke-dasharray="7 5"/>
+  <circle cx="1410" cy="330" r="8" fill="#dc2626"/>
+  <text x="1215" y="276" class="small" fill="#991b1b">independent metal tether to bridge</text>
+  <path d="M1408 485 C1470 485,1470 410,1510 410" fill="none" stroke="#16a34a" stroke-width="5"/>
+  <text x="1370" y="390" class="small" fill="#166534">USB strain relief</text>
+
+  <!-- Adjustment arrows. -->
+  <line x1="920" y1="735" x2="1245" y2="735" class="dim"/><text x="1022" y="758" class="small">X ±50 / Y ±50 carriage</text>
+  <line x1="1455" y1="340" x2="1455" y2="640" class="dim"/><text x="1474" y="555" class="small" transform="rotate(-90 1474 555)">pupil Z=950..1050</text>
+
+  <rect x="850" y="780" width="665" height="95" rx="5" fill="#fef2f2" stroke="#ef4444"/>
+  <text x="870" y="807" class="label" fill="#991b1b">NOT PERMITTED</text>
+  <text x="870" y="832" class="small">• strap or printed clip as primary retention • single-screw antirotation</text>
+  <text x="870" y="854" class="small">• clamping focus/iris rings • assuming rear Ø2 holes are threaded</text>
+
+  <text x="48" y="944" class="small">Final release requires received-part dimensional inspection, exact STEP assembly, load/tip review, non-bottoming fastener proof, sweep clearance, and witness-marked calibration.</text>
+  <text x="48" y="972" class="tiny">Printed scale is not controlled. Use stated dimensions, config/support_design.json, and gantry_interface_coordinates.csv.</text>
+</svg>

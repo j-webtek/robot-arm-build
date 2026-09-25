@@ -1,0 +1,16 @@
+{
+  "schema_version": 2,
+  "design_revision": "RC03-INT-R1",
+  "expected_revision": "RC03-INT-R1",
+  "layout_sha256": "e84db9aa7b88db442f042c6f546196e350c822a2e7609cb4b652b3da535df2e1",
+  "apriltag_map_sha256": "81c867d28660cdade79cb8024104d82e5568effa0736f07f0947c1007ac23700",
+  "coordinate_source": "nominal_layout",
+  "tag_measurement_gate_status": "NOT_TESTED",
+  "manual_sha256": "90a925858e4327f13189df422fde65ef4afa6bbca9e10eeb30caff3710b19530",
+  "controlled_blocks": [
+    "RC03_BOARD_FEATURES",
+    "RC03_DIRECT_TAG_INSTALLATION",
+    "RC03_RUNTIME_TAG_COORDINATES"
+  ],
+  "status": "SYNCED"
+}

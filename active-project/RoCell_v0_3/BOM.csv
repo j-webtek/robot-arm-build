@@ -1,0 +1,54 @@
+category,item,qty,specification,required,notes
+Core,Waveshare RoArm-M3 Pro,1,Existing arm,Yes,Use factory rear-edge clamp
+Core,Structural board,1,610 x 457 x 18 mm birch plywood preferred,Yes,Purchase cut to size; seal both faces equally with a matte finish; no router or CNC is required
+Core,Compact keyboard,1,Perixx PERIBOARD-409 nominal 315 x 147 x 21 mm,Yes,CAD defaults to this exact envelope
+Core,Samsung Galaxy A16 5G,1,Nominal bare body 164.4 x 77.9 x 7.9 mm,Yes,Print the fit coupon before the integrated phone/TCP station; any case requires measured parameter overrides
+Fabrication,Digital calipers,1,0.01 mm display / approximately 0.02-0.05 mm practical accuracy,Yes,Measure devices rods inserts springs and printed coupons only after cooling
+Fabrication,Heat-set insert installation tip,1,M3 tip compatible with the selected compliant-tool and TCP-receiver inserts,Yes,Install square at low pressure using profile-specific coupon-selected pockets
+Fabrication,Hand drill and depth-control set,1,2.5-3.0 mm pilot bit; 6 mm brad-point bit; anchor-barrel bit selected by scrap test; positive depth collars; awl or transfer punch; drill square/portable guide,Yes,Use the 1:1 setup template only to transfer centers; remove it before final drilling; locator bores are blind and every final anchor bore follows the selected interface manufacturer plus the 18 mm cutoff test
+Fabrication,Filament dryer or dry storage,1,Appropriate for ABS PETG TPU and ASA,Recommended,Especially important for exact-spool TPU and PETG dimensional consistency and surface quality
+Fabrication,QIDI ABS Rapido filament,1 controlled lot,QIDI ABS Rapido for X-Plus 4 with 0.4 mm nozzle,Yes,Primary rigid material for jobs 00A 00B 00C 00E 00F 01 02 03A 03B 03C1 03C2 03D and 04A; purchase sufficient same-lot mass after final native slices; use the exact controlled filament preset
+Fabrication,PETG filament for split adapters,1 qualified spool,Exact brand product lot and calibrated X-Plus 4 preset to be recorded before printing,Route dependent,Retained for jobs 00D 04B and 04C because their thin split features need ductility; job 03C3 additionally needs a qualified PETG general process only if the fixed-mast fallback is formally released; no generic thermal values are released
+Fabrication,TPU 95A filament for contact tips,1 qualified spool,Exact brand product Shore 95A lot and calibrated X-Plus 4 preset to be recorded before printing,Yes,Required only for jobs 05A through 05D; dry and qualify the first articles before production tips
+Fabrication,ASA filament for fixed-mast fallback,1 qualified spool,Exact brand product lot and calibrated enclosed X-Plus 4 preset to be recorded only after fallback release,Optional,Inactive fixed-mast jobs 06 07A and 07B only; not part of the intended arm-camera route
+Fabrication,Digital force gauge or calibrated weights,1,0-50 N minimum push-pull gauge with 0.1 N resolution OR a safe fixture with traceable weights capable of 10 N 20 N and 50 N,Yes,Required for the station functional/lateral proofs and the 50 N board-anchor proof; do not hand-estimate acceptance loads
+Fabrication,Straightedge and feeler gauge set,1,300 mm precision straightedge plus 0.10 mm and 0.50 mm feelers,Yes,Measure board/station flatness and verify retained base contact without forcing the feeler
+Fabrication,Low-range torque driver,1,Calibrated tool covering 0.25-0.35 N m with M4 bit,Yes,Use for every station retainer after all shared-fastener stacks are engaged by hand
+Assembly,Keyboard rear-clamp face pad pieces,2,Adhesive-backed EVA or TPU 42 x 10 x 0.8-1.0 mm,Yes,One replaceable face pad per rear clamp; do not bow the keyboard case
+Assembly,M4 low-profile keyboard clamp/retention screws,4,Hand-adjustable length selected from the direct station-to-board stack; two installed plus two spares,Yes,Each screw passes through a rear-clamp slider and station into the board threaded interface; it replaces the conventional station screw at KBL-CLAMP or KBR-CLAMP and is tightened only until padded contact
+Vision,USB camera,1,Exact arm-camera model and interface to be controlled; 1080p manual/fixed exposure preferred where compatible,Yes,Primary intent is arm-mounted/eye-in-hand; the existing rigid-above-workcell mast and universal plate are unqualified fallback hardware only
+Vision,Matte white paper/card,2,"Letter/A4, non-glossy",Yes,ChArUco board only
+Vision,Full-surface matte adhesive AprilTag tiles,12,Six IDs 0-5 plus one complete spare set; 55.0 mm tile with 40.0 mm detection edge,Yes,Apply directly to the cured sealed board using the generated 1:1 template; do not use small tape patches
+Vision,Lint-free wipes and finish-compatible cleaner,1,IPA only if proven compatible with the cured board finish,Yes,Clean each direct-tag area without leaving gloss residue
+Board interface,6 mm precision dowel pins,6,6 x 20 mm hardened or stainless pins; four installed plus two spares,Yes,Install in depth-stop-controlled 15.0 mm blind board bores after coupon selection; target exposed projection is 5.0 mm
+Board interface,M4 board threaded interfaces,12,M4 tee nuts or threaded inserts qualified in an 18 mm board cutoff; nine installed plus three spares,Yes,Require at least 5 mm engagement three service cycles and a 50 N axial proof without rotation or veneer damage
+Board interface,M4 station retention screws,10,Candidate M4 x 20 and M4 x 25 button-head screws; seven installed plus three spares,Yes,These occupy the seven non-clamp board interfaces; the two KBL/KBR clamp interfaces use the shared low-profile clamp/retention screws; select length with a scrap-board stack test and require no bottoming or underside projection
+Board interface,M4 station washers,12,Measured flat washers; nine installed plus three spares,Yes,Use the coupon-selected printed recess and tighten stations only to 0.25-0.35 N m
+Board interface,Slow-cure two-part epoxy,1,Small structural kit compatible with steel and sealed plywood,Yes,For locator pins only after all dry-fit and repeatability checks pass
+Arm interface,Precut metal underside reinforcement plate,1,Minimum 3 mm aluminum or 2 mm steel; footprint selected after measuring the factory RoArm clamp,Yes,Factory clamp remains load-bearing; plate spreads load under the board without a printed structural load path
+Cable management,Nylon cable ties,12,Nominal 4.8 mm wide x <= 1.5 mm thick x 150-200 mm long,Yes,Project-standard wider tie for phone strain relief and optional camera routing; production opening is 5.6 x 2.2 mm and is qualified on Job 03C1
+Cable management,Adhesive cable-tie anchors,4,Low-profile 18-20 mm square mounts compatible with the board finish and with a strap channel accepting the nominal 4.8 mm tie,Recommended,Use only where needed to route the phone lead clear of AprilTags and robot motion; includes two spares
+Phone clamp,M4 captured hex nuts,4,Standard M4 nuts; two installed plus two spares,Yes,Qualify the redesigned 7.2 mm lower-half hex seat on Job 03C1; require at least three full screw turns and no nut spin
+Phone clamp,M4 x 25 mm thumb screws or nylon screws,2,Hand adjustable,Yes,Fit TPU caps to inner ends
+TCP receiver,M3 heat-set inserts,4,"4.5-4.7 mm OD, 5-6 mm long; two installed plus two spares",Yes,Install vertically in the integrated phone/TCP station using the job 00B selected pocket
+TCP receiver,M3 x 10 mm button-head screws,4,Two installed plus two spares,Yes,Retain the keyed TCP datum cartridge without distorting its datum face
+Compliant tool,M3 heat-set inserts,2,"4.5-4.7 mm OD, 5-6 mm long",Yes,Retaining-cap inserts
+Compliant tool,M3 x 10 mm button-head screws,2,Head OD must pass the setup-hardware coupon,Yes,Retaining cap; install without washers unless the cap recess is deliberately revised and revalidated
+Compliant tool,Compression spring,1,OD <= 13.5 mm; ID >= 10.5 mm; free length 18-22 mm; light rate,Yes,Tune for 3-6 mm compliant travel
+Keyboard tool,6 mm smooth rod,1,"90-110 mm long, aluminum/brass/steel/carbon",One tool option,Deburr ends; use printed adapter and TPU tip
+Phone tool,Passive capacitive stylus,1,"Approx. 8.5-9.5 mm barrel, soft conductive tip",One tool option,Verify by hand on A16 before robot use
+Tool retention,Removable retaining compound,1,Small tube of plastics-compatible non-brittle removable compound verified on PETG and the selected stylus or rod,If needed,Use only after measured dry-fit evaluation; avoid permanent threadlocker and brittle cyanoacrylate; document removability and plastic compatibility
+Safety,Latching power cutoff / E-stop,1,Rated for arm power supply,Yes,Keep outside robot reach
+Board,Rubber feet,6,Adhesive or screw-on,Recommended,Prevent sliding and protect table
+Board,Matte neutral paint or vinyl,1,Low-gloss light gray/white,Recommended,Reduces glare; do not cover tag print faces
+Camera stand,2020 extrusion,2,700 mm vertical posts,Optional,Use separate stand to avoid arm vibration
+Camera stand,2020 extrusion,1,650 mm crossbar,Optional,Width can be adjusted to camera framing
+Camera stand,2020 angle brackets + T-nuts,4,Standard M5 hardware,Optional,Metal brackets preferred
+Camera stand,M5 x 60 mm clamp bolts + nuts,4,Two bolts and two captive nuts per reinforced mast foot,Optional,After formal fallback release verify with the same-spool ASA nut-trap coupon before assembly
+Camera stand,M5 base-mounting hardware,8,Length and anchors selected for the stand base material; washers listed separately,Optional,Four mounting holes per mast foot
+Camera stand,M5 T-slot screws,2,M5 x 10-16 mm selected for the camera plate and crossbar T-nuts,Optional,Two camera-plate mounting slots; confirm thread engagement before tightening
+Camera stand,M5 T-nuts,2,Matched to the selected 2020 extrusion profile,Optional,Camera-plate crossbar attachment
+Camera stand,M5 flat washers,16,10-12 mm OD selected with the setup coupon,Optional,Eight mast-base seats four mast-clamp bolt heads two camera-plate slots and two service spares
+Camera stand,Camera retention straps or project-standard zip ties,4,Nominal 4.8 mm wide x <= 1.5 mm thick; reusable straps preferred,Optional,Two installed through the 5.6 mm camera-plate slots plus two spares
+Camera stand,1/4-20 camera screw and nut,1,Screw length selected after measuring the camera blind-thread depth; nut only if the selected interface requires it,Optional,Do not allow the screw to bottom in the camera body
+Service spares,Fastener and insert spare pack,1,2 M3 inserts; 2 M4 phone nuts; 2 M3 x 10 screws; 2 M4 clamp screws; 3 station bolts washers and board inserts; 2 locator pins,Recommended,Label RC03-INT-R1 and store with the accepted profile-specific coupons; PETG adapter TPU tip and ABS TCP-cartridge spares are supplied by their jobs

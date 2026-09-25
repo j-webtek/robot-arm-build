@@ -1,0 +1,235 @@
+{
+  "schema": "rocell.purchased_camera_profile.v1",
+  "schema_version": 1,
+  "profile_id": "arducam-b0477-imx283-16mm-purchased-001",
+  "record_state": "PURCHASED_PENDING_RECEIPT",
+  "authority": {
+    "allowed_use": "REFERENCE_ONLY",
+    "hardware_presence_authority": false,
+    "live_capture_authority": false,
+    "calibration_authority": false,
+    "robot_motion_authority": false,
+    "contact_authority": false,
+    "note": "This purchase record and manufacturer-published specification profile does not prove receipt, identity, mode, focus, calibration, installation, live capture, robot motion, or contact readiness."
+  },
+  "purchase": {
+    "state": "PURCHASED_PENDING_RECEIPT",
+    "evidence_state": "USER_REPORTED_PURCHASE_NOT_RECEIPT_VERIFIED",
+    "reported_product_title": "Arducam USB 3.0 Camera, 120fps High-Speed Camera, 20MP Webcam with 60°(D) 16mm C-Mount Lens and Metal Case, Compatible with Windows and Linux OS",
+    "order_reference": null,
+    "received_utc": null,
+    "receipt_photo_sha256": null
+  },
+  "published_identity": {
+    "evidence_state": "MANUFACTURER_PUBLISHED_UNMEASURED",
+    "manufacturer": "Arducam",
+    "model": "B0477",
+    "sensor": "Sony IMX283",
+    "sensor_megapixels": 20.0,
+    "sensor_optical_format": "1-inch",
+    "sensor_active_width_px": 5496,
+    "sensor_active_height_px": 3672,
+    "pixel_size_um": 2.4,
+    "shutter": "rolling",
+    "color": true
+  },
+  "published_interface": {
+    "evidence_state": "MANUFACTURER_PUBLISHED_UNMEASURED",
+    "device_interface": "USB 3.2 Gen 1",
+    "host_backward_compatibility": "USB 2.0",
+    "connector": "USB Type-C",
+    "uvc_compliant": true,
+    "output_pixel_format": "YUY2",
+    "supported_operating_systems": [
+      "Windows",
+      "Linux"
+    ]
+  },
+  "published_optics": {
+    "evidence_state": "MANUFACTURER_PUBLISHED_UNMEASURED",
+    "lens_supply": "included",
+    "lens_mount": "C-mount",
+    "focal_length_mm": 16.0,
+    "focus_type": "manual",
+    "default_focus_range": "5m-infinity",
+    "aperture_type": "manual",
+    "aperture_min_f_number": 1.4,
+    "aperture_max_f_number": 16.0,
+    "field_of_view_diagonal_deg": 60.0,
+    "field_of_view_horizontal_deg": 49.0,
+    "field_of_view_vertical_deg": 38.0,
+    "integral_ir_cut_filter": true
+  },
+  "published_native_modes": [
+    {
+      "evidence_state": "MANUFACTURER_PUBLISHED_UNMEASURED",
+      "host_bus": "USB_3_2_GEN_1",
+      "width_px": 1280,
+      "height_px": 720,
+      "maximum_fps": 120.0,
+      "pixel_format": "YUY2"
+    },
+    {
+      "evidence_state": "MANUFACTURER_PUBLISHED_UNMEASURED",
+      "host_bus": "USB_3_2_GEN_1",
+      "width_px": 1920,
+      "height_px": 1080,
+      "maximum_fps": 60.0,
+      "pixel_format": "YUY2"
+    },
+    {
+      "evidence_state": "MANUFACTURER_PUBLISHED_UNMEASURED",
+      "host_bus": "USB_3_2_GEN_1",
+      "width_px": 2720,
+      "height_px": 1536,
+      "maximum_fps": 40.0,
+      "pixel_format": "YUY2"
+    },
+    {
+      "evidence_state": "MANUFACTURER_PUBLISHED_UNMEASURED",
+      "host_bus": "USB_3_2_GEN_1",
+      "width_px": 3840,
+      "height_px": 2160,
+      "maximum_fps": 20.0,
+      "pixel_format": "YUY2"
+    },
+    {
+      "evidence_state": "MANUFACTURER_PUBLISHED_UNMEASURED",
+      "host_bus": "USB_3_2_GEN_1",
+      "width_px": 5472,
+      "height_px": 3648,
+      "maximum_fps": 9.0,
+      "pixel_format": "YUY2"
+    },
+    {
+      "evidence_state": "MANUFACTURER_PUBLISHED_UNMEASURED",
+      "host_bus": "USB_2_0",
+      "width_px": 1280,
+      "height_px": 720,
+      "maximum_fps": 10.0,
+      "pixel_format": "YUY2"
+    }
+  ],
+  "published_package": {
+    "evidence_state": "MANUFACTURER_PUBLISHED_UNMEASURED",
+    "metal_case_included": true,
+    "usb_a_to_type_c_cable_included": true,
+    "included_cable_length_m": 1.0,
+    "camera_board_width_mm": 34.0,
+    "camera_board_height_mm": 34.0
+  },
+  "simulation_proxy": {
+    "state": "SYNTHETIC_ONLY_NOT_PHYSICAL_CALIBRATION",
+    "source_mode": {
+      "evidence_state": "MANUFACTURER_PUBLISHED_UNMEASURED",
+      "host_bus": "USB_3_2_GEN_1",
+      "width_px": 5472,
+      "height_px": 3648,
+      "maximum_fps": 9.0,
+      "pixel_format": "YUY2"
+    },
+    "scale": {
+      "numerator": 1,
+      "denominator": 2
+    },
+    "width_px": 2736,
+    "height_px": 1824,
+    "field_of_view": {
+      "evidence_state": "COPIED_FROM_MANUFACTURER_PUBLISHED_UNMEASURED",
+      "horizontal_deg": 49.0,
+      "vertical_deg": 38.0,
+      "preservation": "UNCHANGED_FROM_PUBLISHED_CLAIM"
+    },
+    "projection": {
+      "model": "centered_pinhole",
+      "intrinsics_derivation": "fx=width/(2*tan(horizontal_fov/2)); fy=height/(2*tan(vertical_fov/2)); cx=width/2; cy=height/2",
+      "distortion_assumption": "ZERO_FOR_SYNTHETIC_PROXY_ONLY",
+      "calibration_state": "DERIVED_NOMINAL_NOT_PHYSICAL_CALIBRATION"
+    },
+    "resource_limits": {
+      "synthetic_raster_max_width_px": 4096,
+      "synthetic_raster_max_height_px": 4096,
+      "synthetic_raster_max_pixels": 16777216,
+      "pixel_detector_maximum_image_pixels": 12000000
+    },
+    "authority": {
+      "physical_calibration_authority": false,
+      "live_capture_authority": false,
+      "robot_motion_authority": false,
+      "contact_authority": false
+    }
+  },
+  "provenance": [
+    {
+      "source_id": "arducam_b0477_datasheet",
+      "source_kind": "MANUFACTURER_DATASHEET",
+      "publisher": "Arducam",
+      "url": "https://www.arducam.com/downloads/datasheet/B0477_20MP_IMX283_USB3.0_Camera_Datasheet.pdf",
+      "accessed_date": "2026-09-05",
+      "evidence_state": "PUBLISHED_NOT_MEASURED",
+      "claim_scope": "published identity, sensor, interface, optics, modes, and electrical/mechanical specifications"
+    },
+    {
+      "source_id": "arducam_b0477_product_page",
+      "source_kind": "MANUFACTURER_PRODUCT_PAGE",
+      "publisher": "Arducam",
+      "url": "https://www.arducam.com/arducam-20mp-usb-3-0-camera-module-with-16mm-c-mount-lens-b0477.html",
+      "accessed_date": "2026-09-05",
+      "evidence_state": "PUBLISHED_NOT_MEASURED",
+      "claim_scope": "published package contents and product specifications"
+    },
+    {
+      "source_id": "user_purchase_confirmation_2026_09_05",
+      "source_kind": "USER_REPORT",
+      "publisher": "workspace user",
+      "url": null,
+      "accessed_date": "2026-09-05",
+      "evidence_state": "USER_REPORTED_NOT_RECEIPT_VERIFIED",
+      "claim_scope": "purchase state and reported seller product title only"
+    }
+  ],
+  "physical_observation": {
+    "state": "OPEN_PENDING_RECEIPT_INSPECTION",
+    "received": null,
+    "manufacturer_label": null,
+    "model_label": null,
+    "sensor_label": null,
+    "lens_marking": null,
+    "case_width_mm": null,
+    "case_height_mm": null,
+    "case_depth_mm": null,
+    "mass_g": null,
+    "mount_pattern": null,
+    "one_metre_focus_verified": null
+  },
+  "usb_observation": {
+    "state": "OPEN_PENDING_ENUMERATION",
+    "vid": null,
+    "pid": null,
+    "serial_number": null,
+    "persistent_device_path": null,
+    "negotiated_bus_speed": null,
+    "descriptor_snapshot_sha256": null
+  },
+  "commissioning": {
+    "state": "OPEN_NOT_COMMISSIONED",
+    "commissioned_mode": null,
+    "camera_controls_snapshot_sha256": null,
+    "measured_focus_distance_mm": null,
+    "measured_field_of_view_deg": null,
+    "measured_usable_coverage_mm": null,
+    "intrinsics_artifact_sha256": null,
+    "distortion_model": null,
+    "static_extrinsic_artifact_sha256": null
+  },
+  "open_blockers": [
+    "receive and photograph the exact delivered camera, lens, case, cable, labels, and package contents",
+    "measure the case, mass, mount pattern, fastener thread and depth, lens projection, connector, and entrance-pupil offset",
+    "record stable USB VID, PID, serial descriptor, persistent device path, descriptor snapshot, and negotiated USB bus speed",
+    "prove the exact requested UVC mode and YUY2 format after close, reopen, host reboot, and cable reconnect",
+    "prove that the included 16 mm lens focuses and mechanically locks at the installed working distance",
+    "measure usable field of view, crop, orientation, distortion, corner illumination, glare, exposure, latency, buffering, and settling behavior",
+    "commission and bind camera controls, intrinsics, distortion, static eye-to-hand extrinsic, support witness, and visibility evidence",
+    "complete physical mounting, cable strain-relief, structural, collision, and held-out end-to-end qualification before live motion or contact"
+  ]
+}

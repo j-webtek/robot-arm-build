@@ -1,0 +1,74 @@
+{
+  "schema": "rocell.synthetic_b0477_camera_commissioning_rehearsal.v1",
+  "schema_version": 1,
+  "rehearsal_id": "synthetic-b0477-native-mode-reopen-001",
+  "fixture_class": "SYNTHETIC_ZERO_HARDWARE",
+  "target_profile": {
+    "schema": "rocell.purchased_camera_profile.v1",
+    "profile_id": "arducam-b0477-imx283-16mm-purchased-001",
+    "manufacturer": "Arducam",
+    "model": "B0477",
+    "sensor": "Sony IMX283"
+  },
+  "evidence": {
+    "origin": "SYNTHETIC_TEST_FIXTURE",
+    "authority": "NO_PHYSICAL_EVIDENCE_AUTHORITY",
+    "claim_scope": "parser and deterministic reopen-gate rehearsal only; no camera was accessed"
+  },
+  "authority": {
+    "commissioned": false,
+    "hardware_accessed": false,
+    "camera_frames_requested": 0,
+    "arm_commands": 0,
+    "physical_release_effect": "NONE"
+  },
+  "devices": [
+    {
+      "device_id": "synthetic-b0477-device-001",
+      "persistent_device_id": "synthetic://camera/arducam-b0477/rehearsal-unit-001",
+      "identity_origin": "SYNTHETIC_PERSISTENT_ID",
+      "reopen_snapshots": [
+        {
+          "reopen_index": 1,
+          "phase": "REOPEN_1",
+          "persistent_device_id": "synthetic://camera/arducam-b0477/rehearsal-unit-001",
+          "negotiated_bus": "USB_3_2_GEN_1",
+          "mode": {
+            "width_px": 5472,
+            "height_px": 3648,
+            "fps": 9.0,
+            "fourcc": "YUY2"
+          },
+          "controls": {
+            "exposure_mode": "MANUAL",
+            "exposure_us": 8000.0,
+            "white_balance_mode": "MANUAL",
+            "white_balance_kelvin": 5000.0,
+            "gain_evidence": "SYNTHETIC_OBSERVATION",
+            "gain_observed": 1.0
+          }
+        },
+        {
+          "reopen_index": 2,
+          "phase": "REOPEN_2",
+          "persistent_device_id": "synthetic://camera/arducam-b0477/rehearsal-unit-001",
+          "negotiated_bus": "USB_3_2_GEN_1",
+          "mode": {
+            "width_px": 5472,
+            "height_px": 3648,
+            "fps": 9.0,
+            "fourcc": "YUY2"
+          },
+          "controls": {
+            "exposure_mode": "MANUAL",
+            "exposure_us": 8000.0,
+            "white_balance_mode": "MANUAL",
+            "white_balance_kelvin": 5000.0,
+            "gain_evidence": "SYNTHETIC_OBSERVATION",
+            "gain_observed": 1.0
+          }
+        }
+      ]
+    }
+  ]
+}

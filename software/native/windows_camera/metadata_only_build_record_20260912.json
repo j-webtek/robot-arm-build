@@ -1,0 +1,68 @@
+{
+  "schema": "rocell.windows_camera_metadata_only_development_build.v1",
+  "record_status": "COMPILED_METADATA_ONLY_INERT_TESTS_PASSED",
+  "recorded_date_utc": "2026-09-12",
+  "architecture": "windows-x64",
+  "configuration": "Release",
+  "compiler": "MSVC 19.42.34435.0",
+  "windows_sdk": "10.0.22621.0",
+  "cmake": "3.31.3",
+  "compile_policy": "/W4 /WX /permissive- /utf-8 /guard:cf",
+  "link_policy": "/DYNAMICBASE /NXCOMPAT /guard:cf",
+  "entry_guard": "ROCELL_METADATA_ONLY",
+  "allowed_operations": ["inventory", "identity", "--self-test"],
+  "activation_commands": "REJECTED_BEFORE_ADMISSION_OR_COM_STARTUP",
+  "build_directory": "build-metadata-only-20260912-01",
+  "build_commands": [
+    "cmake -S software/native/windows_camera/metadata_only -B software/native/windows_camera/build-metadata-only-20260912-01 -G \"Visual Studio 17 2022\" -A x64 -DCMAKE_SYSTEM_VERSION=10.0.22621.0",
+    "cmake --build software/native/windows_camera/build-metadata-only-20260912-01 --config Release --parallel 2",
+    "ctest --test-dir software/native/windows_camera/build-metadata-only-20260912-01 -C Release --output-on-failure --output-junit C:/Users/Jack/Desktop/robot-arm-build/.codex-preserved/metadata-successor-native-20260912-01.xml"
+  ],
+  "source_sha256": {
+    "metadata_only/CMakeLists.txt": "38e0cd64f4831e1f334a0ca191d093b977f757a4dbfb4d277f4b956ca396abc1",
+    "metadata_only/denied_commands_test.py": "a9333616d905418577e9a5767bc6f63044b4998a5d566cfe3f228e3391d89d28",
+    "camera_worker.cpp": "19f6dc99b8828c7e5c3553d68788bef4011e2a075a96c1755c326faf773716be",
+    "identity_metadata.cpp": "7c122cd638346a9a4761f504f3560f9d49c1baf7716d7321bdd1538c6e8f2cfd",
+    "identity_metadata.h": "e4f39f7156f66b5fe2f2e8f812d9c1a6ab6e3e69d530aad59f50c4166545b3f0",
+    "identity_metadata_tests.cpp": "312afee6b801c6eb44c4095c4104f068e5ede6d2703fe135ddf4b5737b8b251e",
+    "identity_metadata_wire_test.py": "91bfea68b199602bb1693a1862baf6f2b8ef7189fc1700d92b5b3bc36b80ef52",
+    "admission_protocol.cpp": "54124fbef5eba9e3d3f3484123c280231b9178fd30f5b353dddddc86e876f800",
+    "admission_protocol.h": "2f171649b196c8eb18dbf2f57eeb34787e58b8ca50a8d3f6bb015b0988d95a3f",
+    "admission_entry.cpp": "91aa3c41bde8e24b19f6a2d4494896a847583a92ad5e30b2b42c3809604a9643",
+    "admission_entry.h": "69cb306c4d3e0b6527091a7ed3ddbfd3bf6627c67ed789e455fbed7530015a39",
+    "camera_cleanup.h": "f6262373862550e64e0822ce089a2cf8314a0b1f24243106b4d6fbf195bde6d9",
+    "../../src/rocell/providers/windows/camera_worker_client.py": "2e7a8f8d330374f0614787e3c75441aab3739c613a5392641396b655541832ba"
+  },
+  "artifacts": [
+    {
+      "path": "build-metadata-only-20260912-01/Release/rocell_windows_camera_metadata.exe",
+      "bytes": 219648,
+      "sha256": "14f4a9b0b2e9a2bc332fec2c16c7914a16736a25036e72dca38ae2dd0bd33673"
+    },
+    {
+      "path": "build-metadata-only-20260912-01/Release/rocell_identity_metadata_tests.exe",
+      "bytes": 139776,
+      "sha256": "ce9cfc2619a03e4c3f2d80519a842a1c143e9fa4136b92dc27f7c8cfb2115f56"
+    }
+  ],
+  "verification": {
+    "ctest_passed": 4,
+    "ctest_failed": 0,
+    "ctest_seconds": 0.43,
+    "active_command_denials": 9,
+    "fake_identity_wire_receipts": 31,
+    "junit_path": ".codex-preserved/metadata-successor-native-20260912-01.xml",
+    "junit_sha256": "6d8627b5a65d1da5763875692df50827431c7e402fbb2a70cc2b594712c263fe"
+  },
+  "actual_metadata_queries_at_build_verification": 0,
+  "camera_activations": 0,
+  "serial_port_operations": 0,
+  "physical_authority": false,
+  "hardware_qualified": false,
+  "limitations": [
+    "Tests exercise inert entry points and fake identity API data, not a received camera.",
+    "The shared translation unit contains legacy camera code, but the metadata-only entry guard rejects its active command paths before admission and source startup.",
+    "This build record is not trusted release approval or byte-identical build reproducibility evidence.",
+    "Historical executables and manifests were not replaced. Current metadata registration and each query still require independent fixed-file checks."
+  ]
+}

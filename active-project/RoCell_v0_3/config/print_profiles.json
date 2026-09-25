@@ -1,0 +1,126 @@
+{
+  "schema_version": 3,
+  "slicer_contract": {
+    "application": "QIDI Studio",
+    "verified_config_version": "2.7.2.60",
+    "machine_preset": "X-Plus 4 0.4 nozzle",
+    "build_surface": "Textured PEI Plate",
+    "units": "millimetres, degrees Celsius, millimetres per second, and millimetres per second squared",
+    "rule": "The per-job .print.json and .PRINT_SETTINGS.md files are the released setup records. The 3MF remains geometry-only until a native QIDI Studio project is saved and reviewed."
+  },
+  "printer": {
+    "model": "QIDI Plus4",
+    "nominal_build_volume_mm": [305.0, 305.0, 280.0],
+    "safe_plate_envelope_mm": [295.0, 295.0, 275.0],
+    "edge_margin_mm": 5.0,
+    "default_nozzle_mm": 0.4
+  },
+  "filament_presets": {
+    "qidi_abs_rapido_xplus4_0p4": {
+      "material": "QIDI ABS Rapido",
+      "manufacturer": "QIDI",
+      "commercial_name": "ABS Rapido",
+      "filament_type": "ABS",
+      "resolution_status": "CONFIRMED_EXACT",
+      "qidi_studio_preset": "QIDI ABS Rapido @Qidi X-Plus 4 0.4 nozzle",
+      "settings": {
+        "nozzle_temperature_c": {"initial_layer": 250, "other_layers": 260, "allowed_range": [240, 280]},
+        "textured_bed_temperature_c": {"initial_layer": 90, "other_layers": 90},
+        "chamber_temperature_c": 55,
+        "enclosure": "sealed",
+        "flow_ratio": 0.95,
+        "pressure_advance": {"enabled": true, "value": 0.03},
+        "max_volumetric_speed_mm3_s": 24.5,
+        "cooling": {"fan_off_first_layers": 3, "model_fan_min_percent": 20, "model_fan_max_percent": 80, "overhang_fan_percent": 80, "overhang_threshold_percent": 25, "auxiliary_fan_percent": 0, "exhaust_during_print_percent": 0, "exhaust_after_print_percent": 0}
+      },
+      "unresolved_fields": [],
+      "source": "Installed QIDI Studio X 4 Series system preset, verified 2026-09-01; QIDITECH/QIDIStudio official preset"
+    },
+    "exact_petg_spool_xplus4_0p4": {
+      "material": "PETG", "filament_type": "PETG", "resolution_status": "EXACT_SPOOL_PRESET_REQUIRED", "suggested_starting_preset": "Generic PETG @Qidi X-Plus 4 0.4 nozzle", "process_settings_status": "EXACT", "thermal_settings_status": "UNRESOLVED",
+      "required_operator_inputs": ["manufacturer", "product name", "spool lot", "vendor preset name and revision", "drying record", "flow calibration", "pressure advance calibration"],
+      "unresolved_fields": ["nozzle temperature", "bed temperature", "chamber temperature", "flow ratio", "pressure advance", "maximum volumetric speed", "cooling"]
+    },
+    "exact_tpu95a_spool_xplus4_0p4": {
+      "material": "TPU 95A", "filament_type": "TPU", "resolution_status": "EXACT_SPOOL_PRESET_REQUIRED", "suggested_starting_preset": "Generic TPU 95A @Qidi X-Plus 4 0.4 nozzle", "process_settings_status": "EXACT", "thermal_settings_status": "UNRESOLVED",
+      "required_operator_inputs": ["manufacturer", "product name", "Shore hardness", "spool lot", "vendor preset name and revision", "drying record", "flow calibration", "pressure advance calibration"],
+      "unresolved_fields": ["nozzle temperature", "bed temperature", "flow ratio", "pressure advance", "maximum volumetric speed", "cooling"]
+    },
+    "exact_asa_spool_xplus4_0p4": {
+      "material": "ASA", "filament_type": "ASA", "resolution_status": "EXACT_SPOOL_PRESET_REQUIRED", "suggested_starting_preset": "QIDI ASA @Qidi X-Plus 4 0.4 nozzle", "process_settings_status": "EXACT", "thermal_settings_status": "UNRESOLVED",
+      "required_operator_inputs": ["manufacturer", "product name", "spool lot", "vendor preset name and revision", "drying record", "flow calibration", "pressure advance calibration"],
+      "unresolved_fields": ["nozzle temperature", "bed temperature", "chamber temperature", "flow ratio", "pressure advance", "maximum volumetric speed", "cooling"]
+    }
+  },
+  "process_profiles": {
+    "abs_rapido_general_0p4": {
+      "material": "QIDI ABS Rapido", "filament_preset": "qidi_abs_rapido_xplus4_0p4", "preset_data_status": "EXACT_REPRODUCIBLE",
+      "nozzle_mm": 0.4, "layer_height_mm": 0.2, "walls": 4, "top_layers": 5, "bottom_layers": 5, "infill_percent": 25, "infill_pattern": "gyroid",
+      "supports": "off", "bed_adhesion": "5 mm outer brim with 0.05 mm object gap on clean textured PEI", "dimensional_controls": "Zero XY contour and hole compensation until the matching ABS coupon provides measured evidence; elephant-foot compensation 0.15 mm", "purpose": "Replaceable clamps, direct-tag setup tooling, and general ABS hardware coupons",
+      "qidi_studio": {"base_process_preset": "0.20mm Standard @XPlus4", "import_name": "RC03 ABS Rapido General 0.20", "native_overrides": {"layer_height":"0.2","initial_layer_print_height":"0.2","line_width":"0.42","initial_layer_line_width":"0.5","outer_wall_line_width":"0.42","inner_wall_line_width":"0.45","top_surface_line_width":"0.42","sparse_infill_line_width":"0.45","internal_solid_infill_line_width":"0.42","wall_loops":"4","top_shell_layers":"5","bottom_shell_layers":"5","sparse_infill_density":"25%","sparse_infill_pattern":"gyroid","internal_solid_infill_pattern":"zig-zag","wall_generator":"classic","wall_sequence":"inner wall/outer wall","initial_layer_speed":["30"],"initial_layer_infill_speed":["50"],"outer_wall_speed":["60"],"inner_wall_speed":["130"],"sparse_infill_speed":["140"],"internal_solid_infill_speed":["110"],"top_surface_speed":["50"],"bridge_speed":["35"],"gap_infill_speed":["70"],"travel_speed":["500"],"default_acceleration":["4500"],"travel_acceleration":["7500"],"initial_layer_travel_acceleration":["2800"],"initial_layer_acceleration":["500"],"outer_wall_acceleration":["1800"],"inner_wall_acceleration":["2800"],"top_surface_acceleration":["1200"],"enable_support":"0","ironing_type":"no ironing","brim_type":"outer_only","brim_width":"5","brim_object_gap":"0.05","skirt_loops":"0","enable_prime_tower":"0","xy_hole_compensation":"0","xy_contour_compensation":"0","elefant_foot_compensation":"0.15","seam_position":"aligned","enable_arc_fitting":"1","resolution":"0.012","print_sequence":"by layer","fuzzy_skin":"none"}}
+    },
+    "abs_rapido_tray_structural_0p4": {
+      "material": "QIDI ABS Rapido", "filament_preset": "qidi_abs_rapido_xplus4_0p4", "preset_data_status": "EXACT_REPRODUCIBLE",
+      "nozzle_mm": 0.4, "layer_height_mm": 0.2, "walls": 5, "top_layers": 6, "bottom_layers": 6, "infill_percent": 35, "infill_pattern": "gyroid",
+      "supports": "off", "bed_adhesion": "8 mm outer brim with 0.05 mm object gap; clean textured PEI; one production station per plate", "dimensional_controls": "Keep the slicer seam away from locator sockets, relieved hold-down holes, seam datums, clamp guides, and keyboard contact datums; zero XY compensation pending Job 00A", "purpose": "Integrated ABS left-master and right-slave keyboard stations",
+      "qidi_studio": {"base_process_preset": "0.20mm Standard @XPlus4", "import_name": "RC03 ABS Rapido Tray Structural 0.20", "native_overrides": {"layer_height":"0.2","initial_layer_print_height":"0.2","line_width":"0.42","initial_layer_line_width":"0.5","outer_wall_line_width":"0.42","inner_wall_line_width":"0.45","top_surface_line_width":"0.42","sparse_infill_line_width":"0.45","internal_solid_infill_line_width":"0.42","wall_loops":"5","top_shell_layers":"6","bottom_shell_layers":"6","sparse_infill_density":"35%","sparse_infill_pattern":"gyroid","internal_solid_infill_pattern":"zig-zag","wall_generator":"classic","wall_sequence":"inner wall/outer wall","initial_layer_speed":["30"],"initial_layer_infill_speed":["50"],"outer_wall_speed":["60"],"inner_wall_speed":["140"],"sparse_infill_speed":["150"],"internal_solid_infill_speed":["120"],"top_surface_speed":["60"],"bridge_speed":["40"],"gap_infill_speed":["80"],"travel_speed":["500"],"default_acceleration":["5000"],"travel_acceleration":["8000"],"initial_layer_travel_acceleration":["3000"],"initial_layer_acceleration":["500"],"outer_wall_acceleration":["2000"],"inner_wall_acceleration":["3000"],"top_surface_acceleration":["1500"],"enable_support":"0","ironing_type":"no ironing","brim_type":"outer_only","brim_width":"8","brim_object_gap":"0.05","skirt_loops":"0","enable_prime_tower":"0","xy_hole_compensation":"0","xy_contour_compensation":"0","elefant_foot_compensation":"0.15","seam_position":"aligned","enable_arc_fitting":"1","resolution":"0.012","print_sequence":"by layer","fuzzy_skin":"none"}}
+    },
+    "abs_rapido_cradle_0p4": {
+      "material": "QIDI ABS Rapido", "filament_preset": "qidi_abs_rapido_xplus4_0p4", "preset_data_status": "EXACT_REPRODUCIBLE",
+      "nozzle_mm": 0.4, "layer_height_mm": 0.2, "walls": 5, "top_layers": 5, "bottom_layers": 5, "infill_percent": 30, "infill_pattern": "gyroid",
+      "supports": "off; stop and obtain engineering approval if the locked layer preview shows an unprintable tower", "bed_adhesion": "8 mm outer brim with 0.05 mm object gap on clean textured PEI", "dimensional_controls": "Use the same-profile ABS locator, captive-M4, vertical-M3-insert, cable-saddle, and washer coupons; do not rework a released socket ad hoc", "purpose": "Integrated ABS phone/TCP service station and replaceable phone clamp rail",
+      "qidi_studio": {"base_process_preset": "0.20mm Standard @XPlus4", "import_name": "RC03 ABS Rapido Cradle 0.20", "native_overrides": {"layer_height":"0.2","initial_layer_print_height":"0.2","line_width":"0.42","initial_layer_line_width":"0.5","outer_wall_line_width":"0.42","inner_wall_line_width":"0.45","top_surface_line_width":"0.42","sparse_infill_line_width":"0.45","internal_solid_infill_line_width":"0.42","wall_loops":"5","top_shell_layers":"5","bottom_shell_layers":"5","sparse_infill_density":"30%","sparse_infill_pattern":"gyroid","internal_solid_infill_pattern":"zig-zag","wall_generator":"classic","wall_sequence":"inner wall/outer wall","initial_layer_speed":["30"],"initial_layer_infill_speed":["50"],"outer_wall_speed":["60"],"inner_wall_speed":["130"],"sparse_infill_speed":["140"],"internal_solid_infill_speed":["110"],"top_surface_speed":["50"],"bridge_speed":["35"],"gap_infill_speed":["70"],"travel_speed":["500"],"default_acceleration":["4500"],"travel_acceleration":["7500"],"initial_layer_travel_acceleration":["2800"],"initial_layer_acceleration":["500"],"outer_wall_acceleration":["1800"],"inner_wall_acceleration":["2800"],"top_surface_acceleration":["1200"],"enable_support":"0","ironing_type":"no ironing","brim_type":"outer_only","brim_width":"8","brim_object_gap":"0.05","skirt_loops":"0","enable_prime_tower":"0","xy_hole_compensation":"0","xy_contour_compensation":"0","elefant_foot_compensation":"0.15","seam_position":"aligned","enable_arc_fitting":"1","resolution":"0.012","print_sequence":"by layer","fuzzy_skin":"none"}}
+    },
+    "abs_rapido_precision_0p4": {
+      "material": "QIDI ABS Rapido", "filament_preset": "qidi_abs_rapido_xplus4_0p4", "preset_data_status": "EXACT_REPRODUCIBLE",
+      "nozzle_mm": 0.4, "layer_height_mm": 0.16, "walls": 5, "top_layers": 6, "bottom_layers": 6, "infill_percent": 40, "infill_pattern": "gyroid",
+      "supports": "off", "bed_adhesion": "5 mm outer brim with 0.05 mm object gap on clean textured PEI", "dimensional_controls": "Keep the seam off gripper flats, spring seats, insert pockets, and the sliding guide bore; zero XY compensation pending Job 00C", "purpose": "ABS compliant tool body, caps, and exact-profile qualification coupons",
+      "qidi_studio": {"base_process_preset": "0.16mm High Quality @XPlus4", "import_name": "RC03 ABS Rapido Precision 0.16", "native_overrides": {"layer_height":"0.16","initial_layer_print_height":"0.2","line_width":"0.42","initial_layer_line_width":"0.5","outer_wall_line_width":"0.42","inner_wall_line_width":"0.45","top_surface_line_width":"0.42","sparse_infill_line_width":"0.45","internal_solid_infill_line_width":"0.42","wall_loops":"5","top_shell_layers":"6","bottom_shell_layers":"6","sparse_infill_density":"40%","sparse_infill_pattern":"gyroid","internal_solid_infill_pattern":"zig-zag","wall_generator":"classic","wall_sequence":"inner wall/outer wall","initial_layer_speed":["25"],"initial_layer_infill_speed":["40"],"outer_wall_speed":["45"],"inner_wall_speed":["90"],"sparse_infill_speed":["100"],"internal_solid_infill_speed":["80"],"top_surface_speed":["40"],"bridge_speed":["30"],"gap_infill_speed":["60"],"travel_speed":["450"],"default_acceleration":["4000"],"travel_acceleration":["7000"],"initial_layer_travel_acceleration":["2500"],"initial_layer_acceleration":["400"],"outer_wall_acceleration":["1500"],"inner_wall_acceleration":["2500"],"top_surface_acceleration":["1000"],"enable_support":"0","ironing_type":"no ironing","brim_type":"outer_only","brim_width":"5","brim_object_gap":"0.05","skirt_loops":"0","enable_prime_tower":"0","xy_hole_compensation":"0","xy_contour_compensation":"0","elefant_foot_compensation":"0.15","seam_position":"aligned","enable_arc_fitting":"1","resolution":"0.012","print_sequence":"by layer","fuzzy_skin":"none"}}
+    },
+    "abs_rapido_calibration_0p4": {
+      "material": "QIDI ABS Rapido", "filament_preset": "qidi_abs_rapido_xplus4_0p4", "preset_data_status": "EXACT_REPRODUCIBLE",
+      "nozzle_mm": 0.4, "layer_height_mm": 0.16, "walls": 4, "top_layers": 6, "bottom_layers": 6, "infill_percent": 40, "infill_pattern": "gyroid",
+      "supports": "off", "bed_adhesion": "5 mm outer brim with 0.05 mm object gap on clean textured PEI", "dimensional_controls": "No ironing over crosshairs or divots; seam away from keyed receiver faces; zero XY compensation pending Job 00F", "purpose": "ABS keyed replaceable TCP datum cartridges and matching clearance qualification",
+      "qidi_studio": {"base_process_preset": "0.16mm High Quality @XPlus4", "import_name": "RC03 ABS Rapido Calibration 0.16", "native_overrides": {"layer_height":"0.16","initial_layer_print_height":"0.2","line_width":"0.42","initial_layer_line_width":"0.5","outer_wall_line_width":"0.42","inner_wall_line_width":"0.45","top_surface_line_width":"0.42","sparse_infill_line_width":"0.45","internal_solid_infill_line_width":"0.42","wall_loops":"4","top_shell_layers":"6","bottom_shell_layers":"6","sparse_infill_density":"40%","sparse_infill_pattern":"gyroid","internal_solid_infill_pattern":"zig-zag","wall_generator":"classic","wall_sequence":"inner wall/outer wall","initial_layer_speed":["25"],"initial_layer_infill_speed":["40"],"outer_wall_speed":["45"],"inner_wall_speed":["90"],"sparse_infill_speed":["100"],"internal_solid_infill_speed":["80"],"top_surface_speed":["40"],"bridge_speed":["30"],"gap_infill_speed":["60"],"travel_speed":["450"],"default_acceleration":["4000"],"travel_acceleration":["7000"],"initial_layer_travel_acceleration":["2500"],"initial_layer_acceleration":["400"],"outer_wall_acceleration":["1500"],"inner_wall_acceleration":["2500"],"top_surface_acceleration":["1000"],"enable_support":"0","ironing_type":"no ironing","brim_type":"outer_only","brim_width":"5","brim_object_gap":"0.05","skirt_loops":"0","enable_prime_tower":"0","xy_hole_compensation":"0","xy_contour_compensation":"0","elefant_foot_compensation":"0.15","seam_position":"aligned","enable_arc_fitting":"1","resolution":"0.012","print_sequence":"by layer","fuzzy_skin":"none"}}
+    },
+    "petg_general_0p4": {
+      "material": "PETG", "filament_preset": "exact_petg_spool_xplus4_0p4", "preset_data_status": "EXACT_PROCESS_SPOOL_PRESET_REQUIRED",
+      "nozzle_mm": 0.4, "layer_height_mm": 0.2, "walls": 4, "top_layers": 5, "bottom_layers": 5, "infill_percent": 25, "infill_pattern": "gyroid",
+      "supports": "off", "bed_adhesion": "5 mm outer brim after the exact PETG spool is qualified", "dimensional_controls": "Use only with same-spool coupons", "purpose": "Unselected fixed-camera fallback plate only",
+      "qidi_studio": {"base_process_preset": "0.20mm Standard @XPlus4", "import_name": "RC03 PETG General 0.20", "native_overrides": {"layer_height":"0.2","initial_layer_print_height":"0.2","wall_loops":"4","top_shell_layers":"5","bottom_shell_layers":"5","sparse_infill_density":"25%","sparse_infill_pattern":"gyroid","outer_wall_speed":["60"],"inner_wall_speed":["120"],"sparse_infill_speed":["130"],"internal_solid_infill_speed":["100"],"top_surface_speed":["50"],"bridge_speed":["30"],"gap_infill_speed":["70"],"initial_layer_speed":["25"],"initial_layer_infill_speed":["40"],"default_acceleration":["4000"],"travel_acceleration":["7000"],"outer_wall_acceleration":["1600"],"inner_wall_acceleration":["2600"],"top_surface_acceleration":["1100"],"enable_support":"0","ironing_type":"no ironing","brim_type":"outer_only","brim_width":"5","brim_object_gap":"0.1","enable_prime_tower":"0","xy_hole_compensation":"0","xy_contour_compensation":"0","elefant_foot_compensation":"0.15","print_sequence":"by layer","fuzzy_skin":"none"}}
+    },
+    "petg_adapter_0p4": {
+      "material": "PETG", "filament_preset": "exact_petg_spool_xplus4_0p4", "preset_data_status": "EXACT_PROCESS_SPOOL_PRESET_REQUIRED",
+      "nozzle_mm": 0.4, "layer_height_mm": 0.12, "walls": 4, "top_layers": 5, "bottom_layers": 5, "infill_percent": 100, "infill_pattern": "rectilinear",
+      "supports": "off", "bed_adhesion": "8 mm outer brim with 0.10 mm object gap after the exact PETG spool is qualified", "dimensional_controls": "Calibrate elephant-foot compensation so split bores remain open; never globally scale", "purpose": "Ductile, fit-sensitive stylus collar and thin split rod bushing",
+      "qidi_studio": {"base_process_preset": "0.12mm High Quality @XPlus4", "import_name": "RC03 PETG Split Adapter 0.12", "native_overrides": {"layer_height":"0.12","initial_layer_print_height":"0.2","wall_loops":"4","top_shell_layers":"5","bottom_shell_layers":"5","sparse_infill_density":"100%","sparse_infill_pattern":"rectilinear","outer_wall_speed":["45"],"inner_wall_speed":["90"],"sparse_infill_speed":["90"],"internal_solid_infill_speed":["80"],"top_surface_speed":["45"],"bridge_speed":["25"],"gap_infill_speed":["60"],"initial_layer_speed":["25"],"initial_layer_infill_speed":["40"],"travel_speed":["350"],"default_acceleration":["3500"],"travel_acceleration":["6000"],"initial_layer_travel_acceleration":["2000"],"initial_layer_acceleration":["400"],"outer_wall_acceleration":["1500"],"inner_wall_acceleration":["2200"],"top_surface_acceleration":["1200"],"enable_support":"0","ironing_type":"no ironing","brim_type":"outer_only","brim_width":"8","brim_object_gap":"0.1","skirt_loops":"0","enable_prime_tower":"0","xy_hole_compensation":"0","xy_contour_compensation":"0","elefant_foot_compensation":"0.15","seam_position":"aligned","enable_arc_fitting":"1","resolution":"0.012","print_sequence":"by layer","fuzzy_skin":"none"}}
+    },
+    "tpu95a_0p4": {
+      "material": "TPU 95A", "filament_preset": "exact_tpu95a_spool_xplus4_0p4", "preset_data_status": "EXACT_PROCESS_SPOOL_PRESET_REQUIRED",
+      "nozzle_mm": 0.4, "layer_height_mm": 0.16, "walls": 3, "top_layers": 5, "bottom_layers": 5, "infill_percent": 100, "infill_pattern": "rectilinear",
+      "supports": "off", "bed_adhesion": "3 mm outer brim with 0.10 mm object gap after the exact dry TPU spool is qualified", "dimensional_controls": "Keep first-layer flow calibrated so flared bore entries remain open; do not force a failed tip onto hardware", "purpose": "Phone and keyboard compliant contact tips",
+      "qidi_studio": {"base_process_preset": "0.16mm High Quality @XPlus4", "import_name": "RC03 TPU 95A Contact Tips 0.16", "native_overrides": {"layer_height":"0.16","initial_layer_print_height":"0.2","wall_loops":"3","top_shell_layers":"5","bottom_shell_layers":"5","sparse_infill_density":"100%","sparse_infill_pattern":"rectilinear","outer_wall_speed":["30"],"inner_wall_speed":["45"],"sparse_infill_speed":["45"],"internal_solid_infill_speed":["40"],"top_surface_speed":["30"],"bridge_speed":["20"],"gap_infill_speed":["30"],"initial_layer_speed":["20"],"initial_layer_infill_speed":["25"],"travel_speed":["250"],"default_acceleration":["2000"],"travel_acceleration":["3500"],"initial_layer_travel_acceleration":["1500"],"initial_layer_acceleration":["300"],"outer_wall_acceleration":["800"],"inner_wall_acceleration":["1200"],"top_surface_acceleration":["800"],"enable_support":"0","ironing_type":"no ironing","brim_type":"outer_only","brim_width":"3","brim_object_gap":"0.1","skirt_loops":"0","enable_prime_tower":"0","xy_hole_compensation":"0","xy_contour_compensation":"0","elefant_foot_compensation":"0.1","seam_position":"aligned","enable_arc_fitting":"1","resolution":"0.012","print_sequence":"by layer","fuzzy_skin":"none"}}
+    },
+    "asa_structural_0p4": {
+      "material": "ASA", "filament_preset": "exact_asa_spool_xplus4_0p4", "preset_data_status": "EXACT_PROCESS_SPOOL_PRESET_REQUIRED",
+      "nozzle_mm": 0.4, "layer_height_mm": 0.24, "walls": 6, "top_layers": 6, "bottom_layers": 6, "infill_percent": 45, "infill_pattern": "gyroid",
+      "supports": "off unless a released fallback revision approves build-plate-only support", "bed_adhesion": "10 mm outer brim, enclosed printer, stable chamber, and no drafts", "dimensional_controls": "Use same-spool ASA socket and nut coupons before a full mast foot", "purpose": "Unselected fixed-camera fallback mast feet",
+      "qidi_studio": {"base_process_preset": "0.24mm Draft @XPlus4", "import_name": "RC03 ASA Mast Structural 0.24", "native_overrides": {"layer_height":"0.24","initial_layer_print_height":"0.24","wall_loops":"6","top_shell_layers":"6","bottom_shell_layers":"6","sparse_infill_density":"45%","sparse_infill_pattern":"gyroid","outer_wall_speed":["50"],"inner_wall_speed":["110"],"sparse_infill_speed":["110"],"internal_solid_infill_speed":["100"],"top_surface_speed":["50"],"bridge_speed":["30"],"gap_infill_speed":["60"],"initial_layer_speed":["25"],"initial_layer_infill_speed":["40"],"travel_speed":["400"],"default_acceleration":["4000"],"travel_acceleration":["6500"],"initial_layer_travel_acceleration":["2500"],"initial_layer_acceleration":["400"],"outer_wall_acceleration":["1600"],"inner_wall_acceleration":["2600"],"top_surface_acceleration":["1200"],"enable_support":"0","ironing_type":"no ironing","brim_type":"outer_only","brim_width":"10","brim_object_gap":"0.05","skirt_loops":"0","enable_prime_tower":"0","xy_hole_compensation":"0","xy_contour_compensation":"0","elefant_foot_compensation":"0.15","seam_position":"aligned","enable_arc_fitting":"1","resolution":"0.012","print_sequence":"by layer","fuzzy_skin":"none"}}
+    },
+    "structural_fast_0p6_optional": {
+      "material": "PETG or ASA", "filament_preset": null, "preset_data_status": "NOT_RELEASED", "nozzle_mm": 0.6, "layer_height_mm": 0.3, "walls": 4, "top_layers": 5, "bottom_layers": 5, "infill_percent": 25, "infill_pattern": "gyroid", "supports": "off unless validated for the selected structural part", "purpose": "Optional future production profile; requires a new exact spool/process record and fresh coupons"
+    }
+  },
+  "rules": {
+    "initial_build_nozzle_mm": 0.4,
+    "primary_rigid_material": "QIDI ABS Rapido",
+    "retain_petg_for_split_adapters": true,
+    "retain_tpu_for_contact_tips": true,
+    "keep_tpu_on_separate_plate": true,
+    "keep_asa_on_separate_plate": true,
+    "require_fit_coupons_after_material_or_nozzle_change": true,
+    "never_globally_scale_for_material_shrink": true,
+    "temperature_policy": "QIDI ABS Rapido uses the exact installed X-Plus 4 preset recorded here. PETG, TPU, and ASA jobs remain blocked until the exact physical spool and calibrated filament preset are recorded.",
+    "speed_policy": "Use the exact job profile speeds. Do not substitute the printer maximum, and do not reuse the tray process for precision, calibration, adapter, or TPU jobs."
+  }
+}

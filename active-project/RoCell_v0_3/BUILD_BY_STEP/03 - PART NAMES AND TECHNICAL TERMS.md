@@ -1,0 +1,31 @@
+# Plain-language build glossary
+
+- **Datum:** A trusted surface, edge, point, or feature from which another position is measured.
+- **Build ID:** A unique name tying all raw measurements, files, and signoffs to one physical cell build.
+- **Active build:** The single build ID selected in `ACTIVE_BUILD.json`; only that build's evidence may affect computed step state.
+- **Canonical gate / record:** The reviewed project-level status and values used by validators; step-local evidence does not update it automatically.
+- **Package definition hash:** The stable evidence-binding fingerprint of the models, procedures, gate schema, job definitions, and acceptance logic.
+- **Canonical snapshot hash:** The fingerprint of the complete current project snapshot; it changes as reviewed measurements and lifecycle state are synchronized.
+- **Raw evidence:** Original measurements, observations, images, projects, and reports saved before a reviewer marks a canonical gate PASS.
+- **Route:** One selected hardware/configuration branch. Phone stylus and keyboard rod/TPU are tool routes. `camera_mast_optional` is only the independent fixed-camera fallback; selecting it records scope and never releases its print jobs or substitutes for the intended arm-mounted route.
+- **Signoff:** The step-level decision recording required tests, open holds, operator, date, and final status for the active build.
+- **Reopen / downstream:** Invalidate and repeat the changed source step plus every later acceptance that depended on it.
+- **Master / slave:** The keyboard master owns the location; the slave joins to the master seam and must not create a competing locator system.
+- **Locator:** A pin/socket or keyed feature that establishes position. It is not tightened to create clamp force.
+- **Clamp or retainer screw:** A screw that holds seated parts against their support; the locator still owns position.
+- **Radial slot:** An elongated locator socket that constrains one direction while allowing harmless expansion or tolerance in the other.
+- **Shared stack:** One fastener passing through a removable component and a station into the board, retaining both.
+- **TCP (tool center point):** The robot-coordinate point representing the active tip/contact location of a tool.
+- **Coupon:** A small diagnostic print used with the real hardware to select a fit before production parts are released.
+- **First article:** The first full part printed and measured before dependent or batch parts are authorized.
+- **Native QIDI project:** The QIDI Studio project saved after profile, object count, orientation, and layer preview are verified; a geometry-only 3MF is not equivalent.
+- **Proof load:** A controlled test load applied for a stated duration to demonstrate retention without damage or permanent movement.
+- **Yaw:** Rotation in the board plane about +Z.
+- **Optical-plane Z:** Height of the visible tag surface above the finished board top, including tag stock and compressed adhesive.
+- **HOLD:** Work has started or been reviewed but cannot proceed until a documented issue is corrected and retested.
+- **Quarantine:** Physically label and separate a failed, suspect, or unselected part so it cannot enter the build accidentally.
+- **READY TO START:** Required canonical inputs are PASS; the step itself has not yet been completed.
+- **READY (print readiness):** A selected print job is eligible to slice/print; this is not an assembly-step state.
+- **READY_TO_SLICE (job lifecycle):** A validator-derived lifecycle state; operators begin manual lifecycle evidence at SLICE_REVIEWED.
+- **LOCKED:** At least one prerequisite gate or route decision is incomplete; do not start the step.
+- **COMPLETE:** Required acceptance evidence, canonical completion gates, and the step signoff are all PASS.

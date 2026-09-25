@@ -1,0 +1,32 @@
+{
+  "schema": "rocell.printable_camera_portal.print_sidecar.v1",
+  "schema_version": 1,
+  "design_id": "ROCELL-PRINTABLE-CAMERA-PORTAL-PROTOTYPE-003",
+  "state": "PROTOTYPE_NOT_RELEASED_FOR_ROBOT_OPERATION",
+  "subplate_id": "00G-P1",
+  "geometry_3mf": "00G-P1_TPU_board_pads_ONLY_WELDED_v1.3mf",
+  "geometry_sha256": "b356fb799f3b8fff783e0624b719645ebfa293c01c5a7c2a2efbac2eea018718",
+  "expected_object_count": 4,
+  "sidecar": "00G-P1_TPU_board_pads_ONLY_WELDED_v1.print.json",
+  "profile": "tpu_pads",
+  "native_save_as_pattern": "00G-P1_WELDED_QIDI_native_vNN.3mf",
+  "objects": [
+    {
+      "part": "board_pressure_pad",
+      "stl": "../STL_fallback/board_pressure_pad.stl",
+      "quantity": 4
+    }
+  ],
+  "print": {
+    "profile_key": "tpu_pads",
+    "process_name": "RoCell TPU 95A Camera Clamp Pads 0.16 Print Pack v1",
+    "process_file": "../profiles/tpu95a_camera_clamp_pad_0p4.process.json",
+    "filament_preset": "Installed and identified TPU 95A preset for X-Plus 4 0.4 nozzle",
+    "scale_percent": 100.0,
+    "supports": false,
+    "fuzzy_skin": "none",
+    "orientation": "use stored 3MF orientation and placement; do not auto-arrange"
+  },
+  "release_scope": "Prepared for prototype slicing/printing; not physical load qualification",
+  "native_slicer_preview": "PENDING: verify object count, stored orientation and toolpaths in QIDI"
+}

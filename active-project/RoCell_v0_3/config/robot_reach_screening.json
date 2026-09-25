@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "design_revision": "RC03-INT-R1",
+  "status": "SCREENING_ONLY_NOT_PROVEN",
+  "scope": "planar radial screening only; not an IK, orientation, payload, singularity, or collision proof",
+  "robot": {
+    "model": "Waveshare RoArm-M3 Pro",
+    "published_horizontal_workspace_diameter_mm": 1120.0,
+    "published_nominal_radius_mm": 560.0,
+    "published_vertical_workspace_mm": 798.0,
+    "published_payload_kg_at_500_mm": 0.2,
+    "published_repeatability_mm": 5.0,
+    "product_source": "https://www.waveshare.com/product/ai/robots/roarm-m3.htm",
+    "model_source": "https://raw.githubusercontent.com/waveshareteam/roarm_ws/ros2-humble/src/roarm_main/roarm_description/urdf/roarm_m3/roarm_m3.xacro",
+    "xacro_straight_serial_length_screening_mm": 554.47
+  },
+  "screening_assumption": {
+    "board_frame_base_axis_xy_mm": [305.0, 457.0],
+    "base_z_yaw_and_clamp_axis_offset": "UNKNOWN",
+    "warning": "The assumed base axis is not a released installation datum. Distances below ignore target Z, tool orientation, approach and retreat poses, joint limits, singularities, payload, cable load, and collisions."
+  },
+  "planar_points": [
+    {
+      "point_id": "board_front_left",
+      "board_xy_mm": [0.0, 0.0],
+      "screened_radius_mm": 549.431,
+      "nominal_radial_margin_mm": 10.569
+    },
+    {
+      "point_id": "keyboard_front_left",
+      "board_xy_mm": [85.0, 85.0],
+      "screened_radius_mm": 432.185,
+      "nominal_radial_margin_mm": 127.815
+    },
+    {
+      "point_id": "phone_front_right",
+      "board_xy_mm": [577.1, 84.2],
+      "screened_radius_mm": 461.539,
+      "nominal_radial_margin_mm": 98.461
+    },
+    {
+      "point_id": "phone_station_outer_front_right",
+      "board_xy_mm": [597.3, 80.0],
+      "screened_radius_mm": 477.041,
+      "nominal_radial_margin_mm": 82.959
+    },
+    {
+      "point_id": "tcp_target",
+      "board_xy_mm": [441.0, 180.0],
+      "screened_radius_mm": 308.585,
+      "nominal_radial_margin_mm": 251.415
+    }
+  ],
+  "sensitivity_case": {
+    "description": "Move the assumed base axis 100 mm behind the board while retaining X=305 mm.",
+    "assumed_base_axis_xy_mm": [305.0, 557.0],
+    "point_id": "phone_station_outer_front_right",
+    "screened_radius_mm": 559.436,
+    "nominal_radial_margin_mm": 0.564
+  },
+  "release_blockers": [
+    "freeze and measure the complete board-to-robot-base six-degree-of-freedom transform T_board_base",
+    "measure the installed clamp-edge-to-base-axis offset and board/clamp deflection",
+    "freeze each complete tool TCP, mass, inertia, contact geometry, and cable load",
+    "define every approach, contact, and retreat pose with required orientation",
+    "run IK with joint-limit, singularity, payload, and clearance margins against collision geometry",
+    "perform de-energized clearance checks followed by reduced-speed empty-cell sweeps",
+    "retain vision correction and compliant contact because published robot repeatability is much looser than fixture placement tolerances"
+  ],
+  "release_rule": "Do not claim target reachability or authorize powered contact while status is SCREENING_ONLY_NOT_PROVEN."
+}

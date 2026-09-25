@@ -1,0 +1,630 @@
+{
+  "schema_version": 1,
+  "design_revision": "RC02-PRO-R1",
+  "jobs": [
+    {
+      "job_id": "00A",
+      "design_revision": "RC02-PRO-R1",
+      "lifecycle_status": "UNRELEASED",
+      "kit": "KIT-CAL",
+      "plate_file": "00A_PETG_keyboard_profile_fit_tests.3mf",
+      "plate_sha256": "e953101bb6dbb6a7935538f7615267a46dd3ee09c69a11161bd9fb2912c1392a",
+      "profile": "petg_tray_structural_0p4",
+      "profile_sha256": "a6683691851137c050c1549e2dc810a7be8db2d862064ffd63263d9c5a6165ad",
+      "parts": {
+        "keyboard_corner_fit_test.stl": 1,
+        "keyboard_seam_fit_male.stl": 1,
+        "keyboard_seam_fit_female.stl": 1,
+        "hardware_fit_gauge.stl": 1,
+        "m4_washer_fit_gauge.stl": 1
+      },
+      "prerequisites": [
+        "plus4_machine_confirmed",
+        "nozzle_0p4_confirmed",
+        "petg_tray_profile_calibrated"
+      ],
+      "postconditions": [
+        "keyboard_corner_coupon_pass",
+        "keyboard_seam_coupon_pass",
+        "tray_clearance_holes_coupon_pass"
+      ]
+    },
+    {
+      "job_id": "00B",
+      "design_revision": "RC02-PRO-R1",
+      "lifecycle_status": "UNRELEASED",
+      "kit": "KIT-CAL",
+      "plate_file": "00B_PETG_phone_profile_fit_tests.3mf",
+      "plate_sha256": "8df377ad10c14faa25363c9b48b95b021ef0474aad656b0ea7001c201fa382f9",
+      "profile": "petg_cradle_0p4",
+      "profile_sha256": "874f2e964792b58d533f2fd659f5ad595af5759c7acba9d2244d5fc5b20e841c",
+      "parts": {
+        "phone_width_fit_test.stl": 1,
+        "m4_horizontal_insert_fit_gauge.stl": 1,
+        "cable_tie_saddle_fit_gauge.stl": 1,
+        "m4_washer_fit_gauge.stl": 1
+      },
+      "prerequisites": [
+        "plus4_machine_confirmed",
+        "nozzle_0p4_confirmed",
+        "petg_cradle_profile_calibrated"
+      ],
+      "postconditions": [
+        "phone_width_coupon_pass",
+        "m4_horizontal_insert_coupon_pass",
+        "cable_tie_saddle_coupon_pass",
+        "cradle_m4_washer_coupon_pass"
+      ]
+    },
+    {
+      "job_id": "00C",
+      "design_revision": "RC02-PRO-R1",
+      "lifecycle_status": "UNRELEASED",
+      "kit": "KIT-CAL",
+      "plate_file": "00C_PETG_tool_profile_fit_tests.3mf",
+      "plate_sha256": "072fe182dd1689a3574b62e7a864fa86d0d54d8e614a3d7c0be092192c76a9a6",
+      "profile": "petg_precision_0p4",
+      "profile_sha256": "8a7d27cd2258c97d838fb416cc07a3e8842b840cc0868221bba343297b05e304",
+      "parts": {
+        "compliant_tool_grip_fit_test.stl": 1,
+        "spring_fit_gauge.stl": 1,
+        "m3_insert_fit_gauge.stl": 1,
+        "m3_head_fit_gauge.stl": 1
+      },
+      "prerequisites": [
+        "plus4_machine_confirmed",
+        "nozzle_0p4_confirmed",
+        "petg_precision_profile_calibrated"
+      ],
+      "postconditions": [
+        "gripper_coupon_pass",
+        "spring_fit_coupon_pass",
+        "m3_insert_coupon_pass",
+        "precision_m3_head_coupon_pass"
+      ]
+    },
+    {
+      "job_id": "00D",
+      "design_revision": "RC02-PRO-R1",
+      "lifecycle_status": "UNRELEASED",
+      "kit": "KIT-CAL",
+      "plate_file": "00D_PETG_adapter_profile_fit_tests.3mf",
+      "plate_sha256": "cd8931b9b17661cafa9da8cdb222c6ac21634988b89676a45fe949d7b7bbcee2",
+      "profile": "petg_adapter_0p4",
+      "profile_sha256": "5addad813637abbe2dbc969afe8fde8637973498ff1f2439e590e070d62a2308",
+      "parts": {
+        "stylus_diameter_gauge.stl": 1,
+        "thread_pilot_fit_gauge.stl": 1
+      },
+      "prerequisites": [
+        "plus4_machine_confirmed",
+        "nozzle_0p4_confirmed",
+        "petg_adapter_profile_calibrated"
+      ],
+      "postconditions": [
+        "stylus_gauge_coupon_pass",
+        "adapter_retention_method_selected"
+      ]
+    },
+    {
+      "job_id": "00E",
+      "design_revision": "RC02-PRO-R1",
+      "lifecycle_status": "UNRELEASED",
+      "kit": "KIT-CAL",
+      "plate_file": "00E_PETG_general_setup_tests.3mf",
+      "plate_sha256": "b35f3c91aad94df05b7af152b5a266df5d09f17cffc8ba69b084b5c133786340",
+      "profile": "petg_general_0p4",
+      "profile_sha256": "ecd7e9e90881087b4ef04779c3717bc972489d689924d8602b5cae9d4855408c",
+      "parts": {
+        "hardware_fit_gauge.stl": 1,
+        "setup_hardware_fit_gauge.stl": 1,
+        "tpu_tip_retention_gauge.stl": 1
+      },
+      "prerequisites": [
+        "plus4_machine_confirmed",
+        "nozzle_0p4_confirmed",
+        "petg_general_profile_calibrated"
+      ],
+      "postconditions": [
+        "general_clearance_holes_coupon_pass",
+        "setup_hardware_coupon_pass"
+      ]
+    },
+    {
+      "job_id": "00F",
+      "design_revision": "RC02-PRO-R1",
+      "lifecycle_status": "UNRELEASED",
+      "kit": "KIT-CAL",
+      "plate_file": "00F_PETG_calibration_profile_clearance_test.3mf",
+      "plate_sha256": "0038168c44cd1e614ce979d368855489c8852ba79b2a0565fcccbddffe700cd3",
+      "profile": "petg_calibration_0p4",
+      "profile_sha256": "8bfef01f473a15368eb72901b0b8e472315afb089b489388fd077fff02eb0a06",
+      "parts": {
+        "hardware_fit_gauge.stl": 1,
+        "m4_washer_fit_gauge.stl": 1
+      },
+      "prerequisites": [
+        "plus4_machine_confirmed",
+        "nozzle_0p4_confirmed",
+        "petg_calibration_profile_calibrated"
+      ],
+      "postconditions": [
+        "calibration_clearance_holes_coupon_pass"
+      ]
+    },
+    {
+      "job_id": "01",
+      "design_revision": "RC02-PRO-R1",
+      "lifecycle_status": "UNRELEASED",
+      "kit": "KIT-KB",
+      "plate_file": "01_PETG_keyboard_left.3mf",
+      "plate_sha256": "17bad44e8b245b3ceafbe51af3204fe5a9a37f88fd080e155f983e07026c3354",
+      "profile": "petg_tray_structural_0p4",
+      "profile_sha256": "a6683691851137c050c1549e2dc810a7be8db2d862064ffd63263d9c5a6165ad",
+      "parts": {
+        "keyboard_tray_left.stl": 1
+      },
+      "prerequisites": [
+        "plus4_machine_confirmed",
+        "nozzle_0p4_confirmed",
+        "petg_tray_profile_calibrated",
+        "keyboard_dimensions_measured",
+        "keyboard_corner_coupon_pass",
+        "keyboard_seam_coupon_pass",
+        "tray_clearance_holes_coupon_pass",
+        "geometry_matches_measurements",
+        "qidi_studio_roundtrip_confirmed"
+      ],
+      "postconditions": [
+        "keyboard_left_first_article_pass"
+      ]
+    },
+    {
+      "job_id": "02",
+      "design_revision": "RC02-PRO-R1",
+      "lifecycle_status": "UNRELEASED",
+      "kit": "KIT-KB",
+      "plate_file": "02_PETG_keyboard_right.3mf",
+      "plate_sha256": "38bd156f7dac84ae59168430a49b40f41355f5216b5cb8e3c87ed9cd8bc418b2",
+      "profile": "petg_tray_structural_0p4",
+      "profile_sha256": "a6683691851137c050c1549e2dc810a7be8db2d862064ffd63263d9c5a6165ad",
+      "parts": {
+        "keyboard_tray_right.stl": 1
+      },
+      "prerequisites": [
+        "plus4_machine_confirmed",
+        "nozzle_0p4_confirmed",
+        "petg_tray_profile_calibrated",
+        "keyboard_dimensions_measured",
+        "keyboard_corner_coupon_pass",
+        "keyboard_seam_coupon_pass",
+        "tray_clearance_holes_coupon_pass",
+        "geometry_matches_measurements",
+        "keyboard_left_first_article_pass",
+        "qidi_studio_roundtrip_confirmed"
+      ],
+      "postconditions": [
+        "keyboard_tray_pair_postprint_pass",
+        "keyboard_fixture_assembly_pass"
+      ]
+    },
+    {
+      "job_id": "03A",
+      "design_revision": "RC02-PRO-R1",
+      "lifecycle_status": "UNRELEASED",
+      "kit": "KIT-PHONE",
+      "plate_file": "03A_PETG_phone_cradle.3mf",
+      "plate_sha256": "4de7e4f3e5161e070e629d4e408fecdc307a33639ed3791bc98a0c3fb8119e5b",
+      "profile": "petg_cradle_0p4",
+      "profile_sha256": "874f2e964792b58d533f2fd659f5ad595af5759c7acba9d2244d5fc5b20e841c",
+      "parts": {
+        "phone_cradle_a16.stl": 1
+      },
+      "prerequisites": [
+        "plus4_machine_confirmed",
+        "nozzle_0p4_confirmed",
+        "petg_cradle_profile_calibrated",
+        "phone_dimensions_measured",
+        "phone_side_features_measured",
+        "phone_cable_measured",
+        "phone_width_coupon_pass",
+        "m4_horizontal_insert_coupon_pass",
+        "cable_tie_saddle_coupon_pass",
+        "cradle_m4_washer_coupon_pass",
+        "geometry_matches_measurements",
+        "qidi_studio_roundtrip_confirmed"
+      ],
+      "postconditions": [
+        "phone_cradle_postprint_pass",
+        "phone_fixture_assembly_pass"
+      ]
+    },
+    {
+      "job_id": "03B",
+      "design_revision": "RC02-PRO-R1",
+      "lifecycle_status": "UNRELEASED",
+      "kit": "KIT-KB",
+      "plate_file": "03B_PETG_keyboard_clamps.3mf",
+      "plate_sha256": "bac9fd7c9acc6a1e715f0ca2b26c6f5f6b1c8e4a0dc3d7c30630db8556f48311",
+      "profile": "petg_general_0p4",
+      "profile_sha256": "ecd7e9e90881087b4ef04779c3717bc972489d689924d8602b5cae9d4855408c",
+      "parts": {
+        "keyboard_rear_clamp.stl": 2
+      },
+      "prerequisites": [
+        "plus4_machine_confirmed",
+        "nozzle_0p4_confirmed",
+        "petg_general_profile_calibrated",
+        "keyboard_dimensions_measured",
+        "keyboard_corner_coupon_pass",
+        "general_clearance_holes_coupon_pass",
+        "setup_hardware_coupon_pass",
+        "geometry_matches_measurements",
+        "qidi_studio_roundtrip_confirmed"
+      ],
+      "postconditions": [
+        "keyboard_clamps_postprint_pass",
+        "keyboard_fixture_assembly_pass"
+      ]
+    },
+    {
+      "job_id": "03C1",
+      "design_revision": "RC02-PRO-R1",
+      "lifecycle_status": "UNRELEASED",
+      "kit": "KIT-VISION-TAG",
+      "plate_file": "03C1_PETG_tag_frame_first_article.3mf",
+      "plate_sha256": "c49ef0465c90419dbb4e115d8493039ae78b852f48ac7eca887e21d72c0e3315",
+      "profile": "petg_general_0p4",
+      "profile_sha256": "ecd7e9e90881087b4ef04779c3717bc972489d689924d8602b5cae9d4855408c",
+      "parts": {
+        "tag_frame_ID0_55mm.stl": 1
+      },
+      "prerequisites": [
+        "plus4_machine_confirmed",
+        "nozzle_0p4_confirmed",
+        "petg_general_profile_calibrated",
+        "tag_stock_measured",
+        "general_clearance_holes_coupon_pass",
+        "setup_hardware_coupon_pass",
+        "geometry_matches_measurements",
+        "qidi_studio_roundtrip_confirmed"
+      ],
+      "postconditions": [
+        "tag_artwork_scale_pass",
+        "tag_frame_first_article_pass"
+      ]
+    },
+    {
+      "job_id": "03C2",
+      "design_revision": "RC02-PRO-R1",
+      "lifecycle_status": "UNRELEASED",
+      "kit": "KIT-VISION-TAG",
+      "plate_file": "03C2_PETG_tag_frames_remaining.3mf",
+      "plate_sha256": "0ff8bff94b0a1bb09bb9f6a5bf50a8ded326c1cd9ae79e79aa3188f38fe18dcb",
+      "profile": "petg_general_0p4",
+      "profile_sha256": "ecd7e9e90881087b4ef04779c3717bc972489d689924d8602b5cae9d4855408c",
+      "parts": {
+        "tag_frame_ID1_55mm.stl": 1,
+        "tag_frame_ID2_55mm.stl": 1,
+        "tag_frame_ID3_55mm.stl": 1,
+        "tag_frame_ID4_55mm.stl": 1,
+        "tag_frame_ID5_55mm.stl": 1
+      },
+      "prerequisites": [
+        "plus4_machine_confirmed",
+        "nozzle_0p4_confirmed",
+        "petg_general_profile_calibrated",
+        "tag_stock_measured",
+        "tag_artwork_scale_pass",
+        "tag_frame_first_article_pass",
+        "qidi_studio_roundtrip_confirmed"
+      ],
+      "postconditions": [
+        "tag_frame_batch_postprint_pass",
+        "tag_frame_installation_pass"
+      ]
+    },
+    {
+      "job_id": "03C3",
+      "design_revision": "RC02-PRO-R1",
+      "lifecycle_status": "UNRELEASED",
+      "kit": "KIT-VISION-CAM",
+      "plate_file": "03C3_PETG_camera_plate.3mf",
+      "plate_sha256": "92c277315d15a87632e73585a9b2bcc81c22a46df80c678eaf36de2fc3e6b27b",
+      "profile": "petg_general_0p4",
+      "profile_sha256": "ecd7e9e90881087b4ef04779c3717bc972489d689924d8602b5cae9d4855408c",
+      "parts": {
+        "camera_plate_universal.stl": 1
+      },
+      "prerequisites": [
+        "plus4_machine_confirmed",
+        "nozzle_0p4_confirmed",
+        "petg_general_profile_calibrated",
+        "camera_mount_interface_measured",
+        "general_clearance_holes_coupon_pass",
+        "setup_hardware_coupon_pass",
+        "geometry_matches_measurements",
+        "qidi_studio_roundtrip_confirmed"
+      ],
+      "postconditions": [
+        "camera_plate_hardware_pass"
+      ]
+    },
+    {
+      "job_id": "03D",
+      "design_revision": "RC02-PRO-R1",
+      "lifecycle_status": "UNRELEASED",
+      "kit": "KIT-PUCK",
+      "plate_file": "03D_PETG_calibration_puck.3mf",
+      "plate_sha256": "7ab9f1184d22271a192897c9b705bc25f78073cc9f0a3efb2517557f758dcfe0",
+      "profile": "petg_calibration_0p4",
+      "profile_sha256": "8bfef01f473a15368eb72901b0b8e472315afb089b489388fd077fff02eb0a06",
+      "parts": {
+        "calibration_puck.stl": 1
+      },
+      "prerequisites": [
+        "plus4_machine_confirmed",
+        "nozzle_0p4_confirmed",
+        "petg_calibration_profile_calibrated",
+        "calibration_clearance_holes_coupon_pass",
+        "geometry_matches_measurements",
+        "qidi_studio_roundtrip_confirmed"
+      ],
+      "postconditions": [
+        "calibration_puck_datum_pass"
+      ]
+    },
+    {
+      "job_id": "04A",
+      "design_revision": "RC02-PRO-R1",
+      "lifecycle_status": "UNRELEASED",
+      "kit": "KIT-TOOL-COMMON",
+      "plate_file": "04A_PETG_shared_compliant_tool.3mf",
+      "plate_sha256": "50d98e0061d42ba35f312e69871376c6867c0d63f44b66c210ff00f584b56b62",
+      "profile": "petg_precision_0p4",
+      "profile_sha256": "8a7d27cd2258c97d838fb416cc07a3e8842b840cc0868221bba343297b05e304",
+      "parts": {
+        "compliant_tool_body.stl": 1,
+        "compliant_tool_top_cap.stl": 2
+      },
+      "prerequisites": [
+        "plus4_machine_confirmed",
+        "nozzle_0p4_confirmed",
+        "petg_precision_profile_calibrated",
+        "m3_insert_coupon_pass",
+        "gripper_interface_measured",
+        "gripper_coupon_pass",
+        "spring_dimensions_measured",
+        "spring_fit_coupon_pass",
+        "precision_m3_head_coupon_pass",
+        "geometry_matches_measurements",
+        "qidi_studio_roundtrip_confirmed"
+      ],
+      "postconditions": [
+        "tool_body_postprint_pass",
+        "tool_assembled_motion_pass"
+      ]
+    },
+    {
+      "job_id": "04B",
+      "design_revision": "RC02-PRO-R1",
+      "lifecycle_status": "UNRELEASED",
+      "kit": "KIT-TOOL-PHONE",
+      "plate_file": "04B_PETG_phone_stylus_adapters.3mf",
+      "plate_sha256": "4f23eb2f4dcdd1b74458da5b1dd4077fb4da578030158055d60e3a59f49258af",
+      "profile": "petg_adapter_0p4",
+      "profile_sha256": "5addad813637abbe2dbc969afe8fde8637973498ff1f2439e590e070d62a2308",
+      "parts": {
+        "stylus_collar_9mm.stl": 2
+      },
+      "prerequisites": [
+        "plus4_machine_confirmed",
+        "nozzle_0p4_confirmed",
+        "petg_adapter_profile_calibrated",
+        "stylus_diameter_measured",
+        "stylus_gauge_coupon_pass",
+        "adapter_retention_method_selected",
+        "qidi_studio_roundtrip_confirmed"
+      ],
+      "postconditions": [
+        "stylus_collar_retention_pass",
+        "stylus_function_pass"
+      ]
+    },
+    {
+      "job_id": "04C",
+      "design_revision": "RC02-PRO-R1",
+      "lifecycle_status": "UNRELEASED",
+      "kit": "KIT-TOOL-KB",
+      "plate_file": "04C_PETG_keyboard_rod_adapters.3mf",
+      "plate_sha256": "feb287014ddd1de53dcbd904953614f507ad0ab353590c75d0d2f0098160230f",
+      "profile": "petg_adapter_0p4",
+      "profile_sha256": "5addad813637abbe2dbc969afe8fde8637973498ff1f2439e590e070d62a2308",
+      "parts": {
+        "rod_bushing_6_to_9mm.stl": 2
+      },
+      "prerequisites": [
+        "plus4_machine_confirmed",
+        "nozzle_0p4_confirmed",
+        "petg_adapter_profile_calibrated",
+        "keyboard_rod_measured",
+        "adapter_retention_method_selected",
+        "geometry_matches_measurements",
+        "qidi_studio_roundtrip_confirmed"
+      ],
+      "postconditions": [
+        "rod_bushing_retention_pass"
+      ]
+    },
+    {
+      "job_id": "05A",
+      "design_revision": "RC02-PRO-R1",
+      "lifecycle_status": "UNRELEASED",
+      "kit": "KIT-PHONE",
+      "plate_file": "05A_TPU_phone_tip_first_article.3mf",
+      "plate_sha256": "05d7b42e788b5c03bc60740145ed28b08074330aa980aa9795f3c0c8d8c2e23b",
+      "profile": "tpu95a_0p4",
+      "profile_sha256": "59b69f285f6bead89753b66a3fa1005b3db9b065b58905e3dd84fa684dfa9e49",
+      "parts": {
+        "phone_clamp_tip_TPU_M4.stl": 1
+      },
+      "prerequisites": [
+        "plus4_machine_confirmed",
+        "nozzle_0p4_confirmed",
+        "tpu_profile_calibrated",
+        "qidi_studio_roundtrip_confirmed"
+      ],
+      "postconditions": [
+        "phone_tpu_retention_coupon_pass"
+      ]
+    },
+    {
+      "job_id": "05B",
+      "design_revision": "RC02-PRO-R1",
+      "lifecycle_status": "UNRELEASED",
+      "kit": "KIT-PHONE",
+      "plate_file": "05B_TPU_phone_tips_and_spares.3mf",
+      "plate_sha256": "58a9839c752eb968891f7bea76e2f95c51962d36f9d5013ff7c7cdcc446a67c9",
+      "profile": "tpu95a_0p4",
+      "profile_sha256": "59b69f285f6bead89753b66a3fa1005b3db9b065b58905e3dd84fa684dfa9e49",
+      "parts": {
+        "phone_clamp_tip_TPU_M4.stl": 3
+      },
+      "prerequisites": [
+        "plus4_machine_confirmed",
+        "nozzle_0p4_confirmed",
+        "tpu_profile_calibrated",
+        "phone_tpu_retention_coupon_pass",
+        "qidi_studio_roundtrip_confirmed"
+      ],
+      "postconditions": [
+        "phone_tpu_batch_postprint_pass"
+      ]
+    },
+    {
+      "job_id": "05C",
+      "design_revision": "RC02-PRO-R1",
+      "lifecycle_status": "UNRELEASED",
+      "kit": "KIT-TOOL-KB",
+      "plate_file": "05C_TPU_keyboard_tip_first_article.3mf",
+      "plate_sha256": "41396e0ed39b6662629bb10a23993eab7496816cb65cd709d81f16c8415b2c67",
+      "profile": "tpu95a_0p4",
+      "profile_sha256": "59b69f285f6bead89753b66a3fa1005b3db9b065b58905e3dd84fa684dfa9e49",
+      "parts": {
+        "keyboard_tip_TPU_6mm.stl": 1
+      },
+      "prerequisites": [
+        "plus4_machine_confirmed",
+        "nozzle_0p4_confirmed",
+        "tpu_profile_calibrated",
+        "keyboard_rod_measured",
+        "qidi_studio_roundtrip_confirmed"
+      ],
+      "postconditions": [
+        "keyboard_tpu_retention_coupon_pass"
+      ]
+    },
+    {
+      "job_id": "05D",
+      "design_revision": "RC02-PRO-R1",
+      "lifecycle_status": "UNRELEASED",
+      "kit": "KIT-TOOL-KB",
+      "plate_file": "05D_TPU_keyboard_tips_and_spares.3mf",
+      "plate_sha256": "bf443f6f60d76e0b979218b090837654d87b4d6252922886dcd5be2fb8f8ac05",
+      "profile": "tpu95a_0p4",
+      "profile_sha256": "59b69f285f6bead89753b66a3fa1005b3db9b065b58905e3dd84fa684dfa9e49",
+      "parts": {
+        "keyboard_tip_TPU_6mm.stl": 3
+      },
+      "prerequisites": [
+        "plus4_machine_confirmed",
+        "nozzle_0p4_confirmed",
+        "tpu_profile_calibrated",
+        "keyboard_rod_measured",
+        "keyboard_tpu_retention_coupon_pass",
+        "qidi_studio_roundtrip_confirmed"
+      ],
+      "postconditions": [
+        "keyboard_tpu_batch_postprint_pass"
+      ]
+    },
+    {
+      "job_id": "06",
+      "design_revision": "RC02-PRO-R1",
+      "lifecycle_status": "UNRELEASED",
+      "kit": "KIT-MAST",
+      "plate_file": "06_ASA_mast_fit_tests.3mf",
+      "plate_sha256": "4b72cee5268475f5af4122350fa62eaf9dbbde5100345e24cc5c3091c4f012ba",
+      "profile": "asa_structural_0p4",
+      "profile_sha256": "7f5a63b82b79566c55df616753ef9acc31e6a172a2689b726498aa2cb82c7a22",
+      "parts": {
+        "mast_socket_fit_test.stl": 1,
+        "m5_nut_trap_fit_gauge.stl": 1
+      },
+      "prerequisites": [
+        "plus4_machine_confirmed",
+        "nozzle_0p4_confirmed",
+        "asa_profile_calibrated"
+      ],
+      "postconditions": [
+        "asa_mast_socket_coupon_pass",
+        "asa_m5_nut_coupon_pass",
+        "asa_m5_clearance_coupon_pass"
+      ]
+    },
+    {
+      "job_id": "07A",
+      "design_revision": "RC02-PRO-R1",
+      "lifecycle_status": "UNRELEASED",
+      "kit": "KIT-MAST",
+      "plate_file": "07A_ASA_mast_foot_first_article.3mf",
+      "plate_sha256": "7f25240ea27f296a96ffa6b809fa4069ad633559d3741841919a340e0b481ee7",
+      "profile": "asa_structural_0p4",
+      "profile_sha256": "7f5a63b82b79566c55df616753ef9acc31e6a172a2689b726498aa2cb82c7a22",
+      "parts": {
+        "mast_foot_2020.stl": 1
+      },
+      "prerequisites": [
+        "plus4_machine_confirmed",
+        "nozzle_0p4_confirmed",
+        "asa_profile_calibrated",
+        "asa_mast_socket_coupon_pass",
+        "asa_m5_nut_coupon_pass",
+        "asa_m5_clearance_coupon_pass",
+        "geometry_matches_measurements",
+        "qidi_studio_roundtrip_confirmed"
+      ],
+      "postconditions": [
+        "mast_foot_first_article_pass"
+      ]
+    },
+    {
+      "job_id": "07B",
+      "design_revision": "RC02-PRO-R1",
+      "lifecycle_status": "UNRELEASED",
+      "kit": "KIT-MAST",
+      "plate_file": "07B_ASA_mast_foot_second.3mf",
+      "plate_sha256": "63c6e356e24b395b53d4780ba27e248d6b6a836d0920af1070d2719b9b7f8bc3",
+      "profile": "asa_structural_0p4",
+      "profile_sha256": "7f5a63b82b79566c55df616753ef9acc31e6a172a2689b726498aa2cb82c7a22",
+      "parts": {
+        "mast_foot_2020.stl": 1
+      },
+      "prerequisites": [
+        "plus4_machine_confirmed",
+        "nozzle_0p4_confirmed",
+        "asa_profile_calibrated",
+        "asa_mast_socket_coupon_pass",
+        "asa_m5_nut_coupon_pass",
+        "asa_m5_clearance_coupon_pass",
+        "geometry_matches_measurements",
+        "mast_foot_first_article_pass",
+        "qidi_studio_roundtrip_confirmed"
+      ],
+      "postconditions": [
+        "mast_second_foot_postprint_pass",
+        "mast_pair_installation_pass"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,125 @@
+{
+  "schema_version": 2,
+  "design_revision": "RC02-PRO-R1",
+  "job_id": "00E",
+  "plate_file": "00E_PETG_general_setup_tests.3mf",
+  "printer": {
+    "model": "QIDI Plus4",
+    "nominal_build_volume_mm": [
+      305.0,
+      305.0,
+      280.0
+    ],
+    "safe_plate_envelope_mm": [
+      295.0,
+      295.0,
+      280.0
+    ],
+    "edge_margin_mm": 5.0,
+    "default_nozzle_mm": 0.4
+  },
+  "stage": "diagnostic",
+  "selection": "required",
+  "purpose": "General clearance, screw-head, washer, camera-hex, and TPU-retention setup tests",
+  "parts": {
+    "hardware_fit_gauge.stl": 1,
+    "setup_hardware_fit_gauge.stl": 1,
+    "tpu_tip_retention_gauge.stl": 1
+  },
+  "prerequisites": [
+    "plus4_machine_confirmed",
+    "nozzle_0p4_confirmed",
+    "petg_general_profile_calibrated"
+  ],
+  "process_profile_name": "petg_general_0p4",
+  "process_profile": {
+    "material": "PETG",
+    "nozzle_mm": 0.4,
+    "layer_height_mm": 0.2,
+    "walls": 4,
+    "top_layers": 5,
+    "bottom_layers": 5,
+    "infill_percent": 25,
+    "infill_pattern": "gyroid",
+    "supports": "off unless a job override says otherwise",
+    "bed_adhesion": "Clean textured PEI; use a 5 mm brim only after observed corner lift",
+    "dimensional_controls": "Use calibrated elephant-foot and XY-hole compensation from the diagnostic coupons",
+    "purpose": "Trays, cradle, clamps, frames, puck, and camera plate"
+  },
+  "slicer_warning": "Use a calibrated QIDI Studio filament preset for the exact brand and material; temperatures are deliberately not embedded in geometry-only 3MF files.",
+  "geometry_only_3mf": true,
+  "qidi_studio_native_project_required": true,
+  "qidi_studio_roundtrip_gate": "qidi_studio_roundtrip_confirmed",
+  "plate_envelope_mm": [
+    208.0,
+    124.0,
+    14.0
+  ],
+  "absolute_bed_bounds_mm": {
+    "min": [
+      48.5,
+      90.5,
+      0.0
+    ],
+    "max": [
+      256.5,
+      214.5,
+      14.0
+    ]
+  },
+  "centered_on_nominal_bed": true,
+  "source_stl_sha256": {
+    "hardware_fit_gauge.stl": "beb9ecb2cd3b6020c998dc74d284e7639af7ac7b5040f7ab857d9c3fc3212c26",
+    "setup_hardware_fit_gauge.stl": "9316dd57f120a0d68c3ae228d5e8f0e54537131b5238397a6092e3163f9852d3",
+    "tpu_tip_retention_gauge.stl": "cab0c935e90e3e64c977c4549b3a968d26e838a2437876fd63120bc249a0f0c6"
+  },
+  "process_profile_sha256": "ecd7e9e90881087b4ef04779c3717bc972489d689924d8602b5cae9d4855408c",
+  "plate_sha256": "b35f3c91aad94df05b7af152b5a266df5d09f17cffc8ba69b084b5c133786340",
+  "objects": [
+    {
+      "name": "hardware_fit_gauge_1",
+      "bounds_mm": [
+        [
+          48.5,
+          90.5,
+          0.0
+        ],
+        [
+          208.5,
+          120.5,
+          6.0
+        ]
+      ]
+    },
+    {
+      "name": "setup_hardware_fit_gauge_1",
+      "bounds_mm": [
+        [
+          48.5,
+          130.5,
+          0.0
+        ],
+        [
+          208.5,
+          214.5,
+          8.0
+        ]
+      ]
+    },
+    {
+      "name": "tpu_tip_retention_gauge_1",
+      "bounds_mm": [
+        [
+          218.5,
+          90.5,
+          0.0
+        ],
+        [
+          256.5,
+          112.5,
+          14.0
+        ]
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1355 @@
+{
+  "description": "16 ABS frame plates plus four TPU board pads on one plate; one repaired carriage plate on HOLD",
+  "original_files_preserved": true,
+  "plates": [
+    {
+      "plate": "00G-P1",
+      "file": "PRINT_TPU_board_pads/00G-P1_TPU_board_pads_ONLY_WELDED_v1.3mf",
+      "geometry_source": "C:\\Users\\Jack\\Desktop\\robot-arm-build\\hardware\\static_overhead_camera\\cad\\output\\plates_3mf\\00G-P1_TPU_camera_portal_pads.3mf",
+      "geometry_revision": null,
+      "source_sha256": "2dd31d5b10b814dc7a6280c10e10443189984572e606ba84d0aeecb448ce2957",
+      "output_sha256": "b356fb799f3b8fff783e0624b719645ebfa293c01c5a7c2a2efbac2eea018718",
+      "status": "PASS_MESH",
+      "expected_objects": 4,
+      "objects": [
+        {
+          "name": "board_pressure_pad__01",
+          "original_vertices": 960,
+          "welded_vertices": 960,
+          "triangles": 1916,
+          "open_edges": 0,
+          "nonmanifold_edges": 0,
+          "geometry_unchanged": true
+        },
+        {
+          "name": "board_pressure_pad__02",
+          "original_vertices": 960,
+          "welded_vertices": 960,
+          "triangles": 1916,
+          "open_edges": 0,
+          "nonmanifold_edges": 0,
+          "geometry_unchanged": true
+        },
+        {
+          "name": "board_pressure_pad__03",
+          "original_vertices": 960,
+          "welded_vertices": 960,
+          "triangles": 1916,
+          "open_edges": 0,
+          "nonmanifold_edges": 0,
+          "geometry_unchanged": true
+        },
+        {
+          "name": "board_pressure_pad__04",
+          "original_vertices": 960,
+          "welded_vertices": 960,
+          "triangles": 1916,
+          "open_edges": 0,
+          "nonmanifold_edges": 0,
+          "geometry_unchanged": true
+        }
+      ],
+      "placed_bounds_mm": [
+        [
+          [
+            68.0,
+            10.0,
+            0.0
+          ],
+          [
+            106.0,
+            19.0,
+            3.1500000953674316
+          ]
+        ],
+        [
+          [
+            242.0,
+            10.0,
+            0.0
+          ],
+          [
+            280.0,
+            19.0,
+            3.1500000953674316
+          ]
+        ],
+        [
+          [
+            184.0,
+            10.0,
+            0.0
+          ],
+          [
+            222.0,
+            19.0,
+            3.1500000953674316
+          ]
+        ],
+        [
+          [
+            126.0,
+            10.0,
+            0.0
+          ],
+          [
+            164.0,
+            19.0,
+            3.1500000953674316
+          ]
+        ]
+      ],
+      "triangle_coordinates": "EXACTLY_PRESERVED_FROM_NAMED_GEOMETRY_SOURCE",
+      "build_transforms": "EXACTLY_PRESERVED",
+      "excluded_objects": [
+        "camera_top_compression_pad__01"
+      ],
+      "namespace": "DEFAULT_UNPREFIXED_CORE",
+      "native_slicer_preview": "PENDING",
+      "physical_fit_and_strength": "NOT_QUALIFIED"
+    },
+    {
+      "plate": "08A-J1",
+      "file": "PRINT_ABS_frame/08A-J1_ABS_left_portal_corner_pair_WELDED_v1.3mf",
+      "geometry_source": "C:\\Users\\Jack\\Desktop\\robot-arm-build\\hardware\\static_overhead_camera\\cad\\output\\plates_3mf\\08A-J1_ABS_left_portal_corner_pair.3mf",
+      "geometry_revision": null,
+      "source_sha256": "52c12cd08deed89a396d2f6117d2f4c5375fd44678e944c3667674942a815b63",
+      "output_sha256": "e8d17a66085d69202d2920247dc980297f2a210dca235c1b9bb35b2ecd87413e",
+      "status": "PASS_MESH",
+      "expected_objects": 2,
+      "objects": [
+        {
+          "name": "portal_corner_node_left__01",
+          "original_vertices": 5814,
+          "welded_vertices": 5814,
+          "triangles": 11640,
+          "open_edges": 0,
+          "nonmanifold_edges": 0,
+          "geometry_unchanged": true
+        },
+        {
+          "name": "portal_corner_node_left__02",
+          "original_vertices": 5814,
+          "welded_vertices": 5814,
+          "triangles": 11640,
+          "open_edges": 0,
+          "nonmanifold_edges": 0,
+          "geometry_unchanged": true
+        }
+      ],
+      "placed_bounds_mm": [
+        [
+          [
+            10.0,
+            10.0,
+            0.0
+          ],
+          [
+            134.0,
+            120.0,
+            8.800000190734863
+          ]
+        ],
+        [
+          [
+            154.0,
+            10.0,
+            0.0
+          ],
+          [
+            278.0,
+            120.0,
+            8.800000190734863
+          ]
+        ]
+      ],
+      "triangle_coordinates": "EXACTLY_PRESERVED_FROM_NAMED_GEOMETRY_SOURCE",
+      "build_transforms": "EXACTLY_PRESERVED",
+      "excluded_objects": [],
+      "namespace": "DEFAULT_UNPREFIXED_CORE",
+      "native_slicer_preview": "PENDING",
+      "physical_fit_and_strength": "NOT_QUALIFIED"
+    },
+    {
+      "plate": "08A-S1",
+      "file": "PRINT_ABS_frame/08A-S1_ABS_left_bench_saddle_GROUNDED_v2.3mf",
+      "geometry_source": "C:\\Users\\Jack\\Desktop\\robot-arm-build\\hardware\\static_overhead_camera\\cad\\output\\revisions\\SADDLES_GROUNDED_v2\\08A-S1_ABS_left_bench_saddle_GROUNDED_v2.3mf",
+      "geometry_revision": "GROUNDED_v2: permanent rib feet and cleared upright pocket",
+      "source_sha256": "41f05263543988c9ecf7cec22d5a3d022ad5df1999d30e3cec573a385464e80d",
+      "output_sha256": "a5a22b0745b6f488642abbaf2f08df46727f0e1e55b48758c05e290fdef73a1a",
+      "status": "PASS_MESH",
+      "expected_objects": 1,
+      "objects": [
+        {
+          "name": "08A-S1_ABS_left_bench_saddle_GROUNDED_v2",
+          "original_vertices": 13506,
+          "welded_vertices": 13506,
+          "triangles": 27056,
+          "open_edges": 0,
+          "nonmanifold_edges": 0,
+          "geometry_unchanged": true
+        }
+      ],
+      "placed_bounds_mm": [
+        [
+          [
+            10.0,
+            10.0,
+            0.0
+          ],
+          [
+            260.0,
+            200.0,
+            104.0
+          ]
+        ]
+      ],
+      "triangle_coordinates": "EXACTLY_PRESERVED_FROM_NAMED_GEOMETRY_SOURCE",
+      "build_transforms": "EXACTLY_PRESERVED",
+      "excluded_objects": [],
+      "namespace": "DEFAULT_UNPREFIXED_CORE",
+      "native_slicer_preview": "PENDING",
+      "physical_fit_and_strength": "NOT_QUALIFIED"
+    },
+    {
+      "plate": "08A-S2",
+      "file": "PRINT_ABS_frame/08A-S2_ABS_left_cap_and_splices_WELDED_v1.3mf",
+      "geometry_source": "C:\\Users\\Jack\\Desktop\\robot-arm-build\\hardware\\static_overhead_camera\\cad\\output\\plates_3mf\\08A-S2_ABS_left_cap_and_splices.3mf",
+      "geometry_revision": null,
+      "source_sha256": "4ee50a9be7fd929f1d6d16ad4b58c4dd5a0f686733300129ce00d0e23f6e8fb2",
+      "output_sha256": "d2fc33c532a13c3542d9235b7d6cbbb0d2c2fdab66a037fa5bc052622cb01f9f",
+      "status": "PASS_MESH",
+      "expected_objects": 5,
+      "objects": [
+        {
+          "name": "board_corner_cap_left__01",
+          "original_vertices": 9984,
+          "welded_vertices": 9984,
+          "triangles": 19972,
+          "open_edges": 0,
+          "nonmanifold_edges": 0,
+          "geometry_unchanged": true
+        },
+        {
+          "name": "u_truss_splice__01",
+          "original_vertices": 5628,
+          "welded_vertices": 5628,
+          "triangles": 11268,
+          "open_edges": 0,
+          "nonmanifold_edges": 0,
+          "geometry_unchanged": true
+        },
+        {
+          "name": "u_truss_splice__02",
+          "original_vertices": 5628,
+          "welded_vertices": 5628,
+          "triangles": 11268,
+          "open_edges": 0,
+          "nonmanifold_edges": 0,
+          "geometry_unchanged": true
+        },
+        {
+          "name": "m6_nut_retainer__01",
+          "original_vertices": 340,
+          "welded_vertices": 340,
+          "triangles": 676,
+          "open_edges": 0,
+          "nonmanifold_edges": 0,
+          "geometry_unchanged": true
+        },
+        {
+          "name": "m6_nut_retainer__02",
+          "original_vertices": 340,
+          "welded_vertices": 340,
+          "triangles": 676,
+          "open_edges": 0,
+          "nonmanifold_edges": 0,
+          "geometry_unchanged": true
+        }
+      ],
+      "placed_bounds_mm": [
+        [
+          [
+            10.0,
+            10.0,
+            0.0
+          ],
+          [
+            95.0,
+            95.0,
+            9.800000190734863
+          ]
+        ],
+        [
+          [
+            179.79999923706055,
+            115.0,
+            0.0
+          ],
+          [
+            205.5999984741211,
+            128.19999980926514,
+            6.0
+          ]
+        ],
+        [
+          [
+            134.0,
+            115.0,
+            0.0
+          ],
+          [
+            159.79999923706055,
+            128.19999980926514,
+            6.0
+          ]
+        ],
+        [
+          [
+            10.0,
+            115.0,
+            0.0
+          ],
+          [
+            114.0,
+            190.8000030517578,
+            74.0
+          ]
+        ],
+        [
+          [
+            115.0,
+            10.0,
+            0.0
+          ],
+          [
+            219.0,
+            85.80000305175781,
+            74.0
+          ]
+        ]
+      ],
+      "triangle_coordinates": "EXACTLY_PRESERVED_FROM_NAMED_GEOMETRY_SOURCE",
+      "build_transforms": "EXACTLY_PRESERVED",
+      "excluded_objects": [],
+      "namespace": "DEFAULT_UNPREFIXED_CORE",
+      "native_slicer_preview": "PENDING",
+      "physical_fit_and_strength": "NOT_QUALIFIED"
+    },
+    {
+      "plate": "08A-T1",
+      "file": "PRINT_ABS_frame/08A-T1_ABS_left_uprights_1_2_WELDED_v1.3mf",
+      "geometry_source": "C:\\Users\\Jack\\Desktop\\robot-arm-build\\hardware\\static_overhead_camera\\cad\\output\\plates_3mf\\08A-T1_ABS_left_uprights_1_2.3mf",
+      "geometry_revision": null,
+      "source_sha256": "eeaab711a08ebbd438e649ebdad7b425a001fa6f7fa6f744434eb828d4aae706",
+      "output_sha256": "1ffdda54d7cc3ea1011fd7470c6dcf719c69428e824077270bd16468188b4393",
+      "status": "PASS_MESH",
+      "expected_objects": 2,
+      "objects": [
+        {
+          "name": "upright_truss_segment_240__01",
+          "original_vertices": 7644,
+          "welded_vertices": 7644,
+          "triangles": 15532,
+          "open_edges": 0,
+          "nonmanifold_edges": 0,
+          "geometry_unchanged": true
+        },
+        {
+          "name": "upright_truss_segment_240__02",
+          "original_vertices": 7644,
+          "welded_vertices": 7644,
+          "triangles": 15532,
+          "open_edges": 0,
+          "nonmanifold_edges": 0,
+          "geometry_unchanged": true
+        }
+      ],
+      "placed_bounds_mm": [
+        [
+          [
+            10.0,
+            10.0,
+            0.0
+          ],
+          [
+            250.0,
+            60.0,
+            64.0
+          ]
+        ],
+        [
+          [
+            10.0,
+            80.0,
+            0.0
+          ],
+          [
+            250.0,
+            130.0,
+            64.0
+          ]
+        ]
+      ],
+      "triangle_coordinates": "EXACTLY_PRESERVED_FROM_NAMED_GEOMETRY_SOURCE",
+      "build_transforms": "EXACTLY_PRESERVED",
+      "excluded_objects": [],
+      "namespace": "DEFAULT_UNPREFIXED_CORE",
+      "native_slicer_preview": "PENDING",
+      "physical_fit_and_strength": "NOT_QUALIFIED"
+    },
+    {
+      "plate": "08A-T2",
+      "file": "PRINT_ABS_frame/08A-T2_ABS_left_uprights_3_4_WELDED_v1.3mf",
+      "geometry_source": "C:\\Users\\Jack\\Desktop\\robot-arm-build\\hardware\\static_overhead_camera\\cad\\output\\plates_3mf\\08A-T2_ABS_left_uprights_3_4.3mf",
+      "geometry_revision": null,
+      "source_sha256": "60b002ad6989c338777478ce5b5af0c1a77c62f8e6b853b0e35142c7e60d9e5b",
+      "output_sha256": "b7aa87a78a1db1fce309b9074f573604fdb1ab6ba0516d429653ec93dff0a56d",
+      "status": "PASS_MESH",
+      "expected_objects": 2,
+      "objects": [
+        {
+          "name": "upright_truss_segment_240__01",
+          "original_vertices": 7644,
+          "welded_vertices": 7644,
+          "triangles": 15532,
+          "open_edges": 0,
+          "nonmanifold_edges": 0,
+          "geometry_unchanged": true
+        },
+        {
+          "name": "upright_truss_segment_240__02",
+          "original_vertices": 7644,
+          "welded_vertices": 7644,
+          "triangles": 15532,
+          "open_edges": 0,
+          "nonmanifold_edges": 0,
+          "geometry_unchanged": true
+        }
+      ],
+      "placed_bounds_mm": [
+        [
+          [
+            10.0,
+            10.0,
+            0.0
+          ],
+          [
+            250.0,
+            60.0,
+            64.0
+          ]
+        ],
+        [
+          [
+            10.0,
+            80.0,
+            0.0
+          ],
+          [
+            250.0,
+            130.0,
+            64.0
+          ]
+        ]
+      ],
+      "triangle_coordinates": "EXACTLY_PRESERVED_FROM_NAMED_GEOMETRY_SOURCE",
+      "build_transforms": "EXACTLY_PRESERVED",
+      "excluded_objects": [],
+      "namespace": "DEFAULT_UNPREFIXED_CORE",
+      "native_slicer_preview": "PENDING",
+      "physical_fit_and_strength": "NOT_QUALIFIED"
+    },
+    {
+      "plate": "08B-J1",
+      "file": "PRINT_ABS_frame/08B-J1_ABS_right_portal_corner_pair_WELDED_v1.3mf",
+      "geometry_source": "C:\\Users\\Jack\\Desktop\\robot-arm-build\\hardware\\static_overhead_camera\\cad\\output\\plates_3mf\\08B-J1_ABS_right_portal_corner_pair.3mf",
+      "geometry_revision": null,
+      "source_sha256": "3e38d081b7f64fbf30790a1412952a84b055efe15fb42a38a9ffb9f265bb7e54",
+      "output_sha256": "cc12264de69f9127678efb7e94e62c0e1250cdc05104c470befc336de10bcfaa",
+      "status": "PASS_MESH",
+      "expected_objects": 2,
+      "objects": [
+        {
+          "name": "portal_corner_node_right__01",
+          "original_vertices": 6363,
+          "welded_vertices": 6363,
+          "triangles": 12738,
+          "open_edges": 0,
+          "nonmanifold_edges": 0,
+          "geometry_unchanged": true
+        },
+        {
+          "name": "portal_corner_node_right__02",
+          "original_vertices": 6363,
+          "welded_vertices": 6363,
+          "triangles": 12738,
+          "open_edges": 0,
+          "nonmanifold_edges": 0,
+          "geometry_unchanged": true
+        }
+      ],
+      "placed_bounds_mm": [
+        [
+          [
+            10.0,
+            10.0,
+            0.0
+          ],
+          [
+            134.0,
+            120.0,
+            8.800000190734863
+          ]
+        ],
+        [
+          [
+            154.0,
+            10.0,
+            0.0
+          ],
+          [
+            278.0,
+            120.0,
+            8.800000190734863
+          ]
+        ]
+      ],
+      "triangle_coordinates": "EXACTLY_PRESERVED_FROM_NAMED_GEOMETRY_SOURCE",
+      "build_transforms": "EXACTLY_PRESERVED",
+      "excluded_objects": [],
+      "namespace": "DEFAULT_UNPREFIXED_CORE",
+      "native_slicer_preview": "PENDING",
+      "physical_fit_and_strength": "NOT_QUALIFIED"
+    },
+    {
+      "plate": "08B-S1",
+      "file": "PRINT_ABS_frame/08B-S1_ABS_right_bench_saddle_GROUNDED_v2.3mf",
+      "geometry_source": "C:\\Users\\Jack\\Desktop\\robot-arm-build\\hardware\\static_overhead_camera\\cad\\output\\revisions\\SADDLES_GROUNDED_v2\\08B-S1_ABS_right_bench_saddle_GROUNDED_v2.3mf",
+      "geometry_revision": "GROUNDED_v2: permanent rib feet and cleared upright pocket",
+      "source_sha256": "7daa657e1b4d58fe5690ff3a174789692c27ef45c6d451bf36a0a66f21d0c1b6",
+      "output_sha256": "324982e8634563f0e3eb62bfef9b74700e1cd96526053ad76f6d7b28960b8e92",
+      "status": "PASS_MESH",
+      "expected_objects": 1,
+      "objects": [
+        {
+          "name": "08B-S1_ABS_right_bench_saddle_GROUNDED_v2",
+          "original_vertices": 17183,
+          "welded_vertices": 17183,
+          "triangles": 34410,
+          "open_edges": 0,
+          "nonmanifold_edges": 0,
+          "geometry_unchanged": true
+        }
+      ],
+      "placed_bounds_mm": [
+        [
+          [
+            10.0,
+            10.0,
+            0.0
+          ],
+          [
+            260.0,
+            200.0,
+            104.0
+          ]
+        ]
+      ],
+      "triangle_coordinates": "EXACTLY_PRESERVED_FROM_NAMED_GEOMETRY_SOURCE",
+      "build_transforms": "EXACTLY_PRESERVED",
+      "excluded_objects": [],
+      "namespace": "DEFAULT_UNPREFIXED_CORE",
+      "native_slicer_preview": "PENDING",
+      "physical_fit_and_strength": "NOT_QUALIFIED"
+    },
+    {
+      "plate": "08B-S2",
+      "file": "PRINT_ABS_frame/08B-S2_ABS_right_cap_and_splices_WELDED_v1.3mf",
+      "geometry_source": "C:\\Users\\Jack\\Desktop\\robot-arm-build\\hardware\\static_overhead_camera\\cad\\output\\plates_3mf\\08B-S2_ABS_right_cap_and_splices.3mf",
+      "geometry_revision": null,
+      "source_sha256": "a573a7360479c3e76fd40ab020dacbfe8b13106cb58045b2faca64c192b47b78",
+      "output_sha256": "9d961b1377f4937ce68d209716e8e8cdf69e1de8a4e8474c292887baebb382de",
+      "status": "PASS_MESH",
+      "expected_objects": 6,
+      "objects": [
+        {
+          "name": "board_corner_cap_right__01",
+          "original_vertices": 9990,
+          "welded_vertices": 9990,
+          "triangles": 19984,
+          "open_edges": 0,
+          "nonmanifold_edges": 0,
+          "geometry_unchanged": true
+        },
+        {
+          "name": "u_truss_splice__01",
+          "original_vertices": 5628,
+          "welded_vertices": 5628,
+          "triangles": 11268,
+          "open_edges": 0,
+          "nonmanifold_edges": 0,
+          "geometry_unchanged": true
+        },
+        {
+          "name": "u_truss_splice__02",
+          "original_vertices": 5628,
+          "welded_vertices": 5628,
+          "triangles": 11268,
+          "open_edges": 0,
+          "nonmanifold_edges": 0,
+          "geometry_unchanged": true
+        },
+        {
+          "name": "u_truss_splice__03",
+          "original_vertices": 5628,
+          "welded_vertices": 5628,
+          "triangles": 11268,
+          "open_edges": 0,
+          "nonmanifold_edges": 0,
+          "geometry_unchanged": true
+        },
+        {
+          "name": "m6_nut_retainer__01",
+          "original_vertices": 340,
+          "welded_vertices": 340,
+          "triangles": 676,
+          "open_edges": 0,
+          "nonmanifold_edges": 0,
+          "geometry_unchanged": true
+        },
+        {
+          "name": "m6_nut_retainer__02",
+          "original_vertices": 340,
+          "welded_vertices": 340,
+          "triangles": 676,
+          "open_edges": 0,
+          "nonmanifold_edges": 0,
+          "geometry_unchanged": true
+        }
+      ],
+      "placed_bounds_mm": [
+        [
+          [
+            10.0,
+            10.0,
+            0.0
+          ],
+          [
+            95.0,
+            95.0,
+            9.800000190734863
+          ]
+        ],
+        [
+          [
+            10.0,
+            210.8000030517578,
+            0.0
+          ],
+          [
+            35.79999923706055,
+            224.00000286102295,
+            6.0
+          ]
+        ],
+        [
+          [
+            258.0,
+            115.0,
+            0.0
+          ],
+          [
+            283.79999923706055,
+            128.19999980926514,
+            6.0
+          ]
+        ],
+        [
+          [
+            134.0,
+            115.0,
+            0.0
+          ],
+          [
+            238.0,
+            190.8000030517578,
+            74.0
+          ]
+        ],
+        [
+          [
+            10.0,
+            115.0,
+            0.0
+          ],
+          [
+            114.0,
+            190.8000030517578,
+            74.0
+          ]
+        ],
+        [
+          [
+            115.0,
+            10.0,
+            0.0
+          ],
+          [
+            219.0,
+            85.80000305175781,
+            74.0
+          ]
+        ]
+      ],
+      "triangle_coordinates": "EXACTLY_PRESERVED_FROM_NAMED_GEOMETRY_SOURCE",
+      "build_transforms": "EXACTLY_PRESERVED",
+      "excluded_objects": [],
+      "namespace": "DEFAULT_UNPREFIXED_CORE",
+      "native_slicer_preview": "PENDING",
+      "physical_fit_and_strength": "NOT_QUALIFIED"
+    },
+    {
+      "plate": "08B-T1",
+      "file": "PRINT_ABS_frame/08B-T1_ABS_right_uprights_1_2_WELDED_v1.3mf",
+      "geometry_source": "C:\\Users\\Jack\\Desktop\\robot-arm-build\\hardware\\static_overhead_camera\\cad\\output\\plates_3mf\\08B-T1_ABS_right_uprights_1_2.3mf",
+      "geometry_revision": null,
+      "source_sha256": "748d2bc2f3f3e5ab0539602e74f63002a4b9fd72e0cc92e1a591cd9e9b78a3c4",
+      "output_sha256": "afe4509cc7e06db3a59b069174c2f68bb86efebfeeddbd13bb289d56f3ba1bd2",
+      "status": "PASS_MESH",
+      "expected_objects": 2,
+      "objects": [
+        {
+          "name": "upright_truss_segment_240__01",
+          "original_vertices": 7644,
+          "welded_vertices": 7644,
+          "triangles": 15532,
+          "open_edges": 0,
+          "nonmanifold_edges": 0,
+          "geometry_unchanged": true
+        },
+        {
+          "name": "upright_truss_segment_240__02",
+          "original_vertices": 7644,
+          "welded_vertices": 7644,
+          "triangles": 15532,
+          "open_edges": 0,
+          "nonmanifold_edges": 0,
+          "geometry_unchanged": true
+        }
+      ],
+      "placed_bounds_mm": [
+        [
+          [
+            10.0,
+            10.0,
+            0.0
+          ],
+          [
+            250.0,
+            60.0,
+            64.0
+          ]
+        ],
+        [
+          [
+            10.0,
+            80.0,
+            0.0
+          ],
+          [
+            250.0,
+            130.0,
+            64.0
+          ]
+        ]
+      ],
+      "triangle_coordinates": "EXACTLY_PRESERVED_FROM_NAMED_GEOMETRY_SOURCE",
+      "build_transforms": "EXACTLY_PRESERVED",
+      "excluded_objects": [],
+      "namespace": "DEFAULT_UNPREFIXED_CORE",
+      "native_slicer_preview": "PENDING",
+      "physical_fit_and_strength": "NOT_QUALIFIED"
+    },
+    {
+      "plate": "08B-T2",
+      "file": "PRINT_ABS_frame/08B-T2_ABS_right_uprights_3_4_WELDED_v1.3mf",
+      "geometry_source": "C:\\Users\\Jack\\Desktop\\robot-arm-build\\hardware\\static_overhead_camera\\cad\\output\\plates_3mf\\08B-T2_ABS_right_uprights_3_4.3mf",
+      "geometry_revision": null,
+      "source_sha256": "4f93f099c7018e1f2d17c0a710add6e10950069f7c1e737d8e9b69ae5f83bd75",
+      "output_sha256": "f1851e8c89ad452b37d8e963d85377a46910c324e075d714553e94e71164b07e",
+      "status": "PASS_MESH",
+      "expected_objects": 2,
+      "objects": [
+        {
+          "name": "upright_truss_segment_240__01",
+          "original_vertices": 7644,
+          "welded_vertices": 7644,
+          "triangles": 15532,
+          "open_edges": 0,
+          "nonmanifold_edges": 0,
+          "geometry_unchanged": true
+        },
+        {
+          "name": "upright_truss_segment_240__02",
+          "original_vertices": 7644,
+          "welded_vertices": 7644,
+          "triangles": 15532,
+          "open_edges": 0,
+          "nonmanifold_edges": 0,
+          "geometry_unchanged": true
+        }
+      ],
+      "placed_bounds_mm": [
+        [
+          [
+            10.0,
+            10.0,
+            0.0
+          ],
+          [
+            250.0,
+            60.0,
+            64.0
+          ]
+        ],
+        [
+          [
+            10.0,
+            80.0,
+            0.0
+          ],
+          [
+            250.0,
+            130.0,
+            64.0
+          ]
+        ]
+      ],
+      "triangle_coordinates": "EXACTLY_PRESERVED_FROM_NAMED_GEOMETRY_SOURCE",
+      "build_transforms": "EXACTLY_PRESERVED",
+      "excluded_objects": [],
+      "namespace": "DEFAULT_UNPREFIXED_CORE",
+      "native_slicer_preview": "PENDING",
+      "physical_fit_and_strength": "NOT_QUALIFIED"
+    },
+    {
+      "plate": "08C-B1",
+      "file": "PRINT_ABS_frame/08C-B1_ABS_booms_1_2_WELDED_v1.3mf",
+      "geometry_source": "C:\\Users\\Jack\\Desktop\\robot-arm-build\\hardware\\static_overhead_camera\\cad\\output\\plates_3mf\\08C-B1_ABS_booms_1_2.3mf",
+      "geometry_revision": null,
+      "source_sha256": "ead11099c0df6335e013fc935fe4fa93427b1c1c494926de14aa3bbfb78705d6",
+      "output_sha256": "db915b3ed9c1af1dfbc355a8329bb359478d1788bca09d00f72e0c54a5bf43a9",
+      "status": "PASS_MESH",
+      "expected_objects": 2,
+      "objects": [
+        {
+          "name": "boom_root_truss_segment_164p25__01",
+          "original_vertices": 10703,
+          "welded_vertices": 10703,
+          "triangles": 21590,
+          "open_edges": 0,
+          "nonmanifold_edges": 0,
+          "geometry_unchanged": true
+        },
+        {
+          "name": "boom_root_truss_segment_164p25__02",
+          "original_vertices": 10703,
+          "welded_vertices": 10703,
+          "triangles": 21590,
+          "open_edges": 0,
+          "nonmanifold_edges": 0,
+          "geometry_unchanged": true
+        }
+      ],
+      "placed_bounds_mm": [
+        [
+          [
+            10.0,
+            10.0,
+            0.0
+          ],
+          [
+            174.25,
+            60.0,
+            64.0
+          ]
+        ],
+        [
+          [
+            10.0,
+            80.0,
+            0.0
+          ],
+          [
+            174.25,
+            130.0,
+            64.0
+          ]
+        ]
+      ],
+      "triangle_coordinates": "EXACTLY_PRESERVED_FROM_NAMED_GEOMETRY_SOURCE",
+      "build_transforms": "EXACTLY_PRESERVED",
+      "excluded_objects": [],
+      "namespace": "DEFAULT_UNPREFIXED_CORE",
+      "native_slicer_preview": "PENDING",
+      "physical_fit_and_strength": "NOT_QUALIFIED"
+    },
+    {
+      "plate": "08C-B2",
+      "file": "PRINT_ABS_frame/08C-B2_ABS_booms_3_4_WELDED_v1.3mf",
+      "geometry_source": "C:\\Users\\Jack\\Desktop\\robot-arm-build\\hardware\\static_overhead_camera\\cad\\output\\plates_3mf\\08C-B2_ABS_booms_3_4.3mf",
+      "geometry_revision": null,
+      "source_sha256": "961af0b3cc90a49e155f78344114e5e626bb775fabe9709c97ca50ea97d9e4ca",
+      "output_sha256": "5c1c88d64ab8684041ef5fc28cd29368838a2c613c94fc35095342a0b1fb17cd",
+      "status": "PASS_MESH",
+      "expected_objects": 2,
+      "objects": [
+        {
+          "name": "boom_camera_truss_segment_164p25__01",
+          "original_vertices": 8359,
+          "welded_vertices": 8359,
+          "triangles": 16902,
+          "open_edges": 0,
+          "nonmanifold_edges": 0,
+          "geometry_unchanged": true
+        },
+        {
+          "name": "boom_camera_truss_segment_164p25__02",
+          "original_vertices": 8359,
+          "welded_vertices": 8359,
+          "triangles": 16902,
+          "open_edges": 0,
+          "nonmanifold_edges": 0,
+          "geometry_unchanged": true
+        }
+      ],
+      "placed_bounds_mm": [
+        [
+          [
+            10.0,
+            10.0,
+            0.0
+          ],
+          [
+            174.25,
+            60.0,
+            64.0
+          ]
+        ],
+        [
+          [
+            10.0,
+            80.0,
+            0.0
+          ],
+          [
+            174.25,
+            130.0,
+            64.0
+          ]
+        ]
+      ],
+      "triangle_coordinates": "EXACTLY_PRESERVED_FROM_NAMED_GEOMETRY_SOURCE",
+      "build_transforms": "EXACTLY_PRESERVED",
+      "excluded_objects": [],
+      "namespace": "DEFAULT_UNPREFIXED_CORE",
+      "native_slicer_preview": "PENDING",
+      "physical_fit_and_strength": "NOT_QUALIFIED"
+    },
+    {
+      "plate": "08C-C1",
+      "file": "HOLD_camera_carriage/08C-C1_ABS_camera_xy_carriage_WELDED_v1.3mf",
+      "geometry_source": "C:\\Users\\Jack\\Desktop\\robot-arm-build\\hardware\\static_overhead_camera\\cad\\output\\plates_3mf\\08C-C1_ABS_camera_xy_carriage.3mf",
+      "geometry_revision": null,
+      "source_sha256": "40064de5888d51099edbc0295548ad7d0298ba565c7495e61da185a562fa4f3e",
+      "output_sha256": "2d9891cce19133434d17c7266185f2b0b4d2a993829670a7a797330eae9459ab",
+      "status": "HOLD_DESIGN",
+      "expected_objects": 1,
+      "objects": [
+        {
+          "name": "camera_xy_carriage__01",
+          "original_vertices": 35051,
+          "welded_vertices": 35051,
+          "triangles": 70210,
+          "open_edges": 0,
+          "nonmanifold_edges": 0,
+          "geometry_unchanged": true
+        }
+      ],
+      "placed_bounds_mm": [
+        [
+          [
+            10.0,
+            10.0,
+            0.0
+          ],
+          [
+            260.0,
+            140.0,
+            16.899999618530273
+          ]
+        ]
+      ],
+      "triangle_coordinates": "EXACTLY_PRESERVED_FROM_NAMED_GEOMETRY_SOURCE",
+      "build_transforms": "EXACTLY_PRESERVED",
+      "excluded_objects": [],
+      "namespace": "DEFAULT_UNPREFIXED_CORE",
+      "native_slicer_preview": "PENDING",
+      "physical_fit_and_strength": "NOT_QUALIFIED"
+    },
+    {
+      "plate": "08C-J1",
+      "file": "PRINT_ABS_frame/08C-J1_ABS_crossbar_boom_splices_WELDED_v1.3mf",
+      "geometry_source": "C:\\Users\\Jack\\Desktop\\robot-arm-build\\hardware\\static_overhead_camera\\cad\\output\\plates_3mf\\08C-J1_ABS_crossbar_boom_splices.3mf",
+      "geometry_revision": null,
+      "source_sha256": "99eb9c04b03cfb51bd5e48653bf1a11c227dc01928780c9dce844784c60a5ed5",
+      "output_sha256": "ef0f5c7e494b246468ce4f17afb8156c3c51f4386b28a63683e6af10ffbea89e",
+      "status": "PASS_MESH",
+      "expected_objects": 5,
+      "objects": [
+        {
+          "name": "u_truss_splice__01",
+          "original_vertices": 5628,
+          "welded_vertices": 5628,
+          "triangles": 11268,
+          "open_edges": 0,
+          "nonmanifold_edges": 0,
+          "geometry_unchanged": true
+        },
+        {
+          "name": "u_truss_splice__02",
+          "original_vertices": 5628,
+          "welded_vertices": 5628,
+          "triangles": 11268,
+          "open_edges": 0,
+          "nonmanifold_edges": 0,
+          "geometry_unchanged": true
+        },
+        {
+          "name": "u_truss_splice_center_4bolt__01",
+          "original_vertices": 6675,
+          "welded_vertices": 6675,
+          "triangles": 13378,
+          "open_edges": 0,
+          "nonmanifold_edges": 0,
+          "geometry_unchanged": true
+        },
+        {
+          "name": "u_truss_splice_crossbar_2bolt__01",
+          "original_vertices": 5628,
+          "welded_vertices": 5628,
+          "triangles": 11268,
+          "open_edges": 0,
+          "nonmanifold_edges": 0,
+          "geometry_unchanged": true
+        },
+        {
+          "name": "u_truss_splice_crossbar_2bolt__02",
+          "original_vertices": 5628,
+          "welded_vertices": 5628,
+          "triangles": 11268,
+          "open_edges": 0,
+          "nonmanifold_edges": 0,
+          "geometry_unchanged": true
+        }
+      ],
+      "placed_bounds_mm": [
+        [
+          [
+            10.0,
+            10.0,
+            0.0
+          ],
+          [
+            114.0,
+            85.80000305175781,
+            74.0
+          ]
+        ],
+        [
+          [
+            10.0,
+            201.60000610351562,
+            0.0
+          ],
+          [
+            102.0,
+            277.40000915527344,
+            74.0
+          ]
+        ],
+        [
+          [
+            122.0,
+            105.80000305175781,
+            0.0
+          ],
+          [
+            214.0,
+            181.60000610351562,
+            74.0
+          ]
+        ],
+        [
+          [
+            10.0,
+            105.80000305175781,
+            0.0
+          ],
+          [
+            102.0,
+            181.60000610351562,
+            74.0
+          ]
+        ],
+        [
+          [
+            134.0,
+            10.0,
+            0.0
+          ],
+          [
+            238.0,
+            85.80000305175781,
+            74.0
+          ]
+        ]
+      ],
+      "triangle_coordinates": "EXACTLY_PRESERVED_FROM_NAMED_GEOMETRY_SOURCE",
+      "build_transforms": "EXACTLY_PRESERVED",
+      "excluded_objects": [],
+      "namespace": "DEFAULT_UNPREFIXED_CORE",
+      "native_slicer_preview": "PENDING",
+      "physical_fit_and_strength": "NOT_QUALIFIED"
+    },
+    {
+      "plate": "08C-J2",
+      "file": "PRINT_ABS_frame/08C-J2_ABS_boom_root_nodes_WELDED_v1.3mf",
+      "geometry_source": "C:\\Users\\Jack\\Desktop\\robot-arm-build\\hardware\\static_overhead_camera\\cad\\output\\plates_3mf\\08C-J2_ABS_boom_root_nodes.3mf",
+      "geometry_revision": null,
+      "source_sha256": "da785bb7535f2bc0211390fb85ba7f5c30367be5f4c8463e463e6e3c84097232",
+      "output_sha256": "747032fd2d2030c1c9d19af9b9bb8873fabccc7131d0dba5584ce24884066ecc",
+      "status": "PASS_MESH",
+      "expected_objects": 4,
+      "objects": [
+        {
+          "name": "boom_crossbar_node__01",
+          "original_vertices": 10670,
+          "welded_vertices": 10670,
+          "triangles": 21352,
+          "open_edges": 0,
+          "nonmanifold_edges": 0,
+          "geometry_unchanged": true
+        },
+        {
+          "name": "boom_crossbar_node__02",
+          "original_vertices": 10670,
+          "welded_vertices": 10670,
+          "triangles": 21352,
+          "open_edges": 0,
+          "nonmanifold_edges": 0,
+          "geometry_unchanged": true
+        },
+        {
+          "name": "boom_crossbar_node__03",
+          "original_vertices": 10670,
+          "welded_vertices": 10670,
+          "triangles": 21352,
+          "open_edges": 0,
+          "nonmanifold_edges": 0,
+          "geometry_unchanged": true
+        },
+        {
+          "name": "boom_crossbar_node__04",
+          "original_vertices": 10670,
+          "welded_vertices": 10670,
+          "triangles": 21352,
+          "open_edges": 0,
+          "nonmanifold_edges": 0,
+          "geometry_unchanged": true
+        }
+      ],
+      "placed_bounds_mm": [
+        [
+          [
+            10.0,
+            10.0,
+            0.0
+          ],
+          [
+            94.0,
+            90.0,
+            8.850000381469727
+          ]
+        ],
+        [
+          [
+            114.0,
+            110.0,
+            0.0
+          ],
+          [
+            198.0,
+            190.0,
+            8.850000381469727
+          ]
+        ],
+        [
+          [
+            10.0,
+            110.0,
+            0.0
+          ],
+          [
+            94.0,
+            190.0,
+            8.850000381469727
+          ]
+        ],
+        [
+          [
+            114.0,
+            10.0,
+            0.0
+          ],
+          [
+            198.0,
+            90.0,
+            8.850000381469727
+          ]
+        ]
+      ],
+      "triangle_coordinates": "EXACTLY_PRESERVED_FROM_NAMED_GEOMETRY_SOURCE",
+      "build_transforms": "EXACTLY_PRESERVED",
+      "excluded_objects": [],
+      "namespace": "DEFAULT_UNPREFIXED_CORE",
+      "native_slicer_preview": "PENDING",
+      "physical_fit_and_strength": "NOT_QUALIFIED"
+    },
+    {
+      "plate": "08C-X1",
+      "file": "PRINT_ABS_frame/08C-X1_ABS_crossbar_1_2_WELDED_v1.3mf",
+      "geometry_source": "C:\\Users\\Jack\\Desktop\\robot-arm-build\\hardware\\static_overhead_camera\\cad\\output\\plates_3mf\\08C-X1_ABS_crossbar_1_2.3mf",
+      "geometry_revision": null,
+      "source_sha256": "19f52a50b82a5db4eed9301760c13947c7992adf5d32c883cad4c2fd461b0309",
+      "output_sha256": "4e7a8361a9f0c7ad380239bc2041e6ce25ad795f40fb856dab8c54ef89256d90",
+      "status": "PASS_MESH",
+      "expected_objects": 2,
+      "objects": [
+        {
+          "name": "crossbar_truss_segment_182p5__01",
+          "original_vertices": 10095,
+          "welded_vertices": 10095,
+          "triangles": 20394,
+          "open_edges": 0,
+          "nonmanifold_edges": 0,
+          "geometry_unchanged": true
+        },
+        {
+          "name": "crossbar_truss_segment_182p5__02",
+          "original_vertices": 10095,
+          "welded_vertices": 10095,
+          "triangles": 20394,
+          "open_edges": 0,
+          "nonmanifold_edges": 0,
+          "geometry_unchanged": true
+        }
+      ],
+      "placed_bounds_mm": [
+        [
+          [
+            10.0,
+            10.0,
+            0.0
+          ],
+          [
+            192.5,
+            60.0,
+            64.0
+          ]
+        ],
+        [
+          [
+            10.0,
+            80.0,
+            0.0
+          ],
+          [
+            192.5,
+            130.0,
+            64.0
+          ]
+        ]
+      ],
+      "triangle_coordinates": "EXACTLY_PRESERVED_FROM_NAMED_GEOMETRY_SOURCE",
+      "build_transforms": "EXACTLY_PRESERVED",
+      "excluded_objects": [],
+      "namespace": "DEFAULT_UNPREFIXED_CORE",
+      "native_slicer_preview": "PENDING",
+      "physical_fit_and_strength": "NOT_QUALIFIED"
+    },
+    {
+      "plate": "08C-X2",
+      "file": "PRINT_ABS_frame/08C-X2_ABS_crossbar_3_4_WELDED_v1.3mf",
+      "geometry_source": "C:\\Users\\Jack\\Desktop\\robot-arm-build\\hardware\\static_overhead_camera\\cad\\output\\plates_3mf\\08C-X2_ABS_crossbar_3_4.3mf",
+      "geometry_revision": null,
+      "source_sha256": "d75d4c9daffa22b7d1fec891efcd7b633f51fb8aafe5386ed1c9c4cac885ff03",
+      "output_sha256": "510ec87141be8932ce48bc3c012cde7cec5a3d48b4b45efad9aa702439315b28",
+      "status": "PASS_MESH",
+      "expected_objects": 2,
+      "objects": [
+        {
+          "name": "crossbar_truss_segment_182p5__01",
+          "original_vertices": 10095,
+          "welded_vertices": 10095,
+          "triangles": 20394,
+          "open_edges": 0,
+          "nonmanifold_edges": 0,
+          "geometry_unchanged": true
+        },
+        {
+          "name": "crossbar_truss_segment_182p5__02",
+          "original_vertices": 10095,
+          "welded_vertices": 10095,
+          "triangles": 20394,
+          "open_edges": 0,
+          "nonmanifold_edges": 0,
+          "geometry_unchanged": true
+        }
+      ],
+      "placed_bounds_mm": [
+        [
+          [
+            10.0,
+            10.0,
+            0.0
+          ],
+          [
+            192.5,
+            60.0,
+            64.0
+          ]
+        ],
+        [
+          [
+            10.0,
+            80.0,
+            0.0
+          ],
+          [
+            192.5,
+            130.0,
+            64.0
+          ]
+        ]
+      ],
+      "triangle_coordinates": "EXACTLY_PRESERVED_FROM_NAMED_GEOMETRY_SOURCE",
+      "build_transforms": "EXACTLY_PRESERVED",
+      "excluded_objects": [],
+      "namespace": "DEFAULT_UNPREFIXED_CORE",
+      "native_slicer_preview": "PENDING",
+      "physical_fit_and_strength": "NOT_QUALIFIED"
+    }
+  ]
+}

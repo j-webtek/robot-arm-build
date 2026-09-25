@@ -1,0 +1,89 @@
+{
+  "schema": "rocell.local_mapping_evidence.v2",
+  "status": "EXPERIMENTAL_VARIABLE_ARRIVAL",
+  "enabled": false,
+  "motion_authorized": false,
+  "physical_accuracy_verified": false,
+  "candidate_file": "WIFI_ROLL_150_LOOKUP_CANDIDATE.json",
+  "candidate_sha256": "3bdb830355bdef5c493ed9ee8b6341bd7bf7dc8dbf9ab7ed1c04d98ac6b18e53",
+  "scope": {
+    "joint": "r",
+    "approach": "descending",
+    "desired_endpoint_deg": 1.5,
+    "command_deg": 1.25,
+    "speed": 20,
+    "acceleration": 1,
+    "observed_start_pose_rad_b_s_e_t_r_g": [-0.001533981, 0, 1.593806039, 0.007669904, 0.0398835, 3.149262558],
+    "interpolation_allowed": false,
+    "starting_pose_range_qualified": false
+  },
+  "held_out_trials": [
+    {
+      "export": "wizard-20260917T020917549534Z-9a208e0f1d4b434499a106efd1e36ead",
+      "initial_endpoint_deg": 1.4941406024222599,
+      "initial_error_deg": -0.005859397577740138,
+      "hold_final_deg": 1.4062500225647818,
+      "hold_final_error_deg": -0.0937499774352182,
+      "initial_arrival_verified": true,
+      "unchanged_hold": false,
+      "changed_hold_samples": 103,
+      "hold_sample_count": 117,
+      "manifest_file_sha256": "556f5983f6d3102f1619f1a1e93bd4e966cd6661c39e7c370e3e74e1d60315da"
+    },
+    {
+      "export": "wizard-20260917T021359421783Z-bb4a4ebad56b4f4b85501cfa3454e1d0",
+      "initial_endpoint_deg": 1.4062500225647818,
+      "initial_error_deg": -0.0937499774352182,
+      "hold_final_deg": 1.4062500225647818,
+      "hold_final_error_deg": -0.0937499774352182,
+      "initial_arrival_verified": true,
+      "unchanged_hold": true,
+      "changed_hold_samples": 0,
+      "hold_sample_count": 116,
+      "manifest_file_sha256": "64ecde443c182410c539a47e84143035d3197b1bdf36450f404c4e881360c455"
+    },
+    {
+      "export": "wizard-20260917T022838535576Z-e23657af7df24a7cbdafdfa665a8d841",
+      "initial_endpoint_deg": 1.4941406024222599,
+      "initial_error_deg": -0.005859397577740138,
+      "hold_final_deg": 1.4941406024222599,
+      "hold_final_error_deg": -0.005859397577740138,
+      "initial_arrival_verified": true,
+      "unchanged_hold": true,
+      "changed_hold_samples": 0,
+      "hold_sample_count": 116,
+      "manifest_file_sha256": "ba734e76398cf9804941a671ef6648c333d49431877a336f2b7f9957c715d9b3"
+    }
+  ],
+  "incomplete_held_out_attempts": [
+    {
+      "export": "wizard-20260917T022509854289Z-ea327d82629b40588413bd7e51ab68ce",
+      "manifest_file_sha256": "780b9aac467b3c09d2e6d7b0a96cdff9f570fdee9357a185c9db06a5d4285e29",
+      "transaction_state": "COMMAND_OUTCOME_UNCERTAIN",
+      "command_attempts": 1,
+      "receipt_failure_category": "CONNECTION_RESET",
+      "endpoint_verified": false,
+      "included_in_numeric_endpoint_ranges": false,
+      "automatic_retry_sent": false
+    }
+  ],
+  "observed_ranges_deg": {
+    "initial_endpoint": [1.4062500225647818, 1.4941406024222599],
+    "hold_final": [1.4062500225647818, 1.4941406024222599],
+    "hold_error": [-0.0937499774352182, -0.005859397577740138]
+  },
+  "counts": {
+    "held_out": 3,
+    "initial_arrival_pass": 3,
+    "unchanged_hold_pass": 2,
+    "incomplete_attempts": 1,
+    "training_samples_included": 0
+  },
+  "limitations": [
+    "Observed ranges are descriptive samples, not guaranteed bounds or confidence intervals.",
+    "Matching reported baselines does not establish identical mechanical history.",
+    "A task-specific sustained accuracy requirement has not been selected.",
+    "Existing live minimum-step and same-direction rules do not admit the simulated small correction.",
+    "This evidence record and simulation grant no command authority."
+  ]
+}

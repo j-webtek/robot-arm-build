@@ -1,0 +1,157 @@
+{
+  "schema": "rocell.apriltag_map.v2",
+  "schema_version": 2,
+  "design_revision": "RC03-INT-R1",
+  "layout_sha256": "e84db9aa7b88db442f042c6f546196e350c822a2e7609cb4b652b3da535df2e1",
+  "family": "tag36h11",
+  "detection_edge_mm": 40.0,
+  "tile_size_mm": 55.0,
+  "mounting": "direct_adhesive",
+  "board_z_reference": "finished sealed board top surface",
+  "direct_tag_plane_nominal_z_mm": null,
+  "coordinate_source": "nominal_layout",
+  "measurement": {
+    "gate": "tag_plane_placement_measured",
+    "status": "NOT_TESTED",
+    "measurement_method": null,
+    "measurement_tool_id": null,
+    "evidence_reference": null
+  },
+  "board_axes": {
+    "+x": "right",
+    "+y": "rear/toward arm",
+    "+z": "up"
+  },
+  "paper_top_edge_faces": "+Y / board rear for every tag",
+  "tags": {
+    "T0": {
+      "id": 0,
+      "role": "world",
+      "mounting": "direct_adhesive",
+      "tile_origin_xy_mm": [
+        19.5,
+        12.5
+      ],
+      "nominal_detection_center_xy_mm": [
+        47.0,
+        40.0
+      ],
+      "detection_center_xyz_mm": [
+        47.0,
+        40.0,
+        null
+      ],
+      "expected_yaw_deg_in_board_frame": 0.0,
+      "coordinate_source": "nominal_layout"
+    },
+    "T1": {
+      "id": 1,
+      "role": "world",
+      "mounting": "direct_adhesive",
+      "tile_origin_xy_mm": [
+        412.5,
+        12.5
+      ],
+      "nominal_detection_center_xy_mm": [
+        440.0,
+        40.0
+      ],
+      "detection_center_xyz_mm": [
+        440.0,
+        40.0,
+        null
+      ],
+      "expected_yaw_deg_in_board_frame": 0.0,
+      "coordinate_source": "nominal_layout"
+    },
+    "T2": {
+      "id": 2,
+      "role": "world",
+      "mounting": "direct_adhesive",
+      "tile_origin_xy_mm": [
+        19.5,
+        382.5
+      ],
+      "nominal_detection_center_xy_mm": [
+        47.0,
+        410.0
+      ],
+      "detection_center_xyz_mm": [
+        47.0,
+        410.0,
+        null
+      ],
+      "expected_yaw_deg_in_board_frame": 0.0,
+      "coordinate_source": "nominal_layout"
+    },
+    "T3": {
+      "id": 3,
+      "role": "world",
+      "mounting": "direct_adhesive",
+      "tile_origin_xy_mm": [
+        535.5,
+        382.5
+      ],
+      "nominal_detection_center_xy_mm": [
+        563.0,
+        410.0
+      ],
+      "detection_center_xyz_mm": [
+        563.0,
+        410.0,
+        null
+      ],
+      "expected_yaw_deg_in_board_frame": 0.0,
+      "coordinate_source": "nominal_layout"
+    },
+    "K0": {
+      "id": 4,
+      "role": "station_check",
+      "mounting": "direct_adhesive",
+      "tile_origin_xy_mm": [
+        296.5,
+        281.5
+      ],
+      "nominal_detection_center_xy_mm": [
+        324.0,
+        309.0
+      ],
+      "detection_center_xyz_mm": [
+        324.0,
+        309.0,
+        null
+      ],
+      "expected_yaw_deg_in_board_frame": 0.0,
+      "coordinate_source": "nominal_layout"
+    },
+    "P0": {
+      "id": 5,
+      "role": "station_check",
+      "mounting": "direct_adhesive",
+      "tile_origin_xy_mm": [
+        431.5,
+        281.5
+      ],
+      "nominal_detection_center_xy_mm": [
+        459.0,
+        309.0
+      ],
+      "detection_center_xyz_mm": [
+        459.0,
+        309.0,
+        null
+      ],
+      "expected_yaw_deg_in_board_frame": 0.0,
+      "coordinate_source": "nominal_layout"
+    }
+  },
+  "ids": {
+    "T0": 0,
+    "T1": 1,
+    "T2": 2,
+    "T3": 3,
+    "K0": 4,
+    "P0": 5
+  },
+  "note": "Configure tag size as the measured 40 mm detection edge (0.040 m). The tiles attach directly to the cured sealed board; never use the removed RC02 frames. Board-coordinate solving requires a PASS tag_plane_placement_measured gate."
+}

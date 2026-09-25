@@ -1,0 +1,73 @@
+{
+  "schema": "rocell.local_mapping_evidence.v1",
+  "status": "EXPERIMENTAL_VARIABLE_LOOKUP_RESPONSE",
+  "enabled": false,
+  "motion_authorized": false,
+  "physical_accuracy_verified": false,
+  "candidate_file": "WIFI_ROLL_125_LOOKUP_CANDIDATE.json",
+  "candidate_sha256": "822965da1d902c86993a50c8647b06e672e37323b56a211a42a1c4bc6e48a910",
+  "scope": {
+    "joint": "r",
+    "controller_joint_id": 5,
+    "approach": "descending",
+    "desired_endpoint_deg": 1.25,
+    "command_deg": 0.95,
+    "speed": 20,
+    "acceleration": 1,
+    "observed_start_pose_rad_b_s_e_t_r_g": [-0.001533981, 0, 1.593806039, 0.007669904, 0.0398835, 3.149262558],
+    "starting_pose_range_qualified": false,
+    "interpolation_allowed": false,
+    "other_targets_or_joints_qualified": false
+  },
+  "held_out_lookup": {
+    "count": 5,
+    "reported_endpoint_deg": [1.230468748258267, 1.230468748258267, 1.4062500225647818, 1.4062500225647818, 1.230468748258267],
+    "desired_endpoint_error_deg": [-0.019531251741732945, -0.019531251741732945, 0.15625002256478196, 0.15625002256478196, -0.019531251741732945],
+    "exports": [
+      "wizard-20260917T013221002703Z-1cb4e631371f47e88b452c69c94d02b8",
+      "wizard-20260917T013749578310Z-712f9a5438db49a594325492d45c78eb",
+      "wizard-20260917T023838302816Z-82abe10cb761414ea7106beb29373733",
+      "wizard-20260917T025715945095Z-9f59e4d30a7d4fe58b45c4e99c2be4b4",
+      "wizard-20260917T030107530669Z-3e47bfea5df648319ea0ca71509f409e"
+    ]
+  },
+  "uncorrected_controls": {
+    "count": 4,
+    "command_deg": 1.25,
+    "reported_endpoint_deg": [1.4941406024222599, 1.4941406024222599, 1.4941406024222599, 1.4941406024222599],
+    "desired_endpoint_error_deg": [0.24414060242226002, 0.24414060242226002, 0.24414060242226002, 0.24414060242226002],
+    "exports": [
+      "wizard-20260917T013032891308Z-c714355741a64fedb544fb182f7abe32",
+      "wizard-20260917T013930043053Z-7e8a6e845a0f410aafb8c10c65d8bbc2",
+      "wizard-20260917T025520085502Z-b917fa91c10c4067b5b8d34a57555210",
+      "wizard-20260917T025911731748Z-cb6312e00a4b453c91c9ea4fac27e357"
+    ]
+  },
+  "interruption_history": [
+    {
+      "export": "wizard-20260917T013404192516Z-6f569b0d02a14464aa951b62aa3b7c21",
+      "state": "COMMAND_OUTCOME_UNCERTAIN",
+      "command_deg": 2.5,
+      "command_attempts": 1,
+      "failure": "FIRST_POST_COMMAND_FEEDBACK_TIMEOUT",
+      "retrospectively_verified": false,
+      "recovery_observation_export": "wizard-20260917T013556012810Z-61e8a82bb35a498e819320c3931ba5e8"
+    }
+  ],
+  "review": {
+    "tool": "software/scripts/review_wifi_roll_export.py",
+    "successful_endpoints_and_holds_reconstructed": 9,
+    "uncertain_export_preserved": 1,
+    "integrity_verified_exports": 10,
+    "integrity_is_authentication": false,
+    "training_samples_counted_as_validation": false,
+    "hardware_access_required": false
+  },
+  "limitations": [
+    "Small local sample, not a statistical qualification or spatial accuracy certification.",
+    "Preparation history and inter-command delays differed; the second lookup followed recovery observation.",
+    "Controller-reported zero spread does not prove zero physical variation.",
+    "The 0.5-degree operational arrival threshold is not the measured accuracy result.",
+    "This record is not consumed by a motion sender and grants no authority."
+  ]
+}

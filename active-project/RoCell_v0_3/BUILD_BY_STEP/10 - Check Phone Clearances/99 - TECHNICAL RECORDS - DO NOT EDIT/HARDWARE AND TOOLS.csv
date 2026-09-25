@@ -1,0 +1,6 @@
+source,type,qty,item,critical_condition,status
+required_physical_input,Required input,As specified,Loaded phone and routed cable from Step 09,Present and accepted before work,NOT_VERIFIED
+required_physical_input,Required input,As specified,Measured side-feature and connector map for the exact phone/case,Present and accepted before work,NOT_VERIFIED
+required_physical_input,Required input,As specified,"Calipers, thin rule, inspection light, and camera for evidence",Present and accepted before work,NOT_VERIFIED
+required_physical_input,Required input,As specified,"PASS engineering-release record `phone_no_go_clearance_limit_approved` with approval ID, minimum clearance in mm, and maximum measurement uncertainty in mm",Present and accepted before work,NOT_VERIFIED
+structured_register,Inspection,1 set,"Calipers, rule, and inspection light",Measure real clearances; the red overlay is only a reminder,NOT_VERIFIED

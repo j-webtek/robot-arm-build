@@ -1,0 +1,46 @@
+{
+  "schema": "rocell.printable_camera_portal.print_sidecar.v1",
+  "schema_version": 1,
+  "design_id": "ROCELL-PRINTABLE-CAMERA-PORTAL-PROTOTYPE-003",
+  "state": "PROTOTYPE_NOT_RELEASED_FOR_ROBOT_OPERATION",
+  "subplate_id": "00G-S1",
+  "geometry_3mf": "00G-S1_ABS_board_splice_fit_tests_REPAIRED_LABELS_v2.3mf",
+  "geometry_sha256": "abbce1872a16010e58f29ea714bd1f12426a4a79745cde73feee0dea58d9d9a2",
+  "expected_object_count": 4,
+  "sidecar": "00G-S1_ABS_board_splice_fit_tests_REPAIRED_LABELS_v2.print.json",
+  "profile": "abs_structural",
+  "native_save_as_pattern": "00G-S1_REPAIRED_LABELS_v2_QIDI_native_vNN.3mf",
+  "objects": [
+    {
+      "part": "board_saddle_fit_coupon",
+      "stl": "board_saddle_fit_coupon.stl",
+      "quantity": 1
+    },
+    {
+      "part": "m6_nut_retainer",
+      "stl": "m6_nut_retainer.stl",
+      "quantity": 1
+    },
+    {
+      "part": "u_splice_fit_coupon",
+      "stl": "u_splice_fit_coupon.stl",
+      "quantity": 1
+    },
+    {
+      "part": "u_truss_splice",
+      "stl": "u_truss_splice.stl",
+      "quantity": 1
+    }
+  ],
+  "print": {
+    "profile_key": "abs_structural",
+    "process_name": "RoCell 00G-S1 ABS Rapido Structural 0.20 v1",
+    "process_file": "../../../../slicer_profiles/QIDI_PLUS4/abs_rapido_00G_S1_structural_v1.process.json",
+    "filament_preset": "QIDI ABS Rapido @Qidi X-Plus 4 0.4 nozzle",
+    "scale_percent": 100.0,
+    "supports": false,
+    "fuzzy_skin": "none",
+    "orientation": "use stored 3MF orientation and placement; do not auto-arrange"
+  },
+  "revision": "connectivity-and-readable-labels-v2"
+}

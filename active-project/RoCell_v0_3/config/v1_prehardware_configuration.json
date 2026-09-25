@@ -1,0 +1,324 @@
+{
+  "schema_version": 1,
+  "document_type": "rocell.v1_prehardware_configuration",
+  "baseline_design_revision": "RC03-INT-R1",
+  "candidate_product_revision": "RC03-CUST-R0",
+  "as_of": "2026-09-01",
+  "release_authority": false,
+  "status_vocabulary": {
+    "CANDIDATE": "Chosen for purchasing and physical evaluation, but not released.",
+    "CANDIDATE_SELECTED": "Included in the intended V1 scope and selected in the canonical route record, but still unqualified and unreleased.",
+    "OUT_OF_V1": "Intentionally excluded from the first product configuration.",
+    "OPEN": "A product decision or exact purchasable item is still unresolved.",
+    "PHYSICAL_QUALIFICATION_REQUIRED": "A real item must be measured and tested against the controlled acceptance method."
+  },
+  "status_policy": [
+    "This file is a pre-hardware configuration record, not manufacturing or customer release authority.",
+    "A nominal dimension, vendor specification, CAD fit, or calculated load never completes physical qualification.",
+    "A true selected-route boolean records intended V1 scope only; it does not satisfy any measurement, lifecycle, physical-qualification, or release gate."
+  ],
+  "product": {
+    "name": "RoCell RC03 Self-Print Hybrid Kit for QIDI Plus4",
+    "decision_state": "CANDIDATE",
+    "qualification_state": "PHYSICAL_QUALIFICATION_REQUIRED",
+    "format": "Customer-printed plastic parts plus a seller-supplied labeled hardware, safety, fiducial, spring, and reinforcement pack.",
+    "target_customer": "Existing QIDI Plus4 owner with normal maker and hand-tool skills.",
+    "scope_note": "The robot, printer, reference keyboard, bare phone, computer, and structural board remain customer-owned unless the commercial BOM later reclassifies them."
+  },
+  "configuration": {
+    "printer": {
+      "decision_state": "CANDIDATE",
+      "qualification_state": "PHYSICAL_QUALIFICATION_REQUIRED",
+      "manufacturer": "QIDI",
+      "model": "Plus4",
+      "nominal_build_envelope_mm": [305.0, 305.0, 280.0],
+      "provisional_protected_envelope_mm": [295.0, 295.0, 275.0],
+      "nozzle_candidate_mm": 0.4,
+      "notes": [
+        "The protected envelope is a conservative design candidate already encoded in config/parameters.json and config/workcell_layout.json.",
+        "Measure the reference machine in X, Y, and Z, including carriage, enclosure, purge, plate-edge, and first-layer exclusions before release.",
+        "The Plus4 is discontinued in some QIDI regional stores; V1 therefore targets existing owners unless supply/support strategy changes."
+      ],
+      "source_ids": ["LOCAL-PARAMETERS", "LOCAL-LAYOUT", "QIDI-TECHSPECS"]
+    },
+    "structural_board": {
+      "decision_state": "CANDIDATE",
+      "qualification_state": "PHYSICAL_QUALIFICATION_REQUIRED",
+      "finished_size_mm": [610.0, 457.0, 18.0],
+      "material_candidate": "Birch plywood",
+      "fabrication": "Purchased or hand-cut rectangle, sealed, then hand drilled from a released 1:1 guide; no router or CNC.",
+      "open_items": [
+        "Exact supplier/SKU or allowable material range",
+        "Finish product and coat/cure schedule",
+        "Anchor system and all nine fastener stacks",
+        "Exact reinforcement plate, feet, anti-shift system, and E-stop assembly"
+      ],
+      "source_ids": ["LOCAL-PARAMETERS", "LOCAL-LAYOUT", "LOCAL-BOM"]
+    },
+    "keyboard": {
+      "decision_state": "CANDIDATE",
+      "qualification_state": "PHYSICAL_QUALIFICATION_REQUIRED",
+      "manufacturer": "Perixx",
+      "model_family": "PERIBOARD-409",
+      "reference_variant_candidate": "PERIBOARD-409 U, USB Type-A, English (US), black",
+      "nominal_envelope_mm": [315.0, 147.0, 21.0],
+      "notes": [
+        "Confirm the purchased unit label, layout, connector, cable exit, underside feet, key field, and full physical envelope.",
+        "No other PERIBOARD-409 connector/layout variant is included without separate compatibility evidence."
+      ],
+      "source_ids": ["LOCAL-PARAMETERS", "LOCAL-BOM", "PERIXX-409"]
+    },
+    "phone": {
+      "decision_state": "CANDIDATE",
+      "qualification_state": "PHYSICAL_QUALIFICATION_REQUIRED",
+      "manufacturer": "Samsung",
+      "model_family": "Galaxy A16 5G",
+      "reference_variant_candidate": "SM-A166B",
+      "installed_case_state": "Bare phone; no case",
+      "nominal_body_length_width_thickness_mm": [164.4, 77.9, 7.9],
+      "configured_cad_width_length_thickness_mm": [77.9, 164.4, 7.9],
+      "notes": [
+        "Confirm the exact regional model and measure the body, buttons, glass edge, camera bump, port, and installed orientation.",
+        "A case is OUT_OF_V1 for this candidate and requires a later compatibility configuration."
+      ],
+      "source_ids": ["LOCAL-PARAMETERS", "LOCAL-BOM", "SAMSUNG-A16-5G"]
+    },
+    "phone_usb_cable": {
+      "decision_state": "CANDIDATE",
+      "qualification_state": "PHYSICAL_QUALIFICATION_REQUIRED",
+      "manufacturer": "StarTech.com",
+      "model": "R2CCR-1M-USB-CABLE",
+      "configuration": "USB-C to USB-C, right-angle device end to straight host end, 1 m, USB 2.0 480 Mbps, up to 60 W / 3 A",
+      "published_cable_od_mm": 3.1,
+      "published_overall_product_width_height_mm": [28.0, 6.0],
+      "open_items": [
+        "Confirm the intended host/power source provides the required USB-C interface and power behavior.",
+        "The manufacturer does not publish a minimum installed bend radius; measure the relaxed bend and connector projection.",
+        "Prove the right-angle direction clears the bare-phone cradle and creates no lateral port load."
+      ],
+      "source_ids": ["STARTECH-R2CCR", "STARTECH-R2CCR-DATASHEET"]
+    },
+    "camera": {
+      "decision_state": "CANDIDATE",
+      "qualification_state": "PHYSICAL_QUALIFICATION_REQUIRED",
+      "manufacturer": "Logitech",
+      "model": "C920e Business Webcam",
+      "manufacturer_part_number": "960-001401",
+      "published_envelope_with_clip_mm": [94.0, 43.3, 71.0],
+      "published_weight_g": 162.0,
+      "published_runtime_mode": "1920 x 1080 at 30 fps",
+      "published_focus_and_lens": "Autofocus; glass lens",
+      "published_diagonal_fov_deg": 78.0,
+      "published_horizontal_vertical_fov_deg": [70.42, 43.3],
+      "published_mount": "Integrated tripod thread; exact usable blind depth is unpublished",
+      "published_cable": "Attached 1.5 m USB-A",
+      "calculated_starting_lens_height_mm_above_tag_plane": [640.0, 680.0],
+      "height_calculation_note": "Engineering starting range inferred from 43.3 degree vertical FOV, a 457 mm board depth, and about 10 percent framing margin; it is not a released mast datum.",
+      "open_items": [
+        "Measure the actual camera and tripod-thread blind depth and prove a non-bottoming fastener stack or strap route.",
+        "Prove focus and exposure can be controlled and remain stable after disconnect/reconnect and application restart.",
+        "Prove all six tags are detected in every required acceptance pose with the final mast and lighting."
+      ],
+      "source_ids": ["LOGITECH-C920E", "LOGITECH-C920E-SUPPORT"]
+    },
+    "camera_architecture_alignment": {
+      "decision_state": "OPEN",
+      "qualification_state": "PHYSICAL_QUALIFICATION_REQUIRED",
+      "user_intended_primary_architecture": "Arm-mounted camera per the intended camera specification",
+      "exact_specification_reference": null,
+      "current_controlled_architecture": "Fixed overhead eye-to-hand camera on the independent 2020 mast route",
+      "alignment_record": "config/camera_architecture_decision.json",
+      "release_effect": "ENGINEERING_ALIGNMENT_HOLD",
+      "notes": [
+        "The exact arm-mounted camera specification and mounting interface are not present in the current RC03 package.",
+        "The Logitech C920e and paired 2020 mast remain candidates for fixed-overhead fallback evaluation only; they are not substitutes for the missing arm-camera specification.",
+        "Jobs 03C3, 06, 07A, and 07B carry the fixed_camera_fallback_architecture_released prerequisite and cannot become READY while the architecture hold remains open.",
+        "Arm mounting changes payload, reach, collisions, cable flex, occlusion, calibration architecture, and Step 13 acceptance and therefore requires controlled revision before manufacture or powered use."
+      ]
+    },
+    "camera_support": {
+      "decision_state": "CANDIDATE",
+      "qualification_state": "PHYSICAL_QUALIFICATION_REQUIRED",
+      "route_id": "camera_mast_optional",
+      "architecture": "Paired 2020 extrusion mast isolated from the robot; selected unqualified fallback while the user-intended arm-mounted architecture is on engineering alignment hold",
+      "vertical_posts": {"quantity": 2, "nominal_length_mm_each": 700.0},
+      "crossbar": {"quantity": 1, "nominal_length_mm": 650.0},
+      "printed_feet": {"quantity": 2, "part": "mast_foot_2020.stl", "material_candidate": "ASA"},
+      "notes": [
+        "The route is selected in config/measurement_record.json as intended V1 scope, but remains physically unqualified and unreleased pending the explicit fixed-camera architecture gate, hardware, and evidence.",
+        "Qualify extrusion fit, both feet, all M5 stacks, crossbar level, base attachment, static rigidity, cable disturbance, and 24-hour stability."
+      ],
+      "source_ids": ["LOCAL-BOM", "LOCAL-PRINT-JOBS"]
+    },
+    "tool_spring": {
+      "decision_state": "CANDIDATE",
+      "qualification_state": "PHYSICAL_QUALIFICATION_REQUIRED",
+      "manufacturer": "Lee Spring",
+      "series": "Lite Pressure",
+      "published_stock_code": "LP022J01S316",
+      "catalog_part_label": "LP 022J 01 S316",
+      "material": "Type 316 stainless steel",
+      "ends": "Not ground",
+      "published_od_mm": 12.19,
+      "published_work_over_rod_mm": 10.31,
+      "published_free_length_mm": 19.05,
+      "published_wire_diameter_mm": 0.56,
+      "published_rate_n_per_mm": 0.143,
+      "published_solid_height_mm": 3.76,
+      "published_approximate_load_at_solid_n": 2.18,
+      "calculated_incremental_load_n_at_3mm": 0.429,
+      "calculated_incremental_load_n_at_6mm": 0.858,
+      "calculation_note": "Incremental loads are spring-rate calculations before assembly preload, friction, tolerance, or off-axis effects.",
+      "open_items": [
+        "Measure actual OD, ID/work-over-rod clearance, free length, solid height, and rate/force curve.",
+        "Prove 1-6 mm travel, preload, no coil bind, no guide rub, full return, creep, and route-specific contact force.",
+        "Reject or redesign if the final approved force envelope cannot be met."
+      ],
+      "source_ids": ["LEE-LP022J01S316", "LEE-COMPRESSION-CATALOG"]
+    },
+    "v1_contact_tool": {
+      "decision_state": "CANDIDATE",
+      "qualification_state": "PHYSICAL_QUALIFICATION_REQUIRED",
+      "route_id": "keyboard_rod_route",
+      "architecture": "6 mm rigid rod, printed 6-to-9 mm bushing, and replaceable TPU keyboard tip in the shared compliant body",
+      "notes": [
+        "Measure the exact rod and qualify bushing retention, TPU pull-off/creep, spring force/travel, keyboard function, and TCP repeatability.",
+        "This pre-hardware intent does not alter config/measurement_record.json route booleans."
+      ],
+      "source_ids": ["LOCAL-PARAMETERS", "LOCAL-PRINT-JOBS"]
+    },
+    "phone_stylus_route": {
+      "decision_state": "CANDIDATE_SELECTED",
+      "qualification_state": "PHYSICAL_QUALIFICATION_REQUIRED",
+      "route_id": "phone_stylus_route",
+      "architecture": "Passive capacitive stylus held by a printed collar in the shared compliant body",
+      "open_items": [
+        "Select one exact passive stylus manufacturer/model and record its full geometry and material construction.",
+        "Qualify job 00D gauge selection, job 04B collar, dry or removable-compound retention, pull/cycle/removal/creep behavior, phone contact force, touch reliability, and TCP repeatability."
+      ],
+      "scope_note": "The route is intentionally selected for V1 evaluation, but no stylus hardware, printed adapter, retention method, contact result, or software behavior is physically qualified or released."
+    }
+  },
+  "open_decisions": [
+    {
+      "decision_id": "V1-OPEN-001",
+      "state": "OPEN",
+      "subject": "Exact board supplier/material range, finish, anchors, fastener stacks, reinforcement plate, feet, and anti-shift system"
+    },
+    {
+      "decision_id": "V1-OPEN-002",
+      "state": "OPEN",
+      "subject": "Exact enclosed low-voltage E-stop/power-cutoff assembly compatible with the RoArm supply"
+    },
+    {
+      "decision_id": "V1-OPEN-003",
+      "state": "OPEN",
+      "subject": "Exact PETG, TPU, ASA, adhesives, pads, tags, epoxy, and customer QIDI profile set"
+    },
+    {
+      "decision_id": "V1-OPEN-004",
+      "state": "OPEN",
+      "subject": "Supported Windows, QIDI Studio, RoArm controller/firmware, homing, empty-cell, and final-process versions"
+    },
+    {
+      "decision_id": "V1-OPEN-005",
+      "state": "OPEN",
+      "subject": "Exact intended operations, duty cycle, service life, maintenance intervals, and unsupported-use claims"
+    },
+    {
+      "decision_id": "V1-OPEN-006",
+      "state": "OPEN",
+      "subject": "Phone USB-C power/host source and final strain-relief hardware"
+    },
+    {
+      "decision_id": "V1-OPEN-007",
+      "state": "OPEN",
+      "subject": "Exact passive stylus manufacturer/model for the selected phone-stylus route"
+    },
+    {
+      "decision_id": "V1-OPEN-008",
+      "state": "OPEN",
+      "subject": "Exact arm-mounted camera specification, arm link/frame, mount geometry, cable route, payload/collision model, and eye-in-hand calibration contract"
+    }
+  ],
+  "source_register": [
+    {
+      "source_id": "LOCAL-PARAMETERS",
+      "type": "controlled_local",
+      "location": "config/parameters.json",
+      "supports": "Printer, board, device, rod, and protected-envelope design candidates"
+    },
+    {
+      "source_id": "LOCAL-LAYOUT",
+      "type": "controlled_local",
+      "location": "config/workcell_layout.json",
+      "supports": "Nominal printer, protected envelope, board, and installed-device coordinate model"
+    },
+    {
+      "source_id": "LOCAL-BOM",
+      "type": "controlled_local",
+      "location": "BOM.csv",
+      "supports": "Current device, board, camera, spring-envelope, and paired-mast candidates"
+    },
+    {
+      "source_id": "LOCAL-PRINT-JOBS",
+      "type": "controlled_local",
+      "location": "config/print_jobs.json",
+      "supports": "Route-controlled keyboard tool, phone stylus, and mast print jobs"
+    },
+    {
+      "source_id": "QIDI-TECHSPECS",
+      "type": "manufacturer",
+      "location": "https://us.qidi3d.com/pages/qidi-plus-4-techspecs",
+      "supports": "QIDI Plus4 305 x 305 x 280 mm nominal build volume and 0.4 mm nozzle"
+    },
+    {
+      "source_id": "PERIXX-409",
+      "type": "manufacturer",
+      "location": "https://perixx.com/products/periboard-409",
+      "supports": "PERIBOARD-409 dimensions and available USB-A/US-layout product configuration"
+    },
+    {
+      "source_id": "SAMSUNG-A16-5G",
+      "type": "manufacturer",
+      "location": "https://www.samsung.com/uk/smartphones/galaxy-a/galaxy-a16-5g-blue-black-128gb-sm-a166bzkdeub/",
+      "supports": "Galaxy A16 5G SM-A166B bare-body dimensions and USB-C interface"
+    },
+    {
+      "source_id": "STARTECH-R2CCR",
+      "type": "manufacturer",
+      "location": "https://www.startech.com/en-us/cables/r2ccr-1m-usb-cable",
+      "supports": "R2CCR-1M-USB-CABLE identity and right-angle USB-C cable configuration"
+    },
+    {
+      "source_id": "STARTECH-R2CCR-DATASHEET",
+      "type": "manufacturer_datasheet",
+      "location": "https://media.startech.com/cms/pdfs/r2ccr-1m-usb-cable_datasheet.pdf",
+      "supports": "Cable length, OD, overall envelope, USB rate, and power rating"
+    },
+    {
+      "source_id": "LOGITECH-C920E",
+      "type": "manufacturer",
+      "location": "https://www.logitech.com/en-us/products/webcams/c920e-business-webcam.960-001401.html",
+      "supports": "C920e part number, dimensions, weight, resolution, autofocus, lens, diagonal FOV, attached cable, and tripod thread"
+    },
+    {
+      "source_id": "LOGITECH-C920E-SUPPORT",
+      "type": "manufacturer_support",
+      "location": "https://hub.sync.logitech.com/c920e",
+      "supports": "C920e support/configuration route and published horizontal/vertical field-of-view data"
+    },
+    {
+      "source_id": "LEE-LP022J01S316",
+      "type": "manufacturer",
+      "location": "https://www.leespring.com/product/compression-spring-lp022j01s316-stainless-steel-type-316",
+      "supports": "Exact Lee Spring stock-code candidate"
+    },
+    {
+      "source_id": "LEE-COMPRESSION-CATALOG",
+      "type": "manufacturer_catalog",
+      "location": "https://www.leespring.com/sites/default/files/2020-03/Lee_Spring_Catalog_US_Eng.pdf",
+      "supports": "LP 022J 01 S316 dimensions, material, rate, solid height, and load data"
+    }
+  ]
+}

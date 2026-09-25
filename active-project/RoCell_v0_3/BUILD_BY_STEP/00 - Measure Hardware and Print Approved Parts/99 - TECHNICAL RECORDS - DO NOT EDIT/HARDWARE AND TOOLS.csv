@@ -1,0 +1,14 @@
+source,type,qty,item,critical_condition,status
+required_physical_input,Required input,As specified,QIDI Plus4 with the installed 0.4 mm nozzle physically verified,Present and accepted before work,NOT_VERIFIED
+required_physical_input,Required input,As specified,"Dry, identified QIDI ABS Rapido for active rigid jobs, an identified PETG lot for adapter jobs 00D/04B/04C, and an identified TPU lot for jobs 05A-05D; PETG general and ASA are additionally required only if the optional fixed-mast fallback is formally released",Present and accepted before work,NOT_VERIFIED
+required_physical_input,Required input,As specified,"Actual keyboard, phone/case, cable, camera, RoArm gripper, spring, pins, inserts, nuts, screws, washers, and selected tool-route hardware",Present and accepted before work,NOT_VERIFIED
+required_physical_input,Required input,As specified,"One selected board drill guide: output/pdf/RC03_BOARD_DRILL_GUIDE_LETTER_1TO1.pdf for a tiled Letter-size print or output/pdf/RC03_BOARD_DRILL_GUIDE_24X36_FULL_SIZE_1TO1.pdf for a single 24 x 36 inch sheet, printed at Actual Size / 100 percent, plus a steel rule and scale-control evidence photos",Present and accepted before work,NOT_VERIFIED
+required_physical_input,Required input,As specified,Responsible engineering approval records for phone clearance/TPU retention and every selected tool route; operators may not invent limits,Present and accepted before work,NOT_VERIFIED
+required_physical_input,Required input,As specified,"Digital calipers, flatness tools, low-range torque driver, and an evidence folder",Present and accepted before work,NOT_VERIFIED
+required_physical_input,Required input,As specified,"A selected tool route plus an explicit camera decision: camera_mast_optional means the independent fixed eye-to-hand fallback only, never the intended arm-mounted route; selection records scope but the fixed_camera_fallback_architecture_released gate still controls all fallback printing",Present and accepted before work,NOT_VERIFIED
+structured_register,Printer,1,QIDI Plus4,305 x 305 x 280 mm nominal; physically verify the provisional 295 x 295 x 275 mm protected envelope before production printing,NOT_VERIFIED
+structured_register,Tool,1,Digital calipers,Record tool ID and measure only after parts cool,NOT_VERIFIED
+structured_register,Tool,1,Straightedge and feeler gauges,Required for board and station flatness,NOT_VERIFIED
+structured_register,Tool,1,Low-range torque driver,Must cover the controlled station-retainer range,NOT_VERIFIED
+structured_register,Material,By job,"QIDI ABS Rapido, PETG adapter filament, TPU, and optional fixed-mast PETG/ASA","Use the exact job-card profile; track brand, lot, drying record, and saved profile revision",NOT_VERIFIED
+structured_register,Storage,8 kits,Labeled job/assembly kits,"Use JOB_KITS.csv; segregate INSTALL, SPARE, HOLD, and REJECT",NOT_VERIFIED

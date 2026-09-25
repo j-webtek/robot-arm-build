@@ -1,0 +1,72 @@
+{
+  "schema": "rocell.local_command_sweep_evidence.v1",
+  "session_id": "e784590de9be4024a88297a0bb8ef335",
+  "session_status": "STOPPED",
+  "complete": false,
+  "journal_event_count": 49,
+  "journal_final_sha256": "5f10e525704d665f81d656f62a563b41e429689cdd7fc43231f5126fe13b1d90",
+  "model_fitted": false,
+  "motion_authorized": false,
+  "physical_accuracy_verified": false,
+  "probes": [
+    {
+      "export_id": "wizard-20260917T031057713428Z-f34090d352314b01aaf83fc156921807",
+      "command_deg": 0.85,
+      "endpoint_and_hold_verified": true,
+      "hold_final_deg": 1.1425781111050095
+    },
+    {
+      "export_id": "wizard-20260917T031253219307Z-c24ca91f970a4454b8dab667a99ee82f",
+      "command_deg": 0.95,
+      "endpoint_and_hold_verified": true,
+      "hold_final_deg": 1.230468748258267
+    },
+    {
+      "export_id": "wizard-20260917T031449148977Z-6d13f492897549afab8256849e7bae8e",
+      "command_deg": 1.05,
+      "endpoint_and_hold_verified": true,
+      "hold_final_deg": 1.230468748258267
+    },
+    {
+      "export_id": "wizard-20260917T031644640699Z-7865bdd4ec324bd2b279fd9730e76113",
+      "command_deg": 1.05,
+      "endpoint_and_hold_verified": true,
+      "hold_final_deg": 1.230468748258267
+    },
+    {
+      "export_id": "wizard-20260917T031840247679Z-4b16ab28fb9d4aa0b1ff0899b223fd8b",
+      "command_deg": 0.95,
+      "endpoint_and_hold_verified": true,
+      "hold_final_deg": 1.230468748258267
+    },
+    {
+      "export_id": "wizard-20260917T032028360335Z-be9aaa7fb7de41809a84988617b7718b",
+      "command_deg": 0.85,
+      "endpoint_and_hold_verified": false,
+      "initial_endpoint_verified": true,
+      "initial_endpoint_deg": 1.1425781111050095,
+      "last_successful_hold_sample_deg": 1.1425781111050095,
+      "hold_successful_samples": 91,
+      "hold_response_span_s": 26.303615599987097,
+      "hold_failure_category": "TIMEOUT",
+      "hold_failure_phase": "REQUEST_SEND",
+      "included_in_complete_hold_ranges": false
+    }
+  ],
+  "separate_followups": [
+    {
+      "export_id": "wizard-20260917T032746522159Z-b4027a972a934b6882ed3b2f35f77354",
+      "manifest_file_sha256": "0717e6ec814c446ce3189ffbc7d6fbce4d657a6196a3b0878f6449798d863638",
+      "predecessor_export": "wizard-20260917T032640916595Z-d2842cbf37784f228533b16cf76c1423",
+      "predecessor_manifest_file_sha256": "1b7c8749f459bcbe31a2058577f37e81a062569802146f76d15355c853e0705e",
+      "command_deg": 0.85,
+      "endpoint_and_hold_verified": true,
+      "hold_final_deg": 1.1425781111050095,
+      "hold_successful_samples": 122,
+      "predecessor_hold_to_dispatch_s": 28.874544499994954,
+      "part_of_original_sweep": false,
+      "repairs_original_sweep": false
+    }
+  ],
+  "classification": "CHARACTERIZATION_ONLY_NOT_HELD_OUT_LOOKUP_VALIDATION"
+}

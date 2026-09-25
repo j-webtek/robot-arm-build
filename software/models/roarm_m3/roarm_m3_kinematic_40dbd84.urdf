@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<!--
+  Minimal kinematic projection of Waveshare's official RoArm-M3 Xacro.
+
+  Upstream repository: https://github.com/waveshareteam/roarm_ws
+  Upstream commit: 40dbd84b553695212fab713e8465f817ba95454d
+  Upstream path: src/roarm_main/roarm_description/urdf/roarm_m3/roarm_m3.xacro
+  Upstream SHA-256: b6333849d0e377008eee0a87a5b8cdcf44f7a73edf3d7600e95506a023a234b6
+
+  Visual, collision-mesh, inertial, Gazebo, and transmission elements are
+  intentionally omitted.  Joint names, link graph, origins, axes, types, and
+  limits are retained.  URDF translation units are metres and angle units are
+  radians.  This file is simulation input only and cannot release real motion.
+-->
+<robot name="roarm_m3">
+  <link name="world"/>
+  <link name="base_link"/>
+  <link name="link1"/>
+  <link name="link2"/>
+  <link name="link3"/>
+  <link name="link4"/>
+  <link name="link5"/>
+  <link name="gripper_link"/>
+  <link name="hand_tcp"/>
+
+  <joint name="world_to_base_link" type="fixed">
+    <origin xyz="0 0 0.0701" rpy="0 0 0"/>
+    <parent link="world"/>
+    <child link="base_link"/>
+  </joint>
+
+  <joint name="base_link_to_link1" type="revolute">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <parent link="base_link"/>
+    <child link="link1"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-3.1416" upper="3.1416" effort="0" velocity="0"/>
+  </joint>
+
+  <joint name="link1_to_link2" type="revolute">
+    <origin xyz="0 0 0.051959" rpy="-1.5708 -1.5708 0"/>
+    <parent link="link1"/>
+    <child link="link2"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-1.5708" upper="1.5708" effort="0" velocity="0"/>
+  </joint>
+
+  <joint name="link2_to_link3" type="revolute">
+    <origin xyz="0.236815 0.030002 0" rpy="0 0 1.5708"/>
+    <parent link="link2"/>
+    <child link="link3"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-1" upper="2.95" effort="0" velocity="0"/>
+  </joint>
+
+  <joint name="link3_to_link4" type="revolute">
+    <origin xyz="0 -0.144586 0" rpy="0 0 0"/>
+    <parent link="link3"/>
+    <child link="link4"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-1.5708" upper="1.5708" effort="0" velocity="0"/>
+  </joint>
+
+  <joint name="link4_to_link5" type="revolute">
+    <origin xyz="0.015147 -0.053653 0" rpy="1.5708 1.5708 0"/>
+    <parent link="link4"/>
+    <child link="link5"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-3.1416" upper="3.1416" effort="0" velocity="0"/>
+  </joint>
+
+  <joint name="link5_to_gripper_link" type="revolute">
+    <origin xyz="0 0.018821 0.052035" rpy="-1.5708 -1.5708 0"/>
+    <parent link="link5"/>
+    <child link="gripper_link"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="0" upper="1.5" effort="0" velocity="0"/>
+  </joint>
+
+  <joint name="link5_to_hand_tcp" type="fixed">
+    <origin xyz="0 0 0.115428" rpy="1.5708 -1.5708 0"/>
+    <parent link="link5"/>
+    <child link="hand_tcp"/>
+  </joint>
+</robot>

@@ -1,0 +1,21 @@
+# Step 10 — Print Settings for This Step
+
+**Generated control — do not edit. The linked canonical files and their hashes define the print setup.**
+
+## Traceability only — do not print here
+
+The jobs below identify the accepted Step-00 parts consumed by this assembly step. Do not print the convenience STL copies during assembly. A failed or missing part returns to Step 00 and its controlled job workflow.
+
+| Job | Authority | Material | Preset status | Plate | Exact readable settings | Machine sidecar | QIDI process import | Traveler |
+|---|---|---|---|---|---|---|---|---|
+| `03A` | **WAITING** | QIDI ABS Rapido | `EXACT_REPRODUCIBLE` | [03A_ABS_phone_TCP_station.3mf](<../../print_plates_3mf/03A_ABS_phone_TCP_station.3mf>) | [03A_ABS_phone_TCP_station.PRINT_SETTINGS.md](<../../print_plates_3mf/03A_ABS_phone_TCP_station.PRINT_SETTINGS.md>) | [03A_ABS_phone_TCP_station.print.json](<../../print_plates_3mf/03A_ABS_phone_TCP_station.print.json>) | [abs_rapido_cradle_0p4.process.json](<../../slicer_profiles/QIDI_PLUS4/abs_rapido_cradle_0p4.process.json>) | [JOB-03A.md](<../../job_cards/JOB-03A.md>) |
+| `03C1` | **WAITING** | QIDI ABS Rapido | `EXACT_REPRODUCIBLE` | [03C1_ABS_phone_clamp_rail.3mf](<../../print_plates_3mf/03C1_ABS_phone_clamp_rail.3mf>) | [03C1_ABS_phone_clamp_rail.PRINT_SETTINGS.md](<../../print_plates_3mf/03C1_ABS_phone_clamp_rail.PRINT_SETTINGS.md>) | [03C1_ABS_phone_clamp_rail.print.json](<../../print_plates_3mf/03C1_ABS_phone_clamp_rail.print.json>) | [abs_rapido_cradle_0p4.process.json](<../../slicer_profiles/QIDI_PLUS4/abs_rapido_cradle_0p4.process.json>) | [JOB-03C1.md](<../../job_cards/JOB-03C1.md>) |
+| `05A` | **WAITING** | TPU 95A | `EXACT_PROCESS_SPOOL_PRESET_REQUIRED` | [05A_TPU_phone_tip_first_article.3mf](<../../print_plates_3mf/05A_TPU_phone_tip_first_article.3mf>) | [05A_TPU_phone_tip_first_article.PRINT_SETTINGS.md](<../../print_plates_3mf/05A_TPU_phone_tip_first_article.PRINT_SETTINGS.md>) | [05A_TPU_phone_tip_first_article.print.json](<../../print_plates_3mf/05A_TPU_phone_tip_first_article.print.json>) | [tpu95a_0p4.process.json](<../../slicer_profiles/QIDI_PLUS4/tpu95a_0p4.process.json>) | [JOB-05A.md](<../../job_cards/JOB-05A.md>) |
+| `05B` | **WAITING** | TPU 95A | `EXACT_PROCESS_SPOOL_PRESET_REQUIRED` | [05B_TPU_phone_tips_and_spares.3mf](<../../print_plates_3mf/05B_TPU_phone_tips_and_spares.3mf>) | [05B_TPU_phone_tips_and_spares.PRINT_SETTINGS.md](<../../print_plates_3mf/05B_TPU_phone_tips_and_spares.PRINT_SETTINGS.md>) | [05B_TPU_phone_tips_and_spares.print.json](<../../print_plates_3mf/05B_TPU_phone_tips_and_spares.print.json>) | [tpu95a_0p4.process.json](<../../slicer_profiles/QIDI_PLUS4/tpu95a_0p4.process.json>) | [JOB-05B.md](<../../job_cards/JOB-05B.md>) |
+
+## Material rules
+
+- QIDI ABS Rapido jobs use the confirmed `QIDI ABS Rapido @Qidi X-Plus 4 0.4 nozzle` filament preset and the exact job-specific imported process profile.
+- PETG, TPU 95A, and ASA settings sheets intentionally show `EXACT_SPOOL_PRESET_REQUIRED` until the exact physical spool, drying record, calibrated flow, pressure advance, temperature, cooling, and volumetric limits are recorded. Do not guess these values.
+- Never compensate for ABS shrink or a failed fit by globally scaling an STL. Measure the matching coupon, update the controlled CAD parameter if required, regenerate, and revalidate.
+- The process JSON controls process settings only. The filament preset remains a separate QIDI Studio selection.

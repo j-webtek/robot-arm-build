@@ -1,0 +1,1261 @@
+{
+  "schema_version": 1,
+  "layout_version": 4,
+  "design_revision": "RC03-INT-R1",
+  "package_definition_hash": "7a6947f2de52f63133c5b9647b9b479ccd9d896906c2b575e76c106e1e5dccca",
+  "canonical_snapshot_hash": "05d11599e6d4a2937e0207535b298aa809ff08c79840350c7716666ce6d12755",
+  "canonical_input_hash": "05d11599e6d4a2937e0207535b298aa809ff08c79840350c7716666ce6d12755",
+  "step_id": "13",
+  "slug": "mount_camera_and_check_fov",
+  "title": "Resolve the camera architecture, then mount and prove route-specific vision",
+  "operator_folder": "13 - Mount and Calibrate Camera",
+  "operator_title": "Mount and Calibrate Camera",
+  "state_at_generation": "LOCKED",
+  "active_build_id": "2026-09-01_CELL-A",
+  "blocked_input_gates": [
+    "prerequisite_step:12",
+    "camera_mount_interface_measured",
+    "tag_plane_placement_measured"
+  ],
+  "prerequisite_steps": [
+    "12"
+  ],
+  "input_gate_ids": [
+    "camera_mount_interface_measured",
+    "tag_plane_placement_measured"
+  ],
+  "completion_gate_ids": [
+    "tag_direct_installation_pass"
+  ],
+  "conditional_input_gates": {
+    "camera_mast_optional": [
+      "fixed_camera_fallback_architecture_released",
+      "camera_plate_hardware_pass",
+      "mast_foot_first_article_pass",
+      "mast_second_foot_postprint_pass"
+    ]
+  },
+  "conditional_completion_gates": {
+    "camera_mast_optional": [
+      "mast_pair_installation_pass"
+    ]
+  },
+  "completion_requires_any_route": [],
+  "conditional_acceptance": {
+    "camera_mast_optional": [
+      {
+        "test_id": "13-A",
+        "criterion": "Fixed-fallback camera-plate retention",
+        "method": "Inspect and lightly disturb the plate, cable, and independent support",
+        "limit": "No camera shift, screw bottoming, strap slip, or cable-driven motion",
+        "gate_id": "camera_plate_hardware_pass",
+        "evidence": "Fallback plate, support, and cable photos"
+      },
+      {
+        "test_id": "13-D",
+        "criterion": "Optional mast pair installation",
+        "method": "Inspect both accepted feet, extrusion engagement, fastener stacks, support rigidity, and cable disturbance",
+        "limit": "Both feet seated and retained with no slip, rocking, cracking, fastener bottoming, or camera shift",
+        "gate_id": "mast_pair_installation_pass",
+        "evidence": "Mast measurements, fastener record, disturbance result, and photos"
+      }
+    ]
+  },
+  "effective_test_ids": [
+    "13-B",
+    "13-C"
+  ],
+  "panel": "output/assembly_guide/images/13_mount_camera_and_check_fov.png",
+  "print_jobs": [
+    {
+      "job_id": "00E",
+      "action": "consume_accepted_output",
+      "stage": "diagnostic",
+      "selection": "required",
+      "profile": "abs_rapido_general_0p4",
+      "plate_file": "00E_ABS_general_setup_tests.3mf",
+      "settings_file": "00E_ABS_general_setup_tests.PRINT_SETTINGS.md",
+      "settings_sha256": "0a1da7fcba38d7c228f9d681e467961e3bfe3069356d0591eab0a5fbbee8cbe5",
+      "qidi_process_profile_file": "slicer_profiles/QIDI_PLUS4/abs_rapido_general_0p4.process.json",
+      "qidi_process_profile_sha256": "756895e547ed186ab4b0d532d6d66fc3e2ad31376bc342a0150cbd4667a5d239",
+      "filament_preset": "qidi_abs_rapido_xplus4_0p4",
+      "preset_data_status": "EXACT_REPRODUCIBLE",
+      "parts": {
+        "hardware_fit_gauge.stl": 1,
+        "setup_hardware_fit_gauge.stl": 1,
+        "tpu_tip_retention_gauge.stl": 1
+      },
+      "purpose": "ABS general clearance, screw-head, washer, camera-hex, and TPU-retention setup tests"
+    },
+    {
+      "job_id": "03C3",
+      "action": "consume_accepted_output",
+      "stage": "production",
+      "selection": "camera_mast_optional",
+      "profile": "petg_general_0p4",
+      "plate_file": "03C3_PETG_camera_plate.3mf",
+      "settings_file": "03C3_PETG_camera_plate.PRINT_SETTINGS.md",
+      "settings_sha256": "736c5f8666a3beae5a87cf685c04831499f5510dacdec9e17ab651da5af8e214",
+      "qidi_process_profile_file": "slicer_profiles/QIDI_PLUS4/petg_general_0p4.process.json",
+      "qidi_process_profile_sha256": "4e3fcda86460e9823234db1eff750e880a8b43bcb916dc2b584038b97376b605",
+      "filament_preset": "exact_petg_spool_xplus4_0p4",
+      "preset_data_status": "EXACT_PROCESS_SPOOL_PRESET_REQUIRED",
+      "parts": {
+        "camera_plate_universal.stl": 1
+      },
+      "purpose": "Fixed-mast fallback camera plate; not an arm-camera adapter and not released while the camera architecture hold is open"
+    },
+    {
+      "job_id": "06",
+      "action": "consume_accepted_output",
+      "stage": "diagnostic",
+      "selection": "camera_mast_optional",
+      "profile": "asa_structural_0p4",
+      "plate_file": "06_ASA_mast_fit_tests.3mf",
+      "settings_file": "06_ASA_mast_fit_tests.PRINT_SETTINGS.md",
+      "settings_sha256": "a0201228b703bd3c1c282ab8fd0fd3124acebf9b68c1abbdbbf65ce502e3a461",
+      "qidi_process_profile_file": "slicer_profiles/QIDI_PLUS4/asa_structural_0p4.process.json",
+      "qidi_process_profile_sha256": "a6116150e09eb3212b6d4d76b7def11495593f564f497d2e8e5799ec6e69f7de",
+      "filament_preset": "exact_asa_spool_xplus4_0p4",
+      "preset_data_status": "EXACT_PROCESS_SPOOL_PRESET_REQUIRED",
+      "parts": {
+        "mast_socket_fit_test.stl": 1,
+        "m5_nut_trap_fit_gauge.stl": 1
+      },
+      "purpose": "Fixed-mast fallback 2020 socket and production-axis M5 nut/clearance/washer tests; blocked until the fallback architecture is explicitly released"
+    },
+    {
+      "job_id": "07A",
+      "action": "consume_accepted_output",
+      "stage": "first_article",
+      "selection": "camera_mast_optional",
+      "profile": "asa_structural_0p4",
+      "plate_file": "07A_ASA_mast_foot_first_article.3mf",
+      "settings_file": "07A_ASA_mast_foot_first_article.PRINT_SETTINGS.md",
+      "settings_sha256": "e8d47f729bd0c125a7e9804dac2f342484c0f536f0c5f83a1bffeab28398e7ff",
+      "qidi_process_profile_file": "slicer_profiles/QIDI_PLUS4/asa_structural_0p4.process.json",
+      "qidi_process_profile_sha256": "a6116150e09eb3212b6d4d76b7def11495593f564f497d2e8e5799ec6e69f7de",
+      "filament_preset": "exact_asa_spool_xplus4_0p4",
+      "preset_data_status": "EXACT_PROCESS_SPOOL_PRESET_REQUIRED",
+      "parts": {
+        "mast_foot_2020.stl": 1
+      },
+      "purpose": "First fixed-mast fallback foot with rear-lug clamp bolts; not part of the intended arm-mounted camera architecture"
+    },
+    {
+      "job_id": "07B",
+      "action": "consume_accepted_output",
+      "stage": "optional",
+      "selection": "camera_mast_optional",
+      "profile": "asa_structural_0p4",
+      "plate_file": "07B_ASA_mast_foot_second.3mf",
+      "settings_file": "07B_ASA_mast_foot_second.PRINT_SETTINGS.md",
+      "settings_sha256": "46c56c393526bef5911b0ab604e85f36aeceee2892195a473b9d7931589c97ec",
+      "qidi_process_profile_file": "slicer_profiles/QIDI_PLUS4/asa_structural_0p4.process.json",
+      "qidi_process_profile_sha256": "a6116150e09eb3212b6d4d76b7def11495593f564f497d2e8e5799ec6e69f7de",
+      "filament_preset": "exact_asa_spool_xplus4_0p4",
+      "preset_data_status": "EXACT_PROCESS_SPOOL_PRESET_REQUIRED",
+      "parts": {
+        "mast_foot_2020.stl": 1
+      },
+      "purpose": "Second fixed-mast fallback foot after first-article acceptance; not part of the intended arm-mounted camera architecture"
+    }
+  ],
+  "canonical_files": [
+    {
+      "canonical_path": "ASSEMBLY_MANUAL.md",
+      "sha256": "5c77cf9c49e7afcf51eaaf26cf58dc78081eec860b006acebee91a1f11046c07",
+      "size_bytes": 47056,
+      "roles": [
+        "controlled detailed-manual source"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "ASSEMBLY_MANUAL.pdf",
+      "sha256": "3f82933f75bb4df24ba875c03624668dfd86e15b5a956b963fe3cc92621031e5",
+      "size_bytes": 543436,
+      "roles": [
+        "controlled detailed manual"
+      ],
+      "actions": [
+        "read"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "BOM.csv",
+      "sha256": "c9362cf401ca66f4e584c7fc294f6c54853c8ea546e610d551bc841782d6bcd0",
+      "size_bytes": 10703,
+      "roles": [
+        "purchasing source"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "BUILD_TRACKER.json",
+      "sha256": "0309256af31348620bb977aded9c591bc697c8ab7b9873027430aaa28c077b9a",
+      "size_bytes": 18134,
+      "roles": [
+        "machine-readable lifecycle tracker"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "BUILD_TRACKER.md",
+      "sha256": "17ecf32b45b561c9209189849ef20cac965ef09065cb33bf8aa9f24f9a086775",
+      "size_bytes": 6253,
+      "roles": [
+        "lifecycle tracker"
+      ],
+      "actions": [
+        "verify"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "FASTENER_MAP.csv",
+      "sha256": "94b0af10da8ee259d200ae5ffc404f2265ac9b417169e697bcef38e91aca3085",
+      "size_bytes": 2200,
+      "roles": [
+        "board fastener source"
+      ],
+      "actions": [
+        "edit_only_in_step_01_after_cutoff_tests"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "JOB_KITS.csv",
+      "sha256": "2c93199c0703d975d47870c2537dd4acf39c376c6f42fbab17fcddeba4004516",
+      "size_bytes": 11616,
+      "roles": [
+        "kitting source"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "PRINT_READINESS.json",
+      "sha256": "a8c75f05f727fa899c1f873ffea9852b5e6d343cdd302d5c4e02ee4124f74fc3",
+      "size_bytes": 57793,
+      "roles": [
+        "machine-readable print readiness"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "PRINT_READINESS.md",
+      "sha256": "5be5234644cbca322e93f16ec422cd5a6f04059055a2f56d68cf224d61f015b0",
+      "size_bytes": 17177,
+      "roles": [
+        "current print readiness"
+      ],
+      "actions": [
+        "verify"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "README_FIRST.md",
+      "sha256": "ba84a14a17983d774a0278b4b68571d920b0dc4d186fd05c991b1d149d388a9e",
+      "size_bytes": 9962,
+      "roles": [
+        "release entry point"
+      ],
+      "actions": [
+        "read"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "cad/step/camera_plate_universal.step",
+      "sha256": "dea907ee079c77046150115a57bd506ed195e9ecbf436b4effbaf9cb2a89648d",
+      "size_bytes": 1022420,
+      "roles": [
+        "neutral CAD companion"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": [
+        "03C3"
+      ]
+    },
+    {
+      "canonical_path": "cad/step/hardware_fit_gauge.step",
+      "sha256": "5c703f405245681d67ac4c495d2412e67bd52a35c49dd70900563c2e42f28de4",
+      "size_bytes": 3217336,
+      "roles": [
+        "neutral CAD companion"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": [
+        "00E"
+      ]
+    },
+    {
+      "canonical_path": "cad/step/m5_nut_trap_fit_gauge.step",
+      "sha256": "f9c2aa9abd10fcac616bfac3b0b4eca3b230d55346549e6e070dc9ac53950a7e",
+      "size_bytes": 2253803,
+      "roles": [
+        "neutral CAD companion"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": [
+        "06"
+      ]
+    },
+    {
+      "canonical_path": "cad/step/mast_foot_2020.step",
+      "sha256": "3aac4dc0473b2db61861d4011fd424f6e26b7cf99e8e9f4d712524635aee2220",
+      "size_bytes": 357095,
+      "roles": [
+        "neutral CAD companion"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": [
+        "07A",
+        "07B"
+      ]
+    },
+    {
+      "canonical_path": "cad/step/mast_socket_fit_test.step",
+      "sha256": "89c51ec6483ad4f45ac0c538d82485e78aa5d2751729075102875d27a74afdd7",
+      "size_bytes": 1415178,
+      "roles": [
+        "neutral CAD companion"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": [
+        "06"
+      ]
+    },
+    {
+      "canonical_path": "cad/step/setup_hardware_fit_gauge.step",
+      "sha256": "717132c8838c89f2ca775111d497e9888e68e686d0f945ba043790ee5cd1c2e1",
+      "size_bytes": 7430806,
+      "roles": [
+        "neutral CAD companion"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": [
+        "00E"
+      ]
+    },
+    {
+      "canonical_path": "cad/step/tpu_tip_retention_gauge.step",
+      "sha256": "adb1b65263e62ef9c9a03e13b410391179e07acf29905b973984a9c157309fcc",
+      "size_bytes": 405846,
+      "roles": [
+        "neutral CAD companion"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": [
+        "00E"
+      ]
+    },
+    {
+      "canonical_path": "config/assembly_steps.json",
+      "sha256": "af1920ac851d18c09ad749df5da2ed58dda6c9a40b066966e737430c448a546d",
+      "size_bytes": 117502,
+      "roles": [
+        "canonical step-to-file relationship map"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "config/camera_architecture_decision.json",
+      "sha256": "93b51f5635373c7a2a3d561e5a6ed0eb23c5b20c5243f158261a144e78c63c6b",
+      "size_bytes": 2988,
+      "roles": [
+        "camera architecture alignment hold"
+      ],
+      "actions": [
+        "resolve_by_controlled_revision_before_step"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "config/job_build_record.json",
+      "sha256": "8ffbb767c577fac5c88b8b68a7d4029ac1ca09c5b502f8d27795fb66a585ad64",
+      "size_bytes": 27671,
+      "roles": [
+        "canonical job lifecycle record"
+      ],
+      "actions": [
+        "edit_only_with_controlled_workflow"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "config/measurement_record.json",
+      "sha256": "1fb400eae3104547b9bc75a6824bb137f37acc8274e68d718db7a6d77e734ec9",
+      "size_bytes": 84066,
+      "roles": [
+        "canonical measurement and gate record"
+      ],
+      "actions": [
+        "edit_only_with_recording_script"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "config/parameters.json",
+      "sha256": "769808d9094672ff2f281d39eeafff68c1aa0e4e9ec9b552f22084334b1bb6fc",
+      "size_bytes": 1915,
+      "roles": [
+        "canonical CAD parameter set"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "config/print_jobs.json",
+      "sha256": "429bca9542193388581eee5266af57b2e7460881f87b23b34693eee3b77c66f4",
+      "size_bytes": 13945,
+      "roles": [
+        "canonical print-job definitions"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "config/print_profiles.json",
+      "sha256": "5886a55b3fbdca28bf0d67ea8718a366333e78f2801e1884db00cc9f010ffc5e",
+      "size_bytes": 23632,
+      "roles": [
+        "canonical print-profile definitions"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "config/workcell_layout.json",
+      "sha256": "e84db9aa7b88db442f042c6f546196e350c822a2e7609cb4b652b3da535df2e1",
+      "size_bytes": 17043,
+      "roles": [
+        "generated geometry/layout source"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "fiducials/apriltag_map.json",
+      "sha256": "81c867d28660cdade79cb8024104d82e5568effa0736f07f0947c1007ac23700",
+      "size_bytes": 3798,
+      "roles": [
+        "runtime tag map"
+      ],
+      "actions": [
+        "use_with_helper"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "fiducials/charuco_5x7_square25_marker17_5.png",
+      "sha256": "9ad313fe625fcccba138a1a178cb653fdefd479f2897df48e725d28749417777",
+      "size_bytes": 22744,
+      "roles": [
+        "calibration artwork"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "fiducials/charuco_5x7_square25_marker17_5_1to1.pdf",
+      "sha256": "dd2192e679f764608996957e5708d4e020acca65d0e3fb60f1802897bd866b01",
+      "size_bytes": 116990,
+      "roles": [
+        "lens-calibration target"
+      ],
+      "actions": [
+        "print_actual_size"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "fiducials/charuco_board_definition.json",
+      "sha256": "ed7aa4bd9d82c9d48d6fe86928f7a13836dde8320a489f8c3f851f074103a672",
+      "size_bytes": 280,
+      "roles": [
+        "calibration control"
+      ],
+      "actions": [
+        "use_with_helper"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "job_cards/JOB-00E.md",
+      "sha256": "5e54fc90484f094680ecc6cce9e6cdfc23d81e28d185549f69d0e65c886e9aa0",
+      "size_bytes": 6054,
+      "roles": [
+        "controlled print traveler"
+      ],
+      "actions": [
+        "consume_accepted_output"
+      ],
+      "job_ids": [
+        "00E"
+      ]
+    },
+    {
+      "canonical_path": "job_cards/JOB-03C3.md",
+      "sha256": "adcd24a5a74e80924c27c49ea5a998ecad28010edb2ef3e1bdf4b1f3b3d58428",
+      "size_bytes": 6897,
+      "roles": [
+        "controlled print traveler"
+      ],
+      "actions": [
+        "consume_accepted_output"
+      ],
+      "job_ids": [
+        "03C3"
+      ]
+    },
+    {
+      "canonical_path": "job_cards/JOB-06.md",
+      "sha256": "9e93f1b61e3d5efb38c70b9525aef508d187721c01b09125d813dd2d93708071",
+      "size_bytes": 5915,
+      "roles": [
+        "controlled print traveler"
+      ],
+      "actions": [
+        "consume_accepted_output"
+      ],
+      "job_ids": [
+        "06"
+      ]
+    },
+    {
+      "canonical_path": "job_cards/JOB-07A.md",
+      "sha256": "db28c85e8701f83828c9d702e9f78a9125b239ead7890a3c1ce9d2be1277b0ff",
+      "size_bytes": 6830,
+      "roles": [
+        "controlled print traveler"
+      ],
+      "actions": [
+        "consume_accepted_output"
+      ],
+      "job_ids": [
+        "07A"
+      ]
+    },
+    {
+      "canonical_path": "job_cards/JOB-07B.md",
+      "sha256": "39fbe63a9aee45bf4e03782900394a848d3e7239607642130c4438976d541c37",
+      "size_bytes": 7044,
+      "roles": [
+        "controlled print traveler"
+      ],
+      "actions": [
+        "consume_accepted_output"
+      ],
+      "job_ids": [
+        "07B"
+      ]
+    },
+    {
+      "canonical_path": "output/assembly_guide/images/13_mount_camera_and_check_fov.png",
+      "sha256": "48df5f4db536f7213961d65cd85f85318ed190eb370edfa0f8bcb2d67b131053",
+      "size_bytes": 98740,
+      "roles": [
+        "assembly-step illustration"
+      ],
+      "actions": [
+        "view"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "output/pdf/RC03_ILLUSTRATED_ASSEMBLY_GUIDE.pdf",
+      "sha256": "1084103edb5f167b3a3571ef642826c4f585b488fef8200570e4251f2d5c140d",
+      "size_bytes": 1706300,
+      "roles": [
+        "complete illustrated guide"
+      ],
+      "actions": [
+        "read"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "print_plates_3mf/00E_ABS_general_setup_tests.3mf",
+      "sha256": "67073d37df50d0329a6b77ba5aed00166fff9cc850c9f6225b00abeba54661d7",
+      "size_bytes": 3366992,
+      "roles": [
+        "geometry-only QIDI plate"
+      ],
+      "actions": [
+        "consume_accepted_output"
+      ],
+      "job_ids": [
+        "00E"
+      ]
+    },
+    {
+      "canonical_path": "print_plates_3mf/00E_ABS_general_setup_tests.PRINT_SETTINGS.md",
+      "sha256": "0a1da7fcba38d7c228f9d681e467961e3bfe3069356d0591eab0a5fbbee8cbe5",
+      "size_bytes": 5440,
+      "roles": [
+        "exact operator print-settings sheet"
+      ],
+      "actions": [
+        "consume_accepted_output"
+      ],
+      "job_ids": [
+        "00E"
+      ]
+    },
+    {
+      "canonical_path": "print_plates_3mf/00E_ABS_general_setup_tests.print.json",
+      "sha256": "cd64ea520ff1550b4abf0e6acb270cf673f3f4e118baaa35fffa5394ddc45717",
+      "size_bytes": 13369,
+      "roles": [
+        "controlled plate/profile/hash sidecar"
+      ],
+      "actions": [
+        "consume_accepted_output"
+      ],
+      "job_ids": [
+        "00E"
+      ]
+    },
+    {
+      "canonical_path": "print_plates_3mf/03C3_PETG_camera_plate.3mf",
+      "sha256": "b659444974c21f27d0832b97b0511edd4a879c2049d81ae010cb28d61c8eae42",
+      "size_bytes": 152414,
+      "roles": [
+        "geometry-only QIDI plate"
+      ],
+      "actions": [
+        "consume_accepted_output"
+      ],
+      "job_ids": [
+        "03C3"
+      ]
+    },
+    {
+      "canonical_path": "print_plates_3mf/03C3_PETG_camera_plate.PRINT_SETTINGS.md",
+      "sha256": "736c5f8666a3beae5a87cf685c04831499f5510dacdec9e17ab651da5af8e214",
+      "size_bytes": 4649,
+      "roles": [
+        "exact operator print-settings sheet"
+      ],
+      "actions": [
+        "consume_accepted_output"
+      ],
+      "job_ids": [
+        "03C3"
+      ]
+    },
+    {
+      "canonical_path": "print_plates_3mf/03C3_PETG_camera_plate.print.json",
+      "sha256": "bfa1070820c21e695740fe1a8cc52f26531fb76d403bf9a1a1227a60a6d1a29c",
+      "size_bytes": 10220,
+      "roles": [
+        "controlled plate/profile/hash sidecar"
+      ],
+      "actions": [
+        "consume_accepted_output"
+      ],
+      "job_ids": [
+        "03C3"
+      ]
+    },
+    {
+      "canonical_path": "print_plates_3mf/06_ASA_mast_fit_tests.3mf",
+      "sha256": "02525021bb7f82f1d5c04946222ef5d898551181deb6bedda3b60a54cede6daa",
+      "size_bytes": 704315,
+      "roles": [
+        "geometry-only QIDI plate"
+      ],
+      "actions": [
+        "consume_accepted_output"
+      ],
+      "job_ids": [
+        "06"
+      ]
+    },
+    {
+      "canonical_path": "print_plates_3mf/06_ASA_mast_fit_tests.PRINT_SETTINGS.md",
+      "sha256": "a0201228b703bd3c1c282ab8fd0fd3124acebf9b68c1abbdbbf65ce502e3a461",
+      "size_bytes": 4880,
+      "roles": [
+        "exact operator print-settings sheet"
+      ],
+      "actions": [
+        "consume_accepted_output"
+      ],
+      "job_ids": [
+        "06"
+      ]
+    },
+    {
+      "canonical_path": "print_plates_3mf/06_ASA_mast_fit_tests.print.json",
+      "sha256": "2a1fc922da8f2f8953522a287a468824e3b7743d978a8ba39784dd555ff2d7cc",
+      "size_bytes": 11540,
+      "roles": [
+        "controlled plate/profile/hash sidecar"
+      ],
+      "actions": [
+        "consume_accepted_output"
+      ],
+      "job_ids": [
+        "06"
+      ]
+    },
+    {
+      "canonical_path": "print_plates_3mf/07A_ASA_mast_foot_first_article.3mf",
+      "sha256": "fe98242302efb943e0fba6fb4db4e38f0008ecda19e306688be844dd162af84a",
+      "size_bytes": 100659,
+      "roles": [
+        "geometry-only QIDI plate"
+      ],
+      "actions": [
+        "consume_accepted_output"
+      ],
+      "job_ids": [
+        "07A"
+      ]
+    },
+    {
+      "canonical_path": "print_plates_3mf/07A_ASA_mast_foot_first_article.PRINT_SETTINGS.md",
+      "sha256": "e8d47f729bd0c125a7e9804dac2f342484c0f536f0c5f83a1bffeab28398e7ff",
+      "size_bytes": 4980,
+      "roles": [
+        "exact operator print-settings sheet"
+      ],
+      "actions": [
+        "consume_accepted_output"
+      ],
+      "job_ids": [
+        "07A"
+      ]
+    },
+    {
+      "canonical_path": "print_plates_3mf/07A_ASA_mast_foot_first_article.print.json",
+      "sha256": "aa830046f1152a28fd50d702b9233f8fc3c5854b65f1ea3db505fb4062f9fe19",
+      "size_bytes": 11133,
+      "roles": [
+        "controlled plate/profile/hash sidecar"
+      ],
+      "actions": [
+        "consume_accepted_output"
+      ],
+      "job_ids": [
+        "07A"
+      ]
+    },
+    {
+      "canonical_path": "print_plates_3mf/07B_ASA_mast_foot_second.3mf",
+      "sha256": "1212bdb01b8d4fb140b8eeb7a6e68fdfc604696662d27a199120def6b2260658",
+      "size_bytes": 100664,
+      "roles": [
+        "geometry-only QIDI plate"
+      ],
+      "actions": [
+        "consume_accepted_output"
+      ],
+      "job_ids": [
+        "07B"
+      ]
+    },
+    {
+      "canonical_path": "print_plates_3mf/07B_ASA_mast_foot_second.PRINT_SETTINGS.md",
+      "sha256": "46c56c393526bef5911b0ab604e85f36aeceee2892195a473b9d7931589c97ec",
+      "size_bytes": 5006,
+      "roles": [
+        "exact operator print-settings sheet"
+      ],
+      "actions": [
+        "consume_accepted_output"
+      ],
+      "job_ids": [
+        "07B"
+      ]
+    },
+    {
+      "canonical_path": "print_plates_3mf/07B_ASA_mast_foot_second.print.json",
+      "sha256": "cb85e1aa58ac2567429b4105a925a120605a188e8a26d1d4fda45147cf8f945e",
+      "size_bytes": 11150,
+      "roles": [
+        "controlled plate/profile/hash sidecar"
+      ],
+      "actions": [
+        "consume_accepted_output"
+      ],
+      "job_ids": [
+        "07B"
+      ]
+    },
+    {
+      "canonical_path": "requirements-vision.txt",
+      "sha256": "42ef5240cf2ac5a63f84f7635dc54e2bfb2583bafb9a215d236b93cac3a5e834",
+      "size_bytes": 39,
+      "roles": [
+        "vision dependency versions"
+      ],
+      "actions": [
+        "install_in_isolated_environment"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "scripts/build_illustrated_assembly_guide.py",
+      "sha256": "6badf0daa975d8c0ab5de34cea5a7514dbff8469d2a7b499670a3002d428eb31",
+      "size_bytes": 44117,
+      "roles": [
+        "illustrated-guide PDF generator"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "scripts/build_manual_pdf.py",
+      "sha256": "4baf08d28e3566c3eb3869585275ebc318bf1e076744867221d4d79e2359f182",
+      "size_bytes": 6974,
+      "roles": [
+        "controlled detailed-manual PDF renderer"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "scripts/build_step_packages.py",
+      "sha256": "09ec78a5512ee6cb6997b3200e7bd1cdb1418eeb2fb477f339f331f14191f8a2",
+      "size_bytes": 171609,
+      "roles": [
+        "step-package generator and validator"
+      ],
+      "actions": [
+        "run_from_project_root"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "scripts/generate_build_tracker.py",
+      "sha256": "6090b47ff751ebb62c6ab8ecd4abc55fa54f79cabde5b86a4231484b2cc67e53",
+      "size_bytes": 11983,
+      "roles": [
+        "job-lifecycle validator and tracker generator"
+      ],
+      "actions": [
+        "run_from_project_root"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "scripts/generate_job_cards.py",
+      "sha256": "520cf48d2263beca0eca351d6960fbfae95e1f9c63e05aec1204957b47271a7f",
+      "size_bytes": 22538,
+      "roles": [
+        "controlled print-traveler instruction generator"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "scripts/initialize_step_evidence.py",
+      "sha256": "0a940eabc2ab22fcc0c4e2b2df9a67fa90224027168127917c2e7879a8725b93",
+      "size_bytes": 4692,
+      "roles": [
+        "non-overwriting active-build evidence initializer"
+      ],
+      "actions": [
+        "run_before_each_step"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "scripts/record_job_lifecycle.py",
+      "sha256": "440ca2e1b5185b230067a5d5f63d936a1d56e84bfc9ec9bc32d920e39ed3eb37",
+      "size_bytes": 3613,
+      "roles": [
+        "sequential print-job lifecycle recorder"
+      ],
+      "actions": [
+        "run_after_each_completed_state"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "scripts/record_print_measurement.py",
+      "sha256": "5cac4945ed54e13f95f1ef2e22e0b26448c4b9b69f966051cb350aae575b232b",
+      "size_bytes": 9085,
+      "roles": [
+        "canonical gate and route recorder"
+      ],
+      "actions": [
+        "run_after_reviewing_raw_evidence"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "scripts/record_step_result.py",
+      "sha256": "851e5b3761c2f37e9542f130ad22e2426cdf4d07af212a26ee3f5dd9012b3f0b",
+      "size_bytes": 5673,
+      "roles": [
+        "non-destructive step-result recorder"
+      ],
+      "actions": [
+        "run_for_each_step_test"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "scripts/render_assembly_guide.py",
+      "sha256": "8e7467e8eccccbf6e04988820b828be3c0aa0c1c06167954f53bb46b5f8cf330",
+      "size_bytes": 59312,
+      "roles": [
+        "assembly-panel source renderer"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "scripts/set_active_build.py",
+      "sha256": "0f593f140437858b8cd72c87f4737b14af483c91ac3e9fcb45f07d4893327571",
+      "size_bytes": 2176,
+      "roles": [
+        "active physical-build selector"
+      ],
+      "actions": [
+        "run_before_recording_evidence"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "scripts/sign_off_step.py",
+      "sha256": "caed2f3b929d24354ae7ff289178e70a94c8729d84ca5f2d55384c483032cbba",
+      "size_bytes": 5604,
+      "roles": [
+        "validated step signoff recorder"
+      ],
+      "actions": [
+        "run_after_step_tests"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "scripts/step_evidence_common.py",
+      "sha256": "93fb598ee2de6dc0ba60d6eec7291458a728cb087dbe724b9e3bf09aa8933f8a",
+      "size_bytes": 9078,
+      "roles": [
+        "shared step-evidence containment and schema controls"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "scripts/validate_print_readiness.py",
+      "sha256": "7dc6159c15826da700a66d9e271776f8daed14716db80081fedea2e8712fb2ed",
+      "size_bytes": 86733,
+      "roles": [
+        "typed gate and print-readiness validator"
+      ],
+      "actions": [
+        "run_from_project_root"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "scripts/validate_release_package.py",
+      "sha256": "9b954d47726e7c09423d31f7cdbd8b0e07dff1b78c11bf826274473062d66ed3",
+      "size_bytes": 118881,
+      "roles": [
+        "whole-package release validator"
+      ],
+      "actions": [
+        "run_from_project_root"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "slicer_profiles/QIDI_PLUS4/README.md",
+      "sha256": "641631027fd7a0a452653ca7613b0f2f19c91e3bd49e3f90e9c9a3429c1777f4",
+      "size_bytes": 2277,
+      "roles": [
+        "QIDI process-preset import guide"
+      ],
+      "actions": [
+        "read"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "slicer_profiles/QIDI_PLUS4/abs_rapido_general_0p4.process.json",
+      "sha256": "756895e547ed186ab4b0d532d6d66fc3e2ad31376bc342a0150cbd4667a5d239",
+      "size_bytes": 2090,
+      "roles": [
+        "importable QIDI Studio process preset"
+      ],
+      "actions": [
+        "consume_accepted_output"
+      ],
+      "job_ids": [
+        "00E"
+      ]
+    },
+    {
+      "canonical_path": "slicer_profiles/QIDI_PLUS4/asa_structural_0p4.process.json",
+      "sha256": "a6116150e09eb3212b6d4d76b7def11495593f564f497d2e8e5799ec6e69f7de",
+      "size_bytes": 1710,
+      "roles": [
+        "importable QIDI Studio process preset"
+      ],
+      "actions": [
+        "consume_accepted_output"
+      ],
+      "job_ids": [
+        "06",
+        "07A",
+        "07B"
+      ]
+    },
+    {
+      "canonical_path": "slicer_profiles/QIDI_PLUS4/petg_general_0p4.process.json",
+      "sha256": "4e3fcda86460e9823234db1eff750e880a8b43bcb916dc2b584038b97376b605",
+      "size_bytes": 1435,
+      "roles": [
+        "importable QIDI Studio process preset"
+      ],
+      "actions": [
+        "consume_accepted_output"
+      ],
+      "job_ids": [
+        "03C3"
+      ]
+    },
+    {
+      "canonical_path": "software_helpers/calibrate_camera_charuco.py",
+      "sha256": "1d374cf440cfaa6861b0c5714e04893c0c577f3a3ce70f5fe04d0425b339542e",
+      "size_bytes": 6257,
+      "roles": [
+        "lens calibration"
+      ],
+      "actions": [
+        "run_from_project_root"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "software_helpers/capture_camera_frames.py",
+      "sha256": "a4b5d57fe1ba68b3fe991c96d85894f8f01621ba2fb5f2d9b404f7d245a10669",
+      "size_bytes": 19369,
+      "roles": [
+        "traceable non-overwriting camera capture"
+      ],
+      "actions": [
+        "run_from_project_root_in_venv"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "software_helpers/detect_apriltags.py",
+      "sha256": "4fb2e59d6ae33541de8984321df115533309f5d415e294d4388459dcc28001d0",
+      "size_bytes": 18152,
+      "roles": [
+        "tag verification"
+      ],
+      "actions": [
+        "run_from_project_root"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "stl/camera_plate_universal.stl",
+      "sha256": "7fb63205ddc37b517ee452eda352893c7912cebe74086d977ef0beb8ec2d006f",
+      "size_bytes": 560984,
+      "roles": [
+        "canonical slicing mesh"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": [
+        "03C3"
+      ],
+      "local_operator_copy": "03 - STL MODELS/camera_plate_universal.stl",
+      "local_copy_sha256": "7fb63205ddc37b517ee452eda352893c7912cebe74086d977ef0beb8ec2d006f",
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+    },
+    {
+      "canonical_path": "stl/hardware_fit_gauge.stl",
+      "sha256": "4a9a35b618a420931b7e8b6b717aee4a3eb68f8948fff04e5a69fd65266e9e42",
+      "size_bytes": 3489284,
+      "roles": [
+        "canonical slicing mesh"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": [
+        "00E"
+      ],
+      "local_operator_copy": "03 - STL MODELS/hardware_fit_gauge.stl",
+      "local_copy_sha256": "4a9a35b618a420931b7e8b6b717aee4a3eb68f8948fff04e5a69fd65266e9e42",
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+    },
+    {
+      "canonical_path": "stl/m5_nut_trap_fit_gauge.stl",
+      "sha256": "a6a8dd06689060766bb31f7eca10e6910fb3313a758af185bcbcdfde3c40a01e",
+      "size_bytes": 1261484,
+      "roles": [
+        "canonical slicing mesh"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": [
+        "06"
+      ],
+      "local_operator_copy": "03 - STL MODELS/m5_nut_trap_fit_gauge.stl",
+      "local_copy_sha256": "a6a8dd06689060766bb31f7eca10e6910fb3313a758af185bcbcdfde3c40a01e",
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+    },
+    {
+      "canonical_path": "stl/mast_foot_2020.stl",
+      "sha256": "2b6384b63a5b191ef88ae5590b50ffb5cd0c64d2102b3145b8336b2fb901faa5",
+      "size_bytes": 461684,
+      "roles": [
+        "canonical slicing mesh"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": [
+        "07A",
+        "07B"
+      ],
+      "local_operator_copy": "03 - STL MODELS/mast_foot_2020.stl",
+      "local_copy_sha256": "2b6384b63a5b191ef88ae5590b50ffb5cd0c64d2102b3145b8336b2fb901faa5",
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+    },
+    {
+      "canonical_path": "stl/mast_socket_fit_test.stl",
+      "sha256": "3a8e939ae308baa04fda3891dfc8851a0a3b2caa9e2a91148414255e1114905b",
+      "size_bytes": 1299984,
+      "roles": [
+        "canonical slicing mesh"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": [
+        "06"
+      ],
+      "local_operator_copy": "03 - STL MODELS/mast_socket_fit_test.stl",
+      "local_copy_sha256": "3a8e939ae308baa04fda3891dfc8851a0a3b2caa9e2a91148414255e1114905b",
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+    },
+    {
+      "canonical_path": "stl/setup_hardware_fit_gauge.stl",
+      "sha256": "e6394a26fe104fb2af1b05df14865a5be2908bf6e99fab79c93aa034a2dc57b4",
+      "size_bytes": 8378384,
+      "roles": [
+        "canonical slicing mesh"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": [
+        "00E"
+      ],
+      "local_operator_copy": "03 - STL MODELS/setup_hardware_fit_gauge.stl",
+      "local_copy_sha256": "e6394a26fe104fb2af1b05df14865a5be2908bf6e99fab79c93aa034a2dc57b4",
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+    },
+    {
+      "canonical_path": "stl/tpu_tip_retention_gauge.stl",
+      "sha256": "0476c9c867a9f28816c5df107f8bcff9e44b7e1ba79e8927501a8d1c6d32b777",
+      "size_bytes": 543284,
+      "roles": [
+        "canonical slicing mesh"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": [
+        "00E"
+      ],
+      "local_operator_copy": "03 - STL MODELS/tpu_tip_retention_gauge.stl",
+      "local_copy_sha256": "0476c9c867a9f28816c5df107f8bcff9e44b7e1ba79e8927501a8d1c6d32b777",
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+    }
+  ],
+  "local_stl_copy_count": 7,
+  "next_step": "14",
+  "operator_writable_directory": "06 - SAVE MEASUREMENTS AND PHOTOS",
+  "generated_control_hashes": {
+    "00 - START HERE.md": "db79efaac934fa774065ff97e9fdcb150b6434c44263ea916c8cb0a7a2d17b0e",
+    "01 - BEFORE YOU START.md": "ca04358485cd085f14ae7a8dd027dbb5d1944de99dd6b53992ec81792f1fdf52",
+    "02 - PARTS AND TOOLS CHECKLIST.md": "d6692fa4a43123139eb73d3147152458d4aeb5344934b16be8c6a10653681955",
+    "03 - STL MODELS/READ ME - HOW TO USE THESE MODELS.md": "f35a8909ef3b363d7e5fdd60e3c769d329d75dc82c16a648fed4ebd1ea55b839",
+    "03 - STL MODELS/STL MODEL LIST.csv": "490fcf76c73d94861e04f73fe9a98f1f22c014e588465faa8647f137b4294eb8",
+    "03B - PRINT SETTINGS FOR THIS STEP.md": "4191772ef35c7ef76f189d4978d1da54b4206393de1bc13f2a7418e4763c226e",
+    "04 - STEP-BY-STEP INSTRUCTIONS.md": "e68d9a58e80549befb007fb7b7aa0fc1cd845a4eb2717214c142754b152d0913",
+    "05 - CHECK YOUR WORK.md": "3cdd5e5f99ec7440fcb24fcecad4f61af9b10e223ad4a299f81acb741d4a1d50",
+    "06 - SAVE MEASUREMENTS AND PHOTOS/READ ME - WHAT TO RECORD.md": "1917a98e199ac446959e0f13861cea1a50b889575b27ba38c1d81fb06af35560",
+    "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/measurement_record.json": "5ee4bb4949fa113709e919a657f056432d3082169b83ea3d05432a42169fac01",
+    "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/signoff.json": "40fe8b644337397c4f00eb3d3828d15050921c498015379f11f9560aa8982468",
+    "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/Measurements Checklist.md": "3f6c7cd56b8a02fb896d81756fee85da7453983c788a651817427d211b9cecb3",
+    "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/Finish and Sign Off.md": "f48edf260a1d1423574a71af7e906819e6be6dc1387c1abcf6b5a7fd0f39400a",
+    "07 - FINISH THIS STEP AND CONTINUE.md": "8134475c19fbe9c24609597beff32e1b267560dc0d4c832cb4f752548c8df1e7",
+    "99 - TECHNICAL RECORDS - DO NOT EDIT/OPEN CONTROLLED FILES.md": "ae84d248b3f4c6e1bc9af272001a9aa390cfa427f4033e47ca5259d0a5da6b27",
+    "99 - TECHNICAL RECORDS - DO NOT EDIT/FILE INDEX.csv": "f32369ce1d1c790bdf44b1f8f3c8ca5993441b4ced10f99064c58ec8ccbc11bf",
+    "99 - TECHNICAL RECORDS - DO NOT EDIT/FILE MANIFEST.json": "5625a193ea77735dcb1f80ff1a3b6c0310a928ad76154210b644b45f336a818d",
+    "99 - TECHNICAL RECORDS - DO NOT EDIT/SHA256SUMS.txt": "db604365960f8c60ab88a732e5670144b049354112cf85dd11a738081fe1265b",
+    "99 - TECHNICAL RECORDS - DO NOT EDIT/HARDWARE AND TOOLS.csv": "1635f2f8365cf439455cb3f4edb5f2e77477348665e279722cad08636e60ccff"
+  }
+}

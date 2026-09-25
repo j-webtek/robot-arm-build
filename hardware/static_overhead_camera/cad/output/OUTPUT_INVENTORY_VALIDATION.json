@@ -1,0 +1,19 @@
+{
+  "status": "PASS",
+  "removed_obsolete_files_this_run": [],
+  "expected_part_type_count": 24,
+  "step_file_count": 24,
+  "stl_file_count": 24,
+  "assembly_file_count": 5,
+  "plate_file_count": 21,
+  "differences": {
+    "step_missing": [],
+    "step_unexpected": [],
+    "stl_missing": [],
+    "stl_unexpected": [],
+    "assembly_missing": [],
+    "assembly_unexpected": [],
+    "plate_missing": [],
+    "plate_unexpected": []
+  }
+}

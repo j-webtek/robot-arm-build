@@ -1,0 +1,30 @@
+{
+  "source": "C:\\Users\\Jack\\Desktop\\robot-arm-build\\hardware\\static_overhead_camera\\cad\\output\\plates_3mf\\00G-C1_ABS_received_camera_fit_tests.3mf",
+  "output": "C:\\Users\\Jack\\Desktop\\robot-arm-build\\hardware\\static_overhead_camera\\cad\\output\\revisions\\00G-C1_welded_v1\\00G-C1_ABS_received_camera_fit_tests_WELDED_v1.3mf",
+  "objects": [
+    {
+      "name": "camera_case_fit_gauge__01",
+      "original_vertices": 112080,
+      "welded_vertices": 18676,
+      "triangles": 37360,
+      "open_edges": 0,
+      "nonmanifold_edges": 0,
+      "geometry_unchanged": true
+    },
+    {
+      "name": "camera_case_shim_ladder__01",
+      "original_vertices": 212952,
+      "welded_vertices": 35490,
+      "triangles": 70984,
+      "open_edges": 0,
+      "nonmanifold_edges": 0,
+      "geometry_unchanged": true
+    }
+  ],
+  "source_sha256": "c56f828d3babeb368e9ed10d927c1f957c664a9eae745dd8924afbd055456ded",
+  "output_sha256": "c033b1bfb2fd42aa0b327cb1b04ad4c6dd79370baa85c5f7c85e026ba7bd385e",
+  "scope": "Exact-coordinate weld only; dimensions, labels, transforms and placement unchanged.",
+  "topology": "PASS",
+  "native_slicer_preview": "PENDING",
+  "physical_fit": "PENDING"
+}

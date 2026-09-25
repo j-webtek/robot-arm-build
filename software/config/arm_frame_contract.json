@@ -1,0 +1,105 @@
+{
+  "schema": "rocell.arm_frame_contract.v2",
+  "schema_version": 2,
+  "contract_id": "ROCELL-ROARM-M3-PRO-FRAMES-DRAFT-002",
+  "status": "OPEN_BLOCKING_NOT_COMMISSIONED",
+  "physical_release_effect": "NONE",
+  "hardware_identity": {
+    "manufacturer": "Waveshare",
+    "model": "RoArm-M3-Pro",
+    "controller": "ESP32-WROOM-32 general driver board",
+    "dof_contract": "5 arm DOF plus 1 gripper DOF"
+  },
+  "length_unit": "mm",
+  "angle_unit": "rad",
+  "frames": {
+    "Wv": "vendor URDF world/root frame; not the firmware Cartesian frame",
+    "R_u": "vendor URDF base_link frame; not assumed coincident with Wv or R_ctrl",
+    "R_ctrl": "firmware T=104/T=1051 Cartesian frame; independently correlate to the installed arm",
+    "E": "installation-specific camera-carrier frame rigidly attached to vendor link2",
+    "holder": "bundled Waveshare camera-holder mechanical frame at its measured rail position",
+    "C_arm": "arm-mounted Waveshare IMX335-B optical frame",
+    "G": "vendor hand_tcp planning/tool-holder frame",
+    "T": "route-specific physical contact-tool tip frame",
+    "B": "RC03 board frame, origin at front-left finished top surface; +x right, +y rear, +z up"
+  },
+  "frame_separation": {
+    "controller_frame_equivalence": "NOT_ASSUMED",
+    "prohibited_aliases": [
+      "R_ctrl=Wv",
+      "R_ctrl=R_u",
+      "Wv=R_u",
+      "E=link2",
+      "C_arm=holder",
+      "G=T"
+    ],
+    "rule": "No URDF pose may become a controller Cartesian command until configuration-dependent R_ctrl correlation and residual bounds are commissioned."
+  },
+  "pinned_sources": {
+    "vendor_urdf_repository_commit": "40dbd84b553695212fab713e8465f817ba95454d",
+    "local_kinematic_projection": "software/models/roarm_m3/roarm_m3_kinematic_40dbd84.urdf",
+    "local_kinematic_projection_sha256": "a565718e7d74b07702802cf41eb9549a6e38e50b5e80aa9b887ab1ae3d0d8190",
+    "python_sdk_commit": "d9893632aa7f5a9cb283136ab024faf3143ea7db",
+    "firmware_archive_sha256": "a28247fee0bbb65cc034ff206031b8700d2b1ec8e3a1fa4b1a5a7365c55f1a57"
+  },
+  "camera_installation": {
+    "carrier_link": "link2",
+    "carrier_frame": "E",
+    "holder": "bundled Waveshare camera holder",
+    "camera": "Waveshare IMX335 5MP USB Camera (B), SKU 26719 selected-unqualified candidate",
+    "link2_T_holder": null,
+    "holder_T_C_arm": null,
+    "state": "OPEN_BLOCKING_INSTALL_TRANSFORMS_UNMEASURED"
+  },
+  "controller_model_correlation": {
+    "R_ctrl_correlation_artifact": null,
+    "configuration_dependent_residual_artifact": null,
+    "state": "OPEN_BLOCKING_NOT_CHARACTERIZED"
+  },
+  "feedback_t1051": {
+    "cartesian_frame": "R_ctrl",
+    "endpoint_fields": ["x", "y", "z", "tit"],
+    "endpoint_fields_are_complete_Wv_T_G": false,
+    "joint_order": [
+      "b_base",
+      "s_shoulder",
+      "e_elbow",
+      "t_wrist_pitch",
+      "r_wrist_roll",
+      "g_gripper"
+    ],
+    "load_fields": ["tB", "tS", "tE", "tT", "tR", "tG"],
+    "torque_switch_fields": [
+      "torswitchB",
+      "torswitchS",
+      "torswitchE",
+      "torswitchT",
+      "torswitchR",
+      "torswitchG"
+    ],
+    "voltage_field": "v",
+    "voltage_field_unit_v": 0.01
+  },
+  "motion_t104": {
+    "cartesian_frame": "R_ctrl",
+    "fields": [
+      "x_mm",
+      "y_mm",
+      "z_mm",
+      "pitch_rad",
+      "roll_rad",
+      "gripper_rad",
+      "spd_coefficient"
+    ],
+    "spd_interpretation": "controller coefficient, not physical Cartesian speed",
+    "prohibited_alternative": "T=1041"
+  },
+  "required_before_motion": [
+    "received arm/controller/firmware identity",
+    "joint signs, limits, installed zero offsets, and commissioned reference procedure",
+    "validated FK and source hashes from Wv through R_u, E, G, and route-specific T",
+    "measured link2_T_holder and holder_T_C_arm at the locked rail position",
+    "measured B_T_Wv and independently qualified R_ctrl controller-model correlation",
+    "route TCP/compliance, empty-cell pose, command, load, power-loss, and collision characterization"
+  ]
+}

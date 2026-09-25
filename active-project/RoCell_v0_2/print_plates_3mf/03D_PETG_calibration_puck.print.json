@@ -1,0 +1,94 @@
+{
+  "schema_version": 2,
+  "design_revision": "RC02-PRO-R1",
+  "job_id": "03D",
+  "plate_file": "03D_PETG_calibration_puck.3mf",
+  "printer": {
+    "model": "QIDI Plus4",
+    "nominal_build_volume_mm": [
+      305.0,
+      305.0,
+      280.0
+    ],
+    "safe_plate_envelope_mm": [
+      295.0,
+      295.0,
+      280.0
+    ],
+    "edge_margin_mm": 5.0,
+    "default_nozzle_mm": 0.4
+  },
+  "stage": "production",
+  "selection": "required",
+  "purpose": "TCP calibration puck isolated at its fine process",
+  "parts": {
+    "calibration_puck.stl": 1
+  },
+  "prerequisites": [
+    "plus4_machine_confirmed",
+    "nozzle_0p4_confirmed",
+    "petg_calibration_profile_calibrated",
+    "calibration_clearance_holes_coupon_pass",
+    "geometry_matches_measurements",
+    "qidi_studio_roundtrip_confirmed"
+  ],
+  "process_profile_name": "petg_calibration_0p4",
+  "process_profile": {
+    "material": "PETG",
+    "nozzle_mm": 0.4,
+    "layer_height_mm": 0.16,
+    "walls": 4,
+    "top_layers": 6,
+    "bottom_layers": 6,
+    "infill_percent": 40,
+    "infill_pattern": "gyroid",
+    "supports": "off",
+    "bed_adhesion": "Skirt normally sufficient on clean textured PEI",
+    "dimensional_controls": "Do not enable ironing over the crosshair or central divot",
+    "purpose": "TCP calibration puck"
+  },
+  "slicer_warning": "Use a calibrated QIDI Studio filament preset for the exact brand and material; temperatures are deliberately not embedded in geometry-only 3MF files.",
+  "geometry_only_3mf": true,
+  "qidi_studio_native_project_required": true,
+  "qidi_studio_roundtrip_gate": "qidi_studio_roundtrip_confirmed",
+  "plate_envelope_mm": [
+    60.0,
+    60.0,
+    8.0
+  ],
+  "absolute_bed_bounds_mm": {
+    "min": [
+      122.5,
+      122.5,
+      0.0
+    ],
+    "max": [
+      182.5,
+      182.5,
+      8.0
+    ]
+  },
+  "centered_on_nominal_bed": true,
+  "source_stl_sha256": {
+    "calibration_puck.stl": "8853b88b08019bb84cedebf29685fcb3cde8d1701af9e01469a8344c35e0cbfc"
+  },
+  "process_profile_sha256": "8bfef01f473a15368eb72901b0b8e472315afb089b489388fd077fff02eb0a06",
+  "plate_sha256": "7ab9f1184d22271a192897c9b705bc25f78073cc9f0a3efb2517557f758dcfe0",
+  "objects": [
+    {
+      "name": "calibration_puck_1",
+      "bounds_mm": [
+        [
+          122.5,
+          122.5,
+          0.0
+        ],
+        [
+          182.5,
+          182.5,
+          8.0
+        ]
+      ]
+    }
+  ]
+}

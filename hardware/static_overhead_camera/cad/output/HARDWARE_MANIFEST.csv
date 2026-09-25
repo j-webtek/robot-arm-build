@@ -1,0 +1,15 @@
+item,quantity,use
+M6 x 25 external-hex flange-head bolt,4,10 mm wrench size; top-driven board corner clamps; head OD must be <=13.5 mm and must bear fully on the integrated 16.0 mm raised cap boss; first-cap physical seating remains mandatory
+M6 DIN 985 nyloc nut,5,four fresh final board-clamp nuts plus one sacrificial 00G nut-pocket/prevailing-torque test nut; 10 mm across flats and <=6.0 mm high; side-loaded captured saddle pockets
+M5 x 75 flange-head bolt,32,"sixteen standard-splice positions, four outer-crossbar splice positions, four center-crossbar splice positions, and eight portal-corner positions"
+M5 x 80 flange-head bolt,4,two diagonally separated saddle tower receiver cross-bolts per tower
+M5 x 85 flange-head bolt,4,four carriage-to-boom end-collar positions
+M5 x 90 flange-head bolt,8,four vertical top/bottom sandwich-strap bolts per boom root
+M5 flanged nyloc nut,52,48 final installed M5 joints plus four sacrificial carriage nuts used only for the empty-frame proof/creep test; use four fresh nuts for final overhead carriage installation; no loose M5 washers required
+M4 x 60 button-head bolt,4,four perimeter keeper bolts installed downward; washer and head fully recessed in keeper; nyloc and washer below cage base
+M4 x 70 button-head socket bolt,3,2.5 mm internal hex; leveling screws installed downward from above carriage into captured cage-base nuts
+M4 standard hex nut,6,three underside-loaded cage-base captured nuts beneath intact load-bearing roofs plus three accessible jam nuts directly below carriage
+M4 nyloc nut,4,four-point keeper closure below cage base
+M4 washer,14,"three under leveling heads, three above leveling jam nuts, four under recessed keeper heads, and four above keeper nylocs"
+5.0 mm maximum-width cable tie,6,"two integrated cage slots, two boom floor tie stations, and two right-upright floor tie stations"
+complete factory-terminated independent metal camera safety tether assembly,1,"500 +/- 25 mm finished cable-centerline length; 1.5-2.0 mm 7x7 stainless cable; coated OD <=3.0 mm; >=130 mm laid-flat choker eye around the exposed right distal boom station B (396.25,152.5); captive screw-lock cage connector stock/pin <=5 mm and opening >=9 mm; manufacturer WLL >=10 kg and MBL >=50 kg"

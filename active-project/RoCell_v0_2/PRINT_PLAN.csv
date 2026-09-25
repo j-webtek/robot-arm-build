@@ -1,0 +1,45 @@
+job_id,stage,selection,part_file,qty,material,process_profile,nozzle_mm,layer_mm,walls,top_layers,bottom_layers,infill_percent,infill_pattern,supports,orientation
+00A,diagnostic,required,keyboard_corner_fit_test.stl,1,PETG,petg_tray_structural_0p4,0.4,0.2,5,6,6,35,gyroid,off,Use the locked orientation and placement in the named 3MF; do not auto-orient
+00A,diagnostic,required,keyboard_seam_fit_male.stl,1,PETG,petg_tray_structural_0p4,0.4,0.2,5,6,6,35,gyroid,off,Use the locked orientation and placement in the named 3MF; do not auto-orient
+00A,diagnostic,required,keyboard_seam_fit_female.stl,1,PETG,petg_tray_structural_0p4,0.4,0.2,5,6,6,35,gyroid,off,Use the locked orientation and placement in the named 3MF; do not auto-orient
+00A,diagnostic,required,hardware_fit_gauge.stl,1,PETG,petg_tray_structural_0p4,0.4,0.2,5,6,6,35,gyroid,off,Use the locked orientation and placement in the named 3MF; do not auto-orient
+00A,diagnostic,required,m4_washer_fit_gauge.stl,1,PETG,petg_tray_structural_0p4,0.4,0.2,5,6,6,35,gyroid,off,Use the locked orientation and placement in the named 3MF; do not auto-orient
+00B,diagnostic,required,phone_width_fit_test.stl,1,PETG,petg_cradle_0p4,0.4,0.2,5,5,5,30,gyroid,build-plate only under horizontal clamp bores if needed,Use the locked orientation and placement in the named 3MF; do not auto-orient
+00B,diagnostic,required,m4_horizontal_insert_fit_gauge.stl,1,PETG,petg_cradle_0p4,0.4,0.2,5,5,5,30,gyroid,build-plate only under horizontal clamp bores if needed,Use the locked orientation and placement in the named 3MF; do not auto-orient
+00B,diagnostic,required,cable_tie_saddle_fit_gauge.stl,1,PETG,petg_cradle_0p4,0.4,0.2,5,5,5,30,gyroid,build-plate only under horizontal clamp bores if needed,Use the locked orientation and placement in the named 3MF; do not auto-orient
+00B,diagnostic,required,m4_washer_fit_gauge.stl,1,PETG,petg_cradle_0p4,0.4,0.2,5,5,5,30,gyroid,build-plate only under horizontal clamp bores if needed,Use the locked orientation and placement in the named 3MF; do not auto-orient
+00C,diagnostic,required,compliant_tool_grip_fit_test.stl,1,PETG,petg_precision_0p4,0.4,0.16,5,6,6,40,gyroid,off,Use the locked orientation and placement in the named 3MF; do not auto-orient
+00C,diagnostic,required,spring_fit_gauge.stl,1,PETG,petg_precision_0p4,0.4,0.16,5,6,6,40,gyroid,off,Use the locked orientation and placement in the named 3MF; do not auto-orient
+00C,diagnostic,required,m3_insert_fit_gauge.stl,1,PETG,petg_precision_0p4,0.4,0.16,5,6,6,40,gyroid,off,Use the locked orientation and placement in the named 3MF; do not auto-orient
+00C,diagnostic,required,m3_head_fit_gauge.stl,1,PETG,petg_precision_0p4,0.4,0.16,5,6,6,40,gyroid,off,Use the locked orientation and placement in the named 3MF; do not auto-orient
+00D,diagnostic,required,stylus_diameter_gauge.stl,1,PETG,petg_adapter_0p4,0.4,0.12,4,5,5,100,rectilinear,off,Use the locked orientation and placement in the named 3MF; do not auto-orient
+00D,diagnostic,required,thread_pilot_fit_gauge.stl,1,PETG,petg_adapter_0p4,0.4,0.12,4,5,5,100,rectilinear,off,Use the locked orientation and placement in the named 3MF; do not auto-orient
+00E,diagnostic,required,hardware_fit_gauge.stl,1,PETG,petg_general_0p4,0.4,0.2,4,5,5,25,gyroid,off unless a job override says otherwise,Use the locked orientation and placement in the named 3MF; do not auto-orient
+00E,diagnostic,required,setup_hardware_fit_gauge.stl,1,PETG,petg_general_0p4,0.4,0.2,4,5,5,25,gyroid,off unless a job override says otherwise,Use the locked orientation and placement in the named 3MF; do not auto-orient
+00E,diagnostic,required,tpu_tip_retention_gauge.stl,1,PETG,petg_general_0p4,0.4,0.2,4,5,5,25,gyroid,off unless a job override says otherwise,Use the locked orientation and placement in the named 3MF; do not auto-orient
+00F,diagnostic,required,hardware_fit_gauge.stl,1,PETG,petg_calibration_0p4,0.4,0.16,4,6,6,40,gyroid,off,Use the locked orientation and placement in the named 3MF; do not auto-orient
+00F,diagnostic,required,m4_washer_fit_gauge.stl,1,PETG,petg_calibration_0p4,0.4,0.16,4,6,6,40,gyroid,off,Use the locked orientation and placement in the named 3MF; do not auto-orient
+01,first_article,required,keyboard_tray_left.stl,1,PETG,petg_tray_structural_0p4,0.4,0.2,5,6,6,35,gyroid,off,Use the locked orientation and placement in the named 3MF; do not auto-orient
+02,production,required,keyboard_tray_right.stl,1,PETG,petg_tray_structural_0p4,0.4,0.2,5,6,6,35,gyroid,off,Use the locked orientation and placement in the named 3MF; do not auto-orient
+03A,production,required,phone_cradle_a16.stl,1,PETG,petg_cradle_0p4,0.4,0.2,5,5,5,30,gyroid,build-plate only under horizontal clamp bores if needed,Use the locked orientation and placement in the named 3MF; do not auto-orient
+03B,production,required,keyboard_rear_clamp.stl,2,PETG,petg_general_0p4,0.4,0.2,4,5,5,25,gyroid,off unless a job override says otherwise,Use the locked orientation and placement in the named 3MF; do not auto-orient
+03C1,first_article,required,tag_frame_ID0_55mm.stl,1,PETG,petg_general_0p4,0.4,0.2,4,5,5,25,gyroid,off unless a job override says otherwise,Use the locked orientation and placement in the named 3MF; do not auto-orient
+03C2,production,required,tag_frame_ID1_55mm.stl,1,PETG,petg_general_0p4,0.4,0.2,4,5,5,25,gyroid,off unless a job override says otherwise,Use the locked orientation and placement in the named 3MF; do not auto-orient
+03C2,production,required,tag_frame_ID2_55mm.stl,1,PETG,petg_general_0p4,0.4,0.2,4,5,5,25,gyroid,off unless a job override says otherwise,Use the locked orientation and placement in the named 3MF; do not auto-orient
+03C2,production,required,tag_frame_ID3_55mm.stl,1,PETG,petg_general_0p4,0.4,0.2,4,5,5,25,gyroid,off unless a job override says otherwise,Use the locked orientation and placement in the named 3MF; do not auto-orient
+03C2,production,required,tag_frame_ID4_55mm.stl,1,PETG,petg_general_0p4,0.4,0.2,4,5,5,25,gyroid,off unless a job override says otherwise,Use the locked orientation and placement in the named 3MF; do not auto-orient
+03C2,production,required,tag_frame_ID5_55mm.stl,1,PETG,petg_general_0p4,0.4,0.2,4,5,5,25,gyroid,off unless a job override says otherwise,Use the locked orientation and placement in the named 3MF; do not auto-orient
+03C3,production,required,camera_plate_universal.stl,1,PETG,petg_general_0p4,0.4,0.2,4,5,5,25,gyroid,off unless a job override says otherwise,Use the locked orientation and placement in the named 3MF; do not auto-orient
+03D,production,required,calibration_puck.stl,1,PETG,petg_calibration_0p4,0.4,0.16,4,6,6,40,gyroid,off,Use the locked orientation and placement in the named 3MF; do not auto-orient
+04A,route,any_tool_route,compliant_tool_body.stl,1,PETG,petg_precision_0p4,0.4,0.16,5,6,6,40,gyroid,off,Use the locked orientation and placement in the named 3MF; do not auto-orient
+04A,route,any_tool_route,compliant_tool_top_cap.stl,2,PETG,petg_precision_0p4,0.4,0.16,5,6,6,40,gyroid,off,Use the locked orientation and placement in the named 3MF; do not auto-orient
+04B,route,phone_stylus_route,stylus_collar_9mm.stl,2,PETG,petg_adapter_0p4,0.4,0.12,4,5,5,100,rectilinear,off,Use the locked orientation and placement in the named 3MF; do not auto-orient
+04C,route,keyboard_rod_route,rod_bushing_6_to_9mm.stl,2,PETG,petg_adapter_0p4,0.4,0.12,4,5,5,100,rectilinear,off,Use the locked orientation and placement in the named 3MF; do not auto-orient
+05A,first_article,required,phone_clamp_tip_TPU_M4.stl,1,TPU 95A,tpu95a_0p4,0.4,0.16,3,5,5,100,rectilinear,off,Use the locked orientation and placement in the named 3MF; do not auto-orient
+05B,production,required,phone_clamp_tip_TPU_M4.stl,3,TPU 95A,tpu95a_0p4,0.4,0.16,3,5,5,100,rectilinear,off,Use the locked orientation and placement in the named 3MF; do not auto-orient
+05C,first_article,keyboard_rod_route,keyboard_tip_TPU_6mm.stl,1,TPU 95A,tpu95a_0p4,0.4,0.16,3,5,5,100,rectilinear,off,Use the locked orientation and placement in the named 3MF; do not auto-orient
+05D,production,keyboard_rod_route,keyboard_tip_TPU_6mm.stl,3,TPU 95A,tpu95a_0p4,0.4,0.16,3,5,5,100,rectilinear,off,Use the locked orientation and placement in the named 3MF; do not auto-orient
+06,diagnostic,camera_mast_optional,mast_socket_fit_test.stl,1,ASA,asa_structural_0p4,0.4,0.24,6,6,6,45,gyroid,build-plate only under transverse bores if needed,Use the locked orientation and placement in the named 3MF; do not auto-orient
+06,diagnostic,camera_mast_optional,m5_nut_trap_fit_gauge.stl,1,ASA,asa_structural_0p4,0.4,0.24,6,6,6,45,gyroid,build-plate only under transverse bores if needed,Use the locked orientation and placement in the named 3MF; do not auto-orient
+07A,first_article,camera_mast_optional,mast_foot_2020.stl,1,ASA,asa_structural_0p4,0.4,0.24,6,6,6,45,gyroid,build-plate only under transverse bores if needed,Use the locked orientation and placement in the named 3MF; do not auto-orient
+07B,optional,camera_mast_optional,mast_foot_2020.stl,1,ASA,asa_structural_0p4,0.4,0.24,6,6,6,45,gyroid,build-plate only under transverse bores if needed,Use the locked orientation and placement in the named 3MF; do not auto-orient

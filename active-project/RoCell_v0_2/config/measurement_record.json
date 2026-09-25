@@ -1,0 +1,1255 @@
+{
+  "schema_version": 2,
+  "design_revision": "RC02-PRO-R1",
+  "printer": "QIDI Plus4",
+  "test_context": {
+    "operator": null,
+    "date": null,
+    "printer_serial": null,
+    "measurement_tool_id": null,
+    "evidence_directory": null,
+    "qidi_studio_version": null
+  },
+  "selected_routes": {
+    "phone_stylus_route": false,
+    "keyboard_rod_route": false,
+    "camera_mast_optional": false
+  },
+  "gates": {
+    "plus4_machine_confirmed": {
+      "category": "machine",
+      "status": "PASS",
+      "scope": {
+        "design_revision": "RC02-PRO-R1",
+        "material": "not_applicable",
+        "process_profile": "machine_configuration",
+        "nozzle_mm": "not_applicable"
+      },
+      "recorded_values": {
+        "printer_model": "QIDI Plus4",
+        "nominal_build_volume_mm": [
+          305,
+          305,
+          280
+        ],
+        "safe_plate_envelope_mm": [
+          295,
+          295,
+          280
+        ]
+      },
+      "evidence": "Confirm the printer model and conservative 295 x 295 x 280 mm release envelope."
+    },
+    "nozzle_0p4_confirmed": {
+      "category": "machine",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC02-PRO-R1",
+        "material": "not_applicable",
+        "process_profile": "machine_configuration",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "installed_nozzle_mm": null,
+        "verification_method": null
+      },
+      "evidence": "Confirm the installed nozzle is 0.4 mm and record how it was verified."
+    },
+    "petg_general_profile_calibrated": {
+      "category": "material",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC02-PRO-R1",
+        "material": "PETG",
+        "process_profile": "petg_general_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "brand": null,
+        "filament_name": null,
+        "spool_lot": null,
+        "profile_revision": null,
+        "drying_record": null,
+        "calibration_result": null
+      },
+      "evidence": "Calibrate the exact PETG spool with petg_general_0p4."
+    },
+    "petg_tray_profile_calibrated": {
+      "category": "material",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC02-PRO-R1",
+        "material": "PETG",
+        "process_profile": "petg_tray_structural_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "brand": null,
+        "filament_name": null,
+        "spool_lot": null,
+        "profile_revision": null,
+        "drying_record": null,
+        "calibration_result": null
+      },
+      "evidence": "Calibrate the exact PETG spool with petg_tray_structural_0p4."
+    },
+    "petg_cradle_profile_calibrated": {
+      "category": "material",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC02-PRO-R1",
+        "material": "PETG",
+        "process_profile": "petg_cradle_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "brand": null,
+        "filament_name": null,
+        "spool_lot": null,
+        "profile_revision": null,
+        "drying_record": null,
+        "calibration_result": null
+      },
+      "evidence": "Calibrate the exact PETG spool with petg_cradle_0p4."
+    },
+    "petg_precision_profile_calibrated": {
+      "category": "material",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC02-PRO-R1",
+        "material": "PETG",
+        "process_profile": "petg_precision_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "brand": null,
+        "filament_name": null,
+        "spool_lot": null,
+        "profile_revision": null,
+        "drying_record": null,
+        "calibration_result": null
+      },
+      "evidence": "Calibrate the exact PETG spool with petg_precision_0p4."
+    },
+    "petg_adapter_profile_calibrated": {
+      "category": "material",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC02-PRO-R1",
+        "material": "PETG",
+        "process_profile": "petg_adapter_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "brand": null,
+        "filament_name": null,
+        "spool_lot": null,
+        "profile_revision": null,
+        "drying_record": null,
+        "calibration_result": null
+      },
+      "evidence": "Calibrate the exact PETG spool with petg_adapter_0p4."
+    },
+    "petg_calibration_profile_calibrated": {
+      "category": "material",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC02-PRO-R1",
+        "material": "PETG",
+        "process_profile": "petg_calibration_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "brand": null,
+        "filament_name": null,
+        "spool_lot": null,
+        "profile_revision": null,
+        "drying_record": null,
+        "calibration_result": null
+      },
+      "evidence": "Calibrate the exact PETG spool with petg_calibration_0p4."
+    },
+    "tpu_profile_calibrated": {
+      "category": "material",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC02-PRO-R1",
+        "material": "TPU 95A",
+        "process_profile": "tpu95a_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "brand": null,
+        "filament_name": null,
+        "spool_lot": null,
+        "profile_revision": null,
+        "drying_record": null,
+        "calibration_result": null,
+        "shore_hardness": "95A"
+      },
+      "evidence": "Calibrate the exact dry TPU spool with tpu95a_0p4."
+    },
+    "asa_profile_calibrated": {
+      "category": "material",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC02-PRO-R1",
+        "material": "ASA",
+        "process_profile": "asa_structural_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "brand": null,
+        "filament_name": null,
+        "spool_lot": null,
+        "profile_revision": null,
+        "drying_record": null,
+        "calibration_result": null,
+        "chamber_condition": null
+      },
+      "evidence": "Calibrate the exact ASA spool with the intended chamber conditions."
+    },
+    "keyboard_dimensions_measured": {
+      "category": "measurement",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC02-PRO-R1",
+        "material": "device",
+        "process_profile": "geometry_input",
+        "nozzle_mm": "not_applicable"
+      },
+      "recorded_values": {
+        "device_model": null,
+        "width_mm": null,
+        "depth_mm": null,
+        "height_mm": null,
+        "cable_keepout_mm": null
+      },
+      "nominal_values": {
+        "width_mm": 315,
+        "depth_mm": 147,
+        "height_mm": 21
+      },
+      "evidence": "Measure the keyboard at its widest and tallest points, including its cable keepout."
+    },
+    "phone_dimensions_measured": {
+      "category": "measurement",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC02-PRO-R1",
+        "material": "device",
+        "process_profile": "geometry_input",
+        "nozzle_mm": "not_applicable"
+      },
+      "recorded_values": {
+        "device_model": null,
+        "width_mm": null,
+        "length_mm": null,
+        "thickness_mm": null,
+        "case_installed": null,
+        "camera_bump_envelope_mm": null
+      },
+      "nominal_values": {
+        "width_mm": 77.9,
+        "length_mm": 164.4,
+        "thickness_mm": 7.9
+      },
+      "evidence": "Measure the phone in the exact case state, including the camera-bump envelope."
+    },
+    "phone_side_features_measured": {
+      "category": "measurement",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC02-PRO-R1",
+        "material": "device",
+        "process_profile": "geometry_input",
+        "nozzle_mm": "not_applicable"
+      },
+      "recorded_values": {
+        "right_side_keepouts_from_bottom_mm": null,
+        "selected_clamp_centers_from_bottom_mm": null,
+        "minimum_keepout_margin_mm": null
+      },
+      "evidence": "Record every right-side feature interval and prove both clamp centers clear them."
+    },
+    "phone_cable_measured": {
+      "category": "measurement",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC02-PRO-R1",
+        "material": "device",
+        "process_profile": "geometry_input",
+        "nozzle_mm": "not_applicable"
+      },
+      "recorded_values": {
+        "connector_width_mm": null,
+        "connector_thickness_mm": null,
+        "straight_projection_mm": null,
+        "minimum_bend_radius_mm": null,
+        "selected_tie_width_mm": null
+      },
+      "evidence": "Measure the installed USB-C connector, bend envelope, and selected strain-relief tie."
+    },
+    "gripper_interface_measured": {
+      "category": "measurement",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC02-PRO-R1",
+        "material": "device",
+        "process_profile": "petg_precision_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "jaw_opening_mm": null,
+        "jaw_pad_width_mm": null,
+        "jaw_pad_height_mm": null,
+        "selected_grip_setting": null
+      },
+      "evidence": "Measure the RoArm gripper and record the intended low-force gripping setting."
+    },
+    "spring_dimensions_measured": {
+      "category": "measurement",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC02-PRO-R1",
+        "material": "hardware",
+        "process_profile": "petg_precision_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "od_mm": null,
+        "id_mm": null,
+        "free_length_mm": null,
+        "approx_rate_n_per_mm": null,
+        "coil_bind_length_mm": null
+      },
+      "nominal_values": {
+        "max_od_mm": 13.5,
+        "min_id_mm": 10.5,
+        "free_length_range_mm": "18-22"
+      },
+      "evidence": "Measure spring OD, ID, free length, approximate rate, and coil-bind length."
+    },
+    "stylus_diameter_measured": {
+      "category": "measurement",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC02-PRO-R1",
+        "material": "device",
+        "process_profile": "petg_adapter_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "stylus_model": null,
+        "diameter_mm": null,
+        "measurement_locations": null
+      },
+      "nominal_values": {
+        "diameter_mm": 9
+      },
+      "evidence": "Measure the capacitive stylus barrel at several locations."
+    },
+    "keyboard_rod_measured": {
+      "category": "measurement",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC02-PRO-R1",
+        "material": "hardware",
+        "process_profile": "petg_adapter_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "material": null,
+        "diameter_mm": null,
+        "length_mm": null,
+        "measurement_locations": null
+      },
+      "nominal_values": {
+        "diameter_mm": 6,
+        "length_range_mm": "90-110"
+      },
+      "evidence": "Measure the rod diameter at several points and record its finished length."
+    },
+    "tag_stock_measured": {
+      "category": "measurement",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC02-PRO-R1",
+        "material": "paper",
+        "process_profile": "geometry_input",
+        "nozzle_mm": "not_applicable"
+      },
+      "recorded_values": {
+        "stock_type": null,
+        "tile_width_mm": null,
+        "tile_height_mm": null,
+        "stock_thickness_mm": null
+      },
+      "evidence": "Measure the cut tag stock and confirm it is flat, matte, and compatible with the recess."
+    },
+    "camera_mount_interface_measured": {
+      "category": "measurement",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC02-PRO-R1",
+        "material": "hardware",
+        "process_profile": "petg_general_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "camera_model": null,
+        "camera_thread": null,
+        "safe_thread_engagement_mm": null,
+        "selected_camera_screw_length_mm": null,
+        "selected_tslot_screw_length_mm": null,
+        "strap_width_mm": null
+      },
+      "evidence": "Measure the camera thread, screw engagement, crossbar fasteners, and selected strap."
+    },
+    "geometry_matches_measurements": {
+      "category": "release",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC02-PRO-R1",
+        "material": "multiple",
+        "process_profile": "generated_geometry",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "design_revision": null,
+        "effective_parameters_file": null,
+        "measurement_record_revision": null,
+        "regeneration_completed": null,
+        "affected_parts_reviewed": null
+      },
+      "evidence": "Confirm all PASS measurement/coupon selections match config/parameters.json for this design revision."
+    },
+    "qidi_studio_roundtrip_confirmed": {
+      "category": "release",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC02-PRO-R1",
+        "material": "multiple",
+        "process_profile": "all_active_profiles",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "qidi_studio_version": null,
+        "validated_job_ids": [],
+        "saved_profile_revision_by_job": {},
+        "geometry_scale_percent_by_job": {},
+        "object_count_by_job": {},
+        "critical_layer_preview_pass_by_job": {},
+        "native_project_sha256_by_job": {},
+        "evidence_reference_by_job": {}
+      },
+      "evidence": "For each production job: import, slice, save, reopen, and inspect without auto-scaling or losing objects/settings; record the job-specific native-project hash and preview evidence."
+    },
+    "adapter_retention_method_selected": {
+      "category": "release",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC02-PRO-R1",
+        "material": "hardware",
+        "process_profile": "petg_adapter_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "route": null,
+        "retention_method": null,
+        "hardware_or_adhesive_spec": null,
+        "thread_pilot_selection": null
+      },
+      "evidence": "Select and document the positive or removable adapter-retention method."
+    },
+    "keyboard_corner_coupon_pass": {
+      "category": "coupon",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC02-PRO-R1",
+        "material": "PETG",
+        "process_profile": "petg_tray_structural_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "fit_result": null,
+        "rocking_result": null,
+        "selected_compensation_mm": null
+      },
+      "evidence": "Confirm the keyboard corner seats on both datums without force or rocking."
+    },
+    "keyboard_seam_coupon_pass": {
+      "category": "coupon",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC02-PRO-R1",
+        "material": "PETG",
+        "process_profile": "petg_tray_structural_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "fit_result": null,
+        "assembled_gap_mm": null,
+        "flush_mismatch_mm": null
+      },
+      "evidence": "Mate the M/F coupons by hand and record gap and flush mismatch."
+    },
+    "tray_clearance_holes_coupon_pass": {
+      "category": "coupon",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC02-PRO-R1",
+        "material": "PETG",
+        "process_profile": "petg_tray_structural_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "board_screw_major_diameter_mm": null,
+        "smallest_free_hole_mm": null,
+        "m4_washer_od_mm": null,
+        "washer_fit_result": null
+      },
+      "evidence": "Record the smallest freely passing tray-profile hole and the accepted M4 washer recess diameter for the selected board hardware."
+    },
+    "general_clearance_holes_coupon_pass": {
+      "category": "coupon",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC02-PRO-R1",
+        "material": "PETG",
+        "process_profile": "petg_general_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "m3_selected_mm": null,
+        "m4_or_board_screw_selected_mm": null,
+        "m5_selected_mm": null
+      },
+      "evidence": "Record the smallest freely passing general-profile PETG hole for each fastener family."
+    },
+    "calibration_clearance_holes_coupon_pass": {
+      "category": "coupon",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC02-PRO-R1",
+        "material": "PETG",
+        "process_profile": "petg_calibration_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "board_screw_major_diameter_mm": null,
+        "smallest_free_hole_mm": null,
+        "m4_washer_od_mm": null,
+        "washer_fit_result": null
+      },
+      "evidence": "Record the calibration-profile clearance and washer fit used by the TCP puck."
+    },
+    "setup_hardware_coupon_pass": {
+      "category": "coupon",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC02-PRO-R1",
+        "material": "PETG",
+        "process_profile": "petg_general_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "m3_head_recess_d_mm": null,
+        "m4_washer_od_mm": null,
+        "m5_washer_od_mm": null,
+        "camera_hex_ac_mm": null,
+        "fit_result": null
+      },
+      "evidence": "Verify the production recess, washer, and camera-hex selections against the setup gauge."
+    },
+    "cradle_m4_washer_coupon_pass": {
+      "category": "coupon",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC02-PRO-R1",
+        "material": "PETG",
+        "process_profile": "petg_cradle_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "actual_washer_od_mm": null,
+        "m4_washer_od_mm": null,
+        "fit_result": null
+      },
+      "evidence": "Using the exact cradle profile, record the actual washer OD and the smallest recess that seats it flat without forcing."
+    },
+    "precision_m3_head_coupon_pass": {
+      "category": "coupon",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC02-PRO-R1",
+        "material": "PETG",
+        "process_profile": "petg_precision_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "screw_head_d_mm": null,
+        "m3_head_recess_d_mm": null,
+        "fit_result": null
+      },
+      "evidence": "Using the exact precision-tool profile, record the actual M3 screw-head diameter and the smallest recess that seats it below the surrounding face."
+    },
+    "phone_width_coupon_pass": {
+      "category": "coupon",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC02-PRO-R1",
+        "material": "PETG",
+        "process_profile": "petg_cradle_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "fit_result": null,
+        "lateral_clearance_mm": null,
+        "rail_height_result": null
+      },
+      "evidence": "Confirm the final phone/case seats by hand with measured slight lateral clearance."
+    },
+    "m4_horizontal_insert_coupon_pass": {
+      "category": "coupon",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC02-PRO-R1",
+        "material": "PETG",
+        "process_profile": "petg_cradle_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "selected_pocket_mm": null,
+        "insert_od_mm": null,
+        "insert_length_mm": null,
+        "installed_depth_mm": null,
+        "reamed_passage_mm": null,
+        "retention_result": null
+      },
+      "evidence": "Install the production M4 insert in the same-axis coupon and record size, depth, passage, and retention."
+    },
+    "cable_tie_saddle_coupon_pass": {
+      "category": "coupon",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC02-PRO-R1",
+        "material": "PETG",
+        "process_profile": "petg_cradle_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "selected_slot_width_mm": null,
+        "selected_tie_width_mm": null,
+        "feed_result": null,
+        "saddle_crack_result": null,
+        "cable_clearance_result": null
+      },
+      "evidence": "Feed the selected tie through the saddle and confirm secure clearance without cracking."
+    },
+    "m3_insert_coupon_pass": {
+      "category": "coupon",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC02-PRO-R1",
+        "material": "PETG",
+        "process_profile": "petg_precision_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "selected_pocket_mm": null,
+        "insert_od_mm": null,
+        "insert_length_mm": null,
+        "installed_depth_mm": null,
+        "retention_result": null
+      },
+      "evidence": "Record the precision-profile M3 pocket that installs square without splitting or spinning."
+    },
+    "gripper_coupon_pass": {
+      "category": "coupon",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC02-PRO-R1",
+        "material": "PETG",
+        "process_profile": "petg_precision_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "selected_grip_setting": null,
+        "shim_each_side_mm": null,
+        "slip_result": null,
+        "crush_result": null
+      },
+      "evidence": "Grip the production-face coupon without bottoming, rocking, slipping, or crushing."
+    },
+    "spring_fit_coupon_pass": {
+      "category": "coupon",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC02-PRO-R1",
+        "material": "PETG",
+        "process_profile": "petg_precision_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "selected_step_mm": null,
+        "post_fit_result": null,
+        "cup_fit_result": null,
+        "binding_result": null
+      },
+      "evidence": "Record the stepped spring seat and verify the spring fits without binding."
+    },
+    "stylus_gauge_coupon_pass": {
+      "category": "coupon",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC02-PRO-R1",
+        "material": "PETG",
+        "process_profile": "petg_adapter_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "selected_nominal_mm": null,
+        "sliding_fit_result": null,
+        "excess_play_result": null
+      },
+      "evidence": "Record the smallest adapter-profile stylus hole that slides freely without excessive play."
+    },
+    "thread_pilot_coupon_pass": {
+      "category": "coupon",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC02-PRO-R1",
+        "material": "PETG",
+        "process_profile": "petg_adapter_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "fastener_spec": null,
+        "selected_pilot_mm": null,
+        "thread_form_result": null,
+        "split_result": null
+      },
+      "evidence": "Record the horizontal pilot that forms usable threads without splitting."
+    },
+    "phone_tpu_retention_coupon_pass": {
+      "category": "coupon",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC02-PRO-R1",
+        "material": "TPU 95A",
+        "process_profile": "tpu95a_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "first_article_job": null,
+        "installation_result": null,
+        "axial_pull_test_method": null,
+        "pull_off_result": null,
+        "contact_face_result": null
+      },
+      "evidence": "Test the job 05A first article on the M4 peg and record the pull-off result."
+    },
+    "keyboard_tpu_retention_coupon_pass": {
+      "category": "coupon",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC02-PRO-R1",
+        "material": "TPU 95A",
+        "process_profile": "tpu95a_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "first_article_job": null,
+        "installation_result": null,
+        "axial_pull_test_method": null,
+        "pull_off_result": null,
+        "contact_face_result": null
+      },
+      "evidence": "Test the job 05C first article on the 6 mm peg and record the pull-off result."
+    },
+    "asa_mast_socket_coupon_pass": {
+      "category": "coupon",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC02-PRO-R1",
+        "material": "ASA",
+        "process_profile": "asa_structural_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "selected_socket_mm": null,
+        "extrusion_x_mm": null,
+        "extrusion_y_mm": null,
+        "fit_result": null
+      },
+      "evidence": "Record the same-profile ASA socket that fits the measured extrusion without rocking."
+    },
+    "asa_m5_nut_coupon_pass": {
+      "category": "coupon",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC02-PRO-R1",
+        "material": "ASA",
+        "process_profile": "asa_structural_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "selected_hex_mm": null,
+        "nut_across_flats_mm": null,
+        "nut_thickness_mm": null,
+        "retention_result": null
+      },
+      "evidence": "Record the ASA hex pocket that fully seats the actual M5 nut without splitting or spinning."
+    },
+    "asa_m5_clearance_coupon_pass": {
+      "category": "coupon",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC02-PRO-R1",
+        "material": "ASA",
+        "process_profile": "asa_structural_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "bolt_major_diameter_mm": null,
+        "selected_horizontal_hole_mm": null,
+        "selected_base_hole_mm": null,
+        "m5_washer_od_mm": null,
+        "m5_washer_fit_result": null
+      },
+      "evidence": "Record the production-axis ASA M5 passage, base-hole, and washer fits."
+    },
+    "tag_artwork_scale_pass": {
+      "category": "first_article",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC02-PRO-R1",
+        "material": "paper",
+        "process_profile": "artwork_100_percent",
+        "nozzle_mm": "not_applicable"
+      },
+      "recorded_values": {
+        "tag_id": null,
+        "detection_edge_mm": null,
+        "tile_size_mm": null,
+        "print_scale_percent": null,
+        "orientation_marked": null
+      },
+      "evidence": "Verify the tag detection edge, tile size, 100% scale, and +Y orientation mark."
+    },
+    "tag_frame_first_article_pass": {
+      "category": "first_article",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC02-PRO-R1",
+        "material": "PETG",
+        "process_profile": "petg_general_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "job_id": null,
+        "flatness_mm": null,
+        "tag_fit_result": null,
+        "washer_zone_result": null,
+        "id_legibility_result": null
+      },
+      "evidence": "Inspect job 03C1 for flatness, tag fit, washer zones, and ID0 legibility."
+    },
+    "keyboard_left_first_article_pass": {
+      "category": "first_article",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC02-PRO-R1",
+        "material": "PETG",
+        "process_profile": "petg_tray_structural_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "job_id": null,
+        "flatness_mm": null,
+        "slot_fit_result": null,
+        "washer_track_result": null,
+        "datum_surface_result": null,
+        "seam_key_result": null
+      },
+      "evidence": "Inspect cooled job 01 before releasing the matching right tray."
+    },
+    "mast_foot_first_article_pass": {
+      "category": "first_article",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC02-PRO-R1",
+        "material": "ASA",
+        "process_profile": "asa_structural_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "job_id": null,
+        "socket_fit_result": null,
+        "nut_fit_result": null,
+        "bolt_clamp_result": null,
+        "initial_crack_result": null,
+        "crack_result_after_24h": null,
+        "base_flatness_mm": null
+      },
+      "evidence": "Fully assemble job 07A and verify fit, clamp function, flatness, and no cracks after 24 hours."
+    },
+    "keyboard_tray_pair_postprint_pass": {
+      "category": "postprint",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC02-PRO-R1",
+        "material": "PETG",
+        "process_profile": "petg_tray_structural_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "jobs": null,
+        "assembled_gap_mm": null,
+        "flush_mismatch_mm": null,
+        "overall_flatness_mm": null,
+        "keyboard_dry_fit_result": null
+      },
+      "evidence": "Mate cooled jobs 01/02 and record seam, flatness, and keyboard dry fit."
+    },
+    "keyboard_clamps_postprint_pass": {
+      "category": "postprint",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC02-PRO-R1",
+        "material": "PETG",
+        "process_profile": "petg_general_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "job_id": null,
+        "quantity": null,
+        "base_flatness_mm": null,
+        "gusset_result": null,
+        "slot_result": null,
+        "pad_fit_result": null
+      },
+      "evidence": "Inspect both job 03B clamps and their pad interfaces."
+    },
+    "phone_cradle_postprint_pass": {
+      "category": "postprint",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC02-PRO-R1",
+        "material": "PETG",
+        "process_profile": "petg_cradle_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "job_id": null,
+        "base_flatness_mm": null,
+        "rail_fit_result": null,
+        "tower_result": null,
+        "insert_squareness_result": null,
+        "passage_result": null,
+        "cable_saddle_result": null
+      },
+      "evidence": "Inspect and prepare the cooled cradle before loading hardware or the phone."
+    },
+    "tag_frame_batch_postprint_pass": {
+      "category": "postprint",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC02-PRO-R1",
+        "material": "PETG",
+        "process_profile": "petg_general_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "job_id": null,
+        "quantity": null,
+        "ids_confirmed": null,
+        "flatness_result": null,
+        "tag_fit_result": null
+      },
+      "evidence": "Inspect the ID1-ID5 frame batch for count, identity, flatness, and tag fit."
+    },
+    "camera_plate_hardware_pass": {
+      "category": "postprint",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC02-PRO-R1",
+        "material": "PETG",
+        "process_profile": "petg_general_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "job_id": null,
+        "camera_screw_engagement_mm": null,
+        "tslot_hardware_result": null,
+        "strap_slot_result": null,
+        "camera_screw_bottoming_result": null
+      },
+      "evidence": "Verify the actual camera, screw, T-slot hardware, and straps."
+    },
+    "calibration_puck_datum_pass": {
+      "category": "postprint",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC02-PRO-R1",
+        "material": "PETG",
+        "process_profile": "petg_calibration_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "job_id": null,
+        "flatness_mm": null,
+        "crosshair_result": null,
+        "divot_result": null,
+        "mounted_datum_height_mm": null
+      },
+      "evidence": "Inspect the puck datum and record flatness and mounted height."
+    },
+    "tool_body_postprint_pass": {
+      "category": "postprint",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC02-PRO-R1",
+        "material": "PETG",
+        "process_profile": "petg_precision_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "job_id": null,
+        "body_straightness_result": null,
+        "bore_finish_result": null,
+        "gripper_flat_result": null,
+        "insert_result": null,
+        "cap_fit_result": null,
+        "spare_cap_count": null
+      },
+      "evidence": "Inspect the body, caps, inserts, bores, and gripper faces."
+    },
+    "stylus_collar_retention_pass": {
+      "category": "postprint",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC02-PRO-R1",
+        "material": "PETG",
+        "process_profile": "petg_adapter_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "job_id": null,
+        "selected_collar": null,
+        "retention_method": null,
+        "initial_pull_result": null,
+        "creep_result_after_24h": null
+      },
+      "evidence": "Qualify one collar and retain the second as a labeled spare."
+    },
+    "rod_bushing_retention_pass": {
+      "category": "postprint",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC02-PRO-R1",
+        "material": "PETG",
+        "process_profile": "petg_adapter_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "job_id": null,
+        "selected_bushing": null,
+        "rod_projection_mm": null,
+        "retention_method": null,
+        "initial_pull_result": null,
+        "creep_result_after_24h": null
+      },
+      "evidence": "Qualify one rod bushing and retain the second as a labeled spare."
+    },
+    "phone_tpu_batch_postprint_pass": {
+      "category": "postprint",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC02-PRO-R1",
+        "material": "TPU 95A",
+        "process_profile": "tpu95a_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "job_id": null,
+        "quantity": null,
+        "bore_result": null,
+        "contact_face_result": null,
+        "installed_count": null,
+        "spare_count": null
+      },
+      "evidence": "Inspect and account for all production/spare phone tips."
+    },
+    "keyboard_tpu_batch_postprint_pass": {
+      "category": "postprint",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC02-PRO-R1",
+        "material": "TPU 95A",
+        "process_profile": "tpu95a_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "job_id": null,
+        "quantity": null,
+        "bore_result": null,
+        "contact_face_result": null,
+        "installed_count": null,
+        "spare_count": null
+      },
+      "evidence": "Inspect and account for all production/spare keyboard tips."
+    },
+    "mast_second_foot_postprint_pass": {
+      "category": "postprint",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC02-PRO-R1",
+        "material": "ASA",
+        "process_profile": "asa_structural_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "job_id": null,
+        "base_flatness_mm": null,
+        "socket_fit_result": null,
+        "bolt_clamp_result": null,
+        "crack_result_after_24h": null
+      },
+      "evidence": "Inspect and fully load the second mast foot using the accepted method."
+    },
+    "board_fabrication_pass": {
+      "category": "assembly",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC02-PRO-R1",
+        "material": "board",
+        "process_profile": "board_fabrication",
+        "nozzle_mm": "not_applicable"
+      },
+      "recorded_values": {
+        "width_mm": null,
+        "depth_mm": null,
+        "thickness_mm": null,
+        "flatness_mm": null,
+        "template_scale_bar_mm": null,
+        "pilot_hole_result": null
+      },
+      "evidence": "Verify the board, 100 mm template scale, flatness, and pilot holes."
+    },
+    "keyboard_fixture_assembly_pass": {
+      "category": "assembly",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC02-PRO-R1",
+        "material": "assembly",
+        "process_profile": "keyboard_fixture",
+        "nozzle_mm": "not_applicable"
+      },
+      "recorded_values": {
+        "tray_pair_gate": null,
+        "clamp_gate": null,
+        "pad_count": null,
+        "washer_count": null,
+        "remove_reinstall_cycles": null,
+        "repeatability_result": null
+      },
+      "evidence": "Pass ten keyboard remove/reinstall cycles without rocking or pose change."
+    },
+    "phone_fixture_assembly_pass": {
+      "category": "assembly",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC02-PRO-R1",
+        "material": "assembly",
+        "process_profile": "phone_fixture",
+        "nozzle_mm": "not_applicable"
+      },
+      "recorded_values": {
+        "cradle_gate": null,
+        "tpu_gate": null,
+        "button_clearance_result": null,
+        "camera_clearance_result": null,
+        "usb_strain_relief_result": null,
+        "remove_reinstall_cycles": null,
+        "repeatability_result": null
+      },
+      "evidence": "Pass ten phone cycles with button, camera, and USB clearances maintained."
+    },
+    "tag_frame_installation_pass": {
+      "category": "assembly",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC02-PRO-R1",
+        "material": "assembly",
+        "process_profile": "vision_fiducials",
+        "nozzle_mm": "not_applicable"
+      },
+      "recorded_values": {
+        "installed_ids": null,
+        "orientation_result": null,
+        "marker_size_result": null,
+        "washer_clearance_result": null,
+        "detection_result": null
+      },
+      "evidence": "Install IDs 0-5 with consistent +Y orientation and verify detection."
+    },
+    "tool_assembled_motion_pass": {
+      "category": "assembly",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC02-PRO-R1",
+        "material": "assembly",
+        "process_profile": "compliant_tool",
+        "nozzle_mm": "not_applicable"
+      },
+      "recorded_values": {
+        "route": null,
+        "free_travel_mm": null,
+        "return_result": null,
+        "coil_bind_result": null,
+        "gripper_hold_result": null,
+        "cycle_count": null
+      },
+      "evidence": "Verify 3-6 mm travel, full return, no coil bind, and stable gripper retention."
+    },
+    "stylus_function_pass": {
+      "category": "assembly",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC02-PRO-R1",
+        "material": "assembly",
+        "process_profile": "phone_stylus_route",
+        "nozzle_mm": "not_applicable"
+      },
+      "recorded_values": {
+        "stylus_model": null,
+        "manual_tap_count": null,
+        "successful_taps": null,
+        "electrical_touch_result": null,
+        "assembled_projection_mm": null
+      },
+      "evidence": "Verify capacitive operation by hand and after installation."
+    },
+    "mast_pair_installation_pass": {
+      "category": "assembly",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC02-PRO-R1",
+        "material": "assembly",
+        "process_profile": "camera_mast",
+        "nozzle_mm": "not_applicable"
+      },
+      "recorded_values": {
+        "foot_a_gate": null,
+        "foot_b_gate": null,
+        "base_hardware_count": null,
+        "crossbar_level_result": null,
+        "mast_plumb_result": null,
+        "camera_stability_result": null
+      },
+      "evidence": "Assemble both accepted feet and verify level, plumb, hardware count, and camera stability."
+    }
+  }
+}

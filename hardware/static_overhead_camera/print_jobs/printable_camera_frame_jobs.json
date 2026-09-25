@@ -1,0 +1,519 @@
+{
+  "schema": "rocell.printable_camera_portal.print_jobs.v1",
+  "schema_version": 1,
+  "design_id": "ROCELL-PRINTABLE-CAMERA-PORTAL-PROTOTYPE-003",
+  "revision_date": "2026-09-07",
+  "state": "VALIDATED_GEOMETRY_SUBPLATES_NOT_RELEASED_FOR_ROBOT_OPERATION",
+  "scope": "Printed board anchors, portal arms, camera carriage, and camera cage only.",
+  "geometry": {
+    "generated_manifest": "../cad/output/manifest.json",
+    "plate_validation": "../cad/output/PLATE_VALIDATION.json",
+    "scale_percent": 100.0,
+    "orientation_rule": "Use each stored 3MF orientation and placement; do not auto-arrange or rescale."
+  },
+  "printer": {
+    "machine": "QIDI Plus4",
+    "protected_part_envelope_mm": [
+      295.0,
+      295.0,
+      275.0
+    ],
+    "nozzle_mm": 0.4
+  },
+  "profiles": {
+    "abs_structural": {
+      "process_file": "../slicer_profiles/QIDI_PLUS4/abs_rapido_camera_frame_structural_0p4.process.json",
+      "filament_preset": "QIDI ABS Rapido @Qidi X-Plus 4 0.4 nozzle",
+      "material": "QIDI ABS Rapido",
+      "process_name": "RoCell ABS Rapido Camera Frame Structural 0.20",
+      "layer_height_mm": 0.2,
+      "wall_loops": 6,
+      "top_shell_layers": 7,
+      "bottom_shell_layers": 7,
+      "infill": "40% gyroid",
+      "brim_type": "outer_only",
+      "brim_width_mm": 10.0,
+      "brim_object_gap_mm": 0.05,
+      "supports": false,
+      "fuzzy_skin": "none"
+    },
+    "abs_holder_precision": {
+      "process_file": "../slicer_profiles/QIDI_PLUS4/abs_rapido_camera_holder_precision_0p4.process.json",
+      "filament_preset": "QIDI ABS Rapido @Qidi X-Plus 4 0.4 nozzle",
+      "material": "QIDI ABS Rapido",
+      "process_name": "RoCell ABS Rapido Camera Holder Precision 0.16",
+      "layer_height_mm": 0.16,
+      "wall_loops": 5,
+      "top_shell_layers": 7,
+      "bottom_shell_layers": 7,
+      "infill": "45% gyroid",
+      "brim_type": "outer_only",
+      "brim_width_mm": 6.0,
+      "brim_object_gap_mm": 0.05,
+      "supports": false,
+      "fuzzy_skin": "none"
+    },
+    "tpu_pads": {
+      "process_file": "../slicer_profiles/QIDI_PLUS4/tpu95a_camera_clamp_pad_0p4.process.json",
+      "filament_preset": "Installed and identified TPU 95A preset for X-Plus 4 0.4 nozzle",
+      "material": "TPU 95A",
+      "process_name": "RoCell TPU 95A Camera Clamp Pads 0.16",
+      "layer_height_mm": 0.16,
+      "wall_loops": 3,
+      "top_shell_layers": 5,
+      "bottom_shell_layers": 5,
+      "infill": "100% rectilinear",
+      "brim_type": "outer_only",
+      "brim_width_mm": 3.0,
+      "brim_object_gap_mm": 0.1,
+      "supports": false,
+      "fuzzy_skin": "none"
+    }
+  },
+  "common_preflight": [
+    "Match the selected 3MF SHA-256 and object count to this file and its sidecar.",
+    "Select the named process and filament preset separately; generated 3MF files contain geometry only.",
+    "Keep scale at 100%, supports off, fuzzy skin off, and inspect the complete layer preview.",
+    "Save a new native QIDI project; never overwrite the generated geometry-only 3MF."
+  ],
+  "jobs": [
+    {
+      "job_id": "00G",
+      "name": "Fit gates and compliant pads",
+      "state": "DEFINED_PROTOTYPE_NOT_RELEASED",
+      "purpose": "Print and accept board, splice, camera, retainer, and pad coupons before structural production parts.",
+      "subplates": [
+        {
+          "subplate_id": "00G-S1",
+          "geometry_3mf": "../cad/output/plates_3mf/00G-S1_ABS_board_splice_fit_tests.3mf",
+          "geometry_sha256": "6100bdd78e7574755b1fd4c0c8d6327f0a6e6ff96f9c918f43141cc7a4c0a421",
+          "expected_object_count": 4,
+          "sidecar": "00G-S1_ABS_board_splice_fit_tests.print.json",
+          "profile": "abs_structural",
+          "native_save_as_pattern": "00G-S1_QIDI_native_vNN.3mf",
+          "objects": [
+            {
+              "part": "board_saddle_fit_coupon",
+              "stl": "../cad/output/stl/board_saddle_fit_coupon.stl",
+              "quantity": 1
+            },
+            {
+              "part": "m6_nut_retainer",
+              "stl": "../cad/output/stl/m6_nut_retainer.stl",
+              "quantity": 1
+            },
+            {
+              "part": "u_splice_fit_coupon",
+              "stl": "../cad/output/stl/u_splice_fit_coupon.stl",
+              "quantity": 1
+            },
+            {
+              "part": "u_truss_splice",
+              "stl": "../cad/output/stl/u_truss_splice.stl",
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "subplate_id": "00G-C1",
+          "geometry_3mf": "../cad/output/plates_3mf/00G-C1_ABS_received_camera_fit_tests.3mf",
+          "geometry_sha256": "c56f828d3babeb368e9ed10d927c1f957c664a9eae745dd8924afbd055456ded",
+          "expected_object_count": 2,
+          "sidecar": "00G-C1_ABS_received_camera_fit_tests.print.json",
+          "profile": "abs_holder_precision",
+          "native_save_as_pattern": "00G-C1_QIDI_native_vNN.3mf",
+          "objects": [
+            {
+              "part": "camera_case_fit_gauge",
+              "stl": "../cad/output/stl/camera_case_fit_gauge.stl",
+              "quantity": 1
+            },
+            {
+              "part": "camera_case_shim_ladder",
+              "stl": "../cad/output/stl/camera_case_shim_ladder.stl",
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "subplate_id": "00G-P1",
+          "geometry_3mf": "../cad/output/plates_3mf/00G-P1_TPU_camera_portal_pads.3mf",
+          "geometry_sha256": "2dd31d5b10b814dc7a6280c10e10443189984572e606ba84d0aeecb448ce2957",
+          "expected_object_count": 5,
+          "sidecar": "00G-P1_TPU_camera_portal_pads.print.json",
+          "profile": "tpu_pads",
+          "native_save_as_pattern": "00G-P1_QIDI_native_vNN.3mf",
+          "objects": [
+            {
+              "part": "board_pressure_pad",
+              "stl": "../cad/output/stl/board_pressure_pad.stl",
+              "quantity": 4
+            },
+            {
+              "part": "camera_top_compression_pad",
+              "stl": "../cad/output/stl/camera_top_compression_pad.stl",
+              "quantity": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "job_id": "08A",
+      "name": "Left board anchor and upright",
+      "state": "DEFINED_PROTOTYPE_NOT_RELEASED",
+      "purpose": "Left bench-bearing saddle, cap, retainers, portal plates, splices, and four upright modules.",
+      "subplates": [
+        {
+          "subplate_id": "08A-S1",
+          "geometry_3mf": "../cad/output/plates_3mf/08A-S1_ABS_left_bench_saddle.3mf",
+          "geometry_sha256": "abaef2a07bd4e60e16e037f1282bb0ee47a4eafa18886594bb0a1313feb63ee6",
+          "expected_object_count": 1,
+          "sidecar": "08A-S1_ABS_left_bench_saddle.print.json",
+          "profile": "abs_structural",
+          "native_save_as_pattern": "08A-S1_QIDI_native_vNN.3mf",
+          "objects": [
+            {
+              "part": "board_corner_saddle_left",
+              "stl": "../cad/output/stl/board_corner_saddle_left.stl",
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "subplate_id": "08A-S2",
+          "geometry_3mf": "../cad/output/plates_3mf/08A-S2_ABS_left_cap_and_splices.3mf",
+          "geometry_sha256": "4ee50a9be7fd929f1d6d16ad4b58c4dd5a0f686733300129ce00d0e23f6e8fb2",
+          "expected_object_count": 5,
+          "sidecar": "08A-S2_ABS_left_cap_and_splices.print.json",
+          "profile": "abs_structural",
+          "native_save_as_pattern": "08A-S2_QIDI_native_vNN.3mf",
+          "objects": [
+            {
+              "part": "board_corner_cap_left",
+              "stl": "../cad/output/stl/board_corner_cap_left.stl",
+              "quantity": 1
+            },
+            {
+              "part": "m6_nut_retainer",
+              "stl": "../cad/output/stl/m6_nut_retainer.stl",
+              "quantity": 2
+            },
+            {
+              "part": "u_truss_splice",
+              "stl": "../cad/output/stl/u_truss_splice.stl",
+              "quantity": 2
+            }
+          ]
+        },
+        {
+          "subplate_id": "08A-J1",
+          "geometry_3mf": "../cad/output/plates_3mf/08A-J1_ABS_left_portal_corner_pair.3mf",
+          "geometry_sha256": "52c12cd08deed89a396d2f6117d2f4c5375fd44678e944c3667674942a815b63",
+          "expected_object_count": 2,
+          "sidecar": "08A-J1_ABS_left_portal_corner_pair.print.json",
+          "profile": "abs_structural",
+          "native_save_as_pattern": "08A-J1_QIDI_native_vNN.3mf",
+          "objects": [
+            {
+              "part": "portal_corner_node_left",
+              "stl": "../cad/output/stl/portal_corner_node_left.stl",
+              "quantity": 2
+            }
+          ]
+        },
+        {
+          "subplate_id": "08A-T1",
+          "geometry_3mf": "../cad/output/plates_3mf/08A-T1_ABS_left_uprights_1_2.3mf",
+          "geometry_sha256": "eeaab711a08ebbd438e649ebdad7b425a001fa6f7fa6f744434eb828d4aae706",
+          "expected_object_count": 2,
+          "sidecar": "08A-T1_ABS_left_uprights_1_2.print.json",
+          "profile": "abs_structural",
+          "native_save_as_pattern": "08A-T1_QIDI_native_vNN.3mf",
+          "objects": [
+            {
+              "part": "upright_truss_segment_240",
+              "stl": "../cad/output/stl/upright_truss_segment_240.stl",
+              "quantity": 2
+            }
+          ]
+        },
+        {
+          "subplate_id": "08A-T2",
+          "geometry_3mf": "../cad/output/plates_3mf/08A-T2_ABS_left_uprights_3_4.3mf",
+          "geometry_sha256": "60b002ad6989c338777478ce5b5af0c1a77c62f8e6b853b0e35142c7e60d9e5b",
+          "expected_object_count": 2,
+          "sidecar": "08A-T2_ABS_left_uprights_3_4.print.json",
+          "profile": "abs_structural",
+          "native_save_as_pattern": "08A-T2_QIDI_native_vNN.3mf",
+          "objects": [
+            {
+              "part": "upright_truss_segment_240",
+              "stl": "../cad/output/stl/upright_truss_segment_240.stl",
+              "quantity": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "job_id": "08B",
+      "name": "Right board anchor and upright",
+      "state": "DEFINED_PROTOTYPE_NOT_RELEASED",
+      "purpose": "Right bench-bearing saddle, cap, retainers, portal plates, splices, and four upright modules.",
+      "subplates": [
+        {
+          "subplate_id": "08B-S1",
+          "geometry_3mf": "../cad/output/plates_3mf/08B-S1_ABS_right_bench_saddle.3mf",
+          "geometry_sha256": "ead6d13c8aeabf0afd8cf903e4997c2734bfb28fa24d29c8ae61d71848d7a6a5",
+          "expected_object_count": 1,
+          "sidecar": "08B-S1_ABS_right_bench_saddle.print.json",
+          "profile": "abs_structural",
+          "native_save_as_pattern": "08B-S1_QIDI_native_vNN.3mf",
+          "objects": [
+            {
+              "part": "board_corner_saddle_right",
+              "stl": "../cad/output/stl/board_corner_saddle_right.stl",
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "subplate_id": "08B-S2",
+          "geometry_3mf": "../cad/output/plates_3mf/08B-S2_ABS_right_cap_and_splices.3mf",
+          "geometry_sha256": "a573a7360479c3e76fd40ab020dacbfe8b13106cb58045b2faca64c192b47b78",
+          "expected_object_count": 6,
+          "sidecar": "08B-S2_ABS_right_cap_and_splices.print.json",
+          "profile": "abs_structural",
+          "native_save_as_pattern": "08B-S2_QIDI_native_vNN.3mf",
+          "objects": [
+            {
+              "part": "board_corner_cap_right",
+              "stl": "../cad/output/stl/board_corner_cap_right.stl",
+              "quantity": 1
+            },
+            {
+              "part": "m6_nut_retainer",
+              "stl": "../cad/output/stl/m6_nut_retainer.stl",
+              "quantity": 2
+            },
+            {
+              "part": "u_truss_splice",
+              "stl": "../cad/output/stl/u_truss_splice.stl",
+              "quantity": 3
+            }
+          ]
+        },
+        {
+          "subplate_id": "08B-J1",
+          "geometry_3mf": "../cad/output/plates_3mf/08B-J1_ABS_right_portal_corner_pair.3mf",
+          "geometry_sha256": "3e38d081b7f64fbf30790a1412952a84b055efe15fb42a38a9ffb9f265bb7e54",
+          "expected_object_count": 2,
+          "sidecar": "08B-J1_ABS_right_portal_corner_pair.print.json",
+          "profile": "abs_structural",
+          "native_save_as_pattern": "08B-J1_QIDI_native_vNN.3mf",
+          "objects": [
+            {
+              "part": "portal_corner_node_right",
+              "stl": "../cad/output/stl/portal_corner_node_right.stl",
+              "quantity": 2
+            }
+          ]
+        },
+        {
+          "subplate_id": "08B-T1",
+          "geometry_3mf": "../cad/output/plates_3mf/08B-T1_ABS_right_uprights_1_2.3mf",
+          "geometry_sha256": "748d2bc2f3f3e5ab0539602e74f63002a4b9fd72e0cc92e1a591cd9e9b78a3c4",
+          "expected_object_count": 2,
+          "sidecar": "08B-T1_ABS_right_uprights_1_2.print.json",
+          "profile": "abs_structural",
+          "native_save_as_pattern": "08B-T1_QIDI_native_vNN.3mf",
+          "objects": [
+            {
+              "part": "upright_truss_segment_240",
+              "stl": "../cad/output/stl/upright_truss_segment_240.stl",
+              "quantity": 2
+            }
+          ]
+        },
+        {
+          "subplate_id": "08B-T2",
+          "geometry_3mf": "../cad/output/plates_3mf/08B-T2_ABS_right_uprights_3_4.3mf",
+          "geometry_sha256": "4f93f099c7018e1f2d17c0a710add6e10950069f7c1e737d8e9b69ae5f83bd75",
+          "expected_object_count": 2,
+          "sidecar": "08B-T2_ABS_right_uprights_3_4.print.json",
+          "profile": "abs_structural",
+          "native_save_as_pattern": "08B-T2_QIDI_native_vNN.3mf",
+          "objects": [
+            {
+              "part": "upright_truss_segment_240",
+              "stl": "../cad/output/stl/upright_truss_segment_240.stl",
+              "quantity": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "job_id": "08C",
+      "name": "Crossbar, booms, and camera carriage",
+      "state": "DEFINED_PROTOTYPE_NOT_RELEASED",
+      "purpose": "Four crossbar modules, four boom modules, splice collars, root straps, and positive-lock carriage.",
+      "subplates": [
+        {
+          "subplate_id": "08C-X1",
+          "geometry_3mf": "../cad/output/plates_3mf/08C-X1_ABS_crossbar_1_2.3mf",
+          "geometry_sha256": "19f52a50b82a5db4eed9301760c13947c7992adf5d32c883cad4c2fd461b0309",
+          "expected_object_count": 2,
+          "sidecar": "08C-X1_ABS_crossbar_1_2.print.json",
+          "profile": "abs_structural",
+          "native_save_as_pattern": "08C-X1_QIDI_native_vNN.3mf",
+          "objects": [
+            {
+              "part": "crossbar_truss_segment_182p5",
+              "stl": "../cad/output/stl/crossbar_truss_segment_182p5.stl",
+              "quantity": 2
+            }
+          ]
+        },
+        {
+          "subplate_id": "08C-X2",
+          "geometry_3mf": "../cad/output/plates_3mf/08C-X2_ABS_crossbar_3_4.3mf",
+          "geometry_sha256": "d75d4c9daffa22b7d1fec891efcd7b633f51fb8aafe5386ed1c9c4cac885ff03",
+          "expected_object_count": 2,
+          "sidecar": "08C-X2_ABS_crossbar_3_4.print.json",
+          "profile": "abs_structural",
+          "native_save_as_pattern": "08C-X2_QIDI_native_vNN.3mf",
+          "objects": [
+            {
+              "part": "crossbar_truss_segment_182p5",
+              "stl": "../cad/output/stl/crossbar_truss_segment_182p5.stl",
+              "quantity": 2
+            }
+          ]
+        },
+        {
+          "subplate_id": "08C-B1",
+          "geometry_3mf": "../cad/output/plates_3mf/08C-B1_ABS_booms_1_2.3mf",
+          "geometry_sha256": "ead11099c0df6335e013fc935fe4fa93427b1c1c494926de14aa3bbfb78705d6",
+          "expected_object_count": 2,
+          "sidecar": "08C-B1_ABS_booms_1_2.print.json",
+          "profile": "abs_structural",
+          "native_save_as_pattern": "08C-B1_QIDI_native_vNN.3mf",
+          "objects": [
+            {
+              "part": "boom_root_truss_segment_164p25",
+              "stl": "../cad/output/stl/boom_root_truss_segment_164p25.stl",
+              "quantity": 2
+            }
+          ]
+        },
+        {
+          "subplate_id": "08C-B2",
+          "geometry_3mf": "../cad/output/plates_3mf/08C-B2_ABS_booms_3_4.3mf",
+          "geometry_sha256": "961af0b3cc90a49e155f78344114e5e626bb775fabe9709c97ca50ea97d9e4ca",
+          "expected_object_count": 2,
+          "sidecar": "08C-B2_ABS_booms_3_4.print.json",
+          "profile": "abs_structural",
+          "native_save_as_pattern": "08C-B2_QIDI_native_vNN.3mf",
+          "objects": [
+            {
+              "part": "boom_camera_truss_segment_164p25",
+              "stl": "../cad/output/stl/boom_camera_truss_segment_164p25.stl",
+              "quantity": 2
+            }
+          ]
+        },
+        {
+          "subplate_id": "08C-J1",
+          "geometry_3mf": "../cad/output/plates_3mf/08C-J1_ABS_crossbar_boom_splices.3mf",
+          "geometry_sha256": "99eb9c04b03cfb51bd5e48653bf1a11c227dc01928780c9dce844784c60a5ed5",
+          "expected_object_count": 5,
+          "sidecar": "08C-J1_ABS_crossbar_boom_splices.print.json",
+          "profile": "abs_structural",
+          "native_save_as_pattern": "08C-J1_QIDI_native_vNN.3mf",
+          "objects": [
+            {
+              "part": "u_truss_splice",
+              "stl": "../cad/output/stl/u_truss_splice.stl",
+              "quantity": 2
+            },
+            {
+              "part": "u_truss_splice_center_4bolt",
+              "stl": "../cad/output/stl/u_truss_splice_center_4bolt.stl",
+              "quantity": 1
+            },
+            {
+              "part": "u_truss_splice_crossbar_2bolt",
+              "stl": "../cad/output/stl/u_truss_splice_crossbar_2bolt.stl",
+              "quantity": 2
+            }
+          ]
+        },
+        {
+          "subplate_id": "08C-J2",
+          "geometry_3mf": "../cad/output/plates_3mf/08C-J2_ABS_boom_root_nodes.3mf",
+          "geometry_sha256": "da785bb7535f2bc0211390fb85ba7f5c30367be5f4c8463e463e6e3c84097232",
+          "expected_object_count": 4,
+          "sidecar": "08C-J2_ABS_boom_root_nodes.print.json",
+          "profile": "abs_structural",
+          "native_save_as_pattern": "08C-J2_QIDI_native_vNN.3mf",
+          "objects": [
+            {
+              "part": "boom_crossbar_node",
+              "stl": "../cad/output/stl/boom_crossbar_node.stl",
+              "quantity": 4
+            }
+          ]
+        },
+        {
+          "subplate_id": "08C-C1",
+          "geometry_3mf": "../cad/output/plates_3mf/08C-C1_ABS_camera_xy_carriage.3mf",
+          "geometry_sha256": "40064de5888d51099edbc0295548ad7d0298ba565c7495e61da185a562fa4f3e",
+          "expected_object_count": 1,
+          "sidecar": "08C-C1_ABS_camera_xy_carriage.print.json",
+          "profile": "abs_structural",
+          "native_save_as_pattern": "08C-C1_QIDI_native_vNN.3mf",
+          "objects": [
+            {
+              "part": "camera_xy_carriage",
+              "stl": "../cad/output/stl/camera_xy_carriage.stl",
+              "quantity": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "job_id": "08D",
+      "name": "Camera cage and keeper",
+      "state": "DEFINED_PROTOTYPE_NOT_RELEASED",
+      "purpose": "Four-sided camera cage and planar four-bolt keeper printed with the precision ABS process.",
+      "subplates": [
+        {
+          "subplate_id": "08D-C1",
+          "geometry_3mf": "../cad/output/plates_3mf/08D-C1_ABS_camera_cage_and_keeper.3mf",
+          "geometry_sha256": "df6fe44839036c29f89b49fec790096d2a44db61a0a63ac05627ac5154b5cdfc",
+          "expected_object_count": 2,
+          "sidecar": "08D-C1_ABS_camera_cage_and_keeper.print.json",
+          "profile": "abs_holder_precision",
+          "native_save_as_pattern": "08D-C1_QIDI_native_vNN.3mf",
+          "objects": [
+            {
+              "part": "camera_cage_body",
+              "stl": "../cad/output/stl/camera_cage_body.stl",
+              "quantity": 1
+            },
+            {
+              "part": "camera_cage_keeper",
+              "stl": "../cad/output/stl/camera_cage_keeper.stl",
+              "quantity": 1
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "configured_printed_part_quantity_total": 56,
+  "configured_hardware_quantity_total": 147
+}

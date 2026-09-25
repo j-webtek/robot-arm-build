@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "design_revision": "RC03-INT-R1",
+  "package_definition_hash": "7a6947f2de52f63133c5b9647b9b479ccd9d896906c2b575e76c106e1e5dccca",
+  "canonical_snapshot_hash": "05d11599e6d4a2937e0207535b298aa809ff08c79840350c7716666ce6d12755",
+  "canonical_input_hash": "05d11599e6d4a2937e0207535b298aa809ff08c79840350c7716666ce6d12755",
+  "step_id": "14",
+  "build_id": "2026-09-01_CELL-A",
+  "status": "NOT_STARTED",
+  "required_test_ids": [
+    "14-A",
+    "14-D",
+    "14-BK",
+    "14-CK",
+    "14-BP",
+    "14-CP"
+  ],
+  "accepted_test_ids": [],
+  "open_holds": [],
+  "operator": null,
+  "witness": null,
+  "signed_at": null
+}

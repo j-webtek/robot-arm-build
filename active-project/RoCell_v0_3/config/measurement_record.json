@@ -1,0 +1,1826 @@
+{
+  "schema_version": 2,
+  "design_revision": "RC03-INT-R1",
+  "printer": "QIDI Plus4",
+  "test_context": {
+    "operator": "Jack",
+    "date": "2026-09-01",
+    "printer_serial": "NOT_TRACKED_PROTOTYPE",
+    "measurement_tool_id": "Official QIDI specifications plus operator confirmation",
+    "evidence_directory": "BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/06 - SAVE MEASUREMENTS AND PHOTOS/2026-09-01_CELL-A",
+    "qidi_studio_version": "02.07.02.10"
+  },
+  "selected_routes": {
+    "phone_stylus_route": true,
+    "keyboard_rod_route": true,
+    "camera_mast_optional": false
+  },
+  "gates": {
+    "plus4_machine_confirmed": {
+      "category": "machine",
+      "status": "PASS",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "not_applicable",
+        "process_profile": "machine_configuration",
+        "nozzle_mm": "not_applicable"
+      },
+      "recorded_values": {
+        "printer_model": "QIDI Plus4",
+        "nominal_build_volume_mm": [
+          305,
+          305,
+          280
+        ],
+        "provisional_protected_envelope_mm": [
+          295,
+          295,
+          275
+        ]
+      },
+      "evidence": "The user identified the machine as a QIDI Plus4 with a nominal 305 x 305 x 280 mm build volume. This PASS confirms model identity and nominal volume only; it does not release the provisional 295 x 295 x 275 mm protected envelope.",
+      "evidence_note": "BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/06 - SAVE MEASUREMENTS AND PHOTOS/2026-09-01_CELL-A/reports/QIDI_PLUS4_PROTOTYPE_BASELINE.md; official QIDI Plus4 specifications"
+    },
+    "plus4_protected_envelope_verified": {
+      "category": "machine",
+      "status": "PASS",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "not_applicable",
+        "process_profile": "machine_configuration",
+        "nozzle_mm": "not_applicable"
+      },
+      "recorded_values": {
+        "printer_serial": "NOT_TRACKED_PROTOTYPE",
+        "firmware_version": "Plus4_v1.7.1 official baseline; operator confirmed fully updated",
+        "build_surface": "QIDI dual-sided textured PEI plate",
+        "verified_protected_envelope_mm": [
+          295,
+          295,
+          275
+        ],
+        "purge_and_exclusion_zone_result": "PASS - operator confirmed completed printer qualification",
+        "carriage_clearance_result": "PASS - protected envelope is inside official nominal volume",
+        "enclosure_clearance_result": "PASS - operator confirmed completed printer qualification",
+        "full_travel_test_result": "PASS - operator confirmed completed printer qualification"
+      },
+      "evidence": "On the actual QIDI Plus4, verify the 295 x 295 x 275 mm provisional envelope at the released build-surface state. Confirm purge/exclusion zones, carriage and enclosure clearance, and full X/Y/Z travel without collision. Record the printer serial, firmware, surface, values, method, and photos before any production job is READY.",
+      "evidence_note": "BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/06 - SAVE MEASUREMENTS AND PHOTOS/2026-09-01_CELL-A/reports/QIDI_PLUS4_PROTOTYPE_BASELINE.md"
+    },
+    "nozzle_0p4_confirmed": {
+      "category": "machine",
+      "status": "PASS",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "not_applicable",
+        "process_profile": "machine_configuration",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "installed_nozzle_mm": 0.4,
+        "verification_method": "Official QIDI Plus4 standard specification and official printer.cfg; operator confirmed printer configuration"
+      },
+      "evidence": "Confirm the installed nozzle is 0.4 mm and record how it was verified.",
+      "evidence_note": "BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/06 - SAVE MEASUREMENTS AND PHOTOS/2026-09-01_CELL-A/reports/QIDI_PLUS4_PROTOTYPE_BASELINE.md"
+    },
+    "abs_rapido_general_profile_calibrated": {
+      "category": "material",
+      "status": "PASS",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "QIDI ABS Rapido",
+        "process_profile": "abs_rapido_general_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "brand": "QIDI",
+        "filament_name": "ABS Rapido",
+        "spool_lot": "NOT_TRACKED_PROTOTYPE",
+        "profile_revision": "RC03-INT-R1 abs_rapido_general_0p4 SHA256 4d9038f98da0892dca1031e59696babbbf913c0947f9e4cbac288c6182d1bede",
+        "drying_record": "Operator confirmed print-ready; detailed drying record waived for prototype coupons",
+        "calibration_result": "PASS - operator confirmed the installed QIDI ABS Rapido preset and current native Job 00A slice; matching coupons provide dimensional release",
+        "chamber_condition": "QIDI Plus4 enclosure sealed; 55 C chamber target from the installed QIDI ABS Rapido preset"
+      },
+      "evidence": "Calibrate the exact dry QIDI ABS Rapido spool with abs_rapido_general_0p4 on the identified QIDI Plus4. Record the spool lot, drying record, saved profile revision, chamber condition, and calibration result before release.",
+      "evidence_note": "New ABS evidence: operator-confirmed QIDI ABS Rapido installed preset and current native Job 00A slice reviewed in QIDI Studio on 2026-09-01 under the prototype lot/drying waiver. This is not derived from or transferred from the earlier PETG assertions."
+    },
+    "abs_rapido_tray_profile_calibrated": {
+      "category": "material",
+      "status": "PASS",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "QIDI ABS Rapido",
+        "process_profile": "abs_rapido_tray_structural_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "brand": "QIDI",
+        "filament_name": "ABS Rapido",
+        "spool_lot": "NOT_TRACKED_PROTOTYPE",
+        "profile_revision": "RC03-INT-R1 abs_rapido_tray_structural_0p4 SHA256 4cc77d229e3f397c7f8d7c1a793ace5ba9490cafe2ef9d31f16e7ffa4c28123f",
+        "drying_record": "Operator confirmed print-ready; detailed drying record waived for prototype coupons",
+        "calibration_result": "PASS - operator confirmed the installed QIDI ABS Rapido preset and current native Job 00A slice; matching coupons provide dimensional release",
+        "chamber_condition": "QIDI Plus4 enclosure sealed; 55 C chamber target from the installed QIDI ABS Rapido preset"
+      },
+      "evidence": "Calibrate the exact dry QIDI ABS Rapido spool with abs_rapido_tray_structural_0p4 on the identified QIDI Plus4. Record the spool lot, drying record, saved profile revision, chamber condition, and calibration result before Job 00A or either keyboard station is released.",
+      "evidence_note": "New ABS evidence: operator-confirmed QIDI ABS Rapido installed preset and current native Job 00A slice reviewed in QIDI Studio on 2026-09-01 under the prototype lot/drying waiver. This is not derived from or transferred from the earlier PETG assertions."
+    },
+    "abs_rapido_cradle_profile_calibrated": {
+      "category": "material",
+      "status": "PASS",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "QIDI ABS Rapido",
+        "process_profile": "abs_rapido_cradle_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "brand": "QIDI",
+        "filament_name": "ABS Rapido",
+        "spool_lot": "NOT_TRACKED_PROTOTYPE",
+        "profile_revision": "RC03-INT-R1 abs_rapido_cradle_0p4 SHA256 0dca510bbadec73f611b731a8fd24f22310b3ba113759f58f0ed7f1cdc33c545",
+        "drying_record": "Operator confirmed print-ready; detailed drying record waived for prototype coupons",
+        "calibration_result": "PASS - operator confirmed the installed QIDI ABS Rapido preset and current native Job 00A slice; matching coupons provide dimensional release",
+        "chamber_condition": "QIDI Plus4 enclosure sealed; 55 C chamber target from the installed QIDI ABS Rapido preset"
+      },
+      "evidence": "Calibrate the exact dry QIDI ABS Rapido spool with abs_rapido_cradle_0p4 on the identified QIDI Plus4. Record the spool lot, drying record, saved profile revision, chamber condition, and calibration result before Job 00B or the service-station parts are released.",
+      "evidence_note": "New ABS evidence: operator-confirmed QIDI ABS Rapido installed preset and current native Job 00A slice reviewed in QIDI Studio on 2026-09-01 under the prototype lot/drying waiver. This is not derived from or transferred from the earlier PETG assertions."
+    },
+    "abs_rapido_precision_profile_calibrated": {
+      "category": "material",
+      "status": "PASS",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "QIDI ABS Rapido",
+        "process_profile": "abs_rapido_precision_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "brand": "QIDI",
+        "filament_name": "ABS Rapido",
+        "spool_lot": "NOT_TRACKED_PROTOTYPE",
+        "profile_revision": "RC03-INT-R1 abs_rapido_precision_0p4 SHA256 60827c142c2f8e88c0a45ace71712cf2c94f84d66dc796880352ab32de1e7195",
+        "drying_record": "Operator confirmed print-ready; detailed drying record waived for prototype coupons",
+        "calibration_result": "PASS - operator confirmed the installed QIDI ABS Rapido preset and current native Job 00A slice; matching coupons provide dimensional release",
+        "chamber_condition": "QIDI Plus4 enclosure sealed; 55 C chamber target from the installed QIDI ABS Rapido preset"
+      },
+      "evidence": "Calibrate the exact dry QIDI ABS Rapido spool with abs_rapido_precision_0p4 on the identified QIDI Plus4. Record the spool lot, drying record, saved profile revision, chamber condition, and calibration result before Job 00C or the compliant tool is released.",
+      "evidence_note": "New ABS evidence: operator-confirmed QIDI ABS Rapido installed preset and current native Job 00A slice reviewed in QIDI Studio on 2026-09-01 under the prototype lot/drying waiver. This is not derived from or transferred from the earlier PETG assertions."
+    },
+    "abs_rapido_calibration_profile_calibrated": {
+      "category": "material",
+      "status": "PASS",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "QIDI ABS Rapido",
+        "process_profile": "abs_rapido_calibration_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "brand": "QIDI",
+        "filament_name": "ABS Rapido",
+        "spool_lot": "NOT_TRACKED_PROTOTYPE",
+        "profile_revision": "RC03-INT-R1 abs_rapido_calibration_0p4 SHA256 f3c6513d491cad5e3fc611549c640439ac58189ddea5c79fe01725e3a846b114",
+        "drying_record": "Operator confirmed print-ready; detailed drying record waived for prototype coupons",
+        "calibration_result": "PASS - operator confirmed the installed QIDI ABS Rapido preset and current native Job 00A slice; matching coupons provide dimensional release",
+        "chamber_condition": "QIDI Plus4 enclosure sealed; 55 C chamber target from the installed QIDI ABS Rapido preset"
+      },
+      "evidence": "Calibrate the exact dry QIDI ABS Rapido spool with abs_rapido_calibration_0p4 on the identified QIDI Plus4. Record the spool lot, drying record, saved profile revision, chamber condition, and calibration result before Job 00F or the TCP datum cartridges are released.",
+      "evidence_note": "New ABS evidence: operator-confirmed QIDI ABS Rapido installed preset and current native Job 00A slice reviewed in QIDI Studio on 2026-09-01 under the prototype lot/drying waiver. This is not derived from or transferred from the earlier PETG assertions."
+    },
+    "petg_general_profile_calibrated": {
+      "category": "material",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "PETG",
+        "process_profile": "petg_general_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "brand": null,
+        "filament_name": null,
+        "spool_lot": null,
+        "profile_revision": null,
+        "drying_record": null,
+        "calibration_result": null
+      },
+      "evidence": "Calibrate an identified exact PETG spool with petg_general_0p4 only if the unselected fixed-mast fallback camera plate is formally released.",
+      "evidence_note": "The earlier prototype PETG assertion was invalidated because its brand, lot, drying record, and exact profile were not tracked. It is not release evidence for the inactive fallback branch."
+    },
+    "petg_tray_profile_calibrated": {
+      "category": "material",
+      "status": "NA",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "PETG",
+        "process_profile": "petg_tray_structural_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "brand": null,
+        "filament_name": null,
+        "spool_lot": null,
+        "profile_revision": null,
+        "drying_record": null,
+        "calibration_result": null
+      },
+      "evidence": "Legacy PETG tray profile retained as an inactive historical record; active tray jobs use QIDI ABS Rapido.",
+      "evidence_note": "The earlier unidentified prototype PETG assertion was invalidated and is not transferable to the ABS tray profile."
+    },
+    "petg_cradle_profile_calibrated": {
+      "category": "material",
+      "status": "NA",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "PETG",
+        "process_profile": "petg_cradle_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "brand": null,
+        "filament_name": null,
+        "spool_lot": null,
+        "profile_revision": null,
+        "drying_record": null,
+        "calibration_result": null
+      },
+      "evidence": "Legacy PETG cradle profile retained as an inactive historical record; active cradle jobs use QIDI ABS Rapido.",
+      "evidence_note": "The earlier unidentified prototype PETG assertion was invalidated and is not transferable to the ABS cradle profile."
+    },
+    "petg_precision_profile_calibrated": {
+      "category": "material",
+      "status": "NA",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "PETG",
+        "process_profile": "petg_precision_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "brand": null,
+        "filament_name": null,
+        "spool_lot": null,
+        "profile_revision": null,
+        "drying_record": null,
+        "calibration_result": null
+      },
+      "evidence": "Legacy PETG precision profile retained as an inactive historical record; active precision jobs use QIDI ABS Rapido.",
+      "evidence_note": "The earlier unidentified prototype PETG assertion was invalidated and is not transferable to the ABS precision profile."
+    },
+    "petg_adapter_profile_calibrated": {
+      "category": "material",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "PETG",
+        "process_profile": "petg_adapter_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "brand": null,
+        "filament_name": null,
+        "spool_lot": null,
+        "profile_revision": null,
+        "drying_record": null,
+        "calibration_result": null
+      },
+      "evidence": "Identify and calibrate the exact dry PETG spool with petg_adapter_0p4 before printing the retained thin-wall adapter jobs.",
+      "evidence_note": "The earlier prototype PETG assertion was invalidated because its brand, lot, drying record, and exact profile were not tracked. Jobs 00D, 04B, and 04C remain PETG and require fresh evidence."
+    },
+    "petg_calibration_profile_calibrated": {
+      "category": "material",
+      "status": "NA",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "PETG",
+        "process_profile": "petg_calibration_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "brand": null,
+        "filament_name": null,
+        "spool_lot": null,
+        "profile_revision": null,
+        "drying_record": null,
+        "calibration_result": null
+      },
+      "evidence": "Legacy PETG calibration profile retained as an inactive historical record; active calibration jobs use QIDI ABS Rapido.",
+      "evidence_note": "The earlier unidentified prototype PETG assertion was invalidated and is not transferable to the ABS calibration profile."
+    },
+    "tpu_profile_calibrated": {
+      "category": "material",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "TPU 95A",
+        "process_profile": "tpu95a_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "brand": null,
+        "filament_name": null,
+        "spool_lot": null,
+        "profile_revision": null,
+        "drying_record": null,
+        "calibration_result": null,
+        "shore_hardness": "95A"
+      },
+      "evidence": "Calibrate the exact dry TPU spool with tpu95a_0p4."
+    },
+    "asa_profile_calibrated": {
+      "category": "material",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "ASA",
+        "process_profile": "asa_structural_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "brand": null,
+        "filament_name": null,
+        "spool_lot": null,
+        "profile_revision": null,
+        "drying_record": null,
+        "calibration_result": null,
+        "chamber_condition": null
+      },
+      "evidence": "Calibrate the exact ASA spool with the intended chamber conditions."
+    },
+    "keyboard_dimensions_measured": {
+      "category": "measurement",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "device",
+        "process_profile": "geometry_input",
+        "nozzle_mm": "not_applicable"
+      },
+      "recorded_values": {
+        "device_model": null,
+        "width_mm": null,
+        "depth_mm": null,
+        "height_mm": null,
+        "cable_keepout_mm": null
+      },
+      "nominal_values": {
+        "width_mm": 315,
+        "depth_mm": 147,
+        "height_mm": 21
+      },
+      "evidence": "Measure the keyboard at its widest and tallest points, including its cable keepout."
+    },
+    "phone_dimensions_measured": {
+      "category": "measurement",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "device",
+        "process_profile": "geometry_input",
+        "nozzle_mm": "not_applicable"
+      },
+      "recorded_values": {
+        "device_model": null,
+        "width_mm": null,
+        "length_mm": null,
+        "thickness_mm": null,
+        "case_installed": null,
+        "camera_bump_envelope_mm": null
+      },
+      "nominal_values": {
+        "width_mm": 77.9,
+        "length_mm": 164.4,
+        "thickness_mm": 7.9
+      },
+      "evidence": "Measure the phone in the exact case state, including the camera-bump envelope."
+    },
+    "phone_side_features_measured": {
+      "category": "measurement",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "device",
+        "process_profile": "geometry_input",
+        "nozzle_mm": "not_applicable"
+      },
+      "recorded_values": {
+        "approved_clearance_limit_id": null,
+        "right_side_keepouts_from_bottom_mm": null,
+        "selected_clamp_centers_from_bottom_mm": null,
+        "minimum_keepout_margin_mm": null,
+        "clearance_measurement_uncertainty_mm": null
+      },
+      "evidence": "Use the PASS engineering release in phone_no_go_clearance_limit_approved. Record every right-side keepout as a named start/end interval, both clamp centers, the minimum measured margin, and measurement uncertainty. The conservative margin after uncertainty must meet the approved minimum."
+    },
+    "phone_cable_measured": {
+      "category": "measurement",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "device",
+        "process_profile": "geometry_input",
+        "nozzle_mm": "not_applicable"
+      },
+      "recorded_values": {
+        "connector_width_mm": null,
+        "connector_thickness_mm": null,
+        "straight_projection_mm": null,
+        "minimum_bend_radius_mm": null,
+        "selected_tie_width_mm": null
+      },
+      "evidence": "Measure the installed USB-C connector, bend envelope, and selected strain-relief tie."
+    },
+    "gripper_interface_measured": {
+      "category": "measurement",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "device",
+        "process_profile": "abs_rapido_precision_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "jaw_opening_mm": null,
+        "jaw_pad_width_mm": null,
+        "jaw_pad_height_mm": null,
+        "selected_grip_setting": null
+      },
+      "evidence": "Measure the RoArm gripper and record the intended low-force gripping setting."
+    },
+    "spring_dimensions_measured": {
+      "category": "measurement",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "hardware",
+        "process_profile": "abs_rapido_precision_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "od_mm": null,
+        "id_mm": null,
+        "free_length_mm": null,
+        "approx_rate_n_per_mm": null,
+        "coil_bind_length_mm": null
+      },
+      "nominal_values": {
+        "max_od_mm": 13.5,
+        "min_id_mm": 10.5,
+        "free_length_range_mm": "18-22"
+      },
+      "evidence": "Measure spring OD, ID, free length, approximate rate, and coil-bind length."
+    },
+    "stylus_diameter_measured": {
+      "category": "measurement",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "device",
+        "process_profile": "petg_adapter_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "stylus_model": null,
+        "diameter_mm": null,
+        "measurement_locations": null
+      },
+      "nominal_values": {
+        "diameter_mm": 9
+      },
+      "evidence": "Measure the capacitive stylus barrel at several locations."
+    },
+    "keyboard_rod_measured": {
+      "category": "measurement",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "hardware",
+        "process_profile": "petg_adapter_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "material": null,
+        "diameter_mm": null,
+        "length_mm": null,
+        "measurement_locations": null
+      },
+      "nominal_values": {
+        "diameter_mm": 6,
+        "length_range_mm": "90-110"
+      },
+      "evidence": "Measure the rod diameter at several points and record its finished length."
+    },
+    "tag_stock_measured": {
+      "category": "measurement",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "matte adhesive tag stock",
+        "process_profile": "geometry_input",
+        "nozzle_mm": "not_applicable"
+      },
+      "recorded_values": {
+        "stock_type": null,
+        "adhesive_type": null,
+        "full_surface_adhesive": null,
+        "tile_width_mm": null,
+        "tile_height_mm": null,
+        "detection_edge_mm": null,
+        "stock_thickness_mm": null,
+        "compressed_adhesive_thickness_mm": null,
+        "measured_optical_plane_z_mm": null,
+        "matte_finish_result": null,
+        "curl_result": null
+      },
+      "evidence": "Measure the direct-adhesive tag stock and compressed adhesive, confirm a 55.0 mm tile with 40.0 mm detection edge, matte finish, full-area adhesion, and no curl; optical Z is adhesive plus stock above the finished sealed board."
+    },
+    "camera_mount_interface_measured": {
+      "category": "measurement",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "hardware",
+        "process_profile": "petg_general_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "camera_model": null,
+        "camera_thread": null,
+        "safe_thread_engagement_mm": null,
+        "selected_camera_screw_length_mm": null,
+        "selected_tslot_screw_length_mm": null,
+        "strap_width_mm": null
+      },
+      "evidence": "Measure the camera thread, screw engagement, crossbar fasteners, and selected strap."
+    },
+    "fixed_camera_fallback_architecture_released": {
+      "category": "engineering_release",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "not_applicable",
+        "process_profile": "camera_architecture_control",
+        "nozzle_mm": "not_applicable"
+      },
+      "recorded_values": {
+        "architecture_decision_status": null,
+        "architecture_decision_revision": null,
+        "architecture_decision_sha256": null,
+        "fixed_camera_fallback_authorized": null,
+        "fallback_authorization_reference": null
+      },
+      "evidence": "This gate may PASS only after config/camera_architecture_decision.json closes the engineering alignment hold under a controlled revision and explicitly authorizes the independent fixed-camera fallback. Record the matching decision status, revision, exact file SHA-256, and authorization reference; selecting camera_mast_optional is not release authority."
+    },
+    "geometry_matches_measurements": {
+      "category": "release",
+      "status": "PASS",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "multiple",
+        "process_profile": "generated_geometry",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "design_revision": "RC03-INT-R1",
+        "effective_parameters_file": "config/parameters.json",
+        "measurement_record_revision": "2026-09-06_JOB03C1_REWORK",
+        "regeneration_completed": true,
+        "affected_parts_reviewed": true
+      },
+      "evidence": "Confirm all PASS measurement/coupon selections match config/parameters.json for this design revision.",
+      "evidence_note": "Regenerated 2026-09-06 after operator-approved 6.2 mm locator, OD9.2 washer, redesigned 7.2 mm lower-half M4 nut seat, and 5.6 x 2.2 mm wide-tie saddle decisions. CadQuery/trimesh validation reports phone_clamp_rail and camera_plate watertight, single-body, positive-volume, and within the protected Plus4 envelope. Historical Job 00B nut/tie failures remain FAIL pending Job 03C1 first-article evidence."
+    },
+    "qidi_studio_roundtrip_confirmed": {
+      "category": "release",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "multiple",
+        "process_profile": "all_active_profiles",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "qidi_studio_version": null,
+        "validated_job_ids": [],
+        "saved_profile_revision_by_job": {},
+        "geometry_scale_percent_by_job": {},
+        "object_count_by_job": {},
+        "critical_layer_preview_pass_by_job": {},
+        "native_project_sha256_by_job": {},
+        "evidence_reference_by_job": {}
+      },
+      "evidence": "For each production job: import, slice, save, reopen, and inspect without auto-scaling or losing objects/settings; record the job-specific native-project hash and preview evidence."
+    },
+    "adapter_retention_method_selected": {
+      "category": "release",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "hardware",
+        "process_profile": "petg_adapter_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "route": null,
+        "retention_method": null,
+        "hardware_or_adhesive_spec": null,
+        "dry_fit_pull_result": null,
+        "removability_result": null,
+        "plastic_compatibility_result": null
+      },
+      "evidence": "Select and document measured dry-fit retention or the minimal plastics-compatible removable compound. A thin-wall radial screw is not part of RC03."
+    },
+    "keyboard_corner_coupon_pass": {
+      "category": "coupon",
+      "status": "PASS",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "QIDI ABS Rapido",
+        "process_profile": "abs_rapido_tray_structural_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "fit_result": "PASS - corner seated within both datum walls without force; keyboard remained level with no observed binding or interference (operator verified)",
+        "selected_compensation_mm": 0.0
+      },
+      "evidence": "Use the actual keyboard only to confirm front/side corner clearance at the two printed datum walls. This coupon does not represent the direct-board support plane or release rocking.",
+      "evidence_note": "BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/06 - SAVE MEASUREMENTS AND PHOTOS/2026-09-01_CELL-A/reports/00A_PRINT_AND_FIT_REVIEW.md; primary photo photos/00A-05_keyboard_fit_primary.jpg and supporting photo 00A-06_keyboard_fit_support.jpg"
+    },
+    "keyboard_seam_coupon_pass": {
+      "category": "coupon",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "QIDI ABS Rapido",
+        "process_profile": "abs_rapido_tray_structural_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "fit_result": null,
+        "printed_post_diameter_mm": null,
+        "selected_round_socket_mm": null,
+        "selected_radial_slot_width_mm": null,
+        "rocking_or_yaw_result": null,
+        "tool_free_release_result": null
+      },
+      "evidence": "After accepting job 01, use its measured 8 mm master posts with job 00A's seam round/radial ladder. Independently select the smallest 8.2/8.3/8.4 mm round-socket diameter and radial-slot width that seat by hand without perceptible rocking/yaw and release without tools. Record both values separately. Station-pair gap and flush are measured after job 02, not on this coupon."
+    },
+    "tray_clearance_holes_coupon_pass": {
+      "category": "coupon",
+      "status": "PASS",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "QIDI ABS Rapido",
+        "process_profile": "abs_rapido_tray_structural_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "board_screw_major_diameter_mm": 4.0,
+        "smallest_free_hole_mm": 4.4,
+        "m4_washer_od_mm": 9.2,
+        "washer_fit_result": "PASS - actual M4 production washer fits all candidates; operator selected the photographed/current production OD9.2 recess for service margin and easy assembly"
+      },
+      "evidence": "Record the smallest freely passing tray-profile hole and the accepted M4 washer recess diameter for the selected board hardware.",
+      "evidence_note": "PROTOTYPE FUNCTIONAL-FIT WAIVER authorized by operator Jack: no caliper metrology required. The 4.0 mm screw value is nominal from the M4 designation and is explicitly assumed, not measured. Actual M4 station screw passed cleanly at 4.4 mm and no smaller candidate passed. Actual M4 production washer fit all recess candidates; OD9.2 retained as the photographed and current production selection for assembly margin. Evidence: BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/06 - SAVE MEASUREMENTS AND PHOTOS/2026-09-01_CELL-A/photos/00A-09_clearance_4p4_actual_m4_pass.jpg and photos/00A-07_washer_middle_recess_provisional.jpg."
+    },
+    "keyboard_station_registration_coupon_pass": {
+      "category": "coupon",
+      "status": "PASS",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "QIDI ABS Rapido",
+        "process_profile": "abs_rapido_tray_structural_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "actual_pin_diameter_measurements_mm": [
+          "6.0 nominal \u2014 not caliper-measured under prototype waiver"
+        ],
+        "selected_round_socket_mm": 6.2,
+        "selected_radial_slot_width_mm": 6.2,
+        "selected_radial_slot_length_mm": 10.0,
+        "insertion_removal_cycles": "WAIVED \u2014 round and slot were each functionally checked by hand; 20 repeated cycles not performed",
+        "lateral_play_mm": "NOT MEASURED \u2014 operator accepted functional fit under prototype waiver",
+        "inversion_retention_result": "WAIVED \u2014 inversion retention test not performed for this prototype",
+        "crack_or_whitening_result": "PASS \u2014 none visible in retained round-hole photo and none reported for slot fit"
+      },
+      "evidence": "Select the smallest hand-serviceable round/slot pair in the exact keyboard-station profile. Require 20 cycles, no cracking or whitening, and lateral play no greater than 0.15 mm.",
+      "evidence_note": "PROTOTYPE FUNCTIONAL-FIT WAIVER authorized by operator Jack: caliper pin measurement, numeric lateral-play measurement, 20 repeated cycles, and inversion-retention testing were waived for this prototype. The actual nominal 6 mm production dowel fit by hand in BOARD-R 6.2 (retained photo) and BOARD-S 6.2 (operator confirmation). No cracking or whitening is visible in the round-hole evidence or was reported for the slot. Selected 6.2 mm round, 6.2 mm slot width, and controlled 10.0 mm slot length match current production geometry. Evidence: BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/06 - SAVE MEASUREMENTS AND PHOTOS/2026-09-01_CELL-A/photos/00A-10_locator_board_round_6p2_pass.jpg; operator confirmation in the active Codex build task."
+    },
+    "phone_station_registration_coupon_pass": {
+      "category": "coupon",
+      "status": "PASS",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "QIDI ABS Rapido",
+        "process_profile": "abs_rapido_cradle_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "actual_pin_diameter_measurements_mm": [
+          "6.0 nominal - not caliper-measured under prototype waiver"
+        ],
+        "selected_round_socket_mm": 6.2,
+        "selected_radial_slot_width_mm": 6.2,
+        "selected_radial_slot_length_mm": 10.0,
+        "insertion_removal_cycles": "WAIVED_FUNCTIONAL_HAND_FIT_CONFIRMED",
+        "lateral_play_mm": "NOT_NUMERICALLY_MEASURED_FUNCTIONAL_FIT_ACCEPTED",
+        "inversion_retention_result": "WAIVED_FOR_PROTOTYPE",
+        "crack_or_whitening_result": "PASS_NONE_REPORTED"
+      },
+      "evidence": "Repeat the locator selection in the exact phone/TCP station profile. Require 20 hand cycles, no cracking or whitening, and lateral play no greater than 0.15 mm.",
+      "evidence_note": "PROTOTYPE FUNCTIONAL-FIT WAIVER authorized by operator Jack: the same nominal 6 mm production rod fits the middle BOARD-R 6.2 round row and middle BOARD-S 6.2 radial-slot row in the ABS cradle-profile Job 00B locator gauge. Caliper metrology, numeric play, 20 cycles, and inversion were waived consistently with Job 00A. No cracking or whitening was reported. Operator confirmation is in the active Codex build task; overview condition is retained in the 00B photo set."
+    },
+    "phone_station_m3_insert_coupon_pass": {
+      "category": "coupon",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "QIDI ABS Rapido",
+        "process_profile": "abs_rapido_cradle_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "selected_pocket_mm": null,
+        "insert_od_mm": null,
+        "insert_length_mm": null,
+        "installed_depth_mm": null,
+        "retention_result": null
+      },
+      "evidence": "Use the PHONE-labeled gauge whose 6.2 mm-deep pockets reproduce the station receiver's 0.3 mm floor. Install the production M3 insert vertically in the same service-station profile and record squareness, depth, floor condition, and resistance to rotation; repeat the insert check on the first station article before release."
+    },
+    "general_clearance_holes_coupon_pass": {
+      "category": "coupon",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "QIDI ABS Rapido",
+        "process_profile": "abs_rapido_general_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "m3_selected_mm": null,
+        "m4_or_board_screw_selected_mm": null,
+        "m5_selected_mm": null
+      },
+      "evidence": "Record the smallest freely passing general-profile QIDI ABS Rapido hole for each fastener family."
+    },
+    "calibration_clearance_holes_coupon_pass": {
+      "category": "coupon",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "QIDI ABS Rapido",
+        "process_profile": "abs_rapido_calibration_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "m3_screw_major_diameter_mm": null,
+        "smallest_free_hole_mm": null,
+        "screw_head_d_mm": null,
+        "m3_head_recess_d_mm": null,
+        "fit_result": null
+      },
+      "evidence": "Using the exact calibration-puck profile and an actual M3 x 10 mm button-head screw from the intended hardware lot, record the screw major diameter and head diameter, the smallest freely passing 3.2/3.4/3.6 mm M3 hole, and the smallest H5.8/H6.2/H6.6 recess that seats the head below the surrounding face without forcing."
+    },
+    "setup_hardware_coupon_pass": {
+      "category": "coupon",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "QIDI ABS Rapido",
+        "process_profile": "abs_rapido_general_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "m3_head_recess_d_mm": null,
+        "m4_washer_od_mm": null,
+        "m5_washer_od_mm": null,
+        "camera_hex_ac_mm": null,
+        "fit_result": null
+      },
+      "evidence": "Verify the production recess, washer, and camera-hex selections against the setup gauge."
+    },
+    "cradle_m4_washer_coupon_pass": {
+      "category": "coupon",
+      "status": "PASS",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "QIDI ABS Rapido",
+        "process_profile": "abs_rapido_cradle_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "actual_washer_od_mm": "NOT_CALIPER_MEASURED_PROTOTYPE_WAIVER",
+        "m4_washer_od_mm": 9.2,
+        "fit_result": "PASS_MIDDLE_OD9.2_RECESS_LIES_FLAT_WITHOUT_FORCE"
+      },
+      "evidence": "Using the exact cradle profile, record the actual washer OD and the smallest recess that seats it flat without forcing.",
+      "evidence_note": "Operator Jack confirmed the actual production M4 washer lies flat in the middle OD9.2 cradle-profile recess. Exact washer OD metrology was waived for this prototype. Evidence: BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/06 - SAVE MEASUREMENTS AND PHOTOS/2026-09-01_CELL-A/photos/00B-06_m4_washer_left_candidate_provisional.jpg and operator confirmation in the active Codex build task."
+    },
+    "precision_m3_head_coupon_pass": {
+      "category": "coupon",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "QIDI ABS Rapido",
+        "process_profile": "abs_rapido_precision_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "screw_head_d_mm": null,
+        "m3_head_recess_d_mm": null,
+        "fit_result": null
+      },
+      "evidence": "Using the exact precision-tool profile, record the actual M3 screw-head diameter and the smallest recess that seats it below the surrounding face."
+    },
+    "phone_width_coupon_pass": {
+      "category": "coupon",
+      "status": "PASS",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "QIDI ABS Rapido",
+        "process_profile": "abs_rapido_cradle_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "fit_result": "PASS_BARE_PHONE_SEATS_BY_HAND_COUPON_IS_WIDTH_AND_RAIL_HEIGHT_ONLY",
+        "lateral_clearance_mm": 1.5,
+        "rail_height_result": "PASS_RAILS_VISIBLY_BELOW_SCREEN_FACE"
+      },
+      "evidence": "Confirm the final phone/case seats by hand with measured slight lateral clearance.",
+      "evidence_note": "Operator tested the nominal bare Samsung Galaxy A16 5G in PHONE/FIT79.9 and estimated approximately 1-2 mm total lateral motion. Photos show hand seating and rails below the screen face. The open-ended 36 mm coupon intentionally has no longitudinal keeper or clamp; final retention is provided by the production datum faces and two M4 screws with TPU tips. The 1.5 mm entry is the midpoint of the operator visual estimate, not caliper metrology. Evidence: photos/00B-07 and 00B-08 plus operator report."
+    },
+    "phone_m4_captive_nut_coupon_pass": {
+      "category": "coupon",
+      "status": "FAIL",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "QIDI ABS Rapido",
+        "process_profile": "abs_rapido_cradle_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "actual_nut_across_flats_mm": "NOT_CALIPER_MEASURED_STANDARD_M4_NUT",
+        "actual_nut_thickness_mm": "NOT_CALIPER_MEASURED_STANDARD_M4_NUT",
+        "selected_channel_across_flats_mm": 7.4,
+        "selected_channel_depth_mm": 3.55,
+        "horizontal_screw_axis_result": "FAIL_SCREW_DID_NOT_ENGAGE_RELIABLY",
+        "installation_result": "FAIL_NUT_DROPS_IN_WITH_EXCESSIVE_CLEARANCE",
+        "spin_result_after_20_cycles": "FAIL_TOO_LOOSE_TO_COMPLETE_CYCLE_TEST"
+      },
+      "evidence": "The as-built Job 00B N7.4 screening channel failed because the nut dropped in loosely and the M4 screw would not engage reliably. Qualify the redesigned 7.2 mm lower-half hex seat only on the production-equivalent Job 03C1 rail: each actual nut must top-load by hand, each screw must engage at least three full turns, and neither nut may spin during 20 advance/back-out cycles.",
+      "evidence_note": "Historical failure evidence: 2026-09-01_CELL-A photos 00B-09 and 00B-10 plus operator report. The operator waived caliper metrology but explicitly rejected the loose N7.4 fit. This FAIL does not qualify the redesigned Job 03C1 channel."
+    },
+    "cable_tie_saddle_coupon_pass": {
+      "category": "coupon",
+      "status": "FAIL",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "QIDI ABS Rapido",
+        "process_profile": "abs_rapido_cradle_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "selected_slot_width_mm": null,
+        "selected_tunnel_height_mm": 1.8,
+        "selected_tie_width_mm": 4.8,
+        "job_id": "00B_AS_BUILT_LEGACY_SCREENING",
+        "tie_specification_basis": "OPERATOR_SELECTED_WIDER_NOMINAL_4P8_MM_TIE_CLASS_NOT_CALIPER_MEASURED",
+        "feed_result": "FAIL_SELECTED_WIDER_TIE_DID_NOT_PASS_LEGACY_SADDLE",
+        "saddle_crack_result": "PASS_NO_CRACK_VISIBLE_IN_PHOTOS",
+        "cable_clearance_result": "NOT_TESTABLE_BECAUSE_TIE_DID_NOT_FEED"
+      },
+      "evidence": "No separate replacement coupon is required. On the production-equivalent Job 03C1 rail, feed the selected nominal 4.8 mm wide by no more than 1.5 mm thick tie through the controlled 5.6 x 2.2 mm saddle around the actual USB cable; confirm free feeding, useful cinching range, cable clearance, and no saddle cracking.",
+      "evidence_note": "Historical failure evidence: 2026-09-01_CELL-A photos 00B-04 and 00B-05 plus operator report. The operator authorized direct adoption of the wider production opening without another standalone coupon; Job 03C1 remains the required production first-article check."
+    },
+    "compliant_tool_m3_insert_coupon_pass": {
+      "category": "coupon",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "QIDI ABS Rapido",
+        "process_profile": "abs_rapido_precision_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "selected_pocket_mm": null,
+        "insert_od_mm": null,
+        "insert_length_mm": null,
+        "installed_depth_mm": null,
+        "retention_result": null
+      },
+      "evidence": "Use the TOOL-labeled gauge whose pockets reproduce the compliant tool body's 5 mm edge ligaments. Record the precision-profile M3 pocket that installs square without splitting, edge breakout, or spinning; repeat the insert check on the first article before releasing the tool body."
+    },
+    "gripper_coupon_pass": {
+      "category": "coupon",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "QIDI ABS Rapido",
+        "process_profile": "abs_rapido_precision_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "selected_grip_setting": null,
+        "shim_each_side_mm": null,
+        "slip_result": null,
+        "crush_result": null
+      },
+      "evidence": "Grip the production-face coupon without bottoming, rocking, slipping, or crushing."
+    },
+    "spring_fit_coupon_pass": {
+      "category": "coupon",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "QIDI ABS Rapido",
+        "process_profile": "abs_rapido_precision_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "selected_step_mm": null,
+        "post_fit_result": null,
+        "cup_fit_result": null,
+        "binding_result": null
+      },
+      "evidence": "Record the stepped spring seat and verify the spring fits without binding."
+    },
+    "stylus_gauge_coupon_pass": {
+      "category": "coupon",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "PETG",
+        "process_profile": "petg_adapter_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "selected_nominal_mm": null,
+        "sliding_fit_result": null,
+        "excess_play_result": null
+      },
+      "evidence": "Record the smallest adapter-profile stylus hole that slides freely without excessive play."
+    },
+    "phone_no_go_clearance_limit_approved": {
+      "category": "engineering_release",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "device",
+        "process_profile": "phone_fixture_limits",
+        "nozzle_mm": "not_applicable"
+      },
+      "recorded_values": {
+        "approval_id": null,
+        "approved_by": null,
+        "approved_at": null,
+        "minimum_clearance_mm": null,
+        "maximum_measurement_uncertainty_mm": null,
+        "engineering_rationale": null,
+        "evidence_reference": null
+      },
+      "evidence": "A responsible engineering reviewer must approve a positive minimum no-go clearance and a smaller maximum measurement uncertainty before phone geometry or clamp contact is accepted. Operators may not choose the limit."
+    },
+    "phone_tpu_retention_limits_approved": {
+      "category": "engineering_release",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "TPU 95A",
+        "process_profile": "phone_tpu_retention_limits",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "approval_id": null,
+        "approved_by": null,
+        "approved_at": null,
+        "minimum_pull_force_n": null,
+        "minimum_proof_duration_s": null,
+        "force_gauge_required_range_n": null,
+        "force_gauge_required_resolution_n": null,
+        "engineering_rationale": null,
+        "evidence_reference": null
+      },
+      "evidence": "A responsible engineering reviewer must approve the positive phone-tip pull force and proof duration plus a suitable gauge range and resolution before Job 05A retention qualification. Operators may not choose the limits."
+    },
+    "phone_tpu_retention_coupon_pass": {
+      "category": "coupon",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "TPU 95A",
+        "process_profile": "tpu95a_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "approved_limits_id": null,
+        "first_article_job": null,
+        "installation_result": null,
+        "axial_pull_test_method": null,
+        "minimum_pull_force_n": null,
+        "proof_duration_s": null,
+        "measured_pull_force_n": null,
+        "pull_off_result": null,
+        "contact_face_result": null
+      },
+      "evidence": "Use the PASS engineering release in phone_tpu_retention_limits_approved. Test the Job 05A first article on the M4 peg with a calibrated force gauge and record the approval ID, approved minimum force, achieved duration, method, measured force, and pull-off result."
+    },
+    "keyboard_tpu_retention_coupon_pass": {
+      "category": "coupon",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "TPU 95A",
+        "process_profile": "tpu95a_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "approved_limits_id": null,
+        "first_article_job": null,
+        "installation_result": null,
+        "axial_pull_test_method": null,
+        "minimum_pull_force_n": null,
+        "proof_duration_s": null,
+        "measured_pull_force_n": null,
+        "pull_off_result": null,
+        "contact_face_result": null
+      },
+      "evidence": "Use the keyboard-rod route values in the PASS tool_force_tcp_limits_approved record. Test the Job 05C first article on the 6 mm peg with a calibrated force gauge and record the approval ID, force, duration, method, and pull-off result."
+    },
+    "asa_mast_socket_coupon_pass": {
+      "category": "coupon",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "ASA",
+        "process_profile": "asa_structural_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "selected_socket_mm": null,
+        "extrusion_x_mm": null,
+        "extrusion_y_mm": null,
+        "fit_result": null
+      },
+      "evidence": "Record the same-profile ASA socket that fits the measured extrusion without rocking."
+    },
+    "asa_m5_nut_coupon_pass": {
+      "category": "coupon",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "ASA",
+        "process_profile": "asa_structural_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "selected_hex_mm": null,
+        "nut_across_flats_mm": null,
+        "nut_thickness_mm": null,
+        "retention_result": null
+      },
+      "evidence": "Record the ASA hex pocket that fully seats the actual M5 nut without splitting or spinning."
+    },
+    "asa_m5_clearance_coupon_pass": {
+      "category": "coupon",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "ASA",
+        "process_profile": "asa_structural_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "bolt_major_diameter_mm": null,
+        "selected_horizontal_hole_mm": null,
+        "selected_base_hole_mm": null,
+        "m5_washer_od_mm": null,
+        "m5_washer_fit_result": null
+      },
+      "evidence": "Record the production-axis ASA M5 passage, base-hole, and washer fits."
+    },
+    "tag_artwork_scale_pass": {
+      "category": "first_article",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "paper",
+        "process_profile": "artwork_100_percent",
+        "nozzle_mm": "not_applicable"
+      },
+      "recorded_values": {
+        "tag_id": null,
+        "detection_edge_mm": null,
+        "tile_size_mm": null,
+        "print_scale_percent": null,
+        "orientation_marked": null
+      },
+      "evidence": "Verify the tag detection edge, tile size, 100% scale, and +Y orientation mark."
+    },
+    "board_setup_template_scale_pass": {
+      "category": "first_article",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "paper",
+        "process_profile": "board_setup_template_actual_size",
+        "nozzle_mm": "not_applicable"
+      },
+      "recorded_values": {
+        "template_revision": null,
+        "selected_guide_path": null,
+        "selected_guide_sha256": null,
+        "source_layout_sha256": null,
+        "x_scale_bar_mm": null,
+        "y_scale_bar_mm": null,
+        "page_scaling_setting": null,
+        "all_sheet_registration_marks_result": null
+      },
+      "evidence": "Select either the released Letter tiled guide or the released 24 x 36 full-size guide, record that PDF path and SHA-256 plus the source workcell-layout SHA-256, and print at Actual Size. Require both independent 100 mm scale bars to measure 100.0 +/- 0.2 mm. For the tiled guide, verify every matching registration mark and the prescribed 12 mm overlaps; for the full-size guide, verify the board-edge, orientation, and scale controls. Do not use an overview, schedule, or assembly-map page as a drilling template."
+    },
+    "phone_clamp_rail_first_article_pass": {
+      "category": "first_article",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "QIDI ABS Rapido",
+        "process_profile": "abs_rapido_cradle_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "job_id": null,
+        "flatness_mm": null,
+        "station_seating_result": null,
+        "tower_ligament_result": null,
+        "captive_nut_retention_result": null,
+        "horizontal_screw_axis_result": null,
+        "m4_screw_engagement_turns": null,
+        "cable_tie_feed_result": null,
+        "cable_tie_crack_result": null,
+        "button_keepout_result": null,
+        "service_removal_result": null
+      },
+      "evidence": "Inspect Job 03C1 in two stages: first bench-qualify both redesigned captive-nut seats and the 5.6 x 2.2 mm wide-tie saddle, then after Job 03A exists prove the keeper/tower rail seats repeatably, preserves phone side-feature keepouts, and can be replaced without removing the service station."
+    },
+    "keyboard_left_first_article_pass": {
+      "category": "first_article",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "QIDI ABS Rapido",
+        "process_profile": "abs_rapido_tray_structural_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "job_id": null,
+        "flatness_mm": null,
+        "slot_fit_result": null,
+        "washer_track_result": null,
+        "datum_surface_result": null,
+        "seam_key_result": null
+      },
+      "evidence": "Inspect cooled job 01 as the pinned master station before releasing the matching slave station."
+    },
+    "mast_foot_first_article_pass": {
+      "category": "first_article",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "ASA",
+        "process_profile": "asa_structural_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "job_id": null,
+        "socket_fit_result": null,
+        "nut_fit_result": null,
+        "bolt_clamp_result": null,
+        "initial_crack_result": null,
+        "crack_result_after_24h": null,
+        "base_flatness_mm": null
+      },
+      "evidence": "Fully assemble job 07A and verify fit, clamp function, flatness, and no cracks after 24 hours."
+    },
+    "keyboard_station_pair_postprint_pass": {
+      "category": "postprint",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "QIDI ABS Rapido",
+        "process_profile": "abs_rapido_tray_structural_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "jobs": null,
+        "assembled_gap_mm": null,
+        "flush_mismatch_mm": null,
+        "overall_flatness_mm": null,
+        "support_plane_flatness_mm": null,
+        "keyboard_dry_fit_result": null,
+        "slave_has_independent_locator_pins": null
+      },
+      "evidence": "Mate cooled jobs 01/02, verify the right station is a seam-located slave with no independent locator pair, and record seam gap, flushness, support-plane flatness, and keyboard dry fit."
+    },
+    "keyboard_clamps_postprint_pass": {
+      "category": "postprint",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "QIDI ABS Rapido",
+        "process_profile": "abs_rapido_general_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "job_id": null,
+        "quantity": null,
+        "base_flatness_mm": null,
+        "gusset_result": null,
+        "slot_result": null,
+        "pad_fit_result": null
+      },
+      "evidence": "Inspect both job 03B clamps and their pad interfaces."
+    },
+    "phone_tcp_station_postprint_pass": {
+      "category": "postprint",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "QIDI ABS Rapido",
+        "process_profile": "abs_rapido_cradle_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "job_id": null,
+        "base_flatness_mm": null,
+        "receiver_seat_flatness_mm": null,
+        "locator_socket_result": null,
+        "base_contact_result": null,
+        "rail_fit_result": null,
+        "insert_squareness_result": null,
+        "cable_route_result": null
+      },
+      "evidence": "Inspect the cooled phone/TCP station, including continuous flat base contact at all three retention zones, locator sockets, keyed receiver, fixed phone datums, replaceable-rail interface, and inserts; verify the cable route with the accepted rail-mounted saddle."
+    },
+    "tag_application_tool_postprint_pass": {
+      "category": "postprint",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "QIDI ABS Rapido",
+        "process_profile": "abs_rapido_general_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "job_id": null,
+        "opening_x_mm": null,
+        "opening_y_mm": null,
+        "flatness_mm": null,
+        "center_witness_result": null,
+        "plus_y_witness_result": null,
+        "tag_handling_result": null,
+        "square_corner_release_result": null
+      },
+      "evidence": "Inspect the reusable job 03C2 application frame for a measured 55.3 mm square opening, flat seating, visible center/+Y witnesses, and clean insertion/removal of an actual square 55 mm tile without corner collision, skew, or lift."
+    },
+    "camera_plate_hardware_pass": {
+      "category": "postprint",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "PETG",
+        "process_profile": "petg_general_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "job_id": null,
+        "camera_screw_engagement_mm": null,
+        "tslot_hardware_result": null,
+        "strap_slot_result": null,
+        "camera_screw_bottoming_result": null
+      },
+      "evidence": "Verify the actual camera, screw, T-slot hardware, and straps."
+    },
+    "calibration_puck_datum_pass": {
+      "category": "postprint",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "QIDI ABS Rapido",
+        "process_profile": "abs_rapido_calibration_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "job_id": null,
+        "cartridge_count": null,
+        "cartridge_A_free_state_flatness_mm": null,
+        "cartridge_A_crosshair_result": null,
+        "cartridge_A_divot_result": null,
+        "cartridge_A_lateral_play_mm": null,
+        "cartridge_A_remove_reinstall_cycles": null,
+        "cartridge_A_mounted_height_measurements_mm": [],
+        "cartridge_A_mounted_height_range_mm": null,
+        "cartridge_A_mean_mounted_height_mm": null,
+        "cartridge_B_free_state_flatness_mm": null,
+        "cartridge_B_crosshair_result": null,
+        "cartridge_B_divot_result": null,
+        "cartridge_B_lateral_play_mm": null,
+        "cartridge_B_remove_reinstall_cycles": null,
+        "cartridge_B_mounted_height_measurements_mm": [],
+        "cartridge_B_mounted_height_range_mm": null,
+        "cartridge_B_mean_mounted_height_mm": null,
+        "installed_cartridge_id": null,
+        "installed_selection_score": null,
+        "spare_cartridge_id": null,
+        "accepted_spare_result": null,
+        "spare_swap_requires_tcp_recalibration": null
+      },
+      "evidence": "Preserve the Job 03D slicer identities: calibration_puck_1 is 03D-A and calibration_puck_2 is 03D-B. Qualify each separately: both require an intact crosshair/divot, lateral play no greater than 0.15 mm, and a mounted-height range no greater than 0.10 mm over ten remove/reinstall cycles. For each accepted cartridge calculate score = max(lateral_play_mm / 0.15, mounted_height_range_mm / 0.10). Label the lower-score cartridge INSTALL; if scores are equal at the measuring resolution, choose the lower height range, then 03D-A if still tied. Label the other accepted cartridge SPARE - TCP RECALIBRATION REQUIRED."
+    },
+    "tool_body_postprint_pass": {
+      "category": "postprint",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "QIDI ABS Rapido",
+        "process_profile": "abs_rapido_precision_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "job_id": null,
+        "body_straightness_result": null,
+        "bore_finish_result": null,
+        "gripper_flat_result": null,
+        "insert_result": null,
+        "cap_fit_result": null,
+        "spare_cap_count": null
+      },
+      "evidence": "Inspect the body, caps, inserts, bores, and gripper faces."
+    },
+    "stylus_collar_retention_pass": {
+      "category": "postprint",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "PETG",
+        "process_profile": "petg_adapter_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "approved_limits_id": null,
+        "job_id": null,
+        "selected_collar": null,
+        "retention_method": null,
+        "minimum_pull_force_n": null,
+        "proof_duration_s": null,
+        "measured_pull_force_n": null,
+        "initial_pull_result": null,
+        "cycle_count": null,
+        "removability_result": null,
+        "plastic_compatibility_result": null,
+        "creep_result_after_24h": null,
+        "radial_screw_absent": null
+      },
+      "evidence": "Use the phone-stylus route values in the PASS tool_force_tcp_limits_approved record, then qualify one collar using measured dry fit or minimal removable compound and a calibrated force gauge. Record the approval ID and prove pull/cycle retention, removability, plastic compatibility and 24-hour creep; confirm no radial screw and retain the second as a labeled spare."
+    },
+    "rod_bushing_retention_pass": {
+      "category": "postprint",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "PETG",
+        "process_profile": "petg_adapter_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "approved_limits_id": null,
+        "job_id": null,
+        "selected_bushing": null,
+        "rod_projection_mm": null,
+        "retention_method": null,
+        "minimum_pull_force_n": null,
+        "proof_duration_s": null,
+        "measured_pull_force_n": null,
+        "initial_pull_result": null,
+        "creep_result_after_24h": null
+      },
+      "evidence": "Use the keyboard-rod route values in the PASS tool_force_tcp_limits_approved record, qualify one rod bushing with a calibrated force gauge, record the approval ID and 24-hour creep result, and retain the second as a labeled spare."
+    },
+    "phone_tpu_batch_postprint_pass": {
+      "category": "postprint",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "TPU 95A",
+        "process_profile": "tpu95a_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "job_id": null,
+        "quantity": null,
+        "bore_result": null,
+        "contact_face_result": null,
+        "installed_count": null,
+        "spare_count": null
+      },
+      "evidence": "Inspect and account for all production/spare phone tips."
+    },
+    "keyboard_tpu_batch_postprint_pass": {
+      "category": "postprint",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "TPU 95A",
+        "process_profile": "tpu95a_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "job_id": null,
+        "quantity": null,
+        "bore_result": null,
+        "contact_face_result": null,
+        "installed_count": null,
+        "spare_count": null
+      },
+      "evidence": "Inspect and account for all production/spare keyboard tips."
+    },
+    "mast_second_foot_postprint_pass": {
+      "category": "postprint",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "ASA",
+        "process_profile": "asa_structural_0p4",
+        "nozzle_mm": 0.4
+      },
+      "recorded_values": {
+        "job_id": null,
+        "base_flatness_mm": null,
+        "socket_fit_result": null,
+        "bolt_clamp_result": null,
+        "crack_result_after_24h": null
+      },
+      "evidence": "Inspect and fully load the second mast foot using the accepted method."
+    },
+    "board_fabrication_pass": {
+      "category": "assembly",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "board",
+        "process_profile": "board_fabrication",
+        "nozzle_mm": "not_applicable"
+      },
+      "recorded_values": {
+        "width_mm": null,
+        "depth_mm": null,
+        "thickness_mm": null,
+        "front_width_mm": null,
+        "rear_width_mm": null,
+        "left_depth_mm": null,
+        "right_depth_mm": null,
+        "diagonal_1_mm": null,
+        "diagonal_2_mm": null,
+        "transferred_center_coordinate_record": null,
+        "both_faces_sealed_result": null,
+        "all_edges_sealed_result": null,
+        "finish_cure_result": null,
+        "finish_product_and_batch": null,
+        "finish_application_and_cure_record": null,
+        "finish_evidence_reference": null,
+        "local_flatness_by_station_mm": {},
+        "overall_bow_mm": null,
+        "template_x_scale_bar_mm": null,
+        "template_y_scale_bar_mm": null,
+        "local_thickness_by_locator_mm": {
+          "KBL-LOC-ROUND": null,
+          "KBL-LOC-RADIAL": null,
+          "PT-LOC-ROUND": null,
+          "PT-LOC-RADIAL": null
+        },
+        "blind_locator_bore_depths_mm": {
+          "KBL-LOC-ROUND": null,
+          "KBL-LOC-RADIAL": null,
+          "PT-LOC-ROUND": null,
+          "PT-LOC-RADIAL": null
+        },
+        "locator_projection_measurements_mm": {
+          "KBL-LOC-ROUND": null,
+          "KBL-LOC-RADIAL": null,
+          "PT-LOC-ROUND": null,
+          "PT-LOC-RADIAL": null
+        },
+        "threaded_board_interface_result": null,
+        "scrap_stack_proof_load_result": null,
+        "selected_fastener_map_sha256": null
+      },
+      "evidence": "Accept a 610.0 +/- 0.5 x 457.0 +/- 0.5 mm board, 17.50-18.50 mm thick. Front/rear widths and left/right depths may differ by no more than 0.50 mm; both diagonals must be within 1.00 mm of the edge-derived diagonal and within 1.00 mm of each other. Record the independent X and Y printed-template scale checks, the coordinate-transfer audit, local flatness no greater than 0.50 mm, and overall bow no greater than 1.50 mm. For each named locator, record local thickness and a 15.00 +/- 0.20 mm blind depth that preserves at least 2.00 mm local board floor; after pin installation require 5.00 +/- 0.15 mm projection. Both faces and every edge must be evenly sealed and fully cured. Record PASS results for the qualified threaded interface and scrap-stack proof plus the SHA-256 of a fully selected, anchor-specific FASTENER_MAP.csv. Unresolved anchor or bore fields keep this gate from PASS. No router or CNC is required."
+    },
+    "keyboard_fixture_assembly_pass": {
+      "category": "assembly",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "assembly",
+        "process_profile": "keyboard_fixture",
+        "nozzle_mm": "not_applicable"
+      },
+      "recorded_values": {
+        "station_pair_gate": null,
+        "clamp_gate": null,
+        "seam_gap_mm": null,
+        "seam_flush_mismatch_mm": null,
+        "support_plane_flatness_mm": null,
+        "remove_reinstall_cycles": null,
+        "pose_measurements_xyyaw_mm_deg": [],
+        "keyboard_pose_range_mm": null,
+        "rocking_result": null
+      },
+      "evidence": "Pass ten keyboard remove/reinstall cycles with no rocking, seam gap no greater than 0.40 mm, flush mismatch no greater than 0.25 mm, and keyboard pose range no greater than 0.50 mm."
+    },
+    "phone_fixture_assembly_pass": {
+      "category": "assembly",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "assembly",
+        "process_profile": "phone_fixture",
+        "nozzle_mm": "not_applicable"
+      },
+      "recorded_values": {
+        "approved_no_go_clearance_limit_id": null,
+        "approved_minimum_no_go_clearance_mm": null,
+        "measured_minimum_no_go_clearance_mm": null,
+        "clearance_measurement_uncertainty_mm": null,
+        "station_gate": null,
+        "clamp_rail_gate": null,
+        "tpu_gate": null,
+        "button_clearance_result": null,
+        "camera_clearance_result": null,
+        "usb_strain_relief_result": null,
+        "remove_reinstall_cycles": null,
+        "phone_pose_measurements_xyyaw_mm_deg": [],
+        "phone_pose_range_mm": null
+      },
+      "evidence": "Pass ten phone cycles with pose range no greater than 0.35 mm. Record the approved phone no-go limit ID, approved minimum, measured minimum and uncertainty; the conservative measured margin must meet the approval while button, camera, and USB clearances remain maintained."
+    },
+    "tag_direct_installation_pass": {
+      "category": "assembly",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "assembly",
+        "process_profile": "vision_fiducials",
+        "nozzle_mm": "not_applicable"
+      },
+      "recorded_values": {
+        "installed_ids": null,
+        "orientation_result": null,
+        "full_surface_adhesive_result": null,
+        "tile_measurements_mm": {},
+        "detection_edge_measurements_mm": {},
+        "edge_lift_measurements_mm": {},
+        "static_detection_success_by_id": {}
+      },
+      "evidence": "Apply IDs 0-5 directly to the sealed board with full-surface matte adhesive and consistent +Y orientation. Require 55.0 +/- 0.2 mm tile, 40.0 +/- 0.2 mm detection edge, edge lift no greater than 0.20 mm, and 20/20 static detections per tag."
+    },
+    "tag_plane_placement_measured": {
+      "category": "assembly",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "assembly",
+        "process_profile": "vision_fiducials",
+        "nozzle_mm": "not_applicable"
+      },
+      "recorded_values": {
+        "board_z_reference": "finished sealed board top surface",
+        "measurement_method": null,
+        "measurement_tool_id": null,
+        "evidence_reference": null,
+        "tags": {
+          "T0": {
+            "center_x_mm": null,
+            "center_y_mm": null,
+            "plane_z_mm": null,
+            "yaw_deg": null
+          },
+          "T1": {
+            "center_x_mm": null,
+            "center_y_mm": null,
+            "plane_z_mm": null,
+            "yaw_deg": null
+          },
+          "T2": {
+            "center_x_mm": null,
+            "center_y_mm": null,
+            "plane_z_mm": null,
+            "yaw_deg": null
+          },
+          "T3": {
+            "center_x_mm": null,
+            "center_y_mm": null,
+            "plane_z_mm": null,
+            "yaw_deg": null
+          },
+          "K0": {
+            "center_x_mm": null,
+            "center_y_mm": null,
+            "plane_z_mm": null,
+            "yaw_deg": null
+          },
+          "P0": {
+            "center_x_mm": null,
+            "center_y_mm": null,
+            "plane_z_mm": null,
+            "yaw_deg": null
+          }
+        },
+        "physical_metrology_calculation_record": null
+      },
+      "evidence": "Record installed XY, yaw, optical-plane Z, the raw edge distances/baselines, and the calculation method for all six direct tags. Require center error within 0.50 mm and yaw within 0.30 degrees. Camera reprojection and static detection are verified separately in Step 13."
+    },
+    "station_remove_reinstall_repeatability_pass": {
+      "category": "assembly",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "assembly",
+        "process_profile": "integrated_station_registration",
+        "nozzle_mm": "not_applicable"
+      },
+      "recorded_values": {
+        "cycles": null,
+        "measurements_by_station": {},
+        "range_x_mm_by_station": {},
+        "range_y_mm_by_station": {},
+        "range_z_mm_by_station": {},
+        "range_yaw_deg_by_station": {},
+        "base_contact_result_by_station": {},
+        "structural_proof_result_by_station": {}
+      },
+      "evidence": "Record ten remove/reinstall cycles for keyboard master/slave and phone/TCP stations. Require peak-to-peak X/Y no greater than 0.25 mm, yaw no greater than 0.20 degrees, Z no greater than 0.20 mm, continuous base contact at each retention zone, and no permanent shift after the structural proof load."
+    },
+    "tool_force_tcp_limits_approved": {
+      "category": "engineering_release",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "assembly",
+        "process_profile": "compliant_tool_limits",
+        "nozzle_mm": "not_applicable"
+      },
+      "recorded_values": {
+        "approval_id": null,
+        "approved_by": null,
+        "approved_at": null,
+        "selected_routes": [],
+        "limits_by_route": {},
+        "force_gauge_required_range_n": null,
+        "force_gauge_required_resolution_n": null,
+        "tcp_probe_method_and_reference_frame": null,
+        "engineering_rationale": null,
+        "evidence_reference": null
+      },
+      "evidence": "A responsible engineering reviewer must approve every selected route. Each route record must contain at least two compression-force checkpoints (travel_mm, minimum_force_n, maximum_force_n), a positive TCP axis-range limit in mm, and the route-specific rod-bushing/keyboard-TPU or stylus-collar pull force and duration. Record a force-gauge range and resolution in N plus the TCP probe method/frame. Operator-selected arbitrary values are not permitted."
+    },
+    "tool_assembled_motion_pass": {
+      "category": "assembly",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "assembly",
+        "process_profile": "compliant_tool",
+        "nozzle_mm": "not_applicable"
+      },
+      "recorded_values": {
+        "approved_limits_id": null,
+        "selected_routes": [],
+        "force_gauge_id": null,
+        "tcp_probe_method_and_reference_frame": null,
+        "results_by_route": {}
+      },
+      "evidence": "For every selected route, record at least 20 cycles, free_travel_mm, one measured force for every approved checkpoint, true full-return/no-coil-bind/gripper-retention/functional-contact results, approved route-specific pull forces and durations, at least ten TCP probes, and X/Y/Z range in mm within the approved scalar axis limit. The approval ID and selected-route/result keys must match exactly."
+    },
+    "stylus_function_pass": {
+      "category": "assembly",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "assembly",
+        "process_profile": "phone_stylus_route",
+        "nozzle_mm": "not_applicable"
+      },
+      "recorded_values": {
+        "stylus_model": null,
+        "manual_tap_count": null,
+        "successful_taps": null,
+        "electrical_touch_result": null,
+        "assembled_projection_mm": null
+      },
+      "evidence": "Verify capacitive operation by hand and after installation."
+    },
+    "commissioning_motion_contact_limits_approved": {
+      "category": "engineering_release",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "assembly",
+        "process_profile": "commissioning_limits",
+        "nozzle_mm": "not_applicable"
+      },
+      "recorded_values": {
+        "approval_id": null,
+        "approved_by": null,
+        "approved_at": null,
+        "empty_motion_tcp_speed_limit_mm_s": null,
+        "empty_motion_tcp_acceleration_limit_mm_s2": null,
+        "minimum_clearance_mm": null,
+        "first_contact_tcp_speed_limit_mm_s": null,
+        "first_contact_force_limit_n": null,
+        "first_contact_travel_limit_mm": null,
+        "station_20n_lateral_proof_duration_s": null,
+        "station_10n_functional_proof_duration_s": null,
+        "controller_model_and_firmware": null,
+        "homing_reference_procedure_path": null,
+        "homing_reference_procedure_sha256": null,
+        "empty_cell_program_path": null,
+        "empty_cell_program_sha256": null,
+        "final_process_program_path": null,
+        "final_process_program_sha256": null,
+        "estop_implementation": null,
+        "board_anti_shift_implementation": null,
+        "engineering_rationale": null,
+        "evidence_reference": null
+      },
+      "evidence": "Before robot enable, a responsible engineering reviewer must approve positive empty-motion TCP speed (mm/s), TCP acceleration (mm/s^2), minimum clearance (mm), first-contact TCP speed (mm/s), force (N), travel (mm), and 20 N/10 N station-proof durations (s); identify the controller/firmware, E-stop implementation, and board anti-shift implementation; and bind existing project-relative homing/reference, empty-cell motion, and final-process files by SHA-256. First-contact speed may not exceed empty-motion speed. The 50 N axial board-anchor proof remains fixed at 60 seconds."
+    },
+    "workcell_commissioning_pass": {
+      "category": "assembly",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "assembly",
+        "process_profile": "final_workcell_commissioning",
+        "nozzle_mm": "not_applicable"
+      },
+      "recorded_values": {
+        "arm_clamp_model_and_footprint": null,
+        "reinforcement_material_thickness_and_footprint": null,
+        "board_flatness_before_and_after_clamping_mm": {},
+        "board_to_bench_anti_shift_result": null,
+        "estop_model_cutoff_and_reset_result": null,
+        "camera_model_resolution_focus_exposure": null,
+        "camera_calibration_file_and_sha256": null,
+        "charuco_view_count": null,
+        "camera_reprojection_error_px": null,
+        "t0_t3_full_visibility_result": null,
+        "board_transform_residuals_by_tag": {},
+        "tcp_probe_cycles_and_xyz_range_mm": {},
+        "approved_motion_contact_limits_id": null,
+        "empty_motion_tcp_speed_used_mm_s": null,
+        "empty_motion_tcp_acceleration_used_mm_s2": null,
+        "minimum_clearance_limit_mm": null,
+        "minimum_clearance_measured_mm": null,
+        "first_contact_tcp_speed_used_mm_s": null,
+        "first_contact_force_measured_n": null,
+        "first_contact_travel_measured_mm": null,
+        "station_20n_lateral_proof_duration_s": null,
+        "station_10n_functional_proof_duration_s": null,
+        "controller_model_and_firmware": null,
+        "homing_reference_procedure_path": null,
+        "homing_reference_procedure_sha256": null,
+        "empty_cell_program_path": null,
+        "empty_cell_program_sha256": null,
+        "final_process_program_path": null,
+        "final_process_program_sha256": null,
+        "estop_implementation": null,
+        "board_anti_shift_implementation": null,
+        "board_anchor_50n_60s_results": {},
+        "empty_cell_cycles_speed_acceleration_and_clearance": {},
+        "operator_date_and_evidence_reference": null
+      },
+      "evidence": "Record final loaded-board arm reinforcement and flatness, approved anti-shift and E-stop implementations plus their tests, controller/firmware, the exact hashed homing/reference, empty-cell, and final-process artifacts, locked camera intrinsics and view coverage, board-transform residuals, TCP probe repeatability, approval ID, actual TCP speeds/acceleration in mm/s and mm/s^2, measured force in N, travel/clearance in mm, 20 N/10 N proof durations in s, every 50 N axial/60 s anchor proof, empty-cell clearance, and controlled first contact. Actual motion/contact values must remain within the approved limits."
+    },
+    "mast_pair_installation_pass": {
+      "category": "assembly",
+      "status": "NOT_TESTED",
+      "scope": {
+        "design_revision": "RC03-INT-R1",
+        "material": "assembly",
+        "process_profile": "camera_mast",
+        "nozzle_mm": "not_applicable"
+      },
+      "recorded_values": {
+        "foot_a_gate": null,
+        "foot_b_gate": null,
+        "base_hardware_count": null,
+        "crossbar_level_result": null,
+        "mast_plumb_result": null,
+        "camera_stability_result": null
+      },
+      "evidence": "Assemble both accepted feet and verify level, plumb, hardware count, and camera stability."
+    }
+  }
+}

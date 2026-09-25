@@ -1,0 +1,27 @@
+{
+  "schema": "rocell.offline_roll_lookup_candidate.v1",
+  "enabled": false,
+  "motion_authorized": false,
+  "scope": "DESCENDING_ROLL_DESIRED_1_50_DEG_SPEED_20_ACC_1",
+  "model": "LOCAL_DISCRETE_COMMAND_LOOKUP",
+  "desired_endpoint_deg": 1.5,
+  "command_deg": 1.25,
+  "approach": "descending",
+  "selection_rule": "Lowest observed absolute desired-endpoint error among the two characterized commands; no interpolation",
+  "training_commands_deg": [1.25, 1.35],
+  "training_exports": [
+    "wizard-20260917T015257360360Z-8fa39a93682c4cb3ade81be1ed02c2b4",
+    "wizard-20260917T015441803715Z-a0c24e125b16405fbba317766eebe347",
+    "wizard-20260917T015728724276Z-2f1f964f7f614ef5993d2e6cb45e6426",
+    "wizard-20260917T015911527310Z-da41dd66b5e04ffc8d07e57a308b7da2"
+  ],
+  "validation_at_freeze": "NOT_PERFORMED",
+  "limitations": [
+    "Two characterization samples per command, not statistical qualification.",
+    "Only descending from the tested high-position neighborhood with full holds.",
+    "Do not extrapolate to other targets, directions, speeds, loads or joints.",
+    "Controller telemetry is not independent Cartesian accuracy evidence.",
+    "No native validation action currently loads this artifact.",
+    "Preserve this frozen selection; record future validation separately."
+  ]
+}

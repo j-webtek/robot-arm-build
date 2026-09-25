@@ -1,0 +1,461 @@
+{
+  "schema": "rocell.physical_onboarding_hazard_register.v1",
+  "register_id": "ROCELL-PHYSICAL-ONBOARDING-HAZARDS-001",
+  "revision": 2,
+  "status": "PREHARDWARE_OPEN_ZERO_AUTHORITY",
+  "runtime_activation": false,
+  "authority": {
+    "planning_authority": true,
+    "simulation_authority": true,
+    "device_io_authorized": false,
+    "robot_power_authorized": false,
+    "motion_authorized": false,
+    "contact_authorized": false,
+    "build_promotion_authorized": false,
+    "physical_release_effect": "NONE"
+  },
+  "hazards": [
+    {
+      "id": "HZ-001",
+      "title": "Automatic startup movement",
+      "severity": "CRITICAL",
+      "status": "OPEN_BLOCKING",
+      "evidence_stages": [
+        "power_safety",
+        "power_on_observation",
+        "reference_frame_calibration",
+        "noncontact_acceptance"
+      ],
+      "invalidation_epochs": [
+        "arm_controller_tool",
+        "power_system",
+        "empty_cell_safety"
+      ],
+      "controls": [
+        "Treat every first actuator energization after an applicable change as a possible-motion event.",
+        "Clear and observe the complete startup swept volume with devices and contact tools removed.",
+        "Require an independent physical power-cut E-stop and forbid host initialization, homing, parking, or automatic retry."
+      ],
+      "required_evidence": [
+        "Reviewed empty-cell startup-swept-volume inspection and observer positions.",
+        "Continuous record binding manual power application, zero host commands, actual startup behavior, and final disconnected state.",
+        "Observed power-cut consequence and incident disposition for any unexpected or uncertain movement."
+      ],
+      "fail_safe": "CUT_POWER_AND_LATCH_INCIDENT_HOLD",
+      "residual_status": "UNASSESSED_REQUIRES_RECEIVED_HARDWARE_EVIDENCE"
+    },
+    {
+      "id": "HZ-002",
+      "title": "Gravity drop or stored-energy movement",
+      "severity": "CRITICAL",
+      "status": "OPEN_BLOCKING",
+      "evidence_stages": [
+        "power_safety",
+        "power_on_observation",
+        "reference_frame_calibration"
+      ],
+      "invalidation_epochs": [
+        "arm_controller_tool",
+        "power_system"
+      ],
+      "controls": [
+        "Install passive gravity-safe containment, a catch, support, counterbalance, or a proven safe-collapse envelope.",
+        "Test power loss using a dummy load at representative poses before devices or contact tools are installed.",
+        "Keep personnel and fragile articles outside both powered and unpowered swept volumes."
+      ],
+      "required_evidence": [
+        "Reviewed containment identity, attachment, clearance, and retained-condition photographs.",
+        "Repeated representative-pose power-loss observations including residual travel, settling, and stored-energy release.",
+        "Evidence that E-stop power removal does not create a more hazardous uncontrolled collapse."
+      ],
+      "fail_safe": "PHYSICAL_CONTAINMENT_AND_POWER_CUT",
+      "residual_status": "UNASSESSED_REQUIRES_RECEIVED_HARDWARE_EVIDENCE"
+    },
+    {
+      "id": "HZ-003",
+      "title": "Pinch crush or collision injury",
+      "severity": "CRITICAL",
+      "status": "OPEN_BLOCKING",
+      "evidence_stages": [
+        "power_safety",
+        "reference_frame_calibration",
+        "noncontact_acceptance"
+      ],
+      "invalidation_epochs": [
+        "arm_controller_tool",
+        "empty_cell_safety"
+      ],
+      "controls": [
+        "Maintain a cleared keepout around every arm link, tool, fixture, cable, and startup or route swept volume.",
+        "Require reviewed collision geometry, conservative limits, reduced-speed empty-cell trials, and an observer at the cutoff.",
+        "Keep descent and contact independently blocked throughout onboarding and noncontact acceptance."
+      ],
+      "required_evidence": [
+        "Installed-object inventory and collision model bound to the retained arm, tool, support, fixtures, and cable routes.",
+        "Observed reduced-speed stop, clearance, settling, and safe-park trials over the approved empty-cell routes.",
+        "Incident-free noncontact acceptance record with explicit minimum clearances and rejected-route evidence."
+      ],
+      "fail_safe": "STOP_DISPATCH_CUT_POWER_AND_LATCH_INCIDENT_HOLD",
+      "residual_status": "UNASSESSED_REQUIRES_RECEIVED_HARDWARE_EVIDENCE"
+    },
+    {
+      "id": "HZ-004",
+      "title": "E-stop or cutoff path ineffective",
+      "severity": "CRITICAL",
+      "status": "OPEN_BLOCKING",
+      "evidence_stages": [
+        "power_safety",
+        "power_on_observation",
+        "reference_frame_calibration",
+        "noncontact_acceptance"
+      ],
+      "invalidation_epochs": [
+        "power_system"
+      ],
+      "controls": [
+        "Use a physical actuator-power cutoff independent of host software and reachable by the observer.",
+        "Qualify the cutoff first on an inert load, including latch, reset, discharge, and USB back-power behavior.",
+        "Require a fresh reviewed energization permit and reject automatic restart after reset or mains return."
+      ],
+      "required_evidence": [
+        "Power topology and wiring inspection identifying every supply, return, cutoff, and possible back-power path.",
+        "Repeated voltage-removal and reset tests with measured downstream state and accessible observer actuation.",
+        "First-power record showing the cutoff remained effective in the installed configuration."
+      ],
+      "fail_safe": "NO_ARM_ENERGIZATION",
+      "residual_status": "UNASSESSED_REQUIRES_RECEIVED_HARDWARE_EVIDENCE"
+    },
+    {
+      "id": "HZ-005",
+      "title": "Polarity overcurrent heat or fire",
+      "severity": "CRITICAL",
+      "status": "OPEN_BLOCKING",
+      "evidence_stages": [
+        "power_safety"
+      ],
+      "invalidation_epochs": [
+        "power_system"
+      ],
+      "controls": [
+        "Verify exact supply identity, voltage, polarity, current capacity, connector pinout, conductor rating, and protective devices while disconnected.",
+        "Perform initial electrical checks on an inert load with current limiting and a suitable means of isolation.",
+        "Reject damaged, warm, loose, improvised, or ambiguous power components and connectors."
+      ],
+      "required_evidence": [
+        "Received supply, cable, connector, fuse, and cutoff identities with polarity and continuity measurements.",
+        "Inert-load voltage, current, temperature, and isolation observations retained with the reviewed procedure.",
+        "Inspection confirming strain relief, conductor protection, connector retention, and absence of unsafe heating."
+      ],
+      "fail_safe": "ISOLATE_SUPPLY_AND_BLOCK_POWER_PERMITS",
+      "residual_status": "UNASSESSED_REQUIRES_RECEIVED_HARDWARE_EVIDENCE"
+    },
+    {
+      "id": "HZ-006",
+      "title": "Serial open resets controller or causes movement",
+      "severity": "CRITICAL",
+      "status": "OPEN_BLOCKING",
+      "evidence_stages": [
+        "arm_identity",
+        "power_on_observation",
+        "feedback_only_connection"
+      ],
+      "invalidation_epochs": [
+        "software_build",
+        "arm_controller_tool",
+        "power_system"
+      ],
+      "controls": [
+        "Bind one persistent controller identity before opening and configure RTS and DTR false.",
+        "Durably consume a fresh manual permit before the single bounded serial-open attempt.",
+        "Send only one allowlisted feedback request after a quiet-buffer check; close on reset, drift, timeout, or malformed response without retry."
+      ],
+      "required_evidence": [
+        "Power-off controller identity and serial profile bound to the exact received arm and firmware.",
+        "Raw, timed record of open behavior, receive-buffer state, one T=105 request, one T=1051 response, and close.",
+        "Observed controller reset and movement classification with effect certainty and final power state."
+      ],
+      "fail_safe": "CONSUME_PERMIT_BEFORE_OPEN_NO_RETRY",
+      "residual_status": "UNASSESSED_REQUIRES_RECEIVED_HARDWARE_EVIDENCE"
+    },
+    {
+      "id": "HZ-007",
+      "title": "Camera support or gantry falls or shifts",
+      "severity": "HIGH",
+      "status": "OPEN_BLOCKING",
+      "evidence_stages": [
+        "static_registration",
+        "power_safety",
+        "noncontact_acceptance"
+      ],
+      "invalidation_epochs": [
+        "camera_support_optics",
+        "board_tags_bench",
+        "empty_cell_safety"
+      ],
+      "controls": [
+        "Retain a reviewed support, fastener, keeper, tether, ballast, and bench attachment configuration.",
+        "Use witness marks and drift checks; any bump, reseat, loosened fastener, or moved bench invalidates dependent evidence.",
+        "Keep support members and the camera outside the qualified arm envelope with conservative clearance."
+      ],
+      "required_evidence": [
+        "Installed support identity, dimensions, fastener engagement, keeper or tether, and anti-tip evidence.",
+        "Static load, bump, reseat, and repeated camera-to-board drift measurements.",
+        "Installed collision and clearance review covering camera, gantry, clamps, fasteners, and all arm poses."
+      ],
+      "fail_safe": "BLOCK_CELL_AND_REQUALIFY_SUPPORT",
+      "residual_status": "UNASSESSED_REQUIRES_RECEIVED_HARDWARE_EVIDENCE"
+    },
+    {
+      "id": "HZ-008",
+      "title": "USB or tool cable snag and pull",
+      "severity": "HIGH",
+      "status": "OPEN_BLOCKING",
+      "evidence_stages": [
+        "static_registration",
+        "power_safety",
+        "noncontact_acceptance"
+      ],
+      "invalidation_epochs": [
+        "camera_support_optics",
+        "arm_controller_tool",
+        "empty_cell_safety"
+      ],
+      "controls": [
+        "Route static and moving cables with controlled service loops, strain relief, connector retention, and separation from swept volumes.",
+        "Model the retained cable route as installed collision geometry and prohibit temporary or hanging leads.",
+        "Stop on cable contact, tension, disconnect, route drift, or unreviewed harness change."
+      ],
+      "required_evidence": [
+        "Retained cable and connector identities, routing photographs, bend radii, service-loop dimensions, and strain-relief inspection.",
+        "Full-range empty-cell sweep observations for snag, pull, flex, connector motion, and occlusion.",
+        "Post-sweep identity, continuity, support-drift, and cable-route witness checks."
+      ],
+      "fail_safe": "STOP_MOTION_AND_REQUALIFY_CABLE_ROUTE",
+      "residual_status": "UNASSESSED_REQUIRES_RECEIVED_HARDWARE_EVIDENCE"
+    },
+    {
+      "id": "HZ-009",
+      "title": "Wrong or substituted device identity",
+      "severity": "HIGH",
+      "status": "OPEN_BLOCKING",
+      "evidence_stages": [
+        "camera_identity",
+        "camera_mode_controls",
+        "arm_identity",
+        "feedback_only_connection"
+      ],
+      "invalidation_epochs": [
+        "camera_support_optics",
+        "arm_controller_tool",
+        "software_build"
+      ],
+      "controls": [
+        "Bind model, VID, PID, unit serial, persistent OS identity, host port, driver, and received-article evidence before device access.",
+        "Reject ambiguous candidates, numeric camera indexes, bare COM names, backend fallback, and operator-selected substitutes.",
+        "Recheck persistent identity after acquiring the device lease and after every close, reconnect, reboot, or driver change."
+      ],
+      "required_evidence": [
+        "Received labels and power-off inventory correlated with one persistent camera and one persistent controller identity.",
+        "Reconnect and reboot stability observations with candidate enumeration and explicit ambiguity results.",
+        "Open-time identity and selected mode receipt matching the precommitted device binding."
+      ],
+      "fail_safe": "NO_DEVICE_OPEN_OR_CLOSE_ON_DRIFT",
+      "residual_status": "UNASSESSED_REQUIRES_RECEIVED_HARDWARE_EVIDENCE"
+    },
+    {
+      "id": "HZ-010",
+      "title": "Stale calibration localization or UI map",
+      "severity": "HIGH",
+      "status": "OPEN_BLOCKING",
+      "evidence_stages": [
+        "static_registration",
+        "reference_frame_calibration",
+        "noncontact_acceptance"
+      ],
+      "invalidation_epochs": [
+        "camera_support_optics",
+        "board_tags_bench",
+        "arm_controller_tool",
+        "keyboard_station",
+        "phone_station"
+      ],
+      "controls": [
+        "Bind every calibration, target map, UI state, and derived artifact to exact parent hashes and configuration epochs.",
+        "Invalidate descendants after any camera, support, tag, arm, tool, keyboard, phone, operating-system, IME, orientation, scale, or theme change.",
+        "Require fresh localization and quality gates before every descent and prohibit nominal or simulation fallback."
+      ],
+      "required_evidence": [
+        "Complete dependency graph and epoch records linking installed hardware, settings, calibrations, maps, and observers.",
+        "Training and independent held-out residuals plus repeated installation, bump, reseat, and drift validation.",
+        "Fresh pre-action observation binding the current board, device, UI state, pose, settings, and accepted calibration hashes."
+      ],
+      "fail_safe": "BLOCK_DESCENT_AND_INVALIDATE_DESCENDANTS",
+      "residual_status": "UNASSESSED_REQUIRES_RECEIVED_HARDWARE_EVIDENCE"
+    },
+    {
+      "id": "HZ-011",
+      "title": "Automatic retry duplicates a physical effect",
+      "severity": "HIGH",
+      "status": "OPEN_BLOCKING",
+      "evidence_stages": [
+        "camera_mode_controls",
+        "power_on_observation",
+        "feedback_only_connection",
+        "reference_frame_calibration",
+        "noncontact_acceptance"
+      ],
+      "invalidation_epochs": [
+        "software_build"
+      ],
+      "controls": [
+        "Write and durably seal an attempt intent before every operation that can affect a device or the physical cell.",
+        "Never replay an in-flight attempt after timeout, crash, disconnect, or uncertain completion.",
+        "Require manual reconciliation and a newly reviewed attempt; latch global quarantine when an external effect is uncertain."
+      ],
+      "required_evidence": [
+        "Append-only attempt ledger covering intent, device-I/O start and finish, sealed evidence, assessment, and effect certainty.",
+        "Crash, timeout, reconnect, torn-tail, and duplicate-request tests proving resume performs verification only.",
+        "Manual reconciliation record identifying the prior attempt and authorizing or denying a distinct next attempt."
+      ],
+      "fail_safe": "NEW_REVIEWED_ATTEMPT_OR_GLOBAL_QUARANTINE",
+      "residual_status": "UNASSESSED_REQUIRES_RECEIVED_HARDWARE_EVIDENCE"
+    },
+    {
+      "id": "HZ-012",
+      "title": "Concurrent sessions or processes touch one device",
+      "severity": "HIGH",
+      "status": "OPEN_BLOCKING",
+      "evidence_stages": [
+        "workspace_sources"
+      ],
+      "invalidation_epochs": [
+        "software_build"
+      ],
+      "controls": [
+        "Acquire leases only in canonical order CELL -> SESSION -> CAMERA -> ARM_CONTROLLER, with one mutable physical session per cell.",
+        "Recheck device identity after lock acquisition and deny every second caller before device open.",
+        "Do not break a stale lease using PID alone; require conservative owner and durability reconciliation."
+      ],
+      "required_evidence": [
+        "Cross-process contention tests showing exactly one owner and zero device calls by denied contenders.",
+        "Crash, stale-owner, PID-reuse, and Windows lock-durability tests with no automatic takeover or replay.",
+        "Lease and device-identity records bound into every effectful attempt."
+      ],
+      "fail_safe": "GLOBAL_LEASE_DENIES_SECOND_CALLER",
+      "residual_status": "UNASSESSED_REQUIRES_RECEIVED_HARDWARE_EVIDENCE"
+    },
+    {
+      "id": "HZ-013",
+      "title": "Calibration motion requires unavailable calibration",
+      "severity": "HIGH",
+      "status": "OPEN_BLOCKING",
+      "evidence_stages": [
+        "power_safety",
+        "feedback_only_connection",
+        "reference_frame_calibration"
+      ],
+      "invalidation_epochs": [
+        "arm_controller_tool",
+        "empty_cell_safety"
+      ],
+      "controls": [
+        "Use a separately reviewed, external, contained precalibration bootstrap rather than nominal task calibration.",
+        "Limit bootstrap motion to a conservative surveyed empty-cell envelope with devices removed, reduced limits, independent observation, and fresh permits.",
+        "Never treat automatic middle-position startup motion, a commanded pose, or vendor nominal geometry as calibrated home."
+      ],
+      "required_evidence": [
+        "Bootstrap plan and command allowlist bound to the retained arm, tool-free state, surveyed envelope, collision geometry, and power controls.",
+        "Actual stop, gravity, power-loss, achieved-feedback, and controller-model-correlation evidence from diverse bounded poses.",
+        "Independent review separating bootstrap evidence from the final reference-frame calibration and its held-out acceptance."
+      ],
+      "fail_safe": "USE_CONTAINED_PRECALIBRATION_BOOTSTRAP_ONLY",
+      "residual_status": "UNASSESSED_REQUIRES_RECEIVED_HARDWARE_EVIDENCE"
+    },
+    {
+      "id": "HZ-014",
+      "title": "Tool damages keyboard or phone",
+      "severity": "HIGH",
+      "status": "OPEN_BLOCKING",
+      "evidence_stages": [
+        "reference_frame_calibration",
+        "noncontact_acceptance",
+        "physical_handoff"
+      ],
+      "invalidation_epochs": [
+        "arm_controller_tool",
+        "keyboard_station",
+        "phone_station"
+      ],
+      "controls": [
+        "Keep all descent and contact blocked until tool retention, TCP, compliance, travel, force, target safe regions, and outcome observation are independently qualified.",
+        "Qualify keyboard and phone contact separately, starting with nondestructive dummy articles and purpose-built large targets.",
+        "Retract and inspect after one attempt; never retry an ambiguous contact or infer success from a command."
+      ],
+      "required_evidence": [
+        "Retained tool and device identities with measured surface, target, footprint, compliance, force, travel, and uncertainty budgets.",
+        "Dummy-contact and device-specific single-contact trials with achieved pose, independent outcome, inspection, and no-damage evidence.",
+        "Separate reviewed keyboard and phone release decisions with explicit scope and current dependency hashes."
+      ],
+      "fail_safe": "NO_CONTACT_RELEASE_AND_NO_AUTOMATIC_RETRY",
+      "residual_status": "UNASSESSED_REQUIRES_RECEIVED_HARDWARE_EVIDENCE"
+    },
+    {
+      "id": "HZ-015",
+      "title": "Camera evidence exposes private screen content",
+      "severity": "MEDIUM",
+      "status": "REVIEW_REQUIRED",
+      "evidence_stages": [
+        "camera_mode_controls",
+        "camera_frame_freshness",
+        "optics_intrinsics",
+        "static_registration"
+      ],
+      "invalidation_epochs": [
+        "software_build",
+        "camera_support_optics",
+        "phone_station"
+      ],
+      "controls": [
+        "Use controlled nonprivate test content and remove unrelated screens, documents, people, and identifiers from the camera view.",
+        "Retain raw evidence locally with least-privilege access, explicit retention rules, and no automatic upload.",
+        "Generate previews through bounded safe re-encoding and reviewed cropping or redaction rather than exposing raw frames."
+      ],
+      "required_evidence": [
+        "Reviewed scene-clearance, data-classification, access, export, deletion, and incident-response procedure.",
+        "Manifest identifying every raw and derived image, its purpose, custodian, retention state, and authorized exports.",
+        "Tests showing previews do not embed raw metadata or pixels outside the approved field of view."
+      ],
+      "fail_safe": "LOCAL_RETENTION_ONLY_AND_SAFE_PREVIEW",
+      "residual_status": "PRIVACY_REVIEW_AND_RETENTION_EVIDENCE_REQUIRED"
+    },
+    {
+      "id": "HZ-016",
+      "title": "Operator observer or reviewer role confusion",
+      "severity": "HIGH",
+      "status": "OPEN_BLOCKING",
+      "evidence_stages": [
+        "power_safety",
+        "power_on_observation",
+        "feedback_only_connection",
+        "reference_frame_calibration",
+        "noncontact_acceptance"
+      ],
+      "invalidation_epochs": [
+        "software_build",
+        "power_system"
+      ],
+      "controls": [
+        "Name operator, observer, and reviewer explicitly for each controlled attempt and show their duties before permitting work.",
+        "Require operator and observer to differ for energization, and operator and reviewer to differ for power-safety and effect reviews.",
+        "Treat role records as fresh attestations rather than identity authentication and deny expired, missing, ambiguous, or conflicting attestations."
+      ],
+      "required_evidence": [
+        "Attempt-bound role attestations, procedure acknowledgements, timestamps, and required inequality checks.",
+        "Observer confirmation of cutoff access, cleared cell, communication protocol, and authority to stop the attempt.",
+        "Independent review record for power safety, uncertain effects, incidents, and any scoped physical release."
+      ],
+      "fail_safe": "DENY_PERMIT_UNTIL_ROLE_ATTESTATIONS_ARE_VALID",
+      "residual_status": "UNASSESSED_REQUIRES_RECEIVED_HARDWARE_EVIDENCE"
+    }
+  ]
+}

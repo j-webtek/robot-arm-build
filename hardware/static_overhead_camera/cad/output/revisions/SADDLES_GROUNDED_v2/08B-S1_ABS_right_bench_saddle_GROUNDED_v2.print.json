@@ -1,0 +1,16 @@
+{
+  "geometry_3mf": "08B-S1_ABS_right_bench_saddle_GROUNDED_v2.3mf",
+  "expected_object_count": 1,
+  "scale_percent": 100,
+  "orientation": "Foot-down; stored 90-degree XY rotation; do not auto-orient",
+  "profile": "RoCell ABS Rapido Camera Frame Structural 0.20 Print Pack v1",
+  "layer_height_mm": 0.2,
+  "first_layer_mm": 0.2,
+  "walls": 6,
+  "top_layers": 7,
+  "bottom_layers": 7,
+  "infill": "40% gyroid",
+  "supports": false,
+  "brim": "10 mm outer, 0.05 mm gap",
+  "geometry_sha256": "7daa657e1b4d58fe5690ff3a174789692c27ef45c6d451bf36a0a66f21d0c1b6"
+}

@@ -1,0 +1,1046 @@
+{
+  "schema_version": 1,
+  "design_revision": "RC03-INT-R1",
+  "lifecycle_states": [
+    "UNRELEASED",
+    "READY_TO_SLICE",
+    "SLICE_REVIEWED",
+    "PRINTED",
+    "POSTPRINT_PASS",
+    "KITTED",
+    "ASSEMBLY_PASS",
+    "IN_SERVICE"
+  ],
+  "notes": [
+    "READY_TO_SLICE is derived automatically when the job is selected and every prerequisite gate is PASS.",
+    "States after READY_TO_SLICE require sequential state evidence in this record.",
+    "POSTPRINT_PASS and ASSEMBLY_PASS also require their mapped gates to be PASS."
+  ],
+  "jobs": [
+    {
+      "job_id": "00A",
+      "current_state": "POSTPRINT_PASS",
+      "kit_id": "KIT-CAL",
+      "postprint_gate_ids": [
+        "keyboard_corner_coupon_pass",
+        "keyboard_station_registration_coupon_pass",
+        "tray_clearance_holes_coupon_pass"
+      ],
+      "assembly_gate_ids": [],
+      "state_evidence": {
+        "SLICE_REVIEWED": {
+          "completed_at": "2026-09-02T22:19:58.389938+00:00",
+          "operator": "Jack",
+          "evidence": "BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/06 - SAVE MEASUREMENTS AND PHOTOS/2026-09-01_CELL-A/qidi/00A_QIDI_slice_preview.png \u2014 4 objects, 100% scale, slice preview retained"
+        },
+        "PRINTED": {
+          "completed_at": "2026-09-02T22:19:58.886915+00:00",
+          "operator": "Jack",
+          "evidence": "BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/06 - SAVE MEASUREMENTS AND PHOTOS/2026-09-01_CELL-A/reports/00A_PRINT_AND_FIT_REVIEW.md \u2014 all 4 coupons completed; actual slightly over 100 g and approximately 6 h"
+        },
+        "POSTPRINT_PASS": {
+          "completed_at": "2026-09-02T23:10:45.605625+00:00",
+          "operator": "Jack",
+          "evidence": "BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/06 - SAVE MEASUREMENTS AND PHOTOS/2026-09-01_CELL-A/reports/00A_PRINT_AND_FIT_REVIEW.md \u2014 keyboard corner, locator pair, and M4 clearance/washer gates all accepted"
+        },
+        "KITTED": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "ASSEMBLY_PASS": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "IN_SERVICE": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        }
+      }
+    },
+    {
+      "job_id": "00B",
+      "current_state": "PRINTED",
+      "kit_id": "KIT-CAL",
+      "postprint_gate_ids": [
+        "phone_width_coupon_pass",
+        "phone_station_registration_coupon_pass",
+        "phone_station_m3_insert_coupon_pass",
+        "cradle_m4_washer_coupon_pass"
+      ],
+      "assembly_gate_ids": [],
+      "state_evidence": {
+        "SLICE_REVIEWED": {
+          "completed_at": "2026-09-06T17:52:48.103033+00:00",
+          "operator": "Jack",
+          "evidence": "Build 2026-09-01_CELL-A; released Job 00B ABS Rapido plate was sliced and printed; ten retained photos and reports/00B_PRINT_AND_FIT_REVIEW.md document the recovered objects and current review."
+        },
+        "PRINTED": {
+          "completed_at": "2026-09-06T17:52:48.192284+00:00",
+          "operator": "Jack",
+          "evidence": "Build 2026-09-01_CELL-A; all six Job 00B coupon bodies recovered and visually identified. Original photos retained in photos/00B-01 through 00B-10; preliminary disposition recorded in reports/00B_PRINT_AND_FIT_REVIEW.md."
+        },
+        "POSTPRINT_PASS": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "KITTED": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "ASSEMBLY_PASS": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "IN_SERVICE": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        }
+      }
+    },
+    {
+      "job_id": "00C",
+      "current_state": "UNRELEASED",
+      "kit_id": "KIT-CAL",
+      "postprint_gate_ids": [
+        "compliant_tool_m3_insert_coupon_pass",
+        "gripper_coupon_pass",
+        "spring_fit_coupon_pass",
+        "precision_m3_head_coupon_pass"
+      ],
+      "assembly_gate_ids": [],
+      "state_evidence": {
+        "SLICE_REVIEWED": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "PRINTED": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "POSTPRINT_PASS": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "KITTED": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "ASSEMBLY_PASS": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "IN_SERVICE": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        }
+      }
+    },
+    {
+      "job_id": "00D",
+      "current_state": "UNRELEASED",
+      "kit_id": "KIT-CAL",
+      "postprint_gate_ids": [
+        "stylus_gauge_coupon_pass"
+      ],
+      "assembly_gate_ids": [],
+      "state_evidence": {
+        "SLICE_REVIEWED": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "PRINTED": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "POSTPRINT_PASS": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "KITTED": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "ASSEMBLY_PASS": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "IN_SERVICE": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        }
+      }
+    },
+    {
+      "job_id": "00E",
+      "current_state": "UNRELEASED",
+      "kit_id": "KIT-CAL",
+      "postprint_gate_ids": [
+        "general_clearance_holes_coupon_pass",
+        "setup_hardware_coupon_pass"
+      ],
+      "assembly_gate_ids": [],
+      "state_evidence": {
+        "SLICE_REVIEWED": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "PRINTED": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "POSTPRINT_PASS": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "KITTED": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "ASSEMBLY_PASS": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "IN_SERVICE": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        }
+      }
+    },
+    {
+      "job_id": "00F",
+      "current_state": "UNRELEASED",
+      "kit_id": "KIT-CAL",
+      "postprint_gate_ids": [
+        "calibration_clearance_holes_coupon_pass"
+      ],
+      "assembly_gate_ids": [],
+      "state_evidence": {
+        "SLICE_REVIEWED": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "PRINTED": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "POSTPRINT_PASS": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "KITTED": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "ASSEMBLY_PASS": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "IN_SERVICE": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        }
+      }
+    },
+    {
+      "job_id": "01",
+      "current_state": "UNRELEASED",
+      "kit_id": "KIT-KB",
+      "postprint_gate_ids": [
+        "keyboard_left_first_article_pass",
+        "keyboard_seam_coupon_pass"
+      ],
+      "assembly_gate_ids": [],
+      "state_evidence": {
+        "SLICE_REVIEWED": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "PRINTED": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "POSTPRINT_PASS": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "KITTED": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "ASSEMBLY_PASS": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "IN_SERVICE": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        }
+      }
+    },
+    {
+      "job_id": "02",
+      "current_state": "UNRELEASED",
+      "kit_id": "KIT-KB",
+      "postprint_gate_ids": [
+        "keyboard_station_pair_postprint_pass"
+      ],
+      "assembly_gate_ids": [
+        "station_remove_reinstall_repeatability_pass",
+        "keyboard_fixture_assembly_pass"
+      ],
+      "state_evidence": {
+        "SLICE_REVIEWED": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "PRINTED": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "POSTPRINT_PASS": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "KITTED": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "ASSEMBLY_PASS": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "IN_SERVICE": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        }
+      }
+    },
+    {
+      "job_id": "03A",
+      "current_state": "UNRELEASED",
+      "kit_id": "KIT-PHONE",
+      "postprint_gate_ids": [
+        "phone_tcp_station_postprint_pass"
+      ],
+      "assembly_gate_ids": [
+        "station_remove_reinstall_repeatability_pass",
+        "phone_fixture_assembly_pass"
+      ],
+      "state_evidence": {
+        "SLICE_REVIEWED": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "PRINTED": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "POSTPRINT_PASS": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "KITTED": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "ASSEMBLY_PASS": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "IN_SERVICE": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        }
+      }
+    },
+    {
+      "job_id": "03B",
+      "current_state": "UNRELEASED",
+      "kit_id": "KIT-KB",
+      "postprint_gate_ids": [
+        "keyboard_clamps_postprint_pass"
+      ],
+      "assembly_gate_ids": [
+        "keyboard_fixture_assembly_pass"
+      ],
+      "state_evidence": {
+        "SLICE_REVIEWED": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "PRINTED": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "POSTPRINT_PASS": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "KITTED": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "ASSEMBLY_PASS": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "IN_SERVICE": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        }
+      }
+    },
+    {
+      "job_id": "03C1",
+      "current_state": "UNRELEASED",
+      "kit_id": "KIT-PHONE",
+      "postprint_gate_ids": [
+        "phone_m4_captive_nut_coupon_pass",
+        "cable_tie_saddle_coupon_pass",
+        "phone_clamp_rail_first_article_pass"
+      ],
+      "assembly_gate_ids": [
+        "phone_fixture_assembly_pass"
+      ],
+      "state_evidence": {
+        "SLICE_REVIEWED": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "PRINTED": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "POSTPRINT_PASS": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "KITTED": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "ASSEMBLY_PASS": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "IN_SERVICE": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        }
+      }
+    },
+    {
+      "job_id": "03C2",
+      "current_state": "UNRELEASED",
+      "kit_id": "KIT-BOARD-SETUP",
+      "postprint_gate_ids": [
+        "tag_application_tool_postprint_pass"
+      ],
+      "assembly_gate_ids": [
+        "board_fabrication_pass",
+        "tag_direct_installation_pass",
+        "tag_plane_placement_measured"
+      ],
+      "state_evidence": {
+        "SLICE_REVIEWED": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "PRINTED": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "POSTPRINT_PASS": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "KITTED": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "ASSEMBLY_PASS": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "IN_SERVICE": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        }
+      }
+    },
+    {
+      "job_id": "03C3",
+      "current_state": "UNRELEASED",
+      "kit_id": "KIT-VISION-CAM",
+      "postprint_gate_ids": [
+        "camera_plate_hardware_pass"
+      ],
+      "assembly_gate_ids": [],
+      "state_evidence": {
+        "SLICE_REVIEWED": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "PRINTED": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "POSTPRINT_PASS": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "KITTED": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "ASSEMBLY_PASS": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "IN_SERVICE": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        }
+      }
+    },
+    {
+      "job_id": "03D",
+      "current_state": "UNRELEASED",
+      "kit_id": "KIT-PUCK",
+      "postprint_gate_ids": [
+        "calibration_puck_datum_pass"
+      ],
+      "assembly_gate_ids": [],
+      "state_evidence": {
+        "SLICE_REVIEWED": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "PRINTED": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "POSTPRINT_PASS": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "KITTED": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "ASSEMBLY_PASS": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "IN_SERVICE": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        }
+      }
+    },
+    {
+      "job_id": "04A",
+      "current_state": "UNRELEASED",
+      "kit_id": "KIT-TOOL-COMMON",
+      "postprint_gate_ids": [
+        "tool_body_postprint_pass"
+      ],
+      "assembly_gate_ids": [
+        "tool_assembled_motion_pass"
+      ],
+      "state_evidence": {
+        "SLICE_REVIEWED": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "PRINTED": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "POSTPRINT_PASS": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "KITTED": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "ASSEMBLY_PASS": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "IN_SERVICE": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        }
+      }
+    },
+    {
+      "job_id": "04B",
+      "current_state": "UNRELEASED",
+      "kit_id": "KIT-TOOL-PHONE",
+      "postprint_gate_ids": [
+        "stylus_collar_retention_pass"
+      ],
+      "assembly_gate_ids": [
+        "stylus_function_pass",
+        "tool_assembled_motion_pass"
+      ],
+      "state_evidence": {
+        "SLICE_REVIEWED": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "PRINTED": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "POSTPRINT_PASS": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "KITTED": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "ASSEMBLY_PASS": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "IN_SERVICE": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        }
+      }
+    },
+    {
+      "job_id": "04C",
+      "current_state": "UNRELEASED",
+      "kit_id": "KIT-TOOL-KB",
+      "postprint_gate_ids": [
+        "rod_bushing_retention_pass"
+      ],
+      "assembly_gate_ids": [
+        "tool_assembled_motion_pass"
+      ],
+      "state_evidence": {
+        "SLICE_REVIEWED": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "PRINTED": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "POSTPRINT_PASS": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "KITTED": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "ASSEMBLY_PASS": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "IN_SERVICE": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        }
+      }
+    },
+    {
+      "job_id": "05A",
+      "current_state": "UNRELEASED",
+      "kit_id": "KIT-PHONE",
+      "postprint_gate_ids": [
+        "phone_tpu_retention_coupon_pass"
+      ],
+      "assembly_gate_ids": [],
+      "state_evidence": {
+        "SLICE_REVIEWED": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "PRINTED": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "POSTPRINT_PASS": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "KITTED": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "ASSEMBLY_PASS": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "IN_SERVICE": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        }
+      }
+    },
+    {
+      "job_id": "05B",
+      "current_state": "UNRELEASED",
+      "kit_id": "KIT-PHONE",
+      "postprint_gate_ids": [
+        "phone_tpu_batch_postprint_pass"
+      ],
+      "assembly_gate_ids": [
+        "phone_fixture_assembly_pass"
+      ],
+      "state_evidence": {
+        "SLICE_REVIEWED": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "PRINTED": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "POSTPRINT_PASS": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "KITTED": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "ASSEMBLY_PASS": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "IN_SERVICE": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        }
+      }
+    },
+    {
+      "job_id": "05C",
+      "current_state": "UNRELEASED",
+      "kit_id": "KIT-TOOL-KB",
+      "postprint_gate_ids": [
+        "keyboard_tpu_retention_coupon_pass"
+      ],
+      "assembly_gate_ids": [],
+      "state_evidence": {
+        "SLICE_REVIEWED": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "PRINTED": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "POSTPRINT_PASS": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "KITTED": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "ASSEMBLY_PASS": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "IN_SERVICE": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        }
+      }
+    },
+    {
+      "job_id": "05D",
+      "current_state": "UNRELEASED",
+      "kit_id": "KIT-TOOL-KB",
+      "postprint_gate_ids": [
+        "keyboard_tpu_batch_postprint_pass"
+      ],
+      "assembly_gate_ids": [
+        "tool_assembled_motion_pass"
+      ],
+      "state_evidence": {
+        "SLICE_REVIEWED": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "PRINTED": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "POSTPRINT_PASS": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "KITTED": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "ASSEMBLY_PASS": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "IN_SERVICE": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        }
+      }
+    },
+    {
+      "job_id": "06",
+      "current_state": "UNRELEASED",
+      "kit_id": "KIT-MAST",
+      "postprint_gate_ids": [
+        "asa_mast_socket_coupon_pass",
+        "asa_m5_nut_coupon_pass",
+        "asa_m5_clearance_coupon_pass"
+      ],
+      "assembly_gate_ids": [],
+      "state_evidence": {
+        "SLICE_REVIEWED": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "PRINTED": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "POSTPRINT_PASS": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "KITTED": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "ASSEMBLY_PASS": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "IN_SERVICE": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        }
+      }
+    },
+    {
+      "job_id": "07A",
+      "current_state": "UNRELEASED",
+      "kit_id": "KIT-MAST",
+      "postprint_gate_ids": [
+        "mast_foot_first_article_pass"
+      ],
+      "assembly_gate_ids": [],
+      "state_evidence": {
+        "SLICE_REVIEWED": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "PRINTED": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "POSTPRINT_PASS": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "KITTED": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "ASSEMBLY_PASS": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "IN_SERVICE": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        }
+      }
+    },
+    {
+      "job_id": "07B",
+      "current_state": "UNRELEASED",
+      "kit_id": "KIT-MAST",
+      "postprint_gate_ids": [
+        "mast_second_foot_postprint_pass"
+      ],
+      "assembly_gate_ids": [
+        "mast_pair_installation_pass"
+      ],
+      "state_evidence": {
+        "SLICE_REVIEWED": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "PRINTED": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "POSTPRINT_PASS": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "KITTED": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "ASSEMBLY_PASS": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        },
+        "IN_SERVICE": {
+          "completed_at": null,
+          "operator": null,
+          "evidence": null
+        }
+      }
+    }
+  ]
+}

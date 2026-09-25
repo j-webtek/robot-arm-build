@@ -1,0 +1,96 @@
+{
+  "schema_version": 2,
+  "design_revision": "RC02-PRO-R1",
+  "job_id": "07A",
+  "plate_file": "07A_ASA_mast_foot_first_article.3mf",
+  "printer": {
+    "model": "QIDI Plus4",
+    "nominal_build_volume_mm": [
+      305.0,
+      305.0,
+      280.0
+    ],
+    "safe_plate_envelope_mm": [
+      295.0,
+      295.0,
+      280.0
+    ],
+    "edge_margin_mm": 5.0,
+    "default_nozzle_mm": 0.4
+  },
+  "stage": "first_article",
+  "selection": "camera_mast_optional",
+  "purpose": "First corrected mast foot with rear-lug clamp bolts",
+  "parts": {
+    "mast_foot_2020.stl": 1
+  },
+  "prerequisites": [
+    "plus4_machine_confirmed",
+    "nozzle_0p4_confirmed",
+    "asa_profile_calibrated",
+    "asa_mast_socket_coupon_pass",
+    "asa_m5_nut_coupon_pass",
+    "asa_m5_clearance_coupon_pass",
+    "geometry_matches_measurements",
+    "qidi_studio_roundtrip_confirmed"
+  ],
+  "process_profile_name": "asa_structural_0p4",
+  "process_profile": {
+    "material": "ASA",
+    "nozzle_mm": 0.4,
+    "layer_height_mm": 0.24,
+    "walls": 6,
+    "top_layers": 6,
+    "bottom_layers": 6,
+    "infill_percent": 45,
+    "infill_pattern": "gyroid",
+    "supports": "build-plate only under transverse bores if needed",
+    "bed_adhesion": "10 mm brim, enclosed printer, stable chamber, and no drafts",
+    "dimensional_controls": "Use the ASA socket and nut coupons from the same spool before the first full foot",
+    "purpose": "Optional camera mast feet; calibrate shrink before full print"
+  },
+  "slicer_warning": "Use a calibrated QIDI Studio filament preset for the exact brand and material; temperatures are deliberately not embedded in geometry-only 3MF files.",
+  "geometry_only_3mf": true,
+  "qidi_studio_native_project_required": true,
+  "qidi_studio_roundtrip_gate": "qidi_studio_roundtrip_confirmed",
+  "plate_envelope_mm": [
+    92.0,
+    92.0,
+    74.0
+  ],
+  "absolute_bed_bounds_mm": {
+    "min": [
+      106.5,
+      106.5,
+      0.0
+    ],
+    "max": [
+      198.5,
+      198.5,
+      74.0
+    ]
+  },
+  "centered_on_nominal_bed": true,
+  "source_stl_sha256": {
+    "mast_foot_2020.stl": "2b6384b63a5b191ef88ae5590b50ffb5cd0c64d2102b3145b8336b2fb901faa5"
+  },
+  "process_profile_sha256": "7f5a63b82b79566c55df616753ef9acc31e6a172a2689b726498aa2cb82c7a22",
+  "plate_sha256": "7f25240ea27f296a96ffa6b809fa4069ad633559d3741841919a340e0b481ee7",
+  "objects": [
+    {
+      "name": "mast_foot_2020_1",
+      "bounds_mm": [
+        [
+          106.5,
+          106.5,
+          0.0
+        ],
+        [
+          198.5,
+          198.5,
+          74.0
+        ]
+      ]
+    }
+  ]
+}

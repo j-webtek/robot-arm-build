@@ -1,0 +1,604 @@
+{
+  "status": "PASS_GEOMETRY_CONDITIONAL",
+  "scope": "Nominal external hardware envelopes, local bearing support and nominal bolt stack only. NOT strength, torque, creep, material grade, received hardware or full assembly qualification.",
+  "socket_head": {
+    "standard": "DIN 912 / ISO 4762 M5-0.8",
+    "diameter_mm": 8.5,
+    "height_mm": 5,
+    "hex_key_mm": 4
+  },
+  "washer": {
+    "quantity_final": 48,
+    "material": "metal",
+    "nominal_ID_mm": 5.3,
+    "OD_mm": 10,
+    "max_thickness_mm": 1.2,
+    "placement": "One under each socket head; retain specified flanged nuts"
+  },
+  "bearing_seats": [
+    {
+      "part": "board_corner_saddle_left",
+      "head_contact_xyz_mm": [
+        61,
+        26,
+        78
+      ],
+      "outward": [
+        0,
+        -1,
+        0
+      ],
+      "supported_annulus_fraction": 1.0,
+      "maximum_intersection_mm3": 0,
+      "status": "PASS"
+    },
+    {
+      "part": "board_corner_saddle_left",
+      "head_contact_xyz_mm": [
+        73,
+        26,
+        90
+      ],
+      "outward": [
+        0,
+        -1,
+        0
+      ],
+      "supported_annulus_fraction": 1.0,
+      "maximum_intersection_mm3": 0,
+      "status": "PASS"
+    },
+    {
+      "part": "board_corner_saddle_right",
+      "head_contact_xyz_mm": [
+        131,
+        26,
+        78
+      ],
+      "outward": [
+        0,
+        -1,
+        0
+      ],
+      "supported_annulus_fraction": 1.0,
+      "maximum_intersection_mm3": 0,
+      "status": "PASS"
+    },
+    {
+      "part": "board_corner_saddle_right",
+      "head_contact_xyz_mm": [
+        143,
+        26,
+        90
+      ],
+      "outward": [
+        0,
+        -1,
+        0
+      ],
+      "supported_annulus_fraction": 1.0,
+      "maximum_intersection_mm3": 0,
+      "status": "PASS"
+    },
+    {
+      "part": "portal_corner_node_left",
+      "head_contact_xyz_mm": [
+        43,
+        86,
+        0
+      ],
+      "outward": [
+        0,
+        0,
+        -1
+      ],
+      "supported_annulus_fraction": 1.0,
+      "maximum_intersection_mm3": 0,
+      "status": "PASS"
+    },
+    {
+      "part": "portal_corner_node_left",
+      "head_contact_xyz_mm": [
+        31,
+        74,
+        0
+      ],
+      "outward": [
+        0,
+        0,
+        -1
+      ],
+      "supported_annulus_fraction": 1.0,
+      "maximum_intersection_mm3": 0,
+      "status": "PASS"
+    },
+    {
+      "part": "portal_corner_node_left",
+      "head_contact_xyz_mm": [
+        52,
+        45,
+        0
+      ],
+      "outward": [
+        0,
+        0,
+        -1
+      ],
+      "supported_annulus_fraction": 1.0,
+      "maximum_intersection_mm3": 0,
+      "status": "PASS"
+    },
+    {
+      "part": "portal_corner_node_left",
+      "head_contact_xyz_mm": [
+        40,
+        33,
+        0
+      ],
+      "outward": [
+        0,
+        0,
+        -1
+      ],
+      "supported_annulus_fraction": 1.0,
+      "maximum_intersection_mm3": 0,
+      "status": "PASS"
+    },
+    {
+      "part": "portal_corner_node_right",
+      "head_contact_xyz_mm": [
+        83,
+        86,
+        0
+      ],
+      "outward": [
+        0,
+        0,
+        -1
+      ],
+      "supported_annulus_fraction": 1.0,
+      "maximum_intersection_mm3": 0,
+      "status": "PASS"
+    },
+    {
+      "part": "portal_corner_node_right",
+      "head_contact_xyz_mm": [
+        71,
+        74,
+        0
+      ],
+      "outward": [
+        0,
+        0,
+        -1
+      ],
+      "supported_annulus_fraction": 1.0,
+      "maximum_intersection_mm3": 0,
+      "status": "PASS"
+    },
+    {
+      "part": "portal_corner_node_right",
+      "head_contact_xyz_mm": [
+        48,
+        45,
+        0
+      ],
+      "outward": [
+        0,
+        0,
+        -1
+      ],
+      "supported_annulus_fraction": 1.0,
+      "maximum_intersection_mm3": 0,
+      "status": "PASS"
+    },
+    {
+      "part": "portal_corner_node_right",
+      "head_contact_xyz_mm": [
+        60,
+        33,
+        0
+      ],
+      "outward": [
+        0,
+        0,
+        -1
+      ],
+      "supported_annulus_fraction": 1.0,
+      "maximum_intersection_mm3": 0,
+      "status": "PASS"
+    },
+    {
+      "part": "u_truss_splice",
+      "head_contact_xyz_mm": [
+        30.0,
+        0,
+        35
+      ],
+      "outward": [
+        0,
+        -1,
+        0
+      ],
+      "supported_annulus_fraction": 1.0,
+      "maximum_intersection_mm3": 0,
+      "status": "PASS"
+    },
+    {
+      "part": "u_truss_splice",
+      "head_contact_xyz_mm": [
+        74.0,
+        0,
+        35
+      ],
+      "outward": [
+        0,
+        -1,
+        0
+      ],
+      "supported_annulus_fraction": 1.0,
+      "maximum_intersection_mm3": 0,
+      "status": "PASS"
+    },
+    {
+      "part": "u_truss_splice_crossbar_2bolt",
+      "head_contact_xyz_mm": [
+        24.0,
+        0,
+        35
+      ],
+      "outward": [
+        0,
+        -1,
+        0
+      ],
+      "supported_annulus_fraction": 1.0,
+      "maximum_intersection_mm3": 0,
+      "status": "PASS"
+    },
+    {
+      "part": "u_truss_splice_crossbar_2bolt",
+      "head_contact_xyz_mm": [
+        68.0,
+        0,
+        35
+      ],
+      "outward": [
+        0,
+        -1,
+        0
+      ],
+      "supported_annulus_fraction": 1.0,
+      "maximum_intersection_mm3": 0,
+      "status": "PASS"
+    },
+    {
+      "part": "u_truss_splice_center_4bolt",
+      "head_contact_xyz_mm": [
+        24.0,
+        0,
+        23
+      ],
+      "outward": [
+        0,
+        -1,
+        0
+      ],
+      "supported_annulus_fraction": 1.0,
+      "maximum_intersection_mm3": 0,
+      "status": "PASS"
+    },
+    {
+      "part": "u_truss_splice_center_4bolt",
+      "head_contact_xyz_mm": [
+        36.0,
+        0,
+        35
+      ],
+      "outward": [
+        0,
+        -1,
+        0
+      ],
+      "supported_annulus_fraction": 1.0,
+      "maximum_intersection_mm3": 0,
+      "status": "PASS"
+    },
+    {
+      "part": "u_truss_splice_center_4bolt",
+      "head_contact_xyz_mm": [
+        56.0,
+        0,
+        35
+      ],
+      "outward": [
+        0,
+        -1,
+        0
+      ],
+      "supported_annulus_fraction": 1.0,
+      "maximum_intersection_mm3": 0,
+      "status": "PASS"
+    },
+    {
+      "part": "u_truss_splice_center_4bolt",
+      "head_contact_xyz_mm": [
+        68.0,
+        0,
+        23
+      ],
+      "outward": [
+        0,
+        -1,
+        0
+      ],
+      "supported_annulus_fraction": 1.0,
+      "maximum_intersection_mm3": 0,
+      "status": "PASS"
+    },
+    {
+      "part": "boom_crossbar_node",
+      "head_contact_xyz_mm": [
+        23.0,
+        18.0,
+        8
+      ],
+      "outward": [
+        0,
+        0,
+        1
+      ],
+      "supported_annulus_fraction": 1.0,
+      "maximum_intersection_mm3": 0,
+      "status": "PASS"
+    },
+    {
+      "part": "boom_crossbar_node",
+      "head_contact_xyz_mm": [
+        23.0,
+        66.0,
+        8
+      ],
+      "outward": [
+        0,
+        0,
+        1
+      ],
+      "supported_annulus_fraction": 1.0,
+      "maximum_intersection_mm3": 0,
+      "status": "PASS"
+    },
+    {
+      "part": "boom_crossbar_node",
+      "head_contact_xyz_mm": [
+        57.0,
+        18.0,
+        8
+      ],
+      "outward": [
+        0,
+        0,
+        1
+      ],
+      "supported_annulus_fraction": 1.0,
+      "maximum_intersection_mm3": 0,
+      "status": "PASS"
+    },
+    {
+      "part": "boom_crossbar_node",
+      "head_contact_xyz_mm": [
+        57.0,
+        66.0,
+        8
+      ],
+      "outward": [
+        0,
+        0,
+        1
+      ],
+      "supported_annulus_fraction": 1.0,
+      "maximum_intersection_mm3": 0,
+      "status": "PASS"
+    },
+    {
+      "part": "camera_xy_carriage",
+      "head_contact_xyz_mm": [
+        16.75,
+        65.0,
+        10
+      ],
+      "outward": [
+        0,
+        0,
+        1
+      ],
+      "supported_annulus_fraction": 1.0,
+      "maximum_intersection_mm3": 0,
+      "status": "PASS"
+    },
+    {
+      "part": "camera_xy_carriage",
+      "head_contact_xyz_mm": [
+        16.75,
+        86.0,
+        10
+      ],
+      "outward": [
+        0,
+        0,
+        1
+      ],
+      "supported_annulus_fraction": 1.0,
+      "maximum_intersection_mm3": 0,
+      "status": "PASS"
+    },
+    {
+      "part": "camera_xy_carriage",
+      "head_contact_xyz_mm": [
+        50.75,
+        65.0,
+        10
+      ],
+      "outward": [
+        0,
+        0,
+        1
+      ],
+      "supported_annulus_fraction": 1.0,
+      "maximum_intersection_mm3": 0,
+      "status": "PASS"
+    },
+    {
+      "part": "camera_xy_carriage",
+      "head_contact_xyz_mm": [
+        50.75,
+        86.0,
+        10
+      ],
+      "outward": [
+        0,
+        0,
+        1
+      ],
+      "supported_annulus_fraction": 1.0,
+      "maximum_intersection_mm3": 0,
+      "status": "PASS"
+    },
+    {
+      "part": "camera_xy_carriage",
+      "head_contact_xyz_mm": [
+        199.25,
+        65.0,
+        10
+      ],
+      "outward": [
+        0,
+        0,
+        1
+      ],
+      "supported_annulus_fraction": 1.0,
+      "maximum_intersection_mm3": 0,
+      "status": "PASS"
+    },
+    {
+      "part": "camera_xy_carriage",
+      "head_contact_xyz_mm": [
+        199.25,
+        86.0,
+        10
+      ],
+      "outward": [
+        0,
+        0,
+        1
+      ],
+      "supported_annulus_fraction": 1.0,
+      "maximum_intersection_mm3": 0,
+      "status": "PASS"
+    },
+    {
+      "part": "camera_xy_carriage",
+      "head_contact_xyz_mm": [
+        233.25,
+        65.0,
+        10
+      ],
+      "outward": [
+        0,
+        0,
+        1
+      ],
+      "supported_annulus_fraction": 1.0,
+      "maximum_intersection_mm3": 0,
+      "status": "PASS"
+    },
+    {
+      "part": "camera_xy_carriage",
+      "head_contact_xyz_mm": [
+        233.25,
+        86.0,
+        10
+      ],
+      "outward": [
+        0,
+        0,
+        1
+      ],
+      "supported_annulus_fraction": 1.0,
+      "maximum_intersection_mm3": 0,
+      "status": "PASS"
+    }
+  ],
+  "bolt_stacks": [
+    {
+      "joint": "saddle receivers",
+      "quantity": 4,
+      "bolt_length_mm": 80,
+      "printed_grip_mm": 68,
+      "washer_max_thickness_mm": 1.2,
+      "nut_assumed_height_mm": 6,
+      "post_nut_projection_mm": 4.8,
+      "status": "PASS_NOMINAL"
+    },
+    {
+      "joint": "portal corners",
+      "quantity": 8,
+      "bolt_length_mm": 75,
+      "printed_grip_mm": 66,
+      "washer_max_thickness_mm": 1.2,
+      "nut_assumed_height_mm": 6,
+      "post_nut_projection_mm": 1.8,
+      "status": "PASS_NOMINAL"
+    },
+    {
+      "joint": "upright/boom splices",
+      "quantity": 16,
+      "bolt_length_mm": 75,
+      "printed_grip_mm": 62.8,
+      "washer_max_thickness_mm": 1.2,
+      "nut_assumed_height_mm": 6,
+      "post_nut_projection_mm": 5.0,
+      "status": "PASS_NOMINAL"
+    },
+    {
+      "joint": "crossbar splices",
+      "quantity": 8,
+      "bolt_length_mm": 75,
+      "printed_grip_mm": 62.8,
+      "washer_max_thickness_mm": 1.2,
+      "nut_assumed_height_mm": 6,
+      "post_nut_projection_mm": 5.0,
+      "status": "PASS_NOMINAL"
+    },
+    {
+      "joint": "boom roots",
+      "quantity": 8,
+      "bolt_length_mm": 90,
+      "printed_grip_mm": 80,
+      "washer_max_thickness_mm": 1.2,
+      "nut_assumed_height_mm": 6,
+      "post_nut_projection_mm": 2.8,
+      "status": "PASS_NOMINAL"
+    },
+    {
+      "joint": "carriage",
+      "quantity": 4,
+      "bolt_length_mm": 85,
+      "printed_grip_mm": 74,
+      "washer_max_thickness_mm": 1.2,
+      "nut_assumed_height_mm": 6,
+      "post_nut_projection_mm": 3.8,
+      "status": "PASS_NOMINAL"
+    }
+  ],
+  "conditions": [
+    "Actual head/washer dimensions must fit these envelopes; do not use bare socket heads against ABS as an equivalent flange.",
+    "Actual flanged nut height <=6 mm for tabulated projections; verify full nylon engagement and at least two full threads beyond each nut.",
+    "Use specified bolt lengths; do not substitute 75/80/85/90 mm indiscriminately.",
+    "Existing stainless/12.9 packages differ in grade; load qualification remains outstanding. No torque approval is given."
+  ],
+  "sources": [
+    "https://bossard-embedded.partcommunity.com/3d-cad-models/bn-612-hex-socket-head-cap-screws-fully-threaded-din-912-iso-4762-stainless-steel-a4-bossard-catalog?info=bossard%2F01%2F01_100%2F01_100_100%2F01_100_100_10%2Fbn_610_612_31101%2Fbn_612.prj",
+    "https://www.accu.co.uk/metric-flat-washers/404043-HPW-M5-V1-A4-BL"
+  ]
+}

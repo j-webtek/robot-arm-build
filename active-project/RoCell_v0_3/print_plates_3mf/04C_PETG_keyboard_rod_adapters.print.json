@@ -1,0 +1,356 @@
+{
+  "schema_version": 2,
+  "design_revision": "RC03-INT-R1",
+  "job_id": "04C",
+  "plate_file": "04C_PETG_keyboard_rod_adapters.3mf",
+  "printer": {
+    "model": "QIDI Plus4",
+    "nominal_build_volume_mm": [
+      305.0,
+      305.0,
+      280.0
+    ],
+    "safe_plate_envelope_mm": [
+      295.0,
+      295.0,
+      275.0
+    ],
+    "edge_margin_mm": 5.0,
+    "default_nozzle_mm": 0.4
+  },
+  "stage": "route",
+  "selection": "keyboard_rod_route",
+  "purpose": "Two keyboard-route rod bushings for retention qualification and one spare",
+  "parts": {
+    "rod_bushing_6_to_9mm.stl": 2
+  },
+  "prerequisites": [
+    "plus4_machine_confirmed",
+    "plus4_protected_envelope_verified",
+    "nozzle_0p4_confirmed",
+    "petg_adapter_profile_calibrated",
+    "keyboard_rod_measured",
+    "adapter_retention_method_selected",
+    "geometry_matches_measurements",
+    "qidi_studio_roundtrip_confirmed"
+  ],
+  "process_profile_name": "petg_adapter_0p4",
+  "process_profile": {
+    "material": "PETG",
+    "filament_preset": "exact_petg_spool_xplus4_0p4",
+    "preset_data_status": "EXACT_PROCESS_SPOOL_PRESET_REQUIRED",
+    "nozzle_mm": 0.4,
+    "layer_height_mm": 0.12,
+    "walls": 4,
+    "top_layers": 5,
+    "bottom_layers": 5,
+    "infill_percent": 100,
+    "infill_pattern": "rectilinear",
+    "supports": "off",
+    "bed_adhesion": "8 mm outer brim with 0.10 mm object gap after the exact PETG spool is qualified",
+    "dimensional_controls": "Calibrate elephant-foot compensation so split bores remain open; never globally scale",
+    "purpose": "Ductile, fit-sensitive stylus collar and thin split rod bushing",
+    "qidi_studio": {
+      "base_process_preset": "0.12mm High Quality @XPlus4",
+      "import_name": "RC03 PETG Split Adapter 0.12",
+      "native_overrides": {
+        "layer_height": "0.12",
+        "initial_layer_print_height": "0.2",
+        "wall_loops": "4",
+        "top_shell_layers": "5",
+        "bottom_shell_layers": "5",
+        "sparse_infill_density": "100%",
+        "sparse_infill_pattern": "rectilinear",
+        "outer_wall_speed": [
+          "45"
+        ],
+        "inner_wall_speed": [
+          "90"
+        ],
+        "sparse_infill_speed": [
+          "90"
+        ],
+        "internal_solid_infill_speed": [
+          "80"
+        ],
+        "top_surface_speed": [
+          "45"
+        ],
+        "bridge_speed": [
+          "25"
+        ],
+        "gap_infill_speed": [
+          "60"
+        ],
+        "initial_layer_speed": [
+          "25"
+        ],
+        "initial_layer_infill_speed": [
+          "40"
+        ],
+        "travel_speed": [
+          "350"
+        ],
+        "default_acceleration": [
+          "3500"
+        ],
+        "travel_acceleration": [
+          "6000"
+        ],
+        "initial_layer_travel_acceleration": [
+          "2000"
+        ],
+        "initial_layer_acceleration": [
+          "400"
+        ],
+        "outer_wall_acceleration": [
+          "1500"
+        ],
+        "inner_wall_acceleration": [
+          "2200"
+        ],
+        "top_surface_acceleration": [
+          "1200"
+        ],
+        "enable_support": "0",
+        "ironing_type": "no ironing",
+        "brim_type": "outer_only",
+        "brim_width": "8",
+        "brim_object_gap": "0.1",
+        "skirt_loops": "0",
+        "enable_prime_tower": "0",
+        "xy_hole_compensation": "0",
+        "xy_contour_compensation": "0",
+        "elefant_foot_compensation": "0.15",
+        "seam_position": "aligned",
+        "enable_arc_fitting": "1",
+        "resolution": "0.012",
+        "print_sequence": "by layer",
+        "fuzzy_skin": "none"
+      }
+    }
+  },
+  "preset_contract": {
+    "schema_version": 1,
+    "slicer": {
+      "application": "QIDI Studio",
+      "verified_config_version": "2.7.2.60",
+      "machine_preset": "X-Plus 4 0.4 nozzle",
+      "build_surface": "Textured PEI Plate",
+      "units": "millimetres, degrees Celsius, millimetres per second, and millimetres per second squared",
+      "rule": "The per-job .print.json and .PRINT_SETTINGS.md files are the released setup records. The 3MF remains geometry-only until a native QIDI Studio project is saved and reviewed."
+    },
+    "preset_data_status": "EXACT_PROCESS_SPOOL_PRESET_REQUIRED",
+    "filament_preset_name": "exact_petg_spool_xplus4_0p4",
+    "filament_preset": {
+      "material": "PETG",
+      "filament_type": "PETG",
+      "resolution_status": "EXACT_SPOOL_PRESET_REQUIRED",
+      "suggested_starting_preset": "Generic PETG @Qidi X-Plus 4 0.4 nozzle",
+      "process_settings_status": "EXACT",
+      "thermal_settings_status": "UNRESOLVED",
+      "required_operator_inputs": [
+        "manufacturer",
+        "product name",
+        "spool lot",
+        "vendor preset name and revision",
+        "drying record",
+        "flow calibration",
+        "pressure advance calibration"
+      ],
+      "unresolved_fields": [
+        "nozzle temperature",
+        "bed temperature",
+        "chamber temperature",
+        "flow ratio",
+        "pressure advance",
+        "maximum volumetric speed",
+        "cooling"
+      ]
+    },
+    "process_preset_name": "petg_adapter_0p4",
+    "process_preset": {
+      "material": "PETG",
+      "filament_preset": "exact_petg_spool_xplus4_0p4",
+      "preset_data_status": "EXACT_PROCESS_SPOOL_PRESET_REQUIRED",
+      "nozzle_mm": 0.4,
+      "layer_height_mm": 0.12,
+      "walls": 4,
+      "top_layers": 5,
+      "bottom_layers": 5,
+      "infill_percent": 100,
+      "infill_pattern": "rectilinear",
+      "supports": "off",
+      "bed_adhesion": "8 mm outer brim with 0.10 mm object gap after the exact PETG spool is qualified",
+      "dimensional_controls": "Calibrate elephant-foot compensation so split bores remain open; never globally scale",
+      "purpose": "Ductile, fit-sensitive stylus collar and thin split rod bushing",
+      "qidi_studio": {
+        "base_process_preset": "0.12mm High Quality @XPlus4",
+        "import_name": "RC03 PETG Split Adapter 0.12",
+        "native_overrides": {
+          "layer_height": "0.12",
+          "initial_layer_print_height": "0.2",
+          "wall_loops": "4",
+          "top_shell_layers": "5",
+          "bottom_shell_layers": "5",
+          "sparse_infill_density": "100%",
+          "sparse_infill_pattern": "rectilinear",
+          "outer_wall_speed": [
+            "45"
+          ],
+          "inner_wall_speed": [
+            "90"
+          ],
+          "sparse_infill_speed": [
+            "90"
+          ],
+          "internal_solid_infill_speed": [
+            "80"
+          ],
+          "top_surface_speed": [
+            "45"
+          ],
+          "bridge_speed": [
+            "25"
+          ],
+          "gap_infill_speed": [
+            "60"
+          ],
+          "initial_layer_speed": [
+            "25"
+          ],
+          "initial_layer_infill_speed": [
+            "40"
+          ],
+          "travel_speed": [
+            "350"
+          ],
+          "default_acceleration": [
+            "3500"
+          ],
+          "travel_acceleration": [
+            "6000"
+          ],
+          "initial_layer_travel_acceleration": [
+            "2000"
+          ],
+          "initial_layer_acceleration": [
+            "400"
+          ],
+          "outer_wall_acceleration": [
+            "1500"
+          ],
+          "inner_wall_acceleration": [
+            "2200"
+          ],
+          "top_surface_acceleration": [
+            "1200"
+          ],
+          "enable_support": "0",
+          "ironing_type": "no ironing",
+          "brim_type": "outer_only",
+          "brim_width": "8",
+          "brim_object_gap": "0.1",
+          "skirt_loops": "0",
+          "enable_prime_tower": "0",
+          "xy_hole_compensation": "0",
+          "xy_contour_compensation": "0",
+          "elefant_foot_compensation": "0.15",
+          "seam_position": "aligned",
+          "enable_arc_fitting": "1",
+          "resolution": "0.012",
+          "print_sequence": "by layer",
+          "fuzzy_skin": "none"
+        }
+      }
+    },
+    "human_settings_file": "04C_PETG_keyboard_rod_adapters.PRINT_SETTINGS.md",
+    "human_settings_sha256": "f4e96b64f789e345ba7dabbf4052e35498e57c95c64de12a87374e971eeb32fd",
+    "qidi_process_profile_file": "slicer_profiles/QIDI_PLUS4/petg_adapter_0p4.process.json",
+    "qidi_process_profile_sha256": "0eac339f7768fb799fa420cd300710e080134d0c0737652fd9afd51d9bc4fa91",
+    "filament_preset_sha256": "e4af446b19a2425a1f87b49feb022fb06e525dc92f670689940c8dade2908fc4",
+    "resolved_preset_sha256": "13f92ee97bdb5a9d652e943c052bacd7be2ecb3321ceef6c7a19d7e465249e0a",
+    "unresolved_fields": [
+      "nozzle temperature",
+      "bed temperature",
+      "chamber temperature",
+      "flow ratio",
+      "pressure advance",
+      "maximum volumetric speed",
+      "cooling"
+    ],
+    "part_assignments": [
+      {
+        "stl": "rod_bushing_6_to_9mm.stl",
+        "quantity": 2,
+        "filament_preset": "exact_petg_spool_xplus4_0p4",
+        "process_preset": "petg_adapter_0p4"
+      }
+    ]
+  },
+  "slicer_warning": "QIDI ABS Rapido uses the exact installed X-Plus 4 preset recorded here. PETG, TPU, and ASA jobs remain blocked until the exact physical spool and calibrated filament preset are recorded.",
+  "geometry_only_3mf": true,
+  "qidi_studio_native_project_required": true,
+  "qidi_studio_roundtrip_gate": "qidi_studio_roundtrip_confirmed",
+  "plate_envelope_mm": [
+    38.5,
+    13.5,
+    38.8
+  ],
+  "absolute_bed_bounds_mm": {
+    "min": [
+      133.25,
+      145.751,
+      0.0
+    ],
+    "max": [
+      171.75,
+      159.249,
+      38.8
+    ]
+  },
+  "centered_on_nominal_bed": true,
+  "source_stl_sha256": {
+    "rod_bushing_6_to_9mm.stl": "c30bee2a303f025e94b21e1cf2c5639babbf5d75d3bb008711ea86b5e8160d63"
+  },
+  "process_profile_sha256": "ce4f08af3ad5623c70bc5bb65dc086ae69cb51b98410dd26e85dbd0c1f693747",
+  "filament_preset_sha256": "e4af446b19a2425a1f87b49feb022fb06e525dc92f670689940c8dade2908fc4",
+  "resolved_preset_sha256": "13f92ee97bdb5a9d652e943c052bacd7be2ecb3321ceef6c7a19d7e465249e0a",
+  "human_settings_file": "04C_PETG_keyboard_rod_adapters.PRINT_SETTINGS.md",
+  "human_settings_sha256": "f4e96b64f789e345ba7dabbf4052e35498e57c95c64de12a87374e971eeb32fd",
+  "qidi_process_profile_file": "slicer_profiles/QIDI_PLUS4/petg_adapter_0p4.process.json",
+  "qidi_process_profile_sha256": "0eac339f7768fb799fa420cd300710e080134d0c0737652fd9afd51d9bc4fa91",
+  "plate_sha256": "39b706d658b093fe29c7cd845412ba2082dacdb6cf321b97d9cb6209a5e81427",
+  "objects": [
+    {
+      "name": "rod_bushing_6_to_9mm_1",
+      "bounds_mm": [
+        [
+          133.25,
+          145.751,
+          0.0
+        ],
+        [
+          146.75,
+          159.249,
+          38.8
+        ]
+      ]
+    },
+    {
+      "name": "rod_bushing_6_to_9mm_2",
+      "bounds_mm": [
+        [
+          158.25,
+          145.751,
+          0.0
+        ],
+        [
+          171.75,
+          159.249,
+          38.8
+        ]
+      ]
+    }
+  ]
+}

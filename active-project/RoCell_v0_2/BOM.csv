@@ -1,0 +1,43 @@
+category,item,qty,specification,required,notes
+Core,Waveshare RoArm-M3 Pro,1,Existing arm,Yes,Use factory rear-edge clamp
+Core,Structural board,1,610 x 457 x 18 mm birch plywood preferred; MDF acceptable,Yes,Do not 3D print this structural part
+Core,Compact keyboard,1,Perixx PERIBOARD-409 nominal 315 x 147 x 21 mm,Yes,CAD defaults to this exact envelope
+Core,Samsung Galaxy A16 5G,1,Nominal bare body 164.4 x 77.9 x 7.9 mm,Yes,Print fit coupon before full cradle; case requires override
+Fabrication,Digital calipers,1,0.01 mm display / approximately 0.02-0.05 mm practical accuracy,Yes,Measure devices rods inserts springs and printed coupons only after cooling
+Fabrication,Heat-set insert installation tip,1,M3 and M4 tips compatible with selected inserts,Yes,Install square at low pressure using coupon-selected pockets
+Fabrication,Hand drill or reamer set,1,Selected M3 M4 and M5 clearance sizes from coupon,Yes,Chase printed passages by hand; do not power-ream soft TPU
+Fabrication,Filament dryer or dry storage,1,Appropriate for PETG TPU and ASA,Recommended,Especially important for TPU dimensional consistency and surface quality
+Fabrication,M2 hand tap and pin vise,1,M2 x 0.4 tap used only with the selected stylus-collar retention method,Phone tool option,Tap printed pilots by hand and qualify the actual thin-wall collar before service
+Fabrication,Digital force gauge or calibrated weights,1,0-20 N push-pull gauge with 0.1 N resolution OR traceable 50-500 g weights,Optional,Quantifies spring force and adapter or TPU pull-off retention instead of relying only on feel
+Assembly,Keyboard tray anti-slip pad pieces,4,Adhesive-backed EVA or TPU 16 x 10 x 0.5-0.6 mm,Yes,One pair per tray half; keep pads flush in the four production recesses
+Assembly,Keyboard rear-clamp face pad pieces,2,Adhesive-backed EVA or TPU 42 x 10 x 0.8-1.0 mm,Yes,One replaceable face pad per rear clamp; do not bow the keyboard case
+Vision,USB camera,1,1080p manual/fixed exposure preferred,Yes,Mount rigidly above workcell
+Vision,Matte white paper/card,8,"Letter/A4, non-glossy",Yes,AprilTags and ChArUco board
+Vision,Matte double-sided tag tape,1,Thin non-glossy removable or archival tape <= 0.2 mm thick; enough for six 55 mm tiles,Yes,Keep every tag tile flat without covering the printed detection face
+Fasteners,#8 x 5/8 in pan-head wood screws,32,Approx. 4.2 x 16 mm,Yes,Easy fixture mounting method; use 2.5-3.0 mm pilot holes
+Fasteners,M4 flat washers,32,Standard,Yes,Under fixture screw heads
+Cable management,Nylon cable ties,12,2.5-3.2 mm wide x <= 1.2 mm thick x 100-150 mm long,Yes,Phone strain relief plus camera-routing samples and service spares; verify the selected tie in the saddle coupon
+Cable management,Adhesive cable-tie anchors,4,Low-profile 18-20 mm square mounts compatible with the board finish,Recommended,Use only where needed to route the phone lead clear of AprilTags and robot motion; includes two spares
+Phone clamp,M4 heat-set inserts,2,"6.0-6.2 mm OD, 5-6 mm long",Yes,Verify insert against printed tower pocket
+Phone clamp,M4 x 25 mm thumb screws or nylon screws,2,Hand adjustable,Yes,Fit TPU caps to inner ends
+Compliant tool,M3 heat-set inserts,2,"4.5-4.7 mm OD, 5-6 mm long",Yes,Retaining-cap inserts
+Compliant tool,M3 x 10 mm button-head screws,2,Head OD must pass the setup-hardware coupon,Yes,Retaining cap; install without washers unless the cap recess is deliberately revised and revalidated
+Compliant tool,Compression spring,1,OD <= 13.5 mm; ID >= 10.5 mm; free length 18-22 mm; light rate,Yes,Tune for 3-6 mm compliant travel
+Keyboard tool,6 mm smooth rod,1,"90-110 mm long, aluminum/brass/steel/carbon",One tool option,Deburr ends; use printed adapter and TPU tip
+Phone tool,Passive capacitive stylus,1,"Approx. 8.5-9.5 mm barrel, soft conductive tip",One tool option,Verify by hand on A16 before robot use
+Phone tool,M2 x 3 mm nylon-tip or flat-point grub screws,2,One installed plus one spare; screw must remain below the 13.6 mm collar OD,If selected,Use only after the actual thin-wall collar passes thread and pull-force qualification
+Tool retention,Removable retaining adhesive,1,Small tube of plastics-compatible non-brittle removable compound verified on PETG and the selected stylus or rod,If selected,Avoid permanent threadlocker and brittle cyanoacrylate; document the selected retention method
+Safety,Latching power cutoff / E-stop,1,Rated for arm power supply,Yes,Keep outside robot reach
+Board,Rubber feet,6,Adhesive or screw-on,Recommended,Prevent sliding and protect table
+Board,Matte neutral paint or vinyl,1,Low-gloss light gray/white,Recommended,Reduces glare; do not cover tag print faces
+Camera stand,2020 extrusion,2,700 mm vertical posts,Optional,Use separate stand to avoid arm vibration
+Camera stand,2020 extrusion,1,650 mm crossbar,Optional,Width can be adjusted to camera framing
+Camera stand,2020 angle brackets + T-nuts,4,Standard M5 hardware,Optional,Metal brackets preferred
+Camera stand,M5 x 60 mm clamp bolts + nuts,4,Two bolts and two captive nuts per reinforced mast foot,Optional,Verify with ASA/PETG nut-trap coupon before assembly
+Camera stand,M5 base-mounting hardware,8,Length and anchors selected for the stand base material; washers listed separately,Optional,Four mounting holes per mast foot
+Camera stand,M5 T-slot screws,2,M5 x 10-16 mm selected for the camera plate and crossbar T-nuts,Optional,Two camera-plate mounting slots; confirm thread engagement before tightening
+Camera stand,M5 T-nuts,2,Matched to the selected 2020 extrusion profile,Optional,Camera-plate crossbar attachment
+Camera stand,M5 flat washers,16,10-12 mm OD selected with the setup coupon,Optional,Eight mast-base seats four mast-clamp bolt heads two camera-plate slots and two service spares
+Camera stand,Camera retention straps or narrow zip ties,4,<= 4.0 mm wide and <= 1.5 mm thick; reusable straps preferred,Optional,Two installed through the camera-plate slots plus two spares
+Camera stand,1/4-20 camera screw and nut,1,Screw length selected after measuring the camera blind-thread depth; nut only if the selected interface requires it,Optional,Do not allow the screw to bottom in the camera body
+Service spares,Fastener and insert spare pack,1,2 M3 inserts; 2 M4 inserts; 2 M3 x 10 screws; 1 M4 x 25 clamp screw; 8 #8 screws; 8 M4 washers,Recommended,Label RC02-PRO-R1 and store with accepted coupons; printed TPU and adapter spares are supplied by their jobs

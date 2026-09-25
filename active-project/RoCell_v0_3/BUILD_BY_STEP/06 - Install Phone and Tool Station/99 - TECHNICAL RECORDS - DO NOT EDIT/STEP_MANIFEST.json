@@ -1,0 +1,899 @@
+{
+  "schema_version": 1,
+  "layout_version": 4,
+  "design_revision": "RC03-INT-R1",
+  "package_definition_hash": "7a6947f2de52f63133c5b9647b9b479ccd9d896906c2b575e76c106e1e5dccca",
+  "canonical_snapshot_hash": "05d11599e6d4a2937e0207535b298aa809ff08c79840350c7716666ce6d12755",
+  "canonical_input_hash": "05d11599e6d4a2937e0207535b298aa809ff08c79840350c7716666ce6d12755",
+  "step_id": "06",
+  "slug": "install_phone_tcp_station",
+  "title": "Install the phone and TCP service station",
+  "operator_folder": "06 - Install Phone and Tool Station",
+  "operator_title": "Install Phone and Tool Station",
+  "state_at_generation": "LOCKED",
+  "active_build_id": "2026-09-01_CELL-A",
+  "blocked_input_gates": [
+    "prerequisite_step:05",
+    "phone_tcp_station_postprint_pass",
+    "phone_station_m3_insert_coupon_pass",
+    "board_fabrication_pass"
+  ],
+  "prerequisite_steps": [
+    "05"
+  ],
+  "input_gate_ids": [
+    "phone_tcp_station_postprint_pass",
+    "phone_station_registration_coupon_pass",
+    "phone_station_m3_insert_coupon_pass",
+    "board_fabrication_pass"
+  ],
+  "completion_gate_ids": [],
+  "conditional_input_gates": {},
+  "conditional_completion_gates": {},
+  "completion_requires_any_route": [],
+  "conditional_acceptance": {},
+  "effective_test_ids": [
+    "06-A",
+    "06-B",
+    "06-C",
+    "06-D"
+  ],
+  "panel": "output/assembly_guide/images/06_install_phone_tcp_station.png",
+  "print_jobs": [
+    {
+      "job_id": "00B",
+      "action": "consume_accepted_output",
+      "stage": "diagnostic",
+      "selection": "required",
+      "profile": "abs_rapido_cradle_0p4",
+      "plate_file": "00B_ABS_phone_station_fit_tests.3mf",
+      "settings_file": "00B_ABS_phone_station_fit_tests.PRINT_SETTINGS.md",
+      "settings_sha256": "5dde496287138dc5f8bf01eab3a3217fcf332374e092a4c46f49ae3a9ffda544",
+      "qidi_process_profile_file": "slicer_profiles/QIDI_PLUS4/abs_rapido_cradle_0p4.process.json",
+      "qidi_process_profile_sha256": "9276ce2983256d815925224e7d8fc45032a531678dc336713fc88fa96137e259",
+      "filament_preset": "qidi_abs_rapido_xplus4_0p4",
+      "preset_data_status": "EXACT_REPRODUCIBLE",
+      "parts": {
+        "phone_width_fit_test.stl": 1,
+        "station_locator_fit_gauge.stl": 1,
+        "m4_captive_nut_fit_gauge.stl": 1,
+        "phone_m3_insert_fit_gauge.stl": 1,
+        "cable_tie_saddle_fit_gauge.stl": 1,
+        "m4_washer_fit_gauge.stl": 1
+      },
+      "purpose": "ABS phone width, station locator, profile-specific M3 insert, and washer qualification; retained nut and cable-saddle objects document superseded screening geometry"
+    },
+    {
+      "job_id": "03A",
+      "action": "consume_accepted_output",
+      "stage": "first_article",
+      "selection": "required",
+      "profile": "abs_rapido_cradle_0p4",
+      "plate_file": "03A_ABS_phone_TCP_station.3mf",
+      "settings_file": "03A_ABS_phone_TCP_station.PRINT_SETTINGS.md",
+      "settings_sha256": "c3fd921347d91842d1f16728e8e88a45d25a776aa3aedd6d8810c9db9773c7b9",
+      "qidi_process_profile_file": "slicer_profiles/QIDI_PLUS4/abs_rapido_cradle_0p4.process.json",
+      "qidi_process_profile_sha256": "9276ce2983256d815925224e7d8fc45032a531678dc336713fc88fa96137e259",
+      "filament_preset": "qidi_abs_rapido_xplus4_0p4",
+      "preset_data_status": "EXACT_REPRODUCIBLE",
+      "parts": {
+        "phone_tcp_station.stl": 1
+      },
+      "purpose": "Integrated ABS phone and TCP service station with fixed datums, keyed receiver, and replaceable-rail interface"
+    }
+  ],
+  "canonical_files": [
+    {
+      "canonical_path": "ASSEMBLY_MANUAL.md",
+      "sha256": "5c77cf9c49e7afcf51eaaf26cf58dc78081eec860b006acebee91a1f11046c07",
+      "size_bytes": 47056,
+      "roles": [
+        "controlled detailed-manual source"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "ASSEMBLY_MANUAL.pdf",
+      "sha256": "3f82933f75bb4df24ba875c03624668dfd86e15b5a956b963fe3cc92621031e5",
+      "size_bytes": 543436,
+      "roles": [
+        "controlled detailed manual"
+      ],
+      "actions": [
+        "read"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "BOM.csv",
+      "sha256": "c9362cf401ca66f4e584c7fc294f6c54853c8ea546e610d551bc841782d6bcd0",
+      "size_bytes": 10703,
+      "roles": [
+        "purchasing source"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "BUILD_TRACKER.json",
+      "sha256": "0309256af31348620bb977aded9c591bc697c8ab7b9873027430aaa28c077b9a",
+      "size_bytes": 18134,
+      "roles": [
+        "machine-readable lifecycle tracker"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "BUILD_TRACKER.md",
+      "sha256": "17ecf32b45b561c9209189849ef20cac965ef09065cb33bf8aa9f24f9a086775",
+      "size_bytes": 6253,
+      "roles": [
+        "lifecycle tracker"
+      ],
+      "actions": [
+        "verify"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "FASTENER_MAP.csv",
+      "sha256": "94b0af10da8ee259d200ae5ffc404f2265ac9b417169e697bcef38e91aca3085",
+      "size_bytes": 2200,
+      "roles": [
+        "board fastener source"
+      ],
+      "actions": [
+        "edit_only_in_step_01_after_cutoff_tests"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "JOB_KITS.csv",
+      "sha256": "2c93199c0703d975d47870c2537dd4acf39c376c6f42fbab17fcddeba4004516",
+      "size_bytes": 11616,
+      "roles": [
+        "kitting source"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "PRINT_READINESS.json",
+      "sha256": "a8c75f05f727fa899c1f873ffea9852b5e6d343cdd302d5c4e02ee4124f74fc3",
+      "size_bytes": 57793,
+      "roles": [
+        "machine-readable print readiness"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "PRINT_READINESS.md",
+      "sha256": "5be5234644cbca322e93f16ec422cd5a6f04059055a2f56d68cf224d61f015b0",
+      "size_bytes": 17177,
+      "roles": [
+        "current print readiness"
+      ],
+      "actions": [
+        "verify"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "RC03_INTEGRATED_BUILD_PLAN.md",
+      "sha256": "c8cf80651860f9c6b13f1227eb542356968f7282f591aa76acfa5950707898b0",
+      "size_bytes": 15962,
+      "roles": [
+        "station architecture"
+      ],
+      "actions": [
+        "read"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "README_FIRST.md",
+      "sha256": "ba84a14a17983d774a0278b4b68571d920b0dc4d186fd05c991b1d149d388a9e",
+      "size_bytes": 9962,
+      "roles": [
+        "release entry point"
+      ],
+      "actions": [
+        "read"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "cad/step/cable_tie_saddle_fit_gauge.step",
+      "sha256": "2561bed996ff1a1c9bb15530b35467d15318812ea3822f77c2e76f80ed74008c",
+      "size_bytes": 958928,
+      "roles": [
+        "neutral CAD companion"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": [
+        "00B"
+      ]
+    },
+    {
+      "canonical_path": "cad/step/m4_captive_nut_fit_gauge.step",
+      "sha256": "e9cb6408e7a2f02c388c0f299c60e2bf3c97467710c5f0b523938669dfbfe85d",
+      "size_bytes": 938517,
+      "roles": [
+        "neutral CAD companion"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": [
+        "00B"
+      ]
+    },
+    {
+      "canonical_path": "cad/step/m4_washer_fit_gauge.step",
+      "sha256": "9cc2e4910b7dbeee4f37d240e88bfb2f861ff19121487380d0c3d404f5644cfe",
+      "size_bytes": 1729125,
+      "roles": [
+        "neutral CAD companion"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": [
+        "00B"
+      ]
+    },
+    {
+      "canonical_path": "cad/step/phone_m3_insert_fit_gauge.step",
+      "sha256": "628b170be668c91e55b2986d00775bfa3cc5dbea7083bb02c5371a18d347bac3",
+      "size_bytes": 2094338,
+      "roles": [
+        "neutral CAD companion"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": [
+        "00B"
+      ]
+    },
+    {
+      "canonical_path": "cad/step/phone_tcp_station.step",
+      "sha256": "d44b5a93445dc761df13682001579da495c733eaf83701b988592362eea476a8",
+      "size_bytes": 2693848,
+      "roles": [
+        "neutral CAD companion"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": [
+        "03A"
+      ]
+    },
+    {
+      "canonical_path": "cad/step/phone_width_fit_test.step",
+      "sha256": "1859fd1974f1ff90fe96dc0498ac6ce05c7a8d435d49155bd8e67b98b0794a29",
+      "size_bytes": 887700,
+      "roles": [
+        "neutral CAD companion"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": [
+        "00B"
+      ]
+    },
+    {
+      "canonical_path": "cad/step/station_locator_fit_gauge.step",
+      "sha256": "46a7ba4356c7dc5fe53685c99a358d65f608dca40800f18c2b2bb4c3cf4fb275",
+      "size_bytes": 11272658,
+      "roles": [
+        "neutral CAD companion"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": [
+        "00B"
+      ]
+    },
+    {
+      "canonical_path": "config/assembly_steps.json",
+      "sha256": "af1920ac851d18c09ad749df5da2ed58dda6c9a40b066966e737430c448a546d",
+      "size_bytes": 117502,
+      "roles": [
+        "canonical step-to-file relationship map"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "config/job_build_record.json",
+      "sha256": "8ffbb767c577fac5c88b8b68a7d4029ac1ca09c5b502f8d27795fb66a585ad64",
+      "size_bytes": 27671,
+      "roles": [
+        "canonical job lifecycle record"
+      ],
+      "actions": [
+        "edit_only_with_controlled_workflow"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "config/measurement_record.json",
+      "sha256": "1fb400eae3104547b9bc75a6824bb137f37acc8274e68d718db7a6d77e734ec9",
+      "size_bytes": 84066,
+      "roles": [
+        "canonical measurement and gate record"
+      ],
+      "actions": [
+        "edit_only_with_recording_script"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "config/parameters.json",
+      "sha256": "769808d9094672ff2f281d39eeafff68c1aa0e4e9ec9b552f22084334b1bb6fc",
+      "size_bytes": 1915,
+      "roles": [
+        "canonical CAD parameter set"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "config/print_jobs.json",
+      "sha256": "429bca9542193388581eee5266af57b2e7460881f87b23b34693eee3b77c66f4",
+      "size_bytes": 13945,
+      "roles": [
+        "canonical print-job definitions"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "config/print_profiles.json",
+      "sha256": "5886a55b3fbdca28bf0d67ea8718a366333e78f2801e1884db00cc9f010ffc5e",
+      "size_bytes": 23632,
+      "roles": [
+        "canonical print-profile definitions"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "config/workcell_layout.json",
+      "sha256": "e84db9aa7b88db442f042c6f546196e350c822a2e7609cb4b652b3da535df2e1",
+      "size_bytes": 17043,
+      "roles": [
+        "generated geometry/layout source"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "drawings/board_hole_coordinates.csv",
+      "sha256": "6fec96788e94bebd836ebff3d850f9c1181934d3aadd0d0ed2cae4f24e0422c1",
+      "size_bytes": 4741,
+      "roles": [
+        "feature control"
+      ],
+      "actions": [
+        "verify"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "job_cards/JOB-00B.md",
+      "sha256": "fa575b0438a9fb44153a94cb5ff90572fa2a0fb71a0d4d4a311d2512d3ac887f",
+      "size_bytes": 7019,
+      "roles": [
+        "controlled print traveler"
+      ],
+      "actions": [
+        "consume_accepted_output"
+      ],
+      "job_ids": [
+        "00B"
+      ]
+    },
+    {
+      "canonical_path": "job_cards/JOB-03A.md",
+      "sha256": "41d47b8a7fae22283aedfa0ae502425358ce3261134cf932f4c8db2fef17b95f",
+      "size_bytes": 9655,
+      "roles": [
+        "controlled print traveler"
+      ],
+      "actions": [
+        "consume_accepted_output"
+      ],
+      "job_ids": [
+        "03A"
+      ]
+    },
+    {
+      "canonical_path": "output/assembly_guide/images/06_install_phone_tcp_station.png",
+      "sha256": "9cf12b84cecaea0fae2e349ccd074c946f2fe662cd205813ef545882310c2b20",
+      "size_bytes": 111017,
+      "roles": [
+        "assembly-step illustration"
+      ],
+      "actions": [
+        "view"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "output/pdf/RC03_ILLUSTRATED_ASSEMBLY_GUIDE.pdf",
+      "sha256": "1084103edb5f167b3a3571ef642826c4f585b488fef8200570e4251f2d5c140d",
+      "size_bytes": 1706300,
+      "roles": [
+        "complete illustrated guide"
+      ],
+      "actions": [
+        "read"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "print_plates_3mf/00B_ABS_phone_station_fit_tests.3mf",
+      "sha256": "cd7d1eddac818cb7268d3b6b71a21c72f609bcd2dfd66834d00fe2f31f668a76",
+      "size_bytes": 5247563,
+      "roles": [
+        "geometry-only QIDI plate"
+      ],
+      "actions": [
+        "consume_accepted_output"
+      ],
+      "job_ids": [
+        "00B"
+      ]
+    },
+    {
+      "canonical_path": "print_plates_3mf/00B_ABS_phone_station_fit_tests.PRINT_SETTINGS.md",
+      "sha256": "5dde496287138dc5f8bf01eab3a3217fcf332374e092a4c46f49ae3a9ffda544",
+      "size_bytes": 5734,
+      "roles": [
+        "exact operator print-settings sheet"
+      ],
+      "actions": [
+        "consume_accepted_output"
+      ],
+      "job_ids": [
+        "00B"
+      ]
+    },
+    {
+      "canonical_path": "print_plates_3mf/00B_ABS_phone_station_fit_tests.print.json",
+      "sha256": "236d5990c455bf8f64aca7718cf0bd0cbc15d23c7816fdd95ba1821bf41d940a",
+      "size_bytes": 15400,
+      "roles": [
+        "controlled plate/profile/hash sidecar"
+      ],
+      "actions": [
+        "consume_accepted_output"
+      ],
+      "job_ids": [
+        "00B"
+      ]
+    },
+    {
+      "canonical_path": "print_plates_3mf/03A_ABS_phone_TCP_station.3mf",
+      "sha256": "63cf85413ed08193b08445859bfcc8116c2e47064f2a086fdbfdb8bd7339e565",
+      "size_bytes": 613954,
+      "roles": [
+        "geometry-only QIDI plate"
+      ],
+      "actions": [
+        "consume_accepted_output"
+      ],
+      "job_ids": [
+        "03A"
+      ]
+    },
+    {
+      "canonical_path": "print_plates_3mf/03A_ABS_phone_TCP_station.PRINT_SETTINGS.md",
+      "sha256": "c3fd921347d91842d1f16728e8e88a45d25a776aa3aedd6d8810c9db9773c7b9",
+      "size_bytes": 5851,
+      "roles": [
+        "exact operator print-settings sheet"
+      ],
+      "actions": [
+        "consume_accepted_output"
+      ],
+      "job_ids": [
+        "03A"
+      ]
+    },
+    {
+      "canonical_path": "print_plates_3mf/03A_ABS_phone_TCP_station.print.json",
+      "sha256": "a0933605a7fbc2c7205b93404508f94828e21075476c6e89db2aef5899459da6",
+      "size_bytes": 12830,
+      "roles": [
+        "controlled plate/profile/hash sidecar"
+      ],
+      "actions": [
+        "consume_accepted_output"
+      ],
+      "job_ids": [
+        "03A"
+      ]
+    },
+    {
+      "canonical_path": "scripts/build_illustrated_assembly_guide.py",
+      "sha256": "6badf0daa975d8c0ab5de34cea5a7514dbff8469d2a7b499670a3002d428eb31",
+      "size_bytes": 44117,
+      "roles": [
+        "illustrated-guide PDF generator"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "scripts/build_manual_pdf.py",
+      "sha256": "4baf08d28e3566c3eb3869585275ebc318bf1e076744867221d4d79e2359f182",
+      "size_bytes": 6974,
+      "roles": [
+        "controlled detailed-manual PDF renderer"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "scripts/build_step_packages.py",
+      "sha256": "09ec78a5512ee6cb6997b3200e7bd1cdb1418eeb2fb477f339f331f14191f8a2",
+      "size_bytes": 171609,
+      "roles": [
+        "step-package generator and validator"
+      ],
+      "actions": [
+        "run_from_project_root"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "scripts/generate_build_tracker.py",
+      "sha256": "6090b47ff751ebb62c6ab8ecd4abc55fa54f79cabde5b86a4231484b2cc67e53",
+      "size_bytes": 11983,
+      "roles": [
+        "job-lifecycle validator and tracker generator"
+      ],
+      "actions": [
+        "run_from_project_root"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "scripts/generate_job_cards.py",
+      "sha256": "520cf48d2263beca0eca351d6960fbfae95e1f9c63e05aec1204957b47271a7f",
+      "size_bytes": 22538,
+      "roles": [
+        "controlled print-traveler instruction generator"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "scripts/initialize_step_evidence.py",
+      "sha256": "0a940eabc2ab22fcc0c4e2b2df9a67fa90224027168127917c2e7879a8725b93",
+      "size_bytes": 4692,
+      "roles": [
+        "non-overwriting active-build evidence initializer"
+      ],
+      "actions": [
+        "run_before_each_step"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "scripts/record_job_lifecycle.py",
+      "sha256": "440ca2e1b5185b230067a5d5f63d936a1d56e84bfc9ec9bc32d920e39ed3eb37",
+      "size_bytes": 3613,
+      "roles": [
+        "sequential print-job lifecycle recorder"
+      ],
+      "actions": [
+        "run_after_each_completed_state"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "scripts/record_print_measurement.py",
+      "sha256": "5cac4945ed54e13f95f1ef2e22e0b26448c4b9b69f966051cb350aae575b232b",
+      "size_bytes": 9085,
+      "roles": [
+        "canonical gate and route recorder"
+      ],
+      "actions": [
+        "run_after_reviewing_raw_evidence"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "scripts/record_step_result.py",
+      "sha256": "851e5b3761c2f37e9542f130ad22e2426cdf4d07af212a26ee3f5dd9012b3f0b",
+      "size_bytes": 5673,
+      "roles": [
+        "non-destructive step-result recorder"
+      ],
+      "actions": [
+        "run_for_each_step_test"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "scripts/render_assembly_guide.py",
+      "sha256": "8e7467e8eccccbf6e04988820b828be3c0aa0c1c06167954f53bb46b5f8cf330",
+      "size_bytes": 59312,
+      "roles": [
+        "assembly-panel source renderer"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "scripts/set_active_build.py",
+      "sha256": "0f593f140437858b8cd72c87f4737b14af483c91ac3e9fcb45f07d4893327571",
+      "size_bytes": 2176,
+      "roles": [
+        "active physical-build selector"
+      ],
+      "actions": [
+        "run_before_recording_evidence"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "scripts/sign_off_step.py",
+      "sha256": "caed2f3b929d24354ae7ff289178e70a94c8729d84ca5f2d55384c483032cbba",
+      "size_bytes": 5604,
+      "roles": [
+        "validated step signoff recorder"
+      ],
+      "actions": [
+        "run_after_step_tests"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "scripts/step_evidence_common.py",
+      "sha256": "93fb598ee2de6dc0ba60d6eec7291458a728cb087dbe724b9e3bf09aa8933f8a",
+      "size_bytes": 9078,
+      "roles": [
+        "shared step-evidence containment and schema controls"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "scripts/validate_print_readiness.py",
+      "sha256": "7dc6159c15826da700a66d9e271776f8daed14716db80081fedea2e8712fb2ed",
+      "size_bytes": 86733,
+      "roles": [
+        "typed gate and print-readiness validator"
+      ],
+      "actions": [
+        "run_from_project_root"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "scripts/validate_release_package.py",
+      "sha256": "9b954d47726e7c09423d31f7cdbd8b0e07dff1b78c11bf826274473062d66ed3",
+      "size_bytes": 118881,
+      "roles": [
+        "whole-package release validator"
+      ],
+      "actions": [
+        "run_from_project_root"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "slicer_profiles/QIDI_PLUS4/README.md",
+      "sha256": "641631027fd7a0a452653ca7613b0f2f19c91e3bd49e3f90e9c9a3429c1777f4",
+      "size_bytes": 2277,
+      "roles": [
+        "QIDI process-preset import guide"
+      ],
+      "actions": [
+        "read"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "slicer_profiles/QIDI_PLUS4/abs_rapido_cradle_0p4.process.json",
+      "sha256": "9276ce2983256d815925224e7d8fc45032a531678dc336713fc88fa96137e259",
+      "size_bytes": 2088,
+      "roles": [
+        "importable QIDI Studio process preset"
+      ],
+      "actions": [
+        "consume_accepted_output"
+      ],
+      "job_ids": [
+        "00B",
+        "03A"
+      ]
+    },
+    {
+      "canonical_path": "stl/cable_tie_saddle_fit_gauge.stl",
+      "sha256": "8de2b07efef5bef8ef9297407c0bd22dd7945adc16f84fd0dab236e304398598",
+      "size_bytes": 960984,
+      "roles": [
+        "canonical slicing mesh"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": [
+        "00B"
+      ],
+      "local_operator_copy": "03 - STL MODELS/cable_tie_saddle_fit_gauge.stl",
+      "local_copy_sha256": "8de2b07efef5bef8ef9297407c0bd22dd7945adc16f84fd0dab236e304398598",
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+    },
+    {
+      "canonical_path": "stl/m4_captive_nut_fit_gauge.stl",
+      "sha256": "5771bfa01542ab24999c806f4347486d6cc1800f6a13a17ebfdb9264644e8aec",
+      "size_bytes": 749284,
+      "roles": [
+        "canonical slicing mesh"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": [
+        "00B"
+      ],
+      "local_operator_copy": "03 - STL MODELS/m4_captive_nut_fit_gauge.stl",
+      "local_copy_sha256": "5771bfa01542ab24999c806f4347486d6cc1800f6a13a17ebfdb9264644e8aec",
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+    },
+    {
+      "canonical_path": "stl/m4_washer_fit_gauge.stl",
+      "sha256": "98f27d3b7f274754a274f9856a8318c8b0c98f2fb5b485223fec74236ae349ff",
+      "size_bytes": 2413384,
+      "roles": [
+        "canonical slicing mesh"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": [
+        "00B"
+      ],
+      "local_operator_copy": "03 - STL MODELS/m4_washer_fit_gauge.stl",
+      "local_copy_sha256": "98f27d3b7f274754a274f9856a8318c8b0c98f2fb5b485223fec74236ae349ff",
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+    },
+    {
+      "canonical_path": "stl/phone_m3_insert_fit_gauge.stl",
+      "sha256": "54a7990f706256dd30d3d5ea7487f479e970c1e1d8f212be1996b6df6d1a2e65",
+      "size_bytes": 2617484,
+      "roles": [
+        "canonical slicing mesh"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": [
+        "00B"
+      ],
+      "local_operator_copy": "03 - STL MODELS/phone_m3_insert_fit_gauge.stl",
+      "local_copy_sha256": "54a7990f706256dd30d3d5ea7487f479e970c1e1d8f212be1996b6df6d1a2e65",
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+    },
+    {
+      "canonical_path": "stl/phone_tcp_station.stl",
+      "sha256": "63e02e28f9bb818007564eab7e82e2b9ce8417f30bdf3cbec3c3a86ec08ac32e",
+      "size_bytes": 2272184,
+      "roles": [
+        "canonical slicing mesh"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": [
+        "03A"
+      ],
+      "local_operator_copy": "03 - STL MODELS/phone_tcp_station.stl",
+      "local_copy_sha256": "63e02e28f9bb818007564eab7e82e2b9ce8417f30bdf3cbec3c3a86ec08ac32e",
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+    },
+    {
+      "canonical_path": "stl/phone_width_fit_test.stl",
+      "sha256": "1091a6d591259a4a22b6d9fd7b36d4a8264807ef5c169fe3c5b1019a16420cfa",
+      "size_bytes": 817984,
+      "roles": [
+        "canonical slicing mesh"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": [
+        "00B"
+      ],
+      "local_operator_copy": "03 - STL MODELS/phone_width_fit_test.stl",
+      "local_copy_sha256": "1091a6d591259a4a22b6d9fd7b36d4a8264807ef5c169fe3c5b1019a16420cfa",
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+    },
+    {
+      "canonical_path": "stl/station_locator_fit_gauge.stl",
+      "sha256": "7b34ff9a05495ce702310171cd27c5201e0c1ee54fede8c9cdbeea7260d3d1d5",
+      "size_bytes": 11509484,
+      "roles": [
+        "canonical slicing mesh"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": [
+        "00B"
+      ],
+      "local_operator_copy": "03 - STL MODELS/station_locator_fit_gauge.stl",
+      "local_copy_sha256": "7b34ff9a05495ce702310171cd27c5201e0c1ee54fede8c9cdbeea7260d3d1d5",
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+    }
+  ],
+  "local_stl_copy_count": 7,
+  "next_step": "07",
+  "operator_writable_directory": "06 - SAVE MEASUREMENTS AND PHOTOS",
+  "generated_control_hashes": {
+    "00 - START HERE.md": "067131e5407729d82e4696dd9c315583ddf4d4bb218efd755b94c903a1ec3de5",
+    "01 - BEFORE YOU START.md": "797cdaba3fef450b17cc57d87d6a3852e53193c7fd5d082e0df332f7f725490b",
+    "02 - PARTS AND TOOLS CHECKLIST.md": "78361d4f8851ddf131f9426142bb4bde4f8a40562f8c25ec8d3335b154cb5940",
+    "03 - STL MODELS/READ ME - HOW TO USE THESE MODELS.md": "da5fab5856c5eb1930f64b0a5b39d1caf8aaf38f3ed9e1165278fcf20d45afec",
+    "03 - STL MODELS/STL MODEL LIST.csv": "7993eda71341c9094f5b909bd1487d3641b79eb9881b69eb997f64f1fdd8c516",
+    "03B - PRINT SETTINGS FOR THIS STEP.md": "53d22473ac919e72ffc4ad8b1d0f8764a1b8598c380e4b97a152c8039a0246a7",
+    "04 - STEP-BY-STEP INSTRUCTIONS.md": "acedaa503983e6165954499e14087b71ade3d96b7dd7db2b9c9bf3c6adee272c",
+    "05 - CHECK YOUR WORK.md": "58b826683333653e01fcaec0574d29db8f4ba3bcce33dad59533a69a51af0cfe",
+    "06 - SAVE MEASUREMENTS AND PHOTOS/READ ME - WHAT TO RECORD.md": "29c5565b10525d8478ba987a78c2cf39e9ab968ae423a6a07dd3285471d4af36",
+    "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/measurement_record.json": "d031f0015e22062b9f8443e502e66384be27f61e7a0730a4162e2ed128083fcd",
+    "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/signoff.json": "489460ec186c5eb5bbb8fc8bdab88f287f61ca719bcc855be39c7b4d3c999afc",
+    "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/Measurements Checklist.md": "2d1a93d04c449750f7b9afdcaf383bed5565619daae0d589ece6297499a397b4",
+    "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/Finish and Sign Off.md": "20469dfcd9afb663da80c76a14c11959e34bb13705453560c27ac76d34327d19",
+    "07 - FINISH THIS STEP AND CONTINUE.md": "01e96515df156891e3b588a65f45135f31321774db4922a9864a6e39d0a843d4",
+    "99 - TECHNICAL RECORDS - DO NOT EDIT/OPEN CONTROLLED FILES.md": "73ba2663ea54a00c1dd55227ac2525fad074a926355bfefa9abb28b16eb59c1f",
+    "99 - TECHNICAL RECORDS - DO NOT EDIT/FILE INDEX.csv": "57bf72ed829af2c2dd1dbfd6de67ed6981aa7a2e05570184ce375406d89b9ea7",
+    "99 - TECHNICAL RECORDS - DO NOT EDIT/FILE MANIFEST.json": "fde43a726c3b7b02cdf4844f6262be5a779fcd254c65343f0504f5836bfc2c8a",
+    "99 - TECHNICAL RECORDS - DO NOT EDIT/SHA256SUMS.txt": "76f6d96e8bc7beb3500a8dd0dce4d27124019ca1f24339e487f3c77f18577306",
+    "99 - TECHNICAL RECORDS - DO NOT EDIT/HARDWARE AND TOOLS.csv": "97281c017c10fab61109ea5f29ad286a3323db716152a20b588b2a77189c26f2"
+  }
+}

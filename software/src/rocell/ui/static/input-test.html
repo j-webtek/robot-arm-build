@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RoCell keyboard test pad</title><link rel="stylesheet" href="/assets/app.css">
+<script src="/assets/input-test.js" defer></script></head>
+<body><main class="workspace"><section class="card">
+<h1>Keyboard input test pad</h1>
+<p>No arm commands. This page records only this test field while a capture is active. Use harmless test text—not passwords.</p>
+<p>Start with one lowercase key, then a short word. A match confirms browser input, not that the robot caused it. Android capture is not connected.</p>
+<label>Expected lowercase text (1–8 letters) <input id="expected" value="a" maxlength="8" autocomplete="off"></label>
+<button id="start" class="button primary" type="button">Start capture</button>
+<button id="stop" class="button secondary" type="button" disabled>Stop capture</button>
+<label>Test field <input id="pad" disabled autocomplete="off" autocapitalize="off" spellcheck="false"></label>
+<p id="status" role="status">Not recording. Capture stops on focus loss, unsupported input, 64 events or 60 seconds.</p>
+<pre id="result"></pre>
+<button id="prepare" type="button" class="button secondary" disabled>Preview saving this capture</button>
+<button id="save" type="button" class="button primary" disabled>Save reviewed capture</button>
+<p id="saved" role="status"></p>
+<p><a href="/">Return to wizard</a>. Saved captures appear in Activity and are included in the normal diagnostic export.</p>
+</section></main></body></html>

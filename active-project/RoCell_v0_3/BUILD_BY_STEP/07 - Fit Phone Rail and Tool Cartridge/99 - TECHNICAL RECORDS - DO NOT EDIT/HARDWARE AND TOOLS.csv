@@ -1,0 +1,8 @@
+source,type,qty,item,critical_condition,status
+required_physical_input,Required input,As specified,Installed phone/TCP station,Present and accepted before work,NOT_VERIFIED
+required_physical_input,Required input,As specified,Accepted replaceable phone rail,Present and accepted before work,NOT_VERIFIED
+required_physical_input,Required input,As specified,Job 03D cartridge labeled INSTALL and the accepted cartridge labeled SPARE - TCP RECALIBRATION REQUIRED,Present and accepted before work,NOT_VERIFIED
+required_physical_input,Required input,As specified,PT-HOLD-R1/R2 and both TCP M3 fasteners kept aside until seating is proven,Present and accepted before work,NOT_VERIFIED
+required_physical_input,Required input,As specified,"Thin feeler gauges, dial indicator with rigid stand, and height gauge with 0.01 mm resolution or better",Present and accepted before work,NOT_VERIFIED
+structured_register,Printed part,1,Phone clamp rail,Accepted Job 03C1,NOT_VERIFIED
+structured_register,Printed part,1 + 1 spare,Keyed TCP datum cartridges,Both passed Job 03D; use only the recorded INSTALL cartridge and keep the other labeled SPARE - TCP RECALIBRATION REQUIRED,NOT_VERIFIED

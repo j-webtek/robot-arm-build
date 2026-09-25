@@ -1,0 +1,10 @@
+source,type,qty,item,critical_condition,status
+required_physical_input,Required input,As specified,Complete installed cell with devices initially removed,Present and accepted before work,NOT_VERIFIED
+required_physical_input,Required input,As specified,Signed evidence from Steps 00 through 14,Present and accepted before work,NOT_VERIFIED
+required_physical_input,Required input,As specified,"Calibrated camera, board transform, accepted TCP cartridge, and compliant tool TCP",Present and accepted before work,NOT_VERIFIED
+required_physical_input,Required input,As specified,"E-stop, calibrated force gauge or traceable weights, torque driver, measurement tools, and an observer",Present and accepted before work,NOT_VERIFIED
+required_physical_input,Required input,As specified,"PASS engineering-release record `commissioning_motion_contact_limits_approved` for TCP speed (mm/s), TCP acceleration (mm/s^2), contact force (N), travel/clearance (mm), and 20 N/10 N proof durations (s); plus the fixed 50 N axial anchor proof for 60 seconds",Present and accepted before work,NOT_VERIFIED
+required_physical_input,Required input,As specified,"Approved controller/firmware, E-stop and board anti-shift implementations, and existing project-relative homing/reference, empty-cell motion, and final-process files whose SHA-256 values match the approval record",Present and accepted before work,NOT_VERIFIED
+structured_register,Safety,1,Functional E-stop / power cutoff,Test before robot enable,NOT_VERIFIED
+structured_register,Inspection,1 set,"Force, torque, dimensional, and vision tools",IDs and calibration status recorded,NOT_VERIFIED
+structured_register,Reference,1,Accepted TCP cartridge and labeled spare,Installed cartridge remains flush and repeatable,NOT_VERIFIED

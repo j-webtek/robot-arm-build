@@ -1,0 +1,97 @@
+{
+  "schema_version": 2,
+  "design_revision": "RC02-PRO-R1",
+  "job_id": "01",
+  "plate_file": "01_PETG_keyboard_left.3mf",
+  "printer": {
+    "model": "QIDI Plus4",
+    "nominal_build_volume_mm": [
+      305.0,
+      305.0,
+      280.0
+    ],
+    "safe_plate_envelope_mm": [
+      295.0,
+      295.0,
+      280.0
+    ],
+    "edge_margin_mm": 5.0,
+    "default_nozzle_mm": 0.4
+  },
+  "stage": "first_article",
+  "selection": "required",
+  "purpose": "Left keyboard tray first article",
+  "parts": {
+    "keyboard_tray_left.stl": 1
+  },
+  "prerequisites": [
+    "plus4_machine_confirmed",
+    "nozzle_0p4_confirmed",
+    "petg_tray_profile_calibrated",
+    "keyboard_dimensions_measured",
+    "keyboard_corner_coupon_pass",
+    "keyboard_seam_coupon_pass",
+    "tray_clearance_holes_coupon_pass",
+    "geometry_matches_measurements",
+    "qidi_studio_roundtrip_confirmed"
+  ],
+  "process_profile_name": "petg_tray_structural_0p4",
+  "process_profile": {
+    "material": "PETG",
+    "nozzle_mm": 0.4,
+    "layer_height_mm": 0.2,
+    "walls": 5,
+    "top_layers": 6,
+    "bottom_layers": 6,
+    "infill_percent": 35,
+    "infill_pattern": "gyroid",
+    "supports": "off",
+    "bed_adhesion": "Clean textured PEI; 6 mm brim recommended for the two large tray halves",
+    "dimensional_controls": "Keep slicer seam away from mounting slots, male keys, female pocket mouths, and keyboard datums",
+    "purpose": "Keyboard tray halves with reinforced seam and support rails"
+  },
+  "slicer_warning": "Use a calibrated QIDI Studio filament preset for the exact brand and material; temperatures are deliberately not embedded in geometry-only 3MF files.",
+  "geometry_only_3mf": true,
+  "qidi_studio_native_project_required": true,
+  "qidi_studio_roundtrip_gate": "qidi_studio_roundtrip_confirmed",
+  "plate_envelope_mm": [
+    184.5,
+    157.0,
+    11.0
+  ],
+  "absolute_bed_bounds_mm": {
+    "min": [
+      60.25,
+      74.0,
+      0.0
+    ],
+    "max": [
+      244.75,
+      231.0,
+      11.0
+    ]
+  },
+  "centered_on_nominal_bed": true,
+  "source_stl_sha256": {
+    "keyboard_tray_left.stl": "32f293bb28b7061b735c6f0f7be1e1c44f42d9520c5660795d09fe10e221550f"
+  },
+  "process_profile_sha256": "a6683691851137c050c1549e2dc810a7be8db2d862064ffd63263d9c5a6165ad",
+  "plate_sha256": "17bad44e8b245b3ceafbe51af3204fe5a9a37f88fd080e155f983e07026c3354",
+  "objects": [
+    {
+      "name": "keyboard_tray_left_1",
+      "bounds_mm": [
+        [
+          60.25,
+          74.0,
+          0.0
+        ],
+        [
+          244.75,
+          231.0,
+          11.0
+        ]
+      ]
+    }
+  ]
+}

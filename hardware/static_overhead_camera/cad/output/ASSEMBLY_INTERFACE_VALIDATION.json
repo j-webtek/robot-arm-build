@@ -1,0 +1,365 @@
+{
+  "status": "PASS",
+  "scope": "selected unintended-overlap checks; deliberate bolted/contact/compression interfaces excluded",
+  "nominal_camera_cage_side_clearance_mm": 18.25,
+  "tested_carriage_x_index_offsets_mm": [
+    -12.0,
+    0.0,
+    12.0
+  ],
+  "tested_carriage_y_index_offsets_mm": [
+    0.0,
+    21.0
+  ],
+  "tether_choker_station_B_mm": [
+    396.25,
+    152.5
+  ],
+  "checks": [
+    {
+      "check": "crossbar_to_boom_butt_no_volume_overlap",
+      "status": "PASS",
+      "intersection_volume_mm3": 0,
+      "limit_mm3": 0.5
+    },
+    {
+      "check": "boom_root_straps_touch_without_member_overlap",
+      "status": "PASS",
+      "intersection_volume_mm3": 0,
+      "limit_mm3": 0.1
+    },
+    {
+      "check": "boom_root_straps_clear_crossbar_splices",
+      "status": "PASS",
+      "intersection_volume_mm3": 0,
+      "limit_mm3": 0.01
+    },
+    {
+      "check": "portal_gusset_markings_clear_members",
+      "status": "PASS",
+      "intersection_volume_mm3": 0,
+      "limit_mm3": 0.5
+    },
+    {
+      "check": "carriage_index_X-12_Y+0_touches_booms_without_overlap",
+      "status": "PASS",
+      "intersection_volume_mm3": 0,
+      "limit_mm3": 0.5
+    },
+    {
+      "check": "cage_index_X-12_Y+0_tangent_below_carriage",
+      "status": "PASS",
+      "intersection_volume_mm3": 0,
+      "limit_mm3": 0.01
+    },
+    {
+      "check": "keeper_index_X-12_Y+0_tangent_below_carriage",
+      "status": "PASS",
+      "intersection_volume_mm3": 0,
+      "limit_mm3": 0.01
+    },
+    {
+      "check": "camera_group_index_X-12_Y+0_clear_booms",
+      "status": "PASS",
+      "intersection_volume_mm3": 0,
+      "limit_mm3": 0.01
+    },
+    {
+      "check": "carriage_index_X-12_Y+21_touches_booms_without_overlap",
+      "status": "PASS",
+      "intersection_volume_mm3": 0,
+      "limit_mm3": 0.5
+    },
+    {
+      "check": "cage_index_X-12_Y+21_tangent_below_carriage",
+      "status": "PASS",
+      "intersection_volume_mm3": 0,
+      "limit_mm3": 0.01
+    },
+    {
+      "check": "keeper_index_X-12_Y+21_tangent_below_carriage",
+      "status": "PASS",
+      "intersection_volume_mm3": 0,
+      "limit_mm3": 0.01
+    },
+    {
+      "check": "camera_group_index_X-12_Y+21_clear_booms",
+      "status": "PASS",
+      "intersection_volume_mm3": 0,
+      "limit_mm3": 0.01
+    },
+    {
+      "check": "carriage_index_X+0_Y+0_touches_booms_without_overlap",
+      "status": "PASS",
+      "intersection_volume_mm3": 0,
+      "limit_mm3": 0.5
+    },
+    {
+      "check": "cage_index_X+0_Y+0_tangent_below_carriage",
+      "status": "PASS",
+      "intersection_volume_mm3": 0,
+      "limit_mm3": 0.01
+    },
+    {
+      "check": "keeper_index_X+0_Y+0_tangent_below_carriage",
+      "status": "PASS",
+      "intersection_volume_mm3": 0,
+      "limit_mm3": 0.01
+    },
+    {
+      "check": "camera_group_index_X+0_Y+0_clear_booms",
+      "status": "PASS",
+      "intersection_volume_mm3": 0,
+      "limit_mm3": 0.01
+    },
+    {
+      "check": "carriage_index_X+0_Y+21_touches_booms_without_overlap",
+      "status": "PASS",
+      "intersection_volume_mm3": 0,
+      "limit_mm3": 0.5
+    },
+    {
+      "check": "cage_index_X+0_Y+21_tangent_below_carriage",
+      "status": "PASS",
+      "intersection_volume_mm3": 0,
+      "limit_mm3": 0.01
+    },
+    {
+      "check": "keeper_index_X+0_Y+21_tangent_below_carriage",
+      "status": "PASS",
+      "intersection_volume_mm3": 0,
+      "limit_mm3": 0.01
+    },
+    {
+      "check": "camera_group_index_X+0_Y+21_clear_booms",
+      "status": "PASS",
+      "intersection_volume_mm3": 0,
+      "limit_mm3": 0.01
+    },
+    {
+      "check": "carriage_index_X+12_Y+0_touches_booms_without_overlap",
+      "status": "PASS",
+      "intersection_volume_mm3": 0,
+      "limit_mm3": 0.5
+    },
+    {
+      "check": "cage_index_X+12_Y+0_tangent_below_carriage",
+      "status": "PASS",
+      "intersection_volume_mm3": 0,
+      "limit_mm3": 0.01
+    },
+    {
+      "check": "keeper_index_X+12_Y+0_tangent_below_carriage",
+      "status": "PASS",
+      "intersection_volume_mm3": 0,
+      "limit_mm3": 0.01
+    },
+    {
+      "check": "camera_group_index_X+12_Y+0_clear_booms",
+      "status": "PASS",
+      "intersection_volume_mm3": 0,
+      "limit_mm3": 0.01
+    },
+    {
+      "check": "carriage_index_X+12_Y+21_touches_booms_without_overlap",
+      "status": "PASS",
+      "intersection_volume_mm3": 0,
+      "limit_mm3": 0.5
+    },
+    {
+      "check": "cage_index_X+12_Y+21_tangent_below_carriage",
+      "status": "PASS",
+      "intersection_volume_mm3": 0,
+      "limit_mm3": 0.01
+    },
+    {
+      "check": "keeper_index_X+12_Y+21_tangent_below_carriage",
+      "status": "PASS",
+      "intersection_volume_mm3": 0,
+      "limit_mm3": 0.01
+    },
+    {
+      "check": "camera_group_index_X+12_Y+21_clear_booms",
+      "status": "PASS",
+      "intersection_volume_mm3": 0,
+      "limit_mm3": 0.01
+    },
+    {
+      "check": "u_splice_nominal_clearance",
+      "status": "PASS",
+      "intersection_volume_mm3": 0,
+      "limit_mm3": 0.1
+    },
+    {
+      "check": "usb_route_index_X-12_Y+0_clears_frame_and_carriage",
+      "status": "PASS",
+      "intersection_volume_mm3": 0,
+      "limit_mm3": 0.01
+    },
+    {
+      "check": "usb_route_index_X-12_Y+21_clears_frame_and_carriage",
+      "status": "PASS",
+      "intersection_volume_mm3": 0,
+      "limit_mm3": 0.01
+    },
+    {
+      "check": "usb_route_index_X+0_Y+0_clears_frame_and_carriage",
+      "status": "PASS",
+      "intersection_volume_mm3": 0,
+      "limit_mm3": 0.01
+    },
+    {
+      "check": "usb_route_index_X+0_Y+21_clears_frame_and_carriage",
+      "status": "PASS",
+      "intersection_volume_mm3": 0,
+      "limit_mm3": 0.01
+    },
+    {
+      "check": "usb_route_index_X+12_Y+0_clears_frame_and_carriage",
+      "status": "PASS",
+      "intersection_volume_mm3": 0,
+      "limit_mm3": 0.01
+    },
+    {
+      "check": "usb_route_index_X+12_Y+21_clears_frame_and_carriage",
+      "status": "PASS",
+      "intersection_volume_mm3": 0,
+      "limit_mm3": 0.01
+    },
+    {
+      "check": "tether_connector_index_X-12_Y+0_clears_wing_hole",
+      "status": "PASS",
+      "intersection_volume_mm3": 0,
+      "limit_mm3": 0.01
+    },
+    {
+      "check": "tether_route_index_X-12_Y+0_clears_structure_and_carriage",
+      "status": "PASS",
+      "intersection_volume_mm3": 0,
+      "limit_mm3": 0.01
+    },
+    {
+      "check": "tether_connector_index_X-12_Y+21_clears_wing_hole",
+      "status": "PASS",
+      "intersection_volume_mm3": 0,
+      "limit_mm3": 0.01
+    },
+    {
+      "check": "tether_route_index_X-12_Y+21_clears_structure_and_carriage",
+      "status": "PASS",
+      "intersection_volume_mm3": 0,
+      "limit_mm3": 0.01
+    },
+    {
+      "check": "tether_connector_index_X+0_Y+0_clears_wing_hole",
+      "status": "PASS",
+      "intersection_volume_mm3": 0,
+      "limit_mm3": 0.01
+    },
+    {
+      "check": "tether_route_index_X+0_Y+0_clears_structure_and_carriage",
+      "status": "PASS",
+      "intersection_volume_mm3": 0,
+      "limit_mm3": 0.01
+    },
+    {
+      "check": "tether_connector_index_X+0_Y+21_clears_wing_hole",
+      "status": "PASS",
+      "intersection_volume_mm3": 0,
+      "limit_mm3": 0.01
+    },
+    {
+      "check": "tether_route_index_X+0_Y+21_clears_structure_and_carriage",
+      "status": "PASS",
+      "intersection_volume_mm3": 0,
+      "limit_mm3": 0.01
+    },
+    {
+      "check": "tether_connector_index_X+12_Y+0_clears_wing_hole",
+      "status": "PASS",
+      "intersection_volume_mm3": 0,
+      "limit_mm3": 0.01
+    },
+    {
+      "check": "tether_route_index_X+12_Y+0_clears_structure_and_carriage",
+      "status": "PASS",
+      "intersection_volume_mm3": 0,
+      "limit_mm3": 0.01
+    },
+    {
+      "check": "tether_connector_index_X+12_Y+21_clears_wing_hole",
+      "status": "PASS",
+      "intersection_volume_mm3": 0,
+      "limit_mm3": 0.01
+    },
+    {
+      "check": "tether_route_index_X+12_Y+21_clears_structure_and_carriage",
+      "status": "PASS",
+      "intersection_volume_mm3": 0,
+      "limit_mm3": 0.01
+    },
+    {
+      "check": "tether_proxy_matches_procured_length_and_eye",
+      "status": "PASS",
+      "modeled_centerline_length_range_mm": [
+        423.41,
+        448.587
+      ],
+      "modeled_laid_flat_eye_mm": 134.0,
+      "procurement_finished_length_range_mm": [
+        475.0,
+        525.0
+      ],
+      "minimum_slack_at_worst_index_mm": 26.413,
+      "maximum_slack_at_best_index_mm": 101.59,
+      "required_minimum_slack_mm": 20.0,
+      "allowed_maximum_slack_mm": 105.0,
+      "tested_x_index_offsets_mm": [
+        -12.0,
+        0.0,
+        12.0
+      ],
+      "tested_y_index_offsets_mm": [
+        0.0,
+        21.0
+      ]
+    },
+    {
+      "check": "all_four_m6_nyloc_exterior_to_seat_sweeps",
+      "status": "PASS",
+      "maximum_intersection_mm3": 0,
+      "samples_per_channel": 101,
+      "channel_count": 4
+    },
+    {
+      "check": "all_four_m6_nyloc_seats_and_retainers_clear",
+      "status": "PASS",
+      "maximum_intersection_mm3": 0
+    },
+    {
+      "check": "all_four_m6_nut_pocket_structural_roofs",
+      "status": "PASS",
+      "minimum_annular_solid_fill_ratio": 1.0,
+      "tested_roof_z_range_mm": [
+        12.7,
+        18.4
+      ]
+    },
+    {
+      "check": "all_four_m6_covered_channel_tunnels",
+      "status": "PASS",
+      "minimum_roof_fill_ratio": 1.0,
+      "minimum_floor_fill_ratio": 1.0,
+      "minimum_latch_sidewall_fill_ratio": 1.0,
+      "modeled_tunnel_outer_width_mm": 20.0,
+      "modeled_minimum_roof_mm": 1.9,
+      "maximum_support_free_bridge_mm": 13.6
+    },
+    {
+      "check": "saddle_stops_touch_but_do_not_overlap_board",
+      "status": "PASS",
+      "intersection_volume_mm3": 0,
+      "limit_mm3": 0.01
+    }
+  ]
+}

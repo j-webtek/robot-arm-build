@@ -1,0 +1,369 @@
+{
+  "schema_version": 2,
+  "design_revision": "RC03-INT-R1",
+  "job_id": "03C1",
+  "plate_file": "03C1_ABS_phone_clamp_rail.3mf",
+  "printer": {
+    "model": "QIDI Plus4",
+    "nominal_build_volume_mm": [
+      305.0,
+      305.0,
+      280.0
+    ],
+    "safe_plate_envelope_mm": [
+      295.0,
+      295.0,
+      275.0
+    ],
+    "edge_margin_mm": 5.0,
+    "default_nozzle_mm": 0.4
+  },
+  "stage": "first_article",
+  "selection": "required",
+  "purpose": "Production-equivalent ABS phone keeper and clamp-tower rail that qualifies the revised captive-nut seats and adopted wide-tie saddle before Job 03A",
+  "parts": {
+    "phone_clamp_rail.stl": 1
+  },
+  "prerequisites": [
+    "plus4_machine_confirmed",
+    "plus4_protected_envelope_verified",
+    "nozzle_0p4_confirmed",
+    "abs_rapido_cradle_profile_calibrated",
+    "phone_width_coupon_pass",
+    "cradle_m4_washer_coupon_pass",
+    "geometry_matches_measurements",
+    "qidi_studio_roundtrip_confirmed"
+  ],
+  "process_profile_name": "abs_rapido_cradle_0p4",
+  "process_profile": {
+    "material": "QIDI ABS Rapido",
+    "filament_preset": "qidi_abs_rapido_xplus4_0p4",
+    "preset_data_status": "EXACT_REPRODUCIBLE",
+    "nozzle_mm": 0.4,
+    "layer_height_mm": 0.2,
+    "walls": 5,
+    "top_layers": 5,
+    "bottom_layers": 5,
+    "infill_percent": 30,
+    "infill_pattern": "gyroid",
+    "supports": "off; stop and obtain engineering approval if the locked layer preview shows an unprintable tower",
+    "bed_adhesion": "8 mm outer brim with 0.05 mm object gap on clean textured PEI",
+    "dimensional_controls": "Use the same-profile ABS locator, captive-M4, vertical-M3-insert, cable-saddle, and washer coupons; do not rework a released socket ad hoc",
+    "purpose": "Integrated ABS phone/TCP service station and replaceable phone clamp rail",
+    "qidi_studio": {
+      "base_process_preset": "0.20mm Standard @XPlus4",
+      "import_name": "RC03 ABS Rapido Cradle 0.20",
+      "native_overrides": {
+        "layer_height": "0.2",
+        "initial_layer_print_height": "0.2",
+        "line_width": "0.42",
+        "initial_layer_line_width": "0.5",
+        "outer_wall_line_width": "0.42",
+        "inner_wall_line_width": "0.45",
+        "top_surface_line_width": "0.42",
+        "sparse_infill_line_width": "0.45",
+        "internal_solid_infill_line_width": "0.42",
+        "wall_loops": "5",
+        "top_shell_layers": "5",
+        "bottom_shell_layers": "5",
+        "sparse_infill_density": "30%",
+        "sparse_infill_pattern": "gyroid",
+        "internal_solid_infill_pattern": "zig-zag",
+        "wall_generator": "classic",
+        "wall_sequence": "inner wall/outer wall",
+        "initial_layer_speed": [
+          "30"
+        ],
+        "initial_layer_infill_speed": [
+          "50"
+        ],
+        "outer_wall_speed": [
+          "60"
+        ],
+        "inner_wall_speed": [
+          "130"
+        ],
+        "sparse_infill_speed": [
+          "140"
+        ],
+        "internal_solid_infill_speed": [
+          "110"
+        ],
+        "top_surface_speed": [
+          "50"
+        ],
+        "bridge_speed": [
+          "35"
+        ],
+        "gap_infill_speed": [
+          "70"
+        ],
+        "travel_speed": [
+          "500"
+        ],
+        "default_acceleration": [
+          "4500"
+        ],
+        "travel_acceleration": [
+          "7500"
+        ],
+        "initial_layer_travel_acceleration": [
+          "2800"
+        ],
+        "initial_layer_acceleration": [
+          "500"
+        ],
+        "outer_wall_acceleration": [
+          "1800"
+        ],
+        "inner_wall_acceleration": [
+          "2800"
+        ],
+        "top_surface_acceleration": [
+          "1200"
+        ],
+        "enable_support": "0",
+        "ironing_type": "no ironing",
+        "brim_type": "outer_only",
+        "brim_width": "8",
+        "brim_object_gap": "0.05",
+        "skirt_loops": "0",
+        "enable_prime_tower": "0",
+        "xy_hole_compensation": "0",
+        "xy_contour_compensation": "0",
+        "elefant_foot_compensation": "0.15",
+        "seam_position": "aligned",
+        "enable_arc_fitting": "1",
+        "resolution": "0.012",
+        "print_sequence": "by layer",
+        "fuzzy_skin": "none"
+      }
+    }
+  },
+  "preset_contract": {
+    "schema_version": 1,
+    "slicer": {
+      "application": "QIDI Studio",
+      "verified_config_version": "2.7.2.60",
+      "machine_preset": "X-Plus 4 0.4 nozzle",
+      "build_surface": "Textured PEI Plate",
+      "units": "millimetres, degrees Celsius, millimetres per second, and millimetres per second squared",
+      "rule": "The per-job .print.json and .PRINT_SETTINGS.md files are the released setup records. The 3MF remains geometry-only until a native QIDI Studio project is saved and reviewed."
+    },
+    "preset_data_status": "EXACT_REPRODUCIBLE",
+    "filament_preset_name": "qidi_abs_rapido_xplus4_0p4",
+    "filament_preset": {
+      "material": "QIDI ABS Rapido",
+      "manufacturer": "QIDI",
+      "commercial_name": "ABS Rapido",
+      "filament_type": "ABS",
+      "resolution_status": "CONFIRMED_EXACT",
+      "qidi_studio_preset": "QIDI ABS Rapido @Qidi X-Plus 4 0.4 nozzle",
+      "settings": {
+        "nozzle_temperature_c": {
+          "initial_layer": 250,
+          "other_layers": 260,
+          "allowed_range": [
+            240,
+            280
+          ]
+        },
+        "textured_bed_temperature_c": {
+          "initial_layer": 90,
+          "other_layers": 90
+        },
+        "chamber_temperature_c": 55,
+        "enclosure": "sealed",
+        "flow_ratio": 0.95,
+        "pressure_advance": {
+          "enabled": true,
+          "value": 0.03
+        },
+        "max_volumetric_speed_mm3_s": 24.5,
+        "cooling": {
+          "fan_off_first_layers": 3,
+          "model_fan_min_percent": 20,
+          "model_fan_max_percent": 80,
+          "overhang_fan_percent": 80,
+          "overhang_threshold_percent": 25,
+          "auxiliary_fan_percent": 0,
+          "exhaust_during_print_percent": 0,
+          "exhaust_after_print_percent": 0
+        }
+      },
+      "unresolved_fields": [],
+      "source": "Installed QIDI Studio X 4 Series system preset, verified 2026-09-01; QIDITECH/QIDIStudio official preset"
+    },
+    "process_preset_name": "abs_rapido_cradle_0p4",
+    "process_preset": {
+      "material": "QIDI ABS Rapido",
+      "filament_preset": "qidi_abs_rapido_xplus4_0p4",
+      "preset_data_status": "EXACT_REPRODUCIBLE",
+      "nozzle_mm": 0.4,
+      "layer_height_mm": 0.2,
+      "walls": 5,
+      "top_layers": 5,
+      "bottom_layers": 5,
+      "infill_percent": 30,
+      "infill_pattern": "gyroid",
+      "supports": "off; stop and obtain engineering approval if the locked layer preview shows an unprintable tower",
+      "bed_adhesion": "8 mm outer brim with 0.05 mm object gap on clean textured PEI",
+      "dimensional_controls": "Use the same-profile ABS locator, captive-M4, vertical-M3-insert, cable-saddle, and washer coupons; do not rework a released socket ad hoc",
+      "purpose": "Integrated ABS phone/TCP service station and replaceable phone clamp rail",
+      "qidi_studio": {
+        "base_process_preset": "0.20mm Standard @XPlus4",
+        "import_name": "RC03 ABS Rapido Cradle 0.20",
+        "native_overrides": {
+          "layer_height": "0.2",
+          "initial_layer_print_height": "0.2",
+          "line_width": "0.42",
+          "initial_layer_line_width": "0.5",
+          "outer_wall_line_width": "0.42",
+          "inner_wall_line_width": "0.45",
+          "top_surface_line_width": "0.42",
+          "sparse_infill_line_width": "0.45",
+          "internal_solid_infill_line_width": "0.42",
+          "wall_loops": "5",
+          "top_shell_layers": "5",
+          "bottom_shell_layers": "5",
+          "sparse_infill_density": "30%",
+          "sparse_infill_pattern": "gyroid",
+          "internal_solid_infill_pattern": "zig-zag",
+          "wall_generator": "classic",
+          "wall_sequence": "inner wall/outer wall",
+          "initial_layer_speed": [
+            "30"
+          ],
+          "initial_layer_infill_speed": [
+            "50"
+          ],
+          "outer_wall_speed": [
+            "60"
+          ],
+          "inner_wall_speed": [
+            "130"
+          ],
+          "sparse_infill_speed": [
+            "140"
+          ],
+          "internal_solid_infill_speed": [
+            "110"
+          ],
+          "top_surface_speed": [
+            "50"
+          ],
+          "bridge_speed": [
+            "35"
+          ],
+          "gap_infill_speed": [
+            "70"
+          ],
+          "travel_speed": [
+            "500"
+          ],
+          "default_acceleration": [
+            "4500"
+          ],
+          "travel_acceleration": [
+            "7500"
+          ],
+          "initial_layer_travel_acceleration": [
+            "2800"
+          ],
+          "initial_layer_acceleration": [
+            "500"
+          ],
+          "outer_wall_acceleration": [
+            "1800"
+          ],
+          "inner_wall_acceleration": [
+            "2800"
+          ],
+          "top_surface_acceleration": [
+            "1200"
+          ],
+          "enable_support": "0",
+          "ironing_type": "no ironing",
+          "brim_type": "outer_only",
+          "brim_width": "8",
+          "brim_object_gap": "0.05",
+          "skirt_loops": "0",
+          "enable_prime_tower": "0",
+          "xy_hole_compensation": "0",
+          "xy_contour_compensation": "0",
+          "elefant_foot_compensation": "0.15",
+          "seam_position": "aligned",
+          "enable_arc_fitting": "1",
+          "resolution": "0.012",
+          "print_sequence": "by layer",
+          "fuzzy_skin": "none"
+        }
+      }
+    },
+    "human_settings_file": "03C1_ABS_phone_clamp_rail.PRINT_SETTINGS.md",
+    "human_settings_sha256": "0a0a5ea8323faf956099084619fece6f7c8e879f6d7ae8baa2aff406effec156",
+    "qidi_process_profile_file": "slicer_profiles/QIDI_PLUS4/abs_rapido_cradle_0p4.process.json",
+    "qidi_process_profile_sha256": "9276ce2983256d815925224e7d8fc45032a531678dc336713fc88fa96137e259",
+    "filament_preset_sha256": "ce549e11c71d71294ae086694987ac99842a14ba8fc26e24a879f7dd31b65bd4",
+    "resolved_preset_sha256": "b5d48128c85aa81c03f3e6a3a0effd2c1273b6b13ba2561cc4c00e32866c1da8",
+    "unresolved_fields": [],
+    "part_assignments": [
+      {
+        "stl": "phone_clamp_rail.stl",
+        "quantity": 1,
+        "filament_preset": "qidi_abs_rapido_xplus4_0p4",
+        "process_preset": "abs_rapido_cradle_0p4"
+      }
+    ]
+  },
+  "slicer_warning": "QIDI ABS Rapido uses the exact installed X-Plus 4 preset recorded here. PETG, TPU, and ASA jobs remain blocked until the exact physical spool and calibrated filament preset are recorded.",
+  "geometry_only_3mf": true,
+  "qidi_studio_native_project_required": true,
+  "qidi_studio_roundtrip_gate": "qidi_studio_roundtrip_confirmed",
+  "plate_envelope_mm": [
+    19.2,
+    172.8,
+    16.0
+  ],
+  "absolute_bed_bounds_mm": {
+    "min": [
+      142.9,
+      66.1,
+      0.0
+    ],
+    "max": [
+      162.1,
+      238.9,
+      16.0
+    ]
+  },
+  "centered_on_nominal_bed": true,
+  "source_stl_sha256": {
+    "phone_clamp_rail.stl": "f766a24143f11769a0bcef7236b09938f4c02434b3b5d8e6d77b21b37f49dcff"
+  },
+  "process_profile_sha256": "0dca510bbadec73f611b731a8fd24f22310b3ba113759f58f0ed7f1cdc33c545",
+  "filament_preset_sha256": "ce549e11c71d71294ae086694987ac99842a14ba8fc26e24a879f7dd31b65bd4",
+  "resolved_preset_sha256": "b5d48128c85aa81c03f3e6a3a0effd2c1273b6b13ba2561cc4c00e32866c1da8",
+  "human_settings_file": "03C1_ABS_phone_clamp_rail.PRINT_SETTINGS.md",
+  "human_settings_sha256": "0a0a5ea8323faf956099084619fece6f7c8e879f6d7ae8baa2aff406effec156",
+  "qidi_process_profile_file": "slicer_profiles/QIDI_PLUS4/abs_rapido_cradle_0p4.process.json",
+  "qidi_process_profile_sha256": "9276ce2983256d815925224e7d8fc45032a531678dc336713fc88fa96137e259",
+  "plate_sha256": "e992ea3f29097bd346095a5c5ac08c33c9e2d35d7e9c27bce6041e43e3a9ef39",
+  "objects": [
+    {
+      "name": "phone_clamp_rail_1",
+      "bounds_mm": [
+        [
+          142.9,
+          66.1,
+          0.0
+        ],
+        [
+          162.1,
+          238.9,
+          16.0
+        ]
+      ]
+    }
+  ]
+}

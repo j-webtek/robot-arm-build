@@ -1,0 +1,18 @@
+{
+  "geometry_3mf": "08D-C2_ABS_USB_clearance_keeper_v1.3mf",
+  "expected_object_count": 1,
+  "quantity": 1,
+  "material": "QIDI ABS Rapido",
+  "process": "RoCell ABS Rapido Camera Holder Precision 0.16",
+  "scale_percent": 100,
+  "orientation": "Flat as supplied; counterbores upward",
+  "supports": false,
+  "layer_height_mm": 0.16,
+  "walls": 5,
+  "top_layers": 7,
+  "bottom_layers": 7,
+  "infill": "45% gyroid",
+  "brim": "Outer 6 mm; gap 0.05 mm",
+  "filament": "Keep existing validated ABS filament preset",
+  "geometry_sha256": "d16952b8564914162dc4e21955a1b07abab12c10b6bb5e01a0039f081f4e02d8"
+}

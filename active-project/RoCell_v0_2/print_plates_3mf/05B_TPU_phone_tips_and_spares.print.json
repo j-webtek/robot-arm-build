@@ -1,0 +1,123 @@
+{
+  "schema_version": 2,
+  "design_revision": "RC02-PRO-R1",
+  "job_id": "05B",
+  "plate_file": "05B_TPU_phone_tips_and_spares.3mf",
+  "printer": {
+    "model": "QIDI Plus4",
+    "nominal_build_volume_mm": [
+      305.0,
+      305.0,
+      280.0
+    ],
+    "safe_plate_envelope_mm": [
+      295.0,
+      295.0,
+      280.0
+    ],
+    "edge_margin_mm": 5.0,
+    "default_nozzle_mm": 0.4
+  },
+  "stage": "production",
+  "selection": "required",
+  "purpose": "Three additional phone TPU tips, yielding two installed and two total spares",
+  "parts": {
+    "phone_clamp_tip_TPU_M4.stl": 3
+  },
+  "prerequisites": [
+    "plus4_machine_confirmed",
+    "nozzle_0p4_confirmed",
+    "tpu_profile_calibrated",
+    "phone_tpu_retention_coupon_pass",
+    "qidi_studio_roundtrip_confirmed"
+  ],
+  "process_profile_name": "tpu95a_0p4",
+  "process_profile": {
+    "material": "TPU 95A",
+    "nozzle_mm": 0.4,
+    "layer_height_mm": 0.16,
+    "walls": 3,
+    "top_layers": 5,
+    "bottom_layers": 5,
+    "infill_percent": 100,
+    "infill_pattern": "rectilinear",
+    "supports": "off",
+    "bed_adhesion": "Clean PEI with no glue unless required by the exact TPU; use a 3 mm brim if a tip rocks",
+    "dimensional_controls": "Dry filament and keep first-layer flow calibrated so the flared bore entries remain open",
+    "purpose": "Phone and keyboard contact tips"
+  },
+  "slicer_warning": "Use a calibrated QIDI Studio filament preset for the exact brand and material; temperatures are deliberately not embedded in geometry-only 3MF files.",
+  "geometry_only_3mf": true,
+  "qidi_studio_native_project_required": true,
+  "qidi_studio_roundtrip_gate": "qidi_studio_roundtrip_confirmed",
+  "plate_envelope_mm": [
+    47.5,
+    7.5,
+    8.0
+  ],
+  "absolute_bed_bounds_mm": {
+    "min": [
+      128.75,
+      148.751,
+      0.0
+    ],
+    "max": [
+      176.25,
+      156.249,
+      8.0
+    ]
+  },
+  "centered_on_nominal_bed": true,
+  "source_stl_sha256": {
+    "phone_clamp_tip_TPU_M4.stl": "77883a940d153460346de3ffdfcf3a281e2572ab404dd1f4dc50ec8808afef94"
+  },
+  "process_profile_sha256": "59b69f285f6bead89753b66a3fa1005b3db9b065b58905e3dd84fa684dfa9e49",
+  "plate_sha256": "58a9839c752eb968891f7bea76e2f95c51962d36f9d5013ff7c7cdcc446a67c9",
+  "objects": [
+    {
+      "name": "phone_clamp_tip_TPU_M4_1",
+      "bounds_mm": [
+        [
+          128.75,
+          148.751,
+          0.0
+        ],
+        [
+          136.25,
+          156.249,
+          8.0
+        ]
+      ]
+    },
+    {
+      "name": "phone_clamp_tip_TPU_M4_2",
+      "bounds_mm": [
+        [
+          148.75,
+          148.751,
+          0.0
+        ],
+        [
+          156.25,
+          156.249,
+          8.0
+        ]
+      ]
+    },
+    {
+      "name": "phone_clamp_tip_TPU_M4_3",
+      "bounds_mm": [
+        [
+          168.75,
+          148.751,
+          0.0
+        ],
+        [
+          176.25,
+          156.249,
+          8.0
+        ]
+      ]
+    }
+  ]
+}

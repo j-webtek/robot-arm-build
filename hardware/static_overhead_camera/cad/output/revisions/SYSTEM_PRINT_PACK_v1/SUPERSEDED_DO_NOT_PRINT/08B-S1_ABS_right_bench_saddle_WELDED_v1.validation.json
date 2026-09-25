@@ -1,0 +1,39 @@
+{
+  "plate": "08B-S1",
+  "file": "PRINT_ABS_frame/08B-S1_ABS_right_bench_saddle_WELDED_v1.3mf",
+  "source_sha256": "ead6d13c8aeabf0afd8cf903e4997c2734bfb28fa24d29c8ae61d71848d7a6a5",
+  "output_sha256": "76f797df47943caec9fa3e59847381e38d957afc31a044d057ad3a0d7a73b1c6",
+  "status": "PASS_MESH",
+  "expected_objects": 1,
+  "objects": [
+    {
+      "name": "board_corner_saddle_right__01",
+      "original_vertices": 11007,
+      "welded_vertices": 11007,
+      "triangles": 22050,
+      "open_edges": 0,
+      "nonmanifold_edges": 0,
+      "geometry_unchanged": true
+    }
+  ],
+  "placed_bounds_mm": [
+    [
+      [
+        10.0,
+        10.0,
+        0.0
+      ],
+      [
+        260.0,
+        200.0,
+        104.0
+      ]
+    ]
+  ],
+  "triangle_coordinates": "EXACTLY_PRESERVED",
+  "build_transforms": "EXACTLY_PRESERVED",
+  "excluded_objects": [],
+  "namespace": "DEFAULT_UNPREFIXED_CORE",
+  "native_slicer_preview": "PENDING",
+  "physical_fit_and_strength": "NOT_QUALIFIED"
+}

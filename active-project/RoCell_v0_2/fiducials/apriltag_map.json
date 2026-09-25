@@ -1,0 +1,95 @@
+{
+  "family": "tag36h11",
+  "detection_edge_mm": 40.0,
+  "tile_size_mm": 55.0,
+  "frame_size_mm": 78.0,
+  "board_axes": {
+    "+x": "right",
+    "+y": "rear/toward arm",
+    "+z": "up"
+  },
+  "paper_top_edge_faces": "+Y / board rear for every tag",
+  "tags": {
+    "T0": {
+      "id": 0,
+      "frame_origin_xy_mm": [
+        8.0,
+        1.0
+      ],
+      "detection_center_xy_mm": [
+        47.0,
+        40.0
+      ],
+      "expected_yaw_deg_in_board_frame": 0.0
+    },
+    "T1": {
+      "id": 1,
+      "frame_origin_xy_mm": [
+        401.0,
+        1.0
+      ],
+      "detection_center_xy_mm": [
+        440.0,
+        40.0
+      ],
+      "expected_yaw_deg_in_board_frame": 0.0
+    },
+    "T2": {
+      "id": 2,
+      "frame_origin_xy_mm": [
+        8.0,
+        371.0
+      ],
+      "detection_center_xy_mm": [
+        47.0,
+        410.0
+      ],
+      "expected_yaw_deg_in_board_frame": 0.0
+    },
+    "T3": {
+      "id": 3,
+      "frame_origin_xy_mm": [
+        524.0,
+        371.0
+      ],
+      "detection_center_xy_mm": [
+        563.0,
+        410.0
+      ],
+      "expected_yaw_deg_in_board_frame": 0.0
+    },
+    "K0": {
+      "id": 4,
+      "frame_origin_xy_mm": [
+        285.0,
+        270.0
+      ],
+      "detection_center_xy_mm": [
+        324.0,
+        309.0
+      ],
+      "expected_yaw_deg_in_board_frame": 0.0
+    },
+    "P0": {
+      "id": 5,
+      "frame_origin_xy_mm": [
+        420.0,
+        270.0
+      ],
+      "detection_center_xy_mm": [
+        459.0,
+        309.0
+      ],
+      "expected_yaw_deg_in_board_frame": 0.0
+    }
+  },
+  "ids": {
+    "T0": 0,
+    "T1": 1,
+    "T2": 2,
+    "T3": 3,
+    "K0": 4,
+    "P0": 5
+  },
+  "note": "Configure tag size as the measured 40 mm detection edge (0.040 m). Before cutting, mark each tile's page-top edge on the back; install every marked edge toward board +Y/rear."
+}

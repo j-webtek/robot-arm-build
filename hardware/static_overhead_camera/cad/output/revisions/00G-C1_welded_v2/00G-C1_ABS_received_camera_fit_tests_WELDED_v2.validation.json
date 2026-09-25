@@ -1,0 +1,43 @@
+{
+  "source": "C:\\Users\\Jack\\Desktop\\robot-arm-build\\hardware\\static_overhead_camera\\cad\\output\\plates_3mf\\00G-C1_ABS_received_camera_fit_tests.3mf",
+  "output": "C:\\Users\\Jack\\Desktop\\robot-arm-build\\hardware\\static_overhead_camera\\cad\\output\\revisions\\00G-C1_welded_v2\\00G-C1_ABS_received_camera_fit_tests_WELDED_v2.3mf",
+  "objects": [
+    {
+      "name": "camera_case_fit_gauge__01",
+      "original_vertices": 112080,
+      "welded_vertices": 18676,
+      "triangles": 37360,
+      "open_edges": 0,
+      "nonmanifold_edges": 0,
+      "geometry_unchanged": true
+    },
+    {
+      "name": "camera_case_shim_ladder__01",
+      "original_vertices": 212952,
+      "welded_vertices": 35490,
+      "triangles": 70984,
+      "open_edges": 0,
+      "nonmanifold_edges": 0,
+      "geometry_unchanged": true
+    }
+  ],
+  "source_sha256": "c56f828d3babeb368e9ed10d927c1f957c664a9eae745dd8924afbd055456ded",
+  "output_sha256": "50b83e6c05f9e035b84bb9b718cdefd80e73b718527d842bc3d9379384937801",
+  "literal_xml_tag_counts": {
+    "model": 1,
+    "resources": 1,
+    "object": 2,
+    "mesh": 2,
+    "vertices": 2,
+    "vertex": 54166,
+    "triangles": 2,
+    "triangle": 108344,
+    "build": 1,
+    "item": 2
+  },
+  "scene_import_objects": 2,
+  "scope": "Exact-coordinate weld with default core XML namespace; dimensions, labels, transforms and placement unchanged.",
+  "topology": "PASS",
+  "native_slicer_preview": "PENDING",
+  "physical_fit": "PENDING"
+}

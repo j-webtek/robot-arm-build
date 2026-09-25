@@ -1,0 +1,72 @@
+{
+  "schema": "rocell.windows_camera_integrated_development_build.v1",
+  "record_status": "CURRENT_LOCAL_UNQUALIFIED_BUILD",
+  "recorded_date": "2026-09-07",
+  "protocol_schemas": [
+    "rocell.windows_camera.v1",
+    "rocell.windows_camera_identity.v1"
+  ],
+  "provider_version": "0.1.0",
+  "architecture": "windows-x64",
+  "configuration": "Release",
+  "cmake_version": "3.31.3",
+  "compiler": "MSVC 19.42.34435.0",
+  "msvc_tool_directory_version": "14.42.34433",
+  "windows_sdk_version": "10.0.22621.0",
+  "build_result": "COMPILED_WITH_WARNINGS_AS_ERRORS",
+  "executable_relative_path": "build/Release/rocell_windows_camera.exe",
+  "executable_sha256": "a0410e866563738bbe0c60c2a763adf094deceba10ae9c81f4becba80a06c797",
+  "source_sha256": {
+    "camera_worker.cpp": "e0b113f35959252d36c7d43bde274d42a899d16bd47a8154e84bd682ce32481d",
+    "CMakeLists.txt": "77e4bbe903caf44e7cb0c783fed67ac5fd891573dddd64645f8d2452e677a7fc",
+    "identity_metadata.h": "3cf6e8da5d18bdea4336d57a1e34ebb174373bfecf1efe22c19b8b29507cb06a",
+    "identity_metadata.cpp": "b4459ca9f9d0d99ed58ed87b7ce8ac9f6f6ed37a37090cf7b13b768a58bf93bd",
+    "identity_metadata_tests.cpp": "b88b9c535441ff8ed5c257f4949f9b20228b4c313d8cc765a8eace75816b6834",
+    "identity_metadata_wire_test.py": "0e0958c1204145cd4b4e00f301dfdbec5e10e0dd49140c7cf55d3cb99b333ad5",
+    "../../src/rocell/providers/windows/camera_worker_client.py": "9e664b30f2e327a06dd24a589c260642354d7f8c3b2454e52dc19bd8ce11cca4",
+    "../../tests/unit/test_windows_camera_identity.py": "a7105115b06134c9d7f101e926ce9fbc26006eb31489907c7df603c31aeb9bf8",
+    "../../tests/unit/test_windows_camera_worker.py": "fe0260630c55e5295d6f262961b00ebb5fb39d225637ffd6a250b772303742e0"
+  },
+  "additional_artifact_sha256": {
+    "build/Release/rocell_identity_metadata.lib": "397990e0f96158452abbb133537336b85cf960ccb54c06e33dc02125b3f79e8c",
+    "build/Release/rocell_identity_metadata_tests.exe": "98019a26134ddc294334eea3be596ae6e967f10ca495864cfb0d3a3ed6d2cd8e"
+  },
+  "native_tests": {
+    "result": "PASSED",
+    "ctest_tests_passed": 3,
+    "camera_contract_self_test_assertions": 14,
+    "identity_metadata_fake_api_assertions": 43,
+    "identity_metadata_wire_contract_receipts": 22,
+    "test_timeouts_seconds": [10, 10, 15],
+    "com_or_media_foundation_initialized": false,
+    "production_windows_metadata_api_invocations": 0,
+    "device_operations": 0,
+    "note": "Only helper --self-test and the incapable FakeApi test executable ran. The wire test sends actual fake-native serializer output through the strict Python parser."
+  },
+  "python_worker_fixture_tests": {
+    "result": "PASSED",
+    "passed": 95,
+    "native_processes_started": 0,
+    "device_operations": 0
+  },
+  "mypy_boundary_check": "PASSED",
+  "black_boundary_check": "PASSED",
+  "integrated_identity_native_action": "identity",
+  "integrated_identity_python_method": "WindowsCameraWorkerClient.resolve_identity_metadata",
+  "existing_camera_activation_authorizer": "REQUIRED_UNCHANGED",
+  "qualified_wizard_metadata_composition": "NOT_IMPLEMENTED",
+  "received_B0477_verification": "NOT_RUN",
+  "instrumented_setupapi_wrapper_verification": "NOT_RUN",
+  "instrumented_native_driver_fault_qualification": "NOT_RUN",
+  "byte_identical_cross_machine_reproducibility": "NOT_RUN",
+  "trusted_release_registration": false,
+  "physical_authority": "NONE",
+  "historical_records": ["build_manifest.json", "identity_metadata_build_record.json"],
+  "notes": [
+    "This local development record is not a signed release, runtime registration or activation permit.",
+    "No real inventory, identity lookup, probe, capture, control write, camera activation or serial action was run.",
+    "The separate identity receipt retains observed/unavailable fields without serial or USB speed inference; it does not establish persistent unit identity.",
+    "Any source/build change requires a new hash record and independently reviewed runtime registration.",
+    "The first two CTests require only native binaries; the cross-language CTest is registered only when the existing repository .venv interpreter is present."
+  ]
+}

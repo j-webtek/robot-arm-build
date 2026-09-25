@@ -1,0 +1,4 @@
+file,plain_name,use,job_ids,profiles,quantity_by_job,selections,canonical_path,sha256
+phone_clamp_rail.stl,Phone Clamp Rail,TRACEABILITY_ONLY_DO_NOT_PRINT,03C1,abs_rapido_cradle_0p4,03C1:1,required,stl/phone_clamp_rail.stl,f766a24143f11769a0bcef7236b09938f4c02434b3b5d8e6d77b21b37f49dcff
+phone_clamp_tip_TPU_M4.stl,Phone Clamp Tip TPU M4,TRACEABILITY_ONLY_DO_NOT_PRINT,05A; 05B,tpu95a_0p4,05A:1; 05B:3,required,stl/phone_clamp_tip_TPU_M4.stl,77883a940d153460346de3ffdfcf3a281e2572ab404dd1f4dc50ec8808afef94
+phone_tcp_station.stl,Phone TCP Station,TRACEABILITY_ONLY_DO_NOT_PRINT,03A,abs_rapido_cradle_0p4,03A:1,required,stl/phone_tcp_station.stl,63e02e28f9bb818007564eab7e82e2b9ce8417f30bdf3cbec3c3a86ec08ac32e

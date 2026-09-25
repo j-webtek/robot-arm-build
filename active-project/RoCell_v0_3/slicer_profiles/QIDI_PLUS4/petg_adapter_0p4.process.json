@@ -1,0 +1,83 @@
+{
+  "from": "User",
+  "inherits": "0.12mm High Quality @XPlus4",
+  "name": "RC03 PETG Split Adapter 0.12",
+  "print_settings_id": "RC03 PETG Split Adapter 0.12",
+  "version": "2.7.2.60",
+  "compatible_printers": [
+    "X-Plus 4 0.4 nozzle"
+  ],
+  "layer_height": "0.12",
+  "initial_layer_print_height": "0.2",
+  "wall_loops": "4",
+  "top_shell_layers": "5",
+  "bottom_shell_layers": "5",
+  "sparse_infill_density": "100%",
+  "sparse_infill_pattern": "rectilinear",
+  "outer_wall_speed": [
+    "45"
+  ],
+  "inner_wall_speed": [
+    "90"
+  ],
+  "sparse_infill_speed": [
+    "90"
+  ],
+  "internal_solid_infill_speed": [
+    "80"
+  ],
+  "top_surface_speed": [
+    "45"
+  ],
+  "bridge_speed": [
+    "25"
+  ],
+  "gap_infill_speed": [
+    "60"
+  ],
+  "initial_layer_speed": [
+    "25"
+  ],
+  "initial_layer_infill_speed": [
+    "40"
+  ],
+  "travel_speed": [
+    "350"
+  ],
+  "default_acceleration": [
+    "3500"
+  ],
+  "travel_acceleration": [
+    "6000"
+  ],
+  "initial_layer_travel_acceleration": [
+    "2000"
+  ],
+  "initial_layer_acceleration": [
+    "400"
+  ],
+  "outer_wall_acceleration": [
+    "1500"
+  ],
+  "inner_wall_acceleration": [
+    "2200"
+  ],
+  "top_surface_acceleration": [
+    "1200"
+  ],
+  "enable_support": "0",
+  "ironing_type": "no ironing",
+  "brim_type": "outer_only",
+  "brim_width": "8",
+  "brim_object_gap": "0.1",
+  "skirt_loops": "0",
+  "enable_prime_tower": "0",
+  "xy_hole_compensation": "0",
+  "xy_contour_compensation": "0",
+  "elefant_foot_compensation": "0.15",
+  "seam_position": "aligned",
+  "enable_arc_fitting": "1",
+  "resolution": "0.012",
+  "print_sequence": "by layer",
+  "fuzzy_skin": "none"
+}

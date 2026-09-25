@@ -1,0 +1,18 @@
+source,type,qty,item,critical_condition,status
+required_physical_input,Required input,As specified,Accepted keyboard master/slave and phone/TCP stations for the full dry fit,Present and accepted before work,NOT_VERIFIED
+required_physical_input,Required input,As specified,"610 x 457 x 18 mm board blank cut to final size; it may be unsealed, or already sealed equally on both faces and fully cured",Present and accepted before work,NOT_VERIFIED
+required_physical_input,Required input,As specified,"Step-00 accepted copy of exactly one friendly 1:1 drill guide: the correctly overlapped nine-tile Letter guide or the single-sheet 24 x 36 inch guide, with its recorded path, hashes, print settings, and scale-control evidence",Present and accepted before work,NOT_VERIFIED
+required_physical_input,Required input,As specified,drawings/board_hole_coordinates.csv available for an independent left/front and right/rear edge-distance audit of all thirteen centers,Present and accepted before work,NOT_VERIFIED
+required_physical_input,Required input,As specified,Four selected 6 mm pins and nine board anchors qualified in an 18 mm cutoff,Present and accepted before work,NOT_VERIFIED
+required_physical_input,Required input,As specified,"Hand drill, square drilling guide, awl/transfer punch, brad-point bit, pilot/anchor bits, and positive depth stops",Present and accepted before work,NOT_VERIFIED
+required_physical_input,Required input,As specified,"Steel rule, 300 mm straightedge, feeler gauges, depth gauge, digital calipers, camera, and low-range torque driver",Present and accepted before work,NOT_VERIFIED
+required_physical_input,Required input,As specified,"Board finish compatible with the selected plywood, applicators, mixing tray, lint-free cleanup supplies, gloves, eye protection, and the ventilation/PPE required by the finish SDS",Present and accepted before work,NOT_VERIFIED
+structured_register,Board,1,610 x 457 x 18 mm structural board,Birch plywood preferred; finish fully cured and flat,NOT_VERIFIED
+structured_register,Locator,4 + 2 spares,6 x 20 mm precision dowel pins,Final selection comes from the matching 00A/00B coupons,NOT_VERIFIED
+structured_register,Anchor,9 + 3 spares,M4 board threaded interfaces,"Bore follows the chosen anchor maker and scrap-board test, not the template circle diameter",NOT_VERIFIED
+structured_register,Adhesive,Small kit,Slow-cure structural epoxy,Locator pins only; use after the complete dry fit passes,NOT_VERIFIED
+structured_register,Finish,As required,Selected board sealer/finish and applicators,"Record product, batch, coat/application times, and manufacturer full-cure requirement; apply equally to both faces and every edge",NOT_VERIFIED
+structured_register,PPE,1 set,"Finish-rated gloves, eye protection, and ventilation",Follow the selected finish SDS; keep the curing board away from ignition and contamination sources,NOT_VERIFIED
+structured_register,Tool,1 set,Hand-drill depth-control set,Locator bores are blind; prevent underside breakout,NOT_VERIFIED
+structured_register,Layout,1 set,"Flat assembly surface, transparent tape, low-stretch board tape, sharp awl or transfer punch, steel rule, and long straightedge","For a tiled guide, overlap adjacent sheets by the printed 12 mm amount and match registration IDs; never butt paper or printer margins",NOT_VERIFIED
+structured_register,Support,6,Board feet,"Install after drilling; keep clear of anchors, reinforcement, and clamp load paths",NOT_VERIFIED

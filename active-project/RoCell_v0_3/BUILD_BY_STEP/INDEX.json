@@ -1,0 +1,428 @@
+{
+  "schema_version": 1,
+  "layout_version": 4,
+  "design_revision": "RC03-INT-R1",
+  "package_definition_hash": "7a6947f2de52f63133c5b9647b9b479ccd9d896906c2b575e76c106e1e5dccca",
+  "canonical_snapshot_hash": "05d11599e6d4a2937e0207535b298aa809ff08c79840350c7716666ce6d12755",
+  "canonical_input_hash": "05d11599e6d4a2937e0207535b298aa809ff08c79840350c7716666ce6d12755",
+  "generated_at": "2026-09-06T18:24:58.708779+00:00",
+  "physical_release": "UNRELEASED",
+  "active_build_id": "2026-09-01_CELL-A",
+  "print_readiness": {
+    "ready": 5,
+    "waiting": 15,
+    "not_selected": 4,
+    "total_jobs": 24
+  },
+  "selected_routes": {
+    "phone_stylus_route": true,
+    "keyboard_rod_route": true,
+    "camera_mast_optional": false
+  },
+  "first_locked_step": "01",
+  "first_blocked_step": "00",
+  "first_attention_step": "00",
+  "steps": [
+    {
+      "id": "00",
+      "folder": "00 - Measure Hardware and Print Approved Parts",
+      "title": "Preflight, measurement, print qualification, and kitting",
+      "operator_title": "Measure Hardware and Print Approved Parts",
+      "state": "HOLD",
+      "blocked_input_gates": [
+        "evidence_error:signoff package definition hash is stale",
+        "evidence_error:measurement record package definition hash is stale"
+      ],
+      "prerequisite_steps": [],
+      "print_jobs": [
+        "00A",
+        "00B",
+        "00C",
+        "00D",
+        "00E",
+        "00F",
+        "01",
+        "02",
+        "03A",
+        "03B",
+        "03C1",
+        "03C2",
+        "03C3",
+        "03D",
+        "04A",
+        "04B",
+        "04C",
+        "05A",
+        "05B",
+        "05C",
+        "05D",
+        "06",
+        "07A",
+        "07B"
+      ],
+      "next_step": "01"
+    },
+    {
+      "id": "01",
+      "folder": "01 - Seal Mark and Drill the Board",
+      "title": "Prepare and drill the structural board",
+      "operator_title": "Seal Mark and Drill the Board",
+      "state": "LOCKED",
+      "blocked_input_gates": [
+        "prerequisite_step:00",
+        "keyboard_station_pair_postprint_pass",
+        "phone_tcp_station_postprint_pass",
+        "board_setup_template_scale_pass"
+      ],
+      "prerequisite_steps": [
+        "00"
+      ],
+      "print_jobs": [
+        "00A",
+        "00B",
+        "01",
+        "02",
+        "03A"
+      ],
+      "next_step": "02"
+    },
+    {
+      "id": "02",
+      "folder": "02 - Reinforce Board and Clamp Robot Arm",
+      "title": "Reinforce the board and clamp the arm",
+      "operator_title": "Reinforce Board and Clamp Robot Arm",
+      "state": "LOCKED",
+      "blocked_input_gates": [
+        "prerequisite_step:01",
+        "board_fabrication_pass"
+      ],
+      "prerequisite_steps": [
+        "01"
+      ],
+      "print_jobs": [],
+      "next_step": "03"
+    },
+    {
+      "id": "03",
+      "folder": "03 - Install Left Keyboard Base",
+      "title": "Install the keyboard master station",
+      "operator_title": "Install Left Keyboard Base",
+      "state": "LOCKED",
+      "blocked_input_gates": [
+        "prerequisite_step:02",
+        "board_fabrication_pass",
+        "keyboard_left_first_article_pass",
+        "keyboard_seam_coupon_pass",
+        "keyboard_clamps_postprint_pass"
+      ],
+      "prerequisite_steps": [
+        "02"
+      ],
+      "print_jobs": [
+        "00A",
+        "01",
+        "03B"
+      ],
+      "next_step": "04"
+    },
+    {
+      "id": "04",
+      "folder": "04 - Install Right Keyboard Base",
+      "title": "Join and retain the keyboard slave station",
+      "operator_title": "Install Right Keyboard Base",
+      "state": "LOCKED",
+      "blocked_input_gates": [
+        "prerequisite_step:03",
+        "keyboard_station_pair_postprint_pass",
+        "keyboard_clamps_postprint_pass",
+        "board_fabrication_pass"
+      ],
+      "prerequisite_steps": [
+        "03"
+      ],
+      "print_jobs": [
+        "00A",
+        "01",
+        "02",
+        "03B"
+      ],
+      "next_step": "05"
+    },
+    {
+      "id": "05",
+      "folder": "05 - Place and Secure Keyboard",
+      "title": "Load and gently clamp the keyboard",
+      "operator_title": "Place and Secure Keyboard",
+      "state": "LOCKED",
+      "blocked_input_gates": [
+        "prerequisite_step:04",
+        "keyboard_station_pair_postprint_pass",
+        "keyboard_clamps_postprint_pass",
+        "keyboard_dimensions_measured"
+      ],
+      "prerequisite_steps": [
+        "04"
+      ],
+      "print_jobs": [
+        "01",
+        "02",
+        "03B"
+      ],
+      "next_step": "06"
+    },
+    {
+      "id": "06",
+      "folder": "06 - Install Phone and Tool Station",
+      "title": "Install the phone and TCP service station",
+      "operator_title": "Install Phone and Tool Station",
+      "state": "LOCKED",
+      "blocked_input_gates": [
+        "prerequisite_step:05",
+        "phone_tcp_station_postprint_pass",
+        "phone_station_m3_insert_coupon_pass",
+        "board_fabrication_pass"
+      ],
+      "prerequisite_steps": [
+        "05"
+      ],
+      "print_jobs": [
+        "00B",
+        "03A"
+      ],
+      "next_step": "07"
+    },
+    {
+      "id": "07",
+      "folder": "07 - Fit Phone Rail and Tool Cartridge",
+      "title": "Seat the phone rail and TCP cartridge",
+      "operator_title": "Fit Phone Rail and Tool Cartridge",
+      "state": "LOCKED",
+      "blocked_input_gates": [
+        "prerequisite_step:06",
+        "phone_clamp_rail_first_article_pass",
+        "calibration_puck_datum_pass",
+        "phone_tcp_station_postprint_pass"
+      ],
+      "prerequisite_steps": [
+        "06"
+      ],
+      "print_jobs": [
+        "00B",
+        "00F",
+        "03A",
+        "03C1",
+        "03D"
+      ],
+      "next_step": "08"
+    },
+    {
+      "id": "08",
+      "folder": "08 - Secure Phone Rail and Tool Cartridge",
+      "title": "Install the phone service hardware",
+      "operator_title": "Secure Phone Rail and Tool Cartridge",
+      "state": "LOCKED",
+      "blocked_input_gates": [
+        "prerequisite_step:07",
+        "phone_clamp_rail_first_article_pass",
+        "calibration_puck_datum_pass",
+        "phone_m4_captive_nut_coupon_pass"
+      ],
+      "prerequisite_steps": [
+        "07"
+      ],
+      "print_jobs": [
+        "03A",
+        "03C1",
+        "03D"
+      ],
+      "next_step": "09"
+    },
+    {
+      "id": "09",
+      "folder": "09 - Place Phone and Route USB Cable",
+      "title": "Load the phone and route its cable",
+      "operator_title": "Place Phone and Route USB Cable",
+      "state": "LOCKED",
+      "blocked_input_gates": [
+        "prerequisite_step:08",
+        "phone_dimensions_measured",
+        "phone_side_features_measured",
+        "phone_cable_measured",
+        "phone_no_go_clearance_limit_approved",
+        "phone_tpu_retention_limits_approved",
+        "phone_tpu_retention_coupon_pass",
+        "phone_tpu_batch_postprint_pass",
+        "cable_tie_saddle_coupon_pass"
+      ],
+      "prerequisite_steps": [
+        "08"
+      ],
+      "print_jobs": [
+        "00B",
+        "00E",
+        "03A",
+        "03C1",
+        "05A",
+        "05B"
+      ],
+      "next_step": "10"
+    },
+    {
+      "id": "10",
+      "folder": "10 - Check Phone Clearances",
+      "title": "Verify every phone no-go zone",
+      "operator_title": "Check Phone Clearances",
+      "state": "LOCKED",
+      "blocked_input_gates": [
+        "prerequisite_step:09",
+        "phone_side_features_measured",
+        "phone_cable_measured",
+        "phone_no_go_clearance_limit_approved"
+      ],
+      "prerequisite_steps": [
+        "09"
+      ],
+      "print_jobs": [
+        "03A",
+        "03C1",
+        "05A",
+        "05B"
+      ],
+      "next_step": "11"
+    },
+    {
+      "id": "11",
+      "folder": "11 - Mark AprilTag Locations",
+      "title": "Transfer the AprilTag centers and +Y direction",
+      "operator_title": "Mark AprilTag Locations",
+      "state": "LOCKED",
+      "blocked_input_gates": [
+        "prerequisite_step:10",
+        "board_setup_template_scale_pass",
+        "tag_artwork_scale_pass",
+        "tag_application_tool_postprint_pass",
+        "board_fabrication_pass"
+      ],
+      "prerequisite_steps": [
+        "10"
+      ],
+      "print_jobs": [
+        "03C2"
+      ],
+      "next_step": "12"
+    },
+    {
+      "id": "12",
+      "folder": "12 - Attach and Measure AprilTags",
+      "title": "Apply and measure the six AprilTags",
+      "operator_title": "Attach and Measure AprilTags",
+      "state": "LOCKED",
+      "blocked_input_gates": [
+        "prerequisite_step:11",
+        "tag_artwork_scale_pass",
+        "tag_stock_measured",
+        "tag_application_tool_postprint_pass",
+        "board_setup_template_scale_pass"
+      ],
+      "prerequisite_steps": [
+        "11"
+      ],
+      "print_jobs": [
+        "03C2"
+      ],
+      "next_step": "13"
+    },
+    {
+      "id": "13",
+      "folder": "13 - Mount and Calibrate Camera",
+      "title": "Resolve the camera architecture, then mount and prove route-specific vision",
+      "operator_title": "Mount and Calibrate Camera",
+      "state": "LOCKED",
+      "blocked_input_gates": [
+        "prerequisite_step:12",
+        "camera_mount_interface_measured",
+        "tag_plane_placement_measured"
+      ],
+      "prerequisite_steps": [
+        "12"
+      ],
+      "print_jobs": [
+        "00E",
+        "03C3",
+        "06",
+        "07A",
+        "07B"
+      ],
+      "next_step": "14"
+    },
+    {
+      "id": "14",
+      "folder": "14 - Assemble and Test Spring-Loaded Tool",
+      "title": "Assemble and qualify the compliant tool",
+      "operator_title": "Assemble and Test Spring-Loaded Tool",
+      "state": "LOCKED",
+      "blocked_input_gates": [
+        "prerequisite_step:13",
+        "gripper_interface_measured",
+        "spring_dimensions_measured",
+        "gripper_coupon_pass",
+        "spring_fit_coupon_pass",
+        "compliant_tool_m3_insert_coupon_pass",
+        "tool_body_postprint_pass",
+        "tool_force_tcp_limits_approved",
+        "stylus_diameter_measured",
+        "stylus_gauge_coupon_pass",
+        "stylus_collar_retention_pass",
+        "keyboard_rod_measured",
+        "adapter_retention_method_selected",
+        "rod_bushing_retention_pass",
+        "keyboard_tpu_retention_coupon_pass",
+        "keyboard_tpu_batch_postprint_pass"
+      ],
+      "prerequisite_steps": [
+        "13"
+      ],
+      "print_jobs": [
+        "00C",
+        "00D",
+        "00E",
+        "04A",
+        "04B",
+        "04C",
+        "05C",
+        "05D"
+      ],
+      "next_step": "15"
+    },
+    {
+      "id": "15",
+      "folder": "15 - Final Safety Test and Release",
+      "title": "Final proof, calibration, and commissioning",
+      "operator_title": "Final Safety Test and Release",
+      "state": "LOCKED",
+      "blocked_input_gates": [
+        "prerequisite_step:14",
+        "board_fabrication_pass",
+        "keyboard_fixture_assembly_pass",
+        "phone_fixture_assembly_pass",
+        "tag_direct_installation_pass",
+        "tag_plane_placement_measured",
+        "tool_assembled_motion_pass",
+        "commissioning_motion_contact_limits_approved"
+      ],
+      "prerequisite_steps": [
+        "14"
+      ],
+      "print_jobs": [],
+      "next_step": null
+    }
+  ],
+  "generated_root_control_hashes": {
+    "README.md": "b6a92062cb0388ae5b323e46c100481c836c94054c1160d8a1d850d0ad2917b0",
+    "00 - START HERE.md": "7b310290ef132cc4c3e78346ed313abda047b5a01fa33045c3258b9b6b2ece0a",
+    "01 - COMPLETE BUILD ORDER.md": "886d953d0f1e4533e22e91cef446433cae90c8b2835c83ffa02ed7ab7438857d",
+    "02 - HOW TO SAVE MEASUREMENTS AND PHOTOS.md": "85a65d0d93ea81be77feb8e95ee0c178c6767522f02890e47f5613baaa862e35",
+    "03 - PART NAMES AND TECHNICAL TERMS.md": "f65e9c2d6896bbc9d8808276d646e86d5f6a56cb53a6fc2f32ed753bc673155d",
+    "PRINT_JOB_OWNERSHIP.csv": "b304f6eeb2dfe563bd1737fb6ca0e0097cc3f5dd493841879af5c5d744ddafb3"
+  }
+}

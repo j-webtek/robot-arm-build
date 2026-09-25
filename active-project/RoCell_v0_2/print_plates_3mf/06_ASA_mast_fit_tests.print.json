@@ -1,0 +1,108 @@
+{
+  "schema_version": 2,
+  "design_revision": "RC02-PRO-R1",
+  "job_id": "06",
+  "plate_file": "06_ASA_mast_fit_tests.3mf",
+  "printer": {
+    "model": "QIDI Plus4",
+    "nominal_build_volume_mm": [
+      305.0,
+      305.0,
+      280.0
+    ],
+    "safe_plate_envelope_mm": [
+      295.0,
+      295.0,
+      280.0
+    ],
+    "edge_margin_mm": 5.0,
+    "default_nozzle_mm": 0.4
+  },
+  "stage": "diagnostic",
+  "selection": "camera_mast_optional",
+  "purpose": "Same-profile 2020 socket and production-axis M5 nut/clearance/washer tests",
+  "parts": {
+    "mast_socket_fit_test.stl": 1,
+    "m5_nut_trap_fit_gauge.stl": 1
+  },
+  "prerequisites": [
+    "plus4_machine_confirmed",
+    "nozzle_0p4_confirmed",
+    "asa_profile_calibrated"
+  ],
+  "process_profile_name": "asa_structural_0p4",
+  "process_profile": {
+    "material": "ASA",
+    "nozzle_mm": 0.4,
+    "layer_height_mm": 0.24,
+    "walls": 6,
+    "top_layers": 6,
+    "bottom_layers": 6,
+    "infill_percent": 45,
+    "infill_pattern": "gyroid",
+    "supports": "build-plate only under transverse bores if needed",
+    "bed_adhesion": "10 mm brim, enclosed printer, stable chamber, and no drafts",
+    "dimensional_controls": "Use the ASA socket and nut coupons from the same spool before the first full foot",
+    "purpose": "Optional camera mast feet; calibrate shrink before full print"
+  },
+  "slicer_warning": "Use a calibrated QIDI Studio filament preset for the exact brand and material; temperatures are deliberately not embedded in geometry-only 3MF files.",
+  "geometry_only_3mf": true,
+  "qidi_studio_native_project_required": true,
+  "qidi_studio_roundtrip_gate": "qidi_studio_roundtrip_confirmed",
+  "plate_envelope_mm": [
+    146.0,
+    90.0,
+    30.0
+  ],
+  "absolute_bed_bounds_mm": {
+    "min": [
+      79.5,
+      107.5,
+      0.0
+    ],
+    "max": [
+      225.5,
+      197.5,
+      30.0
+    ]
+  },
+  "centered_on_nominal_bed": true,
+  "source_stl_sha256": {
+    "m5_nut_trap_fit_gauge.stl": "a6a8dd06689060766bb31f7eca10e6910fb3313a758af185bcbcdfde3c40a01e",
+    "mast_socket_fit_test.stl": "3a8e939ae308baa04fda3891dfc8851a0a3b2caa9e2a91148414255e1114905b"
+  },
+  "process_profile_sha256": "7f5a63b82b79566c55df616753ef9acc31e6a172a2689b726498aa2cb82c7a22",
+  "plate_sha256": "4b72cee5268475f5af4122350fa62eaf9dbbde5100345e24cc5c3091c4f012ba",
+  "objects": [
+    {
+      "name": "mast_socket_fit_test_1",
+      "bounds_mm": [
+        [
+          79.5,
+          107.5,
+          0.0
+        ],
+        [
+          189.5,
+          143.5,
+          24.0
+        ]
+      ]
+    },
+    {
+      "name": "m5_nut_trap_fit_gauge_1",
+      "bounds_mm": [
+        [
+          199.5,
+          107.5,
+          0.0
+        ],
+        [
+          225.5,
+          197.5,
+          30.0
+        ]
+      ]
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RoCell · Connection workbench</title>
+  <link rel="stylesheet" href="/assets/app.css">
+  <script src="/assets/app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to workspace</a>
+  <div class="shell">
+    <aside class="sidebar" aria-label="Workbench navigation">
+      <div class="brand"><span class="brand-mark" aria-hidden="true">R</span><div>RoCell<small>Connection workbench</small></div></div>
+      <div id="mode-badge" class="mode-badge">Connecting to local service</div>
+      <nav id="navigation" aria-label="Pages">
+        <button class="nav-item selected" data-page="overview" aria-current="page"><span>01</span>Overview</button>
+        <button class="nav-item" data-page="controls"><span>⌕</span>Control Center</button>
+        <button class="nav-item" data-page="activity"><span>↺</span>Activity &amp; results</button>
+        <button class="nav-item" data-page="commissioning"><span>02</span>Guided rehearsal</button>
+        <button class="nav-item" data-page="camera"><span>03</span>Camera</button>
+        <button class="nav-item" data-page="arm"><span>04</span>Arm</button>
+        <button class="nav-item" data-page="board"><span>05</span>Board &amp; tests</button>
+        <button class="nav-item" data-page="tasks"><span>06</span>Task rehearsal</button>
+        <button class="nav-item" data-page="diagnostics"><span>07</span>Diagnostics &amp; exports</button>
+      </nav>
+      <div class="sidebar-note"><span class="status-dot" aria-hidden="true"></span>Local to this computer<br><small>No cloud video. No automatic reconnect.</small></div>
+    </aside>
+    <div class="workspace">
+      <header class="topbar"><div><span class="eyebrow">ARRIVAL &amp; COMMISSIONING</span><h1 id="page-title">Overview</h1></div><div class="topbar-actions"><span id="connection-status" role="status">Loading…</span><button id="refresh-button" class="button secondary">Refresh status</button></div></header>
+      <div id="identity-bar" class="identity-bar"></div>
+      <main id="main" tabindex="-1">
+        <div id="error-banner" class="notice error" role="alert" hidden></div>
+        <div id="authority-banner" class="notice info"></div>
+        <div id="draft-notice" class="notice info" role="status" hidden></div>
+        <section id="page-content" aria-label="Selected workspace"><div class="card"><h2>Opening the local workbench</h2><p>Reading status does not connect, energize or initialize hardware.</p></div></section>
+      </main>
+      <footer><span>Every action is previewed before execution.</span><span id="revision-label">No session loaded</span></footer>
+    </div>
+  </div>
+  <dialog id="action-dialog" aria-labelledby="action-title">
+    <form method="dialog" id="action-dialog-form">
+      <div class="dialog-heading"><span class="eyebrow">REVIEW EXACT ACTION</span><button class="icon-button" type="button" id="close-dialog" aria-label="Close action preview">×</button></div>
+      <h2 id="action-title">Review action</h2>
+      <div id="action-preview"></div>
+      <div id="action-error" class="notice error" role="alert" hidden></div>
+      <div class="dialog-actions"><button type="button" id="cancel-action" class="button secondary">Cancel</button><button type="button" id="execute-action" class="button primary">Execute reviewed action</button></div>
+    </form>
+  </dialog>
+  <div id="announcement" class="sr-only" role="status" aria-live="polite"></div>
+</body>
+</html>

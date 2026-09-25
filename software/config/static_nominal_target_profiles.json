@@ -1,0 +1,356 @@
+{
+  "schema": "rocell.nominal_target_profiles.v1",
+  "schema_version": 1,
+  "status": "SIMULATION_ONLY_NOMINAL_UNMEASURED",
+  "physical_release_effect": "NONE",
+  "binding": {
+    "design_revision": "RC03-INT-R1",
+    "workcell_layout": "active-project/RoCell_v0_3/config/workcell_layout.json"
+  },
+  "keyboard": {
+    "profile_id": "periboard-409-us-nominal-sim-v1-static-v1",
+    "semantic_profile_id": "development/static-overhead-b0477-keyboard-semantic-v1",
+    "semantic_profile_sha256": "1c981795f4800141fbe28c06b776032b034ff7c0dbc5aaf61813463955916b01",
+    "device_model": "Perixx PERIBOARD-409 U English US candidate",
+    "device_origin_board_xy_mm": [
+      85.0,
+      85.0
+    ],
+    "device_size_mm": [
+      315.0,
+      147.0,
+      21.0
+    ],
+    "target_plane_z_board_mm": 21.0,
+    "coordinate_frame": "keyboard_nominal",
+    "coordinate_definition": "x from device left, y from device front, z up",
+    "source_state": "SYNTHETIC_ANSI_LAYOUT_SEED_NOT_PRODUCT_DRAWING",
+    "key_half_extent_mm": [
+      7.0,
+      7.0
+    ],
+    "pitch_mm": 19.05,
+    "rows": [
+      {
+        "key_ids": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "0",
+          "MINUS",
+          "EQUAL"
+        ],
+        "first_center_xy_mm": [
+          22.0,
+          111.0
+        ],
+        "step_xy_mm": [
+          19.05,
+          0.0
+        ]
+      },
+      {
+        "key_ids": [
+          "Q",
+          "W",
+          "E",
+          "R",
+          "T",
+          "Y",
+          "U",
+          "I",
+          "O",
+          "P"
+        ],
+        "first_center_xy_mm": [
+          31.5,
+          90.0
+        ],
+        "step_xy_mm": [
+          19.05,
+          0.0
+        ]
+      },
+      {
+        "key_ids": [
+          "A",
+          "S",
+          "D",
+          "F",
+          "G",
+          "H",
+          "J",
+          "K",
+          "L",
+          "SEMICOLON",
+          "APOSTROPHE"
+        ],
+        "first_center_xy_mm": [
+          36.3,
+          69.0
+        ],
+        "step_xy_mm": [
+          19.05,
+          0.0
+        ]
+      },
+      {
+        "key_ids": [
+          "Z",
+          "X",
+          "C",
+          "V",
+          "B",
+          "N",
+          "M",
+          "COMMA",
+          "PERIOD",
+          "SLASH"
+        ],
+        "first_center_xy_mm": [
+          45.8,
+          48.0
+        ],
+        "step_xy_mm": [
+          19.05,
+          0.0
+        ]
+      }
+    ],
+    "explicit_targets": {
+      "TAB": {
+        "center_xy_mm": [
+          13.5,
+          90.0
+        ],
+        "half_extent_mm": [
+          10.0,
+          7.0
+        ]
+      },
+      "ENTER": {
+        "center_xy_mm": [
+          250.5,
+          69.0
+        ],
+        "half_extent_mm": [
+          13.0,
+          7.0
+        ]
+      },
+      "SPACE": {
+        "center_xy_mm": [
+          139.0,
+          27.0
+        ],
+        "half_extent_mm": [
+          48.0,
+          7.0
+        ]
+      }
+    }
+  },
+  "phone": {
+    "profile_id": "galaxy-a16-gboard-lower-nominal-sim-v1-static-v1",
+    "semantic_profile_id": "development/static-overhead-b0477-phone-semantic-v1",
+    "semantic_profile_sha256": "8f0f680bde9a23d05271ff827ce7f9fd51ddd1cf4f029d96603ee47cb937ed9c",
+    "device_model": "Samsung Galaxy A16 5G bare-body candidate",
+    "device_origin_board_xy_mm": [
+      499.2,
+      84.2
+    ],
+    "device_size_width_length_thickness_mm": [
+      77.9,
+      164.4,
+      7.9
+    ],
+    "target_plane_z_board_mm": 11.9,
+    "orientation": "portrait_usb_at_device_front",
+    "coordinate_frame": "phone_screen_nominal",
+    "coordinate_definition": "x from device left, y from USB/device front, z normal to screen",
+    "ui_state_id": "KEYBOARD_LOWER",
+    "synthetic_gboard_region_local_rect_mm": [
+      0.0,
+      0.0,
+      77.9,
+      63.5
+    ],
+    "source_state": "SYNTHETIC_GBOARD_LOWERCASE_LAYOUT_NOT_SCREENSHOT_CALIBRATION",
+    "key_half_extent_mm": [
+      3.0,
+      5.5
+    ],
+    "rows": [
+      {
+        "target_ids": [
+          "key_q",
+          "key_w",
+          "key_e",
+          "key_r",
+          "key_t",
+          "key_y",
+          "key_u",
+          "key_i",
+          "key_o",
+          "key_p"
+        ],
+        "first_center_xy_mm": [
+          5.1,
+          58.0
+        ],
+        "step_xy_mm": [
+          7.52,
+          0.0
+        ]
+      },
+      {
+        "target_ids": [
+          "key_a",
+          "key_s",
+          "key_d",
+          "key_f",
+          "key_g",
+          "key_h",
+          "key_j",
+          "key_k",
+          "key_l"
+        ],
+        "first_center_xy_mm": [
+          8.9,
+          42.0
+        ],
+        "step_xy_mm": [
+          7.52,
+          0.0
+        ]
+      },
+      {
+        "target_ids": [
+          "key_z",
+          "key_x",
+          "key_c",
+          "key_v",
+          "key_b",
+          "key_n",
+          "key_m"
+        ],
+        "first_center_xy_mm": [
+          16.4,
+          26.0
+        ],
+        "step_xy_mm": [
+          7.52,
+          0.0
+        ]
+      }
+    ],
+    "explicit_targets": {
+      "key_space": {
+        "center_xy_mm": [
+          38.95,
+          10.5
+        ],
+        "half_extent_mm": [
+          17.0,
+          5.0
+        ]
+      },
+      "key_period": {
+        "center_xy_mm": [
+          61.5,
+          10.5
+        ],
+        "half_extent_mm": [
+          3.0,
+          5.0
+        ]
+      },
+      "key_enter": {
+        "center_xy_mm": [
+          70.5,
+          10.5
+        ],
+        "half_extent_mm": [
+          4.0,
+          5.0
+        ]
+      }
+    }
+  },
+  "replacement_rule": "Replace every nominal center and safe extent with measured, versioned calibration artifacts before any physical pose generation. Unsupported or geometrically ambiguous targets must fail during planning.",
+  "static_binding": {
+    "schema": "rocell.static_nominal_target_binding.v1",
+    "geometry_source": {
+      "path": "software/config/nominal_target_profiles.json",
+      "sha256": "6779213e832ab27eeda1e7fb245f57ff8cb0d56707b5aa73a8f31ec483a620f2",
+      "meaning": "UNCHANGED_SYNTHETIC_TARGET_GEOMETRY_NOT_INSTALLED_MEASUREMENTS"
+    },
+    "semantic_profiles": {
+      "keyboard": {
+        "schema": "rocell.static_development_semantic_binding.v1",
+        "device": "keyboard",
+        "profile_id": "development/static-overhead-b0477-keyboard-semantic-v1",
+        "semantic_content_sha256": "1c981795f4800141fbe28c06b776032b034ff7c0dbc5aaf61813463955916b01",
+        "required_calibrations": [
+          "phase1_b0477_identity",
+          "phase1_b0477_mode",
+          "phase1_b0477_settings",
+          "phase1_static_intrinsics",
+          "phase1_measured_tag_map",
+          "phase1_static_extrinsic",
+          "phase1_robot_reference",
+          "phase1_controller_correlation",
+          "phase1_arm_board",
+          "phase1_keyboard_target_map",
+          "phase1_keyboard_tcp",
+          "phase1_keyboard_outcome_observer"
+        ],
+        "graph_id": "static-overhead-b0477-phase1.v1",
+        "graph_sha256": "048ec086935692fb9698f7e44f43e8addc489bacf0f4909b0dfb3691ef397981",
+        "architecture": "RIGID_STATIC_OVERHEAD_EYE_TO_HAND",
+        "camera_catalog_configuration": "ARDUCAM_B0477_IMX283_16MM",
+        "geometry_bound": false,
+        "installed_calibration_bound": false,
+        "physical_authority": false,
+        "hardware_commands_generated": 0,
+        "binding_sha256": "6dee54f8d83abc3c1a23448793bb588cc6636aa60f464f4d6cbffa783859922d"
+      },
+      "phone": {
+        "schema": "rocell.static_development_semantic_binding.v1",
+        "device": "phone",
+        "profile_id": "development/static-overhead-b0477-phone-semantic-v1",
+        "semantic_content_sha256": "8f0f680bde9a23d05271ff827ce7f9fd51ddd1cf4f029d96603ee47cb937ed9c",
+        "required_calibrations": [
+          "phase1_b0477_identity",
+          "phase1_b0477_mode",
+          "phase1_b0477_settings",
+          "phase1_static_intrinsics",
+          "phase1_measured_tag_map",
+          "phase1_static_extrinsic",
+          "phase1_robot_reference",
+          "phase1_controller_correlation",
+          "phase1_arm_board",
+          "phase1_phone_target_map",
+          "phase1_phone_tcp",
+          "phase1_phone_outcome_observer"
+        ],
+        "graph_id": "static-overhead-b0477-phase1.v1",
+        "graph_sha256": "048ec086935692fb9698f7e44f43e8addc489bacf0f4909b0dfb3691ef397981",
+        "architecture": "RIGID_STATIC_OVERHEAD_EYE_TO_HAND",
+        "camera_catalog_configuration": "ARDUCAM_B0477_IMX283_16MM",
+        "geometry_bound": false,
+        "installed_calibration_bound": false,
+        "physical_authority": false,
+        "hardware_commands_generated": 0,
+        "binding_sha256": "b2d114a2417899561cb67e9afe0c51d38ca83163ccc0bcbf19715db36c3d74a1"
+      }
+    },
+    "physical_authority": false
+  }
+}

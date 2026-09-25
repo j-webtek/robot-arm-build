@@ -1,0 +1,21 @@
+{
+  "command_id": "r7-supported-hold-20260918",
+  "hold_policy": {
+    "acceleration": 1,
+    "age_us": 250000,
+    "baseline_gap_us": 100000,
+    "deadline_us": 2000000,
+    "drift": 2,
+    "joints": [[1983, 2111], [2326, 2454], [1663, 1791], [2893, 2909], [1977, 2105], [1978, 2106], [1987, 2115]],
+    "maximum_gap_us": 500000,
+    "pair_us": 10000,
+    "permit_explicit_enable": 1,
+    "scan_us": 100000,
+    "schema": "rocell.hold_policy.v1",
+    "servo_id": 14,
+    "settle_us": 100000,
+    "speed": 20
+  },
+  "schema": "rocell.controller_hold.v1",
+  "start_port": 8081
+}

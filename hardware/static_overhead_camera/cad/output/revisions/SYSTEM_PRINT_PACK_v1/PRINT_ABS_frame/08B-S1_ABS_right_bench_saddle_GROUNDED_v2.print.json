@@ -1,0 +1,32 @@
+{
+  "schema": "rocell.printable_camera_portal.print_sidecar.v1",
+  "schema_version": 1,
+  "design_id": "ROCELL-PRINTABLE-CAMERA-PORTAL-PROTOTYPE-003",
+  "state": "PROTOTYPE_NOT_RELEASED_FOR_ROBOT_OPERATION",
+  "subplate_id": "08B-S1",
+  "geometry_3mf": "08B-S1_ABS_right_bench_saddle_GROUNDED_v2.3mf",
+  "geometry_sha256": "324982e8634563f0e3eb62bfef9b74700e1cd96526053ad76f6d7b28960b8e92",
+  "expected_object_count": 1,
+  "sidecar": "08B-S1_ABS_right_bench_saddle_GROUNDED_v2.print.json",
+  "profile": "abs_structural",
+  "native_save_as_pattern": "08B-S1_WELDED_QIDI_native_vNN.3mf",
+  "objects": [
+    {
+      "part": "board_corner_saddle_right",
+      "stl": "../STL_fallback/08B-S1_ABS_right_bench_saddle_GROUNDED_v2.stl",
+      "quantity": 1
+    }
+  ],
+  "print": {
+    "profile_key": "abs_structural",
+    "process_name": "RoCell ABS Rapido Camera Frame Structural 0.20 Print Pack v1",
+    "process_file": "../profiles/abs_rapido_camera_frame_structural_0p4.process.json",
+    "filament_preset": "QIDI ABS Rapido @Qidi X-Plus 4 0.4 nozzle",
+    "scale_percent": 100.0,
+    "supports": false,
+    "fuzzy_skin": "none",
+    "orientation": "use stored 3MF orientation and placement; do not auto-arrange"
+  },
+  "release_scope": "Prepared for prototype slicing/printing; not physical load qualification",
+  "native_slicer_preview": "PENDING: verify object count, stored orientation and toolpaths in QIDI"
+}

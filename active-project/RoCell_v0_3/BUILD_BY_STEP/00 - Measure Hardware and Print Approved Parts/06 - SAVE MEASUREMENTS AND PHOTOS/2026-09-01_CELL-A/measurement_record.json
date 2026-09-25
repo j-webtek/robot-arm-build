@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "design_revision": "RC03-INT-R1",
+  "package_definition_hash": "35887e4be902979744e0a709c7ea51bf680250b10dd5672e42aca6a96edf9dd5",
+  "canonical_snapshot_hash": "fc3851407e55f1140648c34102697133dbb01b0f48a69eeee19d8e29bcd6c997",
+  "canonical_input_hash": "fc3851407e55f1140648c34102697133dbb01b0f48a69eeee19d8e29bcd6c997",
+  "step_id": "00",
+  "build_id": "2026-09-01_CELL-A",
+  "operator": null,
+  "started_at": null,
+  "instrument_ids": [],
+  "measurements": [
+    {
+      "test_id": "00-A",
+      "criterion": "Every selected job is READY before print",
+      "value_or_observation": null,
+      "unit": null,
+      "instrument_id": null,
+      "evidence_files": [],
+      "result": "NOT_TESTED",
+      "notes": null
+    },
+    {
+      "test_id": "00-B",
+      "criterion": "All diagnostic fits are selected from the matching production profile",
+      "value_or_observation": null,
+      "unit": null,
+      "instrument_id": null,
+      "evidence_files": [],
+      "result": "NOT_TESTED",
+      "notes": null
+    },
+    {
+      "test_id": "00-C",
+      "criterion": "Printed parts are accepted and kitted",
+      "value_or_observation": null,
+      "unit": null,
+      "instrument_id": null,
+      "evidence_files": [],
+      "result": "NOT_TESTED",
+      "notes": null
+    },
+    {
+      "test_id": "00-D",
+      "criterion": "One named board drill guide is printed at verified 1:1 scale and remains traceable",
+      "value_or_observation": null,
+      "unit": null,
+      "instrument_id": null,
+      "evidence_files": [],
+      "result": "NOT_TESTED",
+      "notes": null
+    }
+  ],
+  "evidence_files": [],
+  "corrections_and_retests": []
+}

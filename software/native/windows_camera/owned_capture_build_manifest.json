@@ -1,0 +1,89 @@
+{
+  "schema": "rocell.windows_camera_owned_capture_development_build.v1",
+  "status": "COMPILED_NOT_EXECUTED_NOT_REGISTERED",
+  "build_date": "2026-09-08",
+  "physical_authority": false,
+  "runtime_dispatch_enabled": false,
+  "driver_qualified": false,
+  "native_helper_executed": false,
+  "hardware_or_metadata_access_performed": false,
+  "compiler": "MSVC 19.42.34435.0 x64",
+  "windows_sdk": "10.0.22621.0",
+  "cmake": "3.31.3",
+  "configuration": "Release",
+  "compile_policy": "/W4 /WX /permissive- /utf-8 /guard:cf",
+  "purpose": "Guarded native capture development prerequisite; not a trusted release or hardware qualification",
+  "request_schema": "rocell.native_camera_capture_admission_request.v1",
+  "admission_timeout_ms": 5000,
+  "native_duration_ms": 5000,
+  "source_files": {
+    "capture/CMakeLists.txt": "4ff8624b1e38ee0f197e7cefdb68c3d159a7b1b62a6edeb86642763128d1d193",
+    "camera_worker.cpp": "ab584dfb3b98d1c82fa41653311f94d321284ec0a13abb0952e47463fba7b4b7",
+    "admission_protocol.h": "2f171649b196c8eb18dbf2f57eeb34787e58b8ca50a8d3f6bb015b0988d95a3f",
+    "admission_protocol.cpp": "54124fbef5eba9e3d3f3484123c280231b9178fd30f5b353dddddc86e876f800",
+    "admission_entry.h": "69cb306c4d3e0b6527091a7ed3ddbfd3bf6627c67ed789e455fbed7530015a39",
+    "admission_entry.cpp": "91aa3c41bde8e24b19f6a2d4494896a847583a92ad5e30b2b42c3809604a9643",
+    "capture_admission_protocol.h": "16ab6d599f108bc3eee8bb11cfc48c899558f3ccc6a59650bd6e2f4bd9fc32e6",
+    "capture_admission_protocol.cpp": "3bcfb08f3d655812442d4befeb002c8f6454dcd97fc1adb93aad2fdbddfb976e",
+    "capture_admission_entry.h": "0a2a43f4a0ef2e4a1a25a2c6d1264f3189fd56499a79ac13194d8d1d4e6cb9f0",
+    "capture_admission_entry.cpp": "f9fc1f9351b87699df10a45fc5e877d4ef841632d8145a96cc89e7c4a0d991a5",
+    "capture_admission_protocol_tests.cpp": "412b40666ded67df1899f26ba4f84a4f4638ce4e42dd99e012cd82fa32b7f875",
+    "capture_admission_entry_tests.cpp": "31cc6e6ea3467109dbbfd80c81597529d3345f9e64485303d906c98a1f0560c0",
+    "capture/admission_entry_wire_test.py": "7702c63f6b22fcaa3cbc6d8cdbe28890f81bb445ec5417e6284b3f171652899b",
+    "identity_metadata.h": "3cf6e8da5d18bdea4336d57a1e34ebb174373bfecf1efe22c19b8b29507cb06a",
+    "identity_metadata.cpp": "b4459ca9f9d0d99ed58ed87b7ce8ac9f6f6ed37a37090cf7b13b768a58bf93bd"
+  },
+  "artifacts": [
+    {
+      "path": "build-owned-capture/Release/rocell_windows_camera.exe",
+      "sha256": "31d2f2742b18c0935b3d7af07f8058f129421871be00860a3d7768e1e940ae2f",
+      "length_bytes": 243200,
+      "executed": false
+    },
+    {
+      "path": "build-owned-capture/Release/rocell_windows_camera_probe_compile_check.exe",
+      "sha256": "51c3e31127f61500e570310c276faf0286c8fa7b9de9be6ef9d1cad751c5d9f5",
+      "length_bytes": 212992,
+      "executed": false,
+      "scope": "CAPTURE_DISABLED_COMPILATION_ONLY"
+    },
+    {
+      "path": "build-owned-capture/Release/rocell_camera_capture_admission_tests.exe",
+      "sha256": "5d7dd976c39be37613d70fe4f9040b2b66f40c270643d472ea5670f4399f6536",
+      "length_bytes": 114176,
+      "executed": true,
+      "scope": "INCAPABLE_PARSER_ONLY"
+    },
+    {
+      "path": "build-owned-capture/Release/rocell_camera_capture_admission_entry_tests.exe",
+      "sha256": "16315844fa922eb9f0708c13ada643fd6cfc5338a0c3495294c6bb2d0b70b1b9",
+      "length_bytes": 84480,
+      "executed": true,
+      "scope": "INCAPABLE_PIPE_ENTRY_ONLY"
+    }
+  ],
+  "verification": {
+    "selected_ctest": "2 passed in 13.33 seconds; incapable parser and pipe targets only",
+    "parser_assertions": 84,
+    "pipe_cases": 8,
+    "pipe_scope": "actual PID/challenge/EOF, Unicode endpoint, 3-second grant, missing grant/EOF timeout, schema/path/permit/trailing faults; no camera calls or output files",
+    "probe_gate_sources_unchanged": true,
+    "original_cmake_unchanged": true,
+    "physical_helper_tests_run": false
+  },
+  "historical_builds": {
+    "build/Release/rocell_windows_camera.exe": "a0410e866563738bbe0c60c2a763adf094deceba10ae9c81f4becba80a06c797",
+    "build-owned/Release/rocell_windows_camera.exe": "e6072f26efa335ada46ef1459a66830a687b2d66c7ff45584aa4ac949eb027a1",
+    "original_CMakeLists.txt": "7f0dc880a4335fdafa2a0be794d84dbdbed0dd3233114010a555740c99e3da22",
+    "manifests_or_catalogs_modified": false,
+    "current_camera_worker_source_matches_historical_records": false
+  },
+  "limitations": [
+    "Compiled native helper was never executed, inventoried or activated",
+    "Default physical runner and runtime registration remain held",
+    "Protocol matching is not independent M1 authorization; the parent must revalidate current consumed authority",
+    "Output checks are not filesystem-TOCTOU, received-unit, driver, native cleanup or power-loss qualification",
+    "Only incapable parser/pipe tests ran; their completion is not a native camera receipt",
+    "Native files require independent parent membership/length/hash validation before dataset ingestion"
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "schema": "rocell.identity_metadata_development_build.v1",
+  "record_status": "HISTORICAL_SUPERSEDED",
+  "superseded_by": "integrated_build_manifest.json",
+  "source_scope_note": "This unlinked seam record is preserved historically. The integrated current helper and source hashes are recorded separately; assertions below describe the earlier stage only.",
+  "recorded_date": "2026-09-07",
+  "architecture": "windows-x64",
+  "configuration": "Release",
+  "compiler": "MSVC 19.42.34435.0",
+  "windows_sdk_version": "10.0.22621.0",
+  "cmake_version": "3.31.3",
+  "source_sha256": {
+    "identity_metadata.h": "64dafb44b59b766d471af930706732bd976ebc9d1930d992c89642d25b49697e",
+    "identity_metadata.cpp": "9765dd5029837cfc74ff265f243ccfb116e21d1e03301178d798ac2f5fc951c7",
+    "identity_metadata_tests.cpp": "1a899c347e1224a569406f2794b69d4532a78ab2ef5d7ce1d6f714867b446684",
+    "CMakeLists.txt": "faf228ad9b7b6fa731e0f034f9b0343a467c82b76f4434ad7394cc9b83bc7f6f"
+  },
+  "artifact_sha256": {
+    "build/Release/rocell_identity_metadata.lib": "b9316535ed6c39571430d92053dcc6b2d3213c8c32e09956422e222633f9d4d8",
+    "build/Release/rocell_identity_metadata_tests.exe": "55f17115329f40887066bc47acfd734099339df1cb0086c314c26a12acae89ca"
+  },
+  "build_result": "COMPILED_WITH_WARNINGS_AS_ERRORS",
+  "test_result": "PASSED",
+  "ctest_name": "identity_metadata_fake_api",
+  "pure_injected_assertions": 37,
+  "production_windows_metadata_api_invocations": 0,
+  "device_enumerations": 0,
+  "camera_activations": 0,
+  "integrated_into_current_helper": false,
+  "received_hardware_verification": "NOT_RUN",
+  "instrumented_win32_wrapper_verification": "NOT_RUN",
+  "trusted_release_registration": false,
+  "physical_authority": "NONE",
+  "historical_helper_manifest_note": "build_manifest.json remains historical. Its recorded CMake hash predates these separate identity targets and is not a current whole-source registration.",
+  "unchanged_existing_helper_sha256_rechecked": "7868953ce435012a6a8f923b944c2dc111146db486f253907cfa81bc540de4b7"
+}

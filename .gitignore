@@ -1,0 +1,52 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+software/runs/*.json
+software/runs/*.jsonl
+software/runs/virtual-*/
+software/runs/.partial-virtual-*/
+# Physical onboarding evidence can contain serial identities, photos, and other
+# installation-specific records. Keep complete and interrupted sessions local.
+software/runs/physical-onboarding/
+software/runs/.partial-onboarding-*/
+software/runs/incoming/
+software/runs/intake/
+software/calibrations/artifacts/*
+!software/calibrations/artifacts/.gitkeep
+
+# Device-specific evidence and private backups are archived separately after
+# review. They may contain Wi-Fi credentials, signing keys and camera images.
+/software/runs/
+/software/private-backups/
+/software/.firmware-tools/
+/.codex-preserved/
+/.github-preparation/
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.pfx
+*.dpapi
+
+# Reproducible build products, local caches and duplicate legacy archives.
+/archives/
+/tmp/
+**/tmp/
+node_modules/
+/output/
+/result.json
+/software/build/
+/software/native/**/build*/
+*.egg-info/
+.coverage
+htmlcov/
+*.log
+*.tlog/
+*.pdb
+*.exe
+*.dll

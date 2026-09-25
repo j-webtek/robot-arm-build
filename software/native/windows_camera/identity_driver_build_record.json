@@ -1,0 +1,92 @@
+{
+  "schema": "rocell.windows_camera_identity_driver_development_build.v1",
+  "record_status": "UNQUALIFIED_DEVELOPMENT_BUILD",
+  "recorded_date": "2026-09-08",
+  "protocol_schemas": {
+    "native_identity_output": "rocell.windows_camera_identity.v2",
+    "python_identity_read_versions": [
+      "rocell.windows_camera_identity.v1",
+      "rocell.windows_camera_identity.v2"
+    ],
+    "capture_unchanged": "rocell.windows_camera.v1"
+  },
+  "architecture": "windows-x64",
+  "configuration": "Release",
+  "cmake_version": "3.31.3",
+  "compiler": "MSVC 19.42.34435.0",
+  "msvc_tool_directory_version": "14.42.34433",
+  "windows_sdk_version": "10.0.22621.0",
+  "build_commands": [
+    "cmake -S software/native/windows_camera -B software/native/windows_camera/build-identity-driver -G \"Visual Studio 17 2022\" -A x64 \"-DCMAKE_SYSTEM_VERSION=10.0.22621.0\"",
+    "cmake --build software/native/windows_camera/build-identity-driver --config Release --parallel 2",
+    "ctest --test-dir software/native/windows_camera/build-identity-driver -C Release --output-on-failure -R \"^(camera_admission_parser_incapable|camera_contract_self_test|identity_metadata_fake_api|identity_metadata_wire_contract)$\""
+  ],
+  "source_sha256": {
+    "identity_metadata.h": "e4f39f7156f66b5fe2f2e8f812d9c1a6ab6e3e69d530aad59f50c4166545b3f0",
+    "identity_metadata.cpp": "7c122cd638346a9a4761f504f3560f9d49c1baf7716d7321bdd1538c6e8f2cfd",
+    "identity_metadata_tests.cpp": "312afee6b801c6eb44c4095c4104f068e5ede6d2703fe135ddf4b5737b8b251e",
+    "identity_metadata_wire_test.py": "91bfea68b199602bb1693a1862baf6f2b8ef7189fc1700d92b5b3bc36b80ef52",
+    "../../src/rocell/providers/windows/camera_worker_client.py": "2e7a8f8d330374f0614787e3c75441aab3739c613a5392641396b655541832ba",
+    "../../tests/unit/test_windows_camera_driver_metadata.py": "4756e4ef2697129f31a4d35247738227732a3eec857981bdf0e9259a12bab48d",
+    "CMakeLists.txt": "7f0dc880a4335fdafa2a0be794d84dbdbed0dd3233114010a555740c99e3da22",
+    "camera_worker.cpp": "ab584dfb3b98d1c82fa41653311f94d321284ec0a13abb0952e47463fba7b4b7",
+    "admission_protocol.h": "2f171649b196c8eb18dbf2f57eeb34787e58b8ca50a8d3f6bb015b0988d95a3f",
+    "admission_protocol.cpp": "54124fbef5eba9e3d3f3484123c280231b9178fd30f5b353dddddc86e876f800",
+    "admission_entry.h": "69cb306c4d3e0b6527091a7ed3ddbfd3bf6627c67ed789e455fbed7530015a39",
+    "admission_entry.cpp": "91aa3c41bde8e24b19f6a2d4494896a847583a92ad5e30b2b42c3809604a9643"
+  },
+  "artifact_sha256": {
+    "build-identity-driver/Release/rocell_windows_camera.exe": "130ddc36ce7e9a2c5e265d022182762b64e16e931ef06912d7ab2cbc9eae71ab",
+    "build-identity-driver/Release/rocell_identity_metadata_tests.exe": "de5fe2cb54f67c705f85f4a15f9a3109addd9d04ede66c6630034199fb698641",
+    "build-identity-driver/Release/rocell_identity_metadata.lib": "aa3689d13c54036037ac636f2d77fcf0996ad47e5c5d22ad6daed26cd551cfd5"
+  },
+  "unchanged_historical_artifact_sha256": {
+    "build/Release/rocell_windows_camera.exe": "a0410e866563738bbe0c60c2a763adf094deceba10ae9c81f4becba80a06c797",
+    "build-owned/Release/rocell_windows_camera.exe": "e6072f26efa335ada46ef1459a66830a687b2d66c7ff45584aa4ac949eb027a1",
+    "build-owned-capture/Release/rocell_windows_camera.exe": "31d2f2742b18c0935b3d7af07f8058f129421871be00860a3d7768e1e940ae2f",
+    "build_manifest.json": "568ef36740b47f8cad86d6f82ca4c02303ee816ad778b869f5dd274d59817522",
+    "integrated_build_manifest.json": "435fce4a83f2536cb0c2fa4b02c1aaacfb2a9dda58796d763fff4547095168f5",
+    "identity_metadata_build_record.json": "d2bffb9c06a870c8ad45074f184e3b4d2a95429877b14a5e0e3e2dd245390465",
+    "owned_build_manifest.json": "705228b1595e1efeb2b8ceef171e3f6fdffad505b6e680b847cec352d712d7b6",
+    "owned_capture_build_manifest.json": "b6b60e92b1f95487be7c9230ddade77827b64a30063377b2f41a66d526eda2a5"
+  },
+  "build_result": "COMPILED_WITH_WARNINGS_AS_ERRORS",
+  "tests": {
+    "native_ctest_passed": 4,
+    "native_ctest_failed": 0,
+    "native_ctest_seconds": 0.32,
+    "incapable_admission_assertions": 29,
+    "inert_camera_contract_assertions": 14,
+    "incapable_identity_assertions": 60,
+    "incapable_identity_wire_receipts": 31,
+    "python_tests_passed": 250,
+    "python_test_seconds": 1.62,
+    "python_test_files": [
+      "test_windows_camera_driver_metadata.py",
+      "test_windows_camera_identity.py",
+      "test_wizard_native_camera_metadata.py",
+      "test_physical_camera_selection.py",
+      "test_wizard_native_camera_enrollment.py",
+      "test_windows_camera_worker.py"
+    ],
+    "black": "PASSED",
+    "mypy": "PASSED"
+  },
+  "actual_windows_metadata_invocations": 0,
+  "device_enumerations": 0,
+  "camera_activations": 0,
+  "usb_hub_handles_opened": 0,
+  "serial_port_operations": 0,
+  "physical_authority": false,
+  "hardware_qualified": false,
+  "trusted_release_registration": false,
+  "received_hardware_verification": "NOT_RUN",
+  "instrumented_windows_cm_wrapper_verification": "NOT_RUN",
+  "byte_identical_reproducibility": "NOT_RUN",
+  "limitations": [
+    "Only the explicit inert helper --self-test and separately incapable parser/identity test programs executed; no real inventory, identity, probe or capture action ran.",
+    "Driver strings are reported device-instance metadata only. Serial, USB operating speed, stability and driver approval are not supplied.",
+    "Historical helper binaries/manifests retain their original hashes; changed source is not retroactively qualified by those records.",
+    "This new artifact is not automatically selected by any production runtime catalog and is not an activation permit."
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "design_revision": "RC03-INT-R1",
+  "package_definition_hash": "7a6947f2de52f63133c5b9647b9b479ccd9d896906c2b575e76c106e1e5dccca",
+  "canonical_snapshot_hash": "05d11599e6d4a2937e0207535b298aa809ff08c79840350c7716666ce6d12755",
+  "canonical_input_hash": "05d11599e6d4a2937e0207535b298aa809ff08c79840350c7716666ce6d12755",
+  "step_id": "06",
+  "build_id": "2026-09-01_CELL-A",
+  "operator": null,
+  "started_at": null,
+  "instrument_ids": [],
+  "measurements": [
+    {
+      "test_id": "06-A",
+      "criterion": "Station locator fit",
+      "value_or_observation": null,
+      "unit": null,
+      "instrument_id": null,
+      "evidence_files": [],
+      "result": "NOT_TESTED",
+      "notes": null
+    },
+    {
+      "test_id": "06-B",
+      "criterion": "Phone support plane",
+      "value_or_observation": null,
+      "unit": null,
+      "instrument_id": null,
+      "evidence_files": [],
+      "result": "NOT_TESTED",
+      "notes": null
+    },
+    {
+      "test_id": "06-C",
+      "criterion": "TCP receiver seat",
+      "value_or_observation": null,
+      "unit": null,
+      "instrument_id": null,
+      "evidence_files": [],
+      "result": "NOT_TESTED",
+      "notes": null
+    },
+    {
+      "test_id": "06-D",
+      "criterion": "PT-HOLD-TCP effective stack",
+      "value_or_observation": null,
+      "unit": null,
+      "instrument_id": null,
+      "evidence_files": [],
+      "result": "NOT_TESTED",
+      "notes": null
+    }
+  ],
+  "evidence_files": [],
+  "corrections_and_retests": []
+}

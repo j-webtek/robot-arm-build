@@ -1,0 +1,19 @@
+{
+  "schema": "rocell.ghost_keyboard_layout.v1",
+  "layout_id": "ghost-three-key-row-v1",
+  "units": "mm",
+  "frame": "GHOST_KEYBOARD",
+  "controller_reference": "R_ctrl",
+  "transform_basis": "NOMINAL_SIMULATION_ONLY",
+  "origin_controller_mm": [340, 0, 220],
+  "yaw_rad": 1.5707963267948966,
+  "controller_pitch_rad": 0,
+  "key_pitch_mm": 19,
+  "key_width_mm": 15,
+  "keys": {"A": [0, 0], "B": [19, 0], "C": [38, 0]},
+  "travel_height_mm": 10,
+  "hover_height_mm": 4,
+  "virtual_surface_z_mm": 0,
+  "sample_spacing_mm": 2,
+  "installed_tool_offset_applied": false
+}

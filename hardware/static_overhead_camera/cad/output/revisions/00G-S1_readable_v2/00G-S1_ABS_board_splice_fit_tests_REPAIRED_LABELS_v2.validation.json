@@ -1,0 +1,169 @@
+{
+  "status": "PASS",
+  "scope": "raw packaged mesh topology, CAD functional interfaces, count, placement and brim envelope",
+  "native_qidi_slice": "NOT_YET_VERIFIED",
+  "physical_fit_and_load": "NOT_TESTED",
+  "file": "00G-S1_ABS_board_splice_fit_tests_REPAIRED_LABELS_v2.3mf",
+  "sha256": "abbce1872a16010e58f29ea714bd1f12426a4a79745cde73feee0dea58d9d9a2",
+  "objects": [
+    {
+      "part": "u_truss_splice",
+      "triangle_count": 20942,
+      "vertices": 10465,
+      "volume_mm3": 108415.73377233035,
+      "bounds_mm": [
+        [
+          10.0,
+          10.0,
+          0.0
+        ],
+        [
+          114.0,
+          85.80000305175781,
+          74.0
+        ]
+      ],
+      "translation_mm": [
+        10,
+        10,
+        0
+      ]
+    },
+    {
+      "part": "u_splice_fit_coupon",
+      "triangle_count": 16762,
+      "vertices": 8335,
+      "volume_mm3": 134407.44209418024,
+      "bounds_mm": [
+        [
+          134.0,
+          10.0,
+          0.0
+        ],
+        [
+          244.0,
+          60.0,
+          64.0
+        ]
+      ],
+      "translation_mm": [
+        134,
+        10,
+        0
+      ]
+    },
+    {
+      "part": "board_saddle_fit_coupon",
+      "triangle_count": 53306,
+      "vertices": 26651,
+      "volume_mm3": 40858.132278062076,
+      "bounds_mm": [
+        [
+          10.0,
+          105.8,
+          0.0
+        ],
+        [
+          114.0,
+          165.45000152587892,
+          19.850000381469727
+        ]
+      ],
+      "translation_mm": [
+        10,
+        105.8,
+        0
+      ]
+    },
+    {
+      "part": "m6_nut_retainer",
+      "triangle_count": 884,
+      "vertices": 444,
+      "volume_mm3": 1817.7267969532793,
+      "bounds_mm": [
+        [
+          134.00000076293946,
+          105.80000009536744,
+          0.0
+        ],
+        [
+          159.8,
+          118.99999990463257,
+          6.0
+        ]
+      ],
+      "translation_mm": [
+        159.8,
+        112.4,
+        -2
+      ]
+    }
+  ],
+  "raw_3mf_checks": [
+    {
+      "object": "u_truss_splice__01",
+      "open_edges": 0,
+      "nonmanifold_edges": 0,
+      "watertight": true,
+      "consistent_winding": true
+    },
+    {
+      "object": "u_splice_fit_coupon__01",
+      "open_edges": 0,
+      "nonmanifold_edges": 0,
+      "watertight": true,
+      "consistent_winding": true
+    },
+    {
+      "object": "board_saddle_fit_coupon__01",
+      "open_edges": 0,
+      "nonmanifold_edges": 0,
+      "watertight": true,
+      "consistent_winding": true
+    },
+    {
+      "object": "m6_nut_retainer__01",
+      "open_edges": 0,
+      "nonmanifold_edges": 0,
+      "watertight": true,
+      "consistent_winding": true
+    }
+  ],
+  "functional_checks": {
+    "board_jaws_and_nut_channel": {
+      "removed_mm3": 0.0,
+      "added_mm3": 0.0,
+      "status": "PASS"
+    },
+    "collar_load_bearing_body_and_bores": {
+      "removed_mm3": 0.0,
+      "added_mm3": 0.0,
+      "status": "PASS"
+    },
+    "truss_test_envelope": {
+      "removed_mm3": 0.0,
+      "added_mm3": 0.0,
+      "status": "PASS"
+    },
+    "retainer_unchanged": {
+      "removed_mm3": 0.0,
+      "added_mm3": 0.0,
+      "status": "PASS"
+    },
+    "coupon_inserted_to_aligned_bolt_station": {
+      "interference_mm3": 0,
+      "status": "PASS"
+    }
+  },
+  "labels": {
+    "font": "Arial Black",
+    "font_size_mm": [
+      7.5,
+      8,
+      9
+    ],
+    "raised_height_mm": 1.2,
+    "retainer": "unchanged and unlettered to preserve fit"
+  },
+  "original_file_preserved": true
+}

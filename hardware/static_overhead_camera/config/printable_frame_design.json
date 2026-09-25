@@ -1,0 +1,272 @@
+{
+  "schema": "rocell.static_overhead_camera.printable_frame.v1",
+  "schema_version": 1,
+  "design_id": "ROCELL-PRINTABLE-CAMERA-PORTAL-PROTOTYPE-003",
+  "revision_date": "2026-09-07",
+  "state": "PARAMETRIC_PROTOTYPE_NOT_RELEASED_FOR_FABRICATION_OR_ROBOT_OPERATION",
+  "supplemental_print_pack": {
+    "path": "cad/output/revisions/SYSTEM_PRINT_PACK_v1/START_HERE.md",
+    "scope": "2026-09-16: 16 repaired ABS frame plates plus one four-board-pad TPU plate; camera carriage held. Originals preserved. Prepared for prototype slicing; native preview and physical qualification pending.",
+    "m5_socket_head_option": "Geometry-conditional alternative: M5 DIN912/ISO4762 head 8.5mm OD x 5mm height plus one metal washer 5.3mm ID x 10mm OD, thickness <=1.2mm under each of 48 heads. Retain specified flanged nuts, total height <=6mm, and original bolt lengths. Verify full nylon engagement and >=2 full threads beyond nut. See M5_SOCKET_HEAD_CHECK.json. Not a strength or torque qualification."
+  },
+  "authority": {
+    "cad_generation": true,
+    "printer_envelope_validation": true,
+    "fabrication_authority": false,
+    "physical_installation_authority": false,
+    "robot_motion_authority": false,
+    "note": "This is an all-printed alternative requested by the user. It has not passed load, creep, vibration, collision, optical, or received-camera fit qualification."
+  },
+  "material_policy": {
+    "rigid_parts": "ABS Rapido",
+    "permitted_nonprinted_items": [
+      "ordinary M4, M5, and M6 bolts, washers, and locknuts",
+      "six cable ties no wider than 5.0 mm",
+      "one complete factory-terminated independent camera safety tether with an all-metal load path; polymer cable coating is permitted"
+    ],
+    "prohibited_primary_retention": [
+      "adhesive tape",
+      "cable tie around camera as the sole restraint",
+      "single tripod screw",
+      "friction-only camera clip"
+    ]
+  },
+  "required_assembly_tools": [
+    {
+      "item": "thin 7 mm open-end wrench",
+      "maximum_head_width_mm": 18.0,
+      "maximum_head_thickness_mm": 5.5,
+      "use": "tighten the three M4 leveling jam nuts through the keeper's edge-open wrench bays"
+    },
+    {
+      "item": "two thin-wall 8 mm sockets or nut drivers",
+      "maximum_socket_outer_diameter_mm": 13.0,
+      "use": "hold and tighten the M5 flange-head bolts and flanged locknuts; the portal diagonal bolt pattern is validated against this maximum socket diameter"
+    },
+    {
+      "item": "2.5 mm hex key",
+      "use": "drive all seven M4 button-head socket bolts"
+    },
+    {
+      "item": "one thin-wall 10 mm socket or nut driver",
+      "maximum_socket_outer_diameter_mm": 18.0,
+      "use": "drive each top-access M6 clamp bolt; the side-loaded DIN 985 nyloc is antirotation-captured and does not need a second driver"
+    }
+  ],
+  "procurement_constraints": {
+    "m6_x25_flange_head_clamp_bolt": {
+      "quantity": 4,
+      "thread": "M6",
+      "finished_length_mm": 25.0,
+      "head_style": "integral flange head",
+      "drive_style": "external hex",
+      "wrench_size_mm": 10.0,
+      "maximum_head_outer_diameter_mm": 13.5,
+      "modeled_cap_boss_outer_diameter_mm": 16.0,
+      "modeled_cap_base_top_height_mm": 8.0,
+      "modeled_cap_boss_bearing_height_mm": 9.8,
+      "maximum_shank_to_bore_lateral_decenter_mm": 0.3,
+      "minimum_nominal_head_support_diameter_margin_mm": 2.0,
+      "minimum_worst_case_radial_support_mm": 0.8,
+      "release_gate": "Seat the actual first bolt head fully and concentrically on the first printed 16.0 mm raised cap boss without force. Confirm the complete flange bears flat on the boss without bridging, rocking, gouging, or overhanging before using the remaining caps."
+    },
+    "m6_din985_nyloc_nut": {
+      "quantity": 5,
+      "thread": "M6",
+      "standard": "DIN 985 or ISO 10511 low-pattern prevailing-torque nyloc",
+      "wrench_size_mm": 10.0,
+      "maximum_height_mm": 6.0,
+      "modeled_hex_pocket_circumscribed_diameter_mm": 12.3,
+      "modeled_channel_width_mm": 12.2,
+      "modeled_channel_height_mm": 7.2,
+      "release_gate": "Use the dedicated sacrificial received nut in 00G in the same hex orientation it will use when seated, confirm it traverses the channel and reaches the hex seat without force, then confirm the sacrificial retainer snaps fully home without touching the nut and the bolt develops prevailing torque. Discard that test nut after the gate; reserve four fresh nuts for the final board clamps."
+    },
+    "independent_camera_safety_tether": {
+      "quantity": 1,
+      "supply_form": "single complete factory-terminated assembly",
+      "load_path": "all load-bearing cable, eyes, swages, and connector parts are metal; polymer cable coating is permitted",
+      "finished_length_nominal_mm": 500.0,
+      "finished_length_tolerance_mm": 25.0,
+      "finished_length_measurement": "load-bearing cable centerline from the cage-connector bearing point through the complete choker-eye circumference",
+      "installed_slack_minimum_mm": 20.0,
+      "installed_slack_maximum_mm": 105.0,
+      "cable_material": "stainless steel",
+      "cable_construction": "7x7",
+      "bare_cable_diameter_min_mm": 1.5,
+      "bare_cable_diameter_max_mm": 2.0,
+      "coated_finished_outer_diameter_max_mm": 3.0,
+      "boom_choker_eye_laid_flat_minimum_mm": 130.0,
+      "cage_connector": "captive screw-lock connector",
+      "cage_connector_stock_or_pin_maximum_mm": 5.0,
+      "cage_connector_opening_minimum_mm": 9.0,
+      "manufacturer_working_load_limit_minimum_kg": 10.0,
+      "manufacturer_minimum_breaking_load_minimum_kg": 50.0,
+      "evidence_required": "manufacturer datasheet, permanent marking, or certificate traceable to the received finished assembly; seller-only unverified claims are insufficient"
+    }
+  },
+  "printer": {
+    "machine": "QIDI Plus4",
+    "nominal_build_volume_mm": [305.0, 305.0, 280.0],
+    "protected_part_envelope_mm": [295.0, 295.0, 275.0]
+  },
+  "coordinate_frame": {
+    "frame_id": "B",
+    "origin": "front-left corner of board top surface",
+    "axes": {"+x": "right", "+y": "rear", "+z": "up"},
+    "units": "mm"
+  },
+  "board": {
+    "width_mm": 610.0,
+    "depth_mm": 457.0,
+    "thickness_mm": 18.0,
+    "edge_clearance_mm": 0.8,
+    "new_holes_allowed": false,
+    "front_tag_tiles": {
+      "T0_xywh_mm": [19.5, 12.5, 55.0, 55.0],
+      "T1_xywh_mm": [412.5, 12.5, 55.0, 55.0]
+    }
+  },
+  "layout": {
+    "left_tower_axis_xy_mm": [-60.0, -100.0],
+    "right_tower_axis_xy_mm": [670.0, -100.0],
+    "camera_axis_xy_mm": [305.0, 228.5],
+    "camera_carriage_xy_mm": [250.0, 130.0],
+    "installed_camera_x_offsets_mm": [-12.0, 0.0, 12.0],
+    "installed_camera_y_offsets_mm": [0.0, 21.0],
+    "camera_entrance_pupil_target_z_mm": 1000.0,
+    "upright_segment_length_mm": 240.0,
+    "upright_segments_per_tower": 4,
+    "crossbar_segment_length_mm": 182.5,
+    "crossbar_segment_count": 4,
+    "boom_segment_length_mm": 164.25,
+    "boom_segments_per_side": 2,
+    "boom_axis_x_mm": [213.75, 396.25],
+    "boom_root_strap_xyz_mm": [80.0, 84.0, 8.0],
+    "boom_root_bolt_x_offsets_mm": [-17.0, 17.0],
+    "boom_root_bolt_y_mm": {"crossbar": -99.0, "boom": -51.0},
+    "crossbar_bottom_z_mm": 1010.0,
+    "boom_bottom_z_mm": 1010.0,
+    "boom_root_y_mm": -75.0,
+    "boom_end_y_mm": 253.5,
+    "boom_camera_attachment_y_mm": 228.5,
+    "tether_choker_axis_xy_mm": [396.25, 152.5],
+    "integrated_saddle_outrigger_length_mm": 150.0,
+    "integrated_saddle_outrigger_y_range_mm": [-250.0, -100.0],
+    "low_structure_boundary": "All connected low structure remains at y <= 0; only the two small clamp lips overlap the board top.",
+    "rear_or_side_structural_stays_allowed": false
+  },
+  "truss": {
+    "height_mm": 64.0,
+    "width_mm": 50.0,
+    "side_wall_mm": 6.0,
+    "bottom_wall_mm": 8.0,
+    "section": "single-piece open-top U lattice; two side truss planes joined by a full bottom wall",
+    "chord_mm": 10.0,
+    "web_mm": 10.0,
+    "end_block_mm": 32.0,
+    "m5_clearance_mm": 5.5,
+    "splice": "full-height keyed external open-top U collars; 104 mm collars serve upright/boom joints, 92 mm collars preserve crossbar root fastener access, and the 92 mm center crossbar collar uses two diagonally separated M5 axes per member end"
+  },
+  "board_clamp": {
+    "saddle_revision": "GROUNDED_v2: two permanent 10x30x16mm brace feet; clear 65x52mm receiver pocket above z68 ledges. Replaces old S1 geometry with floating brace starts. See cad/output/revisions/SADDLES_GROUNDED_v2. Mesh/layer-start checks passed; native slicing and physical qualification pending.",
+    "type": "two mirrored no-drill front-corner compression saddles",
+    "load_path": "The 120 x 120 mm tower feet bear on the bench. The caps register the frame and react overturning moment by pressing the board onto the same bench; they do not suspend portal weight from plywood.",
+    "open_bottom": true,
+    "required_bench_condition": "Board underside and both tower feet must share one flat bench plane. Required unobstructed bench rectangle is B x=-120..730, y=-250..0 at z=-18; verify this measured clearance before printing.",
+    "required_clear_bench_xy_mm": [-120.0, -250.0, 730.0, 0.0],
+    "bench_plane_z_mm": -18.0,
+    "hard_stop_gap_mm": 18.65,
+    "board_slot_height_mm": 18.65,
+    "uncompressed_pad_thickness_mm": 0.8,
+    "nominal_pad_compression_mm": 0.15,
+    "top_lip_intrusion_from_side_mm": 10.0,
+    "top_lip_intrusion_from_front_mm": 10.0,
+    "clamp_bolts_per_corner": 2,
+    "left_saddle_clamp_axis_x_local_mm": [108.0, 150.0],
+    "mirrored_saddle_width_mm": 190.0,
+    "clamp_axis_y_local_mm": 148.0,
+    "outer_nut_channel_opening_y_local_mm": 115.5,
+    "inner_nut_channel_mouth_xy_local_mm": [128.0, 102.0],
+    "nut_channel_width_mm": 12.2,
+    "nut_tunnel_outer_width_mm": 20.0,
+    "nut_tunnel_top_height_mm": 14.6,
+    "nut_tunnel_minimum_roof_mm": 1.9,
+    "clamp_drive_access": "M6 x 25 external-hex flange-head bolts are driven only from above and bear on integrated 16.0 mm cap bosses raised 1.8 mm above the 8.0 mm cap body. M6 DIN 985 low-pattern nyloc nuts load horizontally into blind saddle pockets and each channel is mechanically closed by an individual printed snap retainer; no clamp hardware or tool access is required below the bench plane.",
+    "hard_stop_release_gate": "18.65 mm assumes the nominal 18.0 mm board plus a 0.8 mm captured TPU pad compressed by 0.15 mm. It is a prototype value only. Print the 00G saddle/nut-pocket coupon and confirm the received board thickness, boss and bolt-head seating, pad compression, M6 DIN 985 nyloc fit, retainer lock, full prevailing-torque engagement, and blind-bore tip clearance before production saddles.",
+    "tag_tile_intersection_allowed": false,
+    "tower_receiver": "open-top double-cheek receiver with two rib-supported positive bearing ledges at B z=50; two diagonally separated M5 cross bolts per saddle align to reinforced upright stations at B (tower_x+1,z60) and (tower_x+13,z72), leaving flange/tool clearance while resisting rocking; tower dead load passes ledge-to-foot-to-bench; no unsupported roof"
+  },
+  "camera": {
+    "model_reference": "Arducam B0477 / vendor B0477.STEP proxy pending received-part comparison",
+    "nominal_case_xyz_mm": [38.0, 38.0, 25.0],
+    "cage_internal_xy_mm": [39.2, 39.2],
+    "lens_clearance_diameter_mm": 44.0,
+    "nominal_lens_outside_diameter_mm": 39.5,
+    "usb_notch": "Legacy 26 mm side-wall notch retained in the already printed cage. Received-camera photos show USB on the back face opposite the lens, not the side. Use the supplemental USB-relief keeper; the old side-routing assumption is superseded. Full carriage cable clearance remains pending.",
+    "keeper_usb_plate_override": "cad/output/revisions/08D-C2_usb_keeper_v1/08D-C2_ABS_USB_clearance_keeper_v1.3mf",
+    "keeper_usb_revision_status": "Cover-only geometry checked; photo-informed 30 x 16 mm design plug allowance, not a measured specification. Physical insertion, locking-screw access, spacer contact after cover change, and full carriage route must be checked. User reports existing spacers secure the camera; retain them and the printed cage.",
+    "retention": "four-sided cradle plus a planar top keeper secured by four perimeter M4 bolts; the cage/keeper/camera is bench-assembled as one removable module, and every closure bolt remains driver-accessible through a discrete carriage service bore for installed torque checks",
+    "leveling": "three M4x70 screws inserted downward from above the carriage; each turns in an underside-loaded captured M4 nut beneath an intact cage-base roof, then locks with a washer and standard jam nut directly below the carriage; the keeper has aligned 10.5 mm tool/washer clearances",
+    "xy_adjustment": "three positive-lock camera X indices at B -12/0/+12 mm plus two positive-lock carriage Y positions at B +0/+21 mm. Install all three M4 leveling screws in the same labeled X index and all four M5 carriage bolts in the same Y row; round bores replace long friction slots so the camera cannot creep along an adjustment slot.",
+    "z_adjustment_mm": 8.0,
+    "secondary_retention": "one complete factory-terminated, independently rated stainless 7x7 safety-tether assembly meeting procurement_constraints.independent_camera_safety_tether; >=130 mm laid-flat choker eye centered on the exposed right distal-boom station B (396.25,152.5) and captive screw-lock connector at the rear cage wing; installed centerline slack must be 20-105 mm across the selected positive-lock camera index",
+    "shim_ladder_mm": [0.0, 0.3, 0.6, 0.9],
+    "shim_rule": "Use the thinnest symmetric or single-side combination that removes rattle without forcing or distorting the received camera. On 2026-09-15 the user reported nominal 0.9 mm loose and 0.9+0.3 mm too tight; provide nominal 1.0 and 1.1 mm final options without another coupon print. Final selection and retention remain checked during cage assembly, not assumed passed.",
+    "final_shim_options_mm": [1.0, 1.1],
+    "final_shim_quantity_each": 2,
+    "final_shim_plate_override": "cad/output/revisions/08D-C1_final_shims_v1/08D-C1_ABS_camera_cage_keeper_SHIMS_1p0_1p1_v1.3mf"
+  },
+  "parts": [
+    {"part": "board_corner_saddle_left", "quantity": 1, "material": "ABS Rapido"},
+    {"part": "board_corner_saddle_right", "quantity": 1, "material": "ABS Rapido"},
+    {"part": "board_corner_cap_left", "quantity": 1, "material": "ABS Rapido"},
+    {"part": "board_corner_cap_right", "quantity": 1, "material": "ABS Rapido"},
+    {"part": "board_pressure_pad", "quantity": 4, "material": "TPU 95A preferred; ABS Rapido fallback"},
+    {"part": "m6_nut_retainer", "quantity": 5, "sacrificial_quantity": 1, "material": "ABS Rapido", "note": "four installed mechanically latched channel closures plus one sacrificial 00G insertion/removal test piece; do not transfer the test retainer"},
+    {"part": "upright_truss_segment_240", "quantity": 8, "material": "ABS Rapido", "note": "one-piece open-U section"},
+    {"part": "crossbar_truss_segment_182p5", "quantity": 4, "material": "ABS Rapido", "note": "four interchangeable one-piece open-U modules; one center boss per module"},
+    {"part": "boom_root_truss_segment_164p25", "quantity": 2, "material": "ABS Rapido", "note": "one-piece open-U root module without conflicting vertical bores"},
+    {"part": "boom_camera_truss_segment_164p25", "quantity": 2, "material": "ABS Rapido", "note": "one-piece open-U distal module with two vertical carriage bores only at camera end"},
+    {"part": "u_truss_splice", "quantity": 8, "material": "ABS Rapido", "note": "104 mm long full-height open U collar for six upright and two boom joints"},
+    {"part": "u_truss_splice_crossbar_2bolt", "quantity": 2, "material": "ABS Rapido", "note": "92 mm long full-height outer-crossbar collar; one M5 bolt per adjoining member end preserves boom-root hardware access"},
+    {"part": "u_truss_splice_center_4bolt", "quantity": 1, "material": "ABS Rapido", "note": "92 mm long full-height center-crossbar collar using two diagonally separated M5 bolts per adjoining member end"},
+    {"part": "portal_corner_node_left", "quantity": 2, "material": "ABS Rapido", "note": "matched outside pair at left portal corner"},
+    {"part": "portal_corner_node_right", "quantity": 2, "material": "ABS Rapido", "note": "matched outside pair at right portal corner"},
+    {"part": "boom_crossbar_node", "quantity": 4, "material": "ABS Rapido", "note": "identical 80 x 84 x 8 mm flat sandwich straps, one top and one flipped bottom at each boom root"},
+    {"part": "camera_xy_carriage", "quantity": 1, "material": "ABS Rapido"},
+    {"part": "camera_cage_body", "quantity": 1, "material": "ABS Rapido"},
+    {"part": "camera_cage_keeper", "quantity": 1, "material": "ABS Rapido", "note": "planar four-bolt positive-retention keeper; no slide hooks or friction latch"},
+    {"part": "camera_top_compression_pad", "quantity": 1, "material": "TPU 95A preferred; dimension-selected ABS spacer allowed only after 00G received-camera fit"},
+    {"part": "camera_case_shim_ladder", "quantity": 1, "material": "ABS Rapido", "note": "breakaway 0.3/0.6/0.9 mm labeled shims, two of each"},
+    {"part": "camera_case_fit_gauge", "quantity": 1, "material": "ABS Rapido", "print_first": true},
+    {"part": "board_saddle_fit_coupon", "quantity": 1, "material": "ABS Rapido", "print_first": true},
+    {"part": "u_splice_fit_coupon", "quantity": 1, "material": "ABS Rapido", "print_first": true}
+  ],
+  "hardware": [
+    {"item": "M6 x 25 external-hex flange-head bolt", "quantity": 4, "use": "10 mm wrench size; top-driven board corner clamps; head OD must be <=13.5 mm and must bear fully on the integrated 16.0 mm raised cap boss; first-cap physical seating remains mandatory"},
+    {"item": "M6 DIN 985 nyloc nut", "quantity": 5, "use": "four fresh final board-clamp nuts plus one sacrificial 00G nut-pocket/prevailing-torque test nut; 10 mm across flats and <=6.0 mm high; side-loaded captured saddle pockets"},
+    {"item": "M5 x 75 flange-head bolt", "quantity": 32, "use": "sixteen standard-splice positions, four outer-crossbar splice positions, four center-crossbar splice positions, and eight portal-corner positions"},
+    {"item": "M5 x 80 flange-head bolt", "quantity": 4, "use": "two diagonally separated saddle tower receiver cross-bolts per tower"},
+    {"item": "M5 x 85 flange-head bolt", "quantity": 4, "use": "four carriage-to-boom end-collar positions"},
+    {"item": "M5 x 90 flange-head bolt", "quantity": 8, "use": "four vertical top/bottom sandwich-strap bolts per boom root"},
+    {"item": "M5 flanged nyloc nut", "quantity": 52, "use": "48 final installed M5 joints plus four sacrificial carriage nuts used only for the empty-frame proof/creep test; use four fresh nuts for final overhead carriage installation; no loose M5 washers required"},
+    {"item": "M4 x 60 button-head bolt", "quantity": 4, "use": "four perimeter keeper bolts installed downward; washer and head fully recessed in keeper; nyloc and washer below cage base"},
+    {"item": "M4 x 70 button-head socket bolt", "quantity": 3, "use": "2.5 mm internal hex; leveling screws installed downward from above carriage into captured cage-base nuts"},
+    {"item": "M4 standard hex nut", "quantity": 6, "use": "three underside-loaded cage-base captured nuts beneath intact load-bearing roofs plus three accessible jam nuts directly below carriage"},
+    {"item": "M4 nyloc nut", "quantity": 4, "use": "four-point keeper closure below cage base"},
+    {"item": "M4 washer", "quantity": 14, "use": "three under leveling heads, three above leveling jam nuts, four under recessed keeper heads, and four above keeper nylocs"},
+    {"item": "5.0 mm maximum-width cable tie", "quantity": 6, "use": "two integrated cage slots, two boom floor tie stations, and two right-upright floor tie stations"},
+    {"item": "complete factory-terminated independent metal camera safety tether assembly", "quantity": 1, "use": "500 +/- 25 mm finished cable-centerline length; 1.5-2.0 mm 7x7 stainless cable; coated OD <=3.0 mm; >=130 mm laid-flat choker eye around the exposed right distal boom station B (396.25,152.5); captive screw-lock cage connector stock/pin <=5 mm and opening >=9 mm; manufacturer WLL >=10 kg and MBL >=50 kg"}
+  ],
+  "mandatory_prototype_gates": [
+    "Print camera_case_fit_gauge first and compare the received camera and lens without forcing either feature.",
+    "Install the square camera with its USB connector facing the rear USB opening, then verify the plug and bend radius pass behind the boom end, enter the right open-U channel, rise ahead of the root straps, and clear every boom, strap, keeper, and carriage surface.",
+    "Dry-assemble the empty portal and apply a static proof load greater than the camera/cage mass before installing the camera.",
+    "Verify that neither top clamp lip intersects T0, T1, or any direct tag artwork.",
+    "Verify the complete portal, fasteners, cable, and camera remain outside every robot route; generated proxy geometry is not collision proof.",
+    "Measure entrance-pupil height and lock the four carriage bolts and three leveling screws with witness marks.",
+    "Before installing all clamps, physically seat one received M6x25 flange head with measured head OD <=13.5 mm on the first integrated 16.0 mm raised cap boss and confirm full, concentric, flat, force-free seating with no flange overhang.",
+    "Before any overhead installation, verify the received complete factory-terminated tether and manufacturer evidence against every procurement constraint, then confirm both terminated connections close and lock without modifying the cable or fittings.",
+    "Do not power or move the robot until a superseding controlled build release authorizes this physical support."
+  ]
+}

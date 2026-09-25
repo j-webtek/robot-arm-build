@@ -1,0 +1,159 @@
+{
+  "schema_version": 2,
+  "design_revision": "RC02-PRO-R1",
+  "job_id": "00A",
+  "plate_file": "00A_PETG_keyboard_profile_fit_tests.3mf",
+  "printer": {
+    "model": "QIDI Plus4",
+    "nominal_build_volume_mm": [
+      305.0,
+      305.0,
+      280.0
+    ],
+    "safe_plate_envelope_mm": [
+      295.0,
+      295.0,
+      280.0
+    ],
+    "edge_margin_mm": 5.0,
+    "default_nozzle_mm": 0.4
+  },
+  "stage": "diagnostic",
+  "selection": "required",
+  "purpose": "Keyboard corner, seam, clearance, and M4 washer tests using the exact tray profile",
+  "parts": {
+    "keyboard_corner_fit_test.stl": 1,
+    "keyboard_seam_fit_male.stl": 1,
+    "keyboard_seam_fit_female.stl": 1,
+    "hardware_fit_gauge.stl": 1,
+    "m4_washer_fit_gauge.stl": 1
+  },
+  "prerequisites": [
+    "plus4_machine_confirmed",
+    "nozzle_0p4_confirmed",
+    "petg_tray_profile_calibrated"
+  ],
+  "process_profile_name": "petg_tray_structural_0p4",
+  "process_profile": {
+    "material": "PETG",
+    "nozzle_mm": 0.4,
+    "layer_height_mm": 0.2,
+    "walls": 5,
+    "top_layers": 6,
+    "bottom_layers": 6,
+    "infill_percent": 35,
+    "infill_pattern": "gyroid",
+    "supports": "off",
+    "bed_adhesion": "Clean textured PEI; 6 mm brim recommended for the two large tray halves",
+    "dimensional_controls": "Keep slicer seam away from mounting slots, male keys, female pocket mouths, and keyboard datums",
+    "purpose": "Keyboard tray halves with reinforced seam and support rails"
+  },
+  "slicer_warning": "Use a calibrated QIDI Studio filament preset for the exact brand and material; temperatures are deliberately not embedded in geometry-only 3MF files.",
+  "geometry_only_3mf": true,
+  "qidi_studio_native_project_required": true,
+  "qidi_studio_roundtrip_gate": "qidi_studio_roundtrip_confirmed",
+  "plate_envelope_mm": [
+    174.0,
+    138.0,
+    11.0
+  ],
+  "absolute_bed_bounds_mm": {
+    "min": [
+      65.505,
+      83.5,
+      0.0
+    ],
+    "max": [
+      239.495,
+      221.5,
+      11.0
+    ]
+  },
+  "centered_on_nominal_bed": true,
+  "source_stl_sha256": {
+    "hardware_fit_gauge.stl": "beb9ecb2cd3b6020c998dc74d284e7639af7ac7b5040f7ab857d9c3fc3212c26",
+    "keyboard_corner_fit_test.stl": "782ce3b7a62afd0bf21bcb1f524788aa0eeabb07a27ee6998a2cde75308b2423",
+    "keyboard_seam_fit_female.stl": "62f7a6f07e7decd8947c2763e0d5757d4d3be7382bfc0b3f79fd3dc243f46ba9",
+    "keyboard_seam_fit_male.stl": "36eb25c1b927a56d961e6ba19fa5ed424ee2d9cbf39732c4f3f0c6649f85d31c",
+    "m4_washer_fit_gauge.stl": "8594207f90b7b1e08a7e91e665fcc29d9a92100835ad2fed3fa172585cb4d08f"
+  },
+  "process_profile_sha256": "a6683691851137c050c1549e2dc810a7be8db2d862064ffd63263d9c5a6165ad",
+  "plate_sha256": "e953101bb6dbb6a7935538f7615267a46dd3ee09c69a11161bd9fb2912c1392a",
+  "objects": [
+    {
+      "name": "keyboard_corner_fit_test_1",
+      "bounds_mm": [
+        [
+          65.505,
+          83.5,
+          0.0
+        ],
+        [
+          123.505,
+          141.5,
+          11.0
+        ]
+      ]
+    },
+    {
+      "name": "keyboard_seam_fit_male_1",
+      "bounds_mm": [
+        [
+          133.505,
+          83.5,
+          0.0
+        ],
+        [
+          193.505,
+          121.5,
+          4.0
+        ]
+      ]
+    },
+    {
+      "name": "keyboard_seam_fit_female_1",
+      "bounds_mm": [
+        [
+          201.505,
+          83.5,
+          0.0
+        ],
+        [
+          239.495,
+          121.5,
+          4.0
+        ]
+      ]
+    },
+    {
+      "name": "hardware_fit_gauge_1",
+      "bounds_mm": [
+        [
+          65.505,
+          151.5,
+          0.0
+        ],
+        [
+          225.505,
+          181.5,
+          6.0
+        ]
+      ]
+    },
+    {
+      "name": "m4_washer_fit_gauge_1",
+      "bounds_mm": [
+        [
+          65.505,
+          191.5,
+          0.0
+        ],
+        [
+          143.505,
+          221.5,
+          6.0
+        ]
+      ]
+    }
+  ]
+}

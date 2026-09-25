@@ -1,0 +1,106 @@
+{
+  "plate": "00G-P1",
+  "file": "PRINT_TPU_board_pads/00G-P1_TPU_board_pads_ONLY_WELDED_v1.3mf",
+  "geometry_source": "C:\\Users\\Jack\\Desktop\\robot-arm-build\\hardware\\static_overhead_camera\\cad\\output\\plates_3mf\\00G-P1_TPU_camera_portal_pads.3mf",
+  "geometry_revision": null,
+  "source_sha256": "2dd31d5b10b814dc7a6280c10e10443189984572e606ba84d0aeecb448ce2957",
+  "output_sha256": "b356fb799f3b8fff783e0624b719645ebfa293c01c5a7c2a2efbac2eea018718",
+  "status": "PASS_MESH",
+  "expected_objects": 4,
+  "objects": [
+    {
+      "name": "board_pressure_pad__01",
+      "original_vertices": 960,
+      "welded_vertices": 960,
+      "triangles": 1916,
+      "open_edges": 0,
+      "nonmanifold_edges": 0,
+      "geometry_unchanged": true
+    },
+    {
+      "name": "board_pressure_pad__02",
+      "original_vertices": 960,
+      "welded_vertices": 960,
+      "triangles": 1916,
+      "open_edges": 0,
+      "nonmanifold_edges": 0,
+      "geometry_unchanged": true
+    },
+    {
+      "name": "board_pressure_pad__03",
+      "original_vertices": 960,
+      "welded_vertices": 960,
+      "triangles": 1916,
+      "open_edges": 0,
+      "nonmanifold_edges": 0,
+      "geometry_unchanged": true
+    },
+    {
+      "name": "board_pressure_pad__04",
+      "original_vertices": 960,
+      "welded_vertices": 960,
+      "triangles": 1916,
+      "open_edges": 0,
+      "nonmanifold_edges": 0,
+      "geometry_unchanged": true
+    }
+  ],
+  "placed_bounds_mm": [
+    [
+      [
+        68.0,
+        10.0,
+        0.0
+      ],
+      [
+        106.0,
+        19.0,
+        3.1500000953674316
+      ]
+    ],
+    [
+      [
+        242.0,
+        10.0,
+        0.0
+      ],
+      [
+        280.0,
+        19.0,
+        3.1500000953674316
+      ]
+    ],
+    [
+      [
+        184.0,
+        10.0,
+        0.0
+      ],
+      [
+        222.0,
+        19.0,
+        3.1500000953674316
+      ]
+    ],
+    [
+      [
+        126.0,
+        10.0,
+        0.0
+      ],
+      [
+        164.0,
+        19.0,
+        3.1500000953674316
+      ]
+    ]
+  ],
+  "triangle_coordinates": "EXACTLY_PRESERVED_FROM_NAMED_GEOMETRY_SOURCE",
+  "build_transforms": "EXACTLY_PRESERVED",
+  "excluded_objects": [
+    "camera_top_compression_pad__01"
+  ],
+  "namespace": "DEFAULT_UNPREFIXED_CORE",
+  "native_slicer_preview": "PENDING",
+  "physical_fit_and_strength": "NOT_QUALIFIED"
+}

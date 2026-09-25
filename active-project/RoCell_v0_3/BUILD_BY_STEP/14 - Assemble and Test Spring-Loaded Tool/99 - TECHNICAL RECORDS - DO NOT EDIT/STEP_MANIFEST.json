@@ -1,0 +1,1648 @@
+{
+  "schema_version": 1,
+  "layout_version": 4,
+  "design_revision": "RC03-INT-R1",
+  "package_definition_hash": "7a6947f2de52f63133c5b9647b9b479ccd9d896906c2b575e76c106e1e5dccca",
+  "canonical_snapshot_hash": "05d11599e6d4a2937e0207535b298aa809ff08c79840350c7716666ce6d12755",
+  "canonical_input_hash": "05d11599e6d4a2937e0207535b298aa809ff08c79840350c7716666ce6d12755",
+  "step_id": "14",
+  "slug": "assemble_compliant_tool",
+  "title": "Assemble and qualify the compliant tool",
+  "operator_folder": "14 - Assemble and Test Spring-Loaded Tool",
+  "operator_title": "Assemble and Test Spring-Loaded Tool",
+  "state_at_generation": "LOCKED",
+  "active_build_id": "2026-09-01_CELL-A",
+  "blocked_input_gates": [
+    "prerequisite_step:13",
+    "gripper_interface_measured",
+    "spring_dimensions_measured",
+    "gripper_coupon_pass",
+    "spring_fit_coupon_pass",
+    "compliant_tool_m3_insert_coupon_pass",
+    "tool_body_postprint_pass",
+    "tool_force_tcp_limits_approved",
+    "stylus_diameter_measured",
+    "stylus_gauge_coupon_pass",
+    "stylus_collar_retention_pass",
+    "keyboard_rod_measured",
+    "adapter_retention_method_selected",
+    "rod_bushing_retention_pass",
+    "keyboard_tpu_retention_coupon_pass",
+    "keyboard_tpu_batch_postprint_pass"
+  ],
+  "prerequisite_steps": [
+    "13"
+  ],
+  "input_gate_ids": [
+    "gripper_interface_measured",
+    "spring_dimensions_measured",
+    "gripper_coupon_pass",
+    "spring_fit_coupon_pass",
+    "compliant_tool_m3_insert_coupon_pass",
+    "tool_body_postprint_pass",
+    "tool_force_tcp_limits_approved",
+    "stylus_diameter_measured",
+    "stylus_gauge_coupon_pass",
+    "stylus_collar_retention_pass",
+    "keyboard_rod_measured",
+    "adapter_retention_method_selected",
+    "rod_bushing_retention_pass",
+    "keyboard_tpu_retention_coupon_pass",
+    "keyboard_tpu_batch_postprint_pass"
+  ],
+  "completion_gate_ids": [
+    "tool_assembled_motion_pass",
+    "stylus_function_pass"
+  ],
+  "conditional_input_gates": {
+    "phone_stylus_route": [
+      "stylus_diameter_measured",
+      "stylus_gauge_coupon_pass",
+      "stylus_collar_retention_pass"
+    ],
+    "keyboard_rod_route": [
+      "keyboard_rod_measured",
+      "adapter_retention_method_selected",
+      "rod_bushing_retention_pass",
+      "keyboard_tpu_retention_coupon_pass",
+      "keyboard_tpu_batch_postprint_pass"
+    ]
+  },
+  "conditional_completion_gates": {
+    "phone_stylus_route": [
+      "stylus_function_pass"
+    ],
+    "keyboard_rod_route": []
+  },
+  "completion_requires_any_route": [],
+  "conditional_acceptance": {
+    "keyboard_rod_route": [
+      {
+        "test_id": "14-BK",
+        "criterion": "Keyboard rod/bushing/TPU retention and creep",
+        "method": "Qualified axial force-gauge pull plus 24-hour creep check",
+        "limit": "Meets both engineering-approved rod-bushing and keyboard-TPU proof loads/durations with no slip, permanent set, brittle adhesive, or loss of removability",
+        "gate_id": "rod_bushing_retention_pass",
+        "evidence": "Approval ID, gauge ID, loads, durations, displacement, and before/after photos"
+      },
+      {
+        "test_id": "14-CK",
+        "criterion": "Keyboard contact function",
+        "method": "Hand key-contact test before robot use",
+        "limit": "Reliable key input through the TPU tip without hard-stop loading",
+        "gate_id": "keyboard_tpu_batch_postprint_pass",
+        "evidence": "Functional test record"
+      }
+    ],
+    "phone_stylus_route": [
+      {
+        "test_id": "14-BP",
+        "criterion": "Phone stylus/collar retention",
+        "method": "Qualified axial force-gauge pull and repeated removal check",
+        "limit": "Meets the engineering-approved stylus-collar proof load/duration with no slip, permanent set, or loss of serviceability",
+        "gate_id": "stylus_collar_retention_pass",
+        "evidence": "Approval ID, gauge ID, load, duration, and before/after measurements"
+      },
+      {
+        "test_id": "14-CP",
+        "criterion": "Phone stylus function",
+        "method": "Hand capacitive-contact test before robot use",
+        "limit": "Reliable touch response without hard-stop loading",
+        "gate_id": "stylus_function_pass",
+        "evidence": "Manual tap count, successful taps, and video"
+      }
+    ]
+  },
+  "effective_test_ids": [
+    "14-A",
+    "14-D",
+    "14-BK",
+    "14-CK",
+    "14-BP",
+    "14-CP"
+  ],
+  "panel": "output/assembly_guide/images/14_assemble_compliant_tool.png",
+  "print_jobs": [
+    {
+      "job_id": "00C",
+      "action": "consume_accepted_output",
+      "stage": "diagnostic",
+      "selection": "required",
+      "profile": "abs_rapido_precision_0p4",
+      "plate_file": "00C_ABS_tool_profile_fit_tests.3mf",
+      "settings_file": "00C_ABS_tool_profile_fit_tests.PRINT_SETTINGS.md",
+      "settings_sha256": "59acdd097bba18a034df2e96cb271f7766e73d40de35bf780a890d1ac3727c66",
+      "qidi_process_profile_file": "slicer_profiles/QIDI_PLUS4/abs_rapido_precision_0p4.process.json",
+      "qidi_process_profile_sha256": "c115ad0ca8acafa86bc303973bbbae27578fdd57db8cbf437a7c8175710ba90a",
+      "filament_preset": "qidi_abs_rapido_xplus4_0p4",
+      "preset_data_status": "EXACT_REPRODUCIBLE",
+      "parts": {
+        "compliant_tool_grip_fit_test.stl": 1,
+        "spring_fit_gauge.stl": 1,
+        "tool_m3_insert_fit_gauge.stl": 1,
+        "m3_head_fit_gauge.stl": 1
+      },
+      "purpose": "ABS RoArm grip, stepped spring seat, profile-specific M3 insert, and M3 head tests using the exact tool profile"
+    },
+    {
+      "job_id": "00D",
+      "action": "consume_accepted_output",
+      "stage": "diagnostic",
+      "selection": "phone_stylus_route",
+      "profile": "petg_adapter_0p4",
+      "plate_file": "00D_PETG_adapter_profile_fit_tests.3mf",
+      "settings_file": "00D_PETG_adapter_profile_fit_tests.PRINT_SETTINGS.md",
+      "settings_sha256": "555dd4276ec5dc8cdda79dd8a9c845436e6d3b72e73449048f07954f2dd16bbb",
+      "qidi_process_profile_file": "slicer_profiles/QIDI_PLUS4/petg_adapter_0p4.process.json",
+      "qidi_process_profile_sha256": "0eac339f7768fb799fa420cd300710e080134d0c0737652fd9afd51d9bc4fa91",
+      "filament_preset": "exact_petg_spool_xplus4_0p4",
+      "preset_data_status": "EXACT_PROCESS_SPOOL_PRESET_REQUIRED",
+      "parts": {
+        "stylus_diameter_gauge.stl": 1
+      },
+      "purpose": "Phone-stylus-route sliding-fit qualification using the exact adapter profile"
+    },
+    {
+      "job_id": "00E",
+      "action": "consume_accepted_output",
+      "stage": "diagnostic",
+      "selection": "required",
+      "profile": "abs_rapido_general_0p4",
+      "plate_file": "00E_ABS_general_setup_tests.3mf",
+      "settings_file": "00E_ABS_general_setup_tests.PRINT_SETTINGS.md",
+      "settings_sha256": "0a1da7fcba38d7c228f9d681e467961e3bfe3069356d0591eab0a5fbbee8cbe5",
+      "qidi_process_profile_file": "slicer_profiles/QIDI_PLUS4/abs_rapido_general_0p4.process.json",
+      "qidi_process_profile_sha256": "756895e547ed186ab4b0d532d6d66fc3e2ad31376bc342a0150cbd4667a5d239",
+      "filament_preset": "qidi_abs_rapido_xplus4_0p4",
+      "preset_data_status": "EXACT_REPRODUCIBLE",
+      "parts": {
+        "hardware_fit_gauge.stl": 1,
+        "setup_hardware_fit_gauge.stl": 1,
+        "tpu_tip_retention_gauge.stl": 1
+      },
+      "purpose": "ABS general clearance, screw-head, washer, camera-hex, and TPU-retention setup tests"
+    },
+    {
+      "job_id": "04A",
+      "action": "consume_accepted_output",
+      "stage": "route",
+      "selection": "any_tool_route",
+      "profile": "abs_rapido_precision_0p4",
+      "plate_file": "04A_ABS_shared_compliant_tool.3mf",
+      "settings_file": "04A_ABS_shared_compliant_tool.PRINT_SETTINGS.md",
+      "settings_sha256": "a5f98db5e0bd54f803e6b623cfd587be6cadb2b5f7ef55ea192664edb244027a",
+      "qidi_process_profile_file": "slicer_profiles/QIDI_PLUS4/abs_rapido_precision_0p4.process.json",
+      "qidi_process_profile_sha256": "c115ad0ca8acafa86bc303973bbbae27578fdd57db8cbf437a7c8175710ba90a",
+      "filament_preset": "qidi_abs_rapido_xplus4_0p4",
+      "preset_data_status": "EXACT_REPRODUCIBLE",
+      "parts": {
+        "compliant_tool_body.stl": 1,
+        "compliant_tool_top_cap.stl": 2
+      },
+      "purpose": "Shared ABS compliant tool body with keyed cap and one spare cap"
+    },
+    {
+      "job_id": "04B",
+      "action": "consume_accepted_output",
+      "stage": "route",
+      "selection": "phone_stylus_route",
+      "profile": "petg_adapter_0p4",
+      "plate_file": "04B_PETG_phone_stylus_adapters.3mf",
+      "settings_file": "04B_PETG_phone_stylus_adapters.PRINT_SETTINGS.md",
+      "settings_sha256": "ceeca6a3cb6645b879ff3253f9cab91267a663253bb12e421abd1dc7f421b2db",
+      "qidi_process_profile_file": "slicer_profiles/QIDI_PLUS4/petg_adapter_0p4.process.json",
+      "qidi_process_profile_sha256": "0eac339f7768fb799fa420cd300710e080134d0c0737652fd9afd51d9bc4fa91",
+      "filament_preset": "exact_petg_spool_xplus4_0p4",
+      "preset_data_status": "EXACT_PROCESS_SPOOL_PRESET_REQUIRED",
+      "parts": {
+        "stylus_collar_9mm.stl": 2
+      },
+      "purpose": "Two phone-route stylus collars for thin-wall retention qualification and one spare"
+    },
+    {
+      "job_id": "04C",
+      "action": "consume_accepted_output",
+      "stage": "route",
+      "selection": "keyboard_rod_route",
+      "profile": "petg_adapter_0p4",
+      "plate_file": "04C_PETG_keyboard_rod_adapters.3mf",
+      "settings_file": "04C_PETG_keyboard_rod_adapters.PRINT_SETTINGS.md",
+      "settings_sha256": "f4e96b64f789e345ba7dabbf4052e35498e57c95c64de12a87374e971eeb32fd",
+      "qidi_process_profile_file": "slicer_profiles/QIDI_PLUS4/petg_adapter_0p4.process.json",
+      "qidi_process_profile_sha256": "0eac339f7768fb799fa420cd300710e080134d0c0737652fd9afd51d9bc4fa91",
+      "filament_preset": "exact_petg_spool_xplus4_0p4",
+      "preset_data_status": "EXACT_PROCESS_SPOOL_PRESET_REQUIRED",
+      "parts": {
+        "rod_bushing_6_to_9mm.stl": 2
+      },
+      "purpose": "Two keyboard-route rod bushings for retention qualification and one spare"
+    },
+    {
+      "job_id": "05C",
+      "action": "consume_accepted_output",
+      "stage": "first_article",
+      "selection": "keyboard_rod_route",
+      "profile": "tpu95a_0p4",
+      "plate_file": "05C_TPU_keyboard_tip_first_article.3mf",
+      "settings_file": "05C_TPU_keyboard_tip_first_article.PRINT_SETTINGS.md",
+      "settings_sha256": "8256bf1ff0f030d8023a16f9f4a299c115b0bf3a151e6fe933cbc1cb919aca4f",
+      "qidi_process_profile_file": "slicer_profiles/QIDI_PLUS4/tpu95a_0p4.process.json",
+      "qidi_process_profile_sha256": "547c6502ce8d5f4b04a5d247b50fcafb884dbe587b1df9c43935dfa6d297e6ba",
+      "filament_preset": "exact_tpu95a_spool_xplus4_0p4",
+      "preset_data_status": "EXACT_PROCESS_SPOOL_PRESET_REQUIRED",
+      "parts": {
+        "keyboard_tip_TPU_6mm.stl": 1
+      },
+      "purpose": "One keyboard TPU tip for dimensional and pull-off acceptance"
+    },
+    {
+      "job_id": "05D",
+      "action": "consume_accepted_output",
+      "stage": "production",
+      "selection": "keyboard_rod_route",
+      "profile": "tpu95a_0p4",
+      "plate_file": "05D_TPU_keyboard_tips_and_spares.3mf",
+      "settings_file": "05D_TPU_keyboard_tips_and_spares.PRINT_SETTINGS.md",
+      "settings_sha256": "c2f91ab16e4faeea96945bdef95eba4cfb142430f44302565ebee51ca891ce9f",
+      "qidi_process_profile_file": "slicer_profiles/QIDI_PLUS4/tpu95a_0p4.process.json",
+      "qidi_process_profile_sha256": "547c6502ce8d5f4b04a5d247b50fcafb884dbe587b1df9c43935dfa6d297e6ba",
+      "filament_preset": "exact_tpu95a_spool_xplus4_0p4",
+      "preset_data_status": "EXACT_PROCESS_SPOOL_PRESET_REQUIRED",
+      "parts": {
+        "keyboard_tip_TPU_6mm.stl": 3
+      },
+      "purpose": "Three additional keyboard TPU tips, yielding two installed and two total spares"
+    }
+  ],
+  "canonical_files": [
+    {
+      "canonical_path": "ASSEMBLY_MANUAL.md",
+      "sha256": "5c77cf9c49e7afcf51eaaf26cf58dc78081eec860b006acebee91a1f11046c07",
+      "size_bytes": 47056,
+      "roles": [
+        "controlled detailed-manual source"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "ASSEMBLY_MANUAL.pdf",
+      "sha256": "3f82933f75bb4df24ba875c03624668dfd86e15b5a956b963fe3cc92621031e5",
+      "size_bytes": 543436,
+      "roles": [
+        "controlled detailed manual"
+      ],
+      "actions": [
+        "read"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "BOM.csv",
+      "sha256": "c9362cf401ca66f4e584c7fc294f6c54853c8ea546e610d551bc841782d6bcd0",
+      "size_bytes": 10703,
+      "roles": [
+        "purchasing source"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "BUILD_TRACKER.json",
+      "sha256": "0309256af31348620bb977aded9c591bc697c8ab7b9873027430aaa28c077b9a",
+      "size_bytes": 18134,
+      "roles": [
+        "machine-readable lifecycle tracker"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "BUILD_TRACKER.md",
+      "sha256": "17ecf32b45b561c9209189849ef20cac965ef09065cb33bf8aa9f24f9a086775",
+      "size_bytes": 6253,
+      "roles": [
+        "lifecycle tracker"
+      ],
+      "actions": [
+        "verify"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "FASTENER_MAP.csv",
+      "sha256": "94b0af10da8ee259d200ae5ffc404f2265ac9b417169e697bcef38e91aca3085",
+      "size_bytes": 2200,
+      "roles": [
+        "board fastener source"
+      ],
+      "actions": [
+        "edit_only_in_step_01_after_cutoff_tests"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "JOB_KITS.csv",
+      "sha256": "2c93199c0703d975d47870c2537dd4acf39c376c6f42fbab17fcddeba4004516",
+      "size_bytes": 11616,
+      "roles": [
+        "kitting source"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "PRINT_READINESS.json",
+      "sha256": "a8c75f05f727fa899c1f873ffea9852b5e6d343cdd302d5c4e02ee4124f74fc3",
+      "size_bytes": 57793,
+      "roles": [
+        "machine-readable print readiness"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "PRINT_READINESS.md",
+      "sha256": "5be5234644cbca322e93f16ec422cd5a6f04059055a2f56d68cf224d61f015b0",
+      "size_bytes": 17177,
+      "roles": [
+        "current print readiness"
+      ],
+      "actions": [
+        "verify"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "RC03_INTEGRATED_BUILD_PLAN.md",
+      "sha256": "c8cf80651860f9c6b13f1227eb542356968f7282f591aa76acfa5950707898b0",
+      "size_bytes": 15962,
+      "roles": [
+        "route architecture"
+      ],
+      "actions": [
+        "read"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "README_FIRST.md",
+      "sha256": "ba84a14a17983d774a0278b4b68571d920b0dc4d186fd05c991b1d149d388a9e",
+      "size_bytes": 9962,
+      "roles": [
+        "release entry point"
+      ],
+      "actions": [
+        "read"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "cad/step/compliant_tool_body.step",
+      "sha256": "a734ff981947886e932f45745f92235d1dc34be5a87c4d585d3e5d06bedb6c93",
+      "size_bytes": 87767,
+      "roles": [
+        "neutral CAD companion"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": [
+        "04A"
+      ]
+    },
+    {
+      "canonical_path": "cad/step/compliant_tool_grip_fit_test.step",
+      "sha256": "6a055831d5b962a4cc0050a252000c00bbe5a751fd3efdd44f526ae6e020d257",
+      "size_bytes": 214042,
+      "roles": [
+        "neutral CAD companion"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": [
+        "00C"
+      ]
+    },
+    {
+      "canonical_path": "cad/step/compliant_tool_top_cap.step",
+      "sha256": "311ad48322d9b0c635cd24137087e385b037b7f7865ddb2d889db1414dcd17f8",
+      "size_bytes": 242348,
+      "roles": [
+        "neutral CAD companion"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": [
+        "04A"
+      ]
+    },
+    {
+      "canonical_path": "cad/step/hardware_fit_gauge.step",
+      "sha256": "5c703f405245681d67ac4c495d2412e67bd52a35c49dd70900563c2e42f28de4",
+      "size_bytes": 3217336,
+      "roles": [
+        "neutral CAD companion"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": [
+        "00E"
+      ]
+    },
+    {
+      "canonical_path": "cad/step/keyboard_tip_TPU_6mm.step",
+      "sha256": "21294f8f9728f137fce634e8dcf9e7045b156cb024ed11c54ac83c3e72e29ccf",
+      "size_bytes": 24799,
+      "roles": [
+        "neutral CAD companion"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": [
+        "05C",
+        "05D"
+      ]
+    },
+    {
+      "canonical_path": "cad/step/m3_head_fit_gauge.step",
+      "sha256": "f3297236393c9cd7ff13577272a3f3ef3c761874609d7f15d16d573bbafd4dc2",
+      "size_bytes": 1078895,
+      "roles": [
+        "neutral CAD companion"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": [
+        "00C"
+      ]
+    },
+    {
+      "canonical_path": "cad/step/rod_bushing_6_to_9mm.step",
+      "sha256": "1480cc0b8e9cad1e3f1aabc09e214a6b856250c956b9e5d016c4bd4915e58c9a",
+      "size_bytes": 33579,
+      "roles": [
+        "neutral CAD companion"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": [
+        "04C"
+      ]
+    },
+    {
+      "canonical_path": "cad/step/setup_hardware_fit_gauge.step",
+      "sha256": "717132c8838c89f2ca775111d497e9888e68e686d0f945ba043790ee5cd1c2e1",
+      "size_bytes": 7430806,
+      "roles": [
+        "neutral CAD companion"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": [
+        "00E"
+      ]
+    },
+    {
+      "canonical_path": "cad/step/spring_fit_gauge.step",
+      "sha256": "bda2d66e7fa65397224de9530115c9694115f3b7f1d99b91bf2cb3d12a0eb022",
+      "size_bytes": 461830,
+      "roles": [
+        "neutral CAD companion"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": [
+        "00C"
+      ]
+    },
+    {
+      "canonical_path": "cad/step/stylus_collar_9mm.step",
+      "sha256": "ac7292d53d8a6a1d7d916c411d7c98dcb27d694b7606d71934eb10092cfdf265",
+      "size_bytes": 19203,
+      "roles": [
+        "neutral CAD companion"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": [
+        "04B"
+      ]
+    },
+    {
+      "canonical_path": "cad/step/stylus_diameter_gauge.step",
+      "sha256": "eefa0ca09c4e99dc34434addc66bb64e6574257fd46c8c2a85a9b3e3edb8f053",
+      "size_bytes": 2365272,
+      "roles": [
+        "neutral CAD companion"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": [
+        "00D"
+      ]
+    },
+    {
+      "canonical_path": "cad/step/tool_m3_insert_fit_gauge.step",
+      "sha256": "ccb28e4f29bc1f82efdc4477db1dc3a896e7c85c6ffd407c8be3c7598a737145",
+      "size_bytes": 1898543,
+      "roles": [
+        "neutral CAD companion"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": [
+        "00C"
+      ]
+    },
+    {
+      "canonical_path": "cad/step/tpu_tip_retention_gauge.step",
+      "sha256": "adb1b65263e62ef9c9a03e13b410391179e07acf29905b973984a9c157309fcc",
+      "size_bytes": 405846,
+      "roles": [
+        "neutral CAD companion"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": [
+        "00E"
+      ]
+    },
+    {
+      "canonical_path": "config/assembly_steps.json",
+      "sha256": "af1920ac851d18c09ad749df5da2ed58dda6c9a40b066966e737430c448a546d",
+      "size_bytes": 117502,
+      "roles": [
+        "canonical step-to-file relationship map"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "config/job_build_record.json",
+      "sha256": "8ffbb767c577fac5c88b8b68a7d4029ac1ca09c5b502f8d27795fb66a585ad64",
+      "size_bytes": 27671,
+      "roles": [
+        "canonical job lifecycle record"
+      ],
+      "actions": [
+        "edit_only_with_controlled_workflow"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "config/measurement_record.json",
+      "sha256": "1fb400eae3104547b9bc75a6824bb137f37acc8274e68d718db7a6d77e734ec9",
+      "size_bytes": 84066,
+      "roles": [
+        "canonical measurement and gate record"
+      ],
+      "actions": [
+        "edit_only_with_recording_script"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "config/parameters.json",
+      "sha256": "769808d9094672ff2f281d39eeafff68c1aa0e4e9ec9b552f22084334b1bb6fc",
+      "size_bytes": 1915,
+      "roles": [
+        "canonical CAD parameter set"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "config/print_jobs.json",
+      "sha256": "429bca9542193388581eee5266af57b2e7460881f87b23b34693eee3b77c66f4",
+      "size_bytes": 13945,
+      "roles": [
+        "canonical print-job definitions"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "config/print_profiles.json",
+      "sha256": "5886a55b3fbdca28bf0d67ea8718a366333e78f2801e1884db00cc9f010ffc5e",
+      "size_bytes": 23632,
+      "roles": [
+        "canonical print-profile definitions"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "config/workcell_layout.json",
+      "sha256": "e84db9aa7b88db442f042c6f546196e350c822a2e7609cb4b652b3da535df2e1",
+      "size_bytes": 17043,
+      "roles": [
+        "generated geometry/layout source"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "job_cards/JOB-00C.md",
+      "sha256": "f3710d58351cad23149777ef40412d9d6a4ef2f37279a8b32da8579edd99375d",
+      "size_bytes": 6371,
+      "roles": [
+        "controlled print traveler"
+      ],
+      "actions": [
+        "consume_accepted_output"
+      ],
+      "job_ids": [
+        "00C"
+      ]
+    },
+    {
+      "canonical_path": "job_cards/JOB-00D.md",
+      "sha256": "e047e8a38c2cd60e04656f0520faadac86c1e06dff93d8e37c9d88a718829620",
+      "size_bytes": 5394,
+      "roles": [
+        "controlled print traveler"
+      ],
+      "actions": [
+        "consume_accepted_output"
+      ],
+      "job_ids": [
+        "00D"
+      ]
+    },
+    {
+      "canonical_path": "job_cards/JOB-00E.md",
+      "sha256": "5e54fc90484f094680ecc6cce9e6cdfc23d81e28d185549f69d0e65c886e9aa0",
+      "size_bytes": 6054,
+      "roles": [
+        "controlled print traveler"
+      ],
+      "actions": [
+        "consume_accepted_output"
+      ],
+      "job_ids": [
+        "00E"
+      ]
+    },
+    {
+      "canonical_path": "job_cards/JOB-04A.md",
+      "sha256": "945d36bb22bd3f0c696e6a8ebb65fcb5117f27de94a2363996fa072d2c5c408d",
+      "size_bytes": 7491,
+      "roles": [
+        "controlled print traveler"
+      ],
+      "actions": [
+        "consume_accepted_output"
+      ],
+      "job_ids": [
+        "04A"
+      ]
+    },
+    {
+      "canonical_path": "job_cards/JOB-04B.md",
+      "sha256": "6400a1d8f8c62d9deed91ecc13fd82a29d42aea965f299d222ce8bb519d2453b",
+      "size_bytes": 6256,
+      "roles": [
+        "controlled print traveler"
+      ],
+      "actions": [
+        "consume_accepted_output"
+      ],
+      "job_ids": [
+        "04B"
+      ]
+    },
+    {
+      "canonical_path": "job_cards/JOB-04C.md",
+      "sha256": "0f139865648d4b8796cff5df7a9ca24aa3932a592eab99850cfa053848639bc3",
+      "size_bytes": 6284,
+      "roles": [
+        "controlled print traveler"
+      ],
+      "actions": [
+        "consume_accepted_output"
+      ],
+      "job_ids": [
+        "04C"
+      ]
+    },
+    {
+      "canonical_path": "job_cards/JOB-05C.md",
+      "sha256": "a18bcbbb4080fe595f4c043c750344cea75f7e40e10c240fbc4bc14b70507ae2",
+      "size_bytes": 5735,
+      "roles": [
+        "controlled print traveler"
+      ],
+      "actions": [
+        "consume_accepted_output"
+      ],
+      "job_ids": [
+        "05C"
+      ]
+    },
+    {
+      "canonical_path": "job_cards/JOB-05D.md",
+      "sha256": "5620c0716e848f1b75f509e21641c0e778724544f8a6d7482e8ba38de36305fa",
+      "size_bytes": 6063,
+      "roles": [
+        "controlled print traveler"
+      ],
+      "actions": [
+        "consume_accepted_output"
+      ],
+      "job_ids": [
+        "05D"
+      ]
+    },
+    {
+      "canonical_path": "output/assembly_guide/images/14_assemble_compliant_tool.png",
+      "sha256": "42292a392a68c4a255c7223e71e5810a208da21d7296b7f9bf55a47f99be45e3",
+      "size_bytes": 79390,
+      "roles": [
+        "assembly-step illustration"
+      ],
+      "actions": [
+        "view"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "output/pdf/RC03_ILLUSTRATED_ASSEMBLY_GUIDE.pdf",
+      "sha256": "1084103edb5f167b3a3571ef642826c4f585b488fef8200570e4251f2d5c140d",
+      "size_bytes": 1706300,
+      "roles": [
+        "complete illustrated guide"
+      ],
+      "actions": [
+        "read"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "print_plates_3mf/00C_ABS_tool_profile_fit_tests.3mf",
+      "sha256": "53f14d77ecbebc10860a80122d53860c8789249c29f6af2eecd455855fa14af5",
+      "size_bytes": 1202817,
+      "roles": [
+        "geometry-only QIDI plate"
+      ],
+      "actions": [
+        "consume_accepted_output"
+      ],
+      "job_ids": [
+        "00C"
+      ]
+    },
+    {
+      "canonical_path": "print_plates_3mf/00C_ABS_tool_profile_fit_tests.PRINT_SETTINGS.md",
+      "sha256": "59acdd097bba18a034df2e96cb271f7766e73d40de35bf780a890d1ac3727c66",
+      "size_bytes": 5511,
+      "roles": [
+        "exact operator print-settings sheet"
+      ],
+      "actions": [
+        "consume_accepted_output"
+      ],
+      "job_ids": [
+        "00C"
+      ]
+    },
+    {
+      "canonical_path": "print_plates_3mf/00C_ABS_tool_profile_fit_tests.print.json",
+      "sha256": "74514579248a85f9c75665714dc039baaa7bca4679b40a66b69e866b920496cd",
+      "size_bytes": 13984,
+      "roles": [
+        "controlled plate/profile/hash sidecar"
+      ],
+      "actions": [
+        "consume_accepted_output"
+      ],
+      "job_ids": [
+        "00C"
+      ]
+    },
+    {
+      "canonical_path": "print_plates_3mf/00D_PETG_adapter_profile_fit_tests.3mf",
+      "sha256": "bc6e9d9ec7a6702c2d640f1d43b68eec33864f6398adbb37bb6a0d5fc79f4642",
+      "size_bytes": 663090,
+      "roles": [
+        "geometry-only QIDI plate"
+      ],
+      "actions": [
+        "consume_accepted_output"
+      ],
+      "job_ids": [
+        "00D"
+      ]
+    },
+    {
+      "canonical_path": "print_plates_3mf/00D_PETG_adapter_profile_fit_tests.PRINT_SETTINGS.md",
+      "sha256": "555dd4276ec5dc8cdda79dd8a9c845436e6d3b72e73449048f07954f2dd16bbb",
+      "size_bytes": 4724,
+      "roles": [
+        "exact operator print-settings sheet"
+      ],
+      "actions": [
+        "consume_accepted_output"
+      ],
+      "job_ids": [
+        "00D"
+      ]
+    },
+    {
+      "canonical_path": "print_plates_3mf/00D_PETG_adapter_profile_fit_tests.print.json",
+      "sha256": "5569fe9bdc2c487bc1ddf458d5a94345101311f2e79d3f0d6a341ba0ea7dea11",
+      "size_bytes": 10895,
+      "roles": [
+        "controlled plate/profile/hash sidecar"
+      ],
+      "actions": [
+        "consume_accepted_output"
+      ],
+      "job_ids": [
+        "00D"
+      ]
+    },
+    {
+      "canonical_path": "print_plates_3mf/00E_ABS_general_setup_tests.3mf",
+      "sha256": "67073d37df50d0329a6b77ba5aed00166fff9cc850c9f6225b00abeba54661d7",
+      "size_bytes": 3366992,
+      "roles": [
+        "geometry-only QIDI plate"
+      ],
+      "actions": [
+        "consume_accepted_output"
+      ],
+      "job_ids": [
+        "00E"
+      ]
+    },
+    {
+      "canonical_path": "print_plates_3mf/00E_ABS_general_setup_tests.PRINT_SETTINGS.md",
+      "sha256": "0a1da7fcba38d7c228f9d681e467961e3bfe3069356d0591eab0a5fbbee8cbe5",
+      "size_bytes": 5440,
+      "roles": [
+        "exact operator print-settings sheet"
+      ],
+      "actions": [
+        "consume_accepted_output"
+      ],
+      "job_ids": [
+        "00E"
+      ]
+    },
+    {
+      "canonical_path": "print_plates_3mf/00E_ABS_general_setup_tests.print.json",
+      "sha256": "cd64ea520ff1550b4abf0e6acb270cf673f3f4e118baaa35fffa5394ddc45717",
+      "size_bytes": 13369,
+      "roles": [
+        "controlled plate/profile/hash sidecar"
+      ],
+      "actions": [
+        "consume_accepted_output"
+      ],
+      "job_ids": [
+        "00E"
+      ]
+    },
+    {
+      "canonical_path": "print_plates_3mf/04A_ABS_shared_compliant_tool.3mf",
+      "sha256": "91a9be9ec968c66b10543d13faae269d991b176fffd105d801a07f4a08107882",
+      "size_bytes": 271017,
+      "roles": [
+        "geometry-only QIDI plate"
+      ],
+      "actions": [
+        "consume_accepted_output"
+      ],
+      "job_ids": [
+        "04A"
+      ]
+    },
+    {
+      "canonical_path": "print_plates_3mf/04A_ABS_shared_compliant_tool.PRINT_SETTINGS.md",
+      "sha256": "a5f98db5e0bd54f803e6b623cfd587be6cadb2b5f7ef55ea192664edb244027a",
+      "size_bytes": 5643,
+      "roles": [
+        "exact operator print-settings sheet"
+      ],
+      "actions": [
+        "consume_accepted_output"
+      ],
+      "job_ids": [
+        "04A"
+      ]
+    },
+    {
+      "canonical_path": "print_plates_3mf/04A_ABS_shared_compliant_tool.print.json",
+      "sha256": "38bce25f21361e27227c63abf5d264d41c4fc7e6ff347b1d1279fb4a7d9ae272",
+      "size_bytes": 13306,
+      "roles": [
+        "controlled plate/profile/hash sidecar"
+      ],
+      "actions": [
+        "consume_accepted_output"
+      ],
+      "job_ids": [
+        "04A"
+      ]
+    },
+    {
+      "canonical_path": "print_plates_3mf/04B_PETG_phone_stylus_adapters.3mf",
+      "sha256": "e0c0f7e0a4d634347490cde4653329ea7c9527be5a967a2379077e1ad925c76f",
+      "size_bytes": 30630,
+      "roles": [
+        "geometry-only QIDI plate"
+      ],
+      "actions": [
+        "consume_accepted_output"
+      ],
+      "job_ids": [
+        "04B"
+      ]
+    },
+    {
+      "canonical_path": "print_plates_3mf/04B_PETG_phone_stylus_adapters.PRINT_SETTINGS.md",
+      "sha256": "ceeca6a3cb6645b879ff3253f9cab91267a663253bb12e421abd1dc7f421b2db",
+      "size_bytes": 4845,
+      "roles": [
+        "exact operator print-settings sheet"
+      ],
+      "actions": [
+        "consume_accepted_output"
+      ],
+      "job_ids": [
+        "04B"
+      ]
+    },
+    {
+      "canonical_path": "print_plates_3mf/04B_PETG_phone_stylus_adapters.print.json",
+      "sha256": "14a4ab116cce4aa51f5abdffba7a38a0810420da6d4efcf2ace06a16dd6690e7",
+      "size_bytes": 11259,
+      "roles": [
+        "controlled plate/profile/hash sidecar"
+      ],
+      "actions": [
+        "consume_accepted_output"
+      ],
+      "job_ids": [
+        "04B"
+      ]
+    },
+    {
+      "canonical_path": "print_plates_3mf/04C_PETG_keyboard_rod_adapters.3mf",
+      "sha256": "39b706d658b093fe29c7cd845412ba2082dacdb6cf321b97d9cb6209a5e81427",
+      "size_bytes": 67554,
+      "roles": [
+        "geometry-only QIDI plate"
+      ],
+      "actions": [
+        "consume_accepted_output"
+      ],
+      "job_ids": [
+        "04C"
+      ]
+    },
+    {
+      "canonical_path": "print_plates_3mf/04C_PETG_keyboard_rod_adapters.PRINT_SETTINGS.md",
+      "sha256": "f4e96b64f789e345ba7dabbf4052e35498e57c95c64de12a87374e971eeb32fd",
+      "size_bytes": 4841,
+      "roles": [
+        "exact operator print-settings sheet"
+      ],
+      "actions": [
+        "consume_accepted_output"
+      ],
+      "job_ids": [
+        "04C"
+      ]
+    },
+    {
+      "canonical_path": "print_plates_3mf/04C_PETG_keyboard_rod_adapters.print.json",
+      "sha256": "766b93f14946113cd5544947d7c333c61a1054104a81daf924e856251e5f4a39",
+      "size_bytes": 11277,
+      "roles": [
+        "controlled plate/profile/hash sidecar"
+      ],
+      "actions": [
+        "consume_accepted_output"
+      ],
+      "job_ids": [
+        "04C"
+      ]
+    },
+    {
+      "canonical_path": "print_plates_3mf/05C_TPU_keyboard_tip_first_article.3mf",
+      "sha256": "1b6b6f5803d89ac00eb31cebc09e470365938842edfb7a748d278d81e5791c76",
+      "size_bytes": 183545,
+      "roles": [
+        "geometry-only QIDI plate"
+      ],
+      "actions": [
+        "consume_accepted_output"
+      ],
+      "job_ids": [
+        "05C"
+      ]
+    },
+    {
+      "canonical_path": "print_plates_3mf/05C_TPU_keyboard_tip_first_article.PRINT_SETTINGS.md",
+      "sha256": "8256bf1ff0f030d8023a16f9f4a299c115b0bf3a151e6fe933cbc1cb919aca4f",
+      "size_bytes": 4777,
+      "roles": [
+        "exact operator print-settings sheet"
+      ],
+      "actions": [
+        "consume_accepted_output"
+      ],
+      "job_ids": [
+        "05C"
+      ]
+    },
+    {
+      "canonical_path": "print_plates_3mf/05C_TPU_keyboard_tip_first_article.print.json",
+      "sha256": "78cfbf544e26201d3eec05f7637ec6fb435234120391b4985420806d41d03001",
+      "size_bytes": 10910,
+      "roles": [
+        "controlled plate/profile/hash sidecar"
+      ],
+      "actions": [
+        "consume_accepted_output"
+      ],
+      "job_ids": [
+        "05C"
+      ]
+    },
+    {
+      "canonical_path": "print_plates_3mf/05D_TPU_keyboard_tips_and_spares.3mf",
+      "sha256": "63efc560b375ce5a6abbd5092f51632a51de8771b90aca70794ec6b7e999e843",
+      "size_bytes": 549145,
+      "roles": [
+        "geometry-only QIDI plate"
+      ],
+      "actions": [
+        "consume_accepted_output"
+      ],
+      "job_ids": [
+        "05D"
+      ]
+    },
+    {
+      "canonical_path": "print_plates_3mf/05D_TPU_keyboard_tips_and_spares.PRINT_SETTINGS.md",
+      "sha256": "c2f91ab16e4faeea96945bdef95eba4cfb142430f44302565ebee51ca891ce9f",
+      "size_bytes": 4829,
+      "roles": [
+        "exact operator print-settings sheet"
+      ],
+      "actions": [
+        "consume_accepted_output"
+      ],
+      "job_ids": [
+        "05D"
+      ]
+    },
+    {
+      "canonical_path": "print_plates_3mf/05D_TPU_keyboard_tips_and_spares.print.json",
+      "sha256": "b283dd28900a832352cd281477309a16aacbe36811720ec7e80f77d9b9447799",
+      "size_bytes": 11441,
+      "roles": [
+        "controlled plate/profile/hash sidecar"
+      ],
+      "actions": [
+        "consume_accepted_output"
+      ],
+      "job_ids": [
+        "05D"
+      ]
+    },
+    {
+      "canonical_path": "scripts/build_illustrated_assembly_guide.py",
+      "sha256": "6badf0daa975d8c0ab5de34cea5a7514dbff8469d2a7b499670a3002d428eb31",
+      "size_bytes": 44117,
+      "roles": [
+        "illustrated-guide PDF generator"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "scripts/build_manual_pdf.py",
+      "sha256": "4baf08d28e3566c3eb3869585275ebc318bf1e076744867221d4d79e2359f182",
+      "size_bytes": 6974,
+      "roles": [
+        "controlled detailed-manual PDF renderer"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "scripts/build_step_packages.py",
+      "sha256": "09ec78a5512ee6cb6997b3200e7bd1cdb1418eeb2fb477f339f331f14191f8a2",
+      "size_bytes": 171609,
+      "roles": [
+        "step-package generator and validator"
+      ],
+      "actions": [
+        "run_from_project_root"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "scripts/generate_build_tracker.py",
+      "sha256": "6090b47ff751ebb62c6ab8ecd4abc55fa54f79cabde5b86a4231484b2cc67e53",
+      "size_bytes": 11983,
+      "roles": [
+        "job-lifecycle validator and tracker generator"
+      ],
+      "actions": [
+        "run_from_project_root"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "scripts/generate_job_cards.py",
+      "sha256": "520cf48d2263beca0eca351d6960fbfae95e1f9c63e05aec1204957b47271a7f",
+      "size_bytes": 22538,
+      "roles": [
+        "controlled print-traveler instruction generator"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "scripts/initialize_step_evidence.py",
+      "sha256": "0a940eabc2ab22fcc0c4e2b2df9a67fa90224027168127917c2e7879a8725b93",
+      "size_bytes": 4692,
+      "roles": [
+        "non-overwriting active-build evidence initializer"
+      ],
+      "actions": [
+        "run_before_each_step"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "scripts/record_job_lifecycle.py",
+      "sha256": "440ca2e1b5185b230067a5d5f63d936a1d56e84bfc9ec9bc32d920e39ed3eb37",
+      "size_bytes": 3613,
+      "roles": [
+        "sequential print-job lifecycle recorder"
+      ],
+      "actions": [
+        "run_after_each_completed_state"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "scripts/record_print_measurement.py",
+      "sha256": "5cac4945ed54e13f95f1ef2e22e0b26448c4b9b69f966051cb350aae575b232b",
+      "size_bytes": 9085,
+      "roles": [
+        "canonical gate and route recorder"
+      ],
+      "actions": [
+        "run_after_reviewing_raw_evidence"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "scripts/record_step_result.py",
+      "sha256": "851e5b3761c2f37e9542f130ad22e2426cdf4d07af212a26ee3f5dd9012b3f0b",
+      "size_bytes": 5673,
+      "roles": [
+        "non-destructive step-result recorder"
+      ],
+      "actions": [
+        "run_for_each_step_test"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "scripts/render_assembly_guide.py",
+      "sha256": "8e7467e8eccccbf6e04988820b828be3c0aa0c1c06167954f53bb46b5f8cf330",
+      "size_bytes": 59312,
+      "roles": [
+        "assembly-panel source renderer"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "scripts/set_active_build.py",
+      "sha256": "0f593f140437858b8cd72c87f4737b14af483c91ac3e9fcb45f07d4893327571",
+      "size_bytes": 2176,
+      "roles": [
+        "active physical-build selector"
+      ],
+      "actions": [
+        "run_before_recording_evidence"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "scripts/sign_off_step.py",
+      "sha256": "caed2f3b929d24354ae7ff289178e70a94c8729d84ca5f2d55384c483032cbba",
+      "size_bytes": 5604,
+      "roles": [
+        "validated step signoff recorder"
+      ],
+      "actions": [
+        "run_after_step_tests"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "scripts/step_evidence_common.py",
+      "sha256": "93fb598ee2de6dc0ba60d6eec7291458a728cb087dbe724b9e3bf09aa8933f8a",
+      "size_bytes": 9078,
+      "roles": [
+        "shared step-evidence containment and schema controls"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "scripts/validate_print_readiness.py",
+      "sha256": "7dc6159c15826da700a66d9e271776f8daed14716db80081fedea2e8712fb2ed",
+      "size_bytes": 86733,
+      "roles": [
+        "typed gate and print-readiness validator"
+      ],
+      "actions": [
+        "run_from_project_root"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "scripts/validate_release_package.py",
+      "sha256": "9b954d47726e7c09423d31f7cdbd8b0e07dff1b78c11bf826274473062d66ed3",
+      "size_bytes": 118881,
+      "roles": [
+        "whole-package release validator"
+      ],
+      "actions": [
+        "run_from_project_root"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "slicer_profiles/QIDI_PLUS4/README.md",
+      "sha256": "641631027fd7a0a452653ca7613b0f2f19c91e3bd49e3f90e9c9a3429c1777f4",
+      "size_bytes": 2277,
+      "roles": [
+        "QIDI process-preset import guide"
+      ],
+      "actions": [
+        "read"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "slicer_profiles/QIDI_PLUS4/abs_rapido_general_0p4.process.json",
+      "sha256": "756895e547ed186ab4b0d532d6d66fc3e2ad31376bc342a0150cbd4667a5d239",
+      "size_bytes": 2090,
+      "roles": [
+        "importable QIDI Studio process preset"
+      ],
+      "actions": [
+        "consume_accepted_output"
+      ],
+      "job_ids": [
+        "00E"
+      ]
+    },
+    {
+      "canonical_path": "slicer_profiles/QIDI_PLUS4/abs_rapido_precision_0p4.process.json",
+      "sha256": "c115ad0ca8acafa86bc303973bbbae27578fdd57db8cbf437a7c8175710ba90a",
+      "size_bytes": 2097,
+      "roles": [
+        "importable QIDI Studio process preset"
+      ],
+      "actions": [
+        "consume_accepted_output"
+      ],
+      "job_ids": [
+        "00C",
+        "04A"
+      ]
+    },
+    {
+      "canonical_path": "slicer_profiles/QIDI_PLUS4/petg_adapter_0p4.process.json",
+      "sha256": "0eac339f7768fb799fa420cd300710e080134d0c0737652fd9afd51d9bc4fa91",
+      "size_bytes": 1715,
+      "roles": [
+        "importable QIDI Studio process preset"
+      ],
+      "actions": [
+        "consume_accepted_output"
+      ],
+      "job_ids": [
+        "00D",
+        "04B",
+        "04C"
+      ]
+    },
+    {
+      "canonical_path": "slicer_profiles/QIDI_PLUS4/tpu95a_0p4.process.json",
+      "sha256": "547c6502ce8d5f4b04a5d247b50fcafb884dbe587b1df9c43935dfa6d297e6ba",
+      "size_bytes": 1716,
+      "roles": [
+        "importable QIDI Studio process preset"
+      ],
+      "actions": [
+        "consume_accepted_output"
+      ],
+      "job_ids": [
+        "05C",
+        "05D"
+      ]
+    },
+    {
+      "canonical_path": "stl/compliant_tool_body.stl",
+      "sha256": "18c8d7ff2d57c0785b324c58e93b3c6558db7c56c339270ab183307b991225ba",
+      "size_bytes": 255684,
+      "roles": [
+        "canonical slicing mesh"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": [
+        "04A"
+      ],
+      "local_operator_copy": "03 - STL MODELS/compliant_tool_body.stl",
+      "local_copy_sha256": "18c8d7ff2d57c0785b324c58e93b3c6558db7c56c339270ab183307b991225ba",
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+    },
+    {
+      "canonical_path": "stl/compliant_tool_grip_fit_test.stl",
+      "sha256": "2c892ebeccd9d4512bf877cac3c1d56c87329c1a30a47165221480021104d935",
+      "size_bytes": 106584,
+      "roles": [
+        "canonical slicing mesh"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": [
+        "00C"
+      ],
+      "local_operator_copy": "03 - STL MODELS/compliant_tool_grip_fit_test.stl",
+      "local_copy_sha256": "2c892ebeccd9d4512bf877cac3c1d56c87329c1a30a47165221480021104d935",
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+    },
+    {
+      "canonical_path": "stl/compliant_tool_top_cap.stl",
+      "sha256": "e7adbf51fd9382a4eb2b9a9dd25df677d43fd488c4584c2bf3e3e7d1599b9081",
+      "size_bytes": 379784,
+      "roles": [
+        "canonical slicing mesh"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": [
+        "04A"
+      ],
+      "local_operator_copy": "03 - STL MODELS/compliant_tool_top_cap.stl",
+      "local_copy_sha256": "e7adbf51fd9382a4eb2b9a9dd25df677d43fd488c4584c2bf3e3e7d1599b9081",
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+    },
+    {
+      "canonical_path": "stl/hardware_fit_gauge.stl",
+      "sha256": "4a9a35b618a420931b7e8b6b717aee4a3eb68f8948fff04e5a69fd65266e9e42",
+      "size_bytes": 3489284,
+      "roles": [
+        "canonical slicing mesh"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": [
+        "00E"
+      ],
+      "local_operator_copy": "03 - STL MODELS/hardware_fit_gauge.stl",
+      "local_copy_sha256": "4a9a35b618a420931b7e8b6b717aee4a3eb68f8948fff04e5a69fd65266e9e42",
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+    },
+    {
+      "canonical_path": "stl/keyboard_tip_TPU_6mm.stl",
+      "sha256": "22ba42201e769ff4ed146b125d69d585b7188b7f274a1b3430b741ad62931d37",
+      "size_bytes": 610484,
+      "roles": [
+        "canonical slicing mesh"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": [
+        "05C",
+        "05D"
+      ],
+      "local_operator_copy": "03 - STL MODELS/keyboard_tip_TPU_6mm.stl",
+      "local_copy_sha256": "22ba42201e769ff4ed146b125d69d585b7188b7f274a1b3430b741ad62931d37",
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+    },
+    {
+      "canonical_path": "stl/m3_head_fit_gauge.stl",
+      "sha256": "7d1206ee09722d99cff871031562943e405c263ea5d1d1f5d82e193bf403cb2e",
+      "size_bytes": 1628384,
+      "roles": [
+        "canonical slicing mesh"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": [
+        "00C"
+      ],
+      "local_operator_copy": "03 - STL MODELS/m3_head_fit_gauge.stl",
+      "local_copy_sha256": "7d1206ee09722d99cff871031562943e405c263ea5d1d1f5d82e193bf403cb2e",
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+    },
+    {
+      "canonical_path": "stl/rod_bushing_6_to_9mm.stl",
+      "sha256": "c30bee2a303f025e94b21e1cf2c5639babbf5d75d3bb008711ea86b5e8160d63",
+      "size_bytes": 116784,
+      "roles": [
+        "canonical slicing mesh"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": [
+        "04C"
+      ],
+      "local_operator_copy": "03 - STL MODELS/rod_bushing_6_to_9mm.stl",
+      "local_copy_sha256": "c30bee2a303f025e94b21e1cf2c5639babbf5d75d3bb008711ea86b5e8160d63",
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+    },
+    {
+      "canonical_path": "stl/setup_hardware_fit_gauge.stl",
+      "sha256": "e6394a26fe104fb2af1b05df14865a5be2908bf6e99fab79c93aa034a2dc57b4",
+      "size_bytes": 8378384,
+      "roles": [
+        "canonical slicing mesh"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": [
+        "00E"
+      ],
+      "local_operator_copy": "03 - STL MODELS/setup_hardware_fit_gauge.stl",
+      "local_copy_sha256": "e6394a26fe104fb2af1b05df14865a5be2908bf6e99fab79c93aa034a2dc57b4",
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+    },
+    {
+      "canonical_path": "stl/spring_fit_gauge.stl",
+      "sha256": "0b8464e8506bea26cc8972ce32fcfc4e7366c800eac4ee23e6fcd16677672f4c",
+      "size_bytes": 436884,
+      "roles": [
+        "canonical slicing mesh"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": [
+        "00C"
+      ],
+      "local_operator_copy": "03 - STL MODELS/spring_fit_gauge.stl",
+      "local_copy_sha256": "0b8464e8506bea26cc8972ce32fcfc4e7366c800eac4ee23e6fcd16677672f4c",
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+    },
+    {
+      "canonical_path": "stl/stylus_collar_9mm.stl",
+      "sha256": "abc908bcd256e8836d13c94cf58320654f78d972e0eb1923f50a6575233f2c8e",
+      "size_bytes": 61084,
+      "roles": [
+        "canonical slicing mesh"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": [
+        "04B"
+      ],
+      "local_operator_copy": "03 - STL MODELS/stylus_collar_9mm.stl",
+      "local_copy_sha256": "abc908bcd256e8836d13c94cf58320654f78d972e0eb1923f50a6575233f2c8e",
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+    },
+    {
+      "canonical_path": "stl/stylus_diameter_gauge.stl",
+      "sha256": "556c8114547de14b36d8990444de96f3229f99c93f6d06fb62216880c6f72c77",
+      "size_bytes": 2328684,
+      "roles": [
+        "canonical slicing mesh"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": [
+        "00D"
+      ],
+      "local_operator_copy": "03 - STL MODELS/stylus_diameter_gauge.stl",
+      "local_copy_sha256": "556c8114547de14b36d8990444de96f3229f99c93f6d06fb62216880c6f72c77",
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+    },
+    {
+      "canonical_path": "stl/tool_m3_insert_fit_gauge.stl",
+      "sha256": "8ff0775cb466170e0749bf125b4b2743f134df072f75ac17090d61854fbc7d8d",
+      "size_bytes": 2164284,
+      "roles": [
+        "canonical slicing mesh"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": [
+        "00C"
+      ],
+      "local_operator_copy": "03 - STL MODELS/tool_m3_insert_fit_gauge.stl",
+      "local_copy_sha256": "8ff0775cb466170e0749bf125b4b2743f134df072f75ac17090d61854fbc7d8d",
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+    },
+    {
+      "canonical_path": "stl/tpu_tip_retention_gauge.stl",
+      "sha256": "0476c9c867a9f28816c5df107f8bcff9e44b7e1ba79e8927501a8d1c6d32b777",
+      "size_bytes": 543284,
+      "roles": [
+        "canonical slicing mesh"
+      ],
+      "actions": [
+        "reference_only"
+      ],
+      "job_ids": [
+        "00E"
+      ],
+      "local_operator_copy": "03 - STL MODELS/tpu_tip_retention_gauge.stl",
+      "local_copy_sha256": "0476c9c867a9f28816c5df107f8bcff9e44b7e1ba79e8927501a8d1c6d32b777",
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+    }
+  ],
+  "local_stl_copy_count": 13,
+  "next_step": "15",
+  "operator_writable_directory": "06 - SAVE MEASUREMENTS AND PHOTOS",
+  "generated_control_hashes": {
+    "00 - START HERE.md": "aaef093f780c7d9c92eb437c9632d317353dfcd9ac2111ac1c073566e6998956",
+    "01 - BEFORE YOU START.md": "4cfe142548cfc9d0fc7b1f4cadb632d97c6dc1ee0fcb4bcbe011f3e4200e6113",
+    "02 - PARTS AND TOOLS CHECKLIST.md": "96b68e7e41d7fca4745db7be6c6243bc1369d0f3e9ce26d341408cdeb7299284",
+    "03 - STL MODELS/READ ME - HOW TO USE THESE MODELS.md": "8619ec6e176dddb61a7e80d957d7806ff3aa2fac00872169e6c349e10f0d6f1d",
+    "03 - STL MODELS/STL MODEL LIST.csv": "6383dc671a56fe50fe2b75987b3333918a89315cd2739550d8ab4d1403047901",
+    "03B - PRINT SETTINGS FOR THIS STEP.md": "bb66e04358d603095447781f24d8468e20b8cbeba0b905146aca1a5c8ea46eab",
+    "04 - STEP-BY-STEP INSTRUCTIONS.md": "92bd379e74926639fcb459556203c08a1fbba6b2d6ca9b0c3b56de5bf9b245ad",
+    "05 - CHECK YOUR WORK.md": "a01407be2bd395d1977dac4c92f8a2e9210c95b897cf3f126eab1c0a6d1d4f5b",
+    "06 - SAVE MEASUREMENTS AND PHOTOS/READ ME - WHAT TO RECORD.md": "8e1410acf823dfd06db2bfeae47a2234cb37248a153a44d8816b3720758432bf",
+    "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/measurement_record.json": "8bcaa546516ae0274fd910411ab9a8b550b7efcbc987f1d09ccd42b076dd39ff",
+    "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/signoff.json": "31a59d44fbe8f25e1da243c59a44091a913448bb53f3f868af9b21b372f9ef35",
+    "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/Measurements Checklist.md": "530213796793a61df1d4d188bb4dc96ea776b336a8155a9783bfd5abc60afd7c",
+    "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/Finish and Sign Off.md": "c7409552d6c41ebafe6ae7e6a05d14e4c6e6400fbe335a8705150c689d44b8f6",
+    "07 - FINISH THIS STEP AND CONTINUE.md": "9586910c9506af4938e0c8cba2daba2094f0c19c69176f8ef69f7b1317ccc77d",
+    "99 - TECHNICAL RECORDS - DO NOT EDIT/OPEN CONTROLLED FILES.md": "924167391eb3a7bfad209e4888842d18119a7659bc84714b3920116995918230",
+    "99 - TECHNICAL RECORDS - DO NOT EDIT/FILE INDEX.csv": "4c24e68a071a030cd7dee124cff70000964caa2c420dd87886320dd62118fb00",
+    "99 - TECHNICAL RECORDS - DO NOT EDIT/FILE MANIFEST.json": "79e42fc8d33b9407b7791c16f79880af86c084e573586919140e38b68ecefeeb",
+    "99 - TECHNICAL RECORDS - DO NOT EDIT/SHA256SUMS.txt": "a7191634fd75fe11e7bd8379d7b5ab4b4aa05b4a356e1d10288e59cc540fe21a",
+    "99 - TECHNICAL RECORDS - DO NOT EDIT/HARDWARE AND TOOLS.csv": "828b92f43e2c8fe4a6210c5668bdf4a054e14777e5b38010af0ec0dbb05058e2"
+  }
+}

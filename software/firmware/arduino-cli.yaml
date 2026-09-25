@@ -1,0 +1,8 @@
+# Workspace-isolated compile environment; no upload/serial configuration.
+board_manager:
+  additional_urls:
+    - https://dl.espressif.com/dl/package_esp32_index.json
+directories:
+  data: C:/Users/Jack/Desktop/robot-arm-build/software/.firmware-tools/data
+  downloads: C:/Users/Jack/Desktop/robot-arm-build/software/.firmware-tools/downloads
+  user: C:/Users/Jack/Desktop/robot-arm-build/software/.firmware-tools/user

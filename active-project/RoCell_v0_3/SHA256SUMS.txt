@@ -1,0 +1,844 @@
+5c77cf9c49e7afcf51eaaf26cf58dc78081eec860b006acebee91a1f11046c07  ./ASSEMBLY_MANUAL.md
+3f82933f75bb4df24ba875c03624668dfd86e15b5a956b963fe3cc92621031e5  ./ASSEMBLY_MANUAL.pdf
+c9362cf401ca66f4e584c7fc294f6c54853c8ea546e610d551bc841782d6bcd0  ./BOM.csv
+a627a04f33c85c390a8e84ca334cd7945239ed28d0e13a6e1ed1c2a23426074d  ./BUILD_BY_STEP/.generated_by_build_step_packages
+210436b6327dd3bf39187fde96fdaabe2fafacda6b10a8c280ea1135cac35ef2  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/00 - START HERE.md
+0a3b08f9715d6e3d8f861583abd616fdb09cfbbba6659f86475dc8ab4d45a1d6  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/01 - BEFORE YOU START.md
+383763734529db9f583377fa5567eb4b5ee7be6bb3d49bf395395cd4376377be  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/02 - PARTS AND TOOLS CHECKLIST.md
+8de2b07efef5bef8ef9297407c0bd22dd7945adc16f84fd0dab236e304398598  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/03 - STL MODELS/cable_tie_saddle_fit_gauge.stl
+3d232103d1cc89d083cc700526abe40344db3f34f80609a5f134cb37a9247ce6  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/03 - STL MODELS/calibration_puck.stl
+7fb63205ddc37b517ee452eda352893c7912cebe74086d977ef0beb8ec2d006f  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/03 - STL MODELS/camera_plate_universal.stl
+18c8d7ff2d57c0785b324c58e93b3c6558db7c56c339270ab183307b991225ba  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/03 - STL MODELS/compliant_tool_body.stl
+2c892ebeccd9d4512bf877cac3c1d56c87329c1a30a47165221480021104d935  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/03 - STL MODELS/compliant_tool_grip_fit_test.stl
+e7adbf51fd9382a4eb2b9a9dd25df677d43fd488c4584c2bf3e3e7d1599b9081  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/03 - STL MODELS/compliant_tool_top_cap.stl
+4a9a35b618a420931b7e8b6b717aee4a3eb68f8948fff04e5a69fd65266e9e42  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/03 - STL MODELS/hardware_fit_gauge.stl
+c12095d3506ea86025fcef6cd34702efb391aec1e00c9b23fd77bdb250703ad3  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/03 - STL MODELS/keyboard_corner_fit_test.stl
+78c591895ae8392a5af9832f56cb7f15cb6a401c490153a1914b71ff5bcba373  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/03 - STL MODELS/keyboard_rear_clamp.stl
+a19b4288b9d6c3fae66f3baa3aa7726fc4acaa440bdb3f16ad3a7ea7791e9a1f  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/03 - STL MODELS/keyboard_station_left.stl
+bc9cc0d252da8d1702c56bbd0afaf6ed79e5dd9891d121dd54372e4692675cf0  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/03 - STL MODELS/keyboard_station_right.stl
+22ba42201e769ff4ed146b125d69d585b7188b7f274a1b3430b741ad62931d37  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/03 - STL MODELS/keyboard_tip_TPU_6mm.stl
+7d1206ee09722d99cff871031562943e405c263ea5d1d1f5d82e193bf403cb2e  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/03 - STL MODELS/m3_head_fit_gauge.stl
+5771bfa01542ab24999c806f4347486d6cc1800f6a13a17ebfdb9264644e8aec  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/03 - STL MODELS/m4_captive_nut_fit_gauge.stl
+98f27d3b7f274754a274f9856a8318c8b0c98f2fb5b485223fec74236ae349ff  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/03 - STL MODELS/m4_washer_fit_gauge.stl
+a6a8dd06689060766bb31f7eca10e6910fb3313a758af185bcbcdfde3c40a01e  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/03 - STL MODELS/m5_nut_trap_fit_gauge.stl
+2b6384b63a5b191ef88ae5590b50ffb5cd0c64d2102b3145b8336b2fb901faa5  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/03 - STL MODELS/mast_foot_2020.stl
+3a8e939ae308baa04fda3891dfc8851a0a3b2caa9e2a91148414255e1114905b  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/03 - STL MODELS/mast_socket_fit_test.stl
+f766a24143f11769a0bcef7236b09938f4c02434b3b5d8e6d77b21b37f49dcff  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/03 - STL MODELS/phone_clamp_rail.stl
+77883a940d153460346de3ffdfcf3a281e2572ab404dd1f4dc50ec8808afef94  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/03 - STL MODELS/phone_clamp_tip_TPU_M4.stl
+54a7990f706256dd30d3d5ea7487f479e970c1e1d8f212be1996b6df6d1a2e65  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/03 - STL MODELS/phone_m3_insert_fit_gauge.stl
+63e02e28f9bb818007564eab7e82e2b9ce8417f30bdf3cbec3c3a86ec08ac32e  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/03 - STL MODELS/phone_tcp_station.stl
+1091a6d591259a4a22b6d9fd7b36d4a8264807ef5c169fe3c5b1019a16420cfa  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/03 - STL MODELS/phone_width_fit_test.stl
+75c09988c4ebe403447886e98f1024b74087c1686263116ed031e141b337aca8  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/03 - STL MODELS/READ ME - HOW TO USE THESE MODELS.md
+c30bee2a303f025e94b21e1cf2c5639babbf5d75d3bb008711ea86b5e8160d63  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/03 - STL MODELS/rod_bushing_6_to_9mm.stl
+e6394a26fe104fb2af1b05df14865a5be2908bf6e99fab79c93aa034a2dc57b4  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/03 - STL MODELS/setup_hardware_fit_gauge.stl
+0b8464e8506bea26cc8972ce32fcfc4e7366c800eac4ee23e6fcd16677672f4c  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/03 - STL MODELS/spring_fit_gauge.stl
+7b34ff9a05495ce702310171cd27c5201e0c1ee54fede8c9cdbeea7260d3d1d5  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/03 - STL MODELS/station_locator_fit_gauge.stl
+5db3b323a56e699df48db0925c5c12dec8a490a1327d8f749d69356505b83c60  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/03 - STL MODELS/STL MODEL LIST.csv
+abc908bcd256e8836d13c94cf58320654f78d972e0eb1923f50a6575233f2c8e  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/03 - STL MODELS/stylus_collar_9mm.stl
+556c8114547de14b36d8990444de96f3229f99c93f6d06fb62216880c6f72c77  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/03 - STL MODELS/stylus_diameter_gauge.stl
+492f7e3c567a7aa3a4bc255d59425f73dc0c64ab240df8af8f9adf861d53a10f  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/03 - STL MODELS/tag_application_frame_55mm.stl
+8ff0775cb466170e0749bf125b4b2743f134df072f75ac17090d61854fbc7d8d  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/03 - STL MODELS/tool_m3_insert_fit_gauge.stl
+0476c9c867a9f28816c5df107f8bcff9e44b7e1ba79e8927501a8d1c6d32b777  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/03 - STL MODELS/tpu_tip_retention_gauge.stl
+d91149c8563d7d2434f6cab2a0cd646e6702b1ba4e64aa4b0e19b3dbf1fc1d55  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/03B - PRINT SETTINGS FOR THIS STEP.md
+1364a6b86e515774e068dd813a31bde5a96eadad6b3f595daf75ed57900223fd  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/04 - STEP-BY-STEP INSTRUCTIONS.md
+d3e19bf3d3dc75d752a5cffa9cb0cc69381d22e47658133aae2838d1e85502a0  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/05 - CHECK YOUR WORK.md
+5f0181e72a792558418a97bc8df22f468419b150b93365e4bd2896e1dc4092d9  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/06 - SAVE MEASUREMENTS AND PHOTOS/2026-09-01_CELL-A/Finish and Sign Off.md
+e669853976eb82706f85944ae03b046d69ecd884f2a7a76ed234c407ea001259  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/06 - SAVE MEASUREMENTS AND PHOTOS/2026-09-01_CELL-A/measurement_record.json
+13a30d4f03162f4df230f3e635a64ffc2013206ae1b4e1b60540d4b85119eb82  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/06 - SAVE MEASUREMENTS AND PHOTOS/2026-09-01_CELL-A/Measurements Checklist.md
+20c85ae18485c55f3927b97067e4ff08a2e55e4f09d184603eb3cc0f4864ab77  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/06 - SAVE MEASUREMENTS AND PHOTOS/2026-09-01_CELL-A/photos/00A-01_overview_top.jpg
+1179862f67731f24ee9686a683bc08549b53145b50299bbe22c003a9a3ecd123  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/06 - SAVE MEASUREMENTS AND PHOTOS/2026-09-01_CELL-A/photos/00A-02_overview_bottom.jpg
+686bc6a5710a1b70584a5e0e10b47ec04aa2d591fef9a46ebec4ce185e3e81b7  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/06 - SAVE MEASUREMENTS AND PHOTOS/2026-09-01_CELL-A/photos/00A-03_washer_gauge_closeup.jpg
+e6b8a6c8d7419c04524803f03b4561979460462710ed2b74b606b716e6d07bf1  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/06 - SAVE MEASUREMENTS AND PHOTOS/2026-09-01_CELL-A/photos/00A-04_keyboard_corner_coupon.jpg
+3d369bffabc7ffd268b9b9a27716245e9fce76b8193b7abcabd617577ad3566c  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/06 - SAVE MEASUREMENTS AND PHOTOS/2026-09-01_CELL-A/photos/00A-05_keyboard_fit_primary.jpg
+775f997422afabdcb0145a04d15382da6a6bf390090ca3e61927d74be9196bd7  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/06 - SAVE MEASUREMENTS AND PHOTOS/2026-09-01_CELL-A/photos/00A-06_keyboard_fit_support.jpg
+2ef89ee1df7f5a51efd46da7316ed92a8c7aec7dee102923f552297a813ed426  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/06 - SAVE MEASUREMENTS AND PHOTOS/2026-09-01_CELL-A/photos/00A-07_washer_middle_recess_provisional.jpg
+8845c5d56958be89889b1d728d1a84d9386a189e3c2b4ef3285c8be6ec32b5f0  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/06 - SAVE MEASUREMENTS AND PHOTOS/2026-09-01_CELL-A/photos/00A-08_clearance_4p4_actual_m4_alt_view.jpg
+c36d7e7d52883c73540ec499cc7fdc973692e906b5e16c297a7bbfc24d2d38fc  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/06 - SAVE MEASUREMENTS AND PHOTOS/2026-09-01_CELL-A/photos/00A-09_clearance_4p4_actual_m4_pass.jpg
+13ea00e8d2ebb94ad2173dc97666e218613de7cec1a8323d4fa096e931dbf34e  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/06 - SAVE MEASUREMENTS AND PHOTOS/2026-09-01_CELL-A/photos/00A-10_locator_board_round_6p2_pass.jpg
+eac52169bd963b312b3dd597f090a77562f1ed924be2b98f0a6aae82319e2496  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/06 - SAVE MEASUREMENTS AND PHOTOS/2026-09-01_CELL-A/photos/00B-01_cable_tie_saddle_edge_view1.jpg
+d321f42c38ef8fec4e89e994abfbde8e58dca189e101e6c30cf8756c8310e1c6  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/06 - SAVE MEASUREMENTS AND PHOTOS/2026-09-01_CELL-A/photos/00B-02_cable_tie_saddle_edge_view2.jpg
+2666f9c31b4707e7a8dafa3806a2ecf0fd8d00a00d1b763ddcdfcae12f57c803  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/06 - SAVE MEASUREMENTS AND PHOTOS/2026-09-01_CELL-A/photos/00B-03_cable_tie_saddle_oblique_view.jpg
+6b82c2b05bb810c2cfe60da4826059c3d2304296338d598810f6d53cb18be912  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/06 - SAVE MEASUREMENTS AND PHOTOS/2026-09-01_CELL-A/photos/00B-04_cable_tie_saddle_failed_feed_view1.jpg
+40f66415437eb276d70d4dd98961a1e9771fdf0172e62d054ba98f8d1d15c8ca  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/06 - SAVE MEASUREMENTS AND PHOTOS/2026-09-01_CELL-A/photos/00B-05_cable_tie_saddle_failed_feed_view2.jpg
+8b8397fa4b2c1e4f19bf7d5e33842e778124646b9a0ccf9ad27ee0385595797a  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/06 - SAVE MEASUREMENTS AND PHOTOS/2026-09-01_CELL-A/photos/00B-06_m4_washer_left_candidate_provisional.jpg
+a07aee854cbd2708a1fbcfb276c19a25c9c0f04e3ce43dc8b20f936ea2fda464  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/06 - SAVE MEASUREMENTS AND PHOTOS/2026-09-01_CELL-A/photos/00B-07_phone_width_coupon_fit_view1.jpg
+2309974035f36cdd645f144ae28922bcceeb1e3092a256e3492fc2a2ff6cca33  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/06 - SAVE MEASUREMENTS AND PHOTOS/2026-09-01_CELL-A/photos/00B-08_phone_width_coupon_fit_view2.jpg
+8b3999a97f5c1a1ff35de7ac2c2d9ec79ab7c0408f65b5d43bb6b82947636285  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/06 - SAVE MEASUREMENTS AND PHOTOS/2026-09-01_CELL-A/photos/00B-09_m4_nut_gauge_top_side_view.jpg
+8c969cc0cbc9b39b7df44ada832d6a75a22b6bacfd45418c99e908083fd70f9c  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/06 - SAVE MEASUREMENTS AND PHOTOS/2026-09-01_CELL-A/photos/00B-10_m4_nut_gauge_bottom_side_view.jpg
+2975c25b2fdf73a7a29c26492773b084e230d90fb62817bb4aae6891fe0cfda4  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/06 - SAVE MEASUREMENTS AND PHOTOS/2026-09-01_CELL-A/photos/README.md
+b05425b418fd67d217a303abbe2fb79534460bffff1486f414a9b8ffcc3a4099  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/06 - SAVE MEASUREMENTS AND PHOTOS/2026-09-01_CELL-A/qidi/00A_QIDI_slice_preview.png
+34da11449a22ad197e1c32f8b5244a144ccca2fa982391c5bcd338f3c7874b47  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/06 - SAVE MEASUREMENTS AND PHOTOS/2026-09-01_CELL-A/qidi/README.md
+a04b1cc66b52301f40095905f37f00d293c12ddf09f3f65de67bbc7c7c40b90b  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/06 - SAVE MEASUREMENTS AND PHOTOS/2026-09-01_CELL-A/reports/00A_PRINT_AND_FIT_REVIEW.md
+b56d92124100765e75c9ffcd71efef74628711a5528c9ee20b0ce86f6ffb9272  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/06 - SAVE MEASUREMENTS AND PHOTOS/2026-09-01_CELL-A/reports/00B_PRINT_AND_FIT_REVIEW.md
+c7c1cdd867049bc1f8a2d9d7667bfb81fb07cbcb06983f8573e5f47d9dcd5209  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/06 - SAVE MEASUREMENTS AND PHOTOS/2026-09-01_CELL-A/reports/00B_SUPERSESSION_AND_03C1_REWORK_DECISION.md
+fc5d42ed49c788e0b1964ac42a6c336b88c5f43e518a632a66f075c56cd63dd5  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/06 - SAVE MEASUREMENTS AND PHOTOS/2026-09-01_CELL-A/reports/QIDI_PLUS4_PROTOTYPE_BASELINE.md
+d5679372a3fcf6220442a8f4737ad8095ecf9e5fbe8b3e791d37cbe3c05c63d7  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/06 - SAVE MEASUREMENTS AND PHOTOS/2026-09-01_CELL-A/reports/README.md
+842c9c93a6e53a7da91504773f9578e5abca2c76ea17e8a8a6bb90d939b6db40  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/06 - SAVE MEASUREMENTS AND PHOTOS/2026-09-01_CELL-A/signoff.json
+5f0181e72a792558418a97bc8df22f468419b150b93365e4bd2896e1dc4092d9  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/Finish and Sign Off.md
+195d74695951bc397b47c30de42ab70154a0100f2acc24cf13dfa751841c650f  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/measurement_record.json
+b37905f4fd73a4f55a926e4a49b3418de8994da9f2c88c2c2b2d25af7e3a8804  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/Measurements Checklist.md
+efee4657fc3566ddeb6e568590bc4ca07ac4e733564398a18d755ca2488b734f  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/photos/README.md
+a4c5ee87b168481683f98d50da37484d2de07ad610abe53b321864cab74c35f6  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/qidi/README.md
+d5679372a3fcf6220442a8f4737ad8095ecf9e5fbe8b3e791d37cbe3c05c63d7  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/reports/README.md
+d52efc5dd0e2722ddba4ef3b41fe78248cbfd73acd5feca04c71fd690b7ae39d  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/signoff.json
+b341efb0c5ddf6ebc50f6750a0ccc446b43e02f0059504e0f7738c496c76776d  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/06 - SAVE MEASUREMENTS AND PHOTOS/READ ME - WHAT TO RECORD.md
+459fe3b26dbf9bd63977f02c2345e5f7361d17ea10493f6c012d35eda2078f16  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/07 - FINISH THIS STEP AND CONTINUE.md
+d2d98afa59632a3c287fbfbc7f41e59d199adc61ab27310202bbc4d0cf03bf97  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/99 - TECHNICAL RECORDS - DO NOT EDIT/FILE INDEX.csv
+42bece0b2a6d5724e8ce9b9b1998ddd3e0012dddc1ec9c367e070e1a329a69f5  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/99 - TECHNICAL RECORDS - DO NOT EDIT/FILE MANIFEST.json
+8d50d447995af6c45afde763765ccb206e2c25ff906e478c6302468c5ce2bcdd  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/99 - TECHNICAL RECORDS - DO NOT EDIT/HARDWARE AND TOOLS.csv
+03900f1f44b70830320d7ad9711e6008d3ee4980e73233a1cf029221c1c018ee  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/99 - TECHNICAL RECORDS - DO NOT EDIT/OPEN CONTROLLED FILES.md
+1616d26c67afb76b0d1312b015974fd9250b638b3c3f85388fb7a1d9da2b2a84  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/99 - TECHNICAL RECORDS - DO NOT EDIT/SHA256SUMS.txt
+2781e62e725ab1924660561dce59f5f83bb57aac64595ef46d77c3ac3328795e  ./BUILD_BY_STEP/00 - Measure Hardware and Print Approved Parts/99 - TECHNICAL RECORDS - DO NOT EDIT/STEP_MANIFEST.json
+7b310290ef132cc4c3e78346ed313abda047b5a01fa33045c3258b9b6b2ece0a  ./BUILD_BY_STEP/00 - START HERE.md
+886d953d0f1e4533e22e91cef446433cae90c8b2835c83ffa02ed7ab7438857d  ./BUILD_BY_STEP/01 - COMPLETE BUILD ORDER.md
+3c37a7547ef3ef34aee6e0e6f27ee570754d6ab18ffbff2b76412ca6c03e75d7  ./BUILD_BY_STEP/01 - Seal Mark and Drill the Board/00 - START HERE.md
+b15e00c8176b0c80f9b00f2784cd0d594fe20c0bcf9bc9dca7508e5d9438d181  ./BUILD_BY_STEP/01 - Seal Mark and Drill the Board/01 - BEFORE YOU START.md
+7c6e3a3ea6f8c007a3440601ff3bdcf7416058e7acc0086a3ebb0baeef0e6eba  ./BUILD_BY_STEP/01 - Seal Mark and Drill the Board/02 - PARTS AND TOOLS CHECKLIST.md
+3cc0c5972031730f19d4cad90d2303915a75daa4de75c8a387862e6e08a6a6fa  ./BUILD_BY_STEP/01 - Seal Mark and Drill the Board/03 - STL MODELS/BOARD_REFERENCE_DO_NOT_PRINT.stl
+8de2b07efef5bef8ef9297407c0bd22dd7945adc16f84fd0dab236e304398598  ./BUILD_BY_STEP/01 - Seal Mark and Drill the Board/03 - STL MODELS/cable_tie_saddle_fit_gauge.stl
+4a9a35b618a420931b7e8b6b717aee4a3eb68f8948fff04e5a69fd65266e9e42  ./BUILD_BY_STEP/01 - Seal Mark and Drill the Board/03 - STL MODELS/hardware_fit_gauge.stl
+c12095d3506ea86025fcef6cd34702efb391aec1e00c9b23fd77bdb250703ad3  ./BUILD_BY_STEP/01 - Seal Mark and Drill the Board/03 - STL MODELS/keyboard_corner_fit_test.stl
+a19b4288b9d6c3fae66f3baa3aa7726fc4acaa440bdb3f16ad3a7ea7791e9a1f  ./BUILD_BY_STEP/01 - Seal Mark and Drill the Board/03 - STL MODELS/keyboard_station_left.stl
+bc9cc0d252da8d1702c56bbd0afaf6ed79e5dd9891d121dd54372e4692675cf0  ./BUILD_BY_STEP/01 - Seal Mark and Drill the Board/03 - STL MODELS/keyboard_station_right.stl
+5771bfa01542ab24999c806f4347486d6cc1800f6a13a17ebfdb9264644e8aec  ./BUILD_BY_STEP/01 - Seal Mark and Drill the Board/03 - STL MODELS/m4_captive_nut_fit_gauge.stl
+98f27d3b7f274754a274f9856a8318c8b0c98f2fb5b485223fec74236ae349ff  ./BUILD_BY_STEP/01 - Seal Mark and Drill the Board/03 - STL MODELS/m4_washer_fit_gauge.stl
+54a7990f706256dd30d3d5ea7487f479e970c1e1d8f212be1996b6df6d1a2e65  ./BUILD_BY_STEP/01 - Seal Mark and Drill the Board/03 - STL MODELS/phone_m3_insert_fit_gauge.stl
+63e02e28f9bb818007564eab7e82e2b9ce8417f30bdf3cbec3c3a86ec08ac32e  ./BUILD_BY_STEP/01 - Seal Mark and Drill the Board/03 - STL MODELS/phone_tcp_station.stl
+1091a6d591259a4a22b6d9fd7b36d4a8264807ef5c169fe3c5b1019a16420cfa  ./BUILD_BY_STEP/01 - Seal Mark and Drill the Board/03 - STL MODELS/phone_width_fit_test.stl
+0e2f56f141600c9bc0fa31f983aedd235dbf0aed4c0fe2c4b73b2eb3976d27c9  ./BUILD_BY_STEP/01 - Seal Mark and Drill the Board/03 - STL MODELS/READ ME - HOW TO USE THESE MODELS.md
+7b34ff9a05495ce702310171cd27c5201e0c1ee54fede8c9cdbeea7260d3d1d5  ./BUILD_BY_STEP/01 - Seal Mark and Drill the Board/03 - STL MODELS/station_locator_fit_gauge.stl
+d99890dce58a0c6335b7fcd1e14db227fca2e311fed6f26b786bde23c1f001ab  ./BUILD_BY_STEP/01 - Seal Mark and Drill the Board/03 - STL MODELS/STL MODEL LIST.csv
+9bb4c1736097f6e562071a35808035523164f5846777902f987eadd7cfdd8d4f  ./BUILD_BY_STEP/01 - Seal Mark and Drill the Board/03A - PRINT AND ASSEMBLE THE BOARD DRILL GUIDE.md
+8dcc99a33992101ddc285d96f0c0e89bf550682b90457815b4e6a9058dd0ca02  ./BUILD_BY_STEP/01 - Seal Mark and Drill the Board/03B - PRINT SETTINGS FOR THIS STEP.md
+d6ff900e5b616bd627ad34862b5954bb48a76718642ac8ad59bc956e1a89dbe5  ./BUILD_BY_STEP/01 - Seal Mark and Drill the Board/04 - STEP-BY-STEP INSTRUCTIONS.md
+4c09b8a1d2c7ead72f20921b31a50411bd2648df0930005f34dc3426713ac2f0  ./BUILD_BY_STEP/01 - Seal Mark and Drill the Board/05 - CHECK YOUR WORK.md
+a7b85be1774ce06a321f620c20329a9e1b9fa1fe046f7a655703ffa328219ed8  ./BUILD_BY_STEP/01 - Seal Mark and Drill the Board/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/Finish and Sign Off.md
+1852d2b6f116b88e92f030d2a0523b1d4478fa75031533316d5dfa0552f9ab46  ./BUILD_BY_STEP/01 - Seal Mark and Drill the Board/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/measurement_record.json
+10b140d4e49fea03dcbd1323dffd6572b5e4e28ddf511ea52d464bad2fc27bdd  ./BUILD_BY_STEP/01 - Seal Mark and Drill the Board/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/Measurements Checklist.md
+efee4657fc3566ddeb6e568590bc4ca07ac4e733564398a18d755ca2488b734f  ./BUILD_BY_STEP/01 - Seal Mark and Drill the Board/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/photos/README.md
+a4c5ee87b168481683f98d50da37484d2de07ad610abe53b321864cab74c35f6  ./BUILD_BY_STEP/01 - Seal Mark and Drill the Board/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/qidi/README.md
+d5679372a3fcf6220442a8f4737ad8095ecf9e5fbe8b3e791d37cbe3c05c63d7  ./BUILD_BY_STEP/01 - Seal Mark and Drill the Board/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/reports/README.md
+c258a506a7904ac9d57e812d8924c015783eec8a88e1feb46bc1681168f5ebcb  ./BUILD_BY_STEP/01 - Seal Mark and Drill the Board/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/signoff.json
+e60abb806575ee2217671842b47a529f39dfd1a740db7c5c1004dbca4bb388b0  ./BUILD_BY_STEP/01 - Seal Mark and Drill the Board/06 - SAVE MEASUREMENTS AND PHOTOS/READ ME - WHAT TO RECORD.md
+d0e0d731b3fd24bdc7d844c3f9f8c78b23bd4b93808d2309ccc89420c31e9d12  ./BUILD_BY_STEP/01 - Seal Mark and Drill the Board/07 - FINISH THIS STEP AND CONTINUE.md
+0ff931133fbb1a4b16ff52abcc3a812a52471a3e6e1eaa7cd1906fabe0cf2dc7  ./BUILD_BY_STEP/01 - Seal Mark and Drill the Board/99 - TECHNICAL RECORDS - DO NOT EDIT/FILE INDEX.csv
+15488f0c513541fcb3f1a7b2b49a85431954ad8146c6b93b40fbf30ce6564cca  ./BUILD_BY_STEP/01 - Seal Mark and Drill the Board/99 - TECHNICAL RECORDS - DO NOT EDIT/FILE MANIFEST.json
+36d5eae76d69357728532dac3f646334ca06225faee2200769e4286404dcbb54  ./BUILD_BY_STEP/01 - Seal Mark and Drill the Board/99 - TECHNICAL RECORDS - DO NOT EDIT/HARDWARE AND TOOLS.csv
+e5a34709c0b2d60eec01f960481e5df36cf8f08d619eff4555b43747a7a11c8c  ./BUILD_BY_STEP/01 - Seal Mark and Drill the Board/99 - TECHNICAL RECORDS - DO NOT EDIT/OPEN CONTROLLED FILES.md
+1e4ce18c6690690ae6945cd2d33a2c3c03cf9daacea3a571f5259a1b6203b8d8  ./BUILD_BY_STEP/01 - Seal Mark and Drill the Board/99 - TECHNICAL RECORDS - DO NOT EDIT/SHA256SUMS.txt
+46a19ca3ec91b0e5b31b908766ba6b55bee7e084652a388e02f22e2da25eead3  ./BUILD_BY_STEP/01 - Seal Mark and Drill the Board/99 - TECHNICAL RECORDS - DO NOT EDIT/STEP_MANIFEST.json
+85a65d0d93ea81be77feb8e95ee0c178c6767522f02890e47f5613baaa862e35  ./BUILD_BY_STEP/02 - HOW TO SAVE MEASUREMENTS AND PHOTOS.md
+b3adc4bffca1b8b1be5f57756823339f0fcde1ae3f859eeb69d407a3e8c05585  ./BUILD_BY_STEP/02 - Reinforce Board and Clamp Robot Arm/00 - START HERE.md
+d251f4ff7fdef9f0ef349998abdb11ff4f7fad8fed690643262ccb85b0eae411  ./BUILD_BY_STEP/02 - Reinforce Board and Clamp Robot Arm/01 - BEFORE YOU START.md
+7b365402999cef444f605a1fb66b1076232c22cf9125326dc4fd4607e4409103  ./BUILD_BY_STEP/02 - Reinforce Board and Clamp Robot Arm/02 - PARTS AND TOOLS CHECKLIST.md
+0de2386115ec2c668f3c0f5be2de7572a9ccba5a7b738f51495f42ae0e231f3b  ./BUILD_BY_STEP/02 - Reinforce Board and Clamp Robot Arm/03 - STL MODELS/READ ME - HOW TO USE THESE MODELS.md
+40e3efc580e0e639a309652648ed54c1ff153447f2da70a923a56e7cdb8ccb58  ./BUILD_BY_STEP/02 - Reinforce Board and Clamp Robot Arm/03 - STL MODELS/STL MODEL LIST.csv
+b7a263fc01232dcd568eabfd46ed198bcf3a283d63ab6f9aeac39ceb4bb70644  ./BUILD_BY_STEP/02 - Reinforce Board and Clamp Robot Arm/03B - PRINT SETTINGS FOR THIS STEP.md
+62d57ab7ccdaedb6e6dacd65c855c15e7fca6e055194caea3f74471bde7abfca  ./BUILD_BY_STEP/02 - Reinforce Board and Clamp Robot Arm/04 - STEP-BY-STEP INSTRUCTIONS.md
+19d350edde04173065a9c04df768bd81c5b43f3e836f69198048370093112823  ./BUILD_BY_STEP/02 - Reinforce Board and Clamp Robot Arm/05 - CHECK YOUR WORK.md
+b9e6893f788dfec37518df7f6de6d634a4084a80b9c90a94ec6dd728d4e8a4ae  ./BUILD_BY_STEP/02 - Reinforce Board and Clamp Robot Arm/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/Finish and Sign Off.md
+f8089844b584a16175f97d1836d6749762cd56e36c51eb0b67cd32448b680838  ./BUILD_BY_STEP/02 - Reinforce Board and Clamp Robot Arm/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/measurement_record.json
+5961c1b02348305a3a23c4abac3df9bdafdc040cfdd3a0632af0e3b245e6e599  ./BUILD_BY_STEP/02 - Reinforce Board and Clamp Robot Arm/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/Measurements Checklist.md
+efee4657fc3566ddeb6e568590bc4ca07ac4e733564398a18d755ca2488b734f  ./BUILD_BY_STEP/02 - Reinforce Board and Clamp Robot Arm/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/photos/README.md
+a4c5ee87b168481683f98d50da37484d2de07ad610abe53b321864cab74c35f6  ./BUILD_BY_STEP/02 - Reinforce Board and Clamp Robot Arm/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/qidi/README.md
+d5679372a3fcf6220442a8f4737ad8095ecf9e5fbe8b3e791d37cbe3c05c63d7  ./BUILD_BY_STEP/02 - Reinforce Board and Clamp Robot Arm/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/reports/README.md
+a6201ae23be8c48fc12808762a7ed652b38dde84649572b3377b36d740c89b37  ./BUILD_BY_STEP/02 - Reinforce Board and Clamp Robot Arm/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/signoff.json
+10f97f232a6ee30ce0c76ded23a40a4d15bb5f9f81a270879b3f8fe5545c6cf6  ./BUILD_BY_STEP/02 - Reinforce Board and Clamp Robot Arm/06 - SAVE MEASUREMENTS AND PHOTOS/READ ME - WHAT TO RECORD.md
+6e7777c5d1e21d81be1418aac821dce017736bb51d9ac3b7c0481e40f0338daa  ./BUILD_BY_STEP/02 - Reinforce Board and Clamp Robot Arm/07 - FINISH THIS STEP AND CONTINUE.md
+884e28be8bf29ca6e9624c0a5bfd56b38fffd694728f14f5b5aa6a07366155fa  ./BUILD_BY_STEP/02 - Reinforce Board and Clamp Robot Arm/99 - TECHNICAL RECORDS - DO NOT EDIT/FILE INDEX.csv
+f427a3379984209ee484e0ecc5b202e8e10e8d134176e4d9fbda5bed4b02909c  ./BUILD_BY_STEP/02 - Reinforce Board and Clamp Robot Arm/99 - TECHNICAL RECORDS - DO NOT EDIT/FILE MANIFEST.json
+eb7cb38cde9948529e2dd6a6f2c8f0c790d28df8ea76bc1639603bc3992840c6  ./BUILD_BY_STEP/02 - Reinforce Board and Clamp Robot Arm/99 - TECHNICAL RECORDS - DO NOT EDIT/HARDWARE AND TOOLS.csv
+f0f3e473eba4be583b6cfd57d6162ac3f4963ad352c84e5d33c093a227ce0bfd  ./BUILD_BY_STEP/02 - Reinforce Board and Clamp Robot Arm/99 - TECHNICAL RECORDS - DO NOT EDIT/OPEN CONTROLLED FILES.md
+b76de6e2929b076bd2ef8234ba8ce845ed41ef5d104a036180ac3fdece0fd3e8  ./BUILD_BY_STEP/02 - Reinforce Board and Clamp Robot Arm/99 - TECHNICAL RECORDS - DO NOT EDIT/SHA256SUMS.txt
+d0c10cebef45fcd30dd9708ee134e35aa2dbdedaf600ca6e34752b3b8026becc  ./BUILD_BY_STEP/02 - Reinforce Board and Clamp Robot Arm/99 - TECHNICAL RECORDS - DO NOT EDIT/STEP_MANIFEST.json
+cf14904d57427a0003c7c8a69454b7fbbdb1eca1acc67c46dfdd1043ef067c89  ./BUILD_BY_STEP/03 - Install Left Keyboard Base/00 - START HERE.md
+e47c096124bc45d25afd25ac60c5f1a6e28a776b77f51fe8a9a7b074759a9c87  ./BUILD_BY_STEP/03 - Install Left Keyboard Base/01 - BEFORE YOU START.md
+0ed7e7e108d74538e646da62cddd8c42ba61407428247e5b4ced09cfa50e5d66  ./BUILD_BY_STEP/03 - Install Left Keyboard Base/02 - PARTS AND TOOLS CHECKLIST.md
+4a9a35b618a420931b7e8b6b717aee4a3eb68f8948fff04e5a69fd65266e9e42  ./BUILD_BY_STEP/03 - Install Left Keyboard Base/03 - STL MODELS/hardware_fit_gauge.stl
+c12095d3506ea86025fcef6cd34702efb391aec1e00c9b23fd77bdb250703ad3  ./BUILD_BY_STEP/03 - Install Left Keyboard Base/03 - STL MODELS/keyboard_corner_fit_test.stl
+78c591895ae8392a5af9832f56cb7f15cb6a401c490153a1914b71ff5bcba373  ./BUILD_BY_STEP/03 - Install Left Keyboard Base/03 - STL MODELS/keyboard_rear_clamp.stl
+a19b4288b9d6c3fae66f3baa3aa7726fc4acaa440bdb3f16ad3a7ea7791e9a1f  ./BUILD_BY_STEP/03 - Install Left Keyboard Base/03 - STL MODELS/keyboard_station_left.stl
+98f27d3b7f274754a274f9856a8318c8b0c98f2fb5b485223fec74236ae349ff  ./BUILD_BY_STEP/03 - Install Left Keyboard Base/03 - STL MODELS/m4_washer_fit_gauge.stl
+dc235d0bfbd4b9e3bc7dfd6096123f561e38a28a61db4702956b0398660b4055  ./BUILD_BY_STEP/03 - Install Left Keyboard Base/03 - STL MODELS/READ ME - HOW TO USE THESE MODELS.md
+7b34ff9a05495ce702310171cd27c5201e0c1ee54fede8c9cdbeea7260d3d1d5  ./BUILD_BY_STEP/03 - Install Left Keyboard Base/03 - STL MODELS/station_locator_fit_gauge.stl
+821e19c3e607d8d79417a9e45a44bf20696867dde6000dc4fb3a406ab4f6cde7  ./BUILD_BY_STEP/03 - Install Left Keyboard Base/03 - STL MODELS/STL MODEL LIST.csv
+33f4e0f8da1f1504412e73ef76e9b0b72192dd08af7a77c7d6100282c768b114  ./BUILD_BY_STEP/03 - Install Left Keyboard Base/03B - PRINT SETTINGS FOR THIS STEP.md
+198cf3fb9b8e75636cc4701a626819e3bcf0f168f89f1ca3b9187c9bceaedee0  ./BUILD_BY_STEP/03 - Install Left Keyboard Base/04 - STEP-BY-STEP INSTRUCTIONS.md
+969408a4ca60543f5746a556ec55a03bfdf85a3df0d54e8dd3694e3e36d590b5  ./BUILD_BY_STEP/03 - Install Left Keyboard Base/05 - CHECK YOUR WORK.md
+f8d3d178039f8c68676bf06420a66a602b52db509e10a0435ee09e74ae83cf65  ./BUILD_BY_STEP/03 - Install Left Keyboard Base/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/Finish and Sign Off.md
+77dd595f78f24267d6352d473c675099dcd13c02eae1f6602e27e2345a335588  ./BUILD_BY_STEP/03 - Install Left Keyboard Base/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/measurement_record.json
+574bd5d82e78d37a01ec4aac645d6f4569dd3acaaf4145131cb58d7808babb45  ./BUILD_BY_STEP/03 - Install Left Keyboard Base/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/Measurements Checklist.md
+efee4657fc3566ddeb6e568590bc4ca07ac4e733564398a18d755ca2488b734f  ./BUILD_BY_STEP/03 - Install Left Keyboard Base/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/photos/README.md
+a4c5ee87b168481683f98d50da37484d2de07ad610abe53b321864cab74c35f6  ./BUILD_BY_STEP/03 - Install Left Keyboard Base/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/qidi/README.md
+d5679372a3fcf6220442a8f4737ad8095ecf9e5fbe8b3e791d37cbe3c05c63d7  ./BUILD_BY_STEP/03 - Install Left Keyboard Base/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/reports/README.md
+c2e17ab3b52d812723f65c4a1b42e48451b57caf44d262b15ba261f1a35a2fa2  ./BUILD_BY_STEP/03 - Install Left Keyboard Base/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/signoff.json
+e836cb87481a247490778a6137653006cc2f97ffc564d5f5e9a77120c8fcd813  ./BUILD_BY_STEP/03 - Install Left Keyboard Base/06 - SAVE MEASUREMENTS AND PHOTOS/READ ME - WHAT TO RECORD.md
+7787c30fe55bfe2ed590088767a74d544d52fd1e990ee38d7f4c8e9db60bd43e  ./BUILD_BY_STEP/03 - Install Left Keyboard Base/07 - FINISH THIS STEP AND CONTINUE.md
+eea9de52c674793f98c373edef2435d5766b890bbc7921db1f0da825e59a98a4  ./BUILD_BY_STEP/03 - Install Left Keyboard Base/99 - TECHNICAL RECORDS - DO NOT EDIT/FILE INDEX.csv
+46647629ae0bf3a85250b8276ea308cfa572a39a091f5ff9d33d961cd1261e77  ./BUILD_BY_STEP/03 - Install Left Keyboard Base/99 - TECHNICAL RECORDS - DO NOT EDIT/FILE MANIFEST.json
+f47bcc053a060e19d0a242c3550964453ec729c0b1f920a49269fd881c5e1bb4  ./BUILD_BY_STEP/03 - Install Left Keyboard Base/99 - TECHNICAL RECORDS - DO NOT EDIT/HARDWARE AND TOOLS.csv
+1e031ac82f5114f40c4ebdd6e69457098cb725ca84b7379ca4642892efcfd0a1  ./BUILD_BY_STEP/03 - Install Left Keyboard Base/99 - TECHNICAL RECORDS - DO NOT EDIT/OPEN CONTROLLED FILES.md
+f63eb9ef89166d1a076dc0b565640a574cb4fa110b6365919d3a9ae4e2c2b30d  ./BUILD_BY_STEP/03 - Install Left Keyboard Base/99 - TECHNICAL RECORDS - DO NOT EDIT/SHA256SUMS.txt
+c69a802d6dc16df073edaacff8307d60397e96315111b58e6fc1095ed46e520e  ./BUILD_BY_STEP/03 - Install Left Keyboard Base/99 - TECHNICAL RECORDS - DO NOT EDIT/STEP_MANIFEST.json
+f65e9c2d6896bbc9d8808276d646e86d5f6a56cb53a6fc2f32ed753bc673155d  ./BUILD_BY_STEP/03 - PART NAMES AND TECHNICAL TERMS.md
+d64009c159a95d16aee81bc86d12c8a463b34a4790e48f3dac892f785383f3fe  ./BUILD_BY_STEP/04 - Install Right Keyboard Base/00 - START HERE.md
+960912384b7f8da21c0af89dec5421fafcfa3a66805baabf51fe53fc1e7f6941  ./BUILD_BY_STEP/04 - Install Right Keyboard Base/01 - BEFORE YOU START.md
+b4de05aa406db8b950b455a3ba6c9851186641c2b2530955e674f3cb0c13bc03  ./BUILD_BY_STEP/04 - Install Right Keyboard Base/02 - PARTS AND TOOLS CHECKLIST.md
+4a9a35b618a420931b7e8b6b717aee4a3eb68f8948fff04e5a69fd65266e9e42  ./BUILD_BY_STEP/04 - Install Right Keyboard Base/03 - STL MODELS/hardware_fit_gauge.stl
+c12095d3506ea86025fcef6cd34702efb391aec1e00c9b23fd77bdb250703ad3  ./BUILD_BY_STEP/04 - Install Right Keyboard Base/03 - STL MODELS/keyboard_corner_fit_test.stl
+78c591895ae8392a5af9832f56cb7f15cb6a401c490153a1914b71ff5bcba373  ./BUILD_BY_STEP/04 - Install Right Keyboard Base/03 - STL MODELS/keyboard_rear_clamp.stl
+a19b4288b9d6c3fae66f3baa3aa7726fc4acaa440bdb3f16ad3a7ea7791e9a1f  ./BUILD_BY_STEP/04 - Install Right Keyboard Base/03 - STL MODELS/keyboard_station_left.stl
+bc9cc0d252da8d1702c56bbd0afaf6ed79e5dd9891d121dd54372e4692675cf0  ./BUILD_BY_STEP/04 - Install Right Keyboard Base/03 - STL MODELS/keyboard_station_right.stl
+98f27d3b7f274754a274f9856a8318c8b0c98f2fb5b485223fec74236ae349ff  ./BUILD_BY_STEP/04 - Install Right Keyboard Base/03 - STL MODELS/m4_washer_fit_gauge.stl
+336c68b0391deb7c71153962aff3b9150b2b205a61440f3e9e16bd2ce331b03c  ./BUILD_BY_STEP/04 - Install Right Keyboard Base/03 - STL MODELS/READ ME - HOW TO USE THESE MODELS.md
+7b34ff9a05495ce702310171cd27c5201e0c1ee54fede8c9cdbeea7260d3d1d5  ./BUILD_BY_STEP/04 - Install Right Keyboard Base/03 - STL MODELS/station_locator_fit_gauge.stl
+fcb3d1da6d4562abedd28069ef00d07dc3bdb6135463e5ddb57c118e85448af0  ./BUILD_BY_STEP/04 - Install Right Keyboard Base/03 - STL MODELS/STL MODEL LIST.csv
+ab8d1fcb9bf2aad119bf4ba11bc70848123e96f1a54d97f68952209074a478f8  ./BUILD_BY_STEP/04 - Install Right Keyboard Base/03B - PRINT SETTINGS FOR THIS STEP.md
+f5472ff7d59d4fb7738cb46f394580c9452d22eb8295b206926e0213a99cc997  ./BUILD_BY_STEP/04 - Install Right Keyboard Base/04 - STEP-BY-STEP INSTRUCTIONS.md
+7c0dea62bd402833b0e838f5d5050c6dad99c6a8abe3dd6f52ba638927aa24df  ./BUILD_BY_STEP/04 - Install Right Keyboard Base/05 - CHECK YOUR WORK.md
+796706df2d023d0415682dccab01a604bf645a983875755c175551fe0a1d8dc9  ./BUILD_BY_STEP/04 - Install Right Keyboard Base/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/Finish and Sign Off.md
+e4dd337518ceb5a29f32a0bdd4ef2e27e5f4291ed932cfecfb138184e45aed34  ./BUILD_BY_STEP/04 - Install Right Keyboard Base/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/measurement_record.json
+b8f7faa1b1cbb159ae609009e49d4d6424d9fd763528261e72bca9fd84482300  ./BUILD_BY_STEP/04 - Install Right Keyboard Base/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/Measurements Checklist.md
+efee4657fc3566ddeb6e568590bc4ca07ac4e733564398a18d755ca2488b734f  ./BUILD_BY_STEP/04 - Install Right Keyboard Base/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/photos/README.md
+a4c5ee87b168481683f98d50da37484d2de07ad610abe53b321864cab74c35f6  ./BUILD_BY_STEP/04 - Install Right Keyboard Base/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/qidi/README.md
+d5679372a3fcf6220442a8f4737ad8095ecf9e5fbe8b3e791d37cbe3c05c63d7  ./BUILD_BY_STEP/04 - Install Right Keyboard Base/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/reports/README.md
+e0ac883f54074f2da974dea6552ccca7dc85dbcb3e22792a75951a11eb08e90b  ./BUILD_BY_STEP/04 - Install Right Keyboard Base/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/signoff.json
+cdc6216326868b240b6c769afde84f011e3928991fb48af85b5f8f11644cd42f  ./BUILD_BY_STEP/04 - Install Right Keyboard Base/06 - SAVE MEASUREMENTS AND PHOTOS/READ ME - WHAT TO RECORD.md
+b655526d949b784a0db348fc1467a790744af7705d78c67a73c979e68d29d5d2  ./BUILD_BY_STEP/04 - Install Right Keyboard Base/07 - FINISH THIS STEP AND CONTINUE.md
+f6b5add72b553a24096ed5092ccc6b846edcb8bda98f388d1ad5e196c72a8f01  ./BUILD_BY_STEP/04 - Install Right Keyboard Base/99 - TECHNICAL RECORDS - DO NOT EDIT/FILE INDEX.csv
+88cd19e2088d529548e10bd14c7161bcb12c1221c9329cacf42c8b82710029e7  ./BUILD_BY_STEP/04 - Install Right Keyboard Base/99 - TECHNICAL RECORDS - DO NOT EDIT/FILE MANIFEST.json
+9fe95dd751f9038ff779c9acf6a7d3c1e61f79d624c843d8e8ef8ef93762326a  ./BUILD_BY_STEP/04 - Install Right Keyboard Base/99 - TECHNICAL RECORDS - DO NOT EDIT/HARDWARE AND TOOLS.csv
+51877883217ab8db2259385df6a9caec1d9a179114af81eda67c580fe37ad351  ./BUILD_BY_STEP/04 - Install Right Keyboard Base/99 - TECHNICAL RECORDS - DO NOT EDIT/OPEN CONTROLLED FILES.md
+8b6eaad4b0842a447391df34fe56f82ab59c8c6c75d3f9f323179fda9699a5a6  ./BUILD_BY_STEP/04 - Install Right Keyboard Base/99 - TECHNICAL RECORDS - DO NOT EDIT/SHA256SUMS.txt
+16d6c87c7db999b7ed24476080233b1640ce45cb35b1c39cc78ca1d556dc3942  ./BUILD_BY_STEP/04 - Install Right Keyboard Base/99 - TECHNICAL RECORDS - DO NOT EDIT/STEP_MANIFEST.json
+1c2ac92aeac257467f5e18932a5c7760ecaf0bf17bc95263ccf90b0cff73ca29  ./BUILD_BY_STEP/05 - Place and Secure Keyboard/00 - START HERE.md
+dea8061695b001167738c87b19e7a76f0f3dfdc498c24c3f8a2063d8692cc64f  ./BUILD_BY_STEP/05 - Place and Secure Keyboard/01 - BEFORE YOU START.md
+a835056724fee5fe64a1ec0bb5f77eb6a5bdf53f0f56d1ce71c04cc1c0af8e73  ./BUILD_BY_STEP/05 - Place and Secure Keyboard/02 - PARTS AND TOOLS CHECKLIST.md
+78c591895ae8392a5af9832f56cb7f15cb6a401c490153a1914b71ff5bcba373  ./BUILD_BY_STEP/05 - Place and Secure Keyboard/03 - STL MODELS/keyboard_rear_clamp.stl
+a19b4288b9d6c3fae66f3baa3aa7726fc4acaa440bdb3f16ad3a7ea7791e9a1f  ./BUILD_BY_STEP/05 - Place and Secure Keyboard/03 - STL MODELS/keyboard_station_left.stl
+bc9cc0d252da8d1702c56bbd0afaf6ed79e5dd9891d121dd54372e4692675cf0  ./BUILD_BY_STEP/05 - Place and Secure Keyboard/03 - STL MODELS/keyboard_station_right.stl
+a09d3c8350a3376b7b88644df5f0041bce09783c6aa2b1f42c4266ed0ed4a84e  ./BUILD_BY_STEP/05 - Place and Secure Keyboard/03 - STL MODELS/READ ME - HOW TO USE THESE MODELS.md
+8bdd1c9aca48e1b0e052d0e7ba09e679d6de873e00b60224b7c6373620e5f896  ./BUILD_BY_STEP/05 - Place and Secure Keyboard/03 - STL MODELS/STL MODEL LIST.csv
+b8e894d44b3b4d4837e7ca546fae20d80dc2f1b37f80d4cfb92a5bf70977ca33  ./BUILD_BY_STEP/05 - Place and Secure Keyboard/03B - PRINT SETTINGS FOR THIS STEP.md
+40e6b22984bd67e57f9036fc8835ac62171908f52f95cd753741f23f62c65aca  ./BUILD_BY_STEP/05 - Place and Secure Keyboard/04 - STEP-BY-STEP INSTRUCTIONS.md
+48af296d35cafb9a4e925885fe185ba997961be0e01b4c8d33cfad0be96a8275  ./BUILD_BY_STEP/05 - Place and Secure Keyboard/05 - CHECK YOUR WORK.md
+a367fd3e681c3b1d948db4ee4df79be098dfa531a60a1c43971cec038cd5b66b  ./BUILD_BY_STEP/05 - Place and Secure Keyboard/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/Finish and Sign Off.md
+a3e9876d5648e124b5f116645edaf7c11149ad0fd2ac79d0cf89bfe7cccae7a4  ./BUILD_BY_STEP/05 - Place and Secure Keyboard/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/measurement_record.json
+ca3a086227e1bf5dd30ede166a78e02af76d1a9b5a75968b0eaad7372292da8e  ./BUILD_BY_STEP/05 - Place and Secure Keyboard/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/Measurements Checklist.md
+efee4657fc3566ddeb6e568590bc4ca07ac4e733564398a18d755ca2488b734f  ./BUILD_BY_STEP/05 - Place and Secure Keyboard/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/photos/README.md
+a4c5ee87b168481683f98d50da37484d2de07ad610abe53b321864cab74c35f6  ./BUILD_BY_STEP/05 - Place and Secure Keyboard/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/qidi/README.md
+d5679372a3fcf6220442a8f4737ad8095ecf9e5fbe8b3e791d37cbe3c05c63d7  ./BUILD_BY_STEP/05 - Place and Secure Keyboard/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/reports/README.md
+ac59bc49ee95fd65dcd9ea72ff6ee141c542e3541c7a6c320370e8f2db4e90bd  ./BUILD_BY_STEP/05 - Place and Secure Keyboard/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/signoff.json
+9ff156f45dfc9d5fb23808424fa90eda72c5a3eed243b492a03e3ebdf5151a92  ./BUILD_BY_STEP/05 - Place and Secure Keyboard/06 - SAVE MEASUREMENTS AND PHOTOS/READ ME - WHAT TO RECORD.md
+73147abf138b60f47c218c5c83e927ec82c17a5240199dc8239f10574376a585  ./BUILD_BY_STEP/05 - Place and Secure Keyboard/07 - FINISH THIS STEP AND CONTINUE.md
+ed63038e4b28a7f79ce339129b3f963b75a4ed87dcf9856f6176483ff57c090d  ./BUILD_BY_STEP/05 - Place and Secure Keyboard/99 - TECHNICAL RECORDS - DO NOT EDIT/FILE INDEX.csv
+d6381a9330bc90963d34d4bd67a3a0e78a80d742d289c36e34af2062f6bcface  ./BUILD_BY_STEP/05 - Place and Secure Keyboard/99 - TECHNICAL RECORDS - DO NOT EDIT/FILE MANIFEST.json
+19f2247472a60326779e1c2a460f78678ff9b2db38ebe255306f325de61ff8a1  ./BUILD_BY_STEP/05 - Place and Secure Keyboard/99 - TECHNICAL RECORDS - DO NOT EDIT/HARDWARE AND TOOLS.csv
+5068d84a729d9734d5b6564d9ffd01541600d90543455ef73c820c29b1963eeb  ./BUILD_BY_STEP/05 - Place and Secure Keyboard/99 - TECHNICAL RECORDS - DO NOT EDIT/OPEN CONTROLLED FILES.md
+aa1a8d05ea1a2c7b02ddf2936aa1b0b50c2514bf58360798bec973f121ea18b6  ./BUILD_BY_STEP/05 - Place and Secure Keyboard/99 - TECHNICAL RECORDS - DO NOT EDIT/SHA256SUMS.txt
+54e73b6bb147a425af1eb5cadfcf95c8041d1fac12bea1862f88cded70dec74e  ./BUILD_BY_STEP/05 - Place and Secure Keyboard/99 - TECHNICAL RECORDS - DO NOT EDIT/STEP_MANIFEST.json
+067131e5407729d82e4696dd9c315583ddf4d4bb218efd755b94c903a1ec3de5  ./BUILD_BY_STEP/06 - Install Phone and Tool Station/00 - START HERE.md
+797cdaba3fef450b17cc57d87d6a3852e53193c7fd5d082e0df332f7f725490b  ./BUILD_BY_STEP/06 - Install Phone and Tool Station/01 - BEFORE YOU START.md
+78361d4f8851ddf131f9426142bb4bde4f8a40562f8c25ec8d3335b154cb5940  ./BUILD_BY_STEP/06 - Install Phone and Tool Station/02 - PARTS AND TOOLS CHECKLIST.md
+8de2b07efef5bef8ef9297407c0bd22dd7945adc16f84fd0dab236e304398598  ./BUILD_BY_STEP/06 - Install Phone and Tool Station/03 - STL MODELS/cable_tie_saddle_fit_gauge.stl
+5771bfa01542ab24999c806f4347486d6cc1800f6a13a17ebfdb9264644e8aec  ./BUILD_BY_STEP/06 - Install Phone and Tool Station/03 - STL MODELS/m4_captive_nut_fit_gauge.stl
+98f27d3b7f274754a274f9856a8318c8b0c98f2fb5b485223fec74236ae349ff  ./BUILD_BY_STEP/06 - Install Phone and Tool Station/03 - STL MODELS/m4_washer_fit_gauge.stl
+54a7990f706256dd30d3d5ea7487f479e970c1e1d8f212be1996b6df6d1a2e65  ./BUILD_BY_STEP/06 - Install Phone and Tool Station/03 - STL MODELS/phone_m3_insert_fit_gauge.stl
+63e02e28f9bb818007564eab7e82e2b9ce8417f30bdf3cbec3c3a86ec08ac32e  ./BUILD_BY_STEP/06 - Install Phone and Tool Station/03 - STL MODELS/phone_tcp_station.stl
+1091a6d591259a4a22b6d9fd7b36d4a8264807ef5c169fe3c5b1019a16420cfa  ./BUILD_BY_STEP/06 - Install Phone and Tool Station/03 - STL MODELS/phone_width_fit_test.stl
+da5fab5856c5eb1930f64b0a5b39d1caf8aaf38f3ed9e1165278fcf20d45afec  ./BUILD_BY_STEP/06 - Install Phone and Tool Station/03 - STL MODELS/READ ME - HOW TO USE THESE MODELS.md
+7b34ff9a05495ce702310171cd27c5201e0c1ee54fede8c9cdbeea7260d3d1d5  ./BUILD_BY_STEP/06 - Install Phone and Tool Station/03 - STL MODELS/station_locator_fit_gauge.stl
+7993eda71341c9094f5b909bd1487d3641b79eb9881b69eb997f64f1fdd8c516  ./BUILD_BY_STEP/06 - Install Phone and Tool Station/03 - STL MODELS/STL MODEL LIST.csv
+53d22473ac919e72ffc4ad8b1d0f8764a1b8598c380e4b97a152c8039a0246a7  ./BUILD_BY_STEP/06 - Install Phone and Tool Station/03B - PRINT SETTINGS FOR THIS STEP.md
+acedaa503983e6165954499e14087b71ade3d96b7dd7db2b9c9bf3c6adee272c  ./BUILD_BY_STEP/06 - Install Phone and Tool Station/04 - STEP-BY-STEP INSTRUCTIONS.md
+58b826683333653e01fcaec0574d29db8f4ba3bcce33dad59533a69a51af0cfe  ./BUILD_BY_STEP/06 - Install Phone and Tool Station/05 - CHECK YOUR WORK.md
+20469dfcd9afb663da80c76a14c11959e34bb13705453560c27ac76d34327d19  ./BUILD_BY_STEP/06 - Install Phone and Tool Station/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/Finish and Sign Off.md
+d031f0015e22062b9f8443e502e66384be27f61e7a0730a4162e2ed128083fcd  ./BUILD_BY_STEP/06 - Install Phone and Tool Station/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/measurement_record.json
+2d1a93d04c449750f7b9afdcaf383bed5565619daae0d589ece6297499a397b4  ./BUILD_BY_STEP/06 - Install Phone and Tool Station/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/Measurements Checklist.md
+efee4657fc3566ddeb6e568590bc4ca07ac4e733564398a18d755ca2488b734f  ./BUILD_BY_STEP/06 - Install Phone and Tool Station/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/photos/README.md
+a4c5ee87b168481683f98d50da37484d2de07ad610abe53b321864cab74c35f6  ./BUILD_BY_STEP/06 - Install Phone and Tool Station/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/qidi/README.md
+d5679372a3fcf6220442a8f4737ad8095ecf9e5fbe8b3e791d37cbe3c05c63d7  ./BUILD_BY_STEP/06 - Install Phone and Tool Station/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/reports/README.md
+489460ec186c5eb5bbb8fc8bdab88f287f61ca719bcc855be39c7b4d3c999afc  ./BUILD_BY_STEP/06 - Install Phone and Tool Station/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/signoff.json
+29c5565b10525d8478ba987a78c2cf39e9ab968ae423a6a07dd3285471d4af36  ./BUILD_BY_STEP/06 - Install Phone and Tool Station/06 - SAVE MEASUREMENTS AND PHOTOS/READ ME - WHAT TO RECORD.md
+01e96515df156891e3b588a65f45135f31321774db4922a9864a6e39d0a843d4  ./BUILD_BY_STEP/06 - Install Phone and Tool Station/07 - FINISH THIS STEP AND CONTINUE.md
+57bf72ed829af2c2dd1dbfd6de67ed6981aa7a2e05570184ce375406d89b9ea7  ./BUILD_BY_STEP/06 - Install Phone and Tool Station/99 - TECHNICAL RECORDS - DO NOT EDIT/FILE INDEX.csv
+fde43a726c3b7b02cdf4844f6262be5a779fcd254c65343f0504f5836bfc2c8a  ./BUILD_BY_STEP/06 - Install Phone and Tool Station/99 - TECHNICAL RECORDS - DO NOT EDIT/FILE MANIFEST.json
+97281c017c10fab61109ea5f29ad286a3323db716152a20b588b2a77189c26f2  ./BUILD_BY_STEP/06 - Install Phone and Tool Station/99 - TECHNICAL RECORDS - DO NOT EDIT/HARDWARE AND TOOLS.csv
+73ba2663ea54a00c1dd55227ac2525fad074a926355bfefa9abb28b16eb59c1f  ./BUILD_BY_STEP/06 - Install Phone and Tool Station/99 - TECHNICAL RECORDS - DO NOT EDIT/OPEN CONTROLLED FILES.md
+76f6d96e8bc7beb3500a8dd0dce4d27124019ca1f24339e487f3c77f18577306  ./BUILD_BY_STEP/06 - Install Phone and Tool Station/99 - TECHNICAL RECORDS - DO NOT EDIT/SHA256SUMS.txt
+77757d32865a7774441a0b86a7ccf758821ca1bf438b009e11c559c752fc68a0  ./BUILD_BY_STEP/06 - Install Phone and Tool Station/99 - TECHNICAL RECORDS - DO NOT EDIT/STEP_MANIFEST.json
+80cbe27bd0b0bf81493aa2f813a0af44cf205b11ff56e3c881fbf544d3d80784  ./BUILD_BY_STEP/07 - Fit Phone Rail and Tool Cartridge/00 - START HERE.md
+d124a7abd6cab3b64c44dd5ee359b32d93d83c35d311a2533b3a98e3314d0e06  ./BUILD_BY_STEP/07 - Fit Phone Rail and Tool Cartridge/01 - BEFORE YOU START.md
+4b4d3c2fef4c44af4c2ede8a9d6f7600bdaf77af088cebe9d182e7281f0544e6  ./BUILD_BY_STEP/07 - Fit Phone Rail and Tool Cartridge/02 - PARTS AND TOOLS CHECKLIST.md
+8de2b07efef5bef8ef9297407c0bd22dd7945adc16f84fd0dab236e304398598  ./BUILD_BY_STEP/07 - Fit Phone Rail and Tool Cartridge/03 - STL MODELS/cable_tie_saddle_fit_gauge.stl
+3d232103d1cc89d083cc700526abe40344db3f34f80609a5f134cb37a9247ce6  ./BUILD_BY_STEP/07 - Fit Phone Rail and Tool Cartridge/03 - STL MODELS/calibration_puck.stl
+4a9a35b618a420931b7e8b6b717aee4a3eb68f8948fff04e5a69fd65266e9e42  ./BUILD_BY_STEP/07 - Fit Phone Rail and Tool Cartridge/03 - STL MODELS/hardware_fit_gauge.stl
+7d1206ee09722d99cff871031562943e405c263ea5d1d1f5d82e193bf403cb2e  ./BUILD_BY_STEP/07 - Fit Phone Rail and Tool Cartridge/03 - STL MODELS/m3_head_fit_gauge.stl
+5771bfa01542ab24999c806f4347486d6cc1800f6a13a17ebfdb9264644e8aec  ./BUILD_BY_STEP/07 - Fit Phone Rail and Tool Cartridge/03 - STL MODELS/m4_captive_nut_fit_gauge.stl
+98f27d3b7f274754a274f9856a8318c8b0c98f2fb5b485223fec74236ae349ff  ./BUILD_BY_STEP/07 - Fit Phone Rail and Tool Cartridge/03 - STL MODELS/m4_washer_fit_gauge.stl
+f766a24143f11769a0bcef7236b09938f4c02434b3b5d8e6d77b21b37f49dcff  ./BUILD_BY_STEP/07 - Fit Phone Rail and Tool Cartridge/03 - STL MODELS/phone_clamp_rail.stl
+54a7990f706256dd30d3d5ea7487f479e970c1e1d8f212be1996b6df6d1a2e65  ./BUILD_BY_STEP/07 - Fit Phone Rail and Tool Cartridge/03 - STL MODELS/phone_m3_insert_fit_gauge.stl
+63e02e28f9bb818007564eab7e82e2b9ce8417f30bdf3cbec3c3a86ec08ac32e  ./BUILD_BY_STEP/07 - Fit Phone Rail and Tool Cartridge/03 - STL MODELS/phone_tcp_station.stl
+1091a6d591259a4a22b6d9fd7b36d4a8264807ef5c169fe3c5b1019a16420cfa  ./BUILD_BY_STEP/07 - Fit Phone Rail and Tool Cartridge/03 - STL MODELS/phone_width_fit_test.stl
+f18996e36dd6534d702c1ae9acc904424be9ff823fbfafdeb8f1aa5d8961f00f  ./BUILD_BY_STEP/07 - Fit Phone Rail and Tool Cartridge/03 - STL MODELS/READ ME - HOW TO USE THESE MODELS.md
+7b34ff9a05495ce702310171cd27c5201e0c1ee54fede8c9cdbeea7260d3d1d5  ./BUILD_BY_STEP/07 - Fit Phone Rail and Tool Cartridge/03 - STL MODELS/station_locator_fit_gauge.stl
+0062c5babf4abbae35981d139bdfaf73e345cd25e90b457c8c75780e4f3b2faa  ./BUILD_BY_STEP/07 - Fit Phone Rail and Tool Cartridge/03 - STL MODELS/STL MODEL LIST.csv
+88ebaeb91cbd9e13c7012ce0d1c2e42592453faec50149c3e3dedd024df969ea  ./BUILD_BY_STEP/07 - Fit Phone Rail and Tool Cartridge/03B - PRINT SETTINGS FOR THIS STEP.md
+cddccfbeb14a4d86daab2eda9088ad6e9f0227f24901361839a6e9bac466440a  ./BUILD_BY_STEP/07 - Fit Phone Rail and Tool Cartridge/04 - STEP-BY-STEP INSTRUCTIONS.md
+8447812d3198ec538f5a9f984b307fdcee9b74c9c03c4570a762a5828ade8c49  ./BUILD_BY_STEP/07 - Fit Phone Rail and Tool Cartridge/05 - CHECK YOUR WORK.md
+2e6966e5e4dbf2359d840b7555ab0e8690d901ed9613d88d1da828de3db10fc7  ./BUILD_BY_STEP/07 - Fit Phone Rail and Tool Cartridge/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/Finish and Sign Off.md
+6b3b98561745d5225fd74795aedf58296d852c09b4eea8098eba1035b520b9e2  ./BUILD_BY_STEP/07 - Fit Phone Rail and Tool Cartridge/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/measurement_record.json
+a870c613dbf85edfb298c2088297cfe0f5734364d66d6621343c3b5f14606840  ./BUILD_BY_STEP/07 - Fit Phone Rail and Tool Cartridge/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/Measurements Checklist.md
+efee4657fc3566ddeb6e568590bc4ca07ac4e733564398a18d755ca2488b734f  ./BUILD_BY_STEP/07 - Fit Phone Rail and Tool Cartridge/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/photos/README.md
+a4c5ee87b168481683f98d50da37484d2de07ad610abe53b321864cab74c35f6  ./BUILD_BY_STEP/07 - Fit Phone Rail and Tool Cartridge/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/qidi/README.md
+d5679372a3fcf6220442a8f4737ad8095ecf9e5fbe8b3e791d37cbe3c05c63d7  ./BUILD_BY_STEP/07 - Fit Phone Rail and Tool Cartridge/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/reports/README.md
+65424abc0eddc2d671e2fb1e6c81537c8cfe0c591ad018f191162fcba257f9af  ./BUILD_BY_STEP/07 - Fit Phone Rail and Tool Cartridge/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/signoff.json
+a3949029518253a959f126a53a142d07e45e15b6314bd06c532186745b7d6fc5  ./BUILD_BY_STEP/07 - Fit Phone Rail and Tool Cartridge/06 - SAVE MEASUREMENTS AND PHOTOS/READ ME - WHAT TO RECORD.md
+0a1a7659003a02fdaa9adcf3e450a6f6b87fe40fae930e0dc97897bfd0897a69  ./BUILD_BY_STEP/07 - Fit Phone Rail and Tool Cartridge/07 - FINISH THIS STEP AND CONTINUE.md
+4d5693c323360d3ab7343664a640a310fd1cfd0b6092cf741cb3a979d528c712  ./BUILD_BY_STEP/07 - Fit Phone Rail and Tool Cartridge/99 - TECHNICAL RECORDS - DO NOT EDIT/FILE INDEX.csv
+f09541e2f8b4e153b82192423b8f302a8a445bbffa8f9a0ae136bcb6d5b199c9  ./BUILD_BY_STEP/07 - Fit Phone Rail and Tool Cartridge/99 - TECHNICAL RECORDS - DO NOT EDIT/FILE MANIFEST.json
+fdb7fb277aa5cb3160d4f4abfa42d2e732ed797e998d5b5e83cd6f7ef59a69b4  ./BUILD_BY_STEP/07 - Fit Phone Rail and Tool Cartridge/99 - TECHNICAL RECORDS - DO NOT EDIT/HARDWARE AND TOOLS.csv
+7f30543c8e94c8b3ea2114f532834dcad9854abc9162723b2f88b55d3c3b235f  ./BUILD_BY_STEP/07 - Fit Phone Rail and Tool Cartridge/99 - TECHNICAL RECORDS - DO NOT EDIT/OPEN CONTROLLED FILES.md
+725126af7a70491deceaf7007e5544b1551fb9e7c24a02bd91d53a67262c84c8  ./BUILD_BY_STEP/07 - Fit Phone Rail and Tool Cartridge/99 - TECHNICAL RECORDS - DO NOT EDIT/SHA256SUMS.txt
+8cd481a1afb6147bda4d7f255e0341393e074d31a5a3a91539ec20943eb77db3  ./BUILD_BY_STEP/07 - Fit Phone Rail and Tool Cartridge/99 - TECHNICAL RECORDS - DO NOT EDIT/STEP_MANIFEST.json
+7dd2cd23e9c08051888b98ea6a47676c5488c720f6bd3c32a2c309b20fe20736  ./BUILD_BY_STEP/08 - Secure Phone Rail and Tool Cartridge/00 - START HERE.md
+64210408a35fb3714a1089629ab812fa3edc4f0f276b9482ac8252e2ebd1d506  ./BUILD_BY_STEP/08 - Secure Phone Rail and Tool Cartridge/01 - BEFORE YOU START.md
+1ded454da3f339d32f9b4fd6fd58af577ac852318fb39effbed704841db2e5b2  ./BUILD_BY_STEP/08 - Secure Phone Rail and Tool Cartridge/02 - PARTS AND TOOLS CHECKLIST.md
+3d232103d1cc89d083cc700526abe40344db3f34f80609a5f134cb37a9247ce6  ./BUILD_BY_STEP/08 - Secure Phone Rail and Tool Cartridge/03 - STL MODELS/calibration_puck.stl
+f766a24143f11769a0bcef7236b09938f4c02434b3b5d8e6d77b21b37f49dcff  ./BUILD_BY_STEP/08 - Secure Phone Rail and Tool Cartridge/03 - STL MODELS/phone_clamp_rail.stl
+63e02e28f9bb818007564eab7e82e2b9ce8417f30bdf3cbec3c3a86ec08ac32e  ./BUILD_BY_STEP/08 - Secure Phone Rail and Tool Cartridge/03 - STL MODELS/phone_tcp_station.stl
+60b668c801cbca8cad39ba983077f75a573e46a2699dd6496a5ec5e9bac6c3ba  ./BUILD_BY_STEP/08 - Secure Phone Rail and Tool Cartridge/03 - STL MODELS/READ ME - HOW TO USE THESE MODELS.md
+3b6035ac4f5b5ec41f5336c2a30c8dfe719e7a6b02445663911fca16857ac9ea  ./BUILD_BY_STEP/08 - Secure Phone Rail and Tool Cartridge/03 - STL MODELS/STL MODEL LIST.csv
+a7413be35bbaacdbfb9bdb84ab14a16900afd3ccb3ffc4b8c12635371874f305  ./BUILD_BY_STEP/08 - Secure Phone Rail and Tool Cartridge/03B - PRINT SETTINGS FOR THIS STEP.md
+795f8181783f7988c226c55250f88aa9329b2069146cf9e19bc1fa31e721fc0d  ./BUILD_BY_STEP/08 - Secure Phone Rail and Tool Cartridge/04 - STEP-BY-STEP INSTRUCTIONS.md
+ae2a762b2fb3a1d6403677ebc42d3bccb43f491088d04828903d7af542d397dd  ./BUILD_BY_STEP/08 - Secure Phone Rail and Tool Cartridge/05 - CHECK YOUR WORK.md
+7f6f6ad76a811660fd5eb75de197baefbf0d41dd9272fb440dcda0901b4ce571  ./BUILD_BY_STEP/08 - Secure Phone Rail and Tool Cartridge/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/Finish and Sign Off.md
+2e27e8833d6ff1a2a5e735767835d98d76ca5e50caa7fba0b50e6feab880e3da  ./BUILD_BY_STEP/08 - Secure Phone Rail and Tool Cartridge/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/measurement_record.json
+cbb4365b6db519a202e4a285f4d13e0a487b8a2410afe00eaecbda29ad8e860d  ./BUILD_BY_STEP/08 - Secure Phone Rail and Tool Cartridge/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/Measurements Checklist.md
+efee4657fc3566ddeb6e568590bc4ca07ac4e733564398a18d755ca2488b734f  ./BUILD_BY_STEP/08 - Secure Phone Rail and Tool Cartridge/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/photos/README.md
+a4c5ee87b168481683f98d50da37484d2de07ad610abe53b321864cab74c35f6  ./BUILD_BY_STEP/08 - Secure Phone Rail and Tool Cartridge/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/qidi/README.md
+d5679372a3fcf6220442a8f4737ad8095ecf9e5fbe8b3e791d37cbe3c05c63d7  ./BUILD_BY_STEP/08 - Secure Phone Rail and Tool Cartridge/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/reports/README.md
+6868a993166674b20f7644cd294c9ae91a4df58edbe0ad70ec8f4b46f596904c  ./BUILD_BY_STEP/08 - Secure Phone Rail and Tool Cartridge/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/signoff.json
+b84654f69b337df425ef484bf3afae1a9286ec6c1fefa9f3e64508893c0f58b7  ./BUILD_BY_STEP/08 - Secure Phone Rail and Tool Cartridge/06 - SAVE MEASUREMENTS AND PHOTOS/READ ME - WHAT TO RECORD.md
+9ba2773d26ae9f3f3d5b259eeb317b34d43c9c5391f3f194e0ed6b935bd1259a  ./BUILD_BY_STEP/08 - Secure Phone Rail and Tool Cartridge/07 - FINISH THIS STEP AND CONTINUE.md
+e50f83ed6e664efdd73d9e47dfc431c30e91468b326bd06d0fb0281e19119f80  ./BUILD_BY_STEP/08 - Secure Phone Rail and Tool Cartridge/99 - TECHNICAL RECORDS - DO NOT EDIT/FILE INDEX.csv
+cc9c203fcaedc26b263ec4b21fe4850aa3e9f651e58244e70d01601316add4ad  ./BUILD_BY_STEP/08 - Secure Phone Rail and Tool Cartridge/99 - TECHNICAL RECORDS - DO NOT EDIT/FILE MANIFEST.json
+c636fd93ab0b6ae0fef691a42b4b2c0293af9a1477c978e1ff0aeeb743310a78  ./BUILD_BY_STEP/08 - Secure Phone Rail and Tool Cartridge/99 - TECHNICAL RECORDS - DO NOT EDIT/HARDWARE AND TOOLS.csv
+7cdf274f8adceb2333ba463c411d892d0959ae874815ce63cbf3712e74ac2218  ./BUILD_BY_STEP/08 - Secure Phone Rail and Tool Cartridge/99 - TECHNICAL RECORDS - DO NOT EDIT/OPEN CONTROLLED FILES.md
+402edd19e5f3c6c4026e89cbed630090e91e58f3a2e0fd856634e0e767524e2b  ./BUILD_BY_STEP/08 - Secure Phone Rail and Tool Cartridge/99 - TECHNICAL RECORDS - DO NOT EDIT/SHA256SUMS.txt
+574b782ecd2a34e93a594fa0a5583920bdf6db3c272fb3d9a72cae3002b42f3e  ./BUILD_BY_STEP/08 - Secure Phone Rail and Tool Cartridge/99 - TECHNICAL RECORDS - DO NOT EDIT/STEP_MANIFEST.json
+c6ba6f9d3cbdcf95e75683f420e63010ad95c82b97cc29660926dded8cf7baff  ./BUILD_BY_STEP/09 - Place Phone and Route USB Cable/00 - START HERE.md
+097f0bfdb454c1fca0929a416feea561324e5e755fc205eb82886630cc345377  ./BUILD_BY_STEP/09 - Place Phone and Route USB Cable/01 - BEFORE YOU START.md
+8dbf6c061070b4b0b0fc77ce729ae58c80a77dc58dd57cb2fd112c5939c56bb6  ./BUILD_BY_STEP/09 - Place Phone and Route USB Cable/02 - PARTS AND TOOLS CHECKLIST.md
+8de2b07efef5bef8ef9297407c0bd22dd7945adc16f84fd0dab236e304398598  ./BUILD_BY_STEP/09 - Place Phone and Route USB Cable/03 - STL MODELS/cable_tie_saddle_fit_gauge.stl
+4a9a35b618a420931b7e8b6b717aee4a3eb68f8948fff04e5a69fd65266e9e42  ./BUILD_BY_STEP/09 - Place Phone and Route USB Cable/03 - STL MODELS/hardware_fit_gauge.stl
+5771bfa01542ab24999c806f4347486d6cc1800f6a13a17ebfdb9264644e8aec  ./BUILD_BY_STEP/09 - Place Phone and Route USB Cable/03 - STL MODELS/m4_captive_nut_fit_gauge.stl
+98f27d3b7f274754a274f9856a8318c8b0c98f2fb5b485223fec74236ae349ff  ./BUILD_BY_STEP/09 - Place Phone and Route USB Cable/03 - STL MODELS/m4_washer_fit_gauge.stl
+f766a24143f11769a0bcef7236b09938f4c02434b3b5d8e6d77b21b37f49dcff  ./BUILD_BY_STEP/09 - Place Phone and Route USB Cable/03 - STL MODELS/phone_clamp_rail.stl
+77883a940d153460346de3ffdfcf3a281e2572ab404dd1f4dc50ec8808afef94  ./BUILD_BY_STEP/09 - Place Phone and Route USB Cable/03 - STL MODELS/phone_clamp_tip_TPU_M4.stl
+54a7990f706256dd30d3d5ea7487f479e970c1e1d8f212be1996b6df6d1a2e65  ./BUILD_BY_STEP/09 - Place Phone and Route USB Cable/03 - STL MODELS/phone_m3_insert_fit_gauge.stl
+63e02e28f9bb818007564eab7e82e2b9ce8417f30bdf3cbec3c3a86ec08ac32e  ./BUILD_BY_STEP/09 - Place Phone and Route USB Cable/03 - STL MODELS/phone_tcp_station.stl
+1091a6d591259a4a22b6d9fd7b36d4a8264807ef5c169fe3c5b1019a16420cfa  ./BUILD_BY_STEP/09 - Place Phone and Route USB Cable/03 - STL MODELS/phone_width_fit_test.stl
+5b2fc4100f5d7eb4f8d2f741d393c538024c57fd8e2aeb2c1d3a97cc8880442a  ./BUILD_BY_STEP/09 - Place Phone and Route USB Cable/03 - STL MODELS/READ ME - HOW TO USE THESE MODELS.md
+e6394a26fe104fb2af1b05df14865a5be2908bf6e99fab79c93aa034a2dc57b4  ./BUILD_BY_STEP/09 - Place Phone and Route USB Cable/03 - STL MODELS/setup_hardware_fit_gauge.stl
+7b34ff9a05495ce702310171cd27c5201e0c1ee54fede8c9cdbeea7260d3d1d5  ./BUILD_BY_STEP/09 - Place Phone and Route USB Cable/03 - STL MODELS/station_locator_fit_gauge.stl
+be2644a1fb0d5c663931874a5a89b1253867bff13b6756db38da527badea8d11  ./BUILD_BY_STEP/09 - Place Phone and Route USB Cable/03 - STL MODELS/STL MODEL LIST.csv
+0476c9c867a9f28816c5df107f8bcff9e44b7e1ba79e8927501a8d1c6d32b777  ./BUILD_BY_STEP/09 - Place Phone and Route USB Cable/03 - STL MODELS/tpu_tip_retention_gauge.stl
+5dde99f833bfb72a4efb824a119ec78980d709aced2fbc3057bfb314b6457b89  ./BUILD_BY_STEP/09 - Place Phone and Route USB Cable/03B - PRINT SETTINGS FOR THIS STEP.md
+555a1e3728b42fc8fa724c4060b4899f4b74a99cffae68fd19d778f8e9843c81  ./BUILD_BY_STEP/09 - Place Phone and Route USB Cable/04 - STEP-BY-STEP INSTRUCTIONS.md
+03f4e3ca70884c5979c77d4b7ceaa099eeb20086865bf75ab3e2abefd6ed270a  ./BUILD_BY_STEP/09 - Place Phone and Route USB Cable/05 - CHECK YOUR WORK.md
+f70db8d91bbaff0d15dcce84654b2eeb6643c08ac7a69cc0f2ccd949007abce9  ./BUILD_BY_STEP/09 - Place Phone and Route USB Cable/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/Finish and Sign Off.md
+bae2b64199bd79e5ce6967880be418420bcdca1d5d2b71e7f6e48c65d2a9f76b  ./BUILD_BY_STEP/09 - Place Phone and Route USB Cable/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/measurement_record.json
+7c48b45de13e8d00298d5af5a7c4a584177f7e9b8a2ef5e26abfbe73db916375  ./BUILD_BY_STEP/09 - Place Phone and Route USB Cable/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/Measurements Checklist.md
+efee4657fc3566ddeb6e568590bc4ca07ac4e733564398a18d755ca2488b734f  ./BUILD_BY_STEP/09 - Place Phone and Route USB Cable/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/photos/README.md
+a4c5ee87b168481683f98d50da37484d2de07ad610abe53b321864cab74c35f6  ./BUILD_BY_STEP/09 - Place Phone and Route USB Cable/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/qidi/README.md
+d5679372a3fcf6220442a8f4737ad8095ecf9e5fbe8b3e791d37cbe3c05c63d7  ./BUILD_BY_STEP/09 - Place Phone and Route USB Cable/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/reports/README.md
+8b95afc82cb35b675c3c6e7d9ad0c6f92e2ff3d28f09fd06a247d7136ea33f40  ./BUILD_BY_STEP/09 - Place Phone and Route USB Cable/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/signoff.json
+57008a219ecb9c616b1820fe562e52428d0c3a583ca6f43e1fa3badcf6f21354  ./BUILD_BY_STEP/09 - Place Phone and Route USB Cable/06 - SAVE MEASUREMENTS AND PHOTOS/READ ME - WHAT TO RECORD.md
+3200fe202e0b6aef4ee24fa580093660abaf7b8781a8101714cc8048db1802ad  ./BUILD_BY_STEP/09 - Place Phone and Route USB Cable/07 - FINISH THIS STEP AND CONTINUE.md
+6a9af8da4fa450de8fa1cef3f6ecd37fd1dc6c2ac2bdfefec5dba8fd593adf88  ./BUILD_BY_STEP/09 - Place Phone and Route USB Cable/99 - TECHNICAL RECORDS - DO NOT EDIT/FILE INDEX.csv
+87e7a368cd9e0ce10057ca73e59a85c787c622e7041ed48a311fb1a0873ae24e  ./BUILD_BY_STEP/09 - Place Phone and Route USB Cable/99 - TECHNICAL RECORDS - DO NOT EDIT/FILE MANIFEST.json
+fc1515e1a2c2a585f540d5a439154a80a84c778e3e23ac612248db74a7b37b21  ./BUILD_BY_STEP/09 - Place Phone and Route USB Cable/99 - TECHNICAL RECORDS - DO NOT EDIT/HARDWARE AND TOOLS.csv
+307f9a5691582f2424b9bb3f7072d7141dc3486950d4ac6bdff974d68bda2093  ./BUILD_BY_STEP/09 - Place Phone and Route USB Cable/99 - TECHNICAL RECORDS - DO NOT EDIT/OPEN CONTROLLED FILES.md
+68fa24b30e8777a6c70fbde5999c51170ad4b89cc87903ccb4e97df26e3e2996  ./BUILD_BY_STEP/09 - Place Phone and Route USB Cable/99 - TECHNICAL RECORDS - DO NOT EDIT/SHA256SUMS.txt
+50f2f9d1121afcce5f1c28503848a7570473511e3fdcbd6b2a065f528cbd2556  ./BUILD_BY_STEP/09 - Place Phone and Route USB Cable/99 - TECHNICAL RECORDS - DO NOT EDIT/STEP_MANIFEST.json
+5698cce217bcc091b90bd0fdf6dd93a8e478d26aeeb5baa2bd4171f78bccefff  ./BUILD_BY_STEP/10 - Check Phone Clearances/00 - START HERE.md
+b22e8495ccc12d2b5fd364a2391be67768fb72759ed196efef31a5675cb32555  ./BUILD_BY_STEP/10 - Check Phone Clearances/01 - BEFORE YOU START.md
+a6b23910e8579cf771a3a432a91cfd277c3ecac3cd5846ab43fff2b19f8e04ba  ./BUILD_BY_STEP/10 - Check Phone Clearances/02 - PARTS AND TOOLS CHECKLIST.md
+f766a24143f11769a0bcef7236b09938f4c02434b3b5d8e6d77b21b37f49dcff  ./BUILD_BY_STEP/10 - Check Phone Clearances/03 - STL MODELS/phone_clamp_rail.stl
+77883a940d153460346de3ffdfcf3a281e2572ab404dd1f4dc50ec8808afef94  ./BUILD_BY_STEP/10 - Check Phone Clearances/03 - STL MODELS/phone_clamp_tip_TPU_M4.stl
+63e02e28f9bb818007564eab7e82e2b9ce8417f30bdf3cbec3c3a86ec08ac32e  ./BUILD_BY_STEP/10 - Check Phone Clearances/03 - STL MODELS/phone_tcp_station.stl
+b71166db5374cffc7ca29aae257a872505e23aed07100861ded3ff3fb009148c  ./BUILD_BY_STEP/10 - Check Phone Clearances/03 - STL MODELS/READ ME - HOW TO USE THESE MODELS.md
+99ec03487b4c1ca16596b7f68dd682d4f7158718977f56ec0b70a4114a85b782  ./BUILD_BY_STEP/10 - Check Phone Clearances/03 - STL MODELS/STL MODEL LIST.csv
+a690e6ab917952832664865ab844db8ba1dabeba7738aaa9ec228e86f27c1812  ./BUILD_BY_STEP/10 - Check Phone Clearances/03B - PRINT SETTINGS FOR THIS STEP.md
+c19ee56f8b21aadbcc86efba7058cfdfe8e7e5a38531c3ed631a6c03a950d46e  ./BUILD_BY_STEP/10 - Check Phone Clearances/04 - STEP-BY-STEP INSTRUCTIONS.md
+b6f038fec254435d85b62e0a7df25e9b87ea89b5784e485d50a90490e7345980  ./BUILD_BY_STEP/10 - Check Phone Clearances/05 - CHECK YOUR WORK.md
+9610378a7f90690f5be8c4aa20fb0ebf5644b31ecf50397dbff4e0b1bafe06af  ./BUILD_BY_STEP/10 - Check Phone Clearances/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/Finish and Sign Off.md
+0d3b50bd56ddd39101c85e670c37bc32b8440bfce909c029d655de9849876d64  ./BUILD_BY_STEP/10 - Check Phone Clearances/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/measurement_record.json
+fb2a62d5708442a61ff47dac4d528e91014f35d450a3b784984fa0fa0c6c8194  ./BUILD_BY_STEP/10 - Check Phone Clearances/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/Measurements Checklist.md
+efee4657fc3566ddeb6e568590bc4ca07ac4e733564398a18d755ca2488b734f  ./BUILD_BY_STEP/10 - Check Phone Clearances/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/photos/README.md
+a4c5ee87b168481683f98d50da37484d2de07ad610abe53b321864cab74c35f6  ./BUILD_BY_STEP/10 - Check Phone Clearances/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/qidi/README.md
+d5679372a3fcf6220442a8f4737ad8095ecf9e5fbe8b3e791d37cbe3c05c63d7  ./BUILD_BY_STEP/10 - Check Phone Clearances/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/reports/README.md
+55fd67dd5523c6fb8cc76c7cc57b2d613895394ab112babb03a82ff966af7bc4  ./BUILD_BY_STEP/10 - Check Phone Clearances/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/signoff.json
+02a183c7f1eea03c7e9f7b59785328de681b380deb12567945a88f69190492c7  ./BUILD_BY_STEP/10 - Check Phone Clearances/06 - SAVE MEASUREMENTS AND PHOTOS/READ ME - WHAT TO RECORD.md
+be794b056b53f0b179d1c7a49f296ba2e2e7109c7e2391cf01cc15b2af2e648d  ./BUILD_BY_STEP/10 - Check Phone Clearances/07 - FINISH THIS STEP AND CONTINUE.md
+0cee87942085b1ded3b40551d7d3825b9f30d356a4a6532e5d93a4ee17f401cb  ./BUILD_BY_STEP/10 - Check Phone Clearances/99 - TECHNICAL RECORDS - DO NOT EDIT/FILE INDEX.csv
+01c5f1f8187b120e1e436a23a644c5579f6f86e598569e36dc63e5dffcd04f0e  ./BUILD_BY_STEP/10 - Check Phone Clearances/99 - TECHNICAL RECORDS - DO NOT EDIT/FILE MANIFEST.json
+192e9d89ae01e1de054f67f34ae16313701ed3f5a1783fe9f814dd959a169b5a  ./BUILD_BY_STEP/10 - Check Phone Clearances/99 - TECHNICAL RECORDS - DO NOT EDIT/HARDWARE AND TOOLS.csv
+18ff489e139001e52b102be23959eb28780587bd90d29d5b63a309b622ef57da  ./BUILD_BY_STEP/10 - Check Phone Clearances/99 - TECHNICAL RECORDS - DO NOT EDIT/OPEN CONTROLLED FILES.md
+da0ed04f1d0f6dce01d457b0e2253dc94b2175d7c708c600ad9d32301861199d  ./BUILD_BY_STEP/10 - Check Phone Clearances/99 - TECHNICAL RECORDS - DO NOT EDIT/SHA256SUMS.txt
+52614b8ba8ec0506e32f48b2790182ee581a6d8a13184e0a25a35a90be78feb9  ./BUILD_BY_STEP/10 - Check Phone Clearances/99 - TECHNICAL RECORDS - DO NOT EDIT/STEP_MANIFEST.json
+8f83380ecd5527ed7b6535ae67be38e722b0a34db697e3e3fc9a3ee602fcbc30  ./BUILD_BY_STEP/11 - Mark AprilTag Locations/00 - START HERE.md
+3c8db2a19052c1fa2574147eb86f1aea6189794c2249e7023fe24aa6cdaef274  ./BUILD_BY_STEP/11 - Mark AprilTag Locations/01 - BEFORE YOU START.md
+14720dcf1e16cf009356f48c6ed013c01df227ff54f59ca1c6722055bb6082af  ./BUILD_BY_STEP/11 - Mark AprilTag Locations/02 - PARTS AND TOOLS CHECKLIST.md
+69f96ffee150c9e3671c2d8a926e23b867a15d71d9063a0793a92a6147cbb623  ./BUILD_BY_STEP/11 - Mark AprilTag Locations/03 - STL MODELS/READ ME - HOW TO USE THESE MODELS.md
+224cb545585769bbdf6bbdb86b002e2a9068986691a9eacf3edc61bb7aa6cda7  ./BUILD_BY_STEP/11 - Mark AprilTag Locations/03 - STL MODELS/STL MODEL LIST.csv
+492f7e3c567a7aa3a4bc255d59425f73dc0c64ab240df8af8f9adf861d53a10f  ./BUILD_BY_STEP/11 - Mark AprilTag Locations/03 - STL MODELS/tag_application_frame_55mm.stl
+1a9c73acfd295f0356ab1572cb558c169efadcae37cb18948ca567ba816ac8ae  ./BUILD_BY_STEP/11 - Mark AprilTag Locations/03B - PRINT SETTINGS FOR THIS STEP.md
+24630cc63fe067c7b0ea5f8607c8f113567904a6069efce38bcabdf6ba50ae08  ./BUILD_BY_STEP/11 - Mark AprilTag Locations/04 - STEP-BY-STEP INSTRUCTIONS.md
+e87c32521310e777bd1d26f3427341b94f6737526967f50b5d2e8cfbcafb5477  ./BUILD_BY_STEP/11 - Mark AprilTag Locations/05 - CHECK YOUR WORK.md
+dfb041ee8d4f34e49d088e09b29661fd17fb87bb30c99626231cb323a318031c  ./BUILD_BY_STEP/11 - Mark AprilTag Locations/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/Finish and Sign Off.md
+b00f5350cec403bb638b69128089962edb1e11a8ef38e8db9ef254274a7e7458  ./BUILD_BY_STEP/11 - Mark AprilTag Locations/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/measurement_record.json
+721b61ecf6f6991eb2199018a8cd1859a4f1d3ec92812ff8651b26f444193f52  ./BUILD_BY_STEP/11 - Mark AprilTag Locations/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/Measurements Checklist.md
+efee4657fc3566ddeb6e568590bc4ca07ac4e733564398a18d755ca2488b734f  ./BUILD_BY_STEP/11 - Mark AprilTag Locations/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/photos/README.md
+a4c5ee87b168481683f98d50da37484d2de07ad610abe53b321864cab74c35f6  ./BUILD_BY_STEP/11 - Mark AprilTag Locations/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/qidi/README.md
+d5679372a3fcf6220442a8f4737ad8095ecf9e5fbe8b3e791d37cbe3c05c63d7  ./BUILD_BY_STEP/11 - Mark AprilTag Locations/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/reports/README.md
+c36f01e2462bee305ee28724507ae60ac2bc5dbe9de4699e1051b83576ceee3a  ./BUILD_BY_STEP/11 - Mark AprilTag Locations/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/signoff.json
+84d68329028eec67a966270f0fcc765e290e9a7dfef582ed44917a20708f346b  ./BUILD_BY_STEP/11 - Mark AprilTag Locations/06 - SAVE MEASUREMENTS AND PHOTOS/READ ME - WHAT TO RECORD.md
+3d10bec9f59fd604817a426b74fed60fdab3e88f84af390e96daacbe17521786  ./BUILD_BY_STEP/11 - Mark AprilTag Locations/07 - FINISH THIS STEP AND CONTINUE.md
+b373a165b24ea7e4e6037996f448c14a900d48962ccffc93f3aa8bcc2556f065  ./BUILD_BY_STEP/11 - Mark AprilTag Locations/99 - TECHNICAL RECORDS - DO NOT EDIT/FILE INDEX.csv
+f4f790c5359146839ec9b50336a9df0297cc7091e5f542c9a39cf1fd64f054fa  ./BUILD_BY_STEP/11 - Mark AprilTag Locations/99 - TECHNICAL RECORDS - DO NOT EDIT/FILE MANIFEST.json
+7acdbaa6fcbd65818813025d87c6030493b4df10aeee4a0e6be7fddc6d0b7487  ./BUILD_BY_STEP/11 - Mark AprilTag Locations/99 - TECHNICAL RECORDS - DO NOT EDIT/HARDWARE AND TOOLS.csv
+94be54a2d4afbdef07d7a3fff7704af832b7d02d2427351ccaa7f247626315f7  ./BUILD_BY_STEP/11 - Mark AprilTag Locations/99 - TECHNICAL RECORDS - DO NOT EDIT/OPEN CONTROLLED FILES.md
+cfa4e0c465b77023df7c0c4911011155de01dc03b0fe6cd38bee2417fcc24318  ./BUILD_BY_STEP/11 - Mark AprilTag Locations/99 - TECHNICAL RECORDS - DO NOT EDIT/SHA256SUMS.txt
+edbc11728171f1edad8295fc05d13cc35fd8775ef830d52fdde67da9b756ec77  ./BUILD_BY_STEP/11 - Mark AprilTag Locations/99 - TECHNICAL RECORDS - DO NOT EDIT/STEP_MANIFEST.json
+fe068ecfb676cd87177ed5e5a672eb24b6fe7c667ee44547df205b9a728547bf  ./BUILD_BY_STEP/12 - Attach and Measure AprilTags/00 - START HERE.md
+6434201b0dbbf80fdf5719f12239a3871273a7e530c6d5e6fa8ef621d34fb229  ./BUILD_BY_STEP/12 - Attach and Measure AprilTags/01 - BEFORE YOU START.md
+fc99f5d2d7ee01dbbda8aa088cbb96260dcec906824cb0a0118647035f096d21  ./BUILD_BY_STEP/12 - Attach and Measure AprilTags/02 - PARTS AND TOOLS CHECKLIST.md
+69f96ffee150c9e3671c2d8a926e23b867a15d71d9063a0793a92a6147cbb623  ./BUILD_BY_STEP/12 - Attach and Measure AprilTags/03 - STL MODELS/READ ME - HOW TO USE THESE MODELS.md
+224cb545585769bbdf6bbdb86b002e2a9068986691a9eacf3edc61bb7aa6cda7  ./BUILD_BY_STEP/12 - Attach and Measure AprilTags/03 - STL MODELS/STL MODEL LIST.csv
+492f7e3c567a7aa3a4bc255d59425f73dc0c64ab240df8af8f9adf861d53a10f  ./BUILD_BY_STEP/12 - Attach and Measure AprilTags/03 - STL MODELS/tag_application_frame_55mm.stl
+09e98891548ecee441cbda606fd28b46b91e1b0485d0c0ef8f5906291aeb9a54  ./BUILD_BY_STEP/12 - Attach and Measure AprilTags/03B - PRINT SETTINGS FOR THIS STEP.md
+5a328cc34dcc765a1af9ddde1d01b27ac0362284ec1f770cdf06b7ebdfc7c549  ./BUILD_BY_STEP/12 - Attach and Measure AprilTags/04 - STEP-BY-STEP INSTRUCTIONS.md
+996d26d89cd9ee757debb4197ac2318f8682354c9dcbeeb2f3fd58ecfe272bd5  ./BUILD_BY_STEP/12 - Attach and Measure AprilTags/05 - CHECK YOUR WORK.md
+745cf05d331fe8a320076344add0c2b04ecb8cf60be9a54f5c880a7eecc5f241  ./BUILD_BY_STEP/12 - Attach and Measure AprilTags/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/Finish and Sign Off.md
+2a8b407db588e71105572a9f7ffa7288158d810d63e5e76415f23e5c255842e6  ./BUILD_BY_STEP/12 - Attach and Measure AprilTags/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/measurement_record.json
+fd89bd8480366e69df9188112ff5fca9ea3732f5a47d55da8f4331ccd7b7f603  ./BUILD_BY_STEP/12 - Attach and Measure AprilTags/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/Measurements Checklist.md
+efee4657fc3566ddeb6e568590bc4ca07ac4e733564398a18d755ca2488b734f  ./BUILD_BY_STEP/12 - Attach and Measure AprilTags/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/photos/README.md
+a4c5ee87b168481683f98d50da37484d2de07ad610abe53b321864cab74c35f6  ./BUILD_BY_STEP/12 - Attach and Measure AprilTags/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/qidi/README.md
+d5679372a3fcf6220442a8f4737ad8095ecf9e5fbe8b3e791d37cbe3c05c63d7  ./BUILD_BY_STEP/12 - Attach and Measure AprilTags/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/reports/README.md
+9824a2021a6ec92b4af16bc1d7c2f18968c628207c655d94bce19573915fb9a1  ./BUILD_BY_STEP/12 - Attach and Measure AprilTags/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/signoff.json
+20195a5431f4dc53f9e312c174aed1c0dd3f3f292a3bef7b602bc5183c6c21c9  ./BUILD_BY_STEP/12 - Attach and Measure AprilTags/06 - SAVE MEASUREMENTS AND PHOTOS/READ ME - WHAT TO RECORD.md
+0ef8e420bceaf9e0b122095015ff989d155d314847c9cea5cd34fecf938aec30  ./BUILD_BY_STEP/12 - Attach and Measure AprilTags/07 - FINISH THIS STEP AND CONTINUE.md
+a2c8a31e237ab32bbd172b42f8cc7f291990c76a82c0da6adfe434ff8aa55db3  ./BUILD_BY_STEP/12 - Attach and Measure AprilTags/99 - TECHNICAL RECORDS - DO NOT EDIT/FILE INDEX.csv
+016abfac5cb0b0a6e5d6b0886938145f759f76512eea64dde28fe4d6ee49573d  ./BUILD_BY_STEP/12 - Attach and Measure AprilTags/99 - TECHNICAL RECORDS - DO NOT EDIT/FILE MANIFEST.json
+57716d4c6d58217f918ca164d1fafaf59aee1e40a263ff2ddd6c2b8f199ecb5d  ./BUILD_BY_STEP/12 - Attach and Measure AprilTags/99 - TECHNICAL RECORDS - DO NOT EDIT/HARDWARE AND TOOLS.csv
+be557882d28540f71fd30905c24916a40655ee9a1caac5b585d34e5e2fedfb11  ./BUILD_BY_STEP/12 - Attach and Measure AprilTags/99 - TECHNICAL RECORDS - DO NOT EDIT/OPEN CONTROLLED FILES.md
+814f5c7e93770efc3e57f02566334196fdd82ab5d09e52936a430d52594e377a  ./BUILD_BY_STEP/12 - Attach and Measure AprilTags/99 - TECHNICAL RECORDS - DO NOT EDIT/SHA256SUMS.txt
+01db2d2614d0e062f191d0078e420bd64648c88ffd593166be7a60887518888b  ./BUILD_BY_STEP/12 - Attach and Measure AprilTags/99 - TECHNICAL RECORDS - DO NOT EDIT/STEP_MANIFEST.json
+db79efaac934fa774065ff97e9fdcb150b6434c44263ea916c8cb0a7a2d17b0e  ./BUILD_BY_STEP/13 - Mount and Calibrate Camera/00 - START HERE.md
+ca04358485cd085f14ae7a8dd027dbb5d1944de99dd6b53992ec81792f1fdf52  ./BUILD_BY_STEP/13 - Mount and Calibrate Camera/01 - BEFORE YOU START.md
+d6692fa4a43123139eb73d3147152458d4aeb5344934b16be8c6a10653681955  ./BUILD_BY_STEP/13 - Mount and Calibrate Camera/02 - PARTS AND TOOLS CHECKLIST.md
+7fb63205ddc37b517ee452eda352893c7912cebe74086d977ef0beb8ec2d006f  ./BUILD_BY_STEP/13 - Mount and Calibrate Camera/03 - STL MODELS/camera_plate_universal.stl
+4a9a35b618a420931b7e8b6b717aee4a3eb68f8948fff04e5a69fd65266e9e42  ./BUILD_BY_STEP/13 - Mount and Calibrate Camera/03 - STL MODELS/hardware_fit_gauge.stl
+a6a8dd06689060766bb31f7eca10e6910fb3313a758af185bcbcdfde3c40a01e  ./BUILD_BY_STEP/13 - Mount and Calibrate Camera/03 - STL MODELS/m5_nut_trap_fit_gauge.stl
+2b6384b63a5b191ef88ae5590b50ffb5cd0c64d2102b3145b8336b2fb901faa5  ./BUILD_BY_STEP/13 - Mount and Calibrate Camera/03 - STL MODELS/mast_foot_2020.stl
+3a8e939ae308baa04fda3891dfc8851a0a3b2caa9e2a91148414255e1114905b  ./BUILD_BY_STEP/13 - Mount and Calibrate Camera/03 - STL MODELS/mast_socket_fit_test.stl
+f35a8909ef3b363d7e5fdd60e3c769d329d75dc82c16a648fed4ebd1ea55b839  ./BUILD_BY_STEP/13 - Mount and Calibrate Camera/03 - STL MODELS/READ ME - HOW TO USE THESE MODELS.md
+e6394a26fe104fb2af1b05df14865a5be2908bf6e99fab79c93aa034a2dc57b4  ./BUILD_BY_STEP/13 - Mount and Calibrate Camera/03 - STL MODELS/setup_hardware_fit_gauge.stl
+490fcf76c73d94861e04f73fe9a98f1f22c014e588465faa8647f137b4294eb8  ./BUILD_BY_STEP/13 - Mount and Calibrate Camera/03 - STL MODELS/STL MODEL LIST.csv
+0476c9c867a9f28816c5df107f8bcff9e44b7e1ba79e8927501a8d1c6d32b777  ./BUILD_BY_STEP/13 - Mount and Calibrate Camera/03 - STL MODELS/tpu_tip_retention_gauge.stl
+4191772ef35c7ef76f189d4978d1da54b4206393de1bc13f2a7418e4763c226e  ./BUILD_BY_STEP/13 - Mount and Calibrate Camera/03B - PRINT SETTINGS FOR THIS STEP.md
+e68d9a58e80549befb007fb7b7aa0fc1cd845a4eb2717214c142754b152d0913  ./BUILD_BY_STEP/13 - Mount and Calibrate Camera/04 - STEP-BY-STEP INSTRUCTIONS.md
+3cdd5e5f99ec7440fcb24fcecad4f61af9b10e223ad4a299f81acb741d4a1d50  ./BUILD_BY_STEP/13 - Mount and Calibrate Camera/05 - CHECK YOUR WORK.md
+f48edf260a1d1423574a71af7e906819e6be6dc1387c1abcf6b5a7fd0f39400a  ./BUILD_BY_STEP/13 - Mount and Calibrate Camera/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/Finish and Sign Off.md
+5ee4bb4949fa113709e919a657f056432d3082169b83ea3d05432a42169fac01  ./BUILD_BY_STEP/13 - Mount and Calibrate Camera/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/measurement_record.json
+3f6c7cd56b8a02fb896d81756fee85da7453983c788a651817427d211b9cecb3  ./BUILD_BY_STEP/13 - Mount and Calibrate Camera/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/Measurements Checklist.md
+a061bcc7190d8feff9847e1b1e67b9e544858fd1c5ae20503af381977e335abe  ./BUILD_BY_STEP/13 - Mount and Calibrate Camera/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/photos/charuco/README.md
+9d10dc8ec53e23d573b2cb9dd4f8269acd356b7127d547bf79303964f2f93e65  ./BUILD_BY_STEP/13 - Mount and Calibrate Camera/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/photos/fov/README.md
+efee4657fc3566ddeb6e568590bc4ca07ac4e733564398a18d755ca2488b734f  ./BUILD_BY_STEP/13 - Mount and Calibrate Camera/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/photos/README.md
+a4c5ee87b168481683f98d50da37484d2de07ad610abe53b321864cab74c35f6  ./BUILD_BY_STEP/13 - Mount and Calibrate Camera/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/qidi/README.md
+d5679372a3fcf6220442a8f4737ad8095ecf9e5fbe8b3e791d37cbe3c05c63d7  ./BUILD_BY_STEP/13 - Mount and Calibrate Camera/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/reports/README.md
+40fe8b644337397c4f00eb3d3828d15050921c498015379f11f9560aa8982468  ./BUILD_BY_STEP/13 - Mount and Calibrate Camera/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/signoff.json
+1917a98e199ac446959e0f13861cea1a50b889575b27ba38c1d81fb06af35560  ./BUILD_BY_STEP/13 - Mount and Calibrate Camera/06 - SAVE MEASUREMENTS AND PHOTOS/READ ME - WHAT TO RECORD.md
+8134475c19fbe9c24609597beff32e1b267560dc0d4c832cb4f752548c8df1e7  ./BUILD_BY_STEP/13 - Mount and Calibrate Camera/07 - FINISH THIS STEP AND CONTINUE.md
+f32369ce1d1c790bdf44b1f8f3c8ca5993441b4ced10f99064c58ec8ccbc11bf  ./BUILD_BY_STEP/13 - Mount and Calibrate Camera/99 - TECHNICAL RECORDS - DO NOT EDIT/FILE INDEX.csv
+5625a193ea77735dcb1f80ff1a3b6c0310a928ad76154210b644b45f336a818d  ./BUILD_BY_STEP/13 - Mount and Calibrate Camera/99 - TECHNICAL RECORDS - DO NOT EDIT/FILE MANIFEST.json
+1635f2f8365cf439455cb3f4edb5f2e77477348665e279722cad08636e60ccff  ./BUILD_BY_STEP/13 - Mount and Calibrate Camera/99 - TECHNICAL RECORDS - DO NOT EDIT/HARDWARE AND TOOLS.csv
+ae84d248b3f4c6e1bc9af272001a9aa390cfa427f4033e47ca5259d0a5da6b27  ./BUILD_BY_STEP/13 - Mount and Calibrate Camera/99 - TECHNICAL RECORDS - DO NOT EDIT/OPEN CONTROLLED FILES.md
+db604365960f8c60ab88a732e5670144b049354112cf85dd11a738081fe1265b  ./BUILD_BY_STEP/13 - Mount and Calibrate Camera/99 - TECHNICAL RECORDS - DO NOT EDIT/SHA256SUMS.txt
+b4852467a6e8c0632d5e6a74d7bd2997d9a2c07cc5b3e12b0e7dea66fa0cccb9  ./BUILD_BY_STEP/13 - Mount and Calibrate Camera/99 - TECHNICAL RECORDS - DO NOT EDIT/STEP_MANIFEST.json
+aaef093f780c7d9c92eb437c9632d317353dfcd9ac2111ac1c073566e6998956  ./BUILD_BY_STEP/14 - Assemble and Test Spring-Loaded Tool/00 - START HERE.md
+4cfe142548cfc9d0fc7b1f4cadb632d97c6dc1ee0fcb4bcbe011f3e4200e6113  ./BUILD_BY_STEP/14 - Assemble and Test Spring-Loaded Tool/01 - BEFORE YOU START.md
+96b68e7e41d7fca4745db7be6c6243bc1369d0f3e9ce26d341408cdeb7299284  ./BUILD_BY_STEP/14 - Assemble and Test Spring-Loaded Tool/02 - PARTS AND TOOLS CHECKLIST.md
+18c8d7ff2d57c0785b324c58e93b3c6558db7c56c339270ab183307b991225ba  ./BUILD_BY_STEP/14 - Assemble and Test Spring-Loaded Tool/03 - STL MODELS/compliant_tool_body.stl
+2c892ebeccd9d4512bf877cac3c1d56c87329c1a30a47165221480021104d935  ./BUILD_BY_STEP/14 - Assemble and Test Spring-Loaded Tool/03 - STL MODELS/compliant_tool_grip_fit_test.stl
+e7adbf51fd9382a4eb2b9a9dd25df677d43fd488c4584c2bf3e3e7d1599b9081  ./BUILD_BY_STEP/14 - Assemble and Test Spring-Loaded Tool/03 - STL MODELS/compliant_tool_top_cap.stl
+4a9a35b618a420931b7e8b6b717aee4a3eb68f8948fff04e5a69fd65266e9e42  ./BUILD_BY_STEP/14 - Assemble and Test Spring-Loaded Tool/03 - STL MODELS/hardware_fit_gauge.stl
+22ba42201e769ff4ed146b125d69d585b7188b7f274a1b3430b741ad62931d37  ./BUILD_BY_STEP/14 - Assemble and Test Spring-Loaded Tool/03 - STL MODELS/keyboard_tip_TPU_6mm.stl
+7d1206ee09722d99cff871031562943e405c263ea5d1d1f5d82e193bf403cb2e  ./BUILD_BY_STEP/14 - Assemble and Test Spring-Loaded Tool/03 - STL MODELS/m3_head_fit_gauge.stl
+8619ec6e176dddb61a7e80d957d7806ff3aa2fac00872169e6c349e10f0d6f1d  ./BUILD_BY_STEP/14 - Assemble and Test Spring-Loaded Tool/03 - STL MODELS/READ ME - HOW TO USE THESE MODELS.md
+c30bee2a303f025e94b21e1cf2c5639babbf5d75d3bb008711ea86b5e8160d63  ./BUILD_BY_STEP/14 - Assemble and Test Spring-Loaded Tool/03 - STL MODELS/rod_bushing_6_to_9mm.stl
+e6394a26fe104fb2af1b05df14865a5be2908bf6e99fab79c93aa034a2dc57b4  ./BUILD_BY_STEP/14 - Assemble and Test Spring-Loaded Tool/03 - STL MODELS/setup_hardware_fit_gauge.stl
+0b8464e8506bea26cc8972ce32fcfc4e7366c800eac4ee23e6fcd16677672f4c  ./BUILD_BY_STEP/14 - Assemble and Test Spring-Loaded Tool/03 - STL MODELS/spring_fit_gauge.stl
+6383dc671a56fe50fe2b75987b3333918a89315cd2739550d8ab4d1403047901  ./BUILD_BY_STEP/14 - Assemble and Test Spring-Loaded Tool/03 - STL MODELS/STL MODEL LIST.csv
+abc908bcd256e8836d13c94cf58320654f78d972e0eb1923f50a6575233f2c8e  ./BUILD_BY_STEP/14 - Assemble and Test Spring-Loaded Tool/03 - STL MODELS/stylus_collar_9mm.stl
+556c8114547de14b36d8990444de96f3229f99c93f6d06fb62216880c6f72c77  ./BUILD_BY_STEP/14 - Assemble and Test Spring-Loaded Tool/03 - STL MODELS/stylus_diameter_gauge.stl
+8ff0775cb466170e0749bf125b4b2743f134df072f75ac17090d61854fbc7d8d  ./BUILD_BY_STEP/14 - Assemble and Test Spring-Loaded Tool/03 - STL MODELS/tool_m3_insert_fit_gauge.stl
+0476c9c867a9f28816c5df107f8bcff9e44b7e1ba79e8927501a8d1c6d32b777  ./BUILD_BY_STEP/14 - Assemble and Test Spring-Loaded Tool/03 - STL MODELS/tpu_tip_retention_gauge.stl
+bb66e04358d603095447781f24d8468e20b8cbeba0b905146aca1a5c8ea46eab  ./BUILD_BY_STEP/14 - Assemble and Test Spring-Loaded Tool/03B - PRINT SETTINGS FOR THIS STEP.md
+92bd379e74926639fcb459556203c08a1fbba6b2d6ca9b0c3b56de5bf9b245ad  ./BUILD_BY_STEP/14 - Assemble and Test Spring-Loaded Tool/04 - STEP-BY-STEP INSTRUCTIONS.md
+a01407be2bd395d1977dac4c92f8a2e9210c95b897cf3f126eab1c0a6d1d4f5b  ./BUILD_BY_STEP/14 - Assemble and Test Spring-Loaded Tool/05 - CHECK YOUR WORK.md
+c7409552d6c41ebafe6ae7e6a05d14e4c6e6400fbe335a8705150c689d44b8f6  ./BUILD_BY_STEP/14 - Assemble and Test Spring-Loaded Tool/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/Finish and Sign Off.md
+8bcaa546516ae0274fd910411ab9a8b550b7efcbc987f1d09ccd42b076dd39ff  ./BUILD_BY_STEP/14 - Assemble and Test Spring-Loaded Tool/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/measurement_record.json
+530213796793a61df1d4d188bb4dc96ea776b336a8155a9783bfd5abc60afd7c  ./BUILD_BY_STEP/14 - Assemble and Test Spring-Loaded Tool/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/Measurements Checklist.md
+efee4657fc3566ddeb6e568590bc4ca07ac4e733564398a18d755ca2488b734f  ./BUILD_BY_STEP/14 - Assemble and Test Spring-Loaded Tool/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/photos/README.md
+a4c5ee87b168481683f98d50da37484d2de07ad610abe53b321864cab74c35f6  ./BUILD_BY_STEP/14 - Assemble and Test Spring-Loaded Tool/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/qidi/README.md
+d5679372a3fcf6220442a8f4737ad8095ecf9e5fbe8b3e791d37cbe3c05c63d7  ./BUILD_BY_STEP/14 - Assemble and Test Spring-Loaded Tool/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/reports/README.md
+31a59d44fbe8f25e1da243c59a44091a913448bb53f3f868af9b21b372f9ef35  ./BUILD_BY_STEP/14 - Assemble and Test Spring-Loaded Tool/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/signoff.json
+8e1410acf823dfd06db2bfeae47a2234cb37248a153a44d8816b3720758432bf  ./BUILD_BY_STEP/14 - Assemble and Test Spring-Loaded Tool/06 - SAVE MEASUREMENTS AND PHOTOS/READ ME - WHAT TO RECORD.md
+9586910c9506af4938e0c8cba2daba2094f0c19c69176f8ef69f7b1317ccc77d  ./BUILD_BY_STEP/14 - Assemble and Test Spring-Loaded Tool/07 - FINISH THIS STEP AND CONTINUE.md
+4c24e68a071a030cd7dee124cff70000964caa2c420dd87886320dd62118fb00  ./BUILD_BY_STEP/14 - Assemble and Test Spring-Loaded Tool/99 - TECHNICAL RECORDS - DO NOT EDIT/FILE INDEX.csv
+79e42fc8d33b9407b7791c16f79880af86c084e573586919140e38b68ecefeeb  ./BUILD_BY_STEP/14 - Assemble and Test Spring-Loaded Tool/99 - TECHNICAL RECORDS - DO NOT EDIT/FILE MANIFEST.json
+828b92f43e2c8fe4a6210c5668bdf4a054e14777e5b38010af0ec0dbb05058e2  ./BUILD_BY_STEP/14 - Assemble and Test Spring-Loaded Tool/99 - TECHNICAL RECORDS - DO NOT EDIT/HARDWARE AND TOOLS.csv
+924167391eb3a7bfad209e4888842d18119a7659bc84714b3920116995918230  ./BUILD_BY_STEP/14 - Assemble and Test Spring-Loaded Tool/99 - TECHNICAL RECORDS - DO NOT EDIT/OPEN CONTROLLED FILES.md
+a7191634fd75fe11e7bd8379d7b5ab4b4aa05b4a356e1d10288e59cc540fe21a  ./BUILD_BY_STEP/14 - Assemble and Test Spring-Loaded Tool/99 - TECHNICAL RECORDS - DO NOT EDIT/SHA256SUMS.txt
+c859d80516904aed69d2d30269f61ff96f8d7bba0de189b3a48dd99792108771  ./BUILD_BY_STEP/14 - Assemble and Test Spring-Loaded Tool/99 - TECHNICAL RECORDS - DO NOT EDIT/STEP_MANIFEST.json
+566129245a1ff2f3eb44e4bada0204a53c767de7acfefd9eff5ccbf5baf06f9e  ./BUILD_BY_STEP/15 - Final Safety Test and Release/00 - START HERE.md
+a0176972cc7dab5d649a6549051a7b3cbd58b277dfefe0cfc11dc978006e29a9  ./BUILD_BY_STEP/15 - Final Safety Test and Release/01 - BEFORE YOU START.md
+95cc3d6d9fee2a53c286c15fa3c13d62c4013c740b0b96075fb86f48150fef43  ./BUILD_BY_STEP/15 - Final Safety Test and Release/02 - PARTS AND TOOLS CHECKLIST.md
+0de2386115ec2c668f3c0f5be2de7572a9ccba5a7b738f51495f42ae0e231f3b  ./BUILD_BY_STEP/15 - Final Safety Test and Release/03 - STL MODELS/READ ME - HOW TO USE THESE MODELS.md
+40e3efc580e0e639a309652648ed54c1ff153447f2da70a923a56e7cdb8ccb58  ./BUILD_BY_STEP/15 - Final Safety Test and Release/03 - STL MODELS/STL MODEL LIST.csv
+7bab039f2b429bbb34d74fa2e125ae9d9b55011c69e21f681fdcad967f259cb3  ./BUILD_BY_STEP/15 - Final Safety Test and Release/03B - PRINT SETTINGS FOR THIS STEP.md
+be1233ff0450ee523e0ea56aa7724f4bdfc3f03fee88b605e04a62699cf64132  ./BUILD_BY_STEP/15 - Final Safety Test and Release/04 - STEP-BY-STEP INSTRUCTIONS.md
+ec88d5d67f3cbe1de7fb6d9a6727488d8c97f7ace4a3157e5c74bdae5b782cc7  ./BUILD_BY_STEP/15 - Final Safety Test and Release/05 - CHECK YOUR WORK.md
+3eda299277e45ac335933174a782040cb26e8cb775c50927f16a0f8a038034b3  ./BUILD_BY_STEP/15 - Final Safety Test and Release/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/Finish and Sign Off.md
+0555c005875ec7c036bfb107f726d3eb6fe2982563883b77e723de4f048b5a7c  ./BUILD_BY_STEP/15 - Final Safety Test and Release/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/measurement_record.json
+da6d329caab6f0447707642bc8513c5a1000205961fc037390fa6f966843c22d  ./BUILD_BY_STEP/15 - Final Safety Test and Release/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/Measurements Checklist.md
+efee4657fc3566ddeb6e568590bc4ca07ac4e733564398a18d755ca2488b734f  ./BUILD_BY_STEP/15 - Final Safety Test and Release/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/photos/README.md
+a4c5ee87b168481683f98d50da37484d2de07ad610abe53b321864cab74c35f6  ./BUILD_BY_STEP/15 - Final Safety Test and Release/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/qidi/README.md
+d5679372a3fcf6220442a8f4737ad8095ecf9e5fbe8b3e791d37cbe3c05c63d7  ./BUILD_BY_STEP/15 - Final Safety Test and Release/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/reports/README.md
+d14f112c5c50679b5a4238a5c830c7fd1b6ab406e1e7caddfee617e44cb9d1d9  ./BUILD_BY_STEP/15 - Final Safety Test and Release/06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/signoff.json
+e61ef893c799f653f2e7500a940d33069553f6635654df20967b47c90d4861bb  ./BUILD_BY_STEP/15 - Final Safety Test and Release/06 - SAVE MEASUREMENTS AND PHOTOS/READ ME - WHAT TO RECORD.md
+07657d459ba62b64e0b0ffe36a9b79a72a244e8beffc25ff27828da748374501  ./BUILD_BY_STEP/15 - Final Safety Test and Release/07 - FINISH THIS STEP AND CONTINUE.md
+a5aade6164a5e496bac6559771a385aa3f96cbae57df33e82bebf499e2b1fb1b  ./BUILD_BY_STEP/15 - Final Safety Test and Release/99 - TECHNICAL RECORDS - DO NOT EDIT/FILE INDEX.csv
+1142ddbc92394f7163099837ab8eb4ad673bc8936f3c778d5be98f1eee4b54e2  ./BUILD_BY_STEP/15 - Final Safety Test and Release/99 - TECHNICAL RECORDS - DO NOT EDIT/FILE MANIFEST.json
+e7582f93cc56cec9e4046e5d172d607bd418b06bf742e1fa4a13efc41de89873  ./BUILD_BY_STEP/15 - Final Safety Test and Release/99 - TECHNICAL RECORDS - DO NOT EDIT/HARDWARE AND TOOLS.csv
+376d1091ad993e2deae1812758725292ca23d09f43e27aa55d54e3a25789bf35  ./BUILD_BY_STEP/15 - Final Safety Test and Release/99 - TECHNICAL RECORDS - DO NOT EDIT/OPEN CONTROLLED FILES.md
+a412c37e050a925f378a8b9020918d0925a5f9e2589fc88069b9ce41cee03afd  ./BUILD_BY_STEP/15 - Final Safety Test and Release/99 - TECHNICAL RECORDS - DO NOT EDIT/SHA256SUMS.txt
+a114f0176de37b41d4853cbac9df0fef83d51c889dd16dd508fbe7de138d87fc  ./BUILD_BY_STEP/15 - Final Safety Test and Release/99 - TECHNICAL RECORDS - DO NOT EDIT/STEP_MANIFEST.json
+0f6193f3ea96dba21ac42386c0e3d605d20e7471dc44ff72734eaccbd330d774  ./BUILD_BY_STEP/ACTIVE_BUILD.json
+1d239d1c8f54923c5594a80510c53d927beec8d295cfefcdae3b8da6686a4a21  ./BUILD_BY_STEP/INDEX.json
+671be802804742f0c232ed02b1455a9b7117bc4303afbac919e52c025c5f6078  ./BUILD_BY_STEP/PACKAGE_VALIDATION.json
+b304f6eeb2dfe563bd1737fb6ca0e0097cc3f5dd493841879af5c5d744ddafb3  ./BUILD_BY_STEP/PRINT_JOB_OWNERSHIP.csv
+b6a92062cb0388ae5b323e46c100481c836c94054c1160d8a1d850d0ad2917b0  ./BUILD_BY_STEP/README.md
+0309256af31348620bb977aded9c591bc697c8ab7b9873027430aaa28c077b9a  ./BUILD_TRACKER.json
+17ecf32b45b561c9209189849ef20cac965ef09065cb33bf8aa9f24f9a086775  ./BUILD_TRACKER.md
+207554f3b727467da31e6682f5a331e5e3be09ba5a1aa920250433417e89c86c  ./cad/step/board_610x457x18_RC03.step
+2561bed996ff1a1c9bb15530b35467d15318812ea3822f77c2e76f80ed74008c  ./cad/step/cable_tie_saddle_fit_gauge.step
+122b24630f81598c894d1612c2a6a4c277a3caa51144d40d25899a2293dc0f13  ./cad/step/calibration_puck.step
+dea907ee079c77046150115a57bd506ed195e9ecbf436b4effbaf9cb2a89648d  ./cad/step/camera_plate_universal.step
+a734ff981947886e932f45745f92235d1dc34be5a87c4d585d3e5d06bedb6c93  ./cad/step/compliant_tool_body.step
+6a055831d5b962a4cc0050a252000c00bbe5a751fd3efdd44f526ae6e020d257  ./cad/step/compliant_tool_grip_fit_test.step
+311ad48322d9b0c635cd24137087e385b037b7f7865ddb2d889db1414dcd17f8  ./cad/step/compliant_tool_top_cap.step
+5c703f405245681d67ac4c495d2412e67bd52a35c49dd70900563c2e42f28de4  ./cad/step/hardware_fit_gauge.step
+923f4ea0c22e86fb8860d5221e1d1bf287c1e5bbc86018d64cfa1f5242ee7bce  ./cad/step/keyboard_corner_fit_test.step
+025b6af37e2f9b54fa93be473171289643227d30a32a3f9d3d40f7206acd0f64  ./cad/step/keyboard_rear_clamp.step
+749d12f4c123c4355d0b10ba7c90d40b3b53157097588d8063f1c9c1309350dd  ./cad/step/keyboard_station_left.step
+eb236d1c716a55b70be6b77e8364473d4553a34e54e8d1e4aea3bef507fd97fc  ./cad/step/keyboard_station_right.step
+21294f8f9728f137fce634e8dcf9e7045b156cb024ed11c54ac83c3e72e29ccf  ./cad/step/keyboard_tip_TPU_6mm.step
+f3297236393c9cd7ff13577272a3f3ef3c761874609d7f15d16d573bbafd4dc2  ./cad/step/m3_head_fit_gauge.step
+e9cb6408e7a2f02c388c0f299c60e2bf3c97467710c5f0b523938669dfbfe85d  ./cad/step/m4_captive_nut_fit_gauge.step
+9cc2e4910b7dbeee4f37d240e88bfb2f861ff19121487380d0c3d404f5644cfe  ./cad/step/m4_washer_fit_gauge.step
+f9c2aa9abd10fcac616bfac3b0b4eca3b230d55346549e6e070dc9ac53950a7e  ./cad/step/m5_nut_trap_fit_gauge.step
+3aac4dc0473b2db61861d4011fd424f6e26b7cf99e8e9f4d712524635aee2220  ./cad/step/mast_foot_2020.step
+89c51ec6483ad4f45ac0c538d82485e78aa5d2751729075102875d27a74afdd7  ./cad/step/mast_socket_fit_test.step
+95caeb099f5f2827293eef481619369c9dfb44fe945acf8f5ff6f0b96ee26349  ./cad/step/phone_clamp_rail.step
+6a98c91522263d4eed7dcab49b5bb1ae00389c2daf8e52b0e95664700b597874  ./cad/step/phone_clamp_tip_TPU_M4.step
+628b170be668c91e55b2986d00775bfa3cc5dbea7083bb02c5371a18d347bac3  ./cad/step/phone_m3_insert_fit_gauge.step
+d44b5a93445dc761df13682001579da495c733eaf83701b988592362eea476a8  ./cad/step/phone_tcp_station.step
+1859fd1974f1ff90fe96dc0498ac6ce05c7a8d435d49155bd8e67b98b0794a29  ./cad/step/phone_width_fit_test.step
+940c6ac34802069f55f3668638dd3674cff463eb792443d10f80793391385ac0  ./cad/step/RoCell_RC03_INT_R1_full_assembly.step
+1480cc0b8e9cad1e3f1aabc09e214a6b856250c956b9e5d016c4bd4915e58c9a  ./cad/step/rod_bushing_6_to_9mm.step
+717132c8838c89f2ca775111d497e9888e68e686d0f945ba043790ee5cd1c2e1  ./cad/step/setup_hardware_fit_gauge.step
+bda2d66e7fa65397224de9530115c9694115f3b7f1d99b91bf2cb3d12a0eb022  ./cad/step/spring_fit_gauge.step
+46a7ba4356c7dc5fe53685c99a358d65f608dca40800f18c2b2bb4c3cf4fb275  ./cad/step/station_locator_fit_gauge.step
+ac7292d53d8a6a1d7d916c411d7c98dcb27d694b7606d71934eb10092cfdf265  ./cad/step/stylus_collar_9mm.step
+eefa0ca09c4e99dc34434addc66bb64e6574257fd46c8c2a85a9b3e3edb8f053  ./cad/step/stylus_diameter_gauge.step
+3f0eb40a7469b41762b11172b1a28196877c1ce8b74a1a81a2eea7d23d07c3ee  ./cad/step/tag_application_frame_55mm.step
+ccb28e4f29bc1f82efdc4477db1dc3a896e7c85c6ffd407c8be3c7598a737145  ./cad/step/tool_m3_insert_fit_gauge.step
+adb1b65263e62ef9c9a03e13b410391179e07acf29905b973984a9c157309fcc  ./cad/step/tpu_tip_retention_gauge.step
+47e7ce6c2a77fd670ece425bb438cb277bbdb5c1b563b047f01995be1b509046  ./CAD_VERIFICATION.md
+af1920ac851d18c09ad749df5da2ed58dda6c9a40b066966e737430c448a546d  ./config/assembly_steps.json
+93b51f5635373c7a2a3d561e5a6ed0eb23c5b20c5243f158261a144e78c63c6b  ./config/camera_architecture_decision.json
+1d7be5b0148d13d06875025af0531991feb94b3c63096742e616d450f9ba1deb  ./config/digital_fit_report.json
+1e33702b54e54ba41789b8c50362eecc19977cf534f848e50a7231e70a546e2b  ./config/hardware_candidates.json
+8ffbb767c577fac5c88b8b68a7d4029ac1ca09c5b502f8d27795fb66a585ad64  ./config/job_build_record.json
+1fb400eae3104547b9bc75a6824bb137f37acc8274e68d718db7a6d77e734ec9  ./config/measurement_record.json
+769808d9094672ff2f281d39eeafff68c1aa0e4e9ec9b552f22084334b1bb6fc  ./config/parameters.json
+429bca9542193388581eee5266af57b2e7460881f87b23b34693eee3b77c66f4  ./config/print_jobs.json
+5886a55b3fbdca28bf0d67ea8718a366333e78f2801e1884db00cc9f010ffc5e  ./config/print_profiles.json
+348fccf9be88fc32299ab10fce14e764869422191a43963631e4f5f0ccb9e53b  ./config/robot_reach_screening.json
+82e22835f34620431f9c98a9d6f551d0523710460b78b778cd3be4478f996ae4  ./config/user_overrides.example.json
+04c4e394e8ded36106811a1626b9e2265d7e652869b03c5c0cf76770932b3f63  ./config/v1_prehardware_configuration.json
+e84db9aa7b88db442f042c6f546196e350c822a2e7609cb4b652b3da535df2e1  ./config/workcell_layout.json
+abc0ae19ceb26573752291673d3693fd9ee5a80c8787718acc636837755144d9  ./drawings/board_610x457_drill_layout.dxf
+c0e6f3e6273fb88ddd0a70bfece4fcb92d726cd3999f44e26bc743ccfd4252fb  ./drawings/board_610x457_drill_layout.svg
+368b3e653ffc16ece986b7351442f3c9ecdbf2b040d0998784525789c8daf050  ./drawings/board_drill_template_letter_1to1.pdf
+6fec96788e94bebd836ebff3d850f9c1181934d3aadd0d0ed2cae4f24e0422c1  ./drawings/board_hole_coordinates.csv
+c80bea60c22db98e00ce6a095bf53186f0b8bca24366eba3e41d06023c1335a6  ./drawings/documentation_sync.json
+a468efc23ba74bc0e9979ddda9a343a65a0a5c654c7e4c9d5852d9cc10bc160e  ./drawings/tag_application_coordinates.csv
+5435d962919dae556805080d5d116905c5f08fa206b587cb6d06a226e577f7ea  ./FASTENER_AND_PRINT_UX_GUIDE.md
+94b0af10da8ee259d200ae5ffc404f2265ac9b417169e697bcef38e91aca3085  ./FASTENER_MAP.csv
+a7398a053e14e03976316765676f2c6bcf463748b066b7f4703ba8bc956d69d0  ./fiducials/apriltag36h11_ID0-5_40mm_detection_edge.pdf
+14e5b40490af0937f565e5353ce098b95dadd84a3e21b0ddf5178a067cfbf033  ./fiducials/apriltag36h11_ID0-5_sheet.svg
+81c867d28660cdade79cb8024104d82e5568effa0736f07f0947c1007ac23700  ./fiducials/apriltag_map.json
+9ad313fe625fcccba138a1a178cb653fdefd479f2897df48e725d28749417777  ./fiducials/charuco_5x7_square25_marker17_5.png
+dd2192e679f764608996957e5708d4e020acca65d0e3fb60f1802897bd866b01  ./fiducials/charuco_5x7_square25_marker17_5_1to1.pdf
+ed7aa4bd9d82c9d48d6fe86928f7a13836dde8320a489f8c3f851f074103a672  ./fiducials/charuco_board_definition.json
+743f1e57419e85b59851283d8f4cd0d8368018f40b78a42e02f7f3bad86892af  ./fiducials/tag36h11_id00_tile55_marker40.png
+db65665eff756825ee4271bff9ffff99da50834e610e3ef7ab89517393f244cd  ./fiducials/tag36h11_id00_tile55_marker40.svg
+5d16b66d4cb17c6b940b3a41e74c033dad9f98b68d4dd19a96cf503cf40156ad  ./fiducials/tag36h11_id01_tile55_marker40.png
+614f9355df62f1261a7490ba92776be829673f8f4b4dc113fb978fd517d7f524  ./fiducials/tag36h11_id01_tile55_marker40.svg
+000283a6cfec4663c13eecd41747699a757ff20ca40e656dfa20ff928d796e13  ./fiducials/tag36h11_id02_tile55_marker40.png
+71234ee76fdd2c863a4a696f57f2e2fb65b5af98e397282f53a2dace6ec9710d  ./fiducials/tag36h11_id02_tile55_marker40.svg
+251ede44c48a63f83cec921bbf259afa043b3743bce61035da84e789733d4501  ./fiducials/tag36h11_id03_tile55_marker40.png
+bd2aeaf9f05a3183fea23d33e639be638826371b2746c4abecfd8d2ae692c0b1  ./fiducials/tag36h11_id03_tile55_marker40.svg
+46da4ec6c950e2fbe2927166ce4bbc93ba5ba8cec39f60bc63f90703766f391b  ./fiducials/tag36h11_id04_tile55_marker40.png
+e1ccb1e6d9609b13ca3a23c1f23b5c910015d25061cd1abb75672705ff01689a  ./fiducials/tag36h11_id04_tile55_marker40.svg
+39b607f636fb403762db2167b080c5bbba7fd70f22778848f7c2b32549820276  ./fiducials/tag36h11_id05_tile55_marker40.png
+50164f3def07187b2c689096881ef0b2bc05c50b26aa8a054282fab6ffffcf3c  ./fiducials/tag36h11_id05_tile55_marker40.svg
+3efd49dc36eda46848b903825062be1371546ea0d7df7e8e6b85f07848ab6629  ./images/assembly_exploded.png
+41af485ccf75e0c9a97923d697fe3bfd4e3fe603b7ed8af59ff50d2dcbdb2ecf  ./images/assembly_isometric.png
+3432f76b9c31a828b2652fa071f72afe2af78f0d77433def60225356fbe4f938  ./images/board_layout_dimensioned.png
+087a856912ebb4bd93b90d2c5edfff421a6b0b5ca0c011d190b7347bc716e663  ./images/parts_montage.png
+ecf8d8d91bc48a52e40b62c11ce8e7266a1c428431af8a4f3158e38f9f703f53  ./JOB_CARDS.json
+c8620fbaeacb6e347b1eee2f6ec2880740b8c5b4c8548c4ec290b9f4292eabea  ./JOB_CARDS.md
+d9321015a834d23d29a6bb2fbc06cb9cf064fe31fc3a83f28bb7ce1fce2b6f0c  ./JOB_CARDS.pdf
+31205028fae6d169a6364202280844aec2e6fc9c0c70b58e8433c651fdeea6b1  ./job_cards/JOB-00A.md
+fa575b0438a9fb44153a94cb5ff90572fa2a0fb71a0d4d4a311d2512d3ac887f  ./job_cards/JOB-00B.md
+f3710d58351cad23149777ef40412d9d6a4ef2f37279a8b32da8579edd99375d  ./job_cards/JOB-00C.md
+e047e8a38c2cd60e04656f0520faadac86c1e06dff93d8e37c9d88a718829620  ./job_cards/JOB-00D.md
+5e54fc90484f094680ecc6cce9e6cdfc23d81e28d185549f69d0e65c886e9aa0  ./job_cards/JOB-00E.md
+361a4ec6bc7bfa763602a425060770be6bad3103159987e13edd2dba50b39572  ./job_cards/JOB-00F.md
+da44bcc5dfb9e36b252d37092c410850f31b339c2d348dedcce393d49f4a8025  ./job_cards/JOB-01.md
+89499a559fc585e71848e1f20c89cbde57220eb5a2ec14834955aafbb97067a9  ./job_cards/JOB-02.md
+41d47b8a7fae22283aedfa0ae502425358ce3261134cf932f4c8db2fef17b95f  ./job_cards/JOB-03A.md
+c23d3491935c8b319135a69500446888e806f46c07ca49fccb17dda7388883be  ./job_cards/JOB-03B.md
+4316a909da2b28e3422d9ad7efcaab8289285e4acaea9fc4039c5a3be835617c  ./job_cards/JOB-03C1.md
+82da3a8fb57e2741117bfb359240a5eabac8794e0673035b6b92f0bcc27ef8a5  ./job_cards/JOB-03C2.md
+adcd24a5a74e80924c27c49ea5a998ecad28010edb2ef3e1bdf4b1f3b3d58428  ./job_cards/JOB-03C3.md
+d2e6e6854ac2dd0f71d6cb4cb258ef0c11d5e11da8e5583c3710b65d898eb929  ./job_cards/JOB-03D.md
+945d36bb22bd3f0c696e6a8ebb65fcb5117f27de94a2363996fa072d2c5c408d  ./job_cards/JOB-04A.md
+6400a1d8f8c62d9deed91ecc13fd82a29d42aea965f299d222ce8bb519d2453b  ./job_cards/JOB-04B.md
+0f139865648d4b8796cff5df7a9ca24aa3932a592eab99850cfa053848639bc3  ./job_cards/JOB-04C.md
+36ef5c149038cc136c95cc83f751a2c45ad0607598d17e11d5629305fc839b97  ./job_cards/JOB-05A.md
+ba5aedf699d756f480bcd6431ea6162a683364d80b366be7c310be2acf543673  ./job_cards/JOB-05B.md
+a18bcbbb4080fe595f4c043c750344cea75f7e40e10c240fbc4bc14b70507ae2  ./job_cards/JOB-05C.md
+5620c0716e848f1b75f509e21641c0e778724544f8a6d7482e8ba38de36305fa  ./job_cards/JOB-05D.md
+9e93f1b61e3d5efb38c70b9525aef508d187721c01b09125d813dd2d93708071  ./job_cards/JOB-06.md
+db28c85e8701f83828c9d702e9f78a9125b239ead7890a3c1ce9d2be1277b0ff  ./job_cards/JOB-07A.md
+39fbe63a9aee45bf4e03782900394a848d3e7239607642130c4438976d541c37  ./job_cards/JOB-07B.md
+2c93199c0703d975d47870c2537dd4acf39c376c6f42fbab17fcddeba4004516  ./JOB_KITS.csv
+c8f1a8c4080147e6b24f4dc6c58dc6c4a17d9f1fa439eaf03e857e4e53172fe3  ./KEYBOARD_STATION_ENGINEERING_REVIEW.md
+34f80d7282562031ff75042d6320ca7d8975b05dbb6a317a3ae6cd247b184803  ./MANUFACTURING_REVIEW.md
+a62378547517206ca80349fe438f4d4ce8c662833eb7dc9b442675116cc84c98  ./output/assembly_guide/images/01_prepare_board.png
+8d9b3fed7f935557e7a5324db0970428c2078a9126d95de673ef06bdc77d8e49  ./output/assembly_guide/images/02_reinforce_and_clamp_arm.png
+a39dc6e58b161ab9ca8a4ad4bef1d6b5e2d7627db4fe83276edd880affbc1775  ./output/assembly_guide/images/03_install_keyboard_master.png
+126e91622f68e81298c69143d8890249983664788817915a50e7b9a5550cf57e  ./output/assembly_guide/images/04_join_keyboard_slave.png
+f832b5ef451e2b79c4b88e669bf37a3b42fe7beaceaaf5840f13daedd201dfbc  ./output/assembly_guide/images/05_load_keyboard_and_clamps.png
+9cf12b84cecaea0fae2e349ccd074c946f2fe662cd205813ef545882310c2b20  ./output/assembly_guide/images/06_install_phone_tcp_station.png
+77ad79f5177a6305d46f1d94da356ce399fe7bd6f42532c108ab3bc5f5c32116  ./output/assembly_guide/images/07_seat_phone_rail_and_cartridge.png
+e00b59851cfd50d7facbfc16d6bfd9ca3e2707279c1597ab74a997df96764174  ./output/assembly_guide/images/08_install_phone_service_hardware.png
+74525deb54a391c7cb5a38203cf6ee38f1d43aeb5ae4a6d0412ba8179b143ae9  ./output/assembly_guide/images/09_load_phone_and_route_cable.png
+03850310af5c78526304577cb0b6c34aa7397e9fba24f44b68816ea83e2323d7  ./output/assembly_guide/images/10_verify_phone_no_go_zones.png
+f43a8bb221641188106da6087dd0f5e967f9c8649aee55d138e6985ee8d7baf6  ./output/assembly_guide/images/11_transfer_tag_marks.png
+7e131afe309542e2763ae9f05030ca88aeae264c2afd0802a1578949114a76e9  ./output/assembly_guide/images/12_apply_apriltags.png
+48df5f4db536f7213961d65cd85f85318ed190eb370edfa0f8bcb2d67b131053  ./output/assembly_guide/images/13_mount_camera_and_check_fov.png
+42292a392a68c4a255c7223e71e5810a208da21d7296b7f9bf55a47f99be45e3  ./output/assembly_guide/images/14_assemble_compliant_tool.png
+a63cdd293b9c84b5062c5a69c170358b77b6193864f8adcbda3b312d9cc17aa9  ./output/assembly_guide/images/15_final_cell.png
+8e0db85bf72f02fcc92f77dda7d2a0a8c4c06431d9fb6e60c2a9c7bdf65d04e5  ./output/pdf/RC03_BOARD_DRILL_GUIDE_24X36_FULL_SIZE_1TO1.pdf
+368b3e653ffc16ece986b7351442f3c9ecdbf2b040d0998784525789c8daf050  ./output/pdf/RC03_BOARD_DRILL_GUIDE_LETTER_1TO1.pdf
+1084103edb5f167b3a3571ef642826c4f585b488fef8200570e4251f2d5c140d  ./output/pdf/RC03_ILLUSTRATED_ASSEMBLY_GUIDE.pdf
+5466becfee0fb9ea56ff61cb57413fe7d0e8df46dde8d77c62c9ac9124a92004  ./outputs/01a0541f-aa79-78e1-8989-27e82ebc1acf/PRINT_COMPATIBILITY_WORKBOOK.xlsx
+4266babbe18d76b0604026a20eb4316a3e3a436f9a262b8bdc9e99b5ec7a13f3  ./outputs/01a0541f-aa79-78e1-8989-27e82ebc1acf/PRINT_COMPATIBILITY_WORKBOOK.xlsx.inspect.ndjson
+41e980ae7f23fbea672c20186e387d14fd63dd6a943ab1b2d5553a65f751abd2  ./outputs/README.md
+8ea0a9091790a9a00c5896ac04c74e6549c190e43174d4557a2ea5ff2233a80d  ./PART_VALIDATION.csv
+9c1b4308c0cc6f4b28b9c49814aa94d9325409ec5eda3a27ba5213f8e7309a04  ./PLATE_MANIFEST.csv
+2f00bba3bbc17b24c5c64f9f2d49e6633fc25511c3da1b4732a0852cf019c3cc  ./PREHARDWARE_READINESS.json
+76202a60ba7f00d212deebc2566d1e87aacf1a9bf22e4a1fdff7428de92181c8  ./PREHARDWARE_READINESS.md
+bf837e547ec9a9e271660203db17e13b33886b96f8e8b7281ac0c98abe7cd611  ./PRINT_ENHANCEMENT_PLAN.md
+ea0555461e87a475f844ffb1405a5dd756ab41f9d49617849c56204e275310bf  ./PRINT_PLAN.csv
+cdedea55ccdf765a78d35b976cbd18ea153dc8caf6fb91ce08e507c9be837237  ./print_plates_3mf/00A_ABS_keyboard_station_fit_tests.3mf
+906c4420ba658df5f388b7a783cc3457b8cb61e6f53126d83ecfdb48de352aeb  ./print_plates_3mf/00A_ABS_keyboard_station_fit_tests.print.json
+86498dd72c486e0df6386a8b96cd48884270c5c05b8efeaf4f41921e3919e323  ./print_plates_3mf/00A_ABS_keyboard_station_fit_tests.PRINT_SETTINGS.md
+cd7d1eddac818cb7268d3b6b71a21c72f609bcd2dfd66834d00fe2f31f668a76  ./print_plates_3mf/00B_ABS_phone_station_fit_tests.3mf
+236d5990c455bf8f64aca7718cf0bd0cbc15d23c7816fdd95ba1821bf41d940a  ./print_plates_3mf/00B_ABS_phone_station_fit_tests.print.json
+5dde496287138dc5f8bf01eab3a3217fcf332374e092a4c46f49ae3a9ffda544  ./print_plates_3mf/00B_ABS_phone_station_fit_tests.PRINT_SETTINGS.md
+53f14d77ecbebc10860a80122d53860c8789249c29f6af2eecd455855fa14af5  ./print_plates_3mf/00C_ABS_tool_profile_fit_tests.3mf
+74514579248a85f9c75665714dc039baaa7bca4679b40a66b69e866b920496cd  ./print_plates_3mf/00C_ABS_tool_profile_fit_tests.print.json
+59acdd097bba18a034df2e96cb271f7766e73d40de35bf780a890d1ac3727c66  ./print_plates_3mf/00C_ABS_tool_profile_fit_tests.PRINT_SETTINGS.md
+bc6e9d9ec7a6702c2d640f1d43b68eec33864f6398adbb37bb6a0d5fc79f4642  ./print_plates_3mf/00D_PETG_adapter_profile_fit_tests.3mf
+5569fe9bdc2c487bc1ddf458d5a94345101311f2e79d3f0d6a341ba0ea7dea11  ./print_plates_3mf/00D_PETG_adapter_profile_fit_tests.print.json
+555dd4276ec5dc8cdda79dd8a9c845436e6d3b72e73449048f07954f2dd16bbb  ./print_plates_3mf/00D_PETG_adapter_profile_fit_tests.PRINT_SETTINGS.md
+67073d37df50d0329a6b77ba5aed00166fff9cc850c9f6225b00abeba54661d7  ./print_plates_3mf/00E_ABS_general_setup_tests.3mf
+cd64ea520ff1550b4abf0e6acb270cf673f3f4e118baaa35fffa5394ddc45717  ./print_plates_3mf/00E_ABS_general_setup_tests.print.json
+0a1da7fcba38d7c228f9d681e467961e3bfe3069356d0591eab0a5fbbee8cbe5  ./print_plates_3mf/00E_ABS_general_setup_tests.PRINT_SETTINGS.md
+dc2f6af58b927da87ae6a2469ab8ce8a00ce029e550b5d171833d2152e2b6b9c  ./print_plates_3mf/00F_ABS_calibration_profile_clearance_test.3mf
+1a8a4981e07dc593d423effda1d1951714bb7543adbee88f4f2b57e3b4ac7623  ./print_plates_3mf/00F_ABS_calibration_profile_clearance_test.print.json
+9d808f626a6a47e7609fdd206e314f5e69c06c4972844e791dcdba86262a47e9  ./print_plates_3mf/00F_ABS_calibration_profile_clearance_test.PRINT_SETTINGS.md
+dbcb685037402a8ce90e39c216f00888c9abeb341829ff529248ac6f485e65f3  ./print_plates_3mf/01_ABS_keyboard_station_left.3mf
+d594cad9ee0f35b55e65d2c37b6a9a0bf1bde50c2316d9b4b43dee99be2e1a3b  ./print_plates_3mf/01_ABS_keyboard_station_left.print.json
+54b2f8cc73105131175af762ec6b2f49b8f3c8dc25966d2a06a024d15b8c4688  ./print_plates_3mf/01_ABS_keyboard_station_left.PRINT_SETTINGS.md
+bc8e2fffd5f004678e47ac33c5fca41b3366cab17931cbcd5565f9bf9c2969d0  ./print_plates_3mf/02_ABS_keyboard_station_right.3mf
+e861e72942c3ccec6ad977788700eac56e707f5c29e1a6319e2565a12897d7c5  ./print_plates_3mf/02_ABS_keyboard_station_right.print.json
+e384ebb2785694ebef13fdbcedf547ea7c1730028a0b115350ac93b1d78c7b3e  ./print_plates_3mf/02_ABS_keyboard_station_right.PRINT_SETTINGS.md
+63cf85413ed08193b08445859bfcc8116c2e47064f2a086fdbfdb8bd7339e565  ./print_plates_3mf/03A_ABS_phone_TCP_station.3mf
+a0933605a7fbc2c7205b93404508f94828e21075476c6e89db2aef5899459da6  ./print_plates_3mf/03A_ABS_phone_TCP_station.print.json
+c3fd921347d91842d1f16728e8e88a45d25a776aa3aedd6d8810c9db9773c7b9  ./print_plates_3mf/03A_ABS_phone_TCP_station.PRINT_SETTINGS.md
+0f6e0900c6aec772e790d796ae389aa4506b5080550be71430cd05093acafbed  ./print_plates_3mf/03B_ABS_keyboard_clamps.3mf
+74d06febad8b82d7b8bbd7894ac344c146e942f64b0bd709a0b3ea0675c50a63  ./print_plates_3mf/03B_ABS_keyboard_clamps.print.json
+005ea3f467f64abc7f1e1af070e3436d1d90822e25b22b82c776b7baa24f7c3c  ./print_plates_3mf/03B_ABS_keyboard_clamps.PRINT_SETTINGS.md
+e992ea3f29097bd346095a5c5ac08c33c9e2d35d7e9c27bce6041e43e3a9ef39  ./print_plates_3mf/03C1_ABS_phone_clamp_rail.3mf
+136b3c0808d549dd03f2aa3a212cf250fc5647b426205d5fbbcf8ba76a5a367c  ./print_plates_3mf/03C1_ABS_phone_clamp_rail.print.json
+0a0a5ea8323faf956099084619fece6f7c8e879f6d7ae8baa2aff406effec156  ./print_plates_3mf/03C1_ABS_phone_clamp_rail.PRINT_SETTINGS.md
+6f84a4addac525d32ebe0685c5f11764a15270caf11d29bd6bda20338e1e3b6b  ./print_plates_3mf/03C2_ABS_board_setup_tools.3mf
+7d4a90cb82ff524f8a3b1ac827a1a600722b0f0ceb3b64de20b1a9200de29fcd  ./print_plates_3mf/03C2_ABS_board_setup_tools.print.json
+fad0b88672c052346ceff5fd3fcc86caac6565b081497eeb372ffd4bf6b64416  ./print_plates_3mf/03C2_ABS_board_setup_tools.PRINT_SETTINGS.md
+b659444974c21f27d0832b97b0511edd4a879c2049d81ae010cb28d61c8eae42  ./print_plates_3mf/03C3_PETG_camera_plate.3mf
+bfa1070820c21e695740fe1a8cc52f26531fb76d403bf9a1a1227a60a6d1a29c  ./print_plates_3mf/03C3_PETG_camera_plate.print.json
+736c5f8666a3beae5a87cf685c04831499f5510dacdec9e17ab651da5af8e214  ./print_plates_3mf/03C3_PETG_camera_plate.PRINT_SETTINGS.md
+597423729e6d84ed39847ef9093fec57dcce2d5a51fee3c1bf17228d5045c8f7  ./print_plates_3mf/03D_ABS_TCP_datum_cartridges.3mf
+9cef17736c2c98614135777d8a69034e80e44a27a548a66bcc50e66d58305ce8  ./print_plates_3mf/03D_ABS_TCP_datum_cartridges.print.json
+3e05dc8654924984aeb3fba467e18864eb5797ea8703391043aee9a286f29546  ./print_plates_3mf/03D_ABS_TCP_datum_cartridges.PRINT_SETTINGS.md
+91a9be9ec968c66b10543d13faae269d991b176fffd105d801a07f4a08107882  ./print_plates_3mf/04A_ABS_shared_compliant_tool.3mf
+38bce25f21361e27227c63abf5d264d41c4fc7e6ff347b1d1279fb4a7d9ae272  ./print_plates_3mf/04A_ABS_shared_compliant_tool.print.json
+a5f98db5e0bd54f803e6b623cfd587be6cadb2b5f7ef55ea192664edb244027a  ./print_plates_3mf/04A_ABS_shared_compliant_tool.PRINT_SETTINGS.md
+e0c0f7e0a4d634347490cde4653329ea7c9527be5a967a2379077e1ad925c76f  ./print_plates_3mf/04B_PETG_phone_stylus_adapters.3mf
+14a4ab116cce4aa51f5abdffba7a38a0810420da6d4efcf2ace06a16dd6690e7  ./print_plates_3mf/04B_PETG_phone_stylus_adapters.print.json
+ceeca6a3cb6645b879ff3253f9cab91267a663253bb12e421abd1dc7f421b2db  ./print_plates_3mf/04B_PETG_phone_stylus_adapters.PRINT_SETTINGS.md
+39b706d658b093fe29c7cd845412ba2082dacdb6cf321b97d9cb6209a5e81427  ./print_plates_3mf/04C_PETG_keyboard_rod_adapters.3mf
+766b93f14946113cd5544947d7c333c61a1054104a81daf924e856251e5f4a39  ./print_plates_3mf/04C_PETG_keyboard_rod_adapters.print.json
+f4e96b64f789e345ba7dabbf4052e35498e57c95c64de12a87374e971eeb32fd  ./print_plates_3mf/04C_PETG_keyboard_rod_adapters.PRINT_SETTINGS.md
+4171263d706936cee8f393d2b7be90f299f8a362ceb1ecf3a32732f6c45f1899  ./print_plates_3mf/05A_TPU_phone_tip_first_article.3mf
+8104e90a1f439cce06a3ac6f55e71b2875f5191430de711569e8025b2679cc2a  ./print_plates_3mf/05A_TPU_phone_tip_first_article.print.json
+9cf56d40d7cc29bf233cdce02e3376e324ad6462c7422435b77992b7a2942008  ./print_plates_3mf/05A_TPU_phone_tip_first_article.PRINT_SETTINGS.md
+ba8da269c5c0363efaa344e161f7e2678265b8b4aebb2c541c396dfa0c435747  ./print_plates_3mf/05B_TPU_phone_tips_and_spares.3mf
+a92b142ae158510f7442c811dca61ed16e849fec5679c8d46bec31396e775e5f  ./print_plates_3mf/05B_TPU_phone_tips_and_spares.print.json
+05ecdb00d5d89c5d971407a6d432ad7a8fd5e0b53a004beb1b01963c3da63fe3  ./print_plates_3mf/05B_TPU_phone_tips_and_spares.PRINT_SETTINGS.md
+1b6b6f5803d89ac00eb31cebc09e470365938842edfb7a748d278d81e5791c76  ./print_plates_3mf/05C_TPU_keyboard_tip_first_article.3mf
+78cfbf544e26201d3eec05f7637ec6fb435234120391b4985420806d41d03001  ./print_plates_3mf/05C_TPU_keyboard_tip_first_article.print.json
+8256bf1ff0f030d8023a16f9f4a299c115b0bf3a151e6fe933cbc1cb919aca4f  ./print_plates_3mf/05C_TPU_keyboard_tip_first_article.PRINT_SETTINGS.md
+63efc560b375ce5a6abbd5092f51632a51de8771b90aca70794ec6b7e999e843  ./print_plates_3mf/05D_TPU_keyboard_tips_and_spares.3mf
+b283dd28900a832352cd281477309a16aacbe36811720ec7e80f77d9b9447799  ./print_plates_3mf/05D_TPU_keyboard_tips_and_spares.print.json
+c2f91ab16e4faeea96945bdef95eba4cfb142430f44302565ebee51ca891ce9f  ./print_plates_3mf/05D_TPU_keyboard_tips_and_spares.PRINT_SETTINGS.md
+02525021bb7f82f1d5c04946222ef5d898551181deb6bedda3b60a54cede6daa  ./print_plates_3mf/06_ASA_mast_fit_tests.3mf
+2a1fc922da8f2f8953522a287a468824e3b7743d978a8ba39784dd555ff2d7cc  ./print_plates_3mf/06_ASA_mast_fit_tests.print.json
+a0201228b703bd3c1c282ab8fd0fd3124acebf9b68c1abbdbbf65ce502e3a461  ./print_plates_3mf/06_ASA_mast_fit_tests.PRINT_SETTINGS.md
+fe98242302efb943e0fba6fb4db4e38f0008ecda19e306688be844dd162af84a  ./print_plates_3mf/07A_ASA_mast_foot_first_article.3mf
+aa830046f1152a28fd50d702b9233f8fc3c5854b65f1ea3db505fb4062f9fe19  ./print_plates_3mf/07A_ASA_mast_foot_first_article.print.json
+e8d47f729bd0c125a7e9804dac2f342484c0f536f0c5f83a1bffeab28398e7ff  ./print_plates_3mf/07A_ASA_mast_foot_first_article.PRINT_SETTINGS.md
+1212bdb01b8d4fb140b8eeb7a6e68fdfc604696662d27a199120def6b2260658  ./print_plates_3mf/07B_ASA_mast_foot_second.3mf
+cb85e1aa58ac2567429b4105a925a120605a188e8a26d1d4fda45147cf8f945e  ./print_plates_3mf/07B_ASA_mast_foot_second.print.json
+46c56c393526bef5911b0ab604e85f36aeceee2892195a473b9d7931589c97ec  ./print_plates_3mf/07B_ASA_mast_foot_second.PRINT_SETTINGS.md
+c11694719b65007e9c4ddca4c5c752102a2f39c444c3fe157fc5532dec17095a  ./print_plates_3mf/README.md
+a8c75f05f727fa899c1f873ffea9852b5e6d343cdd302d5c4e02ee4124f74fc3  ./PRINT_READINESS.json
+5be5234644cbca322e93f16ec422cd5a6f04059055a2f56d68cf224d61f015b0  ./PRINT_READINESS.md
+e80cf2e4b916b76f5a83232e5a26f769e810e6be3199e9ce817317ac1bcc4b93  ./PRODUCTIZATION/00 - START HERE.md
+8307c38575ed166971c451843065e165ec628f4792e962ffc76dd08ca46478cc  ./PRODUCTIZATION/01 - END-TO-END PRODUCTIZATION ROADMAP.md
+ddaee8d4b78403daab84f124401439b1d59f87676eb1449c8692e7abe06ddcba  ./PRODUCTIZATION/02 - CUSTOMER BUILD STRUCTURE.md
+08938756c9f4d725feb917be9e0a01f6d6f1ab6641a835ef42d1a45264178b44  ./PRODUCTIZATION/03 - CUSTOMER INSTRUCTION AND FILE STANDARD.md
+6acf5a27289d576caaaf3fcdb929c1fa313d0a03c6aebf9e5b9843482d364eee  ./PRODUCTIZATION/04 - FIRST-CUSTOMER VALIDATION PLAN.md
+b0c38bd370e8f95cfd109edd07104002e9308a88cddb05ba84f5e9d3e0a4fe07  ./PRODUCTIZATION/05 - RELEASE SCORECARD.md
+f06afd1efbd928236c855ea3ceb0ea1098990c2135184be5dadd040d2be2a22c  ./PRODUCTIZATION/06 - CURRENT STEP CONVERSION MATRIX.md
+875f3d6238789c02836e85f79362d5cb9d89fc0cd2cc8617a89cf72550b5ad7f  ./PRODUCTIZATION/07 - PHASE 1 CONFIGURATION FREEZE DECISIONS.md
+39af507cda05f27a7f81c952ba936ce22c57ab8e8ae620066225194c8096022e  ./PRODUCTIZATION/07 - PHASE 1 V1 PRODUCT DEFINITION WORKSHEET.md
+0e5541f26ec5238d3d26adc6f2b1e62326044c108991dda27a9bcb538fb90cd6  ./PRODUCTIZATION/08 - V1 PREHARDWARE CONFIGURATION.md
+e52852f5561f7bac4938af5ffa599c6741bbb48236f4b51d9c44790d45469342  ./PRODUCTIZATION/09 - ISSUE REGISTER.csv
+4ab4e0ed3c65ef1803c3f893d2f2a742ebff83277d55fb929b3cb626e03e0e96  ./PRODUCTIZATION/10 - CHANGE LOG.md
+3843717dddf52da315fe9aca3a1743b742740705a2e5990cb22488dacd812092  ./PRODUCTIZATION/11 - HARDWARE ARRIVAL AND QUALIFICATION PLAN.md
+2d85a295a436cf697cf95332fba0bcd8d00c55f699d1f3c6b376bb5caf4b7afa  ./PRODUCTIZATION/12 - ENGINEERING CANDIDATES AND REACH SCREENING.md
+c8cf80651860f9c6b13f1227eb542356968f7282f591aa76acfa5950707898b0  ./RC03_INTEGRATED_BUILD_PLAN.md
+ba84a14a17983d774a0278b4b68571d920b0dc4d186fd05c991b1d149d388a9e  ./README_FIRST.md
+f756ecf6697982c90ea2c9fe17ca784a170224a748e628574b70a7bb7519e2f3  ./RELEASE_VALIDATION.json
+94d9649e2146cfe6a554fc181c387a82b3251d0a8272616b3886134843155e3d  ./requirements-cad.txt
+42ef5240cf2ac5a63f84f7635dc54e2bfb2583bafb9a215d236b93cac3a5e834  ./requirements-vision.txt
+6badf0daa975d8c0ab5de34cea5a7514dbff8469d2a7b499670a3002d428eb31  ./scripts/build_illustrated_assembly_guide.py
+4baf08d28e3566c3eb3869585275ebc318bf1e076744867221d4d79e2359f182  ./scripts/build_manual_pdf.py
+a353bd4ee4b27d1d4e4e94acdcd066629e9219d7081eba7f8834d56b43b6dd67  ./scripts/build_print_plates.py
+09ec78a5512ee6cb6997b3200e7bd1cdb1418eeb2fb477f339f331f14191f8a2  ./scripts/build_step_packages.py
+6090b47ff751ebb62c6ab8ecd4abc55fa54f79cabde5b86a4231484b2cc67e53  ./scripts/generate_build_tracker.py
+2645ea95e02b75c6456d8f9d3095fd39fcb5e9bad5f5d8bcae6ab403781df4e8  ./scripts/generate_cad.py
+bc67170f3faff0bdebebec01e038014aa3114f0f971f4bfa2f6d3a7f63b71ea8  ./scripts/generate_drawings.py
+b28743c5fbec76f31722e99065965236fbd156d956695b93e488f6e4ccfc8763  ./scripts/generate_fiducials.py
+520cf48d2263beca0eca351d6960fbfae95e1f9c63e05aec1204957b47271a7f  ./scripts/generate_job_cards.py
+31cfc58edc52eebe3fa9afb6c85b1396d95e4a5572c75814733fba3c92e8fb89  ./scripts/generate_prehardware_readiness.py
+0a940eabc2ab22fcc0c4e2b2df9a67fa90224027168127917c2e7879a8725b93  ./scripts/initialize_step_evidence.py
+440ca2e1b5185b230067a5d5f63d936a1d56e84bfc9ec9bc32d920e39ed3eb37  ./scripts/record_job_lifecycle.py
+5cac4945ed54e13f95f1ef2e22e0b26448c4b9b69f966051cb350aae575b232b  ./scripts/record_print_measurement.py
+851e5b3761c2f37e9542f130ad22e2426cdf4d07af212a26ee3f5dd9012b3f0b  ./scripts/record_step_result.py
+8e7467e8eccccbf6e04988820b828be3c0aa0c1c06167954f53bb46b5f8cf330  ./scripts/render_assembly_guide.py
+1b8632d8adc7044220d2902df2cfd652352bdce68e19b4603b969a95ef941964  ./scripts/render_previews.py
+0f593f140437858b8cd72c87f4737b14af483c91ac3e9fcb45f07d4893327571  ./scripts/set_active_build.py
+caed2f3b929d24354ae7ff289178e70a94c8729d84ca5f2d55384c483032cbba  ./scripts/sign_off_step.py
+93fb598ee2de6dc0ba60d6eec7291458a728cb087dbe724b9e3bf09aa8933f8a  ./scripts/step_evidence_common.py
+0697106a1dd46a9b273e7e65a1fe4d2e1553f1b717d7afd1254b21dd7436509c  ./scripts/sync_documentation.py
+105d8f202e0b2e616e2cc2654ef5a6151d5fd5af2f97f61cae7d4b57956d6db6  ./scripts/update_checksums.py
+7dc6159c15826da700a66d9e271776f8daed14716db80081fedea2e8712fb2ed  ./scripts/validate_print_readiness.py
+9b954d47726e7c09423d31f7cdbd8b0e07dff1b78c11bf826274473062d66ed3  ./scripts/validate_release_package.py
+c069454369dc8abe726d0db4359928e9fa870c694cdfdf7b044a3debeeb2d564  ./slicer_profiles/QIDI_PLUS4/abs_rapido_calibration_0p4.process.json
+9276ce2983256d815925224e7d8fc45032a531678dc336713fc88fa96137e259  ./slicer_profiles/QIDI_PLUS4/abs_rapido_cradle_0p4.process.json
+756895e547ed186ab4b0d532d6d66fc3e2ad31376bc342a0150cbd4667a5d239  ./slicer_profiles/QIDI_PLUS4/abs_rapido_general_0p4.process.json
+c115ad0ca8acafa86bc303973bbbae27578fdd57db8cbf437a7c8175710ba90a  ./slicer_profiles/QIDI_PLUS4/abs_rapido_precision_0p4.process.json
+c89e92d6af33cb676d7200e34937ec05c7cec9b55f2d0700b07b89a57cbd81c6  ./slicer_profiles/QIDI_PLUS4/abs_rapido_tray_structural_0p4.process.json
+a6116150e09eb3212b6d4d76b7def11495593f564f497d2e8e5799ec6e69f7de  ./slicer_profiles/QIDI_PLUS4/asa_structural_0p4.process.json
+0eac339f7768fb799fa420cd300710e080134d0c0737652fd9afd51d9bc4fa91  ./slicer_profiles/QIDI_PLUS4/petg_adapter_0p4.process.json
+4e3fcda86460e9823234db1eff750e880a8b43bcb916dc2b584038b97376b605  ./slicer_profiles/QIDI_PLUS4/petg_general_0p4.process.json
+641631027fd7a0a452653ca7613b0f2f19c91e3bd49e3f90e9c9a3429c1777f4  ./slicer_profiles/QIDI_PLUS4/README.md
+547c6502ce8d5f4b04a5d247b50fcafb884dbe587b1df9c43935dfa6d297e6ba  ./slicer_profiles/QIDI_PLUS4/tpu95a_0p4.process.json
+1d374cf440cfaa6861b0c5714e04893c0c577f3a3ce70f5fe04d0425b339542e  ./software_helpers/calibrate_camera_charuco.py
+a4b5d57fe1ba68b3fe991c96d85894f8f01621ba2fb5f2d9b404f7d245a10669  ./software_helpers/capture_camera_frames.py
+4fb2e59d6ae33541de8984321df115533309f5d415e294d4388459dcc28001d0  ./software_helpers/detect_apriltags.py
+8de2b07efef5bef8ef9297407c0bd22dd7945adc16f84fd0dab236e304398598  ./stl/cable_tie_saddle_fit_gauge.stl
+3d232103d1cc89d083cc700526abe40344db3f34f80609a5f134cb37a9247ce6  ./stl/calibration_puck.stl
+7fb63205ddc37b517ee452eda352893c7912cebe74086d977ef0beb8ec2d006f  ./stl/camera_plate_universal.stl
+18c8d7ff2d57c0785b324c58e93b3c6558db7c56c339270ab183307b991225ba  ./stl/compliant_tool_body.stl
+2c892ebeccd9d4512bf877cac3c1d56c87329c1a30a47165221480021104d935  ./stl/compliant_tool_grip_fit_test.stl
+e7adbf51fd9382a4eb2b9a9dd25df677d43fd488c4584c2bf3e3e7d1599b9081  ./stl/compliant_tool_top_cap.stl
+4a9a35b618a420931b7e8b6b717aee4a3eb68f8948fff04e5a69fd65266e9e42  ./stl/hardware_fit_gauge.stl
+c12095d3506ea86025fcef6cd34702efb391aec1e00c9b23fd77bdb250703ad3  ./stl/keyboard_corner_fit_test.stl
+78c591895ae8392a5af9832f56cb7f15cb6a401c490153a1914b71ff5bcba373  ./stl/keyboard_rear_clamp.stl
+a19b4288b9d6c3fae66f3baa3aa7726fc4acaa440bdb3f16ad3a7ea7791e9a1f  ./stl/keyboard_station_left.stl
+bc9cc0d252da8d1702c56bbd0afaf6ed79e5dd9891d121dd54372e4692675cf0  ./stl/keyboard_station_right.stl
+22ba42201e769ff4ed146b125d69d585b7188b7f274a1b3430b741ad62931d37  ./stl/keyboard_tip_TPU_6mm.stl
+7d1206ee09722d99cff871031562943e405c263ea5d1d1f5d82e193bf403cb2e  ./stl/m3_head_fit_gauge.stl
+5771bfa01542ab24999c806f4347486d6cc1800f6a13a17ebfdb9264644e8aec  ./stl/m4_captive_nut_fit_gauge.stl
+98f27d3b7f274754a274f9856a8318c8b0c98f2fb5b485223fec74236ae349ff  ./stl/m4_washer_fit_gauge.stl
+a6a8dd06689060766bb31f7eca10e6910fb3313a758af185bcbcdfde3c40a01e  ./stl/m5_nut_trap_fit_gauge.stl
+2b6384b63a5b191ef88ae5590b50ffb5cd0c64d2102b3145b8336b2fb901faa5  ./stl/mast_foot_2020.stl
+3a8e939ae308baa04fda3891dfc8851a0a3b2caa9e2a91148414255e1114905b  ./stl/mast_socket_fit_test.stl
+f766a24143f11769a0bcef7236b09938f4c02434b3b5d8e6d77b21b37f49dcff  ./stl/phone_clamp_rail.stl
+77883a940d153460346de3ffdfcf3a281e2572ab404dd1f4dc50ec8808afef94  ./stl/phone_clamp_tip_TPU_M4.stl
+54a7990f706256dd30d3d5ea7487f479e970c1e1d8f212be1996b6df6d1a2e65  ./stl/phone_m3_insert_fit_gauge.stl
+63e02e28f9bb818007564eab7e82e2b9ce8417f30bdf3cbec3c3a86ec08ac32e  ./stl/phone_tcp_station.stl
+1091a6d591259a4a22b6d9fd7b36d4a8264807ef5c169fe3c5b1019a16420cfa  ./stl/phone_width_fit_test.stl
+c30bee2a303f025e94b21e1cf2c5639babbf5d75d3bb008711ea86b5e8160d63  ./stl/rod_bushing_6_to_9mm.stl
+e6394a26fe104fb2af1b05df14865a5be2908bf6e99fab79c93aa034a2dc57b4  ./stl/setup_hardware_fit_gauge.stl
+0b8464e8506bea26cc8972ce32fcfc4e7366c800eac4ee23e6fcd16677672f4c  ./stl/spring_fit_gauge.stl
+7b34ff9a05495ce702310171cd27c5201e0c1ee54fede8c9cdbeea7260d3d1d5  ./stl/station_locator_fit_gauge.stl
+abc908bcd256e8836d13c94cf58320654f78d972e0eb1923f50a6575233f2c8e  ./stl/stylus_collar_9mm.stl
+556c8114547de14b36d8990444de96f3229f99c93f6d06fb62216880c6f72c77  ./stl/stylus_diameter_gauge.stl
+492f7e3c567a7aa3a4bc255d59425f73dc0c64ab240df8af8f9adf861d53a10f  ./stl/tag_application_frame_55mm.stl
+8ff0775cb466170e0749bf125b4b2743f134df072f75ac17090d61854fbc7d8d  ./stl/tool_m3_insert_fit_gauge.stl
+0476c9c867a9f28816c5df107f8bcff9e44b7e1ba79e8927501a8d1c6d32b777  ./stl/tpu_tip_retention_gauge.stl
+b17910fbe68286dd1e5910cfc8a985b6c6efc777fe116501b13c03cd4c4c4a87  ./tests/test_build_step_packages.py
+51c85730ca31c6f31fac44609372cd78f023784e4dd356b330ca349846dede51  ./tests/test_capture_camera_frames.py
+4ffab4913d1dece04394449c3e3a7568f2b54e54e9916b25b91ebbc4267cbba8  ./tests/test_detect_apriltags_cli.py
+c79fad408867dce88b049f4989e6db666b27bfd21fe5e98745262fb065adc5c0  ./tests/test_drill_guides.py
+d8878b138063e50c3b4f5d97281e4a1be53dfd1152f80ed59b87f07a79813566  ./tests/test_hardware_candidates.py
+6fd67b5b297860e339ff274eb2e9fe7b8ef1be44d17ebb7ffe41477a87fb2710  ./tests/test_instruction_accuracy.py
+8a34cad667f60fead2c02cc418cbe078e2a29d8664f1fed1858be1078d2469d2  ./tests/test_layout_consistency.py
+db27901eee05153ac04aef112c488e3476f4ea0bb988825451fb75472dadeea6  ./tests/test_prehardware_readiness.py
+90b902fcde6253cd98bde903f1462fac2c40a5d4e532dbbc64c07e78c6697850  ./tests/test_step_evidence_recorders.py
+bb5583525e13b983eef118d2de3c24ca6d9a2e94feb80beb8b3c1cc87e4f8fa6  ./tests/test_v1_prehardware_configuration.py
+e31bccf10c3dfa670fe471420ce5bdd904265d8d1e41a7967b9e159bec56c0e6  ./tests/test_validate_print_readiness.py

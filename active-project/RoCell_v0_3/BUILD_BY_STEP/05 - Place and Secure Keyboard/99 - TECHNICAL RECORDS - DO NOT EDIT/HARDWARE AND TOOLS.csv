@@ -1,0 +1,9 @@
+source,type,qty,item,critical_condition,status
+required_physical_input,Required input,As specified,Installed and accepted keyboard station pair,Present and accepted before work,NOT_VERIFIED
+required_physical_input,Required input,As specified,Actual keyboard in the measured final configuration,Present and accepted before work,NOT_VERIFIED
+required_physical_input,Required input,As specified,Two installed face pads and movable rear sliders,Present and accepted before work,NOT_VERIFIED
+required_physical_input,Required input,As specified,"Cable route kept clear of the seam, tags, and robot envelope",Present and accepted before work,NOT_VERIFIED
+required_physical_input,Required input,As specified,"Low-range torque driver, calipers or rule, and camera for retainer and repeatability checks",Present and accepted before work,NOT_VERIFIED
+structured_register,Device,1,Measured compact keyboard,Same model/state used for the accepted measurement record,NOT_VERIFIED
+structured_register,Pad,2,Rear-clamp face pads,42 x 10 x 0.8-1.0 mm; clean and fully adhered,NOT_VERIFIED
+structured_register,Fastener,2,Shared low-profile M4 clamp/retention screws,Already retain the stations; adjust only until padded contact,NOT_VERIFIED

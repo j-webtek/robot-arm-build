@@ -1,0 +1,32 @@
+{
+  "schema": "rocell.printable_camera_portal.print_sidecar.v1",
+  "schema_version": 1,
+  "design_id": "ROCELL-PRINTABLE-CAMERA-PORTAL-PROTOTYPE-003",
+  "state": "PROTOTYPE_NOT_RELEASED_FOR_ROBOT_OPERATION",
+  "subplate_id": "08C-X2",
+  "geometry_3mf": "08C-X2_ABS_crossbar_3_4_WELDED_v1.3mf",
+  "geometry_sha256": "510ec87141be8932ce48bc3c012cde7cec5a3d48b4b45efad9aa702439315b28",
+  "expected_object_count": 2,
+  "sidecar": "08C-X2_ABS_crossbar_3_4_WELDED_v1.print.json",
+  "profile": "abs_structural",
+  "native_save_as_pattern": "08C-X2_WELDED_QIDI_native_vNN.3mf",
+  "objects": [
+    {
+      "part": "crossbar_truss_segment_182p5",
+      "stl": "../STL_fallback/crossbar_truss_segment_182p5.stl",
+      "quantity": 2
+    }
+  ],
+  "print": {
+    "profile_key": "abs_structural",
+    "process_name": "RoCell ABS Rapido Camera Frame Structural 0.20 Print Pack v1",
+    "process_file": "../profiles/abs_rapido_camera_frame_structural_0p4.process.json",
+    "filament_preset": "QIDI ABS Rapido @Qidi X-Plus 4 0.4 nozzle",
+    "scale_percent": 100.0,
+    "supports": false,
+    "fuzzy_skin": "none",
+    "orientation": "use stored 3MF orientation and placement; do not auto-arrange"
+  },
+  "release_scope": "Prepared for prototype slicing/printing; not physical load qualification",
+  "native_slicer_preview": "PENDING: verify object count, stored orientation and toolpaths in QIDI"
+}

@@ -1,0 +1,177 @@
+// Offline native owner prototype. No route, bus adapter, or live authority.
+#pragma once
+#include "air_typing_policy.h"
+#include "reviewed_hover_manifest.h"
+#include <cstddef>
+#include <cstdint>
+#include <cstring>
+
+namespace rocell_diag {
+struct ReviewedHoverPolicy : AirTypingPolicy {
+  uint8_t pose_ids[ReviewedHoverManifest::max_legs]{};
+  unsigned count=0;
+  bool configure(const uint8_t* ids,size_t size){
+    if(count||!ReviewedHoverManifest::validate(ids,size))return false;
+    count=unsigned(size);std::memcpy(pose_ids,ids,size);
+    const uint16_t initial_positions[7]={2040,2082,2033,2609,2233,2041,2047};
+    for(unsigned i=0;i<7;++i){
+      source_goals[i]=ReviewedHoverManifest::goals[ReviewedHoverManifest::A_CLEAR][i];
+      source_positions[i]=initial_positions[i];
+      target_goals[i]=ReviewedHoverManifest::goals[pose_ids[0]][i];
+    }
+    source_tolerance=3;return true;
+  }
+  bool advance(const ShoulderPreloadPose& final,unsigned next){
+    if(next>=count)return false;
+    for(unsigned i=0;i<7;++i){
+      source_goals[i]=final.goal[i];source_positions[i]=final.position[i];
+      target_goals[i]=ReviewedHoverManifest::goals[pose_ids[next]][i];
+    }
+    source_tolerance=1;return true;
+  }
+};
+
+template<class Policy=ReviewedHoverPolicy> class ReviewedHoverOwnerT {
+ public:
+  enum class State { New,CapturingStart,Prewrite,CapturingEndpoint,
+                     AwaitExport,ReadyNext,Complete,Fault };
+  bool configure(const uint8_t* ids,size_t count,const uint8_t (&boot)[16],
+                 const uint8_t (&manifest_digest)[32]){
+    if(configured_||state_!=State::New||!policy_.configure(ids,count))return false;
+    bool boot_nonzero=false,digest_nonzero=false;
+    for(auto byte:boot)boot_nonzero|=byte!=0;
+    for(auto byte:manifest_digest)digest_nonzero|=byte!=0;
+    if(!boot_nonzero||!digest_nonzero){state_=State::Fault;reason_="INVALID_BINDING";return false;}
+    std::memcpy(boot_,boot,16);std::memcpy(manifest_digest_,manifest_digest,32);
+    configured_=true;return true;
+  }
+  template<class Reserve,class Clock> bool begin(Reserve& reserve,Clock& clock){
+    if(!configured_||state_!=State::New)return false;
+    state_=State::Fault;reason_="RESERVATION_FAILED";
+    if(!reserve())return false;
+    started_us_=clock.now_us();if(!started_us_)return false;
+    state_=State::CapturingStart;reason_="CAPTURING_START";return true;
+  }
+  template<class Acquire,class Write,class Clock,class Evidence,class Admission>
+  void poll(Acquire& acquire,Write& write,Clock& clock,Evidence& evidence,
+            Admission& admitted){
+    if(state_==State::New||state_==State::Complete||state_==State::Fault||
+       state_==State::AwaitExport||state_==State::ReadyNext)return;
+    const auto now=clock.now_us();
+    if(now<started_us_||!admitted()){fail("CLOCK_OR_ADMISSION_LOST");return;}
+    if(now-started_us_>10000000){fail("DEADLINE_EXPIRED");return;}
+    if(last_finished_us_&&now<last_finished_us_){fail("CLOCK_REVERSED");return;}
+    if(last_finished_us_&&now-last_finished_us_<100000)return;
+    ShoulderPreloadPose pose;
+    if(!acquire(pose)||!ShoulderCharacterizationPolicy::valid(pose)||
+       pose.started_us<=last_finished_us_||pose.finished_us>clock.now_us()||
+       clock.now_us()-pose.finished_us>100000){fail("FRESH_FEEDBACK_FAILED");return;}
+    last_finished_us_=pose.finished_us;
+    if(state_==State::CapturingStart){
+      before_[count_++]=pose;
+      if(!evidence("START_SAMPLE",pose)){fail("EVIDENCE_FAILED");return;}
+      if(count_<3)return;
+      if(!policy_.source(before_,clock.now_us())){fail("SOURCE_POSE_REJECTED");return;}
+      if(!evidence("REVIEWED_HOVER_LEG_INTENT",pose)){fail("EVIDENCE_FAILED");return;}
+      state_=State::Prewrite;reason_="PREWRITE";return;
+    }
+    if(state_==State::Prewrite){
+      if(!policy_.unchanged_source(pose,before_[2])||
+         !policy_.source(before_,clock.now_us())){fail("PREWRITE_CHANGED");return;}
+      if(!evidence("PREWRITE",pose)||!admitted()){
+        fail("EVIDENCE_OR_ADMISSION_FAILED");return;
+      }
+      prewrite_=pose;sent_us_=clock.now_us();
+      if(sent_us_<pose.finished_us||sent_us_-pose.finished_us>100000){
+        fail("PREWRITE_EXPIRED");return;
+      }
+      ++writes_;++total_writes_;
+      if(!write(policy_.target_goals,ReviewedHoverManifest::speed,
+                ReviewedHoverManifest::acceleration)){
+        fail("WRITE_DELIVERY_UNCERTAIN");return;
+      }
+      if(!evidence("WRITE_ATTEMPTED",pose)){
+        fail("EVIDENCE_FAILED_AFTER_WRITE");return;
+      }
+      count_=0;state_=State::CapturingEndpoint;reason_="CAPTURING_ENDPOINT";return;
+    }
+    if(!evidence("ENDPOINT_SAMPLE",pose)){
+      fail("EVIDENCE_FAILED_AFTER_WRITE");return;
+    }
+    if(!policy_.bounded_endpoint_sample(before_[2],pose)){
+      fail("ENDPOINT_OUT_OF_BOUNDS");return;
+    }
+    if(count_<3)after_[count_++]=pose;
+    else {after_[0]=after_[1];after_[1]=after_[2];after_[2]=pose;}
+    if(count_<3||!policy_.endpoint(before_,after_,sent_us_,clock.now_us()))return;
+    state_=State::AwaitExport;reason_="AWAITING_DURABLE_EXPORT";
+  }
+  template<class Clock> bool acknowledge(unsigned leg,const uint8_t* digest,Clock& clock){
+    if(state_!=State::AwaitExport||!sealed_||!digest||leg!=leg_+1||
+       std::memcmp(digest,record_digest_,32)!=0)return false;
+    const auto now=clock.now_us();
+    if(now<last_finished_us_||now-last_finished_us_>30000000){
+      fail("EXPORT_RECEIPT_EXPIRED");return false;
+    }
+    if(leg_+1==policy_.count){state_=State::Complete;reason_="REVIEWED_HOVER_COMPLETE";return true;}
+    if(!policy_.advance(after_[2],leg_+1)){
+      fail("POLICY_ADVANCE_REJECTED");return false;
+    }
+    ++leg_;
+    count_=0;writes_=0;sealed_=false;started_us_=now;
+    state_=State::ReadyNext;reason_="READY_NEXT";return true;
+  }
+  template<class Clock> bool begin_next(unsigned leg,Clock& clock){
+    if(state_!=State::ReadyNext||leg!=leg_+1)return false;
+    const auto now=clock.now_us();
+    if(now<started_us_||now-started_us_>30000000){fail("NEXT_ADMISSION_EXPIRED");return false;}
+    started_us_=now;state_=State::CapturingStart;reason_="CAPTURING_START";return true;
+  }
+  template<class Hash>
+  size_t seal_record(uint8_t* out,size_t capacity,Hash& hash){
+    const size_t size=copy_result(out,capacity);
+    if(!size)return 0;
+    uint8_t digest[32];
+    if(!hash(out,size,digest)){fail("RECORD_HASH_FAILED");return 0;}
+    if(sealed_&&std::memcmp(digest,record_digest_,32)!=0){fail("RECORD_CHANGED");return 0;}
+    std::memcpy(record_digest_,digest,32);sealed_=true;return size;
+  }
+  unsigned leg()const{return leg_+1;}
+  unsigned leg_count()const{return policy_.count;}
+  unsigned total_writes()const{return total_writes_;}
+  unsigned writes()const{return writes_;}
+  State state()const{return state_;}
+  const char* reason()const{return reason_;}
+  size_t copy_result(uint8_t* out,size_t capacity)const{
+    constexpr size_t required=10+16+32+1+1+2+8+1+7*(16+7*20);
+    if(state_!=State::AwaitExport||writes_!=1||!out||capacity<required)return 0;
+    size_t size=0;auto put=[&](uint64_t value,unsigned width){
+      for(int n=int(width)-1;n>=0;--n)out[size++]=uint8_t(value>>(n*8));};
+    const char domain[]="RCHOVERR01";
+    for(size_t i=0;i<sizeof(domain)-1;++i)put(uint8_t(domain[i]),1);
+    for(auto byte:boot_)put(byte,1);
+    for(auto byte:manifest_digest_)put(byte,1);
+    put(leg_+1,1);put(policy_.pose_ids[leg_],1);
+    put(policy_.target_goals[4],2);put(sent_us_,8);put(writes_,1);
+    auto retained=[&](const ShoulderPreloadPose& sample){
+      put(sample.started_us,8);put(sample.finished_us,8);
+      for(int i=0;i<7;++i){put(sample.position[i],2);put(sample.goal[i],2);
+        put(sample.torque[i],1);for(auto byte:sample.feedback[i])put(byte,1);}};
+    for(const auto& sample:before_)retained(sample);
+    retained(prewrite_);
+    for(const auto& sample:after_)retained(sample);
+    return size==required?size:0;
+  }
+ private:
+  void fail(const char* reason){state_=State::Fault;reason_=reason;}
+  Policy policy_;
+  bool configured_=false,sealed_=false;
+  uint8_t boot_[16]{},manifest_digest_[32]{},record_digest_[32]{};
+  unsigned leg_=0,total_writes_=0,count_=0,writes_=0;
+  uint64_t started_us_=0,last_finished_us_=0,sent_us_=0;
+  State state_=State::New;
+  const char* reason_="NEW";
+  ShoulderPreloadPose before_[3],prewrite_,after_[3];
+};
+using ReviewedHoverOwner=ReviewedHoverOwnerT<>;
+}

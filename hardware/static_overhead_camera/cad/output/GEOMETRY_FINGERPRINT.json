@@ -1,0 +1,128 @@
+{
+  "part_type_count": 24,
+  "aggregate_stl_file_sha256": "fa17db25a8d180144d918ffdd2e4a4efebce4a75059c34a1c65acafb1dafeadc",
+  "aggregate_geometry_identifier_sha256": "a6b34dd83a24bc1c8ffa7050878428aedc62ecbf4f2ac9d298bd0e3adfffd8c9",
+  "algorithm": "SHA-256 over sorted '<filename>:<per-file-or-geometry-hash>\\n' records",
+  "parts": [
+    {
+      "part": "board_corner_cap_left",
+      "stl_sha256": "731e13e235eb602fd2b99ea98e05138ab73ad2eed3a0923a7e2dd20553530dc5",
+      "geometry_identifier_sha256": "b7b759e39e1d12d0dbea6aeb35b78cdf96fd949a6d1ffde515d4d99d4a668003"
+    },
+    {
+      "part": "board_corner_cap_right",
+      "stl_sha256": "f792c4c42f94506dcc7031916138f1f73a002119966efa6334313b8341fab368",
+      "geometry_identifier_sha256": "b3616bba9114c2e7e28a84ec9e5f0663b125d7657e9943d41fac8633b2099bd8"
+    },
+    {
+      "part": "board_corner_saddle_left",
+      "stl_sha256": "12b24a0ac415b5672a2ccf40d782201a33b3a194f8283d6933c3083d74e64eb1",
+      "geometry_identifier_sha256": "23407c438aac9120bd785e17a35f8ce0c14f0e44f86f9dae247f330eb38335af"
+    },
+    {
+      "part": "board_corner_saddle_right",
+      "stl_sha256": "26763204db3fcf93368579571d3308999c8703bb8fea8709ea993fcb8ee1e6cf",
+      "geometry_identifier_sha256": "f33c04aa04f9ae845f8f5fa3dc43ada68f2698bccdbc567131c1d39377200ded"
+    },
+    {
+      "part": "board_pressure_pad",
+      "stl_sha256": "da761474d09f90d5dcf0640f4e6f7e13ce6570e79b1d7ae90d29e6577916e019",
+      "geometry_identifier_sha256": "aa5cb58331ac73873e24fdb03b721691fb23fc07730ceb697bb9a19f9e7aef67"
+    },
+    {
+      "part": "board_saddle_fit_coupon",
+      "stl_sha256": "b4e48871f1a26553d8ae50c74d91151807f6f1bf5b20f6d30eee24a1780627f8",
+      "geometry_identifier_sha256": "4011f287d66ea6bda9c4a9645c5d05074aab9786e51f5316544c249f19ec064f"
+    },
+    {
+      "part": "boom_camera_truss_segment_164p25",
+      "stl_sha256": "6257b08e54bbb85e61699b90bdaa8c873f73d1dcec3dc199e47e3fb46eafa9ed",
+      "geometry_identifier_sha256": "dbc53eca0eee3f9aa259721da3681c6a056e96a50e05f81e7025466ff37e6f30"
+    },
+    {
+      "part": "boom_crossbar_node",
+      "stl_sha256": "165b2acf91d97b246fcaea7447c78e8054dc9672ac970f2343ce0d32941adf58",
+      "geometry_identifier_sha256": "aaf113a28624b15d6a116dad0c0e835a19d8a067bfdcd1ef17732e14254a8c0d"
+    },
+    {
+      "part": "boom_root_truss_segment_164p25",
+      "stl_sha256": "c90c48b5d0b714622cd4d91792e7af9904ae1dbc68848ad0b35e3d04d83e03fd",
+      "geometry_identifier_sha256": "bb5f832db82110e3f87658289d19b65c1dab1fa3cb1d9b0dc90a45c08d7b4b1e"
+    },
+    {
+      "part": "camera_cage_body",
+      "stl_sha256": "ded4d2b85fadeaca7c27b9c2a34f34203ebb02f2e730d8377fb1bca953e90052",
+      "geometry_identifier_sha256": "a07f01666f71283a759c24aa2e61e5a6d760827ba150a6d4ac442d0dfb91e02f"
+    },
+    {
+      "part": "camera_cage_keeper",
+      "stl_sha256": "74a829cfe1f8f57f3801bcf2eacf97e3afeebd448aca96709fbf2016aa20a730",
+      "geometry_identifier_sha256": "26e1f2c1bcfb0e5e971f16a667b9255b269677f92216292f9e40e08301b7d486"
+    },
+    {
+      "part": "camera_case_fit_gauge",
+      "stl_sha256": "52a50542b8b6455480f7c905114b826f2ce46ba1a475dca3ad5c16c9ab984b8d",
+      "geometry_identifier_sha256": "5d627c43593277d1d455d157d966de654ebdded8f2aedede9acdd9eebf1d1262"
+    },
+    {
+      "part": "camera_case_shim_ladder",
+      "stl_sha256": "ea8e466d4d411f57319f04c68a086418cc0cb4165b75e49943c61e85ff3a49b0",
+      "geometry_identifier_sha256": "5632d67feef05d2d32f2d7ff8bccb4e8e0615e726df0af188676715201606399"
+    },
+    {
+      "part": "camera_top_compression_pad",
+      "stl_sha256": "a0a7c15dbdf1d72bfb345f285fab97360ad0cde692963a8ffdc2556d77474a79",
+      "geometry_identifier_sha256": "04819f08e25478c41bf53215bc94be4f1c5bb5d788dde071d89db3cd3816cbc6"
+    },
+    {
+      "part": "camera_xy_carriage",
+      "stl_sha256": "3de3b975d353a062d257c74445a93e1e2d6570c723f1922db1a0182b162b511b",
+      "geometry_identifier_sha256": "4936eb15cb0390559d317822e2e828693834a837f3b3897dcf3180a0bb34ed4b"
+    },
+    {
+      "part": "crossbar_truss_segment_182p5",
+      "stl_sha256": "05e4304f9c49e490cdf44ca09c4ce3385384c53684b0db84cf2675b3e0ccc6c3",
+      "geometry_identifier_sha256": "32961e0b014128fe90f2993e7a5c1d049e63ec3292c832571e668b03ee5c0c42"
+    },
+    {
+      "part": "m6_nut_retainer",
+      "stl_sha256": "05fca3dabba207b0068df1838e23c23fbf7afc68c593110115dd98b42ffa896c",
+      "geometry_identifier_sha256": "ac7886b789fdf3d70bf813dc35caaa8c3f4d92e452a25b70a69736b59bb7f34d"
+    },
+    {
+      "part": "portal_corner_node_left",
+      "stl_sha256": "7243fd2c7ccba1b4dfe38c71d44c858efe23e484f90185b9e4f8028bab65b649",
+      "geometry_identifier_sha256": "5cd6f578595e2d5fe57ca4070ba37864d1eb08c00d165b03d18c4d02aec427f6"
+    },
+    {
+      "part": "portal_corner_node_right",
+      "stl_sha256": "fc6be2f51398eb53a2b2dfb2bc26ee448e55099f131a7881be11e4f314218186",
+      "geometry_identifier_sha256": "b2d77713f7779296db5aaa555898727a3d48c0f186fced72b9f4e0dbf4d85d2f"
+    },
+    {
+      "part": "u_splice_fit_coupon",
+      "stl_sha256": "767e0358db1301a35516e9b9e3a1d5aabf03bd8c89fa444b5700d16c69471654",
+      "geometry_identifier_sha256": "dbab66ae657003fef7b5cc548a083963ffa409718415184eb9a062fd6720c7ae"
+    },
+    {
+      "part": "u_truss_splice",
+      "stl_sha256": "14e9333330cee534e29283f605d6ef0b5e8486c0aed0e7561fd9864c1494413a",
+      "geometry_identifier_sha256": "180eb0e9a403204789e697301079ecebc96154a932b03b8221e5a7306140400c"
+    },
+    {
+      "part": "u_truss_splice_center_4bolt",
+      "stl_sha256": "49a1483cfee4d5eb148cd2104431705d66bdf43012a069ecfb2c3ad92ead9cd2",
+      "geometry_identifier_sha256": "ba2dcace3bb0a236ef258f92120a364f2a546fc3aa854246bc399d8c1b0acbaf"
+    },
+    {
+      "part": "u_truss_splice_crossbar_2bolt",
+      "stl_sha256": "e5492b1ba6cf288761132bf6e79b2d7c22983864904ead8e95aa1242f6c346de",
+      "geometry_identifier_sha256": "4c808cbe67135655c51e44f3bd2f063d07fbdb2c20270ba7b807f17692077cd6"
+    },
+    {
+      "part": "upright_truss_segment_240",
+      "stl_sha256": "af557a1913e9aa7dbab72161c7430cbda9648574352438867d866437a70f434a",
+      "geometry_identifier_sha256": "cefff236b2c94c8633838fd82f87dd0928f3c89ec233f216170526b606b6a1c0"
+    }
+  ]
+}

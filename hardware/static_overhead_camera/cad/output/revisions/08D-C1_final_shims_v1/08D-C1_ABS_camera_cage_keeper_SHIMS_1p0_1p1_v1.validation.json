@@ -1,0 +1,72 @@
+{
+  "topology": "PASS",
+  "objects": [
+    {
+      "name": "camera_cage_body__01",
+      "original_vertices": 19174,
+      "welded_vertices": 19174,
+      "triangles": 38392,
+      "open_edges": 0,
+      "nonmanifold_edges": 0,
+      "geometry_unchanged": true
+    },
+    {
+      "name": "camera_cage_keeper__01",
+      "original_vertices": 3208,
+      "welded_vertices": 3208,
+      "triangles": 6432,
+      "open_edges": 0,
+      "nonmanifold_edges": 0,
+      "geometry_unchanged": true
+    },
+    {
+      "name": "camera_final_shim_1p0__01",
+      "original_vertices": 4739,
+      "welded_vertices": 4739,
+      "triangles": 9474,
+      "open_edges": 0,
+      "nonmanifold_edges": 0,
+      "geometry_unchanged": true
+    },
+    {
+      "name": "camera_final_shim_1p0__02",
+      "original_vertices": 4739,
+      "welded_vertices": 4739,
+      "triangles": 9474,
+      "open_edges": 0,
+      "nonmanifold_edges": 0,
+      "geometry_unchanged": true
+    },
+    {
+      "name": "camera_final_shim_1p1__01",
+      "original_vertices": 1186,
+      "welded_vertices": 1186,
+      "triangles": 2368,
+      "open_edges": 0,
+      "nonmanifold_edges": 0,
+      "geometry_unchanged": true
+    },
+    {
+      "name": "camera_final_shim_1p1__02",
+      "original_vertices": 1186,
+      "welded_vertices": 1186,
+      "triangles": 2368,
+      "open_edges": 0,
+      "nonmanifold_edges": 0,
+      "geometry_unchanged": true
+    }
+  ],
+  "cage_keeper_geometry_and_placement": "UNCHANGED",
+  "nominal_shim_sizes_mm": [
+    1.0,
+    1.1
+  ],
+  "useful_strip_xy_mm": [
+    38,
+    7
+  ],
+  "native_slicer_verification": "PENDING",
+  "physical_final_fit": "PENDING_ASSEMBLY",
+  "output_sha256": "502f9a5bab3a837b5d59fbeaf34a91ac3623596822c372ae0a5f9c4509dc7d21",
+  "original_cage_keeper_plate_preserved": true
+}

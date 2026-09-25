@@ -1,0 +1,131 @@
+{
+  "schema": "rocell.target_accuracy_budget_policy.v3",
+  "policy_id": "ROCELL-TARGET-ACCURACY-BUDGET-001",
+  "revision": 4,
+  "status": "OPEN_REQUIRES_PHYSICAL_MEASUREMENT",
+  "runtime_activation": false,
+  "authority": {
+    "planning_authority": true,
+    "simulation_authority": true,
+    "physical_targeting_authorized": false,
+    "motion_authorized": false,
+    "contact_authorized": false,
+    "physical_release_effect": "NONE"
+  },
+  "combination_policy": {
+    "release_method": "CONSERVATIVE_LINEAR_SUM",
+    "rss_or_covariance_use": "DIAGNOSTIC_ONLY_UNLESS_INDEPENDENCE_IS_PROVEN",
+    "missing_stale_or_out_of_domain_term": "UNBOUNDED_AND_BLOCKING",
+    "angular_terms_project_to_target_plane": true,
+    "target_safe_region_is_eroded_by_tool_and_guard": true,
+    "scalar_erosion_requires_certified_polygon_inradius_and_tool_circumradius": true
+  },
+  "evidence_admissibility": {
+    "assessment_as_of_unix_ns_required": true,
+    "term_source_binding_required": true,
+    "all_required_metadata_must_exactly_match_binding": true,
+    "dependency_hashes_are_named_sha256": true,
+    "dependency_hash_set_must_exactly_match_binding": true,
+    "term_evidence_digest_must_match_binding": true,
+    "configuration_epoch_binding_required": true,
+    "target_geometry_evidence_required": true,
+    "assessment_clock_evidence_required": true,
+    "observation_time_must_not_follow_as_of": true,
+    "valid_until_must_not_precede_as_of": true,
+    "assessment_records_earliest_evidence_expiry": true,
+    "assessment_binds_policy_and_canonical_term_input_manifest": true,
+    "live_trust_promotion_is_external": true,
+    "missing_or_nonadmissible_evidence_is_unbounded": true
+  },
+  "noncontact_terms": [
+    {
+      "id": "board_pose",
+      "owner_stage": "static_registration",
+      "unit": "MICROMETERS_AT_TARGET_PLANE",
+      "required_metadata": ["frame", "operating_domain", "sample_basis", "bound_method", "coverage", "dependency_hashes"]
+    },
+    {
+      "id": "intrinsics_and_distortion",
+      "owner_stage": "static_registration",
+      "unit": "MICROMETERS_AT_TARGET_PLANE",
+      "required_metadata": ["frame", "operating_domain", "sample_basis", "bound_method", "coverage", "dependency_hashes"]
+    },
+    {
+      "id": "camera_board_registration",
+      "owner_stage": "static_registration",
+      "unit": "MICROMETERS_AT_TARGET_PLANE",
+      "required_metadata": ["frame", "operating_domain", "sample_basis", "bound_method", "coverage", "dependency_hashes"]
+    },
+    {
+      "id": "static_support_drift",
+      "owner_stage": "static_registration",
+      "unit": "MICROMETERS_AT_TARGET_PLANE",
+      "required_metadata": ["frame", "operating_domain", "sample_basis", "bound_method", "coverage", "dependency_hashes"]
+    },
+    {
+      "id": "arm_board",
+      "owner_stage": "reference_frame_calibration",
+      "unit": "MICROMETERS_AT_TARGET_PLANE",
+      "required_metadata": ["frame", "operating_domain", "sample_basis", "bound_method", "coverage", "dependency_hashes"]
+    },
+    {
+      "id": "controller_correlation",
+      "owner_stage": "reference_frame_calibration",
+      "unit": "MICROMETERS_AT_TARGET_PLANE",
+      "required_metadata": ["frame", "operating_domain", "sample_basis", "bound_method", "coverage", "dependency_hashes"]
+    },
+    {
+      "id": "free_tcp",
+      "owner_stage": "reference_frame_calibration",
+      "unit": "MICROMETERS_AT_TARGET_PLANE",
+      "required_metadata": ["frame", "operating_domain", "sample_basis", "bound_method", "coverage", "dependency_hashes"]
+    },
+    {
+      "id": "device_pose",
+      "owner_stage": "reference_frame_calibration",
+      "unit": "MICROMETERS_AT_TARGET_PLANE",
+      "required_metadata": ["frame", "operating_domain", "sample_basis", "bound_method", "coverage", "dependency_hashes"]
+    },
+    {
+      "id": "motion_repeatability",
+      "owner_stage": "noncontact_acceptance",
+      "unit": "MICROMETERS_AT_TARGET_PLANE",
+      "required_metadata": ["frame", "operating_domain", "sample_basis", "bound_method", "coverage", "dependency_hashes"]
+    },
+    {
+      "id": "timing_and_settling",
+      "owner_stage": "noncontact_acceptance",
+      "unit": "MICROMETERS_AT_TARGET_PLANE",
+      "required_metadata": ["frame", "operating_domain", "sample_basis", "bound_method", "coverage", "dependency_hashes"]
+    }
+  ],
+  "contact_addendum_terms": [
+    "contact_tip_footprint",
+    "loaded_tool_compliance",
+    "descent_depth_and_surface_height",
+    "device_actuation_variability",
+    "contact_outcome_observation"
+  ],
+  "current_sensitivity_reference": {
+    "classification": "ILLUSTRATIVE_UNMEASURED_NOT_ACCEPTANCE",
+    "keyboard_targets_with_sampled_gap": 0,
+    "keyboard_target_count": 46,
+    "phone_targets_with_sampled_gap": 27,
+    "phone_target_count": 29,
+    "worst_phone_margin_micrometers": -756
+  },
+  "stock_android_qwerty_requires_closed_budget": true,
+  "fallback_order": [
+    "SMALLER_CHARACTERIZED_PASSIVE_STYLUS",
+    "LARGER_PURPOSE_BUILT_ANDROID_UI",
+    "LOCAL_VISUAL_REFINEMENT",
+    "MECHANICAL_PRECISION_IMPROVEMENT_OR_DIFFERENT_ARM"
+  ],
+  "open_blockers": [
+    "NO_PHYSICAL_TERM_MEASUREMENTS",
+    "PASSIVE_STYLUS_GEOMETRY_NOT_SELECTED",
+    "KEYBOARD_SAFE_REGIONS_NOT_MEASURED",
+    "PHONE_UI_SAFE_REGIONS_NOT_MEASURED",
+    "CONTACT_ADDENDUM_NOT_QUALIFIED"
+  ]
+}

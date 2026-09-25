@@ -1,0 +1,166 @@
+{
+  "schema": "rocell.static_overhead_camera_support.v1",
+  "schema_version": 1,
+  "design_id": "ROCELL-STATIC-CAMERA-SUPPORT-CANDIDATE-001",
+  "revision_date": "2026-09-05",
+  "state": "SCREENING_CANDIDATE_PHYSICAL_QUALIFICATION_OPEN",
+  "authority": {
+    "engineering_screening_authority": true,
+    "simulation_authority": true,
+    "fabrication_authority": false,
+    "physical_installation_authority": false,
+    "powered_motion_authority": false,
+    "contact_authority": false,
+    "note": "This additive contract records the user-confirmed purchased camera catalog configuration and supports geometry and optical screening only. It does not verify the received unit or release cut lengths, fabrication, installation, robot power, motion, descent, or contact."
+  },
+  "source_locks": {
+    "workcell_layout": {
+      "path": "active-project/RoCell_v0_3/config/workcell_layout.json",
+      "sha256": "e84db9aa7b88db442f042c6f546196e350c822a2e7609cb4b652b3da535df2e1"
+    },
+    "robot_reach_screening": {
+      "path": "active-project/RoCell_v0_3/config/robot_reach_screening.json",
+      "sha256": "348fccf9be88fc32299ab10fce14e764869422191a43963631e4f5f0ccb9e53b"
+    },
+    "camera_architecture_plan": {
+      "path": "software/config/camera_architecture_plan.json",
+      "sha256": "e5414dc7295ab8a4c9c1e7e813bedf38e336755b73b9fad9431572da6e1913bf"
+    },
+    "purchased_camera_profile": {
+      "path": "software/config/camera_profiles/arducam_b0477_imx283_16mm.json",
+      "sha256": "c15264f866d81b99cc1155171e21d3416d3a1fa7a244b5ae97642cc989f2e024"
+    }
+  },
+  "external_sources": {
+    "camera_product": {
+      "url": "https://www.arducam.com/arducam-20mp-usb-3-0-camera-module-with-16mm-c-mount-lens-b0477.html",
+      "qualification_state": "PUBLISHED_SPECIFICATION_UNQUALIFIED"
+    },
+    "camera_datasheet": {
+      "url": "https://www.arducam.com/downloads/datasheet/B0477_20MP_IMX283_USB3.0_Camera_Datasheet.pdf",
+      "qualification_state": "PUBLISHED_SPECIFICATION_UNQUALIFIED"
+    }
+  },
+  "coordinate_frame": {
+    "frame_id": "B",
+    "origin": "front-left corner of board top surface",
+    "axes": {
+      "+x": "right",
+      "+y": "rear/toward arm",
+      "+z": "up"
+    },
+    "units": "mm"
+  },
+  "board": {
+    "width_mm": 610.0,
+    "depth_mm": 457.0,
+    "thickness_mm": 18.0,
+    "tag_plane_z_mm": 0.0
+  },
+  "required_view": {
+    "width_mm": 670.0,
+    "depth_mm": 517.0,
+    "margin_each_board_edge_mm": 30.0,
+    "state": "PROVISIONAL_SCREENING_ENVELOPE_NOT_ACCEPTANCE_TOLERANCE"
+  },
+  "robot_screening": {
+    "state": "ASSUMED_ONLY_NOT_COLLISION_OR_REACH_PROOF",
+    "assumed_base_axis_xy_mm": [305.0, 457.0],
+    "vendor_published_radius_mm": 560.0,
+    "vendor_published_vertical_workspace_mm": 798.0,
+    "radial_screening_margin_mm": 50.0,
+    "vertical_screening_margin_mm": 100.0,
+    "warning": "The assumed base axis and vendor envelope are screening inputs only. They do not prove the installed base transform, full-body swept volume, IK, payload, cable, lighting, or collision clearance."
+  },
+  "support": {
+    "topology": "front_portal_on_common_metal_u_frame",
+    "relationship_to_board": "The portal and board share one positively located metal U-frame; the camera support is not carried by the plywood board alone.",
+    "board_location": {
+      "method": "3-2-1 board-edge location and reversible clamping",
+      "new_v0_3_board_holes_allowed": false
+    },
+    "structural_profiles": {
+      "uprights": "4040 aluminum extrusion",
+      "crossbar": "4040 aluminum extrusion",
+      "overhead_booms": "two braced metal booms"
+    },
+    "base_constraint": {
+      "allowed_strategy": "rear-open base and outriggers stay at or forward of y=-100 mm, or use independently qualified bench anchors",
+      "low_side_rails_running_rearward_beside_board_allowed": false,
+      "longitudinal_base_rail_entering_y_greater_or_equal_0_state": "OPEN_BLOCKING_COLLISION_GEOMETRY",
+      "warning": "The compact front post axes have only a radial point screen. They do not authorize a low rail, foot, brace, anchor, or other volume extending rearward toward the board or into the robot swept volume."
+    },
+    "post_axis_xy_mm": [
+      [-60.0, -100.0],
+      [670.0, -100.0]
+    ],
+    "camera_axis_xy_mm": [305.0, 228.5],
+    "nominal_entrance_pupil_z_mm": 1000.0,
+    "qualification_adjustment_z_mm": [950.0, 1050.0],
+    "lowest_static_hardware_z_mm": 920.0,
+    "exact_cut_lengths_mm": null,
+    "cut_lengths_state": "CANDIDATE_ONLY_EXACT_LENGTHS_OPEN_BLOCKING",
+    "state": "CONCEPT_GEOMETRY_ONLY_NOT_RELEASED_FOR_FABRICATION_OR_INSTALLATION"
+  },
+  "optical_candidate": {
+    "selection_state": "PURCHASED_PENDING_RECEIPT_INSPECTION",
+    "camera": {
+      "manufacturer": "Arducam",
+      "model": "B0477",
+      "sensor": "Sony IMX283",
+      "sensor_megapixels": 20.0,
+      "sensor_format": "1-inch",
+      "shutter": "rolling",
+      "interface": "USB 3.0 UVC",
+      "native_width_px": 5472,
+      "native_height_px": 3648,
+      "native_fps": 9.0,
+      "native_pixel_format": "YUY2",
+      "native_aspect": "3:2",
+      "capture_policy": "full native frame without crop or rescale",
+      "case": "included metal case",
+      "included_usb_cable_length_m": 1.0,
+      "lens_mount": "C-mount per supplier detailed specification; delivered C/CS configuration unverified"
+    },
+    "lens": {
+      "supply_relationship": "included with B0477",
+      "focal_length_mm": 16.0,
+      "mount": "C-mount per supplier detailed specification; delivered C/CS configuration unverified",
+      "designed_sensor_format": "1-inch",
+      "focus": "manual adjustable",
+      "aperture": "manual adjustable"
+    },
+    "published_field_of_view": {
+      "horizontal_deg": 49.0,
+      "vertical_deg": 38.0,
+      "diagonal_deg": 60.0,
+      "calculation_model": "centered perpendicular pinhole screening from entrance pupil to tag plane"
+    },
+    "screening_field_of_view_policy": {
+      "vertical_rule": "use the lesser of published vertical FOV and the vertical FOV derived from horizontal FOV plus the full-frame native aspect",
+      "reason": "The published 49 degree horizontal and 38 degree vertical FOV pair is not geometrically consistent with the full-frame native 3:2 aspect under an ideal centered rectilinear pinhole model.",
+      "state": "ASPECT_CONSERVATIVE_UNTIL_MEASURED_USABLE_FOV"
+    },
+    "tag_width_mm": 40.0,
+    "qualification_inputs": {
+      "minimum_focus_at_nominal_1m_verified": null,
+      "exact_case_mount_drawing_verified": null,
+      "persistent_usb_descriptors_verified": null,
+      "measured_usable_field_of_view_verified": null
+    }
+  },
+  "open_blockers": [
+    "measure the installed robot base axis and complete full-body swept-volume, IK, payload, cable, lighting, and collision studies",
+    "select and proof the common metal U-frame, bench anchoring, 3-2-1 locators, clamps, 4040 joints, braces, fasteners, and anti-tip restraint",
+    "derive exact cut lengths only after measuring the received board, bench, robot installation, extrusion hardware, camera case, and entrance-pupil offset",
+    "obtain or measure the exact B0477 metal-case mount drawing and prove positive retention with non-bottoming fasteners",
+    "physically verify that the included 16 mm lens focuses and locks at the nominal 1 m working distance",
+    "resolve the published 49 degree horizontal and 38 degree vertical FOV inconsistency with the native 3:2 frame, then measure usable FOV, distortion, crop, corner illumination, depth of field, glare, and tag pixels at the exact locked settings",
+    "record persistent USB descriptors and prove exact 5472x3648 at 9 fps YUY2 USB 3.0 mode after reopen and reboot",
+    "model and physically prove clearance for the portal, camera, booms, braces, fasteners, cable, strain relief, and lighting through every approved route",
+    "keep every rear-open base and outrigger at or forward of y=-100 mm or use independently qualified bench anchors; any longitudinal base rail entering y>=0 remains open blocking collision geometry",
+    "perform load, tip, stiffness, vibration, settling, cable-pull, bump, remove-reinstall, thermal, and 24-hour drift qualification",
+    "commission intrinsics, the static eye-to-hand extrinsic, support witness, visibility atlas, and independent held-out end-to-end validation",
+    "generate a superseding controlled build freeze before fabrication, installation, powered motion, descent, or contact"
+  ]
+}

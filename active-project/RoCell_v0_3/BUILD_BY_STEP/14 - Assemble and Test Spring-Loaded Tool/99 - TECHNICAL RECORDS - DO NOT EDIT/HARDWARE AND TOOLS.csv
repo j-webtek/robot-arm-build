@@ -1,0 +1,12 @@
+source,type,qty,item,critical_condition,status
+required_physical_input,Required input,As specified,Accepted shared compliant body and keyed cap,Present and accepted before work,NOT_VERIFIED
+required_physical_input,Required input,As specified,Selected and accepted compression spring,Present and accepted before work,NOT_VERIFIED
+required_physical_input,Required input,As specified,"One or both configured routes selected: keyboard rod/TPU, phone stylus, or both; never install both route stacks simultaneously",Present and accepted before work,NOT_VERIFIED
+required_physical_input,Required input,As specified,Two M3 inserts and two M3 x 10 cap screws,Present and accepted before work,NOT_VERIFIED
+required_physical_input,Required input,As specified,"Calipers, calibrated low-range force gauge, retention-test fixture, and a TCP probe method",Present and accepted before work,NOT_VERIFIED
+required_physical_input,Required input,As specified,"PASS engineering-release record `tool_force_tcp_limits_approved` containing numeric route-specific compression-force, retention-proof, and TCP-repeatability limits; operators may not choose arbitrary limits",Present and accepted before work,NOT_VERIFIED
+structured_register,Printed part,1 + 1 spare cap,Compliant body and keyed top caps,Accepted Job 04A,NOT_VERIFIED
+structured_register,Spring,1,Selected compression spring,"OD, ID, free length, and rate qualified by Job 00C",NOT_VERIFIED
+structured_register,Fastener,2,M3 inserts and M3 x 10 button-head screws,Insert and head fits selected by the exact tool profile,NOT_VERIFIED
+structured_register,Route,1 per selected route,6 mm rod + bushing + TPU tip and/or measured stylus + collar,Build and test each selected configuration separately; do not combine route-specific stacks,NOT_VERIFIED
+structured_register,Inspection,1,Calibrated low-range force gauge,Range and resolution must meet the engineering-approved compression and retention proof record,NOT_VERIFIED

@@ -1,0 +1,53 @@
+{
+  "schema": "rocell.windows_camera_owned_development_build.v1",
+  "status": "COMPILED_NOT_EXECUTED_NOT_REGISTERED",
+  "build_date": "2026-09-08",
+  "physical_authority": false,
+  "runtime_dispatch_enabled": false,
+  "driver_qualified": false,
+  "native_helper_executed": false,
+  "hardware_or_metadata_access_performed": false,
+  "compiler": "MSVC 19.42.34435.0 x64",
+  "windows_sdk": "10.0.22621.0",
+  "cmake": "3.31.3",
+  "configuration": "Release",
+  "compile_policy": "/W4 /WX /permissive- /utf-8 /guard:cf",
+  "purpose": "Guarded native probe development build; not a trusted release or hardware qualification",
+  "source_files": {
+    "CMakeLists.txt": "7f0dc880a4335fdafa2a0be794d84dbdbed0dd3233114010a555740c99e3da22",
+    "camera_worker.cpp": "8aba11a34ba1a20dbaab6563f44b13b21c954445dc466cb52b6a256145896f79",
+    "identity_metadata.cpp": "b4459ca9f9d0d99ed58ed87b7ce8ac9f6f6ed37a37090cf7b13b768a58bf93bd",
+    "identity_metadata.h": "3cf6e8da5d18bdea4336d57a1e34ebb174373bfecf1efe22c19b8b29507cb06a",
+    "admission_protocol.h": "2f171649b196c8eb18dbf2f57eeb34787e58b8ca50a8d3f6bb015b0988d95a3f",
+    "admission_protocol.cpp": "54124fbef5eba9e3d3f3484123c280231b9178fd30f5b353dddddc86e876f800",
+    "admission_entry.h": "69cb306c4d3e0b6527091a7ed3ddbfd3bf6627c67ed789e455fbed7530015a39",
+    "admission_entry.cpp": "91aa3c41bde8e24b19f6a2d4494896a847583a92ad5e30b2b42c3809604a9643",
+    "admission_protocol_tests.cpp": "d8274b9d4d700746989ed3755e27bcd3ce1384cf39e097e01b208122e969a764",
+    "admission_entry_tests.cpp": "cb6aa5ab9efec192d530b1a5f99b8f97ce0abfde22b49f706f97e8912cff0c70"
+  },
+  "artifacts": [
+    {"path": "build-owned/Release/rocell_windows_camera.exe", "sha256": "e6072f26efa335ada46ef1459a66830a687b2d66c7ff45584aa4ac949eb027a1", "length_bytes": 212992, "executed": false},
+    {"path": "build-owned/Release/rocell_camera_admission_tests.exe", "sha256": "0d014eccad8e8cfdad9e71ff2bf60d064252a15238a88fc6a62d2508a0c5247e", "length_bytes": 65536, "executed": true, "scope": "INCAPABLE_PARSER_ONLY"},
+    {"path": "build-owned/Release/rocell_camera_admission_entry_tests.exe", "sha256": "2dedfd13dcd57968cb06d859b7cf90017ca399a1ea774af15536efd3d0a5c4a0", "length_bytes": 55808, "executed": true, "scope": "INCAPABLE_PIPE_ENTRY_ONLY_PARENT_INTEROP_TESTS"}
+  ],
+  "verification": {
+    "selected_parser_ctest": "camera_admission_parser_incapable: 1 passed",
+    "pure_python": "test_native_camera_protocol.py: 58 passed",
+    "parent_pipe_interop": "test_native_camera_admission_interop.py: 5 passed; incapable entry target only",
+    "typecheck": "native_camera_protocol.py and native_camera_registration.py: mypy clean"
+  },
+  "historical_metadata_build": {
+    "path": "build/Release/rocell_windows_camera.exe",
+    "sha256_unchanged": "a0410e866563738bbe0c60c2a763adf094deceba10ae9c81f4becba80a06c797",
+    "historical_manifests_modified": false,
+    "metadata_catalog_modified": false,
+    "current_native_source_matches_historical_record": false
+  },
+  "limitations": [
+    "Dormant runtime candidate and handshake do not grant coordinator authority",
+    "Direct probe/capture CLI rejected by new source before COM/MF",
+    "Guarded capture is not implemented",
+    "Parent process must enforce current authority, deadline, cancellation, file pins and cleanup",
+    "Received camera, driver and shutdown behavior remain unverified"
+  ]
+}

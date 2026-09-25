@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "runtime_id": "ROCELL-RUNTIME-SIM-001",
+  "system_manifest": "software/config/system_manifest.json",
+  "camera_manifest": "software/config/camera_manifest.json",
+  "default_mode": "simulation",
+  "live_hardware_enabled": false,
+  "contact_enabled": false,
+  "evidence_root": "software/runs",
+  "calibration_manifest": "software/calibrations/registry.json",
+  "calibration_registry_root": "software/calibrations",
+  "policy": {
+    "semantic_actions_only_at_user_boundary": true,
+    "raw_robot_coordinates_allowed_at_user_boundary": false,
+    "automatic_resume_after_fault": false,
+    "automatic_camera_backend_fallback": false,
+    "automatic_motion_retry": false
+  }
+}

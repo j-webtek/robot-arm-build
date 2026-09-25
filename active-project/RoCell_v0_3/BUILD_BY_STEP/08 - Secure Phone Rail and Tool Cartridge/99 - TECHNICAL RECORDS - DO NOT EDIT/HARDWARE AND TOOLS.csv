@@ -1,0 +1,10 @@
+source,type,qty,item,critical_condition,status
+required_physical_input,Required input,As specified,Seated rail and cartridge from Step 07,Present and accepted before work,NOT_VERIFIED
+required_physical_input,Required input,As specified,PT-HOLD-R1 and PT-HOLD-R2 M4 station stacks,Present and accepted before work,NOT_VERIFIED
+required_physical_input,Required input,As specified,Two selected M4 captive clamp nuts,Present and accepted before work,NOT_VERIFIED
+required_physical_input,Required input,As specified,"Two M3 x 10 mm TCP screws, two M4 hand-adjustable clamp screws for the 20-cycle nut test, and the low-range torque driver",Present and accepted before work,NOT_VERIFIED
+required_physical_input,Required input,As specified,Thin feeler gauges plus a dial indicator or height gauge with 0.01 mm resolution or better,Present and accepted before work,NOT_VERIFIED
+structured_register,Fastener,2,PT-HOLD-R1/R2 M4 screws and washers,Pass through the seated rail and station into board anchors,NOT_VERIFIED
+structured_register,Nut,2 + 2 spares,Measured M4 clamp nuts,Drop into the coupon-selected top-loading channels,NOT_VERIFIED
+structured_register,Fastener,2 + 2 spares,M3 x 10 mm button-head screws,Retain the TCP cartridge without distorting its datum face,NOT_VERIFIED
+structured_register,Test hardware,2,M4 hand-adjustable phone clamp screws,Required in this step to prove both captive nuts through 20 full cycles,NOT_VERIFIED
