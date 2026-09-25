@@ -1,4 +1,4 @@
-# Project status — GitHub baseline, 2026-09-25
+# Project status — 2026-09-25
 
 ## Objective
 
@@ -14,16 +14,21 @@ servo feedback, modeled coordinates, and externally measured accuracy distinct.
   hash-controlled package bytes; do not silently normalize or regenerate them.
 - Software includes the onboarding wizard, simulated tests, command/feedback
   diagnostics, native firmware owners, and reviewed export workflows.
-- The recorded r90 physical first leg reached `A_HOVER` from `A_CLEAR` with a
-  verified seven-servo export. This is endpoint feedback evidence, not measured
-  stylus accuracy or proof of an entire typing sequence.
-- The previous host did not persist its exact authentication sequence. Do not
-  guess that sequence or resume the consumed boot. Resetting alone does not
-  satisfy r90's required `A_CLEAR` source when the arm is at `A_HOVER`.
-- r91 recovery work is **offline**, not installed or physically verified. The
-  fixed recipe, native policy/owner/signed route, authenticated client checks,
-  and independent raw-record verifier are implemented. The plan records the
-  related 219-test checkpoint and later diagnostic additions separately.
+- The r91 app was installed and completed the supervised five-leg noncontact
+  cycle on 2026-09-25, recovering from the preceding r90 `A_HOVER` endpoint:
+  `A_CLEAR → A_HOVER → A_DOWN → A_HOVER → A_CLEAR`.
+- Each leg produced a controller record, checked joint feedback, and an
+  independently verified export before the next command. The terminal status
+  was `REVIEWED_HOVER_COMPLETE|5`. The largest final joint-goal difference
+  across those legs was 9 servo counts; this is not measured tip accuracy.
+- The r91 plan retains the earlier reservation failure, sequencing correction,
+  and successful run as separate evidence. The completed run is historical
+  evidence, not a fresh reading of the arm's present pose.
+- Keyboard placement has been screened using photo estimates. Those estimates
+  are not a measured registration or proof of clearance across the keyboard.
+- The stylus loading procedure is prepared but unexecuted. r91 has no general
+  gripper-control interface; a verified gripper-only path and mounted-tool
+  measurements are still needed.
 - Camera mounting/integration and physical stylus contact remain deferred.
 
 The authoritative detail and remaining checklist are in
@@ -33,10 +38,16 @@ records the surrounding command and export contracts.
 
 ## Next development milestone
 
-Complete the five-leg host/export runner and failure exports; compose and review
-the candidate image; then carry out the separately authorized bounded physical
-campaign. Proposed path: `A_HOVER → A_CLEAR → A_HOVER → A_DOWN → A_HOVER → A_CLEAR`.
+Implement and verify the gripper-only loading path, then load and measure the
+stylus using the [loading procedure](software/docs/STYLUS_LOADING_PROCEDURE.md).
+Use the [photo-estimated keyboard screen](software/docs/PHOTO_ESTIMATED_KEYBOARD_SCREEN.md)
+to review placement assumptions before further ghost-typing routes. Keyboard
+registration, actual tool geometry, and physical contact accuracy remain open.
 No GitHub upload, clone, test run, or merge authorizes deployment or motion.
+
+For other topics, use the [documentation guide](docs/README.md). Detailed
+historical plans preserve earlier checkpoints; this page summarizes the latest
+recorded result.
 
 ## How to read the evidence
 
