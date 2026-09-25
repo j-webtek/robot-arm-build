@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/j-webtek/robot-arm-build/software/ai/schemas/scene_observation_v0.schema.json",
+  "title": "RoCell image-bound scene observation v0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "frame_id", "captured_at_utc", "image_sha256", "runtime", "model", "model_identity", "device_presence", "keyboard_layout", "phone_state", "lighting", "blur", "glare", "occlusion_source", "occlusion_fraction", "critical_targets_visible", "confidence", "abstain", "abstain_reasons", "observation_sha256"],
+  "properties": {
+    "schema": {"const": "rocell.ai_scene_observation.v0"},
+    "frame_id": {"type": "string", "minLength": 1},
+    "captured_at_utc": {"type": "string", "format": "date-time"},
+    "image_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "runtime": {"type": "string", "minLength": 1, "maxLength": 256},
+    "model": {"type": "string", "minLength": 1, "maxLength": 256},
+    "model_identity": {"type": "string", "minLength": 1, "maxLength": 256},
+    "device_presence": {"enum": ["absent", "keyboard", "phone", "both", "uncertain"]},
+    "keyboard_layout": {"enum": ["us_qwerty", "unknown", "not_visible"]},
+    "phone_state": {"enum": ["not_visible", "unknown", "home", "dialer", "keyboard_lower", "call_confirmation"]},
+    "lighting": {"enum": ["acceptable", "dark", "overexposed", "uneven", "unknown"]},
+    "blur": {"enum": ["none", "low", "high", "unknown"]},
+    "glare": {"enum": ["none", "low", "high", "unknown"]},
+    "occlusion_source": {"enum": ["none", "arm", "tool", "cable", "hand", "multiple", "unknown"]},
+    "occlusion_fraction": {"type": "number", "minimum": 0, "maximum": 1},
+    "critical_targets_visible": {"type": "boolean"},
+    "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+    "abstain": {"type": "boolean"},
+    "abstain_reasons": {"type": "array", "uniqueItems": true, "items": {"enum": ["device_absent", "device_uncertain", "layout_uncertain", "state_uncertain", "lighting_adverse", "blur_adverse", "glare_adverse", "occluded", "critical_targets_hidden", "model_refusal", "invalid_output", "runtime_error"]}},
+    "observation_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

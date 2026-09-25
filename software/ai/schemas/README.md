@@ -15,3 +15,6 @@ separate board-coordinate observation contract. It has no motion authority.
 The [synthetic image-model prediction schema](visual_targets_v1.schema.json)
 binds pixel and checkpoint hashes to predicted keyboard target coordinates;
 its model scores are uncalibrated and it also has no motion authority.
+The [scene-observation schema](scene_observation_v0.schema.json) binds a strict
+multimodal scene assessment to exact image bytes. It describes visibility and
+image quality and cannot contain coordinates or controller commands.
