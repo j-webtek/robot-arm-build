@@ -1,0 +1,15 @@
+{
+  "schema": "rocell.ai_benchmark_manifest.v0",
+  "benchmark_id": "rocell_ai_intent_v3",
+  "source_commit": "129a3f5c94569244bf54dda2f85ee6b650cb93ce",
+  "review_state": "simulated_semantic_crosscheck_no_human_review",
+  "case_count": 30,
+  "cases_sha256": "5f57461fed3d0ea875e67e55b53a6590ae9651710686f72cf33788be5fb86804",
+  "scope": "offline request-grounding and semantic compiler challenge, frozen before the first admission implementation",
+  "held_out_policy": "Model holdout from SFT v0 training. Admission policy was adjusted after inspecting a v3 request, so its v3 result is exploratory; use a new set for a clean admission holdout.",
+  "result_classes": [
+    "type_text",
+    "clarify",
+    "unsupported"
+  ]
+}

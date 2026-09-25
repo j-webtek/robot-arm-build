@@ -65,6 +65,18 @@ deterministic parser scores 8/24 with no false execution proposals. All these
 results are offline intent/compiler measurements; the SFT pilot remains
 blocked from arm control.
 
+`benchmark_v3.jsonl` is an agent-authored 30-case challenge, with a pinned
+file hash and simulated review. It was excluded from SFT v0 training. The SFT
+model scores 11/30 exact on v3, with four wrong compiler-accepted plans. The
+request-grounding gate accepts seven correct plans and no wrong plans on v3,
+but blocks five of the 12 supported requests. It intentionally requires quoted
+text, which limits coverage of unquoted commands. The gate was adjusted after
+one v3 request was inspected; treat the admission result as exploratory and
+freeze a new set before further gate tuning or a clean admission evaluation.
+The raw model scorecard and gate scorecard remain separate so accepted-plan
+safety cannot be mistaken for improved model accuracy. Neither scorecard
+contains physical execution evidence.
+
 From the repository root, repeat the checks with:
 
 ```powershell
@@ -72,4 +84,5 @@ python software/ai/run_offline.py review
 python software/ai/run_offline.py evaluate --cases software/ai/eval/benchmark_v1.jsonl --manifest software/ai/eval/benchmark_v1.manifest.json
 python software/ai/run_offline.py evaluate-model --model llama-3.1-8b-instruct-q4_k_m:latest
 python software/ai/run_offline.py review --cases software/ai/eval/benchmark_v2.jsonl --manifest software/ai/eval/benchmark_v2.manifest.json --prior software/ai/eval/benchmark_v0.jsonl --prior software/ai/eval/benchmark_v1.jsonl
+python software/ai/run_offline.py admit-score --cases software/ai/eval/benchmark_v3.jsonl --manifest software/ai/eval/benchmark_v3.manifest.json --raw-scorecard software/ai/eval/llama32_1b_sft_v0_v3_scorecard.json
 ```

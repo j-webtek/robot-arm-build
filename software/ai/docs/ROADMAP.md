@@ -23,9 +23,16 @@ The 24-case v2 challenge set was frozen before training and consumed once for
 the first response-SFT LoRA pilot. That pilot uses 264 synthetic training and
 36 validation examples. It scores 14/31 on v1 and 10/24 on v2, but makes five
 and one false execution proposals respectively. It is blocked from arm
-control. Next: analyze ambiguity failures, freeze a new held-out challenge
-set, and only then change the training data or prompt. Require zero false
-execution proposals before considering further integration.
+control. Require zero false execution proposals before considering further
+integration.
+
+The next offline step adds a request-grounding gate before compiler admission.
+SFT v0 still makes four wrong compiler-accepted plans on the 30-case v3 model
+holdout (11/30 exact). The gate accepts seven correct plans and no wrong plans
+on v3, while blocking five supported requests. Its v3 result is exploratory:
+one policy rule was adjusted after inspecting a v3 request. Freeze another
+challenge set before evaluating a revised gate or model. Model proposal
+quality and admitted-plan quality must remain separate measurements.
 
 | Order | Deliverable | Check before advancing |
 | --- | --- | --- |

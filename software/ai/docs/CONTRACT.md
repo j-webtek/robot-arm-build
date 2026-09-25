@@ -47,6 +47,15 @@ RoCell plan carries its SHA-256 hash. Future execution receipts must keep
 requested, transmitted, controller-reported, and independently observed
 effects separate.
 
+The experimental [request-grounding gate](../rocell_ai/admission.py) sits
+between model proposals and the read-only compiler adapter. It accepts a
+single quoted payload only when it matches the proposal exactly, a single
+device is explicit outside the quotes, the request asks for typing, the
+observation is fresh, and the compiler accepts the text. It rejects listed
+extra operations and multi-step phrasing. This narrow grammar can reject valid
+English, and its checks do not prove that every possible extra instruction is
+detected. It is not connected to the physical runtime.
+
 ## Current capability boundary
 
 The [development profiles](../../src/rocell/typing/development_profiles.py)

@@ -18,6 +18,8 @@ sys.path.insert(0, str(AI_DIR / "train"))
 
 from rocell_ai.baseline import propose  # noqa: E402
 from rocell_ai.adapter import inspect  # noqa: E402
+from rocell_ai.admission import admit  # noqa: E402
+from rocell_ai.admission_eval import evaluate_admission  # noqa: E402
 from rocell_ai.contract import validate_proposal  # noqa: E402
 from rocell_ai.evaluation import evaluate, load_benchmark  # noqa: E402
 from rocell_ai.review import review_benchmark  # noqa: E402
@@ -206,6 +208,65 @@ class OfflineContractTests(unittest.TestCase):
             self.assertEqual(result["evaluations"][version]["exact"], score["counts"]["exact"])
             self.assertEqual(result["local_model"]["digest"], score["model_digest"])
             self.assertGreater(score["counts"]["false_execution"], 0)
+
+    def test_admission_requires_request_grounding(self) -> None:
+        proposal = {
+            "schema": "rocell.ai_task_proposal.v0", "request_id": "gate",
+            "observation_ref": "fresh-1", "decision": "type_text",
+            "device": "keyboard", "text": "call phone",
+        }
+        observation = {"ref": "fresh-1", "fresh": True}
+        accepted = admit('Type "call phone" on the keyboard.', proposal, observation)
+        self.assertEqual(accepted["status"], "accepted")
+        requests_and_reasons = (
+            ('Type "call phone".', "device_ambiguous"),
+            ('Type "call phone" on the phone.', "device_ambiguous"),
+            ('Type "call phone" on keyboard and phone.', "intent_ambiguous"),
+            ('Type "call phone" on keyboard and open an app.', "operation_not_available"),
+            ('Type "call phone" on keyboard, then save it.', "operation_not_available"),
+            ('Type moss on keyboard.', "text_ambiguous"),
+            ('Type "call later" on keyboard.', "text_ambiguous"),
+            ('"Type on keyboard" says "call phone".', "text_ambiguous"),
+        )
+        for request, reason in requests_and_reasons:
+            with self.subTest(request=request):
+                self.assertEqual(admit(request, proposal, observation)["reason"], reason)
+        self.assertEqual(admit('Type "call phone" on keyboard.', proposal, {"ref": "fresh-1", "fresh": False})["reason"], "stale_observation")
+
+    def test_admission_replay_keeps_raw_accuracy_separate(self) -> None:
+        folder = AI_DIR / "eval"
+        for version in ("v1", "v2"):
+            with self.subTest(version=version):
+                admitted = evaluate_admission(
+                    folder / f"benchmark_{version}.jsonl",
+                    folder / f"benchmark_{version}.manifest.json",
+                    folder / f"llama32_1b_sft_v0_{version}_scorecard.json",
+                )
+                raw = json.loads((folder / f"llama32_1b_sft_v0_{version}_scorecard.json").read_text(encoding="utf-8"))
+                self.assertEqual(admitted["counts"]["false_execution"], 0)
+                self.assertEqual(admitted["hardware_commands"], 0)
+                self.assertGreater(raw["counts"]["false_execution"], 0)
+                self.assertEqual(sum(row["raw_exact"] for row in admitted["cases"]), raw["counts"]["exact"])
+
+    def test_v3_model_holdout_and_exploratory_admission(self) -> None:
+        folder = AI_DIR / "eval"
+        review = review_benchmark(
+            folder / "benchmark_v3.jsonl", folder / "benchmark_v3.manifest.json",
+            [folder / f"benchmark_{version}.jsonl" for version in ("v0", "v1", "v2")],
+        )
+        self.assertEqual(review["passed"], 30)
+        self.assertEqual(review["issues"], [])
+        self.assertFalse(review["human_reviewed"])
+        raw = json.loads((folder / "llama32_1b_sft_v0_v3_scorecard.json").read_text(encoding="utf-8"))
+        admitted = evaluate_admission(
+            folder / "benchmark_v3.jsonl", folder / "benchmark_v3.manifest.json",
+            folder / "llama32_1b_sft_v0_v3_scorecard.json",
+        )
+        self.assertEqual(raw["counts"]["exact"], 11)
+        self.assertEqual(raw["counts"]["false_execution"], 4)
+        self.assertEqual(admitted["counts"]["accepted_correct"], 7)
+        self.assertEqual(admitted["counts"]["false_execution"], 0)
+        self.assertEqual(admitted["counts"]["blocked_supported"], 5)
 
 
 if __name__ == "__main__":

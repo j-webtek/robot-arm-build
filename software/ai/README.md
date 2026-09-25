@@ -60,8 +60,14 @@ first training experiment.
 
 The [first SFT result](train/sft_v0_result.json) scores 14/31 on v1 and 10/24
 on v2. It still makes false execution proposals, so it is blocked from arm
-control. v2 has been consumed for this pilot; future tuning needs a new
-held-out set.
+control. The [request-grounding gate](rocell_ai/admission.py) now checks an
+explicit device, one exact quoted payload, a typing request, fresh state, and
+RoCell compiler support before accepting a model proposal. On the v3 challenge
+set, SFT v0 scores 11/30 raw with four wrong compiler-accepted plans. The gate
+accepts seven correct plans, blocks all four wrong plans, and blocks five
+supported requests. This is an offline coverage and safety observation, not
+permission for arm control. A gate rule was adjusted after inspecting a v3
+request, so a new challenge set is needed before a clean gate evaluation.
 
 ## Folder map
 
