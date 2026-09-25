@@ -58,7 +58,8 @@ def evaluate_virtual_typing(targets: list[dict], catalog, truth_pose: tuple[floa
 
 def run(*, request: str, checkpoint: Path, seed: int, frame_id: str,
         image_output: Path | None = None, photo_path: Path | None = None,
-        park_xy_board_mm: tuple[float, float] | None = None) -> dict:
+        park_xy_board_mm: tuple[float, float] | None = None,
+        use_promoted_layout: bool = False) -> dict:
     joint = joint_preview(request=request, checkpoint=checkpoint, seed=seed,
                           frame_id=frame_id, image_output=image_output, photo_path=photo_path)
     coordinates = joint["coordinate_preview"]
@@ -101,7 +102,11 @@ def run(*, request: str, checkpoint: Path, seed: int, frame_id: str,
     virtual = evaluate_virtual_typing(coordinates["targets"], context.targets, truth, text)
     rehearsal = run_static_task_rehearsal(context, device="keyboard", text=text, dense=True,
                                            keyboard_model_estimate=estimate,
-                                           park_xy_board_mm=park_xy_board_mm)
+                                           park_xy_board_mm=park_xy_board_mm,
+                                           robot_layout_profile=(
+                                               ROOT / "software" / "config" /
+                                               "virtual_commissioning_profile.json"
+                                               if use_promoted_layout else None))
     if rehearsal["task_summary"]["requested_targets"] != [
             target["target_id"] for target in coordinates["targets"]]:
         raise ValueError("Static and image semantic plans disagree")
@@ -117,6 +122,7 @@ def run(*, request: str, checkpoint: Path, seed: int, frame_id: str,
               "virtual_typing": virtual,
               "rocell_route": {"status": rehearsal["status"],
                                "park_selection": rehearsal["park_selection"],
+                               "robot_layout_overlay": rehearsal["robot_layout_overlay"],
                                "geometry_all_checks_pass": rehearsal["geometry"]["all_checks_pass"],
                                "sampled_ik_all_converged": rehearsal["ik"]["all_sampled_converged"],
                                "dense_route_all_waypoints_accepted": route_pass,
@@ -125,7 +131,9 @@ def run(*, request: str, checkpoint: Path, seed: int, frame_id: str,
               "virtual_text_after_screened_route": virtual["virtual_text_if_all_contacts_reached"]
               if route_pass else None,
               "limitations": ["Synthetic image and hidden synthetic key layout only",
-                              "Nominal arm geometry and sampled route checks, no hardware execution",
+                              "Pinned arm kinematics and sampled route checks, no hardware execution",
+                              *(["Robot base pose and route tool are unmeasured sensitivity values"]
+                                 if use_promoted_layout else []),
                               "Virtual key hits are not observed physical input events"]}
     return result
 
@@ -141,6 +149,7 @@ def main() -> None:
     parser.add_argument("--report-output", type=Path)
     parser.add_argument("--park-x-mm", type=float)
     parser.add_argument("--park-y-mm", type=float)
+    parser.add_argument("--use-promoted-layout", action="store_true")
     args = parser.parse_args()
     if (args.park_x_mm is None) != (args.park_y_mm is None):
         parser.error("--park-x-mm and --park-y-mm must be supplied together")
@@ -148,7 +157,8 @@ def main() -> None:
                  frame_id=args.frame_id, image_output=args.image_output,
                  photo_path=args.photo_path,
                  park_xy_board_mm=None if args.park_x_mm is None else
-                 (args.park_x_mm, args.park_y_mm))
+                 (args.park_x_mm, args.park_y_mm),
+                 use_promoted_layout=args.use_promoted_layout)
     payload = json.dumps(result, indent=2)
     if args.report_output is not None:
         args.report_output.parent.mkdir(parents=True, exist_ok=True)

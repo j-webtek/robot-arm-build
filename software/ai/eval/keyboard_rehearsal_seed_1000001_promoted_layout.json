@@ -1,0 +1,121 @@
+{
+  "schema": "rocell.ai_offline_keyboard_rehearsal.v1",
+  "seed": 1000001,
+  "request": "Type \"hi\" on the keyboard",
+  "image_sha256": "6622bfa650aa0afcbfda7b11a895e36af4ca225e1f48b0bfc4a6841d754f5467",
+  "model_sha256": "2cc9d770fe9816b1e7f717413996e78d3e440eb6d7b2a02414f229d11ed5671f",
+  "physical_execution_authorized": false,
+  "hardware_commands": 0,
+  "physical_input_events_observed": 0,
+  "status": "VIRTUAL_SUCCESS_ROUTE_SCREENED",
+  "requested_text": "hi",
+  "vision": {
+    "truth_pose_board": [
+      215.9983915143406,
+      157.94436824970683,
+      3.305158917087941
+    ],
+    "predicted_pose_board": [
+      214.89658415317535,
+      158.46930480003357,
+      3.306870778399058
+    ],
+    "center_error_mm": 1.2204662400029163,
+    "yaw_error_deg": 0.09808242823872942
+  },
+  "virtual_typing": {
+    "requested_text": "hi",
+    "virtual_text_if_all_contacts_reached": "hi",
+    "all_intended_keys_hit": true,
+    "events": [
+      {
+        "intended_key": "H",
+        "virtual_hit_key": "H",
+        "hit_intended_key": true,
+        "predicted_contact_board_xy_mm": [
+          239.75258399544757,
+          167.1774487952235
+        ]
+      },
+      {
+        "intended_key": "I",
+        "virtual_hit_key": "I",
+        "hit_intended_key": true,
+        "predicted_contact_board_xy_mm": [
+          210.36143537809656,
+          140.98488529042726
+        ]
+      }
+    ],
+    "interpretation": "Hidden synthetic layout hit test; no arm movement or input event occurred"
+  },
+  "rocell_route": {
+    "status": "DENSE_SAMPLES_PASS_NOT_EXECUTABLE",
+    "park_selection": {
+      "source": "EXPLICIT_SIMULATION_OVERLAY",
+      "xy_board_mm": [
+        290.0,
+        10.0
+      ],
+      "frozen_geometry_modified": false,
+      "installed_position_verified": false
+    },
+    "robot_layout_overlay": {
+      "schema": "rocell.robot_layout_sensitivity_overlay.v1",
+      "source_profile": "software/config/virtual_commissioning_profile.json",
+      "source_profile_sha256": "c8f8440e9e4d2bdd8eaf61b5755d8c57235b5b1a0fb2f62c6953f9b6e20338cf",
+      "source_layout_report_hash": "3b65e3bca509f7c7e1583e5801e189639ab9e40cbf30827b71794752cd7259b4",
+      "source_mission_route_coverage_hash": "c67ac5d2cece745077ac631304b80f51a19c981edd107812ffa716673fbf2cd4",
+      "study_input_id": "reach-944d7463f4c67905",
+      "rank": 1,
+      "board_T_vendor_world_matrix_row_major": [
+        -0.25881904510252063,
+        0.9659258262890683,
+        -0.0,
+        385.0,
+        -0.9659258262890683,
+        -0.25881904510252063,
+        0.0,
+        532.0,
+        -0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "keyboard_tool_length_mm": 120.0,
+      "installed_position_verified": false,
+      "installed_tool_verified": false,
+      "motion_authorized": false,
+      "frozen_geometry_modified": false,
+      "physical_release_effect": "NONE",
+      "overlay_sha256": "e9558be5bc7924752596d5561d7f502a8b4ab281ad8ffcfbcc1c118c99e21a12"
+    },
+    "geometry_all_checks_pass": true,
+    "sampled_ik_all_converged": true,
+    "dense_route_all_waypoints_accepted": true,
+    "task_summary": {
+      "requested_target_count": 2,
+      "requested_targets": [
+        "H",
+        "I"
+      ],
+      "evaluated_waypoint_count": 45,
+      "planned_waypoint_count": 45,
+      "first_failure": null,
+      "physical_input_events_observed": 0,
+      "input_event_verification_performed": false
+    },
+    "rehearsal_sha256": "644c0a56d7367241058a623b15a02730c5df1c4d210ba85b037330719b93ebd9"
+  },
+  "virtual_text_after_screened_route": "hi",
+  "limitations": [
+    "Synthetic image and hidden synthetic key layout only",
+    "Pinned arm kinematics and sampled route checks, no hardware execution",
+    "Robot base pose and route tool are unmeasured sensitivity values",
+    "Virtual key hits are not observed physical input events"
+  ]
+}

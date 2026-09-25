@@ -121,3 +121,33 @@ The report separates intent, image pose error, virtual key hit, geometry, IK,
 and dense route failure. The next physical-data milestone remains fixed-camera
 calibration and measured key labels; the training set and key-hit simulator do
 not substitute for either.
+
+### Vision-positioned arm-layout diagnostic
+
+The next bounded study kept the seed-1000001 predicted keyboard pose fixed and
+screened both documented park points `(290, 10)` and `(290, 40)` mm with each
+allowed tool length: 80, 100, and 120 mm. All six nominal-base combinations
+failed on the first `H` route at TRANSIT or HOVER. Geometry passed in every
+case; the failures were IK convergence or minimum normalized joint margin.
+
+The rehearsal can also load the repository's source-bound
+[`virtual_commissioning_profile.json`](../../config/virtual_commissioning_profile.json)
+using `--use-promoted-layout`. That profile identifies unmeasured sensitivity
+rank 1 `reach-944d7463f4c67905`, its source layout and mission-coverage hashes,
+the hypothesized base transform, and the 120 mm keyboard tool. The loader
+rejects a profile that loses its simulation-only authority markers or exact
+source identity.
+
+```powershell
+python software/ai/vision/run_keyboard_rehearsal.py --request 'Type "hi" on the keyboard' --checkpoint software/ai/train/runs/synthetic_pose_photo_v1/pose_model.pt --seed 1000001 --park-x-mm 290 --park-y-mm 10 --use-promoted-layout
+```
+
+The [saved promoted-layout result](../eval/keyboard_rehearsal_seed_1000001_promoted_layout.json)
+passes all 45 sampled dense-route waypoints and resolves the two hidden virtual
+contacts to `H` and `I`, yielding `virtual_text_after_screened_route: "hi"`.
+Its status is `VIRTUAL_SUCCESS_ROUTE_SCREENED`, with zero hardware commands and
+zero observed input events. This result shows that the software stack can join
+intent, image-derived key coordinates, a declared robot-layout hypothesis, and
+sequential IK. The base pose and 120 mm tool are unmeasured sensitivity values;
+the result does not establish mechanical fit, continuous motion, full-arm
+collision clearance, calibration, or physical typing.

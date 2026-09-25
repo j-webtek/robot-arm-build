@@ -18,7 +18,7 @@ from rocell.typing.static_development_profiles import compile_static_development
 def run_static_task_rehearsal(context, *, device, text, park_xy_board_mm=None, dense=False,
                               tool_length_mm=None, keyboard_translation_mm=None,
                               keyboard_rotation_deg=0, keyboard_photo_estimate=None,
-                              keyboard_model_estimate=None):
+                              keyboard_model_estimate=None, robot_layout_profile=None):
     """Rehearse at most eight characters with explicit static source identity.
 
     Contact points here are numerical candidates only, never controller commands.
@@ -32,6 +32,8 @@ def run_static_task_rehearsal(context, *, device, text, park_xy_board_mm=None, d
     if tool_length_mm is not None and (
             type(tool_length_mm) not in (int, float) or tool_length_mm not in (80.,100.,120.)):
         raise ValueError('Tool study permits only 80, 100 or 120 mm nominal cases')
+    if robot_layout_profile is not None and tool_length_mm is not None:
+        raise ValueError('Robot layout profile already selects the route tool')
     if keyboard_rotation_deg not in (0,180) or type(keyboard_rotation_deg) is not int:
         raise ValueError('Keyboard photo study permits only 0 or 180 degrees')
     if keyboard_rotation_deg and device!='keyboard':
@@ -94,6 +96,11 @@ def run_static_task_rehearsal(context, *, device, text, park_xy_board_mm=None, d
     # Change only the numerical tool-offset hypothesis, never the validated
     # context, controlled files or an installed tool calibration.
     scenario = context.scenario
+    robot_layout=None
+    if robot_layout_profile is not None:
+        from .robot_layout_overlay import promoted_rank1_robot_layout
+
+        scenario,robot_layout=promoted_rank1_robot_layout(context,robot_layout_profile)
     if tool_length_mm is not None:
         case = VirtualToolCase(f'explicit_nominal_tool_{tool_length_mm:g}mm', -float(tool_length_mm))
         scenario = replace(scenario, hand_tcp_to_tip_z_mm=case.hand_tcp_to_tip_z_mm,
@@ -115,7 +122,9 @@ def run_static_task_rehearsal(context, *, device, text, park_xy_board_mm=None, d
                 'SAMPLED_CHECKS_PASS_NOT_EXECUTABLE'),
         architecture='static_overhead_eye_to_hand', device=device,
         keyboard_placement_overlay=placement,
-        tool_selection=dict(source='NOMINAL' if tool_length_mm is None else 'EXPLICIT_SIMULATION_OVERLAY',
+        robot_layout_overlay=robot_layout,
+        tool_selection=dict(source=('ROBOT_LAYOUT_SENSITIVITY_OVERLAY' if robot_layout is not None else
+                                    'NOMINAL' if tool_length_mm is None else 'EXPLICIT_SIMULATION_OVERLAY'),
             hand_tcp_to_tip_z_mm=scenario.hand_tcp_to_tip_z_mm,
             installed_tool_verified=False, frozen_geometry_modified=False),
         park_selection=dict(source='NOMINAL' if park_xy_board_mm is None else 'EXPLICIT_SIMULATION_OVERLAY',
@@ -139,6 +148,8 @@ def run_static_task_rehearsal(context, *, device, text, park_xy_board_mm=None, d
         physical_authority=False, installed_calibration_verified=False,
         vision_observation_performed=False,
         limitations=['Synthetic target locations, not measured keys/screens',
+                     *(['Robot base pose and route tool are unmeasured sensitivity values']
+                       if robot_layout is not None else []),
                      'Sampled IK, not a continuous or full-arm collision check',
                      'No camera capture, physical contact or input-event verification',
                      'No controller-frame correlation or executable route'])
