@@ -151,3 +151,37 @@ fixtures and installed board-to-arm transform are missing. Any physical
 trial needs a newly reviewed, dedicated app, fresh same-pose checks,
 controller-only startup catch precautions, catch removal before movement,
 and one attended exported leg at a time. r94 cannot take another leg.
+
+### r95 installation checkpoint
+
+The dedicated r95 image was built offline with SHA-256
+`d4aafbbb0ede6e93f7085fe07eb7a064344120f9493a423f5d2e2eb65aa73045`.
+Its staged source is deterministically derived from r94 with only the
+dedicated board and boot changed. Linked-symbol review found its fixed
+`BareGripperHoverBoard::dispatch` and no generic serial/web motion parser.
+It has five fixed, manually gated hover/clear legs, no gripper write, no
+virtual downstroke, and no startup servo command.
+
+With the operator's soft catch beneath the arm, one app-slot-only write was
+performed and fully read back. The installer verified the r94 predecessor,
+controller MAC, partition and filesystem identities, and unchanged protected
+flash regions; it did not rewrite settings or credentials. One controller
+startup followed. r95 reported boot `818844fc46074ad9e965c8a4e61f33ee`,
+status `0:0:0`, and a fresh read-only seven-joint snapshot identical to the
+pre-startup r94 endpoint (positions
+`[2001,2082,2033,2609,2233,2041,1900]`, goals
+`[1994,2075,2039,2600,2233,2040,1897]`). No r95 motion leg has yet been
+sent. The catch must be removed from the entire sweep and the path freshly
+confirmed clear before exactly one first-leg request; do not retry or advance
+automatically.
+
+After the operator confirmed the catch was out of the entire sweep and the
+path clear, exactly one r95 `REGION_B_HOVER` leg 1 was sent on that boot. The
+fresh before snapshot matched the r94 endpoint. Controller verification and
+the durable export
+`wizard-20260925T175239899544Z-b01b2d4bd0014798bcd16078e6fac8a3`
+record selected joints 1–4 ending at positions `2094,2020,2620,2199`
+against goals `2093,2021,2618,2197`; base, wrist roll and gripper readings
+were unchanged. The arm is now at the hover pose. This is joint feedback,
+not evidence of physical key-center alignment or visual clearance. Await the
+operator's observation before any retract or other leg.
