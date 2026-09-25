@@ -1,0 +1,40 @@
+{
+  "schema": "rocell.ai_sft_result.v0",
+  "base_repo": "meta-llama/Llama-3.2-1B-Instruct",
+  "base_revision": "9213176726f574b556790deb65791e0c5aa438b6",
+  "license_id": "llama3.2",
+  "data_manifest_sha256": "71f60b3edac6c461d062fe4c775f890c47a3aca696c99feadb3cb7fd366429b5",
+  "train_sha256": "bebf5d798647fbcb0ea8bb1180d434baf99f6eae3e7d1fb63698baae923754f8",
+  "validation_sha256": "cf682ded749e601a91d5d9fbeb7362874d4bc670800cf22d264dee0e30683b21",
+  "prompt_sha256": "ff5faa8c5e52bed95a3172b1ca1b0a6534052d71591b66d04ef954b9a25bf81a",
+  "adapter_sha256": "23d6654f1d3667cd41199650f186b3c66323b19dfc49bba3c3ce2baf07b03243",
+  "local_model": {
+    "tag": "llama32-1b-rocell-sft-v0:latest",
+    "digest": "aa35ccfd7b84a8edb091160b872ae27b3bfb2fff8960508c5c0b1c0bf6c19b52",
+    "runtime": "Ollama F16 base plus LoRA adapter"
+  },
+  "training": {
+    "method": "response_sft_lora",
+    "seed": 2109,
+    "epochs": 2,
+    "optimizer_updates": 34,
+    "batch_size": 4,
+    "gradient_accumulation": 4,
+    "learning_rate": 0.0002,
+    "lora_r": 8,
+    "lora_alpha": 16,
+    "lora_dropout": 0.05,
+    "target_modules": ["q_proj", "v_proj"],
+    "final_train_loss": 0.066731,
+    "final_validation_loss": 0.02408,
+    "versions": {"torch": "2.5.1+cu124", "transformers": "4.47.0", "peft": "0.19.1"}
+  },
+  "evaluations": {
+    "v1": {"scorecard": "../eval/llama32_1b_sft_v0_v1_scorecard.json", "exact": 14, "total": 31, "false_execution": 5, "invalid_output": 0},
+    "v2": {"scorecard": "../eval/llama32_1b_sft_v0_v2_scorecard.json", "exact": 10, "total": 24, "false_execution": 1, "invalid_output": 1}
+  },
+  "promotion_status": "blocked",
+  "reason": "False execution proposals remain on both frozen evaluations; no physical task evidence exists.",
+  "hardware_commands": 0,
+  "artifact_policy": "Adapter weights and local model import remain outside Git."
+}

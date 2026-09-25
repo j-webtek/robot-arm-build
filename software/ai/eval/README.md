@@ -48,15 +48,22 @@ local model loading and cache state; it is not a deployment benchmark.
 `benchmark_v2.jsonl` is a fresh 24-case challenge set frozen before project
 fine tuning or prompt revision. Its `simulated_review_v2.json` cross-checks
 24/24 cases against the compiler and checks exact request reuse against both
-earlier sets. No person reviewed its English labels. It remains reserved for
-a later final offline comparison; do not use it for selecting examples,
-prompts, or checkpoints.
+earlier sets. No person reviewed its English labels. It was consumed once for
+the first SFT pilot comparison. Do not use it for selecting examples, prompts,
+or checkpoints; freeze a new held-out set before further tuning.
 
 The provenance-pinned Meta Llama 3.2 1B Instruct candidate scores 0/31 on v1
 with 13 invalid outputs in JSON mode. That is a measured failure of this
 checkpoint and prompt under the strict proposal schema. The source revision
 and imported Ollama digest are recorded in
 [`train/llama32_1b_candidate.json`](../train/llama32_1b_candidate.json).
+
+The first SFT pilot scores 14/31 on v1 with five false execution proposals.
+On v2 it scores 10/24 with one false execution proposal and one invalid
+response. The unmodified official 1B checkpoint scores 0/24 on v2, while the
+deterministic parser scores 8/24 with no false execution proposals. All these
+results are offline intent/compiler measurements; the SFT pilot remains
+blocked from arm control.
 
 From the repository root, repeat the checks with:
 

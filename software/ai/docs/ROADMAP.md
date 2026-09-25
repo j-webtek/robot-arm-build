@@ -15,12 +15,16 @@ The first local Llama 3.1 8B Q4 candidate also scores 17/31, with
 five false execution proposals and one invalid response. Both remain blocked
 from arm control. Its installed tag has a translation-oriented default system
 prompt and no license or weight lineage in local metadata, so this result is
-exploratory rather than an authenticated base-model comparison. The official Meta Llama 3.2 1B
-Instruct revision is now pinned and evaluated: it scores 0/31 on v1 under the
-strict JSON proposal contract, with 13 invalid outputs and no accepted plans.
-The 24-case v2 challenge set is frozen before training or prompt changes and
-has not been used to tune a candidate. Next: create checked training examples
-separate from v2, then run one small SFT experiment. Require zero false
+exploratory rather than an authenticated base-model comparison. The official
+Meta Llama 3.2 1B Instruct revision is pinned and evaluated: it scores 0/31
+on v1 under the strict JSON proposal contract, with 13 invalid outputs and
+no accepted plans.
+The 24-case v2 challenge set was frozen before training and consumed once for
+the first response-SFT LoRA pilot. That pilot uses 264 synthetic training and
+36 validation examples. It scores 14/31 on v1 and 10/24 on v2, but makes five
+and one false execution proposals respectively. It is blocked from arm
+control. Next: analyze ambiguity failures, freeze a new held-out challenge
+set, and only then change the training data or prompt. Require zero false
 execution proposals before considering further integration.
 
 | Order | Deliverable | Check before advancing |

@@ -1,0 +1,401 @@
+{
+  "benchmark_sha256": "c4617bbb2be227659eedbc575d66924649496ad61778be7379f7d0aa8820f484",
+  "cases": [
+    {
+      "actual": {
+        "decision": "unsupported",
+        "reason": "phone_state_unverified"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v2_s01",
+      "exact": false,
+      "expected": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "green leaf"
+      },
+      "false_execution": false,
+      "latency_ms": 8225.0,
+      "parse_error": null,
+      "response_sha256": "826e1573d946afb64c0ea00970ea76cfa6cfe2b60bc78dff2e99b68e63332513"
+    },
+    {
+      "actual": {
+        "decision": "unsupported",
+        "reason": "phone_state_unverified"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v2_s02",
+      "exact": false,
+      "expected": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "map/route"
+      },
+      "false_execution": false,
+      "latency_ms": 79.1,
+      "parse_error": null,
+      "response_sha256": "826e1573d946afb64c0ea00970ea76cfa6cfe2b60bc78dff2e99b68e63332513"
+    },
+    {
+      "actual": null,
+      "adapter_status": "not_inspected",
+      "case_id": "v2_s03",
+      "exact": false,
+      "expected": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "note 42"
+      },
+      "false_execution": false,
+      "latency_ms": 153.1,
+      "parse_error": "ValueError: proposal has invalid fields",
+      "response_sha256": "f9ae0bb52b52bbd86ba56e8d09fb19288cc89e74fa1b4111f241da95c3b2cada"
+    },
+    {
+      "actual": null,
+      "adapter_status": "not_inspected",
+      "case_id": "v2_s04",
+      "exact": false,
+      "expected": {
+        "decision": "type_text",
+        "device": "phone",
+        "text": "meet soon"
+      },
+      "false_execution": false,
+      "latency_ms": 99.1,
+      "parse_error": "JSONDecodeError: Extra data: line 1 column 54 (char 53)",
+      "response_sha256": "63f9957bc59ad73c4416afd299277daac76c1dd2838151c984ca61cad9e830a1"
+    },
+    {
+      "actual": null,
+      "adapter_status": "not_inspected",
+      "case_id": "v2_s05",
+      "exact": false,
+      "expected": {
+        "decision": "type_text",
+        "device": "phone",
+        "text": "safe."
+      },
+      "false_execution": false,
+      "latency_ms": 100.2,
+      "parse_error": "JSONDecodeError: Extra data: line 1 column 54 (char 53)",
+      "response_sha256": "63f9957bc59ad73c4416afd299277daac76c1dd2838151c984ca61cad9e830a1"
+    },
+    {
+      "actual": null,
+      "adapter_status": "not_inspected",
+      "case_id": "v2_s06",
+      "exact": false,
+      "expected": {
+        "decision": "type_text",
+        "device": "phone",
+        "text": "alpha"
+      },
+      "false_execution": false,
+      "latency_ms": 100.2,
+      "parse_error": "JSONDecodeError: Extra data: line 1 column 54 (char 53)",
+      "response_sha256": "63f9957bc59ad73c4416afd299277daac76c1dd2838151c984ca61cad9e830a1"
+    },
+    {
+      "actual": null,
+      "adapter_status": "not_inspected",
+      "case_id": "v2_s07",
+      "exact": false,
+      "expected": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "line one"
+      },
+      "false_execution": false,
+      "latency_ms": 81.4,
+      "parse_error": "JSONDecodeError: Extra data: line 1 column 54 (char 53)",
+      "response_sha256": "63f9957bc59ad73c4416afd299277daac76c1dd2838151c984ca61cad9e830a1"
+    },
+    {
+      "actual": null,
+      "adapter_status": "not_inspected",
+      "case_id": "v2_s08",
+      "exact": false,
+      "expected": {
+        "decision": "type_text",
+        "device": "phone",
+        "text": "go home"
+      },
+      "false_execution": false,
+      "latency_ms": 101.8,
+      "parse_error": "JSONDecodeError: Extra data: line 1 column 54 (char 53)",
+      "response_sha256": "63f9957bc59ad73c4416afd299277daac76c1dd2838151c984ca61cad9e830a1"
+    },
+    {
+      "actual": null,
+      "adapter_status": "not_inspected",
+      "case_id": "v2_s09",
+      "exact": false,
+      "expected": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "tea-time"
+      },
+      "false_execution": false,
+      "latency_ms": 200.3,
+      "parse_error": "ValueError: proposal has invalid fields",
+      "response_sha256": "87bd94938741c1a823494e32dab6da3b2d8f3c0aa1cf4de0b0280d6a323b6b58"
+    },
+    {
+      "actual": {
+        "decision": "unsupported",
+        "reason": "phone_state_unverified"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v2_u01",
+      "exact": false,
+      "expected": {
+        "decision": "unsupported",
+        "reason": "unsupported_by_profile"
+      },
+      "false_execution": false,
+      "latency_ms": 100.9,
+      "parse_error": null,
+      "response_sha256": "826e1573d946afb64c0ea00970ea76cfa6cfe2b60bc78dff2e99b68e63332513"
+    },
+    {
+      "actual": null,
+      "adapter_status": "not_inspected",
+      "case_id": "v2_u02",
+      "exact": false,
+      "expected": {
+        "decision": "unsupported",
+        "reason": "unsupported_by_profile"
+      },
+      "false_execution": false,
+      "latency_ms": 95.6,
+      "parse_error": "JSONDecodeError: Extra data: line 1 column 54 (char 53)",
+      "response_sha256": "63f9957bc59ad73c4416afd299277daac76c1dd2838151c984ca61cad9e830a1"
+    },
+    {
+      "actual": null,
+      "adapter_status": "not_inspected",
+      "case_id": "v2_u03",
+      "exact": false,
+      "expected": {
+        "decision": "unsupported",
+        "reason": "unsupported_by_profile"
+      },
+      "false_execution": false,
+      "latency_ms": 179.6,
+      "parse_error": "ValueError: proposal has invalid fields",
+      "response_sha256": "aba45e01710e16fb81968492cc2c3f4bf6638e9b640166fc96e900830cac7329"
+    },
+    {
+      "actual": {
+        "decision": "unsupported",
+        "reason": "phone_state_unverified"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v2_u04",
+      "exact": false,
+      "expected": {
+        "decision": "unsupported",
+        "reason": "operation_not_available"
+      },
+      "false_execution": false,
+      "latency_ms": 106.2,
+      "parse_error": null,
+      "response_sha256": "826e1573d946afb64c0ea00970ea76cfa6cfe2b60bc78dff2e99b68e63332513"
+    },
+    {
+      "actual": {
+        "decision": "unsupported",
+        "reason": "phone_state_unverified"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v2_u05",
+      "exact": false,
+      "expected": {
+        "decision": "unsupported",
+        "reason": "operation_not_available"
+      },
+      "false_execution": false,
+      "latency_ms": 81.4,
+      "parse_error": null,
+      "response_sha256": "826e1573d946afb64c0ea00970ea76cfa6cfe2b60bc78dff2e99b68e63332513"
+    },
+    {
+      "actual": {
+        "decision": "unsupported",
+        "reason": "phone_state_unverified"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v2_u06",
+      "exact": false,
+      "expected": {
+        "decision": "unsupported",
+        "reason": "operation_not_available"
+      },
+      "false_execution": false,
+      "latency_ms": 101.7,
+      "parse_error": null,
+      "response_sha256": "826e1573d946afb64c0ea00970ea76cfa6cfe2b60bc78dff2e99b68e63332513"
+    },
+    {
+      "actual": {
+        "decision": "unsupported",
+        "reason": "phone_state_unverified"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v2_u07",
+      "exact": false,
+      "expected": {
+        "decision": "unsupported",
+        "reason": "stale_observation"
+      },
+      "false_execution": false,
+      "latency_ms": 79.9,
+      "parse_error": null,
+      "response_sha256": "826e1573d946afb64c0ea00970ea76cfa6cfe2b60bc78dff2e99b68e63332513"
+    },
+    {
+      "actual": null,
+      "adapter_status": "not_inspected",
+      "case_id": "v2_u08",
+      "exact": false,
+      "expected": {
+        "decision": "unsupported",
+        "reason": "phone_state_unverified"
+      },
+      "false_execution": false,
+      "latency_ms": 212.4,
+      "parse_error": "ValueError: model response contains reserved or unknown fields",
+      "response_sha256": "20a87c9d4ec87ed8a3bd5cfa245fd7c229e1c7a6ffab6a43459563fa523e1540"
+    },
+    {
+      "actual": null,
+      "adapter_status": "not_inspected",
+      "case_id": "v2_c01",
+      "exact": false,
+      "expected": {
+        "decision": "clarify",
+        "reason": "device_ambiguous"
+      },
+      "false_execution": false,
+      "latency_ms": 96.2,
+      "parse_error": "JSONDecodeError: Extra data: line 1 column 64 (char 63)",
+      "response_sha256": "a59eff28ebbb549167a9b0f57e6bc3c3eca4866c67a934c3e552eef99ba02ea8"
+    },
+    {
+      "actual": null,
+      "adapter_status": "not_inspected",
+      "case_id": "v2_c02",
+      "exact": false,
+      "expected": {
+        "decision": "clarify",
+        "reason": "text_ambiguous"
+      },
+      "false_execution": false,
+      "latency_ms": 77.3,
+      "parse_error": "JSONDecodeError: Extra data: line 1 column 65 (char 64)",
+      "response_sha256": "f0eb1a72a24ddbb70eb162cb0ff14aa5d7d9f5a2e80723b98e46b5060ea869a9"
+    },
+    {
+      "actual": null,
+      "adapter_status": "not_inspected",
+      "case_id": "v2_c03",
+      "exact": false,
+      "expected": {
+        "decision": "clarify",
+        "reason": "text_ambiguous"
+      },
+      "false_execution": false,
+      "latency_ms": 102.8,
+      "parse_error": "JSONDecodeError: Extra data: line 1 column 54 (char 53)",
+      "response_sha256": "63f9957bc59ad73c4416afd299277daac76c1dd2838151c984ca61cad9e830a1"
+    },
+    {
+      "actual": null,
+      "adapter_status": "not_inspected",
+      "case_id": "v2_c04",
+      "exact": false,
+      "expected": {
+        "decision": "clarify",
+        "reason": "device_ambiguous"
+      },
+      "false_execution": false,
+      "latency_ms": 100.0,
+      "parse_error": "JSONDecodeError: Extra data: line 1 column 54 (char 53)",
+      "response_sha256": "63f9957bc59ad73c4416afd299277daac76c1dd2838151c984ca61cad9e830a1"
+    },
+    {
+      "actual": null,
+      "adapter_status": "not_inspected",
+      "case_id": "v2_c05",
+      "exact": false,
+      "expected": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous"
+      },
+      "false_execution": false,
+      "latency_ms": 102.5,
+      "parse_error": "ValueError: invalid reason",
+      "response_sha256": "3ef4c75c5adb09269d29d43be96f4d6a0237813de9c6cf3c3599d732e9091277"
+    },
+    {
+      "actual": null,
+      "adapter_status": "not_inspected",
+      "case_id": "v2_c06",
+      "exact": false,
+      "expected": {
+        "decision": "clarify",
+        "reason": "text_ambiguous"
+      },
+      "false_execution": false,
+      "latency_ms": 80.8,
+      "parse_error": "JSONDecodeError: Extra data: line 1 column 54 (char 53)",
+      "response_sha256": "63f9957bc59ad73c4416afd299277daac76c1dd2838151c984ca61cad9e830a1"
+    },
+    {
+      "actual": {
+        "decision": "unsupported",
+        "reason": "phone_state_unverified"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v2_c07",
+      "exact": false,
+      "expected": {
+        "decision": "clarify",
+        "reason": "device_ambiguous"
+      },
+      "false_execution": false,
+      "latency_ms": 97.6,
+      "parse_error": null,
+      "response_sha256": "826e1573d946afb64c0ea00970ea76cfa6cfe2b60bc78dff2e99b68e63332513"
+    }
+  ],
+  "counts": {
+    "compiler_accepted": 0,
+    "exact": 0,
+    "expected_clarify": 7,
+    "expected_type_text": 9,
+    "expected_unsupported": 8,
+    "false_execution": 0,
+    "invalid_output": 16,
+    "total": 24
+  },
+  "evidence_class": "offline_compiler_only",
+  "exact_rate": 0.0,
+  "generation": {
+    "json_mode": true,
+    "num_ctx": 4096,
+    "num_predict": 180,
+    "seed": 1,
+    "temperature": 0
+  },
+  "hardware_commands": 0,
+  "latency_ms_total": 10755.1,
+  "model": "llama32-1b-meta-92131767:latest",
+  "model_digest": "6319184583b7d9d76f7506bfe9cdba1832f147486129527a33c157c62845d046",
+  "prompt_sha256": "ff5faa8c5e52bed95a3172b1ca1b0a6534052d71591b66d04ef954b9a25bf81a",
+  "runtime": "ollama_local_chat",
+  "runtime_version": "0.34.0",
+  "schema": "rocell.ai_model_scorecard.v0"
+}

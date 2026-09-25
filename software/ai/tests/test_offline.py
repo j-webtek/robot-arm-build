@@ -14,6 +14,7 @@ from unittest.mock import patch
 AI_DIR = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(AI_DIR))
 sys.path.insert(0, str(AI_DIR.parent / "src"))
+sys.path.insert(0, str(AI_DIR / "train"))
 
 from rocell_ai.baseline import propose  # noqa: E402
 from rocell_ai.adapter import inspect  # noqa: E402
@@ -21,6 +22,8 @@ from rocell_ai.contract import validate_proposal  # noqa: E402
 from rocell_ai.evaluation import evaluate, load_benchmark  # noqa: E402
 from rocell_ai.review import review_benchmark  # noqa: E402
 from rocell_ai.model_eval import _proposal_from_response, evaluate_model  # noqa: E402
+from rocell_ai.model_eval import PROMPT_SHA256  # noqa: E402
+from build_sft_data import build as build_sft_data  # noqa: E402
 
 
 class OfflineContractTests(unittest.TestCase):
@@ -179,6 +182,30 @@ class OfflineContractTests(unittest.TestCase):
             altered_manifest.write_text(json.dumps(metadata), encoding="utf-8")
             disputed = review_benchmark(altered_cases, altered_manifest, priors)
         self.assertIn({"case_id": "v2_s01", "issue": "duplicate_or_prior_request"}, disputed["issues"])
+
+    def test_synthetic_data_is_reproducible_and_kept_out_of_benchmarks(self) -> None:
+        train, validation, expected_manifest = build_sft_data()
+        folder = AI_DIR / "data"
+        manifest = json.loads((folder / "synthetic_sft_v0.manifest.json").read_text(encoding="utf-8"))
+        self.assertEqual(manifest["benchmark_sha256"], expected_manifest["benchmark_sha256"])
+        self.assertFalse(manifest["human_reviewed"])
+        for name, rows in (("train", train), ("validation", validation)):
+            raw = (folder / f"synthetic_sft_v0_{name}.jsonl").read_bytes()
+            self.assertEqual(hashlib.sha256(raw).hexdigest(), manifest[f"{name}_sha256"])
+            self.assertEqual([json.loads(line) for line in raw.decode("utf-8").splitlines()], rows)
+
+    def test_sft_result_remains_blocked_by_false_execution(self) -> None:
+        result = json.loads((AI_DIR / "train" / "sft_v0_result.json").read_text(encoding="utf-8"))
+        self.assertEqual(result["promotion_status"], "blocked")
+        self.assertEqual(result["hardware_commands"], 0)
+        self.assertEqual(result["prompt_sha256"], PROMPT_SHA256)
+        self.assertEqual(result["data_manifest_sha256"], hashlib.sha256((AI_DIR / "data" / "synthetic_sft_v0.manifest.json").read_bytes()).hexdigest())
+        for version in ("v1", "v2"):
+            score = json.loads((AI_DIR / "eval" / f"llama32_1b_sft_v0_{version}_scorecard.json").read_text(encoding="utf-8"))
+            self.assertEqual(result["evaluations"][version]["false_execution"], score["counts"]["false_execution"])
+            self.assertEqual(result["evaluations"][version]["exact"], score["counts"]["exact"])
+            self.assertEqual(result["local_model"]["digest"], score["model_digest"])
+            self.assertGreater(score["counts"]["false_execution"], 0)
 
 
 if __name__ == "__main__":

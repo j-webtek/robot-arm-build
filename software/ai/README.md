@@ -11,8 +11,8 @@ authorization, controller feedback, and independent input verification.
 - **First milestone:** offline intent-to-plan for supported keyboard and phone
   text. Return clarification or `unsupported_by_profile` for requests the
   current semantic profiles cannot compile.
-- **Later:** train a small Llama student only after comparing it with a
-  deterministic baseline and unmodified models on a frozen benchmark.
+- **Current experiment:** a local small Llama response-SFT adapter trained on
+  compiler-checked synthetic labels and evaluated against frozen benchmarks.
 - **Future:** feedback-driven planning, physically verified typing, dialer
   workflows, and camera observations as RoCell releases those capabilities.
 
@@ -55,8 +55,13 @@ The official Meta Llama 3.2 1B Instruct source revision and imported local
 digest are recorded in the [candidate manifest](train/llama32_1b_candidate.json).
 Its [offline v1 scorecard](eval/llama32_1b_official_v1_scorecard.json) shows
 that the current strict proposal prompt fails on all 31 cases. A separate
-[v2 challenge set](eval/benchmark_v2.manifest.json) is frozen for later
-evaluation after training.
+[v2 challenge set](eval/benchmark_v2.manifest.json) was frozen before the
+first training experiment.
+
+The [first SFT result](train/sft_v0_result.json) scores 14/31 on v1 and 10/24
+on v2. It still makes false execution proposals, so it is blocked from arm
+control. v2 has been consumed for this pilot; future tuning needs a new
+held-out set.
 
 ## Folder map
 
