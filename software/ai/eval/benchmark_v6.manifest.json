@@ -1,0 +1,11 @@
+{
+  "schema": "rocell.ai_benchmark_manifest.v0",
+  "benchmark_id": "rocell_ai_intent_v6",
+  "source_commit": "502b5c64561cb9a530789b0611497be2da348cf0",
+  "case_count": 30,
+  "cases_sha256": "345def14010a7c842932b8a7e10a9d39fac4c9582496d3b28455922041593fde",
+  "review_state": "simulated_semantic_crosscheck_no_human_review",
+  "scope": "offline contrast-focused intent challenge frozen before SFT v2 data generation",
+  "held_out_policy": "Keep these requests and normalized templates out of training; score the fixed SFT v2 candidate and unchanged admission policy once, then create a new set for any further tuning.",
+  "result_classes": ["type_text", "clarify", "unsupported"]
+}
