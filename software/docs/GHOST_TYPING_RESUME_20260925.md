@@ -212,3 +212,15 @@ Base, wrist roll and gripper readings remained unchanged. The verified export
 is `wizard-20260925T184440994897Z-ee8a958090454b44b20c5283f8b61319`.
 The arm is paused at this A-region hover. No final retract was sent; await the
 operator's visual clearance report before leg 5.
+
+The operator confirmed the A-region hover stayed clear. Exactly one final
+`REGION_A_CLEAR_FINAL` retract leg 5 was sent. The fresh before pose matched
+the verified leg-4 endpoint. Selected joints 1–4 returned to positions
+`2081,2033,2609,2233` against goals `2075,2039,2600,2233`; the largest
+selected-joint residual was nine counts. Base, wrist roll and gripper readings
+remained unchanged. The verified export is
+`wizard-20260925T184552652527Z-43a68b4aa26347deb4bc89f9d087eb74`.
+r95 has now consumed all five finite legs on boot
+`818844fc46074ad9e965c8a4e61f33ee`; no retry, lateral return, restart or
+follow-on movement occurred. The final arm state is the A-region high-clear
+pose, not a calibrated physical key coordinate.
