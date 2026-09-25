@@ -31,3 +31,6 @@ plan, screen, and admit it before any controller command can exist.
 The [translation-assurance schema](translation_assurance_v0.schema.json)
 records the ordered stage disposition and proves that no downstream stage can
 pass after the first blocker in the current offline path.
+The [model-motion assurance bundle](model_motion_assurance_bundle_v0.schema.json)
+binds a strict coordinate proposal to its deterministic nominal candidate and
+forces every physical stage after missing calibration to remain `not_run`.

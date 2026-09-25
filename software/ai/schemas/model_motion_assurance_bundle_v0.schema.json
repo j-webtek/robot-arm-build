@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/j-webtek/robot-arm-build/software/ai/schemas/model_motion_assurance_bundle_v0.schema.json",
+  "title": "RoCell offline model motion assurance bundle v0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "candidate", "assurance", "bundle_sha256"],
+  "properties": {
+    "schema": {"const": "rocell.ai_model_motion_assurance_bundle.v0"},
+    "candidate": {"type": "object"},
+    "assurance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["proposal_id", "proposal_sha256", "candidate_sha256", "target_catalog_sha256", "source", "disposition", "stages", "counts", "physical_execution_authorized"],
+      "properties": {
+        "proposal_id": {"type": "string", "minLength": 1},
+        "proposal_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "candidate_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "target_catalog_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "source": {"type": "object"},
+        "disposition": {"const": "BLOCKED_BEFORE_CALIBRATED_PLANNING"},
+        "stages": {"type": "array", "minItems": 9, "maxItems": 9},
+        "counts": {
+          "type": "object", "additionalProperties": false,
+          "required": ["permits", "commands", "writes", "retries"],
+          "properties": {"permits": {"const": 0}, "commands": {"const": 0}, "writes": {"const": 0}, "retries": {"const": 0}}
+        },
+        "physical_execution_authorized": {"const": false}
+      }
+    },
+    "bundle_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

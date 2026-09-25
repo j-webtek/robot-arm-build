@@ -81,6 +81,21 @@ board-frame candidate can enter deterministic IK, smooth trajectory generation,
 full-route screening, exact Waveshare command encoding, and the single-writer
 executor.
 
+Generate the machine-checkable translation trace from the repository root:
+
+```powershell
+python software/ai/run_offline.py assure-motion-proposal `
+  --proposal software/ai/examples/model_motion_proposal_keyboard_h.json `
+  --output motion-assurance.json
+```
+
+The trace binds the proposal, target catalog, converted candidate, source frame,
+and image identity. The current implementation passes proposal validation,
+named-target resolution, and coordinate conversion, then blocks at missing
+commissioned physical calibration. IK, route screening, admission, encoding,
+and verification remain `not_run`, with zero permits, commands, writes, and
+retries.
+
 ## Training use
 
 The current nominal profiles provide 46 keyboard and 29 phone targets. They are

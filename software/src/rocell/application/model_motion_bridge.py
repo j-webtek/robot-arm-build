@@ -95,6 +95,7 @@ def compile_model_motion_proposal(
     report: dict[str, Any] = {
         "schema": "rocell.model_motion_candidate.v1",
         "status": "ACCEPTED_OFFLINE_NOMINAL_REQUIRES_CALIBRATED_PLANNER",
+        "proposal_id": proposal.proposal_id,
         "proposal_sha256": proposal.proposal_sha256,
         "target_catalog_sha256": catalog.content_sha256,
         "source": proposal.source.to_dict(),

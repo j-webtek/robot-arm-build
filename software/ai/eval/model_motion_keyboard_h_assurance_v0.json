@@ -1,0 +1,148 @@
+{
+  "assurance": {
+    "candidate_sha256": "0f096e7fca1efe2fb47090e601dffdb0cf6f1d7986af29f6af17e706c91a0877",
+    "counts": {
+      "commands": 0,
+      "permits": 0,
+      "retries": 0,
+      "writes": 0
+    },
+    "disposition": "BLOCKED_BEFORE_CALIBRATED_PLANNING",
+    "physical_execution_authorized": false,
+    "proposal_id": "keyboard-h-001",
+    "proposal_sha256": "306811fbbc571e40e3248ca87dccc57b7b5fafd71fe0ab6bcf64277b4d4ce682",
+    "source": {
+      "frame_id": "frame-001",
+      "image_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "model_id": "candidate-model-v1"
+    },
+    "stages": [
+      {
+        "artifact_sha256": "306811fbbc571e40e3248ca87dccc57b7b5fafd71fe0ab6bcf64277b4d4ce682",
+        "reason": null,
+        "stage": "model_proposal_validation",
+        "status": "passed"
+      },
+      {
+        "artifact_sha256": "6779213e832ab27eeda1e7fb245f57ff8cb0d56707b5aa73a8f31ec483a620f2",
+        "reason": null,
+        "stage": "named_target_resolution",
+        "status": "passed"
+      },
+      {
+        "artifact_sha256": "0f096e7fca1efe2fb47090e601dffdb0cf6f1d7986af29f6af17e706c91a0877",
+        "reason": null,
+        "stage": "coordinate_frame_conversion",
+        "status": "passed"
+      },
+      {
+        "artifact_sha256": null,
+        "reason": "commissioned_physical_calibration_missing",
+        "stage": "physical_calibration",
+        "status": "blocked"
+      },
+      {
+        "artifact_sha256": null,
+        "reason": "upstream_blocked",
+        "stage": "inverse_kinematics",
+        "status": "not_run"
+      },
+      {
+        "artifact_sha256": null,
+        "reason": "upstream_blocked",
+        "stage": "route_screening",
+        "status": "not_run"
+      },
+      {
+        "artifact_sha256": null,
+        "reason": "upstream_blocked",
+        "stage": "safety_admission",
+        "status": "not_run"
+      },
+      {
+        "artifact_sha256": null,
+        "reason": "upstream_blocked",
+        "stage": "command_encoding",
+        "status": "not_run"
+      },
+      {
+        "artifact_sha256": null,
+        "reason": "upstream_blocked",
+        "stage": "outcome_verification",
+        "status": "not_run"
+      }
+    ],
+    "target_catalog_sha256": "6779213e832ab27eeda1e7fb245f57ff8cb0d56707b5aa73a8f31ec483a620f2"
+  },
+  "bundle_sha256": "f37523b47e5fefde16550b5e6125abc4d004c9a866392e9c08a31ceadfaffb4d",
+  "candidate": {
+    "candidate_sha256": "0f096e7fca1efe2fb47090e601dffdb0cf6f1d7986af29f6af17e706c91a0877",
+    "confidence": 0.98,
+    "controller_commands": [],
+    "device": "keyboard",
+    "hardware_access": false,
+    "hardware_commands_generated": 0,
+    "interaction": "HOVER",
+    "limitations": [
+      "Nominal target map is synthetic and unmeasured",
+      "No physical device-placement transform is commissioned",
+      "No board-to-controller correlation is commissioned",
+      "No IK, full-arm collision, cable, timing, or smoothness screening performed"
+    ],
+    "minimum_confidence": 0.9,
+    "nominal_delta_mm": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "nominal_safe_rectangle_board_mm": [
+      209.55,
+      147.0,
+      223.55,
+      161.0
+    ],
+    "nominal_target_center_board_mm": {
+      "frame": "board",
+      "x": 216.55,
+      "y": 154.0,
+      "z": 21.0
+    },
+    "physical_authority": false,
+    "planner_handoff": {
+      "controller_frame_correlation_required": true,
+      "coordinate_frame": "board",
+      "required_next_stage": "CALIBRATED_IK_AND_FULL_ROUTE_SCREENING",
+      "tool_transform_required": true
+    },
+    "proposal_id": "keyboard-h-001",
+    "proposal_sha256": "306811fbbc571e40e3248ca87dccc57b7b5fafd71fe0ab6bcf64277b4d4ce682",
+    "proposed_surface_target_board_mm": {
+      "frame": "board",
+      "x": 216.55,
+      "y": 154.0,
+      "z": 21.0
+    },
+    "requested_waypoints": [
+      {
+        "phase": "HOVER_DESTINATION",
+        "point_mm": {
+          "frame": "board",
+          "x": 216.55,
+          "y": 154.0,
+          "z": 46.0
+        }
+      }
+    ],
+    "schema": "rocell.model_motion_candidate.v1",
+    "source": {
+      "frame_id": "frame-001",
+      "image_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "model_id": "candidate-model-v1"
+    },
+    "speed_class": "SLOW",
+    "status": "ACCEPTED_OFFLINE_NOMINAL_REQUIRES_CALIBRATED_PLANNER",
+    "target_catalog_sha256": "6779213e832ab27eeda1e7fb245f57ff8cb0d56707b5aa73a8f31ec483a620f2",
+    "target_id": "H"
+  },
+  "schema": "rocell.ai_model_motion_assurance_bundle.v0"
+}

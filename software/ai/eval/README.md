@@ -165,6 +165,12 @@ scene assessment pass; target localization blocks; calibration, planning,
 admission, encoding, and outcome verification remain `not_run`. Permit,
 command, write, and retry counts are all zero.
 
+`model_motion_keyboard_h_assurance_v0.json` is the deterministic assurance
+bundle for the documented keyboard-H coordinate example. Proposal validation,
+named-target resolution, and device-local-to-board conversion pass. The bundle
+then blocks at missing commissioned physical calibration and records every
+later physical stage as `not_run`, with zero effects.
+
 From the repository root, repeat the checks with:
 
 ```powershell

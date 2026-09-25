@@ -57,6 +57,7 @@ python software/ai/run_offline.py evaluate-scene-observer --runtime ollama --end
 python software/ai/vision/evaluate_scene_stress.py --source software/ai/data/raw/real_photo_seed_v0/photo_02.jpg --model gemma3:4b --model-identity ollama:YOUR_PINNED_DIGEST --output software/ai/eval/local_scene_stress.json
 python software/ai/run_offline.py shadow-preview --request 'Type "hi" on the keyboard' --image frame.png --frame-id frame-001 --captured-at-utc 2026-09-25T20:00:00Z --evaluated-at-utc 2026-09-25T20:00:01Z --scene-observation scene.json --precision-observation targets.json --output shadow.json
 python software/ai/run_offline.py assure-shadow --shadow shadow.json --output assurance.json
+python software/ai/run_offline.py assure-motion-proposal --proposal software/ai/examples/model_motion_proposal_keyboard_h.json --output motion-assurance.json
 python -m unittest discover -s software/ai/tests
 ```
 
@@ -85,6 +86,10 @@ replaces it. Omit `--precision-observation` to create a replayable blocked
 record for a real image that does not yet have trustworthy coordinates.
 `assure-shadow` validates that record and emits the ordered translation stages;
 after the first blocker every downstream stage must remain `not_run`.
+`assure-motion-proposal` validates a model-authored named coordinate, compiles
+it through the deterministic nominal target bridge, and records the required
+physical-calibration blocker before IK, route screening, admission, encoding,
+or outcome verification can run.
 
 The `propose` command uses caller-supplied fixture state only. Its phone state
 defaults to `UNKNOWN`; pass `--phone-state KEYBOARD_LOWER` only for an offline

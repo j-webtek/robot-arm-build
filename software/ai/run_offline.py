@@ -29,6 +29,7 @@ from rocell_ai.vision_runtime import LlamaCppVisionObserver, OllamaVisionObserve
 from rocell_ai.scene_evaluation import evaluate_photo_seed  # noqa: E402
 from rocell_ai.shadow_preview import build as build_shadow_preview  # noqa: E402
 from rocell_ai.translation_assurance import build as build_translation_assurance  # noqa: E402
+from rocell_ai.motion_assurance import build as build_motion_assurance, load as load_motion_proposal  # noqa: E402
 
 
 def main() -> int:
@@ -124,6 +125,10 @@ def main() -> int:
     assure = sub.add_parser("assure-shadow", help="Validate a shadow record and emit its stage assurance trace")
     assure.add_argument("--shadow", type=Path, required=True)
     assure.add_argument("--output", type=Path)
+    motion_assure = sub.add_parser("assure-motion-proposal", help="Validate and trace a model coordinate proposal offline")
+    motion_assure.add_argument("--proposal", type=Path, required=True)
+    motion_assure.add_argument("--minimum-confidence", type=float, default=0.9)
+    motion_assure.add_argument("--output", type=Path)
     args = parser.parse_args()
 
     if args.command in {"propose", "inspect"}:
@@ -212,6 +217,14 @@ def main() -> int:
             args.output.write_bytes((json.dumps(result, indent=2, sort_keys=True) + "\n").encode("utf-8"))
     elif args.command == "assure-shadow":
         result = build_translation_assurance(json.loads(args.shadow.read_text(encoding="utf-8")))
+        if args.output:
+            args.output.parent.mkdir(parents=True, exist_ok=True)
+            args.output.write_bytes((json.dumps(result, indent=2, sort_keys=True) + "\n").encode("utf-8"))
+    elif args.command == "assure-motion-proposal":
+        result = build_motion_assurance(
+            load_motion_proposal(args.proposal), workspace=AI_DIR.parents[1],
+            minimum_confidence=args.minimum_confidence,
+        )
         if args.output:
             args.output.parent.mkdir(parents=True, exist_ok=True)
             args.output.write_bytes((json.dumps(result, indent=2, sort_keys=True) + "\n").encode("utf-8"))

@@ -132,6 +132,13 @@ versioned [JSON schema](../schemas/translation_assurance_v0.schema.json). Run
 validate stage ordering and produce a hash-bound assurance record. In v0,
 exactly one stage blocks progression and all later stages must be `not_run`.
 
+Model coordinate proposals use the companion
+[`motion_assurance.py`](../rocell_ai/motion_assurance.py) bundle. Run
+`python software/ai/run_offline.py assure-motion-proposal --proposal proposal.json`
+to validate proposal structure, named-target agreement, coordinate-frame
+conversion, candidate hashing, the physical-calibration blocker, and zero
+downstream effects.
+
 ## Minimum test matrix
 
 Each supported keyboard or phone capability needs tests for:

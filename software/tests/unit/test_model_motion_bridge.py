@@ -46,6 +46,7 @@ def test_keyboard_local_coordinate_compiles_to_nominal_board_candidate(
     report = compile_mapping(proposal(), workspace=workspace_root)
 
     assert report["status"] == "ACCEPTED_OFFLINE_NOMINAL_REQUIRES_CALIBRATED_PLANNER"
+    assert report["proposal_id"] == "proposal-h-001"
     assert report["proposed_surface_target_board_mm"] == {
         "frame": "board",
         "x": pytest.approx(216.55),
