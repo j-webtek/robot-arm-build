@@ -307,6 +307,36 @@ class OfflineContractTests(unittest.TestCase):
         self.assertEqual(admitted["counts"]["false_execution"], 0)
         self.assertEqual(admitted["hardware_commands"], 0)
 
+    def test_sft_v1_frozen_evaluation_remains_blocked(self) -> None:
+        folder = AI_DIR / "eval"
+        review = review_benchmark(
+            folder / "benchmark_v5.jsonl", folder / "benchmark_v5.manifest.json",
+            [folder / f"benchmark_{version}.jsonl" for version in ("v0", "v1", "v2", "v3", "v4")],
+        )
+        self.assertEqual(review["passed"], 30)
+        self.assertEqual(review["issues"], [])
+        self.assertFalse(review["human_reviewed"])
+        result = json.loads((AI_DIR / "train" / "sft_v1_result.json").read_text(encoding="utf-8"))
+        self.assertEqual(result["promotion_status"], "blocked")
+        self.assertEqual(result["hardware_commands"], 0)
+        self.assertEqual(result["data_manifest_sha256"], hashlib.sha256((AI_DIR / "data" / "synthetic_sft_v1.manifest.json").read_bytes()).hexdigest())
+        for version in ("v4", "v5"):
+            raw = json.loads((folder / f"llama32_1b_sft_v1_{version}_scorecard.json").read_text(encoding="utf-8"))
+            admitted = evaluate_admission(
+                folder / f"benchmark_{version}.jsonl",
+                folder / f"benchmark_{version}.manifest.json",
+                folder / f"llama32_1b_sft_v1_{version}_scorecard.json",
+            )
+            label = "v4_development" if version == "v4" else "v5_frozen"
+            entry = result["evaluations"][label]
+            self.assertEqual(entry["exact"], raw["counts"]["exact"])
+            self.assertEqual(entry["false_execution"], raw["counts"]["false_execution"])
+            self.assertEqual(entry["admitted_correct"], admitted["counts"]["accepted_correct"])
+            self.assertEqual(entry["admitted_false_execution"], admitted["counts"]["false_execution"])
+            self.assertEqual(entry["blocked_supported"], admitted["counts"]["blocked_supported"])
+            self.assertEqual(result["local_model"]["digest"], raw["model_digest"])
+            self.assertGreater(raw["counts"]["false_execution"], 0)
+
 
 if __name__ == "__main__":
     unittest.main()

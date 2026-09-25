@@ -17,6 +17,7 @@ sys.path.insert(0, str(AI_DIR.parent / "src"))
 from rocell_ai import SCHEMA_ID  # noqa: E402
 from rocell_ai.adapter import inspect  # noqa: E402
 from rocell_ai.contract import validate_proposal  # noqa: E402
+from rocell.typing import UnsupportedCharacterError, compile_development_text  # noqa: E402
 from build_sft_data import signature, WORDS  # noqa: E402
 
 
@@ -50,6 +51,15 @@ def build() -> tuple[list[dict], list[dict], dict]:
         outcome = inspect(proposal, observation)
         if (outcome["status"] == "accepted") != (target["decision"] == "type_text"):
             raise ValueError(f"compiler/label dispute: {case_id}")
+        if family in {"keyboard_profile_reject", "phone_profile_reject"}:
+            device = "keyboard" if family.startswith("keyboard") else "phone"
+            text = request.split('"')[1]
+            try:
+                compile_development_text(device, text)
+            except UnsupportedCharacterError:
+                pass
+            else:
+                raise ValueError(f"profile rejection accepted by compiler: {case_id}")
         records.append({"id": case_id, "family": family, "request": request,
                         "observation": observation, "target": target})
 

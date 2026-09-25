@@ -1,0 +1,58 @@
+{
+  "schema": "rocell.ai_sft_result.v1",
+  "base_repo": "meta-llama/Llama-3.2-1B-Instruct",
+  "base_revision": "9213176726f574b556790deb65791e0c5aa438b6",
+  "license_id": "llama3.2",
+  "data_manifest_sha256": "e2b712be9be0221fe1cefb6efad4ac3e960064753018366d452b67638b422414",
+  "train_sha256": "25b471267e1e557c5c487a23f8779ff128315fe3591efab0a37ef91812269237",
+  "validation_sha256": "29938a1fa96311e08925626affa997212eeaacced2b92ae51c01b9b6e9fba83e",
+  "prompt_sha256": "ff5faa8c5e52bed95a3172b1ca1b0a6534052d71591b66d04ef954b9a25bf81a",
+  "adapter_sha256": "8d1bed44a8bf7f310936a8904643286beeb028a63264184a936fb981ec150f57",
+  "local_model": {
+    "tag": "llama32-1b-rocell-sft-v1:latest",
+    "digest": "d424a6d8dd20a021fa1da30d23213b450405c750a504dbbc96dd42d6aff9b25e",
+    "runtime": "Ollama F16 base plus LoRA adapter"
+  },
+  "training": {
+    "method": "response_sft_lora",
+    "seed": 2110,
+    "epochs": 2,
+    "optimizer_updates": 76,
+    "batch_size": 4,
+    "gradient_accumulation": 4,
+    "learning_rate": 0.0002,
+    "lora_r": 8,
+    "lora_alpha": 16,
+    "lora_dropout": 0.05,
+    "target_modules": ["q_proj", "v_proj"],
+    "final_train_loss": 0.033366,
+    "final_validation_loss": 0.00889,
+    "versions": {"torch": "2.5.1+cu124", "transformers": "4.47.0", "peft": "0.19.1"}
+  },
+  "evaluations": {
+    "v4_development": {
+      "scorecard": "../eval/llama32_1b_sft_v1_v4_scorecard.json",
+      "admission_scorecard": "../eval/llama32_1b_sft_v1_v4_admission.json",
+      "exact": 14,
+      "total": 30,
+      "false_execution": 5,
+      "admitted_correct": 8,
+      "admitted_false_execution": 0,
+      "blocked_supported": 4
+    },
+    "v5_frozen": {
+      "scorecard": "../eval/llama32_1b_sft_v1_v5_scorecard.json",
+      "admission_scorecard": "../eval/llama32_1b_sft_v1_v5_admission.json",
+      "exact": 15,
+      "total": 30,
+      "false_execution": 4,
+      "admitted_correct": 6,
+      "admitted_false_execution": 0,
+      "blocked_supported": 6
+    }
+  },
+  "promotion_status": "blocked",
+  "reason": "Four wrong compiler-accepted plans remain on frozen v5. The fixed gate accepted no wrong plans in this small set but rejected half of supported requests; no physical task evidence exists.",
+  "hardware_commands": 0,
+  "artifact_policy": "Adapter weights and local model import remain outside Git."
+}

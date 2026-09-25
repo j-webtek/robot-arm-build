@@ -78,6 +78,13 @@ admits six correct plans, blocks all six wrong plans, and blocks six of 12
 supported requests. This clean offline check measures a narrow request set;
 it does not establish general safety or physical typing success.
 
+The [second SFT pilot](train/sft_v1_result.json) uses broader synthetic
+phrasing. It improves raw accuracy on the consumed v4 set, but on the frozen
+v5 challenge it still produces four wrong compiler-accepted plans out of 30
+cases. The fixed gate blocks those four and accepts six correct plans, while
+rejecting six supported requests. Both model candidates remain barred from
+arm control; a new benchmark is required before further tuning.
+
 ## Folder map
 
 | Path | Purpose |

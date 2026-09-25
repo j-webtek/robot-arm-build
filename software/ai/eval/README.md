@@ -90,6 +90,14 @@ execution at 50% supported-request coverage on this small set. It is not a
 statistical safety guarantee, and the model remains barred from arm control.
 Further gate or model changes require a newly frozen evaluation set.
 
+`benchmark_v5.jsonl` was committed before SFT v1 data generation. Its
+simulated review passes 30/30 consistency and exact request-reuse checks;
+no person reviewed the English labels. SFT v1 scores 15/30 exact, with four
+wrong compiler-accepted plans. The unchanged admission gate accepts six
+correct plans, blocks all four wrong plans, and blocks six of 12 supported
+requests. v5 is now consumed. This does not show that future requests are
+safe, and physical typing remains outside the AI evaluation.
+
 From the repository root, repeat the checks with:
 
 ```powershell

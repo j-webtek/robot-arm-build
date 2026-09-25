@@ -43,6 +43,14 @@ continued offline gate development, while the model remains blocked from arm
 control. The next cycle should improve ambiguous-intent rejection and valid
 request coverage, then freeze a new challenge before another evaluation.
 
+The second response-SFT pilot used broader natural-language and ambiguity
+examples. It improved raw exact accuracy on consumed v4 from 10/30 to 14/30,
+but the frozen v5 result is 15/30 exact with four false executions. The gate
+accepts six correct v5 plans and rejects six valid requests. Keep promotion
+blocked. The next research cycle should target missing-device and
+alternative-text errors, and raise supported-request coverage with explicit
+tests; freeze a new challenge before scoring a changed model or gate.
+
 | Order | Deliverable | Check before advancing |
 | --- | --- | --- |
 | 1. Versioned proposal | Define `type_text`, `clarify`, and `unsupported` result shapes; pin the RoCell source/profile identity. | Every supported proposal maps to the existing compiler; no coordinate or hardware command field exists. |

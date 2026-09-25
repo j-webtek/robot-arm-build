@@ -18,3 +18,12 @@ are checked with the read-only adapter. Exact requests and normalized template
 shapes are screened against all three benchmarks. This does not prove that
 semantic paraphrases never overlap. `human_reviewed` is false, and these are
 synthetic intent labels, not physical outcome evidence.
+
+`synthetic_sft_v1_train.jsonl` and `synthetic_sft_v1_validation.jsonl` contain
+605 and 60 examples. The generator combines the checked v0 examples with
+agent-authored natural request paraphrases, two-device and alternative-text
+ambiguities, multi-step requests, and state/profile rejections. Its manifest
+pins all v0–v5 benchmark hashes and the v0 data manifest. Exact requests and
+normalized template signatures are screened against all six benchmarks.
+Validation shares request families with training, so its loss is a training
+diagnostic; the separately frozen v5 cases supply the offline challenge.
