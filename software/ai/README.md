@@ -39,8 +39,15 @@ python software/ai/run_offline.py ground --request 'Type "test" on the keyboard'
 python software/ai/run_offline.py coordinate-preview --request 'Type "test" on the keyboard'
 python software/ai/run_offline.py simulate-vision --device keyboard --frame-id manual-offline --offset-x-mm 2 --output visual.json
 python software/ai/run_offline.py coordinate-preview --request 'Type "test" on the keyboard' --visual-observation visual.json
+python software/ai/run_offline.py observe-image --image frame.jpg --frame-id frame-001 --runtime ollama --endpoint http://127.0.0.1:11434 --model YOUR_VISION_MODEL --model-identity YOUR_PINNED_MODEL_ID --output scene.json
 python -m unittest discover -s software/ai/tests
 ```
+
+`observe-image` reads one existing image and calls the selected local vision
+runtime. It never opens a camera or arm. Replace the model placeholders with a
+multimodal model installed on the deployment host and a pinned identity from
+that installation. A transport or validation failure produces an explicit,
+image-bound abstention record.
 
 The `propose` command uses caller-supplied fixture state only. Its phone state
 defaults to `UNKNOWN`; pass `--phone-state KEYBOARD_LOWER` only for an offline

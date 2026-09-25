@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+from datetime import datetime, timezone
 import json
 from pathlib import Path
 import sys
@@ -23,6 +24,8 @@ from rocell_ai.grounded_eval import evaluate_grounded  # noqa: E402
 from rocell_ai.coordinate_preview import preview as coordinate_preview  # noqa: E402
 from rocell_ai.visual_observation import simulate as simulate_visual_observation  # noqa: E402
 from rocell_ai.review import review_benchmark  # noqa: E402
+from rocell_ai.scene_observation import FrameEvidence  # noqa: E402
+from rocell_ai.vision_runtime import LlamaCppVisionObserver, OllamaVisionObserver  # noqa: E402
 
 
 def main() -> int:
@@ -82,6 +85,16 @@ def main() -> int:
     grounded_batch.add_argument("--cases", type=Path, required=True)
     grounded_batch.add_argument("--manifest", type=Path, required=True)
     grounded_batch.add_argument("--output", type=Path)
+    observe = sub.add_parser("observe-image", help="Classify one saved image with a local multimodal runtime")
+    observe.add_argument("--image", type=Path, required=True)
+    observe.add_argument("--frame-id", required=True)
+    observe.add_argument("--captured-at-utc", help="RFC 3339 UTC time; defaults to the current time")
+    observe.add_argument("--runtime", choices=("ollama", "llama-cpp"), required=True)
+    observe.add_argument("--endpoint", required=True)
+    observe.add_argument("--model", required=True)
+    observe.add_argument("--model-identity", required=True)
+    observe.add_argument("--timeout-seconds", type=float, default=60.0)
+    observe.add_argument("--output", type=Path)
     args = parser.parse_args()
 
     if args.command in {"propose", "inspect"}:
@@ -131,6 +144,17 @@ def main() -> int:
         if args.output:
             args.output.parent.mkdir(parents=True, exist_ok=True)
             args.output.write_bytes((json.dumps(result, indent=2, sort_keys=True) + "\n").encode("utf-8"))
+    elif args.command == "observe-image":
+        captured_at = args.captured_at_utc or datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+        frame = FrameEvidence(args.frame_id, captured_at, args.image.read_bytes())
+        observer_class = OllamaVisionObserver if args.runtime == "ollama" else LlamaCppVisionObserver
+        observer = observer_class(endpoint=args.endpoint, model=args.model,
+                                  model_identity=args.model_identity,
+                                  timeout_seconds=args.timeout_seconds)
+        result = observer.observe(frame)
+        if args.output:
+            args.output.parent.mkdir(parents=True, exist_ok=True)
+            args.output.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     else:
         result = review_benchmark(args.cases, args.manifest, args.prior or [AI_DIR / "eval" / "benchmark_v0.jsonl"])
         if args.output:
