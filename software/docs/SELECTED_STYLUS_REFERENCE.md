@@ -2,6 +2,10 @@
 
 Recorded: 2026-09-17. Status: user-selected product; mounted tool uncalibrated.
 
+For the attended open/place/close and measurement sequence, use
+[the stylus loading procedure](STYLUS_LOADING_PROCEDURE.md). Its controller
+prerequisite is not yet implemented on the installed r91 diagnostic image.
+
 ## Product
 
 User-selected [Amazon ASIN B08Q7L85X2](https://www.amazon.com/dp/B08Q7L85X2).
