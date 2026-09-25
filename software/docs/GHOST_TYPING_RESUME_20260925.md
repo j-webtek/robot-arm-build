@@ -81,6 +81,31 @@ move stayed clear of the keyboard, cables and nearby objects.
 This is controller feedback plus operator-reported visual clearance, not
 independently measured TCP motion or physical key accuracy.
 
+## Five-leg evidence review and next experiment
+
+The read-only `scripts/analyze_r94_ghost_b_cycle.py` review verifies all five
+immutable exports, their same-boot ordered endpoint chain, one-write claims,
+selected joints, target goals, and reported position bounds. All five passed.
+The largest selected-joint goal residual was nine servo counts, and every
+unselected joint reported zero position change between each leg's before and
+after snapshot. The final reported positions were
+`[2001,2082,2033,2609,2233,2041,1900]`; the final goals were
+`[1994,2075,2039,2600,2233,2040,1897]`. These are servo counts, not key
+center errors in millimeters. The review neither contacts hardware nor grants
+motion authority.
+
+The next useful **offline** candidate is a bounded non-contact survey of
+several keyboard regions, not another replay of B or a purported keypress.
+First register the keyboard's approximate footprint and orientation against
+the board marks, and establish the bare-gripper reference point and envelope.
+Use at least three widely separated landmarks (for example a letter, a number
+and punctuation key) as labeled hypotheses, with uncertainty margins. Then
+generate high, non-contact transitions from the freshly observed arm pose and
+screen the entire arm-and-cable sweep. Keep photo estimates explicitly
+provisional; do not extrapolate a physical C or number-row target from the
+53-count A-to-B base offset alone. Any eventual live candidate requires a
+separate reviewed app, startup/drop precautions and one attended leg at a time.
+
 ## Boundary before another ghost-key exercise
 
 1. Confirm the stylus remains removed and the bare gripper and full swept
