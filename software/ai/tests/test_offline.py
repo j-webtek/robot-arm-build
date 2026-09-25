@@ -268,6 +268,32 @@ class OfflineContractTests(unittest.TestCase):
         self.assertEqual(admitted["counts"]["false_execution"], 0)
         self.assertEqual(admitted["counts"]["blocked_supported"], 5)
 
+    def test_v4_fixed_policy_holdout(self) -> None:
+        folder = AI_DIR / "eval"
+        manifest = json.loads((folder / "benchmark_v4.manifest.json").read_text(encoding="utf-8"))
+        review = review_benchmark(
+            folder / "benchmark_v4.jsonl", folder / "benchmark_v4.manifest.json",
+            [folder / f"benchmark_{version}.jsonl" for version in ("v0", "v1", "v2", "v3")],
+        )
+        self.assertEqual(review["passed"], 30)
+        self.assertEqual(review["issues"], [])
+        self.assertFalse(review["human_reviewed"])
+        baseline = json.loads((folder / "baseline_v4_scorecard.json").read_text(encoding="utf-8"))
+        raw = json.loads((folder / "llama32_1b_sft_v0_v4_scorecard.json").read_text(encoding="utf-8"))
+        admitted = evaluate_admission(
+            folder / "benchmark_v4.jsonl", folder / "benchmark_v4.manifest.json",
+            folder / "llama32_1b_sft_v0_v4_scorecard.json",
+        )
+        self.assertEqual(admitted["policy_sha256"], manifest["admission_policy_sha256"])
+        self.assertEqual(admitted["benchmark_sha256"], manifest["cases_sha256"])
+        self.assertEqual(baseline["counts"]["exact"], 13)
+        self.assertEqual(raw["counts"]["exact"], 10)
+        self.assertEqual(raw["counts"]["false_execution"], 6)
+        self.assertEqual(admitted["counts"]["accepted_correct"], 6)
+        self.assertEqual(admitted["counts"]["blocked_supported"], 6)
+        self.assertEqual(admitted["counts"]["false_execution"], 0)
+        self.assertEqual(admitted["hardware_commands"], 0)
+
 
 if __name__ == "__main__":
     unittest.main()

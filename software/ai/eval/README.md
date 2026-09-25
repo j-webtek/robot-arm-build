@@ -77,6 +77,19 @@ The raw model scorecard and gate scorecard remain separate so accepted-plan
 safety cannot be mistaken for improved model accuracy. Neither scorecard
 contains physical execution evidence.
 
+`benchmark_v4.jsonl` and its case hash were committed before any v4 model or
+gate run; the admission policy was already committed and stayed unchanged.
+The manifest's policy hash had a one-character transcription error corrected
+after scoring, with no policy or case change. Its simulated review passes 30/30 compiler,
+state, and exact request-reuse checks; English labels remain agent-authored.
+The deterministic baseline scores 13/30 exact with one false execution. SFT
+v0 scores 10/30 exact with six wrong compiler-accepted plans. The unchanged
+gate admits six correct plans, no wrong plans, and blocks six of the 12
+supported requests. Thus the clean held-out gate observation is zero false
+execution at 50% supported-request coverage on this small set. It is not a
+statistical safety guarantee, and the model remains barred from arm control.
+Further gate or model changes require a newly frozen evaluation set.
+
 From the repository root, repeat the checks with:
 
 ```powershell
@@ -85,4 +98,5 @@ python software/ai/run_offline.py evaluate --cases software/ai/eval/benchmark_v1
 python software/ai/run_offline.py evaluate-model --model llama-3.1-8b-instruct-q4_k_m:latest
 python software/ai/run_offline.py review --cases software/ai/eval/benchmark_v2.jsonl --manifest software/ai/eval/benchmark_v2.manifest.json --prior software/ai/eval/benchmark_v0.jsonl --prior software/ai/eval/benchmark_v1.jsonl
 python software/ai/run_offline.py admit-score --cases software/ai/eval/benchmark_v3.jsonl --manifest software/ai/eval/benchmark_v3.manifest.json --raw-scorecard software/ai/eval/llama32_1b_sft_v0_v3_scorecard.json
+python software/ai/run_offline.py admit-score --cases software/ai/eval/benchmark_v4.jsonl --manifest software/ai/eval/benchmark_v4.manifest.json --raw-scorecard software/ai/eval/llama32_1b_sft_v0_v4_scorecard.json
 ```

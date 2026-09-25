@@ -67,7 +67,16 @@ set, SFT v0 scores 11/30 raw with four wrong compiler-accepted plans. The gate
 accepts seven correct plans, blocks all four wrong plans, and blocks five
 supported requests. This is an offline coverage and safety observation, not
 permission for arm control. A gate rule was adjusted after inspecting a v3
-request, so a new challenge set is needed before a clean gate evaluation.
+request, so that admission result is exploratory.
+
+The [v4 challenge](eval/benchmark_v4.manifest.json) was committed before
+scoring against the unchanged admission policy. Its manifest's policy hash had
+a transcription error that was corrected after scoring; the policy file and
+cases were unchanged. On its 30 agent-authored cases, SFT v0
+scores 10 exact with six wrong compiler-accepted plans. The unchanged gate
+admits six correct plans, blocks all six wrong plans, and blocks six of 12
+supported requests. This clean offline check measures a narrow request set;
+it does not establish general safety or physical typing success.
 
 ## Folder map
 

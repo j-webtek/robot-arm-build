@@ -2,11 +2,12 @@
   "schema": "rocell.ai_benchmark_manifest.v0",
   "benchmark_id": "rocell_ai_intent_v4",
   "source_commit": "8c398d97397cd3b6e3c4bb313e2e5e99506b89e6",
-  "admission_policy_sha256": "d49d4c59063efa8cb0b5a05d455a27b82d844f66d2a29700db0d7faea3591613",
+  "admission_policy_sha256": "d49d4c59063efa8cb0b5a05d455a27b82d844f66d2a29700db0d7faae3591613",
   "review_state": "simulated_semantic_crosscheck_no_human_review",
   "case_count": 30,
   "cases_sha256": "c01fb6c686fc5fe3f755c9fe454109eb77dd5c95320ce9353254afecf5a440cf",
   "scope": "offline admission challenge frozen after policy commit and before candidate evaluation",
+  "provenance_note": "The policy SHA-256 field was corrected after evaluation to fix a one-character transcription error. The policy file and benchmark cases were not changed.",
   "held_out_policy": "Run the existing SFT v0 model and pinned admission policy once. Do not change requests, labels, prompt, model, or policy in response to this score; create a new benchmark for follow-up work.",
   "result_classes": ["type_text", "clarify", "unsupported"]
 }

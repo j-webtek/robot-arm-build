@@ -1,0 +1,544 @@
+{
+  "baseline": "deterministic_v0",
+  "benchmark_sha256": "c01fb6c686fc5fe3f755c9fe454109eb77dd5c95320ce9353254afecf5a440cf",
+  "cases": [
+    {
+      "actual": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v4_s01",
+      "compiler_accepted": false,
+      "exact": false,
+      "expected": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "willow grove"
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    },
+    {
+      "actual": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v4_s02",
+      "compiler_accepted": false,
+      "exact": false,
+      "expected": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "42/7"
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    },
+    {
+      "actual": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v4_s03",
+      "compiler_accepted": false,
+      "exact": false,
+      "expected": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "oak."
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    },
+    {
+      "actual": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v4_s04",
+      "compiler_accepted": false,
+      "exact": false,
+      "expected": {
+        "decision": "type_text",
+        "device": "phone",
+        "text": "meet me"
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    },
+    {
+      "actual": {
+        "decision": "clarify",
+        "reason": "device_ambiguous"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v4_s05",
+      "compiler_accepted": false,
+      "exact": false,
+      "expected": {
+        "decision": "type_text",
+        "device": "phone",
+        "text": "later"
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    },
+    {
+      "actual": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v4_s06",
+      "compiler_accepted": false,
+      "exact": false,
+      "expected": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "dial now"
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    },
+    {
+      "actual": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v4_s07",
+      "compiler_accepted": false,
+      "exact": false,
+      "expected": {
+        "decision": "type_text",
+        "device": "phone",
+        "text": "keyboard"
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    },
+    {
+      "actual": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v4_s08",
+      "compiler_accepted": false,
+      "exact": false,
+      "expected": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "fern"
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    },
+    {
+      "actual": {
+        "decision": "type_text",
+        "device": "phone",
+        "text": "quiet."
+      },
+      "adapter_status": "accepted",
+      "case_id": "v4_s09",
+      "compiler_accepted": true,
+      "exact": true,
+      "expected": {
+        "decision": "type_text",
+        "device": "phone",
+        "text": "quiet."
+      },
+      "false_execution": false,
+      "plan_hash": "627fdb29aa6e03c58f86f9e15dee5a3bd950657b89c8d75cdd797877fde675f7",
+      "profile_id": "development/phone-lowercase-semantic-v1"
+    },
+    {
+      "actual": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "amber"
+      },
+      "adapter_status": "accepted",
+      "case_id": "v4_s10",
+      "compiler_accepted": true,
+      "exact": true,
+      "expected": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "amber"
+      },
+      "false_execution": false,
+      "plan_hash": "98236f56ff96ed6e2900de26c453116bcc81ea65a977f23c19a1ed255c9f9146",
+      "profile_id": "development/keyboard-us-lowercase-semantic-v1"
+    },
+    {
+      "actual": {
+        "decision": "clarify",
+        "reason": "device_ambiguous"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v4_s11",
+      "compiler_accepted": false,
+      "exact": false,
+      "expected": {
+        "decision": "type_text",
+        "device": "phone",
+        "text": "moss"
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    },
+    {
+      "actual": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v4_s12",
+      "compiler_accepted": false,
+      "exact": false,
+      "expected": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "903"
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    },
+    {
+      "actual": {
+        "decision": "unsupported",
+        "reason": "unsupported_by_profile"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v4_u01",
+      "compiler_accepted": false,
+      "exact": true,
+      "expected": {
+        "decision": "unsupported",
+        "reason": "unsupported_by_profile"
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    },
+    {
+      "actual": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v4_u02",
+      "compiler_accepted": false,
+      "exact": false,
+      "expected": {
+        "decision": "unsupported",
+        "reason": "unsupported_by_profile"
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    },
+    {
+      "actual": {
+        "decision": "clarify",
+        "reason": "device_ambiguous"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v4_u03",
+      "compiler_accepted": false,
+      "exact": false,
+      "expected": {
+        "decision": "unsupported",
+        "reason": "unsupported_by_profile"
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    },
+    {
+      "actual": {
+        "decision": "unsupported",
+        "reason": "operation_not_available"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v4_u04",
+      "compiler_accepted": false,
+      "exact": true,
+      "expected": {
+        "decision": "unsupported",
+        "reason": "operation_not_available"
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    },
+    {
+      "actual": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v4_u05",
+      "compiler_accepted": false,
+      "exact": false,
+      "expected": {
+        "decision": "unsupported",
+        "reason": "operation_not_available"
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    },
+    {
+      "actual": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v4_u06",
+      "compiler_accepted": false,
+      "exact": false,
+      "expected": {
+        "decision": "unsupported",
+        "reason": "operation_not_available"
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    },
+    {
+      "actual": {
+        "decision": "unsupported",
+        "reason": "stale_observation"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v4_u07",
+      "compiler_accepted": false,
+      "exact": true,
+      "expected": {
+        "decision": "unsupported",
+        "reason": "stale_observation"
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    },
+    {
+      "actual": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v4_u08",
+      "compiler_accepted": false,
+      "exact": false,
+      "expected": {
+        "decision": "unsupported",
+        "reason": "phone_state_unverified"
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    },
+    {
+      "actual": {
+        "decision": "clarify",
+        "reason": "device_ambiguous"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v4_c01",
+      "compiler_accepted": false,
+      "exact": true,
+      "expected": {
+        "decision": "clarify",
+        "reason": "device_ambiguous"
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    },
+    {
+      "actual": {
+        "decision": "type_text",
+        "device": "phone",
+        "text": "it"
+      },
+      "adapter_status": "accepted",
+      "case_id": "v4_c02",
+      "compiler_accepted": true,
+      "exact": false,
+      "expected": {
+        "decision": "clarify",
+        "reason": "text_ambiguous"
+      },
+      "false_execution": true,
+      "plan_hash": "fb7896a6b6414a98e067860007a3e1fab05b9c7219633200a424b25b5a159cbb",
+      "profile_id": "development/phone-lowercase-semantic-v1"
+    },
+    {
+      "actual": {
+        "decision": "clarify",
+        "reason": "text_ambiguous"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v4_c03",
+      "compiler_accepted": false,
+      "exact": true,
+      "expected": {
+        "decision": "clarify",
+        "reason": "text_ambiguous"
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    },
+    {
+      "actual": {
+        "decision": "clarify",
+        "reason": "device_ambiguous"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v4_c04",
+      "compiler_accepted": false,
+      "exact": true,
+      "expected": {
+        "decision": "clarify",
+        "reason": "device_ambiguous"
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    },
+    {
+      "actual": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v4_c05",
+      "compiler_accepted": false,
+      "exact": true,
+      "expected": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous"
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    },
+    {
+      "actual": {
+        "decision": "clarify",
+        "reason": "device_ambiguous"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v4_c06",
+      "compiler_accepted": false,
+      "exact": true,
+      "expected": {
+        "decision": "clarify",
+        "reason": "device_ambiguous"
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    },
+    {
+      "actual": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v4_c07",
+      "compiler_accepted": false,
+      "exact": false,
+      "expected": {
+        "decision": "clarify",
+        "reason": "text_ambiguous"
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    },
+    {
+      "actual": {
+        "decision": "clarify",
+        "reason": "device_ambiguous"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v4_c08",
+      "compiler_accepted": false,
+      "exact": true,
+      "expected": {
+        "decision": "clarify",
+        "reason": "device_ambiguous"
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    },
+    {
+      "actual": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v4_c09",
+      "compiler_accepted": false,
+      "exact": true,
+      "expected": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous"
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    },
+    {
+      "actual": {
+        "decision": "clarify",
+        "reason": "device_ambiguous"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v4_c10",
+      "compiler_accepted": false,
+      "exact": true,
+      "expected": {
+        "decision": "clarify",
+        "reason": "device_ambiguous"
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    }
+  ],
+  "counts": {
+    "compiler_accepted": 3,
+    "exact": 13,
+    "expected_clarify": 10,
+    "expected_type_text": 12,
+    "expected_unsupported": 8,
+    "false_execution": 1,
+    "total": 30
+  },
+  "evidence_class": "offline_compiler_only",
+  "exact_rate": 0.43333333333333335,
+  "hardware_commands": 0,
+  "schema": "rocell.ai_baseline_scorecard.v0"
+}

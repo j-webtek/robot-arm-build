@@ -30,9 +30,18 @@ The next offline step adds a request-grounding gate before compiler admission.
 SFT v0 still makes four wrong compiler-accepted plans on the 30-case v3 model
 holdout (11/30 exact). The gate accepts seven correct plans and no wrong plans
 on v3, while blocking five supported requests. Its v3 result is exploratory:
-one policy rule was adjusted after inspecting a v3 request. Freeze another
-challenge set before evaluating a revised gate or model. Model proposal
+one policy rule was adjusted after inspecting a v3 request. Model proposal
 quality and admitted-plan quality must remain separate measurements.
+
+The v4 challenge was committed before scoring against the unchanged gate. A
+transcription error in the manifest's gate hash was corrected afterward;
+neither the gate nor cases changed.
+The deterministic parser reaches 13/30 exact with one false execution; SFT
+v0 reaches 10/30 exact with six false executions. The gate admits six correct
+plans, no wrong plans, and rejects six supported requests. This supports
+continued offline gate development, while the model remains blocked from arm
+control. The next cycle should improve ambiguous-intent rejection and valid
+request coverage, then freeze a new challenge before another evaluation.
 
 | Order | Deliverable | Check before advancing |
 | --- | --- | --- |
