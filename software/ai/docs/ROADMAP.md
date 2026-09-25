@@ -51,6 +51,13 @@ blocked. The next research cycle should target missing-device and
 alternative-text errors, and raise supported-request coverage with explicit
 tests; freeze a new challenge before scoring a changed model or gate.
 
+The contrast-pair SFT v2 experiment was run against frozen v6. It reduces
+wrong compiler-accepted proposals from four to two versus SFT v1, but the
+fixed gate admits only two correct plans rather than six. This is a coverage
+regression. Keep SFT v2 blocked; the next experiment should balance positive
+and ambiguous examples by paraphrase family and use a family-held-out
+validation split. Freeze another challenge before scoring changes.
+
 | Order | Deliverable | Check before advancing |
 | --- | --- | --- |
 | 1. Versioned proposal | Define `type_text`, `clarify`, and `unsupported` result shapes; pin the RoCell source/profile identity. | Every supported proposal maps to the existing compiler; no coordinate or hardware command field exists. |

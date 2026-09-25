@@ -350,6 +350,37 @@ class OfflineContractTests(unittest.TestCase):
             self.assertEqual(result["local_model"]["digest"], raw["model_digest"])
             self.assertGreater(raw["counts"]["false_execution"], 0)
 
+    def test_sft_v2_frozen_evaluation_records_coverage_regression(self) -> None:
+        folder = AI_DIR / "eval"
+        review = review_benchmark(
+            folder / "benchmark_v6.jsonl", folder / "benchmark_v6.manifest.json",
+            [folder / f"benchmark_{version}.jsonl" for version in ("v0", "v1", "v2", "v3", "v4", "v5")],
+        )
+        self.assertEqual(review["passed"], 30)
+        self.assertEqual(review["issues"], [])
+        self.assertFalse(review["human_reviewed"])
+        result = json.loads((AI_DIR / "train" / "sft_v2_result.json").read_text(encoding="utf-8"))
+        self.assertEqual(result["promotion_status"], "blocked")
+        self.assertEqual(result["hardware_commands"], 0)
+        self.assertEqual(result["data_manifest_sha256"], hashlib.sha256((AI_DIR / "data" / "synthetic_sft_v2.manifest.json").read_bytes()).hexdigest())
+        for version in ("v5", "v6"):
+            raw = json.loads((folder / f"llama32_1b_sft_v2_{version}_scorecard.json").read_text(encoding="utf-8"))
+            admitted = evaluate_admission(
+                folder / f"benchmark_{version}.jsonl",
+                folder / f"benchmark_{version}.manifest.json",
+                folder / f"llama32_1b_sft_v2_{version}_scorecard.json",
+            )
+            label = "v5_development" if version == "v5" else "v6_frozen"
+            entry = result["evaluations"][label]
+            self.assertEqual(entry["exact"], raw["counts"]["exact"])
+            self.assertEqual(entry["false_execution"], raw["counts"]["false_execution"])
+            self.assertEqual(entry["admitted_correct"], admitted["counts"]["accepted_correct"])
+            self.assertEqual(entry["admitted_false_execution"], admitted["counts"]["false_execution"])
+            self.assertEqual(entry["blocked_supported"], admitted["counts"]["blocked_supported"])
+            self.assertEqual(result["local_model"]["digest"], raw["model_digest"])
+        v1_admitted = json.loads((folder / "llama32_1b_sft_v1_v6_admission.json").read_text(encoding="utf-8"))
+        self.assertGreater(v1_admitted["counts"]["accepted_correct"], result["evaluations"]["v6_frozen"]["admitted_correct"])
+
 
 if __name__ == "__main__":
     unittest.main()

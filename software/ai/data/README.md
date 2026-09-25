@@ -27,3 +27,11 @@ pins all v0–v5 benchmark hashes and the v0 data manifest. Exact requests and
 normalized template signatures are screened against all six benchmarks.
 Validation shares request families with training, so its loss is a training
 diagnostic; the separately frozen v5 cases supply the offline challenge.
+
+`synthetic_sft_v2_train.jsonl` and `synthetic_sft_v2_validation.jsonl` contain
+835 and 80 examples. They retain the checked v1 data and add 250 paired
+examples where a missing device, quoted device word, unselected text or
+device, or missing referent is contrasted with an explicit supported request.
+The manifest pins all v0–v6 benchmarks and the v1 data manifest. The v6
+challenge was committed before this dataset was generated. These labels are
+agent-authored; low validation loss does not establish generalization.

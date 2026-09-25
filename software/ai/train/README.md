@@ -35,6 +35,15 @@ makes four wrong compiler-accepted plans, and the gate admits six correct
 plans with no wrong plans. This candidate is also **blocked** from arm control.
 The model and gate have not been tuned after seeing v5 results.
 
+The third [SFT result](sft_v2_result.json) adds 250 contrast pairs to the
+v1 data. On consumed v5 it makes no wrong compiler-accepted plans, but the
+gate admits only three supported requests instead of six for SFT v1. On the
+frozen v6 set, raw exact matches rise from 12/30 for SFT v1 to 13/30 for
+SFT v2, while admitted correct plans fall from six to two. SFT v2 still makes
+two wrong compiler-accepted proposals. It is **blocked** and represents a
+coverage regression despite low validation loss. Neither model nor gate was
+tuned after seeing v6.
+
 Reproduce the local pilot with the pinned Meta checkpoint already cached:
 
 ```powershell
@@ -52,6 +61,10 @@ python software/ai/train/fit_sft.py --data-version v1 --output software/ai/train
 python software/ai/train/import_adapter.py --adapter-dir software/ai/train/runs/sft_v1 --staging-dir software/ai/artifacts/sft-v1-import --base-tag llama32-1b-meta-92131767:latest --tag llama32-1b-rocell-sft-v1:latest
 python software/ai/run_offline.py evaluate-model --model llama32-1b-rocell-sft-v1:latest --cases software/ai/eval/benchmark_v5.jsonl --manifest software/ai/eval/benchmark_v5.manifest.json
 ```
+
+The third pilot uses `build_sft_v2_data.py` and `fit_sft.py --data-version v2`
+with fresh ignored run and import directories. Its exact run configuration,
+adapter hash, local Ollama digest, and scorecards are in `sft_v2_result.json`.
 
 Use a new `--output` and `--staging-dir` for each run. The importer stages the
 adapter in an ignored folder with the filenames required by this Ollama

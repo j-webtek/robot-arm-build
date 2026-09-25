@@ -98,6 +98,15 @@ correct plans, blocks all four wrong plans, and blocks six of 12 supported
 requests. v5 is now consumed. This does not show that future requests are
 safe, and physical typing remains outside the AI evaluation.
 
+`benchmark_v6.jsonl` was frozen before contrast-pair data generation and
+reviewed by the same simulated checks (30/30 internally consistent; no human
+review). On v6, SFT v1 is 12/30 exact, four wrong compiler-accepted plans,
+and six correct gate-admitted plans. SFT v2 is 13/30 exact, two wrong
+compiler-accepted plans, and only two correct gate-admitted plans. The gate
+blocks every observed wrong plan for both candidates. This is an offline
+coverage regression for SFT v2, not a promotion. v6 is now consumed; a new
+benchmark is needed for any subsequent change.
+
 From the repository root, repeat the checks with:
 
 ```powershell

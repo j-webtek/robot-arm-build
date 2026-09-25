@@ -85,6 +85,12 @@ cases. The fixed gate blocks those four and accepts six correct plans, while
 rejecting six supported requests. Both model candidates remain barred from
 arm control; a new benchmark is required before further tuning.
 
+The [contrast-pair pilot](train/sft_v2_result.json) reduced raw wrong-plan
+proposals on the frozen v6 challenge but also reduced correct admitted plans
+from six to two compared with SFT v1. It remains blocked. This result shows
+why raw exact accuracy, wrong-plan rate, and supported-request coverage are
+reported separately.
+
 ## Folder map
 
 | Path | Purpose |
