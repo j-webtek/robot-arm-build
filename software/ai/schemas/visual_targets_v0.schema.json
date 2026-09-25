@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/j-webtek/robot-arm-build/software/ai/schemas/visual_targets_v0.schema.json",
+  "title": "RoCell synthetic visual target observation v0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "frame_id", "device", "coordinate_frame", "coordinate_unit", "source", "target_catalog_sha256", "targets", "observation_sha256"],
+  "properties": {
+    "schema": {"const": "rocell.ai_visual_targets.v0"},
+    "frame_id": {"type": "string", "minLength": 1},
+    "device": {"enum": ["keyboard", "phone"]},
+    "coordinate_frame": {"const": "board"},
+    "coordinate_unit": {"const": "mm"},
+    "source": {"const": "SYNTHETIC_DISPLACED_NOMINAL_TARGETS"},
+    "target_catalog_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "observation_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "targets": {
+      "type": "object",
+      "minProperties": 1,
+      "maxProperties": 256,
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["center_board_mm", "confidence"],
+        "properties": {
+          "center_board_mm": {
+            "type": "array", "minItems": 3, "maxItems": 3,
+            "items": {"type": "number", "minimum": -1000, "maximum": 1000}
+          },
+          "confidence": {"type": "number", "minimum": 0.95, "maximum": 1}
+        }
+      }
+    }
+  }
+}

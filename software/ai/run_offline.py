@@ -20,6 +20,8 @@ from rocell_ai.model_eval import evaluate_model  # noqa: E402
 from rocell_ai.admission_eval import evaluate_admission  # noqa: E402
 from rocell_ai.grounded import propose as grounded_propose  # noqa: E402
 from rocell_ai.grounded_eval import evaluate_grounded  # noqa: E402
+from rocell_ai.coordinate_preview import preview as coordinate_preview  # noqa: E402
+from rocell_ai.visual_observation import simulate as simulate_visual_observation  # noqa: E402
 from rocell_ai.review import review_benchmark  # noqa: E402
 
 
@@ -63,6 +65,19 @@ def main() -> int:
     grounded.add_argument("--observation-ref", default="manual-offline")
     grounded.add_argument("--phone-state", default="UNKNOWN")
     grounded.add_argument("--stale", action="store_true")
+    coordinate = sub.add_parser("coordinate-preview", help="Resolve nominal board-frame targets offline")
+    coordinate.add_argument("--request", required=True)
+    coordinate.add_argument("--request-id", default="manual-001")
+    coordinate.add_argument("--observation-ref", default="manual-offline")
+    coordinate.add_argument("--phone-state", default="UNKNOWN")
+    coordinate.add_argument("--stale", action="store_true")
+    coordinate.add_argument("--visual-observation", type=Path, help="Synthetic visual-target JSON fixture")
+    visual = sub.add_parser("simulate-vision", help="Generate displaced synthetic visual targets")
+    visual.add_argument("--device", choices=("keyboard", "phone"), required=True)
+    visual.add_argument("--frame-id", default="manual-offline")
+    visual.add_argument("--offset-x-mm", type=float, default=0.0)
+    visual.add_argument("--offset-y-mm", type=float, default=0.0)
+    visual.add_argument("--output", type=Path)
     grounded_batch = sub.add_parser("evaluate-grounded", help="Score the grounded intent path offline")
     grounded_batch.add_argument("--cases", type=Path, required=True)
     grounded_batch.add_argument("--manifest", type=Path, required=True)
@@ -97,6 +112,20 @@ def main() -> int:
         observation = {"ref": args.observation_ref, "fresh": not args.stale, "phone_state": args.phone_state}
         proposal = grounded_propose(request_id=args.request_id, request=args.request, observation=observation)
         result = {"proposal": proposal, "inspection": inspect(proposal, observation)}
+    elif args.command == "coordinate-preview":
+        observation = {"ref": args.observation_ref, "fresh": not args.stale, "phone_state": args.phone_state}
+        visual_observation = None
+        if args.visual_observation is not None:
+            visual_observation = json.loads(args.visual_observation.read_text(encoding="utf-8"))
+        result = coordinate_preview(args.request, observation, request_id=args.request_id,
+                                    workspace=AI_DIR.parents[1], visual_observation=visual_observation)
+    elif args.command == "simulate-vision":
+        result = simulate_visual_observation(AI_DIR.parents[1], device=args.device,
+                                             frame_id=args.frame_id, offset_x_mm=args.offset_x_mm,
+                                             offset_y_mm=args.offset_y_mm)
+        if args.output:
+            args.output.parent.mkdir(parents=True, exist_ok=True)
+            args.output.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     elif args.command == "evaluate-grounded":
         result = evaluate_grounded(args.cases, args.manifest)
         if args.output:

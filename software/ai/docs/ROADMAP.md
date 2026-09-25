@@ -99,3 +99,20 @@ text, model weights, checkpoints, and run outputs outside the repository.
 
 The hardware team can continue its noncontact and calibration work in parallel.
 The AI work does not change RoCell's current physical release state.
+
+## Intent plus visual positioning successor
+
+The next integration target is an observed target-coordinate path, not another
+text-only SFT round. The first offline seam now combines grounded intent,
+RoCell's named-key compiler, and a displaced synthetic visual-target record
+into board-frame coordinate candidates. The simulator does not inspect pixels;
+its output is explicitly blocked from execution. See
+[vision/motion integration](VISION_MOTION_INTEGRATION.md).
+
+Next, bind image-derived board/device observations to exact frame bytes and
+measured calibration, collect real camera images with target labels, and score
+the visual detector separately from intent. Only after those components pass
+held-out scenes should RoCell turn resolved targets into checked trajectories
+and controller commands. Train a joint intent/vision policy only on paired
+image, request, calibration, and observed-outcome records; synthetic target
+coordinates alone would teach the wrong physical geometry.

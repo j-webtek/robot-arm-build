@@ -33,6 +33,9 @@ python software/ai/run_offline.py review
 python software/ai/run_offline.py evaluate-model --model llama-3.1-8b-instruct-q4_k_m:latest
 python software/ai/run_offline.py evaluate-model --model llama32-1b-meta-92131767:latest
 python software/ai/run_offline.py ground --request 'Type "test" on the keyboard'
+python software/ai/run_offline.py coordinate-preview --request 'Type "test" on the keyboard'
+python software/ai/run_offline.py simulate-vision --device keyboard --frame-id manual-offline --offset-x-mm 2 --output visual.json
+python software/ai/run_offline.py coordinate-preview --request 'Type "test" on the keyboard' --visual-observation visual.json
 python -m unittest discover -s software/ai/tests
 ```
 
@@ -105,6 +108,16 @@ or device slots. On the frozen 30-case v9 set it accepts all 12 supported
 requests with no wrong accepted plans, compared with eight correct and one
 wrong admitted plan for SFT v1 plus the older gate. These cases are
 agent-authored and small; the grounded path is still blocked from arm control.
+
+The [coordinate preview](rocell_ai/coordinate_preview.py) resolves a grounded
+request's named keys or phone targets to board-frame millimetre coordinates.
+It can consume a [simulated visual-target observation](rocell_ai/visual_observation.py)
+that shifts those coordinates with a mock device placement. The observation is
+generated from nominal target data, **not** recovered from image pixels or a
+trained vision model. Output includes the source hash, frame ID, semantic plan,
+and explicit execution blockers. It contains no controller commands. This is
+the first integration seam for a future image detector, calibrated motion
+planner, and result observer; see [vision/motion integration](docs/VISION_MOTION_INTEGRATION.md).
 
 ## Folder map
 
