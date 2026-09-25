@@ -1,0 +1,44 @@
+{
+  "benchmark_sha256": "488b045296f6de87ec82d003e92967fac18b1b8029b17637d43f179c986eeba2",
+  "case_count": 30,
+  "human_reviewed": false,
+  "issues": [],
+  "limitations": "English interpretations and coverage are agent-authored; compiler and state checks are automated, not human approval or physical evidence.",
+  "passed": 30,
+  "prior_sets": [
+    {
+      "file": "benchmark_v0.jsonl",
+      "sha256": "50fab69606f9a80f5ca22f60fd56d49374d1118dae3702c4aee4110fdf89e798"
+    },
+    {
+      "file": "benchmark_v1.jsonl",
+      "sha256": "7247d8704901cd1c7b41d0cf8887314578226820d447d3d35fba222707f410b7"
+    },
+    {
+      "file": "benchmark_v2.jsonl",
+      "sha256": "c4617bbb2be227659eedbc575d66924649496ad61778be7379f7d0aa8820f484"
+    },
+    {
+      "file": "benchmark_v3.jsonl",
+      "sha256": "5f57461fed3d0ea875e67e55b53a6590ae9651710686f72cf33788be5fb86804"
+    },
+    {
+      "file": "benchmark_v4.jsonl",
+      "sha256": "c01fb6c686fc5fe3f755c9fe454109eb77dd5c95320ce9353254afecf5a440cf"
+    },
+    {
+      "file": "benchmark_v5.jsonl",
+      "sha256": "fbd408b261b09160503a67095d2a795aa945e32bf9b21eb55cb57d6de24eb955"
+    },
+    {
+      "file": "benchmark_v6.jsonl",
+      "sha256": "345def14010a7c842932b8a7e10a9d39fac4c9582496d3b28455922041593fde"
+    },
+    {
+      "file": "benchmark_v7.jsonl",
+      "sha256": "b703914077c12e5ceb2a287a7e28bb5848fa0820c8ab5f6a0ec3d314da223a48"
+    }
+  ],
+  "review_type": "independent_semantic_crosscheck",
+  "schema": "rocell.ai_simulated_review.v0"
+}

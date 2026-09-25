@@ -1,0 +1,11 @@
+{
+  "schema": "rocell.ai_benchmark_manifest.v0",
+  "benchmark_id": "rocell_ai_intent_v8",
+  "source_commit": "a297d218429d20ea3b4f9ba18a7169d9ae23e921",
+  "case_count": 30,
+  "cases_sha256": "488b045296f6de87ec82d003e92967fac18b1b8029b17637d43f179c986eeba2",
+  "review_state": "simulated_semantic_crosscheck_no_human_review",
+  "scope": "offline grounded intent architecture challenge frozen before implementation",
+  "held_out_policy": "Do not change cases or labels or tune the grounded planner after viewing v8 scores; create a new benchmark for another iteration.",
+  "result_classes": ["type_text", "clarify", "unsupported"]
+}
