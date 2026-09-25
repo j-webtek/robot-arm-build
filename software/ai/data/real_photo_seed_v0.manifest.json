@@ -1,0 +1,90 @@
+{
+  "schema": "rocell.ai_real_photo_seed_manifest.v0",
+  "capture_group": "user_supplied_handheld_keyboard_setup_2026_09_25",
+  "storage": "ignored_local_raw_photos_original_bytes",
+  "exif_retained_locally": true,
+  "human_reviewed": false,
+  "physical_calibration": false,
+  "photos": [
+    {
+      "id": "photo_01",
+      "file": "photo_01.jpg",
+      "sha256": "9f24a64ecb6c19e5097e18373c65a35982cfa04ccd60c4ac5fbe6a93db6591d2",
+      "bytes": 1556369,
+      "width_px": 2880,
+      "height_px": 3840
+    },
+    {
+      "id": "photo_02",
+      "file": "photo_02.jpg",
+      "sha256": "5c90b0b73e149683111fa0bf8d190a3cf36394aa32dce84a6294270bd8bd157f",
+      "bytes": 1964686,
+      "width_px": 2880,
+      "height_px": 3840
+    },
+    {
+      "id": "photo_03",
+      "file": "photo_03.jpg",
+      "sha256": "7276c720bd5da6cf8e94e45ea87090b3ed23fc917f8dadb15562cde17160dfd0",
+      "bytes": 1703380,
+      "width_px": 2880,
+      "height_px": 3840
+    },
+    {
+      "id": "photo_04",
+      "file": "photo_04.jpg",
+      "sha256": "aa711642276c2cf26cba84515acc66f07d713055b8627561f1c70f9292f3fb99",
+      "bytes": 1319667,
+      "width_px": 3840,
+      "height_px": 2880
+    },
+    {
+      "id": "photo_05",
+      "file": "photo_05.jpg",
+      "sha256": "84f4b69d9b891432f3344f777c6ddddaad162aa9243d0db83c5d6dfea9eda638",
+      "bytes": 1445206,
+      "width_px": 2880,
+      "height_px": 3840
+    },
+    {
+      "id": "photo_06",
+      "file": "photo_06.jpg",
+      "sha256": "79bf86f490c1dffe9a3fdcf8ca4d21acbc029eac472f91db9f9720f93abd3f1a",
+      "bytes": 1419161,
+      "width_px": 2880,
+      "height_px": 3840
+    },
+    {
+      "id": "photo_07",
+      "file": "photo_07.jpg",
+      "sha256": "26a657b3d8e567e37858e761a2ee22f1270ff7cd1a0853e300e142df1d385656",
+      "bytes": 1537188,
+      "width_px": 2880,
+      "height_px": 3840
+    },
+    {
+      "id": "photo_08",
+      "file": "photo_08.jpg",
+      "sha256": "31136980c98b350fab08c98eafacf5cfe47609bd737311e972e31da801b05b06",
+      "bytes": 1365521,
+      "width_px": 2880,
+      "height_px": 3840
+    },
+    {
+      "id": "photo_09",
+      "file": "photo_09.jpg",
+      "sha256": "0217dd091165514fcd8fd35b14f8ec1a15984efb83febf9fd2b32754b9998826",
+      "bytes": 1479375,
+      "width_px": 2880,
+      "height_px": 3840
+    },
+    {
+      "id": "photo_10",
+      "file": "photo_10.jpg",
+      "sha256": "3ccec3b2fad7113f1185e19d16c5c2a64c58f79423bc658751e1781182bbbda7",
+      "bytes": 1535538,
+      "width_px": 2880,
+      "height_px": 3840
+    }
+  ]
+}

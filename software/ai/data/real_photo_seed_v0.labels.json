@@ -1,0 +1,23 @@
+{
+  "schema": "rocell.ai_real_photo_seed_labels.v0",
+  "manifest": "real_photo_seed_v0.manifest.json",
+  "label_source": "agent_visual_inspection_of_user_supplied_photos",
+  "human_reviewed": false,
+  "capture_group": "user_supplied_handheld_keyboard_setup_2026_09_25",
+  "split": "development_only_single_correlated_capture_group",
+  "coordinates_labeled": false,
+  "camera_calibration_available": false,
+  "phone_present": false,
+  "rows": [
+    {"id": "photo_01", "view": "high_oblique_rotated", "visible": ["keyboard_partial", "printed_board_reference", "ruler", "arm_mount_partial"], "use": "scene_context"},
+    {"id": "photo_02", "view": "wide_oblique", "visible": ["keyboard", "arm", "printed_board_reference", "ruler", "loose_camera"], "use": "scene_context"},
+    {"id": "photo_03", "view": "wide_oblique", "visible": ["keyboard", "arm", "printed_board_reference", "ruler"], "use": "scene_context"},
+    {"id": "photo_04", "view": "tool_closeup", "visible": ["arm_end_effector", "ruler", "keyboard_partial"], "use": "tool_context"},
+    {"id": "photo_05", "view": "high_oblique_rotated", "visible": ["keyboard", "printed_board_reference", "ruler", "arm_end_effector_partial"], "use": "keyboard_appearance"},
+    {"id": "photo_06", "view": "high_oblique_rotated", "visible": ["keyboard", "arm", "printed_board_reference", "ruler"], "use": "occlusion_context"},
+    {"id": "photo_07", "view": "high_oblique_rotated", "visible": ["keyboard_partial", "printed_board_reference", "ruler", "fixtures"], "use": "board_reference_context"},
+    {"id": "photo_08", "view": "low_oblique", "visible": ["keyboard", "arm_end_effector", "printed_board_reference"], "use": "appearance_only"},
+    {"id": "photo_09", "view": "low_oblique", "visible": ["keyboard", "arm", "printed_board_reference"], "use": "appearance_only"},
+    {"id": "photo_10", "view": "wide_high_oblique", "visible": ["keyboard", "arm", "printed_board_reference", "fixtures"], "use": "scene_context"}
+  ]
+}

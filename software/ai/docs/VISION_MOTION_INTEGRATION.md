@@ -46,6 +46,10 @@ tags, device outlines, target centers/regions, UI state, frame identity, and
 actual coordinate measurements. Split evaluation by capture session and device
 placement so near-identical frames cannot leak between training and test.
 
+The first ten [real setup photos](REAL_PHOTO_SEED_ASSESSMENT.md) are now
+inventoried as one development-only capture group. They establish appearance
+and scene context but lack target-coordinate and camera-calibration labels.
+
 Train and score intent and vision components separately, then score their
 combined target selection and coordinate error. Report detection recall,
 wrong-target rate, mm position error, calibration uncertainty, and full-task

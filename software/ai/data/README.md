@@ -44,3 +44,12 @@ their family IDs and normalized signatures do not appear in training. The
 validation set has 50 supported and 50 clarification labels. v7 was frozen
 before data generation. This is a template separation check, not independent
 human review or proof against semantic leakage.
+
+`real_photo_seed_v0.manifest.json` inventories ten user-provided real setup
+JPEGs by hash and dimensions. The originals are copied only to ignored
+`raw/real_photo_seed_v0/`, preserving their EXIF locally. The tracked
+`real_photo_seed_v0.labels.json` records agent-inspected scene-level content;
+it contains no key centers, board pose, depth, or measured coordinates. All
+ten photos form one correlated capture group and are development-only. No
+phone appears. See [the capture assessment](../docs/REAL_PHOTO_SEED_ASSESSMENT.md)
+before using this set for vision training.
