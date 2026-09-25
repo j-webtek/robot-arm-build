@@ -66,17 +66,20 @@ def install(root: Path, prepared: dict, *, supported_for_reset: bool) -> None:
     if (type(prepared) is not dict or
             {key: prepared.get(key) for key in fresh} != fresh):
         raise ValueError("Prepared r91 inputs changed")
+    pinned = root / ".firmware-tools/esptool-api-4.6"
+    sys.path.insert(0, str(pinned))
+    import serial
+    if (serial.__version__ != "3.5" or
+            not Path(serial.__file__).resolve().is_relative_to(pinned.resolve())):
+        raise ValueError("Unexpected serial implementation")
     from serial.tools.list_ports import comports
     matches = [item for item in comports() if item.device == PORT and
                item.vid == 0x10c4 and item.pid == 0xea60 and
                item.serial_number == USB_SERIAL]
     if len(matches) != 1:
         raise ValueError("Expected controller USB adapter not identified")
-    pinned = root / ".firmware-tools/esptool-api-4.6"
-    sys.path.insert(0, str(pinned))
     import esptool
     from esptool import cmds, loader
-    import serial
     if (esptool.__version__ != "4.6" or
             not Path(esptool.__file__).resolve().is_relative_to(pinned.resolve())):
         raise ValueError("Unexpected esptool implementation")

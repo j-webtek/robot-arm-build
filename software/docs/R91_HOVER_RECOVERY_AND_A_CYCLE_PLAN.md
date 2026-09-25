@@ -1,10 +1,9 @@
 # r91: recover from A_HOVER and run an A-only ghost-key cycle
 
-Status: the offline r91 image is built and independently reviewed; the
-release-pinned host and read-only install preflight are implemented. No r91
-image has been installed or started. The installed r90 image is unchanged.
-This is a finite route to the next useful physical test, not a claim of
-keyboard contact or tool-tip accuracy.
+Status: the r91 app was installed, read back, and started once on 2026-09-25.
+The new boot passed public identity and three-snapshot pose checks; no r91
+movement has been sent. This is a finite route to the next useful physical
+test, not a claim of keyboard contact or tool-tip accuracy.
 
 ## Why a new route is needed
 
@@ -173,13 +172,11 @@ retry.
   at `Source bytes differ`. The r91 preflight uses the verified historical
   build, installation journal and backup evidence instead; it does not
   silently reinterpret that failure as success.
-- Still missing: an explicit physical strategy for torque loss during reset,
-  live execution and readback of the prepared installer, installed-image and
-  startup verification, a fresh A_HOVER source observation, and the live
-  five-leg trial. No firmware was uploaded, no startup was performed, and no
-  movement was sent here.
+- At the time of offline preparation, the physical reset strategy, live
+  install/startup, fresh source observation, and five-leg trial remained open.
+  The dated installation section below supersedes that preparation status.
 
-## Current reset decision (2026-09-25)
+## Pre-install reset decision (2026-09-25)
 
 The user confirms that the movement area is clear but the arm is **not
 physically supported**. Do not invoke `install(..., supported_for_reset=True)`
@@ -201,8 +198,39 @@ touching the arm or obstructing the path, defer the install and plan a
 separate, controlled repositioning procedure.
 
 Do not lower the arm toward the board merely to shorten a possible fall.
-The r90 one-use movement route on the present boot is consumed. A manual
+The r90 one-use movement route on the then-current boot was consumed. A manual
 pose change would invalidate r91's fixed `A_HOVER` source and require a new
 read-only baseline, clearance screen, route/release and reviewed image. It
-also risks uncontrolled contact during the change. No reset, install, or
-movement is authorized by this documentation update alone.
+also risks uncontrolled contact during the change. This pre-install decision
+did not authorize a reset, install, or movement by itself.
+
+## Installation and startup evidence (2026-09-25)
+
+- The user confirmed a soft catch beneath the arm. External DC and USB were
+  kept connected; no torque-off command was sent. The first installer call
+  exited before serial access because the active Python lacked `pyserial`.
+  The installer was corrected to load the already-pinned esptool tool directory
+  before importing its bundled `pyserial` 3.5. Focused tests passed.
+- One r91 app-only write then completed at `0x10000`. The installer verified
+  the prior r90 image and controller MAC `fc:e8:c0:f8:d5:38`, read back every
+  r91 app byte against SHA-256
+  `d69438a1a3483ba6105e2bc5f939dd04c58ee9a197bb28332cb42dc627b7e65f`,
+  confirmed protected regions unchanged, and issued exactly one startup reset.
+  The private deployment journal is retained outside Git.
+- Public r91 capabilities returned release
+  `376f50bb4b372608bbb5eb488229d883fc0ff802cf47b1a53dbccad2cf4942d6`
+  and new boot `2adaa8657729046162db3a8c403a9654`. Movement was not
+  authorized by that public endpoint.
+- The acquisition-only pose route produced three complete snapshots and a
+  terminal record with zero actions. Assessment export:
+  `wizard-20260925T134630545997Z-385394bdb89646b7b5d116a842cd1d84`.
+  All seven joints reported torque on, unchanged controls, and zero sampled
+  position span. Final goal/position counts for IDs 11–17 were respectively
+  `2047/2041`, `2093/2095`, `2021/2020`, `2618/2620`, `2197/2199`,
+  `2040/2041`, `2047/2047`. This establishes a stable post-reset pose, not
+  a continuous torque trace through the reset.
+- Before any r91 movement, the temporary catch must be removed or repositioned
+  outside the complete modeled five-leg swept volume, and the user must
+  confirm the board and cables are clear. Then the live host must independently
+  apply its fresh source, health, and clearance gates. No movement has yet
+  been sent on this boot.

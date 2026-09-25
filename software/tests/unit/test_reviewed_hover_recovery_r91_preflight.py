@@ -9,6 +9,15 @@ import pytest
 
 ROOT = Path(__file__).resolve().parents[2]
 SCRIPT = ROOT / "scripts/preflight_r91_hover_recovery_install.py"
+JOURNAL = ROOT / "private-backups/controller-20260918-session1/app-r91-deployment-events.jsonl"
+
+
+@pytest.fixture
+def before_r91_install(monkeypatch):
+    """Exercise pre-install behavior even after the real one-use journal exists."""
+    original_exists = Path.exists
+    monkeypatch.setattr(Path, "exists", lambda path: False if path == JOURNAL
+                        else original_exists(path))
 
 
 def module():
@@ -22,7 +31,7 @@ def module():
         sys.path.pop(0)
 
 
-def test_local_evidence_is_valid_without_device_access(monkeypatch):
+def test_local_evidence_is_valid_without_device_access(monkeypatch, before_r91_install):
     preflight = module()
     monkeypatch.setattr(preflight, "get", lambda *_: (_ for _ in ()).throw(
         AssertionError("Network must not be reached")))
@@ -32,7 +41,7 @@ def test_local_evidence_is_valid_without_device_access(monkeypatch):
     assert not report["deployment_authorized"]
 
 
-def test_read_only_device_identity_and_wrong_release(monkeypatch):
+def test_read_only_device_identity_and_wrong_release(monkeypatch, before_r91_install):
     preflight = module()
     calls = []
     caps = dict(schema="rocell.reviewed_hover_capabilities.v1",
@@ -52,3 +61,12 @@ def test_read_only_device_identity_and_wrong_release(monkeypatch):
     caps["stamped_release_sha256"] = "34" * 32
     with pytest.raises(ValueError, match="release/boot differs"):
         preflight.preflight(ROOT, "192.168.0.225")
+
+
+def test_existing_one_use_journal_refuses_another_preflight(monkeypatch):
+    preflight = module()
+    original_exists = Path.exists
+    monkeypatch.setattr(Path, "exists", lambda path: True if path == JOURNAL
+                        else original_exists(path))
+    with pytest.raises(ValueError, match="attempt state differs"):
+        preflight.preflight(ROOT)
