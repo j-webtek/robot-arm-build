@@ -1,8 +1,8 @@
 # r91: recover from A_HOVER and run an A-only ghost-key cycle
 
-Status: offline recipe, native owner-policy/signed-route harness, authenticated
-client allowlist, and independent raw-record verifier implemented; no r91
-image built, installed, or authorized. The installed r90 image is unchanged.
+Status: the offline r91 image is built and independently reviewed; the
+release-pinned host and read-only install preflight are implemented. No r91
+image has been installed or started. The installed r90 image is unchanged.
 This is a finite route to the next useful physical test, not a claim of
 keyboard contact or tool-tip accuracy.
 
@@ -122,4 +122,55 @@ retry.
 - A simulation-only five-leg host runner reuses signed no-retry progression,
   checks each independent raw-record assessment, and durably exports before
   each matching receipt. Its tests verify five successful receipts, fault-stop
-  before a bad third-leg receipt, and no retry aft
+  before a bad third-leg receipt, and no retry after a lost second-leg receipt.
+  Recovery receipts are now included in the session's delivery-uncertainty
+  accounting.
+- Added an r91-only board composition. Its recovery adapter permits only the
+  three fixed A poses, rejecting B poses, wrong speed/acceleration, missing
+  ownership, unhealthy service state, and serial-bus error. The native
+  adapter harness passes. Pose observation remains acquisition-only.
+- Staged the r91 source tree separately from hash-checked r90 source and app
+  inputs. The release stamp is derived from the fixed recovery recipe,
+  source hashes and pinned toolchain. Stage export:
+  `wizard-20260925T132159536186Z-6178f1d1529945e594e061a3ccef2309`.
+- The offline r91 compile succeeded. The app is **1,073,440 bytes** in the
+  1,310,720-byte app-only slot. App SHA-256:
+  `d69438a1a3483ba6105e2bc5f939dd04c58ee9a197bb28332cb42dc627b7e65f`.
+  Source-derived release SHA-256:
+  `376f50bb4b372608bbb5eb488229d883fc0ff802cf47b1a53dbccad2cf4942d6`.
+  Independent image review checked exact source and stamp hashes, the
+  embedded release, recovery and pose-observation route markers, absence of
+  the old r90 movement route, and linked entrypoints. Review export:
+  `wizard-20260925T132443178692Z-90971789a3914b20852c44a0f0f1920c`.
+- The release-pinned live host accepts only that app/release pair, a fresh
+  sequence-zero authenticated session and exact boot. It reserves the boot
+  durably before start and exports the actual next authenticated sequence
+  with each leg. Construction does not touch the device.
+- The new read-only install preflight verified the archived full-flash and
+  protected-filesystem backups, r90 installation journal, exact r91 image,
+  and current public r90 capabilities. Current controller boot remains
+  `2d4c94e2cfd8ae25a14f3faed903c11f`, already consumed by the r90 first
+  leg. It did **not** re-read the predecessor app flash today; the future
+  installer must do that before writing. Preflight export:
+  `wizard-20260925T132907250068Z-9ae303c968cd476ea4e3eaf351c8a156`.
+- Prepared a library-only r91 app installer. Its offline preparation verifies
+  the exact r91 and r90 app bytes, release, backups and empty one-use journal.
+  Its live function requires an explicit supported-reset argument, exact USB
+  adapter and MAC, r90 predecessor flash MD5, partition/filesystem MD5,
+  app-only write at `0x10000`, complete app readback, protected-region MD5
+  before/after, one reset, a fsynced journal, and no retry. Only preparation
+  and the unsupported-reset refusal were tested; the live function was not
+  invoked against hardware.
+- The related reviewed-hover suite now passes **316 tests**, excluding the
+  unrelated r89 installer test whose `scripts` import resolves to an installed
+  package during broad collection.
+- The prior r90 live preflight is not reusable as-is: it compares historical
+  r89 release sources with the current evolving diagnostics tree and fails
+  at `Source bytes differ`. The r91 preflight uses the verified historical
+  build, installation journal and backup evidence instead; it does not
+  silently reinterpret that failure as success.
+- Still missing: an explicit physical strategy for torque loss during reset,
+  live execution and readback of the prepared installer, installed-image and
+  startup verification, a fresh A_HOVER source observation, and the live
+  five-leg trial. No firmware was uploaded, no startup was performed, and no
+  movement was sent here.

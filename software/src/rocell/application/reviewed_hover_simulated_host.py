@@ -113,11 +113,11 @@ class ReviewedHoverSimulatedHost:
                     raise ValueError("Noncanonical record hex")
                 row = self._assess_leg(raw, leg, rows[-1] if rows else None)
                 row["source_kind"] = self.source_kind
-                if stop_after_leg == leg:
-                    # Poll count is timing-dependent. Preserve the verified
-                    # next sequence instead of asking a later process to guess.
-                    row["authenticated_next_sequence"] = self.session._sequence
-                    row["last_controller_status"] = last_status
+                # Poll count is timing-dependent. Preserve the verified next
+                # sequence with every exported leg; never ask a later process
+                # to guess it after an interruption.
+                row["authenticated_next_sequence"] = self.session._sequence
+                row["last_controller_status"] = last_status
                 saved = exporter.export({"mode": self.leg_export_mode}, [],
                     attachments={
                         "reviewed-hover-record.hex.txt": encoded,
