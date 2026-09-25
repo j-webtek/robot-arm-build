@@ -91,6 +91,12 @@ from six to two compared with SFT v1. It remains blocked. This result shows
 why raw exact accuracy, wrong-plan rate, and supported-request coverage are
 reported separately.
 
+The [balanced-data pilot](train/sft_v3_result.json) used validation phrases
+held out by template family. On frozen v7, it still trails SFT v1: six
+correct gate-admitted plans versus eight, with four wrong raw plans the
+compiler would accept. SFT v1 remains the strongest measured offline
+reference, and every model remains blocked from arm control.
+
 ## Folder map
 
 | Path | Purpose |

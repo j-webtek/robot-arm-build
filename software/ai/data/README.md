@@ -35,3 +35,12 @@ device, or missing referent is contrasted with an explicit supported request.
 The manifest pins all v0–v6 benchmarks and the v1 data manifest. The v6
 challenge was committed before this dataset was generated. These labels are
 agent-authored; low validation loss does not establish generalization.
+
+`synthetic_sft_v3_train.jsonl` and `synthetic_sft_v3_validation.jsonl` contain
+965 and 100 examples. The training split reuses checked v1 data and adds
+paired supported and ambiguous requests across five themes. Each theme has
+separate positive and negative phrase templates reserved for validation;
+their family IDs and normalized signatures do not appear in training. The
+validation set has 50 supported and 50 clarification labels. v7 was frozen
+before data generation. This is a template separation check, not independent
+human review or proof against semantic leakage.

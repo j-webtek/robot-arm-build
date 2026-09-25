@@ -107,6 +107,15 @@ blocks every observed wrong plan for both candidates. This is an offline
 coverage regression for SFT v2, not a promotion. v6 is now consumed; a new
 benchmark is needed for any subsequent change.
 
+`benchmark_v7.jsonl` was frozen before SFT v3 data generation. Its simulated
+review passes 30/30 consistency and exact request-reuse checks; no person
+reviewed its English labels. On v7, SFT v1 scores 17/30 exact, makes five
+wrong compiler-accepted plans, and has eight correct gate-admitted plans.
+The selected one-epoch SFT v3 scores 15/30 exact, makes four wrong
+compiler-accepted plans, and has six correct gate-admitted plans. The fixed
+gate blocks all observed wrong plans for both. v7 is consumed and neither
+candidate is authorized for arm control.
+
 From the repository root, repeat the checks with:
 
 ```powershell

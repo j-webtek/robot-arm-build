@@ -1,0 +1,82 @@
+{
+  "schema": "rocell.ai_sft_result.v3",
+  "base_repo": "meta-llama/Llama-3.2-1B-Instruct",
+  "base_revision": "9213176726f574b556790deb65791e0c5aa438b6",
+  "license_id": "llama3.2",
+  "data_manifest_sha256": "9efc6f063daf2cb4d7f9172d829827be009fef28d6322707257ff63e5e616eca",
+  "train_sha256": "f296d256d804bb5b05b7782a9b8ab517067d38d1a48b54ae3379488f2a038cc5",
+  "validation_sha256": "0b2d72491b9343ee9956305551edf98a763a44ac6339c7a035cf5b927a000172",
+  "prompt_sha256": "ff5faa8c5e52bed95a3172b1ca1b0a6534052d71591b66d04ef954b9a25bf81a",
+  "training": {
+    "method": "response_sft_lora",
+    "seed": 2112,
+    "batch_size": 4,
+    "gradient_accumulation": 4,
+    "learning_rate": 0.0002,
+    "lora_r": 8,
+    "lora_alpha": 16,
+    "lora_dropout": 0.05,
+    "target_modules": ["q_proj", "v_proj"],
+    "versions": {"torch": "2.5.1+cu124", "transformers": "4.47.0", "peft": "0.19.1"}
+  },
+  "checkpoint_selection": "One epoch selected before v7 scoring from lower template-heldout validation loss and higher raw exact count on consumed v6. The two-epoch run was not evaluated on v7.",
+  "checkpoints": {
+    "one_epoch_selected": {
+      "epochs": 1,
+      "optimizer_updates": 61,
+      "final_train_loss": 0.107045,
+      "final_validation_loss": 0.036004,
+      "adapter_sha256": "1c105a5fb26d17c701aa2e08c42fc94cb6257c0b06bea40ae8ab7c02d3251523",
+      "tag": "llama32-1b-rocell-sft-v3-1e:latest",
+      "digest": "6c5dd8cc81ccdafe614c6701e1d01ab1d398e91da920cd5ffaae067c9cb171dd",
+      "v6_development": {
+        "scorecard": "../eval/llama32_1b_sft_v3_1e_v6_scorecard.json",
+        "admission_scorecard": "../eval/llama32_1b_sft_v3_1e_v6_admission.json",
+        "exact": 13,
+        "false_execution": 4,
+        "admitted_correct": 5,
+        "admitted_false_execution": 0
+      },
+      "v7_frozen": {
+        "scorecard": "../eval/llama32_1b_sft_v3_1e_v7_scorecard.json",
+        "admission_scorecard": "../eval/llama32_1b_sft_v3_1e_v7_admission.json",
+        "exact": 15,
+        "total": 30,
+        "false_execution": 4,
+        "admitted_correct": 6,
+        "admitted_false_execution": 0,
+        "blocked_supported": 6
+      }
+    },
+    "two_epochs_development_only": {
+      "epochs": 2,
+      "optimizer_updates": 122,
+      "final_train_loss": 0.007559,
+      "final_validation_loss": 0.054109,
+      "adapter_sha256": "ea7f9bcf138196e7d8266f5d61a7579a9b3748ee2540bfb22d4b3801134749ba",
+      "tag": "llama32-1b-rocell-sft-v3-2e:latest",
+      "digest": "448280e7eac8ffcde37140fc771a4a842bfa3d7dc53fb51f5a4a6412a8071c1c",
+      "v6_development": {
+        "scorecard": "../eval/llama32_1b_sft_v3_2e_v6_scorecard.json",
+        "admission_scorecard": "../eval/llama32_1b_sft_v3_2e_v6_admission.json",
+        "exact": 12,
+        "false_execution": 3,
+        "admitted_correct": 5,
+        "admitted_false_execution": 0
+      }
+    }
+  },
+  "v7_reference_sft_v1": {
+    "scorecard": "../eval/llama32_1b_sft_v1_v7_scorecard.json",
+    "admission_scorecard": "../eval/llama32_1b_sft_v1_v7_admission.json",
+    "exact": 17,
+    "total": 30,
+    "false_execution": 5,
+    "admitted_correct": 8,
+    "admitted_false_execution": 0
+  },
+  "promotion_status": "blocked",
+  "reason": "The selected checkpoint still makes four wrong compiler-accepted proposals on frozen v7 and yields fewer correct admitted plans than SFT v1. All measurements are offline; no physical task evidence exists.",
+  "hardware_commands": 0,
+  "artifact_policy": "Adapter weights and local model imports remain outside Git."
+}

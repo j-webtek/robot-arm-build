@@ -27,7 +27,10 @@ def main() -> None:
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--device", default="cuda:0")
     parser.add_argument("--data-version", choices=("v0", "v1", "v2", "v3"), default="v0")
+    parser.add_argument("--epochs", type=int, default=2)
     args = parser.parse_args()
+    if args.epochs < 1 or args.epochs > 10:
+        raise ValueError("epochs must be between 1 and 10")
     train_seed = {"v0": SEED, "v1": 2110, "v2": 2111, "v3": 2112}[args.data_version]
     if args.output.exists():
         raise ValueError("output directory already exists; use a new run path")
@@ -99,7 +102,7 @@ def main() -> None:
     optimizer = torch.optim.AdamW((p for p in model.parameters() if p.requires_grad), lr=2e-4, weight_decay=0.0)
     losses: list[dict[str, float]] = []
     updates = 0
-    for epoch in range(2):
+    for epoch in range(args.epochs):
         model.train()
         optimizer.zero_grad(set_to_none=True)
         total_train = 0.0
@@ -139,7 +142,7 @@ def main() -> None:
         "validation_sha256": manifest["validation_sha256"],
         "prompt_sha256": PROMPT_SHA256,
         "adapter_sha256": hashlib.sha256(adapter_path.read_bytes()).hexdigest(),
-        "configuration": {"seed": train_seed, "epochs": 2, "batch_size": 4, "gradient_accumulation": 4,
+        "configuration": {"seed": train_seed, "epochs": args.epochs, "batch_size": 4, "gradient_accumulation": 4,
                           "learning_rate": 2e-4, "max_sequence_length": 512,
                           "lora_r": 8, "lora_alpha": 16, "lora_dropout": 0.05,
                           "target_modules": ["q_proj", "v_proj"], "dtype": "bfloat16", "device": args.device},

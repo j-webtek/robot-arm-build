@@ -1,0 +1,569 @@
+{
+  "benchmark_sha256": "b703914077c12e5ceb2a287a7e28bb5848fa0820c8ab5f6a0ec3d314da223a48",
+  "cases": [
+    {
+      "actual": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "silver leaf"
+      },
+      "adapter_status": "accepted",
+      "case_id": "v7_s01",
+      "exact": true,
+      "expected": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "silver leaf"
+      },
+      "false_execution": false,
+      "latency_ms": 8185.4,
+      "parse_error": null,
+      "response_sha256": "fdaad91fa51c81033457645c4dd3e0b513eb9c994d4d56bc797aca80d5f6278a"
+    },
+    {
+      "actual": {
+        "decision": "type_text",
+        "device": "phone",
+        "text": "new moon"
+      },
+      "adapter_status": "accepted",
+      "case_id": "v7_s02",
+      "exact": true,
+      "expected": {
+        "decision": "type_text",
+        "device": "phone",
+        "text": "new moon"
+      },
+      "false_execution": false,
+      "latency_ms": 113.1,
+      "parse_error": null,
+      "response_sha256": "466b97e35a53723e0aad1a10cc1da439550e3024ccd631d944ff9738dc3419ae"
+    },
+    {
+      "actual": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "c=a"
+      },
+      "adapter_status": "accepted",
+      "case_id": "v7_s03",
+      "exact": true,
+      "expected": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "c=a"
+      },
+      "false_execution": false,
+      "latency_ms": 88.2,
+      "parse_error": null,
+      "response_sha256": "31d619d91817413c6398046e5198770e0529bc31b3b844dea4f19077b96e897d"
+    },
+    {
+      "actual": {
+        "decision": "unsupported",
+        "reason": "unsupported_by_profile"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v7_s04",
+      "exact": false,
+      "expected": {
+        "decision": "type_text",
+        "device": "phone",
+        "text": "okay."
+      },
+      "false_execution": false,
+      "latency_ms": 71.8,
+      "parse_error": null,
+      "response_sha256": "97a0d9ab61a5002826eb67dbf51f1e92915707052e89ff93e878dd6ef4c3d1b2"
+    },
+    {
+      "actual": {
+        "decision": "type_text",
+        "device": "phone",
+        "text": "keyboard"
+      },
+      "adapter_status": "accepted",
+      "case_id": "v7_s05",
+      "exact": true,
+      "expected": {
+        "decision": "type_text",
+        "device": "phone",
+        "text": "keyboard"
+      },
+      "false_execution": false,
+      "latency_ms": 83.2,
+      "parse_error": null,
+      "response_sha256": "f14b1bc93ef595a51b25afe5a5efd4fded1e6dfbf6ae36198e048a453c789986"
+    },
+    {
+      "actual": {
+        "decision": "clarify",
+        "reason": "device_ambiguous"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v7_s06",
+      "exact": false,
+      "expected": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "call me"
+      },
+      "false_execution": false,
+      "latency_ms": 74.9,
+      "parse_error": null,
+      "response_sha256": "0566a4f2023cb6d51973de0931746b9c82633dcc6eefc04f2a6a99c58ee14f90"
+    },
+    {
+      "actual": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "blue ridge"
+      },
+      "adapter_status": "accepted",
+      "case_id": "v7_s07",
+      "exact": true,
+      "expected": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "blue ridge"
+      },
+      "false_execution": false,
+      "latency_ms": 111.1,
+      "parse_error": null,
+      "response_sha256": "2eeef3559e8c1ad0fdbd18fbcc51399923367c82e958784055adeb5079cbeff7"
+    },
+    {
+      "actual": {
+        "decision": "type_text",
+        "device": "phone",
+        "text": "softly"
+      },
+      "adapter_status": "accepted",
+      "case_id": "v7_s08",
+      "exact": true,
+      "expected": {
+        "decision": "type_text",
+        "device": "phone",
+        "text": "softly"
+      },
+      "false_execution": false,
+      "latency_ms": 99.5,
+      "parse_error": null,
+      "response_sha256": "5016c4e24e5f2e4a4f9bbace33a6c72fd4c26e0f417be7c16b200be8167576c3"
+    },
+    {
+      "actual": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "green"
+      },
+      "adapter_status": "accepted",
+      "case_id": "v7_s09",
+      "exact": true,
+      "expected": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "green"
+      },
+      "false_execution": false,
+      "latency_ms": 94.7,
+      "parse_error": null,
+      "response_sha256": "cc5a5164bab8a70f9c551fc0d7104d70537832786fd9a5b3cb1fc867699175b3"
+    },
+    {
+      "actual": {
+        "decision": "clarify",
+        "reason": "device_ambiguous"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v7_s10",
+      "exact": false,
+      "expected": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "line/2"
+      },
+      "false_execution": false,
+      "latency_ms": 74.0,
+      "parse_error": null,
+      "response_sha256": "0566a4f2023cb6d51973de0931746b9c82633dcc6eefc04f2a6a99c58ee14f90"
+    },
+    {
+      "actual": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "civic"
+      },
+      "adapter_status": "accepted",
+      "case_id": "v7_s11",
+      "exact": true,
+      "expected": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "civic"
+      },
+      "false_execution": false,
+      "latency_ms": 112.1,
+      "parse_error": null,
+      "response_sha256": "50e172e88d8dda57c2deeb755bface1235911a65a39e2bc9b4bdfec785ac8306"
+    },
+    {
+      "actual": {
+        "decision": "type_text",
+        "device": "phone",
+        "text": "mellow"
+      },
+      "adapter_status": "accepted",
+      "case_id": "v7_s12",
+      "exact": true,
+      "expected": {
+        "decision": "type_text",
+        "device": "phone",
+        "text": "mellow"
+      },
+      "false_execution": false,
+      "latency_ms": 84.5,
+      "parse_error": null,
+      "response_sha256": "43cad7ebd132829ec1bab03056eff8001068d1283a52faa3cebf8590e5d4a452"
+    },
+    {
+      "actual": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "READY"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v7_u01",
+      "exact": false,
+      "expected": {
+        "decision": "unsupported",
+        "reason": "unsupported_by_profile"
+      },
+      "false_execution": false,
+      "latency_ms": 82.1,
+      "parse_error": null,
+      "response_sha256": "63a1c9e4cb484f6155aaec2dbddfdda53592de13b3553089553ee7171f01e4a2"
+    },
+    {
+      "actual": {
+        "decision": "unsupported",
+        "reason": "unsupported_by_profile"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v7_u02",
+      "exact": true,
+      "expected": {
+        "decision": "unsupported",
+        "reason": "unsupported_by_profile"
+      },
+      "false_execution": false,
+      "latency_ms": 84.0,
+      "parse_error": null,
+      "response_sha256": "97a0d9ab61a5002826eb67dbf51f1e92915707052e89ff93e878dd6ef4c3d1b2"
+    },
+    {
+      "actual": {
+        "decision": "type_text",
+        "device": "phone",
+        "text": "nice!"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v7_u03",
+      "exact": false,
+      "expected": {
+        "decision": "unsupported",
+        "reason": "unsupported_by_profile"
+      },
+      "false_execution": false,
+      "latency_ms": 101.1,
+      "parse_error": null,
+      "response_sha256": "4fc5cb2f17dd6a4156df79856ea260be1a99bd0cdbe72e7ed30f94632cd5020c"
+    },
+    {
+      "actual": {
+        "decision": "unsupported",
+        "reason": "operation_not_available"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v7_u04",
+      "exact": true,
+      "expected": {
+        "decision": "unsupported",
+        "reason": "operation_not_available"
+      },
+      "false_execution": false,
+      "latency_ms": 82.8,
+      "parse_error": null,
+      "response_sha256": "812e87586cf2623bb99bf32e22fd776e1e677f4451f731c4fc8fc0b77db09135"
+    },
+    {
+      "actual": {
+        "decision": "unsupported",
+        "reason": "operation_not_available"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v7_u05",
+      "exact": true,
+      "expected": {
+        "decision": "unsupported",
+        "reason": "operation_not_available"
+      },
+      "false_execution": false,
+      "latency_ms": 81.4,
+      "parse_error": null,
+      "response_sha256": "812e87586cf2623bb99bf32e22fd776e1e677f4451f731c4fc8fc0b77db09135"
+    },
+    {
+      "actual": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "hello"
+      },
+      "adapter_status": "accepted",
+      "case_id": "v7_u06",
+      "exact": false,
+      "expected": {
+        "decision": "unsupported",
+        "reason": "operation_not_available"
+      },
+      "false_execution": true,
+      "latency_ms": 95.6,
+      "parse_error": null,
+      "response_sha256": "47ee0e448a78d6086dc8241687ff192cf5e69da87c9d260d52c5962c755ab091"
+    },
+    {
+      "actual": {
+        "decision": "unsupported",
+        "reason": "operation_not_available"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v7_u07",
+      "exact": false,
+      "expected": {
+        "decision": "unsupported",
+        "reason": "stale_observation"
+      },
+      "false_execution": false,
+      "latency_ms": 86.8,
+      "parse_error": null,
+      "response_sha256": "812e87586cf2623bb99bf32e22fd776e1e677f4451f731c4fc8fc0b77db09135"
+    },
+    {
+      "actual": {
+        "decision": "unsupported",
+        "reason": "phone_state_unverified"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v7_u08",
+      "exact": true,
+      "expected": {
+        "decision": "unsupported",
+        "reason": "phone_state_unverified"
+      },
+      "false_execution": false,
+      "latency_ms": 89.1,
+      "parse_error": null,
+      "response_sha256": "2f5dccc7de1b7f6ab5872a58c5adf0df22dece873e6e80303c7f0133469bc6dd"
+    },
+    {
+      "actual": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "silver leaf"
+      },
+      "adapter_status": "accepted",
+      "case_id": "v7_c01",
+      "exact": false,
+      "expected": {
+        "decision": "clarify",
+        "reason": "device_ambiguous"
+      },
+      "false_execution": true,
+      "latency_ms": 86.6,
+      "parse_error": null,
+      "response_sha256": "fdaad91fa51c81033457645c4dd3e0b513eb9c994d4d56bc797aca80d5f6278a"
+    },
+    {
+      "actual": {
+        "decision": "clarify",
+        "reason": "device_ambiguous"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v7_c02",
+      "exact": true,
+      "expected": {
+        "decision": "clarify",
+        "reason": "device_ambiguous"
+      },
+      "false_execution": false,
+      "latency_ms": 74.1,
+      "parse_error": null,
+      "response_sha256": "0566a4f2023cb6d51973de0931746b9c82633dcc6eefc04f2a6a99c58ee14f90"
+    },
+    {
+      "actual": {
+        "decision": "clarify",
+        "reason": "device_ambiguous"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v7_c03",
+      "exact": false,
+      "expected": {
+        "decision": "clarify",
+        "reason": "text_ambiguous"
+      },
+      "false_execution": false,
+      "latency_ms": 90.2,
+      "parse_error": null,
+      "response_sha256": "0566a4f2023cb6d51973de0931746b9c82633dcc6eefc04f2a6a99c58ee14f90"
+    },
+    {
+      "actual": {
+        "decision": "type_text",
+        "device": "phone",
+        "text": "green"
+      },
+      "adapter_status": "accepted",
+      "case_id": "v7_c04",
+      "exact": false,
+      "expected": {
+        "decision": "clarify",
+        "reason": "device_ambiguous"
+      },
+      "false_execution": true,
+      "latency_ms": 107.3,
+      "parse_error": null,
+      "response_sha256": "d5b2775507395beb66e19ae77dcf9c81dc5cf721910c9d6537954ca7026bfa2c"
+    },
+    {
+      "actual": {
+        "decision": "unsupported",
+        "reason": "unsupported_by_profile"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v7_c05",
+      "exact": false,
+      "expected": {
+        "decision": "clarify",
+        "reason": "device_ambiguous"
+      },
+      "false_execution": false,
+      "latency_ms": 71.3,
+      "parse_error": null,
+      "response_sha256": "97a0d9ab61a5002826eb67dbf51f1e92915707052e89ff93e878dd6ef4c3d1b2"
+    },
+    {
+      "actual": {
+        "decision": "clarify",
+        "reason": "device_ambiguous"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v7_c06",
+      "exact": false,
+      "expected": {
+        "decision": "clarify",
+        "reason": "text_ambiguous"
+      },
+      "false_execution": false,
+      "latency_ms": 87.8,
+      "parse_error": null,
+      "response_sha256": "0566a4f2023cb6d51973de0931746b9c82633dcc6eefc04f2a6a99c58ee14f90"
+    },
+    {
+      "actual": {
+        "decision": "clarify",
+        "reason": "device_ambiguous"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v7_c07",
+      "exact": false,
+      "expected": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous"
+      },
+      "false_execution": false,
+      "latency_ms": 100.7,
+      "parse_error": null,
+      "response_sha256": "0566a4f2023cb6d51973de0931746b9c82633dcc6eefc04f2a6a99c58ee14f90"
+    },
+    {
+      "actual": {
+        "decision": "clarify",
+        "reason": "device_ambiguous"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v7_c08",
+      "exact": true,
+      "expected": {
+        "decision": "clarify",
+        "reason": "device_ambiguous"
+      },
+      "false_execution": false,
+      "latency_ms": 75.6,
+      "parse_error": null,
+      "response_sha256": "0566a4f2023cb6d51973de0931746b9c82633dcc6eefc04f2a6a99c58ee14f90"
+    },
+    {
+      "actual": {
+        "decision": "clarify",
+        "reason": "device_ambiguous"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v7_c09",
+      "exact": false,
+      "expected": {
+        "decision": "clarify",
+        "reason": "text_ambiguous"
+      },
+      "false_execution": false,
+      "latency_ms": 75.8,
+      "parse_error": null,
+      "response_sha256": "0566a4f2023cb6d51973de0931746b9c82633dcc6eefc04f2a6a99c58ee14f90"
+    },
+    {
+      "actual": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "keyboard"
+      },
+      "adapter_status": "accepted",
+      "case_id": "v7_c10",
+      "exact": false,
+      "expected": {
+        "decision": "clarify",
+        "reason": "device_ambiguous"
+      },
+      "false_execution": true,
+      "latency_ms": 105.4,
+      "parse_error": null,
+      "response_sha256": "8d7d71778b4958ed823e3239f7eaa6bff98aa45c81339f92893353ffdc7cd183"
+    }
+  ],
+  "counts": {
+    "compiler_accepted": 13,
+    "exact": 15,
+    "expected_clarify": 10,
+    "expected_type_text": 12,
+    "expected_unsupported": 8,
+    "false_execution": 4,
+    "invalid_output": 0,
+    "total": 30
+  },
+  "evidence_class": "offline_compiler_only",
+  "exact_rate": 0.5,
+  "generation": {
+    "json_mode": true,
+    "num_ctx": 4096,
+    "num_predict": 180,
+    "seed": 1,
+    "temperature": 0
+  },
+  "hardware_commands": 0,
+  "latency_ms_total": 10770.2,
+  "model": "llama32-1b-rocell-sft-v3-1e:latest",
+  "model_digest": "6c5dd8cc81ccdafe614c6701e1d01ab1d398e91da920cd5ffaae067c9cb171dd",
+  "prompt_sha256": "ff5faa8c5e52bed95a3172b1ca1b0a6534052d71591b66d04ef954b9a25bf81a",
+  "runtime": "ollama_local_chat",
+  "runtime_version": "0.34.0",
+  "schema": "rocell.ai_model_scorecard.v0"
+}

@@ -58,6 +58,14 @@ regression. Keep SFT v2 blocked; the next experiment should balance positive
 and ambiguous examples by paraphrase family and use a family-held-out
 validation split. Freeze another challenge before scoring changes.
 
+The balanced SFT v3 experiment used family-held-out phrase templates and
+selected one epoch before v7 scoring. On frozen v7 it trails SFT v1 in raw
+exact decisions (15/30 versus 17/30) and correct gate-admitted plans (six
+versus eight), while still proposing four wrong executable plans. Keep the
+model path blocked. Another template-only SFT round is unlikely to resolve
+the observed generalization gap without better independent labels or a
+different intent architecture; evaluate that choice with a newly frozen set.
+
 | Order | Deliverable | Check before advancing |
 | --- | --- | --- |
 | 1. Versioned proposal | Define `type_text`, `clarify`, and `unsupported` result shapes; pin the RoCell source/profile identity. | Every supported proposal maps to the existing compiler; no coordinate or hardware command field exists. |

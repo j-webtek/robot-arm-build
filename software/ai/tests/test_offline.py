@@ -395,6 +395,35 @@ class OfflineContractTests(unittest.TestCase):
         v1_admitted = json.loads((folder / "llama32_1b_sft_v1_v6_admission.json").read_text(encoding="utf-8"))
         self.assertGreater(v1_admitted["counts"]["accepted_correct"], result["evaluations"]["v6_frozen"]["admitted_correct"])
 
+    def test_sft_v3_selected_checkpoint_and_v7_holdout(self) -> None:
+        folder = AI_DIR / "eval"
+        review = review_benchmark(
+            folder / "benchmark_v7.jsonl", folder / "benchmark_v7.manifest.json",
+            [folder / f"benchmark_{version}.jsonl" for version in ("v0", "v1", "v2", "v3", "v4", "v5", "v6")],
+        )
+        self.assertEqual(review["passed"], 30)
+        self.assertEqual(review["issues"], [])
+        self.assertFalse(review["human_reviewed"])
+        result = json.loads((AI_DIR / "train" / "sft_v3_result.json").read_text(encoding="utf-8"))
+        self.assertEqual(result["promotion_status"], "blocked")
+        self.assertEqual(result["hardware_commands"], 0)
+        self.assertEqual(result["data_manifest_sha256"], hashlib.sha256((AI_DIR / "data" / "synthetic_sft_v3.manifest.json").read_bytes()).hexdigest())
+        selected = result["checkpoints"]["one_epoch_selected"]
+        self.assertLess(selected["final_validation_loss"], result["checkpoints"]["two_epochs_development_only"]["final_validation_loss"])
+        for model, score_name, admission_name, expected in (
+            (selected, "llama32_1b_sft_v3_1e_v7_scorecard.json", "llama32_1b_sft_v3_1e_v7_admission.json", selected["v7_frozen"]),
+            (None, "llama32_1b_sft_v1_v7_scorecard.json", "llama32_1b_sft_v1_v7_admission.json", result["v7_reference_sft_v1"]),
+        ):
+            raw = json.loads((folder / score_name).read_text(encoding="utf-8"))
+            admitted = json.loads((folder / admission_name).read_text(encoding="utf-8"))
+            self.assertEqual(expected["exact"], raw["counts"]["exact"])
+            self.assertEqual(expected["false_execution"], raw["counts"]["false_execution"])
+            self.assertEqual(expected["admitted_correct"], admitted["counts"]["accepted_correct"])
+            self.assertEqual(expected["admitted_false_execution"], admitted["counts"]["false_execution"])
+            if model is not None:
+                self.assertEqual(model["digest"], raw["model_digest"])
+        self.assertGreater(result["v7_reference_sft_v1"]["admitted_correct"], selected["v7_frozen"]["admitted_correct"])
+
 
 if __name__ == "__main__":
     unittest.main()

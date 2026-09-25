@@ -44,6 +44,15 @@ two wrong compiler-accepted proposals. It is **blocked** and represents a
 coverage regression despite low validation loss. Neither model nor gate was
 tuned after seeing v6.
 
+The fourth [SFT result](sft_v3_result.json) uses balanced request pairs and
+phrase-family-held-out validation. A one-epoch checkpoint was selected before
+v7 because it had lower held-out validation loss and higher exact accuracy
+on consumed v6 than a two-epoch checkpoint. On frozen v7, the selected model
+is 15/30 exact, makes four wrong compiler-accepted plans, and has six correct
+gate-admitted plans. SFT v1, run as a reference on v7, is 17/30 exact with
+eight correct gate-admitted plans. SFT v3 remains **blocked**. The low
+validation loss did not translate into a better v7 result.
+
 Reproduce the local pilot with the pinned Meta checkpoint already cached:
 
 ```powershell
@@ -65,6 +74,10 @@ python software/ai/run_offline.py evaluate-model --model llama32-1b-rocell-sft-v
 The third pilot uses `build_sft_v2_data.py` and `fit_sft.py --data-version v2`
 with fresh ignored run and import directories. Its exact run configuration,
 adapter hash, local Ollama digest, and scorecards are in `sft_v2_result.json`.
+
+The fourth pilot uses `build_sft_v3_data.py` and `fit_sft.py --data-version v3
+--epochs 1` with fresh ignored directories. `sft_v3_result.json` records both
+the selected one-epoch run and the two-epoch development comparison.
 
 Use a new `--output` and `--staging-dir` for each run. The importer stages the
 adapter in an ignored folder with the filenames required by this Ollama
