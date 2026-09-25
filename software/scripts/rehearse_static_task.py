@@ -17,6 +17,8 @@ def main():
     parser.add_argument('--dense', action='store_true', help='Check sequential intermediate poses at <=15 mm spacing')
     parser.add_argument('--keyboard-translation-mm',nargs=2,type=float,metavar=('DX','DY'),
                         help='Simulation-only keyboard translation, each axis within +/-50 mm; dimensions unchanged')
+    parser.add_argument('--keyboard-rotation-deg',type=int,choices=(0,180),default=0,
+                        help='Simulation-only keyboard half-turn for photo-estimated placement')
     parser.add_argument('--tool-length-mm', type=float, choices=(80.,100.,120.),
                         help='Nominal tool-offset hypothesis only; not a fabrication dimension or calibration')
     parser.add_argument('--park-xy-mm', nargs=2, type=float, metavar=('X', 'Y'),
@@ -27,7 +29,8 @@ def main():
                                      device=args.device, text=args.text,
                                      park_xy_board_mm=None if args.park_xy_mm is None else tuple(args.park_xy_mm),
                                      dense=args.dense, tool_length_mm=args.tool_length_mm,
-                                     keyboard_translation_mm=args.keyboard_translation_mm)
+                                     keyboard_translation_mm=args.keyboard_translation_mm,
+                                     keyboard_rotation_deg=args.keyboard_rotation_deg)
     exporter = WizardDiagnosticExporter(
         (args.export_dir or root/'software/runs/wizard-exports').resolve())
     exporter.prepare(create=True)

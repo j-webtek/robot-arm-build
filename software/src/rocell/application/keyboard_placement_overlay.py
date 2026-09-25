@@ -29,3 +29,37 @@ def translate_keyboard(scene, targets, offset):
         fixture_geometry_relocated=False)
     selection['overlay_sha256']=hashlib.sha256(canonical(selection)).hexdigest()
     return shifted_scene,shifted_targets,selection
+
+
+def half_turn_keyboard(scene, targets):
+    """Rotate nominal key centers 180 degrees within the keyboard footprint.
+
+    This is a photo-estimate study, not an installed board registration.  A
+    half-turn leaves the rectangular keyboard envelope unchanged, so the
+    existing conservative obstacle AABB remains applicable.
+    """
+    original=scene.devices['keyboard']
+    envelope=original.envelope
+    minimum,maximum=envelope.minimum,envelope.maximum
+    if not (minimum.x<maximum.x and minimum.y<maximum.y):
+        raise ValueError('Keyboard envelope must have positive XY size')
+    def point(p):
+        return replace(p,x=minimum.x+maximum.x-p.x,
+                       y=minimum.y+maximum.y-p.y)
+    turned_targets=replace(targets,keyboard_targets={
+        key:replace(region,center=point(region.center))
+        for key,region in targets.keyboard_targets.items()})
+    for region in turned_targets.keyboard_targets.values():
+        p=region.center
+        if not (minimum.x<=p.x<=maximum.x and minimum.y<=p.y<=maximum.y):
+            raise ValueError('Rotated key leaves the keyboard envelope')
+    turned_scene=replace(scene,assumptions=(*scene.assumptions,
+        'Keyboard 180-degree photo estimate is simulation-only, not installed registration.'))
+    selection=dict(schema='rocell.keyboard_half_turn_overlay.v1',
+        rotation_deg=180, pivot_board_xy_mm=[(minimum.x+maximum.x)/2,
+                                            (minimum.y+maximum.y)/2],
+        source_target_sha256=targets.content_sha256,
+        envelope=envelope.to_dict(), installed_position_verified=False,
+        frozen_geometry_modified=False, fixture_geometry_relocated=False)
+    selection['overlay_sha256']=hashlib.sha256(canonical(selection)).hexdigest()
+    return turned_scene,turned_targets,selection

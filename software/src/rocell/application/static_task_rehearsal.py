@@ -16,7 +16,8 @@ from rocell.typing.static_development_profiles import compile_static_development
 
 
 def run_static_task_rehearsal(context, *, device, text, park_xy_board_mm=None, dense=False,
-                              tool_length_mm=None, keyboard_translation_mm=None):
+                              tool_length_mm=None, keyboard_translation_mm=None,
+                              keyboard_rotation_deg=0):
     """Rehearse at most eight characters with explicit static source identity.
 
     Contact points here are numerical candidates only, never controller commands.
@@ -30,6 +31,10 @@ def run_static_task_rehearsal(context, *, device, text, park_xy_board_mm=None, d
     if tool_length_mm is not None and (
             type(tool_length_mm) not in (int, float) or tool_length_mm not in (80.,100.,120.)):
         raise ValueError('Tool study permits only 80, 100 or 120 mm nominal cases')
+    if keyboard_rotation_deg not in (0,180) or type(keyboard_rotation_deg) is not int:
+        raise ValueError('Keyboard photo study permits only 0 or 180 degrees')
+    if keyboard_rotation_deg and device!='keyboard':
+        raise ValueError('Keyboard rotation cannot be applied to phone tasks')
     sources = dict(static_simulation_context_hashes(context))
     plan = compile_static_development_text(device, text)
     profile = SimulationHardwareProfile(
@@ -60,6 +65,13 @@ def run_static_task_rehearsal(context, *, device, text, park_xy_board_mm=None, d
             raise ValueError('Keyboard translation cannot be applied to phone tasks')
         from .keyboard_placement_overlay import translate_keyboard
         scene,targets,placement=translate_keyboard(scene,targets,keyboard_translation_mm)
+    if keyboard_rotation_deg==180:
+        from .keyboard_placement_overlay import half_turn_keyboard
+        scene,targets,turn=half_turn_keyboard(scene,targets)
+        placement=turn if placement is None else dict(
+            schema='rocell.keyboard_photo_placement_composite.v1',
+            translation=placement,half_turn=turn,
+            installed_position_verified=False)
     validate_scene_park_xy(scene, settings.park_xy_board_mm)
     geometry = GeometricDryRunEngine(settings).run(
             plan, context.snapshot, profile, scene, targets)

@@ -1,7 +1,7 @@
 from pathlib import Path
 import pytest
 from rocell.application.static_simulation_context import load_static_simulation_context
-from rocell.application.keyboard_placement_overlay import translate_keyboard
+from rocell.application.keyboard_placement_overlay import translate_keyboard, half_turn_keyboard
 
 
 @pytest.fixture(scope='module')
@@ -29,3 +29,21 @@ def test_translation_preserves_size_pitch_source_and_other_devices(context):
 @pytest.mark.parametrize('offset',[(0,51),(float('nan'),0),(True,0),(0,),None])
 def test_invalid_offsets_rejected(context,offset):
     with pytest.raises(ValueError): translate_keyboard(context.scene,context.targets,offset)
+
+
+def test_photo_half_turn_preserves_footprint_and_reverses_key_rows(context):
+    shifted_scene,shifted_targets,_=translate_keyboard(context.scene,context.targets,(0,-20))
+    scene,targets,record=half_turn_keyboard(shifted_scene,shifted_targets)
+    envelope=shifted_scene.devices['keyboard'].envelope
+    a=shifted_targets.resolve('keyboard','A').center
+    turned=targets.resolve('keyboard','A').center
+    assert turned.x==pytest.approx(envelope.minimum.x+envelope.maximum.x-a.x)
+    assert turned.y==pytest.approx(envelope.minimum.y+envelope.maximum.y-a.y)
+    assert scene.devices==shifted_scene.devices
+    assert scene.obstacles==shifted_scene.obstacles
+    assert targets.phone_targets==shifted_targets.phone_targets
+    assert targets.content_sha256==shifted_targets.content_sha256
+    assert record['rotation_deg']==180 and not record['installed_position_verified']
+    _,twice,_=half_turn_keyboard(scene,targets)
+    assert twice.resolve('keyboard','A').center.x==pytest.approx(a.x)
+    assert twice.resolve('keyboard','A').center.y==pytest.approx(a.y)
