@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rocell.local/schemas/model_motion_planner_gate_v1.schema.json",
+  "title": "RoCell model motion planner gate v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "status", "model_motion_candidate_sha256",
+    "model_motion_candidate", "source_bindings", "calibration_status_sha256",
+    "calibration_status", "blockers", "next_required_stage",
+    "trajectory_candidate", "ik_executed", "route_screen_executed",
+    "controller_commands", "hardware_commands_generated", "hardware_access",
+    "physical_authority", "planner_gate_sha256"
+  ],
+  "properties": {
+    "schema": {"const": "rocell.model_motion_planner_gate.v1"},
+    "status": {"enum": [
+      "BLOCKED_CALIBRATION_MISSING_OR_STALE",
+      "BLOCKED_STRICT_CALIBRATION_PAYLOAD_DECODER_REQUIRED"
+    ]},
+    "model_motion_candidate_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "model_motion_candidate": {"type": "object"},
+    "source_bindings": {"type": "object"},
+    "calibration_status_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "calibration_status": {"type": "object"},
+    "blockers": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "next_required_stage": {"const": "STRICT_CALIBRATION_SNAPSHOT_DECODER"},
+    "trajectory_candidate": {"type": "null"},
+    "ik_executed": {"const": false},
+    "route_screen_executed": {"const": false},
+    "controller_commands": {"type": "array", "maxItems": 0},
+    "hardware_commands_generated": {"const": 0},
+    "hardware_access": {"const": false},
+    "physical_authority": {"const": false},
+    "planner_gate_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

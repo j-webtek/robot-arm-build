@@ -177,6 +177,13 @@ provisional offline Gemma 3 4B observer supplies scene classifications. The
 real-photo shadow example stops at `precision_observation_missing` because no
 calibrated real-image coordinate observation exists.
 
+The coordinate bridge now feeds a separate zero-write planner-admission gate.
+That gate binds the candidate to the build snapshot, target catalog, kinematic
+model, arm-frame contract, configuration-epoch policy, and device calibration
+graph. With the current empty physical registry it reports explicit missing
+calibrations and performs no IK, route screening, command encoding, or hardware
+access.
+
 The following are still required before functional arm-command qualification:
 
 - fixed-camera real-image target labels and held-out evaluation;

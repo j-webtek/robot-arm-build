@@ -541,6 +541,10 @@ Implement the following before any additional general-purpose arm movement:
 - [ ] Adapt the current grounded-intent result into `task_intent`.
 - [x] Add the strict model coordinate proposal and nominal-map bridge. The bridge
       emits board-frame planning candidates only and produces zero controller writes.
+- [x] Bind model-coordinate candidates to the frozen build, frame contract,
+      configuration-epoch policy, and complete calibration graph through a
+      zero-write planner-admission gate. The empty physical registry fails closed
+      before IK or route screening; strict calibration payload decoding remains next.
 - [ ] Adapt current visual targets and keyboard layout into `scene_targets`.
 - [ ] Wrap `static_task_rehearsal` as a `trajectory_candidate` producer.
 - [ ] Implement the safety report with explicit reject reason codes.

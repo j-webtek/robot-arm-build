@@ -34,3 +34,7 @@ pass after the first blocker in the current offline path.
 The [model-motion assurance bundle](model_motion_assurance_bundle_v0.schema.json)
 binds a strict coordinate proposal to its deterministic nominal candidate and
 forces every physical stage after missing calibration to remain `not_run`.
+The [model-motion planner gate schema](model_motion_planner_gate_v1.schema.json)
+binds that candidate to the frozen build, frame contract, configuration epochs,
+and calibration graph. It remains zero-write and emits neither IK nor a route
+while measured calibration or strict payload decoding is unavailable.

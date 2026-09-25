@@ -115,3 +115,28 @@ Recommended model supervision preserves:
 A later sequence contract should contain an ordered array of these target proposals
 plus transition intent. It should not be implemented by concatenating raw controller
 JSON emitted by a model.
+
+## Planner-admission gate
+
+The next deterministic boundary is implemented by
+`rocell.application.model_motion_planner_gate`. It binds the accepted coordinate
+candidate to the frozen build snapshot, simulation bundle, target catalog,
+kinematic model, arm-frame contract, configuration-epoch policy, and complete
+device calibration graph. Its output is
+`rocell.model_motion_planner_gate.v1`.
+
+The current repository correctly reports
+`BLOCKED_CALIBRATION_MISSING_OR_STALE`: the physical calibration registry is
+empty. Even a populated test registry remains blocked until a reviewed strict
+decoder can construct the closed transform chain from measured artifact
+payloads. The gate executes no IK, route screen, controller encoding, or hardware
+write.
+
+Run the zero-write gate from the repository root:
+
+```powershell
+$env:PYTHONPATH = "software/src"
+python -m rocell.application.model_motion_planner_gate `
+  --workspace . `
+  --proposal software/ai/examples/model_motion_proposal_keyboard_h.json
+```
