@@ -29,6 +29,7 @@ From the repository root with Python 3.10 or newer:
 python software/ai/run_offline.py propose --request 'Type "test" on the keyboard'
 python software/ai/run_offline.py inspect --request 'Type "test" on the keyboard'
 python software/ai/run_offline.py evaluate
+python software/ai/run_offline.py review
 python -m unittest discover -s software/ai/tests
 ```
 
@@ -37,7 +38,10 @@ defaults to `UNKNOWN`; pass `--phone-state KEYBOARD_LOWER` only for an offline
 case where that state is part of the fixture. These commands do not open an arm
 or camera and do not authorize typing. The committed
 [baseline scorecard](eval/baseline_v0_scorecard.json) records the first 28-case
-sanity benchmark and its limits.
+sanity benchmark. The [simulated review](eval/simulated_review_v1.json) and
+[v1 scorecard](eval/baseline_v1_scorecard.json) cover the frozen 31-case
+paraphrase set. No person reviewed the v1 labels; the baseline has one false
+execution proposal, so it is not ready for arm control.
 
 ## Folder map
 
@@ -46,7 +50,7 @@ sanity benchmark and its limits.
 | [`docs/`](docs/README.md) | AI contract, source boundary, and implementation plan |
 | [`schemas/`](schemas/README.md) | Versioned English-to-task proposal and result formats |
 | [`eval/`](eval/README.md) | Frozen offline cases, scoring, and baseline comparisons |
-| [`data/`](data/README.md) | Dataset manifests and reviewed examples only |
+| [`data/`](data/README.md) | Dataset manifests and provenance-marked examples only |
 | [`train/`](train/README.md) | Pinned model and training manifests after baseline evidence |
 
 The existing `software/src/rocell/models/actions.py` and

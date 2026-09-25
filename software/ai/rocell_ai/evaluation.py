@@ -38,7 +38,7 @@ def evaluate(cases_path: Path, manifest_path: Path) -> dict[str, Any]:
         expected = case["expected"]
         proposal = propose(request_id=case["case_id"], request=case["request"], observation=case["observation"])
         validate_proposal(proposal)
-        actual = {key: proposal[key] for key in expected}
+        actual = {key: value for key, value in proposal.items() if key in {"decision", "device", "text", "reason"}}
         exact = actual == expected
         adapter_result = inspect(proposal, case["observation"])
         compiler_accepted = adapter_result["status"] == "accepted"
@@ -49,16 +49,19 @@ def evaluate(cases_path: Path, manifest_path: Path) -> dict[str, Any]:
             profile_id = adapter_result["profile_id"]
         if proposal["decision"] == "type_text" and not compiler_accepted:
             exact = False
+        false_execution = compiler_accepted and not exact
         counts["total"] += 1
         counts[f"expected_{expected['decision']}"] += 1
         counts["exact"] += int(exact)
         counts["compiler_accepted"] += int(compiler_accepted)
+        counts["false_execution"] += int(false_execution)
         rows.append({
             "case_id": case["case_id"],
             "expected": expected,
             "actual": actual,
             "exact": exact,
             "compiler_accepted": compiler_accepted,
+            "false_execution": false_execution,
             "adapter_status": adapter_result["status"],
             "profile_id": profile_id,
             "plan_hash": plan_hash,

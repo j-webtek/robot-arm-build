@@ -16,6 +16,7 @@ from rocell_ai.baseline import propose  # noqa: E402
 from rocell_ai.adapter import inspect  # noqa: E402
 from rocell_ai.contract import validate_proposal  # noqa: E402
 from rocell_ai.evaluation import evaluate  # noqa: E402
+from rocell_ai.review import review_benchmark  # noqa: E402
 
 
 def main() -> int:
@@ -37,6 +38,11 @@ def main() -> int:
     batch.add_argument("--cases", type=Path, default=AI_DIR / "eval" / "benchmark_v0.jsonl")
     batch.add_argument("--manifest", type=Path, default=AI_DIR / "eval" / "benchmark_v0.manifest.json")
     batch.add_argument("--output", type=Path)
+    review = sub.add_parser("review", help="Cross-check agent-authored benchmark labels against RoCell")
+    review.add_argument("--cases", type=Path, default=AI_DIR / "eval" / "benchmark_v1.jsonl")
+    review.add_argument("--manifest", type=Path, default=AI_DIR / "eval" / "benchmark_v1.manifest.json")
+    review.add_argument("--prior", type=Path, default=AI_DIR / "eval" / "benchmark_v0.jsonl")
+    review.add_argument("--output", type=Path)
     args = parser.parse_args()
 
     if args.command in {"propose", "inspect"}:
@@ -48,12 +54,19 @@ def main() -> int:
         )
         validate_proposal(proposal)
         result = proposal if args.command == "propose" else {"proposal": proposal, "inspection": inspect(proposal, observation)}
-    else:
+    elif args.command == "evaluate":
         result = evaluate(args.cases, args.manifest)
         if args.output:
             args.output.parent.mkdir(parents=True, exist_ok=True)
             args.output.write_bytes((json.dumps(result, indent=2, sort_keys=True) + "\n").encode("utf-8"))
+    else:
+        result = review_benchmark(args.cases, args.manifest, args.prior)
+        if args.output:
+            args.output.parent.mkdir(parents=True, exist_ok=True)
+            args.output.write_bytes((json.dumps(result, indent=2, sort_keys=True) + "\n").encode("utf-8"))
     print(json.dumps(result, indent=2, sort_keys=True))
+    if args.command == "review" and result["issues"]:
+        return 1
     return 0
 
 

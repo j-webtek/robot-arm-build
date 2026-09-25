@@ -1,0 +1,566 @@
+{
+  "baseline": "deterministic_v0",
+  "benchmark_sha256": "7247d8704901cd1c7b41d0cf8887314578226820d447d3d35fba222707f410b7",
+  "cases": [
+    {
+      "actual": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v1_k01",
+      "compiler_accepted": false,
+      "exact": false,
+      "expected": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "hello"
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    },
+    {
+      "actual": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "abc 123"
+      },
+      "adapter_status": "accepted",
+      "case_id": "v1_k02",
+      "compiler_accepted": true,
+      "exact": true,
+      "expected": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "abc 123"
+      },
+      "false_execution": false,
+      "plan_hash": "125f7b051b681f040abf0d5a3272ac61a5931c97c65d3b3f1e327199854aa76d",
+      "profile_id": "development/keyboard-us-lowercase-semantic-v1"
+    },
+    {
+      "actual": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "robot arm"
+      },
+      "adapter_status": "accepted",
+      "case_id": "v1_k03",
+      "compiler_accepted": true,
+      "exact": true,
+      "expected": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "robot arm"
+      },
+      "false_execution": false,
+      "plan_hash": "7b89f83f844fec578688b1ae86df1062ff692a3a37e042ce28adfc56b2a077e8",
+      "profile_id": "development/keyboard-us-lowercase-semantic-v1"
+    },
+    {
+      "actual": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v1_k04",
+      "compiler_accepted": false,
+      "exact": false,
+      "expected": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "test"
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    },
+    {
+      "actual": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v1_k05",
+      "compiler_accepted": false,
+      "exact": false,
+      "expected": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "a/b"
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    },
+    {
+      "actual": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v1_k06",
+      "compiler_accepted": false,
+      "exact": false,
+      "expected": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "zero"
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    },
+    {
+      "actual": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "call phone"
+      },
+      "adapter_status": "accepted",
+      "case_id": "v1_k07",
+      "compiler_accepted": true,
+      "exact": true,
+      "expected": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "call phone"
+      },
+      "false_execution": false,
+      "plan_hash": "bccd524ffb53ca462c3d672c60c50d0f6d04ff1a5106680996f63fa587df87d9",
+      "profile_id": "development/keyboard-us-lowercase-semantic-v1"
+    },
+    {
+      "actual": {
+        "decision": "type_text",
+        "device": "phone",
+        "text": "hello."
+      },
+      "adapter_status": "accepted",
+      "case_id": "v1_p01",
+      "compiler_accepted": true,
+      "exact": true,
+      "expected": {
+        "decision": "type_text",
+        "device": "phone",
+        "text": "hello."
+      },
+      "false_execution": false,
+      "plan_hash": "46fe8ed2eb81656eae089c4495afc0456c878cf2245a5851fd4039b13f46c6c1",
+      "profile_id": "development/phone-lowercase-semantic-v1"
+    },
+    {
+      "actual": {
+        "decision": "type_text",
+        "device": "phone",
+        "text": "test"
+      },
+      "adapter_status": "accepted",
+      "case_id": "v1_p02",
+      "compiler_accepted": true,
+      "exact": true,
+      "expected": {
+        "decision": "type_text",
+        "device": "phone",
+        "text": "test"
+      },
+      "false_execution": false,
+      "plan_hash": "414a2f2a2cb9f1866959ee777a2e1feaba40fc67cd3b8a61aa085fe9e6703e73",
+      "profile_id": "development/phone-lowercase-semantic-v1"
+    },
+    {
+      "actual": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v1_p03",
+      "compiler_accepted": false,
+      "exact": false,
+      "expected": {
+        "decision": "type_text",
+        "device": "phone",
+        "text": "hello world"
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    },
+    {
+      "actual": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v1_p04",
+      "compiler_accepted": false,
+      "exact": false,
+      "expected": {
+        "decision": "type_text",
+        "device": "phone",
+        "text": "abc"
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    },
+    {
+      "actual": {
+        "decision": "type_text",
+        "device": "phone",
+        "text": "z"
+      },
+      "adapter_status": "accepted",
+      "case_id": "v1_p05",
+      "compiler_accepted": true,
+      "exact": true,
+      "expected": {
+        "decision": "type_text",
+        "device": "phone",
+        "text": "z"
+      },
+      "false_execution": false,
+      "plan_hash": "fa22de844fe9d8575d44a324c2a8f97e75567551d0b35e88c316517a1c896cb1",
+      "profile_id": "development/phone-lowercase-semantic-v1"
+    },
+    {
+      "actual": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v1_p06",
+      "compiler_accepted": false,
+      "exact": false,
+      "expected": {
+        "decision": "type_text",
+        "device": "phone",
+        "text": "a b"
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    },
+    {
+      "actual": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v1_u01",
+      "compiler_accepted": false,
+      "exact": false,
+      "expected": {
+        "decision": "unsupported",
+        "reason": "unsupported_by_profile"
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    },
+    {
+      "actual": {
+        "decision": "unsupported",
+        "reason": "unsupported_by_profile"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v1_u02",
+      "compiler_accepted": false,
+      "exact": true,
+      "expected": {
+        "decision": "unsupported",
+        "reason": "unsupported_by_profile"
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    },
+    {
+      "actual": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v1_u03",
+      "compiler_accepted": false,
+      "exact": false,
+      "expected": {
+        "decision": "unsupported",
+        "reason": "unsupported_by_profile"
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    },
+    {
+      "actual": {
+        "decision": "unsupported",
+        "reason": "unsupported_by_profile"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v1_u04",
+      "compiler_accepted": false,
+      "exact": true,
+      "expected": {
+        "decision": "unsupported",
+        "reason": "unsupported_by_profile"
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    },
+    {
+      "actual": {
+        "decision": "unsupported",
+        "reason": "operation_not_available"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v1_u05",
+      "compiler_accepted": false,
+      "exact": true,
+      "expected": {
+        "decision": "unsupported",
+        "reason": "operation_not_available"
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    },
+    {
+      "actual": {
+        "decision": "unsupported",
+        "reason": "operation_not_available"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v1_u06",
+      "compiler_accepted": false,
+      "exact": true,
+      "expected": {
+        "decision": "unsupported",
+        "reason": "operation_not_available"
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    },
+    {
+      "actual": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v1_u07",
+      "compiler_accepted": false,
+      "exact": false,
+      "expected": {
+        "decision": "unsupported",
+        "reason": "operation_not_available"
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    },
+    {
+      "actual": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v1_u08",
+      "compiler_accepted": false,
+      "exact": false,
+      "expected": {
+        "decision": "unsupported",
+        "reason": "operation_not_available"
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    },
+    {
+      "actual": {
+        "decision": "unsupported",
+        "reason": "stale_observation"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v1_u09",
+      "compiler_accepted": false,
+      "exact": true,
+      "expected": {
+        "decision": "unsupported",
+        "reason": "stale_observation"
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    },
+    {
+      "actual": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v1_u10",
+      "compiler_accepted": false,
+      "exact": false,
+      "expected": {
+        "decision": "unsupported",
+        "reason": "phone_state_unverified"
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    },
+    {
+      "actual": {
+        "decision": "clarify",
+        "reason": "device_ambiguous"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v1_c01",
+      "compiler_accepted": false,
+      "exact": true,
+      "expected": {
+        "decision": "clarify",
+        "reason": "device_ambiguous"
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    },
+    {
+      "actual": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "it"
+      },
+      "adapter_status": "accepted",
+      "case_id": "v1_c02",
+      "compiler_accepted": true,
+      "exact": false,
+      "expected": {
+        "decision": "clarify",
+        "reason": "text_ambiguous"
+      },
+      "false_execution": true,
+      "plan_hash": "9391cb14c90c44c2f39ac6bcf29cdb90606d94bb5e23e082f77b6b7f8ecd8f68",
+      "profile_id": "development/keyboard-us-lowercase-semantic-v1"
+    },
+    {
+      "actual": {
+        "decision": "clarify",
+        "reason": "text_ambiguous"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v1_c03",
+      "compiler_accepted": false,
+      "exact": true,
+      "expected": {
+        "decision": "clarify",
+        "reason": "text_ambiguous"
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    },
+    {
+      "actual": {
+        "decision": "clarify",
+        "reason": "device_ambiguous"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v1_c04",
+      "compiler_accepted": false,
+      "exact": true,
+      "expected": {
+        "decision": "clarify",
+        "reason": "device_ambiguous"
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    },
+    {
+      "actual": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v1_c05",
+      "compiler_accepted": false,
+      "exact": true,
+      "expected": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous"
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    },
+    {
+      "actual": {
+        "decision": "clarify",
+        "reason": "device_ambiguous"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v1_c06",
+      "compiler_accepted": false,
+      "exact": true,
+      "expected": {
+        "decision": "clarify",
+        "reason": "device_ambiguous"
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    },
+    {
+      "actual": {
+        "decision": "clarify",
+        "reason": "device_ambiguous"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v1_c07",
+      "compiler_accepted": false,
+      "exact": true,
+      "expected": {
+        "decision": "clarify",
+        "reason": "device_ambiguous"
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    },
+    {
+      "actual": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v1_c08",
+      "compiler_accepted": false,
+      "exact": false,
+      "expected": {
+        "decision": "clarify",
+        "reason": "text_ambiguous"
+      },
+      "false_execution": false,
+      "plan_hash": null,
+      "profile_id": null
+    }
+  ],
+  "counts": {
+    "compiler_accepted": 7,
+    "exact": 17,
+    "expected_clarify": 8,
+    "expected_type_text": 13,
+    "expected_unsupported": 10,
+    "false_execution": 1,
+    "total": 31
+  },
+  "evidence_class": "offline_compiler_only",
+  "exact_rate": 0.5483870967741935,
+  "hardware_commands": 0,
+  "schema": "rocell.ai_baseline_scorecard.v0"
+}

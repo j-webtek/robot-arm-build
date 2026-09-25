@@ -1,0 +1,10 @@
+{
+  "benchmark_sha256": "7247d8704901cd1c7b41d0cf8887314578226820d447d3d35fba222707f410b7",
+  "case_count": 31,
+  "human_reviewed": false,
+  "issues": [],
+  "limitations": "English interpretations and coverage are agent-authored; compiler and state checks are automated, not human approval or physical evidence.",
+  "passed": 31,
+  "review_type": "independent_semantic_crosscheck",
+  "schema": "rocell.ai_simulated_review.v0"
+}

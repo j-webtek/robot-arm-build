@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 from pathlib import Path
+import hashlib
+import json
 import sys
 import tempfile
 import unittest
@@ -16,6 +18,7 @@ from rocell_ai.baseline import propose  # noqa: E402
 from rocell_ai.adapter import inspect  # noqa: E402
 from rocell_ai.contract import validate_proposal  # noqa: E402
 from rocell_ai.evaluation import evaluate, load_benchmark  # noqa: E402
+from rocell_ai.review import review_benchmark  # noqa: E402
 
 
 class OfflineContractTests(unittest.TestCase):
@@ -91,6 +94,36 @@ class OfflineContractTests(unittest.TestCase):
         self.assertEqual(stale["reason"], "stale_observation")
         with self.assertRaisesRegex(ValueError, "reference mismatch"):
             inspect(proposal, {"ref": "other", "fresh": True})
+
+    def test_simulated_review_and_held_out_failure_are_explicit(self) -> None:
+        folder = AI_DIR / "eval"
+        cases = folder / "benchmark_v1.jsonl"
+        manifest = folder / "benchmark_v1.manifest.json"
+        review = review_benchmark(cases, manifest, folder / "benchmark_v0.jsonl")
+        self.assertFalse(review["human_reviewed"])
+        self.assertEqual(review["passed"], 31)
+        self.assertEqual(review["issues"], [])
+        score = evaluate(cases, manifest)
+        self.assertEqual(score["counts"]["exact"], 17)
+        self.assertEqual(score["counts"]["false_execution"], 1)
+        false_rows = [row for row in score["cases"] if row["false_execution"]]
+        self.assertEqual([row["case_id"] for row in false_rows], ["v1_c02"])
+        self.assertEqual(score["hardware_commands"], 0)
+
+    def test_simulated_review_detects_compiler_label_dispute(self) -> None:
+        folder = AI_DIR / "eval"
+        rows = [json.loads(line) for line in (folder / "benchmark_v1.jsonl").read_text(encoding="utf-8").splitlines()]
+        rows[0]["review"]["text"] = "HELLO"
+        with tempfile.TemporaryDirectory() as temp_dir:
+            cases = Path(temp_dir) / "cases.jsonl"
+            manifest = Path(temp_dir) / "manifest.json"
+            raw = ("\n".join(json.dumps(row) for row in rows) + "\n").encode("utf-8")
+            cases.write_bytes(raw)
+            metadata = json.loads((folder / "benchmark_v1.manifest.json").read_text(encoding="utf-8"))
+            metadata["cases_sha256"] = hashlib.sha256(raw).hexdigest()
+            manifest.write_text(json.dumps(metadata), encoding="utf-8")
+            report = review_benchmark(cases, manifest, folder / "benchmark_v0.jsonl")
+        self.assertIn({"case_id": "v1_k01", "issue": "compiler_verdict_mismatch"}, report["issues"])
 
 
 if __name__ == "__main__":
