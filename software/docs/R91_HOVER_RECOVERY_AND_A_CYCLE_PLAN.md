@@ -1,9 +1,9 @@
 # r91: recover from A_HOVER and run an A-only ghost-key cycle
 
-Status: the r91 app was installed, read back, and started once on 2026-09-25.
-The new boot passed public identity and three-snapshot pose checks; no r91
-movement has been sent. This is a finite route to the next useful physical
-test, not a claim of keyboard contact or tool-tip accuracy.
+Status: the r91 noncontact five-leg A cycle completed on 2026-09-25 with
+verified per-leg controller feedback and a confirmed terminal status. See the
+live-result section below. This does not establish keyboard contact or
+tool-tip accuracy.
 
 ## Why a new route is needed
 
@@ -286,3 +286,34 @@ did not authorize a reset, install, or movement by itself.
   claim. No pose capture, servo write, or movement was sent after reset.
   The cloth remains in place until the user confirms it is outside the
   complete five-leg swept path.
+
+## Live five-leg result (2026-09-25)
+
+- With the cloth outside the swept path, the corrected read-only preflight
+  passed on boot `fd1421c7f4737db0e21fa16e0cdf85eb`. The one-use live
+  recovery cycle completed all five noncontact legs in order:
+  `A_CLEAR → A_HOVER → A_DOWN → A_HOVER → A_CLEAR`.
+- Each leg produced a live controller record, verified final joint positions
+  in servo counts, and an independently verified export before the next
+  command. The five leg exports are:
+  `wizard-20260925T140618155449Z-694c01ad55e647049650be32e266dd01`,
+  `wizard-20260925T140619712343Z-8e5f2ab92e684e06987564e0b81b27d9`,
+  `wizard-20260925T140621128573Z-4cbb2eed52f54ac2bb747ae35259f8cf`,
+  `wizard-20260925T140622724269Z-3c416db29f0c4837b8d32597aa823768`,
+  and `wizard-20260925T140624401004Z-870759202c404d48b0d93b2af4d46a88`.
+- The final positions at `A_CLEAR` were
+  `[2041, 2081, 2033, 2609, 2233, 2041, 2047]` against goal
+  `[2047, 2075, 2039, 2600, 2233, 2040, 2047]`. Across all five final
+  samples, the largest absolute joint-goal difference was **9 servo counts**.
+  This is controller-reported joint feedback, not a measured millimeter,
+  stylus-tip, key-center, or contact accuracy claim.
+- A single subsequent read-only terminal query returned
+  `REVIEWED_HOVER_COMPLETE|5`. The consolidated review is exported at
+  `runs/wizard-exports/wizard-20260925T140854416386Z-cbd993ade3a7456a9eb1a0f838d357ca`.
+  `scripts/review_r91_live_completion.py` pins the boot and exact five
+  exports, verifies their order/integrity, makes that one terminal GET, and
+  records that no movement command was sent by the reviewer. Its one-use
+  marker prevents repeating the terminal query accidentally.
+- This completes the r91 noncontact cycle. Further physical movement should
+  start from freshly checked feedback and a new, explicitly bounded plan;
+  this run is not proof of physical contact or ghost-keyboard registration.
