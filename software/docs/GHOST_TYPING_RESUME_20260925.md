@@ -203,3 +203,12 @@ leg-2 endpoint. Base position moved from 2001 to 2041 counts toward goal
 unchanged. The verified export is
 `wizard-20260925T184309529486Z-0ef21c5ddcdc4d9492cdd8b564cb9bf3`.
 No A-region hover was sent; await visual confirmation of the lateral sweep.
+
+The operator confirmed the base-only side sweep remained clear. Exactly one
+`REGION_A_HOVER` leg 4 was then sent. Its fresh before pose matched the
+verified leg-3 endpoint. Selected joints 1–4 ended at positions
+`2093,2020,2620,2199` against goals `2093,2021,2618,2197`, within two counts.
+Base, wrist roll and gripper readings remained unchanged. The verified export
+is `wizard-20260925T184440994897Z-ee8a958090454b44b20c5283f8b61319`.
+The arm is paused at this A-region hover. No final retract was sent; await the
+operator's visual clearance report before leg 5.
