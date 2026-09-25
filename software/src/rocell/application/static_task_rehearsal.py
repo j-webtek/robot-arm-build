@@ -17,7 +17,8 @@ from rocell.typing.static_development_profiles import compile_static_development
 
 def run_static_task_rehearsal(context, *, device, text, park_xy_board_mm=None, dense=False,
                               tool_length_mm=None, keyboard_translation_mm=None,
-                              keyboard_rotation_deg=0, keyboard_photo_estimate=None):
+                              keyboard_rotation_deg=0, keyboard_photo_estimate=None,
+                              keyboard_model_estimate=None):
     """Rehearse at most eight characters with explicit static source identity.
 
     Contact points here are numerical candidates only, never controller commands.
@@ -37,8 +38,12 @@ def run_static_task_rehearsal(context, *, device, text, park_xy_board_mm=None, d
         raise ValueError('Keyboard rotation cannot be applied to phone tasks')
     if keyboard_photo_estimate is not None and (
             device != 'keyboard' or keyboard_translation_mm is not None or
-            keyboard_rotation_deg != 0):
+            keyboard_rotation_deg != 0 or keyboard_model_estimate is not None):
         raise ValueError('Photo estimate cannot be combined with another placement overlay')
+    if keyboard_model_estimate is not None and (
+            device != 'keyboard' or keyboard_translation_mm is not None or
+            keyboard_rotation_deg != 0):
+        raise ValueError('Model estimate cannot be combined with another placement overlay')
     sources = dict(static_simulation_context_hashes(context))
     plan = compile_static_development_text(device, text)
     profile = SimulationHardwareProfile(
@@ -67,6 +72,10 @@ def run_static_task_rehearsal(context, *, device, text, park_xy_board_mm=None, d
     if keyboard_photo_estimate is not None:
         from .keyboard_placement_overlay import photo_estimated_keyboard
         scene,targets,placement=photo_estimated_keyboard(scene,targets,keyboard_photo_estimate)
+    if keyboard_model_estimate is not None:
+        from .keyboard_placement_overlay import synthetic_model_keyboard
+
+        scene,targets,placement=synthetic_model_keyboard(scene,targets,keyboard_model_estimate)
     if keyboard_translation_mm is not None:
         if device!='keyboard':
             raise ValueError('Keyboard translation cannot be applied to phone tasks')

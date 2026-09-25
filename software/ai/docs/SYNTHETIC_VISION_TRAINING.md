@@ -83,3 +83,41 @@ Evaluate the current checkpoint without fitting to that session; expect a
 large domain gap. Collect distinct placements and sessions before tuning.
 Phone screen-state and target localization need a separate image dataset;
 the current model is keyboard-only.
+
+## Offline keyboard route and outcome rehearsal
+
+[`run_keyboard_rehearsal.py`](../vision/run_keyboard_rehearsal.py) extends the
+joined preview through RoCell's static-overhead geometric dry run, sampled IK,
+and dense sequential waypoint screen. A bounded simulation-only overlay places
+RoCell's keyboard envelope and named targets at the image model's predicted
+center and yaw. The script verifies that the AI and static catalogs have the
+same key geometry and that the semantic key sequences agree.
+
+A separate virtual keyboard resolves each predicted contact point against the
+**hidden synthetic true** key rectangles. It reports the key that would be hit
+if every contact were reached. The route result controls whether the report
+may show a simulated completed string. A virtual hit alone is not a press, and
+the route screen does not prove a continuous collision-free physical motion.
+
+Run from the repository root with the local checkpoint:
+
+```powershell
+python software/ai/vision/run_keyboard_rehearsal.py --request 'Type "hi" on the keyboard' --checkpoint software/ai/train/runs/synthetic_pose_photo_v1/pose_model.pt --seed 1000001
+```
+
+The [seed-1000001 result](../eval/keyboard_rehearsal_seed_1000001.json)
+estimated the keyboard center within 1.22 mm and yaw
+within 0.10 degrees of the simulator truth. Both virtual points hit `H` and
+`I`. The nominal dense route failed at PARK (waypoint 0,
+`IK_NO_CONVERGED_SOLUTION`), so `virtual_text_after_screened_route` is null and zero
+physical input events are claimed. An explicit park study at (290, 10) mm
+([saved result](../eval/keyboard_rehearsal_seed_1000001_park_study.json))
+progressed to the `H` HOVER waypoint but also failed IK. For `"a"` with the
+same park study, the first failure was at the `A` TRANSIT waypoint due to the
+minimum modeled arm-joint margin. These are route diagnostics, not evidence
+that a keyboard was typed on.
+
+The report separates intent, image pose error, virtual key hit, geometry, IK,
+and dense route failure. The next physical-data milestone remains fixed-camera
+calibration and measured key labels; the training set and key-hit simulator do
+not substitute for either.

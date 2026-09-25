@@ -132,3 +132,54 @@ def photo_estimated_keyboard(scene, targets, estimate):
         fixture_geometry_relocated=False)
     selection['overlay_sha256']=hashlib.sha256(canonical(selection)).hexdigest()
     return studied_scene,studied_targets,selection
+
+
+def synthetic_model_keyboard(scene, targets, estimate):
+    """Apply an image-model pose to the offline keyboard study only."""
+    if (not isinstance(estimate, dict) or
+            estimate.get('schema') != 'rocell.synthetic_model_keyboard_estimate.v1' or
+            estimate.get('source') != 'SYNTHETIC_IMAGE_MODEL_PREDICTION' or
+            estimate.get('motion_authorized') is not False or
+            estimate.get('target_catalog_sha256') != targets.content_sha256):
+        raise ValueError('Synthetic model estimate is not bound to static targets')
+    for field in ('image_sha256', 'model_sha256'):
+        value=estimate.get(field)
+        if not isinstance(value,str) or len(value)!=64 or any(c not in '0123456789abcdef' for c in value):
+            raise ValueError(f'Invalid {field}')
+    center=estimate.get('center_board_xy_mm')
+    yaw=estimate.get('yaw_rad')
+    if (type(center) not in (tuple,list) or len(center)!=2 or
+            any(type(v) not in (int,float) or not math.isfinite(v) for v in center) or
+            type(yaw) not in (int,float) or not math.isfinite(yaw)):
+        raise ValueError('Synthetic model estimate has no finite pose')
+    original=scene.devices['keyboard'].envelope
+    midx=(original.minimum.x+original.maximum.x)/2
+    midy=(original.minimum.y+original.maximum.y)/2
+    c,s=math.cos(yaw),math.sin(yaw)
+    def transform(x,y):
+        dx,dy=x-midx,y-midy
+        return [center[0]+c*dx-s*dy,center[1]+s*dx+c*dy]
+    front_left=transform(original.minimum.x,original.minimum.y)
+    photo_shape=dict(
+        schema='rocell.photo_keyboard_registration_estimate.v1',
+        status='PHOTO_ESTIMATE_OFFLINE_NOT_MOTION_AUTHORITY',
+        motion_authorized=False,keyboard_registered=False,
+        arm_board_transform_verified=False,study_xy_margin_mm=10,
+        fitted_front_left_board_xy_mm=front_left,
+        fitted_footprint_yaw_deg=math.degrees(yaw),
+        nominal_key_centers_board_xy_mm={
+            name:transform(region.center.x,region.center.y)
+            for name,region in targets.keyboard_targets.items()},
+        photo_sha256=estimate['image_sha256'],
+        profile_sha256=targets.content_sha256)
+    scene,targets,base=photo_estimated_keyboard(scene,targets,photo_shape)
+    selection=dict(schema='rocell.synthetic_model_keyboard_overlay.v1',
+        source='SYNTHETIC_IMAGE_MODEL_PREDICTION',
+        image_sha256=estimate['image_sha256'],model_sha256=estimate['model_sha256'],
+        source_target_sha256=estimate['target_catalog_sha256'],
+        center_board_xy_mm=list(center),yaw_rad=yaw,
+        study_xy_margin_mm=10,conservative_envelope=base['conservative_envelope'],
+        installed_position_verified=False,arm_board_transform_verified=False,
+        motion_authorized=False,frozen_geometry_modified=False)
+    selection['overlay_sha256']=hashlib.sha256(canonical(selection)).hexdigest()
+    return scene,targets,selection

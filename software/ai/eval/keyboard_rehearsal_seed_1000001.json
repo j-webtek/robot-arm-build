@@ -1,0 +1,91 @@
+{
+  "schema": "rocell.ai_offline_keyboard_rehearsal.v1",
+  "seed": 1000001,
+  "request": "Type \"hi\" on the keyboard",
+  "image_sha256": "6622bfa650aa0afcbfda7b11a895e36af4ca225e1f48b0bfc4a6841d754f5467",
+  "model_sha256": "2cc9d770fe9816b1e7f717413996e78d3e440eb6d7b2a02414f229d11ed5671f",
+  "physical_execution_authorized": false,
+  "hardware_commands": 0,
+  "physical_input_events_observed": 0,
+  "status": "ROUTE_BLOCKED",
+  "requested_text": "hi",
+  "vision": {
+    "truth_pose_board": [
+      215.9983915143406,
+      157.94436824970683,
+      3.305158917087941
+    ],
+    "predicted_pose_board": [
+      214.89658415317535,
+      158.46930480003357,
+      3.306870778399058
+    ],
+    "center_error_mm": 1.2204662400029163,
+    "yaw_error_deg": 0.09808242823872942
+  },
+  "virtual_typing": {
+    "requested_text": "hi",
+    "virtual_text_if_all_contacts_reached": "hi",
+    "all_intended_keys_hit": true,
+    "events": [
+      {
+        "intended_key": "H",
+        "virtual_hit_key": "H",
+        "hit_intended_key": true,
+        "predicted_contact_board_xy_mm": [
+          239.75258399544757,
+          167.1774487952235
+        ]
+      },
+      {
+        "intended_key": "I",
+        "virtual_hit_key": "I",
+        "hit_intended_key": true,
+        "predicted_contact_board_xy_mm": [
+          210.36143537809656,
+          140.98488529042726
+        ]
+      }
+    ],
+    "interpretation": "Hidden synthetic layout hit test; no arm movement or input event occurred"
+  },
+  "rocell_route": {
+    "status": "DENSE_ROUTE_FAILED",
+    "park_selection": {
+      "source": "NOMINAL",
+      "xy_board_mm": [
+        305.0,
+        400.0
+      ],
+      "frozen_geometry_modified": false,
+      "installed_position_verified": false
+    },
+    "geometry_all_checks_pass": true,
+    "sampled_ik_all_converged": false,
+    "dense_route_all_waypoints_accepted": false,
+    "task_summary": {
+      "requested_target_count": 2,
+      "requested_targets": [
+        "H",
+        "I"
+      ],
+      "evaluated_waypoint_count": 1,
+      "planned_waypoint_count": 58,
+      "first_failure": {
+        "waypoint_sequence": 0,
+        "target": null,
+        "phase": "PARK",
+        "reason": "IK_NO_CONVERGED_SOLUTION"
+      },
+      "physical_input_events_observed": 0,
+      "input_event_verification_performed": false
+    },
+    "rehearsal_sha256": "dae223686d9dbe10b165d827c422288c972cfcaedaf552f6e04759978d2ec2eb"
+  },
+  "virtual_text_after_screened_route": null,
+  "limitations": [
+    "Synthetic image and hidden synthetic key layout only",
+    "Nominal arm geometry and sampled route checks, no hardware execution",
+    "Virtual key hits are not observed physical input events"
+  ]
+}
