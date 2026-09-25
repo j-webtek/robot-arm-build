@@ -1,8 +1,8 @@
 # Resume non-contact ghost typing after gripper loading
 
 Status: offline B-key candidate screened; r94 installed; **B_CLEAR leg 1,
-B_HOVER leg 2, and B_VIRTUAL_DOWN leg 3 sent and verified**. No retract or
-automatic return was sent.
+B_HOVER leg 2, B_VIRTUAL_DOWN leg 3, and B_RETRACT leg 4 sent and verified**.
+No final B_CLEAR or automatic return was sent.
 
 The previous r91 A cycle ended at A_CLEAR. r93 then served the stylus-loading
 attempt; its physical retention and protrusion were not verified. The operator
@@ -27,7 +27,7 @@ separation was 55.75 mm. The verified export is
 Two focused tests pass. These results are numerical screening only; the model
 omits the mounted stylus, keyboard, fixture, cable loops and full link meshes.
 
-## r94 installation and first three live legs
+## r94 installation and first four live legs
 
 A dedicated r94 app compiled with SHA-256
 `31bceb8f7eb92f220d5221549916d26c4ce0958d269b864600d1dca0d9416c59`.
@@ -59,10 +59,18 @@ before pose matched the verified leg-2 endpoint. The four selected joints
 counts of their respective goals 2105, 2009, 2630 and 2173. Base and gripper
 readings remained unchanged. The verified before/after export is
 `wizard-20260925T163122665031Z-b07afdbf3ef24d9bb63469185c2cabb0`.
-No B_RETRACT command followed.
+The operator confirmed clearance for this virtual-down leg.
+
+One `B_RETRACT` leg 4 request was then sent on the same boot. The fresh
+before pose matched the verified leg-3 endpoint. The four selected joints
+(indices 1–4) reported positions 2099, 2015, 2626 and 2196, within eight
+counts of their respective goals 2093, 2021, 2618 and 2197. Base and gripper
+readings remained unchanged. The verified before/after export is
+`wizard-20260925T163316562825Z-9726886cc32842d49a7b4cf183498937`.
+No B_CLEAR_FINAL command followed.
 
 This is controller feedback and an operator clearance setup, not independently
-measured TCP motion or physical key accuracy. The B_VIRTUAL_DOWN visual
+measured TCP motion or physical key accuracy. The B_RETRACT visual
 clearance assessment is still pending from the operator.
 
 ## Boundary before each remaining live B-key leg
@@ -71,7 +79,7 @@ clearance assessment is still pending from the operator.
    region are clear. If the stylus is remounted, qualify retention and its
    envelope and re-screen first; do not substitute the hypothetical 100 mm
    tool offset.
-2. Obtain fresh seven-joint feedback. For leg 4, bind to the verified leg-3
+2. Obtain fresh seven-joint feedback. For leg 5, bind to the verified leg-4
    endpoint on the same r94 boot. Reject a changed source or controller boot;
    never replay a stale pose.
 3. Before each live command, check the actual keyboard/objects/cables and confirm
