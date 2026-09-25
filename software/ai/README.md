@@ -31,6 +31,7 @@ python software/ai/run_offline.py inspect --request 'Type "test" on the keyboard
 python software/ai/run_offline.py evaluate
 python software/ai/run_offline.py review
 python software/ai/run_offline.py evaluate-model --model llama-3.1-8b-instruct-q4_k_m:latest
+python software/ai/run_offline.py evaluate-model --model llama32-1b-meta-92131767:latest
 python -m unittest discover -s software/ai/tests
 ```
 
@@ -49,6 +50,13 @@ an explicit task prompt and a pinned Ollama model digest. Its
 [v1 scorecard](eval/llama31_8b_q4_v1_scorecard.json) is offline evidence only.
 The installed artifact's weight origin and license are unverified; this run
 does not authorize hardware execution or model redistribution.
+
+The official Meta Llama 3.2 1B Instruct source revision and imported local
+digest are recorded in the [candidate manifest](train/llama32_1b_candidate.json).
+Its [offline v1 scorecard](eval/llama32_1b_official_v1_scorecard.json) shows
+that the current strict proposal prompt fails on all 31 cases. A separate
+[v2 challenge set](eval/benchmark_v2.manifest.json) is frozen for later
+evaluation after training.
 
 ## Folder map
 

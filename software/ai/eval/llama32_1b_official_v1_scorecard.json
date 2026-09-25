@@ -1,0 +1,533 @@
+{
+  "benchmark_sha256": "7247d8704901cd1c7b41d0cf8887314578226820d447d3d35fba222707f410b7",
+  "cases": [
+    {
+      "actual": {
+        "decision": "unsupported",
+        "reason": "phone_state_unverified"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v1_k01",
+      "exact": false,
+      "expected": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "hello"
+      },
+      "false_execution": false,
+      "latency_ms": 11572.1,
+      "parse_error": null,
+      "response_sha256": "826e1573d946afb64c0ea00970ea76cfa6cfe2b60bc78dff2e99b68e63332513"
+    },
+    {
+      "actual": {
+        "decision": "unsupported",
+        "reason": "phone_state_unverified"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v1_k02",
+      "exact": false,
+      "expected": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "abc 123"
+      },
+      "false_execution": false,
+      "latency_ms": 84.8,
+      "parse_error": null,
+      "response_sha256": "826e1573d946afb64c0ea00970ea76cfa6cfe2b60bc78dff2e99b68e63332513"
+    },
+    {
+      "actual": null,
+      "adapter_status": "not_inspected",
+      "case_id": "v1_k03",
+      "exact": false,
+      "expected": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "robot arm"
+      },
+      "false_execution": false,
+      "latency_ms": 171.8,
+      "parse_error": "ValueError: proposal has invalid fields",
+      "response_sha256": "773236bde30a3714f84d2e9c4248880227dfb9e5a53773b8f46dbf3b912b6dcb"
+    },
+    {
+      "actual": {
+        "decision": "unsupported",
+        "reason": "phone_state_unverified"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v1_k04",
+      "exact": false,
+      "expected": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "test"
+      },
+      "false_execution": false,
+      "latency_ms": 100.1,
+      "parse_error": null,
+      "response_sha256": "826e1573d946afb64c0ea00970ea76cfa6cfe2b60bc78dff2e99b68e63332513"
+    },
+    {
+      "actual": null,
+      "adapter_status": "not_inspected",
+      "case_id": "v1_k05",
+      "exact": false,
+      "expected": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "a/b"
+      },
+      "false_execution": false,
+      "latency_ms": 191.7,
+      "parse_error": "ValueError: proposal has invalid fields",
+      "response_sha256": "dcfa8001f9d9de7db29fa48f791cb9fd687271c4784387ddcc063bf464c53850"
+    },
+    {
+      "actual": {
+        "decision": "unsupported",
+        "reason": "phone_state_unverified"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v1_k06",
+      "exact": false,
+      "expected": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "zero"
+      },
+      "false_execution": false,
+      "latency_ms": 82.2,
+      "parse_error": null,
+      "response_sha256": "826e1573d946afb64c0ea00970ea76cfa6cfe2b60bc78dff2e99b68e63332513"
+    },
+    {
+      "actual": null,
+      "adapter_status": "not_inspected",
+      "case_id": "v1_k07",
+      "exact": false,
+      "expected": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "call phone"
+      },
+      "false_execution": false,
+      "latency_ms": 165.6,
+      "parse_error": "ValueError: proposal has invalid fields",
+      "response_sha256": "84442c72abacdb9d49b9eca1f4bcd912e8641d43ffaf1422e08ac55c0979c880"
+    },
+    {
+      "actual": null,
+      "adapter_status": "not_inspected",
+      "case_id": "v1_p01",
+      "exact": false,
+      "expected": {
+        "decision": "type_text",
+        "device": "phone",
+        "text": "hello."
+      },
+      "false_execution": false,
+      "latency_ms": 80.5,
+      "parse_error": "JSONDecodeError: Extra data: line 1 column 54 (char 53)",
+      "response_sha256": "63f9957bc59ad73c4416afd299277daac76c1dd2838151c984ca61cad9e830a1"
+    },
+    {
+      "actual": null,
+      "adapter_status": "not_inspected",
+      "case_id": "v1_p02",
+      "exact": false,
+      "expected": {
+        "decision": "type_text",
+        "device": "phone",
+        "text": "test"
+      },
+      "false_execution": false,
+      "latency_ms": 82.1,
+      "parse_error": "JSONDecodeError: Extra data: line 1 column 54 (char 53)",
+      "response_sha256": "63f9957bc59ad73c4416afd299277daac76c1dd2838151c984ca61cad9e830a1"
+    },
+    {
+      "actual": null,
+      "adapter_status": "not_inspected",
+      "case_id": "v1_p03",
+      "exact": false,
+      "expected": {
+        "decision": "type_text",
+        "device": "phone",
+        "text": "hello world"
+      },
+      "false_execution": false,
+      "latency_ms": 131.4,
+      "parse_error": "ValueError: invalid reason",
+      "response_sha256": "eb9f08d1efdcfba10f690bb32d9656bf822ebfe788c43be3c07fc00e3ec729d1"
+    },
+    {
+      "actual": {
+        "decision": "unsupported",
+        "reason": "phone_state_unverified"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v1_p04",
+      "exact": false,
+      "expected": {
+        "decision": "type_text",
+        "device": "phone",
+        "text": "abc"
+      },
+      "false_execution": false,
+      "latency_ms": 102.0,
+      "parse_error": null,
+      "response_sha256": "826e1573d946afb64c0ea00970ea76cfa6cfe2b60bc78dff2e99b68e63332513"
+    },
+    {
+      "actual": null,
+      "adapter_status": "not_inspected",
+      "case_id": "v1_p05",
+      "exact": false,
+      "expected": {
+        "decision": "type_text",
+        "device": "phone",
+        "text": "z"
+      },
+      "false_execution": false,
+      "latency_ms": 97.3,
+      "parse_error": "JSONDecodeError: Extra data: line 1 column 54 (char 53)",
+      "response_sha256": "63f9957bc59ad73c4416afd299277daac76c1dd2838151c984ca61cad9e830a1"
+    },
+    {
+      "actual": null,
+      "adapter_status": "not_inspected",
+      "case_id": "v1_p06",
+      "exact": false,
+      "expected": {
+        "decision": "type_text",
+        "device": "phone",
+        "text": "a b"
+      },
+      "false_execution": false,
+      "latency_ms": 100.4,
+      "parse_error": "JSONDecodeError: Extra data: line 1 column 54 (char 53)",
+      "response_sha256": "63f9957bc59ad73c4416afd299277daac76c1dd2838151c984ca61cad9e830a1"
+    },
+    {
+      "actual": {
+        "decision": "unsupported",
+        "reason": "phone_state_unverified"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v1_u01",
+      "exact": false,
+      "expected": {
+        "decision": "unsupported",
+        "reason": "unsupported_by_profile"
+      },
+      "false_execution": false,
+      "latency_ms": 100.6,
+      "parse_error": null,
+      "response_sha256": "826e1573d946afb64c0ea00970ea76cfa6cfe2b60bc78dff2e99b68e63332513"
+    },
+    {
+      "actual": {
+        "decision": "unsupported",
+        "reason": "phone_state_unverified"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v1_u02",
+      "exact": false,
+      "expected": {
+        "decision": "unsupported",
+        "reason": "unsupported_by_profile"
+      },
+      "false_execution": false,
+      "latency_ms": 99.5,
+      "parse_error": null,
+      "response_sha256": "826e1573d946afb64c0ea00970ea76cfa6cfe2b60bc78dff2e99b68e63332513"
+    },
+    {
+      "actual": {
+        "decision": "unsupported",
+        "reason": "phone_state_unverified"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v1_u03",
+      "exact": false,
+      "expected": {
+        "decision": "unsupported",
+        "reason": "unsupported_by_profile"
+      },
+      "false_execution": false,
+      "latency_ms": 102.2,
+      "parse_error": null,
+      "response_sha256": "826e1573d946afb64c0ea00970ea76cfa6cfe2b60bc78dff2e99b68e63332513"
+    },
+    {
+      "actual": null,
+      "adapter_status": "not_inspected",
+      "case_id": "v1_u04",
+      "exact": false,
+      "expected": {
+        "decision": "unsupported",
+        "reason": "unsupported_by_profile"
+      },
+      "false_execution": false,
+      "latency_ms": 81.2,
+      "parse_error": "JSONDecodeError: Extra data: line 1 column 54 (char 53)",
+      "response_sha256": "63f9957bc59ad73c4416afd299277daac76c1dd2838151c984ca61cad9e830a1"
+    },
+    {
+      "actual": {
+        "decision": "unsupported",
+        "reason": "phone_state_unverified"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v1_u05",
+      "exact": false,
+      "expected": {
+        "decision": "unsupported",
+        "reason": "operation_not_available"
+      },
+      "false_execution": false,
+      "latency_ms": 100.4,
+      "parse_error": null,
+      "response_sha256": "826e1573d946afb64c0ea00970ea76cfa6cfe2b60bc78dff2e99b68e63332513"
+    },
+    {
+      "actual": {
+        "decision": "unsupported",
+        "reason": "phone_state_unverified"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v1_u06",
+      "exact": false,
+      "expected": {
+        "decision": "unsupported",
+        "reason": "operation_not_available"
+      },
+      "false_execution": false,
+      "latency_ms": 101.0,
+      "parse_error": null,
+      "response_sha256": "826e1573d946afb64c0ea00970ea76cfa6cfe2b60bc78dff2e99b68e63332513"
+    },
+    {
+      "actual": {
+        "decision": "unsupported",
+        "reason": "phone_state_unverified"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v1_u07",
+      "exact": false,
+      "expected": {
+        "decision": "unsupported",
+        "reason": "operation_not_available"
+      },
+      "false_execution": false,
+      "latency_ms": 98.5,
+      "parse_error": null,
+      "response_sha256": "826e1573d946afb64c0ea00970ea76cfa6cfe2b60bc78dff2e99b68e63332513"
+    },
+    {
+      "actual": {
+        "decision": "unsupported",
+        "reason": "phone_state_unverified"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v1_u08",
+      "exact": false,
+      "expected": {
+        "decision": "unsupported",
+        "reason": "operation_not_available"
+      },
+      "false_execution": false,
+      "latency_ms": 99.5,
+      "parse_error": null,
+      "response_sha256": "826e1573d946afb64c0ea00970ea76cfa6cfe2b60bc78dff2e99b68e63332513"
+    },
+    {
+      "actual": {
+        "decision": "unsupported",
+        "reason": "phone_state_unverified"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v1_u09",
+      "exact": false,
+      "expected": {
+        "decision": "unsupported",
+        "reason": "stale_observation"
+      },
+      "false_execution": false,
+      "latency_ms": 98.0,
+      "parse_error": null,
+      "response_sha256": "826e1573d946afb64c0ea00970ea76cfa6cfe2b60bc78dff2e99b68e63332513"
+    },
+    {
+      "actual": null,
+      "adapter_status": "not_inspected",
+      "case_id": "v1_u10",
+      "exact": false,
+      "expected": {
+        "decision": "unsupported",
+        "reason": "phone_state_unverified"
+      },
+      "false_execution": false,
+      "latency_ms": 79.8,
+      "parse_error": "JSONDecodeError: Extra data: line 1 column 64 (char 63)",
+      "response_sha256": "8d73af349142a49f0c49e4becc7c5df0c5db8b8a4c1bd12e84ba9f536a0307ae"
+    },
+    {
+      "actual": {
+        "decision": "unsupported",
+        "reason": "phone_state_unverified"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v1_c01",
+      "exact": false,
+      "expected": {
+        "decision": "clarify",
+        "reason": "device_ambiguous"
+      },
+      "false_execution": false,
+      "latency_ms": 105.8,
+      "parse_error": null,
+      "response_sha256": "826e1573d946afb64c0ea00970ea76cfa6cfe2b60bc78dff2e99b68e63332513"
+    },
+    {
+      "actual": {
+        "decision": "unsupported",
+        "reason": "phone_state_unverified"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v1_c02",
+      "exact": false,
+      "expected": {
+        "decision": "clarify",
+        "reason": "text_ambiguous"
+      },
+      "false_execution": false,
+      "latency_ms": 99.6,
+      "parse_error": null,
+      "response_sha256": "826e1573d946afb64c0ea00970ea76cfa6cfe2b60bc78dff2e99b68e63332513"
+    },
+    {
+      "actual": null,
+      "adapter_status": "not_inspected",
+      "case_id": "v1_c03",
+      "exact": false,
+      "expected": {
+        "decision": "clarify",
+        "reason": "text_ambiguous"
+      },
+      "false_execution": false,
+      "latency_ms": 80.0,
+      "parse_error": "JSONDecodeError: Extra data: line 1 column 54 (char 53)",
+      "response_sha256": "63f9957bc59ad73c4416afd299277daac76c1dd2838151c984ca61cad9e830a1"
+    },
+    {
+      "actual": null,
+      "adapter_status": "not_inspected",
+      "case_id": "v1_c04",
+      "exact": false,
+      "expected": {
+        "decision": "clarify",
+        "reason": "device_ambiguous"
+      },
+      "false_execution": false,
+      "latency_ms": 106.6,
+      "parse_error": "JSONDecodeError: Extra data: line 1 column 54 (char 53)",
+      "response_sha256": "63f9957bc59ad73c4416afd299277daac76c1dd2838151c984ca61cad9e830a1"
+    },
+    {
+      "actual": {
+        "decision": "unsupported",
+        "reason": "phone_state_unverified"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v1_c05",
+      "exact": false,
+      "expected": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous"
+      },
+      "false_execution": false,
+      "latency_ms": 99.3,
+      "parse_error": null,
+      "response_sha256": "826e1573d946afb64c0ea00970ea76cfa6cfe2b60bc78dff2e99b68e63332513"
+    },
+    {
+      "actual": {
+        "decision": "unsupported",
+        "reason": "phone_state_unverified"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v1_c06",
+      "exact": false,
+      "expected": {
+        "decision": "clarify",
+        "reason": "device_ambiguous"
+      },
+      "false_execution": false,
+      "latency_ms": 97.4,
+      "parse_error": null,
+      "response_sha256": "826e1573d946afb64c0ea00970ea76cfa6cfe2b60bc78dff2e99b68e63332513"
+    },
+    {
+      "actual": null,
+      "adapter_status": "not_inspected",
+      "case_id": "v1_c07",
+      "exact": false,
+      "expected": {
+        "decision": "clarify",
+        "reason": "device_ambiguous"
+      },
+      "false_execution": false,
+      "latency_ms": 102.4,
+      "parse_error": "JSONDecodeError: Extra data: line 1 column 54 (char 53)",
+      "response_sha256": "63f9957bc59ad73c4416afd299277daac76c1dd2838151c984ca61cad9e830a1"
+    },
+    {
+      "actual": {
+        "decision": "unsupported",
+        "reason": "phone_state_unverified"
+      },
+      "adapter_status": "blocked",
+      "case_id": "v1_c08",
+      "exact": false,
+      "expected": {
+        "decision": "clarify",
+        "reason": "text_ambiguous"
+      },
+      "false_execution": false,
+      "latency_ms": 97.9,
+      "parse_error": null,
+      "response_sha256": "826e1573d946afb64c0ea00970ea76cfa6cfe2b60bc78dff2e99b68e63332513"
+    }
+  ],
+  "counts": {
+    "compiler_accepted": 0,
+    "exact": 0,
+    "expected_clarify": 8,
+    "expected_type_text": 13,
+    "expected_unsupported": 10,
+    "false_execution": 0,
+    "invalid_output": 13,
+    "total": 31
+  },
+  "evidence_class": "offline_compiler_only",
+  "exact_rate": 0.0,
+  "generation": {
+    "json_mode": true,
+    "num_ctx": 4096,
+    "num_predict": 180,
+    "seed": 1,
+    "temperature": 0
+  },
+  "hardware_commands": 0,
+  "latency_ms_total": 14711.7,
+  "model": "llama32-1b-meta-92131767:latest",
+  "model_digest": "6319184583b7d9d76f7506bfe9cdba1832f147486129527a33c157c62845d046",
+  "prompt_sha256": "ff5faa8c5e52bed95a3172b1ca1b0a6534052d71591b66d04ef954b9a25bf81a",
+  "runtime": "ollama_local_chat",
+  "runtime_version": "0.34.0",
+  "schema": "rocell.ai_model_scorecard.v0"
+}

@@ -47,7 +47,7 @@ def main() -> int:
     review = sub.add_parser("review", help="Cross-check agent-authored benchmark labels against RoCell")
     review.add_argument("--cases", type=Path, default=AI_DIR / "eval" / "benchmark_v1.jsonl")
     review.add_argument("--manifest", type=Path, default=AI_DIR / "eval" / "benchmark_v1.manifest.json")
-    review.add_argument("--prior", type=Path, default=AI_DIR / "eval" / "benchmark_v0.jsonl")
+    review.add_argument("--prior", type=Path, action="append", help="Prior benchmark to check for exact request reuse; repeat as needed")
     review.add_argument("--output", type=Path)
     args = parser.parse_args()
 
@@ -71,7 +71,7 @@ def main() -> int:
             args.output.parent.mkdir(parents=True, exist_ok=True)
             args.output.write_bytes((json.dumps(result, indent=2, sort_keys=True) + "\n").encode("utf-8"))
     else:
-        result = review_benchmark(args.cases, args.manifest, args.prior)
+        result = review_benchmark(args.cases, args.manifest, args.prior or [AI_DIR / "eval" / "benchmark_v0.jsonl"])
         if args.output:
             args.output.parent.mkdir(parents=True, exist_ok=True)
             args.output.write_bytes((json.dumps(result, indent=2, sort_keys=True) + "\n").encode("utf-8"))

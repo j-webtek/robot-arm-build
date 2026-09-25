@@ -1,0 +1,23 @@
+{
+  "schema": "rocell.ai_model_candidate.v0",
+  "role": "small_student_baseline",
+  "source": "meta-llama/Llama-3.2-1B-Instruct",
+  "source_revision": "9213176726f574b556790deb65791e0c5aa438b6",
+  "source_url": "https://huggingface.co/meta-llama/Llama-3.2-1B-Instruct",
+  "license_id": "llama3.2",
+  "license_url": "https://github.com/meta-llama/llama-models/blob/main/models/llama3_2/LICENSE",
+  "local_import": {
+    "runtime": "Ollama",
+    "tag": "llama32-1b-meta-92131767:latest",
+    "digest": "6319184583b7d9d76f7506bfe9cdba1832f147486129527a33c157c62845d046",
+    "quantization": "F16",
+    "source_format": "Safetensors",
+    "import_recipe": "Ollama Modelfile FROM the local snapshot of source_revision; PARAMETER temperature 0; PARAMETER num_ctx 4096"
+  },
+  "evaluation": {
+    "benchmark": "../eval/benchmark_v1.manifest.json",
+    "scorecard": "../eval/llama32_1b_official_v1_scorecard.json"
+  },
+  "training_status": "no_project_fine_tuning_offline_evaluation_only",
+  "artifact_policy": "Model weights and local import files remain outside Git."
+}

@@ -156,6 +156,30 @@ class OfflineContractTests(unittest.TestCase):
         self.assertEqual(score["counts"]["invalid_output"], 0)
         self.assertEqual(score["hardware_commands"], 0)
 
+    def test_v2_frozen_review_checks_both_prior_sets(self) -> None:
+        folder = AI_DIR / "eval"
+        cases = folder / "benchmark_v2.jsonl"
+        manifest = folder / "benchmark_v2.manifest.json"
+        priors = [folder / "benchmark_v0.jsonl", folder / "benchmark_v1.jsonl"]
+        report = review_benchmark(cases, manifest, priors)
+        self.assertEqual(report["passed"], 24)
+        self.assertEqual(report["issues"], [])
+        self.assertFalse(report["human_reviewed"])
+
+        rows = [json.loads(line) for line in cases.read_text(encoding="utf-8").splitlines()]
+        prior_request = json.loads((folder / "benchmark_v1.jsonl").read_text(encoding="utf-8").splitlines()[0])["request"]
+        rows[0]["request"] = prior_request
+        with tempfile.TemporaryDirectory() as temp_dir:
+            altered_cases = Path(temp_dir) / "cases.jsonl"
+            altered_manifest = Path(temp_dir) / "manifest.json"
+            raw = ("\n".join(json.dumps(row) for row in rows) + "\n").encode("utf-8")
+            altered_cases.write_bytes(raw)
+            metadata = json.loads(manifest.read_text(encoding="utf-8"))
+            metadata["cases_sha256"] = hashlib.sha256(raw).hexdigest()
+            altered_manifest.write_text(json.dumps(metadata), encoding="utf-8")
+            disputed = review_benchmark(altered_cases, altered_manifest, priors)
+        self.assertIn({"case_id": "v2_s01", "issue": "duplicate_or_prior_request"}, disputed["issues"])
+
 
 if __name__ == "__main__":
     unittest.main()

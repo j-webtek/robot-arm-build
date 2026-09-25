@@ -7,6 +7,7 @@ person's judgment about every natural-language interpretation.
 
 from __future__ import annotations
 
+import hashlib
 from pathlib import Path
 from typing import Any
 
@@ -28,9 +29,10 @@ _BASIS_TO_EXPECTED = {
 _UNAVAILABLE_OPERATIONS = {"dial", "call", "send", "open_app"}
 
 
-def review_benchmark(cases_path: Path, manifest_path: Path, prior_cases_path: Path) -> dict[str, Any]:
+def review_benchmark(cases_path: Path, manifest_path: Path, prior_cases_path: Path | list[Path]) -> dict[str, Any]:
     cases, digest = load_benchmark(cases_path, manifest_path)
-    prior = {row["request"].strip().casefold() for row in _read_cases(prior_cases_path)}
+    prior_paths = [prior_cases_path] if isinstance(prior_cases_path, Path) else prior_cases_path
+    prior = {row["request"].strip().casefold() for path in prior_paths for row in _read_cases(path)}
     issues: list[dict[str, str]] = []
     seen: set[str] = set()
     for case in cases:
@@ -86,6 +88,10 @@ def review_benchmark(cases_path: Path, manifest_path: Path, prior_cases_path: Pa
         "benchmark_sha256": digest,
         "review_type": "independent_semantic_crosscheck",
         "human_reviewed": False,
+        "prior_sets": [
+            {"file": path.name, "sha256": hashlib.sha256(path.read_bytes()).hexdigest()}
+            for path in prior_paths
+        ],
         "case_count": len(cases),
         "passed": len(cases) - len({issue["case_id"] for issue in issues}),
         "issues": issues,

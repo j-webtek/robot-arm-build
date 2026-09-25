@@ -1,0 +1,15 @@
+{
+  "schema": "rocell.ai_benchmark_manifest.v0",
+  "benchmark_id": "rocell_ai_intent_v2",
+  "source_commit": "aa74f7adfe319e40c010ffa96a07d2a914aae862",
+  "review_state": "simulated_semantic_crosscheck_no_human_review",
+  "case_count": 24,
+  "cases_sha256": "c4617bbb2be227659eedbc575d66924649496ad61778be7379f7d0aa8820f484",
+  "scope": "fresh offline intent-to-RoCell challenge set, frozen before any model or prompt tuning",
+  "held_out_policy": "Do not train on these requests or close paraphrases; use v2 only for final offline comparison.",
+  "result_classes": [
+    "type_text",
+    "clarify",
+    "unsupported"
+  ]
+}

@@ -7,7 +7,7 @@ import hashlib
 import json
 from pathlib import Path
 import time
-from typing import Any
+from typing import Any, Callable
 from urllib import request
 
 from . import SCHEMA_ID
@@ -68,29 +68,25 @@ def _proposal_from_response(raw: str, case: dict[str, Any]) -> dict[str, Any]:
     return proposal
 
 
-def evaluate_model(cases_path: Path, manifest_path: Path, model: str) -> dict[str, Any]:
-    """Call a local model, then inspect proposals without executing them."""
+def score_generated(
+    cases: list[dict[str, Any]],
+    digest: str,
+    *,
+    model: str,
+    model_digest: str,
+    runtime: str,
+    runtime_version: str,
+    generation: dict[str, Any],
+    generate: Callable[[dict[str, Any]], str],
+) -> dict[str, Any]:
+    """Score model text through one strict parser and the read-only adapter."""
 
-    cases, digest = load_benchmark(cases_path, manifest_path)
-    model_digest = _model_digest(model)
-    runtime_version = _runtime_version()
     rows: list[dict[str, Any]] = []
     counts: Counter[str] = Counter()
     for case in cases:
         started = time.perf_counter()
-        user_content = json.dumps({"request": case["request"], "observation": case["observation"]}, ensure_ascii=False)
-        response = _post("/api/chat", {
-            "model": model,
-            "messages": [
-                {"role": "system", "content": SYSTEM_PROMPT},
-                {"role": "user", "content": user_content},
-            ],
-            "format": "json",
-            "stream": False,
-            "options": {"temperature": 0, "seed": 1, "num_predict": 180, "num_ctx": 4096},
-        })
+        raw = generate(case)
         elapsed_ms = round((time.perf_counter() - started) * 1000, 1)
-        raw = response.get("message", {}).get("content", "")
         parse_error: str | None = None
         proposal: dict[str, Any] | None = None
         adapter_status = "not_inspected"
@@ -122,17 +118,15 @@ def evaluate_model(cases_path: Path, manifest_path: Path, model: str) -> dict[st
             "response_sha256": hashlib.sha256(raw.encode("utf-8")).hexdigest(),
             "latency_ms": elapsed_ms,
         })
-    if _model_digest(model) != model_digest:
-        raise ValueError("local model digest changed during evaluation")
     return {
         "schema": "rocell.ai_model_scorecard.v0",
         "benchmark_sha256": digest,
         "model": model,
         "model_digest": model_digest,
         "prompt_sha256": PROMPT_SHA256,
-        "runtime": "ollama_local_chat",
+        "runtime": runtime,
         "runtime_version": runtime_version,
-        "generation": {"temperature": 0, "seed": 1, "num_predict": 180, "num_ctx": 4096},
+        "generation": generation,
         "counts": dict(sorted(counts.items())),
         "exact_rate": counts["exact"] / counts["total"] if counts["total"] else 0.0,
         "latency_ms_total": round(sum(row["latency_ms"] for row in rows), 1),
@@ -140,3 +134,35 @@ def evaluate_model(cases_path: Path, manifest_path: Path, model: str) -> dict[st
         "evidence_class": "offline_compiler_only",
         "hardware_commands": 0,
     }
+
+
+def evaluate_model(cases_path: Path, manifest_path: Path, model: str) -> dict[str, Any]:
+    """Call a local Ollama model, then inspect proposals without executing them."""
+
+    cases, digest = load_benchmark(cases_path, manifest_path)
+    model_digest = _model_digest(model)
+    runtime_version = _runtime_version()
+
+    def generate(case: dict[str, Any]) -> str:
+        user_content = json.dumps({"request": case["request"], "observation": case["observation"]}, ensure_ascii=False)
+        response = _post("/api/chat", {
+            "model": model,
+            "messages": [
+                {"role": "system", "content": SYSTEM_PROMPT},
+                {"role": "user", "content": user_content},
+            ],
+            "format": "json",
+            "stream": False,
+            "options": {"temperature": 0, "seed": 1, "num_predict": 180, "num_ctx": 4096},
+        })
+        return response.get("message", {}).get("content", "")
+
+    result = score_generated(
+        cases, digest, model=model, model_digest=model_digest,
+        runtime="ollama_local_chat", runtime_version=runtime_version,
+        generation={"temperature": 0, "seed": 1, "num_predict": 180, "num_ctx": 4096, "json_mode": True},
+        generate=generate,
+    )
+    if _model_digest(model) != model_digest:
+        raise ValueError("local model digest changed during evaluation")
+    return result

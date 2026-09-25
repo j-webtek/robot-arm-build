@@ -45,10 +45,24 @@ The five accepted wrong proposals all concern ambiguous requests. The runner
 records response hashes rather than full generated text. Latency depends on
 local model loading and cache state; it is not a deployment benchmark.
 
+`benchmark_v2.jsonl` is a fresh 24-case challenge set frozen before project
+fine tuning or prompt revision. Its `simulated_review_v2.json` cross-checks
+24/24 cases against the compiler and checks exact request reuse against both
+earlier sets. No person reviewed its English labels. It remains reserved for
+a later final offline comparison; do not use it for selecting examples,
+prompts, or checkpoints.
+
+The provenance-pinned Meta Llama 3.2 1B Instruct candidate scores 0/31 on v1
+with 13 invalid outputs in JSON mode. That is a measured failure of this
+checkpoint and prompt under the strict proposal schema. The source revision
+and imported Ollama digest are recorded in
+[`train/llama32_1b_candidate.json`](../train/llama32_1b_candidate.json).
+
 From the repository root, repeat the checks with:
 
 ```powershell
 python software/ai/run_offline.py review
 python software/ai/run_offline.py evaluate --cases software/ai/eval/benchmark_v1.jsonl --manifest software/ai/eval/benchmark_v1.manifest.json
 python software/ai/run_offline.py evaluate-model --model llama-3.1-8b-instruct-q4_k_m:latest
+python software/ai/run_offline.py review --cases software/ai/eval/benchmark_v2.jsonl --manifest software/ai/eval/benchmark_v2.manifest.json --prior software/ai/eval/benchmark_v0.jsonl --prior software/ai/eval/benchmark_v1.jsonl
 ```

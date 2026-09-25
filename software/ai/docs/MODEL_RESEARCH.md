@@ -26,3 +26,12 @@ served artifact hash, and frozen scorecard. The Llama 3.1 license allows some
 output-based model improvement and sets conditions for distribution; check the
 chosen release's [actual license](https://github.com/meta-llama/llama-models/blob/main/models/llama3_1/LICENSE)
 before using teacher outputs or releasing a model.
+
+The first small student baseline uses Meta's
+[Llama 3.2 1B Instruct repository](https://huggingface.co/meta-llama/Llama-3.2-1B-Instruct)
+at the exact revision in the [candidate manifest](../train/llama32_1b_candidate.json).
+The source reports the `llama3.2` license; see Meta's
+[Llama 3.2 license](https://github.com/meta-llama/llama-models/blob/main/models/llama3_2/LICENSE)
+before distributing any derived model. Model weights are cached locally and
+are not committed. This is an instruction-tuned 1B checkpoint with no
+project-specific fine tuning yet.
