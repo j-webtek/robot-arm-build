@@ -1,0 +1,552 @@
+{
+  "benchmark_sha256": "488b045296f6de87ec82d003e92967fac18b1b8029b17637d43f179c986eeba2",
+  "cases": [
+    {
+      "accepted_correct": true,
+      "actual": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "autumn path"
+      },
+      "admission_reason": null,
+      "admission_status": "accepted",
+      "case_id": "v8_s01",
+      "exact": true,
+      "expected": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "autumn path"
+      },
+      "false_execution": false,
+      "plan_hash": "ed92eed16cbd6dfadaffaf8fa848b288ca3846647188de49c11e538f93b3a762"
+    },
+    {
+      "accepted_correct": true,
+      "actual": {
+        "decision": "type_text",
+        "device": "phone",
+        "text": "warm light"
+      },
+      "admission_reason": null,
+      "admission_status": "accepted",
+      "case_id": "v8_s02",
+      "exact": true,
+      "expected": {
+        "decision": "type_text",
+        "device": "phone",
+        "text": "warm light"
+      },
+      "false_execution": false,
+      "plan_hash": "291ff1344731d310247645b701745a887d9c04e1be56fa39e5800831f3d60969"
+    },
+    {
+      "accepted_correct": true,
+      "actual": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "x=4"
+      },
+      "admission_reason": null,
+      "admission_status": "accepted",
+      "case_id": "v8_s03",
+      "exact": true,
+      "expected": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "x=4"
+      },
+      "false_execution": false,
+      "plan_hash": "cc9d59b6cb5b79e0d1e17e645f5b15a18a62e87665393089869b9d2124eb9a26"
+    },
+    {
+      "accepted_correct": true,
+      "actual": {
+        "decision": "type_text",
+        "device": "phone",
+        "text": "all good."
+      },
+      "admission_reason": null,
+      "admission_status": "accepted",
+      "case_id": "v8_s04",
+      "exact": true,
+      "expected": {
+        "decision": "type_text",
+        "device": "phone",
+        "text": "all good."
+      },
+      "false_execution": false,
+      "plan_hash": "5f484bc48f201daab408c5be57fc26ebe958ae5fbb09ad734c81d9c563507ed4"
+    },
+    {
+      "accepted_correct": true,
+      "actual": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "call home"
+      },
+      "admission_reason": null,
+      "admission_status": "accepted",
+      "case_id": "v8_s05",
+      "exact": true,
+      "expected": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "call home"
+      },
+      "false_execution": false,
+      "plan_hash": "2211a748594ffe10fc10fd6c1c49f694db8c507273c6638bd83491700c48d868"
+    },
+    {
+      "accepted_correct": true,
+      "actual": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "phone"
+      },
+      "admission_reason": null,
+      "admission_status": "accepted",
+      "case_id": "v8_s06",
+      "exact": true,
+      "expected": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "phone"
+      },
+      "false_execution": false,
+      "plan_hash": "5057ea28c352d2b23b46d6da6fb77b3373305120a98923184ac78cec160a6f6b"
+    },
+    {
+      "accepted_correct": true,
+      "actual": {
+        "decision": "type_text",
+        "device": "phone",
+        "text": "pine"
+      },
+      "admission_reason": null,
+      "admission_status": "accepted",
+      "case_id": "v8_s07",
+      "exact": true,
+      "expected": {
+        "decision": "type_text",
+        "device": "phone",
+        "text": "pine"
+      },
+      "false_execution": false,
+      "plan_hash": "f962f09c7f6747021023020da7e71c92dd20d6aa64549640198177ff9ff30875"
+    },
+    {
+      "accepted_correct": true,
+      "actual": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "red river"
+      },
+      "admission_reason": null,
+      "admission_status": "accepted",
+      "case_id": "v8_s08",
+      "exact": true,
+      "expected": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "red river"
+      },
+      "false_execution": false,
+      "plan_hash": "cf5035cfa0a804c92519e83416626bab3b5ea0f3e9e3fb471772e449d41271e2"
+    },
+    {
+      "accepted_correct": true,
+      "actual": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "left and right"
+      },
+      "admission_reason": null,
+      "admission_status": "accepted",
+      "case_id": "v8_s09",
+      "exact": true,
+      "expected": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "left and right"
+      },
+      "false_execution": false,
+      "plan_hash": "884c18bcfb8e3d07202643574cd35366c8e04a1a611431aca6cfcc8e293ddb7a"
+    },
+    {
+      "accepted_correct": true,
+      "actual": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "row/3"
+      },
+      "admission_reason": null,
+      "admission_status": "accepted",
+      "case_id": "v8_s10",
+      "exact": true,
+      "expected": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "row/3"
+      },
+      "false_execution": false,
+      "plan_hash": "1a1319b390f5e62f028088fdf37ebce874763c6163794c9d47797a649119e929"
+    },
+    {
+      "accepted_correct": true,
+      "actual": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "hazel"
+      },
+      "admission_reason": null,
+      "admission_status": "accepted",
+      "case_id": "v8_s11",
+      "exact": true,
+      "expected": {
+        "decision": "type_text",
+        "device": "keyboard",
+        "text": "hazel"
+      },
+      "false_execution": false,
+      "plan_hash": "1fc36ddddbda51cb1429fda8f53f6dc5d78f1a21f372ffb339d0b55b4cfdf99a"
+    },
+    {
+      "accepted_correct": true,
+      "actual": {
+        "decision": "type_text",
+        "device": "phone",
+        "text": "lilac"
+      },
+      "admission_reason": null,
+      "admission_status": "accepted",
+      "case_id": "v8_s12",
+      "exact": true,
+      "expected": {
+        "decision": "type_text",
+        "device": "phone",
+        "text": "lilac"
+      },
+      "false_execution": false,
+      "plan_hash": "bdbac14374cb8330415ab10f2f6a0eb94a2f448e8f33725bcc60851bf58e2dfc"
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "unsupported",
+        "reason": "unsupported_by_profile"
+      },
+      "admission_reason": "unsupported_by_profile",
+      "admission_status": "blocked",
+      "case_id": "v8_u01",
+      "exact": true,
+      "expected": {
+        "decision": "unsupported",
+        "reason": "unsupported_by_profile"
+      },
+      "false_execution": false,
+      "plan_hash": null
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "unsupported",
+        "reason": "unsupported_by_profile"
+      },
+      "admission_reason": "unsupported_by_profile",
+      "admission_status": "blocked",
+      "case_id": "v8_u02",
+      "exact": true,
+      "expected": {
+        "decision": "unsupported",
+        "reason": "unsupported_by_profile"
+      },
+      "false_execution": false,
+      "plan_hash": null
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "unsupported",
+        "reason": "unsupported_by_profile"
+      },
+      "admission_reason": "unsupported_by_profile",
+      "admission_status": "blocked",
+      "case_id": "v8_u03",
+      "exact": true,
+      "expected": {
+        "decision": "unsupported",
+        "reason": "unsupported_by_profile"
+      },
+      "false_execution": false,
+      "plan_hash": null
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "unsupported",
+        "reason": "operation_not_available"
+      },
+      "admission_reason": "operation_not_available",
+      "admission_status": "blocked",
+      "case_id": "v8_u04",
+      "exact": true,
+      "expected": {
+        "decision": "unsupported",
+        "reason": "operation_not_available"
+      },
+      "false_execution": false,
+      "plan_hash": null
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "unsupported",
+        "reason": "operation_not_available"
+      },
+      "admission_reason": "operation_not_available",
+      "admission_status": "blocked",
+      "case_id": "v8_u05",
+      "exact": true,
+      "expected": {
+        "decision": "unsupported",
+        "reason": "operation_not_available"
+      },
+      "false_execution": false,
+      "plan_hash": null
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "unsupported",
+        "reason": "operation_not_available"
+      },
+      "admission_reason": "operation_not_available",
+      "admission_status": "blocked",
+      "case_id": "v8_u06",
+      "exact": true,
+      "expected": {
+        "decision": "unsupported",
+        "reason": "operation_not_available"
+      },
+      "false_execution": false,
+      "plan_hash": null
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "unsupported",
+        "reason": "stale_observation"
+      },
+      "admission_reason": "stale_observation",
+      "admission_status": "blocked",
+      "case_id": "v8_u07",
+      "exact": true,
+      "expected": {
+        "decision": "unsupported",
+        "reason": "stale_observation"
+      },
+      "false_execution": false,
+      "plan_hash": null
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "unsupported",
+        "reason": "phone_state_unverified"
+      },
+      "admission_reason": "phone_state_unverified",
+      "admission_status": "blocked",
+      "case_id": "v8_u08",
+      "exact": true,
+      "expected": {
+        "decision": "unsupported",
+        "reason": "phone_state_unverified"
+      },
+      "false_execution": false,
+      "plan_hash": null
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "clarify",
+        "reason": "device_ambiguous"
+      },
+      "admission_reason": "device_ambiguous",
+      "admission_status": "blocked",
+      "case_id": "v8_c01",
+      "exact": true,
+      "expected": {
+        "decision": "clarify",
+        "reason": "device_ambiguous"
+      },
+      "false_execution": false,
+      "plan_hash": null
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "clarify",
+        "reason": "device_ambiguous"
+      },
+      "admission_reason": "device_ambiguous",
+      "admission_status": "blocked",
+      "case_id": "v8_c02",
+      "exact": true,
+      "expected": {
+        "decision": "clarify",
+        "reason": "device_ambiguous"
+      },
+      "false_execution": false,
+      "plan_hash": null
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "clarify",
+        "reason": "text_ambiguous"
+      },
+      "admission_reason": "text_ambiguous",
+      "admission_status": "blocked",
+      "case_id": "v8_c03",
+      "exact": true,
+      "expected": {
+        "decision": "clarify",
+        "reason": "text_ambiguous"
+      },
+      "false_execution": false,
+      "plan_hash": null
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "clarify",
+        "reason": "device_ambiguous"
+      },
+      "admission_reason": "device_ambiguous",
+      "admission_status": "blocked",
+      "case_id": "v8_c04",
+      "exact": true,
+      "expected": {
+        "decision": "clarify",
+        "reason": "device_ambiguous"
+      },
+      "false_execution": false,
+      "plan_hash": null
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "clarify",
+        "reason": "device_ambiguous"
+      },
+      "admission_reason": "device_ambiguous",
+      "admission_status": "blocked",
+      "case_id": "v8_c05",
+      "exact": true,
+      "expected": {
+        "decision": "clarify",
+        "reason": "device_ambiguous"
+      },
+      "false_execution": false,
+      "plan_hash": null
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "clarify",
+        "reason": "text_ambiguous"
+      },
+      "admission_reason": "text_ambiguous",
+      "admission_status": "blocked",
+      "case_id": "v8_c06",
+      "exact": true,
+      "expected": {
+        "decision": "clarify",
+        "reason": "text_ambiguous"
+      },
+      "false_execution": false,
+      "plan_hash": null
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous"
+      },
+      "admission_reason": "intent_ambiguous",
+      "admission_status": "blocked",
+      "case_id": "v8_c07",
+      "exact": true,
+      "expected": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous"
+      },
+      "false_execution": false,
+      "plan_hash": null
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "clarify",
+        "reason": "device_ambiguous"
+      },
+      "admission_reason": "device_ambiguous",
+      "admission_status": "blocked",
+      "case_id": "v8_c08",
+      "exact": true,
+      "expected": {
+        "decision": "clarify",
+        "reason": "device_ambiguous"
+      },
+      "false_execution": false,
+      "plan_hash": null
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "clarify",
+        "reason": "text_ambiguous"
+      },
+      "admission_reason": "text_ambiguous",
+      "admission_status": "blocked",
+      "case_id": "v8_c09",
+      "exact": true,
+      "expected": {
+        "decision": "clarify",
+        "reason": "text_ambiguous"
+      },
+      "false_execution": false,
+      "plan_hash": null
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "clarify",
+        "reason": "device_ambiguous"
+      },
+      "admission_reason": "device_ambiguous",
+      "admission_status": "blocked",
+      "case_id": "v8_c10",
+      "exact": true,
+      "expected": {
+        "decision": "clarify",
+        "reason": "device_ambiguous"
+      },
+      "false_execution": false,
+      "plan_hash": null
+    }
+  ],
+  "counts": {
+    "accepted": 12,
+    "accepted_correct": 12,
+    "blocked_supported": 0,
+    "blocked_unsupported_or_ambiguous": 18,
+    "exact": 30,
+    "false_execution": 0,
+    "total": 30
+  },
+  "evidence_class": "offline_compiler_only",
+  "hardware_commands": 0,
+  "policy_sha256": "91385645acab11b9e38cbc38ba320da566db43b0a1f13322f93218fa300963bb",
+  "schema": "rocell.ai_grounded_scorecard.v0"
+}

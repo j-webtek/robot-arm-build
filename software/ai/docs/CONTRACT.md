@@ -56,6 +56,16 @@ extra operations and multi-step phrasing. This narrow grammar can reject valid
 English, and its checks do not prove that every possible extra instruction is
 detected. It is not connected to the physical runtime.
 
+The [grounded intent path](../rocell_ai/grounded.py) is a separate offline
+architecture. It extracts one target device and either one quoted literal
+payload or a narrow unquoted single-word payload from the request itself.
+It rejects ungrounded pronouns, multiple targets or payloads, negation, extra
+operations, and phrasing outside its finite vocabulary. RoCell's compiler
+still decides whether the resulting text can be represented. A model may be
+used for research on ambiguous intent, but its generated text and device do
+not supply the evidence for this path. This prototype has no connection to
+camera observations, hardware authorization, or execution.
+
 ## Current capability boundary
 
 The [development profiles](../../src/rocell/typing/development_profiles.py)

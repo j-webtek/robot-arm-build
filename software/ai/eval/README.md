@@ -116,6 +116,15 @@ compiler-accepted plans, and has six correct gate-admitted plans. The fixed
 gate blocks all observed wrong plans for both. v7 is consumed and neither
 candidate is authorized for arm control.
 
+The grounded intent prototype uses request evidence and RoCell's compiler
+without model-generated text or device slots. It scores 30/30 on consumed v7.
+Its first policy also scored 30/30 on v8, but a replay of older sets exposed
+six wrong accepted plans for unquoted pronouns or vague words such as `it`
+and `something`. The saved `grounded_v0_pre_pronoun_fix_v8_scorecard.json`
+records that initial policy hash; its v8 result is exploratory. The revised
+policy blocks those replay failures and scores 30/30 on consumed v7. Do not
+use v8 as a clean test of the revision; freeze a new challenge first.
+
 From the repository root, repeat the checks with:
 
 ```powershell

@@ -18,6 +18,8 @@ from rocell_ai.contract import validate_proposal  # noqa: E402
 from rocell_ai.evaluation import evaluate  # noqa: E402
 from rocell_ai.model_eval import evaluate_model  # noqa: E402
 from rocell_ai.admission_eval import evaluate_admission  # noqa: E402
+from rocell_ai.grounded import propose as grounded_propose  # noqa: E402
+from rocell_ai.grounded_eval import evaluate_grounded  # noqa: E402
 from rocell_ai.review import review_benchmark  # noqa: E402
 
 
@@ -55,6 +57,16 @@ def main() -> int:
     admission.add_argument("--manifest", type=Path, required=True)
     admission.add_argument("--raw-scorecard", type=Path, required=True)
     admission.add_argument("--output", type=Path)
+    grounded = sub.add_parser("ground", help="Extract and inspect grounded slots offline")
+    grounded.add_argument("--request", required=True)
+    grounded.add_argument("--request-id", default="manual-001")
+    grounded.add_argument("--observation-ref", default="manual-offline")
+    grounded.add_argument("--phone-state", default="UNKNOWN")
+    grounded.add_argument("--stale", action="store_true")
+    grounded_batch = sub.add_parser("evaluate-grounded", help="Score the grounded intent path offline")
+    grounded_batch.add_argument("--cases", type=Path, required=True)
+    grounded_batch.add_argument("--manifest", type=Path, required=True)
+    grounded_batch.add_argument("--output", type=Path)
     args = parser.parse_args()
 
     if args.command in {"propose", "inspect"}:
@@ -78,6 +90,15 @@ def main() -> int:
             args.output.write_bytes((json.dumps(result, indent=2, sort_keys=True) + "\n").encode("utf-8"))
     elif args.command == "admit-score":
         result = evaluate_admission(args.cases, args.manifest, args.raw_scorecard)
+        if args.output:
+            args.output.parent.mkdir(parents=True, exist_ok=True)
+            args.output.write_bytes((json.dumps(result, indent=2, sort_keys=True) + "\n").encode("utf-8"))
+    elif args.command == "ground":
+        observation = {"ref": args.observation_ref, "fresh": not args.stale, "phone_state": args.phone_state}
+        proposal = grounded_propose(request_id=args.request_id, request=args.request, observation=observation)
+        result = {"proposal": proposal, "inspection": inspect(proposal, observation)}
+    elif args.command == "evaluate-grounded":
+        result = evaluate_grounded(args.cases, args.manifest)
         if args.output:
             args.output.parent.mkdir(parents=True, exist_ok=True)
             args.output.write_bytes((json.dumps(result, indent=2, sort_keys=True) + "\n").encode("utf-8"))

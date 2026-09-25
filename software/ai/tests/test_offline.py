@@ -20,6 +20,8 @@ from rocell_ai.baseline import propose  # noqa: E402
 from rocell_ai.adapter import inspect  # noqa: E402
 from rocell_ai.admission import admit  # noqa: E402
 from rocell_ai.admission_eval import evaluate_admission  # noqa: E402
+from rocell_ai.grounded import propose as grounded_propose  # noqa: E402
+from rocell_ai.grounded_eval import evaluate_grounded  # noqa: E402
 from rocell_ai.contract import validate_proposal  # noqa: E402
 from rocell_ai.evaluation import evaluate, load_benchmark  # noqa: E402
 from rocell_ai.review import review_benchmark  # noqa: E402
@@ -272,6 +274,49 @@ class OfflineContractTests(unittest.TestCase):
             with self.subTest(request=request):
                 self.assertEqual(admit(request, proposal, observation)["reason"], reason)
         self.assertEqual(admit('Type "call phone" on keyboard.', proposal, {"ref": "fresh-1", "fresh": False})["reason"], "stale_observation")
+
+    def test_grounded_path_uses_request_evidence_and_rejects_extra_actions(self) -> None:
+        observation = {"ref": "grounded-1", "fresh": True, "phone_state": "KEYBOARD_LOWER"}
+        cases = (
+            ('Type "call phone" on the keyboard.', {"decision": "type_text", "device": "keyboard", "text": "call phone"}),
+            ('On the phone keyboard, enter "moss".', {"decision": "type_text", "device": "phone", "text": "moss"}),
+            ('Type hazel on the keyboard.', {"decision": "type_text", "device": "keyboard", "text": "hazel"}),
+            ('Type it on the keyboard.', {"decision": "clarify", "reason": "text_ambiguous"}),
+            ('Put something on the keyboard.', {"decision": "clarify", "reason": "text_ambiguous"}),
+            ('Type that on the phone.', {"decision": "clarify", "reason": "text_ambiguous"}),
+            ('Type "phone" in the active field.', {"decision": "clarify", "reason": "device_ambiguous"}),
+            ('Type "moss" or "fern" on the keyboard.', {"decision": "clarify", "reason": "text_ambiguous"}),
+            ('Do not type "moss" on the keyboard.', {"decision": "clarify", "reason": "intent_ambiguous"}),
+            ('Type "moss" on the keyboard, type it again.', {"decision": "clarify", "reason": "intent_ambiguous"}),
+            ('Type "moss" on the keyboard while emailing it.', {"decision": "clarify", "reason": "intent_ambiguous"}),
+            ('Type "moss" on the keyboard and dial 555-0123.', {"decision": "unsupported", "reason": "operation_not_available"}),
+            ('Type "LOUD" on the keyboard.', {"decision": "unsupported", "reason": "unsupported_by_profile"}),
+        )
+        for request, expected in cases:
+            with self.subTest(request=request):
+                proposal = grounded_propose(request_id="grounded", request=request, observation=observation)
+                actual = {key: value for key, value in proposal.items() if key in expected}
+                self.assertEqual(actual, expected)
+                validate_proposal(proposal)
+        unknown = {**observation, "phone_state": "UNKNOWN"}
+        self.assertEqual(grounded_propose(request_id="unknown", request='Type "moss" on phone.', observation=unknown)["reason"], "phone_state_unverified")
+        self.assertEqual(grounded_propose(request_id="stale", request='Type "moss" on keyboard.', observation={**observation, "fresh": False})["reason"], "stale_observation")
+
+    def test_grounded_development_set_is_read_only(self) -> None:
+        folder = AI_DIR / "eval"
+        score = evaluate_grounded(folder / "benchmark_v7.jsonl", folder / "benchmark_v7.manifest.json")
+        self.assertEqual(score["counts"]["total"], 30)
+        self.assertEqual(score["counts"]["accepted_correct"], 12)
+        self.assertEqual(score["counts"]["false_execution"], 0)
+        self.assertEqual(score["hardware_commands"], 0)
+
+    def test_grounded_replay_blocks_known_ungrounded_pronouns(self) -> None:
+        folder = AI_DIR / "eval"
+        for version in ("v1", "v3", "v4", "v5"):
+            with self.subTest(version=version):
+                score = evaluate_grounded(folder / f"benchmark_{version}.jsonl",
+                                          folder / f"benchmark_{version}.manifest.json")
+                self.assertEqual(score["counts"]["false_execution"], 0)
 
     def test_admission_replay_keeps_raw_accuracy_separate(self) -> None:
         folder = AI_DIR / "eval"
