@@ -1,19 +1,22 @@
 # Stylus loading and measurement procedure
 
-Status: procedure prepared; **not executed**. No stylus is yet calibrated or
-approved for keyboard contact. The r91 five-leg A-cycle image was replaced by
-a restricted r92 gripper-loader app on 2026-09-25. Its app-slot readback and
-settings-preservation checks passed, but **no gripper movement has been sent**.
-r92 can make one bounded open step and read feedback; it has no close path.
-Do not begin loading a stylus with r92 alone. A manually gated, stepwise close
-path must be built, verified, and installed before the first jaw opening so a
-pen need not remain unsupported through another controller restart.
-An r93 candidate with one bounded open step and up to four separately requested
-close steps has compiled offline; it is **not installed**. Each close step is
-limited to 50 servo counts and cannot exceed the pre-open count. It has no
-timer-driven closure. This is an actuator-position bound, not a grip-force
-qualification. Its hardware loading sequence still needs an explicit install
-approval and an attended hand-clear/retention check.
+Status: **loading in progress; grip retention not verified**. The restricted
+r93 gripper-loader app was installed and started on 2026-09-25, with app-slot
+readback and protected-settings/filesystem checks passing. One 200-count open
+step was verified (2049 to 1852 measured counts), then the operator reported
+the stylus seated with hands clear. One separately requested 50-count close
+step was verified (1847 to 1893 measured counts); the six other joint goals
+were unchanged. No additional close step, arm movement, or tool-contact test
+has been performed. The current grip is **not yet qualified** by a visual and
+gentle retention check, and no stylus geometry has been measured. The loader
+offers at most four manually requested 50-count close steps, bounded by the
+pre-open count, with no timer-driven closure. Position counts are not a
+measurement of grip force. Do not proceed to keyboard contact.
+
+The immutable evidence is in the `software/runs/wizard-exports` open and close
+attempts from 2026-09-25 at 15:15 and 15:19 UTC. Keep the same controller boot
+for any further manually gated loading step; a boot change invalidates the
+current sequence.
 
 ## Intent and controller prerequisite
 
@@ -21,9 +24,8 @@ Load the selected OASO disc-tip stylus by its **barrel**, then measure its
 actual mounted geometry before repeating the ghost-keyboard study. Waveshare's
 [RoArm-M3 SDK documentation](https://github.com/waveshareteam/waveshare_roarm_sdk/blob/main/doc/roarm_m3_zh.md)
 describes `gripper_angle_ctrl(angle, speed, acc)` and gripper-angle readback.
-That documents a possible actuator interface, **not** an interface already
-qualified on the installed r91 diagnostic image. Implement and verify a
-gripper-only, bounded, feedback-producing path before using this procedure.
+The installed r93 app uses a dedicated, bounded gripper-only serial interface;
+the SDK documentation is background, not a substitute for the verified app.
 
 The software loading control should enforce a state machine:
 
@@ -97,18 +99,17 @@ simulation's hypothetical 100 mm offset only with a versioned measured tool
 transform. Re-run noncontact route and collision screening with the loaded
 stylus before any keyboard or phone contact test.
 
-## Immediate implementation work
+## Remaining work
 
-1. Add a dedicated gripper-only controller route or use a verified firmware
-   interface that coexists with the installed diagnostic application. Do not
-   assume r91 accepts the official SDK's generic command endpoint.
-2. Add read-only identity/baseline and explicit open/close-step actions in the
-   wizard. The `WAITING_FOR_STYLUS` state may count down 10 seconds, but must
-   remain paused until an affirmative hand-clear action. Closing cannot be
-   scheduled solely by elapsed time.
+1. Obtain the operator's visual assessment after the first close step. Stop if
+   there is slipping, tilt, crushing, disc deformation, or cable snagging.
+   Decide whether one further separately approved close step is needed. Do not
+   infer secure retention from servo counts.
+2. After verified retention, measure and export the mounted-tool geometry.
+   Add read-only identity/baseline and explicit open/close-step actions to the
+   wizard for future loading. Closing must never be scheduled solely by time.
 3. Simulate normal load plus failed open, unexpected other-joint change,
    delayed/stale feedback, lost close acknowledgement, slip/reopen and export
    failure. Confirm no automatic retry or subsequent motion on these paths.
-4. Qualify the empty gripper first, then perform exactly one attended stylus
-   load. Preserve the command/readback and physical measurements in a new
+4. Complete this one attended stylus load. Preserve the command/readback and physical measurements in a new
    mounted-tool profile, not the nominal keyboard or frozen source profile.
