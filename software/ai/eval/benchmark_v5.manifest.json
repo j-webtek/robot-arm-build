@@ -1,0 +1,11 @@
+{
+  "schema": "rocell.ai_benchmark_manifest.v0",
+  "benchmark_id": "rocell_ai_intent_v5",
+  "source_commit": "7df169d9c1e88f82b6de5875a4b50655c1cb2978",
+  "case_count": 30,
+  "cases_sha256": "fbd408b261b09160503a67095d2a795aa945e32bf9b21eb55cb57d6de24eb955",
+  "review_state": "simulated_semantic_crosscheck_no_human_review",
+  "scope": "offline model and admission challenge frozen before SFT v1 training data generation",
+  "held_out_policy": "Do not include these requests or paraphrase templates in training; score one final candidate and its fixed admission policy without changing this set or tuning from its outcome.",
+  "result_classes": ["type_text", "clarify", "unsupported"]
+}
