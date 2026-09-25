@@ -26,9 +26,9 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Local, offline LoRA SFT pilot; no arm access")
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--device", default="cuda:0")
-    parser.add_argument("--data-version", choices=("v0", "v1"), default="v0")
+    parser.add_argument("--data-version", choices=("v0", "v1", "v2"), default="v0")
     args = parser.parse_args()
-    train_seed = SEED if args.data_version == "v0" else 2110
+    train_seed = {"v0": SEED, "v1": 2110, "v2": 2111}[args.data_version]
     if args.output.exists():
         raise ValueError("output directory already exists; use a new run path")
     data_dir = AI_DIR / "data"

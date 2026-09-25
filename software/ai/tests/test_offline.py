@@ -27,6 +27,7 @@ from rocell_ai.model_eval import _proposal_from_response, evaluate_model  # noqa
 from rocell_ai.model_eval import PROMPT_SHA256  # noqa: E402
 from build_sft_data import build as build_sft_data  # noqa: E402
 from build_sft_v1_data import build as build_sft_v1_data  # noqa: E402
+from build_sft_v2_data import build as build_sft_v2_data  # noqa: E402
 
 
 class OfflineContractTests(unittest.TestCase):
@@ -206,6 +207,18 @@ class OfflineContractTests(unittest.TestCase):
         self.assertEqual((len(train), len(validation)), (605, 60))
         for name, rows in (("train", train), ("validation", validation)):
             raw = (folder / f"synthetic_sft_v1_{name}.jsonl").read_bytes()
+            self.assertEqual(hashlib.sha256(raw).hexdigest(), manifest[f"{name}_sha256"])
+            self.assertEqual([json.loads(line) for line in raw.decode("utf-8").splitlines()], rows)
+
+    def test_v2_contrast_data_is_checked_and_reproducible(self) -> None:
+        train, validation, expected = build_sft_v2_data()
+        folder = AI_DIR / "data"
+        manifest = json.loads((folder / "synthetic_sft_v2.manifest.json").read_text(encoding="utf-8"))
+        self.assertEqual(manifest["benchmark_sha256"], expected["benchmark_sha256"])
+        self.assertFalse(manifest["human_reviewed"])
+        self.assertEqual((len(train), len(validation)), (835, 80))
+        for name, rows in (("train", train), ("validation", validation)):
+            raw = (folder / f"synthetic_sft_v2_{name}.jsonl").read_bytes()
             self.assertEqual(hashlib.sha256(raw).hexdigest(), manifest[f"{name}_sha256"])
             self.assertEqual([json.loads(line) for line in raw.decode("utf-8").splitlines()], rows)
 
