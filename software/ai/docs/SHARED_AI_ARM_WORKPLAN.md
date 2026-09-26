@@ -599,6 +599,8 @@ Copy this row and fill every field:
 
 ## Active work claims
 
+| AI | S1 | inference device and batch parity | feature/translation-pair-evidence | ACTIVE |
+
 
 
 Workers add a short row before beginning a potentially overlapping change and
