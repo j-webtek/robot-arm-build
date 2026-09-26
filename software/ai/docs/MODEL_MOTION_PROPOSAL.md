@@ -116,6 +116,58 @@ A later sequence contract should contain an ordered array of these target propos
 plus transition intent. It should not be implemented by concatenating raw controller
 JSON emitted by a model.
 
+## Ordered AI-to-RoCell handoff
+
+That ordered boundary is now `rocell.model_motion_batch.v1`. The AI side should
+emit one `ModelMotionProposal` for every movement-producing semantic action, in
+the exact action-plan order, then construct `ModelMotionBatch` from the core
+`rocell.models` package. It must not hand-calculate servo targets or concatenate
+Waveshare JSON.
+
+The batch binds:
+
+- the exact semantic `ActionPlan.plan_hash`;
+- scene-observation, precision-observation, and fusion-decision hashes;
+- one model, frame ID, and image hash shared by every proposal;
+- the ordered proposal records and a canonical batch hash.
+
+`rocell.application.model_motion_ingress.ingest_model_motion_batch` revalidates
+the active repository context, verifies the batch against the supplied semantic
+plan, requires independently validated scene/precision/fusion hashes, enforces
+exact target order and `CONTACT` interaction for typing/tapping, and runs every
+coordinate through deterministic named-target admission. Its accepted output is
+still offline and contains no controller command or physical authority.
+
+This is the coordination contract for the AI worker:
+
+```text
+grounded request -> ActionPlan
+scene + precision observations -> accepted fusion decision
+ActionPlan + accepted coordinates -> ModelMotionBatch
+ModelMotionBatch + same ActionPlan -> model_motion_ingress
+ordered admitted candidates -> one fresh-state calibrated planner gate at a time
+```
+
+Phone verification actions do not receive coordinate proposals. After any phone
+tap that changes state, orchestration must stop and obtain the required new
+observation before a later tap can be planned. Likewise, a multi-key batch does
+not permit all controller commands to be prepared against one initial arm state:
+each physical action will require fresh achieved-state evidence before its
+planner gate and successor action.
+
+Machine-readable schemas are
+[`model_motion_batch_v1.schema.json`](../schemas/model_motion_batch_v1.schema.json)
+and
+[`model_motion_ingress_v1.schema.json`](../schemas/model_motion_ingress_v1.schema.json).
+
+The current `rocell.ai_visual_targets.v1` KeyboardPoseNet output cannot yet be
+promoted into this handoff for physical use. It is explicitly synthetic, reports
+no calibrated per-target confidence or uncertainty, and has no final-camera
+measurement qualification. Research fixtures may exercise batch ingestion, but
+the production emitter must abstain until the precision contract carries
+validated uncertainty/confidence and the fused sources come from one fresh,
+qualified capture.
+
 ## Planner-admission gate
 
 The next deterministic boundary is implemented by

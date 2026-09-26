@@ -17,6 +17,13 @@ from .motion_proposal import (
     ProposalSource,
     SpeedClass,
 )
+from .model_motion_batch import (
+    MAX_BATCH_PROPOSALS,
+    MAX_BATCH_BYTES,
+    ModelMotionBatch,
+    ModelMotionBatchError,
+    decode_model_motion_batch_json,
+)
 from .profiles import KeyboardProfile, PhoneKeySpec, PhoneProfile
 from .units import Millimetres, Radians, finite_real
 
@@ -27,6 +34,11 @@ __all__ = [
     "KeyboardProfile",
     "Millimetres",
     "ModelMotionProposal",
+    "ModelMotionBatch",
+    "ModelMotionBatchError",
+    "MAX_BATCH_PROPOSALS",
+    "MAX_BATCH_BYTES",
+    "decode_model_motion_batch_json",
     "MotionProposalError",
     "PhoneKeySpec",
     "PhoneProfile",

@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rocell.local/schemas/model_motion_batch_v1.schema.json",
+  "title": "Ordered model motion proposal batch v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "batch_id", "request_id", "intent_plan_sha256",
+    "scene_observation_sha256", "precision_observation_sha256",
+    "fusion_decision_sha256", "proposals", "batch_sha256"
+  ],
+  "properties": {
+    "schema": {"const": "rocell.model_motion_batch.v1"},
+    "batch_id": {"type": "string", "minLength": 1},
+    "request_id": {"type": "string", "minLength": 1},
+    "intent_plan_sha256": {"$ref": "#/$defs/sha256"},
+    "scene_observation_sha256": {"$ref": "#/$defs/sha256"},
+    "precision_observation_sha256": {"$ref": "#/$defs/sha256"},
+    "fusion_decision_sha256": {"$ref": "#/$defs/sha256"},
+    "proposals": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 64,
+      "items": {"$ref": "model_motion_proposal_v1.schema.json"}
+    },
+    "batch_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

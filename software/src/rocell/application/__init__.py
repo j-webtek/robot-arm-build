@@ -216,6 +216,11 @@ from .installed_collision_geometry import (
     load_installed_collision_geometry_for_context,
     load_installed_collision_geometry_profile,
 )
+from .model_motion_ingress import (
+    SCHEMA as MODEL_MOTION_INGRESS_SCHEMA,
+    ModelMotionIngressError,
+    ingest_model_motion_batch,
+)
 from .prehardware_layout_study import (
     LayoutAxisValueEvidence,
     LayoutCandidatePromotion,
@@ -866,6 +871,8 @@ __all__ = [
     "INSTALLED_COLLISION_GEOMETRY_PROFILE_SCHEMA",
     "InstalledCollisionGeometryError",
     "InstalledCollisionGeometryProfile",
+    "MODEL_MOTION_INGRESS_SCHEMA",
+    "ModelMotionIngressError",
     "SimulationContextError",
     "SimulationRunReport",
     "ReachOptimizationError",
@@ -920,6 +927,7 @@ __all__ = [
     "inspect_pinned_urdf_collision_evidence",
     "load_installed_collision_geometry_for_context",
     "load_installed_collision_geometry_profile",
+    "ingest_model_motion_batch",
     "run_simulation",
     "run_target_sweep",
     "default_reach_study_inputs",
