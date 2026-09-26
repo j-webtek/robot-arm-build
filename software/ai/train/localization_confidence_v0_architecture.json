@@ -1,0 +1,24 @@
+{
+  "schema": "rocell.ai_confidence_architecture.v0",
+  "architecture": "Frozen KeyboardPoseNet features (128) + predicted board x/610,y/457 -> Linear(130,32),ReLU,Linear(32,1)",
+  "optimizer": "Adam",
+  "learning_rate": 0.001,
+  "epochs": 12,
+  "batch_size": 1024,
+  "seed": 260926,
+  "selection": "Minimum development BCE; earliest tie",
+  "temperature_candidates": [
+    0.5,
+    0.75,
+    1.0,
+    1.5,
+    2.0,
+    3.0,
+    5.0
+  ],
+  "calibration": "Select minimum calibration BCE; earliest tie; no evaluation tuning",
+  "file_sha256": {
+    "software/ai/train/train_localization_confidence.py": "ad8a9ff5bd8c4ff37aa4dcfd5ffe3728fde38b00c99111784505465d5cc2a3b0"
+  },
+  "scope": "SYNTHETIC_RESEARCH_ONLY"
+}
