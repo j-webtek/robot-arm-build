@@ -16,6 +16,10 @@ demo. This checks packaging as well as source-tree behavior.
 - Local file links in an explicit list of maintained docs; SVG XML validity.
 - An explicit selection of AI/arm contract, ordering, evidence, and metric tests.
   The list is in [offline_checks.py](../scripts/ci/offline_checks.py).
+- Zero-write controller-byte previews, lifecycle fault rehearsal, published
+  controller-boundary schemas, and the controller-evidence gate. These use
+  synthetic/modeled records; a pass does not qualify an installed controller
+  or authenticate physical evidence. No transport is opened by these tests.
 
 The test extra declares `jsonschema`; no separate manual install is needed.
 Dependency ranges are not a lockfile: these jobs check fresh resolution within

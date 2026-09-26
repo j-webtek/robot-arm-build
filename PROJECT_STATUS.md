@@ -1,6 +1,6 @@
 # Tactevra project status
 
-Reviewed September 26, 2026 against merged source through `b1bb742`.
+Reviewed September 26, 2026 against merged source through `e6b69c3`.
 Unmerged workstream branches are not included in this summary.
 This is a capability summary for readers; the
 [shared workplan](software/ai/docs/SHARED_AI_ARM_WORKPLAN.md) retains detailed
@@ -24,6 +24,7 @@ being developed.
 | Arm planning adapter | Admitted v2 proposals enter the arm-owned measured planning policy | The tested valid input reaches the planner but stops for missing or stale calibration; no trajectory or controller command is produced |
 | Controller-command preview | Sealed synthetic trajectories can be encoded into Waveshare T=102 bytes and a proposed dispatch schedule | Offline encoding and published schemas are tested; the preview has no transport and sends nothing to the arm |
 | Execution lifecycle rehearsal | Ownership, single-use reservations, fault handling, and restart reconciliation are modeled | Tests exercise no-retry and fault rules without device I/O; this is not an installed live execution service |
+| Controller evidence gate | Required controller identity, mapping, protocol, freshness, and review fields are checked | Modeled records test rejection behavior; even a passing record grants no transport or execution authority, and no physical originals were qualified |
 | Arm control research | Documented supervised noncontact movement and joint-feedback checks | Specific lab sequences were completed; controller feedback does not measure key-contact accuracy |
 | Hardware | RC03 workcell design and step-by-step assembly package | Design and print resources exist, with their own measurement and print-readiness requirements |
 
@@ -35,6 +36,11 @@ would reserve work, stop on faults, and reconcile a restart without automatic
 retries. Published schemas and an exact-byte fixture let the workstreams check
 the same boundary. These developments do not remove the real planning path's
 calibration block or qualify an installed controller mapping.
+
+The newer controller-evidence gate checks whether a supplied record matches the
+encoding profile and its declared session, mapping, and protocol. Its success
+cases use modeled records, not independently authenticated physical evidence.
+See ARM-021/023 in the shared ledger; the gate does not collect that evidence.
 
 The AI lane has a translation-focused training candidate that improved mean key
 position error from about 0.937 to 0.907 mm on reused synthetic development data.
