@@ -604,7 +604,6 @@ remove it only in the same commit that appends the resulting evidence row.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI | S1 | landmark diagnostic, manifest/report/tests | feature/translation-pair-evidence | ACTIVE: frozen checkpoint peak/spread/visibility diagnosis |
 | Unclaimed | S2 | qualified perception adapter and complete shared gate | — | AVAILABLE |
 | Unclaimed | S4 | implement controller firmware against the committed safe-idle production runtime contract, then independently review source and linked image | — | AVAILABLE |
 
@@ -3805,3 +3804,68 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: heuristic audit; AI-041 protected-main PR publication blocker remains.
 - Supersedes: none; historical failures retained.
 - Next dependency: protected-branch PR/checks and AI-101 diagnostic.
+
+### E-20260926-AI-104 — landmark decoding and visibility diagnosis
+
+- Stage: S1
+- Lane: AI
+- Commit: `bc8ed03bfed5681c2c423162dbc30642c45e8ec2` (frozen diagnostic/manifest before scoring)
+- Change: inspected unchanged saved checkpoint on all retained development images;
+  compared heatmap peak/soft-argmax error, entropy, mass within8px of truth and
+  visibility output by geometric visibility class. No retraining or tuned decoder.
+- Inputs/fixtures:15M800 development images,3200 corners, ellipse occluders;
+  checkpoint/source/scorecard hashes in `eval/landmark_diagnostic_v0.manifest.json`.
+- Command: `python software/ai/vision/diagnose_landmarks.py`
+- Result: PASS diagnosis; trained model remains failed. Clear2736 corners:
+  soft mean26.132636px vs peak3.991214px, peak p956.338789px, mean local mass0.518875.
+  Partial263: soft26.077368px vs peak4.338650px; hidden201: soft22.233041px
+  vs peak4.172279px. Mean predicted visibility clear0.921696,partial0.905462,
+  hidden0.899715; every corner exceeds0.5, including all201 hidden corners.
+  Heatmaps contain useful peak location information but distributed probability
+  causes substantially different soft-argmax output; no precise causal ablation.
+- Artifacts: `eval/landmark_diagnostic_v0_report.json`, manifest and diagnostic.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: reused development data; peak errors still substantial and peak
+  decoding is not promoted. Geometric mask labels do not capture all perceptual
+  visibility. Class imbalance/spread observations do not isolate training causes.
+  No batch changes; boundary suite not triggered; integration gates unchanged.
+- Supersedes: none; AI-101 failure retained.
+- Next dependency: freeze a matched corrective training comparison with visible-
+  corner coordinate loss and class-balanced visibility loss, retaining geometric
+  error and hidden-corner false-visible reporting. Keep data/initialization/budget
+  matched and record combined-intervention limits; fresh evaluation only after
+  development evidence justifies it. No calibrated confidence claim.
+
+### E-20260926-AI-105 — landmark diagnostic evidence test
+
+- Stage: S1
+- Lane: AI
+- Commit: `bc8ed03bfed5681c2c423162dbc30642c45e8ec2` (implementation baseline; test committed with report)
+- Change: verified frozen source/manifest,3200 unique corner records, class counts,
+  error/local-mass means and false-visible counts.
+- Inputs/fixtures: AI-104 manifest/report and retained source hashes.
+- Command: `python -m pytest -q software/ai/tests/test_landmark_diagnostic.py`
+- Result: PASS,1 test; existing pytest-asyncio configuration deprecation warning.
+- Artifacts: named test and AI-104 report.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: diagnostic consistency only; no model qualification.
+- Supersedes: none
+- Next dependency: AI-104 corrective comparison.
+
+### E-20260926-AI-106 — landmark diagnostic publication audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `bc8ed03bfed5681c2c423162dbc30642c45e8ec2` (implementation baseline plus report/test snapshot)
+- Change: audited publication snapshot after merging newcomer-verification main.
+- Inputs/fixtures: repository with AI-104/105 artifacts and reviewed fixture allowlist.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS;5800 paths,809.6 MiB,0 unresolved findings,14 reviewed synthetic fixtures.
+- Artifacts: audit stdout and repository snapshot.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: heuristic audit; AI-041 protected-main PR publication blocker remains.
+- Supersedes: none; historical failures retained.
+- Next dependency: protected-branch PR/checks and AI-104 corrective training.

@@ -392,3 +392,14 @@ falsely marks201/201 fully occluded corners visible. It is not promoted. Short
 random-initialization training versus a pretrained baseline is not a fair general
 architecture comparison. Next: inspect heatmap peaks versus soft-argmax, mass
 spread and visibility class balance before a frozen corrective experiment.
+
+
+### Landmark checkpoint diagnosis
+
+AI-104 through AI-106 inspect the unchanged failed checkpoint: clear-corner
+peak error3.99px versus soft-argmax26.13px, with only0.519 mean probability mass
+within8px of truth. Visibility means clear0.922 and hidden0.900 barely separate;
+all201 hidden corners exceed0.5. These are diagnostic associations, not proof
+of one training cause. Peak decoding remains unqualified and the model is not
+promoted. Next: freeze a matched coordinate-loss/class-balanced-visibility training
+comparison, preserving geometric and false-visible metrics and all failed evidence.
