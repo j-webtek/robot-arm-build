@@ -8,6 +8,9 @@ assignees: ''
 
 ## Expected and observed behavior
 
+For vulnerabilities or exposed secrets, use the repository's Security tab and
+private reporting form instead of this public issue. See SECURITY.md.
+
 ## Reproduction
 
 Include the commit, operating system, command, and a minimal sanitized example.

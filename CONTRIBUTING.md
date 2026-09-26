@@ -32,6 +32,9 @@ campaigns as part of ordinary source setup.
 
 ## Work in reviewable increments
 
+For vulnerabilities or exposed secrets, use [private security reporting](SECURITY.md)
+instead of a public issue. For other questions, see [support](SUPPORT.md).
+
 1. Open an issue describing the behavior, evidence, and acceptance criteria.
 2. Start a branch: `git switch -c feature/short-description`.
 3. Make a bounded change and run its hardware-free tests. Record the exact
@@ -89,8 +92,8 @@ was made. Clones are consequently larger. Keep individual files below GitHub's
 A future LFS migration requires available quota and coordination before rewriting
 shared history. Text files retain original bytes to preserve release hashes.
 
-Invite collaborators through repository access settings. Do not make the repo
-public without a separate privacy and third-party license review. Original
+Invite collaborators through repository access settings. This repository is
+public; review privacy and third-party licenses before publishing new material. Original
 project contributions are licensed under the [Apache License, Version 2.0](LICENSE).
 Third-party code and vendor assets retain their respective licenses and
 attribution notices. Contributions intentionally submitted for inclusion are
