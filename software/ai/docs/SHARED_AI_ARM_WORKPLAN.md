@@ -599,8 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-- AI lane / S1: balanced pose replay comparison, 25% controlled occlusion, fixed budget/loss/criteria; development only.
-
 
 
 
@@ -5980,3 +5978,54 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic audit; protected-main publication blocker AI-041 retained.
 - Supersedes: none; failed evidence and ARM-044 retained; no arm/integration status edits.
 - Next dependency: Freeze a bounded balanced-replay comparison preserving clear examples while adding occlusion; hold sample budget,loss,selection and acceptance criteria constant. Aim to preserve the observed occlusion benefit without clear/appearance regression. No fresh qualification until development criteria pass.
+
+
+### E-20260926-AI-199 — balanced pose replay comparison
+
+- Stage: S1
+- Lane: AI
+- Commit: `5021c019fe9a6eef6caa30a448edb3ae96e58980` (frozen source; results/tests committed with evidence)
+- Change: balanced pose replay comparison.
+- Inputs/fixtures: training14M600 groups x4, development15M200 x4. Starting checkpoint0fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d; rectangle training/ellipse development;4 epochs,AdamW0.0001,loss4:4:1,batch64,seed260926. Frozen source hashes in train/pose_balanced_v0_plan.json; pixel/checkpoint hashes in eval/pose_balanced_v0_report.json.
+- Command: `python software/ai/train/train_pose_balanced.py`
+- Result: FAIL. Candidate standard/appearance/partial/full means0.843/0.854/0.997/1.166mm; tails4/6/9/12 vs baseline5/7/9/11 and control4/6/8/12. Combined obstruction tails21 vs baseline/control20; prior50% occlusion candidate15. Appearance mean and standard yawp95 regress versus baseline; clear means regress versus control. Control epoch4,candidate3. control checkpoint SHA256 bb401f24e8925a78ff01ca6bb8654d711cd475b56dd02dea4b43a90bcfa2c0bf; occlusion checkpoint SHA256 55a08e79cf8829c486063cd8b7463377844522e6b6d42d23bc1ccbd5db2b32bb
+- Artifacts: train/train_pose_balanced.py; eval/pose_balanced_v0_report.json; tests/test_pose_balanced.py; ignored local results/pose_balanced_v0_* checkpoints.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: One seed,GPU nondeterminism and reused synthetic development selection; no holdout consumed. The25% mix also changes which occlusion examples are seen, not a pure exposure-frequency experiment. No promotion or qualification.
+- Supersedes: none; prior failures and arm/integration status retained.
+- Next dependency: Stop mix-ratio tuning. Freeze a bounded paired objective comparison using identical50% occlusion images and starting checkpoint: existing pose-parameter loss versus differentiable key-position displacement loss, preserving common epoch selection and acceptance criteria. Synthetic target geometry is training supervision only, never runtime calibration.
+
+
+### E-20260926-AI-200 — balanced replay verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `5021c019fe9a6eef6caa30a448edb3ae96e58980` (frozen source; results/tests committed with evidence)
+- Change: balanced replay verification.
+- Inputs/fixtures: training14M600 groups x4, development15M200 x4. Starting checkpoint0fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d; rectangle training/ellipse development;4 epochs,AdamW0.0001,loss4:4:1,batch64,seed260926. Frozen source hashes in train/pose_balanced_v0_plan.json; pixel/checkpoint hashes in eval/pose_balanced_v0_report.json.
+- Command: `python -m pytest -q software/ai/tests/test_pose_balanced.py`
+- Result: PASS,2 tests. Exact2400-image budget,1200standard/600appearance/300partial/300full,75 examples per occlusion-type/corner; hashes,metrics,epoch selection,checkpoint identities,comparison checks and unchanged development pixels verified. Existing pytest-asyncio warning.
+- Artifacts: train/train_pose_balanced.py; eval/pose_balanced_v0_report.json; tests/test_pose_balanced.py; ignored local results/pose_balanced_v0_* checkpoints.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Implementation verification only; batch unchanged, shared boundary tests not triggered.
+- Supersedes: none; prior failures and arm/integration status retained.
+- Next dependency: Stop mix-ratio tuning. Freeze a bounded paired objective comparison using identical50% occlusion images and starting checkpoint: existing pose-parameter loss versus differentiable key-position displacement loss, preserving common epoch selection and acceptance criteria. Synthetic target geometry is training supervision only, never runtime calibration.
+
+
+### E-20260926-AI-201 — balanced replay publication audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `5021c019fe9a6eef6caa30a448edb3ae96e58980` (frozen source; results/tests committed with evidence)
+- Change: balanced replay publication audit.
+- Inputs/fixtures: training14M600 groups x4, development15M200 x4. Starting checkpoint0fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d; rectangle training/ellipse development;4 epochs,AdamW0.0001,loss4:4:1,batch64,seed260926. Frozen source hashes in train/pose_balanced_v0_plan.json; pixel/checkpoint hashes in eval/pose_balanced_v0_report.json.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS;5996 paths,845.2 MiB,0 unresolved findings,14 reviewed synthetic fixtures.
+- Artifacts: train/train_pose_balanced.py; eval/pose_balanced_v0_report.json; tests/test_pose_balanced.py; ignored local results/pose_balanced_v0_* checkpoints.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic audit; AI-041 protected-main publication blocker retained.
+- Supersedes: none; prior failures and arm/integration status retained.
+- Next dependency: Stop mix-ratio tuning. Freeze a bounded paired objective comparison using identical50% occlusion images and starting checkpoint: existing pose-parameter loss versus differentiable key-position displacement loss, preserving common epoch selection and acceptance criteria. Synthetic target geometry is training supervision only, never runtime calibration.
