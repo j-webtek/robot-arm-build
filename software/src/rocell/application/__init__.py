@@ -230,6 +230,16 @@ from .fk_collision_pose_adapter import (
     MeasuredRigidAttachmentBinding,
     derive_and_evaluate_fk_waypoint_collisions,
 )
+from .bounded_segment_collision_qualification import (
+    MAX_BOUNDED_SEGMENT_SAMPLES,
+    SCHEMA as BOUNDED_SEGMENT_COLLISION_QUALIFICATION_SCHEMA,
+    BoundedJointConfigurationSample,
+    BoundedSegmentCollisionQualificationError,
+    BoundedSegmentSamplingPolicy,
+    MeasuredSegmentConfigurationSample,
+    build_bounded_joint_sample_plan,
+    qualify_bounded_segment_collisions,
+)
 from .model_motion_ingress import (
     SCHEMA as MODEL_MOTION_INGRESS_SCHEMA,
     ModelMotionIngressError,
@@ -1078,6 +1088,14 @@ __all__ = [
     "MeasuredConfigurationGeometryBinding",
     "MeasuredRigidAttachmentBinding",
     "derive_and_evaluate_fk_waypoint_collisions",
+    "MAX_BOUNDED_SEGMENT_SAMPLES",
+    "BOUNDED_SEGMENT_COLLISION_QUALIFICATION_SCHEMA",
+    "BoundedJointConfigurationSample",
+    "BoundedSegmentCollisionQualificationError",
+    "BoundedSegmentSamplingPolicy",
+    "MeasuredSegmentConfigurationSample",
+    "build_bounded_joint_sample_plan",
+    "qualify_bounded_segment_collisions",
     "MODEL_MOTION_INGRESS_SCHEMA",
     "MeasuredTargetRegionV2",
     "ModelMotionIngressV2Error",

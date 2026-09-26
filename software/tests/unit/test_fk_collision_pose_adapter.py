@@ -17,6 +17,13 @@ from rocell.application.fk_collision_pose_adapter import (
     MeasuredRigidAttachmentBinding,
     derive_and_evaluate_fk_waypoint_collisions,
 )
+from rocell.application.bounded_segment_collision_qualification import (
+    BoundedSegmentCollisionQualificationError,
+    BoundedSegmentSamplingPolicy,
+    MeasuredSegmentConfigurationSample,
+    build_bounded_joint_sample_plan,
+    qualify_bounded_segment_collisions,
+)
 from rocell.application.installed_collision_geometry import (
     InstalledCollisionGeometryProfile,
 )
@@ -167,6 +174,10 @@ def trajectory(context, measured, installed, *, base_offset=0.0):
         "installed_collision_profile_sha256": installed.content_sha256,
         "collision_contract_sha256": installed.contract.content_hash,
         "ik_all_waypoints_accepted": True,
+        "observed_start_joint_positions_rad": {
+            name: context.scenario.ready_arm_joint_positions_rad[name].value
+            for name in ARM_JOINT_NAMES
+        },
         "waypoints": [waypoint],
         "joint_results": [result],
     }
@@ -342,4 +353,92 @@ def test_non_measured_cable_and_crossed_calibration_reject(context) -> None:
     with pytest.raises(FkCollisionPoseAdapterError, match="lineage differ"):
         derive_and_evaluate_fk_waypoint_collisions(
             context, crossed, installed, route, bindings(), cable()
+        )
+
+
+def segment_cables(plan):
+    return tuple(
+        MeasuredSegmentConfigurationSample(
+            item.sample_sequence, item.content_sha256, cable()[0]
+        )
+        for item in plan
+    )
+
+
+def test_bounded_segment_samples_recompute_fk_and_retain_sweep_gate(context) -> None:
+    measured = snapshot(context)
+    installed = profile(context)
+    route = trajectory(context, measured, installed, base_offset=0.12)
+    policy = BoundedSegmentSamplingPolicy(maximum_joint_step_rad=0.05)
+    plan = build_bounded_joint_sample_plan(route, policy)
+
+    assert len(plan) == 4
+    assert plan[0].interpolation_ratio == 0.0
+    assert plan[-1].interpolation_ratio == 1.0
+    report = qualify_bounded_segment_collisions(
+        context,
+        measured,
+        installed,
+        route,
+        bindings(),
+        segment_cables(plan),
+        policy=policy,
+    )
+
+    assert report["status"] == (
+        "BOUNDED_SEGMENT_SAMPLES_CLEAR_CONSERVATIVE_SWEEP_REQUIRED"
+    )
+    assert report["sample_count"] == 4
+    assert report["maximum_observed_joint_gap_rad"] <= 0.05
+    assert report["all_bounded_samples_collision_free"] is True
+    assert report["continuous_collision_proven"] is False
+    assert report["controller_commands"] == []
+    assert report["hardware_access"] is False
+    assert len(report["fk_collision_qualification"]["derived_pose_records"]) == 4
+    schema = json.loads(
+        (
+            WORKSPACE
+            / "software/ai/schemas/bounded_segment_collision_qualification_v1.schema.json"
+        ).read_text(encoding="utf-8")
+    )
+    jsonschema.Draft202012Validator(schema).validate(report)
+
+
+def test_bounded_segment_geometry_must_bind_exact_sample(context) -> None:
+    measured = snapshot(context)
+    installed = profile(context)
+    route = trajectory(context, measured, installed, base_offset=0.08)
+    plan = build_bounded_joint_sample_plan(route)
+    evidence = list(segment_cables(plan))
+    evidence[1] = replace(evidence[1], sample_plan_sha256="f" * 64)
+
+    with pytest.raises(
+        BoundedSegmentCollisionQualificationError, match="does not bind"
+    ):
+        qualify_bounded_segment_collisions(
+            context, measured, installed, route, bindings(), evidence
+        )
+
+
+def test_bounded_segment_rejects_missing_start_and_resource_exhaustion(context) -> None:
+    measured = snapshot(context)
+    installed = profile(context)
+    route = trajectory(context, measured, installed, base_offset=0.12)
+    missing = dict(route)
+    missing.pop("trajectory_screening_sha256")
+    missing.pop("observed_start_joint_positions_rad")
+    missing = {**missing, "trajectory_screening_sha256": digest(missing)}
+    with pytest.raises(
+        BoundedSegmentCollisionQualificationError, match="observed start"
+    ):
+        build_bounded_joint_sample_plan(missing)
+
+    with pytest.raises(
+        BoundedSegmentCollisionQualificationError, match="exceeds policy maximum"
+    ):
+        build_bounded_joint_sample_plan(
+            route,
+            BoundedSegmentSamplingPolicy(
+                maximum_joint_step_rad=0.01, maximum_samples=2
+            ),
         )
