@@ -84,3 +84,21 @@ approval with no open findings or a rejection. The decision digest is then
 matched by the configuration-epoch intake. Repository code can validate those
 bindings; it cannot authenticate the reviewer or substitute a self-review for
 independent custody and identity evidence. No decision has been supplied.
+
+## Synthetic integration rehearsal
+
+A deterministic synthetic decision may be generated for software integration:
+
+```powershell
+$env:PYTHONPATH='software/src'
+python software/scripts/build_r97_synthetic_review_rehearsal.py `
+  software/runs/review-rehearsals/arm-036 `
+  --rehearsal-id arm-036 `
+  --review-started-utc 2026-09-26T13:00:00Z `
+  --review-completed-utc 2026-09-26T13:01:00Z
+```
+
+That artifact is marked `SYNTHETIC_TEST_ONLY`. It may validate serialization,
+hashing, and cross-workstream consumption, but its report always retains the
+`SYNTHETIC_EVIDENCE_NOT_INDEPENDENT` blocker. It cannot satisfy epoch intake,
+authorize an epoch-bound build, or authorize any controller or physical action.

@@ -29,6 +29,7 @@ R97_REVIEW_MANIFEST_SHA256 = (
 )
 R97_APP_SHA256 = "7d2e47d40141e95b611fcf37ca38d495fcf3da4dc3051f128bbae95e10840d1d"
 BLOCKER_CODES = (
+    "SYNTHETIC_EVIDENCE_NOT_INDEPENDENT",
     "DECISION_NOT_APPROVED",
     "PACKET_IDENTITY_MISMATCH",
     "MANIFEST_IDENTITY_MISMATCH",
@@ -59,6 +60,11 @@ class R97ReviewCheck(str, Enum):
     TERMINAL_LOCK_FAILURES = "terminal_lock_failures"
     RUNTIME_ATTESTATION = "runtime_attestation"
     NULL_EPOCH_BLOCKER = "null_epoch_blocker"
+
+
+class R97ReviewEvidenceOrigin(str, Enum):
+    EXTERNAL_INDEPENDENT = "EXTERNAL_INDEPENDENT"
+    SYNTHETIC_TEST_ONLY = "SYNTHETIC_TEST_ONLY"
 
 
 EXPECTED_CHECKS = tuple(item.value for item in R97ReviewCheck)
@@ -127,6 +133,7 @@ class R97IndependentReviewDecisionV1:
     reviewed_packet_sha256: str
     reviewed_manifest_sha256: str
     reviewed_app_sha256: str
+    evidence_origin: R97ReviewEvidenceOrigin
     reviewer_independence_asserted: bool
     reviewer_was_implementation_author: bool
     checks: tuple[R97ReviewCheckResultV1, ...]
@@ -152,6 +159,9 @@ class R97IndependentReviewDecisionV1:
             "reviewed_app_sha256",
         ):
             _digest(getattr(self, name), name)
+        if not isinstance(self.evidence_origin, R97ReviewEvidenceOrigin):
+            raise R97IndependentReviewDecisionError(
+                "evidence_origin must be a closed review origin")
         if (
             type(self.reviewer_independence_asserted) is not bool
             or type(self.reviewer_was_implementation_author) is not bool
@@ -195,6 +205,7 @@ class R97IndependentReviewDecisionV1:
             "reviewed_packet_sha256": self.reviewed_packet_sha256,
             "reviewed_manifest_sha256": self.reviewed_manifest_sha256,
             "reviewed_app_sha256": self.reviewed_app_sha256,
+            "evidence_origin": self.evidence_origin.value,
             "reviewed_packet_status": PACKET_STATUS,
             "reviewer_independence_asserted": self.reviewer_independence_asserted,
             "reviewer_was_implementation_author": (
@@ -237,6 +248,8 @@ class R97IndependentReviewDecisionReportV1:
 
     @property
     def status(self) -> str:
+        if self.blockers == ("SYNTHETIC_EVIDENCE_NOT_INDEPENDENT",):
+            return "SYNTHETIC_REHEARSAL_ACCEPTED"
         return "INDEPENDENT_REVIEW_ACCEPTED" if not self.blockers else "BLOCKED"
 
     def unsigned_dict(self) -> dict[str, Any]:
@@ -246,6 +259,8 @@ class R97IndependentReviewDecisionReportV1:
             "decision_sha256": self.decision_sha256,
             "blockers": list(self.blockers),
             "ready_for_epoch_intake": not self.blockers,
+            "synthetic_rehearsal_ready": (
+                self.blockers == ("SYNTHETIC_EVIDENCE_NOT_INDEPENDENT",)),
             "installation_authorized": False,
             "controller_start_authorized": False,
             "execution_authorized": False,
@@ -279,6 +294,8 @@ def assess_r97_independent_review_decision_v1(
     ):
         _digest(value, label)
     checks = (
+        (decision.evidence_origin is not R97ReviewEvidenceOrigin.EXTERNAL_INDEPENDENT,
+         "SYNTHETIC_EVIDENCE_NOT_INDEPENDENT"),
         (decision.disposition is not ReviewDisposition.INDEPENDENTLY_APPROVED,
          "DECISION_NOT_APPROVED"),
         (decision.reviewed_packet_sha256 != expected_packet_sha256,
@@ -302,10 +319,141 @@ def assess_r97_independent_review_decision_v1(
     )
 
 
+def build_synthetic_r97_review_rehearsal_v1(
+    *,
+    rehearsal_id: str,
+    review_started_utc: str,
+    review_completed_utc: str,
+) -> tuple[
+    R97IndependentReviewDecisionV1,
+    R97IndependentReviewDecisionReportV1,
+]:
+    """Build deterministic test evidence that can never satisfy epoch intake."""
+
+    _identifier(rehearsal_id, "rehearsal_id")
+    if len(rehearsal_id) > 170:
+        raise R97IndependentReviewDecisionError(
+            "rehearsal_id is too long for the derived decision identifier")
+    attestation = hashlib.sha256(_canonical({
+        "authority": "SYNTHETIC_TEST_ONLY",
+        "purpose": "r97 review and epoch integration rehearsal",
+        "rehearsal_id": rehearsal_id,
+        "reviewed_packet_sha256": R97_REVIEW_PACKET_SHA256,
+    })).hexdigest()
+    decision = R97IndependentReviewDecisionV1(
+        decision_id=f"{rehearsal_id}.synthetic-r97-review",
+        reviewer_id="rocell.synthetic-rehearsal",
+        reviewer_affiliation="SYNTHETIC_TEST_ONLY",
+        reviewer_attestation_sha256=attestation,
+        review_started_utc=review_started_utc,
+        review_completed_utc=review_completed_utc,
+        reviewed_packet_sha256=R97_REVIEW_PACKET_SHA256,
+        reviewed_manifest_sha256=R97_REVIEW_MANIFEST_SHA256,
+        reviewed_app_sha256=R97_APP_SHA256,
+        evidence_origin=R97ReviewEvidenceOrigin.SYNTHETIC_TEST_ONLY,
+        reviewer_independence_asserted=True,
+        reviewer_was_implementation_author=False,
+        checks=tuple(
+            R97ReviewCheckResultV1(check=item, passed=True)
+            for item in R97ReviewCheck
+        ),
+        findings=(),
+        disposition=ReviewDisposition.INDEPENDENTLY_APPROVED,
+    )
+    report = assess_r97_independent_review_decision_v1(decision)
+    if (
+        report.status != "SYNTHETIC_REHEARSAL_ACCEPTED"
+        or report.to_dict()["ready_for_epoch_intake"] is not False
+    ):
+        raise R97IndependentReviewDecisionError(
+            "synthetic review rehearsal escaped its non-production boundary")
+    return decision, report
+
+
+def parse_r97_independent_review_decision_v1(
+    document: dict[str, Any],
+) -> R97IndependentReviewDecisionV1:
+    """Strictly decode a JSON decision and verify its embedded content hash."""
+
+    required = {
+        "schema", "decision_id", "reviewer_id", "reviewer_affiliation",
+        "reviewer_attestation_sha256", "review_started_utc",
+        "review_completed_utc", "reviewed_packet_sha256",
+        "reviewed_manifest_sha256", "reviewed_app_sha256", "evidence_origin",
+        "reviewed_packet_status", "reviewer_independence_asserted",
+        "reviewer_was_implementation_author", "checks", "findings",
+        "disposition", "installation_authorized", "controller_start_authorized",
+        "execution_authorized", "physical_authority", "decision_sha256",
+    }
+    if type(document) is not dict or set(document) != required:
+        raise R97IndependentReviewDecisionError(
+            "review decision JSON must contain exactly the closed fields")
+    if document["reviewed_packet_status"] != PACKET_STATUS:
+        raise R97IndependentReviewDecisionError(
+            "review decision packet status is invalid")
+    for field in (
+        "installation_authorized", "controller_start_authorized",
+        "execution_authorized", "physical_authority",
+    ):
+        if document[field] is not False:
+            raise R97IndependentReviewDecisionError(
+                f"review decision {field} must remain false")
+    raw_checks = document["checks"]
+    if not isinstance(raw_checks, list):
+        raise R97IndependentReviewDecisionError(
+            "review decision checks must be a JSON array")
+    if not isinstance(document["findings"], list):
+        raise R97IndependentReviewDecisionError(
+            "review decision findings must be a JSON array")
+    try:
+        checks = tuple(
+            R97ReviewCheckResultV1(
+                check=R97ReviewCheck(item["check_id"]),
+                passed=item["passed"],
+            )
+            for item in raw_checks
+            if type(item) is dict and set(item) == {"check_id", "passed"}
+        )
+        decision = R97IndependentReviewDecisionV1(
+            decision_id=document["decision_id"],
+            reviewer_id=document["reviewer_id"],
+            reviewer_affiliation=document["reviewer_affiliation"],
+            reviewer_attestation_sha256=document["reviewer_attestation_sha256"],
+            review_started_utc=document["review_started_utc"],
+            review_completed_utc=document["review_completed_utc"],
+            reviewed_packet_sha256=document["reviewed_packet_sha256"],
+            reviewed_manifest_sha256=document["reviewed_manifest_sha256"],
+            reviewed_app_sha256=document["reviewed_app_sha256"],
+            evidence_origin=R97ReviewEvidenceOrigin(document["evidence_origin"]),
+            reviewer_independence_asserted=(
+                document["reviewer_independence_asserted"]),
+            reviewer_was_implementation_author=(
+                document["reviewer_was_implementation_author"]),
+            checks=checks,
+            findings=tuple(document["findings"]),
+            disposition=ReviewDisposition(document["disposition"]),
+            schema=document["schema"],
+        )
+    except (KeyError, TypeError, ValueError) as exc:
+        raise R97IndependentReviewDecisionError(
+            "review decision JSON contains invalid typed values") from exc
+    if len(checks) != len(raw_checks):
+        raise R97IndependentReviewDecisionError(
+            "review decision checks contain unknown fields")
+    _digest(document["decision_sha256"], "decision_sha256")
+    if document["decision_sha256"] != decision.decision_sha256:
+        raise R97IndependentReviewDecisionError(
+            "review decision content hash does not match")
+    return decision
+
+
 __all__ = [
     "BLOCKER_CODES", "DECISION_SCHEMA", "EXPECTED_CHECKS", "REPORT_SCHEMA",
     "R97_APP_SHA256", "R97_REVIEW_MANIFEST_SHA256", "R97_REVIEW_PACKET_SHA256",
     "R97IndependentReviewDecisionError", "R97IndependentReviewDecisionReportV1",
     "R97IndependentReviewDecisionV1", "R97ReviewCheck", "R97ReviewCheckResultV1",
+    "R97ReviewEvidenceOrigin",
     "assess_r97_independent_review_decision_v1",
+    "build_synthetic_r97_review_rehearsal_v1",
+    "parse_r97_independent_review_decision_v1",
 ]

@@ -134,6 +134,13 @@ the closed checklist, independence assertions, findings, and disposition; and
 grants no deployment or physical authority. The software validates structure
 and internal bindings but cannot authenticate the human identity or manufacture
 independence; custody and identity evidence remain external.
+For integration development, the same decision schema permits the explicit
+`SYNTHETIC_TEST_ONLY` origin. Its assessment returns
+`SYNTHETIC_REHEARSAL_ACCEPTED` and `synthetic_rehearsal_ready=true`, while
+retaining `SYNTHETIC_EVIDENCE_NOT_INDEPENDENT`,
+`ready_for_epoch_intake=false`, and every physical authority flag false. This
+allows the workstreams to rehearse serialization and binding without confusing
+synthetic success with production review.
 The [measured configuration-epoch intake](controller_configuration_epoch_intake_v1.schema.json)
 and [intake assessment](controller_configuration_epoch_intake_report_v1.schema.json)
 require that full decision, rather than accepting only an arbitrary review hash

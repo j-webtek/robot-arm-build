@@ -2552,3 +2552,39 @@ commissioning, or bounded physical result with its limitations intact.
   `987cbe86d98440734d8336c704f1ecd89692675a9cb1620cb674e4132957b416`,
   followed by independently reviewed retained measurements for all eight epoch
   components.
+
+### E-20260926-ARM-036 — synthetic r97 review integration lane
+
+- Stage: S4
+- Lane: ARM
+- Change: added a distinct `SYNTHETIC_TEST_ONLY` review origin, deterministic
+  offline rehearsal builder, report status, public API, schemas, and tests. The
+  AI and arm lanes can now exchange a concrete content-addressed review artifact
+  while developing their shared serialization and identity bindings.
+- Safety behavior: a structurally correct synthetic review reaches only
+  `SYNTHETIC_REHEARSAL_ACCEPTED`. Its report retains
+  `SYNTHETIC_EVIDENCE_NOT_INDEPENDENT`, fixes `ready_for_epoch_intake=false`,
+  and keeps installation, startup, execution, hardware access, and physical
+  authority false. Epoch assessment independently proves the synthetic decision
+  remains blocked.
+- Artifacts: `build_synthetic_r97_review_rehearsal_v1`,
+  `software/scripts/build_r97_synthetic_review_rehearsal.py`, expanded decision
+  and report schemas, unit/schema/builder tests, and production documentation.
+- Results: generated rehearsal decision SHA-256
+  `7b04b99c2c740bbbce4a7cc41e47d158ae2f8be93df6447b9b594e68f9a28c17`
+  round-tripped through the strict decoder and remained epoch-ineligible;
+  bounded shared AI/arm, r97, runtime, review, epoch, and builder suite PASS,
+  255 tests in 16.94 seconds; documentation PASS for 25 maintained documents
+  and two SVG assets; snapshot audit PASS for 5,727 paths and 903.9 MiB with
+  zero unresolved findings and 14 reviewed synthetic fixtures; diff check PASS.
+  Generated output resides only in the ignored local evidence area.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: this improves integration coverage only. It is not independent
+  review, cannot authenticate a reviewer, and cannot replace measured physical
+  evidence or authorize deployment.
+- Supersedes: ARM-035 only for synthetic integration usability; the external
+  review and every production/physical blocker remain unchanged.
+- Next dependency: use this lane for model/arm contract tests while a genuinely
+  independent reviewer and measurement owners produce the external evidence
+  required by S4.
