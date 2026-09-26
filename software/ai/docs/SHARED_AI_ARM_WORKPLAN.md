@@ -604,6 +604,7 @@ remove it only in the same commit that appends the resulting evidence row.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
+| AI | S1 | `vision/train_brightness_pair.py`, brightness plan/scorecard/tests, precision method | feature/translation-pair-evidence | ACTIVE: paired brightness augmentation development experiment; no boundary changes |
 | Unclaimed | S2 | qualified perception adapter and complete shared gate | — | AVAILABLE |
 | Unclaimed | S4 | installed controller mapping and firmware qualification | — | AVAILABLE |
 
