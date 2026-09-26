@@ -599,7 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-| AI | S1 | label alignment and directional error audit | feature/translation-pair-evidence | ACTIVE |
 
 
 
@@ -5461,3 +5460,51 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic audit; AI-041 protected-main publication blocker remains.
 - Supersedes: none; previous failures and integration statuses retained.
 - Next dependency: Protected-branch PR/checks and AI-172 audit.
+
+### E-20260926-AI-175 — label alignment and directional error audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `35c9177b92c350c2170c06dbfc56fe4a07764ec3` (frozen source; results/tests committed with evidence)
+- Change: label alignment and directional error audit.
+- Inputs/fixtures: Retained AI-157800 development cases/3200 refined corners; intercepted PIL polygon calls on regenerated scenes. Exact source/input hashes in eval/label_alignment_v0_plan.json.
+- Command: `python software/ai/vision/audit_label_alignment.py`
+- Result: PASS vector alignment: maximum draw-label delta0px,independent rigid projection delta2.84217e-14px. Standard local signed means corners0..3=(2.047,2.048),(-1.790,2.126),(-0.410,-3.188),(4.202,-3.983)mm. Appearance=(2.950,4.188),(-2.459,4.282),(-2.399,-5.836),(5.343,-3.228)mm. These signs indicate inward bias in both conditions; occlusion alters direction/magnitude.
+- Artifacts: eval/label_alignment_v0_report.json; frozen audit/plan
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Checks polygon arguments,not final raster edge visibility after blur/clutter. Errors are selected refined heatmap candidates,not raw logits. No empirical offset correction,physical calibration or qualification.
+- Supersedes: none; previous failures and integration statuses retained.
+- Next dependency: Freeze matched localization training with a geometry-consistency auxiliary loss versus unchanged t05 control; use labeled synthetic geometry only as training supervision,never runtime calibration. Keep identical seed/data/budget/selection and unchanged decoder/evaluation criteria; no reused-data offset fitting.
+
+### E-20260926-AI-176 — alignment verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `35c9177b92c350c2170c06dbfc56fe4a07764ec3` (frozen source; results/tests committed with evidence)
+- Change: alignment verification.
+- Inputs/fixtures: AI-175 manifest,800 images/3200 rows.
+- Command: `python -m pytest -q software/ai/tests/test_label_alignment.py`
+- Result: PASS,1 test; hashes,vector alignment,independent formula tolerance,per-corner counts and signed summary recomputation verified. Existing pytest-asyncio warning.
+- Artifacts: software/ai/tests/test_label_alignment.py
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Consistency verification only; batch unchanged,shared boundary suite not triggered.
+- Supersedes: none; previous failures and integration statuses retained.
+- Next dependency: AI-175 matched localization objective study.
+
+### E-20260926-AI-177 — alignment publication audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `35c9177b92c350c2170c06dbfc56fe4a07764ec3` (frozen source; results/tests committed with evidence)
+- Change: alignment publication audit.
+- Inputs/fixtures: Repository with AI-175/176 and reviewed fixture allowlist.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS;5952 paths,839.2 MiB,0 unresolved findings,14 reviewed synthetic fixtures.
+- Artifacts: audit stdout and snapshot
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic audit; AI-041 protected-main publication blocker remains.
+- Supersedes: none; previous failures and integration statuses retained.
+- Next dependency: Protected-branch PR/checks and AI-175 study.

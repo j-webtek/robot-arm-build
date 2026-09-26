@@ -519,3 +519,8 @@ Single-corner energy dominates290/560 bad cases; common translation energy domin
 ### Fixed robust fit (AI-172)
 
 Huber IRLS with3mm residual scale and5 iterations fails overall on all800 development cases. Appearance >3mm tails77→115 and mean2.450→2.776mm; partial yawp951.594→1.790deg. No promotion. Stop fit-only variations and audit corner label/render alignment and signed learned errors by semantic corner/condition before changing localization training. No empirical offset correction from reused data or residual confidence. Source `0f6b90585a8961658ba6eacc99186cb80db20891`; `eval/robust_fit_v0_report.json` (arm equal denotes robust).
+
+
+### Label/render alignment (AI-175)
+
+Labels exactly match actual polygon call coordinates across800 scenes; independent projection differs at most2.84e-14px. Standard/appearance refined candidate means consistently point inward by several millimetres. This excludes a vector-label mismatch in these scenes but not rasterization/blur or learned feature bias. No empirical correction applied. Next freeze matched geometry-consistency auxiliary localization training versus unchanged t05 control,using synthetic geometry as training supervision only. Source `35c9177b92c350c2170c06dbfc56fe4a07764ec3`; `eval/label_alignment_v0_report.json`. No qualification or runtime calibration.
