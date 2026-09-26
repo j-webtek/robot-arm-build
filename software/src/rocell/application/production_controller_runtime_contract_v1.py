@@ -26,6 +26,7 @@ STARTUP_POLICY = "SAFE_IDLE_NO_MOTION"
 WRITER_POLICY = "ONE_ACTIVE_WRITER_EXACT_SEQUENCE"
 RETRY_POLICY = "NEVER_AUTOMATIC"
 EXPECTED_T102_FIELDS = ("T", *JOINT_FIELDS, "spd", "acc")
+EXPECTED_T1021_FIELDS = ("T", "status", "ordinal")
 EXPECTED_T105_FIELDS = ("T",)
 EXPECTED_T1051_JOINT_FIELDS = ("b", "s", "e", "t", "r", "g")
 _SHA256 = re.compile(r"^[0-9a-f]{64}$")
@@ -128,8 +129,9 @@ class ProductionControllerRuntimeManifestV1:
             "writer_policy": WRITER_POLICY,
             "retry_policy": RETRY_POLICY,
             "supported_command_types": [102, 105],
-            "supported_response_types": [1051],
+            "supported_response_types": [1021, 1051],
             "t102_fields": list(EXPECTED_T102_FIELDS),
+            "t1021_fields": list(EXPECTED_T1021_FIELDS),
             "t105_fields": list(EXPECTED_T105_FIELDS),
             "t1051_required_joint_fields": list(
                 EXPECTED_T1051_JOINT_FIELDS),
@@ -214,6 +216,21 @@ class RuntimeAdmissionRecordV1:
         }
 
 
+@dataclass(frozen=True, slots=True)
+class RuntimeCommandAcknowledgmentRecordV1:
+    sequence: int
+    response_bytes_sha256: str
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "sequence": self.sequence,
+            "response_bytes_sha256": self.response_bytes_sha256,
+            "status": "ACCEPTED_ONCE",
+            "arrival_proven": False,
+            "hardware_write_count": 0,
+        }
+
+
 class ProductionControllerRuntimeContractV1:
     """In-memory safe-idle and sole-writer contract with no I/O capability."""
 
@@ -225,6 +242,8 @@ class ProductionControllerRuntimeContractV1:
         self._writer_instance_id: str | None = None
         self._last_sequence = 0
         self._admissions: list[RuntimeAdmissionRecordV1] = []
+        self._acknowledgments: list[RuntimeCommandAcknowledgmentRecordV1] = []
+        self._pending_ack_sequence: int | None = None
         self._feedback_exchange_count = 0
         self._terminal_reason: str | None = None
         self._lock = threading.Lock()
@@ -258,6 +277,9 @@ class ProductionControllerRuntimeContractV1:
                 if self._state is not ProductionRuntimeState.WRITER_CLAIMED:
                     raise ProductionControllerRuntimeContractError(
                         "runtime has no active writer")
+                if self._pending_ack_sequence is not None:
+                    raise ProductionControllerRuntimeContractError(
+                        "prior T=102 acknowledgment remains pending")
                 if frame.writer_instance_id != self._writer_instance_id:
                     raise ProductionControllerRuntimeContractError(
                         "frame came from a different writer")
@@ -300,10 +322,65 @@ class ProductionControllerRuntimeContractV1:
                 )
                 self._last_sequence = frame.sequence
                 self._admissions.append(record)
+                self._pending_ack_sequence = frame.sequence
                 return record
             except Exception as exc:
                 self._lock_terminal(type(exc).__name__)
                 raise
+
+    def rehearse_command_acknowledgment(self, response_bytes: bytes) -> None:
+        """Consume one exact r97 accepted-once response without implying arrival."""
+
+        with self._lock:
+            try:
+                if self._state is not ProductionRuntimeState.WRITER_CLAIMED:
+                    raise ProductionControllerRuntimeContractError(
+                        "runtime has no active writer")
+                if self._pending_ack_sequence is None:
+                    raise ProductionControllerRuntimeContractError(
+                        "no T=102 acknowledgment is pending")
+                if not isinstance(response_bytes, bytes):
+                    raise ProductionControllerRuntimeContractError(
+                        "T=1021 acknowledgment must be bytes")
+                if len(response_bytes) > self.manifest.maximum_feedback_bytes:
+                    raise ProductionControllerRuntimeContractError(
+                        "T=1021 acknowledgment exceeds maximum_feedback_bytes")
+                message = decode_line(response_bytes)
+                expected = {
+                    "T": 1021,
+                    "status": "ACCEPTED_ONCE",
+                    "ordinal": self._pending_ack_sequence,
+                }
+                if (
+                    tuple(message) != EXPECTED_T1021_FIELDS
+                    or message != expected
+                    or encode_line(expected) != response_bytes
+                ):
+                    raise ProductionControllerRuntimeContractError(
+                        "T=1021 acknowledgment differs from pending command")
+                self._acknowledgments.append(
+                    RuntimeCommandAcknowledgmentRecordV1(
+                        sequence=self._pending_ack_sequence,
+                        response_bytes_sha256=hashlib.sha256(
+                            response_bytes).hexdigest(),
+                    ))
+                self._pending_ack_sequence = None
+            except Exception as exc:
+                self._lock_terminal(type(exc).__name__)
+                raise
+
+    def mark_command_acknowledgment_timeout(self) -> None:
+        """Latch uncertainty after a missing response; never retry the command."""
+
+        with self._lock:
+            if (
+                self._state is not ProductionRuntimeState.WRITER_CLAIMED
+                or self._pending_ack_sequence is None
+            ):
+                self._lock_terminal("ACKNOWLEDGMENT_TIMEOUT_WITHOUT_PENDING_COMMAND")
+                raise ProductionControllerRuntimeContractError(
+                    "no pending command can time out")
+            self._lock_terminal("COMMAND_ACKNOWLEDGMENT_TIMEOUT_UNCERTAIN")
 
     def rehearse_feedback_exchange(
         self, request_bytes: bytes, response_bytes: bytes,
@@ -313,6 +390,9 @@ class ProductionControllerRuntimeContractV1:
                 if self._state is not ProductionRuntimeState.WRITER_CLAIMED:
                     raise ProductionControllerRuntimeContractError(
                         "runtime has no active writer")
+                if self._pending_ack_sequence is not None:
+                    raise ProductionControllerRuntimeContractError(
+                        "feedback cannot begin while T=102 acknowledgment is pending")
                 if request_bytes != encode_line(feedback_request()):
                     raise ProductionControllerRuntimeContractError(
                         "feedback request must be exact deterministic T=105")
@@ -340,7 +420,10 @@ class ProductionControllerRuntimeContractV1:
                 "manifest_sha256": self.manifest.manifest_sha256,
                 "state": self._state.value,
                 "status": (
-                    "CONTRACT_REHEARSAL_READY"
+                    "AWAITING_COMMAND_ACKNOWLEDGMENT"
+                    if (self._state is ProductionRuntimeState.WRITER_CLAIMED
+                        and self._pending_ack_sequence is not None)
+                    else "CONTRACT_REHEARSAL_READY"
                     if self._state is ProductionRuntimeState.WRITER_CLAIMED
                     else "SAFE_IDLE" if self._state is ProductionRuntimeState.SAFE_IDLE
                     else "TERMINAL_NO_RETRY"),
@@ -348,6 +431,10 @@ class ProductionControllerRuntimeContractV1:
                 "last_sequence": self._last_sequence,
                 "admission_count": len(self._admissions),
                 "admissions": [item.to_dict() for item in self._admissions],
+                "pending_ack_sequence": self._pending_ack_sequence,
+                "acknowledgment_count": len(self._acknowledgments),
+                "acknowledgments": [
+                    item.to_dict() for item in self._acknowledgments],
                 "feedback_exchange_count": self._feedback_exchange_count,
                 "terminal_reason": self._terminal_reason,
                 "startup_motion_commands": 0,
@@ -365,11 +452,12 @@ class ProductionControllerRuntimeContractV1:
 
 
 __all__ = [
-    "EXPECTED_T102_FIELDS", "EXPECTED_T105_FIELDS",
+    "EXPECTED_T102_FIELDS", "EXPECTED_T1021_FIELDS", "EXPECTED_T105_FIELDS",
     "EXPECTED_T1051_JOINT_FIELDS", "MANIFEST_SCHEMA", "REPORT_SCHEMA",
     "RETRY_POLICY", "STARTUP_POLICY", "WRITER_POLICY",
     "ProductionControllerRuntimeContractError",
     "ProductionControllerRuntimeContractV1",
     "ProductionControllerRuntimeManifestV1", "ProductionRuntimeState",
-    "RuntimeAdmissionRecordV1", "RuntimeCommandFrameV1",
+    "RuntimeAdmissionRecordV1", "RuntimeCommandAcknowledgmentRecordV1",
+    "RuntimeCommandFrameV1",
 ]

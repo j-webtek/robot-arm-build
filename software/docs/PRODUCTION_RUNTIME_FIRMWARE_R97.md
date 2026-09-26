@@ -16,8 +16,10 @@ Only two canonical input lines are accepted:
 - exact compact ordered `T=102` all-joint commands;
 - exact `{"T":105}` feedback requests.
 
-A valid `T=102` produces exactly one seven-servo group-write call and a local
-accepted-once ordinal. A `T=105` reads every servo once and returns a bounded
+A valid `T=102` produces exactly one seven-servo group-write call and a canonical
+`T=1021,status=ACCEPTED_ONCE,ordinal=N` response. The host must consume the exact
+pending ordinal before sending another command or requesting feedback; this
+receipt is not proof of physical arrival. A `T=105` reads every servo once and returns a bounded
 `T=1051` line containing `b,s,e,t,r,g`. Any malformed, overlong, noncanonical,
 unsupported, or failed-feedback input enters terminal lock. There is no retry,
 replay, alternate dispatcher, HTTP path, or single-servo command path in the
