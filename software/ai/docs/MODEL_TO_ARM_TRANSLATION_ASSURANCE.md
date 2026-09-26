@@ -202,6 +202,20 @@ it with `CONTINUOUS_FULL_BODY_COLLISION_SWEEP_NOT_IMPLEMENTED`; no collision
 clearance, envelope, command, or physical authority is inferred merely from
 loading measured body envelopes.
 
+A separate measured-waypoint collision boundary now binds that v2 trajectory
+report and installed profile to exactly one collision pose per accepted planner
+waypoint. Each pose must carry exact rigid-frame transforms and explicit
+configuration-correlated geometry for every deformable body, including the
+moving cable. The existing broad/narrow-phase kernel evaluates every supplied
+full-body sample under the installed clearance policy; missing samples,
+crossed hashes, collisions, and incomplete pose bindings fail closed. A clear
+sequence is reported only as
+`DISCRETE_WAYPOINTS_CLEAR_CONTINUOUS_PROOF_REQUIRED`. It never promotes
+sampled clearance into continuous clearance, commands, or physical authority.
+The remaining adapter must independently recompute robot-link transforms from
+the bound IK results and supply conservative inter-waypoint rigid-body and cable
+coverage rather than trusting arbitrary pose evidence.
+
 The S4 synthetic integration lane now proves the downstream identity plumbing
 without relaxing that physical gate. A typed assessor requires the exact
 synthetic r97 review decision and eight-component configuration epoch, the model
