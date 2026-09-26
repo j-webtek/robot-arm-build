@@ -142,3 +142,30 @@ python -m rocell.application.model_motion_planner_gate `
   --workspace . `
   --proposal software/ai/examples/model_motion_proposal_keyboard_h.json
 ```
+
+## Nominal coordinate rehearsal
+
+`simulate-motion-proposal` accepts one keyboard `CONTACT` proposal and runs its
+converted board coordinate through the existing static geometry, sampled IK,
+and dense route screen. The report binds proposal, candidate, assurance bundle,
+static context, target overlay, and geometry hashes. Static source artifacts are
+revalidated after the run. No local model or network service is needed to replay
+a saved proposal.
+
+This first version evaluates the proposed contact location using the static
+scenario route policy. It does not evaluate model-requested clearance, speed,
+cadence, phone interactions, or an ordered multi-action sequence. The example
+is synthetic and hand-authored; this run measures no model accuracy.
+
+The saved H example passes geometry but fails sampled IK. Dense screening stops
+at waypoint 0 (`PARK`) with `IK_NO_CONVERGED_SOLUTION`, before reaching H. This
+is a limitation of the nominal start/setup assumptions, not evidence that H is
+physically unreachable. The simulation result does not advance the physical
+assurance trace past its missing-calibration blocker. Commands, hardware writes,
+and observed physical input events remain zero.
+
+Next priority is a bounded study of the nominal park pose, base placement, and
+tool offset using existing layout simulation overlays, with every assumption
+recorded. After a route passes, expand to proposal clearance/cadence and
+multiple targets, then combine camera-condition stress cases. Simulation labels
+must retain their synthetic provenance until measured setup data exists.

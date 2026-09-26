@@ -191,3 +191,15 @@ error; no real-camera accuracy is known and no arm commands are emitted.
 The existing `software/src/rocell/models/actions.py` and
 `software/src/rocell/typing/` are the integration boundary. Do not copy the
 older ADB-agent source tree or model artifacts into this folder.
+
+## Model coordinate simulation
+
+Run a keyboard contact proposal through nominal geometry, sampled IK, and dense
+route screening without hardware access:
+
+```powershell
+python software/ai/run_offline.py simulate-motion-proposal --proposal software/ai/examples/model_motion_proposal_keyboard_h_contact.json --output software/ai/results/motion-simulation.json
+```
+
+See [the motion contract](docs/MODEL_MOTION_PROPOSAL.md) for scope and the saved
+[H contact result](eval/model_motion_keyboard_h_contact_simulation_v0.json).

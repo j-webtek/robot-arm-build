@@ -42,3 +42,9 @@ The [planner calibration snapshot schema](planner_calibration_snapshot_v1.schema
 records the exact hash-matched measured transforms, robot reference, controller
 correlation, device placement, and tool/TCP geometry accepted by the strict
 decoder. It carries no physical authority.
+
+
+The [model-motion simulation report](model_motion_simulation_v0.schema.json)
+binds a nominal coordinate rehearsal to its proposal and static source hashes.
+The Python validator also checks hashes and zero physical authority. Even
+`SAMPLES_PASS_NOT_EXECUTABLE` does not permit controller execution.

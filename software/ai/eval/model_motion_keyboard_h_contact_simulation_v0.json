@@ -1,0 +1,51 @@
+{
+  "assurance_bundle_sha256": "5f1d3001448001a68640c4ddb904fa2015a50730b19b32e7999f7e0be51e692f",
+  "candidate_sha256": "a297b0fb13e4bc508037d8b8e80ef8e8387954d4971213f0eb4d3fa934eac547",
+  "continuous_path_proven": false,
+  "dense_route_all_waypoints_accepted": false,
+  "dense_route_status": "DENSE_ROUTE_FAILED",
+  "evaluated_waypoint_count": 1,
+  "first_failure": {
+    "phase": "PARK",
+    "reason": "IK_NO_CONVERGED_SOLUTION",
+    "target": null,
+    "waypoint_sequence": 0
+  },
+  "full_arm_collision_checked": false,
+  "geometry_all_checks_pass": true,
+  "geometry_report_sha256": "45ab39e0e894cd567f021e9a6a5fd06464b5ad71f496a4de269e890096418825",
+  "hardware_commands": [],
+  "hardware_writes": 0,
+  "limitations": [
+    "Model coordinate evaluated against nominal simulation geometry only",
+    "Route uses the static scenario clearance and cadence; proposal speed and requested waypoints are not simulated",
+    "Target placement, board-to-arm correlation, and tool transform are unmeasured",
+    "IK is sampled and full arm, tool, cable, and environment collision are incomplete",
+    "No controller encoding, transport access, contact, or input-event observation occurred"
+  ],
+  "physical_calibration_verified": false,
+  "physical_execution_authorized": false,
+  "physical_input_events_observed": 0,
+  "plan_hash": "c72ec571d536ab12cf5c8deec28488e62d0dc448ab919b0b2dfe976644816c95",
+  "proposal_sha256": "7610d26b88094ab03bcc5290c62902836be3548ea58d80c8ec964807ef3b61a9",
+  "sampled_ik_all_converged": false,
+  "schema": "rocell.ai_model_motion_simulation.v0",
+  "simulation_sha256": "7ca2ee396047feb629f0b10e14e5299e2483b4ed0490608f2af54ad411e40d94",
+  "simulation_status": "SIMULATION_BLOCKED",
+  "simulation_target_overlay": {
+    "base_static_target_catalog_sha256": "0cc4b46ce6a7b94f32ba1d64f9818c094f6005636c4d56480f5907b773cd5276",
+    "center_board_mm": [
+      216.55,
+      154.0,
+      21.0
+    ],
+    "device": "keyboard",
+    "model_candidate_sha256": "a297b0fb13e4bc508037d8b8e80ef8e8387954d4971213f0eb4d3fa934eac547",
+    "overlay_sha256": "542113c74967c508413a3f523d923d8651f25a8206aefd8aca101e11b69815f1",
+    "schema": "rocell.model_motion_target_overlay.v0",
+    "simulation_only": true,
+    "target_id": "H"
+  },
+  "static_context_bundle_sha256": "e825dd29cf856cea44d9ce40ca3bfb5fc305d3493cd129d6b6bea9f04c800f7c",
+  "static_target_catalog_sha256": "0cc4b46ce6a7b94f32ba1d64f9818c094f6005636c4d56480f5907b773cd5276"
+}

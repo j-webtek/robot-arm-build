@@ -30,6 +30,7 @@ from rocell_ai.scene_evaluation import evaluate_photo_seed  # noqa: E402
 from rocell_ai.shadow_preview import build as build_shadow_preview  # noqa: E402
 from rocell_ai.translation_assurance import build as build_translation_assurance  # noqa: E402
 from rocell_ai.motion_assurance import build as build_motion_assurance, load as load_motion_proposal  # noqa: E402
+from rocell_ai.model_motion_simulation import run as run_model_motion_simulation  # noqa: E402
 
 
 def main() -> int:
@@ -129,6 +130,13 @@ def main() -> int:
     motion_assure.add_argument("--proposal", type=Path, required=True)
     motion_assure.add_argument("--minimum-confidence", type=float, default=0.9)
     motion_assure.add_argument("--output", type=Path)
+    motion_simulate = sub.add_parser(
+        "simulate-motion-proposal",
+        help="Rehearse one model coordinate in nominal static geometry with zero hardware access",
+    )
+    motion_simulate.add_argument("--proposal", type=Path, required=True)
+    motion_simulate.add_argument("--minimum-confidence", type=float, default=0.9)
+    motion_simulate.add_argument("--output", type=Path)
     args = parser.parse_args()
 
     if args.command in {"propose", "inspect"}:
@@ -222,6 +230,14 @@ def main() -> int:
             args.output.write_bytes((json.dumps(result, indent=2, sort_keys=True) + "\n").encode("utf-8"))
     elif args.command == "assure-motion-proposal":
         result = build_motion_assurance(
+            load_motion_proposal(args.proposal), workspace=AI_DIR.parents[1],
+            minimum_confidence=args.minimum_confidence,
+        )
+        if args.output:
+            args.output.parent.mkdir(parents=True, exist_ok=True)
+            args.output.write_bytes((json.dumps(result, indent=2, sort_keys=True) + "\n").encode("utf-8"))
+    elif args.command == "simulate-motion-proposal":
+        result = run_model_motion_simulation(
             load_motion_proposal(args.proposal), workspace=AI_DIR.parents[1],
             minimum_confidence=args.minimum_confidence,
         )

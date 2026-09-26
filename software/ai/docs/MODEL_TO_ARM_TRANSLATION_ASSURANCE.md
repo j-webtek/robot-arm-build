@@ -214,3 +214,12 @@ The following are still required before functional arm-command qualification:
 No worker may promote a learned output directly into controller space. New
 capabilities extend semantic profiles, target catalogs, calibration evidence,
 planning, admission, encoding, and verification in that order.
+
+## Coordinate simulation evidence
+
+The `simulate-motion-proposal` command produces a separate nominal rehearsal
+report for a keyboard contact proposal. It checks geometry, sampled IK, and a
+dense route without granting physical authority. The original physical assurance
+trace still stops at missing calibration. The initial H fixture fails at the
+nominal PARK waypoint; workers must preserve this result when studying improved
+layout assumptions. See [the motion contract](MODEL_MOTION_PROPOSAL.md).

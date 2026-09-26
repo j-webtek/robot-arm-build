@@ -184,3 +184,10 @@ python software/ai/run_offline.py evaluate-grounded --cases software/ai/eval/ben
 python software/ai/run_offline.py evaluate-scene-observer --runtime ollama --endpoint http://127.0.0.1:11434 --model gemma3:4b --model-identity ollama:YOUR_PINNED_DIGEST --output software/ai/eval/local_scene_report.json
 python software/ai/vision/evaluate_scene_stress.py --source software/ai/data/raw/real_photo_seed_v0/photo_02.jpg --model gemma3:4b --model-identity ollama:YOUR_PINNED_DIGEST --output software/ai/eval/local_scene_stress.json
 ```
+
+`model_motion_keyboard_h_contact_simulation_v0.json` records a synthetic H-contact
+proposal at board (216.55, 154, 21) mm. Geometry passes; sampled IK does not fully
+converge and dense screening rejects PARK waypoint 0 with
+`IK_NO_CONVERGED_SOLUTION`. One waypoint was evaluated. This is nominal setup
+evidence, not a trained-model score or physical reachability result. There are
+zero hardware commands, writes, and observed input events.
