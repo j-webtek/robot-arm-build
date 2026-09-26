@@ -228,6 +228,11 @@ from .model_motion_ingress_v2 import (
     ingest_model_motion_batch_v2,
     revalidate_model_motion_ingress_v2,
 )
+from .model_motion_registry_v2 import (
+    TrustedMotionRegistryV2,
+    ingest_with_trusted_registry_v2,
+    revalidate_with_trusted_registry_v2,
+)
 from .model_motion_sequence_coordinator import (
     SCHEMA as MODEL_MOTION_SEQUENCE_SNAPSHOT_SCHEMA,
     READY_PLANNER_STATUS,
@@ -911,6 +916,9 @@ __all__ = [
     "TrustedLocalizationQualificationV2",
     "ingest_model_motion_batch_v2",
     "revalidate_model_motion_ingress_v2",
+    "TrustedMotionRegistryV2",
+    "ingest_with_trusted_registry_v2",
+    "revalidate_with_trusted_registry_v2",
     "MODEL_MOTION_SEQUENCE_SNAPSHOT_SCHEMA",
     "READY_PLANNER_STATUS",
     "ActionDisposition",

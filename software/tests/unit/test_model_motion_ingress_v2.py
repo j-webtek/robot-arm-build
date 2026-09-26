@@ -11,6 +11,9 @@ from rocell.application.model_motion_ingress_v2 import (
     MeasuredTargetRegionV2, ModelMotionIngressV2Error,
     TrustedLocalizationQualificationV2, ingest_model_motion_batch_v2,
     revalidate_model_motion_ingress_v2)
+from rocell.application.model_motion_registry_v2 import (
+    TrustedMotionRegistryV2, ingest_with_trusted_registry_v2,
+    revalidate_with_trusted_registry_v2)
 from rocell.models import (
     ActionPlan, Device, Interaction, ModelMotionBatchV2, ModelMotionBatchV2Error,
     ModelMotionProposalV2, MotionCapabilityV2, MotionEvidenceV2, MotionGeometryV2,
@@ -113,6 +116,24 @@ def _ingest(batch, plan, context, **changes):
         trusted_qualification=_qualification(context), measured_target_regions=_regions(context))
     values.update(changes)
     return ingest_model_motion_batch_v2(batch, plan, context, **values)
+
+
+def _registry(context, **changes):
+    values = dict(capability_profile_id="keyboard-development-v1",
+        capability_profile_sha256=H["e"],
+        capture_clock_domain_id="capture-clock-001",
+        camera_identity_sha256=H["b"], scene_lease_id="lease-001",
+        scene_lease_issuer_id="capture-service-001", scene_lease_sha256=H["f"],
+        scene_lease_expires_at_epoch_ms=T0 + 10_000,
+        scene_observation_sha256=H["b"], precision_observation_sha256=H["c"],
+        fusion_decision_sha256=H["d"], placement_observation_sha256=H["e"],
+        board_frame_definition_sha256=H["d"],
+        target_catalog_sha256=context.targets.content_sha256,
+        maximum_scene_age_ms=5_000, minimum_observation_confidence=0.9,
+        maximum_surface_normal_error_mm=0.5, qualification=_qualification(context),
+        target_regions=tuple(_regions(context).values()))
+    values.update(changes)
+    return TrustedMotionRegistryV2(**values)
 
 
 def test_round_trip_and_admission_are_zero_authority():
@@ -258,3 +279,26 @@ def test_preplanner_recheck_rejects_tampered_ingress():
             active_scene_lease_sha256=H["f"],
             active_placement_observation_sha256=H["e"],
             active_target_catalog_sha256=context.targets.content_sha256)
+
+
+def test_registry_wrapper_admits_and_revalidates_one_coherent_snapshot():
+    context, plan = load_simulation_context(WORKSPACE, MANIFEST), _plan()
+    registry = _registry(context)
+    ingress = ingest_with_trusted_registry_v2(
+        _batch(context, plan=plan), plan, context, registry=registry,
+        current_time_epoch_ms=T0 + 3_000, current_monotonic_ns=9_000_000_000)
+    gate = revalidate_with_trusted_registry_v2(
+        ingress, registry=registry, current_monotonic_ns=10_000_000_000)
+    assert gate["status"] == "FRESH_FOR_DETERMINISTIC_PLANNING"
+    assert gate["controller_commands"] == []
+    with pytest.raises(TypeError):
+        registry.target_region_map["H"] = registry.target_regions[0]
+
+
+def test_registry_rejects_incoherent_geometry_and_incomplete_scope():
+    context = load_simulation_context(WORKSPACE, MANIFEST)
+    wrong = replace(_regions(context)["H"], placement_observation_sha256="1" * 64)
+    with pytest.raises(ModelMotionIngressV2Error, match="active geometry"):
+        _registry(context, target_regions=(wrong, _regions(context)["I"]))
+    with pytest.raises(ModelMotionIngressV2Error, match="exactly cover"):
+        _registry(context, target_regions=(_regions(context)["H"],))
