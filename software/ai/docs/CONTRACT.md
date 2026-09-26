@@ -103,6 +103,6 @@ Any future vision observation must carry frame identity/time, camera and
 calibration identity, confidence, and separate controller/device outcome IDs.
 Servo feedback alone does not prove that a key or screen target was activated.
 
-RoCell's current [runtime policy](https://github.com/j-webtek/robot-arm-build/blob/bb5d4afa689f1823b949ce769f28c3e9becef712/software/config/runtime.json) defaults to
+RoCell's current [runtime policy](https://github.com/j-webtek/tactevra/blob/bb5d4afa689f1823b949ce769f28c3e9becef712/software/config/runtime.json) defaults to
 simulation, disables live hardware and contact, and forbids automatic motion
 retry after faults. AI proposals cannot override this policy.

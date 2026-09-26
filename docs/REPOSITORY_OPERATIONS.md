@@ -18,8 +18,11 @@ changes do not need a lengthy integration report.
 For shared schemas, coordinate frames, command formats, or evidence semantics,
 link the producer and consumer checks and record the other lane's review before
 merging. Keep unfinished dependencies explicit; passing CI does not resolve an
-unmerged prerequisite. Do not invent GitHub handles or approvals. No CODEOWNERS
-file is configured until actual reviewer identities and coverage are agreed.
+unmerged prerequisite. Do not invent GitHub handles or approvals. The repository
+includes a conservative [CODEOWNERS map](../.github/CODEOWNERS) with `@j-webtek`
+as the initial accountable maintainer. It documents routing but does not
+manufacture independent approval; specialist owners can replace or join these
+entries after accepting responsibility.
 
 The [shared workplan](../software/ai/docs/SHARED_AI_ARM_WORKPLAN.md) remains the
 engineering evidence ledger. The public [status page](../PROJECT_STATUS.md)
@@ -46,7 +49,7 @@ not an automated semantic-accuracy gate. AI/arm owners supply technical evidence
 the repository lane translates it for readers without changing the evidence.
 
 Track remaining operations work in
-[repository maintenance issues](https://github.com/j-webtek/robot-arm-build/issues?q=is%3Aissue%20is%3Aopen%20label%3Aarea%3Arepository).
+[repository maintenance issues](https://github.com/j-webtek/tactevra/issues?q=is%3Aissue%20is%3Aopen%20label%3Aarea%3Arepository).
 Each issue should name its scope, completion criteria, evidence and exclusions.
 Do not assign a person or promise a date without agreement. The shared engineering
 ledger remains the source for AI/arm stage evidence, not this maintenance backlog.
@@ -117,8 +120,8 @@ Close or defer with an explanation if compatibility is not established.
 ### September 26, 2026 dependency review
 
 The maintainer approved proceeding with review of PRs
-[#17](https://github.com/j-webtek/robot-arm-build/pull/17) and
-[#18](https://github.com/j-webtek/robot-arm-build/pull/18). Approval is not a
+[#17](https://github.com/j-webtek/tactevra/pull/17) and
+[#18](https://github.com/j-webtek/tactevra/pull/18). Approval is not a
 substitute for compatibility checks.
 
 - **pytest (#18):** permits pytest 9 while retaining pytest 8 support. Review

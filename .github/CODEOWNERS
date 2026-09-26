@@ -1,0 +1,23 @@
+# Initial ownership map for repository routing.
+#
+# @j-webtek is the accountable maintainer while specialist AI, arm, hardware,
+# and security reviewers are being established. These entries do not represent
+# independent review and are not an authorization to operate physical hardware.
+
+* @j-webtek
+
+/.github/ @j-webtek
+/README.md @j-webtek
+/CONTRIBUTING.md @j-webtek
+/SECURITY.md @j-webtek
+/SUPPORT.md @j-webtek
+/CODE_OF_CONDUCT.md @j-webtek
+/CHANGELOG.md @j-webtek
+/CITATION.cff @j-webtek
+/docs/ @j-webtek
+
+/software/ai/ @j-webtek
+/software/src/ @j-webtek
+/software/firmware/ @j-webtek
+/hardware/ @j-webtek
+/active-project/ @j-webtek

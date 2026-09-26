@@ -23,8 +23,8 @@ being developed.
 - **Not demonstrated:** reliable camera-guided physical typing or phone operation.
   Merged firmware and clear simulated waypoints do not authorize movement.
 - **Distribution:** no source release is published at this checkpoint. The
-  earlier preview effort was [deferred, not completed](https://github.com/j-webtek/robot-arm-build/issues/25).
-  [Vendor-file redistribution provenance](https://github.com/j-webtek/robot-arm-build/issues/45)
+  earlier preview effort was [deferred, not completed](https://github.com/j-webtek/tactevra/issues/25).
+  [Vendor-file redistribution provenance](https://github.com/j-webtek/tactevra/issues/45)
   remains open for expert review.
 
 The sections below explain the evidence behind this summary. For setup help,

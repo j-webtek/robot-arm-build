@@ -9,13 +9,13 @@ schemas, historic release paths, and third-party attribution. See the
 
 ## Get the source
 
-You need Git, Python 3.10 or newer, and access to `j-webtek/robot-arm-build`.
+You need Git, Python 3.10 or newer, and access to `j-webtek/tactevra`.
 For a first software demonstration, use [getting started](docs/GETTING_STARTED.md).
 For development, install the runtime and test extra:
 
 ```powershell
-git clone https://github.com/j-webtek/robot-arm-build.git
-cd robot-arm-build
+git clone https://github.com/j-webtek/tactevra.git
+cd tactevra
 python -m venv .venv
 .\.venv\Scripts\python -m pip install -e './software[test]'
 ```

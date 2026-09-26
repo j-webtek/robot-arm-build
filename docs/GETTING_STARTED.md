@@ -35,8 +35,8 @@ test of this PowerShell/browser walkthrough on every platform. See the
 [dated first-run record](releases/NEWCOMER_CHECK_2026-09-26.md) for scope and limits.
 
 ```powershell
-git clone https://github.com/j-webtek/robot-arm-build.git
-cd robot-arm-build
+git clone https://github.com/j-webtek/tactevra.git
+cd tactevra
 python -m venv .venv
 .\.venv\Scripts\python -m pip install -e './software'
 .\.venv\Scripts\python -m pip check
