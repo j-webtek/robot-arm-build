@@ -143,7 +143,7 @@ shared byte-level gate remain unfinished.
 
 ## Stage definitions
 
-### S0 — Freeze the shared v1 seam
+### S0 â€” Freeze the shared v1 seam
 
 **Goal:** prove both lanes use one ordered, hash-bound model-to-planner contract.
 
@@ -171,7 +171,7 @@ Integration evidence:
 **Status:** complete at baseline. Future schema changes must preserve a v1
 compatibility fixture or record an explicit migration.
 
-### S1 — Contract v2: freshness, uncertainty, and capability
+### S1 â€” Contract v2: freshness, uncertainty, and capability
 
 **Goal:** remove semantic ambiguity before either lane approaches live execution.
 
@@ -196,7 +196,7 @@ Arm lane objectives:
   acceptance decision.
 - Enforce expiry at ingress and again immediately before planning.
 - Validate qualification/domain/capability registries independently.
-- Require the entire uncertainty region—not only its center—to fit the measured
+- Require the entire uncertainty regionâ€”not only its centerâ€”to fit the measured
   target safe region.
 - Treat model speed and clearance as non-authoritative hints, or remove them and
   derive policy entirely from the arm configuration.
@@ -218,7 +218,7 @@ Completion evidence:
 - Migration behavior for v1.
 - Limitations and explicit non-authority statement.
 
-### S2 — Full zero-hardware text-to-envelope shadow path
+### S2 â€” Full zero-hardware text-to-envelope shadow path
 
 **Goal:** exercise the real components in order without writing to hardware.
 
@@ -256,7 +256,7 @@ Completion evidence:
 - Cross-lane negative test matrix.
 - Confirmation of zero hardware access and zero generated wire commands.
 
-### S3 — Measured localization and planning readiness
+### S3 â€” Measured localization and planning readiness
 
 **Goal:** replace synthetic assumptions with measured deployment evidence.
 
@@ -297,7 +297,7 @@ Completion evidence:
 - Planner-ready trace with zero hardware writes.
 - Failure evidence for every required negative case.
 
-### S4 — Zero-write controller adapter and correlated receipts
+### S4 â€” Zero-write controller adapter and correlated receipts
 
 **Goal:** prove exact protocol encoding and execution lifecycle without sending.
 
@@ -334,7 +334,7 @@ Completion evidence:
 - Receipt and permit schemas.
 - Fault-injection results with zero physical writes.
 
-### S5 — One independently verified physical key action
+### S5 â€” One independently verified physical key action
 
 **Goal:** demonstrate one admitted model-originated key interaction end to end.
 
@@ -368,7 +368,7 @@ Completion evidence:
 - Tracking/settling metrics and discrepancies.
 - Explicit count of physical writes and movements.
 
-### S6 — Ordered multi-action keyboard missions
+### S6 â€” Ordered multi-action keyboard missions
 
 **Goal:** execute supported strings smoothly while preserving per-action safety.
 
@@ -404,7 +404,7 @@ Completion evidence:
 - Per-action lineage and latency breakdown.
 - Restart and fault-injection reports.
 
-### S7 — Performance and operational qualification
+### S7 â€” Performance and operational qualification
 
 **Goal:** improve speed only after correctness and recovery are demonstrated.
 
@@ -435,7 +435,7 @@ Completion evidence:
 - Regression thresholds enforced in CI.
 - Remaining limitations and unsupported capabilities.
 
-### P1 — Separate phone capability track
+### P1 â€” Separate phone capability track
 
 Phone work does not inherit keyboard readiness automatically. It requires:
 
@@ -511,7 +511,7 @@ Every contract or runtime change must preserve tests for:
 Copy this row and fill every field:
 
 ```markdown
-#### E-YYYYMMDD-AI|ARM|INT-NNN — short title
+#### E-YYYYMMDD-AI|ARM|INT-NNN â€” short title
 
 - Stage: S#
 - Lane: AI | ARM | INTEGRATION
@@ -530,7 +530,7 @@ Copy this row and fill every field:
 
 ## Evidence ledger
 
-### E-20260926-INT-001 — shared v1 boundary baseline
+### E-20260926-INT-001 â€” shared v1 boundary baseline
 
 - Stage: S0
 - Lane: INTEGRATION
@@ -555,7 +555,7 @@ Copy this row and fill every field:
 - Supersedes: none
 - Next dependency: S1 contract-v2 producer and consumer agreement
 
-### E-20260926-AI-001 — conservative synthetic localization study
+### E-20260926-AI-001 â€” conservative synthetic localization study
 
 - Stage: S3
 - Lane: AI
@@ -574,7 +574,7 @@ Copy this row and fill every field:
 - Supersedes: E-20260926-AI-000 implicit earlier radius study
 - Next dependency: measured final-camera dataset and independent qualification
 
-### E-20260926-AI-002 — actual prediction key-margin study
+### E-20260926-AI-002 â€” actual prediction key-margin study
 
 - Stage: S1 and S3
 - Lane: AI
@@ -583,7 +583,7 @@ Copy this row and fill every field:
   predictions against independently rendered rotated key regions while retaining
   the previously fixed 6.037862 mm uncertainty radius.
 - Inputs/fixtures: `software/ai/eval/prediction_margin_v0.manifest.json`, fresh
-  seeds 13000000–13000099, three conditions per seed
+  seeds 13000000â€“13000099, three conditions per seed
 - Command: see `software/ai/eval/README.md`
 - Result: 8,516/13,800 predicted key locations contained the full uncertainty
   disk; 118/300 images fit all 46 oracle key regions; 0/13,800 predictions fit
@@ -604,9 +604,8 @@ remove it only in the same commit that appends the resulting evidence row.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI | S1 | landmark loss ablation runner/plan/reports/tests | feature/translation-pair-evidence | ACTIVE: coordinate-only and visibility-only ablations |
-| Unclaimed | S2 | qualified perception adapter and complete shared gate | — | AVAILABLE |
-| Unclaimed | S4 | implement controller firmware against the committed safe-idle production runtime contract, then independently review source and linked image | — | AVAILABLE |
+| Unclaimed | S2 | qualified perception adapter and complete shared gate | â€” | AVAILABLE |
+| Unclaimed | S4 | implement controller firmware against the committed safe-idle production runtime contract, then independently review source and linked image | â€” | AVAILABLE |
 
 ## Worker update procedure
 
@@ -623,7 +622,7 @@ Each worker follows this process for every increment:
 6. Run lane tests plus the shared boundary suite affected by the change.
 7. Append an evidence row. Update only the worker's owned lane status.
 8. If both lanes are ready, run the shared integration gate using actual producer
-   output—not a hand-authored substitute—and append an `INT` evidence row.
+   outputâ€”not a hand-authored substituteâ€”and append an `INT` evidence row.
 9. Review diff, run the repository audit, commit, and push or open a pull request
    according to the repository contribution process.
 10. Leave failed evidence visible and name the precise next dependency.
@@ -675,7 +674,7 @@ Until then, every artifact remains a scoped research, simulation, shadow,
 commissioning, or bounded physical result with its limitations intact.
 
 
-### E-20260926-AI-003 — S1 AI semantic proposal and unchanged boundary regression
+### E-20260926-AI-003 â€” S1 AI semantic proposal and unchanged boundary regression
 
 - Stage: S1
 - Lane: AI
@@ -701,7 +700,7 @@ commissioning, or bounded physical result with its limitations intact.
   source, capability registry and removal of hints; then jointly publish v2 schema.
 
 
-### E-20260926-AI-004 — repository snapshot audit findings retained
+### E-20260926-AI-004 â€” repository snapshot audit findings retained
 
 - Stage: S1
 - Lane: AI
@@ -723,7 +722,7 @@ commissioning, or bounded physical result with its limitations intact.
   S1 still depends on arm-lane semantic agreement listed in AI-003.
 
 
-### E-20260926-AI-005 — analytic oriented-target acceptance cases
+### E-20260926-AI-005 â€” analytic oriented-target acceptance cases
 
 - Stage: S1
 - Lane: AI
@@ -747,7 +746,7 @@ commissioning, or bounded physical result with its limitations intact.
   placement registry/oriented target-map semantics before v2 producer implementation.
 
 
-### E-20260926-AI-006 — geometry increment audit retains existing findings
+### E-20260926-AI-006 â€” geometry increment audit retains existing findings
 
 - Stage: S1
 - Lane: AI
@@ -766,7 +765,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Next dependency: fixture owners review findings; S1 semantic agreement remains pending.
 
 
-### E-20260926-ARM-001 — strict v2 arm contract and admission boundary
+### E-20260926-ARM-001 â€” strict v2 arm contract and admission boundary
 
 - Stage: S1
 - Lane: Arm/runtime
@@ -805,7 +804,7 @@ commissioning, or bounded physical result with its limitations intact.
   meanings, then the shared S1 integration gate mutation-tests those actual bytes.
 
 
-### E-20260926-ARM-002 — v2 increment audit retains existing findings
+### E-20260926-ARM-002 â€” v2 increment audit retains existing findings
 
 - Stage: S1
 - Lane: Arm/runtime
@@ -825,7 +824,7 @@ commissioning, or bounded physical result with its limitations intact.
   of the S1 producer/consumer integration work.
 
 
-### E-20260926-ARM-003 — monotonic pre-planner lease and registry recheck
+### E-20260926-ARM-003 â€” monotonic pre-planner lease and registry recheck
 
 - Stage: S1
 - Lane: Arm/runtime
@@ -851,7 +850,7 @@ commissioning, or bounded physical result with its limitations intact.
   adapters for the shared S1 integration gate.
 
 
-### E-20260926-ARM-004 — AI build review and coherent trusted registry snapshot
+### E-20260926-ARM-004 â€” AI build review and coherent trusted registry snapshot
 
 - Stage: S1
 - Lane: Arm/runtime
@@ -888,7 +887,7 @@ commissioning, or bounded physical result with its limitations intact.
   the S1 producer-to-registry-to-arm integration gate without auto-upgrading v1.
 
 
-### E-20260926-ARM-005 — trusted-registry increment audit
+### E-20260926-ARM-005 â€” trusted-registry increment audit
 
 - Stage: S1
 - Lane: Arm/runtime
@@ -903,7 +902,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Supersedes: none; retains AI-004, AI-006 and ARM-002 failed evidence.
 - Next dependency: fixture owners review the existing findings independently of
   v2 producer migration and integration.
-### E-20260926-AI-007 — v2 typed producer assembly and consumer regression
+### E-20260926-AI-007 â€” v2 typed producer assembly and consumer regression
 
 - Stage: S1
 - Lane: AI
@@ -932,7 +931,7 @@ commissioning, or bounded physical result with its limitations intact.
   remain needed before cross-lane S1 completion.
 
 
-### E-20260926-AI-008 — v2 assembly audit retains findings
+### E-20260926-AI-008 â€” v2 assembly audit retains findings
 
 - Stage: S1
 - Lane: AI
@@ -950,7 +949,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Next dependency: fixture-owner review; AI-007 perception/registry dependencies remain.
 
 
-### E-20260926-INT-001 — actual v2 assembler bytes through trusted arm gates
+### E-20260926-INT-001 â€” actual v2 assembler bytes through trusted arm gates
 
 - Stage: S1
 - Lane: Shared integration
@@ -982,7 +981,7 @@ commissioning, or bounded physical result with its limitations intact.
   text-to-envelope path using these exact bytes and trusted arm gates.
 
 
-### E-20260926-INT-002 — shared v2 integration audit retains findings
+### E-20260926-INT-002 â€” shared v2 integration audit retains findings
 
 - Stage: S1
 - Lane: Shared integration
@@ -998,7 +997,7 @@ commissioning, or bounded physical result with its limitations intact.
   and the S2 zero-hardware composition path.
 
 
-### E-20260926-ARM-006 — v2 proposals enter arm-owned measured planning policy
+### E-20260926-ARM-006 â€” v2 proposals enter arm-owned measured planning policy
 
 - Stage: S2
 - Lane: Arm/runtime
@@ -1035,7 +1034,7 @@ commissioning, or bounded physical result with its limitations intact.
   separately, the AI lane must bind precision output to exact evidence.
 
 
-### E-20260926-ARM-007 — v2 planner-policy increment audit retains findings
+### E-20260926-ARM-007 â€” v2 planner-policy increment audit retains findings
 
 - Stage: S2
 - Lane: Arm/runtime
@@ -1051,7 +1050,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Supersedes: none; retains all earlier failed audit evidence.
 - Next dependency: fixture-owner review remains independent of the S2 shadow
   runner and AI precision-evidence binding work.
-### E-20260926-AI-009 — precision binding test discovery failure
+### E-20260926-AI-009 â€” precision binding test discovery failure
 
 - Stage: S1
 - Lane: AI
@@ -1071,7 +1070,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Next dependency: Restore exact tracked test; rerun.
 
 
-### E-20260926-AI-010 — precision binding dependency failure
+### E-20260926-AI-010 â€” precision binding dependency failure
 
 - Stage: S1
 - Lane: AI
@@ -1091,7 +1090,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Next dependency: Install test dependency; rerun.
 
 
-### E-20260926-AI-011 — precision binding preflight and shared-gate regression
+### E-20260926-AI-011 â€” precision binding preflight and shared-gate regression
 
 - Stage: S1
 - Lane: AI
@@ -1111,7 +1110,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Next dependency: Versioned precision confidence methodology and capture-service provenance adapter; no substitution of scene confidence or coverage.
 
 
-### E-20260926-AI-012 — precision binding repository audit
+### E-20260926-AI-012 â€” precision binding repository audit
 
 - Stage: S1
 - Lane: AI
@@ -1131,7 +1130,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Next dependency: Fixture-owner review of existing findings.
 
 
-### E-20260926-ARM-008 — actual v2 bytes produce a zero-hardware shadow trace
+### E-20260926-ARM-008 â€” actual v2 bytes produce a zero-hardware shadow trace
 
 - Stage: S2
 - Lane: Arm/runtime
@@ -1166,7 +1165,7 @@ commissioning, or bounded physical result with its limitations intact.
   and the full cross-lane negative matrix without weakening the physical gate.
 
 
-### E-20260926-ARM-009 — shadow-trace increment audit retains findings
+### E-20260926-ARM-009 â€” shadow-trace increment audit retains findings
 
 - Stage: S2
 - Lane: Arm/runtime
@@ -1184,7 +1183,7 @@ commissioning, or bounded physical result with its limitations intact.
   and measured calibration work.
 
 
-### E-20260926-ARM-010 — ordered v2 coordinator blocks unsafe envelope migration
+### E-20260926-ARM-010 â€” ordered v2 coordinator blocks unsafe envelope migration
 
 - Stage: S2
 - Lane: Arm/runtime
@@ -1220,7 +1219,7 @@ commissioning, or bounded physical result with its limitations intact.
   then produce it only from a fully screened measured planner result.
 
 
-### E-20260926-ARM-011 — v2 coordinator audit retains findings
+### E-20260926-ARM-011 â€” v2 coordinator audit retains findings
 
 - Stage: S2
 - Lane: Arm/runtime
@@ -1236,7 +1235,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Supersedes: none; retains all earlier failed audit evidence.
 - Next dependency: fixture-owner review remains independent of the v2 envelope
   contract and measured calibration work.
-### E-20260926-AI-013 — capture receipt binding and confidence-method plan
+### E-20260926-AI-013 â€” capture receipt binding and confidence-method plan
 
 - Stage: S1
 - Lane: AI
@@ -1260,7 +1259,7 @@ commissioning, or bounded physical result with its limitations intact.
   confidence event, tolerance, data splits and acceptance criteria before training.
 
 
-### E-20260926-AI-014 — capture-binding audit findings retained
+### E-20260926-AI-014 â€” capture-binding audit findings retained
 
 - Stage: S1
 - Lane: AI
@@ -1278,7 +1277,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Next dependency: fixture-owner review, separate from AI confidence/capture work.
 
 
-### E-20260926-ARM-012 — dual-lineage v2 trajectory-envelope contract
+### E-20260926-ARM-012 â€” dual-lineage v2 trajectory-envelope contract
 
 - Stage: S2
 - Lane: Arm/runtime
@@ -1314,7 +1313,7 @@ commissioning, or bounded physical result with its limitations intact.
   supported, ambiguous, stale, obstructed, out-of-bound and unsupported matrix.
 
 
-### E-20260926-ARM-013 — v2 envelope audit retains findings
+### E-20260926-ARM-013 â€” v2 envelope audit retains findings
 
 - Stage: S2
 - Lane: Arm/runtime
@@ -1330,7 +1329,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Supersedes: none; retains all earlier failed audit evidence.
 - Next dependency: fixture-owner review remains independent of the shared S2
   integration runner and measured calibration work.
-### E-20260926-AI-015 — freeze localization-confidence research protocol
+### E-20260926-AI-015 â€” freeze localization-confidence research protocol
 
 - Stage: S1
 - Lane: AI
@@ -1355,7 +1354,7 @@ commissioning, or bounded physical result with its limitations intact.
   extend separate identity/visibility evidence and authenticated capture integration.
 
 
-### E-20260926-AI-016 — confidence protocol audit findings retained
+### E-20260926-AI-016 â€” confidence protocol audit findings retained
 
 - Stage: S1
 - Lane: AI
@@ -1373,7 +1372,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Next dependency: fixture-owner review, independently of confidence research.
 
 
-### E-20260926-AI-017 — frozen-feature confidence training fails research criteria
+### E-20260926-AI-017 â€” frozen-feature confidence training fails research criteria
 
 - Stage: S1
 - Lane: AI
@@ -1408,7 +1407,7 @@ commissioning, or bounded physical result with its limitations intact.
   local image features in a separately frozen experiment with fresh calibration
   and evaluation seeds. Do not lower this run's threshold or tune on 17M outcomes.
 
-### E-20260926-AI-018 — confidence metric regression
+### E-20260926-AI-018 â€” confidence metric regression
 
 - Stage: S1
 - Lane: AI
@@ -1425,7 +1424,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Supersedes: none
 - Next dependency: AI-017 development investigation.
 
-### E-20260926-AI-019 — confidence training audit findings retained
+### E-20260926-AI-019 â€” confidence training audit findings retained
 
 - Stage: S1
 - Lane: AI
@@ -1442,7 +1441,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Supersedes: none
 - Next dependency: fixture-owner review independently of confidence research.
 
-### E-20260926-INT-003 — raw request reaches the actual v2 arm shadow path
+### E-20260926-INT-003 â€” raw request reaches the actual v2 arm shadow path
 
 - Stage: S2
 - Lane: INTEGRATION
@@ -1483,7 +1482,7 @@ commissioning, or bounded physical result with its limitations intact.
   bounded precision observation to this runner; then repeat the terminal matrix
   with actual producer evidence and measured calibration.
 
-### E-20260926-INT-004 — S2 raw-runner audit findings retained
+### E-20260926-INT-004 â€” S2 raw-runner audit findings retained
 
 - Stage: S2
 - Lane: INTEGRATION
@@ -1504,7 +1503,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Next dependency: fixture-owner review remains independent of qualified
   perception integration and measured-calibration work.
 
-### E-20260926-AI-020 — local image feature development comparison
+### E-20260926-AI-020 â€” local image feature development comparison
 
 - Stage: S1
 - Lane: AI
@@ -1535,7 +1534,7 @@ commissioning, or bounded physical result with its limitations intact.
   data before another frozen held-out experiment; this small gain does not justify
   promotion or changing the original acceptance threshold.
 
-### E-20260926-AI-021 — development scoring regression
+### E-20260926-AI-021 â€” development scoring regression
 
 - Stage: S1
 - Lane: AI
@@ -1551,7 +1550,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Supersedes: none
 - Next dependency: AI-020 development investigation.
 
-### E-20260926-AI-022 — local-feature audit findings retained
+### E-20260926-AI-022 â€” local-feature audit findings retained
 
 - Stage: S1
 - Lane: AI
@@ -1569,7 +1568,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Next dependency: fixture-owner review independently of confidence research.
 
 
-### E-20260926-AI-023 — development inference resolution sensitivity
+### E-20260926-AI-023 â€” development inference resolution sensitivity
 
 - Stage: S1
 - Lane: AI
@@ -1597,7 +1596,7 @@ commissioning, or bounded physical result with its limitations intact.
   development data first; do not switch production input size from this diagnostic.
 
 
-### E-20260926-AI-024 — resolution diagnostic audit findings retained
+### E-20260926-AI-024 â€” resolution diagnostic audit findings retained
 
 - Stage: S1
 - Lane: AI
@@ -1615,7 +1614,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Next dependency: fixture-owner review, separately from localization research.
 
 
-### E-20260926-AI-025 — matched-resolution development fine-tuning
+### E-20260926-AI-025 â€” matched-resolution development fine-tuning
 
 - Stage: S1
 - Lane: AI
@@ -1647,7 +1646,7 @@ commissioning, or bounded physical result with its limitations intact.
   geometric refinement and confidence on development groups before a new frozen
   held-out run. Keep failed confidence results and runtime abstention unchanged.
 
-### E-20260926-AI-026 — matched-resolution evidence checks
+### E-20260926-AI-026 â€” matched-resolution evidence checks
 
 - Stage: S1
 - Lane: AI
@@ -1664,7 +1663,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Supersedes: none
 - Next dependency: AI-025 development investigation.
 
-### E-20260926-AI-027 — matched-resolution audit findings retained
+### E-20260926-AI-027 â€” matched-resolution audit findings retained
 
 - Stage: S1
 - Lane: AI
@@ -1682,7 +1681,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Next dependency: fixture-owner review independently of localization research.
 
 
-### E-20260926-AI-028 — merged boundary regression
+### E-20260926-AI-028 â€” merged boundary regression
 
 - Stage: S1
 - Lane: AI
@@ -1699,7 +1698,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Next dependency: AI-025 development refinement and shared-stage outstanding dependencies.
 
 
-### E-20260926-AI-029 — reject local-edge refinement after development comparison
+### E-20260926-AI-029 â€” reject local-edge refinement after development comparison
 
 - Stage: S1
 - Lane: AI
@@ -1729,7 +1728,7 @@ commissioning, or bounded physical result with its limitations intact.
   pose error into translation/orientation and scene-condition contributions before
   choosing further model changes. Do not tune this rejected heuristic on held-out data.
 
-### E-20260926-AI-030 — refinement bound and edge-case tests
+### E-20260926-AI-030 â€” refinement bound and edge-case tests
 
 - Stage: S1
 - Lane: AI
@@ -1747,7 +1746,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Next dependency: AI-029 error decomposition.
 
 
-### E-20260926-AI-031 — local-refinement audit findings retained
+### E-20260926-AI-031 â€” local-refinement audit findings retained
 
 - Stage: S1
 - Lane: AI
@@ -1764,7 +1763,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Supersedes: none
 - Next dependency: fixture-owner review independently of localization research.
 
-### E-20260926-ARM-014 — sealed-envelope T102 zero-write preview
+### E-20260926-ARM-014 â€” sealed-envelope T102 zero-write preview
 
 - Stage: S4
 - Lane: ARM
@@ -1801,7 +1800,7 @@ commissioning, or bounded physical result with its limitations intact.
   writer, define partial-write/timeout/restart closure, and qualify the installed
   firmware mapping before any physical authority is possible.
 
-### E-20260926-ARM-015 — S4 preview audit findings retained
+### E-20260926-ARM-015 â€” S4 preview audit findings retained
 
 - Stage: S4
 - Lane: ARM
@@ -1822,7 +1821,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Next dependency: fixture-owner review remains independent of S4 writer and
   installed-controller qualification.
 
-### E-20260926-ARM-016 — zero-write sole-writer lifecycle and restart closure
+### E-20260926-ARM-016 â€” zero-write sole-writer lifecycle and restart closure
 
 - Stage: S4
 - Lane: ARM
@@ -1859,7 +1858,7 @@ commissioning, or bounded physical result with its limitations intact.
   byte fixture, then bind them to independently commissioned controller mapping
   and firmware evidence before considering the S4 arm lane ready.
 
-### E-20260926-ARM-017 — sole-writer lifecycle audit findings retained
+### E-20260926-ARM-017 â€” sole-writer lifecycle audit findings retained
 
 - Stage: S4
 - Lane: ARM
@@ -1880,7 +1879,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Next dependency: fixture-owner review remains independent of S4 schema,
   golden-fixture, and controller-mapping work.
 
-### E-20260926-AI-032 — translation and rotation development decomposition
+### E-20260926-AI-032 â€” translation and rotation development decomposition
 
 - Stage: S1
 - Lane: AI
@@ -1908,7 +1907,7 @@ commissioning, or bounded physical result with its limitations intact.
   retaining yaw regression monitoring; require paired baseline comparison before
   consuming new calibration/evaluation groups.
 
-### E-20260926-AI-033 — decomposition consistency checks
+### E-20260926-AI-033 â€” decomposition consistency checks
 
 - Stage: S1
 - Lane: AI
@@ -1925,7 +1924,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Supersedes: none
 - Next dependency: AI-032 translation-focused development experiment.
 
-### E-20260926-AI-034 — decomposition audit findings retained
+### E-20260926-AI-034 â€” decomposition audit findings retained
 
 - Stage: S1
 - Lane: AI
@@ -1943,7 +1942,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Next dependency: fixture-owner review independently of AI development.
 
 
-### E-20260926-AI-035 — translation-weighted development candidate
+### E-20260926-AI-035 â€” translation-weighted development candidate
 
 - Stage: S1
 - Lane: AI
@@ -1976,7 +1975,7 @@ commissioning, or bounded physical result with its limitations intact.
   criteria for this candidate and control before inspecting labels; then assess
   uncertainty separately. Development success alone cannot enable emission.
 
-### E-20260926-AI-036 — paired training evidence validation
+### E-20260926-AI-036 â€” paired training evidence validation
 
 - Stage: S1
 - Lane: AI
@@ -1993,7 +1992,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Supersedes: none
 - Next dependency: AI-035 frozen independent comparison.
 
-### E-20260926-AI-037 — translation-training audit findings retained
+### E-20260926-AI-037 â€” translation-training audit findings retained
 
 - Stage: S1
 - Lane: AI
@@ -2011,14 +2010,14 @@ commissioning, or bounded physical result with its limitations intact.
 - Next dependency: fixture-owner review independently of AI research.
 
 
-### E-20260926-AI-038 — fresh paired translation candidate evaluation
+### E-20260926-AI-038 â€” fresh paired translation candidate evaluation
 
 - Stage: S1
 - Lane: AI
 - Commit: `bc86500906578ba341862f1fd5cf758bf1db698b` (exact frozen evaluation source, checkpoints and criteria before scoring)
 - Change: compared frozen translation-weighted candidate and control on fresh
   18M seeds with no training, threshold tuning or calibration.
-- Inputs/fixtures: seeds 18000000–18000499, three conditions, 46 keys; 1,500 images
+- Inputs/fixtures: seeds 18000000â€“18000499, three conditions, 46 keys; 1,500 images
   and 69,000 correlated target/view errors per model. Checkpoint/source/catalog
   hashes in `eval/translation_pair_v0.manifest.json`; image hash and group scores
   in `eval/translation_pair_v0_scorecard.json`.
@@ -2040,7 +2039,7 @@ commissioning, or bounded physical result with its limitations intact.
   evaluation split for the candidate; test complete bounds against independent
   target regions. Confidence and capture trust remain separate unresolved gates.
 
-### E-20260926-AI-039 — paired held-out evidence verification
+### E-20260926-AI-039 â€” paired held-out evidence verification
 
 - Stage: S1
 - Lane: AI
@@ -2058,7 +2057,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Next dependency: AI-038 independent uncertainty study.
 
 
-### E-20260926-AI-040 — paired evaluation audit findings retained
+### E-20260926-AI-040 â€” paired evaluation audit findings retained
 
 - Stage: S1
 - Lane: AI
@@ -2076,13 +2075,13 @@ commissioning, or bounded physical result with its limitations intact.
 - Next dependency: fixture-owner review independently of AI qualification research.
 
 
-### E-20260926-AI-041 — protected-main publishing blocker
+### E-20260926-AI-041 â€” protected-main publishing blocker
 
 - Stage: S1
 - Lane: AI
 - Commit: `5b94a8dfc218be5a31c94f172db6ae3b62378b88`
 - Change: published completed paired evidence to `feature/translation-pair-evidence` after main protection rejected direct push.
-- Inputs/fixtures: completed AI-038–040 changes and preserved arm merge.
+- Inputs/fixtures: completed AI-038â€“040 changes and preserved arm merge.
 - Command: `git push origin main`; `git push -u origin feature/translation-pair-evidence`; GitHub connector `github_create_pull_request` targeting main.
 - Result: BLOCKED for PR creation: main push rejected GH006 (PR and four checks required); branch push succeeded; connector returned HTTP 403 Resource not accessible by integration. Local gh CLI unavailable.
 - Artifacts: remote branch `feature/translation-pair-evidence`; no PR created.
@@ -2093,7 +2092,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Next dependency: authorized GitHub PR creation and required checks before merge.
 
 
-### E-20260926-AI-042 — candidate uncertainty and full-region study
+### E-20260926-AI-042 â€” candidate uncertainty and full-region study
 
 - Stage: S1
 - Lane: AI
@@ -2123,7 +2122,7 @@ commissioning, or bounded physical result with its limitations intact.
   any target-specific or conditional uncertainty method needs separate frozen
   calibration/evaluation and must preserve complete-region checking. No promotion.
 
-### E-20260926-AI-043 — uncertainty evidence verification
+### E-20260926-AI-043 â€” uncertainty evidence verification
 
 - Stage: S1
 - Lane: AI
@@ -2140,7 +2139,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Supersedes: none
 - Next dependency: AI-042 development-tail investigation.
 
-### E-20260926-AI-044 — uncertainty study audit findings retained
+### E-20260926-AI-044 â€” uncertainty study audit findings retained
 
 - Stage: S1
 - Lane: AI
@@ -2158,7 +2157,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Next dependency: fixture-owner review; protected-main PR blocker AI-041 remains.
 
 
-### E-20260926-AI-045 — audit passes after fixture-owner review merge
+### E-20260926-AI-045 â€” audit passes after fixture-owner review merge
 
 - Stage: S1
 - Lane: AI
@@ -2176,7 +2175,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Next dependency: protected-main PR creation/checks from AI-041; AI-042 localization work remains separate.
 
 
-### E-20260926-AI-046 — development residual-tail stratification
+### E-20260926-AI-046 â€” development residual-tail stratification
 
 - Stage: S1
 - Lane: AI
@@ -2204,7 +2203,7 @@ commissioning, or bounded physical result with its limitations intact.
   added brightness, blur and obstruction effects before targeted retraining;
   preserve all consumed calibration/evaluation splits.
 
-### E-20260926-AI-047 — development-tail evidence checks
+### E-20260926-AI-047 â€” development-tail evidence checks
 
 - Stage: S1
 - Lane: AI
@@ -2222,7 +2221,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Next dependency: AI-046 controlled perturbation experiment.
 
 
-### E-20260926-AI-048 — tail diagnostic repository audit
+### E-20260926-AI-048 â€” tail diagnostic repository audit
 
 - Stage: S1
 - Lane: AI
@@ -2239,7 +2238,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Next dependency: authorized PR creation/checks; AI-046 perturbation study independently.
 
 
-### E-20260926-AI-049 — paired single-perturbation development study
+### E-20260926-AI-049 â€” paired single-perturbation development study
 
 - Stage: S1
 - Lane: AI
@@ -2267,7 +2266,7 @@ commissioning, or bounded physical result with its limitations intact.
   on development groups, retaining baseline/yaw checks; later use fresh calibration
   and evaluation. Do not infer a deployable darkness threshold from this study.
 
-### E-20260926-AI-050 — paired perturbation evidence tests
+### E-20260926-AI-050 â€” paired perturbation evidence tests
 
 - Stage: S1
 - Lane: AI
@@ -2284,7 +2283,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Supersedes: none
 - Next dependency: AI-049 brightness-robustness training.
 
-### E-20260926-AI-051 — paired perturbation publication audit
+### E-20260926-AI-051 â€” paired perturbation publication audit
 
 - Stage: S1
 - Lane: AI
@@ -2304,7 +2303,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Next dependency: paired brightness-augmentation development comparison;
   authorized PR creation and protected-branch checks for main publication.
 
-### E-20260926-ARM-018 — published zero-write controller boundary
+### E-20260926-ARM-018 â€” published zero-write controller boundary
 
 - Stage: S4
 - Lane: ARM
@@ -2336,7 +2335,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Next dependency: independently commission the installed controller mapping
   and firmware evidence before any S4 readiness or physical dispatch claim.
 
-### E-20260926-ARM-019 — zero-write schema audit findings retained
+### E-20260926-ARM-019 â€” zero-write schema audit findings retained
 
 - Stage: S4
 - Lane: ARM
@@ -2357,7 +2356,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Next dependency: fixture-owner review remains independent of installed
   controller mapping and firmware qualification.
 
-### E-20260926-ARM-020 — reviewed-fixture integration verification
+### E-20260926-ARM-020 â€” reviewed-fixture integration verification
 
 - Stage: S4
 - Lane: ARM
@@ -2387,7 +2386,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Next dependency: independently commission the installed controller mapping
   and firmware evidence before any S4 readiness or physical-dispatch claim.
 
-### E-20260926-AI-052 — matched brightness augmentation development failure
+### E-20260926-AI-052 â€” matched brightness augmentation development failure
 
 - Stage: S1
 - Lane: AI
@@ -2424,7 +2423,7 @@ commissioning, or bounded physical result with its limitations intact.
   retaining the per-condition error, tail and yaw gates. Require fresh calibration
   and evaluation only after development criteria pass; no installed qualification.
 
-### E-20260926-AI-053 — brightness evidence consistency tests
+### E-20260926-AI-053 â€” brightness evidence consistency tests
 
 - Stage: S1
 - Lane: AI
@@ -2441,7 +2440,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Supersedes: none
 - Next dependency: AI-052 development comparison; preserve failed candidate.
 
-### E-20260926-AI-054 — brightness evidence publication audit
+### E-20260926-AI-054 â€” brightness evidence publication audit
 
 - Stage: S1
 - Lane: AI
@@ -2459,7 +2458,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Supersedes: none
 - Next dependency: protected-branch PR/checks; AI-052 next development experiment.
 
-### E-20260926-ARM-021 — installed-controller qualification gate
+### E-20260926-ARM-021 â€” installed-controller qualification gate
 
 - Stage: S4
 - Lane: ARM
@@ -2494,7 +2493,7 @@ commissioning, or bounded physical result with its limitations intact.
   bounded physical qualification and obtain independent review before using a
   passing evidence record.
 
-### E-20260926-ARM-022 — controller-gate repository audit
+### E-20260926-ARM-022 â€” controller-gate repository audit
 
 - Stage: S4
 - Lane: ARM
@@ -2515,7 +2514,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Next dependency: collect and independently review exact installed-controller
   evidence; keep physical execution blocked until that is complete.
 
-### E-20260926-ARM-023 — controller-gate release-doc integration
+### E-20260926-ARM-023 â€” controller-gate release-doc integration
 
 - Stage: S4
 - Lane: ARM
@@ -2535,7 +2534,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Next dependency: separately approved physical evidence collection and
   independent review before zero-write profile binding can pass on real data.
 
-### E-20260926-AI-055 — reduced brightness augmentation development failure
+### E-20260926-AI-055 â€” reduced brightness augmentation development failure
 
 - Stage: S1
 - Lane: AI
@@ -2575,7 +2574,7 @@ commissioning, or bounded physical result with its limitations intact.
   augmentation control, with unchanged development gates. No fresh evaluation
   or confidence calibration until a candidate passes development criteria.
 
-### E-20260926-AI-056 — reduced brightness evidence tests
+### E-20260926-AI-056 â€” reduced brightness evidence tests
 
 - Stage: S1
 - Lane: AI
@@ -2592,7 +2591,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Supersedes: none
 - Next dependency: AI-055 baseline-preservation experiment.
 
-### E-20260926-AI-057 — reduced brightness publication audit
+### E-20260926-AI-057 â€” reduced brightness publication audit
 
 - Stage: S1
 - Lane: AI
@@ -2608,7 +2607,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Supersedes: none; historical failed audit evidence retained.
 - Next dependency: protected-branch PR/checks and AI-055 development experiment.
 
-### E-20260926-AI-058 — baseline-preservation distillation development failure
+### E-20260926-AI-058 â€” baseline-preservation distillation development failure
 
 - Stage: S1
 - Lane: AI
@@ -2648,7 +2647,7 @@ commissioning, or bounded physical result with its limitations intact.
   limits. This tests a different intervention after three failed training variants;
   it must not become a runtime preprocessing rule without subsequent evidence.
 
-### E-20260926-AI-059 — preservation evidence and loss tests
+### E-20260926-AI-059 â€” preservation evidence and loss tests
 
 - Stage: S1
 - Lane: AI
@@ -2666,7 +2665,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Supersedes: none
 - Next dependency: AI-058 normalization diagnostic.
 
-### E-20260926-AI-060 — preservation evidence publication audit
+### E-20260926-AI-060 â€” preservation evidence publication audit
 
 - Stage: S1
 - Lane: AI
@@ -2682,7 +2681,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Supersedes: none; historical audit failures retained.
 - Next dependency: protected-branch PR/checks and AI-058 diagnostic.
 
-### E-20260926-AI-061 — fixed lighting normalization development failure
+### E-20260926-AI-061 â€” fixed lighting normalization development failure
 
 - Stage: S1
 - Lane: AI
@@ -2715,7 +2714,7 @@ commissioning, or bounded physical result with its limitations intact.
   existing cases and image evidence before choosing another normalization rule.
   Preserve failure; do not relax tail criteria to pass this candidate.
 
-### E-20260926-AI-062 — lighting normalization evidence tests
+### E-20260926-AI-062 â€” lighting normalization evidence tests
 
 - Stage: S1
 - Lane: AI
@@ -2732,7 +2731,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Supersedes: none
 - Next dependency: AI-061 paired crossing diagnosis.
 
-### E-20260926-AI-063 — normalization publication audit
+### E-20260926-AI-063 â€” normalization publication audit
 
 - Stage: S1
 - Lane: AI
@@ -2748,7 +2747,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Supersedes: none; historical audit failures retained.
 - Next dependency: protected-branch PR/checks and AI-061 diagnostic.
 
-### E-20260926-AI-064 — paired normalization crossing diagnosis
+### E-20260926-AI-064 â€” paired normalization crossing diagnosis
 
 - Stage: S1
 - Lane: AI
@@ -2783,7 +2782,7 @@ commissioning, or bounded physical result with its limitations intact.
   threshold as a research parameter, not physical calibration; require fresh
   held-out evaluation and confidence work after development success.
 
-### E-20260926-AI-065 — crossing diagnosis consistency tests
+### E-20260926-AI-065 â€” crossing diagnosis consistency tests
 
 - Stage: S1
 - Lane: AI
@@ -2800,7 +2799,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Supersedes: none
 - Next dependency: AI-064 bounded comparison.
 
-### E-20260926-AI-066 — crossing diagnosis publication audit
+### E-20260926-AI-066 â€” crossing diagnosis publication audit
 
 - Stage: S1
 - Lane: AI
@@ -2816,7 +2815,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Supersedes: none; historical failures preserved.
 - Next dependency: protected-branch PR/checks and AI-064 comparison.
 
-### E-20260926-ARM-024 — passive r96 evidence candidate and live identity capture
+### E-20260926-ARM-024 â€” passive r96 evidence candidate and live identity capture
 
 - Stage: S4
 - Lane: ARM
@@ -2858,7 +2857,7 @@ commissioning, or bounded physical result with its limitations intact.
   separately hashed evidence for all seven blockers. Do not construct a passing
   qualification record until every blocker is closed.
 
-### E-20260926-ARM-025 — passive-evidence integration verification
+### E-20260926-ARM-025 â€” passive-evidence integration verification
 
 - Stage: S4
 - Lane: ARM
@@ -2880,7 +2879,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Next dependency: independent evidence review and explicit resolution of the
   seven blockers listed by ARM-024.
 
-### E-20260926-AI-067 — dark-only normalization development pass
+### E-20260926-AI-067 â€” dark-only normalization development pass
 
 - Stage: S1
 - Lane: AI
@@ -2912,7 +2911,7 @@ commissioning, or bounded physical result with its limitations intact.
   gate. Use unconsumed seeds beyond20M; no retuning after scoring. Confidence and
   physical calibration remain separate blockers even if evaluation passes.
 
-### E-20260926-AI-068 — dark-only normalization tests
+### E-20260926-AI-068 â€” dark-only normalization tests
 
 - Stage: S1
 - Lane: AI
@@ -2929,7 +2928,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Supersedes: none
 - Next dependency: AI-067 fresh evaluation.
 
-### E-20260926-AI-069 — dark-only normalization publication audit
+### E-20260926-AI-069 â€” dark-only normalization publication audit
 
 - Stage: S1
 - Lane: AI
@@ -2945,7 +2944,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Supersedes: none; historical failures retained.
 - Next dependency: protected-branch PR/checks and AI-067 fresh evaluation.
 
-### E-20260926-AI-070 — fresh synthetic normalization evaluation pass
+### E-20260926-AI-070 â€” fresh synthetic normalization evaluation pass
 
 - Stage: S1
 - Lane: AI
@@ -2980,7 +2979,7 @@ commissioning, or bounded physical result with its limitations intact.
   error-coverage and full target-region containment checks. Do not install
   qualification or treat oracle target placement as runtime calibration.
 
-### E-20260926-AI-071 — fresh normalization evidence tests
+### E-20260926-AI-071 â€” fresh normalization evidence tests
 
 - Stage: S1
 - Lane: AI
@@ -2997,7 +2996,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Supersedes: none
 - Next dependency: AI-070 fresh uncertainty protocol.
 
-### E-20260926-AI-072 — fresh normalization publication audit
+### E-20260926-AI-072 â€” fresh normalization publication audit
 
 - Stage: S1
 - Lane: AI
@@ -3013,7 +3012,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Supersedes: none; historical failures preserved.
 - Next dependency: protected-branch PR/checks and AI-070 uncertainty study.
 
-### E-20260926-AI-073 — normalized uncertainty combined-criteria failure
+### E-20260926-AI-073 â€” normalized uncertainty combined-criteria failure
 
 - Stage: S1
 - Lane: AI
@@ -3048,7 +3047,7 @@ commissioning, or bounded physical result with its limitations intact.
   coverage and region-fit criteria; do not shrink this radius after seeing evaluation
   results. Any selected method requires new calibration/evaluation beyond23M.
 
-### E-20260926-AI-074 — normalized uncertainty evidence test
+### E-20260926-AI-074 â€” normalized uncertainty evidence test
 
 - Stage: S1
 - Lane: AI
@@ -3065,7 +3064,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Supersedes: none
 - Next dependency: AI-073 conditional-uncertainty feasibility study.
 
-### E-20260926-AI-075 — normalized uncertainty publication audit
+### E-20260926-AI-075 â€” normalized uncertainty publication audit
 
 - Stage: S1
 - Lane: AI
@@ -3081,7 +3080,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Supersedes: none; historical audit failures preserved.
 - Next dependency: protected-branch PR/checks and AI-073 feasibility study.
 
-### E-20260926-AI-076 — conditional disagreement abstention feasibility pass
+### E-20260926-AI-076 â€” conditional disagreement abstention feasibility pass
 
 - Stage: S1
 - Lane: AI
@@ -3116,7 +3115,7 @@ commissioning, or bounded physical result with its limitations intact.
   from calibration only; report acceptance, accepted-image and accepted-group
   coverage/containment without treating abstention as success. No runtime qualification.
 
-### E-20260926-AI-077 — disagreement feasibility evidence tests
+### E-20260926-AI-077 â€” disagreement feasibility evidence tests
 
 - Stage: S1
 - Lane: AI
@@ -3133,7 +3132,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Supersedes: none
 - Next dependency: AI-076 fresh study.
 
-### E-20260926-AI-078 — disagreement feasibility publication audit
+### E-20260926-AI-078 â€” disagreement feasibility publication audit
 
 - Stage: S1
 - Lane: AI
@@ -3149,7 +3148,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Supersedes: none; historical failures retained.
 - Next dependency: protected-branch PR/checks and AI-076 fresh calibration/evaluation.
 
-### E-20260926-ARM-026 — r96 command-surface compatibility decision
+### E-20260926-ARM-026 â€” r96 command-surface compatibility decision
 
 - Stage: S4
 - Lane: ARM
@@ -3190,7 +3189,7 @@ commissioning, or bounded physical result with its limitations intact.
   candidate with bounded T=102/T=105/T=1051 handling and runtime attestation;
   independently review it offline before proposing installation or startup.
 
-### E-20260926-ARM-027 — command-surface integration verification
+### E-20260926-ARM-027 â€” command-surface integration verification
 
 - Stage: S4
 - Lane: ARM
@@ -3213,7 +3212,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Next dependency: implement and independently review the separate production
   runtime contract offline, retaining r96 unchanged as diagnostic history.
 
-### E-20260926-AI-079 — fresh conditional uncertainty availability failure
+### E-20260926-AI-079 â€” fresh conditional uncertainty availability failure
 
 - Stage: S1
 - Lane: AI
@@ -3246,7 +3245,7 @@ commissioning, or bounded physical result with its limitations intact.
   method. Do not tune against25M evaluation or reduce radii after seeing failure;
   any revised method needs new independent calibration/evaluation beyond25M.
 
-### E-20260926-AI-080 — fresh conditional uncertainty evidence tests
+### E-20260926-AI-080 â€” fresh conditional uncertainty evidence tests
 
 - Stage: S1
 - Lane: AI
@@ -3263,7 +3262,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Supersedes: none
 - Next dependency: AI-079 retained-calibration diagnostic.
 
-### E-20260926-AI-081 — fresh conditional uncertainty publication audit
+### E-20260926-AI-081 â€” fresh conditional uncertainty publication audit
 
 - Stage: S1
 - Lane: AI
@@ -3279,7 +3278,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Supersedes: none; historical failures retained.
 - Next dependency: protected-branch PR/checks and AI-079 diagnostic.
 
-### E-20260926-AI-082 — stable-but-inaccurate calibration diagnosis
+### E-20260926-AI-082 â€” stable-but-inaccurate calibration diagnosis
 
 - Stage: S1
 - Lane: AI
@@ -3312,7 +3311,7 @@ commissioning, or bounded physical result with its limitations intact.
   is limited to the known synthetic projection and is not runtime calibration;
   no tuning against25M and fresh future calibration/evaluation remains required.
 
-### E-20260926-AI-083 — stable-error diagnostic evidence test
+### E-20260926-AI-083 â€” stable-error diagnostic evidence test
 
 - Stage: S1
 - Lane: AI
@@ -3329,7 +3328,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Supersedes: none
 - Next dependency: AI-082 spatial consistency diagnostic.
 
-### E-20260926-AI-084 — stable-error diagnosis publication audit
+### E-20260926-AI-084 â€” stable-error diagnosis publication audit
 
 - Stage: S1
 - Lane: AI
@@ -3345,7 +3344,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Supersedes: none; historical failures retained.
 - Next dependency: protected-branch PR/checks and AI-082 diagnostic.
 
-### E-20260926-AI-085 — spatial consistency availability failure
+### E-20260926-AI-085 â€” spatial consistency availability failure
 
 - Stage: S1
 - Lane: AI
@@ -3379,7 +3378,7 @@ commissioning, or bounded physical result with its limitations intact.
   improvement directly with per-condition mean/tail/yaw regression limits before
   revisiting uncertainty; do not lower availability or expand the3mm cap to pass.
 
-### E-20260926-AI-086 — spatial uncertainty evidence and transform tests
+### E-20260926-AI-086 â€” spatial uncertainty evidence and transform tests
 
 - Stage: S1
 - Lane: AI
@@ -3396,7 +3395,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Supersedes: none
 - Next dependency: AI-085 estimator comparison.
 
-### E-20260926-AI-087 — spatial uncertainty publication audit
+### E-20260926-AI-087 â€” spatial uncertainty publication audit
 
 - Stage: S1
 - Lane: AI
@@ -3412,7 +3411,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Supersedes: none; historical audit failures retained.
 - Next dependency: protected-branch PR/checks and AI-085 estimator comparison.
 
-### E-20260926-ARM-028 — production runtime executable contract
+### E-20260926-ARM-028 â€” production runtime executable contract
 
 - Stage: S4
 - Lane: ARM
@@ -3444,7 +3443,7 @@ commissioning, or bounded physical result with its limitations intact.
   contract, compile reproducibly, and independently review source and linked
   image before any installation proposal.
 
-### E-20260926-ARM-029 — production runtime contract integration verification
+### E-20260926-ARM-029 â€” production runtime contract integration verification
 
 - Stage: S4
 - Lane: ARM
@@ -3468,7 +3467,7 @@ commissioning, or bounded physical result with its limitations intact.
   manifest and protocol semantics, then conduct independent source/image review.
 
 
-### E-20260926-AI-088 — spatial averaging report serialization failure
+### E-20260926-AI-088 â€” spatial averaging report serialization failure
 
 - Stage: S1
 - Lane: AI
@@ -3484,7 +3483,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Supersedes:none
 - Next dependency: freeze native-bool serialization and wrapped yaw-error correction before rerunning; preserve this failure.
 
-### E-20260926-AI-089 — spatial averaging development tail failure
+### E-20260926-AI-089 â€” spatial averaging development tail failure
 
 - Stage:S1
 - Lane:AI
@@ -3514,7 +3513,7 @@ commissioning, or bounded physical result with its limitations intact.
   against25M. Any accepted estimator requires new independent evaluation and
   uncertainty calibration; do not install this mean estimator.
 
-### E-20260926-AI-090 — spatial averaging evidence tests
+### E-20260926-AI-090 â€” spatial averaging evidence tests
 
 - Stage:S1
 - Lane:AI
@@ -3531,7 +3530,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Supersedes:none
 - Next dependency:AI-089 median comparison.
 
-### E-20260926-AI-091 — spatial averaging publication audit
+### E-20260926-AI-091 â€” spatial averaging publication audit
 
 - Stage:S1
 - Lane:AI
@@ -3547,7 +3546,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Supersedes:none; historical failures retained.
 - Next dependency:protected-branch PR/checks and AI-089 median comparison.
 
-### E-20260926-AI-092 — spatial median development pass
+### E-20260926-AI-092 â€” spatial median development pass
 
 - Stage: S1
 - Lane: AI
@@ -3575,7 +3574,7 @@ commissioning, or bounded physical result with its limitations intact.
  26M500 seed groups before scoring. No tuning after evaluation; separate fresh
   uncertainty study and physical calibration remain required even if it passes.
 
-### E-20260926-AI-093 — spatial median evidence tests
+### E-20260926-AI-093 â€” spatial median evidence tests
 
 - Stage: S1
 - Lane: AI
@@ -3592,7 +3591,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Supersedes: none
 - Next dependency: AI-092 fresh evaluation.
 
-### E-20260926-AI-094 — spatial median publication audit
+### E-20260926-AI-094 â€” spatial median publication audit
 
 - Stage: S1
 - Lane: AI
@@ -3608,7 +3607,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Supersedes: none; historical failures retained.
 - Next dependency: protected-branch PR/checks and AI-092 evaluation.
 
-### E-20260926-AI-095 — fresh spatial median tail failure
+### E-20260926-AI-095 â€” fresh spatial median tail failure
 
 - Stage: S1
 - Lane: AI
@@ -3637,7 +3636,7 @@ commissioning, or bounded physical result with its limitations intact.
   against current normalized pose baseline. Stop post-hoc aggregation tuning on26M;
   future selected models require independent data beyond26M and confidence work.
 
-### E-20260926-AI-096 — fresh spatial median evidence tests
+### E-20260926-AI-096 â€” fresh spatial median evidence tests
 
 - Stage:S1
 - Lane:AI
@@ -3654,7 +3653,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Supersedes:none
 - Next dependency:AI-095 landmark baseline.
 
-### E-20260926-AI-097 — fresh median publication audit
+### E-20260926-AI-097 â€” fresh median publication audit
 
 - Stage:S1
 - Lane:AI
@@ -3670,7 +3669,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Supersedes:none; historical failures retained.
 - Next dependency:protected-branch PR/checks and AI-095 landmark baseline.
 
-### E-20260926-AI-098 — landmark architecture and label foundation
+### E-20260926-AI-098 â€” landmark architecture and label foundation
 
 - Stage:S1
 - Lane:AI
@@ -3702,7 +3701,7 @@ commissioning, or bounded physical result with its limitations intact.
  per-condition comparison against normalized pose baseline before training.
  Visibility logits must not substitute for localization uncertainty.
 
-### E-20260926-AI-099 — landmark foundation tests
+### E-20260926-AI-099 â€” landmark foundation tests
 
 - Stage:S1
 - Lane:AI
@@ -3719,7 +3718,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Supersedes:none
 - Next dependency:AI-098 occlusion data and frozen training protocol.
 
-### E-20260926-AI-100 — landmark foundation publication audit
+### E-20260926-AI-100 â€” landmark foundation publication audit
 
 - Stage:S1
 - Lane:AI
@@ -3735,7 +3734,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Supersedes:none; historical failures retained.
 - Next dependency:protected-branch PR/checks and AI-098 data foundation.
 
-### E-20260926-AI-101 — controlled occlusions and first landmark training failure
+### E-20260926-AI-101 â€” controlled occlusions and first landmark training failure
 
 - Stage: S1
 - Lane: AI
@@ -3772,7 +3771,7 @@ commissioning, or bounded physical result with its limitations intact.
  images before changing architecture/loss. Preserve this checkpoint and failure;
  do not treat visibility logits as localization confidence.
 
-### E-20260926-AI-102 — occlusion and landmark pipeline tests
+### E-20260926-AI-102 â€” occlusion and landmark pipeline tests
 
 - Stage: S1
 - Lane: AI
@@ -3790,7 +3789,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Supersedes: none
 - Next dependency: AI-101 model diagnostic.
 
-### E-20260926-AI-103 — landmark training publication audit
+### E-20260926-AI-103 â€” landmark training publication audit
 
 - Stage: S1
 - Lane: AI
@@ -3806,7 +3805,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Supersedes: none; historical failures retained.
 - Next dependency: protected-branch PR/checks and AI-101 diagnostic.
 
-### E-20260926-AI-104 — landmark decoding and visibility diagnosis
+### E-20260926-AI-104 â€” landmark decoding and visibility diagnosis
 
 - Stage: S1
 - Lane: AI
@@ -3838,7 +3837,7 @@ commissioning, or bounded physical result with its limitations intact.
   matched and record combined-intervention limits; fresh evaluation only after
   development evidence justifies it. No calibrated confidence claim.
 
-### E-20260926-AI-105 — landmark diagnostic evidence test
+### E-20260926-AI-105 â€” landmark diagnostic evidence test
 
 - Stage: S1
 - Lane: AI
@@ -3855,7 +3854,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Supersedes: none
 - Next dependency: AI-104 corrective comparison.
 
-### E-20260926-AI-106 — landmark diagnostic publication audit
+### E-20260926-AI-106 â€” landmark diagnostic publication audit
 
 - Stage: S1
 - Lane: AI
@@ -3871,7 +3870,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Supersedes: none; historical failures retained.
 - Next dependency: protected-branch PR/checks and AI-104 corrective training.
 
-### E-20260926-AI-107 — matched landmark loss correction failure
+### E-20260926-AI-107 â€” matched landmark loss correction failure
 
 - Stage: S1
 - Lane: AI
@@ -3907,7 +3906,7 @@ commissioning, or bounded physical result with its limitations intact.
  selection objective. Record localization, hidden false visibility and clear recall;
  do not tune thresholds or claim calibrated confidence from this result.
 
-### E-20260926-AI-108 — corrective landmark loss tests
+### E-20260926-AI-108 â€” corrective landmark loss tests
 
 - Stage: S1
 - Lane: AI
@@ -3924,7 +3923,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Supersedes: none
 - Next dependency: AI-107 separate-loss comparison.
 
-### E-20260926-AI-109 — corrected landmark publication audit
+### E-20260926-AI-109 â€” corrected landmark publication audit
 
 - Stage: S1
 - Lane: AI
@@ -3939,3 +3938,51 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: heuristic audit; AI-041 protected-main PR publication blocker remains.
 - Supersedes: none; historical failures retained.
 - Next dependency: protected-branch PR/checks and AI-107 ablation.
+
+### E-20260926-AI-110 — separate landmark loss ablations
+
+- Stage: S1
+- Lane: AI
+- Commit: `5a29b0178378478955a12b70a2cf78582f1f4b88` (frozen before execution)
+- Change: separated coordinate-only and balanced-visibility-only objectives, retaining frozen matched control and combined failures.
+- Inputs/fixtures: 600 training groups from seed14000000, 200 reused development groups from15000000; four conditions, rectangle training/ellipse development occluders; 2400/800 images. Exact source/catalog/checkpoint hashes in `train/landmark_ablation_v0_plan.json`; identical pixel hashes verified against frozen control.
+- Command: `python software/ai/train/train_landmarks_ablation.py`
+- Result: FAIL both arms. Coordinate-only mean errors standard/appearance/partial/full 8.512/12.892/11.084/11.248 mm versus control20.879/27.867/23.985/22.069; >3mm tails194/200/197/199 out of200 each. Hidden false-visible201/201, clear recall2736/2736. Standard/appearance yaw regressions fail. Visibility-only means24.012/29.538/26.409/25.285 mm; tails200 each; hidden false-visible88/201, clear recall1572/2736 (57.46%, below90%). Both select epoch8 with common combined development objective. Both remain worse than existing pose baseline.
+- Artifacts: `eval/landmark_ablation_v0_comparison.json` and two arm scorecards. Coordinate checkpoint SHA256 `c19e3f2b193c331cf0a2d97210aca2a94a501a5af04205b154a3cc92a168535c`; visibility checkpoint `ee2f83c3631673544ee5ff9f9ee6b3930f8648e1a35b445a510f36d8fc56c1b8` (ignored local results).
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: one seed, reused development, GPU not bitwise guaranteed; geometric visibility uncalibrated. No localization qualification, runtime calibration, boundary or integration gate change.
+- Supersedes: none; all failed evidence retained.
+- Next dependency: diagnose spatially localized visibility features versus current global pooling, using frozen checkpoint/occlusion evidence before another training change. Preserve coordinate-only localization result as research, not admission.
+
+### E-20260926-AI-111 — ablation provenance and decision checks
+
+- Stage: S1
+- Lane: AI
+- Commit: `5a29b0178378478955a12b70a2cf78582f1f4b88` (implementation baseline; tests committed with evidence)
+- Change: verify pinned hashes, matched pixels, checkpoint selection, independently recounted visibility and recomputed decision gates.
+- Inputs/fixtures: AI-110 manifest/reports and frozen AI-107 control; SHA256 references in manifest/comparison.
+- Command: `python -m pytest -q software/ai/tests/test_landmark_ablation.py`
+- Result: PASS,1 test; existing pytest-asyncio configuration warning.
+- Artifacts: named test and AI-110 scorecards.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: consistency verification does not qualify models; no batch contract changes, shared boundary suite not triggered.
+- Supersedes: none
+- Next dependency: AI-110 visibility diagnosis.
+
+### E-20260926-AI-112 — ablation publication audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `5a29b0178378478955a12b70a2cf78582f1f4b88` (implementation baseline plus results/test snapshot)
+- Change: audit publication snapshot.
+- Inputs/fixtures: repository with AI-110/111 artifacts and reviewed synthetic fixture allowlist.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS;5812 paths,812.2 MiB,0 unresolved findings,14 reviewed synthetic fixtures.
+- Artifacts: audit stdout and repository snapshot.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: heuristic audit; AI-041 protected-main publication blocker remains.
+- Supersedes: none
+- Next dependency: protected-branch PR/checks and AI-110 diagnosis.

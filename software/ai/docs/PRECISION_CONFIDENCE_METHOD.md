@@ -387,7 +387,7 @@ Photo and challenge-mask labels are currently unsupported. Runtime is unchanged.
 
 AI-101 through AI-103 add controlled partial/full masks and complete eight epochs
 on2400 training images with800 development images (ellipse occluders held out from
-rectangle training). The initial landmark model has24–31mm mean key error and
+rectangle training). The initial landmark model has24â€“31mm mean key error and
 falsely marks201/201 fully occluded corners visible. It is not promoted. Short
 random-initialization training versus a pretrained baseline is not a fair general
 architecture comparison. Next: inspect heatmap peaks versus soft-argmax, mass
@@ -409,8 +409,13 @@ comparison, preserving geometric and false-visible metrics and all failed eviden
 
 AI-107 through AI-109 compare original and corrected losses with identical data,
 initialization and budget, selecting both with the corrected objective. Coordinate
-plus balanced visibility losses reduce means from21–28mm to9–13mm, but yaw
+plus balanced visibility losses reduce means from21â€“28mm to9â€“13mm, but yaw
 regresses in standard/appearance conditions. Hidden false-visible count falls201
 ->14 while clear-corner recall falls to12.24%, below90%. Combined criteria fail;
 no promotion. Next: separate coordinate-only and visibility-only loss ablations
 under the same protocol before changing architecture or visibility thresholds.
+
+
+### Separate landmark loss ablations (AI-110)
+
+Frozen source `5a29b0178378478955a12b70a2cf78582f1f4b88` separates the coordinate and visibility objectives with matching pixels, initialization, budget and common checkpoint-selection objective. Coordinate-only reduces mean key error to8.51–12.89mm but classifies all201 hidden corners visible. Balanced-visibility-only lowers that count to88 while clear recall falls to57.46% and localization worsens to24.01–29.54mm. Both fail; neither replaces the pose baseline or supplies calibrated uncertainty. The prior combined failure remains intact. Next investigate whether global pooling discards the corner-local evidence needed for visibility, using frozen diagnostic evidence before further training. Reports: `eval/landmark_ablation_v0_*`; shared ledger AI-110–112.

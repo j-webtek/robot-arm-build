@@ -1,0 +1,69 @@
+{
+  "scope": "MATCHED_DEVELOPMENT_LOSS_ABLATION",
+  "checks": {
+    "coordinate_only": {
+      "conditions": {
+        "standard": {
+          "mean": true,
+          "tail": true,
+          "yaw": false
+        },
+        "appearance_shift": {
+          "mean": true,
+          "tail": true,
+          "yaw": false
+        },
+        "partial": {
+          "mean": true,
+          "tail": true,
+          "yaw": true
+        },
+        "full": {
+          "mean": true,
+          "tail": true,
+          "yaw": true
+        }
+      },
+      "visibility_pass": false,
+      "passed": false
+    },
+    "visibility_only": {
+      "conditions": {
+        "standard": {
+          "mean": false,
+          "tail": true,
+          "yaw": true
+        },
+        "appearance_shift": {
+          "mean": false,
+          "tail": true,
+          "yaw": true
+        },
+        "partial": {
+          "mean": false,
+          "tail": true,
+          "yaw": true
+        },
+        "full": {
+          "mean": false,
+          "tail": true,
+          "yaw": true
+        }
+      },
+      "visibility_pass": false,
+      "passed": false
+    }
+  },
+  "report_hashes": {
+    "coordinate_only": "b8d09f2f5264ff7d6189eae3d3913155d8a0addbb000f1f1bc327edc46f1e64b",
+    "visibility_only": "e9d5d381d23369d775becd6f4569aa5cf1d044aef94a7b2411469f9182862984"
+  },
+  "hardware_writes": 0,
+  "physical_movements": 0,
+  "qualification_installed": false,
+  "limitations": [
+    "Reuses frozen previous control; same data/order/seed/budget/selection, GPU execution not bitwise guaranteed",
+    "One seed and reused development groups; no fresh generalization or architecture superiority claim",
+    "Passing a relative corrective rule would not establish replacement of pose baseline"
+  ]
+}
