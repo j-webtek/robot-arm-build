@@ -71,13 +71,23 @@ order, and assigns a retry-forbidden recovery disposition to an interrupted
 dispatch. Binding the future writable executor's controller session and full
 configuration epoch vector remains part of R3.
 
-### R2 — typed trajectory execution envelope
+### R2 — typed trajectory execution envelope — initial implementation complete
 
 - Define controller-independent waypoints with joint positions, velocity,
   acceleration, jerk, settle tolerance, deadline, and correlation ID.
 - Require continuous-limit and full installed-geometry screening over the exact
   envelope bytes.
 - Keep Waveshare JSON/serial encoding behind the sole writable adapter.
+
+The initial envelope is now implemented as strict, duplicate-free,
+content-hashed JSON. It carries exactly five planner joints in radians with
+monotonic nanosecond timing, calibrated position bounds, velocity,
+acceleration, and jerk limits, settling tolerances/dwell, deadline, correlation
+identity, and all planner/build/session evidence hashes. Construction verifies
+finite values, position bounds, timing, deadline, and discrete dynamics. The
+coordinator and durable journal can bind dispatch to the exact envelope hash.
+It intentionally contains no gripper operation, Waveshare encoding, writable
+transport, or physical authority.
 
 ### R3 — single writer and controller receipts
 
@@ -132,7 +142,8 @@ A model-driven command path is operational only when it demonstrates:
 1. Keep AI output at `ModelMotionBatch`; do not add servo fields to that schema.
 2. Finish measured collision geometry so the planner can earn the reserved
    ready status.
-3. Define the typed trajectory envelope, then implement the sole Waveshare
-   writer against it.
-4. Bind controller-session and epoch evidence into executor receipts.
+3. Implement a zero-write Waveshare encoder that accepts only the sealed
+   trajectory envelope and produces reviewable JSON command bytes.
+4. Place that encoder behind a sole-writer transport with a separate
+   single-use execution permit and correlated receipts.
 5. Connect independent outcome verification and qualify one key before strings.

@@ -41,6 +41,12 @@ The [durable sequence-journal snapshot](model_motion_sequence_journal_snapshot_v
 records the append-only, hash-chained lifecycle and its conservative restart
 disposition. A committed dispatch boundary with no verified result explicitly
 forbids replay and requires outcome reconciliation.
+The [trajectory execution envelope](trajectory_execution_envelope_v1.schema.json)
+is the sealed, controller-independent input to the future sole writer. It binds
+the current model action and planner/collision evidence to timed five-joint
+waypoints, measured position/velocity/acceleration/jerk limits, settling policy,
+deadline, controller session, build, calibration, and configuration epochs. It
+contains no wire command or execution authority.
 The [translation-assurance schema](translation_assurance_v0.schema.json)
 records the ordered stage disposition and proves that no downstream stage can
 pass after the first blocker in the current offline path.

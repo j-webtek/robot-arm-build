@@ -21,6 +21,7 @@ from typing import Any, Mapping
 from rocell.models import ModelMotionBatch
 
 from .model_motion_sequence_coordinator import VerifiedActionResult
+from .trajectory_execution_envelope import TrajectoryExecutionEnvelope
 
 
 HEADER_SCHEMA = "rocell.model_motion_sequence_journal_header.v1"
@@ -493,6 +494,25 @@ class DurableModelMotionSequenceJournal:
             SequenceJournalPhase.DISPATCH_BOUNDARY_COMMITTED,
             action_index=action_index, event_time_ns=event_time_ns,
             evidence_sha256=_digest(execution_request_sha256, "execution request"),
+        )
+
+    def commit_trajectory_envelope(
+        self, envelope: TrajectoryExecutionEnvelope, *, event_time_ns: int
+    ) -> SequenceJournalSnapshot:
+        if not isinstance(envelope, TrajectoryExecutionEnvelope):
+            raise TypeError("envelope must be a TrajectoryExecutionEnvelope")
+        current = self.snapshot()
+        if (
+            envelope.batch_sha256 != current.batch_sha256
+            or envelope.action_index != current.events[-1].action_index
+        ):
+            raise ModelMotionSequenceJournalError(
+                "trajectory envelope does not bind the current journal action"
+            )
+        return self.commit_dispatch_boundary(
+            action_index=envelope.action_index,
+            event_time_ns=event_time_ns,
+            execution_request_sha256=envelope.envelope_sha256,
         )
 
     def record_verified_result(

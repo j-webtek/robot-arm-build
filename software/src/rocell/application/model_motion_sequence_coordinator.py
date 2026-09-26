@@ -20,6 +20,7 @@ from rocell.models import ModelMotionBatch, ModelMotionProposal
 
 from .context import SimulationContext, revalidate_simulation_context
 from .observed_planner_start_state import ObservedPlannerStartState
+from .trajectory_execution_envelope import TrajectoryExecutionEnvelope
 
 
 SCHEMA = "rocell.model_motion_sequence_snapshot.v1"
@@ -309,6 +310,28 @@ class ModelMotionSequenceCoordinator:
         self._used_dispatch_request_sha256.add(request_sha256)
         self._dispatch_request_sha256 = request_sha256
         self._phase = SequencePhase.WAITING_FOR_EXECUTION_RESULT
+
+    def commit_trajectory_envelope(
+        self, envelope: TrajectoryExecutionEnvelope
+    ) -> None:
+        """Bind the current action to one exact sealed trajectory envelope."""
+
+        if not isinstance(envelope, TrajectoryExecutionEnvelope):
+            raise TypeError("envelope must be a TrajectoryExecutionEnvelope")
+        proposal = self.current_proposal
+        if proposal is None or not self._planner_reports:
+            raise ModelMotionSequenceError("no planned action exists for the envelope")
+        if (
+            envelope.batch_sha256 != self._batch.batch_sha256
+            or envelope.action_index != self._action_index
+            or envelope.proposal_sha256 != proposal.proposal_sha256
+            or envelope.planner_gate_sha256
+            != self._planner_reports[-1]["planner_gate_sha256"]
+        ):
+            raise ModelMotionSequenceError(
+                "trajectory envelope does not bind the current action"
+            )
+        self.commit_dispatch_boundary(envelope.envelope_sha256)
 
     def snapshot(self) -> dict[str, Any]:
         report: dict[str, Any] = {

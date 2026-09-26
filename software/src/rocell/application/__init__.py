@@ -239,6 +239,15 @@ from .model_motion_sequence_journal import (
     SequenceRecoveryDisposition,
     load_model_motion_sequence_journal,
 )
+from .trajectory_execution_envelope import (
+    SCHEMA as TRAJECTORY_EXECUTION_ENVELOPE_SCHEMA,
+    JointTrajectoryLimits,
+    TimedJointWaypoint,
+    TrajectoryExecutionEnvelope,
+    TrajectoryExecutionEnvelopeError,
+    TrajectorySettlePolicy,
+    decode_trajectory_execution_envelope_json,
+)
 from .prehardware_layout_study import (
     LayoutAxisValueEvidence,
     LayoutCandidatePromotion,
@@ -904,6 +913,13 @@ __all__ = [
     "SequenceJournalSnapshot",
     "SequenceRecoveryDisposition",
     "load_model_motion_sequence_journal",
+    "TRAJECTORY_EXECUTION_ENVELOPE_SCHEMA",
+    "JointTrajectoryLimits",
+    "TimedJointWaypoint",
+    "TrajectoryExecutionEnvelope",
+    "TrajectoryExecutionEnvelopeError",
+    "TrajectorySettlePolicy",
+    "decode_trajectory_execution_envelope_json",
     "ModelMotionIngressError",
     "SimulationContextError",
     "SimulationRunReport",

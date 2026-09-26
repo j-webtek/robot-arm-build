@@ -7,6 +7,7 @@ import pytest
 
 from rocell.application.model_motion_sequence_coordinator import (
     ModelMotionSequenceCoordinator,
+    ModelMotionSequenceError,
 )
 from rocell.application.model_motion_sequence_journal import (
     DurableModelMotionSequenceJournal,
@@ -22,6 +23,7 @@ from test_model_motion_sequence_coordinator import (
     _result,
     _setup,
 )
+from test_trajectory_execution_envelope import _envelope
 
 
 def _root(tmp_path: Path) -> Path:
@@ -74,16 +76,17 @@ def test_dispatch_boundary_is_durable_before_coordinator_advances(
         coordinator_snapshot_sha256=ready["sequence_snapshot_sha256"],
     )
 
-    execution_request = "6" * 64
-    committed = journal.commit_dispatch_boundary(
+    envelope = _envelope(
+        batch_sha256=batch.batch_sha256,
         action_index=0,
-        event_time_ns=30,
-        execution_request_sha256=execution_request,
+        proposal_sha256=coordinator.current_proposal.proposal_sha256,
+        planner_gate_sha256=ready["planner_gate_sha256"][-1],
     )
+    committed = journal.commit_trajectory_envelope(envelope, event_time_ns=30)
     assert committed.recovery_disposition is (
         SequenceRecoveryDisposition.RETRY_FORBIDDEN_OUTCOME_UNCERTAIN
     )
-    coordinator.commit_dispatch_boundary(execution_request)
+    coordinator.commit_trajectory_envelope(envelope)
     result = _result(batch, coordinator)
     journal.record_verified_result(result, event_time_ns=40)
     coordinator.record_result(result)
@@ -125,6 +128,31 @@ def test_restart_at_dispatch_boundary_forbids_replay(tmp_path: Path) -> None:
             event_time_ns=40,
             execution_request_sha256="7" * 64,
         )
+
+
+def test_trajectory_envelope_must_bind_current_batch_and_action(
+    tmp_path: Path,
+) -> None:
+    batch, ingress, coordinator = _ready_coordinator()
+    journal = DurableModelMotionSequenceJournal.create(
+        _root(tmp_path), batch, ingress, created_at_ns=10
+    )
+    ready = coordinator.snapshot()
+    journal.commit_action_ready(
+        action_index=0,
+        event_time_ns=20,
+        planner_gate_sha256=ready["planner_gate_sha256"][-1],
+        coordinator_snapshot_sha256=ready["sequence_snapshot_sha256"],
+    )
+    wrong = _envelope(
+        batch_sha256="9" * 64,
+        proposal_sha256=coordinator.current_proposal.proposal_sha256,
+        planner_gate_sha256=ready["planner_gate_sha256"][-1],
+    )
+    with pytest.raises(ModelMotionSequenceJournalError, match="current journal"):
+        journal.commit_trajectory_envelope(wrong, event_time_ns=30)
+    with pytest.raises(ModelMotionSequenceError, match="current action"):
+        coordinator.commit_trajectory_envelope(wrong)
 
 
 def test_journal_rejects_tamper_and_tail_truncation(tmp_path: Path) -> None:

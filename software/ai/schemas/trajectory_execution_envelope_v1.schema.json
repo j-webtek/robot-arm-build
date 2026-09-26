@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rocell.local/schemas/trajectory_execution_envelope_v1.schema.json",
+  "title": "RoCell controller-independent trajectory execution envelope v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "correlation_id", "batch_sha256", "action_index",
+    "proposal_sha256", "planner_gate_sha256", "trajectory_screening_sha256",
+    "collision_screening_sha256", "observed_start_state_sha256",
+    "observed_start_joint_positions_rad",
+    "build_snapshot_sha256", "calibration_snapshot_sha256",
+    "configuration_epoch_sha256", "controller_session_id",
+    "issued_monotonic_ns", "deadline_monotonic_ns", "limits",
+    "settle_policy", "waypoints", "continuous_collision_proven",
+    "wire_commands", "hardware_access", "physical_authority",
+    "envelope_sha256"
+  ],
+  "properties": {
+    "schema": {"const": "rocell.trajectory_execution_envelope.v1"},
+    "correlation_id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"},
+    "batch_sha256": {"$ref": "#/$defs/sha256"},
+    "action_index": {"type": "integer", "minimum": 0, "maximum": 63},
+    "proposal_sha256": {"$ref": "#/$defs/sha256"},
+    "planner_gate_sha256": {"$ref": "#/$defs/sha256"},
+    "trajectory_screening_sha256": {"$ref": "#/$defs/sha256"},
+    "collision_screening_sha256": {"$ref": "#/$defs/sha256"},
+    "observed_start_state_sha256": {"$ref": "#/$defs/sha256"},
+    "observed_start_joint_positions_rad": {"$ref": "#/$defs/jointMap"},
+    "build_snapshot_sha256": {"$ref": "#/$defs/sha256"},
+    "calibration_snapshot_sha256": {"$ref": "#/$defs/sha256"},
+    "configuration_epoch_sha256": {"$ref": "#/$defs/sha256"},
+    "controller_session_id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"},
+    "issued_monotonic_ns": {"type": "integer", "minimum": 1},
+    "deadline_monotonic_ns": {"type": "integer", "minimum": 1},
+    "limits": {"$ref": "#/$defs/limits"},
+    "settle_policy": {"$ref": "#/$defs/settle"},
+    "waypoints": {"type": "array", "minItems": 2, "maxItems": 512, "items": {"$ref": "#/$defs/waypoint"}},
+    "continuous_collision_proven": {"const": true},
+    "wire_commands": {"type": "array", "maxItems": 0},
+    "hardware_access": {"const": false},
+    "physical_authority": {"const": false},
+    "envelope_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "jointMap": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["base_link_to_link1", "link1_to_link2", "link2_to_link3", "link3_to_link4", "link4_to_link5"],
+      "properties": {
+        "base_link_to_link1": {"type": "number"},
+        "link1_to_link2": {"type": "number"},
+        "link2_to_link3": {"type": "number"},
+        "link3_to_link4": {"type": "number"},
+        "link4_to_link5": {"type": "number"}
+      }
+    },
+    "limits": {
+      "type": "object", "additionalProperties": false,
+      "required": ["lower_position_rad", "upper_position_rad", "maximum_velocity_rad_s", "maximum_acceleration_rad_s2", "maximum_jerk_rad_s3"],
+      "properties": {
+        "lower_position_rad": {"$ref": "#/$defs/jointMap"},
+        "upper_position_rad": {"$ref": "#/$defs/jointMap"},
+        "maximum_velocity_rad_s": {"$ref": "#/$defs/jointMap"},
+        "maximum_acceleration_rad_s2": {"$ref": "#/$defs/jointMap"},
+        "maximum_jerk_rad_s3": {"$ref": "#/$defs/jointMap"}
+      }
+    },
+    "settle": {
+      "type": "object", "additionalProperties": false,
+      "required": ["position_tolerance_rad", "velocity_tolerance_rad_s", "dwell_ns"],
+      "properties": {
+        "position_tolerance_rad": {"$ref": "#/$defs/jointMap"},
+        "velocity_tolerance_rad_s": {"$ref": "#/$defs/jointMap"},
+        "dwell_ns": {"type": "integer", "minimum": 1}
+      }
+    },
+    "waypoint": {
+      "type": "object", "additionalProperties": false,
+      "required": ["sequence", "time_from_start_ns", "joint_positions_rad"],
+      "properties": {
+        "sequence": {"type": "integer", "minimum": 0},
+        "time_from_start_ns": {"type": "integer", "minimum": 0},
+        "joint_positions_rad": {"$ref": "#/$defs/jointMap"}
+      }
+    }
+  }
+}
