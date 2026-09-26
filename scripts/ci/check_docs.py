@@ -117,7 +117,7 @@ def issue_template_error(target: str, root: Path) -> str | None:
     """Check only this repository's template links, without network requests."""
     parsed = urlsplit(target)
     if (parsed.netloc.lower() != 'github.com'
-            or parsed.path.rstrip('/') != '/j-webtek/robot-arm-build/issues/new'):
+            or parsed.path.rstrip('/') != '/j-webtek/tactevra/issues/new'):
         return None
     templates = parse_qs(parsed.query, keep_blank_values=True).get('template')
     if templates is None:

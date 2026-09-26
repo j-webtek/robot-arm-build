@@ -11,15 +11,15 @@ device access, restarts, torque changes, movement, or release publication.
 
 ## 1. Triage incoming work
 
-- [ ] Check [open issues](https://github.com/j-webtek/robot-arm-build/issues),
-  [pull requests](https://github.com/j-webtek/robot-arm-build/pulls), and
-  [workflow runs](https://github.com/j-webtek/robot-arm-build/actions).
+- [ ] Check [open issues](https://github.com/j-webtek/tactevra/issues),
+  [pull requests](https://github.com/j-webtek/tactevra/pulls), and
+  [workflow runs](https://github.com/j-webtek/tactevra/actions).
   Distinguish a failed check from a cancelled or still-running job.
 - [ ] Route ordinary questions through [support](../SUPPORT.md). Apply the
   existing type/area labels; link duplicates rather than losing their evidence.
   Ask for the missing reproduction detail instead of guessing a cause.
 - [ ] Inspect security reports and alerts through the restricted
-  [Security view](https://github.com/j-webtek/robot-arm-build/security).
+  [Security view](https://github.com/j-webtek/tactevra/security).
   Follow [security reporting](../SECURITY.md); never copy private findings into a
   public maintenance report. Enabled notifications do not prove delivery.
 - [ ] Give each actionable item a next step and completion criterion. Record an

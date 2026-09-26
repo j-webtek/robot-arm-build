@@ -2,7 +2,7 @@
 
 ![Tactevra — intent into action](assets/brand/tactevra-banner.svg)
 
-[![Offline verification](https://github.com/j-webtek/robot-arm-build/actions/workflows/offline-checks.yml/badge.svg?branch=main)](https://github.com/j-webtek/robot-arm-build/actions/workflows/offline-checks.yml)
+[![Offline verification](https://github.com/j-webtek/tactevra/actions/workflows/offline-checks.yml/badge.svg?branch=main)](https://github.com/j-webtek/tactevra/actions/workflows/offline-checks.yml)
 
 The CI badge covers [scoped hardware-free checks](docs/CI.md), not physical robot qualification.
 
@@ -13,7 +13,8 @@ The CI badge covers [scoped hardware-free checks](docs/CI.md), not physical robo
 [Get help](SUPPORT.md) · [Report a vulnerability privately](SECURITY.md)
 
 Formerly **RoCell**. Existing `rocell` commands, package names, and hardware release
-paths remain unchanged for compatibility. The GitHub repository URL has not changed.
+paths remain unchanged for compatibility. The canonical source repository is now
+`j-webtek/tactevra`; GitHub redirects the former repository URL.
 
 Tactevra is an experimental robotics project with a long-term goal: let you
 give an AI a task in plain language and have a robot arm carry out the
@@ -106,7 +107,7 @@ on this page are preserved in the
 
 ## License
 
-Copyright 2026 RoCell contributors. Historical copyright and attribution notices
+Copyright 2026 Tactevra contributors. Historical copyright and attribution notices
 remain unchanged during the Tactevra brand transition.
 
 Original contributions in this repository are licensed under the
@@ -115,3 +116,6 @@ Third-party code, models, drawings, and other vendor assets retain their
 respective licenses and attribution notices; this license does not relicense
 those materials. See their source and provenance documentation for applicable
 terms.
+
+For repository history and citation metadata, see the [changelog](CHANGELOG.md),
+[versioning policy](docs/VERSIONING.md), and [citation file](CITATION.cff).

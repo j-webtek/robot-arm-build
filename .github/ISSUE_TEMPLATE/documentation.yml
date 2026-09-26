@@ -6,7 +6,7 @@ body:
     attributes:
       value: |
         Help us make Tactevra easier to understand. No code fix or technical diagnosis is needed to report confusing guidance.
-        Issues are public: omit private data and use [private security reporting](https://github.com/j-webtek/robot-arm-build/security/advisories/new) for security problems.
+        Issues are public: omit private data and use [private security reporting](https://github.com/j-webtek/tactevra/security/advisories/new) for security problems.
         Do not repeat hardware operations solely to reproduce a documentation problem.
   - type: input
     id: page
