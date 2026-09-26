@@ -604,7 +604,6 @@ remove it only in the same commit that appends the resulting evidence row.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI | S1 | `vision/train_brightness_reduced.py`, reduced-brightness plan/scorecard/tests, precision method | feature/translation-pair-evidence | ACTIVE: matched 25-percent dark-sample comparison at lower learning rate |
 | Unclaimed | S2 | qualified perception adapter and complete shared gate | — | AVAILABLE |
 | Unclaimed | S4 | collect and independently review installed controller evidence | — | AVAILABLE |
 
@@ -2534,3 +2533,76 @@ commissioning, or bounded physical result with its limitations intact.
 - Supersedes: ARM-022 only for the current integrated snapshot counts.
 - Next dependency: separately approved physical evidence collection and
   independent review before zero-write profile binding can pass on real data.
+
+### E-20260926-AI-055 — reduced brightness augmentation development failure
+
+- Stage: S1
+- Lane: AI
+- Commit: `0a878a5ed15a8e516a0ef6b586b940286e64244d` (frozen source and plan before training)
+- Change: matched comparison at learning rate 0.00005; candidate darkens extra
+  image copies for alternating training seed groups (1800/7200 images, 25 percent).
+  Control duplicates unchanged images. Both start from the original translation
+  candidate, use 12 epochs and weights 4:4:1, and select the epoch using common
+  four-condition unweighted development MSE. Previous rejected model is not used.
+- Inputs/fixtures: reused 14M training groups (1200 x 3 x 2), 15M development
+  groups (200 x 4), 46 targets/image. Exact source, initial-checkpoint and catalog
+  hashes in `train/brightness_reduced_v0_plan.json`; pixel and output checkpoint
+  hashes and case-level metrics in the scorecard.
+- Command: `python software/ai/vision/train_brightness_reduced.py`
+- Result: FAIL predefined development candidate rule. Darkened-standard mean
+  key error 2.577164 -> 0.911283 mm and >3mm maximum-key-error images 106 -> 5/200.
+  Standard mean 0.814534 -> 0.919565 mm, tail 3 -> 4;
+  appearance-shift mean 0.821052 -> 1.060568 mm, tail 6 -> 10;
+  challenge mean 1.038751 -> 1.056718 mm, tail 8 -> 13.
+  All original conditions fail the yaw-p95 allowance; challenge alone passes
+  the original-condition mean-error allowance. Aggregate mean 1.312875 ->
+  0.987033 mm cannot override those failures. Selected epochs control 12,
+  candidate 9. No promotion or installed qualification.
+- Artifacts: `eval/brightness_reduced_v0_scorecard.json`, frozen plan/source,
+  ignored local `results/brightness_reduced_v0_control/` and
+  `results/brightness_reduced_v0_brightness_augmented/` checkpoints/results.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: development selection on reused groups; one training seed;
+  factor0.5 applied after resize; lower rate and reduced proportion form a
+  combined intervention, so their individual effects are not identified.
+  No fresh evaluation, physical capture, calibrated uncertainty or boundary
+  change. Shared boundary suite not triggered.
+- Supersedes: none; AI-052 failure remains intact.
+- Next dependency: freeze a bounded comparison adding baseline-preservation
+  distillation on original-condition training images against an otherwise matched
+  augmentation control, with unchanged development gates. No fresh evaluation
+  or confidence calibration until a candidate passes development criteria.
+
+### E-20260926-AI-056 — reduced brightness evidence tests
+
+- Stage: S1
+- Lane: AI
+- Commit: `0a878a5ed15a8e516a0ef6b586b940286e64244d` (frozen implementation baseline; tests committed with evidence)
+- Change: checked hashes, matched budgets, selected epochs, shared development
+  pixels, seed/case metrics, 25-percent schedule and independently recounted gates.
+- Inputs/fixtures: AI-055 plan/scorecard, 800 cases per arm; alternating-seed schedule.
+- Command: `python -m pytest -q software/ai/tests/test_brightness_reduced_evidence.py`
+- Result: PASS, 3 tests; existing pytest-asyncio configuration deprecation warning.
+- Artifacts: named test and AI-055 scorecard.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: offline evidence consistency, not physical localization confidence.
+- Supersedes: none
+- Next dependency: AI-055 baseline-preservation experiment.
+
+### E-20260926-AI-057 — reduced brightness publication audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `0a878a5ed15a8e516a0ef6b586b940286e64244d` (implementation baseline plus result/test snapshot)
+- Change: audited the publication snapshot.
+- Inputs/fixtures: repository with AI-055/056 artifacts and reviewed fixture allowlist.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS; 5706 paths, 787.5 MiB, 0 unresolved findings, 14 reviewed synthetic fixtures.
+- Artifacts: audit stdout and repository snapshot.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: heuristic audit only; AI-041 protected-main PR blocker remains.
+- Supersedes: none; historical failed audit evidence retained.
+- Next dependency: protected-branch PR/checks and AI-055 development experiment.

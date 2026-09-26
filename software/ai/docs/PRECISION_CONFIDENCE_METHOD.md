@@ -178,3 +178,18 @@ not promoted. See AI-052 through AI-054 and the paired scorecard for exact evide
 Next: a frozen, bounded comparison with less dark-sample weight and a lower learning
 rate, preserving the baseline-condition gates. These are reused development groups;
 fresh calibration/evaluation remains necessary after any development success.
+
+
+### Reduced brightness augmentation result
+
+The follow-up uses 25 percent darkened training images and learning rate 0.00005
+in both matched arms. It also **fails** the unchanged development criteria:
+dark-image mean improves 2.577 -> 0.911 mm, but standard and appearance-shift means
+exceed allowed regressions; all original-condition large-error counts and yaw-p95
+checks regress. This joint intervention does not isolate the two parameter effects.
+AI-055 through AI-057 retain the exact evidence. Neither brightness candidate is
+promoted, and no new held-out groups were consumed.
+
+Next research step: predeclare an otherwise matched comparison with an explicit
+baseline-preservation distillation loss on original-condition training images.
+Retain all per-condition gates; a lower aggregate mean cannot justify promotion.
