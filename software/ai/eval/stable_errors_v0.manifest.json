@@ -1,0 +1,27 @@
+{
+  "scope": "POST_HOC_CALIBRATION_DIAGNOSTIC",
+  "source": "software/ai/eval/disagreement_fresh_v0_report.json",
+  "conditions": [
+    "standard",
+    "appearance_shift",
+    "challenge",
+    "darkened_standard",
+    "brightness_055",
+    "brightness_060",
+    "brightness_065"
+  ],
+  "brightness_factors": {
+    "darkened_standard": 0.5,
+    "brightness_055": 0.55,
+    "brightness_060": 0.6,
+    "brightness_065": 0.65
+  },
+  "protocol": "Only fitting_cases24M; bin0 and maximum_error>3mm. Summarize all failures; render top12 distinct seeds by worst error. No selection or tuning using25M.",
+  "file_sha256": {
+    "software/ai/vision/diagnose_stable_errors.py": "ce67edb592477bf04702ac509bf45a7d9d244392e4d1bf87d3eaad6e717d475f",
+    "software/ai/eval/disagreement_fresh_v0_report.json": "2c629a3451434d4c80b63ff453030290422d3a16c6ca232f5b8f22acfe86de99",
+    "software/ai/vision/synthetic_keyboard.py": "b9a1662ea348ba78093909844e5e8bed86f4996babc289bfd63858b6b54f692c",
+    "software/ai/vision/evaluate_dark_only_normalization.py": "12289bfeeb52274678c62f46c7e99e057563036566fa48fc5f5cd1d58add4469",
+    "software/ai/vision/evaluate_pose_challenge.py": "1ba33a1a2d38b1216a5e1708e17b99c3d9dba9fd2c40af46a084da8065102983"
+  }
+}
