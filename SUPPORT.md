@@ -13,6 +13,7 @@ examples.
 | Installation or a reproducible non-sensitive defect | [Open a bug report](https://github.com/j-webtek/robot-arm-build/issues/new?template=bug_report.yml) |
 | Unclear, outdated, or missing guidance | [Report a documentation problem](https://github.com/j-webtek/robot-arm-build/issues/new?template=documentation.yml) |
 | A capability suggestion or workflow improvement | [Request a feature](https://github.com/j-webtek/robot-arm-build/issues/new?template=feature_request.md) |
+| Harassment or another community conduct concern | Use the private contact in our [code of conduct](CODE_OF_CONDUCT.md), not a public issue |
 | A suspected vulnerability, leaked secret, or execution-gate bypass | Follow [private security reporting](SECURITY.md); do not use public issues |
 | Development coordination between AI and arm contributors | Use the [shared workplan](software/ai/docs/SHARED_AI_ARM_WORKPLAN.md) and a topic-branch PR |
 
