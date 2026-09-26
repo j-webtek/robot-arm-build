@@ -252,6 +252,16 @@ waypoint nor an allowance. The resulting artifact contains no controller or wire
 commands, explicitly denies physical/contact authority, and continues to require
 installed physical qualification.
 
+The next command-management boundary is now explicit and remains fail closed.
+`single_action_execution_review_v1` joins one indexed v2 proposal with its
+sealed trajectory, phase-local collision/contact gate, independently reviewed
+installed collision-policy evidence, and the existing installed-controller
+qualification evidence/report. Controller session and configuration epoch must
+match the trajectory exactly. The review expires, can be cancelled, and is
+atomically consumable only once, including under concurrent callers. Its
+consumption receipt still says `permit_issued: false` and contains no controller
+or wire commands: only the safety supervisor may later mint physical authority.
+
 The S4 synthetic integration lane now proves the downstream identity plumbing
 without relaxing that physical gate. A typed assessor requires the exact
 synthetic r97 review decision and eight-component configuration epoch, the model

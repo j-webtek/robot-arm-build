@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rocell.local/schemas/single_action_execution_review_consumption_v1.schema.json",
+  "title": "RoCell single action execution review consumption v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "status", "review_sha256", "batch_sha256", "action_index",
+    "proposal_v2_sha256", "consumed_monotonic_ns", "permit_issued",
+    "automatic_retry_allowed", "controller_commands", "wire_commands",
+    "hardware_access", "physical_authority", "contact_authority",
+    "consumption_sha256"
+  ],
+  "properties": {
+    "schema": {"const": "rocell.single_action_execution_review_consumption.v1"},
+    "status": {"const": "REVIEW_ADMISSION_CONSUMED"},
+    "review_sha256": {"$ref": "#/$defs/hash"},
+    "batch_sha256": {"$ref": "#/$defs/hash"},
+    "action_index": {"type": "integer", "minimum": 0, "maximum": 63},
+    "proposal_v2_sha256": {"$ref": "#/$defs/hash"},
+    "consumed_monotonic_ns": {"type": "integer", "minimum": 1},
+    "permit_issued": {"const": false},
+    "automatic_retry_allowed": {"const": false},
+    "controller_commands": {"type": "array", "maxItems": 0},
+    "wire_commands": {"type": "array", "maxItems": 0},
+    "hardware_access": {"const": false},
+    "physical_authority": {"const": false},
+    "contact_authority": {"const": false},
+    "consumption_sha256": {"$ref": "#/$defs/hash"}
+  },
+  "$defs": {"hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}
+}
