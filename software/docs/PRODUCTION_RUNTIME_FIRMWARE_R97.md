@@ -52,7 +52,26 @@ $env:PYTHONPATH='software/src;software/scripts'
 python software/scripts/stage_r97_production_runtime.py
 python software/scripts/compile_diagnostic_reference.py configured-diagnostic-candidate-r97 --profile default-4mb-no-psram
 python software/scripts/review_r97_production_runtime.py
+python software/scripts/build_r97_independent_review_packet.py
 ```
 
 Compilation is offline only. None of these commands uploads firmware or opens a
 controller port.
+
+## Independent-review handoff
+
+The final command creates a deterministic, self-contained ZIP beneath
+`runs/review-packets/`. It includes the exact two staged source files, linked app
+and ELF images, compile evidence, the first-party report, a closed hash manifest,
+and reviewer instructions. The current packet identity is:
+
+- Packet SHA-256: `987cbe86d98440734d8336c704f1ecd89692675a9cb1620cb674e4132957b416`
+- Manifest SHA-256: `e7c67071d0485b016cf44e0158fddb92edc0373e1e73532a3b1847f976d5117e`
+- App SHA-256: `7d2e47d40141e95b611fcf37ca38d495fcf3da4dc3051f128bbae95e10840d1d`
+
+The packet is a review handoff, not a review decision or deployment artifact.
+Its manifest fixes independent review, configuration-epoch binding, upload,
+startup, movement, and physical authority to false. A reviewer must retain the
+archive unchanged and publish a separate decision that identifies this exact
+packet hash. Even a passing decision does not remove the measured
+configuration-epoch blocker.
