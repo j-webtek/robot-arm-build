@@ -103,6 +103,14 @@ They make the model-to-arm handoff reviewable without granting transport or
 physical authority. The profile's joint mapping remains a content-addressed
 claim only; these schemas and their synthetic golden bytes do not qualify the
 mapping against installed firmware or hardware.
+The [installed-controller evidence schema](installed_controller_qualification_evidence_v1.schema.json)
+and [assessment schema](installed_controller_qualification_report_v1.schema.json)
+close that gap at the software boundary: a profile becomes eligible only for
+zero-write profile binding when independently reviewed, current physical
+evidence matches its controller session, configuration epoch, mapping hash,
+protocol-source hash, T=102 fields, T=1051 fields, planner order, and fixed
+gripper field. Even a passing assessment grants no transport or execution
+authority; evidence collection and physical qualification remain separate.
 
 [Precision observation v2](precision_observation_v2.schema.json) carries explicit
 localization abstention or a reference to externally qualified uncertainty.
