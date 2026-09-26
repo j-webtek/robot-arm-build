@@ -164,6 +164,7 @@ def ingest_model_motion_batch_v2(
     current_time_epoch_ms: int, current_monotonic_ns: int,
     maximum_scene_age_ms: int, trusted_scene_lease_expires_at_epoch_ms: int,
     expected_capability_profile_id: str, expected_capability_profile_sha256: str,
+    expected_capture_id: str, expected_frame_id: str, expected_image_sha256: str,
     expected_capture_clock_domain_id: str, expected_camera_identity_sha256: str,
     expected_scene_lease_id: str, expected_scene_lease_issuer_id: str,
     expected_scene_lease_sha256: str, expected_scene_observation_sha256: str,
@@ -198,6 +199,9 @@ def ingest_model_motion_batch_v2(
         raise ModelMotionIngressV2Error("typing proposals must request CONTACT")
 
     evidence_expected = {
+        "capture_id": _identifier(expected_capture_id, "capture id"),
+        "frame_id": _identifier(expected_frame_id, "frame id"),
+        "image_sha256": _digest(expected_image_sha256, "image"),
         "capture_clock_domain_id": _identifier(expected_capture_clock_domain_id, "clock"),
         "camera_identity_sha256": _digest(expected_camera_identity_sha256, "camera"),
         "scene_lease_id": _identifier(expected_scene_lease_id, "lease"),

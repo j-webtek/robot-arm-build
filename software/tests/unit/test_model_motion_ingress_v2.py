@@ -105,6 +105,8 @@ def _ingest(batch, plan, context, **changes):
         maximum_scene_age_ms=5_000, trusted_scene_lease_expires_at_epoch_ms=T0 + 10_000,
         expected_capability_profile_id="keyboard-development-v1",
         expected_capability_profile_sha256=H["e"],
+        expected_capture_id="capture-001", expected_frame_id="frame-001",
+        expected_image_sha256=H["a"],
         expected_capture_clock_domain_id="capture-clock-001",
         expected_camera_identity_sha256=H["b"], expected_scene_lease_id="lease-001",
         expected_scene_lease_issuer_id="capture-service-001",
@@ -121,6 +123,7 @@ def _ingest(batch, plan, context, **changes):
 def _registry(context, **changes):
     values = dict(capability_profile_id="keyboard-development-v1",
         capability_profile_sha256=H["e"],
+        capture_id="capture-001", frame_id="frame-001", image_sha256=H["a"],
         capture_clock_domain_id="capture-clock-001",
         camera_identity_sha256=H["b"], scene_lease_id="lease-001",
         scene_lease_issuer_id="capture-service-001", scene_lease_sha256=H["f"],

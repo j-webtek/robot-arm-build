@@ -25,6 +25,9 @@ class TrustedMotionRegistryV2:
 
     capability_profile_id: str
     capability_profile_sha256: str
+    capture_id: str
+    frame_id: str
+    image_sha256: str
     capture_clock_domain_id: str
     camera_identity_sha256: str
     scene_lease_id: str
@@ -106,6 +109,9 @@ def ingest_with_trusted_registry_v2(
             registry.scene_lease_expires_at_epoch_ms),
         expected_capability_profile_id=registry.capability_profile_id,
         expected_capability_profile_sha256=registry.capability_profile_sha256,
+        expected_capture_id=registry.capture_id,
+        expected_frame_id=registry.frame_id,
+        expected_image_sha256=registry.image_sha256,
         expected_capture_clock_domain_id=registry.capture_clock_domain_id,
         expected_camera_identity_sha256=registry.camera_identity_sha256,
         expected_scene_lease_id=registry.scene_lease_id,

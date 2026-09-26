@@ -58,11 +58,26 @@ def test_actual_ai_bytes_pass_registry_ingress_and_preplanner_gate():
 
 
 @pytest.mark.parametrize("mutation", [
-    "capability", "camera", "clock", "lease", "placement", "target_map",
-    "qualification", "domain", "uncertainty", "edge"])
+    "plan", "image", "frame", "time", "capability", "camera", "clock",
+    "lease", "placement", "target_map", "qualification", "domain",
+    "uncertainty", "edge"])
 def test_actual_ai_bytes_fail_closed_for_each_trust_or_geometry_mutation(mutation):
     context, plan, args, registry = _actual_bytes_and_registry()
-    if mutation == "capability":
+    emitter_plan = plan
+    if mutation == "plan":
+        emitter_plan = arm.ActionPlan.from_text(device=arm.Device.KEYBOARD,
+            profile_id="keyboard-development-v1", text="different-request",
+            actions=(arm.PressKey("H"), arm.PressKey("H"), arm.PressKey("I")),
+            required_calibrations=("keyboard_pose", "keyboard_tcp"))
+    elif mutation == "image":
+        args["evidence"] = replace(args["evidence"], image_sha256="1" * 64)
+    elif mutation == "frame":
+        args["evidence"] = replace(args["evidence"], frame_id="other-frame")
+    elif mutation == "time":
+        args["evidence"] = replace(args["evidence"],
+            captured_at_epoch_ms=arm.T0 + 4_000,
+            evaluated_at_epoch_ms=arm.T0 + 5_000)
+    elif mutation == "capability":
         args["capability"] = replace(args["capability"], profile_sha256="1" * 64)
     elif mutation == "camera":
         args["evidence"] = replace(args["evidence"], camera_identity_sha256="1" * 64)
@@ -87,7 +102,7 @@ def test_actual_ai_bytes_fail_closed_for_each_trust_or_geometry_mutation(mutatio
         left = target.safe_rectangle_board_mm[0]
         args["observations"]["H"] = TargetObservationV2(
             arm.Point3Mm("board", left + 1.1, target.center.y, target.center.z), 0.93)
-    payload = assemble(plan, **args)
+    payload = assemble(emitter_plan, **args)
     batch = arm.decode_model_motion_batch_v2_json(payload)
     with pytest.raises(ValueError):
         ingest_with_trusted_registry_v2(batch, plan, context, registry=registry,
