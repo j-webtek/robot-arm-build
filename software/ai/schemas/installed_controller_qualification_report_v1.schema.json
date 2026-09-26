@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rocell.local/schemas/installed_controller_qualification_report_v1.schema.json",
+  "title": "RoCell installed-controller qualification assessment v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "status", "encoding_profile_sha256",
+    "qualification_evidence_sha256", "evaluated_monotonic_ns", "blockers",
+    "profile_binding_ready", "execution_authorized", "transport_authorized",
+    "hardware_commands_generated", "hardware_access", "physical_authority",
+    "report_sha256"
+  ],
+  "properties": {
+    "schema": {"const": "rocell.installed_controller_qualification_report.v1"},
+    "status": {"enum": ["BLOCKED", "READY_FOR_ZERO_WRITE_PROFILE_BINDING"]},
+    "encoding_profile_sha256": {"$ref": "#/$defs/sha256"},
+    "qualification_evidence_sha256": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/sha256"}]},
+    "evaluated_monotonic_ns": {"type": "integer", "minimum": 1},
+    "blockers": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/blocker"}},
+    "profile_binding_ready": {"type": "boolean"},
+    "execution_authorized": {"const": false},
+    "transport_authorized": {"const": false},
+    "hardware_commands_generated": {"const": 0},
+    "hardware_access": {"const": false},
+    "physical_authority": {"const": false},
+    "report_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"status": {"const": "BLOCKED"}}},
+      "then": {"properties": {"profile_binding_ready": {"const": false}, "blockers": {"minItems": 1}}}
+    },
+    {
+      "if": {"properties": {"status": {"const": "READY_FOR_ZERO_WRITE_PROFILE_BINDING"}}},
+      "then": {"properties": {"profile_binding_ready": {"const": true}, "blockers": {"maxItems": 0}, "qualification_evidence_sha256": {"$ref": "#/$defs/sha256"}}}
+    }
+  ],
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "blocker": {"enum": [
+      "MISSING_REVIEWED_EVIDENCE", "EVIDENCE_NOT_PHYSICAL_ORIGINAL",
+      "INDEPENDENT_REVIEW_INCOMPLETE", "EVALUATION_PREDATES_CAPTURE",
+      "EVIDENCE_STALE", "CONTROLLER_SESSION_MISMATCH",
+      "CONFIGURATION_EPOCH_MISMATCH", "JOINT_MAPPING_HASH_MISMATCH",
+      "PROTOCOL_SOURCE_HASH_MISMATCH", "T102_COMMAND_FIELDS_MISMATCH",
+      "T1051_FEEDBACK_FIELDS_MISMATCH", "ARM_JOINT_ORDER_MISMATCH",
+      "FIXED_GRIPPER_FIELD_MISMATCH"
+    ]}
+  }
+}
