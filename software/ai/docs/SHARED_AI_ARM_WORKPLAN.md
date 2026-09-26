@@ -602,7 +602,7 @@ remove it only in the same commit that appends the resulting evidence row.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| Arm/runtime lane | S2 | v2 zero-hardware shadow trace runner and tests | `main` from `0740660` | ACTIVE |
+| Unclaimed | S2 | v2 sequence coordinator and envelope-ready fixtures | — | AVAILABLE |
 | Unclaimed | S4 | controller adapter/receipts | — | AVAILABLE |
 
 ## Worker update procedure
@@ -1126,3 +1126,56 @@ commissioning, or bounded physical result with its limitations intact.
   or deployment confidence method. Synthetic fixtures do not establish registry trust.
 - Supersedes: none
 - Next dependency: Fixture-owner review of existing findings.
+
+
+### E-20260926-ARM-008 — actual v2 bytes produce a zero-hardware shadow trace
+
+- Stage: S2
+- Lane: Arm/runtime
+- Commit: `f4f045afc2cce46ecfe0d7c4ed585a6268c3175e`
+- Change: added one deterministic shadow boundary that strictly decodes actual AI
+  v2 bytes, admits them through the consumer-owned registry, rechecks the
+  monotonic lease, binds a fresh observed-state fixture and arm-owned motion
+  policy, evaluates actions in order, and stops at the first exact planner
+  blocker. The trace links request, plan, payload, batch, observation, ingress,
+  pre-planner, observed-state, policy and per-action planner hashes.
+- Inputs/fixtures: actual H,H,I bytes from `batch_emitter_v2`, coherent synthetic
+  trusted registry, fresh zero-authority observed-state fixture, conservative arm
+  policy, and one stale observed-state mutation.
+- Command: `python -m pytest software/tests/integration/test_model_motion_v2_shared_gate.py software/tests/unit/test_model_motion_ingress_v2.py software/tests/unit/test_model_motion_planner_gate.py software/ai/tests/test_precision_binding_v2.py software/ai/tests/test_batch_emitter_v2.py -q`
+- Result: PASS, 65 tests. The trace evaluates action 0 and terminates at
+  `BLOCKED_CALIBRATION_MISSING_OR_STALE`; it emits no envelope, controller
+  command or Waveshare byte. A stale observed state is rejected before planning.
+- Artifacts: `software/src/rocell/application/model_motion_shadow_v2.py`,
+  `software/src/rocell/application/__init__.py`, and
+  `software/tests/integration/test_model_motion_v2_shared_gate.py`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: this is the first actual-byte S2 trace, not S2 completion. Missing
+  measured calibrations prevent reprojection, IK and collision screening, so the
+  trace cannot yet seal an execution envelope. It stops on action 0 and does not
+  yet adapt the existing sequence coordinator to v2 or demonstrate ambiguous,
+  obstructed and unsupported raw-request terminal cases in one command.
+- Supersedes: none; extends ARM-006 from one planner call to a hash-linked actual
+  producer-byte trace.
+- Next dependency: add v2 ordered coordination and an envelope-ready measured or
+  explicitly synthetic qualification fixture, then compose raw parser outcomes
+  and the full cross-lane negative matrix without weakening the physical gate.
+
+
+### E-20260926-ARM-009 — shadow-trace increment audit retains findings
+
+- Stage: S2
+- Lane: Arm/runtime
+- Commit: `f4f045afc2cce46ecfe0d7c4ed585a6268c3175e`
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: FAIL, exit 1; 5,606 paths, 903.2 MiB, the same 14 existing
+  credential-literal-review findings in arm unit fixtures; no shadow-runner
+  finding.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: heuristic findings remain unresolved; this is not a clean
+  repository security-audit claim.
+- Supersedes: none; retains all earlier failed audit evidence.
+- Next dependency: fixture-owner review remains independent of S2 coordination
+  and measured calibration work.
