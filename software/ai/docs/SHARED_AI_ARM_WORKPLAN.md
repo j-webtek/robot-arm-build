@@ -599,8 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-- AI lane / S1: fixed-budget scene-diversity comparison, three seeds, anchored key loss in both arms. Reserve29000000..29002399 for training only; never qualification.
-
 
 
 
@@ -6347,3 +6345,71 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Current run had local checkpoint bytes; absence behavior covered by verifier fixtures, not a new full clean-clone run. No accuracy/qualification or boundary change.
 - Supersedes: AI-213 trainer-only checkpoint-presence assumption,not experimental results.
 - Next dependency: AI-214 fixed-budget training-diversity comparison; protected-main integration remains separate.
+
+
+### E-20260926-AI-216 — fixed-budget training diversity
+
+- Stage: S1
+- Lane: AI
+- Commit: `d8f651ef83b897fde77a63c5ff8f4b7ef3f56075` (frozen source; results/tests committed with evidence)
+- Change: fixed-budget training diversity.
+- Inputs/fixtures: training seeds29000000..29002399 now permanently training-only. Control repeats first600 groups; candidate cycles four disjoint600group blocks. Each group four conditions,4epochs,AdamW0.0001,batch64,key loss+anchor1,optimization seeds260926/27/28. Development15000000..15000199 x4. Initial/teacher0fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d. Exact source hashes in train/pose_diversity_*_plan.json; per-epoch image/teacher and checkpoint hashes in reports.
+- Command: `python software/ai/train/train_pose_diversity.py`
+- Result: FAIL full rule for all3 seeds. Baseline passes2/3. Candidate total tails23/25/25 vs repeated-scene control22/23/24 and starting baseline32 each. Checkpoints SHA256: 260926/control=9f9137dc96ae478ff4c2b2e5fe8975c4755abfe1d4af992f1275c9790cfe2b46; 260926/occlusion=778504bfbd561786a1bd66a7ecd3ebe00080b2ce8e95082659f95b0b0ca9c671; 260927/control=6148954ca968df755fed858e7ca603b94eba07e4034da3a5c3765c168e9daf63; 260927/occlusion=a648d04a41403c5cf4d2e73fa4b6923d9dbfeda4824563a2a97366aeaf5cae2e; 260928/control=f92f66338ef40cce6978c177ef11de9246f3005bad140a0ca48368b34cd8b2d7; 260928/occlusion=d6a3d60470f7eda103e19558e4af9494ba7381f29f3baa65970f31c533254483
+- Artifacts: train/train_pose_diversity.py; vision/summarize_pose_diversity.py; eval/pose_diversity_*_report.json; tests/test_pose_diversity.py.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Dataset identity/reuse changes with diversity; not an isolated count-only causal result. Larger set receives fewer repeats. Historical occlusion arm means diverse candidate; both arms use anchored key loss.
+- Supersedes: none; previous failures and arm/integration status retained.
+- Next dependency: Freeze one longer-budget paired comparison on these fixed training sets,cycling the2400-scene candidate corpus while repeating600-scene control under equal updates. Keep objective/criteria/three seeds unchanged to test whether additional training resolves the diversity tradeoff. No new scenes or qualification before development criteria pass.
+
+
+### E-20260926-AI-217 — training diversity aggregation
+
+- Stage: S1
+- Lane: AI
+- Commit: `d8f651ef83b897fde77a63c5ff8f4b7ef3f56075` (frozen source; results/tests committed with evidence)
+- Change: training diversity aggregation.
+- Inputs/fixtures: training seeds29000000..29002399 now permanently training-only. Control repeats first600 groups; candidate cycles four disjoint600group blocks. Each group four conditions,4epochs,AdamW0.0001,batch64,key loss+anchor1,optimization seeds260926/27/28. Development15000000..15000199 x4. Initial/teacher0fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d. Exact source hashes in train/pose_diversity_*_plan.json; per-epoch image/teacher and checkpoint hashes in reports.
+- Command: `python software/ai/vision/summarize_pose_diversity.py`
+- Result: All3 runs retained. Candidate appearance means0.801144/0.811246/0.842921mm; control0.808037/0.800634/0.822443,baseline0.833364. Mean candidate0.818437/control0.810371. No seed selection or model promotion.
+- Artifacts: train/train_pose_diversity.py; vision/summarize_pose_diversity.py; eval/pose_diversity_*_report.json; tests/test_pose_diversity.py.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Three optimization seeds share reused development data; ranges are not confidence intervals. No qualification data consumed.
+- Supersedes: none; previous failures and arm/integration status retained.
+- Next dependency: Freeze one longer-budget paired comparison on these fixed training sets,cycling the2400-scene candidate corpus while repeating600-scene control under equal updates. Keep objective/criteria/three seeds unchanged to test whether additional training resolves the diversity tradeoff. No new scenes or qualification before development criteria pass.
+
+
+### E-20260926-AI-218 — training diversity verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `d8f651ef83b897fde77a63c5ff8f4b7ef3f56075` (frozen source; results/tests committed with evidence)
+- Change: training diversity verification.
+- Inputs/fixtures: training seeds29000000..29002399 now permanently training-only. Control repeats first600 groups; candidate cycles four disjoint600group blocks. Each group four conditions,4epochs,AdamW0.0001,batch64,key loss+anchor1,optimization seeds260926/27/28. Development15000000..15000199 x4. Initial/teacher0fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d. Exact source hashes in train/pose_diversity_*_plan.json; per-epoch image/teacher and checkpoint hashes in reports.
+- Command: `python -m pytest -q software/ai/tests/test_pose_diversity.py`
+- Result: PASS,2 tests: disjoint candidate/repeated control ranges,9600presentations/152steps each,identical first-epoch pixels/teacher,per-epoch hashes,checkpoint identities and full aggregate reproduction. Existing pytest-asyncio warning.
+- Artifacts: train/train_pose_diversity.py; vision/summarize_pose_diversity.py; eval/pose_diversity_*_report.json; tests/test_pose_diversity.py.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Implementation verification only; contract unchanged,shared boundary tests not triggered.
+- Supersedes: none; previous failures and arm/integration status retained.
+- Next dependency: Freeze one longer-budget paired comparison on these fixed training sets,cycling the2400-scene candidate corpus while repeating600-scene control under equal updates. Keep objective/criteria/three seeds unchanged to test whether additional training resolves the diversity tradeoff. No new scenes or qualification before development criteria pass.
+
+
+### E-20260926-AI-219 — training diversity in-progress snapshot audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `d8f651ef83b897fde77a63c5ff8f4b7ef3f56075` (frozen source; results/tests committed with evidence)
+- Change: training diversity in-progress snapshot audit.
+- Inputs/fixtures: training seeds29000000..29002399 now permanently training-only. Control repeats first600 groups; candidate cycles four disjoint600group blocks. Each group four conditions,4epochs,AdamW0.0001,batch64,key loss+anchor1,optimization seeds260926/27/28. Development15000000..15000199 x4. Initial/teacher0fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d. Exact source hashes in train/pose_diversity_*_plan.json; per-epoch image/teacher and checkpoint hashes in reports.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS;6034 paths,851.0MiB,0 unresolved findings,14 reviewed synthetic fixtures.
+- Artifacts: train/train_pose_diversity.py; vision/summarize_pose_diversity.py; eval/pose_diversity_*_report.json; tests/test_pose_diversity.py.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Audit ran while training was in progress; later numeric reports and aggregation were not all present at scan time. Heuristic audit,AI-041 protected-main blocker retained.
+- Supersedes: none; previous failures and arm/integration status retained.
+- Next dependency: Freeze one longer-budget paired comparison on these fixed training sets,cycling the2400-scene candidate corpus while repeating600-scene control under equal updates. Keep objective/criteria/three seeds unchanged to test whether additional training resolves the diversity tradeoff. No new scenes or qualification before development criteria pass.
