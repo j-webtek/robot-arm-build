@@ -6328,3 +6328,20 @@ commissioning, or bounded physical result with its limitations intact.
   ingestion contract. Any future model-output schema change must update the
   shared contract fixtures and pass the 203-test boundary selection before arm
   integration work accepts it.
+
+
+### E-20260926-AI-215 — replication evidence portability alignment
+
+- Stage: S1
+- Lane: AI
+- Commit: `e89bc9526a275a1e31acdefa6e074d09e80991e9` (merged verifier source; replication-test adaptation committed with this evidence)
+- Change: adopt INT-005 artifact verification in the new replication tests, preserving all frozen training artifacts and both workers' ledger entries.
+- Inputs/fixtures: AI-211 replica plans/reports/checkpoint digests and INT-005 verifier fixtures; exact hashes retained in manifests.
+- Command: `python -m pytest -q software/ai/tests/test_anchor_replicas.py software/ai/tests/test_evidence_artifacts.py`
+- Result: PASS,7 tests. Required source artifacts remain mandatory; ignored checkpoints are verified when present and explicitly represented when absent.
+- Artifacts: tests/test_anchor_replicas.py; unchanged evidence_artifacts.py.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Current run had local checkpoint bytes; absence behavior covered by verifier fixtures, not a new full clean-clone run. No accuracy/qualification or boundary change.
+- Supersedes: AI-213 trainer-only checkpoint-presence assumption,not experimental results.
+- Next dependency: AI-214 fixed-budget training-diversity comparison; protected-main integration remains separate.
