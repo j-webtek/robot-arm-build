@@ -226,3 +226,9 @@ the scene/pixel check despite exceeding the predeclared 5 mm diagnostic budget.
 This identifies a localization-rejection gap. No route or hardware ran, and
 the scene/pixel check is not full vision fusion. The benchmark is consumed;
 exclude these seeds from training and freeze a fresh set before subsequent tuning.
+
+`current_checkpoint_batch_abstention_v0.json` records an actual development
+seed-1000001 pose-model and Gemma run against the shared AI batch producer.
+Scene checks pass; missing localization qualification yields ABSTAINED and
+`batch: null`. Capture/evaluation times are synthetic replay timestamps.
+No uncertainty calibration, training update, or physical operation occurred.

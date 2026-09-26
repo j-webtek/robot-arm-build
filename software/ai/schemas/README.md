@@ -68,3 +68,11 @@ The [installed collision-geometry profile schema](installed_collision_geometry_p
 defines the measured, content-addressed body envelopes, source bindings,
 engineering exclusions, and clearance policy required before route screening may
 rely on the installed arm rather than diagnostic placeholders.
+
+[Precision observation v2](precision_observation_v2.schema.json) carries explicit
+localization abstention or a reference to externally qualified uncertainty.
+[Localization qualification v0](localization_qualification_v0.schema.json)
+binds an offline synthetic error bound to a checkpoint, domain, target set,
+and distinct calibration/evaluation datasets. No qualification is installed.
+The producer constructs the existing shared ModelMotionBatch only after
+precision and scene checks; scene confidence cannot fill a localization gap.

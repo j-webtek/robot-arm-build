@@ -243,3 +243,10 @@ synthetic images evaluated by KeyboardPoseNet and Gemma 3 4B. Three challenge
 images passed scene-quality checks despite large coordinate errors. See the
 [baseline update](docs/AI_SYSTEM_BASELINE_AND_IMPLEMENTATION_PLAN.md) before
 treating scene acceptance as coordinate confidence.
+
+The shared batch producer is now `rocell_ai.batch_emitter.emit`. The current
+pose checkpoint emits a precision-v2 abstention because calibrated localization
+uncertainty is unavailable. Its saved
+[abstention report](eval/current_checkpoint_batch_abstention_v0.json) contains
+no batch. See the [handoff contract](docs/MODEL_MOTION_PROPOSAL.md) and
+`python software/ai/run_batch_emission.py --help` for saved-evidence inputs.

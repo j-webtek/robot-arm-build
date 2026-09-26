@@ -314,3 +314,51 @@ route result. All outcomes retain zero hardware authority. Next priority is
 a fixed-camera synthetic image evaluation with actual local-model predictions
 and independent target truth, retaining freshness and frame-binding checks
 when composing scene and precision observations.
+
+## AI precision v2 and shared batch producer
+
+`rocell_ai.precision_observation` wraps the image prediction in
+`rocell.ai_precision_observation.v2`. An unqualified prediction explicitly
+abstains with `localization_uncalibrated`; it cannot borrow Gemma scene
+confidence. The current `run_joint_preview` returns this v2 record alongside
+its legacy research preview. Legacy v1 previews and route studies remain
+research artifacts and are not batch-admission evidence.
+
+`rocell_ai.batch_emitter.emit` consumes a compiled `ActionPlan`, exact frame
+bytes, scene observation, precision v2 record, and evaluation time. It reruns
+the existing freshness/image-quality/scene fusion checks, then verifies the
+localization qualification and error bounds before constructing RoCell's
+`ModelMotionBatch`. It preserves every movement action, including repeated
+keys, with unique proposal IDs, CONTACT mode, and exact plan/evidence hashes.
+It invokes the shared nominal coordinate bridge before returning a batch.
+
+Qualification records are supplied by trusted application configuration, never
+by model output. A record binds checkpoint, domain, catalog, covered targets,
+distinct calibration/evaluation dataset hashes, coverage probability, and a
+planar error radius in mm. The application must independently select the
+matching domain via `expected_domain_id`. The producer requires the whole XY
+error bound to fit inside the target rectangle. Proposal confidence comes from
+that localization coverage, not scene confidence. Per-target coverage is not
+a joint success probability for an entire batch. Hashes protect integrity,
+not scientific validity: dataset separation and statistical qualification
+must be established before records enter the trusted registry.
+
+This revision supports `SYNTHETIC_OFFLINE_ONLY` qualifications. No trusted
+qualification is installed and no measured deployment qualification is claimed.
+The test suite uses explicitly fabricated TEST_ONLY records to prove the
+producer/decoder/ingress integration; these records are not deployed. The CLI
+`run_batch_emission.py` has an empty trust registry and cannot accept a model's
+self-supplied qualification. The saved
+`eval/current_checkpoint_batch_abstention_v0.json` comes from actual checkpoint
+and Gemma inference on development seed 1000001: it abstains despite passing
+scene checks. Its capture/evaluation times are synthetic replay times.
+
+Phone plans are rejected by this keyboard-only producer. A later phone
+producer must stop at each state-changing action, obtain new image/scene/
+precision/fusion evidence, and compile the next segment. It must not pre-emit
+a full dialer workflow using one frame. No AI code emits servo angles,
+Waveshare wire commands, execution permits, or claimed hardware effects.
+
+RoCell's sequential orchestrator remains responsible for fresh achieved-state
+feedback before each successor, calibration, trajectory screening, and later
+execution admission. An offline batch is not an execution authorization.

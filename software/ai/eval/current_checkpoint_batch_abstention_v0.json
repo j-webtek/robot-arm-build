@@ -1,0 +1,402 @@
+{
+  "batch": null,
+  "controller_commands": [],
+  "emission_sha256": "e6e5f754786a8cf26385a224d62f86169b1c623c987c52e1b270885b9616161f",
+  "fusion": {
+    "accepted": false,
+    "decision_sha256": "aac991b10bf0604e84d3d7bf2d49314a32effc8ca44d79645adc8b6418e57062",
+    "device": "keyboard",
+    "evaluated_at_utc": "2026-09-26T12:00:01Z",
+    "execution_authorized": false,
+    "frame_age_seconds": 1.0,
+    "frame_id": "batch-abstention-development-001",
+    "image_sha256": "6622bfa650aa0afcbfda7b11a895e36af4ca225e1f48b0bfc4a6841d754f5467",
+    "localization_scope": "SYNTHETIC_OFFLINE_ONLY",
+    "pixel_quality": {
+      "accepted": true,
+      "assessment_sha256": "58ba355059a8ed04c8e53bd707866b76831be193c9c66722b7da43fb386e6c1d",
+      "frame_id": "batch-abstention-development-001",
+      "image_sha256": "6622bfa650aa0afcbfda7b11a895e36af4ca225e1f48b0bfc4a6841d754f5467",
+      "metrics": {
+        "bright_pixel_fraction": 0.0,
+        "dark_pixel_fraction": 0.0,
+        "edge_variance": 2220.216082,
+        "luminance_stddev": 73.216883,
+        "mean_luminance": 208.337789
+      },
+      "physical_calibration": false,
+      "reasons": [],
+      "schema": "rocell.ai_pixel_quality.v0",
+      "threshold_profile": "development_stress_v0"
+    },
+    "precision_observation_sha256": "13525a218fb791d6092e194ceedd3db18e3133ec437da06118b93ce1a26a38d6",
+    "qualification_sha256": null,
+    "reasons": [
+      "localization_uncalibrated"
+    ],
+    "required_targets": [
+      "H",
+      "H",
+      "I"
+    ],
+    "scene_observation_sha256": "325385909e794beb79c76efe4b36ff34344751dc420bb6505f2cdcdbd6342c36",
+    "schema": "rocell.ai_precision_fusion.v1",
+    "thresholds": {
+      "maximum_age_seconds": 2.0,
+      "maximum_occlusion_fraction": 0.2,
+      "minimum_scene_confidence": 0.85
+    }
+  },
+  "hardware_writes": 0,
+  "intent_plan_sha256": "16651f6034fab618b8d760f7cb522703553a9382a3bf73d6181f457a0c44630e",
+  "localization_qualification": null,
+  "physical_execution_authorized": false,
+  "precision_observation": {
+    "abstain": true,
+    "abstain_reasons": [
+      "localization_uncalibrated"
+    ],
+    "domain_id": "synthetic-keyboard-standard",
+    "observation_sha256": "13525a218fb791d6092e194ceedd3db18e3133ec437da06118b93ce1a26a38d6",
+    "prediction": {
+      "coordinate_frame": "board",
+      "coordinate_unit": "mm",
+      "device": "keyboard",
+      "frame_id": "batch-abstention-development-001",
+      "image_sha256": "6622bfa650aa0afcbfda7b11a895e36af4ca225e1f48b0bfc4a6841d754f5467",
+      "model_sha256": "2cc9d770fe9816b1e7f717413996e78d3e440eb6d7b2a02414f229d11ed5671f",
+      "observation_sha256": "94624058c79960611f607779e664aa5ad00ff9766281fcf1caf83997161fa258",
+      "schema": "rocell.ai_visual_targets.v1",
+      "source": "SYNTHETIC_IMAGE_MODEL_PREDICTION",
+      "target_catalog_sha256": "6779213e832ab27eeda1e7fb245f57ff8cb0d56707b5aa73a8f31ec483a620f2",
+      "targets": {
+        "0": {
+          "center_board_mm": [
+            185.60623814311776,
+            115.56559714427138,
+            21.0
+          ]
+        },
+        "1": {
+          "center_board_mm": [
+            354.71982633625197,
+            143.77369506743955,
+            21.0
+          ]
+        },
+        "2": {
+          "center_board_mm": [
+            335.9294276481259,
+            140.6394619648653,
+            21.0
+          ]
+        },
+        "3": {
+          "center_board_mm": [
+            317.1390289599999,
+            137.50522886229106,
+            21.0
+          ]
+        },
+        "4": {
+          "center_board_mm": [
+            298.3486302718739,
+            134.3709957597168,
+            21.0
+          ]
+        },
+        "5": {
+          "center_board_mm": [
+            279.5582315837479,
+            131.23676265714258,
+            21.0
+          ]
+        },
+        "6": {
+          "center_board_mm": [
+            260.7678328956219,
+            128.10252955456835,
+            21.0
+          ]
+        },
+        "7": {
+          "center_board_mm": [
+            241.97743420749583,
+            124.96829645199409,
+            21.0
+          ]
+        },
+        "8": {
+          "center_board_mm": [
+            223.18703551936983,
+            121.83406334941986,
+            21.0
+          ]
+        },
+        "9": {
+          "center_board_mm": [
+            204.39663683124385,
+            118.69983024684564,
+            21.0
+          ]
+        },
+        "A": {
+          "center_board_mm": [
+            333.70457743607767,
+            182.8486143080947,
+            21.0
+          ]
+        },
+        "APOSTROPHE": {
+          "center_board_mm": [
+            145.8005905548175,
+            151.5062832823523,
+            21.0
+          ]
+        },
+        "B": {
+          "center_board_mm": [
+            245.71738254230033,
+            189.46250383880516,
+            21.0
+          ]
+        },
+        "C": {
+          "center_board_mm": [
+            283.29817991855236,
+            195.73097004395365,
+            21.0
+          ]
+        },
+        "COMMA": {
+          "center_board_mm": [
+            189.3461864779223,
+            180.05980453108245,
+            21.0
+          ]
+        },
+        "D": {
+          "center_board_mm": [
+            296.12378005982566,
+            176.58014810294623,
+            21.0
+          ]
+        },
+        "E": {
+          "center_board_mm": [
+            304.31342881872666,
+            156.65605080329846,
+            21.0
+          ]
+        },
+        "ENTER": {
+          "center_board_mm": [
+            122.42355911604656,
+            147.60700115474026,
+            21.0
+          ]
+        },
+        "EQUAL": {
+          "center_board_mm": [
+            148.02544076686576,
+            109.2971309391229,
+            21.0
+          ]
+        },
+        "F": {
+          "center_board_mm": [
+            277.33338137169966,
+            173.445915000372,
+            21.0
+          ]
+        },
+        "G": {
+          "center_board_mm": [
+            258.5429826835736,
+            170.31168189779774,
+            21.0
+          ]
+        },
+        "H": {
+          "center_board_mm": [
+            239.75258399544757,
+            167.1774487952235,
+            21.0
+          ]
+        },
+        "I": {
+          "center_board_mm": [
+            210.36143537809656,
+            140.98488529042726,
+            21.0
+          ]
+        },
+        "J": {
+          "center_board_mm": [
+            220.96218530732153,
+            164.04321569264928,
+            21.0
+          ]
+        },
+        "K": {
+          "center_board_mm": [
+            202.17178661919556,
+            160.90898259007503,
+            21.0
+          ]
+        },
+        "L": {
+          "center_board_mm": [
+            183.38138793106955,
+            157.7747494875008,
+            21.0
+          ]
+        },
+        "M": {
+          "center_board_mm": [
+            208.13658516604826,
+            183.19403763365668,
+            21.0
+          ]
+        },
+        "MINUS": {
+          "center_board_mm": [
+            166.8158394549918,
+            112.43136404169715,
+            21.0
+          ]
+        },
+        "N": {
+          "center_board_mm": [
+            226.9269838541743,
+            186.3282707362309,
+            21.0
+          ]
+        },
+        "O": {
+          "center_board_mm": [
+            191.57103668997055,
+            137.85065218785303,
+            21.0
+          ]
+        },
+        "P": {
+          "center_board_mm": [
+            172.78063800184447,
+            134.71641908527877,
+            21.0
+          ]
+        },
+        "PERIOD": {
+          "center_board_mm": [
+            170.55578778979626,
+            176.9255714285082,
+            21.0
+          ]
+        },
+        "Q": {
+          "center_board_mm": [
+            341.89422619497867,
+            162.92451700844694,
+            21.0
+          ]
+        },
+        "R": {
+          "center_board_mm": [
+            285.5230301306006,
+            153.52181770072423,
+            21.0
+          ]
+        },
+        "S": {
+          "center_board_mm": [
+            314.91417874795167,
+            179.71438120552048,
+            21.0
+          ]
+        },
+        "SEMICOLON": {
+          "center_board_mm": [
+            164.59098924294352,
+            154.64051638492654,
+            21.0
+          ]
+        },
+        "SLASH": {
+          "center_board_mm": [
+            151.76538910167022,
+            173.79133832593396,
+            21.0
+          ]
+        },
+        "SPACE": {
+          "center_board_mm": [
+            225.4939876419223,
+            207.379375739429,
+            21.0
+          ]
+        },
+        "T": {
+          "center_board_mm": [
+            266.7326314424746,
+            150.38758459815,
+            21.0
+          ]
+        },
+        "TAB": {
+          "center_board_mm": [
+            359.64893361683,
+            165.8859971053675,
+            21.0
+          ]
+        },
+        "U": {
+          "center_board_mm": [
+            229.15183406622256,
+            144.11911839300151,
+            21.0
+          ]
+        },
+        "V": {
+          "center_board_mm": [
+            264.5077812304263,
+            192.5967369413794,
+            21.0
+          ]
+        },
+        "W": {
+          "center_board_mm": [
+            323.1038275068526,
+            159.7902839058727,
+            21.0
+          ]
+        },
+        "X": {
+          "center_board_mm": [
+            302.0885786066783,
+            198.86520314652788,
+            21.0
+          ]
+        },
+        "Y": {
+          "center_board_mm": [
+            247.9422327543486,
+            147.25335149557574,
+            21.0
+          ]
+        },
+        "Z": {
+          "center_board_mm": [
+            320.8789772948044,
+            201.9994362491021,
+            21.0
+          ]
+        }
+      }
+    },
+    "qualification_sha256": null,
+    "schema": "rocell.ai_precision_observation.v2"
+  },
+  "schema": "rocell.ai_batch_emission.v0",
+  "status": "ABSTAINED"
+}

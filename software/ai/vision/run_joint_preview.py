@@ -19,6 +19,7 @@ ROOT = AI_DIR.parents[1]
 sys.path.insert(0, str(AI_DIR.parent / "src"))
 sys.path.insert(0, str(AI_DIR))
 
+from rocell_ai.precision_observation import build as build_precision_v2
 from rocell_ai.coordinate_preview import preview  # noqa: E402
 from rocell_ai.visual_observation import MODEL_SCHEMA  # noqa: E402
 from vision.pose_model import KeyboardPoseNet  # noqa: E402
@@ -86,6 +87,7 @@ def run(*, request: str, checkpoint: Path, seed: int, frame_id: str, image_outpu
         "center_error_mm": math.dist(truth[:2], estimated_pose[:2]),
         "yaw_error_deg": abs(math.degrees(truth[2] - estimated_pose[2])),
         "coordinate_preview": result,
+        "precision_observation_v2": build_precision_v2(visual, domain_id="synthetic-keyboard-" + domain),
         "physical_execution_authorized": False,
         "hardware_commands": 0,
     }

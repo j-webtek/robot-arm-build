@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Precision observation with localization abstention v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "prediction",
+    "domain_id",
+    "qualification_sha256",
+    "abstain",
+    "abstain_reasons",
+    "observation_sha256"
+  ],
+  "properties": {
+    "schema": {
+      "const": "rocell.ai_precision_observation.v2"
+    },
+    "prediction": {
+      "$ref": "visual_targets_v1.schema.json"
+    },
+    "domain_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "qualification_sha256": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "abstain": {
+      "type": "boolean"
+    },
+    "abstain_reasons": {
+      "type": "array",
+      "items": {
+        "const": "localization_uncalibrated"
+      },
+      "maxItems": 1
+    },
+    "observation_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "qualification_sha256": {
+            "type": "null"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "abstain": {
+            "const": true
+          },
+          "abstain_reasons": {
+            "const": [
+              "localization_uncalibrated"
+            ]
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "abstain": {
+            "const": false
+          },
+          "abstain_reasons": {
+            "const": []
+          }
+        }
+      }
+    }
+  ]
+}
