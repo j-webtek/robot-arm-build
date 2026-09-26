@@ -599,6 +599,8 @@ Copy this row and fill every field:
 
 ## Active work claims
 
+- AI lane / S1: frozen pose-tail decomposition on retained 15M cases; translation/yaw and paired-condition diagnosis only. No arm or integration status change.
+
 
 
 
