@@ -604,6 +604,7 @@ remove it only in the same commit that appends the resulting evidence row.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
+| AI/model | S1 | target-local refinement helper, dev diagnostic, tests/evidence | main from `8f85eee` | ACTIVE: bounded pixel-only refinement, development only |
 | Unclaimed | S2 | qualified perception adapter and complete shared gate | — | AVAILABLE |
 | Unclaimed | S4 | controller adapter/receipts | — | AVAILABLE |
 
