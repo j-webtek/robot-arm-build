@@ -599,7 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-| AI | S1 | consolidated pose landmark comparison | feature/translation-pair-evidence | ACTIVE |
 
 
 
@@ -5737,3 +5736,51 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic audit; AI-041 protected-main publication blocker remains.
 - Supersedes: none; prior failures and integration statuses retained.
 - Next dependency: Protected-branch PR/checks and AI-184 comparison.
+
+### E-20260926-AI-187 — consolidated pose versus landmark comparison
+
+- Stage: S1
+- Lane: AI
+- Commit: `47d0e33f84aaccae3fd47aabeaf4c7790b99faa8` (frozen source; results/tests committed with evidence)
+- Change: consolidated pose versus landmark comparison.
+- Inputs/fixtures: 800 reused15M200 images. Same normalized256x192 source; pose receives128x96 resize,landmark full resolution. Pose checkpoint0fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d; original t05 landmark356a4dec05c6c2194c6d31542fed0d7199d5e989eb4b7678888d1a01aa493281 plus frozen geometry/subpixel. Exact source hashes in eval/pose_landmark_v0_plan.json.
+- Command: `python software/ai/vision/evaluate_pose_landmark.py`
+- Result: Landmark FAIL all12 comparison checks. Pose versus landmark means standard0.853/3.040,appearance0.833/2.450,partial1.026/4.773,full1.229/5.236mm. >3mm tails pose5/7/9/11 versus125/77/172/186 per200. Pose yawp950.526/0.514/0.782/0.829deg versus1.285/1.236/1.594/1.523. Landmark predicted min3 support200/200/194/192 descriptive only; all cases scored.
+- Artifacts: eval/pose_landmark_v0_report.json; frozen runner/plan
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Unequal model training histories; not architecture superiority proof. Reused synthetic development,pose lacks calibrated per-observation uncertainty and visibility. Both unqualified; no runtime or arm/integration status change.
+- Supersedes: none; previous failures and integration statuses retained.
+- Next dependency: Prioritize established pose localization; retain landmark visibility as separate research. Freeze an identical-input diagnostic of pose >3mm failures versus predicted landmark visibility,including false rejection of good pose cases. Do not assume visibility is localization confidence or install a gate from development evidence.
+
+### E-20260926-AI-188 — consolidated comparison verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `47d0e33f84aaccae3fd47aabeaf4c7790b99faa8` (frozen source; results/tests committed with evidence)
+- Change: consolidated comparison verification.
+- Inputs/fixtures: AI-187 manifest/report,retained subpixel predictions and original training pixel hash.
+- Command: `python -m pytest -q software/ai/tests/test_pose_landmark.py`
+- Result: PASS,2 tests; rigid fit,hashes,same normalized pixels,exact landmark reproduction,support counts and comparison criteria verified. Existing pytest-asyncio warning.
+- Artifacts: software/ai/tests/test_pose_landmark.py
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Implementation verification only; batch unchanged,shared boundary suite not triggered.
+- Supersedes: none; previous failures and integration statuses retained.
+- Next dependency: AI-187 pose failure/visibility diagnostic.
+
+### E-20260926-AI-189 — comparison publication audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `47d0e33f84aaccae3fd47aabeaf4c7790b99faa8` (frozen source; results/tests committed with evidence)
+- Change: comparison publication audit.
+- Inputs/fixtures: Repository with AI-187/188 and reviewed fixture allowlist.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS;5978 paths,842.6 MiB,0 unresolved findings,14 reviewed synthetic fixtures.
+- Artifacts: audit stdout and snapshot
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic audit; AI-041 protected-main publication blocker remains.
+- Supersedes: none; previous failures and integration statuses retained.
+- Next dependency: Protected-branch PR/checks and AI-187 diagnosis.

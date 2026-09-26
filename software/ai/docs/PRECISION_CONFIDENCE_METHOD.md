@@ -539,3 +539,8 @@ On four fixed32-image training batches,geometry/base shared-feature gradient nor
 ### Coefficient0.1 comparison (AI-184)
 
 Correctly logged0.1 geometry weighting still fails: all condition means worsen,hidden false-visible1→3/201,clear recall2617→2578/2736. Coefficient1 failure remains retained. Stop coefficient tuning; next consolidate established pose baseline versus original t05+geometry/subpixel on identical development pixels,reporting absolute performance and visibility/abstention limitations before another model investment. Source `c67f9ee26dc0cb24956164bcbe090684e0579801`; `eval/landmark_geometry_tenth_v0_*`. No qualification or runtime changes.
+
+
+### Consolidated model priority (AI-187)
+
+On identical normalized development sources,the pose baseline yields0.833–1.229mm mean and5–11 >3mm image failures/200 per condition,versus complete landmark geometry/subpixel2.450–5.236mm and77–186 failures. Prioritize pose localization; preserve landmark visibility research separately. Neither is qualified: pose lacks calibrated uncertainty and corner visibility,while landmark support is not localization confidence. Next diagnose pose failures against predicted visibility on matched retained cases,including false rejection; no runtime gate or development-derived qualification. Source `47d0e33f84aaccae3fd47aabeaf4c7790b99faa8`; `eval/pose_landmark_v0_report.json`. Unequal training histories preclude architecture superiority claims.
