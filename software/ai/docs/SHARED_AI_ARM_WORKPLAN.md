@@ -602,7 +602,6 @@ remove it only in the same commit that appends the resulting evidence row.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI/model | S1 | matched-resolution training script/plan/scorecard | main from `e2cd280` | ACTIVE: paired development fine-tuning only |
 | Shared integration lane | S2 | raw-request runner and terminal negative matrix | `main` from `ca8c5ae` | ACTIVE |
 | Unclaimed | S4 | controller adapter/receipts | — | AVAILABLE |
 
@@ -1550,3 +1549,70 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: heuristic findings unresolved; no clean audit claim.
 - Supersedes: none
 - Next dependency: fixture-owner review, separately from localization research.
+
+
+### E-20260926-AI-025 — matched-resolution development fine-tuning
+
+- Stage: S1
+- Lane: AI
+- Commit: `cc9d000b927122bb200b6142315c96fb879ec2f8` (exact frozen training code and plan before execution)
+- Change: paired 128x96/256x192 fine-tuning from identical robust pose weights,
+  same seeded image order, 12 epochs, batch 64, AdamW learning rate 0.0002.
+- Inputs/fixtures: 14M training (1,200 groups) and 15M development (200 groups),
+  3 conditions; 3,600/600 images. Checkpoint/source/catalog hashes pinned in
+  `train/matched_resolution_v0_plan.json`; pixel/output-model hashes in scorecard.
+- Command: `python software/ai/vision/train_matched_resolution.py`
+- Result: PASS for completed development comparison, not qualification. Both
+  selected epoch 11 by development MSE. 128x96: mean 0.94513 mm, p95 2.06487 mm,
+  63.12% within 1 mm. 256x192: mean 1.44220 mm, p95 3.52965 mm, 39.69% within
+  1 mm. Each has 27,600 correlated target/view errors; retain 128x96 research
+  resolution, with no runtime checkpoint replacement from development results.
+- Artifacts: `software/ai/eval/matched_resolution_v0_scorecard.json`; local ignored
+  checkpoints under `software/ai/results/matched_resolution_v0_128/` and `_256/`.
+  SHA-256 values respectively
+  `1dc517acd1da53166dc2df11a4d67e98aaf1186d96edd3342db0498fb6a6f2cc` and
+  `15f495bb18437208ae8bbea273aa957f5468b40bba4374546a81716ed545aa37`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: same pretrained weights originated at 128x96, so this is an
+  equal-budget adaptation comparison, not from-scratch proof that higher resolution
+  cannot help. One training seed; development selects epoch and reports quality;
+  no independent generalization or physical claim, new evaluation data or qualification.
+- Supersedes: none; extends inference-only AI-023 without rewriting it.
+- Next dependency: use 128x96 as the development reference; investigate target-local
+  geometric refinement and confidence on development groups before a new frozen
+  held-out run. Keep failed confidence results and runtime abstention unchanged.
+
+### E-20260926-AI-026 — matched-resolution evidence checks
+
+- Stage: S1
+- Lane: AI
+- Commit: `cc9d000b927122bb200b6142315c96fb879ec2f8` (training baseline; new evidence test and scorecard committed with this row)
+- Change: verified frozen source hashes, equal budgets/counts, development-only
+  splits and minimum-development-MSE checkpoint selection.
+- Inputs/fixtures: paired plan/scorecard and `software/ai/tests/test_matched_resolution_evidence.py`.
+- Command: `python -m pytest -q software/ai/tests/test_matched_resolution_evidence.py`
+- Result: PASS, 1 evidence test covering both runs.
+- Artifacts: test, frozen plan and scorecard.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: internal evidence consistency, not physical model qualification.
+- Supersedes: none
+- Next dependency: AI-025 development investigation.
+
+### E-20260926-AI-027 — matched-resolution audit findings retained
+
+- Stage: S1
+- Lane: AI
+- Commit: `cc9d000b927122bb200b6142315c96fb879ec2f8`
+- Change: required read-only audit during training.
+- Inputs/fixtures: repository snapshot and `scripts/audit_github_snapshot.py`.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: FAIL, exit 1; 5,638 paths, 785.0 MiB, same 14 existing arm-unit
+  credential-literal-review findings; no matched-resolution source finding.
+- Artifacts: scanner and existing fixtures.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: heuristic findings unresolved; no clean audit claim.
+- Supersedes: none
+- Next dependency: fixture-owner review independently of localization research.

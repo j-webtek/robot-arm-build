@@ -80,3 +80,14 @@ training comparison. A 1 mm tolerance is about 0.21 input pixel at 128x96, but
 subpixel regression remains possible; do not assert a hard pixel accuracy floor.
 Next compare matched-resolution training on development data before reserving a
 new held-out experiment. See `eval/resolution_development_v0_scorecard.json`.
+
+
+## Matched-resolution development fine-tuning
+
+Equal-budget paired fine-tuning from the same checkpoint selected epoch 11 for
+both sizes. Development mean/p95 errors were 0.945/2.065 mm at 128x96 and
+1.442/3.530 mm at 256x192. Retain 128x96 as the development reference; this is not
+runtime promotion. Shared pretraining at 128x96 and a single training seed limit
+claims about resolution. No new calibration or evaluation data was accessed.
+See `eval/matched_resolution_v0_scorecard.json`. Next investigate local geometric
+refinement before another confidence or held-out qualification run.

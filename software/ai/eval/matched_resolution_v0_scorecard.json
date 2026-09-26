@@ -1,0 +1,185 @@
+{
+  "scope": "DEVELOPMENT_ONLY",
+  "plan_sha256": "857b61faba747e727b533e141d45f34a5c2ddceea7802fe934164ffd40c06422",
+  "results": [
+    {
+      "scope": "DEVELOPMENT_ONLY",
+      "input_size": [
+        128,
+        96
+      ],
+      "selected_epoch": 11,
+      "mean_mm": 0.9451284402366427,
+      "p95_mm": 2.064872655130977,
+      "maximum_mm": 6.627302440971617,
+      "within_1mm_fraction": 0.631159420289855,
+      "target_view_count": 27600,
+      "worst_image_error_p95_mm": 2.545433555557716,
+      "checkpoint_sha256": "1dc517acd1da53166dc2df11a4d67e98aaf1186d96edd3342db0498fb6a6f2cc",
+      "history": [
+        {
+          "epoch": 1,
+          "training_mse": 0.0017836979657618536,
+          "development_mse": 0.0008790092542767525
+        },
+        {
+          "epoch": 2,
+          "training_mse": 0.0010585060767415496,
+          "development_mse": 0.0010768736246973276
+        },
+        {
+          "epoch": 3,
+          "training_mse": 0.0011056509639860855,
+          "development_mse": 0.0011396175250411034
+        },
+        {
+          "epoch": 4,
+          "training_mse": 0.0009965445644532641,
+          "development_mse": 0.0009427319746464491
+        },
+        {
+          "epoch": 5,
+          "training_mse": 0.0009752822491443819,
+          "development_mse": 0.0008712866110727191
+        },
+        {
+          "epoch": 6,
+          "training_mse": 0.0009263834559048215,
+          "development_mse": 0.0012307072756811976
+        },
+        {
+          "epoch": 7,
+          "training_mse": 0.0009407245892927878,
+          "development_mse": 0.0010222247801721096
+        },
+        {
+          "epoch": 8,
+          "training_mse": 0.0008988489658157859,
+          "development_mse": 0.0011403938988223672
+        },
+        {
+          "epoch": 9,
+          "training_mse": 0.0009716885298904445,
+          "development_mse": 0.0009837278630584478
+        },
+        {
+          "epoch": 10,
+          "training_mse": 0.0007974570461859305,
+          "development_mse": 0.0010839231545105577
+        },
+        {
+          "epoch": 11,
+          "training_mse": 0.0007904153922572731,
+          "development_mse": 0.0008109158370643854
+        },
+        {
+          "epoch": 12,
+          "training_mse": 0.0007884641687592698,
+          "development_mse": 0.0008469218155369163
+        }
+      ],
+      "device": "cuda",
+      "training_images": 3600,
+      "development_images": 600,
+      "training_pixels_sha256": "e5f9a33b30c5847cefe5c362d14e27aca26b4838c59bead74b43080ad3418265",
+      "development_pixels_sha256": "e548008788762c07e3d087a32ba0fd2e549702230b695096a1625c68f011701e",
+      "qualification_installed": false,
+      "hardware_writes": 0,
+      "physical_movements": 0
+    },
+    {
+      "scope": "DEVELOPMENT_ONLY",
+      "input_size": [
+        256,
+        192
+      ],
+      "selected_epoch": 11,
+      "mean_mm": 1.4422039155607493,
+      "p95_mm": 3.5296516440680246,
+      "maximum_mm": 11.715162389529512,
+      "within_1mm_fraction": 0.3968840579710145,
+      "target_view_count": 27600,
+      "worst_image_error_p95_mm": 5.327657197540514,
+      "checkpoint_sha256": "15f495bb18437208ae8bbea273aa957f5468b40bba4374546a81716ed545aa37",
+      "history": [
+        {
+          "epoch": 1,
+          "training_mse": 0.03391995846397347,
+          "development_mse": 0.016217442229390144
+        },
+        {
+          "epoch": 2,
+          "training_mse": 0.012669261772599485,
+          "development_mse": 0.007694742642343044
+        },
+        {
+          "epoch": 3,
+          "training_mse": 0.00819895800617006,
+          "development_mse": 0.005767304450273514
+        },
+        {
+          "epoch": 4,
+          "training_mse": 0.005911521170702245,
+          "development_mse": 0.004934715107083321
+        },
+        {
+          "epoch": 5,
+          "training_mse": 0.004964783477286498,
+          "development_mse": 0.004682511556893587
+        },
+        {
+          "epoch": 6,
+          "training_mse": 0.004156532794651058,
+          "development_mse": 0.0039712111465632915
+        },
+        {
+          "epoch": 7,
+          "training_mse": 0.0037265048186398216,
+          "development_mse": 0.0031815709080547094
+        },
+        {
+          "epoch": 8,
+          "training_mse": 0.0033499986564533577,
+          "development_mse": 0.0029274425469338894
+        },
+        {
+          "epoch": 9,
+          "training_mse": 0.0029830457352929647,
+          "development_mse": 0.002781428163871169
+        },
+        {
+          "epoch": 10,
+          "training_mse": 0.002848352378803409,
+          "development_mse": 0.0024912094231694937
+        },
+        {
+          "epoch": 11,
+          "training_mse": 0.0025708045044706925,
+          "development_mse": 0.0021495858673006296
+        },
+        {
+          "epoch": 12,
+          "training_mse": 0.0025682593219810063,
+          "development_mse": 0.002525878371670842
+        }
+      ],
+      "device": "cuda",
+      "training_images": 3600,
+      "development_images": 600,
+      "training_pixels_sha256": "ffd59eb4d35d09dd3ddb430e0c631572424c9cf88e86ea80b741e7ebea9a9843",
+      "development_pixels_sha256": "983e985ad03dc8867bfb643cbf2e1cd0529800e530ddb5fc995496585c8fda67",
+      "qualification_installed": false,
+      "hardware_writes": 0,
+      "physical_movements": 0
+    }
+  ],
+  "hardware_writes": 0,
+  "physical_movements": 0,
+  "qualification_installed": false,
+  "limitations": [
+    "Same pretrained checkpoint originated at 128x96; this is equal-budget fine-tuning, not training from scratch",
+    "Epoch selected on development MSE; development metrics are optimistic selection evidence",
+    "Renderer remains 256x192; no real camera or held-out evaluation data",
+    "One training seed per resolution; no claim of statistical significance"
+  ]
+}
