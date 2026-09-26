@@ -1,0 +1,1993 @@
+{
+  "case_count": 12,
+  "cases": [
+    {
+      "assurance_bundle_sha256_in_order": [
+        "0e609a56c0cf768e292ea1c7bc618d29b0d37251ecd89d6e8009904711bf16fd",
+        "8150871137c6e0f3dd06fd617d2bc023b3ac367eeeb849749712472088b37067"
+      ],
+      "cadence_hypothesis": {
+        "cartesian_speed_mm_s": 10.0,
+        "contact_dwell_s": 0.1,
+        "contact_events": [
+          {
+            "action_index": 0,
+            "planned_contact_time_s": 21.365055675746987,
+            "target": "keyboard:H"
+          },
+          {
+            "action_index": 1,
+            "planned_contact_time_s": 35.80191991013455,
+            "target": "keyboard:I"
+          }
+        ],
+        "dynamics_verified": false,
+        "input_events_observed": 0,
+        "planned_duration_s": 58.08338701400989,
+        "vision_or_verify_delay_s": 0.2
+      },
+      "dense_route_all_waypoints_accepted": true,
+      "dense_route_sha256": "e1a3686ab8394f3e94124cda18af1f0debcdf5c49c8f54ae8537f7b702a728f3",
+      "dense_route_status": "DENSE_SAMPLES_PASS_NOT_EXECUTABLE",
+      "evaluated_waypoint_count": 45,
+      "first_failure": null,
+      "geometry_all_checks_pass": true,
+      "geometry_report_sha256": "2fbcc788163376c1f3a27e278ac00517fc11c6314e8b2d87c94c898249e855e7",
+      "hardware_commands": [],
+      "hardware_writes": 0,
+      "hover_clearance_mm": 12.0,
+      "layout_overlay": {
+        "board_T_vendor_world_matrix_row_major": [
+          -0.25881904510252063,
+          0.9659258262890683,
+          -0.0,
+          385.0,
+          -0.9659258262890683,
+          -0.25881904510252063,
+          0.0,
+          532.0,
+          -0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "frozen_geometry_modified": false,
+        "installed_position_verified": false,
+        "installed_tool_verified": false,
+        "keyboard_tool_length_mm": 120.0,
+        "motion_authorized": false,
+        "overlay_sha256": "e9558be5bc7924752596d5561d7f502a8b4ab281ad8ffcfbcc1c118c99e21a12",
+        "physical_release_effect": "NONE",
+        "rank": 1,
+        "schema": "rocell.robot_layout_sensitivity_overlay.v1",
+        "source_layout_report_hash": "3b65e3bca509f7c7e1583e5801e189639ab9e40cbf30827b71794752cd7259b4",
+        "source_mission_route_coverage_hash": "c67ac5d2cece745077ac631304b80f51a19c981edd107812ffa716673fbf2cd4",
+        "source_profile": "software/config/virtual_commissioning_profile.json",
+        "source_profile_sha256": "c8f8440e9e4d2bdd8eaf61b5755d8c57235b5b1a0fb2f62c6953f9b6e20338cf",
+        "study_input_id": "reach-944d7463f4c67905"
+      },
+      "limitations": [
+        "Synthetic proposals and unmeasured base/tool/park geometry",
+        "Common clearance is applied to hover and retract; local approach and overtravel use static policy",
+        "SLOW maps only to an illustrative constant 10 mm/s schedule; acceleration and servo dynamics are unmodeled",
+        "Vision and verification steps are placeholders; no camera or input event was observed",
+        "A planned contact event does not mean the dense route reached it; inspect route status",
+        "Sampled tip route checks do not prove continuous full-arm collision clearance"
+      ],
+      "park_xy_board_mm": [
+        290.0,
+        10.0
+      ],
+      "physical_execution_authorized": false,
+      "plan_hash": "e7992a295c8aa2f70b752e9754cbb504d094e99d6683ae262a506d317fcc81e5",
+      "proposals": [
+        {
+          "approach_clearance_mm": 12.0,
+          "confidence": 1.0,
+          "coordinate_frame": "board",
+          "device": "keyboard",
+          "interaction": "CONTACT",
+          "proposal_id": "synthetic-keyboard-coverage-H-0-clearance-12",
+          "schema": "rocell.model_motion_proposal.v1",
+          "source": {
+            "frame_id": "synthetic-no-camera-capture",
+            "image_sha256": "eee0d74689680963ae0f251ebc480f24512bbd7cd718402db5c2767a417f0b4a",
+            "model_id": "synthetic-nominal-catalog-generator-v0"
+          },
+          "speed_class": "SLOW",
+          "target_id": "H",
+          "target_mm": {
+            "x": 216.55,
+            "y": 154.0,
+            "z": 21.0
+          }
+        },
+        {
+          "approach_clearance_mm": 12.0,
+          "confidence": 1.0,
+          "coordinate_frame": "board",
+          "device": "keyboard",
+          "interaction": "CONTACT",
+          "proposal_id": "synthetic-keyboard-coverage-I-1-clearance-12",
+          "schema": "rocell.model_motion_proposal.v1",
+          "source": {
+            "frame_id": "synthetic-no-camera-capture",
+            "image_sha256": "eee0d74689680963ae0f251ebc480f24512bbd7cd718402db5c2767a417f0b4a",
+            "model_id": "synthetic-nominal-catalog-generator-v0"
+          },
+          "speed_class": "SLOW",
+          "target_id": "I",
+          "target_mm": {
+            "x": 249.85,
+            "y": 175.0,
+            "z": 21.0
+          }
+        }
+      ],
+      "requested_targets": [
+        "H",
+        "I"
+      ],
+      "sampled_ik_all_converged": true,
+      "schema": "rocell.ai_sequence_simulation_summary.v0",
+      "source_sequence_sha256": "1c3e027c25ac1f68369a7749dd59eb4f4e1b15120667917ba85b97df6c86c5af",
+      "static_context_sha256": "e825dd29cf856cea44d9ce40ca3bfb5fc305d3493cd129d6b6bea9f04c800f7c",
+      "summary_sha256": "112ddfe06eca09ae3abb61b36dae37a950b580e8d4bb582a4ce068466d8c4011",
+      "target_overlay": {
+        "base_catalog_sha256": "0cc4b46ce6a7b94f32ba1d64f9818c094f6005636c4d56480f5907b773cd5276",
+        "candidate_sha256_in_order": [
+          "45208a733b4dd3b8a08a0ee6021461493dd33e8200ac5f695336a12880f2813c",
+          "f6d2d87db8a08b61348fffc161bfe1e5168e93e38f64c29a31d4a72bf9d4671e"
+        ],
+        "centers_board_mm": {
+          "H": [
+            216.55,
+            154.0,
+            21.0
+          ],
+          "I": [
+            249.85,
+            175.0,
+            21.0
+          ]
+        },
+        "simulation_only": true
+      },
+      "target_overlay_sha256": "1511a8d335b92f776b20a66e3997daa9a47bfe5048f66b8c3134c2502551d0bd"
+    },
+    {
+      "assurance_bundle_sha256_in_order": [
+        "24bd3015b1bb91020568820d584ef3765dd93878986706d8b8dfe4101ff1f9c6",
+        "e81cd981713a087880cc952d9675e6450775aca9f8add2cefa9ad4ef36684d58"
+      ],
+      "cadence_hypothesis": {
+        "cartesian_speed_mm_s": 10.0,
+        "contact_dwell_s": 0.1,
+        "contact_events": [
+          {
+            "action_index": 0,
+            "planned_contact_time_s": 21.365055675746987,
+            "target": "keyboard:H"
+          },
+          {
+            "action_index": 1,
+            "planned_contact_time_s": 35.80191991013456,
+            "target": "keyboard:I"
+          }
+        ],
+        "dynamics_verified": false,
+        "input_events_observed": 0,
+        "planned_duration_s": 58.083387014009894,
+        "vision_or_verify_delay_s": 0.2
+      },
+      "dense_route_all_waypoints_accepted": true,
+      "dense_route_sha256": "5c9851a6cd4b95f53c0cc1075a10c7412914d4dd1cda6300b015ab5cf0c24a10",
+      "dense_route_status": "DENSE_SAMPLES_PASS_NOT_EXECUTABLE",
+      "evaluated_waypoint_count": 45,
+      "first_failure": null,
+      "geometry_all_checks_pass": true,
+      "geometry_report_sha256": "93d7ca444f43855b17d6d8fd77c46db0c82a2f80323918216da746113c4cf1ee",
+      "hardware_commands": [],
+      "hardware_writes": 0,
+      "hover_clearance_mm": 25.0,
+      "layout_overlay": {
+        "board_T_vendor_world_matrix_row_major": [
+          -0.25881904510252063,
+          0.9659258262890683,
+          -0.0,
+          385.0,
+          -0.9659258262890683,
+          -0.25881904510252063,
+          0.0,
+          532.0,
+          -0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "frozen_geometry_modified": false,
+        "installed_position_verified": false,
+        "installed_tool_verified": false,
+        "keyboard_tool_length_mm": 120.0,
+        "motion_authorized": false,
+        "overlay_sha256": "e9558be5bc7924752596d5561d7f502a8b4ab281ad8ffcfbcc1c118c99e21a12",
+        "physical_release_effect": "NONE",
+        "rank": 1,
+        "schema": "rocell.robot_layout_sensitivity_overlay.v1",
+        "source_layout_report_hash": "3b65e3bca509f7c7e1583e5801e189639ab9e40cbf30827b71794752cd7259b4",
+        "source_mission_route_coverage_hash": "c67ac5d2cece745077ac631304b80f51a19c981edd107812ffa716673fbf2cd4",
+        "source_profile": "software/config/virtual_commissioning_profile.json",
+        "source_profile_sha256": "c8f8440e9e4d2bdd8eaf61b5755d8c57235b5b1a0fb2f62c6953f9b6e20338cf",
+        "study_input_id": "reach-944d7463f4c67905"
+      },
+      "limitations": [
+        "Synthetic proposals and unmeasured base/tool/park geometry",
+        "Common clearance is applied to hover and retract; local approach and overtravel use static policy",
+        "SLOW maps only to an illustrative constant 10 mm/s schedule; acceleration and servo dynamics are unmodeled",
+        "Vision and verification steps are placeholders; no camera or input event was observed",
+        "A planned contact event does not mean the dense route reached it; inspect route status",
+        "Sampled tip route checks do not prove continuous full-arm collision clearance"
+      ],
+      "park_xy_board_mm": [
+        290.0,
+        10.0
+      ],
+      "physical_execution_authorized": false,
+      "plan_hash": "a35a4fbb91ab906a4d89c480819d2622c952f6632ed6a82ca3f5f587a9f12fde",
+      "proposals": [
+        {
+          "approach_clearance_mm": 25.0,
+          "confidence": 1.0,
+          "coordinate_frame": "board",
+          "device": "keyboard",
+          "interaction": "CONTACT",
+          "proposal_id": "synthetic-keyboard-coverage-H-0-clearance-25",
+          "schema": "rocell.model_motion_proposal.v1",
+          "source": {
+            "frame_id": "synthetic-no-camera-capture",
+            "image_sha256": "eee0d74689680963ae0f251ebc480f24512bbd7cd718402db5c2767a417f0b4a",
+            "model_id": "synthetic-nominal-catalog-generator-v0"
+          },
+          "speed_class": "SLOW",
+          "target_id": "H",
+          "target_mm": {
+            "x": 216.55,
+            "y": 154.0,
+            "z": 21.0
+          }
+        },
+        {
+          "approach_clearance_mm": 25.0,
+          "confidence": 1.0,
+          "coordinate_frame": "board",
+          "device": "keyboard",
+          "interaction": "CONTACT",
+          "proposal_id": "synthetic-keyboard-coverage-I-1-clearance-25",
+          "schema": "rocell.model_motion_proposal.v1",
+          "source": {
+            "frame_id": "synthetic-no-camera-capture",
+            "image_sha256": "eee0d74689680963ae0f251ebc480f24512bbd7cd718402db5c2767a417f0b4a",
+            "model_id": "synthetic-nominal-catalog-generator-v0"
+          },
+          "speed_class": "SLOW",
+          "target_id": "I",
+          "target_mm": {
+            "x": 249.85,
+            "y": 175.0,
+            "z": 21.0
+          }
+        }
+      ],
+      "requested_targets": [
+        "H",
+        "I"
+      ],
+      "sampled_ik_all_converged": true,
+      "schema": "rocell.ai_sequence_simulation_summary.v0",
+      "source_sequence_sha256": "8e0887537a8c60a7bdf2e06601518b2d6b2138c7c9a720b2deb8566878293ede",
+      "static_context_sha256": "e825dd29cf856cea44d9ce40ca3bfb5fc305d3493cd129d6b6bea9f04c800f7c",
+      "summary_sha256": "126b792e26213030697df5193b62f427b2bf78d548f2625b3c7982e3a367737c",
+      "target_overlay": {
+        "base_catalog_sha256": "0cc4b46ce6a7b94f32ba1d64f9818c094f6005636c4d56480f5907b773cd5276",
+        "candidate_sha256_in_order": [
+          "a73ec6f19c3c8752a4fc3c990f433af3d46e0f548e8ac9211f175291c3457e07",
+          "0c568bf6c4e07223cc8310b58b94947ca3baeda8a1ce36fcccfdf8193e8c2426"
+        ],
+        "centers_board_mm": {
+          "H": [
+            216.55,
+            154.0,
+            21.0
+          ],
+          "I": [
+            249.85,
+            175.0,
+            21.0
+          ]
+        },
+        "simulation_only": true
+      },
+      "target_overlay_sha256": "f323c429efdd721cd7376aa4b009bb7fbfbb4dae22e1099112784061dc825c31"
+    },
+    {
+      "assurance_bundle_sha256_in_order": [
+        "2b9616302c93a6b564639132eec3deeadc5a3a2674c580c3b79cc0e9ade78734",
+        "1d8b75d1a80652cc689f5ce95cdabcf5f2cde2d0959df9576f036c445721da9d"
+      ],
+      "cadence_hypothesis": {
+        "cartesian_speed_mm_s": 10.0,
+        "contact_dwell_s": 0.1,
+        "contact_events": [
+          {
+            "action_index": 0,
+            "planned_contact_time_s": 21.365055675746987,
+            "target": "keyboard:H"
+          },
+          {
+            "action_index": 1,
+            "planned_contact_time_s": 35.80191991013455,
+            "target": "keyboard:I"
+          }
+        ],
+        "dynamics_verified": false,
+        "input_events_observed": 0,
+        "planned_duration_s": 58.08338701400989,
+        "vision_or_verify_delay_s": 0.2
+      },
+      "dense_route_all_waypoints_accepted": true,
+      "dense_route_sha256": "40f5afe2b5114724e36b80f8432114a01df485f19ea69ba345cfbcb159abbccf",
+      "dense_route_status": "DENSE_SAMPLES_PASS_NOT_EXECUTABLE",
+      "evaluated_waypoint_count": 45,
+      "first_failure": null,
+      "geometry_all_checks_pass": true,
+      "geometry_report_sha256": "fa03aedd5d3b5bf224905f93ecad56e51fc2cd7d8ff91c7880a840423869b638",
+      "hardware_commands": [],
+      "hardware_writes": 0,
+      "hover_clearance_mm": 40.0,
+      "layout_overlay": {
+        "board_T_vendor_world_matrix_row_major": [
+          -0.25881904510252063,
+          0.9659258262890683,
+          -0.0,
+          385.0,
+          -0.9659258262890683,
+          -0.25881904510252063,
+          0.0,
+          532.0,
+          -0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "frozen_geometry_modified": false,
+        "installed_position_verified": false,
+        "installed_tool_verified": false,
+        "keyboard_tool_length_mm": 120.0,
+        "motion_authorized": false,
+        "overlay_sha256": "e9558be5bc7924752596d5561d7f502a8b4ab281ad8ffcfbcc1c118c99e21a12",
+        "physical_release_effect": "NONE",
+        "rank": 1,
+        "schema": "rocell.robot_layout_sensitivity_overlay.v1",
+        "source_layout_report_hash": "3b65e3bca509f7c7e1583e5801e189639ab9e40cbf30827b71794752cd7259b4",
+        "source_mission_route_coverage_hash": "c67ac5d2cece745077ac631304b80f51a19c981edd107812ffa716673fbf2cd4",
+        "source_profile": "software/config/virtual_commissioning_profile.json",
+        "source_profile_sha256": "c8f8440e9e4d2bdd8eaf61b5755d8c57235b5b1a0fb2f62c6953f9b6e20338cf",
+        "study_input_id": "reach-944d7463f4c67905"
+      },
+      "limitations": [
+        "Synthetic proposals and unmeasured base/tool/park geometry",
+        "Common clearance is applied to hover and retract; local approach and overtravel use static policy",
+        "SLOW maps only to an illustrative constant 10 mm/s schedule; acceleration and servo dynamics are unmodeled",
+        "Vision and verification steps are placeholders; no camera or input event was observed",
+        "A planned contact event does not mean the dense route reached it; inspect route status",
+        "Sampled tip route checks do not prove continuous full-arm collision clearance"
+      ],
+      "park_xy_board_mm": [
+        290.0,
+        10.0
+      ],
+      "physical_execution_authorized": false,
+      "plan_hash": "8a26a93832c759737fe76435ae6de715dc45e266017409163dc40dc796cd4b12",
+      "proposals": [
+        {
+          "approach_clearance_mm": 40.0,
+          "confidence": 1.0,
+          "coordinate_frame": "board",
+          "device": "keyboard",
+          "interaction": "CONTACT",
+          "proposal_id": "synthetic-keyboard-coverage-H-0-clearance-40",
+          "schema": "rocell.model_motion_proposal.v1",
+          "source": {
+            "frame_id": "synthetic-no-camera-capture",
+            "image_sha256": "eee0d74689680963ae0f251ebc480f24512bbd7cd718402db5c2767a417f0b4a",
+            "model_id": "synthetic-nominal-catalog-generator-v0"
+          },
+          "speed_class": "SLOW",
+          "target_id": "H",
+          "target_mm": {
+            "x": 216.55,
+            "y": 154.0,
+            "z": 21.0
+          }
+        },
+        {
+          "approach_clearance_mm": 40.0,
+          "confidence": 1.0,
+          "coordinate_frame": "board",
+          "device": "keyboard",
+          "interaction": "CONTACT",
+          "proposal_id": "synthetic-keyboard-coverage-I-1-clearance-40",
+          "schema": "rocell.model_motion_proposal.v1",
+          "source": {
+            "frame_id": "synthetic-no-camera-capture",
+            "image_sha256": "eee0d74689680963ae0f251ebc480f24512bbd7cd718402db5c2767a417f0b4a",
+            "model_id": "synthetic-nominal-catalog-generator-v0"
+          },
+          "speed_class": "SLOW",
+          "target_id": "I",
+          "target_mm": {
+            "x": 249.85,
+            "y": 175.0,
+            "z": 21.0
+          }
+        }
+      ],
+      "requested_targets": [
+        "H",
+        "I"
+      ],
+      "sampled_ik_all_converged": true,
+      "schema": "rocell.ai_sequence_simulation_summary.v0",
+      "source_sequence_sha256": "ee7fe0364dda41878e902a996f9de318639a887353ad4aa4c7524de5a0a5553b",
+      "static_context_sha256": "e825dd29cf856cea44d9ce40ca3bfb5fc305d3493cd129d6b6bea9f04c800f7c",
+      "summary_sha256": "36402873df55603413d4b6faf6fa24a092ff255eae7a599a26d22ed0b1f20f55",
+      "target_overlay": {
+        "base_catalog_sha256": "0cc4b46ce6a7b94f32ba1d64f9818c094f6005636c4d56480f5907b773cd5276",
+        "candidate_sha256_in_order": [
+          "6643b7c8a14f776a61549c18e83f9f808eb9b9e4e30ea4ac8ecaaed3eec1cd4e",
+          "2c46aafb5e5adb63892ee70c451133a65ee86286e789a71dbe5bf4d506a64e4b"
+        ],
+        "centers_board_mm": {
+          "H": [
+            216.55,
+            154.0,
+            21.0
+          ],
+          "I": [
+            249.85,
+            175.0,
+            21.0
+          ]
+        },
+        "simulation_only": true
+      },
+      "target_overlay_sha256": "cd295a55a0bdad2d9a43cc823a15735cd6cd50f0eef153d947f4152cdedeca70"
+    },
+    {
+      "assurance_bundle_sha256_in_order": [
+        "0e609a56c0cf768e292ea1c7bc618d29b0d37251ecd89d6e8009904711bf16fd",
+        "abc62baaa972fad8fa4249e88b05ffc778402847c17b221ee4e5268150564d39"
+      ],
+      "cadence_hypothesis": {
+        "cartesian_speed_mm_s": 10.0,
+        "contact_dwell_s": 0.1,
+        "contact_events": [
+          {
+            "action_index": 0,
+            "planned_contact_time_s": 21.365055675746987,
+            "target": "keyboard:H"
+          },
+          {
+            "action_index": 1,
+            "planned_contact_time_s": 31.865055675746984,
+            "target": "keyboard:H"
+          }
+        ],
+        "dynamics_verified": false,
+        "input_events_observed": 0,
+        "planned_duration_s": 53.33011135149398,
+        "vision_or_verify_delay_s": 0.2
+      },
+      "dense_route_all_waypoints_accepted": true,
+      "dense_route_sha256": "69daa423ee2fca5a8464b7cffdd4996331b53f468e5e7454fe56c5b675157d70",
+      "dense_route_status": "DENSE_SAMPLES_PASS_NOT_EXECUTABLE",
+      "evaluated_waypoint_count": 42,
+      "first_failure": null,
+      "geometry_all_checks_pass": true,
+      "geometry_report_sha256": "d365e3814bff2d9c7dce4f8f887a84ef56d9d0e0d67c3cfc8a2d2a7d8f9e2d40",
+      "hardware_commands": [],
+      "hardware_writes": 0,
+      "hover_clearance_mm": 12.0,
+      "layout_overlay": {
+        "board_T_vendor_world_matrix_row_major": [
+          -0.25881904510252063,
+          0.9659258262890683,
+          -0.0,
+          385.0,
+          -0.9659258262890683,
+          -0.25881904510252063,
+          0.0,
+          532.0,
+          -0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "frozen_geometry_modified": false,
+        "installed_position_verified": false,
+        "installed_tool_verified": false,
+        "keyboard_tool_length_mm": 120.0,
+        "motion_authorized": false,
+        "overlay_sha256": "e9558be5bc7924752596d5561d7f502a8b4ab281ad8ffcfbcc1c118c99e21a12",
+        "physical_release_effect": "NONE",
+        "rank": 1,
+        "schema": "rocell.robot_layout_sensitivity_overlay.v1",
+        "source_layout_report_hash": "3b65e3bca509f7c7e1583e5801e189639ab9e40cbf30827b71794752cd7259b4",
+        "source_mission_route_coverage_hash": "c67ac5d2cece745077ac631304b80f51a19c981edd107812ffa716673fbf2cd4",
+        "source_profile": "software/config/virtual_commissioning_profile.json",
+        "source_profile_sha256": "c8f8440e9e4d2bdd8eaf61b5755d8c57235b5b1a0fb2f62c6953f9b6e20338cf",
+        "study_input_id": "reach-944d7463f4c67905"
+      },
+      "limitations": [
+        "Synthetic proposals and unmeasured base/tool/park geometry",
+        "Common clearance is applied to hover and retract; local approach and overtravel use static policy",
+        "SLOW maps only to an illustrative constant 10 mm/s schedule; acceleration and servo dynamics are unmodeled",
+        "Vision and verification steps are placeholders; no camera or input event was observed",
+        "A planned contact event does not mean the dense route reached it; inspect route status",
+        "Sampled tip route checks do not prove continuous full-arm collision clearance"
+      ],
+      "park_xy_board_mm": [
+        290.0,
+        10.0
+      ],
+      "physical_execution_authorized": false,
+      "plan_hash": "7a6eb71dd50226516659dada8bdb789667ef4c0feb6fda83ab55981964a6e093",
+      "proposals": [
+        {
+          "approach_clearance_mm": 12.0,
+          "confidence": 1.0,
+          "coordinate_frame": "board",
+          "device": "keyboard",
+          "interaction": "CONTACT",
+          "proposal_id": "synthetic-keyboard-coverage-H-0-clearance-12",
+          "schema": "rocell.model_motion_proposal.v1",
+          "source": {
+            "frame_id": "synthetic-no-camera-capture",
+            "image_sha256": "eee0d74689680963ae0f251ebc480f24512bbd7cd718402db5c2767a417f0b4a",
+            "model_id": "synthetic-nominal-catalog-generator-v0"
+          },
+          "speed_class": "SLOW",
+          "target_id": "H",
+          "target_mm": {
+            "x": 216.55,
+            "y": 154.0,
+            "z": 21.0
+          }
+        },
+        {
+          "approach_clearance_mm": 12.0,
+          "confidence": 1.0,
+          "coordinate_frame": "board",
+          "device": "keyboard",
+          "interaction": "CONTACT",
+          "proposal_id": "synthetic-keyboard-coverage-H-1-clearance-12",
+          "schema": "rocell.model_motion_proposal.v1",
+          "source": {
+            "frame_id": "synthetic-no-camera-capture",
+            "image_sha256": "eee0d74689680963ae0f251ebc480f24512bbd7cd718402db5c2767a417f0b4a",
+            "model_id": "synthetic-nominal-catalog-generator-v0"
+          },
+          "speed_class": "SLOW",
+          "target_id": "H",
+          "target_mm": {
+            "x": 216.55,
+            "y": 154.0,
+            "z": 21.0
+          }
+        }
+      ],
+      "requested_targets": [
+        "H",
+        "H"
+      ],
+      "sampled_ik_all_converged": true,
+      "schema": "rocell.ai_sequence_simulation_summary.v0",
+      "source_sequence_sha256": "ee62bda2352028ce42d3becf935dfddafe0e8d4503e65ea3d7708be4dba33e1e",
+      "static_context_sha256": "e825dd29cf856cea44d9ce40ca3bfb5fc305d3493cd129d6b6bea9f04c800f7c",
+      "summary_sha256": "aead8d44f22a44e83c9e122477b50cf778c406d79695461497f29a9d17911281",
+      "target_overlay": {
+        "base_catalog_sha256": "0cc4b46ce6a7b94f32ba1d64f9818c094f6005636c4d56480f5907b773cd5276",
+        "candidate_sha256_in_order": [
+          "45208a733b4dd3b8a08a0ee6021461493dd33e8200ac5f695336a12880f2813c",
+          "3c24bdb4fdc9d2e5562199c25ed7366a70f40eee14413d4ea89ec2d77690b185"
+        ],
+        "centers_board_mm": {
+          "H": [
+            216.55,
+            154.0,
+            21.0
+          ]
+        },
+        "simulation_only": true
+      },
+      "target_overlay_sha256": "7ca8bb9010304deb744fb5f49184ab37590fe584b7e52abe60dfb3083698d429"
+    },
+    {
+      "assurance_bundle_sha256_in_order": [
+        "24bd3015b1bb91020568820d584ef3765dd93878986706d8b8dfe4101ff1f9c6",
+        "61eacc90b3165828ab79e30e43b21a523676d52cc1a9f48e9077767b1570d8aa"
+      ],
+      "cadence_hypothesis": {
+        "cartesian_speed_mm_s": 10.0,
+        "contact_dwell_s": 0.1,
+        "contact_events": [
+          {
+            "action_index": 0,
+            "planned_contact_time_s": 21.365055675746987,
+            "target": "keyboard:H"
+          },
+          {
+            "action_index": 1,
+            "planned_contact_time_s": 31.865055675746984,
+            "target": "keyboard:H"
+          }
+        ],
+        "dynamics_verified": false,
+        "input_events_observed": 0,
+        "planned_duration_s": 53.330111351493976,
+        "vision_or_verify_delay_s": 0.2
+      },
+      "dense_route_all_waypoints_accepted": true,
+      "dense_route_sha256": "a2bb05e647c0e18badc4adffb05603f7aa88b86c1bf216786a391f4644f6bf95",
+      "dense_route_status": "DENSE_SAMPLES_PASS_NOT_EXECUTABLE",
+      "evaluated_waypoint_count": 42,
+      "first_failure": null,
+      "geometry_all_checks_pass": true,
+      "geometry_report_sha256": "8c7221d08cb545c7d865b202043edc29662b2fa368c73c5627a2ae22d1efe344",
+      "hardware_commands": [],
+      "hardware_writes": 0,
+      "hover_clearance_mm": 25.0,
+      "layout_overlay": {
+        "board_T_vendor_world_matrix_row_major": [
+          -0.25881904510252063,
+          0.9659258262890683,
+          -0.0,
+          385.0,
+          -0.9659258262890683,
+          -0.25881904510252063,
+          0.0,
+          532.0,
+          -0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "frozen_geometry_modified": false,
+        "installed_position_verified": false,
+        "installed_tool_verified": false,
+        "keyboard_tool_length_mm": 120.0,
+        "motion_authorized": false,
+        "overlay_sha256": "e9558be5bc7924752596d5561d7f502a8b4ab281ad8ffcfbcc1c118c99e21a12",
+        "physical_release_effect": "NONE",
+        "rank": 1,
+        "schema": "rocell.robot_layout_sensitivity_overlay.v1",
+        "source_layout_report_hash": "3b65e3bca509f7c7e1583e5801e189639ab9e40cbf30827b71794752cd7259b4",
+        "source_mission_route_coverage_hash": "c67ac5d2cece745077ac631304b80f51a19c981edd107812ffa716673fbf2cd4",
+        "source_profile": "software/config/virtual_commissioning_profile.json",
+        "source_profile_sha256": "c8f8440e9e4d2bdd8eaf61b5755d8c57235b5b1a0fb2f62c6953f9b6e20338cf",
+        "study_input_id": "reach-944d7463f4c67905"
+      },
+      "limitations": [
+        "Synthetic proposals and unmeasured base/tool/park geometry",
+        "Common clearance is applied to hover and retract; local approach and overtravel use static policy",
+        "SLOW maps only to an illustrative constant 10 mm/s schedule; acceleration and servo dynamics are unmodeled",
+        "Vision and verification steps are placeholders; no camera or input event was observed",
+        "A planned contact event does not mean the dense route reached it; inspect route status",
+        "Sampled tip route checks do not prove continuous full-arm collision clearance"
+      ],
+      "park_xy_board_mm": [
+        290.0,
+        10.0
+      ],
+      "physical_execution_authorized": false,
+      "plan_hash": "a6c1eaa18daeef9da0136b6e398b2afea4dd9d2d65cffec353735546e539c060",
+      "proposals": [
+        {
+          "approach_clearance_mm": 25.0,
+          "confidence": 1.0,
+          "coordinate_frame": "board",
+          "device": "keyboard",
+          "interaction": "CONTACT",
+          "proposal_id": "synthetic-keyboard-coverage-H-0-clearance-25",
+          "schema": "rocell.model_motion_proposal.v1",
+          "source": {
+            "frame_id": "synthetic-no-camera-capture",
+            "image_sha256": "eee0d74689680963ae0f251ebc480f24512bbd7cd718402db5c2767a417f0b4a",
+            "model_id": "synthetic-nominal-catalog-generator-v0"
+          },
+          "speed_class": "SLOW",
+          "target_id": "H",
+          "target_mm": {
+            "x": 216.55,
+            "y": 154.0,
+            "z": 21.0
+          }
+        },
+        {
+          "approach_clearance_mm": 25.0,
+          "confidence": 1.0,
+          "coordinate_frame": "board",
+          "device": "keyboard",
+          "interaction": "CONTACT",
+          "proposal_id": "synthetic-keyboard-coverage-H-1-clearance-25",
+          "schema": "rocell.model_motion_proposal.v1",
+          "source": {
+            "frame_id": "synthetic-no-camera-capture",
+            "image_sha256": "eee0d74689680963ae0f251ebc480f24512bbd7cd718402db5c2767a417f0b4a",
+            "model_id": "synthetic-nominal-catalog-generator-v0"
+          },
+          "speed_class": "SLOW",
+          "target_id": "H",
+          "target_mm": {
+            "x": 216.55,
+            "y": 154.0,
+            "z": 21.0
+          }
+        }
+      ],
+      "requested_targets": [
+        "H",
+        "H"
+      ],
+      "sampled_ik_all_converged": true,
+      "schema": "rocell.ai_sequence_simulation_summary.v0",
+      "source_sequence_sha256": "041e026f92570e6ca6eb5fc2222540c20358fe886de68ca07fde7a68de9413fe",
+      "static_context_sha256": "e825dd29cf856cea44d9ce40ca3bfb5fc305d3493cd129d6b6bea9f04c800f7c",
+      "summary_sha256": "4903b9baa465940d9dd60fbda15835dc6ae71dc19f9db918bf293a25e28a374b",
+      "target_overlay": {
+        "base_catalog_sha256": "0cc4b46ce6a7b94f32ba1d64f9818c094f6005636c4d56480f5907b773cd5276",
+        "candidate_sha256_in_order": [
+          "a73ec6f19c3c8752a4fc3c990f433af3d46e0f548e8ac9211f175291c3457e07",
+          "f25b616d632266eb10a09f0268fbbe42bfca842a1421dbda6212b4216a9d12c8"
+        ],
+        "centers_board_mm": {
+          "H": [
+            216.55,
+            154.0,
+            21.0
+          ]
+        },
+        "simulation_only": true
+      },
+      "target_overlay_sha256": "2ca0619e7aa024dce4fec781fe8c177f66a40f5bd4f911b9361325faa81e1a5d"
+    },
+    {
+      "assurance_bundle_sha256_in_order": [
+        "2b9616302c93a6b564639132eec3deeadc5a3a2674c580c3b79cc0e9ade78734",
+        "0205948843b80add3705f7b6706a21bdd80bb1bdef65a01376565c31c608bd2b"
+      ],
+      "cadence_hypothesis": {
+        "cartesian_speed_mm_s": 10.0,
+        "contact_dwell_s": 0.1,
+        "contact_events": [
+          {
+            "action_index": 0,
+            "planned_contact_time_s": 21.365055675746987,
+            "target": "keyboard:H"
+          },
+          {
+            "action_index": 1,
+            "planned_contact_time_s": 31.865055675746984,
+            "target": "keyboard:H"
+          }
+        ],
+        "dynamics_verified": false,
+        "input_events_observed": 0,
+        "planned_duration_s": 53.330111351493976,
+        "vision_or_verify_delay_s": 0.2
+      },
+      "dense_route_all_waypoints_accepted": true,
+      "dense_route_sha256": "9dd7433e54a6d5ad16b47aa4a02f8245a366594f5a074e3ed68b4565111e4b5d",
+      "dense_route_status": "DENSE_SAMPLES_PASS_NOT_EXECUTABLE",
+      "evaluated_waypoint_count": 42,
+      "first_failure": null,
+      "geometry_all_checks_pass": true,
+      "geometry_report_sha256": "a478ba0635531fcc351d878452af176abd441103d77a2ba4330a6f51f4cfd59f",
+      "hardware_commands": [],
+      "hardware_writes": 0,
+      "hover_clearance_mm": 40.0,
+      "layout_overlay": {
+        "board_T_vendor_world_matrix_row_major": [
+          -0.25881904510252063,
+          0.9659258262890683,
+          -0.0,
+          385.0,
+          -0.9659258262890683,
+          -0.25881904510252063,
+          0.0,
+          532.0,
+          -0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "frozen_geometry_modified": false,
+        "installed_position_verified": false,
+        "installed_tool_verified": false,
+        "keyboard_tool_length_mm": 120.0,
+        "motion_authorized": false,
+        "overlay_sha256": "e9558be5bc7924752596d5561d7f502a8b4ab281ad8ffcfbcc1c118c99e21a12",
+        "physical_release_effect": "NONE",
+        "rank": 1,
+        "schema": "rocell.robot_layout_sensitivity_overlay.v1",
+        "source_layout_report_hash": "3b65e3bca509f7c7e1583e5801e189639ab9e40cbf30827b71794752cd7259b4",
+        "source_mission_route_coverage_hash": "c67ac5d2cece745077ac631304b80f51a19c981edd107812ffa716673fbf2cd4",
+        "source_profile": "software/config/virtual_commissioning_profile.json",
+        "source_profile_sha256": "c8f8440e9e4d2bdd8eaf61b5755d8c57235b5b1a0fb2f62c6953f9b6e20338cf",
+        "study_input_id": "reach-944d7463f4c67905"
+      },
+      "limitations": [
+        "Synthetic proposals and unmeasured base/tool/park geometry",
+        "Common clearance is applied to hover and retract; local approach and overtravel use static policy",
+        "SLOW maps only to an illustrative constant 10 mm/s schedule; acceleration and servo dynamics are unmodeled",
+        "Vision and verification steps are placeholders; no camera or input event was observed",
+        "A planned contact event does not mean the dense route reached it; inspect route status",
+        "Sampled tip route checks do not prove continuous full-arm collision clearance"
+      ],
+      "park_xy_board_mm": [
+        290.0,
+        10.0
+      ],
+      "physical_execution_authorized": false,
+      "plan_hash": "c80aea4db1849bf7095b29c03667c842823b30c588a20ae8cb883a85efadf917",
+      "proposals": [
+        {
+          "approach_clearance_mm": 40.0,
+          "confidence": 1.0,
+          "coordinate_frame": "board",
+          "device": "keyboard",
+          "interaction": "CONTACT",
+          "proposal_id": "synthetic-keyboard-coverage-H-0-clearance-40",
+          "schema": "rocell.model_motion_proposal.v1",
+          "source": {
+            "frame_id": "synthetic-no-camera-capture",
+            "image_sha256": "eee0d74689680963ae0f251ebc480f24512bbd7cd718402db5c2767a417f0b4a",
+            "model_id": "synthetic-nominal-catalog-generator-v0"
+          },
+          "speed_class": "SLOW",
+          "target_id": "H",
+          "target_mm": {
+            "x": 216.55,
+            "y": 154.0,
+            "z": 21.0
+          }
+        },
+        {
+          "approach_clearance_mm": 40.0,
+          "confidence": 1.0,
+          "coordinate_frame": "board",
+          "device": "keyboard",
+          "interaction": "CONTACT",
+          "proposal_id": "synthetic-keyboard-coverage-H-1-clearance-40",
+          "schema": "rocell.model_motion_proposal.v1",
+          "source": {
+            "frame_id": "synthetic-no-camera-capture",
+            "image_sha256": "eee0d74689680963ae0f251ebc480f24512bbd7cd718402db5c2767a417f0b4a",
+            "model_id": "synthetic-nominal-catalog-generator-v0"
+          },
+          "speed_class": "SLOW",
+          "target_id": "H",
+          "target_mm": {
+            "x": 216.55,
+            "y": 154.0,
+            "z": 21.0
+          }
+        }
+      ],
+      "requested_targets": [
+        "H",
+        "H"
+      ],
+      "sampled_ik_all_converged": true,
+      "schema": "rocell.ai_sequence_simulation_summary.v0",
+      "source_sequence_sha256": "fd789360991aad71023d2265d4227a3af808f087d9016a83dca934de59b76b52",
+      "static_context_sha256": "e825dd29cf856cea44d9ce40ca3bfb5fc305d3493cd129d6b6bea9f04c800f7c",
+      "summary_sha256": "7634aebc71a1cbbde908c7593924fb25acf5c17a69e9fc549bcc1dacd23d6528",
+      "target_overlay": {
+        "base_catalog_sha256": "0cc4b46ce6a7b94f32ba1d64f9818c094f6005636c4d56480f5907b773cd5276",
+        "candidate_sha256_in_order": [
+          "6643b7c8a14f776a61549c18e83f9f808eb9b9e4e30ea4ac8ecaaed3eec1cd4e",
+          "7d5d3c684d7fd4b2418fd56073f3f98a79e7ac4dca1e6f02d3760869fc529aff"
+        ],
+        "centers_board_mm": {
+          "H": [
+            216.55,
+            154.0,
+            21.0
+          ]
+        },
+        "simulation_only": true
+      },
+      "target_overlay_sha256": "10e1050ab2e57cc0d06374e90992ee8635313496e23adcc75e7133812c3b493d"
+    },
+    {
+      "assurance_bundle_sha256_in_order": [
+        "31e20411b074bf7474b300c8cfb95f5c21a6992ca33669f0bcf152660d4bf6b4",
+        "076c068a292cfa4986dbdf7eabec3b400ddc454a51166bca31eba813554e530d"
+      ],
+      "cadence_hypothesis": {
+        "cartesian_speed_mm_s": 10.0,
+        "contact_dwell_s": 0.1,
+        "contact_events": [
+          {
+            "action_index": 0,
+            "planned_contact_time_s": 27.380101442509226,
+            "target": "keyboard:A"
+          },
+          {
+            "action_index": 1,
+            "planned_contact_time_s": 40.18498755683245,
+            "target": "keyboard:Z"
+          }
+        ],
+        "dynamics_verified": false,
+        "input_events_observed": 0,
+        "planned_duration_s": 65.60304909367045,
+        "vision_or_verify_delay_s": 0.2
+      },
+      "dense_route_all_waypoints_accepted": true,
+      "dense_route_sha256": "5fe4679ae6cd81ef705fe770e491942964a7bff12e35a7e9a8d5c246a13b12ef",
+      "dense_route_status": "DENSE_SAMPLES_PASS_NOT_EXECUTABLE",
+      "evaluated_waypoint_count": 50,
+      "first_failure": null,
+      "geometry_all_checks_pass": true,
+      "geometry_report_sha256": "79b56c03ed9eeb05696182531743930948b1930a49dba2d31bc994dd52cfe7e9",
+      "hardware_commands": [],
+      "hardware_writes": 0,
+      "hover_clearance_mm": 12.0,
+      "layout_overlay": {
+        "board_T_vendor_world_matrix_row_major": [
+          -0.25881904510252063,
+          0.9659258262890683,
+          -0.0,
+          385.0,
+          -0.9659258262890683,
+          -0.25881904510252063,
+          0.0,
+          532.0,
+          -0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "frozen_geometry_modified": false,
+        "installed_position_verified": false,
+        "installed_tool_verified": false,
+        "keyboard_tool_length_mm": 120.0,
+        "motion_authorized": false,
+        "overlay_sha256": "e9558be5bc7924752596d5561d7f502a8b4ab281ad8ffcfbcc1c118c99e21a12",
+        "physical_release_effect": "NONE",
+        "rank": 1,
+        "schema": "rocell.robot_layout_sensitivity_overlay.v1",
+        "source_layout_report_hash": "3b65e3bca509f7c7e1583e5801e189639ab9e40cbf30827b71794752cd7259b4",
+        "source_mission_route_coverage_hash": "c67ac5d2cece745077ac631304b80f51a19c981edd107812ffa716673fbf2cd4",
+        "source_profile": "software/config/virtual_commissioning_profile.json",
+        "source_profile_sha256": "c8f8440e9e4d2bdd8eaf61b5755d8c57235b5b1a0fb2f62c6953f9b6e20338cf",
+        "study_input_id": "reach-944d7463f4c67905"
+      },
+      "limitations": [
+        "Synthetic proposals and unmeasured base/tool/park geometry",
+        "Common clearance is applied to hover and retract; local approach and overtravel use static policy",
+        "SLOW maps only to an illustrative constant 10 mm/s schedule; acceleration and servo dynamics are unmodeled",
+        "Vision and verification steps are placeholders; no camera or input event was observed",
+        "A planned contact event does not mean the dense route reached it; inspect route status",
+        "Sampled tip route checks do not prove continuous full-arm collision clearance"
+      ],
+      "park_xy_board_mm": [
+        290.0,
+        10.0
+      ],
+      "physical_execution_authorized": false,
+      "plan_hash": "367b851ab2c56f4ea56943283faf89ec27c888caae017893f9f01d8e15f1582f",
+      "proposals": [
+        {
+          "approach_clearance_mm": 12.0,
+          "confidence": 1.0,
+          "coordinate_frame": "board",
+          "device": "keyboard",
+          "interaction": "CONTACT",
+          "proposal_id": "synthetic-keyboard-coverage-A-0-clearance-12",
+          "schema": "rocell.model_motion_proposal.v1",
+          "source": {
+            "frame_id": "synthetic-no-camera-capture",
+            "image_sha256": "eee0d74689680963ae0f251ebc480f24512bbd7cd718402db5c2767a417f0b4a",
+            "model_id": "synthetic-nominal-catalog-generator-v0"
+          },
+          "speed_class": "SLOW",
+          "target_id": "A",
+          "target_mm": {
+            "x": 121.3,
+            "y": 154.0,
+            "z": 21.0
+          }
+        },
+        {
+          "approach_clearance_mm": 12.0,
+          "confidence": 1.0,
+          "coordinate_frame": "board",
+          "device": "keyboard",
+          "interaction": "CONTACT",
+          "proposal_id": "synthetic-keyboard-coverage-Z-1-clearance-12",
+          "schema": "rocell.model_motion_proposal.v1",
+          "source": {
+            "frame_id": "synthetic-no-camera-capture",
+            "image_sha256": "eee0d74689680963ae0f251ebc480f24512bbd7cd718402db5c2767a417f0b4a",
+            "model_id": "synthetic-nominal-catalog-generator-v0"
+          },
+          "speed_class": "SLOW",
+          "target_id": "Z",
+          "target_mm": {
+            "x": 130.8,
+            "y": 133.0,
+            "z": 21.0
+          }
+        }
+      ],
+      "requested_targets": [
+        "A",
+        "Z"
+      ],
+      "sampled_ik_all_converged": true,
+      "schema": "rocell.ai_sequence_simulation_summary.v0",
+      "source_sequence_sha256": "f1aba1adec47c98e73ec89de2586757429dfefc070d2cc139b643fbea559c8f5",
+      "static_context_sha256": "e825dd29cf856cea44d9ce40ca3bfb5fc305d3493cd129d6b6bea9f04c800f7c",
+      "summary_sha256": "d16b85ae2365a4a8f830efbe97cce969c6e6351878dbdd8e352907428b5e5ffb",
+      "target_overlay": {
+        "base_catalog_sha256": "0cc4b46ce6a7b94f32ba1d64f9818c094f6005636c4d56480f5907b773cd5276",
+        "candidate_sha256_in_order": [
+          "0a0b2292bf91688d2219108f7e969ec21bdd6b34139a9795e775d44581945bc6",
+          "52ea78fc80245e480f35468c4872a0fba0669d54f392076dc071a9e9f534df23"
+        ],
+        "centers_board_mm": {
+          "A": [
+            121.3,
+            154.0,
+            21.0
+          ],
+          "Z": [
+            130.8,
+            133.0,
+            21.0
+          ]
+        },
+        "simulation_only": true
+      },
+      "target_overlay_sha256": "b46b8621e1afa4f58287cfb2d5b0ffa64fdc935f712390fe0e74bf2fe69bd99e"
+    },
+    {
+      "assurance_bundle_sha256_in_order": [
+        "6a1f49c0a5bb657f6d21a697d2dafc61b843f45967e59fb9e57e103a555ffcf3",
+        "a20e0214c71f4b2969da05154e951d35cafce34c6e45a24fffe90b53a520937d"
+      ],
+      "cadence_hypothesis": {
+        "cartesian_speed_mm_s": 10.0,
+        "contact_dwell_s": 0.1,
+        "contact_events": [
+          {
+            "action_index": 0,
+            "planned_contact_time_s": 27.380101442509226,
+            "target": "keyboard:A"
+          },
+          {
+            "action_index": 1,
+            "planned_contact_time_s": 40.18498755683245,
+            "target": "keyboard:Z"
+          }
+        ],
+        "dynamics_verified": false,
+        "input_events_observed": 0,
+        "planned_duration_s": 65.60304909367045,
+        "vision_or_verify_delay_s": 0.2
+      },
+      "dense_route_all_waypoints_accepted": true,
+      "dense_route_sha256": "327da7494fb88e9d65b5556b16d7035bdd4580a756f1e363056035bc17677590",
+      "dense_route_status": "DENSE_SAMPLES_PASS_NOT_EXECUTABLE",
+      "evaluated_waypoint_count": 50,
+      "first_failure": null,
+      "geometry_all_checks_pass": true,
+      "geometry_report_sha256": "5e3b6ca4ef96b58378595d8d0ae5a9c15355b800951b33b788ceac482922659b",
+      "hardware_commands": [],
+      "hardware_writes": 0,
+      "hover_clearance_mm": 25.0,
+      "layout_overlay": {
+        "board_T_vendor_world_matrix_row_major": [
+          -0.25881904510252063,
+          0.9659258262890683,
+          -0.0,
+          385.0,
+          -0.9659258262890683,
+          -0.25881904510252063,
+          0.0,
+          532.0,
+          -0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "frozen_geometry_modified": false,
+        "installed_position_verified": false,
+        "installed_tool_verified": false,
+        "keyboard_tool_length_mm": 120.0,
+        "motion_authorized": false,
+        "overlay_sha256": "e9558be5bc7924752596d5561d7f502a8b4ab281ad8ffcfbcc1c118c99e21a12",
+        "physical_release_effect": "NONE",
+        "rank": 1,
+        "schema": "rocell.robot_layout_sensitivity_overlay.v1",
+        "source_layout_report_hash": "3b65e3bca509f7c7e1583e5801e189639ab9e40cbf30827b71794752cd7259b4",
+        "source_mission_route_coverage_hash": "c67ac5d2cece745077ac631304b80f51a19c981edd107812ffa716673fbf2cd4",
+        "source_profile": "software/config/virtual_commissioning_profile.json",
+        "source_profile_sha256": "c8f8440e9e4d2bdd8eaf61b5755d8c57235b5b1a0fb2f62c6953f9b6e20338cf",
+        "study_input_id": "reach-944d7463f4c67905"
+      },
+      "limitations": [
+        "Synthetic proposals and unmeasured base/tool/park geometry",
+        "Common clearance is applied to hover and retract; local approach and overtravel use static policy",
+        "SLOW maps only to an illustrative constant 10 mm/s schedule; acceleration and servo dynamics are unmodeled",
+        "Vision and verification steps are placeholders; no camera or input event was observed",
+        "A planned contact event does not mean the dense route reached it; inspect route status",
+        "Sampled tip route checks do not prove continuous full-arm collision clearance"
+      ],
+      "park_xy_board_mm": [
+        290.0,
+        10.0
+      ],
+      "physical_execution_authorized": false,
+      "plan_hash": "5ebfe7b512047d91fea20587314233adc048d4f41ba2d9c4c32b4319553e3b65",
+      "proposals": [
+        {
+          "approach_clearance_mm": 25.0,
+          "confidence": 1.0,
+          "coordinate_frame": "board",
+          "device": "keyboard",
+          "interaction": "CONTACT",
+          "proposal_id": "synthetic-keyboard-coverage-A-0-clearance-25",
+          "schema": "rocell.model_motion_proposal.v1",
+          "source": {
+            "frame_id": "synthetic-no-camera-capture",
+            "image_sha256": "eee0d74689680963ae0f251ebc480f24512bbd7cd718402db5c2767a417f0b4a",
+            "model_id": "synthetic-nominal-catalog-generator-v0"
+          },
+          "speed_class": "SLOW",
+          "target_id": "A",
+          "target_mm": {
+            "x": 121.3,
+            "y": 154.0,
+            "z": 21.0
+          }
+        },
+        {
+          "approach_clearance_mm": 25.0,
+          "confidence": 1.0,
+          "coordinate_frame": "board",
+          "device": "keyboard",
+          "interaction": "CONTACT",
+          "proposal_id": "synthetic-keyboard-coverage-Z-1-clearance-25",
+          "schema": "rocell.model_motion_proposal.v1",
+          "source": {
+            "frame_id": "synthetic-no-camera-capture",
+            "image_sha256": "eee0d74689680963ae0f251ebc480f24512bbd7cd718402db5c2767a417f0b4a",
+            "model_id": "synthetic-nominal-catalog-generator-v0"
+          },
+          "speed_class": "SLOW",
+          "target_id": "Z",
+          "target_mm": {
+            "x": 130.8,
+            "y": 133.0,
+            "z": 21.0
+          }
+        }
+      ],
+      "requested_targets": [
+        "A",
+        "Z"
+      ],
+      "sampled_ik_all_converged": true,
+      "schema": "rocell.ai_sequence_simulation_summary.v0",
+      "source_sequence_sha256": "8b0a1209c111098ae4feb47fcc491039d7be335fae5626bccf3c30315f86e49f",
+      "static_context_sha256": "e825dd29cf856cea44d9ce40ca3bfb5fc305d3493cd129d6b6bea9f04c800f7c",
+      "summary_sha256": "43507eb7e437eeef5850998749a1c1b94dbf34ff1ff9011d76b009b89a465481",
+      "target_overlay": {
+        "base_catalog_sha256": "0cc4b46ce6a7b94f32ba1d64f9818c094f6005636c4d56480f5907b773cd5276",
+        "candidate_sha256_in_order": [
+          "cf98fc949b0a5561d163991e7e3dbd2a75d7171643ba4c4d80e5244e1ecc9e8d",
+          "845082d554435702ac472ae39d1217fd8919713f5a272bdf5bb017b42c500763"
+        ],
+        "centers_board_mm": {
+          "A": [
+            121.3,
+            154.0,
+            21.0
+          ],
+          "Z": [
+            130.8,
+            133.0,
+            21.0
+          ]
+        },
+        "simulation_only": true
+      },
+      "target_overlay_sha256": "600f60b4583b626b29a88a5327ec3b548e853d3361813bbfb8341f629fcb8df5"
+    },
+    {
+      "assurance_bundle_sha256_in_order": [
+        "d7f3fa00cdd13db2de744f55d7a2e069decba1b413ee17ca9f2746dfcb0c7445",
+        "b66ab038f706872a0db901418d2126359d6c1ba94e27f8193b6819aa3f48e7fe"
+      ],
+      "cadence_hypothesis": {
+        "cartesian_speed_mm_s": 10.0,
+        "contact_dwell_s": 0.1,
+        "contact_events": [
+          {
+            "action_index": 0,
+            "planned_contact_time_s": 27.380101442509226,
+            "target": "keyboard:A"
+          },
+          {
+            "action_index": 1,
+            "planned_contact_time_s": 40.18498755683245,
+            "target": "keyboard:Z"
+          }
+        ],
+        "dynamics_verified": false,
+        "input_events_observed": 0,
+        "planned_duration_s": 65.60304909367045,
+        "vision_or_verify_delay_s": 0.2
+      },
+      "dense_route_all_waypoints_accepted": true,
+      "dense_route_sha256": "4f4f29a573187a56c43adcc885e7d51887155b1017ed2582c3500373e988e435",
+      "dense_route_status": "DENSE_SAMPLES_PASS_NOT_EXECUTABLE",
+      "evaluated_waypoint_count": 50,
+      "first_failure": null,
+      "geometry_all_checks_pass": true,
+      "geometry_report_sha256": "a3cd1852fec625f20e9451c05411f391797735403424bfe2b6f116dca45144e3",
+      "hardware_commands": [],
+      "hardware_writes": 0,
+      "hover_clearance_mm": 40.0,
+      "layout_overlay": {
+        "board_T_vendor_world_matrix_row_major": [
+          -0.25881904510252063,
+          0.9659258262890683,
+          -0.0,
+          385.0,
+          -0.9659258262890683,
+          -0.25881904510252063,
+          0.0,
+          532.0,
+          -0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "frozen_geometry_modified": false,
+        "installed_position_verified": false,
+        "installed_tool_verified": false,
+        "keyboard_tool_length_mm": 120.0,
+        "motion_authorized": false,
+        "overlay_sha256": "e9558be5bc7924752596d5561d7f502a8b4ab281ad8ffcfbcc1c118c99e21a12",
+        "physical_release_effect": "NONE",
+        "rank": 1,
+        "schema": "rocell.robot_layout_sensitivity_overlay.v1",
+        "source_layout_report_hash": "3b65e3bca509f7c7e1583e5801e189639ab9e40cbf30827b71794752cd7259b4",
+        "source_mission_route_coverage_hash": "c67ac5d2cece745077ac631304b80f51a19c981edd107812ffa716673fbf2cd4",
+        "source_profile": "software/config/virtual_commissioning_profile.json",
+        "source_profile_sha256": "c8f8440e9e4d2bdd8eaf61b5755d8c57235b5b1a0fb2f62c6953f9b6e20338cf",
+        "study_input_id": "reach-944d7463f4c67905"
+      },
+      "limitations": [
+        "Synthetic proposals and unmeasured base/tool/park geometry",
+        "Common clearance is applied to hover and retract; local approach and overtravel use static policy",
+        "SLOW maps only to an illustrative constant 10 mm/s schedule; acceleration and servo dynamics are unmodeled",
+        "Vision and verification steps are placeholders; no camera or input event was observed",
+        "A planned contact event does not mean the dense route reached it; inspect route status",
+        "Sampled tip route checks do not prove continuous full-arm collision clearance"
+      ],
+      "park_xy_board_mm": [
+        290.0,
+        10.0
+      ],
+      "physical_execution_authorized": false,
+      "plan_hash": "7c96b11acca7b4f303698de4541e74a1c21c198abca6d9b96da556cbd5b03463",
+      "proposals": [
+        {
+          "approach_clearance_mm": 40.0,
+          "confidence": 1.0,
+          "coordinate_frame": "board",
+          "device": "keyboard",
+          "interaction": "CONTACT",
+          "proposal_id": "synthetic-keyboard-coverage-A-0-clearance-40",
+          "schema": "rocell.model_motion_proposal.v1",
+          "source": {
+            "frame_id": "synthetic-no-camera-capture",
+            "image_sha256": "eee0d74689680963ae0f251ebc480f24512bbd7cd718402db5c2767a417f0b4a",
+            "model_id": "synthetic-nominal-catalog-generator-v0"
+          },
+          "speed_class": "SLOW",
+          "target_id": "A",
+          "target_mm": {
+            "x": 121.3,
+            "y": 154.0,
+            "z": 21.0
+          }
+        },
+        {
+          "approach_clearance_mm": 40.0,
+          "confidence": 1.0,
+          "coordinate_frame": "board",
+          "device": "keyboard",
+          "interaction": "CONTACT",
+          "proposal_id": "synthetic-keyboard-coverage-Z-1-clearance-40",
+          "schema": "rocell.model_motion_proposal.v1",
+          "source": {
+            "frame_id": "synthetic-no-camera-capture",
+            "image_sha256": "eee0d74689680963ae0f251ebc480f24512bbd7cd718402db5c2767a417f0b4a",
+            "model_id": "synthetic-nominal-catalog-generator-v0"
+          },
+          "speed_class": "SLOW",
+          "target_id": "Z",
+          "target_mm": {
+            "x": 130.8,
+            "y": 133.0,
+            "z": 21.0
+          }
+        }
+      ],
+      "requested_targets": [
+        "A",
+        "Z"
+      ],
+      "sampled_ik_all_converged": true,
+      "schema": "rocell.ai_sequence_simulation_summary.v0",
+      "source_sequence_sha256": "386d3203295c624f0304e8387a6edd41edc475ea54593a5cbd28103cac40a2cf",
+      "static_context_sha256": "e825dd29cf856cea44d9ce40ca3bfb5fc305d3493cd129d6b6bea9f04c800f7c",
+      "summary_sha256": "b3623aed488c15fb1cca74185eca2a71a7e9e95d145ccb33907012dae2a6ec95",
+      "target_overlay": {
+        "base_catalog_sha256": "0cc4b46ce6a7b94f32ba1d64f9818c094f6005636c4d56480f5907b773cd5276",
+        "candidate_sha256_in_order": [
+          "426cdf29a2880b8b12ad028f68d72e9cc01bf762b873a25867c9c692093dd907",
+          "6b202d1ec3ce6ef1d10bdfbb088f997b0d76adf1eb3d15a8aff35ffb81539de0"
+        ],
+        "centers_board_mm": {
+          "A": [
+            121.3,
+            154.0,
+            21.0
+          ],
+          "Z": [
+            130.8,
+            133.0,
+            21.0
+          ]
+        },
+        "simulation_only": true
+      },
+      "target_overlay_sha256": "e99f525cc8f11ddfd4cb0f18ff5ad56d12f1258e18bc1de9db43b319d4e4edf3"
+    },
+    {
+      "assurance_bundle_sha256_in_order": [
+        "a220f3ea8b198c523ab006431b331c395501a87b279d12ddf8a409c70913461a",
+        "a216553a1d83b0dc9cb3c3e6fb66ce1a03d8f79e2cf07712beb4d22d35f9bfe2",
+        "951d225f099d8e8079b7bbe5090ddff8221ae3409fef2898e4e5aa3195e97aa0"
+      ],
+      "cadence_hypothesis": {
+        "cartesian_speed_mm_s": 10.0,
+        "contact_dwell_s": 0.1,
+        "contact_events": [
+          {
+            "action_index": 0,
+            "planned_contact_time_s": 31.29310253687744,
+            "target": "keyboard:1"
+          },
+          {
+            "action_index": 1,
+            "planned_contact_time_s": 56.19622719786682,
+            "target": "keyboard:SPACE"
+          },
+          {
+            "action_index": 2,
+            "planned_contact_time_s": 78.61102891673737,
+            "target": "keyboard:ENTER"
+          }
+        ],
+        "dynamics_verified": false,
+        "input_events_observed": 0,
+        "planned_duration_s": 99.01276722727633,
+        "vision_or_verify_delay_s": 0.2
+      },
+      "dense_route_all_waypoints_accepted": true,
+      "dense_route_sha256": "6bb8bb319b03cdd49a384fb329146bf2ad3fa6e072f9a4cc29a7f789ca1a0ae2",
+      "dense_route_status": "DENSE_SAMPLES_PASS_NOT_EXECUTABLE",
+      "evaluated_waypoint_count": 75,
+      "first_failure": null,
+      "geometry_all_checks_pass": true,
+      "geometry_report_sha256": "e94e3414f1f234e558e751a58a439c117d2767faf8211b47e84cc8a5734f94f9",
+      "hardware_commands": [],
+      "hardware_writes": 0,
+      "hover_clearance_mm": 12.0,
+      "layout_overlay": {
+        "board_T_vendor_world_matrix_row_major": [
+          -0.25881904510252063,
+          0.9659258262890683,
+          -0.0,
+          385.0,
+          -0.9659258262890683,
+          -0.25881904510252063,
+          0.0,
+          532.0,
+          -0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "frozen_geometry_modified": false,
+        "installed_position_verified": false,
+        "installed_tool_verified": false,
+        "keyboard_tool_length_mm": 120.0,
+        "motion_authorized": false,
+        "overlay_sha256": "e9558be5bc7924752596d5561d7f502a8b4ab281ad8ffcfbcc1c118c99e21a12",
+        "physical_release_effect": "NONE",
+        "rank": 1,
+        "schema": "rocell.robot_layout_sensitivity_overlay.v1",
+        "source_layout_report_hash": "3b65e3bca509f7c7e1583e5801e189639ab9e40cbf30827b71794752cd7259b4",
+        "source_mission_route_coverage_hash": "c67ac5d2cece745077ac631304b80f51a19c981edd107812ffa716673fbf2cd4",
+        "source_profile": "software/config/virtual_commissioning_profile.json",
+        "source_profile_sha256": "c8f8440e9e4d2bdd8eaf61b5755d8c57235b5b1a0fb2f62c6953f9b6e20338cf",
+        "study_input_id": "reach-944d7463f4c67905"
+      },
+      "limitations": [
+        "Synthetic proposals and unmeasured base/tool/park geometry",
+        "Common clearance is applied to hover and retract; local approach and overtravel use static policy",
+        "SLOW maps only to an illustrative constant 10 mm/s schedule; acceleration and servo dynamics are unmodeled",
+        "Vision and verification steps are placeholders; no camera or input event was observed",
+        "A planned contact event does not mean the dense route reached it; inspect route status",
+        "Sampled tip route checks do not prove continuous full-arm collision clearance"
+      ],
+      "park_xy_board_mm": [
+        290.0,
+        10.0
+      ],
+      "physical_execution_authorized": false,
+      "plan_hash": "d6e519da7194b00ed6c5858cc7f4286e215fac198e14d6fea8b9545630a0efc8",
+      "proposals": [
+        {
+          "approach_clearance_mm": 12.0,
+          "confidence": 1.0,
+          "coordinate_frame": "board",
+          "device": "keyboard",
+          "interaction": "CONTACT",
+          "proposal_id": "synthetic-keyboard-coverage-1-0-clearance-12",
+          "schema": "rocell.model_motion_proposal.v1",
+          "source": {
+            "frame_id": "synthetic-no-camera-capture",
+            "image_sha256": "eee0d74689680963ae0f251ebc480f24512bbd7cd718402db5c2767a417f0b4a",
+            "model_id": "synthetic-nominal-catalog-generator-v0"
+          },
+          "speed_class": "SLOW",
+          "target_id": "1",
+          "target_mm": {
+            "x": 107.0,
+            "y": 196.0,
+            "z": 21.0
+          }
+        },
+        {
+          "approach_clearance_mm": 12.0,
+          "confidence": 1.0,
+          "coordinate_frame": "board",
+          "device": "keyboard",
+          "interaction": "CONTACT",
+          "proposal_id": "synthetic-keyboard-coverage-SPACE-1-clearance-12",
+          "schema": "rocell.model_motion_proposal.v1",
+          "source": {
+            "frame_id": "synthetic-no-camera-capture",
+            "image_sha256": "eee0d74689680963ae0f251ebc480f24512bbd7cd718402db5c2767a417f0b4a",
+            "model_id": "synthetic-nominal-catalog-generator-v0"
+          },
+          "speed_class": "SLOW",
+          "target_id": "SPACE",
+          "target_mm": {
+            "x": 224.0,
+            "y": 112.0,
+            "z": 21.0
+          }
+        },
+        {
+          "approach_clearance_mm": 12.0,
+          "confidence": 1.0,
+          "coordinate_frame": "board",
+          "device": "keyboard",
+          "interaction": "CONTACT",
+          "proposal_id": "synthetic-keyboard-coverage-ENTER-2-clearance-12",
+          "schema": "rocell.model_motion_proposal.v1",
+          "source": {
+            "frame_id": "synthetic-no-camera-capture",
+            "image_sha256": "eee0d74689680963ae0f251ebc480f24512bbd7cd718402db5c2767a417f0b4a",
+            "model_id": "synthetic-nominal-catalog-generator-v0"
+          },
+          "speed_class": "SLOW",
+          "target_id": "ENTER",
+          "target_mm": {
+            "x": 335.5,
+            "y": 154.0,
+            "z": 21.0
+          }
+        }
+      ],
+      "requested_targets": [
+        "1",
+        "SPACE",
+        "ENTER"
+      ],
+      "sampled_ik_all_converged": true,
+      "schema": "rocell.ai_sequence_simulation_summary.v0",
+      "source_sequence_sha256": "977bf50e62ce416bbe895bcc1cd768563aca6d26d25f4c0f3f2359ac478444fc",
+      "static_context_sha256": "e825dd29cf856cea44d9ce40ca3bfb5fc305d3493cd129d6b6bea9f04c800f7c",
+      "summary_sha256": "b34e87708d5fb17ba9f2ed9ff7fa037d1cc200a5189d2b01cd70f2f759908f8b",
+      "target_overlay": {
+        "base_catalog_sha256": "0cc4b46ce6a7b94f32ba1d64f9818c094f6005636c4d56480f5907b773cd5276",
+        "candidate_sha256_in_order": [
+          "5ba9b5a2868aeb06d26a76bb3e26ec627f7b943def42337438537c8637c4ef00",
+          "145a9170b2f338f7a00699c22c5fb048826f355d12f98072a51c5c5f19f8ded8",
+          "98ff7878ed0aa9f183649bc3572ef96354a4f875c7fab01092af7eaeef15fc50"
+        ],
+        "centers_board_mm": {
+          "1": [
+            107.0,
+            196.0,
+            21.0
+          ],
+          "ENTER": [
+            335.5,
+            154.0,
+            21.0
+          ],
+          "SPACE": [
+            224.0,
+            112.0,
+            21.0
+          ]
+        },
+        "simulation_only": true
+      },
+      "target_overlay_sha256": "b644c193cfa86fc32c7b8aa8ab9dfe05569bc5ae2059fa7e7918a29511a0bf71"
+    },
+    {
+      "assurance_bundle_sha256_in_order": [
+        "2e4716cfc55e28d8d0ef86526aa15f848e843403f1e11870577d9bce3c008827",
+        "6e7ff30d85e1a24425b4718506ca5838d19c5edb2b994600bb4391bdca842aa2",
+        "1a9bffb7578ecdc45b9fb7cceef9695ccb77163035c1e00b36814e5fa82fc45a"
+      ],
+      "cadence_hypothesis": {
+        "cartesian_speed_mm_s": 10.0,
+        "contact_dwell_s": 0.1,
+        "contact_events": [
+          {
+            "action_index": 0,
+            "planned_contact_time_s": 31.29310253687744,
+            "target": "keyboard:1"
+          },
+          {
+            "action_index": 1,
+            "planned_contact_time_s": 56.19622719786682,
+            "target": "keyboard:SPACE"
+          },
+          {
+            "action_index": 2,
+            "planned_contact_time_s": 78.61102891673737,
+            "target": "keyboard:ENTER"
+          }
+        ],
+        "dynamics_verified": false,
+        "input_events_observed": 0,
+        "planned_duration_s": 99.01276722727633,
+        "vision_or_verify_delay_s": 0.2
+      },
+      "dense_route_all_waypoints_accepted": true,
+      "dense_route_sha256": "709138d1cba690fb237bc4ba1dc7ca06e3cad1c9515165b10404b7d9daa93ad1",
+      "dense_route_status": "DENSE_SAMPLES_PASS_NOT_EXECUTABLE",
+      "evaluated_waypoint_count": 75,
+      "first_failure": null,
+      "geometry_all_checks_pass": true,
+      "geometry_report_sha256": "7c47fe1d301fa4292daa9941a4cc1e2468afc86b08d4a0980b0eab71ffb742f3",
+      "hardware_commands": [],
+      "hardware_writes": 0,
+      "hover_clearance_mm": 25.0,
+      "layout_overlay": {
+        "board_T_vendor_world_matrix_row_major": [
+          -0.25881904510252063,
+          0.9659258262890683,
+          -0.0,
+          385.0,
+          -0.9659258262890683,
+          -0.25881904510252063,
+          0.0,
+          532.0,
+          -0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "frozen_geometry_modified": false,
+        "installed_position_verified": false,
+        "installed_tool_verified": false,
+        "keyboard_tool_length_mm": 120.0,
+        "motion_authorized": false,
+        "overlay_sha256": "e9558be5bc7924752596d5561d7f502a8b4ab281ad8ffcfbcc1c118c99e21a12",
+        "physical_release_effect": "NONE",
+        "rank": 1,
+        "schema": "rocell.robot_layout_sensitivity_overlay.v1",
+        "source_layout_report_hash": "3b65e3bca509f7c7e1583e5801e189639ab9e40cbf30827b71794752cd7259b4",
+        "source_mission_route_coverage_hash": "c67ac5d2cece745077ac631304b80f51a19c981edd107812ffa716673fbf2cd4",
+        "source_profile": "software/config/virtual_commissioning_profile.json",
+        "source_profile_sha256": "c8f8440e9e4d2bdd8eaf61b5755d8c57235b5b1a0fb2f62c6953f9b6e20338cf",
+        "study_input_id": "reach-944d7463f4c67905"
+      },
+      "limitations": [
+        "Synthetic proposals and unmeasured base/tool/park geometry",
+        "Common clearance is applied to hover and retract; local approach and overtravel use static policy",
+        "SLOW maps only to an illustrative constant 10 mm/s schedule; acceleration and servo dynamics are unmodeled",
+        "Vision and verification steps are placeholders; no camera or input event was observed",
+        "A planned contact event does not mean the dense route reached it; inspect route status",
+        "Sampled tip route checks do not prove continuous full-arm collision clearance"
+      ],
+      "park_xy_board_mm": [
+        290.0,
+        10.0
+      ],
+      "physical_execution_authorized": false,
+      "plan_hash": "41102a7f000d4f580691edc0e4777989e50058fe0173016aec14bed6d31d5d0d",
+      "proposals": [
+        {
+          "approach_clearance_mm": 25.0,
+          "confidence": 1.0,
+          "coordinate_frame": "board",
+          "device": "keyboard",
+          "interaction": "CONTACT",
+          "proposal_id": "synthetic-keyboard-coverage-1-0-clearance-25",
+          "schema": "rocell.model_motion_proposal.v1",
+          "source": {
+            "frame_id": "synthetic-no-camera-capture",
+            "image_sha256": "eee0d74689680963ae0f251ebc480f24512bbd7cd718402db5c2767a417f0b4a",
+            "model_id": "synthetic-nominal-catalog-generator-v0"
+          },
+          "speed_class": "SLOW",
+          "target_id": "1",
+          "target_mm": {
+            "x": 107.0,
+            "y": 196.0,
+            "z": 21.0
+          }
+        },
+        {
+          "approach_clearance_mm": 25.0,
+          "confidence": 1.0,
+          "coordinate_frame": "board",
+          "device": "keyboard",
+          "interaction": "CONTACT",
+          "proposal_id": "synthetic-keyboard-coverage-SPACE-1-clearance-25",
+          "schema": "rocell.model_motion_proposal.v1",
+          "source": {
+            "frame_id": "synthetic-no-camera-capture",
+            "image_sha256": "eee0d74689680963ae0f251ebc480f24512bbd7cd718402db5c2767a417f0b4a",
+            "model_id": "synthetic-nominal-catalog-generator-v0"
+          },
+          "speed_class": "SLOW",
+          "target_id": "SPACE",
+          "target_mm": {
+            "x": 224.0,
+            "y": 112.0,
+            "z": 21.0
+          }
+        },
+        {
+          "approach_clearance_mm": 25.0,
+          "confidence": 1.0,
+          "coordinate_frame": "board",
+          "device": "keyboard",
+          "interaction": "CONTACT",
+          "proposal_id": "synthetic-keyboard-coverage-ENTER-2-clearance-25",
+          "schema": "rocell.model_motion_proposal.v1",
+          "source": {
+            "frame_id": "synthetic-no-camera-capture",
+            "image_sha256": "eee0d74689680963ae0f251ebc480f24512bbd7cd718402db5c2767a417f0b4a",
+            "model_id": "synthetic-nominal-catalog-generator-v0"
+          },
+          "speed_class": "SLOW",
+          "target_id": "ENTER",
+          "target_mm": {
+            "x": 335.5,
+            "y": 154.0,
+            "z": 21.0
+          }
+        }
+      ],
+      "requested_targets": [
+        "1",
+        "SPACE",
+        "ENTER"
+      ],
+      "sampled_ik_all_converged": true,
+      "schema": "rocell.ai_sequence_simulation_summary.v0",
+      "source_sequence_sha256": "3989214cbdf1c2f415fe153f8ca0ae47c22fb4cb5604e6d144b35f0d41774249",
+      "static_context_sha256": "e825dd29cf856cea44d9ce40ca3bfb5fc305d3493cd129d6b6bea9f04c800f7c",
+      "summary_sha256": "6624e6c4f4eb4c5ec4ce3d9000d333f3aa8b995072f3b14120840c960092938e",
+      "target_overlay": {
+        "base_catalog_sha256": "0cc4b46ce6a7b94f32ba1d64f9818c094f6005636c4d56480f5907b773cd5276",
+        "candidate_sha256_in_order": [
+          "2e5922d1ec2b1e0d9508a6e6ae77bf50d8d37355d04def14e08d937ee63eabc1",
+          "240c933b162c524504c87ef188f1174e1f0b6396b2e0e40813598559c3b4928a",
+          "282915172a74438451025f400f0703c974f2cb94d16fefc5df7321c2f94330e6"
+        ],
+        "centers_board_mm": {
+          "1": [
+            107.0,
+            196.0,
+            21.0
+          ],
+          "ENTER": [
+            335.5,
+            154.0,
+            21.0
+          ],
+          "SPACE": [
+            224.0,
+            112.0,
+            21.0
+          ]
+        },
+        "simulation_only": true
+      },
+      "target_overlay_sha256": "37d0558584cf2cfd1c2d02e0a68e6c0364d7ed97ec920197c234151ff6e65a35"
+    },
+    {
+      "assurance_bundle_sha256_in_order": [
+        "a281d266573053ba7f441adebed7411ad8d74c8c219c97166305872f5e400bdc",
+        "cef6f51e40331a4b6881f2f31c955007ebaba10f567a0929a892b7700f4299f3",
+        "8a6377c369d557d11e679713ccecdfa2defaf36b6004bfb9a7ba3e15b3fb9225"
+      ],
+      "cadence_hypothesis": {
+        "cartesian_speed_mm_s": 10.0,
+        "contact_dwell_s": 0.1,
+        "contact_events": [
+          {
+            "action_index": 0,
+            "planned_contact_time_s": 31.29310253687744,
+            "target": "keyboard:1"
+          },
+          {
+            "action_index": 1,
+            "planned_contact_time_s": 56.19622719786682,
+            "target": "keyboard:SPACE"
+          },
+          {
+            "action_index": 2,
+            "planned_contact_time_s": 78.61102891673737,
+            "target": "keyboard:ENTER"
+          }
+        ],
+        "dynamics_verified": false,
+        "input_events_observed": 0,
+        "planned_duration_s": 99.01276722727633,
+        "vision_or_verify_delay_s": 0.2
+      },
+      "dense_route_all_waypoints_accepted": true,
+      "dense_route_sha256": "3e1e7b2fa10947b6a2bbde9d6336e727f75b6706988fef4abd9130bde20b775f",
+      "dense_route_status": "DENSE_SAMPLES_PASS_NOT_EXECUTABLE",
+      "evaluated_waypoint_count": 75,
+      "first_failure": null,
+      "geometry_all_checks_pass": true,
+      "geometry_report_sha256": "5f4da3758879f83cda1daf4a2a06b92a337e9a10be8e4b3ff011d4d1cdaf0848",
+      "hardware_commands": [],
+      "hardware_writes": 0,
+      "hover_clearance_mm": 40.0,
+      "layout_overlay": {
+        "board_T_vendor_world_matrix_row_major": [
+          -0.25881904510252063,
+          0.9659258262890683,
+          -0.0,
+          385.0,
+          -0.9659258262890683,
+          -0.25881904510252063,
+          0.0,
+          532.0,
+          -0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "frozen_geometry_modified": false,
+        "installed_position_verified": false,
+        "installed_tool_verified": false,
+        "keyboard_tool_length_mm": 120.0,
+        "motion_authorized": false,
+        "overlay_sha256": "e9558be5bc7924752596d5561d7f502a8b4ab281ad8ffcfbcc1c118c99e21a12",
+        "physical_release_effect": "NONE",
+        "rank": 1,
+        "schema": "rocell.robot_layout_sensitivity_overlay.v1",
+        "source_layout_report_hash": "3b65e3bca509f7c7e1583e5801e189639ab9e40cbf30827b71794752cd7259b4",
+        "source_mission_route_coverage_hash": "c67ac5d2cece745077ac631304b80f51a19c981edd107812ffa716673fbf2cd4",
+        "source_profile": "software/config/virtual_commissioning_profile.json",
+        "source_profile_sha256": "c8f8440e9e4d2bdd8eaf61b5755d8c57235b5b1a0fb2f62c6953f9b6e20338cf",
+        "study_input_id": "reach-944d7463f4c67905"
+      },
+      "limitations": [
+        "Synthetic proposals and unmeasured base/tool/park geometry",
+        "Common clearance is applied to hover and retract; local approach and overtravel use static policy",
+        "SLOW maps only to an illustrative constant 10 mm/s schedule; acceleration and servo dynamics are unmodeled",
+        "Vision and verification steps are placeholders; no camera or input event was observed",
+        "A planned contact event does not mean the dense route reached it; inspect route status",
+        "Sampled tip route checks do not prove continuous full-arm collision clearance"
+      ],
+      "park_xy_board_mm": [
+        290.0,
+        10.0
+      ],
+      "physical_execution_authorized": false,
+      "plan_hash": "f2c211adccef8e9f7f4d6369fd5f8fdb698932d15de78b52363f2a0667ea12f1",
+      "proposals": [
+        {
+          "approach_clearance_mm": 40.0,
+          "confidence": 1.0,
+          "coordinate_frame": "board",
+          "device": "keyboard",
+          "interaction": "CONTACT",
+          "proposal_id": "synthetic-keyboard-coverage-1-0-clearance-40",
+          "schema": "rocell.model_motion_proposal.v1",
+          "source": {
+            "frame_id": "synthetic-no-camera-capture",
+            "image_sha256": "eee0d74689680963ae0f251ebc480f24512bbd7cd718402db5c2767a417f0b4a",
+            "model_id": "synthetic-nominal-catalog-generator-v0"
+          },
+          "speed_class": "SLOW",
+          "target_id": "1",
+          "target_mm": {
+            "x": 107.0,
+            "y": 196.0,
+            "z": 21.0
+          }
+        },
+        {
+          "approach_clearance_mm": 40.0,
+          "confidence": 1.0,
+          "coordinate_frame": "board",
+          "device": "keyboard",
+          "interaction": "CONTACT",
+          "proposal_id": "synthetic-keyboard-coverage-SPACE-1-clearance-40",
+          "schema": "rocell.model_motion_proposal.v1",
+          "source": {
+            "frame_id": "synthetic-no-camera-capture",
+            "image_sha256": "eee0d74689680963ae0f251ebc480f24512bbd7cd718402db5c2767a417f0b4a",
+            "model_id": "synthetic-nominal-catalog-generator-v0"
+          },
+          "speed_class": "SLOW",
+          "target_id": "SPACE",
+          "target_mm": {
+            "x": 224.0,
+            "y": 112.0,
+            "z": 21.0
+          }
+        },
+        {
+          "approach_clearance_mm": 40.0,
+          "confidence": 1.0,
+          "coordinate_frame": "board",
+          "device": "keyboard",
+          "interaction": "CONTACT",
+          "proposal_id": "synthetic-keyboard-coverage-ENTER-2-clearance-40",
+          "schema": "rocell.model_motion_proposal.v1",
+          "source": {
+            "frame_id": "synthetic-no-camera-capture",
+            "image_sha256": "eee0d74689680963ae0f251ebc480f24512bbd7cd718402db5c2767a417f0b4a",
+            "model_id": "synthetic-nominal-catalog-generator-v0"
+          },
+          "speed_class": "SLOW",
+          "target_id": "ENTER",
+          "target_mm": {
+            "x": 335.5,
+            "y": 154.0,
+            "z": 21.0
+          }
+        }
+      ],
+      "requested_targets": [
+        "1",
+        "SPACE",
+        "ENTER"
+      ],
+      "sampled_ik_all_converged": true,
+      "schema": "rocell.ai_sequence_simulation_summary.v0",
+      "source_sequence_sha256": "0d85163d1bfd61ab2a207dc9d0fc27557f07d02cafd6418ef2957132bcbf3c3b",
+      "static_context_sha256": "e825dd29cf856cea44d9ce40ca3bfb5fc305d3493cd129d6b6bea9f04c800f7c",
+      "summary_sha256": "4841895095aeaf7ef5791502c786e737cce27fc09f8c63f2eace94ef2cbae438",
+      "target_overlay": {
+        "base_catalog_sha256": "0cc4b46ce6a7b94f32ba1d64f9818c094f6005636c4d56480f5907b773cd5276",
+        "candidate_sha256_in_order": [
+          "58a86ad8adccebcccad49666908af4cfecea774ee09f179f7692920dee4ab5dd",
+          "0e4a9545511b20a7bc05791d9584fe7d4fef25e6c9343d21ddccdc713b7bd0ae",
+          "18da3c04e1d79be3dd3122714c589071300856d6da2a2af37c94bf7e9e5c09c1"
+        ],
+        "centers_board_mm": {
+          "1": [
+            107.0,
+            196.0,
+            21.0
+          ],
+          "ENTER": [
+            335.5,
+            154.0,
+            21.0
+          ],
+          "SPACE": [
+            224.0,
+            112.0,
+            21.0
+          ]
+        },
+        "simulation_only": true
+      },
+      "target_overlay_sha256": "c0e74545878d9fb5b222726167334eea8fc538f2f8783885bbf454013a634424"
+    }
+  ],
+  "hardware_writes": 0,
+  "passing_count": 12,
+  "physical_execution_authorized": false,
+  "schema": "rocell.ai_sequence_clearance_study.v0",
+  "study_sha256": "719d9c9c4c267af7a0c7df58d3b5fb6843e7d286a55fb72d73aadcf7bb46d04b"
+}

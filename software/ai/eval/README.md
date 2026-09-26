@@ -204,3 +204,9 @@ sampled IK, and dense route screening. Proposals are generated synthetic labels;
 no language or vision model ran. Each case independently returns to park.
 The report embeds every proposal and simulation result, preserving hashes and
 zero physical authority. Inter-key transitions and typing cadence remain untested.
+
+`sequence_clearance_study_v0.json` records 12/12 passing sampled routes: H-I, H-H,
+A-Z, and 1-Space-Enter at 12/25/40 mm common hover clearance. Summaries bind
+full result hashes and preserve repeated-action timestamps. Cadence is only
+a constant-speed/delay hypothesis; servo dynamics and actual input events are
+unverified. The proposals are synthetic and no learned model was evaluated.

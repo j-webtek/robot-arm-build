@@ -202,3 +202,29 @@ Next evaluate ordered multi-key transitions and proposal approach clearance,
 then perturb visual localization and camera conditions. Passing individual
 center routes does not establish direct inter-key motion, cadence, edge contact
 accuracy, model interpretation accuracy, or physical typing success.
+
+## Ordered sequence and clearance study
+
+`run_sequence_clearance_study.py` evaluates H-I, H-H, A-Z, and 1-Space-Enter at
+12, 25, and 40 mm common hover clearance. All 12 cases pass sampled route
+screening under the same candidate layout. Repeated keys remain separate
+actions, and movements between keys ascend to the static transit plane.
+
+The sequence simulator accepts one to eight keyboard CONTACT/SLOW proposals.
+Each proposal passes the existing coordinate bridge. A repeated key must retain
+the same coordinate; mixed clearances and unsupported speed classes are rejected.
+The common requested clearance sets hover and retract height. The static policy
+still sets the near-surface approach and nominal contact overtravel.
+
+Cadence is an arithmetic hypothesis: 10 mm/s Cartesian travel, 0.1 s contact
+dwell, and 0.2 s per vision-correction or verification placeholder. Acceleration,
+servo response, keyboard debounce, and observed inputs are not modeled. Planned
+contact timestamps do not establish that a blocked route reaches any contact.
+No installed controller speed mapping is implied by this SLOW-only study.
+
+The compact `eval/sequence_clearance_study_v0.json` includes ordered proposals,
+source bindings, result hashes, contact timestamps, and route outcomes. Calling
+`rocell_ai.motion_sequence_simulation.run` regenerates full geometry and dense
+route detail. These cases are development probes, not a held-out model benchmark.
+Next priority is perturbing target localization and adding camera-condition
+rejection cases while preserving these route and sequence checks.

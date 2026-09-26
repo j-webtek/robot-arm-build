@@ -50,3 +50,6 @@ htmlcov/
 *.pdb
 *.exe
 *.dll
+
+# Local regenerated AI simulation detail; curated evidence lives in ai/eval.
+/software/ai/results/

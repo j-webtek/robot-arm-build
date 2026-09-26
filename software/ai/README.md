@@ -218,3 +218,12 @@ python software/ai/run_keyboard_route_coverage.py --output software/ai/results/k
 
 Every case includes its synthetic proposal and simulation report. This checks
 individual park-to-key-to-park routes, without model inference or camera capture.
+
+Run the ordered-sequence and clearance study:
+
+```powershell
+python software/ai/run_sequence_clearance_study.py --output software/ai/results/sequence-clearance-study.json
+```
+
+The sequence simulator returns full route detail; this CLI saves compact summaries
+with hashes of the detailed results. See the motion contract for timing assumptions.
