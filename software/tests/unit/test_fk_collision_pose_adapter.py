@@ -24,6 +24,11 @@ from rocell.application.bounded_segment_collision_qualification import (
     build_bounded_joint_sample_plan,
     qualify_bounded_segment_collisions,
 )
+from rocell.application.conservative_segment_sweep_qualification import (
+    ConservativeSegmentSweepQualificationError,
+    MeasuredConfigurationSweepEnvelopeBinding,
+    qualify_conservative_segment_sweeps,
+)
 from rocell.application.installed_collision_geometry import (
     InstalledCollisionGeometryProfile,
 )
@@ -441,4 +446,122 @@ def test_bounded_segment_rejects_missing_start_and_resource_exhaustion(context) 
             BoundedSegmentSamplingPolicy(
                 maximum_joint_step_rad=0.01, maximum_samples=2
             ),
+        )
+
+
+def sweep_envelopes(plan, *, colliding=False):
+    result = []
+    for sequence, (start, end) in enumerate(zip(plan, plan[1:])):
+        primitives = (
+            (SphereMm(Vec3.zero(), 1_000_000.0),)
+            if colliding
+            else (
+                CapsuleMm(
+                    Vec3(50_000.0, 0.0, 0.0),
+                    Vec3(50_010.0, 0.0, 0.0),
+                    0.1,
+                ),
+            )
+        )
+        result.append(
+            {
+                "attachment:moving_camera_cable": (
+                    MeasuredConfigurationSweepEnvelopeBinding(
+                        sequence,
+                        start.content_sha256,
+                        end.content_sha256,
+                        "attachment:moving_camera_cable",
+                        SampledCollisionGeometry(
+                            primitives,
+                            CollisionEvidenceState.ACCEPTED_MEASURED,
+                            "measured conservative cable envelope",
+                        ),
+                        "4" * 64,
+                    )
+                )
+            }
+        )
+    return tuple(result)
+
+
+def test_conservative_segment_sweeps_clear_bound_geometry(context) -> None:
+    measured = snapshot(context)
+    installed = profile(context)
+    route = trajectory(context, measured, installed, base_offset=0.001)
+    policy = BoundedSegmentSamplingPolicy(maximum_joint_step_rad=0.05)
+    plan = build_bounded_joint_sample_plan(route, policy)
+    report = qualify_conservative_segment_sweeps(
+        context,
+        measured,
+        installed,
+        route,
+        bindings(),
+        segment_cables(plan),
+        sweep_envelopes(plan),
+        sampling_policy=policy,
+    )
+
+    assert report["status"] == "CONSERVATIVE_SEGMENT_SWEEPS_CLEAR_RELEASE_GATES_REMAIN"
+    assert report["segment_count"] == len(plan) - 1
+    assert report["all_conservative_segment_sweeps_clear"] is True
+    assert report["all_pair_exclusions_physically_accepted"] is False
+    assert report["continuous_collision_proven_for_bound_geometry"] is False
+    assert "ACCEPTED_GLOBAL_PAIR_EXCLUSIONS_REQUIRED" in report["blockers"]
+    assert report["physical_authority"] is False
+    assert report["controller_commands"] == []
+    assert all(
+        item["collision_free_diagnostic"] for item in report["segment_reports"]
+    )
+    schema = json.loads(
+        (
+            WORKSPACE
+            / "software/ai/schemas/conservative_segment_sweep_qualification_v1.schema.json"
+        ).read_text(encoding="utf-8")
+    )
+    jsonschema.Draft202012Validator(schema).validate(report)
+
+
+def test_conservative_segment_sweep_detects_envelope_collision(context) -> None:
+    measured = snapshot(context)
+    installed = profile(context)
+    route = trajectory(context, measured, installed, base_offset=0.04)
+    plan = build_bounded_joint_sample_plan(route)
+    report = qualify_conservative_segment_sweeps(
+        context,
+        measured,
+        installed,
+        route,
+        bindings(),
+        segment_cables(plan),
+        sweep_envelopes(plan, colliding=True),
+    )
+
+    assert report["status"] == "BLOCKED_CONSERVATIVE_SWEEP_COLLISION"
+    assert report["all_conservative_segment_sweeps_clear"] is False
+    assert report["continuous_collision_proven_for_bound_geometry"] is False
+
+
+def test_conservative_segment_sweep_rejects_crossed_envelope(context) -> None:
+    measured = snapshot(context)
+    installed = profile(context)
+    route = trajectory(context, measured, installed, base_offset=0.08)
+    plan = build_bounded_joint_sample_plan(route)
+    envelope_sets = list(sweep_envelopes(plan))
+    body_id = "attachment:moving_camera_cable"
+    crossed = replace(
+        envelope_sets[0][body_id], end_sample_sha256="f" * 64
+    )
+    envelope_sets[0] = {body_id: crossed}
+
+    with pytest.raises(
+        ConservativeSegmentSweepQualificationError, match="does not bind"
+    ):
+        qualify_conservative_segment_sweeps(
+            context,
+            measured,
+            installed,
+            route,
+            bindings(),
+            segment_cables(plan),
+            envelope_sets,
         )

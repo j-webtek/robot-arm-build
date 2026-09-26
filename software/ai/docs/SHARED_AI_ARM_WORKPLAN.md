@@ -2903,3 +2903,45 @@ commissioning, or bounded physical result with its limitations intact.
 - Next dependency: construct a conservative swept-volume bound for every rigid
   primitive and a profile-bound conservative cable envelope across each adjacent
   sample pair, then prove the bound under the installed clearance policy.
+
+### E-20260926-ARM-044 — conservative adjacent-sample sweep envelopes
+
+- Stage: S3
+- Lane: ARM
+- Change: added a deterministic offline qualifier that encloses each rigid
+  primitive over every adjacent ARM-043 sample pair. The rigid displacement
+  margin uses the pinned URDF path radius and exact ancestor-joint delta sum.
+  Configuration-sampled cable bodies require a separately measured root-frame
+  envelope bound to the exact start/end sample hashes and an installed-profile
+  source.
+- Safety behavior: conservative envelopes are evaluated under the installed
+  clearance policy. Missing/crossed envelope evidence, unbound sources,
+  unsupported prismatic arm joints, incomplete poses, or envelope collisions
+  reject. Clear envelopes do not become physical authority. Diagnostic-only
+  global pair exclusions prevent a continuous-proof claim, while phase-local
+  contact policy and installed physical qualification remain explicit blockers.
+- Artifacts: `conservative_segment_sweep_qualification.py`, closed v1 JSON
+  schema, clear/collision/crossed-envelope tests, public application exports,
+  and shared assurance/status updates.
+- Artifact identity: conservative sweep qualifier SHA-256
+  `77084da5f82431f31c4658c83726dd9a7829eb872ad8968919846ba288c73547`;
+  v1 report schema SHA-256
+  `e304a5f0e53a11412d599ae56e6f8c18a82f29cbd22c5c272fc4c4a4b95857a3`.
+- Results: focused collision/FK/sweep suite PASS, 43 tests in 2.92 seconds;
+  portable shared AI/arm selection PASS, 199 tests in 23.91 seconds;
+  documentation PASS for 26 maintained documents, eight public titles,
+  required navigation, and two SVG assets; compile and diff checks PASS.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: a deformable cable envelope is supplied evidence, not inferred
+  cable physics. The rigid bound is intentionally conservative and may reject
+  feasible routes. Current installed pair exclusions remain diagnostic rather
+  than accepted engineering evidence, and fixture geometry is not independently
+  measured installed-workcell evidence.
+- Supersedes: ARM-043's unresolved rigid and cable inter-sample coverage gap for
+  exact supplied conservative envelopes. It does not supersede accepted pair
+  exclusions, phase-local contact semantics, installed physical qualification,
+  controller qualification, or execution review.
+- Next dependency: replace diagnostic URDF-adjacent exclusions with accepted
+  engineering evidence, define phase-local intended-contact rules, and bind the
+  resulting collision qualification into the no-write trajectory envelope gate.
