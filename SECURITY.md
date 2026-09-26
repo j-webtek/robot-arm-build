@@ -35,6 +35,12 @@ questions and non-sensitive defects belong in [support](SUPPORT.md).
 
 ## Maintenance and response expectations
 
+The repository owner, **j-webtek**, is the initial contact for private reports
+and repository security alerts, confirmed September 26, 2026. Submit sensitive
+information through the private channel above, not a public mention or issue.
+This assignment does not establish a response-time guarantee or verify that
+personal email/web notifications are configured.
+
 Tactevra is experimental. The current `main` branch is the development baseline;
 there is no maintained stable-version matrix, guaranteed response time, commercial
 support agreement, or bug-bounty program stated by this project. Historical
@@ -49,6 +55,19 @@ If a secret was exposed, revoke or rotate it through the owning service; deletin
 a file or commit alone does not invalidate the secret.
 
 ## Limits of repository checks
+
+On September 26, 2026, repository secret scanning, secret-scanning push protection,
+Dependabot alerts, and Dependabot security updates were enabled and verified
+through GitHub's API. Security updates propose pull requests; automatic merging
+remains disabled and normal review/check requirements still apply.
+
+These protections cover supported patterns and recognized dependency information,
+not every secret or vulnerability. Enablement is not proof that a historical scan
+has finished or that the repository is free of findings. Non-provider-pattern
+scanning and validity checks were not enabled in this change. Never treat an
+unblocked push as permission to commit credentials. See the
+[maintainer procedure](docs/REPOSITORY_OPERATIONS.md#security-alert-handling)
+for notification setup, triage, and remediation boundaries.
 
 CI and the snapshot audit are scoped development checks, not security
 certification or physical safety qualification. The snapshot audit is heuristic
