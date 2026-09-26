@@ -39,6 +39,8 @@ campaigns as part of ordinary source setup.
 4. Review `git diff` and `git status`. Stage explicit paths with `git add`.
 5. Run `python scripts/audit_github_snapshot.py`; review any findings without
    posting secret values. This heuristic audit is not a security guarantee.
+   [Reviewed fixture exceptions](docs/AUDIT_FIXTURE_REVIEW.md) are exact and
+   fail on changed content; never blanket-ignore tests or refresh exceptions blindly.
 6. Commit, push the branch, and open a pull request with results and limitations.
 7. Update the relevant plan's checkpoint after evidence changes. Never rewrite
    an earlier failed result into a success; record the later correction.
