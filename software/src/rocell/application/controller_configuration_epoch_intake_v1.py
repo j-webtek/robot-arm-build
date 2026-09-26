@@ -17,6 +17,10 @@ import re
 from typing import Any
 
 from .installed_controller_qualification_v1 import EvidenceOrigin, ReviewDisposition
+from .r97_independent_review_decision_v1 import (
+    R97IndependentReviewDecisionV1,
+    assess_r97_independent_review_decision_v1,
+)
 
 
 INTAKE_SCHEMA = "rocell.controller_configuration_epoch_intake.v1"
@@ -32,6 +36,9 @@ EXPECTED_COMPONENT_IDS = (
     "empty_cell_safety",
 )
 BLOCKER_CODES = (
+    "FIRMWARE_REVIEW_DECISION_MISSING",
+    "FIRMWARE_REVIEW_DECISION_MISMATCH",
+    "FIRMWARE_REVIEW_DECISION_BLOCKED",
     "FIRMWARE_INDEPENDENT_REVIEW_INCOMPLETE",
     "REVIEW_PACKET_MISMATCH",
     "CANDIDATE_APP_MISMATCH",
@@ -277,6 +284,7 @@ def assess_controller_configuration_epoch_intake_v1(
     intake: ControllerConfigurationEpochIntakeV1,
     *,
     evaluated_monotonic_ns: int,
+    firmware_review_decision: R97IndependentReviewDecisionV1 | None = None,
     expected_review_packet_sha256: str = R97_REVIEW_PACKET_SHA256,
     expected_app_sha256: str = R97_APP_SHA256,
     expected_protocol_source_sha256: str = R97_PROTOCOL_SOURCE_SHA256,
@@ -296,6 +304,29 @@ def assess_controller_configuration_epoch_intake_v1(
     ):
         _digest(value, label)
     blockers: list[str] = []
+    if firmware_review_decision is None:
+        blockers.append("FIRMWARE_REVIEW_DECISION_MISSING")
+    else:
+        if not isinstance(
+            firmware_review_decision, R97IndependentReviewDecisionV1
+        ):
+            raise TypeError(
+                "firmware_review_decision must be "
+                "R97IndependentReviewDecisionV1 or None")
+        review_report = assess_r97_independent_review_decision_v1(
+            firmware_review_decision,
+            expected_packet_sha256=expected_review_packet_sha256,
+            expected_app_sha256=expected_app_sha256,
+        )
+        if (
+            intake.firmware_independent_review_sha256
+            != firmware_review_decision.decision_sha256
+            or intake.firmware_review_disposition
+            is not firmware_review_decision.disposition
+        ):
+            blockers.append("FIRMWARE_REVIEW_DECISION_MISMATCH")
+        if review_report.blockers:
+            blockers.append("FIRMWARE_REVIEW_DECISION_BLOCKED")
     checks = (
         (intake.firmware_review_disposition
          is not ReviewDisposition.INDEPENDENTLY_APPROVED,

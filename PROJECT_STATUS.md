@@ -27,7 +27,7 @@ being developed.
 | Controller evidence gate | Required controller identity, mapping, protocol, freshness, and review fields are checked | Modeled records test rejection behavior; even a passing record grants no transport or execution authority, and no physical originals were qualified |
 | Installed-controller compatibility | A passive r96 observation is recorded; an offline assessment checks the installed application's command surface | r96 lacks the required generic production command/feedback interface and remains blocked; its identity evidence is not independently qualified |
 | Production runtime contract | A host-side executable specification rehearses safe-idle startup, one writer, ordered commands, deadlines, and feedback checks | Software rules are testable without I/O; this is not replacement firmware or an installed execution service |
-| Production firmware candidate | r97 controller-side implementation compiled offline; source, integration, sealed review handoff, and measured-epoch intake contracts are merged | First-party checks passed, but no independent review decision or eight-component measured epoch evidence has been supplied; installed qualification and all physical use remain blocked |
+| Production firmware candidate | r97 controller-side implementation compiled offline; source, integration, sealed review handoff, typed external-decision, and measured-epoch intake contracts are merged | First-party checks passed, but no authenticated independent review decision or eight-component measured epoch evidence has been supplied; installed qualification and all physical use remain blocked |
 | Arm control research | Documented supervised noncontact movement and joint-feedback checks | Specific lab sequences were completed; controller feedback does not measure key-contact accuracy |
 | Hardware | RC03 workcell design and step-by-step assembly package | Design and print resources exist, with their own measurement and print-readiness requirements |
 
@@ -61,8 +61,11 @@ implements a narrow controller-side command and feedback surface (ARM-030/031).
 The ledger records a 314,640-byte offline build, 30 focused tests and 107 selected
 integration tests passing. These are overlapping software checks, not physical
 trials. Its configuration epoch remains explicitly unset. Independent source/image
-review, configuration binding and installed qualification are still open; no
-controller was installed, started, queried or moved in that work. The passive record and
+review, configuration binding and installed qualification are still open. The
+epoch intake now requires and validates the full content-addressed external
+decision rather than trusting a hash and approval label alone, but no reviewer
+decision has been supplied and software cannot authenticate reviewer identity.
+No controller was installed, started, queried or moved in that work. The passive record and
 compatibility assessment reference local evidence not included in a fresh clone;
 this public summary reports the ledger, not an independent physical revalidation.
 

@@ -130,6 +130,14 @@ The epoch intake deliberately hashes two separate identity classes:
   arm/controller/tool, power, keyboard station, phone station, and empty-cell
   safety.
 
+The release side is not admitted from a free-form review hash plus an approval
+label. Intake requires the complete typed external r97 review decision, assesses
+its exact packet/manifest/app bindings and closed checklist, and verifies that
+the epoch's stored decision digest and disposition match it. A missing,
+mismatched, rejected, non-independent, author-conflicted, incomplete, or
+open-finding decision blocks the epoch. The contract cannot authenticate the
+human reviewer; that identity and evidence custody remain external controls.
+
 The candidate app SHA remains an explicit field but is not recursively derived
 from an app image that already embeds the epoch digest. This avoids an
 impossible self-referential hash. A later epoch-bound firmware build can embed

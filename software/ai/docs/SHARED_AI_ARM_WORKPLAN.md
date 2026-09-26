@@ -605,7 +605,7 @@ remove it only in the same commit that appends the resulting evidence row.
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
 | Unclaimed | S2 | qualified perception adapter and complete shared gate | — | AVAILABLE |
-| Unclaimed | S4 | independently review sealed r97 packet `987cbe86...b416` and collect/review all eight measured epoch components | — | AVAILABLE |
+| Unclaimed | S4 | external reviewer publishes a typed decision for sealed r97 packet `987cbe86...b416`; collect/review all eight measured epoch components | — | AVAILABLE |
 
 ## Worker update procedure
 
@@ -2515,3 +2515,40 @@ commissioning, or bounded physical result with its limitations intact.
 - Next dependency: supply an independent decision for packet
   `987cbe86d98440734d8336c704f1ecd89692675a9cb1620cb674e4132957b416`
   and independently reviewed retained measurements for all eight components.
+
+### E-20260926-ARM-035 — typed external r97 review-decision boundary
+
+- Stage: S4
+- Lane: ARM
+- Change: added a closed, content-addressed external-review decision and report
+  contract for r97, then required configuration-epoch assessment to consume the
+  full typed decision. Epoch admission now verifies exact packet, manifest, and
+  app identities, the eleven-item checklist, independence and author-separation
+  assertions, findings, disposition, decision digest, and disposition match.
+- Safety behavior: a missing, mismatched, rejected, non-independent,
+  author-conflicted, incomplete, or open-finding decision blocks. The decision
+  and report keep installation, startup, execution, hardware access, and
+  physical authority false. There is no transport or device I/O.
+- Trust boundary: validation proves only structure and internal content binding.
+  It cannot authenticate the reviewer identity, establish independent custody,
+  or turn a self-authored fixture into independent evidence. Tests use clearly
+  labeled synthetic decisions; no real review decision was created.
+- Artifacts: typed decision/report implementation, closed JSON schemas, public
+  exports, epoch-intake linkage, unit/schema tests, and firmware/runtime/schema
+  documentation.
+- Results: bounded shared AI/arm, r97, runtime, review-decision, and epoch-intake
+  suite PASS, 249 tests in 16.78 seconds; documentation PASS for 25 maintained
+  documents and two SVG assets; snapshot audit PASS for 5,725 paths and 903.8
+  MiB with zero unresolved findings and 14 reviewed synthetic fixtures; diff
+  check PASS.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: no external reviewer decision and no measured workcell component
+  evidence have been supplied. No epoch-bound build is ready.
+- Supersedes: ARM-034 only for the release-review decision binding; every
+  external evidence and physical-use blocker remains.
+- Next dependency: a genuinely independent reviewer publishes an authenticated
+  decision for packet
+  `987cbe86d98440734d8336c704f1ecd89692675a9cb1620cb674e4132957b416`,
+  followed by independently reviewed retained measurements for all eight epoch
+  components.
