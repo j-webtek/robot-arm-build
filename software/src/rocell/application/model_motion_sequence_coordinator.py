@@ -34,6 +34,7 @@ class ModelMotionSequenceError(ValueError):
 class SequencePhase(str, Enum):
     WAITING_FOR_FRESH_STATE = "WAITING_FOR_FRESH_STATE"
     READY_FOR_SINGLE_ACTION_EXECUTOR = "READY_FOR_SINGLE_ACTION_EXECUTOR"
+    WAITING_FOR_EXECUTION_RESULT = "WAITING_FOR_EXECUTION_RESULT"
     COMPLETED = "COMPLETED"
     BLOCKED = "BLOCKED"
     OUTCOME_UNCERTAIN = "OUTCOME_UNCERTAIN"
@@ -161,6 +162,8 @@ class ModelMotionSequenceCoordinator:
         self._used_observed_states: set[str] = set()
         self._planner_reports: list[dict[str, Any]] = []
         self._results: list[VerifiedActionResult] = []
+        self._dispatch_request_sha256: str | None = None
+        self._used_dispatch_request_sha256: set[str] = set()
         self._blocker: str | None = None
 
     @property
@@ -255,10 +258,14 @@ class ModelMotionSequenceCoordinator:
     def record_result(self, result: VerifiedActionResult) -> None:
         """Consume a single-use downstream result; never infer or retry one."""
 
-        if self._phase is not SequencePhase.READY_FOR_SINGLE_ACTION_EXECUTOR:
+        if self._phase is not SequencePhase.WAITING_FOR_EXECUTION_RESULT:
             raise ModelMotionSequenceError("no action is awaiting an executor result")
         if not isinstance(result, VerifiedActionResult):
             raise TypeError("result must be a VerifiedActionResult")
+        if result.disposition is ActionDisposition.FAILED_BEFORE_DISPATCH:
+            raise ModelMotionSequenceError(
+                "a pre-dispatch failure cannot follow a committed dispatch boundary"
+            )
         proposal = self.current_proposal
         assert proposal is not None
         expected_gate = self._planner_reports[-1]["planner_gate_sha256"]
@@ -279,6 +286,7 @@ class ModelMotionSequenceCoordinator:
         self._results.append(result)
         if result.disposition is ActionDisposition.VERIFIED_COMPLETED:
             self._action_index += 1
+            self._dispatch_request_sha256 = None
             self._phase = (
                 SequencePhase.COMPLETED
                 if self._action_index == len(self._batch.proposals)
@@ -287,9 +295,20 @@ class ModelMotionSequenceCoordinator:
         elif result.disposition is ActionDisposition.OUTCOME_UNCERTAIN:
             self._phase = SequencePhase.OUTCOME_UNCERTAIN
             self._blocker = "OUTCOME_UNCERTAIN_RETRY_FORBIDDEN"
-        else:
-            self._phase = SequencePhase.BLOCKED
-            self._blocker = "FAILED_BEFORE_DISPATCH_NO_AUTOMATIC_RETRY"
+
+    def commit_dispatch_boundary(self, execution_request_sha256: str) -> None:
+        """Mark that dispatch may occur; callers must persist this before I/O."""
+
+        if self._phase is not SequencePhase.READY_FOR_SINGLE_ACTION_EXECUTOR:
+            raise ModelMotionSequenceError("current action is not ready for dispatch")
+        request_sha256 = _digest(
+            execution_request_sha256, "execution_request_sha256"
+        )
+        if request_sha256 in self._used_dispatch_request_sha256:
+            raise ModelMotionSequenceError("execution request cannot be reused")
+        self._used_dispatch_request_sha256.add(request_sha256)
+        self._dispatch_request_sha256 = request_sha256
+        self._phase = SequencePhase.WAITING_FOR_EXECUTION_RESULT
 
     def snapshot(self) -> dict[str, Any]:
         report: dict[str, Any] = {
@@ -310,6 +329,10 @@ class ModelMotionSequenceCoordinator:
                 item["planner_gate_sha256"] for item in self._planner_reports
             ],
             "results": [item.to_dict() for item in self._results],
+            "dispatch_request_sha256": self._dispatch_request_sha256,
+            "used_dispatch_request_sha256": sorted(
+                self._used_dispatch_request_sha256
+            ),
             "blocker": self._blocker,
             "automatic_retry_allowed": False,
             "lookahead_planning_allowed": False,

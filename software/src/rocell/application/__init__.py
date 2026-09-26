@@ -230,6 +230,15 @@ from .model_motion_sequence_coordinator import (
     SequencePhase,
     VerifiedActionResult,
 )
+from .model_motion_sequence_journal import (
+    DurableModelMotionSequenceJournal,
+    ModelMotionSequenceJournalError,
+    SequenceJournalEvent,
+    SequenceJournalPhase,
+    SequenceJournalSnapshot,
+    SequenceRecoveryDisposition,
+    load_model_motion_sequence_journal,
+)
 from .prehardware_layout_study import (
     LayoutAxisValueEvidence,
     LayoutCandidatePromotion,
@@ -888,6 +897,13 @@ __all__ = [
     "ModelMotionSequenceError",
     "SequencePhase",
     "VerifiedActionResult",
+    "DurableModelMotionSequenceJournal",
+    "ModelMotionSequenceJournalError",
+    "SequenceJournalEvent",
+    "SequenceJournalPhase",
+    "SequenceJournalSnapshot",
+    "SequenceRecoveryDisposition",
+    "load_model_motion_sequence_journal",
     "ModelMotionIngressError",
     "SimulationContextError",
     "SimulationRunReport",

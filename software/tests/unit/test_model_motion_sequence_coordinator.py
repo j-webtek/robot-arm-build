@@ -161,6 +161,10 @@ def _result(batch, coordinator, disposition=ActionDisposition.VERIFIED_COMPLETED
     )
 
 
+def _commit(coordinator):
+    coordinator.commit_dispatch_boundary(str(coordinator.action_index + 6) * 64)
+
+
 def test_sequence_requires_fresh_state_after_each_verified_action() -> None:
     context, batch, ingress = _setup()
     gate, calls = _ready_gate(ingress)
@@ -171,6 +175,7 @@ def test_sequence_requires_fresh_state_after_each_verified_action() -> None:
     coordinator.evaluate_next(_observed("a"), evaluation_monotonic_ns=110)
     assert coordinator.phase is SequencePhase.READY_FOR_SINGLE_ACTION_EXECUTOR
     assert calls == [("H", _observed("a").observed_start_state_sha256)]
+    _commit(coordinator)
     coordinator.record_result(_result(batch, coordinator))
     assert coordinator.phase is SequencePhase.WAITING_FOR_FRESH_STATE
     assert coordinator.current_proposal.target_id == "I"
@@ -178,6 +183,7 @@ def test_sequence_requires_fresh_state_after_each_verified_action() -> None:
     coordinator.evaluate_next(
         _observed("b", available=300), evaluation_monotonic_ns=310
     )
+    _commit(coordinator)
     coordinator.record_result(_result(batch, coordinator))
     snapshot = coordinator.snapshot()
     assert coordinator.phase is SequencePhase.COMPLETED
@@ -199,6 +205,7 @@ def test_sequence_forbids_lookahead_and_observed_state_reuse() -> None:
     coordinator.evaluate_next(first, evaluation_monotonic_ns=110)
     with pytest.raises(ModelMotionSequenceError, match="not waiting"):
         coordinator.evaluate_next(_observed("b"), evaluation_monotonic_ns=110)
+    _commit(coordinator)
     coordinator.record_result(_result(batch, coordinator))
     with pytest.raises(ModelMotionSequenceError, match="cannot be reused"):
         coordinator.evaluate_next(first, evaluation_monotonic_ns=120)
@@ -246,6 +253,7 @@ def test_uncertain_outcome_is_terminal_and_cannot_retry() -> None:
         batch, ingress, context, planner_gate=gate
     )
     coordinator.evaluate_next(_observed("a"), evaluation_monotonic_ns=110)
+    _commit(coordinator)
     coordinator.record_result(
         _result(batch, coordinator, ActionDisposition.OUTCOME_UNCERTAIN)
     )
@@ -263,6 +271,7 @@ def test_result_must_bind_exact_current_action() -> None:
         batch, ingress, context, planner_gate=gate
     )
     coordinator.evaluate_next(_observed("a"), evaluation_monotonic_ns=110)
+    _commit(coordinator)
     wrong = _result(batch, coordinator)
     wrong = VerifiedActionResult(
         batch_sha256=wrong.batch_sha256,

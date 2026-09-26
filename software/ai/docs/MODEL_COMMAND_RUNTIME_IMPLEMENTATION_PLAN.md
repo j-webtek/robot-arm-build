@@ -56,13 +56,20 @@ cannot mistake this orchestration work for physical readiness.
 
 ## Next implementation slices
 
-### R1 — durable coordinator journal
+### R1 — durable coordinator journal — initial implementation complete
 
 - Persist every phase transition with an append-only hash chain.
 - Reopen after process restart without repeating a possibly dispatched action.
 - Treat any missing post-dispatch evidence as `OUTCOME_UNCERTAIN`.
 - Bind journal identity to batch, build, controller session, and configuration
   epoch vector.
+
+The initial implementation now persists a canonical header, append-only
+hash-chained events, and an atomically replaced high-water head. It binds the
+batch and ingress records, detects altered/truncated histories, enforces action
+order, and assigns a retry-forbidden recovery disposition to an interrupted
+dispatch. Binding the future writable executor's controller session and full
+configuration epoch vector remains part of R3.
 
 ### R2 — typed trajectory execution envelope
 
@@ -125,6 +132,7 @@ A model-driven command path is operational only when it demonstrates:
 1. Keep AI output at `ModelMotionBatch`; do not add servo fields to that schema.
 2. Finish measured collision geometry so the planner can earn the reserved
    ready status.
-3. Add the durable coordinator journal before connecting a writable transport.
-4. Define the typed trajectory envelope, then implement the Waveshare adapter.
+3. Define the typed trajectory envelope, then implement the sole Waveshare
+   writer against it.
+4. Bind controller-session and epoch evidence into executor receipts.
 5. Connect independent outcome verification and qualify one key before strings.

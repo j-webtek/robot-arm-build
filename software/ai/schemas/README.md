@@ -37,6 +37,10 @@ The [model-motion sequence snapshot](model_motion_sequence_snapshot_v1.schema.js
 tracks that admitted batch one action at a time. It requires a new observed arm
 state for every proposal, forbids lookahead and automatic retry, and advances
 only after exact, independently verified completion evidence.
+The [durable sequence-journal snapshot](model_motion_sequence_journal_snapshot_v1.schema.json)
+records the append-only, hash-chained lifecycle and its conservative restart
+disposition. A committed dispatch boundary with no verified result explicitly
+forbids replay and requires outcome reconciliation.
 The [translation-assurance schema](translation_assurance_v0.schema.json)
 records the ordered stage disposition and proves that no downstream stage can
 pass after the first blocker in the current offline path.

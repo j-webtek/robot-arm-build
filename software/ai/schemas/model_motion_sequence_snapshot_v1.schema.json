@@ -6,7 +6,8 @@
   "additionalProperties": false,
   "required": [
     "schema", "phase", "batch_sha256", "ingress_sha256", "action_count",
-    "current_action_index", "completed_action_count",
+    "current_action_index", "completed_action_count", "dispatch_request_sha256",
+    "used_dispatch_request_sha256",
     "used_observed_start_state_sha256", "planner_gate_sha256", "results",
     "blocker", "automatic_retry_allowed", "lookahead_planning_allowed",
     "controller_commands", "hardware_commands_generated", "hardware_access",
@@ -14,7 +15,7 @@
   ],
   "properties": {
     "schema": {"const": "rocell.model_motion_sequence_snapshot.v1"},
-    "phase": {"enum": ["WAITING_FOR_FRESH_STATE", "READY_FOR_SINGLE_ACTION_EXECUTOR", "COMPLETED", "BLOCKED", "OUTCOME_UNCERTAIN"]},
+    "phase": {"enum": ["WAITING_FOR_FRESH_STATE", "READY_FOR_SINGLE_ACTION_EXECUTOR", "WAITING_FOR_EXECUTION_RESULT", "COMPLETED", "BLOCKED", "OUTCOME_UNCERTAIN"]},
     "batch_sha256": {"$ref": "#/$defs/sha256"},
     "ingress_sha256": {"$ref": "#/$defs/sha256"},
     "action_count": {"type": "integer", "minimum": 1, "maximum": 64},
@@ -23,6 +24,8 @@
     "used_observed_start_state_sha256": {"type": "array", "maxItems": 64, "uniqueItems": true, "items": {"$ref": "#/$defs/sha256"}},
     "planner_gate_sha256": {"type": "array", "maxItems": 64, "items": {"$ref": "#/$defs/sha256"}},
     "results": {"type": "array", "maxItems": 64, "items": {"type": "object"}},
+    "dispatch_request_sha256": {"anyOf": [{"$ref": "#/$defs/sha256"}, {"type": "null"}]},
+    "used_dispatch_request_sha256": {"type": "array", "maxItems": 64, "uniqueItems": true, "items": {"$ref": "#/$defs/sha256"}},
     "blocker": {"type": ["string", "null"]},
     "automatic_retry_allowed": {"const": false},
     "lookahead_planning_allowed": {"const": false},
