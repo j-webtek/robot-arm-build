@@ -22,6 +22,31 @@ engineering evidence ledger. The public [status page](../PROJECT_STATUS.md)
 summarizes capabilities, not every experiment. Update both only when relevant;
 keep historical results intact and date new claims.
 
+## Keep public documentation current
+
+For each PR, classify its public impact: capability, limitation, setup, or none.
+Capability or limitation changes update `PROJECT_STATUS.md`; setup changes update
+the getting-started or contribution guide. Update the README only when the short
+overview or supported entry path changes. A tooling-only change can state why no
+capability update is needed instead of rewriting the status page.
+
+Record a reviewed source commit and the relevant shared-ledger evidence IDs.
+Keep the date and checkpoint explicit: a proposed branch is not merged capability,
+and a documentation edit is not a new physical verification. For a feature PR,
+identify the reviewed implementation commit and label the claim as pending merge
+until that PR is merged. If public updates must be deferred, link a follow-up
+issue, responsible lane and reason in the PR; do not quietly leave stale claims.
+
+The repository maintainer checks this during review. This is a documented process,
+not an automated semantic-accuracy gate. AI/arm owners supply technical evidence;
+the repository lane translates it for readers without changing the evidence.
+
+Track remaining operations work in
+[repository maintenance issues](https://github.com/j-webtek/robot-arm-build/issues?q=is%3Aissue%20is%3Aopen%20label%3Aarea%3Arepository).
+Each issue should name its scope, completion criteria, evidence and exclusions.
+Do not assign a person or promise a date without agreement. The shared engineering
+ledger remains the source for AI/arm stage evidence, not this maintenance backlog.
+
 Required checks and branch-protection behavior are in [CI](CI.md). Cross-lane
 review is a contributor process, not an enforced independent-review rule:
 GitHub currently requires zero approving reviews so the solo maintainer can

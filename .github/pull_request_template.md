@@ -21,6 +21,8 @@ Do not mark another workstream's approval as complete without its recorded revie
 - Limitations and unresolved failures:
 - Tested commit and environment:
 - User-facing docs updated (links, or why not needed):
+- Public status impact: capability / limitation / setup / none (explain).
+- If status changes: reviewed source commit and shared-ledger evidence IDs:
 
 ## Review checklist
 
@@ -28,6 +30,7 @@ Do not mark another workstream's approval as complete without its recorded revie
 - [ ] New public prose uses Tactevra; technical identifiers and historical records remain compatible.
 - [ ] Credentials, private settings, and raw device exports are excluded.
 - [ ] Relevant docs and shared AI/arm evidence are updated, or this is not applicable.
+- [ ] Capability, limitation, or setup changes update the public status/entry docs in this PR, or link a named follow-up with a reason for deferral.
 - [ ] Any hardware writes or movements are explicitly listed; otherwise state none.
 - [ ] Dependencies are merged or explicitly listed; cross-workstream changes have the required recorded review.
 - [ ] No release publication or hardware authorization is implied by this merge.

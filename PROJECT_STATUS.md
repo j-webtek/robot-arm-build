@@ -1,6 +1,6 @@
 # Tactevra project status
 
-Reviewed September 26, 2026 against merged source through `e6b69c3`.
+Reviewed September 26, 2026 against merged source through `22c2f10`.
 Unmerged workstream branches are not included in this summary.
 This is a capability summary for readers; the
 [shared workplan](software/ai/docs/SHARED_AI_ARM_WORKPLAN.md) retains detailed
@@ -25,6 +25,8 @@ being developed.
 | Controller-command preview | Sealed synthetic trajectories can be encoded into Waveshare T=102 bytes and a proposed dispatch schedule | Offline encoding and published schemas are tested; the preview has no transport and sends nothing to the arm |
 | Execution lifecycle rehearsal | Ownership, single-use reservations, fault handling, and restart reconciliation are modeled | Tests exercise no-retry and fault rules without device I/O; this is not an installed live execution service |
 | Controller evidence gate | Required controller identity, mapping, protocol, freshness, and review fields are checked | Modeled records test rejection behavior; even a passing record grants no transport or execution authority, and no physical originals were qualified |
+| Installed-controller compatibility | A passive r96 observation is recorded; an offline assessment checks the installed application's command surface | r96 lacks the required generic production command/feedback interface and remains blocked; its identity evidence is not independently qualified |
+| Production runtime contract | A host-side executable specification rehearses safe-idle startup, one writer, ordered commands, deadlines, and feedback checks | Software rules are testable without I/O; this is not replacement firmware or an installed execution service |
 | Arm control research | Documented supervised noncontact movement and joint-feedback checks | Specific lab sequences were completed; controller feedback does not measure key-contact accuracy |
 | Hardware | RC03 workcell design and step-by-step assembly package | Design and print resources exist, with their own measurement and print-readiness requirements |
 
@@ -42,6 +44,21 @@ encoding profile and its declared session, mapping, and protocol. Its success
 cases use modeled records, not independently authenticated physical evidence.
 See ARM-021/023 in the shared ledger; the gate does not collect that evidence.
 
+Since that checkpoint, the arm lane recorded one passive controller observation
+without a restart or movement (ARM-024). The subsequent offline assessment found
+that the installed r96 diagnostic application cannot accept the generic command
+and feedback interface needed for production use (ARM-026). This is a design
+boundary, not a failed movement test: r96 remains useful diagnostic history, but
+cannot simply be connected to the new planner as its execution service.
+
+A separate [production runtime contract](software/docs/PRODUCTION_CONTROLLER_RUNTIME_CONTRACT.md)
+now defines the required behavior in a host-side, zero-I/O rehearsal (ARM-028/029).
+It models one command owner, strict ordering and deadlines, and stopping on
+ambiguous feedback or restart. Firmware implementation, independent source/image
+review, and installed qualification remain future work. The passive record and
+compatibility assessment reference local evidence not included in a fresh clone;
+this public summary reports the ledger, not an independent physical revalidation.
+
 The AI lane has a translation-focused training candidate that improved mean key
 position error from about 0.937 to 0.907 mm on reused synthetic development data.
 That is a development-selection result, not independent generalization or real
@@ -58,7 +75,10 @@ zero physical movements. Test selections overlap and are not a model-accuracy
 score, full-suite qualification, or physical typing success rate.
 
 Repository improvements include protected-main CI, support and private security
-reporting, and an experimental source-release checklist. The snapshot audit now
+reporting, contributor handoff templates, reviewed dependency updates, and an
+experimental source-release checklist. CI now exposes resolved package versions
+and coverage limits in each job summary. No source release has been published at
+this checkpoint. The snapshot audit now
 uses [exact reviewed synthetic-fixture exceptions](docs/AUDIT_FIXTURE_REVIEW.md);
 historical failed audit records remain intact. An audit pass is not security
 certification. See [test tiers](docs/CI.md) for clean-checkout limits.
@@ -82,8 +102,10 @@ demonstrate an operating dialer or completed call.
 
 The AI lane needs independent evaluation of the localization candidate and
 separate confidence qualification, alongside capture provenance. The arm lane
-needs independently verified installed-controller mapping and firmware evidence
-before connecting its zero-write preview to any physical dispatch path. Both use the same
+needs a separate firmware candidate implementing the production runtime contract,
+followed by independent source/image review and installed-controller qualification.
+The existing r96 application remains incompatible with that production interface;
+closing paperwork alone will not add the missing command handlers. Both use the same
 [AI/arm workplan](software/ai/docs/SHARED_AI_ARM_WORKPLAN.md).
 The next shared milestone is a complete offline path from user text and visual
 evidence to a checked movement plan. Further physical qualification is tracked

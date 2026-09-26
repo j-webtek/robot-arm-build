@@ -60,7 +60,7 @@ def smoke() -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('stage', choices=('install-base', 'install-tests', 'smoke', 'test'))
+    parser.add_argument('stage', choices=('install-base', 'install-tests', 'smoke', 'test', 'environment'))
     stage = parser.parse_args().stage
     require(PYTHON.is_file(), 'Create .venv-ci with python -m venv .venv-ci first')
     if stage == 'install-base':
@@ -71,6 +71,8 @@ def main() -> None:
         run('-m', 'pip', 'check')
     elif stage == 'smoke':
         smoke()
+    elif stage == 'environment':
+        run('scripts/ci/environment_report.py')
     else:
         run('-m', 'pytest', '-q', *TESTS)
 
