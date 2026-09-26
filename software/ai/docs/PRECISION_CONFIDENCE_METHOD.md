@@ -529,3 +529,8 @@ Labels exactly match actual polygon call coordinates across800 scenes; independe
 ### Geometry auxiliary training (AI-178)
 
 Adding coefficient1 visible-pair vector consistency worsens every relative localization criterion and visibility: hidden false-visible6→100/201,clear recall2661→1422/2736. Both networks use t05; the comparison report contains stale inherited temperature1/0.5 limitation wording,clarified in the ledger without rewriting evidence. No promotion. Next measure loss magnitudes and shared-feature gradient norms/cosines at initialization and frozen checkpoints before another coefficient choice. Source `fa1eedd1f479fcf2d8ad7024ec06628aedf0af11`; `eval/landmark_geometry_aux_v0_*`.
+
+
+### Loss gradient snapshots (AI-181)
+
+On four fixed32-image training batches,geometry/base shared-feature gradient norm ratios average1.97 at initialization,3.38 at control checkpoint,2.53 at failed geometry checkpoint. Geometry opposes visibility gradients on all four failed-checkpoint batches. These snapshots support a scale/conflict hypothesis,not training causality or an optimal coefficient. Next freeze one coefficient0.1 versus control study with objective logging,no sweep; retain coefficient1 failure and all qualification criteria. Source `ba9d05524e261dda8cc931115c8a7cb7498aef97`; `eval/gradient_diagnostic_v0_report.json`. No runtime changes.

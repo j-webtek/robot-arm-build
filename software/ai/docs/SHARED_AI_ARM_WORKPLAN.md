@@ -599,7 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-| AI | S1 | loss gradient diagnosis | feature/translation-pair-evidence | ACTIVE |
 
 
 
@@ -5600,3 +5599,51 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic audit; AI-041 protected-main publication blocker remains.
 - Supersedes: none; prior failures and integration statuses retained.
 - Next dependency: Protected-branch PR/checks and AI-178 diagnosis.
+
+### E-20260926-AI-181 — loss gradient snapshot diagnosis
+
+- Stage: S1
+- Lane: AI
+- Commit: `ba9d05524e261dda8cc931115c8a7cb7498aef97` (frozen source; results/tests committed with evidence)
+- Change: loss gradient snapshot diagnosis.
+- Inputs/fixtures: Four fixed32-image reused training batches from14M starts0/8/16/24,128 images; seeded initialization and retained control/geometry checkpoints. Exact source/checkpoint hashes and seeds in eval/gradient_diagnostic_v0_plan.json; pixel hashes in report.
+- Command: `python software/ai/vision/diagnose_loss_gradients.py`
+- Result: Completed. Geometry/base shared-feature norm ratio means initialization1.9734,control3.3776,geometry2.5254. Geometry/base cosine ranges0.659–0.721,0.787–0.842,0.052–0.415. Geometry/visibility cosines all negative at initialization(-0.068..-0.021) and failed checkpoint(-0.314..-0.020),positive at control(0.200..0.527). Supports scale-imbalance/conflict hypothesis,not causal proof.
+- Artifacts: eval/gradient_diagnostic_v0_report.json; frozen runner/plan
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: CPU frozen snapshots,not optimizer trajectories; raw gradients omit AdamW state.128 reused images cannot establish generalization or coefficient optimum. No training,qualification or boundary changes.
+- Supersedes: none; prior failures and integration statuses retained.
+- Next dependency: Freeze one matched auxiliary coefficient0.1 versus control comparison (no sweep),logging per-objective magnitudes and keeping identical data/budget/selection/criteria. Retain coefficient1 failure; fresh evaluation required for any eventual candidate.
+
+### E-20260926-AI-182 — gradient report verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `ba9d05524e261dda8cc931115c8a7cb7498aef97` (frozen source; results/tests committed with evidence)
+- Change: gradient report verification.
+- Inputs/fixtures: AI-181 manifest/12 state-batch rows.
+- Command: `python -m pytest -q software/ai/tests/test_loss_gradients.py`
+- Result: PASS,1 test; hashes,identical pixels across states,norm ratios,cosine ranges,finite losses and summary means verified. Existing pytest-asyncio warning.
+- Artifacts: software/ai/tests/test_loss_gradients.py
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Report consistency only; batch unchanged,shared boundary suite not triggered.
+- Supersedes: none; prior failures and integration statuses retained.
+- Next dependency: AI-181 bounded training comparison.
+
+### E-20260926-AI-183 — gradient publication audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `ba9d05524e261dda8cc931115c8a7cb7498aef97` (frozen source; results/tests committed with evidence)
+- Change: gradient publication audit.
+- Inputs/fixtures: Repository with AI-181/182 and reviewed fixture allowlist.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS;5966 paths,840.6 MiB,0 unresolved findings,14 reviewed synthetic fixtures.
+- Artifacts: audit stdout and snapshot
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic audit; AI-041 protected-main publication blocker remains.
+- Supersedes: none; prior failures and integration statuses retained.
+- Next dependency: Protected-branch PR/checks and AI-181 study.

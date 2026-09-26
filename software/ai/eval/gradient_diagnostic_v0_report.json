@@ -1,0 +1,432 @@
+{
+  "plan_sha256": "9b2c09b71d8f6c012a98592f1d17c7018416b7f55abde8e5d88fb8b0f2b40bf6",
+  "rows": [
+    {
+      "state": "initial",
+      "batch_start": 14000000,
+      "pixels_sha256": "daeb7ec419e07cea727bdf862fc86ceb35e1907aaf6ded289b2752b21c190691",
+      "losses": {
+        "heatmap": 8.032358169555664,
+        "coordinate": 28.570148468017578,
+        "visibility": 0.6939274072647095,
+        "geometry": 55.505306243896484
+      },
+      "gradient_norms": {
+        "heatmap": 0.09594482183456421,
+        "coordinate": 2.780050277709961,
+        "visibility": 0.014560936018824577,
+        "geometry": 5.536261081695557,
+        "base": 2.821035623550415
+      },
+      "cosines": {
+        "heatmap_vs_coordinate": 0.4130536913871765,
+        "heatmap_vs_visibility": 0.08464761078357697,
+        "heatmap_vs_geometry": 0.05898602306842804,
+        "heatmap_vs_base": 0.4415002465248108,
+        "coordinate_vs_visibility": -0.005365693476051092,
+        "coordinate_vs_geometry": 0.7269262671470642,
+        "coordinate_vs_base": 0.999494731426239,
+        "visibility_vs_geometry": -0.020660841837525368,
+        "visibility_vs_base": 0.002752757165580988,
+        "geometry_vs_base": 0.7182645797729492
+      },
+      "geometry_base_norm_ratio": 1.9624924391163463
+    },
+    {
+      "state": "initial",
+      "batch_start": 14000008,
+      "pixels_sha256": "6a70506cb04ee45bcb86338eeca140859b8d1cc29529f71f69e6d80f632df422",
+      "losses": {
+        "heatmap": 8.03265380859375,
+        "coordinate": 27.5181827545166,
+        "visibility": 0.6938726902008057,
+        "geometry": 55.484130859375
+      },
+      "gradient_norms": {
+        "heatmap": 0.09944590926170349,
+        "coordinate": 2.408581018447876,
+        "visibility": 0.013680079020559788,
+        "geometry": 4.922323703765869,
+        "base": 2.4506521224975586
+      },
+      "cosines": {
+        "heatmap_vs_coordinate": 0.4073403775691986,
+        "heatmap_vs_visibility": 0.09175297617912292,
+        "heatmap_vs_geometry": 0.05836634337902069,
+        "heatmap_vs_base": 0.44143903255462646,
+        "coordinate_vs_visibility": -0.015594031661748886,
+        "coordinate_vs_geometry": 0.7119688987731934,
+        "coordinate_vs_base": 0.9992780089378357,
+        "visibility_vs_geometry": -0.05668160691857338,
+        "visibility_vs_base": -0.006020811852067709,
+        "geometry_vs_base": 0.7017983794212341
+      },
+      "geometry_base_norm_ratio": 2.0085770879423435
+    },
+    {
+      "state": "initial",
+      "batch_start": 14000016,
+      "pixels_sha256": "d2d8026149e2794d9e9ed6d117d658c56914bb974da98f5d123e50d217cd4f3e",
+      "losses": {
+        "heatmap": 8.032442092895508,
+        "coordinate": 27.093658447265625,
+        "visibility": 0.6938306093215942,
+        "geometry": 55.4833869934082
+      },
+      "gradient_norms": {
+        "heatmap": 0.09489660710096359,
+        "coordinate": 2.296658992767334,
+        "visibility": 0.014223036356270313,
+        "geometry": 4.635209083557129,
+        "base": 2.335519313812256
+      },
+      "cosines": {
+        "heatmap_vs_coordinate": 0.38805443048477173,
+        "heatmap_vs_visibility": 0.07695727050304413,
+        "heatmap_vs_geometry": 0.04334826394915581,
+        "heatmap_vs_base": 0.42269834876060486,
+        "coordinate_vs_visibility": 0.02211124636232853,
+        "coordinate_vs_geometry": 0.7316640615463257,
+        "coordinate_vs_base": 0.9992660880088806,
+        "visibility_vs_geometry": -0.0237435232847929,
+        "visibility_vs_base": 0.03096017614006996,
+        "geometry_vs_base": 0.7211067080497742
+      },
+      "geometry_base_norm_ratio": 1.9846588534483587
+    },
+    {
+      "state": "initial",
+      "batch_start": 14000024,
+      "pixels_sha256": "ce3ccc85d12f8c14b31815ef2c4de2263047ebd29aaf08171afed44db54e4b9b",
+      "losses": {
+        "heatmap": 8.032490730285645,
+        "coordinate": 27.297767639160156,
+        "visibility": 0.6949107050895691,
+        "geometry": 55.81612014770508
+      },
+      "gradient_norms": {
+        "heatmap": 0.09444974362850189,
+        "coordinate": 2.4890055656433105,
+        "visibility": 0.06986935436725616,
+        "geometry": 4.909085750579834,
+        "base": 2.5333573818206787
+      },
+      "cosines": {
+        "heatmap_vs_coordinate": 0.3816419541835785,
+        "heatmap_vs_visibility": 0.08741021156311035,
+        "heatmap_vs_geometry": 0.011037188582122326,
+        "heatmap_vs_base": 0.41465383768081665,
+        "coordinate_vs_visibility": 0.08153192698955536,
+        "coordinate_vs_geometry": 0.6724033951759338,
+        "coordinate_vs_base": 0.9989731907844543,
+        "visibility_vs_geometry": -0.06790275871753693,
+        "visibility_vs_base": 0.11094324290752411,
+        "geometry_vs_base": 0.6591702699661255
+      },
+      "geometry_base_norm_ratio": 1.937778611816609
+    },
+    {
+      "state": "control",
+      "batch_start": 14000000,
+      "pixels_sha256": "daeb7ec419e07cea727bdf862fc86ceb35e1907aaf6ded289b2752b21c190691",
+      "losses": {
+        "heatmap": 5.6117987632751465,
+        "coordinate": 0.5122935771942139,
+        "visibility": 0.42757242918014526,
+        "geometry": 0.8333941698074341
+      },
+      "gradient_norms": {
+        "heatmap": 8.855982780456543,
+        "coordinate": 24.096452713012695,
+        "visibility": 1.0743581056594849,
+        "geometry": 53.2874870300293,
+        "base": 18.571481704711914
+      },
+      "cosines": {
+        "heatmap_vs_coordinate": -0.7987366914749146,
+        "heatmap_vs_visibility": -0.4175567328929901,
+        "heatmap_vs_geometry": -0.8335007429122925,
+        "heatmap_vs_base": -0.5836540460586548,
+        "coordinate_vs_visibility": 0.6473982930183411,
+        "coordinate_vs_geometry": 0.8917872309684753,
+        "coordinate_vs_base": 0.9540679454803467,
+        "visibility_vs_geometry": 0.4649743139743805,
+        "visibility_vs_base": 0.6987319588661194,
+        "geometry_vs_base": 0.7865279912948608
+      },
+      "geometry_base_norm_ratio": 2.869318015509194
+    },
+    {
+      "state": "control",
+      "batch_start": 14000008,
+      "pixels_sha256": "6a70506cb04ee45bcb86338eeca140859b8d1cc29529f71f69e6d80f632df422",
+      "losses": {
+        "heatmap": 5.6037702560424805,
+        "coordinate": 0.38577502965927124,
+        "visibility": 0.3927653431892395,
+        "geometry": 0.7820326089859009
+      },
+      "gradient_norms": {
+        "heatmap": 8.089818954467773,
+        "coordinate": 16.21019172668457,
+        "visibility": 1.4227240085601807,
+        "geometry": 38.9099006652832,
+        "base": 12.565810203552246
+      },
+      "cosines": {
+        "heatmap_vs_coordinate": -0.7312029004096985,
+        "heatmap_vs_visibility": -0.043811436742544174,
+        "heatmap_vs_geometry": -0.7269210815429688,
+        "heatmap_vs_base": -0.30443286895751953,
+        "coordinate_vs_visibility": 0.44324564933776855,
+        "coordinate_vs_geometry": 0.9839780926704407,
+        "coordinate_vs_base": 0.8694648742675781,
+        "visibility_vs_geometry": 0.3578498065471649,
+        "visibility_vs_base": 0.6568137407302856,
+        "geometry_vs_base": 0.8418824672698975
+      },
+      "geometry_base_norm_ratio": 3.0964896043299865
+    },
+    {
+      "state": "control",
+      "batch_start": 14000016,
+      "pixels_sha256": "d2d8026149e2794d9e9ed6d117d658c56914bb974da98f5d123e50d217cd4f3e",
+      "losses": {
+        "heatmap": 5.666071891784668,
+        "coordinate": 0.7609819173812866,
+        "visibility": 0.4149346351623535,
+        "geometry": 1.2431637048721313
+      },
+      "gradient_norms": {
+        "heatmap": 9.291278839111328,
+        "coordinate": 28.306638717651367,
+        "visibility": 1.3758870363235474,
+        "geometry": 64.19537353515625,
+        "base": 21.961589813232422
+      },
+      "cosines": {
+        "heatmap_vs_coordinate": -0.8392907977104187,
+        "heatmap_vs_visibility": -0.6250945925712585,
+        "heatmap_vs_geometry": -0.8096953630447388,
+        "heatmap_vs_base": -0.6978669166564941,
+        "coordinate_vs_visibility": 0.645514965057373,
+        "coordinate_vs_geometry": 0.8824992179870605,
+        "coordinate_vs_base": 0.9742810726165771,
+        "visibility_vs_geometry": 0.5274100303649902,
+        "visibility_vs_base": 0.6302056312561035,
+        "geometry_vs_base": 0.8279517889022827
+      },
+      "geometry_base_norm_ratio": 2.9230749723081018
+    },
+    {
+      "state": "control",
+      "batch_start": 14000024,
+      "pixels_sha256": "ce3ccc85d12f8c14b31815ef2c4de2263047ebd29aaf08171afed44db54e4b9b",
+      "losses": {
+        "heatmap": 5.65671968460083,
+        "coordinate": 0.42264524102211,
+        "visibility": 0.463983416557312,
+        "geometry": 0.7704089879989624
+      },
+      "gradient_norms": {
+        "heatmap": 8.487810134887695,
+        "coordinate": 14.235107421875,
+        "visibility": 2.0645458698272705,
+        "geometry": 43.2351188659668,
+        "base": 9.354984283447266
+      },
+      "cosines": {
+        "heatmap_vs_coordinate": -0.7661561369895935,
+        "heatmap_vs_visibility": -0.5372730493545532,
+        "heatmap_vs_geometry": -0.7721124291419983,
+        "heatmap_vs_base": -0.37709516286849976,
+        "coordinate_vs_visibility": 0.2133992314338684,
+        "coordinate_vs_geometry": 0.978584349155426,
+        "coordinate_vs_base": 0.8736209869384766,
+        "visibility_vs_geometry": 0.19990351796150208,
+        "visibility_vs_base": 0.05794103816151619,
+        "geometry_vs_base": 0.8326486945152283
+      },
+      "geometry_base_norm_ratio": 4.621613201688338
+    },
+    {
+      "state": "geometry",
+      "batch_start": 14000000,
+      "pixels_sha256": "daeb7ec419e07cea727bdf862fc86ceb35e1907aaf6ded289b2752b21c190691",
+      "losses": {
+        "heatmap": 6.503716945648193,
+        "coordinate": 0.462409108877182,
+        "visibility": 0.6832336187362671,
+        "geometry": 0.5934202671051025
+      },
+      "gradient_norms": {
+        "heatmap": 18.617361068725586,
+        "coordinate": 21.73721694946289,
+        "visibility": 0.3201582431793213,
+        "geometry": 36.119300842285156,
+        "base": 6.386164665222168
+      },
+      "cosines": {
+        "heatmap_vs_coordinate": -0.9617144465446472,
+        "heatmap_vs_visibility": 0.2509194314479828,
+        "heatmap_vs_geometry": -0.9591057300567627,
+        "heatmap_vs_base": -0.3456297516822815,
+        "coordinate_vs_visibility": -0.21793478727340698,
+        "coordinate_vs_geometry": 0.9418141841888428,
+        "coordinate_vs_base": 0.5892258882522583,
+        "visibility_vs_geometry": -0.30125337839126587,
+        "visibility_vs_base": 0.039823587983846664,
+        "geometry_vs_base": 0.39459583163261414
+      },
+      "geometry_base_norm_ratio": 5.655867447168089
+    },
+    {
+      "state": "geometry",
+      "batch_start": 14000008,
+      "pixels_sha256": "6a70506cb04ee45bcb86338eeca140859b8d1cc29529f71f69e6d80f632df422",
+      "losses": {
+        "heatmap": 6.453505992889404,
+        "coordinate": 0.47479110956192017,
+        "visibility": 0.6684049367904663,
+        "geometry": 0.7983236312866211
+      },
+      "gradient_norms": {
+        "heatmap": 17.711406707763672,
+        "coordinate": 8.295108795166016,
+        "visibility": 0.3645743727684021,
+        "geometry": 14.900989532470703,
+        "base": 20.032976150512695
+      },
+      "cosines": {
+        "heatmap_vs_coordinate": 0.08739370107650757,
+        "heatmap_vs_visibility": -0.5549097657203674,
+        "heatmap_vs_geometry": 0.0803728923201561,
+        "heatmap_vs_base": 0.91020268201828,
+        "coordinate_vs_visibility": 0.02833176963031292,
+        "coordinate_vs_geometry": 0.832605242729187,
+        "coordinate_vs_base": 0.4918544590473175,
+        "visibility_vs_geometry": -0.02032485045492649,
+        "visibility_vs_base": -0.460672527551651,
+        "geometry_vs_base": 0.4154478907585144
+      },
+      "geometry_base_norm_ratio": 0.7438230555717678
+    },
+    {
+      "state": "geometry",
+      "batch_start": 14000016,
+      "pixels_sha256": "d2d8026149e2794d9e9ed6d117d658c56914bb974da98f5d123e50d217cd4f3e",
+      "losses": {
+        "heatmap": 6.534309387207031,
+        "coordinate": 0.7230567336082458,
+        "visibility": 0.6723697185516357,
+        "geometry": 1.1953705549240112
+      },
+      "gradient_norms": {
+        "heatmap": 18.44634246826172,
+        "coordinate": 14.029419898986816,
+        "visibility": 0.3549904525279999,
+        "geometry": 35.01624298095703,
+        "base": 12.267573356628418
+      },
+      "cosines": {
+        "heatmap_vs_coordinate": -0.7476905584335327,
+        "heatmap_vs_visibility": 0.22276759147644043,
+        "heatmap_vs_geometry": -0.651780903339386,
+        "heatmap_vs_base": 0.6550445556640625,
+        "coordinate_vs_visibility": -0.26620399951934814,
+        "coordinate_vs_geometry": 0.9108204245567322,
+        "coordinate_vs_base": 0.011639539152383804,
+        "visibility_vs_geometry": -0.314121812582016,
+        "visibility_vs_base": 0.059469860047101974,
+        "geometry_vs_base": 0.05247954651713371
+      },
+      "geometry_base_norm_ratio": 2.85437404472801
+    },
+    {
+      "state": "geometry",
+      "batch_start": 14000024,
+      "pixels_sha256": "ce3ccc85d12f8c14b31815ef2c4de2263047ebd29aaf08171afed44db54e4b9b",
+      "losses": {
+        "heatmap": 6.510208606719971,
+        "coordinate": 0.4863128662109375,
+        "visibility": 0.6782187223434448,
+        "geometry": 0.7129201889038086
+      },
+      "gradient_norms": {
+        "heatmap": 17.4144344329834,
+        "coordinate": 10.306905746459961,
+        "visibility": 0.9412201046943665,
+        "geometry": 19.690080642700195,
+        "base": 23.235925674438477
+      },
+      "cosines": {
+        "heatmap_vs_coordinate": 0.3176592290401459,
+        "heatmap_vs_visibility": 0.3664794862270355,
+        "heatmap_vs_geometry": -0.3344743251800537,
+        "heatmap_vs_base": 0.9052137136459351,
+        "coordinate_vs_visibility": 0.1794397234916687,
+        "coordinate_vs_geometry": 0.7635143995285034,
+        "coordinate_vs_base": 0.6889186501502991,
+        "visibility_vs_geometry": -0.09694729745388031,
+        "visibility_vs_base": 0.39476460218429565,
+        "geometry_vs_base": 0.08407412469387054
+      },
+      "geometry_base_norm_ratio": 0.8473981591514981
+    }
+  ],
+  "summary": {
+    "initial": {
+      "ratio_mean": 1.9733767480809143,
+      "geometry_base_cosines": [
+        0.7182645797729492,
+        0.7017983794212341,
+        0.7211067080497742,
+        0.6591702699661255
+      ],
+      "geometry_visibility_cosines": [
+        -0.020660841837525368,
+        -0.05668160691857338,
+        -0.0237435232847929,
+        -0.06790275871753693
+      ]
+    },
+    "control": {
+      "ratio_mean": 3.377623948458905,
+      "geometry_base_cosines": [
+        0.7865279912948608,
+        0.8418824672698975,
+        0.8279517889022827,
+        0.8326486945152283
+      ],
+      "geometry_visibility_cosines": [
+        0.4649743139743805,
+        0.3578498065471649,
+        0.5274100303649902,
+        0.19990351796150208
+      ]
+    },
+    "geometry": {
+      "ratio_mean": 2.525365676654841,
+      "geometry_base_cosines": [
+        0.39459583163261414,
+        0.4154478907585144,
+        0.05247954651713371,
+        0.08407412469387054
+      ],
+      "geometry_visibility_cosines": [
+        -0.30125337839126587,
+        -0.02032485045492649,
+        -0.314121812582016,
+        -0.09694729745388031
+      ]
+    }
+  },
+  "hardware_writes": 0,
+  "physical_movements": 0,
+  "qualification_installed": false,
+  "limitations": [
+    "CPU frozen snapshots on128 reused training images; not optimizer trajectories or causal proof",
+    "Raw gradients omit AdamW state and do not justify a new coefficient alone",
+    "No retraining or runtime changes"
+  ]
+}
