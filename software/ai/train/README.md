@@ -100,3 +100,37 @@ pins the provisional 4B Q4 scene observer. The smaller
 records its structured-output failure with the current Ollama adapter. Model
 weights remain local and are not committed. Neither candidate produces servo
 commands or has physical authorization.
+
+## Challenge-robust pose candidate v0
+
+A new KeyboardPoseNet candidate was fine-tuned from the prior checkpoint using
+3,600 procedural images in 1,200 new seed groups, including the harder
+challenge transformations. Development selection used 300 images in 100
+separate groups; epoch 12 had the lowest development MSE. Training and
+calibration/evaluation ranges were committed before training. The selected
+checkpoint was pinned before scoring and remains local in
+`software/ai/results/robust_pose_v0/pose_model.pt` (SHA-256
+`a9590dce78cb801b9c37eab3522ce9785404ba2776152eefdde04a08983e8b60`).
+
+On the same fresh 100 calibration and 100 evaluation groups:
+
+| Metric | Prior checkpoint | Robust candidate |
+| --- | ---: | ---: |
+| Empirical calibration radius | 28.788 mm | 3.306 mm |
+| Held-out radius coverage | 89/100 | 89/100 |
+| Held-out group-max error, nearest-rank p95 | 36.250 mm | 4.005 mm |
+| Worst held-out group error | 60.258 mm | 7.572 mm |
+| Nominal center rectangles fitting radius | 0/46 | 46/46 |
+
+The group maximum includes every key under all three paired conditions.
+The coordinate accuracy improved substantially, but coverage still misses the
+95% target. No qualification is installed, no default checkpoint is replaced,
+and the current producer continues to abstain. The center-fit result is
+optimistic geometry, not physical hit accuracy. No Gemma inference or hardware
+operation ran in this training experiment. The scorecard's no-retraining note
+refers to the evaluation stage; the training stage is recorded separately.
+
+These evaluation groups are consumed. Next investigate uncertainty/rejection
+on new development data and calibrate with larger fresh splits and a
+predeclared conservative coverage rule. Do not increase this bound using the
+observed evaluation errors or count this split as fresh evidence afterward.

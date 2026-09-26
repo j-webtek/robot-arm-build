@@ -251,3 +251,10 @@ physical guarantee. The evaluation split is now consumed. Next improve
 localization robustness or rejection on separate development data, then freeze
 new calibration and evaluation groups. Increasing the bound cannot resolve
 the already-zero target-fit coverage.
+
+`robust_pose_v0_scorecard.json` and `robust_pose_v0_reference_scorecard.json`
+compare the fine-tuned pose candidate and prior checkpoint on identical fresh
+images. Their manifests were committed before scoring. The candidate reduces
+held-out group-max p95 error from 36.250 to 4.005 mm, but its 3.306 mm empirical
+radius covers only 89/100 groups. Neither model is qualified. See the training
+plan/result and system baseline for exact splits and candidate identity.
