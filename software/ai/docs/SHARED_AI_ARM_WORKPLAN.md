@@ -2929,8 +2929,8 @@ commissioning, or bounded physical result with its limitations intact.
   `e304a5f0e53a11412d599ae56e6f8c18a82f29cbd22c5c272fc4c4a4b95857a3`.
 - Results: focused collision/FK/sweep suite PASS, 43 tests in 2.92 seconds;
   portable shared AI/arm selection PASS, 199 tests in 23.91 seconds;
-  documentation PASS for 26 maintained documents and two SVG assets; compile
-  and diff checks PASS.
+  documentation PASS for 26 maintained documents, eight public titles,
+  required navigation, and two SVG assets; compile and diff checks PASS.
 - Hardware writes: 0
 - Physical movements: 0
 - Limitations: a deformable cable envelope is supplied evidence, not inferred
