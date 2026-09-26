@@ -604,6 +604,7 @@ remove it only in the same commit that appends the resulting evidence row.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
+| AI/model | S1 | frozen paired held-out comparison/manifest/evidence | main from `1444527` | ACTIVE: fresh 18M evaluation only, no tuning |
 | Unclaimed | S2 | qualified perception adapter and complete shared gate | — | AVAILABLE |
 | Unclaimed | S4 | sole-writer lifecycle, fault injection, and restart closure | — | AVAILABLE |
 
