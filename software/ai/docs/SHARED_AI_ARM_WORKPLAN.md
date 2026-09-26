@@ -604,6 +604,7 @@ remove it only in the same commit that appends the resulting evidence row.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
+| AI | S1 | normalized uncertainty evaluators, manifest/scorecard/tests and precision method | feature/translation-pair-evidence | ACTIVE:22M calibration/23M evaluation with full region containment |
 | Unclaimed | S2 | qualified perception adapter and complete shared gate | — | AVAILABLE |
 | Unclaimed | S4 | independently review passive controller candidate and close its seven explicit blockers | — | AVAILABLE |
 
