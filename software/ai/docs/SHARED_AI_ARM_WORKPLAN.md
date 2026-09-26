@@ -604,7 +604,6 @@ remove it only in the same commit that appends the resulting evidence row.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI | S1 | fresh median evaluator, manifest/scorecard/tests, precision method | feature/translation-pair-evidence | ACTIVE: frozen26M median evaluation |
 | Unclaimed | S2 | qualified perception adapter and complete shared gate | — | AVAILABLE |
 | Unclaimed | S4 | implement controller firmware against the committed safe-idle production runtime contract, then independently review source and linked image | — | AVAILABLE |
 
@@ -3607,3 +3606,65 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: heuristic audit; AI-041 protected-main PR publication blocker remains.
 - Supersedes: none; historical failures retained.
 - Next dependency: protected-branch PR/checks and AI-092 evaluation.
+
+### E-20260926-AI-095 — fresh spatial median tail failure
+
+- Stage: S1
+- Lane: AI
+- Commit: `5b6d0bcdfd2cc2e54591aaccc793f3b7534de7a9` (frozen evaluator/manifest before scoring)
+- Change: imported unchanged median estimator, shifts, normalization and checkpoint;
+  applied the same overall and per-condition acceptance limits on fresh26M seeds.
+- Inputs/fixtures:26000000..26000499,500 groups x7 conditions=3500 images,
+ 46 targets/image, five passes/image. Exact source/checkpoint/catalog hashes in
+ `eval/spatial_median_fresh_v0.manifest.json`; paired cases/input digests in scorecard.
+ The26M range is now consumed and cannot be reused as fresh evidence.
+- Command: `python software/ai/vision/evaluate_spatial_median_fresh.py`
+- Result: FAIL,20/22 checks pass. Mean and yaw-p95 improve in every condition,
+  but appearance-shift >3mm count14 -> 16/500 and brightness0.65 count14 -> 15/500
+  violate tail limits. Other counts:standard12 -> 9,challenge16 -> 12,
+  darkened11 -> 9,brightness0.55:14 -> 12,0.60:15 -> 13. No promotion.
+- Artifacts: `eval/spatial_median_fresh_v0_scorecard.json`, manifest and evaluator.
+- Hardware writes:0
+- Physical movements:0
+- Limitations: same synthetic renderer, correlated condition views; unseen seeds
+  do not establish physical camera accuracy. Lower mean does not override failures.
+  Synthetic projection is not runtime calibration. No batch changes; boundary
+  suite not triggered; shared integration status unchanged.
+- Supersedes:none; AI-092 development pass retained alongside failed fresh result.
+- Next dependency: freeze a development-only landmark-localization baseline with
+  explicit keyboard geometry outputs and visibility/occlusion evaluation, comparing
+  against current normalized pose baseline. Stop post-hoc aggregation tuning on26M;
+  future selected models require independent data beyond26M and confidence work.
+
+### E-20260926-AI-096 — fresh spatial median evidence tests
+
+- Stage:S1
+- Lane:AI
+- Commit:`5b6d0bcdfd2cc2e54591aaccc793f3b7534de7a9` (implementation baseline; tests committed with evidence)
+- Change: checked circular median behavior, analytic outlier resistance, frozen
+  provenance, exact26M seed coverage and metric/gate recounts.
+- Inputs/fixtures:analytic poses and AI-095 manifest/scorecard.
+- Command:`python -m pytest -q software/ai/tests/test_spatial_median_fresh.py`
+- Result:PASS,3 tests; existing pytest-asyncio configuration deprecation warning.
+- Artifacts:named tests and AI-095 scorecard.
+- Hardware writes:0
+- Physical movements:0
+- Limitations:offline consistency only; model acceptance still fails.
+- Supersedes:none
+- Next dependency:AI-095 landmark baseline.
+
+### E-20260926-AI-097 — fresh median publication audit
+
+- Stage:S1
+- Lane:AI
+- Commit:`5b6d0bcdfd2cc2e54591aaccc793f3b7534de7a9` (implementation baseline plus result/test snapshot)
+- Change:audited publication snapshot.
+- Inputs/fixtures:repository with AI-095/096 artifacts and reviewed fixture allowlist.
+- Command:`python scripts/audit_github_snapshot.py`
+- Result:PASS;5784 paths,807.0 MiB,0 unresolved findings,14 reviewed synthetic fixtures.
+- Artifacts:audit stdout and repository snapshot.
+- Hardware writes:0
+- Physical movements:0
+- Limitations:heuristic audit; AI-041 protected-main PR publication blocker remains.
+- Supersedes:none; historical failures retained.
+- Next dependency:protected-branch PR/checks and AI-095 landmark baseline.

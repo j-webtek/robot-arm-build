@@ -354,3 +354,16 @@ and wrapped-yaw aggregation over five inverse-corrected views. Overall mean0.911
 This remains selected on reused15M data; no runtime estimator or qualification is
 installed. Next: freeze the same estimator/gates on fresh26M500 groups, then
 independently revisit uncertainty only if fresh evidence supports the estimator.
+
+
+### Fresh spatial median fails tail checks
+
+AI-095 through AI-097 evaluate unchanged median aggregation on500 fresh26M groups.
+All condition means/yaw-p95 improve, but appearance-shift tails rise14 -> 16 and
+brightness0.65 tails14 -> 15. Combined acceptance fails; no promotion, and26M is
+now consumed. Development success remains recorded without claiming generalization.
+
+Next: freeze a landmark-localization baseline with explicit geometry predictions
+and visibility/occlusion evaluation on development data. Repeated output-adjustment
+failures motivate changing the estimator rather than tuning against26M or relaxing
+limits. Fresh evaluation, uncertainty and physical calibration remain required.
