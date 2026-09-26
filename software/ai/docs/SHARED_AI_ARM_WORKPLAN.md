@@ -603,7 +603,6 @@ remove it only in the same commit that appends the resulting evidence row.
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
 | Arm/runtime lane | S1 | `software/src/rocell/models`, arm-side schema and unit tests | `main` from `ebe7eee` | ACTIVE |
-| AI/model | S1 | `eval/s1_geometry_cases_v0.json`, `tests/test_s1_geometry_cases.py` | main from `95b4786` | ACTIVE: analytic acceptance fixtures only |
 | Unclaimed | S2 | shadow runner/integration fixtures | — | AVAILABLE |
 | Unclaimed | S4 | controller adapter/receipts | — | AVAILABLE |
 
@@ -720,3 +719,46 @@ commissioning, or bounded physical result with its limitations intact.
 - Supersedes: none
 - Next dependency: fixture owners review the 14 existing test-literal findings;
   S1 still depends on arm-lane semantic agreement listed in AI-003.
+
+
+### E-20260926-AI-005 — analytic oriented-target acceptance cases
+
+- Stage: S1
+- Lane: AI
+- Commit: `72f12ffaa16aaf0bea002f335af8260afc432bb0` (evaluation-helper source baseline; new fixtures/tests and evidence committed together in this entry's containing commit)
+- Change: added 10 analytic cases for independent target geometry, exact edge,
+  uncertainty crossing, rotation, displaced targets and self-centering failure.
+- Inputs/fixtures: `software/ai/eval/s1_geometry_cases_v0.json`; exact file hashes
+  in `software/ai/eval/s1_geometry_evidence_v0.json`.
+- Command: `python -m pytest -q software/ai/tests/test_s1_geometry_cases.py software/ai/tests/test_prediction_margin.py`
+- Result: PASS, 7 tests including 10 analytic vectors. Rotated enclosing AABB
+  accepts a point the true key region rejects; self-centering hides displacement.
+- Artifacts: [vectors](../eval/s1_geometry_cases_v0.json),
+  [evidence](../eval/s1_geometry_evidence_v0.json), `tests/test_s1_geometry_cases.py`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: evaluation-only geometry; fixtures are not independent runtime
+  evidence. No schema/emitter/decoder change, qualification or integration completion.
+  These tests cannot establish provenance independence; that requires a registry.
+- Supersedes: none
+- Next dependency: arm-lane agreement on AI S1 proposal and independently evidenced
+  placement registry/oriented target-map semantics before v2 producer implementation.
+
+
+### E-20260926-AI-006 — geometry increment audit retains existing findings
+
+- Stage: S1
+- Lane: AI
+- Commit: `72f12ffaa16aaf0bea002f335af8260afc432bb0` (tracked baseline plus AI-005 working-tree fixtures)
+- Change: repeated the required read-only snapshot audit.
+- Inputs/fixtures: repository snapshot and `scripts/audit_github_snapshot.py`;
+  new geometry fixture/test files hashed in AI-005 evidence manifest.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: FAIL, exit 1; 5,590 paths, 784.7 MiB, same 14 existing
+  credential-literal-review findings in arm unit fixtures; no new AI-file findings.
+- Artifacts: scanner output locations match AI-004; no secret values retained.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: heuristic audit remains unresolved; no fixture-owner review claimed.
+- Supersedes: none (preserves AI-004 failed evidence)
+- Next dependency: fixture owners review findings; S1 semantic agreement remains pending.

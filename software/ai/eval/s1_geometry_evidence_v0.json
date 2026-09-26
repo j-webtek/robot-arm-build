@@ -1,0 +1,19 @@
+{
+  "source_commit": "72f12ffaa16aaf0bea002f335af8260afc432bb0",
+  "command": "python -m pytest -q software/ai/tests/test_s1_geometry_cases.py software/ai/tests/test_prediction_margin.py",
+  "result": "PASS",
+  "tests_passed": 7,
+  "analytic_cases": 10,
+  "hardware_writes": 0,
+  "physical_movements": 0,
+  "files_sha256": {
+    "software/ai/eval/s1_geometry_cases_v0.json": "5735603721bf3bf94000596a2c31bec1cc37ea63b765eadb4418d54e6ef40c5d",
+    "software/ai/tests/test_s1_geometry_cases.py": "127664478a9024340378ecb197dbabcc32fb8ea8e2d3d1413ced8528b77168f7",
+    "software/ai/tests/test_prediction_margin.py": "f491c91bacc9836c98f91aa1a186b0c1e316170c2fb443eade0e7e2fa372a56a",
+    "software/ai/vision/evaluate_prediction_margin.py": "4aa2b7c616d1152779d080186f5eaa83905a59322dfd6a1d7179195bd3cf7e3e"
+  },
+  "limitations": [
+    "Analytic evaluation only, not production v2 validation or physical qualification"
+  ],
+  "next_dependency": "Arm-lane S1 semantic agreement and independent placement registry"
+}

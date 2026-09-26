@@ -1,0 +1,192 @@
+{
+  "schema": "rocell.ai_s1_geometry_test_vectors.v0",
+  "scope": "ANALYTIC_TEST_ONLY",
+  "placement_source": "Hand-authored analytic fixture, not runtime evidence",
+  "cases": [
+    {
+      "id": "center",
+      "point_mm": [
+        100,
+        200
+      ],
+      "independent_center_mm": [
+        100,
+        200
+      ],
+      "yaw_rad": 0,
+      "half_extents_mm": [
+        7,
+        7
+      ],
+      "radius_mm": 6,
+      "expected_fit": true
+    },
+    {
+      "id": "edge_equal",
+      "point_mm": [
+        101,
+        200
+      ],
+      "independent_center_mm": [
+        100,
+        200
+      ],
+      "yaw_rad": 0,
+      "half_extents_mm": [
+        7,
+        7
+      ],
+      "radius_mm": 6,
+      "expected_fit": true
+    },
+    {
+      "id": "edge_crossing",
+      "point_mm": [
+        101.001,
+        200
+      ],
+      "independent_center_mm": [
+        100,
+        200
+      ],
+      "yaw_rad": 0,
+      "half_extents_mm": [
+        7,
+        7
+      ],
+      "radius_mm": 6,
+      "expected_fit": false
+    },
+    {
+      "id": "rotated_long_axis",
+      "point_mm": [
+        100,
+        203
+      ],
+      "independent_center_mm": [
+        100,
+        200
+      ],
+      "yaw_rad": 1.5707963267948966,
+      "half_extents_mm": [
+        5,
+        2
+      ],
+      "radius_mm": 1,
+      "expected_fit": true
+    },
+    {
+      "id": "rotated_short_axis",
+      "point_mm": [
+        103,
+        200
+      ],
+      "independent_center_mm": [
+        100,
+        200
+      ],
+      "yaw_rad": 1.5707963267948966,
+      "half_extents_mm": [
+        5,
+        2
+      ],
+      "radius_mm": 1,
+      "expected_fit": false
+    },
+    {
+      "id": "wrong_orientation",
+      "point_mm": [
+        100,
+        203
+      ],
+      "independent_center_mm": [
+        100,
+        200
+      ],
+      "yaw_rad": 0,
+      "half_extents_mm": [
+        5,
+        2
+      ],
+      "radius_mm": 1,
+      "expected_fit": false
+    },
+    {
+      "id": "displaced_target",
+      "point_mm": [
+        150,
+        200
+      ],
+      "independent_center_mm": [
+        100,
+        200
+      ],
+      "yaw_rad": 0,
+      "half_extents_mm": [
+        7,
+        7
+      ],
+      "radius_mm": 1,
+      "expected_fit": false
+    },
+    {
+      "id": "disk_too_large",
+      "point_mm": [
+        100,
+        200
+      ],
+      "independent_center_mm": [
+        100,
+        200
+      ],
+      "yaw_rad": 0,
+      "half_extents_mm": [
+        7,
+        7
+      ],
+      "radius_mm": 7.001,
+      "expected_fit": false
+    },
+    {
+      "id": "rotated_aabb_false_accept",
+      "point_mm": [
+        104,
+        204
+      ],
+      "independent_center_mm": [
+        100,
+        200
+      ],
+      "yaw_rad": 0.7853981633974483,
+      "half_extents_mm": [
+        5,
+        2
+      ],
+      "radius_mm": 0.1,
+      "expected_fit": false
+    },
+    {
+      "id": "prediction_centered_control",
+      "point_mm": [
+        150,
+        200
+      ],
+      "independent_center_mm": [
+        150,
+        200
+      ],
+      "yaw_rad": 0,
+      "half_extents_mm": [
+        7,
+        7
+      ],
+      "radius_mm": 1,
+      "expected_fit": true
+    }
+  ],
+  "limitations": [
+    "The prediction_centered_control demonstrates a geometric false reassurance; it is prohibited runtime provenance.",
+    "These cases test geometry only; independent provenance must be enforced by the future consumer registry.",
+    "No v2 wire schema or calibration authority."
+  ]
+}
