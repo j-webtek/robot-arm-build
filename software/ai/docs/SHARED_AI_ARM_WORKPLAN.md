@@ -599,7 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-| AI | S1 | visibility weighted fit and abstention | feature/translation-pair-evidence | ACTIVE |
 
 
 
@@ -5085,3 +5084,51 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic audit; AI-041 protected-main publication blocker remains.
 - Supersedes: none; historical failures and shared integration status retained.
 - Next dependency: Protected-branch PR/checks and AI-154 development study.
+
+### E-20260926-AI-157 — visibility weighted fit development study
+
+- Stage: S1
+- Lane: AI
+- Commit: `7cb6012e61febd434718967b5cad0801124db13f` (frozen source; results/tests committed with evidence)
+- Change: visibility weighted fit development study.
+- Inputs/fixtures: 800 reused15M200 images,four conditions,t05 checkpoint356a4dec05c6c2194c6d31542fed0d7199d5e989eb4b7678888d1a01aa493281; exact hashes in eval/visible_candidate_v0_plan.json.
+- Command: `python software/ai/vision/evaluate_visible_candidates.py`
+- Result: FAIL overall. Coverage standard/appearance/partial/full200/200/194/192 of200 (100/100/97/96%). Same accepted subset subpixel→weighted means3.040→3.038,2.450→2.462,4.757→4.375,5.045→3.965mm. >3mm tails125→132,77→85,166→162,178→156. Full yawp951.480→1.658 exceeds1.1x; standard/appearance tails and appearance mean fail. Predicted0.5 support,minimum3,probability-weighted rigid fit; abstentions retained.
+- Artifacts: eval/visible_candidate_v0_report.json; frozen decoder/runner/plan
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Uncalibrated visibility,synthetic development,all-corner candidate selection still unchanged. No qualification or boundary change; prior visibility/device parity blockers remain.
+- Supersedes: none; failures and integration statuses retained.
+- Next dependency: Freeze a bounded ablation separating hard visibility support (equal weights among supported corners) from probability weighting on the same development cases. This tests whether continuous weights harm clear scenes without oracle visibility or threshold tuning.
+
+### E-20260926-AI-158 — visibility weighted fit verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `7cb6012e61febd434718967b5cad0801124db13f` (frozen source; results/tests committed with evidence)
+- Change: visibility weighted fit verification.
+- Inputs/fixtures: Analytic rotated rectangle with excluded corrupted corner,abstention case,and AI-157 pinned report.
+- Command: `python -m pytest -q software/ai/tests/test_visible_candidates.py`
+- Result: PASS,2 tests; weighted transform,minimum support,hashes,coverage,same-subset metrics and gates verified. Existing pytest-asyncio warning.
+- Artifacts: software/ai/tests/test_visible_candidates.py
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Consistency checks not qualification; batch unchanged,shared boundary suite not triggered.
+- Supersedes: none; failures and integration statuses retained.
+- Next dependency: AI-157 support/weight ablation.
+
+### E-20260926-AI-159 — visibility fit publication audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `7cb6012e61febd434718967b5cad0801124db13f` (frozen source; results/tests committed with evidence)
+- Change: visibility fit publication audit.
+- Inputs/fixtures: Repository with AI-157/158 and reviewed fixture allowlist.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS;5923 paths,835.7 MiB,0 unresolved findings,14 reviewed synthetic fixtures.
+- Artifacts: audit stdout and snapshot
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic audit; AI-041 protected-main publication blocker remains.
+- Supersedes: none; failures and integration statuses retained.
+- Next dependency: Protected-branch PR/checks and AI-157 ablation.

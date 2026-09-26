@@ -489,3 +489,8 @@ Fixed3x3 probability centroids refine the already-selected candidates without ch
 ### Fresh subpixel evaluation (AI-154)
 
 Unchanged refinement passes all12 relative checks on28M500 fresh groups/2000 images. Means standard3.315,appearance2.418,partial4.792,full5.478mm; >3mm tails361/183/436/470 of500. The fresh relative improvement does not qualify localization, particularly under obstruction.28M now consumed. Next use only15M development to test predicted-visibility-weighted fitting with abstention below three supported corners; report coverage and errors together, no oracle visibility. Source `0fcabf20a80d825746bd561b69af9aaf7d8d5f69`; `eval/subpixel_candidate_fresh_v0_report.json`. Existing device parity and physical-calibration blockers remain.
+
+
+### Visibility-weighted fitting (AI-157)
+
+Fixed predicted support>=0.5,minimum3 corners and probability-weighted rigid fit retain96–100% coverage. Accepted full-occlusion mean improves5.045→3.965mm, but standard/appearance >3mm tails worsen125→132 and77→85; full yawp95 exceeds1.1x. Overall gate FAIL; no decoder promotion. Next freeze equal-weight supported-corner ablation against continuous weighting, keeping threshold and candidate selection unchanged. Source `7cb6012e61febd434718967b5cad0801124db13f`; `eval/visible_candidate_v0_report.json`. Coverage is research acceptance, not arm admission or calibrated confidence.
