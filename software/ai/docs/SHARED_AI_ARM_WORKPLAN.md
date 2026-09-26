@@ -605,7 +605,7 @@ remove it only in the same commit that appends the resulting evidence row.
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
 | Unclaimed | S2 | qualified perception adapter and complete shared gate | — | AVAILABLE |
-| Unclaimed | S4 | controller adapter/receipts | — | AVAILABLE |
+| Arm lane | S4 | zero-write T102 encoder, single-use preview permit, and receipt | `main` from `009b49e` | ACTIVE |
 
 ## Worker update procedure
 
