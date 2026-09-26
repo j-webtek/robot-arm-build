@@ -599,7 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-| AI | S1 | fixed temperature pooling comparison | feature/translation-pair-evidence | ACTIVE |
 
 
 
@@ -4495,3 +4494,67 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic audit; AI-041 protected-main publication blocker remains.
 - Supersedes: none; failures and integration statuses preserved.
 - Next dependency: Protected-branch PR/checks and AI-129 experiment.
+
+### E-20260926-AI-132 — fixed temperature training comparison
+
+- Stage: S1
+- Lane: AI
+- Commit: `f950639a36a1433840a29410a934f37752aaff4e` (frozen source baseline; results/tests committed with evidence)
+- Change: fixed temperature training comparison.
+- Inputs/fixtures: 2400 training/800 reused development images,600 groups from14000000/200 from15000000,four conditions. Exact sources/catalog/baseline hashes in train/landmark_temperature_v0_plan.json.
+- Command: `python software/ai/train/train_temperature_visibility.py`
+- Result: FAIL overall relative gate despite visibility PASS. Temperature1→0.5 clear recall2060→2722/2736 (75.29%→99.49%), hidden false-visible42→2/201. Mean errors standard/appearance/partial/full9.277/13.389/11.361/11.504→7.714/11.530/10.465/10.659mm. >3mm tails197/200/197/198→194/196/197/199 out of200 each; full-condition tail regression fails. All relative mean/yaw checks pass. Both select epoch8. Checkpoint hashes t1=8727f2120c64a4d0c958410ba142cf4d0647528379fe1b8a63a9ee79177478b7,t05=356a4dec05c6c2194c6d31542fed0d7199d5e989eb4b7678888d1a01aa493281.
+- Artifacts: eval/landmark_temperature_v0_*; ignored checkpoints
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: One seed,reused synthetic development,GPU nondeterminism. Absolute localization remains far worse than pose baseline. Reference self-comparison is bookkeeping; no qualification.
+- Supersedes: none; historical failures and shared integration status preserved.
+- Next dependency: Freeze diagnostic of t05 soft-coordinate bias versus heatmap peak and visibility failures; retain fixed criteria and require fresh evidence before promotion.
+
+### E-20260926-AI-133 — temperature inference parity
+
+- Stage: S1
+- Lane: AI
+- Commit: `ff92b9d5f3b9faebb9b451e3b3a3e94a342f35ae` (frozen source baseline; results/tests committed with evidence)
+- Change: temperature inference parity.
+- Inputs/fixtures: AI-132 checkpoints and identical800 development pixels; exact hashes in eval/temperature_visibility_{t1,t05}_parity_plan.json.
+- Command: `python software/ai/vision/diagnose_temperature_visibility_parity.py`
+- Result: FAIL zero-disagreement criterion both. CPU1/32 and CPU1/CUDA1 decisions agree for both; CPU1/CUDA32 differs by1 decision each. Max cross-device probability deltas t1=0.000275016,t05=0.000681102. Both CUDA32 predictions exactly reproduce retained training evaluation.
+- Artifacts: eval/temperature_visibility_{t1,t05}_parity_report.json
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: One environment; no cross-platform guarantee. No correction, decision threshold tuning or qualification.
+- Supersedes: none; historical failures and shared integration status preserved.
+- Next dependency: Diagnose remaining near-threshold t05 case alongside localization; do not erase retained parity failure.
+
+### E-20260926-AI-134 — temperature verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `ff92b9d5f3b9faebb9b451e3b3a3e94a342f35ae` (frozen source baseline; results/tests committed with evidence)
+- Change: temperature verification.
+- Inputs/fixtures: Analytic constant features,seeded networks,AI-132/133 pinned reports/manifests.
+- Command: `python -m pytest -q software/ai/tests/test_temperature_visibility.py`
+- Result: PASS,4 tests; initialization,pooling agreement,gradient routing,hashes,pixels,selection,criteria,parity recounts and exact GPU reproduction verified. Existing pytest-asyncio warning.
+- Artifacts: software/ai/tests/test_temperature_visibility.py
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Consistency tests do not qualify a model. Batch contract unchanged; shared boundary suite not triggered.
+- Supersedes: none; historical failures and shared integration status preserved.
+- Next dependency: AI-132/133 diagnostics.
+
+### E-20260926-AI-135 — temperature publication audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `ff92b9d5f3b9faebb9b451e3b3a3e94a342f35ae` (frozen source baseline; results/tests committed with evidence)
+- Change: temperature publication audit.
+- Inputs/fixtures: Repository snapshot with AI-132/133/134 and reviewed fixture allowlist.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS;5876 paths,825.1 MiB,0 unresolved findings,14 reviewed synthetic fixtures.
+- Artifacts: audit stdout and snapshot
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic audit; AI-041 protected-main publication blocker remains.
+- Supersedes: none; historical failures and shared integration status preserved.
+- Next dependency: Protected-branch PR/checks and AI-132 diagnostics.

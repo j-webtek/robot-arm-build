@@ -449,3 +449,8 @@ Matched training replaces hard peaks with detached full-softmax weighting of3x3 
 ### Weighted spread diagnosis (AI-129)
 
 Rejected clear corners have higher heatmap entropy4.94 versus4.24 and lower truth-neighborhood mass0.468 versus0.535, but smaller peak error5.19 versus12.36px. This supports investigating spread without attributing all rejection to position error. Five cross-device threshold flips lie within0.000110 of0.5 on CPU. No threshold was changed. Next freeze one matched temperature0.5 versus1.0 weighting hypothesis, without a sweep; retain unchanged criteria and require future fresh evaluation. Source `6e4105736ad903ac5b91981c24ff2f514c753a1a`; `eval/weighted_spread_v0_report.json`. Diagnostic truth-centered mass is never runtime calibration.
+
+
+### Fixed temperature0.5 comparison (AI-132/133)
+
+The one frozen0.5-versus1.0 training comparison passes relative visibility: clear recall99.49% and hidden false-visible2/201 versus75.29% and42/201. Mean localization improves in each condition, yet the full-occlusion >3mm tail increases198→199/200; the overall gate fails. Both models retain one CPU1/CUDA32 decision mismatch. No qualification or threshold change. Next diagnose soft-coordinate bias versus peak localization on the frozen0.5 checkpoint and retain the parity failure. Source training `f950639a36a1433840a29410a934f37752aaff4e`, parity `ff92b9d5f3b9faebb9b451e3b3a3e94a342f35ae`. Reports landmark_temperature_v0_* and temperature_visibility_*_parity_report.json. Reused development and one seed cannot establish generalization.
