@@ -605,7 +605,7 @@ remove it only in the same commit that appends the resulting evidence row.
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
 | Unclaimed | S2 | qualified perception adapter and complete shared gate | — | AVAILABLE |
-| Unclaimed | S4 | independently review sealed r97 packet `987cbe86...b416`, then bind a separately measured configuration epoch | — | AVAILABLE |
+| Unclaimed | S4 | independently review sealed r97 packet `987cbe86...b416` and collect/review all eight measured epoch components | — | AVAILABLE |
 
 ## Worker update procedure
 
@@ -2478,3 +2478,40 @@ commissioning, or bounded physical result with its limitations intact.
   measured-epoch, installation, startup, and physical blockers remain.
 - Next dependency: an independent reviewer publishes a separate decision bound
   to the exact packet SHA-256, followed by measured configuration-epoch intake.
+
+### E-20260926-ARM-034 — measured configuration-epoch intake contract
+
+- Stage: S4
+- Lane: ARM
+- Change: added a strict zero-I/O intake and assessment for the configuration
+  epoch required by the production runtime. It binds the exact r97 review
+  packet, candidate app, protocol source, joint-mapping source, optional
+  predecessor, and all eight ordered workcell components to retained evidence
+  plus separate independent-review decisions.
+- Bootstrap decision: the candidate app SHA is explicit but remains separate
+  from the epoch digest. This prevents a circular requirement in which the app
+  binary must contain an epoch hash that itself depends on the final app hash.
+  A later epoch-bound build embeds the stable epoch digest and attests its final
+  app SHA separately.
+- Admission behavior: synthetic, unreviewed, future-dated, stale, reordered,
+  incomplete, or release-identity-mismatched inputs block. A complete intake
+  reaches only `READY_FOR_EPOCH_BOUND_BUILD_PROPOSAL`; installation, controller
+  startup, transport, execution, hardware access, and physical authority remain
+  schema-fixed false.
+- Artifacts: typed intake/report implementation, closed JSON schemas, public
+  exports, unit/schema tests, schema documentation, and controller-runtime
+  bootstrap documentation.
+- Results: bounded shared AI/arm, r97, runtime, and epoch-intake suite PASS, 228
+  tests in 16.25 seconds; documentation PASS for 23 maintained documents and
+  two SVG assets; snapshot audit PASS for 5,719 paths and 903.8 MiB with zero
+  unresolved findings and 14 reviewed synthetic fixtures; diff check PASS.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: no real review decision or physical component evidence was
+  supplied, so no measured epoch record was created and no build is presently
+  ready. Tests use synthetic evidence strictly to exercise contract behavior.
+- Supersedes: ARM-033 only for readiness to consume future measured evidence;
+  independent review and all physical evidence collection remain external.
+- Next dependency: supply an independent decision for packet
+  `987cbe86d98440734d8336c704f1ecd89692675a9cb1620cb674e4132957b416`
+  and independently reviewed retained measurements for all eight components.

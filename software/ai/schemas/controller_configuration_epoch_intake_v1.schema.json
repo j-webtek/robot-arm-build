@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rocell.local/schemas/controller_configuration_epoch_intake_v1.schema.json",
+  "title": "RoCell measured controller configuration epoch intake v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "epoch_id", "predecessor_configuration_epoch_sha256",
+    "r97_review_packet_sha256", "firmware_independent_review_sha256",
+    "firmware_review_disposition", "candidate_app_sha256",
+    "protocol_source_sha256", "joint_mapping_source_sha256", "components",
+    "epoch_scope", "app_digest_separate_to_avoid_self_reference",
+    "hardware_access", "installation_authorized", "controller_start_authorized",
+    "execution_authorized", "physical_authority", "configuration_epoch_sha256"
+  ],
+  "properties": {
+    "schema": {"const": "rocell.controller_configuration_epoch_intake.v1"},
+    "epoch_id": {"$ref": "#/$defs/identifier"},
+    "predecessor_configuration_epoch_sha256": {
+      "oneOf": [{"$ref": "#/$defs/sha256"}, {"type": "null"}]
+    },
+    "r97_review_packet_sha256": {"$ref": "#/$defs/sha256"},
+    "firmware_independent_review_sha256": {"$ref": "#/$defs/sha256"},
+    "firmware_review_disposition": {"$ref": "#/$defs/reviewDisposition"},
+    "candidate_app_sha256": {"$ref": "#/$defs/sha256"},
+    "protocol_source_sha256": {"$ref": "#/$defs/sha256"},
+    "joint_mapping_source_sha256": {"$ref": "#/$defs/sha256"},
+    "components": {
+      "type": "array", "minItems": 8, "maxItems": 8,
+      "prefixItems": [
+        {"$ref": "#/$defs/softwareBuild"},
+        {"$ref": "#/$defs/cameraSupportOptics"},
+        {"$ref": "#/$defs/boardTagsBench"},
+        {"$ref": "#/$defs/armControllerTool"},
+        {"$ref": "#/$defs/powerSystem"},
+        {"$ref": "#/$defs/keyboardStation"},
+        {"$ref": "#/$defs/phoneStation"},
+        {"$ref": "#/$defs/emptyCellSafety"}
+      ],
+      "items": false
+    },
+    "epoch_scope": {"const": "RELEASE_IDENTITY_PLUS_MEASURED_WORKCELL"},
+    "app_digest_separate_to_avoid_self_reference": {"const": true},
+    "hardware_access": {"const": false},
+    "installation_authorized": {"const": false},
+    "controller_start_authorized": {"const": false},
+    "execution_authorized": {"const": false},
+    "physical_authority": {"const": false},
+    "configuration_epoch_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "identifier": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"},
+    "reviewDisposition": {"enum": ["INDEPENDENTLY_APPROVED", "UNREVIEWED", "REJECTED"]},
+    "component": {
+      "type": "object", "additionalProperties": false,
+      "required": ["component_id", "evidence_sha256", "independent_review_sha256",
+        "measured_monotonic_ns", "valid_until_monotonic_ns", "evidence_origin",
+        "review_disposition"],
+      "properties": {
+        "component_id": {"type": "string"},
+        "evidence_sha256": {"$ref": "#/$defs/sha256"},
+        "independent_review_sha256": {"$ref": "#/$defs/sha256"},
+        "measured_monotonic_ns": {"type": "integer", "minimum": 1},
+        "valid_until_monotonic_ns": {"type": "integer", "minimum": 1},
+        "evidence_origin": {"enum": ["PHYSICAL_RETAINED_ORIGINALS", "SYNTHETIC_TEST_ONLY"]},
+        "review_disposition": {"$ref": "#/$defs/reviewDisposition"}
+      }
+    },
+    "softwareBuild": {"allOf": [{"$ref": "#/$defs/component"}, {"properties": {"component_id": {"const": "software_build"}}}]},
+    "cameraSupportOptics": {"allOf": [{"$ref": "#/$defs/component"}, {"properties": {"component_id": {"const": "camera_support_optics"}}}]},
+    "boardTagsBench": {"allOf": [{"$ref": "#/$defs/component"}, {"properties": {"component_id": {"const": "board_tags_bench"}}}]},
+    "armControllerTool": {"allOf": [{"$ref": "#/$defs/component"}, {"properties": {"component_id": {"const": "arm_controller_tool"}}}]},
+    "powerSystem": {"allOf": [{"$ref": "#/$defs/component"}, {"properties": {"component_id": {"const": "power_system"}}}]},
+    "keyboardStation": {"allOf": [{"$ref": "#/$defs/component"}, {"properties": {"component_id": {"const": "keyboard_station"}}}]},
+    "phoneStation": {"allOf": [{"$ref": "#/$defs/component"}, {"properties": {"component_id": {"const": "phone_station"}}}]},
+    "emptyCellSafety": {"allOf": [{"$ref": "#/$defs/component"}, {"properties": {"component_id": {"const": "empty_cell_safety"}}}]}
+  }
+}

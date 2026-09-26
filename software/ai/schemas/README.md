@@ -126,6 +126,13 @@ feedback framing, terminal closure on ambiguity, and no automatic retry. These
 schemas also bind each r97 `T=1021` accepted-once ordinal before another command
 or feedback exchange; that receipt explicitly does not prove physical arrival.
 They describe an offline contract only and cannot authorize transport.
+The [measured configuration-epoch intake](controller_configuration_epoch_intake_v1.schema.json)
+and [intake assessment](controller_configuration_epoch_intake_report_v1.schema.json)
+bind the independently reviewed release packet to all eight measured workcell
+components. The candidate app digest is explicit but separate from the epoch
+digest, avoiding a self-referential firmware build. A passing assessment makes
+only an epoch-bound build proposal ready; installation, startup, transport,
+execution, and physical authority remain false.
 
 [Precision observation v2](precision_observation_v2.schema.json) carries explicit
 localization abstention or a reference to externally qualified uncertainty.
