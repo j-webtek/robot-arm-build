@@ -599,8 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-- AI lane / S1: paired key-displacement objective comparison on identical50% occlusion inputs; fixed budget/selection/criteria, no qualification.
-
 
 
 
@@ -6031,3 +6029,54 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic audit; AI-041 protected-main publication blocker retained.
 - Supersedes: none; prior failures and arm/integration status retained.
 - Next dependency: Stop mix-ratio tuning. Freeze a bounded paired objective comparison using identical50% occlusion images and starting checkpoint: existing pose-parameter loss versus differentiable key-position displacement loss, preserving common epoch selection and acceptance criteria. Synthetic target geometry is training supervision only, never runtime calibration.
+
+
+### E-20260926-AI-202 — paired key displacement objective
+
+- Stage: S1
+- Lane: AI
+- Commit: `45ec6182f0193d8a57f83a30936d80968bc0431b` (frozen source; results/tests committed with evidence)
+- Change: paired key displacement objective.
+- Inputs/fixtures: training14M600 x4,development15M200 x4; initial checkpoint0fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d. Both arms50% occlusion,rectangle training/ellipse development,4 epochs,AdamW0.0001,batch64,seed260926. Control4:4:1 pose loss,candidate46-key squared displacement/900. Source hashes in train/pose_keyloss_v0_plan.json; pixel/checkpoint hashes in eval/pose_keyloss_v0_report.json.
+- Command: `python software/ai/train/train_pose_keyloss.py`
+- Result: FAIL overall, only baseline appearance-mean criterion fails. Candidate means standard0.821,appearance0.863,partial0.947,full1.101mm vs baseline0.853/0.833/1.026/1.229 and control0.843/0.870/0.973/1.127. Candidate tails3/5/5/8 (21total) vs baseline5/7/9/11 (32) and control4/6/6/10 (26). All paired-control criteria pass; obstruction tails13 vs baseline20/control16. Both select epoch3. control checkpoint SHA256 1739de33237f58dd39033d44ff3532b3619ae69daccc62642aad3d4ad773a87b; occlusion checkpoint SHA256 2fe0f07e235f68f994e2d0f46f59794c6cdad43563c40f0f3de54d3daf19d33d
+- Artifacts: train/key_displacement_loss.py; train/train_pose_keyloss.py; eval/pose_keyloss_v0_report.json; tests/test_pose_keyloss.py; ignored results/pose_keyloss_v0_* checkpoints.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Single seed,GPU nondeterminism,reused synthetic development; candidate objective changes gradient scaling as well as geometric weighting. Arm name occlusion denotes key-loss candidate for inherited report compatibility. No promotion,qualification or fresh holdout.
+- Supersedes: none; previous failed evidence and arm/integration status retained.
+- Next dependency: Freeze paired standard-versus-appearance residual attribution for baseline/control/key-loss candidate on retained cases, identifying whether the remaining appearance regression is broad translation bias or concentrated failures before choosing one corrective training change. No acceptance-rule relaxation or fresh holdout until development criteria pass.
+
+
+### E-20260926-AI-203 — key displacement verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `45ec6182f0193d8a57f83a30936d80968bc0431b` (frozen source; results/tests committed with evidence)
+- Change: key displacement verification.
+- Inputs/fixtures: training14M600 x4,development15M200 x4; initial checkpoint0fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d. Both arms50% occlusion,rectangle training/ellipse development,4 epochs,AdamW0.0001,batch64,seed260926. Control4:4:1 pose loss,candidate46-key squared displacement/900. Source hashes in train/pose_keyloss_v0_plan.json; pixel/checkpoint hashes in eval/pose_keyloss_v0_report.json.
+- Command: `python -m pytest -q software/ai/tests/test_pose_keyloss.py`
+- Result: PASS,2 tests: scalar geometry agreement,zero/known translation loss,finite-difference autograd check,identical training pixels,hashes,metrics,selection and comparison criteria. Existing pytest-asyncio warning.
+- Artifacts: train/key_displacement_loss.py; train/train_pose_keyloss.py; eval/pose_keyloss_v0_report.json; tests/test_pose_keyloss.py; ignored results/pose_keyloss_v0_* checkpoints.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Implementation verification only; batch contract unchanged,shared boundary tests not triggered.
+- Supersedes: none; previous failed evidence and arm/integration status retained.
+- Next dependency: Freeze paired standard-versus-appearance residual attribution for baseline/control/key-loss candidate on retained cases, identifying whether the remaining appearance regression is broad translation bias or concentrated failures before choosing one corrective training change. No acceptance-rule relaxation or fresh holdout until development criteria pass.
+
+
+### E-20260926-AI-204 — key displacement publication audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `45ec6182f0193d8a57f83a30936d80968bc0431b` (frozen source; results/tests committed with evidence)
+- Change: key displacement publication audit.
+- Inputs/fixtures: training14M600 x4,development15M200 x4; initial checkpoint0fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d. Both arms50% occlusion,rectangle training/ellipse development,4 epochs,AdamW0.0001,batch64,seed260926. Control4:4:1 pose loss,candidate46-key squared displacement/900. Source hashes in train/pose_keyloss_v0_plan.json; pixel/checkpoint hashes in eval/pose_keyloss_v0_report.json.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS;6001 paths,846.3 MiB,0 unresolved findings,14 reviewed synthetic fixtures.
+- Artifacts: train/key_displacement_loss.py; train/train_pose_keyloss.py; eval/pose_keyloss_v0_report.json; tests/test_pose_keyloss.py; ignored results/pose_keyloss_v0_* checkpoints.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic audit; protected-main publication blocker AI-041 retained.
+- Supersedes: none; previous failed evidence and arm/integration status retained.
+- Next dependency: Freeze paired standard-versus-appearance residual attribution for baseline/control/key-loss candidate on retained cases, identifying whether the remaining appearance regression is broad translation bias or concentrated failures before choosing one corrective training change. No acceptance-rule relaxation or fresh holdout until development criteria pass.
