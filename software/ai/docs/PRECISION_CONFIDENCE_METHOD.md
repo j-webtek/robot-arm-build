@@ -479,3 +479,8 @@ Unchanged checkpoint/decoder/cost passes all12 relative checks on fresh27M500 gr
 ### Development residual decomposition (AI-148)
 
 Oracle diagnostic counterfactuals isolate translation-only mean4.521–6.400mm versus rotation-only0.918–1.131mm. Nearest4px-grid truth corners yield1.767mm mean and45/200 >3mm images per condition; this is an illustrative quantization reference, not a lower bound or runtime correction. Translation dominates the remaining mean, beyond grid effects alone. Next freeze fixed3x3 probability-weighted refinement of the selected candidates, preserving candidate combination selection/cost. Fresh27M remains untouched by this development analysis; no qualification. Source `03b4779971bb22804955eef77bd9122caa02be3d`; `eval/geometry_residual_v0_report.json`.
+
+
+### Selected-candidate subpixel refinement (AI-151)
+
+Fixed3x3 probability centroids refine the already-selected candidates without changing candidate combination/cost. All12 relative development checks pass: standard mean5.946→3.040mm,appearance4.716→2.450mm,partial6.312→4.773mm,full6.550→5.236mm. Absolute >3mm counts77–186/200 remain too high. Candidate choices and original poses exactly match the frozen grid report. Next freeze28M500 fresh groups for unchanged refinement; prior27M consumed. No calibration,qualification or runtime change. Source `d17b76d53ac6d9a311d83fe9538094229f1098ad`; `eval/subpixel_candidate_v0_report.json`.

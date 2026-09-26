@@ -599,7 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-| AI | S1 | selected candidate subpixel refinement | feature/translation-pair-evidence | ACTIVE |
 
 
 
@@ -4987,3 +4986,51 @@ commissioning, or bounded physical result with its limitations intact.
   without changing the shared contract, while the arm lane must commission
   measured calibration, collision, installed-controller, and review evidence
   before any physical admission.
+
+### E-20260926-AI-151 — selected candidate subpixel development comparison
+
+- Stage: S1
+- Lane: AI
+- Commit: `d17b76d53ac6d9a311d83fe9538094229f1098ad` (frozen source; results/tests committed with evidence)
+- Change: selected candidate subpixel development comparison.
+- Inputs/fixtures: 800 reused15M200 images,four conditions,t05 checkpoint356a4dec05c6c2194c6d31542fed0d7199d5e989eb4b7678888d1a01aa493281. Exact source/input hashes in eval/subpixel_candidate_v0_plan.json.
+- Command: `python software/ai/vision/evaluate_subpixel_candidates.py`
+- Result: PASS all12 relative checks. Grid→subpixel mean standard5.946→3.040,appearance4.716→2.450,partial6.312→4.773,full6.550→5.236mm. >3mm tails183→125,168→77,180→172,192→186/200. Refined yawp951.285/1.236/1.594/1.523deg. Candidate choices/cost unchanged; fixed clipped3x3 probability centroid then same rigid fit.
+- Artifacts: eval/subpixel_candidate_v0_report.json; decoder/runner/frozen plan
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Development pass only; absolute errors and occlusion tails remain high. Synthetic projection/dimensions not measured calibration; visibility/device-stability blockers remain. No qualification or batch-boundary change.
+- Supersedes: none; prior failures and integration statuses retained.
+- Next dependency: Freeze fresh28M500-group evaluation of unchanged refinement/checkpoint/selection before further tuning;27M consumed. No runtime promotion.
+
+### E-20260926-AI-152 — subpixel verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `d17b76d53ac6d9a311d83fe9538094229f1098ad` (frozen source; results/tests committed with evidence)
+- Change: subpixel verification.
+- Inputs/fixtures: Analytic rigid rectangle,AI-151 manifest/800 rows and retained AI-142 report.
+- Command: `python -m pytest -q software/ai/tests/test_subpixel_candidates.py`
+- Result: PASS,2 tests; hashes,rigid fit,metrics/gates and exact unchanged candidate choices/original poses/grid scores verified. Existing pytest-asyncio warning.
+- Artifacts: software/ai/tests/test_subpixel_candidates.py
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Implementation verification only; boundary unchanged,shared boundary suite not triggered.
+- Supersedes: none; prior failures and integration statuses retained.
+- Next dependency: AI-151 fresh evaluation.
+
+### E-20260926-AI-153 — subpixel publication audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `d17b76d53ac6d9a311d83fe9538094229f1098ad` (frozen source; results/tests committed with evidence)
+- Change: subpixel publication audit.
+- Inputs/fixtures: Repository with AI-151/152 and reviewed fixture allowlist.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS;5913 paths,833.0 MiB,0 unresolved findings,14 reviewed synthetic fixtures.
+- Artifacts: audit stdout and repository snapshot
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic audit; AI-041 protected-main publication blocker remains.
+- Supersedes: none; prior failures and integration statuses retained.
+- Next dependency: Protected-branch PR/checks and AI-151 fresh evaluation.
