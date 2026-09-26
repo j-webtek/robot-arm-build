@@ -355,6 +355,12 @@ from .production_controller_runtime_contract_v1 import (
     RuntimeCommandAcknowledgmentRecordV1,
     RuntimeCommandFrameV1,
 )
+from .r97_independent_review_packet import (
+    R97IndependentReviewPacketError,
+    R97ReviewPacketResult,
+    build_r97_review_packet,
+    inspect_r97_review_packet,
+)
 from .prehardware_layout_study import (
     LayoutAxisValueEvidence,
     LayoutCandidatePromotion,
@@ -1106,6 +1112,10 @@ __all__ = [
     "ProductionControllerRuntimeContractError",
     "ProductionControllerRuntimeContractV1",
     "ProductionControllerRuntimeManifestV1",
+    "R97IndependentReviewPacketError",
+    "R97ReviewPacketResult",
+    "build_r97_review_packet",
+    "inspect_r97_review_packet",
     "ProductionRuntimeState",
     "RuntimeAdmissionRecordV1",
     "RuntimeCommandAcknowledgmentRecordV1",
