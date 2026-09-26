@@ -605,7 +605,7 @@ remove it only in the same commit that appends the resulting evidence row.
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
 | Unclaimed | S2 | qualified perception adapter and complete shared gate | — | AVAILABLE |
-| Arm lane | S4 | published zero-write schemas and golden fixtures | codex/s4-zero-write-schemas from 5201f2e | ACTIVE |
+| Unclaimed | S4 | installed controller mapping and firmware qualification | — | AVAILABLE |
 
 ## Worker update procedure
 
@@ -2008,3 +2008,56 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: heuristic findings unresolved; no clean audit claim.
 - Supersedes: none
 - Next dependency: fixture-owner review independently of AI research.
+
+### E-20260926-ARM-018 — published zero-write controller boundary
+
+- Stage: S4
+- Lane: ARM
+- Commit: `b858420` (implementation commit; evidence row committed separately)
+- Change: published strict Draft 2020-12 schemas for the Waveshare T=102
+  encoding profile, single-use preview permit, zero-write preview receipt,
+  hash-chained sole-writer journal, and lifecycle report. Added stable
+  serializations for profile and permit plus a committed exact-byte T=102
+  fixture generated through the existing sealed-envelope path.
+- Inputs/fixtures: synthetic ready v2 envelope from the established arm test
+  factory; `software/tests/fixtures/zero_write_waveshare_v1/t102_waypoint_1.jsonl`;
+  fixed offline profile and monotonic timestamps.
+- Command: `$env:PYTHONPATH='software/src;software/ai/src;software/tests/unit'; python -m pytest -q software/ai/tests software/tests/unit/test_model_motion_ingress_v2.py software/tests/unit/test_model_motion_sequence_journal.py software/tests/unit/test_model_motion_sequence_coordinator.py software/tests/unit/test_trajectory_execution_envelope_v2.py software/tests/unit/test_zero_write_waveshare_adapter_v1.py software/tests/unit/test_zero_write_sole_writer_v1.py software/tests/integration/test_zero_write_waveshare_contract_v1.py`
+- Result: PASS, 210 tests. Runtime documents validate against all five closed
+  schemas; exact wire bytes and their SHA-256 match the committed fixture;
+  content hashes recompute; the journal round-trips; unpublished fields and
+  asserted hardware authority reject.
+- Artifacts: five `software/ai/schemas/zero_write_*_v1.schema.json` files,
+  schema README, golden JSONL fixture, and
+  `software/tests/integration/test_zero_write_waveshare_contract_v1.py`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: all inputs and bytes are synthetic/offline. The profile binds a
+  controller-joint-mapping hash but does not prove that mapping, firmware
+  version, acknowledgement grammar, feedback behavior, or installed hardware.
+  The encoder still owns no transport or physical authority.
+- Supersedes: none; extends ARM-014 and ARM-016 with a published interchange
+  boundary.
+- Next dependency: independently commission the installed controller mapping
+  and firmware evidence before any S4 readiness or physical dispatch claim.
+
+### E-20260926-ARM-019 — zero-write schema audit findings retained
+
+- Stage: S4
+- Lane: ARM
+- Commit: `b858420` (implementation baseline)
+- Change: ran the required read-only repository snapshot audit after publishing
+  the zero-write schemas and golden byte fixture.
+- Inputs/fixtures: repository snapshot and `scripts/audit_github_snapshot.py`.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: FAIL, exit 1; 5,670 paths, 903.5 MiB, the same 14 existing
+  credential-literal-review findings in arm unit fixtures; no new schema,
+  golden-fixture, adapter-serialization, or integration-test finding.
+- Artifacts: scanner and the existing named fixtures in its output.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: heuristic findings remain unresolved; this is not a clean
+  repository security-audit claim.
+- Supersedes: none; retains all earlier audit failures.
+- Next dependency: fixture-owner review remains independent of installed
+  controller mapping and firmware qualification.
