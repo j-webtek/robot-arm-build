@@ -1,6 +1,11 @@
 # AI documentation
 
-Read [the integration contract](CONTRACT.md), then the
+Start with the
+[shared AI-to-arm workplan and evidence backbone](SHARED_AI_ARM_WORKPLAN.md).
+It is the common stage board for the AI/model and arm/runtime workstreams and
+the append-only index for cross-lane evidence.
+
+Then read [the integration contract](CONTRACT.md), followed by the
 [model-to-arm translation assurance process](MODEL_TO_ARM_TRANSLATION_ASSURANCE.md),
 then [the roadmap](ROADMAP.md).
 The [model research note](MODEL_RESEARCH.md) records the published Llama
