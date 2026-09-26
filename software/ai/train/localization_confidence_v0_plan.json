@@ -1,0 +1,53 @@
+{
+  "schema": "rocell.ai_localization_confidence_research_plan.v0",
+  "scope": "SYNTHETIC_RESEARCH_ONLY",
+  "event": "Named catalog target planar Euclidean localization error <= 1.0 mm; identity and visibility NOT evaluated",
+  "tolerance_mm": 1.0,
+  "threshold": 0.95,
+  "reliability_bins": 10,
+  "splits": {
+    "training": {
+      "seed_start": 14000000,
+      "seed_count": 1200
+    },
+    "development": {
+      "seed_start": 15000000,
+      "seed_count": 200
+    },
+    "calibration": {
+      "seed_start": 16000000,
+      "seed_count": 300
+    },
+    "evaluation": {
+      "seed_start": 17000000,
+      "seed_count": 300
+    }
+  },
+  "conditions": [
+    "standard",
+    "appearance_shift",
+    "challenge"
+  ],
+  "grouping": "All keys and conditions sharing a seed remain in the same split",
+  "checkpoint_sha256": "a9590dce78cb801b9c37eab3522ce9785404ba2776152eefdde04a08983e8b60",
+  "research_success_criteria": {
+    "max_false_accept_fraction_among_accepted": 0.05,
+    "minimum_acceptance_fraction": 0.1,
+    "maximum_brier_score": 0.1
+  },
+  "policy": "Freeze before training; criteria apply to synthetic research only. Report aggregate and each condition; every condition must meet criteria. No automatic qualification.",
+  "method": "Separate correctness estimator from image features and predicted target location; no labels/residuals as inference inputs. Model architecture and optimization must be frozen in a subsequent plan before training.",
+  "limitations": [
+    "Known catalog identity is assumed; this is not full observation confidence",
+    "Tolerance is a research target, not a commissioned contact margin",
+    "Research criteria are not consumer release thresholds",
+    "No data generated, trained model, confidence calibration or evaluation result yet"
+  ],
+  "file_sha256": {
+    "software/ai/rocell_ai/confidence_metrics.py": "37a4106e0d63335f45233e8a0788fe6092f014deec0ba8030e7f1b816ead04b8",
+    "software/ai/vision/synthetic_keyboard.py": "b9a1662ea348ba78093909844e5e8bed86f4996babc289bfd63858b6b54f692c",
+    "software/ai/vision/evaluate_pose_challenge.py": "1ba33a1a2d38b1216a5e1708e17b99c3d9dba9fd2c40af46a084da8065102983",
+    "software/ai/vision/pose_model.py": "7eccc2a3cabf3a37217b4a1c3114c439ffc740a917c08e4ef378065ff85c6ec5",
+    "software/ai/vision/train_pose.py": "98c2ae6211b42c3b4b7c5bed3fb03aab82bffff79c30ebb546e3681b3be3a1b6"
+  }
+}
