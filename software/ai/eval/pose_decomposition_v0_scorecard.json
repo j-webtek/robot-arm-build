@@ -1,0 +1,154 @@
+{
+  "scope": "DEVELOPMENT_ONLY",
+  "manifest_sha256": "8f380cb5fe4146e8de6f4bca659861f8fe46216fb867e74b87310de166f8466c",
+  "image_data_sha256": "f6c02145bc9e601f4715bda8d7da49d11452b147c121fcae35f45093c6995e20",
+  "target_catalog_sha256": "6779213e832ab27eeda1e7fb245f57ff8cb0d56707b5aa73a8f31ec483a620f2",
+  "results": {
+    "baseline": {
+      "conditions": {
+        "standard": {
+          "count": 9200,
+          "mean_mm": 0.8683602735646241,
+          "p95_mm": 1.9205769502965,
+          "maximum_mm": 4.940224939470375,
+          "within_1mm_fraction": 0.6845652173913044
+        },
+        "appearance_shift": {
+          "count": 9200,
+          "mean_mm": 0.9006344359169571,
+          "p95_mm": 1.908660392095762,
+          "maximum_mm": 6.095700860066567,
+          "within_1mm_fraction": 0.6668478260869565
+        },
+        "challenge": {
+          "count": 9200,
+          "mean_mm": 1.0667512986549563,
+          "p95_mm": 2.353482959265653,
+          "maximum_mm": 6.626306543148998,
+          "within_1mm_fraction": 0.5410869565217391
+        }
+      },
+      "all": {
+        "count": 27600,
+        "mean_mm": 0.9452486693788458,
+        "p95_mm": 2.0658506480433196,
+        "maximum_mm": 6.626306543148998,
+        "within_1mm_fraction": 0.6308333333333334
+      },
+      "seed_group_maximum_error": {
+        "count": 200,
+        "mean_mm": 1.6764815364780026,
+        "p95_mm": 3.3055064534806515,
+        "maximum_mm": 6.626306543148998,
+        "within_1mm_fraction": 0.17
+      }
+    },
+    "translation_only": {
+      "conditions": {
+        "standard": {
+          "count": 9200,
+          "mean_mm": 0.8180944869376467,
+          "p95_mm": 1.7909960603389672,
+          "maximum_mm": 4.003614667441943,
+          "within_1mm_fraction": 0.71
+        },
+        "appearance_shift": {
+          "count": 9200,
+          "mean_mm": 0.8360471168990987,
+          "p95_mm": 1.8086595379641217,
+          "maximum_mm": 3.5683919278532503,
+          "within_1mm_fraction": 0.695
+        },
+        "challenge": {
+          "count": 9200,
+          "mean_mm": 1.002089395456835,
+          "p95_mm": 2.223401873993991,
+          "maximum_mm": 6.286661651734983,
+          "within_1mm_fraction": 0.58
+        }
+      },
+      "all": {
+        "count": 27600,
+        "mean_mm": 0.8854103330978601,
+        "p95_mm": 1.9398461076105864,
+        "maximum_mm": 6.286661651734983,
+        "within_1mm_fraction": 0.6616666666666666
+      },
+      "seed_group_maximum_error": {
+        "count": 200,
+        "mean_mm": 1.2175148956392388,
+        "p95_mm": 2.477409955625742,
+        "maximum_mm": 6.286661651734983,
+        "within_1mm_fraction": 0.415
+      }
+    },
+    "rotation_only": {
+      "conditions": {
+        "standard": {
+          "count": 9200,
+          "mean_mm": 0.24426615801964746,
+          "p95_mm": 0.7964505388863878,
+          "maximum_mm": 4.342379932285319,
+          "within_1mm_fraction": 0.9722826086956522
+        },
+        "appearance_shift": {
+          "count": 9200,
+          "mean_mm": 0.2818743272829965,
+          "p95_mm": 0.8960250872503401,
+          "maximum_mm": 4.3238522035760285,
+          "within_1mm_fraction": 0.9618478260869565
+        },
+        "challenge": {
+          "count": 9200,
+          "mean_mm": 0.30904546894460677,
+          "p95_mm": 0.9829968678391612,
+          "maximum_mm": 4.596168609568214,
+          "within_1mm_fraction": 0.952391304347826
+        }
+      },
+      "all": {
+        "count": 27600,
+        "mean_mm": 0.2783953180824169,
+        "p95_mm": 0.8946503248800716,
+        "maximum_mm": 4.596168609568214,
+        "within_1mm_fraction": 0.9621739130434782
+      },
+      "seed_group_maximum_error": {
+        "count": 200,
+        "mean_mm": 0.8972103252640625,
+        "p95_mm": 1.9306380171554274,
+        "maximum_mm": 4.596168609568214,
+        "within_1mm_fraction": 0.665
+      }
+    }
+  },
+  "pose_components": {
+    "standard": {
+      "translation_mean_mm": 0.818094486937647,
+      "translation_p95_mm": 1.790996060339039,
+      "yaw_mean_degrees": 0.21449493184418528,
+      "yaw_p95_degrees": 0.5606842884960105
+    },
+    "appearance_shift": {
+      "translation_mean_mm": 0.8360471168990986,
+      "translation_p95_mm": 1.8086595379641057,
+      "yaw_mean_degrees": 0.2475198815949124,
+      "yaw_p95_degrees": 0.6370228853893302
+    },
+    "challenge": {
+      "translation_mean_mm": 1.002089395456835,
+      "translation_p95_mm": 2.2234018739939745,
+      "yaw_mean_degrees": 0.2713791704292176,
+      "yaw_p95_degrees": 0.7104566992812857
+    }
+  },
+  "hardware_writes": 0,
+  "physical_movements": 0,
+  "qualification_installed": false,
+  "limitations": [
+    "Development selection evidence only; no calibration/evaluation seeds accessed",
+    "Fixed synthetic projection; no physical camera calibration",
+    "Counterfactual components use hidden truth for scoring only; scalar errors are not additive",
+    "Condition bundles do not isolate lighting or obstruction causes; no per-image occlusion labels exist"
+  ]
+}

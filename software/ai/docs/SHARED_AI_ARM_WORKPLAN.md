@@ -604,7 +604,6 @@ remove it only in the same commit that appends the resulting evidence row.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI/model | S1 | pose-error decomposition diagnostic/manifest/evidence | main from `448789a` | ACTIVE: development-only attribution |
 | Unclaimed | S2 | qualified perception adapter and complete shared gate | — | AVAILABLE |
 | Unclaimed | S4 | sole-writer lifecycle, fault injection, and restart closure | — | AVAILABLE |
 
@@ -1821,3 +1820,66 @@ commissioning, or bounded physical result with its limitations intact.
 - Supersedes: none; preserves every previous audit failure.
 - Next dependency: fixture-owner review remains independent of S4 writer and
   installed-controller qualification.
+
+
+### E-20260926-AI-032 — translation and rotation development decomposition
+
+- Stage: S1
+- Lane: AI
+- Commit: `c20b7c9d6319a267f66dd348f49b87ef734e3ac9` (exact frozen diagnostic and manifest before scoring)
+- Change: scored unchanged model predictions plus translation-only and rotation-only
+  counterfactuals; hidden renderer truth used only in diagnostic scoring.
+- Inputs/fixtures: 200 existing 15M development groups, three conditions, 46 targets;
+  checkpoint/source hashes in `eval/pose_decomposition_v0.manifest.json`; image and
+  catalog hashes in scorecard. Same matched 128x96 checkpoint as AI-029.
+- Command: `python software/ai/vision/diagnose_pose_decomposition.py`
+- Result: PASS for completed attribution. Mean key error baseline 0.945249 mm,
+  translation-only 0.885410 mm, rotation-only 0.278395 mm. Within-1mm rates 63.083%,
+  66.167%, 96.217%, respectively; each 27,600 correlated target/view samples.
+  Baseline mean standard 0.868360, appearance_shift 0.900634, challenge 1.066751 mm.
+- Artifacts: `software/ai/eval/pose_decomposition_v0_scorecard.json`, manifest,
+  `software/ai/vision/diagnose_pose_decomposition.py`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: counterfactual diagnostics are not deployable corrections; scalar
+  error magnitudes are not additive. Condition bundles do not identify individual
+  lighting/blur/obstruction causes. No independent evaluation, calibration,
+  confidence promotion, or qualification installation.
+- Supersedes: none
+- Next dependency: freeze translation-focused pose training on development data,
+  retaining yaw regression monitoring; require paired baseline comparison before
+  consuming new calibration/evaluation groups.
+
+### E-20260926-AI-033 — decomposition consistency checks
+
+- Stage: S1
+- Lane: AI
+- Commit: `c20b7c9d6319a267f66dd348f49b87ef734e3ac9` (diagnostic baseline; new tests/evidence committed with this row)
+- Change: checked exact previous baseline/image identity, source pins and equality
+  of translation-only key mean error with center translation mean error.
+- Inputs/fixtures: AI-029 and AI-032 scorecards and frozen manifest.
+- Command: `python -m pytest -q software/ai/tests/test_pose_decomposition.py`
+- Result: PASS, 2 tests.
+- Artifacts: named test and scorecards.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: diagnostic consistency only, not physical or model qualification.
+- Supersedes: none
+- Next dependency: AI-032 translation-focused development experiment.
+
+### E-20260926-AI-034 — decomposition audit findings retained
+
+- Stage: S1
+- Lane: AI
+- Commit: `c20b7c9d6319a267f66dd348f49b87ef734e3ac9`
+- Change: required read-only repository audit after diagnostic.
+- Inputs/fixtures: repository snapshot, new scorecard and `scripts/audit_github_snapshot.py`.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: FAIL, exit 1; 5,656 paths, 785.0 MiB, same 14 existing arm-unit
+  credential-literal-review findings; no decomposition-file finding.
+- Artifacts: scanner and existing fixtures.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: heuristic findings unresolved; no clean audit claim.
+- Supersedes: none
+- Next dependency: fixture-owner review independently of AI development.
