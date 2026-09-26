@@ -599,8 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-- AI lane / S1: paired pose occlusion fine-tuning, frozen equal budget and unchanged 4:4:1 loss; development evidence only.
-
 
 
 
@@ -5929,3 +5927,54 @@ commissioning, or bounded physical result with its limitations intact.
 - Next dependency: replace diagnostic URDF-adjacent exclusions with accepted
   engineering evidence, define phase-local intended-contact rules, and bind the
   resulting collision qualification into the no-write trajectory envelope gate.
+
+
+### E-20260926-AI-196 — paired pose occlusion fine tuning
+
+- Stage: S1
+- Lane: AI
+- Commit: `24250e9c3d1d60ab352d9de631d468da1b48eb6e` (frozen source; results/tests committed with evidence)
+- Change: paired pose occlusion fine tuning.
+- Inputs/fixtures: training14M600 groups x4 images, development15M200 x4; starting pose SHA256 0fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d. Rectangle training/ellipse development, normalized128x96; four epochs,AdamW0.0001,loss4:4:1,batch64,seed260926. Source hashes in train/pose_occlusion_v0_plan.json; pixel/checkpoint hashes in eval/pose_occlusion_v0_report.json.
+- Command: `python software/ai/train/train_pose_occlusion.py`
+- Result: FAIL frozen candidate criteria. Occluded tails20->15 versus both baseline/control; candidate standard/appearance/partial/full tails4/6/5/10 vs baseline5/7/9/11,control4/6/8/12. Candidate means0.843/0.870/0.974/1.127mm vs baseline0.853/0.833/1.026/1.229,control0.802/0.790/1.009/1.209. Standard yawp95 baseline0.525->0.581deg exceeds10% bound; appearance mean regresses. Control selected epoch4,candidate3. control checkpoint SHA256 9ae845c83dce2afcb32cfe1e48668ac7d3863305a98036d616aa3c12c6bc0f00; occlusion checkpoint SHA256 06cb514ce93546728027685966937872dd36151edfaf57d8a989e86ab392b8ae
+- Artifacts: train/train_pose_occlusion.py; eval/pose_occlusion_v0_report.json; tests/test_pose_occlusion.py; ignored local results/pose_occlusion_v0_* checkpoints.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: One seed,GPU nondeterminism; repeated synthetic development selects checkpoints. CUDA baseline differs slightly from prior CPU results; within-run baseline used. No fresh holdout consumed, no model promotion or qualification.
+- Supersedes: none; failed evidence and ARM-044 retained; no arm/integration status edits.
+- Next dependency: Freeze a bounded balanced-replay comparison preserving clear examples while adding occlusion; hold sample budget,loss,selection and acceptance criteria constant. Aim to preserve the observed occlusion benefit without clear/appearance regression. No fresh qualification until development criteria pass.
+
+
+### E-20260926-AI-197 — pose occlusion verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `24250e9c3d1d60ab352d9de631d468da1b48eb6e` (frozen source; results/tests committed with evidence)
+- Change: pose occlusion verification.
+- Inputs/fixtures: training14M600 groups x4 images, development15M200 x4; starting pose SHA256 0fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d. Rectangle training/ellipse development, normalized128x96; four epochs,AdamW0.0001,loss4:4:1,batch64,seed260926. Source hashes in train/pose_occlusion_v0_plan.json; pixel/checkpoint hashes in eval/pose_occlusion_v0_report.json.
+- Command: `python -m pytest -q software/ai/tests/test_pose_occlusion.py`
+- Result: PASS,2 tests: equal sample budgets/intervention,hashes,all condition metrics,epoch selection,checkpoint hashes and comparison checks. Existing pytest-asyncio warning.
+- Artifacts: train/train_pose_occlusion.py; eval/pose_occlusion_v0_report.json; tests/test_pose_occlusion.py; ignored local results/pose_occlusion_v0_* checkpoints.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Implementation verification; batch unchanged, shared boundary suite not triggered.
+- Supersedes: none; failed evidence and ARM-044 retained; no arm/integration status edits.
+- Next dependency: Freeze a bounded balanced-replay comparison preserving clear examples while adding occlusion; hold sample budget,loss,selection and acceptance criteria constant. Aim to preserve the observed occlusion benefit without clear/appearance regression. No fresh qualification until development criteria pass.
+
+
+### E-20260926-AI-198 — pose occlusion publication audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `24250e9c3d1d60ab352d9de631d468da1b48eb6e` (frozen source; results/tests committed with evidence)
+- Change: pose occlusion publication audit.
+- Inputs/fixtures: training14M600 groups x4 images, development15M200 x4; starting pose SHA256 0fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d. Rectangle training/ellipse development, normalized128x96; four epochs,AdamW0.0001,loss4:4:1,batch64,seed260926. Source hashes in train/pose_occlusion_v0_plan.json; pixel/checkpoint hashes in eval/pose_occlusion_v0_report.json.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS;5992 paths,844.2 MiB,0 unresolved findings,14 reviewed synthetic fixtures.
+- Artifacts: train/train_pose_occlusion.py; eval/pose_occlusion_v0_report.json; tests/test_pose_occlusion.py; ignored local results/pose_occlusion_v0_* checkpoints.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic audit; protected-main publication blocker AI-041 retained.
+- Supersedes: none; failed evidence and ARM-044 retained; no arm/integration status edits.
+- Next dependency: Freeze a bounded balanced-replay comparison preserving clear examples while adding occlusion; hold sample budget,loss,selection and acceptance criteria constant. Aim to preserve the observed occlusion benefit without clear/appearance regression. No fresh qualification until development criteria pass.
