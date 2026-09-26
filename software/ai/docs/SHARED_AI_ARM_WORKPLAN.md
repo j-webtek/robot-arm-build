@@ -5320,3 +5320,44 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic audit; AI-041 protected-main publication blocker remains.
 - Supersedes: none; prior failures and integration statuses retained.
 - Next dependency: Protected-branch PR/checks and AI-166 diagnosis.
+### E-20260926-ARM-041 — hash-bound per-waypoint collision evidence
+
+- Stage: S3
+- Lane: ARM
+- Change: added a bounded evaluator that consumes the exact v2 measured
+  trajectory-screening report, its exact installed collision profile, and one
+  explicit collision pose for every accepted planner waypoint. Each sample is
+  bound to the canonical waypoint and joint-result hashes and carries the full
+  pose content required for replay. Configuration-sampled bodies such as the
+  moving camera cable must provide pose-local geometry at every waypoint.
+- Safety behavior: crossed profile, trajectory, waypoint, or joint-result
+  lineage rejects. Missing or unusable deformable geometry blocks the sample;
+  any primitive collision blocks the route. Even when all supplied full-body
+  samples are clear, the report remains
+  `DISCRETE_WAYPOINTS_CLEAR_CONTINUOUS_PROOF_REQUIRED`, retains
+  `CONTINUOUS_FULL_BODY_COLLISION_SWEEP_REQUIRED`, and fixes controller
+  commands, hardware access, and physical authority to zero/false.
+- Artifacts: `measured_waypoint_collision_sequence.py`, closed v1 JSON schema,
+  positive/collision/missing-cable/crossed-lineage/resource-bound tests, public
+  application exports, portable CI selection, and shared assurance updates.
+- Artifact identity: waypoint collision evaluator SHA-256
+  `e25145b2bfa143c287cc701fd678e25ad36e4786d6f428794fbe48ea524feb4b`;
+  v1 report schema SHA-256
+  `3aaaed58858d098deed83f617d56cdd39b41de8fd6680a9e5847450cfcf05d2e`.
+- Results: focused collision/planner suite PASS, 38 tests in 3.55 seconds;
+  portable shared AI/arm selection PASS, 189 tests in 20.80 seconds;
+  snapshot audit PASS, 19 tests in 0.54 seconds; documentation PASS for 26
+  maintained documents and two SVG assets; compile and diff checks PASS.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: tests use accepted-measured typed fixtures, not independently
+  measured installed workcell evidence. The boundary hash-binds supplied rigid
+  transforms to their waypoint but does not yet recompute robot-link transforms
+  from the joint solution. Discrete waypoint samples do not bound inter-waypoint
+  motion, and no phase-local contact allowance is present.
+- Supersedes: ARM-040 only for explicit per-waypoint primitive evaluation and
+  deformable-body sample completeness. Continuous clearance, FK-derived pose
+  provenance, installed qualification, and every physical-use gate remain.
+- Next dependency: derive robot-link transforms from the pinned URDF and exact
+  joint result inside a trusted adapter, then require conservative bounded
+  inter-waypoint samples for both rigid and configuration-sampled bodies.
