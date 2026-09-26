@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import replace
+import hashlib
 import json
 from pathlib import Path
 
@@ -14,10 +15,14 @@ from rocell.application.model_motion_ingress_v2 import (
 from rocell.application.model_motion_registry_v2 import (
     TrustedMotionRegistryV2, ingest_with_trusted_registry_v2,
     revalidate_with_trusted_registry_v2)
+from rocell.application.model_motion_planner_gate_v2 import (
+    ArmMotionPolicyV2, ModelMotionPlannerGateV2Error,
+    evaluate_model_motion_planner_gate_v2)
 from rocell.models import (
     ActionPlan, Device, Interaction, ModelMotionBatchV2, ModelMotionBatchV2Error,
     ModelMotionProposalV2, MotionCapabilityV2, MotionEvidenceV2, MotionGeometryV2,
-    MotionUncertaintyV2, Point3Mm, PressKey, ProposalDevice, UncertaintyBoundType,
+    MotionUncertaintyV2, Point3Mm, PressKey, ProposalDevice, SpeedClass,
+    UncertaintyBoundType,
     decode_model_motion_batch_json, decode_model_motion_batch_v2_json)
 
 WORKSPACE = Path(__file__).resolve().parents[3]
@@ -305,3 +310,83 @@ def test_registry_rejects_incoherent_geometry_and_incomplete_scope():
         _registry(context, target_regions=(wrong, _regions(context)["I"]))
     with pytest.raises(ModelMotionIngressV2Error, match="exactly cover"):
         _registry(context, target_regions=(_regions(context)["H"],))
+
+
+def _admitted_planner_inputs():
+    context, plan = load_simulation_context(WORKSPACE, MANIFEST), _plan()
+    batch = _batch(context, plan=plan)
+    registry = _registry(context)
+    ingress = ingest_with_trusted_registry_v2(
+        batch, plan, context, registry=registry,
+        current_time_epoch_ms=T0 + 3_000, current_monotonic_ns=9_000_000_000)
+    preplanner = revalidate_with_trusted_registry_v2(
+        ingress, registry=registry, current_monotonic_ns=10_000_000_000)
+    policy = ArmMotionPolicyV2(
+        "keyboard-contact-conservative-v1", 25.0, SpeedClass.SLOW)
+    return context, batch, ingress, preplanner, policy
+
+
+def test_v2_policy_adapter_reaches_real_measured_gate_without_authority():
+    context, batch, ingress, preplanner, policy = _admitted_planner_inputs()
+    report = evaluate_model_motion_planner_gate_v2(
+        batch.proposals[0], batch, ingress, preplanner, context,
+        policy=policy, evaluation_monotonic_ns=10_500_000_000)
+    assert report["status"] == "BLOCKED_CALIBRATION_MISSING_OR_STALE"
+    assert report["batch_sha256"] == batch.batch_sha256
+    assert report["proposal_sha256"] == batch.proposals[0].proposal_sha256
+    assert report["arm_motion_policy"] == policy.to_dict()
+    assert report["measured_planner_gate"]["ik_executed"] is False
+    assert report["measured_planner_gate"]["route_screen_executed"] is False
+    assert report["controller_commands"] == []
+    assert report["hardware_commands_generated"] == 0
+    assert report["hardware_access"] is report["physical_authority"] is False
+
+
+def test_v2_policy_adapter_rejects_tampered_lineage_and_expiry():
+    context, batch, ingress, preplanner, policy = _admitted_planner_inputs()
+    tampered = dict(ingress); tampered["request_id"] = "tampered"
+    with pytest.raises(ModelMotionPlannerGateV2Error, match="ingress hash"):
+        evaluate_model_motion_planner_gate_v2(
+            batch.proposals[0], batch, tampered, preplanner, context,
+            policy=policy, evaluation_monotonic_ns=10_500_000_000)
+    with pytest.raises(ModelMotionPlannerGateV2Error, match="lease is stale"):
+        evaluate_model_motion_planner_gate_v2(
+            batch.proposals[0], batch, ingress, preplanner, context,
+            policy=policy,
+            evaluation_monotonic_ns=preplanner["valid_until_monotonic_ns"])
+
+
+def test_v2_policy_adapter_rejects_wrong_action_and_upstream_authority():
+    context, batch, ingress, preplanner, policy = _admitted_planner_inputs()
+    wrong = replace(batch.proposals[0], proposal_id="not-the-batch-proposal")
+    with pytest.raises(ModelMotionPlannerGateV2Error, match="indexed batch action"):
+        evaluate_model_motion_planner_gate_v2(
+            wrong, batch, ingress, preplanner, context,
+            policy=policy, evaluation_monotonic_ns=10_500_000_000)
+    unsafe = dict(preplanner); unsafe["hardware_access"] = True
+    unsigned = {key: value for key, value in unsafe.items()
+                if key != "preplanner_gate_sha256"}
+    unsafe["preplanner_gate_sha256"] = hashlib.sha256(json.dumps(
+        unsigned, sort_keys=True, separators=(",", ":"), ensure_ascii=True,
+        allow_nan=False).encode()).hexdigest()
+    with pytest.raises(ModelMotionPlannerGateV2Error, match="zero authority"):
+        evaluate_model_motion_planner_gate_v2(
+            batch.proposals[0], batch, ingress, unsafe, context,
+            policy=policy, evaluation_monotonic_ns=10_500_000_000)
+
+
+def test_v2_arm_policy_is_the_only_speed_and_clearance_source():
+    context, batch, ingress, preplanner, policy = _admitted_planner_inputs()
+    assert "speed_class" not in batch.proposals[0].to_dict()
+    assert "approach_clearance_mm" not in batch.proposals[0].to_dict()
+    first = evaluate_model_motion_planner_gate_v2(
+        batch.proposals[0], batch, ingress, preplanner, context,
+        policy=policy, evaluation_monotonic_ns=10_500_000_000)
+    alternate = ArmMotionPolicyV2(
+        "keyboard-contact-nominal-v1", 30.0, SpeedClass.NOMINAL)
+    second = evaluate_model_motion_planner_gate_v2(
+        batch.proposals[0], batch, ingress, preplanner, context,
+        policy=alternate, evaluation_monotonic_ns=10_500_000_000)
+    assert first["arm_motion_policy_sha256"] != second["arm_motion_policy_sha256"]
+    assert first["derived_v1_surrogate_sha256"] != second["derived_v1_surrogate_sha256"]
+    assert first["proposal_sha256"] == second["proposal_sha256"]

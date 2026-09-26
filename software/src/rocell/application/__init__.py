@@ -233,6 +233,12 @@ from .model_motion_registry_v2 import (
     ingest_with_trusted_registry_v2,
     revalidate_with_trusted_registry_v2,
 )
+from .model_motion_planner_gate_v2 import (
+    SCHEMA as MODEL_MOTION_PLANNER_GATE_V2_SCHEMA,
+    ArmMotionPolicyV2,
+    ModelMotionPlannerGateV2Error,
+    evaluate_model_motion_planner_gate_v2,
+)
 from .model_motion_sequence_coordinator import (
     SCHEMA as MODEL_MOTION_SEQUENCE_SNAPSHOT_SCHEMA,
     READY_PLANNER_STATUS,
@@ -919,6 +925,10 @@ __all__ = [
     "TrustedMotionRegistryV2",
     "ingest_with_trusted_registry_v2",
     "revalidate_with_trusted_registry_v2",
+    "MODEL_MOTION_PLANNER_GATE_V2_SCHEMA",
+    "ArmMotionPolicyV2",
+    "ModelMotionPlannerGateV2Error",
+    "evaluate_model_motion_planner_gate_v2",
     "MODEL_MOTION_SEQUENCE_SNAPSHOT_SCHEMA",
     "READY_PLANNER_STATUS",
     "ActionDisposition",
