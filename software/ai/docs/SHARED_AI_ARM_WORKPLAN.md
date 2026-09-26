@@ -599,8 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-- AI lane / S1: retained appearance regression attribution across baseline/control/key-loss candidate; no training or runtime changes.
-
 
 
 
@@ -6082,3 +6080,54 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic audit; protected-main publication blocker AI-041 retained.
 - Supersedes: none; previous failed evidence and arm/integration status retained.
 - Next dependency: Freeze paired standard-versus-appearance residual attribution for baseline/control/key-loss candidate on retained cases, identifying whether the remaining appearance regression is broad translation bias or concentrated failures before choosing one corrective training change. No acceptance-rule relaxation or fresh holdout until development criteria pass.
+
+
+### E-20260926-AI-205 — appearance residual attribution
+
+- Stage: S1
+- Lane: AI
+- Commit: `44236431c73142a94329a897358e34bd4a10a7be` (frozen source; results/tests committed with evidence)
+- Change: appearance residual attribution.
+- Inputs/fixtures: retained AI-202 baseline/control/key-loss metrics,200 seeds15000000..15000199,paired standard/appearance. Exact report and runner SHA256 in eval/appearance_residual_v0_plan.json; no new inference or training.
+- Command: `python software/ai/vision/diagnose_appearance_residual.py`
+- Result: Completed. Candidate versus baseline appearance mean+0.029881mm,median+0.020577mm,105worse/95improved; translation magnitude+0.018502mm,rotation-only maximum+0.030818mm. Signed translation change[-0.165992,-0.012357]mm. Top10 account for24.17% of positive regression; after descriptive trimming mean remains+0.000638mm. Candidate vs control appearance mean improves0.007190mm. Pattern includes distributed small regression and larger contributors; not an isolated outlier or proven causal offset.
+- Artifacts: vision/diagnose_appearance_residual.py; eval/appearance_residual_v0_report.json; tests/test_appearance_residual.py.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Retained synthetic development,not fresh evidence. Top10 descriptive only; all cases remain in acceptance metrics. No oracle correction or calibration.
+- Supersedes: none; previous failures and arm/integration status retained.
+- Next dependency: Freeze paired key-loss training with versus without a fixed baseline-prediction preservation penalty on standard/appearance training images only. Same images,budget,starting checkpoint and criteria; teacher has no truth authority and may retain errors. Test whether reduced prediction drift retains occlusion gains; do not sweep coefficients or relax acceptance.
+
+
+### E-20260926-AI-206 — appearance attribution verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `44236431c73142a94329a897358e34bd4a10a7be` (frozen source; results/tests committed with evidence)
+- Change: appearance attribution verification.
+- Inputs/fixtures: retained AI-202 baseline/control/key-loss metrics,200 seeds15000000..15000199,paired standard/appearance. Exact report and runner SHA256 in eval/appearance_residual_v0_plan.json; no new inference or training.
+- Command: `python -m pytest -q software/ai/tests/test_appearance_residual.py`
+- Result: PASS,2 tests: known broad/concentrated/zero changes,frozen hashes,200case counts,concentration and trimmed metrics. Existing pytest-asyncio warning.
+- Artifacts: vision/diagnose_appearance_residual.py; eval/appearance_residual_v0_report.json; tests/test_appearance_residual.py.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Implementation verification only; batch unchanged,shared boundary suite not triggered.
+- Supersedes: none; previous failures and arm/integration status retained.
+- Next dependency: Freeze paired key-loss training with versus without a fixed baseline-prediction preservation penalty on standard/appearance training images only. Same images,budget,starting checkpoint and criteria; teacher has no truth authority and may retain errors. Test whether reduced prediction drift retains occlusion gains; do not sweep coefficients or relax acceptance.
+
+
+### E-20260926-AI-207 — appearance attribution publication audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `44236431c73142a94329a897358e34bd4a10a7be` (frozen source; results/tests committed with evidence)
+- Change: appearance attribution publication audit.
+- Inputs/fixtures: retained AI-202 baseline/control/key-loss metrics,200 seeds15000000..15000199,paired standard/appearance. Exact report and runner SHA256 in eval/appearance_residual_v0_plan.json; no new inference or training.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS;6005 paths,846.8 MiB,0 unresolved findings,14 reviewed synthetic fixtures.
+- Artifacts: vision/diagnose_appearance_residual.py; eval/appearance_residual_v0_report.json; tests/test_appearance_residual.py.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic audit; AI-041 protected-main publication blocker retained.
+- Supersedes: none; previous failures and arm/integration status retained.
+- Next dependency: Freeze paired key-loss training with versus without a fixed baseline-prediction preservation penalty on standard/appearance training images only. Same images,budget,starting checkpoint and criteria; teacher has no truth authority and may retain errors. Test whether reduced prediction drift retains occlusion gains; do not sweep coefficients or relax acceptance.
