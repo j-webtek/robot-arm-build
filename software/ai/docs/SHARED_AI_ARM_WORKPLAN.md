@@ -604,7 +604,6 @@ remove it only in the same commit that appends the resulting evidence row.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI | S1 | fresh disagreement evaluator, manifest/report/tests, precision method | feature/translation-pair-evidence | ACTIVE: frozen24M calibration/25M evaluation |
 | Unclaimed | S2 | qualified perception adapter and complete shared gate | — | AVAILABLE |
 | Unclaimed | S4 | design and independently qualify a separate generic T=102/T=105/T=1051 runtime; r96 is an incompatible finite diagnostic landmark | — | AVAILABLE |
 
@@ -3212,3 +3211,69 @@ commissioning, or bounded physical result with its limitations intact.
   counts. It does not alter ARM-024's observation or ARM-026's blocked result.
 - Next dependency: implement and independently review the separate production
   runtime contract offline, retaining r96 unchanged as diagnostic history.
+
+### E-20260926-AI-079 — fresh conditional uncertainty availability failure
+
+- Stage: S1
+- Lane: AI
+- Commit: `081e15ea084a381e0c2cb22ff9a2c7f7fb7121cf` (frozen protocol before calibration/evaluation)
+- Change: preserved checkpoint, normalization, perturbations0.95/1.05, bins
+  0.25/0.5/1mm, nearest-rank99% group-error radius, minimum50 support and3mm
+  admission cap. Refit radii on fresh calibration only before evaluation.
+- Inputs/fixtures: calibration24000000..24000999 (1000 groups/7000 images),
+  evaluation25000000..25000499 (500 groups/3500 images), seven conditions,
+  three passes/image,46 targets. Both ranges are now consumed. Exact hashes in
+  `eval/disagreement_fresh_v0.manifest.json`; full cases/input hashes in report.
+- Command: `python software/ai/vision/evaluate_disagreement_fresh.py`
+- Result: FAIL. Bin radii4.289480/5.604864/7.043847/13.453540 mm, with supports
+  924/910/640/120 calibration seed groups (groups may occur in multiple bins).
+  All radii exceed3mm, so0/3500 images and0/500 groups accepted; acceptance0%
+  in every condition fails the10% minimum. Coverage and containment are null,
+  not successful or zero-error claims. Earlier optimistic development pass did
+  not generalize to fresh calibration; no thresholds relaxed or model promoted.
+- Artifacts: `eval/disagreement_fresh_v0_report.json`, manifest and evaluator.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: fresh seeds within the same renderer; no physical capture or
+  deployment qualification. Stable perturbation predictions can share position
+  bias; this result does not establish its cause. The study does not invalidate
+  the separately measured normalization improvement. No contract changes;
+  boundary suite not triggered; arm/integration stages unchanged.
+- Supersedes: none; AI-076 development evidence retained with its original caveat.
+- Next dependency: diagnose low-disagreement/high-error cases in retained24M
+  calibration evidence (position/yaw, condition and paired images) before another
+  method. Do not tune against25M evaluation or reduce radii after seeing failure;
+  any revised method needs new independent calibration/evaluation beyond25M.
+
+### E-20260926-AI-080 — fresh conditional uncertainty evidence tests
+
+- Stage: S1
+- Lane: AI
+- Commit: `081e15ea084a381e0c2cb22ff9a2c7f7fb7121cf` (implementation baseline; tests committed with evidence)
+- Change: verified bins, frozen provenance, calibration supports/quantiles,
+  abstention/null accounting, group gates and exact disjoint fresh seed ranges.
+- Inputs/fixtures: analytic bin values and AI-079 full report/manifest.
+- Command: `python -m pytest -q software/ai/tests/test_disagreement_fresh.py`
+- Result: PASS,4 tests; existing pytest-asyncio configuration deprecation warning.
+- Artifacts: named tests and AI-079 report.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: evidence consistency only; failing model study remains failed.
+- Supersedes: none
+- Next dependency: AI-079 retained-calibration diagnostic.
+
+### E-20260926-AI-081 — fresh conditional uncertainty publication audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `081e15ea084a381e0c2cb22ff9a2c7f7fb7121cf` (implementation baseline plus report/test snapshot)
+- Change: audited publication snapshot.
+- Inputs/fixtures: repository with AI-079/080 artifacts and reviewed fixture allowlist.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS;5755 paths,800.3 MiB,0 unresolved findings,14 reviewed synthetic fixtures.
+- Artifacts: audit stdout and repository snapshot.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: heuristic audit only; AI-041 protected-main PR blocker remains.
+- Supersedes: none; historical failures retained.
+- Next dependency: protected-branch PR/checks and AI-079 diagnostic.

@@ -292,3 +292,17 @@ stable predictions can still share error. No runtime installation occurs.
 Next: freeze the same method on fresh24M calibration and25M evaluation groups,
 refitting radii only on calibration. Preserve availability and accepted-image/group
 coverage/containment criteria; retain any failure without post-hoc changes.
+
+
+### Fresh conditional uncertainty fails availability
+
+AI-079 through AI-081 preserve the same method on fresh24M calibration and25M
+evaluation. The smallest calibrated bin radius increases to4.289 mm; all four
+radii exceed the fixed3mm cap. The method abstains on all3500 evaluation images,
+so availability fails and accepted coverage/containment are undefined. The prior
+development pass is retained but does not generalize. No runtime qualification
+or threshold relaxation occurs; both new ranges are now consumed.
+
+Next: inspect retained24M low-disagreement/high-error calibration examples to
+understand stable prediction errors before selecting another intervention.
+Do not optimize against25M evaluation; revised methods need new independent data.
