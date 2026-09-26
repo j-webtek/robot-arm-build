@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rocell.local/schemas/fk_derived_waypoint_collision_sequence_v1.schema.json",
+  "title": "RoCell FK-derived waypoint collision sequence v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "status", "trajectory_screening_sha256",
+    "calibration_snapshot_sha256", "installed_collision_profile_sha256",
+    "kinematic_model_sha256", "attachment_bindings", "derived_pose_records",
+    "collision_sequence", "robot_link_transforms_recomputed_from_joint_results",
+    "caller_robot_link_transform_overrides_accepted", "continuous_collision_proven",
+    "controller_commands", "hardware_commands_generated", "hardware_access",
+    "physical_authority", "fk_collision_sequence_sha256"
+  ],
+  "properties": {
+    "schema": {"const": "rocell.fk_derived_waypoint_collision_sequence.v1"},
+    "status": {"enum": [
+      "DISCRETE_WAYPOINTS_CLEAR_CONTINUOUS_PROOF_REQUIRED",
+      "BLOCKED_COLLISION_DETECTED",
+      "BLOCKED_INCOMPLETE_WAYPOINT_COLLISION_EVIDENCE"
+    ]},
+    "trajectory_screening_sha256": {"$ref": "#/$defs/hash"},
+    "calibration_snapshot_sha256": {"$ref": "#/$defs/hash"},
+    "installed_collision_profile_sha256": {"$ref": "#/$defs/hash"},
+    "kinematic_model_sha256": {"$ref": "#/$defs/hash"},
+    "attachment_bindings": {
+      "type": "array", "maxItems": 256,
+      "items": {"type": "object"}
+    },
+    "derived_pose_records": {
+      "type": "array", "minItems": 1, "maxItems": 256,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": [
+          "waypoint_sequence", "pose_sha256", "joint_result_sha256",
+          "urdf_derived_frames", "attachment_binding_sha256_by_frame",
+          "configuration_geometry_sha256_by_body"
+        ],
+        "properties": {
+          "waypoint_sequence": {"type": "integer", "minimum": 0},
+          "pose_sha256": {"$ref": "#/$defs/hash"},
+          "joint_result_sha256": {"$ref": "#/$defs/hash"},
+          "urdf_derived_frames": {
+            "type": "array", "uniqueItems": true,
+            "items": {"type": "string", "minLength": 1}
+          },
+          "attachment_binding_sha256_by_frame": {
+            "type": "object", "additionalProperties": {"$ref": "#/$defs/hash"}
+          },
+          "configuration_geometry_sha256_by_body": {
+            "type": "object", "additionalProperties": {"$ref": "#/$defs/hash"}
+          }
+        }
+      }
+    },
+    "collision_sequence": {"type": "object"},
+    "robot_link_transforms_recomputed_from_joint_results": {"const": true},
+    "caller_robot_link_transform_overrides_accepted": {"const": false},
+    "continuous_collision_proven": {"const": false},
+    "controller_commands": {"type": "array", "maxItems": 0},
+    "hardware_commands_generated": {"const": 0},
+    "hardware_access": {"const": false},
+    "physical_authority": {"const": false},
+    "fk_collision_sequence_sha256": {"$ref": "#/$defs/hash"}
+  },
+  "$defs": {"hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}
+}

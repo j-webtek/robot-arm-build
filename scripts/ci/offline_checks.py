@@ -15,6 +15,7 @@ TESTS = (
     'software/tests/unit/test_model_motion_planner_gate.py',
     'software/tests/unit/test_measured_trajectory_screening.py',
     'software/tests/unit/test_measured_waypoint_collision_sequence.py',
+    'software/tests/unit/test_fk_collision_pose_adapter.py',
     'software/tests/unit/test_model_motion_sequence_coordinator.py',
     'software/tests/unit/test_zero_write_waveshare_adapter_v1.py',
     'software/tests/unit/test_zero_write_sole_writer_v1.py',
