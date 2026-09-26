@@ -1,0 +1,34 @@
+{
+  "scope": "INITIAL_DEVELOPMENT_BASELINE",
+  "training_groups": [
+    14000000,
+    600
+  ],
+  "development_groups": [
+    15000000,
+    200
+  ],
+  "conditions": [
+    "standard",
+    "appearance_shift",
+    "partial",
+    "full"
+  ],
+  "epochs": 8,
+  "seed": 260926,
+  "learning_rate": 0.001,
+  "baseline_checkpoint": "software/ai/results/translation_weighted_v0_translation_weighted/pose_model.pt",
+  "baseline_checkpoint_sha256": "0fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d",
+  "target_catalog_sha256": "6779213e832ab27eeda1e7fb245f57ff8cb0d56707b5aa73a8f31ec483a620f2",
+  "file_sha256": {
+    "software/ai/vision/landmark_occlusions.py": "2d77d25077ab98dad632bb441b94c06cc6c139116d6621483cab7728d95c6aad",
+    "software/ai/vision/landmark_renderer.py": "e8535fbf98c8cfd3a838f5f793534a182d0dc5b8b9eabaa3bfa2173e649137de",
+    "software/ai/vision/landmark_model.py": "d877060b029487382fcedf9eea4af0b6248029fbcf484d44d921f942579483fc",
+    "software/ai/vision/evaluate_dark_only_normalization.py": "12289bfeeb52274678c62f46c7e99e057563036566fa48fc5f5cd1d58add4469",
+    "software/ai/vision/synthetic_keyboard.py": "b9a1662ea348ba78093909844e5e8bed86f4996babc289bfd63858b6b54f692c",
+    "software/ai/vision/pose_model.py": "7eccc2a3cabf3a37217b4a1c3114c439ffc740a917c08e4ef378065ff85c6ec5",
+    "software/ai/vision/train_pose.py": "98c2ae6211b42c3b4b7c5bed3fb03aab82bffff79c30ebb546e3681b3be3a1b6",
+    "software/ai/train/train_landmarks.py": "fe255154e4cc3a6a0efecd2a8344519a201cd847b33b61d827ca8da1992a95bb"
+  },
+  "policy": "Train random initialization eight epochs, choose minimum total development loss. Visible-fraction weighted Gaussian heatmap crossentropy sigma1.5 grid cells plus soft visibility BCE. No localization supervision for fully occluded corners. Compare unconditional four-corner pose to pretrained normalized baseline on identical images. Each condition mean<=1.05x, tail no increase, yaw p95<=1.10x. No runtime promotion regardless; visibility evaluated separately, not trusted confidence."
+}
