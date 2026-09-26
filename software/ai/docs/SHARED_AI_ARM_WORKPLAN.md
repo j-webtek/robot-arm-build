@@ -602,6 +602,7 @@ remove it only in the same commit that appends the resulting evidence row.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
+| AI/model | S1 | `rocell_ai/batch_emitter_v2.py`, `tests/test_batch_emitter_v2.py`, AI evidence | main from `7ffb7f2` | ACTIVE: typed producer assembly and fixture round-trip |
 | Unclaimed | S2 | shadow runner/integration fixtures | — | AVAILABLE |
 | Unclaimed | S4 | controller adapter/receipts | — | AVAILABLE |
 
