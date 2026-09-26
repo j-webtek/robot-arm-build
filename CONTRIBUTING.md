@@ -1,5 +1,8 @@
 # Contributing to Tactevra
 
+Please follow our [community code of conduct](CODE_OF_CONDUCT.md). It explains
+respectful participation, private conduct reporting and the review process.
+
 Use **Tactevra** in new public-facing prose. Preserve `rocell` executable names,
 schemas, historic release paths, and third-party attribution. See the
 [brand guide](docs/brand/BRAND_GUIDE.md) for shared naming and presentation rules.

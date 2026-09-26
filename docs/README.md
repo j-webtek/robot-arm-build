@@ -15,6 +15,8 @@ Maintainers preparing a source preview should follow the
 
 For questions and defects, see [support](../SUPPORT.md). Report vulnerabilities
 through the [private security channel](../SECURITY.md), not public issues.
+For participation standards and private conduct reports, see the
+[community code of conduct](../CODE_OF_CONDUCT.md).
 
 Branding contributors: the [Tactevra brand foundation](brand/BRAND_GUIDE.md) records
 the selected name and staged migration plan. Commercial clearance and rollout remain pending.
