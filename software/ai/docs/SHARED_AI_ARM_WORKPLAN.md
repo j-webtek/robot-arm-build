@@ -1679,3 +1679,20 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: heuristic findings unresolved; no clean audit claim.
 - Supersedes: none
 - Next dependency: fixture-owner review independently of localization research.
+
+
+### E-20260926-AI-028 — merged boundary regression
+
+- Stage: S1
+- Lane: AI
+- Commit: `4687072c25f774a5651b39ba1ba79a07949a494f`
+- Change: retained concurrent shared shadow/boundary changes and reran focused producer/consumer checks.
+- Inputs/fixtures: v2 AI assembler and arm ingress fixtures, matched-resolution scorecard.
+- Command: `python -m pytest -q software/ai/tests/test_batch_emitter_v2.py software/tests/unit/test_model_motion_ingress_v2.py software/ai/tests/test_matched_resolution_evidence.py`
+- Result: PASS, 33 tests.
+- Artifacts: named tests and merged shared boundary sources.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: focused offline regression only; no integration status changed by AI lane.
+- Supersedes: none
+- Next dependency: AI-025 development refinement and shared-stage outstanding dependencies.
