@@ -13,6 +13,7 @@ DOCS = (
     'docs/README.md', 'docs/GETTING_STARTED.md', 'docs/RELEASING.md',
     'docs/releases/EXPERIMENTAL_PREVIEW_DRAFT.md',
     'docs/releases/BASELINE_2026-09-26.md',
+    'docs/releases/NEWCOMER_CHECK_2026-09-26.md',
     'docs/releases/COMPATIBILITY_CONTENT_REVIEW_2026-09-26.md',
     'docs/HARDWARE_PROVENANCE.md',
     'docs/REPOSITORY_OPERATIONS.md',
