@@ -1,0 +1,12 @@
+{
+  "stage": "S1",
+  "input": "software/ai/eval/pose_landmark_v0_report.json",
+  "minimum_support": 3,
+  "tolerance_mm": 3,
+  "fixtures": "15M seeds 15000000..15000199, four conditions, retained AI-187 predictions",
+  "file_sha256": {
+    "software/ai/eval/pose_landmark_v0_report.json": "16c143673d885de73ad1c4f07396ce75e42905bd36baa53e51e7cfaea6f01a94",
+    "software/ai/vision/diagnose_pose_visibility.py": "0fad409ca5476059a0afcbeb272f99e88bbf85a96697aba9d9f1e529d1377b1a"
+  },
+  "decision": "Report fixed-rule false accepts and false rejections; no qualification or parameter selection"
+}

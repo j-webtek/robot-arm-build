@@ -599,6 +599,8 @@ Copy this row and fill every field:
 
 ## Active work claims
 
+- AI lane / S1: pose-visibility diagnostic; freeze existing min-three-visible-corner rule against retained AI-187 pose errors. No runtime qualification or arm status changes.
+
 
 
 
