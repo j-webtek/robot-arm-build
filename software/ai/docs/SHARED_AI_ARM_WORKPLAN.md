@@ -606,7 +606,6 @@ remove it only in the same commit that appends the resulting evidence row.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI | S1 | local visibility error diagnosis | feature/translation-pair-evidence | ACTIVE |
 | Unclaimed | S2 | qualified perception adapter and complete shared gate | — | AVAILABLE |
 | Unclaimed | S4 | independently review sealed r97 packet `987cbe86...b416`, then bind a separately measured configuration epoch | — | AVAILABLE |
 
@@ -4211,3 +4210,51 @@ commissioning, or bounded physical result with its limitations intact.
   measured-epoch, installation, startup, and physical blockers remain.
 - Next dependency: an independent reviewer publishes a separate decision bound
   to the exact packet SHA-256, followed by measured configuration-epoch intake.
+
+### E-20260926-AI-119 — local visibility error diagnosis
+
+- Stage: S1
+- Lane: AI
+- Commit: `8110be4d686878debfcc34f004b433b9a68bafec` (frozen before execution)
+- Change: recompute local-head predicted peak/soft coordinate errors on CPU, stratify geometric classes at fixed4/8pixel cuts, and compare frozen global/local paired occlusion responses.
+- Inputs/fixtures:200 reused groups15000000..15000199, four conditions,800 images/3200 corners; local checkpoint SHA256 `3d2fd582bcb7591d4ef04aff8c9db5fedc38ce37d704786ed7d82265cb5b82d7`. Exact source, checkpoint and scorecard hashes in `eval/local_visibility_diagnostic_v0.manifest.json`.
+- Command: `python software/ai/vision/diagnose_local_visibility.py`
+- Result: diagnostic completed. Paired clear-to-hidden crossings global0 versus local172/196; local mean target drop0.358145, unaffected-peer drop0.000669. CPU clear predicted-visible2068/2736; below4px831/1025,4–8px1181/1262,>=8px56/449. Of668 clear rejections,393 have>=8px peak error and275 have<8px. Clear peak mean13.877px/p9590.154px; soft mean9.220px. Hidden false-visible4/201. Both crop location and near-corner classification remain relevant.
+- Artifacts: `eval/local_visibility_diagnostic_v0_report.json`, runner and manifest.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: CPU recomputation differs from retained GPU scorecard by3 clear decisions (2068 versus2065); cause not isolated, neither overwritten. Reused synthetic development; error strata association is not causal proof. No calibrated uncertainty, boundary changes or integration completion.
+- Supersedes: none
+- Next dependency: isolate CPU/GPU and single/batch inference disagreement with identical stored pixels/checkpoint, then freeze a location-estimator comparison for the visibility crop. No oracle runtime crop or qualification.
+
+### E-20260926-AI-120 — local diagnostic verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `8110be4d686878debfcc34f004b433b9a68bafec` (source baseline; tests committed with evidence)
+- Change: verify hashes and independently recount all fixed error strata and paired crossing counts.
+- Inputs/fixtures: AI-119 manifest,3200 corner rows and paired response rows; source/input hashes in manifest.
+- Command: `python -m pytest -q software/ai/tests/test_local_visibility_diagnostic.py`
+- Result: PASS,1 test; existing pytest-asyncio configuration warning.
+- Artifacts: named test and diagnostic report.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: arithmetic/provenance verification; no boundary changes, shared boundary suite not triggered.
+- Supersedes: none
+- Next dependency: AI-119 inference parity diagnosis.
+
+### E-20260926-AI-121 — local diagnostic publication audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `8110be4d686878debfcc34f004b433b9a68bafec` (source baseline plus result/test snapshot)
+- Change: audited publication snapshot.
+- Inputs/fixtures: repository with AI-119/120 artifacts and reviewed fixture allowlist.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS;5835 paths,815.2 MiB,0 unresolved findings,14 reviewed synthetic fixtures.
+- Artifacts: audit stdout and snapshot.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: heuristic audit; AI-041 protected-main publication blocker remains.
+- Supersedes: none
+- Next dependency: protected-branch PR/checks and AI-119 parity diagnosis.

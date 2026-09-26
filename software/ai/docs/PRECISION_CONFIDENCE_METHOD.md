@@ -429,3 +429,8 @@ Across196 eligible same-scene clear-to-hidden interventions, the control, combin
 ### Matched local visibility head (AI-116)
 
 Predicted-peak local pooling improves hidden false-visible counts36→4/201 and clear recall20.58%→75.48% against the retrained global head. This remains below the fixed90% recall requirement, while partial/full localization tails worsen197→198 and198→200/200. The combined promotion rule fails; no qualification is installed. Both heads have identical parameters/initialization and matched data/loss/budget; the local head uses predicted hard peaks and3x3 feature patches, never oracle crops. Next diagnose paired occlusion response and predicted-crop error before further training. Frozen source `b06f609a33e09e0a0a402b665b05f245d55e7cb6`; scorecards `eval/landmark_local_visibility_v0_*`. One seed and reused synthetic development cannot establish fresh performance.
+
+
+### Local-head error diagnosis (AI-119)
+
+Local visibility has an obstruction-specific response:172/196 paired clear-to-hidden threshold crossings versus0 for the global head, with mean target probability drop0.358 and peer drop0.000669. CPU diagnostic clear rejections split393 with peak error>=8px and275 below8px; position errors explain an association, not all classification errors or causality. CPU clear-visible2068 differs from retained GPU2065; preserve both and isolate device/batch inference parity before the next location-estimator experiment. This is reused synthetic evidence, not qualification. Source `8110be4d686878debfcc34f004b433b9a68bafec`; report `eval/local_visibility_diagnostic_v0_report.json`.
