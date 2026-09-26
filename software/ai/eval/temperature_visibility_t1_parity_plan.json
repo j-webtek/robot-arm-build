@@ -1,0 +1,32 @@
+{
+  "checkpoint": "software/ai/results/landmark_temperature_v0_t1/model.pt",
+  "checkpoint_sha256": "8727f2120c64a4d0c958410ba142cf4d0647528379fe1b8a63a9ee79177478b7",
+  "conditions": [
+    "standard",
+    "appearance_shift",
+    "partial",
+    "full"
+  ],
+  "protocol": "All800 retained development images; peak vs soft-argmax pixel errors, entropy, mass within8px, visibility by geometric class. No modifications or threshold selection.",
+  "file_sha256": {
+    "software/ai/vision/diagnose_landmarks.py": "7fbf2c6730ac6e1778a3e1fea61ffeed93eecfc8ce36b8f2ead579e2c50a4205",
+    "software/ai/vision/landmark_model.py": "d877060b029487382fcedf9eea4af0b6248029fbcf484d44d921f942579483fc",
+    "software/ai/vision/landmark_occlusions.py": "2d77d25077ab98dad632bb441b94c06cc6c139116d6621483cab7728d95c6aad",
+    "software/ai/vision/landmark_renderer.py": "e8535fbf98c8cfd3a838f5f793534a182d0dc5b8b9eabaa3bfa2173e649137de",
+    "software/ai/vision/evaluate_dark_only_normalization.py": "12289bfeeb52274678c62f46c7e99e057563036566fa48fc5f5cd1d58add4469",
+    "software/ai/eval/landmark_v0_scorecard.json": "8756daa676e33c2e89fb5b7cf45267b640970c0eff55d6e0a3f4756a8f99e467",
+    "software/ai/vision/diagnose_local_visibility.py": "12b72a895a99a88adf1cb35c110523aae88b828932fbf99e5fb453e5b0bee4bc",
+    "software/ai/vision/local_visibility_model.py": "011f411a32586e094553ac25f19162143a1309f15a75547ee864406db13d9b57",
+    "software/ai/vision/diagnose_landmark_visibility_response.py": "7555a1d85edd922d605b8d19d2ececa89c563b937e5c7c29a5c0fba6e6244729",
+    "software/ai/eval/landmark_local_visibility_v0_local_scorecard.json": "d09878972ad20c93779d33b2bd179daaae931f2458aa0d668452c2871e1adfaf",
+    "software/ai/eval/landmark_local_visibility_v0_global_scorecard.json": "a83b3c90f8d07917cd0fa183eb46142b1f627ba9832e608c9c1e5f843744ceae",
+    "software/ai/vision/diagnose_local_visibility_parity.py": "1fddfbd34641e1bbbb61c58cd1998715e8aa1bbf245e5f8e12348d5d93ec694d",
+    "software/ai/vision/weighted_visibility_model.py": "4c2f7633f5ca3c1a450beb09fed1b37a54d9eead2a5315578bc983cdd98558ba",
+    "software/ai/vision/diagnose_weighted_visibility_parity.py": "0c3a155d5c3d3fa049864775bc52f6a88537f5d0400a495800375d446aa22a44",
+    "software/ai/eval/landmark_weighted_visibility_v0_weighted_scorecard.json": "e45d7e7e3a4766e83d2122d2ac8118d9fe6e32bb3d11ece5a26fe60df707ec87",
+    "software/ai/vision/temperature_visibility_model.py": "b63084f2c554f5734111775f8ab6c891e2af190766c9dac2ffc2c03bb4420a89",
+    "software/ai/vision/diagnose_temperature_visibility_parity.py": "f3093d2eea7b2cb86b0eaa77e1ee835f896249fcb6c1c22ae0092fe5552284bd",
+    "software/ai/eval/landmark_temperature_v0_t1_scorecard.json": "7a848ef60eaa04027b609b95cf5a36accd2862d7a45a2a5fe2f59a74340c3b4b"
+  },
+  "policy": "Same uint8 normalized pixels verified against training scorecard. CPU/CUDA each batch1/32, unchanged checkpoint. Record hard peaks, top-two logit margins, probabilities, decision changes at fixed0.5. No tuning or qualification."
+}
