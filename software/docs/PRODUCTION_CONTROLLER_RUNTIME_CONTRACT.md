@@ -159,6 +159,15 @@ form one lineage and the receipt proves zero transport writes. Its success
 status explicitly includes `PRODUCTION_BLOCKED`; it creates neither a runtime
 admission record nor a production dispatch permit.
 
+The producer/consumer integration rehearsal now starts from the exact canonical
+bytes returned by the real AI batch assembler. The arm decoder, registry,
+freshness gate, and measured planner consume those bytes unchanged. The measured
+planner is required to stop at missing or stale calibration; only a distinct
+synthetic planner-ready copy may continue into the zero-write encoder rehearsal.
+Accordingly this integration proves wire compatibility and content-addressed
+lineage, not learned-model qualification, measured trajectory readiness, or
+permission to invoke this runtime.
+
 The candidate app SHA remains an explicit field but is not recursively derived
 from an app image that already embeds the epoch digest. This avoids an
 impossible self-referential hash. A later epoch-bound firmware build can embed

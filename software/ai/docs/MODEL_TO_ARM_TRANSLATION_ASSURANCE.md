@@ -202,6 +202,17 @@ rehearsal succeeds only when the production epoch still reports
 Consequently it can catch crossed model, epoch, trajectory, profile, or receipt
 identities while remaining unusable as a dispatch permit.
 
+The shared seam now also consumes the exact canonical bytes produced by the
+real `rocell_ai.batch_emitter_v2` assembler. Those bytes are decoded by the arm
+model, admitted through the registry, checked for freshness, and submitted to
+the measured planner without substituting a hand-authored batch. The measured
+planner correctly stops at `BLOCKED_CALIBRATION_MISSING_OR_STALE` and requests
+`COMMISSION_REQUIRED_CALIBRATIONS`. Only after recording that independent
+blocker does a separate synthetic planner-ready copy exercise the sealed
+trajectory and zero-write encoder path. This proves producer/consumer wire and
+lineage compatibility; it does not qualify the synthetic observation fixture,
+the current learned models, a physical route, or controller execution.
+
 The following are still required before functional arm-command qualification:
 
 - fixed-camera real-image target labels and held-out evaluation;
