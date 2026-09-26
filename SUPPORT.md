@@ -6,6 +6,17 @@ Start with [getting started](docs/GETTING_STARTED.md),
 You do not need an arm or a running model service for the introductory offline
 examples.
 
+## Before opening a report
+
+- If you are trying the project for the first time, use the
+  [walkthrough's expected results](docs/GETTING_STARTED.md#what-you-can-do-today).
+- In that offline coordinate preview, `execution_authorized: false`, no
+  controller commands, and missing physical prerequisites are expected results,
+  not installation failures. Do not bypass them.
+- If a guide is confusing but you cannot identify a code defect, a documentation
+  report is enough. Include the page and the step that was unclear; you do not
+  need to propose a fix or run another test.
+
 ## Choose the right channel
 
 | Need | Where to go |
