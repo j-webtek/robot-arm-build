@@ -27,6 +27,31 @@ review is a contributor process, not an enforced independent-review rule:
 GitHub currently requires zero approving reviews so the solo maintainer can
 merge. The maintainer is responsible for checking the handoff fields.
 
+## Issue and PR triage
+
+Reuse `bug`, `documentation`, `enhancement`, and `question` for issue type.
+Additional labels created on September 26, 2026:
+
+| Label | Use |
+| --- | --- |
+| `area:repository` | GitHub configuration, CI, maintenance and contributor experience |
+| `area:ai` | AI producer, model or vision changes |
+| `area:arm` | Arm consumer, planner or controller changes |
+| `cross-workstream` | Coordinated interface review is needed |
+| `needs-owner-review` | An affected owner has not recorded a disposition |
+| `release-readiness` | Release prerequisites and preparation |
+
+Multiple area labels are appropriate for shared changes. Labels route work; they
+do not assign a person, establish priority, grant approval, or enforce a merge
+block. Do not invent assignees. Leave `needs-owner-review` until the relevant
+disposition is recorded at an exact commit. Preserve unrelated labels.
+
+Use the documentation template for unclear public guidance and the handoff
+template for shared contracts. The shared workplan remains the engineering
+ledger; link to it rather than copying long histories into issues. Keep security
+details in the private reporting channel. No automatic stale-issue closer is
+configured: inactivity is not evidence that a problem is resolved.
+
 ## Dependency-update operation
 
 [Dependabot configuration](../.github/dependabot.yml) proposes weekly updates for
@@ -57,10 +82,12 @@ agent or reminder is created by this guide.
 
 ## Actions and security baseline
 
-The offline workflow uses full commit SHAs for checkout and setup-python, resolved
-from the existing v4/v5 references on September 26, 2026. This avoids an unreviewed
-major-version migration and makes those action revisions immutable. Dependabot
-can propose later pin updates; pinning does not itself prove the action is safe.
+The offline workflow uses full commit SHAs for checkout v7.0.1 and setup-python
+v7.0.0, verified against upstream release tags on September 26, 2026. The upgrade
+review covered the intervening Node 24 runner requirement, checkout credential
+handling, event restrictions, and setup-python input changes. The hosted matrix
+tests the combined revisions; no self-hosted runner compatibility is claimed.
+Dependabot can propose later pin updates; pinning does not itself prove the action is safe.
 The workflow retains read-only permissions, non-persisted checkout credentials,
 hosted runners and bounded jobs. It does not use `pull_request_target` or deploy.
 

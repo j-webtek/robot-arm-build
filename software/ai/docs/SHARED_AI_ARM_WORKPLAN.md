@@ -605,7 +605,7 @@ remove it only in the same commit that appends the resulting evidence row.
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
 | Unclaimed | S2 | qualified perception adapter and complete shared gate | — | AVAILABLE |
-| Unclaimed | S4 | independently review passive controller candidate and close its seven explicit blockers | — | AVAILABLE |
+| Unclaimed | S4 | design and independently qualify a separate generic T=102/T=105/T=1051 runtime; r96 is an incompatible finite diagnostic landmark | — | AVAILABLE |
 
 ## Worker update procedure
 
@@ -2231,3 +2231,67 @@ commissioning, or bounded physical result with its limitations intact.
   not supersede ARM-024's live observation or limitations.
 - Next dependency: independent evidence review and explicit resolution of the
   seven blockers listed by ARM-024.
+
+### E-20260926-ARM-026 — r96 command-surface compatibility decision
+
+- Stage: S4
+- Lane: ARM
+- Change: added a pure, fail-closed compatibility boundary that requires the
+  exact passively observed application to expose a reviewed generic dispatcher,
+  `T=102` commands, `T=105` requests, `T=1051` responses, runtime app-hash
+  attestation, and independent approval. Added closed evidence/report schemas,
+  public exports, tests, an offline assessor, and operator documentation.
+- Inputs: ignored passive evidence from ARM-024; exact r96 staged source,
+  compiled app and ELF; retained compile review; predecessor image hash.
+- Offline assessment: `BLOCKED`. The installed app hash matches the reviewed
+  r96 hash, but blockers are `RUNTIME_APP_HASH_NOT_ATTESTED`,
+  `GENERIC_COMMAND_DISPATCH_ABSENT`, `T102_COMMAND_UNAVAILABLE`,
+  `T105_FEEDBACK_REQUEST_UNAVAILABLE`,
+  `T1051_FEEDBACK_RESPONSE_UNAVAILABLE`, and
+  `INDEPENDENT_REVIEW_INCOMPLETE`.
+- Local artifact: ignored
+  `software/runs/installed-controller-qualification/r96-surface-compatibility-20260926.json`;
+  report hash
+  `fdcd559ddf407e67082cb3c80f410ef35b3a3163e21264c677b2a17ee2184706`;
+  surface evidence hash
+  `88315efd7167c1059196504db9a10f20afe0e6f6fd49e52169695a4862092643`;
+  file hash
+  `4af82bf96e54daa1dc9e790f76d2d6ceb728fb59ed3ebb6504ff712d80dc880e`.
+- Command: `$env:PYTHONPATH='software/src;software/scripts'; python software/scripts/assess_r96_controller_surface.py --passive-evidence software/runs/installed-controller-qualification/r96-passive-20260926.json --output software/runs/installed-controller-qualification/r96-surface-compatibility-20260926.json`.
+- Test result: targeted compatibility, passive-evidence, and qualification suite
+  PASS, 34 tests. Every missing requirement fails closed; schemas reject
+  mutation into execution authority.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: this is an offline compatibility decision, not independent r96
+  evidence approval and not qualification of a new runtime. No transport,
+  execution, or physical authority is created.
+- Supersedes: ARM-024's proposed path of closing r96's protocol blockers. r96
+  remains valid as historical passive and diagnostic evidence, but is
+  structurally incompatible with the production command surface.
+- Next dependency: design a separate safe-idle, sole-writer generic runtime
+  candidate with bounded T=102/T=105/T=1051 handling and runtime attestation;
+  independently review it offline before proposing installation or startup.
+
+### E-20260926-ARM-027 — command-surface integration verification
+
+- Stage: S4
+- Lane: ARM
+- Change: verified the r96 compatibility decision across the shared AI/arm,
+  zero-write, sole-writer, passive-evidence, qualification, schema, and snapshot
+  boundaries, then audited the complete repository snapshot.
+- Commands: `python scripts/ci/check_docs.py`; ARM-021's integrated pytest
+  selection with `test_installed_controller_surface_compatibility_v1.py` added;
+  `python scripts/audit_github_snapshot.py`; `git diff --check`.
+- Result: documentation PASS for 21 maintained documents and two SVG assets;
+  pytest PASS, 263 tests in 38.93 seconds; audit PASS, 5,696 paths, 903.6 MiB,
+  zero unresolved findings and 14 reviewed synthetic fixtures; diff check PASS.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: integrated software verification does not qualify a replacement
+  controller runtime and does not authorize installation, startup, transport,
+  execution, or physical movement.
+- Supersedes: ARM-025 only for current integrated test, document, and audit
+  counts. It does not alter ARM-024's observation or ARM-026's blocked result.
+- Next dependency: implement and independently review the separate production
+  runtime contract offline, retaining r96 unchanged as diagnostic history.

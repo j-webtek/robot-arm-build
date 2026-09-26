@@ -327,6 +327,16 @@ from .installed_controller_passive_evidence_v1 import (
     InstalledControllerPassiveEvidenceV1,
     assemble_installed_controller_passive_evidence_v1,
 )
+from .installed_controller_surface_compatibility_v1 import (
+    BLOCKER_CODES as INSTALLED_CONTROLLER_SURFACE_BLOCKER_CODES,
+    EVIDENCE_SCHEMA as INSTALLED_CONTROLLER_SURFACE_EVIDENCE_SCHEMA,
+    REPORT_SCHEMA as INSTALLED_CONTROLLER_SURFACE_REPORT_SCHEMA,
+    InstalledControllerSurfaceCompatibilityError,
+    InstalledControllerSurfaceCompatibilityReportV1,
+    InstalledControllerSurfaceEvidenceV1,
+    SurfaceReviewDisposition,
+    assess_installed_controller_surface_compatibility_v1,
+)
 from .prehardware_layout_study import (
     LayoutAxisValueEvidence,
     LayoutCandidatePromotion,
@@ -1058,6 +1068,14 @@ __all__ = [
     "InstalledControllerPassiveEvidenceError",
     "InstalledControllerPassiveEvidenceV1",
     "assemble_installed_controller_passive_evidence_v1",
+    "INSTALLED_CONTROLLER_SURFACE_BLOCKER_CODES",
+    "INSTALLED_CONTROLLER_SURFACE_EVIDENCE_SCHEMA",
+    "INSTALLED_CONTROLLER_SURFACE_REPORT_SCHEMA",
+    "InstalledControllerSurfaceCompatibilityError",
+    "InstalledControllerSurfaceCompatibilityReportV1",
+    "InstalledControllerSurfaceEvidenceV1",
+    "SurfaceReviewDisposition",
+    "assess_installed_controller_surface_compatibility_v1",
     "ModelMotionIngressError",
     "SimulationContextError",
     "SimulationRunReport",
