@@ -599,6 +599,8 @@ Copy this row and fill every field:
 
 ## Active work claims
 
+- AI lane / S1: paired pose occlusion fine-tuning, frozen equal budget and unchanged 4:4:1 loss; development evidence only.
+
 
 
 
