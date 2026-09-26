@@ -14,6 +14,8 @@ demo. This checks packaging as well as source-tree behavior.
 - Coordinate preview reports nominal geometry, no controller commands, and no
   execution authorization.
 - Local file links in an explicit list of maintained docs; SVG XML validity.
+  Links to this repository's new-issue templates are checked against local
+  template filenames, catching stale `.md`/`.yml` routes without network access.
 - An explicit selection of AI/arm contract, ordering, evidence, and metric tests.
   The list is in [offline_checks.py](../scripts/ci/offline_checks.py).
 - Zero-write controller-byte previews, lifecycle fault rehearsal, published
@@ -69,6 +71,8 @@ security sandbox or proof of physical safety.
 Green checks do not establish model accuracy, authenticated real-camera evidence,
 measured calibration, physical typing, or full-suite qualification. Link checking
 does not validate anchors or remote URLs. SVG parsing does not replace visual QA.
+The issue-template check verifies file existence, not GitHub form-schema validity
+or submission behavior. Generic/blank issue routes are not template files.
 The repository snapshot audit remains a separate review. Its previously reported
 synthetic fixtures have [exact documented exceptions](AUDIT_FIXTURE_REVIEW.md);
 CI tests that mechanism but does not replace a full snapshot scan.
