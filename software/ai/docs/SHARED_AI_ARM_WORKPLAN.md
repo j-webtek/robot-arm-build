@@ -604,6 +604,7 @@ remove it only in the same commit that appends the resulting evidence row.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
+| AI | S1 | `vision/diagnose_normalization_crossings.py`, crossing manifest/report/tests and diagnostic images | feature/translation-pair-evidence | ACTIVE: paired normalization threshold-crossing diagnosis |
 | Unclaimed | S2 | qualified perception adapter and complete shared gate | — | AVAILABLE |
 | Unclaimed | S4 | collect and independently review installed controller evidence | — | AVAILABLE |
 
