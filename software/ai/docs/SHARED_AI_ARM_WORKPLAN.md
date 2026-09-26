@@ -599,8 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-- AI lane / S1: unchanged anchor replication seeds260927/260928, retain260926 and aggregate all runs; no seed selection or qualification.
-
 
 
 
@@ -6226,3 +6224,71 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic audit; protected-main blocker AI-041 retained.
 - Supersedes: none; prior failures and arm/integration statuses retained.
 - Next dependency: Freeze two additional training seeds for the unchanged paired experiment,report each run and aggregate variation rather than pick a winning seed. Keep coefficient,data,budget,selection and acceptance rules fixed; test repeatability before any new parameter change or fresh qualification.
+
+
+### E-20260926-AI-211 — two additional anchor training seeds
+
+- Stage: S1
+- Lane: AI
+- Commit: `23ccd07d96acfc2ac3af0eb3e05ccd400200d101` (frozen source; results/tests committed with evidence)
+- Change: two additional anchor training seeds.
+- Inputs/fixtures: AI-208 seed260926 plus260927/260928; training14M600 x4,development15M200 x4; identical initial/teacher checkpoint0fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d,key-loss4epochs,AdamW0.0001,batch64,anchor coefficient1. Source hashes in train/pose_anchor_replica_*_plan.json and eval/pose_anchor_replication_v0_plan.json; generated hashes in replica and aggregate reports.
+- Command: `python software/ai/train/train_pose_anchor_replicas.py`
+- Result: Both replicas FAIL full criteria. Seed260927 candidate25 vs control29 total >3mm failures; seed260928 candidate27 vs control24. Seed260927 passes baseline checks,260928 fails. 260927/control checkpoint SHA256 7d5892ff1927f02f26c9361c54f582a2bbdac8e7002284ab7163b5e15dec67b5; 260927/occlusion checkpoint SHA256 a4b2c53e54722d156f28604d4589086d3bbd113b7ab0dd4265b6acb06fbfa681; 260928/control checkpoint SHA256 e50b8b329ad582e5e63c84f9e4153d2b830886b46add67040752194dff3417f1; 260928/occlusion checkpoint SHA256 0784058fbc3712e79c9d4d478f877bb89a63587c767f66330188ca027eeaee5a
+- Artifacts: train/train_pose_anchor_replicas.py; vision/summarize_anchor_replicas.py; eval/pose_anchor_replica_*_report.json; eval/pose_anchor_replication_v0_report.json; tests/test_anchor_replicas.py.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Same synthetic development data,not independent data replication;GPU nondeterminism. No seed selection,model promotion or fresh holdout.
+- Supersedes: none; all prior failed evidence and arm/integration status retained.
+- Next dependency: Stop penalty-coefficient tuning. Design a fixed-budget training-diversity comparison using explicitly reserved new training seeds,holding objective and steps constant,with all three seeds retained. Diagnose whether repeatedly reusing600 training scenes limits robustness; keep new training seeds separate from future qualification data and keep all current models unqualified.
+
+
+### E-20260926-AI-212 — three-seed anchor aggregation
+
+- Stage: S1
+- Lane: AI
+- Commit: `23ccd07d96acfc2ac3af0eb3e05ccd400200d101` (frozen source; results/tests committed with evidence)
+- Change: three-seed anchor aggregation.
+- Inputs/fixtures: AI-208 seed260926 plus260927/260928; training14M600 x4,development15M200 x4; identical initial/teacher checkpoint0fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d,key-loss4epochs,AdamW0.0001,batch64,anchor coefficient1. Source hashes in train/pose_anchor_replica_*_plan.json and eval/pose_anchor_replication_v0_plan.json; generated hashes in replica and aggregate reports.
+- Command: `python software/ai/vision/summarize_anchor_replicas.py`
+- Result: Full passes0/3,baseline passes2/3. Seeds260926/27/28: candidate failures25/25/27,control22/29/24,baseline32/32/32. Candidate appearance means0.831020/0.832420/0.836195mm; mean0.833212 versus baseline0.833364. Control appearance range0.836309..0.880173. Baseline appearance gain is tiny and not consistent; paired-control advantage not established.
+- Artifacts: train/train_pose_anchor_replicas.py; vision/summarize_anchor_replicas.py; eval/pose_anchor_replica_*_report.json; eval/pose_anchor_replication_v0_report.json; tests/test_anchor_replicas.py.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Descriptive ranges only,not confidence intervals; repeated images cannot be pooled as independent observations. No acceptance relaxation.
+- Supersedes: none; all prior failed evidence and arm/integration status retained.
+- Next dependency: Stop penalty-coefficient tuning. Design a fixed-budget training-diversity comparison using explicitly reserved new training seeds,holding objective and steps constant,with all three seeds retained. Diagnose whether repeatedly reusing600 training scenes limits robustness; keep new training seeds separate from future qualification data and keep all current models unqualified.
+
+
+### E-20260926-AI-213 — anchor replication verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `23ccd07d96acfc2ac3af0eb3e05ccd400200d101` (frozen source; results/tests committed with evidence)
+- Change: anchor replication verification.
+- Inputs/fixtures: AI-208 seed260926 plus260927/260928; training14M600 x4,development15M200 x4; identical initial/teacher checkpoint0fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d,key-loss4epochs,AdamW0.0001,batch64,anchor coefficient1. Source hashes in train/pose_anchor_replica_*_plan.json and eval/pose_anchor_replication_v0_plan.json; generated hashes in replica and aggregate reports.
+- Command: `python -m pytest -q software/ai/tests/test_anchor_replicas.py`
+- Result: PASS,2 tests: fixed experiment parameters,exact source/checkpoint/input/teacher hashes,all three runs retained,aggregate metrics and pass statuses. Existing pytest-asyncio warning.
+- Artifacts: train/train_pose_anchor_replicas.py; vision/summarize_anchor_replicas.py; eval/pose_anchor_replica_*_report.json; eval/pose_anchor_replication_v0_report.json; tests/test_anchor_replicas.py.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Implementation verification; batch unchanged,shared boundary tests not triggered.
+- Supersedes: none; all prior failed evidence and arm/integration status retained.
+- Next dependency: Stop penalty-coefficient tuning. Design a fixed-budget training-diversity comparison using explicitly reserved new training seeds,holding objective and steps constant,with all three seeds retained. Diagnose whether repeatedly reusing600 training scenes limits robustness; keep new training seeds separate from future qualification data and keep all current models unqualified.
+
+
+### E-20260926-AI-214 — anchor replication publication audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `23ccd07d96acfc2ac3af0eb3e05ccd400200d101` (frozen source; results/tests committed with evidence)
+- Change: anchor replication publication audit.
+- Inputs/fixtures: AI-208 seed260926 plus260927/260928; training14M600 x4,development15M200 x4; identical initial/teacher checkpoint0fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d,key-loss4epochs,AdamW0.0001,batch64,anchor coefficient1. Source hashes in train/pose_anchor_replica_*_plan.json and eval/pose_anchor_replication_v0_plan.json; generated hashes in replica and aggregate reports.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS;6025 paths,849.9 MiB,0 unresolved findings,14 reviewed synthetic fixtures.
+- Artifacts: train/train_pose_anchor_replicas.py; vision/summarize_anchor_replicas.py; eval/pose_anchor_replica_*_report.json; eval/pose_anchor_replication_v0_report.json; tests/test_anchor_replicas.py.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic audit; AI-041 protected-main publication blocker retained.
+- Supersedes: none; all prior failed evidence and arm/integration status retained.
+- Next dependency: Stop penalty-coefficient tuning. Design a fixed-budget training-diversity comparison using explicitly reserved new training seeds,holding objective and steps constant,with all three seeds retained. Diagnose whether repeatedly reusing600 training scenes limits robustness; keep new training seeds separate from future qualification data and keep all current models unqualified.
