@@ -38,8 +38,9 @@ questions and non-sensitive defects belong in [support](SUPPORT.md).
 The repository owner, **j-webtek**, is the initial contact for private reports
 and repository security alerts, confirmed September 26, 2026. Submit sensitive
 information through the private channel above, not a public mention or issue.
-This assignment does not establish a response-time guarantee or verify that
-personal email/web notifications are configured.
+Repository security-alert watching and the owner's notification preferences were
+configured and checked on the same date. Actual notification receipt has not been
+tested; this does not establish a response-time guarantee.
 
 Tactevra is experimental. The current `main` branch is the development baseline;
 there is no maintained stable-version matrix, guaranteed response time, commercial
