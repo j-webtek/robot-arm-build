@@ -1,0 +1,16 @@
+{
+  "schema": "rocell.ai_local_features_development_plan.v0",
+  "architecture": "Frozen pose features 128 + predicted XY 2 + grayscale 8x8 patch 64 -> Linear(194,32),ReLU,Linear(32,1)",
+  "optimizer": "Adam",
+  "learning_rate": 0.001,
+  "epochs": 12,
+  "batch_size": 1024,
+  "seed": 260926,
+  "selection": "Minimum development BCE; earliest tie",
+  "file_sha256": {
+    "software/ai/train/compare_local_confidence_features.py": "4b92c77517bec7e3f07950b33a33ebdd97cf88f9817e5e58f8cd33b441b6eab4"
+  },
+  "scope": "DEVELOPMENT_ONLY",
+  "baseline_head_sha256": "3a2f1b969b834b82c5858a2ac1c53c39a18b135a368317ada95c4a471b80d8b4",
+  "comparison": "Same original training/development groups; compare uncalibrated BCE-selected heads on development only; no promotion"
+}

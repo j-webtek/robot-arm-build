@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img" aria-labelledby="title">
+  <title id="title">Tactevra path-to-target mark</title>
+  <rect width="256" height="256" rx="44" fill="#142633"/>
+  <g fill="none" stroke="#58D5C4" stroke-width="12" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M64 190V78H184V154"/>
+    <circle cx="64" cy="190" r="12" fill="#142633"/>
+    <circle cx="64" cy="78" r="12" fill="#142633"/>
+    <circle cx="184" cy="154" r="24"/>
+  </g>
+</svg>
