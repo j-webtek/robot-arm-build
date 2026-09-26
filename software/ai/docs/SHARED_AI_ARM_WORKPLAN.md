@@ -5906,9 +5906,9 @@ commissioning, or bounded physical result with its limitations intact.
   schema, clear/collision/crossed-envelope tests, public application exports,
   and shared assurance/status updates.
 - Artifact identity: conservative sweep qualifier SHA-256
-  `77084da5f82431f31c4658c83726dd9a7829eb872ad8968919846ba288c73547`;
+  `0f953ead5c94ff795bb412eed661b87f38e4b36d1ef5c27be8eebcd9106d90d6`;
   v1 report schema SHA-256
-  `e304a5f0e53a11412d599ae56e6f8c18a82f29cbd22c5c272fc4c4a4b95857a3`.
+  `2892acc794c9d61a57b02edd462f8ed02cf6f2217e688a0ce40a367e40857c69`.
 - Results: focused collision/FK/sweep suite PASS, 43 tests in 2.92 seconds;
   portable shared AI/arm selection PASS, 199 tests in 23.91 seconds;
   documentation PASS for 26 maintained documents, eight public titles,
@@ -6131,3 +6131,45 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic audit; AI-041 protected-main publication blocker retained.
 - Supersedes: none; previous failures and arm/integration status retained.
 - Next dependency: Freeze paired key-loss training with versus without a fixed baseline-prediction preservation penalty on standard/appearance training images only. Same images,budget,starting checkpoint and criteria; teacher has no truth authority and may retain errors. Test whether reduced prediction drift retains occlusion gains; do not sweep coefficients or relax acceptance.
+### E-20260926-ARM-045 — phase-local contact and collision envelope gate
+
+- Stage: S3
+- Lane: ARM
+- Change: added a deterministic gate that binds one v2 model proposal, its
+  measured trajectory screening, the ARM-044 conservative sweep result, the
+  installed collision profile, and the sealed no-write trajectory envelope.
+  Contact proposals require one exact target-bound `CONTACT` waypoint and one
+  exact installed tool/device body pair; hover proposals cannot carry either.
+- Safety behavior: every global exclusion must be `ENGINEERING_GLOBAL` with
+  `ACCEPTED_ENGINEERING` evidence. The phase-local allowance never enters the
+  global exclusion set, permits only one contact waypoint, cannot cross device
+  or target identity, emits no controller/wire commands, and grants neither
+  physical nor contact authority. Installed physical qualification remains
+  required.
+- Artifacts: `phase_local_contact_envelope_gate.py`, closed v1 JSON schema,
+  accepted/rejection/tamper tests, public application exports, and updated
+  collision/translation assurance documentation. ARM-044 reports now expose
+  the exact trajectory-screening digest required for downstream lineage.
+- Artifact identity: contact-envelope gate SHA-256
+  `607b2cefc4be9151c8f6182ee21cc56af2ce739e44872cb3e178dba29430adb0`;
+  v1 report schema SHA-256
+  `f91499c82a2be28a5cb724387e5e39afd9f9c6d9958f0c85a4c768bd12e21dd0`.
+- Results: focused collision/sweep/envelope suite PASS, 16 tests in 4.66
+  seconds; portable shared AI/arm selection PASS, 203 tests in 29.62 seconds;
+  documentation PASS for 26 maintained documents, eight public titles,
+  required navigation, and two SVG assets; compile checks PASS.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: accepted engineering exclusions and measured collision geometry
+  in tests remain synthetic fixtures. The gate proves policy/lineage structure,
+  not an installed unit, contact force, device registration, controller
+  execution, or observed task outcome. The allowance does not filter an
+  ARM-044 collision: the supplied conservative sweep must already be clear;
+  installed intended-contact geometry still needs independent qualification.
+- Supersedes: ARM-044's missing phase-local-contact and no-write-envelope binding
+  for exact supplied evidence. It does not supersede installed metrology,
+  physical qualification, execution review, controller permit, or outcome
+  verification.
+- Next dependency: qualify the installed profile and contact policy with
+  independently reviewed physical evidence, then connect this collision-policy
+  artifact as a mandatory input to the single-use execution review/permit gate.

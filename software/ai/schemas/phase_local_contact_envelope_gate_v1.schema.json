@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rocell.local/schemas/phase_local_contact_envelope_gate_v1.schema.json",
+  "title": "RoCell phase-local contact envelope gate v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "status", "action_index", "proposal_v2_sha256", "target_id",
+    "interaction", "trajectory_screening_sha256",
+    "conservative_sweep_qualification_sha256",
+    "installed_collision_profile_sha256",
+    "trajectory_execution_envelope_v2_sha256",
+    "global_pair_exclusions_accepted_engineering",
+    "phase_local_contact_allowance", "phase_local_contact_allowance_sha256",
+    "continuous_collision_proven_for_bound_geometry",
+    "installed_physical_qualification_required", "controller_commands",
+    "wire_commands", "hardware_access", "physical_authority",
+    "contact_authority", "contact_envelope_gate_sha256"
+  ],
+  "properties": {
+    "schema": {"const": "rocell.phase_local_contact_envelope_gate.v1"},
+    "status": {"const": "COLLISION_POLICY_BOUND_NO_WRITE_ENVELOPE"},
+    "action_index": {"type": "integer", "minimum": 0, "maximum": 63},
+    "proposal_v2_sha256": {"$ref": "#/$defs/hash"},
+    "target_id": {"type": "string", "minLength": 1},
+    "interaction": {"enum": ["HOVER", "CONTACT"]},
+    "trajectory_screening_sha256": {"$ref": "#/$defs/hash"},
+    "conservative_sweep_qualification_sha256": {"$ref": "#/$defs/hash"},
+    "installed_collision_profile_sha256": {"$ref": "#/$defs/hash"},
+    "trajectory_execution_envelope_v2_sha256": {"$ref": "#/$defs/hash"},
+    "global_pair_exclusions_accepted_engineering": {"const": true},
+    "phase_local_contact_allowance": {
+      "oneOf": [
+        {"type": "null"},
+        {"$ref": "#/$defs/contactAllowance"}
+      ]
+    },
+    "phase_local_contact_allowance_sha256": {
+      "oneOf": [{"type": "null"}, {"$ref": "#/$defs/hash"}]
+    },
+    "continuous_collision_proven_for_bound_geometry": {"const": true},
+    "installed_physical_qualification_required": {"const": true},
+    "controller_commands": {"type": "array", "maxItems": 0},
+    "wire_commands": {"type": "array", "maxItems": 0},
+    "hardware_access": {"const": false},
+    "physical_authority": {"const": false},
+    "contact_authority": {"const": false},
+    "contact_envelope_gate_sha256": {"$ref": "#/$defs/hash"}
+  },
+  "$defs": {
+    "hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "contactAllowance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "policy_id", "target_id", "body_pair", "phase",
+        "maximum_contact_waypoints", "engineering_evidence_sha256",
+        "source_reference", "global_exclusion", "contact_authority"
+      ],
+      "properties": {
+        "policy_id": {"type": "string", "minLength": 1},
+        "target_id": {"type": "string", "minLength": 1},
+        "body_pair": {
+          "type": "array", "minItems": 2, "maxItems": 2,
+          "items": {"type": "string", "minLength": 1}
+        },
+        "phase": {"const": "CONTACT"},
+        "maximum_contact_waypoints": {"const": 1},
+        "engineering_evidence_sha256": {"$ref": "#/$defs/hash"},
+        "source_reference": {"type": "string", "minLength": 1},
+        "global_exclusion": {"const": false},
+        "contact_authority": {"const": false}
+      }
+    }
+  }
+}

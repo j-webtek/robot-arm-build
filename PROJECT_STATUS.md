@@ -1,6 +1,6 @@
 # Tactevra project status
 
-Reviewed September 26, 2026 through the ARM-044 conservative-sweep collision
+Reviewed September 26, 2026 through the ARM-045 phase-local contact gate
 increment.
 Unmerged workstream branches are not included in this summary.
 This is a capability summary for readers; the
@@ -43,7 +43,7 @@ use the shared workplan linked above.
 | Precision evidence | Identity and capture-receipt binding helpers | These establish software checks, not a qualified real-camera observation; authenticated capture and usable localization confidence remain open |
 | Arm planning adapter | Admitted v2 proposals enter the arm-owned measured planning policy | The tested valid input reaches the planner but stops for missing or stale calibration; no trajectory or controller command is produced |
 | Installed collision evidence | Strict measured profiles bind body geometry and clearance policy to the manifest, build, model, and base collision contract | The measured trajectory screener can consume this profile without falling back to nominal geometry, but continuous full-body sweep remains unimplemented and release stays blocked |
-| Conservative route collision evaluation | Robot poses are FK-derived at bounded samples; rigid motion is enclosed by URDF-derived margins and each adjacent pair requires a profile-bound cable envelope | Synthetic fixtures test clear, collision, crossed-identity, and resource cases; diagnostic pair exclusions, contact policy, and installed physical qualification still block release |
+| Conservative route collision evaluation | Robot poses are FK-derived at bounded samples; rigid motion is enclosed by URDF-derived margins, each adjacent pair requires a profile-bound cable envelope, and one exact contact allowance can be bound to a sealed no-write envelope | Synthetic fixtures test clear, collision, crossed-identity, contact-policy, and resource cases; installed engineering evidence and physical qualification still block release |
 | Controller-command preview | Sealed synthetic trajectories can be encoded into Waveshare T=102 bytes and a proposed dispatch schedule | Offline encoding and published schemas are tested; the preview has no transport and sends nothing to the arm |
 | Execution lifecycle rehearsal | Ownership, single-use reservations, fault handling, and restart reconciliation are modeled | Tests exercise no-retry and fault rules without device I/O; this is not an installed live execution service |
 | Controller evidence gate | Required controller identity, mapping, protocol, freshness, and review fields are checked | Modeled records test rejection behavior; even a passing record grants no transport or execution authority, and no physical originals were qualified |
@@ -61,9 +61,12 @@ accepted joint solutions, insert bounded joint-space samples, and build
 conservative rigid envelopes between each adjacent pair. Every pair also
 requires a hash-bound measured cable envelope. Collisions, missing evidence,
 crossed identities, unsupported joints, or resource overflow block the route.
-Clear envelope checks still cannot release motion because current pair
-exclusions are diagnostic, intended contact lacks a phase-local policy, and the
-tests use fixtures rather than independently measured installed geometry.
+An additive gate now accepts only reviewed global exclusions and, for a contact
+proposal, one exact installed tool/device pair at one target-bound `CONTACT`
+waypoint. It binds that policy and the conservative-sweep hash to the same v2
+proposal and no-write trajectory envelope. Clear fixture checks still cannot
+release motion because no independently measured installed profile, engineering
+contact evidence, or physical qualification has been supplied.
 
 The arm lane can now inspect what controller-command bytes a synthetic movement
 would produce, without sending them. It also rehearses how one command owner

@@ -474,6 +474,9 @@ def qualify_conservative_segment_sweeps(
     report: dict[str, Any] = {
         "schema": SCHEMA,
         "status": status,
+        "trajectory_screening_sha256": trajectory_screening[
+            "trajectory_screening_sha256"
+        ],
         "bounded_segment_qualification_sha256": bounded[
             "bounded_segment_qualification_sha256"
         ],

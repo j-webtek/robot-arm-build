@@ -145,9 +145,15 @@ The current adjacent-link exclusions are derived from the exact pinned URDF
 topology. They are diagnostic and not physically accepted because adjacency
 alone does not prove that installed body envelopes may always overlap safely.
 
-Keyboard-key and phone-screen contact are phase-specific allowances. They must
-be modeled by a future phase-local contact query and must never be converted
-into global collision exclusions. No exclusion can authorize contact.
+Keyboard-key and phone-screen contact are phase-specific allowances. The
+`phase_local_contact_envelope_gate` now represents one exact tool/installed-
+device body pair for one named target and exactly one `CONTACT` waypoint. It
+rejects the allowance for `HOVER`, a different device or target, a non-tool
+body, a non-environment body, or a route with any other contact count. The
+allowance remains separate from the collision contract's global exclusions and
+cannot authorize contact. It also does not erase a collision reported by the
+conservative sweep; installed intended-contact geometry and force behavior need
+their own physical qualification.
 
 ## Configuration-sampled cable geometry
 
@@ -375,15 +381,18 @@ remaining work is:
    it against metrology, calibration residuals, repeatability, backlash, flex,
    payload, and the intended operating speed.
 8. Review each global exclusion against the accepted envelopes. Promote only
-   genuinely invariant pairs to `ENGINEERING_GLOBAL`; keep typing/tapping
-   contact allowances phase-local.
+   genuinely invariant pairs to `ENGINEERING_GLOBAL`. Bind typing/tapping
+   contact through `PhaseLocalContactAllowance`, never through a global
+   exclusion.
 9. Project route joint states and accepted frame transforms into
     `CollisionPose` values and call the pose/sweep engine for park, transit,
     hover, approach, contact, and retract. Preserve the report hashes alongside
     the route evidence.
-10. Add a validated continuous or conservatively swept-volume collision method
-    if hardware release requires collision freedom between samples. The
-    existing discrete sweep cannot make that claim.
+10. Supply conservative cable envelopes and run the adjacent-sample sweep
+    qualifier. The phase-local envelope gate accepts its continuous claim only
+    when every global exclusion is accepted engineering evidence and the sweep,
+    trajectory, installed profile, proposal, and v2 envelope lineages match.
+    Installed physical qualification remains a separate required release gate.
 11. Re-run the strict readiness command, then the route-level diagnostics. Keep
     motion/contact authority in the independent safety and commissioning gates;
     collision readiness alone must never release them.
