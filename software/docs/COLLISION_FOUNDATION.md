@@ -155,6 +155,14 @@ cannot authorize contact. It also does not erase a collision reported by the
 conservative sweep; installed intended-contact geometry and force behavior need
 their own physical qualification.
 
+The downstream `single_action_execution_review_v1` boundary now requires that
+physical qualification explicitly. Its installed collision-policy artifact
+binds the exact profile and optional phase-local allowance hashes to retained
+physical measurement evidence and an independent review decision. Synthetic,
+unreviewed, stale, or crossed qualifications cannot enter execution review.
+Even an accepted review is zero-authority and can only be consumed once as an
+input to a future safety-supervisor permit decision.
+
 ## Configuration-sampled cable geometry
 
 The moving camera cable uses `CONFIGURATION_SAMPLED`. Each `CollisionPose` must
