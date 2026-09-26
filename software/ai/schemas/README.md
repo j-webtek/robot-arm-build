@@ -149,6 +149,11 @@ components. The candidate app digest is explicit but separate from the epoch
 digest, avoiding a self-referential firmware build. A passing assessment makes
 only an epoch-bound build proposal ready; installation, startup, transport,
 execution, and physical authority remain false.
+The epoch intake also has a strict JSON decoder and a synthetic builder covering
+all eight ordered components. Its synthetic report is intentionally `BLOCKED`
+by `FIRMWARE_REVIEW_DECISION_BLOCKED` and
+`COMPONENT_NOT_PHYSICAL_ORIGINAL`; a separate rehearsal summary may record that
+the integration exercise completed, but it cannot change the production report.
 
 [Precision observation v2](precision_observation_v2.schema.json) carries explicit
 localization abstention or a reference to externally qualified uncertainty.

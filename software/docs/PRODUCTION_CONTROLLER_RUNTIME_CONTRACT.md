@@ -144,6 +144,14 @@ This permits deterministic model/arm integration tests and produces a distinct
 assessment treats that result as blocked even when every simulated checklist
 item passes and every identity hash matches.
 
+The synthetic epoch builder extends that rehearsal through all eight workcell
+components. It creates deterministic evidence and review hashes, exercises the
+same strict epoch serializer/parser and production assessment, and succeeds as
+a rehearsal only when the production report contains exactly
+`FIRMWARE_REVIEW_DECISION_BLOCKED` and
+`COMPONENT_NOT_PHYSICAL_ORIGINAL`. This separation lets downstream software
+develop against a complete epoch shape without creating deployable evidence.
+
 The candidate app SHA remains an explicit field but is not recursively derived
 from an app image that already embeds the epoch digest. This avoids an
 impossible self-referential hash. A later epoch-bound firmware build can embed

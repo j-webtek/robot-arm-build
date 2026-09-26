@@ -16,6 +16,8 @@ from rocell.application.controller_configuration_epoch_intake_v1 import (
     ControllerConfigurationEpochIntakeV1,
     MeasuredConfigurationComponentV1,
     assess_controller_configuration_epoch_intake_v1,
+    build_synthetic_controller_configuration_epoch_rehearsal_v1,
+    parse_controller_configuration_epoch_intake_v1,
 )
 from rocell.application.installed_controller_qualification_v1 import (
     EvidenceOrigin,
@@ -244,3 +246,80 @@ def test_epoch_assessment_never_promotes_synthetic_review():
 def test_epoch_assessment_requires_typed_review_decision():
     with pytest.raises(TypeError, match="R97IndependentReviewDecisionV1"):
         _assess(_intake(), firmware_review_decision={})
+
+
+def test_epoch_json_round_trip_is_strict_and_hash_bound():
+    original = _intake()
+    parsed = parse_controller_configuration_epoch_intake_v1(original.to_dict())
+    assert parsed == original
+    tampered = original.to_dict()
+    tampered["epoch_id"] = "changed-after-hashing"
+    with pytest.raises(ControllerConfigurationEpochIntakeError, match="hash"):
+        parse_controller_configuration_epoch_intake_v1(tampered)
+    extra = original.to_dict()
+    extra["unexpected"] = True
+    with pytest.raises(ControllerConfigurationEpochIntakeError, match="closed fields"):
+        parse_controller_configuration_epoch_intake_v1(extra)
+
+
+def test_synthetic_epoch_rehearsal_is_deterministic_and_production_blocked():
+    decision = _decision(
+        evidence_origin=R97ReviewEvidenceOrigin.SYNTHETIC_TEST_ONLY)
+    first, first_report = build_synthetic_controller_configuration_epoch_rehearsal_v1(
+        rehearsal_id="arm-037",
+        firmware_review_decision=decision,
+        measured_monotonic_ns=100,
+        valid_until_monotonic_ns=300,
+        evaluated_monotonic_ns=200,
+    )
+    second, second_report = build_synthetic_controller_configuration_epoch_rehearsal_v1(
+        rehearsal_id="arm-037",
+        firmware_review_decision=decision,
+        measured_monotonic_ns=100,
+        valid_until_monotonic_ns=300,
+        evaluated_monotonic_ns=200,
+    )
+    assert first.configuration_epoch_sha256 == second.configuration_epoch_sha256
+    assert first_report.report_sha256 == second_report.report_sha256
+    assert all(
+        item.evidence_origin is EvidenceOrigin.SYNTHETIC_TEST_ONLY
+        for item in first.components
+    )
+    assert first_report.status == "BLOCKED"
+    assert first_report.blockers == (
+        "FIRMWARE_REVIEW_DECISION_BLOCKED",
+        "COMPONENT_NOT_PHYSICAL_ORIGINAL",
+    )
+    assert first_report.to_dict()["epoch_bound_build_proposal_ready"] is False
+    assert parse_controller_configuration_epoch_intake_v1(
+        first.to_dict()).configuration_epoch_sha256 == first.configuration_epoch_sha256
+    jsonschema.Draft202012Validator(_schema(
+        "controller_configuration_epoch_intake_v1.schema.json"
+    )).validate(first.to_dict())
+    jsonschema.Draft202012Validator(_schema(
+        "controller_configuration_epoch_intake_report_v1.schema.json"
+    )).validate(first_report.to_dict())
+
+
+def test_synthetic_epoch_rehearsal_rejects_external_review_or_bad_window():
+    with pytest.raises(
+        ControllerConfigurationEpochIntakeError,
+        match="requires synthetic review",
+    ):
+        build_synthetic_controller_configuration_epoch_rehearsal_v1(
+            rehearsal_id="arm-037",
+            firmware_review_decision=_decision(),
+            measured_monotonic_ns=100,
+            valid_until_monotonic_ns=300,
+            evaluated_monotonic_ns=200,
+        )
+    decision = _decision(
+        evidence_origin=R97ReviewEvidenceOrigin.SYNTHETIC_TEST_ONLY)
+    with pytest.raises(ControllerConfigurationEpochIntakeError, match="window"):
+        build_synthetic_controller_configuration_epoch_rehearsal_v1(
+            rehearsal_id="arm-037",
+            firmware_review_decision=decision,
+            measured_monotonic_ns=100,
+            valid_until_monotonic_ns=150,
+            evaluated_monotonic_ns=200,
+        )
