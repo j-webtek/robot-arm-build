@@ -602,7 +602,6 @@ remove it only in the same commit that appends the resulting evidence row.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI/model | S1 | confidence research plan, metric helper/tests, AI evidence | main from `e444e2b` | ACTIVE: freeze synthetic study and scoring; no training/promotion |
 | Arm/runtime lane | S2 | v2 dual-lineage trajectory envelope contract | `main` from `67390c4` | ACTIVE |
 | Unclaimed | S4 | controller adapter/receipts | — | AVAILABLE |
 
@@ -1274,3 +1273,46 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: heuristic findings unresolved; no clean audit claim.
 - Supersedes: none; prior failed evidence retained.
 - Next dependency: fixture-owner review, separate from AI confidence/capture work.
+
+
+### E-20260926-AI-015 — freeze localization-confidence research protocol
+
+- Stage: S1
+- Lane: AI
+- Commit: `9c061d45ed2d7a299d7312890ce6155d8def55ee` (source baseline; protocol/helper/tests/evidence added together in this entry's containing commit)
+- Change: froze 1 mm localization-only event, fresh 14M/15M/16M/17M seed groups,
+  three conditions, threshold 0.95 and synthetic research criteria; implemented
+  Brier, reliability-bin and abstention/false-accept scoring.
+- Inputs/fixtures: analytic probability/outcome vectors; source hashes in
+  `software/ai/eval/confidence_protocol_evidence.json` and training plan.
+- Command: `python -m pytest -q software/ai/tests/test_confidence_metrics.py`
+- Result: PASS, 10 tests. Empty acceptance reports undefined false-accept rate,
+  not zero; invalid numeric inputs reject; frozen split/source checks pass.
+- Artifacts: `software/ai/train/localization_confidence_v0_plan.json`,
+  `software/ai/rocell_ai/confidence_metrics.py`, corresponding tests/evidence.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: no generated dataset, trained confidence head or evaluation results;
+  known target identity assumed, visibility not measured. Research thresholds are
+  not release criteria and cannot install qualification or runtime confidence.
+- Supersedes: none
+- Next dependency: freeze model architecture/optimization before confidence training;
+  extend separate identity/visibility evidence and authenticated capture integration.
+
+
+### E-20260926-AI-016 — confidence protocol audit findings retained
+
+- Stage: S1
+- Lane: AI
+- Commit: `9c061d45ed2d7a299d7312890ce6155d8def55ee` (baseline plus AI-015 working-tree files)
+- Change: required read-only repository audit.
+- Inputs/fixtures: repository snapshot, AI-015 file hashes, `scripts/audit_github_snapshot.py`.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: FAIL, exit 1; 5,614 paths, 784.9 MiB, same 14 existing arm-unit
+  credential-literal-review findings; no confidence-protocol file finding.
+- Artifacts: scanner and AI-015 evidence manifest.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: heuristic findings remain unresolved; no clean audit claim.
+- Supersedes: none; previous failures retained.
+- Next dependency: fixture-owner review, independently of confidence research.

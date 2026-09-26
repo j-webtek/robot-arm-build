@@ -1,0 +1,16 @@
+{
+  "source_commit": "9c061d45ed2d7a299d7312890ce6155d8def55ee",
+  "command": "python -m pytest -q software/ai/tests/test_confidence_metrics.py",
+  "passed": 10,
+  "hardware_writes": 0,
+  "physical_movements": 0,
+  "files_sha256": {
+    "software/ai/train/localization_confidence_v0_plan.json": "908fd70960e02d16dc7f065c72c1561426edbda3934d7d4bcb52909ebfcd5f38",
+    "software/ai/rocell_ai/confidence_metrics.py": "37a4106e0d63335f45233e8a0788fe6092f014deec0ba8030e7f1b816ead04b8",
+    "software/ai/tests/test_confidence_metrics.py": "1e30871832cc2b15fe01af6160122cfca0dc07d61d2c3c692b778523d38ceeba"
+  },
+  "limitations": [
+    "Protocol and metric tests only; no training/evaluation results",
+    "Localization-only event cannot populate runtime observation confidence"
+  ]
+}
