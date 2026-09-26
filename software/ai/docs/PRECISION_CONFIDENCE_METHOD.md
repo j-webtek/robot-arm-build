@@ -494,3 +494,8 @@ Unchanged refinement passes all12 relative checks on28M500 fresh groups/2000 ima
 ### Visibility-weighted fitting (AI-157)
 
 Fixed predicted support>=0.5,minimum3 corners and probability-weighted rigid fit retain96–100% coverage. Accepted full-occlusion mean improves5.045→3.965mm, but standard/appearance >3mm tails worsen125→132 and77→85; full yawp95 exceeds1.1x. Overall gate FAIL; no decoder promotion. Next freeze equal-weight supported-corner ablation against continuous weighting, keeping threshold and candidate selection unchanged. Source `7cb6012e61febd434718967b5cad0801124db13f`; `eval/visible_candidate_v0_report.json`. Coverage is research acceptance, not arm admission or calibrated confidence.
+
+
+### Equal support weighting (AI-160)
+
+Equal weights among the same predicted-supported corners pass all16 relative criteria versus probability weighting, but fail against the original subpixel reference: standard/appearance tails125→127 and77→80,full yawp951.480→1.643deg. Coverage stays96–100%; full mean3.904mm. No promotion. Next attribute support exclusions per case against diagnostic geometric visibility, separating false exclusions from true obstruction without oracle runtime fitting. Source `99db4efb6114abb4f4b91aca18c31ea90e39d0e2`; `eval/equal_support_v0_report.json`.

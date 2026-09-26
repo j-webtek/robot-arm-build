@@ -599,7 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-| AI | S1 | equal support weighting ablation | feature/translation-pair-evidence | ACTIVE |
 
 
 
@@ -5134,3 +5133,51 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic audit; AI-041 protected-main publication blocker remains.
 - Supersedes: none; failures and integration statuses retained.
 - Next dependency: Protected-branch PR/checks and AI-157 ablation.
+
+### E-20260926-AI-160 — equal support weighting ablation
+
+- Stage: S1
+- Lane: AI
+- Commit: `99db4efb6114abb4f4b91aca18c31ea90e39d0e2` (frozen source; results/tests committed with evidence)
+- Change: equal support weighting ablation.
+- Inputs/fixtures: Retained AI-157800 development predictions,15M200 groups,four conditions. Exact source/input hashes in eval/equal_support_v0_plan.json; identical refined points,support and abstentions.
+- Command: `python software/ai/vision/evaluate_equal_support.py`
+- Result: FAIL overall versus both references; all16 checks versus probability weighting pass. Equal means standard/appearance/partial/full3.008/2.386/4.283/3.904mm; tails127/80/161/154 on200/200/194/192 accepted. Original subpixel tails125/77/166/178; first two regress. Full yawp951.643 exceeds1.1x original1.480. Coverage100/100/97/96%. Mean criterion predeclared nonincrease(1e-12 tolerance),allowing exact all-supported equivalence.
+- Artifacts: eval/equal_support_v0_report.json; frozen runner/plan
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Reused synthetic evidence; no oracle support,no calibration,qualification or runtime promotion. Remaining support exclusions matter beyond continuous weights.
+- Supersedes: none; historical failures and integration status retained.
+- Next dependency: Freeze per-case support-error attribution: false exclusions versus true obstruction and translation/yaw effects. Use oracle visibility only for labeled diagnostic strata,never runtime fitting; retain rejected/accepted cases and all failures.
+
+### E-20260926-AI-161 — equal support verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `99db4efb6114abb4f4b91aca18c31ea90e39d0e2` (frozen source; results/tests committed with evidence)
+- Change: equal support verification.
+- Inputs/fixtures: AI-160 manifest/report and retained AI-157800 rows.
+- Command: `python -m pytest -q software/ai/tests/test_equal_support.py`
+- Result: PASS,1 test; hashes,case identities,acceptance,unchanged references,means/tails and comparison criteria verified. Existing pytest-asyncio warning.
+- Artifacts: software/ai/tests/test_equal_support.py
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Consistency verification only; batch unchanged,shared boundary suite not triggered.
+- Supersedes: none; historical failures and integration status retained.
+- Next dependency: AI-160 support attribution.
+
+### E-20260926-AI-162 — equal support publication audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `99db4efb6114abb4f4b91aca18c31ea90e39d0e2` (frozen source; results/tests committed with evidence)
+- Change: equal support publication audit.
+- Inputs/fixtures: Repository with AI-160/161 and reviewed fixture allowlist.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS;5927 paths,836.3 MiB,0 unresolved findings,14 reviewed synthetic fixtures.
+- Artifacts: audit stdout and snapshot
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic audit; AI-041 protected-main publication blocker remains.
+- Supersedes: none; historical failures and integration status retained.
+- Next dependency: Protected-branch PR/checks and AI-160 diagnosis.
