@@ -64,7 +64,8 @@ device access, restarts, torque changes, movement, or release publication.
   what users will see and what they do **not** establish.
 - [ ] Run `python scripts/ci/check_docs.py` from the repository root after entry
   documentation changes. It checks selected local file links and SVG syntax,
-  not remote URLs, anchors, prose accuracy or rendered appearance.
+  plus selected public titles, navigation routes and plain-heading anchors.
+  It does not check remote URLs, arbitrary anchors, prose accuracy or rendered appearance.
 - [ ] Preview changed Markdown on GitHub and check its changed links. Keep
   Tactevra branding consistent without renaming `rocell` interfaces or historical
   evidence. Use the [brand guide](brand/BRAND_GUIDE.md).
