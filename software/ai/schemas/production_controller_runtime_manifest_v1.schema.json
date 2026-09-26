@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rocell.local/schemas/production_controller_runtime_manifest_v1.schema.json",
+  "title": "RoCell production controller runtime manifest v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "runtime_id", "candidate_app_sha256", "protocol_source_sha256",
+    "controller_joint_mapping_sha256", "configuration_epoch_sha256",
+    "expected_encoding_profile_sha256", "controller_session_id",
+    "maximum_command_bytes", "maximum_feedback_bytes",
+    "startup_policy", "writer_policy", "retry_policy",
+    "supported_command_types", "supported_response_types", "t102_fields",
+    "t105_fields", "t1051_required_joint_fields", "startup_motion_commands",
+    "automatic_retry", "hardware_access", "physical_authority", "manifest_sha256"
+  ],
+  "properties": {
+    "schema": {"const": "rocell.production_controller_runtime_manifest.v1"},
+    "runtime_id": {"$ref": "#/$defs/identifier"},
+    "candidate_app_sha256": {"$ref": "#/$defs/sha256"},
+    "protocol_source_sha256": {"$ref": "#/$defs/sha256"},
+    "controller_joint_mapping_sha256": {"$ref": "#/$defs/sha256"},
+    "configuration_epoch_sha256": {"$ref": "#/$defs/sha256"},
+    "expected_encoding_profile_sha256": {"$ref": "#/$defs/sha256"},
+    "controller_session_id": {"$ref": "#/$defs/identifier"},
+    "maximum_command_bytes": {"type": "integer", "minimum": 64, "maximum": 4096},
+    "maximum_feedback_bytes": {"type": "integer", "minimum": 64, "maximum": 16384},
+    "startup_policy": {"const": "SAFE_IDLE_NO_MOTION"},
+    "writer_policy": {"const": "ONE_ACTIVE_WRITER_EXACT_SEQUENCE"},
+    "retry_policy": {"const": "NEVER_AUTOMATIC"},
+    "supported_command_types": {"const": [102, 105]},
+    "supported_response_types": {"const": [1051]},
+    "t102_fields": {"const": ["T", "base", "shoulder", "elbow", "wrist", "roll", "hand", "spd", "acc"]},
+    "t105_fields": {"const": ["T"]},
+    "t1051_required_joint_fields": {"const": ["b", "s", "e", "t", "r", "g"]},
+    "startup_motion_commands": {"const": 0},
+    "automatic_retry": {"const": false},
+    "hardware_access": {"const": false},
+    "physical_authority": {"const": false},
+    "manifest_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "identifier": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"}
+  }
+}
