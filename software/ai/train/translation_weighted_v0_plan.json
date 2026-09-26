@@ -1,0 +1,46 @@
+{
+  "conditions": [
+    "standard",
+    "appearance_shift",
+    "challenge"
+  ],
+  "development_groups": [
+    15000000,
+    200
+  ],
+  "epochs": 12,
+  "file_sha256": {
+    "software/ai/vision/evaluate_localization_radius.py": "411d9724e389fc825e1b6755aa7d845d6c45dbce505a70db6044bee0278e2159",
+    "software/ai/vision/evaluate_pose_challenge.py": "1ba33a1a2d38b1216a5e1708e17b99c3d9dba9fd2c40af46a084da8065102983",
+    "software/ai/vision/pose_model.py": "7eccc2a3cabf3a37217b4a1c3114c439ffc740a917c08e4ef378065ff85c6ec5",
+    "software/ai/vision/synthetic_keyboard.py": "b9a1662ea348ba78093909844e5e8bed86f4996babc289bfd63858b6b54f692c",
+    "software/ai/vision/train_pose.py": "98c2ae6211b42c3b4b7c5bed3fb03aab82bffff79c30ebb546e3681b3be3a1b6",
+    "software/ai/vision/train_translation_weighted.py": "93f0773731321798cc1d52ca47dff4c8960231d6078d485b8ed07bc722f29200"
+  },
+  "initial_checkpoint": "software/ai/results/matched_resolution_v0_128/pose_model.pt",
+  "initial_checkpoint_sha256": "1dc517acd1da53166dc2df11a4d67e98aaf1186d96edd3342db0498fb6a6f2cc",
+  "learning_rate": 0.0002,
+  "schema": "rocell.ai_robust_pose_plan.v0",
+  "selection": "minimum_development_mse_only",
+  "target_catalog_sha256": "6779213e832ab27eeda1e7fb245f57ff8cb0d56707b5aa73a8f31ec483a620f2",
+  "training_groups": [
+    14000000,
+    1200
+  ],
+  "training_seed": 260926,
+  "scope": "DEVELOPMENT_ONLY",
+  "policy": "Paired same budget and seed. Weight normalized XY residuals 4:4:1 vs1:1:1. Both selected using unweighted development MSE. No held-out access.",
+  "arms": {
+    "control": [
+      1,
+      1,
+      1
+    ],
+    "translation_weighted": [
+      4,
+      4,
+      1
+    ]
+  },
+  "development_candidate_rule": "Candidate must improve mean key error and center error while yaw p95 increases by no more than 10%; descriptive development rule only"
+}
