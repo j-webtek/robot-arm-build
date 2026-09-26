@@ -434,3 +434,8 @@ Predicted-peak local pooling improves hidden false-visible counts36→4/201 and 
 ### Local-head error diagnosis (AI-119)
 
 Local visibility has an obstruction-specific response:172/196 paired clear-to-hidden threshold crossings versus0 for the global head, with mean target probability drop0.358 and peer drop0.000669. CPU diagnostic clear rejections split393 with peak error>=8px and275 below8px; position errors explain an association, not all classification errors or causality. CPU clear-visible2068 differs from retained GPU2065; preserve both and isolate device/batch inference parity before the next location-estimator experiment. This is reused synthetic evidence, not qualification. Source `8110be4d686878debfcc34f004b433b9a68bafec`; report `eval/local_visibility_diagnostic_v0_report.json`.
+
+
+### Inference parity diagnosis (AI-122)
+
+Identical pixels/checkpoint reproduce the saved CUDA batch32 probabilities exactly. CPU batch1/32 decisions agree, but CUDA1 and CUDA32 each differ from CPU on three decisions, involving different cases. All changed decisions change hard-selected peaks; probability shifts reach0.395179. This demonstrates sensitivity of the current hard-peak feature selection, without isolating the underlying numerical kernel. Next compare continuous heatmap-weighted local features under matched training and evaluate device/batch stability alongside unchanged localization/visibility criteria. Source `deb618c51d84f366591aef46c6b69d471cb60005`; report `eval/local_visibility_parity_report.json`. No qualification or runtime changes.

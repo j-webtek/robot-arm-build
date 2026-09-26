@@ -599,7 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-| AI | S1 | inference device and batch parity | feature/translation-pair-evidence | ACTIVE |
 
 
 
@@ -4296,3 +4295,51 @@ commissioning, or bounded physical result with its limitations intact.
 - Next dependency: supply an independent decision for packet
   `987cbe86d98440734d8336c704f1ecd89692675a9cb1620cb674e4132957b416`
   and independently reviewed retained measurements for all eight components.
+
+### E-20260926-AI-122 — local visibility device/batch parity
+
+- Stage: S1
+- Lane: AI
+- Commit: `deb618c51d84f366591aef46c6b69d471cb60005` (source/plan frozen before execution)
+- Change: compare CPU/CUDA inference at batch1/32 on identical normalized uint8 pixels and checkpoint, retaining peak indices, top-two margins and probabilities.
+- Inputs/fixtures:800 reused development images/3200 corners from15000000..15000199; input pixel hash matches AI-116. Checkpoint `3d2fd582bcb7591d4ef04aff8c9db5fedc38ce37d704786ed7d82265cb5b82d7`; exact input/source hashes in `eval/local_visibility_parity_plan.json`.
+- Command: `python software/ai/vision/diagnose_local_visibility_parity.py`
+- Result: diagnostic completed; exact decision parity FAIL across devices. CPU1 versus CPU32:0 peak/decision changes,max probability delta1.1921e-7. CPU1 versus CUDA1:4 peak changes,3 decision changes,max delta0.395179. CPU1 versus CUDA32:6 peak changes,3 decision changes,max delta0.300818. CUDA32 exactly reproduces retained GPU report (delta0). Different cases flip in CUDA1 and CUDA32. Every decision flip changes hard peak; CPU top-two margins for changed cases range0.0000410..0.00194645. Hard selection amplifies observed numerical sensitivity; underlying kernel/precision source not isolated.
+- Artifacts: `eval/local_visibility_parity_report.json` including exact environment, all predictions and changed indices; frozen runner/plan.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: one checkpoint, reused synthetic images, one CPU/GPU environment; no cross-platform bound or correction established. No model qualification, batch boundary change or integration gate completion.
+- Supersedes: none; both earlier CPU/GPU reports retained.
+- Next dependency: freeze matched continuous heatmap-weighted local feature pooling versus hard-peak pooling; assess localization, visibility and device/batch decision stability without oracle positions or threshold tuning.
+
+### E-20260926-AI-123 — parity evidence verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `deb618c51d84f366591aef46c6b69d471cb60005` (source baseline; tests committed with evidence)
+- Change: recompute comparison counts, verify every decision flip changes peak, input hashes and exact retained GPU reproduction.
+- Inputs/fixtures: AI-122 manifest/report and pinned AI-116 scorecard.
+- Command: `python -m pytest -q software/ai/tests/test_local_visibility_parity.py`
+- Result: PASS,1 test; existing pytest-asyncio configuration warning.
+- Artifacts: named test and AI-122 report.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: calculation consistency does not establish inference stability. Boundary unchanged, shared boundary tests not triggered.
+- Supersedes: none
+- Next dependency: AI-122 pooling experiment.
+
+### E-20260926-AI-124 — parity publication audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `deb618c51d84f366591aef46c6b69d471cb60005` (source baseline plus result/test snapshot)
+- Change: audit publication snapshot.
+- Inputs/fixtures: repository with AI-122/123 artifacts and reviewed fixture allowlist.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS;5843 paths,816.4 MiB,0 unresolved findings,14 reviewed synthetic fixtures.
+- Artifacts: audit stdout and snapshot.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: heuristic audit; AI-041 protected-main publication blocker remains.
+- Supersedes: none
+- Next dependency: protected-branch PR/checks and AI-122 pooling study.
