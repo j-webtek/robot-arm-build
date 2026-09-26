@@ -1,7 +1,9 @@
 """Check local file links in maintained entry docs, not archived lab records.
 
 Checks this repository's issue-template URLs against local template files too.
-Does not validate URL reachability, Markdown anchors, or visual rendering.
+Also enforces explicit public-page titles and required navigation routes.
+Only explicitly listed plain-heading anchors are checked; this is not a general
+Markdown parser, URL reachability check, or visual review.
 """
 from pathlib import Path
 import re
@@ -26,6 +28,89 @@ DOCS = (
     'docs/brand/BRAND_GUIDE.md', 'docs/brand/NAMING_REVIEW.md',
     'docs/brand/MIGRATION_PLAN.md',
 )
+
+# Deliberately narrow: compatibility identifiers and historical records are not
+# subject to brand-name replacement. Update this contract with intentional UI changes.
+PUBLIC_TITLES = {
+    'README.md': 'Tactevra',
+    'PROJECT_STATUS.md': 'Tactevra project status',
+    'CONTRIBUTING.md': 'Contributing to Tactevra',
+    'SUPPORT.md': 'Getting help with Tactevra',
+    'SECURITY.md': 'Tactevra security reporting',
+    'CODE_OF_CONDUCT.md': 'Tactevra community code of conduct',
+    'docs/README.md': 'Tactevra documentation',
+    'docs/GETTING_STARTED.md': 'Getting started with Tactevra',
+}
+
+# (relative Markdown destination, optional exact plain ATX heading).
+PUBLIC_ROUTES = {
+    'README.md': (
+        ('docs/GETTING_STARTED.md#install-the-software', 'Install the software'),
+        ('PROJECT_STATUS.md', None), ('docs/README.md', None),
+        ('SUPPORT.md', None), ('SECURITY.md', None),
+    ),
+    'docs/README.md': (
+        ('GETTING_STARTED.md', None), ('../PROJECT_STATUS.md', None),
+        ('../SUPPORT.md', None), ('../CONTRIBUTING.md', None),
+        ('../SECURITY.md', None), ('../CODE_OF_CONDUCT.md', None),
+    ),
+    'SUPPORT.md': (
+        ('docs/GETTING_STARTED.md#what-you-can-do-today', 'What you can do today'),
+        ('SECURITY.md', None), ('CODE_OF_CONDUCT.md', None),
+        ('CONTRIBUTING.md#export-sharing', 'Export sharing'),
+    ),
+    'docs/GETTING_STARTED.md': (
+        ('../PROJECT_STATUS.md', None), ('../CONTRIBUTING.md', None),
+    ),
+}
+
+
+def without_fences(content: str) -> str:
+    """Exclude backtick/tilde fenced examples from the small entry-doc checks."""
+    lines = []
+    fence = None
+    for line in content.splitlines():
+        marker = re.match(r'^ {0,3}(`{3,}|~{3,})(.*)$', line)
+        if fence:
+            if (marker and marker[1][0] == fence[0]
+                    and len(marker[1]) >= len(fence) and not marker[2].strip()):
+                fence = None
+            continue
+        if marker:
+            fence = marker[1]
+        else:
+            lines.append(line)
+    return '\n'.join(lines)
+
+
+def public_entry_errors(relative: str, content: str, root: Path) -> list[str]:
+    """Enforce the reviewed entry-page contract without inspecting runtime code."""
+    content = without_fences(content)
+    errors = []
+    title = PUBLIC_TITLES.get(relative)
+    headings = re.findall(r'^# +(.+?)\s*$', content, flags=re.M)
+    if title and headings != [title]:
+        errors.append(f'expected one public title: # {title}')
+    links = {target.strip().strip('<>')
+             for target in re.findall(r'\]\(([^)]+)\)', content)}
+    for target, heading in PUBLIC_ROUTES.get(relative, ()):
+        if target not in links:
+            errors.append(f'missing required navigation link: {target}')
+        destination = root / Path(relative).parent / urlsplit(target).path
+        if not destination.is_file():
+            errors.append(f'missing navigation destination: {target}')
+            continue
+        if heading:
+            # Only plain headings explicitly listed above; no inferred GitHub slugger.
+            fragment = urlsplit(target).fragment
+            if fragment != heading.lower().replace(' ', '-'):
+                errors.append(f'invalid navigation anchor contract: {target}')
+            headings_at_target = re.findall(
+                r'^#{1,6} +(.+?)\s*$',
+                without_fences(destination.read_text(encoding='utf-8')), flags=re.M)
+            if headings_at_target.count(heading) != 1:
+                errors.append(f'expected one navigation heading "{heading}" in {target}')
+    return errors
 
 
 def issue_template_error(target: str, root: Path) -> str | None:
@@ -56,7 +141,10 @@ def main() -> None:
         if not path.is_file():
             errors.append(f'Missing maintained document: {relative}')
             continue
-        content = re.sub(r'```.*?```', '', path.read_text(encoding='utf-8'), flags=re.S)
+        raw_content = path.read_text(encoding='utf-8')
+        errors.extend(f'{relative}: {error}'
+                      for error in public_entry_errors(relative, raw_content, ROOT))
+        content = without_fences(raw_content)
         for target in re.findall(r'\]\(([^)]+)\)', content):
             target = target.strip().strip('<>')
             parsed = urlsplit(target)
@@ -76,7 +164,8 @@ def main() -> None:
             errors.append(f'{asset}: {exc}')
     if errors:
         raise SystemExit('\n'.join(errors))
-    print(f'PASS: local file links in {len(DOCS)} maintained docs and two SVG assets')
+    print(f'PASS: local file links in {len(DOCS)} maintained docs, '
+          f'{len(PUBLIC_TITLES)} public titles, required navigation, and two SVG assets')
 
 
 if __name__ == '__main__':
