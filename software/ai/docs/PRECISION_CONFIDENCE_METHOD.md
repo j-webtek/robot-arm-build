@@ -249,3 +249,17 @@ preprocessing or qualification is installed; all earlier failures remain intact.
 Next: freeze fresh-seed evaluation, unchanged correction and acceptance rules,
 with additional brightness levels near the threshold. Retain absolute errors,
 all failures and post-evaluation limitations before confidence/calibration work.
+
+
+### Fresh synthetic dark-only normalization evaluation
+
+AI-070 through AI-072 pass all21 prespecified relative checks on500 unseen21M
+seed groups across7 conditions. Darkened mean2.665 -> 0.854 mm, >3mm count228 ->
+9/500; standard/appearance unchanged and challenge improved. Brightness factors
+0.55/0.60/0.65 also pass. The correction and checkpoint were frozen;21M data is
+now consumed. This is evidence within the same synthetic renderer, not physical
+camera generalization, calibrated confidence or permission for motion.
+
+Next: fresh uncertainty calibration and separate evaluation beyond21M using this
+exact preprocessing. Retain full target-region containment and coverage criteria;
+oracle geometry remains scoring-only and cannot become runtime calibration.

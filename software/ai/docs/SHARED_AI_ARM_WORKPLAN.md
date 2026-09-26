@@ -604,7 +604,6 @@ remove it only in the same commit that appends the resulting evidence row.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI | S1 | fresh normalization evaluator, manifest, scorecard/tests and precision method | feature/translation-pair-evidence | ACTIVE: frozen21M held-out paired evaluation with near-threshold brightness strata |
 | Unclaimed | S2 | qualified perception adapter and complete shared gate | — | AVAILABLE |
 | Unclaimed | S4 | independently review passive controller candidate and close its seven explicit blockers | — | AVAILABLE |
 
@@ -2944,3 +2943,71 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: heuristic audit only; AI-041 protected-main PR publication blocker remains.
 - Supersedes: none; historical failures retained.
 - Next dependency: protected-branch PR/checks and AI-067 fresh evaluation.
+
+### E-20260926-AI-070 — fresh synthetic normalization evaluation pass
+
+- Stage: S1
+- Lane: AI
+- Commit: `2d2165850ab22357f1ec81bb8d8424360f4f9aec` (frozen evaluator/manifest before scoring)
+- Change: evaluated the unchanged checkpoint and imported frozen dark-only
+  normalization on fresh21M seeds. Added prespecified brightness factors0.55,
+  0.60 and0.65 to probe the threshold neighborhood. No tuning after evaluation.
+- Inputs/fixtures: seeds21000000..21000499, 500 groups x7 conditions =3500 images,
+  46 targets/image per arm. Source/checkpoint/catalog hashes in
+  `eval/normalization_fresh_v0.manifest.json`; input hashes and paired cases in
+  scorecard. This seed range is now consumed and cannot be claimed fresh again.
+- Command: `python software/ai/vision/evaluate_normalization_fresh.py`
+- Result: PASS all21 predefined relative mean/tail/yaw checks. Darkened mean
+  2.664649 -> 0.853881 mm, >3mm maximum-key-error count228 -> 9/500.
+  Standard unchanged0.861101 mm/tail9; appearance unchanged0.850701 mm/tail17;
+  challenge1.019997 -> 0.992334 mm/tail22 -> 18.
+  Brightness0.55: mean1.456758 -> 0.924903 mm/tail79 -> 9;
+  brightness0.60: mean1.087081 -> 0.995574 mm/tail28 -> 19;
+  brightness0.65: mean0.996495 -> 0.994915 mm/tail15 -> 15.
+  No runtime installation, confidence qualification or integration-stage advancement.
+- Artifacts: `eval/normalization_fresh_v0_scorecard.json`, manifest and evaluator.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: unseen seeds within the same renderer, not an independent physical
+  camera distribution. Seven views share each seed and are not3500 independent
+  scenes. Relative non-regression criteria do not require zero failures or prove
+  calibrated confidence; some targets still exceed3mm. No batch contract changes;
+  shared boundary suite not triggered.
+- Supersedes: none; development selection and failed studies remain retained.
+- Next dependency: freeze a new uncertainty-calibration/evaluation protocol on
+  unconsumed seed ranges beyond21M with this exact preprocessing, preserving
+  error-coverage and full target-region containment checks. Do not install
+  qualification or treat oracle target placement as runtime calibration.
+
+### E-20260926-AI-071 — fresh normalization evidence tests
+
+- Stage: S1
+- Lane: AI
+- Commit: `2d2165850ab22357f1ec81bb8d8424360f4f9aec` (implementation baseline; tests committed with evidence)
+- Change: checked source/manifest hashes, transformation/bypass boundary behavior,
+  all3500 paired cases, fresh seed coverage and independent metric/gate recounts.
+- Inputs/fixtures: analytic PIL images and AI-070 manifest/scorecard.
+- Command: `python -m pytest -q software/ai/tests/test_normalization_fresh.py`
+- Result: PASS, 3 tests; existing pytest-asyncio configuration deprecation warning.
+- Artifacts: named tests and AI-070 scorecard.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: consistency testing, not physical localization qualification.
+- Supersedes: none
+- Next dependency: AI-070 fresh uncertainty protocol.
+
+### E-20260926-AI-072 — fresh normalization publication audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `2d2165850ab22357f1ec81bb8d8424360f4f9aec` (implementation baseline plus scorecard/test snapshot)
+- Change: audited publication snapshot with latest contributor-operations main merged.
+- Inputs/fixtures: repository with AI-070/071 artifacts and reviewed fixture allowlist.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS; 5736 paths, 791.0 MiB, 0 unresolved findings, 14 reviewed synthetic fixtures.
+- Artifacts: audit stdout and repository snapshot.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: heuristic audit only; AI-041 protected-main PR publication blocker remains.
+- Supersedes: none; historical failures preserved.
+- Next dependency: protected-branch PR/checks and AI-070 uncertainty study.
