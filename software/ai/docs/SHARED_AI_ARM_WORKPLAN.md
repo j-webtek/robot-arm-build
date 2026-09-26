@@ -3986,3 +3986,61 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: heuristic audit; AI-041 protected-main publication blocker remains.
 - Supersedes: none
 - Next dependency: protected-branch PR/checks and AI-110 diagnosis.
+### E-20260926-ARM-030 — r97 production runtime firmware candidate
+
+- Stage: S4
+- Lane: ARM
+- Change: implemented and reproducibly compiled the minimal r97 controller-side
+  runtime against ARM-028. The sketch starts safe-idle, exposes only canonical
+  T=102 and T=105 input, returns T=1051 joint feedback, contains one seven-servo
+  group-write call site, and terminally locks on ambiguity without retry.
+- Excluded surfaces: vendor generic dispatcher, Wi-Fi, HTTP, ESP-NOW,
+  filesystem, mission playback, persistence, torque changes, single-servo
+  writes, automatic retry, and startup movement are absent from sketch source.
+- Attestation: startup dynamically reports the running app digest plus pinned
+  host protocol and joint-mapping source hashes. Configuration epoch remains
+  explicitly null and is a qualification blocker rather than an assumed value.
+- Compile: `default-4mb-no-psram` PASS; app SHA-256
+  `7d2e47d40141e95b611fcf37ca38d495fcf3da4dc3051f128bbae95e10840d1d`;
+  314,640 bytes of a 1,310,720-byte slot; verified export
+  `wizard-20260926T173219601251Z-d485be98eea84923b79039bc01b7dbe4`.
+- Artifacts: `software/scripts/stage_r97_production_runtime.py`,
+  `software/scripts/review_r97_production_runtime.py`, firmware-source tests,
+  and `software/docs/PRODUCTION_RUNTIME_FIRMWARE_R97.md`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: compile and first-party inspection do not prove behavior on an
+  installed controller. Independent source/image review, configuration-epoch
+  binding, installed identity/surface checks, and feedback qualification remain
+  mandatory before any installation or movement proposal.
+- Supersedes: ARM-029's implementation dependency only. It does not authorize
+  installation, startup, transport, feedback reads, or movement.
+- Next dependency: run repository integration verification, then obtain an
+  independent offline review of the exact source and app image.
+
+### E-20260926-ARM-031 — r97 offline integration verification
+
+- Stage: S4
+- Lane: ARM
+- Change: verified the exact staged r97 source, compile evidence, app image,
+  required linked symbols, host runtime contract, installed-surface gate,
+  qualification boundary, zero-write adapter, sole-writer lifecycle, model
+  ingress, and measured trajectory-envelope integration.
+- Results: r97 source/image review PASS with status
+  `COMPILED_AWAITING_INDEPENDENT_REVIEW_NOT_INSTALLED`; focused r97 plus host
+  contract PASS, 30 tests; integrated boundary selection PASS, 107 tests in
+  11.95 seconds; documentation PASS for 22 maintained documents and two SVG
+  assets; snapshot audit PASS for 5,709 paths and 903.7 MiB with zero unresolved
+  findings and 14 reviewed synthetic fixtures; diff check PASS.
+- Environment note: an attempted unscoped full-suite collection encounters an
+  existing Python package-name collision in three legacy tests importing
+  `scripts`; the bounded integration selection avoids those unrelated live
+  installer modules and is fully green.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: no controller was opened, installed, started, queried, or moved.
+  Independent review and configuration-epoch binding remain incomplete.
+- Supersedes: ARM-030 only for current offline verification evidence.
+- Next dependency: independent review of exact app SHA-256
+  `7d2e47d40141e95b611fcf37ca38d495fcf3da4dc3051f128bbae95e10840d1d`;
+  only after approval should an installation/startup proposal be drafted.
