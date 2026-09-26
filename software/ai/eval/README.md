@@ -216,3 +216,13 @@ route passes, 5 coordinate/confidence rejections, and 50 archived quality
 rejections before route simulation. It reuses earlier saved Gemma decisions;
 no new inference occurs. Coordinate errors are injected on H-I, so this does
 not measure learned localization or establish a physical precision tolerance.
+
+`frozen_vision_v0.manifest.json` was committed before scoring 24 procedural
+images in eight new seed groups. `frozen_vision_v0_scorecard.json` records
+actual KeyboardPoseNet and local Gemma inference with per-key error and
+image/observation hashes. All-key p95 errors are 2.694 / 2.006 / 30.830 mm for
+standard / appearance shift / challenge. Three of eight challenge images pass
+the scene/pixel check despite exceeding the predeclared 5 mm diagnostic budget.
+This identifies a localization-rejection gap. No route or hardware ran, and
+the scene/pixel check is not full vision fusion. The benchmark is consumed;
+exclude these seeds from training and freeze a fresh set before subsequent tuning.

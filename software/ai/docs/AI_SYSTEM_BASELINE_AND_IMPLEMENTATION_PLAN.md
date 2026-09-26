@@ -162,7 +162,7 @@ occlusion, adverse image quality, or observer/pose disagreement.
 
 ## Prioritized implementation
 
-### P0: contracts and fail-closed fusion — implemented offline
+### P0: contracts and fail-closed fusion â€” implemented offline
 
 1. Add versioned scene-observation and fused-decision data contracts.
 2. Add canonical hashing and exact frame-byte binding.
@@ -172,7 +172,7 @@ occlusion, adverse image quality, or observer/pose disagreement.
 5. Prove with unit tests that malformed or conflicting records cannot reach
    coordinate preview.
 
-### P1: local multimodal observer — implemented and provisionally benchmarked
+### P1: local multimodal observer â€” implemented and provisionally benchmarked
 
 1. Add an Ollama HTTP adapter with explicit endpoint, model, timeout, prompt,
    and JSON schema configuration.
@@ -187,7 +187,7 @@ Model selection is a benchmark decision. Candidate size and quantization must
 fit the intended vision host's GPU memory and system RAM. A model is not
 promoted based on conversational quality alone.
 
-### P2: stress data and benchmark — initial seed only
+### P2: stress data and benchmark â€” initial seed only
 
 Generate a frozen, provenance-marked synthetic set varying:
 
@@ -249,3 +249,31 @@ held-out real captures and measured geometry:
 
 Until those gates pass, outputs remain offline observations, candidate
 coordinates, or simulated routes.
+
+## 2026-09-26 actual-model benchmark update
+
+A new 24-image benchmark was committed before inference, using eight unseen
+seed groups (4000000-4000007) paired across standard, appearance-shift, and
+challenge conditions. Source files and the selected pose checkpoint are pinned
+in `eval/frozen_vision_v0.manifest.json`. Both KeyboardPoseNet and local Gemma
+3 4B actually ran; this is not archived scene replay or injected coordinates.
+
+Across all 46 key positions per image, 95th-percentile error was 2.694 mm for
+standard scenes, 2.006 mm for appearance shift, and 30.830 mm for challenge
+scenes. The scene/pixel quality check accepted 6/8 standard, 8/8 shifted, and
+8/8 challenge scenes. Three challenge scenes were accepted despite maximum
+key errors of approximately 16.79, 37.65, and 14.13 mm, exceeding the
+predeclared 5 mm diagnostic budget. This is a quality-filter false acceptance
+relative to synthetic coordinate truth, not a physical execution event or
+a measurement of full vision-fusion admission.
+
+The set is now consumed. Keep its seed groups out of training and use a new
+held-out set for the next model or gate change. The immediate priority is
+localization-specific abstention and harder development data; scene quality
+alone does not bound geometric error. No model weights were changed by this
+evaluation. No route or hardware command ran.
+
+The renderer uses a fixed synthetic top-down projection, not calibrated
+deployment optics. Truth is independent of model predictions but comes from
+the same renderer family used in training. Eight paired groups cannot establish
+real-world reliability; no absent-device or phone examples are included.

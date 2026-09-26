@@ -236,3 +236,10 @@ python software/ai/run_localization_stress.py --output software/ai/results/local
 
 This injects synthetic coordinate errors and replays saved scene-quality
 decisions. It runs no new model inference and is not current-frame admission.
+
+The latest actual-model evaluation is
+[the frozen vision scorecard](eval/frozen_vision_v0_scorecard.json): 24 unseen
+synthetic images evaluated by KeyboardPoseNet and Gemma 3 4B. Three challenge
+images passed scene-quality checks despite large coordinate errors. See the
+[baseline update](docs/AI_SYSTEM_BASELINE_AND_IMPLEMENTATION_PLAN.md) before
+treating scene acceptance as coordinate confidence.
