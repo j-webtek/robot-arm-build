@@ -152,3 +152,13 @@ quadrant and yaw bin contains failures. These are confounded descriptive strata,
 not evidence for truth-based runtime exclusion or isolated obstruction causality.
 See `eval/development_tails_v0_scorecard.json`. Next use paired single perturbations
 on development images before targeting augmentation or abstention design.
+
+
+## Paired added perturbations
+
+At fixed tested strengths on 200 existing standard development images, halving
+brightness raises mean key error 0.853->2.515 mm and >3mm-image count 5->87.
+Blur sigma1.2 and one small fixed obstruction change means much less (0.832 and
+0.871 mm). This supports prioritizing brightness-augmentation training, not
+claiming generic blur/occlusion safety or a physical brightness threshold.
+See `eval/single_perturbations_v0_scorecard.json`. No new held-out data consumed.

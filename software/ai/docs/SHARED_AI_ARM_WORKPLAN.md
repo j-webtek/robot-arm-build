@@ -604,7 +604,6 @@ remove it only in the same commit that appends the resulting evidence row.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI/model | S1 | paired perturbation diagnostic/manifest/evidence | feature/translation-pair-evidence | ACTIVE: single added perturbations on 15M development images |
 | Unclaimed | S2 | qualified perception adapter and complete shared gate | — | AVAILABLE |
 | Unclaimed | S4 | published permit/receipt schemas, golden fixture, and installed mapping qualification | — | AVAILABLE |
 
@@ -2237,3 +2236,69 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: heuristic audit only; protected-main publishing blocker AI-041 remains.
 - Supersedes: none
 - Next dependency: authorized PR creation/checks; AI-046 perturbation study independently.
+
+
+### E-20260926-AI-049 — paired single-perturbation development study
+
+- Stage: S1
+- Lane: AI
+- Commit: `a8f2a0982939877473c11bfa61167e921ea20479` (exact frozen diagnostic/manifest before scoring)
+- Change: added brightness factor 0.5, Gaussian blur 1.2 pixels, or fixed small
+  opaque rectangle separately to the same standard development image per seed.
+- Inputs/fixtures: existing 15M 200 development groups; 4 variants/seed, 46 targets;
+  checkpoint/source hashes in `eval/single_perturbations_v0.manifest.json`;
+  per-condition pixel hashes, paired cases and counts in scorecard.
+- Command: `python software/ai/vision/diagnose_single_perturbations.py`
+- Result: PASS for completed diagnostic. Mean key error base 0.853172 mm,
+  darkened 2.515475 mm, blur 0.832448 mm, obstruction 0.871324 mm. Images with
+  maximum key error >3mm: 5, 87, 4, 5 respectively (200 each). Darkening worsens
+  178/200 images and introduces 83 new >3mm cases. Added effects are paired.
+- Artifacts: `software/ai/eval/single_perturbations_v0_scorecard.json`, manifest,
+  `software/ai/vision/diagnose_single_perturbations.py`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: base renderer already contains nuisance effects; fixed synthetic
+  strengths/obstruction location do not represent all camera/arm conditions.
+  No interactions, visibility qualification, measured lighting threshold or
+  held-out data. Small mean changes do not establish blur/obstruction safety.
+- Supersedes: none
+- Next dependency: freeze paired brightness-augmentation training versus control
+  on development groups, retaining baseline/yaw checks; later use fresh calibration
+  and evaluation. Do not infer a deployable darkness threshold from this study.
+
+### E-20260926-AI-050 — paired perturbation evidence tests
+
+- Stage: S1
+- Lane: AI
+- Commit: `a8f2a0982939877473c11bfa61167e921ea20479` (diagnostic baseline; test committed with evidence)
+- Change: verified base-image immutability, brightness arithmetic, unknown-condition
+  rejection, source hashes, development seeds and paired metric counts.
+- Inputs/fixtures: analytic PIL image and frozen paired scorecard/manifest.
+- Command: `python -m pytest -q software/ai/tests/test_single_perturbations.py`
+- Result: PASS, 2 tests.
+- Artifacts: named test and AI-049 scorecard.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: offline consistency only, no confidence or physical qualification.
+- Supersedes: none
+- Next dependency: AI-049 brightness-robustness training.
+
+### E-20260926-AI-051 — paired perturbation publication audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `a8f2a0982939877473c11bfa61167e921ea20479` (frozen diagnostic baseline; scorecard and tests committed with evidence)
+- Change: audited the publication snapshot after adding paired perturbation evidence.
+- Inputs/fixtures: repository snapshot including AI-049 scorecard and AI-050 tests;
+  existing reviewed synthetic fixture allowlist.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS; 5682 paths, 786.5 MiB, 0 unresolved findings,
+  14 reviewed synthetic fixtures.
+- Artifacts: repository snapshot and audit stdout.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: heuristic snapshot audit only; no physical or localization
+  qualification. Protected-main publication blocker AI-041 remains.
+- Supersedes: none; historical failed audit evidence remains unchanged.
+- Next dependency: paired brightness-augmentation development comparison;
+  authorized PR creation and protected-branch checks for main publication.
