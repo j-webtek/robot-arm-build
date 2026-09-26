@@ -339,6 +339,7 @@ from .installed_controller_surface_compatibility_v1 import (
 )
 from .production_controller_runtime_contract_v1 import (
     EXPECTED_T102_FIELDS as PRODUCTION_RUNTIME_EXPECTED_T102_FIELDS,
+    EXPECTED_T1021_FIELDS as PRODUCTION_RUNTIME_EXPECTED_T1021_FIELDS,
     EXPECTED_T105_FIELDS as PRODUCTION_RUNTIME_EXPECTED_T105_FIELDS,
     EXPECTED_T1051_JOINT_FIELDS as PRODUCTION_RUNTIME_EXPECTED_T1051_JOINT_FIELDS,
     MANIFEST_SCHEMA as PRODUCTION_CONTROLLER_RUNTIME_MANIFEST_SCHEMA,
@@ -351,6 +352,7 @@ from .production_controller_runtime_contract_v1 import (
     ProductionControllerRuntimeManifestV1,
     ProductionRuntimeState,
     RuntimeAdmissionRecordV1,
+    RuntimeCommandAcknowledgmentRecordV1,
     RuntimeCommandFrameV1,
 )
 from .prehardware_layout_study import (
@@ -1093,6 +1095,7 @@ __all__ = [
     "SurfaceReviewDisposition",
     "assess_installed_controller_surface_compatibility_v1",
     "PRODUCTION_RUNTIME_EXPECTED_T102_FIELDS",
+    "PRODUCTION_RUNTIME_EXPECTED_T1021_FIELDS",
     "PRODUCTION_RUNTIME_EXPECTED_T105_FIELDS",
     "PRODUCTION_RUNTIME_EXPECTED_T1051_JOINT_FIELDS",
     "PRODUCTION_CONTROLLER_RUNTIME_MANIFEST_SCHEMA",
@@ -1105,6 +1108,7 @@ __all__ = [
     "ProductionControllerRuntimeManifestV1",
     "ProductionRuntimeState",
     "RuntimeAdmissionRecordV1",
+    "RuntimeCommandAcknowledgmentRecordV1",
     "RuntimeCommandFrameV1",
     "ModelMotionIngressError",
     "SimulationContextError",

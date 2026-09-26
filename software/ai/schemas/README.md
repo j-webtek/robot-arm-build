@@ -123,7 +123,9 @@ and [zero-I/O rehearsal report](production_controller_runtime_rehearsal_v1.schem
 define the replacement runtime's executable acceptance contract: safe idle at
 startup, one writer, exact ordered and expiring T=102 frames, exact T=105/T=1051
 feedback framing, terminal closure on ambiguity, and no automatic retry. These
-schemas describe an offline contract only and cannot authorize transport.
+schemas also bind each r97 `T=1021` accepted-once ordinal before another command
+or feedback exchange; that receipt explicitly does not prove physical arrival.
+They describe an offline contract only and cannot authorize transport.
 
 [Precision observation v2](precision_observation_v2.schema.json) carries explicit
 localization abstention or a reference to externally qualified uncertainty.
