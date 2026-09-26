@@ -216,6 +216,13 @@ from .installed_collision_geometry import (
     load_installed_collision_geometry_for_context,
     load_installed_collision_geometry_profile,
 )
+from .measured_waypoint_collision_sequence import (
+    MAX_WAYPOINT_COLLISION_SAMPLES,
+    SCHEMA as MEASURED_WAYPOINT_COLLISION_SEQUENCE_SCHEMA,
+    MeasuredWaypointCollisionSample,
+    MeasuredWaypointCollisionSequenceError,
+    evaluate_measured_waypoint_collision_sequence,
+)
 from .model_motion_ingress import (
     SCHEMA as MODEL_MOTION_INGRESS_SCHEMA,
     ModelMotionIngressError,
@@ -1054,6 +1061,11 @@ __all__ = [
     "INSTALLED_COLLISION_GEOMETRY_PROFILE_SCHEMA",
     "InstalledCollisionGeometryError",
     "InstalledCollisionGeometryProfile",
+    "MAX_WAYPOINT_COLLISION_SAMPLES",
+    "MEASURED_WAYPOINT_COLLISION_SEQUENCE_SCHEMA",
+    "MeasuredWaypointCollisionSample",
+    "MeasuredWaypointCollisionSequenceError",
+    "evaluate_measured_waypoint_collision_sequence",
     "MODEL_MOTION_INGRESS_SCHEMA",
     "MeasuredTargetRegionV2",
     "ModelMotionIngressV2Error",
