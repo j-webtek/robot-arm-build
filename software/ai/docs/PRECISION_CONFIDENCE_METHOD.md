@@ -101,3 +101,13 @@ Do not enable this heuristic. The diagnostic and failure remain in
 `eval/local_refinement_v0_scorecard.json`; unit tests only confirm bounded behavior.
 Next decompose translation, orientation and scene-condition errors before choosing
 further model changes. No additional calibration/evaluation data was consumed.
+
+
+## Development error attribution
+
+Translation-only counterfactual mean key error is 0.885 mm versus rotation-only
+0.278 mm (full prediction 0.945 mm). This supports prioritizing board-center
+translation training while monitoring yaw. Counterfactuals use hidden truth only
+for scoring and cannot be deployed. Challenge mean error is 1.067 mm versus
+standard 0.868 mm; bundled augmentations do not isolate causal lighting or
+obstruction contributions. See `eval/pose_decomposition_v0_scorecard.json`.

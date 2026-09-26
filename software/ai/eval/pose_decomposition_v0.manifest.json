@@ -1,0 +1,24 @@
+{
+  "scope": "DEVELOPMENT_ONLY",
+  "seed_start": 15000000,
+  "seed_count": 200,
+  "conditions": [
+    "standard",
+    "appearance_shift",
+    "challenge"
+  ],
+  "checkpoint_sha256": "1dc517acd1da53166dc2df11a4d67e98aaf1186d96edd3342db0498fb6a6f2cc",
+  "file_sha256": {
+    "software/ai/vision/pose_model.py": "7eccc2a3cabf3a37217b4a1c3114c439ffc740a917c08e4ef378065ff85c6ec5",
+    "software/ai/vision/synthetic_keyboard.py": "b9a1662ea348ba78093909844e5e8bed86f4996babc289bfd63858b6b54f692c",
+    "software/ai/vision/train_pose.py": "98c2ae6211b42c3b4b7c5bed3fb03aab82bffff79c30ebb546e3681b3be3a1b6",
+    "software/ai/vision/evaluate_pose_challenge.py": "1ba33a1a2d38b1216a5e1708e17b99c3d9dba9fd2c40af46a084da8065102983",
+    "software/ai/vision/diagnose_pose_decomposition.py": "c479802ae338296841bc8c7b5b26d19bd81bc0d7d7975e54ae4c2c0155cffc37"
+  },
+  "policy": "Development-only counterfactual attribution; no inference correction or held-out access",
+  "methods": [
+    "baseline",
+    "translation_only",
+    "rotation_only"
+  ]
+}
