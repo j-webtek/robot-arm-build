@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rocell.local/schemas/installed_controller_surface_evidence_v1.schema.json",
+  "title": "RoCell installed-controller command-surface evidence v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "surface_id", "reviewed_app_sha256",
+    "linked_image_review_sha256", "generic_command_dispatch_present",
+    "t102_command_supported", "t105_feedback_request_supported",
+    "t1051_feedback_response_supported", "runtime_app_hash_attested",
+    "review_disposition", "hardware_access", "physical_authority",
+    "evidence_sha256"
+  ],
+  "properties": {
+    "schema": {"const": "rocell.installed_controller_surface_evidence.v1"},
+    "surface_id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"},
+    "reviewed_app_sha256": {"$ref": "#/$defs/sha256"},
+    "linked_image_review_sha256": {"$ref": "#/$defs/sha256"},
+    "generic_command_dispatch_present": {"type": "boolean"},
+    "t102_command_supported": {"type": "boolean"},
+    "t105_feedback_request_supported": {"type": "boolean"},
+    "t1051_feedback_response_supported": {"type": "boolean"},
+    "runtime_app_hash_attested": {"type": "boolean"},
+    "review_disposition": {"enum": ["INDEPENDENTLY_APPROVED", "UNREVIEWED", "REJECTED"]},
+    "hardware_access": {"const": false},
+    "physical_authority": {"const": false},
+    "evidence_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rocell.local/schemas/installed_controller_surface_compatibility_report_v1.schema.json",
+  "title": "RoCell installed-controller command-surface compatibility report v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "status", "passive_evidence_sha256",
+    "surface_evidence_sha256", "controller_session_id", "blockers",
+    "profile_binding_compatible", "execution_authorized",
+    "transport_authorized", "hardware_commands_generated", "hardware_access",
+    "physical_authority", "report_sha256"
+  ],
+  "properties": {
+    "schema": {"const": "rocell.installed_controller_surface_compatibility_report.v1"},
+    "status": {"enum": ["BLOCKED", "COMPATIBLE_FOR_ZERO_WRITE_BINDING"]},
+    "passive_evidence_sha256": {"$ref": "#/$defs/sha256"},
+    "surface_evidence_sha256": {"$ref": "#/$defs/sha256"},
+    "controller_session_id": {"type": "string", "minLength": 1, "maxLength": 128},
+    "blockers": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/blocker"}},
+    "profile_binding_compatible": {"type": "boolean"},
+    "execution_authorized": {"const": false},
+    "transport_authorized": {"const": false},
+    "hardware_commands_generated": {"const": 0},
+    "hardware_access": {"const": false},
+    "physical_authority": {"const": false},
+    "report_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"status": {"const": "BLOCKED"}}},
+      "then": {"properties": {"profile_binding_compatible": {"const": false}, "blockers": {"minItems": 1}}}
+    },
+    {
+      "if": {"properties": {"status": {"const": "COMPATIBLE_FOR_ZERO_WRITE_BINDING"}}},
+      "then": {"properties": {"profile_binding_compatible": {"const": true}, "blockers": {"maxItems": 0}}}
+    }
+  ],
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "blocker": {"enum": [
+      "APP_HASH_MISMATCH", "RUNTIME_APP_HASH_NOT_ATTESTED",
+      "GENERIC_COMMAND_DISPATCH_ABSENT", "T102_COMMAND_UNAVAILABLE",
+      "T105_FEEDBACK_REQUEST_UNAVAILABLE",
+      "T1051_FEEDBACK_RESPONSE_UNAVAILABLE",
+      "INDEPENDENT_REVIEW_INCOMPLETE"
+    ]}
+  }
+}
