@@ -1,10 +1,17 @@
 # Tactevra offline verification
 
 The [Offline verification workflow](../.github/workflows/offline-checks.yml) runs
-on pull requests, pushes to main, and manual dispatch. It uses GitHub-hosted Linux
-and Windows runners with Python 3.10 and 3.12. Each job creates a new virtual
-environment and installs the package non-editably before running the introductory
-demo. This checks packaging as well as source-tree behavior.
+on pull requests, pushes to main, and manual dispatch. It uses GitHub-hosted
+Ubuntu 24.04 and `windows-latest` runners with Python 3.10 and 3.12. Each job
+creates a new virtual environment and installs the package non-editably before
+running the introductory demo. This checks packaging as well as source-tree
+behavior.
+
+The protected Linux check names retain `ubuntu-latest` for status-context
+continuity, but the workflow's actual `runs-on` value is pinned to
+`ubuntu-24.04`. The environment summary is the source for the resolved runner OS.
+Changing that image requires a reviewed workflow and documentation update; it
+must not happen implicitly when GitHub moves the `ubuntu-latest` alias.
 
 Repository policy requires full commit-SHA action pins and permits only
 `actions/checkout` and `actions/setup-python`. Fork workflows from outside
@@ -140,6 +147,10 @@ Force pushes and branch deletion are disabled. No independent approving review
 is mandatory (the approval count is zero), so a solo maintainer can merge after
 the checks pass. These are repository settings, not settings installed by cloning
 this source; recheck GitHub if policy changes.
+
+The two `ubuntu-latest` strings above are stable required-check identifiers. They
+currently run on the explicitly pinned Ubuntu 24.04 hosted image, as documented
+at the top of this page.
 
 Both AI and arm contributors should push a topic branch and open a PR rather
 than pushing directly to `main`. Update the branch when `main` advances and let
