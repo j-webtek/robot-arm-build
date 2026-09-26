@@ -599,8 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-- AI lane / S1: frozen pose-tail decomposition on retained 15M cases; translation/yaw and paired-condition diagnosis only. No arm or integration status change.
-
 
 
 
@@ -5837,3 +5835,54 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic audit; AI-041 protected-main publication blocker remains.
 - Supersedes: none; earlier failed evidence and arm/integration status retained.
 - Next dependency: Freeze a direct pose-tail diagnosis by seed, translation/yaw contribution and controlled condition before selecting a bounded pose-training change. Visibility may describe occlusion but must not substitute for coordinate uncertainty. Protected-branch publication still requires PR/checks.
+
+
+### E-20260926-AI-193 — pose tail decomposition
+
+- Stage: S1
+- Lane: AI
+- Commit: `87d8ad7d7fdd168d855933f1a4e4e4887039eb8e` (frozen source; results/tests committed with evidence)
+- Change: pose tail decomposition.
+- Inputs/fixtures: 800 reused15M cases (15000000..15000199 x four conditions), normalized identical images; pose checkpoint SHA256 0fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d. All source/checkpoint/report hashes pinned in eval/pose_tail_v0_plan.json.
+- Command: `python software/ai/vision/diagnose_pose_tail.py`
+- Result: Completed; exact AI-187 pixel and pose metric reproduction. Standard/appearance/partial/full tails5/7/9/11 per200. New failures versus standard0/3/4/6; recovered0/1/0/0. Translation larger than rotation-only maximum in3/2/4/4 failures; translation alone exceeds3mm in3/4/3/4; rotation alone in1/3/1/3. Partial/full raise average maximum key error by0.274/0.525mm. Both components matter; occlusion adds failures.
+- Artifacts: eval/pose_tail_v0_report.json
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Oracle decomposition only; components can reinforce/cancel and are not additive. Reused synthetic development and renderer; no physical calibration or runtime uncertainty.
+- Supersedes: none; failed evidence and arm/integration status retained.
+- Next dependency: Freeze a controlled pose fine-tuning comparison from the established checkpoint: equal training budget, unchanged loss, control without added controlled occlusion versus mixed occlusion candidate; evaluate clear-image regression and occlusion tails on development before any fresh holdout. Do not train on the diagnosed development seeds or install qualification.
+
+
+### E-20260926-AI-194 — pose tail verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `87d8ad7d7fdd168d855933f1a4e4e4887039eb8e` (frozen source; results/tests committed with evidence)
+- Change: pose tail verification.
+- Inputs/fixtures: 800 reused15M cases (15000000..15000199 x four conditions), normalized identical images; pose checkpoint SHA256 0fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d. All source/checkpoint/report hashes pinned in eval/pose_tail_v0_plan.json.
+- Command: `python -m pytest -q software/ai/tests/test_pose_tail.py`
+- Result: PASS,2 tests: known translation/rotation, source hashes, all800 retained metrics, triangle bound and paired failure sets. Existing pytest-asyncio warning.
+- Artifacts: tests/test_pose_tail.py
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Implementation tests only; batch contract unchanged; shared boundary suite not triggered.
+- Supersedes: none; failed evidence and arm/integration status retained.
+- Next dependency: Freeze a controlled pose fine-tuning comparison from the established checkpoint: equal training budget, unchanged loss, control without added controlled occlusion versus mixed occlusion candidate; evaluate clear-image regression and occlusion tails on development before any fresh holdout. Do not train on the diagnosed development seeds or install qualification.
+
+
+### E-20260926-AI-195 — pose tail publication audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `87d8ad7d7fdd168d855933f1a4e4e4887039eb8e` (frozen source; results/tests committed with evidence)
+- Change: pose tail publication audit.
+- Inputs/fixtures: 800 reused15M cases (15000000..15000199 x four conditions), normalized identical images; pose checkpoint SHA256 0fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d. All source/checkpoint/report hashes pinned in eval/pose_tail_v0_plan.json.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS;5986 paths,843.1 MiB,0 unresolved findings,14 reviewed synthetic fixtures.
+- Artifacts: audit stdout and snapshot
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic audit; protected-main publication blocker AI-041 retained.
+- Supersedes: none; failed evidence and arm/integration status retained.
+- Next dependency: Freeze a controlled pose fine-tuning comparison from the established checkpoint: equal training budget, unchanged loss, control without added controlled occlusion versus mixed occlusion candidate; evaluate clear-image regression and occlusion tails on development before any fresh holdout. Do not train on the diagnosed development seeds or install qualification.
