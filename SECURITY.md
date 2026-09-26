@@ -2,7 +2,7 @@
 
 ## Report privately
 
-Please use [GitHub private vulnerability reporting](https://github.com/j-webtek/robot-arm-build/security/advisories/new)
+Please use [GitHub private vulnerability reporting](https://github.com/j-webtek/tactevra/security/advisories/new)
 for suspected security vulnerabilities. Private reporting was enabled and checked
 on September 26, 2026. You need a GitHub account to submit a report.
 

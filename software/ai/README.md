@@ -28,7 +28,7 @@ image-bound keyboard/phone coordinates for deterministic offline screening; it
 does not grant a model direct serial or motion authority.
 
 This folder is the small, reviewable AI addition to the
-[`robot-arm-build`](https://github.com/j-webtek/robot-arm-build) repository. It
+[`tactevra`](https://github.com/j-webtek/tactevra) repository. It
 translates English requests into RoCell's existing semantic typing plans and can
 hand image-bound coordinate proposals to the deterministic model-motion bridge.
 RoCell remains the owner of coordinate validation, transforms, trajectory

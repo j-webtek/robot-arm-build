@@ -107,6 +107,8 @@ documents may exist only on the lab workstation; sharing them is covered in
 - [Routine maintainer checklist](MAINTAINER_CHECKLIST.md): triage, review, and handoffs.
 - [Hardware-free CI checks](CI.md) and [repository operations](REPOSITORY_OPERATIONS.md):
   verification scope, PR workflow, and dependency maintenance.
+- [Versioning and compatibility](VERSIONING.md): source-preview identifiers and
+  the technical interfaces preserved during the Tactevra transition.
 - [Experimental release checklist](RELEASING.md): requirements for a separately
   reviewed source preview; the checklist itself does not publish a release.
 - [Hardware provenance](HARDWARE_PROVENANCE.md): the owner's CAD/print-design

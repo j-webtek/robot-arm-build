@@ -1,6 +1,6 @@
 # Experimental source-preview candidate: dcd87db
 
-Prepared September 26, 2026 for [issue #25](https://github.com/j-webtek/robot-arm-build/issues/25).
+Prepared September 26, 2026 for [issue #25](https://github.com/j-webtek/tactevra/issues/25).
 **Disposition: HOLD for publication.** This is preparation evidence, not a release
 approval, firmware review, or physical qualification.
 
@@ -38,7 +38,7 @@ that all historical lab instructions are current or suitable for a new user.
 
 ## Exact-candidate verification
 
-The [merged-main CI run](https://github.com/j-webtek/robot-arm-build/actions/runs/36260595859)
+The [merged-main CI run](https://github.com/j-webtek/tactevra/actions/runs/36260595859)
 completed successfully at the full candidate SHA:
 
 | Required job | Result |
