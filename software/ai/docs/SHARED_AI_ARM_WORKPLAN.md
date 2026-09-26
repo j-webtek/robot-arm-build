@@ -602,7 +602,7 @@ remove it only in the same commit that appends the resulting evidence row.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| Unclaimed | S2 | v2 dual-lineage trajectory envelope contract | — | AVAILABLE |
+| Arm/runtime lane | S2 | v2 dual-lineage trajectory envelope contract | `main` from `67390c4` | ACTIVE |
 | Unclaimed | S4 | controller adapter/receipts | — | AVAILABLE |
 
 ## Worker update procedure
