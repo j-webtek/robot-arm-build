@@ -14,6 +14,8 @@
     "configuration_epoch_sha256": {"$ref": "#/$defs/sha256"},
     "evaluated_monotonic_ns": {"type": "integer", "minimum": 1},
     "blockers": {"type": "array", "uniqueItems": true, "items": {"enum": [
+      "FIRMWARE_REVIEW_DECISION_MISSING", "FIRMWARE_REVIEW_DECISION_MISMATCH",
+      "FIRMWARE_REVIEW_DECISION_BLOCKED",
       "FIRMWARE_INDEPENDENT_REVIEW_INCOMPLETE", "REVIEW_PACKET_MISMATCH",
       "CANDIDATE_APP_MISMATCH", "PROTOCOL_SOURCE_MISMATCH",
       "JOINT_MAPPING_SOURCE_MISMATCH", "EVALUATION_PREDATES_MEASUREMENT",

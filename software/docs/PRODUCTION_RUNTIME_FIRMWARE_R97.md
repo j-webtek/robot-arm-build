@@ -75,3 +75,12 @@ startup, movement, and physical authority to false. A reviewer must retain the
 archive unchanged and publish a separate decision that identifies this exact
 packet hash. Even a passing decision does not remove the measured
 configuration-epoch blocker.
+
+The external decision must use the closed
+`rocell.r97_independent_review_decision.v1` contract, identify the exact packet,
+manifest, and app hashes above, record all eleven checklist results, declare
+reviewer independence and author separation, and contain either an independent
+approval with no open findings or a rejection. The decision digest is then
+matched by the configuration-epoch intake. Repository code can validate those
+bindings; it cannot authenticate the reviewer or substitute a self-review for
+independent custody and identity evidence. No decision has been supplied.

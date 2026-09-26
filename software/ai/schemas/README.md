@@ -126,9 +126,18 @@ feedback framing, terminal closure on ambiguity, and no automatic retry. These
 schemas also bind each r97 `T=1021` accepted-once ordinal before another command
 or feedback exchange; that receipt explicitly does not prove physical arrival.
 They describe an offline contract only and cannot authorize transport.
+The [external r97 review decision](r97_independent_review_decision_v1.schema.json)
+and its [assessment](r97_independent_review_decision_report_v1.schema.json)
+define the separate, content-addressed record an independent reviewer must
+publish. The decision binds the exact packet, manifest, and app hashes; records
+the closed checklist, independence assertions, findings, and disposition; and
+grants no deployment or physical authority. The software validates structure
+and internal bindings but cannot authenticate the human identity or manufacture
+independence; custody and identity evidence remain external.
 The [measured configuration-epoch intake](controller_configuration_epoch_intake_v1.schema.json)
 and [intake assessment](controller_configuration_epoch_intake_report_v1.schema.json)
-bind the independently reviewed release packet to all eight measured workcell
+require that full decision, rather than accepting only an arbitrary review hash
+and disposition, and bind the reviewed release to all eight measured workcell
 components. The candidate app digest is explicit but separate from the epoch
 digest, avoiding a self-referential firmware build. A passing assessment makes
 only an epoch-bound build proposal ready; installation, startup, transport,
