@@ -2073,3 +2073,20 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: heuristic findings unresolved; no clean audit claim.
 - Supersedes: none
 - Next dependency: fixture-owner review independently of AI qualification research.
+
+
+### E-20260926-AI-041 — protected-main publishing blocker
+
+- Stage: S1
+- Lane: AI
+- Commit: `5b94a8dfc218be5a31c94f172db6ae3b62378b88`
+- Change: published completed paired evidence to `feature/translation-pair-evidence` after main protection rejected direct push.
+- Inputs/fixtures: completed AI-038–040 changes and preserved arm merge.
+- Command: `git push origin main`; `git push -u origin feature/translation-pair-evidence`; GitHub connector `github_create_pull_request` targeting main.
+- Result: BLOCKED for PR creation: main push rejected GH006 (PR and four checks required); branch push succeeded; connector returned HTTP 403 Resource not accessible by integration. Local gh CLI unavailable.
+- Artifacts: remote branch `feature/translation-pair-evidence`; no PR created.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: changes are published on branch but not merged to main; no protection bypass attempted.
+- Supersedes: none
+- Next dependency: authorized GitHub PR creation and required checks before merge.
