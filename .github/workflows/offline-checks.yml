@@ -15,14 +15,28 @@ concurrency:
 
 jobs:
   offline:
-    name: Offline / ${{ matrix.os }} / Python ${{ matrix.python }}
-    runs-on: ${{ matrix.os }}
+    # Keep the established check labels while pinning the actual Linux image.
+    # Branch protection keys off these names; the runner identity is reported
+    # separately in the environment summary.
+    name: Offline / ${{ matrix.check_os }} / Python ${{ matrix.python }}
+    runs-on: ${{ matrix.runner }}
     timeout-minutes: 15
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest]
-        python: ['3.10', '3.12']
+        include:
+          - runner: ubuntu-24.04
+            check_os: ubuntu-latest
+            python: '3.10'
+          - runner: ubuntu-24.04
+            check_os: ubuntu-latest
+            python: '3.12'
+          - runner: windows-latest
+            check_os: windows-latest
+            python: '3.10'
+          - runner: windows-latest
+            check_os: windows-latest
+            python: '3.12'
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
