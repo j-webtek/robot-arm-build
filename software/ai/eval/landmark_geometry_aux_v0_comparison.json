@@ -1,0 +1,69 @@
+{
+  "scope": "MATCHED_GEOMETRY_AUXILIARY",
+  "checks": {
+    "control": {
+      "conditions": {
+        "standard": {
+          "mean": false,
+          "tail": true,
+          "yaw": true
+        },
+        "appearance_shift": {
+          "mean": false,
+          "tail": true,
+          "yaw": true
+        },
+        "partial": {
+          "mean": false,
+          "tail": true,
+          "yaw": true
+        },
+        "full": {
+          "mean": false,
+          "tail": true,
+          "yaw": true
+        }
+      },
+      "visibility_pass": false,
+      "passed": false
+    },
+    "geometry": {
+      "conditions": {
+        "standard": {
+          "mean": false,
+          "tail": false,
+          "yaw": false
+        },
+        "appearance_shift": {
+          "mean": false,
+          "tail": false,
+          "yaw": false
+        },
+        "partial": {
+          "mean": false,
+          "tail": false,
+          "yaw": false
+        },
+        "full": {
+          "mean": false,
+          "tail": false,
+          "yaw": false
+        }
+      },
+      "visibility_pass": false,
+      "passed": false
+    }
+  },
+  "report_hashes": {
+    "control": "d4472f0fd850139699c5d38d51dbeed8d31de9bddfec5ca057c784d31ddc0208",
+    "geometry": "2734a20811027c1837539e5c05505aaa7776aa91ff826c6ff758bc614d040bad"
+  },
+  "hardware_writes": 0,
+  "physical_movements": 0,
+  "qualification_installed": false,
+  "limitations": [
+    "Retrained matched temperature1/0.5 heads; identical parameters and seed; GPU execution not bitwise guaranteed",
+    "One seed and reused development groups; no fresh generalization or architecture superiority claim",
+    "Passing a relative corrective rule would not establish replacement of pose baseline"
+  ]
+}

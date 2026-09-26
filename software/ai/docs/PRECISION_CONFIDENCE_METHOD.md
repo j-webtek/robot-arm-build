@@ -524,3 +524,8 @@ Huber IRLS with3mm residual scale and5 iterations fails overall on all800 develo
 ### Label/render alignment (AI-175)
 
 Labels exactly match actual polygon call coordinates across800 scenes; independent projection differs at most2.84e-14px. Standard/appearance refined candidate means consistently point inward by several millimetres. This excludes a vector-label mismatch in these scenes but not rasterization/blur or learned feature bias. No empirical correction applied. Next freeze matched geometry-consistency auxiliary localization training versus unchanged t05 control,using synthetic geometry as training supervision only. Source `35c9177b92c350c2170c06dbfc56fe4a07764ec3`; `eval/label_alignment_v0_report.json`. No qualification or runtime calibration.
+
+
+### Geometry auxiliary training (AI-178)
+
+Adding coefficient1 visible-pair vector consistency worsens every relative localization criterion and visibility: hidden false-visible6→100/201,clear recall2661→1422/2736. Both networks use t05; the comparison report contains stale inherited temperature1/0.5 limitation wording,clarified in the ledger without rewriting evidence. No promotion. Next measure loss magnitudes and shared-feature gradient norms/cosines at initialization and frozen checkpoints before another coefficient choice. Source `fa1eedd1f479fcf2d8ad7024ec06628aedf0af11`; `eval/landmark_geometry_aux_v0_*`.

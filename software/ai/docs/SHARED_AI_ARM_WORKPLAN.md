@@ -599,7 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-| AI | S1 | geometry auxiliary training | feature/translation-pair-evidence | ACTIVE |
 
 
 
@@ -5551,3 +5550,51 @@ commissioning, or bounded physical result with its limitations intact.
 - Next dependency: derive bounded intermediate joint samples for every segment,
   recompute all rigid transforms at each sample, and require profile-bound cable
   geometry or a conservative cable envelope at each intermediate state.
+
+### E-20260926-AI-178 — geometry auxiliary matched training
+
+- Stage: S1
+- Lane: AI
+- Commit: `fa1eedd1f479fcf2d8ad7024ec06628aedf0af11` (frozen source; results/tests committed with evidence)
+- Change: geometry auxiliary matched training.
+- Inputs/fixtures: 2400 training/800 reused development images,14M600/15M200 groups. Exact source/catalog/checkpoint hashes in train/landmark_geometry_aux_v0_plan.json. Both t05 networks,same initialization/data/order/8epochs/common original development objective.
+- Command: `python software/ai/train/train_geometry_auxiliary.py`
+- Result: FAIL all12 relative localization checks and visibility. Control→aux mean standard8.248→13.881,appearance12.765→17.767,partial10.934→14.902,full11.050→14.751mm; tails192/199/196/198→200/200/199/199. Hidden false-visible6→100/201; clear recall2661→1422/2736. Coefficient1 geometry term is six pair-vector squared errors scaled16px,weighted by pair visibility. Control checkpointdc87386d602222652aab4f6e2a052e59d6e39fc862c3847f97b470e5b52803f7; auxiliarya2fe809acb36d94ae137f0b3e525889b284dbc5fe611cd4a537c9b8fb200e9f5.
+- Artifacts: eval/landmark_geometry_aux_v0_*; ignored checkpoints
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: One seed,reused development,GPU nondeterminism. Inherited comparison limitation text incorrectly says temperature1/0.5; actual frozen source/plan instantiate t05 for BOTH arms. Retained report is not rewritten; this entry clarifies metadata. No qualification or runtime change.
+- Supersedes: none; prior failures and integration statuses retained.
+- Next dependency: Freeze per-loss magnitudes and shared-feature gradient norms/cosines for control versus geometry objectives at seeded initialization and retained checkpoints; no coefficient sweep or retraining before diagnosis.
+
+### E-20260926-AI-179 — geometry auxiliary verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `fa1eedd1f479fcf2d8ad7024ec06628aedf0af11` (frozen source; results/tests committed with evidence)
+- Change: geometry auxiliary verification.
+- Inputs/fixtures: Analytic translated/corrupted corners,visibility masks and AI-178 pinned reports.
+- Command: `python -m pytest -q software/ai/tests/test_geometry_auxiliary.py`
+- Result: PASS,2 tests; translation invariance,occlusion exclusion,all-hidden finite loss,hashes,matched pixels,selection,visibility recounts and criteria verified. Existing pytest-asyncio warning.
+- Artifacts: software/ai/tests/test_geometry_auxiliary.py
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Consistency tests not qualification; batch unchanged,shared boundary suite not triggered.
+- Supersedes: none; prior failures and integration statuses retained.
+- Next dependency: AI-178 gradient diagnostic.
+
+### E-20260926-AI-180 — geometry training publication audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `fa1eedd1f479fcf2d8ad7024ec06628aedf0af11` (frozen source; results/tests committed with evidence)
+- Change: geometry training publication audit.
+- Inputs/fixtures: Repository with AI-178/179 and reviewed fixture allowlist.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS;5962 paths,840.6 MiB,0 unresolved findings,14 reviewed synthetic fixtures.
+- Artifacts: audit stdout and snapshot
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic audit; AI-041 protected-main publication blocker remains.
+- Supersedes: none; prior failures and integration statuses retained.
+- Next dependency: Protected-branch PR/checks and AI-178 diagnosis.
