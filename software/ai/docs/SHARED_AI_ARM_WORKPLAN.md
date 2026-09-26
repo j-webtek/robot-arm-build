@@ -599,6 +599,8 @@ Copy this row and fill every field:
 
 ## Active work claims
 
+- AI lane / S1: retained appearance regression attribution across baseline/control/key-loss candidate; no training or runtime changes.
+
 
 
 

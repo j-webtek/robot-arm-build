@@ -1,0 +1,8 @@
+{
+  "input": "software/ai/eval/pose_keyloss_v0_report.json",
+  "file_sha256": {
+    "software/ai/eval/pose_keyloss_v0_report.json": "649440b9c5fdfc7976c8e0491c401bf152724a4fdebca3112d7bfc3e7e7b4a3b",
+    "software/ai/vision/diagnose_appearance_residual.py": "4dcf931b056dc92e12f53df9996c74ce06c7bbc9cda7d8e493a141e52f70f852"
+  },
+  "method": "Pair exact seed identities; signed translation and unsigned rotation changes; fixed top10 positive regression concentration,all200 cases retained; no threshold tuning or runtime offset"
+}
