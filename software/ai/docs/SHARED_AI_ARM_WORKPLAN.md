@@ -4927,3 +4927,61 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic audit; AI-041 protected-main publication blocker remains.
 - Supersedes: none; prior failures and integration statuses retained.
 - Next dependency: Protected-branch PR/checks and AI-148 experiment.
+### E-20260926-ARM-039 — actual AI-emitter bytes through arm admission
+
+- Stage: S2/S4 bridge
+- Lane: ARM
+- Change: replaced the hand-built batch at the producer/consumer seam with the
+  exact canonical bytes returned by `rocell_ai.batch_emitter_v2.assemble` for a
+  synthetic qualified-shape observation fixture. The arm decoder, registry
+  ingress, freshness gate, and measured planner consume that same payload. A
+  separate synthetic-ready planner copy is used only to prove that the admitted
+  batch/proposal identity can continue through the ARM-038 epoch and zero-write
+  encoding rehearsal.
+- Safety behavior: the measured planner must remain
+  `BLOCKED_CALIBRATION_MISSING_OR_STALE` with next stage
+  `COMMISSION_REQUIRED_CALIBRATIONS`; any crossed or tampered payload, ingress,
+  freshness, planner, proposal, epoch, or preview identity rejects. The report
+  fixes production dispatch, installation, controller startup, execution,
+  retry, hardware access, and physical authority false.
+- Artifact identity: canonical emitter payload SHA-256
+  `9e64e21670aa4545a4ea326bf122716e8b40eac4b86ae1d7e80141553f9a779e`;
+  model batch SHA-256
+  `260c2ed2ae641c3a350637db2d784c43a42d1f440846a2514d2a6c46e1e9c980`;
+  intent plan SHA-256
+  `682eabd41a40d5516d87b9b26e97eb9ca9276eca519d1b3f3a8422e5676f2c81`;
+  ingress SHA-256
+  `402b25b4f7c6d4b0b0fef8da57cdb32086c3401934aed8d55a124ea5f78e3d12`;
+  freshness gate SHA-256
+  `b69f0e032737f8f0042d7ec968735aa3877ef1eeb9a8d0d96597f91780ae0c4c`;
+  measured planner gate SHA-256
+  `ba29c35e895e352081990daf242d0671823b262604f7bdf09c16bcd2dbc409a7`;
+  configuration epoch SHA-256
+  `671c044b48b9f3aaac2e5f260a6b8c948f6c2a060451730d015b9431d46cf6c6`;
+  preview receipt SHA-256
+  `06562a60f2babc2dc06faf3dd93879d7b0f550fd73ad8d14248e1e808fc0e6bc`;
+  combined report SHA-256
+  `de86a22022f57f6c579300b3d933888ff24e46f466cb8d517f29f6aba4f735bc`.
+- Artifacts: `ai_emitted_epoch_model_arm_rehearsal_v1.py`, closed JSON
+  schema, real-emitter integration/tamper tests, public application exports,
+  portable CI inclusion, and shared status/assurance documentation.
+- Results: focused integration suite PASS, 4 tests in 1.82 seconds; bounded
+  shared AI/arm suite PASS, 225 tests in 18.37 seconds; documentation PASS for
+  25 maintained documents and two SVG assets; snapshot audit PASS for 5,736
+  paths and 903.9 MiB with zero unresolved findings and 14 reviewed synthetic
+  fixtures; diff check PASS. Protected CI remains required before merge.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: the AI emitter is real code, but its input here is a synthetic
+  evidence fixture, not an independently evaluated model prediction. The AI
+  research lane's current localization and uncertainty failures remain retained
+  and unpromoted, and the stable batch contract is unchanged. The measured
+  planner produced no trajectory because commissioned calibration is absent;
+  the downstream trajectory and controller bytes remain synthetic inspection
+  evidence only.
+- Supersedes: ARM-038 only for the AI-producer-to-arm-consumer seam. ARM-038's
+  downstream synthetic proof and every physical-use blocker remain.
+- Next dependency: the AI lane must independently qualify an emitted batch
+  without changing the shared contract, while the arm lane must commission
+  measured calibration, collision, installed-controller, and review evidence
+  before any physical admission.
