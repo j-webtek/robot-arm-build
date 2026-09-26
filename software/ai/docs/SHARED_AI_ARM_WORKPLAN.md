@@ -2628,3 +2628,53 @@ commissioning, or bounded physical result with its limitations intact.
 - Next dependency: connect the model/arm offline integration harness to this
   strict epoch fixture while physical measurement owners and an independent
   reviewer produce the evidence required for production admission.
+
+### E-20260926-ARM-038 — synthetic epoch through model-to-arm encoding
+
+- Stage: S4
+- Lane: ARM
+- Change: added a typed cross-layer assessor that binds the exact ARM-036
+  synthetic review decision and ARM-037 eight-component epoch to a real v2
+  model-motion batch, its indexed proposal, a sealed trajectory, a matching
+  Waveshare T=102 profile, and the transport-free preview receipt. The portable
+  offline CI selection now includes this integration boundary.
+- Safety behavior: rehearsal success requires the unchanged epoch assessment to
+  remain `BLOCKED` with exactly `FIRMWARE_REVIEW_DECISION_BLOCKED` and
+  `COMPONENT_NOT_PHYSICAL_ORIGINAL`. Crossed epoch, batch, proposal, profile, or
+  receipt identities reject. The resulting report fixes production dispatch,
+  installation, startup, execution, retry, hardware access, and physical
+  authority false; it creates no runtime frame or dispatch permit.
+- Artifact identity: review decision SHA-256
+  `7b04b99c2c740bbbce4a7cc41e47d158ae2f8be93df6447b9b594e68f9a28c17`;
+  configuration epoch SHA-256
+  `671c044b48b9f3aaac2e5f260a6b8c948f6c2a060451730d015b9431d46cf6c6`;
+  model batch SHA-256
+  `133a24fec9e136909d31ce1a7529ef00d5a9977bc2a17806c1bf2d95c9932544`;
+  preview receipt SHA-256
+  `ee03428d9b91f5fbd3d457c8dbddc50739c81eac9a46135a66e98e32f8e5adfd`;
+  combined rehearsal report SHA-256
+  `5b3b2c7d2c445770d7d16ee2c8f3e53cae5e6f6eff9d10e1406c983840d5beeb`.
+- Artifacts: `synthetic_epoch_model_arm_rehearsal_v1.py`, closed JSON schema,
+  positive/tamper integration tests, public application exports, portable CI
+  inclusion, and shared model/runtime documentation.
+- Results: exact lineage produced one reviewable encoded command and zero
+  writes; bounded shared AI/arm, review, epoch, envelope, and encoding suite
+  PASS, 221 tests in 18.04 seconds; focused new integration suite PASS, 4 tests
+  in 1.26 seconds; documentation PASS for 25 maintained documents and two SVG
+  assets; snapshot audit PASS for 5,733 paths and 903.9 MiB with zero unresolved
+  findings and 14 reviewed synthetic fixtures. The isolated CI helper could not
+  run locally because `.venv-ci` was absent; its exact test list passed under
+  the active offline Python environment and protected CI remains required.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: the planner-ready trajectory is a synthetic test fixture and the
+  encoded command is inspection evidence only. This proves identity and schema
+  compatibility, not real perception accuracy, measured calibration, collision
+  completeness, installed-controller qualification, or physical execution.
+- Supersedes: ARM-037 only for downstream model-to-encoder integration coverage;
+  all independent-review, measured-evidence, installation, and physical-use
+  blockers remain.
+- Next dependency: have the AI lane emit independently evaluated batches against
+  this unchanged interface, while the arm lane replaces synthetic trajectory and
+  epoch inputs only after measured calibration, collision, controller, and review
+  evidence independently qualify.

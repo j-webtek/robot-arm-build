@@ -390,6 +390,13 @@ from .controller_configuration_epoch_intake_v1 import (
     build_synthetic_controller_configuration_epoch_rehearsal_v1,
     parse_controller_configuration_epoch_intake_v1,
 )
+from .synthetic_epoch_model_arm_rehearsal_v1 import (
+    EXPECTED_EPOCH_BLOCKERS as SYNTHETIC_EPOCH_MODEL_ARM_EXPECTED_BLOCKERS,
+    SCHEMA as SYNTHETIC_EPOCH_MODEL_ARM_REHEARSAL_SCHEMA,
+    SyntheticEpochModelArmRehearsalError,
+    SyntheticEpochModelArmRehearsalReportV1,
+    assess_synthetic_epoch_model_arm_rehearsal_v1,
+)
 from .prehardware_layout_study import (
     LayoutAxisValueEvidence,
     LayoutCandidatePromotion,
@@ -1170,6 +1177,11 @@ __all__ = [
     "assess_controller_configuration_epoch_intake_v1",
     "build_synthetic_controller_configuration_epoch_rehearsal_v1",
     "parse_controller_configuration_epoch_intake_v1",
+    "SYNTHETIC_EPOCH_MODEL_ARM_EXPECTED_BLOCKERS",
+    "SYNTHETIC_EPOCH_MODEL_ARM_REHEARSAL_SCHEMA",
+    "SyntheticEpochModelArmRehearsalError",
+    "SyntheticEpochModelArmRehearsalReportV1",
+    "assess_synthetic_epoch_model_arm_rehearsal_v1",
     "ProductionRuntimeState",
     "RuntimeAdmissionRecordV1",
     "RuntimeCommandAcknowledgmentRecordV1",

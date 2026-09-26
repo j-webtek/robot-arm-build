@@ -154,6 +154,13 @@ all eight ordered components. Its synthetic report is intentionally `BLOCKED`
 by `FIRMWARE_REVIEW_DECISION_BLOCKED` and
 `COMPONENT_NOT_PHYSICAL_ORIGINAL`; a separate rehearsal summary may record that
 the integration exercise completed, but it cannot change the production report.
+The [synthetic epoch model-to-arm rehearsal](synthetic_epoch_model_arm_rehearsal_v1.schema.json)
+then binds that exact blocked epoch to one model batch, its indexed proposal, a
+sealed trajectory, the Waveshare encoding profile, and the zero-write receipt.
+Success requires at least one reviewable encoded command while transport writes,
+retry, execution authority, and production dispatch all remain disabled. This
+is an interface-compatibility artifact, not evidence of planning accuracy,
+installed-controller readiness, or physical safety.
 
 [Precision observation v2](precision_observation_v2.schema.json) carries explicit
 localization abstention or a reference to externally qualified uncertainty.
