@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rocell.local/schemas/installed_controller_passive_evidence_v1.schema.json",
+  "title": "RoCell passive installed-controller evidence candidate v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "capture_id", "captured_at_utc", "controller_session_id",
+    "usb_identity", "retained_originals", "live_capabilities",
+    "live_capabilities_sha256", "observation_method", "serial_port_opened",
+    "controller_restarted", "hardware_writes", "movement_commands",
+    "review_disposition", "qualification_evidence_ready", "blockers",
+    "execution_authorized", "transport_authorized", "physical_authority",
+    "evidence_sha256"
+  ],
+  "properties": {
+    "schema": {"const": "rocell.installed_controller_passive_evidence.v1"},
+    "capture_id": {"type": "string", "minLength": 1, "maxLength": 128},
+    "captured_at_utc": {"type": "string", "format": "date-time"},
+    "controller_session_id": {"type": "string", "pattern": "^[0-9a-f]{32}$"},
+    "usb_identity": {
+      "type": "object", "additionalProperties": false,
+      "required": ["port", "pnp_instance_id"],
+      "properties": {
+        "port": {"type": "string", "pattern": "^COM[1-9][0-9]{0,3}$"},
+        "pnp_instance_id": {"type": "string", "minLength": 1, "maxLength": 512}
+      }
+    },
+    "retained_originals": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "installed_app_sha256", "installed_app_bytes_sha256",
+        "deployment_journal_sha256", "final_export_manifest_sha256",
+        "final_feedback_attachment_sha256"
+      ],
+      "properties": {
+        "installed_app_sha256": {"$ref": "#/$defs/sha256"},
+        "installed_app_bytes_sha256": {"$ref": "#/$defs/sha256"},
+        "deployment_journal_sha256": {"$ref": "#/$defs/sha256"},
+        "final_export_manifest_sha256": {"$ref": "#/$defs/sha256"},
+        "final_feedback_attachment_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "live_capabilities": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "schema", "boot_id", "maximum_legs", "automatic_progression",
+        "gripper_writes", "motion_authorized"
+      ],
+      "properties": {
+        "schema": {"const": "rocell.registration_ladder.v1"},
+        "boot_id": {"type": "string", "pattern": "^[0-9a-f]{32}$"},
+        "maximum_legs": {"const": 1},
+        "automatic_progression": {"const": false},
+        "gripper_writes": {"const": false},
+        "motion_authorized": {"const": false}
+      }
+    },
+    "live_capabilities_sha256": {"$ref": "#/$defs/sha256"},
+    "observation_method": {"const": "ONE_HTTP_GET_NO_RETRY"},
+    "serial_port_opened": {"const": false},
+    "controller_restarted": {"const": false},
+    "hardware_writes": {"const": 0},
+    "movement_commands": {"const": 0},
+    "review_disposition": {"const": "UNREVIEWED"},
+    "qualification_evidence_ready": {"const": false},
+    "blockers": {
+      "const": [
+        "INDEPENDENT_REVIEW_REQUIRED", "RUNTIME_APP_HASH_NOT_ATTESTED",
+        "JOINT_MAPPING_EVIDENCE_NOT_BOUND", "PROTOCOL_EVIDENCE_NOT_BOUND",
+        "STARTUP_BEHAVIOR_REVIEW_NOT_BOUND",
+        "FEEDBACK_PROTOCOL_REVIEW_NOT_BOUND",
+        "CONFIGURATION_EPOCH_NOT_ESTABLISHED"
+      ]
+    },
+    "execution_authorized": {"const": false},
+    "transport_authorized": {"const": false},
+    "physical_authority": {"const": false},
+    "evidence_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}
