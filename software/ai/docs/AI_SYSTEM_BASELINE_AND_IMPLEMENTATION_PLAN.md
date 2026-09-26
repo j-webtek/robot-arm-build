@@ -340,3 +340,29 @@ These evaluation groups are consumed. Next investigate uncertainty/rejection
 on new development data and calibrate with larger fresh splits and a
 predeclared conservative coverage rule. Do not increase this bound using the
 observed evaluation errors or count this split as fresh evidence afterward.
+
+## Larger conservative uncertainty study
+
+The unchanged robust candidate was evaluated on 1,000 fresh calibration seed
+groups and 500 fresh evaluation groups, three image conditions per group
+(4,500 images). Before inference, the study committed a 99% empirical
+calibration quantile and acceptance criteria of at least 95% held-out group
+coverage plus 46/46 ideal nominal center fits. The calibration quantile and
+evaluation criterion are intentionally different and were not adjusted after
+scoring.
+
+The resulting radius is **6.038 mm** and covers **494/500 groups (98.8%)**.
+It fits all 46 nominal rectangles at their centers. Both declared synthetic
+criteria pass. This is descriptive held-out coverage, not a population
+confidence bound, real-camera validation, or proof of physical contact. A
+6 mm radius leaves little margin for displaced predictions, and the actual
+batch producer must check each uncertainty region against its named target.
+
+The result remains `SYNTHETIC_CRITERIA_PASS_UNQUALIFIED`: no qualification is
+installed, the default model is unchanged, and no hardware commands ran.
+Full image/pose evidence is reproducible via
+`vision/evaluate_conservative_radius.py`; the compact committed scorecard
+preserves group hashes, scores, and the full-study hash. Both splits are now
+consumed. Next exercise rejection near target boundaries using this fixed
+bound and actual predictions in a fresh synthetic integration study before
+considering a strictly simulation-only qualification.

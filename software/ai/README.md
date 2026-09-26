@@ -256,3 +256,8 @@ The first independent localization-radius study failed qualification:
 key regions able to fit the bound. No qualification is trusted; the current
 batch producer still abstains. See `eval/localization_radius_v0_scorecard.json`.
 Reproduce with `python software/ai/vision/evaluate_localization_radius.py --output software/ai/results/localization-radius.json`.
+
+A subsequent larger study of the robust candidate passes its declared
+synthetic criteria: 6.038 mm bound, 494/500 held-out groups covered, and
+46/46 ideal center fits. See `eval/conservative_radius_v0_scorecard.json`.
+No qualification is installed; actual prediction margins still need testing.
