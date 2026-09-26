@@ -212,9 +212,14 @@ crossed hashes, collisions, and incomplete pose bindings fail closed. A clear
 sequence is reported only as
 `DISCRETE_WAYPOINTS_CLEAR_CONTINUOUS_PROOF_REQUIRED`. It never promotes
 sampled clearance into continuous clearance, commands, or physical authority.
-The remaining adapter must independently recompute robot-link transforms from
-the bound IK results and supply conservative inter-waypoint rigid-body and cable
-coverage rather than trusting arbitrary pose evidence.
+The FK adapter now independently recomputes robot-link transforms from each
+exact bound IK result using the hash-pinned URDF and measured `B_T_Wv`.
+Callers cannot override those frames. Non-URDF rigid attachments are expressed
+as measured fixed transforms from named URDF links, while every deformable
+sample and attachment transform must carry a source digest already present in
+the installed collision profile. The remaining collision gap is conservative
+inter-waypoint rigid-body and cable coverage; clear waypoint samples still do
+not prove the space between them.
 
 The S4 synthetic integration lane now proves the downstream identity plumbing
 without relaxing that physical gate. A typed assessor requires the exact
