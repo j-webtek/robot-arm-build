@@ -167,9 +167,18 @@ The snapshot audit remains a complementary, limited review.
 ## Security alert handling
 
 The owner confirmed **j-webtek** as the initial contact on September 26, 2026.
-Personal notification delivery has not been configured or verified by this work.
-The owner should use repository **Watch → Custom → Security alerts** (or All
-Activity), then check personal notification delivery preferences. Consult
+On the same date, repository **Watch → Custom → Security alerts** was saved and
+verified for that account, without subscribing to all issues, PRs or releases.
+The owner's selected default notification email was saved privately, and Watching
+delivery was set to **On GitHub + Email**. Dependabot new-vulnerability delivery
+was already enabled for GitHub, email and CLI, with a weekly email digest.
+The default email and Watching preferences are account-wide, not repository-only;
+other collaborators must configure their own subscriptions. Personal email
+addresses are intentionally omitted from this public record.
+
+These are verified settings, not an end-to-end delivery test: receipt of an alert
+email and private-report notification has not been tested. Recheck preferences
+when the responsible account or destination changes. Consult
 [GitHub's security-notification guide](https://docs.github.com/en/subscriptions-and-notifications/how-tos/managing-security-notifications).
 Do not assume enabling a scanner subscribes every collaborator or delivers every
 pre-existing finding. Inspect the repository Security view after enablement.
