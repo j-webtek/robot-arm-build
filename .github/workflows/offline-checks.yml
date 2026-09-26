@@ -39,8 +39,11 @@ jobs:
       - name: Check maintained documentation links and branding assets
         run: |
           python -m compileall -q scripts/ci
+          python -m unittest discover -s scripts/ci -p "test_*.py"
           python scripts/ci/check_docs.py
       - name: Install test extra
         run: python scripts/ci/offline_checks.py install-tests
+      - name: Summarize resolved verification environment
+        run: python scripts/ci/offline_checks.py environment
       - name: Run bounded AI and arm contract tests
         run: python scripts/ci/offline_checks.py test
