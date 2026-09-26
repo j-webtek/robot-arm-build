@@ -197,3 +197,10 @@ rank-1-layout-only, and combined assumptions for the same H contact proposal.
 Only the combined case passes (32 sampled waypoints). Park-only progresses to
 HOVER before failing; the other cases fail at PARK. Each case includes its
 source hashes and zero physical authority. These are exploratory setup results.
+
+`keyboard_route_coverage_v0.json` records all 46 nominal keyboard-center contact
+proposals with the fixed rank-1 layout and park (290,10) mm. All 46 pass geometry,
+sampled IK, and dense route screening. Proposals are generated synthetic labels;
+no language or vision model ran. Each case independently returns to park.
+The report embeds every proposal and simulation result, preserving hashes and
+zero physical authority. Inter-key transitions and typing cadence remain untested.

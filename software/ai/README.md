@@ -209,3 +209,12 @@ Repeat the four-case park/layout comparison with:
 ```powershell
 python software/ai/run_motion_layout_study.py --proposal software/ai/examples/model_motion_proposal_keyboard_h_contact.json --output software/ai/results/motion-layout-study.json
 ```
+
+Run all nominal keyboard centers with the fixed candidate park/layout:
+
+```powershell
+python software/ai/run_keyboard_route_coverage.py --output software/ai/results/keyboard-route-coverage.json
+```
+
+Every case includes its synthetic proposal and simulation report. This checks
+individual park-to-key-to-park routes, without model inference or camera capture.

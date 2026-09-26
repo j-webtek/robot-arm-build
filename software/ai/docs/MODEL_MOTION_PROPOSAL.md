@@ -185,3 +185,18 @@ This is an exploratory result for one hand-authored H coordinate. It provides
 a candidate setup for the next simulation: broader key coverage and approach
 clearance, followed by camera-condition stress. It does not validate installed
 geometry, full-arm collisions, physical typing, or language-model accuracy.
+
+## Keyboard coverage result
+
+The fixed candidate layout and park pass sampled geometry, IK, and dense route
+screening for all 46 nominal keyboard centers in
+`eval/keyboard_route_coverage_v0.json`. Every case records its generated proposal
+and source-bound simulation report. The source image hash is a synthetic
+placeholder, and confidence 1.0 denotes generator input; neither is vision
+evidence. These are independent park-to-key-to-park routes under the same
+unmeasured base/tool assumptions. No hardware command or input event occurred.
+
+Next evaluate ordered multi-key transitions and proposal approach clearance,
+then perturb visual localization and camera conditions. Passing individual
+center routes does not establish direct inter-key motion, cadence, edge contact
+accuracy, model interpretation accuracy, or physical typing success.
