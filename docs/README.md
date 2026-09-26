@@ -1,5 +1,7 @@
 # Tactevra documentation
 
+Contributors can reproduce the [hardware-free CI checks](CI.md) locally.
+
 Branding contributors: the [Tactevra brand foundation](brand/BRAND_GUIDE.md) records
 the selected name and staged migration plan. Commercial clearance and rollout remain pending.
 
