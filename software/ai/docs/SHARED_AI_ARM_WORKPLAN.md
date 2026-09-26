@@ -599,6 +599,8 @@ Copy this row and fill every field:
 
 ## Active work claims
 
+| AI | S1 | temperature coordinate bias diagnosis | feature/translation-pair-evidence | ACTIVE |
+
 
 
 
