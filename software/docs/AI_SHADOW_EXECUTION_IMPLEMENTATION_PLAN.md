@@ -553,6 +553,11 @@ Implement the following before any additional general-purpose arm movement:
       `B_T_phone_screen`. Named-target containment is checked in device coordinates,
       clearance follows measured device-local +Z, and the hash-bound output advances
       only to deterministic IK and full-route screening with zero hardware writes.
+- [x] Add measured-route IK and sampled joint-continuity screening. The route begins
+      only from a fresh explicitly supplied observed joint state, uses previous-state
+      seeding at every densified waypoint, and attaches current collision-readiness
+      evidence. Missing start telemetry and incomplete full-body/tool/cable collision
+      geometry remain release-blocking; no controller command is generated.
 - [ ] Adapt current visual targets and keyboard layout into `scene_targets`.
 - [ ] Wrap `static_task_rehearsal` as a `trajectory_candidate` producer.
 - [ ] Implement the safety report with explicit reject reason codes.

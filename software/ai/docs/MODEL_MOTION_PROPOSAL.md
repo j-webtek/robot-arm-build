@@ -129,10 +129,12 @@ The current repository correctly reports
 `BLOCKED_CALIBRATION_MISSING_OR_STALE`: the physical calibration registry is
 empty. A strict decoder now accepts only hash-matched `VALID` artifacts with
 exact payload schemas for robot reference, `B_T_Wv`, separate `R_ctrl`
-correlation, measured device pose, and `G_T_T`. After those artifacts exist,
-the next gate is reprojecting the model's device-local target through the
-measured device transform. The gate executes no IK, route screen, controller
-encoding, or hardware write.
+correlation, measured device pose, and `G_T_T`. A valid snapshot now reprojects
+the model's device-local target through measured placement, then constructs a
+bounded measured-route screening request. IK is intentionally withheld until a
+fresh observed starting joint state is supplied. Full-body/tool/cable collision
+geometry is still incomplete, so no screened result can authorize execution.
+The gate performs no controller encoding or hardware write.
 
 Run the zero-write gate from the repository root:
 

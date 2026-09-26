@@ -51,3 +51,7 @@ The [measured target reprojection schema](measured_target_reprojection_v1.schema
 validates a model point in the measured device frame, binds it to its named target,
 and transforms its surface/clearance points into calibrated board frame `B`. It is
 Cartesian planner input only and contains no IK result or controller command.
+The [measured trajectory screening schema](measured_trajectory_screening_v1.schema.json)
+binds that target to a fresh observed start state, deterministic sampled IK and
+joint-continuity evidence, plus the current full-body collision-readiness audit.
+Missing start telemetry or incomplete collision geometry remains an explicit blocker.

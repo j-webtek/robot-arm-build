@@ -186,9 +186,11 @@ access.
 
 When the graph becomes valid, the strict planner calibration decoder additionally
 requires exact, hash-matched measured payloads for the installed robot reference,
-`B_T_Wv`, separate `R_ctrl` correlation, device pose, and `G_T_T`. The decoded
-snapshot still carries no authority; the model target must next be reprojected
-through the measured device transform before deterministic IK.
+`B_T_Wv`, separate `R_ctrl` correlation, device pose, and `G_T_T`. The model target
+is then reprojected through measured device placement. The next route boundary
+requires a fresh observed starting joint state, performs deterministic densified IK
+and sampled joint-continuity checks, and remains blocked on incomplete full-body,
+tool, and cable collision geometry. None of these artifacts carries authority.
 
 The following are still required before functional arm-command qualification:
 

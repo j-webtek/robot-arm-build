@@ -154,17 +154,25 @@ def test_valid_calibrations_and_reprojection_advance_to_ik_screening(
     monkeypatch.setattr(
         gate_module, "reproject_measured_target", lambda *_args, **_kwargs: reprojection
     )
+    trajectory = {
+        "status": "BLOCKED_OBSERVED_START_STATE_REQUIRED",
+        "blockers": ["FRESH_OBSERVED_START_JOINT_STATE_REQUIRED"],
+        "next_required_stage": "CAPTURE_FRESH_OBSERVED_START_JOINT_STATE",
+    }
+    monkeypatch.setattr(
+        gate_module, "screen_measured_trajectory", lambda *_args, **_kwargs: trajectory
+    )
 
     report = evaluate_model_motion_planner_gate(
         ModelMotionProposal.from_mapping(proposal()), context
     )
-    assert report["status"] == "READY_FOR_DETERMINISTIC_IK_AND_ROUTE_SCREENING"
-    assert report["next_required_stage"] == "DETERMINISTIC_IK_AND_FULL_ROUTE_SCREENING"
+    assert report["status"] == "BLOCKED_OBSERVED_START_STATE_REQUIRED"
+    assert report["next_required_stage"] == "CAPTURE_FRESH_OBSERVED_START_JOINT_STATE"
     assert report["calibration_snapshot_sha256"] == "c" * 64
     assert report["measured_target_reprojection"] == reprojection
     assert report["measured_target_reprojection_sha256"] == "d" * 64
-    assert report["blockers"] == []
-    assert report["trajectory_candidate"] is None
+    assert report["blockers"] == ["FRESH_OBSERVED_START_JOINT_STATE_REQUIRED"]
+    assert report["trajectory_candidate"] == trajectory
     assert report["hardware_commands_generated"] == 0
 
 

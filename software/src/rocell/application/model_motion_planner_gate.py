@@ -36,6 +36,10 @@ from .measured_target_reprojection import (
     MeasuredTargetReprojectionError,
     reproject_measured_target,
 )
+from .measured_trajectory_screening import (
+    MeasuredTrajectoryScreeningError,
+    screen_measured_trajectory,
+)
 
 
 class ModelMotionPlannerGateError(ValueError):
@@ -112,6 +116,7 @@ def evaluate_model_motion_planner_gate(
     calibration_snapshot_sha256 = None
     measured_target_reprojection = None
     measured_target_reprojection_sha256 = None
+    trajectory_candidate = None
     if calibration.all_valid:
         artifact_ids = required_planner_artifact_ids(proposal.device.value)
         registry = CalibrationRegistry(context.workspace / "software/calibrations")
@@ -155,8 +160,21 @@ def evaluate_model_motion_planner_gate(
             else:
                 measured_target_reprojection = reprojected
                 measured_target_reprojection_sha256 = reprojected["reprojection_sha256"]
-                status = "READY_FOR_DETERMINISTIC_IK_AND_ROUTE_SCREENING"
-                next_stage = "DETERMINISTIC_IK_AND_FULL_ROUTE_SCREENING"
+                try:
+                    trajectory_candidate = screen_measured_trajectory(
+                        proposal,
+                        context,
+                        decoded,
+                        reprojected,
+                    )
+                except MeasuredTrajectoryScreeningError as exc:
+                    status = "BLOCKED_MEASURED_TRAJECTORY_INPUT_INVALID"
+                    blockers.append(f"MEASURED_TRAJECTORY_INPUT_INVALID:{exc}")
+                    next_stage = "CORRECT_MEASURED_TRAJECTORY_INPUT"
+                else:
+                    status = trajectory_candidate["status"]
+                    blockers.extend(trajectory_candidate["blockers"])
+                    next_stage = trajectory_candidate["next_required_stage"]
     else:
         status = "BLOCKED_CALIBRATION_MISSING_OR_STALE"
         next_stage = "COMMISSION_REQUIRED_CALIBRATIONS"
@@ -188,7 +206,7 @@ def evaluate_model_motion_planner_gate(
         "measured_target_reprojection": measured_target_reprojection,
         "blockers": blockers,
         "next_required_stage": next_stage,
-        "trajectory_candidate": None,
+        "trajectory_candidate": trajectory_candidate,
         "ik_executed": False,
         "route_screen_executed": False,
         "controller_commands": [],

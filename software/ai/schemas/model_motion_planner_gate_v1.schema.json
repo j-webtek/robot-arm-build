@@ -20,7 +20,10 @@
       "BLOCKED_CALIBRATION_MISSING_OR_STALE",
       "BLOCKED_CALIBRATION_PAYLOAD_INVALID",
       "BLOCKED_MEASURED_TARGET_REPROJECTION_INVALID",
-      "READY_FOR_DETERMINISTIC_IK_AND_ROUTE_SCREENING"
+      "BLOCKED_MEASURED_TRAJECTORY_INPUT_INVALID",
+      "BLOCKED_OBSERVED_START_STATE_REQUIRED",
+      "BLOCKED_DETERMINISTIC_IK_OR_CONTINUITY",
+      "BLOCKED_FULL_ROUTE_COLLISION_SCREENING_REQUIRED"
     ]},
     "model_motion_candidate_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
     "model_motion_candidate": {"type": "object"},
@@ -46,9 +49,12 @@
       "COMMISSION_REQUIRED_CALIBRATIONS",
       "CORRECT_MEASURED_CALIBRATION_PAYLOADS",
       "CORRECT_MODEL_TARGET_OR_MEASURED_DEVICE_PLACEMENT",
-      "DETERMINISTIC_IK_AND_FULL_ROUTE_SCREENING"
+      "CORRECT_MEASURED_TRAJECTORY_INPUT",
+      "CAPTURE_FRESH_OBSERVED_START_JOINT_STATE",
+      "CORRECT_IK_OR_ROUTE_CONTINUITY",
+      "COMPLETE_COLLISION_GEOMETRY_AND_CONTINUOUS_SWEEP"
     ]},
-    "trajectory_candidate": {"type": "null"},
+    "trajectory_candidate": {"oneOf": [{"type": "null"}, {"type": "object"}]},
     "ik_executed": {"const": false},
     "route_screen_executed": {"const": false},
     "controller_commands": {"type": "array", "maxItems": 0},

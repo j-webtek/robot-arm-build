@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rocell.local/schemas/measured_trajectory_screening_v1.schema.json",
+  "title": "RoCell measured trajectory screening v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "status", "proposal_sha256", "reprojection_sha256",
+    "calibration_snapshot_sha256", "build_snapshot_sha256",
+    "kinematic_model_sha256", "policy", "observed_start_joint_positions_rad",
+    "waypoints", "joint_results", "ik_executed", "ik_all_waypoints_accepted",
+    "sampled_joint_continuity_checked", "collision_readiness_sha256",
+    "collision_readiness_status", "full_collision_screen_executed",
+    "continuous_collision_proven", "blockers", "next_required_stage",
+    "controller_commands", "hardware_commands_generated", "hardware_access",
+    "physical_authority", "trajectory_screening_sha256"
+  ],
+  "properties": {
+    "schema": {"const": "rocell.measured_trajectory_screening.v1"},
+    "status": {"enum": [
+      "BLOCKED_OBSERVED_START_STATE_REQUIRED",
+      "BLOCKED_DETERMINISTIC_IK_OR_CONTINUITY",
+      "BLOCKED_FULL_ROUTE_COLLISION_SCREENING_REQUIRED"
+    ]},
+    "proposal_sha256": {"$ref": "#/$defs/hash"},
+    "reprojection_sha256": {"$ref": "#/$defs/hash"},
+    "calibration_snapshot_sha256": {"$ref": "#/$defs/hash"},
+    "build_snapshot_sha256": {"$ref": "#/$defs/hash"},
+    "kinematic_model_sha256": {"$ref": "#/$defs/hash"},
+    "policy": {"type": "object"},
+    "observed_start_joint_positions_rad": {
+      "oneOf": [
+        {"type": "null"},
+        {"type": "object", "minProperties": 5, "maxProperties": 5,
+         "additionalProperties": {"type": "number"}}
+      ]
+    },
+    "waypoints": {"type": "array", "items": {"type": "object"}},
+    "joint_results": {"type": "array", "items": {"type": "object"}},
+    "ik_executed": {"type": "boolean"},
+    "ik_all_waypoints_accepted": {"type": "boolean"},
+    "sampled_joint_continuity_checked": {"type": "boolean"},
+    "collision_readiness_sha256": {"$ref": "#/$defs/hash"},
+    "collision_readiness_status": {"type": "string", "minLength": 1},
+    "full_collision_screen_executed": {"const": false},
+    "continuous_collision_proven": {"const": false},
+    "blockers": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "next_required_stage": {"enum": [
+      "CAPTURE_FRESH_OBSERVED_START_JOINT_STATE",
+      "CORRECT_IK_OR_ROUTE_CONTINUITY",
+      "COMPLETE_COLLISION_GEOMETRY_AND_CONTINUOUS_SWEEP"
+    ]},
+    "controller_commands": {"type": "array", "maxItems": 0},
+    "hardware_commands_generated": {"const": 0},
+    "hardware_access": {"const": false},
+    "physical_authority": {"const": false},
+    "trajectory_screening_sha256": {"$ref": "#/$defs/hash"}
+  },
+  "$defs": {
+    "hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}
