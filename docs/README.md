@@ -1,5 +1,8 @@
 # Tactevra documentation
 
+Maintainers: start with the [routine review checklist](MAINTAINER_CHECKLIST.md)
+for triage, PR review and clean handoffs.
+
 Contributors can reproduce the [hardware-free CI checks](CI.md) locally.
 See [repository operations](REPOSITORY_OPERATIONS.md) for PR handoffs and
 dependency maintenance.
