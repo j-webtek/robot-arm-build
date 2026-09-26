@@ -2061,3 +2061,33 @@ commissioning, or bounded physical result with its limitations intact.
 - Supersedes: none; retains all earlier audit failures.
 - Next dependency: fixture-owner review remains independent of installed
   controller mapping and firmware qualification.
+
+### E-20260926-ARM-020 — reviewed-fixture integration verification
+
+- Stage: S4
+- Lane: ARM
+- Commit: `681e3a3` plus merged `origin/main` at `1cb96bd` (verified integration
+  baseline; this evidence row committed separately)
+- Change: merged the repository's independently reviewed synthetic-fixture
+  allowlist and reran the zero-write/shared-contract tests and snapshot audit
+  without changing the S4 artifacts or erasing ARM-019's historical result.
+- Inputs/fixtures: ARM-018 artifacts, current AI tests, motion-ingress and
+  sequence tests, trajectory envelope tests, snapshot-audit tests, and reviewed
+  exception records from `scripts/audit_fixture_reviews.json`.
+- Commands: the ARM-018 pytest command plus
+  `software/tests/unit/test_snapshot_audit.py`; then
+  `python scripts/audit_github_snapshot.py`.
+- Result: PASS, 229 tests in 43.41 seconds. Audit PASS, exit 0; 5,673 paths,
+  903.5 MiB, 0 unresolved review findings, 14 reviewed synthetic fixtures.
+- Artifacts: ARM-018 schema/fixture/test artifacts plus the independently merged
+  audit review records and tests.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: reviewed audit exceptions are exact synthetic test fixtures, not
+  production credentials. Passing schemas and golden bytes still do not qualify
+  installed controller mapping, firmware, acknowledgements, feedback, or any
+  physical execution path.
+- Supersedes: ARM-019 only for current audit status; ARM-019 remains the exact
+  pre-review snapshot result.
+- Next dependency: independently commission the installed controller mapping
+  and firmware evidence before any S4 readiness or physical-dispatch claim.
