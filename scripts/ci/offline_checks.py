@@ -10,6 +10,7 @@ import sys
 ROOT = Path(__file__).resolve().parents[2]
 PYTHON = ROOT / '.venv-ci' / ('Scripts/python.exe' if sys.platform == 'win32' else 'bin/python')
 TESTS = (
+    'software/tests/unit/test_snapshot_audit.py',
     'software/tests/unit/test_model_motion_ingress_v2.py',
     'software/tests/unit/test_model_motion_planner_gate.py',
     'software/tests/unit/test_model_motion_sequence_coordinator.py',

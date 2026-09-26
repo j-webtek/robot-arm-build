@@ -1,0 +1,100 @@
+[
+  {
+    "path": "software/tests/unit/test_arm_feedback_worker.py",
+    "kind": "credential-literal-review",
+    "line_sha256": "7f08276edb65d9557164cc5a9d2eb1351d75d23746778633a2c8dd5d431851eb",
+    "expected_count": 1,
+    "reason": "Raw feedback response tests removal of password-shaped fields from serialized reports."
+  },
+  {
+    "path": "software/tests/unit/test_arm_wifi_feedback.py",
+    "kind": "credential-literal-review",
+    "line_sha256": "76836e3808dac34f8cf75d0961ef1732884f9477628d765ebd4b1bafd7852645",
+    "expected_count": 1,
+    "reason": "Synthetic connection response tests unknown credential field filtering."
+  },
+  {
+    "path": "software/tests/unit/test_arm_wifi_feedback.py",
+    "kind": "credential-literal-review",
+    "line_sha256": "e6ac22acf0898cfef06c50f41b2c84398910895c2d7ce4e22229ad9f5360c2fc",
+    "expected_count": 1,
+    "reason": "Malformed feedback fixture tests failure without disclosing input."
+  },
+  {
+    "path": "software/tests/unit/test_arm_wifi_observation.py",
+    "kind": "credential-literal-review",
+    "line_sha256": "63aea5c3655152d0760da0e9f90d4f4dbf6ed9f68d570fe41bdf0e8eaa3bd3f7",
+    "expected_count": 1,
+    "reason": "Synthetic raw response tests credential and duplicate-field rejection."
+  },
+  {
+    "path": "software/tests/unit/test_camera_configuration_attempt_export.py",
+    "kind": "credential-literal-review",
+    "line_sha256": "4b8ddc79989cf494dc76bb901a7240915da5af394441c0074fe9e8cdfd7e5058",
+    "expected_count": 1,
+    "reason": "Configuration export test asserts placeholder removal and explicit redaction status."
+  },
+  {
+    "path": "software/tests/unit/test_camera_probe_attempt_export.py",
+    "kind": "credential-literal-review",
+    "line_sha256": "b4974486b407a969a31df8a8459d725938388e68e99a4721a933f742e71f82f1",
+    "expected_count": 1,
+    "reason": "Complete JSON fixture tests redaction before encoding."
+  },
+  {
+    "path": "software/tests/unit/test_camera_probe_attempt_export.py",
+    "kind": "credential-literal-review",
+    "line_sha256": "b1fc27f1520e42edf634bd7aad866eb0eba36e3e5818749068cf93fc9ee2d38a",
+    "expected_count": 1,
+    "reason": "Truncated JSON fixture tests redaction of incomplete credential fields."
+  },
+  {
+    "path": "software/tests/unit/test_physical_camera_identity_export.py",
+    "kind": "credential-literal-review",
+    "line_sha256": "c2feba3f2fa0d0d02d36396a681b8c404f36d85fdc06723d21e039a1879c5cda",
+    "expected_count": 1,
+    "reason": "Deeply nested synthetic document tests recursive credential redaction."
+  },
+  {
+    "path": "software/tests/unit/test_physical_usb_identity_export.py",
+    "kind": "credential-literal-review",
+    "line_sha256": "2cb034f848b1cb44209cc4c9b542e1f0e10e8e05592d69fd102b6634fc212345",
+    "expected_count": 1,
+    "reason": "Synthetic USB export tests redaction while preserving original evidence hash."
+  },
+  {
+    "path": "software/tests/unit/test_usb_absence_export.py",
+    "kind": "credential-literal-review",
+    "line_sha256": "fd4e96e8362b50d7728f5acbd4eb7401a0f334f42aba06180d3a5bc86b033b78",
+    "expected_count": 1,
+    "reason": "Modeled operator report tests redaction without an original-byte preservation claim."
+  },
+  {
+    "path": "software/tests/unit/test_usb_qualification_export.py",
+    "kind": "credential-literal-review",
+    "line_sha256": "68396eeba124e69508af2821d816b8a47627fabc9fde119bd4cb5860433a5861",
+    "expected_count": 1,
+    "reason": "Modeled trial plan tests explicit redacted restoration."
+  },
+  {
+    "path": "software/tests/unit/test_usb_trial_baseline_export.py",
+    "kind": "credential-literal-review",
+    "line_sha256": "52e7eb21079622ce73f50d40089b011cff26e1b26aa3619379e65d997a60df7e",
+    "expected_count": 1,
+    "reason": "Modeled host report tests redaction while retaining phase records."
+  },
+  {
+    "path": "software/tests/unit/test_wifi_discrete_native.py",
+    "kind": "credential-literal-review",
+    "line_sha256": "e2a6d478c0656e6dc7800c2ac886b7982be544140a72f34fd07420203539ef15",
+    "expected_count": 1,
+    "reason": "Synthetic extra response field tests that a receipt cannot become an endpoint."
+  },
+  {
+    "path": "software/tests/unit/test_wizard_diagnostic_export.py",
+    "kind": "credential-literal-review",
+    "line_sha256": "c26537c083c487f7520947720a549196d260ae62f2a10c891ba5f94a7748e252",
+    "expected_count": 1,
+    "reason": "Nested named placeholders exercise case-insensitive diagnostic credential redaction."
+  }
+]
