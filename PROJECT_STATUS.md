@@ -1,6 +1,7 @@
 # Tactevra project status
 
-Reviewed September 26, 2026 against GitHub source through `ca8c5ae`.
+Reviewed September 26, 2026 against merged source through `e6b69c3`.
+Unmerged workstream branches are not included in this summary.
 This is a capability summary for readers; the
 [shared workplan](software/ai/docs/SHARED_AI_ARM_WORKPLAN.md) retains detailed
 stage ownership and test evidence as development continues.
@@ -21,24 +22,46 @@ being developed.
 | AI-to-arm interface | V2 batch assembler, strict decoder, registry snapshot, and freshness checks | Actual assembler output passes shared software tests with synthetic evidence, preserving action order and rejecting tested invalid inputs |
 | Precision evidence | Identity and capture-receipt binding helpers | These establish software checks, not a qualified real-camera observation; authenticated capture and usable localization confidence remain open |
 | Arm planning adapter | Admitted v2 proposals enter the arm-owned measured planning policy | The tested valid input reaches the planner but stops for missing or stale calibration; no trajectory or controller command is produced |
+| Controller-command preview | Sealed synthetic trajectories can be encoded into Waveshare T=102 bytes and a proposed dispatch schedule | Offline encoding and published schemas are tested; the preview has no transport and sends nothing to the arm |
+| Execution lifecycle rehearsal | Ownership, single-use reservations, fault handling, and restart reconciliation are modeled | Tests exercise no-retry and fault rules without device I/O; this is not an installed live execution service |
+| Controller evidence gate | Required controller identity, mapping, protocol, freshness, and review fields are checked | Modeled records test rejection behavior; even a passing record grants no transport or execution authority, and no physical originals were qualified |
 | Arm control research | Documented supervised noncontact movement and joint-feedback checks | Specific lab sequences were completed; controller feedback does not measure key-contact accuracy |
 | Hardware | RC03 workcell design and step-by-step assembly package | Design and print resources exist, with their own measurement and print-readiness requirements |
 
-The shared v2 contract suite recorded 73 passing tests at its integration
-checkpoint. The subsequent precision-binding increment recorded 31 passing
-tests. These are separate, overlapping software selections, not a combined
-accuracy score or a physical typing success rate. See entries INT-001 and AI-011
-in the [evidence ledger](software/ai/docs/SHARED_AI_ARM_WORKPLAN.md). The newer
-ARM-006 entry records 48 passing tests for the planning adapter and its related
-checks, including the expected calibration block. Later ARM-010 and ARM-012
-entries add ordered coordination and a v2 trajectory-envelope contract; the real
-shadow trace still stops at calibration rather than authorizing hardware.
+### Recent progress, in plain language
 
-The latest confidence-head training completed but **failed its synthetic research
-criteria** (AI-017): no evaluation targets were accepted, and the required scoring
-threshold was not met. That is a preserved research result, not production-ready
-confidence or evidence of zero false accepts. Passing metric unit tests does not
-change the model result.
+The arm lane can now inspect what controller-command bytes a synthetic movement
+would produce, without sending them. It also rehearses how one command owner
+would reserve work, stop on faults, and reconcile a restart without automatic
+retries. Published schemas and an exact-byte fixture let the workstreams check
+the same boundary. These developments do not remove the real planning path's
+calibration block or qualify an installed controller mapping.
+
+The newer controller-evidence gate checks whether a supplied record matches the
+encoding profile and its declared session, mapping, and protocol. Its success
+cases use modeled records, not independently authenticated physical evidence.
+See ARM-021/023 in the shared ledger; the gate does not collect that evidence.
+
+The AI lane has a translation-focused training candidate that improved mean key
+position error from about 0.937 to 0.907 mm on reused synthetic development data.
+That is a development-selection result, not independent generalization or real
+camera accuracy. At this merged checkpoint, a fresh held-out comparison remains
+the next dependency; no runtime checkpoint was replaced by this experiment.
+The earlier confidence-head experiment **failed its synthetic research criteria**
+and accepted no evaluation targets. Better pose estimates do not establish usable
+confidence or erase that failure.
+
+Detailed evidence is in AI-035/036 and ARM-018/020 of the
+[shared ledger](software/ai/docs/SHARED_AI_ARM_WORKPLAN.md). ARM-020 records 229
+passing tests in its selected integration run, with zero hardware writes and
+zero physical movements. Test selections overlap and are not a model-accuracy
+score, full-suite qualification, or physical typing success rate.
+
+Repository improvements include protected-main CI, support and private security
+reporting, and an experimental source-release checklist. The snapshot audit now
+uses [exact reviewed synthetic-fixture exceptions](docs/AUDIT_FIXTURE_REVIEW.md);
+historical failed audit records remain intact. An audit pass is not security
+certification. See [test tiers](docs/CI.md) for clean-checkout limits.
 
 ## What still needs work
 
@@ -57,10 +80,10 @@ demonstrate an operating dialer or completed call.
 
 ## Current development direction
 
-The AI lane is connecting precision output and capture provenance to the shared
-command format. The arm lane has connected validated proposals to its planning
-policy, ordered coordination, and envelope contracts. The AI lane is investigating
-the failed confidence experiment. Both use the same
+The AI lane needs independent evaluation of the localization candidate and
+separate confidence qualification, alongside capture provenance. The arm lane
+needs independently verified installed-controller mapping and firmware evidence
+before connecting its zero-write preview to any physical dispatch path. Both use the same
 [AI/arm workplan](software/ai/docs/SHARED_AI_ARM_WORKPLAN.md).
 The next shared milestone is a complete offline path from user text and visual
 evidence to a checked movement plan. Further physical qualification is tracked
