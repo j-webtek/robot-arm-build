@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rocell.local/schemas/production_controller_runtime_rehearsal_v1.schema.json",
+  "title": "RoCell production controller runtime rehearsal v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "manifest_sha256", "state", "status", "writer_instance_id",
+    "last_sequence", "admission_count", "admissions", "feedback_exchange_count",
+    "terminal_reason", "startup_motion_commands", "transport_open_count",
+    "hardware_write_count", "automatic_retry", "replay_allowed",
+    "hardware_access", "physical_authority", "report_sha256"
+  ],
+  "properties": {
+    "schema": {"const": "rocell.production_controller_runtime_rehearsal.v1"},
+    "manifest_sha256": {"$ref": "#/$defs/sha256"},
+    "state": {"enum": ["SAFE_IDLE", "WRITER_CLAIMED", "TERMINAL_LOCKED"]},
+    "status": {"enum": ["SAFE_IDLE", "CONTRACT_REHEARSAL_READY", "TERMINAL_NO_RETRY"]},
+    "writer_instance_id": {"anyOf": [{"type": "null"}, {"$ref": "#/$defs/identifier"}]},
+    "last_sequence": {"type": "integer", "minimum": 0},
+    "admission_count": {"type": "integer", "minimum": 0},
+    "admissions": {"type": "array", "items": {"$ref": "#/$defs/admission"}},
+    "feedback_exchange_count": {"type": "integer", "minimum": 0},
+    "terminal_reason": {"anyOf": [{"type": "null"}, {"type": "string", "minLength": 1}]},
+    "startup_motion_commands": {"const": 0},
+    "transport_open_count": {"const": 0},
+    "hardware_write_count": {"const": 0},
+    "automatic_retry": {"const": false},
+    "replay_allowed": {"const": false},
+    "hardware_access": {"const": false},
+    "physical_authority": {"const": false},
+    "report_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "identifier": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"},
+    "admission": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sequence", "correlation_id", "frame_sha256", "wire_bytes_sha256", "message_sha256", "status", "hardware_write_count"],
+      "properties": {
+        "sequence": {"type": "integer", "minimum": 1},
+        "correlation_id": {"$ref": "#/$defs/identifier"},
+        "frame_sha256": {"$ref": "#/$defs/sha256"},
+        "wire_bytes_sha256": {"$ref": "#/$defs/sha256"},
+        "message_sha256": {"$ref": "#/$defs/sha256"},
+        "status": {"const": "ADMITTED_CONTRACT_ONLY"},
+        "hardware_write_count": {"const": 0}
+      }
+    }
+  }
+}
