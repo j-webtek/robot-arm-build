@@ -599,7 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-| AI | S1 | fresh subpixel evaluation | feature/translation-pair-evidence | ACTIVE |
 
 
 
@@ -5036,3 +5035,51 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic audit; AI-041 protected-main publication blocker remains.
 - Supersedes: none; prior failures and integration statuses retained.
 - Next dependency: Protected-branch PR/checks and AI-151 fresh evaluation.
+
+### E-20260926-AI-154 — fresh subpixel evaluation
+
+- Stage: S1
+- Lane: AI
+- Commit: `0fcabf20a80d825746bd561b69af9aaf7d8d5f69` (frozen source; results/tests committed with evidence)
+- Change: fresh subpixel evaluation.
+- Inputs/fixtures: Fresh seeds28000000..28000499,500 groups x4 conditions=2000 images. Unchanged refinement/selection/cost and t05 checkpoint356a4dec05c6c2194c6d31542fed0d7199d5e989eb4b7678888d1a01aa493281; exact hashes in eval/subpixel_candidate_fresh_v0_plan.json.
+- Command: `python software/ai/vision/evaluate_subpixel_candidates_fresh.py`
+- Result: PASS all12 relative checks. Grid→subpixel means standard6.057→3.315,appearance4.456→2.418,partial6.210→4.792,full6.622→5.478mm. >3mm tails470→361,421→183,462→436,476→470/500. Refined yawp951.381/1.283/1.616/1.512deg. Absolute occlusion error prevalence87.2–94% remains unacceptable; no qualification.
+- Artifacts: eval/subpixel_candidate_fresh_v0_report.json; frozen runner/plan
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Same synthetic generator,not camera distribution qualification; dimensions/projection not measured calibration. Visibility/device parity blockers remain.28M split now consumed; no tuning on this result.
+- Supersedes: none; historical failures and shared integration status retained.
+- Next dependency: Return to15M development and freeze predicted-visibility-weighted rigid fitting of refined selected corners, with explicit abstention for fewer than three supported corners. Evaluate coverage plus accepted errors; no oracle visibility or threshold tuning.
+
+### E-20260926-AI-155 — fresh subpixel verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `0fcabf20a80d825746bd561b69af9aaf7d8d5f69` (frozen source; results/tests committed with evidence)
+- Change: fresh subpixel verification.
+- Inputs/fixtures: Analytic rectangle,AI-154 pinned manifest and2000 rows.
+- Command: `python -m pytest -q software/ai/tests/test_subpixel_candidates_fresh.py`
+- Result: PASS,2 tests; hashes,exact500 seeds,four conditions,unique cases,rigid fit and relative metric gates verified. Existing pytest-asyncio warning.
+- Artifacts: software/ai/tests/test_subpixel_candidates_fresh.py
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Consistency tests do not qualify localization; batch unchanged,shared boundary suite not triggered.
+- Supersedes: none; historical failures and shared integration status retained.
+- Next dependency: AI-154 development occlusion-aware fit.
+
+### E-20260926-AI-156 — fresh subpixel publication audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `0fcabf20a80d825746bd561b69af9aaf7d8d5f69` (frozen source; results/tests committed with evidence)
+- Change: fresh subpixel publication audit.
+- Inputs/fixtures: Repository with AI-154/155 and reviewed fixture allowlist.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS;5918 paths,834.7 MiB,0 unresolved findings,14 reviewed synthetic fixtures.
+- Artifacts: audit stdout and snapshot
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic audit; AI-041 protected-main publication blocker remains.
+- Supersedes: none; historical failures and shared integration status retained.
+- Next dependency: Protected-branch PR/checks and AI-154 development study.

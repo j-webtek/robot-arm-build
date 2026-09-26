@@ -484,3 +484,8 @@ Oracle diagnostic counterfactuals isolate translation-only mean4.521–6.400mm v
 ### Selected-candidate subpixel refinement (AI-151)
 
 Fixed3x3 probability centroids refine the already-selected candidates without changing candidate combination/cost. All12 relative development checks pass: standard mean5.946→3.040mm,appearance4.716→2.450mm,partial6.312→4.773mm,full6.550→5.236mm. Absolute >3mm counts77–186/200 remain too high. Candidate choices and original poses exactly match the frozen grid report. Next freeze28M500 fresh groups for unchanged refinement; prior27M consumed. No calibration,qualification or runtime change. Source `d17b76d53ac6d9a311d83fe9538094229f1098ad`; `eval/subpixel_candidate_v0_report.json`.
+
+
+### Fresh subpixel evaluation (AI-154)
+
+Unchanged refinement passes all12 relative checks on28M500 fresh groups/2000 images. Means standard3.315,appearance2.418,partial4.792,full5.478mm; >3mm tails361/183/436/470 of500. The fresh relative improvement does not qualify localization, particularly under obstruction.28M now consumed. Next use only15M development to test predicted-visibility-weighted fitting with abstention below three supported corners; report coverage and errors together, no oracle visibility. Source `0fcabf20a80d825746bd561b69af9aaf7d8d5f69`; `eval/subpixel_candidate_fresh_v0_report.json`. Existing device parity and physical-calibration blockers remain.
