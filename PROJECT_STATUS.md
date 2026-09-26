@@ -1,6 +1,6 @@
 # Tactevra project status
 
-Reviewed September 26, 2026 against merged source through `22c2f10`.
+Reviewed September 26, 2026 against merged source through `4a166c8`.
 Unmerged workstream branches are not included in this summary.
 This is a capability summary for readers; the
 [shared workplan](software/ai/docs/SHARED_AI_ARM_WORKPLAN.md) retains detailed
@@ -27,6 +27,7 @@ being developed.
 | Controller evidence gate | Required controller identity, mapping, protocol, freshness, and review fields are checked | Modeled records test rejection behavior; even a passing record grants no transport or execution authority, and no physical originals were qualified |
 | Installed-controller compatibility | A passive r96 observation is recorded; an offline assessment checks the installed application's command surface | r96 lacks the required generic production command/feedback interface and remains blocked; its identity evidence is not independently qualified |
 | Production runtime contract | A host-side executable specification rehearses safe-idle startup, one writer, ordered commands, deadlines, and feedback checks | Software rules are testable without I/O; this is not replacement firmware or an installed execution service |
+| Production firmware candidate | r97 controller-side implementation compiled offline; source and integration records are merged | First-party checks passed, but independent source/image review, configuration binding and installed qualification remain incomplete; no r97 installation or physical test is established |
 | Arm control research | Documented supervised noncontact movement and joint-feedback checks | Specific lab sequences were completed; controller feedback does not measure key-contact accuracy |
 | Hardware | RC03 workcell design and step-by-step assembly package | Design and print resources exist, with their own measurement and print-readiness requirements |
 
@@ -54,10 +55,22 @@ cannot simply be connected to the new planner as its execution service.
 A separate [production runtime contract](software/docs/PRODUCTION_CONTROLLER_RUNTIME_CONTRACT.md)
 now defines the required behavior in a host-side, zero-I/O rehearsal (ARM-028/029).
 It models one command owner, strict ordering and deadlines, and stopping on
-ambiguous feedback or restart. Firmware implementation, independent source/image
-review, and installed qualification remain future work. The passive record and
+ambiguous feedback or restart. The subsequent
+[r97 firmware candidate](software/docs/PRODUCTION_RUNTIME_FIRMWARE_R97.md)
+implements a narrow controller-side command and feedback surface (ARM-030/031).
+The ledger records a 314,640-byte offline build, 30 focused tests and 107 selected
+integration tests passing. These are overlapping software checks, not physical
+trials. Its configuration epoch remains explicitly unset. Independent source/image
+review, configuration binding and installed qualification are still open; no
+controller was installed, started, queried or moved in that work. The passive record and
 compatibility assessment reference local evidence not included in a fresh clone;
 this public summary reports the ledger, not an independent physical revalidation.
+
+The merged host acknowledgment update (ARM-032) also checks that each command's
+acceptance receipt matches its pending sequence before allowing further work.
+It remains a zero-I/O rehearsal: command acceptance is not proof of arrival, and
+missing or ambiguous receipts must not trigger an automatic retry. Its selected
+integration run records 115 passing tests; independent r97 review remains open.
 
 The AI lane has a translation-focused training candidate that improved mean key
 position error from about 0.937 to 0.907 mm on reused synthetic development data.
@@ -102,8 +115,10 @@ demonstrate an operating dialer or completed call.
 
 The AI lane needs independent evaluation of the localization candidate and
 separate confidence qualification, alongside capture provenance. The arm lane
-needs a separate firmware candidate implementing the production runtime contract,
-followed by independent source/image review and installed-controller qualification.
+has merged the offline r97 firmware candidate. Its next dependency is independent
+review of the exact source and compiled image, with configuration-epoch binding
+and installed-controller qualification still unresolved. A merge is not deployment
+approval or evidence that the device is running r97.
 The existing r96 application remains incompatible with that production interface;
 closing paperwork alone will not add the missing command handlers. Both use the same
 [AI/arm workplan](software/ai/docs/SHARED_AI_ARM_WORKPLAN.md).

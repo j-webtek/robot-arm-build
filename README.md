@@ -45,9 +45,11 @@ also documented in the lab records.
 The next software milestone is connecting trustworthy visual observations to
 that command interface and carrying them through the complete planning path.
 The arm lane now has an offline controller-byte preview and a production-runtime
-contract rehearsal; neither sends commands to hardware. The installed r96
-diagnostic application lacks that production interface, so a separately reviewed
-firmware candidate is still needed. A newer localization candidate
+contract rehearsal; neither sends commands to hardware. The r97 production-runtime
+firmware candidate has been compiled offline and merged, but is not installed or
+physically qualified. Independent source/image review and configuration binding
+remain open; the recorded r96 diagnostic application lacks the production interface.
+A newer localization candidate
 improved synthetic development results but has not established real-camera accuracy.
 The project has not demonstrated a camera-to-arm workflow that reliably types
 on a physical keyboard or operates a phone. Measured calibration, tool geometry,

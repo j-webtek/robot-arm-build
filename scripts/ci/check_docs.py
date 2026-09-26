@@ -12,6 +12,7 @@ DOCS = (
     'README.md', 'PROJECT_STATUS.md', 'CONTRIBUTING.md', 'SUPPORT.md', 'SECURITY.md',
     'docs/README.md', 'docs/GETTING_STARTED.md', 'docs/RELEASING.md',
     'docs/releases/EXPERIMENTAL_PREVIEW_DRAFT.md',
+    'docs/releases/CANDIDATE_DCD87DB.md',
     'docs/releases/BASELINE_2026-09-26.md',
     'docs/releases/NEWCOMER_CHECK_2026-09-26.md',
     'docs/releases/COMPATIBILITY_CONTENT_REVIEW_2026-09-26.md',

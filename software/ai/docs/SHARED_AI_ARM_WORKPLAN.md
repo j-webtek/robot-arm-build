@@ -606,8 +606,8 @@ remove it only in the same commit that appends the resulting evidence row.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| Unclaimed | S2 | qualified perception adapter and complete shared gate | â€” | AVAILABLE |
-| Unclaimed | S4 | implement controller firmware against the committed safe-idle production runtime contract, then independently review source and linked image | â€” | AVAILABLE |
+| Unclaimed | S2 | qualified perception adapter and complete shared gate | — | AVAILABLE |
+| Unclaimed | S4 | independently review sealed r97 packet `987cbe86...b416`, then bind a separately measured configuration epoch | — | AVAILABLE |
 
 ## Worker update procedure
 
@@ -4174,3 +4174,39 @@ commissioning, or bounded physical result with its limitations intact.
   offline integration counts; the independent review blocker remains.
 - Next dependency: independently review the exact r97 source/image, then bind a
   measured configuration epoch before any installation/startup proposal.
+
+### E-20260926-ARM-033 — sealed r97 independent-review handoff
+
+- Stage: S4
+- Lane: ARM
+- Change: added a deterministic review-packet builder and fail-closed inspector
+  so an independent reviewer can receive the exact r97 source, linked app and
+  ELF images, compile report, first-party report, closed member manifest, and
+  explicit review procedure without relying on mutable workspace paths.
+- Packet identity: SHA-256
+  `987cbe86d98440734d8336c704f1ecd89692675a9cb1620cb674e4132957b416`;
+  manifest SHA-256
+  `e7c67071d0485b016cf44e0158fddb92edc0373e1e73532a3b1847f976d5117e`;
+  app SHA-256 remains
+  `7d2e47d40141e95b611fcf37ca38d495fcf3da4dc3051f128bbae95e10840d1d`.
+- Safety behavior: archive membership is closed; duplicate, additional, unsafe,
+  missing, or hash/size-mismatched members fail inspection. The source/image
+  binding and existing first-party blocker must match before a packet is built.
+  Packet construction and inspection grant no approval, epoch binding,
+  installation, startup, movement, or physical authority.
+- Results: focused packet, r97 source, production-runtime, and bounded shared
+  AI/arm boundary tests PASS, 214 tests in 15.85 seconds. Documentation PASS
+  for 23 maintained documents and two SVG assets; snapshot audit PASS for
+  5,715 paths and 903.8 MiB with zero unresolved findings and 14 reviewed
+  synthetic fixtures; diff check PASS. The actual seven-member packet was
+  produced and reinspected locally.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: this makes independent review reproducible but does not perform
+  or impersonate it. The packet is stored in the ignored `runs/review-packets/`
+  evidence area and must be transferred unchanged to a genuinely independent
+  reviewer. No measured configuration epoch exists yet.
+- Supersedes: ARM-032 only for review-handoff readiness; all independent-review,
+  measured-epoch, installation, startup, and physical blockers remain.
+- Next dependency: an independent reviewer publishes a separate decision bound
+  to the exact packet SHA-256, followed by measured configuration-epoch intake.

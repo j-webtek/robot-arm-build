@@ -2,10 +2,17 @@
 
 **Unpublished draft. Not a stable product, installer, or hardware deployment.**
 
-Proposed scope: a source snapshot for developers exploring offline request
-interpretation, model-to-arm contracts, and simulated planning. The release tag,
-source commit, publication approval, and candidate-specific validation remain
-unselected. Complete the [release checklist](../RELEASING.md) before publication.
+Proposed title: **Tactevra v0.1.0-alpha.1 — experimental source preview**.
+Proposed tag: `tactevra-v0.1.0-alpha.1` (not created or approved).
+Proposed source: `dcd87db12c9593f1c17b7a222cb711c4fbe7845e`, a merged snapshot,
+not the moving main branch. See the [candidate record](CANDIDATE_DCD87DB.md)
+for verification and unresolved gates. **Publication is on hold.**
+
+This preview is for developers exploring offline request interpretation,
+model-to-arm contracts, and simulated planning. Complete the
+[release checklist](../RELEASING.md) before publication. These notes and the
+candidate record are later preparation documents, not files in that pinned
+snapshot. Including them in a different source target requires revalidation.
 
 A [pinned source-baseline verification](BASELINE_2026-09-26.md) is available for
 `b1bb742`. It is supporting evidence, not approval of a final release candidate.
@@ -23,12 +30,18 @@ sign-off remain separate.
 - Tactevra's public-facing documentation and branding, with compatible `rocell`
   commands and historical identifiers preserved.
 - Introductory offline request interpretation and nominal coordinate previews.
-- AI/arm integration contracts and software checks. Describe the exact included
-  increments after selecting and reviewing the candidate commit.
+- AI/arm v2 proposal contracts and software checks: AI supplies named coordinates;
+  the arm owns motion policy and checked planning. Nominal examples grant no
+  execution authority.
+- Zero-write controller-byte previews, lifecycle and acknowledgment rehearsals,
+  and r97 firmware staging source. r97 is an offline compiled candidate, not
+  installed or independently qualified firmware; no firmware binary is offered.
 - Scoped Linux/Windows CI, explicit audit-fixture review, support guidance, and
   private vulnerability reporting.
 
-These are scope intentions, not claims that a release candidate has passed.
+Generated source archives include tracked historical CAD/print material and a
+vendor camera geometry file. They are not software-only packages or newly
+qualified print bundles. Vendor redistribution review remains unresolved.
 
 ## Important limitations
 
@@ -47,13 +60,13 @@ full-suite pass, a security certification, or authorization to move an arm.
 
 | Required item | Status |
 | --- | --- |
-| Approved title and tag | Not selected |
-| Exact full source SHA on main | Not selected |
+| Approved title and tag | Proposed above; explicit approval pending |
+| Exact full source SHA on main | Proposed `dcd87db12c9593f1c17b7a222cb711c4fbe7845e` |
 | Included changes and compatibility review by both workstreams | Pending |
-| Four hosted CI results and merged-main run | Pending for selected candidate |
-| Fresh-checkout setup and example results | Pending for selected candidate |
-| Snapshot audit and release-content review | Pending for selected candidate |
-| Known failures and unavailable prerequisites | Populate from candidate review |
+| Four hosted CI results and merged-main run | Passed; linked in candidate record |
+| Fresh-checkout setup and example results | See candidate record for scoped results |
+| Snapshot audit and release-content review | See candidate record; vendor rights and owner dispositions remain open |
+| Known failures and unavailable prerequisites | Native helpers, broader collection limits, physical calibration and qualification remain outside portable checks |
 | Publication approval and final release URL | Not approved or published |
 
 ## Getting started and help
