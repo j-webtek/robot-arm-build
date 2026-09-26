@@ -424,3 +424,8 @@ Frozen source `5a29b0178378478955a12b70a2cf78582f1f4b88` separates the coordinat
 ### Paired visibility response (AI-113)
 
 Across196 eligible same-scene clear-to-hidden interventions, the control, combined and coordinate-only models never cross the fixed0.5 visibility threshold; visibility-only crosses twice. Target probability changes are small (0.00026–0.00183), only slightly greater than unaffected-corner changes. Aggregate hidden rejection therefore does not establish obstacle-specific recognition. The next experiment should compare global pooling with corner-local features under matched training, using predicted positions at evaluation. Oracle position crops remain diagnostic only. This reused-development analysis neither proves global pooling caused the problem nor qualifies visibility. Source `a38231105cda7e0104b8fc8238076bed6e697db9`; report `eval/landmark_visibility_response.json`.
+
+
+### Matched local visibility head (AI-116)
+
+Predicted-peak local pooling improves hidden false-visible counts36→4/201 and clear recall20.58%→75.48% against the retrained global head. This remains below the fixed90% recall requirement, while partial/full localization tails worsen197→198 and198→200/200. The combined promotion rule fails; no qualification is installed. Both heads have identical parameters/initialization and matched data/loss/budget; the local head uses predicted hard peaks and3x3 feature patches, never oracle crops. Next diagnose paired occlusion response and predicted-crop error before further training. Frozen source `b06f609a33e09e0a0a402b665b05f245d55e7cb6`; scorecards `eval/landmark_local_visibility_v0_*`. One seed and reused synthetic development cannot establish fresh performance.

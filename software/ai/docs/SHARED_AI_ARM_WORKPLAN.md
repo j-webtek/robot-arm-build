@@ -599,7 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-| AI | S1 | matched local visibility training | feature/translation-pair-evidence | ACTIVE |
 
 
 Workers add a short row before beginning a potentially overlapping change and
@@ -4095,3 +4094,51 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: heuristic audit; AI-041 protected-main publication blocker remains.
 - Supersedes: none
 - Next dependency: protected-branch PR/checks and AI-113 training study.
+
+### E-20260926-AI-116 — matched predicted-local visibility training
+
+- Stage: S1
+- Lane: AI
+- Commit: `b06f609a33e09e0a0a402b665b05f245d55e7cb6` (source/plan frozen before execution)
+- Change: retrain matched global versus local visibility pooling with identical parameter initialization, combined loss, ordering, budget and checkpoint selection. Local head samples3x3 feature cells around hard predicted heatmap peaks; no oracle positions at training or evaluation.
+- Inputs/fixtures:2400 training images (600 groups from14000000),800 reused development images (200 groups from15000000),four conditions; rectangle/ellipse occluders. Exact sources/catalog/baseline hashes in `train/landmark_local_visibility_v0_plan.json`; identical pixel hashes verified.
+- Command: `python software/ai/train/train_local_visibility.py`
+- Result: FAIL local promotion rule. Hidden false-visible global36/201 versus local4/201; clear recall563/2736 (20.58%) versus2065/2736 (75.48%), below90%. Global mean key errors standard/appearance/partial/full8.514/12.938/11.005/11.125mm; local8.537/12.821/11.348/11.438mm. >3mm tails global194/200/197/198 versus local191/198/198/200 out of200 each. All relative yaw checks pass, but mean/occluded tails regress. Both selected epoch8; both worse than pretrained pose baseline. Global self-comparison in JSON is bookkeeping, not an independent candidate gate.
+- Artifacts: `eval/landmark_local_visibility_v0_comparison.json` and global/local scorecards. Ignored local checkpoint hashes global `2ae47a78deabd3479f8ef3f3efdeea2ef95ecdcffca0c78ed736ce8ecf4c36b8`, local `3d2fd582bcb7591d4ef04aff8c9db5fedc38ce37d704786ed7d82265cb5b82d7`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: one seed,eight epochs,reused synthetic development; GPU nondeterminism and shared-feature training effects preclude broad causal/generalization claims. No calibrated uncertainty or runtime qualification. ModelMotionBatch boundary unchanged; integration gates unchanged.
+- Supersedes: none; all failed studies retained.
+- Next dependency: freeze paired obstruction-response and error-stratified local-head diagnosis, distinguishing wrong predicted crop locations from clear-corner rejection before choosing another training change.
+
+### E-20260926-AI-117 — local visibility implementation verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `b06f609a33e09e0a0a402b665b05f245d55e7cb6` (implementation baseline; tests committed with evidence)
+- Change: test identical initialization, constant-field pooling agreement, feature/head gradients and hard-position gradient exclusion; verify artifact hashes, same pixels, selection and independently recomputed criteria.
+- Inputs/fixtures: analytic feature fields, seeded networks and AI-116 pinned reports/manifest.
+- Command: `python -m pytest -q software/ai/tests/test_local_visibility.py`
+- Result: PASS,3 tests; existing pytest-asyncio configuration warning.
+- Artifacts: named test and AI-116 reports.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: implementation consistency does not override model failures. No boundary contract changes; shared boundary suite not triggered.
+- Supersedes: none
+- Next dependency: AI-116 diagnostic.
+
+### E-20260926-AI-118 — local visibility publication audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `b06f609a33e09e0a0a402b665b05f245d55e7cb6` (frozen source plus result/test snapshot)
+- Change: audit publication snapshot.
+- Inputs/fixtures: repository with AI-116/117 artifacts and reviewed fixture allowlist.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS;5827 paths,813.8 MiB,0 unresolved findings,14 reviewed synthetic fixtures.
+- Artifacts: audit stdout and snapshot.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: heuristic audit; AI-041 protected-main publication blocker remains.
+- Supersedes: none
+- Next dependency: protected-branch PR/checks and AI-116 diagnostic.
