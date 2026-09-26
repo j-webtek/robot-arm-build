@@ -604,7 +604,6 @@ remove it only in the same commit that appends the resulting evidence row.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI | S1 | `vision/evaluate_lighting_normalization.py`, normalization manifest/scorecard/tests, precision method | feature/translation-pair-evidence | ACTIVE: frozen pixel-only normalization diagnostic |
 | Unclaimed | S2 | qualified perception adapter and complete shared gate | — | AVAILABLE |
 | Unclaimed | S4 | collect and independently review installed controller evidence | — | AVAILABLE |
 
@@ -2681,3 +2680,69 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: heuristic audit only; AI-041 protected-main PR publication blocker remains.
 - Supersedes: none; historical audit failures retained.
 - Next dependency: protected-branch PR/checks and AI-058 diagnostic.
+
+### E-20260926-AI-061 — fixed lighting normalization development failure
+
+- Stage: S1
+- Lane: AI
+- Commit: `dd2f0f14f26f78afd327b5aa2d8c6764b4c78f2b` (frozen source and manifest before scoring)
+- Change: unchanged initial translation checkpoint; compare original pixels against
+  global RGB gain220/p95(luminance), denominator>=1, gain clipped[0.5,2.5], rounded
+  and clipped to uint8 after resizing. No truth, target location or camera metadata
+  participates in preprocessing; no parameters were tuned after scoring.
+- Inputs/fixtures: reused 15M 200 development groups x4 conditions, 46 targets.
+  Source/checkpoint/catalog hashes in `eval/lighting_normalization_v0.manifest.json`;
+  paired cases, gains and input-pixel digests in scorecard.
+- Command: `python software/ai/vision/evaluate_lighting_normalization.py`
+- Result: FAIL combined development criteria (11/12 checks pass). Darkened-standard
+  mean 2.512120 -> 0.845294 mm; >3mm image count86 -> 6/200.
+  Standard mean0.853172 -> 0.846697 mm, tail5 -> 5;
+  appearance-shift mean0.833414 -> 0.873718 mm, tail7 -> 8;
+  challenge mean1.032991 -> 0.937176 mm, tail10 -> 8.
+  Appearance-shift tail increase is the failing check. No runtime preprocessing
+  installation, checkpoint promotion or localization qualification.
+- Artifacts: `eval/lighting_normalization_v0_scorecard.json`, manifest, evaluator.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: reused synthetic development groups, fixed camera rendering and
+  synthetic darkening; global gain cannot recover occluded or clipped content.
+  Model was not trained with this normalization. Passing individual checks is
+  not a held-out, physical or calibrated-confidence claim. No contract changes;
+  shared boundary suite not triggered.
+- Supersedes: none; all failed training variants remain retained.
+- Next dependency: diagnose paired appearance-shift threshold crossings from
+  existing cases and image evidence before choosing another normalization rule.
+  Preserve failure; do not relax tail criteria to pass this candidate.
+
+### E-20260926-AI-062 — lighting normalization evidence tests
+
+- Stage: S1
+- Lane: AI
+- Commit: `dd2f0f14f26f78afd327b5aa2d8c6764b4c78f2b` (implementation baseline; tests committed with results)
+- Change: checked analytic gray/black/white transform behavior, immutability,
+  bounded gain, provenance, seed coverage, per-case metrics and independent gates.
+- Inputs/fixtures: analytic PIL images and AI-061 manifest/scorecard (800 paired cases).
+- Command: `python -m pytest -q software/ai/tests/test_lighting_normalization.py`
+- Result: PASS, 2 tests; existing pytest-asyncio configuration deprecation warning.
+- Artifacts: named test and AI-061 scorecard.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: offline correctness only; no physical confidence qualification.
+- Supersedes: none
+- Next dependency: AI-061 paired crossing diagnosis.
+
+### E-20260926-AI-063 — normalization publication audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `dd2f0f14f26f78afd327b5aa2d8c6764b4c78f2b` (implementation baseline plus result/test snapshot)
+- Change: audited the repository publication snapshot.
+- Inputs/fixtures: repository with AI-061/062 artifacts and reviewed fixture allowlist.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS; 5715 paths, 788.5 MiB, 0 unresolved findings, 14 reviewed synthetic fixtures.
+- Artifacts: audit stdout and repository snapshot.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: heuristic audit only; AI-041 protected-main PR publication blocker remains.
+- Supersedes: none; historical audit failures retained.
+- Next dependency: protected-branch PR/checks and AI-061 diagnostic.

@@ -208,3 +208,16 @@ Next: freeze a bounded photometric-normalization diagnostic using the unchanged
 initial checkpoint and the same per-condition limits. All three failed training
 variants remain evidence; preprocessing must also earn fresh evaluation and
 calibration before any runtime adoption.
+
+
+### Fixed lighting normalization result
+
+A fixed pixel-only luminance gain on the unchanged translation checkpoint passes
+11/12 development checks but **fails the combined rule**. Darkened-image mean
+improves 2.512 -> 0.845 mm; >3mm image count86 -> 6/200. Appearance-shift count
+increases7 -> 8, violating the no-tail-regression criterion. AI-061 through AI-063
+retain exact source, paired cases and tests. No preprocessing is installed.
+
+Next: inspect paired appearance-shift threshold crossings and associated images
+before another intervention. Do not relax criteria or treat the close development
+result as calibration, generalization or physical evidence.
