@@ -250,3 +250,9 @@ uncertainty is unavailable. Its saved
 [abstention report](eval/current_checkpoint_batch_abstention_v0.json) contains
 no batch. See the [handoff contract](docs/MODEL_MOTION_PROPOSAL.md) and
 `python software/ai/run_batch_emission.py --help` for saved-evidence inputs.
+
+The first independent localization-radius study failed qualification:
+25.409 mm empirical bound, 90/100 held-out groups covered, and 0/46 nominal
+key regions able to fit the bound. No qualification is trusted; the current
+batch producer still abstains. See `eval/localization_radius_v0_scorecard.json`.
+Reproduce with `python software/ai/vision/evaluate_localization_radius.py --output software/ai/results/localization-radius.json`.

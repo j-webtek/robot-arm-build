@@ -232,3 +232,22 @@ seed-1000001 pose-model and Gemma run against the shared AI batch producer.
 Scene checks pass; missing localization qualification yields ABSTAINED and
 `batch: null`. Capture/evaluation times are synthetic replay timestamps.
 No uncertainty calibration, training update, or physical operation occurred.
+
+## Independent localization-radius evaluation
+
+The frozen `localization_radius_v0` study uses 100 calibration and 100 disjoint
+evaluation seed groups, each with standard, appearance-shift, and challenge
+conditions: 600 images total. Its score is the worst XY error across all 46
+keys and all three conditions within each group. Correlated key errors are
+therefore not counted as independent calibration samples.
+
+The unchanged checkpoint's empirical 95% nearest-rank calibration radius is
+**25.409 mm**. Applied unchanged to evaluation, it covers **90/100 groups**,
+below the 95% target. It fits **0/46** nominal key safe rectangles even when
+centered ideally. No qualification is installed; precision v2 still abstains.
+
+This is empirical coverage in a shared renderer family, not a statistical or
+physical guarantee. The evaluation split is now consumed. Next improve
+localization robustness or rejection on separate development data, then freeze
+new calibration and evaluation groups. Increasing the bound cannot resolve
+the already-zero target-fit coverage.
