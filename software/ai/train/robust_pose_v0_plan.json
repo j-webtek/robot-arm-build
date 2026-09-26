@@ -1,0 +1,41 @@
+{
+  "calibration_groups": [
+    9000000,
+    100
+  ],
+  "conditions": [
+    "standard",
+    "appearance_shift",
+    "challenge"
+  ],
+  "development_groups": [
+    8000000,
+    100
+  ],
+  "empirical_coverage_target": 0.95,
+  "epochs": 12,
+  "evaluation_groups": [
+    10000000,
+    100
+  ],
+  "file_sha256": {
+    "software/ai/vision/evaluate_localization_radius.py": "411d9724e389fc825e1b6755aa7d845d6c45dbce505a70db6044bee0278e2159",
+    "software/ai/vision/evaluate_pose_challenge.py": "1ba33a1a2d38b1216a5e1708e17b99c3d9dba9fd2c40af46a084da8065102983",
+    "software/ai/vision/pose_model.py": "7eccc2a3cabf3a37217b4a1c3114c439ffc740a917c08e4ef378065ff85c6ec5",
+    "software/ai/vision/synthetic_keyboard.py": "b9a1662ea348ba78093909844e5e8bed86f4996babc289bfd63858b6b54f692c",
+    "software/ai/vision/train_pose.py": "98c2ae6211b42c3b4b7c5bed3fb03aab82bffff79c30ebb546e3681b3be3a1b6",
+    "software/ai/vision/train_robust_pose.py": "d62898d1cb37a725bad52050cc571a7b18163cb258ebbcb545f67dcc2a44b53f"
+  },
+  "initial_checkpoint": "software/ai/train/runs/synthetic_pose_photo_v1/pose_model.pt",
+  "initial_checkpoint_sha256": "2cc9d770fe9816b1e7f717413996e78d3e440eb6d7b2a02414f229d11ed5671f",
+  "learning_rate": 0.0002,
+  "promotion_policy": "No automatic qualification; report held-out coverage and target-fit radius without retuning",
+  "schema": "rocell.ai_robust_pose_plan.v0",
+  "selection": "minimum_development_mse_only",
+  "target_catalog_sha256": "6779213e832ab27eeda1e7fb245f57ff8cb0d56707b5aa73a8f31ec483a620f2",
+  "training_groups": [
+    7000000,
+    1200
+  ],
+  "training_seed": 260926
+}
