@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rocell.local/schemas/installed_controller_qualification_evidence_v1.schema.json",
+  "title": "RoCell reviewed installed-controller qualification evidence v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "qualification_id", "controller_binding_sha256",
+    "installed_firmware_evidence_sha256", "qualified_protocol_source_sha256",
+    "controller_joint_mapping_evidence_sha256",
+    "controller_joint_mapping_sha256", "feedback_protocol_evidence_sha256",
+    "startup_behavior_evidence_sha256", "configuration_epoch_sha256",
+    "controller_session_id", "captured_monotonic_ns",
+    "valid_until_monotonic_ns", "t102_command_fields",
+    "t1051_feedback_fields", "arm_joint_order", "fixed_gripper_field",
+    "evidence_origin", "review_disposition", "hardware_access",
+    "physical_authority", "evidence_sha256"
+  ],
+  "properties": {
+    "schema": {"const": "rocell.installed_controller_qualification_evidence.v1"},
+    "qualification_id": {"$ref": "#/$defs/identifier"},
+    "controller_binding_sha256": {"$ref": "#/$defs/sha256"},
+    "installed_firmware_evidence_sha256": {"$ref": "#/$defs/sha256"},
+    "qualified_protocol_source_sha256": {"$ref": "#/$defs/sha256"},
+    "controller_joint_mapping_evidence_sha256": {"$ref": "#/$defs/sha256"},
+    "controller_joint_mapping_sha256": {"$ref": "#/$defs/sha256"},
+    "feedback_protocol_evidence_sha256": {"$ref": "#/$defs/sha256"},
+    "startup_behavior_evidence_sha256": {"$ref": "#/$defs/sha256"},
+    "configuration_epoch_sha256": {"$ref": "#/$defs/sha256"},
+    "controller_session_id": {"$ref": "#/$defs/identifier"},
+    "captured_monotonic_ns": {"type": "integer", "minimum": 1},
+    "valid_until_monotonic_ns": {"type": "integer", "minimum": 1},
+    "t102_command_fields": {"$ref": "#/$defs/t102Fields"},
+    "t1051_feedback_fields": {"$ref": "#/$defs/t1051Fields"},
+    "arm_joint_order": {"$ref": "#/$defs/armJointOrder"},
+    "fixed_gripper_field": {"const": "hand"},
+    "evidence_origin": {"enum": ["PHYSICAL_RETAINED_ORIGINALS", "SYNTHETIC_TEST_ONLY"]},
+    "review_disposition": {"enum": ["INDEPENDENTLY_APPROVED", "UNREVIEWED", "REJECTED"]},
+    "hardware_access": {"const": false},
+    "physical_authority": {"const": false},
+    "evidence_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "identifier": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"},
+    "t102Fields": {"const": ["base", "shoulder", "elbow", "wrist", "roll", "hand"]},
+    "t1051Fields": {"const": ["b", "s", "e", "t", "r", "g"]},
+    "armJointOrder": {"const": ["base_link_to_link1", "link1_to_link2", "link2_to_link3", "link3_to_link4", "link4_to_link5"]}
+  }
+}
