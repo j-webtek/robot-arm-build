@@ -209,6 +209,13 @@ from .collision_readiness import (
     assess_current_collision_readiness,
     inspect_pinned_urdf_collision_evidence,
 )
+from .installed_collision_geometry import (
+    SCHEMA as INSTALLED_COLLISION_GEOMETRY_PROFILE_SCHEMA,
+    InstalledCollisionGeometryError,
+    InstalledCollisionGeometryProfile,
+    load_installed_collision_geometry_for_context,
+    load_installed_collision_geometry_profile,
+)
 from .prehardware_layout_study import (
     LayoutAxisValueEvidence,
     LayoutCandidatePromotion,
@@ -856,6 +863,9 @@ __all__ = [
     "CURRENT_COLLISION_READINESS_SCHEMA",
     "CurrentCollisionReadinessReport",
     "PinnedUrdfCollisionEvidence",
+    "INSTALLED_COLLISION_GEOMETRY_PROFILE_SCHEMA",
+    "InstalledCollisionGeometryError",
+    "InstalledCollisionGeometryProfile",
     "SimulationContextError",
     "SimulationRunReport",
     "ReachOptimizationError",
@@ -908,6 +918,8 @@ __all__ = [
     "assess_current_collision_readiness",
     "bootstrap_virtual_workcell",
     "inspect_pinned_urdf_collision_evidence",
+    "load_installed_collision_geometry_for_context",
+    "load_installed_collision_geometry_profile",
     "run_simulation",
     "run_target_sweep",
     "default_reach_study_inputs",

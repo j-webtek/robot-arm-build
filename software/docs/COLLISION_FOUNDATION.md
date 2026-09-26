@@ -335,46 +335,55 @@ pose/sweep collision query.
 ## Concrete path to unblock collision diagnostics
 
 No dimension should be inserted merely to turn the current status green. The
-next work is:
+first infrastructure step is now implemented by
+`rocell.application.installed_collision_geometry`: a strict, bounded,
+content-addressed loader for
+`rocell.installed_collision_geometry_profile.v1`. It requires exact
+manifest/build/model/base-contract identity, independently pinned measurement
+sources, complete required-body coverage, accepted measured evidence, and an
+accepted measured clearance policy. Configuration-sampled cable geometry must
+still be supplied at each evaluated pose. The loader emits no command and
+confers no physical authority.
 
-1. Define a reviewed, versioned, content-addressed collision-geometry artifact
-   and loader. Bind it through the simulation bundle/context so accepted body
-   shapes and transforms cannot be substituted in memory or changed without a
-   hash change.
-2. Derive conservative reduced primitives for all seven robot bodies from the
+There is deliberately no installed measured profile in the repository yet.
+Photograph estimates, nominal RC03 proxies, and unit-test dimensions are not
+eligible inputs. Therefore the current readiness state remains blocked. The
+remaining work is:
+
+1. Derive conservative reduced primitives for all seven robot bodies from the
    exact received Pro arm and authoritative CAD or measured geometry. Record
    the reduction method, source bytes, link-frame convention, uncertainty, and
    engineering acceptance.
-3. Measure the installed factory base/clamp envelope and its board-frame pose.
+2. Measure the installed factory base/clamp envelope and its board-frame pose.
    Include fasteners or protrusions that can enter the swept workspace.
-4. Identify the exact received holder, camera module, connector/plug, strain
+3. Identify the exact received holder, camera module, connector/plug, strain
    relief, and locked mounting configuration. Measure complete envelopes and
    accepted transforms for `holder` and `camera_module`; do not infer them from
    the camera's mounting-hole pitch alone.
-5. Define the keyboard and phone contact tools separately, including their
+4. Define the keyboard and phone contact tools separately, including their
    rigid `hand_tcp` transforms, full envelopes, compliance/flex uncertainty,
    and route-specific installation identity.
-6. Capture the moving cable's conservative configuration-dependent envelope.
+5. Capture the moving cable's conservative configuration-dependent envelope.
    Add a bounded explicit waypoint-sequence/deformable-sampler query boundary,
    then bind evidence-bearing cable geometry at every evaluated sample; the
    current two-endpoint sweep cannot accept those intermediate samples.
-7. Replace the six nominal RC03 proxies with measured installed board, device,
+6. Replace the six nominal RC03 proxies with measured installed board, device,
    station, and nearby-fixture geometry where those bodies are required for
    physical reasoning.
-8. Approve an evidence-backed clearance policy with positive minimum
+7. Approve an evidence-backed clearance policy with positive minimum
    separation and explicit per-body geometry and pose uncertainties. Validate
    it against metrology, calibration residuals, repeatability, backlash, flex,
    payload, and the intended operating speed.
-9. Review each global exclusion against the accepted envelopes. Promote only
+8. Review each global exclusion against the accepted envelopes. Promote only
    genuinely invariant pairs to `ENGINEERING_GLOBAL`; keep typing/tapping
    contact allowances phase-local.
-10. Project route joint states and accepted frame transforms into
+9. Project route joint states and accepted frame transforms into
     `CollisionPose` values and call the pose/sweep engine for park, transit,
     hover, approach, contact, and retract. Preserve the report hashes alongside
     the route evidence.
-11. Add a validated continuous or conservatively swept-volume collision method
+10. Add a validated continuous or conservatively swept-volume collision method
     if hardware release requires collision freedom between samples. The
     existing discrete sweep cannot make that claim.
-12. Re-run the strict readiness command, then the route-level diagnostics. Keep
+11. Re-run the strict readiness command, then the route-level diagnostics. Keep
     motion/contact authority in the independent safety and commissioning gates;
     collision readiness alone must never release them.

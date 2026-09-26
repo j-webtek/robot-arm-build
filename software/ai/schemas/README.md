@@ -59,3 +59,7 @@ The [observed planner start-state schema](observed_planner_start_state_v1.schema
 binds one authenticated, fresh T=1051 receipt to the measured robot reference.
 It requires all six feedback joints, applies the calibrated sign/offset projection,
 and exposes a time-limited five-joint IK start state with no commands or authority.
+The [installed collision-geometry profile schema](installed_collision_geometry_profile_v1.schema.json)
+defines the measured, content-addressed body envelopes, source bindings,
+engineering exclusions, and clearance policy required before route screening may
+rely on the installed arm rather than diagnostic placeholders.
