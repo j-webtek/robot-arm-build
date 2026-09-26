@@ -1,0 +1,21 @@
+{
+  "scope": "DEVELOPMENT_ONLY",
+  "seed_start": 15000000,
+  "seed_count": 200,
+  "conditions": [
+    "base",
+    "darken",
+    "blur",
+    "obstruction"
+  ],
+  "checkpoint": "software/ai/results/translation_weighted_v0_translation_weighted/pose_model.pt",
+  "checkpoint_sha256": "0fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d",
+  "policy": "200 existing dev standard images; brightness0.5, blur sigma1.2px, fixed opaque rectangle96,40-103,90. Compare paired added effects; no tuning, held-out access or runtime gating.",
+  "file_sha256": {
+    "software/ai/vision/pose_model.py": "7eccc2a3cabf3a37217b4a1c3114c439ffc740a917c08e4ef378065ff85c6ec5",
+    "software/ai/vision/synthetic_keyboard.py": "b9a1662ea348ba78093909844e5e8bed86f4996babc289bfd63858b6b54f692c",
+    "software/ai/vision/train_pose.py": "98c2ae6211b42c3b4b7c5bed3fb03aab82bffff79c30ebb546e3681b3be3a1b6",
+    "software/ai/vision/evaluate_pose_challenge.py": "1ba33a1a2d38b1216a5e1708e17b99c3d9dba9fd2c40af46a084da8065102983",
+    "software/ai/vision/diagnose_single_perturbations.py": "70b31bb36747ce1ae0e9f54a98f707b492da6df07f1be32d5807912e0dba1975"
+  }
+}
