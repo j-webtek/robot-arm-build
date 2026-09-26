@@ -1,0 +1,19 @@
+{
+  "checkpoint": "software/ai/results/landmark_v0/model.pt",
+  "checkpoint_sha256": "49c143aac249ad18071407b7ff94c6456bc8dff00ad9ab2e7b63521e9fb0608e",
+  "conditions": [
+    "standard",
+    "appearance_shift",
+    "partial",
+    "full"
+  ],
+  "protocol": "All800 retained development images; peak vs soft-argmax pixel errors, entropy, mass within8px, visibility by geometric class. No modifications or threshold selection.",
+  "file_sha256": {
+    "software/ai/vision/diagnose_landmarks.py": "7fbf2c6730ac6e1778a3e1fea61ffeed93eecfc8ce36b8f2ead579e2c50a4205",
+    "software/ai/vision/landmark_model.py": "d877060b029487382fcedf9eea4af0b6248029fbcf484d44d921f942579483fc",
+    "software/ai/vision/landmark_occlusions.py": "2d77d25077ab98dad632bb441b94c06cc6c139116d6621483cab7728d95c6aad",
+    "software/ai/vision/landmark_renderer.py": "e8535fbf98c8cfd3a838f5f793534a182d0dc5b8b9eabaa3bfa2173e649137de",
+    "software/ai/vision/evaluate_dark_only_normalization.py": "12289bfeeb52274678c62f46c7e99e057563036566fa48fc5f5cd1d58add4469",
+    "software/ai/eval/landmark_v0_scorecard.json": "8756daa676e33c2e89fb5b7cf45267b640970c0eff55d6e0a3f4756a8f99e467"
+  }
+}
