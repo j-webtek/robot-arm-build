@@ -604,6 +604,7 @@ remove it only in the same commit that appends the resulting evidence row.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
+| AI | S1 | fresh disagreement evaluator, manifest/report/tests, precision method | feature/translation-pair-evidence | ACTIVE: frozen24M calibration/25M evaluation |
 | Unclaimed | S2 | qualified perception adapter and complete shared gate | — | AVAILABLE |
 | Unclaimed | S4 | design and independently qualify a separate generic T=102/T=105/T=1051 runtime; r96 is an incompatible finite diagnostic landmark | — | AVAILABLE |
 
