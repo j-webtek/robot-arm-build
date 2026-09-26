@@ -366,3 +366,34 @@ preserves group hashes, scores, and the full-study hash. Both splits are now
 consumed. Next exercise rejection near target boundaries using this fixed
 bound and actual predictions in a fresh synthetic integration study before
 considering a strictly simulation-only qualification.
+
+
+## Actual prediction margins (2026-09-26)
+
+Frozen `eval/prediction_margin_v0.manifest.json` and
+`vision/evaluate_prediction_margin.py` were committed before scoring. The unchanged
+robust checkpoint was evaluated on fresh seeds 13000000–13000099 across standard,
+appearance-shift and challenge conditions (300 images). The earlier calibrated
+radius was held fixed at 6.037862263092149 mm.
+
+Results in `eval/prediction_margin_v0_scorecard.json`:
+- 8,516 / 13,800 predicted key locations (61.71%) contained the complete uncertainty
+  disk inside the independently rendered, rotated key rectangle.
+- 118 / 300 images (39.33%) fit all 46 key regions.
+- 0 / 13,800 predictions fit the current fixed nominal target rectangles.
+
+The earlier 46/46 ideal-center result did not measure displaced model predictions.
+This study exposes both limited remaining key margin and a layout mismatch: the
+renderer rotates/displaces the keyboard, while the batch emitter admits against a
+fixed nominal board layout. Oracle geometry is hidden truth used only for scoring;
+it must never be installed as runtime calibration. Counts are correlated descriptive
+measurements, not physical accuracy or independent success probabilities. This run
+measures the geometric predicate only, not scene fusion or complete batch ingress.
+No qualification was installed and no hardware commands were issued.
+
+Priority: agree and implement an independently evidenced keyboard-placement contract
+with RoCell, binding board-frame transform, orientation, target catalog, image/frame,
+uncertainty and freshness. Validate rotated target regions without centering them on
+the same model prediction being checked. Then test actual batch ingress with that
+contract. Improve localization residuals on separate development seeds; reserve new
+held-out seeds for evaluation. Real camera/domain and contact validation remain open.
