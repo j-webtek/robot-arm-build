@@ -263,3 +263,18 @@ camera generalization, calibrated confidence or permission for motion.
 Next: fresh uncertainty calibration and separate evaluation beyond21M using this
 exact preprocessing. Retain full target-region containment and coverage criteria;
 oracle geometry remains scoring-only and cannot become runtime calibration.
+
+
+### Normalized uncertainty study remains blocked
+
+AI-073 through AI-075 calibrate on fresh22M groups and evaluate on fresh23M groups
+with frozen preprocessing over seven conditions. The6.042 mm global radius covers
+99% of500 evaluation groups, but full predicted-disk containment in true key
+regions passes only13% (65/500), below95%. Combined criteria **fail**; no
+qualification is installed. Both seed ranges are now consumed. Earlier three-
+condition studies are not matched comparisons of normalization effects.
+
+Next: predeclare an image-conditioned uncertainty/abstention feasibility study
+using development data. Preserve coverage and containment requirements and avoid
+post-hoc radius reduction. Any selected method needs separate fresh calibration
+and evaluation beyond23M; hidden target geometry remains scoring-only.

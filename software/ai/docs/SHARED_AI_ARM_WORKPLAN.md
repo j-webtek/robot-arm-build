@@ -604,7 +604,6 @@ remove it only in the same commit that appends the resulting evidence row.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI | S1 | normalized uncertainty evaluators, manifest/scorecard/tests and precision method | feature/translation-pair-evidence | ACTIVE:22M calibration/23M evaluation with full region containment |
 | Unclaimed | S2 | qualified perception adapter and complete shared gate | — | AVAILABLE |
 | Unclaimed | S4 | independently review passive controller candidate and close its seven explicit blockers | — | AVAILABLE |
 
@@ -3012,3 +3011,71 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: heuristic audit only; AI-041 protected-main PR publication blocker remains.
 - Supersedes: none; historical failures preserved.
 - Next dependency: protected-branch PR/checks and AI-070 uncertainty study.
+
+### E-20260926-AI-073 — normalized uncertainty combined-criteria failure
+
+- Stage: S1
+- Lane: AI
+- Commit: `097dd89aae7e0068031978117bebaaee98f8671e` (frozen implementation/manifest before calibration or scoring)
+- Change: used unchanged checkpoint and dark-only normalization; fixed a99%
+  nearest-rank radius from calibration seed-group maxima over46 keys x7 conditions
+  before computing evaluation results. Independently scored the full disk around
+  each prediction against hidden true oriented key regions.
+- Inputs/fixtures: calibration seeds22000000..22000999 (1000 groups), evaluation
+  seeds23000000..23000499 (500 groups), seven conditions from AI-070.
+  Exact source/checkpoint/catalog hashes in `eval/normalized_uncertainty_v0.manifest.json`;
+  group hashes/scores and fit counts in scorecard; both seed ranges now consumed.
+- Command: `python software/ai/vision/evaluate_normalized_uncertainty.py`
+- Result: FAIL combined criteria. Radius6.041821790 mm; error coverage495/500=99%
+  passes95% requirement. Full-region containment65/500 groups=13% fails95%
+  requirement. Individual predicted regions fitting111769/161000; group criterion
+  still governs. No qualification, runtime preprocessing or model replacement.
+- Artifacts: `eval/normalized_uncertainty_v0_scorecard.json`, manifest, two evaluators;
+  ignored complete `results/normalized_uncertainty_v0_full.json` with study/group
+  hashes retained by scorecard.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: global radius, same synthetic renderer and oracle geometry for
+  scoring only; no calibrated per-observation confidence, actual camera transform
+  or physical evidence. This seven-condition study differs from earlier three-
+  condition uncertainty studies and cannot isolate normalization's effect by
+  comparing their radii directly. AI-070 relative localization gains remain valid.
+  No batch changes; shared boundary suite not triggered; integration gates unchanged.
+- Supersedes: none; prior passes/failures retained.
+- Next dependency: predeclare a bounded development-only image-conditioned
+  uncertainty/abstention feasibility study on reused development groups. Preserve
+  coverage and region-fit criteria; do not shrink this radius after seeing evaluation
+  results. Any selected method requires new calibration/evaluation beyond23M.
+
+### E-20260926-AI-074 — normalized uncertainty evidence test
+
+- Stage: S1
+- Lane: AI
+- Commit: `097dd89aae7e0068031978117bebaaee98f8671e` (implementation baseline; test committed with evidence)
+- Change: recounted nearest-rank calibration, empirical coverage, independent seed
+  ranges, seven-condition ordering, target counts, group containment and final status.
+- Inputs/fixtures: AI-073 manifest/scorecard and frozen source hashes.
+- Command: `python -m pytest -q software/ai/tests/test_normalized_uncertainty_evidence.py`
+- Result: PASS, 1 test; existing pytest-asyncio configuration deprecation warning.
+- Artifacts: named test and AI-073 scorecard.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: evidence consistency only, not physical qualification.
+- Supersedes: none
+- Next dependency: AI-073 conditional-uncertainty feasibility study.
+
+### E-20260926-AI-075 — normalized uncertainty publication audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `097dd89aae7e0068031978117bebaaee98f8671e` (implementation baseline plus result/test snapshot)
+- Change: audited publication snapshot.
+- Inputs/fixtures: repository with AI-073/074 artifacts and reviewed fixture allowlist.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS; 5741 paths, 791.7 MiB, 0 unresolved findings, 14 reviewed synthetic fixtures.
+- Artifacts: audit stdout and repository snapshot.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: heuristic audit; AI-041 protected-main PR publication blocker remains.
+- Supersedes: none; historical audit failures preserved.
+- Next dependency: protected-branch PR/checks and AI-073 feasibility study.
