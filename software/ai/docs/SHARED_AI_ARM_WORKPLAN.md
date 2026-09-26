@@ -599,7 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-| AI | S1 | support exclusion attribution | feature/translation-pair-evidence | ACTIVE |
 
 
 
@@ -5224,3 +5223,51 @@ commissioning, or bounded physical result with its limitations intact.
 - Next dependency: implement deterministic per-waypoint full-body and cable
   collision evaluation against this exact profile, then qualify it with
   independently measured installed geometry and conservative clearance data.
+
+### E-20260926-AI-163 — support exclusion attribution
+
+- Stage: S1
+- Lane: AI
+- Commit: `2cbe9584af422a35821caa3db1794f9cbee04600` (frozen source; results/tests committed with evidence)
+- Change: support exclusion attribution.
+- Inputs/fixtures: Retained AI-157/160800 development predictions,15M200 groups; regenerated geometric labels used only for strata. Exact source/input hashes in eval/support_attribution_v0_plan.json.
+- Command: `python software/ai/vision/diagnose_support_attribution.py`
+- Result: Diagnostic completed. No-exclusion412 cases,all accepted,exact0 metric changes. Clear-only8 accepted cases:8 false exclusions,2 new/2 recovered >3mm tails,mean delta+0.04974mm. Occluded-only374 cases,366 accepted/8 abstained:23 new/47 recovered tails,mean delta-0.90375mm,translation delta-1.00919mm,yaw delta+0.10634deg. Mixed6 cases all abstained. Thus true geometric obstruction exclusions also produce regressions; false clear exclusion alone does not explain them.
+- Artifacts: eval/support_attribution_v0_report.json; frozen runner/plan
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Geometric visibility not perceptual confidence; partial obstruction counted as occluded,not necessarily unusable. Associations,not causal proof; no oracle fitting,qualification or boundary change.
+- Supersedes: none; prior failures and integration statuses retained.
+- Next dependency: Freeze fixed half-weight retention of predicted-unsupported corners versus zero-weight exclusion,keeping min3 support and equal weights on supported corners. This tests geometric information loss with one predeclared0.5 weight,no sweep; compare against both original subpixel and equal-support fits on identical accepted cases.
+
+### E-20260926-AI-164 — support attribution verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `2cbe9584af422a35821caa3db1794f9cbee04600` (frozen source; results/tests committed with evidence)
+- Change: support attribution verification.
+- Inputs/fixtures: AI-163 pinned manifest/800 rows.
+- Command: `python -m pytest -q software/ai/tests/test_support_attribution.py`
+- Result: PASS,1 test; hashes,geometric classes,accepted/abstained counts,new/recovered tails and all mean deltas independently recounted. Existing pytest-asyncio warning.
+- Artifacts: software/ai/tests/test_support_attribution.py
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Consistency verification only; batch unchanged,shared boundary suite not triggered.
+- Supersedes: none; prior failures and integration statuses retained.
+- Next dependency: AI-163 retention experiment.
+
+### E-20260926-AI-165 — support attribution publication audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `2cbe9584af422a35821caa3db1794f9cbee04600` (frozen source; results/tests committed with evidence)
+- Change: support attribution publication audit.
+- Inputs/fixtures: Repository with AI-163/164 and reviewed fixture allowlist.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS;5932 paths,836.7 MiB,0 unresolved findings,14 reviewed synthetic fixtures.
+- Artifacts: audit stdout and snapshot
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic audit; AI-041 protected-main publication blocker remains.
+- Supersedes: none; prior failures and integration statuses retained.
+- Next dependency: Protected-branch PR/checks and AI-163 experiment.

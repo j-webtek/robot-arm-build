@@ -499,3 +499,8 @@ Fixed predicted support>=0.5,minimum3 corners and probability-weighted rigid fit
 ### Equal support weighting (AI-160)
 
 Equal weights among the same predicted-supported corners pass all16 relative criteria versus probability weighting, but fail against the original subpixel reference: standard/appearance tails125→127 and77→80,full yawp951.480→1.643deg. Coverage stays96–100%; full mean3.904mm. No promotion. Next attribute support exclusions per case against diagnostic geometric visibility, separating false exclusions from true obstruction without oracle runtime fitting. Source `99db4efb6114abb4f4b91aca18c31ea90e39d0e2`; `eval/equal_support_v0_report.json`.
+
+
+### Support attribution (AI-163)
+
+Among366 accepted occluded-only exclusion cases,mean improves0.904mm but yaw worsens0.106deg;47 >3mm failures recover while23 new failures appear. Only8 accepted clear-only exclusion cases occur,with2 new/2 recovered tails. False clear rejection therefore does not explain all regressions. Next freeze one half-weight retention experiment for predicted-unsupported corners,keeping minimum3 support and no oracle labels in fitting. Source `2cbe9584af422a35821caa3db1794f9cbee04600`; `eval/support_attribution_v0_report.json`. No qualification or runtime changes.
