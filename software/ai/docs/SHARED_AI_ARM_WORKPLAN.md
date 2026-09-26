@@ -820,3 +820,29 @@ commissioning, or bounded physical result with its limitations intact.
 - Supersedes: none; retains AI-004 and AI-006 failed evidence.
 - Next dependency: fixture owners review the 14 existing findings independently
   of the S1 producer/consumer integration work.
+
+
+### E-20260926-ARM-003 — monotonic pre-planner lease and registry recheck
+
+- Stage: S1
+- Lane: Arm/runtime
+- Commit: `f0074b1d4d63e7acdbfeb7bd7c1c017a7179e2b5`
+- Change: added a second fail-closed gate immediately before deterministic
+  planning. It verifies the original ingress hash and zero-authority fields,
+  rejects equality at the monotonic deadline, and rechecks the active capability,
+  external scene lease, independent placement, and target-map hashes so revocation
+  after ingress cannot silently enter planning.
+- Inputs/fixtures: accepted v2 H/I ingress report, exact-deadline case, changed
+  placement registry identity, and tampered ingress content.
+- Command: `python -m pytest software/tests/unit/test_model_motion_ingress_v2.py software/tests/unit/test_model_motion_ingress.py software/tests/unit/test_model_motion_sequence_coordinator.py -q`
+- Result: PASS, 28 tests.
+- Artifacts: `software/src/rocell/application/model_motion_ingress_v2.py` and
+  `software/tests/unit/test_model_motion_ingress_v2.py`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: this recheck does not plan, encode, or execute movement; active
+  registry identities are still supplied by the caller until persistent trusted
+  registry plumbing is implemented.
+- Supersedes: none; extends ARM-001.
+- Next dependency: actual AI-emitted v2 bytes and production trusted-registry
+  adapters for the shared S1 integration gate.
