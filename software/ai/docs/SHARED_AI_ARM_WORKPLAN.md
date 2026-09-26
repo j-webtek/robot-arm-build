@@ -604,7 +604,6 @@ remove it only in the same commit that appends the resulting evidence row.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI | S1 | spatial uncertainty evaluator, manifest/report/tests, precision method | feature/translation-pair-evidence | ACTIVE: frozen one-pixel spatial consistency on14M/15M development |
 | Unclaimed | S2 | qualified perception adapter and complete shared gate | — | AVAILABLE |
 | Unclaimed | S4 | design and independently qualify a separate generic T=102/T=105/T=1051 runtime; r96 is an incompatible finite diagnostic landmark | — | AVAILABLE |
 
@@ -3344,3 +3343,70 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: heuristic audit; AI-041 protected-main PR blocker remains.
 - Supersedes: none; historical failures retained.
 - Next dependency: protected-branch PR/checks and AI-082 diagnostic.
+
+### E-20260926-AI-085 — spatial consistency availability failure
+
+- Stage: S1
+- Lane: AI
+- Commit: `bca1428141590564a805089399982723f7552c82` (frozen protocol before scoring)
+- Change: replaced brightness perturbations with four cardinal one-pixel shifts,
+  edge replication and inverse correction using the fixed synthetic610x457mm
+  board projection at128x96. Original prediction remains the estimator; disagreement
+  alone selects a radius. Same bins, support,99% quantile,3mm cap and coverage/
+  containment/availability criteria as development brightness study.
+- Inputs/fixtures: reused14M600 fitting and15M200 development seed groups,
+  seven conditions,4200/1400 images, five passes/image,46 targets. Source/model/
+  catalog hashes in `eval/spatial_uncertainty_v0.manifest.json`; full cases in report.
+- Command: `python software/ai/vision/evaluate_spatial_uncertainty.py`
+- Result: FAIL availability. Bin supports1/167/500/462; radii null/2.155254/
+  3.533526/4.873882mm. Only second bin admitted. Accepted counts per200 images:
+  standard11,appearance43,challenge12,darkened15,brightness0.55:9,0.60:7,0.65:6.
+  Six of seven conditions fail10% availability. Accepted-group coverage59/61=
+  96.72%, containment61/61=100%; these do not override failed availability.
+  Per-condition accepted coverage minimum41/43=95.35%; containment100%.
+  No new qualification or runtime behavior installed.
+- Artifacts: `eval/spatial_uncertainty_v0_report.json`, manifest and evaluator.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: pose-training overlap in fitting and reused development selection;
+  small accepted sample, correlated views, edge padding artifacts possible.
+  Inverse transform is synthetic-only, not measured runtime calibration. No
+  fresh evaluation consumed or batch changed; boundary suite not triggered.
+- Supersedes: none; earlier failures retained, integration status unchanged.
+- Next dependency: freeze a development comparison of the mean inverse-corrected
+  spatial predictions versus the unchanged base estimate. Test localization
+  improvement directly with per-condition mean/tail/yaw regression limits before
+  revisiting uncertainty; do not lower availability or expand the3mm cap to pass.
+
+### E-20260926-AI-086 — spatial uncertainty evidence and transform tests
+
+- Stage: S1
+- Lane: AI
+- Commit: `bca1428141590564a805089399982723f7552c82` (implementation baseline; tests committed with evidence)
+- Change: verified shift direction, edge replication, immutability, inverse
+  synthetic coordinate correction, hashes, radius/support and abstention metrics.
+- Inputs/fixtures: analytic image/pose and AI-085 manifest/report.
+- Command: `python -m pytest -q software/ai/tests/test_spatial_uncertainty.py`
+- Result: PASS,4 tests; existing pytest-asyncio configuration deprecation warning.
+- Artifacts: named tests and AI-085 report.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: offline consistency only; model study remains failed.
+- Supersedes: none
+- Next dependency: AI-085 estimator comparison.
+
+### E-20260926-AI-087 — spatial uncertainty publication audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `bca1428141590564a805089399982723f7552c82` (implementation baseline plus report/test snapshot)
+- Change: audited publication snapshot.
+- Inputs/fixtures: repository with AI-085/086 artifacts and reviewed fixture allowlist.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS;5765 paths,803.3 MiB,0 unresolved findings,14 reviewed synthetic fixtures.
+- Artifacts: audit stdout and repository snapshot.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: heuristic audit; AI-041 protected-main PR publication blocker remains.
+- Supersedes: none; historical audit failures retained.
+- Next dependency: protected-branch PR/checks and AI-085 estimator comparison.

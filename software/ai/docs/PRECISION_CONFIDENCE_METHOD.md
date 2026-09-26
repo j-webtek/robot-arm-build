@@ -320,3 +320,16 @@ are not used for this diagnosis, and the original failure remains unchanged.
 Next: predeclare a spatial-shift consistency diagnostic on reused development
 splits, undoing only known synthetic image shifts. This is not measured runtime
 calibration; any chosen method needs separate future calibration/evaluation.
+
+
+### Spatial consistency fails availability
+
+AI-085 through AI-087 use cardinal one-pixel shifts with synthetic inverse
+correction. Accepted-group coverage96.72% and containment100% pass, but six of
+seven conditions accept only3%..7.5% of images, below10%. Overall feasibility
+fails. Only the second bin has sufficient support and radius<=3mm. Reused
+training/development groups and small accepted subsets do not establish trust.
+
+Next: compare mean inverse-corrected predictions against base localization on
+development data under frozen per-condition mean/tail/yaw limits. Improve the
+estimator before another confidence study; preserve all abstention constraints.
