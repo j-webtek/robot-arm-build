@@ -602,7 +602,6 @@ remove it only in the same commit that appends the resulting evidence row.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI/model | S1 | resolution diagnostic script/manifest/scorecard | main from `a110280` | ACTIVE: development-only resolution sensitivity |
 | Shared integration lane | S2 | raw-request runner and terminal negative matrix | `main` from `ca8c5ae` | ACTIVE |
 | Unclaimed | S4 | controller adapter/receipts | — | AVAILABLE |
 
@@ -1504,3 +1503,49 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: heuristic findings unresolved; no clean audit claim.
 - Supersedes: none
 - Next dependency: fixture-owner review independently of confidence research.
+
+
+### E-20260926-AI-023 — development inference resolution sensitivity
+
+- Stage: S1
+- Lane: AI
+- Commit: `effa56e1e696494e1b038d8eda82e0f43de53674` (exact frozen diagnostic source and manifest)
+- Change: compared the unchanged pose checkpoint at trained 128x96 and untrained
+  256x192 input sizes using only the 200 existing 15M development seed groups.
+- Inputs/fixtures: 600 procedural images, 46 keys, three conditions; source/model
+  hashes in `eval/resolution_development_v0.manifest.json`; image/catalog hashes
+  and per-condition/group metrics in the scorecard.
+- Command: `python software/ai/vision/diagnose_resolution.py`
+- Result: PASS for completed diagnostic. At 128x96: mean 1.03166 mm, p95 2.30191 mm,
+  58.42% within 1 mm. At untrained 256x192: mean 13.50350 mm, p95 25.63512 mm,
+  0.315% within 1 mm. Each reports 27,600 correlated target/view errors.
+- Artifacts: `software/ai/eval/resolution_development_v0_scorecard.json`, manifest
+  and `software/ai/vision/diagnose_resolution.py`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: changing inference size alone introduces distribution shift; this
+  does not compare matched-resolution training or prove a resolution accuracy
+  floor. At 128x96, 1 mm spans approximately 0.21 pixel; subpixel regression is
+  possible. The synthetic source is only 256x192. No confidence promotion,
+  calibration/evaluation access, retraining or installed qualification.
+- Supersedes: none
+- Next dependency: freeze a matched train/evaluate resolution experiment using
+  development data first; do not switch production input size from this diagnostic.
+
+
+### E-20260926-AI-024 — resolution diagnostic audit findings retained
+
+- Stage: S1
+- Lane: AI
+- Commit: `effa56e1e696494e1b038d8eda82e0f43de53674`
+- Change: required read-only snapshot audit after diagnostic.
+- Inputs/fixtures: repository snapshot, new diagnostic scorecard and `scripts/audit_github_snapshot.py`.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: FAIL, exit 1; 5,636 paths, 784.9 MiB, same 14 existing arm-unit
+  credential-literal-review findings; no diagnostic file finding.
+- Artifacts: scanner and existing fixtures.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: heuristic findings unresolved; no clean audit claim.
+- Supersedes: none
+- Next dependency: fixture-owner review, separately from localization research.
