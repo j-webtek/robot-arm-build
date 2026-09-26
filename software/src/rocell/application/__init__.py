@@ -223,6 +223,13 @@ from .measured_waypoint_collision_sequence import (
     MeasuredWaypointCollisionSequenceError,
     evaluate_measured_waypoint_collision_sequence,
 )
+from .fk_collision_pose_adapter import (
+    SCHEMA as FK_DERIVED_WAYPOINT_COLLISION_SEQUENCE_SCHEMA,
+    FkCollisionPoseAdapterError,
+    MeasuredConfigurationGeometryBinding,
+    MeasuredRigidAttachmentBinding,
+    derive_and_evaluate_fk_waypoint_collisions,
+)
 from .model_motion_ingress import (
     SCHEMA as MODEL_MOTION_INGRESS_SCHEMA,
     ModelMotionIngressError,
@@ -1066,6 +1073,11 @@ __all__ = [
     "MeasuredWaypointCollisionSample",
     "MeasuredWaypointCollisionSequenceError",
     "evaluate_measured_waypoint_collision_sequence",
+    "FK_DERIVED_WAYPOINT_COLLISION_SEQUENCE_SCHEMA",
+    "FkCollisionPoseAdapterError",
+    "MeasuredConfigurationGeometryBinding",
+    "MeasuredRigidAttachmentBinding",
+    "derive_and_evaluate_fk_waypoint_collisions",
     "MODEL_MOTION_INGRESS_SCHEMA",
     "MeasuredTargetRegionV2",
     "ModelMotionIngressV2Error",

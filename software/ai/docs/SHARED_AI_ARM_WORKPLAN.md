@@ -2821,3 +2821,45 @@ commissioning, or bounded physical result with its limitations intact.
 - Next dependency: derive robot-link transforms from the pinned URDF and exact
   joint result inside a trusted adapter, then require conservative bounded
   inter-waypoint samples for both rigid and configuration-sampled bodies.
+
+### E-20260926-ARM-042 — FK-derived collision-pose adapter
+
+- Stage: S3
+- Lane: ARM
+- Change: added a trusted offline adapter that reconstructs every robot-link,
+  gripper, hand-TCP, and tool-parent transform from the exact accepted IK joint
+  result, fixed gripper state, hash-pinned URDF, and measured `B_T_Wv`.
+  Non-URDF holder/camera frames are derived from measured fixed transforms
+  anchored to named URDF links. The adapter then feeds the ARM-041 full-body
+  waypoint evaluator without accepting caller-supplied robot-link overrides.
+- Safety behavior: context, build, calibration, model, base collision contract,
+  trajectory, and installed-profile lineage are revalidated. Attachment and
+  configuration-sampled geometry source hashes must already exist in the
+  installed profile. Missing attachment coverage, non-measured cable geometry,
+  crossed calibration, malformed joints, or any override attempt rejects.
+  Clear output retains the continuous-sweep blocker and has zero commands,
+  hardware access, or physical authority.
+- Artifacts: `fk_collision_pose_adapter.py`, closed v1 JSON schema,
+  FK-change/attachment-coverage/override/cable-provenance/crossed-calibration
+  tests, public application exports, portable CI selection, and shared
+  assurance updates.
+- Artifact identity: FK collision-pose adapter SHA-256
+  `5e9609b4a55539be30a51c731fdc2fc40aa66aae679693e28c275772a9b8defc`;
+  v1 report schema SHA-256
+  `54061ef2e45911908016f85306c736698b6868bd73c8e60f8066106be07ce1a9`.
+- Results: focused collision/FK/planner suite PASS, 42 tests in 4.48 seconds;
+  portable shared AI/arm selection PASS, 193 tests in 20.65 seconds;
+  snapshot audit PASS, 19 tests in 0.48 seconds; documentation PASS for 26
+  maintained documents and two SVG assets; compile and diff checks PASS.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: fixtures use accepted-measured typed geometry rather than an
+  independently measured installed workcell. Fixed attachment transforms are
+  only as trustworthy as the profile-bound sources. Evaluation remains at
+  planner waypoints; no conservative segment subdivision, cable swept volume,
+  or phase-local contact allowance is implemented.
+- Supersedes: ARM-041's caller-supplied robot rigid-transform limitation. It
+  does not supersede ARM-041's discrete-only or physical-evidence limitations.
+- Next dependency: derive bounded intermediate joint samples for every segment,
+  recompute all rigid transforms at each sample, and require profile-bound cable
+  geometry or a conservative cable envelope at each intermediate state.
