@@ -40,9 +40,14 @@ The collector deliberately leaves these blockers:
 6. T=1051 feedback protocol review is not bound; and
 7. a configuration epoch is not established.
 
-An independent reviewer must inspect the retained originals and close each
-blocker with separately hashed evidence. Only then may another tool construct
-`rocell.installed_controller_qualification_evidence.v1` and evaluate the
-qualification gate. Even a passing gate grants only zero-write profile binding;
-it never grants transport or execution authority.
+Subsequent source and linked-image review established a stronger conclusion:
+r96 is intentionally a finite one-leg diagnostic app and does not include the
+generic production command dispatcher or `T=102` / `T=105` / `T=1051` surface.
+It therefore cannot close the protocol blockers and must not be relabeled as
+the production runtime. See
+[Installed-controller command-surface compatibility](INSTALLED_CONTROLLER_SURFACE_COMPATIBILITY.md).
 
+Independent review remains required for the retained r96 historical evidence,
+but production work now proceeds by designing a separate generic runtime
+candidate. Even a future passing gate grants only zero-write profile binding;
+it never grants transport or execution authority.
