@@ -5,7 +5,8 @@
   "type": "object",
   "additionalProperties": false,
   "required": [
-    "schema", "status", "bounded_segment_qualification_sha256",
+    "schema", "status", "trajectory_screening_sha256",
+    "bounded_segment_qualification_sha256",
     "installed_collision_profile_sha256", "kinematic_model_sha256",
     "segment_count", "segment_reports", "rigid_bound_method",
     "configuration_bound_method", "all_conservative_segment_sweeps_clear",
@@ -22,6 +23,7 @@
       "BLOCKED_CONSERVATIVE_SWEEP_COLLISION",
       "BLOCKED_INCOMPLETE_CONSERVATIVE_SWEEP_EVIDENCE"
     ]},
+    "trajectory_screening_sha256": {"$ref": "#/$defs/hash"},
     "bounded_segment_qualification_sha256": {"$ref": "#/$defs/hash"},
     "installed_collision_profile_sha256": {"$ref": "#/$defs/hash"},
     "kinematic_model_sha256": {"$ref": "#/$defs/hash"},
