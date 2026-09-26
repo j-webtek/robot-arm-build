@@ -221,6 +221,16 @@ the installed collision profile. The remaining collision gap is conservative
 inter-waypoint rigid-body and cable coverage; clear waypoint samples still do
 not prove the space between them.
 
+The bounded-segment qualifier now subdivides every accepted joint-space segment
+from the fresh observed start through each IK endpoint under an explicit maximum
+joint-step policy. It recomputes FK through the trusted adapter at every
+generated sample and requires exact, hash-bound configuration geometry for the
+moving cable at each one. Sample omissions, crossed sample identities, malformed
+start/end states, and resource-cap exhaustion reject. A clear result is only
+`BOUNDED_SEGMENT_SAMPLES_CLEAR_CONSERVATIVE_SWEEP_REQUIRED`: finite sampling
+reduces an evidence gap but does not prove the swept volume between samples.
+No commands, hardware access, or physical authority are created.
+
 The S4 synthetic integration lane now proves the downstream identity plumbing
 without relaxing that physical gate. A typed assessor requires the exact
 synthetic r97 review decision and eight-component configuration epoch, the model
