@@ -599,7 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-| AI | S1 | half weight retention experiment | feature/translation-pair-evidence | ACTIVE |
 
 
 
@@ -5273,3 +5272,51 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic audit; AI-041 protected-main publication blocker remains.
 - Supersedes: none; prior failures and integration statuses retained.
 - Next dependency: Protected-branch PR/checks and AI-163 experiment.
+
+### E-20260926-AI-166 — half weight retention experiment
+
+- Stage: S1
+- Lane: AI
+- Commit: `dfacdba3c7d27893867977f37f64b8c0af67f833` (frozen source; results/tests committed with evidence)
+- Change: half weight retention experiment.
+- Inputs/fixtures: Retained AI-157/160800 development predictions; exact hashes in eval/half_support_v0_plan.json. Same points,support0.5,min3,accepted200/200/194/192.
+- Command: `python software/ai/vision/evaluate_half_support.py`
+- Result: FAIL overall. Half-retention means standard/appearance/partial/full3.011/2.417/4.319/4.394mm; >3mm tails124/79/157/175. Versus original subpixel appearance tail77→79 fails. Versus equal-support all means regress and full tails154→175 regress; full yaw improves1.643→1.512deg. Original min3 gate retained before fitting; supported weight1,unsupported0.5. Output arm equal is documented half-retention candidate.
+- Artifacts: eval/half_support_v0_report.json; frozen runner/plan
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Reused synthetic evidence,uncalibrated support,not a runtime policy. No qualification or batch changes; failed criteria retained.
+- Supersedes: none; prior failures and integration statuses retained.
+- Next dependency: Stop fixed-weight exploration. Freeze per-corner refined-coordinate error and rigid-fit residual attribution to distinguish outliers from common translation bias before changing candidate selection or model supervision.
+
+### E-20260926-AI-167 — half retention verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `dfacdba3c7d27893867977f37f64b8c0af67f833` (frozen source; results/tests committed with evidence)
+- Change: half retention verification.
+- Inputs/fixtures: AI-166 manifest/report and retained original visibility predictions.
+- Command: `python -m pytest -q software/ai/tests/test_half_support.py`
+- Result: PASS,1 test; hashes,case identities,acceptance,unchanged references,means/tails and criteria verified. Existing pytest-asyncio warning.
+- Artifacts: software/ai/tests/test_half_support.py
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Consistency verification only; batch unchanged,shared boundary suite not triggered.
+- Supersedes: none; prior failures and integration statuses retained.
+- Next dependency: AI-166 coordinate attribution.
+
+### E-20260926-AI-168 — half retention publication audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `dfacdba3c7d27893867977f37f64b8c0af67f833` (frozen source; results/tests committed with evidence)
+- Change: half retention publication audit.
+- Inputs/fixtures: Repository with AI-166/167 and reviewed fixture allowlist.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS;5936 paths,837.4 MiB,0 unresolved findings,14 reviewed synthetic fixtures.
+- Artifacts: audit stdout and snapshot
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic audit; AI-041 protected-main publication blocker remains.
+- Supersedes: none; prior failures and integration statuses retained.
+- Next dependency: Protected-branch PR/checks and AI-166 diagnosis.

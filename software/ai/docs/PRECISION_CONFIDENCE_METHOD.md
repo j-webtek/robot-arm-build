@@ -504,3 +504,8 @@ Equal weights among the same predicted-supported corners pass all16 relative cri
 ### Support attribution (AI-163)
 
 Among366 accepted occluded-only exclusion cases,mean improves0.904mm but yaw worsens0.106deg;47 >3mm failures recover while23 new failures appear. Only8 accepted clear-only exclusion cases occur,with2 new/2 recovered tails. False clear rejection therefore does not explain all regressions. Next freeze one half-weight retention experiment for predicted-unsupported corners,keeping minimum3 support and no oracle labels in fitting. Source `2cbe9584af422a35821caa3db1794f9cbee04600`; `eval/support_attribution_v0_report.json`. No qualification or runtime changes.
+
+
+### Half retention (AI-166)
+
+Keeping predicted-unsupported corners at fixed weight0.5 while supported corners have weight1 retains the original min3 gate. Overall criteria fail: full mean3.904→4.394mm and tails154→175 versus exclusion,despite yaw1.643→1.512deg; appearance tails77→79 versus original subpixel. No promotion. Stop fixed-weight exploration and diagnose refined-corner outliers versus common translation bias and fit residuals. Source `dfacdba3c7d27893867977f37f64b8c0af67f833`; `eval/half_support_v0_report.json` (arm equal denotes half-retention). No qualification or runtime changes.
