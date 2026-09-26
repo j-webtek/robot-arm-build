@@ -297,6 +297,7 @@ def ingest_model_motion_batch_v2(
               "capability": batch.capability.to_dict(),
               "coordinate_profile": geometry.coordinate_profile,
               "scene_lease_id": evidence.scene_lease_id,
+              "scene_lease_sha256": evidence.scene_lease_sha256,
               "expires_at_epoch_ms": evidence.expires_at_epoch_ms,
               "valid_until_monotonic_ns": valid_until_monotonic_ns,
               "qualification_sha256": qualification.qualification_sha256,
@@ -309,5 +310,66 @@ def ingest_model_motion_batch_v2(
     return {**report, "ingress_sha256": hashlib.sha256(_canonical(report)).hexdigest()}
 
 
+def revalidate_model_motion_ingress_v2(
+    ingress: Mapping[str, Any], *, current_monotonic_ns: int,
+    expected_capability_profile_sha256: str,
+    active_scene_lease_sha256: str,
+    active_placement_observation_sha256: str,
+    active_target_catalog_sha256: str,
+) -> dict[str, Any]:
+    """Recheck one admitted batch immediately before deterministic planning.
+
+    This check deliberately uses the monotonic deadline derived at ingress. It
+    cannot extend a lease after a wall-clock rollback and still emits no route,
+    controller command, or physical authority.
+    """
+    if not isinstance(ingress, Mapping):
+        raise TypeError("ingress must be a mapping")
+    if ingress.get("schema") != SCHEMA or ingress.get("status") != \
+            "ACCEPTED_V2_FOR_FRESH_SEQUENTIAL_PLANNER_GATES":
+        raise ModelMotionIngressV2Error("ingress is not an accepted v2 record")
+    if ingress.get("hardware_access") is not False \
+            or ingress.get("physical_authority") is not False \
+            or ingress.get("controller_commands") != []:
+        raise ModelMotionIngressV2Error("ingress violates zero authority")
+    claimed = ingress.get("ingress_sha256")
+    unsigned = {key: value for key, value in ingress.items() if key != "ingress_sha256"}
+    if not isinstance(claimed, str) or hashlib.sha256(_canonical(unsigned)).hexdigest() != claimed:
+        raise ModelMotionIngressV2Error("ingress_sha256 does not match content")
+    deadline = ingress.get("valid_until_monotonic_ns")
+    if isinstance(current_monotonic_ns, bool) or not isinstance(current_monotonic_ns, int) \
+            or current_monotonic_ns <= 0 or isinstance(deadline, bool) \
+            or not isinstance(deadline, int):
+        raise ModelMotionIngressV2Error("monotonic time is invalid")
+    if current_monotonic_ns >= deadline:
+        raise ModelMotionIngressV2Error("ingress lease expired before planning")
+    capability = ingress.get("capability")
+    if not isinstance(capability, Mapping) or capability.get("profile_sha256") != _digest(
+            expected_capability_profile_sha256, "capability hash"):
+        raise ModelMotionIngressV2Error("capability was changed or revoked")
+    active = {
+        "scene_lease_sha256": _digest(active_scene_lease_sha256, "scene lease hash"),
+        "placement_observation_sha256": _digest(
+            active_placement_observation_sha256, "placement hash"),
+        "target_catalog_sha256": _digest(active_target_catalog_sha256, "target map hash"),
+    }
+    for field, expected in active.items():
+        if ingress.get(field) != expected:
+            raise ModelMotionIngressV2Error(f"{field} was changed or revoked")
+    report = {
+        "schema": "rocell.model_motion_preplanner_gate.v2",
+        "status": "FRESH_FOR_DETERMINISTIC_PLANNING",
+        "ingress_sha256": claimed,
+        "batch_sha256": ingress.get("batch_sha256"),
+        "checked_at_monotonic_ns": current_monotonic_ns,
+        "valid_until_monotonic_ns": deadline,
+        "controller_commands": [], "hardware_access": False,
+        "physical_authority": False,
+    }
+    return {**report, "preplanner_gate_sha256": hashlib.sha256(
+        _canonical(report)).hexdigest()}
+
+
 __all__ = ["SCHEMA", "MeasuredTargetRegionV2", "ModelMotionIngressV2Error",
-           "TrustedLocalizationQualificationV2", "ingest_model_motion_batch_v2"]
+           "TrustedLocalizationQualificationV2", "ingest_model_motion_batch_v2",
+           "revalidate_model_motion_ingress_v2"]

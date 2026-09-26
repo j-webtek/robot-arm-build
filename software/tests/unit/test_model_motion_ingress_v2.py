@@ -9,7 +9,8 @@ import pytest
 from rocell.application.context import load_simulation_context
 from rocell.application.model_motion_ingress_v2 import (
     MeasuredTargetRegionV2, ModelMotionIngressV2Error,
-    TrustedLocalizationQualificationV2, ingest_model_motion_batch_v2)
+    TrustedLocalizationQualificationV2, ingest_model_motion_batch_v2,
+    revalidate_model_motion_ingress_v2)
 from rocell.models import (
     ActionPlan, Device, Interaction, ModelMotionBatchV2, ModelMotionBatchV2Error,
     ModelMotionProposalV2, MotionCapabilityV2, MotionEvidenceV2, MotionGeometryV2,
@@ -225,3 +226,35 @@ def test_v1_and_v2_decoders_do_not_auto_upgrade_each_other():
     if v1_fixture.exists():
         with pytest.raises(ModelMotionBatchV2Error):
             decode_model_motion_batch_v2_json(v1_fixture.read_bytes())
+
+
+def test_preplanner_recheck_uses_monotonic_deadline_and_active_registry_hashes():
+    context, plan = load_simulation_context(WORKSPACE, MANIFEST), _plan()
+    ingress = _ingest(_batch(context, plan=plan), plan, context)
+    values = dict(current_monotonic_ns=15_999_999_999,
+        expected_capability_profile_sha256=H["e"],
+        active_scene_lease_sha256=H["f"],
+        active_placement_observation_sha256=H["e"],
+        active_target_catalog_sha256=context.targets.content_sha256)
+    gate = revalidate_model_motion_ingress_v2(ingress, **values)
+    assert gate["status"] == "FRESH_FOR_DETERMINISTIC_PLANNING"
+    assert gate["controller_commands"] == []
+    with pytest.raises(ModelMotionIngressV2Error, match="expired before planning"):
+        revalidate_model_motion_ingress_v2(
+            ingress, **{**values, "current_monotonic_ns": 16_000_000_000})
+    with pytest.raises(ModelMotionIngressV2Error, match="changed or revoked"):
+        revalidate_model_motion_ingress_v2(
+            ingress, **{**values, "active_placement_observation_sha256": "1" * 64})
+
+
+def test_preplanner_recheck_rejects_tampered_ingress():
+    context, plan = load_simulation_context(WORKSPACE, MANIFEST), _plan()
+    ingress = _ingest(_batch(context, plan=plan), plan, context)
+    ingress["request_id"] = "tampered"
+    with pytest.raises(ModelMotionIngressV2Error, match="ingress_sha256"):
+        revalidate_model_motion_ingress_v2(ingress,
+            current_monotonic_ns=10_000_000_000,
+            expected_capability_profile_sha256=H["e"],
+            active_scene_lease_sha256=H["f"],
+            active_placement_observation_sha256=H["e"],
+            active_target_catalog_sha256=context.targets.content_sha256)

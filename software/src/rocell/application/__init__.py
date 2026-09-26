@@ -226,6 +226,7 @@ from .model_motion_ingress_v2 import (
     ModelMotionIngressV2Error,
     TrustedLocalizationQualificationV2,
     ingest_model_motion_batch_v2,
+    revalidate_model_motion_ingress_v2,
 )
 from .model_motion_sequence_coordinator import (
     SCHEMA as MODEL_MOTION_SEQUENCE_SNAPSHOT_SCHEMA,
@@ -909,6 +910,7 @@ __all__ = [
     "ModelMotionIngressV2Error",
     "TrustedLocalizationQualificationV2",
     "ingest_model_motion_batch_v2",
+    "revalidate_model_motion_ingress_v2",
     "MODEL_MOTION_SEQUENCE_SNAPSHOT_SCHEMA",
     "READY_PLANNER_STATUS",
     "ActionDisposition",
