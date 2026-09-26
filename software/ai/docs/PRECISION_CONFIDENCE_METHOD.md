@@ -221,3 +221,17 @@ retain exact source, paired cases and tests. No preprocessing is installed.
 Next: inspect paired appearance-shift threshold crossings and associated images
 before another intervention. Do not relax criteria or treat the close development
 result as calibration, generalization or physical evidence.
+
+
+### Paired crossing diagnosis
+
+AI-064 through AI-066 show that normalization recovered81 dark-image failures
+while introducing1, leaving6 failures. Appearance-shift retained all7 previous
+failures and introduced1. That new case changes maximum error1.604 -> 3.821 mm,
+mainly translation, without pixel saturation; its gain overlaps gains of passing
+cases. Paired image inspection alone does not establish the cause. The original
+acceptance failure remains unchanged.
+
+Next: predeclare a bounded pixel-only dark-image correction comparison, retaining
+all acceptance limits. Any darkness threshold is a research parameter; physical
+calibration and fresh evaluation remain separate requirements.

@@ -604,7 +604,6 @@ remove it only in the same commit that appends the resulting evidence row.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI | S1 | `vision/diagnose_normalization_crossings.py`, crossing manifest/report/tests and diagnostic images | feature/translation-pair-evidence | ACTIVE: paired normalization threshold-crossing diagnosis |
 | Unclaimed | S2 | qualified perception adapter and complete shared gate | — | AVAILABLE |
 | Unclaimed | S4 | collect and independently review installed controller evidence | — | AVAILABLE |
 
@@ -2747,3 +2746,71 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: heuristic audit only; AI-041 protected-main PR publication blocker remains.
 - Supersedes: none; historical audit failures retained.
 - Next dependency: protected-branch PR/checks and AI-061 diagnostic.
+
+### E-20260926-AI-064 — paired normalization crossing diagnosis
+
+- Stage: S1
+- Lane: AI
+- Commit: `e5e3bc7fe7fbdff2b6e43324bf72b2b9066ff327` (frozen diagnostic and input hashes before run)
+- Change: recounted paired transitions across the existing 3mm threshold for all
+  conditions; reconstructed all eight appearance-shift cases failing either arm
+  and produced a labeled contact sheet with pixel statistics/hashes.
+- Inputs/fixtures: retained AI-061 800 paired development cases; exact scorecard,
+  renderer and normalization source hashes in `eval/normalization_crossings_v0.manifest.json`.
+- Command: `python software/ai/vision/diagnose_normalization_crossings.py`
+- Result: PASS diagnostic, with AI-061 acceptance failure unchanged. New/persistent/
+  recovered failures respectively: standard0/5/0, appearance1/7/0,
+  challenge1/7/3, darkened1/5/81. Appearance seed15000114 has maximum error
+  1.603918 -> 3.821403 mm; center1.561153 -> 3.765002 mm;
+  yaw0.059889 -> 0.070912 degrees; gain1.152520, no saturated RGB samples.
+  Its gain lies within stable-pass gain range0.938971..1.207564, so a simple
+  gain range cannot separate it from all passing examples. Visual inspection of
+  paired contact sheet shows no obvious arm obstruction for this new failure;
+  that observation is not a causal explanation or visibility qualification.
+- Artifacts: `eval/normalization_crossings_v0_report.json`, manifest, diagnostic;
+  ignored reproducible `results/normalization_crossings_v0/appearance_crossings.png`
+  with hash in report, visually inspected after generation.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: post-hoc analysis of reused synthetic development labels; crossing
+  labels are unavailable at inference and must never be used as a runtime gate.
+  No new predictions, tuned threshold, calibration, or qualification. No boundary
+  change; shared boundary suite not triggered.
+- Supersedes: none; AI-061 remains a failed acceptance result.
+- Next dependency: predeclare a bounded dark-only normalization comparison using
+  image pixels alone and unchanged acceptance limits. Treat any chosen darkness
+  threshold as a research parameter, not physical calibration; require fresh
+  held-out evaluation and confidence work after development success.
+
+### E-20260926-AI-065 — crossing diagnosis consistency tests
+
+- Stage: S1
+- Lane: AI
+- Commit: `e5e3bc7fe7fbdff2b6e43324bf72b2b9066ff327` (implementation baseline; tests committed with report)
+- Change: verified strict3mm boundary cases, frozen hashes, seed groups,
+  transition accounting, source-case preservation and all eight selected details.
+- Inputs/fixtures: analytic threshold values; AI-061 scorecard and AI-064 report.
+- Command: `python -m pytest -q software/ai/tests/test_normalization_crossings.py`
+- Result: PASS, 2 tests; existing pytest-asyncio configuration deprecation warning.
+- Artifacts: named tests and AI-064 report.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: consistency only, not physical accuracy or causal identification.
+- Supersedes: none
+- Next dependency: AI-064 bounded comparison.
+
+### E-20260926-AI-066 — crossing diagnosis publication audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `e5e3bc7fe7fbdff2b6e43324bf72b2b9066ff327` (implementation baseline plus report/test snapshot)
+- Change: audited publication snapshot.
+- Inputs/fixtures: repository with AI-064/065 artifacts and reviewed fixture allowlist.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS; 5721 paths, 788.5 MiB, 0 unresolved findings, 14 reviewed synthetic fixtures.
+- Artifacts: audit stdout and repository snapshot.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: heuristic audit; AI-041 protected-main PR blocker remains.
+- Supersedes: none; historical failures preserved.
+- Next dependency: protected-branch PR/checks and AI-064 comparison.
