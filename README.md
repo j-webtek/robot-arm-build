@@ -1,6 +1,15 @@
-# RoCell — Robot Arm Build
+# Tactevra
 
-RoCell is an experimental robotics project with a long-term goal: let you
+![Tactevra — intent into action](assets/brand/tactevra-banner.svg)
+
+**An experimental local-first robotics platform connecting user intent, visual evidence, and checked physical actions.**
+
+[Get started](docs/GETTING_STARTED.md) · [Current capabilities](PROJECT_STATUS.md) · [Documentation](docs/README.md) · [Contribute](CONTRIBUTING.md)
+
+Formerly **RoCell**. Existing `rocell` commands, package names, and hardware release
+paths remain unchanged for compatibility. The GitHub repository URL has not changed.
+
+Tactevra is an experimental robotics project with a long-term goal: let you
 give an AI a task in plain language and have a robot arm carry out the
 keyboard and phone actions on your behalf.
 
@@ -9,11 +18,11 @@ positioning the arm, pressing keyboard keys, and tapping a phone with a
 stylus. This repository contains the control software, simulations, test
 records, and printable workcell designs that support that work.
 
-AI integration will come later. The aim is to train or adapt an AI to
-translate your intent into device actions, use the arm's verified control
-interface, observe the results, and determine whether the task succeeded.
-For example, a future request to enter text or navigate a phone app would
-become a sequence of planned, checked physical actions.
+AI and arm software are being developed together. The offline AI pipeline
+interprets supported requests and proposes target coordinates. The arm software
+checks those proposals before planning movement. A future request to enter text
+or navigate a phone app would become a sequence of checked physical actions with
+confirmation that the intended input occurred.
 
 Today's movement and feedback tests build the foundation for that future
 system. Reliable typing, phone interaction, and AI-directed task execution
@@ -21,14 +30,17 @@ are development goals, not completed capabilities.
 
 ## Where we are
 
-As of September 25, 2026, the arm has completed a supervised five-leg,
-noncontact movement cycle with verified controller feedback and an export
-for each leg. This demonstrates that specific sequence; physical key accuracy
-and stylus contact are still to be established.
+As of September 26, 2026, you can explore a local rehearsal interface, interpret
+supported text requests offline, and inspect simulated coordinate and movement
+results. The AI v2 command assembler and arm validation interface have passed a
+shared test using synthetic evidence. Supervised noncontact arm movements are
+also documented in the lab records.
 
-The next stage is stylus loading and measurement, followed by keyboard
-registration and further ghost-typing tests—movements above keys without
-pressing them. Camera mounting and integration are also unfinished.
+The next software milestone is connecting trustworthy visual observations to
+that command interface and carrying them through the complete planning path.
+The project has not demonstrated a camera-to-arm workflow that reliably types
+on a physical keyboard or operates a phone. Measured calibration, tool geometry,
+contact behavior, and confirmation of actual device input remain open.
 
 Read [project status](PROJECT_STATUS.md) for the checkpoint, evidence, and
 next steps. Simulation results, servo feedback, and measured tip accuracy
@@ -38,6 +50,7 @@ are tracked separately.
 
 | I want to… | Read this |
 | --- | --- |
+| Try the project for the first time | [Getting started](docs/GETTING_STARTED.md) |
 | Understand what works and what comes next | [Project status](PROJECT_STATUS.md) |
 | Set up the code and contribute | [Developer setup](CONTRIBUTING.md) |
 | Explore the local interface | [Wizard workbench guide](software/docs/WIZARD_WORKBENCH.md) |
@@ -60,6 +73,7 @@ actions and terminal interface.
 | Folder | Contents |
 | --- | --- |
 | [software/](software/README.md) | Python runtime, firmware, models, tests, and technical documentation |
+| [software/ai/](software/ai/README.md) | Intent parsing, vision research, and the AI-to-arm command interface |
 | [active-project/RoCell_v0_3/](active-project/RoCell_v0_3/README_FIRST.md) | Active RC03 hardware design, print files, and assembly instructions |
 | [hardware/static_overhead_camera/](hardware/static_overhead_camera/README.md) | Static overhead camera design and mounting work |
 | [scripts/](scripts/) | Project tools and experiment runners |
@@ -86,7 +100,8 @@ on this page are preserved in the
 
 ## License
 
-Copyright 2026 RoCell contributors.
+Copyright 2026 RoCell contributors. Historical copyright and attribution notices
+remain unchanged during the Tactevra brand transition.
 
 Original contributions in this repository are licensed under the
 [Apache License, Version 2.0](LICENSE).
