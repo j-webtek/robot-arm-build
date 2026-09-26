@@ -17,12 +17,9 @@ python -m venv .venv
 .\.venv\Scripts\python -m pip install -e './software[test]'
 ```
 
-The shared AI v2 schema integration test also imports `jsonschema`, which is not
-currently included in the test extra. Install it before running that test:
-
-```powershell
-.\.venv\Scripts\python -m pip install jsonschema
-```
+The test extra includes `jsonschema` for the shared AI v2 schema integration
+tests. Use [offline verification](docs/CI.md) to reproduce the bounded CI checks
+in a fresh environment before submitting a change.
 
 Use the same virtual environment interpreter for test commands. Model training
 and optional vision runtimes have additional requirements documented under
