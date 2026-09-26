@@ -192,6 +192,16 @@ requires a fresh observed starting joint state, performs deterministic densified
 and sampled joint-continuity checks, and remains blocked on incomplete full-body,
 tool, and cable collision geometry. None of these artifacts carries authority.
 
+The trajectory screener can now consume the strict installed measured-collision
+profile rather than silently reverting to nominal readiness. It rechecks the
+profile's manifest, build snapshot, robot model, and base-contract lineage and
+records the installed profile, contract, and clearance-policy hashes in a v2
+report. A complete installed profile removes only the
+`FULL_COLLISION_GEOMETRY_INCOMPLETE` blocker. The report deliberately replaces
+it with `CONTINUOUS_FULL_BODY_COLLISION_SWEEP_NOT_IMPLEMENTED`; no collision
+clearance, envelope, command, or physical authority is inferred merely from
+loading measured body envelopes.
+
 The S4 synthetic integration lane now proves the downstream identity plumbing
 without relaxing that physical gate. A typed assessor requires the exact
 synthetic r97 review decision and eight-component configuration epoch, the model

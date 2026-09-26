@@ -5181,3 +5181,44 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic audit; AI-041 protected-main publication blocker remains.
 - Supersedes: none; historical failures and integration status retained.
 - Next dependency: Protected-branch PR/checks and AI-160 diagnosis.
+### E-20260926-ARM-040 — installed measured collision profile at planner seam
+
+- Stage: S3
+- Lane: ARM
+- Change: connected the existing strict installed collision-geometry profile
+  to measured trajectory screening and both v1/v2 model-motion planner entry
+  points. New screening reports use the additive v2 schema and bind the geometry
+  source, collision contract, installed-profile content, and measured
+  clearance-policy hashes. The frozen v1 schema remains unchanged.
+- Safety behavior: the screener rechecks manifest, manifest hash, active build,
+  build snapshot, robot model, and base-contract lineage. A typed profile from
+  another context rejects. A diagnostically complete installed profile removes
+  only `FULL_COLLISION_GEOMETRY_INCOMPLETE`; it necessarily retains
+  `CONTINUOUS_FULL_BODY_COLLISION_SWEEP_NOT_IMPLEMENTED`, with full collision
+  screening, continuous-clearance proof, commands, hardware access, and
+  physical authority all false.
+- Artifacts: `measured_trajectory_screening.py`, planner-gate propagation,
+  `measured_trajectory_screening_v2.schema.json`, positive/crossed-build unit
+  tests, portable CI inclusion, and shared status/assurance documentation.
+- Artifact identity: measured trajectory screening implementation SHA-256
+  `9aaccc382534663c80b8dc03840934d52af07100b79d75e492122a911aaa6d61`;
+  v2 report schema SHA-256
+  `0e0676a67eefd1c7feb3784f07e7590b425ba93c3dcd20bdf62d0f20d0e6a2c3`.
+- Results: focused planner/screening integration suite PASS, 36 tests in 6.19
+  seconds; expanded shared AI/arm suite PASS, 237 tests in 22.25 seconds;
+  documentation PASS for 26 maintained documents and two SVG assets; snapshot
+  audit PASS for 5,738 paths and 904.0 MiB with zero unresolved findings and 14
+  reviewed synthetic fixtures; diff check PASS. Protected CI remains required
+  before merge.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: no measured installed profile has been supplied by the workcell;
+  tests use typed measured-shape fixtures. No per-waypoint rigid-body transforms,
+  deformable cable samples, phase-local contact allowances, or continuous sweep
+  implementation exist in this increment.
+- Supersedes: no physical evidence. This closes the previously disconnected
+  installed-profile/planner seam while preserving every calibration, collision,
+  controller, review, and physical-use blocker.
+- Next dependency: implement deterministic per-waypoint full-body and cable
+  collision evaluation against this exact profile, then qualify it with
+  independently measured installed geometry and conservative clearance data.
