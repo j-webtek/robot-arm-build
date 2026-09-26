@@ -444,3 +444,8 @@ Identical pixels/checkpoint reproduce the saved CUDA batch32 probabilities exact
 ### Continuous feature weighting (AI-125/126)
 
 Matched training replaces hard peaks with detached full-softmax weighting of3x3 local feature neighborhoods, preserving parameter initialization, loss, data, budget and selection. Relative localization checks improve, but hidden false-visible rises6→15/201 and clear recall drops83.44%→62.10%. Largest tested cross-device probability delta falls0.150383→0.000349224, yet near-threshold decisions still differ (weighted1/4 CPU-to-CUDA1/32 flips). Both fixed promotion and stability criteria fail. No runtime change or qualification. Next diagnose mass spread and threshold margins before another pooling choice; do not tune thresholds against reused reports. Frozen training82b8fc76aee4aa2d7849cbe6cba9f35b5891daf6, parity70db43fae214c1b374b5fb52789e57be5e3c8fba; reports landmark_weighted_visibility_v0_* and weighted_visibility_*_parity_report.json.
+
+
+### Weighted spread diagnosis (AI-129)
+
+Rejected clear corners have higher heatmap entropy4.94 versus4.24 and lower truth-neighborhood mass0.468 versus0.535, but smaller peak error5.19 versus12.36px. This supports investigating spread without attributing all rejection to position error. Five cross-device threshold flips lie within0.000110 of0.5 on CPU. No threshold was changed. Next freeze one matched temperature0.5 versus1.0 weighting hypothesis, without a sweep; retain unchanged criteria and require future fresh evaluation. Source `6e4105736ad903ac5b91981c24ff2f514c753a1a`; `eval/weighted_spread_v0_report.json`. Diagnostic truth-centered mass is never runtime calibration.

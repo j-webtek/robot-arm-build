@@ -599,7 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-| AI | S1 | weighted heatmap spread diagnosis | feature/translation-pair-evidence | ACTIVE |
 
 
 
@@ -4446,3 +4445,51 @@ commissioning, or bounded physical result with its limitations intact.
   `987cbe86d98440734d8336c704f1ecd89692675a9cb1620cb674e4132957b416`,
   followed by independently reviewed retained measurements for all eight epoch
   components.
+
+### E-20260926-AI-129 — weighted heatmap spread and threshold diagnosis
+
+- Stage: S1
+- Lane: AI
+- Commit: `6e4105736ad903ac5b91981c24ff2f514c753a1a` (frozen source; result/tests committed with evidence)
+- Change: weighted heatmap spread and threshold diagnosis.
+- Inputs/fixtures: 800 reused synthetic development images,3200 corners, weighted checkpoint1551db19d1a4e34b4ebf9e793e4fa87b9d8e8f07ceefcd9f8cf94f6bf2b5d3a1; exact source/input hashes in eval/weighted_spread_v0.manifest.json.
+- Command: `python software/ai/vision/diagnose_weighted_spread.py`
+- Result: Completed descriptive diagnosis. Rejected/accepted clear counts1037/1699; entropy4.93842/4.24252, mass within8px0.46830/0.53454, peak error5.19219/12.36132px. Hidden rejected/accepted186/15; entropy4.29255/3.91302, mass0.44928/0.38421. Thus greater spread associates with clear rejection, but rejected clear peaks are closer on average; no single-cause claim. All5 retained CPU/GPU flipped cases have CPU threshold distance5.90e-6..1.09553e-4.
+- Artifacts: eval/weighted_spread_v0_report.json; frozen runner/manifest
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Reused data, diagnostic truth-centered mass only, CPU single-image inference; group averages are associations. No retraining, threshold tuning, qualification or runtime calibration.
+- Supersedes: none; failures and integration statuses preserved.
+- Next dependency: Freeze a matched fixed-temperature0.5 versus1.0 continuous-weighting training comparison, chosen as one explicit hypothesis (no sweep); retain existing visibility/localization/stability criteria and require fresh evaluation before any promotion.
+
+### E-20260926-AI-130 — weighted spread verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `6e4105736ad903ac5b91981c24ff2f514c753a1a` (frozen source; result/tests committed with evidence)
+- Change: weighted spread verification.
+- Inputs/fixtures: AI-129 manifest/rows and frozen AI-126 parity report; exact hashes in manifest.
+- Command: `python -m pytest -q software/ai/tests/test_weighted_spread.py`
+- Result: PASS,1 test; hashes, group means/counts and individual threshold distances independently recomputed. Existing pytest-asyncio configuration warning.
+- Artifacts: software/ai/tests/test_weighted_spread.py
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Arithmetic/provenance check, not qualification; batch contract unchanged, shared boundary suite not triggered.
+- Supersedes: none; failures and integration statuses preserved.
+- Next dependency: AI-129 matched pooling hypothesis.
+
+### E-20260926-AI-131 — weighted spread publication audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `6e4105736ad903ac5b91981c24ff2f514c753a1a` (frozen source; result/tests committed with evidence)
+- Change: weighted spread publication audit.
+- Inputs/fixtures: Repository snapshot with AI-129/130 and reviewed fixture allowlist.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS;5864 paths,821.5 MiB,0 unresolved findings,14 reviewed synthetic fixtures.
+- Artifacts: audit stdout and repository snapshot
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic audit; AI-041 protected-main publication blocker remains.
+- Supersedes: none; failures and integration statuses preserved.
+- Next dependency: Protected-branch PR/checks and AI-129 experiment.
