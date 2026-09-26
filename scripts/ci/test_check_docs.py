@@ -7,7 +7,7 @@ from check_docs import (PUBLIC_ROUTES, PUBLIC_TITLES, issue_template_error,
                         public_entry_errors, without_fences)
 
 
-BASE = 'https://github.com/j-webtek/robot-arm-build/issues/new'
+BASE = 'https://github.com/j-webtek/tactevra/issues/new'
 
 
 class IssueTemplateLinkTests(unittest.TestCase):

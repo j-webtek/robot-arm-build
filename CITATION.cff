@@ -1,0 +1,16 @@
+cff-version: 1.2.0
+message: >-
+  If you use Tactevra in research or engineering work, cite this repository and
+  the exact commit or experimental release that you evaluated.
+title: Tactevra
+type: software
+authors:
+  - name: Tactevra contributors
+repository-code: https://github.com/j-webtek/tactevra
+url: https://github.com/j-webtek/tactevra/blob/main/docs/README.md
+license: Apache-2.0
+keywords:
+  - robotics
+  - robot control
+  - computer vision
+  - human-robot interaction
