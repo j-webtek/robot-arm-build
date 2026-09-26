@@ -69,3 +69,14 @@ zero at threshold 0.95. This is an optimistic feature-selection comparison, not
 held-out improvement. No additional calibration/evaluation seeds were consumed.
 See `eval/local_features_dev_v0_scorecard.json`. Investigate localization/feature
 resolution before another held-out run; runtime abstention remains unchanged.
+
+
+## Resolution sensitivity diagnostic
+
+On existing development groups, the unchanged pose model has 1.032 mm mean error
+at its trained 128x96 input size. Feeding native 256x192 without retraining worsens
+mean error to 13.503 mm. This is distribution-shift evidence, not a high-resolution
+training comparison. A 1 mm tolerance is about 0.21 input pixel at 128x96, but
+subpixel regression remains possible; do not assert a hard pixel accuracy floor.
+Next compare matched-resolution training on development data before reserving a
+new held-out experiment. See `eval/resolution_development_v0_scorecard.json`.

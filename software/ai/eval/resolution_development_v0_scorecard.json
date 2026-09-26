@@ -1,0 +1,109 @@
+{
+  "scope": "DEVELOPMENT_ONLY",
+  "manifest_sha256": "63e49c4bbb128f3e75a55222b1400fec1ad1ca7034f2aa19c9265570460e75ba",
+  "image_data_sha256": "f6c02145bc9e601f4715bda8d7da49d11452b147c121fcae35f45093c6995e20",
+  "target_catalog_sha256": "6779213e832ab27eeda1e7fb245f57ff8cb0d56707b5aa73a8f31ec483a620f2",
+  "results": {
+    "[128, 96]": {
+      "conditions": {
+        "standard": {
+          "count": 9200,
+          "mean_mm": 0.9351385045731383,
+          "p95_mm": 2.064410761260288,
+          "maximum_mm": 4.361044072107019,
+          "within_1mm_fraction": 0.6272826086956522
+        },
+        "appearance_shift": {
+          "count": 9200,
+          "mean_mm": 0.9876081002686442,
+          "p95_mm": 2.1465786218288514,
+          "maximum_mm": 5.590686450877717,
+          "within_1mm_fraction": 0.5952173913043478
+        },
+        "challenge": {
+          "count": 9200,
+          "mean_mm": 1.1722420754509786,
+          "p95_mm": 2.725374702534784,
+          "maximum_mm": 8.031300264466356,
+          "within_1mm_fraction": 0.5301086956521739
+        }
+      },
+      "all": {
+        "count": 27600,
+        "mean_mm": 1.0316628934309204,
+        "p95_mm": 2.3019077634429896,
+        "maximum_mm": 8.031300264466356,
+        "within_1mm_fraction": 0.5842028985507246
+      },
+      "seed_group_maximum_error": {
+        "count": 200,
+        "mean_mm": 1.8500910897689573,
+        "p95_mm": 3.6571970506488056,
+        "maximum_mm": 8.031300264466356,
+        "within_1mm_fraction": 0.13
+      }
+    },
+    "[256, 192]": {
+      "conditions": {
+        "standard": {
+          "count": 9200,
+          "mean_mm": 12.937031108118033,
+          "p95_mm": 23.829305752481165,
+          "maximum_mm": 43.09278393650956,
+          "within_1mm_fraction": 0.002282608695652174
+        },
+        "appearance_shift": {
+          "count": 9200,
+          "mean_mm": 13.130134423022144,
+          "p95_mm": 24.802905748746454,
+          "maximum_mm": 43.27894247812309,
+          "within_1mm_fraction": 0.002717391304347826
+        },
+        "challenge": {
+          "count": 9200,
+          "mean_mm": 14.44332377010249,
+          "p95_mm": 28.365711754724998,
+          "maximum_mm": 56.57458312631448,
+          "within_1mm_fraction": 0.0044565217391304346
+        }
+      },
+      "all": {
+        "count": 27600,
+        "mean_mm": 13.503496433747555,
+        "p95_mm": 25.635123985665988,
+        "maximum_mm": 56.57458312631448,
+        "within_1mm_fraction": 0.0031521739130434784
+      },
+      "seed_group_maximum_error": {
+        "count": 200,
+        "mean_mm": 18.653419338454306,
+        "p95_mm": 35.93177862835558,
+        "maximum_mm": 56.57458312631448,
+        "within_1mm_fraction": 0.0
+      }
+    }
+  },
+  "resolution_scale": {
+    "[128, 96]": {
+      "mm_per_pixel_x": 4.765625,
+      "mm_per_pixel_y": 4.760416666666667,
+      "one_mm_pixels_x": 0.2098360655737705,
+      "one_mm_pixels_y": 0.2100656455142232
+    },
+    "[256, 192]": {
+      "mm_per_pixel_x": 2.3828125,
+      "mm_per_pixel_y": 2.3802083333333335,
+      "one_mm_pixels_x": 0.419672131147541,
+      "one_mm_pixels_y": 0.4201312910284464
+    }
+  },
+  "hardware_writes": 0,
+  "physical_movements": 0,
+  "qualification_installed": false,
+  "limitations": [
+    "256x192 inference is off the trained 128x96 input distribution; this is not a matched-resolution training comparison",
+    "Subpixel regression is possible; pixel scale alone does not establish an accuracy floor",
+    "Synthetic renderer rasterizes at 256x192; upsampling cannot create new physical evidence",
+    "Development groups only; no calibration/evaluation seeds accessed; correlated sample counts"
+  ]
+}
