@@ -142,13 +142,60 @@ Dependabot can propose later pin updates; pinning does not itself prove the acti
 The workflow retains read-only permissions, non-persisted checkout credentials,
 hosted runners and bounded jobs. It does not use `pull_request_target` or deploy.
 
-Read-only GitHub API inspection on September 26, 2026 found repository default
-workflow permissions `read` and Actions PR-approval permission disabled. Private
-vulnerability reporting is enabled as documented in [SECURITY.md](../SECURITY.md).
-Dependabot security updates and secret scanning/push protection were reported
-disabled at inspection; this PR does not enable them or claim coverage. Review
-those separately, including access/availability and alert handling. The snapshot
-audit is not their replacement.
+The initial September 26, 2026 inspection found Dependabot alerts/security updates
+and secret scanning/push protection disabled. The later approved repository
+security review enabled and read back the following settings:
+
+| Setting | Verified state |
+| --- | --- |
+| Secret scanning | Enabled |
+| Secret-scanning push protection | Enabled |
+| Dependabot alerts | Enabled |
+| Dependabot security updates | Enabled, not paused |
+| Private vulnerability reporting | Enabled; retained |
+| Automatic PR merging | Disabled; retained |
+| Default workflow token | Read-only; retained |
+| Actions approval of PR reviews | Disabled; retained |
+| Non-provider-pattern scanning / validity checks | Disabled; unchanged |
+
+This used repository-level controls on the public repository. No paid product,
+billing option, bypass, history rewrite, or runtime change was requested. Settings
+apply on GitHub, not when someone clones the repository. No historical scan
+completion, absence of vulnerabilities, or full secret-pattern coverage is claimed.
+The snapshot audit remains a complementary, limited review.
+
+## Security alert handling
+
+The owner confirmed **j-webtek** as the initial contact on September 26, 2026.
+Personal notification delivery has not been configured or verified by this work.
+The owner should use repository **Watch → Custom → Security alerts** (or All
+Activity), then check personal notification delivery preferences. Consult
+[GitHub's security-notification guide](https://docs.github.com/en/subscriptions-and-notifications/how-tos/managing-security-notifications).
+Do not assume enabling a scanner subscribes every collaborator or delivers every
+pre-existing finding. Inspect the repository Security view after enablement.
+
+Maintainer procedure, without an automatic monitor or promised response time:
+
+1. Review private vulnerability reports, secret-scanning alerts and Dependabot
+   alerts in GitHub's restricted security views. Also inspect security-update PRs.
+2. For a suspected exposed secret, validate privately and revoke/rotate through
+   its owning service. Removing a file does not invalidate a credential. Never
+   paste secret values or private findings into public issues, CI logs or PRs.
+3. For dependencies, assess affected versions and actual usage with the owning
+   AI/arm lane, record a disposition in the alert, and test the proposed fix.
+   Security-update PRs still need compatibility review and required checks; no
+   automatic merge or runtime-policy relaxation is allowed. The OpenCV #17 hold
+   is not lifted by enabling security updates.
+4. Dismiss only with an evidence-backed reason; do not bulk-dismiss findings or
+   add blanket exclusions for synthetic tests. The snapshot audit's fixture
+   registry does not configure GitHub's scanner exceptions.
+5. Coordinate private disclosure and sanitized remediation guidance when needed.
+   History rewriting, changes to credentials, billing, or device deployments
+   require their own scoped authorization; this procedure does not grant it.
+
+Keep the assigned contact and settings record current when ownership changes.
+If personal notifications are unavailable, review the restricted views directly;
+do not claim unattended alert coverage.
 
 References: [Dependabot options](https://docs.github.com/en/code-security/reference/supply-chain-security/dependabot-options-reference)
 and [GitHub workflow hardening](https://docs.github.com/en/code-security/tutorials/secure-your-organization/protect-against-threats).
