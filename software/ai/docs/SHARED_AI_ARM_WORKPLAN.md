@@ -5647,3 +5647,42 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic audit; AI-041 protected-main publication blocker remains.
 - Supersedes: none; prior failures and integration statuses retained.
 - Next dependency: Protected-branch PR/checks and AI-181 study.
+### E-20260926-ARM-043 — bounded inter-waypoint joint sampling
+
+- Stage: S3
+- Lane: ARM
+- Change: added a deterministic diagnostic qualifier that starts from the
+  authenticated observed joint state, subdivides each accepted IK segment under
+  a bounded maximum joint-step policy, and passes every generated configuration
+  through the ARM-042 FK-derived full-body collision adapter.
+- Safety behavior: each intermediate cable sample must bind the exact generated
+  joint-sample hash and use measured geometry whose source is already bound by
+  the installed collision profile. Missing start state, malformed endpoints,
+  crossed sample evidence, incomplete geometry, collisions, or sample-cap
+  exhaustion reject. Clear samples retain a conservative swept-volume blocker;
+  no continuous-clear claim, command, hardware access, or physical authority is
+  produced.
+- Artifacts: `bounded_segment_collision_qualification.py`, closed v1 JSON
+  schema, bounded-step/lineage/resource-cap tests, public application exports,
+  and assurance/status updates.
+- Artifact identity: bounded segment qualifier SHA-256
+  `7494809d311fef38065a17ae548fb90c3da2a9412585acf00af12d2fe2dc001d`;
+  v1 report schema SHA-256
+  `0bf9448fe8521a9f3d3df2c6cce4c4608efbd6db866abb020af14790647ea4e9`.
+- Results: focused collision/FK/planner suite PASS, 17 tests in 4.19 seconds;
+  portable shared AI/arm selection PASS, 196 tests in 20.73 seconds;
+  documentation PASS for 26 maintained documents and two SVG assets; compile
+  and diff checks PASS.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: linear joint interpolation plus finite sampling is diagnostic,
+  not a conservative continuous swept-volume proof. Test geometry is typed as
+  accepted measured evidence but remains synthetic fixture data rather than an
+  independently measured installed workcell.
+- Supersedes: ARM-042 only for deterministic bounded intermediate sampling and
+  exact per-sample cable-evidence binding. It does not supersede physical
+  metrology, conservative inter-sample coverage, phase-local contact policy, or
+  installed release qualification.
+- Next dependency: construct a conservative swept-volume bound for every rigid
+  primitive and a profile-bound conservative cable envelope across each adjacent
+  sample pair, then prove the bound under the installed clearance policy.

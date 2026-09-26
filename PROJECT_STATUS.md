@@ -1,7 +1,7 @@
 # Tactevra project status
 
-Reviewed September 26, 2026 against merged source through `dcde6cb`, including
-the ARM-040 and ARM-041 collision-evidence increments.
+Reviewed September 26, 2026 through the ARM-043 bounded-segment collision
+increment.
 Unmerged workstream branches are not included in this summary.
 This is a capability summary for readers; the
 [shared workplan](software/ai/docs/SHARED_AI_ARM_WORKPLAN.md) retains detailed
@@ -43,7 +43,7 @@ use the shared workplan linked above.
 | Precision evidence | Identity and capture-receipt binding helpers | These establish software checks, not a qualified real-camera observation; authenticated capture and usable localization confidence remain open |
 | Arm planning adapter | Admitted v2 proposals enter the arm-owned measured planning policy | The tested valid input reaches the planner but stops for missing or stale calibration; no trajectory or controller command is produced |
 | Installed collision evidence | Strict measured profiles bind body geometry and clearance policy to the manifest, build, model, and base collision contract | The measured trajectory screener can consume this profile without falling back to nominal geometry, but continuous full-body sweep remains unimplemented and release stays blocked |
-| Waypoint collision evaluation | Supplied body and cable poses can be checked at each planned waypoint and bound to the exact trajectory | Synthetic fixtures test collisions and mismatched evidence; supplied poses are not yet derived from joint solutions, and clearance between waypoints remains unproven |
+| Bounded route collision evaluation | Robot poses are FK-derived from exact joint results at endpoints and bounded intermediate samples; every sample requires profile-bound cable geometry | Synthetic fixtures test collisions, crossed identities, and sample caps; finite samples still do not prove conservative clearance between adjacent samples |
 | Controller-command preview | Sealed synthetic trajectories can be encoded into Waveshare T=102 bytes and a proposed dispatch schedule | Offline encoding and published schemas are tested; the preview has no transport and sends nothing to the arm |
 | Execution lifecycle rehearsal | Ownership, single-use reservations, fault handling, and restart reconciliation are modeled | Tests exercise no-retry and fault rules without device I/O; this is not an installed live execution service |
 | Controller evidence gate | Required controller identity, mapping, protocol, freshness, and review fields are checked | Modeled records test rejection behavior; even a passing record grants no transport or execution authority, and no physical originals were qualified |
@@ -56,12 +56,13 @@ use the shared workplan linked above.
 
 ### Recent progress, in plain language
 
-The latest collision increment (ARM-041) checks supplied arm-body and cable
-geometry at individual points along a planned route. A collision or missing
-cable sample blocks the route. Even if all those points are clear, the software
-does not yet prove that the spaces between them are clear, or independently
-derive the supplied body poses from joint angles. The tests use fixtures, not
-measured installed geometry. This adds offline evidence without enabling motion.
+The latest collision increments derive robot and attachment poses from the exact
+accepted joint solutions, then insert bounded joint-space samples between route
+endpoints. Every generated configuration requires a hash-bound cable sample. A
+collision, missing sample, crossed identity, or resource-cap overflow blocks the
+route. Even when every sample is clear, the software does not claim the swept
+volume between adjacent samples is clear. The tests use fixtures, not measured
+installed geometry. This adds offline evidence without enabling motion.
 
 The arm lane can now inspect what controller-command bytes a synthetic movement
 would produce, without sending them. It also rehearses how one command owner
