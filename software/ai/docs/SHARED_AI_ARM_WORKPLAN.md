@@ -604,7 +604,6 @@ remove it only in the same commit that appends the resulting evidence row.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI | S1 | disagreement uncertainty evaluator, plan/report/tests, precision method | feature/translation-pair-evidence | ACTIVE: development-only prediction-disagreement bins and abstention feasibility |
 | Unclaimed | S2 | qualified perception adapter and complete shared gate | — | AVAILABLE |
 | Unclaimed | S4 | independently review passive controller candidate and close its seven explicit blockers | — | AVAILABLE |
 
@@ -3080,3 +3079,71 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: heuristic audit; AI-041 protected-main PR publication blocker remains.
 - Supersedes: none; historical audit failures preserved.
 - Next dependency: protected-branch PR/checks and AI-073 feasibility study.
+
+### E-20260926-AI-076 — conditional disagreement abstention feasibility pass
+
+- Stage: S1
+- Lane: AI
+- Commit: `89c87f25e4cd796469ea8a6c8d0a30da652cbc68` (frozen evaluator/protocol before fitting or evaluation)
+- Change: measured maximum target prediction disagreement under brightness0.95/1.05
+  around normalized input. Frozen bins at0.25/0.5/1mm; each radius is99th percentile
+  of within-bin seed-group worst errors. Minimum50 fitting groups; abstain for
+  missing radius or radius>3mm. No truth used for binning or abstention.
+- Inputs/fixtures: reused pose-training14M seeds14000000..14000599 (600 fitting groups),
+  reused development15M seeds15000000..15000199 (200 groups), seven conditions;
+  4200 fitting/1400 evaluation images, three model passes per image, 46 targets.
+  Exact source/checkpoint/catalog hashes in `eval/disagreement_uncertainty_v0.manifest.json`;
+  per-case input hashes, predictions/truth/errors and decisions in report.
+- Command: `python software/ai/vision/evaluate_disagreement_uncertainty.py`
+- Result: PASS development feasibility criteria. Bin radii2.884125/3.565022/
+  4.873882/7.330715 mm; fitting supports561/563/371/61 seed groups (bins can share
+  a seed across conditions). Only first bin admitted. Acceptance20%..73.5%
+  per condition; accepted-image coverage95.08%..98.96%, containment96.72%..100%.
+  Among187 groups with accepted images, coverage180/187=96.26%, containment
+  183/187=97.86%. Abstained images are excluded from success counts and availability
+  is reported separately. No qualification or runtime installation.
+- Artifacts: `eval/disagreement_uncertainty_v0_report.json`, manifest and evaluator.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: fitting seeds overlap pose training and development groups are reused;
+  optimistic method selection, not calibrated deployment confidence or fresh evidence.
+  Stable predictions may share bias. Oracle key regions are scoring-only. No batch
+  contract changes; boundary suite not triggered; shared integration status unchanged.
+- Supersedes: none; global-radius failure AI-073 remains retained.
+- Next dependency: freeze this exact binning, perturbation, abstention and criteria
+  on fresh calibration24M and evaluation25M seed ranges before scoring. Refit radii
+  from calibration only; report acceptance, accepted-image and accepted-group
+  coverage/containment without treating abstention as success. No runtime qualification.
+
+### E-20260926-AI-077 — disagreement feasibility evidence tests
+
+- Stage: S1
+- Lane: AI
+- Commit: `89c87f25e4cd796469ea8a6c8d0a30da652cbc68` (implementation baseline; tests committed with evidence)
+- Change: checked bin boundaries, frozen hashes, fitting supports/quantiles,
+  abstention/null outcomes, per-condition metrics and nonvacuous group criteria.
+- Inputs/fixtures: analytic bin edges and complete AI-076 report/manifest.
+- Command: `python -m pytest -q software/ai/tests/test_disagreement_uncertainty.py`
+- Result: PASS, 3 tests; existing pytest-asyncio configuration deprecation warning.
+- Artifacts: named tests and AI-076 report.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: offline consistency only, not physical qualification.
+- Supersedes: none
+- Next dependency: AI-076 fresh study.
+
+### E-20260926-AI-078 — disagreement feasibility publication audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `89c87f25e4cd796469ea8a6c8d0a30da652cbc68` (implementation baseline plus report/test snapshot)
+- Change: audited publication snapshot.
+- Inputs/fixtures: repository with AI-076/077 artifacts and reviewed fixture allowlist.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS; 5745 paths, 794.6 MiB, 0 unresolved findings, 14 reviewed synthetic fixtures.
+- Artifacts: audit stdout and repository snapshot.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: heuristic audit only; AI-041 protected-main PR publication blocker remains.
+- Supersedes: none; historical failures retained.
+- Next dependency: protected-branch PR/checks and AI-076 fresh calibration/evaluation.

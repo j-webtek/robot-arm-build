@@ -278,3 +278,17 @@ Next: predeclare an image-conditioned uncertainty/abstention feasibility study
 using development data. Preserve coverage and containment requirements and avoid
 post-hoc radius reduction. Any selected method needs separate fresh calibration
 and evaluation beyond23M; hidden target geometry remains scoring-only.
+
+
+### Conditional disagreement feasibility
+
+AI-076 through AI-078 pass a development-only study using prediction disagreement
+under fixed brightness perturbations to choose a bin-specific radius and abstain
+above3mm. Acceptance20%..73.5% per condition; accepted-group coverage96.26% and
+containment97.86%. Fitting includes pose-training seeds, so these are optimistic
+feasibility results, not calibrated confidence. Three inference passes are needed;
+stable predictions can still share error. No runtime installation occurs.
+
+Next: freeze the same method on fresh24M calibration and25M evaluation groups,
+refitting radii only on calibration. Preserve availability and accepted-image/group
+coverage/containment criteria; retain any failure without post-hoc changes.
