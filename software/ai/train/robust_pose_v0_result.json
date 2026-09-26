@@ -1,0 +1,75 @@
+{
+  "calibration_or_evaluation_used_for_selection": false,
+  "checkpoint_sha256": "a9590dce78cb801b9c37eab3522ce9785404ba2776152eefdde04a08983e8b60",
+  "development_images": 300,
+  "device": "cuda",
+  "history": [
+    {
+      "development_mse": 0.0021445257589221,
+      "epoch": 1,
+      "training_mse": 0.0037890757847991252
+    },
+    {
+      "development_mse": 0.0015718535287305713,
+      "epoch": 2,
+      "training_mse": 0.0017703164658612676
+    },
+    {
+      "development_mse": 0.0012730052694678307,
+      "epoch": 3,
+      "training_mse": 0.0015260983558578623
+    },
+    {
+      "development_mse": 0.001376341562718153,
+      "epoch": 4,
+      "training_mse": 0.0013245852648591002
+    },
+    {
+      "development_mse": 0.0012492246460169554,
+      "epoch": 5,
+      "training_mse": 0.0011823049777497847
+    },
+    {
+      "development_mse": 0.0009633431327529252,
+      "epoch": 6,
+      "training_mse": 0.0011793955265440874
+    },
+    {
+      "development_mse": 0.0009487752104178071,
+      "epoch": 7,
+      "training_mse": 0.00098660074484845
+    },
+    {
+      "development_mse": 0.0009023816091939807,
+      "epoch": 8,
+      "training_mse": 0.0009412492428802782
+    },
+    {
+      "development_mse": 0.0009888369822874665,
+      "epoch": 9,
+      "training_mse": 0.0008744774655335479
+    },
+    {
+      "development_mse": 0.000863795168697834,
+      "epoch": 10,
+      "training_mse": 0.0008940221659011311
+    },
+    {
+      "development_mse": 0.0007945815450511873,
+      "epoch": 11,
+      "training_mse": 0.0009082725364714861
+    },
+    {
+      "development_mse": 0.0007715941173955798,
+      "epoch": 12,
+      "training_mse": 0.0007848705873928137
+    }
+  ],
+  "physical_execution_authorized": false,
+  "plan_sha256": "df51ccd7a575f809b2ed68b9d6666476a13b188f2c2465aff264965514e32bfd",
+  "qualification_installed": false,
+  "schema": "rocell.ai_robust_pose_training.v0",
+  "selected_epoch": 12,
+  "selection": "minimum_development_mse_only",
+  "training_images": 3600
+}
