@@ -21,6 +21,8 @@ from rocell.application.model_motion_planner_gate_v2 import (  # noqa: E402
     ArmMotionPolicyV2)
 from rocell.application.model_motion_shadow_v2 import (  # noqa: E402
     ModelMotionShadowV2Error, run_model_motion_shadow_v2)
+from rocell.application.model_motion_sequence_coordinator_v2 import (  # noqa: E402
+    ModelMotionSequenceCoordinatorV2, ModelMotionSequenceV2Error)
 from rocell.application.observed_planner_start_state import (  # noqa: E402
     ObservedPlannerStartState)
 
@@ -159,6 +161,11 @@ def test_actual_ai_bytes_produce_one_hash_linked_zero_hardware_shadow_trace():
     assert report["intent_plan_sha256"] == plan.plan_hash
     assert report["actions"][0]["target_id"] == "H"
     assert len(report["actions"]) == 1
+    assert report["sequence_snapshot"]["action_count"] == 3
+    assert report["sequence_snapshot"]["current_action_index"] == 0
+    assert report["sequence_snapshot"]["phase"] == "BLOCKED"
+    assert report["sequence_snapshot"]["lookahead_planning_allowed"] is False
+    assert report["sequence_snapshot"]["v1_envelope_auto_upgrade_allowed"] is False
     assert report["trajectory_execution_envelope_sha256"] is None
     assert report["waveshare_bytes"] == report["controller_commands"] == []
     assert report["hardware_commands_generated"] == 0
@@ -177,3 +184,26 @@ def test_shadow_trace_rejects_stale_observed_state_before_planning():
             ingress_monotonic_ns=9_000_000_000,
             preplanner_monotonic_ns=10_000_000_000,
             planner_monotonic_ns=11_000_000_001)
+
+
+def test_v2_coordinator_forbids_lookahead_or_retry_after_first_blocker():
+    context, plan, args, registry = _actual_bytes_and_registry()
+    batch = arm.decode_model_motion_batch_v2_json(assemble(plan, **args))
+    ingress = ingest_with_trusted_registry_v2(
+        batch, plan, context, registry=registry,
+        current_time_epoch_ms=arm.T0 + 3_000,
+        current_monotonic_ns=9_000_000_000)
+    preplanner = revalidate_with_trusted_registry_v2(
+        ingress, registry=registry, current_monotonic_ns=10_000_000_000)
+    coordinator = ModelMotionSequenceCoordinatorV2(
+        batch, ingress, preplanner, context,
+        policy=ArmMotionPolicyV2("keyboard-contact-conservative-v1", 25.0,
+                                 arm.SpeedClass.SLOW))
+    observed = _fresh_observed_state(context)
+    report = coordinator.evaluate_next(
+        observed, evaluation_monotonic_ns=10_500_000_000)
+    assert report["status"] == "BLOCKED_CALIBRATION_MISSING_OR_STALE"
+    assert coordinator.current_proposal.target_id == "H"
+    with pytest.raises(ModelMotionSequenceV2Error, match="not waiting"):
+        coordinator.evaluate_next(
+            observed, evaluation_monotonic_ns=10_500_000_001)

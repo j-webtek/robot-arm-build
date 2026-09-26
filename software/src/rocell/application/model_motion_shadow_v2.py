@@ -16,14 +16,14 @@ from typing import Any
 from rocell.models import ActionPlan, decode_model_motion_batch_v2_json
 
 from .context import SimulationContext
-from .model_motion_planner_gate_v2 import (
-    ArmMotionPolicyV2,
-    evaluate_model_motion_planner_gate_v2,
-)
+from .model_motion_planner_gate_v2 import ArmMotionPolicyV2
 from .model_motion_registry_v2 import (
     TrustedMotionRegistryV2,
     ingest_with_trusted_registry_v2,
     revalidate_with_trusted_registry_v2,
+)
+from .model_motion_sequence_coordinator_v2 import (
+    ModelMotionSequenceCoordinatorV2,
 )
 from .observed_planner_start_state import ObservedPlannerStartState
 
@@ -87,27 +87,24 @@ def run_model_motion_shadow_v2(
         ingress, registry=registry,
         current_monotonic_ns=preplanner_monotonic_ns,
     )
-    actions: list[dict[str, Any]] = []
-    terminal_status = "EMPTY_PLAN"
-    for proposal in batch.proposals:
-        planner = evaluate_model_motion_planner_gate_v2(
-            proposal, batch, ingress, preplanner, context, policy=policy,
-            observed_start_state=observed_start_state,
-            evaluation_monotonic_ns=planner_monotonic_ns,
-        )
-        action = {
-            "action_index": proposal.action_index,
-            "target_id": proposal.target_id,
-            "proposal_sha256": proposal.proposal_sha256,
-            "planner_gate_v2_sha256": planner["planner_gate_v2_sha256"],
-            "status": planner["status"],
-            "next_required_stage": planner["next_required_stage"],
-            "trajectory_execution_envelope_sha256": None,
-        }
-        actions.append(action)
-        terminal_status = planner["status"]
-        if terminal_status != "READY_FOR_SINGLE_ACTION_EXECUTION_ADMISSION":
-            break
+    coordinator = ModelMotionSequenceCoordinatorV2(
+        batch, ingress, preplanner, context, policy=policy)
+    proposal = coordinator.current_proposal
+    if proposal is None:
+        raise ModelMotionShadowV2Error("v2 batch contains no action")
+    planner = coordinator.evaluate_next(
+        observed_start_state, evaluation_monotonic_ns=planner_monotonic_ns)
+    actions = [{
+        "action_index": proposal.action_index,
+        "target_id": proposal.target_id,
+        "proposal_sha256": proposal.proposal_sha256,
+        "planner_gate_v2_sha256": planner["planner_gate_v2_sha256"],
+        "status": planner["status"],
+        "next_required_stage": planner["next_required_stage"],
+        "trajectory_execution_envelope_sha256": None,
+    }]
+    terminal_status = planner["status"]
+    sequence = coordinator.snapshot()
 
     report: dict[str, Any] = {
         "schema": SCHEMA,
@@ -130,6 +127,8 @@ def run_model_motion_shadow_v2(
             observed_start_state.observed_start_state_sha256
         ),
         "arm_motion_policy_sha256": policy.policy_sha256,
+        "sequence_snapshot_v2_sha256": sequence["sequence_snapshot_v2_sha256"],
+        "sequence_snapshot": sequence,
         "actions": actions,
         "trajectory_execution_envelope_sha256": None,
         "waveshare_bytes": [],

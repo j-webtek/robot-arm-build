@@ -244,6 +244,12 @@ from .model_motion_shadow_v2 import (
     ModelMotionShadowV2Error,
     run_model_motion_shadow_v2,
 )
+from .model_motion_sequence_coordinator_v2 import (
+    SCHEMA as MODEL_MOTION_SEQUENCE_V2_SCHEMA,
+    ModelMotionSequenceCoordinatorV2,
+    ModelMotionSequenceV2Error,
+    SequencePhaseV2,
+)
 from .model_motion_sequence_coordinator import (
     SCHEMA as MODEL_MOTION_SEQUENCE_SNAPSHOT_SCHEMA,
     READY_PLANNER_STATUS,
@@ -937,6 +943,10 @@ __all__ = [
     "MODEL_MOTION_SHADOW_V2_SCHEMA",
     "ModelMotionShadowV2Error",
     "run_model_motion_shadow_v2",
+    "MODEL_MOTION_SEQUENCE_V2_SCHEMA",
+    "ModelMotionSequenceCoordinatorV2",
+    "ModelMotionSequenceV2Error",
+    "SequencePhaseV2",
     "MODEL_MOTION_SEQUENCE_SNAPSHOT_SCHEMA",
     "READY_PLANNER_STATUS",
     "ActionDisposition",
