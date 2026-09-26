@@ -142,3 +142,13 @@ frozen 95% criterion. Combined study fails; no qualification installed. Individu
 fit is 64,859/69,000 and must not replace the group criterion. Hidden target truth
 remains evaluation-only. See `eval/candidate_uncertainty_v0_scorecard.json`.
 Investigate tails on development data before changing the uncertainty method.
+
+
+## Development tail stratification
+
+At a fixed >3mm maximum-key-error threshold, 22/600 existing development images
+have large errors: 5 standard, 7 appearance-shift and 10 challenge. Every position
+quadrant and yaw bin contains failures. These are confounded descriptive strata,
+not evidence for truth-based runtime exclusion or isolated obstruction causality.
+See `eval/development_tails_v0_scorecard.json`. Next use paired single perturbations
+on development images before targeting augmentation or abstention design.

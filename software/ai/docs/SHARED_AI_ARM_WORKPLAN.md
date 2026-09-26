@@ -604,7 +604,6 @@ remove it only in the same commit that appends the resulting evidence row.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI/model | S1 | development tail diagnostic/manifest/evidence | feature/translation-pair-evidence | ACTIVE: 15M groups only; fixed >3mm diagnostic threshold |
 | Unclaimed | S2 | qualified perception adapter and complete shared gate | — | AVAILABLE |
 | Unclaimed | S4 | published permit/receipt schemas, golden fixture, and installed mapping qualification | — | AVAILABLE |
 
@@ -2174,3 +2173,66 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: heuristic audit only, not a security guarantee; earlier audit failures retained.
 - Supersedes: unresolved audit dependency in AI-044 after owner review; no historical result rewritten.
 - Next dependency: protected-main PR creation/checks from AI-041; AI-042 localization work remains separate.
+
+
+### E-20260926-AI-046 — development residual-tail stratification
+
+- Stage: S1
+- Lane: AI
+- Commit: `ee9ab18fdefb69aab4213318e902d24974322b67` (exact frozen diagnostic and manifest)
+- Change: analyzed candidate residuals on existing development images using a
+  predeclared >3mm maximum-key-error diagnostic and marginal scene/pose bins.
+- Inputs/fixtures: 200 existing 15M development groups, 600 images, 46 targets;
+  checkpoint/source hashes in `eval/development_tails_v0.manifest.json`; image
+  hash, per-image, per-key and stratified metrics in scorecard.
+- Command: `python software/ai/vision/diagnose_development_tails.py`
+- Result: PASS for descriptive diagnostic. 22/600 images exceed 3mm: standard
+  5/200 (2.5%), appearance_shift 7/200 (3.5%), challenge 10/200 (5%). All four
+  position bins and all three orientation bins contain large-error cases.
+  Mean maximum-key error 1.215390 mm; mean center error 0.856611 mm.
+- Artifacts: `software/ai/eval/development_tails_v0_scorecard.json`, manifest,
+  `software/ai/vision/diagnose_development_tails.py`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: marginal strata are correlated/confounded, not causal or statistically
+  significant effects. Truth-derived pose bins are scoring metadata, not runtime
+  rules. No per-image occlusion labels; cannot isolate lighting/obstruction causes.
+  No new calibration/evaluation data consumed; no qualification or runtime changes.
+- Supersedes: none
+- Next dependency: freeze a paired single-perturbation development study to isolate
+  added brightness, blur and obstruction effects before targeted retraining;
+  preserve all consumed calibration/evaluation splits.
+
+### E-20260926-AI-047 — development-tail evidence checks
+
+- Stage: S1
+- Lane: AI
+- Commit: `ee9ab18fdefb69aab4213318e902d24974322b67` (diagnostic baseline; new test committed with evidence)
+- Change: verified frozen hashes, exact development-only seed set, fixed tail
+  threshold and stratified counts.
+- Inputs/fixtures: frozen manifest/scorecard and `tests/test_development_tails.py`.
+- Command: `python -m pytest -q software/ai/tests/test_development_tails.py`
+- Result: PASS, 1 evidence test.
+- Artifacts: named test, manifest and scorecard.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: consistency only; not a runtime rejection rule or physical qualification.
+- Supersedes: none
+- Next dependency: AI-046 controlled perturbation experiment.
+
+
+### E-20260926-AI-048 — tail diagnostic repository audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `ee9ab18fdefb69aab4213318e902d24974322b67` (diagnostic baseline plus scorecard/test)
+- Change: required read-only audit after diagnostic.
+- Inputs/fixtures: repository snapshot and reviewed fixture manifest.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS, exit 0; 5,678 paths, 786.3 MiB; 0 unresolved findings and 14 reviewed synthetic fixtures.
+- Artifacts: auditor, fixture review manifest and AI-046 artifacts.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: heuristic audit only; protected-main publishing blocker AI-041 remains.
+- Supersedes: none
+- Next dependency: authorized PR creation/checks; AI-046 perturbation study independently.
