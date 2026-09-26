@@ -231,6 +231,17 @@ start/end states, and resource-cap exhaustion reject. A clear result is only
 reduces an evidence gap but does not prove the swept volume between samples.
 No commands, hardware access, or physical authority are created.
 
+The next conservative-sweep boundary encloses each rigid primitive over every
+adjacent bounded sample pair. Its displacement margin is derived from the pinned
+URDF serial-chain path radius and the exact ancestor-joint deltas; deformable
+cable motion must instead arrive as a measured root-frame envelope bound to both
+sample hashes and a source already installed in the collision profile. These
+envelopes are evaluated under the installed clearance policy. Intersections,
+missing envelopes, crossed endpoints, unsupported prismatic arm joints, and
+unbound sources reject. Diagnostic-only global pair exclusions still prevent a
+continuous-proof claim, and clear envelopes retain contact-policy and installed
+physical-qualification blockers. No transport or execution authority is added.
+
 The S4 synthetic integration lane now proves the downstream identity plumbing
 without relaxing that physical gate. A typed assessor requires the exact
 synthetic r97 review decision and eight-component configuration epoch, the model
