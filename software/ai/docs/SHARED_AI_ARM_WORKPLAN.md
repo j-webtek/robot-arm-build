@@ -606,6 +606,7 @@ remove it only in the same commit that appends the resulting evidence row.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
+| AI | S1 | local visibility error diagnosis | feature/translation-pair-evidence | ACTIVE |
 | Unclaimed | S2 | qualified perception adapter and complete shared gate | — | AVAILABLE |
 | Unclaimed | S4 | independently review sealed r97 packet `987cbe86...b416`, then bind a separately measured configuration epoch | — | AVAILABLE |
 
