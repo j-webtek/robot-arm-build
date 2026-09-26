@@ -24,11 +24,13 @@ from rocell.kinematics import (
 )
 from rocell.models import ModelMotionProposal
 from rocell.motion import MotionPhase
+from rocell.simulation.collision import audit_collision_geometry
 from rocell.targets import NominalTargetCatalog
 
 from ._pinned_model import load_pinned_urdf
 from .collision_readiness import assess_current_collision_readiness
 from .context import SimulationContext, revalidate_simulation_context
+from .installed_collision_geometry import InstalledCollisionGeometryProfile
 from .measured_target_reprojection import reproject_measured_target
 from .observed_planner_start_state import (
     ObservedPlannerStartState,
@@ -41,7 +43,7 @@ from .trajectory_simulation import (
 )
 
 
-SCHEMA = "rocell.measured_trajectory_screening.v1"
+SCHEMA = "rocell.measured_trajectory_screening.v2"
 _REFERENCE_TO_URDF = dict(
     zip(
         ("b_base", "s_shoulder", "e_elbow", "t_wrist_pitch", "r_wrist_roll"),
@@ -234,6 +236,7 @@ def screen_measured_trajectory(
     reprojection: Mapping[str, Any],
     *,
     observed_start_state: ObservedPlannerStartState | None = None,
+    installed_collision_geometry: InstalledCollisionGeometryProfile | None = None,
     evaluation_monotonic_ns: int | None = None,
     policy: TrajectorySimulationPolicy | None = None,
 ) -> dict[str, Any]:
@@ -281,8 +284,61 @@ def screen_measured_trajectory(
     if not isinstance(selected_policy, TrajectorySimulationPolicy):
         raise TypeError("policy must be a TrajectorySimulationPolicy")
     collision = assess_current_collision_readiness(context)
+    installed_collision_profile_sha256 = None
+    collision_clearance_policy_sha256 = None
+    collision_geometry_source = "NOMINAL_READINESS"
+    collision_readiness_sha256 = collision.report_hash
+    collision_readiness_status = collision.status
+    collision_contract_sha256 = collision.contract.content_hash
+    collision_audit = collision.geometry_audit
+    if installed_collision_geometry is not None:
+        if not isinstance(
+            installed_collision_geometry, InstalledCollisionGeometryProfile
+        ):
+            raise MeasuredTrajectoryScreeningError(
+                "installed collision geometry must be a typed measured profile"
+            )
+        if (
+            installed_collision_geometry.manifest_id
+            != context.snapshot.manifest_id
+            or installed_collision_geometry.manifest_sha256
+            != context.snapshot.manifest_sha256
+            or installed_collision_geometry.active_build_id
+            != context.snapshot.active_build_id
+            or installed_collision_geometry.build_snapshot_sha256
+            != context.snapshot.snapshot_hash
+            or installed_collision_geometry.robot_model_sha256
+            != context.scenario.model_sha256
+            or installed_collision_geometry.base_contract_sha256
+            != collision.contract.content_hash
+        ):
+            raise MeasuredTrajectoryScreeningError(
+                "installed collision geometry differs from the active planning context"
+            )
+        collision_audit = audit_collision_geometry(
+            installed_collision_geometry.contract
+        )
+        if not collision_audit.diagnostic_ready:
+            raise MeasuredTrajectoryScreeningError(
+                "installed collision geometry is not diagnostically complete"
+            )
+        installed_document = installed_collision_geometry.to_dict()
+        collision_geometry_source = "INSTALLED_MEASURED_PROFILE"
+        installed_collision_profile_sha256 = (
+            installed_collision_geometry.content_sha256
+        )
+        collision_clearance_policy_sha256 = installed_document[
+            "clearance_policy_sha256"
+        ]
+        collision_readiness_sha256 = installed_collision_geometry.content_sha256
+        collision_readiness_status = (
+            "INSTALLED_MEASURED_GEOMETRY_LOADED_CONTINUOUS_SWEEP_REQUIRED"
+        )
+        collision_contract_sha256 = (
+            installed_collision_geometry.contract.content_hash
+        )
     blockers = _compatibility_blockers(snapshot)
-    if not collision.geometry_audit.diagnostic_ready:
+    if not collision_audit.diagnostic_ready:
         blockers.append("FULL_COLLISION_GEOMETRY_INCOMPLETE")
     else:
         blockers.append("CONTINUOUS_FULL_BODY_COLLISION_SWEEP_NOT_IMPLEMENTED")
@@ -410,8 +466,16 @@ def screen_measured_trajectory(
         "ik_executed": ik_executed,
         "ik_all_waypoints_accepted": ik_all_accepted,
         "sampled_joint_continuity_checked": ik_executed,
-        "collision_readiness_sha256": collision.report_hash,
-        "collision_readiness_status": collision.status,
+        "collision_geometry_source": collision_geometry_source,
+        "collision_readiness_sha256": collision_readiness_sha256,
+        "collision_readiness_status": collision_readiness_status,
+        "collision_contract_sha256": collision_contract_sha256,
+        "installed_collision_profile_sha256": (
+            installed_collision_profile_sha256
+        ),
+        "collision_clearance_policy_sha256": (
+            collision_clearance_policy_sha256
+        ),
         "full_collision_screen_executed": False,
         "continuous_collision_proven": False,
         "blockers": list(dict.fromkeys(blockers)),

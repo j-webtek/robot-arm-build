@@ -19,6 +19,7 @@ from rocell.models import (ModelMotionBatchV2, ModelMotionProposal,
 from .context import SimulationContext
 from .model_motion_planner_gate import evaluate_model_motion_planner_gate
 from .observed_planner_start_state import ObservedPlannerStartState
+from .installed_collision_geometry import InstalledCollisionGeometryProfile
 
 SCHEMA = "rocell.model_motion_planner_gate.v2"
 
@@ -77,6 +78,7 @@ def evaluate_model_motion_planner_gate_v2(
     ingress_report: Mapping[str, Any], preplanner_report: Mapping[str, Any],
     context: SimulationContext, *, policy: ArmMotionPolicyV2,
     observed_start_state: ObservedPlannerStartState | None = None,
+    installed_collision_geometry: InstalledCollisionGeometryProfile | None = None,
     evaluation_monotonic_ns: int,
 ) -> dict[str, Any]:
     """Evaluate one admitted v2 action through the existing measured gate."""
@@ -137,6 +139,7 @@ def evaluate_model_motion_planner_gate_v2(
     downstream = evaluate_model_motion_planner_gate(
         surrogate, context, minimum_confidence=0.0,
         observed_start_state=observed_start_state,
+        installed_collision_geometry=installed_collision_geometry,
         evaluation_monotonic_ns=evaluation_monotonic_ns)
     if downstream.get("controller_commands") != [] \
             or downstream.get("hardware_commands_generated") != 0 \

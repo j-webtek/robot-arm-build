@@ -40,6 +40,7 @@ from .measured_trajectory_screening import (
     MeasuredTrajectoryScreeningError,
     screen_measured_trajectory,
 )
+from .installed_collision_geometry import InstalledCollisionGeometryProfile
 from .observed_planner_start_state import ObservedPlannerStartState
 
 
@@ -88,6 +89,7 @@ def evaluate_model_motion_planner_gate(
     *,
     minimum_confidence: float = 0.9,
     observed_start_state: ObservedPlannerStartState | None = None,
+    installed_collision_geometry: InstalledCollisionGeometryProfile | None = None,
     evaluation_monotonic_ns: int | None = None,
 ) -> dict[str, Any]:
     """Return a hash-bound, zero-authority planner-admission report.
@@ -170,6 +172,7 @@ def evaluate_model_motion_planner_gate(
                         decoded,
                         reprojected,
                         observed_start_state=observed_start_state,
+                        installed_collision_geometry=installed_collision_geometry,
                         evaluation_monotonic_ns=evaluation_monotonic_ns,
                     )
                 except MeasuredTrajectoryScreeningError as exc:
