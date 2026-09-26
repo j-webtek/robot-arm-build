@@ -599,6 +599,8 @@ Copy this row and fill every field:
 
 ## Active work claims
 
+- AI lane / S1: balanced pose replay comparison, 25% controlled occlusion, fixed budget/loss/criteria; development only.
+
 
 
 
