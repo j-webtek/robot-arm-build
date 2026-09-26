@@ -1,0 +1,141 @@
+{
+  "cases": [
+    {
+      "case_id": "vision-v0-4000000-standard",
+      "condition": "standard",
+      "seed": 4000000
+    },
+    {
+      "case_id": "vision-v0-4000000-appearance_shift",
+      "condition": "appearance_shift",
+      "seed": 4000000
+    },
+    {
+      "case_id": "vision-v0-4000000-challenge",
+      "condition": "challenge",
+      "seed": 4000000
+    },
+    {
+      "case_id": "vision-v0-4000001-standard",
+      "condition": "standard",
+      "seed": 4000001
+    },
+    {
+      "case_id": "vision-v0-4000001-appearance_shift",
+      "condition": "appearance_shift",
+      "seed": 4000001
+    },
+    {
+      "case_id": "vision-v0-4000001-challenge",
+      "condition": "challenge",
+      "seed": 4000001
+    },
+    {
+      "case_id": "vision-v0-4000002-standard",
+      "condition": "standard",
+      "seed": 4000002
+    },
+    {
+      "case_id": "vision-v0-4000002-appearance_shift",
+      "condition": "appearance_shift",
+      "seed": 4000002
+    },
+    {
+      "case_id": "vision-v0-4000002-challenge",
+      "condition": "challenge",
+      "seed": 4000002
+    },
+    {
+      "case_id": "vision-v0-4000003-standard",
+      "condition": "standard",
+      "seed": 4000003
+    },
+    {
+      "case_id": "vision-v0-4000003-appearance_shift",
+      "condition": "appearance_shift",
+      "seed": 4000003
+    },
+    {
+      "case_id": "vision-v0-4000003-challenge",
+      "condition": "challenge",
+      "seed": 4000003
+    },
+    {
+      "case_id": "vision-v0-4000004-standard",
+      "condition": "standard",
+      "seed": 4000004
+    },
+    {
+      "case_id": "vision-v0-4000004-appearance_shift",
+      "condition": "appearance_shift",
+      "seed": 4000004
+    },
+    {
+      "case_id": "vision-v0-4000004-challenge",
+      "condition": "challenge",
+      "seed": 4000004
+    },
+    {
+      "case_id": "vision-v0-4000005-standard",
+      "condition": "standard",
+      "seed": 4000005
+    },
+    {
+      "case_id": "vision-v0-4000005-appearance_shift",
+      "condition": "appearance_shift",
+      "seed": 4000005
+    },
+    {
+      "case_id": "vision-v0-4000005-challenge",
+      "condition": "challenge",
+      "seed": 4000005
+    },
+    {
+      "case_id": "vision-v0-4000006-standard",
+      "condition": "standard",
+      "seed": 4000006
+    },
+    {
+      "case_id": "vision-v0-4000006-appearance_shift",
+      "condition": "appearance_shift",
+      "seed": 4000006
+    },
+    {
+      "case_id": "vision-v0-4000006-challenge",
+      "condition": "challenge",
+      "seed": 4000006
+    },
+    {
+      "case_id": "vision-v0-4000007-standard",
+      "condition": "standard",
+      "seed": 4000007
+    },
+    {
+      "case_id": "vision-v0-4000007-appearance_shift",
+      "condition": "appearance_shift",
+      "seed": 4000007
+    },
+    {
+      "case_id": "vision-v0-4000007-challenge",
+      "condition": "challenge",
+      "seed": 4000007
+    }
+  ],
+  "checkpoint_sha256": "2cc9d770fe9816b1e7f717413996e78d3e440eb6d7b2a02414f229d11ed5671f",
+  "diagnostic_error_budget_mm": 5.0,
+  "file_sha256": {
+    "software/ai/rocell_ai/pixel_quality.py": "bea8546e66bf98e419231d868bc00dda649ac62599385764ea7225e24a456805",
+    "software/ai/rocell_ai/scene_observation.py": "421ae6dd55fc447cfa9d93a4953aeee272b8a0fbeeab919f23fcae9091ccb98d",
+    "software/ai/rocell_ai/vision_runtime.py": "0d5b188ffb200517ca70baf72cf0087bd92058873f719c315abc04cb0d7cdb61",
+    "software/ai/vision/evaluate_frozen_vision.py": "77b8b29d34b548d41168fd2bafb9042f38a9ad87801dd09c1f4abe12e78c0783",
+    "software/ai/vision/evaluate_pose_challenge.py": "1ba33a1a2d38b1216a5e1708e17b99c3d9dba9fd2c40af46a084da8065102983",
+    "software/ai/vision/pose_model.py": "7eccc2a3cabf3a37217b4a1c3114c439ffc740a917c08e4ef378065ff85c6ec5",
+    "software/ai/vision/synthetic_keyboard.py": "b9a1662ea348ba78093909844e5e8bed86f4996babc289bfd63858b6b54f692c",
+    "software/ai/vision/train_pose.py": "98c2ae6211b42c3b4b7c5bed3fb03aab82bffff79c30ebb546e3681b3be3a1b6"
+  },
+  "observer_identity": "ollama:a2af6cc3eb7fa8be8504abaf9b04e88f17a119ec3f04a3addf55f92841195f5a",
+  "observer_model": "gemma3:4b",
+  "physical_execution_authorized": false,
+  "purpose": "Held-out evaluation only; exclude these seed groups from training and tuning",
+  "schema": "rocell.ai_frozen_vision_manifest.v0"
+}
