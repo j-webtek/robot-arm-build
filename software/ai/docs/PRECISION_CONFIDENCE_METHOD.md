@@ -162,3 +162,19 @@ Blur sigma1.2 and one small fixed obstruction change means much less (0.832 and
 0.871 mm). This supports prioritizing brightness-augmentation training, not
 claiming generic blur/occlusion safety or a physical brightness threshold.
 See `eval/single_perturbations_v0_scorecard.json`. No new held-out data consumed.
+
+
+### Paired brightness augmentation development result
+
+The frozen `train/brightness_pair_v0_plan.json` experiment improves darkened
+standard-image mean error from 2.400 to 0.879 mm and reduces images with maximum
+key error above 3 mm from 87 to 5 of 200. It **fails** the predefined per-condition
+rule: standard, appearance-shift and challenge localization and yaw regress,
+with large-error counts increasing in all three. Aggregate improvement does not
+override these failures. Both arms have equal training budgets and select epochs
+using the same development objective. The candidate is retained as failed research,
+not promoted. See AI-052 through AI-054 and the paired scorecard for exact evidence.
+
+Next: a frozen, bounded comparison with less dark-sample weight and a lower learning
+rate, preserving the baseline-condition gates. These are reused development groups;
+fresh calibration/evaluation remains necessary after any development success.

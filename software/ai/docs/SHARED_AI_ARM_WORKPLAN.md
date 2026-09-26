@@ -604,7 +604,6 @@ remove it only in the same commit that appends the resulting evidence row.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI | S1 | `vision/train_brightness_pair.py`, brightness plan/scorecard/tests, precision method | feature/translation-pair-evidence | ACTIVE: paired brightness augmentation development experiment; no boundary changes |
 | Unclaimed | S2 | qualified perception adapter and complete shared gate | — | AVAILABLE |
 | Unclaimed | S4 | installed controller mapping and firmware qualification | — | AVAILABLE |
 
@@ -2386,3 +2385,75 @@ commissioning, or bounded physical result with its limitations intact.
   pre-review snapshot result.
 - Next dependency: independently commission the installed controller mapping
   and firmware evidence before any S4 readiness or physical-dispatch claim.
+
+### E-20260926-AI-052 — matched brightness augmentation development failure
+
+- Stage: S1
+- Lane: AI
+- Commit: `4801532e942e8f2574d86813665e327d833502ca` (frozen training source and plan before execution)
+- Change: paired fine-tuning from the existing translation-weighted checkpoint.
+  Candidate adds a brightness-0.5 copy of every training image; control duplicates
+  the unchanged image for equal optimizer steps. Both use weights 4:4:1, 12 epochs,
+  common unweighted four-condition development-MSE epoch selection.
+- Inputs/fixtures: reused 14M training groups (1200 x 3 x 2 = 7200 images),
+  reused 15M development groups (200 x 4 = 800 images), 46 targets/image.
+  Source/catalog/initial checkpoint hashes in `train/brightness_pair_v0_plan.json`;
+  training/development pixel hashes and output checkpoint hashes in scorecard.
+- Command: `python software/ai/vision/train_brightness_pair.py`
+- Result: FAIL predefined development candidate rule. Darkened-standard mean key
+  error improves 2.399967 -> 0.878742 mm; >3mm maximum-key-error images 87 -> 5/200.
+  Standard worsens 0.816161 -> 0.989308 mm, tail 3 -> 6;
+  appearance-shift worsens 0.796980 -> 1.013772 mm, tail 5 -> 10;
+  challenge worsens 1.029145 -> 1.089872 mm, tail 9 -> 14.
+  All original conditions also exceed the allowed 10% yaw-p95 regression.
+  Aggregate mean improves 1.260563 -> 0.992923 mm but cannot override condition gates.
+  Selected epochs control 12, candidate 10. No model promotion.
+- Artifacts: `eval/brightness_pair_v0_scorecard.json`, frozen plan/source;
+  ignored local `results/brightness_pair_v0_control/` and
+  `results/brightness_pair_v0_brightness_augmented/` checkpoint/result directories.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: one training seed; development data reused for study selection;
+  fixed synthetic brightness applied after resizing; no fresh evaluation,
+  calibrated uncertainty, authentic camera capture or physical evidence.
+  Zero contract changes; shared boundary suite not triggered.
+- Supersedes: none; AI-049 and all earlier failed evidence remain intact.
+- Next dependency: freeze a bounded lower-intensity brightness training comparison
+  (reduced dark-sample proportion and lower learning rate) against a matched control,
+  retaining the per-condition error, tail and yaw gates. Require fresh calibration
+  and evaluation only after development criteria pass; no installed qualification.
+
+### E-20260926-AI-053 — brightness evidence consistency tests
+
+- Stage: S1
+- Lane: AI
+- Commit: `4801532e942e8f2574d86813665e327d833502ca` (frozen implementation baseline; tests committed with results)
+- Change: checked source/plan hashes, matched sample budgets, common development
+  pixels, distinct training pixels, epoch selection, seed coverage and case metrics.
+- Inputs/fixtures: AI-052 plan and scorecard, 800 cases per arm.
+- Command: `python -m pytest -q software/ai/tests/test_brightness_pair_evidence.py`
+- Result: PASS, 2 tests; existing pytest-asyncio configuration deprecation warning.
+- Artifacts: named test and AI-052 scorecard.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: consistency tests do not establish physical accuracy or confidence.
+- Supersedes: none
+- Next dependency: AI-052 development comparison; preserve failed candidate.
+
+### E-20260926-AI-054 — brightness evidence publication audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `4801532e942e8f2574d86813665e327d833502ca` (implementation baseline plus AI-052 scorecard/test snapshot)
+- Change: ran the repository publication audit.
+- Inputs/fixtures: repository snapshot with brightness evidence; reviewed synthetic fixture allowlist.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS; 5698 paths, 787.0 MiB, 0 unresolved findings,
+  14 reviewed synthetic fixtures.
+- Artifacts: audit stdout and repository snapshot.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: heuristic audit, not localization qualification; AI-041 protected-main
+  PR publication blocker remains. Historical audit failures remain unchanged.
+- Supersedes: none
+- Next dependency: protected-branch PR/checks; AI-052 next development experiment.
