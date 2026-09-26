@@ -314,6 +314,12 @@ from .trajectory_execution_envelope_v2 import (
     TrajectoryExecutionEnvelopeV2Error,
     bind_trajectory_execution_envelope_v2,
 )
+from .phase_local_contact_envelope_gate import (
+    SCHEMA as PHASE_LOCAL_CONTACT_ENVELOPE_GATE_SCHEMA,
+    PhaseLocalContactAllowance,
+    PhaseLocalContactEnvelopeGateError,
+    bind_phase_local_contact_envelope_gate,
+)
 from .zero_write_waveshare_adapter_v1 import (
     GRIPPER_BEHAVIOR as ZERO_WRITE_GRIPPER_BEHAVIOR,
     INTERPOLATION_MODE as ZERO_WRITE_INTERPOLATION_MODE,
@@ -1153,6 +1159,10 @@ __all__ = [
     "TrajectoryExecutionEnvelopeV2",
     "TrajectoryExecutionEnvelopeV2Error",
     "bind_trajectory_execution_envelope_v2",
+    "PHASE_LOCAL_CONTACT_ENVELOPE_GATE_SCHEMA",
+    "PhaseLocalContactAllowance",
+    "PhaseLocalContactEnvelopeGateError",
+    "bind_phase_local_contact_envelope_gate",
     "ZERO_WRITE_GRIPPER_BEHAVIOR",
     "ZERO_WRITE_INTERPOLATION_MODE",
     "ZERO_WRITE_WAVESHARE_PERMIT_SCHEMA",

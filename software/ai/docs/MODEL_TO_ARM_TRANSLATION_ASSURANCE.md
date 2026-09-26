@@ -242,6 +242,16 @@ unbound sources reject. Diagnostic-only global pair exclusions still prevent a
 continuous-proof claim, and clear envelopes retain contact-policy and installed
 physical-qualification blockers. No transport or execution authority is added.
 
+The phase-local contact envelope gate now closes the next software seam without
+weakening collision semantics. It verifies the conservative-sweep content hash,
+the exact trajectory/profile lineage, accepted-engineering status for every
+global exclusion, and the sealed v2 proposal/envelope identity. A contact
+proposal must bind exactly one `CONTACT` waypoint to the proposal target and an
+installed `TOOL`/device-body pair; a hover proposal may carry neither a contact
+waypoint nor an allowance. The resulting artifact contains no controller or wire
+commands, explicitly denies physical/contact authority, and continues to require
+installed physical qualification.
+
 The S4 synthetic integration lane now proves the downstream identity plumbing
 without relaxing that physical gate. A typed assessor requires the exact
 synthetic r97 review decision and eight-component configuration epoch, the model
