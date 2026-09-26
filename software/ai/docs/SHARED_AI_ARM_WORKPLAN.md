@@ -599,7 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-| AI | S1 | coefficient0.1 geometry training | feature/translation-pair-evidence | ACTIVE |
 
 
 
@@ -5688,3 +5687,51 @@ commissioning, or bounded physical result with its limitations intact.
 - Next dependency: construct a conservative swept-volume bound for every rigid
   primitive and a profile-bound conservative cable envelope across each adjacent
   sample pair, then prove the bound under the installed clearance policy.
+
+### E-20260926-AI-184 — coefficient0.1 geometry training
+
+- Stage: S1
+- Lane: AI
+- Commit: `c67f9ee26dc0cb24956164bcbe090684e0579801` (frozen source; results/tests committed with evidence)
+- Change: coefficient0.1 geometry training.
+- Inputs/fixtures: Matched t05 networks,2400/800 reused14M600/15M200 images,8epochs; exact hashes in train/landmark_geometry_tenth_v0_plan.json.
+- Command: `python software/ai/train/train_geometry_tenth.py`
+- Result: FAIL. Control→candidate mean standard9.017→9.544,appearance13.051→13.902,partial11.413→11.734,full11.470→11.784mm. >3mm tails196/196/200/199→196/199/198/195. All yaw checks pass,but all means and appearance tail fail. Hidden false-visible1→3/201; clear recall2617→2578/2736. Epoch8 candidate terms heatmap5.9462,coordinate0.4416,visibility0.4874,raw geometry0.7557,applied0.07557;sum6.95072. Both select epoch8. Control checkpoint94bd425ecf91623d2c301a359e944b174e6956b1630842faa844254e765172e9; candidate4964dd70bcdf89a6cad70f99c12d6f16e48889f014d34b80bd1bcb890a495c69.
+- Artifacts: eval/landmark_geometry_tenth_v0_*; ignored checkpoints
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: One seed,reused development,GPU nondeterminism; no qualification or runtime change. Correct objective scaling does not imply useful objective.
+- Supersedes: none; prior failures and integration statuses retained.
+- Next dependency: Stop auxiliary coefficient tuning. Freeze a consolidated same-pixel development comparison of established pose baseline versus original t05 landmark plus geometry/subpixel decoder,including visibility and abstention limitations,to choose the next model investment from absolute performance rather than relative landmark gains.
+
+### E-20260926-AI-185 — coefficient verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `c67f9ee26dc0cb24956164bcbe090684e0579801` (frozen source; results/tests committed with evidence)
+- Change: coefficient verification.
+- Inputs/fixtures: Analytic geometry tests,AI-184 pinned reports,per-epoch objective logs.
+- Command: `python -m pytest -q software/ai/tests/test_geometry_tenth.py`
+- Result: PASS,3 tests;geometry behavior,hashes,matched pixels,selection,criteria,and exact0.1 applied coefficient/objective sum verified. Existing pytest-asyncio warning.
+- Artifacts: software/ai/tests/test_geometry_tenth.py
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Consistency verification only; batch unchanged,shared boundary suite not triggered.
+- Supersedes: none; prior failures and integration statuses retained.
+- Next dependency: AI-184 consolidated comparison.
+
+### E-20260926-AI-186 — coefficient publication audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `c67f9ee26dc0cb24956164bcbe090684e0579801` (frozen source; results/tests committed with evidence)
+- Change: coefficient publication audit.
+- Inputs/fixtures: Repository with AI-184/185 and reviewed fixture allowlist.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS;5974 paths,841.9 MiB,0 unresolved findings,14 reviewed synthetic fixtures.
+- Artifacts: audit stdout and snapshot
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic audit; AI-041 protected-main publication blocker remains.
+- Supersedes: none; prior failures and integration statuses retained.
+- Next dependency: Protected-branch PR/checks and AI-184 comparison.

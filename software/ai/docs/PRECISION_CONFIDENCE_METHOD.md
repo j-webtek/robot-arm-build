@@ -534,3 +534,8 @@ Adding coefficient1 visible-pair vector consistency worsens every relative local
 ### Loss gradient snapshots (AI-181)
 
 On four fixed32-image training batches,geometry/base shared-feature gradient norm ratios average1.97 at initialization,3.38 at control checkpoint,2.53 at failed geometry checkpoint. Geometry opposes visibility gradients on all four failed-checkpoint batches. These snapshots support a scale/conflict hypothesis,not training causality or an optimal coefficient. Next freeze one coefficient0.1 versus control study with objective logging,no sweep; retain coefficient1 failure and all qualification criteria. Source `ba9d05524e261dda8cc931115c8a7cb7498aef97`; `eval/gradient_diagnostic_v0_report.json`. No runtime changes.
+
+
+### Coefficient0.1 comparison (AI-184)
+
+Correctly logged0.1 geometry weighting still fails: all condition means worsen,hidden false-visible1→3/201,clear recall2617→2578/2736. Coefficient1 failure remains retained. Stop coefficient tuning; next consolidate established pose baseline versus original t05+geometry/subpixel on identical development pixels,reporting absolute performance and visibility/abstention limitations before another model investment. Source `c67f9ee26dc0cb24956164bcbe090684e0579801`; `eval/landmark_geometry_tenth_v0_*`. No qualification or runtime changes.
