@@ -602,6 +602,7 @@ remove it only in the same commit that appends the resulting evidence row.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
+| AI/model | S1 | `rocell_ai/precision_binding_v2.py`, corresponding AI test and evidence | main from `52be3be` | ACTIVE: current precision binding and explicit abstention |
 | Unclaimed | S2 | shadow runner/integration fixtures | — | AVAILABLE |
 | Unclaimed | S4 | controller adapter/receipts | — | AVAILABLE |
 
