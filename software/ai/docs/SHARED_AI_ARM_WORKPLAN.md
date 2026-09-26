@@ -599,6 +599,8 @@ Copy this row and fill every field:
 
 ## Active work claims
 
+- AI lane / S1: paired key-displacement objective comparison on identical50% occlusion inputs; fixed budget/selection/criteria, no qualification.
+
 
 
 
