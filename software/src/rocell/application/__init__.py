@@ -298,6 +298,16 @@ from .zero_write_waveshare_adapter_v1 import (
     issue_zero_write_encoding_permit_v1,
     trajectory_limits_sha256,
 )
+from .zero_write_sole_writer_v1 import (
+    JOURNAL_SCHEMA as ZERO_WRITE_SOLE_WRITER_JOURNAL_SCHEMA,
+    REPORT_SCHEMA as ZERO_WRITE_SOLE_WRITER_REPORT_SCHEMA,
+    ZeroWriteSoleWriterError,
+    ZeroWriteSoleWriterJournalV1,
+    ZeroWriteSoleWriterReportV1,
+    ZeroWriteWriterEventV1,
+    ZeroWriteWriterFault,
+    run_zero_write_sole_writer_rehearsal_v1,
+)
 from .prehardware_layout_study import (
     LayoutAxisValueEvidence,
     LayoutCandidatePromotion,
@@ -1006,6 +1016,14 @@ __all__ = [
     "ZeroWriteWavesharePreviewReceiptV1",
     "issue_zero_write_encoding_permit_v1",
     "trajectory_limits_sha256",
+    "ZERO_WRITE_SOLE_WRITER_JOURNAL_SCHEMA",
+    "ZERO_WRITE_SOLE_WRITER_REPORT_SCHEMA",
+    "ZeroWriteSoleWriterError",
+    "ZeroWriteSoleWriterJournalV1",
+    "ZeroWriteSoleWriterReportV1",
+    "ZeroWriteWriterEventV1",
+    "ZeroWriteWriterFault",
+    "run_zero_write_sole_writer_rehearsal_v1",
     "ModelMotionIngressError",
     "SimulationContextError",
     "SimulationRunReport",
