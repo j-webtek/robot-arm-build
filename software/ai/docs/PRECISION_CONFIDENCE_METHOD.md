@@ -121,3 +121,13 @@ A paired 4:4:1 XY/yaw loss versus 1:1:1 improved mean key error from 0.937 to
 and control now need a separately frozen fresh held-out comparison. Do not use
 this pose improvement as observation confidence or localization qualification.
 See `eval/translation_weighted_v0_scorecard.json`; no runtime checkpoint changed.
+
+
+## Fresh paired evaluation
+
+The translation-weighted candidate passed the frozen comparison on 500 fresh 18M
+seed groups (1,500 synthetic images). Mean key error improved 0.947->0.868 mm,
+p95 2.139->1.934 mm and within-1mm 62.8%->68.9%; all per-condition criteria passed.
+Worst observed error increased 6.976->7.094 mm. This is evidence for independent
+uncertainty calibration next, not runtime promotion or observation confidence.
+18M evaluation groups are consumed. See `eval/translation_pair_v0_scorecard.json`.

@@ -604,7 +604,6 @@ remove it only in the same commit that appends the resulting evidence row.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI/model | S1 | frozen paired held-out comparison/manifest/evidence | main from `1444527` | ACTIVE: fresh 18M evaluation only, no tuning |
 | Unclaimed | S2 | qualified perception adapter and complete shared gate | — | AVAILABLE |
 | Unclaimed | S4 | sole-writer lifecycle, fault injection, and restart closure | — | AVAILABLE |
 
@@ -1952,3 +1951,68 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: heuristic findings unresolved; no clean audit claim.
 - Supersedes: none
 - Next dependency: fixture-owner review independently of AI research.
+
+
+### E-20260926-AI-038 — fresh paired translation candidate evaluation
+
+- Stage: S1
+- Lane: AI
+- Commit: `bc86500906578ba341862f1fd5cf758bf1db698b` (exact frozen evaluation source, checkpoints and criteria before scoring)
+- Change: compared frozen translation-weighted candidate and control on fresh
+  18M seeds with no training, threshold tuning or calibration.
+- Inputs/fixtures: seeds 18000000–18000499, three conditions, 46 keys; 1,500 images
+  and 69,000 correlated target/view errors per model. Checkpoint/source/catalog
+  hashes in `eval/translation_pair_v0.manifest.json`; image hash and group scores
+  in `eval/translation_pair_v0_scorecard.json`.
+- Command: `python software/ai/vision/evaluate_translation_pair.py`
+- Result: PASS, `PAIRED_RESEARCH_CRITERIA_PASS`, all four predeclared criteria pass
+  in aggregate and each condition. Control -> candidate: mean key 0.947368 ->
+  0.868438 mm; key p95 2.139202 -> 1.933529 mm; within-1mm 62.8087% -> 68.9072%;
+  center mean 0.875454 -> 0.805079 mm; yaw p95 0.632257 -> 0.621475 degrees.
+  Worst error worsens 6.975993 -> 7.093951 mm; improvement is not universal.
+- Artifacts: frozen evaluator/manifest and full paired scorecard above.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: synthetic known-target localization only; no physical/domain,
+  confidence or visibility qualification. Descriptive correlated samples, no
+  significance claim. No calibrated uncertainty or runtime checkpoint replacement.
+  18M groups are now consumed evaluation data and must not be reused as fresh.
+- Supersedes: none; failed earlier evidence retained.
+- Next dependency: freeze a new independent uncertainty-calibration split and
+  evaluation split for the candidate; test complete bounds against independent
+  target regions. Confidence and capture trust remain separate unresolved gates.
+
+### E-20260926-AI-039 — paired held-out evidence verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `bc86500906578ba341862f1fd5cf758bf1db698b` (evaluation baseline; new test committed with evidence)
+- Change: verified source/manifest hashes, fresh seed identities, paired group
+  mean aggregation and recomputation of each acceptance criterion.
+- Inputs/fixtures: frozen manifest, scorecard, `tests/test_translation_pair_evidence.py`.
+- Command: `python -m pytest -q software/ai/tests/test_translation_pair_evidence.py`
+- Result: PASS, 1 evidence test.
+- Artifacts: named test, manifest and scorecard.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: consistency only; no installed qualification or integration status change.
+- Supersedes: none
+- Next dependency: AI-038 independent uncertainty study.
+
+
+### E-20260926-AI-040 — paired evaluation audit findings retained
+
+- Stage: S1
+- Lane: AI
+- Commit: `bc86500906578ba341862f1fd5cf758bf1db698b`
+- Change: required read-only audit after evaluation.
+- Inputs/fixtures: repository snapshot, paired scorecard/test and `scripts/audit_github_snapshot.py`.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: FAIL, exit 1; 5,665 paths, 785.6 MiB, same 14 existing arm-unit
+  credential-literal-review findings; no paired-evaluation file finding.
+- Artifacts: scanner and existing fixtures.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: heuristic findings unresolved; no clean audit claim.
+- Supersedes: none
+- Next dependency: fixture-owner review independently of AI qualification research.
