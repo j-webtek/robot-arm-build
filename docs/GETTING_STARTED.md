@@ -9,6 +9,20 @@ The examples prepare or inspect tasks; they do not type into your keyboard or
 move an arm. Read [project status](../PROJECT_STATUS.md) for the current physical
 capabilities and remaining work.
 
+## What you can do today
+
+This walkthrough takes one request through three inspectable software stages:
+
+| Stage | You will see | This does not prove |
+| --- | --- | --- |
+| Interpret `Type "hi" on the keyboard` | Ordered proposed actions H, then I | General language-model accuracy or actual typing |
+| Preview target coordinates | Nominal H and I positions in millimeters | The measured positions of keys on your desk |
+| Check interface startup | Rehearsal diagnostics ready | Permission or readiness for physical movement |
+
+Start with the command-line examples below. Opening the interface is optional.
+You have completed the first walkthrough when these outputs match; you do not
+need to resolve physical-calibration prerequisites or connect hardware.
+
 ## Install the software
 
 Use Windows PowerShell, Git, and Python 3.10 or newer. These instructions assume
@@ -49,6 +63,18 @@ For this exact example, expect `inspection.status` to be `accepted`,
 `proposal.text` to be `hi`, and the action list to contain H followed by I.
 Those are proposed key actions, not actual keystrokes.
 
+For a shorter view of the same result, run:
+
+```powershell
+$taskResult = .\.venv\Scripts\python software/ai/run_offline.py ground --request 'Type "hi" on the keyboard' | ConvertFrom-Json
+$taskResult.inspection.status
+$taskResult.proposal.text
+$taskResult.inspection.action_plan.actions | Format-Table type, key | Out-Host
+```
+
+The status should be `accepted`, the text `hi`, and the two rows `press_key H`
+and `press_key I`. Here, `press_key` names a proposed action; it does not execute it.
+
 To inspect the offline coordinate preview:
 
 ```powershell
@@ -65,6 +91,27 @@ Expect `status: coordinate_preview`, `execution_authorized: false`, an empty
 `coordinate_source: SIMULATION_ONLY_NOMINAL_UNMEASURED`. H and I should remain
 in order. The `missing_before_execution` list is expected, not an installation
 failure; do not bypass those prerequisites to make the example look successful.
+
+To make the preview easier to read:
+
+```powershell
+$preview = .\.venv\Scripts\python software/ai/run_offline.py coordinate-preview --request 'Type "hi" on the keyboard' | ConvertFrom-Json
+$preview | Format-List status, coordinate_frame, coordinate_unit, coordinate_source, execution_authorized | Out-Host
+$preview.controller_commands.Count
+$preview.targets | Format-Table target_id, nominal_center_board_mm | Out-Host
+```
+
+The command count should be `0`. For the current nominal development catalog:
+
+| Target | X (mm) | Y (mm) | Z (mm) |
+| --- | ---: | ---: | ---: |
+| H | 216.55 | 154.00 | 21.00 |
+| I | 249.85 | 175.00 | 21.00 |
+
+These are illustrative catalog values, **not safe motion commands**. The preview
+does not run a camera, localize your keyboard, solve a physical route, or authorize
+contact. Its `model_sha256` and `image_sha256` are `null` because this example
+uses neither a trained model nor an image.
 
 ## Explore the interface
 
@@ -101,6 +148,16 @@ stop the server with Ctrl+C when finished. Exports normally stay in the local
 `software/runs/wizard-exports/` directory.
 In terminal mode, enter `quit` to exit without selecting an action.
 
+### Walkthrough verification
+
+On 2026-09-26, the installation, both text commands (including the compact
+views), and startup `-Check` were rerun in a clean Git worktree at
+`47f49f4aa338b37e8a9fa4c849753e3c49bc0a57`, using a new virtual environment,
+Windows, PowerShell 7.6.5 and Python 3.10.10. `pip check` found no broken
+requirements, and the results matched the values above. This was not a clean-OS
+installation or a new browser walkthrough; no model or hardware was connected.
+The earlier linked first-run record covers the separate interface review.
+
 ## Understand what the software tells you
 
 | Term | Meaning |
@@ -123,6 +180,10 @@ stage and evidence type before interpreting it as a completed task.
   terminal, and check `python --version` or `git --version`.
 - **RoCell cannot be imported:** rerun the editable installation with the same
   `.venv` interpreter used for the example.
+- **Dependency downloads retry or fail:** check your network and configured
+  package indexes. Installation needs access to dependency packages even though
+  the examples run locally afterward. Do not disable TLS verification or change
+  organization-managed package settings to bypass a failure.
 - **PowerShell blocks a launcher:** use your organization's approved script
   execution policy. The direct Python text examples can still be used; do not
   change machine-wide policy merely to follow this guide.
