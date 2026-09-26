@@ -599,7 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-| AI | S1 | fixed robust fitting comparison | feature/translation-pair-evidence | ACTIVE |
 
 
 
@@ -5412,3 +5411,51 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic audit; AI-041 protected-main publication blocker remains.
 - Supersedes: none; prior failures and integration statuses retained.
 - Next dependency: Protected-branch PR/checks and AI-169 study.
+
+### E-20260926-AI-172 — fixed Huber fitting comparison
+
+- Stage: S1
+- Lane: AI
+- Commit: `0f6b90585a8961658ba6eacc99186cb80db20891` (frozen source; results/tests committed with evidence)
+- Change: fixed Huber fitting comparison.
+- Inputs/fixtures: All800 retained15M200 refined coordinate sets; exact source/input hashes in eval/robust_fit_v0_plan.json. Same candidates,Huber3mm scale,5 iterations,ordinary fit initialization.
+- Command: `python software/ai/vision/evaluate_robust_fit.py`
+- Result: FAIL overall. Original→robust means standard3.040→2.993,appearance2.450→2.776,partial4.773→4.440,full5.236→5.186mm. >3mm tails125→126,77→115,172→173,186→178/200. Appearance yawp951.236→1.391 and partial1.594→1.790 exceed1.1x. All800 cases scored,including original visibility abstentions. Output arm equal denotes robust candidate.
+- Artifacts: eval/robust_fit_v0_report.json; frozen fit/runner/plan
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Synthetic development,correlated corner errors and four-point geometry limit residual reweighting. No calibrated residual confidence,qualification,boundary change or runtime promotion.
+- Supersedes: none; previous failures and integration statuses retained.
+- Next dependency: Stop fit-only variations. Audit corner-coordinate label/render alignment and learned heatmap error direction by semantic corner and condition before defining a new localization training objective; no empirical offset correction from reused data.
+
+### E-20260926-AI-173 — robust fit verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `0f6b90585a8961658ba6eacc99186cb80db20891` (frozen source; results/tests committed with evidence)
+- Change: robust fit verification.
+- Inputs/fixtures: Analytic exact rigid pose/translation,AI-172 pinned report and original predictions.
+- Command: `python -m pytest -q software/ai/tests/test_robust_fit.py`
+- Result: PASS,2 tests; rigid recovery,translation equivariance,hashes,all-case scoring,retained references and criteria verified. Existing pytest-asyncio warning.
+- Artifacts: software/ai/tests/test_robust_fit.py
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Consistency verification only; batch unchanged,shared boundary suite not triggered.
+- Supersedes: none; previous failures and integration statuses retained.
+- Next dependency: AI-172 label/heatmap audit.
+
+### E-20260926-AI-174 — robust fit publication audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `0f6b90585a8961658ba6eacc99186cb80db20891` (frozen source; results/tests committed with evidence)
+- Change: robust fit publication audit.
+- Inputs/fixtures: Repository with AI-172/173 and reviewed fixture allowlist.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS;5948 paths,838.5 MiB,0 unresolved findings,14 reviewed synthetic fixtures.
+- Artifacts: audit stdout and snapshot
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic audit; AI-041 protected-main publication blocker remains.
+- Supersedes: none; previous failures and integration statuses retained.
+- Next dependency: Protected-branch PR/checks and AI-172 audit.

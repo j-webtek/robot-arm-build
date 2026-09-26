@@ -514,3 +514,8 @@ Keeping predicted-unsupported corners at fixed weight0.5 while supported corners
 ### Refined-corner attribution (AI-169)
 
 Single-corner energy dominates290/560 bad cases; common translation energy dominates100 (overlap possible). FitRMS<=3mm still contains28 bad cases among39,so residual cannot become calibrated uncertainty. Next freeze one Huber IRLS fit (3mm residual scale,5 iterations),using predicted refined corners and unchanged candidate selection,scoring all cases. No residual-derived confidence or oracle correction. Source `61d37269f269005116c7de24220dcaa62b811275`; `eval/refined_bias_v0_report.json`.
+
+
+### Fixed robust fit (AI-172)
+
+Huber IRLS with3mm residual scale and5 iterations fails overall on all800 development cases. Appearance >3mm tails77→115 and mean2.450→2.776mm; partial yawp951.594→1.790deg. No promotion. Stop fit-only variations and audit corner label/render alignment and signed learned errors by semantic corner/condition before changing localization training. No empirical offset correction from reused data or residual confidence. Source `0f6b90585a8961658ba6eacc99186cb80db20891`; `eval/robust_fit_v0_report.json` (arm equal denotes robust).
