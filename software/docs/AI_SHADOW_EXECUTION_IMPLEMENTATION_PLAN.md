@@ -544,7 +544,12 @@ Implement the following before any additional general-purpose arm movement:
 - [x] Bind model-coordinate candidates to the frozen build, frame contract,
       configuration-epoch policy, and complete calibration graph through a
       zero-write planner-admission gate. The empty physical registry fails closed
-      before IK or route screening; strict calibration payload decoding remains next.
+      before IK or route screening.
+- [x] Add the strict measured calibration snapshot decoder for robot reference,
+      `B_T_Wv`, separate `R_ctrl` correlation, device placement, and `G_T_T`.
+      Nominal/non-valid artifacts, hash mismatches, wrong transform directions,
+      unknown fields, and invalid limits fail closed. Measured target reprojection
+      is the next planner boundary.
 - [ ] Adapt current visual targets and keyboard layout into `scene_targets`.
 - [ ] Wrap `static_task_rehearsal` as a `trajectory_candidate` producer.
 - [ ] Implement the safety report with explicit reject reason codes.

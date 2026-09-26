@@ -184,6 +184,12 @@ graph. With the current empty physical registry it reports explicit missing
 calibrations and performs no IK, route screening, command encoding, or hardware
 access.
 
+When the graph becomes valid, the strict planner calibration decoder additionally
+requires exact, hash-matched measured payloads for the installed robot reference,
+`B_T_Wv`, separate `R_ctrl` correlation, device pose, and `G_T_T`. The decoded
+snapshot still carries no authority; the model target must next be reprojected
+through the measured device transform before deterministic IK.
+
 The following are still required before functional arm-command qualification:
 
 - fixed-camera real-image target labels and held-out evaluation;

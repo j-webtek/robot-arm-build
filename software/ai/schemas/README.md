@@ -38,3 +38,7 @@ The [model-motion planner gate schema](model_motion_planner_gate_v1.schema.json)
 binds that candidate to the frozen build, frame contract, configuration epochs,
 and calibration graph. It remains zero-write and emits neither IK nor a route
 while measured calibration or strict payload decoding is unavailable.
+The [planner calibration snapshot schema](planner_calibration_snapshot_v1.schema.json)
+records the exact hash-matched measured transforms, robot reference, controller
+correlation, device placement, and tool/TCP geometry accepted by the strict
+decoder. It carries no physical authority.

@@ -17,6 +17,12 @@ from typing import Any, Mapping, Sequence
 
 from rocell.models import ModelMotionProposal
 from rocell.rc03.integrity import sha256_file
+from rocell.calibration import (
+    CalibrationRegistry,
+    PlannerCalibrationSnapshotError,
+    decode_planner_calibration_snapshot,
+    required_planner_artifact_ids,
+)
 
 from .calibration_status import assess_calibration_status
 from .context import (
@@ -58,7 +64,9 @@ def _calibration_blockers(document: Mapping[str, Any]) -> tuple[str, ...]:
         if not isinstance(assessment, Mapping):
             raise ModelMotionPlannerGateError("calibration assessment is invalid")
         reasons = assessment.get("reasons")
-        if not isinstance(reasons, list) or any(not isinstance(item, str) for item in reasons):
+        if not isinstance(reasons, list) or any(
+            not isinstance(item, str) for item in reasons
+        ):
             raise ModelMotionPlannerGateError("calibration reasons are invalid")
         blockers.extend(reasons)
     return tuple(dict.fromkeys(blockers))
@@ -72,11 +80,9 @@ def evaluate_model_motion_planner_gate(
 ) -> dict[str, Any]:
     """Return a hash-bound, zero-authority planner-admission report.
 
-    A complete calibration graph is necessary but not sufficient. The current
-    repository has no reviewed decoder that turns each calibration artifact's
-    payload into the closed B -> Wv -> R_u -> G -> T chain while preserving the
-    separate R_ctrl correlation. The gate records that implementation blocker
-    even if a test registry is populated with nominal artifacts.
+    A complete calibration graph is necessary but not sufficient. Valid artifacts
+    are decoded through the strict planner snapshot contract; device-local target
+    reprojection through the measured device transform remains a separate stage.
     """
 
     if not isinstance(proposal, ModelMotionProposal):
@@ -96,12 +102,43 @@ def evaluate_model_motion_planner_gate(
     calibration = assess_calibration_status(context, proposal.device.value)
     calibration_document = calibration.to_dict()
     blockers = list(_calibration_blockers(calibration_document))
-    status = (
-        "BLOCKED_STRICT_CALIBRATION_PAYLOAD_DECODER_REQUIRED"
-        if calibration.all_valid
-        else "BLOCKED_CALIBRATION_MISSING_OR_STALE"
-    )
-    blockers.append("STRICT_CALIBRATION_SNAPSHOT_DECODER_NOT_IMPLEMENTED")
+    calibration_snapshot = None
+    calibration_snapshot_sha256 = None
+    if calibration.all_valid:
+        artifact_ids = required_planner_artifact_ids(proposal.device.value)
+        registry = CalibrationRegistry(context.workspace / "software/calibrations")
+        artifacts = {}
+        for artifact_id in artifact_ids:
+            artifact = registry.get_current(artifact_id)
+            if artifact is None:
+                raise ModelMotionPlannerGateError(
+                    "calibration resolution was valid but a required artifact disappeared"
+                )
+            artifacts[artifact_id] = artifact
+        assessments = {item.artifact_id: item for item in calibration.assessments}
+        try:
+            decoded = decode_planner_calibration_snapshot(
+                device=proposal.device.value,
+                artifacts=artifacts,
+                assessments={
+                    artifact_id: assessments[artifact_id]
+                    for artifact_id in artifact_ids
+                },
+                expected_target_map_sha256=context.targets.content_sha256,
+            )
+        except PlannerCalibrationSnapshotError as exc:
+            status = "BLOCKED_CALIBRATION_PAYLOAD_INVALID"
+            blockers.append(f"CALIBRATION_PAYLOAD_INVALID:{exc}")
+            next_stage = "CORRECT_MEASURED_CALIBRATION_PAYLOADS"
+        else:
+            calibration_snapshot = decoded.to_dict()
+            calibration_snapshot_sha256 = decoded.snapshot_sha256
+            status = "BLOCKED_MEASURED_TARGET_REPROJECTION_REQUIRED"
+            blockers.append("MEASURED_DEVICE_TARGET_REPROJECTION_NOT_IMPLEMENTED")
+            next_stage = "MEASURED_DEVICE_TARGET_REPROJECTION"
+    else:
+        status = "BLOCKED_CALIBRATION_MISSING_OR_STALE"
+        next_stage = "COMMISSION_REQUIRED_CALIBRATIONS"
 
     epoch_policy_path = context.workspace / "software/config/configuration_epochs.json"
     arm_frame_lock = context.bundle_lock.artifact("arm_frame_contract")
@@ -124,8 +161,10 @@ def evaluate_model_motion_planner_gate(
         },
         "calibration_status_sha256": calibration.report_hash,
         "calibration_status": calibration_document,
+        "calibration_snapshot_sha256": calibration_snapshot_sha256,
+        "calibration_snapshot": calibration_snapshot,
         "blockers": blockers,
-        "next_required_stage": "STRICT_CALIBRATION_SNAPSHOT_DECODER",
+        "next_required_stage": next_stage,
         "trajectory_candidate": None,
         "ik_executed": False,
         "route_screen_executed": False,

@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rocell.local/schemas/planner_calibration_snapshot_v1.schema.json",
+  "title": "RoCell planner calibration snapshot v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "device", "manifest_id", "active_build_id", "artifact_hashes", "board_T_vendor_world",
+    "board_T_device", "hand_T_tool", "robot_reference",
+    "controller_correlation", "target_map_sha256", "physical_authority"
+  ],
+  "properties": {
+    "schema": {"const": "rocell.planner_calibration_snapshot.v1"},
+    "device": {"enum": ["keyboard", "phone"]},
+    "manifest_id": {"type": "string", "minLength": 1},
+    "active_build_id": {"type": "string", "minLength": 1},
+    "artifact_hashes": {
+      "type": "object",
+      "minProperties": 5,
+      "maxProperties": 5,
+      "propertyNames": {"enum": [
+        "robot_reference", "arm_board", "controller_correlation",
+        "keyboard_pose", "keyboard_tcp", "phone_screen", "phone_tcp"
+      ]},
+      "additionalProperties": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+    },
+    "board_T_vendor_world": {"$ref": "#/$defs/transform"},
+    "board_T_device": {"$ref": "#/$defs/transform"},
+    "hand_T_tool": {"$ref": "#/$defs/transform"},
+    "robot_reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["joint_order", "zero_offsets_rad", "lower_rad", "upper_rad", "signs"],
+      "properties": {
+        "joint_order": {"type": "array", "minItems": 6, "maxItems": 6, "items": {"type": "string"}},
+        "zero_offsets_rad": {"$ref": "#/$defs/sixNumbers"},
+        "lower_rad": {"$ref": "#/$defs/sixNumbers"},
+        "upper_rad": {"$ref": "#/$defs/sixNumbers"},
+        "signs": {"type": "array", "minItems": 6, "maxItems": 6, "items": {"enum": [-1, 1]}}
+      }
+    },
+    "controller_correlation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "model_frame", "controller_frame", "correlation_model_id",
+        "correlation_model_sha256",
+        "validation_sample_count", "heldout_count",
+        "heldout_max_position_error_mm", "heldout_max_angle_error_rad"
+      ],
+      "properties": {
+        "model_frame": {"const": "Wv"},
+        "controller_frame": {"const": "R_ctrl"},
+        "correlation_model_id": {"type": "string"},
+        "correlation_model_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "validation_sample_count": {"type": "integer", "minimum": 1},
+        "heldout_count": {"type": "integer", "minimum": 1},
+        "heldout_max_position_error_mm": {"type": "number", "minimum": 0},
+        "heldout_max_angle_error_rad": {"type": "number", "minimum": 0}
+      }
+    },
+    "target_map_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "physical_authority": {"const": false}
+  },
+  "$defs": {
+    "sixNumbers": {
+      "type": "array", "minItems": 6, "maxItems": 6, "items": {"type": "number"}
+    },
+    "transform": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["parent_frame", "child_frame", "rotation_matrix_row_major", "translation_mm"],
+      "properties": {
+        "parent_frame": {"type": "string"},
+        "child_frame": {"type": "string"},
+        "rotation_matrix_row_major": {
+          "type": "array", "minItems": 9, "maxItems": 9, "items": {"type": "number"}
+        },
+        "translation_mm": {
+          "type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "number"}
+        }
+      }
+    }
+  }
+}

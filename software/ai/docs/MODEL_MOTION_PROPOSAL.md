@@ -127,10 +127,12 @@ device calibration graph. Its output is
 
 The current repository correctly reports
 `BLOCKED_CALIBRATION_MISSING_OR_STALE`: the physical calibration registry is
-empty. Even a populated test registry remains blocked until a reviewed strict
-decoder can construct the closed transform chain from measured artifact
-payloads. The gate executes no IK, route screen, controller encoding, or hardware
-write.
+empty. A strict decoder now accepts only hash-matched `VALID` artifacts with
+exact payload schemas for robot reference, `B_T_Wv`, separate `R_ctrl`
+correlation, measured device pose, and `G_T_T`. After those artifacts exist,
+the next gate is reprojecting the model's device-local target through the
+measured device transform. The gate executes no IK, route screen, controller
+encoding, or hardware write.
 
 Run the zero-write gate from the repository root:
 

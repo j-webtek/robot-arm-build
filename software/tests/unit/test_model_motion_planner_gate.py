@@ -2,9 +2,12 @@ from __future__ import annotations
 
 from dataclasses import replace
 from pathlib import Path
+from types import SimpleNamespace
 
 import pytest
 
+import rocell.application.model_motion_planner_gate as gate_module
+from rocell.calibration import PlannerCalibrationSnapshotError
 from rocell.application.context import SimulationContextError, load_simulation_context
 from rocell.application.model_motion_planner_gate import (
     evaluate_mapping,
@@ -52,11 +55,16 @@ def test_current_repository_fails_closed_at_missing_calibration(context) -> None
     assert report["status"] == "BLOCKED_CALIBRATION_MISSING_OR_STALE"
     assert report["model_motion_candidate"]["target_id"] == "H"
     assert report["model_motion_candidate"]["proposed_surface_target_board_mm"] == {
-        "frame": "board", "x": 216.55, "y": 154.0, "z": 21.0
+        "frame": "board",
+        "x": 216.55,
+        "y": 154.0,
+        "z": 21.0,
     }
     assert "MISSING_CALIBRATION:arm_board" in report["blockers"]
     assert "MISSING_CALIBRATION:controller_correlation" in report["blockers"]
-    assert "STRICT_CALIBRATION_SNAPSHOT_DECODER_NOT_IMPLEMENTED" in report["blockers"]
+    assert report["next_required_stage"] == "COMMISSION_REQUIRED_CALIBRATIONS"
+    assert report["calibration_snapshot"] is None
+    assert report["calibration_snapshot_sha256"] is None
     assert report["trajectory_candidate"] is None
     assert report["ik_executed"] is False
     assert report["route_screen_executed"] is False
@@ -100,3 +108,75 @@ def test_tampered_context_is_revalidated(context) -> None:
         evaluate_model_motion_planner_gate(
             ModelMotionProposal.from_mapping(proposal()), tampered
         )
+
+
+def valid_calibration_status():
+    artifact_ids = (
+        "robot_reference",
+        "arm_board",
+        "controller_correlation",
+        "keyboard_pose",
+        "keyboard_tcp",
+    )
+    return SimpleNamespace(
+        all_valid=True,
+        report_hash="b" * 64,
+        assessments=tuple(SimpleNamespace(artifact_id=item) for item in artifact_ids),
+        to_dict=lambda: {"ordered_requirements": []},
+    )
+
+
+def test_valid_calibrations_advance_only_to_measured_reprojection(
+    context, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setattr(
+        gate_module, "assess_calibration_status", lambda *_: valid_calibration_status()
+    )
+    monkeypatch.setattr(
+        gate_module,
+        "CalibrationRegistry",
+        lambda *_: SimpleNamespace(get_current=lambda artifact_id: object()),
+    )
+    decoded = SimpleNamespace(
+        to_dict=lambda: {"schema": "rocell.planner_calibration_snapshot.v1"},
+        snapshot_sha256="c" * 64,
+    )
+    monkeypatch.setattr(
+        gate_module, "decode_planner_calibration_snapshot", lambda **_: decoded
+    )
+
+    report = evaluate_model_motion_planner_gate(
+        ModelMotionProposal.from_mapping(proposal()), context
+    )
+    assert report["status"] == "BLOCKED_MEASURED_TARGET_REPROJECTION_REQUIRED"
+    assert report["next_required_stage"] == "MEASURED_DEVICE_TARGET_REPROJECTION"
+    assert report["calibration_snapshot_sha256"] == "c" * 64
+    assert report["trajectory_candidate"] is None
+    assert report["hardware_commands_generated"] == 0
+
+
+def test_invalid_calibration_payload_is_an_explicit_blocker(
+    context, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setattr(
+        gate_module, "assess_calibration_status", lambda *_: valid_calibration_status()
+    )
+    monkeypatch.setattr(
+        gate_module,
+        "CalibrationRegistry",
+        lambda *_: SimpleNamespace(get_current=lambda artifact_id: object()),
+    )
+
+    def reject(**_):
+        raise PlannerCalibrationSnapshotError("wrong transform direction")
+
+    monkeypatch.setattr(gate_module, "decode_planner_calibration_snapshot", reject)
+    report = evaluate_model_motion_planner_gate(
+        ModelMotionProposal.from_mapping(proposal()), context
+    )
+    assert report["status"] == "BLOCKED_CALIBRATION_PAYLOAD_INVALID"
+    assert report["next_required_stage"] == "CORRECT_MEASURED_CALIBRATION_PAYLOADS"
+    assert report["blockers"] == [
+        "CALIBRATION_PAYLOAD_INVALID:wrong transform direction"
+    ]
+    assert report["calibration_snapshot"] is None
