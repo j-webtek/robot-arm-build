@@ -599,8 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-- AI lane / S1: fixed baseline-preservation penalty comparison; identical key-loss inputs/budget, coefficient1, no qualification.
-
 
 
 
@@ -6175,3 +6173,54 @@ commissioning, or bounded physical result with its limitations intact.
 - Next dependency: qualify the installed profile and contact policy with
   independently reviewed physical evidence, then connect this collision-policy
   artifact as a mandatory input to the single-use execution review/permit gate.
+
+
+### E-20260926-AI-208 — baseline preservation penalty comparison
+
+- Stage: S1
+- Lane: AI
+- Commit: `ce016b51974f925bd38b14998d2c941e74a9451e` (frozen source; results/tests committed with evidence)
+- Change: baseline preservation penalty comparison.
+- Inputs/fixtures: training14M600 x4,development15M200 x4; initial/teacher checkpoint0fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d. Both arms key-loss,50% occlusion,4epochs,AdamW0.0001,batch64,seed260926; candidate adds coefficient1 teacher-key penalty only on standard/appearance training images. Source hashes train/pose_anchor_v0_plan.json; image/teacher/checkpoint hashes eval/pose_anchor_v0_report.json.
+- Command: `python software/ai/train/train_pose_anchor.py`
+- Result: FAIL overall; all baseline comparisons PASS, paired-control comparisons FAIL. Candidate means standard0.797,appearance0.831,partial0.944,full1.116mm vs baseline0.853/0.833/1.026/1.229 and control0.822/0.864/0.947/1.101. Candidate tails4/6/6/9 (25total) vs baseline5/7/9/11 (32) and control3/5/5/9 (22). Obstruction tails15 vs baseline20/control14. Candidate epoch4,control3. control checkpoint SHA256 32827846727a3e6fdbbedad1b94d3952867a776ae5e9aa8e5f23944ca60684ec; occlusion checkpoint SHA256 efdc3b783ea6eca98393ebeb1e0f02d4bb3c2b1bcb8a837b1135b57d1ef91c0a
+- Artifacts: train/train_pose_anchor.py; eval/pose_anchor_v0_report.json; tests/test_pose_anchor.py; ignored results/pose_anchor_v0_* checkpoints.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: One seed,GPU nondeterminism,reused development selection. Appearance gain over baseline only0.002344mm; not established repeatability. Teacher can preserve errors and has no truth/calibration authority. Historical occlusion arm denotes anchored candidate. No promotion or fresh holdout.
+- Supersedes: none; prior failures and arm/integration statuses retained.
+- Next dependency: Freeze two additional training seeds for the unchanged paired experiment,report each run and aggregate variation rather than pick a winning seed. Keep coefficient,data,budget,selection and acceptance rules fixed; test repeatability before any new parameter change or fresh qualification.
+
+
+### E-20260926-AI-209 — baseline preservation verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `ce016b51974f925bd38b14998d2c941e74a9451e` (frozen source; results/tests committed with evidence)
+- Change: baseline preservation verification.
+- Inputs/fixtures: training14M600 x4,development15M200 x4; initial/teacher checkpoint0fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d. Both arms key-loss,50% occlusion,4epochs,AdamW0.0001,batch64,seed260926; candidate adds coefficient1 teacher-key penalty only on standard/appearance training images. Source hashes train/pose_anchor_v0_plan.json; image/teacher/checkpoint hashes eval/pose_anchor_v0_report.json.
+- Command: `python -m pytest -q software/ai/tests/test_pose_anchor.py`
+- Result: PASS,3 tests: geometry/autograd,masked teacher detached,zero-mask handling,equal image/teacher hashes,1200 anchor images per arm,checkpoint identities,selection and metrics. Existing pytest-asyncio warning.
+- Artifacts: train/train_pose_anchor.py; eval/pose_anchor_v0_report.json; tests/test_pose_anchor.py; ignored results/pose_anchor_v0_* checkpoints.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Implementation verification only; batch unchanged,shared boundary suite not triggered.
+- Supersedes: none; prior failures and arm/integration statuses retained.
+- Next dependency: Freeze two additional training seeds for the unchanged paired experiment,report each run and aggregate variation rather than pick a winning seed. Keep coefficient,data,budget,selection and acceptance rules fixed; test repeatability before any new parameter change or fresh qualification.
+
+
+### E-20260926-AI-210 — baseline preservation publication audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `ce016b51974f925bd38b14998d2c941e74a9451e` (frozen source; results/tests committed with evidence)
+- Change: baseline preservation publication audit.
+- Inputs/fixtures: training14M600 x4,development15M200 x4; initial/teacher checkpoint0fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d. Both arms key-loss,50% occlusion,4epochs,AdamW0.0001,batch64,seed260926; candidate adds coefficient1 teacher-key penalty only on standard/appearance training images. Source hashes train/pose_anchor_v0_plan.json; image/teacher/checkpoint hashes eval/pose_anchor_v0_report.json.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS;6012 paths,847.8 MiB,0 unresolved findings,14 reviewed synthetic fixtures.
+- Artifacts: train/train_pose_anchor.py; eval/pose_anchor_v0_report.json; tests/test_pose_anchor.py; ignored results/pose_anchor_v0_* checkpoints.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic audit; protected-main blocker AI-041 retained.
+- Supersedes: none; prior failures and arm/integration statuses retained.
+- Next dependency: Freeze two additional training seeds for the unchanged paired experiment,report each run and aggregate variation rather than pick a winning seed. Keep coefficient,data,budget,selection and acceptance rules fixed; test repeatability before any new parameter change or fresh qualification.
