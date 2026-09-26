@@ -599,6 +599,8 @@ Copy this row and fill every field:
 
 ## Active work claims
 
+| AI | S1 | fresh geometry decoder evaluation | feature/translation-pair-evidence | ACTIVE |
+
 
 
 
