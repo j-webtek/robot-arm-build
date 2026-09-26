@@ -1,12 +1,12 @@
 # Naming shortlist and preliminary search record
 
-Date: September 26, 2026. Status: creative shortlist, NOT legal clearance.
+Date: September 26, 2026. Status: Tactevra selected by owner, NOT legal clearance.
 
-## Recommendation
+## Owner selection
 
-Advance **Tactevra** for owner consideration, with **Kinetavra** and **Tactoryn**
-as alternatives. This is a subjective brand recommendation, not a finding that
-any candidate is available, registrable, or commercially protected.
+The owner selected **Tactevra** with “Go with tactevra” on September 26, 2026.
+Kinetavra and Tactoryn are retained below as historical alternatives. Selection
+is not a finding that the name is available, registrable, or commercially protected.
 
 | Candidate | Suggested pronunciation | Creative fit | Concern |
 | --- | --- | --- | --- |
@@ -14,9 +14,8 @@ any candidate is available, registrable, or commercially protected.
 | Kinetavra | kin-eh-TAV-ruh | Motion-oriented, broad platform identity | Longer; similar-sounding motion brands must be searched |
 | Tactoryn | TAK-tor-in | Practical, engineered physical action | Can sound like “factory”; spelling may need repetition |
 
-Suggested repository slugs would be `tactevra`, `kinetavra`, or `tactoryn`.
-These are proposed strings only; no domain, account, package name, or repository
-has been reserved or renamed.
+The planned repository slug is `tactevra`. No domain, account, package name, or
+repository has been reserved or renamed.
 
 ## Search performed
 
@@ -38,7 +37,8 @@ their operators, trademark ownership, or commercial claims.
 
 ## Required before commercial adoption
 
-- [ ] Owner selects preferred candidate and target sales jurisdictions.
+- [x] Owner selects preferred candidate: Tactevra.
+- [ ] Owner specifies target sales jurisdictions.
 - [ ] Define intended goods/services and who will own the brand.
 - [ ] Search exact, similar-spelling, phonetic, and meaning-related marks in the
   relevant official trademark databases; retain dated queries and findings.
@@ -58,13 +58,13 @@ also distinguishes coined/arbitrary marks from descriptive names.
 
 ## Decision record
 
-- Selected name: pending owner decision.
-- Pronunciation and spelling: pending.
+- Selected name: Tactevra, owner selection on September 26, 2026.
+- Canonical spelling: Tactevra; recommended pronunciation: tak-TEV-ruh.
 - Target markets and legal owner: pending.
 - Trademark review: not performed.
 - Domain/handle/package availability: not verified.
 - Commercial licensing review of dependencies and model artifacts: pending.
-- Repository rename: not authorized for a specific name and not performed.
+- Repository rename: planned slug `tactevra`; operational rename remains pending.
 
 Update this record with evidence rather than replacing “not checked” with an
 assumption. Keep rejected candidates so future contributors do not repeat the
