@@ -1,0 +1,34 @@
+name: Documentation problem
+description: Report unclear, outdated, missing or misleading Tactevra guidance.
+labels: [documentation]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Help us make Tactevra easier to understand. No code fix or technical diagnosis is needed to report confusing guidance.
+        Issues are public: omit private data and use [private security reporting](https://github.com/j-webtek/robot-arm-build/security/advisories/new) for security problems.
+        Do not repeat hardware operations solely to reproduce a documentation problem.
+  - type: input
+    id: page
+    attributes:
+      label: Page or missing topic
+      description: Link the page and section, or describe the topic you could not find. Include a revision if known.
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What is unclear or inaccurate?
+      description: Tell us what you were trying to understand and where you got stuck. Include supporting dated evidence if available, but do not guess the answer.
+    validations:
+      required: true
+  - type: textarea
+    id: audience
+    attributes:
+      label: Reader context
+      description: Optional. Are you new to the project, setting it up, contributing, or reviewing evidence? Share only what helps explain the difficulty.
+  - type: textarea
+    id: improvement
+    attributes:
+      label: Suggested improvement or related work
+      description: Optional. What would help you continue? Link related issues or PRs. A proposed correction is welcome, not required; leave unknown owners unassigned.

@@ -1,0 +1,57 @@
+name: Bug report
+description: Report a non-sensitive Tactevra installation or software problem.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This report will be public. For vulnerabilities, exposed secrets or execution-gate bypasses, use [private security reporting](https://github.com/j-webtek/robot-arm-build/security/advisories/new).
+        Do not include credentials, private configuration, personal photos or raw device backups.
+        Do not repeat a physical movement to reproduce a bug, or restart/release torque on an unsupported arm. Describe observations you already have.
+  - type: dropdown
+    id: context
+    attributes:
+      label: Where did the problem occur?
+      options:
+        - Installation or offline introductory example
+        - Offline tests or simulation
+        - Model inference or evaluation
+        - Previously authorized physical test
+        - Other or unsure
+    validations:
+      required: true
+  - type: textarea
+    id: behavior
+    attributes:
+      label: Expected and observed behavior
+      description: What were you trying to do, and what happened instead? Say what this blocks.
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Version and environment
+      description: Include the commit (git rev-parse HEAD), OS and Python version when available. Say unknown or not applicable rather than guessing. Do not paste environment-variable dumps.
+      placeholder: |
+        Commit or downloaded revision:
+        OS:
+        Python version:
+        Relevant optional package or native-helper version, if known:
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Command or steps already taken
+      description: Include the exact command and a minimal sanitized example. If it cannot be reproduced offline, describe the existing record instead; no new hardware test is requested.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Sanitized evidence and related work
+      description: Optional error excerpt, relevant issue or PR, and workaround already tried. Separate requested targets, controller feedback and physical observations. Keep original exports locally; share only reviewed excerpts.
+  - type: markdown
+    attributes:
+      value: |
+        Unsure which detail is needed? Say so in the report. See [support](https://github.com/j-webtek/robot-arm-build/blob/main/SUPPORT.md) for reporting guidance. This is not an emergency or live hardware-support channel.
