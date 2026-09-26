@@ -599,7 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-| AI | S1 | corner identity and rival peak attribution | feature/translation-pair-evidence | ACTIVE |
 
 
 
@@ -4644,3 +4643,51 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic audit; AI-041 protected-main publication blocker remains.
 - Supersedes: none; earlier failures and integration statuses preserved.
 - Next dependency: Protected-branch PR/checks and AI-136 diagnosis.
+
+### E-20260926-AI-139 — corner identity and rival peak attribution
+
+- Stage: S1
+- Lane: AI
+- Commit: `20520312354e67e734f910020295cf156e728fb7` (frozen source; results/tests committed with evidence)
+- Change: corner identity and rival peak attribution.
+- Inputs/fixtures: 800 reused15M200 images,3200 corners; frozen t05 checkpoint356a4dec05c6c2194c6d31542fed0d7199d5e989eb4b7678888d1a01aa493281. Exact source/input hashes in eval/corner_attribution_v0.manifest.json.
+- Command: `python software/ai/vision/diagnose_corner_attribution.py`
+- Result: Completed descriptive attribution. Clear/partial/hidden >8px peak errors202/76/17; peaks within8px of another corner1/0/0. Strongest rival outside8px of primary is within8px of correct corner189/52/12; rival also >=0.5 primary strength149/24/8. Thus near-other-corner errors are rare in this definition; alternate responses often retain correct-corner evidence.
+- Artifacts: eval/corner_attribution_v0_report.json; frozen runner/manifest
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Reused synthetic CPU study; geometric proximity is not confirmed semantic swap, rival may be a broad shoulder, thresholds descriptive only. No oracle selection/runtime calibration, retraining, qualification or boundary change.
+- Supersedes: none; prior failures and integration statuses preserved.
+- Next dependency: Freeze a bounded geometry-consistency candidate-peak decoder study. Use only predicted peaks and declared synthetic keyboard dimensions at selection, never truth pose/placement; truth only scores results. Retain mean/tail/yaw, visibility and stability criteria; require fresh evaluation before promotion.
+
+### E-20260926-AI-140 — corner attribution verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `20520312354e67e734f910020295cf156e728fb7` (frozen source; results/tests committed with evidence)
+- Change: corner attribution verification.
+- Inputs/fixtures: AI-139 manifest and3200 diagnostic rows with pinned source/input hashes.
+- Command: `python -m pytest -q software/ai/tests/test_corner_attribution.py`
+- Result: PASS,1 test; independently recomputed class counts,proximity and rival intersections,ratio ranges and zero authority. Existing pytest-asyncio warning.
+- Artifacts: software/ai/tests/test_corner_attribution.py
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Consistency verification only. Batch contract unchanged; shared boundary suite not triggered.
+- Supersedes: none; prior failures and integration statuses preserved.
+- Next dependency: AI-139 geometry-consistency study.
+
+### E-20260926-AI-141 — corner attribution publication audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `20520312354e67e734f910020295cf156e728fb7` (frozen source; results/tests committed with evidence)
+- Change: corner attribution publication audit.
+- Inputs/fixtures: Repository with AI-139/140 and reviewed fixture allowlist.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS;5887 paths,829.8 MiB,0 unresolved findings,14 reviewed synthetic fixtures.
+- Artifacts: audit stdout and repository snapshot
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic audit; AI-041 protected-main publication blocker remains.
+- Supersedes: none; prior failures and integration statuses preserved.
+- Next dependency: Protected-branch PR/checks and AI-139 study.

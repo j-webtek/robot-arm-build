@@ -459,3 +459,8 @@ The one frozen0.5-versus1.0 training comparison passes relative visibility: clea
 ### Coordinate decoder diagnosis (AI-136)
 
 On the frozen visibility-temperature0.5 model, coordinate softargmax still uses temperature1. Sharpening its decoder to0.5 reduces clear mean8.219→7.057px but worsens clear p9516.099→27.157px, partial mean8.362→12.237px and hidden mean6.181→8.233px. Hard peaks also have large clear/partial tails. No decoder change is justified by this diagnostic. Next attribute heatmap peaks to semantic corner identities and keyboard geometry before another training change. Source `e9e6b07539996716239bd1f88d2c8490b01edeaa`; `eval/temperature_bias_v0_report.json`. Reused synthetic evidence cannot qualify localization.
+
+
+### Corner attribution (AI-139)
+
+Of295 hard-peak errors>8px, only1 lies within8px of a different semantic corner. Clear-corner large errors often retain a correct nearby alternate response:189/202 have the strongest rival outside the primary8px neighborhood near truth,149 also at least half primary strength. This suggests testing geometric consistency among predicted candidates rather than assuming corner swaps. A rival may be a shoulder, and truth proximity is diagnostic only. Next freeze a candidate decoder using predicted peaks plus declared synthetic dimensions, never oracle pose/placement. No runtime correction or qualification. Source `20520312354e67e734f910020295cf156e728fb7`; `eval/corner_attribution_v0_report.json`.
