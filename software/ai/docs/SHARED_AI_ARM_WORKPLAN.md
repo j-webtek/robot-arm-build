@@ -605,7 +605,7 @@ remove it only in the same commit that appends the resulting evidence row.
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
 | Unclaimed | S2 | qualified perception adapter and complete shared gate | — | AVAILABLE |
-| Unclaimed | S4 | sole-writer lifecycle, fault injection, and restart closure | — | AVAILABLE |
+| Unclaimed | S4 | published permit/receipt schemas, golden fixture, and installed mapping qualification | — | AVAILABLE |
 
 ## Worker update procedure
 
@@ -1821,6 +1821,63 @@ commissioning, or bounded physical result with its limitations intact.
 - Next dependency: fixture-owner review remains independent of S4 writer and
   installed-controller qualification.
 
+### E-20260926-ARM-016 — zero-write sole-writer lifecycle and restart closure
+
+- Stage: S4
+- Lane: ARM
+- Commit: `8ddd984d4dd8df1f18e58c2f743854642b84abe7`
+- Change: wrapped the hash-bound T=102 preview receipt in a transport-free
+  single-owner lifecycle. One correlation can be reserved once. Events are
+  ordinal, hash-chained, bound to the exact preview receipt and writer instance,
+  and exported as strict canonical journal bytes. Normal rehearsal closes
+  terminally; injected partial write, acknowledgement timeout, feedback timeout,
+  and uncertain close all close as `AMBIGUOUS_NO_RETRY`. A process restart after
+  reservation reconstructs only as `RECONCILIATION_REQUIRED_NO_RETRY` and cannot
+  automatically replay.
+- Inputs/fixtures: ARM-014 zero-write preview receipt and its sealed synthetic v2
+  trajectory fixture; analytic counterfactual fault labels only.
+- Command: `python -m pytest software/ai/tests software/tests/unit/test_zero_write_sole_writer_v1.py software/tests/unit/test_zero_write_waveshare_adapter_v1.py software/tests/unit/test_trajectory_execution_envelope_v2.py software/tests/unit/test_all_joint_command.py software/tests/unit/test_arm_protocol.py software/tests/integration/test_shared_shadow_runner_v2.py software/tests/integration/test_model_motion_v2_shared_gate.py software/tests/unit/test_model_motion_ingress_v2.py software/tests/unit/test_model_motion_planner_gate.py software/tests/unit/test_model_motion_sequence_coordinator.py -q`
+- Result: PASS, 272 tests. Concurrent claim attempts permit exactly one owner;
+  consumed/closed/recovered journals refuse replay. Altered event content,
+  duplicate JSON fields, wrong receipt identity, and unknown fault modes reject.
+  Every success and failure report records zero transport opens, zero physical
+  writes, no submitted bytes, and no automatic retry.
+- Artifacts: `software/src/rocell/application/zero_write_sole_writer_v1.py`,
+  its application exports, and
+  `software/tests/unit/test_zero_write_sole_writer_v1.py`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: fault labels are counterfactual lifecycle injections; no serial or
+  HTTP transport is imported, opened, or exercised. Restart safety depends on
+  retaining and reconstructing the exact journal bytes; a production durable
+  reservation store is not implemented. No installed controller mapping,
+  firmware-version match, acknowledgement grammar, or feedback qualification is
+  claimed.
+- Supersedes: none; extends ARM-014 without granting physical authority.
+- Next dependency: publish strict permit/receipt schemas and a committed golden
+  byte fixture, then bind them to independently commissioned controller mapping
+  and firmware evidence before considering the S4 arm lane ready.
+
+### E-20260926-ARM-017 — sole-writer lifecycle audit findings retained
+
+- Stage: S4
+- Lane: ARM
+- Commit: `8ddd984d4dd8df1f18e58c2f743854642b84abe7`
+- Change: ran the required read-only repository snapshot audit after the
+  zero-write writer lifecycle and fault matrix.
+- Inputs/fixtures: repository snapshot and `scripts/audit_github_snapshot.py`.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: FAIL, exit 1; 5,655 paths, 903.5 MiB, the same 14 existing
+  credential-literal-review findings in arm unit fixtures; no sole-writer,
+  journal, report, or lifecycle-test finding.
+- Artifacts: scanner and the existing named fixtures in its output.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: heuristic findings remain unresolved; this is not a clean
+  repository security-audit claim.
+- Supersedes: none; retains all earlier audit failures.
+- Next dependency: fixture-owner review remains independent of S4 schema,
+  golden-fixture, and controller-mapping work.
 
 ### E-20260926-AI-032 — translation and rotation development decomposition
 
