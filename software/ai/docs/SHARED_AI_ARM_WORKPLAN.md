@@ -603,6 +603,7 @@ remove it only in the same commit that appends the resulting evidence row.
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
 | Arm/runtime lane | S1 | `software/src/rocell/models`, arm-side schema and unit tests | `main` from `ebe7eee` | ACTIVE |
+| AI/model | S1 | `eval/s1_geometry_cases_v0.json`, `tests/test_s1_geometry_cases.py` | main from `95b4786` | ACTIVE: analytic acceptance fixtures only |
 | Unclaimed | S2 | shadow runner/integration fixtures | — | AVAILABLE |
 | Unclaimed | S4 | controller adapter/receipts | — | AVAILABLE |
 
