@@ -31,6 +31,8 @@ for the dated settings and how to propose another action without bypassing them.
   Links to this repository's new-issue templates are checked against local
   template filenames, catching stale `.md`/`.yml` routes without network access.
 - An explicit selection of AI/arm contract, ordering, evidence, and metric tests.
+- A generated-evidence change budget that protects reviewability and clone cost;
+  see [evidence retention](EVIDENCE_RETENTION.md).
   The list is in [offline_checks.py](../scripts/ci/offline_checks.py).
 - Zero-write controller-byte previews, lifecycle fault rehearsal, published
   controller-boundary schemas, and the controller-evidence gate. These use

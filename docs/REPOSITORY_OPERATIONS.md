@@ -48,6 +48,10 @@ The repository maintainer checks this during review. This is a documented proces
 not an automated semantic-accuracy gate. AI/arm owners supply technical evidence;
 the repository lane translates it for readers without changing the evidence.
 
+Apply the [evidence-retention policy](EVIDENCE_RETENTION.md) before accepting
+generated reports. A green test suite does not make a multi-million-line data
+diff reviewable; require compact scorecards or an exact-digest exception.
+
 Track remaining operations work in
 [repository maintenance issues](https://github.com/j-webtek/tactevra/issues?q=is%3Aissue%20is%3Aopen%20label%3Aarea%3Arepository).
 Each issue should name its scope, completion criteria, evidence and exclusions.

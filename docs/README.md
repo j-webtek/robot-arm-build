@@ -31,6 +31,7 @@ still being developed.
 | [Getting started](GETTING_STARTED.md) | First-time users: install, try text interpretation, and explore rehearsal |
 | [AI overview](../software/ai/README.md) | Readers exploring intent parsing and vision experiments |
 | [Shared AI/arm workplan](../software/ai/docs/SHARED_AI_ARM_WORKPLAN.md) | Contributors: stage ownership, dependencies and recorded test evidence |
+| [Evidence retention](EVIDENCE_RETENTION.md) | Contributors: what evidence belongs in Git and how larger artifacts are reviewed |
 | [Runtime implementation plan](../software/ai/docs/MODEL_COMMAND_RUNTIME_IMPLEMENTATION_PLAN.md) | Arm developers: planning, command handling and execution infrastructure |
 | [AI system baseline](../software/ai/docs/AI_SYSTEM_BASELINE_AND_IMPLEMENTATION_PLAN.md) | Research context and dated model-evaluation results |
 
