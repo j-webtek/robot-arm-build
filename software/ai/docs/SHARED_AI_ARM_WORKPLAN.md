@@ -122,7 +122,7 @@ Only the shared integration gate may change a stage's overall status to
 |---|---|---:|---:|---:|---:|
 | S0 | Shared v1 seam and baseline | COMPLETE | COMPLETE | COMPLETE | COMPLETE |
 | S1 | Contract v2: freshness, uncertainty, capability | IN_PROGRESS | READY_FOR_INTEGRATION | COMPLETE | IN_PROGRESS |
-| S2 | Full zero-hardware text-to-envelope shadow path | NOT_STARTED | READY_FOR_INTEGRATION | NOT_STARTED | IN_PROGRESS |
+| S2 | Full zero-hardware text-to-envelope shadow path | NOT_STARTED | READY_FOR_INTEGRATION | IN_PROGRESS | IN_PROGRESS |
 | S3 | Measured localization and planning readiness | IN_PROGRESS | BLOCKED | NOT_STARTED | BLOCKED |
 | S4 | Zero-write Waveshare adapter and receipts | READY_FOR_INTEGRATION | NOT_STARTED | NOT_STARTED | NOT_STARTED |
 | S5 | One independently verified physical key action | NOT_STARTED | NOT_STARTED | NOT_STARTED | NOT_STARTED |
@@ -131,9 +131,11 @@ Only the shared integration gate may change a stage's overall status to
 | P1 | Phone capability track | BLOCKED | BLOCKED | NOT_STARTED | BLOCKED |
 
 The S0 status is supported by the shared v1 batch, strict ingress, sequence
-coordinator, journal, and focused boundary tests. S2 arm work is in progress
-because the sealed controller-independent trajectory exists, but no actual
-model-produced batch has traversed the complete shadow path. S3 remains blocked
+coordinator, journal, and focused boundary tests. S2 integration is in progress:
+a raw request now traverses the grounded parser, deterministic compiler, actual
+v2 emitter, and arm shadow path when given an explicitly scoped synthetic
+integration fixture. Qualified perception has not yet supplied that fixture, so
+this is not the complete S2 path. S3 remains blocked
 from integration because no deployment localization qualification is installed
 and the measured planner does not yet reach physical execution admission. S4
 lists AI as ready because no new AI authority is required; the arm adapter and
@@ -602,7 +604,7 @@ remove it only in the same commit that appends the resulting evidence row.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| Shared integration lane | S2 | raw-request runner and terminal negative matrix | `main` from `ca8c5ae` | ACTIVE |
+| Unclaimed | S2 | qualified perception adapter and complete shared gate | — | AVAILABLE |
 | Unclaimed | S4 | controller adapter/receipts | — | AVAILABLE |
 
 ## Worker update procedure
@@ -1438,3 +1440,65 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: heuristic findings remain unresolved; no clean audit claim.
 - Supersedes: none
 - Next dependency: fixture-owner review independently of confidence research.
+
+### E-20260926-INT-003 — raw request reaches the actual v2 arm shadow path
+
+- Stage: S2
+- Lane: INTEGRATION
+- Commit: `ffa5cf82fdf6be33e35e349ac1e171486ce186f5`
+- Change: added a zero-authority shared runner from raw text through the grounded
+  parser, deterministic compiler, actual v2 batch assembler, decoder, trusted
+  ingress, sequence coordination, and arm shadow planner. The integration found
+  and fixed a real producer/consumer discrepancy: the compiler's profile ID
+  `development/keyboard-us-lowercase-semantic-v1` contains `/`, while the v2
+  schema and arm runtime previously accepted only generic identifiers. Profile
+  IDs now use a dedicated bounded rule; generic identifiers remain unchanged.
+- Inputs/fixtures: explicit `SYNTHETIC_INTEGRATION_ONLY` typed observation,
+  evidence, registry, and fresh observed-state fixtures from the existing v2
+  shared gate; raw requests and terminal cases in
+  `software/tests/integration/test_shared_shadow_runner_v2.py`.
+- Command: `python -m pytest software/tests/integration/test_shared_shadow_runner_v2.py software/tests/integration/test_model_motion_v2_shared_gate.py software/ai/tests/test_batch_emitter_v2.py software/ai/tests/test_precision_binding_v2.py software/ai/tests/test_capture_binding.py software/tests/unit/test_model_motion_ingress_v2.py software/tests/unit/test_model_motion_planner_gate.py software/tests/unit/test_model_motion_sequence_coordinator.py software/tests/unit/test_trajectory_execution_envelope_v2.py -q`
+- Result: PASS, 95 tests. Supported `type hhi on keyboard` preserves three
+  ordered actions and reaches the exact current arm blocker
+  `BLOCKED_CALIBRATION_MISSING_OR_STALE`. Ambiguous, unsupported, stale,
+  obstructed, missing-perception, out-of-bounds, and expired-evidence cases stop
+  at their expected terminal states. The exact compiler profile validates under
+  both the published JSON schema and runtime decoder.
+- Artifacts: `software/ai/rocell_ai/shared_shadow_runner_v2.py`,
+  `software/tests/integration/test_shared_shadow_runner_v2.py`,
+  `software/ai/schemas/model_motion_batch_v2.schema.json`,
+  `software/src/rocell/models/model_motion_batch_v2.py`, and
+  `software/src/rocell/application/model_motion_ingress_v2.py`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: this is partial S2 integration, not S2 completion. The accepted
+  supported path uses an explicitly labeled synthetic integration fixture. The
+  selected precision/confidence workstream has not emitted qualified deployment
+  evidence, and AI-017 correctly records complete abstention under its failed
+  research criteria. No envelope is produced because measured calibration is
+  still missing or stale.
+- Supersedes: none; extends INT-001 and INT-002 without changing their evidence.
+- Next dependency: connect authenticated capture plus a qualified, independently
+  bounded precision observation to this runner; then repeat the terminal matrix
+  with actual producer evidence and measured calibration.
+
+### E-20260926-INT-004 — S2 raw-runner audit findings retained
+
+- Stage: S2
+- Lane: INTEGRATION
+- Commit: `ffa5cf82fdf6be33e35e349ac1e171486ce186f5`
+- Change: ran the required read-only repository snapshot audit after the shared
+  runner and profile-contract correction.
+- Inputs/fixtures: repository snapshot and `scripts/audit_github_snapshot.py`.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: FAIL, exit 1; 5,622 paths, 903.3 MiB, the same 14 existing
+  credential-literal-review findings in arm unit fixtures; no shared-runner,
+  profile-schema, or profile-runtime finding.
+- Artifacts: scanner and the existing named unit fixtures in its output.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: heuristic findings remain unresolved; this is not a clean
+  repository security-audit claim.
+- Supersedes: none; retains every earlier failed audit row.
+- Next dependency: fixture-owner review remains independent of qualified
+  perception integration and measured-calibration work.
