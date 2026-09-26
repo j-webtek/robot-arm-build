@@ -93,6 +93,17 @@ defines the measured, content-addressed body envelopes, source bindings,
 engineering exclusions, and clearance policy required before route screening may
 rely on the installed arm rather than diagnostic placeholders.
 
+The S4 zero-write controller boundary publishes five strict, closed schemas:
+the [T=102 encoding profile](zero_write_waveshare_t102_profile_v1.schema.json),
+[single-use preview permit](zero_write_waveshare_preview_permit_v1.schema.json),
+[wire preview receipt](zero_write_waveshare_preview_receipt_v1.schema.json),
+[sole-writer journal](zero_write_sole_writer_journal_v1.schema.json), and
+[sole-writer rehearsal report](zero_write_sole_writer_report_v1.schema.json).
+They make the model-to-arm handoff reviewable without granting transport or
+physical authority. The profile's joint mapping remains a content-addressed
+claim only; these schemas and their synthetic golden bytes do not qualify the
+mapping against installed firmware or hardware.
+
 [Precision observation v2](precision_observation_v2.schema.json) carries explicit
 localization abstention or a reference to externally qualified uncertainty.
 [Localization qualification v0](localization_qualification_v0.schema.json)

@@ -133,6 +133,9 @@ class WaveshareT102EncodingProfileV1:
     def profile_sha256(self) -> str:
         return hashlib.sha256(_canonical(self.unsigned_dict())).hexdigest()
 
+    def to_dict(self) -> dict[str, Any]:
+        return {**self.unsigned_dict(), "profile_sha256": self.profile_sha256}
+
 
 class ZeroWriteEncodingPermitV1:
     """Single-use preview token; it carries no permission to access hardware."""
@@ -178,6 +181,9 @@ class ZeroWriteEncodingPermitV1:
     @property
     def permit_id(self) -> str:
         return hashlib.sha256(_canonical(self.unsigned_dict())).hexdigest()
+
+    def to_dict(self) -> dict[str, Any]:
+        return {**self.unsigned_dict(), "permit_id": self.permit_id}
 
     @property
     def consumed(self) -> bool:

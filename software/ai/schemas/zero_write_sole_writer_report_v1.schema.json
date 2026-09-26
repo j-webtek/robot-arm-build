@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rocell.local/schemas/zero_write_sole_writer_report_v1.schema.json",
+  "title": "RoCell zero-write sole-writer rehearsal report v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "preview_receipt_sha256", "correlation_id",
+    "writer_instance_id", "fault", "status", "recovery_disposition",
+    "journal_sha256", "command_count", "would_submit_command_count",
+    "transport_open_count", "physical_write_count", "submitted_bytes",
+    "acknowledgements", "feedback_samples", "timeout_events",
+    "automatic_retry", "writer_closed", "hardware_access",
+    "physical_authority", "report_sha256"
+  ],
+  "properties": {
+    "schema": {"const": "rocell.zero_write_sole_writer_report.v1"},
+    "preview_receipt_sha256": {"$ref": "#/$defs/sha256"},
+    "correlation_id": {"$ref": "#/$defs/identifier"},
+    "writer_instance_id": {"$ref": "#/$defs/identifier"},
+    "fault": {"enum": ["NONE", "PARTIAL_WRITE", "ACK_TIMEOUT", "FEEDBACK_TIMEOUT", "TRANSPORT_CLOSE_UNCERTAIN", "PROCESS_RESTART_AFTER_RESERVATION"]},
+    "status": {"enum": ["ZERO_WRITE_REHEARSAL_COMPLETE", "AMBIGUOUS_NO_RETRY", "RECONCILIATION_REQUIRED"]},
+    "recovery_disposition": {"enum": ["TERMINAL_NO_REPLAY", "RECONCILIATION_REQUIRED_NO_RETRY"]},
+    "journal_sha256": {"$ref": "#/$defs/sha256"},
+    "command_count": {"type": "integer", "minimum": 1, "maximum": 511},
+    "would_submit_command_count": {"type": "integer", "minimum": 1, "maximum": 511},
+    "transport_open_count": {"const": 0}, "physical_write_count": {"const": 0},
+    "submitted_bytes": {"type": "array", "maxItems": 0},
+    "acknowledgements": {"type": "array", "maxItems": 0},
+    "feedback_samples": {"type": "array", "maxItems": 0},
+    "timeout_events": {"type": "array", "maxItems": 1, "items": {"enum": ["ACK_TIMEOUT", "FEEDBACK_TIMEOUT"]}},
+    "automatic_retry": {"const": false}, "writer_closed": {"type": "boolean"},
+    "hardware_access": {"const": false}, "physical_authority": {"const": false},
+    "report_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "identifier": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"}
+  }
+}
