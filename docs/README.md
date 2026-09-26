@@ -1,5 +1,8 @@
 # Documentation guide
 
+Branding contributors: the [draft brand foundation](brand/BRAND_GUIDE.md) includes
+the naming shortlist and staged migration plan. No replacement name is adopted yet.
+
 Start with the [project overview](../README.md) and
 [current status](../PROJECT_STATUS.md). Use the links below when you need
 implementation details or evidence for a specific part of the system.
