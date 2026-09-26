@@ -1,0 +1,201 @@
+{
+  "scope": "DEVELOPMENT_ONLY",
+  "plan_sha256": "ca5f31665e5cfdba2a6f0b4b98d9c6dc826350f237862cae20b37a36341b3be9",
+  "results": [
+    {
+      "scope": "DEVELOPMENT_ONLY",
+      "input_size": [
+        128,
+        96
+      ],
+      "loss_weights": [
+        1,
+        1,
+        1
+      ],
+      "selected_epoch": 5,
+      "center_mean_mm": 0.8789340929376531,
+      "yaw_mean_degrees": 0.2352524791393855,
+      "yaw_p95_degrees": 0.6165806424161752,
+      "mean_mm": 0.9365509519099628,
+      "p95_mm": 2.1335929756556142,
+      "maximum_mm": 6.462692067951133,
+      "within_1mm_fraction": 0.6480072463768116,
+      "target_view_count": 27600,
+      "worst_image_error_p95_mm": 2.5732765118237504,
+      "checkpoint_sha256": "be261aa283dc63622d945b5ae313880c4b4fcad53381f8cdb45b3322e85e0490",
+      "history": [
+        {
+          "epoch": 1,
+          "training_mse": 0.0011792753647185035,
+          "development_mse": 0.0008351423894055188
+        },
+        {
+          "epoch": 2,
+          "training_mse": 0.0007476365721474091,
+          "development_mse": 0.0009878679411485791
+        },
+        {
+          "epoch": 3,
+          "training_mse": 0.0007549847018284103,
+          "development_mse": 0.0011482364498078823
+        },
+        {
+          "epoch": 4,
+          "training_mse": 0.0007410308201279905,
+          "development_mse": 0.0008787873666733503
+        },
+        {
+          "epoch": 5,
+          "training_mse": 0.0007378477841201756,
+          "development_mse": 0.0007710381760261953
+        },
+        {
+          "epoch": 6,
+          "training_mse": 0.0007201656988925405,
+          "development_mse": 0.001386211602948606
+        },
+        {
+          "epoch": 7,
+          "training_mse": 0.0007316379732866254,
+          "development_mse": 0.0008973196963779628
+        },
+        {
+          "epoch": 8,
+          "training_mse": 0.000700509335535268,
+          "development_mse": 0.0008817169582471251
+        },
+        {
+          "epoch": 9,
+          "training_mse": 0.0006886957539245487,
+          "development_mse": 0.0008907111478038132
+        },
+        {
+          "epoch": 10,
+          "training_mse": 0.0006470360262836847,
+          "development_mse": 0.0009437401895411313
+        },
+        {
+          "epoch": 11,
+          "training_mse": 0.0006384079691229595,
+          "development_mse": 0.0008025112329050899
+        },
+        {
+          "epoch": 12,
+          "training_mse": 0.000633125374507573,
+          "development_mse": 0.0007989316363818944
+        }
+      ],
+      "device": "cuda",
+      "training_images": 3600,
+      "development_images": 600,
+      "training_pixels_sha256": "e5f9a33b30c5847cefe5c362d14e27aca26b4838c59bead74b43080ad3418265",
+      "development_pixels_sha256": "e548008788762c07e3d087a32ba0fd2e549702230b695096a1625c68f011701e",
+      "qualification_installed": false,
+      "hardware_writes": 0,
+      "physical_movements": 0
+    },
+    {
+      "scope": "DEVELOPMENT_ONLY",
+      "input_size": [
+        128,
+        96
+      ],
+      "loss_weights": [
+        4,
+        4,
+        1
+      ],
+      "selected_epoch": 12,
+      "center_mean_mm": 0.8565903674883111,
+      "yaw_mean_degrees": 0.2196326614307777,
+      "yaw_p95_degrees": 0.5711234880650456,
+      "mean_mm": 0.9065263673844253,
+      "p95_mm": 2.0510642636320804,
+      "maximum_mm": 6.6616864070779505,
+      "within_1mm_fraction": 0.6902173913043478,
+      "target_view_count": 27600,
+      "worst_image_error_p95_mm": 2.6356439102046294,
+      "checkpoint_sha256": "0fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d",
+      "history": [
+        {
+          "epoch": 1,
+          "training_mse": 0.0013017835576708118,
+          "development_mse": 0.0008629411458969116
+        },
+        {
+          "epoch": 2,
+          "training_mse": 0.0007594920555129647,
+          "development_mse": 0.0009343673009425402
+        },
+        {
+          "epoch": 3,
+          "training_mse": 0.0007579566591367539,
+          "development_mse": 0.001080124988220632
+        },
+        {
+          "epoch": 4,
+          "training_mse": 0.0007647961569536063,
+          "development_mse": 0.0008056247606873512
+        },
+        {
+          "epoch": 5,
+          "training_mse": 0.0007235134749983748,
+          "development_mse": 0.0007712435908615589
+        },
+        {
+          "epoch": 6,
+          "training_mse": 0.0007299413131032552,
+          "development_mse": 0.001557622803375125
+        },
+        {
+          "epoch": 7,
+          "training_mse": 0.0008125065633147541,
+          "development_mse": 0.0008431492024101317
+        },
+        {
+          "epoch": 8,
+          "training_mse": 0.0007067203294071886,
+          "development_mse": 0.0009302797843702137
+        },
+        {
+          "epoch": 9,
+          "training_mse": 0.0007316403002995584,
+          "development_mse": 0.0009040581644512713
+        },
+        {
+          "epoch": 10,
+          "training_mse": 0.0006599223991442058,
+          "development_mse": 0.0008382741361856461
+        },
+        {
+          "epoch": 11,
+          "training_mse": 0.0006402746916541623,
+          "development_mse": 0.0009171046549454331
+        },
+        {
+          "epoch": 12,
+          "training_mse": 0.0006865171599201858,
+          "development_mse": 0.0007510019931942225
+        }
+      ],
+      "device": "cuda",
+      "training_images": 3600,
+      "development_images": 600,
+      "training_pixels_sha256": "e5f9a33b30c5847cefe5c362d14e27aca26b4838c59bead74b43080ad3418265",
+      "development_pixels_sha256": "e548008788762c07e3d087a32ba0fd2e549702230b695096a1625c68f011701e",
+      "qualification_installed": false,
+      "hardware_writes": 0,
+      "physical_movements": 0
+    }
+  ],
+  "hardware_writes": 0,
+  "physical_movements": 0,
+  "qualification_installed": false,
+  "limitations": [
+    "Both arms use same 128x96 starting checkpoint, sample order, budget and unweighted development-MSE epoch selection",
+    "Epoch selected on development MSE; development metrics are optimistic selection evidence",
+    "Renderer remains 256x192; no real camera or held-out evaluation data",
+    "One training seed per arm; no claim of statistical significance"
+  ]
+}
