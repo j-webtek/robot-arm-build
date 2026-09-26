@@ -604,7 +604,6 @@ remove it only in the same commit that appends the resulting evidence row.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI | S1 | dark-only normalization evaluator, manifest, scorecard, tests and precision method | feature/translation-pair-evidence | ACTIVE: fixed pixel-only dark correction development comparison |
 | Unclaimed | S2 | qualified perception adapter and complete shared gate | — | AVAILABLE |
 | Unclaimed | S4 | independently review passive controller candidate and close its seven explicit blockers | — | AVAILABLE |
 
@@ -2879,3 +2878,68 @@ commissioning, or bounded physical result with its limitations intact.
   not supersede ARM-024's live observation or limitations.
 - Next dependency: independent evidence review and explicit resolution of the
   seven blockers listed by ARM-024.
+
+### E-20260926-AI-067 — dark-only normalization development pass
+
+- Stage: S1
+- Lane: AI
+- Commit: `2ebb30f4814ec62d5a8b6fb473b790e1a0b34de6` (frozen evaluator/manifest before scoring)
+- Change: unchanged translation checkpoint, pixel-only correction when p95
+  luminance<128. Brighter images are copied unchanged; corrected gain220/p95
+  is clipped[1,2.5]. Threshold128 is a research choice informed by earlier
+  development diagnostics, not measured camera calibration.
+- Inputs/fixtures: reused 15M 200 development groups x4 conditions, 46 targets/image;
+  exact source/checkpoint/catalog hashes in `eval/dark_only_normalization_v0.manifest.json`;
+  input digests, paired metrics and gains in scorecard.
+- Command: `python software/ai/vision/evaluate_dark_only_normalization.py`
+- Result: PASS all12 predefined development checks. Darkened-standard mean
+  2.512120 -> 0.845294 mm; >3mm maximum-key-error images86 -> 6/200.
+  Standard unchanged mean0.853172 mm/tail5; appearance unchanged0.833414 mm/tail7;
+  challenge mean1.032991 -> 0.995131 mm/tail10 -> 9.
+  Corrected images: standard0, appearance0, challenge13, darkened200.
+  No runtime preprocessing installation or localization qualification.
+- Artifacts: `eval/dark_only_normalization_v0_scorecard.json`, manifest and evaluator.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: adaptive research selection on reused synthetic development data;
+  no held-out evidence, actual camera measurements or confidence calibration.
+  Passing relative criteria leaves absolute localization failures. No shared
+  integration gate advanced. No batch contract change; boundary suite not triggered.
+- Supersedes: none; earlier failed normalization/training evidence retained.
+- Next dependency: freeze fresh-seed paired evaluation with unchanged checkpoint,
+  correction and acceptance limits, plus prespecified brightness levels near the
+  gate. Use unconsumed seeds beyond20M; no retuning after scoring. Confidence and
+  physical calibration remain separate blockers even if evaluation passes.
+
+### E-20260926-AI-068 — dark-only normalization tests
+
+- Stage: S1
+- Lane: AI
+- Commit: `2ebb30f4814ec62d5a8b6fb473b790e1a0b34de6` (implementation baseline; tests committed with evidence)
+- Change: checked pixel immutability, black/white behavior, threshold127/128/129,
+  exact bypass, frozen provenance, seeds, metric/gate recounts and correction counts.
+- Inputs/fixtures: analytic PIL images and AI-067 manifest/scorecard (800 paired cases).
+- Command: `python -m pytest -q software/ai/tests/test_dark_only_normalization.py`
+- Result: PASS, 3 tests; existing pytest-asyncio configuration deprecation warning.
+- Artifacts: named tests and AI-067 scorecard.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: offline consistency, not physical accuracy or confidence evidence.
+- Supersedes: none
+- Next dependency: AI-067 fresh evaluation.
+
+### E-20260926-AI-069 — dark-only normalization publication audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `2ebb30f4814ec62d5a8b6fb473b790e1a0b34de6` (implementation baseline plus result/test snapshot)
+- Change: audited publication snapshot after merging latest arm passive-evidence work.
+- Inputs/fixtures: repository with AI-067/068 artifacts and reviewed fixture allowlist.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS; 5730 paths, 789.0 MiB, 0 unresolved findings, 14 reviewed synthetic fixtures.
+- Artifacts: audit stdout and repository snapshot.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: heuristic audit only; AI-041 protected-main PR publication blocker remains.
+- Supersedes: none; historical failures retained.
+- Next dependency: protected-branch PR/checks and AI-067 fresh evaluation.

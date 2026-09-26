@@ -235,3 +235,17 @@ acceptance failure remains unchanged.
 Next: predeclare a bounded pixel-only dark-image correction comparison, retaining
 all acceptance limits. Any darkness threshold is a research parameter; physical
 calibration and fresh evaluation remain separate requirements.
+
+
+### Dark-only normalization development pass
+
+AI-067 through AI-069 record a pass of all12 unchanged development checks for
+correction only when pixel p95 luminance<128. Standard and appearance-shift images
+are bypassed exactly; darkened mean2.512 -> 0.845 mm and >3mm count86 -> 6/200;
+challenge mean1.033 -> 0.995 mm and count10 -> 9. This is selected on reused
+development groups and is not generalization or physical evidence. No runtime
+preprocessing or qualification is installed; all earlier failures remain intact.
+
+Next: freeze fresh-seed evaluation, unchanged correction and acceptance rules,
+with additional brightness levels near the threshold. Retain absolute errors,
+all failures and post-evaluation limitations before confidence/calibration work.
