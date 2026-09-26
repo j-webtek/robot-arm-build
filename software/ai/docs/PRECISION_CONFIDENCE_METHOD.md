@@ -344,3 +344,13 @@ and yaw-p95. However brightness0.55/0.60 tail counts rise6 -> 7 and10 -> 11, so
 combined acceptance fails. No estimator is promoted. Next: predeclare a robust
 median comparison with the same limits; retain fresh evaluation and uncertainty
 requirements before any runtime adoption.
+
+
+### Spatial median passes development gates
+
+AI-092 through AI-094 pass all22 unchanged development checks for median center
+and wrapped-yaw aggregation over five inverse-corrected views. Overall mean0.911
+->0.866mm; all seven condition means/yaw-p95 improve and no tail count increases.
+This remains selected on reused15M data; no runtime estimator or qualification is
+installed. Next: freeze the same estimator/gates on fresh26M500 groups, then
+independently revisit uncertainty only if fresh evidence supports the estimator.

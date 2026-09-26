@@ -604,7 +604,6 @@ remove it only in the same commit that appends the resulting evidence row.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI | S1 | spatial median evaluator, manifest/scorecard/tests, precision method | feature/translation-pair-evidence | ACTIVE: frozen median development comparison |
 | Unclaimed | S2 | qualified perception adapter and complete shared gate | — | AVAILABLE |
 | Unclaimed | S4 | implement controller firmware against the committed safe-idle production runtime contract, then independently review source and linked image | — | AVAILABLE |
 
@@ -3546,3 +3545,64 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations:heuristic audit; AI-041 protected-main PR blocker remains.
 - Supersedes:none; historical failures retained.
 - Next dependency:protected-branch PR/checks and AI-089 median comparison.
+
+### E-20260926-AI-092 — spatial median development pass
+
+- Stage: S1
+- Lane: AI
+- Commit: `1c0b7af55ef624172505aa2d9547ebe602892cd7` (frozen evaluator/manifest before scoring)
+- Change: coordinate-wise median of five inverse-corrected centers and median
+  wrapped yaw offsets relative to base. Same normalized base control, shifts,
+  checkpoint and per-condition mean/tail/yaw limits as AI-089; no tuned weights.
+- Inputs/fixtures: reused15M200 groups x7 conditions=1400 images,46 targets,
+  five passes/image. Exact source/checkpoint/catalog hashes in
+  `eval/spatial_median_v0.manifest.json`; paired cases and input hashes in scorecard.
+- Command: `python software/ai/vision/evaluate_spatial_median.py`
+- Result: PASS all22 development checks. Overall mean0.910859 -> 0.865577mm
+  (about4.97% reduction); every condition mean and yaw-p95 improve. >3mm counts
+  per200 images:standard5 -> 4,appearance7 -> 7,challenge9 -> 8,darkened6 -> 5,
+  brightness0.55:6 -> 5,0.60:10 -> 10,0.65:8 -> 6. No runtime promotion.
+- Artifacts: `eval/spatial_median_v0_scorecard.json`, manifest and evaluator.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: adaptively selected using reused development data; five passes
+  increase compute; inverse image-to-board shift uses synthetic projection, not
+  measured camera calibration. Absolute tail errors remain. No batch changes;
+  shared boundary tests not triggered, integration status unchanged.
+- Supersedes: none; mean-aggregation failure AI-089 remains retained.
+- Next dependency: freeze identical estimator and acceptance gates on unconsumed
+ 26M500 seed groups before scoring. No tuning after evaluation; separate fresh
+  uncertainty study and physical calibration remain required even if it passes.
+
+### E-20260926-AI-093 — spatial median evidence tests
+
+- Stage: S1
+- Lane: AI
+- Commit: `1c0b7af55ef624172505aa2d9547ebe602892cd7` (implementation baseline; tests committed with evidence)
+- Change: tested pi-boundary yaw, resistance to a single analytic outlier, frozen
+  provenance, seed order and per-condition metric/gate recounts.
+- Inputs/fixtures: analytic poses and AI-092 manifest/scorecard.
+- Command: `python -m pytest -q software/ai/tests/test_spatial_median.py`
+- Result: PASS,3 tests; existing pytest-asyncio configuration deprecation warning.
+- Artifacts: named tests and AI-092 scorecard.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: offline consistency, not physical localization qualification.
+- Supersedes: none
+- Next dependency: AI-092 fresh evaluation.
+
+### E-20260926-AI-094 — spatial median publication audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `1c0b7af55ef624172505aa2d9547ebe602892cd7` (implementation baseline plus result/test snapshot)
+- Change: audited publication snapshot.
+- Inputs/fixtures: repository with AI-092/093 artifacts and reviewed fixture allowlist.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS;5778 paths,804.9 MiB,0 unresolved findings,14 reviewed synthetic fixtures.
+- Artifacts: audit stdout and repository snapshot.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: heuristic audit; AI-041 protected-main PR publication blocker remains.
+- Supersedes: none; historical failures retained.
+- Next dependency: protected-branch PR/checks and AI-092 evaluation.
