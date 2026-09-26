@@ -12,9 +12,11 @@ are summarized in [project status](../../PROJECT_STATUS.md).
 As of September 26, 2026, the v2 assembler produces ordered coordinate proposals
 that pass through the arm decoder and validation gates using synthetic evidence.
 It accepts supplied observations; it is not a complete camera-to-arm pipeline.
-The precision-binding preflight checks observation identities and currently
-abstains because the precision record lacks observation confidence and capture
-clock provenance. There is no installed physical localization qualification.
+The precision-binding preflight checks observation identities; capture-receipt
+binding is tested with supplied fixtures, not an authenticated camera service.
+Usable localization confidence and physical localization qualification remain
+missing. The latest confidence-head training failed its synthetic research
+criteria; that result is retained in the shared evidence ledger.
 
 See the [shared workplan](docs/SHARED_AI_ARM_WORKPLAN.md) for developer ownership
 and evidence. The commands and experiment results below are a research reference;
