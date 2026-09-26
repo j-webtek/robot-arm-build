@@ -602,7 +602,7 @@ remove it only in the same commit that appends the resulting evidence row.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| Arm/runtime lane | S2 | v2 sequence coordinator and blocker-path tests | `main` from `a041185` | ACTIVE |
+| Unclaimed | S2 | v2 dual-lineage trajectory envelope contract | — | AVAILABLE |
 | Unclaimed | S4 | controller adapter/receipts | — | AVAILABLE |
 
 ## Worker update procedure
@@ -1179,3 +1179,57 @@ commissioning, or bounded physical result with its limitations intact.
 - Supersedes: none; retains all earlier failed audit evidence.
 - Next dependency: fixture-owner review remains independent of S2 coordination
   and measured calibration work.
+
+
+### E-20260926-ARM-010 — ordered v2 coordinator blocks unsafe envelope migration
+
+- Stage: S2
+- Lane: Arm/runtime
+- Commit: `9c4acf3ede92e4394e942e138a82c5a95062d2fc`
+- Change: added an ordered v2 sequence coordinator and routed the actual-byte
+  shadow trace through it. The coordinator verifies ingress, pre-planner and
+  planner report hashes; preserves repeated ordered proposals; consumes one
+  fresh observed state only for the current action; forbids lookahead, automatic
+  retry and authority; and remains on action 0 when the measured planner blocks.
+  It also records a newly explicit contract boundary: the existing v1 trajectory
+  envelope binds the measured-planner surrogate proposal, not the original v2
+  proposal, so automatic envelope migration is forbidden.
+- Inputs/fixtures: actual AI H,H,I v2 bytes, coherent trusted registry, fresh
+  observed-state fixture, arm-owned conservative policy, missing measured
+  calibration blocker, and a repeated evaluation attempt after the blocker.
+- Command: `python -m pytest software/tests/integration/test_model_motion_v2_shared_gate.py software/tests/unit/test_model_motion_ingress_v2.py software/tests/unit/test_model_motion_planner_gate.py software/tests/unit/test_model_motion_sequence_coordinator.py software/ai/tests/test_precision_binding_v2.py software/ai/tests/test_batch_emitter_v2.py -q`
+- Result: PASS, 71 tests. The coordinator snapshot retains all three ordered
+  proposal hashes but plans only action 0, enters `BLOCKED`, rejects a second
+  evaluation, generates no envelope or wire bytes, and grants no authority.
+- Artifacts:
+  `software/src/rocell/application/model_motion_sequence_coordinator_v2.py`,
+  `software/src/rocell/application/model_motion_shadow_v2.py`,
+  `software/src/rocell/application/__init__.py`, and
+  `software/tests/integration/test_model_motion_v2_shared_gate.py`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: no action can advance because measured calibration is absent. A
+  future v2 envelope must bind both the original v2 proposal/planner wrapper and
+  the internal measured-planner trajectory lineage. This increment intentionally
+  does not reinterpret the v1 envelope or fabricate an envelope-ready fixture.
+- Supersedes: none; extends ARM-008 with an explicit ordered lifecycle.
+- Next dependency: define and test a dual-lineage v2 trajectory-envelope wrapper,
+  then produce it only from a fully screened measured planner result.
+
+
+### E-20260926-ARM-011 — v2 coordinator audit retains findings
+
+- Stage: S2
+- Lane: Arm/runtime
+- Commit: `9c4acf3ede92e4394e942e138a82c5a95062d2fc`
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: FAIL, exit 1; 5,607 paths, 903.2 MiB, the same 14 existing
+  credential-literal-review findings in arm unit fixtures; no v2 coordinator
+  finding.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: heuristic findings remain unresolved; this is not a clean
+  repository security-audit claim.
+- Supersedes: none; retains all earlier failed audit evidence.
+- Next dependency: fixture-owner review remains independent of the v2 envelope
+  contract and measured calibration work.
