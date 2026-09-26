@@ -17,7 +17,10 @@ from rocell.application.r97_independent_review_decision_v1 import (
     R97IndependentReviewDecisionV1,
     R97ReviewCheck,
     R97ReviewCheckResultV1,
+    R97ReviewEvidenceOrigin,
     assess_r97_independent_review_decision_v1,
+    build_synthetic_r97_review_rehearsal_v1,
+    parse_r97_independent_review_decision_v1,
 )
 
 
@@ -43,6 +46,7 @@ def _decision(**changes):
         "reviewed_packet_sha256": R97_REVIEW_PACKET_SHA256,
         "reviewed_manifest_sha256": R97_REVIEW_MANIFEST_SHA256,
         "reviewed_app_sha256": R97_APP_SHA256,
+        "evidence_origin": R97ReviewEvidenceOrigin.EXTERNAL_INDEPENDENT,
         "reviewer_independence_asserted": True,
         "reviewer_was_implementation_author": False,
         "checks": _checks(),
@@ -63,6 +67,7 @@ def test_approved_decision_is_schema_valid_and_ready_for_epoch_intake():
     assert tuple(item.check.value for item in decision.checks) == EXPECTED_CHECKS
     assert report.status == "INDEPENDENT_REVIEW_ACCEPTED"
     assert report.blockers == ()
+    assert report.to_dict()["synthetic_rehearsal_ready"] is False
     assert report.decision_sha256 == decision.decision_sha256
     for document in (decision.to_dict(), report.to_dict()):
         assert document["installation_authorized"] is False
@@ -103,6 +108,27 @@ def test_failed_check_blocks():
     assert report.blockers == ("CHECKLIST_INCOMPLETE",)
 
 
+def test_synthetic_review_is_usable_only_for_rehearsal():
+    decision = _decision(
+        evidence_origin=R97ReviewEvidenceOrigin.SYNTHETIC_TEST_ONLY)
+    report = assess_r97_independent_review_decision_v1(decision)
+    assert report.status == "SYNTHETIC_REHEARSAL_ACCEPTED"
+    assert report.blockers == ("SYNTHETIC_EVIDENCE_NOT_INDEPENDENT",)
+    document = report.to_dict()
+    assert document["synthetic_rehearsal_ready"] is True
+    assert document["ready_for_epoch_intake"] is False
+    assert document["installation_authorized"] is False
+    assert document["controller_start_authorized"] is False
+    assert document["execution_authorized"] is False
+    assert document["physical_authority"] is False
+    jsonschema.Draft202012Validator(_schema(
+        "r97_independent_review_decision_v1.schema.json"
+    )).validate(decision.to_dict())
+    jsonschema.Draft202012Validator(_schema(
+        "r97_independent_review_decision_report_v1.schema.json"
+    )).validate(document)
+
+
 @pytest.mark.parametrize(
     "checks",
     [(), _checks()[:-1], _checks()[::-1]],
@@ -139,3 +165,35 @@ def test_decision_digest_is_deterministic_and_materially_bound():
 def test_assessment_requires_typed_decision():
     with pytest.raises(TypeError, match="R97IndependentReviewDecisionV1"):
         assess_r97_independent_review_decision_v1({})
+
+
+def test_synthetic_rehearsal_builder_is_deterministic_and_non_production():
+    first_decision, first_report = build_synthetic_r97_review_rehearsal_v1(
+        rehearsal_id="arm-036",
+        review_started_utc="2026-09-26T13:00:00Z",
+        review_completed_utc="2026-09-26T13:01:00Z",
+    )
+    second_decision, second_report = build_synthetic_r97_review_rehearsal_v1(
+        rehearsal_id="arm-036",
+        review_started_utc="2026-09-26T13:00:00Z",
+        review_completed_utc="2026-09-26T13:01:00Z",
+    )
+    assert first_decision.decision_sha256 == second_decision.decision_sha256
+    assert first_report.report_sha256 == second_report.report_sha256
+    assert first_decision.evidence_origin is R97ReviewEvidenceOrigin.SYNTHETIC_TEST_ONLY
+    assert first_report.status == "SYNTHETIC_REHEARSAL_ACCEPTED"
+    assert first_report.to_dict()["ready_for_epoch_intake"] is False
+
+
+def test_decision_json_round_trip_is_strict_and_hash_bound():
+    original = _decision()
+    parsed = parse_r97_independent_review_decision_v1(original.to_dict())
+    assert parsed == original
+    tampered = original.to_dict()
+    tampered["reviewer_affiliation"] = "changed-after-signing"
+    with pytest.raises(R97IndependentReviewDecisionError, match="hash"):
+        parse_r97_independent_review_decision_v1(tampered)
+    extra = original.to_dict()
+    extra["unexpected"] = True
+    with pytest.raises(R97IndependentReviewDecisionError, match="closed fields"):
+        parse_r97_independent_review_decision_v1(extra)

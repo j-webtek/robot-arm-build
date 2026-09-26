@@ -371,7 +371,10 @@ from .r97_independent_review_decision_v1 import (
     R97IndependentReviewDecisionV1,
     R97ReviewCheck,
     R97ReviewCheckResultV1,
+    R97ReviewEvidenceOrigin,
     assess_r97_independent_review_decision_v1,
+    build_synthetic_r97_review_rehearsal_v1,
+    parse_r97_independent_review_decision_v1,
 )
 from .controller_configuration_epoch_intake_v1 import (
     BLOCKER_CODES as CONTROLLER_CONFIGURATION_EPOCH_BLOCKER_CODES,
@@ -1149,7 +1152,10 @@ __all__ = [
     "R97IndependentReviewDecisionV1",
     "R97ReviewCheck",
     "R97ReviewCheckResultV1",
+    "R97ReviewEvidenceOrigin",
     "assess_r97_independent_review_decision_v1",
+    "build_synthetic_r97_review_rehearsal_v1",
+    "parse_r97_independent_review_decision_v1",
     "CONTROLLER_CONFIGURATION_EPOCH_BLOCKER_CODES",
     "CONTROLLER_CONFIGURATION_EPOCH_COMPONENT_IDS",
     "CONTROLLER_CONFIGURATION_EPOCH_INTAKE_SCHEMA",

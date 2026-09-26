@@ -138,6 +138,12 @@ mismatched, rejected, non-independent, author-conflicted, incomplete, or
 open-finding decision blocks the epoch. The contract cannot authenticate the
 human reviewer; that identity and evidence custody remain external controls.
 
+The decision contract also supports an explicitly synthetic rehearsal origin.
+This permits deterministic model/arm integration tests and produces a distinct
+`SYNTHETIC_REHEARSAL_ACCEPTED` status, but retains a production blocker. Epoch
+assessment treats that result as blocked even when every simulated checklist
+item passes and every identity hash matches.
+
 The candidate app SHA remains an explicit field but is not recursively derived
 from an app image that already embeds the epoch digest. This avoids an
 impossible self-referential hash. A later epoch-bound firmware build can embed
