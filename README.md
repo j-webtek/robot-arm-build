@@ -2,6 +2,10 @@
 
 ![Tactevra — intent into action](assets/brand/tactevra-banner.svg)
 
+[![Offline verification](https://github.com/j-webtek/robot-arm-build/actions/workflows/offline-checks.yml/badge.svg?branch=main)](https://github.com/j-webtek/robot-arm-build/actions/workflows/offline-checks.yml)
+
+The CI badge covers [scoped hardware-free checks](docs/CI.md), not physical robot qualification.
+
 **An experimental local-first robotics platform connecting user intent, visual evidence, and checked physical actions.**
 
 [Get started](docs/GETTING_STARTED.md) · [Current capabilities](PROJECT_STATUS.md) · [Documentation](docs/README.md) · [Contribute](CONTRIBUTING.md)

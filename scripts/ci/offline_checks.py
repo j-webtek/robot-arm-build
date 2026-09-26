@@ -14,6 +14,7 @@ TESTS = (
     'software/tests/unit/test_model_motion_planner_gate.py',
     'software/tests/unit/test_model_motion_sequence_coordinator.py',
     'software/tests/integration/test_model_motion_v2_shared_gate.py',
+    'software/tests/integration/test_shared_shadow_runner_v2.py',
     'software/ai/tests/test_batch_emitter_v2.py',
     'software/ai/tests/test_capture_binding.py',
     'software/ai/tests/test_precision_binding_v2.py',
