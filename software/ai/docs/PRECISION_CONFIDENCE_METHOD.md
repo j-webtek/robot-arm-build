@@ -333,3 +333,14 @@ training/development groups and small accepted subsets do not establish trust.
 Next: compare mean inverse-corrected predictions against base localization on
 development data under frozen per-condition mean/tail/yaw limits. Improve the
 estimator before another confidence study; preserve all abstention constraints.
+
+
+### Spatial averaging improves means but fails tail limits
+
+AI-088 retains an initial serialization failure and its correction; AI-089 through
+AI-091 report the completed frozen rerun. Mean inverse-corrected spatial poses
+reduce overall development mean0.911 -> 0.865mm and improve each condition mean
+and yaw-p95. However brightness0.55/0.60 tail counts rise6 -> 7 and10 -> 11, so
+combined acceptance fails. No estimator is promoted. Next: predeclare a robust
+median comparison with the same limits; retain fresh evaluation and uncertainty
+requirements before any runtime adoption.

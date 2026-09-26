@@ -604,7 +604,6 @@ remove it only in the same commit that appends the resulting evidence row.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI | S1 | spatial averaging evaluator, manifest/scorecard/tests, precision method | feature/translation-pair-evidence | ACTIVE: paired development estimator comparison |
 | Unclaimed | S2 | qualified perception adapter and complete shared gate | — | AVAILABLE |
 | Unclaimed | S4 | implement controller firmware against the committed safe-idle production runtime contract, then independently review source and linked image | — | AVAILABLE |
 
@@ -3483,3 +3482,66 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: no usable result. Inspection also identifies circular-mean yaw wrap requiring wrapped angle-error scoring.
 - Supersedes:none
 - Next dependency: freeze native-bool serialization and wrapped yaw-error correction before rerunning; preserve this failure.
+
+### E-20260926-AI-089 — spatial averaging development tail failure
+
+- Stage:S1
+- Lane:AI
+- Commit:`659ba427a7964a43869296ab027eea5ea4c3fda3` (corrected source/manifest frozen before rerun)
+- Change: compared equal mean inverse-corrected center and circular yaw across
+  base plus four one-pixel shifted inputs against unchanged normalized base.
+  Wrapped yaw error scoring handles pi boundary. No retraining or tuned weights.
+- Inputs/fixtures: reused15M200 groups x7 conditions,1400 images,46 targets,
+  five passes/image; exact source/checkpoint/catalog hashes in spatial-average
+  manifest; cases and input digests in scorecard.
+- Command:`python software/ai/vision/evaluate_spatial_average.py`
+- Result:FAIL combined criteria. Overall mean0.910859 -> 0.864746mm (about5.1%
+  reduction); mean error and yaw-p95 improve in every condition. Tail count
+  brightness0.55 rises6 -> 7/200, brightness0.60 rises10 -> 11/200, failing
+  no-tail-regression limits. Other tails:standard5 -> 4,appearance7 -> 7,
+  challenge9 -> 9,darkened6 -> 6,brightness0.65:8 -> 8.20/22 checks pass;
+  failed checks cannot be overridden by aggregate improvement. No promotion.
+- Artifacts:`eval/spatial_average_v0_scorecard.json`, manifest and evaluator.
+- Hardware writes:0
+- Physical movements:0
+- Limitations: reused development selection, five model passes, synthetic inverse
+  projection only. Does not establish fresh generalization or runtime calibration.
+  No batch changes; boundary suite not triggered; integration status unchanged.
+- Supersedes:none; AI-088 failed execution retained.
+- Next dependency: predeclare a robust median aggregation comparison on development
+  data with unchanged per-condition limits; inspect tail effects without tuning
+  against25M. Any accepted estimator requires new independent evaluation and
+  uncertainty calibration; do not install this mean estimator.
+
+### E-20260926-AI-090 — spatial averaging evidence tests
+
+- Stage:S1
+- Lane:AI
+- Commit:`659ba427a7964a43869296ab027eea5ea4c3fda3` (implementation baseline; tests committed with evidence)
+- Change: tested circular mean across pi and recounted frozen provenance,
+  seeds, means, tail counts, yaw ranges and condition gates.
+- Inputs/fixtures: analytic poses and AI-089 manifest/scorecard.
+- Command:`python -m pytest -q software/ai/tests/test_spatial_average.py`
+- Result:PASS,2 tests; existing pytest-asyncio configuration deprecation warning.
+- Artifacts:named tests and AI-089 scorecard.
+- Hardware writes:0
+- Physical movements:0
+- Limitations: offline evidence correctness only; model acceptance still fails.
+- Supersedes:none
+- Next dependency:AI-089 median comparison.
+
+### E-20260926-AI-091 — spatial averaging publication audit
+
+- Stage:S1
+- Lane:AI
+- Commit:`659ba427a7964a43869296ab027eea5ea4c3fda3` (implementation baseline plus scorecard/test snapshot)
+- Change:audited publication snapshot after latest dependency-review main merge.
+- Inputs/fixtures:repository with AI-089/090 artifacts and reviewed fixture allowlist.
+- Command:`python scripts/audit_github_snapshot.py`
+- Result:PASS;5774 paths,804.1 MiB,0 unresolved findings,14 reviewed synthetic fixtures.
+- Artifacts:audit stdout and repository snapshot.
+- Hardware writes:0
+- Physical movements:0
+- Limitations:heuristic audit; AI-041 protected-main PR blocker remains.
+- Supersedes:none; historical failures retained.
+- Next dependency:protected-branch PR/checks and AI-089 median comparison.
