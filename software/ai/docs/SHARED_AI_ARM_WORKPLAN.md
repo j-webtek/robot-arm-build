@@ -605,7 +605,7 @@ remove it only in the same commit that appends the resulting evidence row.
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
 | Unclaimed | S2 | qualified perception adapter and complete shared gate | — | AVAILABLE |
-| Unclaimed | S4 | collect and independently review installed controller evidence | — | AVAILABLE |
+| Unclaimed | S4 | independently review passive controller candidate and close its seven explicit blockers | — | AVAILABLE |
 
 ## Worker update procedure
 
@@ -2167,3 +2167,67 @@ commissioning, or bounded physical result with its limitations intact.
 - Supersedes: ARM-022 only for the current integrated snapshot counts.
 - Next dependency: separately approved physical evidence collection and
   independent review before zero-write profile binding can pass on real data.
+
+### E-20260926-ARM-024 — passive r96 evidence candidate and live identity capture
+
+- Stage: S4
+- Lane: ARM
+- Change: added a pure fail-closed assembler, strict schema, tests, and a
+  one-GET/no-retry r96 collector. The collector never opens serial and cannot
+  produce approved qualification evidence. A separately approved live run
+  correlated the unchanged r96 boot with exact local app bytes, its one-attempt
+  install journal, protected-region result, and final registration export.
+- Physical observation: one HTTP `GET` of the fixed r96 capability endpoint.
+  Boot `4390cfab5cd74a16fd5048406c1b5adf` remained unchanged and reported one
+  maximum leg, no automatic progression, no gripper writes, and motion
+  unauthorized. COM7 was not opened; the controller was not restarted.
+- Local artifact: ignored
+  `software/runs/installed-controller-qualification/r96-passive-20260926.json`;
+  evidence hash
+  `45f7390a22ba312cb004d7b23c12c0370bcdd49bca61e87750858be449937eb8`;
+  file hash
+  `6c11665a036e0875469098156a7ed8e1332e207739c444192adecda6e3b219d0`.
+- Command: `$env:PYTHONPATH='software/src;software/ai/src;software/tests/unit'; python -m pytest -q software/tests/unit/test_installed_controller_passive_evidence_v1.py software/tests/unit/test_installed_controller_qualification_v1.py software/tests/unit/test_zero_write_waveshare_adapter_v1.py software/tests/unit/test_zero_write_sole_writer_v1.py software/tests/integration/test_zero_write_waveshare_contract_v1.py`.
+- Result: PASS, 58 tests. Capability drift, app/hash mismatch, install-stage
+  drift, different boot, retry-enabled result, and non-verified result all fail
+  closed. The schema rejects claimed approval or execution authority.
+- Artifacts:
+  `software/src/rocell/application/installed_controller_passive_evidence_v1.py`,
+  `software/scripts/capture_r96_passive_evidence.py`,
+  `software/ai/schemas/installed_controller_passive_evidence_v1.schema.json`,
+  `software/tests/unit/test_installed_controller_passive_evidence_v1.py`, and
+  `software/docs/INSTALLED_CONTROLLER_PASSIVE_EVIDENCE.md`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: the runtime does not attest its app hash; retained installation
+  and feedback records are correlated but not independently reviewed. Mapping,
+  protocol, startup, feedback and configuration-epoch bindings remain absent.
+  The candidate is `UNREVIEWED`, qualification readiness is false, and it grants
+  no transport, execution, or physical authority.
+- Supersedes: ARM-023 only for the statement that no physical original had been
+  consumed; all ARM-023 authority and qualification limitations remain.
+- Next dependency: an independent reviewer validates the candidate and supplies
+  separately hashed evidence for all seven blockers. Do not construct a passing
+  qualification record until every blocker is closed.
+
+### E-20260926-ARM-025 — passive-evidence integration verification
+
+- Stage: S4
+- Lane: ARM
+- Change: re-ran the shared AI/arm and zero-write controller boundary after the
+  passive-evidence increment, then audited the complete repository snapshot.
+- Commands: `python scripts/ci/check_docs.py`; ARM-021's integrated pytest
+  selection with `test_installed_controller_passive_evidence_v1.py` added;
+  `python scripts/audit_github_snapshot.py`; `git diff --check`.
+- Result: documentation PASS for 19 maintained documents and two SVG assets;
+  pytest PASS, 253 tests in 38.41 seconds; audit PASS, 5,688 paths, 903.6 MiB,
+  zero unresolved findings and 14 reviewed synthetic fixtures; diff check PASS.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: software verification and a passive identity observation do not
+  independently qualify the installed mapping, protocol, startup, feedback, or
+  configuration epoch. The local candidate remains unreviewed and blocked.
+- Supersedes: ARM-023 only for the current integrated test/audit counts; it does
+  not supersede ARM-024's live observation or limitations.
+- Next dependency: independent evidence review and explicit resolution of the
+  seven blockers listed by ARM-024.

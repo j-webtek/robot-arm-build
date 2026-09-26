@@ -321,6 +321,12 @@ from .installed_controller_qualification_v1 import (
     ReviewDisposition as InstalledControllerReviewDisposition,
     assess_installed_controller_qualification_v1,
 )
+from .installed_controller_passive_evidence_v1 import (
+    BLOCKERS as INSTALLED_CONTROLLER_PASSIVE_EVIDENCE_BLOCKERS,
+    InstalledControllerPassiveEvidenceError,
+    InstalledControllerPassiveEvidenceV1,
+    assemble_installed_controller_passive_evidence_v1,
+)
 from .prehardware_layout_study import (
     LayoutAxisValueEvidence,
     LayoutCandidatePromotion,
@@ -1048,6 +1054,10 @@ __all__ = [
     "InstalledControllerQualificationReportV1",
     "InstalledControllerReviewDisposition",
     "assess_installed_controller_qualification_v1",
+    "INSTALLED_CONTROLLER_PASSIVE_EVIDENCE_BLOCKERS",
+    "InstalledControllerPassiveEvidenceError",
+    "InstalledControllerPassiveEvidenceV1",
+    "assemble_installed_controller_passive_evidence_v1",
     "ModelMotionIngressError",
     "SimulationContextError",
     "SimulationRunReport",
