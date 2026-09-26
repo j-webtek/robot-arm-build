@@ -69,3 +69,25 @@ zero at threshold 0.95. This is an optimistic feature-selection comparison, not
 held-out improvement. No additional calibration/evaluation seeds were consumed.
 See `eval/local_features_dev_v0_scorecard.json`. Investigate localization/feature
 resolution before another held-out run; runtime abstention remains unchanged.
+
+
+## Resolution sensitivity diagnostic
+
+On existing development groups, the unchanged pose model has 1.032 mm mean error
+at its trained 128x96 input size. Feeding native 256x192 without retraining worsens
+mean error to 13.503 mm. This is distribution-shift evidence, not a high-resolution
+training comparison. A 1 mm tolerance is about 0.21 input pixel at 128x96, but
+subpixel regression remains possible; do not assert a hard pixel accuracy floor.
+Next compare matched-resolution training on development data before reserving a
+new held-out experiment. See `eval/resolution_development_v0_scorecard.json`.
+
+
+## Matched-resolution development fine-tuning
+
+Equal-budget paired fine-tuning from the same checkpoint selected epoch 11 for
+both sizes. Development mean/p95 errors were 0.945/2.065 mm at 128x96 and
+1.442/3.530 mm at 256x192. Retain 128x96 as the development reference; this is not
+runtime promotion. Shared pretraining at 128x96 and a single training seed limit
+claims about resolution. No new calibration or evaluation data was accessed.
+See `eval/matched_resolution_v0_scorecard.json`. Next investigate local geometric
+refinement before another confidence or held-out qualification run.

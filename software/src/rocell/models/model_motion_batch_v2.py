@@ -20,6 +20,7 @@ MAX_BATCH_PROPOSALS_V2 = 64
 MAX_BATCH_BYTES_V2 = 1_048_576
 _SHA256 = re.compile(r"^[0-9a-f]{64}$")
 _IDENTIFIER = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$")
+_PROFILE_IDENTIFIER = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$")
 
 
 class ModelMotionBatchV2Error(ValueError):
@@ -83,7 +84,11 @@ class MotionCapabilityV2:
     profile_sha256: str
 
     def __post_init__(self) -> None:
-        _identifier(self.profile_id, "capability.profile_id")
+        if not isinstance(self.profile_id, str) or (
+            _PROFILE_IDENTIFIER.fullmatch(self.profile_id) is None
+        ):
+            raise ModelMotionBatchV2Error(
+                "capability.profile_id must be a bounded profile identifier")
         _digest(self.profile_sha256, "capability.profile_sha256")
 
     def to_dict(self) -> dict[str, str]:

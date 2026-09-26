@@ -122,7 +122,7 @@ Only the shared integration gate may change a stage's overall status to
 |---|---|---:|---:|---:|---:|
 | S0 | Shared v1 seam and baseline | COMPLETE | COMPLETE | COMPLETE | COMPLETE |
 | S1 | Contract v2: freshness, uncertainty, capability | IN_PROGRESS | READY_FOR_INTEGRATION | COMPLETE | IN_PROGRESS |
-| S2 | Full zero-hardware text-to-envelope shadow path | NOT_STARTED | READY_FOR_INTEGRATION | NOT_STARTED | IN_PROGRESS |
+| S2 | Full zero-hardware text-to-envelope shadow path | NOT_STARTED | READY_FOR_INTEGRATION | IN_PROGRESS | IN_PROGRESS |
 | S3 | Measured localization and planning readiness | IN_PROGRESS | BLOCKED | NOT_STARTED | BLOCKED |
 | S4 | Zero-write Waveshare adapter and receipts | READY_FOR_INTEGRATION | NOT_STARTED | NOT_STARTED | NOT_STARTED |
 | S5 | One independently verified physical key action | NOT_STARTED | NOT_STARTED | NOT_STARTED | NOT_STARTED |
@@ -131,9 +131,11 @@ Only the shared integration gate may change a stage's overall status to
 | P1 | Phone capability track | BLOCKED | BLOCKED | NOT_STARTED | BLOCKED |
 
 The S0 status is supported by the shared v1 batch, strict ingress, sequence
-coordinator, journal, and focused boundary tests. S2 arm work is in progress
-because the sealed controller-independent trajectory exists, but no actual
-model-produced batch has traversed the complete shadow path. S3 remains blocked
+coordinator, journal, and focused boundary tests. S2 integration is in progress:
+a raw request now traverses the grounded parser, deterministic compiler, actual
+v2 emitter, and arm shadow path when given an explicitly scoped synthetic
+integration fixture. Qualified perception has not yet supplied that fixture, so
+this is not the complete S2 path. S3 remains blocked
 from integration because no deployment localization qualification is installed
 and the measured planner does not yet reach physical execution admission. S4
 lists AI as ready because no new AI authority is required; the arm adapter and
@@ -602,7 +604,7 @@ remove it only in the same commit that appends the resulting evidence row.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| Shared integration lane | S2 | raw-request runner and terminal negative matrix | `main` from `ca8c5ae` | ACTIVE |
+| Unclaimed | S2 | qualified perception adapter and complete shared gate | — | AVAILABLE |
 | Unclaimed | S4 | controller adapter/receipts | — | AVAILABLE |
 
 ## Worker update procedure
@@ -1439,6 +1441,67 @@ commissioning, or bounded physical result with its limitations intact.
 - Supersedes: none
 - Next dependency: fixture-owner review independently of confidence research.
 
+### E-20260926-INT-003 — raw request reaches the actual v2 arm shadow path
+
+- Stage: S2
+- Lane: INTEGRATION
+- Commit: `ffa5cf82fdf6be33e35e349ac1e171486ce186f5`
+- Change: added a zero-authority shared runner from raw text through the grounded
+  parser, deterministic compiler, actual v2 batch assembler, decoder, trusted
+  ingress, sequence coordination, and arm shadow planner. The integration found
+  and fixed a real producer/consumer discrepancy: the compiler's profile ID
+  `development/keyboard-us-lowercase-semantic-v1` contains `/`, while the v2
+  schema and arm runtime previously accepted only generic identifiers. Profile
+  IDs now use a dedicated bounded rule; generic identifiers remain unchanged.
+- Inputs/fixtures: explicit `SYNTHETIC_INTEGRATION_ONLY` typed observation,
+  evidence, registry, and fresh observed-state fixtures from the existing v2
+  shared gate; raw requests and terminal cases in
+  `software/tests/integration/test_shared_shadow_runner_v2.py`.
+- Command: `python -m pytest software/tests/integration/test_shared_shadow_runner_v2.py software/tests/integration/test_model_motion_v2_shared_gate.py software/ai/tests/test_batch_emitter_v2.py software/ai/tests/test_precision_binding_v2.py software/ai/tests/test_capture_binding.py software/tests/unit/test_model_motion_ingress_v2.py software/tests/unit/test_model_motion_planner_gate.py software/tests/unit/test_model_motion_sequence_coordinator.py software/tests/unit/test_trajectory_execution_envelope_v2.py -q`
+- Result: PASS, 95 tests. Supported `type hhi on keyboard` preserves three
+  ordered actions and reaches the exact current arm blocker
+  `BLOCKED_CALIBRATION_MISSING_OR_STALE`. Ambiguous, unsupported, stale,
+  obstructed, missing-perception, out-of-bounds, and expired-evidence cases stop
+  at their expected terminal states. The exact compiler profile validates under
+  both the published JSON schema and runtime decoder.
+- Artifacts: `software/ai/rocell_ai/shared_shadow_runner_v2.py`,
+  `software/tests/integration/test_shared_shadow_runner_v2.py`,
+  `software/ai/schemas/model_motion_batch_v2.schema.json`,
+  `software/src/rocell/models/model_motion_batch_v2.py`, and
+  `software/src/rocell/application/model_motion_ingress_v2.py`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: this is partial S2 integration, not S2 completion. The accepted
+  supported path uses an explicitly labeled synthetic integration fixture. The
+  selected precision/confidence workstream has not emitted qualified deployment
+  evidence, and AI-017 correctly records complete abstention under its failed
+  research criteria. No envelope is produced because measured calibration is
+  still missing or stale.
+- Supersedes: none; extends INT-001 and INT-002 without changing their evidence.
+- Next dependency: connect authenticated capture plus a qualified, independently
+  bounded precision observation to this runner; then repeat the terminal matrix
+  with actual producer evidence and measured calibration.
+
+### E-20260926-INT-004 — S2 raw-runner audit findings retained
+
+- Stage: S2
+- Lane: INTEGRATION
+- Commit: `ffa5cf82fdf6be33e35e349ac1e171486ce186f5`
+- Change: ran the required read-only repository snapshot audit after the shared
+  runner and profile-contract correction.
+- Inputs/fixtures: repository snapshot and `scripts/audit_github_snapshot.py`.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: FAIL, exit 1; 5,622 paths, 903.3 MiB, the same 14 existing
+  credential-literal-review findings in arm unit fixtures; no shared-runner,
+  profile-schema, or profile-runtime finding.
+- Artifacts: scanner and the existing named unit fixtures in its output.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: heuristic findings remain unresolved; this is not a clean
+  repository security-audit claim.
+- Supersedes: none; retains every earlier failed audit row.
+- Next dependency: fixture-owner review remains independent of qualified
+  perception integration and measured-calibration work.
 
 ### E-20260926-AI-020 — local image feature development comparison
 
@@ -1503,3 +1566,133 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: heuristic findings unresolved; no clean audit claim.
 - Supersedes: none
 - Next dependency: fixture-owner review independently of confidence research.
+
+
+### E-20260926-AI-023 — development inference resolution sensitivity
+
+- Stage: S1
+- Lane: AI
+- Commit: `effa56e1e696494e1b038d8eda82e0f43de53674` (exact frozen diagnostic source and manifest)
+- Change: compared the unchanged pose checkpoint at trained 128x96 and untrained
+  256x192 input sizes using only the 200 existing 15M development seed groups.
+- Inputs/fixtures: 600 procedural images, 46 keys, three conditions; source/model
+  hashes in `eval/resolution_development_v0.manifest.json`; image/catalog hashes
+  and per-condition/group metrics in the scorecard.
+- Command: `python software/ai/vision/diagnose_resolution.py`
+- Result: PASS for completed diagnostic. At 128x96: mean 1.03166 mm, p95 2.30191 mm,
+  58.42% within 1 mm. At untrained 256x192: mean 13.50350 mm, p95 25.63512 mm,
+  0.315% within 1 mm. Each reports 27,600 correlated target/view errors.
+- Artifacts: `software/ai/eval/resolution_development_v0_scorecard.json`, manifest
+  and `software/ai/vision/diagnose_resolution.py`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: changing inference size alone introduces distribution shift; this
+  does not compare matched-resolution training or prove a resolution accuracy
+  floor. At 128x96, 1 mm spans approximately 0.21 pixel; subpixel regression is
+  possible. The synthetic source is only 256x192. No confidence promotion,
+  calibration/evaluation access, retraining or installed qualification.
+- Supersedes: none
+- Next dependency: freeze a matched train/evaluate resolution experiment using
+  development data first; do not switch production input size from this diagnostic.
+
+
+### E-20260926-AI-024 — resolution diagnostic audit findings retained
+
+- Stage: S1
+- Lane: AI
+- Commit: `effa56e1e696494e1b038d8eda82e0f43de53674`
+- Change: required read-only snapshot audit after diagnostic.
+- Inputs/fixtures: repository snapshot, new diagnostic scorecard and `scripts/audit_github_snapshot.py`.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: FAIL, exit 1; 5,636 paths, 784.9 MiB, same 14 existing arm-unit
+  credential-literal-review findings; no diagnostic file finding.
+- Artifacts: scanner and existing fixtures.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: heuristic findings unresolved; no clean audit claim.
+- Supersedes: none
+- Next dependency: fixture-owner review, separately from localization research.
+
+
+### E-20260926-AI-025 — matched-resolution development fine-tuning
+
+- Stage: S1
+- Lane: AI
+- Commit: `cc9d000b927122bb200b6142315c96fb879ec2f8` (exact frozen training code and plan before execution)
+- Change: paired 128x96/256x192 fine-tuning from identical robust pose weights,
+  same seeded image order, 12 epochs, batch 64, AdamW learning rate 0.0002.
+- Inputs/fixtures: 14M training (1,200 groups) and 15M development (200 groups),
+  3 conditions; 3,600/600 images. Checkpoint/source/catalog hashes pinned in
+  `train/matched_resolution_v0_plan.json`; pixel/output-model hashes in scorecard.
+- Command: `python software/ai/vision/train_matched_resolution.py`
+- Result: PASS for completed development comparison, not qualification. Both
+  selected epoch 11 by development MSE. 128x96: mean 0.94513 mm, p95 2.06487 mm,
+  63.12% within 1 mm. 256x192: mean 1.44220 mm, p95 3.52965 mm, 39.69% within
+  1 mm. Each has 27,600 correlated target/view errors; retain 128x96 research
+  resolution, with no runtime checkpoint replacement from development results.
+- Artifacts: `software/ai/eval/matched_resolution_v0_scorecard.json`; local ignored
+  checkpoints under `software/ai/results/matched_resolution_v0_128/` and `_256/`.
+  SHA-256 values respectively
+  `1dc517acd1da53166dc2df11a4d67e98aaf1186d96edd3342db0498fb6a6f2cc` and
+  `15f495bb18437208ae8bbea273aa957f5468b40bba4374546a81716ed545aa37`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: same pretrained weights originated at 128x96, so this is an
+  equal-budget adaptation comparison, not from-scratch proof that higher resolution
+  cannot help. One training seed; development selects epoch and reports quality;
+  no independent generalization or physical claim, new evaluation data or qualification.
+- Supersedes: none; extends inference-only AI-023 without rewriting it.
+- Next dependency: use 128x96 as the development reference; investigate target-local
+  geometric refinement and confidence on development groups before a new frozen
+  held-out run. Keep failed confidence results and runtime abstention unchanged.
+
+### E-20260926-AI-026 — matched-resolution evidence checks
+
+- Stage: S1
+- Lane: AI
+- Commit: `cc9d000b927122bb200b6142315c96fb879ec2f8` (training baseline; new evidence test and scorecard committed with this row)
+- Change: verified frozen source hashes, equal budgets/counts, development-only
+  splits and minimum-development-MSE checkpoint selection.
+- Inputs/fixtures: paired plan/scorecard and `software/ai/tests/test_matched_resolution_evidence.py`.
+- Command: `python -m pytest -q software/ai/tests/test_matched_resolution_evidence.py`
+- Result: PASS, 1 evidence test covering both runs.
+- Artifacts: test, frozen plan and scorecard.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: internal evidence consistency, not physical model qualification.
+- Supersedes: none
+- Next dependency: AI-025 development investigation.
+
+### E-20260926-AI-027 — matched-resolution audit findings retained
+
+- Stage: S1
+- Lane: AI
+- Commit: `cc9d000b927122bb200b6142315c96fb879ec2f8`
+- Change: required read-only audit during training.
+- Inputs/fixtures: repository snapshot and `scripts/audit_github_snapshot.py`.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: FAIL, exit 1; 5,638 paths, 785.0 MiB, same 14 existing arm-unit
+  credential-literal-review findings; no matched-resolution source finding.
+- Artifacts: scanner and existing fixtures.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: heuristic findings unresolved; no clean audit claim.
+- Supersedes: none
+- Next dependency: fixture-owner review independently of localization research.
+
+
+### E-20260926-AI-028 — merged boundary regression
+
+- Stage: S1
+- Lane: AI
+- Commit: `4687072c25f774a5651b39ba1ba79a07949a494f`
+- Change: retained concurrent shared shadow/boundary changes and reran focused producer/consumer checks.
+- Inputs/fixtures: v2 AI assembler and arm ingress fixtures, matched-resolution scorecard.
+- Command: `python -m pytest -q software/ai/tests/test_batch_emitter_v2.py software/tests/unit/test_model_motion_ingress_v2.py software/ai/tests/test_matched_resolution_evidence.py`
+- Result: PASS, 33 tests.
+- Artifacts: named tests and merged shared boundary sources.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: focused offline regression only; no integration status changed by AI lane.
+- Supersedes: none
+- Next dependency: AI-025 development refinement and shared-stage outstanding dependencies.
