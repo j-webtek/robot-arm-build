@@ -1,0 +1,16 @@
+{
+  "source_commit": "b3d3a7eb5ace6592115e270c035f6aa07816d24d",
+  "command": "python -m pytest -q software/ai/tests/test_capture_binding.py software/ai/tests/test_precision_binding_v2.py software/ai/tests/test_batch_emitter_v2.py",
+  "passed": 28,
+  "hardware_writes": 0,
+  "physical_movements": 0,
+  "files_sha256": {
+    "software/ai/rocell_ai/capture_binding.py": "675614a0fad76a658146d0d2b700168b5f3b922ff71554de068308e658cc696c",
+    "software/ai/tests/test_capture_binding.py": "f586a3f22c8d9d000a00b321e87ee6a0e6ec00822ff42ce2af11564cb14590ba",
+    "software/ai/docs/PRECISION_CONFIDENCE_METHOD.md": "55a8f01e86ccaaaeda18269580fd923893c9a9a81ff5668bfcc69fb6d51205ba"
+  },
+  "limitations": [
+    "Caller-trusted fixture receipts; capture service authentication not implemented",
+    "Confidence method is proposed research, not trained or calibrated"
+  ]
+}
