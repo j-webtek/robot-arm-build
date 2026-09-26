@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rocell.local/schemas/controller_configuration_epoch_intake_report_v1.schema.json",
+  "title": "RoCell controller configuration epoch intake report v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "status", "configuration_epoch_sha256",
+    "evaluated_monotonic_ns", "blockers", "epoch_bound_build_proposal_ready",
+    "installation_authorized", "controller_start_authorized", "execution_authorized",
+    "hardware_access", "physical_authority", "report_sha256"],
+  "properties": {
+    "schema": {"const": "rocell.controller_configuration_epoch_intake_report.v1"},
+    "status": {"enum": ["BLOCKED", "READY_FOR_EPOCH_BOUND_BUILD_PROPOSAL"]},
+    "configuration_epoch_sha256": {"$ref": "#/$defs/sha256"},
+    "evaluated_monotonic_ns": {"type": "integer", "minimum": 1},
+    "blockers": {"type": "array", "uniqueItems": true, "items": {"enum": [
+      "FIRMWARE_INDEPENDENT_REVIEW_INCOMPLETE", "REVIEW_PACKET_MISMATCH",
+      "CANDIDATE_APP_MISMATCH", "PROTOCOL_SOURCE_MISMATCH",
+      "JOINT_MAPPING_SOURCE_MISMATCH", "EVALUATION_PREDATES_MEASUREMENT",
+      "MEASUREMENT_STALE", "COMPONENT_NOT_PHYSICAL_ORIGINAL",
+      "COMPONENT_INDEPENDENT_REVIEW_INCOMPLETE"
+    ]}},
+    "epoch_bound_build_proposal_ready": {"type": "boolean"},
+    "installation_authorized": {"const": false},
+    "controller_start_authorized": {"const": false},
+    "execution_authorized": {"const": false},
+    "hardware_access": {"const": false},
+    "physical_authority": {"const": false},
+    "report_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {"sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}
+}

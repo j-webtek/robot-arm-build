@@ -118,3 +118,25 @@ The first offline implementation is documented in
 [PRODUCTION_RUNTIME_FIRMWARE_R97.md](PRODUCTION_RUNTIME_FIRMWARE_R97.md). It is
 compiled but intentionally uninstalled, independently unreviewed, and blocked
 on a measured configuration-epoch binding.
+
+## Configuration-epoch bootstrap
+
+The epoch intake deliberately hashes two separate identity classes:
+
+- the independently reviewed release packet and its candidate app, protocol,
+  and joint-mapping identities; and
+- retained, independently reviewed measurements for all eight controlled
+  workcell components: software build, camera/support/optics, board/tags/bench,
+  arm/controller/tool, power, keyboard station, phone station, and empty-cell
+  safety.
+
+The candidate app SHA remains an explicit field but is not recursively derived
+from an app image that already embeds the epoch digest. This avoids an
+impossible self-referential hash. A later epoch-bound firmware build can embed
+the resulting configuration-epoch SHA while separately attesting its final app
+SHA. Installation evidence must then prove that the running app matches that
+candidate and that none of the measured components changed.
+
+The current intake and assessment are zero-I/O. A passing result means only
+`READY_FOR_EPOCH_BOUND_BUILD_PROPOSAL`; it does not authorize installation,
+startup, transport, torque, feedback, or movement.
