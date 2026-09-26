@@ -111,3 +111,13 @@ translation training while monitoring yaw. Counterfactuals use hidden truth only
 for scoring and cannot be deployed. Challenge mean error is 1.067 mm versus
 standard 0.868 mm; bundled augmentations do not isolate causal lighting or
 obstruction contributions. See `eval/pose_decomposition_v0_scorecard.json`.
+
+
+## Translation-weighted development candidate
+
+A paired 4:4:1 XY/yaw loss versus 1:1:1 improved mean key error from 0.937 to
+0.907 mm and within-1mm rate from 64.8% to 69.0%; yaw p95 also improved from
+0.617 to 0.571 degrees. This meets the frozen development rule only. Candidate
+and control now need a separately frozen fresh held-out comparison. Do not use
+this pose improvement as observation confidence or localization qualification.
+See `eval/translation_weighted_v0_scorecard.json`; no runtime checkpoint changed.

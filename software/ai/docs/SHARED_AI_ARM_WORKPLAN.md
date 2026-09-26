@@ -1940,3 +1940,71 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: heuristic findings unresolved; no clean audit claim.
 - Supersedes: none
 - Next dependency: fixture-owner review independently of AI development.
+
+
+### E-20260926-AI-035 — translation-weighted development candidate
+
+- Stage: S1
+- Lane: AI
+- Commit: `fe20dc15376361f38049e4791583af72b62e5a77` (exact frozen paired training code and plan)
+- Change: compared normalized pose residual weights 1:1:1 versus 4:4:1 for XY/yaw,
+  same starting checkpoint, seed/order, 128x96 input and 12-epoch AdamW budget.
+  Both select minimum unweighted development MSE; training_mse in the history
+  denotes each arm's normalized weighted training loss.
+- Inputs/fixtures: 14M training/15M development groups, 3 conditions, 46 targets;
+  3,600/600 images. Source/catalog/start checkpoint hashes in
+  `train/translation_weighted_v0_plan.json`; pixel/model hashes in scorecard.
+- Command: `python software/ai/vision/train_translation_weighted.py`
+- Result: PASS for predeclared development candidate rule, not qualification.
+  Control epoch 5 vs weighted epoch 12: mean key error 0.936551 -> 0.906526 mm;
+  mean center error 0.878934 -> 0.856590 mm; yaw p95 0.616581 -> 0.571123 degrees;
+  within-1mm 64.8007% -> 69.0217%. Key p95 2.133593 -> 2.051064 mm.
+- Artifacts: `software/ai/eval/translation_weighted_v0_scorecard.json`, paired plan,
+  `vision/train_translation_weighted.py`; ignored local models under
+  `software/ai/results/translation_weighted_v0_control/` and `_translation_weighted/`.
+  Model SHA-256 respectively
+  `be261aa283dc63622d945b5ae313880c4b4fcad53381f8cdb45b3322e85e0490` and
+  `0fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: repeated development selection, one training seed, synthetic known
+  target geometry. No new held-out/calibration access, runtime model replacement,
+  confidence validation or installed qualification.
+- Supersedes: none; prior failed confidence/refinement studies retained.
+- Next dependency: freeze fresh independent seed groups and paired evaluation
+  criteria for this candidate and control before inspecting labels; then assess
+  uncertainty separately. Development success alone cannot enable emission.
+
+### E-20260926-AI-036 — paired training evidence validation
+
+- Stage: S1
+- Lane: AI
+- Commit: `fe20dc15376361f38049e4791583af72b62e5a77` (training baseline; new test committed with evidence)
+- Change: checked frozen sources, identical data hashes/budgets, selected epochs
+  and exact predeclared candidate rule.
+- Inputs/fixtures: paired plan/scorecard and `tests/test_translation_weighted_evidence.py`.
+- Command: `python -m pytest -q software/ai/tests/test_translation_weighted_evidence.py`
+- Result: PASS, 2 tests.
+- Artifacts: named evidence test and scorecard.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: internal consistency, not independent generalization or qualification.
+- Supersedes: none
+- Next dependency: AI-035 frozen independent comparison.
+
+### E-20260926-AI-037 — translation-training audit findings retained
+
+- Stage: S1
+- Lane: AI
+- Commit: `fe20dc15376361f38049e4791583af72b62e5a77`
+- Change: required read-only audit during training.
+- Inputs/fixtures: repository snapshot and `scripts/audit_github_snapshot.py`.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: FAIL, exit 1; 5,659 paths, 785.0 MiB, same 14 existing arm-unit
+  credential-literal-review findings; no new training-source finding.
+- Artifacts: scanner and existing fixtures.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: heuristic findings unresolved; no clean audit claim.
+- Supersedes: none
+- Next dependency: fixture-owner review independently of AI research.
