@@ -15,6 +15,7 @@ DOCS = (
     'README.md', 'PROJECT_STATUS.md', 'CONTRIBUTING.md', 'SUPPORT.md', 'SECURITY.md',
     'CODE_OF_CONDUCT.md',
     'docs/README.md', 'docs/GETTING_STARTED.md', 'docs/RELEASING.md',
+    'docs/EVIDENCE_RETENTION.md',
     'docs/releases/EXPERIMENTAL_PREVIEW_DRAFT.md',
     'docs/releases/CANDIDATE_DCD87DB.md',
     'docs/releases/BASELINE_2026-09-26.md',

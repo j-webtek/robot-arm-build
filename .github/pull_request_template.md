@@ -19,6 +19,7 @@ Do not mark another workstream's approval as complete without its recorded revie
 - Commands run and results:
 - Evidence type: software test / simulation / controller feedback / physical measurement
 - Limitations and unresolved failures:
+- Generated evidence: compact/in-budget / exception issue and exact digest / none:
 - Tested commit and environment:
 - User-facing docs updated (links, or why not needed):
 - Public status impact: capability / limitation / setup / none (explain).

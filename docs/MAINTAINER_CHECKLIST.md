@@ -44,6 +44,9 @@ device access, restarts, torque changes, movement, or release publication.
 - [ ] Review new files and archives for private data and third-party provenance.
   Use the [snapshot audit and fixture policy](AUDIT_FIXTURE_REVIEW.md); a clean
   heuristic result does not replace inspection or establish redistribution rights.
+- [ ] Apply the [evidence-retention policy](EVIDENCE_RETENTION.md). Review the
+  generated-data count and size, reproduction metadata and any exact-digest
+  exception; passing CI does not make bulk output human-reviewable.
 
 ## 3. Close the handoff after merge
 
