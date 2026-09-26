@@ -602,7 +602,6 @@ remove it only in the same commit that appends the resulting evidence row.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI/model | S1 | `rocell_ai/capture_binding.py`, AI tests, confidence-method documentation | main from `a041185` | ACTIVE: capture receipt binding; no confidence promotion |
 | Unclaimed | S2 | v2 sequence coordinator and envelope-ready fixtures | — | AVAILABLE |
 | Unclaimed | S4 | controller adapter/receipts | — | AVAILABLE |
 
@@ -1180,3 +1179,45 @@ commissioning, or bounded physical result with its limitations intact.
 - Supersedes: none; retains all earlier failed audit evidence.
 - Next dependency: fixture-owner review remains independent of S2 coordination
   and measured calibration work.
+
+
+### E-20260926-AI-013 — capture receipt binding and confidence-method plan
+
+- Stage: S1
+- Lane: AI
+- Commit: `b3d3a7eb5ace6592115e270c035f6aa07816d24d` (source baseline; new implementation/tests/evidence committed together in this entry's containing commit)
+- Change: implemented read-only exact capture-receipt binding; documented a
+  per-target correctness-probability research method separate from coverage.
+- Inputs/fixtures: synthetic frame bytes and externally supplied fixture receipt;
+  file hashes in `software/ai/eval/s1_capture_binding_evidence.json`.
+- Command: `python -m pytest -q software/ai/tests/test_capture_binding.py software/ai/tests/test_precision_binding_v2.py software/ai/tests/test_batch_emitter_v2.py`
+- Result: PASS, 28 tests. Exact capture/frame/image/camera/clock/time bindings,
+  absent registry, wrong issuer, changed bytes, tampering and extra-field rejection.
+- Artifacts: `software/ai/rocell_ai/capture_binding.py`,
+  `software/ai/docs/PRECISION_CONFIDENCE_METHOD.md`, evidence manifest above.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: caller-provided trust is not authentication; no real capture-service
+  adapter or trained confidence method. Capture binding alone does not enable
+  precision emission. No batch schema or arm status changed; no qualification installed.
+- Supersedes: none
+- Next dependency: authenticated capture-service/clock adapter and predeclared
+  confidence event, tolerance, data splits and acceptance criteria before training.
+
+
+### E-20260926-AI-014 — capture-binding audit findings retained
+
+- Stage: S1
+- Lane: AI
+- Commit: `b3d3a7eb5ace6592115e270c035f6aa07816d24d` (baseline plus AI-013 working-tree files)
+- Change: required read-only snapshot audit.
+- Inputs/fixtures: repository snapshot, AI-013 file hashes and `scripts/audit_github_snapshot.py`.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: FAIL, exit 1; 5,609 paths, 784.9 MiB, same 14 existing arm-unit
+  credential-literal-review findings; no capture-binding-file findings.
+- Artifacts: scanner and AI-013 evidence manifest.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: heuristic findings unresolved; no clean audit claim.
+- Supersedes: none; prior failed evidence retained.
+- Next dependency: fixture-owner review, separate from AI confidence/capture work.
