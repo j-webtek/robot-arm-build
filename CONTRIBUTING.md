@@ -32,6 +32,10 @@ campaigns as part of ordinary source setup.
 
 ## Work in reviewable increments
 
+Use the [repository operations guide](docs/REPOSITORY_OPERATIONS.md) for ownership,
+cross-workstream handoffs and dependency-update review. Fill the PR template;
+do not assume a passing check constitutes the other workstream's approval.
+
 For vulnerabilities or exposed secrets, use [private security reporting](SECURITY.md)
 instead of a public issue. For other questions, see [support](SUPPORT.md).
 
