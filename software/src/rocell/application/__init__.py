@@ -221,6 +221,15 @@ from .model_motion_ingress import (
     ModelMotionIngressError,
     ingest_model_motion_batch,
 )
+from .model_motion_sequence_coordinator import (
+    SCHEMA as MODEL_MOTION_SEQUENCE_SNAPSHOT_SCHEMA,
+    READY_PLANNER_STATUS,
+    ActionDisposition,
+    ModelMotionSequenceCoordinator,
+    ModelMotionSequenceError,
+    SequencePhase,
+    VerifiedActionResult,
+)
 from .prehardware_layout_study import (
     LayoutAxisValueEvidence,
     LayoutCandidatePromotion,
@@ -872,6 +881,13 @@ __all__ = [
     "InstalledCollisionGeometryError",
     "InstalledCollisionGeometryProfile",
     "MODEL_MOTION_INGRESS_SCHEMA",
+    "MODEL_MOTION_SEQUENCE_SNAPSHOT_SCHEMA",
+    "READY_PLANNER_STATUS",
+    "ActionDisposition",
+    "ModelMotionSequenceCoordinator",
+    "ModelMotionSequenceError",
+    "SequencePhase",
+    "VerifiedActionResult",
     "ModelMotionIngressError",
     "SimulationContextError",
     "SimulationRunReport",

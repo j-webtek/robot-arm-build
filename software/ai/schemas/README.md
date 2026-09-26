@@ -33,6 +33,10 @@ one semantic plan to same-frame, same-image proposals in action order. The
 [model-motion ingress report](model_motion_ingress_v1.schema.json) records
 RoCell's deterministic admission of that batch while retaining zero hardware
 authority.
+The [model-motion sequence snapshot](model_motion_sequence_snapshot_v1.schema.json)
+tracks that admitted batch one action at a time. It requires a new observed arm
+state for every proposal, forbids lookahead and automatic retry, and advances
+only after exact, independently verified completion evidence.
 The [translation-assurance schema](translation_assurance_v0.schema.json)
 records the ordered stage disposition and proves that no downstream stage can
 pass after the first blocker in the current offline path.

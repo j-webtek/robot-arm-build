@@ -250,6 +250,16 @@ held-out real captures and measured geometry:
 Until those gates pass, outputs remain offline observations, candidate
 coordinates, or simulated routes.
 
+## Arm-runtime integration track
+
+The arm-side implementation is tracked separately in
+[MODEL_COMMAND_RUNTIME_IMPLEMENTATION_PLAN.md](MODEL_COMMAND_RUNTIME_IMPLEMENTATION_PLAN.md).
+Its first sequential coordinator is implemented: it consumes the admitted
+ordered batch one action at a time, requires a never-reused fresh observed arm
+state, blocks lookahead and automatic retries, and advances only from an exact
+verified result. It remains zero-hardware while measured planning blockers are
+open.
+
 ## 2026-09-26 actual-model benchmark update
 
 A new 24-image benchmark was committed before inference, using eight unseen
