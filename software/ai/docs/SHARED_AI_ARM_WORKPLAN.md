@@ -1612,3 +1612,153 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: heuristic findings unresolved; no clean audit claim.
 - Supersedes: none
 - Next dependency: fixture-owner review, separately from localization research.
+
+
+### E-20260926-AI-025 — matched-resolution development fine-tuning
+
+- Stage: S1
+- Lane: AI
+- Commit: `cc9d000b927122bb200b6142315c96fb879ec2f8` (exact frozen training code and plan before execution)
+- Change: paired 128x96/256x192 fine-tuning from identical robust pose weights,
+  same seeded image order, 12 epochs, batch 64, AdamW learning rate 0.0002.
+- Inputs/fixtures: 14M training (1,200 groups) and 15M development (200 groups),
+  3 conditions; 3,600/600 images. Checkpoint/source/catalog hashes pinned in
+  `train/matched_resolution_v0_plan.json`; pixel/output-model hashes in scorecard.
+- Command: `python software/ai/vision/train_matched_resolution.py`
+- Result: PASS for completed development comparison, not qualification. Both
+  selected epoch 11 by development MSE. 128x96: mean 0.94513 mm, p95 2.06487 mm,
+  63.12% within 1 mm. 256x192: mean 1.44220 mm, p95 3.52965 mm, 39.69% within
+  1 mm. Each has 27,600 correlated target/view errors; retain 128x96 research
+  resolution, with no runtime checkpoint replacement from development results.
+- Artifacts: `software/ai/eval/matched_resolution_v0_scorecard.json`; local ignored
+  checkpoints under `software/ai/results/matched_resolution_v0_128/` and `_256/`.
+  SHA-256 values respectively
+  `1dc517acd1da53166dc2df11a4d67e98aaf1186d96edd3342db0498fb6a6f2cc` and
+  `15f495bb18437208ae8bbea273aa957f5468b40bba4374546a81716ed545aa37`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: same pretrained weights originated at 128x96, so this is an
+  equal-budget adaptation comparison, not from-scratch proof that higher resolution
+  cannot help. One training seed; development selects epoch and reports quality;
+  no independent generalization or physical claim, new evaluation data or qualification.
+- Supersedes: none; extends inference-only AI-023 without rewriting it.
+- Next dependency: use 128x96 as the development reference; investigate target-local
+  geometric refinement and confidence on development groups before a new frozen
+  held-out run. Keep failed confidence results and runtime abstention unchanged.
+
+### E-20260926-AI-026 — matched-resolution evidence checks
+
+- Stage: S1
+- Lane: AI
+- Commit: `cc9d000b927122bb200b6142315c96fb879ec2f8` (training baseline; new evidence test and scorecard committed with this row)
+- Change: verified frozen source hashes, equal budgets/counts, development-only
+  splits and minimum-development-MSE checkpoint selection.
+- Inputs/fixtures: paired plan/scorecard and `software/ai/tests/test_matched_resolution_evidence.py`.
+- Command: `python -m pytest -q software/ai/tests/test_matched_resolution_evidence.py`
+- Result: PASS, 1 evidence test covering both runs.
+- Artifacts: test, frozen plan and scorecard.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: internal evidence consistency, not physical model qualification.
+- Supersedes: none
+- Next dependency: AI-025 development investigation.
+
+### E-20260926-AI-027 — matched-resolution audit findings retained
+
+- Stage: S1
+- Lane: AI
+- Commit: `cc9d000b927122bb200b6142315c96fb879ec2f8`
+- Change: required read-only audit during training.
+- Inputs/fixtures: repository snapshot and `scripts/audit_github_snapshot.py`.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: FAIL, exit 1; 5,638 paths, 785.0 MiB, same 14 existing arm-unit
+  credential-literal-review findings; no matched-resolution source finding.
+- Artifacts: scanner and existing fixtures.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: heuristic findings unresolved; no clean audit claim.
+- Supersedes: none
+- Next dependency: fixture-owner review independently of localization research.
+
+
+### E-20260926-AI-028 — merged boundary regression
+
+- Stage: S1
+- Lane: AI
+- Commit: `4687072c25f774a5651b39ba1ba79a07949a494f`
+- Change: retained concurrent shared shadow/boundary changes and reran focused producer/consumer checks.
+- Inputs/fixtures: v2 AI assembler and arm ingress fixtures, matched-resolution scorecard.
+- Command: `python -m pytest -q software/ai/tests/test_batch_emitter_v2.py software/tests/unit/test_model_motion_ingress_v2.py software/ai/tests/test_matched_resolution_evidence.py`
+- Result: PASS, 33 tests.
+- Artifacts: named tests and merged shared boundary sources.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: focused offline regression only; no integration status changed by AI lane.
+- Supersedes: none
+- Next dependency: AI-025 development refinement and shared-stage outstanding dependencies.
+
+
+### E-20260926-AI-029 — reject local-edge refinement after development comparison
+
+- Stage: S1
+- Lane: AI
+- Commit: `524803de116214cbec6366568cdc49f6d1a577a4` (exact frozen helper/diagnostic/manifest before scoring)
+- Change: tested fixed 9x9 gradient-energy centroid with Gaussian sigma 2 pixels,
+  capped at 1 mm correction. Uses predicted location and image pixels only.
+- Inputs/fixtures: 200 existing 15M development groups, 3 conditions, 46 targets;
+  128x96 matched-resolution checkpoint hash
+  `1dc517acd1da53166dc2df11a4d67e98aaf1186d96edd3342db0498fb6a6f2cc`.
+  Source/model hashes in `eval/local_refinement_v0.manifest.json`; image/catalog
+  hashes and per-condition metrics in scorecard.
+- Command: `python software/ai/vision/diagnose_local_refinement.py`
+- Result: FAIL for improvement hypothesis; diagnostic completed. Baseline mean
+  0.945249 mm / p95 2.065851 mm / within-1mm 63.083%; refined mean 1.236834 mm /
+  p95 2.665683 mm / within-1mm 45.949%. Reject this heuristic; no runtime change.
+- Artifacts: `software/ai/eval/local_refinement_v0_scorecard.json`, frozen manifest,
+  `vision/local_refinement.py` and `vision/diagnose_local_refinement.py`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: synthetic projection and known identities; correlated samples;
+  development diagnostic only. Tiny baseline differences from AI-025 may reflect this
+  run's CPU inference/direct renderer truth versus GPU/float32 decoded training
+  labels. The paired comparison here uses identical inference/truth for both arms.
+  No calibration/evaluation access, qualified confidence, or installed qualification.
+- Supersedes: none; previous evidence retained.
+- Next dependency: retain unrefined 128x96 development reference; decompose remaining
+  pose error into translation/orientation and scene-condition contributions before
+  choosing further model changes. Do not tune this rejected heuristic on held-out data.
+
+### E-20260926-AI-030 — refinement bound and edge-case tests
+
+- Stage: S1
+- Lane: AI
+- Commit: `524803de116214cbec6366568cdc49f6d1a577a4`
+- Change: tested flat-image fallback, border fallback, finite-input rejection and
+  maximum correction distance.
+- Inputs/fixtures: analytic PIL images in `software/ai/tests/test_local_refinement.py`.
+- Command: `python -m pytest -q software/ai/tests/test_local_refinement.py`
+- Result: PASS, 4 tests; functional bounds do not overturn AI-029's accuracy failure.
+- Artifacts: helper and tests.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: unit correctness only, not model-quality or physical evidence.
+- Supersedes: none
+- Next dependency: AI-029 error decomposition.
+
+
+### E-20260926-AI-031 — local-refinement audit findings retained
+
+- Stage: S1
+- Lane: AI
+- Commit: `524803de116214cbec6366568cdc49f6d1a577a4`
+- Change: required read-only snapshot audit after diagnostic.
+- Inputs/fixtures: repository snapshot, scorecard, `scripts/audit_github_snapshot.py`.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: FAIL, exit 1; 5,647 paths, 785.0 MiB, same 14 existing arm-unit
+  credential-literal-review findings; no local-refinement file finding.
+- Artifacts: scanner and existing fixtures.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: heuristic findings unresolved; no clean audit claim.
+- Supersedes: none
+- Next dependency: fixture-owner review independently of localization research.

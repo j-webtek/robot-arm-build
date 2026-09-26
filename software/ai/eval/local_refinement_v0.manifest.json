@@ -1,0 +1,24 @@
+{
+  "scope": "DEVELOPMENT_ONLY",
+  "seed_start": 15000000,
+  "seed_count": 200,
+  "conditions": [
+    "standard",
+    "appearance_shift",
+    "challenge"
+  ],
+  "checkpoint_sha256": "1dc517acd1da53166dc2df11a4d67e98aaf1186d96edd3342db0498fb6a6f2cc",
+  "file_sha256": {
+    "software/ai/vision/pose_model.py": "7eccc2a3cabf3a37217b4a1c3114c439ffc740a917c08e4ef378065ff85c6ec5",
+    "software/ai/vision/synthetic_keyboard.py": "b9a1662ea348ba78093909844e5e8bed86f4996babc289bfd63858b6b54f692c",
+    "software/ai/vision/train_pose.py": "98c2ae6211b42c3b4b7c5bed3fb03aab82bffff79c30ebb546e3681b3be3a1b6",
+    "software/ai/vision/evaluate_pose_challenge.py": "1ba33a1a2d38b1216a5e1708e17b99c3d9dba9fd2c40af46a084da8065102983",
+    "software/ai/vision/diagnose_local_refinement.py": "04d7446f32d5086e54e39fb2ecbb9856755b613f28a1cf2154489beac9714133",
+    "software/ai/vision/local_refinement.py": "f16d4970f77faf76f5bcb509d84c73cbd3f2f93ea14a6f3ca712765cefcd77c3"
+  },
+  "policy": "Development only: compare fixed 9x9 edge-centroid Gaussian sigma2 correction capped1mm; no parameter tuning or promotion",
+  "methods": [
+    "baseline",
+    "edge_centroid"
+  ]
+}
