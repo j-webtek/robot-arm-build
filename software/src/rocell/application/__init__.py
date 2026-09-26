@@ -221,6 +221,12 @@ from .model_motion_ingress import (
     ModelMotionIngressError,
     ingest_model_motion_batch,
 )
+from .model_motion_ingress_v2 import (
+    MeasuredTargetRegionV2,
+    ModelMotionIngressV2Error,
+    TrustedLocalizationQualificationV2,
+    ingest_model_motion_batch_v2,
+)
 from .model_motion_sequence_coordinator import (
     SCHEMA as MODEL_MOTION_SEQUENCE_SNAPSHOT_SCHEMA,
     READY_PLANNER_STATUS,
@@ -899,6 +905,10 @@ __all__ = [
     "InstalledCollisionGeometryError",
     "InstalledCollisionGeometryProfile",
     "MODEL_MOTION_INGRESS_SCHEMA",
+    "MeasuredTargetRegionV2",
+    "ModelMotionIngressV2Error",
+    "TrustedLocalizationQualificationV2",
+    "ingest_model_motion_batch_v2",
     "MODEL_MOTION_SEQUENCE_SNAPSHOT_SCHEMA",
     "READY_PLANNER_STATUS",
     "ActionDisposition",

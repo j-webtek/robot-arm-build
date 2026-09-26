@@ -30,6 +30,16 @@ proposal still has no transport authority; deterministic code must resolve,
 plan, screen, and admit it before any controller command can exist.
 The [ordered model-motion batch schema](model_motion_batch_v1.schema.json) binds
 one semantic plan to same-frame, same-image proposals in action order. The
+[v2 proposal](model_motion_proposal_v2.schema.json) and
+[v2 batch](model_motion_batch_v2.schema.json) add a bounded scene lease,
+independent placement and board-frame evidence, camera/clock/lease identity,
+integer epoch-millisecond freshness, capability identity, ordered semantic action
+indexes, qualified planar uncertainty, and per-observation confidence. V2
+deliberately removes model-owned speed and clearance choices and initially accepts
+only `board_mm_xy_plane_v2`. The arm consumer composes producer localization error
+with independent placement error, while surface-normal evidence is checked
+separately. It remains zero-authority and is additive beside the frozen v1
+compatibility contract. The
 [model-motion ingress report](model_motion_ingress_v1.schema.json) records
 RoCell's deterministic admission of that batch while retaining zero hardware
 authority.

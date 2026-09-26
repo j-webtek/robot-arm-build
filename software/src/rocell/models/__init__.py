@@ -24,6 +24,20 @@ from .model_motion_batch import (
     ModelMotionBatchError,
     decode_model_motion_batch_json,
 )
+from .model_motion_batch_v2 import (
+    COORDINATE_PROFILE_V2,
+    MAX_BATCH_BYTES_V2,
+    MAX_BATCH_PROPOSALS_V2,
+    ModelMotionBatchV2,
+    ModelMotionBatchV2Error,
+    ModelMotionProposalV2,
+    MotionCapabilityV2,
+    MotionEvidenceV2,
+    MotionGeometryV2,
+    MotionUncertaintyV2,
+    UncertaintyBoundType,
+    decode_model_motion_batch_v2_json,
+)
 from .profiles import KeyboardProfile, PhoneKeySpec, PhoneProfile
 from .units import Millimetres, Radians, finite_real
 
@@ -39,6 +53,18 @@ __all__ = [
     "MAX_BATCH_PROPOSALS",
     "MAX_BATCH_BYTES",
     "decode_model_motion_batch_json",
+    "ModelMotionBatchV2",
+    "ModelMotionBatchV2Error",
+    "ModelMotionProposalV2",
+    "MotionCapabilityV2",
+    "MotionEvidenceV2",
+    "MotionGeometryV2",
+    "MotionUncertaintyV2",
+    "UncertaintyBoundType",
+    "MAX_BATCH_BYTES_V2",
+    "MAX_BATCH_PROPOSALS_V2",
+    "COORDINATE_PROFILE_V2",
+    "decode_model_motion_batch_v2_json",
     "MotionProposalError",
     "PhoneKeySpec",
     "PhoneProfile",
