@@ -121,7 +121,7 @@ Only the shared integration gate may change a stage's overall status to
 | Stage | Deliverable | AI lane | Arm lane | Integration gate | Overall |
 |---|---|---:|---:|---:|---:|
 | S0 | Shared v1 seam and baseline | COMPLETE | COMPLETE | COMPLETE | COMPLETE |
-| S1 | Contract v2: freshness, uncertainty, capability | IN_PROGRESS | READY_FOR_INTEGRATION | NOT_STARTED | IN_PROGRESS |
+| S1 | Contract v2: freshness, uncertainty, capability | IN_PROGRESS | READY_FOR_INTEGRATION | COMPLETE | IN_PROGRESS |
 | S2 | Full zero-hardware text-to-envelope shadow path | NOT_STARTED | IN_PROGRESS | NOT_STARTED | IN_PROGRESS |
 | S3 | Measured localization and planning readiness | IN_PROGRESS | BLOCKED | NOT_STARTED | BLOCKED |
 | S4 | Zero-write Waveshare adapter and receipts | READY_FOR_INTEGRATION | NOT_STARTED | NOT_STARTED | NOT_STARTED |
@@ -945,3 +945,51 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: heuristic findings unresolved; no clean security audit claim.
 - Supersedes: none; earlier failed audits retained.
 - Next dependency: fixture-owner review; AI-007 perception/registry dependencies remain.
+
+
+### E-20260926-INT-001 — actual v2 assembler bytes through trusted arm gates
+
+- Stage: S1
+- Lane: Shared integration
+- Commits: `20b669c8914ba83cd4bdddc98abae128af1342a2` and
+  `f032dc85b3dda58396865e5ca32c54857a4b5570`
+- Change: passed canonical bytes from the actual AI v2 assembler through Draft
+  2020-12 schema validation, the strict shared decoder, the consumer-owned trusted
+  registry, arm ingress, and the monotonic pre-planner recheck. Closed a review
+  gap by binding the registry and ingress to exact capture ID, frame ID and image
+  hash in addition to camera, clock, derived evidence, lease and geometry records.
+- Inputs/fixtures: repeated H,H,I plan; actual canonical assembler bytes; coherent
+  synthetic registry fixture; one-field mutations for plan, image, frame, future
+  time, capability, camera, clock, lease, placement, target map, qualification,
+  domain, uncertainty and safe-region edge; exact expiry.
+- Command: `python -m pytest software/tests/integration/test_model_motion_v2_shared_gate.py software/ai/tests/test_batch_emitter_v2.py software/ai/tests/test_batch_emitter.py software/tests/unit/test_model_motion_ingress.py software/tests/unit/test_model_motion_ingress_v2.py software/tests/unit/test_model_motion_sequence_coordinator.py software/tests/unit/test_model_motion_sequence_journal.py software/tests/unit/test_trajectory_execution_envelope.py -q`
+- Result: PASS, 73 tests. The shared S1 producer/consumer contract integration
+  gate is complete; all tested mutations fail closed before planning.
+- Artifacts: `software/tests/integration/test_model_motion_v2_shared_gate.py`,
+  `software/ai/rocell_ai/batch_emitter_v2.py`, and the v2 registry/ingress modules.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: all evidence and geometry remain synthetic/caller-supplied. This
+  proves contract compatibility and rejection behavior, not perception correctness,
+  installed qualification, physical planning readiness or execution authority.
+- Supersedes: the actual-producer integration dependency in ARM-001/004 and AI-007;
+  it does not supersede AI-007's missing precision-evidence adapter dependency.
+- Next dependency: AI lane binds precision outputs to exact capture/evidence and
+  reaches its own S1 acceptance criteria; S2 then composes the full zero-hardware
+  text-to-envelope path using these exact bytes and trusted arm gates.
+
+
+### E-20260926-INT-002 — shared v2 integration audit retains findings
+
+- Stage: S1
+- Lane: Shared integration
+- Commit: `f032dc85b3dda58396865e5ca32c54857a4b5570`
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: FAIL, exit 1; 5,601 paths, 903.3 MiB, the same 14 existing
+  credential-literal-review findings in arm unit fixtures; no shared-gate finding.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: heuristic audit remains unresolved; no clean security-audit claim.
+- Supersedes: none; retains all earlier failed audit evidence.
+- Next dependency: fixture-owner review remains separate from AI precision binding
+  and the S2 zero-hardware composition path.
