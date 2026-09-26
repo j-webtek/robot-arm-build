@@ -122,7 +122,7 @@ Only the shared integration gate may change a stage's overall status to
 |---|---|---:|---:|---:|---:|
 | S0 | Shared v1 seam and baseline | COMPLETE | COMPLETE | COMPLETE | COMPLETE |
 | S1 | Contract v2: freshness, uncertainty, capability | IN_PROGRESS | READY_FOR_INTEGRATION | COMPLETE | IN_PROGRESS |
-| S2 | Full zero-hardware text-to-envelope shadow path | NOT_STARTED | IN_PROGRESS | NOT_STARTED | IN_PROGRESS |
+| S2 | Full zero-hardware text-to-envelope shadow path | NOT_STARTED | READY_FOR_INTEGRATION | NOT_STARTED | IN_PROGRESS |
 | S3 | Measured localization and planning readiness | IN_PROGRESS | BLOCKED | NOT_STARTED | BLOCKED |
 | S4 | Zero-write Waveshare adapter and receipts | READY_FOR_INTEGRATION | NOT_STARTED | NOT_STARTED | NOT_STARTED |
 | S5 | One independently verified physical key action | NOT_STARTED | NOT_STARTED | NOT_STARTED | NOT_STARTED |
@@ -602,7 +602,7 @@ remove it only in the same commit that appends the resulting evidence row.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| Arm/runtime lane | S2 | v2 dual-lineage trajectory envelope contract | `main` from `67390c4` | ACTIVE |
+| Unclaimed | S2 | raw-request shared runner and negative matrix | — | AVAILABLE |
 | Unclaimed | S4 | controller adapter/receipts | — | AVAILABLE |
 
 ## Worker update procedure
@@ -1273,3 +1273,57 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: heuristic findings unresolved; no clean audit claim.
 - Supersedes: none; prior failed evidence retained.
 - Next dependency: fixture-owner review, separate from AI confidence/capture work.
+
+
+### E-20260926-ARM-012 — dual-lineage v2 trajectory-envelope contract
+
+- Stage: S2
+- Lane: Arm/runtime
+- Commit: `af57bee3672d65a3063ce69527784a96213a6c43`
+- Change: added a zero-authority v2 trajectory-envelope wrapper that preserves
+  both the original v2 proposal/planner lineage and the internal measured-planner
+  surrogate lineage. Binding requires explicit readiness at both planner layers,
+  exact batch/action hashes and an already validated controller-independent v1
+  measured trajectory. A blocked planner report cannot be wrapped. The S2 arm
+  lane is now `READY_FOR_INTEGRATION` on its exact-blocker path.
+- Inputs/fixtures: actual v2 H/I model and planner objects, real missing-calibration
+  blocker, an explicitly synthetic dual-ready planner report used only to test
+  the contract, a validated controller-independent trajectory envelope, crossed
+  surrogate identity and tampered planner report.
+- Command: `python -m pytest software/tests/unit/test_trajectory_execution_envelope_v2.py software/tests/unit/test_trajectory_execution_envelope.py software/tests/integration/test_model_motion_v2_shared_gate.py software/tests/unit/test_model_motion_ingress_v2.py software/tests/unit/test_model_motion_planner_gate.py software/tests/unit/test_model_motion_sequence_coordinator.py software/ai/tests/test_capture_binding.py software/ai/tests/test_precision_binding_v2.py software/ai/tests/test_batch_emitter_v2.py -q`
+- Result: PASS, 91 tests. Blocked reports fail closed; the synthetic readiness
+  fixture seals both lineages; crossed surrogate and tampered report identities
+  reject; all envelope documents remain free of wire commands and authority.
+- Artifacts:
+  `software/src/rocell/application/trajectory_execution_envelope_v2.py`,
+  `software/src/rocell/application/__init__.py`, and
+  `software/tests/unit/test_trajectory_execution_envelope_v2.py`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: readiness is a contract-only synthetic fixture, not evidence that
+  current measured planning passes. The real shadow trace still terminates at
+  missing/stale calibration before reprojection or IK. The wrapper is not a
+  dispatch permit and cannot be encoded by a writable adapter.
+- Supersedes: the dual-lineage envelope dependency recorded by ARM-010; it does
+  not supersede the missing-calibration blocker.
+- Next dependency: shared integration composes raw parser outcomes, actual
+  perception/assembler bytes and the arm shadow runner into one command with the
+  supported, ambiguous, stale, obstructed, out-of-bound and unsupported matrix.
+
+
+### E-20260926-ARM-013 — v2 envelope audit retains findings
+
+- Stage: S2
+- Lane: Arm/runtime
+- Commit: `af57bee3672d65a3063ce69527784a96213a6c43`
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: FAIL, exit 1; 5,613 paths, 903.3 MiB, the same 14 existing
+  credential-literal-review findings in arm unit fixtures; no v2 envelope
+  contract finding.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: heuristic findings remain unresolved; this is not a clean
+  repository security-audit claim.
+- Supersedes: none; retains all earlier failed audit evidence.
+- Next dependency: fixture-owner review remains independent of the shared S2
+  integration runner and measured calibration work.
