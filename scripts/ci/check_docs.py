@@ -1,10 +1,11 @@
 """Check local file links in maintained entry docs, not archived lab records.
 
+Checks this repository's issue-template URLs against local template files too.
 Does not validate URL reachability, Markdown anchors, or visual rendering.
 """
 from pathlib import Path
 import re
-from urllib.parse import unquote, urlsplit
+from urllib.parse import parse_qs, unquote, urlsplit
 import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -26,6 +27,27 @@ DOCS = (
 )
 
 
+def issue_template_error(target: str, root: Path) -> str | None:
+    """Check only this repository's template links, without network requests."""
+    parsed = urlsplit(target)
+    if (parsed.netloc.lower() != 'github.com'
+            or parsed.path.rstrip('/') != '/j-webtek/robot-arm-build/issues/new'):
+        return None
+    templates = parse_qs(parsed.query, keep_blank_values=True).get('template')
+    if templates is None:
+        return None  # Generic new-issue link, not a template link.
+    if len(templates) != 1 or not templates[0]:
+        return f'ambiguous or empty issue template: {target}'
+    name = templates[0]
+    if name == 'BLANK_ISSUE':
+        return None  # GitHub's built-in fallback, not a file.
+    if not re.fullmatch(r'[A-Za-z0-9_-]+\.(?:md|yml|yaml)', name):
+        return f'invalid issue template filename: {target}'
+    if not (root / '.github' / 'ISSUE_TEMPLATE' / name).is_file():
+        return f'missing issue template: {name}'
+    return None
+
+
 def main() -> None:
     errors = []
     for relative in DOCS:
@@ -37,6 +59,9 @@ def main() -> None:
         for target in re.findall(r'\]\(([^)]+)\)', content):
             target = target.strip().strip('<>')
             parsed = urlsplit(target)
+            template_error = issue_template_error(target, ROOT)
+            if template_error:
+                errors.append(f'{relative}: {template_error}')
             if parsed.scheme or target.startswith('#'):
                 continue
             if not (path.parent / unquote(parsed.path)).exists():

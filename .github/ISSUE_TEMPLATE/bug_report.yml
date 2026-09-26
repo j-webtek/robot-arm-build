@@ -13,11 +13,12 @@ body:
     attributes:
       label: Where did the problem occur?
       options:
+        - Other or unsure
         - Installation or offline introductory example
         - Offline tests or simulation
         - Model inference or evaluation
         - Previously authorized physical test
-        - Other or unsure
+      default: 0
     validations:
       required: true
   - type: textarea
