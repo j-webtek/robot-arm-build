@@ -102,3 +102,20 @@ That artifact is marked `SYNTHETIC_TEST_ONLY`. It may validate serialization,
 hashing, and cross-workstream consumption, but its report always retains the
 `SYNTHETIC_EVIDENCE_NOT_INDEPENDENT` blocker. It cannot satisfy epoch intake,
 authorize an epoch-bound build, or authorize any controller or physical action.
+
+The resulting decision can then exercise the complete synthetic epoch path:
+
+```powershell
+$env:PYTHONPATH='software/src'
+python software/scripts/build_synthetic_configuration_epoch_rehearsal.py `
+  software/runs/review-rehearsals/arm-036/r97-synthetic-review-decision.json `
+  software/runs/review-rehearsals/arm-037 `
+  --rehearsal-id arm-037 `
+  --measured-monotonic-ns 100 `
+  --valid-until-monotonic-ns 300 `
+  --evaluated-monotonic-ns 200
+```
+
+This creates eight ordered synthetic component records and strictly re-parses
+the content-addressed epoch. The production assessment must remain `BLOCKED`
+for synthetic firmware-review and non-physical-component evidence.

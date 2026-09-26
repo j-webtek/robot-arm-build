@@ -2588,3 +2588,43 @@ commissioning, or bounded physical result with its limitations intact.
 - Next dependency: use this lane for model/arm contract tests while a genuinely
   independent reviewer and measurement owners produce the external evidence
   required by S4.
+
+### E-20260926-ARM-037 — full synthetic review-to-epoch rehearsal
+
+- Stage: S4
+- Lane: ARM
+- Change: extended the synthetic integration lane across configuration-epoch
+  intake. The builder strictly ingests the content-addressed ARM-036 decision,
+  deterministically constructs all eight ordered synthetic component records,
+  serializes and strictly re-parses the epoch, and runs the unchanged production
+  assessment.
+- Safety behavior: rehearsal success requires the production report to remain
+  `BLOCKED` with exactly `FIRMWARE_REVIEW_DECISION_BLOCKED` and
+  `COMPONENT_NOT_PHYSICAL_ORIGINAL`. Epoch-bound build proposal, installation,
+  startup, execution, hardware access, and physical authority remain false.
+- Artifact identity: synthetic configuration epoch SHA-256
+  `671c044b48b9f3aaac2e5f260a6b8c948f6c2a060451730d015b9431d46cf6c6`;
+  assessment report SHA-256
+  `0c560ec3228fb29ebb676684f62d810e3c456ed42dd6dd5ad11e98be64345ea4`;
+  input review decision SHA-256
+  `7b04b99c2c740bbbce4a7cc41e47d158ae2f8be93df6447b9b594e68f9a28c17`.
+- Artifacts: strict epoch JSON decoder,
+  `build_synthetic_controller_configuration_epoch_rehearsal_v1`,
+  `software/scripts/build_synthetic_configuration_epoch_rehearsal.py`, unit and
+  builder tests, ignored local decision/intake/report evidence, and updated
+  production documentation.
+- Results: bounded shared AI/arm, r97, runtime, review, epoch, and builder suite
+  PASS, 260 tests in 17.10 seconds; documentation PASS for 25 maintained
+  documents and two SVG assets; snapshot audit PASS for 5,730 paths and 903.9
+  MiB with zero unresolved findings and 14 reviewed synthetic fixtures; diff
+  check PASS. Generated output resides only in the ignored local evidence area.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: every component is synthetic and every component review hash is
+  simulated. This proves interface compatibility and fail-closed behavior only,
+  not workcell measurement, reviewer independence, or controller readiness.
+- Supersedes: ARM-036 only for full synthetic epoch integration coverage; all
+  external-review, measured-evidence, installation, and physical blockers remain.
+- Next dependency: connect the model/arm offline integration harness to this
+  strict epoch fixture while physical measurement owners and an independent
+  reviewer produce the evidence required for production admission.

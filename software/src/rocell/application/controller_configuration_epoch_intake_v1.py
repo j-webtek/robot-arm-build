@@ -19,6 +19,7 @@ from typing import Any
 from .installed_controller_qualification_v1 import EvidenceOrigin, ReviewDisposition
 from .r97_independent_review_decision_v1 import (
     R97IndependentReviewDecisionV1,
+    R97ReviewEvidenceOrigin,
     assess_r97_independent_review_decision_v1,
 )
 
@@ -358,6 +359,171 @@ def assess_controller_configuration_epoch_intake_v1(
     )
 
 
+def parse_controller_configuration_epoch_intake_v1(
+    document: dict[str, Any],
+) -> ControllerConfigurationEpochIntakeV1:
+    """Strictly decode a JSON epoch intake and verify its content hash."""
+
+    required = {
+        "schema", "epoch_id", "predecessor_configuration_epoch_sha256",
+        "r97_review_packet_sha256", "firmware_independent_review_sha256",
+        "firmware_review_disposition", "candidate_app_sha256",
+        "protocol_source_sha256", "joint_mapping_source_sha256", "components",
+        "epoch_scope", "app_digest_separate_to_avoid_self_reference",
+        "hardware_access", "installation_authorized",
+        "controller_start_authorized", "execution_authorized",
+        "physical_authority", "configuration_epoch_sha256",
+    }
+    if type(document) is not dict or set(document) != required:
+        raise ControllerConfigurationEpochIntakeError(
+            "configuration epoch JSON must contain exactly the closed fields")
+    if document["epoch_scope"] != "RELEASE_IDENTITY_PLUS_MEASURED_WORKCELL":
+        raise ControllerConfigurationEpochIntakeError(
+            "configuration epoch scope is invalid")
+    if document["app_digest_separate_to_avoid_self_reference"] is not True:
+        raise ControllerConfigurationEpochIntakeError(
+            "configuration epoch app digest separation must remain true")
+    for field in (
+        "hardware_access", "installation_authorized",
+        "controller_start_authorized", "execution_authorized",
+        "physical_authority",
+    ):
+        if document[field] is not False:
+            raise ControllerConfigurationEpochIntakeError(
+                f"configuration epoch {field} must remain false")
+    raw_components = document["components"]
+    if not isinstance(raw_components, list):
+        raise ControllerConfigurationEpochIntakeError(
+            "configuration epoch components must be a JSON array")
+    try:
+        components = tuple(
+            MeasuredConfigurationComponentV1(
+                component=ConfigurationEpochComponent(item["component_id"]),
+                evidence_sha256=item["evidence_sha256"],
+                independent_review_sha256=item["independent_review_sha256"],
+                measured_monotonic_ns=item["measured_monotonic_ns"],
+                valid_until_monotonic_ns=item["valid_until_monotonic_ns"],
+                evidence_origin=EvidenceOrigin(item["evidence_origin"]),
+                review_disposition=ReviewDisposition(item["review_disposition"]),
+            )
+            for item in raw_components
+            if type(item) is dict and set(item) == {
+                "component_id", "evidence_sha256", "independent_review_sha256",
+                "measured_monotonic_ns", "valid_until_monotonic_ns",
+                "evidence_origin", "review_disposition",
+            }
+        )
+        intake = ControllerConfigurationEpochIntakeV1(
+            epoch_id=document["epoch_id"],
+            predecessor_configuration_epoch_sha256=(
+                document["predecessor_configuration_epoch_sha256"]),
+            r97_review_packet_sha256=document["r97_review_packet_sha256"],
+            firmware_independent_review_sha256=(
+                document["firmware_independent_review_sha256"]),
+            firmware_review_disposition=ReviewDisposition(
+                document["firmware_review_disposition"]),
+            candidate_app_sha256=document["candidate_app_sha256"],
+            protocol_source_sha256=document["protocol_source_sha256"],
+            joint_mapping_source_sha256=document["joint_mapping_source_sha256"],
+            components=components,
+            schema=document["schema"],
+        )
+    except (KeyError, TypeError, ValueError) as exc:
+        raise ControllerConfigurationEpochIntakeError(
+            "configuration epoch JSON contains invalid typed values") from exc
+    if len(components) != len(raw_components):
+        raise ControllerConfigurationEpochIntakeError(
+            "configuration epoch components contain unknown fields")
+    _digest(document["configuration_epoch_sha256"], "configuration_epoch_sha256")
+    if document["configuration_epoch_sha256"] != intake.configuration_epoch_sha256:
+        raise ControllerConfigurationEpochIntakeError(
+            "configuration epoch content hash does not match")
+    return intake
+
+
+def build_synthetic_controller_configuration_epoch_rehearsal_v1(
+    *,
+    rehearsal_id: str,
+    firmware_review_decision: R97IndependentReviewDecisionV1,
+    measured_monotonic_ns: int,
+    valid_until_monotonic_ns: int,
+    evaluated_monotonic_ns: int,
+) -> tuple[
+    ControllerConfigurationEpochIntakeV1,
+    ControllerConfigurationEpochIntakeReportV1,
+]:
+    """Build a deterministic full-epoch fixture that remains production-blocked."""
+
+    _identifier(rehearsal_id, "rehearsal_id")
+    if len(rehearsal_id) > 108:
+        raise ControllerConfigurationEpochIntakeError(
+            "rehearsal_id is too long for the derived epoch identifier")
+    if not isinstance(firmware_review_decision, R97IndependentReviewDecisionV1):
+        raise TypeError(
+            "firmware_review_decision must be R97IndependentReviewDecisionV1")
+    if (
+        firmware_review_decision.evidence_origin
+        is not R97ReviewEvidenceOrigin.SYNTHETIC_TEST_ONLY
+    ):
+        raise ControllerConfigurationEpochIntakeError(
+            "synthetic epoch rehearsal requires synthetic review evidence")
+    measured = _positive_ns(measured_monotonic_ns, "measured_monotonic_ns")
+    valid_until = _positive_ns(
+        valid_until_monotonic_ns, "valid_until_monotonic_ns")
+    evaluated = _positive_ns(evaluated_monotonic_ns, "evaluated_monotonic_ns")
+    if not measured + len(EXPECTED_COMPONENT_IDS) - 1 <= evaluated < valid_until:
+        raise ControllerConfigurationEpochIntakeError(
+            "synthetic epoch evaluation must be inside the evidence window")
+    components = tuple(
+        MeasuredConfigurationComponentV1(
+            component=ConfigurationEpochComponent(component_id),
+            evidence_sha256=hashlib.sha256(_canonical({
+                "component_id": component_id,
+                "evidence_origin": "SYNTHETIC_TEST_ONLY",
+                "rehearsal_id": rehearsal_id,
+            })).hexdigest(),
+            independent_review_sha256=hashlib.sha256(_canonical({
+                "component_id": component_id,
+                "review_origin": "SYNTHETIC_TEST_ONLY",
+                "rehearsal_id": rehearsal_id,
+            })).hexdigest(),
+            measured_monotonic_ns=measured + index,
+            valid_until_monotonic_ns=valid_until + index,
+            evidence_origin=EvidenceOrigin.SYNTHETIC_TEST_ONLY,
+            review_disposition=ReviewDisposition.INDEPENDENTLY_APPROVED,
+        )
+        for index, component_id in enumerate(EXPECTED_COMPONENT_IDS)
+    )
+    intake = ControllerConfigurationEpochIntakeV1(
+        epoch_id=f"{rehearsal_id}.synthetic-epoch",
+        predecessor_configuration_epoch_sha256=None,
+        r97_review_packet_sha256=R97_REVIEW_PACKET_SHA256,
+        firmware_independent_review_sha256=(
+            firmware_review_decision.decision_sha256),
+        firmware_review_disposition=firmware_review_decision.disposition,
+        candidate_app_sha256=R97_APP_SHA256,
+        protocol_source_sha256=R97_PROTOCOL_SOURCE_SHA256,
+        joint_mapping_source_sha256=R97_JOINT_MAPPING_SOURCE_SHA256,
+        components=components,
+    )
+    report = assess_controller_configuration_epoch_intake_v1(
+        intake,
+        evaluated_monotonic_ns=evaluated,
+        firmware_review_decision=firmware_review_decision,
+    )
+    expected_blockers = (
+        "FIRMWARE_REVIEW_DECISION_BLOCKED",
+        "COMPONENT_NOT_PHYSICAL_ORIGINAL",
+    )
+    if (
+        report.blockers != expected_blockers
+        or report.to_dict()["epoch_bound_build_proposal_ready"] is not False
+    ):
+        raise ControllerConfigurationEpochIntakeError(
+            "synthetic epoch rehearsal escaped its non-production boundary")
+    return intake, report
+
+
 __all__ = [
     "BLOCKER_CODES", "EXPECTED_COMPONENT_IDS", "INTAKE_SCHEMA", "REPORT_SCHEMA",
     "R97_APP_SHA256", "R97_JOINT_MAPPING_SOURCE_SHA256",
@@ -366,4 +532,6 @@ __all__ = [
     "ControllerConfigurationEpochIntakeReportV1",
     "ControllerConfigurationEpochIntakeV1", "MeasuredConfigurationComponentV1",
     "assess_controller_configuration_epoch_intake_v1",
+    "build_synthetic_controller_configuration_epoch_rehearsal_v1",
+    "parse_controller_configuration_epoch_intake_v1",
 ]

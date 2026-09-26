@@ -387,6 +387,8 @@ from .controller_configuration_epoch_intake_v1 import (
     ControllerConfigurationEpochIntakeV1,
     MeasuredConfigurationComponentV1,
     assess_controller_configuration_epoch_intake_v1,
+    build_synthetic_controller_configuration_epoch_rehearsal_v1,
+    parse_controller_configuration_epoch_intake_v1,
 )
 from .prehardware_layout_study import (
     LayoutAxisValueEvidence,
@@ -1166,6 +1168,8 @@ __all__ = [
     "ControllerConfigurationEpochIntakeV1",
     "MeasuredConfigurationComponentV1",
     "assess_controller_configuration_epoch_intake_v1",
+    "build_synthetic_controller_configuration_epoch_rehearsal_v1",
+    "parse_controller_configuration_epoch_intake_v1",
     "ProductionRuntimeState",
     "RuntimeAdmissionRecordV1",
     "RuntimeCommandAcknowledgmentRecordV1",
