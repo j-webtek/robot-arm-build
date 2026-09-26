@@ -75,6 +75,32 @@ behavioral risk. Optional serial/vision features are not fully exercised by the
 portable matrix. Do not widen a version bound merely to make a bot PR mergeable.
 Close or defer with an explanation if compatibility is not established.
 
+### September 26, 2026 dependency review
+
+The maintainer approved proceeding with review of PRs
+[#17](https://github.com/j-webtek/robot-arm-build/pull/17) and
+[#18](https://github.com/j-webtek/robot-arm-build/pull/18). Approval is not a
+substitute for compatibility checks.
+
+- **pytest (#18):** permits pytest 9 while retaining pytest 8 support. Review
+  uses the existing four-job offline matrix and a local Python 3.10 run with
+  pytest 9.1.1. See the PR for exact tested commits and final check results.
+  This is test tooling, not physical-device qualification. Upstream
+  [release notes](https://docs.pytest.org/en/latest/changelog.html) describe
+  removals and changed fixture/import behavior; broader optional/native suites
+  remain the responsibility of their owning lanes.
+- **OpenCV (#17): deferred.** The proposed `<6` installation bound conflicts
+  with `<5` policies in `physical_host_readiness.py` and
+  `physical_connection_rehearsal.py`. OpenCV 5.0.0.93 resolves on local Python
+  3.10, but successful installation and portable CI do not qualify the camera
+  backend. Keep the current `<5` bound until the arm/vision owners review
+  backend compatibility, align manifest and readiness policies in one change,
+  and supply optional-feature evidence. Do not bypass the readiness check.
+
+For future optional dependency updates, compare package bounds with runtime
+readiness policies before merging. Record deferred work on the dependency PR;
+do not infer live camera or hardware coverage from the offline matrix.
+
 Routine maintenance: check failed/cancelled workflows and Dependabot errors,
 triage security reports privately, review stalled dependency PRs, and ensure
 public links/status still match the supported entry path. No scheduled maintenance
