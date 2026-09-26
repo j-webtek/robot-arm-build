@@ -469,3 +469,8 @@ Of295 hard-peak errors>8px, only1 lies within8px of a different semantic corner.
 ### Geometry candidate decoder (AI-142)
 
 A fixed16-combination search over two predicted peaks per corner fits the declared synthetic315x147mm rectangle, using residual_mm2/16 plus negative log peak probability. No truth pose or placement enters selection. All12 relative development checks pass: means4.716–6.550mm versus7.713–11.529mm, with improved yaw and tails. Absolute >3mm image counts remain168–192/200; no qualification. Next freeze fresh27M500-group evaluation of the unchanged decoder/checkpoint/cost. Synthetic dimensions/projection do not establish physical calibration; visibility/parity blockers remain. Source `db5f956d5cbdf7b340d2a971b9eb317c56a703de`; `eval/geometry_candidate_v0_report.json`.
+
+
+### Fresh geometry evaluation (AI-145)
+
+Unchanged checkpoint/decoder/cost passes all12 relative checks on fresh27M500 groups (2000 images). Geometry mean errors4.586–6.295mm versus soft10.244–13.809mm; >3mm image counts426–466/500 remain unacceptable. This verifies relative gains on new random scenes, not physical calibration or localization qualification.27M is now consumed. Return to development for translation/orientation/grid residual decomposition before subpixel refinement; future changes require another untouched split. Source `5b4ed1df56fb24145fd1bb6a42a9cd777afe57ef`; `eval/geometry_candidate_fresh_v0_report.json`. Visibility and device-stability blockers remain.

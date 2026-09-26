@@ -599,7 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-| AI | S1 | fresh geometry decoder evaluation | feature/translation-pair-evidence | ACTIVE |
 
 
 
@@ -4831,3 +4830,51 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic audit; AI-041 protected-main publication blocker remains.
 - Supersedes: none; previous failures and integration statuses preserved.
 - Next dependency: Protected-branch PR/checks and AI-142 fresh evaluation.
+
+### E-20260926-AI-145 — fresh geometry decoder evaluation
+
+- Stage: S1
+- Lane: AI
+- Commit: `5b4ed1df56fb24145fd1bb6a42a9cd777afe57ef` (frozen source; results/tests committed with evidence)
+- Change: fresh geometry decoder evaluation.
+- Inputs/fixtures: Fresh seeds27000000..27000499,500 groups x4 conditions=2000 images; unchanged decoder/cost and t05 checkpoint356a4dec05c6c2194c6d31542fed0d7199d5e989eb4b7678888d1a01aa493281. Exact source/input hashes in eval/geometry_candidate_fresh_v0_plan.json.
+- Command: `python software/ai/vision/evaluate_geometry_candidates_fresh.py`
+- Result: PASS all12 relative checks. Soft→geometry means standard10.244→5.975,appearance13.809→4.586,partial12.925→6.167,full13.080→6.295mm. >3mm tails484→458,497→426,494→459,498→466/500. Geometry yawp952.113/1.708/2.227/1.988deg. Absolute failure prevalence85.2–93.2% remains unacceptable; no qualification.
+- Artifacts: eval/geometry_candidate_fresh_v0_report.json; frozen runner/plan
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Fresh random groups from same synthetic generator, not real camera or distribution shift qualification. Synthetic geometry/projection not measured calibration. Visibility/device stability not reevaluated; prior blockers retained.27M split now consumed; do not reuse as fresh.
+- Supersedes: none; failed evidence and integration status retained.
+- Next dependency: Return to development data and decompose residual translation/orientation and grid-quantization errors before choosing a subpixel refinement. Preserve fixed decoder and fresh evidence; any changed candidate needs a new untouched split.
+
+### E-20260926-AI-146 — fresh geometry verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `5b4ed1df56fb24145fd1bb6a42a9cd777afe57ef` (frozen source; results/tests committed with evidence)
+- Change: fresh geometry verification.
+- Inputs/fixtures: Analytic rigid rectangle,AI-145 manifest and2000 rows.
+- Command: `python -m pytest -q software/ai/tests/test_geometry_candidates_fresh.py`
+- Result: PASS,2 tests; hashes,rigid fit,exact500 seeds/four conditions,unique cases,mean/tail counts and comparison gates verified. Existing pytest-asyncio warning.
+- Artifacts: software/ai/tests/test_geometry_candidates_fresh.py
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Implementation verification does not qualify localization. Batch contract unchanged; shared boundary suite not triggered.
+- Supersedes: none; failed evidence and integration status retained.
+- Next dependency: AI-145 development residual decomposition.
+
+### E-20260926-AI-147 — fresh geometry publication audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `5b4ed1df56fb24145fd1bb6a42a9cd777afe57ef` (frozen source; results/tests committed with evidence)
+- Change: fresh geometry publication audit.
+- Inputs/fixtures: Repository snapshot with AI-145/146 and reviewed fixture allowlist.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS;5901 paths,831.8 MiB,0 unresolved findings,14 reviewed synthetic fixtures.
+- Artifacts: audit stdout and snapshot
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic audit; AI-041 protected-main publication blocker remains.
+- Supersedes: none; failed evidence and integration status retained.
+- Next dependency: Protected-branch PR/checks and AI-145 development diagnosis.
