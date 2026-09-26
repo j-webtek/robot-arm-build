@@ -4,6 +4,10 @@ This guide covers GitHub administration, documentation and maintenance. AI and
 arm implementation remain owned by their respective workstreams. Repository
 maintenance does not authorize model promotion, firmware deployment or movement.
 
+For a short working procedure, use the
+[maintainer checklist](MAINTAINER_CHECKLIST.md). This guide supplies the detailed
+policies and dated administrative evidence behind it.
+
 ## One change, one clear handoff
 
 Use a topic branch and the [PR template](../.github/pull_request_template.md).
