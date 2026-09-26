@@ -1,0 +1,22 @@
+{
+  "source_commit": "a0c2715429d7d2ebbe83f2866eef1b8abdfe6ae1",
+  "scope": "S1 AI semantic design; unchanged v1 boundary regression",
+  "command": "python -m pytest -q software/ai/tests/test_batch_emitter.py software/tests/unit/test_model_motion_ingress.py software/tests/unit/test_model_motion_sequence_coordinator.py software/tests/unit/test_model_motion_sequence_journal.py software/tests/unit/test_trajectory_execution_envelope.py",
+  "result": "PASS",
+  "passed": 29,
+  "hardware_writes": 0,
+  "physical_movements": 0,
+  "files_sha256": {
+    "software/ai/tests/test_batch_emitter.py": "c02fc1b612cb1d97f3b6e7de98832cfd41e9225fc321007d1980eca50294bdbc",
+    "software/tests/unit/test_model_motion_ingress.py": "10fa3f710c3e6e7d6defec2ce598a1130a1974f0adec1a5b5bb43283dc254f5c",
+    "software/tests/unit/test_model_motion_sequence_coordinator.py": "1850122ac373e813dba4305c9e717ff6fe37adcb0d9028c36ce5fb965d31e9a1",
+    "software/tests/unit/test_model_motion_sequence_journal.py": "46f254e06b14e27f3a3b744a97250d77201ca383d5f710ba77ecb69d1cf6b99b",
+    "software/tests/unit/test_trajectory_execution_envelope.py": "8df00dd2dd481cdf0c7d5761f233088b55d14af30302fec19b4405d83d5041d5",
+    "software/ai/docs/CONTRACT_V2_AI_PROPOSAL.md": "aa42aae72e7cc29409f5807b00a2932c63ade15b10bc11f22ec3f04aab60b743"
+  },
+  "limitations": [
+    "No v2 implementation or joint acceptance",
+    "Fixture-based offline tests; no physical qualification"
+  ],
+  "next_dependency": "Arm-lane agreement on CONTRACT_V2_AI_PROPOSAL.md semantics"
+}

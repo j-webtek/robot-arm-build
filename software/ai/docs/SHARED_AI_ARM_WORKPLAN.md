@@ -602,7 +602,6 @@ remove it only in the same commit that appends the resulting evidence row.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI/model | S1 | `docs/CONTRACT_V2_AI_PROPOSAL.md`, AI entries in this workplan | main; based on ebe7eee | IN_PROGRESS: semantic proposal for joint review; no runtime/schema migration |
 | Unclaimed | S2 | shadow runner/integration fixtures | — | AVAILABLE |
 | Unclaimed | S4 | controller adapter/receipts | — | AVAILABLE |
 
@@ -671,3 +670,51 @@ coordinates or the arm follows manually supplied commands. Completion requires:
 
 Until then, every artifact remains a scoped research, simulation, shadow,
 commissioning, or bounded physical result with its limitations intact.
+
+
+### E-20260926-AI-003 — S1 AI semantic proposal and unchanged boundary regression
+
+- Stage: S1
+- Lane: AI
+- Commit: `a0c2715429d7d2ebbe83f2866eef1b8abdfe6ae1` (exact tested runtime/fixture source baseline; proposal and evidence are added together in this ledger entry's containing commit)
+- Change: proposed v2 freshness/lease, separate confidence and uncertainty,
+  independent placement/oriented target regions, target-map and capability binding,
+  and removal of motion hints. No schema, emitter or consumer change.
+- Inputs/fixtures: five test modules and proposal SHA-256 identities in
+  `software/ai/eval/s1_ai_design_v0.json`; existing synthetic fixture factories.
+- Command: `python -m pytest -q software/ai/tests/test_batch_emitter.py software/tests/unit/test_model_motion_ingress.py software/tests/unit/test_model_motion_sequence_coordinator.py software/tests/unit/test_model_motion_sequence_journal.py software/tests/unit/test_trajectory_execution_envelope.py`
+- Result: PASS, 29 existing boundary regression tests; v2 implementation and joint
+  agreement remain pending. This result does not validate the proposed v2 semantics.
+- Artifacts: [AI proposal](CONTRACT_V2_AI_PROPOSAL.md),
+  [evidence manifest](../eval/s1_ai_design_v0.json)
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: document-only semantic increment; no qualified localization,
+  measured placement, v2 schema/decoder/emitter or integration gate evidence.
+  Current synthetic margin failures remain preserved in AI-002.
+- Supersedes: none
+- Next dependency: arm-lane review of clock/lease ownership, independent placement
+  record, oriented target-map representation, uncertainty composition, confidence
+  source, capability registry and removal of hints; then jointly publish v2 schema.
+
+
+### E-20260926-AI-004 — repository snapshot audit findings retained
+
+- Stage: S1
+- Lane: AI
+- Commit: `a0c2715429d7d2ebbe83f2866eef1b8abdfe6ae1` (tracked baseline; same working tree as AI-003)
+- Change: ran required read-only repository upload audit during the semantic increment.
+- Inputs/fixtures: tracked baseline plus `CONTRACT_V2_AI_PROPOSAL.md`; scanner
+  `scripts/audit_github_snapshot.py`, repository text and archive contents.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: FAIL (exit 1), 5,587 paths, 784.7 MiB, 14 credential-literal-review
+  findings in existing `software/tests/unit/` files; none in the new AI proposal.
+- Artifacts: scanner and existing test fixtures at the source commit; no secret
+  values copied into evidence.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: heuristic audit findings remain unresolved; this is not a clean
+  repository security-audit claim. No affected fixture was changed by this increment.
+- Supersedes: none
+- Next dependency: fixture owners review the 14 existing test-literal findings;
+  S1 still depends on arm-lane semantic agreement listed in AI-003.
