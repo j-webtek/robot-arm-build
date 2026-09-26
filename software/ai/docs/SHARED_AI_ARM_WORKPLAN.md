@@ -599,7 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-| AI | S1 | refined coordinate bias attribution | feature/translation-pair-evidence | ACTIVE |
 
 
 
@@ -5363,3 +5362,51 @@ commissioning, or bounded physical result with its limitations intact.
 - Next dependency: derive robot-link transforms from the pinned URDF and exact
   joint result inside a trusted adapter, then require conservative bounded
   inter-waypoint samples for both rigid and configuration-sampled bodies.
+
+### E-20260926-AI-169 — refined coordinate bias attribution
+
+- Stage: S1
+- Lane: AI
+- Commit: `61d37269f269005116c7de24220dcaa62b811275` (frozen source; results/tests committed with evidence)
+- Change: refined coordinate bias attribution.
+- Inputs/fixtures: Retained AI-157800 refined-corner predictions,15M200 groups,four conditions; exact source/input hashes in eval/refined_bias_v0_plan.json.
+- Command: `python software/ai/vision/diagnose_refined_bias.py`
+- Result: Diagnostic completed. Bad >3mm cases standard/appearance/partial/full125/77/172/186; >=50% single-corner energy69/22/87/112 (290 total),>=50% common translation energy31/10/18/41 (100 total),categories may overlap. Shared-bias means2.980/2.275/4.689/5.131mm. FitRMS<=3mm cases20/6/10/3 include14/6/5/3 bad cases (28/39). Residual/error correlations0.018/0.492/0.921/0.912. Residual is insufficient as calibrated uncertainty.
+- Artifacts: eval/refined_bias_v0_report.json; frozen runner/plan
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Oracle error decomposition diagnostic only; no offset correction/calibration. Descriptive3mm/50% cuts not admission thresholds. Reused synthetic data; no qualification or boundary changes.
+- Supersedes: none; prior failures and integration statuses retained.
+- Next dependency: Freeze one fixed robust-fit comparison using refined predicted corners only (Huber IRLS,3mm residual scale,5 iterations),with same original candidate selection and all-case scoring. Preserve absolute metrics and do not infer confidence from residual.
+
+### E-20260926-AI-170 — refined bias verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `61d37269f269005116c7de24220dcaa62b811275` (frozen source; results/tests committed with evidence)
+- Change: refined bias verification.
+- Inputs/fixtures: AI-169 pinned manifest/800 rows.
+- Command: `python -m pytest -q software/ai/tests/test_refined_bias.py`
+- Result: PASS,1 test; hashes,energy decomposition identity,majority counts and low-residual false assurances verified. Existing pytest-asyncio warning.
+- Artifacts: software/ai/tests/test_refined_bias.py
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Consistency check only; batch unchanged,shared boundary suite not triggered.
+- Supersedes: none; prior failures and integration statuses retained.
+- Next dependency: AI-169 robust fitting study.
+
+### E-20260926-AI-171 — refined bias publication audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `61d37269f269005116c7de24220dcaa62b811275` (frozen source; results/tests committed with evidence)
+- Change: refined bias publication audit.
+- Inputs/fixtures: Repository with AI-169/170 and reviewed fixture allowlist.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS;5943 paths,837.9 MiB,0 unresolved findings,14 reviewed synthetic fixtures.
+- Artifacts: audit stdout and snapshot
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic audit; AI-041 protected-main publication blocker remains.
+- Supersedes: none; prior failures and integration statuses retained.
+- Next dependency: Protected-branch PR/checks and AI-169 study.

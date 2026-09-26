@@ -509,3 +509,8 @@ Among366 accepted occluded-only exclusion cases,mean improves0.904mm but yaw wor
 ### Half retention (AI-166)
 
 Keeping predicted-unsupported corners at fixed weight0.5 while supported corners have weight1 retains the original min3 gate. Overall criteria fail: full mean3.904→4.394mm and tails154→175 versus exclusion,despite yaw1.643→1.512deg; appearance tails77→79 versus original subpixel. No promotion. Stop fixed-weight exploration and diagnose refined-corner outliers versus common translation bias and fit residuals. Source `dfacdba3c7d27893867977f37f64b8c0af67f833`; `eval/half_support_v0_report.json` (arm equal denotes half-retention). No qualification or runtime changes.
+
+
+### Refined-corner attribution (AI-169)
+
+Single-corner energy dominates290/560 bad cases; common translation energy dominates100 (overlap possible). FitRMS<=3mm still contains28 bad cases among39,so residual cannot become calibrated uncertainty. Next freeze one Huber IRLS fit (3mm residual scale,5 iterations),using predicted refined corners and unchanged candidate selection,scoring all cases. No residual-derived confidence or oracle correction. Source `61d37269f269005116c7de24220dcaa62b811275`; `eval/refined_bias_v0_report.json`.
