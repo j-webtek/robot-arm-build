@@ -1,5 +1,25 @@
 # RoCell AI work area
 
+## Start here
+
+This is the AI research and integration area for RoCell. To try a supported
+English request without downloading a model, follow the
+[first-use guide](../../docs/GETTING_STARTED.md#try-a-text-request).
+The grounded parser is the current intent reference. Gemma assesses scenes;
+KeyboardPoseNet estimates keyboard position. Their measured results and limits
+are summarized in [project status](../../PROJECT_STATUS.md).
+
+As of September 26, 2026, the v2 assembler produces ordered coordinate proposals
+that pass through the arm decoder and validation gates using synthetic evidence.
+It accepts supplied observations; it is not a complete camera-to-arm pipeline.
+The precision-binding preflight checks observation identities and currently
+abstains because the precision record lacks observation confidence and capture
+clock provenance. There is no installed physical localization qualification.
+
+See the [shared workplan](docs/SHARED_AI_ARM_WORKPLAN.md) for developer ownership
+and evidence. The commands and experiment results below are a research reference;
+model evaluation commands require their own locally installed models and data.
+
 The coordinate-producing model handoff is documented in
 [`docs/MODEL_MOTION_PROPOSAL.md`](docs/MODEL_MOTION_PROPOSAL.md). It accepts
 image-bound keyboard/phone coordinates for deterministic offline screening; it

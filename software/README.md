@@ -1,5 +1,26 @@
 # RoCell runtime
 
+## Start here
+
+RoCell provides the local rehearsal interface, semantic task compiler, simulation
+tools, and arm command validation. For a first run, use the
+[getting-started guide](../docs/GETTING_STARTED.md). For current capabilities and
+limitations, use [project status](../PROJECT_STATUS.md).
+
+The AI-to-arm v2 interface now includes an assembler, strict decoder, trusted
+registry snapshot, and freshness checks before planning. Its shared tests use
+synthetic evidence. This does not establish physical typing or a complete
+camera-to-arm workflow. Integration work is tracked in the
+[shared developer workplan](ai/docs/SHARED_AI_ARM_WORKPLAN.md).
+
+## Earlier implementation checkpoints
+
+The dated entries below preserve the development history. Statements such as
+"current", "next", and "not released" in these entries apply to their own
+checkpoint or frozen configuration. They are not a current capability summary
+for the entire repository. Installation and command reference sections follow
+the history; new users should begin with the guide linked above.
+
 Working arm integration checklist: [Arm wizard implementation plan](docs/ARM_WIZARD_IMPLEMENTATION_PLAN.md).
 
 New rehearsal feature: [Passive USB connection rehearsal](docs/ARM_PASSIVE_WIZARD_CHECKPOINT.md)
@@ -351,7 +372,7 @@ a synchronized controlled freeze.
 - [Offline eye-on-arm calibration](docs/EYE_ON_ARM_CALIBRATION.md)
 - [Offline eye-on-arm capture bundle](docs/EYE_ON_ARM_CAPTURE_BUNDLE.md)
 - [Calibration artifact policy](calibrations/README.md)
-- [Runtime evidence policy](runs/README.md)
+- [Runtime evidence sharing policy](../CONTRIBUTING.md#export-sharing)
 
 ## Historical Freeze-009 camera facts
 

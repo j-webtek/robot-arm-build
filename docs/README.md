@@ -1,16 +1,36 @@
 # Documentation guide
 
 Start with the [project overview](../README.md) and
+[getting-started guide](GETTING_STARTED.md), then
 [current status](../PROJECT_STATUS.md). Use the links below when you need
 implementation details or evidence for a specific part of the system.
 
-## Current arm and typing work
+## AI and arm integration
+
+The current software focus is carrying supported requests and visual evidence
+through a shared command format to arm planning. The v2 interface is tested with
+synthetic evidence; trustworthy real-camera coordinates and physical typing are
+still being developed.
+
+| Document | Audience and purpose |
+| --- | --- |
+| [Getting started](GETTING_STARTED.md) | First-time users: install, try text interpretation, and explore rehearsal |
+| [AI overview](../software/ai/README.md) | Readers exploring intent parsing and vision experiments |
+| [Shared AI/arm workplan](../software/ai/docs/SHARED_AI_ARM_WORKPLAN.md) | Contributors: stage ownership, dependencies and recorded test evidence |
+| [Runtime implementation plan](../software/ai/docs/MODEL_COMMAND_RUNTIME_IMPLEMENTATION_PLAN.md) | Arm developers: planning, command handling and execution infrastructure |
+| [AI system baseline](../software/ai/docs/AI_SYSTEM_BASELINE_AND_IMPLEMENTATION_PLAN.md) | Research context and dated model-evaluation results |
+
+## Arm experiments and procedures
+
+These links describe particular lab checkpoints and procedures. They are not a
+sequence of commands for a newly cloned installation. Check the current status
+and each document's recorded results before using them.
 
 | Document | What it explains |
 | --- | --- |
 | [r91 recovery and A-cycle record](../software/docs/R91_HOVER_RECOVERY_AND_A_CYCLE_PLAN.md#live-five-leg-result-2026-09-25) | The completed five-leg physical cycle, feedback results, and export references |
 | [Photo-estimated keyboard screen](../software/docs/PHOTO_ESTIMATED_KEYBOARD_SCREEN.md) | The photographed keyboard placement, modeling assumptions, and limits of the estimate |
-| [Stylus loading procedure](../software/docs/STYLUS_LOADING_PROCEDURE.md) | Controller prerequisites, attended loading, and mounted-tool measurements; not yet executed |
+| [Stylus loading procedure](../software/docs/STYLUS_LOADING_PROCEDURE.md) | Controller prerequisites, attended loading, and mounted-tool measurement requirements |
 | [Selected stylus reference](../software/docs/SELECTED_STYLUS_REFERENCE.md) | The selected tool and what still needs measuring and validating |
 | [Full-size keyboard ghost-typing plan](../software/docs/PERIBOARD_PHYSICAL_GHOST_TYPING_PLAN.md) | Keyboard geometry, virtual tip modeling, and noncontact test design; includes earlier checkpoints |
 
