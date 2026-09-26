@@ -454,3 +454,8 @@ Rejected clear corners have higher heatmap entropy4.94 versus4.24 and lower trut
 ### Fixed temperature0.5 comparison (AI-132/133)
 
 The one frozen0.5-versus1.0 training comparison passes relative visibility: clear recall99.49% and hidden false-visible2/201 versus75.29% and42/201. Mean localization improves in each condition, yet the full-occlusion >3mm tail increases198→199/200; the overall gate fails. Both models retain one CPU1/CUDA32 decision mismatch. No qualification or threshold change. Next diagnose soft-coordinate bias versus peak localization on the frozen0.5 checkpoint and retain the parity failure. Source training `f950639a36a1433840a29410a934f37752aaff4e`, parity `ff92b9d5f3b9faebb9b451e3b3a3e94a342f35ae`. Reports landmark_temperature_v0_* and temperature_visibility_*_parity_report.json. Reused development and one seed cannot establish generalization.
+
+
+### Coordinate decoder diagnosis (AI-136)
+
+On the frozen visibility-temperature0.5 model, coordinate softargmax still uses temperature1. Sharpening its decoder to0.5 reduces clear mean8.219→7.057px but worsens clear p9516.099→27.157px, partial mean8.362→12.237px and hidden mean6.181→8.233px. Hard peaks also have large clear/partial tails. No decoder change is justified by this diagnostic. Next attribute heatmap peaks to semantic corner identities and keyboard geometry before another training change. Source `e9e6b07539996716239bd1f88d2c8490b01edeaa`; `eval/temperature_bias_v0_report.json`. Reused synthetic evidence cannot qualify localization.

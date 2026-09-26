@@ -599,7 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-| AI | S1 | temperature coordinate bias diagnosis | feature/translation-pair-evidence | ACTIVE |
 
 
 
@@ -4595,3 +4594,51 @@ commissioning, or bounded physical result with its limitations intact.
 - Next dependency: use this lane for model/arm contract tests while a genuinely
   independent reviewer and measurement owners produce the external evidence
   required by S4.
+
+### E-20260926-AI-136 — temperature coordinate decoder diagnosis
+
+- Stage: S1
+- Lane: AI
+- Commit: `e9e6b07539996716239bd1f88d2c8490b01edeaa` (frozen source; result/tests committed with evidence)
+- Change: temperature coordinate decoder diagnosis.
+- Inputs/fixtures: 800 reused development images/3200 corners,15M200 groups,four conditions; checkpoint356a4dec05c6c2194c6d31542fed0d7199d5e989eb4b7678888d1a01aa493281. Exact source/input hashes in eval/temperature_bias_v0.manifest.json.
+- Command: `python software/ai/vision/diagnose_temperature_bias.py`
+- Result: Diagnostic completed; no decoder promotion supported. Clear mean existing/sharpened/peak8.219/7.057/9.237px,p9516.099/27.157/60.008px. Partial mean8.362/12.237/13.697,p9518.232/56.471/83.143px. Hidden mean6.181/8.233/6.178,p9513.724/17.938/11.299px. Fixed0.5 coordinate sharpening worsens clear tails and occluded means. Prior remaining CUDA32 flip image106/corner2 has CPU/GPU distance0.000144124/0.000009775 from0.5.
+- Artifacts: eval/temperature_bias_v0_report.json; frozen runner/manifest
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: CPU diagnostic,reused synthetic data,oracle truth used only for error measurement; no runtime decoder change,calibration or qualification. Visibility temperature and coordinate decoder temperature are separate.
+- Supersedes: none; earlier failures and integration statuses preserved.
+- Next dependency: Freeze a failure attribution study of heatmap peaks versus semantic corner identity and keyboard geometry; determine corner swaps/multimodality before further model changes. Preserve parity and absolute-error blockers.
+
+### E-20260926-AI-137 — coordinate diagnostic verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `e9e6b07539996716239bd1f88d2c8490b01edeaa` (frozen source; result/tests committed with evidence)
+- Change: coordinate diagnostic verification.
+- Inputs/fixtures: AI-136 pinned manifest,3200 rows and prior parity report.
+- Command: `python -m pytest -q software/ai/tests/test_temperature_bias.py`
+- Result: PASS,1 test; hashes,group counts/means/p95,signed-vector norms and threshold margins independently checked. Existing pytest-asyncio warning.
+- Artifacts: software/ai/tests/test_temperature_bias.py
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Consistency verification only; batch contract unchanged, shared boundary suite not triggered.
+- Supersedes: none; earlier failures and integration statuses preserved.
+- Next dependency: AI-136 attribution study.
+
+### E-20260926-AI-138 — coordinate diagnostic publication audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `e9e6b07539996716239bd1f88d2c8490b01edeaa` (frozen source; result/tests committed with evidence)
+- Change: coordinate diagnostic publication audit.
+- Inputs/fixtures: Repository with AI-136/137 and reviewed fixture allowlist.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS;5882 paths,827.2 MiB,0 unresolved findings,14 reviewed synthetic fixtures.
+- Artifacts: audit stdout and snapshot
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic audit; AI-041 protected-main publication blocker remains.
+- Supersedes: none; earlier failures and integration statuses preserved.
+- Next dependency: Protected-branch PR/checks and AI-136 diagnosis.
