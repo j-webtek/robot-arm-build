@@ -397,6 +397,13 @@ from .synthetic_epoch_model_arm_rehearsal_v1 import (
     SyntheticEpochModelArmRehearsalReportV1,
     assess_synthetic_epoch_model_arm_rehearsal_v1,
 )
+from .ai_emitted_epoch_model_arm_rehearsal_v1 import (
+    PLANNER_BLOCKED_STATUS as AI_EMITTED_REHEARSAL_PLANNER_BLOCKED_STATUS,
+    SCHEMA as AI_EMITTED_EPOCH_MODEL_ARM_REHEARSAL_SCHEMA,
+    AIEmittedEpochModelArmRehearsalError,
+    AIEmittedEpochModelArmRehearsalReportV1,
+    assess_ai_emitted_epoch_model_arm_rehearsal_v1,
+)
 from .prehardware_layout_study import (
     LayoutAxisValueEvidence,
     LayoutCandidatePromotion,
@@ -1182,6 +1189,11 @@ __all__ = [
     "SyntheticEpochModelArmRehearsalError",
     "SyntheticEpochModelArmRehearsalReportV1",
     "assess_synthetic_epoch_model_arm_rehearsal_v1",
+    "AI_EMITTED_REHEARSAL_PLANNER_BLOCKED_STATUS",
+    "AI_EMITTED_EPOCH_MODEL_ARM_REHEARSAL_SCHEMA",
+    "AIEmittedEpochModelArmRehearsalError",
+    "AIEmittedEpochModelArmRehearsalReportV1",
+    "assess_ai_emitted_epoch_model_arm_rehearsal_v1",
     "ProductionRuntimeState",
     "RuntimeAdmissionRecordV1",
     "RuntimeCommandAcknowledgmentRecordV1",

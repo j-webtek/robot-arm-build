@@ -161,6 +161,15 @@ Success requires at least one reviewable encoded command while transport writes,
 retry, execution authority, and production dispatch all remain disabled. This
 is an interface-compatibility artifact, not evidence of planning accuracy,
 installed-controller readiness, or physical safety.
+The [AI-emitted epoch model-to-arm rehearsal](ai_emitted_epoch_model_arm_rehearsal_v1.schema.json)
+adds the producer/consumer seam that the synthetic rehearsal alone cannot
+prove. It requires canonical bytes produced by the real AI batch assembler,
+their exact registry-ingress and freshness reports, and the real arm planner's
+calibration-blocked result. A separate synthetic downstream preview may bind
+the same batch and proposal to the epoch and encoder, but the schema fixes that
+preview as synthetic and fixes installation, startup, execution, retry,
+hardware access, physical authority, and production dispatch false. It is not
+model qualification or evidence that the measured planner can produce a route.
 
 [Precision observation v2](precision_observation_v2.schema.json) carries explicit
 localization abstention or a reference to externally qualified uncertainty.

@@ -21,6 +21,7 @@ TESTS = (
     'software/tests/integration/test_model_motion_v2_shared_gate.py',
     'software/tests/integration/test_shared_shadow_runner_v2.py',
     'software/tests/integration/test_synthetic_epoch_model_arm_rehearsal_v1.py',
+    'software/tests/integration/test_ai_emitted_epoch_model_arm_rehearsal_v1.py',
     'software/ai/tests/test_batch_emitter_v2.py',
     'software/ai/tests/test_capture_binding.py',
     'software/ai/tests/test_precision_binding_v2.py',
