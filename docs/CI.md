@@ -6,6 +6,13 @@ and Windows runners with Python 3.10 and 3.12. Each job creates a new virtual
 environment and installs the package non-editably before running the introductory
 demo. This checks packaging as well as source-tree behavior.
 
+Repository policy requires full commit-SHA action pins and permits only
+`actions/checkout` and `actions/setup-python`. Fork workflows from outside
+contributors require approval before running. A pending approval is not a failed
+test; maintainers review the proposed code before allowing CI to execute. See
+[Actions policy](REPOSITORY_OPERATIONS.md#september-26-2026-actions-policy-hardening)
+for the dated settings and how to propose another action without bypassing them.
+
 ## What is checked
 
 - Base installation and `pip check`, before adding test-only dependencies.

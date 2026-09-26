@@ -240,6 +240,13 @@ from .bounded_segment_collision_qualification import (
     build_bounded_joint_sample_plan,
     qualify_bounded_segment_collisions,
 )
+from .conservative_segment_sweep_qualification import (
+    MAX_CONSERVATIVE_SEGMENT_ENVELOPES,
+    SCHEMA as CONSERVATIVE_SEGMENT_SWEEP_QUALIFICATION_SCHEMA,
+    ConservativeSegmentSweepQualificationError,
+    MeasuredConfigurationSweepEnvelopeBinding,
+    qualify_conservative_segment_sweeps,
+)
 from .model_motion_ingress import (
     SCHEMA as MODEL_MOTION_INGRESS_SCHEMA,
     ModelMotionIngressError,
@@ -1096,6 +1103,11 @@ __all__ = [
     "MeasuredSegmentConfigurationSample",
     "build_bounded_joint_sample_plan",
     "qualify_bounded_segment_collisions",
+    "MAX_CONSERVATIVE_SEGMENT_ENVELOPES",
+    "CONSERVATIVE_SEGMENT_SWEEP_QUALIFICATION_SCHEMA",
+    "ConservativeSegmentSweepQualificationError",
+    "MeasuredConfigurationSweepEnvelopeBinding",
+    "qualify_conservative_segment_sweeps",
     "MODEL_MOTION_INGRESS_SCHEMA",
     "MeasuredTargetRegionV2",
     "ModelMotionIngressV2Error",
