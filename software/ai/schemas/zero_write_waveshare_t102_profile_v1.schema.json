@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rocell.local/schemas/zero_write_waveshare_t102_profile_v1.schema.json",
+  "title": "RoCell zero-write Waveshare T=102 encoding profile v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "profile_id", "vendor_source_sha256",
+    "controller_joint_mapping_sha256", "expected_trajectory_limits_sha256",
+    "controller_session_id", "configuration_epoch_sha256",
+    "fixed_gripper_rad", "speed", "acceleration", "interpolation_mode",
+    "gripper_behavior", "profile_sha256"
+  ],
+  "properties": {
+    "schema": {"const": "rocell.zero_write_waveshare_t102_profile.v1"},
+    "profile_id": {"$ref": "#/$defs/identifier"},
+    "vendor_source_sha256": {"$ref": "#/$defs/sha256"},
+    "controller_joint_mapping_sha256": {"$ref": "#/$defs/sha256"},
+    "expected_trajectory_limits_sha256": {"$ref": "#/$defs/sha256"},
+    "controller_session_id": {"$ref": "#/$defs/identifier"},
+    "configuration_epoch_sha256": {"$ref": "#/$defs/sha256"},
+    "fixed_gripper_rad": {"type": "number"},
+    "speed": {"type": "integer", "minimum": 1, "maximum": 65535},
+    "acceleration": {"type": "integer", "minimum": 1, "maximum": 255},
+    "interpolation_mode": {"const": "HOST_SCHEDULED_T102_WAYPOINTS_V1"},
+    "gripper_behavior": {"const": "FIXED_ABSOLUTE_RAD"},
+    "profile_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "identifier": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"}
+  }
+}
