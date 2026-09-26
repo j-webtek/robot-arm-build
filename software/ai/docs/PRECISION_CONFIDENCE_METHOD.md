@@ -439,3 +439,8 @@ Local visibility has an obstruction-specific response:172/196 paired clear-to-hi
 ### Inference parity diagnosis (AI-122)
 
 Identical pixels/checkpoint reproduce the saved CUDA batch32 probabilities exactly. CPU batch1/32 decisions agree, but CUDA1 and CUDA32 each differ from CPU on three decisions, involving different cases. All changed decisions change hard-selected peaks; probability shifts reach0.395179. This demonstrates sensitivity of the current hard-peak feature selection, without isolating the underlying numerical kernel. Next compare continuous heatmap-weighted local features under matched training and evaluate device/batch stability alongside unchanged localization/visibility criteria. Source `deb618c51d84f366591aef46c6b69d471cb60005`; report `eval/local_visibility_parity_report.json`. No qualification or runtime changes.
+
+
+### Continuous feature weighting (AI-125/126)
+
+Matched training replaces hard peaks with detached full-softmax weighting of3x3 local feature neighborhoods, preserving parameter initialization, loss, data, budget and selection. Relative localization checks improve, but hidden false-visible rises6→15/201 and clear recall drops83.44%→62.10%. Largest tested cross-device probability delta falls0.150383→0.000349224, yet near-threshold decisions still differ (weighted1/4 CPU-to-CUDA1/32 flips). Both fixed promotion and stability criteria fail. No runtime change or qualification. Next diagnose mass spread and threshold margins before another pooling choice; do not tune thresholds against reused reports. Frozen training82b8fc76aee4aa2d7849cbe6cba9f35b5891daf6, parity70db43fae214c1b374b5fb52789e57be5e3c8fba; reports landmark_weighted_visibility_v0_* and weighted_visibility_*_parity_report.json.

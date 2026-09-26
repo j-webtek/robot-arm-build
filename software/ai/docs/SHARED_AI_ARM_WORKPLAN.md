@@ -599,7 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-| AI | S1 | continuous local pooling study | feature/translation-pair-evidence | ACTIVE |
 
 
 
@@ -4345,3 +4344,67 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: heuristic audit; AI-041 protected-main publication blocker remains.
 - Supersedes: none
 - Next dependency: protected-branch PR/checks and AI-122 pooling study.
+
+### E-20260926-AI-125 — matched hard versus weighted local pooling
+
+- Stage: S1
+- Lane: AI
+- Commit: `82b8fc76aee4aa2d7849cbe6cba9f35b5891daf6` (frozen source baseline; results/tests committed with this evidence)
+- Change: matched hard versus weighted local pooling.
+- Inputs/fixtures: 2400 training/800 reused development images;600 groups from14000000 and200 from15000000, four conditions. Exact source/catalog/checkpoint hashes in train/landmark_weighted_visibility_v0_plan.json.
+- Command: `python software/ai/train/train_weighted_visibility.py`
+- Result: FAIL promotion. Weighted mean errors standard/appearance/partial/full9.201/13.261/11.167/11.337mm versus hard9.951/14.340/12.013/12.135; all relative mean/tail/yaw checks pass. Hidden false-visible6→15/201; clear recall2283→1699/2736 (83.44%→62.10%), below90%. Both select epoch8. Hard checkpoint7f8f9263e90bada8b96190a702c1be67d0aafc0d8288669644276c063373ce02; weighted1551db19d1a4e34b4ebf9e793e4fa87b9d8e8f07ceefcd9f8cf94f6bf2b5d3a1.
+- Artifacts: eval/landmark_weighted_visibility_v0_*; ignored local checkpoints
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: One seed, reused synthetic development, GPU nondeterminism; full softmax weighting may dilute local evidence. Both remain worse than pose baseline; no qualification. Reference self-comparison is bookkeeping.
+- Supersedes: none; prior failed evidence and shared integration statuses retained.
+- Next dependency: Diagnose heatmap mass spread versus clear/hidden errors before selecting a pooling modification; retain all failures.
+
+### E-20260926-AI-126 — matched pooling inference parity
+
+- Stage: S1
+- Lane: AI
+- Commit: `70db43fae214c1b374b5fb52789e57be5e3c8fba` (frozen source baseline; results/tests committed with this evidence)
+- Change: matched pooling inference parity.
+- Inputs/fixtures: AI-125 checkpoints and identical800 development pixels; exact hashes in eval/weighted_visibility_{hard,weighted}_parity_plan.json.
+- Command: `python software/ai/vision/diagnose_weighted_visibility_parity.py`
+- Result: FAIL zero-decision-disagreement criterion for both. Hard CPU1→CUDA1:3 flips,max delta0.150383; CPU1→CUDA32:0 flips,max0.000206590. Weighted CPU1→CUDA1:1 flip,max0.000301659; CPU1→CUDA32:4 flips,max0.000349224. CPU1/32:0 flips both; both CUDA32 reports exactly reproduce retained training evaluation. Continuous weighting reduces probability excursions but does not ensure threshold decision parity.
+- Artifacts: eval/weighted_visibility_{hard,weighted}_parity_report.json
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Single environment and reused images; no cross-platform bound. Weighted peak changes are diagnostic only, not selected sampling positions.
+- Supersedes: none; prior failed evidence and shared integration statuses retained.
+- Next dependency: Analyze threshold margins and pooling mass spread without tuning thresholds on these reports.
+
+### E-20260926-AI-127 — weighted pooling implementation verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `70db43fae214c1b374b5fb52789e57be5e3c8fba` (frozen source baseline; results/tests committed with this evidence)
+- Change: weighted pooling implementation verification.
+- Inputs/fixtures: Analytic constant features, matching initialization/gradient checks, AI-125/126 pinned scorecards/manifests.
+- Command: `python -m pytest -q software/ai/tests/test_weighted_visibility.py`
+- Result: PASS,4 tests; existing pytest-asyncio configuration warning. Hashes, pixels, selection, visibility gates, parity recounts and retained GPU predictions verified.
+- Artifacts: software/ai/tests/test_weighted_visibility.py
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Tests verify implementation/evidence consistency, not model qualification. ModelMotionBatch boundary unchanged; shared boundary suite not triggered.
+- Supersedes: none; prior failed evidence and shared integration statuses retained.
+- Next dependency: AI-125/126 diagnostic dependencies.
+
+### E-20260926-AI-128 — weighted pooling publication audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `70db43fae214c1b374b5fb52789e57be5e3c8fba` (frozen source baseline; results/tests committed with this evidence)
+- Change: weighted pooling publication audit.
+- Inputs/fixtures: Repository snapshot including AI-125/126/127 and reviewed fixture allowlist.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS;5855 paths,820.1 MiB,0 unresolved findings,14 reviewed synthetic fixtures.
+- Artifacts: audit stdout and snapshot
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic audit; AI-041 protected-main publication blocker remains.
+- Supersedes: none; prior failed evidence and shared integration statuses retained.
+- Next dependency: Protected-branch PR/checks and AI-125/126 diagnostics.
