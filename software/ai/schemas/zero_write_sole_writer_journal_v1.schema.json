@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rocell.local/schemas/zero_write_sole_writer_journal_v1.schema.json",
+  "title": "RoCell zero-write sole-writer journal v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "preview_receipt_sha256", "correlation_id",
+    "writer_instance_id", "events", "recovery_disposition",
+    "transport_open_count", "physical_write_count", "hardware_access",
+    "physical_authority", "journal_sha256"
+  ],
+  "properties": {
+    "schema": {"const": "rocell.zero_write_sole_writer_journal.v1"},
+    "preview_receipt_sha256": {"$ref": "#/$defs/sha256"},
+    "correlation_id": {"$ref": "#/$defs/identifier"},
+    "writer_instance_id": {"$ref": "#/$defs/identifier"},
+    "events": {"type": "array", "minItems": 0, "maxItems": 2, "items": {"$ref": "#/$defs/event"}},
+    "recovery_disposition": {"enum": ["UNUSED", "RECONCILIATION_REQUIRED_NO_RETRY", "TERMINAL_NO_REPLAY"]},
+    "transport_open_count": {"const": 0},
+    "physical_write_count": {"const": 0},
+    "hardware_access": {"const": false},
+    "physical_authority": {"const": false},
+    "journal_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "identifier": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"},
+    "reservedDetails": {
+      "type": "object", "additionalProperties": false,
+      "required": ["command_count", "transport_opened", "physical_write_count"],
+      "properties": {
+        "command_count": {"type": "integer", "minimum": 1, "maximum": 511},
+        "transport_opened": {"const": false}, "physical_write_count": {"const": 0}
+      }
+    },
+    "closedDetails": {
+      "type": "object", "additionalProperties": false,
+      "required": ["status", "fault", "automatic_retry", "transport_opened", "physical_write_count"],
+      "properties": {
+        "status": {"enum": ["ZERO_WRITE_REHEARSAL_COMPLETE", "AMBIGUOUS_NO_RETRY"]},
+        "fault": {"enum": ["NONE", "PARTIAL_WRITE", "ACK_TIMEOUT", "FEEDBACK_TIMEOUT", "TRANSPORT_CLOSE_UNCERTAIN"]},
+        "automatic_retry": {"const": false}, "transport_opened": {"const": false},
+        "physical_write_count": {"const": 0}
+      }
+    },
+    "event": {
+      "type": "object", "additionalProperties": false,
+      "required": ["ordinal", "kind", "preview_receipt_sha256", "correlation_id", "writer_instance_id", "previous_event_sha256", "details", "event_sha256"],
+      "properties": {
+        "ordinal": {"type": "integer", "minimum": 0, "maximum": 1},
+        "kind": {"enum": ["RESERVED", "CLOSED"]},
+        "preview_receipt_sha256": {"$ref": "#/$defs/sha256"},
+        "correlation_id": {"$ref": "#/$defs/identifier"},
+        "writer_instance_id": {"$ref": "#/$defs/identifier"},
+        "previous_event_sha256": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/sha256"}]},
+        "details": {"oneOf": [{"$ref": "#/$defs/reservedDetails"}, {"$ref": "#/$defs/closedDetails"}]},
+        "event_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    }
+  }
+}
