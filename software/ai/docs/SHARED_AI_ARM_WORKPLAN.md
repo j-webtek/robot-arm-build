@@ -602,7 +602,6 @@ remove it only in the same commit that appends the resulting evidence row.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| Arm/runtime lane | S1 | trusted v2 registry adapter and arm tests | `main` from `7ffb7f2` | ACTIVE |
 | Unclaimed | S2 | shadow runner/integration fixtures | — | AVAILABLE |
 | Unclaimed | S4 | controller adapter/receipts | — | AVAILABLE |
 
@@ -847,3 +846,57 @@ commissioning, or bounded physical result with its limitations intact.
 - Supersedes: none; extends ARM-001.
 - Next dependency: actual AI-emitted v2 bytes and production trusted-registry
   adapters for the shared S1 integration gate.
+
+
+### E-20260926-ARM-004 — AI build review and coherent trusted registry snapshot
+
+- Stage: S1
+- Lane: Arm/runtime
+- Commit: `10c74587e96b22c69527fc0b95df1154b7f2028f`
+- Decision review: retain the split architecture. The parser/model/vision lane may
+  propose intent and board-frame target coordinates; deterministic arm code owns
+  trust resolution, freshness, uncertainty composition, planning, policy and all
+  physical authority. The current actual AI emitter remains v1: it still carries
+  speed/clearance, copies qualification coverage into confidence, uses nominal
+  axis-aligned target rectangles, and emits none of the v2 camera, clock, lease,
+  independent placement or uncertainty identities. It therefore must not be
+  connected to the v2 planner path until the AI lane performs an explicit emitter
+  migration and shared actual-byte integration gate.
+- Change: added an immutable consumer-owned `TrustedMotionRegistryV2` snapshot and
+  wrapper functions for ingress and pre-planner revalidation. The snapshot requires
+  one coherent capability, camera/clock, external lease, evidence set, independent
+  placement/frame/map, localization qualification, policy thresholds and exact
+  oriented-region coverage. The model cannot populate or expand these records.
+- Inputs/fixtures: v2 H/I model batch; coherent registry; incomplete target scope;
+  region from a different placement; immutable region-map attempt.
+- Command: `python -m pytest software/tests/unit/test_model_motion_ingress_v2.py software/tests/unit/test_model_motion_ingress.py software/ai/tests/test_s1_geometry_cases.py software/ai/tests/test_batch_emitter.py -q`
+- Result: PASS, 35 tests.
+- Artifacts: `software/src/rocell/application/model_motion_registry_v2.py` and
+  `software/tests/unit/test_model_motion_ingress_v2.py`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: the snapshot is an in-process trusted adapter, not persistent signed
+  registry storage; no installed localization qualification or actual v2 producer
+  output exists. The v1 emitter remains available only for frozen offline research.
+- Supersedes: the registry-plumbing limitation in ARM-001 and ARM-003 at the
+  in-process boundary; it does not complete the AI emitter or shared integration.
+- Next dependency: AI lane implements an explicit v2 emitter using the frozen
+  schemas and produces canonical bytes plus one-field mutation fixtures. Then run
+  the S1 producer-to-registry-to-arm integration gate without auto-upgrading v1.
+
+
+### E-20260926-ARM-005 — trusted-registry increment audit
+
+- Stage: S1
+- Lane: Arm/runtime
+- Commit: `10c74587e96b22c69527fc0b95df1154b7f2028f`
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: FAIL, exit 1; 5,597 paths, 903.2 MiB, the same 14 existing
+  credential-literal-review findings in arm unit fixtures; no trusted-registry
+  adapter finding.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: heuristic audit remains unresolved; no clean security-audit claim.
+- Supersedes: none; retains AI-004, AI-006 and ARM-002 failed evidence.
+- Next dependency: fixture owners review the existing findings independently of
+  v2 producer migration and integration.
