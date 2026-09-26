@@ -12,6 +12,7 @@ DOCS = (
     'README.md', 'PROJECT_STATUS.md', 'CONTRIBUTING.md', 'SUPPORT.md', 'SECURITY.md',
     'docs/README.md', 'docs/GETTING_STARTED.md', 'docs/RELEASING.md',
     'docs/releases/EXPERIMENTAL_PREVIEW_DRAFT.md',
+    'docs/releases/BASELINE_2026-09-26.md',
     'docs/CI.md', 'docs/AUDIT_FIXTURE_REVIEW.md', 'software/README.md', 'software/ai/README.md',
     'software/ai/docs/README.md', 'assets/brand/README.md',
     'docs/brand/BRAND_GUIDE.md', 'docs/brand/NAMING_REVIEW.md',

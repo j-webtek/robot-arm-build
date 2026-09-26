@@ -7,6 +7,9 @@ interpretation, model-to-arm contracts, and simulated planning. The release tag,
 source commit, publication approval, and candidate-specific validation remain
 unselected. Complete the [release checklist](../RELEASING.md) before publication.
 
+A [pinned source-baseline verification](BASELINE_2026-09-26.md) is available for
+`b1bb742`. It is supporting evidence, not approval of a final release candidate.
+
 ## What this preview is intended to include
 
 - Tactevra's public-facing documentation and branding, with compatible `rocell`
