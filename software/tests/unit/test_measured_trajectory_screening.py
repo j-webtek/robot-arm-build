@@ -1,10 +1,17 @@
 from __future__ import annotations
 
+from dataclasses import replace
+import json
 from pathlib import Path
 
+import jsonschema
 import pytest
 
+from rocell.application.collision_readiness import assess_current_collision_readiness
 from rocell.application.context import load_simulation_context
+from rocell.application.installed_collision_geometry import (
+    InstalledCollisionGeometryProfile,
+)
 from rocell.application.measured_target_reprojection import reproject_measured_target
 from rocell.application.measured_trajectory_screening import (
     MeasuredTrajectoryScreeningError,
@@ -15,6 +22,15 @@ from rocell.calibration import PlannerCalibrationSnapshot, required_planner_arti
 from rocell.geometry import RigidTransform, Rotation3, Vec3
 from rocell.kinematics import ARM_JOINT_NAMES
 from rocell.models import ModelMotionProposal
+from rocell.simulation.collision import (
+    CollisionBindingMode,
+    CollisionBody,
+    CollisionClearanceEvidenceState,
+    CollisionClearancePolicy,
+    CollisionEvidenceState,
+    CollisionGeometryContract,
+    SphereMm,
+)
 
 
 WORKSPACE = Path(__file__).resolve().parents[3]
@@ -129,6 +145,55 @@ def observed_state(measured: PlannerCalibrationSnapshot, values) -> ObservedPlan
     )
 
 
+def installed_collision_profile(context) -> InstalledCollisionGeometryProfile:
+    readiness = assess_current_collision_readiness(context)
+    bodies = tuple(
+        CollisionBody(
+            requirement.body_id,
+            requirement.parent_frame,
+            requirement.role,
+            CollisionEvidenceState.ACCEPTED_MEASURED,
+            (
+                ()
+                if requirement.binding_mode
+                is CollisionBindingMode.CONFIGURATION_SAMPLED
+                else (SphereMm(Vec3(0.0, 0.0, 0.0), 1.0),)
+            ),
+            requirement.binding_mode,
+            "unit-test measured geometry",
+        )
+        for requirement in readiness.contract.requirements
+    )
+    contract = CollisionGeometryContract(
+        "installed-collision-planner-test-v1",
+        readiness.contract.root_frame,
+        readiness.contract.requirements,
+        bodies,
+        (),
+    )
+    clearance = CollisionClearancePolicy(
+        2.0,
+        0.5,
+        0.5,
+        CollisionClearanceEvidenceState.ACCEPTED_MEASURED,
+        "unit-test measured clearance",
+    )
+    return InstalledCollisionGeometryProfile(
+        "installed-collision-planner-test-v1",
+        readiness.manifest_id,
+        readiness.manifest_sha256,
+        readiness.active_build_id,
+        readiness.build_snapshot_hash,
+        readiness.urdf_sha256,
+        readiness.contract.content_hash,
+        {"metrology": "6" * 64},
+        contract,
+        clearance,
+        "7" * 64,
+        "8" * 64,
+    )
+
+
 def test_without_observed_start_fails_closed_before_ik(context) -> None:
     request, measured, reprojection = inputs(context)
     report = screen_measured_trajectory(request, context, measured, reprojection)
@@ -175,6 +240,50 @@ def test_observed_start_runs_bounded_deterministic_ik(context) -> None:
     }
     assert first["full_collision_screen_executed"] is False
     assert first["physical_authority"] is False
+
+
+def test_installed_measured_geometry_reaches_screening_but_not_release(context) -> None:
+    request, measured, reprojection = inputs(context)
+    profile = installed_collision_profile(context)
+    report = screen_measured_trajectory(
+        request,
+        context,
+        measured,
+        reprojection,
+        installed_collision_geometry=profile,
+    )
+
+    assert report["collision_geometry_source"] == "INSTALLED_MEASURED_PROFILE"
+    assert report["installed_collision_profile_sha256"] == profile.content_sha256
+    assert report["collision_contract_sha256"] == profile.contract.content_hash
+    assert report["collision_clearance_policy_sha256"] is not None
+    assert "FULL_COLLISION_GEOMETRY_INCOMPLETE" not in report["blockers"]
+    assert "CONTINUOUS_FULL_BODY_COLLISION_SWEEP_NOT_IMPLEMENTED" in report["blockers"]
+    assert report["full_collision_screen_executed"] is False
+    assert report["continuous_collision_proven"] is False
+    assert report["physical_authority"] is False
+    schema = json.loads(
+        (
+            WORKSPACE
+            / "software/ai/schemas/measured_trajectory_screening_v2.schema.json"
+        ).read_text(encoding="utf-8")
+    )
+    jsonschema.Draft202012Validator(schema).validate(report)
+
+
+def test_rejects_installed_geometry_from_another_build(context) -> None:
+    request, measured, reprojection = inputs(context)
+    profile = replace(
+        installed_collision_profile(context), active_build_id="different-build"
+    )
+    with pytest.raises(MeasuredTrajectoryScreeningError, match="active planning context"):
+        screen_measured_trajectory(
+            request,
+            context,
+            measured,
+            reprojection,
+            installed_collision_geometry=profile,
+        )
 
 
 def test_rejects_tampered_reprojection_and_start_shape(context) -> None:

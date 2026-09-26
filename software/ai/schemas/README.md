@@ -80,10 +80,16 @@ The [measured target reprojection schema](measured_target_reprojection_v1.schema
 validates a model point in the measured device frame, binds it to its named target,
 and transforms its surface/clearance points into calibrated board frame `B`. It is
 Cartesian planner input only and contains no IK result or controller command.
-The [measured trajectory screening schema](measured_trajectory_screening_v1.schema.json)
+The original [measured trajectory screening v1 schema](measured_trajectory_screening_v1.schema.json)
 binds that target to a fresh observed start state, deterministic sampled IK and
-joint-continuity evidence, plus the current full-body collision-readiness audit.
-Missing start telemetry or incomplete collision geometry remains an explicit blocker.
+joint-continuity evidence, plus the current nominal full-body
+collision-readiness audit. The additive
+[v2 screening schema](measured_trajectory_screening_v2.schema.json) identifies
+whether geometry came from that nominal audit or a strict installed measured
+profile and binds the selected collision contract, installed-profile content,
+and measured clearance-policy hashes. Missing start telemetry, incomplete
+geometry, or the still-unimplemented continuous sweep remains an explicit
+blocker. V1 remains published for frozen evidence; new screening reports use v2.
 The [observed planner start-state schema](observed_planner_start_state_v1.schema.json)
 binds one authenticated, fresh T=1051 receipt to the measured robot reference.
 It requires all six feedback joints, applies the calibrated sign/offset projection,

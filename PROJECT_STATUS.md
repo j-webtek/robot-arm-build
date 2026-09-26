@@ -1,7 +1,7 @@
 # Tactevra project status
 
-Reviewed September 26, 2026 against merged source through `5a41ecc` plus the
-ARM-039 candidate described below.
+Reviewed September 26, 2026 against merged source through `d08703b` plus the
+ARM-040 candidate described below.
 Unmerged workstream branches are not included in this summary.
 This is a capability summary for readers; the
 [shared workplan](software/ai/docs/SHARED_AI_ARM_WORKPLAN.md) retains detailed
@@ -23,6 +23,7 @@ being developed.
 | AI-to-arm interface | V2 batch assembler, strict decoder, registry snapshot, and freshness checks | Actual assembler output passes shared software tests with synthetic evidence, preserving action order and rejecting tested invalid inputs |
 | Precision evidence | Identity and capture-receipt binding helpers | These establish software checks, not a qualified real-camera observation; authenticated capture and usable localization confidence remain open |
 | Arm planning adapter | Admitted v2 proposals enter the arm-owned measured planning policy | The tested valid input reaches the planner but stops for missing or stale calibration; no trajectory or controller command is produced |
+| Installed collision evidence | Strict measured profiles bind body geometry and clearance policy to the manifest, build, model, and base collision contract | The measured trajectory screener can consume this profile without falling back to nominal geometry, but continuous full-body sweep remains unimplemented and release stays blocked |
 | Controller-command preview | Sealed synthetic trajectories can be encoded into Waveshare T=102 bytes and a proposed dispatch schedule | Offline encoding and published schemas are tested; the preview has no transport and sends nothing to the arm |
 | Execution lifecycle rehearsal | Ownership, single-use reservations, fault handling, and restart reconciliation are modeled | Tests exercise no-retry and fault rules without device I/O; this is not an installed live execution service |
 | Controller evidence gate | Required controller identity, mapping, protocol, freshness, and review fields are checked | Modeled records test rejection behavior; even a passing record grants no transport or execution authority, and no physical originals were qualified |
