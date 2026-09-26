@@ -599,7 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-| AI | S1 | geometry candidate decoder | feature/translation-pair-evidence | ACTIVE |
 
 
 
@@ -4782,3 +4781,51 @@ commissioning, or bounded physical result with its limitations intact.
   this unchanged interface, while the arm lane replaces synthetic trajectory and
   epoch inputs only after measured calibration, collision, controller, and review
   evidence independently qualify.
+
+### E-20260926-AI-142 — geometry candidate decoder development study
+
+- Stage: S1
+- Lane: AI
+- Commit: `db5f956d5cbdf7b340d2a971b9eb317c56a703de` (frozen source; results/tests committed with evidence)
+- Change: geometry candidate decoder development study.
+- Inputs/fixtures: 800 reused15M200 images,four conditions,t05 checkpoint356a4dec05c6c2194c6d31542fed0d7199d5e989eb4b7678888d1a01aa493281; exact hashes in eval/geometry_candidate_v0_plan.json.
+- Command: `python software/ai/vision/evaluate_geometry_candidates.py`
+- Result: PASS all12 relative development mean/tail/yaw checks. Soft→geometry means standard7.713→5.946,appearance11.529→4.716,partial10.465→6.312,full10.659→6.550mm. >3mm tails194→183,196→168,197→180,198→192/200. Geometry yawp952.046/1.724/2.265/2.151deg. Two predicted candidates per corner,16 combinations; fixed residual_mm2/16 plus mean negative log probability, rigid315x147mm synthetic rectangle. Truth only scores results.
+- Artifacts: eval/geometry_candidate_v0_report.json; decoder/runner/frozen plan
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Relative development pass only; absolute tails remain unacceptable. Reused synthetic dimensions/projection are not measured calibration. Unconditional hidden-corner decoding, existing visibility/parity blockers retained; no qualification or boundary changes.
+- Supersedes: none; previous failures and integration statuses preserved.
+- Next dependency: Freeze fresh27M500-group evaluation of unchanged decoder/checkpoint/cost across same four conditions before any further tuning; retain absolute metrics and all existing qualification blockers.
+
+### E-20260926-AI-143 — geometry decoder verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `db5f956d5cbdf7b340d2a971b9eb317c56a703de` (frozen source; results/tests committed with evidence)
+- Change: geometry decoder verification.
+- Inputs/fixtures: Analytic rotated/translated rectangle plus AI-142 pinned report/manifest.
+- Command: `python -m pytest -q software/ai/tests/test_geometry_candidates.py`
+- Result: PASS,2 tests; rigid fit, hashes,800 rows,mean/tail recounts and relative gates verified. Existing pytest-asyncio warning.
+- Artifacts: software/ai/tests/test_geometry_candidates.py
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Implementation verification is not qualification. Batch contract unchanged; shared boundary suite not triggered.
+- Supersedes: none; previous failures and integration statuses preserved.
+- Next dependency: AI-142 fresh evaluation.
+
+### E-20260926-AI-144 — geometry publication audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `db5f956d5cbdf7b340d2a971b9eb317c56a703de` (frozen source; results/tests committed with evidence)
+- Change: geometry publication audit.
+- Inputs/fixtures: Repository with AI-142/143 and reviewed fixture allowlist.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS;5897 paths,830.4 MiB,0 unresolved findings,14 reviewed synthetic fixtures.
+- Artifacts: audit stdout and snapshot
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic audit; AI-041 protected-main publication blocker remains.
+- Supersedes: none; previous failures and integration statuses preserved.
+- Next dependency: Protected-branch PR/checks and AI-142 fresh evaluation.

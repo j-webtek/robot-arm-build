@@ -464,3 +464,8 @@ On the frozen visibility-temperature0.5 model, coordinate softargmax still uses 
 ### Corner attribution (AI-139)
 
 Of295 hard-peak errors>8px, only1 lies within8px of a different semantic corner. Clear-corner large errors often retain a correct nearby alternate response:189/202 have the strongest rival outside the primary8px neighborhood near truth,149 also at least half primary strength. This suggests testing geometric consistency among predicted candidates rather than assuming corner swaps. A rival may be a shoulder, and truth proximity is diagnostic only. Next freeze a candidate decoder using predicted peaks plus declared synthetic dimensions, never oracle pose/placement. No runtime correction or qualification. Source `20520312354e67e734f910020295cf156e728fb7`; `eval/corner_attribution_v0_report.json`.
+
+
+### Geometry candidate decoder (AI-142)
+
+A fixed16-combination search over two predicted peaks per corner fits the declared synthetic315x147mm rectangle, using residual_mm2/16 plus negative log peak probability. No truth pose or placement enters selection. All12 relative development checks pass: means4.716–6.550mm versus7.713–11.529mm, with improved yaw and tails. Absolute >3mm image counts remain168–192/200; no qualification. Next freeze fresh27M500-group evaluation of the unchanged decoder/checkpoint/cost. Synthetic dimensions/projection do not establish physical calibration; visibility/parity blockers remain. Source `db5f956d5cbdf7b340d2a971b9eb317c56a703de`; `eval/geometry_candidate_v0_report.json`.
