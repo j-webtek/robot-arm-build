@@ -12,7 +12,8 @@ from rocell.application.static_simulation_context import (
     revalidate_static_simulation_context,
     static_simulation_context_hashes,
 )
-from rocell.application.trajectory_simulation import screen_scenario_route
+from rocell.application.trajectory_simulation import screen_scenario_route, validate_scene_park_xy
+from rocell.application.robot_layout_overlay import promoted_rank1_robot_layout
 from rocell.models import ActionPlan, Device, PressKey, Point3Mm
 from rocell.motion import GeometricDryRunEngine, GeometricSimulationSettings
 from rocell.simulation.profile import (
@@ -62,7 +63,7 @@ def _simulation_profile(context: Any) -> SimulationHardwareProfile:
 
 
 def validate(value: Any) -> dict[str, Any]:
-    if not isinstance(value, dict) or set(value) != REPORT_FIELDS:
+    if not isinstance(value, dict) or set(value) - {"layout_study_assumptions"} != REPORT_FIELDS:
         raise ValueError("model motion simulation report has invalid fields")
     if value.get("schema") != SCHEMA:
         raise ValueError("unsupported model motion simulation schema")
@@ -73,6 +74,20 @@ def validate(value: Any) -> dict[str, Any]:
     ):
         if not isinstance(value[key], str) or SHA256_PATTERN.fullmatch(value[key]) is None:
             raise ValueError(f"invalid model motion simulation {key}")
+    assumptions = value.get("layout_study_assumptions")
+    if "layout_study_assumptions" in value:
+        if not isinstance(assumptions, dict):
+            raise ValueError("layout assumptions must be an object")
+        for key in ("installed_position_verified", "installed_tool_verified", "physical_execution_authorized"):
+            if assumptions.get(key) is not False:
+                raise ValueError("layout study cannot assert physical verification or authority")
+        layout = assumptions.get("robot_layout_overlay")
+        if layout is not None:
+            if not isinstance(layout, dict) or layout.get("motion_authorized") is not False:
+                raise ValueError("layout overlay cannot authorize motion")
+            layout_core = {key: item for key, item in layout.items() if key != "overlay_sha256"}
+            if layout.get("overlay_sha256") != canonical_hash(layout_core):
+                raise ValueError("layout overlay hash mismatch")
     overlay = value["simulation_target_overlay"]
     if not isinstance(overlay, dict) or overlay.get("simulation_only") is not True:
         raise ValueError("model motion simulation requires a simulation-only overlay")
@@ -112,7 +127,9 @@ def validate(value: Any) -> dict[str, Any]:
     return value
 
 
-def run(value: object, *, workspace: Path, minimum_confidence: float = 0.9) -> dict[str, Any]:
+def run(value: object, *, workspace: Path, minimum_confidence: float = 0.9,
+        park_xy_board_mm: tuple[float, float] | None = None,
+        robot_layout_profile: Path | None = None) -> dict[str, Any]:
     assurance = build_assurance(value, workspace=workspace, minimum_confidence=minimum_confidence)
     candidate = assurance["candidate"]
     if candidate["device"] != "keyboard" or candidate["interaction"] != "CONTACT":
@@ -159,14 +176,19 @@ def run(value: object, *, workspace: Path, minimum_confidence: float = 0.9) -> d
         hover_height_mm=path.hover_height_mm,
         approach_height_mm=path.approach_height_mm,
         contact_overtravel_mm=path.contact_overtravel_mm,
-        park_xy_board_mm=path.park_xy_board_mm,
+        park_xy_board_mm=path.park_xy_board_mm if park_xy_board_mm is None else park_xy_board_mm,
     )
+    validate_scene_park_xy(context.scene, settings.park_xy_board_mm)
+    scenario = context.scenario
+    layout = None
+    if robot_layout_profile is not None:
+        scenario, layout = promoted_rank1_robot_layout(context, robot_layout_profile)
     hardware_profile = _simulation_profile(context)
     geometry = GeometricDryRunEngine(settings).run(
         plan, context.snapshot, hardware_profile, context.scene, targets,
     )
-    ik = run_scenario_ik(context.scenario, geometry)
-    route = screen_scenario_route(context.scenario, plan, geometry)
+    ik = run_scenario_ik(scenario, geometry)
+    route = screen_scenario_route(scenario, plan, geometry)
     route_passed = route["all_waypoints_accepted"] is True
     route_round = route.get("round") or {}
     failed = next((row for row in route_round.get("joint_results", []) if not row["accepted"]), None)
@@ -208,4 +230,12 @@ def run(value: object, *, workspace: Path, minimum_confidence: float = 0.9) -> d
             "No controller encoding, transport access, contact, or input-event observation occurred",
         ],
     }
+    if park_xy_board_mm is not None or layout is not None:
+        core["layout_study_assumptions"] = {
+            "park_xy_board_mm": list(settings.park_xy_board_mm),
+            "robot_layout_overlay": layout,
+            "installed_position_verified": False,
+            "installed_tool_verified": False,
+            "physical_execution_authorized": False,
+        }
     return validate({**core, "simulation_sha256": canonical_hash(core)})

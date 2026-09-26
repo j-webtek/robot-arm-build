@@ -15,6 +15,42 @@
     "hardware_writes", "physical_input_events_observed", "limitations", "simulation_sha256"
   ],
   "properties": {
+    "layout_study_assumptions": {
+      "type": "object",
+      "required": [
+        "park_xy_board_mm",
+        "robot_layout_overlay",
+        "installed_position_verified",
+        "installed_tool_verified",
+        "physical_execution_authorized"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "park_xy_board_mm": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": {
+            "type": "number"
+          }
+        },
+        "robot_layout_overlay": {
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "installed_position_verified": {
+          "const": false
+        },
+        "installed_tool_verified": {
+          "const": false
+        },
+        "physical_execution_authorized": {
+          "const": false
+        }
+      }
+    },
     "schema": {"const": "rocell.ai_model_motion_simulation.v0"},
     "proposal_sha256": {"$ref": "#/$defs/hash"},
     "candidate_sha256": {"$ref": "#/$defs/hash"},

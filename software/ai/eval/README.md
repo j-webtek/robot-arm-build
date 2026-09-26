@@ -191,3 +191,9 @@ converge and dense screening rejects PARK waypoint 0 with
 `IK_NO_CONVERGED_SOLUTION`. One waypoint was evaluated. This is nominal setup
 evidence, not a trained-model score or physical reachability result. There are
 zero hardware commands, writes, and observed input events.
+
+`model_motion_keyboard_h_layout_study_v0.json` compares nominal, park-only,
+rank-1-layout-only, and combined assumptions for the same H contact proposal.
+Only the combined case passes (32 sampled waypoints). Park-only progresses to
+HOVER before failing; the other cases fail at PARK. Each case includes its
+source hashes and zero physical authority. These are exploratory setup results.

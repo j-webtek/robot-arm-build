@@ -169,3 +169,19 @@ tool offset using existing layout simulation overlays, with every assumption
 recorded. After a route passes, expand to proposal clearance/cadence and
 multiple targets, then combine camera-condition stress cases. Simulation labels
 must retain their synthetic provenance until measured setup data exists.
+
+## Park and layout study result
+
+The four-case H-contact study is saved in
+`eval/model_motion_keyboard_h_layout_study_v0.json`. Nominal setup fails at PARK.
+Changing park XY to (290, 10) mm reaches HOVER before IK fails (14 waypoints
+evaluated). Applying only the existing rank-1 layout also fails at PARK. Combining
+that layout and park passes all 32 sampled route waypoints. The layout changes
+both base pose and tool length (120 mm); this study does not isolate their
+individual effects. Its profile hash and unmeasured transform are recorded in
+each applicable report. The original nominal report remains unchanged.
+
+This is an exploratory result for one hand-authored H coordinate. It provides
+a candidate setup for the next simulation: broader key coverage and approach
+clearance, followed by camera-condition stress. It does not validate installed
+geometry, full-arm collisions, physical typing, or language-model accuracy.

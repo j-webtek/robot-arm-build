@@ -36,6 +36,20 @@ class ModelMotionSimulationTests(unittest.TestCase):
         self.assertEqual(report["hardware_writes"], 0)
         self.assertIs(validate(report), report)
 
+    def test_layout_and_park_overlay_passes_sampled_route(self) -> None:
+        report = run(
+            self.proposal, workspace=WORKSPACE, park_xy_board_mm=(290.0, 10.0),
+            robot_layout_profile=WORKSPACE / "software/config/virtual_commissioning_profile.json",
+        )
+        self.assertTrue(report["dense_route_all_waypoints_accepted"])
+        self.assertEqual(report["evaluated_waypoint_count"], 32)
+        self.assertIsNone(report["first_failure"])
+        self.assertFalse(report["physical_execution_authorized"])
+        changed = copy.deepcopy(report)
+        changed["layout_study_assumptions"]["installed_position_verified"] = True
+        with self.assertRaisesRegex(ValueError, "cannot assert physical"):
+            validate(changed)
+
     def test_hover_proposal_is_outside_contact_rehearsal_scope(self) -> None:
         changed = copy.deepcopy(self.proposal)
         changed["interaction"] = "HOVER"

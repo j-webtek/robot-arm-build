@@ -1,0 +1,324 @@
+{
+  "cases": [
+    {
+      "case": "nominal",
+      "report": {
+        "assurance_bundle_sha256": "5f1d3001448001a68640c4ddb904fa2015a50730b19b32e7999f7e0be51e692f",
+        "candidate_sha256": "a297b0fb13e4bc508037d8b8e80ef8e8387954d4971213f0eb4d3fa934eac547",
+        "continuous_path_proven": false,
+        "dense_route_all_waypoints_accepted": false,
+        "dense_route_status": "DENSE_ROUTE_FAILED",
+        "evaluated_waypoint_count": 1,
+        "first_failure": {
+          "phase": "PARK",
+          "reason": "IK_NO_CONVERGED_SOLUTION",
+          "target": null,
+          "waypoint_sequence": 0
+        },
+        "full_arm_collision_checked": false,
+        "geometry_all_checks_pass": true,
+        "geometry_report_sha256": "45ab39e0e894cd567f021e9a6a5fd06464b5ad71f496a4de269e890096418825",
+        "hardware_commands": [],
+        "hardware_writes": 0,
+        "limitations": [
+          "Model coordinate evaluated against nominal simulation geometry only",
+          "Route uses the static scenario clearance and cadence; proposal speed and requested waypoints are not simulated",
+          "Target placement, board-to-arm correlation, and tool transform are unmeasured",
+          "IK is sampled and full arm, tool, cable, and environment collision are incomplete",
+          "No controller encoding, transport access, contact, or input-event observation occurred"
+        ],
+        "physical_calibration_verified": false,
+        "physical_execution_authorized": false,
+        "physical_input_events_observed": 0,
+        "plan_hash": "c72ec571d536ab12cf5c8deec28488e62d0dc448ab919b0b2dfe976644816c95",
+        "proposal_sha256": "7610d26b88094ab03bcc5290c62902836be3548ea58d80c8ec964807ef3b61a9",
+        "sampled_ik_all_converged": false,
+        "schema": "rocell.ai_model_motion_simulation.v0",
+        "simulation_sha256": "7ca2ee396047feb629f0b10e14e5299e2483b4ed0490608f2af54ad411e40d94",
+        "simulation_status": "SIMULATION_BLOCKED",
+        "simulation_target_overlay": {
+          "base_static_target_catalog_sha256": "0cc4b46ce6a7b94f32ba1d64f9818c094f6005636c4d56480f5907b773cd5276",
+          "center_board_mm": [
+            216.55,
+            154.0,
+            21.0
+          ],
+          "device": "keyboard",
+          "model_candidate_sha256": "a297b0fb13e4bc508037d8b8e80ef8e8387954d4971213f0eb4d3fa934eac547",
+          "overlay_sha256": "542113c74967c508413a3f523d923d8651f25a8206aefd8aca101e11b69815f1",
+          "schema": "rocell.model_motion_target_overlay.v0",
+          "simulation_only": true,
+          "target_id": "H"
+        },
+        "static_context_bundle_sha256": "e825dd29cf856cea44d9ce40ca3bfb5fc305d3493cd129d6b6bea9f04c800f7c",
+        "static_target_catalog_sha256": "0cc4b46ce6a7b94f32ba1d64f9818c094f6005636c4d56480f5907b773cd5276"
+      }
+    },
+    {
+      "case": "park_only",
+      "report": {
+        "assurance_bundle_sha256": "5f1d3001448001a68640c4ddb904fa2015a50730b19b32e7999f7e0be51e692f",
+        "candidate_sha256": "a297b0fb13e4bc508037d8b8e80ef8e8387954d4971213f0eb4d3fa934eac547",
+        "continuous_path_proven": false,
+        "dense_route_all_waypoints_accepted": false,
+        "dense_route_status": "DENSE_ROUTE_FAILED",
+        "evaluated_waypoint_count": 14,
+        "first_failure": {
+          "phase": "HOVER",
+          "reason": "IK_NO_CONVERGED_SOLUTION",
+          "target": "keyboard:H",
+          "waypoint_sequence": 13
+        },
+        "full_arm_collision_checked": false,
+        "geometry_all_checks_pass": true,
+        "geometry_report_sha256": "b0c9bdccf53e77aa171a542be64895259dfa8e1ce8b98e033323974b4668ae29",
+        "hardware_commands": [],
+        "hardware_writes": 0,
+        "layout_study_assumptions": {
+          "installed_position_verified": false,
+          "installed_tool_verified": false,
+          "park_xy_board_mm": [
+            290.0,
+            10.0
+          ],
+          "physical_execution_authorized": false,
+          "robot_layout_overlay": null
+        },
+        "limitations": [
+          "Model coordinate evaluated against nominal simulation geometry only",
+          "Route uses the static scenario clearance and cadence; proposal speed and requested waypoints are not simulated",
+          "Target placement, board-to-arm correlation, and tool transform are unmeasured",
+          "IK is sampled and full arm, tool, cable, and environment collision are incomplete",
+          "No controller encoding, transport access, contact, or input-event observation occurred"
+        ],
+        "physical_calibration_verified": false,
+        "physical_execution_authorized": false,
+        "physical_input_events_observed": 0,
+        "plan_hash": "c72ec571d536ab12cf5c8deec28488e62d0dc448ab919b0b2dfe976644816c95",
+        "proposal_sha256": "7610d26b88094ab03bcc5290c62902836be3548ea58d80c8ec964807ef3b61a9",
+        "sampled_ik_all_converged": false,
+        "schema": "rocell.ai_model_motion_simulation.v0",
+        "simulation_sha256": "a83bc1ca8f0cdfaa8790d4371f3ee961b134754047728696368f73edf700c25c",
+        "simulation_status": "SIMULATION_BLOCKED",
+        "simulation_target_overlay": {
+          "base_static_target_catalog_sha256": "0cc4b46ce6a7b94f32ba1d64f9818c094f6005636c4d56480f5907b773cd5276",
+          "center_board_mm": [
+            216.55,
+            154.0,
+            21.0
+          ],
+          "device": "keyboard",
+          "model_candidate_sha256": "a297b0fb13e4bc508037d8b8e80ef8e8387954d4971213f0eb4d3fa934eac547",
+          "overlay_sha256": "542113c74967c508413a3f523d923d8651f25a8206aefd8aca101e11b69815f1",
+          "schema": "rocell.model_motion_target_overlay.v0",
+          "simulation_only": true,
+          "target_id": "H"
+        },
+        "static_context_bundle_sha256": "e825dd29cf856cea44d9ce40ca3bfb5fc305d3493cd129d6b6bea9f04c800f7c",
+        "static_target_catalog_sha256": "0cc4b46ce6a7b94f32ba1d64f9818c094f6005636c4d56480f5907b773cd5276"
+      }
+    },
+    {
+      "case": "rank1_layout_only",
+      "report": {
+        "assurance_bundle_sha256": "5f1d3001448001a68640c4ddb904fa2015a50730b19b32e7999f7e0be51e692f",
+        "candidate_sha256": "a297b0fb13e4bc508037d8b8e80ef8e8387954d4971213f0eb4d3fa934eac547",
+        "continuous_path_proven": false,
+        "dense_route_all_waypoints_accepted": false,
+        "dense_route_status": "DENSE_ROUTE_FAILED",
+        "evaluated_waypoint_count": 1,
+        "first_failure": {
+          "phase": "PARK",
+          "reason": "IK_NO_CONVERGED_SOLUTION",
+          "target": null,
+          "waypoint_sequence": 0
+        },
+        "full_arm_collision_checked": false,
+        "geometry_all_checks_pass": true,
+        "geometry_report_sha256": "45ab39e0e894cd567f021e9a6a5fd06464b5ad71f496a4de269e890096418825",
+        "hardware_commands": [],
+        "hardware_writes": 0,
+        "layout_study_assumptions": {
+          "installed_position_verified": false,
+          "installed_tool_verified": false,
+          "park_xy_board_mm": [
+            305.0,
+            400.0
+          ],
+          "physical_execution_authorized": false,
+          "robot_layout_overlay": {
+            "board_T_vendor_world_matrix_row_major": [
+              -0.25881904510252063,
+              0.9659258262890683,
+              -0.0,
+              385.0,
+              -0.9659258262890683,
+              -0.25881904510252063,
+              0.0,
+              532.0,
+              -0.0,
+              0.0,
+              1.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ],
+            "frozen_geometry_modified": false,
+            "installed_position_verified": false,
+            "installed_tool_verified": false,
+            "keyboard_tool_length_mm": 120.0,
+            "motion_authorized": false,
+            "overlay_sha256": "e9558be5bc7924752596d5561d7f502a8b4ab281ad8ffcfbcc1c118c99e21a12",
+            "physical_release_effect": "NONE",
+            "rank": 1,
+            "schema": "rocell.robot_layout_sensitivity_overlay.v1",
+            "source_layout_report_hash": "3b65e3bca509f7c7e1583e5801e189639ab9e40cbf30827b71794752cd7259b4",
+            "source_mission_route_coverage_hash": "c67ac5d2cece745077ac631304b80f51a19c981edd107812ffa716673fbf2cd4",
+            "source_profile": "software/config/virtual_commissioning_profile.json",
+            "source_profile_sha256": "c8f8440e9e4d2bdd8eaf61b5755d8c57235b5b1a0fb2f62c6953f9b6e20338cf",
+            "study_input_id": "reach-944d7463f4c67905"
+          }
+        },
+        "limitations": [
+          "Model coordinate evaluated against nominal simulation geometry only",
+          "Route uses the static scenario clearance and cadence; proposal speed and requested waypoints are not simulated",
+          "Target placement, board-to-arm correlation, and tool transform are unmeasured",
+          "IK is sampled and full arm, tool, cable, and environment collision are incomplete",
+          "No controller encoding, transport access, contact, or input-event observation occurred"
+        ],
+        "physical_calibration_verified": false,
+        "physical_execution_authorized": false,
+        "physical_input_events_observed": 0,
+        "plan_hash": "c72ec571d536ab12cf5c8deec28488e62d0dc448ab919b0b2dfe976644816c95",
+        "proposal_sha256": "7610d26b88094ab03bcc5290c62902836be3548ea58d80c8ec964807ef3b61a9",
+        "sampled_ik_all_converged": false,
+        "schema": "rocell.ai_model_motion_simulation.v0",
+        "simulation_sha256": "d72fe0349d402d0d94f046c931292464b00a8a7f580c9bc1ec92da71c2300b8e",
+        "simulation_status": "SIMULATION_BLOCKED",
+        "simulation_target_overlay": {
+          "base_static_target_catalog_sha256": "0cc4b46ce6a7b94f32ba1d64f9818c094f6005636c4d56480f5907b773cd5276",
+          "center_board_mm": [
+            216.55,
+            154.0,
+            21.0
+          ],
+          "device": "keyboard",
+          "model_candidate_sha256": "a297b0fb13e4bc508037d8b8e80ef8e8387954d4971213f0eb4d3fa934eac547",
+          "overlay_sha256": "542113c74967c508413a3f523d923d8651f25a8206aefd8aca101e11b69815f1",
+          "schema": "rocell.model_motion_target_overlay.v0",
+          "simulation_only": true,
+          "target_id": "H"
+        },
+        "static_context_bundle_sha256": "e825dd29cf856cea44d9ce40ca3bfb5fc305d3493cd129d6b6bea9f04c800f7c",
+        "static_target_catalog_sha256": "0cc4b46ce6a7b94f32ba1d64f9818c094f6005636c4d56480f5907b773cd5276"
+      }
+    },
+    {
+      "case": "rank1_layout_and_park",
+      "report": {
+        "assurance_bundle_sha256": "5f1d3001448001a68640c4ddb904fa2015a50730b19b32e7999f7e0be51e692f",
+        "candidate_sha256": "a297b0fb13e4bc508037d8b8e80ef8e8387954d4971213f0eb4d3fa934eac547",
+        "continuous_path_proven": false,
+        "dense_route_all_waypoints_accepted": true,
+        "dense_route_status": "DENSE_SAMPLES_PASS_NOT_EXECUTABLE",
+        "evaluated_waypoint_count": 32,
+        "first_failure": null,
+        "full_arm_collision_checked": false,
+        "geometry_all_checks_pass": true,
+        "geometry_report_sha256": "b0c9bdccf53e77aa171a542be64895259dfa8e1ce8b98e033323974b4668ae29",
+        "hardware_commands": [],
+        "hardware_writes": 0,
+        "layout_study_assumptions": {
+          "installed_position_verified": false,
+          "installed_tool_verified": false,
+          "park_xy_board_mm": [
+            290.0,
+            10.0
+          ],
+          "physical_execution_authorized": false,
+          "robot_layout_overlay": {
+            "board_T_vendor_world_matrix_row_major": [
+              -0.25881904510252063,
+              0.9659258262890683,
+              -0.0,
+              385.0,
+              -0.9659258262890683,
+              -0.25881904510252063,
+              0.0,
+              532.0,
+              -0.0,
+              0.0,
+              1.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ],
+            "frozen_geometry_modified": false,
+            "installed_position_verified": false,
+            "installed_tool_verified": false,
+            "keyboard_tool_length_mm": 120.0,
+            "motion_authorized": false,
+            "overlay_sha256": "e9558be5bc7924752596d5561d7f502a8b4ab281ad8ffcfbcc1c118c99e21a12",
+            "physical_release_effect": "NONE",
+            "rank": 1,
+            "schema": "rocell.robot_layout_sensitivity_overlay.v1",
+            "source_layout_report_hash": "3b65e3bca509f7c7e1583e5801e189639ab9e40cbf30827b71794752cd7259b4",
+            "source_mission_route_coverage_hash": "c67ac5d2cece745077ac631304b80f51a19c981edd107812ffa716673fbf2cd4",
+            "source_profile": "software/config/virtual_commissioning_profile.json",
+            "source_profile_sha256": "c8f8440e9e4d2bdd8eaf61b5755d8c57235b5b1a0fb2f62c6953f9b6e20338cf",
+            "study_input_id": "reach-944d7463f4c67905"
+          }
+        },
+        "limitations": [
+          "Model coordinate evaluated against nominal simulation geometry only",
+          "Route uses the static scenario clearance and cadence; proposal speed and requested waypoints are not simulated",
+          "Target placement, board-to-arm correlation, and tool transform are unmeasured",
+          "IK is sampled and full arm, tool, cable, and environment collision are incomplete",
+          "No controller encoding, transport access, contact, or input-event observation occurred"
+        ],
+        "physical_calibration_verified": false,
+        "physical_execution_authorized": false,
+        "physical_input_events_observed": 0,
+        "plan_hash": "c72ec571d536ab12cf5c8deec28488e62d0dc448ab919b0b2dfe976644816c95",
+        "proposal_sha256": "7610d26b88094ab03bcc5290c62902836be3548ea58d80c8ec964807ef3b61a9",
+        "sampled_ik_all_converged": true,
+        "schema": "rocell.ai_model_motion_simulation.v0",
+        "simulation_sha256": "b9286135ea4b89729b82adfc40b498c99bb9ccec98c2e2f1ed0f87c037a18e6e",
+        "simulation_status": "SAMPLES_PASS_NOT_EXECUTABLE",
+        "simulation_target_overlay": {
+          "base_static_target_catalog_sha256": "0cc4b46ce6a7b94f32ba1d64f9818c094f6005636c4d56480f5907b773cd5276",
+          "center_board_mm": [
+            216.55,
+            154.0,
+            21.0
+          ],
+          "device": "keyboard",
+          "model_candidate_sha256": "a297b0fb13e4bc508037d8b8e80ef8e8387954d4971213f0eb4d3fa934eac547",
+          "overlay_sha256": "542113c74967c508413a3f523d923d8651f25a8206aefd8aca101e11b69815f1",
+          "schema": "rocell.model_motion_target_overlay.v0",
+          "simulation_only": true,
+          "target_id": "H"
+        },
+        "static_context_bundle_sha256": "e825dd29cf856cea44d9ce40ca3bfb5fc305d3493cd129d6b6bea9f04c800f7c",
+        "static_target_catalog_sha256": "0cc4b46ce6a7b94f32ba1d64f9818c094f6005636c4d56480f5907b773cd5276"
+      }
+    }
+  ],
+  "hardware_writes": 0,
+  "limitations": [
+    "One hand-authored contact proposal, not a model accuracy evaluation",
+    "Rank-1 layout jointly changes base pose and tool length; their separate effects are not isolated",
+    "Park coordinate and layout were drawn from an existing successful synthetic rehearsal",
+    "Exploratory simulation only; no installed geometry, continuous collision proof, or physical input verification"
+  ],
+  "passing_cases": [
+    "rank1_layout_and_park"
+  ],
+  "physical_execution_authorized": false,
+  "schema": "rocell.ai_model_motion_layout_study.v0",
+  "study_sha256": "18518d4053d320e2cfc789d9bb500260feb2dd04f4b4992e14a27a944193a087"
+}

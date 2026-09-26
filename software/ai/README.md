@@ -203,3 +203,9 @@ python software/ai/run_offline.py simulate-motion-proposal --proposal software/a
 
 See [the motion contract](docs/MODEL_MOTION_PROPOSAL.md) for scope and the saved
 [H contact result](eval/model_motion_keyboard_h_contact_simulation_v0.json).
+
+Repeat the four-case park/layout comparison with:
+
+```powershell
+python software/ai/run_motion_layout_study.py --proposal software/ai/examples/model_motion_proposal_keyboard_h_contact.json --output software/ai/results/motion-layout-study.json
+```
