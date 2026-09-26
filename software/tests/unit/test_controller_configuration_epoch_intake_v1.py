@@ -26,6 +26,7 @@ from rocell.application.r97_independent_review_decision_v1 import (
     R97IndependentReviewDecisionV1,
     R97ReviewCheck,
     R97ReviewCheckResultV1,
+    R97ReviewEvidenceOrigin,
 )
 
 
@@ -44,6 +45,7 @@ def _decision(**changes):
         "reviewed_packet_sha256": R97_REVIEW_PACKET_SHA256,
         "reviewed_manifest_sha256": R97_REVIEW_MANIFEST_SHA256,
         "reviewed_app_sha256": R97_APP_SHA256,
+        "evidence_origin": R97ReviewEvidenceOrigin.EXTERNAL_INDEPENDENT,
         "reviewer_independence_asserted": True,
         "reviewer_was_implementation_author": False,
         "checks": tuple(
@@ -226,6 +228,17 @@ def test_epoch_assessment_rejects_blocked_decision():
         firmware_independent_review_sha256=decision.decision_sha256)
     report = _assess(intake, firmware_review_decision=decision)
     assert report.blockers == ("FIRMWARE_REVIEW_DECISION_BLOCKED",)
+
+
+def test_epoch_assessment_never_promotes_synthetic_review():
+    decision = _decision(
+        evidence_origin=R97ReviewEvidenceOrigin.SYNTHETIC_TEST_ONLY)
+    intake = _intake(
+        firmware_independent_review_sha256=decision.decision_sha256)
+    report = _assess(intake, firmware_review_decision=decision)
+    assert report.status == "BLOCKED"
+    assert report.blockers == ("FIRMWARE_REVIEW_DECISION_BLOCKED",)
+    assert report.to_dict()["epoch_bound_build_proposal_ready"] is False
 
 
 def test_epoch_assessment_requires_typed_review_decision():
