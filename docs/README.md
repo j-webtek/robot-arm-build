@@ -1,6 +1,8 @@
 # Tactevra documentation
 
 Contributors can reproduce the [hardware-free CI checks](CI.md) locally.
+See [repository operations](REPOSITORY_OPERATIONS.md) for PR handoffs and
+dependency maintenance.
 
 The [hardware provenance record](HARDWARE_PROVENANCE.md) documents the owner's
 CAD/print-design authorship confirmation and its scope.

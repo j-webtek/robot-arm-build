@@ -15,6 +15,7 @@ DOCS = (
     'docs/releases/BASELINE_2026-09-26.md',
     'docs/releases/COMPATIBILITY_CONTENT_REVIEW_2026-09-26.md',
     'docs/HARDWARE_PROVENANCE.md',
+    'docs/REPOSITORY_OPERATIONS.md',
     'docs/CI.md', 'docs/AUDIT_FIXTURE_REVIEW.md', 'software/README.md', 'software/ai/README.md',
     'software/ai/docs/README.md', 'assets/brand/README.md',
     'docs/brand/BRAND_GUIDE.md', 'docs/brand/NAMING_REVIEW.md',
