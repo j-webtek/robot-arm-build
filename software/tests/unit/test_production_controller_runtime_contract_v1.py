@@ -59,6 +59,10 @@ def _frame(sequence=1, **changes):
     return RuntimeCommandFrameV1(**values)
 
 
+def _ack(sequence=1):
+    return encode_line({"T": 1021, "status": "ACCEPTED_ONCE", "ordinal": sequence})
+
+
 def _schema(name):
     return json.loads((WORKSPACE / "software/ai/schemas" / name).read_text(
         encoding="utf-8"))
@@ -86,11 +90,18 @@ def test_one_writer_accepts_exact_ordered_t102_frames_without_writing():
     runtime = ProductionControllerRuntimeContractV1(_manifest())
     runtime.claim_writer("writer-1")
     first = runtime.admit_t102(_frame(1), now_monotonic_ns=150)
+    assert runtime.report()["status"] == "AWAITING_COMMAND_ACKNOWLEDGMENT"
+    runtime.rehearse_command_acknowledgment(_ack(1))
     second = runtime.admit_t102(_frame(2), now_monotonic_ns=150)
+    runtime.rehearse_command_acknowledgment(_ack(2))
     report = runtime.report()
     assert (first.sequence, second.sequence) == (1, 2)
     assert report["status"] == "CONTRACT_REHEARSAL_READY"
     assert report["last_sequence"] == report["admission_count"] == 2
+    assert report["acknowledgment_count"] == 2
+    assert report["pending_ack_sequence"] is None
+    assert all(item["arrival_proven"] is False
+               for item in report["acknowledgments"])
     assert all(item["hardware_write_count"] == 0 for item in report["admissions"])
     assert report["hardware_write_count"] == 0
 
@@ -124,10 +135,61 @@ def test_duplicate_sequence_is_terminal_and_never_replayed():
     runtime = ProductionControllerRuntimeContractV1(_manifest())
     runtime.claim_writer("writer-1")
     runtime.admit_t102(_frame(), now_monotonic_ns=150)
+    runtime.rehearse_command_acknowledgment(_ack())
     with pytest.raises(ProductionControllerRuntimeContractError, match="sequence"):
         runtime.admit_t102(_frame(), now_monotonic_ns=150)
     assert runtime.report()["admission_count"] == 1
     assert runtime.state is ProductionRuntimeState.TERMINAL_LOCKED
+
+
+def test_next_command_before_acknowledgment_is_terminal():
+    runtime = ProductionControllerRuntimeContractV1(_manifest())
+    runtime.claim_writer("writer-1")
+    runtime.admit_t102(_frame(1), now_monotonic_ns=150)
+    with pytest.raises(ProductionControllerRuntimeContractError, match="pending"):
+        runtime.admit_t102(_frame(2), now_monotonic_ns=150)
+    assert runtime.report()["status"] == "TERMINAL_NO_RETRY"
+
+
+@pytest.mark.parametrize("response", [
+    b'{"T":1021,"status":"ACCEPTED_ONCE","ordinal":2}\n',
+    b'{"T":1021,"ordinal":1,"status":"ACCEPTED_ONCE"}\n',
+    b'{"T":1021,"status":"ACCEPTED_ONCE","ordinal":1,"extra":0}\n',
+    b'{"T":1021,"status":"ACCEPTED_ONCE","ordinal":1}\r\n',
+    b'{"T":1051,"b":0,"s":0,"e":0,"t":0,"r":0,"g":0}\n',
+])
+def test_wrong_stale_or_noncanonical_acknowledgment_is_terminal(response):
+    runtime = ProductionControllerRuntimeContractV1(_manifest())
+    runtime.claim_writer("writer-1")
+    runtime.admit_t102(_frame(1), now_monotonic_ns=150)
+    with pytest.raises(Exception):
+        runtime.rehearse_command_acknowledgment(response)
+    assert runtime.report()["status"] == "TERMINAL_NO_RETRY"
+    assert runtime.report()["automatic_retry"] is False
+
+
+def test_acknowledgment_timeout_latches_uncertain_without_retry():
+    runtime = ProductionControllerRuntimeContractV1(_manifest())
+    runtime.claim_writer("writer-1")
+    runtime.admit_t102(_frame(1), now_monotonic_ns=150)
+    runtime.mark_command_acknowledgment_timeout()
+    report = runtime.report()
+    assert report["status"] == "TERMINAL_NO_RETRY"
+    assert report["terminal_reason"] == "COMMAND_ACKNOWLEDGMENT_TIMEOUT_UNCERTAIN"
+    assert report["admission_count"] == 1
+    assert report["acknowledgment_count"] == 0
+
+
+def test_feedback_is_forbidden_until_command_acknowledgment_consumed():
+    runtime = ProductionControllerRuntimeContractV1(_manifest())
+    runtime.claim_writer("writer-1")
+    runtime.admit_t102(_frame(1), now_monotonic_ns=150)
+    with pytest.raises(ProductionControllerRuntimeContractError, match="pending"):
+        runtime.rehearse_feedback_exchange(
+            b'{"T":105}\n',
+            b'{"T":1051,"b":0,"s":0,"e":0,"t":0,"r":0,"g":0}\n',
+        )
+    assert runtime.report()["status"] == "TERMINAL_NO_RETRY"
 
 
 def test_exact_t105_t1051_rehearsal_uses_same_claim_without_io():

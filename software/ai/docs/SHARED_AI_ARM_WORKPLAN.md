@@ -4142,3 +4142,35 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: heuristic audit; AI-041 protected-main publication blocker remains.
 - Supersedes: none
 - Next dependency: protected-branch PR/checks and AI-116 diagnostic.
+### E-20260926-ARM-032 — r97 accepted-once host correlation
+
+- Stage: S4
+- Lane: ARM
+- Change: closed the host/firmware receipt gap for r97. The host contract now
+  permits exactly one in-flight T=102, requires the exact canonical
+  `T=1021,status=ACCEPTED_ONCE,ordinal=N` response for the pending sequence, and
+  forbids another command or T=105 exchange until that receipt is consumed.
+- Failure behavior: missing, stale, duplicate, reordered, wrong-ordinal,
+  malformed, overlong, CRLF, or extra-field responses terminally lock the
+  session. A timeout is retained as uncertain after one admission and never
+  retries or replays the command.
+- Semantics: the acknowledgment proves only that r97 accepted the command once
+  and reached its one group-write call. `arrival_proven` is schema-fixed false;
+  fresh T=105/T=1051 feedback and later arrival verification remain separate.
+- Artifacts: updated production runtime state machine, manifest/rehearsal
+  schemas, public exports, unit tests, schema README, controller contract, and
+  r97 firmware documentation.
+- Results: focused runtime PASS, 26 tests; integrated model/trajectory,
+  zero-write, qualification, surface, firmware, and runtime boundaries PASS,
+  115 tests in 10.57 seconds; documentation PASS for 23 maintained documents
+  and two SVG assets; snapshot audit PASS for 5,712 paths and 903.7 MiB with
+  zero unresolved findings and 14 reviewed synthetic fixtures; diff check PASS.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: this is still zero-I/O rehearsal. It does not install r97, open a
+  controller, consume a live receipt, bind configuration epoch, or prove servo
+  arrival.
+- Supersedes: ARM-031 only for host/r97 acknowledgment compatibility and current
+  offline integration counts; the independent review blocker remains.
+- Next dependency: independently review the exact r97 source/image, then bind a
+  measured configuration epoch before any installation/startup proposal.
