@@ -605,7 +605,7 @@ remove it only in the same commit that appends the resulting evidence row.
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
 | Unclaimed | S2 | qualified perception adapter and complete shared gate | — | AVAILABLE |
-| Unclaimed | S4 | sole-writer lifecycle, fault injection, and restart closure | — | AVAILABLE |
+| Arm lane | S4 | zero-write sole-writer lifecycle, fault injection, and restart closure | `main` from `448789a` | ACTIVE |
 
 ## Worker update procedure
 
