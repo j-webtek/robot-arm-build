@@ -599,6 +599,8 @@ Copy this row and fill every field:
 
 ## Active work claims
 
+- AI lane / S1: fixed-budget scene-diversity comparison, three seeds, anchored key loss in both arms. Reserve29000000..29002399 for training only; never qualification.
+
 
 
 
