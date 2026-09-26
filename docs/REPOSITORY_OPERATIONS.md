@@ -178,6 +178,37 @@ apply on GitHub, not when someone clones the repository. No historical scan
 completion, absence of vulnerabilities, or full secret-pattern coverage is claimed.
 The snapshot audit remains a complementary, limited review.
 
+### September 26, 2026 Actions-policy hardening
+
+Following the owner's approval, repository settings were changed and read back:
+
+| Control | Verified state |
+| --- | --- |
+| Allowed Actions | Selected only: `actions/checkout@*` and `actions/setup-python@*` |
+| Broad GitHub-owned / verified-creator allowances | Both disabled |
+| Full-length commit-SHA pinning | Required |
+| Outside-contributor fork workflows | Approval required for all outside contributors |
+| Default token / permission to approve PR reviews | Read-only / disabled, unchanged |
+
+The action patterns allow reviewed pin updates within these two repositories;
+they do not waive the separate full-SHA requirement. Adding a new action needs
+an owner-approved allowlist change and review of its source, requested permissions,
+and workflow use. Do not broaden the allowlist just to clear a failed run.
+
+Before approving an outside contributor's workflow, inspect the proposed code
+and workflow changes at the revision being approved. Approval allows CI code to
+run; it is not a code-review sign-off, permission to merge, or hardware authority.
+Do not switch to `pull_request_target`, expose secrets, or use a self-hosted
+workcell runner to work around pending approval. These settings do not sandbox
+arbitrary shell commands or dependencies installed by an allowed workflow.
+
+Existing required checks and branch protections remain unchanged, including
+zero required approving reviews for the solo-maintainer workflow. Independent
+review requirements need an agreed, available reviewer before enablement.
+Installed GitHub Apps could not be enumerated with the available authentication;
+account-wide tokens, OAuth grants, 2FA, and notification delivery were not verified.
+This is a scoped repository-settings record, not a full access certification.
+
 ## Security alert handling
 
 The owner confirmed **j-webtek** as the initial contact on September 26, 2026.
