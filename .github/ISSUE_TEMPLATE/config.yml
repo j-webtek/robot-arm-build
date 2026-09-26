@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Report a security vulnerability privately
+    url: https://github.com/j-webtek/robot-arm-build/security/advisories/new
+    about: Use private reporting for vulnerabilities or exposed secrets, not public issues.
+  - name: Read the support guide
+    url: https://github.com/j-webtek/robot-arm-build/blob/main/SUPPORT.md
+    about: Find setup guidance, reporting requirements, and physical-test boundaries.

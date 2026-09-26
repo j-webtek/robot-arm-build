@@ -10,6 +10,8 @@ The CI badge covers [scoped hardware-free checks](docs/CI.md), not physical robo
 
 [Get started](docs/GETTING_STARTED.md) · [Current capabilities](PROJECT_STATUS.md) · [Documentation](docs/README.md) · [Contribute](CONTRIBUTING.md)
 
+[Get help](SUPPORT.md) · [Report a vulnerability privately](SECURITY.md)
+
 Formerly **RoCell**. Existing `rocell` commands, package names, and hardware release
 paths remain unchanged for compatibility. The GitHub repository URL has not changed.
 
