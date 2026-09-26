@@ -1,0 +1,16 @@
+{
+  "source_commit": "413cb8796d7b470752d839b19763f8c903c771c7",
+  "command": "python -m pytest -q software/ai/tests/test_batch_emitter_v2.py software/ai/tests/test_batch_emitter.py software/tests/unit/test_model_motion_ingress.py software/tests/unit/test_model_motion_ingress_v2.py software/tests/unit/test_model_motion_sequence_coordinator.py software/tests/unit/test_model_motion_sequence_journal.py software/tests/unit/test_trajectory_execution_envelope.py",
+  "passed": 55,
+  "hardware_writes": 0,
+  "physical_movements": 0,
+  "files_sha256": {
+    "software/ai/rocell_ai/batch_emitter_v2.py": "ae97a1290421a84aace0ef2fb2772ed4eeba69980e2673f386d0d098d271306d",
+    "software/ai/tests/test_batch_emitter_v2.py": "4efbe9515d1a2a3cf25488b35ae64f51a005b06c364b1ef61124d25033df7ae4",
+    "software/tests/unit/test_model_motion_ingress_v2.py": "cc19568d4d3bca0a9e88130ecfbc8560305c2129183885345d397b14ad92a36e"
+  },
+  "limitations": [
+    "Caller-supplied synthetic evidence; no qualified perception adapter",
+    "No production registry plumbing or integration gate completion"
+  ]
+}

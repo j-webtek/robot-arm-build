@@ -602,7 +602,6 @@ remove it only in the same commit that appends the resulting evidence row.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI/model | S1 | `rocell_ai/batch_emitter_v2.py`, `tests/test_batch_emitter_v2.py`, AI evidence | main from `7ffb7f2` | ACTIVE: typed producer assembly and fixture round-trip |
 | Unclaimed | S2 | shadow runner/integration fixtures | — | AVAILABLE |
 | Unclaimed | S4 | controller adapter/receipts | — | AVAILABLE |
 
@@ -847,3 +846,50 @@ commissioning, or bounded physical result with its limitations intact.
 - Supersedes: none; extends ARM-001.
 - Next dependency: actual AI-emitted v2 bytes and production trusted-registry
   adapters for the shared S1 integration gate.
+
+
+### E-20260926-AI-007 — v2 typed producer assembly and consumer regression
+
+- Stage: S1
+- Lane: AI
+- Commit: `413cb8796d7b470752d839b19763f8c903c771c7` (shared consumer/source baseline; new assembly, tests and evidence committed together in this entry's containing commit)
+- Change: reviewed ARM-001/003 and adopted published shared types; implemented
+  canonical v2 assembly with ordered repeated actions and missing-uncertainty
+  abstention. No direct hardware or lower-level command fields added.
+- Inputs/fixtures: arm v2 synthetic H/I fixture factories, compiler-shaped H,H,I
+  plan; hashes in `software/ai/eval/s1_v2_assembly_evidence.json`.
+- Command: `python -m pytest -q software/ai/tests/test_batch_emitter_v2.py software/ai/tests/test_batch_emitter.py software/tests/unit/test_model_motion_ingress.py software/tests/unit/test_model_motion_ingress_v2.py software/tests/unit/test_model_motion_sequence_coordinator.py software/tests/unit/test_model_motion_sequence_journal.py software/tests/unit/test_trajectory_execution_envelope.py`
+- Result: PASS, 55 tests; actual assembler bytes decode and enter fixture-based
+  consumer admission; repeated H,H,I preserved; confidence 0.93 remains distinct
+  from coverage 0.99; missing evidence, wrong profile, uncovered/missing target,
+  invalid confidence, same precision/placement hash and expiry reject or abstain.
+- Artifacts: `software/ai/rocell_ai/batch_emitter_v2.py`,
+  `software/ai/tests/test_batch_emitter_v2.py`, evidence manifest above.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: assembly consumes caller-supplied typed evidence. It cannot attest
+  that coordinates derive from referenced precision evidence, establish trusted
+  placement provenance, or validate qualification registries. Current perception
+  has no qualified v2 adapter. No qualification installed; no integration completion.
+- Supersedes: none
+- Next dependency: AI precision adapter binds observed coordinates/confidence to
+  exact evidence; persistent trusted registry adapters and full mutation matrix
+  remain needed before cross-lane S1 completion.
+
+
+### E-20260926-AI-008 — v2 assembly audit retains findings
+
+- Stage: S1
+- Lane: AI
+- Commit: `413cb8796d7b470752d839b19763f8c903c771c7` (baseline plus AI-007 assembly/test working tree)
+- Change: required read-only repository audit.
+- Inputs/fixtures: repository snapshot, new AI-007 files and `scripts/audit_github_snapshot.py`.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: FAIL, exit 1; 5,598 paths, 784.8 MiB, same 14 existing arm-unit-fixture
+  credential-literal findings; no new v2 assembly/test finding.
+- Artifacts: existing scanner; AI-007 file-hash manifest.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: heuristic findings unresolved; no clean security audit claim.
+- Supersedes: none; earlier failed audits retained.
+- Next dependency: fixture-owner review; AI-007 perception/registry dependencies remain.
