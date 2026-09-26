@@ -1,0 +1,11 @@
+{
+  "scope": "POST_HOC_DEVELOPMENT_DIAGNOSTIC",
+  "scorecard": "software/ai/eval/lighting_normalization_v0_scorecard.json",
+  "protocol": "Recount all paired 3mm transitions. Render all appearance-shift cases where either arm exceeds3mm; record gain, brightness, saturation and image hashes. No retuning.",
+  "file_sha256": {
+    "software/ai/vision/diagnose_normalization_crossings.py": "f877f961e2957aed375027e59d0a58164a78a2f6161c1912a434b507c3aa41b1",
+    "software/ai/eval/lighting_normalization_v0_scorecard.json": "f4c3e923ee44fd5bf34e13037575cead5f739fcc2bc422fb84aa3215be79dece",
+    "software/ai/vision/synthetic_keyboard.py": "b9a1662ea348ba78093909844e5e8bed86f4996babc289bfd63858b6b54f692c",
+    "software/ai/vision/evaluate_lighting_normalization.py": "e042e8842f89eb6024b7ae0036ac9a7c6559a146faf34c0e72d13b12393e54da"
+  }
+}
