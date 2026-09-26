@@ -30,6 +30,15 @@ patent, regulatory, or physical-safety clearance.
 - New imported designs or third-party material need their own source and license
   records; this declaration is not blanket approval for future additions.
 
+### Explicit vendor exception
+
+The tracked [Arducam geometry proxy](../hardware/static_overhead_camera/vendor/README.md),
+`B0477.STEP`, is identified by its own record as a vendor download, not an original
+project design. The owner's confirmation above does not establish redistribution
+rights for that file. The source-preview review requires a recorded license or
+permission disposition before publishing archives containing it. No asset was
+removed or relicensed by this clarification.
+
 A design's authorship does not establish print readiness, fit, strength, electrical
 compatibility, or safe robot operation. Follow the exact hardware revision's
 measurement and qualification requirements.
