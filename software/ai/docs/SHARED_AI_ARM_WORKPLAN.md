@@ -604,7 +604,6 @@ remove it only in the same commit that appends the resulting evidence row.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI/model | S1 | candidate uncertainty study/manifest/tests/evidence | feature/translation-pair-evidence | ACTIVE: independent 19M calibration / 20M evaluation |
 | Unclaimed | S2 | qualified perception adapter and complete shared gate | — | AVAILABLE |
 | Unclaimed | S4 | published permit/receipt schemas, golden fixture, and installed mapping qualification | — | AVAILABLE |
 
@@ -2091,3 +2090,68 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: changes are published on branch but not merged to main; no protection bypass attempted.
 - Supersedes: none
 - Next dependency: authorized GitHub PR creation and required checks before merge.
+
+
+### E-20260926-AI-042 — candidate uncertainty and full-region study
+
+- Stage: S1
+- Lane: AI
+- Commit: `de696d1abff38f1db40a01daed8fd4235c350517` (exact frozen source/manifest before scoring)
+- Change: calibrated 99% nearest-rank radius from seed-group maximum errors;
+  independently evaluated error coverage and full-disk containment around actual
+  predictions in hidden-truth oriented key regions. No automatic qualification.
+- Inputs/fixtures: 1,000 fresh 19M calibration groups and 500 fresh 20M evaluation
+  groups, 3 conditions/46 targets. Candidate/source/catalog hashes in
+  `eval/candidate_uncertainty_v0.manifest.json`; group hashes/scores in scorecard.
+- Command: `python software/ai/vision/evaluate_candidate_uncertainty.py`
+- Result: FAIL, `SYNTHETIC_COMBINED_CRITERIA_FAIL`. Radius 5.201783 mm; error coverage
+  494/500 groups (98.8%) passes 95% criterion. Actual complete-region group fit
+  380/500 (76%) fails 95% criterion. 64,859/69,000 individual target predictions
+  fit; this does not replace the frozen all-target/all-condition group criterion.
+- Artifacts: `software/ai/eval/candidate_uncertainty_v0_scorecard.json`, manifest,
+  evaluator; full source study retained locally under ignored
+  `software/ai/results/candidate_uncertainty_v0_full.json` (content hash in scorecard).
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: empirical coverage, not population guarantee. Hidden truth is
+  evaluation-only and cannot become runtime placement calibration. Synthetic
+  known targets only; no confidence/capture/physical qualification. 19M/20M seed
+  groups are consumed and cannot be reused as fresh independent evaluation.
+- Supersedes: none; earlier failures and improvements preserved.
+- Next dependency: investigate residual-tail causes using development groups;
+  any target-specific or conditional uncertainty method needs separate frozen
+  calibration/evaluation and must preserve complete-region checking. No promotion.
+
+### E-20260926-AI-043 — uncertainty evidence verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `de696d1abff38f1db40a01daed8fd4235c350517` (study baseline; test and evidence committed together)
+- Change: recomputed calibration quantile, evaluation coverage, region-fit counts,
+  frozen source identities and failure outcome.
+- Inputs/fixtures: frozen manifest/scorecard and `tests/test_candidate_uncertainty_evidence.py`.
+- Command: `python -m pytest -q software/ai/tests/test_candidate_uncertainty_evidence.py`
+- Result: PASS, 1 evidence test; study failure remains unchanged.
+- Artifacts: named test and scorecard.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: consistency only; no qualification or integration status change.
+- Supersedes: none
+- Next dependency: AI-042 development-tail investigation.
+
+### E-20260926-AI-044 — uncertainty study audit findings retained
+
+- Stage: S1
+- Lane: AI
+- Commit: `de696d1abff38f1db40a01daed8fd4235c350517`
+- Change: required read-only repository audit during study.
+- Inputs/fixtures: repository snapshot and `scripts/audit_github_snapshot.py`.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: FAIL, exit 1; 5,670 paths, 786.0 MiB, same 14 existing arm-unit
+  credential-literal-review findings; no candidate-study file finding.
+- Artifacts: scanner and existing fixtures.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: heuristic findings unresolved; no clean audit claim.
+- Supersedes: none
+- Next dependency: fixture-owner review; protected-main PR blocker AI-041 remains.

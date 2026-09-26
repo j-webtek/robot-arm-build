@@ -131,3 +131,14 @@ p95 2.139->1.934 mm and within-1mm 62.8%->68.9%; all per-condition criteria pass
 Worst observed error increased 6.976->7.094 mm. This is evidence for independent
 uncertainty calibration next, not runtime promotion or observation confidence.
 18M evaluation groups are consumed. See `eval/translation_pair_v0_scorecard.json`.
+
+
+## Candidate uncertainty study
+
+Fresh 19M calibration / 20M evaluation produced a 5.201783 mm empirical radius
+with 98.8% evaluation group error coverage. Full uncertainty disks fit every
+actual key across all three conditions in only 380/500 groups (76%), below the
+frozen 95% criterion. Combined study fails; no qualification installed. Individual
+fit is 64,859/69,000 and must not replace the group criterion. Hidden target truth
+remains evaluation-only. See `eval/candidate_uncertainty_v0_scorecard.json`.
+Investigate tails on development data before changing the uncertainty method.
