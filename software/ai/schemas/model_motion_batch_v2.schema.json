@@ -21,7 +21,10 @@
       "additionalProperties": false,
       "required": ["profile_id", "profile_sha256"],
       "properties": {
-        "profile_id": {"$ref": "#/$defs/identifier"},
+        "profile_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$"
+        },
         "profile_sha256": {"$ref": "#/$defs/sha256"}
       }
     },

@@ -16,6 +16,7 @@ from .context import SimulationContext, revalidate_simulation_context
 SCHEMA = "rocell.model_motion_ingress.v2"
 _SHA256 = re.compile(r"^[0-9a-f]{64}$")
 _IDENTIFIER = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$")
+_PROFILE_IDENTIFIER = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$")
 
 
 class ModelMotionIngressV2Error(ValueError):
@@ -36,6 +37,13 @@ def _digest(value: object, label: str) -> str:
 def _identifier(value: object, label: str) -> str:
     if not isinstance(value, str) or _IDENTIFIER.fullmatch(value) is None:
         raise ModelMotionIngressV2Error(f"{label} must be a bounded identifier")
+    return value
+
+
+def _profile_identifier(value: object, label: str) -> str:
+    if not isinstance(value, str) or _PROFILE_IDENTIFIER.fullmatch(value) is None:
+        raise ModelMotionIngressV2Error(
+            f"{label} must be a bounded profile identifier")
     return value
 
 
@@ -182,7 +190,8 @@ def ingest_model_motion_batch_v2(
             or not isinstance(context, SimulationContext):
         raise TypeError("batch, plan, or context has the wrong type")
     revalidate_simulation_context(context)
-    if batch.capability.profile_id != _identifier(expected_capability_profile_id, "profile") \
+    if batch.capability.profile_id != _profile_identifier(
+            expected_capability_profile_id, "profile") \
             or batch.capability.profile_sha256 != _digest(
                 expected_capability_profile_sha256, "profile hash") \
             or plan.profile_id != expected_capability_profile_id:
