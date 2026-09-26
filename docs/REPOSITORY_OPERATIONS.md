@@ -27,6 +27,31 @@ review is a contributor process, not an enforced independent-review rule:
 GitHub currently requires zero approving reviews so the solo maintainer can
 merge. The maintainer is responsible for checking the handoff fields.
 
+## Issue and PR triage
+
+Reuse `bug`, `documentation`, `enhancement`, and `question` for issue type.
+Additional labels created on September 26, 2026:
+
+| Label | Use |
+| --- | --- |
+| `area:repository` | GitHub configuration, CI, maintenance and contributor experience |
+| `area:ai` | AI producer, model or vision changes |
+| `area:arm` | Arm consumer, planner or controller changes |
+| `cross-workstream` | Coordinated interface review is needed |
+| `needs-owner-review` | An affected owner has not recorded a disposition |
+| `release-readiness` | Release prerequisites and preparation |
+
+Multiple area labels are appropriate for shared changes. Labels route work; they
+do not assign a person, establish priority, grant approval, or enforce a merge
+block. Do not invent assignees. Leave `needs-owner-review` until the relevant
+disposition is recorded at an exact commit. Preserve unrelated labels.
+
+Use the documentation template for unclear public guidance and the handoff
+template for shared contracts. The shared workplan remains the engineering
+ledger; link to it rather than copying long histories into issues. Keep security
+details in the private reporting channel. No automatic stale-issue closer is
+configured: inactivity is not evidence that a problem is resolved.
+
 ## Dependency-update operation
 
 [Dependabot configuration](../.github/dependabot.yml) proposes weekly updates for
