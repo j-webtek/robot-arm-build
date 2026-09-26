@@ -605,7 +605,7 @@ remove it only in the same commit that appends the resulting evidence row.
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
 | Unclaimed | S2 | qualified perception adapter and complete shared gate | — | AVAILABLE |
-| Unclaimed | S4 | installed controller mapping and firmware qualification | — | AVAILABLE |
+| Unclaimed | S4 | collect and independently review installed controller evidence | — | AVAILABLE |
 
 ## Worker update procedure
 
@@ -2457,3 +2457,79 @@ commissioning, or bounded physical result with its limitations intact.
   PR publication blocker remains. Historical audit failures remain unchanged.
 - Supersedes: none
 - Next dependency: protected-branch PR/checks; AI-052 next development experiment.
+
+### E-20260926-ARM-021 — installed-controller qualification gate
+
+- Stage: S4
+- Lane: ARM
+- Commit: `f78b2f1` (implementation commit; evidence row committed separately)
+- Change: added a fail-closed assessment between the installed controller's
+  independently reviewed evidence and the zero-write Waveshare encoding
+  profile. The gate binds controller session, configuration epoch, mapping
+  hash, protocol-source hash, T=102 command fields, T=1051 feedback fields,
+  planner joint order, fixed gripper field, evidence origin, review disposition,
+  and monotonic freshness.
+- Inputs/fixtures: modeled physical-shaped and synthetic evidence records;
+  existing sealed-envelope/profile factory; published strict evidence and
+  assessment schemas. No retained physical original was consumed.
+- Command: `$env:PYTHONPATH='software/src;software/ai/src;software/tests/unit'; python -m pytest -q software/ai/tests software/tests/unit/test_model_motion_ingress_v2.py software/tests/unit/test_model_motion_sequence_journal.py software/tests/unit/test_model_motion_sequence_coordinator.py software/tests/unit/test_trajectory_execution_envelope_v2.py software/tests/unit/test_zero_write_waveshare_adapter_v1.py software/tests/unit/test_zero_write_sole_writer_v1.py software/tests/unit/test_installed_controller_qualification_v1.py software/tests/integration/test_zero_write_waveshare_contract_v1.py software/tests/unit/test_snapshot_audit.py`
+- Result: PASS, 244 tests in 45.74 seconds. Missing, synthetic, stale,
+  unreviewed, pre-capture, session/epoch/mapping/protocol mismatched, reordered,
+  and wrong-gripper evidence all block. Exact modeled evidence reaches only
+  `READY_FOR_ZERO_WRITE_PROFILE_BINDING`; execution and transport authority
+  remain false and zero hardware commands are generated.
+- Artifacts:
+  `software/src/rocell/application/installed_controller_qualification_v1.py`,
+  two `installed_controller_qualification_*_v1.schema.json` schemas, exports,
+  schema documentation, and the named unit test.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: success cases use modeled physical-shaped records and prove only
+  deterministic gate behavior. The module neither collects nor independently
+  authenticates evidence. No installed firmware, mapping, startup behavior,
+  feedback behavior, controller identity, or physical execution is qualified.
+- Supersedes: none; closes the software trust-boundary gap identified by ARM-018.
+- Next dependency: collect retained originals under a separately approved,
+  bounded physical qualification and obtain independent review before using a
+  passing evidence record.
+
+### E-20260926-ARM-022 — controller-gate repository audit
+
+- Stage: S4
+- Lane: ARM
+- Commit: `f78b2f1` (implementation baseline)
+- Change: ran the required read-only repository snapshot audit after adding the
+  installed-controller qualification gate.
+- Inputs/fixtures: repository snapshot, reviewed fixture registry, and
+  `scripts/audit_github_snapshot.py`.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS, exit 0; 5,677 paths, 903.6 MiB, 0 unresolved review findings,
+  14 reviewed synthetic fixtures.
+- Artifacts: scanner, reviewed fixture registry, and the new gate artifacts.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: repository scanning and reviewed synthetic fixture exceptions do
+  not qualify controller hardware, firmware, mapping, or runtime behavior.
+- Supersedes: none.
+- Next dependency: collect and independently review exact installed-controller
+  evidence; keep physical execution blocked until that is complete.
+
+### E-20260926-ARM-023 — controller-gate release-doc integration
+
+- Stage: S4
+- Lane: ARM
+- Commit: `592092b` plus merged `origin/main` at `b1bb742` (verified integration
+  baseline; this evidence row committed separately)
+- Change: merged concurrent experimental-release/support documentation and
+  reverified the controller gate without altering its trust or authority rules.
+- Inputs/fixtures: ARM-021 suite plus the current repository snapshot.
+- Commands: ARM-021 pytest command; `python scripts/audit_github_snapshot.py`.
+- Result: PASS, 244 tests in 41.32 seconds. Audit PASS, exit 0; 5,682 paths,
+  903.6 MiB, 0 unresolved review findings, 14 reviewed synthetic fixtures.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: integration success is still offline and does not qualify the
+  installed controller, mapping, firmware, feedback, or startup behavior.
+- Supersedes: ARM-022 only for the current integrated snapshot counts.
+- Next dependency: separately approved physical evidence collection and
+  independent review before zero-write profile binding can pass on real data.
