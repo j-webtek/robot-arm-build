@@ -49,8 +49,9 @@ security sandbox or proof of physical safety.
 Green checks do not establish model accuracy, authenticated real-camera evidence,
 measured calibration, physical typing, or full-suite qualification. Link checking
 does not validate anchors or remote URLs. SVG parsing does not replace visual QA.
-The repository snapshot audit remains a separate review with existing unresolved
-fixture findings; it is not silently labeled green by this workflow.
+The repository snapshot audit remains a separate review. Its previously reported
+synthetic fixtures have [exact documented exceptions](AUDIT_FIXTURE_REVIEW.md);
+CI tests that mechanism but does not replace a full snapshot scan.
 
 After the workflow has run successfully, maintainers can choose these checks in
 branch protection. This change does not modify branch protection settings.
