@@ -239,3 +239,26 @@ source bindings, result hashes, contact timestamps, and route outcomes. Calling
 route detail. These cases are development probes, not a held-out model benchmark.
 Next priority is perturbing target localization and adding camera-condition
 rejection cases while preserving these route and sequence checks.
+
+## Localization and archived scene stress
+
+The 60-case development study pairs six archived scene conditions with ten
+synthetic H-I probes: nominal, +/-6 mm on each axis, +/-8 mm on each axis, and
+confidence 0.5. Five control-scene routes pass sampled screening (nominal and
+four 6 mm offsets). Four 8 mm offsets and the low-confidence case stop at the
+coordinate bridge. The five adverse archived scene conditions suppress all
+50 associated route attempts.
+
+The scene decisions come from the existing Gemma photo-stress report; its
+report, observation, and pixel hashes and frame bindings are checked. These
+are archived classifications applied as synthetic experimental conditions to
+unrelated nominal coordinates. This is not the current-frame vision-fusion
+API, fresh inference, or calibrated image grounding. A route pass at 6 mm
+does not establish physical key accuracy or an acceptable deployment tolerance.
+
+The saved result is `eval/localization_scene_stress_v0.json`. Each accepted
+probe binds the resulting sequence and route hashes; rejected cases record no
+route result. All outcomes retain zero hardware authority. Next priority is
+a fixed-camera synthetic image evaluation with actual local-model predictions
+and independent target truth, retaining freshness and frame-binding checks
+when composing scene and precision observations.

@@ -227,3 +227,12 @@ python software/ai/run_sequence_clearance_study.py --output software/ai/results/
 
 The sequence simulator returns full route detail; this CLI saves compact summaries
 with hashes of the detailed results. See the motion contract for timing assumptions.
+
+Run the localization/archived-scene stress study:
+
+```powershell
+python software/ai/run_localization_stress.py --output software/ai/results/localization-stress.json
+```
+
+This injects synthetic coordinate errors and replays saved scene-quality
+decisions. It runs no new model inference and is not current-frame admission.

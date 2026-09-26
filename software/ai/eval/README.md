@@ -210,3 +210,9 @@ A-Z, and 1-Space-Enter at 12/25/40 mm common hover clearance. Summaries bind
 full result hashes and preserve repeated-action timestamps. Cadence is only
 a constant-speed/delay hypothesis; servo dynamics and actual input events are
 unverified. The proposals are synthetic and no learned model was evaluated.
+
+`localization_scene_stress_v0.json` records 60 development probes: 5 sampled
+route passes, 5 coordinate/confidence rejections, and 50 archived quality
+rejections before route simulation. It reuses earlier saved Gemma decisions;
+no new inference occurs. Coordinate errors are injected on H-I, so this does
+not measure learned localization or establish a physical precision tolerance.
