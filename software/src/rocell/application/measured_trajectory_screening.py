@@ -30,6 +30,10 @@ from ._pinned_model import load_pinned_urdf
 from .collision_readiness import assess_current_collision_readiness
 from .context import SimulationContext, revalidate_simulation_context
 from .measured_target_reprojection import reproject_measured_target
+from .observed_planner_start_state import (
+    ObservedPlannerStartState,
+    ObservedPlannerStartStateError,
+)
 from .trajectory_simulation import (
     CartesianRouteWaypoint,
     TrajectorySimulationPolicy,
@@ -88,18 +92,28 @@ def _point_from_document(value: object) -> Point3Mm:
 
 
 def _observed_state(
-    value: Mapping[str, object] | None,
+    value: ObservedPlannerStartState | None,
+    snapshot: PlannerCalibrationSnapshot,
+    evaluation_monotonic_ns: int | None,
     bounds: Mapping[str, tuple[float, float]],
 ) -> dict[str, float] | None:
     if value is None:
         return None
-    if not isinstance(value, Mapping) or set(value) != set(ARM_JOINT_NAMES):
+    if not isinstance(value, ObservedPlannerStartState):
         raise MeasuredTrajectoryScreeningError(
-            "observed start state must contain exactly the five URDF arm joints"
+            "observed start state must be authenticated feedback evidence"
         )
+    if evaluation_monotonic_ns is None:
+        raise MeasuredTrajectoryScreeningError(
+            "evaluation_monotonic_ns is required with observed start state"
+        )
+    try:
+        qualified = value.require_fresh_for(snapshot, evaluation_monotonic_ns)
+    except ObservedPlannerStartStateError as exc:
+        raise MeasuredTrajectoryScreeningError(str(exc)) from exc
     result: dict[str, float] = {}
     for name in ARM_JOINT_NAMES:
-        raw = value[name]
+        raw = qualified[name]
         if isinstance(raw, bool) or not isinstance(raw, (int, float)):
             raise MeasuredTrajectoryScreeningError(
                 f"observed start {name} is not numeric"
@@ -219,7 +233,8 @@ def screen_measured_trajectory(
     snapshot: PlannerCalibrationSnapshot,
     reprojection: Mapping[str, Any],
     *,
-    observed_start_joint_positions_rad: Mapping[str, object] | None = None,
+    observed_start_state: ObservedPlannerStartState | None = None,
+    evaluation_monotonic_ns: int | None = None,
     policy: TrajectorySimulationPolicy | None = None,
 ) -> dict[str, Any]:
     """Screen one measured route, retaining every blocker and generating no commands."""
@@ -273,7 +288,9 @@ def screen_measured_trajectory(
         blockers.append("CONTINUOUS_FULL_BODY_COLLISION_SWEEP_NOT_IMPLEMENTED")
 
     bounds = _planner_bounds(context, snapshot)
-    observed = _observed_state(observed_start_joint_positions_rad, bounds)
+    observed = _observed_state(
+        observed_start_state, snapshot, evaluation_monotonic_ns, bounds
+    )
     if observed is None:
         blockers.append("FRESH_OBSERVED_START_JOINT_STATE_REQUIRED")
 
@@ -382,6 +399,11 @@ def screen_measured_trajectory(
             **selected_policy.to_dict(),
             "policy_hash": selected_policy.policy_hash,
         },
+        "observed_start_state_sha256": (
+            None
+            if observed_start_state is None
+            else observed_start_state.observed_start_state_sha256
+        ),
         "observed_start_joint_positions_rad": observed,
         "waypoints": [item.to_dict() for item in waypoints],
         "joint_results": results,

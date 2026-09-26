@@ -10,6 +10,7 @@ from rocell.application.measured_trajectory_screening import (
     MeasuredTrajectoryScreeningError,
     screen_measured_trajectory,
 )
+from rocell.application.observed_planner_start_state import ObservedPlannerStartState
 from rocell.calibration import PlannerCalibrationSnapshot, required_planner_artifact_ids
 from rocell.geometry import RigidTransform, Rotation3, Vec3
 from rocell.kinematics import ARM_JOINT_NAMES
@@ -76,6 +77,11 @@ def snapshot(context) -> PlannerCalibrationSnapshot:
             Rotation3.identity(),
             Vec3(0.0, 0.0, scenario.hand_tcp_to_tip_z_mm),
         ),
+        robot_reference_identity={
+            "arm_identity_hash": "1" * 64,
+            "controller_identity_hash": "2" * 64,
+            "firmware_identity_hash": "3" * 64,
+        },
         joint_zero_offsets_rad=(0.0,) * 6,
         joint_lower_rad=tuple(pair[0] for pair in bounds) + (gripper[0],),
         joint_upper_rad=tuple(pair[1] for pair in bounds) + (gripper[1],),
@@ -97,6 +103,32 @@ def inputs(context):
     return request, measured, reprojection
 
 
+def observed_state(measured: PlannerCalibrationSnapshot, values) -> ObservedPlannerStartState:
+    model = dict(
+        zip(
+            ("b_base", "s_shoulder", "e_elbow", "t_wrist_pitch", "r_wrist_roll"),
+            (values[name] for name in ARM_JOINT_NAMES),
+            strict=True,
+        )
+    )
+    model["g_gripper"] = 0.0
+    return ObservedPlannerStartState(
+        run_id="test-run",
+        arm_identity_sha256="1" * 64,
+        controller_session_id="test-session",
+        request_context_sha256="4" * 64,
+        feedback_receipt_sha256="5" * 64,
+        calibration_snapshot_sha256=measured.snapshot_sha256,
+        manifest_id=measured.manifest_id,
+        active_build_id=measured.active_build_id,
+        response_completed_monotonic_ns=100,
+        available_monotonic_ns=101,
+        valid_until_monotonic_ns=200,
+        controller_joint_positions_rad={key: 0.0 for key in ("b", "s", "e", "t", "r", "g")},
+        model_joint_positions_rad=model,
+    )
+
+
 def test_without_observed_start_fails_closed_before_ik(context) -> None:
     request, measured, reprojection = inputs(context)
     report = screen_measured_trajectory(request, context, measured, reprojection)
@@ -112,23 +144,26 @@ def test_without_observed_start_fails_closed_before_ik(context) -> None:
 
 def test_observed_start_runs_bounded_deterministic_ik(context) -> None:
     request, measured, reprojection = inputs(context)
-    observed = {
+    observed_values = {
         name: context.scenario.ready_arm_joint_positions_rad[name].value
         for name in ARM_JOINT_NAMES
     }
+    observed = observed_state(measured, observed_values)
     first = screen_measured_trajectory(
         request,
         context,
         measured,
         reprojection,
-        observed_start_joint_positions_rad=observed,
+        observed_start_state=observed,
+        evaluation_monotonic_ns=150,
     )
     second = screen_measured_trajectory(
         request,
         context,
         measured,
         reprojection,
-        observed_start_joint_positions_rad=observed,
+        observed_start_state=observed,
+        evaluation_monotonic_ns=150,
     )
     assert first == second
     assert first["ik_executed"] is True
@@ -148,11 +183,12 @@ def test_rejects_tampered_reprojection_and_start_shape(context) -> None:
     tampered["target_id"] = "J"
     with pytest.raises(MeasuredTrajectoryScreeningError, match="hash"):
         screen_measured_trajectory(request, context, measured, tampered)
-    with pytest.raises(MeasuredTrajectoryScreeningError, match="exactly the five"):
+    with pytest.raises(MeasuredTrajectoryScreeningError, match="authenticated"):
         screen_measured_trajectory(
             request,
             context,
             measured,
             reprojection,
-            observed_start_joint_positions_rad={"bad": 0.0},
+            observed_start_state={"bad": 0.0},  # type: ignore[arg-type]
+            evaluation_monotonic_ns=150,
         )

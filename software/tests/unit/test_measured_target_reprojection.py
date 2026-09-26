@@ -38,6 +38,11 @@ def snapshot(
         ),
         board_T_device=transform,
         hand_T_tool=RigidTransform("G", "T", Rotation3.identity(), Vec3.zero()),
+        robot_reference_identity={
+            "arm_identity_hash": "1" * 64,
+            "controller_identity_hash": "2" * 64,
+            "firmware_identity_hash": "3" * 64,
+        },
         joint_zero_offsets_rad=(0.0,) * 6,
         joint_lower_rad=(-2.0,) * 6,
         joint_upper_rad=(2.0,) * 6,

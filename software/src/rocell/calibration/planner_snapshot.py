@@ -152,6 +152,7 @@ class PlannerCalibrationSnapshot:
     board_T_vendor_world: RigidTransform
     board_T_device: RigidTransform
     hand_T_tool: RigidTransform
+    robot_reference_identity: Mapping[str, str]
     joint_zero_offsets_rad: tuple[float, ...]
     joint_lower_rad: tuple[float, ...]
     joint_upper_rad: tuple[float, ...]
@@ -173,6 +174,24 @@ class PlannerCalibrationSnapshot:
             "controller_correlation",
             MappingProxyType(dict(self.controller_correlation)),
         )
+        expected_identity_fields = {
+            "arm_identity_hash",
+            "controller_identity_hash",
+            "firmware_identity_hash",
+        }
+        if set(self.robot_reference_identity) != expected_identity_fields:
+            raise PlannerCalibrationSnapshotError(
+                "snapshot robot reference identity is incomplete"
+            )
+        identity = {
+            key: _sha256(value, key)
+            for key, value in self.robot_reference_identity.items()
+        }
+        object.__setattr__(
+            self,
+            "robot_reference_identity",
+            MappingProxyType(dict(sorted(identity.items()))),
+        )
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -186,6 +205,7 @@ class PlannerCalibrationSnapshot:
             "hand_T_tool": _transform_dict(self.hand_T_tool),
             "robot_reference": {
                 "joint_order": list(_JOINT_ORDER),
+                **dict(self.robot_reference_identity),
                 "zero_offsets_rad": list(self.joint_zero_offsets_rad),
                 "lower_rad": list(self.joint_lower_rad),
                 "upper_rad": list(self.joint_upper_rad),
@@ -423,6 +443,11 @@ def decode_planner_calibration_snapshot(
         board_T_vendor_world=board_T_world,
         board_T_device=board_T_device,
         hand_T_tool=hand_T_tool,
+        robot_reference_identity={
+            "arm_identity_hash": reference["arm_identity_hash"],
+            "controller_identity_hash": reference["controller_identity_hash"],
+            "firmware_identity_hash": reference["firmware_identity_hash"],
+        },
         joint_zero_offsets_rad=zeros,
         joint_lower_rad=lower,
         joint_upper_rad=upper,

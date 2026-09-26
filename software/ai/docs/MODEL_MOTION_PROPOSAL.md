@@ -136,6 +136,17 @@ fresh observed starting joint state is supplied. Full-body/tool/cable collision
 geometry is still incomplete, so no screened result can authorize execution.
 The gate performs no controller encoding or hardware write.
 
+The observed-state boundary is now implemented by
+`rocell.application.observed_planner_start_state`. It consumes the exact
+single-query T=105 request/receipt pair, rejects buffered/retried/motion-bearing
+or stale evidence through the typed receipt contract, requires all six `b/s/e/t/r/g`
+feedback fields, and verifies the observed arm identity against the measured
+robot reference. It then applies the calibrated projection
+`q_model = sign*q_feedback + offset` and supplies the five URDF arm joints to
+trajectory screening only until the monotonic freshness deadline. A plain joint
+dictionary is no longer accepted as an observed start state. The adapter and
+screen remain command-free and carry no physical authority.
+
 Run the zero-write gate from the repository root:
 
 ```powershell

@@ -30,9 +30,15 @@
     "robot_reference": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["joint_order", "zero_offsets_rad", "lower_rad", "upper_rad", "signs"],
+      "required": [
+        "joint_order", "arm_identity_hash", "controller_identity_hash",
+        "firmware_identity_hash", "zero_offsets_rad", "lower_rad", "upper_rad", "signs"
+      ],
       "properties": {
         "joint_order": {"type": "array", "minItems": 6, "maxItems": 6, "items": {"type": "string"}},
+        "arm_identity_hash": {"$ref": "#/$defs/hash"},
+        "controller_identity_hash": {"$ref": "#/$defs/hash"},
+        "firmware_identity_hash": {"$ref": "#/$defs/hash"},
         "zero_offsets_rad": {"$ref": "#/$defs/sixNumbers"},
         "lower_rad": {"$ref": "#/$defs/sixNumbers"},
         "upper_rad": {"$ref": "#/$defs/sixNumbers"},
@@ -63,6 +69,7 @@
     "physical_authority": {"const": false}
   },
   "$defs": {
+    "hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
     "sixNumbers": {
       "type": "array", "minItems": 6, "maxItems": 6, "items": {"type": "number"}
     },

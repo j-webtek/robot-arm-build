@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rocell.local/schemas/observed_planner_start_state_v1.schema.json",
+  "title": "RoCell observed planner start state v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "status", "source", "calibration", "freshness",
+    "controller_joint_positions_rad", "model_joint_positions_rad",
+    "arm_joint_positions_rad", "controller_commands",
+    "hardware_commands_generated", "hardware_access", "physical_authority",
+    "observed_start_state_sha256"
+  ],
+  "properties": {
+    "schema": {"const": "rocell.observed_planner_start_state.v1"},
+    "status": {"const": "READY_FOR_OFFLINE_TRAJECTORY_SCREENING"},
+    "source": {
+      "type": "object", "additionalProperties": false,
+      "required": ["run_id", "arm_identity_sha256", "controller_session_id", "request_context_sha256", "feedback_receipt_sha256"],
+      "properties": {
+        "run_id": {"type": "string", "minLength": 1},
+        "arm_identity_sha256": {"$ref": "#/$defs/hash"},
+        "controller_session_id": {"type": "string", "minLength": 1},
+        "request_context_sha256": {"$ref": "#/$defs/hash"},
+        "feedback_receipt_sha256": {"$ref": "#/$defs/hash"}
+      }
+    },
+    "calibration": {
+      "type": "object", "additionalProperties": false,
+      "required": ["calibration_snapshot_sha256", "manifest_id", "active_build_id", "projection"],
+      "properties": {
+        "calibration_snapshot_sha256": {"$ref": "#/$defs/hash"},
+        "manifest_id": {"type": "string", "minLength": 1},
+        "active_build_id": {"type": "string", "minLength": 1},
+        "projection": {"const": "q_model=sign*q_feedback+offset"}
+      }
+    },
+    "freshness": {
+      "type": "object", "additionalProperties": false,
+      "required": ["response_completed_monotonic_ns", "available_monotonic_ns", "valid_until_monotonic_ns"],
+      "properties": {
+        "response_completed_monotonic_ns": {"type": "integer", "minimum": 1},
+        "available_monotonic_ns": {"type": "integer", "minimum": 1},
+        "valid_until_monotonic_ns": {"type": "integer", "minimum": 1}
+      }
+    },
+    "controller_joint_positions_rad": {"$ref": "#/$defs/controllerJoints"},
+    "model_joint_positions_rad": {"$ref": "#/$defs/modelJoints"},
+    "arm_joint_positions_rad": {
+      "type": "object", "additionalProperties": false,
+      "required": ["base_link_to_link1", "link1_to_link2", "link2_to_link3", "link3_to_link4", "link4_to_link5"],
+      "properties": {
+        "base_link_to_link1": {"type": "number"},
+        "link1_to_link2": {"type": "number"},
+        "link2_to_link3": {"type": "number"},
+        "link3_to_link4": {"type": "number"},
+        "link4_to_link5": {"type": "number"}
+      }
+    },
+    "controller_commands": {"type": "array", "maxItems": 0},
+    "hardware_commands_generated": {"const": 0},
+    "hardware_access": {"const": false},
+    "physical_authority": {"const": false},
+    "observed_start_state_sha256": {"$ref": "#/$defs/hash"}
+  },
+  "$defs": {
+    "hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "controllerJoints": {
+      "type": "object", "additionalProperties": false,
+      "required": ["b", "s", "e", "t", "r", "g"],
+      "properties": {
+        "b": {"type": "number"}, "s": {"type": "number"},
+        "e": {"type": "number"}, "t": {"type": "number"},
+        "r": {"type": "number"}, "g": {"type": "number"}
+      }
+    },
+    "modelJoints": {
+      "type": "object", "additionalProperties": false,
+      "required": ["b_base", "s_shoulder", "e_elbow", "t_wrist_pitch", "r_wrist_roll", "g_gripper"],
+      "properties": {
+        "b_base": {"type": "number"}, "s_shoulder": {"type": "number"},
+        "e_elbow": {"type": "number"}, "t_wrist_pitch": {"type": "number"},
+        "r_wrist_roll": {"type": "number"}, "g_gripper": {"type": "number"}
+      }
+    }
+  }
+}

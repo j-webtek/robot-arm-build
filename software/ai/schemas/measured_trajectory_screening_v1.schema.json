@@ -7,7 +7,8 @@
   "required": [
     "schema", "status", "proposal_sha256", "reprojection_sha256",
     "calibration_snapshot_sha256", "build_snapshot_sha256",
-    "kinematic_model_sha256", "policy", "observed_start_joint_positions_rad",
+    "kinematic_model_sha256", "policy", "observed_start_state_sha256",
+    "observed_start_joint_positions_rad",
     "waypoints", "joint_results", "ik_executed", "ik_all_waypoints_accepted",
     "sampled_joint_continuity_checked", "collision_readiness_sha256",
     "collision_readiness_status", "full_collision_screen_executed",
@@ -28,6 +29,9 @@
     "build_snapshot_sha256": {"$ref": "#/$defs/hash"},
     "kinematic_model_sha256": {"$ref": "#/$defs/hash"},
     "policy": {"type": "object"},
+    "observed_start_state_sha256": {
+      "oneOf": [{"type": "null"}, {"$ref": "#/$defs/hash"}]
+    },
     "observed_start_joint_positions_rad": {
       "oneOf": [
         {"type": "null"},

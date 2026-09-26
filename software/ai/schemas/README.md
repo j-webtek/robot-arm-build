@@ -55,3 +55,7 @@ The [measured trajectory screening schema](measured_trajectory_screening_v1.sche
 binds that target to a fresh observed start state, deterministic sampled IK and
 joint-continuity evidence, plus the current full-body collision-readiness audit.
 Missing start telemetry or incomplete collision geometry remains an explicit blocker.
+The [observed planner start-state schema](observed_planner_start_state_v1.schema.json)
+binds one authenticated, fresh T=1051 receipt to the measured robot reference.
+It requires all six feedback joints, applies the calibrated sign/offset projection,
+and exposes a time-limited five-joint IK start state with no commands or authority.

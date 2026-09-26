@@ -40,6 +40,7 @@ from .measured_trajectory_screening import (
     MeasuredTrajectoryScreeningError,
     screen_measured_trajectory,
 )
+from .observed_planner_start_state import ObservedPlannerStartState
 
 
 class ModelMotionPlannerGateError(ValueError):
@@ -86,6 +87,8 @@ def evaluate_model_motion_planner_gate(
     context: SimulationContext,
     *,
     minimum_confidence: float = 0.9,
+    observed_start_state: ObservedPlannerStartState | None = None,
+    evaluation_monotonic_ns: int | None = None,
 ) -> dict[str, Any]:
     """Return a hash-bound, zero-authority planner-admission report.
 
@@ -166,6 +169,8 @@ def evaluate_model_motion_planner_gate(
                         context,
                         decoded,
                         reprojected,
+                        observed_start_state=observed_start_state,
+                        evaluation_monotonic_ns=evaluation_monotonic_ns,
                     )
                 except MeasuredTrajectoryScreeningError as exc:
                     status = "BLOCKED_MEASURED_TRAJECTORY_INPUT_INVALID"
@@ -207,8 +212,12 @@ def evaluate_model_motion_planner_gate(
         "blockers": blockers,
         "next_required_stage": next_stage,
         "trajectory_candidate": trajectory_candidate,
-        "ik_executed": False,
-        "route_screen_executed": False,
+        "ik_executed": bool(
+            trajectory_candidate and trajectory_candidate.get("ik_executed", False)
+        ),
+        "route_screen_executed": bool(
+            trajectory_candidate and trajectory_candidate.get("waypoints", [])
+        ),
         "controller_commands": [],
         "hardware_commands_generated": 0,
         "hardware_access": False,
