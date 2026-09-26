@@ -81,6 +81,16 @@ ledger; link to it rather than copying long histories into issues. Keep security
 details in the private reporting channel. No automatic stale-issue closer is
 configured: inactivity is not evidence that a problem is resolved.
 
+Bug and documentation intake use YAML issue forms, with only the core context
+required. Unknown versions are acceptable; users are not asked to repeat a live
+test or supply personal contact details. Feature and cross-workstream templates
+remain Markdown, and blank issues/private security contact links remain available.
+Forms help collect information; required fields are not evidence validation,
+security screening, or an enforced review gate for all issue-creation methods.
+For future edits, follow [GitHub's form syntax](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-issue-forms),
+check IDs and labels for uniqueness, and verify the chooser and unsubmitted forms
+after merge. Do not create public test issues or submit private data for UI testing.
+
 ## Dependency-update operation
 
 [Dependabot configuration](../.github/dependabot.yml) proposes weekly updates for
