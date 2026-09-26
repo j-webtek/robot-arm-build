@@ -419,3 +419,8 @@ under the same protocol before changing architecture or visibility thresholds.
 ### Separate landmark loss ablations (AI-110)
 
 Frozen source `5a29b0178378478955a12b70a2cf78582f1f4b88` separates the coordinate and visibility objectives with matching pixels, initialization, budget and common checkpoint-selection objective. Coordinate-only reduces mean key error to8.51–12.89mm but classifies all201 hidden corners visible. Balanced-visibility-only lowers that count to88 while clear recall falls to57.46% and localization worsens to24.01–29.54mm. Both fail; neither replaces the pose baseline or supplies calibrated uncertainty. The prior combined failure remains intact. Next investigate whether global pooling discards the corner-local evidence needed for visibility, using frozen diagnostic evidence before further training. Reports: `eval/landmark_ablation_v0_*`; shared ledger AI-110–112.
+
+
+### Paired visibility response (AI-113)
+
+Across196 eligible same-scene clear-to-hidden interventions, the control, combined and coordinate-only models never cross the fixed0.5 visibility threshold; visibility-only crosses twice. Target probability changes are small (0.00026–0.00183), only slightly greater than unaffected-corner changes. Aggregate hidden rejection therefore does not establish obstacle-specific recognition. The next experiment should compare global pooling with corner-local features under matched training, using predicted positions at evaluation. Oracle position crops remain diagnostic only. This reused-development analysis neither proves global pooling caused the problem nor qualifies visibility. Source `a38231105cda7e0104b8fc8238076bed6e697db9`; report `eval/landmark_visibility_response.json`.

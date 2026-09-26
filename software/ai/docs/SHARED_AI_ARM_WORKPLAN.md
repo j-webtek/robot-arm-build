@@ -599,7 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-| AI | S1 | paired corner visibility diagnostic | feature/translation-pair-evidence | ACTIVE |
 
 Workers add a short row before beginning a potentially overlapping change and
 remove it only in the same commit that appends the resulting evidence row.
@@ -4046,3 +4045,51 @@ commissioning, or bounded physical result with its limitations intact.
 - Next dependency: independent review of exact app SHA-256
   `7d2e47d40141e95b611fcf37ca38d495fcf3da4dc3051f128bbae95e10840d1d`;
   only after approval should an installation/startup proposal be drafted.
+
+### E-20260926-AI-113 — paired corner visibility response
+
+- Stage: S1
+- Lane: AI
+- Commit: `a38231105cda7e0104b8fc8238076bed6e697db9` (source and input manifest frozen before execution)
+- Change: compare same-seed standard/full occlusion predictions for four frozen landmark models; target must change clear-to-hidden, comparison corners remain clear.
+- Inputs/fixtures: AI-107/110 scorecards, 200 reused development groups starting15000000;196 eligible pairs per model. Exact input/source SHA256 in `vision/landmark_visibility_response_plan.json`.
+- Command: `python software/ai/vision/diagnose_landmark_visibility_response.py`
+- Result: diagnostic completed; target probability drops control/combined/coordinate-only/visibility-only 0.001482/0.000263/0.000317/0.001827. Target-minus-peer selectivity0.000081/0.000152/0.000105/0.000231. Fixed0.5 visible-to-hidden crossings0/0/0/2 of196. Positive selectivity56/104/107/142. Small response supports testing localized visibility features; does not prove pooling causality.
+- Artifacts: `eval/landmark_visibility_response.json`, runner and frozen manifest.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: existing predictions, reused synthetic development data, image-wide normalization also changes; descriptive study without qualification threshold. No local-head model trained. No batch contract or integration-status change.
+- Supersedes: none; previous failures retained.
+- Next dependency: freeze matched global-pooling versus corner-local visibility-head training, using predicted locations at evaluation; oracle crops can only be explicitly labeled diagnostics. Preserve localization and clear-recall gates.
+
+### E-20260926-AI-114 — visibility response verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `a38231105cda7e0104b8fc8238076bed6e697db9` (source baseline; test committed with evidence)
+- Change: analytic targeted/global response discrimination and complete report recomputation with hash verification.
+- Inputs/fixtures: analytic four-corner predictions, AI-113 pinned input reports and output.
+- Command: `python -m pytest -q software/ai/tests/test_landmark_visibility_response.py`
+- Result: PASS,2 tests; existing pytest-asyncio configuration warning.
+- Artifacts: named test and AI-113 report.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: verifies calculation, not model qualification; boundary contract unchanged, shared boundary tests not triggered.
+- Supersedes: none
+- Next dependency: AI-113 matched local-head study.
+
+### E-20260926-AI-115 — visibility diagnostic publication audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `a38231105cda7e0104b8fc8238076bed6e697db9` (frozen source plus report/test snapshot)
+- Change: audit publication snapshot.
+- Inputs/fixtures: repository with AI-113/114 artifacts and reviewed fixture allowlist.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS;5820 paths,812.4 MiB,0 unresolved findings,14 reviewed synthetic fixtures.
+- Artifacts: audit stdout and snapshot.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: heuristic audit; AI-041 protected-main publication blocker remains.
+- Supersedes: none
+- Next dependency: protected-branch PR/checks and AI-113 training study.
