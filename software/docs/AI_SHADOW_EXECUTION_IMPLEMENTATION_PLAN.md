@@ -548,8 +548,11 @@ Implement the following before any additional general-purpose arm movement:
 - [x] Add the strict measured calibration snapshot decoder for robot reference,
       `B_T_Wv`, separate `R_ctrl` correlation, device placement, and `G_T_T`.
       Nominal/non-valid artifacts, hash mismatches, wrong transform directions,
-      unknown fields, and invalid limits fail closed. Measured target reprojection
-      is the next planner boundary.
+      unknown fields, and invalid limits fail closed.
+- [x] Reproject validated model targets through measured `B_T_keyboard` or
+      `B_T_phone_screen`. Named-target containment is checked in device coordinates,
+      clearance follows measured device-local +Z, and the hash-bound output advances
+      only to deterministic IK and full-route screening with zero hardware writes.
 - [ ] Adapt current visual targets and keyboard layout into `scene_targets`.
 - [ ] Wrap `static_task_rehearsal` as a `trajectory_candidate` producer.
 - [ ] Implement the safety report with explicit reject reason codes.

@@ -37,14 +37,17 @@ forces every physical stage after missing calibration to remain `not_run`.
 The [model-motion planner gate schema](model_motion_planner_gate_v1.schema.json)
 binds that candidate to the frozen build, frame contract, configuration epochs,
 and calibration graph. It remains zero-write and emits neither IK nor a route
-while measured calibration or strict payload decoding is unavailable.
+while measured calibration, strict payload decoding, or target reprojection is
+unavailable.
 The [planner calibration snapshot schema](planner_calibration_snapshot_v1.schema.json)
 records the exact hash-matched measured transforms, robot reference, controller
 correlation, device placement, and tool/TCP geometry accepted by the strict
 decoder. It carries no physical authority.
-
-
 The [model-motion simulation report](model_motion_simulation_v0.schema.json)
 binds a nominal coordinate rehearsal to its proposal and static source hashes.
 The Python validator also checks hashes and zero physical authority. Even
 `SAMPLES_PASS_NOT_EXECUTABLE` does not permit controller execution.
+The [measured target reprojection schema](measured_target_reprojection_v1.schema.json)
+validates a model point in the measured device frame, binds it to its named target,
+and transforms its surface/clearance points into calibrated board frame `B`. It is
+Cartesian planner input only and contains no IK result or controller command.

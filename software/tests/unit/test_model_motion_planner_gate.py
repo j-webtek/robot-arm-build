@@ -8,6 +8,9 @@ import pytest
 
 import rocell.application.model_motion_planner_gate as gate_module
 from rocell.calibration import PlannerCalibrationSnapshotError
+from rocell.application.measured_target_reprojection import (
+    MeasuredTargetReprojectionError,
+)
 from rocell.application.context import SimulationContextError, load_simulation_context
 from rocell.application.model_motion_planner_gate import (
     evaluate_mapping,
@@ -126,7 +129,7 @@ def valid_calibration_status():
     )
 
 
-def test_valid_calibrations_advance_only_to_measured_reprojection(
+def test_valid_calibrations_and_reprojection_advance_to_ik_screening(
     context, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     monkeypatch.setattr(
@@ -144,13 +147,23 @@ def test_valid_calibrations_advance_only_to_measured_reprojection(
     monkeypatch.setattr(
         gate_module, "decode_planner_calibration_snapshot", lambda **_: decoded
     )
+    reprojection = {
+        "schema": "rocell.measured_target_reprojection.v1",
+        "reprojection_sha256": "d" * 64,
+    }
+    monkeypatch.setattr(
+        gate_module, "reproject_measured_target", lambda *_args, **_kwargs: reprojection
+    )
 
     report = evaluate_model_motion_planner_gate(
         ModelMotionProposal.from_mapping(proposal()), context
     )
-    assert report["status"] == "BLOCKED_MEASURED_TARGET_REPROJECTION_REQUIRED"
-    assert report["next_required_stage"] == "MEASURED_DEVICE_TARGET_REPROJECTION"
+    assert report["status"] == "READY_FOR_DETERMINISTIC_IK_AND_ROUTE_SCREENING"
+    assert report["next_required_stage"] == "DETERMINISTIC_IK_AND_FULL_ROUTE_SCREENING"
     assert report["calibration_snapshot_sha256"] == "c" * 64
+    assert report["measured_target_reprojection"] == reprojection
+    assert report["measured_target_reprojection_sha256"] == "d" * 64
+    assert report["blockers"] == []
     assert report["trajectory_candidate"] is None
     assert report["hardware_commands_generated"] == 0
 
@@ -180,3 +193,40 @@ def test_invalid_calibration_payload_is_an_explicit_blocker(
         "CALIBRATION_PAYLOAD_INVALID:wrong transform direction"
     ]
     assert report["calibration_snapshot"] is None
+
+
+def test_invalid_measured_reprojection_is_an_explicit_blocker(
+    context, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setattr(
+        gate_module, "assess_calibration_status", lambda *_: valid_calibration_status()
+    )
+    monkeypatch.setattr(
+        gate_module,
+        "CalibrationRegistry",
+        lambda *_: SimpleNamespace(get_current=lambda artifact_id: object()),
+    )
+    decoded = SimpleNamespace(
+        to_dict=lambda: {"schema": "rocell.planner_calibration_snapshot.v1"},
+        snapshot_sha256="c" * 64,
+    )
+    monkeypatch.setattr(
+        gate_module, "decode_planner_calibration_snapshot", lambda **_: decoded
+    )
+
+    def reject(*_args, **_kwargs):
+        raise MeasuredTargetReprojectionError("outside named target")
+
+    monkeypatch.setattr(gate_module, "reproject_measured_target", reject)
+    report = evaluate_model_motion_planner_gate(
+        ModelMotionProposal.from_mapping(proposal()), context
+    )
+    assert report["status"] == "BLOCKED_MEASURED_TARGET_REPROJECTION_INVALID"
+    assert (
+        report["next_required_stage"]
+        == "CORRECT_MODEL_TARGET_OR_MEASURED_DEVICE_PLACEMENT"
+    )
+    assert report["blockers"] == [
+        "MEASURED_TARGET_REPROJECTION_INVALID:outside named target"
+    ]
+    assert report["measured_target_reprojection"] is None

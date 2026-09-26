@@ -8,6 +8,7 @@
     "schema", "status", "model_motion_candidate_sha256",
     "model_motion_candidate", "source_bindings", "calibration_status_sha256",
     "calibration_status", "calibration_snapshot_sha256", "calibration_snapshot",
+    "measured_target_reprojection_sha256", "measured_target_reprojection",
     "blockers", "next_required_stage",
     "trajectory_candidate", "ik_executed", "route_screen_executed",
     "controller_commands", "hardware_commands_generated", "hardware_access",
@@ -18,7 +19,8 @@
     "status": {"enum": [
       "BLOCKED_CALIBRATION_MISSING_OR_STALE",
       "BLOCKED_CALIBRATION_PAYLOAD_INVALID",
-      "BLOCKED_MEASURED_TARGET_REPROJECTION_REQUIRED"
+      "BLOCKED_MEASURED_TARGET_REPROJECTION_INVALID",
+      "READY_FOR_DETERMINISTIC_IK_AND_ROUTE_SCREENING"
     ]},
     "model_motion_candidate_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
     "model_motion_candidate": {"type": "object"},
@@ -32,11 +34,19 @@
       ]
     },
     "calibration_snapshot": {"oneOf": [{"type": "null"}, {"type": "object"}]},
-    "blockers": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "measured_target_reprojection_sha256": {
+      "oneOf": [
+        {"type": "null"},
+        {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      ]
+    },
+    "measured_target_reprojection": {"oneOf": [{"type": "null"}, {"type": "object"}]},
+    "blockers": {"type": "array", "items": {"type": "string"}},
     "next_required_stage": {"enum": [
       "COMMISSION_REQUIRED_CALIBRATIONS",
       "CORRECT_MEASURED_CALIBRATION_PAYLOADS",
-      "MEASURED_DEVICE_TARGET_REPROJECTION"
+      "CORRECT_MODEL_TARGET_OR_MEASURED_DEVICE_PLACEMENT",
+      "DETERMINISTIC_IK_AND_FULL_ROUTE_SCREENING"
     ]},
     "trajectory_candidate": {"type": "null"},
     "ik_executed": {"const": false},

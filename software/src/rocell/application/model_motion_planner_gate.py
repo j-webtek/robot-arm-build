@@ -4,7 +4,8 @@ The gate is intentionally incapable of trajectory generation or hardware access.
 It proves that the coordinate proposal, frozen target catalog, build context,
 frame contract, configuration-epoch policy, and calibration graph refer to one
 coherent planning attempt. Until measured calibration artifacts and their strict
-payload decoder exist, the only valid disposition is a documented block.
+payload decoder exist, the valid disposition is a documented block. With a valid
+snapshot, measured target reprojection may advance to offline IK/route screening.
 """
 
 from __future__ import annotations
@@ -31,6 +32,10 @@ from .context import (
     revalidate_simulation_context,
 )
 from .model_motion_bridge import compile_model_motion_proposal
+from .measured_target_reprojection import (
+    MeasuredTargetReprojectionError,
+    reproject_measured_target,
+)
 
 
 class ModelMotionPlannerGateError(ValueError):
@@ -81,8 +86,9 @@ def evaluate_model_motion_planner_gate(
     """Return a hash-bound, zero-authority planner-admission report.
 
     A complete calibration graph is necessary but not sufficient. Valid artifacts
-    are decoded through the strict planner snapshot contract; device-local target
-    reprojection through the measured device transform remains a separate stage.
+    are decoded through the strict planner snapshot contract and the model target is
+    reprojected through measured device placement. IK and route screening remain a
+    later stage.
     """
 
     if not isinstance(proposal, ModelMotionProposal):
@@ -104,6 +110,8 @@ def evaluate_model_motion_planner_gate(
     blockers = list(_calibration_blockers(calibration_document))
     calibration_snapshot = None
     calibration_snapshot_sha256 = None
+    measured_target_reprojection = None
+    measured_target_reprojection_sha256 = None
     if calibration.all_valid:
         artifact_ids = required_planner_artifact_ids(proposal.device.value)
         registry = CalibrationRegistry(context.workspace / "software/calibrations")
@@ -133,9 +141,22 @@ def evaluate_model_motion_planner_gate(
         else:
             calibration_snapshot = decoded.to_dict()
             calibration_snapshot_sha256 = decoded.snapshot_sha256
-            status = "BLOCKED_MEASURED_TARGET_REPROJECTION_REQUIRED"
-            blockers.append("MEASURED_DEVICE_TARGET_REPROJECTION_NOT_IMPLEMENTED")
-            next_stage = "MEASURED_DEVICE_TARGET_REPROJECTION"
+            try:
+                reprojected = reproject_measured_target(
+                    proposal,
+                    context.targets,
+                    decoded,
+                    model_motion_candidate_sha256=candidate["candidate_sha256"],
+                )
+            except MeasuredTargetReprojectionError as exc:
+                status = "BLOCKED_MEASURED_TARGET_REPROJECTION_INVALID"
+                blockers.append(f"MEASURED_TARGET_REPROJECTION_INVALID:{exc}")
+                next_stage = "CORRECT_MODEL_TARGET_OR_MEASURED_DEVICE_PLACEMENT"
+            else:
+                measured_target_reprojection = reprojected
+                measured_target_reprojection_sha256 = reprojected["reprojection_sha256"]
+                status = "READY_FOR_DETERMINISTIC_IK_AND_ROUTE_SCREENING"
+                next_stage = "DETERMINISTIC_IK_AND_FULL_ROUTE_SCREENING"
     else:
         status = "BLOCKED_CALIBRATION_MISSING_OR_STALE"
         next_stage = "COMMISSION_REQUIRED_CALIBRATIONS"
@@ -163,6 +184,8 @@ def evaluate_model_motion_planner_gate(
         "calibration_status": calibration_document,
         "calibration_snapshot_sha256": calibration_snapshot_sha256,
         "calibration_snapshot": calibration_snapshot,
+        "measured_target_reprojection_sha256": measured_target_reprojection_sha256,
+        "measured_target_reprojection": measured_target_reprojection,
         "blockers": blockers,
         "next_required_stage": next_stage,
         "trajectory_candidate": None,
