@@ -1,11 +1,16 @@
-# Brand foundation — draft for owner review
+# Tactevra brand foundation
 
-Prepared September 26, 2026. No new name has been adopted. The current project
-remains RoCell and the repository remains `j-webtek/robot-arm-build`.
+Updated September 26, 2026. The project owner selected **Tactevra** as the new
+brand. Commercial clearance and rollout remain pending; the repository remains
+`j-webtek/robot-arm-build`, and existing technical identifiers remain unchanged.
+
+Canonical spelling: **Tactevra**. Lowercase slug: `tactevra`.
+Recommended pronunciation: **tak-TEV-ruh**. Transitional description:
+**Tactevra, formerly RoCell**.
 
 Start here for consistent product language. Use the [naming review](NAMING_REVIEW.md)
-to choose a candidate and the [migration plan](MIGRATION_PLAN.md) to implement an
-approved identity. These documents do not change software or hardware behavior.
+for the selection record and the [migration plan](MIGRATION_PLAN.md) for rollout.
+These documents do not change software or hardware behavior.
 
 ## Positioning
 
@@ -18,7 +23,7 @@ Positioning statement:
 
 Short description for current use:
 
-> RoCell brings AI target proposals and robot control into one inspectable
+> Tactevra brings AI target proposals and robot control into one inspectable
 > workflow. It supports offline research, command validation, and supervised
 > movement experiments while physical typing and phone interaction are developed.
 
@@ -36,20 +41,20 @@ evidence and review.
 
 ## One product, consistent component names
 
-After an owner-approved and screened name is selected:
+Use these names for the planned rollout; this table does not rename deployed components:
 
 | Surface | Naming rule | Purpose |
 | --- | --- | --- |
-| Product | `<Brand>` | Umbrella identity |
-| GitHub repository | lowercase brand slug | Main source repository |
-| User interface | `<Brand> Studio` | Setup, task review, results |
-| Arm software | `<Brand> Runtime` | Validation, planning, execution records |
-| AI workstream | `<Brand> AI` | Intent and perception components |
-| Physical assembly | `<Brand> Workcell` | Hardware integration |
+| Product | Tactevra | Umbrella identity |
+| GitHub repository | `tactevra` (planned) | Main source repository |
+| User interface | Tactevra Studio | Setup, task review, results |
+| Arm software | Tactevra Runtime | Validation, planning, execution records |
+| AI workstream | Tactevra AI | Intent and perception components |
+| Physical assembly | Tactevra Workcell | Hardware integration |
 
 These are descriptive components, not separate companies or independent brands.
-Do not publish literal `<Brand>` placeholders. Until adoption, retain RoCell in
-active user-facing material. Do not rename individual third-party models.
+Update active public-facing material in the coordinated rollout; preserve RoCell
+in historical records and compatibility identifiers. Do not rename third-party models.
 
 ## Voice and capability language
 
