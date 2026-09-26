@@ -14,6 +14,9 @@ The [compatibility and content review](COMPATIBILITY_CONTENT_REVIEW_2026-09-26.m
 at `3660fc4` found no incompatibility in the tested offline selection. Release
 content/provenance review and both workstream owners' sign-off remain pending;
 generated source archives also include tracked CAD and print-package assets.
+The project owner has since [confirmed original authorship of the CAD/print
+designs](../HARDWARE_PROVENANCE.md); software/model attribution and workstream
+sign-off remain separate.
 
 ## What this preview is intended to include
 

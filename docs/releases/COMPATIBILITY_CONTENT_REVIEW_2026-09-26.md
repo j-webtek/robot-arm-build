@@ -64,11 +64,12 @@ local models, adapters, or their caches without a separate provenance review.
 
 ## Decisions needed before publication
 
-1. **Project/hardware owner:** confirm authorship or upstream sources and
-   redistribution terms for CAD/print packages, including the ZIP. Supply
-   attribution records where required. Preserve frozen archives; use a companion
-   provenance record or a separately reviewed release artifact rather than
-   silently rewriting historical bytes.
+1. **Project/hardware owner — authorship confirmed September 26, 2026:** the
+   owner states the CAD/print designs are entirely their own work. See the
+   [provenance record](../HARDWARE_PROVENANCE.md). The existing repository license
+   is unchanged. This resolves the design-authorship question; it does not cover
+   third-party software, models, or embedded non-design metadata. Frozen archive
+   bytes remain unchanged.
 2. **AI owner:** sign off the exact candidate's producer contract and identify
    any code/data/model materials needing additional notices. This review does
    not approve redistributing locally installed weights.

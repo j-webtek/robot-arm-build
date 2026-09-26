@@ -2,6 +2,9 @@
 
 Contributors can reproduce the [hardware-free CI checks](CI.md) locally.
 
+The [hardware provenance record](HARDWARE_PROVENANCE.md) documents the owner's
+CAD/print-design authorship confirmation and its scope.
+
 Maintainers preparing a source preview should follow the
 [experimental release checklist](RELEASING.md); no release is published by that plan.
 
