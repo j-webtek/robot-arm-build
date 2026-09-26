@@ -1,0 +1,12 @@
+{
+  "seeds": [
+    260926,
+    260927,
+    260928
+  ],
+  "policy": "All runs retained; report full and baseline acceptance separately and per-condition ranges; do not pool repeated images as independent observations.",
+  "source_sha256": {
+    "software\\ai\\vision\\summarize_anchor_replicas.py": "80b9c114d4bb2878bc65d8a2ff59b01fa8e5785ebaf3be7d8c6b0ed704fdd83e",
+    "software\\ai\\eval\\pose_anchor_v0_report.json": "ca98799b752788c732dbd9f18453cbc6a5cd1785d2b27eab3abb6e61484cee4e"
+  }
+}

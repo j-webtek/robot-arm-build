@@ -599,6 +599,8 @@ Copy this row and fill every field:
 
 ## Active work claims
 
+- AI lane / S1: unchanged anchor replication seeds260927/260928, retain260926 and aggregate all runs; no seed selection or qualification.
+
 
 
 
