@@ -602,6 +602,7 @@ remove it only in the same commit that appends the resulting evidence row.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
+| AI/model | S1 | confidence research plan, metric helper/tests, AI evidence | main from `e444e2b` | ACTIVE: freeze synthetic study and scoring; no training/promotion |
 | Arm/runtime lane | S2 | v2 dual-lineage trajectory envelope contract | `main` from `67390c4` | ACTIVE |
 | Unclaimed | S4 | controller adapter/receipts | — | AVAILABLE |
 
