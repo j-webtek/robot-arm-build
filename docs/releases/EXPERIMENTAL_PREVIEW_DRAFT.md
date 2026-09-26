@@ -10,6 +10,14 @@ unselected. Complete the [release checklist](../RELEASING.md) before publication
 A [pinned source-baseline verification](BASELINE_2026-09-26.md) is available for
 `b1bb742`. It is supporting evidence, not approval of a final release candidate.
 
+The [compatibility and content review](COMPATIBILITY_CONTENT_REVIEW_2026-09-26.md)
+at `3660fc4` found no incompatibility in the tested offline selection. Release
+content/provenance review and both workstream owners' sign-off remain pending;
+generated source archives also include tracked CAD and print-package assets.
+The project owner has since [confirmed original authorship of the CAD/print
+designs](../HARDWARE_PROVENANCE.md); software/model attribution and workstream
+sign-off remain separate.
+
 ## What this preview is intended to include
 
 - Tactevra's public-facing documentation and branding, with compatible `rocell`
