@@ -2147,3 +2147,23 @@ commissioning, or bounded physical result with its limitations intact.
 - Supersedes: none.
 - Next dependency: collect and independently review exact installed-controller
   evidence; keep physical execution blocked until that is complete.
+
+### E-20260926-ARM-023 — controller-gate release-doc integration
+
+- Stage: S4
+- Lane: ARM
+- Commit: `592092b` plus merged `origin/main` at `b1bb742` (verified integration
+  baseline; this evidence row committed separately)
+- Change: merged concurrent experimental-release/support documentation and
+  reverified the controller gate without altering its trust or authority rules.
+- Inputs/fixtures: ARM-021 suite plus the current repository snapshot.
+- Commands: ARM-021 pytest command; `python scripts/audit_github_snapshot.py`.
+- Result: PASS, 244 tests in 41.32 seconds. Audit PASS, exit 0; 5,682 paths,
+  903.6 MiB, 0 unresolved review findings, 14 reviewed synthetic fixtures.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: integration success is still offline and does not qualify the
+  installed controller, mapping, firmware, feedback, or startup behavior.
+- Supersedes: ARM-022 only for the current integrated snapshot counts.
+- Next dependency: separately approved physical evidence collection and
+  independent review before zero-write profile binding can pass on real data.
