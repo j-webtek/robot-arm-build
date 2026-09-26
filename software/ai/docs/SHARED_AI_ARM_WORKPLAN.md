@@ -124,7 +124,7 @@ Only the shared integration gate may change a stage's overall status to
 | S1 | Contract v2: freshness, uncertainty, capability | IN_PROGRESS | READY_FOR_INTEGRATION | COMPLETE | IN_PROGRESS |
 | S2 | Full zero-hardware text-to-envelope shadow path | NOT_STARTED | READY_FOR_INTEGRATION | IN_PROGRESS | IN_PROGRESS |
 | S3 | Measured localization and planning readiness | IN_PROGRESS | BLOCKED | NOT_STARTED | BLOCKED |
-| S4 | Zero-write Waveshare adapter and receipts | READY_FOR_INTEGRATION | NOT_STARTED | NOT_STARTED | NOT_STARTED |
+| S4 | Zero-write Waveshare adapter and receipts | READY_FOR_INTEGRATION | IN_PROGRESS | NOT_STARTED | IN_PROGRESS |
 | S5 | One independently verified physical key action | NOT_STARTED | NOT_STARTED | NOT_STARTED | NOT_STARTED |
 | S6 | Ordered multi-action keyboard missions | NOT_STARTED | NOT_STARTED | NOT_STARTED | NOT_STARTED |
 | S7 | Performance and operational qualification | NOT_STARTED | NOT_STARTED | NOT_STARTED | NOT_STARTED |
@@ -605,7 +605,7 @@ remove it only in the same commit that appends the resulting evidence row.
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
 | Unclaimed | S2 | qualified perception adapter and complete shared gate | — | AVAILABLE |
-| Unclaimed | S4 | controller adapter/receipts | — | AVAILABLE |
+| Unclaimed | S4 | sole-writer lifecycle, fault injection, and restart closure | — | AVAILABLE |
 
 ## Worker update procedure
 
@@ -1762,3 +1762,192 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: heuristic findings unresolved; no clean audit claim.
 - Supersedes: none
 - Next dependency: fixture-owner review independently of localization research.
+
+### E-20260926-ARM-014 — sealed-envelope T102 zero-write preview
+
+- Stage: S4
+- Lane: ARM
+- Commit: `575669b206fc671bb51277971843a9cf690082e4`
+- Change: implemented a transport-free Waveshare T=102 preview adapter that
+  accepts only a sealed dual-lineage v2 trajectory envelope, an exact encoding
+  profile, and a separately issued single-use evidence-only permit. The observed
+  starting waypoint is retained as state and never encoded as a movement. Every
+  later waypoint maps the five planner joints to base/shoulder/elbow/wrist/roll,
+  holds the gripper at one explicit fixed angle, and retains its host dispatch
+  time separately from the firmware's opaque `spd` and `acc` fields.
+- Inputs/fixtures: synthetic ready v2 envelope fixture from
+  `software/tests/unit/test_trajectory_execution_envelope_v2.py`; encoding
+  profile bound to exact vendor-source, joint-map, controller-session,
+  configuration-epoch, and trajectory-limit hashes.
+- Command: `python -m pytest software/ai/tests software/tests/unit/test_zero_write_waveshare_adapter_v1.py software/tests/unit/test_trajectory_execution_envelope_v2.py software/tests/unit/test_all_joint_command.py software/tests/unit/test_arm_protocol.py software/tests/integration/test_shared_shadow_runner_v2.py software/tests/integration/test_model_motion_v2_shared_gate.py software/tests/unit/test_model_motion_ingress_v2.py software/tests/unit/test_model_motion_planner_gate.py software/tests/unit/test_model_motion_sequence_coordinator.py -q`
+- Result: PASS, 261 tests after merging the concurrent AI work. Golden bytes are
+  deterministic. Reused permits, duplicate correlations, stale permits, altered
+  envelopes, mismatched controller sessions/configuration epochs/limit profiles,
+  unsupported interpolation or gripper behavior, invalid firmware settings, and
+  schedules exceeding the envelope deadline fail closed without retry.
+- Artifacts: `software/src/rocell/application/zero_write_waveshare_adapter_v1.py`,
+  its application exports, and
+  `software/tests/unit/test_zero_write_waveshare_adapter_v1.py`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: this is an encoding preview and receipt, not a sole writable
+  transport owner or physical execution permit. It opens no transport, submits
+  no bytes, receives no acknowledgement or feedback, and does not prove that
+  the configured vendor artifact, mapping, rate settings, or joint limits match
+  the installed controller. The ready trajectory used by the test is synthetic.
+- Supersedes: none; starts the arm-owned S4 implementation.
+- Next dependency: place this exact encoder behind one separately reviewed sole
+  writer, define partial-write/timeout/restart closure, and qualify the installed
+  firmware mapping before any physical authority is possible.
+
+### E-20260926-ARM-015 — S4 preview audit findings retained
+
+- Stage: S4
+- Lane: ARM
+- Commit: `575669b206fc671bb51277971843a9cf690082e4`
+- Change: ran the required read-only repository snapshot audit after merging the
+  current AI evidence and CI changes with the S4 preview implementation.
+- Inputs/fixtures: repository snapshot and `scripts/audit_github_snapshot.py`.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: FAIL, exit 1; 5,653 paths, 903.4 MiB, the same 14 existing
+  credential-literal-review findings in arm unit fixtures; no zero-write adapter,
+  permit, receipt, or test finding.
+- Artifacts: scanner and the existing named fixtures in its output.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: heuristic findings remain unresolved; this is not a clean
+  repository security-audit claim.
+- Supersedes: none; preserves every previous audit failure.
+- Next dependency: fixture-owner review remains independent of S4 writer and
+  installed-controller qualification.
+
+
+### E-20260926-AI-032 — translation and rotation development decomposition
+
+- Stage: S1
+- Lane: AI
+- Commit: `c20b7c9d6319a267f66dd348f49b87ef734e3ac9` (exact frozen diagnostic and manifest before scoring)
+- Change: scored unchanged model predictions plus translation-only and rotation-only
+  counterfactuals; hidden renderer truth used only in diagnostic scoring.
+- Inputs/fixtures: 200 existing 15M development groups, three conditions, 46 targets;
+  checkpoint/source hashes in `eval/pose_decomposition_v0.manifest.json`; image and
+  catalog hashes in scorecard. Same matched 128x96 checkpoint as AI-029.
+- Command: `python software/ai/vision/diagnose_pose_decomposition.py`
+- Result: PASS for completed attribution. Mean key error baseline 0.945249 mm,
+  translation-only 0.885410 mm, rotation-only 0.278395 mm. Within-1mm rates 63.083%,
+  66.167%, 96.217%, respectively; each 27,600 correlated target/view samples.
+  Baseline mean standard 0.868360, appearance_shift 0.900634, challenge 1.066751 mm.
+- Artifacts: `software/ai/eval/pose_decomposition_v0_scorecard.json`, manifest,
+  `software/ai/vision/diagnose_pose_decomposition.py`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: counterfactual diagnostics are not deployable corrections; scalar
+  error magnitudes are not additive. Condition bundles do not identify individual
+  lighting/blur/obstruction causes. No independent evaluation, calibration,
+  confidence promotion, or qualification installation.
+- Supersedes: none
+- Next dependency: freeze translation-focused pose training on development data,
+  retaining yaw regression monitoring; require paired baseline comparison before
+  consuming new calibration/evaluation groups.
+
+### E-20260926-AI-033 — decomposition consistency checks
+
+- Stage: S1
+- Lane: AI
+- Commit: `c20b7c9d6319a267f66dd348f49b87ef734e3ac9` (diagnostic baseline; new tests/evidence committed with this row)
+- Change: checked exact previous baseline/image identity, source pins and equality
+  of translation-only key mean error with center translation mean error.
+- Inputs/fixtures: AI-029 and AI-032 scorecards and frozen manifest.
+- Command: `python -m pytest -q software/ai/tests/test_pose_decomposition.py`
+- Result: PASS, 2 tests.
+- Artifacts: named test and scorecards.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: diagnostic consistency only, not physical or model qualification.
+- Supersedes: none
+- Next dependency: AI-032 translation-focused development experiment.
+
+### E-20260926-AI-034 — decomposition audit findings retained
+
+- Stage: S1
+- Lane: AI
+- Commit: `c20b7c9d6319a267f66dd348f49b87ef734e3ac9`
+- Change: required read-only repository audit after diagnostic.
+- Inputs/fixtures: repository snapshot, new scorecard and `scripts/audit_github_snapshot.py`.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: FAIL, exit 1; 5,656 paths, 785.0 MiB, same 14 existing arm-unit
+  credential-literal-review findings; no decomposition-file finding.
+- Artifacts: scanner and existing fixtures.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: heuristic findings unresolved; no clean audit claim.
+- Supersedes: none
+- Next dependency: fixture-owner review independently of AI development.
+
+
+### E-20260926-AI-035 — translation-weighted development candidate
+
+- Stage: S1
+- Lane: AI
+- Commit: `fe20dc15376361f38049e4791583af72b62e5a77` (exact frozen paired training code and plan)
+- Change: compared normalized pose residual weights 1:1:1 versus 4:4:1 for XY/yaw,
+  same starting checkpoint, seed/order, 128x96 input and 12-epoch AdamW budget.
+  Both select minimum unweighted development MSE; training_mse in the history
+  denotes each arm's normalized weighted training loss.
+- Inputs/fixtures: 14M training/15M development groups, 3 conditions, 46 targets;
+  3,600/600 images. Source/catalog/start checkpoint hashes in
+  `train/translation_weighted_v0_plan.json`; pixel/model hashes in scorecard.
+- Command: `python software/ai/vision/train_translation_weighted.py`
+- Result: PASS for predeclared development candidate rule, not qualification.
+  Control epoch 5 vs weighted epoch 12: mean key error 0.936551 -> 0.906526 mm;
+  mean center error 0.878934 -> 0.856590 mm; yaw p95 0.616581 -> 0.571123 degrees;
+  within-1mm 64.8007% -> 69.0217%. Key p95 2.133593 -> 2.051064 mm.
+- Artifacts: `software/ai/eval/translation_weighted_v0_scorecard.json`, paired plan,
+  `vision/train_translation_weighted.py`; ignored local models under
+  `software/ai/results/translation_weighted_v0_control/` and `_translation_weighted/`.
+  Model SHA-256 respectively
+  `be261aa283dc63622d945b5ae313880c4b4fcad53381f8cdb45b3322e85e0490` and
+  `0fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: repeated development selection, one training seed, synthetic known
+  target geometry. No new held-out/calibration access, runtime model replacement,
+  confidence validation or installed qualification.
+- Supersedes: none; prior failed confidence/refinement studies retained.
+- Next dependency: freeze fresh independent seed groups and paired evaluation
+  criteria for this candidate and control before inspecting labels; then assess
+  uncertainty separately. Development success alone cannot enable emission.
+
+### E-20260926-AI-036 — paired training evidence validation
+
+- Stage: S1
+- Lane: AI
+- Commit: `fe20dc15376361f38049e4791583af72b62e5a77` (training baseline; new test committed with evidence)
+- Change: checked frozen sources, identical data hashes/budgets, selected epochs
+  and exact predeclared candidate rule.
+- Inputs/fixtures: paired plan/scorecard and `tests/test_translation_weighted_evidence.py`.
+- Command: `python -m pytest -q software/ai/tests/test_translation_weighted_evidence.py`
+- Result: PASS, 2 tests.
+- Artifacts: named evidence test and scorecard.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: internal consistency, not independent generalization or qualification.
+- Supersedes: none
+- Next dependency: AI-035 frozen independent comparison.
+
+### E-20260926-AI-037 — translation-training audit findings retained
+
+- Stage: S1
+- Lane: AI
+- Commit: `fe20dc15376361f38049e4791583af72b62e5a77`
+- Change: required read-only audit during training.
+- Inputs/fixtures: repository snapshot and `scripts/audit_github_snapshot.py`.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: FAIL, exit 1; 5,659 paths, 785.0 MiB, same 14 existing arm-unit
+  credential-literal-review findings; no new training-source finding.
+- Artifacts: scanner and existing fixtures.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: heuristic findings unresolved; no clean audit claim.
+- Supersedes: none
+- Next dependency: fixture-owner review independently of AI research.

@@ -101,3 +101,23 @@ Do not enable this heuristic. The diagnostic and failure remain in
 `eval/local_refinement_v0_scorecard.json`; unit tests only confirm bounded behavior.
 Next decompose translation, orientation and scene-condition errors before choosing
 further model changes. No additional calibration/evaluation data was consumed.
+
+
+## Development error attribution
+
+Translation-only counterfactual mean key error is 0.885 mm versus rotation-only
+0.278 mm (full prediction 0.945 mm). This supports prioritizing board-center
+translation training while monitoring yaw. Counterfactuals use hidden truth only
+for scoring and cannot be deployed. Challenge mean error is 1.067 mm versus
+standard 0.868 mm; bundled augmentations do not isolate causal lighting or
+obstruction contributions. See `eval/pose_decomposition_v0_scorecard.json`.
+
+
+## Translation-weighted development candidate
+
+A paired 4:4:1 XY/yaw loss versus 1:1:1 improved mean key error from 0.937 to
+0.907 mm and within-1mm rate from 64.8% to 69.0%; yaw p95 also improved from
+0.617 to 0.571 degrees. This meets the frozen development rule only. Candidate
+and control now need a separately frozen fresh held-out comparison. Do not use
+this pose improvement as observation confidence or localization qualification.
+See `eval/translation_weighted_v0_scorecard.json`; no runtime checkpoint changed.
