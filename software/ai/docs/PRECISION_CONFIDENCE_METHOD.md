@@ -91,3 +91,13 @@ runtime promotion. Shared pretraining at 128x96 and a single training seed limit
 claims about resolution. No new calibration or evaluation data was accessed.
 See `eval/matched_resolution_v0_scorecard.json`. Next investigate local geometric
 refinement before another confidence or held-out qualification run.
+
+
+## Rejected edge-centroid refinement
+
+A fixed local edge-centroid correction capped at 1 mm worsened paired development
+mean error from 0.945 to 1.237 mm and within-1mm rate from 63.1% to 45.9%.
+Do not enable this heuristic. The diagnostic and failure remain in
+`eval/local_refinement_v0_scorecard.json`; unit tests only confirm bounded behavior.
+Next decompose translation, orientation and scene-condition errors before choosing
+further model changes. No additional calibration/evaluation data was consumed.

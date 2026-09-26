@@ -1,0 +1,95 @@
+{
+  "scope": "DEVELOPMENT_ONLY",
+  "manifest_sha256": "047c41fa280c6ffa4094ccef9839cbb13b6a0b6515e75f574cc3467e06aba233",
+  "image_data_sha256": "f6c02145bc9e601f4715bda8d7da49d11452b147c121fcae35f45093c6995e20",
+  "target_catalog_sha256": "6779213e832ab27eeda1e7fb245f57ff8cb0d56707b5aa73a8f31ec483a620f2",
+  "results": {
+    "baseline": {
+      "conditions": {
+        "standard": {
+          "count": 9200,
+          "mean_mm": 0.8683602735646241,
+          "p95_mm": 1.9205769502965,
+          "maximum_mm": 4.940224939470375,
+          "within_1mm_fraction": 0.6845652173913044
+        },
+        "appearance_shift": {
+          "count": 9200,
+          "mean_mm": 0.9006344359169571,
+          "p95_mm": 1.908660392095762,
+          "maximum_mm": 6.095700860066567,
+          "within_1mm_fraction": 0.6668478260869565
+        },
+        "challenge": {
+          "count": 9200,
+          "mean_mm": 1.0667512986549563,
+          "p95_mm": 2.353482959265653,
+          "maximum_mm": 6.626306543148998,
+          "within_1mm_fraction": 0.5410869565217391
+        }
+      },
+      "all": {
+        "count": 27600,
+        "mean_mm": 0.9452486693788458,
+        "p95_mm": 2.0658506480433196,
+        "maximum_mm": 6.626306543148998,
+        "within_1mm_fraction": 0.6308333333333334
+      },
+      "seed_group_maximum_error": {
+        "count": 200,
+        "mean_mm": 1.6764815364780026,
+        "p95_mm": 3.3055064534806515,
+        "maximum_mm": 6.626306543148998,
+        "within_1mm_fraction": 0.17
+      }
+    },
+    "edge_centroid": {
+      "conditions": {
+        "standard": {
+          "count": 9200,
+          "mean_mm": 1.1913579918628798,
+          "p95_mm": 2.4660086754128394,
+          "maximum_mm": 5.117749056124116,
+          "within_1mm_fraction": 0.47119565217391307
+        },
+        "appearance_shift": {
+          "count": 9200,
+          "mean_mm": 1.1684949147109474,
+          "p95_mm": 2.593610943583166,
+          "maximum_mm": 6.194930589298434,
+          "within_1mm_fraction": 0.49293478260869567
+        },
+        "challenge": {
+          "count": 9200,
+          "mean_mm": 1.350648882525419,
+          "p95_mm": 2.958170512159401,
+          "maximum_mm": 7.404590470314563,
+          "within_1mm_fraction": 0.4143478260869565
+        }
+      },
+      "all": {
+        "count": 27600,
+        "mean_mm": 1.2368339296997488,
+        "p95_mm": 2.665683455835489,
+        "maximum_mm": 7.404590470314563,
+        "within_1mm_fraction": 0.4594927536231884
+      },
+      "seed_group_maximum_error": {
+        "count": 200,
+        "mean_mm": 2.425895933427495,
+        "p95_mm": 4.120871398093292,
+        "maximum_mm": 7.404590470314563,
+        "within_1mm_fraction": 0.0
+      }
+    }
+  },
+  "hardware_writes": 0,
+  "physical_movements": 0,
+  "qualification_installed": false,
+  "limitations": [
+    "Development selection evidence only; no calibration/evaluation seeds accessed",
+    "Fixed synthetic projection; no physical camera calibration",
+    "Edge centroid in 9x9 patch with Gaussian sigma 2 pixels and maximum 1 mm correction",
+    "Predicted coordinates and pixels only at inference; known target identity assumed"
+  ]
+}

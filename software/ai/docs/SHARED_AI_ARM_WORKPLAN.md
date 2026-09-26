@@ -604,7 +604,6 @@ remove it only in the same commit that appends the resulting evidence row.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI/model | S1 | target-local refinement helper, dev diagnostic, tests/evidence | main from `8f85eee` | ACTIVE: bounded pixel-only refinement, development only |
 | Unclaimed | S2 | qualified perception adapter and complete shared gate | — | AVAILABLE |
 | Unclaimed | S4 | controller adapter/receipts | — | AVAILABLE |
 
@@ -1697,3 +1696,69 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: focused offline regression only; no integration status changed by AI lane.
 - Supersedes: none
 - Next dependency: AI-025 development refinement and shared-stage outstanding dependencies.
+
+
+### E-20260926-AI-029 — reject local-edge refinement after development comparison
+
+- Stage: S1
+- Lane: AI
+- Commit: `524803de116214cbec6366568cdc49f6d1a577a4` (exact frozen helper/diagnostic/manifest before scoring)
+- Change: tested fixed 9x9 gradient-energy centroid with Gaussian sigma 2 pixels,
+  capped at 1 mm correction. Uses predicted location and image pixels only.
+- Inputs/fixtures: 200 existing 15M development groups, 3 conditions, 46 targets;
+  128x96 matched-resolution checkpoint hash
+  `1dc517acd1da53166dc2df11a4d67e98aaf1186d96edd3342db0498fb6a6f2cc`.
+  Source/model hashes in `eval/local_refinement_v0.manifest.json`; image/catalog
+  hashes and per-condition metrics in scorecard.
+- Command: `python software/ai/vision/diagnose_local_refinement.py`
+- Result: FAIL for improvement hypothesis; diagnostic completed. Baseline mean
+  0.945249 mm / p95 2.065851 mm / within-1mm 63.083%; refined mean 1.236834 mm /
+  p95 2.665683 mm / within-1mm 45.949%. Reject this heuristic; no runtime change.
+- Artifacts: `software/ai/eval/local_refinement_v0_scorecard.json`, frozen manifest,
+  `vision/local_refinement.py` and `vision/diagnose_local_refinement.py`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: synthetic projection and known identities; correlated samples;
+  development diagnostic only. Tiny baseline differences from AI-025 may reflect this
+  run's CPU inference/direct renderer truth versus GPU/float32 decoded training
+  labels. The paired comparison here uses identical inference/truth for both arms.
+  No calibration/evaluation access, qualified confidence, or installed qualification.
+- Supersedes: none; previous evidence retained.
+- Next dependency: retain unrefined 128x96 development reference; decompose remaining
+  pose error into translation/orientation and scene-condition contributions before
+  choosing further model changes. Do not tune this rejected heuristic on held-out data.
+
+### E-20260926-AI-030 — refinement bound and edge-case tests
+
+- Stage: S1
+- Lane: AI
+- Commit: `524803de116214cbec6366568cdc49f6d1a577a4`
+- Change: tested flat-image fallback, border fallback, finite-input rejection and
+  maximum correction distance.
+- Inputs/fixtures: analytic PIL images in `software/ai/tests/test_local_refinement.py`.
+- Command: `python -m pytest -q software/ai/tests/test_local_refinement.py`
+- Result: PASS, 4 tests; functional bounds do not overturn AI-029's accuracy failure.
+- Artifacts: helper and tests.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: unit correctness only, not model-quality or physical evidence.
+- Supersedes: none
+- Next dependency: AI-029 error decomposition.
+
+
+### E-20260926-AI-031 — local-refinement audit findings retained
+
+- Stage: S1
+- Lane: AI
+- Commit: `524803de116214cbec6366568cdc49f6d1a577a4`
+- Change: required read-only snapshot audit after diagnostic.
+- Inputs/fixtures: repository snapshot, scorecard, `scripts/audit_github_snapshot.py`.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: FAIL, exit 1; 5,647 paths, 785.0 MiB, same 14 existing arm-unit
+  credential-literal-review findings; no local-refinement file finding.
+- Artifacts: scanner and existing fixtures.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: heuristic findings unresolved; no clean audit claim.
+- Supersedes: none
+- Next dependency: fixture-owner review independently of localization research.
