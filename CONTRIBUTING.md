@@ -1,9 +1,14 @@
-# Developing and sharing RoCell
+# Contributing to Tactevra
+
+Use **Tactevra** in new public-facing prose. Preserve `rocell` executable names,
+schemas, historic release paths, and third-party attribution. See the
+[brand guide](docs/brand/BRAND_GUIDE.md) for shared naming and presentation rules.
 
 ## Get the source
 
-Access is restricted to invited collaborators of `j-webtek/robot-arm-build`.
-Install Git, then:
+You need Git, Python 3.10 or newer, and access to `j-webtek/robot-arm-build`.
+For a first software demonstration, use [getting started](docs/GETTING_STARTED.md).
+For development, install the runtime and test extra:
 
 ```powershell
 git clone https://github.com/j-webtek/robot-arm-build.git
@@ -11,6 +16,17 @@ cd robot-arm-build
 python -m venv .venv
 .\.venv\Scripts\python -m pip install -e './software[test]'
 ```
+
+The shared AI v2 schema integration test also imports `jsonschema`, which is not
+currently included in the test extra. Install it before running that test:
+
+```powershell
+.\.venv\Scripts\python -m pip install jsonschema
+```
+
+Use the same virtual environment interpreter for test commands. Model training
+and optional vision runtimes have additional requirements documented under
+[software/ai](software/ai/README.md).
 
 Read [PROJECT_STATUS.md](PROJECT_STATUS.md) before following older plans.
 Optional camera/serial dependencies and live commissioning are documented in
@@ -29,6 +45,20 @@ campaigns as part of ordinary source setup.
 6. Commit, push the branch, and open a pull request with results and limitations.
 7. Update the relevant plan's checkpoint after evidence changes. Never rewrite
    an earlier failed result into a success; record the later correction.
+
+## Keep user documentation current
+
+Update [project status](PROJECT_STATUS.md) when a capability or its limitations
+change, and update [getting started](docs/GETTING_STARTED.md) when a command or
+dependency changes. Keep the root README brief enough for a new reader to choose
+a next step. Explain unfamiliar terms on first use; put internal stage IDs,
+hashes and detailed test counts in the linked engineering evidence.
+
+Date capability claims and distinguish simulation, controller feedback, physical
+measurement and verified device input. Check example commands against the code
+and use repository-relative Markdown links so the guide works on GitHub and in
+a clone. Historical records should retain their original outcomes and be labeled
+as dated evidence rather than presented as current instructions.
 
 Do not force-push shared history. Preserve concurrent work and frozen release
 packages. A clean clone lacks ignored lab data/toolchains; some historical tests
