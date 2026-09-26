@@ -2,6 +2,9 @@
 
 Contributors can reproduce the [hardware-free CI checks](CI.md) locally.
 
+Maintainers preparing a source preview should follow the
+[experimental release checklist](RELEASING.md); no release is published by that plan.
+
 For questions and defects, see [support](../SUPPORT.md). Report vulnerabilities
 through the [private security channel](../SECURITY.md), not public issues.
 
