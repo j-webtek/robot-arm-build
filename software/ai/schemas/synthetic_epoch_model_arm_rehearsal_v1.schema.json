@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rocell.local/schemas/synthetic_epoch_model_arm_rehearsal_v1.schema.json",
+  "title": "RoCell synthetic epoch model-to-arm rehearsal v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "status", "review_decision_sha256", "review_report_sha256",
+    "configuration_epoch_sha256", "configuration_epoch_report_sha256",
+    "configuration_epoch_blockers", "batch_sha256", "proposal_v2_sha256",
+    "envelope_v2_sha256", "encoding_profile_sha256", "preview_receipt_sha256",
+    "command_count", "production_dispatch_allowed", "transport_opened",
+    "transport_write_count", "installation_authorized",
+    "controller_start_authorized", "execution_authorized", "automatic_retry",
+    "hardware_access", "physical_authority", "report_sha256"
+  ],
+  "properties": {
+    "schema": {"const": "rocell.synthetic_epoch_model_arm_rehearsal.v1"},
+    "status": {"const": "ZERO_WRITE_LINEAGE_PROVEN_PRODUCTION_BLOCKED"},
+    "review_decision_sha256": {"$ref": "#/$defs/sha256"},
+    "review_report_sha256": {"$ref": "#/$defs/sha256"},
+    "configuration_epoch_sha256": {"$ref": "#/$defs/sha256"},
+    "configuration_epoch_report_sha256": {"$ref": "#/$defs/sha256"},
+    "configuration_epoch_blockers": {
+      "const": ["FIRMWARE_REVIEW_DECISION_BLOCKED", "COMPONENT_NOT_PHYSICAL_ORIGINAL"]
+    },
+    "batch_sha256": {"$ref": "#/$defs/sha256"},
+    "proposal_v2_sha256": {"$ref": "#/$defs/sha256"},
+    "envelope_v2_sha256": {"$ref": "#/$defs/sha256"},
+    "encoding_profile_sha256": {"$ref": "#/$defs/sha256"},
+    "preview_receipt_sha256": {"$ref": "#/$defs/sha256"},
+    "command_count": {"type": "integer", "minimum": 1},
+    "production_dispatch_allowed": {"const": false},
+    "transport_opened": {"const": false},
+    "transport_write_count": {"const": 0},
+    "installation_authorized": {"const": false},
+    "controller_start_authorized": {"const": false},
+    "execution_authorized": {"const": false},
+    "automatic_retry": {"const": false},
+    "hardware_access": {"const": false},
+    "physical_authority": {"const": false},
+    "report_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {"sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}
+}

@@ -192,6 +192,16 @@ requires a fresh observed starting joint state, performs deterministic densified
 and sampled joint-continuity checks, and remains blocked on incomplete full-body,
 tool, and cable collision geometry. None of these artifacts carries authority.
 
+The S4 synthetic integration lane now proves the downstream identity plumbing
+without relaxing that physical gate. A typed assessor requires the exact
+synthetic r97 review decision and eight-component configuration epoch, the model
+batch and indexed proposal, a sealed trajectory carrying that epoch digest, the
+matching Waveshare profile, and its transport-free preview receipt. The
+rehearsal succeeds only when the production epoch still reports
+`FIRMWARE_REVIEW_DECISION_BLOCKED` and `COMPONENT_NOT_PHYSICAL_ORIGINAL`.
+Consequently it can catch crossed model, epoch, trajectory, profile, or receipt
+identities while remaining unusable as a dispatch permit.
+
 The following are still required before functional arm-command qualification:
 
 - fixed-camera real-image target labels and held-out evaluation;

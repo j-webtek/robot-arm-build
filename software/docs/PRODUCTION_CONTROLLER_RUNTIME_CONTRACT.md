@@ -152,6 +152,13 @@ a rehearsal only when the production report contains exactly
 `COMPONENT_NOT_PHYSICAL_ORIGINAL`. This separation lets downstream software
 develop against a complete epoch shape without creating deployable evidence.
 
+The model-to-arm synthetic rehearsal carries the resulting epoch SHA through a
+sealed model-motion trajectory and the zero-write T=102 encoding profile. It
+accepts the preview only when the batch/proposal/envelope/profile/receipt hashes
+form one lineage and the receipt proves zero transport writes. Its success
+status explicitly includes `PRODUCTION_BLOCKED`; it creates neither a runtime
+admission record nor a production dispatch permit.
+
 The candidate app SHA remains an explicit field but is not recursively derived
 from an app image that already embeds the epoch digest. This avoids an
 impossible self-referential hash. A later epoch-bound firmware build can embed

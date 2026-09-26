@@ -1,6 +1,6 @@
 # Tactevra project status
 
-Reviewed September 26, 2026 against merged source through `4a166c8`.
+Reviewed September 26, 2026 against merged source through `90003f0`.
 Unmerged workstream branches are not included in this summary.
 This is a capability summary for readers; the
 [shared workplan](software/ai/docs/SHARED_AI_ARM_WORKPLAN.md) retains detailed
@@ -28,6 +28,7 @@ being developed.
 | Installed-controller compatibility | A passive r96 observation is recorded; an offline assessment checks the installed application's command surface | r96 lacks the required generic production command/feedback interface and remains blocked; its identity evidence is not independently qualified |
 | Production runtime contract | A host-side executable specification rehearses safe-idle startup, one writer, ordered commands, deadlines, and feedback checks | Software rules are testable without I/O; this is not replacement firmware or an installed execution service |
 | Production firmware candidate | r97 controller-side implementation compiled offline; source, integration, sealed review handoff, typed review-decision, full synthetic review-to-epoch rehearsal, and measured-epoch intake contracts are merged | Synthetic review and eight-component epoch fixtures exercise integration but remain production-blocked; no authenticated independent review decision or measured epoch evidence has been supplied, so installed qualification and all physical use remain blocked |
+| Synthetic model-to-controller lineage | Exact synthetic review and epoch identities now bind through a v2 model batch, sealed trajectory, T=102 profile, and zero-write preview receipt | Crossed identities reject and one encoded command is reviewable, but production dispatch remains explicitly blocked and no bytes are sent |
 | Arm control research | Documented supervised noncontact movement and joint-feedback checks | Specific lab sequences were completed; controller feedback does not measure key-contact accuracy |
 | Hardware | RC03 workcell design and step-by-step assembly package | Design and print resources exist, with their own measurement and print-readiness requirements |
 
@@ -39,6 +40,14 @@ would reserve work, stop on faults, and reconcile a restart without automatic
 retries. Published schemas and an exact-byte fixture let the workstreams check
 the same boundary. These developments do not remove the real planning path's
 calibration block or qualify an installed controller mapping.
+
+The latest integration check carries the exact synthetic r97 review decision
+and eight-component epoch through a real model-motion batch, sealed trajectory,
+encoding profile, and zero-write receipt. This closes a software compatibility
+gap between the AI and arm workstreams: both now agree on the batch/proposal and
+configuration-epoch identities expected at the encoder boundary. The check is
+successful only because production dispatch remains blocked; its trajectory is
+a synthetic test fixture and it neither opens a transport nor sends bytes.
 
 The newer controller-evidence gate checks whether a supplied record matches the
 encoding profile and its declared session, mapping, and protocol. Its success
