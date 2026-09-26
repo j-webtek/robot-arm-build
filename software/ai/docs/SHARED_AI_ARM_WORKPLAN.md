@@ -604,7 +604,6 @@ remove it only in the same commit that appends the resulting evidence row.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI | S1 | corrected landmark training, frozen plan, paired reports/tests | feature/translation-pair-evidence | ACTIVE: matched coordinate/visibility loss comparison |
 | Unclaimed | S2 | qualified perception adapter and complete shared gate | — | AVAILABLE |
 | Unclaimed | S4 | implement controller firmware against the committed safe-idle production runtime contract, then independently review source and linked image | — | AVAILABLE |
 
@@ -3870,3 +3869,72 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: heuristic audit; AI-041 protected-main PR publication blocker remains.
 - Supersedes: none; historical failures retained.
 - Next dependency: protected-branch PR/checks and AI-104 corrective training.
+
+### E-20260926-AI-107 — matched landmark loss correction failure
+
+- Stage: S1
+- Lane: AI
+- Commit: `82f3707d33a05e75a614a03fbf1ff87d8cee069a` (frozen protocol before either training arm)
+- Change: matched seeded initialization/data/order/eight-epoch budget; control
+  original loss, candidate visible-corner coordinate loss (squared error/16px)
+  plus balanced positive/negative soft visibility loss. Both choose checkpoints
+  using the same corrected development loss. Existing pose baseline retained.
+- Inputs/fixtures:14M600 groups/2400 training images,15M200 groups/800 development
+  images, rectangle training/ellipse development occluders. Exact source/catalog/
+  baseline hashes in `train/landmark_corrected_v0_plan.json`; paired pixel/checkpoint
+  hashes, histories and cases in arm scorecards and comparison report.
+- Command: `python software/ai/train/train_landmarks_corrected.py`
+- Result: FAIL corrective criteria and existing-pose comparison. Mean key errors
+  control -> corrected:standard20.879164 -> 9.484379mm,appearance27.866548 ->
+ 13.456419mm,partial23.985062 -> 11.709188mm,full22.069383 -> 11.777097mm.
+ Standard/appearance yaw-p95 exceed allowed regression. False-visible hidden
+ corners201 -> 14/201, but clear-corner recall2736/2736 -> 335/2736=12.24%,
+ below90%. Both selected epoch8. No model promotion; combined intervention does
+ not isolate each loss's contribution.
+- Artifacts: `train/train_landmarks_corrected.py`, frozen plan,
+ `eval/landmark_corrected_v0_control_scorecard.json`, corrected scorecard and
+ comparison JSON; ignored local control/corrected model checkpoints.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: reused development, one seed, short budget; both models remain far
+ worse than pretrained pose baseline. Uncalibrated visibility and unconditional
+ four-corner pose decoding are diagnostic only. No batch changes; boundary suite
+ not triggered, shared integration status unchanged.
+- Supersedes: none; prior failed landmark studies retained.
+- Next dependency: freeze a matched loss ablation separating coordinate-only and
+ balanced-visibility-only changes, using identical initialization/data/budget and
+ selection objective. Record localization, hidden false visibility and clear recall;
+ do not tune thresholds or claim calibrated confidence from this result.
+
+### E-20260926-AI-108 — corrective landmark loss tests
+
+- Stage: S1
+- Lane: AI
+- Commit: `82f3707d33a05e75a614a03fbf1ff87d8cee069a` (implementation baseline; tests committed with evidence)
+- Change: verified balanced rare-hidden gradients, finite all-clear loss,
+  matched pixels, frozen hashes, selection, visibility counts and comparison gates.
+- Inputs/fixtures: analytic Torch logits and paired AI-107 reports/manifest.
+- Command: `python -m pytest -q software/ai/tests/test_landmark_corrected.py`
+- Result: PASS,2 tests; existing pytest-asyncio configuration deprecation warning.
+- Artifacts: named tests and AI-107 reports.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: implementation consistency does not override failed model criteria.
+- Supersedes: none
+- Next dependency: AI-107 separate-loss comparison.
+
+### E-20260926-AI-109 — corrected landmark publication audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `82f3707d33a05e75a614a03fbf1ff87d8cee069a` (implementation baseline plus reports/test snapshot)
+- Change: audited publication snapshot.
+- Inputs/fixtures: repository with AI-107/108 artifacts and reviewed fixture allowlist.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS;5806 paths,810.9 MiB,0 unresolved findings,14 reviewed synthetic fixtures.
+- Artifacts: audit stdout and repository snapshot.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: heuristic audit; AI-041 protected-main PR publication blocker remains.
+- Supersedes: none; historical failures retained.
+- Next dependency: protected-branch PR/checks and AI-107 ablation.

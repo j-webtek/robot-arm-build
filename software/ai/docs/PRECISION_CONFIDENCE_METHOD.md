@@ -403,3 +403,14 @@ all201 hidden corners exceed0.5. These are diagnostic associations, not proof
 of one training cause. Peak decoding remains unqualified and the model is not
 promoted. Next: freeze a matched coordinate-loss/class-balanced-visibility training
 comparison, preserving geometric and false-visible metrics and all failed evidence.
+
+
+### Matched corrective losses improve means but fail criteria
+
+AI-107 through AI-109 compare original and corrected losses with identical data,
+initialization and budget, selecting both with the corrected objective. Coordinate
+plus balanced visibility losses reduce means from21–28mm to9–13mm, but yaw
+regresses in standard/appearance conditions. Hidden false-visible count falls201
+->14 while clear-corner recall falls to12.24%, below90%. Combined criteria fail;
+no promotion. Next: separate coordinate-only and visibility-only loss ablations
+under the same protocol before changing architecture or visibility thresholds.

@@ -1,0 +1,39 @@
+{
+  "scope": "MATCHED_DEVELOPMENT_CORRECTIVE_LOSS",
+  "checks": {
+    "standard": {
+      "mean": true,
+      "tail": true,
+      "yaw": false
+    },
+    "appearance_shift": {
+      "mean": true,
+      "tail": true,
+      "yaw": false
+    },
+    "partial": {
+      "mean": true,
+      "tail": true,
+      "yaw": true
+    },
+    "full": {
+      "mean": true,
+      "tail": true,
+      "yaw": true
+    }
+  },
+  "visibility_pass": false,
+  "corrective_rule_passed": false,
+  "control_checkpoint_sha256": "7855c24b39a27f30be84f04bc84c616a5308ff5d2364758d29f82b9b60c8837e",
+  "candidate_checkpoint_sha256": "be9a779a3ab96ba15e6b3bb92bf8ab8031cc26404bd9192a01f44e8b7b04871f",
+  "control_report_sha256": "9f13c016fb2dca8e7f98d26f391cdafcbed497bb44ec1b34f7f540f5c7f25f4c",
+  "candidate_report_sha256": "8fdb3f2172d69e4aa3453649e91081be2d9d874047576b5b96570d43bf26342a",
+  "hardware_writes": 0,
+  "physical_movements": 0,
+  "qualification_installed": false,
+  "limitations": [
+    "Combined coordinate and visibility intervention cannot isolate individual effects",
+    "Both arms selected by the same corrected development loss; reused data, one seed",
+    "Improving failed landmark control is not sufficient to replace existing pose baseline"
+  ]
+}
