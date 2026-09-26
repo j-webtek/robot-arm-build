@@ -17,6 +17,12 @@ import test_model_motion_ingress_v2 as arm  # noqa: E402
 from rocell_ai.batch_emitter_v2 import TargetObservationV2, assemble  # noqa: E402
 from rocell.application.model_motion_registry_v2 import (  # noqa: E402
     ingest_with_trusted_registry_v2, revalidate_with_trusted_registry_v2)
+from rocell.application.model_motion_planner_gate_v2 import (  # noqa: E402
+    ArmMotionPolicyV2)
+from rocell.application.model_motion_shadow_v2 import (  # noqa: E402
+    ModelMotionShadowV2Error, run_model_motion_shadow_v2)
+from rocell.application.observed_planner_start_state import (  # noqa: E402
+    ObservedPlannerStartState)
 
 
 def _actual_bytes_and_registry():
@@ -117,3 +123,57 @@ def test_actual_ai_bytes_expire_at_exact_deadline_and_never_reach_commands():
         ingest_with_trusted_registry_v2(batch, plan, context, registry=registry,
             current_time_epoch_ms=args["evidence"].expires_at_epoch_ms,
             current_monotonic_ns=9_000_000_000)
+
+
+def _fresh_observed_state(context):
+    return ObservedPlannerStartState(
+        run_id="shadow-v2", arm_identity_sha256="1" * 64,
+        controller_session_id="offline-fixture",
+        request_context_sha256="2" * 64, feedback_receipt_sha256="3" * 64,
+        calibration_snapshot_sha256="4" * 64,
+        manifest_id=context.snapshot.manifest_id,
+        active_build_id=context.snapshot.active_build_id,
+        response_completed_monotonic_ns=10_100_000_000,
+        available_monotonic_ns=10_200_000_000,
+        valid_until_monotonic_ns=11_000_000_000,
+        controller_joint_positions_rad={name: 0.0 for name in ("b", "s", "e", "t", "r", "g")},
+        model_joint_positions_rad={name: 0.0 for name in (
+            "b_base", "s_shoulder", "e_elbow", "t_wrist_pitch",
+            "r_wrist_roll", "g_gripper")})
+
+
+def test_actual_ai_bytes_produce_one_hash_linked_zero_hardware_shadow_trace():
+    context, plan, args, registry = _actual_bytes_and_registry()
+    payload = assemble(plan, **args)
+    report = run_model_motion_shadow_v2(
+        payload, plan, context, registry=registry,
+        policy=ArmMotionPolicyV2("keyboard-contact-conservative-v1", 25.0,
+                                 arm.SpeedClass.SLOW),
+        observed_start_state=_fresh_observed_state(context),
+        current_time_epoch_ms=arm.T0 + 3_000,
+        ingress_monotonic_ns=9_000_000_000,
+        preplanner_monotonic_ns=10_000_000_000,
+        planner_monotonic_ns=10_500_000_000)
+    assert report["status"] == "BLOCKED_CALIBRATION_MISSING_OR_STALE"
+    assert report["requested_text_sha256"] == plan.requested_text_sha256
+    assert report["intent_plan_sha256"] == plan.plan_hash
+    assert report["actions"][0]["target_id"] == "H"
+    assert len(report["actions"]) == 1
+    assert report["trajectory_execution_envelope_sha256"] is None
+    assert report["waveshare_bytes"] == report["controller_commands"] == []
+    assert report["hardware_commands_generated"] == 0
+    assert report["hardware_access"] is report["physical_authority"] is False
+
+
+def test_shadow_trace_rejects_stale_observed_state_before_planning():
+    context, plan, args, registry = _actual_bytes_and_registry()
+    with pytest.raises(ModelMotionShadowV2Error, match="not fresh"):
+        run_model_motion_shadow_v2(
+            assemble(plan, **args), plan, context, registry=registry,
+            policy=ArmMotionPolicyV2("keyboard-contact-conservative-v1", 25.0,
+                                     arm.SpeedClass.SLOW),
+            observed_start_state=_fresh_observed_state(context),
+            current_time_epoch_ms=arm.T0 + 3_000,
+            ingress_monotonic_ns=9_000_000_000,
+            preplanner_monotonic_ns=10_000_000_000,
+            planner_monotonic_ns=11_000_000_001)

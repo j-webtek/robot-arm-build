@@ -239,6 +239,11 @@ from .model_motion_planner_gate_v2 import (
     ModelMotionPlannerGateV2Error,
     evaluate_model_motion_planner_gate_v2,
 )
+from .model_motion_shadow_v2 import (
+    SCHEMA as MODEL_MOTION_SHADOW_V2_SCHEMA,
+    ModelMotionShadowV2Error,
+    run_model_motion_shadow_v2,
+)
 from .model_motion_sequence_coordinator import (
     SCHEMA as MODEL_MOTION_SEQUENCE_SNAPSHOT_SCHEMA,
     READY_PLANNER_STATUS,
@@ -929,6 +934,9 @@ __all__ = [
     "ArmMotionPolicyV2",
     "ModelMotionPlannerGateV2Error",
     "evaluate_model_motion_planner_gate_v2",
+    "MODEL_MOTION_SHADOW_V2_SCHEMA",
+    "ModelMotionShadowV2Error",
+    "run_model_motion_shadow_v2",
     "MODEL_MOTION_SEQUENCE_SNAPSHOT_SCHEMA",
     "READY_PLANNER_STATUS",
     "ActionDisposition",
