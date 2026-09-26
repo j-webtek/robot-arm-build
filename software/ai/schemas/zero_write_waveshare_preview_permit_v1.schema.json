@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rocell.local/schemas/zero_write_waveshare_preview_permit_v1.schema.json",
+  "title": "RoCell zero-write encoding preview permit v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "envelope_v2_sha256", "encoding_profile_sha256",
+    "correlation_id", "controller_session_id", "issued_monotonic_ns",
+    "expires_monotonic_ns", "hardware_access", "physical_authority",
+    "permit_id"
+  ],
+  "properties": {
+    "schema": {"const": "rocell.zero_write_waveshare_preview_permit.v1"},
+    "envelope_v2_sha256": {"$ref": "#/$defs/sha256"},
+    "encoding_profile_sha256": {"$ref": "#/$defs/sha256"},
+    "correlation_id": {"$ref": "#/$defs/identifier"},
+    "controller_session_id": {"$ref": "#/$defs/identifier"},
+    "issued_monotonic_ns": {"type": "integer", "minimum": 1},
+    "expires_monotonic_ns": {"type": "integer", "minimum": 1},
+    "hardware_access": {"const": false},
+    "physical_authority": {"const": false},
+    "permit_id": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "identifier": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"}
+  }
+}

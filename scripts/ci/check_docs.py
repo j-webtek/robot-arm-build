@@ -9,7 +9,7 @@ import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[2]
 DOCS = (
-    'README.md', 'PROJECT_STATUS.md', 'CONTRIBUTING.md',
+    'README.md', 'PROJECT_STATUS.md', 'CONTRIBUTING.md', 'SUPPORT.md', 'SECURITY.md',
     'docs/README.md', 'docs/GETTING_STARTED.md',
     'docs/CI.md', 'docs/AUDIT_FIXTURE_REVIEW.md', 'software/README.md', 'software/ai/README.md',
     'software/ai/docs/README.md', 'assets/brand/README.md',
