@@ -1,0 +1,101 @@
+# Production controller runtime contract
+
+This is the offline acceptance contract for the separate production runtime
+that will eventually replace diagnostic-only controller applications such as
+r96. It defines how planned commands cross the final arm boundary without
+making model output, a planner result, or valid JSON equivalent to permission
+to move.
+
+The current implementation is a zero-I/O rehearsal. It cannot open a transport,
+install firmware, restart the controller, send bytes, or move the arm.
+
+## Startup behavior
+
+Every new runtime instance begins in `SAFE_IDLE` with:
+
+- zero startup movement commands;
+- no writer owner;
+- no automatic retry or replay;
+- no transport or hardware access; and
+- no execution or physical authority.
+
+Startup never restores an unfinished command. A restart after a writer claim
+enters `TERMINAL_LOCKED` with `RESTART_RECONCILIATION_REQUIRED`; a separate
+observed-state reconciliation is required before any future session.
+
+## One writer and ordered frames
+
+Exactly one writer may claim a runtime instance. Every `T=102` frame binds:
+
+- the writer instance;
+- controller session and configuration epoch;
+- exact encoding-profile hash;
+- correlation ID;
+- strictly increasing sequence number;
+- issue and expiry times; and
+- exact wire-byte hash.
+
+The runtime accepts sequence 1, then 2, and so on. Duplicate, skipped,
+out-of-order, foreign-writer, stale, future, wrong-session, wrong-epoch, or
+wrong-profile frames lock the runtime terminally. They are never retried.
+
+## Exact protocol surface
+
+The command parser permits only deterministic compact newline-framed `T=102`
+messages with fields in this exact encoding order:
+
+```text
+T, base, shoulder, elbow, wrist, roll, hand, spd, acc
+```
+
+All six joint targets must be finite numbers. `spd` and `acc` remain opaque
+firmware settings with the existing explicit integer bounds; they are not
+treated as physical speed or acceleration units.
+
+The feedback rehearsal accepts only the exact `{"T":105}\n` request and one
+bounded, newline-terminated `T=1051` response containing all six joint fields:
+
+```text
+b, s, e, t, r, g
+```
+
+It reuses the shared duplicate-field, malformed JSON, reset-banner, response
+type, length, and typed-value checks. A failed feedback exchange locks the
+runtime without retry.
+
+## Model and planner integration
+
+The AI workstream continues to output target proposals, not servo commands.
+The arm workstream remains responsible for transforming and validating those
+proposals, producing a measured trajectory envelope, applying the qualified
+joint mapping, and creating the exact hash-bound `T=102` frames.
+
+The final relationship is:
+
+```text
+model target proposal
+  -> shared ingress and calibration gates
+  -> collision-screened measured trajectory envelope
+  -> qualified zero-write T=102 encoding profile
+  -> sole-writer ordered runtime frame
+  -> production runtime admission
+  -> separately authorized transport (not implemented here)
+```
+
+Thus the model cannot bypass calibration, collision screening, controller
+qualification, sequencing, deadlines, or sole-writer ownership.
+
+## What remains before physical use
+
+1. Implement the same state machine and capability manifest in a separate
+   controller firmware candidate with no startup movement.
+2. Compile it reproducibly and independently review source plus linked image.
+3. Prove runtime self-attestation of app hash and configuration epoch.
+4. Bind it to independently reviewed protocol and joint-mapping evidence.
+5. Pass the installed-controller surface and qualification gates.
+6. Propose installation and startup separately; neither is authorized by this
+   contract.
+7. Qualify one bounded feedback exchange before proposing any movement.
+
+The committed Python state machine and schemas are the executable specification
+against which that firmware candidate must be tested.

@@ -605,7 +605,7 @@ remove it only in the same commit that appends the resulting evidence row.
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
 | Unclaimed | S2 | qualified perception adapter and complete shared gate | — | AVAILABLE |
-| Unclaimed | S4 | design and independently qualify a separate generic T=102/T=105/T=1051 runtime; r96 is an incompatible finite diagnostic landmark | — | AVAILABLE |
+| Unclaimed | S4 | implement controller firmware against the committed safe-idle production runtime contract, then independently review source and linked image | — | AVAILABLE |
 
 ## Worker update procedure
 
@@ -2295,3 +2295,58 @@ commissioning, or bounded physical result with its limitations intact.
   counts. It does not alter ARM-024's observation or ARM-026's blocked result.
 - Next dependency: implement and independently review the separate production
   runtime contract offline, retaining r96 unchanged as diagnostic history.
+
+### E-20260926-ARM-028 — production runtime executable contract
+
+- Stage: S4
+- Lane: ARM
+- Change: implemented a zero-I/O executable specification for the separate
+  production controller runtime. The manifest binds candidate app, protocol,
+  joint mapping, configuration epoch, controller session and encoding profile.
+  The state machine starts safe-idle, permits one writer, accepts only exact
+  deterministic T=102 frames in strict sequence and time bounds, rehearses exact
+  T=105/T=1051 feedback, and terminally locks on ambiguity or restart.
+- Safety properties: zero startup commands; zero transport opens; zero hardware
+  writes; no automatic retry; no replay; no authority. Foreign writers,
+  mismatched session/epoch/profile, stale frames, sequence gaps or duplicates,
+  noncanonical messages, missing feedback joints and wrong response types all
+  fail closed.
+- Tests: `software/tests/unit/test_production_controller_runtime_contract_v1.py`
+  PASS, 18 tests, including concurrent writer claims and schema authority
+  mutation rejection.
+- Artifacts:
+  `software/src/rocell/application/production_controller_runtime_contract_v1.py`,
+  two `production_controller_runtime_*_v1.schema.json` schemas, public exports,
+  tests, and `software/docs/PRODUCTION_CONTROLLER_RUNTIME_CONTRACT.md`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: this is the executable host-side specification, not controller
+  firmware, a compiled app, installed qualification, or transport authority.
+- Supersedes: ARM-027's next dependency only; r96 remains unchanged and blocked
+  for production binding.
+- Next dependency: implement a separate firmware candidate against this
+  contract, compile reproducibly, and independently review source and linked
+  image before any installation proposal.
+
+### E-20260926-ARM-029 — production runtime contract integration verification
+
+- Stage: S4
+- Lane: ARM
+- Change: verified the production runtime contract across shared AI/arm ingress,
+  measured envelopes, zero-write encoding, sole-writer lifecycle, installed
+  qualification, installed surface compatibility, schemas, and snapshot audit.
+- Commands: `python scripts/ci/check_docs.py`; integrated ARM-027 pytest
+  selection with `test_production_controller_runtime_contract_v1.py` added;
+  `python scripts/audit_github_snapshot.py`; `git diff --check`.
+- Result: documentation PASS for 22 maintained documents and two SVG assets;
+  focused controller boundary PASS, 77 tests; integrated PASS, 281 tests in
+  40.46 seconds; audit PASS, 5,703 paths, 903.7 MiB, zero unresolved findings
+  and 14 reviewed synthetic fixtures; diff check PASS.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: green contract tests prove deterministic software behavior only;
+  they do not prove firmware implementation, timing, servo response, installed
+  identity, or physical movement safety.
+- Supersedes: ARM-028 only for current integrated verification counts.
+- Next dependency: build the firmware-side candidate offline, retaining exact
+  manifest and protocol semantics, then conduct independent source/image review.
