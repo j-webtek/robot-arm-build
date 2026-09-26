@@ -604,6 +604,7 @@ remove it only in the same commit that appends the resulting evidence row.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
+| AI | S1 | `vision/train_brightness_preserved.py`, preservation plan/scorecard/tests, precision method | feature/translation-pair-evidence | ACTIVE: matched teacher-preservation loss experiment |
 | Unclaimed | S2 | qualified perception adapter and complete shared gate | — | AVAILABLE |
 | Unclaimed | S4 | collect and independently review installed controller evidence | — | AVAILABLE |
 
