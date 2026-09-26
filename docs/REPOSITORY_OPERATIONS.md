@@ -155,6 +155,11 @@ v7.0.0, verified against upstream release tags on September 26, 2026. The upgrad
 review covered the intervening Node 24 runner requirement, checkout credential
 handling, event restrictions, and setup-python input changes. The hosted matrix
 tests the combined revisions; no self-hosted runner compatibility is claimed.
+The Linux jobs run on the explicit `ubuntu-24.04` image so GitHub's announced
+October 2026 `ubuntu-latest` migration cannot silently change the build. Their
+protected check identifiers retain `ubuntu-latest` for continuity and are not
+the runner selector; the CI guide documents this distinction.
+
 Dependabot can propose later pin updates; pinning does not itself prove the action is safe.
 The workflow retains read-only permissions, non-persisted checkout credentials,
 hosted runners and bounded jobs. It does not use `pull_request_target` or deploy.
