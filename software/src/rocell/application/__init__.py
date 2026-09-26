@@ -277,6 +277,12 @@ from .trajectory_execution_envelope import (
     TrajectorySettlePolicy,
     decode_trajectory_execution_envelope_json,
 )
+from .trajectory_execution_envelope_v2 import (
+    SCHEMA as TRAJECTORY_EXECUTION_ENVELOPE_V2_SCHEMA,
+    TrajectoryExecutionEnvelopeV2,
+    TrajectoryExecutionEnvelopeV2Error,
+    bind_trajectory_execution_envelope_v2,
+)
 from .prehardware_layout_study import (
     LayoutAxisValueEvidence,
     LayoutCandidatePromotion,
@@ -968,6 +974,10 @@ __all__ = [
     "TrajectoryExecutionEnvelopeError",
     "TrajectorySettlePolicy",
     "decode_trajectory_execution_envelope_json",
+    "TRAJECTORY_EXECUTION_ENVELOPE_V2_SCHEMA",
+    "TrajectoryExecutionEnvelopeV2",
+    "TrajectoryExecutionEnvelopeV2Error",
+    "bind_trajectory_execution_envelope_v2",
     "ModelMotionIngressError",
     "SimulationContextError",
     "SimulationRunReport",
