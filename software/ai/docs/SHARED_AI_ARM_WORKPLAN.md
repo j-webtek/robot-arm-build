@@ -602,6 +602,7 @@ remove it only in the same commit that appends the resulting evidence row.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
+| AI/model | S1 | `rocell_ai/capture_binding.py`, AI tests, confidence-method documentation | main from `a041185` | ACTIVE: capture receipt binding; no confidence promotion |
 | Unclaimed | S2 | v2 sequence coordinator and envelope-ready fixtures | — | AVAILABLE |
 | Unclaimed | S4 | controller adapter/receipts | — | AVAILABLE |
 
