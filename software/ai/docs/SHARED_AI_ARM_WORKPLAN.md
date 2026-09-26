@@ -604,7 +604,6 @@ remove it only in the same commit that appends the resulting evidence row.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI | S1 | controlled landmark occlusions, training runner/plan, scorecard/tests | feature/translation-pair-evidence | ACTIVE: labeled occlusions and frozen initial landmark training |
 | Unclaimed | S2 | qualified perception adapter and complete shared gate | — | AVAILABLE |
 | Unclaimed | S4 | implement controller firmware against the committed safe-idle production runtime contract, then independently review source and linked image | — | AVAILABLE |
 
@@ -3734,3 +3733,74 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations:heuristic audit; AI-041 protected-main PR publication blocker remains.
 - Supersedes:none; historical failures retained.
 - Next dependency:protected-branch PR/checks and AI-098 data foundation.
+
+### E-20260926-AI-101 — controlled occlusions and first landmark training failure
+
+- Stage: S1
+- Lane: AI
+- Commit: `99dae837d1f6de5caec9ec42c62bcbc4a6a9f006` (frozen data/training/loss/selection protocol before execution)
+- Change: added controlled partial/full corner masks; trained61032-parameter
+  heatmap/visibility model from random initialization for8 epochs. Rectangle
+  occluders for training, ellipse variants for development. Localization loss
+  weights Gaussian heatmap labels by visible fraction; visibility uses soft BCE.
+- Inputs/fixtures: reused14M600 groups x4 conditions=2400 training images and
+ 15M200 groups x4=800 development images; standard,appearance,partial,full.
+ Exact source/catalog/baseline hashes in `train/landmark_v0_plan.json`; pixel,
+ output-checkpoint hashes, histories and800 cases in scorecard.
+- Command: `python software/ai/train/train_landmarks.py`
+- Result: FAIL comparison. Epoch8 selected by minimum development loss5.353226.
+ Landmark mean key error standard23.993929mm,appearance30.851021mm,
+ partial27.048675mm,full24.756265mm versus baseline0.853231/0.833362/
+ 1.026278/1.228562mm. Every landmark image exceeds3mm. Visibility head falsely
+ marks201/201 fully occluded development corners visible at0.5 threshold.
+ Data/training run completed; model unsuitable for promotion or confidence use.
+- Artifacts: `vision/landmark_occlusions.py`, training runner/plan,
+ `eval/landmark_v0_scorecard.json`, ignored `results/landmark_v0/model.pt`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: initial short-budget model versus pretrained pose checkpoint,
+ unequal training history; not evidence against landmark architectures generally.
+ Unconditional pose uses all four predicted corners, including occluded corners;
+ diagnostic only, not admission. Baseline uses same normalized image downsampled
+ to128x96, not identical preprocessing order to earlier studies. Reused seeds,
+ new occluder shapes, no fresh physical/generalization claim. No batch changes;
+ boundary suite not triggered; no shared stage advanced.
+- Supersedes: none; all earlier evidence retained.
+- Next dependency: frozen diagnostic of peak versus soft-argmax corner errors,
+ heatmap mass spread and visibility-label imbalance on retained development
+ images before changing architecture/loss. Preserve this checkpoint and failure;
+ do not treat visibility logits as localization confidence.
+
+### E-20260926-AI-102 — occlusion and landmark pipeline tests
+
+- Stage: S1
+- Lane: AI
+- Commit: `99dae837d1f6de5caec9ec42c62bcbc4a6a9f006` (implementation baseline; tests committed with results)
+- Change: checked control-image preservation, full/partial masks, unchanged pose,
+ monotonic occlusion masks, source hashes, selected epoch, metrics and false visibility.
+- Inputs/fixtures: analytic/source masks across12 seeds and both occluder styles;
+ AI-101 report plus existing landmark foundation tests.
+- Command: `python -m pytest -q software/ai/tests/test_landmark_training.py software/ai/tests/test_landmark_foundation.py`
+- Result: PASS,4 tests; existing pytest-asyncio configuration deprecation warning.
+- Artifacts: named tests and AI-101 scorecard.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: pipeline correctness does not override failed trained-model metrics.
+- Supersedes: none
+- Next dependency: AI-101 model diagnostic.
+
+### E-20260926-AI-103 — landmark training publication audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `99dae837d1f6de5caec9ec42c62bcbc4a6a9f006` (implementation baseline plus scorecard/test snapshot)
+- Change: audited publication snapshot.
+- Inputs/fixtures: repository with AI-101/102 artifacts and reviewed fixture allowlist.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS;5795 paths,808.3 MiB,0 unresolved findings,14 reviewed synthetic fixtures.
+- Artifacts: audit stdout and repository snapshot.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: heuristic audit; AI-041 protected-main PR publication blocker remains.
+- Supersedes: none; historical failures retained.
+- Next dependency: protected-branch PR/checks and AI-101 diagnostic.

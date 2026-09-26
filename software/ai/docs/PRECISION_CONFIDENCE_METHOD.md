@@ -381,3 +381,14 @@ not replace localization uncertainty.
 Next: controlled partial/full occlusion fixtures and held-out occluder variants,
 then a frozen training/loss/selection comparison against normalized pose baseline.
 Photo and challenge-mask labels are currently unsupported. Runtime is unchanged.
+
+
+### First landmark training fails
+
+AI-101 through AI-103 add controlled partial/full masks and complete eight epochs
+on2400 training images with800 development images (ellipse occluders held out from
+rectangle training). The initial landmark model has24–31mm mean key error and
+falsely marks201/201 fully occluded corners visible. It is not promoted. Short
+random-initialization training versus a pretrained baseline is not a fair general
+architecture comparison. Next: inspect heatmap peaks versus soft-argmax, mass
+spread and visibility class balance before a frozen corrective experiment.
