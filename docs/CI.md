@@ -25,6 +25,21 @@ The test extra declares `jsonschema`; no separate manual install is needed.
 Dependency ranges are not a lockfile: these jobs check fresh resolution within
 supported ranges, not bit-for-bit environment reproduction.
 
+### Find the versions behind a result
+
+Open **Actions → Offline verification → the relevant run**. Each job's summary
+lists its Python/OS and installed distribution versions after test-extra
+installation. Match the run's commit and job to your evidence; PR runs may test
+a merge revision. The summary is an inventory, not a pass/fail report or lockfile.
+The job steps remain the source for outcomes. An early installation failure can
+prevent the summary from being produced; consult that step's log instead.
+
+The reporter reads package metadata without importing camera or serial backends.
+It does not include environment-variable dumps, pip configuration, installation
+URLs, or local paths. Optional packages appearing in a local report do not mean
+the portable tests exercised them. GitHub run retention applies; save the exact
+run link and relevant evidence in the shared workplan for a promotion decision.
+
 ## Run locally from the repository root
 
 Use a new `.venv-ci` environment (not your existing development environment):
@@ -35,6 +50,7 @@ python scripts/ci/offline_checks.py install-base
 python scripts/ci/offline_checks.py smoke
 python scripts/ci/check_docs.py
 python scripts/ci/offline_checks.py install-tests
+python scripts/ci/offline_checks.py environment
 python scripts/ci/offline_checks.py test
 ```
 
