@@ -111,6 +111,13 @@ evidence matches its controller session, configuration epoch, mapping hash,
 protocol-source hash, T=102 fields, T=1051 fields, planner order, and fixed
 gripper field. Even a passing assessment grants no transport or execution
 authority; evidence collection and physical qualification remain separate.
+The [installed-controller surface evidence schema](installed_controller_surface_evidence_v1.schema.json)
+and [surface compatibility report](installed_controller_surface_compatibility_report_v1.schema.json)
+add a prior fail-closed check that the exact installed app actually exposes the
+generic `T=102` command and `T=105`/`T=1051` feedback paths. The check prevents a
+finite diagnostic image such as r96 from being mistaken for a production
+runtime. A compatible result still grants no transport, execution, or physical
+authority.
 
 [Precision observation v2](precision_observation_v2.schema.json) carries explicit
 localization abstention or a reference to externally qualified uncertainty.
