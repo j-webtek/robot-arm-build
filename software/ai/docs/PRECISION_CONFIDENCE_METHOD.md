@@ -193,3 +193,18 @@ promoted, and no new held-out groups were consumed.
 Next research step: predeclare an otherwise matched comparison with an explicit
 baseline-preservation distillation loss on original-condition training images.
 Retain all per-condition gates; a lower aggregate mean cannot justify promotion.
+
+
+### Baseline-preservation distillation result
+
+Adding weight4 frozen-teacher preservation on original training images improves
+original-condition means versus an otherwise matched augmentation control, but
+**fails** the combined development gates. Darkened-image mean worsens 0.910 ->
+1.012 mm; its >3mm image count rises 4 -> 12. Original-condition tails remain
+above the frozen nonaugmented reference. Neither this candidate nor the matched
+control is promoted. AI-058 through AI-060 retain source, hashes, cases and tests.
+
+Next: freeze a bounded photometric-normalization diagnostic using the unchanged
+initial checkpoint and the same per-condition limits. All three failed training
+variants remain evidence; preprocessing must also earn fresh evaluation and
+calibration before any runtime adoption.

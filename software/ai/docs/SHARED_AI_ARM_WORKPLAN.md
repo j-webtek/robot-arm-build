@@ -604,7 +604,6 @@ remove it only in the same commit that appends the resulting evidence row.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI | S1 | `vision/train_brightness_preserved.py`, preservation plan/scorecard/tests, precision method | feature/translation-pair-evidence | ACTIVE: matched teacher-preservation loss experiment |
 | Unclaimed | S2 | qualified perception adapter and complete shared gate | — | AVAILABLE |
 | Unclaimed | S4 | collect and independently review installed controller evidence | — | AVAILABLE |
 
@@ -2607,3 +2606,77 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: heuristic audit only; AI-041 protected-main PR blocker remains.
 - Supersedes: none; historical failed audit evidence retained.
 - Next dependency: protected-branch PR/checks and AI-055 development experiment.
+
+### E-20260926-AI-058 — baseline-preservation distillation development failure
+
+- Stage: S1
+- Lane: AI
+- Commit: `cc6b73dea829e33b6e49e065b42d300c47e64415` (frozen training source/plan before execution)
+- Change: both arms use identical 25-percent darkened training images, LR0.00005,
+  12 epochs, normalized pose weights 4:4:1 and common development-MSE selection.
+  Candidate adds weight4 teacher-preservation loss on original images; control
+  weight0. Teacher predictions are detached from the initial checkpoint, using
+  training images only. The frozen nonaugmented AI-055 control is an additional
+  reference; passing against a regressed augmentation control alone is insufficient.
+- Inputs/fixtures: reused 14M 1200 training groups, 7200 images (5400 original);
+  reused 15M 200 development groups x4 conditions, 46 targets/image.
+  Source, catalog, initial checkpoint and reference-scorecard hashes are in
+  `train/brightness_preserved_v0_plan.json`; output checkpoint, pixel and teacher
+  prediction hashes and case metrics are in the scorecard.
+- Command: `python software/ai/vision/train_brightness_preserved.py`
+- Result: FAIL predefined combined development rule. Versus matched augmentation
+  control, standard mean 0.918388 -> 0.877357 mm, appearance-shift 1.059982 ->
+  0.940878 mm, challenge 1.057172 -> 1.043721 mm, darkened-standard 0.910199 ->
+  1.011594 mm. >3mm image counts: standard 4 -> 6, appearance 10 -> 10,
+  challenge 13 -> 13, darkened 4 -> 12 (200 images/condition).
+  Candidate also fails original-condition mean/tail limits against the frozen
+  nonaugmented reference. Aggregate mean 0.986436 -> 0.968388 mm cannot override
+  failed gates. Selected epochs control9/candidate10. No model promotion.
+- Artifacts: `eval/brightness_preserved_v0_scorecard.json`, frozen plan/source;
+  ignored local `results/brightness_preserved_v0_augmentation_control/` and
+  `results/brightness_preserved_v0_preservation/` checkpoints/results.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: reused development selection, one seed, synthetic factor0.5 after
+  resize, teacher may preserve its own errors; GPU numerical reproducibility is
+  not bitwise guaranteed. No fresh evaluation or runtime confidence qualification.
+  No boundary change; shared boundary suite not triggered.
+- Supersedes: none; earlier brightness failures remain intact.
+- Next dependency: freeze a development-only photometric-normalization comparison
+  on the unchanged initial checkpoint, with unchanged per-condition error/tail/yaw
+  limits. This tests a different intervention after three failed training variants;
+  it must not become a runtime preprocessing rule without subsequent evidence.
+
+### E-20260926-AI-059 — preservation evidence and loss tests
+
+- Stage: S1
+- Lane: AI
+- Commit: `cc6b73dea829e33b6e49e065b42d300c47e64415` (implementation baseline; tests committed with evidence)
+- Change: verified frozen hashes, identical training/development pixels and teacher
+  predictions, sample budgets, epoch selection, per-case metrics, independent gate
+  recounts and masked loss gradients (dark images contribute zero preservation loss).
+- Inputs/fixtures: AI-058 plan/scorecard, AI-055 reference, analytic Torch tensors.
+- Command: `python -m pytest -q software/ai/tests/test_brightness_preserved_evidence.py`
+- Result: PASS, 4 tests; existing pytest-asyncio configuration deprecation warning.
+- Artifacts: named test and AI-058 scorecard.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: offline consistency and loss correctness, not physical confidence.
+- Supersedes: none
+- Next dependency: AI-058 normalization diagnostic.
+
+### E-20260926-AI-060 — preservation evidence publication audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `cc6b73dea829e33b6e49e065b42d300c47e64415` (implementation baseline plus result/test snapshot)
+- Change: audited the repository publication snapshot.
+- Inputs/fixtures: repository including AI-058/059 artifacts and reviewed fixture allowlist.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS; 5711 paths, 788.0 MiB, 0 unresolved findings, 14 reviewed synthetic fixtures.
+- Artifacts: audit stdout and repository snapshot.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: heuristic audit only; AI-041 protected-main PR publication blocker remains.
+- Supersedes: none; historical audit failures retained.
+- Next dependency: protected-branch PR/checks and AI-058 diagnostic.
