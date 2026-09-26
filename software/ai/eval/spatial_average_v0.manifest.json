@@ -23,7 +23,7 @@
     "software/ai/vision/evaluate_pose_challenge.py": "1ba33a1a2d38b1216a5e1708e17b99c3d9dba9fd2c40af46a084da8065102983",
     "software/ai/vision/evaluate_dark_only_normalization.py": "12289bfeeb52274678c62f46c7e99e057563036566fa48fc5f5cd1d58add4469",
     "software/ai/vision/evaluate_normalization_fresh.py": "184692d7fcd3634ece072950574289841b7cef6ec706d85bf74289433204c967",
-    "software/ai/vision/evaluate_spatial_average.py": "c909f9de06463dc6bf44d6a7ef66950ed15ef5b416fe8cf85d3e235389d64f9d",
+    "software/ai/vision/evaluate_spatial_average.py": "fc64e85148b24d290086e963e32dc562cbfb7bbaabe5538c1fe58873d458d07a",
     "software/ai/vision/evaluate_spatial_uncertainty.py": "ae8f778849ae3d8a6a5ab1eab7f85d57a61cc5bb46918d055e62dcc8195e587f"
   },
   "brightness_factors": {

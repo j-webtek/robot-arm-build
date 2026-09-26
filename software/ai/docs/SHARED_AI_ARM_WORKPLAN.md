@@ -3466,3 +3466,20 @@ commissioning, or bounded physical result with its limitations intact.
 - Supersedes: ARM-028 only for current integrated verification counts.
 - Next dependency: build the firmware-side candidate offline, retaining exact
   manifest and protocol semantics, then conduct independent source/image review.
+
+
+### E-20260926-AI-088 — spatial averaging report serialization failure
+
+- Stage: S1
+- Lane: AI
+- Commit: `fcac5ddd22f398f2b9c4237fdf1c0a455f7b80c5`
+- Change: frozen paired spatial-averaging development experiment.
+- Inputs/fixtures:15M200 groups x7 conditions; exact hashes in spatial-average manifest.
+- Command: `python software/ai/vision/evaluate_spatial_average.py`
+- Result: FAILED exit1 at JSON serialization: NumPy bool_ overall comparison cannot serialize. No scorecard written; no result accepted.
+- Artifacts: frozen source/manifest and retained tool traceback.
+- Hardware writes:0
+- Physical movements:0
+- Limitations: no usable result. Inspection also identifies circular-mean yaw wrap requiring wrapped angle-error scoring.
+- Supersedes:none
+- Next dependency: freeze native-bool serialization and wrapped yaw-error correction before rerunning; preserve this failure.

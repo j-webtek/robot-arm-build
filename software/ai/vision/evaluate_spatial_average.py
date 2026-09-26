@@ -51,7 +51,7 @@ def run():
                 predicted=[transform_target(r.center.x,r.center.y,pose[:2],pose[2]) for r in catalog.keyboard_targets.values()]
                 errors=[math.dist(a,b) for a,b in zip(actual,predicted)]
                 row['arms'][arm]=dict(mean_mm=float(np.mean(errors)),maximum_mm=max(errors),center_mm=math.dist(pose[:2],truth[:2]),
-                    yaw_degrees=abs(math.degrees(pose[2]-truth[2])),within_1mm_count=sum(e<=1 for e in errors))
+                    yaw_degrees=abs(math.degrees(math.atan2(math.sin(pose[2]-truth[2]),math.cos(pose[2]-truth[2])))),within_1mm_count=sum(e<=1 for e in errors))
             cases.append(row)
     summaries={};checks={}
     for condition in m['conditions']:
@@ -65,7 +65,7 @@ def run():
         checks[condition]=dict(mean_error=b['mean_mm']<=1.05*a['mean_mm'],
             tail=b['above_3mm_images']<=a['above_3mm_images'],
             yaw=b['yaw_p95_degrees']<=1.10*a['yaw_p95_degrees'])
-    checks['overall']={'mean_improves':np.mean([r['arms']['averaged']['mean_mm'] for r in cases])<np.mean([r['arms']['control']['mean_mm'] for r in cases])}
+    checks['overall']={'mean_improves':bool(np.mean([r['arms']['averaged']['mean_mm'] for r in cases])<np.mean([r['arms']['control']['mean_mm'] for r in cases]))}
     corrected_counts={c:sum(r['gain']!=1 for r in cases if r['condition']==c) for c in m['conditions']}
     report=dict(corrected_counts=corrected_counts,scope='REUSED_DEVELOPMENT_ESTIMATOR_COMPARISON',manifest_sha256=hashlib.sha256(path.read_bytes()).hexdigest(),
         image_data_sha256={a:d.hexdigest() for a,d in digests.items()},target_catalog_sha256=catalog.content_sha256,
