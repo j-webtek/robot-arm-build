@@ -602,7 +602,6 @@ remove it only in the same commit that appends the resulting evidence row.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI/model | S1 | confidence training script, architecture plan, scorecard | main from `5040056` | ACTIVE: frozen-feature synthetic confidence experiment |
 | Arm/runtime lane | S2 | v2 dual-lineage trajectory envelope contract | `main` from `67390c4` | ACTIVE |
 | Unclaimed | S4 | controller adapter/receipts | — | AVAILABLE |
 
@@ -1317,3 +1316,73 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: heuristic findings remain unresolved; no clean audit claim.
 - Supersedes: none; previous failures retained.
 - Next dependency: fixture-owner review, independently of confidence research.
+
+
+### E-20260926-AI-017 — frozen-feature confidence training fails research criteria
+
+- Stage: S1
+- Lane: AI
+- Commit: `aaaca60a73ff59b312f963389961784a4ba567ae` (exact committed training source and architecture before execution)
+- Change: trained a 4,225-parameter 130->32->1 confidence head on frozen pose
+  features plus predicted XY. Adam, 12 epochs, development BCE selection and
+  separate temperature-grid calibration were frozen before training.
+- Inputs/fixtures: robust pose checkpoint SHA-256
+  `a9590dce78cb801b9c37eab3522ce9785404ba2776152eefdde04a08983e8b60`;
+  `train/localization_confidence_v0_plan.json` and architecture manifest;
+  seeds 14M training (1,200), 15M development (200), 16M calibration (300),
+  17M evaluation (300), each with 3 conditions and 46 targets. Exact input-source,
+  plan/architecture, generated-data and output-model hashes are in the manifests
+  and `eval/localization_confidence_v0_scorecard.json`.
+- Command: `python software/ai/train/train_localization_confidence.py`
+- Result: FAIL, `SYNTHETIC_RESEARCH_FAILED`; training completed successfully.
+  Selected epoch 8, temperature 1.0. Evaluation 41,400 target/view samples:
+  Brier 0.2353066 (required <=0.10), acceptance 0/41,400 (required >=10%).
+  False-accept rate among accepted is undefined, not zero. All three conditions
+  fail; Brier standard 0.2365861, appearance_shift 0.2238393, challenge 0.2454943.
+- Artifacts: architecture/training source and scorecard above; model retained
+  locally under ignored `software/ai/results/localization_confidence_v0/model.pt`,
+  SHA-256 `3a2f1b969b834b82c5858a2ac1c53c39a18b135a368317ada95c4a471b80d8b4`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: synthetic localization-only event; correlated target/views, known
+  identity, no visibility qualification or authenticated capture. No runtime
+  confidence or localization qualification installed. Reproduction requires the
+  pinned local pose checkpoint and a new/absent output directory.
+- Supersedes: none; frozen protocol and failed result preserved.
+- Next dependency: investigate confidence-head inputs on development data; consider
+  local image features in a separately frozen experiment with fresh calibration
+  and evaluation seeds. Do not lower this run's threshold or tune on 17M outcomes.
+
+### E-20260926-AI-018 — confidence metric regression
+
+- Stage: S1
+- Lane: AI
+- Commit: `aaaca60a73ff59b312f963389961784a4ba567ae`
+- Change: reran scoring regression during the frozen confidence experiment.
+- Inputs/fixtures: analytic vectors in `software/ai/tests/test_confidence_metrics.py`;
+  source hashes pinned by the confidence protocol.
+- Command: `python -m pytest -q software/ai/tests/test_confidence_metrics.py`
+- Result: PASS, 10 tests; this validates metrics, not the model's failed criteria.
+- Artifacts: metric helper and tests.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: unit tests only; not a batch contract change or physical evidence.
+- Supersedes: none
+- Next dependency: AI-017 development investigation.
+
+### E-20260926-AI-019 — confidence training audit findings retained
+
+- Stage: S1
+- Lane: AI
+- Commit: `aaaca60a73ff59b312f963389961784a4ba567ae`
+- Change: required read-only snapshot audit during training.
+- Inputs/fixtures: repository snapshot and `scripts/audit_github_snapshot.py`.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: FAIL, exit 1; 5,617 paths, 784.9 MiB, same 14 existing arm-unit
+  credential-literal-review findings; no new training-source finding.
+- Artifacts: scanner and existing test fixtures.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: heuristic findings remain unresolved; no clean audit claim.
+- Supersedes: none
+- Next dependency: fixture-owner review independently of confidence research.
