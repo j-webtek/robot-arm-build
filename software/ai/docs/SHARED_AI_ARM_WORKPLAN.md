@@ -604,6 +604,7 @@ remove it only in the same commit that appends the resulting evidence row.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
+| AI/model | S1 | development tail diagnostic/manifest/evidence | feature/translation-pair-evidence | ACTIVE: 15M groups only; fixed >3mm diagnostic threshold |
 | Unclaimed | S2 | qualified perception adapter and complete shared gate | — | AVAILABLE |
 | Unclaimed | S4 | published permit/receipt schemas, golden fixture, and installed mapping qualification | — | AVAILABLE |
 
