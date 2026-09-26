@@ -474,3 +474,8 @@ A fixed16-combination search over two predicted peaks per corner fits the declar
 ### Fresh geometry evaluation (AI-145)
 
 Unchanged checkpoint/decoder/cost passes all12 relative checks on fresh27M500 groups (2000 images). Geometry mean errors4.586–6.295mm versus soft10.244–13.809mm; >3mm image counts426–466/500 remain unacceptable. This verifies relative gains on new random scenes, not physical calibration or localization qualification.27M is now consumed. Return to development for translation/orientation/grid residual decomposition before subpixel refinement; future changes require another untouched split. Source `5b4ed1df56fb24145fd1bb6a42a9cd777afe57ef`; `eval/geometry_candidate_fresh_v0_report.json`. Visibility and device-stability blockers remain.
+
+
+### Development residual decomposition (AI-148)
+
+Oracle diagnostic counterfactuals isolate translation-only mean4.521–6.400mm versus rotation-only0.918–1.131mm. Nearest4px-grid truth corners yield1.767mm mean and45/200 >3mm images per condition; this is an illustrative quantization reference, not a lower bound or runtime correction. Translation dominates the remaining mean, beyond grid effects alone. Next freeze fixed3x3 probability-weighted refinement of the selected candidates, preserving candidate combination selection/cost. Fresh27M remains untouched by this development analysis; no qualification. Source `03b4779971bb22804955eef77bd9122caa02be3d`; `eval/geometry_residual_v0_report.json`.

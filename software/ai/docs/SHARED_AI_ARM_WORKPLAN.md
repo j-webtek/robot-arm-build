@@ -599,7 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-| AI | S1 | geometry residual decomposition | feature/translation-pair-evidence | ACTIVE |
 
 
 
@@ -4880,3 +4879,51 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic audit; AI-041 protected-main publication blocker remains.
 - Supersedes: none; failed evidence and integration status retained.
 - Next dependency: Protected-branch PR/checks and AI-145 development diagnosis.
+
+### E-20260926-AI-148 — development geometry residual decomposition
+
+- Stage: S1
+- Lane: AI
+- Commit: `03b4779971bb22804955eef77bd9122caa02be3d` (frozen source; results/tests committed with evidence)
+- Change: development geometry residual decomposition.
+- Inputs/fixtures: AI-142 retained800 development rows,15M200 groups,four conditions; exact source/input hashes in eval/geometry_residual_v0_plan.json. Fresh27M evidence not used.
+- Command: `python software/ai/vision/diagnose_geometry_residual.py`
+- Result: Diagnostic completed. Actual means standard/appearance/partial/full5.946/4.716/6.312/6.550mm; translation-only5.856/4.521/6.165/6.400; rotation-only0.918/0.943/1.131/1.049. Translation p9510.148/9.437/10.821/10.906mm. Oracle nearest4px-grid truth corners fitted to rectangle give1.767mm mean and45/200 >3mm images in each condition. Exact actual metrics reproduced.
+- Artifacts: eval/geometry_residual_v0_report.json; frozen runner/plan
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Oracle counterfactuals are diagnostic only, not deployable corrections or measured calibration. Components nonadditive. Nearest-grid reference is not a universal lower bound. No runtime change,qualification or integration gate completion.
+- Supersedes: none; prior failures and integration statuses retained.
+- Next dependency: Freeze fixed3x3 probability-weighted subpixel refinement of already-selected candidates, leaving combination choice/cost unchanged. Evaluate on development before allocating new fresh split; no oracle selection or offsets.
+
+### E-20260926-AI-149 — geometry decomposition verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `03b4779971bb22804955eef77bd9122caa02be3d` (frozen source; results/tests committed with evidence)
+- Change: geometry decomposition verification.
+- Inputs/fixtures: AI-148 manifest/report and pinned AI-142 predictions.
+- Command: `python -m pytest -q software/ai/tests/test_geometry_residual.py`
+- Result: PASS,1 test; hashes,800 case identities,exact actual reproduction,translation-only identity and summary counts/means verified. Existing pytest-asyncio warning.
+- Artifacts: software/ai/tests/test_geometry_residual.py
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Implementation consistency only; batch contract unchanged,shared boundary tests not triggered.
+- Supersedes: none; prior failures and integration statuses retained.
+- Next dependency: AI-148 subpixel experiment.
+
+### E-20260926-AI-150 — residual publication audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `03b4779971bb22804955eef77bd9122caa02be3d` (frozen source; results/tests committed with evidence)
+- Change: residual publication audit.
+- Inputs/fixtures: Repository with AI-148/149 and reviewed fixture allowlist.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS;5905 paths,832.4 MiB,0 unresolved findings,14 reviewed synthetic fixtures.
+- Artifacts: audit stdout and snapshot
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic audit; AI-041 protected-main publication blocker remains.
+- Supersedes: none; prior failures and integration statuses retained.
+- Next dependency: Protected-branch PR/checks and AI-148 experiment.
