@@ -52,7 +52,21 @@ All six joint targets must be finite numbers. `spd` and `acc` remain opaque
 firmware settings with the existing explicit integer bounds; they are not
 treated as physical speed or acceleration units.
 
-The feedback rehearsal accepts only the exact `{"T":105}\n` request and one
+After each admitted command, the runtime accepts only this exact canonical r97
+acknowledgment before another command or feedback request:
+
+```text
+T, status="ACCEPTED_ONCE", ordinal=<pending sequence>
+```
+
+The acknowledgment proves only that r97 reached its single group-write call and
+accepted that ordinal once. It does not prove servo arrival, contact, or task
+success. A missing, stale, duplicate, reordered, malformed, or wrong-ordinal
+acknowledgment terminally locks the session as uncertain; the command is never
+retried.
+
+Once no command acknowledgment is pending, the feedback rehearsal accepts only
+the exact `{"T":105}\n` request and one
 bounded, newline-terminated `T=1051` response containing all six joint fields:
 
 ```text
