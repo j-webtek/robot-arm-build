@@ -602,7 +602,6 @@ remove it only in the same commit that appends the resulting evidence row.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI/model | S1 | `rocell_ai/precision_binding_v2.py`, corresponding AI test and evidence | main from `52be3be` | ACTIVE: current precision binding and explicit abstention |
 | Unclaimed | S2 | shadow runner/integration fixtures | — | AVAILABLE |
 | Unclaimed | S4 | controller adapter/receipts | — | AVAILABLE |
 
@@ -994,3 +993,83 @@ commissioning, or bounded physical result with its limitations intact.
 - Supersedes: none; retains all earlier failed audit evidence.
 - Next dependency: fixture-owner review remains separate from AI precision binding
   and the S2 zero-hardware composition path.
+
+
+### E-20260926-AI-009 — precision binding test discovery failure
+
+- Stage: S1
+- Lane: AI
+- Commit: `60447e80c262a24ade6da5423f0fdf022ef1c42d` (source baseline; new binding/test/evidence committed together in this entry's containing commit)
+- Change: strict current-precision identity preflight; no runtime batch-contract change.
+- Inputs/fixtures: synthetic VisionFusionTests precision fixture and arm v2 fixture;
+  exact hashes/environment in `software/ai/eval/s1_precision_binding_evidence.json`.
+- Command: `python -m pytest -q software/ai/tests/test_precision_binding_v2.py software/tests/integration/test_model_motion_v2_shared_gate.py software/ai/tests/test_batch_emitter_v2.py`
+- Result: FAIL: exit 4, no tests ran; tracked shared-gate test absent from sparse checkout.
+- Artifacts: `software/ai/rocell_ai/precision_binding_v2.py`, corresponding test,
+  and `software/ai/eval/s1_precision_binding_evidence.json`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: preflight only, no end-to-end perception emission, installed qualification
+  or deployment confidence method. Synthetic fixtures do not establish registry trust.
+- Supersedes: none
+- Next dependency: Restore exact tracked test; rerun.
+
+
+### E-20260926-AI-010 — precision binding dependency failure
+
+- Stage: S1
+- Lane: AI
+- Commit: `60447e80c262a24ade6da5423f0fdf022ef1c42d` (source baseline; new binding/test/evidence committed together in this entry's containing commit)
+- Change: strict current-precision identity preflight; no runtime batch-contract change.
+- Inputs/fixtures: synthetic VisionFusionTests precision fixture and arm v2 fixture;
+  exact hashes/environment in `software/ai/eval/s1_precision_binding_evidence.json`.
+- Command: `python -m pytest -q software/ai/tests/test_precision_binding_v2.py software/tests/integration/test_model_motion_v2_shared_gate.py software/ai/tests/test_batch_emitter_v2.py`
+- Result: FAIL: exit 2, collection stopped because jsonschema was not installed after restoring the tracked test.
+- Artifacts: `software/ai/rocell_ai/precision_binding_v2.py`, corresponding test,
+  and `software/ai/eval/s1_precision_binding_evidence.json`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: preflight only, no end-to-end perception emission, installed qualification
+  or deployment confidence method. Synthetic fixtures do not establish registry trust.
+- Supersedes: none
+- Next dependency: Install test dependency; rerun.
+
+
+### E-20260926-AI-011 — precision binding preflight and shared-gate regression
+
+- Stage: S1
+- Lane: AI
+- Commit: `60447e80c262a24ade6da5423f0fdf022ef1c42d` (source baseline; new binding/test/evidence committed together in this entry's containing commit)
+- Change: strict current-precision identity preflight; no runtime batch-contract change.
+- Inputs/fixtures: synthetic VisionFusionTests precision fixture and arm v2 fixture;
+  exact hashes/environment in `software/ai/eval/s1_precision_binding_evidence.json`.
+- Command: `python -m pytest -q software/ai/tests/test_precision_binding_v2.py software/tests/integration/test_model_motion_v2_shared_gate.py software/ai/tests/test_batch_emitter_v2.py`
+- Result: PASS: 31 tests. Exact precision/frame/image/model/map bindings checked; tampered coordinates rejected. Current schema explicitly abstains for missing confidence and capture-clock provenance.
+- Artifacts: `software/ai/rocell_ai/precision_binding_v2.py`, corresponding test,
+  and `software/ai/eval/s1_precision_binding_evidence.json`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: preflight only, no end-to-end perception emission, installed qualification
+  or deployment confidence method. Synthetic fixtures do not establish registry trust.
+- Supersedes: AI-009/010 environment blockers resolved; failures retained
+- Next dependency: Versioned precision confidence methodology and capture-service provenance adapter; no substitution of scene confidence or coverage.
+
+
+### E-20260926-AI-012 — precision binding repository audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `60447e80c262a24ade6da5423f0fdf022ef1c42d` (source baseline; new binding/test/evidence committed together in this entry's containing commit)
+- Change: strict current-precision identity preflight; no runtime batch-contract change.
+- Inputs/fixtures: synthetic VisionFusionTests precision fixture and arm v2 fixture;
+  exact hashes/environment in `software/ai/eval/s1_precision_binding_evidence.json`.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: FAIL: exit 1; 5,603 paths, 784.8 MiB, same 14 existing arm-unit credential-literal-review findings.
+- Artifacts: `software/ai/rocell_ai/precision_binding_v2.py`, corresponding test,
+  and `software/ai/eval/s1_precision_binding_evidence.json`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: preflight only, no end-to-end perception emission, installed qualification
+  or deployment confidence method. Synthetic fixtures do not establish registry trust.
+- Supersedes: none
+- Next dependency: Fixture-owner review of existing findings.

@@ -1,0 +1,21 @@
+{
+  "source_commit": "60447e80c262a24ade6da5423f0fdf022ef1c42d",
+  "command": "python -m pytest -q software/ai/tests/test_precision_binding_v2.py software/tests/integration/test_model_motion_v2_shared_gate.py software/ai/tests/test_batch_emitter_v2.py",
+  "passed": 31,
+  "hardware_writes": 0,
+  "physical_movements": 0,
+  "files_sha256": {
+    "software/ai/rocell_ai/precision_binding_v2.py": "a8125494c590138ec90be8cf72702c6f8888b1248da97055e624ee5f06521507",
+    "software/ai/tests/test_precision_binding_v2.py": "0befeabcc880d7b72f7d898d06cb780329f8fce7de6d3d6b23d9ec7b6f3f654d",
+    "software/tests/integration/test_model_motion_v2_shared_gate.py": "a5662578f03d4b81c8e9ea4b75459d94a20bfa37ff7d5e0677ff3d77d9cd553a"
+  },
+  "limitations": [
+    "Preflight only: no observation confidence or capture clock provenance in current precision schema",
+    "No qualification installed; no batch emitted"
+  ],
+  "environment_repair": [
+    "git restore --ignore-skip-worktree-bits --source=HEAD --worktree software/tests/integration/test_model_motion_v2_shared_gate.py",
+    "python -m pip install jsonschema"
+  ],
+  "jsonschema_version": "4.26.0"
+}
