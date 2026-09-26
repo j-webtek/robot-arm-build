@@ -604,6 +604,7 @@ remove it only in the same commit that appends the resulting evidence row.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
+| AI | S1 | `vision/evaluate_lighting_normalization.py`, normalization manifest/scorecard/tests, precision method | feature/translation-pair-evidence | ACTIVE: frozen pixel-only normalization diagnostic |
 | Unclaimed | S2 | qualified perception adapter and complete shared gate | — | AVAILABLE |
 | Unclaimed | S4 | collect and independently review installed controller evidence | — | AVAILABLE |
 
