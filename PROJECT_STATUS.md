@@ -1,6 +1,6 @@
 # Tactevra project status
 
-Reviewed September 26, 2026 against merged source through `c331c70`.
+Reviewed September 26, 2026 against merged source through `4a166c8`.
 Unmerged workstream branches are not included in this summary.
 This is a capability summary for readers; the
 [shared workplan](software/ai/docs/SHARED_AI_ARM_WORKPLAN.md) retains detailed
@@ -65,6 +65,12 @@ review, configuration binding and installed qualification are still open; no
 controller was installed, started, queried or moved in that work. The passive record and
 compatibility assessment reference local evidence not included in a fresh clone;
 this public summary reports the ledger, not an independent physical revalidation.
+
+The merged host acknowledgment update (ARM-032) also checks that each command's
+acceptance receipt matches its pending sequence before allowing further work.
+It remains a zero-I/O rehearsal: command acceptance is not proof of arrival, and
+missing or ambiguous receipts must not trigger an automatic retry. Its selected
+integration run records 115 passing tests; independent r97 review remains open.
 
 The AI lane has a translation-focused training candidate that improved mean key
 position error from about 0.937 to 0.907 mm on reused synthetic development data.
