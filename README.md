@@ -42,15 +42,7 @@ results. The AI v2 command assembler and arm validation interface have passed a
 shared test using synthetic evidence. Supervised noncontact arm movements are
 also documented in the lab records.
 
-The next software milestone is connecting trustworthy visual observations to
-that command interface and carrying them through the complete planning path.
-The arm lane now has an offline controller-byte preview and a production-runtime
-contract rehearsal; neither sends commands to hardware. The r97 production-runtime
-firmware candidate has been compiled offline and merged, but is not installed or
-physically qualified. Independent source/image review and configuration binding
-remain open; the recorded r96 diagnostic application lacks the production interface.
-A newer localization candidate
-improved synthetic development results but has not established real-camera accuracy.
+These are separate research results, not an end-to-end autonomous product.
 The project has not demonstrated a camera-to-arm workflow that reliably types
 on a physical keyboard or operates a phone. Measured calibration, tool geometry,
 contact behavior, and confirmation of actual device input remain open.
@@ -70,7 +62,8 @@ are tracked separately.
 | Build the physical workcell | [Step-by-step assembly guide](active-project/RoCell_v0_3/BUILD_BY_STEP/README.md) |
 | Find architecture, test results, or procedures | [Documentation guide](docs/README.md) |
 
-After completing developer setup, launch the local rehearsal interface from
+After completing the [base installation](docs/GETTING_STARTED.md#install-the-software),
+you can optionally launch the local rehearsal interface from
 the repository root:
 
 ```powershell

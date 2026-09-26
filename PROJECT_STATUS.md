@@ -1,7 +1,7 @@
 # Tactevra project status
 
-Reviewed September 26, 2026 against merged source through `d08703b` plus the
-ARM-040 candidate described below.
+Reviewed September 26, 2026 against merged source through `dcde6cb`, including
+the ARM-040 and ARM-041 collision-evidence increments.
 Unmerged workstream branches are not included in this summary.
 This is a capability summary for readers; the
 [shared workplan](software/ai/docs/SHARED_AI_ARM_WORKPLAN.md) retains detailed
@@ -11,6 +11,25 @@ Tactevra (formerly RoCell) is an experimental robot workcell intended to carry o
 tasks from a person's text request. You can explore the software and run offline
 examples today. A reliable physical typing or phone-operation product is still
 being developed.
+
+## At a glance
+
+- **Try now:** the [hardware-free walkthrough](docs/GETTING_STARTED.md) turns
+  a supported text request into proposed key actions and nominal coordinates.
+  No model download or robot is needed.
+- **Research progress:** AI/arm contracts, simulated planning, and command
+  previews have software evidence. Specific supervised noncontact movements
+  also have historical lab records; they are not a general typing qualification.
+- **Not demonstrated:** reliable camera-guided physical typing or phone operation.
+  Merged firmware and clear simulated waypoints do not authorize movement.
+- **Distribution:** no source release is published at this checkpoint. The
+  earlier preview effort was [deferred, not completed](https://github.com/j-webtek/robot-arm-build/issues/25).
+  [Vendor-file redistribution provenance](https://github.com/j-webtek/robot-arm-build/issues/45)
+  remains open for expert review.
+
+The sections below explain the evidence behind this summary. For setup help,
+use [support](SUPPORT.md); for implementation ownership and newer increments,
+use the shared workplan linked above.
 
 ## What works today
 
@@ -24,6 +43,7 @@ being developed.
 | Precision evidence | Identity and capture-receipt binding helpers | These establish software checks, not a qualified real-camera observation; authenticated capture and usable localization confidence remain open |
 | Arm planning adapter | Admitted v2 proposals enter the arm-owned measured planning policy | The tested valid input reaches the planner but stops for missing or stale calibration; no trajectory or controller command is produced |
 | Installed collision evidence | Strict measured profiles bind body geometry and clearance policy to the manifest, build, model, and base collision contract | The measured trajectory screener can consume this profile without falling back to nominal geometry, but continuous full-body sweep remains unimplemented and release stays blocked |
+| Waypoint collision evaluation | Supplied body and cable poses can be checked at each planned waypoint and bound to the exact trajectory | Synthetic fixtures test collisions and mismatched evidence; supplied poses are not yet derived from joint solutions, and clearance between waypoints remains unproven |
 | Controller-command preview | Sealed synthetic trajectories can be encoded into Waveshare T=102 bytes and a proposed dispatch schedule | Offline encoding and published schemas are tested; the preview has no transport and sends nothing to the arm |
 | Execution lifecycle rehearsal | Ownership, single-use reservations, fault handling, and restart reconciliation are modeled | Tests exercise no-retry and fault rules without device I/O; this is not an installed live execution service |
 | Controller evidence gate | Required controller identity, mapping, protocol, freshness, and review fields are checked | Modeled records test rejection behavior; even a passing record grants no transport or execution authority, and no physical originals were qualified |
@@ -35,6 +55,13 @@ being developed.
 | Hardware | RC03 workcell design and step-by-step assembly package | Design and print resources exist, with their own measurement and print-readiness requirements |
 
 ### Recent progress, in plain language
+
+The latest collision increment (ARM-041) checks supplied arm-body and cable
+geometry at individual points along a planned route. A collision or missing
+cable sample blocks the route. Even if all those points are clear, the software
+does not yet prove that the spaces between them are clear, or independently
+derive the supplied body poses from joint angles. The tests use fixtures, not
+measured installed geometry. This adds offline evidence without enabling motion.
 
 The arm lane can now inspect what controller-command bytes a synthetic movement
 would produce, without sending them. It also rehearses how one command owner

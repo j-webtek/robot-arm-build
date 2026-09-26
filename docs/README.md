@@ -1,30 +1,23 @@
 # Tactevra documentation
 
-Maintainers: start with the [routine review checklist](MAINTAINER_CHECKLIST.md)
-for triage, PR review and clean handoffs.
-
-Contributors can reproduce the [hardware-free CI checks](CI.md) locally.
-See [repository operations](REPOSITORY_OPERATIONS.md) for PR handoffs and
-dependency maintenance.
-
-The [hardware provenance record](HARDWARE_PROVENANCE.md) documents the owner's
-CAD/print-design authorship confirmation and its scope.
-
-Maintainers preparing a source preview should follow the
-[experimental release checklist](RELEASING.md); no release is published by that plan.
-
-For questions and defects, see [support](../SUPPORT.md). Report vulnerabilities
-through the [private security channel](../SECURITY.md), not public issues.
-For participation standards and private conduct reports, see the
-[community code of conduct](../CODE_OF_CONDUCT.md).
-
-Branding contributors: the [Tactevra brand foundation](brand/BRAND_GUIDE.md) records
-the selected name and staged migration plan. Commercial clearance and rollout remain pending.
-
 Start with the [project overview](../README.md) and
 [getting-started guide](GETTING_STARTED.md), then
 [current status](../PROJECT_STATUS.md). Use the links below when you need
 implementation details or evidence for a specific part of the system.
+
+## Choose a starting point
+
+| Your goal | Start here |
+| --- | --- |
+| Try it without hardware or downloaded models | [Getting started](GETTING_STARTED.md) |
+| Understand capabilities and limitations | [Project status](../PROJECT_STATUS.md) |
+| Get help or report unclear guidance | [Support](../SUPPORT.md) |
+| Contribute code or documentation | [Contributing](../CONTRIBUTING.md) |
+| Explore physical build resources | [RC03 introduction](../active-project/RoCell_v0_3/README_FIRST.md) and [print readiness](../active-project/RoCell_v0_3/PRINT_READINESS.md) |
+
+The overview introduces the project, status summarizes dated capability evidence,
+and getting started is the reproducible first-run path. The shared AI/arm
+workplan below is the detailed engineering record, not a beginner setup guide.
 
 ## AI and arm integration
 
@@ -108,3 +101,18 @@ Older plans retain earlier outcomes and proposed next steps. Read their dates
 and later result sections before using them. Raw exports referenced by these
 documents may exist only on the lab workstation; sharing them is covered in
 [the contribution guide](../CONTRIBUTING.md#export-sharing).
+
+## Repository maintenance and policies
+
+- [Routine maintainer checklist](MAINTAINER_CHECKLIST.md): triage, review, and handoffs.
+- [Hardware-free CI checks](CI.md) and [repository operations](REPOSITORY_OPERATIONS.md):
+  verification scope, PR workflow, and dependency maintenance.
+- [Experimental release checklist](RELEASING.md): requirements for a separately
+  reviewed source preview; the checklist itself does not publish a release.
+- [Hardware provenance](HARDWARE_PROVENANCE.md): the owner's CAD/print-design
+  authorship confirmation and its limits, including separate vendor rights.
+- [Brand foundation](brand/BRAND_GUIDE.md): Tactevra naming and staged migration;
+  commercial clearance remains pending.
+- [Private security reporting](../SECURITY.md) and [code of conduct](../CODE_OF_CONDUCT.md):
+  separate channels for vulnerabilities and community conduct concerns. Do not
+  put private reports in public issues.
