@@ -602,6 +602,7 @@ remove it only in the same commit that appends the resulting evidence row.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
+| Arm/runtime lane | S2 | v2 arm-policy planner adapter and tests | `main` from `52be3be` | ACTIVE |
 | Unclaimed | S2 | shadow runner/integration fixtures | — | AVAILABLE |
 | Unclaimed | S4 | controller adapter/receipts | — | AVAILABLE |
 
