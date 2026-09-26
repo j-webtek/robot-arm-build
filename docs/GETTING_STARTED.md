@@ -15,11 +15,17 @@ Use Windows PowerShell, Git, and Python 3.10 or newer. These instructions assume
 you have access to the repository. Run the commands from a directory where you
 want the checkout to live:
 
+The walkthrough below was checked on Windows with PowerShell 7.6.5 and Python
+3.10.10. Portable CI also tests Python 3.12 on Windows and Linux; that is not a
+test of this PowerShell/browser walkthrough on every platform. See the
+[dated first-run record](releases/NEWCOMER_CHECK_2026-09-26.md) for scope and limits.
+
 ```powershell
 git clone https://github.com/j-webtek/robot-arm-build.git
 cd robot-arm-build
 python -m venv .venv
 .\.venv\Scripts\python -m pip install -e './software'
+.\.venv\Scripts\python -m pip check
 ```
 
 Keep subsequent commands in the repository root. Using the explicit virtual
@@ -39,6 +45,10 @@ Inspect its decision, device and text. Supported requests can be passed to the
 compiler; an ambiguous or unsupported request should produce a clarification or
 rejection. This example uses the grounded parser, so it requires no Ollama model.
 
+For this exact example, expect `inspection.status` to be `accepted`,
+`proposal.text` to be `hi`, and the action list to contain H followed by I.
+Those are proposed key actions, not actual keystrokes.
+
 To inspect the offline coordinate preview:
 
 ```powershell
@@ -50,7 +60,27 @@ candidate targets or explain a blocker. Its coordinates are not measurements of
 your desk, keyboard or robot. The developer [AI reference](../software/ai/README.md)
 describes saved-image experiments and optional model runtimes.
 
+Expect `status: coordinate_preview`, `execution_authorized: false`, an empty
+`controller_commands` list, and
+`coordinate_source: SIMULATION_ONLY_NOMINAL_UNMEASURED`. H and I should remain
+in order. The `missing_before_execution` list is expected, not an installation
+failure; do not bypass those prerequisites to make the example look successful.
+
 ## Explore the interface
+
+First check startup without opening a browser, server, or physical device:
+
+```powershell
+$startupCheck = .\start-rocell-wizard.ps1 -Check | ConvertFrom-Json
+$startupCheck | Select-Object mode, status, verification
+```
+
+Expect `rehearsal`, `READY_FOR_DIAGNOSTICS`, and
+`DIAGNOSTIC_ONLY_NOT_RECEIVED_UNIT_VERIFIED`. The word "ready" refers to software
+diagnostics, not readiness to move a robot. The unfiltered check produces a large
+JSON report; the projection above keeps the first check readable.
+
+Then start the interface:
 
 ```powershell
 .\start-rocell-wizard.ps1
@@ -69,6 +99,7 @@ Follow the [workbench guide](../software/docs/WIZARD_WORKBENCH.md) for individua
 actions. Keep the launching terminal open while using the browser interface;
 stop the server with Ctrl+C when finished. Exports normally stay in the local
 `software/runs/wizard-exports/` directory.
+In terminal mode, enter `quit` to exit without selecting an action.
 
 ## Understand what the software tells you
 
@@ -100,6 +131,10 @@ stage and evidence type before interpreting it as a completed task.
 - **A plan reports missing calibration or evidence:** retain that result and
   inspect the named prerequisite. A fresh clone does not contain the lab's
   private calibration and device records.
+- **The browser did not open:** run `.\start-rocell-wizard.ps1 -NoBrowser` and
+  open the complete local URL printed by that launch in your browser. Keep its
+  session fragment private; do not paste the URL into an issue or screenshot.
+  Do not change the server to listen on a public or LAN address.
 
 ## Choose your next step
 
