@@ -70,7 +70,17 @@ security sandbox or proof of physical safety.
 
 Green checks do not establish model accuracy, authenticated real-camera evidence,
 measured calibration, physical typing, or full-suite qualification. Link checking
-does not validate anchors or remote URLs. SVG parsing does not replace visual QA.
+does not validate remote URLs or arbitrary Markdown anchors. SVG parsing does
+not replace visual QA.
+The documentation check also enforces eight explicitly listed public-page titles
+and required navigation routes in `scripts/ci/check_docs.py`. Three selected
+plain-heading anchors (installation, expected results, and export sharing) must
+still exist exactly once at their destination. Backtick and tilde fenced examples
+do not satisfy these checks. This is a narrow navigation contract, not a complete
+Markdown parser or a check of every GitHub heading slug. Historical RoCell names,
+package identifiers, technical documents, and body prose are not rebranding targets.
+For an intentional title or route change, update the explicit contract and its
+tests in the same PR; do not remove a check just to silence a regression.
 The issue-template check verifies file existence, not GitHub form-schema validity
 or submission behavior. Generic/blank issue routes are not template files.
 The repository snapshot audit remains a separate review. Its previously reported
