@@ -1,6 +1,15 @@
-# RoCell — Robot Arm Build
+# Tactevra
 
-RoCell is an experimental robotics project with a long-term goal: let you
+![Tactevra — intent into action](assets/brand/tactevra-banner.svg)
+
+**An experimental local-first robotics platform connecting user intent, visual evidence, and checked physical actions.**
+
+[Get started](docs/GETTING_STARTED.md) · [Current capabilities](PROJECT_STATUS.md) · [Documentation](docs/README.md) · [Contribute](CONTRIBUTING.md)
+
+Formerly **RoCell**. Existing `rocell` commands, package names, and hardware release
+paths remain unchanged for compatibility. The GitHub repository URL has not changed.
+
+Tactevra is an experimental robotics project with a long-term goal: let you
 give an AI a task in plain language and have a robot arm carry out the
 keyboard and phone actions on your behalf.
 
@@ -91,7 +100,8 @@ on this page are preserved in the
 
 ## License
 
-Copyright 2026 RoCell contributors.
+Copyright 2026 RoCell contributors. Historical copyright and attribution notices
+remain unchanged during the Tactevra brand transition.
 
 Original contributions in this repository are licensed under the
 [Apache License, Version 2.0](LICENSE).

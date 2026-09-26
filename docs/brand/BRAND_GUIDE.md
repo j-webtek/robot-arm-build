@@ -1,7 +1,8 @@
 # Tactevra brand foundation
 
 Updated September 26, 2026. The project owner selected **Tactevra** as the new
-brand. Commercial clearance and rollout remain pending; the repository remains
+brand. Commercial clearance remains pending; GitHub-facing documentation uses
+Tactevra while the repository remains
 `j-webtek/robot-arm-build`, and existing technical identifiers remain unchanged.
 
 Canonical spelling: **Tactevra**. Lowercase slug: `tactevra`.
@@ -41,7 +42,7 @@ evidence and review.
 
 ## One product, consistent component names
 
-Use these names for the planned rollout; this table does not rename deployed components:
+Use these names for public documentation; this table does not rename deployed components:
 
 | Surface | Naming rule | Purpose |
 | --- | --- | --- |
@@ -75,14 +76,16 @@ Avoid: “AI completed your task” when only a proposal has been accepted.
 ## Proposed visual direction
 
 Calm, precise, and approachable; avoid hazard-stripe decoration, humanoid imagery,
-or a logo tied exclusively to the current arm. A simple path-to-target symbol is
-a possible direction, not a finalized or cleared logo.
+or a logo tied exclusively to the current arm. The initial GitHub identity uses a
+path-to-target symbol and a dark wordmark banner in [assets/brand](../../assets/brand/README.md).
+This is a repository presentation asset, not a legally cleared logo.
 
 | Role | Proposed value |
 | --- | --- |
 | Main text / dark surface | Ink `#142633` |
 | Page surface | Mist `#F5F7FA` |
 | Brand accent | Teal `#007F78` |
+| Accent on dark banner | Mint `#58D5C4` |
 | Attention | Amber `#A45A00` |
 | Error | Red `#B42318` |
 | Typography | System sans-serif; monospace only for commands and data |
@@ -92,8 +95,8 @@ Test every actual foreground/background pairing, focus state, and disabled state
 before release. Status must also use text or icons, never color alone. Preserve
 clear separation between decorative branding and operational warnings.
 
-After approval, keep vector logo masters, monochrome variants, and usage examples
-in `assets/brand/`, and machine-readable UI tokens alongside them. Do not add
+Keep vector masters in `assets/brand/`. Monochrome variants and application UI
+tokens remain future work; this GitHub refresh does not restyle the running app. Do not add
 downloaded fonts or icons without recording their license and source.
 
 ## Ownership and consistency

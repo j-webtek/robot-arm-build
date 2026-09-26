@@ -1,4 +1,8 @@
-# Developing and sharing RoCell
+# Contributing to Tactevra
+
+Use **Tactevra** in new public-facing prose. Preserve `rocell` executable names,
+schemas, historic release paths, and third-party attribution. See the
+[brand guide](docs/brand/BRAND_GUIDE.md) for shared naming and presentation rules.
 
 ## Get the source
 

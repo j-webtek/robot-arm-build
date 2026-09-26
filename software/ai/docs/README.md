@@ -1,4 +1,4 @@
-# AI documentation
+# Tactevra AI documentation
 
 For a user introduction, start with [getting started](../../../docs/GETTING_STARTED.md)
 and [current capabilities](../../../PROJECT_STATUS.md). This directory contains

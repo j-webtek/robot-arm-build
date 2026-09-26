@@ -1,6 +1,6 @@
-# Getting started with RoCell
+# Getting started with Tactevra
 
-RoCell is an experimental robot workcell for keyboard and phone interaction.
+Tactevra (formerly RoCell) is an experimental robot workcell for keyboard and phone interaction.
 Start by exploring its software rehearsal and text interpretation. You do not
 need a robot, camera, stylus, GPU, or downloaded language model for the examples
 on this page.

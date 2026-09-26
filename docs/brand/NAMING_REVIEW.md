@@ -38,7 +38,7 @@ their operators, trademark ownership, or commercial claims.
 ## Required before commercial adoption
 
 - [x] Owner selects preferred candidate: Tactevra.
-- [ ] Owner specifies target sales jurisdictions.
+- [x] Owner specifies target sales jurisdictions: United States initially.
 - [ ] Define intended goods/services and who will own the brand.
 - [ ] Search exact, similar-spelling, phonetic, and meaning-related marks in the
   relevant official trademark databases; retain dated queries and findings.
@@ -60,7 +60,8 @@ also distinguishes coined/arbitrary marks from descriptive names.
 
 - Selected name: Tactevra, owner selection on September 26, 2026.
 - Canonical spelling: Tactevra; recommended pronunciation: tak-TEV-ruh.
-- Target markets and legal owner: pending.
+- Target market: United States, confirmed by owner September 26, 2026.
+- Legal owner: pending.
 - Trademark review: not performed.
 - Domain/handle/package availability: not verified.
 - Commercial licensing review of dependencies and model artifacts: pending.

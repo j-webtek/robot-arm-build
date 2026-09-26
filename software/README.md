@@ -1,8 +1,8 @@
-# RoCell runtime
+# Tactevra Runtime
 
 ## Start here
 
-RoCell provides the local rehearsal interface, semantic task compiler, simulation
+Tactevra Runtime provides the local rehearsal interface, semantic task compiler, simulation
 tools, and arm command validation. For a first run, use the
 [getting-started guide](../docs/GETTING_STARTED.md). For current capabilities and
 limitations, use [project status](../PROJECT_STATUS.md).

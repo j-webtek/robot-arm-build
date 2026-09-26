@@ -1,6 +1,7 @@
 # Brand adoption and repository migration plan
 
-Status: Tactevra selected by owner, September 26, 2026. No live rename or runtime changes.
+Status: Tactevra GitHub presentation prepared, September 26, 2026.
+Repository rename and runtime changes are not included.
 See the [brand guide](BRAND_GUIDE.md) and [name review](NAMING_REVIEW.md).
 
 ## Stages and completion criteria
@@ -14,8 +15,11 @@ See the [brand guide](BRAND_GUIDE.md) and [name review](NAMING_REVIEW.md).
 | 5. GitHub rename | Repository owner | Exact destination approved, rename completed, links and integrations verified |
 | 6. Optional technical rename | Both maintainers | Separately versioned compatibility plan and import/CLI/protocol tests pass |
 
-Stage 1 is documented. Stage 2 name selection is complete: **Tactevra**; market
-scope, legal owner, and clearance remain pending. Stages 3 onward remain pending. No hardware
+Stage 1 is documented. Stage 2 name and initial market are selected: **Tactevra**,
+United States; legal owner and clearance remain pending. Stage 3 has initial SVG
+GitHub assets, not a complete app design system. Stage 4 covers entry-point docs
+and repository presentation; application UI, screenshots, and package metadata
+remain unchanged. Stages 5 and 6 remain pending. No hardware
 test, firmware installation, torque change, or model retraining is required for
 branding work.
 

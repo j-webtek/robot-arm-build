@@ -1,8 +1,8 @@
-# RoCell AI work area
+# Tactevra AI
 
 ## Start here
 
-This is the AI research and integration area for RoCell. To try a supported
+This is the AI research and integration area for Tactevra. To try a supported
 English request without downloading a model, follow the
 [first-use guide](../../docs/GETTING_STARTED.md#try-a-text-request).
 The grounded parser is the current intent reference. Gemma assesses scenes;

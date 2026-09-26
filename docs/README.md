@@ -1,4 +1,4 @@
-# Documentation guide
+# Tactevra documentation
 
 Branding contributors: the [Tactevra brand foundation](brand/BRAND_GUIDE.md) records
 the selected name and staged migration plan. Commercial clearance and rollout remain pending.
