@@ -604,7 +604,6 @@ remove it only in the same commit that appends the resulting evidence row.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI | S1 | stable-error calibration diagnostic, manifest/report/tests | feature/translation-pair-evidence | ACTIVE: retained24M calibration only; no25M metric analysis |
 | Unclaimed | S2 | qualified perception adapter and complete shared gate | — | AVAILABLE |
 | Unclaimed | S4 | design and independently qualify a separate generic T=102/T=105/T=1051 runtime; r96 is an incompatible finite diagnostic landmark | — | AVAILABLE |
 
@@ -3278,3 +3277,69 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: heuristic audit only; AI-041 protected-main PR blocker remains.
 - Supersedes: none; historical failures retained.
 - Next dependency: protected-branch PR/checks and AI-079 diagnostic.
+
+### E-20260926-AI-082 — stable-but-inaccurate calibration diagnosis
+
+- Stage: S1
+- Lane: AI
+- Commit: `5ca137b762d9af787825e100f56cad068f7456d4` (frozen source/protocol before analysis)
+- Change: analyzed only retained24M fitting cases from AI-079; selected bin0
+  (disagreement<=0.25mm) with error>3mm. Summarized condition/position/yaw errors
+  and rendered the twelve worst distinct seed representatives for inspection.
+- Inputs/fixtures: AI-079 report, specifically7000 calibration cases; source,
+  renderer and normalization hashes in `eval/stable_errors_v0.manifest.json`.
+  The source container also holds25M records, but no25M metrics or cases are used.
+- Command: `python software/ai/vision/diagnose_stable_errors.py`
+- Result: PASS diagnostic; uncertainty method remains failed. Of3263 low-
+  disagreement images,70 across35 seed groups exceed3mm. Counts by standard,
+  appearance,challenge,darkened,brightness0.55/0.60/0.65:12/13/13/14/8/6/4.
+  Worst selected seed24000868: maximum key error11.67mm, center error11.39mm,
+  yaw0.35deg, disagreement0.17mm (rounded). Image inspection shows arm-like
+  obstructions and ruler lines in selected examples; this does not prove cause.
+- Artifacts: `eval/stable_errors_v0_report.json`, manifest, diagnostic;
+  ignored reproducible `results/stable_errors_v0/stable_errors.png`, visually
+  inspected, with image hash and selected input hashes in report.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: post-hoc calibration-only diagnosis, correlated conditions and
+  hidden truth for scoring/selection only. No new confidence rule, model update
+  or qualification. No batch change; boundary suite not triggered.
+- Supersedes: none; AI-079 failure retained.
+- Next dependency: predeclare a development-only spatial-shift consistency
+  diagnostic on reused14M/15M data, testing whether inverse-corrected predictions
+  expose errors missed by brightness perturbation. Any image-to-board correction
+  is limited to the known synthetic projection and is not runtime calibration;
+  no tuning against25M and fresh future calibration/evaluation remains required.
+
+### E-20260926-AI-083 — stable-error diagnostic evidence test
+
+- Stage: S1
+- Lane: AI
+- Commit: `5ca137b762d9af787825e100f56cad068f7456d4` (implementation baseline; test committed with report)
+- Change: checked frozen inputs, calibration-only seed selection, condition counts,
+  position/yaw calculations and twelve distinct representatives.
+- Inputs/fixtures: AI-082 report/manifest and AI-079 retained calibration cases.
+- Command: `python -m pytest -q software/ai/tests/test_stable_errors.py`
+- Result: PASS,1 test; existing pytest-asyncio configuration deprecation warning.
+- Artifacts: named test and AI-082 report.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: consistency only, not physical accuracy or causal attribution.
+- Supersedes: none
+- Next dependency: AI-082 spatial consistency diagnostic.
+
+### E-20260926-AI-084 — stable-error diagnosis publication audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `5ca137b762d9af787825e100f56cad068f7456d4` (implementation baseline plus report/test snapshot)
+- Change: audited publication snapshot.
+- Inputs/fixtures: repository with AI-082/083 artifacts and reviewed fixture allowlist.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS;5761 paths,800.3 MiB,0 unresolved findings,14 reviewed synthetic fixtures.
+- Artifacts: audit stdout and repository snapshot.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: heuristic audit; AI-041 protected-main PR blocker remains.
+- Supersedes: none; historical failures retained.
+- Next dependency: protected-branch PR/checks and AI-082 diagnostic.

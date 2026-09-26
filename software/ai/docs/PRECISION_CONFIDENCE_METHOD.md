@@ -306,3 +306,17 @@ or threshold relaxation occurs; both new ranges are now consumed.
 Next: inspect retained24M low-disagreement/high-error calibration examples to
 understand stable prediction errors before selecting another intervention.
 Do not optimize against25M evaluation; revised methods need new independent data.
+
+
+### Stable prediction errors on retained calibration
+
+AI-082 through AI-084 inspect only24M calibration evidence:70 of3263 images
+with brightness disagreement<=0.25mm still have key errors>3mm, across35 scenes.
+The worst representative has11.39mm center error despite0.17mm disagreement.
+Brightness consistency therefore misses substantial stable error. Selected images
+show distractors/obstructions, but no causal conclusion is established.25M results
+are not used for this diagnosis, and the original failure remains unchanged.
+
+Next: predeclare a spatial-shift consistency diagnostic on reused development
+splits, undoing only known synthetic image shifts. This is not measured runtime
+calibration; any chosen method needs separate future calibration/evaluation.
