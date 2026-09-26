@@ -1,0 +1,44 @@
+{
+  "scope": "INITIAL_DEVELOPMENT_BASELINE",
+  "training_groups": [
+    14000000,
+    600
+  ],
+  "development_groups": [
+    15000000,
+    200
+  ],
+  "conditions": [
+    "standard",
+    "appearance_shift",
+    "partial",
+    "full"
+  ],
+  "epochs": 8,
+  "seed": 260926,
+  "learning_rate": 0.001,
+  "baseline_checkpoint": "software/ai/results/translation_weighted_v0_translation_weighted/pose_model.pt",
+  "baseline_checkpoint_sha256": "0fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d",
+  "target_catalog_sha256": "6779213e832ab27eeda1e7fb245f57ff8cb0d56707b5aa73a8f31ec483a620f2",
+  "file_sha256": {
+    "software/ai/vision/landmark_occlusions.py": "2d77d25077ab98dad632bb441b94c06cc6c139116d6621483cab7728d95c6aad",
+    "software/ai/vision/landmark_renderer.py": "e8535fbf98c8cfd3a838f5f793534a182d0dc5b8b9eabaa3bfa2173e649137de",
+    "software/ai/vision/landmark_model.py": "d877060b029487382fcedf9eea4af0b6248029fbcf484d44d921f942579483fc",
+    "software/ai/vision/evaluate_dark_only_normalization.py": "12289bfeeb52274678c62f46c7e99e057563036566fa48fc5f5cd1d58add4469",
+    "software/ai/vision/synthetic_keyboard.py": "b9a1662ea348ba78093909844e5e8bed86f4996babc289bfd63858b6b54f692c",
+    "software/ai/vision/pose_model.py": "7eccc2a3cabf3a37217b4a1c3114c439ffc740a917c08e4ef378065ff85c6ec5",
+    "software/ai/vision/train_pose.py": "98c2ae6211b42c3b4b7c5bed3fb03aab82bffff79c30ebb546e3681b3be3a1b6",
+    "software/ai/train/train_landmarks.py": "fe255154e4cc3a6a0efecd2a8344519a201cd847b33b61d827ca8da1992a95bb",
+    "software/ai/train/train_landmarks_corrected.py": "d75168af42405e0afce0fd8f46c1b45012101a323257e902a8f910bf308b0741",
+    "software/ai/train/train_landmarks_ablation.py": "3eba28404cde7f35c0657d4ba0ffb12bc093fb19418c9f12a5e1b6e1bb2f336e",
+    "software/ai/eval/landmark_corrected_v0_control_scorecard.json": "9f13c016fb2dca8e7f98d26f391cdafcbed497bb44ec1b34f7f540f5c7f25f4c",
+    "software/ai/eval/landmark_corrected_v0_corrected_scorecard.json": "8fdb3f2172d69e4aa3453649e91081be2d9d874047576b5b96570d43bf26342a",
+    "software/ai/train/train_local_visibility.py": "76b9f325c55c9a8536e0ce423052ad8295cf255ed3e9c0932d9ca2b0a5fcdd6a",
+    "software/ai/vision/local_visibility_model.py": "011f411a32586e094553ac25f19162143a1309f15a75547ee864406db13d9b57",
+    "software/ai/train/train_weighted_visibility.py": "838baa5e9317b683e9a81ba104554ea7d0f2f39942a081d5550db5255a383fbd",
+    "software/ai/vision/weighted_visibility_model.py": "4c2f7633f5ca3c1a450beb09fed1b37a54d9eead2a5315578bc983cdd98558ba",
+    "software/ai/vision/temperature_visibility_model.py": "b63084f2c554f5734111775f8ab6c891e2af190766c9dac2ffc2c03bb4420a89",
+    "software/ai/train/train_temperature_visibility.py": "d65446acda161fd1bb9a47ccda9333832a08a6b32c4d53fee9434d127e253623"
+  },
+  "policy": "Matched fixed temperature1.0 versus0.5 continuous pooling, no sweep. Identical parameters, seed, data/order, combined loss,8 epochs, selection. Lower mean each condition, no tail increase, yaw<=1.1x control; lower hidden false-visible with clear recall>=90%; zero CPU/CUDA batch1/32 decision disagreement required. No oracle/runtime qualification."
+}
