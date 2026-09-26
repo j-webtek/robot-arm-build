@@ -53,5 +53,53 @@ The repository snapshot audit remains a separate review. Its previously reported
 synthetic fixtures have [exact documented exceptions](AUDIT_FIXTURE_REVIEW.md);
 CI tests that mechanism but does not replace a full snapshot scan.
 
-After the workflow has run successfully, maintainers can choose these checks in
-branch protection. This change does not modify branch protection settings.
+## Test tiers: choose the evidence you need
+
+| Tier | Prerequisites | What a pass establishes |
+| --- | --- | --- |
+| Portable offline CI | Fresh Python environment and package-index access for installation | The explicitly selected packaging, contract, ordering and evidence checks pass; no devices or model services needed. |
+| Native-helper offline tests | Windows, matching MSVC/Windows SDK and separately built incapable test helpers | Modeled native process/protocol behavior; not physical device qualification. |
+| Model evaluation | The experiment's model artifacts, datasets and declared environment | Results for that evaluation population, not arm execution or general model accuracy. |
+| Physical qualification | Measured setup, reviewed procedure, authorized operator and live-device prerequisites | Only the specific observations recorded by that procedure. Never inferred from CI. |
+
+Directory names such as `unit` do not guarantee portability. Do not replace the
+explicit CI list with unrestricted test discovery without inspecting dependencies
+and side effects.
+
+### Known clean-checkout native prerequisite
+
+During the audit-fixture review, the broader affected-file run reported **465
+passed and one failed**. The Windows case
+`test_exact_owned_run_original_bytes_survive_export[False]` in
+`software/tests/unit/test_physical_usb_identity_export.py` required
+`software/native/windows_usb_identity/build/Release/rocell_usb_identity_entry_tests.exe`.
+That generated helper was absent; the modeled run reported `FileNotFoundError`
+and `no_attempt`. This is not a full-suite pass or evidence of a hardware fault.
+The test was not weakened or silently skipped.
+
+The [native component guide](../software/native/windows_usb_identity/README.md)
+describes its build prerequisites and separately linked incapable test binaries.
+Do not substitute the production USB executable. CMake registers additional
+Python wire/admission tests only when its expected `software/.venv` interpreter
+exists; `.venv-ci` alone does not enable those tests. Check the registered CTest
+list before interpreting a result. No native helper or physical test is run by
+the portable workflow.
+
+## Main-branch merge policy
+
+Configured on GitHub on 2026-09-26: pull requests, resolved review conversations,
+an up-to-date branch, and all four checks below are required, including for admins:
+
+- `Offline / ubuntu-latest / Python 3.10`
+- `Offline / ubuntu-latest / Python 3.12`
+- `Offline / windows-latest / Python 3.10`
+- `Offline / windows-latest / Python 3.12`
+
+Force pushes and branch deletion are disabled. No independent approving review
+is mandatory (the approval count is zero), so a solo maintainer can merge after
+the checks pass. These are repository settings, not settings installed by cloning
+this source; recheck GitHub if policy changes.
+
+Both AI and arm contributors should push a topic branch and open a PR rather
+than pushing directly to `main`. Update the branch when `main` advances and let
+the checks rerun. A green result remains scoped to the portable tier above.
