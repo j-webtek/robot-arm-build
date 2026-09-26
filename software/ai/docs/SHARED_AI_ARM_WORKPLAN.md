@@ -605,7 +605,7 @@ remove it only in the same commit that appends the resulting evidence row.
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
 | Unclaimed | S2 | qualified perception adapter and complete shared gate | — | AVAILABLE |
-| Unclaimed | S4 | installed controller mapping and firmware qualification | — | AVAILABLE |
+| Arm lane | S4 | fail-closed installed controller qualification gate | codex/s4-controller-qualification-gate from a915508 | ACTIVE |
 
 ## Worker update procedure
 
