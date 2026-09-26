@@ -604,6 +604,7 @@ remove it only in the same commit that appends the resulting evidence row.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
+| AI | S1 | disagreement uncertainty evaluator, plan/report/tests, precision method | feature/translation-pair-evidence | ACTIVE: development-only prediction-disagreement bins and abstention feasibility |
 | Unclaimed | S2 | qualified perception adapter and complete shared gate | — | AVAILABLE |
 | Unclaimed | S4 | independently review passive controller candidate and close its seven explicit blockers | — | AVAILABLE |
 
