@@ -121,7 +121,7 @@ Only the shared integration gate may change a stage's overall status to
 | Stage | Deliverable | AI lane | Arm lane | Integration gate | Overall |
 |---|---|---:|---:|---:|---:|
 | S0 | Shared v1 seam and baseline | COMPLETE | COMPLETE | COMPLETE | COMPLETE |
-| S1 | Contract v2: freshness, uncertainty, capability | IN_PROGRESS | IN_PROGRESS | NOT_STARTED | IN_PROGRESS |
+| S1 | Contract v2: freshness, uncertainty, capability | IN_PROGRESS | READY_FOR_INTEGRATION | NOT_STARTED | IN_PROGRESS |
 | S2 | Full zero-hardware text-to-envelope shadow path | NOT_STARTED | IN_PROGRESS | NOT_STARTED | IN_PROGRESS |
 | S3 | Measured localization and planning readiness | IN_PROGRESS | BLOCKED | NOT_STARTED | BLOCKED |
 | S4 | Zero-write Waveshare adapter and receipts | READY_FOR_INTEGRATION | NOT_STARTED | NOT_STARTED | NOT_STARTED |
@@ -602,7 +602,6 @@ remove it only in the same commit that appends the resulting evidence row.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| Arm/runtime lane | S1 | `software/src/rocell/models`, arm-side schema and unit tests | `main` from `ebe7eee` | ACTIVE |
 | Unclaimed | S2 | shadow runner/integration fixtures | — | AVAILABLE |
 | Unclaimed | S4 | controller adapter/receipts | — | AVAILABLE |
 
@@ -762,3 +761,62 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: heuristic audit remains unresolved; no fixture-owner review claimed.
 - Supersedes: none (preserves AI-004 failed evidence)
 - Next dependency: fixture owners review findings; S1 semantic agreement remains pending.
+
+
+### E-20260926-ARM-001 — strict v2 arm contract and admission boundary
+
+- Stage: S1
+- Lane: Arm/runtime
+- Commit: `c579746dd801987fa66445fecbc1f5ebd8fe99b1`
+- Change: accepted the AI lane's core S1 semantics and implemented the published
+  v2 batch/proposal schemas, strict duplicate-free decoder, explicit board-plane
+  geometry profile, epoch-ms freshness and external lease checks, monotonic
+  post-admission deadline, independently supplied capability/evidence/qualification
+  bindings, ordered action indexes, oriented convex target regions, additive
+  localization-plus-placement bounds, and separate surface-normal qualification.
+  Speed and clearance are absent. The output remains zero-authority.
+- Inputs/fixtures: existing v1 fixtures; analytic S1 geometry vectors; v2 H/I
+  keyboard fixtures with independently supplied region, placement, model, camera,
+  clock, lease, map, board-frame, capability and qualification identities.
+- Command: `python -m pytest software/ai/tests/test_s1_geometry_cases.py software/ai/tests/test_batch_emitter.py software/tests/unit/test_model_motion_ingress.py software/tests/unit/test_model_motion_ingress_v2.py software/tests/unit/test_model_motion_sequence_coordinator.py software/tests/unit/test_model_motion_sequence_journal.py software/tests/unit/test_trajectory_execution_envelope.py -q`
+- Result: PASS, 48 tests. Both JSON schemas also passed Draft 2020-12 schema
+  self-validation. V1 and v2 decoders explicitly reject the other's wire format.
+- Artifacts: `software/ai/schemas/model_motion_batch_v2.schema.json`,
+  `software/ai/schemas/model_motion_proposal_v2.schema.json`,
+  `software/src/rocell/models/model_motion_batch_v2.py`,
+  `software/src/rocell/application/model_motion_ingress_v2.py`, and
+  `software/tests/unit/test_model_motion_ingress_v2.py`.
+- Schema SHA-256: batch
+  `cf59e2b2f42de78b2c22b27aad5bc44881c20bea68e16af727b04e5ffa8327ce`;
+  proposal
+  `9cfd3c1fc493a738112795a8153b94855e6281e0d9aac0d1ed19b2705174136e`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: arm fixtures are handcrafted consumer tests, not actual AI emitter
+  bytes; no localization qualification is installed; trusted registry records are
+  injected by the caller and still require production registry plumbing. Admission
+  generates no trajectory or controller command and grants no execution authority.
+- Supersedes: arm-side semantic-review dependency in AI-003; it does not supersede
+  the AI producer or shared integration gates.
+- Next dependency: AI lane emits canonical v2 bytes matching these frozen field
+  meanings, then the shared S1 integration gate mutation-tests those actual bytes.
+
+
+### E-20260926-ARM-002 — v2 increment audit retains existing findings
+
+- Stage: S1
+- Lane: Arm/runtime
+- Commit: `c579746dd801987fa66445fecbc1f5ebd8fe99b1`
+- Change: ran the required read-only repository snapshot audit after the v2 arm
+  implementation.
+- Inputs/fixtures: repository snapshot and `scripts/audit_github_snapshot.py`.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: FAIL, exit 1; 5,593 paths, 903.2 MiB, the same 14 existing
+  credential-literal-review findings in arm unit fixtures; no v2-file finding.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: heuristic audit remains unresolved and this is not a clean
+  repository security-audit claim.
+- Supersedes: none; retains AI-004 and AI-006 failed evidence.
+- Next dependency: fixture owners review the 14 existing findings independently
+  of the S1 producer/consumer integration work.
