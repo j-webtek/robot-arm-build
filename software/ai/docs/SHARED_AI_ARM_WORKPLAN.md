@@ -599,6 +599,8 @@ Copy this row and fill every field:
 
 ## Active work claims
 
+- AI lane / S1: fixed baseline-preservation penalty comparison; identical key-loss inputs/budget, coefficient1, no qualification.
+
 
 
 
