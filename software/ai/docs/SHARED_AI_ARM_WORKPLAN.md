@@ -602,7 +602,6 @@ remove it only in the same commit that appends the resulting evidence row.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| Arm/runtime lane | S2 | v2 arm-policy planner adapter and tests | `main` from `52be3be` | ACTIVE |
 | Unclaimed | S2 | shadow runner/integration fixtures | — | AVAILABLE |
 | Unclaimed | S4 | controller adapter/receipts | — | AVAILABLE |
 
@@ -994,3 +993,58 @@ commissioning, or bounded physical result with its limitations intact.
 - Supersedes: none; retains all earlier failed audit evidence.
 - Next dependency: fixture-owner review remains separate from AI precision binding
   and the S2 zero-hardware composition path.
+
+
+### E-20260926-ARM-006 — v2 proposals enter arm-owned measured planning policy
+
+- Stage: S2
+- Lane: Arm/runtime
+- Commit: `dfce88e823f9540db03650392dbbb169e366a336`
+- Change: added a fail-closed adapter from an admitted v2 proposal and fresh
+  pre-planner lease into the existing measured planner. The adapter verifies the
+  ingress and pre-planner hashes, exact batch/action lineage, monotonic deadline,
+  and zero-authority fields. It derives clearance and speed exclusively from an
+  arm-owned policy, preserves the original v2 evidence hashes, and refuses to
+  encode or authorize controller commands.
+- Inputs/fixtures: coherent H/I v2 batch, consumer-owned trusted registry,
+  admitted ingress report, fresh pre-planner report, conservative arm policy,
+  tampered ingress, exact expiry, altered action identity, and an upstream report
+  that falsely claims hardware access.
+- Command: `python -m pytest software/tests/unit/test_model_motion_ingress_v2.py software/tests/unit/test_model_motion_planner_gate.py software/tests/integration/test_model_motion_v2_shared_gate.py -q`
+- Result: PASS, 48 tests. The valid input reaches the real measured planner and
+  terminates as `BLOCKED_CALIBRATION_MISSING_OR_STALE`; IK and route screening do
+  not run, and no envelope or controller command is fabricated. Tamper, expiry,
+  wrong-action, and upstream-authority cases fail closed.
+- Artifacts: `software/src/rocell/application/model_motion_planner_gate_v2.py`,
+  `software/src/rocell/application/__init__.py`, and
+  `software/tests/unit/test_model_motion_ingress_v2.py`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: the internal v1 proposal is only a deterministic compatibility
+  surrogate for the existing measured planner; it is not a wire migration and
+  never replaces the original v2 lineage. No measured deployment calibration or
+  localization qualification is installed, so no trajectory envelope is
+  produced. The complete raw-text-to-envelope trace runner and v2 sequence
+  coordinator remain unfinished.
+- Supersedes: none; extends the S1 admission chain into S2 measured planning.
+- Next dependency: compose the actual AI v2 bytes, this policy adapter, fresh
+  observed-state fixtures, and ordered coordination into one zero-hardware trace;
+  separately, the AI lane must bind precision output to exact evidence.
+
+
+### E-20260926-ARM-007 — v2 planner-policy increment audit retains findings
+
+- Stage: S2
+- Lane: Arm/runtime
+- Commit: `dfce88e823f9540db03650392dbbb169e366a336`
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: FAIL, exit 1; 5,602 paths, 903.2 MiB, the same 14 existing
+  credential-literal-review findings in arm unit fixtures; no v2 planner-policy
+  adapter finding.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: heuristic findings remain unresolved; this is not a clean
+  repository security-audit claim.
+- Supersedes: none; retains all earlier failed audit evidence.
+- Next dependency: fixture-owner review remains independent of the S2 shadow
+  runner and AI precision-evidence binding work.
