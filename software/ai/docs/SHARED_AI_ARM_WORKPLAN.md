@@ -599,8 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-- AI lane / S1: pose-visibility diagnostic; freeze existing min-three-visible-corner rule against retained AI-187 pose errors. No runtime qualification or arm status changes.
-
 
 
 
@@ -5786,3 +5784,54 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic audit; AI-041 protected-main publication blocker remains.
 - Supersedes: none; previous failures and integration statuses retained.
 - Next dependency: Protected-branch PR/checks and AI-187 diagnosis.
+
+
+### E-20260926-AI-190 — pose visibility association diagnostic
+
+- Stage: S1
+- Lane: AI
+- Commit: `705a3f3bd9701ccdf1ee9857863fe5fc863f6231` (frozen source; results/tests committed with evidence)
+- Change: pose visibility association diagnostic.
+- Inputs/fixtures: AI-187 retained 800 predictions, seeds15000000..15000199 x four conditions; source/report hashes pinned in eval/pose_visibility_v0_plan.json. Existing support threshold sigmoid visibility>=0.5,minimum3 corners; pose maximum target error>3mm. Audit additionally uses reviewed fixture allowlist.
+- Command: `python software/ai/vision/diagnose_pose_visibility.py`
+- Result: FAIL as localization safeguard: 28/32 errors over3mm remain accepted; 4/32 detected (12.5%); 10 accurate cases rejected. Coverage786/800 (98.25%). Standard accepted bad5/200; appearance7/200; partial7/194; full9/192. No threshold sweep.
+- Artifacts: eval/pose_visibility_v0_report.json; vision/diagnose_pose_visibility.py
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Reused synthetic development; fixed visibility rule is not calibrated localization uncertainty. No runtime gate installed.
+- Supersedes: none; earlier failed evidence and arm/integration status retained.
+- Next dependency: Freeze a direct pose-tail diagnosis by seed, translation/yaw contribution and controlled condition before selecting a bounded pose-training change. Visibility may describe occlusion but must not substitute for coordinate uncertainty. Protected-branch publication still requires PR/checks.
+
+
+### E-20260926-AI-191 — pose visibility verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `705a3f3bd9701ccdf1ee9857863fe5fc863f6231` (frozen source; results/tests committed with evidence)
+- Change: pose visibility verification.
+- Inputs/fixtures: AI-187 retained 800 predictions, seeds15000000..15000199 x four conditions; source/report hashes pinned in eval/pose_visibility_v0_plan.json. Existing support threshold sigmoid visibility>=0.5,minimum3 corners; pose maximum target error>3mm. Audit additionally uses reviewed fixture allowlist.
+- Command: `python -m pytest -q software/ai/tests/test_pose_visibility.py`
+- Result: PASS,2 tests: threshold boundaries, confusion counts, empty accepted set, hashes and retained evidence recount. Existing pytest-asyncio warning.
+- Artifacts: tests/test_pose_visibility.py
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Implementation verification only; batch contract unchanged, shared boundary tests not triggered.
+- Supersedes: none; earlier failed evidence and arm/integration status retained.
+- Next dependency: Freeze a direct pose-tail diagnosis by seed, translation/yaw contribution and controlled condition before selecting a bounded pose-training change. Visibility may describe occlusion but must not substitute for coordinate uncertainty. Protected-branch publication still requires PR/checks.
+
+
+### E-20260926-AI-192 — pose visibility publication audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `705a3f3bd9701ccdf1ee9857863fe5fc863f6231` (frozen source; results/tests committed with evidence)
+- Change: pose visibility publication audit.
+- Inputs/fixtures: AI-187 retained 800 predictions, seeds15000000..15000199 x four conditions; source/report hashes pinned in eval/pose_visibility_v0_plan.json. Existing support threshold sigmoid visibility>=0.5,minimum3 corners; pose maximum target error>3mm. Audit additionally uses reviewed fixture allowlist.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS;5982 paths,842.6 MiB,0 unresolved findings,14 reviewed synthetic fixtures.
+- Artifacts: audit stdout and repository snapshot
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic audit; AI-041 protected-main publication blocker remains.
+- Supersedes: none; earlier failed evidence and arm/integration status retained.
+- Next dependency: Freeze a direct pose-tail diagnosis by seed, translation/yaw contribution and controlled condition before selecting a bounded pose-training change. Visibility may describe occlusion but must not substitute for coordinate uncertainty. Protected-branch publication still requires PR/checks.

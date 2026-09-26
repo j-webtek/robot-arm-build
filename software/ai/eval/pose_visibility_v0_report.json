@@ -1,0 +1,57 @@
+{
+  "plan_sha256": "04b493fd9fdf2b1383082670b0fda5a35f4d700f3166a43e4b85e5c7f5983cac",
+  "summaries": {
+    "appearance_shift": {
+      "accepted_good": 193,
+      "accepted_bad": 7,
+      "rejected_good": 0,
+      "rejected_bad": 0,
+      "cases": 200,
+      "coverage": 1.0,
+      "baseline_bad_rate": 0.035,
+      "accepted_bad_rate": 0.035,
+      "failure_detection_rate": 0.0
+    },
+    "full": {
+      "accepted_good": 183,
+      "accepted_bad": 9,
+      "rejected_good": 6,
+      "rejected_bad": 2,
+      "cases": 200,
+      "coverage": 0.96,
+      "baseline_bad_rate": 0.055,
+      "accepted_bad_rate": 0.046875,
+      "failure_detection_rate": 0.18181818181818182
+    },
+    "partial": {
+      "accepted_good": 187,
+      "accepted_bad": 7,
+      "rejected_good": 4,
+      "rejected_bad": 2,
+      "cases": 200,
+      "coverage": 0.97,
+      "baseline_bad_rate": 0.045,
+      "accepted_bad_rate": 0.03608247422680412,
+      "failure_detection_rate": 0.2222222222222222
+    },
+    "standard": {
+      "accepted_good": 195,
+      "accepted_bad": 5,
+      "rejected_good": 0,
+      "rejected_bad": 0,
+      "cases": 200,
+      "coverage": 1.0,
+      "baseline_bad_rate": 0.025,
+      "accepted_bad_rate": 0.025,
+      "failure_detection_rate": 0.0
+    }
+  },
+  "hardware_writes": 0,
+  "physical_movements": 0,
+  "qualification_installed": false,
+  "limitations": [
+    "Reused synthetic development; no new model inference or fresh holdout",
+    "Visibility is not localization uncertainty; no threshold tuning or runtime gate",
+    "Three millimetres is a diagnostic error threshold, not target-specific admission"
+  ]
+}
