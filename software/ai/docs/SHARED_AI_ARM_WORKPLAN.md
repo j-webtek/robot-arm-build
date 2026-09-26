@@ -604,7 +604,6 @@ remove it only in the same commit that appends the resulting evidence row.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI | S1 | landmark renderer/model, fixtures/tests, training plan | feature/translation-pair-evidence | ACTIVE: landmark and occlusion-label foundation; no runtime boundary changes |
 | Unclaimed | S2 | qualified perception adapter and complete shared gate | — | AVAILABLE |
 | Unclaimed | S4 | implement controller firmware against the committed safe-idle production runtime contract, then independently review source and linked image | — | AVAILABLE |
 
@@ -3669,3 +3668,68 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations:heuristic audit; AI-041 protected-main PR publication blocker remains.
 - Supersedes:none; historical failures retained.
 - Next dependency:protected-branch PR/checks and AI-095 landmark baseline.
+
+### E-20260926-AI-098 — landmark architecture and label foundation
+
+- Stage:S1
+- Lane:AI
+- Commit:`947f67df03713473f5af55d67819790dbc910612` (frozen renderer/model/audit before scoring)
+- Change: added an isolated instrumented renderer retaining original RGB output,
+  four ordered semantic case corners and geometric foreground-mask fractions in
+  radius2px disks. Added a61032-parameter CNN with four48x64 heatmaps and four
+  visibility logits from256x192 input, plus differentiable pixel-coordinate decoding.
+- Inputs/fixtures:15M200 reused groups x standard/appearance domains=400 images,
+ 1600 corners; exact sources in `eval/landmark_labels_v0.manifest.json`; image,
+ mask hashes and labels retained in report. No source photographs consumed.
+- Command:`python software/ai/vision/evaluate_landmark_labels.py`
+- Result:PASS foundation audit,0 RGB/pose mismatches across400 images.1564 corners
+ fully unoccluded,36 partially occluded,0 fully occluded. Architecture exists but
+ is UNTRAINED; no accuracy, calibrated visibility or performance claim. Label
+ population is insufficient for fully occluded visibility behavior.
+- Artifacts:`vision/landmark_renderer.py`, `vision/landmark_model.py`, evaluator,
+ manifest and `eval/landmark_labels_v0_report.json`.
+- Hardware writes:0
+- Physical movements:0
+- Limitations: synthetic case geometry only; mask covers drawn foreground arm,
+ ruler and reflective line, not perceptual visibility under blur/contrast.
+ Photo-texture and challenge-mask labeling unsupported. Existing hashed renderer
+ unchanged; instrumented copy requires continued parity checks. No runtime or
+ batch contract change; boundary suite not triggered; integration gates unchanged.
+- Supersedes:none; existing pose studies remain retained.
+- Next dependency:add controlled partial/full corner occlusions with explicit
+ labels and held-out occluder variants; then freeze training/loss/selection and
+ per-condition comparison against normalized pose baseline before training.
+ Visibility logits must not substitute for localization uncertainty.
+
+### E-20260926-AI-099 — landmark foundation tests
+
+- Stage:S1
+- Lane:AI
+- Commit:`947f67df03713473f5af55d67819790dbc910612` (implementation baseline; tests committed with evidence)
+- Change: verified source hashes, corner ordering/centroid/visibility bounds,
+ output shapes, finite gradients, and uniform/peaked heatmap coordinate decoding.
+- Inputs/fixtures:AI-098 report and analytic Torch image/heatmap tensors.
+- Command:`python -m pytest -q software/ai/tests/test_landmark_foundation.py`
+- Result:PASS,2 tests; existing pytest-asyncio configuration deprecation warning.
+- Artifacts:named tests and AI-098 report.
+- Hardware writes:0
+- Physical movements:0
+- Limitations:implementation checks only; architecture remains untrained.
+- Supersedes:none
+- Next dependency:AI-098 occlusion data and frozen training protocol.
+
+### E-20260926-AI-100 — landmark foundation publication audit
+
+- Stage:S1
+- Lane:AI
+- Commit:`947f67df03713473f5af55d67819790dbc910612` (implementation baseline plus report/test snapshot)
+- Change:audited publication snapshot.
+- Inputs/fixtures:repository with AI-098/099 artifacts and reviewed fixture allowlist.
+- Command:`python scripts/audit_github_snapshot.py`
+- Result:PASS;5790 paths,807.6 MiB,0 unresolved findings,14 reviewed synthetic fixtures.
+- Artifacts:audit stdout and repository snapshot.
+- Hardware writes:0
+- Physical movements:0
+- Limitations:heuristic audit; AI-041 protected-main PR publication blocker remains.
+- Supersedes:none; historical failures retained.
+- Next dependency:protected-branch PR/checks and AI-098 data foundation.

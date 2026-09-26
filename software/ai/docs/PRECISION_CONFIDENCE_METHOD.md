@@ -367,3 +367,17 @@ Next: freeze a landmark-localization baseline with explicit geometry predictions
 and visibility/occlusion evaluation on development data. Repeated output-adjustment
 failures motivate changing the estimator rather than tuning against26M or relaxing
 limits. Fresh evaluation, uncertainty and physical calibration remain required.
+
+
+### Landmark baseline foundation (untrained)
+
+AI-098 through AI-100 add four semantic case-corner heatmaps and geometric
+occlusion labels. The61032-parameter network is untrained. An instrumented
+renderer preserves400 existing RGB/pose outputs exactly;1600 corner labels contain
+1564 fully unoccluded,36 partially occluded and zero fully occluded examples.
+Geometric mask visibility does not represent blur/contrast confidence and must
+not replace localization uncertainty.
+
+Next: controlled partial/full occlusion fixtures and held-out occluder variants,
+then a frozen training/loss/selection comparison against normalized pose baseline.
+Photo and challenge-mask labels are currently unsupported. Runtime is unchanged.
