@@ -1,0 +1,10 @@
+{
+  "scope": "SYNTHETIC_LABEL_FOUNDATION",
+  "protocol": "400 existing15M images, standard/appearance domains. Exact RGB and pose parity; four semantic case corners and radius2 geometric foreground occlusion masks. No training or physical confidence claim.",
+  "file_sha256": {
+    "software/ai/vision/synthetic_keyboard.py": "b9a1662ea348ba78093909844e5e8bed86f4996babc289bfd63858b6b54f692c",
+    "software/ai/vision/landmark_renderer.py": "e8535fbf98c8cfd3a838f5f793534a182d0dc5b8b9eabaa3bfa2173e649137de",
+    "software/ai/vision/landmark_model.py": "d877060b029487382fcedf9eea4af0b6248029fbcf484d44d921f942579483fc",
+    "software/ai/vision/evaluate_landmark_labels.py": "2834f440d8dd51ae3462b5522ee8b2b693e739255e9eb9e68475a88e209b2898"
+  }
+}
