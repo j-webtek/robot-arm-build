@@ -99,3 +99,8 @@ qualification, sequencing, deadlines, or sole-writer ownership.
 
 The committed Python state machine and schemas are the executable specification
 against which that firmware candidate must be tested.
+
+The first offline implementation is documented in
+[PRODUCTION_RUNTIME_FIRMWARE_R97.md](PRODUCTION_RUNTIME_FIRMWARE_R97.md). It is
+compiled but intentionally uninstalled, independently unreviewed, and blocked
+on a measured configuration-epoch binding.
