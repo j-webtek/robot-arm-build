@@ -1,0 +1,183 @@
+{
+  "scope": "DEVELOPMENT_ONLY",
+  "selected_epoch": 2,
+  "development_bce": [
+    0.6391778588294983,
+    0.6350350975990295,
+    0.6351708173751831,
+    0.635448157787323,
+    0.6366243958473206,
+    0.637973964214325,
+    0.6371122598648071,
+    0.6353476047515869,
+    0.6366392970085144,
+    0.6379086971282959,
+    0.6370155811309814,
+    0.6375932097434998
+  ],
+  "candidate": {
+    "count": 27600,
+    "brier_score": 0.22199267042429158,
+    "outcome_frequency": 0.5842028985507246,
+    "constant_frequency_brier": 0.24290987187565638,
+    "accepted_count": 0,
+    "abstained_count": 27600,
+    "acceptance_fraction": 0.0,
+    "false_accept_count": 0,
+    "false_accept_fraction_among_accepted": null,
+    "reliability_bins": [
+      {
+        "bin_index": 0,
+        "count": 49,
+        "mean_probability": 0.0666162520647049,
+        "success_fraction": 0.02040816326530612
+      },
+      {
+        "bin_index": 1,
+        "count": 439,
+        "mean_probability": 0.14944498782345267,
+        "success_fraction": 0.1958997722095672
+      },
+      {
+        "bin_index": 2,
+        "count": 801,
+        "mean_probability": 0.25325997151462326,
+        "success_fraction": 0.21722846441947566
+      },
+      {
+        "bin_index": 3,
+        "count": 1526,
+        "mean_probability": 0.35740497405610266,
+        "success_fraction": 0.4200524246395806
+      },
+      {
+        "bin_index": 4,
+        "count": 3048,
+        "mean_probability": 0.45125956447144816,
+        "success_fraction": 0.3349737532808399
+      },
+      {
+        "bin_index": 5,
+        "count": 6595,
+        "mean_probability": 0.5562213537817746,
+        "success_fraction": 0.5871114480667172
+      },
+      {
+        "bin_index": 6,
+        "count": 10600,
+        "mean_probability": 0.65226316622968,
+        "success_fraction": 0.6571698113207547
+      },
+      {
+        "bin_index": 7,
+        "count": 4542,
+        "mean_probability": 0.7307757674230452,
+        "success_fraction": 0.7404227212681638
+      },
+      {
+        "bin_index": 8,
+        "count": 0,
+        "mean_probability": null,
+        "success_fraction": null
+      },
+      {
+        "bin_index": 9,
+        "count": 0,
+        "mean_probability": null,
+        "success_fraction": null
+      }
+    ],
+    "limitation": "Descriptive correlated-sample metrics; no population confidence or qualification claim"
+  },
+  "baseline": {
+    "count": 27600,
+    "brier_score": 0.22393257440306613,
+    "outcome_frequency": 0.5842028985507246,
+    "constant_frequency_brier": 0.24290987187565638,
+    "accepted_count": 0,
+    "abstained_count": 27600,
+    "acceptance_fraction": 0.0,
+    "false_accept_count": 0,
+    "false_accept_fraction_among_accepted": null,
+    "reliability_bins": [
+      {
+        "bin_index": 0,
+        "count": 245,
+        "mean_probability": 0.0742997633711416,
+        "success_fraction": 0.053061224489795916
+      },
+      {
+        "bin_index": 1,
+        "count": 396,
+        "mean_probability": 0.15054226264056533,
+        "success_fraction": 0.2297979797979798
+      },
+      {
+        "bin_index": 2,
+        "count": 705,
+        "mean_probability": 0.25816406172218054,
+        "success_fraction": 0.21560283687943263
+      },
+      {
+        "bin_index": 3,
+        "count": 1560,
+        "mean_probability": 0.35418031679896206,
+        "success_fraction": 0.3685897435897436
+      },
+      {
+        "bin_index": 4,
+        "count": 2915,
+        "mean_probability": 0.455100404234734,
+        "success_fraction": 0.40617495711835333
+      },
+      {
+        "bin_index": 5,
+        "count": 5340,
+        "mean_probability": 0.5530074769749623,
+        "success_fraction": 0.5707865168539326
+      },
+      {
+        "bin_index": 6,
+        "count": 10117,
+        "mean_probability": 0.65317452438172,
+        "success_fraction": 0.6528615202135021
+      },
+      {
+        "bin_index": 7,
+        "count": 6229,
+        "mean_probability": 0.7357045530717893,
+        "success_fraction": 0.7021993899502328
+      },
+      {
+        "bin_index": 8,
+        "count": 93,
+        "mean_probability": 0.8075508571440174,
+        "success_fraction": 0.8817204301075269
+      },
+      {
+        "bin_index": 9,
+        "count": 0,
+        "mean_probability": null,
+        "success_fraction": null
+      }
+    ],
+    "limitation": "Descriptive correlated-sample metrics; no population confidence or qualification claim"
+  },
+  "brier_improvement": 0.0019399039787745542,
+  "parameter_count": 6273,
+  "data_sha256": {
+    "training": "96cbb6c3d2f6003cc4026d564458f98482fd0b5306714d2ee3eeb60fc6eb13e9",
+    "development": "fccd4d229718b4781cc760dfcb7648d8ab68a6f805145436691bab4184a74c89"
+  },
+  "model_sha256": "5eaaa537c2c54367937a58b5fbf3545b6152436a626c91174f22423d6b7185a9",
+  "plan_sha256": "f453424c65cc598903dc647a874866840146d258fa090e36b3eb126bb22f859a",
+  "hardware_writes": 0,
+  "physical_movements": 0,
+  "qualification_installed": false,
+  "limitations": [
+    "Development labels select epoch and assess feature choice; optimistic selection evidence only",
+    "No calibration or evaluation samples read; not an independent generalization result",
+    "Synthetic pixel projection only; local crop uses predicted center, never hidden truth",
+    "Known-target localization only; no runtime confidence or authority"
+  ]
+}

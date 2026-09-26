@@ -602,7 +602,6 @@ remove it only in the same commit that appends the resulting evidence row.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI/model | S1 | local-feature development experiment, plan and evidence | main from `06bbc21` | ACTIVE: train/development only, no held-out evaluation |
 | Shared integration lane | S2 | raw-request runner and terminal negative matrix | `main` from `ca8c5ae` | ACTIVE |
 | Unclaimed | S4 | controller adapter/receipts | — | AVAILABLE |
 
@@ -1437,5 +1436,70 @@ commissioning, or bounded physical result with its limitations intact.
 - Hardware writes: 0
 - Physical movements: 0
 - Limitations: heuristic findings remain unresolved; no clean audit claim.
+- Supersedes: none
+- Next dependency: fixture-owner review independently of confidence research.
+
+
+### E-20260926-AI-020 — local image feature development comparison
+
+- Stage: S1
+- Lane: AI
+- Commit: `070565245915893a993141cb248d626c440a9041` (exact frozen code/plan before execution)
+- Change: added an 8x8 grayscale patch from a 16x16 pixel crop centered on the
+  predicted target, combined with frozen pose features and predicted XY; trained
+  6,273 parameters. Hidden truth supplies labels only, never patch placement.
+- Inputs/fixtures: original 14M training and 15M development seeds, 3 conditions,
+  46 keys. 165,600 training and 27,600 development target/view samples. Pose/head
+  hashes pinned in `train/local_features_dev_v0_plan.json` and original plan;
+  generated-data, plan and output-model hashes in the scorecard.
+- Command: `python software/ai/train/compare_local_confidence_features.py`
+- Result: PASS for completed development experiment, not readiness. Epoch 2
+  selected by development BCE. Candidate Brier 0.2219927 vs baseline 0.2239326
+  (improvement 0.0019399). Both accept 0/27,600 at 0.95; false-accept rate among
+  accepted remains undefined. No new calibration or evaluation data consumed.
+- Artifacts: `software/ai/eval/local_features_dev_v0_scorecard.json`, frozen plan
+  and training script; local ignored model at
+  `software/ai/results/local_features_dev_v0/model.pt`, SHA-256
+  `5eaaa537c2c54367937a58b5fbf3545b6152436a626c91174f22423d6b7185a9`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: development data select epoch and feature choice; optimistic
+  selection evidence only. No calibrated confidence, identity/visibility evidence,
+  installed qualification or runtime promotion. Previous failed evaluation retained.
+- Supersedes: none
+- Next dependency: investigate localization/feature resolution on development
+  data before another frozen held-out experiment; this small gain does not justify
+  promotion or changing the original acceptance threshold.
+
+### E-20260926-AI-021 — development scoring regression
+
+- Stage: S1
+- Lane: AI
+- Commit: `070565245915893a993141cb248d626c440a9041`
+- Change: reran descriptive scoring tests.
+- Inputs/fixtures: analytic vectors in `software/ai/tests/test_confidence_metrics.py`.
+- Command: `python -m pytest -q software/ai/tests/test_confidence_metrics.py`
+- Result: PASS, 10 tests.
+- Artifacts: scoring helper and tests; frozen source hashes in original protocol.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: metric correctness only, not model quality or physical evidence.
+- Supersedes: none
+- Next dependency: AI-020 development investigation.
+
+### E-20260926-AI-022 — local-feature audit findings retained
+
+- Stage: S1
+- Lane: AI
+- Commit: `070565245915893a993141cb248d626c440a9041`
+- Change: required read-only repository audit during experiment.
+- Inputs/fixtures: repository snapshot and `scripts/audit_github_snapshot.py`.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: FAIL, exit 1; 5,622 paths, 784.9 MiB, same 14 existing arm-unit
+  credential-literal-review findings; no new local-feature source finding.
+- Artifacts: scanner and existing fixtures.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: heuristic findings unresolved; no clean audit claim.
 - Supersedes: none
 - Next dependency: fixture-owner review independently of confidence research.

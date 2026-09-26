@@ -59,3 +59,13 @@ This result cannot supply runtime observation confidence. The original threshold
 all failures and consumed seed ranges remain fixed. Study local image features
 using development evidence before committing a new experiment; reserve fresh
 calibration and evaluation groups. No runtime promotion follows from training.
+
+
+## Local patch development comparison
+
+Adding a predicted-target-centered grayscale patch (6,273-parameter head) reduced
+Brier on the reused development set from 0.22393 to 0.22199. Both versions accept
+zero at threshold 0.95. This is an optimistic feature-selection comparison, not
+held-out improvement. No additional calibration/evaluation seeds were consumed.
+See `eval/local_features_dev_v0_scorecard.json`. Investigate localization/feature
+resolution before another held-out run; runtime abstention remains unchanged.
