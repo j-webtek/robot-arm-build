@@ -124,7 +124,7 @@ Only the shared integration gate may change a stage's overall status to
 | S1 | Contract v2: freshness, uncertainty, capability | IN_PROGRESS | READY_FOR_INTEGRATION | COMPLETE | IN_PROGRESS |
 | S2 | Full zero-hardware text-to-envelope shadow path | NOT_STARTED | READY_FOR_INTEGRATION | IN_PROGRESS | IN_PROGRESS |
 | S3 | Measured localization and planning readiness | IN_PROGRESS | BLOCKED | NOT_STARTED | BLOCKED |
-| S4 | Zero-write Waveshare adapter and receipts | READY_FOR_INTEGRATION | NOT_STARTED | NOT_STARTED | NOT_STARTED |
+| S4 | Zero-write Waveshare adapter and receipts | READY_FOR_INTEGRATION | IN_PROGRESS | NOT_STARTED | IN_PROGRESS |
 | S5 | One independently verified physical key action | NOT_STARTED | NOT_STARTED | NOT_STARTED | NOT_STARTED |
 | S6 | Ordered multi-action keyboard missions | NOT_STARTED | NOT_STARTED | NOT_STARTED | NOT_STARTED |
 | S7 | Performance and operational qualification | NOT_STARTED | NOT_STARTED | NOT_STARTED | NOT_STARTED |
@@ -605,7 +605,7 @@ remove it only in the same commit that appends the resulting evidence row.
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
 | Unclaimed | S2 | qualified perception adapter and complete shared gate | — | AVAILABLE |
-| Arm lane | S4 | zero-write T102 encoder, single-use preview permit, and receipt | `main` from `009b49e` | ACTIVE |
+| Unclaimed | S4 | sole-writer lifecycle, fault injection, and restart closure | — | AVAILABLE |
 
 ## Worker update procedure
 
@@ -1762,3 +1762,61 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: heuristic findings unresolved; no clean audit claim.
 - Supersedes: none
 - Next dependency: fixture-owner review independently of localization research.
+
+### E-20260926-ARM-014 — sealed-envelope T102 zero-write preview
+
+- Stage: S4
+- Lane: ARM
+- Commit: `575669b206fc671bb51277971843a9cf690082e4`
+- Change: implemented a transport-free Waveshare T=102 preview adapter that
+  accepts only a sealed dual-lineage v2 trajectory envelope, an exact encoding
+  profile, and a separately issued single-use evidence-only permit. The observed
+  starting waypoint is retained as state and never encoded as a movement. Every
+  later waypoint maps the five planner joints to base/shoulder/elbow/wrist/roll,
+  holds the gripper at one explicit fixed angle, and retains its host dispatch
+  time separately from the firmware's opaque `spd` and `acc` fields.
+- Inputs/fixtures: synthetic ready v2 envelope fixture from
+  `software/tests/unit/test_trajectory_execution_envelope_v2.py`; encoding
+  profile bound to exact vendor-source, joint-map, controller-session,
+  configuration-epoch, and trajectory-limit hashes.
+- Command: `python -m pytest software/ai/tests software/tests/unit/test_zero_write_waveshare_adapter_v1.py software/tests/unit/test_trajectory_execution_envelope_v2.py software/tests/unit/test_all_joint_command.py software/tests/unit/test_arm_protocol.py software/tests/integration/test_shared_shadow_runner_v2.py software/tests/integration/test_model_motion_v2_shared_gate.py software/tests/unit/test_model_motion_ingress_v2.py software/tests/unit/test_model_motion_planner_gate.py software/tests/unit/test_model_motion_sequence_coordinator.py -q`
+- Result: PASS, 261 tests after merging the concurrent AI work. Golden bytes are
+  deterministic. Reused permits, duplicate correlations, stale permits, altered
+  envelopes, mismatched controller sessions/configuration epochs/limit profiles,
+  unsupported interpolation or gripper behavior, invalid firmware settings, and
+  schedules exceeding the envelope deadline fail closed without retry.
+- Artifacts: `software/src/rocell/application/zero_write_waveshare_adapter_v1.py`,
+  its application exports, and
+  `software/tests/unit/test_zero_write_waveshare_adapter_v1.py`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: this is an encoding preview and receipt, not a sole writable
+  transport owner or physical execution permit. It opens no transport, submits
+  no bytes, receives no acknowledgement or feedback, and does not prove that
+  the configured vendor artifact, mapping, rate settings, or joint limits match
+  the installed controller. The ready trajectory used by the test is synthetic.
+- Supersedes: none; starts the arm-owned S4 implementation.
+- Next dependency: place this exact encoder behind one separately reviewed sole
+  writer, define partial-write/timeout/restart closure, and qualify the installed
+  firmware mapping before any physical authority is possible.
+
+### E-20260926-ARM-015 — S4 preview audit findings retained
+
+- Stage: S4
+- Lane: ARM
+- Commit: `575669b206fc671bb51277971843a9cf690082e4`
+- Change: ran the required read-only repository snapshot audit after merging the
+  current AI evidence and CI changes with the S4 preview implementation.
+- Inputs/fixtures: repository snapshot and `scripts/audit_github_snapshot.py`.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: FAIL, exit 1; 5,653 paths, 903.4 MiB, the same 14 existing
+  credential-literal-review findings in arm unit fixtures; no zero-write adapter,
+  permit, receipt, or test finding.
+- Artifacts: scanner and the existing named fixtures in its output.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: heuristic findings remain unresolved; this is not a clean
+  repository security-audit claim.
+- Supersedes: none; preserves every previous audit failure.
+- Next dependency: fixture-owner review remains independent of S4 writer and
+  installed-controller qualification.
