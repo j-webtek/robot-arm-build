@@ -121,7 +121,7 @@ Only the shared integration gate may change a stage's overall status to
 | Stage | Deliverable | AI lane | Arm lane | Integration gate | Overall |
 |---|---|---:|---:|---:|---:|
 | S0 | Shared v1 seam and baseline | COMPLETE | COMPLETE | COMPLETE | COMPLETE |
-| S1 | Contract v2: freshness, uncertainty, capability | NOT_STARTED | NOT_STARTED | NOT_STARTED | NOT_STARTED |
+| S1 | Contract v2: freshness, uncertainty, capability | IN_PROGRESS | NOT_STARTED | NOT_STARTED | NOT_STARTED |
 | S2 | Full zero-hardware text-to-envelope shadow path | NOT_STARTED | IN_PROGRESS | NOT_STARTED | IN_PROGRESS |
 | S3 | Measured localization and planning readiness | IN_PROGRESS | BLOCKED | NOT_STARTED | BLOCKED |
 | S4 | Zero-write Waveshare adapter and receipts | READY_FOR_INTEGRATION | NOT_STARTED | NOT_STARTED | NOT_STARTED |
@@ -602,7 +602,7 @@ remove it only in the same commit that appends the resulting evidence row.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| Unclaimed | S1 | shared contract/schema/tests | — | AVAILABLE |
+| AI/model | S1 | `docs/CONTRACT_V2_AI_PROPOSAL.md`, AI entries in this workplan | main; based on ebe7eee | IN_PROGRESS: semantic proposal for joint review; no runtime/schema migration |
 | Unclaimed | S2 | shadow runner/integration fixtures | — | AVAILABLE |
 | Unclaimed | S4 | controller adapter/receipts | — | AVAILABLE |
 
