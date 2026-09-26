@@ -1,0 +1,28 @@
+{
+  "inputs": {
+    "control": {
+      "path": "eval/landmark_corrected_v0_control_scorecard.json",
+      "sha256": "9f13c016fb2dca8e7f98d26f391cdafcbed497bb44ec1b34f7f540f5c7f25f4c"
+    },
+    "combined": {
+      "path": "eval/landmark_corrected_v0_corrected_scorecard.json",
+      "sha256": "8fdb3f2172d69e4aa3453649e91081be2d9d874047576b5b96570d43bf26342a"
+    },
+    "coordinate_only": {
+      "path": "eval/landmark_ablation_v0_coordinate_only_scorecard.json",
+      "sha256": "b8d09f2f5264ff7d6189eae3d3913155d8a0addbb000f1f1bc327edc46f1e64b"
+    },
+    "visibility_only": {
+      "path": "eval/landmark_ablation_v0_visibility_only_scorecard.json",
+      "sha256": "e9d5d381d23369d775becd6f4569aa5cf1d044aef94a7b2411469f9182862984"
+    }
+  },
+  "source_sha256": "7555a1d85edd922d605b8d19d2ececa89c563b937e5c7c29a5c0fba6e6244729",
+  "policy": "Paired same-seed standard/full occlusion. Target originally clear and then fully hidden; peers remain geometrically clear. Report target probability drop minus peer mean drop and fixed .5 crossing. Descriptive only; no pass threshold, tuning or qualification.",
+  "limitations": [
+    "Reused 15M development groups, not fresh evaluation",
+    "Synthetic masks and probabilities are not calibrated visibility",
+    "Paired images also undergo image-wide normalization; response cannot isolate pooling as causal mechanism",
+    "Existing predictions only; no local-head model trained"
+  ]
+}
