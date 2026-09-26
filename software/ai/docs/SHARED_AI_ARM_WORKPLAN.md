@@ -6224,3 +6224,41 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic audit; protected-main blocker AI-041 retained.
 - Supersedes: none; prior failures and arm/integration statuses retained.
 - Next dependency: Freeze two additional training seeds for the unchanged paired experiment,report each run and aggregate variation rather than pick a winning seed. Keep coefficient,data,budget,selection and acceptance rules fixed; test repeatability before any new parameter change or fresh qualification.
+
+
+### E-20260926-INT-005 — clean-clone AI/arm synchronization checkpoint
+
+- Stage: S1/S3 boundary maintenance
+- Lane: INTEGRATION
+- Change: synchronized the AI evidence branch with current protected `main`
+  (`0f17c61`) and made frozen AI artifact verification portable to a clean
+  GitHub checkout. Repository-required inputs remain mandatory. Checkpoints
+  intentionally excluded by `/software/ai/results/` remain identified by exact
+  path and SHA-256; their bytes are verified whenever locally present and their
+  absence is explicitly represented when not present.
+- Inputs/fixtures: unchanged AI-202 and AI-208 frozen plans/reports; unchanged
+  v2 `ModelMotionBatch` boundary; current ARM-045 phase-local contact gate.
+- Commands: targeted AI evidence tests; the explicit portable test selection
+  from `scripts/ci/offline_checks.py`; `scripts/ci/check_docs.py`; compile checks.
+- Result: PASS. Newest key-loss and anchor evidence plus verifier tests passed,
+  10 tests. Shared AI/arm boundary selection passed, 203 tests. Documentation
+  passed for 26 maintained documents, eight public titles, required navigation,
+  and two SVG assets. Compile checks passed. Contract diff review found no
+  model-to-arm schema change in the AI experiment series.
+- Artifacts: `software/ai/evidence_artifacts.py`, verifier unit tests, and
+  clean-clone-safe updates to `test_pose_keyloss.py` and
+  `test_pose_anchor.py`. Frozen plans, reports, and recorded checkpoint digests
+  were not rewritten.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: this verifies software lineage and interface compatibility, not
+  model accuracy, model qualification, installed geometry, controller timing,
+  or physical execution. AI-202 and AI-208 remain failed experiments. Ignored
+  checkpoint bytes are not recoverable from GitHub by design; reproducing the
+  byte-level training result still requires the separately retained artifacts.
+- Supersedes: AI-203 and AI-209's trainer-machine-only test assumption. It does
+  not supersede their experimental results or promote either candidate.
+- Next dependency: keep training replication separate from the stable arm
+  ingestion contract. Any future model-output schema change must update the
+  shared contract fixtures and pass the 203-test boundary selection before arm
+  integration work accepts it.
