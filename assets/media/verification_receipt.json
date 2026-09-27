@@ -1,7 +1,7 @@
 {
   "schema": "tactevra.published-media-verification.v1",
   "recorded_on": "2026-09-27",
-  "asset_revision_commit": "fd24bc3f455b5f1736fc5955beffe0a8c20f9649",
+  "asset_revision_commit": "a9952dfda52d34e3f97111ca5f9f5ee35fdf843a",
   "source_pull_request": "https://github.com/j-webtek/tactevra/pull/122",
   "authority": {
     "path": "presentations/blender/dimension_manifest.json",
@@ -22,19 +22,20 @@
       "MP4 stream inventory, duration, dimensions, frame rate, audio, and selectable English subtitle stream",
       "WebVTT cue order and timing",
       "eight representative frames sampled across the committed MP4",
-      "integrated loudness and true-peak analysis of the final AAC delivery"
+      "integrated loudness and true-peak analysis of the final AAC delivery",
+      "eleven timestamp-ordered ElevenLabs narration clips aligned to their documented scene windows"
     ],
     "visual_result": "PASS_WITH_RECORDED_LIMITATIONS"
   },
   "outputs": [
     {
       "path": "assets/media/tactevra-overview.mp4",
-      "size_bytes": 19162996,
-      "sha256": "346da059b8b86f130bd72e541904efb0993035c87ce0143ab4cee0928c7aac58",
+      "size_bytes": 7519160,
+      "sha256": "5e7c6dd0f1be5021b76c543029378956dd553ec8a761228457584cf767764b89",
       "media": {
-        "duration_seconds": 77.003,
+        "duration_seconds": 77.002,
         "video": "H.264 1920x1080 24fps",
-        "audio": "AAC 96000Hz stereo",
+        "audio": "AAC 48000Hz stereo",
         "subtitles": "mov_text English"
       }
     },
@@ -63,6 +64,7 @@
     "The Blender scene was fully rerendered for this revision; the published bytes, metadata, captions, representative frames, and final audio measurements were verified before publication.",
     "The recorded visual review covers one continuous arm identity, camera and tag lock, rejected and accepted admission states, an unobstructed resolved H target, simulated tool contact, host-screen observation, closed-loop payoff, and end card.",
     "The unresolved Waveshare URDF redistribution disposition remains tracked at https://github.com/j-webtek/tactevra/issues/88.",
+    "The GitHub delivery is intentionally encoded below the repository's 10 MiB ordinary-review ceiling; a higher-bitrate local master remains reproducible from the documented build.",
     "The film is an architectural visualization, not physical-operation, collision, fabrication, or autonomous-task qualification."
   ]
 }
