@@ -6413,3 +6413,46 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Audit ran while training was in progress; later numeric reports and aggregation were not all present at scan time. Heuristic audit,AI-041 protected-main blocker retained.
 - Supersedes: none; previous failures and arm/integration status retained.
 - Next dependency: Freeze one longer-budget paired comparison on these fixed training sets,cycling the2400-scene candidate corpus while repeating600-scene control under equal updates. Keep objective/criteria/three seeds unchanged to test whether additional training resolves the diversity tradeoff. No new scenes or qualification before development criteria pass.
+### E-20260926-ARM-046 — single-use execution-review admission boundary
+
+- Stage: S4
+- Lane: ARM
+- Change: added a closed, zero-authority review boundary for exactly one indexed
+  v2 action. It binds the model batch/proposal, v2 trajectory envelope,
+  phase-local collision/contact gate, installed collision-policy qualification,
+  and installed-controller qualification evidence/report. The controller
+  session and configuration epoch must match the trajectory.
+- Command-management behavior: review lifetime is capped at 30 seconds; a
+  review can be cancelled; exact-digest consumption is atomic and single-use;
+  crossed, stale, synthetic, unreviewed, expired, cancelled, mismatched, and
+  reused inputs reject. Concurrent consumers cannot both succeed.
+- Safety behavior: the review and consumption receipt emit no controller or
+  wire commands, perform no hardware access, grant no physical/contact
+  authority, prohibit automatic retry, and explicitly report that no permit was
+  issued. The safety supervisor remains the only future permit issuer.
+- Artifacts: `single_action_execution_review_v1.py`, three closed JSON schemas,
+  positive/rejection/tamper/stale/cancellation/expiry/concurrency tests, public
+  application exports, portable CI selection, and assurance documentation.
+- Artifact identity: implementation SHA-256
+  `0475e23fa5acf5ce9583de163efada2808eceb70c33bd57fbcf6bcc9c43908f9`;
+  collision qualification, review, and consumption schema SHA-256 values
+  `1b8d77263da5de5bbcb0813b912059473d80f07cb992a6ec3b7150ccadab2a97`,
+  `3da8c4c6ba652e971f3945c48bcb612bcb650a4444b92524994a7c56b3ba262d`,
+  and `0c04178ed15d6bf235f6c5d70b97fa9b8f2dc776c7bf2ce14107f8fa718c49b9`.
+- Results: focused ARM-046 suite PASS, 7 tests; portable shared AI/arm
+  selection PASS, 210 tests in 41.38 seconds; documentation PASS for 27
+  maintained documents, eight public titles, required navigation, and two SVG
+  assets; documentation self-tests PASS, 18 tests; compile and diff checks PASS.
+- Evidence status: all passing physical-shaped unit inputs are modeled fixtures;
+  no claim of installed measurement, independent custody, controller readiness,
+  hardware write, or physical movement is made.
+- Hardware writes: 0
+- Physical movements: 0
+- Supersedes: ARM-045 only for the missing offline execution-review seam. It
+  does not supersede authentic installed evidence, safety-supervisor permit
+  issuance, command encoding/writing, feedback correlation, or outcome
+  verification.
+- Next dependency: connect a valid consumed review to the existing safety
+  supervisor so it may consider a short-lived motion permit, then require the
+  sole writer to consume that permit exactly once and emit correlated lifecycle
+  acknowledgements without automatic retry.

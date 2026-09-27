@@ -90,6 +90,13 @@ and unrelated images. Inspect archives as well as loose files. Never use
 `git add -f` to upload private backups or raw runs. Private repository visibility
 does not make credentials safe to commit. Retain the untouched original locally.
 
+Generated AI and experiment data also follow the
+[evidence-retention policy](docs/EVIDENCE_RETENTION.md). Commit compact manifests,
+scorecards and representative sanitized fixtures—not entire parameter-search or
+per-sample output sets. Ordinary changes have an automated reviewability budget;
+larger artifacts require an exact-digest exception linked to an owner-reviewed
+issue.
+
 ## CAD, releases, and access
 
 STEP/STP, STL, 3MF, and ZIP packages are ordinary Git objects in this baseline.
