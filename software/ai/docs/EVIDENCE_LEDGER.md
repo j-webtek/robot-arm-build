@@ -3588,3 +3588,85 @@ rewriting history. New entries must use a unique evidence ID.
   rest-to-rest, not measured controller latency or physically qualified speed.
 - Next dependency: T2B consumes the exact bounded samples with deterministic IK
   and installed-geometry collision screening, retaining action and hash binding.
+
+### E-20260927-AI-411 — camera campaign source-freeze diff failure
+
+- Stage: S2/S3 physical-camera localization readiness.
+- Lane: AI.
+- Commit: `844f1e58fb2cb31b2d8555d9f76d12259d90a65d`.
+- Change: first source freeze for the physical-camera campaign contract,
+  preflight, runbook, schemas, and focused tests.
+- Inputs/fixtures: schema-authored 300-capture calibration and 300-capture
+  evaluation fixture with 1,200 retained temporary files and all 11 required
+  evaluation conditions.
+- Command: `git diff --cached --check`.
+- Result: FAIL: two Markdown lines in the new runbook had trailing whitespace.
+  The commit completed because the shell command did not stop on that nonzero
+  subcommand; the failure is retained instead of being rewritten as a pass.
+- Artifacts: source commit above; no evaluation receipt or physical original.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: formatting failure only; it is not evidence that preflight or
+  physical localization succeeded.
+- Supersedes: none.
+- Next dependency: remove only the trailing whitespace in a separate commit,
+  rerun the diff check, and verify the corrected source.
+
+### E-20260927-AI-412 — portable-runner environment failures
+
+- Stage: S2/S3 physical-camera localization readiness.
+- Lane: AI.
+- Commit: `3a8ef7a5a946f3b10d685522da365880bbc5a0b1`.
+- Change: attempted the repository portable suite against the corrected camera
+  campaign source before the detached test environment was complete.
+- Inputs/fixtures: corrected committed source; no physical camera files.
+- Command: `python scripts/ci/offline_checks.py test`; then
+  `C:\\camtest\\.venv-ci\\Scripts\\python.exe scripts/ci/offline_checks.py install-base`,
+  `smoke`, `install-tests`, and `test`; then, from `C:\\camtest`,
+  `.\\.venv-ci\\Scripts\\python.exe scripts/ci/offline_checks.py test`.
+- Result: BLOCKED in three preserved attempts: the primary worktree lacked
+  `.venv-ci`; the next invocation used the wrong current directory; and the
+  first detached-worktree test lacked sparse-selected integration files. No
+  test failure was converted into a pass and no source was changed to bypass
+  the runner.
+- Artifacts: console output only.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: environment and sparse-checkout failures only; they do not
+  assess physical data or model accuracy.
+- Supersedes: none.
+- Next dependency: materialize the runner's committed integration, script,
+  native, firmware, and fixture inputs, then rerun the identical test command.
+
+### E-20260927-AI-413 — physical-camera localization test baseline prepared
+
+- Stage: S2/S3 physical-camera localization readiness.
+- Lane: AI.
+- Commit: `3a8ef7a5a946f3b10d685522da365880bbc5a0b1`.
+- Change: froze a strict external physical-camera campaign contract, a
+  content-verifying read-only preflight receipt, an operator runbook, and
+  focused tests. The package requires disjoint calibration/evaluation sessions,
+  at least 300 captures per split, at least 20 held-out captures for each of 11
+  lighting/blur/occlusion/placement/absence conditions, immutable camera/mode/
+  epoch identities, and independent surveyed-fiducial ground truth.
+- Inputs/fixtures: generated temporary 300/300 split fixture; 600 unique image
+  identities, 600 unique ground-truth identities, two disjoint sessions, and
+  minimum held-out condition count 27. No fixture bytes were retained in Git.
+- Command: `python -m pytest software/ai/tests/test_physical_camera_localization_campaign.py -q`; `python -m py_compile software/ai/eval/preflight_physical_camera_campaign.py`; `git diff --check`; `python scripts/ci/check_evidence_scope.py`; `python scripts/ci/check_docs.py`; `python scripts/ci/check_public_records.py`; `python scripts/ci/check_repository_artifacts.py`; `python scripts/ci/check_release_integrity.py`; and, in detached worktree `C:\\camtest`, `.\\.venv-ci\\Scripts\\python.exe scripts/ci/offline_checks.py test`.
+- Result: PASS: 6 focused tests in 2.60 seconds; compilation and all repository
+  audits passed; portable suite passed 496 with 4 documented Windows symlink
+  skips in 72.62 seconds. Tests reject duplicate JSON fields, split-session
+  overlap, declared-only condition coverage, and altered retained bytes.
+- Artifacts: `software/ai/docs/PHYSICAL_CAMERA_LOCALIZATION_CAMPAIGN.md`;
+  `software/ai/schemas/physical_camera_localization_campaign_v1.schema.json`;
+  `software/ai/schemas/physical_camera_localization_preflight_receipt_v1.schema.json`;
+  `software/ai/eval/preflight_physical_camera_campaign.py`.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: readiness contract only. No camera was opened, no physical image
+  was collected, no model was loaded, no localization metric was measured, no
+  qualification was installed, and no arm or integration status changed.
+- Supersedes: none. AI-411 and AI-412 remain failed/blocked history.
+- Next dependency: retain the four ARM-070 physical originals, freeze the final
+  configuration epoch and calibrations, collect the external campaign, and run
+  this preflight before any model evaluation.

@@ -36,6 +36,13 @@ The governing criterion is
 `perception + calibration + tracking/settling + tool-tip uncertainty < target safe-region margin`.
 Additional broad ghost routines do not advance this baseline by themselves.
 
+The AI S2/S3 physical-camera campaign is prepared in
+[`PHYSICAL_CAMERA_LOCALIZATION_CAMPAIGN.md`](PHYSICAL_CAMERA_LOCALIZATION_CAMPAIGN.md).
+Its strict external-evidence manifest and read-only preflight freeze split
+separation, required lighting/occlusion/placement cases, independent surveyed
+ground truth, file identities, and zero authority before model evaluation. This
+preparation does not satisfy any missing physical-original or calibration gate.
+
 ## Purpose
 
 This is the common working backbone for two independently advancing workstreams:
@@ -777,7 +784,6 @@ remove it only in the same commit that appends the resulting evidence row.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI | S2/S3 | physical-camera localization campaign contract, preflight, fixture, tests, operator plan, and AI evidence row | `codex/camera-localization-test-readiness` from `41966c62a04adf7036b502bd873cc12743e28e8e` | ACTIVE: prepare zero-authority final-camera qualification inputs; no camera access |
 | Unclaimed | S2/S3 | physical-camera deployment qualification and safe-region-fit precision evidence | — | AVAILABLE |
 | ARM | S4 | collect four physical-original `camera_support_optics` bindings through onboarding, then run the ARM-070 intake; no synthetic promotion | ARM-071 | WAITING_FOR_ORIGINALS |
 
