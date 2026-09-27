@@ -4,8 +4,8 @@
 **Authority:** Byte identity and post-merge inspection only; this record is not a Blender rerender, third-party-rights disposition, or physical qualification
 
 The current overview-media revision was produced from commit
-`cc0a73926ccae2ff220f958db7100f4d5ee279fa` through
-[pull request #144](https://github.com/j-webtek/tactevra/pull/144). The
+`f820067db59b30eb6c209c76f325191c75d6d91c` through
+[pull request #146](https://github.com/j-webtek/tactevra/pull/146). The
 machine-readable [verification receipt](verification_receipt.json) binds the
 committed media files to exact byte sizes and SHA-256 digests and records the
 authority manifest used by the documented scene builder.
@@ -16,7 +16,7 @@ authority manifest used by the documented scene builder.
   with AAC stereo audio and a selectable English subtitle stream.
 - Eleven timestamp-ordered ElevenLabs narration clips were aligned to the
   documented scene windows without speech-rate modification.
-- Final audio measures −14.4 LUFS integrated with a −1.6 dBTP true peak, with
+- Final audio measures −14.3 LUFS integrated with a −1.6 dBTP true peak, with
   no interval of one second or longer below −45 dB.
 - The sidecar WebVTT file contains 11 ordered cues whose timing fits within
   the delivery duration.
@@ -34,6 +34,14 @@ authority manifest used by the documented scene builder.
   frame, optical glass, controls, camera hardware, cable, and modeled host UI.
 - Each chapter uses a distinct camera move, and the verification macro focuses
   on the actual modeled phone screen plane.
+- The perception chapter visibly establishes the fixed camera body, mount,
+  cable, lens, and 1000 mm optical plane before switching to a centered board
+  view. Camera hardware and the explanatory ray are absent from that lens view.
+- Camera orientation uses one quaternion animation path with clamped easing,
+  explicit endpoint holds, and 360 ms chapter dissolves. The exterior-camera
+  and optical-view handoff was reviewed in the final composited media.
+- The Blender build asserted the board and device envelopes, all station and
+  tag centers, and the camera optical plane before producing the saved scene.
 - The keyboard resolve remains squared through the camera move. The execution
   shot keeps the complete servo-style base, link structure, mounting plates,
   servo caps, connectors, attached harness, wrist, and stylus in one visual
@@ -45,7 +53,7 @@ authority manifest used by the documented scene builder.
   in the machine-readable receipt.
 
 Blender 4.3.2 and the identified FFmpeg build were observed during the full
-rerender and final inspection. Pull request #144 records that render, visual
+rerender and final inspection. Pull request #146 records that render, visual
 review, selectable-caption check, and final audio-QA validation.
 
 ## Limits
