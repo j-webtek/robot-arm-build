@@ -599,12 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-- AI lane / S1: implement the actual pose-output to
-  `rocell.ai_precision_observation.v2` adapter, a synthetic held-out
-  localization evaluation bundle, and precision-derived ModelMotionBatchV2
-  producer fixtures; no deployment qualification, arm, or integration-status
-  changes.
-
 
 
 
@@ -9385,3 +9379,78 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic repository review before final ledger append; not model, runtime, or physical assurance. No arm or integration status changes.
 - Supersedes: none.
 - Next dependency: Same as AI-395.
+
+### E-20260927-AI-398 — pose-output precision adapter and held-out synthetic localization evaluation
+
+- Stage: S1
+- Lane: AI
+- Commit: `ff950c852c3ae6edbacbf421d7fc510972a43d4a` (adapter, producer, schema, frozen plan and evaluator); `dedd639a15b568f0986d92fe161d8f360c99e9da` (generated evidence, tests, contract fixture and documentation).
+- Inputs/fixtures: Frozen grouped-linear model/checkpoint SHA256 `c9f4ef6d8f9e50317a917154fccacce46506ab2e7cde8267396e28fec156147b`; target catalog SHA256 `6779213e832ab27eeda1e7fb245f57ff8cb0d56707b5aa73a8f31ec483a620f2`; disjoint calibration scenes `82000000..82000249` and evaluation scenes `82100000..82100249`, each with rectangle/ellipse styles and standard/appearance-shift/partial/full conditions. Calibration/evaluation canonical dataset SHA256 values `942ecf9055ffd93e01fa2cfed0745c45c857bbcec9431603497bedd7df1606c0` and `0c6a49a46b398de03262a6cf368b7f03b5fe42d8575b1815969871f6be072412`. Declared domain `synthetic-controlled-keyboard-v1`. Plan/evaluator/adapter/producer/schema file SHA256 values `96c247faec1678cb365c1d3ef1cd11229e3e2e9ec5c76214e5d8b47d8ca85e2c`, `8d8f240d34f49310346feb68ef3ed3c3d27ad7bc9bc2e7ba2f5f77229361f4a8`, `868531d71bcf72372f51c6562967c690f1afc3a4ff60996ed303ca5e83c83e22`, `046ab97992bda708fa700054df2d863e80bdbb86adcf27393cfa293dc9c5d2ee`, and `41e5c7b5d1278a001f3b33890d37161a1c11b34f5d8f104b8ba7b3296f828d6f`.
+- Command: `python software/ai/eval/evaluate_precision_adapter_localization_v1.py`
+- Result: PASS synthetic held-out coverage criterion. The adapter converts the actual three-value model pose output into `rocell.ai_precision_observation.v2` and emits exactly `localization_uncalibrated` without one applicable installed qualification. On 2,000 calibration and 2,000 held-out evaluation cases, declared coverage was `0.99`, measured coverage was `0.9975`, and the conservative maximum-calibration planar bound was `14.400834977163141` mm. All 46 catalog target IDs are covered and retained explicitly in bundle SHA256 `4765a1bb36cb6fc1bc1124614a27d5864a166d88c28712c474c94cded98c7ffc` (file SHA256 `35280cc7b8321e4761a965d5a9ad4a1500da2308514963b651a85db7439fedef`). Per-target arrays retain every error, 9 target-case failures in total (0..5 per target), failure case IDs, summary statistics and 2,000 deliberate no-registry adapter abstentions per target (92,000 target abstentions). Candidate qualification SHA256 `4811a738f55926cc68a9a4db110d54e589768d0d52301c6b3c8376fc6205f2ba` is retained but not installed.
+- Artifacts: `rocell_ai/precision_adapter_v2.py`; `rocell_ai/precision_batch_producer_v2.py`; `schemas/localization_evaluation_bundle_v1.schema.json`; `eval/precision_adapter_localization_v1_plan.json`; `eval/evaluate_precision_adapter_localization_v1.py`; `eval/precision_adapter_localization_v1_bundle.json`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Scope is exactly `SYNTHETIC_OFFLINE_ONLY`. The model has no calibrated confidence head. The bound is an empirical maximum over a disjoint calibration cohort under the same renderer family, not a distribution-free or physical guarantee. At 14.4008 mm it crosses ordinary key safe regions, so it cannot authorize keyboard contact. No deployment qualification, physical-camera evidence, installed qualification, joint value, motion policy, controller encoding, permit, transport access or physical authority was created. Arm and integration status are unchanged.
+- Supersedes: none; all prior failed and passing uncertainty evidence remains preserved.
+- Next dependency: Acquire final-camera physical calibration/evaluation data and propose a separately reviewed deployment-qualification schema before any physical installation. Until then the adapter must continue to abstain outside explicitly installed synthetic test scope.
+
+### E-20260927-AI-399 — precision-derived ModelMotionBatchV2 producer fixture and verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `dedd639a15b568f0986d92fe161d8f360c99e9da`
+- Inputs/fixtures: Actual frozen-model inference `[-0.5535516518850586, 0.48056715938765016, -0.7107819493791543]` for synthetic case seed `82100000`, rectangle/standard, input-pixel SHA256 `cfed90e872a92dae28062b0260345c212953889948cf728a86653aef9ba66031`; precision observation SHA256 `521228872a8bcfc6d82340ce8a94e1af443092dc74730d982f56e0cc517fbab0`; evaluation bundle SHA256 `4765a1bb36cb6fc1bc1124614a27d5864a166d88c28712c474c94cded98c7ffc`. Requested target order is `H,H,1,PERIOD`. Batch/metadata file SHA256 values are `fc82da88b013a3b8069208cd4811507ac66112f6e696a1d0a728ba754a9a622f` and `6fb1db87884f45eb9cf690691edd422611c072906e8491c98a1523e2aab72012`.
+- Command: `python software/ai/eval/generate_precision_adapter_batch_v2_fixture.py`
+- Result: PASS contract-fixture generation. Actual pose inference flows through the precision adapter and V2 producer; decoded proposals preserve punctuation, number and repeated-key order exactly as `H,H,1,PERIOD`. The output has `controller_commands: []`, `hardware_access: false` and `physical_authority: false`.
+- Artifacts: `eval/generate_precision_adapter_batch_v2_fixture.py`; `eval/precision_adapter_batch_v2_contract_fixture.json`; `eval/precision_adapter_batch_v2_contract_fixture_metadata.json`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Scope is exactly `SYNTHETIC_CONTRACT_FIXTURE_ONLY`. The 0.99 observation confidence is an explicit fixture input because the pose model has no confidence head. Broad synthetic acceptance envelopes demonstrate serialization only; they are not measured key safe regions. The candidate qualification exists only in memory during generation and is not installed for deployment. This fixture grants no motion or physical authority.
+- Supersedes: none.
+- Next dependency: Same physical-data and separately reviewed deployment-schema dependency as AI-398; real placement regions must remain independently observed.
+
+### E-20260927-AI-400 — precision adapter, held-out bundle and edge-case verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `dedd639a15b568f0986d92fe161d8f360c99e9da`
+- Inputs/fixtures: Adapter, producer, held-out bundle, schema, actual generated batch fixture and synthetic typed unit fixtures from AI-398/399.
+- Command: `python -m pytest -q software/ai/tests/test_precision_adapter_v2.py software/ai/tests/test_precision_adapter_evaluation_bundle_v1.py`
+- Result: PASS: 9 tests in 1.18s. Tests cover an accepted observation, exact missing-qualification abstention, wrong domain, altered model/catalog/qualification hashes, low confidence, stale evidence, qualified uncertainty crossing a target safe region, punctuation, numbers, repeated targets, schema validation, exact evidence hashes, per-target accounting, generated V2 decoding and zero authority.
+- Artifacts: `tests/test_precision_adapter_v2.py`; `tests/test_precision_adapter_evaluation_bundle_v1.py` plus AI-398/399 artifacts.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Synthetic contract and evidence verification only; existing pytest-asyncio configuration warning. Passing unit tests do not overcome the 14.4008 mm safe-region blocker or provide physical qualification.
+- Supersedes: none.
+- Next dependency: Same as AI-398.
+
+### E-20260927-AI-401 — shared V2 boundary regression after precision producer addition
+
+- Stage: S1
+- Lane: AI
+- Commit: `dedd639a15b568f0986d92fe161d8f360c99e9da`
+- Inputs/fixtures: Existing shared V2 batch emitter, precision binding and arm ingress suites plus the additive precision producer. No shared batch schema or arm implementation was changed.
+- Command: `python -m pytest -q software/ai/tests/test_batch_emitter_v2.py software/ai/tests/test_precision_binding_v2.py software/tests/unit/test_model_motion_ingress_v2.py`
+- Result: PASS: 39 tests in 2.96s. Existing shared order, evidence binding, uncertainty, freshness, named-target containment and zero-authority behavior remains intact.
+- Artifacts: existing shared test suites; additive producer at `rocell_ai/precision_batch_producer_v2.py`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Offline regression only; no arm-lane or integration-gate status change. Existing pytest-asyncio configuration warning.
+- Supersedes: none.
+- Next dependency: Same as AI-398.
+
+### E-20260927-AI-402 — precision adapter snapshot review
+
+- Stage: S1
+- Lane: AI
+- Commit: `dedd639a15b568f0986d92fe161d8f360c99e9da`
+- Inputs/fixtures: Repository snapshot containing the frozen adapter/evaluator, held-out bundle, producer fixture, tests, schema and documentation before this final ledger append.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS: 6,362 paths, 1,026.6 MiB, 0 unresolved review findings, 14 reviewed synthetic fixtures.
+- Artifacts: AI-398 through AI-401 artifacts and shared documentation.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic repository review, not model, runtime, deployment or physical assurance. No arm or integration status changes.
+- Supersedes: none.
+- Next dependency: Same as AI-398.
