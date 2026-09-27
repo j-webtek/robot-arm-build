@@ -1,0 +1,69 @@
+{
+  "study_id": "appearance_robust_ensemble_v1",
+  "scope": "training_and_selection_only",
+  "candidate_artifact": "software/ai/results/grouped_linear_refit_v1/model.pt",
+  "previous_report": "software/ai/eval/diverse_pose_ensemble_v1_report.json",
+  "training_groups": [
+    37000000,
+    2400
+  ],
+  "selection_groups": [
+    37002400,
+    400
+  ],
+  "styles": [
+    "rectangle",
+    "ellipse"
+  ],
+  "conditions": [
+    "standard",
+    "appearance_shift",
+    "partial",
+    "full"
+  ],
+  "condition_loss_weights": {
+    "standard": 1.0,
+    "appearance_shift": 2.0,
+    "partial": 1.0,
+    "full": 1.0
+  },
+  "models": {
+    "silu": {
+      "seed": 272127
+    },
+    "separable": {
+      "seed": 272128
+    }
+  },
+  "epochs": 24,
+  "batch_size": 128,
+  "learning_rate": 0.0002,
+  "weight_decay": 0.0001,
+  "retention_fractions": [
+    0.1,
+    0.25,
+    0.5,
+    0.75,
+    1.0
+  ],
+  "minimum_scene_tail_auc": 0.68,
+  "retention_0_25_max_relative": 0.5,
+  "retention_0_5_max_relative": 0.75,
+  "member_max_mean_ratio": 2.0,
+  "member_appearance_max_mean_ratio": 1.8,
+  "acceptance_rule": "Pass selection only if ensemble disagreement has scene-level tail AUROC >= 0.68, retained tail rate is <= 50% of the overall selection tail rate at 25% retention and <= 75% at 50% retention, each new member's mean target error in every condition is <= 2x the frozen candidate's mean, and each appearance-shift mean is <= 1.8x the candidate. Passing permits freezing these checkpoints for one fresh preregistered development study; it does not install runtime authority or permit calibration.",
+  "file_sha256": {
+    "software/ai/eval/diverse_pose_ensemble_v1_report.json": "161a077d71f3f9497dc2023fe7ef480317ce8756cba196ab36e56c5d5262db03",
+    "software/ai/results/grouped_linear_refit_v1/model.pt": "c9f4ef6d8f9e50317a917154fccacce46506ab2e7cde8267396e28fec156147b",
+    "software/ai/train/compare_backbone_uncertainty.py": "9bd5580862b178d4f62ef4aa8b3311f4f4992cc0571eb4aebd0be64b881faf0f",
+    "software/ai/train/train_appearance_robust_ensemble.py": "324a047df9685c47f297eac992c51b21c93f6f6b6ecd9346c8b1a0e36c12324e",
+    "software/ai/train/train_diverse_pose_ensemble.py": "4724e5322eb3cbe7e71cef1f824fabe252765aa16a32dca302f3d7fd7a008fa5",
+    "software/ai/vision/diagnose_pose_tail.py": "42da11417ceac91001e47fa732d2c127ef9f1763c479c56f9593ff3bd185fb90",
+    "software/ai/vision/diverse_pose_models.py": "c0683f59edd63773d68c4037dade390e8e66f56db7078ca18510a69f05acfdb6",
+    "software/ai/vision/evaluate_dark_only_normalization.py": "12289bfeeb52274678c62f46c7e99e057563036566fa48fc5f5cd1d58add4469",
+    "software/ai/vision/landmark_occlusions.py": "2d77d25077ab98dad632bb441b94c06cc6c139116d6621483cab7728d95c6aad",
+    "software/ai/vision/linear_residual_pose.py": "d46b24cbe48c43ae56d9f1a700459281fceef19475f85187469cd81c735af9cc",
+    "software/ai/vision/synthetic_keyboard.py": "b9a1662ea348ba78093909844e5e8bed86f4996babc289bfd63858b6b54f692c",
+    "software/ai/vision/train_pose.py": "98c2ae6211b42c3b4b7c5bed3fb03aab82bffff79c30ebb546e3681b3be3a1b6"
+  }
+}

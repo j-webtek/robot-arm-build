@@ -599,6 +599,11 @@ Copy this row and fill every field:
 
 ## Active work claims
 
+- AI lane / S1: train an appearance-weighted revision of both compact pose
+  architectures on a new 37M training cohort and apply one frozen go/no-go
+  selection rule on a disjoint 37M cohort; no calibration, runtime, contract,
+  or arm changes.
+
 
 
 
