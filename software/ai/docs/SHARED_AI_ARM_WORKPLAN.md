@@ -190,6 +190,15 @@ external decision keeps endpoint open, controller start, execution, hardware,
 and physical authority false. No independent review is yet present; the next
 dependency remains a real outside decision and separately authorized read-only
 endpoint qualification.
+ARM-057 now makes the external exchange operational without crossing that
+boundary. A deterministic builder emits the immutable packet, decision/report
+schemas, reviewer procedure, and a content-addressed exchange manifest with no
+decision included. A separate strict intake reads one returned regular JSON
+file, rejects duplicate fields, oversize, symlinks, mutation, and overwrite,
+then retains a normalized decision, assessment report, and raw-document hash.
+Blocked reviews remain retained and non-authorizing. This tooling performs no
+hardware access and does not solve reviewer identity or custody; those remain
+external prerequisites.
 
 ## Stage definitions
 
