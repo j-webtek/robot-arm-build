@@ -599,10 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-- AI lane / S1: calibrate metric radii and select one preregistered 25th-
-  percentile tail-risk acceptance gate on fresh 66M and 67M scenes; no model
-  training, runtime, contract, arm, or integration-status changes.
-
 
 
 
@@ -9098,3 +9094,48 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic repository review before final ledger append; not model, runtime, or physical assurance. No arm or integration status changes.
 - Supersedes: none.
 - Next dependency: Same as AI-376.
+
+### E-20260927-AI-379 — explicit risk-gated metric selection
+
+- Stage: S1
+- Lane: AI
+- Commit: `e40263374929ca32bfc68c2f69785c690cc6a7a1` (separate radius calibration, fixed 25th-percentile risk gate, fresh populations, unchanged final gates, source, plan, and claim frozen before inference; failed report, tests, interpretation, and claim removal committed in the successor)
+- Inputs/fixtures: Frozen bounded-metric checkpoint/report SHA256 `c9ee03b9962e28443fbac7644cdfbb9c068e544aeb75cc58dc2ba8b6b494b16c`/`d0632877b0918c8b71417a8c34e6e580b12599c6144cb4876d4bb11dcc821fb7`; frozen tail-risk checkpoint/report SHA256 `79d48b0ef63effea3642c2e08a20d8a6800f27f75e0ed97ed8050f146d4f326e`/`40524c98512aa98383f70aa0156b062276660572081ff1c4b808fdec460211cf`. Mapping-calibration scenes `66000000..66000999` and selection scenes `67000000..67000999`, each with two styles and four conditions for 8,000 images. Calibration pixel/feature/target/metric/risk SHA256 values `42ac94c8dfa0e66f5dabcec7975d5dcb54d54bc0f9ed7d08676642072080ef7d`, `715467622cd804ea9a401da14669557f639abf4ca90f829a493902f4c38476fc`, `a85eb9bf7b9b1fed642cb827afb22a213f8ae3720646211d1aa795ff84941889`, `acaa05cf036c8f2132d144a4f3457ded34edbac5eae545b959276e9b27951263`, and `82da4c445685eef0801f7ac6b697d904f94c8bf05afa68c58a1127dae7f520b5`; selection values `07f7a64fa3c06c3634d33ac3220d9627f192f91b5fece33d45ea753023332b3c`, `1d777ea2bbf22a8f7ec3b30078f87c2bc67146db7f687d218844ab14dc856e7d`, `57e06ac36382702e58c3b08455a55027e5d682fef482096ebf6788684830440b`, `d45ca3e23e390c1c1563c04253e4c25d9a341c5fb23101512e02d46568045d55`, and `4ddbfc726767e887504fbb0c6ef8e3c7f10016dc0be3e46f8feca9d5e08e6c33`. Risk-reference SHA256 `801ca31545470da3f75f3edc3a77623526770000eb4da6d9022153e9e3d0b714`; plan SHA256 `338f41b776fbbd57b525db5d0fb00f266794f9d6ed6ef3cbd3b0fa84a73a3527`; report SHA256 `6c24ca9c2f19d098889b5ae6bcdfad6ecbf0fbd981ae8bda30784989bba0f468`.
+- Command: `python software/ai/train/select_risk_gated_metric.py`
+- Result: FAIL fixed selection rule by three checks. Independent metric calibration yields rank 991 and normalized quantile `1.849293028`. Marginal scene coverage is 99.4%; 354/8,000 images are accepted (4.425%); accepted-image coverage is `0.994350282`; accepted-scene coverage is `0.992`; and zero accepted error exceeds 3 mm. Overall utility fails the 5% minimum. Full obstruction retains 19/2,000 (0.95%), just below 1%. Appearance, partial, and full accepted-image coverage are 100%; standard is `0.977777778` because 2 of 90 accepted standard images exceed their predicted radius. One mapping fit, zero new model fits, and zero optimizer updates.
+- Artifacts: `train/select_risk_gated_metric.py`; `train/risk_gated_metric_v1_plan.json`; `eval/risk_gated_metric_v1_report.json`; `tests/test_risk_gated_metric.py`; `docs/IMAGE_DEPENDENT_UNCERTAINTY.md`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Synthetic mapping-calibration and selection evidence for one fixed gate. No independent confirmation was allocated after failure. The 3 mm threshold is a research tolerance, not a measured contact margin. No gate, runtime installation, physical-camera evidence, qualification, or motion authority. ModelMotionBatchV2 and arm/integration statuses are unchanged.
+- Supersedes: none; the late-fusion and all earlier failed evidence remains preserved.
+- Next dependency: On entirely fresh mapping-calibration and selection cohorts, preregister one slightly broader risk gate together with a small conservative radius inflation. Require recovery of overall and full-obstruction utility while removing low-risk radius violations under every unchanged final gate before independent confirmation.
+
+### E-20260927-AI-380 — explicit risk-gated metric verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `e40263374929ca32bfc68c2f69785c690cc6a7a1` (frozen mapping source; tests and documentation committed in the successor)
+- Inputs/fixtures: Same 16,000 fresh images, frozen specialists, independent metric calibration, risk reference, gate plan, and failed report as AI-379; exact hashes are recorded there and in the report.
+- Command: `python -m pytest -q software/ai/tests/test_risk_gated_metric.py`
+- Result: PASS: 2 tests in 2.02s. Tests verify conjunctive radius/risk eligibility, immutable lineage, exact grouped populations, risk-reference hash, all attached outputs, scene scores, rank and quantile, complete gated overall and conditional recounts, every fixed passing and failed check, and zero model fitting, optimizer, hardware, physical, qualification, or runtime authority.
+- Artifacts: `tests/test_risk_gated_metric.py`; `eval/risk_gated_metric_v1_report.json`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Existing pytest-asyncio configuration warning. Recount consistency only; no physical assurance. Contract unchanged, so shared boundary tests were not triggered.
+- Supersedes: none.
+- Next dependency: Same as AI-379.
+
+### E-20260927-AI-381 — explicit risk-gated metric snapshot review
+
+- Stage: S1
+- Lane: AI
+- Commit: `e40263374929ca32bfc68c2f69785c690cc6a7a1` (frozen mapping source; final ledger append in successor)
+- Inputs/fixtures: Repository snapshot containing the frozen gate study, failed report, verification test, interpretation, and shared ledger; exact hashes recorded in AI-379.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS: 6,334 paths, 998.8 MiB, 0 unresolved review findings, 14 reviewed synthetic fixtures.
+- Artifacts: risk-gate plan/report; verification test; uncertainty documentation; shared ledger.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic repository review before final ledger append; not model, runtime, or physical assurance. No arm or integration status changes.
+- Supersedes: none.
+- Next dependency: Same as AI-379.

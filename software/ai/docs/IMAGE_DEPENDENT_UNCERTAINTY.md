@@ -570,3 +570,32 @@ installed. The next bounded study should keep both specialists and the metric
 calibration separate, then preregister an explicit risk-percentile acceptance
 gate on fresh mapping-calibration and selection cohorts. It must preserve the
 same utility, conditional coverage, and zero-above-tolerance requirements.
+
+## Explicit risk-gated metric acceptance
+
+The bounded metric head was calibrated independently on 1,000 new 66M scenes,
+producing a rank-991 normalized quantile of 1.849293. The frozen tail-risk head
+defined a separate empirical CDF on the same mapping-calibration images. An
+image from the untouched 67M selection cohort was eligible only when its metric
+radius was at most 3 mm and its risk percentile was at most 0.25. Neither the
+radius nor the gate modified the other output.
+
+This separation produced the strongest accepted-subset coverage so far.
+Marginal scene coverage was 99.4%, accepted-image coverage was 99.4350%, and
+accepted-scene coverage was 99.2%. No accepted error exceeded 3 mm. Appearance,
+partial-obstruction, and full-obstruction accepted-image coverage were all
+100%. Only two accepted standard images exceeded their predicted radius,
+leaving standard accepted-image coverage at 97.7778%.
+
+The complete selection remains a near-miss failure because utility was too
+low. It retained 354/8,000 images, or 4.425%, below the 5% minimum. Full
+obstruction retained 19/2,000 images, or 0.95%, just below the 1% conditional
+minimum. The failed standard conditional coverage is the third failed check.
+No gate or qualification is installed.
+
+The explicit gate validates the architectural separation: it repaired overall
+accepted-image and accepted-scene coverage without admitting an above-tolerance
+error. The next study may preregister one slightly broader risk gate together
+with a small conservative radius inflation on entirely fresh cohorts. The pair
+must recover overall and full-obstruction utility while removing the two
+low-risk standard radius violations, under every unchanged final gate.
