@@ -59,6 +59,8 @@ TESTS = (
     'software/ai/tests/test_batch_emitter_v2.py',
     'software/ai/tests/test_capture_binding.py',
     'software/ai/tests/test_precision_binding_v2.py',
+    'software/ai/tests/test_precision_adapter_v2.py',
+    'software/ai/tests/test_precision_adapter_evaluation_bundle_v1.py',
     'software/ai/tests/test_confidence_metrics.py',
 )
 

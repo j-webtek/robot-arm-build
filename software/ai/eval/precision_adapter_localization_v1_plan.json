@@ -1,0 +1,40 @@
+{
+  "model_id": "grouped-linear-refit-v1",
+  "model_checkpoint": "software/ai/results/grouped_linear_refit_v1/model.pt",
+  "model_checkpoint_sha256": "c9f4ef6d8f9e50317a917154fccacce46506ab2e7cde8267396e28fec156147b",
+  "target_catalog_sha256": "6779213e832ab27eeda1e7fb245f57ff8cb0d56707b5aa73a8f31ec483a620f2",
+  "domain_id": "synthetic-controlled-keyboard-v1",
+  "calibration_group": [82000000, 250],
+  "evaluation_group": [82100000, 250],
+  "styles": ["rectangle", "ellipse"],
+  "conditions": ["standard", "appearance_shift", "partial", "full"],
+  "batch_size": 128,
+  "declared_coverage_probability": 0.99,
+  "fixture_observation_confidence": 0.99,
+  "replay_epoch_ms": 1800000000000,
+  "contract_fixture": {
+    "source_model_output": [-0.5535516518850586, 0.48056715938765016, -0.7107819493791543],
+    "source_case": {
+      "seed": 82100000,
+      "style": "rectangle",
+      "condition": "standard",
+      "input_pixels_sha256": "cfed90e872a92dae28062b0260345c212953889948cf728a86653aef9ba66031"
+    }
+  },
+  "file_sha256": {
+    "software/ai/eval/evaluate_precision_adapter_localization_v1.py": "d86d88f6234a5ebec642c8a3a4a4df197f287f92a97733265824016c2c741409",
+    "software/ai/rocell_ai/precision_adapter_v2.py": "868531d71bcf72372f51c6562967c690f1afc3a4ff60996ed303ca5e83c83e22",
+    "software/ai/rocell_ai/precision_observation.py": "1cb30284ff780aab538f97006d901c109a7775d91db430aa38e866a06c0b42bf",
+    "software/ai/rocell_ai/visual_observation.py": "47882111810e51e34fb3cb6ac73321b5135b3cbc8526f91ad7ffbce352046c2b",
+    "software/ai/rocell_ai/scene_observation.py": "421ae6dd55fc447cfa9d93a4953aeee272b8a0fbeeab919f23fcae9091ccb98d",
+    "software/ai/train/train_diverse_pose_ensemble.py": "4724e5322eb3cbe7e71cef1f824fabe252765aa16a32dca302f3d7fd7a008fa5",
+    "software/ai/vision/linear_residual_pose.py": "d46b24cbe48c43ae56d9f1a700459281fceef19475f85187469cd81c735af9cc",
+    "software/ai/vision/synthetic_keyboard.py": "b9a1662ea348ba78093909844e5e8bed86f4996babc289bfd63858b6b54f692c",
+    "software/ai/vision/train_pose.py": "98c2ae6211b42c3b4b7c5bed3fb03aab82bffff79c30ebb546e3681b3be3a1b6",
+    "software/ai/vision/landmark_occlusions.py": "2d77d25077ab98dad632bb441b94c06cc6c139116d6621483cab7728d95c6aad",
+    "software/ai/vision/landmark_renderer.py": "e8535fbf98c8cfd3a838f5f793534a182d0dc5b8b9eabaa3bfa2173e649137de",
+    "software/ai/vision/evaluate_dark_only_normalization.py": "12289bfeeb52274678c62f46c7e99e057563036566fa48fc5f5cd1d58add4469",
+    "software/src/rocell/targets/nominal.py": "d9c419207f8077d9d63a29413b6295256344593867957c169a96ea90ecf865a4",
+    "software/config/nominal_target_profiles.json": "6779213e832ab27eeda1e7fb245f57ff8cb0d56707b5aa73a8f31ec483a620f2"
+  }
+}

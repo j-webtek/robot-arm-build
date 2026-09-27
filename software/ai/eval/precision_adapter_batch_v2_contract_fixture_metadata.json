@@ -1,0 +1,37 @@
+{
+  "schema": "rocell.ai_precision_adapter_contract_fixture.v1",
+  "scope": "SYNTHETIC_CONTRACT_FIXTURE_ONLY",
+  "source_model_output": [
+    -0.5535516518850586,
+    0.48056715938765016,
+    -0.7107819493791543
+  ],
+  "source_case": {
+    "seed": 82100000,
+    "style": "rectangle",
+    "condition": "standard",
+    "input_pixels_sha256": "cfed90e872a92dae28062b0260345c212953889948cf728a86653aef9ba66031"
+  },
+  "precision_observation_sha256": "521228872a8bcfc6d82340ce8a94e1af443092dc74730d982f56e0cc517fbab0",
+  "evaluation_bundle_sha256": "990f0736c4b6eaf6799bef079480b7d874290209a5f6427e0f4c010e219d3fd3",
+  "batch_file_sha256": "26fa25a5824c2bd3e1b8312f91b801afa02c240487771533b8faed5c4bd531c5",
+  "requested_target_order": [
+    "H",
+    "H",
+    "1",
+    "PERIOD"
+  ],
+  "qualification_installed_for_deployment": false,
+  "physical_deployment_qualified": false,
+  "hardware_writes": 0,
+  "physical_movements": 0,
+  "limitations": [
+    "The source pose is actual frozen-model inference on a synthetic renderer case.",
+    "Mainline retains the exact model-output record and image hash; the research checkpoint remains external by digest.",
+    "The pose model has no calibrated confidence head; 0.99 is an explicit contract-fixture input.",
+    "Acceptance regions are broad synthetic envelopes, not measured key safe regions.",
+    "The held-out bound crosses ordinary key safe regions and therefore cannot authorize them.",
+    "The qualification candidate is installed only in memory for this contract fixture.",
+    "The batch has zero controller commands, hardware access, and physical authority."
+  ]
+}

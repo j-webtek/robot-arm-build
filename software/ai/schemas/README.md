@@ -18,6 +18,12 @@ separate board-coordinate observation contract. It has no motion authority.
 The [synthetic image-model prediction schema](visual_targets_v1.schema.json)
 binds pixel and checkpoint hashes to predicted keyboard target coordinates;
 its model scores are uncalibrated and it also has no motion authority.
+The [held-out localization evaluation bundle](localization_evaluation_bundle_v1.schema.json)
+records exact model, target-catalog, disjoint calibration/evaluation dataset,
+domain, coverage, error, per-target failure, and adapter-abstention evidence.
+Its scope is fixed to `SYNTHETIC_OFFLINE_ONLY`; its qualification candidate may
+be absent when declared held-out coverage fails, and any retained candidate is
+still uninstalled. This schema is not a deployment-qualification schema.
 The [scene-observation schema](scene_observation_v0.schema.json) binds a strict
 multimodal scene assessment to exact image bytes. It describes visibility and
 image quality and cannot contain coordinates or controller commands.

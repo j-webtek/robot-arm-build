@@ -3507,3 +3507,50 @@ rewriting history. New entries must use a unique evidence ID.
   to transcribe accepted retained originals manually into ARM-070 bindings.
 - Next dependency: collect and owner-AI review the four physical originals in
   canonical order, then load them through this adapter and rerun ARM-070.
+
+### E-20260927-AI-403 — precision adapter mainline integration review
+
+- Stage: S2/S3.
+- Lane: AI/INTEGRATION.
+- Source: remote `codex/precision-adapter-v2` commits `ff950c8` and
+  `dedd639`, rebased selectively onto GitHub `main` `26d12aa`; stale branch
+  history and its superseded inline ledger were not imported.
+- Change: integrated the pose-output-to-`rocell.ai_precision_observation.v2`
+  adapter and ordered `ModelMotionBatchV2` producer, including exact
+  `localization_uncalibrated` abstention and zero-authority output behavior.
+- Retained evaluation: 2,000 disjoint calibration cases, 2,000 held-out cases,
+  all 46 keyboard targets, declared coverage 0.99, measured coverage 0.9975,
+  conservative planar bound 14.400834977163141 mm.
+- Identity: model
+  `c9f4ef6d8f9e50317a917154fccacce46506ab2e7cde8267396e28fec156147b`;
+  target catalog
+  `6779213e832ab27eeda1e7fb245f57ff8cb0d56707b5aa73a8f31ec483a620f2`;
+  calibration dataset
+  `942ecf9055ffd93e01fa2cfed0745c45c857bbcec9431603497bedd7df1606c0`;
+  evaluation dataset
+  `0c6a49a46b398de03262a6cf368b7f03b5fe42d8575b1815969871f6be072412`.
+- Evidence bundle:
+  `990f0736c4b6eaf6799bef079480b7d874290209a5f6427e0f4c010e219d3fd3`.
+  It retains aggregate statistics, failure IDs, and per-target ordered-series
+  digests instead of 92,000-plus bulk sample lines, satisfying current
+  repository evidence policy without changing the measured result.
+- Qualification candidate:
+  `4811a738f55926cc68a9a4db110d54e589768d0d52301c6b3c8376fc6205f2ba`;
+  retained but not installed. The 14.4 mm disk crosses ordinary key safe
+  regions, so deployment qualification and physical authority remain false.
+- Contract fixture: exact retained model-output record produces ordered
+  `H,H,1,PERIOD` bytes; deterministic replay detects batch or metadata drift.
+  The research checkpoint and two research modules remain external by digest;
+  mainline fails closed with an explicit dependency error when full evaluation
+  is requested without them.
+- Verification: 64 focused adapter, evidence, schema, strict-ingress, shared
+  gate, and conformance tests passed; maintained-doc, public-record, and
+  release-integrity checks passed before the final bounded CI run.
+- Endpoint/camera opens: 0.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Authority: no joints, controller JSON, permits, transport access, hardware
+  access, or physical authority are emitted.
+- Next dependency: evaluate final-camera physical originals and produce a
+  safe-region-fit uncertainty bound before installing any deployment
+  qualification or rerunning the operational-readiness perception gate.
