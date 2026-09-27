@@ -39,3 +39,16 @@ The single full fit exported as5328-byte JSON (SHA256476a64054981226d63afe119d12
 Separate34M calibration produced normalized quantile4.75657008897. Independent35M confirmation covered994/1000 scenes(99.4%) and3986/4000 images(99.65%), but accepted zero images at the unchanged3mm tolerance. The experiment fails its utility requirement. Zero accepted violations provides no accepted-subset assurance. Both ranges are now consumed. Different cohorts prevent a controlled claim that this scale improved coverage over the earlier global bound.
 
 Four verification tests passed; failed utility evidence remains immutable. Before another calibration attempt, audit33M out-of-fold risk ranking to determine whether the features distinguish low-error images at all. Use training-only evidence; do not tune on these consumed calibration or confirmation rows. Pose/scale weights and runtime baseline remain frozen, with no physical qualification or motion authority.
+
+
+## Training-only ranking audit
+
+Frozen audit ebc27f659e84b68283f436fbfc3093278e3cf881 used only the saved33M out-of-fold predictions. Image tail-error AUROC is0.687362 and Spearman correlation0.226719; scene-maximum AUROC is0.590133 and correlation0.191710. These are descriptive, not significance claims.
+
+At the fixed lowest10% retention,481 images include5 tails(1.0395%); the extra image is included because scores tie at the boundary. The lowest60 scenes include5 tails(8.3333%), compared with49/600(8.1667%) across all scenes. At25% scene retention,9/150 fail(6%). The features contain some signal but do not reliably isolate clean scenes. No diagnostic threshold was chosen for runtime or calibrated admission.
+
+Three regression tests passed. No fitting, new images, calibration or runtime changes occurred. The zero-utility confirmation remains unchanged.
+
+## Next bounded comparison
+
+Before fitting, freeze a training-only comparison of the existing56 raw-image features against the frozen pose backbone's512 pooled spatial features. Use the same33M scene folds and error labels, alpha1.0, fold-only normalization and log(error+0.1) target. Keep the pose network frozen. Compare per-condition out-of-fold log-error MSE, scene tail AUROC and the same fixed retention curves. Require lower MSE in every condition and higher scene tail AUROC than the56-feature reference before considering another full fit or calibration. Preserve all failures; do not choose retention thresholds from this diagnostic. No31M/32M/34M/35M fitting or selection is allowed. Any subsequent calibration and confirmation still require independent, separately frozen data.

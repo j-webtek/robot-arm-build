@@ -599,7 +599,7 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-- AI lane / S1: audit33M out-of-fold scale ranking and fixed retention risks; no fits/new images/calibration, preserve frozen models and arm boundary.
+
 
 
 
@@ -8125,3 +8125,51 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: One normalized-quantile calibration fit, zero pose/scale fits during confirmation. Both34M/35M ranges now consumed. Synthetic marginal coverage is not conditional accepted coverage or physical qualification. Different cohorts prohibit attributing coverage change versus prior global experiment to the scale alone. No tuning or threshold relaxation. Runtime baseline and ModelMotionBatchV2 unchanged; boundary tests not triggered; arm/integration status unchanged. Existing pytest warning; heuristic snapshot before final docs.
 - Supersedes: none; failed global bound and zero-utility scaled bound retained.
 - Next dependency: Training-only out-of-fold risk-ranking audit on33M evidence to test whether image statistics distinguish low-error cases before any further calibration. Do not tune on consumed31M/32M/34M/35M calibration or confirmation rows. Freeze pose/scale and preserve3mm research rule; no runtime installation.
+
+
+### E-20260927-AI-316 — training-only risk-ranking audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `ebc27f659e84b68283f436fbfc3093278e3cf881` (audit source/plan frozen before execution; report/tests/docs in successor)
+- Inputs/fixtures: Saved33M600scene x8variant out-of-fold scale evidence only. Source/script hashes in eval/scale_ranking_v1_plan.json. Report SHA256 `5f89833ec39c20df60b1fbcd3e25d353116dbe1e7e8f837518a1bfbefac153c9`. All prior models frozen.
+- Command: `python software/ai/vision/audit_scale_ranking.py`
+- Result: PASS descriptive audit:4800images141tails,600scenes49tails. Image AUROC0.687362/Spearman0.226719; scene AUROC0.590133/Spearman0.191710. Lowest10% includes5/481 image tails and5/60 scene tails;25% includes9/150 scene tails. No useful scene separation established at lowest10%.
+- Artifacts: vision/audit_scale_ranking.py; eval/scale_ranking_v1_plan.json and report.json; tests/test_scale_ranking.py; docs/IMAGE_DEPENDENT_UNCERTAINTY.md.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Zero fits/new images/calibration. Descriptive training-selection evidence, correlated variants, no statistical significance or physical claim. Fixed retention thresholds are diagnostics only, not runtime gates. Fold-constant ranks reflect fold intercept variation. No qualification or boundary changes; boundary tests not triggered. Existing pytest warning; arm/integration statuses unchanged.
+- Supersedes: none; zero-utility bounds preserved.
+- Next dependency: Freeze grouped33M comparison of512 frozen backbone features against56 image features at fixed alpha1.0; require every-condition MSE improvement and scene AUROC improvement before further calibration. Exclude consumed calibration/confirmation data from selection.
+
+
+### E-20260927-AI-317 — ranking audit verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `ebc27f659e84b68283f436fbfc3093278e3cf881` (audit source/plan frozen before execution; report/tests/docs in successor)
+- Inputs/fixtures: Saved33M600scene x8variant out-of-fold scale evidence only. Source/script hashes in eval/scale_ranking_v1_plan.json. Report SHA256 `5f89833ec39c20df60b1fbcd3e25d353116dbe1e7e8f837518a1bfbefac153c9`. All prior models frozen.
+- Command: `python -m pytest -q software/ai/tests/test_scale_ranking.py`
+- Result: PASS:3 tests in0.37s. AUROC orientation/ties, rank ties, retention tie inclusion, constant ranks, lineage and all condition/style/scene metric recounts verified.
+- Artifacts: vision/audit_scale_ranking.py; eval/scale_ranking_v1_plan.json and report.json; tests/test_scale_ranking.py; docs/IMAGE_DEPENDENT_UNCERTAINTY.md.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Zero fits/new images/calibration. Descriptive training-selection evidence, correlated variants, no statistical significance or physical claim. Fixed retention thresholds are diagnostics only, not runtime gates. Fold-constant ranks reflect fold intercept variation. No qualification or boundary changes; boundary tests not triggered. Existing pytest warning; arm/integration statuses unchanged.
+- Supersedes: none; zero-utility bounds preserved.
+- Next dependency: Freeze grouped33M comparison of512 frozen backbone features against56 image features at fixed alpha1.0; require every-condition MSE improvement and scene AUROC improvement before further calibration. Exclude consumed calibration/confirmation data from selection.
+
+
+### E-20260927-AI-318 — ranking audit snapshot review
+
+- Stage: S1
+- Lane: AI
+- Commit: `ebc27f659e84b68283f436fbfc3093278e3cf881` (frozen source; evidence/docs in successor)
+- Inputs/fixtures: Repository snapshot including33M ranking audit; exact source/report hashes recorded in AI-316 and eval/scale_ranking_v1_plan.json.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS:6235 paths,900.1MiB,0 unresolved findings,14 reviewed synthetic fixtures.
+- Artifacts: eval/scale_ranking_v1_report.json; docs/IMAGE_DEPENDENT_UNCERTAINTY.md; shared ledger.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic snapshot before final ledger append, not model or physical assurance; no boundary/arm status changes.
+- Supersedes: none.
+- Next dependency: Frozen training-only512-feature versus56-feature uncertainty comparison, as specified in AI-316; no further calibration without improvement.

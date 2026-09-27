@@ -1,0 +1,1012 @@
+{
+  "plan_sha256": "539feb3ea0fd91a3b5e2a706bf92782c6df6aa54a8aad68a34e49362d5dbfeac",
+  "source_sha256": "9b58bf614dde9006056e3ac92f90a7213ff3d8d78ca109e5ea51e14842104c80",
+  "images": {
+    "image_scale": {
+      "rows": 4800,
+      "tail_count": 141,
+      "tail_rate": 0.029375,
+      "tail_auc": 0.6873617599734518,
+      "spearman": 0.22671936943569546,
+      "scale_min": 0.9994002372215123,
+      "scale_max": 1.6466207264489439,
+      "retention_curve": [
+        {
+          "requested_fraction": 0.1,
+          "selected": 481,
+          "actual_fraction": 0.10020833333333333,
+          "diagnostic_scale_threshold": 1.1217579306359844,
+          "tail_count": 5,
+          "tail_rate": 0.010395010395010396,
+          "mean_error_mm": 1.1118462010347803,
+          "max_error_mm": 4.481268156988129
+        },
+        {
+          "requested_fraction": 0.25,
+          "selected": 1201,
+          "actual_fraction": 0.2502083333333333,
+          "diagnostic_scale_threshold": 1.1626071392316846,
+          "tail_count": 16,
+          "tail_rate": 0.013322231473771857,
+          "mean_error_mm": 1.1193688996281934,
+          "max_error_mm": 5.032355975069949
+        },
+        {
+          "requested_fraction": 0.5,
+          "selected": 2400,
+          "actual_fraction": 0.5,
+          "diagnostic_scale_threshold": 1.2198788536268088,
+          "tail_count": 39,
+          "tail_rate": 0.01625,
+          "mean_error_mm": 1.159036999690046,
+          "max_error_mm": 7.770272821582339
+        },
+        {
+          "requested_fraction": 0.75,
+          "selected": 3600,
+          "actual_fraction": 0.75,
+          "diagnostic_scale_threshold": 1.2851485871738475,
+          "tail_count": 65,
+          "tail_rate": 0.018055555555555554,
+          "mean_error_mm": 1.2008865743175714,
+          "max_error_mm": 7.770272821582339
+        },
+        {
+          "requested_fraction": 1.0,
+          "selected": 4800,
+          "actual_fraction": 1.0,
+          "diagnostic_scale_threshold": 1.6466207264489439,
+          "tail_count": 141,
+          "tail_rate": 0.029375,
+          "mean_error_mm": 1.2948752593075359,
+          "max_error_mm": 7.770272821582339
+        }
+      ]
+    },
+    "fold_constant": {
+      "rows": 4800,
+      "tail_count": 141,
+      "tail_rate": 0.029375,
+      "tail_auc": 0.4751567544857129,
+      "spearman": -0.04207402857200433,
+      "scale_min": 1.217764209613396,
+      "scale_max": 1.236013331662395,
+      "retention_curve": [
+        {
+          "requested_fraction": 0.1,
+          "selected": 960,
+          "actual_fraction": 0.2,
+          "diagnostic_scale_threshold": 1.217764209613396,
+          "tail_count": 25,
+          "tail_rate": 0.026041666666666668,
+          "mean_error_mm": 1.3372373125352588,
+          "max_error_mm": 5.824682733282535
+        },
+        {
+          "requested_fraction": 0.25,
+          "selected": 1920,
+          "actual_fraction": 0.4,
+          "diagnostic_scale_threshold": 1.2294579264994445,
+          "tail_count": 50,
+          "tail_rate": 0.026041666666666668,
+          "mean_error_mm": 1.3167105477799896,
+          "max_error_mm": 7.770272821582339
+        },
+        {
+          "requested_fraction": 0.5,
+          "selected": 2880,
+          "actual_fraction": 0.6,
+          "diagnostic_scale_threshold": 1.232616417521058,
+          "tail_count": 92,
+          "tail_rate": 0.03194444444444444,
+          "mean_error_mm": 1.3158275510859454,
+          "max_error_mm": 7.770272821582339
+        },
+        {
+          "requested_fraction": 0.75,
+          "selected": 3840,
+          "actual_fraction": 0.8,
+          "diagnostic_scale_threshold": 1.2347313711107506,
+          "tail_count": 132,
+          "tail_rate": 0.034375,
+          "mean_error_mm": 1.3116728570166567,
+          "max_error_mm": 7.770272821582339
+        },
+        {
+          "requested_fraction": 1.0,
+          "selected": 4800,
+          "actual_fraction": 1.0,
+          "diagnostic_scale_threshold": 1.236013331662395,
+          "tail_count": 141,
+          "tail_rate": 0.029375,
+          "mean_error_mm": 1.2948752593075359,
+          "max_error_mm": 7.770272821582339
+        }
+      ]
+    }
+  },
+  "scenes": {
+    "image_scale": {
+      "rows": 600,
+      "tail_count": 49,
+      "tail_rate": 0.08166666666666667,
+      "tail_auc": 0.5901329678876995,
+      "spearman": 0.1917095880821891,
+      "scale_min": 1.0304417239446815,
+      "scale_max": 1.6466207264489439,
+      "retention_curve": [
+        {
+          "requested_fraction": 0.1,
+          "selected": 60,
+          "actual_fraction": 0.1,
+          "diagnostic_scale_threshold": 1.1717320443369441,
+          "tail_count": 5,
+          "tail_rate": 0.08333333333333333,
+          "mean_error_mm": 1.8137164684990696,
+          "max_error_mm": 3.721504676019537
+        },
+        {
+          "requested_fraction": 0.25,
+          "selected": 150,
+          "actual_fraction": 0.25,
+          "diagnostic_scale_threshold": 1.2114714454039686,
+          "tail_count": 9,
+          "tail_rate": 0.06,
+          "mean_error_mm": 1.7258831480909862,
+          "max_error_mm": 4.481268156988129
+        },
+        {
+          "requested_fraction": 0.5,
+          "selected": 300,
+          "actual_fraction": 0.5,
+          "diagnostic_scale_threshold": 1.2590097999087742,
+          "tail_count": 18,
+          "tail_rate": 0.06,
+          "mean_error_mm": 1.7523761946692897,
+          "max_error_mm": 4.481268156988129
+        },
+        {
+          "requested_fraction": 0.75,
+          "selected": 450,
+          "actual_fraction": 0.75,
+          "diagnostic_scale_threshold": 1.3228293309853099,
+          "tail_count": 31,
+          "tail_rate": 0.06888888888888889,
+          "mean_error_mm": 1.815542307887375,
+          "max_error_mm": 5.032355975069949
+        },
+        {
+          "requested_fraction": 1.0,
+          "selected": 600,
+          "actual_fraction": 1.0,
+          "diagnostic_scale_threshold": 1.6466207264489439,
+          "tail_count": 49,
+          "tail_rate": 0.08166666666666667,
+          "mean_error_mm": 1.907353031301145,
+          "max_error_mm": 7.770272821582339
+        }
+      ]
+    },
+    "fold_constant": {
+      "rows": 600,
+      "tail_count": 49,
+      "tail_rate": 0.08166666666666667,
+      "tail_auc": 0.46444312752324163,
+      "spearman": -0.047363671614905435,
+      "scale_min": 1.217764209613396,
+      "scale_max": 1.236013331662395,
+      "retention_curve": [
+        {
+          "requested_fraction": 0.1,
+          "selected": 120,
+          "actual_fraction": 0.2,
+          "diagnostic_scale_threshold": 1.217764209613396,
+          "tail_count": 12,
+          "tail_rate": 0.1,
+          "mean_error_mm": 1.980445206869135,
+          "max_error_mm": 5.824682733282535
+        },
+        {
+          "requested_fraction": 0.25,
+          "selected": 240,
+          "actual_fraction": 0.4,
+          "diagnostic_scale_threshold": 1.2294579264994445,
+          "tail_count": 20,
+          "tail_rate": 0.08333333333333333,
+          "mean_error_mm": 1.934196891361611,
+          "max_error_mm": 7.770272821582339
+        },
+        {
+          "requested_fraction": 0.5,
+          "selected": 360,
+          "actual_fraction": 0.6,
+          "diagnostic_scale_threshold": 1.232616417521058,
+          "tail_count": 31,
+          "tail_rate": 0.08611111111111111,
+          "mean_error_mm": 1.927807438061501,
+          "max_error_mm": 7.770272821582339
+        },
+        {
+          "requested_fraction": 0.75,
+          "selected": 480,
+          "actual_fraction": 0.8,
+          "diagnostic_scale_threshold": 1.2347313711107506,
+          "tail_count": 43,
+          "tail_rate": 0.08958333333333333,
+          "mean_error_mm": 1.9257555822670627,
+          "max_error_mm": 7.770272821582339
+        },
+        {
+          "requested_fraction": 1.0,
+          "selected": 600,
+          "actual_fraction": 1.0,
+          "diagnostic_scale_threshold": 1.236013331662395,
+          "tail_count": 49,
+          "tail_rate": 0.08166666666666667,
+          "mean_error_mm": 1.907353031301145,
+          "max_error_mm": 7.770272821582339
+        }
+      ]
+    }
+  },
+  "conditions": {
+    "standard": {
+      "image_scale": {
+        "rows": 1200,
+        "tail_count": 18,
+        "tail_rate": 0.015,
+        "tail_auc": 0.7935702199661591,
+        "spearman": 0.21144892069144636,
+        "scale_min": 1.000305051603624,
+        "scale_max": 1.6136380199332305,
+        "retention_curve": [
+          {
+            "requested_fraction": 0.1,
+            "selected": 120,
+            "actual_fraction": 0.1,
+            "diagnostic_scale_threshold": 1.1398982777374405,
+            "tail_count": 0,
+            "tail_rate": 0.0,
+            "mean_error_mm": 1.0310046085988396,
+            "max_error_mm": 2.1805542073044357
+          },
+          {
+            "requested_fraction": 0.25,
+            "selected": 300,
+            "actual_fraction": 0.25,
+            "diagnostic_scale_threshold": 1.177752328257444,
+            "tail_count": 0,
+            "tail_rate": 0.0,
+            "mean_error_mm": 0.9706832860398178,
+            "max_error_mm": 2.1805542073044357
+          },
+          {
+            "requested_fraction": 0.5,
+            "selected": 600,
+            "actual_fraction": 0.5,
+            "diagnostic_scale_threshold": 1.228369382025435,
+            "tail_count": 4,
+            "tail_rate": 0.006666666666666667,
+            "mean_error_mm": 0.972646273115271,
+            "max_error_mm": 3.125466113532198
+          },
+          {
+            "requested_fraction": 0.75,
+            "selected": 900,
+            "actual_fraction": 0.75,
+            "diagnostic_scale_threshold": 1.2881169607126997,
+            "tail_count": 4,
+            "tail_rate": 0.0044444444444444444,
+            "mean_error_mm": 0.9934965186788137,
+            "max_error_mm": 3.125466113532198
+          },
+          {
+            "requested_fraction": 1.0,
+            "selected": 1200,
+            "actual_fraction": 1.0,
+            "diagnostic_scale_threshold": 1.6136380199332305,
+            "tail_count": 18,
+            "tail_rate": 0.015,
+            "mean_error_mm": 1.104947200168744,
+            "max_error_mm": 6.584133476481784
+          }
+        ]
+      },
+      "fold_constant": {
+        "rows": 1200,
+        "tail_count": 18,
+        "tail_rate": 0.015,
+        "tail_auc": 0.4323181049069374,
+        "spearman": -0.04560139738013162,
+        "scale_min": 1.217764209613396,
+        "scale_max": 1.236013331662395,
+        "retention_curve": [
+          {
+            "requested_fraction": 0.1,
+            "selected": 240,
+            "actual_fraction": 0.2,
+            "diagnostic_scale_threshold": 1.217764209613396,
+            "tail_count": 4,
+            "tail_rate": 0.016666666666666666,
+            "mean_error_mm": 1.1452826058340286,
+            "max_error_mm": 4.440646114073814
+          },
+          {
+            "requested_fraction": 0.25,
+            "selected": 480,
+            "actual_fraction": 0.4,
+            "diagnostic_scale_threshold": 1.2294579264994445,
+            "tail_count": 6,
+            "tail_rate": 0.0125,
+            "mean_error_mm": 1.143272490872081,
+            "max_error_mm": 6.584133476481784
+          },
+          {
+            "requested_fraction": 0.5,
+            "selected": 720,
+            "actual_fraction": 0.6,
+            "diagnostic_scale_threshold": 1.232616417521058,
+            "tail_count": 14,
+            "tail_rate": 0.019444444444444445,
+            "mean_error_mm": 1.1207059921482292,
+            "max_error_mm": 6.584133476481784
+          },
+          {
+            "requested_fraction": 0.75,
+            "selected": 960,
+            "actual_fraction": 0.8,
+            "diagnostic_scale_threshold": 1.2347313711107506,
+            "tail_count": 18,
+            "tail_rate": 0.01875,
+            "mean_error_mm": 1.1186666807459085,
+            "max_error_mm": 6.584133476481784
+          },
+          {
+            "requested_fraction": 1.0,
+            "selected": 1200,
+            "actual_fraction": 1.0,
+            "diagnostic_scale_threshold": 1.236013331662395,
+            "tail_count": 18,
+            "tail_rate": 0.015,
+            "mean_error_mm": 1.104947200168744,
+            "max_error_mm": 6.584133476481784
+          }
+        ]
+      }
+    },
+    "appearance_shift": {
+      "image_scale": {
+        "rows": 1200,
+        "tail_count": 30,
+        "tail_rate": 0.025,
+        "tail_auc": 0.6340740740740741,
+        "spearman": 0.12063005730571474,
+        "scale_min": 0.9994002372215123,
+        "scale_max": 1.3470348355569008,
+        "retention_curve": [
+          {
+            "requested_fraction": 0.1,
+            "selected": 120,
+            "actual_fraction": 0.1,
+            "diagnostic_scale_threshold": 1.0911358747259152,
+            "tail_count": 2,
+            "tail_rate": 0.016666666666666666,
+            "mean_error_mm": 1.181691691648908,
+            "max_error_mm": 4.481268156988129
+          },
+          {
+            "requested_fraction": 0.25,
+            "selected": 300,
+            "actual_fraction": 0.25,
+            "diagnostic_scale_threshold": 1.1147228890271608,
+            "tail_count": 4,
+            "tail_rate": 0.013333333333333334,
+            "mean_error_mm": 1.0682290703761141,
+            "max_error_mm": 4.481268156988129
+          },
+          {
+            "requested_fraction": 0.5,
+            "selected": 600,
+            "actual_fraction": 0.5,
+            "diagnostic_scale_threshold": 1.1438871425091137,
+            "tail_count": 8,
+            "tail_rate": 0.013333333333333334,
+            "mean_error_mm": 1.0794519677597774,
+            "max_error_mm": 4.481268156988129
+          },
+          {
+            "requested_fraction": 0.75,
+            "selected": 900,
+            "actual_fraction": 0.75,
+            "diagnostic_scale_threshold": 1.177996435587845,
+            "tail_count": 16,
+            "tail_rate": 0.017777777777777778,
+            "mean_error_mm": 1.1004959269673646,
+            "max_error_mm": 5.032355975069949
+          },
+          {
+            "requested_fraction": 1.0,
+            "selected": 1200,
+            "actual_fraction": 1.0,
+            "diagnostic_scale_threshold": 1.3470348355569008,
+            "tail_count": 30,
+            "tail_rate": 0.025,
+            "mean_error_mm": 1.1731311069201753,
+            "max_error_mm": 7.770272821582339
+          }
+        ]
+      },
+      "fold_constant": {
+        "rows": 1200,
+        "tail_count": 30,
+        "tail_rate": 0.025,
+        "tail_auc": 0.45897435897435895,
+        "spearman": -0.07296767912631029,
+        "scale_min": 1.217764209613396,
+        "scale_max": 1.236013331662395,
+        "retention_curve": [
+          {
+            "requested_fraction": 0.1,
+            "selected": 240,
+            "actual_fraction": 0.2,
+            "diagnostic_scale_threshold": 1.217764209613396,
+            "tail_count": 8,
+            "tail_rate": 0.03333333333333333,
+            "mean_error_mm": 1.1940453580244685,
+            "max_error_mm": 5.824682733282535
+          },
+          {
+            "requested_fraction": 0.25,
+            "selected": 480,
+            "actual_fraction": 0.4,
+            "diagnostic_scale_threshold": 1.2294579264994445,
+            "tail_count": 12,
+            "tail_rate": 0.025,
+            "mean_error_mm": 1.2249727778300814,
+            "max_error_mm": 7.770272821582339
+          },
+          {
+            "requested_fraction": 0.5,
+            "selected": 720,
+            "actual_fraction": 0.6,
+            "diagnostic_scale_threshold": 1.232616417521058,
+            "tail_count": 20,
+            "tail_rate": 0.027777777777777776,
+            "mean_error_mm": 1.2242367931561025,
+            "max_error_mm": 7.770272821582339
+          },
+          {
+            "requested_fraction": 0.75,
+            "selected": 960,
+            "actual_fraction": 0.8,
+            "diagnostic_scale_threshold": 1.2347313711107506,
+            "tail_count": 26,
+            "tail_rate": 0.027083333333333334,
+            "mean_error_mm": 1.203750054716266,
+            "max_error_mm": 7.770272821582339
+          },
+          {
+            "requested_fraction": 1.0,
+            "selected": 1200,
+            "actual_fraction": 1.0,
+            "diagnostic_scale_threshold": 1.236013331662395,
+            "tail_count": 30,
+            "tail_rate": 0.025,
+            "mean_error_mm": 1.1731311069201753,
+            "max_error_mm": 7.770272821582339
+          }
+        ]
+      }
+    },
+    "partial": {
+      "image_scale": {
+        "rows": 1200,
+        "tail_count": 31,
+        "tail_rate": 0.025833333333333333,
+        "tail_auc": 0.8238913877314495,
+        "spearman": 0.1747275796719303,
+        "scale_min": 1.0302013000780392,
+        "scale_max": 1.6466207264489439,
+        "retention_curve": [
+          {
+            "requested_fraction": 0.1,
+            "selected": 120,
+            "actual_fraction": 0.1,
+            "diagnostic_scale_threshold": 1.1636988041327434,
+            "tail_count": 0,
+            "tail_rate": 0.0,
+            "mean_error_mm": 1.2154563301519097,
+            "max_error_mm": 2.8859889023456398
+          },
+          {
+            "requested_fraction": 0.25,
+            "selected": 300,
+            "actual_fraction": 0.25,
+            "diagnostic_scale_threshold": 1.2023846349873173,
+            "tail_count": 0,
+            "tail_rate": 0.0,
+            "mean_error_mm": 1.1290893559759692,
+            "max_error_mm": 2.8859889023456398
+          },
+          {
+            "requested_fraction": 0.5,
+            "selected": 600,
+            "actual_fraction": 0.5,
+            "diagnostic_scale_threshold": 1.2512505896264803,
+            "tail_count": 2,
+            "tail_rate": 0.0033333333333333335,
+            "mean_error_mm": 1.175969842904517,
+            "max_error_mm": 3.787127236672034
+          },
+          {
+            "requested_fraction": 0.75,
+            "selected": 900,
+            "actual_fraction": 0.75,
+            "diagnostic_scale_threshold": 1.3128322704502469,
+            "tail_count": 9,
+            "tail_rate": 0.01,
+            "mean_error_mm": 1.215748767017396,
+            "max_error_mm": 3.787127236672034
+          },
+          {
+            "requested_fraction": 1.0,
+            "selected": 1200,
+            "actual_fraction": 1.0,
+            "diagnostic_scale_threshold": 1.6466207264489439,
+            "tail_count": 31,
+            "tail_rate": 0.025833333333333333,
+            "mean_error_mm": 1.309764051679661,
+            "max_error_mm": 7.588260762138086
+          }
+        ]
+      },
+      "fold_constant": {
+        "rows": 1200,
+        "tail_count": 31,
+        "tail_rate": 0.025833333333333333,
+        "tail_auc": 0.4933773006981429,
+        "spearman": -0.034604157735777824,
+        "scale_min": 1.217764209613396,
+        "scale_max": 1.236013331662395,
+        "retention_curve": [
+          {
+            "requested_fraction": 0.1,
+            "selected": 240,
+            "actual_fraction": 0.2,
+            "diagnostic_scale_threshold": 1.217764209613396,
+            "tail_count": 2,
+            "tail_rate": 0.008333333333333333,
+            "mean_error_mm": 1.3713748269251018,
+            "max_error_mm": 4.806760388107553
+          },
+          {
+            "requested_fraction": 0.25,
+            "selected": 480,
+            "actual_fraction": 0.4,
+            "diagnostic_scale_threshold": 1.2294579264994445,
+            "tail_count": 10,
+            "tail_rate": 0.020833333333333332,
+            "mean_error_mm": 1.3242853024194732,
+            "max_error_mm": 6.780628787257427
+          },
+          {
+            "requested_fraction": 0.5,
+            "selected": 720,
+            "actual_fraction": 0.6,
+            "diagnostic_scale_threshold": 1.232616417521058,
+            "tail_count": 20,
+            "tail_rate": 0.027777777777777776,
+            "mean_error_mm": 1.3234465816651237,
+            "max_error_mm": 7.588260762138086
+          },
+          {
+            "requested_fraction": 0.75,
+            "selected": 960,
+            "actual_fraction": 0.8,
+            "diagnostic_scale_threshold": 1.2347313711107506,
+            "tail_count": 31,
+            "tail_rate": 0.03229166666666667,
+            "mean_error_mm": 1.3239004094110924,
+            "max_error_mm": 7.588260762138086
+          },
+          {
+            "requested_fraction": 1.0,
+            "selected": 1200,
+            "actual_fraction": 1.0,
+            "diagnostic_scale_threshold": 1.236013331662395,
+            "tail_count": 31,
+            "tail_rate": 0.025833333333333333,
+            "mean_error_mm": 1.309764051679661,
+            "max_error_mm": 7.588260762138086
+          }
+        ]
+      }
+    },
+    "full": {
+      "image_scale": {
+        "rows": 1200,
+        "tail_count": 62,
+        "tail_rate": 0.051666666666666666,
+        "tail_auc": 0.6465219116729973,
+        "spearman": 0.13090276451580868,
+        "scale_min": 1.028545655096664,
+        "scale_max": 1.6367926722010218,
+        "retention_curve": [
+          {
+            "requested_fraction": 0.1,
+            "selected": 120,
+            "actual_fraction": 0.1,
+            "diagnostic_scale_threshold": 1.1698423554333597,
+            "tail_count": 5,
+            "tail_rate": 0.041666666666666664,
+            "mean_error_mm": 1.5533491372245416,
+            "max_error_mm": 3.721504676019537
+          },
+          {
+            "requested_fraction": 0.25,
+            "selected": 300,
+            "actual_fraction": 0.25,
+            "diagnostic_scale_threshold": 1.2090094927276414,
+            "tail_count": 8,
+            "tail_rate": 0.02666666666666667,
+            "mean_error_mm": 1.428429419321196,
+            "max_error_mm": 3.721504676019537
+          },
+          {
+            "requested_fraction": 0.5,
+            "selected": 600,
+            "actual_fraction": 0.5,
+            "diagnostic_scale_threshold": 1.2575376903878632,
+            "tail_count": 20,
+            "tail_rate": 0.03333333333333333,
+            "mean_error_mm": 1.4726680361681805,
+            "max_error_mm": 4.219771595154909
+          },
+          {
+            "requested_fraction": 0.75,
+            "selected": 900,
+            "actual_fraction": 0.75,
+            "diagnostic_scale_threshold": 1.3212885831572643,
+            "tail_count": 33,
+            "tail_rate": 0.03666666666666667,
+            "mean_error_mm": 1.5172808942903486,
+            "max_error_mm": 4.69432148147653
+          },
+          {
+            "requested_fraction": 1.0,
+            "selected": 1200,
+            "actual_fraction": 1.0,
+            "diagnostic_scale_threshold": 1.6367926722010218,
+            "tail_count": 62,
+            "tail_rate": 0.051666666666666666,
+            "mean_error_mm": 1.5916586784615634,
+            "max_error_mm": 7.086013384537377
+          }
+        ]
+      },
+      "fold_constant": {
+        "rows": 1200,
+        "tail_count": 62,
+        "tail_rate": 0.051666666666666666,
+        "tail_auc": 0.4863937864958331,
+        "spearman": -0.008734815414305614,
+        "scale_min": 1.217764209613396,
+        "scale_max": 1.236013331662395,
+        "retention_curve": [
+          {
+            "requested_fraction": 0.1,
+            "selected": 240,
+            "actual_fraction": 0.2,
+            "diagnostic_scale_threshold": 1.217764209613396,
+            "tail_count": 11,
+            "tail_rate": 0.04583333333333333,
+            "mean_error_mm": 1.638246459357437,
+            "max_error_mm": 5.446394260091274
+          },
+          {
+            "requested_fraction": 0.25,
+            "selected": 480,
+            "actual_fraction": 0.4,
+            "diagnostic_scale_threshold": 1.2294579264994445,
+            "tail_count": 22,
+            "tail_rate": 0.04583333333333333,
+            "mean_error_mm": 1.5743116199983225,
+            "max_error_mm": 7.086013384537377
+          },
+          {
+            "requested_fraction": 0.5,
+            "selected": 720,
+            "actual_fraction": 0.6,
+            "diagnostic_scale_threshold": 1.232616417521058,
+            "tail_count": 38,
+            "tail_rate": 0.05277777777777778,
+            "mean_error_mm": 1.5949208373743256,
+            "max_error_mm": 7.086013384537377
+          },
+          {
+            "requested_fraction": 0.75,
+            "selected": 960,
+            "actual_fraction": 0.8,
+            "diagnostic_scale_threshold": 1.2347313711107506,
+            "tail_count": 57,
+            "tail_rate": 0.059375,
+            "mean_error_mm": 1.6003742831933587,
+            "max_error_mm": 7.086013384537377
+          },
+          {
+            "requested_fraction": 1.0,
+            "selected": 1200,
+            "actual_fraction": 1.0,
+            "diagnostic_scale_threshold": 1.236013331662395,
+            "tail_count": 62,
+            "tail_rate": 0.051666666666666666,
+            "mean_error_mm": 1.5916586784615634,
+            "max_error_mm": 7.086013384537377
+          }
+        ]
+      }
+    }
+  },
+  "styles": {
+    "rectangle": {
+      "image_scale": {
+        "rows": 2400,
+        "tail_count": 80,
+        "tail_rate": 0.03333333333333333,
+        "tail_auc": 0.67109375,
+        "spearman": 0.24272957339055093,
+        "scale_min": 0.9994002372215123,
+        "scale_max": 1.6452666972803753,
+        "retention_curve": [
+          {
+            "requested_fraction": 0.1,
+            "selected": 240,
+            "actual_fraction": 0.1,
+            "diagnostic_scale_threshold": 1.1217735506158781,
+            "tail_count": 3,
+            "tail_rate": 0.0125,
+            "mean_error_mm": 1.1212150141246253,
+            "max_error_mm": 4.481268156988129
+          },
+          {
+            "requested_fraction": 0.25,
+            "selected": 600,
+            "actual_fraction": 0.25,
+            "diagnostic_scale_threshold": 1.1630131099312824,
+            "tail_count": 11,
+            "tail_rate": 0.018333333333333333,
+            "mean_error_mm": 1.1290615283425713,
+            "max_error_mm": 5.032355975069949
+          },
+          {
+            "requested_fraction": 0.5,
+            "selected": 1200,
+            "actual_fraction": 0.5,
+            "diagnostic_scale_threshold": 1.2206219565579624,
+            "tail_count": 23,
+            "tail_rate": 0.019166666666666665,
+            "mean_error_mm": 1.1828374198738865,
+            "max_error_mm": 7.770272821582339
+          },
+          {
+            "requested_fraction": 0.75,
+            "selected": 1800,
+            "actual_fraction": 0.75,
+            "diagnostic_scale_threshold": 1.2856467554102886,
+            "tail_count": 40,
+            "tail_rate": 0.022222222222222223,
+            "mean_error_mm": 1.2350449052584003,
+            "max_error_mm": 7.770272821582339
+          },
+          {
+            "requested_fraction": 1.0,
+            "selected": 2400,
+            "actual_fraction": 1.0,
+            "diagnostic_scale_threshold": 1.6452666972803753,
+            "tail_count": 80,
+            "tail_rate": 0.03333333333333333,
+            "mean_error_mm": 1.333253790829609,
+            "max_error_mm": 7.770272821582339
+          }
+        ]
+      },
+      "fold_constant": {
+        "rows": 2400,
+        "tail_count": 80,
+        "tail_rate": 0.03333333333333333,
+        "tail_auc": 0.4793103448275862,
+        "spearman": -0.04491454524666745,
+        "scale_min": 1.217764209613396,
+        "scale_max": 1.236013331662395,
+        "retention_curve": [
+          {
+            "requested_fraction": 0.1,
+            "selected": 480,
+            "actual_fraction": 0.2,
+            "diagnostic_scale_threshold": 1.217764209613396,
+            "tail_count": 15,
+            "tail_rate": 0.03125,
+            "mean_error_mm": 1.38309700375105,
+            "max_error_mm": 5.824682733282535
+          },
+          {
+            "requested_fraction": 0.25,
+            "selected": 960,
+            "actual_fraction": 0.4,
+            "diagnostic_scale_threshold": 1.2294579264994445,
+            "tail_count": 28,
+            "tail_rate": 0.029166666666666667,
+            "mean_error_mm": 1.3567272895255968,
+            "max_error_mm": 7.770272821582339
+          },
+          {
+            "requested_fraction": 0.5,
+            "selected": 1440,
+            "actual_fraction": 0.6,
+            "diagnostic_scale_threshold": 1.232616417521058,
+            "tail_count": 51,
+            "tail_rate": 0.035416666666666666,
+            "mean_error_mm": 1.3540420947769496,
+            "max_error_mm": 7.770272821582339
+          },
+          {
+            "requested_fraction": 0.75,
+            "selected": 1920,
+            "actual_fraction": 0.8,
+            "diagnostic_scale_threshold": 1.2347313711107506,
+            "tail_count": 74,
+            "tail_rate": 0.03854166666666667,
+            "mean_error_mm": 1.350530447575395,
+            "max_error_mm": 7.770272821582339
+          },
+          {
+            "requested_fraction": 1.0,
+            "selected": 2400,
+            "actual_fraction": 1.0,
+            "diagnostic_scale_threshold": 1.236013331662395,
+            "tail_count": 80,
+            "tail_rate": 0.03333333333333333,
+            "mean_error_mm": 1.333253790829609,
+            "max_error_mm": 7.770272821582339
+          }
+        ]
+      }
+    },
+    "ellipse": {
+      "image_scale": {
+        "rows": 2400,
+        "tail_count": 61,
+        "tail_rate": 0.025416666666666667,
+        "tail_auc": 0.7080369220417861,
+        "spearman": 0.21007906077761473,
+        "scale_min": 0.9994002372215123,
+        "scale_max": 1.6466207264489439,
+        "retention_curve": [
+          {
+            "requested_fraction": 0.1,
+            "selected": 240,
+            "actual_fraction": 0.1,
+            "diagnostic_scale_threshold": 1.12145952964058,
+            "tail_count": 2,
+            "tail_rate": 0.008333333333333333,
+            "mean_error_mm": 1.1007129409615037,
+            "max_error_mm": 4.481268156988129
+          },
+          {
+            "requested_fraction": 0.25,
+            "selected": 600,
+            "actual_fraction": 0.25,
+            "diagnostic_scale_threshold": 1.1620678613321258,
+            "tail_count": 6,
+            "tail_rate": 0.01,
+            "mean_error_mm": 1.11044839913133,
+            "max_error_mm": 5.032355975069949
+          },
+          {
+            "requested_fraction": 0.5,
+            "selected": 1200,
+            "actual_fraction": 0.5,
+            "diagnostic_scale_threshold": 1.2188938010273322,
+            "tail_count": 15,
+            "tail_rate": 0.0125,
+            "mean_error_mm": 1.1359260689336348,
+            "max_error_mm": 7.770272821582339
+          },
+          {
+            "requested_fraction": 0.75,
+            "selected": 1800,
+            "actual_fraction": 0.75,
+            "diagnostic_scale_threshold": 1.283945748010302,
+            "tail_count": 25,
+            "tail_rate": 0.013888888888888888,
+            "mean_error_mm": 1.1686427232713523,
+            "max_error_mm": 7.770272821582339
+          },
+          {
+            "requested_fraction": 1.0,
+            "selected": 2400,
+            "actual_fraction": 1.0,
+            "diagnostic_scale_threshold": 1.6466207264489439,
+            "tail_count": 61,
+            "tail_rate": 0.025416666666666667,
+            "mean_error_mm": 1.2564967277854628,
+            "max_error_mm": 7.770272821582339
+          }
+        ]
+      },
+      "fold_constant": {
+        "rows": 2400,
+        "tail_count": 61,
+        "tail_rate": 0.025416666666666667,
+        "tail_auc": 0.46972224363781634,
+        "spearman": -0.03885588493507678,
+        "scale_min": 1.217764209613396,
+        "scale_max": 1.236013331662395,
+        "retention_curve": [
+          {
+            "requested_fraction": 0.1,
+            "selected": 480,
+            "actual_fraction": 0.2,
+            "diagnostic_scale_threshold": 1.217764209613396,
+            "tail_count": 10,
+            "tail_rate": 0.020833333333333332,
+            "mean_error_mm": 1.291377621319468,
+            "max_error_mm": 5.824682733282535
+          },
+          {
+            "requested_fraction": 0.25,
+            "selected": 960,
+            "actual_fraction": 0.4,
+            "diagnostic_scale_threshold": 1.2294579264994445,
+            "tail_count": 22,
+            "tail_rate": 0.022916666666666665,
+            "mean_error_mm": 1.2766938060343824,
+            "max_error_mm": 7.770272821582339
+          },
+          {
+            "requested_fraction": 0.5,
+            "selected": 1440,
+            "actual_fraction": 0.6,
+            "diagnostic_scale_threshold": 1.232616417521058,
+            "tail_count": 41,
+            "tail_rate": 0.02847222222222222,
+            "mean_error_mm": 1.2776130073949414,
+            "max_error_mm": 7.770272821582339
+          },
+          {
+            "requested_fraction": 0.75,
+            "selected": 1920,
+            "actual_fraction": 0.8,
+            "diagnostic_scale_threshold": 1.2347313711107506,
+            "tail_count": 58,
+            "tail_rate": 0.030208333333333334,
+            "mean_error_mm": 1.272815266457918,
+            "max_error_mm": 7.770272821582339
+          },
+          {
+            "requested_fraction": 1.0,
+            "selected": 2400,
+            "actual_fraction": 1.0,
+            "diagnostic_scale_threshold": 1.236013331662395,
+            "tail_count": 61,
+            "tail_rate": 0.025416666666666667,
+            "mean_error_mm": 1.2564967277854628,
+            "max_error_mm": 7.770272821582339
+          }
+        ]
+      }
+    }
+  },
+  "new_fits": 0,
+  "new_images": 0,
+  "hardware_writes": 0,
+  "physical_movements": 0,
+  "qualification_installed": false,
+  "limitations": [
+    "Out-of-fold uncertainty-training evidence only; no statistical-significance or independent confirmation claim.",
+    "Diagnostic thresholds are not selected, exported or admitted at runtime.",
+    "Ties are included in full, so actual retention may exceed requested fraction.",
+    "Scene maxima cover all eight variants; image rows are correlated.",
+    "Fold-constant ordering reflects fitted fold intercepts, not an image-dependent signal."
+  ]
+}
