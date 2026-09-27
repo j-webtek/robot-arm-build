@@ -85,6 +85,22 @@ matched by the configuration-epoch intake. Repository code can validate those
 bindings; it cannot authenticate the reviewer or substitute a self-review for
 independent custody and identity evidence. No decision has been supplied.
 
+## ARM-065 installed-surface reconciliation
+
+ARM-065 binds the retained ARM-064 active-feedback receipt to the exact r97
+packet, manifest, and application hashes. It records a fail-closed `BLOCKED`
+assessment because the installed COM7 surface returned
+`FAULT:NOT_READY\r\n`, is not cryptographically attested as r97, and r97 still
+lacks both an external independent-review decision and the eight-component
+measured configuration epoch. The r97 image itself continues to advertise a
+null epoch.
+
+The retained assessment is
+`software/ai/eval/arm065_r97_runtime_transition_assessment.json`. It grants no
+installation, startup, transport, execution, hardware, or physical authority.
+Its next dependency is external r97 review plus the measured epoch; only after
+those pass may a separate hash-bound installation intake be proposed.
+
 ## Synthetic integration rehearsal
 
 A deterministic synthetic decision may be generated for software integration:

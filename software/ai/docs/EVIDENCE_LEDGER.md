@@ -3196,3 +3196,31 @@ rewriting history. New entries must use a unique evidence ID.
 - Next dependency: resolve the installed diagnostic-versus-production runtime
   mismatch through the existing reviewed installation/configuration-epoch
   gates. Do not retry T=105 against the current surface.
+
+### E-20260927-ARM-065 — r97 runtime-transition assessment remains blocked
+
+- Stage: S4
+- Lane: ARM
+- Change: reconciled the exact ARM-064 terminal receipt with the sealed r97
+  review packet, manifest, and application identities using a deterministic
+  zero-I/O assessment and closed schema.
+- Artifact:
+  `software/ai/eval/arm065_r97_runtime_transition_assessment.json`; assessment
+  SHA-256 `591df4379a55410a59d1a74e182d07ca1ac95c607950084890b214b6d5875f3f`.
+- Result: `BLOCKED`. The installed surface is consistent with the finite
+  diagnostic application but is not attested as r97; active feedback was
+  rejected; external r97 review is missing; the eight-component measured
+  configuration epoch is missing; and r97 embeds a null epoch.
+- Endpoint opens: 0
+- Hardware writes: 0
+- Physical movements: 0
+- Authority: installation, startup, transport, execution, hardware, and
+  physical authority all remain false.
+- Limitations: source-string consistency is not installed-image identity. The
+  assessment does not replace an external reviewer, physical measurements, or
+  a later installation/startup authorization.
+- Next dependency: external independent review of packet
+  `987cbe86d98440734d8336c704f1ecd89692675a9cb1620cb674e4132957b416`
+  and independently reviewed measurements for all eight configuration-epoch
+  components. Only then may an epoch-bound build and separate installation
+  intake be proposed.

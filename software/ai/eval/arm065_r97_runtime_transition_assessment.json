@@ -1,0 +1,26 @@
+{
+  "schema": "rocell.r97_runtime_transition_assessment.v1",
+  "status": "BLOCKED",
+  "installed_surface_assessment": "DIAGNOSTIC_SURFACE_CONSISTENT_NOT_ATTESTED",
+  "arm064_receipt_sha256": "8bf9d1d5fc3f523918953633ef24b51bcf59c44b8d6df8e7fc7fbd8426c3c1d1",
+  "arm064_response_sha256": "148028ad79af17d51f9c75cdd7f49e04bc274fa5830e58aae4568006921c4a53",
+  "r97_review_packet_sha256": "987cbe86d98440734d8336c704f1ecd89692675a9cb1620cb674e4132957b416",
+  "r97_review_manifest_sha256": "e7c67071d0485b016cf44e0158fddb92edc0373e1e73532a3b1847f976d5117e",
+  "r97_app_sha256": "7d2e47d40141e95b611fcf37ca38d495fcf3da4dc3051f128bbae95e10840d1d",
+  "blockers": [
+    "INSTALLED_RUNTIME_NOT_ATTESTED_AS_R97",
+    "ACTIVE_FEEDBACK_SURFACE_REJECTED",
+    "R97_INDEPENDENT_REVIEW_DECISION_MISSING",
+    "MEASURED_CONFIGURATION_EPOCH_MISSING",
+    "R97_CONFIGURATION_EPOCH_NULL"
+  ],
+  "next_dependency": "EXTERNAL_R97_REVIEW_AND_EIGHT_COMPONENT_MEASURED_EPOCH",
+  "installation_intake_ready": false,
+  "installation_authorized": false,
+  "controller_start_authorized": false,
+  "transport_authorized": false,
+  "execution_authorized": false,
+  "hardware_access": false,
+  "physical_authority": false,
+  "assessment_sha256": "591df4379a55410a59d1a74e182d07ca1ac95c607950084890b214b6d5875f3f"
+}

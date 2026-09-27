@@ -266,6 +266,15 @@ attest installed firmware identity. The generic feedback seam and observed
 planner start state remain blocked. The next dependency is resolving the
 installed-runtime mismatch under a separate reviewed installation/startup
 plan—not repeating this request.
+ARM-065 now reconciles that terminal result with the sealed r97 candidate. The
+assessment binds the ARM-064 receipt and response digests to the exact r97
+packet, manifest, and app hashes and remains `BLOCKED`. The installed surface
+is diagnostic-consistent but not attested as r97; independent r97 review and
+all eight measured epoch components are absent; and r97 still reports a null
+epoch. No installation intake is ready, and no installation, startup,
+transport, execution, hardware, or physical authority was created. The shared
+next dependency is external r97 review plus the measured configuration epoch,
+followed by a separately reviewed hash-bound installation proposal.
 
 ## Stage definitions
 
