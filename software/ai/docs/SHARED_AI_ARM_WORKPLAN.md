@@ -256,6 +256,35 @@ Neither passive evidence nor the fake rehearsal qualifies installed firmware,
 physical telemetry accuracy, actuation, or model-command execution. The next
 arm-lane dependency is the separately authorized ARM-063 exchange, not another
 passive retry.
+ARM-064 consumed that authorization exactly once. COM7 opened and closed once,
+the pre-request buffer was empty, and the exact T=105 bytes were written once.
+The installed surface returned `FAULT:NOT_READY\r\n` instead of T=1051. No
+retry, movement, T=102, torque action, startup, purge, fallback, or DTR/RTS
+assertion occurred. The exact fault exists in the finite ghost-typing source,
+so the result is consistent with the known diagnostic surface but does not
+attest installed firmware identity. The generic feedback seam and observed
+planner start state remain blocked. The next dependency is resolving the
+installed-runtime mismatch under a separate reviewed installation/startup
+plan—not repeating this request.
+ARM-065 now reconciles that terminal result with the sealed r97 candidate. The
+assessment binds the ARM-064 receipt and response digests to the exact r97
+packet, manifest, and app hashes and remains `BLOCKED`. The installed surface
+is diagnostic-consistent but not attested as r97; independent r97 review and
+all eight measured epoch components are absent; and r97 still reports a null
+epoch. No installation intake is ready, and no installation, startup,
+transport, execution, hardware, or physical authority was created. The shared
+next dependency is external r97 review plus the measured configuration epoch,
+followed by a separately reviewed hash-bound installation proposal.
+ARM-066 verified the ignored seven-member r97 packet directly from the retained
+compiled inputs; its SHA-256 remains
+`987cbe86d98440734d8336c704f1ecd89692675a9cb1620cb674e4132957b416`.
+It also adds the missing owner-side intake CLI for a returned external decision.
+That CLI strictly parses, normalizes, assesses, and immutably retains one
+decision while keeping every physical authority false. This makes the external
+review handoff operational without pretending that repository code can perform
+the independent review. The dependency is unchanged: a genuinely independent
+reviewer must return the decision, then all eight measured epoch components
+must be collected and reviewed.
 
 ## Stage definitions
 

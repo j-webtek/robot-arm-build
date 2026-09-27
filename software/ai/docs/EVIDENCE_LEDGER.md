@@ -3160,3 +3160,95 @@ rewriting history. New entries must use a unique evidence ID.
 - Next dependency: obtain explicit authorization naming intake
   `3b44d5e011d8c44afda1bb6deb1cc479b1fc0c45e59e39308d285cde416b8fcc`
   before exactly one active non-moving COM7 feedback exchange.
+
+### E-20260927-ARM-064 — one-shot active feedback rejected by installed surface
+
+- Stage: S4
+- Lane: ARM
+- Authorization: exact ARM-063 intake
+  `3b44d5e011d8c44afda1bb6deb1cc479b1fc0c45e59e39308d285cde416b8fcc`;
+  one pinned COM7 open, one canonical T=105 write, one bounded T=1051 read,
+  and one close; no startup, T=102, movement, torque, retry, fallback, purge,
+  or DTR/RTS assertion.
+- Result: `ACTIVE_FEEDBACK_FAILED_TERMINAL`. Identity matched before and after;
+  open succeeded once; the receive buffer was empty; all ten authorized bytes
+  were written once; one 17-byte line was read; close was confirmed once.
+  The response was exactly `FAULT:NOT_READY\r\n`, not T=1051. No retry ran.
+- Artifact:
+  `software/ai/eval/arm064_active_feedback_qualification_20260927.json`, file
+  SHA-256
+  `8bf9d1d5fc3f523918953633ef24b51bcf59c44b8d6df8e7fc7fbd8426c3c1d1`;
+  response SHA-256
+  `148028ad79af17d51f9c75cdd7f49e04bc274fa5830e58aae4568006921c4a53`.
+- Source analysis: `ghost_typing_b_board.h` contains the exact fault before its
+  finite leg-command comparison when its one-use state is not ready. This is
+  consistency evidence only, not cryptographic installed-firmware identity.
+- Endpoint opens: 1
+- Hardware writes: 1 request / 10 bytes
+- Active requests: 1
+- Physical movements: 0
+- Limitations: no T=1051 telemetry or pose was obtained; controller firmware
+  identity, joint accuracy, and the generic production protocol remain
+  unqualified. The original receipt's generic parse-failure text is retained
+  unchanged; its base64 raw line supplies the authoritative response.
+- Supersedes: the pending active-feedback attempt after ARM-063. It does not
+  qualify the generic feedback protocol or observed planner start state.
+- Next dependency: resolve the installed diagnostic-versus-production runtime
+  mismatch through the existing reviewed installation/configuration-epoch
+  gates. Do not retry T=105 against the current surface.
+
+### E-20260927-ARM-065 — r97 runtime-transition assessment remains blocked
+
+- Stage: S4
+- Lane: ARM
+- Change: reconciled the exact ARM-064 terminal receipt with the sealed r97
+  review packet, manifest, and application identities using a deterministic
+  zero-I/O assessment and closed schema.
+- Artifact:
+  `software/ai/eval/arm065_r97_runtime_transition_assessment.json`; assessment
+  SHA-256 `591df4379a55410a59d1a74e182d07ca1ac95c607950084890b214b6d5875f3f`.
+- Result: `BLOCKED`. The installed surface is consistent with the finite
+  diagnostic application but is not attested as r97; active feedback was
+  rejected; external r97 review is missing; the eight-component measured
+  configuration epoch is missing; and r97 embeds a null epoch.
+- Endpoint opens: 0
+- Hardware writes: 0
+- Physical movements: 0
+- Authority: installation, startup, transport, execution, hardware, and
+  physical authority all remain false.
+- Limitations: source-string consistency is not installed-image identity. The
+  assessment does not replace an external reviewer, physical measurements, or
+  a later installation/startup authorization.
+- Next dependency: external independent review of packet
+  `987cbe86d98440734d8336c704f1ecd89692675a9cb1620cb674e4132957b416`
+  and independently reviewed measurements for all eight configuration-epoch
+  components. Only then may an epoch-bound build and separate installation
+  intake be proposed.
+
+### E-20260927-ARM-066 — external r97 decision intake is operational
+
+- Stage: S4
+- Lane: ARM
+- Change: reproduced and reinspected the existing seven-member r97 review
+  packet from retained compiled inputs, added a reviewer handoff guide, and
+  implemented a strict owner-side CLI for one returned external decision.
+- Packet verification: SHA-256
+  `987cbe86d98440734d8336c704f1ecd89692675a9cb1620cb674e4132957b416`,
+  exactly matching the frozen ARM-033 identity.
+- Intake behavior: one regular non-symlink JSON file, 128-KiB maximum, strict
+  UTF-8 JSON with duplicate-field rejection, full closed decision parsing,
+  exact packet/manifest/app assessment, normalized immutable output, and
+  overwrite refusal.
+- Results: focused external-decision, r97-decision, and ARM-065 tests PASS.
+- Endpoint opens: 0
+- Hardware writes: 0
+- Physical movements: 0
+- Authority: installation, startup, transport, execution, hardware, and
+  physical authority remain false even when a decision passes.
+- Limitations: no external decision was created or received. Reproducing and
+  validating the packet does not authenticate reviewer independence or evidence
+  custody.
+- Next dependency: transfer the unchanged packet to a genuinely independent
+  reviewer and ingest their returned decision with
+  `software/scripts/assess_r97_external_review_decision.py`; afterward collect
+  and independently review all eight measured configuration-epoch components.

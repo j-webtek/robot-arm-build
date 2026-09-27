@@ -176,6 +176,14 @@ assertion. Its fake-only rehearsal checks the lifecycle and strict T=1051
 parsing without accepting an arbitrary transport. The retained intake cannot
 open COM7 or authorize its active write; that requires a later explicit
 authorization naming its hash.
+The [active-feedback qualification receipt](native_t105_active_feedback_qualification_v1.schema.json)
+retains the separately authorized one-attempt lifecycle, exact raw response,
+and zero-effect counters. ARM-064 received `FAULT:NOT_READY` rather than
+T=1051, closed successfully, and made no retry. The source tree contains that
+exact fault in the finite ghost-typing diagnostic, which makes the response
+consistent with an installed diagnostic surface that does not expose generic
+T=105 feedback. This source match is an inference, not installed-firmware
+attestation.
 The [measured configuration-epoch intake](controller_configuration_epoch_intake_v1.schema.json)
 and [intake assessment](controller_configuration_epoch_intake_report_v1.schema.json)
 require that full decision, rather than accepting only an arbitrary review hash
