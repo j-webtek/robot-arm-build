@@ -599,11 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-- AI lane / S1: train an appearance-weighted revision of both compact pose
-  architectures on a new 37M training cohort and apply one frozen go/no-go
-  selection rule on a disjoint 37M cohort; no calibration, runtime, contract,
-  or arm changes.
-
 
 
 
@@ -8405,6 +8400,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Supersedes: none.
 - Next dependency: Same as AI-331.
 
+
 ### E-20260927-AI-333 — diverse ensemble snapshot review
 
 - Stage: S1
@@ -8419,3 +8415,51 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic repository review before the final ledger append; not model, runtime, or physical assurance. No arm or integration status changes.
 - Supersedes: none.
 - Next dependency: Same as AI-331.
+
+
+### E-20260927-AI-334 — appearance-robust ensemble selection
+
+- Stage: S1
+- Lane: AI
+- Commit: `98e9739d8c13495ac133d9632838198c90ac43ee` (training recipe, populations, selection rule, source, and plan frozen before rendering or fitting; report, tests, and documentation committed in the successor)
+- Inputs/fixtures: New training scenes `37000000..37002399` and disjoint selection scenes `37002400..37002799`, rectangle and ellipse styles, and four conditions: 19,200 training images and 3,200 selection images. Appearance-shift samples have fixed loss weight 2.0; all others 1.0. Training pixel SHA256 `c4460f62e30941c0dd20ff5c2793f6a9295929f377c7fd64761ad90c682bcb80`; selection pixel SHA256 `760db131855cbdbf8532090cf5e9c4ddf6e77caf0c2b0e40c8893df9ac3c2048`; training-weight SHA256 `d6303f3369d6a2efb9c0c6780b747f324de752ea64898742e265712e0468cb6e`; plan SHA256 `8698a55675e19d5dab113c43e1ffec71c5ddaff2b40e61f2556a3efbd3b1c5a8`; report SHA256 `17815b1d24e593812a87d9b88257578722712bd0afc7d51e5d6b3be484aa9702`. Frozen candidate and previous report hashes are retained in the plan. SiLU checkpoint SHA256 `22ac55a2c869a0aaac8f1c03364cd2f05456c492e10fd4825a58f8727d0b425b`; separable checkpoint SHA256 `7236e5a4a25d3465bbac07ff6d41e3dc43508ee765a77e67f59c7bd0bc558dea`.
+- Command: `python software/ai/train/train_appearance_robust_ensemble.py`
+- Result: PASS fixed selection rule. Scene tail AUROC `0.717287` exceeds `0.68`. Overall selection failure is `38/400` (9.5%); 25% retention has `4/100` (4.0%) and 50% has `10/200` (5.0%), passing both relative reductions. SiLU and separable appearance means are `1.298275` mm and `1.483910` mm versus candidate `0.878960` mm, passing the fixed 1.8-times limit. Every all-condition two-times member check passes. Two pose fits and 7,200 optimizer updates were performed.
+- Artifacts: `train/train_appearance_robust_ensemble.py`; `train/appearance_robust_ensemble_v1_plan.json`; `eval/appearance_robust_ensemble_v1_report.json`; ignored local checkpoints under `results/appearance_robust_ensemble_v1_*`; `tests/test_appearance_robust_ensemble.py`; `docs/IMAGE_DEPENDENT_UNCERTAINTY.md`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Synthetic renderer only, one seed per architecture, CUDA nondeterminism may remain, and selection evidence is used only for go/no-go. It is not independent development, confirmation, calibrated uncertainty, runtime admission, or physical qualification. ModelMotionBatchV2 and arm/integration statuses are unchanged.
+- Supersedes: none; the failed first diverse-ensemble result and all prior negative uncertainty evidence remain preserved.
+- Next dependency: Freeze the exact two selected checkpoint hashes and evaluate them once on a new grouped development cohort. Require scene AUROC at least 0.70, the same fixed-retention reductions, and the same member-quality limits. Do not allocate calibration data until that fresh development rule passes.
+
+
+### E-20260927-AI-335 — appearance-robust ensemble verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `98e9739d8c13495ac133d9632838198c90ac43ee` (frozen study source; tests and documentation committed in the successor)
+- Inputs/fixtures: Same 19,200 training images, 3,200 selection images, frozen candidate, plan, and selected checkpoints as AI-334; exact hashes are recorded there and in the report.
+- Command: `python -m pytest -q software/ai/tests/test_appearance_robust_ensemble.py`
+- Result: PASS: 2 tests in 1.77s. Tests verify frozen lineage, disjoint grouped allocations, fixed condition weights, exact populations, training histories and optimizer counts, candidate metric recounts, scene aggregation and ranking, every registered selection check, the passing composite decision, and zero hardware or physical authority.
+- Artifacts: `tests/test_appearance_robust_ensemble.py`; `eval/appearance_robust_ensemble_v1_report.json`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Existing pytest-asyncio configuration warning. Verification establishes internal reproducibility, not physical accuracy or calibrated uncertainty. Contract unchanged, so shared boundary tests were not triggered.
+- Supersedes: none.
+- Next dependency: Same as AI-334.
+
+
+### E-20260927-AI-336 — appearance-robust selection snapshot review
+
+- Stage: S1
+- Lane: AI
+- Commit: `98e9739d8c13495ac133d9632838198c90ac43ee` (frozen study source; final ledger append in successor)
+- Inputs/fixtures: Repository snapshot containing the frozen appearance-robust study, generated report, tests, and interpretation; exact hashes recorded in AI-334.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS: 6,262 paths, 915.9 MiB, 0 unresolved review findings, 14 reviewed synthetic fixtures.
+- Artifacts: `eval/appearance_robust_ensemble_v1_report.json`; `tests/test_appearance_robust_ensemble.py`; `docs/IMAGE_DEPENDENT_UNCERTAINTY.md`; shared evidence ledger.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic repository review before final ledger append; not model, runtime, or physical assurance. No arm or integration status changes.
+- Supersedes: none.
+- Next dependency: Same as AI-334.

@@ -185,3 +185,26 @@ and appearance robustness using a newly allocated training/selection cohort,
 then test the frozen replacement once on a fresh grouped development cohort.
 No calibration or confirmation population should be allocated until that fresh
 study passes its preregistered failure-ranking and member-quality requirements.
+
+## Appearance-robust ensemble selection
+
+The fixed revision retained both compact architectures and changed only the
+training recipe: 2,400 new grouped scenes, 24 epochs, and double loss weight for
+appearance-shift samples. It used 19,200 training images. A disjoint 400-scene,
+3,200-image selection cohort was used once for a registered go/no-go decision.
+
+The selection rule passed. Scene tail AUROC rose to 0.717287. The selection
+cohort contained 38 failing scenes out of 400 (9.5%); the lowest-disagreement
+25% contained 4 failures out of 100 (4.0%), and the lowest 50% contained 10 out
+of 200 (5.0%). Both satisfy the registered relative-reduction requirements.
+Appearance-shift mean error was 1.298275 mm for the SiLU member and 1.483910 mm
+for the separable member, versus 0.878960 mm for the frozen candidate. Both pass
+the stricter 1.8-times-candidate selection limit, and every other member-quality
+check also passes.
+
+This is training-selection evidence. The selected checkpoints have no runtime,
+calibration, confirmation, or physical authority. The 37,002,400 through
+37,002,799 selection scenes are consumed and cannot be reused to set the fresh
+development decision. The next step is one preregistered evaluation of these
+exact checkpoint hashes on a new grouped development cohort, using the stronger
+0.70 AUROC requirement and the same fixed-retention and member-quality rules.
