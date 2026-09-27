@@ -170,10 +170,11 @@ state, and the live Pages title with
 `.github/repository-health-policy.json`. Drift fails the job and is summarized
 in the Actions run; the workflow cannot change settings.
 
-The policy also records owner-visible branch protection, Actions, security, and
-Pages expectations. Those endpoints require an owner token with repository
-administration read access and are deliberately not granted to the scheduled
-workflow. An authenticated maintainer can run the complete read-only audit:
+The policy also records owner-visible merge policy, branch protection, Actions,
+security, and Pages expectations. Those endpoints require an owner token with
+repository administration read access and are deliberately not granted to the
+scheduled workflow. An authenticated maintainer can run the complete read-only
+audit:
 
 ```powershell
 $env:GH_TOKEN = gh auth token
