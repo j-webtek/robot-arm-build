@@ -626,3 +626,33 @@ post-selection tuning and is prohibited. The next study must use new grouped
 populations and improve the metric proposal itself or preregister a new
 selection mechanism before seeing those populations. Independent confirmation
 is not allocated after this failure.
+
+## Conservative gated late fusion
+
+One new study combined only values frozen by the preceding experiments. The
+bounded metric was scaled by the existing risk formula
+`exp(0.5 * (2 * percentile - 1))`. A rank-991 scene conformal quantile was fit
+on 1,000 new 70M calibration scenes and multiplied once by the existing 1.15
+inflation. The existing 40th-percentile risk gate was then applied once to
+1,000 untouched 71M selection scenes. No model, gain, inflation, gate, or
+quantile was selected on either new cohort.
+
+The combination recovered utility. It accepted 706/8,000 images, or 8.825%,
+and every condition exceeded 1%: standard 11.8%, appearance shift 15.7%,
+partial obstruction 4.4%, and full obstruction 3.4%. Marginal scene coverage
+was 99.8%, overall accepted-image coverage was 99.1501%, and accepted-scene
+coverage was 99.5575%.
+
+The complete study still failed. Six accepted images exceeded their predicted
+radius. Two full-obstruction images also exceeded the 3 mm tolerance. Partial-
+obstruction accepted-image coverage was 97.7273% and full-obstruction coverage
+was 97.0588%, below 99%. The risk multiplier therefore improves retention by
+shrinking low-risk radii, but remains overconfident in the obstructed tail even
+after conservative inflation.
+
+No mapping or runtime behavior is installed, and the 71M cohort cannot be used
+to adjust this formula. The next bounded work should target obstruction-aware
+metric uncertainty directly on new training-selection populations. It should
+retain the recovered utility as an explicit goal while preserving the existing
+coverage and zero-above-tolerance gates before any calibration or independent
+confirmation is allocated.

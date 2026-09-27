@@ -599,11 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-- AI lane / S1: evaluate one preregistered conservative gated late-fusion
-  mapping on fresh 70M calibration and 71M selection scenes, combining only
-  previously frozen gain, inflation, and risk-gate values; no model training,
-  runtime, contract, arm, or integration-status changes.
-
 
 
 
@@ -9189,3 +9184,63 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic repository review before final ledger append; not model, runtime, or physical assurance. No arm or integration status changes.
 - Supersedes: none.
 - Next dependency: Same as AI-382.
+
+### E-20260927-AI-385 — conservative gated late-fusion selection
+
+- Stage: S1
+- Lane: AI
+- Commit: `4d3e4ff0061d0349ac8d98c3dd8f8ec203b08321` (frozen specialist lineage, previously fixed fusion gain, inflation and gate, fresh populations, unchanged final gates, source, plan, and claim committed before inference; failed report, tests, interpretation, and claim removal committed in the successor)
+- Inputs/fixtures: Frozen late-fusion report SHA256 `8296328aaad2c98dc659d4d8d409d39513f4ede04fb3d0d8cc66249ca4d29edb`; frozen inflated-gate report SHA256 `5e6cbe95c00be3e3c77699ef69a05d128b7998b4110d2ce3131c2f045bf90c17`; bounded-metric checkpoint/report SHA256 `c9ee03b9962e28443fbac7644cdfbb9c068e544aeb75cc58dc2ba8b6b494b16c`/`d0632877b0918c8b71417a8c34e6e580b12599c6144cb4876d4bb11dcc821fb7`; tail-risk checkpoint/report SHA256 `79d48b0ef63effea3642c2e08a20d8a6800f27f75e0ed97ed8050f146d4f326e`/`40524c98512aa98383f70aa0156b062276660572081ff1c4b808fdec460211cf`. Mapping-calibration scenes `70000000..70000999` and selection scenes `71000000..71000999`, each with two styles and four conditions for 8,000 images. Calibration pixel/feature/target/metric/risk SHA256 values `7686f7f0fa3ce7e79b6d1d106d120d879fcd03452b8912afbfa25fb5edf2ac67`, `f50c7e7b3fc7698e05596e9d8ca0aafb54eb692af900b9c2df0baf0f40e799bd`, `85cc754463c489462265d0edfa8ff03f1d9c3969c95951f1471188cef3c95c07`, `752bc714639c222afb91640cde86a40995b86a3a546efbc4a3fdc0cf79ea6169`, and `9c97929febb646937ecf984889bce2f89fd799ee0a6fb36dd545f161d9e4f8a5`; selection values `2a2ade139ed9c87cdde828b132becb7a65c94d382985d4177981e57c327cb7f2`, `afa9c284d92b2b5b0518b717c66e9bb46d23d70492e58cb0081d5f204b29a044`, `2dde182398436f9b5bddc001dab7dde07d3ee5ea7da2bc58e2c6fbb2ddd7753c`, `d54646b625c5ae2f94501c2ccca554fb61a81ba47628d98e988fb904c34021d7`, and `173113bf66915ce755a622cb7b5075a9a8c5fb2b2704510830c6a1bc0443b82b`. Risk-reference SHA256 `8ca149c2faa6720166262ee8d2efc203ae28d5bdb5e4239b4d14d532415e0cc8`; plan SHA256 `225a87070752246d7e5c7d6e671457c3c41533d79484161c898c7af1a210ba7e`; report SHA256 `14c86c35894f35424d672cb4a7d31b57b8953ff70bab3c933f11067edaf0609b`.
+- Command: `python software/ai/train/select_conservative_gated_late_fusion.py`
+- Result: FAIL fixed selection rule. Rank-991 calibration yields quantile `2.150357817`; the frozen 1.15 inflation yields `2.472911490`. Marginal scene coverage is 99.8%; 706/8,000 images are accepted (8.825%); accepted-image coverage is `0.991501416`; accepted-scene coverage is `0.995575221`; and every condition passes utility. Six accepted images exceed their predicted radius, including two full-obstruction errors above 3 mm. Partial and full accepted-image coverage fail at `0.977272727` and `0.970588235`. One mapping fit, zero new model fits, and zero optimizer updates.
+- Artifacts: `train/select_conservative_gated_late_fusion.py`; `train/conservative_gated_late_fusion_v1_plan.json`; `eval/conservative_gated_late_fusion_v1_report.json`; `tests/test_conservative_gated_late_fusion.py`; `docs/IMAGE_DEPENDENT_UNCERTAINTY.md`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Synthetic mapping-calibration and selection evidence for one fixed combination of earlier components. No independent confirmation was allocated after failure. The 3 mm threshold is a research tolerance, not a measured contact margin. No mapping, runtime installation, physical-camera evidence, qualification, or motion authority. ModelMotionBatchV2 and arm/integration statuses are unchanged.
+- Supersedes: none; all component studies and failures remain preserved.
+- Next dependency: Do not tune on 71M. On entirely fresh grouped training-selection populations, preregister an obstruction-aware metric uncertainty study that targets the partial/full tail directly. Retain the recovered utility as an explicit later calibration goal while preserving all current coverage and zero-above-tolerance gates.
+
+### E-20260927-AI-386 — conservative gated late-fusion initial verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `4d3e4ff0061d0349ac8d98c3dd8f8ec203b08321` (frozen mapping source; verification implementation and correction committed in the successor)
+- Inputs/fixtures: Same 16,000 fresh images, frozen specialists, empirical risk reference, conservative gated-fusion plan, and failed report as AI-385; exact hashes are recorded there and in the report.
+- Command: `python -m pytest -q software/ai/tests/test_conservative_gated_late_fusion.py`
+- Result: FAIL: 1 failed, 1 passed in 2.03s. The report-recount test passed. The arithmetic unit test used exact equality for binary floating-point multiplication and observed `3.0 * 1.15 * 2.0 != 6.9` at machine representation. This was a test assertion defect, not an evidence or model discrepancy.
+- Artifacts: `tests/test_conservative_gated_late_fusion.py`; `eval/conservative_gated_late_fusion_v1_report.json`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Failed verification preserved before correction. No study values or report data changed. Existing pytest-asyncio configuration warning. Contract unchanged, so shared boundary tests were not triggered.
+- Supersedes: none.
+- Next dependency: Replace the exact floating-point assertion with an approximate numeric comparison and rerun the identical verification command.
+
+### E-20260927-AI-387 — conservative gated late-fusion corrected verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `4d3e4ff0061d0349ac8d98c3dd8f8ec203b08321` (frozen mapping source; corrected test and documentation committed in the successor)
+- Inputs/fixtures: Same artifacts as AI-386; only the unit assertion uses `pytest.approx(6.9)` after the preserved exact-equality failure.
+- Command: `python -m pytest -q software/ai/tests/test_conservative_gated_late_fusion.py`
+- Result: PASS: 2 tests in 1.96s. Tests verify fusion arithmetic before one inflation, immutable lineage, both exact grouped populations, risk-reference hash, fused-output reconstruction, scene scores, conformal rank and both quantiles, complete overall and conditional recounts, every fixed passing and failed check, and zero model fitting, optimizer, hardware, physical, qualification, or runtime authority.
+- Artifacts: `tests/test_conservative_gated_late_fusion.py`; `eval/conservative_gated_late_fusion_v1_report.json`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Existing pytest-asyncio configuration warning. Recount consistency only; no physical assurance. Contract unchanged, so shared boundary tests were not triggered.
+- Supersedes: none; AI-386 remains preserved as failed evidence.
+- Next dependency: Same as AI-385.
+
+### E-20260927-AI-388 — conservative gated late-fusion snapshot review
+
+- Stage: S1
+- Lane: AI
+- Commit: `4d3e4ff0061d0349ac8d98c3dd8f8ec203b08321` (frozen mapping source; final ledger append in successor)
+- Inputs/fixtures: Repository snapshot containing the frozen study, failed report, corrected verification test, interpretation, preserved failed verification, and shared ledger; exact hashes recorded in AI-385.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS: 6,342 paths, 1,011.5 MiB, 0 unresolved review findings, 14 reviewed synthetic fixtures.
+- Artifacts: conservative gated-fusion plan/report; verification test; uncertainty documentation; shared ledger.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic repository review before final ledger append; not model, runtime, or physical assurance. No arm or integration status changes.
+- Supersedes: none.
+- Next dependency: Same as AI-385.
