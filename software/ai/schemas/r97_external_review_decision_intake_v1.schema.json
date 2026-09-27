@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rocell.local/schemas/r97_external_review_decision_intake_v1.schema.json",
+  "title": "RoCell external r97 review decision intake v1",
+  "type": "object", "additionalProperties": false,
+  "required": ["schema", "status", "input_document_sha256", "decision_sha256",
+    "report_sha256", "received_utc", "ready_for_configuration_epoch_intake",
+    "installation_authorized", "controller_start_authorized", "transport_authorized",
+    "execution_authorized", "hardware_access", "physical_authority"],
+  "properties": {
+    "schema": {"const": "rocell.r97_external_review_decision_intake.v1"},
+    "status": {"enum": ["BLOCKED", "INDEPENDENT_REVIEW_ACCEPTED", "SYNTHETIC_REHEARSAL_ACCEPTED"]},
+    "input_document_sha256": {"$ref": "#/$defs/sha256"},
+    "decision_sha256": {"$ref": "#/$defs/sha256"},
+    "report_sha256": {"$ref": "#/$defs/sha256"},
+    "received_utc": {"type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$"},
+    "ready_for_configuration_epoch_intake": {"type": "boolean"},
+    "installation_authorized": {"const": false},
+    "controller_start_authorized": {"const": false},
+    "transport_authorized": {"const": false},
+    "execution_authorized": {"const": false},
+    "hardware_access": {"const": false},
+    "physical_authority": {"const": false}
+  },
+  "$defs": {"sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}
+}

@@ -3224,3 +3224,31 @@ rewriting history. New entries must use a unique evidence ID.
   and independently reviewed measurements for all eight configuration-epoch
   components. Only then may an epoch-bound build and separate installation
   intake be proposed.
+
+### E-20260927-ARM-066 — external r97 decision intake is operational
+
+- Stage: S4
+- Lane: ARM
+- Change: reproduced and reinspected the existing seven-member r97 review
+  packet from retained compiled inputs, added a reviewer handoff guide, and
+  implemented a strict owner-side CLI for one returned external decision.
+- Packet verification: SHA-256
+  `987cbe86d98440734d8336c704f1ecd89692675a9cb1620cb674e4132957b416`,
+  exactly matching the frozen ARM-033 identity.
+- Intake behavior: one regular non-symlink JSON file, 128-KiB maximum, strict
+  UTF-8 JSON with duplicate-field rejection, full closed decision parsing,
+  exact packet/manifest/app assessment, normalized immutable output, and
+  overwrite refusal.
+- Results: focused external-decision, r97-decision, and ARM-065 tests PASS.
+- Endpoint opens: 0
+- Hardware writes: 0
+- Physical movements: 0
+- Authority: installation, startup, transport, execution, hardware, and
+  physical authority remain false even when a decision passes.
+- Limitations: no external decision was created or received. Reproducing and
+  validating the packet does not authenticate reviewer independence or evidence
+  custody.
+- Next dependency: transfer the unchanged packet to a genuinely independent
+  reviewer and ingest their returned decision with
+  `software/scripts/assess_r97_external_review_decision.py`; afterward collect
+  and independently review all eight measured configuration-epoch components.
