@@ -2,13 +2,15 @@
 
 **Document status:** Current release-readiness dashboard  
 **Authority:** Status and routing only; this page does not select a candidate, approve publication, or authorize hardware operation  
-**Last reconciled:** September 27, 2026, against protected `main` at `8a637d4`
+**Last reconciled:** September 27, 2026, against protected `main` at `ae78e07`
 
 Tactevra has not published a GitHub release. No source commit, tag, release notes,
 or downloadable asset set is currently approved. This dashboard is the concise
 public summary of the first source-only experimental preview. Use
 [issue #57](https://github.com/j-webtek/tactevra/issues/57) for the actionable
 checklist and the [release procedure](../RELEASING.md) for the required process.
+The reviewed [machine-readable readiness registry](../../.github/release-readiness.json)
+is the offline enforcement source for the three blockers below.
 
 `main` may advance after the reconciliation commit above. A later merge does not
 silently become the candidate and does not inherit earlier evidence. The exact
@@ -86,6 +88,9 @@ accuracy, physical clearance, successful device input, or third-party rights.
 
 - Update this page when a listed gate changes state, not for every development
   merge.
+- Update the machine-readable registry in the same reviewed change that changes
+  a blocker state. A closed GitHub issue without a registry resolution and
+  durable evidence remains blocked in candidate validation.
 - Record action-level evidence and discussion on issue #57 or its linked blocker;
   keep this page concise.
 - Name exact commits for candidate evidence. Never describe moving `main` as the

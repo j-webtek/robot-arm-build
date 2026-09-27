@@ -1,8 +1,9 @@
 """Check tracked source-preview contents against the reviewed release policy.
 
 Policy mode runs in ordinary CI and rejects unexpected private, executable,
-firmware, model-weight, key, and archive paths. Candidate mode additionally
-fails while an explicitly recorded release blocker remains tracked.
+firmware, model-weight, key, and archive paths. It also validates the offline
+release-readiness registry. Candidate mode additionally fails while a recorded
+path or readiness blocker remains open.
 
 This path check complements the content-oriented snapshot audit. Neither check
 establishes redistribution rights or certifies that a snapshot is secret-free.
@@ -19,6 +20,7 @@ import subprocess
 
 ROOT = Path(__file__).resolve().parents[2]
 POLICY_PATH = ROOT / ".github" / "release-integrity-policy.json"
+READINESS_PATH = ROOT / ".github" / "release-readiness.json"
 ISSUE_PREFIX = "https://github.com/j-webtek/tactevra/issues/"
 TOP_LEVEL_FIELDS = {
     "version",
@@ -31,6 +33,11 @@ TOP_LEVEL_FIELDS = {
     "allowed_tracked_files",
     "candidate_blockers",
 }
+READINESS_FIELDS = {"version", "release_scope", "authority", "blockers"}
+READINESS_BLOCKER_FIELDS = {
+    "id", "issue", "owner", "requirement", "status", "resolution",
+}
+RESOLUTION_FIELDS = {"summary", "evidence"}
 
 
 def normalize(value: str) -> str:
@@ -112,6 +119,99 @@ def load_policy(path: Path = POLICY_PATH) -> dict:
     return policy
 
 
+def load_readiness(path: Path = READINESS_PATH) -> dict:
+    readiness = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(readiness, dict) or set(readiness) != READINESS_FIELDS:
+        raise ValueError(
+            f"readiness registry must contain exactly {sorted(READINESS_FIELDS)}")
+    if readiness["version"] != 1:
+        raise ValueError("readiness registry version must be 1")
+    if readiness["release_scope"] != "source-only-experimental-preview":
+        raise ValueError(
+            "release_scope must be source-only-experimental-preview")
+    if (not isinstance(readiness["authority"], str)
+            or not readiness["authority"].strip()):
+        raise ValueError("readiness authority must be a non-empty string")
+    blockers = readiness["blockers"]
+    if not isinstance(blockers, list):
+        raise ValueError("readiness blockers must be a list")
+
+    seen_ids: set[str] = set()
+    seen_issues: set[str] = set()
+    for index, entry in enumerate(blockers):
+        if not isinstance(entry, dict) or set(entry) != READINESS_BLOCKER_FIELDS:
+            raise ValueError(f"readiness blockers[{index}] has invalid fields")
+        blocker_id = entry["id"]
+        if (not isinstance(blocker_id, str)
+                or not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", blocker_id)):
+            raise ValueError(f"invalid readiness blocker id: {blocker_id!r}")
+        if blocker_id in seen_ids:
+            raise ValueError(f"duplicate readiness blocker id: {blocker_id}")
+        seen_ids.add(blocker_id)
+        issue = entry["issue"]
+        if not isinstance(issue, str) or not issue.startswith(ISSUE_PREFIX):
+            raise ValueError(f"invalid issue for readiness blocker {blocker_id}")
+        if issue in seen_issues:
+            raise ValueError(f"duplicate readiness blocker issue: {issue}")
+        seen_issues.add(issue)
+        for field in ("owner", "requirement"):
+            if not isinstance(entry[field], str) or not entry[field].strip():
+                raise ValueError(
+                    f"empty {field} for readiness blocker {blocker_id}")
+        status = entry["status"]
+        resolution = entry["resolution"]
+        if status == "open":
+            if resolution is not None:
+                raise ValueError(
+                    f"open readiness blocker {blocker_id} must have null resolution")
+        elif status == "cleared":
+            if (not isinstance(resolution, dict)
+                    or set(resolution) != RESOLUTION_FIELDS):
+                raise ValueError(
+                    f"cleared readiness blocker {blocker_id} needs a resolution")
+            if (not isinstance(resolution["summary"], str)
+                    or not resolution["summary"].strip()):
+                raise ValueError(
+                    f"cleared readiness blocker {blocker_id} needs a summary")
+            evidence = resolution["evidence"]
+            if (not isinstance(evidence, list) or not evidence
+                    or any(not isinstance(item, str) or not item.strip()
+                           for item in evidence)):
+                raise ValueError(
+                    f"cleared readiness blocker {blocker_id} needs evidence")
+        else:
+            raise ValueError(
+                f"invalid status for readiness blocker {blocker_id}: {status!r}")
+    return readiness
+
+
+def readiness_errors(root: Path, readiness: dict, tracked: list[str] | None = None,
+                     *, candidate: bool = False) -> list[str]:
+    errors: list[str] = []
+    tracked_set = set(tracked) if tracked is not None else None
+    for entry in readiness["blockers"]:
+        if entry["status"] == "cleared":
+            for evidence in entry["resolution"]["evidence"]:
+                if evidence.startswith(("https://", "http://")):
+                    continue
+                try:
+                    evidence_path = normalize(evidence)
+                except ValueError as exc:
+                    errors.append(
+                        f"invalid readiness evidence for {entry['id']}: {exc}")
+                    continue
+                if not (root / Path(evidence_path)).is_file():
+                    errors.append(
+                        f"missing readiness evidence for {entry['id']}: {evidence_path}")
+                elif tracked_set is not None and evidence_path not in tracked_set:
+                    errors.append(
+                        f"untracked readiness evidence for {entry['id']}: {evidence_path}")
+        elif candidate:
+            errors.append(
+                f"release-readiness blocker is open: {entry['id']} ({entry['issue']})")
+    return errors
+
+
 def tracked_paths(root: Path = ROOT) -> list[str]:
     output = subprocess.check_output(
         ["git", "ls-files", "-z"], cwd=root,
@@ -171,18 +271,24 @@ def main() -> None:
     args = parser.parse_args()
     try:
         policy = load_policy()
+        readiness = load_readiness()
         tracked = tracked_paths()
         errors = policy_errors(ROOT, policy, tracked, candidate=args.mode == "candidate")
+        errors.extend(readiness_errors(
+            ROOT, readiness, tracked, candidate=args.mode == "candidate"))
     except (OSError, ValueError, json.JSONDecodeError, subprocess.CalledProcessError) as exc:
         raise SystemExit(f"release-integrity check could not run: {exc}") from exc
     if errors:
         details = "\n".join(f"- {error}" for error in errors)
         raise SystemExit(
             f"Release-integrity {args.mode} check failed:\n{details}\n"
-            "Review .github/release-integrity-policy.json and docs/RELEASING.md."
+            "Review .github/release-integrity-policy.json, "
+            ".github/release-readiness.json, and docs/RELEASING.md."
         )
-    blockers = sum(entry["path"] in set(tracked)
-                   for entry in policy["candidate_blockers"])
+    blockers = (sum(entry["path"] in set(tracked)
+                    for entry in policy["candidate_blockers"])
+                + sum(entry["status"] == "open"
+                      for entry in readiness["blockers"]))
     print(
         f"PASS: release-integrity {args.mode} check covers {len(tracked)} tracked paths; "
         f"{blockers} recorded candidate blocker(s) remain"
