@@ -599,6 +599,11 @@ Copy this row and fill every field:
 
 ## Active work claims
 
+- AI lane / S1: train two independently initialized compact pose architectures
+  on a new obstruction-rich 36M training cohort and evaluate ensemble
+  disagreement on a disjoint 36M development cohort; no calibration/runtime or
+  arm changes.
+
 
 
 
