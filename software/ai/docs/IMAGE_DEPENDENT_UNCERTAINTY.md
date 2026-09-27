@@ -131,3 +131,25 @@ without simulator truth at inference. The diagnostic must use grouped 33M
 out-of-fold evidence and fixed retention comparisons. If it is weak, the next
 uncertainty effort needs either a genuinely diverse pose ensemble or a broader
 uncertainty-training population before any new calibration data is allocated.
+
+## Frozen pose-disagreement diagnostic
+
+The zero-fit diagnostic computed maximum target displacement between the
+original baseline pose and confirmed residual-candidate pose. This uses two
+deployable model outputs and all 46 named targets, with no simulator truth in
+the score itself. Truth was used only to evaluate ranking on the existing 33M
+training evidence.
+
+The signal failed every fixed comparison. Scene tail AUROC was 0.556317 versus
+0.644431 for the best nonlinear risk ranker. At 25% retention, disagreement
+kept 12 failing scenes out of 150 versus 4 for the reference; at 50%, it kept
+22 out of 300 versus 17. The lowest-disagreement 10% still contained 5 failures
+among 60 scenes.
+
+The baseline and residual candidate share the same backbone, so agreement
+between them is not independent evidence. This result closes uncertainty work
+based on additional heads or comparisons over this single representation and
+600-scene population. The next credible path requires a broader, failure-rich
+uncertainty-training set and genuinely diverse compact pose models. Their
+dispersion must first demonstrate useful grouped training-only failure ranking;
+new calibration and confirmation data should not be allocated before that gate.

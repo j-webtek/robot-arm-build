@@ -599,9 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-- AI lane / S1: zero-fit audit of baseline-versus-candidate geometric
-  disagreement on grouped 33M scenes; no model fitting, threshold selection,
-  calibration data, runtime promotion, or arm changes.
 
 
 
@@ -8324,3 +8321,51 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic snapshot before final ledger append; not model or physical assurance. No arm or integration status changes.
 - Supersedes: none.
 - Next dependency: Same as AI-325.
+
+
+### E-20260927-AI-328 — frozen pose-disagreement audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `188f1425264fe773c17aa8f3f4a62d4433ad8fce` (score, comparison, source, and plan frozen before inference; evidence/tests/docs committed in the successor)
+- Inputs/fixtures: Existing `33000000..33000599` grouped uncertainty-training scenes and 4,800 variants. Frozen original baseline is embedded in the confirmed residual artifact SHA256 `c9f4ef6d8f9e50317a917154fccacce46506ab2e7cde8267396e28fec156147b`; source report SHA256 `b9ac4856d8af925d19d2e3b25e049c22f738590fba2deb7e52ff9fedc0fc0d4d`. Score is maximum displacement over all 46 targets between baseline and candidate poses. Full hashes in `eval/pose_disagreement_v1_plan.json`; report SHA256 `43747f73ae0bf6fcb6ed8758f09dd84b0508cdce23fafc9659ddd1b10680d0a7` retains every score and prediction hash.
+- Command: `python software/ai/vision/audit_pose_disagreement.py`
+- Result: FAIL all fixed comparisons. Disagreement scene tail AUROC is `0.556317` versus `0.644431` reference. At 25% retention it keeps `12/150` failures (8.0%) versus `4/150` (2.67%); at 50% it keeps `22/300` (7.33%) versus `17/300` (5.67%). Lowest-disagreement 10% contains `5/60` failures, slightly worse than the full-scene rate. Candidate error recount matches prior evidence within the frozen 1e-9 mm tolerance.
+- Artifacts: `vision/audit_pose_disagreement.py`; `eval/pose_disagreement_v1_plan.json` and report; `tests/test_pose_disagreement.py`; `docs/IMAGE_DEPENDENT_UNCERTAINTY.md`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Zero fits, new images, calibration, or threshold selection. Baseline and residual candidate share a backbone and are not a diverse ensemble. Training-only synthetic diagnostic; no independent confirmation or physical claim. No runtime installation or qualification. ModelMotionBatchV2 and arm/integration statuses unchanged.
+- Supersedes: none; all negative uncertainty evidence remains preserved.
+- Next dependency: Stop uncertainty work on correlated outputs from the current backbone. Define a broader uncertainty-training population and genuinely diverse compact pose ensemble, including independent initialization or architecture, before evaluating ensemble dispersion. Do not allocate new calibration/confirmation data until grouped training evidence shows useful failure ranking.
+
+
+### E-20260927-AI-329 — pose-disagreement verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `188f1425264fe773c17aa8f3f4a62d4433ad8fce` (frozen diagnostic source; tests and docs in successor)
+- Inputs/fixtures: Same 4,800 rows and frozen artifacts as AI-328; report SHA256 `43747f73ae0bf6fcb6ed8758f09dd84b0508cdce23fafc9659ddd1b10680d0a7`.
+- Command: `python -m pytest -q software/ai/tests/test_pose_disagreement.py`
+- Result: PASS: 2 tests in 1.89s. Tests verify zero/equal-pose and translated/rotated disagreement geometry, frozen lineage, complete population, source-error recount, nonnegative scores, scene ranking, fixed-retention comparisons, and the failed decision.
+- Artifacts: `tests/test_pose_disagreement.py`; `eval/pose_disagreement_v1_report.json`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Existing pytest-asyncio configuration warning. Reproducibility only; no accuracy or physical assurance. Contract unchanged, so boundary tests were not triggered.
+- Supersedes: none.
+- Next dependency: Same as AI-328.
+
+
+### E-20260927-AI-330 — pose-disagreement snapshot review
+
+- Stage: S1
+- Lane: AI
+- Commit: `188f1425264fe773c17aa8f3f4a62d4433ad8fce` (frozen diagnostic source; final ledger append in successor)
+- Inputs/fixtures: Repository snapshot containing the disagreement audit and evidence; exact hashes recorded in AI-328.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS: 6,253 paths, 912.0 MiB, 0 unresolved review findings, 14 reviewed synthetic fixtures.
+- Artifacts: `eval/pose_disagreement_v1_report.json`; `tests/test_pose_disagreement.py`; shared evidence ledger.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic snapshot before final ledger append; not model or physical assurance. No arm or integration status changes.
+- Supersedes: none.
+- Next dependency: Same as AI-328.
