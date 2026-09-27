@@ -47,6 +47,21 @@ The test extra declares `jsonschema`; no separate manual install is needed.
 Dependency ranges are not a lockfile: these jobs check fresh resolution within
 supported ranges, not bit-for-bit environment reproduction.
 
+## Manual source-preview candidate audit
+
+The [Preview candidate audit](../.github/workflows/preview-candidate-audit.yml)
+is a separate, manually dispatched, read-only workflow. It accepts one full
+40-character commit SHA, checks that exact checkout, runs the strict release
+candidate inventory policy, performs the snapshot audit, and rechecks maintained
+documentation. It uses a hosted Ubuntu runner, read-only repository permission,
+non-persisted checkout credentials, and no repository secrets.
+
+This workflow does not install the project, exercise hardware, upload artifacts,
+create tags, or publish releases. It is not a required branch-protection check.
+Use it only after identifying a proposed preview commit; a moving branch name is
+not a candidate identity. Until every recorded candidate blocker is resolved,
+a failed candidate-integrity step is the correct result.
+
 ### Find the versions behind a result
 
 Open **Actions → Offline verification → the relevant run**. Each job's summary

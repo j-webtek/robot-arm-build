@@ -169,6 +169,11 @@ the runner selector; the CI guide documents this distinction.
 Dependabot can propose later pin updates; pinning does not itself prove the action is safe.
 The workflow retains read-only permissions, non-persisted checkout credentials,
 hosted runners and bounded jobs. It does not use `pull_request_target` or deploy.
+The manually dispatched preview-candidate audit uses the same two pinned actions,
+read-only permissions, a hosted Ubuntu runner, and a caller-supplied full commit
+SHA. It audits only and has no release, artifact-upload, deployment, or hardware
+step. It is intentionally outside branch protection because it applies to a
+selected candidate rather than every development commit.
 
 The initial September 26, 2026 inspection found Dependabot alerts/security updates
 and secret scanning/push protection disabled. The later approved repository
