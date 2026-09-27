@@ -5,6 +5,11 @@ It does not qualify physical operation or publish an installer, firmware image,
 model bundle, or new printable hardware package. Publication is a separate
 maintainer decision; this document creates no tag or GitHub release.
 
+Vendor geometry that lacks established redistribution permission is link-only.
+In particular, `hardware/static_overhead_camera/vendor/B0477.STEP` must remain
+untracked; its source URL and digest are recorded in the adjacent vendor README.
+The release-integrity policy rejects reintroducing that path.
+
 ## Release identity and scope
 
 Use a Tactevra display name and an explicitly experimental tag, for example
