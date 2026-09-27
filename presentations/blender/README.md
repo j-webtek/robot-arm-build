@@ -30,6 +30,11 @@ cut explicit on screen. Controller close-ups temporarily hide the tall camera
 portal to reveal the arm; the overlay identifies this as a presentation
 cutaway rather than a different hardware configuration.
 
+The keyboard and phone preserve the measured RC03 device envelopes and target
+origins. Their shells, controls, legends, glass, interface, and cables are
+presentation-detail geometry: they make the intended device classes and
+interactions legible, but are not manufacturer CAD or fabrication authority.
+
 `dimension_manifest.json` records the values and source authorities used by the
 film. Run the validator before rendering:
 
@@ -171,13 +176,22 @@ dimension-checked 3D render:
   static hardware shot;
 - a six-row compact keyboard reconstruction uses the measured RC03 envelope
   and the nominal 19.05 mm pitch encoded by the target profile, with realistic
-  stagger and modifier-key widths rather than a uniform placeholder grid;
+  stagger, modifier-key widths, recessed key wells, beveled caps, legends,
+  enclosure trim, status lights, and a connected cable rather than a uniform
+  placeholder grid;
+- a layered phone reconstruction adds an aluminum envelope, optical glass,
+  receiver, camera, side controls, cable, and a modeled host-verification UI
+  while preserving the configured phone origin and measured screen plane;
 - a small persistent Tactevra wordmark establishes brand continuity without
   competing with chapter titles;
 - procedural birch and bench variation, restrained depth of field, animated
   focal length, pulsing registration tags, board-frame axes, and a visible
   camera-to-board-to-key trace add material and motion depth while keeping the
   exact hardware surface visually coherent;
+- every chapter has its own camera grammar: a complete workcell reveal,
+  hardware beauty orbit, fixture-to-lens perception move, three distinct
+  decision dollies, orthographic-like target resolution, tooling close-up,
+  sharp phone macro, and wide payoff return;
 - key legends, an H target ring carried into contact, a connected stylus, and separate
   telemetry and host-result panels make the target, action, and observed result
   legible without implying a live controller trace;
