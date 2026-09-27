@@ -34,6 +34,10 @@ for the dated settings and how to propose another action without bypassing them.
 - A generated-evidence change budget that protects reviewability and clone cost;
   see [evidence retention](EVIDENCE_RETENTION.md).
   The list is in [offline_checks.py](../scripts/ci/offline_checks.py).
+- A release-integrity path policy that rejects newly tracked private-backup,
+  credential, key, executable, firmware, model-weight, and archive paths unless
+  their exact bytes have a reviewed allowance. Ordinary CI does not clear the
+  stricter release-candidate blockers; see [release preparation](RELEASING.md).
 - Zero-write controller-byte previews, lifecycle fault rehearsal, published
   controller-boundary schemas, and the controller-evidence gate. These use
   synthetic/modeled records; a pass does not qualify an installed controller
@@ -69,6 +73,7 @@ python -m venv .venv-ci
 python scripts/ci/offline_checks.py install-base
 python scripts/ci/offline_checks.py smoke
 python scripts/ci/check_docs.py
+python scripts/ci/check_release_integrity.py --mode policy
 python scripts/ci/offline_checks.py install-tests
 python scripts/ci/offline_checks.py environment
 python scripts/ci/offline_checks.py test

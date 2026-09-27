@@ -68,6 +68,9 @@ device access, restarts, torque changes, movement, or release publication.
 - [ ] A merge is not a release. For publication, use the separate
   [release checklist](RELEASING.md), an exact candidate commit and its own reviews.
   If the candidate changes, reassess its evidence instead of reusing old sign-offs.
+- [ ] Before naming a preview candidate, run the release-integrity check in
+  `candidate` mode. A normal CI pass validates the standing path policy but does
+  not clear recorded provenance or other candidate blockers.
 
 ## 4. Check the newcomer path
 

@@ -37,6 +37,10 @@ are a starting point, not a completed qualification record.
 - [ ] Run the snapshot audit at the candidate revision and review findings;
   inspect release contents for private data, license notices, and unexpected
   artifacts. This heuristic scan is not a full-history or security certification.
+- [ ] Run `python scripts/ci/check_release_integrity.py --mode candidate` at the
+  candidate revision. Candidate mode must pass without removing a blocker merely
+  to silence the check; resolve the linked review issue or record an approved
+  exclusion/replacement disposition in the same reviewed change.
 - [ ] List known limitations, including native-helper prerequisites, absent lab
   records, unqualified real-camera localization, and physical typing status.
 - [ ] Review the draft notes and remove unresolved placeholders only when their
@@ -61,6 +65,14 @@ so checks that use `git ls-files` need a checkout instead.
 Verify the published title, experimental warning, tag target, source downloads,
 and links. Record the release URL and final evidence in the release PR. No release
 step should connect to hardware or upload firmware. CI does not publish releases.
+
+Ordinary CI runs the check in `policy` mode. That mode rejects newly tracked
+private-backup paths, credential filenames, keys, executable/native binaries,
+firmware images, model weights, and archives unless an exact path and SHA-256
+allowance is reviewed in `.github/release-integrity-policy.json`. A policy-mode
+pass means the inventory follows the recorded path policy; it does not override
+the stricter candidate blockers, inspect file contents, or establish third-party
+redistribution rights. The separate snapshot audit remains required.
 
 ## If a release needs correction
 
