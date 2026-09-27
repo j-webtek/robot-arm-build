@@ -599,8 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-- AI lane / S1: retained cross-seed persistent-failure diagnosis; baseline counted once, six trained predictions per case; no training/runtime changes.
-
 
 
 
@@ -6526,3 +6524,54 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic audit; protected-main publication blocker AI-041 retained.
 - Supersedes: none; failed evidence and ARM-046 retained; no arm/integration status changes.
 - Next dependency: Stop extending training budgets without diagnosis. Freeze cross-seed persistent-failure analysis of the retained long-run predictions,including failures shared by baseline/control/candidate and translation/rotation contributions. Identify systematic simulator or representation weaknesses before choosing another intervention; no qualification or runtime change.
+
+
+### E-20260926-AI-224 — cross-seed persistent failure diagnosis
+
+- Stage: S1
+- Lane: AI
+- Commit: `4905a0e3c9ccf29aedcc78596bc89b1cc2f96792` (frozen source; results/tests committed with evidence)
+- Change: cross-seed persistent failure diagnosis.
+- Inputs/fixtures: retained AI-220 long-run reports,seeds260926/27/28; 800 development cases15000000..15000199 x4,baseline counted once and six trained predictions per case. Exact source/report hashes in eval/persistent_pose_v0_plan.json.
+- Command: `python software/ai/vision/diagnose_persistent_pose.py`
+- Result: Completed.19/800 image cases fail all6 trained predictions: standard3,appearance5,partial4,full7. All19 also fail starting baseline;114/134 trained failure occurrences (85.07%) are persistent. Translation larger in a majority of predictions for8/19 persistent cases; rotation magnitude dominates the remaining11. Baseline failures recovered by all6: standard1,appearance0,partial3,full2.
+- Artifacts: vision/diagnose_persistent_pose.py; eval/persistent_pose_v0_report.json; tests/test_persistent_pose.py.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Repeated cases are not independent trials; component magnitudes do not prove causal defects. No uncertainty claim or oracle correction.
+- Supersedes: none; previous failures and arm/integration status retained.
+- Next dependency: Freeze a visual/renderer audit of these19 persistent cases alongside matched successful cases. Inspect occlusion,visibility,cropping,pose extremes and label alignment before a targeted training/representation change. Preserve all cases in scoring; no hand correction or exclusion based on development truth.
+
+
+### E-20260926-AI-225 — persistent failure verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `4905a0e3c9ccf29aedcc78596bc89b1cc2f96792` (frozen source; results/tests committed with evidence)
+- Change: persistent failure verification.
+- Inputs/fixtures: retained AI-220 long-run reports,seeds260926/27/28; 800 development cases15000000..15000199 x4,baseline counted once and six trained predictions per case. Exact source/report hashes in eval/persistent_pose_v0_plan.json.
+- Command: `python -m pytest -q software/ai/tests/test_persistent_pose.py`
+- Result: PASS,2 tests: baseline counted once,all-six versus five-case threshold,source hashes,all800 rows and134failure occurrences reproduced. Existing pytest-asyncio warning.
+- Artifacts: vision/diagnose_persistent_pose.py; eval/persistent_pose_v0_report.json; tests/test_persistent_pose.py.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Implementation verification only; batch unchanged,shared boundary tests not triggered.
+- Supersedes: none; previous failures and arm/integration status retained.
+- Next dependency: Freeze a visual/renderer audit of these19 persistent cases alongside matched successful cases. Inspect occlusion,visibility,cropping,pose extremes and label alignment before a targeted training/representation change. Preserve all cases in scoring; no hand correction or exclusion based on development truth.
+
+
+### E-20260926-AI-226 — persistent failure publication audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `4905a0e3c9ccf29aedcc78596bc89b1cc2f96792` (frozen source; results/tests committed with evidence)
+- Change: persistent failure publication audit.
+- Inputs/fixtures: retained AI-220 long-run reports,seeds260926/27/28; 800 development cases15000000..15000199 x4,baseline counted once and six trained predictions per case. Exact source/report hashes in eval/persistent_pose_v0_plan.json.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS;6060paths,856.5MiB,0 unresolved findings,14 reviewed synthetic fixtures.
+- Artifacts: vision/diagnose_persistent_pose.py; eval/persistent_pose_v0_report.json; tests/test_persistent_pose.py.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic audit; AI-041 protected-main publication blocker retained.
+- Supersedes: none; previous failures and arm/integration status retained.
+- Next dependency: Freeze a visual/renderer audit of these19 persistent cases alongside matched successful cases. Inspect occlusion,visibility,cropping,pose extremes and label alignment before a targeted training/representation change. Preserve all cases in scoring; no hand correction or exclusion based on development truth.
