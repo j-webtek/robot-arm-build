@@ -599,6 +599,10 @@ Copy this row and fill every field:
 
 ## Active work claims
 
+- AI lane / S1: train and evaluate one fixed nonlinear uncertainty head on
+  frozen pose features and grouped 33M scenes; no pose fitting, calibration
+  data, runtime promotion, or arm changes.
+
 
 
 

@@ -1,0 +1,28 @@
+{
+  "source_report": "software/ai/eval/image_quality_scale_v1_report.json",
+  "artifact": "software/ai/results/grouped_linear_refit_v1/model.pt",
+  "groups": [33000000, 600],
+  "styles": ["rectangle", "ellipse"],
+  "conditions": ["standard", "appearance_shift", "partial", "full"],
+  "seed": 270927,
+  "epochs": 30,
+  "batch_size": 64,
+  "learning_rate": 0.001,
+  "weight_decay": 0.0001,
+  "retention_fractions": [0.1, 0.25, 0.5, 0.75, 1.0],
+  "architecture": "Frozen 512 pooled pose features -> Linear32 -> GELU -> Linear8 -> GELU -> Linear1 log(error+0.1). One deterministic head per fold.",
+  "acceptance": "Nonlinear log-error MSE must be strictly lower than the 56-feature reference in every condition, and scene tail AUROC must be strictly higher.",
+  "scope": "Same 33M uncertainty-training scenes and folds; fixed architecture and schedule, no sweep, early stopping, new images, calibration, confirmation, threshold selection, pose fitting, or runtime installation.",
+  "file_sha256": {
+    "software/ai/vision/nonlinear_uncertainty.py": "ebef9ef01ee2783b03c993b2c7d52891699c0dfdefa3448a58583a6f5b84a48e",
+    "software/ai/train/evaluate_nonlinear_uncertainty.py": "61201a623dcd91069c266a23858bf86e273110ec0d96ddb7b7f038ddef973999",
+    "software/ai/train/compare_backbone_uncertainty.py": "9bd5580862b178d4f62ef4aa8b3311f4f4992cc0571eb4aebd0be64b881faf0f",
+    "software/ai/eval/image_quality_scale_v1_report.json": "9b58bf614dde9006056e3ac92f90a7213ff3d8d78ca109e5ea51e14842104c80",
+    "software/ai/results/grouped_linear_refit_v1/model.pt": "c9f4ef6d8f9e50317a917154fccacce46506ab2e7cde8267396e28fec156147b",
+    "software/ai/vision/audit_scene_splits.py": "987ea313fbb67436c985646e96067dd8eb7ee5fd07398eb93a001e092f98fec0",
+    "software/ai/vision/evaluate_dark_only_normalization.py": "12289bfeeb52274678c62f46c7e99e057563036566fa48fc5f5cd1d58add4469",
+    "software/ai/vision/landmark_occlusions.py": "2d77d25077ab98dad632bb441b94c06cc6c139116d6621483cab7728d95c6aad",
+    "software/ai/vision/linear_residual_pose.py": "d46b24cbe48c43ae56d9f1a700459281fceef19475f85187469cd81c735af9cc",
+    "software/ai/vision/synthetic_keyboard.py": "b9a1662ea348ba78093909844e5e8bed86f4996babc289bfd63858b6b54f692c"
+  }
+}
