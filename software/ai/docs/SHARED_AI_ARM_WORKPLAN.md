@@ -599,8 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-- AI lane / S1: RNG-preserving arm/ruler ablation,all800 cases,baseline pose checkpoint; AI evidence branch only,no training or qualification.
-
 
 
 
@@ -6696,3 +6694,54 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic audit;AI-041 protected-main publication blocker retained.
 - Supersedes: none;failed dependency attempt and all arm evidence retained.
 - Next dependency: Freeze RNG-preserving arm-line/ruler renderer ablations over all development cases; retain unmodified results,no training or qualification. Publish only AI branch feature/translation-pair-evidence to verified canonical j-webtek/tactevra remote.
+
+
+### E-20260926-AI-232 — RNG-preserving clutter intervention
+
+- Stage: S1
+- Lane: AI
+- Commit: `ae5276557e5f208ce9292975e01c2e19a00c78fb` (frozen source;results/tests committed with evidence)
+- Change: RNG-preserving clutter intervention.
+- Inputs/fixtures: all800 reused15M200 x4 development cases,original/no-arm/no-ruler/neither;checkpoint0fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d,CPU128x96. Exact source/report/checkpoint hashes eval/clutter_ablation_v0_plan.json;per-mode pixel hashes in report.
+- Command: `python software/ai/vision/evaluate_clutter_ablation.py`
+- Result: Completed. All800 originals reproduce RGB/masks/labels and baseline pose metrics;all intervention poses identical. Failures original32,no-arm17,no-ruler25,neither11. Recovered15/7/21 respectively,introduced0each. Of19persistent cases,remaining10/15/6. Original-vs-neither means standard0.853->0.737,appearance0.833->0.731,partial1.026->0.927,full1.229->1.131mm.
+- Artifacts: vision/clutter_ablation_renderer.py;vision/clutter_ablation_occlusions.py;vision/evaluate_clutter_ablation.py;eval/clutter_ablation_v0_report.json;tests/test_clutter_ablation.py;docs/PERSISTENT_SCENE_REVIEW.md.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Established baseline checkpoint only; synthetic layer removal,not physical clutter robustness. Blur/contrast/normalization spread effects beyond line pixels. No runtime cleanup,training or acceptance exclusion.
+- Supersedes: none;prior failures and arm/integration status retained.
+- Next dependency: Freeze training-only paired-clutter consistency comparison with identical pose supervision,common budget and fixed coefficient;evaluate original unmodified development scenes. No runtime clutter removal or model qualification. Publish only feature/translation-pair-evidence to j-webtek/tactevra.
+
+
+### E-20260926-AI-233 — clutter intervention verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `ae5276557e5f208ce9292975e01c2e19a00c78fb` (frozen source;results/tests committed with evidence)
+- Change: clutter intervention verification.
+- Inputs/fixtures: all800 reused15M200 x4 development cases,original/no-arm/no-ruler/neither;checkpoint0fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d,CPU128x96. Exact source/report/checkpoint hashes eval/clutter_ablation_v0_plan.json;per-mode pixel hashes in report.
+- Command: `python -m pytest -q software/ai/tests/test_clutter_ablation.py`
+- Result: PASS,2 tests: original pixel/label/mask equality,pose/corner invariance,mask subset behavior,frozen hashes and report recovery/new-failure recount. Existing pytest-asyncio warning.
+- Artifacts: vision/clutter_ablation_renderer.py;vision/clutter_ablation_occlusions.py;vision/evaluate_clutter_ablation.py;eval/clutter_ablation_v0_report.json;tests/test_clutter_ablation.py;docs/PERSISTENT_SCENE_REVIEW.md.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Implementation verification only;batch unchanged,shared boundary suite not triggered.
+- Supersedes: none;prior failures and arm/integration status retained.
+- Next dependency: Freeze training-only paired-clutter consistency comparison with identical pose supervision,common budget and fixed coefficient;evaluate original unmodified development scenes. No runtime clutter removal or model qualification. Publish only feature/translation-pair-evidence to j-webtek/tactevra.
+
+
+### E-20260926-AI-234 — clutter intervention publication audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `ae5276557e5f208ce9292975e01c2e19a00c78fb` (frozen source;results/tests committed with evidence)
+- Change: clutter intervention publication audit.
+- Inputs/fixtures: all800 reused15M200 x4 development cases,original/no-arm/no-ruler/neither;checkpoint0fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d,CPU128x96. Exact source/report/checkpoint hashes eval/clutter_ablation_v0_plan.json;per-mode pixel hashes in report.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS;6079paths,858.5MiB,0 unresolved findings,14 reviewed synthetic fixtures.
+- Artifacts: vision/clutter_ablation_renderer.py;vision/clutter_ablation_occlusions.py;vision/evaluate_clutter_ablation.py;eval/clutter_ablation_v0_report.json;tests/test_clutter_ablation.py;docs/PERSISTENT_SCENE_REVIEW.md.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic audit;AI-041 protected-main publication blocker retained.
+- Supersedes: none;prior failures and arm/integration status retained.
+- Next dependency: Freeze training-only paired-clutter consistency comparison with identical pose supervision,common budget and fixed coefficient;evaluate original unmodified development scenes. No runtime clutter removal or model qualification. Publish only feature/translation-pair-evidence to j-webtek/tactevra.
