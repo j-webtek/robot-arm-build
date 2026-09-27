@@ -176,16 +176,15 @@ the portable workflow.
 ## Main-branch merge policy
 
 Configured on GitHub and last expanded on 2026-09-27: pull requests, resolved
-review conversations, an up-to-date branch, linear history, and all seven checks
+review conversations, an up-to-date branch, linear history, and all six checks
 below are required, including for admins:
 
 - `Offline / ubuntu-latest / Python 3.10`
 - `Offline / ubuntu-latest / Python 3.12`
 - `Offline / windows-latest / Python 3.10`
 - `Offline / windows-latest / Python 3.12`
-- `Analyze (actions)`
-- `Analyze (javascript-typescript)`
-- `Analyze (python)`
+- `RC03 manual / Ubuntu 24.04 / Python 3.12`
+- `CodeQL`
 
 Force pushes and branch deletion are disabled. No independent approving review
 is mandatory (the approval count is zero), so a solo maintainer can merge after
@@ -196,13 +195,14 @@ The two `ubuntu-latest` strings above are stable required-check identifiers. The
 currently run on the explicitly pinned Ubuntu 24.04 hosted image, as documented
 at the top of this page.
 
-The three `Analyze` checks come from GitHub's default CodeQL setup and are bound
-to the official GitHub Actions App, like the offline matrix. They cover GitHub
-Actions, JavaScript/TypeScript, and Python only. C/C++ and C# are not covered by
-this setup. A required security check can still fail because of scanner or
-platform trouble; inspect its run rather than bypassing it or treating an absent
-result as a pass. CodeQL success is not physical-safety, release-readiness, or
-complete security evidence.
+The required `CodeQL` summary comes from GitHub Advanced Security and is app-bound.
+It reports success after the applicable GitHub Actions, JavaScript/TypeScript, and
+Python analyzers complete, or neutral when GitHub determines that a change cannot
+affect a configured language. This avoids blocking dependency-only and prose-only
+PRs on analyzer jobs that GitHub intentionally does not create. Inspect a failure,
+missing summary, or unexpected neutral result rather than bypassing it. C/C++ and
+C# are not covered by this setup. CodeQL success is not physical-safety,
+release-readiness, or complete security evidence.
 
 Both AI and arm contributors should push a topic branch and open a PR rather
 than pushing directly to `main`. Update the branch when `main` advances and let

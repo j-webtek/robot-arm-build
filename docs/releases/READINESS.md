@@ -33,8 +33,9 @@ candidate SHA will be selected only after the blocking owner evidence closes.
 - The first preview is scoped to GitHub-generated source archives. It excludes
   installers, firmware images, trained model bundles, and newly qualified
   printable hardware packages.
-- Protected `main` requires four offline verification jobs and three CodeQL
-  analyzer jobs: Actions, JavaScript/TypeScript, and Python.
+- Protected `main` requires four offline verification jobs, the focused RC03
+  manual-render qualification, and the app-bound CodeQL summary. CodeQL analyzes
+  Actions, JavaScript/TypeScript, and Python when those languages are affected.
 - Repository policy distinguishes reviewable source and compact scorecards from
   external checkpoints and bulk generated evidence.
 - Historical candidate and baseline records remain bound to their recorded
