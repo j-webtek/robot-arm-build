@@ -65,6 +65,8 @@ jobs:
           snapshot_status=$?
           python scripts/ci/check_docs.py
           docs_status=$?
+          python scripts/ci/check_source_archive_footprint.py
+          footprint_status=$?
           set -e
 
           {
@@ -75,10 +77,11 @@ jobs:
             echo "- Release-integrity candidate check exit: \`${integrity_status}\`"
             echo "- Snapshot audit exit: \`${snapshot_status}\`"
             echo "- Maintained-document check exit: \`${docs_status}\`"
+            echo "- Source-archive footprint exit: \`${footprint_status}\`"
             echo
             echo 'This workflow is read-only and publishes no release or artifact.'
           } >> "$GITHUB_STEP_SUMMARY"
 
-          if (( integrity_status != 0 || snapshot_status != 0 || docs_status != 0 )); then
+          if (( integrity_status != 0 || snapshot_status != 0 || docs_status != 0 || footprint_status != 0 )); then
             exit 1
           fi

@@ -141,6 +141,9 @@ documents may exist only on the lab workstation; sharing them is covered in
   verification scope, PR workflow, and dependency maintenance.
 - [Repository artifact governance](ARTIFACT_GOVERNANCE.md): limits for new
   large or duplicate CAD, print, media, and document artifacts.
+- [Source-distribution footprint](SOURCE_DISTRIBUTION.md): clean-checkout
+  verification, current source-archive cost, containment ceilings, and the
+  reviewed path toward a smaller distribution.
 - [Public roadmap](../ROADMAP.md): evidence-based delivery stages and the
   completion evidence required before capability claims advance.
 - [Repository-health policy](../.github/repository-health-policy.json): the

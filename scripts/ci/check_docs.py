@@ -22,6 +22,7 @@ DOCS = (
     'docs/DOCUMENTATION_STANDARD.md',
     'docs/EVIDENCE_RETENTION.md',
     'docs/ARTIFACT_GOVERNANCE.md',
+    'docs/SOURCE_DISTRIBUTION.md',
     'docs/releases/EXPERIMENTAL_PREVIEW_DRAFT.md',
     'docs/releases/CANDIDATE_DCD87DB.md',
     'docs/releases/BASELINE_2026-09-26.md',
@@ -59,6 +60,7 @@ PUBLIC_TITLES = {
     'docs/GLOSSARY.md': 'Tactevra glossary',
     'docs/HARDWARE_BUILD_GUIDE.md': 'Building the Tactevra RC03 workcell',
     'docs/DOCUMENTATION_STANDARD.md': 'Tactevra documentation standard',
+    'docs/SOURCE_DISTRIBUTION.md': 'Tactevra source-distribution footprint',
     'docs/releases/READINESS.md': 'Tactevra experimental-preview readiness',
     'software/README.md': 'Tactevra Runtime',
     'software/RUNTIME_IMPLEMENTATION_HISTORY.md': 'Tactevra Runtime implementation history',
@@ -91,6 +93,14 @@ REQUIRED_PHRASES = {
     'docs/ARTIFACT_GOVERNANCE.md': (
         '**Document status:** Current repository policy',
         '**Authority:** Repository placement and reviewability only;',
+    ),
+    'docs/SOURCE_DISTRIBUTION.md': (
+        '**Document status:** Current repository policy',
+        '**Authority:** Repository packaging and clone-cost guidance only.',
+        'GitHub-generated source archives',
+        'https://github.com/j-webtek/tactevra/issues/56',
+        'https://github.com/j-webtek/tactevra/issues/61',
+        'https://github.com/j-webtek/tactevra/issues/88',
     ),
     'THIRD_PARTY_NOTICES.md': (
         '**Document status:** Current attribution index',
