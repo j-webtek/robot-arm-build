@@ -71,7 +71,8 @@ device access, restarts, torque changes, movement, or release publication.
   that history in operations notes.
 - [ ] Keep [project status](../PROJECT_STATUS.md) readable and date its evidence
   checkpoint. Do not silently promote a branch proposal into a released feature.
-- [ ] A merge is not a release. For publication, use the separate
+- [ ] A merge is not a release. For publication, start with the
+  [release-readiness dashboard](releases/READINESS.md), then use the
   [release records](releases/README.md) and [release checklist](RELEASING.md), an
   exact candidate commit and its own reviews.
   If the candidate changes, reassess its evidence instead of reusing old sign-offs.
