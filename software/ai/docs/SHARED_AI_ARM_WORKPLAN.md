@@ -599,6 +599,11 @@ Copy this row and fill every field:
 
 ## Active work claims
 
+- AI lane / S1: calibrate the selected obstruction-weighted metric head and
+  evaluate one preregistered 40th-percentile tail-risk gate on fresh 74M
+  calibration and 75M selection scenes; no training, runtime, contract, arm,
+  or integration-status changes.
+
 
 
 
