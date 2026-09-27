@@ -25,3 +25,14 @@ The head may be discarded at inference. Any trained pose backbone still needs in
 ## Evidence
 
 Exact source hashes: `eval/representation_review_v0_plan.json`. Architecture traces and retained metrics: `eval/representation_review_v0_report.json`. This review performed no training or physical operation.
+
+
+## Follow-up decision: end the auxiliary-loss series
+
+The random-head and learned-head auxiliary comparisons did not meet the full localization improvement rule in any of three seeds. The head-only probe did learn visible masks (88.2–90.8% mean IoU), so mask learnability alone does not resolve the pose errors.
+
+The frozen overlap audit (`eval/warm_segmentation_overlap_v0_report.json`) finds all 19 previously persistent failures still fail in every warmed candidate. There are 21 cases failing all six current control/candidate models. The only recovered threshold case is appearance-shift scene 15000159 in seed260926: maximum target error changes from 3.033146 to 2.980808 mm. The other two candidates still fail that scene. No candidate introduces a new >3mm failure relative to its paired control. This is not a consistent solution to clutter sensitivity.
+
+Do not sweep auxiliary coefficients or promote these checkpoints. The next bounded design should explicitly expose the learned spatial mask to a pose readout, rather than relying on an auxiliary gradient alone. Before training, define a parameter-matched control with constant-mask input, preserve baseline predictions at initialization with a zero-initialized residual, and test shapes, mask sensitivity after a controlled nonzero residual, and exact export behavior. Both arms must receive the same images, pose features, budget and selection rule. Use predicted masks at inference; geometric training labels must never become runtime inputs. The added inference cost and head-pretraining cost must be reported. This is a proposed experiment, not evidence that spatial conditioning works.
+
+Do not consume fresh30M data for architecture selection. Reused development and these synthetic masks provide no physical calibration or localization uncertainty qualification. The AI boundary remains unchanged.

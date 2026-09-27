@@ -599,7 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-- AI lane / S1: frozen retained-prediction overlap audit of all three warmed-head pairs and the prior19 persistent cases; no training, new inference or arm changes.
 
 
 
@@ -7123,3 +7122,54 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Audit ran before final ledger and failure-artifact additions; heuristic snapshot audit, not runtime assurance.
 - Supersedes: none; failed evidence retained.
 - Next dependency: Stop this auxiliary-loss series without a coefficient sweep or promotion. Perform a frozen inference-only case-overlap audit of warmed candidates versus controls and the previously identified19 persistent failures, including recovered and newly failed cases, to choose the next representation change from evidence. Reused development cannot qualify localization; fresh30M data remains unused. Arm and integration statuses unchanged.
+
+
+### E-20260926-AI-257 — learned-head failure overlap
+
+- Stage: S1
+- Lane: AI
+- Commit: `3d10598bdf2390c766536ecb7f52a32968301593` (frozen analysis source; results/tests/docs committed with evidence)
+- Change: learned-head failure overlap.
+- Inputs/fixtures: retained pose_warm_segmentation_260926/260927/260928 reports, each800 development scenes15000000..15000199 x4; prior persistent_pose_v0 report. Exact SHA256 of all inputs and source in eval/warm_segmentation_overlap_v0_plan.json. Output report SHA256 42b202d02765e5ff9709efa5046ae1dd56d3e09ea213e15dbe5eb03da4181bec.
+- Command: `python software/ai/vision/audit_warm_segmentation_overlap.py`
+- Result: 800 cases; recovered by seed1/0/0; introduced0/0/0; all19 prior persistent cases still fail all candidates;21 cases fail all six current models. Sole recovery scene15000159/appearance_shift/seed260926:3.033146102269828 to2.980807932140745mm. No recovery consistent across seeds.
+- Artifacts: vision/audit_warm_segmentation_overlap.py; eval/warm_segmentation_overlap_v0_plan.json; eval/warm_segmentation_overlap_v0_report.json; tests/test_warm_segmentation_overlap.py; docs/POSE_REPRESENTATION_REVIEW.md.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Retained outputs only: zero new forward passes and optimizer updates. Same reused synthetic development; threshold crossings and GPU nondeterminism do not establish causality.
+- Supersedes: none; prior failed evidence retained; arm/integration statuses unchanged.
+- Next dependency: Freeze a learned-mask-conditioned residual pose readout feasibility design with parameter-matched constant-mask control, exact baseline initialization, no oracle inference inputs, and measured added cost. Verify representation before training; no auxiliary-coefficient sweep or promotion. Fresh30M remains unused. Publish only feature/translation-pair-evidence.
+
+
+### E-20260926-AI-258 — overlap verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `3d10598bdf2390c766536ecb7f52a32968301593` (frozen analysis source; results/tests/docs committed with evidence)
+- Change: overlap verification.
+- Inputs/fixtures: retained pose_warm_segmentation_260926/260927/260928 reports, each800 development scenes15000000..15000199 x4; prior persistent_pose_v0 report. Exact SHA256 of all inputs and source in eval/warm_segmentation_overlap_v0_plan.json. Output report SHA256 42b202d02765e5ff9709efa5046ae1dd56d3e09ea213e15dbe5eb03da4181bec.
+- Command: `python -m pytest -q software/ai/tests/test_warm_segmentation_overlap.py`
+- Result: PASS:6 tests in0.08s; known recovery/introduction and strict3mm threshold, duplicate/missing/nonfinite/baseline mismatch rejection, frozen lineage and population recount.
+- Artifacts: vision/audit_warm_segmentation_overlap.py; eval/warm_segmentation_overlap_v0_plan.json; eval/warm_segmentation_overlap_v0_report.json; tests/test_warm_segmentation_overlap.py; docs/POSE_REPRESENTATION_REVIEW.md.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Existing pytest-asyncio warning. Contract unchanged, so shared boundary suite not triggered.
+- Supersedes: none; prior failed evidence retained; arm/integration statuses unchanged.
+- Next dependency: Freeze a learned-mask-conditioned residual pose readout feasibility design with parameter-matched constant-mask control, exact baseline initialization, no oracle inference inputs, and measured added cost. Verify representation before training; no auxiliary-coefficient sweep or promotion. Fresh30M remains unused. Publish only feature/translation-pair-evidence.
+
+
+### E-20260926-AI-259 — overlap publication audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `3d10598bdf2390c766536ecb7f52a32968301593` (frozen analysis source; results/tests/docs committed with evidence)
+- Change: overlap publication audit.
+- Inputs/fixtures: retained pose_warm_segmentation_260926/260927/260928 reports, each800 development scenes15000000..15000199 x4; prior persistent_pose_v0 report. Exact SHA256 of all inputs and source in eval/warm_segmentation_overlap_v0_plan.json. Output report SHA256 42b202d02765e5ff9709efa5046ae1dd56d3e09ea213e15dbe5eb03da4181bec.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS:6128paths,868.8MiB,0unresolved findings,14reviewed synthetic fixtures.
+- Artifacts: vision/audit_warm_segmentation_overlap.py; eval/warm_segmentation_overlap_v0_plan.json; eval/warm_segmentation_overlap_v0_report.json; tests/test_warm_segmentation_overlap.py; docs/POSE_REPRESENTATION_REVIEW.md.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic audit before final documentation append; not runtime qualification.
+- Supersedes: none; prior failed evidence retained; arm/integration statuses unchanged.
+- Next dependency: Freeze a learned-mask-conditioned residual pose readout feasibility design with parameter-matched constant-mask control, exact baseline initialization, no oracle inference inputs, and measured added cost. Verify representation before training; no auxiliary-coefficient sweep or promotion. Fresh30M remains unused. Publish only feature/translation-pair-evidence.
