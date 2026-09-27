@@ -599,7 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-- AI lane / S1: frozen export passed parity; preregistered untouched synthetic30000000..30000999 x4 evaluation, no refit or tuning. No contract/arm changes or physical qualification.
 
 
 
@@ -7659,3 +7658,54 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Selected on reused development; no new fits. CPU host timing only, float32backbone/float64residual. No calibration/uncertainty/runtime qualification. Failed v0 source and evidence retained. Batch contract unchanged.
 - Supersedes: none; v1 corrects reference batching, not weights or tolerance.
 - Next dependency: Execute separately frozen4000-image evaluation on30000000..30000999 x4, with fixed mean/tail/yaw/obstruction rule and no tuning.
+
+
+### E-20260926-AI-288 — untouched synthetic linear evaluation
+
+- Stage: S1
+- Lane: AI
+- Commit: `c3284111e869487a0a5e947235242e8c6f331841` (frozen fresh-evaluation source/plan before image generation; results/tests/docs committed together)
+- Change: untouched synthetic linear evaluation.
+- Inputs/fixtures:30000000..30000999 x4conditions,ellipse obstruction,1000cases per condition. Frozen export SHA2560cd2442e6a6190ad7228749bd47f20c108ec6062c5d319b1e36be054efd3af0e; baseline SHA2560fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d. All source/artifact hashes in eval/linear_fresh_v0_plan.json; pixel/prediction hashes and individual errors in report SHA256 7d52f04e6ebec8d598ec5493688a0500b20539e69471e087170656365b5ea75a.
+- Command: `python software/ai/vision/evaluate_linear_fresh.py`
+- Result: FAIL fixed acceptance.4000images:baseline119tails,candidate121;54recovered,56introduced. Per-condition baseline/candidate tails18/25standard,28/27appearance,30/30partial,43/39full. Candidate means0.953486/0.847452/1.009655/1.092544mm versus baseline0.851725/0.840330/0.990319/1.142997. Standard mean/tail/yaw fail;appearance/partial mean fail. Combined obstruction tails73→69, insufficient for full rule.
+- Artifacts: vision/evaluate_linear_fresh.py; eval/linear_fresh_v0_plan.json and report.json; tests/test_linear_fresh.py; docs/POSE_REPRESENTATION_REVIEW.md.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Previously unused seeds from same synthetic renderer, not physical validation. Candidate selected after reused-development analysis. No refit or tuning. Paired condition variants are correlated; no statistical significance claim. This range is now consumed. Zero new fits; no runtime model update or localization qualification.
+- Supersedes: none; favorable development result and failed export attempt retained. Arm/integration statuses unchanged.
+- Next dependency: Retain original baseline. Audit grouped scene-split integrity and train/development/evaluation coverage, then define model selection confined to grouped training data before new fitting.30000000..30000999 is consumed; no retuning against it or renewed untouched-data claims. Later confirmation requires separately frozen unused data.
+
+
+### E-20260926-AI-289 — fresh evaluation verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `c3284111e869487a0a5e947235242e8c6f331841` (frozen fresh-evaluation source/plan before image generation; results/tests/docs committed together)
+- Change: fresh evaluation verification.
+- Inputs/fixtures:30000000..30000999 x4conditions,ellipse obstruction,1000cases per condition. Frozen export SHA2560cd2442e6a6190ad7228749bd47f20c108ec6062c5d319b1e36be054efd3af0e; baseline SHA2560fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d. All source/artifact hashes in eval/linear_fresh_v0_plan.json; pixel/prediction hashes and individual errors in report SHA256 7d52f04e6ebec8d598ec5493688a0500b20539e69471e087170656365b5ea75a.
+- Command: `python -m pytest -q software/ai/tests/test_linear_fresh.py`
+- Result: PASS:2tests in1.65s; strict all-condition and obstruction rule, all4000unique scene/condition keys, artifact/input lineage, complete mean/tail/yaw recount, recovery/introduction accounting and no-fit/no-authority fields.
+- Artifacts: vision/evaluate_linear_fresh.py; eval/linear_fresh_v0_plan.json and report.json; tests/test_linear_fresh.py; docs/POSE_REPRESENTATION_REVIEW.md.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Existing pytest-asyncio warning. Contract unchanged; shared boundary suite not triggered. Portable artifact verifier checks local ignored bytes when present. Zero new fits; no runtime model update or localization qualification.
+- Supersedes: none; favorable development result and failed export attempt retained. Arm/integration statuses unchanged.
+- Next dependency: Retain original baseline. Audit grouped scene-split integrity and train/development/evaluation coverage, then define model selection confined to grouped training data before new fitting.30000000..30000999 is consumed; no retuning against it or renewed untouched-data claims. Later confirmation requires separately frozen unused data.
+
+
+### E-20260926-AI-290 — export/evaluation snapshot audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `c3284111e869487a0a5e947235242e8c6f331841` (frozen fresh-evaluation source/plan before image generation; results/tests/docs committed together)
+- Change: export/evaluation snapshot audit.
+- Inputs/fixtures:30000000..30000999 x4conditions,ellipse obstruction,1000cases per condition. Frozen export SHA2560cd2442e6a6190ad7228749bd47f20c108ec6062c5d319b1e36be054efd3af0e; baseline SHA2560fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d. All source/artifact hashes in eval/linear_fresh_v0_plan.json; pixel/prediction hashes and individual errors in report SHA256 7d52f04e6ebec8d598ec5493688a0500b20539e69471e087170656365b5ea75a.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS:6186paths,879.2MiB,0 unresolved findings,14 reviewed synthetic fixtures.
+- Artifacts: vision/evaluate_linear_fresh.py; eval/linear_fresh_v0_plan.json and report.json; tests/test_linear_fresh.py; docs/POSE_REPRESENTATION_REVIEW.md.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic snapshot audit before final documentation append; not runtime assurance. Zero new fits; no runtime model update or localization qualification.
+- Supersedes: none; favorable development result and failed export attempt retained. Arm/integration statuses unchanged.
+- Next dependency: Retain original baseline. Audit grouped scene-split integrity and train/development/evaluation coverage, then define model selection confined to grouped training data before new fitting.30000000..30000999 is consumed; no retuning against it or renewed untouched-data claims. Later confirmation requires separately frozen unused data.
