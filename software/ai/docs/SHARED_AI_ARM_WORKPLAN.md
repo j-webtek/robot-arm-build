@@ -599,6 +599,8 @@ Copy this row and fill every field:
 
 ## Active work claims
 
+- AI lane / S1: visible-keyboard auxiliary labels/head feasibility,fixed training-only gradient probe; no optimizer updates or qualification.
+
 
 
 

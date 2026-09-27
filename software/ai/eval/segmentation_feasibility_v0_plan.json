@@ -1,0 +1,29 @@
+{
+  "checkpoint": "software/ai/results/translation_weighted_v0_translation_weighted/pose_model.pt",
+  "seed": 260926,
+  "batch_starts": [
+    29000000,
+    29000008,
+    29000016,
+    29000024
+  ],
+  "conditions": [
+    "standard",
+    "appearance_shift",
+    "partial",
+    "full"
+  ],
+  "probe_coefficient": 0.001,
+  "file_sha256": {
+    "software/ai/train/segmentation_auxiliary.py": "40a581ef7b357644cea1672a3900f3c033c072da9422d2eb6c2b1acd6bc1cdb9",
+    "software/ai/vision/diagnose_segmentation_auxiliary.py": "8364377403bb88385f9fded33185f4f4e5736fa60130e7a485f8fe1926e7e6ba",
+    "software/ai/train/key_displacement_loss.py": "25368d50ea1791f8e48e27cb53d7ed2c954c2c2a591f0ed1e44edd9d181c0722",
+    "software/ai/vision/pose_model.py": "7eccc2a3cabf3a37217b4a1c3114c439ffc740a917c08e4ef378065ff85c6ec5",
+    "software/ai/vision/landmark_occlusions.py": "2d77d25077ab98dad632bb441b94c06cc6c139116d6621483cab7728d95c6aad",
+    "software/ai/vision/landmark_renderer.py": "e8535fbf98c8cfd3a838f5f793534a182d0dc5b8b9eabaa3bfa2173e649137de",
+    "software/ai/vision/synthetic_keyboard.py": "b9a1662ea348ba78093909844e5e8bed86f4996babc289bfd63858b6b54f692c",
+    "software/ai/vision/evaluate_dark_only_normalization.py": "12289bfeeb52274678c62f46c7e99e057563036566fa48fc5f5cd1d58add4469",
+    "software/ai/results/translation_weighted_v0_translation_weighted/pose_model.pt": "0fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d"
+  },
+  "policy": "No optimizer updates;coefficient0.001 fixed for gradient-scale probe only,no sweep;baseline key loss versus balanced visible-case BCE on shared stride-four layers"
+}
