@@ -599,7 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-- AI lane / S1: frozen initial-versus-trained activation and bias audit, all six residual checkpoints on existing2400 training images; no updates or arm/contract changes.
 
 
 
@@ -7417,3 +7416,54 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic audit before final documentation append; not runtime assurance. Zero optimizer updates; reused synthetic data; no runtime correction/qualification installed.
 - Supersedes: none; prior failures and arm/integration statuses retained.
 - Next dependency: Freeze hidden-activation and output-bias diagnostic across all six checkpoints, comparing initial/trained activations on existing training inputs. Test the unit-collapse hypothesis before selecting activation/normalization changes. No new holdout or training sweep.
+
+
+### E-20260926-AI-274 — residual activation and bias audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `6aaaae60938dab01333586e7fbc82c1c3e199f25` (frozen audit source; results/tests/docs committed together)
+- Change: residual activation and bias audit.
+- Inputs/fixtures: scenes29000000..29000599 x4conditions (2400 training images), all6 residual checkpoints and reconstructed initial states for seeds260926/27/28. Source/checkpoint hashes in eval/residual_activations_v0_plan.json; initial-state, pixel, activation and feature-output hashes in report SHA256 6ca00bc22268dd72a6ac4f3157690fd278b8eb1ac4030d72add33a2230f1760a.
+- Command: `python software/ai/vision/diagnose_residual_activations.py`
+- Result: Inactive units initial→trained:260926constant10→31,predicted12→31;260927constant10→32,predicted8→32;260928constant16→30,predicted18→31. Seed260927 both modes have exactly zero hidden activations and feature-dependent output on all2400 images: correction equals final bias. Exact component reconstruction and initial-state lineage verified.
+- Artifacts: vision/diagnose_residual_activations.py; eval/residual_activations_v0_plan.json and report.json; tests/test_residual_activations.py; docs/POSE_REPRESENTATION_REVIEW.md.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Inactive is defined only over sampled training images. Initial/final snapshots do not show the optimizer trajectory or cause. No accuracy or runtime qualification established. Zero optimizer updates; no new data or holdout.
+- Supersedes: none; failed evidence and arm/integration status retained.
+- Next dependency: Freeze residual LeakyReLU0.01-only variant with versioned research export, exact initial baseline parity and negative-side gradient tests; then same-budget three-seed paired learning and variation check. No slope sweep, runtime qualification or other simultaneous architecture change.
+
+
+### E-20260926-AI-275 — activation audit verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `6aaaae60938dab01333586e7fbc82c1c3e199f25` (frozen audit source; results/tests/docs committed together)
+- Change: activation audit verification.
+- Inputs/fixtures: scenes29000000..29000599 x4conditions (2400 training images), all6 residual checkpoints and reconstructed initial states for seeds260926/27/28. Source/checkpoint hashes in eval/residual_activations_v0_plan.json; initial-state, pixel, activation and feature-output hashes in report SHA256 6ca00bc22268dd72a6ac4f3157690fd278b8eb1ac4030d72add33a2230f1760a.
+- Command: `python -m pytest -q software/ai/tests/test_residual_activations.py`
+- Result: PASS:5tests in1.62s; known inactive/active units, exact bias-only case, invalid-array rejection, frozen hashes, training pixel identity and population/count recount.
+- Artifacts: vision/diagnose_residual_activations.py; eval/residual_activations_v0_plan.json and report.json; tests/test_residual_activations.py; docs/POSE_REPRESENTATION_REVIEW.md.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Existing pytest-asyncio warning. Contract unchanged; shared boundary suite not triggered. Missing ignored checkpoint bytes permitted by portable verifier; present bytes verified. Zero optimizer updates; no new data or holdout.
+- Supersedes: none; failed evidence and arm/integration status retained.
+- Next dependency: Freeze residual LeakyReLU0.01-only variant with versioned research export, exact initial baseline parity and negative-side gradient tests; then same-budget three-seed paired learning and variation check. No slope sweep, runtime qualification or other simultaneous architecture change.
+
+
+### E-20260926-AI-276 — activation audit snapshot
+
+- Stage: S1
+- Lane: AI
+- Commit: `6aaaae60938dab01333586e7fbc82c1c3e199f25` (frozen audit source; results/tests/docs committed together)
+- Change: activation audit snapshot.
+- Inputs/fixtures: scenes29000000..29000599 x4conditions (2400 training images), all6 residual checkpoints and reconstructed initial states for seeds260926/27/28. Source/checkpoint hashes in eval/residual_activations_v0_plan.json; initial-state, pixel, activation and feature-output hashes in report SHA256 6ca00bc22268dd72a6ac4f3157690fd278b8eb1ac4030d72add33a2230f1760a.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS:6158paths,872.2MiB,0unresolved findings,14reviewed synthetic fixtures.
+- Artifacts: vision/diagnose_residual_activations.py; eval/residual_activations_v0_plan.json and report.json; tests/test_residual_activations.py; docs/POSE_REPRESENTATION_REVIEW.md.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic audit before final docs append; not runtime assurance. Zero optimizer updates; no new data or holdout.
+- Supersedes: none; failed evidence and arm/integration status retained.
+- Next dependency: Freeze residual LeakyReLU0.01-only variant with versioned research export, exact initial baseline parity and negative-side gradient tests; then same-budget three-seed paired learning and variation check. No slope sweep, runtime qualification or other simultaneous architecture change.

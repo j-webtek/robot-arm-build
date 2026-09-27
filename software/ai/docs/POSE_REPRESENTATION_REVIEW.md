@@ -67,3 +67,12 @@ For the other two predicted-mask seeds, development correction standard deviatio
 A single mean normalized offset fitted on training alone was[-0.0059134068,0.0015876684,-0.0006194752]. Applied unchanged to development, it produces33 large-error cases versus32 baseline. It minimizes normalized pose MSE, not the anchored key-loss objective, so it is only a diagnostic comparator. No offset was installed.
 
 Next freeze an activation/bias diagnostic for all six retained checkpoints: positive hidden-unit fractions, fully inactive units, hidden activation variation, output bias versus feature-dependent output, and initial-versus-trained activation statistics on the same training inputs. This can test whether hidden-unit collapse explains the constant seed before choosing an activation or normalization change. No extra training, architecture sweep, fresh holdout or runtime qualification is warranted by this diagnostic alone.
+
+
+## Hidden-unit collapse confirmed on sampled training inputs
+
+Initial-to-trained inactive counts (of32 units) were: seed260926 control10→31/candidate12→31; seed260927 control10→32/candidate8→32; seed260928 control16→30/candidate18→31. Inactive here means the preactivation never exceeded zero across all2,400 existing training images. These counts do not establish inactivity on every possible image.
+
+For seed260927 both modes have all hidden activations exactly zero for all2,400 images and the feature-dependent output exactly zero. The correction is consequently the final output bias. This directly explains the constant correction on those images; it does not identify the optimizer step or cause that drove the preactivations negative. Other seeds retain only1–2 active units and limited correction variation.
+
+Next freeze a single activation change: use LeakyReLU with fixed negative slope0.01 in the residual hidden layer, preserving the same weights, parameter count, zero-initialized output, paired mask/control design, losses and training budget. Verify nonzero negative-side gradients and exact export/initial baseline parity. Version the research artifact so old ReLU checkpoints cannot silently load with new semantics. Then run the same three-seed paired experiment, retaining all results and checking actual correction variation alongside localization criteria. No slope sweep or other simultaneous architecture change. Preventing all-zero hidden output is not proof of useful localization learning.
