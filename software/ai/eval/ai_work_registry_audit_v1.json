@@ -1,0 +1,19 @@
+{
+  "controller_authority": false,
+  "documented_ai_test_count": 34,
+  "hardware_writes": 0,
+  "limitations": [
+    "The registry proves documentation coverage and path integrity, not model correctness.",
+    "Evaluation claims remain governed by their frozen artifacts and evidence-ledger entries."
+  ],
+  "multiply_owned_test_paths": [],
+  "physical_movements": 0,
+  "receipt_sha256": "38abfee42d677dd4077b365cecf291aa8b8dd7257eccb2dc943ce3b166a03db2",
+  "referenced_path_count": 104,
+  "registry_sha256": "83be0313103114048c13d5167911160b981e063089f362da980ab2c26f9c503d",
+  "schema": "tactevra.ai_work_registry_audit.v1",
+  "status": "PASS",
+  "tracked_ai_test_count": 34,
+  "unowned_test_paths": [],
+  "workstream_count": 7
+}
