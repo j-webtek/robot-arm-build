@@ -1,0 +1,82 @@
+{
+  "schema": "tactevra.repository-health-policy.v1",
+  "repository": "j-webtek/tactevra",
+  "public": {
+    "repository_fields": {
+      "visibility": "public",
+      "default_branch": "main",
+      "homepage": "https://j-webtek.github.io/tactevra/",
+      "archived": false,
+      "disabled": false,
+      "fork": false,
+      "has_issues": true,
+      "allow_squash_merge": true,
+      "allow_merge_commit": false,
+      "allow_rebase_merge": false,
+      "delete_branch_on_merge": true
+    },
+    "default_branch_protected": true,
+    "minimum_community_health_percentage": 100,
+    "required_workflows": {
+      ".github/workflows/offline-checks.yml": "active",
+      ".github/workflows/pages.yml": "active",
+      ".github/workflows/preview-candidate-audit.yml": "active",
+      ".github/workflows/repository-health.yml": "active"
+    },
+    "pages": {
+      "url": "https://j-webtek.github.io/tactevra/",
+      "title_contains": "Tactevra"
+    }
+  },
+  "owner": {
+    "security_and_analysis": {
+      "dependabot_security_updates": "enabled",
+      "secret_scanning": "enabled",
+      "secret_scanning_non_provider_patterns": "disabled",
+      "secret_scanning_push_protection": "enabled",
+      "secret_scanning_validity_checks": "disabled"
+    },
+    "branch_protection": {
+      "strict_status_checks": true,
+      "required_status_contexts": [
+        "CodeQL",
+        "Offline / ubuntu-latest / Python 3.10",
+        "Offline / ubuntu-latest / Python 3.12",
+        "Offline / windows-latest / Python 3.10",
+        "Offline / windows-latest / Python 3.12",
+        "RC03 manual / Ubuntu 24.04 / Python 3.12"
+      ],
+      "enforce_admins": true,
+      "dismiss_stale_reviews": true,
+      "required_approving_review_count": 0,
+      "required_linear_history": true,
+      "required_conversation_resolution": true,
+      "allow_force_pushes": false,
+      "allow_deletions": false
+    },
+    "actions": {
+      "enabled": true,
+      "allowed_actions": "selected",
+      "sha_pinning_required": true,
+      "github_owned_allowed": false,
+      "verified_allowed": false,
+      "patterns_allowed": [
+        "actions/checkout@*",
+        "actions/setup-python@*",
+        "actions/upload-artifact@*",
+        "actions/configure-pages@*",
+        "actions/deploy-pages@*"
+      ],
+      "default_workflow_permissions": "read",
+      "can_approve_pull_request_reviews": false
+    },
+    "pages": {
+      "html_url": "https://j-webtek.github.io/tactevra/",
+      "build_type": "workflow",
+      "public": true,
+      "https_enforced": true,
+      "source_branch": "main",
+      "source_path": "/"
+    }
+  }
+}

@@ -15,6 +15,9 @@ device access, restarts, torque changes, movement, or release publication.
   [pull requests](https://github.com/j-webtek/tactevra/pulls), and
   [workflow runs](https://github.com/j-webtek/tactevra/actions).
   Distinguish a failed check from a cancelled or still-running job.
+- [ ] Review the latest `Repository health` run. Investigate drift against the
+  [declared policy](../.github/repository-health-policy.json); do not bypass the
+  check or let the read-only audit mutate settings.
 - [ ] Route ordinary questions through [support](../SUPPORT.md). Apply the
   existing type/area labels; link duplicates rather than losing their evidence.
   Ask for the missing reproduction detail instead of guessing a cause.
@@ -77,6 +80,9 @@ device access, restarts, torque changes, movement, or release publication.
   that history in operations notes.
 - [ ] Keep [project status](../PROJECT_STATUS.md) readable and date its evidence
   checkpoint. Do not silently promote a branch proposal into a released feature.
+- [ ] Update the [public roadmap](../ROADMAP.md) only when completion evidence is
+  merged. Keep implementation details in the shared workplan rather than turning
+  roadmap aspirations into capability claims.
 - [ ] A merge is not a release. For publication, start with the
   [release-readiness dashboard](releases/READINESS.md), then use the
   [release records](releases/README.md) and [release checklist](RELEASING.md), an

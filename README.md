@@ -8,7 +8,7 @@ The CI badge covers [scoped hardware-free checks](docs/CI.md), not physical robo
 
 **An experimental local-first robotics platform connecting user intent, visual evidence, and checked physical actions.**
 
-[Get started](docs/GETTING_STARTED.md) · [How the system works](docs/SYSTEM_OVERVIEW.md) · [Current capabilities](PROJECT_STATUS.md) · [Documentation](docs/README.md) · [Contribute](CONTRIBUTING.md)
+[Get started](docs/GETTING_STARTED.md) · [How the system works](docs/SYSTEM_OVERVIEW.md) · [Current capabilities](PROJECT_STATUS.md) · [Roadmap](ROADMAP.md) · [Documentation](docs/README.md) · [Contribute](CONTRIBUTING.md)
 
 [Get help](SUPPORT.md) · [Report a vulnerability privately](SECURITY.md)
 
@@ -78,6 +78,7 @@ are tracked separately.
 | Try the project for the first time | [Getting started](docs/GETTING_STARTED.md) |
 | Understand the end-to-end system | [System overview](docs/SYSTEM_OVERVIEW.md) |
 | Understand what works and what comes next | [Project status](PROJECT_STATUS.md) |
+| Follow the evidence-based delivery stages | [Roadmap](ROADMAP.md) |
 | Set up the code and contribute | [Developer setup](CONTRIBUTING.md) |
 | Explore the local interface | [Wizard workbench guide](software/docs/WIZARD_WORKBENCH.md) |
 | Build the physical workcell | [Hardware build guide](docs/HARDWARE_BUILD_GUIDE.md) |

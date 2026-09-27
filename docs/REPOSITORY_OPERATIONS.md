@@ -213,6 +213,23 @@ triage security reports privately, review stalled dependency PRs, and ensure
 public links/status still match the supported entry path. No scheduled maintenance
 agent or reminder is created by this guide.
 
+### Read-only repository-health audit
+
+The repository declares its expected public and owner-visible GitHub settings in
+`.github/repository-health-policy.json`. The weekly `Repository health` workflow
+checks only publicly observable state with a read-only token: repository metadata,
+default-branch protection visibility, community profile health, required workflow
+state, and the live Pages title. A failure signals drift for a maintainer to
+review; the workflow cannot repair settings, merge changes, or publish a release.
+
+Owner-visible expectations include branch protection, selected-action policy,
+workflow-token permissions, security features, and Pages configuration. Run the
+owner audit manually with a short-lived authenticated environment as documented
+in [CI](CI.md#repository-health-drift-audit). Never add a personal token to the
+workflow. After an intentional settings change, update the policy and its
+operations documentation in a reviewed PR so the declared baseline and GitHub
+state remain aligned.
+
 ## Actions and security baseline
 
 The offline workflow uses full commit SHAs for checkout v7.0.1, setup-python

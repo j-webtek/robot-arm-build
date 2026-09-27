@@ -114,6 +114,7 @@ python scripts/ci/offline_checks.py install-base
 python scripts/ci/offline_checks.py smoke
 python scripts/ci/check_docs.py
 python scripts/ci/check_public_records.py
+python scripts/ci/check_repository_health.py --policy-only
 python scripts/ci/check_release_integrity.py --mode policy
 python scripts/ci/offline_checks.py install-tests
 python scripts/ci/offline_checks.py environment
@@ -159,6 +160,30 @@ restricted to `main`. Both jobs run on the explicit `ubuntu-24.04` image.
 `actions/configure-pages` and `actions/deploy-pages` are pinned to verified
 v6.0.0 and v5.0.1 commits whose action runtimes are Node 24; this avoids both
 the Node 20 removal and the announced `ubuntu-latest` image migration.
+
+## Repository-health drift audit
+
+`.github/workflows/repository-health.yml` runs a read-only public-state audit
+every Monday and on manual dispatch. It compares repository metadata, default-
+branch protection visibility, community-health percentage, required workflow
+state, and the live Pages title with
+`.github/repository-health-policy.json`. Drift fails the job and is summarized
+in the Actions run; the workflow cannot change settings.
+
+The policy also records owner-visible branch protection, Actions, security, and
+Pages expectations. Those endpoints require an owner token with repository
+administration read access and are deliberately not granted to the scheduled
+workflow. An authenticated maintainer can run the complete read-only audit:
+
+```powershell
+$env:GH_TOKEN = gh auth token
+python scripts/ci/check_repository_health.py --scope owner
+Remove-Item Env:\GH_TOKEN
+```
+
+Do not store the token in Git, an issue, an Actions log, or a policy file. A
+failed audit is evidence of drift to investigate; it is not permission for the
+script or reviewer to restore settings automatically.
 
 ## Test tiers: choose the evidence you need
 

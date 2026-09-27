@@ -38,7 +38,9 @@ being developed.
 
 The sections below explain the evidence behind this summary. For setup help,
 use [support](SUPPORT.md); for implementation ownership and newer increments,
-use the shared workplan linked above.
+use the shared workplan linked above. The [public roadmap](ROADMAP.md) describes
+the evidence required to advance from this checkpoint without treating plans as
+completed capabilities.
 
 ## What works today
 
