@@ -8,21 +8,18 @@ The scene deliberately separates four evidence classes:
 - **Measured** — RC03 board and device envelopes copied from
   `active-project/RoCell_v0_3/config/workcell_layout.json`.
 - **Designed** — repository-owned portal and station STL geometry.
-- **Vendor surface authority** — the arm's visible base, links, servo housings,
-  wrist, fasteners, and gripper tessellated locally from Waveshare's
-  hash-verified official assembly STEP.
 - **Kinematic authority** — the arm frame chain, joint origins, TCP, and nominal
   board-to-robot transform reconstructed from the separately hash-pinned URDF
   and frozen simulation profile.
+- **Presentation proxy** — one continuous arm-and-stylus silhouette dimensioned
+  from that pinned URDF. Its authored pose is not a solved trajectory.
 - **Conceptual** — target paths and explanatory motion graphics. These
   communicate intended behavior; they are not collision or motion
   qualification.
 
-No manufacturer robot surface mesh is redistributed. A preparation script
-downloads the pinned official archive, verifies its SHA-256, checks the STEP
-envelope, and creates a local presentation mesh below ignored `/tmp/`. The
-official assembly's default pose is shown as a static product visualization;
-the film does not claim that pose is a qualified live trajectory.
+No manufacturer robot surface mesh is redistributed. The optional preparation
+script verifies the pinned official STEP below ignored `/tmp/`. The film uses
+the same URDF-derived proxy in every scene so its actuator identity is clear.
 
 `dimension_manifest.json` records the values and source authorities used by the
 film. Run the validator before rendering:
@@ -69,6 +66,16 @@ Render the complete 77-second, 24 fps, 1920×1080 film with:
   --python presentations/blender/build_workcell_explainer.py -- --render-video
 ```
 
+To replace the fallback voice without rerendering the 3D picture, generate the
+eleven clips in `ELEVENLABS_NARRATION.md`, then run:
+
+```powershell
+& "C:\Program Files\Blender Foundation\Blender 4.3\blender.exe" `
+  --background --factory-startup `
+  --python presentations/blender/build_workcell_explainer.py -- `
+  --overlay-only --voiceover-dir "C:\path\to\elevenlabs-clips"
+```
+
 The resulting MP4 is written beside the scene. Generated `.blend`, frames, and
 video stay out of source control through the repository's existing `/tmp/`
 ignore rule; the source scene builder and production notes are the reviewable
@@ -86,8 +93,8 @@ README media with:
   --publish-homepage-media
 ```
 
-This requires `ffmpeg` on `PATH` and writes three curated files to
-`assets/media/`: a compact MP4, a poster, and an English WebVTT sidecar. The MP4
+This requires `ffmpeg` on `PATH` and writes a compact MP4, poster, social-card
+image, English WebVTT captions, and WebVTT chapters to `assets/media/`. The MP4
 contains the same captions as a selectable `mov_text` subtitle stream, so they
 can be enabled or disabled by the viewer. Add future languages as separate
 WebVTT files and subtitle streams; do not burn accessibility text into the
@@ -153,8 +160,8 @@ dimension-checked 3D render:
 - procedural birch and bench variation, restrained depth of field, animated
   focal length, pulsing registration tags, board-frame axes, and a visible
   camera-to-board-to-key trace add material and motion depth while keeping the
-  official arm surface static;
-- key legends, an H target ring, a finished simulated tool holder, and separate
+  continuous arm proxy visually coherent;
+- key legends, an H target ring carried into contact, a connected stylus, and separate
   telemetry and host-result panels make the target, action, and observed result
   legible without implying a live controller trace;
 - calm local narration is the loudest element; the deterministic soundtrack
@@ -174,8 +181,8 @@ effect that obscures the hardware evidence.
 The registration pulses and frame-chain trace are conceptual state graphics.
 They are not a TCP trace, servo simulation, collision result, or qualified
 trajectory. The rendered tool contact is explicitly labeled as a simulated
-press. The exact official arm assembly remains static because it is a single
-vendor surface asset rather than a segmented, validated digital twin.
+press. The URDF-derived arm is a presentation proxy, not a segmented, validated
+digital twin.
 
 ## Authoritative inputs
 
@@ -195,9 +202,9 @@ tag centers, camera target, portal mesh, arm joint origins, TCP offset, and
 nominal robot transform are sourced directly from repository authorities. The
 station and portal shapes are imported from their actual STL files.
 
-The arm's visible geometry comes from the official vendor STEP, but the source
-and local tessellation remain untracked. Its STEP pose is static; it is not
-segmented or driven as a qualified digital twin. Device manufacturing
+The visible arm is dimensioned from the pinned official URDF but is not a
+qualified digital twin. The optional vendor STEP and local tessellation remain
+untracked. Device manufacturing
 variation, cable geometry, the installed robot transform, tag stack height,
 and tool geometry also remain physical-measurement items. This film is therefore
 an accurate system-layout and product-geometry explainer, not a motion-clearance
@@ -205,13 +212,14 @@ or fabrication release.
 
 ## Narration and truth boundary
 
-`generate_voiceover.ps1` creates local sentence-level narration using an
-installed Windows voice. The build aligns those segments to the screenplay,
+`generate_voiceover.ps1` creates fallback sentence-level narration using an
+installed Windows voice. `ELEVENLABS_NARRATION.md` defines the preferred
+eleven-clip handoff; pass its folder with `--voiceover-dir`. The build aligns
+either source to the screenplay,
 mixes the dialogue to approximately −14 LUFS with a −1 dBTP ceiling, and writes
 SRT and WebVTT captions matching the spoken script. Replace the local voice with
 a recorded human performance later without changing the timings or captions.
 
-The exact official arm remains a static surface. The moving contact indicator
-and H key are presentation animation, explicitly labeled `SIMULATED PRESS`.
-They explain the intended controller boundary; they are not a kinematic solve,
-collision check, or record of a physical robot action.
+The continuous arm, moving stylus, and H key are presentation animation,
+explicitly labeled `SIMULATED PRESS`. They explain the intended controller
+boundary; they are not a kinematic solve, collision check, or physical record.

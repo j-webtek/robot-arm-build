@@ -8,17 +8,17 @@ Add-Type -AssemblyName System.Speech
 New-Item -ItemType Directory -Force -Path $OutputDirectory | Out-Null
 
 $segments = @(
-    'When AI moves real hardware, usually right isn''t good enough. A wrong guess isn''t a typo. It''s a motion.',
+    'When AI moves real hardware, a wrong guess becomes real motion.',
     'Tactevra turns one request into one checked physical action.',
-    'First, a fixed camera reads marker tags on the board, so every target is measured in one shared frame.',
-    'Next, the model proposes: an action, a named target, a frame, and its confidence. Never raw motor commands.',
-    'Then deterministic gates check every proposal. A stale or malformed plan is rejected before anything moves.',
-    'Units. Frame. Reach. Clearance. Freshness. Only a plan that passes every gate is admitted.',
-    'Measured geometry turns the H key into exact millimeters, through the camera, board, and device frames.',
-    'One controller, and only one, sends a single bounded motion.',
-    'Telemetry and the camera confirm the result before the next action is allowed.',
-    'One shared contract, from user intent to verified physical action.',
-    'Tactevra.'
+    'A fixed camera reads four board markers, placing every target in one shared frame.',
+    'The model proposes the action, named target, coordinate frame, and confidence. Never motor commands.',
+    'Deterministic gates stop stale or malformed plans before the arm can move.',
+    'Units. Frame. Reach. Clearance. Freshness. Every gate must pass.',
+    'Measured geometry resolves the H key into exact board coordinates.',
+    'The arm carries the stylus and sends one bounded press.',
+    'Telemetry confirms the target, while the host confirms the character H.',
+    'That closes one shared contract, from intent to verified physical action.',
+    'Tactevra. Physical intelligence, checked.'
 )
 
 $synth = [System.Speech.Synthesis.SpeechSynthesizer]::new()
@@ -31,7 +31,7 @@ foreach ($voice in $preferredVoices) {
     }
 }
 $synth.Volume = 100
-$rates = @(4, 1, 1, 2, 1, 4, 1, 1, 1, 1, 1)
+$rates = @(1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1)
 
 for ($index = 0; $index -lt $segments.Count; $index++) {
     $filename = 'voice_{0:d2}.wav' -f ($index + 1)
