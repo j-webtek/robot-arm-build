@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rocell.local/schemas/reviewed_action_lifecycle_v1.schema.json",
+  "title": "RoCell reviewed action lifecycle v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "phase", "review_sha256", "permit_binding_sha256",
+    "events", "automatic_retry_allowed", "follow_on_movement_authorized",
+    "lifecycle_sha256"],
+  "properties": {
+    "schema": {"const": "rocell.reviewed_action_lifecycle.v1"},
+    "phase": {"enum": ["ACCEPTED", "STARTED", "COMPLETED", "FAILED", "UNCERTAIN"]},
+    "review_sha256": {"$ref": "#/$defs/hash"},
+    "permit_binding_sha256": {"$ref": "#/$defs/hash"},
+    "events": {"type": "array", "minItems": 1, "maxItems": 3, "items": {"$ref": "#/$defs/event"}},
+    "automatic_retry_allowed": {"const": false},
+    "follow_on_movement_authorized": {"const": false},
+    "lifecycle_sha256": {"$ref": "#/$defs/hash"}
+  },
+  "$defs": {
+    "hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "event": {
+      "type": "object", "additionalProperties": false,
+      "required": ["ordinal", "phase", "permit_binding_sha256",
+        "event_monotonic_ns", "detail_sha256", "previous_event_sha256",
+        "automatic_retry_allowed", "event_sha256"],
+      "properties": {
+        "ordinal": {"type": "integer", "minimum": 0, "maximum": 2},
+        "phase": {"enum": ["ACCEPTED", "STARTED", "COMPLETED", "FAILED", "UNCERTAIN"]},
+        "permit_binding_sha256": {"$ref": "#/$defs/hash"},
+        "event_monotonic_ns": {"oneOf": [{"type": "null"}, {"type": "integer", "minimum": 1}]},
+        "detail_sha256": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/hash"}]},
+        "previous_event_sha256": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/hash"}]},
+        "automatic_retry_allowed": {"const": false},
+        "event_sha256": {"$ref": "#/$defs/hash"}
+      }
+    }
+  }
+}
