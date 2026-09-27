@@ -599,11 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-- AI lane / S1: preregister, train, and evaluate one marginal-tail balanced
-  residual metric corrector on fresh 79M training and 80M selection scenes,
-  targeting the prior utility gain with noninferior marginal proper loss; no
-  calibration, runtime, contract, arm, or integration-status changes.
-
 
 
 
@@ -9459,3 +9454,48 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Source invariants only; no training, selection, runtime, or physical assurance. Existing pytest-asyncio configuration warning. Contract unchanged, so shared boundary tests were not triggered.
 - Supersedes: AI-401 only as corrected source verification; the failed record remains preserved.
 - Next dependency: Commit the frozen source and plan before generating the 79M training or 80M selection populations.
+
+### E-20260927-AI-403 — compact marginal-tail metric scaler selection
+
+- Stage: S1
+- Lane: AI
+- Commit: `6a8fac84a9b1c4fa898c3e7d2095da8c4830f10e` (frozen source and plan; failed report, checkpoint, test, interpretation, and ledger committed in the successor)
+- Inputs/fixtures: Preregistered plan SHA-256 `ce9dbc9b9ecb5c62c39abd5e4c48ec952d4d89688580da63e57403ba8909efe4`; 16,000 fresh synthetic training images from seeds 79,000,000–79,001,999 over rectangle/ellipse styles and standard/appearance-shift/partial/full conditions, with pixels/features/targets SHA-256 `d3b41697501eaccf6f0e096c783ed3f66932aef2d858aa754360855c967c8ee7` / `e57133913e2bee744ceb735b10d42ffa06444fb5362cad8edc18aaeab71bb1cf` / `4d42a9879437af4e7046168fffab1bbedd05c380726f054abeb88cc702c08315`; 8,000 fresh selection images from seeds 80,000,000–80,000,999 with pixels/features/targets SHA-256 `cd822732191d621a95b59521b3eafa0d55721177f5f93e3562c835dadfd60039` / `d6e8e5b3af6dda3f1b0f2af38a6e363fbfa1680981ededc9de1a37db7fd7ab19` / `902284f2c2d4fe24eaded629b4a3215048788b627afefaf6e08e48ffcc6881a8`; three-parameter checkpoint SHA-256 `51e3021366c8f856f651e45f6c013ecd4d3286b1968c3f6ea58bde798cd6c69c`; normalization/risk-reference SHA-256 `7e6c76717c9f925cd8bdcbe56ac72cf21fecff483bb92c99576004cb142753c9` / `3e1e09713694ac90816d3722247629575eecb818c05330da7db32a432dce2d1c`; selection compact/base/risk predictions SHA-256 `48bb4a1a6722a7ee3c5b87da4e89e783c7fb1e2fd62ea8aeef712f2751c4020f` / `740ba4cb482ffe0e1ca64819b9c8394ac2b489e955f80a55b50e91dc9e47832d` / `a3d7a324d7eb7d3bb96415d2817c34c5a4b205eaa51a450e4e516e2fffed51d0`; report SHA-256 `8ea0e269880563c6aa14f87990660b1e54582d5baf54bccb9fa92dc61b59771c`.
+- Command: `python software/ai/train/train_compact_metric_scaler.py`
+- Result: FAIL. One three-parameter scaler was fitted for 6,250 optimizer updates with zero calibration fits. Candidate mean pinball loss improved from 0.05859684647499819 to 0.0575722133103875 and coverage increased from 0.961125 to 0.98. Candidate median/mean/maximum bounds were 2.8601309061050415 / 3.0862847104892133 / 10.0 mm versus prior 2.5147957801818848 / 2.699890161741525 / 9.931445121765137 mm. Candidate condition coverage was 0.988 / 0.995 / 0.981 / 0.956 for standard / appearance shift / partial / full versus prior 0.984 / 0.98 / 0.961 / 0.9195. Scene AUC was 0.7587507182532082; condition AUC was 0.9284602368866328 / 0.9521863903886376 / 0.865238237126527 / 0.777035043675631. The development utility proxy declined from 493/8,000 = 0.061625 to 403/8,000 = 0.050375, with candidate condition fractions 0.068 / 0.075 / 0.0335 / 0.025. The frozen median ratio, overall utility, utility improvement, appearance-shift utility, and aggregate conditional utility checks failed; proper-loss noninferiority, coverage, ranking, finite-bound, and obstruction coverage checks passed. `passed_selection=false`; `qualification_installed=false`.
+- Artifacts: `vision/compact_metric_scaler.py`; `train/train_compact_metric_scaler.py`; `train/compact_metric_scaler_v1_plan.json`; `results/compact_metric_scaler_v1/model.pt`; `eval/compact_metric_scaler_v1_report.json`; `tests/test_compact_metric_scaler.py`; `docs/IMAGE_DEPENDENT_UNCERTAINTY.md`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Synthetic development and selection evidence only. The low-bound utility measure uses the training-only risk CDF and is a development proxy, not calibrated acceptance evidence. One three-parameter architecture and one frozen loss blend were evaluated without a sweep. Improved proper loss does not override failed utility and median-bound requirements. No calibration, runtime installation, contract change, physical-camera evidence, qualification, or motion authority. ModelMotionBatchV2 and arm/integration statuses are unchanged.
+- Supersedes: none; both correction failures remain preserved and this checkpoint is ineligible for calibration or runtime use.
+- Next dependency: Do not tune on or reuse 78M or 80M. Preregister a scene-selective correction on new development populations that combines the residual model's utility margin with the compact model's noninferior proper loss. Its objective must constrain marginal proper loss directly; fresh selection and independent confirmation remain required before calibration or runtime consideration.
+
+### E-20260927-AI-404 — compact marginal-tail metric scaler verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `6a8fac84a9b1c4fa898c3e7d2095da8c4830f10e` (frozen source; test and documentation committed in the successor)
+- Inputs/fixtures: Frozen plan, source, three-parameter checkpoint, 16,000-image 79M training cohort, 8,000-image 80M selection cohort, predictions, and failed report from AI-403 with exact hashes recorded there.
+- Command: `python -m pytest -q software/ai/tests/test_compact_metric_scaler.py`
+- Result: PASS: 1 test in 2.19s. The test verifies immutable lineage and all 26 frozen artifacts; exact training and selection populations; balanced-weight sum and training constant; complete candidate/prior/constant and ranking recounts; proxy arithmetic and frozen check outcomes; all five failed utility/efficiency checks; and zero calibration, hardware, physical, qualification, runtime, or command authority.
+- Artifacts: `tests/test_compact_metric_scaler.py`; `eval/compact_metric_scaler_v1_report.json`; `results/compact_metric_scaler_v1/model.pt`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Existing pytest-asyncio configuration warning. The test validates stored proxy arithmetic and check logic; full source regeneration remains the evidence-producing command in AI-403. Contract unchanged, so shared boundary tests were not triggered. No physical assurance.
+- Supersedes: none.
+- Next dependency: Same as AI-403.
+
+### E-20260927-AI-405 — compact marginal-tail metric scaler snapshot review
+
+- Stage: S1
+- Lane: AI
+- Commit: `6a8fac84a9b1c4fa898c3e7d2095da8c4830f10e` (frozen source; final ledger append in successor)
+- Inputs/fixtures: Repository snapshot containing the frozen compact scaler study, failed report, checkpoint, verification test, interpretation, and shared ledger; exact model fixture hashes are recorded in AI-403.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS: 6,367 paths, 1,040.2 MiB, 0 unresolved review findings, 14 reviewed synthetic fixtures.
+- Artifacts: compact scaler source; training program and plan; failed report and checkpoint; verification test; uncertainty documentation; shared ledger.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic repository review before final ledger append; not model, runtime, security, or physical assurance. No arm or integration status changes.
+- Supersedes: none.
+- Next dependency: Same as AI-403.

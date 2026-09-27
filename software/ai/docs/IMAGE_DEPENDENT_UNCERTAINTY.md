@@ -786,3 +786,32 @@ obstruction coverage or ranking, while locating the remaining tradeoff in
 metric calibration quality. A successor must be fixed on new populations and
 combine the residual utility behavior with a noninferior calibration loss. It
 must not relax this failed gate or reuse 78M for model selection.
+
+## Compact marginal-tail metric correction
+
+A three-parameter scaler tested whether the utility/calibration tradeoff could
+be resolved with a smaller correction. It used only the frozen base metric and
+tail-risk score, then produced a multiplier constrained to `[0.5, 2.0]`.
+Training on 16,000 new 79M images used a fixed blend of 75% marginal unit
+weight and 25% mean-normalized obstruction weight. The architecture, objective
+blend, 50 epochs, and all gates were frozen before generating the cohort.
+
+On 8,000 untouched 80M images, the compact scaler improved mean pinball loss
+from `0.058596846` to `0.057572213` and increased overall coverage from
+96.1125% to 98%. Scene AUROC reached `0.758750718`; all conditional image
+AUROCs exceeded 0.77, and partial/full coverage remained noninferior. This
+confirms that a risk-aware compact correction can improve marginal proper loss.
+
+The complete selection rule failed because the correction was too globally
+conservative. Median bound increased from `2.514795780` to `2.860130906` mm,
+above the frozen 1.10 ratio limit. Development proxy utility fell from
+493/8,000 = 6.1625% to 403/8,000 = 5.0375%, and appearance-shift utility was
+7.5% against its 8% minimum. The model therefore receives no calibration,
+confirmation, runtime, or physical authority.
+
+Together, the two failed corrections isolate the remaining design need. The
+large residual model creates selective low bounds but slightly worsens proper
+loss; the compact scaler improves proper loss but raises bounds too broadly.
+A successor needs scene-selective capacity with an objective that explicitly
+retains marginal proper loss. The 78M and 80M populations are consumed and
+must not be used to tune that successor.
