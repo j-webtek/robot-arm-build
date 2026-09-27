@@ -599,6 +599,11 @@ Copy this row and fill every field:
 
 ## Active work claims
 
+- AI lane / S1: keep the localized obstruction classifier frozen and select
+  once among four preregistered low-gain probability/disagreement mappings on
+  new 49M mapping-calibration and 50M selection cohorts; no runtime, contract,
+  or arm changes.
+
 
 
 
