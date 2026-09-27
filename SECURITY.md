@@ -62,6 +62,11 @@ Dependabot alerts, and Dependabot security updates were enabled and verified
 through GitHub's API. Security updates propose pull requests; automatic merging
 remains disabled and normal review/check requirements still apply.
 
+CodeQL default setup was enabled on September 27, 2026 for GitHub Actions,
+JavaScript/TypeScript, and Python. Findings remain subject to maintainer triage;
+the scanner does not cover every repository language and is not a physical-safety
+or release-readiness decision.
+
 These protections cover supported patterns and recognized dependency information,
 not every secret or vulnerability. Enablement is not proof that a historical scan
 has finished or that the repository is free of findings. Non-provider-pattern

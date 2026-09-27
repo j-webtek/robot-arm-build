@@ -52,9 +52,11 @@ are a starting point, not a completed qualification record.
   exclusion/replacement disposition in the same reviewed change.
   A maintainer may instead dispatch the read-only
   [Preview candidate audit](../.github/workflows/preview-candidate-audit.yml)
-  with the exact full candidate SHA. The workflow verifies the checkout identity,
-  runs candidate integrity, the snapshot audit, and maintained-document checks,
-  and publishes no artifact or release.
+  from the intended protected `main` revision and provide that exact full SHA as
+  the identity assertion. The input does not select a checkout. The workflow
+  verifies the GitHub-selected revision against the assertion, runs candidate
+  integrity, the snapshot audit, and maintained-document checks, and publishes
+  no artifact or release.
 - [ ] List known limitations, including native-helper prerequisites, absent lab
   records, unqualified real-camera localization, and physical typing status.
 - [ ] Review the draft notes and remove unresolved placeholders only when their

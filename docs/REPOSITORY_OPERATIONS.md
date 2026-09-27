@@ -174,10 +174,11 @@ Dependabot can propose later pin updates; pinning does not itself prove the acti
 The workflow retains read-only permissions, non-persisted checkout credentials,
 hosted runners and bounded jobs. It does not use `pull_request_target` or deploy.
 The manually dispatched preview-candidate audit uses the same two pinned actions,
-read-only permissions, a hosted Ubuntu runner, and a caller-supplied full commit
-SHA. It audits only and has no release, artifact-upload, deployment, or hardware
-step. It is intentionally outside branch protection because it applies to a
-selected candidate rather than every development commit.
+read-only permissions, and a hosted Ubuntu runner. GitHub selects the checkout
+revision; the caller-supplied full commit SHA is only an identity assertion and
+cannot select code to run. It audits only and has no release, artifact-upload,
+deployment, or hardware step. It is intentionally outside branch protection
+because it applies to a selected candidate rather than every development commit.
 
 The initial September 26, 2026 inspection found Dependabot alerts/security updates
 and secret scanning/push protection disabled. The later approved repository
@@ -194,6 +195,23 @@ security review enabled and read back the following settings:
 | Default workflow token | Read-only; retained |
 | Actions approval of PR reviews | Disabled; retained |
 | Non-provider-pattern scanning / validity checks | Disabled; unchanged |
+
+On September 27, 2026, CodeQL default setup was enabled with the default query
+suite and remote threat model for GitHub Actions, JavaScript/TypeScript, and
+Python. C/C++ and C# are not covered by this initial setup. The first scan ran
+against commit `92d404ba401af3cafba41e1e6d79a3b50f2b28f2`. CodeQL immediately
+identified an input-controlled checkout in the manually dispatched candidate
+audit; the remediation keeps the SHA input as an equality assertion but makes
+GitHub's dispatch revision the only checkout source. CodeQL remains observational
+and is not yet a required branch-protection check. Require it only after recurring
+and pull-request behavior has been observed to be stable; a green scan is not a
+security certification.
+
+Attempts to enable GitHub's optional non-provider-pattern and secret-validity
+scanning modes did not change their reported disabled state. Treat those modes as
+unavailable for this repository unless a later settings review proves otherwise;
+do not claim that the core secret scanner covers generic credentials or validates
+whether a detected credential is active.
 
 This used repository-level controls on the public repository. No paid product,
 billing option, bypass, history rewrite, or runtime change was requested. Settings

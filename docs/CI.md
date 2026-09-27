@@ -54,16 +54,23 @@ supported ranges, not bit-for-bit environment reproduction.
 
 The [Preview candidate audit](../.github/workflows/preview-candidate-audit.yml)
 is a separate, manually dispatched, read-only workflow. It accepts one full
-40-character commit SHA, checks that exact checkout, runs the strict release
-candidate inventory policy, performs the snapshot audit, and rechecks maintained
-documentation. It uses a hosted Ubuntu runner, read-only repository permission,
-non-persisted checkout credentials, and no repository secrets.
+40-character commit SHA as an identity assertion. Select the intended protected
+`main` revision in GitHub's **Run workflow from** control. The workflow checks out
+that GitHub-selected revision, requires its immutable SHA to equal the assertion,
+runs the strict release candidate inventory policy, performs the snapshot audit,
+and rechecks maintained documentation. The input never selects code to check out.
+This prevents an input-controlled revision from executing in the default-branch
+workflow cache scope. The workflow uses a hosted Ubuntu runner, read-only repository
+permission, non-persisted checkout credentials, and no repository secrets.
 
 This workflow does not install the project, exercise hardware, upload artifacts,
 create tags, or publish releases. It is not a required branch-protection check.
-Use it only after identifying a proposed preview commit; a moving branch name is
-not a candidate identity. Until every recorded candidate blocker is resolved,
-a failed candidate-integrity step is the correct result.
+Use it only after identifying a proposed preview commit on protected `main`; a
+moving branch name is not a candidate identity. Confirm the completed run names
+the expected SHA. To assess some other revision without executing it in this
+workflow context, use the documented fresh-checkout local procedure. Until every
+recorded candidate blocker is resolved, a failed candidate-integrity step is the
+correct result.
 
 ### Find the versions behind a result
 
