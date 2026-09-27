@@ -599,7 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-- AI lane / S1: paired residual-only training, three seeds, predicted-mask versus constant-mask control; frozen pose/head, eight epochs at0.001, unchanged acceptance. AI branch only; no contract or arm changes.
 
 
 
@@ -7296,3 +7295,71 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic audit before final documentation append; not runtime assurance. Inherited head pretraining304updates per seed; no new data/holdout.
 - Supersedes: none; all failed prior evidence and arm/integration statuses retained.
 - Next dependency: Freeze paired three-seed residual-only training with predicted-mask versus constant-mask input, same baseline/features/head/image order/budget/selection, and unchanged baseline/control acceptance criteria. No runtime model promotion or mask confidence qualification.
+
+
+### E-20260926-AI-267 — paired residual-only training
+
+- Stage: S1
+- Lane: AI
+- Commit: `82b6b7e0c2f8207dfe37f97f1d4ab957246f8cae` (frozen execution source; results/tests/docs committed together)
+- Change: paired residual-only training.
+- Inputs/fixtures: scenes29000000..29000599 x4 training;15000000..15000199 x4 development; seeds260926/260927/260928. Fixed8epochs,AdamW0.001,key loss+anchor1;16515 residual parameters only. Baseline SHA256 0fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d. Exact source/head hashes in train/pose_mask_residual_*_plan.json; input/frozen-state/teacher/checkpoint hashes in eval/pose_mask_residual_*_report.json; aggregate binds all report hashes.
+- Command: `python software/ai/train/train_pose_mask_residual.py`
+- Result: Full rule FAIL3/3; baseline-only PASS2/3. Candidate/control tails both31/32/31 versus baseline32each. Frozen pose and mask states unchanged; initial pose delta0;304 residual updates and19200 image presentations per arm.
+- Artifacts: train/train_pose_mask_residual.py; vision/summarize_pose_mask_residual.py; eval/pose_mask_residual_*_report.json; tests/test_pose_mask_residual.py; ignored local results/pose_mask_residual_*/model.pt.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Reused development selects epoch; GPU nondeterminism; no calibration or qualification. Inherited head pretraining304updates per seed is additional shared cost. Frozen-feature residual study is not a full-backbone comparison.
+- Supersedes: none; failed evidence retained; arm/integration statuses unchanged.
+- Next dependency: Freeze an inference-only correction diagnostic on existing training/development: correction magnitude and per-axis variability/alignment versus true residual, with a training-only mean-offset comparator. No development-fit offset, runtime correction, architecture expansion or sweep. Keep demo baseline and fresh30M data unchanged.
+
+
+### E-20260926-AI-268 — residual study aggregation
+
+- Stage: S1
+- Lane: AI
+- Commit: `82b6b7e0c2f8207dfe37f97f1d4ab957246f8cae` (frozen execution source; results/tests/docs committed together)
+- Change: residual study aggregation.
+- Inputs/fixtures: scenes29000000..29000599 x4 training;15000000..15000199 x4 development; seeds260926/260927/260928. Fixed8epochs,AdamW0.001,key loss+anchor1;16515 residual parameters only. Baseline SHA256 0fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d. Exact source/head hashes in train/pose_mask_residual_*_plan.json; input/frozen-state/teacher/checkpoint hashes in eval/pose_mask_residual_*_report.json; aggregate binds all report hashes.
+- Command: `python software/ai/vision/summarize_pose_mask_residual.py`
+- Result: All3seeds retained; candidate appearance mean0.8357533143736205mm versus control0.8337978144490462 and baseline0.8333639909177747. Full passes0/3,baseline passes2/3.
+- Artifacts: train/train_pose_mask_residual.py; vision/summarize_pose_mask_residual.py; eval/pose_mask_residual_*_report.json; tests/test_pose_mask_residual.py; ignored local results/pose_mask_residual_*/model.pt.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Same development cases across optimization seeds; descriptive aggregation, not independent dataset replication.
+- Supersedes: none; failed evidence retained; arm/integration statuses unchanged.
+- Next dependency: Freeze an inference-only correction diagnostic on existing training/development: correction magnitude and per-axis variability/alignment versus true residual, with a training-only mean-offset comparator. No development-fit offset, runtime correction, architecture expansion or sweep. Keep demo baseline and fresh30M data unchanged.
+
+
+### E-20260926-AI-269 — residual training verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `82b6b7e0c2f8207dfe37f97f1d4ab957246f8cae` (frozen execution source; results/tests/docs committed together)
+- Change: residual training verification.
+- Inputs/fixtures: scenes29000000..29000599 x4 training;15000000..15000199 x4 development; seeds260926/260927/260928. Fixed8epochs,AdamW0.001,key loss+anchor1;16515 residual parameters only. Baseline SHA256 0fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d. Exact source/head hashes in train/pose_mask_residual_*_plan.json; input/frozen-state/teacher/checkpoint hashes in eval/pose_mask_residual_*_report.json; aggregate binds all report hashes.
+- Command: `python -m pytest -q software/ai/tests/test_pose_mask_residual.py`
+- Result: PASS:2 tests in1.69s. Paired initialization/input/teacher hashes, unchanged frozen sources, residual weight changes, mode-preserving exports, fixed budget, epoch selection and full acceptance recount.
+- Artifacts: train/train_pose_mask_residual.py; vision/summarize_pose_mask_residual.py; eval/pose_mask_residual_*_report.json; tests/test_pose_mask_residual.py; ignored local results/pose_mask_residual_*/model.pt.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Ignored checkpoint bytes checked locally when available; portable frozen-artifact checks retained. Existing pytest-asyncio warning. Contract unchanged; shared boundary suite not triggered.
+- Supersedes: none; failed evidence retained; arm/integration statuses unchanged.
+- Next dependency: Freeze an inference-only correction diagnostic on existing training/development: correction magnitude and per-axis variability/alignment versus true residual, with a training-only mean-offset comparator. No development-fit offset, runtime correction, architecture expansion or sweep. Keep demo baseline and fresh30M data unchanged.
+
+
+### E-20260926-AI-270 — residual study publication audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `82b6b7e0c2f8207dfe37f97f1d4ab957246f8cae` (frozen execution source; results/tests/docs committed together)
+- Change: residual study publication audit.
+- Inputs/fixtures: scenes29000000..29000599 x4 training;15000000..15000199 x4 development; seeds260926/260927/260928. Fixed8epochs,AdamW0.001,key loss+anchor1;16515 residual parameters only. Baseline SHA256 0fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d. Exact source/head hashes in train/pose_mask_residual_*_plan.json; input/frozen-state/teacher/checkpoint hashes in eval/pose_mask_residual_*_report.json; aggregate binds all report hashes.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS:6150paths,872.0MiB,0 unresolved findings,14 reviewed synthetic fixtures.
+- Artifacts: train/train_pose_mask_residual.py; vision/summarize_pose_mask_residual.py; eval/pose_mask_residual_*_report.json; tests/test_pose_mask_residual.py; ignored local results/pose_mask_residual_*/model.pt.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic snapshot audit before final documentation append; not runtime assurance.
+- Supersedes: none; failed evidence retained; arm/integration statuses unchanged.
+- Next dependency: Freeze an inference-only correction diagnostic on existing training/development: correction magnitude and per-axis variability/alignment versus true residual, with a training-only mean-offset comparator. No development-fit offset, runtime correction, architecture expansion or sweep. Keep demo baseline and fresh30M data unchanged.

@@ -47,3 +47,12 @@ The32-image CPU probe across three learned heads verified exact initial identity
 Both arms have293,415 parameters versus276,867 baseline (+16,548, approximately6%). Serialized probe artifacts are1,179,040 bytes. Predicted-mask batch-one median CPU latency was0.7668–0.7805ms versus0.55255ms baseline (four threads,10 warmups,100 timed calls). These sequential host timings include Python overhead and are descriptive, not deployment guarantees. Inherited mask pretraining cost304 updates per seed remains part of total development cost.
 
 Next: freeze a three-seed paired residual-only training experiment, using the same images, order, initialization, budget and selection in both arms. Keep the original baseline and constant-mask control comparisons, retain all failures and use no fresh holdout for model selection. The present probe ran zero optimizer updates and establishes no localization improvement.
+
+
+## First paired residual-training result
+
+The eight-epoch residual-only study (AI-267 onward) failed the full baseline-and-control rule in all three seeds. Candidate and control large-error counts were identical31/32/31, versus32 baseline. The candidate passed the baseline-only rule in two seeds; appearance mean averaged0.835753mm versus0.833798mm control and0.833364mm baseline. These results do not establish a benefit from predicted-mask conditioning. The model remains a research artifact; the baseline demo is unchanged.
+
+Both arms used the same2,400 images,19,200 presentations,304 residual updates, AdamW0.001, key loss plus baseline anchor1, and minimum development pose-MSE epoch selection. Only16,515 parameters were trainable; baseline and learned head bytes stayed identical. Prior eight-epoch head training is additional shared cost. This budget was fixed before execution, with no coefficient or learning-rate sweep.
+
+Next diagnose correction magnitude, per-axis variability, and alignment with true pose residuals on the existing training and development sets. Compare actual learned corrections against a training-only mean-offset diagnostic evaluated unchanged on development. This can distinguish scene-dependent learning from a generic shift; it must not become a runtime correction or use development-fitted offsets. Do not increase model size or resume a sweep before this diagnosis. No fresh holdout has been consumed.
