@@ -1,0 +1,17 @@
+{
+  "plan_sha256": "bc94744f2ddc151e8b7ecf089424665ec6ad067247722db0ec1cdbe7f025a824",
+  "artifact": "software/ai/eval/image_scale_refit_v1_model.json",
+  "artifact_sha256": "476a64054981226d63afe119d124188b1946cf9f8debbad83ae605d018fd8082",
+  "artifact_bytes": 5328,
+  "images": 4800,
+  "features_sha256": "539efe4b6762ec5024e96621e6262ae879d8e0d66e63e85a362bdc033fbb8cb8",
+  "scale_predictions_sha256": "e4566bb7876c8b4a08a7c478ce42942ff5b7226793987eab17ae34c4a363280d",
+  "roundtrip_exact": true,
+  "image_max_delta_mm": 2.220446049250313e-16,
+  "scale_fits": 1,
+  "pose_fits": 0,
+  "calibration_fits": 0,
+  "hardware_writes": 0,
+  "physical_movements": 0,
+  "qualification_installed": false
+}

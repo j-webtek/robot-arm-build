@@ -8059,3 +8059,19 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Five uncertainty-regressor fits, zero pose fits/calibration fits. Freshly allocated uncertainty-training data only; no untouched confirmation claim. Error-scale output is not confidence or an upper bound. Modest synthetic MSE improvement cannot establish useful acceptance or physical-camera behavior. Historical pose selection remains fixed. No calibrated qualification/runtime gate installed. Batch contract unchanged; shared boundary suite not triggered. Snapshot heuristic before final docs; existing pytest warning. Arm/integration statuses unchanged.
 - Supersedes: none; failed global bound retained.
 - Next dependency: Freeze one full scale fit and export parity, then separately allocate/freeze independent normalized-score calibration and confirmation. Keep pose weights, features, alpha and3mm research tolerance fixed. Report accepted-subset violations without claiming conditional coverage from marginal calibration.
+
+
+### E-20260927-AI-312 — final image-scale fit and export
+
+- Stage: S1
+- Lane: AI
+- Commit: `fc2ee94d35164321214dead7718d33e280813ee6` (frozen before fit; report/model committed with subsequent calibration source)
+- Inputs/fixtures:33000000..33000599 x2styles x4conditions,4800 images. Feature SHA256539efe4b6762ec5024e96621e6262ae879d8e0d66e63e85a362bdc033fbb8cb8. Source/artifact hashes in train/image_scale_refit_v1_plan.json; frozen pose unchanged.
+- Command: `python software/ai/train/refit_image_scale.py`
+- Result: PASS:one full scale fit at alpha1.0;5328-byte export SHA256476a64054981226d63afe119d124188b1946cf9f8debbad83ae605d018fd8082. Exact JSON reload predictions; all4800 image-call/reference max delta2.220446049250313e-16mm (<1e-12).
+- Artifacts: vision/image_scale_export.py; train/refit_image_scale.py; train/image_scale_refit_v1_plan.json; eval/image_scale_refit_v1_model.json and report.json.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Error scale only, no calibrated bound. Zero pose fits/calibration fits; no runtime promotion or qualification. Batch contract and arm/integration statuses unchanged.
+- Supersedes: none.
+- Next dependency: Independently frozen34000000..34000999 normalized-score calibration and35000000..35000999 confirmation; fixed3mm research gate and99% scene criterion.
