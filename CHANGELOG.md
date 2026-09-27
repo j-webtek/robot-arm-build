@@ -1,8 +1,9 @@
 # Changelog
 
 This file records notable changes to the public Tactevra source repository.
-Detailed experiment evidence remains in the linked status, workplan, and release
-records; a changelog entry is not evidence of physical qualification.
+Detailed experiment evidence remains in the linked status, evidence ledger,
+workplan, and release records; a changelog entry is not evidence of physical
+qualification.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and source-preview versions follow [Semantic Versioning](https://semver.org/)

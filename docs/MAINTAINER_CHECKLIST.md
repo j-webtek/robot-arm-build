@@ -56,8 +56,10 @@ device access, restarts, torque changes, movement, or release publication.
 - [ ] Record the merge commit and relevant check links on the PR or tracking
   issue. Close only the acceptance criteria actually completed.
 - [ ] Identify the next action, responsible lane, and unresolved prerequisites.
-  Update the [shared workplan](../software/ai/docs/SHARED_AI_ARM_WORKPLAN.md) only
-  when engineering evidence changes; do not duplicate its history in operations notes.
+  Update the [shared workplan](../software/ai/docs/SHARED_AI_ARM_WORKPLAN.md) when
+  stages or ownership change, and append results to the
+  [evidence ledger](../software/ai/docs/EVIDENCE_LEDGER.md). Do not duplicate
+  that history in operations notes.
 - [ ] Keep [project status](../PROJECT_STATUS.md) readable and date its evidence
   checkpoint. Do not silently promote a branch proposal into a released feature.
 - [ ] A merge is not a release. For publication, use the separate
