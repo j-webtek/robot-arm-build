@@ -54,3 +54,20 @@ python software/ai/eval/verify_pose_checkpoint_artifact.py --root . --expect ver
 `verified` means only that size and SHA-256 match. It does not promote the
 candidate, install runtime qualification, authorize controller access, or
 establish real-camera or physical performance.
+
+## Retained evidence
+
+- Clean-clone receipt:
+  [`pose_keyloss_external_artifact_unavailable_receipt.json`](../eval/pose_keyloss_external_artifact_unavailable_receipt.json),
+  SHA-256 `e9347f172421bc6faa8b8a75b176cbcf25f8e5b75ca6518e84673008abb8110c`.
+- Artifact-present receipt:
+  [`pose_keyloss_external_artifact_verified_receipt.json`](../eval/pose_keyloss_external_artifact_verified_receipt.json),
+  SHA-256 `09d0b08b20acbd120b255e018a69b1867de2c2b99fe7b497789adcc793ca8b7a`.
+- Compact development scorecard:
+  [`pose_keyloss_external_artifact_scorecard.json`](../eval/pose_keyloss_external_artifact_scorecard.json),
+  SHA-256 `0fb3077fcea31a61b4d6c977e4266f5b313ac69497af021bf697e02dcbc5fb3f`.
+
+The unavailable receipt was generated from fresh detached worktree commit
+`88a018d75cb8245d079148503aa46929a0c4efc9`. The verified receipt was generated
+separately against externally retained bytes. Neither receipt contains model
+weights or grants runtime authority.

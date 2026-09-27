@@ -772,12 +772,18 @@ SHA-256 `2430ec5f8362aae76e8250d2d9da292f85375d93750addd944a969b1bc2e4dbd`.
 It binds the reviewed arm and AI commits, freezes the implemented v2 boundary,
 and provides shared accepted/rejected cases without advancing operational readiness.
 
+The pose-keyloss research checkpoint is now represented by the focused external-
+artifact package in
+[`POSE_KEYLOSS_EXTERNAL_ARTIFACT.md`](POSE_KEYLOSS_EXTERNAL_ARTIFACT.md) and
+evidence `E-20260927-AI-410`. Its clean-clone state is explicitly unavailable,
+its separately present bytes are identity-verified, and neither result installs
+localization qualification or changes the AI-to-arm authority boundary.
+
 Workers add a short row before beginning a potentially overlapping change and
 remove it only in the same commit that appends the resulting evidence row.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI | S1 | pose-keyloss external manifest, verifier/test, compact scorecard, unavailable/present receipts, reproduction docs, and AI evidence row | `codex/pose-checkpoint-artifact-manifest` from `f32c3deadee78fb2871018e39e892079f096032a` | ACTIVE: focused #56/#61 artifact identity package; zero authority |
 | Unclaimed | S2/S3 | physical-camera deployment qualification and safe-region-fit precision evidence | — | AVAILABLE |
 | ARM | S4 | collect four physical-original `camera_support_optics` bindings through onboarding, then run the ARM-070 intake; no synthetic promotion | ARM-071 | WAITING_FOR_ORIGINALS |
 
