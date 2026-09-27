@@ -16,17 +16,32 @@ longer matches the registry hash.
 5. **Repository audits** check documentation, evidence retention, public
    records, artifacts, and release integrity.
 
-From the repository root:
+Create an isolated environment from the repository root. The repository test
+installer supplies core and test dependencies; the AI requirements file adds
+the exact NumPy and PyTorch versions used by localization research tests.
 
 ```powershell
-python -m pytest software/ai/tests -q
-python software/ai/eval/audit_ai_work_registry.py
-python scripts/ci/check_docs.py
-python scripts/ci/check_evidence_scope.py
-python scripts/ci/check_public_records.py
-python scripts/ci/check_repository_artifacts.py
-python scripts/ci/check_release_integrity.py
+python -m venv .venv-ai
+.\.venv-ai\Scripts\python.exe scripts/ci/offline_checks.py install-base
+.\.venv-ai\Scripts\python.exe scripts/ci/offline_checks.py install-tests
+.\.venv-ai\Scripts\python.exe -m pip install -r software/ai/requirements-test.txt
 ```
+
+Then run:
+
+```powershell
+.\.venv-ai\Scripts\python.exe -m pytest software/ai/tests -q
+.\.venv-ai\Scripts\python.exe software/ai/eval/audit_ai_work_registry.py
+.\.venv-ai\Scripts\python.exe scripts/ci/check_docs.py
+.\.venv-ai\Scripts\python.exe scripts/ci/check_evidence_scope.py
+.\.venv-ai\Scripts\python.exe scripts/ci/check_public_records.py
+.\.venv-ai\Scripts\python.exe scripts/ci/check_repository_artifacts.py
+.\.venv-ai\Scripts\python.exe scripts/ci/check_release_integrity.py
+```
+
+The pinned packages reproduce test execution; they do not identify or qualify
+an inference deployment. Model manifests separately bind every evaluated model
+and runtime.
 
 For the portable suite:
 

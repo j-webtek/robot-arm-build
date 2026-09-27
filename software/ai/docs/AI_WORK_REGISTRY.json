@@ -284,6 +284,7 @@
       "status": "IMPLEMENTED_ZERO_AUTHORITY",
       "objective": "Keep AI procedures, source ownership, tests, retained evidence, limitations, and next dependencies discoverable and machine checked.",
       "source_paths": [
+        "software/ai/requirements-test.txt",
         "software/ai/eval/audit_ai_work_registry.py",
         "software/ai/schemas/ai_work_registry_audit_v1.schema.json",
         "software/ai/schemas/ai_work_registry_v1.schema.json"
@@ -316,5 +317,5 @@
   "controller_authority": false,
   "hardware_writes": 0,
   "physical_movements": 0,
-  "registry_sha256": "83be0313103114048c13d5167911160b981e063089f362da980ab2c26f9c503d"
+  "registry_sha256": "ea5da4211f33041e8adad425e6e190bb3df4a5dc9e5f5f313f4956b4faaef34d"
 }

@@ -142,16 +142,27 @@ commands, writes, retries, movements, and independent outcomes.
 
 ### 5. Test in layers
 
-Run the smallest meaningful focused tests first, then:
+Run the smallest meaningful focused tests first. For a clean full-AI-suite
+environment, create `.venv-ai`, install the repository base and test groups,
+then install the exact AI research dependencies:
 
 ```powershell
-python -m pytest software/ai/tests -q
-python software/ai/eval/audit_ai_work_registry.py
-python scripts/ci/check_docs.py
-python scripts/ci/check_evidence_scope.py
-python scripts/ci/check_public_records.py
-python scripts/ci/check_repository_artifacts.py
-python scripts/ci/check_release_integrity.py
+python -m venv .venv-ai
+.\.venv-ai\Scripts\python.exe scripts/ci/offline_checks.py install-base
+.\.venv-ai\Scripts\python.exe scripts/ci/offline_checks.py install-tests
+.\.venv-ai\Scripts\python.exe -m pip install -r software/ai/requirements-test.txt
+```
+
+Run the maintained suite and audits from that environment:
+
+```powershell
+.\.venv-ai\Scripts\python.exe -m pytest software/ai/tests -q
+.\.venv-ai\Scripts\python.exe software/ai/eval/audit_ai_work_registry.py
+.\.venv-ai\Scripts\python.exe scripts/ci/check_docs.py
+.\.venv-ai\Scripts\python.exe scripts/ci/check_evidence_scope.py
+.\.venv-ai\Scripts\python.exe scripts/ci/check_public_records.py
+.\.venv-ai\Scripts\python.exe scripts/ci/check_repository_artifacts.py
+.\.venv-ai\Scripts\python.exe scripts/ci/check_release_integrity.py
 ```
 
 Run the shared producer/consumer boundary tests whenever a batch, precision,
