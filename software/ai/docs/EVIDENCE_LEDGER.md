@@ -2880,3 +2880,42 @@ rewriting history. New entries must use a unique evidence ID.
 - Next dependency: transfer the immutable packet to a genuinely independent
   reviewer and retain a separately authenticated decision bound to its SHA-256.
   Only a separate authorization may begin read-only endpoint qualification.
+
+### E-20260927-ARM-056 — external adapter-review decision intake boundary
+
+- Stage: S4
+- Lane: ARM
+- Change: added a closed, content-addressed decision and assessment report for
+  a genuinely external review of the exact ARM-055 packet. The decision binds
+  packet, manifest, ARM-054 candidate commit, adapter source, reviewer
+  attestation digest, ordered checklist, findings, disposition, and a bounded
+  UTC validity window.
+- Fail-closed behavior: synthetic origin, rejection, crossed identities,
+  unasserted independence, implementation-author conflict, incomplete checks,
+  open findings, assessment before completion, and expiration all block
+  read-only endpoint-qualification intake. Strict parsing rejects added fields,
+  authority promotion, malformed types, and content-hash mismatch.
+- Artifacts: `native_t102_adapter_review_decision_v1.py`, two closed JSON
+  schemas, focused tests, public exports, portable CI selection, and
+  `NATIVE_T102_ADAPTER_REVIEW_DECISION.md`.
+- Results: focused adapter packet/decision/r97 decision suite PASS, 51 tests;
+  portable shared AI/arm selection PASS, 338 tests in 39.40 seconds;
+  documentation checks PASS, 43 self-tests plus maintained-link,
+  evidence-scope, and release-integrity validation; compile and diff checks
+  PASS.
+- Evidence status: synthetic in-process fixtures only. No real reviewer
+  decision, reviewer authentication, custody proof, or independent assessment
+  is claimed. A dedicated synthetic origin is quarantined from endpoint intake.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: a structurally accepted external-origin document cannot by
+  itself prove who controlled the reviewer identity. Acceptance means only
+  eligibility for a future read-only qualification intake and keeps endpoint
+  open, controller start, execution, hardware, and physical authority false.
+- Supersedes: ARM-055 only for the typed decision-return boundary. It does not
+  supersede actual independent review, reviewer authentication, endpoint
+  qualification, controller provenance, physical authority, or outcome
+  verification.
+- Next dependency: obtain and authenticate a genuinely independent decision
+  bound to the exact ARM-055 packet, then separately design and authorize a
+  read-only endpoint qualification. Movement remains out of scope.

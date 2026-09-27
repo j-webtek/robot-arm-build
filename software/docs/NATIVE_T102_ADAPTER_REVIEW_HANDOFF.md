@@ -68,3 +68,10 @@ the packet SHA-256. The repository must not self-assert reviewer independence.
 Even a passing decision would not authorize endpoint opening or movement. A
 separate read-only endpoint qualification and, later, a separately authorized
 bounded physical test remain required.
+
+ARM-056 adds the strict return path for that external decision. See
+`NATIVE_T102_ADAPTER_REVIEW_DECISION.md`. It binds the packet, manifest,
+candidate commit, adapter source, ordered checklist, reviewer declarations,
+findings, disposition, and expiration time. Acceptance means only eligibility
+for a later read-only endpoint-qualification intake; it grants no hardware or
+movement authority.
