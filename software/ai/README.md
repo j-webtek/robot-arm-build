@@ -55,6 +55,12 @@ independent input verification.
 - **Next:** collect static-camera keyboard and phone captures with measured
   board coordinates, then calibrate abstention and coordinate-error thresholds.
 
+The final-camera collection contract, split policy, condition matrix, and
+read-only preflight command are frozen in the
+[physical-camera localization campaign](docs/PHYSICAL_CAMERA_LOCALIZATION_CAMPAIGN.md).
+Use that runbook after the camera/support and calibration originals exist; bulk
+images remain external to Git.
+
 The current system baseline and the prioritized multimodal implementation are
 tracked in the [AI system baseline and implementation plan](docs/AI_SYSTEM_BASELINE_AND_IMPLEMENTATION_PLAN.md).
 The required handoff from learned outputs to deterministic robot control is
