@@ -147,7 +147,7 @@ class IncapableReviewedMotionIoV1:
 
 
 def _dispatch_receipt(
-    *, admission: ReviewedMotionPermitAdmissionV1, goal: CartesianGoal,
+    *, admission: ReviewedMotionPermitAdmissionV1, goal: object,
     payload: bytes, io: IncapableReviewedMotionIoV1, confirmed_bytes: int | None,
     dispatched_monotonic_ns: int, error_code: str | None,
 ) -> ReviewedMotionDispatchReceiptV1:

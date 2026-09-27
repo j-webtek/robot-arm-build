@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rocell.local/schemas/reviewed_t102_joint_settlement_v1.schema.json",
+  "title": "RoCell reviewed T102 joint settlement v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "status", "frame_sha256", "goal_sha256",
+    "assessed_monotonic_ns", "accepted_sample_count",
+    "feedback_response_sha256", "rejected_sample_codes",
+    "consecutive_settled_samples", "required_consecutive_samples",
+    "tolerance_rad", "max_joint_error_rad", "controller_receipt_claimed",
+    "controller_arrival_claimed", "independent_task_outcome_verified",
+    "settlement_sha256"
+  ],
+  "properties": {
+    "schema": {"const": "rocell.reviewed_t102_joint_settlement.v1"},
+    "status": {"enum": ["OBSERVED_SETTLED_JOINT_ARRIVAL", "JOINT_ARRIVAL_UNVERIFIED"]},
+    "frame_sha256": {"$ref": "#/$defs/hash"},
+    "goal_sha256": {"$ref": "#/$defs/hash"},
+    "assessed_monotonic_ns": {"type": "integer", "minimum": 1},
+    "accepted_sample_count": {"type": "integer", "minimum": 0},
+    "feedback_response_sha256": {
+      "type": "array", "items": {"$ref": "#/$defs/hash"}
+    },
+    "rejected_sample_codes": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "MALFORMED_SAMPLE", "NON_MONOTONIC_OR_PRE_DISPATCH",
+          "STALE_OR_FUTURE_FEEDBACK", "MALFORMED_RESPONSE_BYTES",
+          "RUNTIME_REJECTED_FEEDBACK", "FEEDBACK_COLLECTION_ERROR"
+        ]
+      }
+    },
+    "consecutive_settled_samples": {"type": "integer", "minimum": 0},
+    "required_consecutive_samples": {"type": "integer", "minimum": 2, "maximum": 16},
+    "tolerance_rad": {"type": "number", "minimum": 0},
+    "max_joint_error_rad": {"type": "number", "minimum": 0},
+    "controller_receipt_claimed": {"const": true},
+    "controller_arrival_claimed": {"type": "boolean"},
+    "independent_task_outcome_verified": {"const": false},
+    "settlement_sha256": {"$ref": "#/$defs/hash"}
+  },
+  "$defs": {
+    "hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}
