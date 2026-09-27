@@ -637,6 +637,7 @@ remove it only in the same commit that appends the resulting evidence row.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
+| AI lane | S1 | compact decision confusion audit, deterministic-policy ablation, next-architecture recommendation, tests, and evidence | `feature/translation-pair-evidence` at `f9c9b9dd806630d99d699e54840557347222e11e` | ACTIVE: diagnose committed validation only; no fit or confirmation |
 | Unclaimed | S2 | qualified perception adapter and complete shared gate | — | AVAILABLE |
 | Unclaimed | S4 | external reviewer publishes a typed decision for sealed r97 packet `987cbe86...b416`; collect/review all eight measured epoch components | — | AVAILABLE |
 
@@ -9938,3 +9939,18 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Development-only agent-authored templated language with simulated review. Weighted replacement improved minority exposure but did not prevent class collapse or establish natural-language transfer. Deterministic assembly reduced unsafe acceptance without making the classifier accurate. No camera, localization, motion, runtime release, hardware, physical, qualification, arm-lane, or integration evidence/status changed.
 - Supersedes: none; both compact checkpoints remain preserved as failed development evidence.
 - Next dependency: Diagnose the committed confusion matrix before another fit. The efficient next study should separate deterministic lexical capability checks for phone-call and shifted-text requests from a smaller learned device/payload/intent classifier, or explicitly test a classification-loss head; preregister the choice and retain zero-wrong-accepted compiler gates before creating any confirmation population.
+
+### E-20260927-AI-436 — structural separability audit freeze
+
+- Stage: S1
+- Lane: AI
+- Commit: `f9c9b9dd806630d99d699e54840557347222e11e` (failed compact student evidence parent; frozen audit source, tests, and ledger committed in the successor before writing an audit artifact)
+- Inputs/fixtures: Frozen 320-row compact validation SHA-256 `cd13604a21e1cbcb1b9f2b3c3f48857745e4b0e055e877f08a68e7ddcb88cd46`; selected epoch-2 scorecard SHA-256 `dba226ee11e03661f2f1ddae05aeb8967d441ff9c0cd45f8f93996d52d8a2ae4`; exact compact targets and existing deterministic assembler semantics.
+- Command: `python -m pytest tests/test_mission_decision_structure_source.py tests/test_mission_decision.py tests/test_mission_decision_student_result.py -q`; `python -m py_compile rocell_ai/mission_decision_structure.py eval/audit_mission_decision_structure.py`; `git diff --check` from `software/ai`.
+- Result: PASS: 12 tests in 0.65s, compilation passed, and diff check was clean. Froze a development-only structural baseline over quote count, explicit device mentions, phone-keyboard compounds versus explicit cross-device conflicts, compound operation words, uppercase payloads, and phone-call language. The source test predicts all 320 existing validation targets exactly in memory. This establishes the preregistered audit hypothesis and shows the current templated split may be solvable without a learned classifier; it does not yet write or claim a scorecard.
+- Artifacts: `rocell_ai/mission_decision_structure.py`; `eval/audit_mission_decision_structure.py`; `tests/test_mission_decision_structure_source.py`; shared ledger.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Development-only source test over agent-authored templates. The structural baseline is deliberately not installed in runtime and perfect in-memory agreement cannot establish natural-language transfer. No model fit, confirmation data, qualification, arm-lane, or integration status change.
+- Supersedes: none.
+- Next dependency: Commit this audit source before executing it once against the immutable epoch-2 scorecard, then hash and verify the resulting structural-versus-model comparison. Use that evidence to define a residual paraphrase population rather than fitting the same templates again.
