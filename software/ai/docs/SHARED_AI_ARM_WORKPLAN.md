@@ -9447,7 +9447,7 @@ commissioning, or bounded physical result with its limitations intact.
 - Commit: `dedd639a15b568f0986d92fe161d8f360c99e9da`
 - Inputs/fixtures: Repository snapshot containing the frozen adapter/evaluator, held-out bundle, producer fixture, tests, schema and documentation before this final ledger append.
 - Command: `python scripts/audit_github_snapshot.py`
-- Result: PASS: 6,362 paths, 1,026.6 MiB, 0 unresolved review findings, 14 reviewed synthetic fixtures.
+- Result: PASS after rebase onto the latest AI lane: 6,366 paths, 1,029.5 MiB, 0 unresolved review findings, 14 reviewed synthetic fixtures.
 - Artifacts: AI-398 through AI-401 artifacts and shared documentation.
 - Hardware writes: 0
 - Physical movements: 0
