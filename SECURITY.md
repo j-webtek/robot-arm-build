@@ -72,11 +72,18 @@ bypassing it or removing the protection to complete a merge.
 
 These protections cover supported patterns and recognized dependency information,
 not every secret or vulnerability. Enablement is not proof that a historical scan
-has finished or that the repository is free of findings. Non-provider-pattern
-scanning and validity checks were not enabled in this change. Never treat an
-unblocked push as permission to commit credentials. See the
+has finished or that the repository is free of findings. On September 27, 2026,
+the owner sent exact repository-API requests to enable non-provider-pattern
+scanning and validity checks; GitHub accepted both requests but immediate readback
+still reported both settings disabled. Treat those optional modes as unavailable
+for the current repository configuration until a later readback proves otherwise.
+Never treat an unblocked push as permission to commit credentials. See the
 [maintainer procedure](docs/REPOSITORY_OPERATIONS.md#security-alert-handling)
 for notification setup, triage, and remediation boundaries.
+
+The same owner-scoped review returned zero open secret-scanning, Dependabot, and
+CodeQL alerts. That is a dated queue observation, not proof that the repository,
+its history, dependencies, or devices contain no vulnerability or credential.
 
 CI and the snapshot audit are scoped development checks, not security
 certification or physical safety qualification. The snapshot audit is heuristic

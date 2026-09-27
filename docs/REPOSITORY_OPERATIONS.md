@@ -307,10 +307,19 @@ is not a security certification, and an unavailable or unexpected result must be
 investigated rather than bypassed.
 
 Attempts to enable GitHub's optional non-provider-pattern and secret-validity
-scanning modes did not change their reported disabled state. Treat those modes as
-unavailable for this repository unless a later settings review proves otherwise;
-do not claim that the core secret scanner covers generic credentials or validates
-whether a detected credential is active.
+scanning modes used exact repository-API requests on September 27, 2026. GitHub
+accepted both updates without an error, but immediate repository readback still
+reported both settings disabled. Treat those modes as unavailable for this
+repository unless a later settings review proves otherwise; do not claim that the
+core secret scanner covers generic credentials or validates whether a detected
+credential is active. The owner-visible policy intentionally records `disabled`
+because it describes verified live state, not an unsupported desired state.
+
+That review also queried the restricted secret-scanning, Dependabot, and CodeQL
+alert endpoints and found zero open alerts. Record only counts in public
+maintenance notes; alert contents can contain sensitive paths, dependency
+details, or credential context and belong in GitHub's restricted security views.
+Zero open alerts is a queue observation, not a security certification.
 
 This used repository-level controls on the public repository. No paid product,
 billing option, bypass, history rewrite, or runtime change was requested. Settings
