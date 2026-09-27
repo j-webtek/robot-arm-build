@@ -599,6 +599,8 @@ Copy this row and fill every field:
 
 ## Active work claims
 
+- AI lane / S1: three-cohort split/coverage audit and training-only grouped-selection protocol; all scene variants grouped, no fits, no new evaluation data, no arm changes.
+
 
 
 
