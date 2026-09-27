@@ -110,3 +110,11 @@ It was designed from the aggregate v1 category metrics and does not load the
 consumed v1 heldout cases or predictions. It contains no confirmation split.
 A confirmation generator must be authored and frozen only after the successor
 model, prompt, decoder, selection rule, and promotion gates are fixed.
+
+The frozen v2 fit produced two development checkpoints. Neither passed the
+development gates. Epoch 2 reached 42.5% exact output but produced 22 wrong
+accepted operations and two changed literals. Epoch 1 reached 19.7% exact
+output with ten wrong accepted operations and no changed literals. The frozen
+safety-first selector chose epoch 1 as the less unsafe candidate and marked it
+unqualified. Because development gates failed, no confirmation generator or
+confirmation data was created.

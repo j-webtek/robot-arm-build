@@ -1,0 +1,40 @@
+{
+  "base_repo": "meta-llama/Llama-3.2-1B-Instruct",
+  "base_revision": "9213176726f574b556790deb65791e0c5aa438b6",
+  "confirmation_read": false,
+  "hardware_writes": 0,
+  "history": [
+    {
+      "adapter_sha256": "32499f66dd751625b98fb8105dda1001082f0b7fd80086e349ce248e34417a19",
+      "epoch": 1,
+      "train_loss": 0.29898900584084914,
+      "validation_loss": 0.025376270664855836
+    },
+    {
+      "adapter_sha256": "0d9a8a2c87f075055ed7103dbec86f8b7a027054eeef6167323c03aae9654477",
+      "epoch": 2,
+      "train_loss": 0.01584603812370915,
+      "validation_loss": 0.016550738300429656
+    }
+  ],
+  "limitations": [
+    "Agent-authored templated development data without independent human labels.",
+    "Checkpoint selection requires frozen structured validation scorecards.",
+    "No confirmation fixture exists or is read during fit or selection.",
+    "LoRA training grants no runtime, motion, or physical authority."
+  ],
+  "model_fits": 1,
+  "optimizer_updates": 80,
+  "physical_movements": 0,
+  "plan_sha256": "226519f65505330ce8a6958cab002f55e0d672fe04283afb4e36f1d971605858",
+  "prompt_sha256": "a91332a8eaf342e0ed6ea62201b35bd2d0e93824949a41cdca68232db4b416c5",
+  "schema": "rocell.mission_student_training.v2",
+  "selection_pending": true,
+  "train_sha256": "ec8739514dfd0dc2f4556694f547f2aa28b489355a15eb6a3cb8772d4cf7fc9e",
+  "validation_sha256": "fc4b94d49ca7f0e0354f2aa70e186cca6edb5e8148451176eaf0fda37b30ca7b",
+  "versions": {
+    "peft": "0.19.1",
+    "torch": "2.5.1+cu124",
+    "transformers": "4.47.0"
+  }
+}

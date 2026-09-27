@@ -1,0 +1,37 @@
+{
+  "candidate_keys": {
+    "1": [
+      10,
+      0,
+      0,
+      -63,
+      -7,
+      -0.0,
+      0.025376270664855836,
+      1
+    ],
+    "2": [
+      22,
+      0,
+      2,
+      -136,
+      -17,
+      -0.0,
+      0.016550738300429656,
+      2
+    ]
+  },
+  "confirmation_read": false,
+  "hardware_writes": 0,
+  "physical_movements": 0,
+  "plan_sha256": "226519f65505330ce8a6958cab002f55e0d672fe04283afb4e36f1d971605858",
+  "qualification_installed": false,
+  "schema": "rocell.mission_student_selection.v2",
+  "selected_adapter_sha256": "32499f66dd751625b98fb8105dda1001082f0b7fd80086e349ce248e34417a19",
+  "selected_epoch": 1,
+  "selected_model": "llama32-1b-rocell-mission-v2-e1:latest",
+  "selected_model_digest": "86d3078a0908156459800b2759f9c68b1b671a4846fe87486ea46e6f418d0a1f",
+  "selected_passed_development_gates": false,
+  "selected_validation_scorecard_sha256": "7b30f2f5323c936052ed671202bc4dd642451473f64ec1e4fcf10af37e1dc635",
+  "selection_rule": "lexicographically minimize wrong_accepted, invalid, changed_literal, negative exact, negative accepted_correct, negative minimum_category_exact_fraction, validation_loss, then epoch"
+}

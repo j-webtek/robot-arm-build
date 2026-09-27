@@ -1,0 +1,8 @@
+{
+  "adapter_sha256": "32499f66dd751625b98fb8105dda1001082f0b7fd80086e349ce248e34417a19",
+  "base_digest": "6319184583b7d9d76f7506bfe9cdba1832f147486129527a33c157c62845d046",
+  "base_tag": "llama32-1b-meta-92131767:latest",
+  "digest": "86d3078a0908156459800b2759f9c68b1b671a4846fe87486ea46e6f418d0a1f",
+  "schema": "rocell.ai_local_adapter_import.v0",
+  "tag": "llama32-1b-rocell-mission-v2-e1:latest"
+}
