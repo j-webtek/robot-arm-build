@@ -599,6 +599,11 @@ Copy this row and fill every field:
 
 ## Active work claims
 
+- AI lane / S1: preregister, train, and evaluate one marginal-tail balanced
+  residual metric corrector on fresh 79M training and 80M selection scenes,
+  targeting the prior utility gain with noninferior marginal proper loss; no
+  calibration, runtime, contract, arm, or integration-status changes.
+
 
 
 
@@ -9424,3 +9429,33 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic repository review before final ledger append; not model, runtime, security, or physical assurance. No arm or integration status changes.
 - Supersedes: none.
 - Next dependency: Same as AI-398.
+
+### E-20260927-AI-401 — compact metric scaler initial source verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `f1c0140b801f61da6dd012eea0fd09ee456966d7` (parent evidence commit; new source, plan, and failed test harness committed in the successor)
+- Inputs/fixtures: Preregistered compact scaler source and 79M/80M plan; 26 frozen source/model/report hashes validated separately with zero mismatches. No training or selection population was generated.
+- Command: `python -m py_compile software/ai/vision/compact_metric_scaler.py software/ai/train/train_compact_metric_scaler.py software/ai/tests/test_compact_metric_scaler_source.py; python -m pytest -q software/ai/tests/test_compact_metric_scaler_source.py`
+- Result: FAIL during test collection: `ModuleNotFoundError: No module named 'train'`. Python compilation completed before the collection failure. This was a test-harness path omission; no model, plan, objective, gate, population, or result was changed.
+- Artifacts: `vision/compact_metric_scaler.py`; `train/train_compact_metric_scaler.py`; `train/compact_metric_scaler_v1_plan.json`; `tests/test_compact_metric_scaler_source.py`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Source-level verification failure before the study freeze; no model-quality or physical evidence. Existing pytest-asyncio configuration warning. Contract unchanged, so shared boundary tests were not triggered.
+- Supersedes: none; preserved as failed evidence.
+- Next dependency: Add the repository AI root to the test import path only, then rerun the identical command before freezing the study.
+
+### E-20260927-AI-402 — compact metric scaler corrected source verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `f1c0140b801f61da6dd012eea0fd09ee456966d7` (parent evidence commit; corrected test harness and frozen study source committed in the successor)
+- Inputs/fixtures: Same compact scaler source and preregistered plan as AI-401; test-harness import path corrected without changing the model, objective, gates, population definitions, or 26 frozen source/model/report hashes.
+- Command: `python -m py_compile software/ai/vision/compact_metric_scaler.py software/ai/train/train_compact_metric_scaler.py software/ai/tests/test_compact_metric_scaler_source.py; python -m pytest -q software/ai/tests/test_compact_metric_scaler_source.py`
+- Result: PASS: 2 tests in 1.73s. Tests verify the exact three trainable parameters, multiplier and metric bounds, and the preregistered 0.75 marginal plus 0.25 mean-normalized obstruction-weight objective. All 26 plan hashes independently validated with zero mismatches.
+- Artifacts: same as AI-401.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Source invariants only; no training, selection, runtime, or physical assurance. Existing pytest-asyncio configuration warning. Contract unchanged, so shared boundary tests were not triggered.
+- Supersedes: AI-401 only as corrected source verification; the failed record remains preserved.
+- Next dependency: Commit the frozen source and plan before generating the 79M training or 80M selection populations.
