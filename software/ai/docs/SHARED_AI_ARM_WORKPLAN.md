@@ -293,6 +293,16 @@ than blocking. The next active dependency is an owner-governed configuration
 epoch containing retained physical evidence and AI review records for all
 eight controlled workcell components. This override creates no installation,
 startup, transport, execution, hardware, or physical authority.
+ARM-068 implements that next boundary without rewriting the historical
+independent-review epoch contract. Its owner-governed draft accepts zero through
+eight components, requires the policy-defined binding set for each component,
+and reports missing, stale, synthetic, or unreviewed evidence separately. A
+confirmed-not-installed station may be represented, but still requires retained
+physical evidence and owner-AI review. The retained initial assessment is
+correctly `BLOCKED`: all eight components and their 32 required bindings are
+missing. No configuration-epoch hash exists until the complete draft passes.
+The next work is evidence population, beginning with the reproducible
+`software_build` component; no controller operation is needed for that step.
 
 ## Stage definitions
 
@@ -696,7 +706,7 @@ remove it only in the same commit that appends the resulting evidence row.
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
 | Unclaimed | S2 | qualified perception adapter and complete shared gate | — | AVAILABLE |
-| ARM | S4 | build the owner-governed measured configuration epoch for all eight controlled components using ARM-067 acceptance `76bac617...1698` | ARM-067 | ACTIVE |
+| ARM | S4 | populate the ARM-068 owner-governed epoch one physical-original component at a time, starting with `software_build`; preserve missing evidence as blockers | ARM-069 | ACTIVE |
 
 ## Worker update procedure
 

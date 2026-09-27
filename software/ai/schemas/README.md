@@ -197,6 +197,14 @@ all eight ordered components. Its synthetic report is intentionally `BLOCKED`
 by `FIRMWARE_REVIEW_DECISION_BLOCKED` and
 `COMPONENT_NOT_PHYSICAL_ORIGINAL`; a separate rehearsal summary may record that
 the integration exercise completed, but it cannot change the production report.
+The [owner-governed epoch draft](owner_governed_configuration_epoch_draft_v1.schema.json)
+and [assessment](owner_governed_configuration_epoch_assessment_v1.schema.json)
+form the non-human-review successor path selected in ARM-067. They preserve the
+historical contract unchanged, bind the exact owner acceptance, and support
+partial evidence intake so every missing component and binding remains visible.
+Only a complete, current, physical-original, owner-AI-accepted eight-component
+draft receives a configuration-epoch hash. Even that result permits only an
+epoch-bound build proposal and grants no hardware authority.
 The [synthetic epoch model-to-arm rehearsal](synthetic_epoch_model_arm_rehearsal_v1.schema.json)
 then binds that exact blocked epoch to one model batch, its indexed proposal, a
 sealed trajectory, the Waveshare encoding profile, and the zero-write receipt.

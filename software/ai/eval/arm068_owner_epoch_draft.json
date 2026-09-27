@@ -1,0 +1,23 @@
+{
+  "schema": "rocell.owner_governed_configuration_epoch_draft.v1",
+  "epoch_id": "arm-068-owner-governed-measured-epoch",
+  "predecessor_configuration_epoch_sha256": null,
+  "owner_acceptance_sha256": "76bac6177af918fcee476f7645df6559a960ad52e68c68875db52cdf6a091698",
+  "r97_review_packet_sha256": "987cbe86d98440734d8336c704f1ecd89692675a9cb1620cb674e4132957b416",
+  "candidate_app_sha256": "7d2e47d40141e95b611fcf37ca38d495fcf3da4dc3051f128bbae95e10840d1d",
+  "protocol_source_sha256": "3647f6575de09a521503d02d192a8c5396ff5537015f946ef5d571c3f4a9a933",
+  "joint_mapping_source_sha256": "b99bd3590c1cd4855535863a9d19a873bb2643be24403f9760f376150a71483f",
+  "components": [],
+  "epoch_scope": "OWNER_GOVERNED_RELEASE_PLUS_MEASURED_WORKCELL",
+  "human_review_required": false,
+  "human_review_claimed": false,
+  "external_independence_claimed": false,
+  "owner_governance_override": true,
+  "hardware_access": false,
+  "installation_authorized": false,
+  "controller_start_authorized": false,
+  "transport_authorized": false,
+  "execution_authorized": false,
+  "physical_authority": false,
+  "draft_sha256": "72e00112d41fc5849dd58d1c0abd858980ce9849817d6e2a6a82bcb78c842dc6"
+}
