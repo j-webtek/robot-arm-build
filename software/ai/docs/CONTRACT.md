@@ -14,7 +14,9 @@ test matrix, and the conditions required before controller encoding.
 
 ```text
 English request + fresh observation
-  -> AI: operation, device, exact text or clarification/unsupported
+  -> AI: one compact semantic decision class
+  -> deterministic binder: request IDs + exact quoted literal + capability policy
+  -> MissionIntentV1
   -> RoCell typing compiler: ActionPlan + plan hash or error
   -> RoCell admission, geometry, controller, observations (when released)
   -> independently verified result or uncertain/failed state
@@ -51,6 +53,16 @@ producing `rocell.mission_compilation.v1`. The committed capability matrix
 keeps phone calling and shifted keyboard typing unavailable and records zero
 physical release for every capability. This is an offline dataset and
 compilation boundary; `ModelMotionBatch` and physical authority are unchanged.
+
+The current replacement-model target is the narrower
+[`rocell.mission_decision.v1`](MISSION_DECISION_V1.md). The model chooses only
+one of seven classes: keyboard execute, phone execute, three clarification
+reasons, shifted-keyboard unsupported, or phone-call unsupported. It cannot
+generate the payload, request binding, capability, or observation policy.
+Deterministic code extracts one exact quoted literal from the source request,
+grounds the declared device outside the quoted data, rejects known compound
+operations, injects the request and observation references, and validates the
+assembled `MissionIntentV1`. Failed grounding downgrades to clarification.
 
 ## Proposed first request
 

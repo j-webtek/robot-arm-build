@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/j-webtek/robot-arm-build/software/ai/schemas/mission_decision_v1.schema.json",
+  "title": "RoCell compact mission decision v1",
+  "oneOf": [
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema", "decision", "device"],
+      "properties": {
+        "schema": {"const": "rocell.mission_decision.v1"},
+        "decision": {"const": "execute"},
+        "device": {"enum": ["keyboard", "phone"]}
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema", "decision", "reason"],
+      "properties": {
+        "schema": {"const": "rocell.mission_decision.v1"},
+        "decision": {"const": "clarify"},
+        "reason": {"enum": ["device_ambiguous", "payload_ambiguous", "intent_ambiguous"]}
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema", "decision", "kind"],
+      "properties": {
+        "schema": {"const": "rocell.mission_decision.v1"},
+        "decision": {"const": "unsupported"},
+        "kind": {"enum": ["shifted_keyboard_text", "phone_call"]}
+      }
+    }
+  ]
+}

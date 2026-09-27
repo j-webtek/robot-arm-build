@@ -9803,3 +9803,33 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Development-only synthetic templated evidence with simulated review. Both candidates are unsafe and unusable. Validation may inform a future preregistered development study, but neither candidate may advance to confirmation. Model weights and Ollama blobs remain outside Git. No camera, localization, motion, runtime, hardware, physical, arm, or integration status changed.
 - Supersedes: none; both v2 candidates remain preserved as failed development evidence.
 - Next dependency: Diagnose development confusion using the committed validation scorecards, then preregister a different learning formulation rather than adding epochs. Priority is eliminating wrong accepted operations and separating semantic classification from literal slot copying before any fresh confirmation population is created.
+
+### E-20260927-AI-427 — compact mission decision initial test collection failure
+
+- Stage: S1
+- Lane: AI
+- Commit: `12f78b5100c229d90448ff6a57c9e3d63db5081f` (failed v2 development evidence parent; failed test and correction committed in the successor)
+- Inputs/fixtures: Failed v1/v2 full-object student evidence; new compact seven-class decision schema, deterministic assembler, and focused tests; existing MissionIntentV1 validator/compiler and ModelMotionBatchV2 emitter regression.
+- Command: `python -m py_compile software/ai/rocell_ai/mission_decision.py software/ai/tests/test_mission_decision.py; python -m pytest -q software/ai/tests/test_mission_decision.py software/ai/tests/test_mission_intent.py software/ai/tests/test_batch_emitter_v2.py; git diff --check`
+- Result: FAIL during collection: pytest reserves the parametrization name `request`; no test executed. Python compilation completed. The implementation, schema, target classes, grounding behavior, and expected results were unchanged after this harness-only failure.
+- Artifacts: `schemas/mission_decision_v1.schema.json`; `rocell_ai/mission_decision.py`; `tests/test_mission_decision.py`; active S1 claim in this workplan.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Test-harness naming failure before boundary verification. No dataset, model, fit, selection, confirmation, runtime, or physical evidence. No arm or integration status change.
+- Supersedes: none; this failed evidence remains preserved.
+- Next dependency: Rename only the test parameter from pytest-reserved `request` to `request_text`, then rerun the identical suite.
+
+### E-20260927-AI-428 — compact mission decision and deterministic assembly boundary
+
+- Stage: S1
+- Lane: AI
+- Commit: `12f78b5100c229d90448ff6a57c9e3d63db5081f` (failed v2 development evidence parent; compact boundary, tests, documentation, and ledger committed in the successor)
+- Inputs/fixtures: Decision schema SHA-256 `53b3c660352812d9c9250bc2807e6521665153e1d4a6a3ac7bffcca16f062f4c`; runtime SHA-256 `d7d8b3268ec5a18c2def59920f86ba4948481d591960c6e01109966a6ceadba0`; corrected focused-test SHA-256 `cfed28fc377a3ceb57beeb73b4599a51bd7dee44a981f047356c63c0504c81fb`; existing strict MissionIntentV1 and actual ModelMotionBatchV2 fixtures.
+- Command: `python -m pytest -q software/ai/tests/test_mission_decision.py software/ai/tests/test_mission_intent.py software/ai/tests/test_offline.py software/ai/tests/test_batch_emitter_v2.py; git diff --check`
+- Result: PASS: 48 tests in 1.05s and clean diff check. Added seven bounded semantic classes with strict duplicate-free decoding. Execute decisions carry only a device. Deterministic assembly copies request/observation bindings and one exact double-quoted literal, assigns fixed capability/policy fields, validates MissionIntentV1, and records a decision hash. Multiple literals, missing or conflicting device grounding, and known compound operations deterministically downgrade to clarification. Clarification and unsupported classes expand through fixed mappings. Tests prove exact preservation of the command-like literal `call mom`, compiler acceptance after safe assembly, conservative downgrade paths, rejection of model-supplied text and extra fields, zero hardware/physical counts, preserved legacy semantic behavior, and unchanged ModelMotionBatchV2 assembly behavior.
+- Artifacts: schema, runtime, and test from AI-427; `docs/MISSION_DECISION_V1.md`; update to `docs/CONTRACT.md`; shared ledger.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Offline contract and deterministic assembly only. Double-quoted literals and finite device/compound vocabularies deliberately reject valid language and are not a complete parser. The semantic classifier model and compact curriculum do not yet exist. No camera, localization, trajectory, contact, runtime, hardware, physical, qualification, arm, or integration evidence/status changed.
+- Supersedes: none; full-object student results remain preserved as failed evidence and motivation.
+- Next dependency: Freeze a derived compact-decision development dataset from the existing balanced v2 records. Targets must contain only the seven classes, while an independent test must reassemble each decision against the source request and reproduce the existing MissionIntentV1 target or a documented conservative downgrade. Then train a seven-class student without generating literals.
