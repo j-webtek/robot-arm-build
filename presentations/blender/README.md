@@ -98,6 +98,27 @@ while the camera moves between the workcell, arm, devices, and route.
 The film ends with a visible qualification disclaimer. It must not be used as
 fabrication approval, camera-load approval, or robot-motion evidence.
 
+## Editorial system
+
+The final composite adds a controlled finishing layer without altering the
+dimension-checked 3D render:
+
+- true 200 ms cross-dissolves overlap adjacent camera setups without discarding
+  source frames;
+- chapter titles explain one architectural decision at a time;
+- a persistent five-stage spine highlights the current system responsibility;
+- monospace cards show a nominal model proposal, admission result, resolved
+  board target, execution permit, and verification result;
+- the example card explicitly says `NOMINAL` so illustrative values cannot be
+  mistaken for a live controller trace;
+- informational graphics are composited after transitions, keeping titles and
+  evidence labels readable during every cut.
+
+When revising the film, preserve these communication rules: one idea per shot,
+no unqualified capability claims, no raw model output presented as an admitted
+controller command, no critical text outside title-safe margins, and no visual
+effect that obscures the hardware evidence.
+
 ## Authoritative inputs
 
 - `active-project/RoCell_v0_3/config/workcell_layout.json`

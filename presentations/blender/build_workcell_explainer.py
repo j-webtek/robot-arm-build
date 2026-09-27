@@ -560,6 +560,7 @@ Style: Sub,Arial,32,&H00F6F8FA,&H000000FF,&H90081119,&H70000000,-1,0,0,0,100,100
 Style: Cyan,Arial,27,&H00F8C845,&H000000FF,&H90081119,&H70000000,-1,0,0,0,100,100,0,0,1,3,1,2,90,90,58,1
 Style: Warn,Arial,22,&H004C9BFF,&H000000FF,&H90081119,&H70000000,-1,0,0,0,100,100,0,0,1,3,1,2,75,75,48,1
 Style: Spine,Arial,23,&H00D8DEE8,&H000000FF,&H90081119,&H90000000,-1,0,0,0,100,100,1,0,1,3,1,2,60,60,24,1
+Style: Card,Consolas,24,&H00F3F6FA,&H000000FF,&H00373E49,&HC00A0E14,-1,0,0,0,100,100,0,0,3,2,0,7,90,90,205,1
 
 [Events]
 Format: Layer,Start,End,Style,Name,MarginL,MarginR,MarginV,Effect,Text
@@ -571,18 +572,23 @@ Dialogue: 0,0:00:03.72,0:00:07.25,Spine,,0,0,0,,{\\fad(180,180)}{\\c&H00F8C845}P
 Dialogue: 0,0:00:07.38,0:00:10.55,Hero,,0,0,0,,{\\fad(180,180)}2 · PROPOSE A TARGET
 Dialogue: 0,0:00:07.65,0:00:10.55,Cyan,,0,0,0,,{\\fad(180,180)}AI PRODUCES INTENT, TARGET, FRAME AND CONFIDENCE — NEVER RAW SERVO COMMANDS
 Dialogue: 0,0:00:07.38,0:00:10.55,Spine,,0,0,0,,{\\fad(180,180)}PERCEIVE  →  {\\c&H00F8C845}PROPOSE{\\c&H00D8DEE8}  →  CHECK  →  EXECUTE  →  VERIFY
+Dialogue: 0,0:00:07.72,0:00:10.40,Card,,0,0,0,,{\\fad(180,180)}{\\c&H00F8C845}NOMINAL MODEL PROPOSAL{\\c&H00F3F6FA}\\Naction       hover\\Ntarget       keyboard:H\\Nframe        board\\Nconfidence   0.97
 Dialogue: 0,0:00:10.70,0:00:13.85,Hero,,0,0,0,,{\\fad(180,180)}3 · CHECK THE PLAN
 Dialogue: 0,0:00:10.95,0:00:13.85,Cyan,,0,0,0,,{\\fad(180,180)}DETERMINISTIC GATES VERIFY UNITS, FRAMES, REACH, CLEARANCE AND FRESHNESS
 Dialogue: 0,0:00:10.70,0:00:13.85,Spine,,0,0,0,,{\\fad(180,180)}PERCEIVE  →  PROPOSE  →  {\\c&H004C9BFF}CHECK{\\c&H00D8DEE8}  →  EXECUTE  →  VERIFY
+Dialogue: 0,0:00:10.98,0:00:13.70,Card,,0,0,0,,{\\fad(180,180)}{\\c&H004C9BFF}ADMISSION GATE{\\c&H00F3F6FA}\\Nunits       PASS\\Nframe       PASS\\Nreach       PASS\\Nclearance   PASS\\Nfreshness   PASS
 Dialogue: 0,0:00:14.02,0:00:16.85,Hero,,0,0,0,,{\\fad(180,180)}3 · CHECK TARGET + ROUTE
 Dialogue: 0,0:00:14.25,0:00:16.85,Cyan,,0,0,0,,{\\fad(180,180)}NAMED KEYS AND PHONE CONTROLS RESOLVE THROUGH MEASURED DEVICE GEOMETRY
 Dialogue: 0,0:00:14.02,0:00:16.85,Spine,,0,0,0,,{\\fad(180,180)}PERCEIVE  →  PROPOSE  →  {\\c&H004C9BFF}CHECK{\\c&H00D8DEE8}  →  EXECUTE  →  VERIFY
+Dialogue: 0,0:00:14.28,0:00:16.70,Card,,0,0,0,,{\\fad(180,180)}{\\c&H004C9BFF}NOMINAL RESOLVED TARGET{\\c&H00F3F6FA}\\Nkey          H\\NX            216.55 mm\\NY            154.00 mm\\NZ            48.00 mm
 Dialogue: 0,0:00:17.02,0:00:18.45,Hero,,0,0,0,,{\\fad(150,150)}4 · EXECUTE ONE BOUNDED ACTION
 Dialogue: 0,0:00:17.20,0:00:18.45,Cyan,,0,0,0,,{\\fad(150,150)}THE SOLE CONTROLLER WRITER SENDS THE ADMITTED MOTION
 Dialogue: 0,0:00:17.02,0:00:18.45,Spine,,0,0,0,,{\\fad(150,150)}PERCEIVE  →  PROPOSE  →  CHECK  →  {\\c&H00F8C845}EXECUTE{\\c&H00D8DEE8}  →  VERIFY
+Dialogue: 0,0:00:17.18,0:00:18.35,Card,,0,0,0,,{\\fad(120,120)}{\\c&H00F8C845}EXECUTION PERMIT{\\c&H00F3F6FA}\\Naction_count 1\\Nretry        none\\Nwriter       controller
 Dialogue: 0,0:00:18.55,0:00:19.60,Hero,,0,0,0,,{\\fad(120,150)}5 · VERIFY BEFORE CONTINUING
 Dialogue: 0,0:00:18.67,0:00:19.60,Cyan,,0,0,0,,{\\fad(120,150)}TELEMETRY + OBSERVATION CLOSE THE LOOP
 Dialogue: 0,0:00:18.55,0:00:19.60,Spine,,0,0,0,,{\\fad(120,150)}PERCEIVE  →  PROPOSE  →  CHECK  →  EXECUTE  →  {\\c&H003DCC46}VERIFY
+Dialogue: 0,0:00:18.66,0:00:19.48,Card,,0,0,0,,{\\fad(100,100)}{\\c&H003DCC46}RESULT{\\c&H00F3F6FA}\\Nsettled      PASS\\Nobserved     PASS
 Dialogue: 0,0:00:19.75,0:00:21.95,Hero,,0,0,0,,{\\fad(220,180)}ONE SHARED CONTRACT
 Dialogue: 0,0:00:19.98,0:00:21.95,Sub,,0,0,0,,{\\fad(220,180)}FROM USER INTENT TO VERIFIED PHYSICAL ACTION
 Dialogue: 0,0:00:19.82,0:00:21.95,Warn,,0,0,0,,{\\fad(220,180)}PRESENTATION VISUALIZATION • STATIC OFFICIAL ARM POSE • NOT MOTION OR FABRICATION QUALIFICATION
@@ -600,10 +606,35 @@ def composite_overlay(clean_video: Path, final_video: Path) -> None:
     # libass filter paths require a forward-slash Windows path with an escaped
     # drive colon. subprocess avoids shell interpolation of the filter itself.
     ass_filter_path = str(ass_path).replace("\\", "/").replace(":", "\\:")
+    # Overlap 100 ms on each side of every camera cut and use a true 200 ms
+    # cross-dissolve. Segment overlap preserves the source pixels; sequential
+    # fade filters would destructively blacken the already-filtered stream.
+    # Information graphics are composited last so chapter titles remain stable.
+    camera_cuts = (89 / FPS, 177 / FPS, 265 / FPS, 337 / FPS, 409 / FPS, 473 / FPS)
+    overlap = 0.10
+    dissolve = overlap * 2
+    source_duration = END_FRAME / FPS
+    starts = [0.0, *[cut - overlap for cut in camera_cuts]]
+    ends = [*[cut + overlap for cut in camera_cuts], source_duration]
+    graph: list[str] = []
+    for index, (start, end) in enumerate(zip(starts, ends)):
+        graph.append(
+            f"[0:v]trim=start={start:.3f}:end={end:.3f},"
+            f"setpts=PTS-STARTPTS,fps={FPS},settb=AVTB,format=yuv420p[segment{index}]"
+        )
+    previous = "segment0"
+    for index, cut in enumerate(camera_cuts, start=1):
+        output = f"transition{index}"
+        graph.append(
+            f"[{previous}][segment{index}]xfade=transition=fade:"
+            f"duration={dissolve:.3f}:offset={cut - overlap:.3f}[{output}]"
+        )
+        previous = output
+    graph.append(f"[{previous}]ass='{ass_filter_path}'[finished]")
     subprocess.run(
         [
             ffmpeg, "-y", "-i", str(clean_video),
-            "-vf", f"ass='{ass_filter_path}'",
+            "-filter_complex", ";".join(graph), "-map", "[finished]",
             "-c:v", "libx264", "-preset", "medium", "-crf", "18",
             "-pix_fmt", "yuv420p", "-movflags", "+faststart",
             str(final_video),
