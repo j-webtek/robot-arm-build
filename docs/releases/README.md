@@ -3,16 +3,17 @@
 **Document status:** Current release index  
 **Authority:** Navigation and readiness context only; this page does not approve or publish a release
 
-Tactevra has not published a GitHub release. Release preparation is tracked in
-[issue #57](https://github.com/j-webtek/tactevra/issues/57). The issue is the live
-readiness record; dated documents in this directory preserve evidence for the
-exact revisions they name and must not be silently updated to describe newer
-source.
+Tactevra has not published a GitHub release. Start with the
+[current readiness dashboard](READINESS.md), then use
+[issue #57](https://github.com/j-webtek/tactevra/issues/57) for the actionable
+checklist. Dated documents in this directory preserve evidence for the exact
+revisions they name and must not be silently updated to describe newer source.
 
 ## Current readiness path
 
-1. Resolve the linked owner-evidence dependencies in issue #57. A repository or
-   CI improvement cannot substitute for AI- or arm-owner evidence.
+1. Resolve the owner-evidence dependencies shown on the readiness dashboard and
+   in issue #57. A repository or CI improvement cannot substitute for AI- or
+   arm-owner evidence.
 2. Select one full commit SHA on protected `main` only after those dependencies
    close.
 3. Follow the [experimental release procedure](../RELEASING.md), including the
@@ -30,6 +31,7 @@ promote a model, qualify physical behavior, or authorize hardware activity.
 
 | Record | Lifecycle | Use |
 | --- | --- | --- |
+| [Current readiness dashboard](READINESS.md) | Current status | Concise gate state, ownership, and next actions; not release approval |
 | [Experimental preview draft](EXPERIMENTAL_PREVIEW_DRAFT.md) | Superseded, unpublished | Historical proposed scope and limitations |
 | [Candidate `dcd87db`](CANDIDATE_DCD87DB.md) | Superseded without publication | Exact-revision validation and unresolved gates |
 | [Baseline from September 26, 2026](BASELINE_2026-09-26.md) | Historical evidence | Earlier pinned source qualification |

@@ -5,9 +5,10 @@ It does not qualify physical operation or publish an installer, firmware image,
 model bundle, or new printable hardware package. Publication is a separate
 maintainer decision; this document creates no tag or GitHub release.
 
-Begin with the [release-record index](releases/README.md). It distinguishes the
-live readiness tracker from superseded exact-revision evidence. Never update a
-historical candidate record to imply that it covers newer source.
+Begin with the [current readiness dashboard](releases/READINESS.md), then use the
+[release-record index](releases/README.md) to distinguish current status from
+superseded exact-revision evidence. Never update a historical candidate record
+to imply that it covers newer source.
 
 Vendor geometry that lacks established redistribution permission is link-only.
 In particular, `hardware/static_overhead_camera/vendor/B0477.STEP` must remain
