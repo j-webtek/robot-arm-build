@@ -262,14 +262,81 @@ def look_at(obj: bpy.types.Object, target: Vector) -> None:
 
 def animate_transform(obj: bpy.types.Object, frames_and_locations: list[tuple[int, Vector]],
                       frames_and_targets: list[tuple[int, Vector]] | None = None) -> None:
+    obj.rotation_mode = "QUATERNION"
     for frame, loc in frames_and_locations:
         obj.location = loc
         obj.keyframe_insert("location", frame=frame)
     if frames_and_targets:
         for frame, target in frames_and_targets:
             obj.location = dict(frames_and_locations)[frame]
-            look_at(obj, target)
-            obj.keyframe_insert("rotation_euler", frame=frame)
+            obj.rotation_quaternion = (target - obj.location).to_track_quat("-Z", "Y")
+            obj.keyframe_insert("rotation_quaternion", frame=frame)
+
+
+def verify_scene_layout(scene: bpy.types.Scene, layout: dict,
+                        camera_front_z: float) -> None:
+    """Fail the render if presentation assets drift from the RC03 contract."""
+    tolerance = 0.00015
+
+    def assert_vector(actual: Vector, expected: Vector, label: str) -> None:
+        if (actual - expected).length > tolerance:
+            raise RuntimeError(
+                f"{label} presentation drift: {tuple(actual)} != {tuple(expected)}"
+            )
+
+    board = scene.objects["MEASURED — 610 × 457 × 18 mm board"]
+    assert_vector(board.location, Vector((0.0, 0.0, -0.009)), "board center")
+    assert_vector(board.dimensions, Vector((0.610, 0.457, 0.018)), "board envelope")
+
+    keyboard = layout["devices"]["keyboard"]
+    kx, ky = keyboard["nominal_origin_xy"]
+    ksx, ksy, ksz = keyboard["nominal_size"]
+    keyboard_body = scene.objects["Measured keyboard lower chassis"]
+    assert_vector(
+        keyboard_body.location,
+        board_point(kx + ksx / 2, ky + ksy / 2, ksz * 0.38),
+        "keyboard center",
+    )
+    assert_vector(
+        keyboard_body.dimensions,
+        Vector((ksx / 1000, ksy / 1000, ksz * 0.76 / 1000)),
+        "keyboard envelope",
+    )
+
+    phone = layout["devices"]["phone"]
+    px, py = phone["nominal_origin_xy"]
+    psx, psy, psz = phone["configured_size"]
+    phone_body = scene.objects["Measured phone aluminum frame"]
+    assert_vector(
+        phone_body.location,
+        board_point(px + psx / 2, py + psy / 2,
+                    phone["support_plane_z"] + psz / 2),
+        "phone center",
+    )
+    assert_vector(phone_body.dimensions, Vector((psx, psy, psz)) / 1000,
+                  "phone envelope")
+
+    for station_id, object_name in (
+        ("keyboard_left", "Designed keyboard station L"),
+        ("keyboard_right", "Designed keyboard station R"),
+        ("phone_tcp", "Designed phone station"),
+    ):
+        sx, sy = layout["stations"][station_id]["origin_xy"]
+        assert_vector(scene.objects[object_name].location, board_point(sx, sy, 0),
+                      f"{station_id} origin")
+
+    for tag_id, tag in layout["direct_tags"]["tags"].items():
+        tx, ty = tag["detection_center_xy"]
+        assert_vector(scene.objects[f"Tag {tag_id}"].location,
+                      board_point(tx, ty, 0.8), f"tag {tag_id} center")
+
+    expected_optical_z = layout.get("presentation_camera_optical_z_mm", 1000.0) / 1000
+    if abs(camera_front_z - expected_optical_z) > tolerance:
+        raise RuntimeError(
+            f"camera optical plane drift: {camera_front_z} != {expected_optical_z}"
+        )
+
+    scene["layout_verification"] = "PASS_RC03_BOARD_DEVICE_STATION_TAG_CAMERA"
 
 
 def add_tag(tag_id: str, x: float, y: float, white: bpy.types.Material,
@@ -280,7 +347,9 @@ def add_tag(tag_id: str, x: float, y: float, white: bpy.types.Material,
     for ix, iy in ((-1, -1), (1, -1), (-1, 1), (1, 1), (0, 0)):
         cell = cube(f"Tag {tag_id} cell", board_point(x + ix * 13, y + iy * 13, 1.7),
                     (0.010, 0.010, 0.001), black)
-        cell.parent = base
+        # These coordinates are already in board/world space. Parenting here
+        # would reinterpret them as local coordinates and translate every cell
+        # by the tag center a second time.
     return base
 
 
@@ -289,10 +358,12 @@ def add_keyboard(layout: dict, mats: dict[str, bpy.types.Material]) -> dict[str,
     ox, oy = dev["nominal_origin_xy"]
     sx, sy, sz = dev["nominal_size"]
     # Repository station meshes are designed artifacts and placed by RC03 origins.
+    left_origin = (*layout["stations"]["keyboard_left"]["origin_xy"], 0.0)
+    right_origin = (*layout["stations"]["keyboard_right"]["origin_xy"], 0.0)
     import_stl(STL_DIR / "keyboard_station_left.stl", "Designed keyboard station L",
-               mats["abs"], (80.0, 72.0, 0.0))
+               mats["abs"], left_origin)
     import_stl(STL_DIR / "keyboard_station_right.stl", "Designed keyboard station R",
-               mats["abs"], (242.5, 72.0, 0.0))
+               mats["abs"], right_origin)
     cube("Measured keyboard lower chassis",
          board_point(ox + sx / 2, oy + sy / 2, sz * 0.38),
          (sx / 1000, sy / 1000, sz * 0.76 / 1000),
@@ -387,8 +458,9 @@ def add_phone(layout: dict, mats: dict[str, bpy.types.Material]) -> dict[str, bp
     dev = layout["devices"]["phone"]
     ox, oy = dev["nominal_origin_xy"]
     sx, sy, sz = dev["configured_size"]
+    station_origin = (*layout["stations"]["phone_tcp"]["origin_xy"], 0.0)
     import_stl(STL_DIR / "phone_tcp_station.stl", "Designed phone station",
-               mats["abs"], (411.0, 80.0, 0.0))
+               mats["abs"], station_origin)
     phone = cube("Measured phone aluminum frame",
                  board_point(ox + sx / 2, oy + sy / 2, dev["support_plane_z"] + sz / 2),
                  (sx / 1000, sy / 1000, sz / 1000), mats["phone"], 0.006)
@@ -761,6 +833,9 @@ def setup_render(scene: bpy.types.Scene) -> None:
 def build() -> bpy.types.Scene:
     clean_scene()
     layout = json.loads(LAYOUT_PATH.read_text(encoding="utf-8"))
+    dimension_manifest = json.loads(
+        DIMENSION_MANIFEST_PATH.read_text(encoding="utf-8")
+    )
     scene = bpy.context.scene
     setup_render(scene)
 
@@ -864,31 +939,46 @@ def build() -> bpy.types.Scene:
         h_key.location.z = h_key_z + offset
         h_key.keyframe_insert("location", frame=frame)
     # A recognizable camera hangs below the carriage instead of disappearing
-    # inside the portal mounting plate. The optical axis remains centered on
-    # the nominal board target.
-    cam_center = board_point(305, 228.5, 970)
+    # inside the portal mounting plate. The front glass is fixed at the
+    # manifest's 1000 mm nominal optical plane and the axis remains centered on
+    # the board. Body, mount, connector, cable, lens barrel, glass, and status
+    # light all remain visible in the establishing shot.
+    optical_z_mm = dimension_manifest["portal"]["nominal_camera_optical_z"]
+    cam_center = board_point(305, 228.5, optical_z_mm + 46.0)
     camera_hardware = [
         cube("Designed camera body", cam_center, (0.086, 0.066, 0.052), mats["abs"], 0.008),
-        cube("Designed camera top mount", cam_center + Vector((0, 0, 0.047)),
-             (0.046, 0.042, 0.044), mats["metal"], 0.005),
+        cube("Designed camera top mount", cam_center + Vector((0, 0, 0.033)),
+             (0.050, 0.044, 0.014), mats["metal"], 0.004),
+        cube("Camera rear I/O block", cam_center + Vector((0.045, 0.0, 0.006)),
+             (0.014, 0.034, 0.026), mats["metal"], 0.003),
+        cube("Camera mounting shoe", cam_center + Vector((0.0, 0.0, 0.040)),
+             (0.072, 0.030, 0.006), mats["metal"], 0.002),
     ]
-    lens = cylinder("Machine vision lens", cam_center + Vector((0, 0, -0.047)),
-                    0.022, 0.050, mats["metal"])
+    lens = cylinder("Machine vision lens", board_point(305, 228.5, optical_z_mm + 10.0),
+                    0.022, 0.020, mats["metal"])
     lens.rotation_euler = (0, 0, 0)
     lens_glass = cylinder("Machine vision front glass",
-                          cam_center + Vector((0, 0, -0.073)),
+                          board_point(305, 228.5, optical_z_mm - 1.5),
                           0.016, 0.003, mats["cyan"], 48)
     lens_glass.rotation_euler = (0, 0, 0)
     status_light = cylinder("Camera status light", cam_center + Vector((0.031, -0.034, 0.006)),
                             0.004, 0.003, mats["green"], 32)
     status_light.rotation_euler = (math.pi / 2, 0, 0)
     camera_hardware.extend((lens, lens_glass, status_light))
+    camera_cable = curve_line(
+        "Camera data and power cable",
+        [cam_center + Vector((0.051, 0.0, 0.009)),
+         cam_center + Vector((0.092, 0.0, 0.035)),
+         board_point(427, 228.5, 1090)],
+        mats["cable"], 0.0035,
+    )
+    camera_hardware.append(camera_cable)
     for component in camera_hardware:
         component.hide_render = False
         component.keyframe_insert("hide_render", frame=1)
-        component.keyframe_insert("hide_render", frame=528)
+        component.keyframe_insert("hide_render", frame=432)
         component.hide_render = True
-        component.keyframe_insert("hide_render", frame=529)
+        component.keyframe_insert("hide_render", frame=433)
         component.keyframe_insert("hide_render", frame=1560)
         component.hide_render = False
         component.keyframe_insert("hide_render", frame=1561)
@@ -908,10 +998,12 @@ def build() -> bpy.types.Scene:
         (97, Vector((0.28, -1.30, 0.78))), (240, Vector((0.12, -1.10, 0.70))),
         (241, Vector((0.18, -1.18, 0.72))), (336, Vector((-0.02, -1.02, 0.66))),
         # Perceive: camera fixture, then its measured top-down view.
-        (337, Vector((0.62, -0.36, 1.18))), (408, Vector((0.28, -0.18, 1.02))),
+        (337, Vector((0.46, -0.56, 0.86))), (349, Vector((0.46, -0.56, 0.86))),
+        (420, Vector((0.30, -0.38, 0.90))), (432, Vector((0.30, -0.38, 0.90))),
         # The lens POV begins below the physical camera body so the fixture
         # cannot occlude or defocus the board evidence.
-        (409, Vector((-0.10, -0.04, 0.92))), (528, Vector((0.10, 0.04, 0.84))),
+        (433, Vector((0.0, 0.0, 1.00))), (445, Vector((0.0, 0.0, 1.00))),
+        (516, Vector((0.0, 0.0, 0.82))), (528, Vector((0.0, 0.0, 0.82))),
         # Proposal and both gate decisions keep the exact arm visibly still.
         # The previous reverse angle was dominated by a portal leg; this angle
         # preserves the workcell context behind the screen-space evidence card.
@@ -937,8 +1029,12 @@ def build() -> bpy.types.Scene:
     ]
     targets = [
         (1, Vector((0, 0.02, 0.38))), (336, Vector((0, 0.02, 0.38))),
-        (337, Vector((0, 0.02, 1.00))), (408, Vector((0, 0.02, 0.98))),
-        (409, Vector((0, 0.00, 0.03))), (528, Vector((0, 0.00, 0.03))),
+        (337, board_point(305, 228.5, optical_z_mm + 8)),
+        (349, board_point(305, 228.5, optical_z_mm + 8)),
+        (420, board_point(305, 228.5, optical_z_mm + 2)),
+        (432, board_point(305, 228.5, optical_z_mm + 2)),
+        (433, Vector((0, 0.00, 0.00))), (445, Vector((0, 0.00, 0.00))),
+        (516, Vector((0, 0.00, 0.00))), (528, Vector((0, 0.00, 0.00))),
         # Tilt the three decision shots toward the board. The arm remains the
         # hero, but the keyboard and calibrated surface now provide changing
         # spatial context instead of three nearly identical black backdrops.
@@ -964,11 +1060,12 @@ def build() -> bpy.types.Scene:
     camera_target_by_frame = dict(targets)
     for frame in (1057, 1224):
         camera.location = camera_location_by_frame[frame]
-        camera.rotation_euler = (
+        rolled = (
             camera_target_by_frame[frame] - camera.location
         ).to_track_quat("-Z", "Y").to_euler()
-        camera.rotation_euler.rotate_axis("Z", math.radians(-90))
-        camera.keyframe_insert("rotation_euler", frame=frame)
+        rolled.rotate_axis("Z", math.radians(-90))
+        camera.rotation_quaternion = rolled.to_quaternion()
+        camera.keyframe_insert("rotation_quaternion", frame=frame)
 
     # A focus target tracks the same authored points as the camera aim. Depth
     # of field remains subtle enough to preserve dimension evidence while
@@ -982,7 +1079,8 @@ def build() -> bpy.types.Scene:
     camera.data.dof.aperture_fstop = 11.0
     lens_keys = (
         (1, 38), (96, 42), (97, 50), (240, 72), (241, 54), (336, 70),
-        (337, 52), (408, 78), (409, 38), (528, 45),
+        (337, 58), (349, 58), (420, 74), (432, 74),
+        (433, 38), (445, 38), (516, 45), (528, 45),
         (529, 55), (720, 70), (721, 60), (888, 72),
         (889, 65), (1056, 82), (1057, 58), (1224, 70),
         (1225, 52), (1392, 68), (1393, 62), (1560, 74),
@@ -994,8 +1092,8 @@ def build() -> bpy.types.Scene:
     # Shot-specific depth of field separates architectural context from the
     # target-resolution, press, and phone-result macro beats.
     aperture_keys = (
-        (1, 8.0), (336, 7.1), (337, 6.3), (408, 5.6),
-        (409, 10.0), (528, 9.0), (529, 7.1), (1056, 6.3),
+        (1, 8.0), (336, 7.1), (337, 8.0), (432, 7.1),
+        (433, 11.0), (528, 10.0), (529, 7.1), (1056, 6.3),
         (1057, 9.0), (1224, 8.0), (1225, 6.3), (1392, 5.6),
         (1393, 9.0), (1560, 8.0), (1561, 7.1), (END_FRAME, 6.3),
     )
@@ -1046,17 +1144,21 @@ def build() -> bpy.types.Scene:
 
     vision = text_object("Vision label", "STATIC VISION\n1000 mm NOMINAL OPTICAL TARGET",
                          Vector((0.0, 0.07, 1.14)), 0.035, mats["white"], camera)
-    visibility(vision, 337, 408)
+    visibility(vision, 337, 432)
     sight = curve_line("Vision ray",
-                       [board_point(305, 228.5, 995), board_point(305, 228.5, 14)], mats["cyan"], 0.002)
-    visibility(sight, 337, 528)
+                       [board_point(305, 228.5, optical_z_mm),
+                        board_point(305, 228.5, 14)], mats["cyan"], 0.002)
+    # This is an exterior-shot explanatory ray, not a physical object. Hide it
+    # before switching through the lens so it cannot bloom down the optical
+    # axis and obscure the measured board view.
+    visibility(sight, 337, 432)
 
     # In the camera POV the four physical tags pulse in sequence and the board
     # axes draw on the board itself, making perception visible without a card.
     for index, (tag_id, _tag, xy) in enumerate(tag_objects):
         ring = add_target_ring(f"Perception pulse {tag_id}", xy[0], xy[1], 4.2,
-                               mats["cyan"], 409, 528)
-        pulse_visibility(ring, 414 + index * 18, 528)
+                               mats["cyan"], 433, 528)
+        pulse_visibility(ring, 440 + index * 13, 528)
     perceive_origin = board_point(42, 42, 5)
     x_axis = add_axis("Perceive board X", perceive_origin,
                       perceive_origin + Vector((0.115, 0, 0)), mats["cyan"], 448, 528)
@@ -1068,8 +1170,8 @@ def build() -> bpy.types.Scene:
                          0.015, mats["cyan"])
     y_label = board_text("Perceive Y label", "Y", perceive_origin + Vector((0, 0.126, 0.002)),
                          0.015, mats["cyan"])
-    visibility(x_label, 462, 528)
-    visibility(y_label, 472, 528)
+    visibility(x_label, 480, 528)
+    visibility(y_label, 490, 528)
 
     arm_detail = text_object("Arm detail label", "ROARM-M3\nURDF-DERIVED ARM PROXY",
                              Vector((0.0, -0.10, 0.42)), 0.030, mats["white"], camera)
@@ -1077,7 +1179,7 @@ def build() -> bpy.types.Scene:
 
     devices = text_object("Device label", "INDEXED DEVICE GEOMETRY\nKEYBOARD + PHONE + DIRECT TAGS",
                           Vector((0.02, -0.14, 0.29)), 0.031, mats["white"], camera)
-    visibility(devices, 409, 528)
+    visibility(devices, 433, 528)
     h_ring = add_target_ring("Keyboard target H", 216.55, 154.0, 29,
                              mats["cyan"], 1057, 1320)
     h_target_label = board_text("Resolved H label", "H",
@@ -1152,6 +1254,7 @@ def build() -> bpy.types.Scene:
     )
     scene["source_layout"] = str(LAYOUT_PATH.relative_to(ROOT))
     scene["source_portal"] = str(PORTAL_PATH.relative_to(ROOT))
+    verify_scene_layout(scene, layout, optical_z_mm / 1000)
     return scene
 
 
@@ -1199,8 +1302,9 @@ Dialogue: 1,0:00:30.00,0:00:44.00,Tracker,,0,0,0,,PERCEIVE  →  PROPOSE  →  {
 Dialogue: 1,0:00:44.00,0:00:51.00,Tracker,,0,0,0,,PERCEIVE  →  PROPOSE  →  {\\c&H00F8C845}CHECK{\\c&H00D8DEE8}  →  EXECUTE  →  VERIFY
 Dialogue: 1,0:00:51.00,0:00:58.00,Tracker,,0,0,0,,PERCEIVE  →  PROPOSE  →  CHECK  →  {\\c&H00F8C845}EXECUTE{\\c&H00D8DEE8}  →  VERIFY
 Dialogue: 1,0:00:58.00,0:01:05.00,Tracker,,0,0,0,,PERCEIVE  →  PROPOSE  →  CHECK  →  EXECUTE  →  {\\c&H004FCC33}VERIFY
-Dialogue: 1,0:00:14.00,0:00:16.10,Stage,,0,0,0,,{\\fad(180,180)}1 · PERCEIVE
-Dialogue: 1,0:00:16.10,0:00:22.00,Badge,,0,0,0,,{\\fad(180,180)}{\\c&H00F8C845}4 TAGS LOCKED  ·  BOARD X/Y DRAWN
+Dialogue: 1,0:00:14.00,0:00:15.20,Stage,,0,0,0,,{\\fad(180,180)}1 · PERCEIVE
+Dialogue: 1,0:00:15.20,0:00:18.00,Badge,,0,0,0,,{\\fad(180,180)}{\\c&H00F8C845}FIXED OVERHEAD CAMERA  ·  1000 mm OPTICAL PLANE
+Dialogue: 1,0:00:18.00,0:00:22.00,Badge,,0,0,0,,{\\fad(180,180)}{\\c&H00F8C845}4 TAGS LOCKED  ·  BOARD X/Y DRAWN
 Dialogue: 1,0:00:22.00,0:00:24.00,Stage,,0,0,0,,{\\fad(180,180)}2 · PROPOSE
 Dialogue: 1,0:00:24.00,0:00:30.00,Card,,0,0,0,,{\\fad(180,180)}{\\c&H004C9BFF}MODEL PROPOSAL{\\c&H00F3F6FA}\\Naction       press\\Ntarget       keyboard:H\\Nframe        board\\Nconfidence   0.97
 Dialogue: 1,0:00:30.00,0:00:31.80,Stage,,0,0,0,,{\\fad(150,150)}3 · CHECK
@@ -1735,13 +1839,15 @@ def composite_overlay(clean_video: Path, final_video: Path,
     # libass filter paths require a forward-slash Windows path with an escaped
     # drive colon. subprocess avoids shell interpolation of the filter itself.
     ass_filter_path = str(ass_path).replace("\\", "/").replace(":", "\\:")
-    # Overlap 100 ms on each side of every camera cut and use a true 200 ms
-    # cross-dissolve. Segment overlap preserves the source pixels; sequential
+    # Overlap 180 ms on each side of every camera cut and use a true 360 ms
+    # cross-dissolve. This takes the edge off chapter cuts while remaining
+    # short enough that evidence from adjacent states is never conflated.
+    # Segment overlap preserves the source pixels; sequential
     # fade filters would destructively blacken the already-filtered stream.
     # Information graphics are composited last so chapter titles remain stable.
     camera_cuts = (4.0, 10.0, 14.0, 22.0, 30.0, 37.0, 44.0,
                    51.0, 58.0, 65.0, 72.0)
-    overlap = 0.10
+    overlap = 0.18
     dissolve = overlap * 2
     source_duration = END_FRAME / FPS
     starts = [0.0, *[cut - overlap for cut in camera_cuts]]
@@ -1803,7 +1909,7 @@ def main() -> None:
     bpy.ops.wm.save_as_mainfile(filepath=str(blend_path))
 
     if "--preview-shots" in args:
-        preview_frames = (48, 168, 288, 384, 468, 624, 804, 972,
+        preview_frames = (48, 168, 288, 360, 420, 468, 624, 804, 972,
                           1140, 1300, 1476, 1644, 1788)
         scene.render.resolution_percentage = 55
         for frame in preview_frames:
