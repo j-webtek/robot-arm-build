@@ -599,7 +599,7 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-- AI lane / S1: final image-scale fit/export, then34000000..34000999 calibration and35000000..35000999 confirmation; fixed features/pose/rules, no arm changes.
+
 
 
 
@@ -8075,3 +8075,51 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Error scale only, no calibrated bound. Zero pose fits/calibration fits; no runtime promotion or qualification. Batch contract and arm/integration statuses unchanged.
 - Supersedes: none.
 - Next dependency: Independently frozen34000000..34000999 normalized-score calibration and35000000..35000999 confirmation; fixed3mm research gate and99% scene criterion.
+
+
+### E-20260927-AI-313 — image-dependent uncertainty confirmation
+
+- Stage: S1
+- Lane: AI
+- Commit: `642827db5a82fd66ac6fec7aa438a2dd8f36da32` (scale artifact and source/plan frozen before calibration/confirmation; report/tests/docs in successor)
+- Inputs/fixtures:34000000..34000999 calibration and35000000..35000999 confirmation; each1000 scenes x4ellipse conditions. Pose SHA256 c9f4ef6d8f9e50317a917154fccacce46506ab2e7cde8267396e28fec156147b; scale SHA256476a64054981226d63afe119d124188b1946cf9f8debbad83ae605d018fd8082. Full source hashes in eval/scaled_uncertainty_v1_plan.json; report SHA256 `88519196d646f757c07d722653fe00a98e0c71b68efe681921d50f9b145006cd` includes all scores, errors, scales and pixel/prediction hashes.
+- Command: `python software/ai/vision/evaluate_scaled_uncertainty.py`
+- Result: FAIL utility:rank991 normalized quantile4.75657008897. Confirmation994/1000 scenes covered(99.4%;95% Wilson98.6972%–99.7247%),3986/4000 images covered(99.65%). Zero accepted images in every condition; zero accepted violations is vacuous. Scene coverage passes but nonzero-acceptance requirement fails.
+- Artifacts: vision/evaluate_scaled_uncertainty.py; eval/scaled_uncertainty_v1_plan.json and report.json; tests/test_scaled_uncertainty.py; docs/IMAGE_DEPENDENT_UNCERTAINTY.md.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: One normalized-quantile calibration fit, zero pose/scale fits during confirmation. Both34M/35M ranges now consumed. Synthetic marginal coverage is not conditional accepted coverage or physical qualification. Different cohorts prohibit attributing coverage change versus prior global experiment to the scale alone. No tuning or threshold relaxation. Runtime baseline and ModelMotionBatchV2 unchanged; boundary tests not triggered; arm/integration status unchanged. Existing pytest warning; heuristic snapshot before final docs.
+- Supersedes: none; failed global bound and zero-utility scaled bound retained.
+- Next dependency: Training-only out-of-fold risk-ranking audit on33M evidence to test whether image statistics distinguish low-error cases before any further calibration. Do not tune on consumed31M/32M/34M/35M calibration or confirmation rows. Freeze pose/scale and preserve3mm research rule; no runtime installation.
+
+
+### E-20260927-AI-314 — scale export and confirmation verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `642827db5a82fd66ac6fec7aa438a2dd8f36da32` (scale artifact and source/plan frozen before calibration/confirmation; report/tests/docs in successor)
+- Inputs/fixtures:34000000..34000999 calibration and35000000..35000999 confirmation; each1000 scenes x4ellipse conditions. Pose SHA256 c9f4ef6d8f9e50317a917154fccacce46506ab2e7cde8267396e28fec156147b; scale SHA256476a64054981226d63afe119d124188b1946cf9f8debbad83ae605d018fd8082. Full source hashes in eval/scaled_uncertainty_v1_plan.json; report SHA256 `88519196d646f757c07d722653fe00a98e0c71b68efe681921d50f9b145006cd` includes all scores, errors, scales and pixel/prediction hashes.
+- Command: `python -m pytest -q software/ai/tests/test_scaled_uncertainty.py`
+- Result: PASS:4 tests in1.87s. Strict artifact rejection, image roundtrip, full-fit lineage, complete8000-row scene/condition accounting, disjoint calibration/confirmation, quantile/coverage recount and accepted-subset violations verified.
+- Artifacts: vision/evaluate_scaled_uncertainty.py; eval/scaled_uncertainty_v1_plan.json and report.json; tests/test_scaled_uncertainty.py; docs/IMAGE_DEPENDENT_UNCERTAINTY.md.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: One normalized-quantile calibration fit, zero pose/scale fits during confirmation. Both34M/35M ranges now consumed. Synthetic marginal coverage is not conditional accepted coverage or physical qualification. Different cohorts prohibit attributing coverage change versus prior global experiment to the scale alone. No tuning or threshold relaxation. Runtime baseline and ModelMotionBatchV2 unchanged; boundary tests not triggered; arm/integration status unchanged. Existing pytest warning; heuristic snapshot before final docs.
+- Supersedes: none; failed global bound and zero-utility scaled bound retained.
+- Next dependency: Training-only out-of-fold risk-ranking audit on33M evidence to test whether image statistics distinguish low-error cases before any further calibration. Do not tune on consumed31M/32M/34M/35M calibration or confirmation rows. Freeze pose/scale and preserve3mm research rule; no runtime installation.
+
+
+### E-20260927-AI-315 — scaled uncertainty snapshot audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `642827db5a82fd66ac6fec7aa438a2dd8f36da32` (scale artifact and source/plan frozen before calibration/confirmation; report/tests/docs in successor)
+- Inputs/fixtures:34000000..34000999 calibration and35000000..35000999 confirmation; each1000 scenes x4ellipse conditions. Pose SHA256 c9f4ef6d8f9e50317a917154fccacce46506ab2e7cde8267396e28fec156147b; scale SHA256476a64054981226d63afe119d124188b1946cf9f8debbad83ae605d018fd8082. Full source hashes in eval/scaled_uncertainty_v1_plan.json; report SHA256 `88519196d646f757c07d722653fe00a98e0c71b68efe681921d50f9b145006cd` includes all scores, errors, scales and pixel/prediction hashes.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS:6231 paths,900.0MiB,0 unresolved findings,14 reviewed synthetic fixtures.
+- Artifacts: vision/evaluate_scaled_uncertainty.py; eval/scaled_uncertainty_v1_plan.json and report.json; tests/test_scaled_uncertainty.py; docs/IMAGE_DEPENDENT_UNCERTAINTY.md.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: One normalized-quantile calibration fit, zero pose/scale fits during confirmation. Both34M/35M ranges now consumed. Synthetic marginal coverage is not conditional accepted coverage or physical qualification. Different cohorts prohibit attributing coverage change versus prior global experiment to the scale alone. No tuning or threshold relaxation. Runtime baseline and ModelMotionBatchV2 unchanged; boundary tests not triggered; arm/integration status unchanged. Existing pytest warning; heuristic snapshot before final docs.
+- Supersedes: none; failed global bound and zero-utility scaled bound retained.
+- Next dependency: Training-only out-of-fold risk-ranking audit on33M evidence to test whether image statistics distinguish low-error cases before any further calibration. Do not tune on consumed31M/32M/34M/35M calibration or confirmation rows. Freeze pose/scale and preserve3mm research rule; no runtime installation.
