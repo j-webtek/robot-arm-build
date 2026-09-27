@@ -16,6 +16,7 @@ def policy(*, allowed=None, blockers=None) -> dict:
     return {
         "version": 1,
         "archive_scope": "github-generated-source-archives",
+        "forbidden_tracked_files": ["vendor/excluded.step"],
         "forbidden_tracked_prefixes": ["private/", "artifacts/"],
         "forbidden_tracked_basenames": [".env", "credentials.json"],
         "forbidden_tracked_basename_prefixes": [".env."],
@@ -49,6 +50,12 @@ class ReleaseIntegrityTests(unittest.TestCase):
         errors = policy_errors(self.root, policy(), tracked)
         for path in tracked:
             self.assertTrue(any(path in error for error in errors), path)
+
+    def test_exact_forbidden_file_fails_without_blocking_similar_names(self):
+        tracked = ["vendor/excluded.step", "vendor/excluded.step.notes"]
+        errors = policy_errors(self.root, policy(), tracked)
+        self.assertTrue(any("vendor/excluded.step" in error for error in errors))
+        self.assertFalse(any("vendor/excluded.step.notes" in error for error in errors))
 
     def test_exact_digest_allowance_passes_and_changed_bytes_fail(self):
         path = self.write("bundle.zip", b"reviewed")
