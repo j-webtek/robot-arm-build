@@ -145,7 +145,12 @@ ordered joint encoding, but authentic native transport, independently acquired
 receipts, and physical qualification remain unfinished. A durable native T=102
 handoff now commits an exclusive writer claim before any future transport open;
 restart after that claim is retry-forbidden even though native open authority is
-still absent.
+still absent. The claimed handoff now also reaches a hardware-incapable native
+executor rehearsal: fresh claim-bound authority is consumed exactly once, an
+exactly typed in-memory transport records one open/write/close lifecycle, and a
+closed receipt distinguishes requested and confirmed bytes from authentic
+controller receipt or movement. A real serial transport and physical authority
+remain absent and require independent review.
 
 ## Stage definitions
 

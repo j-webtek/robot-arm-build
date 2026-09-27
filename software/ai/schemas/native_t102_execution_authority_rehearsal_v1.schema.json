@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rocell.local/schemas/native_t102_execution_authority_rehearsal_v1.schema.json",
+  "title": "RoCell hardware-incapable native T102 execution authority rehearsal v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "scope", "authority_id", "approval_record_sha256",
+    "claim_sha256", "frame_sha256", "writer_instance_id",
+    "controller_session_id", "issued_monotonic_ns", "expires_monotonic_ns",
+    "maximum_uses", "hardware_access_authorized", "physical_authority",
+    "automatic_retry_allowed", "authority_sha256"
+  ],
+  "properties": {
+    "schema": {"const": "rocell.native_t102_execution_authority_rehearsal.v1"},
+    "scope": {"const": "HARDWARE_INCAPABLE_NATIVE_T102_REHEARSAL"},
+    "authority_id": {"$ref": "#/$defs/identifier"},
+    "approval_record_sha256": {"$ref": "#/$defs/hash"},
+    "claim_sha256": {"$ref": "#/$defs/hash"},
+    "frame_sha256": {"$ref": "#/$defs/hash"},
+    "writer_instance_id": {"$ref": "#/$defs/identifier"},
+    "controller_session_id": {"$ref": "#/$defs/identifier"},
+    "issued_monotonic_ns": {"type": "integer", "minimum": 1},
+    "expires_monotonic_ns": {"type": "integer", "minimum": 1},
+    "maximum_uses": {"const": 1},
+    "hardware_access_authorized": {"const": false},
+    "physical_authority": {"const": false},
+    "automatic_retry_allowed": {"const": false},
+    "authority_sha256": {"$ref": "#/$defs/hash"}
+  },
+  "$defs": {
+    "hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "identifier": {
+      "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+    }
+  }
+}
