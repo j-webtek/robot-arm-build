@@ -14,7 +14,7 @@ Changing that image requires a reviewed workflow and documentation update; it
 must not happen implicitly when GitHub moves the `ubuntu-latest` alias.
 
 Repository policy requires full commit-SHA action pins and permits only
-`actions/checkout` and `actions/setup-python`. Fork workflows from outside
+`actions/checkout`, `actions/setup-python`, and `actions/upload-artifact`. Fork workflows from outside
 contributors require approval before running. A pending approval is not a failed
 test; maintainers review the proposed code before allowing CI to execute. See
 [Actions policy](REPOSITORY_OPERATIONS.md#september-26-2026-actions-policy-hardening)
@@ -45,6 +45,12 @@ for the dated settings and how to propose another action without bypassing them.
   controller-boundary schemas, and the controller-evidence gate. These use
   synthetic/modeled records; a pass does not qualify an installed controller
   or authenticate physical evidence. No transport is opened by these tests.
+- A Linux/Python 3.12 RC03 assembly-manual render using only the three
+  documentation dependencies selected from `requirements-cad.txt`. The job checks
+  PDF structure, page dimensions, minimum size/page count, source and output
+  digests, and resolved package versions. It retains the PDF and JSON summary for
+  14 days so representative pages can be reviewed. Structural success is not
+  visual approval and does not qualify CAD or hardware.
 
 The test extra declares `jsonschema`; no separate manual install is needed.
 Dependency ranges are not a lockfile: these jobs check fresh resolution within
