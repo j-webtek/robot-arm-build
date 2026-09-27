@@ -599,6 +599,8 @@ Copy this row and fill every field:
 
 ## Active work claims
 
+- AI lane / S1: frozen initial-versus-trained activation and bias audit, all six residual checkpoints on existing2400 training images; no updates or arm/contract changes.
+
 
 
 
