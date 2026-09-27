@@ -112,3 +112,30 @@ terminal cleanup but cannot accept pyserial or any arbitrary transport object.
 ARM-063 grants no endpoint-open or transport-write authority. No COM7 access
 occurred while creating it. A live exchange requires separate explicit owner
 authorization naming the exact ARM-063 intake hash and remains non-moving.
+
+## ARM-064 active-feedback qualification result
+
+The owner authorized the exact ARM-063 intake for one active, non-moving
+exchange. Preflight matched the pinned COM7 CP210x identity without opening the
+endpoint. The single live attempt then opened once, observed zero buffered
+bytes, wrote the exact ten-byte T=105 request once, read one 17-byte line, and
+closed once successfully. Identity remained unchanged.
+
+The response was exactly `FAULT:NOT_READY\r\n` (SHA-256
+`148028ad79af17d51f9c75cdd7f49e04bc274fa5830e58aae4568006921c4a53`),
+not T=1051. The terminal receipt is
+`software/ai/eval/arm064_active_feedback_qualification_20260927.json`, file
+SHA-256
+`8bf9d1d5fc3f523918953633ef24b51bcf59c44b8d6df8e7fc7fbd8426c3c1d1`.
+No retry, T=102, movement, torque command, purge, fallback, controller startup,
+or DTR/RTS assertion occurred.
+
+The repository's finite ghost-typing board emits this exact fault before its
+fixed leg-command comparison when its one-use state is exhausted, busy,
+faulted, or lacks a snapshot. That exact source match makes the response
+consistent with the previously documented installed diagnostic surface rather
+than the proposed generic production runtime. It is not cryptographic
+attestation of installed firmware. The important qualification result is
+fail-closed: this installed serial surface did not accept the canonical T=105
+protocol, so active feedback and observed planner-start-state construction
+remain blocked. Repeating T=105 is not warranted.
