@@ -84,8 +84,10 @@ python scripts/ci/verify_clean_checkout.py `
 
 This verifies repository policy and archive shape without downloading external
 model artifacts or touching hardware. Candidate mode additionally enforces the
-tracked-path candidate policy; it does not query GitHub issue or approval state
-and can pass while an issue-based gate remains open. See
+tracked-path candidate policy and the reviewed offline blocker registry at
+[`release-readiness.json`](../.github/release-readiness.json). It does not query
+GitHub issue or approval state: closing an issue does not clear the gate until a
+reviewed repository change records the resolution and durable evidence. See
 [source-distribution footprint](SOURCE_DISTRIBUTION.md#clean-checkout-evidence).
 
 The [Preview candidate audit](../.github/workflows/preview-candidate-audit.yml)

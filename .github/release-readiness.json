@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "release_scope": "source-only-experimental-preview",
+  "authority": "This registry blocks candidate validation; it does not select a candidate or authorize publication.",
+  "blockers": [
+    {
+      "id": "ai-artifact-reproducibility",
+      "issue": "https://github.com/j-webtek/tactevra/issues/56",
+      "owner": "AI workstream",
+      "requirement": "Record the exact checkpoint manifest plus deterministic artifact-absent and independently verified artifact-present clean-clone evidence.",
+      "status": "open",
+      "resolution": null
+    },
+    {
+      "id": "ai-evidence-retention",
+      "issue": "https://github.com/j-webtek/tactevra/issues/61",
+      "owner": "AI workstream with repository review",
+      "requirement": "Land compact reviewable replacement evidence and an approved disposition for bulk generated output.",
+      "status": "open",
+      "resolution": null
+    },
+    {
+      "id": "waveshare-urdf-redistribution",
+      "issue": "https://github.com/j-webtek/tactevra/issues/88",
+      "owner": "Repository maintainer with arm-owner and rights review",
+      "requirement": "Establish a durable redistribution basis or merge a reviewed replacement or removal of the derived Waveshare URDF.",
+      "status": "open",
+      "resolution": null
+    }
+  ]
+}

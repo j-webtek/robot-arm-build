@@ -97,7 +97,10 @@ device access, restarts, torque changes, movement, or release publication.
   If the candidate changes, reassess its evidence instead of reusing old sign-offs.
 - [ ] Before naming a preview candidate, run the release-integrity check in
   `candidate` mode. A normal CI pass validates the standing path policy but does
-  not clear recorded provenance or other candidate blockers.
+  not clear recorded provenance or other candidate blockers. Reconcile
+  [the offline release-readiness registry](../.github/release-readiness.json)
+  in the same reviewed change that resolves a blocker; issue closure alone is
+  not clearance.
 
 ## 4. Check the newcomer path
 

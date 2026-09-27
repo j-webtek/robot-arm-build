@@ -5,7 +5,9 @@ from pathlib import Path
 import tempfile
 import unittest
 
-from check_release_integrity import load_policy, normalize, policy_errors
+from check_release_integrity import (
+    load_policy, load_readiness, normalize, policy_errors, readiness_errors,
+)
 
 
 def digest(content: bytes) -> str:
@@ -23,6 +25,26 @@ def policy(*, allowed=None, blockers=None) -> dict:
         "forbidden_tracked_suffixes": [".key", ".pt", ".zip"],
         "allowed_tracked_files": allowed or [],
         "candidate_blockers": blockers or [],
+    }
+
+
+def readiness(*, blockers=None) -> dict:
+    return {
+        "version": 1,
+        "release_scope": "source-only-experimental-preview",
+        "authority": "Test-only registry.",
+        "blockers": blockers or [],
+    }
+
+
+def readiness_blocker(*, status="open", resolution=None) -> dict:
+    return {
+        "id": "test-blocker",
+        "issue": "https://github.com/j-webtek/tactevra/issues/56",
+        "owner": "Test owner",
+        "requirement": "Provide reviewed evidence.",
+        "status": status,
+        "resolution": resolution,
     }
 
 
@@ -100,6 +122,44 @@ class ReleaseIntegrityTests(unittest.TestCase):
         path.write_text(json.dumps(invalid), encoding="utf-8")
         with self.assertRaises(ValueError):
             load_policy(path)
+
+    def test_open_readiness_blocker_only_fails_candidate_mode(self):
+        registry = readiness(blockers=[readiness_blocker()])
+        self.assertEqual(readiness_errors(self.root, registry), [])
+        errors = readiness_errors(self.root, registry, candidate=True)
+        self.assertTrue(any("test-blocker" in error for error in errors))
+
+    def test_cleared_readiness_blocker_requires_existing_local_evidence(self):
+        registry = readiness(blockers=[readiness_blocker(
+            status="cleared",
+            resolution={"summary": "Reviewed.", "evidence": ["docs/proof.md"]},
+        )])
+        self.assertTrue(any("missing readiness evidence" in error
+                            for error in readiness_errors(self.root, registry)))
+        self.write("docs/proof.md")
+        self.assertTrue(any("untracked readiness evidence" in error
+                            for error in readiness_errors(
+                                self.root, registry, [], candidate=True)))
+        self.assertEqual(readiness_errors(
+            self.root, registry, ["docs/proof.md"], candidate=True), [])
+
+    def test_readiness_loader_rejects_evidence_free_clearance(self):
+        path = self.root / "readiness.json"
+        invalid = readiness(blockers=[readiness_blocker(
+            status="cleared",
+            resolution={"summary": "Reviewed.", "evidence": []},
+        )])
+        path.write_text(json.dumps(invalid), encoding="utf-8")
+        with self.assertRaises(ValueError):
+            load_readiness(path)
+
+    def test_readiness_loader_rejects_untrusted_issue(self):
+        path = self.root / "readiness.json"
+        blocker = readiness_blocker()
+        blocker["issue"] = "https://example.com/issues/56"
+        path.write_text(json.dumps(readiness(blockers=[blocker])), encoding="utf-8")
+        with self.assertRaises(ValueError):
+            load_readiness(path)
 
     def test_normalize_rejects_escape(self):
         with self.assertRaises(ValueError):
