@@ -2753,3 +2753,46 @@ rewriting history. New entries must use a unique evidence ID.
   pinned identity, reuse this pre-open/terminal journal discipline, account for
   exactly one write, acquire authentic T=1021/T=1051 evidence, and never resend
   an ambiguous execution. Physical use remains separately authorized.
+
+### E-20260926-ARM-053 — abstract production T=102 transport boundary
+
+- Stage: S4
+- Lane: ARM
+- Change: defined the production-shaped seam outside ARM-051's exact incapable
+  executor. The candidate binds ARM-050's claimed handoff to one exact COM/USB
+  identity, one detached externally issued authority record, and one positive
+  decision from an externally supplied verifier. The authority is atomic and
+  single-use; this repository contains no issuer, verifier keyring, discovery,
+  fallback endpoint, or concrete serial implementation.
+- Lifecycle: a durable `started.json` is exclusively written and flushed before
+  the abstract transport may open. The contract allows one open, verifies the
+  observed endpoint before write, allows one exact T=102 write, captures once,
+  validates a sequence-correlated T=1021 response and two settled monotonic
+  T=1051 samples, closes once, and seals `terminal.json`. Every ambiguous state
+  is no-retry and no-follow-on; a pre-terminal restart is retry-forbidden.
+- Artifacts: `native_t102_production_transport_v1.py`, seven closed schemas,
+  public application exports, bounded offline CI selection, contract/fault/
+  identity/authority/concurrency/restart tests, and
+  `NATIVE_T102_PRODUCTION_TRANSPORT_BOUNDARY.md`.
+- Results: focused ARM-053 suite PASS, 17 tests; expanded native T=102/runtime
+  suite PASS, 91 tests; portable shared AI/arm selection PASS, 289 tests in
+  68.80 seconds; documentation checks PASS, 43 self-tests plus maintained-link,
+  evidence-scope, and release-integrity validation.
+- Evidence status: deterministic filesystem plus scripted in-memory evidence.
+  The test transport exists only inside the test module and owns no port,
+  serial factory, socket, callback, device handle, controller process, firmware
+  operation, or external I/O.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: `CONTROLLER_EVIDENCE_CAPTURED_SETTLED_UNQUALIFIED` proves only
+  contract composition and parsing. The receipt deliberately keeps concrete
+  transport qualification, authentic controller receipt, physical movement,
+  and follow-on authorization false. An external verifier interface is not a
+  shipped approval verifier.
+- Supersedes: ARM-052's missing production-shaped adapter seam. It does not
+  supersede ARM-052's incapable rehearsal, independently reviewed native
+  implementation, physical qualification, or task-outcome verification.
+- Next dependency: implement and independently review one concrete Windows
+  adapter that satisfies this abstract boundary, then qualify endpoint identity,
+  bounded waits/cleanup, and authentic T=1021/T=1051 provenance under a
+  separately explicit physical test authorization.

@@ -155,6 +155,15 @@ has a durable terminal receipt journal: a content-bound `started.json` is
 committed before the rehearsal transport may open, so pre-terminal restart is
 always retry-forbidden, and a separately flushed `terminal.json` seals the
 exact byte-accounted receipt with terminal no-replay semantics.
+ARM-053 now defines the production-shaped seam outside that incapable executor:
+an exact COM/USB identity, detached externally issued single-use authority,
+external verifier interface, one-open/one-T=102-write/one-capture/one-close
+abstract transport, exact T=1021 and settled T=1051 validation, and its own
+durable pre-open/terminal attempt journal. No concrete transport, authority
+issuer, verifier keyring, port discovery, or controller process is included,
+so all current ARM-053 capture evidence remains scripted and explicitly
+unqualified. The next dependency is independent review of a concrete adapter,
+not further model-contract expansion.
 
 ## Stage definitions
 
