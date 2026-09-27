@@ -2796,3 +2796,41 @@ rewriting history. New entries must use a unique evidence ID.
   adapter that satisfies this abstract boundary, then qualify endpoint identity,
   bounded waits/cleanup, and authentic T=1021/T=1051 provenance under a
   separately explicit physical test authorization.
+
+### E-20260926-ARM-054 — isolated Windows serial adapter candidate
+
+- Stage: S4
+- Lane: ARM
+- Change: implemented a concrete pyserial-shaped Windows adapter behind the
+  ARM-053 abstract boundary. It resolves only the pinned COM name, requires the
+  exact USB VID/PID/serial identity before open, re-reads the same identity
+  after exclusive open, enforces 115200 8N1 no flow, rejects stale buffered
+  input without purging, writes one canonical T=102 frame once, captures one
+  bounded T=1021 line, performs exactly two bounded T=105/T=1051 feedback
+  exchanges, timestamps them monotonically, and closes once.
+- Failure behavior: no discovery fallback, reopen, resend, recapture, purge,
+  reset, startup motion, torque command, or automatic retry path exists.
+  Identity drift, stale bytes, partial/invalid writes, timeout, malformed or
+  wrong-type lines, reset banners, and overlong/truncated framing fail closed.
+- Artifacts: `providers/windows/native_t102_serial_transport_v1.py`, focused
+  offline adapter tests, portable CI selection, adapter boundary documentation,
+  and updated ARM-053/shared workplan references.
+- Results: focused adapter plus ARM-053 suite PASS, 33 tests; portable shared
+  AI/arm selection PASS, 305 tests in 39.12 seconds; documentation checks PASS,
+  43 self-tests plus maintained-link, evidence-scope, and release-integrity
+  validation; compile and diff checks PASS.
+- Evidence status: deterministic memory-only serial and inventory fixtures.
+  pyserial is lazy-loaded only at explicit open; no automated test opens a real
+  endpoint or composes the adapter with an authority issuer.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: this is an implementation candidate, not an independently
+  reviewed or physically qualified transport. It does not authenticate the
+  installed controller, prove real T=1021/T=1051 provenance, verify movement or
+  task outcome, or authorize follow-on action.
+- Supersedes: ARM-053's missing concrete Windows adapter source. It does not
+  supersede the external-authority boundary, durable no-replay journal,
+  independent source review, physical qualification, or task verification.
+- Next dependency: independent review of the adapter and its composition,
+  followed by a separately authorized read-only endpoint qualification before
+  any proposal for one bounded physical movement.
