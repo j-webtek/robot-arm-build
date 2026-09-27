@@ -37,6 +37,9 @@ device access, restarts, torque changes, movement, or release publication.
 - [ ] Match required [CI checks](CI.md) to the current revision. New commits or
   reconciliation with main require fresh checks. Missing or pending checks are
   not passes; do not use administrator bypass to finish a merge.
+- [ ] Use the repository's squash-merge path. Protected `main` requires linear
+  history; do not work around it with a direct push, temporary force-push
+  allowance, merge commit, or alternate merge method.
 - [ ] Check the public impact: capability, limitation, setup, or none. Update
   the appropriate entry document or link an explicit follow-up with a reason.
   Keep model evaluation, simulation, controller feedback and physical results
