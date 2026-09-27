@@ -105,6 +105,36 @@ class PublicRecordTests(unittest.TestCase):
             self.assertTrue(any("stale" in error for error in errors))
             self.assertTrue(any("issue #45" in error for error in errors))
 
+    def test_pages_runtime_baseline(self):
+        with TemporaryDirectory() as folder:
+            root = Path(folder)
+            workflow = root / checks.PAGES_WORKFLOW
+            workflow.parent.mkdir(parents=True)
+            workflow.write_text(
+                "runs-on: ubuntu-24.04\n"
+                "uses: actions/configure-pages@"
+                f"{checks.CONFIGURE_PAGES_V6_SHA} # v6.0.0\n"
+                "runs-on: ubuntu-24.04\n",
+                encoding="utf-8",
+            )
+            self.assertEqual([], checks.pages_workflow_errors(root))
+
+    def test_pages_moving_runner_and_old_action_are_rejected(self):
+        with TemporaryDirectory() as folder:
+            root = Path(folder)
+            workflow = root / checks.PAGES_WORKFLOW
+            workflow.parent.mkdir(parents=True)
+            workflow.write_text(
+                "runs-on: ubuntu-latest\n"
+                "uses: actions/configure-pages@old # v5\n"
+                "runs-on: ubuntu-latest\n",
+                encoding="utf-8",
+            )
+            errors = checks.pages_workflow_errors(root)
+            self.assertTrue(any("ubuntu-24.04" in error for error in errors))
+            self.assertTrue(any("ubuntu-latest" in error for error in errors))
+            self.assertTrue(any("v6.0.0" in error for error in errors))
+
 
 if __name__ == "__main__":
     unittest.main()

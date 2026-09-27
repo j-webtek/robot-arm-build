@@ -151,7 +151,10 @@ The separate Pages workflow deploys only the checked-in project player and
 content-addressed overview media. Its build job has read-only repository access;
 only the deploy job receives `pages: write` and an OIDC token. The build runs the
 media-only receipt check before packaging, and the `github-pages` environment is
-restricted to `main`.
+restricted to `main`. Both jobs run on the explicit `ubuntu-24.04` image.
+`actions/configure-pages` is pinned to its verified v6.0.0 commit, whose action
+runtime is Node 24; this avoids both the Node 20 removal and the announced
+`ubuntu-latest` image migration.
 
 ## Test tiers: choose the evidence you need
 
