@@ -599,7 +599,7 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-- AI lane / S1: frozen-candidate failure decomposition on consumed confirmation evidence and independent uncertainty protocol; no fitting, new scenes or arm changes.
+
 
 
 
@@ -7893,3 +7893,51 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Same-renderer synthetic confirmation, correlated variants, no physical-camera data or statistical-significance claim. No fits during confirmation; no threshold change or tuning. Range30001000..30001999 is now consumed. Candidate still has121 tails and9 newly introduced failures. No runtime promotion or calibrated uncertainty qualification; arm/integration statuses unchanged. Batch contract unchanged; boundary tests not triggered. Snapshot heuristic before final ledger append.
 - Supersedes: none; previous failed fresh test and rejected settings retained.
 - Next dependency: Freeze candidate weights. Audit remaining and introduced failures plus observation-quality signals, then specify an independent uncertainty/abstention calibration protocol. Consumed evaluation may inform diagnostics but cannot serve as fresh confirmation or calibration-selection evidence. Retain runtime baseline until separate qualification evidence exists.
+
+
+### E-20260927-AI-302 — candidate failure decomposition
+
+- Stage: S1
+- Lane: AI
+- Commit: `2a2b572a28f0d729680cd58732eb01b87a434641` (audit source/plan frozen before execution; report/tests/protocol/docs in successor)
+- Inputs/fixtures: Existing4000-row grouped_linear_confirmation_v1_report.json, scenes30001000..30001999 x4. Source/script hashes in eval/grouped_failure_audit_v1_plan.json. Audit report SHA256 `93c477bb03699e48147887db0ee94794375021cf391f3bdd05428ebb4158499f`. Frozen model SHA256 c9f4ef6d8f9e50317a917154fccacce46506ab2e7cde8267396e28fec156147b.
+- Command: `python software/ai/vision/audit_grouped_failures.py`
+- Result: PASS descriptive audit:112 persistent,9 introduced,26 recovered,3853 both within3mm. Candidate121 failing images span57 scenes. Worst11.417265mm; introduced worst9.482836mm.59 failing images have both isolated components <=3mm. No runtime quality signals in source evidence.
+- Artifacts: vision/audit_grouped_failures.py; eval/grouped_failure_audit_v1_plan.json and report.json; tests/test_grouped_failure_audit.py; eval/grouped_uncertainty_v1_protocol.json; docs/GROUPED_UNCERTAINTY_PROTOCOL.md.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Consumed synthetic data only; zero new images/fits. Truth-derived decomposition cannot serve as observation quality or causal attribution. No abstention classifier, confidence calibration or physical qualification exists from this increment. Scene-group uncertainty proposal not executed; exchangeability assumptions do not establish physical-camera applicability. Snapshot heuristic before final ledger append; existing pytest warning. ModelMotionBatchV2 unchanged; boundary tests not triggered. Arm/integration statuses unchanged.
+- Supersedes: none; previous failed and successful evaluations retained.
+- Next dependency: Check intervening allocations, freeze executable uncertainty protocol and two unused scene ranges; execute global-bound calibration and separate confirmation. Preserve zero-utility outcome if radius exceeds3mm. Keep weights frozen and runtime baseline unchanged.
+
+
+### E-20260927-AI-303 — failure audit regression and protocol
+
+- Stage: S1
+- Lane: AI
+- Commit: `2a2b572a28f0d729680cd58732eb01b87a434641` (audit source/plan frozen before execution; report/tests/protocol/docs in successor)
+- Inputs/fixtures: Existing4000-row grouped_linear_confirmation_v1_report.json, scenes30001000..30001999 x4. Source/script hashes in eval/grouped_failure_audit_v1_plan.json. Audit report SHA256 `93c477bb03699e48147887db0ee94794375021cf391f3bdd05428ebb4158499f`. Frozen model SHA256 c9f4ef6d8f9e50317a917154fccacce46506ab2e7cde8267396e28fec156147b.
+- Command: `python -m pytest -q software/ai/tests/test_grouped_failure_audit.py`
+- Result: PASS:2 tests in0.18s; exact3mm boundary, complete disjoint4000-row partition, condition/member recount and frozen hashes. Specified separate1000-scene calibration and1000-scene confirmation protocol; alpha0.01, joint target/variant scene scores, fixed3mm research-only utility gate. Not executed; no ranges allocated.
+- Artifacts: vision/audit_grouped_failures.py; eval/grouped_failure_audit_v1_plan.json and report.json; tests/test_grouped_failure_audit.py; eval/grouped_uncertainty_v1_protocol.json; docs/GROUPED_UNCERTAINTY_PROTOCOL.md.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Consumed synthetic data only; zero new images/fits. Truth-derived decomposition cannot serve as observation quality or causal attribution. No abstention classifier, confidence calibration or physical qualification exists from this increment. Scene-group uncertainty proposal not executed; exchangeability assumptions do not establish physical-camera applicability. Snapshot heuristic before final ledger append; existing pytest warning. ModelMotionBatchV2 unchanged; boundary tests not triggered. Arm/integration statuses unchanged.
+- Supersedes: none; previous failed and successful evaluations retained.
+- Next dependency: Check intervening allocations, freeze executable uncertainty protocol and two unused scene ranges; execute global-bound calibration and separate confirmation. Preserve zero-utility outcome if radius exceeds3mm. Keep weights frozen and runtime baseline unchanged.
+
+
+### E-20260927-AI-304 — failure audit repository review
+
+- Stage: S1
+- Lane: AI
+- Commit: `2a2b572a28f0d729680cd58732eb01b87a434641` (audit source/plan frozen before execution; report/tests/protocol/docs in successor)
+- Inputs/fixtures: Existing4000-row grouped_linear_confirmation_v1_report.json, scenes30001000..30001999 x4. Source/script hashes in eval/grouped_failure_audit_v1_plan.json. Audit report SHA256 `93c477bb03699e48147887db0ee94794375021cf391f3bdd05428ebb4158499f`. Frozen model SHA256 c9f4ef6d8f9e50317a917154fccacce46506ab2e7cde8267396e28fec156147b.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS:6211 paths,893.7MiB,0 unresolved findings,14 reviewed synthetic fixtures.
+- Artifacts: vision/audit_grouped_failures.py; eval/grouped_failure_audit_v1_plan.json and report.json; tests/test_grouped_failure_audit.py; eval/grouped_uncertainty_v1_protocol.json; docs/GROUPED_UNCERTAINTY_PROTOCOL.md.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Consumed synthetic data only; zero new images/fits. Truth-derived decomposition cannot serve as observation quality or causal attribution. No abstention classifier, confidence calibration or physical qualification exists from this increment. Scene-group uncertainty proposal not executed; exchangeability assumptions do not establish physical-camera applicability. Snapshot heuristic before final ledger append; existing pytest warning. ModelMotionBatchV2 unchanged; boundary tests not triggered. Arm/integration statuses unchanged.
+- Supersedes: none; previous failed and successful evaluations retained.
+- Next dependency: Check intervening allocations, freeze executable uncertainty protocol and two unused scene ranges; execute global-bound calibration and separate confirmation. Preserve zero-utility outcome if radius exceeds3mm. Keep weights frozen and runtime baseline unchanged.

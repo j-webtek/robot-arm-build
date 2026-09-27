@@ -1,0 +1,32 @@
+{
+  "version": "grouped_uncertainty_feasibility_v1",
+  "status": "specified_not_executed",
+  "candidate_sha256": "c9f4ef6d8f9e50317a917154fccacce46506ab2e7cde8267396e28fec156147b",
+  "calibration_groups": 1000,
+  "confirmation_groups": 1000,
+  "seed_ranges": null,
+  "seed_allocation": "Check all intervening plans and claims; reserve disjoint unused ranges in a separately frozen executable plan before rendering.",
+  "conditions": [
+    "standard",
+    "appearance_shift",
+    "partial",
+    "full"
+  ],
+  "style": "ellipse",
+  "score": "One score per scene: maximum target displacement across all46 keyboard targets and all4 condition variants.",
+  "miscoverage_alpha": 0.01,
+  "quantile_rule": "Sort1000 scene scores; use one-based rank ceil((n+1)*(1-alpha))=991. If rank>n use infinity and abstain.",
+  "uncertainty": "Single global board-frame radius in millimetres; not image-specific confidence or physical calibration.",
+  "research_admission": "Global radius <=3mm permits research-only acceptance; otherwise abstain on all images. No gate adjustment after outcomes.",
+  "confirmation_rule": "Observed scene coverage >=0.99 and research accepted fraction >0; report exact scene counts, image counts, maximum errors, and binomial uncertainty. No runtime qualification follows.",
+  "forbidden_inputs": [
+    "oracle pose at inference",
+    "simulator condition labels at inference",
+    "foreground masks at inference",
+    "consumed confirmation errors for quantile fitting",
+    "nominal fixed board rectangles as runtime target placement"
+  ],
+  "new_fits": 0,
+  "hardware_writes": 0,
+  "physical_movements": 0
+}
