@@ -185,6 +185,8 @@ class SingleActionExecutionReviewV1:
     batch_sha256: str
     action_index: int
     proposal_v2_sha256: str
+    device: str
+    interaction: str
     trajectory_execution_envelope_v2_sha256: str
     contact_envelope_gate_sha256: str
     installed_collision_policy_qualification_sha256: str
@@ -216,6 +218,10 @@ class SingleActionExecutionReviewV1:
         ) or self.action_index < 0:
             raise SingleActionExecutionReviewError(
                 "action_index must be a nonnegative integer")
+        if self.device not in ("keyboard", "phone"):
+            raise SingleActionExecutionReviewError("device is invalid")
+        if self.interaction not in ("HOVER", "CONTACT"):
+            raise SingleActionExecutionReviewError("interaction is invalid")
         issued = _positive_ns(self.issued_monotonic_ns, "issued_monotonic_ns")
         deadline = _positive_ns(self.deadline_monotonic_ns, "deadline_monotonic_ns")
         if deadline <= issued or deadline - issued > MAX_REVIEW_TTL_NS:
@@ -230,6 +236,8 @@ class SingleActionExecutionReviewV1:
             "batch_sha256": self.batch_sha256,
             "action_index": self.action_index,
             "proposal_v2_sha256": self.proposal_v2_sha256,
+            "device": self.device,
+            "interaction": self.interaction,
             "trajectory_execution_envelope_v2_sha256": (
                 self.trajectory_execution_envelope_v2_sha256),
             "contact_envelope_gate_sha256": self.contact_envelope_gate_sha256,
@@ -381,6 +389,8 @@ def build_single_action_execution_review_v1(
         batch_sha256=batch.batch_sha256,
         action_index=proposal.action_index,
         proposal_v2_sha256=proposal.proposal_sha256,
+        device=proposal.device.value,
+        interaction=proposal.interaction.value,
         trajectory_execution_envelope_v2_sha256=envelope.envelope_v2_sha256,
         contact_envelope_gate_sha256=contact_hash,
         installed_collision_policy_qualification_sha256=(

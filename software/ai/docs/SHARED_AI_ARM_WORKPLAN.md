@@ -6434,10 +6434,10 @@ commissioning, or bounded physical result with its limitations intact.
   positive/rejection/tamper/stale/cancellation/expiry/concurrency tests, public
   application exports, portable CI selection, and assurance documentation.
 - Artifact identity: implementation SHA-256
-  `0475e23fa5acf5ce9583de163efada2808eceb70c33bd57fbcf6bcc9c43908f9`;
+  `7f7ef24608bddcc1c01fc226aedd1ef3b3f6659bd2bdbb43ad513ade4b176b9b`;
   collision qualification, review, and consumption schema SHA-256 values
   `1b8d77263da5de5bbcb0813b912059473d80f07cb992a6ec3b7150ccadab2a97`,
-  `3da8c4c6ba652e971f3945c48bcb612bcb650a4444b92524994a7c56b3ba262d`,
+  `d9b9569faeafece65fb264019f733bcfa15c43155c355a708144074d69ee112f`,
   and `0c04178ed15d6bf235f6c5d70b97fa9b8f2dc776c7bf2ce14107f8fa718c49b9`.
 - Results: focused ARM-046 suite PASS, 7 tests; portable shared AI/arm
   selection PASS, 210 tests in 41.38 seconds; documentation PASS for 27
@@ -6575,3 +6575,40 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic audit; AI-041 protected-main publication blocker retained.
 - Supersedes: none; previous failures and arm/integration status retained.
 - Next dependency: Freeze a visual/renderer audit of these19 persistent cases alongside matched successful cases. Inspect occlusion,visibility,cropping,pose extremes and label alignment before a targeted training/representation change. Preserve all cases in scoring; no hand correction or exclusion based on development truth.
+### E-20260926-ARM-047 — reviewed permit bridge and lifecycle acknowledgements
+
+- Stage: S4
+- Lane: ARM
+- Change: connected one consumed ARM-046 review to the existing
+  `SafetySupervisor`. The bridge derives the required capability from the
+  review's exact lowercase device and uppercase interaction fields, uses the
+  review digest as the supervisor plan hash, and enumerates exact goal hashes.
+- Runtime behavior: the supervisor still rechecks current build capability,
+  calibration, interlocks, runtime health, operator arming, and safety state.
+  Only it can issue the short-lived permit. A crossed/tampered receipt, wrong
+  capability, missing current condition, or authorization failure rejects.
+- Lifecycle behavior: hash-chained `ACCEPTED`, `STARTED`, and exactly one
+  `COMPLETED`, `FAILED`, or `UNCERTAIN` acknowledgement are supported. Every
+  state explicitly denies automatic retry and follow-on movement.
+- Artifacts: `reviewed_motion_permit_bridge_v1.py`, closed admission/lifecycle
+  schemas, compatibility/rejection/preflight/terminal tests, public exports,
+  and portable CI selection.
+- Artifact identity: implementation SHA-256
+  `0b888d409124fdfaaa24c82c14249e1e7ecb47a8103c37f4c8c2096545b0964c`;
+  admission and lifecycle schema SHA-256 values
+  `a945e7cd20098efa70c13dd2f2c0149f83ccd67a06ca6f56ddc7a6ac157df3fc`
+  and `896014f3fd0945e6a59be8d004d5971fbb9834cb1a8d579eed3a666125a48408`.
+- Results: focused ARM-046/047 suite PASS, 13 tests; portable shared AI/arm
+  selection PASS, 216 tests in 30.31 seconds; compile and diff checks PASS.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: tests use modeled released-build and physical-shaped evidence.
+  The lifecycle consumes acknowledgements supplied by a future sole writer; it
+  does not itself prove a native write, arrival, settling, contact, or outcome.
+- Supersedes: ARM-046's missing supervisor-permit bridge and lifecycle contract.
+  It does not supersede authentic installed evidence, sole-writer integration,
+  transport receipts, feedback verification, or independent task observation.
+- Next dependency: integrate the exact-goal permit and lifecycle with the sole
+  writable adapter so permit consumption occurs at the final outbound boundary,
+  then bind controller receipt, feedback/settling, and independent outcome
+  evidence without adding any retry path.

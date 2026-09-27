@@ -262,6 +262,16 @@ atomically consumable only once, including under concurrent callers. Its
 consumption receipt still says `permit_issued: false` and contains no controller
 or wire commands: only the safety supervisor may later mint physical authority.
 
+The ARM-047 bridge now performs that handoff without bypassing the existing
+authority. Device/interaction semantics determine the only acceptable safety
+capability; the consumed review digest becomes the plan identity; and the
+supervisor rechecks fresh calibration, interlocks, runtime status, operator
+arming, build release, and safety state before issuing exact-goal authority.
+Hash-chained lifecycle acknowledgements distinguish accepted, started,
+completed, failed, and uncertain outcomes. Failure and uncertainty are terminal
+and never imply retry or follow-on movement. Native writer and feedback binding
+remain separate work.
+
 The S4 synthetic integration lane now proves the downstream identity plumbing
 without relaxing that physical gate. A typed assessor requires the exact
 synthetic r97 review decision and eight-component configuration epoch, the model
