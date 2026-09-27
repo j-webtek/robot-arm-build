@@ -22,9 +22,9 @@ the exact NumPy and PyTorch versions used by localization research tests.
 
 ```powershell
 python -m venv .venv-ai
-.\.venv-ai\Scripts\python.exe scripts/ci/offline_checks.py install-base
-.\.venv-ai\Scripts\python.exe scripts/ci/offline_checks.py install-tests
+.\.venv-ai\Scripts\python.exe -m pip install ".\software[test]"
 .\.venv-ai\Scripts\python.exe -m pip install -r software/ai/requirements-test.txt
+.\.venv-ai\Scripts\python.exe -m pip check
 ```
 
 Then run:

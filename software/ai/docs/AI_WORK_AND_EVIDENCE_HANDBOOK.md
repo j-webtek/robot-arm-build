@@ -148,9 +148,9 @@ then install the exact AI research dependencies:
 
 ```powershell
 python -m venv .venv-ai
-.\.venv-ai\Scripts\python.exe scripts/ci/offline_checks.py install-base
-.\.venv-ai\Scripts\python.exe scripts/ci/offline_checks.py install-tests
+.\.venv-ai\Scripts\python.exe -m pip install ".\software[test]"
 .\.venv-ai\Scripts\python.exe -m pip install -r software/ai/requirements-test.txt
+.\.venv-ai\Scripts\python.exe -m pip check
 ```
 
 Run the maintained suite and audits from that environment:
