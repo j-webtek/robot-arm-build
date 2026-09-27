@@ -599,6 +599,10 @@ Copy this row and fill every field:
 
 ## Active work claims
 
+- AI lane / S1: freeze a mission-v1 student recipe and heldout evaluator,
+  then fit and score one local offline student without changing prompts,
+  decoding, gates, ModelMotionBatch, arm/runtime schemas, or integration status.
+
 
 
 
@@ -9604,3 +9608,33 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic repository review before final ledger append; not language-quality, runtime, security, or physical assurance. No arm or integration status changes.
 - Supersedes: none.
 - Next dependency: Same as AI-410.
+
+### E-20260927-AI-413 — mission student freeze harness initial verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `28e8680d472a874be14fce2a6fa4be7911544812` (curriculum evidence parent; failed test and its correction are committed in the successor)
+- Inputs/fixtures: Frozen 208/80/80 mission curriculum; pinned Llama 3.2 1B source revision `9213176726f574b556790deb65791e0c5aa438b6`; new mission prompt, LoRA recipe, structured Ollama runner, compiler-backed evaluator, and source test.
+- Command: `python -m py_compile software/ai/rocell_ai/mission_model.py software/ai/rocell_ai/mission_student_eval.py software/ai/rocell_ai/mission_student_ollama.py software/ai/train/train_mission_student_v1.py software/ai/tests/test_mission_student_source.py; python -m pytest -q software/ai/tests/test_mission_student_source.py software/ai/tests/test_mission_intent.py software/ai/tests/test_mission_curriculum.py; git diff --check`
+- Result: FAIL: 1 failed and 14 passed in 0.70s. The synthetic dangerous-output test copied an accepted target from a different case, including its request and observation references. The compiler correctly blocked that mismatched fixture, so it did not exercise the intended wrong-but-accepted counter. Python compilation completed and `git diff --check` was not reached because PowerShell stopped neither command but pytest returned failure before the final command's combined result could qualify the increment. No recipe, prompt, decoder, gate, data, or model result was changed in response.
+- Artifacts: `rocell_ai/mission_model.py`; `rocell_ai/mission_student_eval.py`; `rocell_ai/mission_student_ollama.py`; `train/train_mission_student_v1.py`; `train/mission_student_v1_plan.json`; `tests/test_mission_student_source.py`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Test-fixture construction failure only; no model fit, heldout model inference, adapter import, runtime installation, qualification, or physical evidence. `ModelMotionBatch` did not change, so shared boundary tests were not triggered. Arm and integration status are unchanged.
+- Supersedes: none; this failed evidence remains preserved.
+- Next dependency: Change only the dangerous fixture so one otherwise valid accepted target retains its own bindings while changing its literal, then rerun the identical focused suite before committing the frozen study.
+
+### E-20260927-AI-414 — mission student recipe and evaluator freeze
+
+- Stage: S1
+- Lane: AI
+- Commit: `28e8680d472a874be14fce2a6fa4be7911544812` (curriculum evidence parent; frozen study source, plan, tests, and ledger committed in the successor before fitting)
+- Inputs/fixtures: Plan SHA-256 `766bbb2e9c924b0d14c65008f364aac385345d135ede489419b176efd9e28a81`; prompt SHA-256 `4050f6169b81ae6ee158240514d8cdc73105b6c00d3316b23e1e5094eb2fe60f`; source SHA-256 values are locked inside the plan; corrected source-test SHA-256 `71fc5f1e9b97869be45eb82a439e8bcc075d525e9315bce45a8124b51121e0b8`; curriculum train/validation/heldout SHA-256 `f08dc9b87b31f65ba71790a392ea96c2a827a9d21176e8810a6c90df313fafbf` / `466189939a506725bb9e7e2fd77e2888cd2e002aeb5c295082d199e87bb7f3df` / `f17b14b4e0d24d9de83b525cf460b9c6c0821f488f3118b41cfdeaa3c454f4fd`.
+- Command: `python -m pytest -q software/ai/tests/test_mission_student_source.py software/ai/tests/test_mission_intent.py software/ai/tests/test_mission_curriculum.py; git diff --check`
+- Result: PASS: 15 tests in 0.63s and clean diff check. Frozen one 1B BF16 LoRA fit with three epochs, train-only optimization, validation-loss checkpoint selection, structured mission JSON inference, exact local-model digest binding, and a one-pass heldout evaluator. Promotion requires zero invalid outputs, zero wrong accepted operations, zero changed literals, at least 0.75 exact fraction, and at least 0.75 coverage of expected accepted operations. Synthetic evaluator checks prove a perfect prediction file passes, a bound valid execution with a changed literal fails as wrong accepted, and missing predictions reject.
+- Artifacts: same source artifacts as AI-413 plus the frozen plan and corrected test.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Source and harness verification only. The dataset is templated and agent-authored with simulated review. The heldout set is family-separated but shares the generator design. No model has yet been fitted or scored. Structured output constrains shape, while compiler-backed scoring supplies semantic and risk checks. No camera, localization, contact, motion, ModelMotionBatch, permit, controller, transport, or physical assurance; no qualification or runtime release.
+- Supersedes: AI-413 only as corrected harness verification; the failed record remains preserved.
+- Next dependency: Commit this freeze before running exactly one local fit. Select only by frozen validation loss, import only the selected adapter over the pinned base, then run the untouched heldout once with the frozen structured decoder and report every gate without post-heldout tuning.
