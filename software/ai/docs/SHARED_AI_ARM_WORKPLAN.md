@@ -599,7 +599,8 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-- AI lane / S1: exact unmasked linear export, image-only parity and CPU cost; freeze subsequent untouched-data plan only after export verification. No refit or arm/contract change.
+- AI lane / S1: frozen export passed parity; preregistered untouched synthetic30000000..30000999 x4 evaluation, no refit or tuning. No contract/arm changes or physical qualification.
+
 
 
 
@@ -7624,3 +7625,37 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: reference computation used64-row matrix multiplications versus original800-row calculation; floating-point shape sensitivity suspected, not established until corrected replay. No fitting or fresh data consumed.
 - Supersedes: none; failed source and plan preserved.
 - Next dependency: run separately frozen v1 reference using original full-array multiplication; do not relax1e-10 exported-model tolerance or change coefficients. Fresh evaluation depends on parity success.
+
+
+### E-20260926-AI-286 — corrected standalone export parity
+
+- Stage: S1
+- Lane: AI
+- Commit: `024bee407c7039224710cff3a418c64a31fdf374` (frozen corrected export source; tests/results committed with evidence)
+- Change: corrected standalone export parity.
+- Inputs/fixtures:800existing development images15000000..15000199 x4; exact prior unmasked fit; source hashes in eval/linear_export_v1_plan.json,model/pixel/prediction hashes in report.
+- Command: `python software/ai/vision/export_linear_residual_v1.py`
+- Result: PASS800existing development images; original full-array reference hash restored. Maximum normalized delta2.220446049250313e-16 <=1e-10; exact export/load and image-preprocessing parity. Artifact SHA2560cd2442e6a6190ad7228749bd47f20c108ec6062c5d319b1e36be054efd3af0e,1132606bytes. Backbone276867parameters +1539linear coefficients +1024normalization values. CPU median0.70615ms versus baseline0.54585ms;100batch-one calls after10warmups.
+- Artifacts: vision/linear_residual_pose.py; vision/export_linear_residual_v1.py; eval/linear_export_v1_report.json; tests/test_linear_export.py; ignored results/linear_residual_export_v1/model.pt.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Selected on reused development; no new fits. CPU host timing only, float32backbone/float64residual. No calibration/uncertainty/runtime qualification. Failed v0 source and evidence retained. Batch contract unchanged.
+- Supersedes: none; v1 corrects reference batching, not weights or tolerance.
+- Next dependency: Execute separately frozen4000-image evaluation on30000000..30000999 x4, with fixed mean/tail/yaw/obstruction rule and no tuning.
+
+
+### E-20260926-AI-287 — standalone export verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `024bee407c7039224710cff3a418c64a31fdf374` (frozen corrected export source; tests/results committed with evidence)
+- Change: standalone export verification.
+- Inputs/fixtures:800existing development images15000000..15000199 x4; exact prior unmasked fit; source hashes in eval/linear_export_v1_plan.json,model/pixel/prediction hashes in report.
+- Command: `python -m pytest -q software/ai/tests/test_linear_export.py`
+- Result: PASS6tests in1.63s: exact reload, image-only input, malformed scale/weights/schema/preprocessing rejection and frozen parity lineage. Existing pytest-asyncio warning.
+- Artifacts: vision/linear_residual_pose.py; vision/export_linear_residual_v1.py; eval/linear_export_v1_report.json; tests/test_linear_export.py; ignored results/linear_residual_export_v1/model.pt.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Selected on reused development; no new fits. CPU host timing only, float32backbone/float64residual. No calibration/uncertainty/runtime qualification. Failed v0 source and evidence retained. Batch contract unchanged.
+- Supersedes: none; v1 corrects reference batching, not weights or tolerance.
+- Next dependency: Execute separately frozen4000-image evaluation on30000000..30000999 x4, with fixed mean/tail/yaw/obstruction rule and no tuning.

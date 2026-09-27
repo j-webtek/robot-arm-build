@@ -1,0 +1,40 @@
+{
+  "plan_sha256": "066404e6c5fd882a128afc3e67a9d88606153cfd3fada562e9cd73219c0ccb93",
+  "artifact": "software/ai/results/linear_residual_export_v1/model.pt",
+  "artifact_sha256": "0cd2442e6a6190ad7228749bd47f20c108ec6062c5d319b1e36be054efd3af0e",
+  "artifact_bytes": 1132606,
+  "development_images": 800,
+  "pixels_sha256": "daadf03fc0c3f98e322d5230d541569ea3b8835608c66bd339bfa2e380f29a73",
+  "reference_prediction_sha256": "7972f17586f60ccd06829c40f22e84dd97b916266c3d8ac76482c027926cdefc",
+  "export_prediction_sha256": "420d2d6c3a146f24f18640793b51eea0eca0804d446eda9b4f1366a66aa4ff1f",
+  "max_normalized_delta": 2.220446049250313e-16,
+  "roundtrip_exact": true,
+  "image_preprocess_exact": true,
+  "backbone_parameters": 276867,
+  "linear_coefficients": 1539,
+  "normalization_values": 1024,
+  "timing": {
+    "median_ms": 0.70615,
+    "p95_ms": 0.85079,
+    "iterations": 100,
+    "warmup": 10,
+    "batch": 1
+  },
+  "baseline_timing": {
+    "median_ms": 0.54585,
+    "p95_ms": 0.71564,
+    "iterations": 100,
+    "warmup": 10,
+    "batch": 1
+  },
+  "new_fits": 0,
+  "optimizer_updates": 0,
+  "hardware_writes": 0,
+  "physical_movements": 0,
+  "qualification_installed": false,
+  "limitations": [
+    "Selected unmasked control after reused-development diagnostic; export parity is not independent accuracy evidence",
+    "Float32 backbone and float64 residual; CPU timing on this host only; no quantization or mobile latency claim",
+    "No mask head, model fitting, physical calibration, coordinate uncertainty, or runtime installation"
+  ]
+}
