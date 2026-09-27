@@ -599,6 +599,12 @@ Copy this row and fill every field:
 
 ## Active work claims
 
+- AI lane / S1: implement the actual pose-output to
+  `rocell.ai_precision_observation.v2` adapter, a synthetic held-out
+  localization evaluation bundle, and precision-derived ModelMotionBatchV2
+  producer fixtures; no deployment qualification, arm, or integration-status
+  changes.
+
 
 
 
