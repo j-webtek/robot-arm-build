@@ -23,7 +23,7 @@ examples.
 | --- | --- |
 | Installation or a reproducible non-sensitive defect | [Open a bug report](https://github.com/j-webtek/tactevra/issues/new?template=bug_report.yml) |
 | Unclear, outdated, or missing guidance | [Report a documentation problem](https://github.com/j-webtek/tactevra/issues/new?template=documentation.yml) |
-| A capability suggestion or workflow improvement | [Request a feature](https://github.com/j-webtek/tactevra/issues/new?template=feature_request.md) |
+| A capability suggestion or workflow improvement | [Request a feature](https://github.com/j-webtek/tactevra/issues/new?template=feature_request.yml) |
 | Harassment or another community conduct concern | Use the private contact in our [code of conduct](CODE_OF_CONDUCT.md), not a public issue |
 | A suspected vulnerability, leaked secret, or execution-gate bypass | Follow [private security reporting](SECURITY.md); do not use public issues |
 | Development coordination between AI and arm contributors | Use the [shared workplan](software/ai/docs/SHARED_AI_ARM_WORKPLAN.md) and a topic-branch PR |
@@ -31,11 +31,12 @@ examples.
 GitHub issues are public. This project does not promise response times, emergency
 support, or compatibility with an unqualified hardware setup.
 
-The bug and documentation forms guide you through the useful details. If a
-version is unknown or a field does not apply, say so; do not guess or repeat a
-hardware test to fill it in. Suggested documentation fixes are optional. You can
-also choose a blank issue from the [issue chooser](https://github.com/j-webtek/tactevra/issues/new/choose)
-if the forms do not fit your report. Never use that fallback for private findings.
+The bug, documentation, and feature forms guide you through the useful details.
+If a version is unknown or a field does not apply, say so; do not guess or repeat
+a hardware test to fill it in. Suggested documentation fixes are optional. Blank
+issues are disabled so reports use a supported public route. If no form fits,
+use the support guidance rather than placing private or unstructured details in
+a public issue.
 
 ## Help us reproduce a problem
 

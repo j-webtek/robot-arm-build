@@ -60,6 +60,11 @@ a generator or manifest over repeated bytes in instructional folders. The
 delta-based check preserves the existing historical baseline; it does not
 authorize new duplication or replace privacy, provenance, or license review.
 
+The whole-tree [source-distribution policy](SOURCE_DISTRIBUTION.md) separately
+measures what GitHub-generated source archives must contain. Its ceilings prevent
+silent footprint growth; its smaller targets are planning goals, not authority to
+delete files, relocate provenance, or rewrite shared history.
+
 Track remaining operations work in
 [repository maintenance issues](https://github.com/j-webtek/tactevra/issues?q=is%3Aissue%20is%3Aopen%20label%3Aarea%3Arepository).
 Each issue should name its scope, completion criteria, evidence and exclusions.
@@ -106,10 +111,11 @@ ledger; link to it rather than copying long histories into issues. Keep security
 details in the private reporting channel. No automatic stale-issue closer is
 configured: inactivity is not evidence that a problem is resolved.
 
-Bug and documentation intake use YAML issue forms, with only the core context
-required. Unknown versions are acceptable; users are not asked to repeat a live
-test or supply personal contact details. Feature and cross-workstream templates
-remain Markdown, and blank issues/private security contact links remain available.
+Bug, documentation, and feature intake use YAML issue forms, with only the core
+context required. Unknown versions are acceptable; users are not asked to repeat
+a live test or supply personal contact details. The cross-workstream handoff
+template remains Markdown. Blank issues are disabled so public reports use a
+supported route; private security and support contact links remain available.
 Forms help collect information; required fields are not evidence validation,
 security screening, or an enforced review gate for all issue-creation methods.
 For future edits, follow [GitHub's form syntax](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-issue-forms),

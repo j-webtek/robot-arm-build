@@ -44,6 +44,11 @@ are a starting point, not a completed qualification record.
 - [ ] From a fresh checkout at the candidate SHA, reproduce the documented
   [offline setup and checks](CI.md). Record OS, Python version, commands, results,
   and dependency versions. CI covers selected tests, not the complete suite.
+- [ ] Produce an identity-bound clean-checkout receipt using
+  `scripts/ci/verify_clean_checkout.py`. Review the
+  [source-distribution footprint](SOURCE_DISTRIBUTION.md); do not describe the
+  GitHub-generated archive as slim while the tracked tree remains above its
+  reduction targets.
 - [ ] Run the snapshot audit at the candidate revision and review findings;
   inspect release contents for private data, license notices, and unexpected
   artifacts. This heuristic scan is not a full-history or security certification.

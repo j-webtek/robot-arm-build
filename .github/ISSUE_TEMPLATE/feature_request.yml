@@ -1,0 +1,49 @@
+name: Feature request
+description: Propose a Tactevra user outcome or integration improvement.
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Describe the user outcome, not only an implementation idea. This issue is public: omit credentials, personal data, private device exports and vulnerability details.
+        Use [private security reporting](https://github.com/j-webtek/tactevra/security/advisories/new) for vulnerabilities. A proposal does not authorize hardware movement, firmware installation or a release.
+  - type: textarea
+    id: outcome
+    attributes:
+      label: User outcome
+      description: What should someone be able to accomplish, and who benefits?
+    validations:
+      required: true
+  - type: textarea
+    id: limitation
+    attributes:
+      label: Current limitation
+      description: What prevents that outcome today? Link current documentation or evidence when available.
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Primary area
+      options:
+        - Repository, documentation or contributor experience
+        - AI, perception or intent interpretation
+        - Arm planning, runtime or controller integration
+        - Physical workcell or hardware
+        - Cross-workstream or unsure
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Proposed scope and acceptance evidence
+      description: Describe the smallest useful result and how it could be reviewed. Separate software tests, simulation, controller feedback and physical evidence.
+    validations:
+      required: true
+  - type: textarea
+    id: compatibility
+    attributes:
+      label: Compatibility, safety and alternatives
+      description: Identify affected APIs, coordinate frames, identifiers, hardware boundaries or existing workflows. Include alternatives considered; say unknown where appropriate.
+    validations:
+      required: true
