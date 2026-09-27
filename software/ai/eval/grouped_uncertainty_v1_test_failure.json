@@ -1,0 +1,9 @@
+{
+  "source_commit": "7992e942194285390893a91b16c1e78e50c973f6",
+  "command": "python -m pytest -q software/ai/tests/test_grouped_uncertainty.py",
+  "result": "1 failed,7 passed in1.80s",
+  "failure": "Test required exact zero for Wilson lower endpoint; floating cancellation returned3.469446951953614e-18.",
+  "correction": "Use absolute1e-15 tolerance for analytic endpoints only; source, experiment report, acceptance and calibration unchanged.",
+  "hardware_writes": 0,
+  "physical_movements": 0
+}

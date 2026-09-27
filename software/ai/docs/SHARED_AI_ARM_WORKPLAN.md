@@ -599,7 +599,7 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-- AI lane / S1: fixed global uncertainty feasibility; reserve31000000..31000999 calibration and32000000..32000999 confirmation, frozen weights/rule, no arm changes.
+
 
 
 
@@ -7943,3 +7943,67 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Consumed synthetic data only; zero new images/fits. Truth-derived decomposition cannot serve as observation quality or causal attribution. No abstention classifier, confidence calibration or physical qualification exists from this increment. Scene-group uncertainty proposal not executed; exchangeability assumptions do not establish physical-camera applicability. Snapshot heuristic before final ledger append; existing pytest warning. ModelMotionBatchV2 unchanged; boundary tests not triggered. Arm/integration statuses unchanged.
 - Supersedes: none; previous failed and successful evaluations retained.
 - Next dependency: Check intervening allocations, freeze executable uncertainty protocol and two unused scene ranges; execute global-bound calibration and separate confirmation. Preserve zero-utility outcome if radius exceeds3mm. Keep weights frozen and runtime baseline unchanged.
+
+
+### E-20260927-AI-305 — global uncertainty feasibility failure
+
+- Stage: S1
+- Lane: AI
+- Commit: `7992e942194285390893a91b16c1e78e50c973f6` (source/plan frozen before calibration/confirmation; evidence/tests/docs in successor)
+- Inputs/fixtures:31000000..31000999 calibration and32000000..32000999 confirmation,1000 scenes/4000 images each, four ellipse conditions,46 targets. Model SHA256 c9f4ef6d8f9e50317a917154fccacce46506ab2e7cde8267396e28fec156147b. Source/artifact hashes in eval/grouped_uncertainty_v1_plan.json. Report SHA256 `9a1ead5d6695989d04b9274831056ab5e3d7c24a6a00b5f2697fc6415483c8b1`; full pixel/prediction hashes and per-image/scene scores retained.
+- Command: `python software/ai/vision/evaluate_grouped_uncertainty.py`
+- Result: FAIL fixed feasibility:rank991/1000 calibration bound4.9120642323mm exceeds3mm tolerance; accepted fraction0. Confirmation covers987/1000 scenes(98.7%), below99% rule;95% Wilson interval[97.7886%,99.2387%]. Image coverage99.275%(3971/4000),13 scene violations. No gate tuning.
+- Artifacts: vision/evaluate_grouped_uncertainty.py; eval/grouped_uncertainty_v1_plan.json and report.json; tests/test_grouped_uncertainty.py; eval/grouped_uncertainty_v1_test_failure.json; docs/GROUPED_UNCERTAINTY_PROTOCOL.md.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: One global-bound calibration fit, zero model fits. Both newly generated ranges now consumed. Same-renderer synthetic scenes; interval assumes binomial scene observations and is not physical-camera assurance.99% marginal target does not guarantee every1000-scene sample meets99%; observed rule nevertheless fails and utility is zero. No runtime bound installed or calibrated physical qualification. Contract unchanged; boundary suite not triggered. Existing pytest warning; arm/integration statuses unchanged.
+- Supersedes: none; zero-utility and initial test failure retained.
+- Next dependency: Specify image-derived uncertainty features and grouped training-only evaluation with frozen pose model; no training/threshold selection using these consumed calibration/confirmation cohorts. Any locally scaled bound requires a separately frozen calibration and independent confirmation allocation. Keep runtime baseline unchanged.
+
+
+### E-20260927-AI-306 — uncertainty test endpoint failure
+
+- Stage: S1
+- Lane: AI
+- Commit: `7992e942194285390893a91b16c1e78e50c973f6` (source/plan frozen before calibration/confirmation; evidence/tests/docs in successor)
+- Inputs/fixtures:31000000..31000999 calibration and32000000..32000999 confirmation,1000 scenes/4000 images each, four ellipse conditions,46 targets. Model SHA256 c9f4ef6d8f9e50317a917154fccacce46506ab2e7cde8267396e28fec156147b. Source/artifact hashes in eval/grouped_uncertainty_v1_plan.json. Report SHA256 `9a1ead5d6695989d04b9274831056ab5e3d7c24a6a00b5f2697fc6415483c8b1`; full pixel/prediction hashes and per-image/scene scores retained.
+- Command: `python -m pytest -q software/ai/tests/test_grouped_uncertainty.py`
+- Result: FAIL:1 failed,7 passed in1.80s. Test expected exact Wilson lower endpoint0; floating cancellation yields3.469446951953614e-18. Failure retained in eval/grouped_uncertainty_v1_test_failure.json.
+- Artifacts: vision/evaluate_grouped_uncertainty.py; eval/grouped_uncertainty_v1_plan.json and report.json; tests/test_grouped_uncertainty.py; eval/grouped_uncertainty_v1_test_failure.json; docs/GROUPED_UNCERTAINTY_PROTOCOL.md.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: One global-bound calibration fit, zero model fits. Both newly generated ranges now consumed. Same-renderer synthetic scenes; interval assumes binomial scene observations and is not physical-camera assurance.99% marginal target does not guarantee every1000-scene sample meets99%; observed rule nevertheless fails and utility is zero. No runtime bound installed or calibrated physical qualification. Contract unchanged; boundary suite not triggered. Existing pytest warning; arm/integration statuses unchanged.
+- Supersedes: none; zero-utility and initial test failure retained.
+- Next dependency: Specify image-derived uncertainty features and grouped training-only evaluation with frozen pose model; no training/threshold selection using these consumed calibration/confirmation cohorts. Any locally scaled bound requires a separately frozen calibration and independent confirmation allocation. Keep runtime baseline unchanged.
+
+
+### E-20260927-AI-307 — uncertainty verification after test correction
+
+- Stage: S1
+- Lane: AI
+- Commit: `7992e942194285390893a91b16c1e78e50c973f6` (source/plan frozen before calibration/confirmation; evidence/tests/docs in successor)
+- Inputs/fixtures:31000000..31000999 calibration and32000000..32000999 confirmation,1000 scenes/4000 images each, four ellipse conditions,46 targets. Model SHA256 c9f4ef6d8f9e50317a917154fccacce46506ab2e7cde8267396e28fec156147b. Source/artifact hashes in eval/grouped_uncertainty_v1_plan.json. Report SHA256 `9a1ead5d6695989d04b9274831056ab5e3d7c24a6a00b5f2697fc6415483c8b1`; full pixel/prediction hashes and per-image/scene scores retained.
+- Command: `python -m pytest -q software/ai/tests/test_grouped_uncertainty.py`
+- Result: PASS:8 tests in1.83s. Corrected analytic endpoint assertion to absolute1e-15; frozen source/report/thresholds unchanged. Quantile rank, small-sample infinite-bound abstention, fixed gate, disjoint scene groups, all8000 rows and coverage recount verified.
+- Artifacts: vision/evaluate_grouped_uncertainty.py; eval/grouped_uncertainty_v1_plan.json and report.json; tests/test_grouped_uncertainty.py; eval/grouped_uncertainty_v1_test_failure.json; docs/GROUPED_UNCERTAINTY_PROTOCOL.md.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: One global-bound calibration fit, zero model fits. Both newly generated ranges now consumed. Same-renderer synthetic scenes; interval assumes binomial scene observations and is not physical-camera assurance.99% marginal target does not guarantee every1000-scene sample meets99%; observed rule nevertheless fails and utility is zero. No runtime bound installed or calibrated physical qualification. Contract unchanged; boundary suite not triggered. Existing pytest warning; arm/integration statuses unchanged.
+- Supersedes: none; zero-utility and initial test failure retained.
+- Next dependency: Specify image-derived uncertainty features and grouped training-only evaluation with frozen pose model; no training/threshold selection using these consumed calibration/confirmation cohorts. Any locally scaled bound requires a separately frozen calibration and independent confirmation allocation. Keep runtime baseline unchanged.
+
+
+### E-20260927-AI-308 — uncertainty snapshot audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `7992e942194285390893a91b16c1e78e50c973f6` (source/plan frozen before calibration/confirmation; evidence/tests/docs in successor)
+- Inputs/fixtures:31000000..31000999 calibration and32000000..32000999 confirmation,1000 scenes/4000 images each, four ellipse conditions,46 targets. Model SHA256 c9f4ef6d8f9e50317a917154fccacce46506ab2e7cde8267396e28fec156147b. Source/artifact hashes in eval/grouped_uncertainty_v1_plan.json. Report SHA256 `9a1ead5d6695989d04b9274831056ab5e3d7c24a6a00b5f2697fc6415483c8b1`; full pixel/prediction hashes and per-image/scene scores retained.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS:6215 paths,897.4MiB,0 unresolved findings,14 reviewed synthetic fixtures. Snapshot before additional failed-test artifact and final documentation append.
+- Artifacts: vision/evaluate_grouped_uncertainty.py; eval/grouped_uncertainty_v1_plan.json and report.json; tests/test_grouped_uncertainty.py; eval/grouped_uncertainty_v1_test_failure.json; docs/GROUPED_UNCERTAINTY_PROTOCOL.md.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: One global-bound calibration fit, zero model fits. Both newly generated ranges now consumed. Same-renderer synthetic scenes; interval assumes binomial scene observations and is not physical-camera assurance.99% marginal target does not guarantee every1000-scene sample meets99%; observed rule nevertheless fails and utility is zero. No runtime bound installed or calibrated physical qualification. Contract unchanged; boundary suite not triggered. Existing pytest warning; arm/integration statuses unchanged.
+- Supersedes: none; zero-utility and initial test failure retained.
+- Next dependency: Specify image-derived uncertainty features and grouped training-only evaluation with frozen pose model; no training/threshold selection using these consumed calibration/confirmation cohorts. Any locally scaled bound requires a separately frozen calibration and independent confirmation allocation. Keep runtime baseline unchanged.
