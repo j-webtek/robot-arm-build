@@ -3252,3 +3252,32 @@ rewriting history. New entries must use a unique evidence ID.
   reviewer and ingest their returned decision with
   `software/scripts/assess_r97_external_review_decision.py`; afterward collect
   and independently review all eight measured configuration-epoch components.
+
+### E-20260927-ARM-067 — owner accepts non-independent r97 AI review
+
+- Stage: S4
+- Lane: ARM
+- Owner decision: no human reviewer will be used; remove that dependency and
+  continue.
+- Change: bound the exact passing r97 synthetic AI technical decision to an
+  explicit owner governance override. The record does not relabel AI evidence
+  as human or externally independent.
+- Artifact: `software/ai/eval/arm067_r97_owner_ai_review_acceptance.json`;
+  acceptance SHA-256
+  `76bac6177af918fcee476f7645df6559a960ad52e68c68875db52cdf6a091698`.
+- Bound identities: packet `987cbe86...b416`, manifest `e7c67071...117e`, app
+  `7d2e47d4...d1d`, AI decision `f84c9568...dc6b`.
+- Result: `OWNER_ACCEPTED_AI_REVIEW_GOVERNANCE_OVERRIDE`; ready for an
+  owner-governed configuration-epoch intake.
+- Endpoint opens: 0
+- Hardware writes: 0
+- Physical movements: 0
+- Authority: installation, startup, transport, execution, hardware, and
+  physical authority remain false.
+- Limitations: owner acceptance removes a governance dependency; it does not
+  improve evidence independence or prove installed firmware, calibration,
+  geometry, or motion behavior.
+- Supersedes: ARM-066 only as the mandatory external-review dependency. The
+  external workflow remains an optional future path.
+- Next dependency: collect and AI-review retained physical evidence for the
+  eight configuration components, then construct the owner-governed epoch.

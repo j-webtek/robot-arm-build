@@ -1,5 +1,10 @@
 # r97 external-review handoff
 
+> Historical optional path: ARM-067 replaced the mandatory human-review
+> dependency with an explicit owner-authorized, non-independent AI technical
+> review. This workflow remains available if an external reviewer is later
+> desired, but it is no longer a project prerequisite.
+
 This handoff closes the filesystem boundary around the existing r97 review
 packet. It does not perform or impersonate independent review and grants no
 installation, startup, transport, execution, hardware, or physical authority.

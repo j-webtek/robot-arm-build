@@ -101,6 +101,13 @@ installation, startup, transport, execution, hardware, or physical authority.
 Its next dependency is external r97 review plus the measured epoch; only after
 those pass may a separate hash-bound installation intake be proposed.
 
+ARM-067 supersedes the external-human portion of that dependency by owner
+governance decision. The retained acceptance binds the exact r97 packet,
+manifest, app, and AI technical-review decision; explicitly claims neither a
+human reviewer nor external independence; and permits progression only to an
+owner-governed measured configuration-epoch intake. Installation, startup,
+transport, execution, hardware, and physical authority remain false.
+
 ## Synthetic integration rehearsal
 
 A deterministic synthetic decision may be generated for software integration:
