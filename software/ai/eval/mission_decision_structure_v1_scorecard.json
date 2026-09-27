@@ -1,0 +1,3570 @@
+{
+  "cases_sha256": "cd13604a21e1cbcb1b9f2b3c3f48857745e4b0e055e877f08a68e7ddcb88cd46",
+  "hardware_writes": 0,
+  "interpretation": "Current templated validation is structurally separable and cannot justify another generative fit. Preserve deterministic safety checks and build a frozen residual paraphrase set that is not solved by this baseline before training another model.",
+  "limitations": [
+    "Development audit over the existing agent-authored templated validation only.",
+    "Perfect structural separation here does not establish natural-language generalization.",
+    "This diagnostic is not installed in runtime and has no execution authority."
+  ],
+  "model_confusion": {
+    "clarify.device_ambiguous -> clarify.intent_ambiguous": 25,
+    "clarify.device_ambiguous -> clarify.payload_ambiguous": 7,
+    "clarify.intent_ambiguous -> clarify.intent_ambiguous": 30,
+    "clarify.intent_ambiguous -> clarify.payload_ambiguous": 2,
+    "clarify.payload_ambiguous -> clarify.payload_ambiguous": 32,
+    "execute.keyboard -> clarify.intent_ambiguous": 14,
+    "execute.keyboard -> clarify.payload_ambiguous": 36,
+    "execute.keyboard -> execute.keyboard": 45,
+    "execute.keyboard -> unsupported.shifted_keyboard_text": 1,
+    "execute.phone -> clarify.payload_ambiguous": 2,
+    "execute.phone -> execute.phone": 62,
+    "unsupported.phone_call -> clarify.intent_ambiguous": 11,
+    "unsupported.phone_call -> clarify.payload_ambiguous": 14,
+    "unsupported.phone_call -> execute.phone": 7,
+    "unsupported.shifted_keyboard_text -> clarify.intent_ambiguous": 4,
+    "unsupported.shifted_keyboard_text -> clarify.payload_ambiguous": 8,
+    "unsupported.shifted_keyboard_text -> execute.keyboard": 4,
+    "unsupported.shifted_keyboard_text -> unsupported.shifted_keyboard_text": 16
+  },
+  "model_exact": 185,
+  "model_exact_fraction": 0.578125,
+  "model_scorecard_sha256": "dba226ee11e03661f2f1ddae05aeb8967d441ff9c0cd45f8f93996d52d8a2ae4",
+  "physical_movements": 0,
+  "qualification_installed": false,
+  "rows": [
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0001",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0002",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0003",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0004",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0005",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0006",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0007",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0008",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0009",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0010",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0011",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0012",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0013",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0014",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0015",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0016",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0017",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0018",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0019",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0020",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0021",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0022",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0023",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0024",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0025",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0026",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0027",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0028",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0029",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0030",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0031",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0032",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.phone",
+      "id": "mission-v2-v-0033",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "phone",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.phone",
+      "id": "mission-v2-v-0034",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "phone",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.phone",
+      "id": "mission-v2-v-0035",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "phone",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.phone",
+      "id": "mission-v2-v-0036",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "phone",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.phone",
+      "id": "mission-v2-v-0037",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "phone",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.phone",
+      "id": "mission-v2-v-0038",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "phone",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.phone",
+      "id": "mission-v2-v-0039",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "phone",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.phone",
+      "id": "mission-v2-v-0040",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "phone",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.phone",
+      "id": "mission-v2-v-0041",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "phone",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.phone",
+      "id": "mission-v2-v-0042",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "phone",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.phone",
+      "id": "mission-v2-v-0043",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "phone",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.phone",
+      "id": "mission-v2-v-0044",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "phone",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.phone",
+      "id": "mission-v2-v-0045",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "phone",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.phone",
+      "id": "mission-v2-v-0046",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "phone",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.phone",
+      "id": "mission-v2-v-0047",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "phone",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.phone",
+      "id": "mission-v2-v-0048",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "phone",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.phone",
+      "id": "mission-v2-v-0049",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "phone",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.phone",
+      "id": "mission-v2-v-0050",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "phone",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.phone",
+      "id": "mission-v2-v-0051",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "phone",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.phone",
+      "id": "mission-v2-v-0052",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "phone",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.phone",
+      "id": "mission-v2-v-0053",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "phone",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.phone",
+      "id": "mission-v2-v-0054",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "phone",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.phone",
+      "id": "mission-v2-v-0055",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "phone",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.phone",
+      "id": "mission-v2-v-0056",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "phone",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.phone",
+      "id": "mission-v2-v-0057",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "phone",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.phone",
+      "id": "mission-v2-v-0058",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "phone",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.phone",
+      "id": "mission-v2-v-0059",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "phone",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.phone",
+      "id": "mission-v2-v-0060",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "phone",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.phone",
+      "id": "mission-v2-v-0061",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "phone",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.phone",
+      "id": "mission-v2-v-0062",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "phone",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.phone",
+      "id": "mission-v2-v-0063",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "phone",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.phone",
+      "id": "mission-v2-v-0064",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "phone",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0065",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0066",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0067",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0068",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0069",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0070",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0071",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0072",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0073",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0074",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0075",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0076",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0077",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0078",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0079",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0080",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0081",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0082",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0083",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0084",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0085",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0086",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0087",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0088",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0089",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0090",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0091",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0092",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0093",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0094",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0095",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0096",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0097",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0098",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0099",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0100",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0101",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0102",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0103",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0104",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0105",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0106",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0107",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0108",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0109",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0110",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0111",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0112",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0113",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0114",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0115",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0116",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0117",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0118",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0119",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0120",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0121",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0122",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0123",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0124",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0125",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0126",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0127",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.keyboard",
+      "id": "mission-v2-v-0128",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "keyboard",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.phone",
+      "id": "mission-v2-v-0129",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "phone",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.phone",
+      "id": "mission-v2-v-0130",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "phone",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.phone",
+      "id": "mission-v2-v-0131",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "phone",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.phone",
+      "id": "mission-v2-v-0132",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "phone",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.phone",
+      "id": "mission-v2-v-0133",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "phone",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.phone",
+      "id": "mission-v2-v-0134",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "phone",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.phone",
+      "id": "mission-v2-v-0135",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "phone",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.phone",
+      "id": "mission-v2-v-0136",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "phone",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.phone",
+      "id": "mission-v2-v-0137",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "phone",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.phone",
+      "id": "mission-v2-v-0138",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "phone",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.phone",
+      "id": "mission-v2-v-0139",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "phone",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.phone",
+      "id": "mission-v2-v-0140",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "phone",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.phone",
+      "id": "mission-v2-v-0141",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "phone",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.phone",
+      "id": "mission-v2-v-0142",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "phone",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.phone",
+      "id": "mission-v2-v-0143",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "phone",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.phone",
+      "id": "mission-v2-v-0144",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "phone",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.phone",
+      "id": "mission-v2-v-0145",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "phone",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.phone",
+      "id": "mission-v2-v-0146",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "phone",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.phone",
+      "id": "mission-v2-v-0147",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "phone",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.phone",
+      "id": "mission-v2-v-0148",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "phone",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.phone",
+      "id": "mission-v2-v-0149",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "phone",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.phone",
+      "id": "mission-v2-v-0150",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "phone",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.phone",
+      "id": "mission-v2-v-0151",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "phone",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.phone",
+      "id": "mission-v2-v-0152",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "phone",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.phone",
+      "id": "mission-v2-v-0153",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "phone",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.phone",
+      "id": "mission-v2-v-0154",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "phone",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.phone",
+      "id": "mission-v2-v-0155",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "phone",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.phone",
+      "id": "mission-v2-v-0156",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "phone",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.phone",
+      "id": "mission-v2-v-0157",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "phone",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.phone",
+      "id": "mission-v2-v-0158",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "phone",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.phone",
+      "id": "mission-v2-v-0159",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "phone",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "execute.phone",
+      "id": "mission-v2-v-0160",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "execute",
+        "device": "phone",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.device_ambiguous",
+      "id": "mission-v2-v-0161",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "device_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.device_ambiguous",
+      "id": "mission-v2-v-0162",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "device_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.device_ambiguous",
+      "id": "mission-v2-v-0163",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "device_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.device_ambiguous",
+      "id": "mission-v2-v-0164",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "device_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.device_ambiguous",
+      "id": "mission-v2-v-0165",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "device_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.device_ambiguous",
+      "id": "mission-v2-v-0166",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "device_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.device_ambiguous",
+      "id": "mission-v2-v-0167",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "device_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.device_ambiguous",
+      "id": "mission-v2-v-0168",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "device_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.device_ambiguous",
+      "id": "mission-v2-v-0169",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "device_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.device_ambiguous",
+      "id": "mission-v2-v-0170",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "device_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.device_ambiguous",
+      "id": "mission-v2-v-0171",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "device_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.device_ambiguous",
+      "id": "mission-v2-v-0172",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "device_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.device_ambiguous",
+      "id": "mission-v2-v-0173",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "device_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.device_ambiguous",
+      "id": "mission-v2-v-0174",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "device_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.device_ambiguous",
+      "id": "mission-v2-v-0175",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "device_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.device_ambiguous",
+      "id": "mission-v2-v-0176",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "device_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.device_ambiguous",
+      "id": "mission-v2-v-0177",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "device_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.device_ambiguous",
+      "id": "mission-v2-v-0178",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "device_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.device_ambiguous",
+      "id": "mission-v2-v-0179",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "device_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.device_ambiguous",
+      "id": "mission-v2-v-0180",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "device_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.device_ambiguous",
+      "id": "mission-v2-v-0181",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "device_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.device_ambiguous",
+      "id": "mission-v2-v-0182",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "device_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.device_ambiguous",
+      "id": "mission-v2-v-0183",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "device_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.device_ambiguous",
+      "id": "mission-v2-v-0184",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "device_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.device_ambiguous",
+      "id": "mission-v2-v-0185",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "device_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.device_ambiguous",
+      "id": "mission-v2-v-0186",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "device_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.device_ambiguous",
+      "id": "mission-v2-v-0187",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "device_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.device_ambiguous",
+      "id": "mission-v2-v-0188",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "device_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.device_ambiguous",
+      "id": "mission-v2-v-0189",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "device_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.device_ambiguous",
+      "id": "mission-v2-v-0190",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "device_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.device_ambiguous",
+      "id": "mission-v2-v-0191",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "device_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.device_ambiguous",
+      "id": "mission-v2-v-0192",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "device_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.payload_ambiguous",
+      "id": "mission-v2-v-0193",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "payload_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.payload_ambiguous",
+      "id": "mission-v2-v-0194",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "payload_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.payload_ambiguous",
+      "id": "mission-v2-v-0195",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "payload_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.payload_ambiguous",
+      "id": "mission-v2-v-0196",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "payload_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.payload_ambiguous",
+      "id": "mission-v2-v-0197",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "payload_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.payload_ambiguous",
+      "id": "mission-v2-v-0198",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "payload_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.payload_ambiguous",
+      "id": "mission-v2-v-0199",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "payload_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.payload_ambiguous",
+      "id": "mission-v2-v-0200",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "payload_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.payload_ambiguous",
+      "id": "mission-v2-v-0201",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "payload_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.payload_ambiguous",
+      "id": "mission-v2-v-0202",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "payload_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.payload_ambiguous",
+      "id": "mission-v2-v-0203",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "payload_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.payload_ambiguous",
+      "id": "mission-v2-v-0204",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "payload_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.payload_ambiguous",
+      "id": "mission-v2-v-0205",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "payload_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.payload_ambiguous",
+      "id": "mission-v2-v-0206",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "payload_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.payload_ambiguous",
+      "id": "mission-v2-v-0207",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "payload_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.payload_ambiguous",
+      "id": "mission-v2-v-0208",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "payload_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.payload_ambiguous",
+      "id": "mission-v2-v-0209",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "payload_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.payload_ambiguous",
+      "id": "mission-v2-v-0210",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "payload_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.payload_ambiguous",
+      "id": "mission-v2-v-0211",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "payload_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.payload_ambiguous",
+      "id": "mission-v2-v-0212",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "payload_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.payload_ambiguous",
+      "id": "mission-v2-v-0213",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "payload_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.payload_ambiguous",
+      "id": "mission-v2-v-0214",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "payload_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.payload_ambiguous",
+      "id": "mission-v2-v-0215",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "payload_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.payload_ambiguous",
+      "id": "mission-v2-v-0216",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "payload_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.payload_ambiguous",
+      "id": "mission-v2-v-0217",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "payload_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.payload_ambiguous",
+      "id": "mission-v2-v-0218",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "payload_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.payload_ambiguous",
+      "id": "mission-v2-v-0219",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "payload_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.payload_ambiguous",
+      "id": "mission-v2-v-0220",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "payload_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.payload_ambiguous",
+      "id": "mission-v2-v-0221",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "payload_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.payload_ambiguous",
+      "id": "mission-v2-v-0222",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "payload_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.payload_ambiguous",
+      "id": "mission-v2-v-0223",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "payload_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.payload_ambiguous",
+      "id": "mission-v2-v-0224",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "payload_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.intent_ambiguous",
+      "id": "mission-v2-v-0225",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.intent_ambiguous",
+      "id": "mission-v2-v-0226",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.intent_ambiguous",
+      "id": "mission-v2-v-0227",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.intent_ambiguous",
+      "id": "mission-v2-v-0228",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.intent_ambiguous",
+      "id": "mission-v2-v-0229",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.intent_ambiguous",
+      "id": "mission-v2-v-0230",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.intent_ambiguous",
+      "id": "mission-v2-v-0231",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.intent_ambiguous",
+      "id": "mission-v2-v-0232",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.intent_ambiguous",
+      "id": "mission-v2-v-0233",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.intent_ambiguous",
+      "id": "mission-v2-v-0234",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.intent_ambiguous",
+      "id": "mission-v2-v-0235",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.intent_ambiguous",
+      "id": "mission-v2-v-0236",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.intent_ambiguous",
+      "id": "mission-v2-v-0237",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.intent_ambiguous",
+      "id": "mission-v2-v-0238",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.intent_ambiguous",
+      "id": "mission-v2-v-0239",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.intent_ambiguous",
+      "id": "mission-v2-v-0240",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.intent_ambiguous",
+      "id": "mission-v2-v-0241",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.intent_ambiguous",
+      "id": "mission-v2-v-0242",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.intent_ambiguous",
+      "id": "mission-v2-v-0243",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.intent_ambiguous",
+      "id": "mission-v2-v-0244",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.intent_ambiguous",
+      "id": "mission-v2-v-0245",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.intent_ambiguous",
+      "id": "mission-v2-v-0246",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.intent_ambiguous",
+      "id": "mission-v2-v-0247",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.intent_ambiguous",
+      "id": "mission-v2-v-0248",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.intent_ambiguous",
+      "id": "mission-v2-v-0249",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.intent_ambiguous",
+      "id": "mission-v2-v-0250",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.intent_ambiguous",
+      "id": "mission-v2-v-0251",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.intent_ambiguous",
+      "id": "mission-v2-v-0252",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.intent_ambiguous",
+      "id": "mission-v2-v-0253",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.intent_ambiguous",
+      "id": "mission-v2-v-0254",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.intent_ambiguous",
+      "id": "mission-v2-v-0255",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "clarify.intent_ambiguous",
+      "id": "mission-v2-v-0256",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "clarify",
+        "reason": "intent_ambiguous",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "unsupported.shifted_keyboard_text",
+      "id": "mission-v2-v-0257",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "unsupported",
+        "kind": "shifted_keyboard_text",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "unsupported.shifted_keyboard_text",
+      "id": "mission-v2-v-0258",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "unsupported",
+        "kind": "shifted_keyboard_text",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "unsupported.shifted_keyboard_text",
+      "id": "mission-v2-v-0259",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "unsupported",
+        "kind": "shifted_keyboard_text",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "unsupported.shifted_keyboard_text",
+      "id": "mission-v2-v-0260",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "unsupported",
+        "kind": "shifted_keyboard_text",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "unsupported.shifted_keyboard_text",
+      "id": "mission-v2-v-0261",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "unsupported",
+        "kind": "shifted_keyboard_text",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "unsupported.shifted_keyboard_text",
+      "id": "mission-v2-v-0262",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "unsupported",
+        "kind": "shifted_keyboard_text",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "unsupported.shifted_keyboard_text",
+      "id": "mission-v2-v-0263",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "unsupported",
+        "kind": "shifted_keyboard_text",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "unsupported.shifted_keyboard_text",
+      "id": "mission-v2-v-0264",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "unsupported",
+        "kind": "shifted_keyboard_text",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "unsupported.shifted_keyboard_text",
+      "id": "mission-v2-v-0265",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "unsupported",
+        "kind": "shifted_keyboard_text",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "unsupported.shifted_keyboard_text",
+      "id": "mission-v2-v-0266",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "unsupported",
+        "kind": "shifted_keyboard_text",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "unsupported.shifted_keyboard_text",
+      "id": "mission-v2-v-0267",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "unsupported",
+        "kind": "shifted_keyboard_text",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "unsupported.shifted_keyboard_text",
+      "id": "mission-v2-v-0268",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "unsupported",
+        "kind": "shifted_keyboard_text",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "unsupported.shifted_keyboard_text",
+      "id": "mission-v2-v-0269",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "unsupported",
+        "kind": "shifted_keyboard_text",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "unsupported.shifted_keyboard_text",
+      "id": "mission-v2-v-0270",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "unsupported",
+        "kind": "shifted_keyboard_text",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "unsupported.shifted_keyboard_text",
+      "id": "mission-v2-v-0271",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "unsupported",
+        "kind": "shifted_keyboard_text",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "unsupported.shifted_keyboard_text",
+      "id": "mission-v2-v-0272",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "unsupported",
+        "kind": "shifted_keyboard_text",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "unsupported.shifted_keyboard_text",
+      "id": "mission-v2-v-0273",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "unsupported",
+        "kind": "shifted_keyboard_text",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "unsupported.shifted_keyboard_text",
+      "id": "mission-v2-v-0274",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "unsupported",
+        "kind": "shifted_keyboard_text",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "unsupported.shifted_keyboard_text",
+      "id": "mission-v2-v-0275",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "unsupported",
+        "kind": "shifted_keyboard_text",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "unsupported.shifted_keyboard_text",
+      "id": "mission-v2-v-0276",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "unsupported",
+        "kind": "shifted_keyboard_text",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "unsupported.shifted_keyboard_text",
+      "id": "mission-v2-v-0277",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "unsupported",
+        "kind": "shifted_keyboard_text",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "unsupported.shifted_keyboard_text",
+      "id": "mission-v2-v-0278",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "unsupported",
+        "kind": "shifted_keyboard_text",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "unsupported.shifted_keyboard_text",
+      "id": "mission-v2-v-0279",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "unsupported",
+        "kind": "shifted_keyboard_text",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "unsupported.shifted_keyboard_text",
+      "id": "mission-v2-v-0280",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "unsupported",
+        "kind": "shifted_keyboard_text",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "unsupported.shifted_keyboard_text",
+      "id": "mission-v2-v-0281",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "unsupported",
+        "kind": "shifted_keyboard_text",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "unsupported.shifted_keyboard_text",
+      "id": "mission-v2-v-0282",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "unsupported",
+        "kind": "shifted_keyboard_text",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "unsupported.shifted_keyboard_text",
+      "id": "mission-v2-v-0283",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "unsupported",
+        "kind": "shifted_keyboard_text",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "unsupported.shifted_keyboard_text",
+      "id": "mission-v2-v-0284",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "unsupported",
+        "kind": "shifted_keyboard_text",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "unsupported.shifted_keyboard_text",
+      "id": "mission-v2-v-0285",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "unsupported",
+        "kind": "shifted_keyboard_text",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "unsupported.shifted_keyboard_text",
+      "id": "mission-v2-v-0286",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "unsupported",
+        "kind": "shifted_keyboard_text",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "unsupported.shifted_keyboard_text",
+      "id": "mission-v2-v-0287",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "unsupported",
+        "kind": "shifted_keyboard_text",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "unsupported.shifted_keyboard_text",
+      "id": "mission-v2-v-0288",
+      "model_exact": true,
+      "structural_decision": {
+        "decision": "unsupported",
+        "kind": "shifted_keyboard_text",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "unsupported.phone_call",
+      "id": "mission-v2-v-0289",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "unsupported",
+        "kind": "phone_call",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "unsupported.phone_call",
+      "id": "mission-v2-v-0290",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "unsupported",
+        "kind": "phone_call",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "unsupported.phone_call",
+      "id": "mission-v2-v-0291",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "unsupported",
+        "kind": "phone_call",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "unsupported.phone_call",
+      "id": "mission-v2-v-0292",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "unsupported",
+        "kind": "phone_call",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "unsupported.phone_call",
+      "id": "mission-v2-v-0293",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "unsupported",
+        "kind": "phone_call",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "unsupported.phone_call",
+      "id": "mission-v2-v-0294",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "unsupported",
+        "kind": "phone_call",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "unsupported.phone_call",
+      "id": "mission-v2-v-0295",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "unsupported",
+        "kind": "phone_call",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "unsupported.phone_call",
+      "id": "mission-v2-v-0296",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "unsupported",
+        "kind": "phone_call",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "unsupported.phone_call",
+      "id": "mission-v2-v-0297",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "unsupported",
+        "kind": "phone_call",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "unsupported.phone_call",
+      "id": "mission-v2-v-0298",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "unsupported",
+        "kind": "phone_call",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "unsupported.phone_call",
+      "id": "mission-v2-v-0299",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "unsupported",
+        "kind": "phone_call",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "unsupported.phone_call",
+      "id": "mission-v2-v-0300",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "unsupported",
+        "kind": "phone_call",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "unsupported.phone_call",
+      "id": "mission-v2-v-0301",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "unsupported",
+        "kind": "phone_call",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "unsupported.phone_call",
+      "id": "mission-v2-v-0302",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "unsupported",
+        "kind": "phone_call",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "unsupported.phone_call",
+      "id": "mission-v2-v-0303",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "unsupported",
+        "kind": "phone_call",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "unsupported.phone_call",
+      "id": "mission-v2-v-0304",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "unsupported",
+        "kind": "phone_call",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "unsupported.phone_call",
+      "id": "mission-v2-v-0305",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "unsupported",
+        "kind": "phone_call",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "unsupported.phone_call",
+      "id": "mission-v2-v-0306",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "unsupported",
+        "kind": "phone_call",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "unsupported.phone_call",
+      "id": "mission-v2-v-0307",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "unsupported",
+        "kind": "phone_call",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "unsupported.phone_call",
+      "id": "mission-v2-v-0308",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "unsupported",
+        "kind": "phone_call",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "unsupported.phone_call",
+      "id": "mission-v2-v-0309",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "unsupported",
+        "kind": "phone_call",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "unsupported.phone_call",
+      "id": "mission-v2-v-0310",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "unsupported",
+        "kind": "phone_call",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "unsupported.phone_call",
+      "id": "mission-v2-v-0311",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "unsupported",
+        "kind": "phone_call",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "unsupported.phone_call",
+      "id": "mission-v2-v-0312",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "unsupported",
+        "kind": "phone_call",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "unsupported.phone_call",
+      "id": "mission-v2-v-0313",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "unsupported",
+        "kind": "phone_call",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "unsupported.phone_call",
+      "id": "mission-v2-v-0314",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "unsupported",
+        "kind": "phone_call",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "unsupported.phone_call",
+      "id": "mission-v2-v-0315",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "unsupported",
+        "kind": "phone_call",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "unsupported.phone_call",
+      "id": "mission-v2-v-0316",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "unsupported",
+        "kind": "phone_call",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "unsupported.phone_call",
+      "id": "mission-v2-v-0317",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "unsupported",
+        "kind": "phone_call",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "unsupported.phone_call",
+      "id": "mission-v2-v-0318",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "unsupported",
+        "kind": "phone_call",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "unsupported.phone_call",
+      "id": "mission-v2-v-0319",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "unsupported",
+        "kind": "phone_call",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    },
+    {
+      "class_label": "unsupported.phone_call",
+      "id": "mission-v2-v-0320",
+      "model_exact": false,
+      "structural_decision": {
+        "decision": "unsupported",
+        "kind": "phone_call",
+        "schema": "rocell.mission_decision.v1"
+      },
+      "structural_exact": true
+    }
+  ],
+  "schema": "rocell.mission_decision_structure_audit.v1",
+  "structural_class_accuracy": {
+    "clarify.device_ambiguous": 1.0,
+    "clarify.intent_ambiguous": 1.0,
+    "clarify.payload_ambiguous": 1.0,
+    "execute.keyboard": 1.0,
+    "execute.phone": 1.0,
+    "unsupported.phone_call": 1.0,
+    "unsupported.shifted_keyboard_text": 1.0
+  },
+  "structural_exact": 320,
+  "structural_exact_fraction": 1.0,
+  "total": 320
+}

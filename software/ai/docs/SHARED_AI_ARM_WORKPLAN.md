@@ -637,7 +637,6 @@ remove it only in the same commit that appends the resulting evidence row.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI lane | S1 | compact decision confusion audit, deterministic-policy ablation, next-architecture recommendation, tests, and evidence | `feature/translation-pair-evidence` at `f9c9b9dd806630d99d699e54840557347222e11e` | ACTIVE: diagnose committed validation only; no fit or confirmation |
 | Unclaimed | S2 | qualified perception adapter and complete shared gate | — | AVAILABLE |
 | Unclaimed | S4 | external reviewer publishes a typed decision for sealed r97 packet `987cbe86...b416`; collect/review all eight measured epoch components | — | AVAILABLE |
 
@@ -9954,3 +9953,18 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Development-only source test over agent-authored templates. The structural baseline is deliberately not installed in runtime and perfect in-memory agreement cannot establish natural-language transfer. No model fit, confirmation data, qualification, arm-lane, or integration status change.
 - Supersedes: none.
 - Next dependency: Commit this audit source before executing it once against the immutable epoch-2 scorecard, then hash and verify the resulting structural-versus-model comparison. Use that evidence to define a residual paraphrase population rather than fitting the same templates again.
+
+### E-20260927-AI-437 — current compact validation is structurally separable
+
+- Stage: S1
+- Lane: AI
+- Commit: `795ead003cc774853e69da6b5f487dfdd63573d2` (frozen structural audit source; generated audit, independent reproduction test, and ledger committed in the successor)
+- Inputs/fixtures: Frozen 320-row compact validation SHA-256 `cd13604a21e1cbcb1b9f2b3c3f48857745e4b0e055e877f08a68e7ddcb88cd46`; selected epoch-2 scorecard SHA-256 `dba226ee11e03661f2f1ddae05aeb8967d441ff9c0cd45f8f93996d52d8a2ae4`; frozen structural audit from AI-436.
+- Command: `python eval/audit_mission_decision_structure.py --cases data/mission_decision_curriculum_v1_validation.jsonl --model-scorecard results/mission_decision_student_v1/validation_epoch_2_scorecard.json --output eval/mission_decision_structure_v1_scorecard.json`; `python -m pytest tests/test_mission_decision_structure_source.py tests/test_mission_decision_structure_result.py tests/test_mission_decision_student_result.py -q`; `git diff --check` from `software/ai`.
+- Result: PASS: audit SHA-256 `fb63f092e6eafbf76123020f688f002c240f33267339ef175b8b5a94e9b29d0b`; reproduction suite 5 tests in 0.65s; clean diff check. The deterministic structural baseline exactly classified 320/320 frozen validation requests and reached 1.0 accuracy on every one of seven classes. The selected learned checkpoint exactly classified 185/320 (0.578125). The baseline uses quote count, explicit device language, phone-keyboard compound handling, explicit device conflict, compound operation words, uppercase payloads, and phone-call wording. Therefore this validation population is fully structurally separable and does not support another generative fit on the same templates. This is a development diagnosis and does not install the baseline in runtime.
+- Artifacts: `eval/mission_decision_structure_v1_scorecard.json`; `tests/test_mission_decision_structure_result.py`; shared ledger.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Agent-authored templated development population only. Perfect structural separation is evidence of dataset simplicity, not broad language understanding. The diagnostic vocabulary is finite and can miss paraphrases. No confirmation data, camera, localization, model qualification, runtime release, arm-lane, or integration status changed.
+- Supersedes: none; failed learned checkpoints remain preserved.
+- Next dependency: Freeze a residual paraphrase-development generator whose cases preserve the seven semantic outcomes but intentionally avoid or vary the structural cues used here. Partition outcomes into deterministic policy decisions, learned residual decisions, and conservative clarification. Require the structural baseline to fail on a meaningful portion before fitting, and retain compiler-backed zero-wrong-accepted gates. Do not create confirmation data yet.
