@@ -599,11 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-- AI lane / S1: train a compact image-only obstruction classifier on a new 43M
-  cohort and test a fixed classifier-weighted ensemble scale on disjoint 44M
-  mapping-calibration and 45M selection cohorts; no runtime, contract, or arm
-  changes.
-
 
 
 
@@ -8612,3 +8607,52 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic repository review before final ledger append; not model, runtime, or physical assurance. No arm or integration status changes.
 - Supersedes: none.
 - Next dependency: Same as AI-343.
+
+
+### E-20260927-AI-346 — image-only obstruction-risk scale study
+
+- Stage: S1
+- Lane: AI
+- Commit: `7c27ffc4ef32a6d4bbd4c8d8a2a8a845126fd6c6` (classifier, cohorts, combined scale, thresholds, source, and plan frozen before training; report, tests, and documentation committed in the successor)
+- Inputs/fixtures: Training scenes `43000000..43001999` (16,000 raw images), mapping-calibration scenes `44000000..44000999`, and selection scenes `45000000..45000999` (8,000 images each). Training pixel SHA256 `9d4fa2aefd9f00ba724b3740d55e1cfb72f342907895169dabf782aab1232162`; mapping raw-pixel SHA256 `6c7c16ab667af4e39a7d0d4af3dbbaae63939701875440e349021ab9ce42741c`; selection raw-pixel SHA256 `f8255ddc90a795dc6a8b3410d9a1ae8814877787e871e571c0d240c4bc9f6b94`; plan SHA256 `3cd9f8ca6d2a93f39bb295c2c73e0401785b82c7a16dc4950f4ee4fd1254b49c`; report SHA256 `6b4bd12ea0b6830028847ab79e10de97912c84425a3ae18c621ab2ad06996529`; 69,561-parameter checkpoint SHA256 `fcfdb42a6665816e02828f884e7d61bf15476d963f4846b992bdaa19c93a3e1d`.
+- Command: `python software/ai/train/train_obstruction_risk_scale.py`
+- Result: FAIL fixed composite rule. Classifier AUROC `0.91947`, obstruction recall `0.78625`, and clean false-positive rate `0.124` miss required `0.95`, `0.90`, and `<=0.10`. Combined scale reaches 99.3% scene coverage, `1014/8000` utility (12.675%), 99.6055% accepted-image coverage, 99.4764% accepted-scene coverage, and zero accepted errors above 3 mm. Full-obstruction accepted coverage is `21/23` (91.3043%), failing its 99% condition rule; all other scale checks pass. One classifier fit, one quantile calibration, and 2,000 optimizer updates.
+- Artifacts: `vision/obstruction_risk_model.py`; `train/train_obstruction_risk_scale.py`; `train/obstruction_risk_scale_v1_plan.json`; `eval/obstruction_risk_scale_v1_report.json`; ignored local classifier checkpoint; `tests/test_obstruction_risk_scale.py`; uncertainty documentation.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Synthetic training-selection evidence, one classifier seed, and no fresh confirmation or physical-camera claim. No classifier promotion, runtime installation, physical qualification, or motion authority. ModelMotionBatchV2 and arm/integration statuses are unchanged.
+- Supersedes: none; failed scalar mappings and calibration evidence remain preserved.
+- Next dependency: Improve full-obstruction recall using a preregistered localized or multi-scale image-only architecture on new grouped training-selection evidence. Retain the same classifier, conditional-coverage, utility, and 3 mm rules before another calibration pair.
+
+
+### E-20260927-AI-347 — obstruction-risk verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `7c27ffc4ef32a6d4bbd4c8d8a2a8a845126fd6c6` (frozen study source; tests and documentation committed in the successor)
+- Inputs/fixtures: Same 32,000 images across training, mapping-calibration, and selection cohorts as AI-346; exact model, pixel, plan, and report hashes recorded there.
+- Command: `python -m pytest -q software/ai/tests/test_obstruction_risk_scale.py`
+- Result: PASS: 2 tests in 1.77s. Tests verify architecture size and strict input, frozen lineage, exact grouped populations, combined-scale construction, all decision checks, failed selection, and zero hardware or physical authority.
+- Artifacts: `tests/test_obstruction_risk_scale.py`; `eval/obstruction_risk_scale_v1_report.json`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Existing pytest-asyncio configuration warning. Recount consistency only; no physical assurance. Contract unchanged, so shared boundary tests were not triggered.
+- Supersedes: none.
+- Next dependency: Same as AI-346.
+
+
+### E-20260927-AI-348 — obstruction-risk snapshot review
+
+- Stage: S1
+- Lane: AI
+- Commit: `7c27ffc4ef32a6d4bbd4c8d8a2a8a845126fd6c6` (frozen study source; final ledger append in successor)
+- Inputs/fixtures: Repository snapshot containing the frozen obstruction-risk study, report, tests, and interpretation; exact hashes recorded in AI-346.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS: 6,281 paths, 934.4 MiB, 0 unresolved review findings, 14 reviewed synthetic fixtures.
+- Artifacts: obstruction-risk plan/report; verification test; uncertainty documentation; shared ledger.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic repository review; not model, runtime, or physical assurance. No arm or integration status changes.
+- Supersedes: none.
+- Next dependency: Same as AI-346.
+

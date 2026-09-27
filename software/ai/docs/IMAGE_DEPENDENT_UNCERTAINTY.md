@@ -280,3 +280,23 @@ sensitive observable rather than another scalar transform. It should be trained
 and evaluated only on new grouped training-selection evidence and must improve
 partial/full accepted-subset ranking before another calibration pair is
 allocated.
+
+## Image-only obstruction signal
+
+A fixed 69,561-parameter classifier was trained on 16,000 raw 43M images to
+predict obstruction presence without masks or condition labels at inference.
+Its probability multiplied the existing disagreement scale by `1 + p`. Separate
+44M mapping-calibration and 45M selection cohorts contained 8,000 images each.
+
+The composite selection rule failed. Classifier AUROC was 0.91947, recall
+0.78625, and clean false-positive rate 0.124, missing the frozen 0.95, 0.90, and
+0.10 requirements. The combined scale achieved 99.3% scene coverage, 12.675%
+utility, and zero accepted errors above 3 mm. Overall accepted image and scene
+coverage passed, as did partial-obstruction coverage. Full-obstruction accepted
+coverage was only 21/23 (91.3043%), so that condition failed.
+
+This establishes that an obstruction observable can improve utility and remove
+above-tolerance accepted errors, but the tested classifier is not reliable
+enough for promotion. The next training-only study should improve full-
+obstruction recall with localized or multi-scale features and require the same
+strict classifier and conditional-coverage checks on fresh selection evidence.
