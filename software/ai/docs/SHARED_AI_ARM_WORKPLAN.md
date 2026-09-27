@@ -599,6 +599,8 @@ Copy this row and fill every field:
 
 ## Active work claims
 
+- AI lane / S1: fixed LeakyReLU0.01 residual variant and same-budget three-seed paired training; verify negative gradients/export and direct correction variation. No contract/arm changes or slope sweep.
+
 
 
 
