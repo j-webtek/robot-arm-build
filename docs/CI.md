@@ -14,8 +14,9 @@ Changing that image requires a reviewed workflow and documentation update; it
 must not happen implicitly when GitHub moves the `ubuntu-latest` alias.
 
 Repository policy requires full commit-SHA action pins and permits only
-`actions/checkout`, `actions/setup-python`, and `actions/upload-artifact`. Fork workflows from outside
-contributors require approval before running. A pending approval is not a failed
+`actions/checkout`, `actions/setup-python`, `actions/upload-artifact`,
+`actions/configure-pages`, and `actions/deploy-pages`. Fork workflows from
+outside contributors require approval before running. A pending approval is not a failed
 test; maintainers review the proposed code before allowing CI to execute. See
 [Actions policy](REPOSITORY_OPERATIONS.md#september-26-2026-actions-policy-hardening)
 for the dated settings and how to propose another action without bypassing them.
@@ -30,6 +31,10 @@ for the dated settings and how to propose another action without bypassing them.
 - Local file links in an explicit list of maintained docs; SVG XML validity.
   Links to this repository's new-issue templates are checked against local
   template filenames, catching stale `.md`/`.yml` routes without network access.
+- The public project-status reviewed-through marker must match the newest ARM
+  evidence-ledger record, and known issue dispositions must not regress.
+- Published overview media and its authority manifest must match the exact
+  sizes and SHA-256 identities in the public verification receipt.
 - An explicit selection of AI/arm contract, ordering, evidence, and metric tests.
 - A generated-evidence change budget that protects reviewability and clone cost;
   see [evidence retention](EVIDENCE_RETENTION.md).
@@ -104,6 +109,7 @@ python -m venv .venv-ci
 python scripts/ci/offline_checks.py install-base
 python scripts/ci/offline_checks.py smoke
 python scripts/ci/check_docs.py
+python scripts/ci/check_public_records.py
 python scripts/ci/check_release_integrity.py --mode policy
 python scripts/ci/offline_checks.py install-tests
 python scripts/ci/offline_checks.py environment
@@ -116,8 +122,8 @@ model service, camera, arm, or private calibration records.
 
 ## Boundaries
 
-No repository secrets, self-hosted runners, hardware connections, or deployment
-steps are configured. The workflow uses a read-only GitHub token and does not
+No repository secrets, self-hosted runners, or hardware connections are
+configured in offline verification. That workflow uses a read-only GitHub token and does not
 persist checkout credentials. Do not add live scripts or broad test discovery
 without inspecting their side effects. These are scoped software checks, not a
 security sandbox or proof of physical safety.
@@ -126,7 +132,7 @@ Green checks do not establish model accuracy, authenticated real-camera evidence
 measured calibration, physical typing, or full-suite qualification. Link checking
 does not validate remote URLs or arbitrary Markdown anchors. SVG parsing does
 not replace visual QA.
-The documentation check also enforces eight explicitly listed public-page titles
+The documentation check also enforces explicitly listed public-page titles
 and required navigation routes in `scripts/ci/check_docs.py`. Three selected
 plain-heading anchors (installation, expected results, and export sharing) must
 still exist exactly once at their destination. Backtick and tilde fenced examples
@@ -140,6 +146,12 @@ or submission behavior. Generic/blank issue routes are not template files.
 The repository snapshot audit remains a separate review. Its previously reported
 synthetic fixtures have [exact documented exceptions](AUDIT_FIXTURE_REVIEW.md);
 CI tests that mechanism but does not replace a full snapshot scan.
+
+The separate Pages workflow deploys only the checked-in project player and
+content-addressed overview media. Its build job has read-only repository access;
+only the deploy job receives `pages: write` and an OIDC token. The build runs the
+media-only receipt check before packaging, and the `github-pages` environment is
+restricted to `main`.
 
 ## Test tiers: choose the evidence you need
 

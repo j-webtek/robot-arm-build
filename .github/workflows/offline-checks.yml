@@ -56,6 +56,7 @@ jobs:
           python -m compileall -q scripts/ci
           python -m unittest discover -s scripts/ci -p "test_*.py"
           python scripts/ci/check_docs.py
+          python scripts/ci/check_public_records.py
           python scripts/ci/check_evidence_scope.py
           python scripts/ci/check_release_integrity.py --mode policy
       - name: Install test extra

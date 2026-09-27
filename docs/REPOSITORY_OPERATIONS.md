@@ -285,22 +285,23 @@ Following the owner's approval, repository settings were changed and read back:
 
 | Control | Verified state |
 | --- | --- |
-| Allowed Actions | Selected only: `actions/checkout@*`, `actions/setup-python@*`, and `actions/upload-artifact@*` |
+| Allowed Actions | Selected only: `actions/checkout@*`, `actions/setup-python@*`, `actions/upload-artifact@*`, `actions/configure-pages@*`, and `actions/deploy-pages@*` |
 | Broad GitHub-owned / verified-creator allowances | Both disabled |
 | Full-length commit-SHA pinning | Required |
 | Outside-contributor fork workflows | Approval required for all outside contributors |
 | Default token / permission to approve PR reviews | Read-only / disabled, unchanged |
 
-The action patterns allow reviewed pin updates within these three repositories;
+The action patterns allow reviewed pin updates within these five repositories;
 they do not waive the separate full-SHA requirement. Adding a new action needs
 an owner-approved allowlist change and review of its source, requested permissions,
 and workflow use. Do not broaden the allowlist just to clear a failed run.
 
-The upload action was added on September 27, 2026 solely for the bounded RC03
-manual qualification artifact. It receives the generated PDF and JSON summary
-from the runner's temporary directory, retains them for 14 days, and has no
-release or deployment authority. Repository workflow permissions remain
-read-only; artifact retention is review evidence, not publication.
+The upload action was added on September 27, 2026 for bounded workflow
+artifacts. The offline workflow retains the generated RC03 PDF and JSON summary
+for 14 days and has no release or deployment authority. The Pages workflow uses
+the same action for a one-day site package; its build job remains read-only and
+only its deploy job receives `pages: write` plus an OIDC token. Artifact
+retention is review or deployment staging, not source-release publication.
 
 Before approving an outside contributor's workflow, inspect the proposed code
 and workflow changes at the revision being approved. Approval allows CI code to

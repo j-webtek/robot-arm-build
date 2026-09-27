@@ -38,6 +38,7 @@ DOCS = (
     'software/docs/ARCHITECTURE.md',
     'docs/brand/BRAND_GUIDE.md', 'docs/brand/NAMING_REVIEW.md',
     'docs/brand/MIGRATION_PLAN.md',
+    'assets/media/README.md', 'assets/media/VERIFICATION_RECEIPT.md',
 )
 
 # Deliberately narrow: compatibility identifiers and historical records are not
@@ -64,6 +65,7 @@ PUBLIC_TITLES = {
     'software/ai/docs/SHARED_AI_ARM_WORKPLAN.md': 'Shared AI-to-arm workplan',
     'software/ai/docs/EVIDENCE_LEDGER.md': 'Tactevra AI/arm evidence ledger',
     'software/docs/ARCHITECTURE.md': 'Tactevra Runtime software architecture',
+    'assets/media/VERIFICATION_RECEIPT.md': 'Tactevra overview-media verification receipt',
 }
 
 REQUIRED_PHRASES = {
@@ -116,6 +118,13 @@ REQUIRED_PHRASES = {
     'software/ai/docs/EVIDENCE_LEDGER.md': (
         '**Document status:** Append-only evidence record',
         'duplicate `E-20260926-INT-001` identifier',
+    ),
+    'assets/media/VERIFICATION_RECEIPT.md': (
+        '**Document status:** Current published-media verification',
+        '**Authority:** Byte identity and post-merge inspection only;',
+        'https://github.com/j-webtek/tactevra/issues/88',
+        'not a Blender rerender',
+        'does not qualify robot motion',
     ),
     'docs/releases/EXPERIMENTAL_PREVIEW_DRAFT.md': (
         '**Status:** Superseded preparation record; unpublished',

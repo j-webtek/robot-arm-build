@@ -1,7 +1,7 @@
 # Tactevra project status
 
-Reviewed September 27, 2026 through the ARM-048 sole-writer dispatch lifecycle
-increment on merged `main`.
+Reviewed September 27, 2026 through the ARM-070 camera/support/optics intake
+and gap assessment on merged `main`.
 Unmerged workstream branches are not included in this summary.
 This is a capability summary for readers; the
 [shared workplan](software/ai/docs/SHARED_AI_ARM_WORKPLAN.md) retains current
@@ -25,7 +25,9 @@ being developed.
   Merged firmware and clear simulated waypoints do not authorize movement.
 - **Distribution:** no source release is published at this checkpoint. The
   earlier preview effort was [deferred, not completed](https://github.com/j-webtek/tactevra/issues/25).
-  [Vendor-file redistribution provenance](https://github.com/j-webtek/tactevra/issues/45)
+  [Issue #45](https://github.com/j-webtek/tactevra/issues/45) was closed by
+  removing the tracked vendor file and retaining a link-only boundary. The
+  broader [Waveshare URDF disposition](https://github.com/j-webtek/tactevra/issues/88)
   remains open for expert review.
 
 The sections below explain the evidence behind this summary. For setup help,
@@ -52,7 +54,7 @@ use the shared workplan linked above.
 | Controller evidence gate | Required controller identity, mapping, protocol, freshness, and review fields are checked | Modeled records test rejection behavior; even a passing record grants no transport or execution authority, and no physical originals were qualified |
 | Installed-controller compatibility | A passive r96 observation is recorded; an offline assessment checks the installed application's command surface | r96 lacks the required generic production command/feedback interface and remains blocked; its identity evidence is not independently qualified |
 | Production runtime contract | A host-side executable specification rehearses safe-idle startup, one writer, ordered commands, deadlines, and feedback checks | Software rules are testable without I/O; this is not replacement firmware or an installed execution service |
-| Production firmware candidate | r97 controller-side implementation compiled offline; source, integration, sealed review handoff, typed review-decision, full synthetic review-to-epoch rehearsal, and measured-epoch intake contracts are merged | Synthetic review and eight-component epoch fixtures exercise integration but remain production-blocked; no authenticated independent review decision or measured epoch evidence has been supplied, so installed qualification and all physical use remain blocked |
+| Production firmware candidate | r97 controller-side implementation compiled offline; source, integration, sealed review handoff, typed review-decision, full synthetic review-to-epoch rehearsal, and owner-governed measured-epoch intake contracts are merged | The owner accepted a clearly labeled non-independent AI review and the reproducible `software_build` component is ready, but seven required physical components remain missing and the epoch identity is null; installed qualification and all physical use remain blocked |
 | Synthetic model-to-controller lineage | Exact synthetic review and epoch identities now bind through actual AI-assembler bytes, arm ingress and freshness checks, the measured planner blocker, a sealed synthetic trajectory, T=102 profile, and zero-write preview receipt | Crossed identities reject and one encoded command is reviewable, but the real planner stops for missing calibration, production dispatch remains explicitly blocked, and no bytes are sent |
 | Arm control research | Documented supervised noncontact movement and joint-feedback checks | Specific lab sequences were completed; controller feedback does not measure key-contact accuracy |
 | Hardware | RC03 workcell design and step-by-step assembly package | Design and print resources exist, with their own measurement and print-readiness requirements |
@@ -157,6 +159,28 @@ open a port or reach hardware, so the result qualifies the state machine and
 evidence contract only—not native transport, controller feedback, movement, or
 typing.
 
+The later ARM-064 one-shot active feedback request reached the installed
+diagnostic surface but received `FAULT:NOT_READY`; no retry or movement followed.
+ARM-065 therefore kept the r97 runtime transition blocked. ARM-066 added a
+strict external-decision intake, and ARM-067 records the owner's decision to
+accept a non-independent AI technical review without mislabeling it as human or
+external evidence. ARM-068 adds the parallel owner-governed configuration-epoch
+contract. Its retained draft is intentionally incomplete: all eight physical
+components and all 32 required bindings are missing, the epoch identity is null,
+and installation, transport, execution, and physical authority remain false.
+
+ARM-069 then closed the four reproducible `software_build` bindings with exact
+source, dependency, provider, and build-snapshot evidence plus a separate
+owner-AI review. This advances software provenance only: the other seven
+components remain missing, the configuration-epoch identity remains null, and
+no installed-controller or physical authority was created.
+
+ARM-070 adds the deterministic `camera_support_optics` intake and readiness
+assessment. It records the current gap instead of manufacturing evidence: the
+camera receipt, persistent identity, commissioned mode and controls, and support
+witnesses are all missing. The component remains blocked, the ARM-069 partial
+epoch is unchanged, and no camera or hardware authority was granted.
+
 Repository improvements include protected-main CI, support and private security
 reporting, contributor handoff templates, reviewed dependency updates, and an
 experimental source-release checklist. CI now exposes resolved package versions
@@ -185,10 +209,13 @@ demonstrate an operating dialer or completed call.
 
 The AI lane needs independent evaluation of the localization candidate and
 separate confidence qualification, alongside capture provenance. The arm lane
-has merged the offline r97 firmware candidate. Its next dependency is independent
-review of the exact source and compiled image, with configuration-epoch binding
-and installed-controller qualification still unresolved. A merge is not deployment
-approval or evidence that the device is running r97.
+has merged the offline r97 firmware candidate and the owner's explicitly
+non-independent AI-review decision. The reproducible `software_build` evidence
+is now ready, and the `camera_support_optics` intake is implemented but blocked
+on four retained physical originals and their owner-AI review. Six additional
+configuration components also remain missing. Configuration binding and installed-controller
+qualification remain unresolved. A merge is not deployment approval or evidence
+that the device is running r97.
 The existing r96 application remains incompatible with that production interface;
 closing paperwork alone will not add the missing command handlers. Both use the same
 [AI/arm workplan](software/ai/docs/SHARED_AI_ARM_WORKPLAN.md).

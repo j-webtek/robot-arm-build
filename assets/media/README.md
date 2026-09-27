@@ -21,6 +21,10 @@ than burned-in captions. Viewers can enable it in a compatible player, and
 future translations can be added as separate `.vtt` files without rerendering
 the 3D film.
 
+The [published-media verification receipt](VERIFICATION_RECEIPT.md) records
+the exact committed file identities, observed delivery metadata, and explicit
+limits of the post-merge inspection.
+
 ## Rebuild the published files
 
 First create and review the web render documented in
