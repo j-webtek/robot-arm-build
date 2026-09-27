@@ -556,6 +556,28 @@ def add_continuous_press_arm(mats: dict[str, bpy.types.Material]) -> dict[str, o
     for point, label, size in servo_points:
         cube(f"Continuous arm {label} servo body", point, size,
              mats["servo"], 0.007)
+        # Layered end caps, mounting ears, and connector blocks break the
+        # generic smooth-box silhouette and repeat the construction language
+        # of the detailed ST-series servos visible in the official assembly.
+        cube(f"Continuous arm {label} front cap",
+             point + axis * (size[2] * 0.34),
+             (size[0] * 0.88, size[1] * 1.03, 0.010),
+             mats["servo"], 0.0025)
+        cube(f"Continuous arm {label} rear cap",
+             point - axis * (size[2] * 0.34),
+             (size[0] * 0.88, size[1] * 1.03, 0.010),
+             mats["servo"], 0.0025)
+        for ear_sign in (-1, 1):
+            ear_center = point + side * (size[1] * 0.66 * ear_sign)
+            _world_beam(
+                f"Continuous arm {label} mounting ear {ear_sign:+d}",
+                ear_center - axis * 0.026,
+                ear_center + axis * 0.026,
+                mats["carbon"], 0.010,
+            )
+        cube(f"Continuous arm {label} cable connector",
+             point + normal * (size[0] * 0.52) - axis * 0.010,
+             (0.018, 0.014, 0.014), mats["abs"], 0.002)
         for sign in (-1, 1):
             boss = cylinder(f"Continuous arm {label} output boss {sign:+d}",
                             point + side * (size[1] * 0.51 * sign),
@@ -576,6 +598,14 @@ def add_continuous_press_arm(mats: dict[str, bpy.types.Material]) -> dict[str, o
                     elbow + offset, mats["carbon"], 0.019)
         _world_beam(f"Continuous forearm rail {suffix}", elbow + offset,
                     wrist + offset, mats["carbon"], 0.019)
+        # Wider outer side plates make the paired-link architecture legible in
+        # the execution shot instead of reading as two solid industrial bars.
+        _world_beam(f"Continuous upper side plate {suffix}",
+                    shoulder + offset * 1.55, elbow + offset * 1.55,
+                    mats["carbon"], 0.010)
+        _world_beam(f"Continuous forearm side plate {suffix}",
+                    elbow + offset * 1.55, wrist + offset * 1.55,
+                    mats["carbon"], 0.010)
 
     # Cross-braces and exposed bolts preserve the lightweight paired-link
     # character of the actual arm rather than reading as solid industrial bars.
@@ -598,6 +628,19 @@ def add_continuous_press_arm(mats: dict[str, bpy.types.Material]) -> dict[str, o
                     mats["metal"], 24,
                 )
                 bolt.rotation_euler = (math.pi / 2, 0, 0)
+
+    # A restrained, physically attached harness is a strong continuity cue in
+    # the reference photographs. It follows the joint chain and cannot be
+    # mistaken for the old loose cable crossing the keyboard.
+    harness = curve_line(
+        "Continuous arm servo harness",
+        [base + Vector((0.010, 0.0, 0.080)),
+         shoulder + normal * 0.030,
+         elbow + normal * 0.030,
+         wrist + normal * 0.024],
+        mats["wire"], 0.0028,
+    )
+    harness["presentation_detail"] = "JOINT_CHAIN_ATTACHED_SERVO_HARNESS"
 
     holder = cube("Continuous arm wrist servo", wrist + Vector((0, 0, -0.030)),
                   (0.060, 0.050, 0.066), mats["servo"], 0.006)
@@ -724,7 +767,7 @@ def build() -> bpy.types.Scene:
     mats = {
         "abs": material("Printed matte black ABS", (0.012, 0.016, 0.021, 1), roughness=0.34),
         "carbon": material("Carbon link", (0.018, 0.023, 0.028, 1), metallic=0.2, roughness=0.24),
-        "servo": material("Black servo", (0.025, 0.032, 0.040, 1), metallic=0.35, roughness=0.27),
+        "servo": material("Black servo", (0.010, 0.014, 0.020, 1), metallic=0.12, roughness=0.36),
         "metal": material("Machined metal", (0.22, 0.28, 0.34, 1), metallic=0.85, roughness=0.20),
         "brass": material("Servo identification brass", (0.42, 0.27, 0.07, 1),
                            metallic=0.72, roughness=0.26),
@@ -751,6 +794,8 @@ def build() -> bpy.types.Scene:
                                  emission=(0.012, 0.06, 0.095, 1),
                                  emission_strength=0.65),
         "cable": material("Signal cable rubber", (0.004, 0.006, 0.009, 1), roughness=0.62),
+        "wire": material("Servo harness", (0.035, 0.020, 0.017, 1), metallic=0.05,
+                           roughness=0.54),
         "white": material("Reference white", (0.92, 0.95, 0.98, 1), roughness=0.55),
         "cyan": material("Tactevra cyan", (0.00, 0.52, 0.92, 1), roughness=0.22,
                          emission=(0.00, 0.52, 0.92, 1), emission_strength=3.5),
@@ -876,12 +921,18 @@ def build() -> bpy.types.Scene:
         # Resolve top-down, execute close-up, verify, payoff, end card.
         # Unobstructed top-down keyboard resolution, then a medium tooling shot
         # that keeps the simulated holder, stylus, and H key in one frame.
-        (1057, board_point(180.0, 175.0, 690)),
-        (1224, board_point(245.0, 130.0, 590)),
-        (1225, Vector((0.30, -0.98, 0.68))), (1392, Vector((0.12, -0.78, 0.50))),
+        # Resolve is deliberately square to the keyboard so the H legend and
+        # coordinate trace read upright rather than on a distracting diagonal.
+        (1057, board_point(242.5, 158.5, 675)),
+        (1224, board_point(242.5, 158.5, 575)),
+        # A wider execution move keeps the base, paired links, servo stack,
+        # gripper, stylus, and H target in one continuous-machine composition.
+        (1225, Vector((0.43, -1.16, 0.79))), (1392, Vector((0.24, -0.94, 0.62))),
         (1393, board_point(phone_x - 140.0, phone_y - 270.0, 260)),
         (1560, board_point(phone_x - 82.0, phone_y - 218.0, 210)),
-        (1561, Vector((-0.24, -1.10, 0.68))), (1728, Vector((0.34, -1.42, 0.84))),
+        # Push the payoff closer so the workcell fills the lower half while
+        # retaining dark title-safe space for the shared-contract summary.
+        (1561, Vector((-0.05, -0.85, 0.55))), (1728, Vector((0.15, -0.98, 0.60))),
         (1729, Vector((0.34, -1.42, 0.84))), (END_FRAME, Vector((0.28, -1.25, 0.76))),
     ]
     targets = [
@@ -900,9 +951,24 @@ def build() -> bpy.types.Scene:
         # the former macro shot was visibly soft at the verification moment.
         (1393, board_point(phone_x, phone_y, phone_dev["nominal_screen_plane_z"] + 1.0)),
         (1560, board_point(phone_x, phone_y, phone_dev["nominal_screen_plane_z"] + 1.0)),
-        (1561, Vector((0, 0.02, 0.38))), (END_FRAME, Vector((0, 0.02, 0.38))),
+        (1561, Vector((-0.08, 0.02, 0.30))),
+        (1728, Vector((-0.08, 0.02, 0.30))),
+        (1729, Vector((0, 0.02, 0.38))), (END_FRAME, Vector((0, 0.02, 0.38))),
     ]
     animate_transform(camera, camera_positions, targets)
+
+    # The straight-down look-at is geometrically square but Blender's default
+    # roll places the keyboard's long edge vertically. Rotate only the Resolve
+    # chapter around the optical axis so labels read naturally left-to-right.
+    camera_location_by_frame = dict(camera_positions)
+    camera_target_by_frame = dict(targets)
+    for frame in (1057, 1224):
+        camera.location = camera_location_by_frame[frame]
+        camera.rotation_euler = (
+            camera_target_by_frame[frame] - camera.location
+        ).to_track_quat("-Z", "Y").to_euler()
+        camera.rotation_euler.rotate_axis("Z", math.radians(-90))
+        camera.keyframe_insert("rotation_euler", frame=frame)
 
     # A focus target tracks the same authored points as the camera aim. Depth
     # of field remains subtle enough to preserve dimension evidence while
@@ -918,9 +984,9 @@ def build() -> bpy.types.Scene:
         (1, 38), (96, 42), (97, 50), (240, 72), (241, 54), (336, 70),
         (337, 52), (408, 78), (409, 38), (528, 45),
         (529, 55), (720, 70), (721, 60), (888, 72),
-        (889, 65), (1056, 82), (1057, 55), (1224, 72),
-        (1225, 62), (1392, 82), (1393, 62), (1560, 74),
-        (1561, 40), (1728, 52), (1729, 48), (END_FRAME, 54),
+        (889, 65), (1056, 82), (1057, 58), (1224, 70),
+        (1225, 52), (1392, 68), (1393, 62), (1560, 74),
+        (1561, 44), (1728, 58), (1729, 48), (END_FRAME, 54),
     )
     for frame, focal_length in lens_keys:
         camera.data.lens = focal_length
@@ -1588,6 +1654,53 @@ def publish_homepage_media() -> None:
     public_video = PUBLIC_MEDIA_DIR / "tactevra-overview.mp4"
     poster = PUBLIC_MEDIA_DIR / "tactevra-overview-poster.jpg"
     social_preview = PUBLIC_MEDIA_DIR / "tactevra-social-preview.jpg"
+
+    def render_story_poster(output: Path, width: int, height: int) -> None:
+        """Render a share image that communicates rejection and verification.
+
+        A lone robot beauty frame did not explain the product in a social feed.
+        Pairing the real film's REJECT beat with its verified host result turns
+        the thumbnail into a compact before/after story.
+        """
+        half = width // 2
+        source_width = 1920
+        source_height = 1080
+        crop_width = round(source_height * half / height)
+        verify_crop_x = (source_width - crop_width) // 2
+        headline_band = int(height * 0.24)
+        headline_size = max(40, int(width * 0.043))
+        subhead_size = max(22, int(width * 0.020))
+        font_path = Path("C:/Windows/Fonts/arialbd.ttf")
+        font_filter = str(font_path).replace("\\", "/").replace(":", "\\:")
+        graph = (
+            # Bias the rejection crop toward the left-side decision card while
+            # keeping the verification crop centered on the host result.
+            f"[0:v]crop={crop_width}:{source_height}:0:0,"
+            f"scale={half}:{height}[reject];"
+            f"[1:v]crop={crop_width}:{source_height}:{verify_crop_x}:0,"
+            f"scale={half}:{height}[verify];"
+            f"[reject][verify]hstack=inputs=2[split];"
+            f"[split]drawbox=x=0:y=0:w=iw:h={headline_band}:"
+            "color=0x05080d@0.90:t=fill,"
+            f"drawtext=fontfile='{font_filter}':"
+            "text='PHYSICAL INTELLIGENCE, CHECKED.':"
+            f"fontcolor=white:fontsize={headline_size}:"
+            "x=(w-text_w)/2:y=30,"
+            f"drawtext=fontfile='{font_filter}':"
+            "text='A bad plan stops. A verified result moves forward.':"
+            f"fontcolor=0x84d9ff:fontsize={subhead_size}:"
+            f"x=(w-text_w)/2:y={int(headline_band * 0.62)}[story]"
+        )
+        subprocess.run(
+            [
+                ffmpeg, "-y", "-ss", "33.5", "-i", str(source),
+                "-ss", "61.5", "-i", str(source),
+                "-filter_complex", graph, "-map", "[story]",
+                "-frames:v", "1", "-update", "1", "-q:v", "2",
+                str(output),
+            ],
+            check=True,
+        )
     write_webvtt_file(captions)
     write_chapters_file(chapters)
     subprocess.run(
@@ -1608,24 +1721,8 @@ def publish_homepage_media() -> None:
         ],
         check=True,
     )
-    subprocess.run(
-        [
-            ffmpeg, "-y", "-ss", "11.50", "-i", str(source),
-            "-frames:v", "1", "-update", "1",
-            "-vf", "scale=1200:675,crop=1200:630:0:22", "-q:v", "2",
-            str(social_preview),
-        ],
-        check=True,
-    )
-    subprocess.run(
-        [
-            ffmpeg, "-y", "-ss", "11.50", "-i", str(source),
-            "-frames:v", "1", "-update", "1",
-            "-vf", "scale=1280:-2", "-q:v", "2",
-            str(poster),
-        ],
-        check=True,
-    )
+    render_story_poster(social_preview, 1200, 630)
+    render_story_poster(poster, 1280, 720)
 
 
 def composite_overlay(clean_video: Path, final_video: Path,
