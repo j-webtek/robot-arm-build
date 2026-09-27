@@ -14,6 +14,7 @@ implementation details or evidence for a specific part of the system.
 | Get help or report unclear guidance | [Support](../SUPPORT.md) |
 | Contribute code or documentation | [Contributing](../CONTRIBUTING.md) |
 | Explore physical build resources | [RC03 introduction](../active-project/RoCell_v0_3/README_FIRST.md) and [print readiness](../active-project/RoCell_v0_3/PRINT_READINESS.md) |
+| Build the system visualization | [Blender workcell explainer](../presentations/blender/README.md) |
 
 The overview introduces the project, status summarizes dated capability evidence,
 and getting started is the reproducible first-run path. The shared AI/arm
