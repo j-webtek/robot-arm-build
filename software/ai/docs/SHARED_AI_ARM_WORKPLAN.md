@@ -599,11 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-- AI lane / S1: train one compact error-risk head on frozen pose descriptors
-  and ensemble disagreement using new 52M scenes, then make one selection
-  decision on disjoint 53M scenes; no calibration, runtime, contract, or arm
-  changes.
-
 
 
 
@@ -8784,3 +8779,48 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic repository review before final ledger append; not model, runtime, or physical assurance. No arm or integration status changes.
 - Supersedes: none.
 - Next dependency: Same as AI-355.
+
+### E-20260927-AI-358 — direct pose-error head selection
+
+- Stage: S1
+- Lane: AI
+- Commit: `953b46cbaaa2694de89fad712e5433bf8f6520c7` (architecture, frozen inputs, training objective, populations, checks, source, plan, and claim frozen before feature extraction or training; report, checkpoint, tests, interpretation, and claim removal committed in the successor)
+- Inputs/fixtures: Training scenes `52000000..52001999` (16,000 images) and selection scenes `53000000..53000999` (8,000 images), each with two styles and four conditions. Training pixel/feature/target SHA256 values `779b2efa0d1168a57bca59af249f57523da27795526697cfd413d0e2c490332c`, `d2b6d6c7564d385f3e76ad379624933a3c14ee66e1f3dc4903778b2557bbac84`, and `f08f701b1bb5e349b5a1b2dcb8f810d1e77bae95772f91385a7e796d996c4bf6`; selection pixel/feature/target SHA256 values `7a12dc83fdc196a735e2174021a72fa8e014b98786b2e0e671e2057f1e16aa56`, `1e5991862fbc817610f9ee81cdb48a26581da617a7786bc551d531eed3ce4f33`, and `a13fd869b6316b4851cd6f476677f3d637970f56e4abef8c79999c854e9df05b`; training candidate/SILU/separable prediction hashes `4f6444a95f711b12317fd48c5334b90bf7df6e06d53b1d97221cc1f7bfc4cd14`, `b70ac569173cbc8508026b2897eab770c008718d24c60871a190c9956784f34a`, and `33dd062bfe95bc74806f580ca244fd22e43fbdf01217ade4dced42dd4d13c942`; selection prediction hashes are retained in the report. Plan SHA256 `a46320df1adbdbffacf97313dede473be4f757a2e9e8a6f1005ada8d370e6e53`; report SHA256 `46b3d1f66e15f40e5e6e872b87e6f4aebaac55ba92033a16d03540f77f5cbda2`; checkpoint SHA256 `0bee4cd1682dea9c7a893b8adcf932c866aa805c71a5b790e96f30cefb726df5`; normalization SHA256 `4863325d0adb4d128d2748dfd7a83bc0d1690a24d56ea99b52f7eb719f339dbf`; risk prediction SHA256 `9696d81a453f4bf58e9f0614acf95d7902e9bc97c8bbebb756c9cab1ce986f15`.
+- Command: `python software/ai/train/train_pose_error_head.py`
+- Result: FAIL fixed selection rule by one lowest-quartile scene. The 52,481-parameter head raises grouped scene AUROC from `0.701847595` to `0.729795210`, passes the 0.72 minimum and 0.02 improvement, lowers lowest-half failure from 6.8% to 5.0%, and passes all conditional image AUROCs: standard `0.841182455`, appearance `0.875035897`, partial `0.804697167`, full `0.735053654`. Lowest-quartile failure is `10/250` (4.0%) versus a required maximum of 3.9% from `13/250 * 0.75`; that check fails, so the complete selection fails. One model fit, zero calibration fits, and 2,500 optimizer updates.
+- Artifacts: `vision/pose_error_head.py`; `train/train_pose_error_head.py`; `train/pose_error_head_v1_plan.json`; `eval/pose_error_head_v1_report.json`; `results/pose_error_head_v1/model.pt`; `tests/test_pose_error_head.py`; `docs/IMAGE_DEPENDENT_UNCERTAINTY.md`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Synthetic training-selection evidence for one seed and objective. The retained checkpoint is research evidence only. No metric calibration, confirmation, runtime installation, physical-camera evidence, or motion authority. ModelMotionBatchV2 and arm/integration statuses are unchanged.
+- Supersedes: none; the near miss does not erase any earlier failed evidence or qualify the head.
+- Next dependency: Keep the failed gate unchanged. Freeze one tail-aware head using the same frozen descriptor inputs and a preregistered failure-weighted or ranking objective on entirely new grouped training-selection cohorts before any calibration allocation.
+
+### E-20260927-AI-359 — direct pose-error head verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `953b46cbaaa2694de89fad712e5433bf8f6520c7` (frozen training-selection source; tests and documentation committed in the successor)
+- Inputs/fixtures: Same 24,000 images, frozen pose models, 52,481-parameter head, plan, report, and retained research checkpoint as AI-358; exact hashes are recorded there and in the report.
+- Command: `python -m pytest -q software/ai/tests/test_pose_error_head.py`
+- Result: PASS: 2 tests in 2.35s. Tests verify strict architecture and normalization, frozen lineage, exact grouped populations, ranking recounts, every fixed check including the single failed lowest-quartile check, and zero calibration, hardware, or physical authority.
+- Artifacts: `tests/test_pose_error_head.py`; `eval/pose_error_head_v1_report.json`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Existing pytest-asyncio configuration warning. Recount consistency only; no physical assurance. Contract unchanged, so shared boundary tests were not triggered.
+- Supersedes: none.
+- Next dependency: Same as AI-358.
+
+### E-20260927-AI-360 — direct pose-error head snapshot review
+
+- Stage: S1
+- Lane: AI
+- Commit: `953b46cbaaa2694de89fad712e5433bf8f6520c7` (frozen training-selection source; final ledger append in successor)
+- Inputs/fixtures: Repository snapshot containing the frozen study, report, retained research checkpoint, tests, interpretation, and shared ledger; exact hashes recorded in AI-358.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS: 6,300 paths, 957.3 MiB, 0 unresolved review findings, 14 reviewed synthetic fixtures.
+- Artifacts: error-head plan/report/checkpoint; verification test; uncertainty documentation; shared ledger.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic repository review before final ledger append; not model, runtime, or physical assurance. No arm or integration status changes.
+- Supersedes: none.
+- Next dependency: Same as AI-358.

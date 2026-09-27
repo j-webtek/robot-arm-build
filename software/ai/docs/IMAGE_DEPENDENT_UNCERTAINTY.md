@@ -374,3 +374,28 @@ are not sufficiently coupled. The next bounded direction should train a compact
 image-conditioned error or heteroscedastic head against held-out pose residuals,
 with scene-grouped training and selection populations. Its uncertainty output
 must remain research-only until independent calibration and confirmation pass.
+
+## Direct pose-error head
+
+A 52,481-parameter head was trained for 20 fixed epochs on 16,000 new 52M
+images. Its inputs were the frozen pose model's 512-element image descriptor and
+the frozen ensemble disagreement. Its target was `log1p(maximum target error)`.
+No localization model weight changed. One disjoint 8,000-image 53M cohort was
+used for the registered selection decision.
+
+The result was a near miss and remains a failure. Grouped scene AUROC improved
+from 0.701848 for disagreement to 0.729795 for the learned head, exceeding both
+the 0.72 absolute and 0.02 improvement gates. The lowest-half scene failure rate
+fell from 6.8% to 5.0%, and every conditional image AUROC passed 0.70: standard
+0.841182, appearance 0.875036, partial 0.804697, and full 0.735054. The lowest-
+quartile failure rate fell from 5.2% to 4.0%, but its frozen requirement was at
+most 75% of baseline, or 3.9%. One additional failure in 250 scenes therefore
+failed the complete rule.
+
+The checkpoint is retained as research evidence and has no runtime authority.
+This result supports direct supervision of pose error while showing that plain
+regression does not rank the safest tail strongly enough. The next bounded
+study should keep the frozen descriptor inputs and train one preregistered
+tail-aware head on entirely new training-selection cohorts, using a failure-
+weighted or ranking objective fixed before either cohort is evaluated. The
+failed gate must remain unchanged.
