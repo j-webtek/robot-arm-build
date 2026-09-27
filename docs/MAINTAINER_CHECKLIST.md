@@ -55,6 +55,10 @@ device access, restarts, torque changes, movement, or release publication.
 - [ ] Apply the [evidence-retention policy](EVIDENCE_RETENTION.md). Review the
   generated-data count and size, reproduction metadata and any exact-digest
   exception; passing CI does not make bulk output human-reviewable.
+- [ ] Apply [repository artifact governance](ARTIFACT_GOVERNANCE.md) to new or
+  changed CAD, print, media, archive, and rendered-document files. Require a
+  canonical source or an exact-digest reviewed exception instead of adding
+  repeated bytes for convenience.
 - [ ] Apply the [documentation standard](DOCUMENTATION_STANDARD.md). Label
   active plans, evidence records, historical pages, and release drafts; use the
   [glossary](GLOSSARY.md) for current explanatory prose.

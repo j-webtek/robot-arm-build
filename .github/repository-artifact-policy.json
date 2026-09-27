@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "max_changed_file_bytes": 10485760,
+  "governed_binary_suffixes": [
+    ".3mf",
+    ".dxf",
+    ".jpg",
+    ".mp4",
+    ".pdf",
+    ".png",
+    ".step",
+    ".stl",
+    ".xlsx",
+    ".zip"
+  ],
+  "exceptions": []
+}
