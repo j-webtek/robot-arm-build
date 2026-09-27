@@ -289,6 +289,16 @@ from .model_motion_sequence_coordinator_v2 import (
     ModelMotionSequenceV2Error,
     SequencePhaseV2,
 )
+from .typing_execution_plan_v1 import (
+    SCHEMA as TYPING_EXECUTION_PLAN_V1_SCHEMA,
+    TransitionKindV1,
+    TypingExecutionActionV1,
+    TypingExecutionConfigV1,
+    TypingExecutionMetricsV1,
+    TypingExecutionPlanV1,
+    TypingExecutionPlanV1Error,
+    compile_typing_execution_plan_v1,
+)
 from .model_motion_sequence_coordinator import (
     SCHEMA as MODEL_MOTION_SEQUENCE_SNAPSHOT_SCHEMA,
     READY_PLANNER_STATUS,
@@ -1388,6 +1398,14 @@ __all__ = [
     "ModelMotionSequenceCoordinatorV2",
     "ModelMotionSequenceV2Error",
     "SequencePhaseV2",
+    "TYPING_EXECUTION_PLAN_V1_SCHEMA",
+    "TransitionKindV1",
+    "TypingExecutionActionV1",
+    "TypingExecutionConfigV1",
+    "TypingExecutionMetricsV1",
+    "TypingExecutionPlanV1",
+    "TypingExecutionPlanV1Error",
+    "compile_typing_execution_plan_v1",
     "MODEL_MOTION_SEQUENCE_SNAPSHOT_SCHEMA",
     "READY_PLANNER_STATUS",
     "ActionDisposition",

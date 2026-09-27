@@ -323,6 +323,31 @@ Do not publish a typing-speed claim from simulation timing alone.
 
 ## Implementation stages
 
+### Implementation checkpoint — 2026-09-27
+
+The T1 foundation is now implemented in
+`rocell.application.typing_execution_plan_v1`:
+
+- strict `TypingExecutionPlanV1` and configuration/action/metrics records;
+- canonical, hash-bound serialization and fail-closed decoding;
+- exact ordered compilation from an admitted `ModelMotionBatchV2`;
+- target-local hover/contact/retract cycles;
+- direct retract-to-next-hover transition chaining;
+- a park-between-key distance baseline and deterministic distance-reduction
+  metrics; and
+- explicit one-action commit horizon, bounded preview horizon, zero controller
+  commands, zero hardware access, and zero physical authority.
+
+Unit coverage includes `robot`, repeated targets, mutation rejection, canonical
+round trips, and invalid device/interaction/configuration cases. Integration
+coverage passes actual AI-emitted V2 bytes through the trusted arm ingress and
+then compiles `H,H,I` without crossing the authority boundary.
+
+This checkpoint is a geometric sequence optimizer, not a trajectory or timing
+qualification. It does not yet perform IK, collision screening, jerk-limited
+time parameterization, fresh-state preview rebinding, controller encoding, or
+physical execution. Those remain T2 and later work.
+
 ### T1 — Schema and deterministic offline executor
 
 - Add `TypingExecutionPlanV1` and canonical serialization.
