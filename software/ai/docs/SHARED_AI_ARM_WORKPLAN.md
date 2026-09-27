@@ -599,6 +599,8 @@ Copy this row and fill every field:
 
 ## Active work claims
 
+- AI lane / S1: fixed ridge residual diagnostic, training-only normalization/fit, alpha0.01, one shared constant-mask control and three learned-mask representations. No development tuning or arm/contract change.
+
 
 
 
