@@ -82,6 +82,7 @@ def clean_scene() -> None:
 
 def material(name: str, color: tuple[float, float, float, float], *,
              metallic: float = 0.0, roughness: float = 0.45,
+             ior_level: float = 0.5,
              emission: tuple[float, float, float, float] | None = None,
              emission_strength: float = 0.0) -> bpy.types.Material:
     mat = bpy.data.materials.new(name)
@@ -91,6 +92,11 @@ def material(name: str, color: tuple[float, float, float, float], *,
     bsdf.inputs["Base Color"].default_value = color
     bsdf.inputs["Metallic"].default_value = metallic
     bsdf.inputs["Roughness"].default_value = roughness
+    # Blender 4.x names this socket "IOR Level" or "Specular IOR Level"
+    # depending on the exact point release.
+    ior_socket = bsdf.inputs.get("IOR Level") or bsdf.inputs.get("Specular IOR Level")
+    if ior_socket is not None:
+        ior_socket.default_value = ior_level
     if emission is not None:
         bsdf.inputs["Emission Color"].default_value = emission
         bsdf.inputs["Emission Strength"].default_value = emission_strength
@@ -905,21 +911,24 @@ def build() -> bpy.types.Scene:
                               metallic=0.48, roughness=0.24),
         "wood": textured_material("Light birch", (0.55, 0.33, 0.16, 1),
                                     scale=7.0, detail=3.0, roughness=0.48),
-        "keyboard": material("Keyboard body", (0.001, 0.002, 0.004, 1), roughness=0.31),
+        "keyboard": material("Keyboard black body", (0.0002, 0.0003, 0.0005, 1),
+                             roughness=0.48, ior_level=0.20),
         "keyboard_side": material("Keyboard lower shell", (0.006, 0.008, 0.011, 1),
                                   metallic=0.12, roughness=0.42),
-        "keyboard_trim": material("Keyboard brushed edge", (0.14, 0.18, 0.22, 1),
-                                  metallic=0.82, roughness=0.21),
+        "keyboard_trim": material("Keyboard black brushed edge", (0.006, 0.008, 0.011, 1),
+                                  metallic=0.44, roughness=0.36, ior_level=0.24),
         "keyboard_film": textured_material(
             "Photographed keyboard protective film",
             (0.24, 0.27, 0.30, 1), scale=42.0, detail=4.0,
             roughness=0.18, metallic=0.46,
         ),
-        "key": material("Keyboard keys", (0.003, 0.005, 0.008, 1), roughness=0.38),
+        "key": material("Keyboard black keys", (0.0003, 0.0005, 0.0008, 1),
+                        roughness=0.54, ior_level=0.18),
         "key_side": material("Keyboard key wells", (0.0006, 0.0008, 0.0012, 1),
                              roughness=0.48),
         "legend": material("Keyboard legends", (0.34, 0.39, 0.45, 1), roughness=0.50),
-        "phone": material("Phone edge", (0.03, 0.04, 0.05, 1), metallic=0.6, roughness=0.20),
+        "phone": material("Phone black edge", (0.002, 0.0025, 0.0032, 1),
+                          metallic=0.42, roughness=0.33, ior_level=0.22),
         "screen": material("Phone screen", (0.008, 0.015, 0.022, 1), metallic=0.15, roughness=0.16,
                            emission=(0.01, 0.03, 0.05, 1), emission_strength=0.14),
         "screen_glass": material("Phone optical glass", (0.004, 0.009, 0.016, 1),

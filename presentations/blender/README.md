@@ -178,10 +178,10 @@ dimension-checked 3D render:
 - a six-row compact keyboard reconstruction uses the measured RC03 envelope
   and the nominal 19.05 mm pitch encoded by the target profile, with realistic
   stagger, modifier-key widths, recessed key wells, beveled caps, legends,
-  enclosure trim, the photographed rear protective-film band, status lights,
-  and a connected cable rather than a uniform placeholder grid;
+  matte-black enclosure and keys, the photographed rear protective-film band,
+  status lights, and a connected cable rather than a uniform placeholder grid;
 - a layered phone reconstruction adds an aluminum envelope, optical glass,
-  black bezel rails, receiver, front camera, side controls, charging-port
+  matte-black chassis and bezel rails, receiver, front camera, side controls, charging-port
   recess, and a modeled host-verification UI
   while preserving the configured phone origin and measured screen plane;
 - all six board markers use the exact released tag36h11 ID 0–5 cell grids from
