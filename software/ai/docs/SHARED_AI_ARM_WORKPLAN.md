@@ -599,6 +599,11 @@ Copy this row and fill every field:
 
 ## Active work claims
 
+- AI lane / S1: calibrate the frozen ensemble-disagreement scale on a new 39M
+  grouped cohort and confirm it once on a disjoint 40M cohort using frozen 99%
+  coverage, 3 mm tolerance, and utility rules; no runtime, contract, or arm
+  changes.
+
 
 
 

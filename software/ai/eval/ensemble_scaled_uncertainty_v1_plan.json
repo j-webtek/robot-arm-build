@@ -1,0 +1,57 @@
+{
+  "study_id": "ensemble_scaled_uncertainty_v1",
+  "scope": "calibration_and_confirmation_only",
+  "candidate_artifact": "software/ai/results/grouped_linear_refit_v1/model.pt",
+  "development_report": "software/ai/eval/appearance_robust_ensemble_development_v1_report.json",
+  "selected_checkpoints": {
+    "silu": "software/ai/results/appearance_robust_ensemble_v1_silu/pose_model.pt",
+    "separable": "software/ai/results/appearance_robust_ensemble_v1_separable/pose_model.pt"
+  },
+  "groups": {
+    "calibration": [
+      39000000,
+      1000
+    ],
+    "confirmation": [
+      40000000,
+      1000
+    ]
+  },
+  "styles": [
+    "rectangle",
+    "ellipse"
+  ],
+  "conditions": [
+    "standard",
+    "appearance_shift",
+    "partial",
+    "full"
+  ],
+  "batch_size": 128,
+  "scale_floor_mm": 1.0,
+  "alpha": 0.01,
+  "tolerance_mm": 3.0,
+  "minimum_scene_coverage": 0.99,
+  "minimum_accepted_fraction": 0.05,
+  "minimum_condition_accepted_fraction": 0.01,
+  "minimum_accepted_image_coverage": 0.99,
+  "minimum_accepted_scene_coverage": 0.99,
+  "quantile_rule": "For each calibration scene take the maximum over its eight image variants of candidate maximum-target error divided by max(maximum pairwise ensemble target displacement, 1.0 mm). Sort 1000 scene scores and use one-based rank ceil((n+1)*(1-alpha))=991. If the rank exceeds n, use infinity and accept nothing.",
+  "acceptance_rule": "For each image radius_mm = calibrated_quantile * max(ensemble_disagreement_mm, 1.0). Research acceptance requires radius_mm <= 3.0. Confirmation passes only with overall scene coverage >= 0.99, accepted image fraction >= 0.05 overall and >= 0.01 in every condition, accepted image and accepted-scene coverage each >= 0.99, and zero accepted images with actual error above 3.0 mm. Passing does not install runtime or physical authority.",
+  "file_sha256": {
+    "software/ai/eval/appearance_robust_ensemble_development_v1_report.json": "1356b89880c06f84be3a7d83a5fc42d0bc3b07406f16b4664f1673f7528acdf8",
+    "software/ai/results/appearance_robust_ensemble_v1_separable/pose_model.pt": "7236e5a4a25d3465bbac07ff6d41e3dc43508ee765a77e67f59c7bd0bc558dea",
+    "software/ai/results/appearance_robust_ensemble_v1_silu/pose_model.pt": "22ac55a2c869a0aaac8f1c03364cd2f05456c492e10fd4825a58f8727d0b425b",
+    "software/ai/results/grouped_linear_refit_v1/model.pt": "c9f4ef6d8f9e50317a917154fccacce46506ab2e7cde8267396e28fec156147b",
+    "software/ai/train/train_diverse_pose_ensemble.py": "4724e5322eb3cbe7e71cef1f824fabe252765aa16a32dca302f3d7fd7a008fa5",
+    "software/ai/vision/diagnose_pose_tail.py": "42da11417ceac91001e47fa732d2c127ef9f1763c479c56f9593ff3bd185fb90",
+    "software/ai/vision/diverse_pose_models.py": "c0683f59edd63773d68c4037dade390e8e66f56db7078ca18510a69f05acfdb6",
+    "software/ai/vision/evaluate_dark_only_normalization.py": "12289bfeeb52274678c62f46c7e99e057563036566fa48fc5f5cd1d58add4469",
+    "software/ai/vision/evaluate_ensemble_scaled_uncertainty.py": "867b6181b8e61eb21d6c426e9f831cf45c91ac2abd1b7faefbf2cbb01366ad19",
+    "software/ai/vision/evaluate_grouped_uncertainty.py": "0bd2154a7022c964be506b91b1ab129a27352fd706e8c7d1a95aff653236b084",
+    "software/ai/vision/landmark_occlusions.py": "2d77d25077ab98dad632bb441b94c06cc6c139116d6621483cab7728d95c6aad",
+    "software/ai/vision/linear_residual_pose.py": "d46b24cbe48c43ae56d9f1a700459281fceef19475f85187469cd81c735af9cc",
+    "software/ai/vision/synthetic_keyboard.py": "b9a1662ea348ba78093909844e5e8bed86f4996babc289bfd63858b6b54f692c",
+    "software/ai/vision/train_pose.py": "98c2ae6211b42c3b4b7c5bed3fb03aab82bffff79c30ebb546e3681b3be3a1b6"
+  }
+}
