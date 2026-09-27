@@ -81,13 +81,19 @@ the final MP4 without rerendering the 3D frames:
 
 | Time | Shot | Evidence communicated |
 |---:|---|---|
-| 0–3.7 s | Full-system hero | Designed portal, measured work surface, and official arm assembly |
-| 3.7–7.4 s | Reverse workcell view | Indexed board, static vision, and device fixtures |
-| 7.4–11 s | Arm profile | Official link, servo, base, and controller surfaces |
-| 11–14 s | Gripper close-up | Real wrist stack and gripper-head geometry |
-| 14–17 s | Overhead layout | Measured keyboard/phone envelopes and indexed stations |
-| 17–19.7 s | Operational detail | Conceptual checked route across bounded targets |
-| 19.7–22 s | System close | Request → perceive → plan → check → act → verify |
+| 0–3.7 s | Product promise | One user request becomes one checked physical action |
+| 3.7–7.4 s | 1 — Perceive | Fixed vision and direct tags establish the shared board frame |
+| 7.4–10.7 s | 2 — Propose | AI supplies intent, target, frame, and confidence—not raw servo commands |
+| 10.7–14 s | 3 — Check | Deterministic gates validate units, frames, reach, clearance, and freshness |
+| 14–17 s | 3 — Check target + route | Named targets resolve through measured device geometry inside the deterministic check |
+| 17–18.5 s | 4 — Execute | The sole controller writer sends one admitted, bounded action |
+| 18.5–19.7 s | 5 — Verify | Telemetry and observation close the loop before the next action |
+| 19.7–22 s | System close | One shared contract connects intent to verified physical action |
+
+The composited information layer maintains a persistent architecture spine—
+`PERCEIVE → PROPOSE → CHECK → EXECUTE → VERIFY`—and highlights the active
+stage in every chapter. This gives a first-time viewer a stable mental model
+while the camera moves between the workcell, arm, devices, and route.
 
 The film ends with a visible qualification disclaimer. It must not be used as
 fabrication approval, camera-load approval, or robot-motion evidence.
@@ -120,12 +126,13 @@ or fabrication release.
 
 ## Narration guide
 
-> Tactevra turns a user request into a checked physical action. A fixed overhead
-> camera observes the indexed work surface. Known keyboard and phone geometry
-> anchors each target in the board frame. Perception proposes a destination;
-> deterministic planning validates coordinates, clearance, and route. Only an
-> admitted movement reaches the controller. The system then observes the result
-> before continuing. This visualization uses the current RC03 dimensions and
-> repository CAD. The arm surface is derived from the hash-verified official
-> assembly STEP and shown in its default static pose. Target paths remain
-> conceptual until physically qualified.
+> One request enters Tactevra. First, fixed vision and direct tags anchor the
+> workspace to a shared board frame. The AI proposes intent, a named target,
+> coordinate frame, and confidence—but never raw servo commands. Deterministic
+> gates then check units, calibration, reach, clearance, and freshness. Measured
+> device geometry resolves a key or phone control into a bounded target. The
+> sole controller writer executes one admitted action. Telemetry and observation
+> verify the result before the system continues. This visualization uses current
+> RC03 dimensions and repository CAD. The arm surface comes from the
+> hash-verified official assembly STEP and is shown in its default static pose;
+> target paths remain conceptual until physically qualified.
