@@ -12,6 +12,7 @@ implementation details or evidence for a specific part of the system.
 | Try it without hardware or downloaded models | [Getting started](GETTING_STARTED.md) |
 | Understand the complete request-to-result flow | [System overview](SYSTEM_OVERVIEW.md) |
 | Understand capabilities and limitations | [Project status](../PROJECT_STATUS.md) |
+| Follow delivery stages and completion evidence | [Roadmap](../ROADMAP.md) |
 | Get help or report unclear guidance | [Support](../SUPPORT.md) |
 | Contribute code or documentation | [Contributing](../CONTRIBUTING.md) |
 | Explore physical build resources | [Hardware build guide](HARDWARE_BUILD_GUIDE.md) |
@@ -140,6 +141,10 @@ documents may exist only on the lab workstation; sharing them is covered in
   verification scope, PR workflow, and dependency maintenance.
 - [Repository artifact governance](ARTIFACT_GOVERNANCE.md): limits for new
   large or duplicate CAD, print, media, and document artifacts.
+- [Public roadmap](../ROADMAP.md): evidence-based delivery stages and the
+  completion evidence required before capability claims advance.
+- [Repository-health policy](../.github/repository-health-policy.json): the
+  machine-readable expected GitHub configuration used by read-only drift checks.
 - [Versioning and compatibility](VERSIONING.md): source-preview identifiers and
   the technical interfaces preserved during the Tactevra transition.
 - [Experimental release checklist](RELEASING.md): requirements for a separately

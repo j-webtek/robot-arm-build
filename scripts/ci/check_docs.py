@@ -12,7 +12,7 @@ import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[2]
 DOCS = (
-    'README.md', 'PROJECT_STATUS.md', 'CONTRIBUTING.md', 'SUPPORT.md', 'SECURITY.md',
+    'README.md', 'PROJECT_STATUS.md', 'ROADMAP.md', 'CONTRIBUTING.md', 'SUPPORT.md', 'SECURITY.md',
     'THIRD_PARTY_NOTICES.md',
     'CODE_OF_CONDUCT.md',
     'docs/README.md', 'docs/GETTING_STARTED.md', 'docs/RELEASING.md',
@@ -47,6 +47,7 @@ DOCS = (
 PUBLIC_TITLES = {
     'README.md': 'Tactevra',
     'PROJECT_STATUS.md': 'Tactevra project status',
+    'ROADMAP.md': 'Tactevra roadmap',
     'CONTRIBUTING.md': 'Contributing to Tactevra',
     'SUPPORT.md': 'Getting help with Tactevra',
     'SECURITY.md': 'Tactevra security reporting',
@@ -70,6 +71,12 @@ PUBLIC_TITLES = {
 }
 
 REQUIRED_PHRASES = {
+    'ROADMAP.md': (
+        '**Document status:** Current public roadmap',
+        '**Authority:** Planning and navigation only.',
+        '[project status](PROJECT_STATUS.md)',
+        'https://github.com/j-webtek/tactevra/issues/88',
+    ),
     'docs/SYSTEM_OVERVIEW.md': (
         '**Document status:** Current overview',
         '**Authority:** Explanatory; it does not authorize hardware operation',
@@ -146,12 +153,13 @@ PUBLIC_ROUTES = {
         ('docs/GETTING_STARTED.md#install-the-software', 'Install the software'),
         ('docs/SYSTEM_OVERVIEW.md', None),
         ('docs/HARDWARE_BUILD_GUIDE.md', None),
-        ('PROJECT_STATUS.md', None), ('docs/README.md', None),
+        ('PROJECT_STATUS.md', None), ('ROADMAP.md', None), ('docs/README.md', None),
         ('SUPPORT.md', None), ('SECURITY.md', None),
         ('THIRD_PARTY_NOTICES.md', None),
     ),
     'docs/README.md': (
         ('GETTING_STARTED.md', None), ('../PROJECT_STATUS.md', None),
+        ('../ROADMAP.md', None),
         ('SYSTEM_OVERVIEW.md', None), ('GLOSSARY.md', None),
         ('HARDWARE_BUILD_GUIDE.md', None),
         ('releases/READINESS.md', None), ('releases/README.md', None),
