@@ -55,7 +55,8 @@ OFFICIAL_ARM_STL_PATH = ROOT / "tmp" / "vendor" / "roarm_m3" / "roarm_m3_officia
 PUBLIC_MEDIA_DIR = ROOT / "assets" / "media"
 
 FPS = 24
-# V2 follows the narrated 12-beat screenplay: 77 seconds at 24 fps.
+# V3 keeps the narrated 12-beat screenplay while making the distinction between
+# exact hardware appearance and conceptual motion unmistakable.
 END_FRAME = 77 * FPS
 BOARD_CENTER_MM = Vector((305.0, 228.5, 0.0))
 
@@ -294,34 +295,59 @@ def add_keyboard(layout: dict, mats: dict[str, bpy.types.Material]) -> dict[str,
                mats["abs"], (242.5, 72.0, 0.0))
     cube("Measured keyboard chassis", board_point(ox + sx / 2, oy + sy / 2, sz / 2),
          (sx / 1000, sy / 1000, sz / 1000), mats["keyboard"], 0.006)
-    rows = [14, 14, 13, 12, 10]
-    labels = [
-        list("1234567890-=") + ["BS", "DEL"],
-        list("QWERTYUIOP[]") + ["\\", "PG"],
-        list("ASDFGHJKL;' ") + ["ENT"],
-        list("ZXCVBNM,./") + ["SHIFT", "UP"],
-        ["CTRL", "ALT", "SPACE", "SPACE", "SPACE", "SPACE", "FN", "LEFT", "DOWN", "RIGHT"],
+    # The printable shell remains a measured envelope. The principal key rows
+    # below are positioned from software/config/static_nominal_target_profiles.json:
+    # 19.05 mm pitch, exact first-center offsets, and therefore H at
+    # board (216.55, 154.00). Function and modifier caps are presentation
+    # context only and stay inside the same measured chassis.
+    pitch = 19.05
+    rows = [
+        ("ESC F1 F2 F3 F4 F5 F6 F7 F8 F9 F10 F11 F12 PRT SCR".split(),
+         ox + 10.0, oy + 135.0, 0.82),
+        (list("1234567890") + ["-", "="],
+         ox + 22.0, oy + 111.0, 0.82),
+        (list("QWERTYUIOP"),
+         ox + 31.5, oy + 90.0, 0.82),
+        (list("ASDFGHJKL") + [";", "'"],
+         ox + 36.3, oy + 69.0, 0.82),
+        (list("ZXCVBNM") + [",", ".", "/"],
+         ox + 45.8, oy + 48.0, 0.82),
     ]
-    top = oy + sy - 18
-    usable_x = sx - 22
     named_keys: dict[str, bpy.types.Object] = {}
-    for row_i, count in enumerate(rows):
-        pitch = usable_x / count
-        y = top - row_i * 27
-        for col in range(count):
-            x = ox + 11 + pitch * (col + 0.5)
+    for row_i, (legends, first_x, y, width_ratio) in enumerate(rows):
+        for col, legend in enumerate(legends):
+            x = first_x + col * pitch
+            key_width = pitch * width_ratio
             key = cube(f"Key {row_i}-{col}", board_point(x, y, sz + 2.4),
-                       (pitch * 0.82 / 1000, 0.021, 0.005), mats["key"], 0.002)
-            if row_i < len(labels) and col < len(labels[row_i]):
-                legend = labels[row_i][col]
-                key["legend"] = legend
-                named_keys.setdefault(legend, key)
-                if legend.strip():
-                    legend_size = 0.0054 if len(legend) <= 2 else 0.0035
-                    board_text(
-                        f"Key legend {legend}-{row_i}-{col}", legend,
-                        board_point(x, y, sz + 5.2), legend_size, mats["legend"],
-                    )
+                       (max(0.009, (key_width - 2.2) / 1000), 0.0175, 0.005),
+                       mats["key"], 0.002)
+            key["legend"] = legend
+            named_keys.setdefault(legend, key)
+            legend_size = 0.0048 if len(legend) <= 2 else 0.0028
+            board_text(
+                f"Key legend {legend}-{row_i}-{col}", legend,
+                board_point(x, y, sz + 5.2), legend_size, mats["legend"],
+            )
+    # Presentation-only outer modifiers, sized to resemble the photographed
+    # compact keyboard without changing any named target coordinate.
+    for label, x, y, width in (
+        ("TAB", ox + 12.0, oy + 90.0, 22.0),
+        ("CAPS", ox + 15.0, oy + 69.0, 28.0),
+        ("SHIFT", ox + 20.0, oy + 48.0, 37.0),
+        ("CTRL", ox + 14.0, oy + 24.0, 26.0),
+        ("ALT", ox + 48.0, oy + 24.0, 24.0),
+        ("SPACE", ox + 128.0, oy + 24.0, 112.0),
+        ("ALT", ox + 201.0, oy + 24.0, 24.0),
+        ("LEFT", ox + 247.0, oy + 24.0, 17.0),
+        ("DOWN", ox + 266.0, oy + 24.0, 17.0),
+        ("RIGHT", ox + 285.0, oy + 24.0, 17.0),
+    ):
+        key = cube(f"Modifier {label}-{x}", board_point(x, y, sz + 2.4),
+                   (width / 1000, 0.0175, 0.005), mats["key"], 0.002)
+        board_text(f"Modifier legend {label}-{x}", label,
+                   board_point(x, y, sz + 5.2),
+                   0.0048 if len(label) <= 2 else 0.0028, mats["legend"])
+        named_keys.setdefault(label, key)
     return named_keys
 
 
@@ -475,7 +501,7 @@ def add_continuous_press_arm(mats: dict[str, bpy.types.Material]) -> dict[str, o
     return {"root": base, "objects": objects, "moving": moving, "manifest": manifest}
 
 
-def add_robot(mats: dict[str, bpy.types.Material]) -> dict[str, bpy.types.Object]:
+def add_robot(mats: dict[str, bpy.types.Material]) -> dict[str, object]:
     """Place the hash-verified official assembly surface in the RC03 frame.
 
     The official STEP assembly is prepared below /tmp and is not redistributed.
@@ -500,7 +526,27 @@ def add_robot(mats: dict[str, bpy.types.Material]) -> dict[str, bpy.types.Object
     arm["source_archive_sha256"] = manifest["arm"]["surface_geometry"]["source_archive_sha256"]
     arm["kinematic_authority_sha256"] = manifest["arm"]["kinematic_authority_sha256"]
     arm["pose_status"] = "OFFICIAL_DEFAULT_ASSEMBLY_POSE_STATIC_PRESENTATION_ONLY"
-    return {"root": arm}
+    return {"root": arm, "objects": (arm,)}
+
+
+def keyed_render_window(objects: tuple[bpy.types.Object, ...], start: int, end: int) -> None:
+    """Render *objects* only inside an inclusive frame window.
+
+    Blender's hide_render property is discrete, so keys are placed one frame
+    either side of the window. This is used to distinguish the exact static
+    vendor surface from the explicitly conceptual articulated press proxy.
+    """
+    for obj in objects:
+        obj.hide_render = True
+        obj.keyframe_insert("hide_render", frame=1)
+        if start > 1:
+            obj.keyframe_insert("hide_render", frame=start - 1)
+        obj.hide_render = False
+        obj.keyframe_insert("hide_render", frame=start)
+        obj.keyframe_insert("hide_render", frame=end)
+        if end < END_FRAME:
+            obj.hide_render = True
+            obj.keyframe_insert("hide_render", frame=end + 1)
 
 
 def add_target_ring(name: str, x: float, y: float, z: float,
@@ -532,7 +578,7 @@ def setup_render(scene: bpy.types.Scene) -> None:
     scene.render.ffmpeg.ffmpeg_preset = "GOOD"
     scene.render.use_file_extension = True
     scene.view_settings.look = "AgX - Medium High Contrast"
-    scene.view_settings.exposure = -0.9
+    scene.view_settings.exposure = -1.15
     scene.world.color = (0.012, 0.016, 0.023)
 
 
@@ -551,10 +597,9 @@ def build() -> bpy.types.Scene:
                               metallic=0.48, roughness=0.24),
         "wood": textured_material("Light birch", (0.55, 0.33, 0.16, 1),
                                     scale=7.0, detail=3.0, roughness=0.48),
-        "keyboard": material("Keyboard body", (0.022, 0.027, 0.034, 1), roughness=0.28),
-        "key": material("Keyboard keys", (0.055, 0.065, 0.078, 1), roughness=0.34),
-        "legend": material("Keyboard legends", (0.82, 0.87, 0.92, 1), roughness=0.42,
-                           emission=(0.18, 0.22, 0.28, 1), emission_strength=0.18),
+        "keyboard": material("Keyboard body", (0.001, 0.002, 0.004, 1), roughness=0.31),
+        "key": material("Keyboard keys", (0.003, 0.005, 0.008, 1), roughness=0.38),
+        "legend": material("Keyboard legends", (0.34, 0.39, 0.45, 1), roughness=0.50),
         "phone": material("Phone edge", (0.03, 0.04, 0.05, 1), metallic=0.6, roughness=0.20),
         "screen": material("Phone screen", (0.008, 0.015, 0.022, 1), metallic=0.15, roughness=0.16,
                            emission=(0.01, 0.03, 0.05, 1), emission_strength=0.14),
@@ -570,7 +615,20 @@ def build() -> bpy.types.Scene:
     }
 
     # Designed portal geometry is already expressed in board frame millimetres.
-    import_stl(PORTAL_PATH, "DESIGNED — printable camera portal", mats["abs"])
+    portal = import_stl(PORTAL_PATH, "DESIGNED — printable camera portal", mats["abs"])
+    # Establish the complete workcell in the opening, explain the camera in the
+    # perception chapter, then remove the tall portal from the beauty layer for
+    # the controller close-ups. The camera remains represented by its frame and
+    # overlays; this is a presentation cutaway, not a hardware configuration.
+    portal.hide_render = False
+    portal.keyframe_insert("hide_render", frame=1)
+    portal.keyframe_insert("hide_render", frame=528)
+    portal.hide_render = True
+    portal.keyframe_insert("hide_render", frame=529)
+    portal.keyframe_insert("hide_render", frame=1560)
+    portal.hide_render = False
+    portal.keyframe_insert("hide_render", frame=1561)
+    portal.keyframe_insert("hide_render", frame=END_FRAME)
     cube("MEASURED — 610 × 457 × 18 mm board", (0, 0, -0.009),
          (0.610, 0.457, 0.018), mats["wood"], 0.006)
     cube("Bench", (0, -0.01, -0.050), (1.15, 0.88, 0.065),
@@ -587,20 +645,25 @@ def build() -> bpy.types.Scene:
         tag_objects.append(
             (tag_id, add_tag(tag_id, *xy, mats["white"], mats["abs"]), xy)
         )
-    # The film uses one continuous arm-and-stylus assembly in every shot. The
-    # proxy is dimensioned from the pinned URDF contract and remains explicitly
-    # presentation-only; it avoids changing actuator identity between scenes.
-    robot = add_continuous_press_arm(mats)
-    # Resolve gets a full unobstructed hold. The identical arm reappears at the
-    # Execute cut; there is no substitute actuator or foreground sweep.
-    for component in robot["objects"]:
-        component.hide_render = False
-        component.keyframe_insert("hide_render", frame=1056)
+    # Hardware appearance and motion meaning are deliberately separate. The
+    # hash-verified official Waveshare STEP derivative is the visual authority
+    # in every architectural shot. Only the short execution close-up switches
+    # to the URDF-dimensioned articulated proxy, where the overlay explicitly
+    # identifies the motion as a simulation. This prevents a simplified proxy
+    # from being mistaken for the expected physical hardware.
+    exact_robot = add_robot(mats)
+    motion_proxy = add_continuous_press_arm(mats)
+    keyed_render_window(exact_robot["objects"], 1, 1224)
+    keyed_render_window(motion_proxy["objects"], 1225, 1392)
+    # The exact hardware surface returns for verification and the final system
+    # view; the conceptual proxy never appears without its evidence label.
+    for component in exact_robot["objects"]:
         component.hide_render = True
-        component.keyframe_insert("hide_render", frame=1057)
-        component.keyframe_insert("hide_render", frame=1224)
-        component.hide_render = False
         component.keyframe_insert("hide_render", frame=1225)
+        component.keyframe_insert("hide_render", frame=1392)
+        component.hide_render = False
+        component.keyframe_insert("hide_render", frame=1393)
+        component.keyframe_insert("hide_render", frame=END_FRAME)
     h_key = keyboard_keys["H"]
     h_key_z = h_key.location.z
     for frame, offset in ((1225, 0.0), (1288, 0.0), (1300, -0.004),
@@ -611,9 +674,11 @@ def build() -> bpy.types.Scene:
     # inside the portal mounting plate. The optical axis remains centered on
     # the nominal board target.
     cam_center = board_point(305, 228.5, 970)
-    cube("Designed camera body", cam_center, (0.086, 0.066, 0.052), mats["abs"], 0.008)
-    cube("Designed camera top mount", cam_center + Vector((0, 0, 0.047)),
-         (0.046, 0.042, 0.044), mats["metal"], 0.005)
+    camera_hardware = [
+        cube("Designed camera body", cam_center, (0.086, 0.066, 0.052), mats["abs"], 0.008),
+        cube("Designed camera top mount", cam_center + Vector((0, 0, 0.047)),
+             (0.046, 0.042, 0.044), mats["metal"], 0.005),
+    ]
     lens = cylinder("Machine vision lens", cam_center + Vector((0, 0, -0.047)),
                     0.022, 0.050, mats["metal"])
     lens.rotation_euler = (0, 0, 0)
@@ -621,8 +686,19 @@ def build() -> bpy.types.Scene:
                           cam_center + Vector((0, 0, -0.073)),
                           0.016, 0.003, mats["cyan"], 48)
     lens_glass.rotation_euler = (0, 0, 0)
-    cylinder("Camera status light", cam_center + Vector((0.031, -0.034, 0.006)),
-             0.004, 0.003, mats["green"], 32).rotation_euler = (math.pi / 2, 0, 0)
+    status_light = cylinder("Camera status light", cam_center + Vector((0.031, -0.034, 0.006)),
+                            0.004, 0.003, mats["green"], 32)
+    status_light.rotation_euler = (math.pi / 2, 0, 0)
+    camera_hardware.extend((lens, lens_glass, status_light))
+    for component in camera_hardware:
+        component.hide_render = False
+        component.keyframe_insert("hide_render", frame=1)
+        component.keyframe_insert("hide_render", frame=528)
+        component.hide_render = True
+        component.keyframe_insert("hide_render", frame=529)
+        component.keyframe_insert("hide_render", frame=1560)
+        component.hide_render = False
+        component.keyframe_insert("hide_render", frame=1561)
 
     # Render camera and cinematic movement.
     bpy.ops.object.camera_add(location=(1.90, -2.10, 0.96))
@@ -632,18 +708,22 @@ def build() -> bpy.types.Scene:
     camera.data.sensor_width = 36
     scene.camera = camera
     camera_positions = [
-        # Request / stakes / promise: one locked hero scene and a restrained orbit.
-        (1, Vector((1.90, -2.18, 1.10))), (96, Vector((1.90, -2.18, 1.10))),
-        (97, Vector((1.72, -2.02, 1.04))), (240, Vector((1.42, -1.72, 0.94))),
-        (241, Vector((1.42, -1.72, 0.94))), (336, Vector((1.28, -1.58, 0.90))),
+        # Request / stakes / promise: a readable three-quarter hero view. Keep
+        # the complete board, exact arm, and camera portal in frame without the
+        # old extreme-wide dead space.
+        (1, Vector((0.34, -1.42, 0.84))), (96, Vector((0.34, -1.42, 0.84))),
+        (97, Vector((0.30, -1.34, 0.80))), (240, Vector((0.24, -1.24, 0.75))),
+        (241, Vector((0.24, -1.24, 0.75))), (336, Vector((0.18, -1.16, 0.71))),
         # Perceive: camera fixture, then its measured top-down view.
         (337, Vector((0.58, -0.42, 1.16))), (408, Vector((0.42, -0.28, 1.08))),
         # The lens POV begins below the physical camera body so the fixture
         # cannot occlude or defocus the board evidence.
         (409, Vector((0.00, 0.00, 0.89))), (528, Vector((0.00, 0.00, 0.85))),
-        # Proposal and both gate decisions keep the arm visibly still.
-        (529, Vector((-1.18, -1.42, 0.82))), (720, Vector((-0.98, -1.22, 0.75))),
-        (721, Vector((-0.98, -1.22, 0.75))), (1056, Vector((-0.90, -1.14, 0.72))),
+        # Proposal and both gate decisions keep the exact arm visibly still.
+        # The previous reverse angle was dominated by a portal leg; this angle
+        # preserves the workcell context behind the screen-space evidence card.
+        (529, Vector((0.44, -1.04, 0.68))), (720, Vector((0.36, -0.94, 0.62))),
+        (721, Vector((0.36, -0.94, 0.62))), (1056, Vector((0.30, -0.88, 0.58))),
         # Resolve top-down, execute close-up, verify, payoff, end card.
         # Unobstructed top-down keyboard resolution, then a medium tooling shot
         # that keeps the simulated holder, stylus, and H key in one frame.
@@ -651,19 +731,19 @@ def build() -> bpy.types.Scene:
         (1224, board_point(216.55, 154.0, 610)),
         (1225, Vector((0.48, -0.72, 0.48))), (1392, Vector((0.38, -0.60, 0.40))),
         (1393, Vector((0.02, -0.70, 0.54))), (1560, Vector((0.06, -0.64, 0.48))),
-        (1561, Vector((0.94, -1.30, 0.78))), (1728, Vector((1.66, -1.94, 1.04))),
-        (1729, Vector((1.66, -1.94, 1.04))), (END_FRAME, Vector((1.66, -1.94, 1.04))),
+        (1561, Vector((0.30, -1.18, 0.72))), (1728, Vector((0.34, -1.42, 0.84))),
+        (1729, Vector((0.34, -1.42, 0.84))), (END_FRAME, Vector((0.34, -1.42, 0.84))),
     ]
     targets = [
-        (1, Vector((0, 0.02, 0.45))), (336, Vector((0, 0.02, 0.45))),
+        (1, Vector((0, 0.02, 0.38))), (336, Vector((0, 0.02, 0.38))),
         (337, Vector((0, 0.02, 1.00))), (408, Vector((0, 0.02, 0.98))),
         (409, Vector((0, 0.00, 0.03))), (528, Vector((0, 0.00, 0.03))),
-        (529, Vector((0, -0.02, 0.40))), (1056, Vector((0, -0.02, 0.40))),
+        (529, Vector((0, -0.02, 0.34))), (1056, Vector((0, -0.02, 0.34))),
         (1057, board_point(216.55, 154.0, 22)), (1224, board_point(216.55, 154.0, 22)),
         (1225, board_point(216.55, 154.0, 105)), (1392, board_point(216.55, 154.0, 92)),
         (1393, board_point(phone_x, phone_y, 42)),
         (1560, board_point(phone_x, phone_y, 42)),
-        (1561, Vector((0, 0.02, 0.45))), (END_FRAME, Vector((0, 0.02, 0.45))),
+        (1561, Vector((0, 0.02, 0.38))), (END_FRAME, Vector((0, 0.02, 0.38))),
     ]
     animate_transform(camera, camera_positions, targets)
 
@@ -691,26 +771,26 @@ def build() -> bpy.types.Scene:
     bpy.ops.object.light_add(type="AREA", location=(0.0, -0.18, 1.55))
     key = bpy.context.object
     key.name = "Overhead softbox"
-    key.data.energy = 260
+    key.data.energy = 145
     key.data.shape = "DISK"
     key.data.size = 1.2
     key.rotation_euler = (0, 0, 0)
     bpy.ops.object.light_add(type="AREA", location=(0.78, -0.52, 0.65))
     fill = bpy.context.object
-    fill.data.energy = 140
+    fill.data.energy = 75
     fill.data.color = (0.68, 0.82, 1.0)
     fill.data.size = 0.75
     look_at(fill, Vector((0, 0, 0.3)))
     bpy.ops.object.light_add(type="AREA", location=(-0.62, 0.34, 0.82))
     rim = bpy.context.object
-    rim.data.energy = 190
+    rim.data.energy = 110
     rim.data.color = (1.0, 0.38, 0.18)
     rim.data.size = 0.55
     look_at(rim, Vector((0, 0.04, 0.38)))
     bpy.ops.object.light_add(type="AREA", location=(-0.35, -0.42, 0.50))
     arm_rim = bpy.context.object
     arm_rim.name = "Arm detail strip"
-    arm_rim.data.energy = 235
+    arm_rim.data.energy = 135
     arm_rim.data.color = (0.48, 0.72, 1.0)
     arm_rim.data.shape = "RECTANGLE"
     arm_rim.data.size = 0.42
@@ -827,8 +907,10 @@ def build() -> bpy.types.Scene:
 
     scene["evidence_notice"] = (
         "Portal/stations are repository CAD; board/devices are RC03 measured envelopes; "
-        "the continuous arm proxy is dimensioned from the pinned official URDF contract; "
-        "its pose and H contact are presentation simulations, not motion qualification."
+        "the static arm beauty surface is a hash-verified local derivative of the official "
+        "Waveshare STEP; the execution-only proxy is dimensioned from the pinned official "
+        "URDF contract. Its pose and H contact are presentation simulations, not motion "
+        "qualification. The portal is hidden in controller close-ups for visual clarity."
     )
     scene["source_layout"] = str(LAYOUT_PATH.relative_to(ROOT))
     scene["source_portal"] = str(PORTAL_PATH.relative_to(ROOT))
@@ -882,6 +964,7 @@ Dialogue: 1,0:00:58.00,0:01:05.00,Tracker,,0,0,0,,PERCEIVE  →  PROPOSE  →  C
 Dialogue: 1,0:00:14.00,0:00:16.10,Stage,,0,0,0,,{\\fad(180,180)}1 · PERCEIVE
 Dialogue: 1,0:00:16.10,0:00:22.00,Badge,,0,0,0,,{\\fad(180,180)}{\\c&H00F8C845}4 TAGS LOCKED  ·  BOARD X/Y DRAWN
 Dialogue: 1,0:00:22.00,0:00:24.00,Stage,,0,0,0,,{\\fad(180,180)}2 · PROPOSE
+Dialogue: 1,0:00:22.00,0:01:05.00,Fine,,0,0,0,,CONTROLLER CUTAWAY · CAMERA PORTAL HIDDEN FOR CLARITY
 Dialogue: 1,0:00:24.00,0:00:30.00,Card,,0,0,0,,{\\fad(180,180)}{\\c&H004C9BFF}MODEL PROPOSAL{\\c&H00F3F6FA}\\Naction       press\\Ntarget       keyboard:H\\Nframe        board\\Nconfidence   0.97
 Dialogue: 1,0:00:30.00,0:00:31.80,Stage,,0,0,0,,{\\fad(150,150)}3 · CHECK
 Dialogue: 1,0:00:31.80,0:00:37.00,Card,,0,0,0,,{\\pos(150,230)\\fad(150,180)}{\\c&H00505AFF}GATE · REJECT{\\c&H00F3F6FA}\\Nframe        camera_raw  ✕\\Nfreshness    stale       ✕\\N\\NARM REMAINS STILL
@@ -1211,10 +1294,10 @@ def write_soundtrack(path: Path) -> None:
 
 def mux_soundtrack_and_variants(silent_video: Path, final_video: Path,
                                 ffmpeg: str, external_voice_dir: Path | None = None) -> None:
-    soundtrack = OUT / "tactevra_workcell_explainer_soundtrack_v2.wav"
-    captions = OUT / "tactevra_workcell_explainer_captions_v2.srt"
-    web_video = OUT / "tactevra_workcell_explainer_web_1080p_v2.mp4"
-    social_video = OUT / "tactevra_workcell_explainer_social_square_v2.mp4"
+    soundtrack = OUT / "tactevra_workcell_explainer_soundtrack_v3.wav"
+    captions = OUT / "tactevra_workcell_explainer_captions_v3.srt"
+    web_video = OUT / "tactevra_workcell_explainer_web_1080p_v3.mp4"
+    social_video = OUT / "tactevra_workcell_explainer_social_square_v3.mp4"
     voice_dir = external_voice_dir or (OUT / "voiceover_v3")
     write_soundtrack(soundtrack)
     write_caption_file(captions)
@@ -1302,7 +1385,7 @@ def publish_homepage_media() -> None:
     ffmpeg = shutil.which("ffmpeg")
     if not ffmpeg:
         raise RuntimeError("ffmpeg is required to publish homepage media")
-    source = OUT / "tactevra_workcell_explainer_web_1080p_v2.mp4"
+    source = OUT / "tactevra_workcell_explainer_web_1080p_v3.mp4"
     if not source.is_file():
         raise FileNotFoundError(
             f"Homepage publishing requires the reviewed web render: {source}"
@@ -1352,7 +1435,7 @@ def composite_overlay(clean_video: Path, final_video: Path,
     ffmpeg = shutil.which("ffmpeg")
     if not ffmpeg:
         raise RuntimeError("ffmpeg is required to composite informational labels")
-    ass_path = OUT / "tactevra_workcell_explainer_v2.ass"
+    ass_path = OUT / "tactevra_workcell_explainer_v3.ass"
     write_ass_overlay(ass_path)
     # libass filter paths require a forward-slash Windows path with an escaped
     # drive colon. subprocess avoids shell interpolation of the filter itself.
@@ -1383,7 +1466,7 @@ def composite_overlay(clean_video: Path, final_video: Path,
         )
         previous = output
     graph.append(f"[{previous}]ass='{ass_filter_path}'[finished]")
-    silent_video = OUT / "tactevra_workcell_explainer_silent_v2.mp4"
+    silent_video = OUT / "tactevra_workcell_explainer_silent_v3.mp4"
     subprocess.run(
         [
             ffmpeg, "-y", "-i", str(clean_video),
@@ -1410,8 +1493,8 @@ def main() -> None:
         print(f"TACTEVRA_PUBLIC_MEDIA={PUBLIC_MEDIA_DIR}")
         return
     if "--overlay-only" in args:
-        clean_video = OUT / "tactevra_workcell_explainer_clean_v2.mp4"
-        final_video = OUT / "tactevra_workcell_explainer_v2.mp4"
+        clean_video = OUT / "tactevra_workcell_explainer_clean_v3.mp4"
+        final_video = OUT / "tactevra_workcell_explainer_v3.mp4"
         if not clean_video.exists():
             raise FileNotFoundError(
                 f"Overlay-only mode requires an existing clean render: {clean_video}"
@@ -1421,7 +1504,7 @@ def main() -> None:
         return
 
     scene = build()
-    blend_path = OUT / "tactevra_workcell_explainer_v2.blend"
+    blend_path = OUT / "tactevra_workcell_explainer_v3.blend"
     bpy.ops.wm.save_as_mainfile(filepath=str(blend_path))
 
     if "--preview-shots" in args:
@@ -1437,8 +1520,8 @@ def main() -> None:
         scene.render.image_settings.file_format = "FFMPEG"
         scene.render.ffmpeg.format = "MPEG4"
         scene.render.ffmpeg.codec = "H264"
-        clean_video = OUT / "tactevra_workcell_explainer_clean_v2.mp4"
-        final_video = OUT / "tactevra_workcell_explainer_v2.mp4"
+        clean_video = OUT / "tactevra_workcell_explainer_clean_v3.mp4"
+        final_video = OUT / "tactevra_workcell_explainer_v3.mp4"
         # Blender treats render.filepath as a stem when animation numbering is
         # enabled. Disable extension synthesis and use the complete filename.
         scene.render.use_file_extension = False
@@ -1450,7 +1533,7 @@ def main() -> None:
     else:
         scene.frame_set(52)
         scene.render.image_settings.file_format = "PNG"
-        scene.render.filepath = str(OUT / "tactevra_workcell_explainer_poster_v2.png")
+        scene.render.filepath = str(OUT / "tactevra_workcell_explainer_poster_v3.png")
         bpy.ops.render.render(write_still=True)
 
     print(f"TACTEVRA_OUTPUT={OUT}")
