@@ -8,6 +8,7 @@ import jsonschema
 from rocell.application.context import load_simulation_context
 from rocell.application.reviewed_motion_permit_bridge_v1 import (
     ReviewedActionLifecycleV1,
+    ReviewedMotionDispatchReceiptV1,
     ReviewedMotionPermitBridgeError,
     issue_reviewed_motion_permit_v1,
 )
@@ -118,7 +119,32 @@ def test_lifecycle_is_hash_chained_terminal_and_never_retries(
         runtime=_healthy_runtime(), ttl_s=2, now_monotonic=now)
     lifecycle = ReviewedActionLifecycleV1(admission)
     assert permit.allows(goal, now_monotonic=100.1)
-    lifecycle.started(goal_sha256=goal_hash(goal), event_monotonic_ns=1_000)
+    dispatch = {
+        "schema": "rocell.reviewed_motion_dispatch_receipt.v1",
+        "status": "REPLAY_WRITE_CONFIRMED",
+        "review_sha256": review.review_sha256,
+        "permit_binding_sha256": admission.permit_binding_sha256,
+        "goal_sha256": goal_hash(goal),
+        "payload_sha256": "a" * 64,
+        "payload_bytes": 10,
+        "confirmed_bytes": 10,
+        "retained_bytes_sha256": "a" * 64,
+        "permit_consumed": True,
+        "write_attempts": 1,
+        "dispatched_monotonic_ns": 1_000,
+        "error_code": None,
+        "composition": "HARDWARE_INCAPABLE_REPLAY",
+        "automatic_retry_allowed": False,
+        "hardware_access": False,
+        "physical_authority": False,
+        "physical_command_writes": 0,
+    }
+    import hashlib
+    dispatch["dispatch_receipt_sha256"] = hashlib.sha256(json.dumps(
+        dispatch, sort_keys=True, separators=(",", ":"), ensure_ascii=True,
+        allow_nan=False).encode("utf-8")).hexdigest()
+    typed_dispatch = ReviewedMotionDispatchReceiptV1._issue_from_owned_writer(dispatch)
+    lifecycle.started_from_dispatch(typed_dispatch, event_monotonic_ns=1_000)
     lifecycle.terminal(
         terminal, detail_sha256="d" * 64, event_monotonic_ns=2_000)
     snapshot = lifecycle.snapshot()
@@ -131,3 +157,28 @@ def test_lifecycle_is_hash_chained_terminal_and_never_retries(
     with pytest.raises(ReviewedMotionPermitBridgeError, match="requires STARTED"):
         lifecycle.terminal(
             terminal, detail_sha256="e" * 64, event_monotonic_ns=3_000)
+
+
+def test_lifecycle_rejects_caller_authored_or_tampered_start(
+    context, released_snapshot,
+) -> None:
+    review, receipt = _consumed(context)
+    supervisor = SafetySupervisor(released_snapshot)
+    _advance_to_armed(supervisor)
+    goal = {"T": 104, "x": 1}
+    _, admission = issue_reviewed_motion_permit_v1(
+        supervisor, review, receipt, Capability.KEYBOARD_CONTACT, [goal],
+        calibrations=_valid_calibrations(), interlocks=_healthy_interlocks(100),
+        runtime=_healthy_runtime(), ttl_s=2, now_monotonic=100)
+    lifecycle = ReviewedActionLifecycleV1(admission)
+    with pytest.raises(ReviewedMotionPermitBridgeError, match="verified sole-writer"):
+        lifecycle.started_from_dispatch({
+            "schema": "rocell.reviewed_motion_dispatch_receipt.v1",
+            "review_sha256": review.review_sha256,
+            "permit_binding_sha256": admission.permit_binding_sha256,
+            "goal_sha256": goal_hash(goal),
+            "permit_consumed": True,
+            "write_attempts": 1,
+            "automatic_retry_allowed": False,
+            "dispatch_receipt_sha256": "0" * 64,
+        }, event_monotonic_ns=1_000)
