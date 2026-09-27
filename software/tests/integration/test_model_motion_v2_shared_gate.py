@@ -28,6 +28,8 @@ from rocell.application.observed_planner_start_state import (  # noqa: E402
 from rocell.application.typing_execution_plan_v1 import (  # noqa: E402
     TypingExecutionConfigV1, TypingExecutionPlanV1,
     compile_typing_execution_plan_v1)
+from rocell.application.typing_trajectory_plan_v1 import (  # noqa: E402
+    TypingTrajectoryPolicyV1, compile_typing_trajectory_plan_v1)
 
 
 def _actual_bytes_and_registry():
@@ -99,6 +101,26 @@ def test_actual_ai_bytes_compile_to_ordered_direct_typing_plan():
     assert execution.to_dict()["controller_commands"] == []
     assert execution.to_dict()["hardware_access"] is False
     assert execution.to_dict()["physical_authority"] is False
+
+    trajectory = compile_typing_trajectory_plan_v1(
+        execution,
+        policy=TypingTrajectoryPolicyV1(
+            policy_id="shared-gate-s0-quintic-v1",
+            maximum_cartesian_step_mm=5.0,
+            maximum_velocity_mm_s=80.0,
+            maximum_acceleration_mm_s2=160.0,
+            maximum_jerk_mm_s3=800.0,
+            hover_settle_ms=100,
+            contact_dwell_ms=60,
+        ),
+    )
+    assert [item.target_id for item in trajectory.phase_waypoints
+            if item.phase.value == "CONTACT"] == ["H", "H", "I"]
+    assert trajectory.metrics.direct_estimated_time_ms < (
+        trajectory.metrics.park_baseline_estimated_time_ms)
+    assert trajectory.to_dict()["ik_screening_executed"] is False
+    assert trajectory.to_dict()["controller_commands"] == []
+    assert trajectory.to_dict()["physical_authority"] is False
 
 
 @pytest.mark.parametrize("mutation", [

@@ -3554,3 +3554,37 @@ rewriting history. New entries must use a unique evidence ID.
 - Next dependency: evaluate final-camera physical originals and produce a
   safe-region-fit uncertainty bound before installing any deployment
   qualification or rerunning the operational-readiness perception gate.
+
+### E-20260927-ARM-074 — T2A jerk-bounded typing trajectory preparation
+
+- Stage: S5 optimization research; T2A of the optimized typing execution plan.
+- Lane: ARM.
+- Source: T1 `TypingExecutionPlanV1` on GitHub `main` commit `8a19cb0`.
+- Change: compiled the exact ordered T1 action chain into semantic Cartesian
+  endpoints, bounded-step screening samples, and an analytical quintic
+  rest-to-rest timing model. Direct hover-to-hover timing is compared with the
+  same actions returning to the route reference after every key.
+- Profile: every nonzero endpoint segment uses
+  `10s^3 - 15s^4 + 6s^5`; duration is the maximum of the analytical velocity,
+  acceleration, and jerk requirements. Collision samples are separate from
+  timing endpoints, so sampling density does not create fictitious stops.
+- Coverage: `H,H,1,PERIOD` preserves exact contact order and the repeated H;
+  dense adjacent samples remain within the configured Cartesian step; all
+  computed peak demands remain within the declared Cartesian limits; canonical
+  replay is deterministic; invalid dynamics bounds fail closed.
+- Synthetic benchmark fixture: 14 semantic endpoints, 87 Cartesian screening
+  samples, and 13 timed segments. Under the pinned 80 mm/s, 160 mm/s^2, and
+  800 mm/s^3 policy, direct travel was 417.712599485 mm versus
+  598.833228888 mm through park; the conservative rest-to-rest estimate was
+  16,640.180 ms versus 22,490.212 ms, a 26.0115% reduction. These are model
+  outputs for comparison, not measured speed or a release target.
+- Endpoint/camera opens: 0.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Authority: controller commands, permits, transport access, hardware access,
+  and physical authority remain absent.
+- Limitations: no IK or joint-dynamics screen has run; no installed-geometry or
+  continuous collision claim is made; the timing estimate is Cartesian and
+  rest-to-rest, not measured controller latency or physically qualified speed.
+- Next dependency: T2B consumes the exact bounded samples with deterministic IK
+  and installed-geometry collision screening, retaining action and hash binding.

@@ -13,6 +13,8 @@ TESTS = (
     'software/tests/unit/test_snapshot_audit.py',
     'software/tests/unit/test_model_motion_ingress_v2.py',
     'software/tests/unit/test_model_motion_planner_gate.py',
+    'software/tests/unit/test_typing_execution_plan_v1.py',
+    'software/tests/unit/test_typing_trajectory_plan_v1.py',
     'software/tests/unit/test_measured_trajectory_screening.py',
     'software/tests/unit/test_measured_waypoint_collision_sequence.py',
     'software/tests/unit/test_fk_collision_pose_adapter.py',
