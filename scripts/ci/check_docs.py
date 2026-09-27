@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 ROOT = Path(__file__).resolve().parents[2]
 DOCS = (
     'README.md', 'PROJECT_STATUS.md', 'ROADMAP.md', 'CONTRIBUTING.md', 'SUPPORT.md', 'SECURITY.md',
+    'GOVERNANCE.md',
     'THIRD_PARTY_NOTICES.md',
     'CODE_OF_CONDUCT.md',
     'docs/README.md', 'docs/GETTING_STARTED.md', 'docs/RELEASING.md',
@@ -31,6 +32,7 @@ DOCS = (
     'docs/HARDWARE_PROVENANCE.md',
     'docs/REPOSITORY_OPERATIONS.md',
     'docs/MAINTAINER_CHECKLIST.md',
+    'docs/decisions/README.md',
     'docs/CI.md', 'docs/AUDIT_FIXTURE_REVIEW.md', 'software/README.md',
     'software/RUNTIME_IMPLEMENTATION_HISTORY.md', 'software/ai/README.md',
     'software/ai/docs/README.md', 'assets/brand/README.md',
@@ -54,11 +56,13 @@ PUBLIC_TITLES = {
     'SECURITY.md': 'Tactevra security reporting',
     'CODE_OF_CONDUCT.md': 'Tactevra community code of conduct',
     'THIRD_PARTY_NOTICES.md': 'Tactevra third-party notices',
+    'GOVERNANCE.md': 'Tactevra project governance',
     'docs/README.md': 'Tactevra documentation',
     'docs/GETTING_STARTED.md': 'Getting started with Tactevra',
     'docs/SYSTEM_OVERVIEW.md': 'Tactevra system overview',
     'docs/GLOSSARY.md': 'Tactevra glossary',
     'docs/HARDWARE_BUILD_GUIDE.md': 'Building the Tactevra RC03 workcell',
+    'docs/decisions/README.md': 'Tactevra decision records',
     'docs/DOCUMENTATION_STANDARD.md': 'Tactevra documentation standard',
     'docs/SOURCE_DISTRIBUTION.md': 'Tactevra source-distribution footprint',
     'docs/releases/READINESS.md': 'Tactevra experimental-preview readiness',
@@ -73,6 +77,17 @@ PUBLIC_TITLES = {
 }
 
 REQUIRED_PHRASES = {
+    'GOVERNANCE.md': (
+        '**Document status:** Current governance policy',
+        '**Authority:** Repository decision process only.',
+        '[decision-record index](docs/decisions/README.md)',
+    ),
+    'docs/decisions/README.md': (
+        '**Document status:** Current decision-process index',
+        '**Authority:** Documentation and traceability only;',
+        '[the template](TEMPLATE.md)',
+        'No durable decisions have been recorded under this process yet.',
+    ),
     'ROADMAP.md': (
         '**Document status:** Current public roadmap',
         '**Authority:** Planning and navigation only.',
@@ -165,6 +180,7 @@ PUBLIC_ROUTES = {
         ('docs/HARDWARE_BUILD_GUIDE.md', None),
         ('PROJECT_STATUS.md', None), ('ROADMAP.md', None), ('docs/README.md', None),
         ('SUPPORT.md', None), ('SECURITY.md', None),
+        ('GOVERNANCE.md', None),
         ('THIRD_PARTY_NOTICES.md', None),
     ),
     'docs/README.md': (
@@ -174,12 +190,14 @@ PUBLIC_ROUTES = {
         ('HARDWARE_BUILD_GUIDE.md', None),
         ('releases/READINESS.md', None), ('releases/README.md', None),
         ('../SUPPORT.md', None), ('../CONTRIBUTING.md', None),
+        ('../GOVERNANCE.md', None),
         ('../SECURITY.md', None), ('../CODE_OF_CONDUCT.md', None),
         ('../THIRD_PARTY_NOTICES.md', None),
     ),
     'SUPPORT.md': (
         ('docs/GETTING_STARTED.md#what-you-can-do-today', 'What you can do today'),
         ('SECURITY.md', None), ('CODE_OF_CONDUCT.md', None),
+        ('GOVERNANCE.md', None),
         ('CONTRIBUTING.md#export-sharing', 'Export sharing'),
     ),
     'docs/GETTING_STARTED.md': (

@@ -37,6 +37,10 @@ device access, restarts, torque changes, movement, or release publication.
 - [ ] Confirm which lane owns the change and whether another lane's review is
   needed. For shared contracts, link producer and consumer evidence at the
   reviewed commit. Do not record approval on someone else's behalf.
+- [ ] Apply the [governance decision classes](../GOVERNANCE.md#decision-classes).
+  Require a [decision record](decisions/README.md) for a durable architectural,
+  compatibility, governance, or shared-contract choice; keep routine detail in
+  its issue and PR.
 - [ ] Match required [CI checks](CI.md) to the current revision. New commits or
   reconciliation with main require fresh checks. Missing or pending checks are
   not passes; do not use administrator bypass to finish a merge.

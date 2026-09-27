@@ -38,6 +38,11 @@ campaigns as part of ordinary source setup.
 Use the [repository operations guide](docs/REPOSITORY_OPERATIONS.md) for ownership,
 cross-workstream handoffs and dependency-update review. Fill the PR template;
 do not assume a passing check constitutes the other workstream's approval.
+The [governance policy](GOVERNANCE.md) explains current roles, decision classes,
+review dispositions, and protected release/hardware/security boundaries. Use a
+[decision record](docs/decisions/README.md) only for a durable architectural,
+compatibility, governance, or cross-workstream contract choice—not for routine
+implementation detail or experiment results.
 
 For vulnerabilities or exposed secrets, use [private security reporting](SECURITY.md)
 instead of a public issue. For other questions, see [support](SUPPORT.md).

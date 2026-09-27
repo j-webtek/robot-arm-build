@@ -8,6 +8,12 @@ For a short working procedure, use the
 [maintainer checklist](MAINTAINER_CHECKLIST.md). This guide supplies the detailed
 policies and dated administrative evidence behind it.
 
+The root [governance policy](../GOVERNANCE.md) defines roles, decision classes,
+review dispositions, and authority boundaries. Use the
+[decision-record process](decisions/README.md) for durable architectural,
+compatibility, governance, or shared-contract choices. Repository operations
+implement that policy; they do not create an alternate approval path.
+
 ## One change, one clear handoff
 
 Use a topic branch and the [PR template](../.github/pull_request_template.md).
@@ -111,13 +117,16 @@ ledger; link to it rather than copying long histories into issues. Keep security
 details in the private reporting channel. No automatic stale-issue closer is
 configured: inactivity is not evidence that a problem is resolved.
 
-Bug, documentation, and feature intake use YAML issue forms, with only the core
+Bug, documentation, feature, and durable-decision intake use YAML issue forms, with only the core
 context required. Unknown versions are acceptable; users are not asked to repeat
 a live test or supply personal contact details. The cross-workstream handoff
 template remains Markdown. Blank issues are disabled so public reports use a
 supported route; private security and support contact links remain available.
 Forms help collect information; required fields are not evidence validation,
 security screening, or an enforced review gate for all issue-creation methods.
+The decision form routes durable choices into the governance process; it does
+not make every feature request an architecture decision or grant authority to
+the proposer.
 For future edits, follow [GitHub's form syntax](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-issue-forms),
 check IDs and labels for uniqueness, and verify the chooser and unsubmitted forms
 after merge. Do not create public test issues or submit private data for UI testing.

@@ -28,6 +28,7 @@ implementation details or evidence for a specific part of the system.
 | AI contributor | [AI overview](../software/ai/README.md) → [AI documentation](../software/ai/docs/README.md) → [shared workplan](../software/ai/docs/SHARED_AI_ARM_WORKPLAN.md) |
 | Arm/runtime contributor | [System overview](SYSTEM_OVERVIEW.md) → [architecture](../software/docs/ARCHITECTURE.md) → [shared workplan](../software/ai/docs/SHARED_AI_ARM_WORKPLAN.md) |
 | Maintainer or release reviewer | [Repository operations](REPOSITORY_OPERATIONS.md) → [maintainer checklist](MAINTAINER_CHECKLIST.md) → [release readiness](releases/READINESS.md) → [release procedure](RELEASING.md) |
+| Governance or architecture proposer | [Project governance](../GOVERNANCE.md) → [decision records](decisions/README.md) → [repository operations](REPOSITORY_OPERATIONS.md) |
 
 Use the [glossary](GLOSSARY.md) for product, interface, evidence, and execution
 terms. Contributors should follow the [documentation standard](DOCUMENTATION_STANDARD.md)
@@ -134,6 +135,10 @@ documents may exist only on the lab workstation; sharing them is covered in
 
 ## Repository maintenance and policies
 
+- [Project governance](../GOVERNANCE.md): current roles, decision classes,
+  review dispositions, succession, and protected authority boundaries.
+- [Decision records](decisions/README.md): lightweight process and template for
+  durable architectural, compatibility, cross-workstream, and governance choices.
 - [Documentation standard](DOCUMENTATION_STANDARD.md): lifecycle labels,
   naming, capability language, and navigation expectations.
 - [Routine maintainer checklist](MAINTAINER_CHECKLIST.md): triage, review, and handoffs.

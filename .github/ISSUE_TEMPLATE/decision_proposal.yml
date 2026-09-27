@@ -1,0 +1,71 @@
+name: Decision proposal
+description: Propose a durable cross-workstream, compatibility, architecture, or governance decision.
+labels: [cross-workstream, needs-owner-review]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this public form for a durable decision that affects shared contracts, compatibility, architecture, governance, or release boundaries. Read the [governance policy](https://github.com/j-webtek/tactevra/blob/main/GOVERNANCE.md) first.
+        Omit credentials, personal data, private device exports, vulnerability details, and unpublished security findings. A proposal does not authorize hardware operation, repository settings changes, or a release.
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Decision and intended outcome
+      description: What exact choice is proposed, and what outcome should it enable?
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Context and evidence
+      description: What verified facts, constraints, exact revisions, and unresolved assumptions led to this proposal?
+    validations:
+      required: true
+  - type: dropdown
+    id: primary_area
+    attributes:
+      label: Primary area
+      options:
+        - Repository governance or contributor operations
+        - AI, perception or intent interpretation
+        - Arm planning, runtime or controller integration
+        - Physical workcell or hardware
+        - Release, compatibility or distribution
+        - Cross-workstream or unsure
+    validations:
+      required: true
+  - type: textarea
+    id: affected
+    attributes:
+      label: Affected contracts and workstreams
+      description: Name affected schemas, commands, coordinate frames, interfaces, evidence formats, users, or workstreams. Do not assign a reviewer without agreement.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Describe credible alternatives, including keeping the current behavior, and the tradeoffs of each.
+    validations:
+      required: true
+  - type: textarea
+    id: consequences
+    attributes:
+      label: Consequences, migration and rollback
+      description: Describe benefits, risks, compatibility impact, operational burden, migration, rollback, and unresolved dependencies.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Required evidence and dispositions
+      description: What evidence and affected-workstream reviews are required before acceptance? Separate software, simulation, controller and physical evidence.
+    validations:
+      required: true
+  - type: textarea
+    id: exclusions
+    attributes:
+      label: Explicit exclusions
+      description: State adjacent actions this proposal does not authorize, such as release publication, settings changes, firmware installation or physical movement.
+    validations:
+      required: true

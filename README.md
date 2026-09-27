@@ -8,7 +8,7 @@ The CI badge covers [scoped hardware-free checks](docs/CI.md), not physical robo
 
 **An experimental local-first robotics platform connecting user intent, visual evidence, and checked physical actions.**
 
-[Get started](docs/GETTING_STARTED.md) · [How the system works](docs/SYSTEM_OVERVIEW.md) · [Current capabilities](PROJECT_STATUS.md) · [Roadmap](ROADMAP.md) · [Documentation](docs/README.md) · [Contribute](CONTRIBUTING.md)
+[Get started](docs/GETTING_STARTED.md) · [How the system works](docs/SYSTEM_OVERVIEW.md) · [Current capabilities](PROJECT_STATUS.md) · [Roadmap](ROADMAP.md) · [Documentation](docs/README.md) · [Contribute](CONTRIBUTING.md) · [Governance](GOVERNANCE.md)
 
 [Get help](SUPPORT.md) · [Report a vulnerability privately](SECURITY.md)
 
