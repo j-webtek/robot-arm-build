@@ -57,6 +57,7 @@ jobs:
           python -m unittest discover -s scripts/ci -p "test_*.py"
           python scripts/ci/check_docs.py
           python scripts/ci/check_evidence_scope.py
+          python scripts/ci/check_release_integrity.py --mode policy
       - name: Install test extra
         run: python scripts/ci/offline_checks.py install-tests
       - name: Summarize resolved verification environment
