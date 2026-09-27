@@ -599,6 +599,8 @@ Copy this row and fill every field:
 
 ## Active work claims
 
+- AI lane / S1: paired joint localization training with learned segmentation heads, three fixed seeds; preserve prior learning rate, loss coefficient, budget and selection. AI branch only; no contract or arm-status changes.
+
 
 
 
