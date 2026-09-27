@@ -754,3 +754,35 @@ narrows the remaining issue to cross-population utility stability near the
 acceptance boundary. Any successor must be preregistered on new development
 populations and then repeat a new independent confirmation chain. No runtime,
 physical-camera, hardware, or motion authority is installed.
+
+## Residual metric utility correction
+
+One 52,577-parameter residual head was trained over the frozen obstruction-
+weighted metric proposal. It received the 513 existing pose features plus the
+base metric value and produced a multiplier constrained to `[0.5, 2.0]`; the
+corrected metric remained clamped to `[0.25, 10.0]` mm. Training retained the
+1/1/2/4 obstruction weights and 97.5th-percentile pinball objective for 20
+epochs on 16,000 new 77M images. No multiplier, architecture, loss, or proxy
+threshold sweep occurred.
+
+On 8,000 untouched 78M images, the correction achieved its intended utility
+margin. A development proxy using metric bound at most 1.8 mm and a training-
+CDF risk percentile at most 0.40 accepted 748 images, or 9.35%, compared with
+475 images, or 5.9375%, for the frozen base head. Condition proxy utility was
+9.2% standard, 19.4% appearance shift, 5.2% partial obstruction, and 3.6% full
+obstruction. Scene AUROC improved to `0.740661011`, every conditional image
+AUROC exceeded 0.75, and partial/full coverage remained noninferior.
+
+The complete model-selection rule still failed. Mean pinball loss increased
+from `0.060865563` for the base head to `0.061726220` for the residual head,
+where the frozen requirement demanded at least a 3% improvement. The residual
+head improved median and mean bound efficiency, but that utility gain came with
+a small calibration-loss regression. Its checkpoint is preserved as failed
+research evidence and receives no mapping calibration, confirmation, runtime,
+or physical authority.
+
+This result demonstrates that the utility margin can be created without losing
+obstruction coverage or ranking, while locating the remaining tradeoff in
+metric calibration quality. A successor must be fixed on new populations and
+combine the residual utility behavior with a noninferior calibration loss. It
+must not relax this failed gate or reuse 78M for model selection.

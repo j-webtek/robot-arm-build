@@ -599,11 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-- AI lane / S1: train and evaluate one preregistered residual metric-scale
-  corrector over the frozen obstruction-weighted head on fresh 77M training
-  and 78M selection scenes, targeting a larger low-bound utility margin; no
-  calibration, runtime, contract, arm, or integration-status changes.
-
 
 
 
@@ -9384,3 +9379,48 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic repository review before final ledger append; not model, runtime, or physical assurance. No arm or integration status changes.
 - Supersedes: none.
 - Next dependency: Same as AI-395.
+
+### E-20260927-AI-398 — residual metric utility correction selection
+
+- Stage: S1
+- Lane: AI
+- Commit: `c2ba356a441b4cd7469677b854b6d66090322722` (frozen training and selection source; failed report, checkpoint, test, interpretation, and ledger committed in the successor)
+- Inputs/fixtures: Preregistered `residual_metric_head_v1_plan.json` SHA-256 `808200f846d393abb2050e3282e9ec06ff2158e0a78ad204176c79bed0111149`; 16,000 fresh synthetic training images from seeds 77,000,000–77,001,999 over rectangle/ellipse styles and standard/appearance-shift/partial/full conditions with condition weights 1/1/2/4; training pixels/features/targets SHA-256 `4a7af7d68b124c6845ab41e32e46522e9552366bccfd53ff7e2c00086573bc0e` / `0fbf51202179d73d4f30bb03517df800e4333788605dc93c5b2c17fa644a57d0` / `efccb92328b35ca152e5b105cac0335bffdcd308c587c57cc7e0bdd26f2c48c1`; 8,000 fresh selection images from seeds 78,000,000–78,000,999 over the same styles and conditions with pixels/features/targets SHA-256 `d7a726009a02d69e57d32d7a4e25c876cabc9059fe3abf9f796b3c586226c615` / `e6da6bbc2d7d5bf03fd5974f4895cd35fd2b213e63935d12c84c0eec620fcc57` / `20a3e97401b24b31da953986f81c624253803f9d95d7c08135533edcc4a3e9b2`; frozen base/risk reports SHA-256 `4ec0f5979b6739c28c56107f1296c05fcacbb6f982f1e05e3ef97162909b09f9` / `40524c98512aa98383f70aa0156b062276660572081ff1c4b808fdec460211cf`; base/risk checkpoints SHA-256 `433d134b92b710566a0798c38dc344d1a768d2c87e44ef92135ffc075dfa9662` / `79d48b0ef63effea3642c2e08a20d8a6800f27f75e0ed97ed8050f146d4f326e`; residual checkpoint SHA-256 `09e5cff08743003beaeffbc99b34af12a301fd004747f30dab6a0967b3ce0f8f`; normalization/risk-reference SHA-256 `82de39584d37ab94be8e9314a4ce1198c482191384a0679fcebd734d7f7a7ef9` / `6fd80f216ad860a6646ae7cece062628c80190cd9fd2628373befff3c169c0f2`; selection residual/base/risk prediction SHA-256 `8beadca8e48b9e5e89b68bd09a664521a361abf94f13fa6a543484c40c187c4a` / `9e933255bc7b4e86f72a4f485b98440f9aab206966c27c2107285b7ac9850d6c` / `01db2a97737751c4a3fd1f6ee84a808d77e94b1890b9a81c51fe800a0feeae38`.
+- Command: `python software/ai/train/train_residual_metric_head.py`
+- Result: FAIL. One 52,577-parameter residual scale model was fitted for 2,500 optimizer updates with zero calibration fits. Candidate coverage was 0.948625 versus prior 0.953; mean pinball loss was 0.061726219995995084 versus prior 0.06086556268252901, so the frozen `candidate <= 0.97 * prior` check failed. Candidate median/mean/maximum bounds were 2.439382791519165 / 2.59894872071594 / 8.9753999710083 mm versus prior 2.516248345375061 / 2.6998500632867217 / 9.819472312927246 mm. Candidate condition coverage was 0.973 / 0.958 / 0.956 / 0.9075 for standard / appearance shift / partial / full versus prior 0.981 / 0.968 / 0.956 / 0.907. Scene AUC was 0.7406610105103204; condition AUC was 0.8798396265932619 / 0.8904542349726776 / 0.8062077454438565 / 0.7552858905800083. The development utility proxy improved from 475/8,000 = 0.059375 to 748/8,000 = 0.0935, with candidate condition fractions 0.092 / 0.194 / 0.052 / 0.036. Every frozen coverage, ranking, finite-bound, median, noninferiority, and utility check passed; `prior_pinball_improvement` was the sole failure. `passed_selection=false`; `qualification_installed=false`.
+- Artifacts: `vision/residual_metric_head.py`; `train/train_residual_metric_head.py`; `train/residual_metric_head_v1_plan.json`; `results/residual_metric_head_v1/model.pt`; `eval/residual_metric_head_v1_report.json`; `tests/test_residual_metric_head.py`; `docs/IMAGE_DEPENDENT_UNCERTAINTY.md`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Synthetic development and selection evidence only. The low-bound utility measure uses the training-only risk CDF and is a development proxy, not calibrated acceptance evidence. One architecture and one fixed multiplier interval were evaluated without a sweep. The utility gain does not override the failed proper-loss requirement. No calibration, runtime installation, contract change, physical-camera evidence, qualification, or motion authority. ModelMotionBatchV2 and arm/integration statuses are unchanged.
+- Supersedes: none; the failure is preserved and this residual checkpoint is ineligible for calibration or runtime use.
+- Next dependency: Do not tune on or reuse the 78M selection population. A successor must preregister a different correction objective on new development populations that retains the demonstrated utility margin while achieving noninferior proper loss, then undergo fresh selection and independent confirmation before any calibration allocation.
+
+### E-20260927-AI-399 — residual metric utility correction verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `c2ba356a441b4cd7469677b854b6d66090322722` (frozen source; test and documentation committed in the successor)
+- Inputs/fixtures: Frozen plan, source, checkpoint, 16,000-image training cohort, 8,000-image selection cohort, predictions, and failed report from AI-398 with the exact hashes recorded there.
+- Command: `python -m pytest -q software/ai/tests/test_residual_metric_head.py`
+- Result: PASS: 2 tests in 2.15s. Tests verify the 52,577-parameter bounded multiplier model; immutable lineage and artifact hashes; exact frozen populations and weighting; reconstructed training constant and prediction hashes; complete candidate/prior/constant summary and ranking recounts; utility arithmetic and frozen check outcomes; the sole `prior_pinball_improvement` failure; and zero calibration, hardware, physical, qualification, runtime, or command authority.
+- Artifacts: `tests/test_residual_metric_head.py`; `eval/residual_metric_head_v1_report.json`; `results/residual_metric_head_v1/model.pt`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Existing pytest-asyncio configuration warning. The test validates stored proxy arithmetic and check logic; full source regeneration remains the evidence-producing training command in AI-398. Contract unchanged, so shared boundary tests were not triggered. No physical assurance.
+- Supersedes: none.
+- Next dependency: Same as AI-398.
+
+### E-20260927-AI-400 — residual metric utility snapshot review
+
+- Stage: S1
+- Lane: AI
+- Commit: `c2ba356a441b4cd7469677b854b6d66090322722` (frozen source; final ledger append in successor)
+- Inputs/fixtures: Repository snapshot containing the preregistered residual model study, failed report, checkpoint, verification test, interpretation, and shared ledger; exact model fixture hashes are recorded in AI-398.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS: 6,360 paths, 1,033.5 MiB, 0 unresolved review findings, 14 reviewed synthetic fixtures.
+- Artifacts: residual model source; training program and plan; failed report and checkpoint; verification test; uncertainty documentation; shared ledger.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic repository review before final ledger append; not model, runtime, security, or physical assurance. No arm or integration status changes.
+- Supersedes: none.
+- Next dependency: Same as AI-398.
