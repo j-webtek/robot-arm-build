@@ -9544,3 +9544,18 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic repository review before final ledger append; not model, runtime, security, or physical assurance. No arm or integration status changes.
 - Supersedes: none.
 - Next dependency: Same as AI-406.
+
+### E-20260927-AI-409 — mission curriculum v1 generator freeze
+
+- Stage: S1
+- Lane: AI
+- Commit: `687e21e4c06291faa6d0c334c1c7fbf7eb0cac6c` (mission-boundary parent; frozen generator committed in the successor before any curriculum file was produced)
+- Inputs/fixtures: `rocell.mission_intent.v1`, `rocell.mission_compilation.v1`, capability matrix SHA-256 `4fb6ec167ffc832d2eb0c7bee0d0c113d031a705edcc3e842df71fef1f801384`, and deterministic generator SHA-256 `981b0966c17c273ee04f008a4b11fd724e4f88d0bf8e314cd67d6145dde08db8`.
+- Command: `python -m py_compile software/ai/train/build_mission_curriculum_v1.py; git diff --check`
+- Result: PASS. Frozen generation rules define disjoint train, validation, and heldout paraphrase families across supported keyboard/phone typing, quoted command-word literals, stale observations, unverified phone state, device/payload/intent ambiguity, shifted-text rejection, and unavailable phone calls. Every future record is required to pass mission validation and the read-only compiler before serialization. No data file or model result existed at this freeze.
+- Artifacts: `train/build_mission_curriculum_v1.py`; active S1 claim in this workplan.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Source-level preregistration only. Templates and labels are agent-authored with simulated review. Compiler checks cannot establish physical task success or natural-language representativeness. No model, camera, motion batch, runtime, or integration status change.
+- Supersedes: none.
+- Next dependency: Commit this generator before running it once; then verify byte-for-byte regeneration, split-family separation, compiler outcomes, and manifest hashes without tuning on heldout contents.
