@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rocell.local/schemas/native_t105_active_feedback_qualification_v1.schema.json",
+  "title": "RoCell native T105 active feedback qualification v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "status", "intake_sha256", "intake_id", "host_id",
+    "endpoint_sha256", "request_sha256", "started_utc", "finished_utc",
+    "lifecycle_elapsed_ms", "response_elapsed_ms", "identity_before",
+    "identity_after", "open_attempts", "open_succeeded",
+    "pre_request_buffered_bytes", "write_attempts", "outbound_bytes",
+    "active_requests", "read_attempts", "response_line_count",
+    "response_bytes", "response_base64", "response_sha256", "response",
+    "close_attempts", "close_confirmed", "movement_commands",
+    "torque_commands", "t102_commands", "retry_count", "purge_count",
+    "fallback_count", "dtr_asserted", "rts_asserted",
+    "controller_start_performed", "failure", "execution_authorized",
+    "physical_authority"
+  ],
+  "properties": {
+    "schema": {"const": "rocell.native_t105_active_feedback_qualification.v1"},
+    "status": {"enum": ["ACTIVE_FEEDBACK_COMPLETED", "ACTIVE_FEEDBACK_FAILED_TERMINAL"]},
+    "intake_sha256": {"$ref": "#/$defs/sha256"},
+    "intake_id": {"type": "string", "minLength": 1, "maxLength": 192},
+    "host_id": {"type": "string", "minLength": 1, "maxLength": 192},
+    "endpoint_sha256": {"$ref": "#/$defs/sha256"},
+    "request_sha256": {"const": "2cace64403a9db92d57acd8814d55c833529c0341468529900bd89f089e1fa3c"},
+    "started_utc": {"type": "string", "format": "date-time"},
+    "finished_utc": {"type": "string", "format": "date-time"},
+    "lifecycle_elapsed_ms": {"type": "number", "minimum": 0},
+    "response_elapsed_ms": {"type": "number", "minimum": 0, "maximum": 1000},
+    "identity_before": {"$ref": "#/$defs/identity"},
+    "identity_after": {"$ref": "#/$defs/identity"},
+    "open_attempts": {"const": 1}, "open_succeeded": {"type": "boolean"},
+    "pre_request_buffered_bytes": {"type": ["integer", "null"], "minimum": 0},
+    "write_attempts": {"type": "integer", "minimum": 0, "maximum": 1},
+    "outbound_bytes": {"type": "integer", "minimum": 0, "maximum": 10},
+    "active_requests": {"type": "integer", "minimum": 0, "maximum": 1},
+    "read_attempts": {"type": "integer", "minimum": 0, "maximum": 1},
+    "response_line_count": {"type": "integer", "minimum": 0, "maximum": 1},
+    "response_bytes": {"type": "integer", "minimum": 0, "maximum": 2048},
+    "response_base64": {"type": "string", "maxLength": 4096},
+    "response_sha256": {"oneOf": [{"$ref": "#/$defs/sha256"}, {"type": "null"}]},
+    "response": {"type": ["object", "null"]},
+    "close_attempts": {"const": 1}, "close_confirmed": {"type": "boolean"},
+    "movement_commands": {"const": 0}, "torque_commands": {"const": 0},
+    "t102_commands": {"const": 0}, "retry_count": {"const": 0},
+    "purge_count": {"const": 0}, "fallback_count": {"const": 0},
+    "dtr_asserted": {"const": false}, "rts_asserted": {"const": false},
+    "controller_start_performed": {"const": false},
+    "failure": {"type": ["string", "null"]},
+    "execution_authorized": {"const": false},
+    "physical_authority": {"const": false}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "identity": {
+      "type": "object", "additionalProperties": false,
+      "required": ["status", "friendly_name", "instance_id"],
+      "properties": {
+        "status": {"const": "OK"},
+        "friendly_name": {"type": "string", "minLength": 1},
+        "instance_id": {"type": "string", "minLength": 1}
+      }
+    }
+  }
+}

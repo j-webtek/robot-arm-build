@@ -256,6 +256,16 @@ Neither passive evidence nor the fake rehearsal qualifies installed firmware,
 physical telemetry accuracy, actuation, or model-command execution. The next
 arm-lane dependency is the separately authorized ARM-063 exchange, not another
 passive retry.
+ARM-064 consumed that authorization exactly once. COM7 opened and closed once,
+the pre-request buffer was empty, and the exact T=105 bytes were written once.
+The installed surface returned `FAULT:NOT_READY\r\n` instead of T=1051. No
+retry, movement, T=102, torque action, startup, purge, fallback, or DTR/RTS
+assertion occurred. The exact fault exists in the finite ghost-typing source,
+so the result is consistent with the known diagnostic surface but does not
+attest installed firmware identity. The generic feedback seam and observed
+planner start state remain blocked. The next dependency is resolving the
+installed-runtime mismatch under a separate reviewed installation/startup
+plan—not repeating this request.
 
 ## Stage definitions
 
