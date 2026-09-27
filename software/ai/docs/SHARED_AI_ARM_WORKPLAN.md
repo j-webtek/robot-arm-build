@@ -599,6 +599,10 @@ Copy this row and fill every field:
 
 ## Active work claims
 
+- AI lane / S1: compare 512 frozen pose-backbone features with the existing
+  56 image-statistic uncertainty features on the same grouped 33M evidence;
+  no pose fitting, calibration data, runtime promotion, or arm changes.
+
 
 
 
