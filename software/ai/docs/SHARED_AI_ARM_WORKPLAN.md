@@ -599,6 +599,11 @@ Copy this row and fill every field:
 
 ## Active work claims
 
+- AI lane / S1: train and evaluate one preregistered residual metric-scale
+  corrector over the frozen obstruction-weighted head on fresh 77M training
+  and 78M selection scenes, targeting a larger low-bound utility margin; no
+  calibration, runtime, contract, arm, or integration-status changes.
+
 
 
 
