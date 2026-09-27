@@ -418,6 +418,15 @@ from .native_t102_production_transport_v1 import (
     admit_external_native_t102_authority_v1,
     execute_native_t102_production_candidate_v1,
 )
+from .native_t102_adapter_review_packet_v1 import (
+    MAX_PACKET_BYTES as NATIVE_T102_ADAPTER_REVIEW_MAX_PACKET_BYTES,
+    SCHEMA as NATIVE_T102_ADAPTER_REVIEW_PACKET_SCHEMA,
+    STATUS as NATIVE_T102_ADAPTER_REVIEW_PACKET_STATUS,
+    NativeT102AdapterReviewPacketError,
+    NativeT102AdapterReviewPacketResultV1,
+    build_native_t102_adapter_review_packet_v1,
+    inspect_native_t102_adapter_review_packet_v1,
+)
 from .zero_write_waveshare_adapter_v1 import (
     GRIPPER_BEHAVIOR as ZERO_WRITE_GRIPPER_BEHAVIOR,
     INTERPOLATION_MODE as ZERO_WRITE_INTERPOLATION_MODE,
@@ -1343,6 +1352,13 @@ __all__ = [
     "ProductionAttemptSnapshotV1",
     "admit_external_native_t102_authority_v1",
     "execute_native_t102_production_candidate_v1",
+    "NATIVE_T102_ADAPTER_REVIEW_MAX_PACKET_BYTES",
+    "NATIVE_T102_ADAPTER_REVIEW_PACKET_SCHEMA",
+    "NATIVE_T102_ADAPTER_REVIEW_PACKET_STATUS",
+    "NativeT102AdapterReviewPacketError",
+    "NativeT102AdapterReviewPacketResultV1",
+    "build_native_t102_adapter_review_packet_v1",
+    "inspect_native_t102_adapter_review_packet_v1",
     "ZERO_WRITE_GRIPPER_BEHAVIOR",
     "ZERO_WRITE_INTERPOLATION_MODE",
     "ZERO_WRITE_WAVESHARE_PERMIT_SCHEMA",

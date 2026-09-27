@@ -1,0 +1,31 @@
+{
+  "candidate_commit": "9bd17ac21d7fd00d18f3dd4378b9bea529b5b681",
+  "candidate_files": [
+    {
+      "bytes": 2849,
+      "path": "docs/WINDOWS_NATIVE_T102_SERIAL_ADAPTER.md",
+      "sha256": "40a733dc55c4778e762e20bed06190f519cf121c49a89415970297dff89b336a"
+    },
+    {
+      "bytes": 14338,
+      "path": "source/native_t102_serial_transport_v1.py",
+      "sha256": "29cf25dd80c7560fb1613710fcef273466aba970b5b9333df3ed7bf9acbfafea"
+    },
+    {
+      "bytes": 7251,
+      "path": "tests/test_windows_native_t102_serial_transport_v1.py",
+      "sha256": "ea97b5ee1f6c10125e974f8ae9e6ae532d50a978087ba71f8214ca7b2be8369b"
+    }
+  ],
+  "documentation_tests_passed": 43,
+  "focused_tests_passed": 33,
+  "github_checks_passed": 8,
+  "hardware_writes": 0,
+  "independent_review_complete": false,
+  "physical_authority": false,
+  "physical_movements": 0,
+  "real_endpoint_opened": false,
+  "schema": "rocell.native_t102_adapter_offline_verification.v1",
+  "shared_tests_passed": 305,
+  "status": "PASS_OFFLINE_NO_HARDWARE"
+}

@@ -170,6 +170,16 @@ feedback exchanges. It is not connected to a CLI, authority issuer, controller
 startup, or automatic runtime composition. The next dependency is independent
 source review followed by separately authorized endpoint and physical
 qualification, not further model-contract expansion.
+ARM-055 now freezes that exact merged candidate into a deterministic,
+content-addressed review packet and exercises the real adapter class through
+ARM-053 using memory-only serial and inventory fixtures. The composition audit
+shows crossed external authority is durably started and rejected before adapter
+open, while a successful scripted path retains terminal no-replay evidence and
+cannot promote controller provenance, movement qualification, or follow-on
+authority. Packet status remains `AWAITING_EXTERNAL_INDEPENDENT_REVIEW`; this
+repository has not performed or impersonated that review. The next dependency
+is an external decision bound to the packet SHA-256, followed only under
+separate authorization by read-only endpoint qualification.
 
 ## Stage definitions
 
