@@ -31,6 +31,7 @@ TESTS = (
     'software/tests/unit/test_arm054_adapter_review_exchange_cli.py',
     'software/tests/unit/test_model_motion_sequence_coordinator.py',
     'software/tests/unit/test_zero_write_waveshare_adapter_v1.py',
+    'software/tests/unit/test_shadow_telemetry_replay_v1.py',
     'software/tests/unit/test_zero_write_sole_writer_v1.py',
     'software/tests/unit/test_installed_controller_qualification_v1.py',
     'software/tests/integration/test_zero_write_waveshare_contract_v1.py',

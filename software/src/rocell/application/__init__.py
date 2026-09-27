@@ -459,6 +459,15 @@ from .zero_write_waveshare_adapter_v1 import (
     issue_zero_write_encoding_permit_v1,
     trajectory_limits_sha256,
 )
+from .shadow_telemetry_replay_v1 import (
+    ORIGINS as SHADOW_TELEMETRY_ORIGINS,
+    SAMPLE_SCHEMA as SHADOW_TELEMETRY_SAMPLE_SCHEMA,
+    SCHEMA as SHADOW_TELEMETRY_REPLAY_SCHEMA,
+    ShadowTelemetryPolicyV1,
+    ShadowTelemetryReplayError,
+    ShadowTelemetrySampleV1,
+    assess_shadow_telemetry_replay_v1,
+)
 from .zero_write_sole_writer_v1 import (
     JOURNAL_SCHEMA as ZERO_WRITE_SOLE_WRITER_JOURNAL_SCHEMA,
     REPORT_SCHEMA as ZERO_WRITE_SOLE_WRITER_REPORT_SCHEMA,
@@ -1404,6 +1413,13 @@ __all__ = [
     "ZeroWriteWavesharePreviewReceiptV1",
     "issue_zero_write_encoding_permit_v1",
     "trajectory_limits_sha256",
+    "SHADOW_TELEMETRY_ORIGINS",
+    "SHADOW_TELEMETRY_SAMPLE_SCHEMA",
+    "SHADOW_TELEMETRY_REPLAY_SCHEMA",
+    "ShadowTelemetryPolicyV1",
+    "ShadowTelemetryReplayError",
+    "ShadowTelemetrySampleV1",
+    "assess_shadow_telemetry_replay_v1",
     "ZERO_WRITE_SOLE_WRITER_JOURNAL_SCHEMA",
     "ZERO_WRITE_SOLE_WRITER_REPORT_SCHEMA",
     "ZeroWriteSoleWriterError",
