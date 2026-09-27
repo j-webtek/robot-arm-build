@@ -599,6 +599,10 @@ Copy this row and fill every field:
 
 ## Active work claims
 
+- AI lane / S1: train one preregistered bounded 97.5th-percentile metric head
+  on fresh 60M training and 61M selection scenes; no runtime, contract, arm, or
+  integration-status changes.
+
 
 
 
