@@ -60,6 +60,7 @@ jobs:
           python scripts/ci/check_evidence_scope.py
           python scripts/ci/check_repository_artifacts.py
           python scripts/ci/check_repository_health.py --policy-only
+          python scripts/ci/check_source_archive_footprint.py
           python scripts/ci/check_release_integrity.py --mode policy
       - name: Install test extra
         run: python scripts/ci/offline_checks.py install-tests

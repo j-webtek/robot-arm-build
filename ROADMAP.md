@@ -15,9 +15,12 @@ physical qualification and third-party review cannot be predicted responsibly.
 
 The repository currently provides a hardware-free walkthrough, structured
 AI-to-arm contracts, simulated planning and command previews, operational gates,
-and records of particular supervised noncontact movements. These results show
-that individual software boundaries can be tested. They do not establish a
-reliable camera-to-arm typing system or autonomous phone operation.
+an integrated pose-output precision adapter, and records of particular
+supervised noncontact movements. The adapter's current 14.400834977 mm
+synthetic uncertainty bound is intentionally not installed for deployment.
+These results show that individual software boundaries can be tested. They do
+not establish a reliable camera-to-arm typing system or autonomous phone
+operation.
 
 See [project status](PROJECT_STATUS.md) for the dated capability statement and
 the [evidence ledger](software/ai/docs/EVIDENCE_LEDGER.md) for detailed records.
@@ -27,7 +30,7 @@ the [evidence ledger](software/ai/docs/EVIDENCE_LEDGER.md) for detailed records.
 | Stage | Objective | Completion evidence |
 | --- | --- | --- |
 | 1. Governed source preview | Make the research source understandable, reviewable, and reproducible without implying physical qualification | Release blockers in [#56](https://github.com/j-webtek/tactevra/issues/56), [#61](https://github.com/j-webtek/tactevra/issues/61), and [#88](https://github.com/j-webtek/tactevra/issues/88) are resolved; an exact candidate is separately reviewed and approved |
-| 2. Measured workcell | Replace nominal camera, board, robot, device, and tool assumptions with bound measurements | Calibration identities, uncertainty bounds, installed collision evidence, and fresh observation receipts pass the operational-readiness gate |
+| 2. Measured workcell | Freeze the final camera and physical layout, then replace nominal camera, board, robot, device, and tool assumptions with bound measurements | Four retained camera/support originals, calibrated transform identities, real-camera held-out uncertainty, installed collision evidence, and fresh observation receipts pass the operational-readiness gate; combined error fits inside each applicable target safe region |
 | 3. One verified physical action | Execute one bounded keyboard action and independently confirm its result | Intended target, admitted plan, controller receipts, observed motion, and device-level outcome are linked in one reviewable record |
 | 4. Reliable bounded sequences | Extend one verified action to short keyboard sequences without weakening rejection or recovery rules | Held-out sequences report target accuracy, abstention, timing, recovery, and independently verified outcomes |
 | 5. State-aware device workflows | Add bounded phone and changing-screen interactions | Each action is conditioned on observed device state, checked before execution, and independently verified afterward |

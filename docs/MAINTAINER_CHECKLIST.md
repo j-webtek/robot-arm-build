@@ -62,6 +62,9 @@ device access, restarts, torque changes, movement, or release publication.
   changed CAD, print, media, archive, and rendered-document files. Require a
   canonical source or an exact-digest reviewed exception instead of adding
   repeated bytes for convenience.
+- [ ] Confirm the [source-distribution footprint](SOURCE_DISTRIBUTION.md) remains
+  inside its containment ceilings. Treat smaller reduction targets as planned
+  work, not permission for unreviewed removal or history rewriting.
 - [ ] Apply the [documentation standard](DOCUMENTATION_STANDARD.md). Label
   active plans, evidence records, historical pages, and release drafts; use the
   [glossary](GLOSSARY.md) for current explanatory prose.

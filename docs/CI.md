@@ -43,6 +43,10 @@ for the dated settings and how to propose another action without bypassing them.
   newly added or modified files over 10 MiB and byte-for-byte duplicate governed
   binaries unless their exact path and digest have a reviewed exception. Existing
   unchanged hardware-package duplication remains a historical baseline.
+- A whole-tree [source-distribution footprint](SOURCE_DISTRIBUTION.md) check that
+  contains tracked file count, logical bytes, single-blob size, and existing
+  large-blob duplication. Reduction targets are reported separately from CI
+  ceilings; a pass does not mean the current archive is small.
 - Unit coverage for the read-only [external artifact contract](EXTERNAL_ARTIFACTS.md),
   including unavailable, verified, size-mismatch, digest-mismatch, and unsafe
   manifest states. No external artifact is downloaded or required by CI.
@@ -67,13 +71,31 @@ supported ranges, not bit-for-bit environment reproduction.
 
 ## Manual source-preview candidate audit
 
+Before selecting a candidate, maintainers can produce a compact identity-bound
+receipt from a fresh checkout:
+
+```powershell
+$candidate = git rev-parse HEAD
+python scripts/ci/verify_clean_checkout.py `
+  --expected-sha $candidate `
+  --mode policy `
+  --receipt clean-checkout-receipt.json
+```
+
+This verifies repository policy and archive shape without downloading external
+model artifacts or touching hardware. Candidate mode additionally enforces the
+tracked-path candidate policy; it does not query GitHub issue or approval state
+and can pass while an issue-based gate remains open. See
+[source-distribution footprint](SOURCE_DISTRIBUTION.md#clean-checkout-evidence).
+
 The [Preview candidate audit](../.github/workflows/preview-candidate-audit.yml)
 is a separate, manually dispatched, read-only workflow. It accepts one full
 40-character commit SHA as an identity assertion. Select the intended protected
 `main` revision in GitHub's **Run workflow from** control. The workflow checks out
 that GitHub-selected revision, requires its immutable SHA to equal the assertion,
 runs the strict release candidate inventory policy, performs the snapshot audit,
-and rechecks maintained documentation. The input never selects code to check out.
+rechecks maintained documentation, and measures the source-archive footprint.
+The input never selects code to check out.
 This prevents an input-controlled revision from executing in the default-branch
 workflow cache scope. The workflow uses a hosted Ubuntu runner, read-only repository
 permission, non-persisted checkout credentials, and no repository secrets.
@@ -83,9 +105,9 @@ create tags, or publish releases. It is not a required branch-protection check.
 Use it only after identifying a proposed preview commit on protected `main`; a
 moving branch name is not a candidate identity. Confirm the completed run names
 the expected SHA. To assess some other revision without executing it in this
-workflow context, use the documented fresh-checkout local procedure. Until every
-recorded candidate blocker is resolved, a failed candidate-integrity step is the
-correct result.
+workflow context, use the documented fresh-checkout local procedure. A tracked-
+path candidate blocker correctly fails the inventory step; issue-based gates are
+reviewed separately in the readiness dashboard.
 
 ### Find the versions behind a result
 
@@ -115,6 +137,7 @@ python scripts/ci/offline_checks.py smoke
 python scripts/ci/check_docs.py
 python scripts/ci/check_public_records.py
 python scripts/ci/check_repository_health.py --policy-only
+python scripts/ci/check_source_archive_footprint.py
 python scripts/ci/check_release_integrity.py --mode policy
 python scripts/ci/offline_checks.py install-tests
 python scripts/ci/offline_checks.py environment
@@ -147,7 +170,8 @@ package identifiers, technical documents, and body prose are not rebranding targ
 For an intentional title or route change, update the explicit contract and its
 tests in the same PR; do not remove a check just to silence a regression.
 The issue-template check verifies file existence, not GitHub form-schema validity
-or submission behavior. Generic/blank issue routes are not template files.
+or submission behavior. Contact links are not template files; blank issues are
+disabled by repository policy.
 The repository snapshot audit remains a separate review. Its previously reported
 synthetic fixtures have [exact documented exceptions](AUDIT_FIXTURE_REVIEW.md);
 CI tests that mechanism but does not replace a full snapshot scan.
