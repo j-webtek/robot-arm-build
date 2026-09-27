@@ -3474,3 +3474,36 @@ rewriting history. New entries must use a unique evidence ID.
 - Next dependency: AI supplies qualified perception; arm collects the four
   camera/support originals and remaining measured epoch components, commissions
   planner calibration, and resolves installed-runtime feedback qualification.
+
+### E-20260927-ARM-073 — retained camera/support binding adapter
+
+- Stage: S4
+- Lane: ARM
+- Source baseline: GitHub `main`
+  `36ebe29c68ec3339110597ae78093acdebb9d28b`.
+- Change: added a strict file-backed bridge from four retained physical-original
+  files and their owner-AI review records into the canonical ARM-070
+  `CameraSupportBindingV1` sequence.
+- Contract: review and receipt JSON Schemas are closed; evidence reads are
+  bounded to 16 MiB, review reads to 128 KiB, paths remain beneath one canonical
+  root, regular-file substitution checks are reused from onboarding durability,
+  and duplicate fields, hash drift, traversal, partial sets, and reordered sets
+  fail closed.
+- Integration result: a complete current fixture produces all four typed
+  bindings, passes fresh ARM-070 assessment, and can construct the
+  `camera_support_optics` epoch component. A stale fixture still loads as an
+  authenticated record but is rejected by ARM-070 with `EVIDENCE_STALE`, keeping
+  authentication separate from admission policy.
+- Endpoint/camera opens: 0.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Authority: epoch advancement, camera open, controller startup, transport,
+  execution, hardware, and physical authority remain false.
+- Limitations: the adapter does not collect a physical original, manufacture an
+  owner-AI decision, evaluate perception accuracy, or make the currently missing
+  ARM-070 evidence exist. Its root digest is an audit binding to the selected
+  canonical path; evidence and review identity remain content-hash based.
+- Supersedes: no evidence result and no physical gate. It removes only the need
+  to transcribe accepted retained originals manually into ARM-070 bindings.
+- Next dependency: collect and owner-AI review the four physical originals in
+  canonical order, then load them through this adapter and rerun ARM-070.

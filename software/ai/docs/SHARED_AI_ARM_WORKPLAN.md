@@ -320,6 +320,14 @@ intake rows remain unresolved. The retained result therefore keeps all four
 camera bindings missing and does not alter the ARM-069 epoch. The next step is
 physical-original collection through the existing onboarding workflow, not a
 synthetic substitution or another controller test.
+ARM-073 closes the software-only gap between those retained originals and the
+ARM-070 binding slots. It accepts only four canonical owner-AI review records,
+performs bounded substitution-aware reads beneath one safe root, verifies the
+exact original and review hashes, and emits typed bindings plus zero-authority
+receipts. It does not create evidence, perform a review, decide freshness,
+advance the epoch, open a camera, or authorize hardware. The physical collection
+dependency remains unchanged; once those originals exist, this adapter removes
+manual transcription from their ARM-070 intake.
 
 ## Stage definitions
 

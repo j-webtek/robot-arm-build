@@ -1,7 +1,7 @@
 # Tactevra project status
 
-Reviewed September 27, 2026 through the ARM-070 camera/support/optics intake
-and gap assessment on merged `main`.
+Reviewed September 27, 2026 through the ARM-073 retained camera/support binding
+adapter on merged `main`.
 Unmerged workstream branches are not included in this summary.
 This is a capability summary for readers; the
 [shared workplan](software/ai/docs/SHARED_AI_ARM_WORKPLAN.md) retains current
@@ -180,6 +180,13 @@ assessment. It records the current gap instead of manufacturing evidence: the
 camera receipt, persistent identity, commissioned mode and controls, and support
 witnesses are all missing. The component remains blocked, the ARM-069 partial
 epoch is unchanged, and no camera or hardware authority was granted.
+
+ARM-073 adds the strict file-backed bridge that those four missing originals
+will use after collection and owner-AI review. It verifies bounded regular-file
+reads, safe relative paths, exact content hashes, closed review fields, and
+canonical binding order before constructing ARM-070 inputs. It eliminates
+manual transcription but does not create any missing observation, decide model
+accuracy, advance the epoch, or grant hardware authority.
 
 Repository improvements include protected-main CI, support and private security
 reporting, contributor handoff templates, reviewed dependency updates, and an

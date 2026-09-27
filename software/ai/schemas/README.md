@@ -217,6 +217,13 @@ provide the next component boundary. Catalog specifications and digital support
 designs are retained as context but never promoted to physical originals. All
 four bindings must carry current retained-original evidence and owner-AI review
 before the adapter can construct a `camera_support_optics` epoch component.
+The [retained-original owner-AI review](camera_support_original_owner_ai_review_v1.schema.json)
+and [binding adapter receipt](camera_support_binding_adapter_receipt_v1.schema.json)
+define the file-backed bridge into those four slots. The loader permits only
+bounded regular files below one canonical root, rejects duplicate JSON fields,
+verifies both content hashes, requires canonical binding order, and fixes all
+hardware authority false. It authenticates an already completed review; it does
+not collect evidence, open the camera, determine freshness, or advance an epoch.
 The [synthetic epoch model-to-arm rehearsal](synthetic_epoch_model_arm_rehearsal_v1.schema.json)
 then binds that exact blocked epoch to one model batch, its indexed proposal, a
 sealed trajectory, the Waveshare encoding profile, and the zero-write receipt.

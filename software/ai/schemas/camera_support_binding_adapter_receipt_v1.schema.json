@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rocell.local/schemas/camera_support_binding_adapter_receipt_v1.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "status", "evidence_root_sha256", "evidence_relative_path",
+    "evidence_file_sha256", "review_relative_path", "review_file_sha256",
+    "owner_ai_review_sha256", "binding", "epoch_advanced",
+    "camera_open_authorized", "controller_start_authorized",
+    "transport_authorized", "execution_authorized", "hardware_access",
+    "physical_authority", "receipt_sha256"
+  ],
+  "properties": {
+    "schema": {"const": "rocell.camera_support_binding_adapter_receipt.v1"},
+    "status": {"const": "BOUND_FOR_ARM070_INTAKE"},
+    "evidence_root_sha256": {"$ref": "#/$defs/sha"},
+    "evidence_relative_path": {"type": "string", "minLength": 1, "maxLength": 1024},
+    "evidence_file_sha256": {"$ref": "#/$defs/sha"},
+    "review_relative_path": {"type": "string", "minLength": 1, "maxLength": 1024},
+    "review_file_sha256": {"$ref": "#/$defs/sha"},
+    "owner_ai_review_sha256": {"$ref": "#/$defs/sha"},
+    "binding": {"$ref": "#/$defs/binding"},
+    "epoch_advanced": {"const": false},
+    "camera_open_authorized": {"const": false},
+    "controller_start_authorized": {"const": false},
+    "transport_authorized": {"const": false},
+    "execution_authorized": {"const": false},
+    "hardware_access": {"const": false},
+    "physical_authority": {"const": false},
+    "receipt_sha256": {"$ref": "#/$defs/sha"}
+  },
+  "$defs": {
+    "sha": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "binding": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "binding_id", "evidence_sha256", "owner_ai_review_sha256",
+        "measured_monotonic_ns", "valid_until_monotonic_ns",
+        "evidence_origin", "review_disposition"
+      ],
+      "properties": {
+        "binding_id": {"enum": ["camera_receipt", "camera_identity", "camera_mode_controls", "support_witnesses"]},
+        "evidence_sha256": {"$ref": "#/$defs/sha"},
+        "owner_ai_review_sha256": {"$ref": "#/$defs/sha"},
+        "measured_monotonic_ns": {"type": "integer", "minimum": 1},
+        "valid_until_monotonic_ns": {"type": "integer", "minimum": 2},
+        "evidence_origin": {"const": "PHYSICAL_RETAINED_ORIGINALS"},
+        "review_disposition": {"const": "OWNER_AI_ACCEPTED"}
+      }
+    }
+  }
+}
