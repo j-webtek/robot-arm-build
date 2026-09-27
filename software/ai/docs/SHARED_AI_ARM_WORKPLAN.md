@@ -162,8 +162,14 @@ abstract transport, exact T=1021 and settled T=1051 validation, and its own
 durable pre-open/terminal attempt journal. No concrete transport, authority
 issuer, verifier keyring, port discovery, or controller process is included,
 so all current ARM-053 capture evidence remains scripted and explicitly
-unqualified. The next dependency is independent review of a concrete adapter,
-not further model-contract expansion.
+unqualified. ARM-054 now supplies a separately isolated Windows serial adapter
+candidate with exact pre/post-open USB identity checks, finite read/write
+timeouts, one
+canonical T=102 write, bounded T=1021 capture, and exactly two T=105/T=1051
+feedback exchanges. It is not connected to a CLI, authority issuer, controller
+startup, or automatic runtime composition. The next dependency is independent
+source review followed by separately authorized endpoint and physical
+qualification, not further model-contract expansion.
 
 ## Stage definitions
 

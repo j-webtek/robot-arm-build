@@ -1,7 +1,7 @@
 # Native T=102 production transport boundary
 
 ARM-053 defines the final arm-side shape between a claimed, reviewed T=102
-frame and a future native controller adapter. It is a **code-only production
+frame and a native controller adapter. It is a **code-only production
 candidate**, not a hardware-qualified serial implementation.
 
 ## What is now fixed
@@ -38,12 +38,13 @@ again. A full write still requires an exact sequence-correlated T=1021
 within the bounded joint tolerance. `terminal.json` then seals the exact
 receipt and forbids replay.
 
-## Deliberate capability gap
+## Deliberate qualification gap
 
-`NativeT102ProductionTransportV1` is abstract. There is no Windows, pyserial,
-HTTP, socket, port-enumeration, controller-startup, or firmware implementation
-in ARM-053. The only implementation used by tests is declared inside the test
-module and stores scripted values in memory. Therefore the passing outcome is
+`NativeT102ProductionTransportV1` remains the authority-facing abstract seam.
+ARM-054 adds a separately reviewable Windows pyserial candidate, documented in
+[WINDOWS_NATIVE_T102_SERIAL_ADAPTER.md](WINDOWS_NATIVE_T102_SERIAL_ADAPTER.md).
+It is not composed with an authority issuer, CLI command, startup service, or
+physical test path. Therefore the passing outcome remains
 named `CONTROLLER_EVIDENCE_CAPTURED_SETTLED_UNQUALIFIED`: it proves the
 contract and lifecycle, not that a controller produced the bytes or that the
 arm moved.
@@ -67,8 +68,8 @@ lifecycle.
 
 ## Next reviewable increment
 
-A concrete adapter must be implemented separately and independently reviewed.
-It must:
+The ARM-054 adapter must be independently reviewed and physically qualified.
+Qualification must:
 
 - resolve and re-read the exact endpoint identity after obtaining exclusive
   ownership;
@@ -80,4 +81,6 @@ It must:
 - pass explicit physical qualification and authorization before it is ever
   composed with this boundary.
 
-Until then, ARM-053 generates zero hardware writes and zero physical movement.
+Until then, the repository's automated paths generate zero hardware writes and
+zero physical movement. Merely having the adapter source does not authorize or
+schedule its `open_once` method.
