@@ -599,6 +599,8 @@ Copy this row and fill every field:
 
 ## Active work claims
 
+- AI lane / S1: persistent-case renderer/visual audit on feature/translation-pair-evidence; same-condition nearest-pose successful controls, no training or exclusions.
+
 
 
 
