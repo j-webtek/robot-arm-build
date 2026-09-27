@@ -142,7 +142,10 @@ and the measured planner does not yet reach physical execution admission. S4
 lists AI as ready because no new AI authority is required. The zero-write
 adapter and reviewed native-shaped T=102 bridge now share the controller's
 ordered joint encoding, but authentic native transport, independently acquired
-receipts, and physical qualification remain unfinished.
+receipts, and physical qualification remain unfinished. A durable native T=102
+handoff now commits an exclusive writer claim before any future transport open;
+restart after that claim is retry-forbidden even though native open authority is
+still absent.
 
 ## Stage definitions
 

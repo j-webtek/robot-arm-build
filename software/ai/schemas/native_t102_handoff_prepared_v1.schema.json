@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rocell.local/schemas/native_t102_handoff_prepared_v1.schema.json",
+  "title": "RoCell native T102 prepared handoff v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "status", "review_sha256", "permit_binding_sha256",
+    "goal_sha256", "frame_sha256", "wire_bytes_sha256", "sequence",
+    "correlation_id", "writer_instance_id", "controller_session_id",
+    "configuration_epoch_sha256", "encoding_profile_sha256",
+    "adapter_candidate_sha256", "created_monotonic_ns",
+    "frame_issued_monotonic_ns", "frame_expires_monotonic_ns",
+    "transport_open_authorized", "physical_authority",
+    "automatic_retry_allowed", "transport_open_count",
+    "physical_command_writes", "prepared_sha256"
+  ],
+  "properties": {
+    "schema": {"const": "rocell.native_t102_handoff_prepared.v1"},
+    "status": {"const": "PREPARED_BEFORE_NATIVE_OPEN"},
+    "review_sha256": {"$ref": "#/$defs/hash"},
+    "permit_binding_sha256": {"$ref": "#/$defs/hash"},
+    "goal_sha256": {"$ref": "#/$defs/hash"},
+    "frame_sha256": {"$ref": "#/$defs/hash"},
+    "wire_bytes_sha256": {"$ref": "#/$defs/hash"},
+    "sequence": {"type": "integer", "minimum": 1},
+    "correlation_id": {"$ref": "#/$defs/identifier"},
+    "writer_instance_id": {"$ref": "#/$defs/identifier"},
+    "controller_session_id": {"$ref": "#/$defs/identifier"},
+    "configuration_epoch_sha256": {"$ref": "#/$defs/hash"},
+    "encoding_profile_sha256": {"$ref": "#/$defs/hash"},
+    "adapter_candidate_sha256": {"$ref": "#/$defs/hash"},
+    "created_monotonic_ns": {"type": "integer", "minimum": 1},
+    "frame_issued_monotonic_ns": {"type": "integer", "minimum": 1},
+    "frame_expires_monotonic_ns": {"type": "integer", "minimum": 1},
+    "transport_open_authorized": {"const": false},
+    "physical_authority": {"const": false},
+    "automatic_retry_allowed": {"const": false},
+    "transport_open_count": {"const": 0},
+    "physical_command_writes": {"const": 0},
+    "prepared_sha256": {"$ref": "#/$defs/hash"}
+  },
+  "$defs": {
+    "hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "identifier": {
+      "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+    }
+  }
+}

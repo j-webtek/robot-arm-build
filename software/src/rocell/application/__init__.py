@@ -359,6 +359,17 @@ from .reviewed_t102_runtime_bridge_v1 import (
     ReviewedT102RuntimeBridgeError,
     execute_reviewed_t102_runtime_rehearsal_v1,
 )
+from .native_t102_handoff_journal_v1 import (
+    CLAIM_SCHEMA as NATIVE_T102_WRITER_CLAIM_SCHEMA,
+    PREPARED_SCHEMA as NATIVE_T102_HANDOFF_PREPARED_SCHEMA,
+    SNAPSHOT_SCHEMA as NATIVE_T102_HANDOFF_SNAPSHOT_SCHEMA,
+    DurableNativeT102HandoffV1,
+    NativeT102HandoffJournalError,
+    NativeT102HandoffPhase,
+    NativeT102HandoffSnapshotV1,
+    NativeT102RecoveryDisposition,
+    load_native_t102_handoff_v1,
+)
 from .zero_write_waveshare_adapter_v1 import (
     GRIPPER_BEHAVIOR as ZERO_WRITE_GRIPPER_BEHAVIOR,
     INTERPOLATION_MODE as ZERO_WRITE_INTERPOLATION_MODE,
@@ -1233,6 +1244,15 @@ __all__ = [
     "JointSettlementPolicyV1",
     "ReviewedT102RuntimeBridgeError",
     "execute_reviewed_t102_runtime_rehearsal_v1",
+    "NATIVE_T102_WRITER_CLAIM_SCHEMA",
+    "NATIVE_T102_HANDOFF_PREPARED_SCHEMA",
+    "NATIVE_T102_HANDOFF_SNAPSHOT_SCHEMA",
+    "DurableNativeT102HandoffV1",
+    "NativeT102HandoffJournalError",
+    "NativeT102HandoffPhase",
+    "NativeT102HandoffSnapshotV1",
+    "NativeT102RecoveryDisposition",
+    "load_native_t102_handoff_v1",
     "ZERO_WRITE_GRIPPER_BEHAVIOR",
     "ZERO_WRITE_INTERPOLATION_MODE",
     "ZERO_WRITE_WAVESHARE_PERMIT_SCHEMA",

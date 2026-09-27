@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rocell.local/schemas/native_t102_handoff_snapshot_v1.schema.json",
+  "title": "RoCell native T102 durable handoff snapshot v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "phase", "prepared_sha256", "frame_sha256",
+    "permit_binding_sha256", "claim_sha256", "recovery_disposition",
+    "transport_open_authorized", "physical_authority",
+    "automatic_retry_allowed", "transport_open_count",
+    "physical_command_writes", "snapshot_sha256"
+  ],
+  "properties": {
+    "schema": {"const": "rocell.native_t102_handoff_snapshot.v1"},
+    "phase": {"enum": ["PREPARED", "WRITER_CLAIMED"]},
+    "prepared_sha256": {"$ref": "#/$defs/hash"},
+    "frame_sha256": {"$ref": "#/$defs/hash"},
+    "permit_binding_sha256": {"$ref": "#/$defs/hash"},
+    "claim_sha256": {
+      "oneOf": [{"type": "null"}, {"$ref": "#/$defs/hash"}]
+    },
+    "recovery_disposition": {
+      "enum": [
+        "CANCEL_AND_REPLAN_WITH_FRESH_AUTHORITY",
+        "RETRY_FORBIDDEN_DISPATCH_UNCERTAIN"
+      ]
+    },
+    "transport_open_authorized": {"const": false},
+    "physical_authority": {"const": false},
+    "automatic_retry_allowed": {"const": false},
+    "transport_open_count": {"const": 0},
+    "physical_command_writes": {"const": 0},
+    "snapshot_sha256": {"$ref": "#/$defs/hash"}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"phase": {"const": "PREPARED"}}},
+      "then": {
+        "properties": {
+          "claim_sha256": {"type": "null"},
+          "recovery_disposition": {
+            "const": "CANCEL_AND_REPLAN_WITH_FRESH_AUTHORITY"
+          }
+        }
+      }
+    },
+    {
+      "if": {"properties": {"phase": {"const": "WRITER_CLAIMED"}}},
+      "then": {
+        "properties": {
+          "claim_sha256": {"$ref": "#/$defs/hash"},
+          "recovery_disposition": {
+            "const": "RETRY_FORBIDDEN_DISPATCH_UNCERTAIN"
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}
