@@ -599,6 +599,11 @@ Copy this row and fill every field:
 
 ## Active work claims
 
+- AI lane / S1: train one compact error-risk head on frozen pose descriptors
+  and ensemble disagreement using new 52M scenes, then make one selection
+  decision on disjoint 53M scenes; no calibration, runtime, contract, or arm
+  changes.
+
 
 
 
