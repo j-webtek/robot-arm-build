@@ -791,6 +791,7 @@ remove it only in the same commit that appends the resulting evidence row.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
+| AI | S1/S2/S3 | AI work/evidence handbook, machine-readable registry/schema, documentation audit, test inventory, and AI evidence row | `codex/ai-work-evidence-handbook` stacked on camera-readiness PR #147 | ACTIVE: document all AI workstreams and tests; zero authority |
 | Unclaimed | S2/S3 | physical-camera deployment qualification and safe-region-fit precision evidence | — | AVAILABLE |
 | ARM | S4 | collect four physical-original `camera_support_optics` bindings through onboarding, then run the ARM-070 intake; no synthetic promotion | ARM-071 | WAITING_FOR_ORIGINALS |
 
