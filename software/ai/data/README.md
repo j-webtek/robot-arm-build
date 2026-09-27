@@ -68,6 +68,15 @@ informed the design. There is intentionally no confirmation split. A separate
 confirmation source may be created only after the successor model, prompt,
 decoder, selection rule, and gates are frozen.
 
+`mission_decision_curriculum_v1_train.jsonl` and
+`mission_decision_curriculum_v1_validation.jsonl` deterministically transform
+the 1,280/320 mission-development-v2 records into seven compact semantic
+classes. Every compact target reassembles against its original request to the
+original MissionIntentV1 target exactly. The compact targets contain no text,
+request binding, capability, policy, motion, or controller fields. The
+manifest records inverse-frequency weights for training without duplicating
+examples. Confirmation remains absent.
+
 `real_photo_seed_v0.manifest.json` inventories ten user-provided real setup
 JPEGs by hash and dimensions. The originals are copied only to ignored
 `raw/real_photo_seed_v0/`, preserving their EXIF locally. The tracked

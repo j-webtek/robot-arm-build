@@ -599,10 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-- AI lane / S1: freeze and generate a compact seven-class development
-  curriculum derived only from mission-development-v2; require deterministic
-  reassembly to reproduce every original MissionIntentV1 target exactly and
-  keep confirmation absent.
 
 
 
@@ -9867,3 +9863,18 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Source and in-memory deterministic development evidence only. The inputs remain agent-authored templates with simulated review. Exact reassembly proves transformation fidelity, not classifier generalization. No confirmation data or model exists. No physical or runtime authority changed.
 - Supersedes: AI-429 only as corrected source verification; failed evidence remains preserved.
 - Next dependency: Commit this corrected boundary and generator before executing it once. Then verify byte reproduction, source lineage, class counts and weights, exact reassembly hashes, zero confirmation artifacts, and unchanged downstream boundaries.
+
+### E-20260927-AI-431 — compact seven-class development curriculum generation
+
+- Stage: S1
+- Lane: AI
+- Commit: `6474ba895dd5dbf2913cca0eadc3bbc74c57b00c` (frozen corrected generator; generated evidence, verification, documentation, and ledger committed in the successor)
+- Inputs/fixtures: Frozen generator and exact source hashes from AI-430; frozen mission-development-v2 manifest/train/validation SHA-256 `2eb484610cf51a21ee41a10100631bdefe92fa94d79a797cfa195fbb1577ac34` / `ec8739514dfd0dc2f4556694f547f2aa28b489355a15eb6a3cb8772d4cf7fc9e` / `fc4b94d49ca7f0e0354f2aa70e186cca6edb5e8148451176eaf0fda37b30ca7b`.
+- Command: `Test-Path software/ai/data/mission_decision_curriculum_v1.manifest.json; python software/ai/train/build_mission_decision_curriculum_v1.py`; `python -m pytest -q software/ai/tests/test_mission_decision_curriculum_source.py software/ai/tests/test_mission_decision_curriculum.py software/ai/tests/test_mission_decision.py software/ai/tests/test_mission_intent.py software/ai/tests/test_batch_emitter_v2.py`.
+- Result: PASS: 26 tests in 2.68s and clean diff check. The precondition returned `False`; generation wrote 1,280 train and 320 validation records with SHA-256 `408ae1f33ddf0a4c1c3ddd825a49540b72b8e7080e2abec6bedfd883da343dbd` / `cd13604a21e1cbcb1b9f2b3c3f48857745e4b0e055e877f08a68e7ddcb88cd46`; manifest SHA-256 is `956eac3a04a4cbb7f7a37db354894443e82500d3fdf9f39fd587bfc04d0ed04d`. All 1,600 decisions exactly reassemble their frozen MissionIntentV1 targets with zero downgrades. Training class counts are 384 keyboard execute, 256 phone execute, and 128 for each of five remaining classes; validation is one quarter of those counts. Inverse-frequency weights equalize aggregate class mass without duplicated records. Compact targets contain no literal or authority fields. Confirmation remains absent.
+- Artifacts: `data/mission_decision_curriculum_v1_train.jsonl`; `data/mission_decision_curriculum_v1_validation.jsonl`; `data/mission_decision_curriculum_v1.manifest.json`; `tests/test_mission_decision_curriculum.py`; data and decision documentation; shared ledger.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Deterministically derived agent-authored templated development evidence with simulated review. Exact transformation and balancing do not establish classifier transfer. No model, selection, confirmation, camera, motion, hardware, or physical evidence. No qualification or status change.
+- Supersedes: none.
+- Next dependency: Freeze a compact-classifier training recipe that uses the recorded inverse-frequency weights, emits only MissionDecisionV1 under its JSON Schema, selects on macro class accuracy plus zero unsafe assembled acceptance, and keeps confirmation absent until development gates pass.

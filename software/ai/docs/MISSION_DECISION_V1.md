@@ -40,3 +40,12 @@ which were observed failure modes in the v1 and v2 full-object students.
 This is an offline semantic boundary. It grants no motion, hardware, contact,
 permit, transport, or success authority and does not change ModelMotionBatch,
 arm runtime, or integration status.
+
+## Development curriculum
+
+The first compact curriculum derives from the frozen balanced
+mission-development-v2 records. It contains 1,280 training and 320 validation
+examples. All 1,600 compact labels reassemble to their original MissionIntent
+targets exactly. The seven class frequencies are recorded with inverse-class
+frequency weights so training can balance class mass without duplicating
+requests. No confirmation split exists.
