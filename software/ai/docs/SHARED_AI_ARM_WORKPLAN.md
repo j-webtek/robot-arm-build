@@ -599,11 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-- AI lane / S1: train and evaluate one preregistered obstruction-weighted
-  bounded metric uncertainty head on fresh 72M training and 73M selection
-  scenes; no calibration, runtime, contract, arm, or integration-status
-  changes.
-
 
 
 
@@ -9249,3 +9244,48 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic repository review before final ledger append; not model, runtime, or physical assurance. No arm or integration status changes.
 - Supersedes: none.
 - Next dependency: Same as AI-385.
+
+### E-20260927-AI-389 — obstruction-weighted metric-head selection
+
+- Stage: S1
+- Lane: AI
+- Commit: `ae07a269fee863edee6e58cf4904fde719daabe6` (fixed architecture, condition weights, objective, prior-comparison gates, fresh populations, source, plan, and claim committed before feature extraction or training; passing report, checkpoint, tests, interpretation, and claim removal committed in the successor)
+- Inputs/fixtures: Training scenes `72000000..72001999` (16,000 images) and selection scenes `73000000..73000999` (8,000 images), each with two styles and four conditions. Training pixel/feature/target SHA256 values `3ae3712d50c397e625fb3c6e7a104acfce71036adaa70c64dda99d008807b1ad`, `6c662c7911f9834546f7bb77f4a9222d5a3a9867714b060788c911626361cce5`, and `03fece73e3fd2d22612a81df3165e3f033dce0c802f55de3afa93630a3cdaf85`; selection values `d9d4e508e3e921cc9fff7c9d5a5ae72d4ed9f1a5b9281b39645eb337007c96d6`, `7f9a3448caf02554c84a30a7281532b501975c9dfd060a9538f230b1094ccc69`, and `09c514e42aebefeba3a8f048e3ebe6c014ba822e4077694a1cf2380e06b842ac`; all pose prediction hashes are retained in the report. Prior bounded-head checkpoint/report SHA256 `c9ee03b9962e28443fbac7644cdfbb9c068e544aeb75cc58dc2ba8b6b494b16c`/`d0632877b0918c8b71417a8c34e6e580b12599c6144cb4876d4bb11dcc821fb7`; trigger report SHA256 `14c86c35894f35424d672cb4a7d31b57b8953ff70bab3c933f11067edaf0609b`. Plan SHA256 `eec1b92f1e9bfa632a5bdd106ac25e00116f455c96bccf760a5d4ee1ea562857`; report SHA256 `4ec0f5979b6739c28c56107f1296c05fcacbb6f982f1e05e3ef97162909b09f9`; checkpoint SHA256 `433d134b92b710566a0798c38dc344d1a768d2c87e44ef92135ffc075dfa9662`; normalization SHA256 `3c691b6b9baf0ffbfe61c16ac94ae6c5cbec27f05358e780f1e199d06105a591`; new/prior selection prediction SHA256 values `38aa46e73fc6c7bbe8c3008530de5f33143e434c4127c8feb552873a2b775177` and `5910a12aacf6b9fdb3da83f331e0d72abe270599138d8af6fc5a614159049204`.
+- Command: `python software/ai/train/train_obstruction_weighted_metric_head.py`
+- Result: PASS fixed selection rule. The 52,481-parameter head trained for 20 epochs with condition weights 1/1/2/4 and a total training weight of 32,000, completing 2,500 optimizer updates. On selection, overall coverage is `0.94775`; standard, appearance-shift, partial, and full coverage are `0.973`, `0.963`, `0.9505`, and `0.9045`. The frozen prior head reaches `0.927`, `0.954`, `0.942`, `0.94`, and `0.872`, so partial improves by 1.05 points and full by 3.25 points. Mean pinball loss improves from prior `0.071729333` to `0.069618193`; median bound is `2.495371342` mm versus prior `2.255104303` mm and weighted constant `3.668837070` mm. Scene AUROC is `0.734116928`; conditional image AUROCs are standard `0.949362504`, appearance `0.846142134`, partial `0.851990450`, and full `0.752107023`. All outputs remain within `[0.25,10.0]` mm and every frozen check passes. One model fit and zero calibration fits.
+- Artifacts: `train/train_obstruction_weighted_metric_head.py`; `train/obstruction_weighted_metric_head_v1_plan.json`; `eval/obstruction_weighted_metric_head_v1_report.json`; `results/obstruction_weighted_metric_head_v1/model.pt`; `tests/test_obstruction_weighted_metric_head.py`; `docs/IMAGE_DEPENDENT_UNCERTAINTY.md`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Synthetic training-selection evidence for one seed and one fixed condition-weight schedule. Synthetic condition labels influence training loss but are not model inputs. This selects only a research feature; no metric calibration, independent confirmation, runtime installation, physical-camera evidence, qualification, or motion authority. ModelMotionBatchV2 and arm/integration statuses are unchanged.
+- Supersedes: none; the prior bounded head and all failed mapping evidence remain preserved.
+- Next dependency: Freeze one mapping-calibration and selection study on entirely fresh grouped populations using this checkpoint with the existing tail-risk specialist. Preserve the current marginal, utility, conditional accepted-subset, and zero accepted errors above 3 mm gates before any independent confirmation.
+
+### E-20260927-AI-390 — obstruction-weighted metric-head verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `ae07a269fee863edee6e58cf4904fde719daabe6` (frozen training-selection source; tests and documentation committed in the successor)
+- Inputs/fixtures: Same 24,000 images, fixed 1/1/2/4 weight schedule, prior head, new checkpoint, plan, and passing report as AI-389; exact hashes are recorded there and in the report.
+- Command: `python -m pytest -q software/ai/tests/test_obstruction_weighted_metric_head.py`
+- Result: PASS: 2 tests in 2.14s. Tests verify explicit condition weights and weighted pinball arithmetic, immutable lineage, checkpoint integrity, both exact grouped populations, training weight sum and weighted constant, complete candidate/prior/constant metric recounts, ranking metrics, every fixed passing check, and zero calibration, hardware, physical, qualification, or runtime authority.
+- Artifacts: `tests/test_obstruction_weighted_metric_head.py`; `eval/obstruction_weighted_metric_head_v1_report.json`; `results/obstruction_weighted_metric_head_v1/model.pt`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Existing pytest-asyncio configuration warning. Recount consistency only; no physical assurance. Contract unchanged, so shared boundary tests were not triggered.
+- Supersedes: none.
+- Next dependency: Same as AI-389.
+
+### E-20260927-AI-391 — obstruction-weighted metric-head snapshot review
+
+- Stage: S1
+- Lane: AI
+- Commit: `ae07a269fee863edee6e58cf4904fde719daabe6` (frozen training-selection source; final ledger append in successor)
+- Inputs/fixtures: Repository snapshot containing the frozen study, passing report, selected research checkpoint, verification test, interpretation, and shared ledger; exact hashes recorded in AI-389.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS: 6,346 paths, 1,017.8 MiB, 0 unresolved review findings, 14 reviewed synthetic fixtures.
+- Artifacts: obstruction-weighted plan/report/checkpoint; verification test; uncertainty documentation; shared ledger.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic repository review before final ledger append; not model, runtime, or physical assurance. No arm or integration status changes.
+- Supersedes: none.
+- Next dependency: Same as AI-389.

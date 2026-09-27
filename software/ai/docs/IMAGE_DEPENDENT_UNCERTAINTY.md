@@ -656,3 +656,33 @@ metric uncertainty directly on new training-selection populations. It should
 retain the recovered utility as an explicit goal while preserving the existing
 coverage and zero-above-tolerance gates before any calibration or independent
 confirmation is allocated.
+
+## Obstruction-weighted metric uncertainty
+
+A new 52,481-parameter bounded metric head retained the existing descriptor,
+architecture, 97.5th-percentile pinball target, and `[0.25, 10.0]` mm output.
+Only the preregistered training weights changed: standard and appearance-shift
+images received weight 1, partial obstruction weight 2, and full obstruction
+weight 4. Condition labels supplied loss weights during training and were not
+model inputs. The head completed 20 epochs on 16,000 new 72M images without
+selection-based stopping or a weight sweep.
+
+The head passed every fixed gate on 8,000 untouched 73M images. Overall
+coverage was 94.775%. Standard, appearance-shift, partial, and full-obstruction
+coverage was 97.3%, 96.3%, 95.05%, and 90.45%. Against the prior bounded head
+on those same images, partial coverage increased from 94.0% and full coverage
+increased from 87.2%. Mean pinball loss improved from `0.071729333` to
+`0.069618193`. The median bound rose from `2.255104303` mm to `2.495371342`
+mm, remaining inside the fixed 1.20 ratio limit and below the weighted constant
+baseline.
+
+Failure ordering also remained useful: grouped scene AUROC was `0.734116928`,
+the lowest-bound quartile had a 2.8% scene failure rate, and every conditional
+image AUROC exceeded 0.75. Outputs remained finite inside the frozen interval.
+
+This selects the obstruction-weighted head as a research metric feature. It
+does not establish calibrated millimetre uncertainty or runtime authority. The
+next increment may freeze one mapping-calibration and selection study on new
+populations, using this checkpoint with the existing specialist risk signal.
+All marginal, conditional, utility, and zero-above-tolerance gates remain in
+force before independent confirmation can be considered.
