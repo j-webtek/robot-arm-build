@@ -599,8 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-- AI lane / S1: persistent-case renderer/visual audit on feature/translation-pair-evidence; same-condition nearest-pose successful controls, no training or exclusions.
-
 
 
 
@@ -6628,3 +6626,71 @@ commissioning, or bounded physical result with its limitations intact.
 - Physical movements: 0
 - Limitations: Local plotting dependency absent; no visual conclusion.
 - Next dependency: install plotting dependency and rerun unchanged frozen script; preserve this failure.
+
+
+### E-20260926-AI-228 — visual audit environment recovery
+
+- Stage: S1
+- Lane: AI
+- Commit: `6270eb27847a7c42e3fae2af89d4d5db7ab03fc7` (frozen runner/plan;results and review committed with evidence)
+- Change: visual audit environment recovery.
+- Inputs/fixtures: AI-224 retained19persistent cases;nearest normalized-pose same-condition zero-failure controls,seed tie-break,with replacement. Exact source hashes in eval/persistent_visual_v0_plan.json;image/figure hashes in report.
+- Command: `python -m pip install matplotlib; python -m pip install numpy==1.26.3 matplotlib==3.9.4 contourpy==1.3.2`
+- Result: Initial install selected numpy2.5.3; restored original1.26.3 before evaluation,matplotlib3.9.4/contourpy1.3.2 installed.
+- Artifacts: eval/persistent_visual_v0_report.json;eval/persistent_visual_v0_page_1.png through page_4.png;docs/PERSISTENT_SCENE_REVIEW.md;tests/test_persistent_visual.py.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Local dependency change,not model training. Pip reports pre-existing datasets missing pyarrow; unrelated to renderer. AI-227 retained.
+- Supersedes: none;failed dependency attempt and all arm evidence retained.
+- Next dependency: Freeze RNG-preserving arm-line/ruler renderer ablations over all development cases; retain unmodified results,no training or qualification. Publish only AI branch feature/translation-pair-evidence to verified canonical j-webtek/tactevra remote.
+
+
+### E-20260926-AI-229 — persistent scene renderer and visual review
+
+- Stage: S1
+- Lane: AI
+- Commit: `6270eb27847a7c42e3fae2af89d4d5db7ab03fc7` (frozen runner/plan;results and review committed with evidence)
+- Change: persistent scene renderer and visual review.
+- Inputs/fixtures: AI-224 retained19persistent cases;nearest normalized-pose same-condition zero-failure controls,seed tie-break,with replacement. Exact source hashes in eval/persistent_visual_v0_plan.json;image/figure hashes in report.
+- Command: `python software/ai/vision/audit_persistent_visual.py`
+- Result: Completed unchanged frozen script.19failures/19matched control slots;cropped0/0,vector label error0px,foreground means2.6475%/0.8099%,fewer-than3corners1/0,pose-extreme3/2. Viewed all4 figure pages. Nearby arm-like lines/ruler clutter recur,including near-zero-overlap failures; causal sensitivity remains a hypothesis.
+- Artifacts: eval/persistent_visual_v0_report.json;eval/persistent_visual_v0_page_1.png through page_4.png;docs/PERSISTENT_SCENE_REVIEW.md;tests/test_persistent_visual.py.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Selected reused synthetic development,matched with replacement;no raster/physical label qualification. No exclusion or correction.
+- Supersedes: none;failed dependency attempt and all arm evidence retained.
+- Next dependency: Freeze RNG-preserving arm-line/ruler renderer ablations over all development cases; retain unmodified results,no training or qualification. Publish only AI branch feature/translation-pair-evidence to verified canonical j-webtek/tactevra remote.
+
+
+### E-20260926-AI-230 — visual review verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `6270eb27847a7c42e3fae2af89d4d5db7ab03fc7` (frozen runner/plan;results and review committed with evidence)
+- Change: visual review verification.
+- Inputs/fixtures: AI-224 retained19persistent cases;nearest normalized-pose same-condition zero-failure controls,seed tie-break,with replacement. Exact source hashes in eval/persistent_visual_v0_plan.json;image/figure hashes in report.
+- Command: `python -m pytest -q software/ai/tests/test_persistent_visual.py software/ai/tests/test_pose_diversity_long.py`
+- Result: PASS,3 tests: frozen hashes,figure identities,pair outcome/condition membership,geometry checks,and prior training-budget lineage after NumPy restoration. Existing pytest-asyncio warning.
+- Artifacts: eval/persistent_visual_v0_report.json;eval/persistent_visual_v0_page_1.png through page_4.png;docs/PERSISTENT_SCENE_REVIEW.md;tests/test_persistent_visual.py.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Implementation verification;batch unchanged,shared boundary suite not triggered.
+- Supersedes: none;failed dependency attempt and all arm evidence retained.
+- Next dependency: Freeze RNG-preserving arm-line/ruler renderer ablations over all development cases; retain unmodified results,no training or qualification. Publish only AI branch feature/translation-pair-evidence to verified canonical j-webtek/tactevra remote.
+
+
+### E-20260926-AI-231 — visual review publication audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `6270eb27847a7c42e3fae2af89d4d5db7ab03fc7` (frozen runner/plan;results and review committed with evidence)
+- Change: visual review publication audit.
+- Inputs/fixtures: AI-224 retained19persistent cases;nearest normalized-pose same-condition zero-failure controls,seed tie-break,with replacement. Exact source hashes in eval/persistent_visual_v0_plan.json;image/figure hashes in report.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS;6073paths,857.1MiB,0 unresolved findings,14 reviewed synthetic fixtures.
+- Artifacts: eval/persistent_visual_v0_report.json;eval/persistent_visual_v0_page_1.png through page_4.png;docs/PERSISTENT_SCENE_REVIEW.md;tests/test_persistent_visual.py.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic audit;AI-041 protected-main publication blocker retained.
+- Supersedes: none;failed dependency attempt and all arm evidence retained.
+- Next dependency: Freeze RNG-preserving arm-line/ruler renderer ablations over all development cases; retain unmodified results,no training or qualification. Publish only AI branch feature/translation-pair-evidence to verified canonical j-webtek/tactevra remote.
