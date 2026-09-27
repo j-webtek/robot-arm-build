@@ -83,6 +83,24 @@ def test_schema_and_strict_round_trip():
     assert parse_native_t102_read_only_endpoint_intake_v1(document) == original
 
 
+def test_retained_arm061_intake_is_strict_and_non_authorizing():
+    document = json.loads((
+        ROOT / "ai/eval/arm061_read_only_endpoint_intake.json"
+    ).read_text(encoding="utf-8"))
+    schema = json.loads((
+        ROOT / "ai/schemas/native_t102_read_only_endpoint_intake_v1.schema.json"
+    ).read_text(encoding="utf-8"))
+    jsonschema.Draft202012Validator(schema).validate(document)
+    parsed = parse_native_t102_read_only_endpoint_intake_v1(document)
+    assert parsed.intake_sha256 == document["intake_sha256"]
+    assert parsed.endpoint.endpoint_sha256 == document["endpoint_sha256"]
+    assert document["status"] == "READY_FOR_SEPARATE_READ_ONLY_AUTHORIZATION"
+    assert document["read_only_endpoint_authorized"] is False
+    assert document["endpoint_open_authorized"] is False
+    assert document["transport_write_count_limit"] == 0
+    assert document["movement_command_count_limit"] == 0
+
+
 @pytest.mark.parametrize("field,value", [
     ("transport_write_count_limit", 1),
     ("active_request_count_limit", 1),

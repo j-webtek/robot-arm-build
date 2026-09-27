@@ -3063,3 +3063,32 @@ rewriting history. New entries must use a unique evidence ID.
 - Next dependency: establish the exact physical host and endpoint identity,
   retain a matching intake under separate authorization, and obtain a new
   bounded authorization before the passive zero-write run.
+
+### E-20260927-ARM-061 — retained exact read-only endpoint intake
+
+- Stage: S4
+- Lane: ARM
+- Change: performed Windows PnP-only identity discovery and retained the first
+  real ARM-060 intake. The present CP210x controller matched the historically
+  documented COM7, VID `10C4`, PID `EA60`, and USB serial identity; separate
+  Bluetooth COM endpoints were excluded. The host is bound through a
+  pseudonymous SHA-256-derived identifier.
+- Artifact: `software/ai/eval/arm061_read_only_endpoint_intake.json`, intake
+  SHA-256
+  `2d88fa8874088ce47b778343ea0ed07994bafb64267b8cd121765c52536ce1d9`.
+  Schema validation and strict parsing recompute both endpoint and intake
+  hashes.
+- Evidence status: fresh Windows Plug-and-Play metadata plus the previously
+  documented physical endpoint identity. This is endpoint identity evidence,
+  not controller-protocol, firmware, telemetry, or pose evidence.
+- Endpoint opens: 0
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: inventory presence does not prove controller protocol identity,
+  firmware provenance, telemetry validity, or mechanical readiness. The intake
+  remains `READY_FOR_SEPARATE_READ_ONLY_AUTHORIZATION`; read-only endpoint,
+  startup, write, execution, hardware, and physical authority are false.
+- Supersedes: the missing exact host/endpoint intake artifact after ARM-060. It
+  does not supersede separate authorization or the passive qualification run.
+- Next dependency: obtain an explicit authorization naming the retained intake
+  hash before opening COM7 once for the bounded zero-write passive capture.

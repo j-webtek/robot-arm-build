@@ -54,3 +54,16 @@ Consequently ARM-060 can be built, parsed, tested, and reviewed entirely
 offline. A later operator authorization must name the exact retained intake
 before a distinct hardware-capable tool may perform the bounded passive run.
 That later run is not part of ARM-060, and movement remains out of scope.
+
+## Retained ARM-061 intake
+
+ARM-061 used Windows Plug-and-Play metadata without opening the serial endpoint.
+It found the already documented CP210x identity at COM7 and excluded the
+separate Bluetooth serial ports. The retained intake binds that endpoint to a
+pseudonymous SHA-256 host identity rather than publishing the Windows hostname.
+
+The retained file is
+`software/ai/eval/arm061_read_only_endpoint_intake.json`, with intake SHA-256
+`2d88fa8874088ce47b778343ea0ed07994bafb64267b8cd121765c52536ce1d9`.
+It remains non-authorizing. Creating and validating this record did not open
+COM7, start the controller, send bytes, or perform movement.

@@ -228,6 +228,15 @@ transport, execution, hardware, and physical authority remains false. No real
 intake is retained until the actual host and endpoint identity are established
 without guessing. The next dependency is a separately authorized creation of
 that exact intake and then a separately bounded passive qualification run.
+ARM-061 now retains the first exact intake after a fresh Windows PnP-only
+identity check found the historically documented CP210x controller on COM7 and
+distinguished it from the host's Bluetooth serial endpoints. The host name is
+represented by a SHA-256-derived pseudonymous identifier. Strict tests validate
+the retained artifact against the closed schema and recomputed endpoint/intake
+hashes. No serial open occurred. The next boundary is unchanged: a separate,
+explicit authorization must name intake
+`2d88fa8874088ce47b778343ea0ed07994bafb64267b8cd121765c52536ce1d9`
+before the one-open, zero-write passive qualification may run.
 
 ## Stage definitions
 
