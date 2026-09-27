@@ -2,7 +2,7 @@
   "schema": "tactevra.published-media-verification.v1",
   "recorded_on": "2026-09-27",
   "asset_revision_commit": "fd24bc3f455b5f1736fc5955beffe0a8c20f9649",
-  "source_pull_request": "https://github.com/j-webtek/tactevra/pull/118",
+  "source_pull_request": "https://github.com/j-webtek/tactevra/pull/122",
   "authority": {
     "path": "presentations/blender/dimension_manifest.json",
     "size_bytes": 2272,

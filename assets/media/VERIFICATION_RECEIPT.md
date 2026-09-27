@@ -5,7 +5,7 @@
 
 The current overview-media revision was produced from commit
 `fd24bc3f455b5f1736fc5955beffe0a8c20f9649` through
-[pull request #118](https://github.com/j-webtek/tactevra/pull/118). The
+[pull request #122](https://github.com/j-webtek/tactevra/pull/122). The
 machine-readable [verification receipt](verification_receipt.json) binds the
 committed media files to exact byte sizes and SHA-256 digests and records the
 authority manifest used by the documented scene builder.
