@@ -153,3 +153,35 @@ based on additional heads or comparisons over this single representation and
 uncertainty-training set and genuinely diverse compact pose models. Their
 dispersion must first demonstrate useful grouped training-only failure ranking;
 new calibration and confirmation data should not be allocated before that gate.
+
+## Diverse compact pose ensemble
+
+Two independently initialized compact models were trained from scratch on a
+new 36M cohort containing 1,600 grouped scenes and 12,800 rendered images. A
+172,331-parameter SiLU convolutional network and an 82,763-parameter depthwise
+separable network use different feature extractors from the frozen candidate.
+The fixed 12-epoch schedules and all acceptance criteria were committed before
+training. A disjoint 400-scene, 3,200-image development cohort was used once.
+
+The study failed its fixed composite rule. Maximum pairwise target displacement
+had scene tail AUROC 0.646260, below the required 0.70. At 25% retention it kept
+6 failing scenes among 100 (6.0%), which did not meet the required 50% reduction
+from the overall 11.25% scene failure rate. At 50% retention it kept 15 failures
+among 200 (7.5%) and passed that relative reduction check. The lowest 10% did
+contain zero failures among 40 scenes, but that descriptive subset was not a
+registered independent confirmation result and cannot be promoted into a gate.
+
+Both new members also exceeded the fixed two-times-candidate mean-error limit
+under appearance shift: 1.676510 mm and 1.913844 mm versus 0.831711 mm for the
+candidate. The remaining condition checks passed. This confirms that a diverse
+ensemble can expose some useful ranking signal, while the tested members are
+not accurate or stable enough to support calibrated uncertainty or runtime
+admission.
+
+The 36,001,600 through 36,001,999 development scenes are now consumed for this
+decision and must not be used to tune another schedule, architecture, threshold,
+or acceptance rule. The next bounded step should improve diverse member accuracy
+and appearance robustness using a newly allocated training/selection cohort,
+then test the frozen replacement once on a fresh grouped development cohort.
+No calibration or confirmation population should be allocated until that fresh
+study passes its preregistered failure-ranking and member-quality requirements.

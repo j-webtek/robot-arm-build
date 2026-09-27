@@ -599,13 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-- AI lane / S1: train two independently initialized compact pose architectures
-  on a new obstruction-rich 36M training cohort and evaluate ensemble
-  disagreement on a disjoint 36M development cohort; no calibration/runtime or
-  arm changes.
-
-
-
 
 
 
@@ -8374,3 +8367,50 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic snapshot before final ledger append; not model or physical assurance. No arm or integration status changes.
 - Supersedes: none.
 - Next dependency: Same as AI-328.
+
+
+### E-20260927-AI-331 — diverse compact pose ensemble study
+
+- Stage: S1
+- Lane: AI
+- Commit: `cb22df8c3a2f7d1dc7c54b287a6a8ec3eebcd7a6` (architectures, populations, schedules, acceptance rule, source, and plan frozen before rendering or fitting; report, tests, and documentation committed in the successor)
+- Inputs/fixtures: New training scenes `36000000..36001599` and disjoint development scenes `36001600..36001999`, rectangle and ellipse styles, and standard, appearance-shift, partial-obstruction, and full-obstruction conditions: 12,800 training images and 3,200 development images. Training pixel SHA256 `11b81f3dbd1c38e48ab57e2aac91870de80f17e3a091d97fd004cb9fad5aac5e`; development pixel SHA256 `840580d70cb5570188ab1727d43c30ae7c55ea9edecc894cab29a492222a159a`; frozen candidate SHA256 `c9f4ef6d8f9e50317a917154fccacce46506ab2e7cde8267396e28fec156147b`; plan SHA256 `2d6838e1820a34c3cb3ff5dab2a13701df0cddb0d13801b3c18f791a3d7fc0c8`; report SHA256 `161a077d71f3f9497dc2023fe7ef480317ce8756cba196ab36e56c5d5262db03`. The 172,331-parameter SiLU and 82,763-parameter separable models used fixed seeds, 12 epochs, and 2,400 total optimizer updates; checkpoint and prediction hashes are retained in the report.
+- Command: `python software/ai/train/train_diverse_pose_ensemble.py`
+- Result: FAIL fixed composite rule. Scene tail AUROC is `0.646260` versus required `0.70`. Overall development scene failure is `45/400` (11.25%); lowest-disagreement 10% has `0/40`, 25% has `6/100` (6.0%) and fails its <=5.625% requirement, and 50% has `15/200` (7.5%) and passes its <=8.4375% requirement. Both new members fail only the appearance-shift mean-error check: SiLU `1.676510` mm and separable `1.913844` mm versus candidate `0.831711` mm. No registered gate passes because the composite decision is false.
+- Artifacts: `vision/diverse_pose_models.py`; `train/train_diverse_pose_ensemble.py`; `train/diverse_pose_ensemble_v1_plan.json`; `eval/diverse_pose_ensemble_v1_report.json`; ignored local checkpoints under `results/diverse_pose_ensemble_v1_*`; `tests/test_diverse_pose_ensemble.py`; `docs/IMAGE_DEPENDENT_UNCERTAINTY.md`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Two pose fits on a synthetic renderer, one fixed seed per architecture, CUDA training with possible nondeterminism, and one development cohort used for the decision. The zero-failure 10% subset is descriptive and not independent confirmation. Dispersion is uncalibrated. There is no threshold, export, runtime installation, physical-camera qualification, or motion authority. ModelMotionBatchV2 and arm/integration statuses are unchanged.
+- Supersedes: none; correlated-disagreement, learned-head, and zero-utility calibration failures remain preserved.
+- Next dependency: Do not tune against the consumed 36M development rows or allocate calibration data. Improve diverse-member appearance robustness on a newly allocated training/selection cohort, freeze the resulting architecture and schedule, then evaluate it once on fresh grouped development evidence with preregistered ranking and member-quality requirements.
+
+
+### E-20260927-AI-332 — diverse ensemble verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `cb22df8c3a2f7d1dc7c54b287a6a8ec3eebcd7a6` (frozen experiment source; tests and documentation committed in the successor)
+- Inputs/fixtures: Same 12,800 training images, 3,200 development images, frozen candidate, plan, checkpoints, and report as AI-331; exact hashes are retained there and in the generated report.
+- Command: `python -m pytest -q software/ai/tests/test_diverse_pose_ensemble.py`
+- Result: PASS: 3 tests in 1.78s. Tests verify both architecture parameter counts and strict inputs, pairwise target-displacement geometry, frozen hashes, exact scene populations, training history and optimizer counts, candidate metric recounts, scene aggregation and ranking, every fixed acceptance check, the failed composite decision, and zero hardware or physical authority.
+- Artifacts: `tests/test_diverse_pose_ensemble.py`; `eval/diverse_pose_ensemble_v1_report.json`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Existing pytest-asyncio configuration warning. Verification establishes internal reproducibility, not accuracy, calibration, or physical assurance. Contract unchanged, so shared boundary tests were not triggered.
+- Supersedes: none.
+- Next dependency: Same as AI-331.
+
+### E-20260927-AI-333 — diverse ensemble snapshot review
+
+- Stage: S1
+- Lane: AI
+- Commit: `cb22df8c3a2f7d1dc7c54b287a6a8ec3eebcd7a6` (frozen experiment source; final ledger append in successor)
+- Inputs/fixtures: Repository snapshot containing the frozen diverse-ensemble source, generated report, verification tests, and interpretation; exact hashes recorded in AI-331.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS: 6,258 paths, 914.0 MiB, 0 unresolved review findings, 14 reviewed synthetic fixtures.
+- Artifacts: `eval/diverse_pose_ensemble_v1_report.json`; `tests/test_diverse_pose_ensemble.py`; `docs/IMAGE_DEPENDENT_UNCERTAINTY.md`; shared evidence ledger.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic repository review before the final ledger append; not model, runtime, or physical assurance. No arm or integration status changes.
+- Supersedes: none.
+- Next dependency: Same as AI-331.
