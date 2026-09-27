@@ -599,21 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-- AI lane / S1: train a localized multi-scale obstruction classifier on new
-  46M scenes and test the unchanged combined uncertainty rule on disjoint 47M
-  mapping-calibration and 48M selection cohorts; no runtime, contract, or arm
-  changes.
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -8659,3 +8644,48 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic repository review; not model, runtime, or physical assurance. No arm or integration status changes.
 - Supersedes: none.
 - Next dependency: Same as AI-346.
+
+### E-20260927-AI-349 — localized multi-scale obstruction-scale study
+
+- Stage: S1
+- Lane: AI
+- Commit: `6f4510a513bb02750c326e394401c3ae6c399def` (architecture, training recipe, cohorts, fixed scale, thresholds, source, and plan frozen before training; report, checkpoint, tests, and documentation committed in the successor)
+- Inputs/fixtures: Training scenes `46000000..46001999` (16,000 raw images), mapping-calibration scenes `47000000..47000999`, and selection scenes `48000000..48000999` (8,000 images each). Training pixel SHA256 `133e6028663a2097829c174017c0523b5269a58a675ad88812ac3bebeed4f124`, label SHA256 `fcc0c7ad06ec8e99b61072e8c255520fbde97b126c87a3655fe4912ac7940404`, and weight SHA256 `307797f0af6ce029cddf368d67043a7a864592976bcc7345f96bcc43e75354b3`; mapping raw-pixel SHA256 `b152169730b3cca7fabd38d33d86c890de8803a2fe97c492857a08e250ca9a90`; selection raw-pixel SHA256 `d9564dfeee96d082ce3523336742c6ccb9696753aa4b39e8746410786fd53475`; plan SHA256 `5f479b9d1f8a5edfd1bcd2ff027a31eeefc1d09591f1e2be244b09f4e4e44d4d`; report SHA256 `d40396a5cfbb66aa200f6c400b7ae560dfb3d5d8538e64f32d6a5d2f4fb24e78`; 34,381-parameter checkpoint SHA256 `96cc444276e9d9f35d0ed722891dc3eab2a7a1502960ed36df18ce17236200d9`. Pose and obstruction prediction hashes are retained in the report.
+- Command: `python software/ai/train/train_multiscale_obstruction_scale.py`
+- Result: FAIL fixed composite rule after one classifier fit, one rank-991 calibration, and 3,000 optimizer updates. The classifier passes: AUROC `0.995723625`, obstruction recall `0.97875`, and clean false-positive rate `0.013`. The quantile is `1.7034787433390106`. Selection scene coverage is 98.3%; utility is `1572/8000` (19.65%); accepted-image coverage is 98.6641%; accepted-scene coverage is 98.0322%; and zero accepted errors exceed 3 mm. Partial/full utility fails at `7/2000` and `5/2000`; full accepted-image coverage is `4/5`. Standard and appearance accepted coverage also miss 99%. No scale or qualification selected.
+- Artifacts: `vision/multiscale_obstruction_model.py`; `train/train_multiscale_obstruction_scale.py`; `train/multiscale_obstruction_scale_v1_plan.json`; `eval/multiscale_obstruction_scale_v1_report.json`; `results/multiscale_obstruction_scale_v1/model.pt`; `tests/test_multiscale_obstruction_scale.py`; `docs/IMAGE_DEPENDENT_UNCERTAINTY.md`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Synthetic training-selection evidence, one seed, and no fresh confirmation or physical-camera claim. The retained checkpoint is a research input only. No mapping promotion, runtime installation, physical qualification, or motion authority. ModelMotionBatchV2 and arm/integration statuses are unchanged.
+- Supersedes: none; the earlier classifier and every failed uncertainty mapping remain preserved.
+- Next dependency: Freeze a small family of probability/disagreement mappings or acceptance rules, keep this classifier checkpoint fixed, and make one selection on new grouped mapping-calibration and selection cohorts. Retain all conditional coverage, utility, and 3 mm rules before allocating confirmation evidence.
+
+### E-20260927-AI-350 — localized multi-scale obstruction verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `6f4510a513bb02750c326e394401c3ae6c399def` (frozen study source; tests and documentation committed in the successor)
+- Inputs/fixtures: Same 32,000 images, frozen pose models, compact classifier, plan, and report as AI-349; exact hashes are recorded there and in the report.
+- Command: `python -m pytest -q software/ai/tests/test_multiscale_obstruction_scale.py`
+- Result: PASS: 2 tests in 1.81s. Tests verify the strict compact architecture, frozen lineage, exact grouped populations, scale floor, classifier checks, every composite decision check, the failed selection, and zero hardware or physical authority.
+- Artifacts: `tests/test_multiscale_obstruction_scale.py`; `eval/multiscale_obstruction_scale_v1_report.json`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Existing pytest-asyncio configuration warning. Recount consistency only; no physical assurance. Contract unchanged, so shared boundary tests were not triggered.
+- Supersedes: none.
+- Next dependency: Same as AI-349.
+
+### E-20260927-AI-351 — localized multi-scale snapshot review
+
+- Stage: S1
+- Lane: AI
+- Commit: `6f4510a513bb02750c326e394401c3ae6c399def` (frozen study source; final ledger append in successor)
+- Inputs/fixtures: Repository snapshot containing the frozen study, generated report, retained research checkpoint, tests, interpretation, and shared evidence ledger; exact hashes recorded in AI-349.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS: 6,286 paths, 939.3 MiB, 0 unresolved review findings, 14 reviewed synthetic fixtures.
+- Artifacts: multi-scale plan/report/checkpoint; verification test; uncertainty documentation; shared ledger.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic repository review before final ledger append; not model, runtime, or physical assurance. No arm or integration status changes.
+- Supersedes: none.
+- Next dependency: Same as AI-349.

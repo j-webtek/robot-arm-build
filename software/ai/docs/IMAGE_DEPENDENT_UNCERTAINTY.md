@@ -300,3 +300,30 @@ above-tolerance accepted errors, but the tested classifier is not reliable
 enough for promotion. The next training-only study should improve full-
 obstruction recall with localized or multi-scale features and require the same
 strict classifier and conditional-coverage checks on fresh selection evidence.
+
+## Localized multi-scale obstruction signal
+
+A compact 34,381-parameter network retained spatial features longer and pooled
+both their average and maximum. It was trained on 16,000 new 46M images with
+extra loss weight for partial and full obstruction. The image-only classifier
+passed every registered classifier check on the disjoint 48M selection cohort:
+AUROC was 0.995724, obstruction recall was 0.97875, and the clean false-positive
+rate was 0.013.
+
+The unchanged `max(disagreement, 1 mm) * (1 + probability)` scale still failed.
+Its rank-991 quantile from 1,000 independent 47M scenes was 1.703479. On 1,000
+48M selection scenes, marginal scene coverage was 98.3%, accepted utility was
+1,572/8,000 (19.65%), accepted-image coverage was 98.6641%, and accepted-scene
+coverage was 98.0322%. It accepted no error over 3 mm, but accepted only 7
+partial and 5 full obstruction images. Full-obstruction accepted-image coverage
+was 4/5. Standard and appearance accepted-subset coverage also missed 99%.
+
+The classifier checkpoint is retained only as a reproducible research input.
+It has no runtime, calibration, physical, or motion authority. These results
+separate the next problem: the obstruction detector is effective, while the
+fixed multiplicative mapping does not allocate useful uncertainty across clean
+and obstructed images. The next bounded study should freeze a small family of
+mappings or acceptance rules using the frozen classifier probability and pose
+disagreement, select once on new grouped cohorts, and preserve the same
+conditional coverage, utility, and 3 mm requirements. The classifier should not
+be retrained or selected again in that study.
