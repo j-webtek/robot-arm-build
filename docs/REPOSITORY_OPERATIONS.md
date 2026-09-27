@@ -140,6 +140,39 @@ behavioral risk. Optional serial/vision features are not fully exercised by the
 portable matrix. Do not widen a version bound merely to make a bot PR mergeable.
 Close or defer with an explanation if compatibility is not established.
 
+Treat a lower-bound-only proposal according to why the floor would change:
+
+- **Routine latest-version proposal:** if the existing range already admits the
+  proposed release, close the PR unless a documented compatibility baseline or
+  required capability justifies removing older environments.
+- **Security-driven proposal:** verify the upstream advisory and whether the
+  repository uses the affected feature. A security release can justify a higher
+  minimum, but the affected component must still receive a focused compatibility
+  check. Generic green checks are not evidence for a component they do not install
+  or execute.
+- **Unexercised optional tooling:** hold the PR with `needs-owner-review` and a
+  precise evidence request. Do not represent dependency resolution, import
+  success, or unrelated CI as behavior qualification.
+
+For example, the protected offline matrix does not install
+`active-project/RoCell_v0_3/requirements-cad.txt` or render the RC03 assembly
+manual. A WeasyPrint floor change therefore requires an isolated install, an
+actual Markdown-to-PDF render, basic PDF integrity checks, and representative
+page review before merge. Record failed qualification attempts as inconclusive;
+an unavailable package index is not compatibility evidence.
+
+### September 27, 2026 RC03 first-run triage
+
+The first active-RC03 Dependabot run completed successfully and opened two
+minimum-version proposals. [PR #94](https://github.com/j-webtek/tactevra/pull/94)
+was closed because the existing Beautiful Soup range already admitted the
+proposed release and no new minimum was justified.
+[PR #93](https://github.com/j-webtek/tactevra/pull/93) remains held for focused
+review because WeasyPrint 70 is identified upstream as a security release, while
+the current protected matrix does not exercise the RC03 PDF generator. This
+triage confirms that the monitor is operating; it does not qualify either
+dependency or the RC03 toolchain.
+
 ### September 26, 2026 dependency review
 
 The maintainer approved proceeding with review of PRs
