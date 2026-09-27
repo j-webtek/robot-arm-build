@@ -599,6 +599,8 @@ Copy this row and fill every field:
 
 ## Active work claims
 
+- AI lane / S1: predicted-mask residual architecture feasibility; paired constant-mask control, exact baseline initialization, frozen features/head, image-only export and CPU cost. No fitting, contract or arm-status changes.
+
 
 
 
