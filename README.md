@@ -58,14 +58,19 @@ shared test using synthetic evidence. Supervised noncontact arm movements are
 also documented in the lab records.
 
 The repository now also carries a shared model/arm conformance profile and an
-operational-readiness gate. These make compatibility expectations and missing
-evidence explicit before arm execution is considered. They are software control
-boundaries, not permission to move hardware and not evidence of physical typing.
+operational-readiness gate. A merged precision adapter can now turn pinned pose
+output into the same V2 batch consumed by the arm lane while preserving repeated
+targets and abstaining on invalid evidence. Its current 14.400834977 mm
+synthetic uncertainty bound is too large for ordinary key safe regions, so it is
+not deployment-qualified. These are software control boundaries, not permission
+to move hardware and not evidence of physical typing.
 
 These are separate research results, not an end-to-end autonomous product.
 The project has not demonstrated a camera-to-arm workflow that reliably types
 on a physical keyboard or operates a phone. Measured calibration, tool geometry,
-contact behavior, and confirmation of actual device input remain open.
+final-camera localization, contact behavior, and confirmation of actual device
+input remain open. The next high-value test is fixed-camera measured calibration
+and held-out localization—not another broad ghost-motion sequence.
 
 Read [project status](PROJECT_STATUS.md) for the checkpoint, evidence, and
 next steps. Simulation results, servo feedback, and measured tip accuracy

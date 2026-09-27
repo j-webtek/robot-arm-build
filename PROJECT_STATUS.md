@@ -1,18 +1,18 @@
 # Tactevra project status
 
 Reviewed September 27, 2026 through the ARM-073 retained camera/support binding
-adapter on merged `main`.
+adapter and AI-403 precision-adapter integration on merged `main`.
 Unmerged workstream branches are not included in this summary.
 This is a capability summary for readers; the
 [shared workplan](software/ai/docs/SHARED_AI_ARM_WORKPLAN.md) retains current
 stage ownership, while the [evidence ledger](software/ai/docs/EVIDENCE_LEDGER.md)
 preserves detailed test records as development continues.
 
-Protected `main` also carries the shared model/arm conformance profile and
-operational-readiness gate from PRs #115 and #119. Those controls formalize
-software compatibility and evidence requirements but add no physical
-observation. The ARM-073 marker above advances only because the evidence ledger
-now records the retained camera/support binding adapter from PR #120.
+Protected `main` also carries the shared model/arm conformance profile,
+operational-readiness gate, retained camera/support binding adapter, and the
+mainline precision adapter from PRs #115, #119, #120, and #126. These controls
+formalize software compatibility and evidence requirements but add no physical
+observation or movement authority.
 
 Tactevra (formerly RoCell) is an experimental robot workcell intended to carry out keyboard and phone
 tasks from a person's text request. You can explore the software and run offline
@@ -52,7 +52,7 @@ completed capabilities.
 | Keyboard localization | KeyboardPoseNet trained on synthetic images | Candidate keyboard poses and key coordinates can be evaluated offline; real-camera accuracy remains unqualified |
 | AI-to-arm interface | V2 batch assembler, strict decoder, registry snapshot, and freshness checks | Actual assembler output passes shared software tests with synthetic evidence, preserving action order and rejecting tested invalid inputs |
 | Model/arm compatibility | Shared conformance profile and operational-readiness gate | Software can reject tested incompatibilities and incomplete evidence before execution; a pass does not authorize movement or qualify a physical setup |
-| Precision evidence | Identity and capture-receipt binding helpers | These establish software checks, not a qualified real-camera observation; authenticated capture and usable localization confidence remain open |
+| Precision evidence | Pose-output adapter, deterministic V2 batch producer, identity/capture bindings, and compact held-out synthetic evaluation | The adapter preserves repeated targets and fails closed on invalid qualification, domain, freshness, confidence, identity, or containment; its 14.400834977 mm synthetic bound crosses ordinary key safe regions, so deployment qualification remains uninstalled |
 | Arm planning adapter | Admitted v2 proposals enter the arm-owned measured planning policy | The tested valid input reaches the planner but stops for missing or stale calibration; no trajectory or controller command is produced |
 | Installed collision evidence | Strict measured profiles bind body geometry and clearance policy to the manifest, build, model, and base collision contract | The measured trajectory screener can consume this profile without falling back to nominal geometry, but continuous full-body sweep remains unimplemented and release stays blocked |
 | Conservative route collision evaluation | Robot poses are FK-derived at bounded samples; rigid motion is enclosed by URDF-derived margins, each adjacent pair requires a profile-bound cable envelope, and one exact contact allowance can be bound to a sealed no-write envelope | Synthetic fixtures test clear, collision, crossed-identity, contact-policy, and resource cases; installed engineering evidence and physical qualification still block release |
@@ -197,6 +197,16 @@ canonical binding order before constructing ARM-070 inputs. It eliminates
 manual transcription but does not create any missing observation, decide model
 accuracy, advance the epoch, or grant hardware authority.
 
+AI-403 then integrates the pose-output precision adapter and actual V2 batch
+producer on current `main`. The retained contract fixture deterministically
+preserves `H,H,1,PERIOD`, while invalid qualification, domain, freshness,
+identity, confidence, and containment paths abstain. Its disjoint 2,000-case
+calibration and 2,000-case held-out synthetic evaluation measured 0.9975
+coverage at a declared 0.99. The conservative planar bound is nevertheless
+14.400834977 mm, which crosses ordinary key safe regions. The candidate remains
+`SYNTHETIC_OFFLINE_ONLY`, is not installed for deployment, and grants no
+controller or physical authority.
+
 Repository improvements include protected-main CI, support and private security
 reporting, contributor handoff templates, reviewed dependency updates, and an
 experimental source-release checklist. CI now exposes resolved package versions
@@ -209,10 +219,11 @@ certification. See [test tiers](docs/CI.md) for clean-checkout limits.
 ## What still needs work
 
 The main gap is connecting trustworthy perception to physical execution. The
-current v2 assembler consumes supplied observations. The precision preflight
-does not yet produce a complete qualified batch from a real camera capture.
-The trusted registry is an in-process snapshot; creating it does not establish
-the provenance of the measurements it contains.
+current v2 assembler can consume output from the merged precision adapter, but
+the retained qualification is synthetic and intentionally uninstalled. The
+system does not yet produce a deployment-qualified batch from a final-camera
+capture. The trusted registry is an in-process snapshot; creating it does not
+establish the provenance of the measurements it contains.
 
 Before physical typing can be demonstrated, the system needs measured camera,
 board, device, robot and tool relationships; qualified localization and confidence;
@@ -223,8 +234,13 @@ demonstrate an operating dialer or completed call.
 
 ## Current development direction
 
-The AI lane needs independent evaluation of the localization candidate and
-separate confidence qualification, alongside capture provenance. The arm lane
+The highest-value next test is a fixed final-camera measurement campaign, not
+another broad ghost-motion routine. It must retain the four camera/support
+originals, measure camera-to-board, board-to-robot, keyboard-to-board, and
+tool-to-joint transforms, and evaluate the merged adapter on disjoint real
+captures. Deployment can advance only when the combined perception,
+calibration, tracking, and tool uncertainty fits inside each applicable target's
+safe-region margin. The arm lane
 has merged the offline r97 firmware candidate and the owner's explicitly
 non-independent AI-review decision. The reproducible `software_build` evidence
 is now ready, and the `camera_support_optics` intake is implemented but blocked
@@ -235,10 +251,11 @@ that the device is running r97.
 The existing r96 application remains incompatible with that production interface;
 closing paperwork alone will not add the missing command handlers. Both use the same
 [AI/arm workplan](software/ai/docs/SHARED_AI_ARM_WORKPLAN.md).
-The next shared milestone is a complete offline path from user text and visual
-evidence to a checked movement plan. Further physical qualification is tracked
-separately. Stylus loading and additional ghost routines are retained as specific
-lab procedures, rather than the general next step for every reader.
+The next shared milestone is a measured final-camera observation that survives
+the existing model-to-arm gates and reaches checked planning without synthetic
+promotion. Further physical qualification is tracked separately. Stylus loading
+and additional ghost routines are retained as specific lab procedures, rather
+than the general next step for every reader.
 
 ## How to interpret results
 
