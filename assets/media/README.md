@@ -8,7 +8,13 @@ repository README:
 - `tactevra-overview.en.vtt` — English WebVTT sidecar for players and future
   web surfaces that support external caption tracks;
 - `tactevra-overview-poster.jpg` — lightweight linked preview for GitHub and
-  clients that do not render an inline video player.
+clients that do not render an inline video player.
+
+The README poster opens the project player at
+`https://j-webtek.github.io/tactevra/`. GitHub's repository file viewer does not
+reliably preview MP4 files on mobile, so the Pages player is the supported
+playback surface. It serves the same checked-in assets with the correct media
+type, native controls, inline mobile playback, and a WebVTT caption selector.
 
 The MP4 subtitle stream is optional rather than burned into the image. Viewers
 can enable it in a compatible player, and future translations can be added as
