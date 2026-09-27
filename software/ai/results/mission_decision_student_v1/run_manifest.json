@@ -1,0 +1,53 @@
+{
+  "base_repo": "meta-llama/Llama-3.2-1B-Instruct",
+  "base_revision": "9213176726f574b556790deb65791e0c5aa438b6",
+  "confirmation_read": false,
+  "hardware_writes": 0,
+  "history": [
+    {
+      "adapter_sha256": "a2abec75b0e338fe655e4a6094dfe66e1e25dd338e38a886e01f04027e570e61",
+      "epoch": 1,
+      "train_loss": 1.1742351932858583,
+      "validation_loss": 0.07562797703430987
+    },
+    {
+      "adapter_sha256": "c27bee6791d52af135550a8b8834d0df71093d6643d3552ab72dda7ab3b2aa1f",
+      "epoch": 2,
+      "train_loss": 0.020368261492694727,
+      "validation_loss": 0.026450272864167346
+    }
+  ],
+  "limitations": [
+    "Agent-authored templated development labels without independent human labels.",
+    "Checkpoint selection requires frozen structured validation scorecards.",
+    "No confirmation fixture exists or is read during fit or selection.",
+    "LoRA training grants no runtime, motion, or physical authority."
+  ],
+  "model_fits": 1,
+  "optimizer_updates": 80,
+  "physical_movements": 0,
+  "plan_sha256": "32abd9da37b8a3eece7a2d39abcd9ff71322d5e2e467dfe1a5f0fbdbc26c37df",
+  "prompt_sha256": "15a51a8deb032cde003893ee78cd4289aae586db3bbbc5f6fb79d4f10285b708",
+  "sampler": {
+    "kind": "inverse_frequency_weighted_replacement",
+    "num_samples_per_epoch": 1280,
+    "weights": {
+      "clarify.device_ambiguous": 1.4285714285714286,
+      "clarify.intent_ambiguous": 1.4285714285714286,
+      "clarify.payload_ambiguous": 1.4285714285714286,
+      "execute.keyboard": 0.47619047619047616,
+      "execute.phone": 0.7142857142857143,
+      "unsupported.phone_call": 1.4285714285714286,
+      "unsupported.shifted_keyboard_text": 1.4285714285714286
+    }
+  },
+  "schema": "rocell.mission_decision_training.v1",
+  "selection_pending": true,
+  "train_sha256": "408ae1f33ddf0a4c1c3ddd825a49540b72b8e7080e2abec6bedfd883da343dbd",
+  "validation_sha256": "cd13604a21e1cbcb1b9f2b3c3f48857745e4b0e055e877f08a68e7ddcb88cd46",
+  "versions": {
+    "peft": "0.19.1",
+    "torch": "2.5.1+cu124",
+    "transformers": "4.47.0"
+  }
+}

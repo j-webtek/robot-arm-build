@@ -9893,3 +9893,48 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: The frozen development data remain agent-authored templates with simulated review. Inverse-frequency sampling balances expected class exposure but creates no new language diversity. Compiler-backed scoring proves semantic boundary behavior only and cannot establish localization, contact, arm motion, or physical task success. Adapter weights and Ollama blobs remain outside Git. No qualification, arm-lane, or integration status changed.
 - Supersedes: none; failed full-object student evidence remains preserved.
 - Next dependency: Commit this freeze before fitting. Then execute exactly one two-epoch weighted development fit, import each checkpoint under a unique local Ollama tag, generate and score the frozen validation split once per epoch, apply the frozen selector, and create no confirmation fixture unless the selected checkpoint passes every development gate.
+
+### E-20260927-AI-433 — compact decision score command environment failure
+
+- Stage: S1
+- Lane: AI
+- Commit: `6da9a76b2bf2e2d1e3908e99638d5be9be09d6b5` (frozen compact study; failed command evidence and correction committed in the successor)
+- Inputs/fixtures: Immutable 320-row validation predictions SHA-256 `cd44a9c8d30b52a08b2b1586e050e2b806a534154a5959b48c4c18a2121b8ca4` and `5a1aafbb15ea35ab0fde36c1c135e99ef87288e23f47dc253377306798823b5a`; frozen evaluator and plan SHA-256 `32abd9da37b8a3eece7a2d39abcd9ff71322d5e2e467dfe1a5f0fbdbc26c37df`.
+- Command: `python -m rocell_ai.mission_decision_eval --cases data/mission_decision_curriculum_v1_validation.jsonl --predictions results/mission_decision_student_v1/validation_epoch_1_predictions.jsonl --manifest data/mission_decision_curriculum_v1.manifest.json --split validation --plan train/mission_decision_student_v1_plan.json --output results/mission_decision_student_v1/validation_epoch_1_scorecard.json`; identical epoch-2 command, both from `software/ai` without `software/src` on `PYTHONPATH`.
+- Result: FAIL before scoring or output writes: both commands raised `ModuleNotFoundError: No module named 'rocell'` while importing the existing compiler dependency. Prediction bytes, evaluator source, frozen plan, thresholds, and semantics were unchanged. No scorecard existed after the failed attempt.
+- Artifacts: preserved immutable prediction files; this ledger row.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Shell module-path configuration failure only; no semantic result. GPU model inference had already completed, but the failure neither evaluated nor modified it. No confirmation, qualification, arm, or integration status change.
+- Supersedes: none; this failed command remains preserved.
+- Next dependency: Set `PYTHONPATH=..\\src` for the evaluation shell and rerun the identical frozen evaluator against the unchanged prediction bytes.
+
+### E-20260927-AI-434 — compact result test collection environment failure
+
+- Stage: S1
+- Lane: AI
+- Commit: `6da9a76b2bf2e2d1e3908e99638d5be9be09d6b5` (frozen compact study; failed command evidence and corrected verification committed in the successor)
+- Inputs/fixtures: Completed immutable compact fit, prediction, scorecard, and selection artifacts from the frozen study; new hash-and-recount result test.
+- Command: `python -m pytest software/ai/tests/test_mission_decision_student_source.py software/ai/tests/test_mission_decision_student_result.py -q; git diff --check` from repository root.
+- Result: FAIL during collection before any assertion: `ModuleNotFoundError: No module named 'rocell_ai'`. The repository-root invocation did not place `software/ai` on Python's import path. `git diff --check` passed. No result artifact, test expectation, frozen source, or score changed.
+- Artifacts: unchanged result artifacts and `tests/test_mission_decision_student_result.py`; this ledger row.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Test invocation path failure only; no new semantic or model evidence. No confirmation, qualification, arm, or integration status change.
+- Supersedes: none; this failed test collection remains preserved.
+- Next dependency: Run `python -m pytest tests/test_mission_decision_student_source.py tests/test_mission_decision_student_result.py -q` from `software/ai`, matching the already verified source-test environment.
+
+### E-20260927-AI-435 — weighted compact student development rejection
+
+- Stage: S1
+- Lane: AI
+- Commit: `6da9a76b2bf2e2d1e3908e99638d5be9be09d6b5` (frozen compact study; fit, failed command, corrected validation, selection, verification, and ledger committed in the successor)
+- Inputs/fixtures: Plan SHA-256 `32abd9da37b8a3eece7a2d39abcd9ff71322d5e2e467dfe1a5f0fbdbc26c37df`; pinned base digest `6319184583b7d9d76f7506bfe9cdba1832f147486129527a33c157c62845d046`; compact 1,280/320 train/validation SHA-256 `408ae1f33ddf0a4c1c3ddd825a49540b72b8e7080e2abec6bedfd883da343dbd` / `cd13604a21e1cbcb1b9f2b3c3f48857745e4b0e055e877f08a68e7ddcb88cd46`; epoch 1/2 adapter SHA-256 `a2abec75b0e338fe655e4a6094dfe66e1e25dd338e38a886e01f04027e570e61` / `c27bee6791d52af135550a8b8834d0df71093d6643d3552ab72dda7ab3b2aa1f`; imported model digests `be412a800bbadb45937c20985913d3be1e588e70ef17a3314d0d89fc622ff1f1` / `22f80c2c3a5ace8b575863c0e37a6119029a98bc5e39829dd691b0f71ca0329d`; prediction SHA-256 `cd44a9c8d30b52a08b2b1586e050e2b806a534154a5959b48c4c18a2121b8ca4` / `5a1aafbb15ea35ab0fde36c1c135e99ef87288e23f47dc253377306798823b5a`; scorecard SHA-256 `1aa4bd1d7e250710d602167e7095772a67016c3240f216f21936075fbca76469` / `dba226ee11e03661f2f1ddae05aeb8967d441ff9c0cd45f8f93996d52d8a2ae4`; selection SHA-256 `c24945d00b78eb0c44fb4dc75de7c6f20188db7ddc49ba05cd9ed05abcb55c72`.
+- Command: `python software/ai/train/train_mission_decision_student_v1.py --output software/ai/results/mission_decision_student_v1 --device cuda:0`; `python software/ai/train/import_adapter.py` once for each epoch; `python -m rocell_ai.mission_decision_ollama` once per epoch over the frozen validation split; `$env:PYTHONPATH = '..\\src'; python -m rocell_ai.mission_decision_eval` once per unchanged prediction file; `python software/ai/train/select_mission_decision_student_v1.py --results software/ai/results/mission_decision_student_v1 --plan software/ai/train/mission_decision_student_v1_plan.json --output software/ai/results/mission_decision_student_v1/selection.json`; `python -m pytest tests/test_mission_decision_student_source.py tests/test_mission_decision_student_result.py -q; git diff --check` from `software/ai`.
+- Result: FAIL development gates; evidence verification PASS: 7 tests in 0.91s and clean diff check. The single two-epoch weighted fit completed with 80 optimizer updates and `confirmation_read=false`. Epoch 1/2 train loss was 1.1742351933 / 0.0203682615 and validation loss was 0.0756279770 / 0.0264502729. Both emitted 320/320 valid schema-bound decisions and produced zero wrong accepted operations. Epoch 1 exact assembly was 48/320 (0.15), macro class accuracy 0.214286, minimum class accuracy 0, and accepted coverage 0/96. Epoch 2 improved to 185/320 exact assembly (0.578125), macro class accuracy 0.553571, minimum class accuracy 0, and 62/96 accepted coverage (0.645833), still below all accuracy/coverage gates. Epoch 2 scored 0/32 on `clarify.device_ambiguous` and 0/32 on `unsupported.phone_call`; seven phone-call mistakes proposed phone execution, but deterministic missing-literal grounding downgraded them before compilation, preserving zero wrong acceptance. The frozen selector chose epoch 2, with `selected_passed_development_gates=false`. No confirmation fixture was created and no qualification was installed.
+- Artifacts: `results/mission_decision_student_v1/run_manifest.json`; both epoch import manifests; both validation predictions and scorecards; `results/mission_decision_student_v1/selection.json`; `tests/test_mission_decision_student_result.py`; shared ledger. Adapter/tokenizer weights and Ollama blobs remain ignored outside Git.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Development-only agent-authored templated language with simulated review. Weighted replacement improved minority exposure but did not prevent class collapse or establish natural-language transfer. Deterministic assembly reduced unsafe acceptance without making the classifier accurate. No camera, localization, motion, runtime release, hardware, physical, qualification, arm-lane, or integration evidence/status changed.
+- Supersedes: none; both compact checkpoints remain preserved as failed development evidence.
+- Next dependency: Diagnose the committed confusion matrix before another fit. The efficient next study should separate deterministic lexical capability checks for phone-call and shifted-text requests from a smaller learned device/payload/intent classifier, or explicitly test a classification-loss head; preregister the choice and retain zero-wrong-accepted compiler gates before creating any confirmation population.

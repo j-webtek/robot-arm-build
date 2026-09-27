@@ -1,0 +1,39 @@
+{
+  "candidate_keys": {
+    "1": [
+      0,
+      0,
+      -48,
+      -0.21428571428571427,
+      -0.0,
+      0,
+      -0.0,
+      0.07562797703430987,
+      1
+    ],
+    "2": [
+      0,
+      0,
+      -185,
+      -0.5535714285714286,
+      -0.0,
+      -62,
+      -0.6458333333333334,
+      0.026450272864167346,
+      2
+    ]
+  },
+  "confirmation_read": false,
+  "hardware_writes": 0,
+  "physical_movements": 0,
+  "plan_sha256": "32abd9da37b8a3eece7a2d39abcd9ff71322d5e2e467dfe1a5f0fbdbc26c37df",
+  "qualification_installed": false,
+  "schema": "rocell.mission_decision_selection.v1",
+  "selected_adapter_sha256": "c27bee6791d52af135550a8b8834d0df71093d6643d3552ab72dda7ab3b2aa1f",
+  "selected_epoch": 2,
+  "selected_model": "llama32-1b-rocell-decision-v1-e2:latest",
+  "selected_model_digest": "22f80c2c3a5ace8b575863c0e37a6119029a98bc5e39829dd691b0f71ca0329d",
+  "selected_passed_development_gates": false,
+  "selected_validation_scorecard_sha256": "dba226ee11e03661f2f1ddae05aeb8967d441ff9c0cd45f8f93996d52d8a2ae4",
+  "selection_rule": "lexicographically minimize wrong_accepted and invalid_decision; maximize assembly_exact, macro_class_accuracy, minimum_class_accuracy, accepted_correct, and expected_accepted_coverage; then minimize validation_loss and epoch"
+}
