@@ -168,6 +168,14 @@ lifecycle counts, zero outbound activity, and retained non-authority flags. A
 completed empty passive window proves only that the endpoint opened and closed
 under the zero-write policy; it does not prove controller protocol or firmware
 identity.
+The [active-feedback intake](native_t105_active_feedback_intake_v1.schema.json)
+binds that passive receipt and exact endpoint to the canonical ten bytes
+`{"T":105}\n`, one response line, one open/write/read/close lifecycle, and
+zero T=102, movement, torque, retry, purge, fallback, startup, or control-line
+assertion. Its fake-only rehearsal checks the lifecycle and strict T=1051
+parsing without accepting an arbitrary transport. The retained intake cannot
+open COM7 or authorize its active write; that requires a later explicit
+authorization naming its hash.
 The [measured configuration-epoch intake](controller_configuration_epoch_intake_v1.schema.json)
 and [intake assessment](controller_configuration_epoch_intake_report_v1.schema.json)
 require that full decision, rather than accepting only an arbitrary review hash

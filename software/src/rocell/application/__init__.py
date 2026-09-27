@@ -459,6 +459,23 @@ from .native_t102_read_only_endpoint_intake_v1 import (
     build_native_t102_read_only_endpoint_intake_v1,
     parse_native_t102_read_only_endpoint_intake_v1,
 )
+from .native_t105_active_feedback_intake_v1 import (
+    OPERATIONS as NATIVE_T105_ACTIVE_FEEDBACK_OPERATIONS,
+    REQUEST_BYTES as NATIVE_T105_ACTIVE_FEEDBACK_REQUEST_BYTES,
+    REQUEST_SHA256 as NATIVE_T105_ACTIVE_FEEDBACK_REQUEST_SHA256,
+    SCHEMA as NATIVE_T105_ACTIVE_FEEDBACK_INTAKE_SCHEMA,
+    NativeT105ActiveFeedbackIntakeError,
+    NativeT105ActiveFeedbackIntakeV1,
+    build_native_t105_active_feedback_intake_v1,
+    parse_native_t105_active_feedback_intake_v1,
+)
+from .native_t105_active_feedback_rehearsal_v1 import (
+    SCHEMA as NATIVE_T105_ACTIVE_FEEDBACK_REHEARSAL_SCHEMA,
+    DeterministicFakeT105Endpoint,
+    NativeT105ActiveFeedbackRehearsalError,
+    NativeT105ActiveFeedbackRehearsalReceiptV1,
+    rehearse_native_t105_active_feedback_v1,
+)
 from .zero_write_waveshare_adapter_v1 import (
     GRIPPER_BEHAVIOR as ZERO_WRITE_GRIPPER_BEHAVIOR,
     INTERPOLATION_MODE as ZERO_WRITE_INTERPOLATION_MODE,
@@ -1426,6 +1443,19 @@ __all__ = [
     "NativeT102ReadOnlyEndpointIntakeV1",
     "build_native_t102_read_only_endpoint_intake_v1",
     "parse_native_t102_read_only_endpoint_intake_v1",
+    "NATIVE_T105_ACTIVE_FEEDBACK_OPERATIONS",
+    "NATIVE_T105_ACTIVE_FEEDBACK_REQUEST_BYTES",
+    "NATIVE_T105_ACTIVE_FEEDBACK_REQUEST_SHA256",
+    "NATIVE_T105_ACTIVE_FEEDBACK_INTAKE_SCHEMA",
+    "NativeT105ActiveFeedbackIntakeError",
+    "NativeT105ActiveFeedbackIntakeV1",
+    "build_native_t105_active_feedback_intake_v1",
+    "parse_native_t105_active_feedback_intake_v1",
+    "NATIVE_T105_ACTIVE_FEEDBACK_REHEARSAL_SCHEMA",
+    "DeterministicFakeT105Endpoint",
+    "NativeT105ActiveFeedbackRehearsalError",
+    "NativeT105ActiveFeedbackRehearsalReceiptV1",
+    "rehearse_native_t105_active_feedback_v1",
     "ZERO_WRITE_GRIPPER_BEHAVIOR",
     "ZERO_WRITE_INTERPOLATION_MODE",
     "ZERO_WRITE_WAVESHARE_PERMIT_SCHEMA",

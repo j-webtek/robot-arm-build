@@ -243,9 +243,19 @@ the close was confirmed; and no bytes, requests, movement, torque action,
 retry, purge, or DTR/RTS assertion occurred. The one-second window contained no
 unsolicited complete or partial lines. This qualifies only the pinned endpoint
 lifecycle under the passive zero-write policy. It does not qualify controller
-protocol, firmware, telemetry, actuation, or model-command execution. The next
-arm-lane dependency is a separately designed and authorized active identity or
-feedback qualification, not another passive retry.
+protocol or firmware identity. ARM-063 now freezes the next active, non-moving
+feedback proposal: one exact ten-byte `T=105` request, one bounded `T=1051`
+response, and one open/write/read/close lifecycle, with no T=102, movement,
+torque, retry, purge, fallback, startup, or DTR/RTS assertion. Its retained
+intake hash is
+`3b44d5e011d8c44afda1bb6deb1cc479b1fc0c45e59e39308d285cde416b8fcc`.
+Only a fake endpoint has exercised the contract. The intake grants no live
+open or write authority; the physical exchange requires a separate explicit
+owner authorization naming that hash.
+Neither passive evidence nor the fake rehearsal qualifies installed firmware,
+physical telemetry accuracy, actuation, or model-command execution. The next
+arm-lane dependency is the separately authorized ARM-063 exchange, not another
+passive retry.
 
 ## Stage definitions
 
