@@ -599,6 +599,8 @@ Copy this row and fill every field:
 
 ## Active work claims
 
+- AI lane / S1: eight-epoch fixed-corpus diversity comparison,three seeds,equal304 updates; no new scenes or qualification.
+
 
 
 
