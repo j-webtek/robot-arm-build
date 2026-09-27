@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rocell.local/schemas/camera_support_optics_epoch_assessment_v1.schema.json",
+  "type": "object", "additionalProperties": false,
+  "required": [
+    "schema", "status", "intake_sha256", "evaluated_monotonic_ns",
+    "binding_assessments", "missing_binding_ids", "blocked_binding_ids",
+    "component_admission_ready", "epoch_advanced", "hardware_access",
+    "camera_open_authorized", "installation_authorized",
+    "controller_start_authorized", "transport_authorized",
+    "execution_authorized", "physical_authority", "assessment_sha256"
+  ],
+  "properties": {
+    "schema": {"const": "rocell.camera_support_optics_epoch_assessment.v1"},
+    "status": {"enum": ["BLOCKED", "READY_FOR_COMPONENT_ADMISSION"]},
+    "intake_sha256": {"$ref": "#/$defs/sha"},
+    "evaluated_monotonic_ns": {"type": "integer", "minimum": 1},
+    "binding_assessments": {
+      "type": "array", "minItems": 4, "maxItems": 4,
+      "items": {"type": "object", "additionalProperties": false,
+        "required": ["binding_id", "status", "blockers"],
+        "properties": {
+          "binding_id": {"$ref": "#/$defs/bindingId"},
+          "status": {"enum": ["MISSING", "BLOCKED", "READY"]},
+          "blockers": {"type": "array", "uniqueItems": true, "items": {"type": "string"}}
+        }}
+    },
+    "missing_binding_ids": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/bindingId"}},
+    "blocked_binding_ids": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/bindingId"}},
+    "component_admission_ready": {"type": "boolean"},
+    "epoch_advanced": {"const": false},
+    "hardware_access": {"const": false},
+    "camera_open_authorized": {"const": false},
+    "installation_authorized": {"const": false},
+    "controller_start_authorized": {"const": false},
+    "transport_authorized": {"const": false},
+    "execution_authorized": {"const": false},
+    "physical_authority": {"const": false},
+    "assessment_sha256": {"$ref": "#/$defs/sha"}
+  },
+  "$defs": {
+    "sha": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "bindingId": {"enum": ["camera_receipt", "camera_identity", "camera_mode_controls", "support_witnesses"]}
+  }
+}

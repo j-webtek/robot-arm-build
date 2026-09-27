@@ -211,6 +211,12 @@ first owner-governed epoch component from tracked source and reviewed r97
 release identities. They distinguish retained original software inputs from a
 physical measurement, advance only `software_build`, and grant no controller
 or physical authority.
+The [camera/support/optics intake](camera_support_optics_epoch_intake_v1.schema.json)
+and [readiness assessment](camera_support_optics_epoch_assessment_v1.schema.json)
+provide the next component boundary. Catalog specifications and digital support
+designs are retained as context but never promoted to physical originals. All
+four bindings must carry current retained-original evidence and owner-AI review
+before the adapter can construct a `camera_support_optics` epoch component.
 The [synthetic epoch model-to-arm rehearsal](synthetic_epoch_model_arm_rehearsal_v1.schema.json)
 then binds that exact blocked epoch to one model batch, its indexed proposal, a
 sealed trajectory, the Waveshare encoding profile, and the zero-write receipt.

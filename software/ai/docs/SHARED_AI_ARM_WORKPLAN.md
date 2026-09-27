@@ -312,6 +312,14 @@ components remain explicitly `MISSING`, the configuration-epoch hash remains
 null, and every hardware authority remains false. The next ARM dependency is
 the retained camera/support/optics evidence bundle, not another software-build
 or controller test.
+ARM-070 implements that camera/support/optics intake and evaluates the actual
+repository baseline. The purchased profile still says
+`PURCHASED_PENDING_RECEIPT`; received-unit, USB identity, commissioned mode,
+control-readback, and qualified support evidence are absent, and all 55 hardware
+intake rows remain unresolved. The retained result therefore keeps all four
+camera bindings missing and does not alter the ARM-069 epoch. The next step is
+physical-original collection through the existing onboarding workflow, not a
+synthetic substitution or another controller test.
 
 ## Stage definitions
 
@@ -715,7 +723,7 @@ remove it only in the same commit that appends the resulting evidence row.
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
 | Unclaimed | S2 | qualified perception adapter and complete shared gate | — | AVAILABLE |
-| ARM | S4 | collect and owner-AI review retained `camera_support_optics` evidence; preserve the seven remaining missing components as blockers | ARM-070 | AVAILABLE |
+| ARM | S4 | collect four physical-original `camera_support_optics` bindings through onboarding, then run the ARM-070 intake; no synthetic promotion | ARM-071 | WAITING_FOR_ORIGINALS |
 
 ## Worker update procedure
 

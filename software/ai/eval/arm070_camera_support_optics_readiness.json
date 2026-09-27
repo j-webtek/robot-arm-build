@@ -1,0 +1,53 @@
+{
+  "schema": "rocell.camera_support_optics_epoch_assessment.v1",
+  "status": "BLOCKED",
+  "intake_sha256": "63757a5bdb2f835579d4b46f665ae86a889e226e64206e88c085696b7c6eac14",
+  "evaluated_monotonic_ns": 1,
+  "binding_assessments": [
+    {
+      "binding_id": "camera_receipt",
+      "status": "MISSING",
+      "blockers": [
+        "RETAINED_ORIGINAL_MISSING"
+      ]
+    },
+    {
+      "binding_id": "camera_identity",
+      "status": "MISSING",
+      "blockers": [
+        "RETAINED_ORIGINAL_MISSING"
+      ]
+    },
+    {
+      "binding_id": "camera_mode_controls",
+      "status": "MISSING",
+      "blockers": [
+        "RETAINED_ORIGINAL_MISSING"
+      ]
+    },
+    {
+      "binding_id": "support_witnesses",
+      "status": "MISSING",
+      "blockers": [
+        "RETAINED_ORIGINAL_MISSING"
+      ]
+    }
+  ],
+  "missing_binding_ids": [
+    "camera_receipt",
+    "camera_identity",
+    "camera_mode_controls",
+    "support_witnesses"
+  ],
+  "blocked_binding_ids": [],
+  "component_admission_ready": false,
+  "epoch_advanced": false,
+  "hardware_access": false,
+  "camera_open_authorized": false,
+  "installation_authorized": false,
+  "controller_start_authorized": false,
+  "transport_authorized": false,
+  "execution_authorized": false,
+  "physical_authority": false,
+  "assessment_sha256": "093fb631ffdba64cf415ebb962c90876625f4bef8d83df0aee1b3f080fddf6ce"
+}
