@@ -1,11 +1,15 @@
-# RoCell software architecture
+# Tactevra Runtime software architecture
 
 ## Purpose and authority boundary
 
-RoCell turns keyboard or Android text into deterministic, reviewable software
+Tactevra Runtime turns keyboard or Android text into deterministic, reviewable software
 artifacts for the RC03 placemat. The current runtime is a simulation and
 commissioning foundation. It does not expose a live-motion command, produce
 controller motion commands, press a key, or tap a screen.
+
+The implementation retains the `rocell` Python, command, schema, and
+configuration namespace for compatibility. Tactevra is the product name; see
+the repository [glossary](../../docs/GLOSSARY.md).
 
 The controlled baseline is manifest
 `ROCELL-PHASE0-RC03-INT-R1-FREEZE-011`, design revision `RC03-INT-R1`, active

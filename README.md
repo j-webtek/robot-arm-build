@@ -8,7 +8,7 @@ The CI badge covers [scoped hardware-free checks](docs/CI.md), not physical robo
 
 **An experimental local-first robotics platform connecting user intent, visual evidence, and checked physical actions.**
 
-[Get started](docs/GETTING_STARTED.md) · [Current capabilities](PROJECT_STATUS.md) · [Documentation](docs/README.md) · [Contribute](CONTRIBUTING.md)
+[Get started](docs/GETTING_STARTED.md) · [How the system works](docs/SYSTEM_OVERVIEW.md) · [Current capabilities](PROJECT_STATUS.md) · [Documentation](docs/README.md) · [Contribute](CONTRIBUTING.md)
 
 [Get help](SUPPORT.md) · [Report a vulnerability privately](SECURITY.md)
 
@@ -57,11 +57,13 @@ are tracked separately.
 | I want to… | Read this |
 | --- | --- |
 | Try the project for the first time | [Getting started](docs/GETTING_STARTED.md) |
+| Understand the end-to-end system | [System overview](docs/SYSTEM_OVERVIEW.md) |
 | Understand what works and what comes next | [Project status](PROJECT_STATUS.md) |
 | Set up the code and contribute | [Developer setup](CONTRIBUTING.md) |
 | Explore the local interface | [Wizard workbench guide](software/docs/WIZARD_WORKBENCH.md) |
 | Build the physical workcell | [Step-by-step assembly guide](active-project/RoCell_v0_3/BUILD_BY_STEP/README.md) |
 | Find architecture, test results, or procedures | [Documentation guide](docs/README.md) |
+| Decode project terminology | [Glossary](docs/GLOSSARY.md) |
 
 After completing the [base installation](docs/GETTING_STARTED.md#install-the-software),
 you can optionally launch the local rehearsal interface from

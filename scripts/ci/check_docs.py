@@ -15,6 +15,8 @@ DOCS = (
     'README.md', 'PROJECT_STATUS.md', 'CONTRIBUTING.md', 'SUPPORT.md', 'SECURITY.md',
     'CODE_OF_CONDUCT.md',
     'docs/README.md', 'docs/GETTING_STARTED.md', 'docs/RELEASING.md',
+    'docs/SYSTEM_OVERVIEW.md', 'docs/GLOSSARY.md',
+    'docs/DOCUMENTATION_STANDARD.md',
     'docs/EVIDENCE_RETENTION.md',
     'docs/releases/EXPERIMENTAL_PREVIEW_DRAFT.md',
     'docs/releases/CANDIDATE_DCD87DB.md',
@@ -26,6 +28,9 @@ DOCS = (
     'docs/MAINTAINER_CHECKLIST.md',
     'docs/CI.md', 'docs/AUDIT_FIXTURE_REVIEW.md', 'software/README.md', 'software/ai/README.md',
     'software/ai/docs/README.md', 'assets/brand/README.md',
+    'software/ai/docs/CONTRACT.md',
+    'software/ai/docs/SHARED_AI_ARM_WORKPLAN.md',
+    'software/docs/ARCHITECTURE.md',
     'docs/brand/BRAND_GUIDE.md', 'docs/brand/NAMING_REVIEW.md',
     'docs/brand/MIGRATION_PLAN.md',
 )
@@ -41,17 +46,40 @@ PUBLIC_TITLES = {
     'CODE_OF_CONDUCT.md': 'Tactevra community code of conduct',
     'docs/README.md': 'Tactevra documentation',
     'docs/GETTING_STARTED.md': 'Getting started with Tactevra',
+    'docs/SYSTEM_OVERVIEW.md': 'Tactevra system overview',
+    'docs/GLOSSARY.md': 'Tactevra glossary',
+    'docs/DOCUMENTATION_STANDARD.md': 'Tactevra documentation standard',
+    'software/ai/docs/CONTRACT.md': 'AI-to-Tactevra Runtime integration contract',
+    'software/docs/ARCHITECTURE.md': 'Tactevra Runtime software architecture',
+}
+
+REQUIRED_PHRASES = {
+    'docs/SYSTEM_OVERVIEW.md': (
+        '**Document status:** Current overview',
+        '**Authority:** Explanatory; it does not authorize hardware operation',
+    ),
+    'docs/GLOSSARY.md': ('**Document status:** Current reference',),
+    'docs/DOCUMENTATION_STANDARD.md': ('**Document status:** Current policy',),
+    'docs/releases/EXPERIMENTAL_PREVIEW_DRAFT.md': (
+        '**Status:** Superseded preparation record; unpublished',
+        'https://github.com/j-webtek/tactevra/issues/57',
+    ),
+    'docs/releases/CANDIDATE_DCD87DB.md': (
+        '**Disposition: SUPERSEDED WITHOUT PUBLICATION.**',
+    ),
 }
 
 # (relative Markdown destination, optional exact plain ATX heading).
 PUBLIC_ROUTES = {
     'README.md': (
         ('docs/GETTING_STARTED.md#install-the-software', 'Install the software'),
+        ('docs/SYSTEM_OVERVIEW.md', None),
         ('PROJECT_STATUS.md', None), ('docs/README.md', None),
         ('SUPPORT.md', None), ('SECURITY.md', None),
     ),
     'docs/README.md': (
         ('GETTING_STARTED.md', None), ('../PROJECT_STATUS.md', None),
+        ('SYSTEM_OVERVIEW.md', None), ('GLOSSARY.md', None),
         ('../SUPPORT.md', None), ('../CONTRIBUTING.md', None),
         ('../SECURITY.md', None), ('../CODE_OF_CONDUCT.md', None),
     ),
@@ -92,6 +120,9 @@ def public_entry_errors(relative: str, content: str, root: Path) -> list[str]:
     headings = re.findall(r'^# +(.+?)\s*$', content, flags=re.M)
     if title and headings != [title]:
         errors.append(f'expected one public title: # {title}')
+    for phrase in REQUIRED_PHRASES.get(relative, ()):
+        if phrase not in content:
+            errors.append(f'missing required status context: {phrase}')
     links = {target.strip().strip('<>')
              for target in re.findall(r'\]\(([^)]+)\)', content)}
     for target, heading in PUBLIC_ROUTES.get(relative, ()):
@@ -143,6 +174,9 @@ def main() -> None:
             errors.append(f'Missing maintained document: {relative}')
             continue
         raw_content = path.read_text(encoding='utf-8')
+        if 'j-webtek/robot-arm-build' in without_fences(raw_content):
+            errors.append(
+                f'{relative}: stale canonical repository reference; use j-webtek/tactevra')
         errors.extend(f'{relative}: {error}'
                       for error in public_entry_errors(relative, raw_content, ROOT))
         content = without_fences(raw_content)

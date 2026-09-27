@@ -1,12 +1,19 @@
-# Tactevra experimental source preview — draft notes
+# Historical Tactevra experimental source-preview draft
 
-**Unpublished draft. Not a stable product, installer, or hardware deployment.**
+- **Status:** Superseded preparation record; unpublished
+- **Current release tracker:** [issue #57](https://github.com/j-webtek/tactevra/issues/57)
+
+This document preserves preparation for an earlier candidate. It is not the
+current candidate, a stable product, an installer, or a hardware deployment.
+Do not update its recorded SHA to a newer commit; create a new candidate record
+and repeat the release checks instead.
 
 Proposed title: **Tactevra v0.1.0-alpha.1 — experimental source preview**.
 Proposed tag: `tactevra-v0.1.0-alpha.1` (not created or approved).
-Proposed source: `dcd87db12c9593f1c17b7a222cb711c4fbe7845e`, a merged snapshot,
+Historical proposed source: `dcd87db12c9593f1c17b7a222cb711c4fbe7845e`, a merged snapshot,
 not the moving main branch. See the [candidate record](CANDIDATE_DCD87DB.md)
-for verification and unresolved gates. **Publication is on hold.**
+for verification and unresolved gates. **This candidate was superseded and was
+not published.**
 
 This preview is for developers exploring offline request interpretation,
 model-to-arm contracts, and simulated planning. Complete the
@@ -61,7 +68,7 @@ full-suite pass, a security certification, or authorization to move an arm.
 | Required item | Status |
 | --- | --- |
 | Approved title and tag | Proposed above; explicit approval pending |
-| Exact full source SHA on main | Proposed `dcd87db12c9593f1c17b7a222cb711c4fbe7845e` |
+| Exact full source SHA on main | Historical proposal `dcd87db12c9593f1c17b7a222cb711c4fbe7845e`; superseded |
 | Included changes and compatibility review by both workstreams | Pending |
 | Four hosted CI results and merged-main run | Passed; linked in candidate record |
 | Fresh-checkout setup and example results | See candidate record for scoped results |

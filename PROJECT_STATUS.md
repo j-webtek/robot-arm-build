@@ -1,7 +1,7 @@
 # Tactevra project status
 
-Reviewed September 26, 2026 through the ARM-045 phase-local contact gate
-increment.
+Reviewed September 27, 2026 through the ARM-047 reviewed-permit lifecycle
+increment on merged `main`.
 Unmerged workstream branches are not included in this summary.
 This is a capability summary for readers; the
 [shared workplan](software/ai/docs/SHARED_AI_ARM_WORKPLAN.md) retains detailed
@@ -46,6 +46,7 @@ use the shared workplan linked above.
 | Conservative route collision evaluation | Robot poses are FK-derived at bounded samples; rigid motion is enclosed by URDF-derived margins, each adjacent pair requires a profile-bound cable envelope, and one exact contact allowance can be bound to a sealed no-write envelope | Synthetic fixtures test clear, collision, crossed-identity, contact-policy, and resource cases; installed engineering evidence and physical qualification still block release |
 | Controller-command preview | Sealed synthetic trajectories can be encoded into Waveshare T=102 bytes and a proposed dispatch schedule | Offline encoding and published schemas are tested; the preview has no transport and sends nothing to the arm |
 | Execution lifecycle rehearsal | Ownership, single-use reservations, fault handling, and restart reconciliation are modeled | Tests exercise no-retry and fault rules without device I/O; this is not an installed live execution service |
+| Reviewed permit bridge | A consumed single-action review can be bound to the existing safety supervisor and an exact-goal motion permit with hash-chained lifecycle acknowledgments | Portable tests cover accepted, started, completed, failed, and uncertain records; there is still no controller transport, physical execution, or independent outcome evidence |
 | Controller evidence gate | Required controller identity, mapping, protocol, freshness, and review fields are checked | Modeled records test rejection behavior; even a passing record grants no transport or execution authority, and no physical originals were qualified |
 | Installed-controller compatibility | A passive r96 observation is recorded; an offline assessment checks the installed application's command surface | r96 lacks the required generic production command/feedback interface and remains blocked; its identity evidence is not independently qualified |
 | Production runtime contract | A host-side executable specification rehearses safe-idle startup, one writer, ordered commands, deadlines, and feedback checks | Software rules are testable without I/O; this is not replacement firmware or an installed execution service |
@@ -135,6 +136,14 @@ Detailed evidence is in AI-035/036 and ARM-018/020 of the
 passing tests in its selected integration run, with zero hardware writes and
 zero physical movements. Test selections overlap and are not a model-accuracy
 score, full-suite qualification, or physical typing success rate.
+
+The merged ARM-046/047 boundary now consumes one reviewed action at most once,
+rechecks the existing safety supervisor, derives capability from the frozen
+device and interaction semantics, and binds an exact-goal permit to
+hash-chained lifecycle acknowledgments. Terminal results prohibit automatic
+retry and follow-on movement. This makes the offline handoff more explicit; it
+does not add a native controller writer, authenticated feedback, settling,
+contact qualification, or independent device-input verification.
 
 Repository improvements include protected-main CI, support and private security
 reporting, contributor handoff templates, reviewed dependency updates, and an

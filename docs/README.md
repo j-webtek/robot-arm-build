@@ -10,10 +10,26 @@ implementation details or evidence for a specific part of the system.
 | Your goal | Start here |
 | --- | --- |
 | Try it without hardware or downloaded models | [Getting started](GETTING_STARTED.md) |
+| Understand the complete request-to-result flow | [System overview](SYSTEM_OVERVIEW.md) |
 | Understand capabilities and limitations | [Project status](../PROJECT_STATUS.md) |
 | Get help or report unclear guidance | [Support](../SUPPORT.md) |
 | Contribute code or documentation | [Contributing](../CONTRIBUTING.md) |
 | Explore physical build resources | [RC03 introduction](../active-project/RoCell_v0_3/README_FIRST.md) and [print readiness](../active-project/RoCell_v0_3/PRINT_READINESS.md) |
+
+## Choose by role
+
+| Role | Primary path |
+| --- | --- |
+| User or evaluator | [Getting started](GETTING_STARTED.md) → [system overview](SYSTEM_OVERVIEW.md) → [project status](../PROJECT_STATUS.md) |
+| Hardware builder | [RC03 introduction](../active-project/RoCell_v0_3/README_FIRST.md) → [assembly steps](../active-project/RoCell_v0_3/BUILD_BY_STEP/README.md) → [print readiness](../active-project/RoCell_v0_3/PRINT_READINESS.md) |
+| Software contributor | [Contributing](../CONTRIBUTING.md) → [software reference](../software/README.md) → [architecture](../software/docs/ARCHITECTURE.md) |
+| AI contributor | [AI overview](../software/ai/README.md) → [AI documentation](../software/ai/docs/README.md) → [shared workplan](../software/ai/docs/SHARED_AI_ARM_WORKPLAN.md) |
+| Arm/runtime contributor | [System overview](SYSTEM_OVERVIEW.md) → [architecture](../software/docs/ARCHITECTURE.md) → [shared workplan](../software/ai/docs/SHARED_AI_ARM_WORKPLAN.md) |
+| Maintainer or release reviewer | [Repository operations](REPOSITORY_OPERATIONS.md) → [maintainer checklist](MAINTAINER_CHECKLIST.md) → [release procedure](RELEASING.md) |
+
+Use the [glossary](GLOSSARY.md) for product, interface, evidence, and execution
+terms. Contributors should follow the [documentation standard](DOCUMENTATION_STANDARD.md)
+when adding or substantially revising a page.
 
 The overview introduces the project, status summarizes dated capability evidence,
 and getting started is the reproducible first-run path. The shared AI/arm
@@ -55,6 +71,10 @@ distinguishes these kinds of evidence.
 
 ## Software and architecture
 
+- [System overview](SYSTEM_OVERVIEW.md): concise request-to-result architecture,
+  responsibilities, authority boundaries, and evidence levels.
+- [Glossary](GLOSSARY.md): product, compatibility, planning, controller, and
+  verification terminology.
 - [Developer setup and contribution workflow](../CONTRIBUTING.md): installation,
   scoped checks, Git workflow, and sanitized evidence sharing.
 - [Wizard workbench](../software/docs/WIZARD_WORKBENCH.md): local browser and
@@ -105,6 +125,8 @@ documents may exist only on the lab workstation; sharing them is covered in
 
 ## Repository maintenance and policies
 
+- [Documentation standard](DOCUMENTATION_STANDARD.md): lifecycle labels,
+  naming, capability language, and navigation expectations.
 - [Routine maintainer checklist](MAINTAINER_CHECKLIST.md): triage, review, and handoffs.
 - [Hardware-free CI checks](CI.md) and [repository operations](REPOSITORY_OPERATIONS.md):
   verification scope, PR workflow, and dependency maintenance.

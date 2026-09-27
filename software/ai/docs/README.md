@@ -21,8 +21,12 @@ llama.cpp multimodal observer fits beside the precision pose model, and the
 prioritized path to a physically qualified system.
 
 These documents include both implemented offline components and proposed work.
-Read each document's date, result, and limitations. Current RoCell
+Read each document's date, result, and limitations. Current Tactevra
 capabilities and physical status remain in the repository's
 [project status](../../../PROJECT_STATUS.md),
 [software architecture](../../docs/ARCHITECTURE.md), and code. The AI documents
 must be revised when those contracts change.
+
+Tactevra is the product name. The lowercase `rocell` name remains in package,
+command, schema, configuration, and historical identifiers for compatibility;
+see the repository [glossary](../../../docs/GLOSSARY.md).

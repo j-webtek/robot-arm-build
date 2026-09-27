@@ -47,6 +47,9 @@ device access, restarts, torque changes, movement, or release publication.
 - [ ] Apply the [evidence-retention policy](EVIDENCE_RETENTION.md). Review the
   generated-data count and size, reproduction metadata and any exact-digest
   exception; passing CI does not make bulk output human-reviewable.
+- [ ] Apply the [documentation standard](DOCUMENTATION_STANDARD.md). Label
+  active plans, evidence records, historical pages, and release drafts; use the
+  [glossary](GLOSSARY.md) for current explanatory prose.
 
 ## 3. Close the handoff after merge
 
