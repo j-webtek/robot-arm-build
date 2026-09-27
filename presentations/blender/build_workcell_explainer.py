@@ -293,8 +293,20 @@ def add_keyboard(layout: dict, mats: dict[str, bpy.types.Material]) -> dict[str,
                mats["abs"], (80.0, 72.0, 0.0))
     import_stl(STL_DIR / "keyboard_station_right.stl", "Designed keyboard station R",
                mats["abs"], (242.5, 72.0, 0.0))
-    cube("Measured keyboard chassis", board_point(ox + sx / 2, oy + sy / 2, sz / 2),
-         (sx / 1000, sy / 1000, sz / 1000), mats["keyboard"], 0.006)
+    cube("Measured keyboard lower chassis",
+         board_point(ox + sx / 2, oy + sy / 2, sz * 0.38),
+         (sx / 1000, sy / 1000, sz * 0.76 / 1000),
+         mats["keyboard_side"], 0.006)
+    cube("Measured keyboard top deck",
+         board_point(ox + sx / 2, oy + sy / 2, sz * 0.79),
+         ((sx - 3.0) / 1000, (sy - 3.0) / 1000, sz * 0.34 / 1000),
+         mats["keyboard"], 0.005)
+    # A restrained brushed perimeter and front chamfer catch highlights in
+    # close-ups without changing the measured keyboard envelope.
+    cube("Keyboard front accent", board_point(ox + sx / 2, oy + 3.2, sz - 1.4),
+         ((sx - 8.0) / 1000, 0.003, 0.0022), mats["keyboard_trim"], 0.001)
+    cube("Keyboard rear accent", board_point(ox + sx / 2, oy + sy - 3.2, sz - 1.4),
+         ((sx - 8.0) / 1000, 0.003, 0.0022), mats["keyboard_trim"], 0.001)
     # The printable shell remains a measured envelope. The principal key rows
     # below are positioned from software/config/static_nominal_target_profiles.json:
     # 19.05 mm pitch, exact first-center offsets, and therefore H at
@@ -318,15 +330,19 @@ def add_keyboard(layout: dict, mats: dict[str, bpy.types.Material]) -> dict[str,
         for col, legend in enumerate(legends):
             x = first_x + col * pitch
             key_width = pitch * width_ratio
-            key = cube(f"Key {row_i}-{col}", board_point(x, y, sz + 2.4),
-                       (max(0.009, (key_width - 2.2) / 1000), 0.0175, 0.005),
-                       mats["key"], 0.002)
+            lower = cube(f"Key well {row_i}-{col}", board_point(x, y, sz + 1.7),
+                         (max(0.009, (key_width - 1.7) / 1000), 0.0180, 0.0034),
+                         mats["key_side"], 0.0018)
+            key = cube(f"Key cap {row_i}-{col}", board_point(x, y, sz + 4.0),
+                       (max(0.008, (key_width - 3.0) / 1000), 0.0162, 0.0042),
+                       mats["key"], 0.0024)
+            lower["legend"] = legend
             key["legend"] = legend
             named_keys.setdefault(legend, key)
             legend_size = 0.0048 if len(legend) <= 2 else 0.0028
             board_text(
                 f"Key legend {legend}-{row_i}-{col}", legend,
-                board_point(x, y, sz + 5.2), legend_size, mats["legend"],
+                board_point(x, y, sz + 6.2), legend_size, mats["legend"],
             )
     # Presentation-only outer modifiers, sized to resemble the photographed
     # compact keyboard without changing any named target coordinate.
@@ -342,12 +358,28 @@ def add_keyboard(layout: dict, mats: dict[str, bpy.types.Material]) -> dict[str,
         ("DOWN", ox + 266.0, oy + 24.0, 17.0),
         ("RIGHT", ox + 285.0, oy + 24.0, 17.0),
     ):
-        key = cube(f"Modifier {label}-{x}", board_point(x, y, sz + 2.4),
-                   (width / 1000, 0.0175, 0.005), mats["key"], 0.002)
+        cube(f"Modifier well {label}-{x}", board_point(x, y, sz + 1.7),
+             ((width + 0.5) / 1000, 0.0180, 0.0034), mats["key_side"], 0.0018)
+        key = cube(f"Modifier cap {label}-{x}", board_point(x, y, sz + 4.0),
+                   ((width - 1.0) / 1000, 0.0162, 0.0042), mats["key"], 0.0024)
         board_text(f"Modifier legend {label}-{x}", label,
-                   board_point(x, y, sz + 5.2),
+                   board_point(x, y, sz + 6.2),
                    0.0048 if len(label) <= 2 else 0.0028, mats["legend"])
         named_keys.setdefault(label, key)
+    # Three small status lights and a recessed cable exit add scale cues that
+    # survive the overhead and macro shots.
+    for index, state_mat in enumerate((mats["green"], mats["cyan"], mats["amber"])):
+        cylinder(f"Keyboard status LED {index + 1}",
+                 board_point(ox + sx - 12.0 - index * 7.0, oy + sy - 10.0, sz + 2.0),
+                 0.0015, 0.0010, state_mat, 24)
+    cable_start = board_point(ox + sx / 2, oy + sy, sz * 0.68)
+    keyboard_cable = curve_line(
+        "Keyboard signal cable",
+        [cable_start, cable_start + Vector((0.0, 0.040, 0.005)),
+         cable_start + Vector((0.065, 0.075, 0.002))],
+        mats["cable"], 0.0022,
+    )
+    keyboard_cable["presentation_detail"] = "KEYBOARD_CABLE_WITHIN_PRESENTATION_CLEARANCE"
     return named_keys
 
 
@@ -357,13 +389,52 @@ def add_phone(layout: dict, mats: dict[str, bpy.types.Material]) -> dict[str, bp
     sx, sy, sz = dev["configured_size"]
     import_stl(STL_DIR / "phone_tcp_station.stl", "Designed phone station",
                mats["abs"], (411.0, 80.0, 0.0))
-    phone = cube("Measured phone envelope",
+    phone = cube("Measured phone aluminum frame",
                  board_point(ox + sx / 2, oy + sy / 2, dev["support_plane_z"] + sz / 2),
                  (sx / 1000, sy / 1000, sz / 1000), mats["phone"], 0.006)
-    screen = cube("Phone screen", board_point(ox + sx / 2, oy + sy / 2,
-                                               dev["nominal_screen_plane_z"] + 0.4),
-                  ((sx - 5) / 1000, (sy - 8) / 1000, 0.0008), mats["screen"], 0.004)
-    screen.parent = phone
+    screen_z = dev["nominal_screen_plane_z"] + 0.35
+    screen = cube("Phone edge-to-edge glass",
+                  board_point(ox + sx / 2, oy + sy / 2, screen_z),
+                  ((sx - 4.2) / 1000, (sy - 7.0) / 1000, 0.0007),
+                  mats["screen"], 0.0048)
+    # Physical details: speaker, front camera, side controls, rear camera rise.
+    cube("Phone receiver slit", board_point(ox + sx / 2, oy + sy - 8.0, screen_z + 0.55),
+         (0.018, 0.0018, 0.0007), mats["metal"], 0.0008)
+    cylinder("Phone front camera", board_point(ox + sx / 2 + 15.0, oy + sy - 8.0,
+                                                screen_z + 0.65),
+             0.0018, 0.0008, mats["screen_glass"], 32)
+    cube("Phone volume rocker", board_point(ox - 0.4, oy + sy * 0.63,
+                                             dev["support_plane_z"] + sz * 0.62),
+         (0.0012, 0.030, 0.0024), mats["metal"], 0.0007)
+    cube("Phone power button", board_point(ox + sx + 0.4, oy + sy * 0.61,
+                                            dev["support_plane_z"] + sz * 0.62),
+         (0.0012, 0.024, 0.0024), mats["metal"], 0.0007)
+    camera_island = cube("Phone rear camera island",
+                         board_point(ox + 15.0, oy + sy - 18.0,
+                                     dev["support_plane_z"] + sz + 0.7),
+                         (0.025, 0.032, 0.0018), mats["phone"], 0.005)
+    camera_island.hide_render = True  # underside detail is retained in the editable scene
+
+    # A restrained, product-like host interface gives the verification shot a
+    # real destination without pretending to be a captured application UI.
+    board_text("Phone UI brand", "TACTEVRA",
+               board_point(ox + sx / 2, oy + sy - 23.0, screen_z + 0.65),
+               0.0065, mats["cyan"])
+    cube("Phone UI status rule", board_point(ox + sx / 2, oy + sy - 34.0,
+                                              screen_z + 0.55),
+         ((sx - 18.0) / 1000, 0.0012, 0.0005), mats["cyan"], 0.0005)
+    cube("Phone UI target card", board_point(ox + sx / 2, oy + sy * 0.50,
+                                              screen_z + 0.55),
+         ((sx - 17.0) / 1000, 0.053, 0.0005), mats["screen_panel"], 0.006)
+    board_text("Phone UI state", "HOST RESULT",
+               board_point(ox + sx / 2, oy + 35.0, screen_z + 0.68),
+               0.0048, mats["legend"])
+    cube("Phone UI verified pill", board_point(ox + sx / 2, oy + 18.0,
+                                                screen_z + 0.62),
+         (0.043, 0.011, 0.0006), mats["green"], 0.005)
+    board_text("Phone UI verified label", "VERIFIED",
+               board_point(ox + sx / 2, oy + 18.0, screen_z + 1.0),
+               0.0042, mats["white"])
     return {"root": phone, "screen": screen}
 
 
@@ -662,11 +733,24 @@ def build() -> bpy.types.Scene:
         "wood": textured_material("Light birch", (0.55, 0.33, 0.16, 1),
                                     scale=7.0, detail=3.0, roughness=0.48),
         "keyboard": material("Keyboard body", (0.001, 0.002, 0.004, 1), roughness=0.31),
+        "keyboard_side": material("Keyboard lower shell", (0.006, 0.008, 0.011, 1),
+                                  metallic=0.12, roughness=0.42),
+        "keyboard_trim": material("Keyboard brushed edge", (0.14, 0.18, 0.22, 1),
+                                  metallic=0.82, roughness=0.21),
         "key": material("Keyboard keys", (0.003, 0.005, 0.008, 1), roughness=0.38),
+        "key_side": material("Keyboard key wells", (0.0006, 0.0008, 0.0012, 1),
+                             roughness=0.48),
         "legend": material("Keyboard legends", (0.34, 0.39, 0.45, 1), roughness=0.50),
         "phone": material("Phone edge", (0.03, 0.04, 0.05, 1), metallic=0.6, roughness=0.20),
         "screen": material("Phone screen", (0.008, 0.015, 0.022, 1), metallic=0.15, roughness=0.16,
                            emission=(0.01, 0.03, 0.05, 1), emission_strength=0.14),
+        "screen_glass": material("Phone optical glass", (0.004, 0.009, 0.016, 1),
+                                 metallic=0.35, roughness=0.08),
+        "screen_panel": material("Phone interface panel", (0.018, 0.043, 0.065, 1),
+                                 metallic=0.08, roughness=0.20,
+                                 emission=(0.012, 0.06, 0.095, 1),
+                                 emission_strength=0.65),
+        "cable": material("Signal cable rubber", (0.004, 0.006, 0.009, 1), roughness=0.62),
         "white": material("Reference white", (0.92, 0.95, 0.98, 1), roughness=0.55),
         "cyan": material("Tactevra cyan", (0.00, 0.52, 0.92, 1), roughness=0.22,
                          emission=(0.00, 0.52, 0.92, 1), emission_strength=3.5),
@@ -775,38 +859,47 @@ def build() -> bpy.types.Scene:
         # Request / stakes / promise: a readable three-quarter hero view. Keep
         # the complete board, exact arm, and camera portal in frame without the
         # old extreme-wide dead space.
-        (1, Vector((0.34, -1.42, 0.84))), (96, Vector((0.34, -1.42, 0.84))),
-        (97, Vector((0.30, -1.34, 0.80))), (240, Vector((0.24, -1.24, 0.75))),
-        (241, Vector((0.24, -1.24, 0.75))), (336, Vector((0.18, -1.16, 0.71))),
+        (1, Vector((0.38, -1.52, 0.88))), (96, Vector((0.32, -1.40, 0.83))),
+        (97, Vector((0.28, -1.30, 0.78))), (240, Vector((0.12, -1.10, 0.70))),
+        (241, Vector((0.18, -1.18, 0.72))), (336, Vector((-0.02, -1.02, 0.66))),
         # Perceive: camera fixture, then its measured top-down view.
-        (337, Vector((0.58, -0.42, 1.16))), (408, Vector((0.42, -0.28, 1.08))),
+        (337, Vector((0.62, -0.36, 1.18))), (408, Vector((0.28, -0.18, 1.02))),
         # The lens POV begins below the physical camera body so the fixture
         # cannot occlude or defocus the board evidence.
-        (409, Vector((0.00, 0.00, 0.89))), (528, Vector((0.00, 0.00, 0.85))),
+        (409, Vector((-0.10, -0.04, 0.92))), (528, Vector((0.10, 0.04, 0.84))),
         # Proposal and both gate decisions keep the exact arm visibly still.
         # The previous reverse angle was dominated by a portal leg; this angle
         # preserves the workcell context behind the screen-space evidence card.
-        (529, Vector((0.44, -1.04, 0.68))), (720, Vector((0.36, -0.94, 0.62))),
-        (721, Vector((0.36, -0.94, 0.62))), (1056, Vector((0.30, -0.88, 0.58))),
+        (529, Vector((0.46, -1.02, 0.66))), (720, Vector((0.20, -0.84, 0.56))),
+        (721, Vector((0.34, -0.98, 0.60))), (888, Vector((0.20, -0.82, 0.54))),
+        (889, Vector((0.18, -0.82, 0.54))), (1056, Vector((0.38, -0.92, 0.60))),
         # Resolve top-down, execute close-up, verify, payoff, end card.
         # Unobstructed top-down keyboard resolution, then a medium tooling shot
         # that keeps the simulated holder, stylus, and H key in one frame.
-        (1057, board_point(216.55, 154.0, 670)),
-        (1224, board_point(216.55, 154.0, 610)),
-        (1225, Vector((0.28, -0.98, 0.66))), (1392, Vector((0.20, -0.86, 0.56))),
-        (1393, Vector((0.02, -0.70, 0.54))), (1560, Vector((0.06, -0.64, 0.48))),
-        (1561, Vector((0.30, -1.18, 0.72))), (1728, Vector((0.34, -1.42, 0.84))),
-        (1729, Vector((0.34, -1.42, 0.84))), (END_FRAME, Vector((0.34, -1.42, 0.84))),
+        (1057, board_point(180.0, 175.0, 690)),
+        (1224, board_point(245.0, 130.0, 590)),
+        (1225, Vector((0.30, -0.98, 0.68))), (1392, Vector((0.12, -0.78, 0.50))),
+        (1393, board_point(phone_x - 140.0, phone_y - 270.0, 260)),
+        (1560, board_point(phone_x - 82.0, phone_y - 218.0, 210)),
+        (1561, Vector((-0.24, -1.10, 0.68))), (1728, Vector((0.34, -1.42, 0.84))),
+        (1729, Vector((0.34, -1.42, 0.84))), (END_FRAME, Vector((0.28, -1.25, 0.76))),
     ]
     targets = [
         (1, Vector((0, 0.02, 0.38))), (336, Vector((0, 0.02, 0.38))),
         (337, Vector((0, 0.02, 1.00))), (408, Vector((0, 0.02, 0.98))),
         (409, Vector((0, 0.00, 0.03))), (528, Vector((0, 0.00, 0.03))),
-        (529, Vector((0, -0.02, 0.34))), (1056, Vector((0, -0.02, 0.34))),
+        # Tilt the three decision shots toward the board. The arm remains the
+        # hero, but the keyboard and calibrated surface now provide changing
+        # spatial context instead of three nearly identical black backdrops.
+        (529, Vector((0, -0.02, 0.29))), (720, Vector((0, -0.02, 0.29))),
+        (721, Vector((0, -0.02, 0.27))), (888, Vector((0, -0.02, 0.27))),
+        (889, Vector((0, -0.02, 0.28))), (1056, Vector((0, -0.02, 0.28))),
         (1057, board_point(216.55, 154.0, 22)), (1224, board_point(216.55, 154.0, 22)),
         (1225, board_point(216.55, 154.0, 105)), (1392, board_point(216.55, 154.0, 92)),
-        (1393, board_point(phone_x, phone_y, 42)),
-        (1560, board_point(phone_x, phone_y, 42)),
+        # Focus on the actual glass plane rather than a point above the phone;
+        # the former macro shot was visibly soft at the verification moment.
+        (1393, board_point(phone_x, phone_y, phone_dev["nominal_screen_plane_z"] + 1.0)),
+        (1560, board_point(phone_x, phone_y, phone_dev["nominal_screen_plane_z"] + 1.0)),
         (1561, Vector((0, 0.02, 0.38))), (END_FRAME, Vector((0, 0.02, 0.38))),
     ]
     animate_transform(camera, camera_positions, targets)
@@ -822,14 +915,27 @@ def build() -> bpy.types.Scene:
     camera.data.dof.focus_object = focus
     camera.data.dof.aperture_fstop = 11.0
     lens_keys = (
-        (1, 35), (96, 35), (97, 35), (336, 42), (337, 58), (408, 72),
-        (409, 38), (528, 40), (529, 58), (1056, 68), (1057, 52),
-        (1224, 58), (1225, 46), (1392, 54), (1393, 58), (1560, 72),
-        (1561, 35), (END_FRAME, 42),
+        (1, 38), (96, 42), (97, 50), (240, 72), (241, 54), (336, 70),
+        (337, 52), (408, 78), (409, 38), (528, 45),
+        (529, 55), (720, 70), (721, 60), (888, 72),
+        (889, 65), (1056, 82), (1057, 55), (1224, 72),
+        (1225, 62), (1392, 82), (1393, 62), (1560, 74),
+        (1561, 40), (1728, 52), (1729, 48), (END_FRAME, 54),
     )
     for frame, focal_length in lens_keys:
         camera.data.lens = focal_length
         camera.data.keyframe_insert("lens", frame=frame)
+    # Shot-specific depth of field separates architectural context from the
+    # target-resolution, press, and phone-result macro beats.
+    aperture_keys = (
+        (1, 8.0), (336, 7.1), (337, 6.3), (408, 5.6),
+        (409, 10.0), (528, 9.0), (529, 7.1), (1056, 6.3),
+        (1057, 9.0), (1224, 8.0), (1225, 6.3), (1392, 5.6),
+        (1393, 9.0), (1560, 8.0), (1561, 7.1), (END_FRAME, 6.3),
+    )
+    for frame, aperture in aperture_keys:
+        camera.data.dof.aperture_fstop = aperture
+        camera.data.dof.keyframe_insert("aperture_fstop", frame=frame)
 
     # Studio illumination.
     bpy.ops.object.light_add(type="AREA", location=(0.0, -0.18, 1.55))
