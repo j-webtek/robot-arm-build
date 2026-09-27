@@ -4,8 +4,37 @@
 **Owners:** AI/model workstream and arm/runtime workstream  
 **Started:** 2026-09-26  
 **Repository:** `j-webtek/tactevra`
-**Current baseline commit:** `ebe7eee` (`docs: establish shared AI arm workplan`)  
+**Current capability baseline:** merged PR #126 (`AI-403` precision-adapter integration)
 **Authority:** this document coordinates development; it grants no hardware authority
+
+## Paused baseline and next test campaign
+
+The software wire contract is ready, but operational readiness remains blocked
+on qualified perception, retained camera/support evidence, a complete measured
+configuration epoch, commissioned planner calibration, and installed runtime
+qualification. The current synthetic precision candidate measured 0.9975
+coverage at a declared 0.99 with a 14.400834977 mm conservative planar bound.
+Because that disk crosses ordinary key safe regions, it is retained as research
+evidence and is not installed for deployment.
+
+When physical testing resumes, the highest-value sequence is:
+
+1. Freeze the final camera mount, arm base, board, keyboard, tool, cables, and
+   lighting as one measured configuration epoch.
+2. Collect and owner-AI review the four ARM-070 camera/support originals.
+3. Commission camera-to-board, board-to-robot, keyboard-to-board, and
+   tool-to-joint transforms with repeatability observations.
+4. Evaluate the merged precision adapter on disjoint final-camera calibration
+   and held-out captures, including glare, blur, obstruction, and placement
+   changes that remain inside the declared domain.
+5. Run zero-movement shadow batches through ingress, planning, and rejection
+   gates before any sparse noncontact hover grid.
+6. Attempt one independently verified contact only after the combined error
+   budget fits inside the selected target safe region.
+
+The governing criterion is
+`perception + calibration + tracking/settling + tool-tip uncertainty < target safe-region margin`.
+Additional broad ghost routines do not advance this baseline by themselves.
 
 ## Purpose
 
