@@ -543,6 +543,7 @@ remove it only in the same commit that appends the resulting evidence row.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
+| Arm runtime / ARM-049 | S4 | reviewed T102 runtime bridge, runtime tests, schemas, evidence ledger | `feat/arm-049-native-shaped` | ACTIVE |
 | Unclaimed | S2 | qualified perception adapter and complete shared gate | — | AVAILABLE |
 | Unclaimed | S4 | external reviewer publishes a typed decision for sealed r97 packet `987cbe86...b416`; collect/review all eight measured epoch components | — | AVAILABLE |
 
