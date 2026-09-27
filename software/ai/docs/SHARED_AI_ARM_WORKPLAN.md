@@ -599,8 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-- AI lane / S1: three-seed segmentation auxiliary training,coefficient0.001;identical heads/control initialization and original images;AI branch only.
-
 
 
 
@@ -6917,3 +6915,71 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic audit;AI-041 protected-main publication blocker retained.
 - Supersedes: none;prior failures and arm/integration status retained.
 - Next dependency: Freeze paired original-image training with identical auxiliary-head architecture/control initialization and no mask gradient in control,coefficient0.001 candidate. Same pose loss/anchor,data,budget/selection and three seeds;score original cluttered development images and retain segmentation metrics separately. No runtime or qualification change. Publish only feature/translation-pair-evidence to j-webtek/tactevra.
+
+
+### E-20260926-AI-245 — paired segmentation auxiliary training
+
+- Stage: S1
+- Lane: AI
+- Commit: `96e489e3cd0818053820cc6b06adc05fecc20cb2` (frozen source;results/tests committed with evidence)
+- Change: paired segmentation auxiliary training.
+- Inputs/fixtures: original29000000..29000599 x4 training,original15M200 x4 development;4epochs,9600presentations,152updates,AdamW0.0001,batch64,key loss+anchor1 both,balanced mask BCE0.001 candidate;identical head initializations,seeds260926/27/28. Initial/teacher0fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d. Source hashes train/pose_segmentation_*_plan.json;inputs/masks/teacher/checkpoint hashes in reports.
+- Command: `python software/ai/train/train_pose_segmentation.py`
+- Result: Full rule FAIL3/3;baseline PASS3/3. Candidate and control tails identical22/23/24 vs baseline32each. Mask BCE candidate0.632876/0.679543/0.678997 vs control0.660642/0.700939/0.716994;candidate IoU0.661374/0.052425/0.166410. No localization gain established. Checkpoint SHA256: 260926/control pose=3cd918c5cde540f8d3baf20eea9a37bc7190b74d3bdad3b520c1d55cba04c5dc training=2ebfde77408fe7eda92e3483ad921101de64ade9f95e3b2854f44f670cf93359; 260926/occlusion pose=2049ba45d2626d58ef796814692f80fd8068a20ba2c5f512ef02bf441cfd628d training=f0b8bf712a7c233ee893f524b85b9957dcd7ae62483a7ac396950ed84d15c003; 260927/control pose=2a578175168e399302c230dfdf69d3f90ba6f10fbff54018a5ffc345536e3c52 training=9fb105add2ee225f564591b77a711870e4b9ba1adfb8cb55153798183d3a54bf; 260927/occlusion pose=b1a27a35586378c11ab42f1a45cecadcc31905266c515b96a88c4106012c6bbc training=18a106b5c4b8e2856c77499b07636886f11f9c100b1a15737836a7560875db1a; 260928/control pose=1c101a33a3894ea65509e2d2ee1945c9d1e55e9916d96b2ca8eb466029b85ca8 training=ffcdce58bb1ea210a1920db33ed7cd29a103e7c36af609ae2d4da62e04473e61; 260928/occlusion pose=2c24f13e3128dcaee12031f657cbc82a9f6ce8655133d4982f891fc9392625a5 training=45a5ff7aa3fe6a501c3d32be45532b49716de04ae866333fcbeb316e88fc9380
+- Artifacts: train/train_pose_segmentation.py;vision/summarize_pose_segmentation.py;eval/pose_segmentation_*_report.json;tests/test_pose_segmentation.py;ignored local training/pose checkpoint pairs.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Reused development selects pose epoch;segmentation metrics descriptive. Random control heads remain untrained;IoU strongly initialization-dependent. No mask-based qualification or model promotion.
+- Supersedes: none;prior failures and arm/integration status retained.
+- Next dependency: Freeze a head-only visible-mask learning probe on frozen baseline features across all3 seeds;verify whether the33-parameter linear head can reliably learn the task before modifying shared features or sweeping auxiliary coefficients. Pose weights/predictions must remain identical;segmentation success alone grants no localization authority. Publish only feature/translation-pair-evidence to j-webtek/tactevra.
+
+
+### E-20260926-AI-246 — segmentation auxiliary aggregation
+
+- Stage: S1
+- Lane: AI
+- Commit: `96e489e3cd0818053820cc6b06adc05fecc20cb2` (frozen source;results/tests committed with evidence)
+- Change: segmentation auxiliary aggregation.
+- Inputs/fixtures: original29000000..29000599 x4 training,original15M200 x4 development;4epochs,9600presentations,152updates,AdamW0.0001,batch64,key loss+anchor1 both,balanced mask BCE0.001 candidate;identical head initializations,seeds260926/27/28. Initial/teacher0fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d. Source hashes train/pose_segmentation_*_plan.json;inputs/masks/teacher/checkpoint hashes in reports.
+- Command: `python software/ai/vision/summarize_pose_segmentation.py`
+- Result: All3seeds retained;candidate appearance mean0.809090mm vs control0.809980 and baseline0.833364;no tail improvement. Full passes0/3,baseline passes3/3.
+- Artifacts: train/train_pose_segmentation.py;vision/summarize_pose_segmentation.py;eval/pose_segmentation_*_report.json;tests/test_pose_segmentation.py;ignored local training/pose checkpoint pairs.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Three optimization seeds,same evaluation cases;not independent data replication or statistical significance.
+- Supersedes: none;prior failures and arm/integration status retained.
+- Next dependency: Freeze a head-only visible-mask learning probe on frozen baseline features across all3 seeds;verify whether the33-parameter linear head can reliably learn the task before modifying shared features or sweeping auxiliary coefficients. Pose weights/predictions must remain identical;segmentation success alone grants no localization authority. Publish only feature/translation-pair-evidence to j-webtek/tactevra.
+
+
+### E-20260926-AI-247 — segmentation training verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `96e489e3cd0818053820cc6b06adc05fecc20cb2` (frozen source;results/tests committed with evidence)
+- Change: segmentation training verification.
+- Inputs/fixtures: original29000000..29000599 x4 training,original15M200 x4 development;4epochs,9600presentations,152updates,AdamW0.0001,batch64,key loss+anchor1 both,balanced mask BCE0.001 candidate;identical head initializations,seeds260926/27/28. Initial/teacher0fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d. Source hashes train/pose_segmentation_*_plan.json;inputs/masks/teacher/checkpoint hashes in reports.
+- Command: `python -m pytest -q software/ai/tests/test_pose_segmentation.py`
+- Result: PASS,2 tests: identical initial/input/mask/teacher hashes,common budget/selection,original evaluation pixels,untrained control versus changed candidate head,exact backbone-only exports,checkpoint lineage and aggregate recount. Existing pytest-asyncio warning.
+- Artifacts: train/train_pose_segmentation.py;vision/summarize_pose_segmentation.py;eval/pose_segmentation_*_report.json;tests/test_pose_segmentation.py;ignored local training/pose checkpoint pairs.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Local checkpoint byte checks passed;clean clones explicitly skip the local-head test if ignored checkpoints absent. Contract unchanged;shared boundary suite not triggered.
+- Supersedes: none;prior failures and arm/integration status retained.
+- Next dependency: Freeze a head-only visible-mask learning probe on frozen baseline features across all3 seeds;verify whether the33-parameter linear head can reliably learn the task before modifying shared features or sweeping auxiliary coefficients. Pose weights/predictions must remain identical;segmentation success alone grants no localization authority. Publish only feature/translation-pair-evidence to j-webtek/tactevra.
+
+
+### E-20260926-AI-248 — segmentation training publication audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `96e489e3cd0818053820cc6b06adc05fecc20cb2` (frozen source;results/tests committed with evidence)
+- Change: segmentation training publication audit.
+- Inputs/fixtures: original29000000..29000599 x4 training,original15M200 x4 development;4epochs,9600presentations,152updates,AdamW0.0001,batch64,key loss+anchor1 both,balanced mask BCE0.001 candidate;identical head initializations,seeds260926/27/28. Initial/teacher0fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d. Source hashes train/pose_segmentation_*_plan.json;inputs/masks/teacher/checkpoint hashes in reports.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS;6109paths,864.8MiB,0 unresolved findings,14 reviewed synthetic fixtures.
+- Artifacts: train/train_pose_segmentation.py;vision/summarize_pose_segmentation.py;eval/pose_segmentation_*_report.json;tests/test_pose_segmentation.py;ignored local training/pose checkpoint pairs.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic audit;AI-041 protected-main blocker retained.
+- Supersedes: none;prior failures and arm/integration status retained.
+- Next dependency: Freeze a head-only visible-mask learning probe on frozen baseline features across all3 seeds;verify whether the33-parameter linear head can reliably learn the task before modifying shared features or sweeping auxiliary coefficients. Pose weights/predictions must remain identical;segmentation success alone grants no localization authority. Publish only feature/translation-pair-evidence to j-webtek/tactevra.
