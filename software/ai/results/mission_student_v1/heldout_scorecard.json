@@ -1,0 +1,2633 @@
+{
+  "cases": [
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "unsupported",
+        "device": "keyboard",
+        "observation_ref": "mission-v1-h-frame-0001",
+        "operation": "type_text",
+        "reason": "unsupported_by_profile",
+        "request_id": "mission-v1-h-0001",
+        "required_capability": "keyboard.typing.shifted",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": "unsupported_by_profile",
+      "actual_compilation_status": "blocked",
+      "category": "supported_keyboard",
+      "changed_literal": false,
+      "error": null,
+      "exact": false,
+      "expected": {
+        "arguments": {
+          "text": "robot"
+        },
+        "decision": "execute",
+        "device": "keyboard",
+        "observation_policy": "verify_after_each_action",
+        "observation_ref": "mission-v1-h-frame-0001",
+        "operation": "type_text",
+        "request_id": "mission-v1-h-0001",
+        "required_capability": "keyboard.typing.lowercase",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "accepted",
+      "id": "mission-v1-h-0001",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": true,
+      "actual": {
+        "arguments": {
+          "text": "robot"
+        },
+        "decision": "execute",
+        "device": "phone",
+        "observation_policy": "verify_after_each_state_change",
+        "observation_ref": "mission-v1-h-frame-0002",
+        "operation": "type_text",
+        "request_id": "mission-v1-h-0002",
+        "required_capability": "phone.typing.lowercase",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": null,
+      "actual_compilation_status": "accepted",
+      "category": "supported_phone",
+      "changed_literal": false,
+      "error": null,
+      "exact": true,
+      "expected": {
+        "arguments": {
+          "text": "robot"
+        },
+        "decision": "execute",
+        "device": "phone",
+        "observation_policy": "verify_after_each_state_change",
+        "observation_ref": "mission-v1-h-frame-0002",
+        "operation": "type_text",
+        "request_id": "mission-v1-h-0002",
+        "required_capability": "phone.typing.lowercase",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "accepted",
+      "id": "mission-v1-h-0002",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0003",
+        "reason": "intent_ambiguous",
+        "request_id": "mission-v1-h-0003",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": "intent_ambiguous",
+      "actual_compilation_status": "blocked",
+      "category": "quoted_command_word_literal",
+      "changed_literal": false,
+      "error": null,
+      "exact": false,
+      "expected": {
+        "arguments": {
+          "text": "robot"
+        },
+        "decision": "execute",
+        "device": "keyboard",
+        "observation_policy": "verify_after_each_action",
+        "observation_ref": "mission-v1-h-frame-0003",
+        "operation": "type_text",
+        "request_id": "mission-v1-h-0003",
+        "required_capability": "keyboard.typing.lowercase",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "accepted",
+      "id": "mission-v1-h-0003",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "unsupported",
+        "device": "keyboard",
+        "observation_ref": "mission-v1-h-frame-0004",
+        "operation": "type_text",
+        "reason": "unsupported_by_profile",
+        "request_id": "mission-v1-h-0004",
+        "required_capability": "keyboard.typing.shifted",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": "unsupported_by_profile",
+      "actual_compilation_status": "blocked",
+      "category": "stale_observation",
+      "changed_literal": false,
+      "error": null,
+      "exact": false,
+      "expected": {
+        "arguments": {
+          "text": "robot"
+        },
+        "decision": "execute",
+        "device": "keyboard",
+        "observation_policy": "verify_after_each_action",
+        "observation_ref": "mission-v1-h-frame-0004",
+        "operation": "type_text",
+        "request_id": "mission-v1-h-0004",
+        "required_capability": "keyboard.typing.lowercase",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "blocked",
+      "id": "mission-v1-h-0004",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "arguments": {
+          "text": "robot"
+        },
+        "decision": "execute",
+        "device": "phone",
+        "observation_policy": "verify_after_each_state_change",
+        "observation_ref": "mission-v1-h-frame-0005",
+        "operation": "type_text",
+        "request_id": "mission-v1-h-0005",
+        "required_capability": "phone.typing.lowercase",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": "phone_state_unverified",
+      "actual_compilation_status": "blocked",
+      "category": "phone_state_unverified",
+      "changed_literal": false,
+      "error": null,
+      "exact": true,
+      "expected": {
+        "arguments": {
+          "text": "robot"
+        },
+        "decision": "execute",
+        "device": "phone",
+        "observation_policy": "verify_after_each_state_change",
+        "observation_ref": "mission-v1-h-frame-0005",
+        "operation": "type_text",
+        "request_id": "mission-v1-h-0005",
+        "required_capability": "phone.typing.lowercase",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "blocked",
+      "id": "mission-v1-h-0005",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0006",
+        "reason": "device_ambiguous",
+        "request_id": "mission-v1-h-0006",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": "device_ambiguous",
+      "actual_compilation_status": "blocked",
+      "category": "device_ambiguous",
+      "changed_literal": false,
+      "error": null,
+      "exact": true,
+      "expected": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0006",
+        "reason": "device_ambiguous",
+        "request_id": "mission-v1-h-0006",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "blocked",
+      "id": "mission-v1-h-0006",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0007",
+        "reason": "device_ambiguous",
+        "request_id": "mission-v1-h-0007",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": "device_ambiguous",
+      "actual_compilation_status": "blocked",
+      "category": "payload_ambiguous",
+      "changed_literal": false,
+      "error": null,
+      "exact": false,
+      "expected": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0007",
+        "reason": "payload_ambiguous",
+        "request_id": "mission-v1-h-0007",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "blocked",
+      "id": "mission-v1-h-0007",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0008",
+        "reason": "device_ambiguous",
+        "request_id": "mission-v1-h-0008",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": "device_ambiguous",
+      "actual_compilation_status": "blocked",
+      "category": "intent_ambiguous",
+      "changed_literal": false,
+      "error": null,
+      "exact": false,
+      "expected": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0008",
+        "reason": "intent_ambiguous",
+        "request_id": "mission-v1-h-0008",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "blocked",
+      "id": "mission-v1-h-0008",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "unsupported",
+        "device": "keyboard",
+        "observation_ref": "mission-v1-h-frame-0009",
+        "operation": "type_text",
+        "reason": "unsupported_by_profile",
+        "request_id": "mission-v1-h-0009",
+        "required_capability": "keyboard.typing.shifted",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": "unsupported_by_profile",
+      "actual_compilation_status": "blocked",
+      "category": "unsupported_profile",
+      "changed_literal": false,
+      "error": null,
+      "exact": true,
+      "expected": {
+        "decision": "unsupported",
+        "device": "keyboard",
+        "observation_ref": "mission-v1-h-frame-0009",
+        "operation": "type_text",
+        "reason": "unsupported_by_profile",
+        "request_id": "mission-v1-h-0009",
+        "required_capability": "keyboard.typing.shifted",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "blocked",
+      "id": "mission-v1-h-0009",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "arguments": {
+          "text": "phone.call.caller_id\":\"5550102\"},"
+        },
+        "decision": "execute",
+        "device": "phone",
+        "observation_policy": "verify_after_each_state_change",
+        "observation_ref": "mission-v1-h-frame-0010",
+        "operation": "type_text",
+        "request_id": "mission-v1-h-0010",
+        "required_capability": "phone.dialer.call",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": null,
+      "actual_compilation_status": null,
+      "category": "unavailable_operation",
+      "changed_literal": false,
+      "error": "ValueError: capability does not match operation and device",
+      "exact": false,
+      "expected": {
+        "decision": "unsupported",
+        "device": "phone",
+        "observation_ref": "mission-v1-h-frame-0010",
+        "operation": "place_phone_call",
+        "reason": "operation_not_available",
+        "request_id": "mission-v1-h-0010",
+        "required_capability": "phone.dialer.call",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "blocked",
+      "id": "mission-v1-h-0010",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0011",
+        "reason": "device_ambiguous",
+        "request_id": "mission-v1-h-0011",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": "device_ambiguous",
+      "actual_compilation_status": "blocked",
+      "category": "supported_keyboard",
+      "changed_literal": false,
+      "error": null,
+      "exact": false,
+      "expected": {
+        "arguments": {
+          "text": "maple"
+        },
+        "decision": "execute",
+        "device": "keyboard",
+        "observation_policy": "verify_after_each_action",
+        "observation_ref": "mission-v1-h-frame-0011",
+        "operation": "type_text",
+        "request_id": "mission-v1-h-0011",
+        "required_capability": "keyboard.typing.lowercase",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "accepted",
+      "id": "mission-v1-h-0011",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": true,
+      "actual": {
+        "arguments": {
+          "text": "maple"
+        },
+        "decision": "execute",
+        "device": "phone",
+        "observation_policy": "verify_after_each_state_change",
+        "observation_ref": "mission-v1-h-frame-0012",
+        "operation": "type_text",
+        "request_id": "mission-v1-h-0012",
+        "required_capability": "phone.typing.lowercase",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": null,
+      "actual_compilation_status": "accepted",
+      "category": "supported_phone",
+      "changed_literal": false,
+      "error": null,
+      "exact": true,
+      "expected": {
+        "arguments": {
+          "text": "maple"
+        },
+        "decision": "execute",
+        "device": "phone",
+        "observation_policy": "verify_after_each_state_change",
+        "observation_ref": "mission-v1-h-frame-0012",
+        "operation": "type_text",
+        "request_id": "mission-v1-h-0012",
+        "required_capability": "phone.typing.lowercase",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "accepted",
+      "id": "mission-v1-h-0012",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0013",
+        "reason": "intent_ambiguous",
+        "request_id": "mission-v1-h-0013",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": "intent_ambiguous",
+      "actual_compilation_status": "blocked",
+      "category": "quoted_command_word_literal",
+      "changed_literal": false,
+      "error": null,
+      "exact": false,
+      "expected": {
+        "arguments": {
+          "text": "maple"
+        },
+        "decision": "execute",
+        "device": "keyboard",
+        "observation_policy": "verify_after_each_action",
+        "observation_ref": "mission-v1-h-frame-0013",
+        "operation": "type_text",
+        "request_id": "mission-v1-h-0013",
+        "required_capability": "keyboard.typing.lowercase",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "accepted",
+      "id": "mission-v1-h-0013",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "unsupported",
+        "device": "keyboard",
+        "observation_ref": "mission-v1-h-frame-0014",
+        "operation": "type_text",
+        "reason": "unsupported_by_profile",
+        "request_id": "mission-v1-h-0014",
+        "required_capability": "keyboard.typing.shifted",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": "unsupported_by_profile",
+      "actual_compilation_status": "blocked",
+      "category": "stale_observation",
+      "changed_literal": false,
+      "error": null,
+      "exact": false,
+      "expected": {
+        "arguments": {
+          "text": "maple"
+        },
+        "decision": "execute",
+        "device": "keyboard",
+        "observation_policy": "verify_after_each_action",
+        "observation_ref": "mission-v1-h-frame-0014",
+        "operation": "type_text",
+        "request_id": "mission-v1-h-0014",
+        "required_capability": "keyboard.typing.lowercase",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "blocked",
+      "id": "mission-v1-h-0014",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "arguments": {
+          "text": "maple"
+        },
+        "decision": "execute",
+        "device": "phone",
+        "observation_policy": "verify_after_each_state_change",
+        "observation_ref": "mission-v1-h-frame-0015",
+        "operation": "type_text",
+        "request_id": "mission-v1-h-0015",
+        "required_capability": "phone.typing.lowercase",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": "phone_state_unverified",
+      "actual_compilation_status": "blocked",
+      "category": "phone_state_unverified",
+      "changed_literal": false,
+      "error": null,
+      "exact": true,
+      "expected": {
+        "arguments": {
+          "text": "maple"
+        },
+        "decision": "execute",
+        "device": "phone",
+        "observation_policy": "verify_after_each_state_change",
+        "observation_ref": "mission-v1-h-frame-0015",
+        "operation": "type_text",
+        "request_id": "mission-v1-h-0015",
+        "required_capability": "phone.typing.lowercase",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "blocked",
+      "id": "mission-v1-h-0015",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0016",
+        "reason": "device_ambiguous",
+        "request_id": "mission-v1-h-0016",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": "device_ambiguous",
+      "actual_compilation_status": "blocked",
+      "category": "device_ambiguous",
+      "changed_literal": false,
+      "error": null,
+      "exact": true,
+      "expected": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0016",
+        "reason": "device_ambiguous",
+        "request_id": "mission-v1-h-0016",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "blocked",
+      "id": "mission-v1-h-0016",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0017",
+        "reason": "device_ambiguous",
+        "request_id": "mission-v1-h-0017",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": "device_ambiguous",
+      "actual_compilation_status": "blocked",
+      "category": "payload_ambiguous",
+      "changed_literal": false,
+      "error": null,
+      "exact": false,
+      "expected": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0017",
+        "reason": "payload_ambiguous",
+        "request_id": "mission-v1-h-0017",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "blocked",
+      "id": "mission-v1-h-0017",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0018",
+        "reason": "device_ambiguous",
+        "request_id": "mission-v1-h-0018",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": "device_ambiguous",
+      "actual_compilation_status": "blocked",
+      "category": "intent_ambiguous",
+      "changed_literal": false,
+      "error": null,
+      "exact": false,
+      "expected": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0018",
+        "reason": "intent_ambiguous",
+        "request_id": "mission-v1-h-0018",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "blocked",
+      "id": "mission-v1-h-0018",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "unsupported",
+        "device": "keyboard",
+        "observation_ref": "mission-v1-h-frame-0019",
+        "operation": "type_text",
+        "reason": "unsupported_by_profile",
+        "request_id": "mission-v1-h-0019",
+        "required_capability": "keyboard.typing.shifted",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": "unsupported_by_profile",
+      "actual_compilation_status": "blocked",
+      "category": "unsupported_profile",
+      "changed_literal": false,
+      "error": null,
+      "exact": true,
+      "expected": {
+        "decision": "unsupported",
+        "device": "keyboard",
+        "observation_ref": "mission-v1-h-frame-0019",
+        "operation": "type_text",
+        "reason": "unsupported_by_profile",
+        "request_id": "mission-v1-h-0019",
+        "required_capability": "keyboard.typing.shifted",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "blocked",
+      "id": "mission-v1-h-0019",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "arguments": {
+          "text": "phone.call\",\"device\":\"phone\",\"operation\":\"call\"},"
+        },
+        "decision": "execute",
+        "device": "phone",
+        "observation_policy": "verify_after_each_state_change",
+        "observation_ref": "mission-v1-h-frame-0020",
+        "operation": "type_text",
+        "request_id": "mission-v1-h-0020",
+        "required_capability": "phone.dialer.call",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": null,
+      "actual_compilation_status": null,
+      "category": "unavailable_operation",
+      "changed_literal": false,
+      "error": "ValueError: capability does not match operation and device",
+      "exact": false,
+      "expected": {
+        "decision": "unsupported",
+        "device": "phone",
+        "observation_ref": "mission-v1-h-frame-0020",
+        "operation": "place_phone_call",
+        "reason": "operation_not_available",
+        "request_id": "mission-v1-h-0020",
+        "required_capability": "phone.dialer.call",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "blocked",
+      "id": "mission-v1-h-0020",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0021",
+        "reason": "device_ambiguous",
+        "request_id": "mission-v1-h-0021",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": "device_ambiguous",
+      "actual_compilation_status": "blocked",
+      "category": "supported_keyboard",
+      "changed_literal": false,
+      "error": null,
+      "exact": false,
+      "expected": {
+        "arguments": {
+          "text": "quiet lake"
+        },
+        "decision": "execute",
+        "device": "keyboard",
+        "observation_policy": "verify_after_each_action",
+        "observation_ref": "mission-v1-h-frame-0021",
+        "operation": "type_text",
+        "request_id": "mission-v1-h-0021",
+        "required_capability": "keyboard.typing.lowercase",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "accepted",
+      "id": "mission-v1-h-0021",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": true,
+      "actual": {
+        "arguments": {
+          "text": "quiet lake"
+        },
+        "decision": "execute",
+        "device": "phone",
+        "observation_policy": "verify_after_each_state_change",
+        "observation_ref": "mission-v1-h-frame-0022",
+        "operation": "type_text",
+        "request_id": "mission-v1-h-0022",
+        "required_capability": "phone.typing.lowercase",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": null,
+      "actual_compilation_status": "accepted",
+      "category": "supported_phone",
+      "changed_literal": false,
+      "error": null,
+      "exact": true,
+      "expected": {
+        "arguments": {
+          "text": "quiet lake"
+        },
+        "decision": "execute",
+        "device": "phone",
+        "observation_policy": "verify_after_each_state_change",
+        "observation_ref": "mission-v1-h-frame-0022",
+        "operation": "type_text",
+        "request_id": "mission-v1-h-0022",
+        "required_capability": "phone.typing.lowercase",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "accepted",
+      "id": "mission-v1-h-0022",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0023",
+        "reason": "intent_ambiguous",
+        "request_id": "mission-v1-h-0023",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": "intent_ambiguous",
+      "actual_compilation_status": "blocked",
+      "category": "quoted_command_word_literal",
+      "changed_literal": false,
+      "error": null,
+      "exact": false,
+      "expected": {
+        "arguments": {
+          "text": "quiet lake"
+        },
+        "decision": "execute",
+        "device": "keyboard",
+        "observation_policy": "verify_after_each_action",
+        "observation_ref": "mission-v1-h-frame-0023",
+        "operation": "type_text",
+        "request_id": "mission-v1-h-0023",
+        "required_capability": "keyboard.typing.lowercase",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "accepted",
+      "id": "mission-v1-h-0023",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0024",
+        "reason": "device_ambiguous",
+        "request_id": "mission-v1-h-0024",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": "device_ambiguous",
+      "actual_compilation_status": "blocked",
+      "category": "stale_observation",
+      "changed_literal": false,
+      "error": null,
+      "exact": false,
+      "expected": {
+        "arguments": {
+          "text": "quiet lake"
+        },
+        "decision": "execute",
+        "device": "keyboard",
+        "observation_policy": "verify_after_each_action",
+        "observation_ref": "mission-v1-h-frame-0024",
+        "operation": "type_text",
+        "request_id": "mission-v1-h-0024",
+        "required_capability": "keyboard.typing.lowercase",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "blocked",
+      "id": "mission-v1-h-0024",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "arguments": {
+          "text": "quiet lake"
+        },
+        "decision": "execute",
+        "device": "phone",
+        "observation_policy": "verify_after_each_state_change",
+        "observation_ref": "mission-v1-h-frame-0025",
+        "operation": "type_text",
+        "request_id": "mission-v1-h-0025",
+        "required_capability": "phone.dialer.call",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": null,
+      "actual_compilation_status": null,
+      "category": "phone_state_unverified",
+      "changed_literal": false,
+      "error": "ValueError: capability does not match operation and device",
+      "exact": false,
+      "expected": {
+        "arguments": {
+          "text": "quiet lake"
+        },
+        "decision": "execute",
+        "device": "phone",
+        "observation_policy": "verify_after_each_state_change",
+        "observation_ref": "mission-v1-h-frame-0025",
+        "operation": "type_text",
+        "request_id": "mission-v1-h-0025",
+        "required_capability": "phone.typing.lowercase",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "blocked",
+      "id": "mission-v1-h-0025",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0026",
+        "reason": "intent_ambiguous",
+        "request_id": "mission-v1-h-0026",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": "intent_ambiguous",
+      "actual_compilation_status": "blocked",
+      "category": "device_ambiguous",
+      "changed_literal": false,
+      "error": null,
+      "exact": false,
+      "expected": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0026",
+        "reason": "device_ambiguous",
+        "request_id": "mission-v1-h-0026",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "blocked",
+      "id": "mission-v1-h-0026",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0027",
+        "reason": "device_ambiguous",
+        "request_id": "mission-v1-h-0027",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": "device_ambiguous",
+      "actual_compilation_status": "blocked",
+      "category": "payload_ambiguous",
+      "changed_literal": false,
+      "error": null,
+      "exact": false,
+      "expected": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0027",
+        "reason": "payload_ambiguous",
+        "request_id": "mission-v1-h-0027",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "blocked",
+      "id": "mission-v1-h-0027",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0028",
+        "reason": "device_ambiguous",
+        "request_id": "mission-v1-h-0028",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": "device_ambiguous",
+      "actual_compilation_status": "blocked",
+      "category": "intent_ambiguous",
+      "changed_literal": false,
+      "error": null,
+      "exact": false,
+      "expected": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0028",
+        "reason": "intent_ambiguous",
+        "request_id": "mission-v1-h-0028",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "blocked",
+      "id": "mission-v1-h-0028",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0029",
+        "reason": "device_ambiguous",
+        "request_id": "mission-v1-h-0029",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": "device_ambiguous",
+      "actual_compilation_status": "blocked",
+      "category": "unsupported_profile",
+      "changed_literal": false,
+      "error": null,
+      "exact": false,
+      "expected": {
+        "decision": "unsupported",
+        "device": "keyboard",
+        "observation_ref": "mission-v1-h-frame-0029",
+        "operation": "type_text",
+        "reason": "unsupported_by_profile",
+        "request_id": "mission-v1-h-0029",
+        "required_capability": "keyboard.typing.shifted",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "blocked",
+      "id": "mission-v1-h-0029",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0030",
+        "reason": "device_ambiguous",
+        "request_id": "mission-v1-h-0030",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": "device_ambiguous",
+      "actual_compilation_status": "blocked",
+      "category": "unavailable_operation",
+      "changed_literal": false,
+      "error": null,
+      "exact": false,
+      "expected": {
+        "decision": "unsupported",
+        "device": "phone",
+        "observation_ref": "mission-v1-h-frame-0030",
+        "operation": "place_phone_call",
+        "reason": "operation_not_available",
+        "request_id": "mission-v1-h-0030",
+        "required_capability": "phone.dialer.call",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "blocked",
+      "id": "mission-v1-h-0030",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0031",
+        "reason": "device_ambiguous",
+        "request_id": "mission-v1-h-0031",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": "device_ambiguous",
+      "actual_compilation_status": "blocked",
+      "category": "supported_keyboard",
+      "changed_literal": false,
+      "error": null,
+      "exact": false,
+      "expected": {
+        "arguments": {
+          "text": "call later"
+        },
+        "decision": "execute",
+        "device": "keyboard",
+        "observation_policy": "verify_after_each_action",
+        "observation_ref": "mission-v1-h-frame-0031",
+        "operation": "type_text",
+        "request_id": "mission-v1-h-0031",
+        "required_capability": "keyboard.typing.lowercase",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "accepted",
+      "id": "mission-v1-h-0031",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": true,
+      "actual": {
+        "arguments": {
+          "text": "call later"
+        },
+        "decision": "execute",
+        "device": "phone",
+        "observation_policy": "verify_after_each_state_change",
+        "observation_ref": "mission-v1-h-frame-0032",
+        "operation": "type_text",
+        "request_id": "mission-v1-h-0032",
+        "required_capability": "phone.typing.lowercase",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": null,
+      "actual_compilation_status": "accepted",
+      "category": "supported_phone",
+      "changed_literal": false,
+      "error": null,
+      "exact": true,
+      "expected": {
+        "arguments": {
+          "text": "call later"
+        },
+        "decision": "execute",
+        "device": "phone",
+        "observation_policy": "verify_after_each_state_change",
+        "observation_ref": "mission-v1-h-frame-0032",
+        "operation": "type_text",
+        "request_id": "mission-v1-h-0032",
+        "required_capability": "phone.typing.lowercase",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "accepted",
+      "id": "mission-v1-h-0032",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0033",
+        "reason": "intent_ambiguous",
+        "request_id": "mission-v1-h-0033",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": "intent_ambiguous",
+      "actual_compilation_status": "blocked",
+      "category": "quoted_command_word_literal",
+      "changed_literal": false,
+      "error": null,
+      "exact": false,
+      "expected": {
+        "arguments": {
+          "text": "call later"
+        },
+        "decision": "execute",
+        "device": "keyboard",
+        "observation_policy": "verify_after_each_action",
+        "observation_ref": "mission-v1-h-frame-0033",
+        "operation": "type_text",
+        "request_id": "mission-v1-h-0033",
+        "required_capability": "keyboard.typing.lowercase",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "accepted",
+      "id": "mission-v1-h-0033",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0034",
+        "reason": "device_ambiguous",
+        "request_id": "mission-v1-h-0034",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": "device_ambiguous",
+      "actual_compilation_status": "blocked",
+      "category": "stale_observation",
+      "changed_literal": false,
+      "error": null,
+      "exact": false,
+      "expected": {
+        "arguments": {
+          "text": "call later"
+        },
+        "decision": "execute",
+        "device": "keyboard",
+        "observation_policy": "verify_after_each_action",
+        "observation_ref": "mission-v1-h-frame-0034",
+        "operation": "type_text",
+        "request_id": "mission-v1-h-0034",
+        "required_capability": "keyboard.typing.lowercase",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "blocked",
+      "id": "mission-v1-h-0034",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "arguments": {
+          "text": "call later"
+        },
+        "decision": "execute",
+        "device": "phone",
+        "observation_policy": "verify_after_each_state_change",
+        "observation_ref": "mission-v1-h-frame-0035",
+        "operation": "type_text",
+        "request_id": "mission-v1-h-0035",
+        "required_capability": "phone.dialer.call",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": null,
+      "actual_compilation_status": null,
+      "category": "phone_state_unverified",
+      "changed_literal": false,
+      "error": "ValueError: capability does not match operation and device",
+      "exact": false,
+      "expected": {
+        "arguments": {
+          "text": "call later"
+        },
+        "decision": "execute",
+        "device": "phone",
+        "observation_policy": "verify_after_each_state_change",
+        "observation_ref": "mission-v1-h-frame-0035",
+        "operation": "type_text",
+        "request_id": "mission-v1-h-0035",
+        "required_capability": "phone.typing.lowercase",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "blocked",
+      "id": "mission-v1-h-0035",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0036",
+        "reason": "intent_ambiguous",
+        "request_id": "mission-v1-h-0036",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": "intent_ambiguous",
+      "actual_compilation_status": "blocked",
+      "category": "device_ambiguous",
+      "changed_literal": false,
+      "error": null,
+      "exact": false,
+      "expected": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0036",
+        "reason": "device_ambiguous",
+        "request_id": "mission-v1-h-0036",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "blocked",
+      "id": "mission-v1-h-0036",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0037",
+        "reason": "device_ambiguous",
+        "request_id": "mission-v1-h-0037",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": "device_ambiguous",
+      "actual_compilation_status": "blocked",
+      "category": "payload_ambiguous",
+      "changed_literal": false,
+      "error": null,
+      "exact": false,
+      "expected": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0037",
+        "reason": "payload_ambiguous",
+        "request_id": "mission-v1-h-0037",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "blocked",
+      "id": "mission-v1-h-0037",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0038",
+        "reason": "device_ambiguous",
+        "request_id": "mission-v1-h-0038",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": "device_ambiguous",
+      "actual_compilation_status": "blocked",
+      "category": "intent_ambiguous",
+      "changed_literal": false,
+      "error": null,
+      "exact": false,
+      "expected": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0038",
+        "reason": "intent_ambiguous",
+        "request_id": "mission-v1-h-0038",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "blocked",
+      "id": "mission-v1-h-0038",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0039",
+        "reason": "device_ambiguous",
+        "request_id": "mission-v1-h-0039",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": "device_ambiguous",
+      "actual_compilation_status": "blocked",
+      "category": "unsupported_profile",
+      "changed_literal": false,
+      "error": null,
+      "exact": false,
+      "expected": {
+        "decision": "unsupported",
+        "device": "keyboard",
+        "observation_ref": "mission-v1-h-frame-0039",
+        "operation": "type_text",
+        "reason": "unsupported_by_profile",
+        "request_id": "mission-v1-h-0039",
+        "required_capability": "keyboard.typing.shifted",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "blocked",
+      "id": "mission-v1-h-0039",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0040",
+        "reason": "device_ambiguous",
+        "request_id": "mission-v1-h-0040",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": "device_ambiguous",
+      "actual_compilation_status": "blocked",
+      "category": "unavailable_operation",
+      "changed_literal": false,
+      "error": null,
+      "exact": false,
+      "expected": {
+        "decision": "unsupported",
+        "device": "phone",
+        "observation_ref": "mission-v1-h-frame-0040",
+        "operation": "place_phone_call",
+        "reason": "operation_not_available",
+        "request_id": "mission-v1-h-0040",
+        "required_capability": "phone.dialer.call",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "blocked",
+      "id": "mission-v1-h-0040",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0041",
+        "reason": "device_ambiguous",
+        "request_id": "mission-v1-h-0041",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": "device_ambiguous",
+      "actual_compilation_status": "blocked",
+      "category": "supported_keyboard",
+      "changed_literal": false,
+      "error": null,
+      "exact": false,
+      "expected": {
+        "arguments": {
+          "text": "send help"
+        },
+        "decision": "execute",
+        "device": "keyboard",
+        "observation_policy": "verify_after_each_action",
+        "observation_ref": "mission-v1-h-frame-0041",
+        "operation": "type_text",
+        "request_id": "mission-v1-h-0041",
+        "required_capability": "keyboard.typing.lowercase",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "accepted",
+      "id": "mission-v1-h-0041",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": true,
+      "actual": {
+        "arguments": {
+          "text": "send help"
+        },
+        "decision": "execute",
+        "device": "phone",
+        "observation_policy": "verify_after_each_state_change",
+        "observation_ref": "mission-v1-h-frame-0042",
+        "operation": "type_text",
+        "request_id": "mission-v1-h-0042",
+        "required_capability": "phone.typing.lowercase",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": null,
+      "actual_compilation_status": "accepted",
+      "category": "supported_phone",
+      "changed_literal": false,
+      "error": null,
+      "exact": true,
+      "expected": {
+        "arguments": {
+          "text": "send help"
+        },
+        "decision": "execute",
+        "device": "phone",
+        "observation_policy": "verify_after_each_state_change",
+        "observation_ref": "mission-v1-h-frame-0042",
+        "operation": "type_text",
+        "request_id": "mission-v1-h-0042",
+        "required_capability": "phone.typing.lowercase",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "accepted",
+      "id": "mission-v1-h-0042",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0043",
+        "reason": "intent_ambiguous",
+        "request_id": "mission-v1-h-0043",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": "intent_ambiguous",
+      "actual_compilation_status": "blocked",
+      "category": "quoted_command_word_literal",
+      "changed_literal": false,
+      "error": null,
+      "exact": false,
+      "expected": {
+        "arguments": {
+          "text": "send help"
+        },
+        "decision": "execute",
+        "device": "keyboard",
+        "observation_policy": "verify_after_each_action",
+        "observation_ref": "mission-v1-h-frame-0043",
+        "operation": "type_text",
+        "request_id": "mission-v1-h-0043",
+        "required_capability": "keyboard.typing.lowercase",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "accepted",
+      "id": "mission-v1-h-0043",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0044",
+        "reason": "device_ambiguous",
+        "request_id": "mission-v1-h-0044",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": "device_ambiguous",
+      "actual_compilation_status": "blocked",
+      "category": "stale_observation",
+      "changed_literal": false,
+      "error": null,
+      "exact": false,
+      "expected": {
+        "arguments": {
+          "text": "send help"
+        },
+        "decision": "execute",
+        "device": "keyboard",
+        "observation_policy": "verify_after_each_action",
+        "observation_ref": "mission-v1-h-frame-0044",
+        "operation": "type_text",
+        "request_id": "mission-v1-h-0044",
+        "required_capability": "keyboard.typing.lowercase",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "blocked",
+      "id": "mission-v1-h-0044",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "arguments": {
+          "text": "send help"
+        },
+        "decision": "execute",
+        "device": "phone",
+        "observation_policy": "verify_after_each_state_change",
+        "observation_ref": "mission-v1-h-frame-0045",
+        "operation": "type_text",
+        "request_id": "mission-v1-h-0045",
+        "required_capability": "phone.dialer.call",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": null,
+      "actual_compilation_status": null,
+      "category": "phone_state_unverified",
+      "changed_literal": false,
+      "error": "ValueError: capability does not match operation and device",
+      "exact": false,
+      "expected": {
+        "arguments": {
+          "text": "send help"
+        },
+        "decision": "execute",
+        "device": "phone",
+        "observation_policy": "verify_after_each_state_change",
+        "observation_ref": "mission-v1-h-frame-0045",
+        "operation": "type_text",
+        "request_id": "mission-v1-h-0045",
+        "required_capability": "phone.typing.lowercase",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "blocked",
+      "id": "mission-v1-h-0045",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0046",
+        "reason": "intent_ambiguous",
+        "request_id": "mission-v1-h-0046",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": "intent_ambiguous",
+      "actual_compilation_status": "blocked",
+      "category": "device_ambiguous",
+      "changed_literal": false,
+      "error": null,
+      "exact": false,
+      "expected": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0046",
+        "reason": "device_ambiguous",
+        "request_id": "mission-v1-h-0046",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "blocked",
+      "id": "mission-v1-h-0046",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0047",
+        "reason": "device_ambiguous",
+        "request_id": "mission-v1-h-0047",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": "device_ambiguous",
+      "actual_compilation_status": "blocked",
+      "category": "payload_ambiguous",
+      "changed_literal": false,
+      "error": null,
+      "exact": false,
+      "expected": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0047",
+        "reason": "payload_ambiguous",
+        "request_id": "mission-v1-h-0047",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "blocked",
+      "id": "mission-v1-h-0047",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0048",
+        "reason": "device_ambiguous",
+        "request_id": "mission-v1-h-0048",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": "device_ambiguous",
+      "actual_compilation_status": "blocked",
+      "category": "intent_ambiguous",
+      "changed_literal": false,
+      "error": null,
+      "exact": false,
+      "expected": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0048",
+        "reason": "intent_ambiguous",
+        "request_id": "mission-v1-h-0048",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "blocked",
+      "id": "mission-v1-h-0048",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "unsupported",
+        "device": "keyboard",
+        "observation_ref": "mission-v1-h-frame-0049",
+        "operation": "type_text",
+        "reason": "unsupported_by_profile",
+        "request_id": "mission-v1-h-0049",
+        "required_capability": "keyboard.typing.shifted",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": "unsupported_by_profile",
+      "actual_compilation_status": "blocked",
+      "category": "unsupported_profile",
+      "changed_literal": false,
+      "error": null,
+      "exact": true,
+      "expected": {
+        "decision": "unsupported",
+        "device": "keyboard",
+        "observation_ref": "mission-v1-h-frame-0049",
+        "operation": "type_text",
+        "reason": "unsupported_by_profile",
+        "request_id": "mission-v1-h-0049",
+        "required_capability": "keyboard.typing.shifted",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "blocked",
+      "id": "mission-v1-h-0049",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0050",
+        "reason": "intent_ambiguous",
+        "request_id": "mission-v1-h-0050",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": "intent_ambiguous",
+      "actual_compilation_status": "blocked",
+      "category": "unavailable_operation",
+      "changed_literal": false,
+      "error": null,
+      "exact": false,
+      "expected": {
+        "decision": "unsupported",
+        "device": "phone",
+        "observation_ref": "mission-v1-h-frame-0050",
+        "operation": "place_phone_call",
+        "reason": "operation_not_available",
+        "request_id": "mission-v1-h-0050",
+        "required_capability": "phone.dialer.call",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "blocked",
+      "id": "mission-v1-h-0050",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "unsupported",
+        "device": "keyboard",
+        "observation_ref": "mission-v1-h-frame-0051",
+        "operation": "type_text",
+        "reason": "unsupported_by_profile",
+        "request_id": "mission-v1-h-0051",
+        "required_capability": "keyboard.typing.shifted",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": "unsupported_by_profile",
+      "actual_compilation_status": "blocked",
+      "category": "supported_keyboard",
+      "changed_literal": false,
+      "error": null,
+      "exact": false,
+      "expected": {
+        "arguments": {
+          "text": "phone"
+        },
+        "decision": "execute",
+        "device": "keyboard",
+        "observation_policy": "verify_after_each_action",
+        "observation_ref": "mission-v1-h-frame-0051",
+        "operation": "type_text",
+        "request_id": "mission-v1-h-0051",
+        "required_capability": "keyboard.typing.lowercase",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "accepted",
+      "id": "mission-v1-h-0051",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": true,
+      "actual": {
+        "arguments": {
+          "text": "phone"
+        },
+        "decision": "execute",
+        "device": "phone",
+        "observation_policy": "verify_after_each_state_change",
+        "observation_ref": "mission-v1-h-frame-0052",
+        "operation": "type_text",
+        "request_id": "mission-v1-h-0052",
+        "required_capability": "phone.typing.lowercase",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": null,
+      "actual_compilation_status": "accepted",
+      "category": "supported_phone",
+      "changed_literal": false,
+      "error": null,
+      "exact": true,
+      "expected": {
+        "arguments": {
+          "text": "phone"
+        },
+        "decision": "execute",
+        "device": "phone",
+        "observation_policy": "verify_after_each_state_change",
+        "observation_ref": "mission-v1-h-frame-0052",
+        "operation": "type_text",
+        "request_id": "mission-v1-h-0052",
+        "required_capability": "phone.typing.lowercase",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "accepted",
+      "id": "mission-v1-h-0052",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0053",
+        "reason": "intent_ambiguous",
+        "request_id": "mission-v1-h-0053",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": "intent_ambiguous",
+      "actual_compilation_status": "blocked",
+      "category": "quoted_command_word_literal",
+      "changed_literal": false,
+      "error": null,
+      "exact": false,
+      "expected": {
+        "arguments": {
+          "text": "phone"
+        },
+        "decision": "execute",
+        "device": "keyboard",
+        "observation_policy": "verify_after_each_action",
+        "observation_ref": "mission-v1-h-frame-0053",
+        "operation": "type_text",
+        "request_id": "mission-v1-h-0053",
+        "required_capability": "keyboard.typing.lowercase",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "accepted",
+      "id": "mission-v1-h-0053",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "arguments": {
+          "text": "phone"
+        },
+        "decision": "execute",
+        "device": "keyboard",
+        "observation_policy": "verify_after_each_action",
+        "observation_ref": "mission-v1-h-frame-0054",
+        "operation": "type_text",
+        "request_id": "mission-v1-h-0054",
+        "required_capability": "keyboard.typing.lowercase",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": "stale_observation",
+      "actual_compilation_status": "blocked",
+      "category": "stale_observation",
+      "changed_literal": false,
+      "error": null,
+      "exact": true,
+      "expected": {
+        "arguments": {
+          "text": "phone"
+        },
+        "decision": "execute",
+        "device": "keyboard",
+        "observation_policy": "verify_after_each_action",
+        "observation_ref": "mission-v1-h-frame-0054",
+        "operation": "type_text",
+        "request_id": "mission-v1-h-0054",
+        "required_capability": "keyboard.typing.lowercase",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "blocked",
+      "id": "mission-v1-h-0054",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "arguments": {
+          "text": "phone"
+        },
+        "decision": "execute",
+        "device": "phone",
+        "observation_policy": "verify_after_each_state_change",
+        "observation_ref": "mission-v1-h-frame-0055",
+        "operation": "type_text",
+        "request_id": "mission-v1-h-0055",
+        "required_capability": "phone.typing.lowercase",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": "phone_state_unverified",
+      "actual_compilation_status": "blocked",
+      "category": "phone_state_unverified",
+      "changed_literal": false,
+      "error": null,
+      "exact": true,
+      "expected": {
+        "arguments": {
+          "text": "phone"
+        },
+        "decision": "execute",
+        "device": "phone",
+        "observation_policy": "verify_after_each_state_change",
+        "observation_ref": "mission-v1-h-frame-0055",
+        "operation": "type_text",
+        "request_id": "mission-v1-h-0055",
+        "required_capability": "phone.typing.lowercase",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "blocked",
+      "id": "mission-v1-h-0055",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0056",
+        "reason": "device_ambiguous",
+        "request_id": "mission-v1-h-0056",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": "device_ambiguous",
+      "actual_compilation_status": "blocked",
+      "category": "device_ambiguous",
+      "changed_literal": false,
+      "error": null,
+      "exact": true,
+      "expected": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0056",
+        "reason": "device_ambiguous",
+        "request_id": "mission-v1-h-0056",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "blocked",
+      "id": "mission-v1-h-0056",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0057",
+        "reason": "device_ambiguous",
+        "request_id": "mission-v1-h-0057",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": "device_ambiguous",
+      "actual_compilation_status": "blocked",
+      "category": "payload_ambiguous",
+      "changed_literal": false,
+      "error": null,
+      "exact": false,
+      "expected": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0057",
+        "reason": "payload_ambiguous",
+        "request_id": "mission-v1-h-0057",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "blocked",
+      "id": "mission-v1-h-0057",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0058",
+        "reason": "device_ambiguous",
+        "request_id": "mission-v1-h-0058",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": "device_ambiguous",
+      "actual_compilation_status": "blocked",
+      "category": "intent_ambiguous",
+      "changed_literal": false,
+      "error": null,
+      "exact": false,
+      "expected": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0058",
+        "reason": "intent_ambiguous",
+        "request_id": "mission-v1-h-0058",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "blocked",
+      "id": "mission-v1-h-0058",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "unsupported",
+        "device": "keyboard",
+        "observation_ref": "mission-v1-h-frame-0059",
+        "operation": "type_text",
+        "reason": "unsupported_by_profile",
+        "request_id": "mission-v1-h-0059",
+        "required_capability": "keyboard.typing.shifted",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": "unsupported_by_profile",
+      "actual_compilation_status": "blocked",
+      "category": "unsupported_profile",
+      "changed_literal": false,
+      "error": null,
+      "exact": true,
+      "expected": {
+        "decision": "unsupported",
+        "device": "keyboard",
+        "observation_ref": "mission-v1-h-frame-0059",
+        "operation": "type_text",
+        "reason": "unsupported_by_profile",
+        "request_id": "mission-v1-h-0059",
+        "required_capability": "keyboard.typing.shifted",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "blocked",
+      "id": "mission-v1-h-0059",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0060",
+        "reason": "intent_ambiguous",
+        "request_id": "mission-v1-h-0060",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": "intent_ambiguous",
+      "actual_compilation_status": "blocked",
+      "category": "unavailable_operation",
+      "changed_literal": false,
+      "error": null,
+      "exact": false,
+      "expected": {
+        "decision": "unsupported",
+        "device": "phone",
+        "observation_ref": "mission-v1-h-frame-0060",
+        "operation": "place_phone_call",
+        "reason": "operation_not_available",
+        "request_id": "mission-v1-h-0060",
+        "required_capability": "phone.dialer.call",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "blocked",
+      "id": "mission-v1-h-0060",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0061",
+        "reason": "device_ambiguous",
+        "request_id": "mission-v1-h-0061",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": "device_ambiguous",
+      "actual_compilation_status": "blocked",
+      "category": "supported_keyboard",
+      "changed_literal": false,
+      "error": null,
+      "exact": false,
+      "expected": {
+        "arguments": {
+          "text": "left and right"
+        },
+        "decision": "execute",
+        "device": "keyboard",
+        "observation_policy": "verify_after_each_action",
+        "observation_ref": "mission-v1-h-frame-0061",
+        "operation": "type_text",
+        "request_id": "mission-v1-h-0061",
+        "required_capability": "keyboard.typing.lowercase",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "accepted",
+      "id": "mission-v1-h-0061",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": true,
+      "actual": {
+        "arguments": {
+          "text": "left and right"
+        },
+        "decision": "execute",
+        "device": "phone",
+        "observation_policy": "verify_after_each_state_change",
+        "observation_ref": "mission-v1-h-frame-0062",
+        "operation": "type_text",
+        "request_id": "mission-v1-h-0062",
+        "required_capability": "phone.typing.lowercase",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": null,
+      "actual_compilation_status": "accepted",
+      "category": "supported_phone",
+      "changed_literal": false,
+      "error": null,
+      "exact": true,
+      "expected": {
+        "arguments": {
+          "text": "left and right"
+        },
+        "decision": "execute",
+        "device": "phone",
+        "observation_policy": "verify_after_each_state_change",
+        "observation_ref": "mission-v1-h-frame-0062",
+        "operation": "type_text",
+        "request_id": "mission-v1-h-0062",
+        "required_capability": "phone.typing.lowercase",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "accepted",
+      "id": "mission-v1-h-0062",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0063",
+        "reason": "intent_ambiguous",
+        "request_id": "mission-v1-h-0063",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": "intent_ambiguous",
+      "actual_compilation_status": "blocked",
+      "category": "quoted_command_word_literal",
+      "changed_literal": false,
+      "error": null,
+      "exact": false,
+      "expected": {
+        "arguments": {
+          "text": "left and right"
+        },
+        "decision": "execute",
+        "device": "keyboard",
+        "observation_policy": "verify_after_each_action",
+        "observation_ref": "mission-v1-h-frame-0063",
+        "operation": "type_text",
+        "request_id": "mission-v1-h-0063",
+        "required_capability": "keyboard.typing.lowercase",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "accepted",
+      "id": "mission-v1-h-0063",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0064",
+        "reason": "device_ambiguous",
+        "request_id": "mission-v1-h-0064",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": "device_ambiguous",
+      "actual_compilation_status": "blocked",
+      "category": "stale_observation",
+      "changed_literal": false,
+      "error": null,
+      "exact": false,
+      "expected": {
+        "arguments": {
+          "text": "left and right"
+        },
+        "decision": "execute",
+        "device": "keyboard",
+        "observation_policy": "verify_after_each_action",
+        "observation_ref": "mission-v1-h-frame-0064",
+        "operation": "type_text",
+        "request_id": "mission-v1-h-0064",
+        "required_capability": "keyboard.typing.lowercase",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "blocked",
+      "id": "mission-v1-h-0064",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "arguments": {
+          "text": "left and right"
+        },
+        "decision": "execute",
+        "device": "phone",
+        "observation_policy": "verify_after_each_state_change",
+        "observation_ref": "mission-v1-h-frame-0065",
+        "operation": "type_text",
+        "request_id": "mission-v1-h-0065",
+        "required_capability": "phone.typing.lowercase",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": "phone_state_unverified",
+      "actual_compilation_status": "blocked",
+      "category": "phone_state_unverified",
+      "changed_literal": false,
+      "error": null,
+      "exact": true,
+      "expected": {
+        "arguments": {
+          "text": "left and right"
+        },
+        "decision": "execute",
+        "device": "phone",
+        "observation_policy": "verify_after_each_state_change",
+        "observation_ref": "mission-v1-h-frame-0065",
+        "operation": "type_text",
+        "request_id": "mission-v1-h-0065",
+        "required_capability": "phone.typing.lowercase",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "blocked",
+      "id": "mission-v1-h-0065",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0066",
+        "reason": "device_ambiguous",
+        "request_id": "mission-v1-h-0066",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": "device_ambiguous",
+      "actual_compilation_status": "blocked",
+      "category": "device_ambiguous",
+      "changed_literal": false,
+      "error": null,
+      "exact": true,
+      "expected": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0066",
+        "reason": "device_ambiguous",
+        "request_id": "mission-v1-h-0066",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "blocked",
+      "id": "mission-v1-h-0066",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0067",
+        "reason": "device_ambiguous",
+        "request_id": "mission-v1-h-0067",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": "device_ambiguous",
+      "actual_compilation_status": "blocked",
+      "category": "payload_ambiguous",
+      "changed_literal": false,
+      "error": null,
+      "exact": false,
+      "expected": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0067",
+        "reason": "payload_ambiguous",
+        "request_id": "mission-v1-h-0067",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "blocked",
+      "id": "mission-v1-h-0067",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0068",
+        "reason": "intent_ambiguous",
+        "request_id": "mission-v1-h-0068",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": "intent_ambiguous",
+      "actual_compilation_status": "blocked",
+      "category": "intent_ambiguous",
+      "changed_literal": false,
+      "error": null,
+      "exact": true,
+      "expected": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0068",
+        "reason": "intent_ambiguous",
+        "request_id": "mission-v1-h-0068",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "blocked",
+      "id": "mission-v1-h-0068",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0069",
+        "reason": "device_ambiguous",
+        "request_id": "mission-v1-h-0069",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": "device_ambiguous",
+      "actual_compilation_status": "blocked",
+      "category": "unsupported_profile",
+      "changed_literal": false,
+      "error": null,
+      "exact": false,
+      "expected": {
+        "decision": "unsupported",
+        "device": "keyboard",
+        "observation_ref": "mission-v1-h-frame-0069",
+        "operation": "type_text",
+        "reason": "unsupported_by_profile",
+        "request_id": "mission-v1-h-0069",
+        "required_capability": "keyboard.typing.shifted",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "blocked",
+      "id": "mission-v1-h-0069",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0070",
+        "reason": "intent_ambiguous",
+        "request_id": "mission-v1-h-0070",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": "intent_ambiguous",
+      "actual_compilation_status": "blocked",
+      "category": "unavailable_operation",
+      "changed_literal": false,
+      "error": null,
+      "exact": false,
+      "expected": {
+        "decision": "unsupported",
+        "device": "phone",
+        "observation_ref": "mission-v1-h-frame-0070",
+        "operation": "place_phone_call",
+        "reason": "operation_not_available",
+        "request_id": "mission-v1-h-0070",
+        "required_capability": "phone.dialer.call",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "blocked",
+      "id": "mission-v1-h-0070",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0071",
+        "reason": "device_ambiguous",
+        "request_id": "mission-v1-h-0071",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": "device_ambiguous",
+      "actual_compilation_status": "blocked",
+      "category": "supported_keyboard",
+      "changed_literal": false,
+      "error": null,
+      "exact": false,
+      "expected": {
+        "arguments": {
+          "text": "a=7"
+        },
+        "decision": "execute",
+        "device": "keyboard",
+        "observation_policy": "verify_after_each_action",
+        "observation_ref": "mission-v1-h-frame-0071",
+        "operation": "type_text",
+        "request_id": "mission-v1-h-0071",
+        "required_capability": "keyboard.typing.lowercase",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "accepted",
+      "id": "mission-v1-h-0071",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "arguments": {
+          "text": "a=7"
+        },
+        "decision": "execute",
+        "device": "phone",
+        "observation_policy": "verify_after_each_state_change",
+        "observation_ref": "mission-v1-h-frame-0072",
+        "operation": "type_text",
+        "request_id": "mission-v1-h-0072",
+        "required_capability": "phone.typing.lowercase",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": "unsupported_by_profile",
+      "actual_compilation_status": "blocked",
+      "category": "supported_phone",
+      "changed_literal": false,
+      "error": null,
+      "exact": true,
+      "expected": {
+        "arguments": {
+          "text": "a=7"
+        },
+        "decision": "execute",
+        "device": "phone",
+        "observation_policy": "verify_after_each_state_change",
+        "observation_ref": "mission-v1-h-frame-0072",
+        "operation": "type_text",
+        "request_id": "mission-v1-h-0072",
+        "required_capability": "phone.typing.lowercase",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "blocked",
+      "id": "mission-v1-h-0072",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0073",
+        "reason": "intent_ambiguous",
+        "request_id": "mission-v1-h-0073",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": "intent_ambiguous",
+      "actual_compilation_status": "blocked",
+      "category": "quoted_command_word_literal",
+      "changed_literal": false,
+      "error": null,
+      "exact": false,
+      "expected": {
+        "arguments": {
+          "text": "a=7"
+        },
+        "decision": "execute",
+        "device": "keyboard",
+        "observation_policy": "verify_after_each_action",
+        "observation_ref": "mission-v1-h-frame-0073",
+        "operation": "type_text",
+        "request_id": "mission-v1-h-0073",
+        "required_capability": "keyboard.typing.lowercase",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "accepted",
+      "id": "mission-v1-h-0073",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0074",
+        "reason": "device_ambiguous",
+        "request_id": "mission-v1-h-0074",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": "device_ambiguous",
+      "actual_compilation_status": "blocked",
+      "category": "stale_observation",
+      "changed_literal": false,
+      "error": null,
+      "exact": false,
+      "expected": {
+        "arguments": {
+          "text": "a=7"
+        },
+        "decision": "execute",
+        "device": "keyboard",
+        "observation_policy": "verify_after_each_action",
+        "observation_ref": "mission-v1-h-frame-0074",
+        "operation": "type_text",
+        "request_id": "mission-v1-h-0074",
+        "required_capability": "keyboard.typing.lowercase",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "blocked",
+      "id": "mission-v1-h-0074",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "arguments": {
+          "text": "a=7"
+        },
+        "decision": "execute",
+        "device": "phone",
+        "observation_policy": "verify_after_each_state_change",
+        "observation_ref": "mission-v1-h-frame-0075",
+        "operation": "type_text",
+        "request_id": "mission-v1-h-0075",
+        "required_capability": "phone.dialer.call",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": null,
+      "actual_compilation_status": null,
+      "category": "phone_state_unverified",
+      "changed_literal": false,
+      "error": "ValueError: capability does not match operation and device",
+      "exact": false,
+      "expected": {
+        "arguments": {
+          "text": "a=7"
+        },
+        "decision": "execute",
+        "device": "phone",
+        "observation_policy": "verify_after_each_state_change",
+        "observation_ref": "mission-v1-h-frame-0075",
+        "operation": "type_text",
+        "request_id": "mission-v1-h-0075",
+        "required_capability": "phone.typing.lowercase",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "blocked",
+      "id": "mission-v1-h-0075",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0076",
+        "reason": "intent_ambiguous",
+        "request_id": "mission-v1-h-0076",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": "intent_ambiguous",
+      "actual_compilation_status": "blocked",
+      "category": "device_ambiguous",
+      "changed_literal": false,
+      "error": null,
+      "exact": false,
+      "expected": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0076",
+        "reason": "device_ambiguous",
+        "request_id": "mission-v1-h-0076",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "blocked",
+      "id": "mission-v1-h-0076",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0077",
+        "reason": "device_ambiguous",
+        "request_id": "mission-v1-h-0077",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": "device_ambiguous",
+      "actual_compilation_status": "blocked",
+      "category": "payload_ambiguous",
+      "changed_literal": false,
+      "error": null,
+      "exact": false,
+      "expected": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0077",
+        "reason": "payload_ambiguous",
+        "request_id": "mission-v1-h-0077",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "blocked",
+      "id": "mission-v1-h-0077",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0078",
+        "reason": "intent_ambiguous",
+        "request_id": "mission-v1-h-0078",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": "intent_ambiguous",
+      "actual_compilation_status": "blocked",
+      "category": "intent_ambiguous",
+      "changed_literal": false,
+      "error": null,
+      "exact": true,
+      "expected": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0078",
+        "reason": "intent_ambiguous",
+        "request_id": "mission-v1-h-0078",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "blocked",
+      "id": "mission-v1-h-0078",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0079",
+        "reason": "device_ambiguous",
+        "request_id": "mission-v1-h-0079",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": "device_ambiguous",
+      "actual_compilation_status": "blocked",
+      "category": "unsupported_profile",
+      "changed_literal": false,
+      "error": null,
+      "exact": false,
+      "expected": {
+        "decision": "unsupported",
+        "device": "keyboard",
+        "observation_ref": "mission-v1-h-frame-0079",
+        "operation": "type_text",
+        "reason": "unsupported_by_profile",
+        "request_id": "mission-v1-h-0079",
+        "required_capability": "keyboard.typing.shifted",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "blocked",
+      "id": "mission-v1-h-0079",
+      "wrong_accepted": false
+    },
+    {
+      "accepted_correct": false,
+      "actual": {
+        "decision": "clarify",
+        "observation_ref": "mission-v1-h-frame-0080",
+        "reason": "device_ambiguous",
+        "request_id": "mission-v1-h-0080",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "actual_compilation_reason": "device_ambiguous",
+      "actual_compilation_status": "blocked",
+      "category": "unavailable_operation",
+      "changed_literal": false,
+      "error": null,
+      "exact": false,
+      "expected": {
+        "decision": "unsupported",
+        "device": "phone",
+        "observation_ref": "mission-v1-h-frame-0080",
+        "operation": "place_phone_call",
+        "reason": "operation_not_available",
+        "request_id": "mission-v1-h-0080",
+        "required_capability": "phone.dialer.call",
+        "schema": "rocell.mission_intent.v1"
+      },
+      "expected_compilation_status": "blocked",
+      "id": "mission-v1-h-0080",
+      "wrong_accepted": false
+    }
+  ],
+  "categories": {
+    "device_ambiguous": {
+      "accepted_correct": 0,
+      "changed_literal": 0,
+      "exact": 4,
+      "invalid": 0,
+      "total": 8,
+      "valid": 8,
+      "wrong_accepted": 0
+    },
+    "intent_ambiguous": {
+      "accepted_correct": 0,
+      "changed_literal": 0,
+      "exact": 2,
+      "invalid": 0,
+      "total": 8,
+      "valid": 8,
+      "wrong_accepted": 0
+    },
+    "payload_ambiguous": {
+      "accepted_correct": 0,
+      "changed_literal": 0,
+      "exact": 0,
+      "invalid": 0,
+      "total": 8,
+      "valid": 8,
+      "wrong_accepted": 0
+    },
+    "phone_state_unverified": {
+      "accepted_correct": 0,
+      "changed_literal": 0,
+      "exact": 4,
+      "invalid": 4,
+      "total": 8,
+      "valid": 4,
+      "wrong_accepted": 0
+    },
+    "quoted_command_word_literal": {
+      "accepted_correct": 0,
+      "changed_literal": 0,
+      "exact": 0,
+      "invalid": 0,
+      "total": 8,
+      "valid": 8,
+      "wrong_accepted": 0
+    },
+    "stale_observation": {
+      "accepted_correct": 0,
+      "changed_literal": 0,
+      "exact": 1,
+      "invalid": 0,
+      "total": 8,
+      "valid": 8,
+      "wrong_accepted": 0
+    },
+    "supported_keyboard": {
+      "accepted_correct": 0,
+      "changed_literal": 0,
+      "exact": 0,
+      "invalid": 0,
+      "total": 8,
+      "valid": 8,
+      "wrong_accepted": 0
+    },
+    "supported_phone": {
+      "accepted_correct": 7,
+      "changed_literal": 0,
+      "exact": 8,
+      "invalid": 0,
+      "total": 8,
+      "valid": 8,
+      "wrong_accepted": 0
+    },
+    "unavailable_operation": {
+      "accepted_correct": 0,
+      "changed_literal": 0,
+      "exact": 0,
+      "invalid": 2,
+      "total": 8,
+      "valid": 6,
+      "wrong_accepted": 0
+    },
+    "unsupported_profile": {
+      "accepted_correct": 0,
+      "changed_literal": 0,
+      "exact": 4,
+      "invalid": 0,
+      "total": 8,
+      "valid": 8,
+      "wrong_accepted": 0
+    }
+  },
+  "checks": {
+    "minimum_exact_fraction": false,
+    "minimum_expected_accepted_coverage": false,
+    "zero_changed_literal": true,
+    "zero_invalid": false,
+    "zero_wrong_accepted": true
+  },
+  "counts": {
+    "accepted_correct": 7,
+    "actual_accepted": 7,
+    "blocked_expected_accepted": 16,
+    "changed_literal": 0,
+    "exact": 23,
+    "expected_accepted": 23,
+    "invalid": 6,
+    "total": 80,
+    "valid": 74,
+    "wrong_accepted": 0
+  },
+  "hardware_writes": 0,
+  "heldout_sha256": "f17b14b4e0d24d9de83b525cf460b9c6c0821f488f3118b41cfdeaa3c454f4fd",
+  "metrics": {
+    "exact_fraction": 0.2875,
+    "expected_accepted_coverage": 0.30434782608695654,
+    "valid_fraction": 0.925
+  },
+  "passed": false,
+  "physical_movements": 0,
+  "predictions_sha256": "5609c52e628fa310cfda8ffca14cc1699a4ccf0ebb1122526b400d80488faacc",
+  "qualification_installed": false,
+  "schema": "rocell.mission_student_scorecard.v1"
+}

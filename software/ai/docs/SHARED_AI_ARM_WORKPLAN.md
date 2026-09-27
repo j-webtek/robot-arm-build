@@ -599,21 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-- AI lane / S1: freeze a mission-v1 student recipe and heldout evaluator,
-  then fit and score one local offline student without changing prompts,
-  decoding, gates, ModelMotionBatch, arm/runtime schemas, or integration status.
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -9638,3 +9623,78 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Source and harness verification only. The dataset is templated and agent-authored with simulated review. The heldout set is family-separated but shares the generator design. No model has yet been fitted or scored. Structured output constrains shape, while compiler-backed scoring supplies semantic and risk checks. No camera, localization, contact, motion, ModelMotionBatch, permit, controller, transport, or physical assurance; no qualification or runtime release.
 - Supersedes: AI-413 only as corrected harness verification; the failed record remains preserved.
 - Next dependency: Commit this freeze before running exactly one local fit. Select only by frozen validation loss, import only the selected adapter over the pinned base, then run the untouched heldout once with the frozen structured decoder and report every gate without post-heldout tuning.
+
+### E-20260927-AI-415 — mission student heldout scoring invocation failure
+
+- Stage: S1
+- Lane: AI
+- Commit: `ce1cf9fe14afc427d4829ed7147dbb0c411ff1a4` (frozen student study; failed command evidence committed in the successor)
+- Inputs/fixtures: Completed frozen fit and untouched heldout prediction file SHA-256 `5609c52e628fa310cfda8ffca14cc1699a4ccf0ebb1122526b400d80488faacc`; frozen evaluator and plan from AI-414.
+- Command: `$env:PYTHONPATH='software/ai'; python -m rocell_ai.mission_student_eval --cases software/ai/data/mission_curriculum_v1_heldout.jsonl --predictions software/ai/results/mission_student_v1/heldout_predictions.jsonl --plan software/ai/train/mission_student_v1_plan.json --output software/ai/results/mission_student_v1/heldout_scorecard.json; python -c "import json;p='software/ai/results/mission_student_v1/heldout_scorecard.json';x=json.load(open(p));print(json.dumps({k:x[k] for k in ['passed','counts','metrics','checks','categories']},indent=2,sort_keys=True))"`
+- Result: FAIL before scoring: `ModuleNotFoundError: No module named 'rocell'`; the follow-on display also failed because no scorecard was created. The command supplied the AI package path but omitted `software/src`, which the frozen mission compiler imports. The already generated heldout predictions were retained byte-for-byte; model inference was not rerun, and no prompt, decoder, plan, evaluator, threshold, adapter, or prediction changed.
+- Artifacts: retained `results/mission_student_v1/heldout_predictions.jsonl`; no scorecard from this failed invocation.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Local command-environment failure after inference; no model-quality conclusion from this command. No qualification, runtime release, arm status, or integration status change.
+- Supersedes: none; this failed evidence remains preserved.
+- Next dependency: Add only `software/src` to `PYTHONPATH` and score the identical retained prediction bytes once with the frozen evaluator.
+
+### E-20260927-AI-416 — first frozen mission student fit and heldout result
+
+- Stage: S1
+- Lane: AI
+- Commit: `ce1cf9fe14afc427d4829ed7147dbb0c411ff1a4` (frozen study; failed result and ledger committed in the successor)
+- Inputs/fixtures: Plan SHA-256 `766bbb2e9c924b0d14c65008f364aac385345d135ede489419b176efd9e28a81`; pinned base tag/digest `llama32-1b-meta-92131767:latest` / `6319184583b7d9d76f7506bfe9cdba1832f147486129527a33c157c62845d046`; 208 train, 80 validation, and untouched 80 heldout records with hashes from AI-414; selected adapter SHA-256 `bb0afa4fcb729c7ca475f1e7ee1d61017f675aa2acc941d3e86f917928db04f1`; imported tag/digest `llama32-1b-rocell-mission-v1:latest` / `4340d7f6191e01a1ea4071a31785e01cbe2744eb01037cb43b6e1056b4b78a78`; prediction and scorecard SHA-256 `5609c52e628fa310cfda8ffca14cc1699a4ccf0ebb1122526b400d80488faacc` / `0fd68713c36b6638091c2a313998bda88856def085e9334e00fb4c8f40977b75`.
+- Command: `python software/ai/train/train_mission_student_v1.py --output software/ai/results/mission_student_v1 --device cuda:0`; `python software/ai/train/import_adapter.py --adapter-dir software/ai/results/mission_student_v1/epoch-3 --staging-dir software/ai/artifacts/mission_student_v1_epoch3 --base-tag llama32-1b-meta-92131767:latest --tag llama32-1b-rocell-mission-v1:latest`; `$env:PYTHONPATH='software/ai'; python -m rocell_ai.mission_student_ollama --cases software/ai/data/mission_curriculum_v1_heldout.jsonl --plan software/ai/train/mission_student_v1_plan.json --model llama32-1b-rocell-mission-v1:latest --output software/ai/results/mission_student_v1/heldout_predictions.jsonl`; `$env:PYTHONPATH='software/ai;software/src'; python -m rocell_ai.mission_student_eval --cases software/ai/data/mission_curriculum_v1_heldout.jsonl --predictions software/ai/results/mission_student_v1/heldout_predictions.jsonl --plan software/ai/train/mission_student_v1_plan.json --output software/ai/results/mission_student_v1/heldout_scorecard.json`.
+- Result: FAIL promotion. Exactly one BF16 LoRA fit completed with 39 optimizer updates. Epoch 1/2/3 train losses were 1.1149103005 / 0.2117111705 / 0.0429351144 and validation losses were 0.6764784172 / 0.1888838754 / 0.0535534139; the frozen rule selected epoch 3 and training records `heldout_read=false`. Ollama 0.34.0 generated all 80 structured heldout responses once. Exact/valid counts were 23/80 and 74/80; expected accepted coverage was 7/23 = 0.3043478261. Six outputs were invalid, 16 expected accepted operations were blocked, and exact fraction was 0.2875. Zero wrong accepted operations and zero changed literal payloads passed; zero-invalid, minimum-exact, and minimum-coverage gates failed. Category exact counts out of eight were keyboard 0, phone 8, quoted literal 0, stale 1, phone-state-unverified 4, device ambiguity 4, payload ambiguity 0, intent ambiguity 2, unavailable operation 0, and unsupported profile 4. `passed=false`; `qualification_installed=false`.
+- Artifacts: `results/mission_student_v1/run_manifest.json`; `results/mission_student_v1/epoch-3/import_manifest.json`; `results/mission_student_v1/heldout_predictions.jsonl`; `results/mission_student_v1/heldout_scorecard.json`; selected adapter weights remain ignored and outside Git; interpretation in `docs/MISSION_INTENT_V1.md`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Synthetic templated language and simulated review only. The heldout shares its generator design even though template families are disjoint. The failed heldout is final for this candidate and cannot be used for tuning. Structured output did not prevent six capability mismatches. Zero wrong accepted operations reflects conservative over-abstention and does not qualify useful behavior. No camera, localization, trajectory, contact, ModelMotionBatch, hardware, runtime, or physical assurance; no capability, arm, integration, or qualification status changed.
+- Supersedes: none; this is retained as a failed candidate.
+- Next dependency: Preregister a new development-only curriculum and replacement study without reusing this heldout for selection. Development should directly balance ambiguity reason separation, supported keyboard execution, quoted command-word literals, stale-observation execute semantics, unavailable-operation classification, and capability-policy consistency. Use a fresh independent confirmation population after all choices freeze.
+
+### E-20260927-AI-417 — mission student result verification initial hash failure
+
+- Stage: S1
+- Lane: AI
+- Commit: `ce1cf9fe14afc427d4829ed7147dbb0c411ff1a4` (frozen study; failed verification and correction committed in the successor)
+- Inputs/fixtures: Training, import, prediction, and scorecard artifacts from AI-416; initial result verification test.
+- Command: `python -m pytest -q software/ai/tests/test_mission_student_source.py software/ai/tests/test_mission_student_result.py software/ai/tests/test_mission_intent.py software/ai/tests/test_mission_curriculum.py; git diff --check`
+- Result: FAIL: 1 failed and 16 passed in 0.72s. The runner reported prediction SHA-256 `af302d478fab3e1377bb68dc8911411106e4fc3ef28e44784993da3d58219214` over its in-memory LF payload, while Windows `Path.write_text` materialized CRLF bytes with actual SHA-256 `5609c52e628fa310cfda8ffca14cc1699a4ccf0ebb1122526b400d80488faacc`. The frozen evaluator and scorecard independently hashed the actual file bytes correctly. No artifact, response, metric, gate, model, or study choice changed.
+- Artifacts: same result artifacts as AI-416; failed test expectation in `tests/test_mission_student_result.py`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Evidence-reporting portability defect in the frozen runner's console digest. Actual prediction bytes and the authoritative scorecard remained stable. The runner is not installed. No physical evidence or status change.
+- Supersedes: none; this failed verification remains preserved.
+- Next dependency: Bind the result test to the actual file-byte digest already recorded by the frozen scorecard, document the console-report limitation, and rerun without regenerating predictions or scorecard.
+
+### E-20260927-AI-418 — mission student failed-result verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `ce1cf9fe14afc427d4829ed7147dbb0c411ff1a4` (frozen study; verification and ledger committed in the successor)
+- Inputs/fixtures: Result test SHA-256 `6417b861599429ee28f33bf7704b536abefac129e85dae0ef7fe5b73be41dbb3`; exact artifacts and hashes from AI-416; frozen source, plan, mission runtime, and curriculum fixtures.
+- Command: `python -m pytest -q software/ai/tests/test_mission_student_source.py software/ai/tests/test_mission_student_result.py software/ai/tests/test_mission_intent.py software/ai/tests/test_mission_curriculum.py; git diff --check; python -c "import json,hashlib;p='software/ai/results/mission_student_v1/heldout_predictions.jsonl';s=json.load(open('software/ai/results/mission_student_v1/heldout_scorecard.json'));print(s['predictions_sha256'],hashlib.sha256(open(p,'rb').read()).hexdigest())"`
+- Result: PASS: 17 tests in 0.66s, clean diff check, and scorecard/file prediction hashes both `5609c52e628fa310cfda8ffca14cc1699a4ccf0ebb1122526b400d80488faacc`. Tests verify the one-fit lineage, no-heldout training claim, validation-only epoch selection, exact adapter/base/Ollama digests, complete prediction set, full compiler-backed scorecard recount, all failed and passed gates, zero hardware/physical counts, and no qualification.
+- Artifacts: `tests/test_mission_student_result.py`; all artifacts from AI-416; result interpretation and shared ledger.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Existing pytest-asyncio configuration warning. Verification reproduces stored scoring from retained prediction bytes; it does not repeat model generation or establish independent language, runtime, or physical assurance. The console digest defect remains in frozen source and is documented rather than rewritten after the heldout result. `ModelMotionBatch` did not change, so shared boundary tests were not triggered.
+- Supersedes: AI-417 only as corrected artifact verification; failed evidence remains preserved.
+- Next dependency: Same as AI-416.
+
+### E-20260927-AI-419 — mission student failed-result snapshot review
+
+- Stage: S1
+- Lane: AI
+- Commit: `ce1cf9fe14afc427d4829ed7147dbb0c411ff1a4` (frozen study; failed result, verification, review, and ledger committed in the successor)
+- Inputs/fixtures: Staged repository snapshot containing the frozen mission student source and plan, exact training/import/prediction/scorecard evidence from AI-416, verification test, interpretation, and preserved failed records.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS: 6,391 paths, 1,040.7 MiB, 0 unresolved review findings, and 14 reviewed synthetic fixtures.
+- Artifacts: all artifacts from AI-416 and AI-418 plus shared documentation.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic repository review only; not independent language, model, security, runtime, or physical assurance. Adapter weights and Ollama blobs remain outside Git. No arm or integration status changes.
+- Supersedes: none.
+- Next dependency: Same as AI-416.

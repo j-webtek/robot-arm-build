@@ -79,3 +79,26 @@ IDs. Each validation and heldout category has eight cases. Stale and unverified
 state cases retain the correct semantic execute intent while the compiler
 result blocks before an ActionPlan; ambiguous and unavailable targets produce
 no plan. The heldout split is consumed only by a separately frozen evaluation.
+
+## First mission student result
+
+The frozen `mission_student_v1` study fitted one LoRA adapter on the pinned
+Llama 3.2 1B Instruct base. Training used 208 records, checkpoint selection
+used validation token loss only, and the selected third epoch reduced that
+loss to `0.0535534`. The training process did not read heldout.
+
+The selected adapter then ran once on all 80 untouched heldout cases through
+Ollama 0.34.0 with the frozen JSON Schema decoder. It did not qualify: 23/80
+outputs were exact, 74/80 were valid, and 7/23 expected executable cases were
+accepted correctly. Six outputs were invalid. The candidate produced zero
+wrong accepted operations and zero changed literal payloads, so the main
+failure is conservative over-abstention and poor category transfer rather
+than unsafe accepted substitutions.
+
+This result is a failed offline candidate. It does not install a runtime model
+or change any capability, motion, hardware, or integration status. The
+heldout examples cannot be used to tune a replacement. A successor needs a
+new preregistered development curriculum that improves ambiguity-reason
+separation, keyboard execution, quoted literals, stale-state semantics, and
+unavailable-operation classification before evaluation on a new confirmation
+population.
