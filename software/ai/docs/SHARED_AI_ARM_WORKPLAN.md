@@ -717,6 +717,12 @@ to the ledger using the template above; do not rewrite an earlier result.
 
 ## Active work claims
 
+The current zero-authority integration baseline is
+[`model_arm_conformance_profile_v1.json`](../../config/model_arm_conformance_profile_v1.json),
+SHA-256 `2430ec5f8362aae76e8250d2d9da292f85375d93750addd944a969b1bc2e4dbd`.
+It binds the reviewed arm and AI commits, freezes the implemented v2 boundary,
+and provides shared accepted/rejected cases without advancing operational readiness.
+
 Workers add a short row before beginning a potentially overlapping change and
 remove it only in the same commit that appends the resulting evidence row.
 
@@ -761,19 +767,20 @@ Each worker follows this process for every increment:
 
 ## Immediate coordinated work order
 
-1. **Joint S1 design:** agree on v2 freshness, uncertainty, capability, and
-   motion-hint semantics before coding either decoder or emitter.
-2. **AI S1 producer:** implement the v2 emitter and adversarial producer tests.
-3. **Arm S1 consumer:** implement strict v2 decoding, independent registry and
-   freshness checks, and v1 migration fixtures.
-4. **Integration S1:** round-trip actual v2 producer bytes and mutation-test every
-   identity and freshness field.
-5. **Joint S2 runner:** compose raw text through the actual emitter and arm
-   coordinator into a single zero-hardware trace.
-6. Continue measured S3 work independently, but do not install a qualification
-   or promote the planner until its own held-out and commissioning gates pass.
-7. Begin S4 zero-write encoding only from sealed envelopes; do not couple it to
-   model internals or add controller fields to the batch.
+1. **S1 software boundary — complete for zero authority:** v2 producer bytes,
+   strict decoding, trusted registry, freshness, mutation rejection, and ordered
+   `H,H,I` ingress are covered by the shared conformance profile.
+2. **AI S2:** produce a separately confirmed localization qualification and a
+   precision adapter. A research error scale or failed synthetic selection may
+   not populate the qualified uncertainty fields.
+3. **Arm S4:** collect the four physical-original camera/support/optics bindings
+   already named by ARM-070; do not synthesize the trusted registry from model output.
+4. **Integration S2:** rerun the conformance profile using actual qualified AI
+   output and physical-original registry records, beginning with one keyboard target.
+5. Continue measured planning and controller qualification independently. Speed,
+   clearance, dynamics, encoding, transport, and retry remain arm-owned.
+6. Require independent device-effect verification before expanding from one key
+   to strings or phone workflows.
 
 ## Definition of shared completion
 
