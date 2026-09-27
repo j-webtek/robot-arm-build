@@ -114,6 +114,8 @@ class PublicRecordTests(unittest.TestCase):
                 "runs-on: ubuntu-24.04\n"
                 "uses: actions/configure-pages@"
                 f"{checks.CONFIGURE_PAGES_V6_SHA} # v6.0.0\n"
+                "uses: actions/deploy-pages@"
+                f"{checks.DEPLOY_PAGES_V5_SHA} # v5.0.1\n"
                 "runs-on: ubuntu-24.04\n",
                 encoding="utf-8",
             )
@@ -127,6 +129,7 @@ class PublicRecordTests(unittest.TestCase):
             workflow.write_text(
                 "runs-on: ubuntu-latest\n"
                 "uses: actions/configure-pages@old # v5\n"
+                "uses: actions/deploy-pages@old # v4\n"
                 "runs-on: ubuntu-latest\n",
                 encoding="utf-8",
             )
@@ -134,6 +137,7 @@ class PublicRecordTests(unittest.TestCase):
             self.assertTrue(any("ubuntu-24.04" in error for error in errors))
             self.assertTrue(any("ubuntu-latest" in error for error in errors))
             self.assertTrue(any("v6.0.0" in error for error in errors))
+            self.assertTrue(any("v5.0.1" in error for error in errors))
 
 
 if __name__ == "__main__":

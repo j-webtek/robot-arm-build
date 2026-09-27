@@ -301,8 +301,8 @@ artifacts. The offline workflow retains the generated RC03 PDF and JSON summary
 for 14 days and has no release or deployment authority. The Pages workflow uses
 the same action for a one-day site package; its build job remains read-only and
 only its deploy job receives `pages: write` plus an OIDC token. Both Pages jobs
-use the explicit Ubuntu 24.04 hosted image, and `configure-pages` is pinned to
-the verified v6.0.0 Node 24 release commit. Artifact
+use the explicit Ubuntu 24.04 hosted image. `configure-pages` and `deploy-pages`
+are pinned to verified v6.0.0 and v5.0.1 Node 24 release commits. Artifact
 retention is review or deployment staging, not source-release publication.
 
 Before approving an outside contributor's workflow, inspect the proposed code
