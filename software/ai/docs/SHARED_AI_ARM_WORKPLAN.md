@@ -631,6 +631,12 @@ Completion evidence:
 
 **Goal:** improve speed only after correctness and recovery are demonstrated.
 
+The arm-side implementation sequence, rolling-horizon boundary, motion-shaping
+rules, and speed ladder are defined in the
+[optimized typing execution plan](../../docs/OPTIMIZED_TYPING_EXECUTION_PLAN.md).
+That plan retains a one-action commit horizon: preview and transition-cache work
+may reduce latency, but neither grants physical authority.
+
 AI lane objectives:
 
 - Measure intent, scene, precision, fusion, and emission latency separately.
@@ -822,7 +828,9 @@ Each worker follows this process for every increment:
 4. **Integration S2:** rerun the conformance profile using actual qualified AI
    output and physical-original registry records, beginning with one keyboard target.
 5. Continue measured planning and controller qualification independently. Speed,
-   clearance, dynamics, encoding, transport, and retry remain arm-owned.
+   clearance, dynamics, encoding, transport, and retry remain arm-owned. Use the
+   [optimized typing execution plan](../../docs/OPTIMIZED_TYPING_EXECUTION_PLAN.md)
+   for the ordered T1-T6 implementation and qualification gates.
 6. Require independent device-effect verification before expanding from one key
    to strings or phone workflows.
 7. Rebuild `arm072_model_arm_operational_readiness.json` after any retained
