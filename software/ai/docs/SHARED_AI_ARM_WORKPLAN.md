@@ -599,7 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-- AI lane / S1: fixed LeakyReLU0.01 residual variant and same-budget three-seed paired training; verify negative gradients/export and direct correction variation. No contract/arm changes or slope sweep.
 
 
 
@@ -7469,3 +7468,88 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic audit before final docs append; not runtime assurance. Zero optimizer updates; no new data or holdout.
 - Supersedes: none; failed evidence and arm/integration status retained.
 - Next dependency: Freeze residual LeakyReLU0.01-only variant with versioned research export, exact initial baseline parity and negative-side gradient tests; then same-budget three-seed paired learning and variation check. No slope sweep, runtime qualification or other simultaneous architecture change.
+
+
+### E-20260926-AI-277 — fixed leaky activation verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `e99d19ad39df7ba451a962ad285540d41399a0fa` (frozen execution source; results/tests/docs committed together)
+- Change: fixed leaky activation verification.
+- Inputs/fixtures: scenes29000000..29000599 x4training,15000000..15000199 x4development; seeds260926/27/28; same initial weights,8epochs,19200presentations,304updates,AdamW0.001,key loss+anchor1 as ReLU comparison. Only hidden activation changed to fixed LeakyReLU0.01. Exact source/head hashes in train/pose_leaky_residual_*_plan.json; input/frozen/teacher/checkpoint hashes in reports; aggregate binds all reports.
+- Command: `python -m pytest -q software/ai/tests/test_mask_conditioned_leaky_pose.py`
+- Result: PASS:2tests in1.63s before training; identical initial weights and baseline predictions; negative-side gradient0.01; exact nonzero export roundtrip; legacy/wrong-slope artifacts rejected.
+- Artifacts: vision/mask_conditioned_leaky_pose.py; train/train_pose_leaky_residual.py; eval/pose_leaky_residual_*_report.json; vision/summarize_pose_leaky_residual.py; tests/test_mask_conditioned_leaky_pose.py; tests/test_pose_leaky_residual.py; ignored local model.pt checkpoints.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Research artifact version only; no shared motion contract changed. Existing pytest-asyncio warning. No localization qualification or runtime model update.
+- Supersedes: none; ReLU failures and all arm/integration statuses retained.
+- Next dependency: Freeze one training-only regularized linear-readout diagnostic on fixed pooled descriptors, with training-only normalization and matched mask/control representations; report training fit/conditioning and reused-development errors without tuning regularization on development. No activation sweep or new holdout.
+
+
+### E-20260926-AI-278 — paired leaky residual training
+
+- Stage: S1
+- Lane: AI
+- Commit: `e99d19ad39df7ba451a962ad285540d41399a0fa` (frozen execution source; results/tests/docs committed together)
+- Change: paired leaky residual training.
+- Inputs/fixtures: scenes29000000..29000599 x4training,15000000..15000199 x4development; seeds260926/27/28; same initial weights,8epochs,19200presentations,304updates,AdamW0.001,key loss+anchor1 as ReLU comparison. Only hidden activation changed to fixed LeakyReLU0.01. Exact source/head hashes in train/pose_leaky_residual_*_plan.json; input/frozen/teacher/checkpoint hashes in reports; aggregate binds all reports.
+- Command: `python software/ai/train/train_pose_leaky_residual.py`
+- Result: Full rule FAIL3/3; baseline PASS2/3. Candidate tails31/31/32 versus control32/31/32 and baseline32each. All6models have0all-hidden-zero images and nonzero residual std on all axes in both splits; frozen sources unchanged.
+- Artifacts: vision/mask_conditioned_leaky_pose.py; train/train_pose_leaky_residual.py; eval/pose_leaky_residual_*_report.json; vision/summarize_pose_leaky_residual.py; tests/test_mask_conditioned_leaky_pose.py; tests/test_pose_leaky_residual.py; ignored local model.pt checkpoints.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Reused synthetic development selects epoch; GPU nondeterminism; removing zero hidden vectors does not establish useful accuracy. No slope/learning-rate sweep. Inherited head pretraining304updates per seed additional. No localization qualification or runtime model update.
+- Supersedes: none; ReLU failures and all arm/integration statuses retained.
+- Next dependency: Freeze one training-only regularized linear-readout diagnostic on fixed pooled descriptors, with training-only normalization and matched mask/control representations; report training fit/conditioning and reused-development errors without tuning regularization on development. No activation sweep or new holdout.
+
+
+### E-20260926-AI-279 — leaky study aggregation
+
+- Stage: S1
+- Lane: AI
+- Commit: `e99d19ad39df7ba451a962ad285540d41399a0fa` (frozen execution source; results/tests/docs committed together)
+- Change: leaky study aggregation.
+- Inputs/fixtures: scenes29000000..29000599 x4training,15000000..15000199 x4development; seeds260926/27/28; same initial weights,8epochs,19200presentations,304updates,AdamW0.001,key loss+anchor1 as ReLU comparison. Only hidden activation changed to fixed LeakyReLU0.01. Exact source/head hashes in train/pose_leaky_residual_*_plan.json; input/frozen/teacher/checkpoint hashes in reports; aggregate binds all reports.
+- Command: `python software/ai/vision/summarize_pose_leaky_residual.py`
+- Result: All3seeds retained. Appearance mean candidate0.8269351051589647mm,control0.8298856440815955,baseline0.8333639909177747. Full passes0/3,baseline-only2/3.
+- Artifacts: vision/mask_conditioned_leaky_pose.py; train/train_pose_leaky_residual.py; eval/pose_leaky_residual_*_report.json; vision/summarize_pose_leaky_residual.py; tests/test_mask_conditioned_leaky_pose.py; tests/test_pose_leaky_residual.py; ignored local model.pt checkpoints.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Same evaluation images across optimization seeds; not independent data replication. No localization qualification or runtime model update.
+- Supersedes: none; ReLU failures and all arm/integration statuses retained.
+- Next dependency: Freeze one training-only regularized linear-readout diagnostic on fixed pooled descriptors, with training-only normalization and matched mask/control representations; report training fit/conditioning and reused-development errors without tuning regularization on development. No activation sweep or new holdout.
+
+
+### E-20260926-AI-280 — leaky training evidence verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `e99d19ad39df7ba451a962ad285540d41399a0fa` (frozen execution source; results/tests/docs committed together)
+- Change: leaky training evidence verification.
+- Inputs/fixtures: scenes29000000..29000599 x4training,15000000..15000199 x4development; seeds260926/27/28; same initial weights,8epochs,19200presentations,304updates,AdamW0.001,key loss+anchor1 as ReLU comparison. Only hidden activation changed to fixed LeakyReLU0.01. Exact source/head hashes in train/pose_leaky_residual_*_plan.json; input/frozen/teacher/checkpoint hashes in reports; aggregate binds all reports.
+- Command: `python -m pytest -q software/ai/tests/test_pose_leaky_residual.py`
+- Result: PASS:2tests in1.68s. Prior identical initial weights and hyperparameters, paired input/frozen/teacher hashes, selected epoch, fixed budget, nonzero correction variation, frozen source bytes, versioned exports and acceptance recount.
+- Artifacts: vision/mask_conditioned_leaky_pose.py; train/train_pose_leaky_residual.py; eval/pose_leaky_residual_*_report.json; vision/summarize_pose_leaky_residual.py; tests/test_mask_conditioned_leaky_pose.py; tests/test_pose_leaky_residual.py; ignored local model.pt checkpoints.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Ignored checkpoint bytes verified locally; portable checks retained. Existing pytest-asyncio warning. Shared boundary suite not triggered because contract unchanged. No localization qualification or runtime model update.
+- Supersedes: none; ReLU failures and all arm/integration statuses retained.
+- Next dependency: Freeze one training-only regularized linear-readout diagnostic on fixed pooled descriptors, with training-only normalization and matched mask/control representations; report training fit/conditioning and reused-development errors without tuning regularization on development. No activation sweep or new holdout.
+
+
+### E-20260926-AI-281 — leaky study snapshot audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `e99d19ad39df7ba451a962ad285540d41399a0fa` (frozen execution source; results/tests/docs committed together)
+- Change: leaky study snapshot audit.
+- Inputs/fixtures: scenes29000000..29000599 x4training,15000000..15000199 x4development; seeds260926/27/28; same initial weights,8epochs,19200presentations,304updates,AdamW0.001,key loss+anchor1 as ReLU comparison. Only hidden activation changed to fixed LeakyReLU0.01. Exact source/head hashes in train/pose_leaky_residual_*_plan.json; input/frozen/teacher/checkpoint hashes in reports; aggregate binds all reports.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS:6170paths,875.3MiB,0unresolved findings,14reviewed synthetic fixtures.
+- Artifacts: vision/mask_conditioned_leaky_pose.py; train/train_pose_leaky_residual.py; eval/pose_leaky_residual_*_report.json; vision/summarize_pose_leaky_residual.py; tests/test_mask_conditioned_leaky_pose.py; tests/test_pose_leaky_residual.py; ignored local model.pt checkpoints.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic audit before final documentation append; not runtime assurance. No localization qualification or runtime model update.
+- Supersedes: none; ReLU failures and all arm/integration statuses retained.
+- Next dependency: Freeze one training-only regularized linear-readout diagnostic on fixed pooled descriptors, with training-only normalization and matched mask/control representations; report training fit/conditioning and reused-development errors without tuning regularization on development. No activation sweep or new holdout.

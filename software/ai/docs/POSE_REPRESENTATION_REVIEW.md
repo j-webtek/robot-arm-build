@@ -76,3 +76,14 @@ Initial-to-trained inactive counts (of32 units) were: seed260926 control10→31/
 For seed260927 both modes have all hidden activations exactly zero for all2,400 images and the feature-dependent output exactly zero. The correction is consequently the final output bias. This directly explains the constant correction on those images; it does not identify the optimizer step or cause that drove the preactivations negative. Other seeds retain only1–2 active units and limited correction variation.
 
 Next freeze a single activation change: use LeakyReLU with fixed negative slope0.01 in the residual hidden layer, preserving the same weights, parameter count, zero-initialized output, paired mask/control design, losses and training budget. Verify nonzero negative-side gradients and exact export/initial baseline parity. Version the research artifact so old ReLU checkpoints cannot silently load with new semantics. Then run the same three-seed paired experiment, retaining all results and checking actual correction variation alongside localization criteria. No slope sweep or other simultaneous architecture change. Preventing all-zero hidden output is not proof of useful localization learning.
+
+
+## Fixed LeakyReLU comparison
+
+The fixed0.01 negative slope preserved identical initial weights and baseline outputs, introduced no parameters, and used a separate versioned research export that rejects legacy artifacts. Both negative-side gradient and nonzero-weight export tests passed before training.
+
+Across all six selected models, no training or development image had an all-zero hidden vector, and direct residual outputs varied on every axis. Seed260927 now has nonzero scene variation, unlike the prior bias-only model. This addresses the observed all-zero activation failure on these samples, but does not establish useful accuracy.
+
+Candidate tails31/31/32 versus matched control32/31/32 and baseline32each; full acceptance0/3, baseline-only2/3. Candidate appearance mean0.826935mm versus control0.829886mm and baseline0.833364mm. One candidate has12 full-obstruction tails versus11 baseline. Keep all failures; no model promotion, extra activation sweep or runtime change.
+
+Next use a bounded training-only linear-readout diagnostic on the frozen pooled descriptors to assess whether they contain learnable residual information without nonlinear optimizer collapse. Fix a single regularization and training-only normalization before execution; compare predicted-mask and constant-mask descriptors with baseline/mean-offset diagnostics on both training and reused development. Report conditioning and training fit, and do not select regularization on development. This is an information/optimization diagnostic, not a new qualified controller. No fresh holdout should be consumed yet.
