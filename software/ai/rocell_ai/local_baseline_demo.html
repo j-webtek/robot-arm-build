@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Robot arm AI — local baseline</title>
+<style>
+:root{font:16px system-ui;color:#e6edf6;background:#101722}body{max-width:1120px;margin:auto;padding:32px}h1{font-size:32px;margin-bottom:8px}p{line-height:1.5;color:#b8c8da}.tag{color:#80dcd0;font-size:13px;text-transform:uppercase;letter-spacing:2px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}.card{background:#1a2535;border:1px solid #354359;border-radius:12px;padding:20px;margin-top:20px}select{width:100%;background:#101722;color:white;padding:12px;border:1px solid #63738b;border-radius:7px;font:inherit}svg{width:100%;background:#eee;border-radius:8px}h2{font-size:18px}strong{color:#fff}table{width:100%;border-collapse:collapse;font-size:14px}th,td{text-align:left;padding:8px;border-bottom:1px solid #354359}.scroll{max-height:320px;overflow:auto}.blocked{color:#ffc477}.accepted{color:#80dcd0}code{overflow-wrap:anywhere;font-size:12px}button{background:#b5ece4;color:#101722;border:0;padding:10px 16px;border-radius:7px;cursor:pointer}li{margin:8px 0;color:#b8c8da}@media(max-width:760px){.grid{grid-template-columns:1fr}body{padding:18px}} label{display:block;margin-bottom:10px} .legend{font-size:14px}pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px}
+</style>
+<div class="tag">Offline · simulation · zero hardware activity</div>
+<h1>From instruction to a blocked motion handoff</h1>
+<p>Explore what works today: text planning and predicted key locations. Physical movement remains blocked until perception is qualified.</p>
+<div class="card"><label for="case">Choose a recorded demonstration</label><select id="case"></select><p id="request"></p><p id="fixture"></p></div>
+<div class="grid"><section class="card"><h2>1. Simulated camera and target overlay</h2><svg id="board" viewBox="0 0 256 192" role="img" aria-label="Synthetic keyboard with prediction and truth overlay"></svg><p class="legend">Orange circles: model predictions · cyan crosses: simulator truth. Lines connect each pair; differences may be smaller than one display pixel.</p><label><input type="checkbox" id="truth" checked> Show simulator truth (evaluation only)</label><p id="error"></p></section>
+<section class="card"><h2>2. Semantic plan</h2><p id="semantic"></p><p id="order"></p><h2>3. Motion handoff</h2><p class="blocked" id="motion"></p><p id="reason"></p><p><strong>No ModelMotionBatch emitted.</strong> No hardware writes or physical movement. Semantic acceptance is not motion acceptance.</p></section></div>
+<section class="card"><h2>Ordered target preview</h2><p>XY in millimetres on the synthetic board. These values are not calibrated physical commands. Repeated keys remain separate actions.</p><div class="scroll"><table><thead><tr><th>Action</th><th>Key</th><th>Predicted XY</th><th>Truth XY</th><th>Error</th></tr></thead><tbody id="targets"></tbody></table></div></section>
+<section class="card"><h2>What is actually running?</h2><p>These recorded results use the local KeyboardPoseNet checkpoint and the existing deterministic grounded text parser. No language model, camera or inference server runs inside this page. Change a request by rerunning the documented Python command.</p><ul id="limits"></ul><details><summary>Evidence and selected case JSON</summary><p>Model SHA256: <code id="model"></code></p><pre id="evidence"></pre></details></section>
+<script id="report" type="application/json">__REPORT_JSON__</script>
+<script>
+const report=JSON.parse(document.getElementById('report').textContent),$=id=>document.getElementById(id),ns='http://www.w3.org/2000/svg';
+const node=(tag,attrs)=>{const n=document.createElementNS(ns,tag);for(const[k,v]of Object.entries(attrs))n.setAttribute(k,v);return n};
+report.cases.forEach((c,i)=>{const o=document.createElement('option');o.value=i;o.textContent=c.name;$('case').append(o)});
+report.limitations.forEach(t=>{const li=document.createElement('li');li.textContent=t;$('limits').append(li)});$('model').textContent=report.model_sha256;
+function render(){const c=report.cases[Number($('case').value)],show=$('truth').checked;$('request').textContent=c.request;$('fixture').textContent=`Fixture ${c.seed} · ${c.condition} · freshness ${c.fresh} · obstruction ${c.obstructed}`;
+$('semantic').textContent=c.semantic_inspection.status==='accepted'?'Accepted by the text compiler':'Blocked: '+c.semantic_inspection.reason;$('semantic').className=c.semantic_inspection.status==='accepted'?'accepted':'blocked';
+$('order').textContent=c.targets.length?c.targets.map(t=>t.target_id).join(' → '):'No keyboard target sequence.';$('motion').textContent=c.motion_status;$('reason').textContent=c.motion_reason;
+$('error').textContent=c.maximum_requested_target_error_mm===null?'No requested keyboard targets to score.':`Largest requested-key error: ${c.maximum_requested_target_error_mm.toFixed(3)} mm. This is a simulator comparison, not an uncertainty estimate.`;
+const board=$('board');board.replaceChildren(node('image',{href:c.image_data_uri,width:256,height:192}));$('targets').replaceChildren();
+const xy=p=>[p[0]*256/610,p[1]*192/457];
+for(const t of c.targets){const [x,y]=xy(t.predicted_xy_mm),[u,v]=xy(t.simulation_truth_xy_mm);if(show){board.append(node('line',{x1:x,y1:y,x2:u,y2:v,stroke:'#f97316','stroke-width':.5}),node('path',{d:`M${u-2},${v}h4 M${u},${v-2}v4`,stroke:'#00d6db','stroke-width':.7}))}board.append(node('circle',{cx:x,cy:y,r:2.2,fill:'none',stroke:'#ff7b00','stroke-width':.8}));const tr=document.createElement('tr');[t.action_index+1,t.target_id,t.predicted_xy_mm.map(v=>v.toFixed(2)).join(', '),show?t.simulation_truth_xy_mm.map(v=>v.toFixed(2)).join(', '):'Hidden',t.error_mm.toFixed(3)+' mm'].forEach(value=>{const td=document.createElement('td');td.textContent=value;tr.append(td)});$('targets').append(tr)}
+const {image_data_uri,...evidence}=c;$('evidence').textContent=JSON.stringify(evidence,null,2)}
+$('case').onchange=render;$('truth').onchange=render;render();
+</script></html>

@@ -599,6 +599,8 @@ Copy this row and fill every field:
 
 ## Active work claims
 
+- AI lane / S1: user-requested local baseline demonstration using grounded parser, baseline pose checkpoint and actual zero-evidence shared shadow decision; no training or contract changes.
+
 
 
 
