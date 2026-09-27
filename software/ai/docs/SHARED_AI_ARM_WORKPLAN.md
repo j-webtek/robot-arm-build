@@ -3,7 +3,7 @@
 **Status:** active coordination document  
 **Owners:** AI/model workstream and arm/runtime workstream  
 **Started:** 2026-09-26  
-**Repository:** `j-webtek/robot-arm-build`  
+**Repository:** `j-webtek/tactevra`
 **Current baseline commit:** `ebe7eee` (`docs: establish shared AI arm workplan`)  
 **Authority:** this document coordinates development; it grants no hardware authority
 

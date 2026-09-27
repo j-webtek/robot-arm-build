@@ -1,8 +1,10 @@
 # Experimental source-preview candidate: dcd87db
 
 Prepared September 26, 2026 for [issue #25](https://github.com/j-webtek/tactevra/issues/25).
-**Disposition: HOLD for publication.** This is preparation evidence, not a release
-approval, firmware review, or physical qualification.
+**Disposition: SUPERSEDED WITHOUT PUBLICATION.** This is historical preparation
+evidence, not a current candidate, release approval, firmware review, or
+physical qualification. Current preparation is tracked in
+[issue #57](https://github.com/j-webtek/tactevra/issues/57).
 
 ## Proposed identity
 
