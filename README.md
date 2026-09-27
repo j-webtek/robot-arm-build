@@ -14,9 +14,9 @@ The CI badge covers [scoped hardware-free checks](docs/CI.md), not physical robo
 
 ## See Tactevra in 22 seconds
 
-[![Watch the Tactevra system explainer](assets/media/tactevra-overview-poster.jpg)](assets/media/tactevra-overview.mp4)
+[![Watch the Tactevra system explainer](assets/media/tactevra-overview-poster.jpg)](https://j-webtek.github.io/tactevra/)
 
-[Watch the explainer with playback controls and selectable English captions](assets/media/tactevra-overview.mp4)
+[▶ Watch the explainer with mobile-friendly controls and selectable English captions](https://j-webtek.github.io/tactevra/)
 · [English captions (WebVTT)](assets/media/tactevra-overview.en.vtt)
 
 The film follows one request through Tactevra's five-stage architecture:

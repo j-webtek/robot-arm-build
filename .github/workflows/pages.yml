@@ -1,0 +1,49 @@
+name: Project video
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/pages.yml"
+      - "assets/media/**"
+      - "site/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Assemble player
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p _site/media
+          cp site/index.html _site/index.html
+          cp assets/media/tactevra-overview.mp4 _site/media/
+          cp assets/media/tactevra-overview-poster.jpg _site/media/
+          cp assets/media/tactevra-overview.en.vtt _site/media/
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4
