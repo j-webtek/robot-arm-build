@@ -599,6 +599,8 @@ Copy this row and fill every field:
 
 ## Active work claims
 
+- AI lane / S1: retained cross-seed persistent-failure diagnosis; baseline counted once, six trained predictions per case; no training/runtime changes.
+
 
 
 

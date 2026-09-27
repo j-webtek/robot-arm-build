@@ -1,0 +1,14 @@
+{
+  "inputs": [
+    "software/ai/eval/pose_diversity_long_260926_report.json",
+    "software/ai/eval/pose_diversity_long_260927_report.json",
+    "software/ai/eval/pose_diversity_long_260928_report.json"
+  ],
+  "file_sha256": {
+    "software/ai/eval/pose_diversity_long_260926_report.json": "1ea17532234f0f53db89b4c985b92c377d09214fc6e385323105fc640a6c0d76",
+    "software/ai/eval/pose_diversity_long_260927_report.json": "ece44c98deb83fd46d54b628a681874d2e7af73f5483001fc9daf2355a5bb332",
+    "software/ai/eval/pose_diversity_long_260928_report.json": "dcce877f776a46499b799f900236bc4788e1ea9c61c614fc02944e55528ecb19",
+    "software/ai/vision/diagnose_persistent_pose.py": "15b8c7b81caaa504d0463c9193a3ee37977431d2f85a6b5390aeec41caa619ad"
+  },
+  "method": "Fixed>3mm maximum key error; all-six trained predictions defines persistent; baseline counted once; no selected subset removed from scoring"
+}
