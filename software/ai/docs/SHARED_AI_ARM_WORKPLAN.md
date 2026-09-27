@@ -599,6 +599,10 @@ Copy this row and fill every field:
 
 ## Active work claims
 
+- AI lane / S1: train one preregistered 95th-percentile metric error head on
+  fresh 58M training and 59M selection scenes; no runtime, contract, arm, or
+  integration-status changes.
+
 
 
 
