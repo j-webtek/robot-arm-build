@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rocell.local/schemas/native_t102_read_only_endpoint_qualification_v1.schema.json",
+  "title": "RoCell native T102 read-only endpoint qualification receipt v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "status", "intake_sha256", "intake_id", "host_id",
+    "endpoint_sha256", "started_utc", "finished_utc", "elapsed_ms",
+    "identity_before", "identity_after", "open_attempts", "open_succeeded",
+    "close_attempts", "close_confirmed", "maximum_passive_lines",
+    "maximum_line_bytes", "passive_read_timeout_s", "captured_lines",
+    "captured_line_count", "outbound_bytes", "active_requests",
+    "movement_commands", "torque_commands", "retry_count", "purge_count",
+    "dtr_asserted", "rts_asserted", "failure",
+    "controller_start_authorized", "transport_write_authorized",
+    "execution_authorized", "physical_authority"
+  ],
+  "properties": {
+    "schema": {"const": "rocell.native_t102_read_only_endpoint_qualification.v1"},
+    "status": {
+      "enum": [
+        "PASSIVE_CAPTURE_COMPLETED", "PASSIVE_CAPTURE_FAILED",
+        "PASSIVE_LINE_LIMIT_EXCEEDED"
+      ]
+    },
+    "intake_sha256": {"$ref": "#/$defs/sha256"},
+    "intake_id": {"$ref": "#/$defs/id"},
+    "host_id": {"$ref": "#/$defs/id"},
+    "endpoint_sha256": {"$ref": "#/$defs/sha256"},
+    "started_utc": {"$ref": "#/$defs/utcMillis"},
+    "finished_utc": {"$ref": "#/$defs/utcMillis"},
+    "elapsed_ms": {"type": "number", "minimum": 0, "maximum": 3000},
+    "identity_before": {"$ref": "#/$defs/identity"},
+    "identity_after": {"anyOf": [{"$ref": "#/$defs/identity"}, {"type": "null"}]},
+    "open_attempts": {"const": 1},
+    "open_succeeded": {"type": "boolean"},
+    "close_attempts": {"const": 1},
+    "close_confirmed": {"type": "boolean"},
+    "maximum_passive_lines": {"const": 4},
+    "maximum_line_bytes": {"const": 2048},
+    "passive_read_timeout_s": {"const": 1},
+    "captured_lines": {
+      "type": "array", "maxItems": 4,
+      "items": {"$ref": "#/$defs/line"}
+    },
+    "captured_line_count": {"type": "integer", "minimum": 0, "maximum": 4},
+    "outbound_bytes": {"const": 0},
+    "active_requests": {"const": 0},
+    "movement_commands": {"const": 0},
+    "torque_commands": {"const": 0},
+    "retry_count": {"const": 0},
+    "purge_count": {"const": 0},
+    "dtr_asserted": {"const": false},
+    "rts_asserted": {"const": false},
+    "failure": {"type": ["string", "null"], "maxLength": 2048},
+    "controller_start_authorized": {"const": false},
+    "transport_write_authorized": {"const": false},
+    "execution_authorized": {"const": false},
+    "physical_authority": {"const": false}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "id": {
+      "type": "string", "minLength": 1, "maxLength": 192,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:@/-]*$"
+    },
+    "utcMillis": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+    },
+    "identity": {
+      "type": "object", "additionalProperties": false,
+      "required": ["status", "friendly_name", "instance_id"],
+      "properties": {
+        "status": {"const": "OK"},
+        "friendly_name": {"const": "Silicon Labs CP210x USB to UART Bridge (COM7)"},
+        "instance_id": {
+          "const": "USB\\VID_10C4&PID_EA60\\52E4E1E8337FEF119E92181CEDD322A4"
+        }
+      }
+    },
+    "line": {
+      "type": "object", "additionalProperties": false,
+      "required": ["ordinal", "bytes", "base64", "sha256", "newline_terminated"],
+      "properties": {
+        "ordinal": {"type": "integer", "minimum": 0, "maximum": 3},
+        "bytes": {"type": "integer", "minimum": 1, "maximum": 2048},
+        "base64": {"type": "string", "maxLength": 2732},
+        "sha256": {"$ref": "#/$defs/sha256"},
+        "newline_terminated": {"type": "boolean"}
+      }
+    }
+  }
+}

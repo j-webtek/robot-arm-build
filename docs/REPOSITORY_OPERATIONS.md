@@ -18,12 +18,17 @@ changes do not need a lengthy integration report.
 For shared schemas, coordinate frames, command formats, or evidence semantics,
 link the producer and consumer checks and record the other lane's review before
 merging. Keep unfinished dependencies explicit; passing CI does not resolve an
-unmerged prerequisite. Do not invent GitHub handles or approvals. No CODEOWNERS
-file is configured until actual reviewer identities and coverage are agreed.
+unmerged prerequisite. Do not invent GitHub handles or approvals. The repository
+includes a conservative [CODEOWNERS map](../.github/CODEOWNERS) with `@j-webtek`
+as the initial accountable maintainer. It documents routing but does not
+manufacture independent approval; specialist owners can replace or join these
+entries after accepting responsibility.
 
-The [shared workplan](../software/ai/docs/SHARED_AI_ARM_WORKPLAN.md) remains the
-engineering evidence ledger. The public [status page](../PROJECT_STATUS.md)
-summarizes capabilities, not every experiment. Update both only when relevant;
+The [shared workplan](../software/ai/docs/SHARED_AI_ARM_WORKPLAN.md) coordinates
+current engineering stages and ownership. The separate
+[AI/arm evidence ledger](../software/ai/docs/EVIDENCE_LEDGER.md) preserves the
+append-only test history. The public [status page](../PROJECT_STATUS.md)
+summarizes capabilities, not every experiment. Update each only when relevant;
 keep historical results intact and date new claims.
 
 ## Keep public documentation current
@@ -34,7 +39,7 @@ the getting-started or contribution guide. Update the README only when the short
 overview or supported entry path changes. A tooling-only change can state why no
 capability update is needed instead of rewriting the status page.
 
-Record a reviewed source commit and the relevant shared-ledger evidence IDs.
+Record a reviewed source commit and the relevant evidence-ledger IDs.
 Keep the date and checkpoint explicit: a proposed branch is not merged capability,
 and a documentation edit is not a new physical verification. For a feature PR,
 identify the reviewed implementation commit and label the claim as pending merge
@@ -45,8 +50,12 @@ The repository maintainer checks this during review. This is a documented proces
 not an automated semantic-accuracy gate. AI/arm owners supply technical evidence;
 the repository lane translates it for readers without changing the evidence.
 
+Apply the [evidence-retention policy](EVIDENCE_RETENTION.md) before accepting
+generated reports. A green test suite does not make a multi-million-line data
+diff reviewable; require compact scorecards or an exact-digest exception.
+
 Track remaining operations work in
-[repository maintenance issues](https://github.com/j-webtek/robot-arm-build/issues?q=is%3Aissue%20is%3Aopen%20label%3Aarea%3Arepository).
+[repository maintenance issues](https://github.com/j-webtek/tactevra/issues?q=is%3Aissue%20is%3Aopen%20label%3Aarea%3Arepository).
 Each issue should name its scope, completion criteria, evidence and exclusions.
 Do not assign a person or promise a date without agreement. The shared engineering
 ledger remains the source for AI/arm stage evidence, not this maintenance backlog.
@@ -55,6 +64,16 @@ Required checks and branch-protection behavior are in [CI](CI.md). Cross-lane
 review is a contributor process, not an enforced independent-review rule:
 GitHub currently requires zero approving reviews so the solo maintainer can
 merge. The maintainer is responsible for checking the handoff fields.
+The repository accepts squash merges only, deletes a merged head branch
+automatically, and enforces linear history on protected `main`. Linear-history
+enforcement was enabled and read back on September 27, 2026; strict required
+checks, admin enforcement, the zero-approval solo-maintainer rule, stale-review
+dismissal, conversation resolution, and the force-push/deletion prohibitions were
+confirmed unchanged in the same readback. Together these controls keep one
+reviewed change per main-branch commit and reduce stale branch clutter. They do
+not replace the required checks, handoff review, or exact-commit evidence. Do not
+enable merge commits or rebase merging without updating this policy and checking
+the protected-branch behavior first.
 
 ## Issue and PR triage
 
@@ -94,16 +113,23 @@ after merge. Do not create public test issues or submit private data for UI test
 ## Dependency-update operation
 
 [Dependabot configuration](../.github/dependabot.yml) proposes weekly updates for
-GitHub Actions and `software/pyproject.toml`, Monday at 09:00 America/New_York.
-It takes effect when merged to the default branch; its first successful run must
-be checked in GitHub before claiming the service is operating.
+GitHub Actions, `software/pyproject.toml`, and the active RC03 CAD/vision
+requirements, Monday at 09:00 America/New_York. Each scope takes effect when
+merged to the default branch; its first successful run must be checked in GitHub
+before claiming that scope is operating.
 
-- At most two open Actions version-update PRs and three Python version-update PRs.
+- At most two open Actions version-update PRs, three runtime Python update PRs,
+  and two RC03 tool update PRs.
 - Minor/patch version updates are grouped per ecosystem; majors remain separate.
 - These limits apply to version updates, not a total cap on security-update PRs.
 - No automatic merging or dependency installation on contributors' machines.
-- Historical RC02/RC03 requirements, local model weights, vendor firmware and
-  ignored toolchains are outside this configuration.
+- Historical RC02 requirements, local model weights, vendor firmware, and
+  ignored toolchains remain outside this configuration. RC03 coverage proposes
+  dependency changes only; it does not release prints, qualify CAD output,
+  validate cameras, or approve native installations.
+- Direct attribution and external-artifact boundaries are indexed in
+  [`THIRD_PARTY_NOTICES.md`](../THIRD_PARTY_NOTICES.md). Dependabot coverage does
+  not establish license compatibility or redistribution permission.
 - Ranged Python requirements may already admit newer versions without a manifest
   change. A missing Dependabot PR is not evidence that every dependency was checked
   or that the resolved environment is secure. CI still resolves supported ranges.
@@ -114,11 +140,47 @@ behavioral risk. Optional serial/vision features are not fully exercised by the
 portable matrix. Do not widen a version bound merely to make a bot PR mergeable.
 Close or defer with an explanation if compatibility is not established.
 
+Treat a lower-bound-only proposal according to why the floor would change:
+
+- **Routine latest-version proposal:** if the existing range already admits the
+  proposed release, close the PR unless a documented compatibility baseline or
+  required capability justifies removing older environments.
+- **Security-driven proposal:** verify the upstream advisory and whether the
+  repository uses the affected feature. A security release can justify a higher
+  minimum, but the affected component must still receive a focused compatibility
+  check. Generic green checks are not evidence for a component they do not install
+  or execute.
+- **Unexercised optional tooling:** hold the PR with `needs-owner-review` and a
+  precise evidence request. Do not represent dependency resolution, import
+  success, or unrelated CI as behavior qualification.
+
+For example, the protected offline matrix does not install
+`active-project/RoCell_v0_3/requirements-cad.txt` or render the RC03 assembly
+manual in its four portable package jobs. The separate `RC03 manual` job selects
+the manual dependencies from that requirements file, performs an actual
+Markdown-to-PDF render, checks PDF integrity, and retains the result for
+representative-page review. That focused job plus human page review is the
+acceptance path for a WeasyPrint floor change. Record failed qualification
+attempts as inconclusive; an unavailable package index is not compatibility
+evidence.
+
+### September 27, 2026 RC03 first-run triage
+
+The first active-RC03 Dependabot run completed successfully and opened two
+minimum-version proposals. [PR #94](https://github.com/j-webtek/tactevra/pull/94)
+was closed because the existing Beautiful Soup range already admitted the
+proposed release and no new minimum was justified.
+[PR #93](https://github.com/j-webtek/tactevra/pull/93) remains held for focused
+review because WeasyPrint 70 is identified upstream as a security release, while
+the current protected matrix does not exercise the RC03 PDF generator. This
+triage confirms that the monitor is operating; it does not qualify either
+dependency or the RC03 toolchain.
+
 ### September 26, 2026 dependency review
 
 The maintainer approved proceeding with review of PRs
-[#17](https://github.com/j-webtek/robot-arm-build/pull/17) and
-[#18](https://github.com/j-webtek/robot-arm-build/pull/18). Approval is not a
+[#17](https://github.com/j-webtek/tactevra/pull/17) and
+[#18](https://github.com/j-webtek/tactevra/pull/18). Approval is not a
 substitute for compatibility checks.
 
 - **pytest (#18):** permits pytest 9 while retaining pytest 8 support. Review
@@ -147,14 +209,26 @@ agent or reminder is created by this guide.
 
 ## Actions and security baseline
 
-The offline workflow uses full commit SHAs for checkout v7.0.1 and setup-python
-v7.0.0, verified against upstream release tags on September 26, 2026. The upgrade
+The offline workflow uses full commit SHAs for checkout v7.0.1, setup-python
+v7.0.0, and upload-artifact v7.0.1, verified against upstream release tags by
+September 27, 2026. The upgrade
 review covered the intervening Node 24 runner requirement, checkout credential
 handling, event restrictions, and setup-python input changes. The hosted matrix
 tests the combined revisions; no self-hosted runner compatibility is claimed.
+The Linux jobs run on the explicit `ubuntu-24.04` image so GitHub's announced
+October 2026 `ubuntu-latest` migration cannot silently change the build. Their
+protected check identifiers retain `ubuntu-latest` for continuity and are not
+the runner selector; the CI guide documents this distinction.
+
 Dependabot can propose later pin updates; pinning does not itself prove the action is safe.
 The workflow retains read-only permissions, non-persisted checkout credentials,
 hosted runners and bounded jobs. It does not use `pull_request_target` or deploy.
+The manually dispatched preview-candidate audit uses the same two pinned actions,
+read-only permissions, and a hosted Ubuntu runner. GitHub selects the checkout
+revision; the caller-supplied full commit SHA is only an identity assertion and
+cannot select code to run. It audits only and has no release, artifact-upload,
+deployment, or hardware step. It is intentionally outside branch protection
+because it applies to a selected candidate rather than every development commit.
 
 The initial September 26, 2026 inspection found Dependabot alerts/security updates
 and secret scanning/push protection disabled. The later approved repository
@@ -172,6 +246,33 @@ security review enabled and read back the following settings:
 | Actions approval of PR reviews | Disabled; retained |
 | Non-provider-pattern scanning / validity checks | Disabled; unchanged |
 
+On September 27, 2026, CodeQL default setup was enabled with the default query
+suite and remote threat model for GitHub Actions, JavaScript/TypeScript, and
+Python. C/C++ and C# are not covered by this initial setup. The first scan ran
+against commit `92d404ba401af3cafba41e1e6d79a3b50f2b28f2`. CodeQL immediately
+identified an input-controlled checkout in the manually dispatched candidate
+audit; the remediation keeps the SHA input as an equality assertion but makes
+GitHub's dispatch revision the only checkout source. CodeQL was initially
+observational while its first recurring and pull-request runs were observed.
+After successful scans on `main` and multiple pull-request revisions, the three
+app-bound analyzer contexts—`Analyze (actions)`, `Analyze
+(javascript-typescript)`, and `Analyze (python)`—were initially added to strict
+branch protection on September 27, 2026. GitHub intentionally omits those
+language-specific jobs for changes that cannot affect a configured language,
+which left dependency-only PRs permanently blocked. Branch protection was then
+corrected to require the app-bound `CodeQL` summary instead: it succeeds after
+applicable analyzers complete and reports neutral when none apply. The focused
+RC03 manual-render job was also made required. These checks supplement rather
+than replace the four offline compatibility checks. A green or neutral summary
+is not a security certification, and an unavailable or unexpected result must be
+investigated rather than bypassed.
+
+Attempts to enable GitHub's optional non-provider-pattern and secret-validity
+scanning modes did not change their reported disabled state. Treat those modes as
+unavailable for this repository unless a later settings review proves otherwise;
+do not claim that the core secret scanner covers generic credentials or validates
+whether a detected credential is active.
+
 This used repository-level controls on the public repository. No paid product,
 billing option, bypass, history rewrite, or runtime change was requested. Settings
 apply on GitHub, not when someone clones the repository. No historical scan
@@ -184,16 +285,22 @@ Following the owner's approval, repository settings were changed and read back:
 
 | Control | Verified state |
 | --- | --- |
-| Allowed Actions | Selected only: `actions/checkout@*` and `actions/setup-python@*` |
+| Allowed Actions | Selected only: `actions/checkout@*`, `actions/setup-python@*`, and `actions/upload-artifact@*` |
 | Broad GitHub-owned / verified-creator allowances | Both disabled |
 | Full-length commit-SHA pinning | Required |
 | Outside-contributor fork workflows | Approval required for all outside contributors |
 | Default token / permission to approve PR reviews | Read-only / disabled, unchanged |
 
-The action patterns allow reviewed pin updates within these two repositories;
+The action patterns allow reviewed pin updates within these three repositories;
 they do not waive the separate full-SHA requirement. Adding a new action needs
 an owner-approved allowlist change and review of its source, requested permissions,
 and workflow use. Do not broaden the allowlist just to clear a failed run.
+
+The upload action was added on September 27, 2026 solely for the bounded RC03
+manual qualification artifact. It receives the generated PDF and JSON summary
+from the runner's temporary directory, retains them for 14 days, and has no
+release or deployment authority. Repository workflow permissions remain
+read-only; artifact retention is review evidence, not publication.
 
 Before approving an outside contributor's workflow, inspect the proposed code
 and workflow changes at the revision being approved. Approval allows CI code to

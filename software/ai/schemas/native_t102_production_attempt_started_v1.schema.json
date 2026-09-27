@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rocell.local/schemas/native_t102_production_attempt_started_v1.schema.json",
+  "title": "RoCell native T102 production attempt started v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "status", "claim_sha256", "prepared_sha256", "frame_sha256", "wire_bytes_sha256", "authority_sha256", "verification_sha256", "endpoint_sha256", "correlation_id", "writer_instance_id", "controller_session_id", "started_monotonic_ns", "automatic_retry_allowed", "transport_open_count", "physical_command_writes", "started_sha256"],
+  "properties": {
+    "schema": {"const": "rocell.native_t102_production_attempt_started.v1"},
+    "status": {"const": "EXECUTION_STARTED_BEFORE_TRANSPORT_OPEN"},
+    "claim_sha256": {"$ref": "#/$defs/hash"}, "prepared_sha256": {"$ref": "#/$defs/hash"}, "frame_sha256": {"$ref": "#/$defs/hash"}, "wire_bytes_sha256": {"$ref": "#/$defs/hash"}, "authority_sha256": {"$ref": "#/$defs/hash"}, "verification_sha256": {"$ref": "#/$defs/hash"}, "endpoint_sha256": {"$ref": "#/$defs/hash"},
+    "correlation_id": {"$ref": "#/$defs/identifier"}, "writer_instance_id": {"$ref": "#/$defs/identifier"}, "controller_session_id": {"$ref": "#/$defs/identifier"},
+    "started_monotonic_ns": {"type": "integer", "minimum": 1}, "automatic_retry_allowed": {"const": false}, "transport_open_count": {"const": 0}, "physical_command_writes": {"const": 0}, "started_sha256": {"$ref": "#/$defs/hash"}
+  },
+  "$defs": {"hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"}, "identifier": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"}}
+}

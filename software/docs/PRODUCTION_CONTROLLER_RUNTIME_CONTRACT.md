@@ -99,6 +99,11 @@ model target proposal
 Thus the model cannot bypass calibration, collision screening, controller
 qualification, sequencing, deadlines, or sole-writer ownership.
 
+The separate [native T=102 production transport boundary](NATIVE_T102_PRODUCTION_TRANSPORT_BOUNDARY.md)
+defines the externally verified, exact-endpoint, durable no-replay seam for a
+future concrete adapter. It does not add a live serial implementation or grant
+physical authority by itself.
+
 ## What remains before physical use
 
 1. Implement the same state machine and capability manifest in a separate

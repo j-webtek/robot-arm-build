@@ -1,0 +1,57 @@
+{
+  "version": 1,
+  "archive_scope": "github-generated-source-archives",
+  "forbidden_tracked_files": [
+    "hardware/static_overhead_camera/vendor/B0477.STEP"
+  ],
+  "forbidden_tracked_prefixes": [
+    "archives/",
+    "software/calibrations/artifacts/",
+    "software/private-backups/"
+  ],
+  "forbidden_tracked_basenames": [
+    ".env",
+    "client_secret.json",
+    "credentials.json",
+    "service-account.json"
+  ],
+  "forbidden_tracked_basename_prefixes": [
+    ".env."
+  ],
+  "forbidden_tracked_suffixes": [
+    ".bin",
+    ".ckpt",
+    ".dll",
+    ".dylib",
+    ".elf",
+    ".exe",
+    ".gguf",
+    ".hex",
+    ".jks",
+    ".key",
+    ".keystore",
+    ".onnx",
+    ".p12",
+    ".pem",
+    ".pfx",
+    ".pt",
+    ".pth",
+    ".safetensors",
+    ".so",
+    ".uf2",
+    ".zip"
+  ],
+  "allowed_tracked_files": [
+    {
+      "path": "hardware/static_overhead_camera/cad/output/revisions/SYSTEM_PRINT_PACK_v1.zip",
+      "sha256": "88a3b42a90aa3fec30ed28d25910df445520ca29e55da633620ab3fb66f40046",
+      "rationale": "Existing controlled static-camera print-pack archive; exact bytes are reviewed and the snapshot audit inspects its bounded members."
+    },
+    {
+      "path": "software/calibrations/artifacts/.gitkeep",
+      "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "rationale": "Empty placeholder preserving the ignored local-artifact directory without publishing an artifact."
+    }
+  ],
+  "candidate_blockers": []
+}

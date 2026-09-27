@@ -10,15 +10,32 @@ implementation details or evidence for a specific part of the system.
 | Your goal | Start here |
 | --- | --- |
 | Try it without hardware or downloaded models | [Getting started](GETTING_STARTED.md) |
+| Understand the complete request-to-result flow | [System overview](SYSTEM_OVERVIEW.md) |
 | Understand capabilities and limitations | [Project status](../PROJECT_STATUS.md) |
 | Get help or report unclear guidance | [Support](../SUPPORT.md) |
 | Contribute code or documentation | [Contributing](../CONTRIBUTING.md) |
-| Explore physical build resources | [RC03 introduction](../active-project/RoCell_v0_3/README_FIRST.md) and [print readiness](../active-project/RoCell_v0_3/PRINT_READINESS.md) |
+| Explore physical build resources | [Hardware build guide](HARDWARE_BUILD_GUIDE.md) |
 | Build the system visualization | [Blender workcell explainer](../presentations/blender/README.md) |
+
+## Choose by role
+
+| Role | Primary path |
+| --- | --- |
+| User or evaluator | [Getting started](GETTING_STARTED.md) → [system overview](SYSTEM_OVERVIEW.md) → [project status](../PROJECT_STATUS.md) |
+| Hardware builder | [Hardware build guide](HARDWARE_BUILD_GUIDE.md) → [print readiness](../active-project/RoCell_v0_3/PRINT_READINESS.md) → [assembly steps](../active-project/RoCell_v0_3/BUILD_BY_STEP/README.md) |
+| Software contributor | [Contributing](../CONTRIBUTING.md) → [software reference](../software/README.md) → [architecture](../software/docs/ARCHITECTURE.md) |
+| AI contributor | [AI overview](../software/ai/README.md) → [AI documentation](../software/ai/docs/README.md) → [shared workplan](../software/ai/docs/SHARED_AI_ARM_WORKPLAN.md) |
+| Arm/runtime contributor | [System overview](SYSTEM_OVERVIEW.md) → [architecture](../software/docs/ARCHITECTURE.md) → [shared workplan](../software/ai/docs/SHARED_AI_ARM_WORKPLAN.md) |
+| Maintainer or release reviewer | [Repository operations](REPOSITORY_OPERATIONS.md) → [maintainer checklist](MAINTAINER_CHECKLIST.md) → [release readiness](releases/READINESS.md) → [release procedure](RELEASING.md) |
+
+Use the [glossary](GLOSSARY.md) for product, interface, evidence, and execution
+terms. Contributors should follow the [documentation standard](DOCUMENTATION_STANDARD.md)
+when adding or substantially revising a page.
 
 The overview introduces the project, status summarizes dated capability evidence,
 and getting started is the reproducible first-run path. The shared AI/arm
-workplan below is the detailed engineering record, not a beginner setup guide.
+workplan below coordinates current engineering work; the separate evidence
+ledger preserves the detailed history. Neither is a beginner setup guide.
 
 ## AI and arm integration
 
@@ -31,7 +48,10 @@ still being developed.
 | --- | --- |
 | [Getting started](GETTING_STARTED.md) | First-time users: install, try text interpretation, and explore rehearsal |
 | [AI overview](../software/ai/README.md) | Readers exploring intent parsing and vision experiments |
-| [Shared AI/arm workplan](../software/ai/docs/SHARED_AI_ARM_WORKPLAN.md) | Contributors: stage ownership, dependencies and recorded test evidence |
+| [Shared AI/arm workplan](../software/ai/docs/SHARED_AI_ARM_WORKPLAN.md) | Contributors: current stages, ownership, dependencies and operating rules |
+| [AI/arm evidence ledger](../software/ai/docs/EVIDENCE_LEDGER.md) | Contributors and reviewers: append-only test results, limitations and dependencies |
+| [Evidence retention](EVIDENCE_RETENTION.md) | Contributors: what evidence belongs in Git and how larger artifacts are reviewed |
+| [External artifact contract](EXTERNAL_ARTIFACTS.md) | AI and repository contributors: deterministic identity and availability checks for external checkpoints and datasets |
 | [Runtime implementation plan](../software/ai/docs/MODEL_COMMAND_RUNTIME_IMPLEMENTATION_PLAN.md) | Arm developers: planning, command handling and execution infrastructure |
 | [AI system baseline](../software/ai/docs/AI_SYSTEM_BASELINE_AND_IMPLEMENTATION_PLAN.md) | Research context and dated model-evaluation results |
 
@@ -55,13 +75,19 @@ distinguishes these kinds of evidence.
 
 ## Software and architecture
 
+- [System overview](SYSTEM_OVERVIEW.md): concise request-to-result architecture,
+  responsibilities, authority boundaries, and evidence levels.
+- [Glossary](GLOSSARY.md): product, compatibility, planning, controller, and
+  verification terminology.
 - [Developer setup and contribution workflow](../CONTRIBUTING.md): installation,
   scoped checks, Git workflow, and sanitized evidence sharing.
 - [Wizard workbench](../software/docs/WIZARD_WORKBENCH.md): local browser and
   terminal interface usage.
 - [Software reference](../software/README.md): detailed component descriptions,
-  setup, commands, and earlier implementation checkpoints. Use project status
-  for the latest physical-test summary.
+  setup, commands, and architecture. Use project status for the latest
+  capability summary.
+- [Runtime implementation history](../software/RUNTIME_IMPLEMENTATION_HISTORY.md):
+  dated camera, USB, onboarding, and runtime checkpoints retained for provenance.
 - [Reviewed-hover protocol](../software/docs/REVIEWED_HOVER_RUNTIME_PROTOCOL_PLAN.md):
   command handling, feedback, and export contracts.
 - [Official Waveshare tooling reuse plan](../software/docs/OFFICIAL_TOOLING_REUSE_PLAN.md):
@@ -73,6 +99,8 @@ distinguishes these kinds of evidence.
 
 ## Hardware and camera
 
+- [Hardware build guide](HARDWARE_BUILD_GUIDE.md): current release position,
+  status vocabulary, and the controlled path for builders.
 - [RC03 package introduction](../active-project/RoCell_v0_3/README_FIRST.md)
   and [assembly steps](../active-project/RoCell_v0_3/BUILD_BY_STEP/README.md).
 - [Print readiness](../active-project/RoCell_v0_3/PRINT_READINESS.md): which
@@ -105,13 +133,23 @@ documents may exist only on the lab workstation; sharing them is covered in
 
 ## Repository maintenance and policies
 
+- [Documentation standard](DOCUMENTATION_STANDARD.md): lifecycle labels,
+  naming, capability language, and navigation expectations.
 - [Routine maintainer checklist](MAINTAINER_CHECKLIST.md): triage, review, and handoffs.
 - [Hardware-free CI checks](CI.md) and [repository operations](REPOSITORY_OPERATIONS.md):
   verification scope, PR workflow, and dependency maintenance.
+- [Versioning and compatibility](VERSIONING.md): source-preview identifiers and
+  the technical interfaces preserved during the Tactevra transition.
 - [Experimental release checklist](RELEASING.md): requirements for a separately
   reviewed source preview; the checklist itself does not publish a release.
+- [Release readiness](releases/READINESS.md): current gate state, ownership, and
+  route to candidate selection; it is not publication approval.
+- [Release records](releases/README.md): lifecycle map for exact-revision
+  candidate and historical evidence records.
 - [Hardware provenance](HARDWARE_PROVENANCE.md): the owner's CAD/print-design
   authorship confirmation and its limits, including separate vendor rights.
+- [Third-party notices](../THIRD_PARTY_NOTICES.md): direct dependency sources,
+  external model/vendor boundaries, and unresolved redistribution clearance.
 - [Brand foundation](brand/BRAND_GUIDE.md): Tactevra naming and staged migration;
   commercial clearance remains pending.
 - [Private security reporting](../SECURITY.md) and [code of conduct](../CODE_OF_CONDUCT.md):

@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rocell.local/schemas/native_t102_pinned_endpoint_v1.schema.json",
+  "title": "RoCell pinned native T102 endpoint v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "port_name", "usb_vid", "usb_pid", "usb_serial_number", "baud_rate", "data_bits", "parity", "stop_bits", "flow_control", "endpoint_sha256"],
+  "properties": {
+    "schema": {"const": "rocell.native_t102_pinned_endpoint.v1"},
+    "port_name": {"type": "string", "pattern": "^COM[1-9][0-9]{0,2}$"},
+    "usb_vid": {"type": "string", "pattern": "^[0-9A-F]{4}$"},
+    "usb_pid": {"type": "string", "pattern": "^[0-9A-F]{4}$"},
+    "usb_serial_number": {"$ref": "#/$defs/identifier"},
+    "baud_rate": {"const": 115200},
+    "data_bits": {"const": 8},
+    "parity": {"const": "NONE"},
+    "stop_bits": {"const": 1},
+    "flow_control": {"const": "NONE"},
+    "endpoint_sha256": {"$ref": "#/$defs/hash"}
+  },
+  "$defs": {
+    "hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "identifier": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"}
+  }
+}

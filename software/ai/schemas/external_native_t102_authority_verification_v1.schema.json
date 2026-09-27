@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rocell.local/schemas/external_native_t102_authority_verification_v1.schema.json",
+  "title": "RoCell external native T102 authority verification v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "approved", "signed_payload_sha256", "verifier_id", "verifier_build_sha256", "verified_monotonic_ns", "decision_code", "verification_sha256"],
+  "properties": {
+    "schema": {"const": "rocell.external_native_t102_authority_verification.v1"},
+    "approved": {"type": "boolean"},
+    "signed_payload_sha256": {"$ref": "#/$defs/hash"},
+    "verifier_id": {"$ref": "#/$defs/identifier"},
+    "verifier_build_sha256": {"$ref": "#/$defs/hash"},
+    "verified_monotonic_ns": {"type": "integer", "minimum": 1},
+    "decision_code": {"$ref": "#/$defs/identifier"},
+    "verification_sha256": {"$ref": "#/$defs/hash"}
+  },
+  "$defs": {
+    "hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "identifier": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"}
+  }
+}

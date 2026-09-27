@@ -2,7 +2,7 @@
 
 ## Report privately
 
-Please use [GitHub private vulnerability reporting](https://github.com/j-webtek/robot-arm-build/security/advisories/new)
+Please use [GitHub private vulnerability reporting](https://github.com/j-webtek/tactevra/security/advisories/new)
 for suspected security vulnerabilities. Private reporting was enabled and checked
 on September 26, 2026. You need a GitHub account to submit a report.
 
@@ -61,6 +61,14 @@ On September 26, 2026, repository secret scanning, secret-scanning push protecti
 Dependabot alerts, and Dependabot security updates were enabled and verified
 through GitHub's API. Security updates propose pull requests; automatic merging
 remains disabled and normal review/check requirements still apply.
+
+CodeQL default setup was enabled on September 27, 2026 for GitHub Actions,
+JavaScript/TypeScript, and Python. Findings remain subject to maintainer triage;
+the scanner does not cover every repository language and is not a physical-safety
+or release-readiness decision. After successful observation on `main` and pull
+requests, its three analyzer checks were made required on protected `main`.
+Maintainers should investigate a failed or unavailable analyzer rather than
+bypassing it or removing the protection to complete a merge.
 
 These protections cover supported patterns and recognized dependency information,
 not every secret or vulnerability. Enablement is not proof that a historical scan

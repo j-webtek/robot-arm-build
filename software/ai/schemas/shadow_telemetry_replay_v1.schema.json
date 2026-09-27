@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tactevra.local/schemas/shadow_telemetry_replay_v1.schema.json",
+  "title": "RoCell shadow telemetry replay v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "status", "origin", "source_export_sha256",
+    "preview_receipt_sha256", "envelope_v2_sha256",
+    "encoding_profile_sha256", "correlation_id", "controller_session_id",
+    "policy", "policy_sha256", "command_count", "sample_count",
+    "sample_sha256", "waypoints", "all_waypoints_settled_in_replay",
+    "physical_arrival_proven", "independent_visual_outcome_proven",
+    "transport_opened", "transport_write_count", "automatic_retry",
+    "execution_authorized", "hardware_access", "physical_authority",
+    "limitations", "replay_sha256"
+  ],
+  "properties": {
+    "schema": {"const": "rocell.shadow_telemetry_replay.v1"},
+    "status": {"enum": ["SIMULATION_REPLAY_PASS", "SIMULATION_REPLAY_UNVERIFIED"]},
+    "origin": {"enum": ["SYNTHETIC", "RETAINED_EXPORT"]},
+    "source_export_sha256": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/sha256"}]},
+    "preview_receipt_sha256": {"$ref": "#/$defs/sha256"},
+    "envelope_v2_sha256": {"$ref": "#/$defs/sha256"},
+    "encoding_profile_sha256": {"$ref": "#/$defs/sha256"},
+    "correlation_id": {"type": "string", "minLength": 1, "maxLength": 128},
+    "controller_session_id": {"type": "string", "minLength": 1, "maxLength": 128},
+    "policy": {
+      "type": "object", "additionalProperties": false,
+      "required": ["joint_tolerance_rad", "stability_span_rad", "required_consecutive_samples", "maximum_sample_lag_ns"],
+      "properties": {
+        "joint_tolerance_rad": {"type": "number", "minimum": 0},
+        "stability_span_rad": {"type": "number", "minimum": 0},
+        "required_consecutive_samples": {"type": "integer", "minimum": 2, "maximum": 16},
+        "maximum_sample_lag_ns": {"type": "integer", "minimum": 1}
+      }
+    },
+    "policy_sha256": {"$ref": "#/$defs/sha256"},
+    "command_count": {"type": "integer", "minimum": 1},
+    "sample_count": {"type": "integer", "minimum": 0},
+    "sample_sha256": {"type": "array", "items": {"$ref": "#/$defs/sha256"}},
+    "waypoints": {
+      "type": "array", "minItems": 1,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["waypoint_sequence", "command_wire_sha256", "scheduled_dispatch_monotonic_ns", "sample_count", "consecutive_settled_samples", "settled", "final_signed_joint_residual_rad", "maximum_absolute_joint_residual_rad"],
+        "properties": {
+          "waypoint_sequence": {"type": "integer", "minimum": 1},
+          "command_wire_sha256": {"$ref": "#/$defs/sha256"},
+          "scheduled_dispatch_monotonic_ns": {"type": "integer", "minimum": 1},
+          "sample_count": {"type": "integer", "minimum": 0},
+          "consecutive_settled_samples": {"type": "integer", "minimum": 0},
+          "settled": {"type": "boolean"},
+          "final_signed_joint_residual_rad": {"oneOf": [{"type": "null"}, {"type": "array", "minItems": 6, "maxItems": 6, "items": {"type": "number"}}]},
+          "maximum_absolute_joint_residual_rad": {"type": "number", "minimum": 0}
+        }
+      }
+    },
+    "all_waypoints_settled_in_replay": {"type": "boolean"},
+    "physical_arrival_proven": {"const": false},
+    "independent_visual_outcome_proven": {"const": false},
+    "transport_opened": {"const": false},
+    "transport_write_count": {"const": 0},
+    "automatic_retry": {"const": false},
+    "execution_authorized": {"const": false},
+    "hardware_access": {"const": false},
+    "physical_authority": {"const": false},
+    "limitations": {"type": "array", "minItems": 3, "items": {"type": "string"}, "uniqueItems": true},
+    "replay_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

@@ -1,13 +1,20 @@
 # Tactevra offline verification
 
 The [Offline verification workflow](../.github/workflows/offline-checks.yml) runs
-on pull requests, pushes to main, and manual dispatch. It uses GitHub-hosted Linux
-and Windows runners with Python 3.10 and 3.12. Each job creates a new virtual
-environment and installs the package non-editably before running the introductory
-demo. This checks packaging as well as source-tree behavior.
+on pull requests, pushes to main, and manual dispatch. It uses GitHub-hosted
+Ubuntu 24.04 and `windows-latest` runners with Python 3.10 and 3.12. Each job
+creates a new virtual environment and installs the package non-editably before
+running the introductory demo. This checks packaging as well as source-tree
+behavior.
+
+The protected Linux check names retain `ubuntu-latest` for status-context
+continuity, but the workflow's actual `runs-on` value is pinned to
+`ubuntu-24.04`. The environment summary is the source for the resolved runner OS.
+Changing that image requires a reviewed workflow and documentation update; it
+must not happen implicitly when GitHub moves the `ubuntu-latest` alias.
 
 Repository policy requires full commit-SHA action pins and permits only
-`actions/checkout` and `actions/setup-python`. Fork workflows from outside
+`actions/checkout`, `actions/setup-python`, and `actions/upload-artifact`. Fork workflows from outside
 contributors require approval before running. A pending approval is not a failed
 test; maintainers review the proposed code before allowing CI to execute. See
 [Actions policy](REPOSITORY_OPERATIONS.md#september-26-2026-actions-policy-hardening)
@@ -24,15 +31,52 @@ for the dated settings and how to propose another action without bypassing them.
   Links to this repository's new-issue templates are checked against local
   template filenames, catching stale `.md`/`.yml` routes without network access.
 - An explicit selection of AI/arm contract, ordering, evidence, and metric tests.
+- A generated-evidence change budget that protects reviewability and clone cost;
+  see [evidence retention](EVIDENCE_RETENTION.md).
   The list is in [offline_checks.py](../scripts/ci/offline_checks.py).
+- Unit coverage for the read-only [external artifact contract](EXTERNAL_ARTIFACTS.md),
+  including unavailable, verified, size-mismatch, digest-mismatch, and unsafe
+  manifest states. No external artifact is downloaded or required by CI.
+- A release-integrity path policy that rejects newly tracked private-backup,
+  credential, key, executable, firmware, model-weight, and archive paths unless
+  their exact bytes have a reviewed allowance. Ordinary CI does not clear the
+  stricter release-candidate blockers; see [release preparation](RELEASING.md).
 - Zero-write controller-byte previews, lifecycle fault rehearsal, published
   controller-boundary schemas, and the controller-evidence gate. These use
   synthetic/modeled records; a pass does not qualify an installed controller
   or authenticate physical evidence. No transport is opened by these tests.
+- A Linux/Python 3.12 RC03 assembly-manual render using only the three
+  documentation dependencies selected from `requirements-cad.txt`. The job checks
+  PDF structure, page dimensions, minimum size/page count, source and output
+  digests, and resolved package versions. It retains the PDF and JSON summary for
+  14 days so representative pages can be reviewed. Structural success is not
+  visual approval and does not qualify CAD or hardware.
 
 The test extra declares `jsonschema`; no separate manual install is needed.
 Dependency ranges are not a lockfile: these jobs check fresh resolution within
 supported ranges, not bit-for-bit environment reproduction.
+
+## Manual source-preview candidate audit
+
+The [Preview candidate audit](../.github/workflows/preview-candidate-audit.yml)
+is a separate, manually dispatched, read-only workflow. It accepts one full
+40-character commit SHA as an identity assertion. Select the intended protected
+`main` revision in GitHub's **Run workflow from** control. The workflow checks out
+that GitHub-selected revision, requires its immutable SHA to equal the assertion,
+runs the strict release candidate inventory policy, performs the snapshot audit,
+and rechecks maintained documentation. The input never selects code to check out.
+This prevents an input-controlled revision from executing in the default-branch
+workflow cache scope. The workflow uses a hosted Ubuntu runner, read-only repository
+permission, non-persisted checkout credentials, and no repository secrets.
+
+This workflow does not install the project, exercise hardware, upload artifacts,
+create tags, or publish releases. It is not a required branch-protection check.
+Use it only after identifying a proposed preview commit on protected `main`; a
+moving branch name is not a candidate identity. Confirm the completed run names
+the expected SHA. To assess some other revision without executing it in this
+workflow context, use the documented fresh-checkout local procedure. Until every
+recorded candidate blocker is resolved, a failed candidate-integrity step is the
+correct result.
 
 ### Find the versions behind a result
 
@@ -47,7 +91,9 @@ The reporter reads package metadata without importing camera or serial backends.
 It does not include environment-variable dumps, pip configuration, installation
 URLs, or local paths. Optional packages appearing in a local report do not mean
 the portable tests exercised them. GitHub run retention applies; save the exact
-run link and relevant evidence in the shared workplan for a promotion decision.
+run link and relevant result in the
+[AI/arm evidence ledger](../software/ai/docs/EVIDENCE_LEDGER.md) for a promotion
+decision, and update the shared workplan only when stage status or ownership changes.
 
 ## Run locally from the repository root
 
@@ -58,6 +104,7 @@ python -m venv .venv-ci
 python scripts/ci/offline_checks.py install-base
 python scripts/ci/offline_checks.py smoke
 python scripts/ci/check_docs.py
+python scripts/ci/check_release_integrity.py --mode policy
 python scripts/ci/offline_checks.py install-tests
 python scripts/ci/offline_checks.py environment
 python scripts/ci/offline_checks.py test
@@ -128,18 +175,34 @@ the portable workflow.
 
 ## Main-branch merge policy
 
-Configured on GitHub on 2026-09-26: pull requests, resolved review conversations,
-an up-to-date branch, and all four checks below are required, including for admins:
+Configured on GitHub and last expanded on 2026-09-27: pull requests, resolved
+review conversations, an up-to-date branch, linear history, and all six checks
+below are required, including for admins:
 
 - `Offline / ubuntu-latest / Python 3.10`
 - `Offline / ubuntu-latest / Python 3.12`
 - `Offline / windows-latest / Python 3.10`
 - `Offline / windows-latest / Python 3.12`
+- `RC03 manual / Ubuntu 24.04 / Python 3.12`
+- `CodeQL`
 
 Force pushes and branch deletion are disabled. No independent approving review
 is mandatory (the approval count is zero), so a solo maintainer can merge after
 the checks pass. These are repository settings, not settings installed by cloning
 this source; recheck GitHub if policy changes.
+
+The two `ubuntu-latest` strings above are stable required-check identifiers. They
+currently run on the explicitly pinned Ubuntu 24.04 hosted image, as documented
+at the top of this page.
+
+The required `CodeQL` summary comes from GitHub Advanced Security and is app-bound.
+It reports success after the applicable GitHub Actions, JavaScript/TypeScript, and
+Python analyzers complete, or neutral when GitHub determines that a change cannot
+affect a configured language. This avoids blocking dependency-only and prose-only
+PRs on analyzer jobs that GitHub intentionally does not create. Inspect a failure,
+missing summary, or unexpected neutral result rather than bypassing it. C/C++ and
+C# are not covered by this setup. CodeQL success is not physical-safety,
+release-readiness, or complete security evidence.
 
 Both AI and arm contributors should push a topic branch and open a PR rather
 than pushing directly to `main`. Update the branch when `main` advances and let

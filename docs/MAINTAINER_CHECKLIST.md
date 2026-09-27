@@ -11,15 +11,15 @@ device access, restarts, torque changes, movement, or release publication.
 
 ## 1. Triage incoming work
 
-- [ ] Check [open issues](https://github.com/j-webtek/robot-arm-build/issues),
-  [pull requests](https://github.com/j-webtek/robot-arm-build/pulls), and
-  [workflow runs](https://github.com/j-webtek/robot-arm-build/actions).
+- [ ] Check [open issues](https://github.com/j-webtek/tactevra/issues),
+  [pull requests](https://github.com/j-webtek/tactevra/pulls), and
+  [workflow runs](https://github.com/j-webtek/tactevra/actions).
   Distinguish a failed check from a cancelled or still-running job.
 - [ ] Route ordinary questions through [support](../SUPPORT.md). Apply the
   existing type/area labels; link duplicates rather than losing their evidence.
   Ask for the missing reproduction detail instead of guessing a cause.
 - [ ] Inspect security reports and alerts through the restricted
-  [Security view](https://github.com/j-webtek/robot-arm-build/security).
+  [Security view](https://github.com/j-webtek/tactevra/security).
   Follow [security reporting](../SECURITY.md); never copy private findings into a
   public maintenance report. Enabled notifications do not prove delivery.
 - [ ] Give each actionable item a next step and completion criterion. Record an
@@ -37,6 +37,14 @@ device access, restarts, torque changes, movement, or release publication.
 - [ ] Match required [CI checks](CI.md) to the current revision. New commits or
   reconciliation with main require fresh checks. Missing or pending checks are
   not passes; do not use administrator bypass to finish a merge.
+- [ ] Confirm the app-bound `CodeQL` summary completed for the current revision.
+  For source changes, inspect the applicable analyzer jobs behind it. A neutral
+  summary is expected only when GitHub determines that no configured language is
+  affected; inspect a surprising neutral or missing result rather than bypassing
+  the required context.
+- [ ] Use the repository's squash-merge path. Protected `main` requires linear
+  history; do not work around it with a direct push, temporary force-push
+  allowance, merge commit, or alternate merge method.
 - [ ] Check the public impact: capability, limitation, setup, or none. Update
   the appropriate entry document or link an explicit follow-up with a reason.
   Keep model evaluation, simulation, controller feedback and physical results
@@ -44,19 +52,35 @@ device access, restarts, torque changes, movement, or release publication.
 - [ ] Review new files and archives for private data and third-party provenance.
   Use the [snapshot audit and fixture policy](AUDIT_FIXTURE_REVIEW.md); a clean
   heuristic result does not replace inspection or establish redistribution rights.
+- [ ] Apply the [evidence-retention policy](EVIDENCE_RETENTION.md). Review the
+  generated-data count and size, reproduction metadata and any exact-digest
+  exception; passing CI does not make bulk output human-reviewable.
+- [ ] Apply the [documentation standard](DOCUMENTATION_STANDARD.md). Label
+  active plans, evidence records, historical pages, and release drafts; use the
+  [glossary](GLOSSARY.md) for current explanatory prose.
+- [ ] Keep current setup and command guidance ahead of dated history. If a
+  reference becomes a chronology, preserve the unchanged records in a labeled
+  historical page and validate links to both documents.
 
 ## 3. Close the handoff after merge
 
 - [ ] Record the merge commit and relevant check links on the PR or tracking
   issue. Close only the acceptance criteria actually completed.
 - [ ] Identify the next action, responsible lane, and unresolved prerequisites.
-  Update the [shared workplan](../software/ai/docs/SHARED_AI_ARM_WORKPLAN.md) only
-  when engineering evidence changes; do not duplicate its history in operations notes.
+  Update the [shared workplan](../software/ai/docs/SHARED_AI_ARM_WORKPLAN.md) when
+  stages or ownership change, and append results to the
+  [evidence ledger](../software/ai/docs/EVIDENCE_LEDGER.md). Do not duplicate
+  that history in operations notes.
 - [ ] Keep [project status](../PROJECT_STATUS.md) readable and date its evidence
   checkpoint. Do not silently promote a branch proposal into a released feature.
-- [ ] A merge is not a release. For publication, use the separate
-  [release checklist](RELEASING.md), an exact candidate commit and its own reviews.
+- [ ] A merge is not a release. For publication, start with the
+  [release-readiness dashboard](releases/READINESS.md), then use the
+  [release records](releases/README.md) and [release checklist](RELEASING.md), an
+  exact candidate commit and its own reviews.
   If the candidate changes, reassess its evidence instead of reusing old sign-offs.
+- [ ] Before naming a preview candidate, run the release-integrity check in
+  `candidate` mode. A normal CI pass validates the standing path policy but does
+  not clear recorded provenance or other candidate blockers.
 
 ## 4. Check the newcomer path
 

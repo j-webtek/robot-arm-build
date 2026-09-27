@@ -4,10 +4,11 @@
 **Scope:** model proposal ingress through verified arm outcomes  
 **Authority:** this plan and its current coordinator are zero-hardware artifacts
 
-Cross-workstream stage status, ownership, and evidence are maintained in the
-[shared AI-to-arm workplan](SHARED_AI_ARM_WORKPLAN.md). This document remains
-the detailed arm-runtime implementation plan; it must not advance shared stage
-status without the integration evidence required by that workplan.
+Cross-workstream stage status and ownership are maintained in the
+[shared AI-to-arm workplan](SHARED_AI_ARM_WORKPLAN.md), while detailed results
+are appended to the [AI/arm evidence ledger](EVIDENCE_LEDGER.md). This document
+remains the detailed arm-runtime implementation plan; it must not advance shared
+stage status without the integration evidence required by the workplan.
 
 ## Objective
 

@@ -5,6 +5,16 @@ It does not qualify physical operation or publish an installer, firmware image,
 model bundle, or new printable hardware package. Publication is a separate
 maintainer decision; this document creates no tag or GitHub release.
 
+Begin with the [current readiness dashboard](releases/READINESS.md), then use the
+[release-record index](releases/README.md) to distinguish current status from
+superseded exact-revision evidence. Never update a historical candidate record
+to imply that it covers newer source.
+
+Vendor geometry that lacks established redistribution permission is link-only.
+In particular, `hardware/static_overhead_camera/vendor/B0477.STEP` must remain
+untracked; its source URL and digest are recorded in the adjacent vendor README.
+The release-integrity policy rejects reintroducing that path.
+
 ## Release identity and scope
 
 Use a Tactevra display name and an explicitly experimental tag, for example
@@ -37,6 +47,21 @@ are a starting point, not a completed qualification record.
 - [ ] Run the snapshot audit at the candidate revision and review findings;
   inspect release contents for private data, license notices, and unexpected
   artifacts. This heuristic scan is not a full-history or security certification.
+- [ ] Review [`THIRD_PARTY_NOTICES.md`](../THIRD_PARTY_NOTICES.md) against the
+  exact candidate contents and resolved dependency set. Resolve every unknown
+  or incompatible redistribution term; in particular, do not publish the
+  derived Waveshare kinematic URDF until its redistribution basis is established.
+- [ ] Run `python scripts/ci/check_release_integrity.py --mode candidate` at the
+  candidate revision. Candidate mode must pass without removing a blocker merely
+  to silence the check; resolve the linked review issue or record an approved
+  exclusion/replacement disposition in the same reviewed change.
+  A maintainer may instead dispatch the read-only
+  [Preview candidate audit](../.github/workflows/preview-candidate-audit.yml)
+  from the intended protected `main` revision and provide that exact full SHA as
+  the identity assertion. The input does not select a checkout. The workflow
+  verifies the GitHub-selected revision against the assertion, runs candidate
+  integrity, the snapshot audit, and maintained-document checks, and publishes
+  no artifact or release.
 - [ ] List known limitations, including native-helper prerequisites, absent lab
   records, unqualified real-camera localization, and physical typing status.
 - [ ] Review the draft notes and remove unresolved placeholders only when their
@@ -61,6 +86,17 @@ so checks that use `git ls-files` need a checkout instead.
 Verify the published title, experimental warning, tag target, source downloads,
 and links. Record the release URL and final evidence in the release PR. No release
 step should connect to hardware or upload firmware. CI does not publish releases.
+
+Ordinary CI runs the check in `policy` mode. That mode rejects newly tracked
+private-backup paths, credential filenames, keys, executable/native binaries,
+firmware images, model weights, and archives unless an exact path and SHA-256
+allowance is reviewed in `.github/release-integrity-policy.json`. A policy-mode
+pass means the inventory follows the recorded path policy; it does not override
+the stricter candidate blockers, inspect file contents, or establish third-party
+redistribution rights. The separate snapshot audit remains required.
+The manual candidate workflow is additional release evidence, not a protected
+merge check or a publication approval. A failed run is expected while a recorded
+candidate blocker remains and must not be bypassed or reclassified as success.
 
 ## If a release needs correction
 

@@ -252,6 +252,38 @@ waypoint nor an allowance. The resulting artifact contains no controller or wire
 commands, explicitly denies physical/contact authority, and continues to require
 installed physical qualification.
 
+The next command-management boundary is now explicit and remains fail closed.
+`single_action_execution_review_v1` joins one indexed v2 proposal with its
+sealed trajectory, phase-local collision/contact gate, independently reviewed
+installed collision-policy evidence, and the existing installed-controller
+qualification evidence/report. Controller session and configuration epoch must
+match the trajectory exactly. The review expires, can be cancelled, and is
+atomically consumable only once, including under concurrent callers. Its
+consumption receipt still says `permit_issued: false` and contains no controller
+or wire commands: only the safety supervisor may later mint physical authority.
+
+The ARM-047 bridge now performs that handoff without bypassing the existing
+authority. Device/interaction semantics determine the only acceptable safety
+capability; the consumed review digest becomes the plan identity; and the
+supervisor rechecks fresh calibration, interlocks, runtime status, operator
+arming, build release, and safety state before issuing exact-goal authority.
+Hash-chained lifecycle acknowledgements distinguish accepted, started,
+completed, failed, and uncertain outcomes. Failure and uncertainty are terminal
+and never imply retry or follow-on movement. Native writer and feedback binding
+remain separate work.
+
+ARM-048 now replaces the caller-authored `STARTED` acknowledgement with a
+content-addressed dispatch receipt.  The hardware-incapable sole-writer
+rehearsal consumes the exact supervisor permit immediately before one encoded
+write attempt, records payload identity and confirmed byte count, and evaluates
+ordered post-dispatch T=1051 samples against explicit arrival and settling
+tolerances.  Zero writes fail; partial or completion-uncertain writes and stale,
+missing, malformed, or unsettled feedback terminate as `UNCERTAIN`.  No path
+retries or authorizes follow-on movement.  This qualifies the execution
+semantics only: the implementation has no serial factory, port, callback,
+socket, or device handle and therefore claims neither an authentic controller
+receipt nor independent task outcome.
+
 The S4 synthetic integration lane now proves the downstream identity plumbing
 without relaxing that physical gate. A typed assessor requires the exact
 synthetic r97 review decision and eight-component configuration epoch, the model

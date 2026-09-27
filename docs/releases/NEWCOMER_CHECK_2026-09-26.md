@@ -1,6 +1,6 @@
 # Hardware-free newcomer check — September 26, 2026
 
-Related task: [#24](https://github.com/j-webtek/robot-arm-build/issues/24).
+Related task: [#24](https://github.com/j-webtek/tactevra/issues/24).
 Source checked: `28aef3d2ab6c7c52e0040ca6fdce48d13ecef8d5`.
 This is setup evidence, not a release, UI acceptance certification, or hardware test.
 

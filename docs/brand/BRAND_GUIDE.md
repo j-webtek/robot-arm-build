@@ -1,9 +1,8 @@
 # Tactevra brand foundation
 
 Updated September 26, 2026. The project owner selected **Tactevra** as the new
-brand. Commercial clearance remains pending; GitHub-facing documentation uses
-Tactevra while the repository remains
-`j-webtek/robot-arm-build`, and existing technical identifiers remain unchanged.
+brand. Commercial clearance remains pending. The canonical repository is
+`j-webtek/tactevra`; existing technical identifiers remain unchanged.
 
 Canonical spelling: **Tactevra**. Lowercase slug: `tactevra`.
 Recommended pronunciation: **tak-TEV-ruh**. Transitional description:
@@ -47,7 +46,7 @@ Use these names for public documentation; this table does not rename deployed co
 | Surface | Naming rule | Purpose |
 | --- | --- | --- |
 | Product | Tactevra | Umbrella identity |
-| GitHub repository | `tactevra` (planned) | Main source repository |
+| GitHub repository | `j-webtek/tactevra` | Main source repository |
 | User interface | Tactevra Studio | Setup, task review, results |
 | Arm software | Tactevra Runtime | Validation, planning, execution records |
 | AI workstream | Tactevra AI | Intent and perception components |

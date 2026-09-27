@@ -8,5 +8,5 @@ matplotlib>=3.8
 Pillow>=10.0
 mistune>=3.0
 beautifulsoup4>=4.12
-weasyprint>=62.0
+weasyprint>=70.0
 opencv-contrib-python>=4.10

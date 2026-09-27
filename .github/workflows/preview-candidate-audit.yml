@@ -1,0 +1,84 @@
+name: Preview candidate audit
+
+on:
+  workflow_dispatch:
+    inputs:
+      expected_sha:
+        description: Full 40-character commit SHA to audit
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: preview-candidate-audit-${{ inputs.expected_sha }}
+  cancel-in-progress: false
+
+jobs:
+  candidate-audit:
+    name: Source preview candidate / audit
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.12'
+      - name: Verify immutable candidate identity
+        env:
+          EXPECTED_SHA: ${{ inputs.expected_sha }}
+          DISPATCH_SHA: ${{ github.sha }}
+        run: |
+          python - <<'PY'
+          import os
+          import re
+          import subprocess
+
+          expected = os.environ['EXPECTED_SHA'].lower()
+          if not re.fullmatch(r'[0-9a-f]{40}', expected):
+              raise SystemExit('expected_sha must be one full 40-character hexadecimal commit SHA')
+          dispatched = os.environ['DISPATCH_SHA'].lower()
+          if not re.fullmatch(r'[0-9a-f]{40}', dispatched):
+              raise SystemExit('GitHub did not provide a full dispatch commit SHA')
+          actual = subprocess.check_output(
+              ['git', 'rev-parse', 'HEAD'], text=True
+          ).strip().lower()
+          if actual != dispatched or actual != expected:
+              raise SystemExit(
+                  f'checked out {actual}, dispatch selected {dispatched}, expected {expected}'
+              )
+          print(f'Candidate identity verified: {actual}')
+          PY
+      - name: Run read-only candidate audits
+        env:
+          EXPECTED_SHA: ${{ inputs.expected_sha }}
+        shell: bash
+        run: |
+          set +e
+          python scripts/ci/check_release_integrity.py --mode candidate
+          integrity_status=$?
+          python scripts/audit_github_snapshot.py
+          snapshot_status=$?
+          python scripts/ci/check_docs.py
+          docs_status=$?
+          set -e
+
+          {
+            echo '### Source preview candidate audit'
+            echo
+            echo "Candidate: \`${EXPECTED_SHA}\`"
+            echo
+            echo "- Release-integrity candidate check exit: \`${integrity_status}\`"
+            echo "- Snapshot audit exit: \`${snapshot_status}\`"
+            echo "- Maintained-document check exit: \`${docs_status}\`"
+            echo
+            echo 'This workflow is read-only and publishes no release or artifact.'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          if (( integrity_status != 0 || snapshot_status != 0 || docs_status != 0 )); then
+            exit 1
+          fi

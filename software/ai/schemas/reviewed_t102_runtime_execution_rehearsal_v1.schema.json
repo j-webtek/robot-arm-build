@@ -1,0 +1,240 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rocell.local/schemas/reviewed_t102_runtime_execution_rehearsal_v1.schema.json",
+  "title": "RoCell reviewed T102 runtime execution rehearsal v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "status", "permit_binding_sha256", "frame_sha256",
+    "dispatch", "acknowledgment", "settlement", "runtime_report",
+    "lifecycle", "automatic_retry_allowed", "follow_on_movement_authorized",
+    "hardware_access", "physical_authority", "physical_command_writes",
+    "limitations", "execution_sha256"
+  ],
+  "properties": {
+    "schema": {"const": "rocell.reviewed_t102_runtime_execution_rehearsal.v1"},
+    "status": {"enum": ["COMPLETED", "FAILED", "UNCERTAIN"]},
+    "permit_binding_sha256": {"$ref": "#/$defs/hash"},
+    "frame_sha256": {"$ref": "#/$defs/hash"},
+    "dispatch": {"$ref": "#/$defs/dispatch"},
+    "acknowledgment": {
+      "oneOf": [
+        {"type": "null"},
+        {"$ref": "#/$defs/acceptedAcknowledgment"},
+        {"$ref": "#/$defs/rejectedAcknowledgment"}
+      ]
+    },
+    "settlement": {
+      "oneOf": [{"type": "null"}, {"$ref": "#/$defs/settlement"}]
+    },
+    "runtime_report": {"$ref": "#/$defs/runtimeReport"},
+    "lifecycle": {"$ref": "#/$defs/lifecycle"},
+    "automatic_retry_allowed": {"const": false},
+    "follow_on_movement_authorized": {"const": false},
+    "hardware_access": {"const": false},
+    "physical_authority": {"const": false},
+    "physical_command_writes": {"const": 0},
+    "limitations": {
+      "const": [
+        "HARDWARE_INCAPABLE_RUNTIME_REHEARSAL",
+        "NO_AUTHENTIC_PHYSICAL_CONTROLLER_RECEIPT",
+        "NO_INDEPENDENT_TASK_OUTCOME"
+      ]
+    },
+    "execution_sha256": {"$ref": "#/$defs/hash"}
+  },
+  "$defs": {
+    "hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "identifier": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"},
+    "dispatch": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "schema", "status", "review_sha256", "permit_binding_sha256",
+        "goal_sha256", "payload_sha256", "payload_bytes", "confirmed_bytes",
+        "retained_bytes_sha256", "write_attempts", "permit_consumed",
+        "dispatched_monotonic_ns", "error_code", "composition",
+        "automatic_retry_allowed", "hardware_access", "physical_authority",
+        "physical_command_writes", "dispatch_receipt_sha256"
+      ],
+      "properties": {
+        "schema": {"const": "rocell.reviewed_motion_dispatch_receipt.v1"},
+        "status": {"enum": ["REPLAY_WRITE_CONFIRMED", "ZERO_WRITE_CONFIRMED", "PARTIAL_WRITE_CONFIRMED", "WRITE_COMPLETION_UNCERTAIN"]},
+        "review_sha256": {"$ref": "#/$defs/hash"},
+        "permit_binding_sha256": {"$ref": "#/$defs/hash"},
+        "goal_sha256": {"$ref": "#/$defs/hash"},
+        "payload_sha256": {"$ref": "#/$defs/hash"},
+        "payload_bytes": {"type": "integer", "minimum": 1},
+        "confirmed_bytes": {"oneOf": [{"type": "null"}, {"type": "integer", "minimum": 0}]},
+        "retained_bytes_sha256": {"$ref": "#/$defs/hash"},
+        "write_attempts": {"const": 1},
+        "permit_consumed": {"const": true},
+        "dispatched_monotonic_ns": {"type": "integer", "minimum": 1},
+        "error_code": {"oneOf": [{"type": "null"}, {"type": "string", "minLength": 1}]},
+        "composition": {"const": "HARDWARE_INCAPABLE_REPLAY"},
+        "automatic_retry_allowed": {"const": false},
+        "hardware_access": {"const": false},
+        "physical_authority": {"const": false},
+        "physical_command_writes": {"const": 0},
+        "dispatch_receipt_sha256": {"$ref": "#/$defs/hash"}
+      }
+    },
+    "acceptedAcknowledgment": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "sequence", "response_bytes_sha256", "status", "arrival_proven",
+        "hardware_write_count", "frame_sha256", "correlation_id",
+        "controller_session_id", "modeled_controller_receipt",
+        "authentic_physical_receipt", "acknowledgment_sha256"
+      ],
+      "properties": {
+        "sequence": {"type": "integer", "minimum": 1},
+        "response_bytes_sha256": {"$ref": "#/$defs/hash"},
+        "status": {"const": "ACCEPTED_ONCE"},
+        "arrival_proven": {"const": false},
+        "hardware_write_count": {"const": 0},
+        "frame_sha256": {"$ref": "#/$defs/hash"},
+        "correlation_id": {"$ref": "#/$defs/identifier"},
+        "controller_session_id": {"$ref": "#/$defs/identifier"},
+        "modeled_controller_receipt": {"const": true},
+        "authentic_physical_receipt": {"const": false},
+        "acknowledgment_sha256": {"$ref": "#/$defs/hash"}
+      }
+    },
+    "rejectedAcknowledgment": {
+      "type": "object", "additionalProperties": false,
+      "required": ["status", "error_code", "response_bytes_sha256", "authentic_physical_receipt", "acknowledgment_sha256"],
+      "properties": {
+        "status": {"const": "ACKNOWLEDGMENT_REJECTED"},
+        "error_code": {"type": "string", "minLength": 1},
+        "response_bytes_sha256": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/hash"}]},
+        "authentic_physical_receipt": {"const": false},
+        "acknowledgment_sha256": {"$ref": "#/$defs/hash"}
+      }
+    },
+    "settlement": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "schema", "status", "frame_sha256", "goal_sha256",
+        "assessed_monotonic_ns", "accepted_sample_count",
+        "feedback_response_sha256", "rejected_sample_codes",
+        "consecutive_settled_samples", "required_consecutive_samples",
+        "tolerance_rad", "max_joint_error_rad", "controller_receipt_claimed",
+        "controller_arrival_claimed", "independent_task_outcome_verified",
+        "settlement_sha256"
+      ],
+      "properties": {
+        "schema": {"const": "rocell.reviewed_t102_joint_settlement.v1"},
+        "status": {"enum": ["OBSERVED_SETTLED_JOINT_ARRIVAL", "JOINT_ARRIVAL_UNVERIFIED"]},
+        "frame_sha256": {"$ref": "#/$defs/hash"},
+        "goal_sha256": {"$ref": "#/$defs/hash"},
+        "assessed_monotonic_ns": {"type": "integer", "minimum": 1},
+        "accepted_sample_count": {"type": "integer", "minimum": 0},
+        "feedback_response_sha256": {"type": "array", "items": {"$ref": "#/$defs/hash"}},
+        "rejected_sample_codes": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "MALFORMED_SAMPLE", "NON_MONOTONIC_OR_PRE_DISPATCH",
+              "STALE_OR_FUTURE_FEEDBACK", "MALFORMED_RESPONSE_BYTES",
+              "RUNTIME_REJECTED_FEEDBACK", "FEEDBACK_COLLECTION_ERROR"
+            ]
+          }
+        },
+        "consecutive_settled_samples": {"type": "integer", "minimum": 0},
+        "required_consecutive_samples": {"type": "integer", "minimum": 2, "maximum": 16},
+        "tolerance_rad": {"type": "number", "minimum": 0},
+        "max_joint_error_rad": {"type": "number", "minimum": 0},
+        "controller_receipt_claimed": {"const": true},
+        "controller_arrival_claimed": {"type": "boolean"},
+        "independent_task_outcome_verified": {"const": false},
+        "settlement_sha256": {"$ref": "#/$defs/hash"}
+      }
+    },
+    "runtimeReport": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "schema", "manifest_sha256", "state", "status", "writer_instance_id",
+        "last_sequence", "admission_count", "admissions", "pending_ack_sequence",
+        "acknowledgment_count", "acknowledgments", "feedback_exchange_count",
+        "terminal_reason", "startup_motion_commands", "transport_open_count",
+        "hardware_write_count", "automatic_retry", "replay_allowed",
+        "hardware_access", "physical_authority", "report_sha256"
+      ],
+      "properties": {
+        "schema": {"const": "rocell.production_controller_runtime_rehearsal.v1"},
+        "manifest_sha256": {"$ref": "#/$defs/hash"},
+        "state": {"enum": ["SAFE_IDLE", "WRITER_CLAIMED", "TERMINAL_LOCKED"]},
+        "status": {"enum": ["SAFE_IDLE", "CONTRACT_REHEARSAL_READY", "AWAITING_COMMAND_ACKNOWLEDGMENT", "TERMINAL_NO_RETRY"]},
+        "writer_instance_id": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/identifier"}]},
+        "last_sequence": {"type": "integer", "minimum": 0},
+        "admission_count": {"type": "integer", "minimum": 0},
+        "admissions": {"type": "array", "items": {"$ref": "#/$defs/runtimeAdmission"}},
+        "pending_ack_sequence": {"oneOf": [{"type": "null"}, {"type": "integer", "minimum": 1}]},
+        "acknowledgment_count": {"type": "integer", "minimum": 0},
+        "acknowledgments": {"type": "array", "items": {"$ref": "#/$defs/runtimeAcknowledgment"}},
+        "feedback_exchange_count": {"type": "integer", "minimum": 0},
+        "terminal_reason": {"oneOf": [{"type": "null"}, {"type": "string", "minLength": 1}]},
+        "startup_motion_commands": {"const": 0},
+        "transport_open_count": {"const": 0},
+        "hardware_write_count": {"const": 0},
+        "automatic_retry": {"const": false},
+        "replay_allowed": {"const": false},
+        "hardware_access": {"const": false},
+        "physical_authority": {"const": false},
+        "report_sha256": {"$ref": "#/$defs/hash"}
+      }
+    },
+    "lifecycle": {
+      "type": "object", "additionalProperties": false,
+      "required": ["schema", "phase", "review_sha256", "permit_binding_sha256", "events", "automatic_retry_allowed", "follow_on_movement_authorized", "lifecycle_sha256"],
+      "properties": {
+        "schema": {"const": "rocell.reviewed_action_lifecycle.v1"},
+        "phase": {"enum": ["COMPLETED", "FAILED", "UNCERTAIN"]},
+        "review_sha256": {"$ref": "#/$defs/hash"},
+        "permit_binding_sha256": {"$ref": "#/$defs/hash"},
+        "events": {"type": "array", "minItems": 3, "maxItems": 3, "items": {"$ref": "#/$defs/lifecycleEvent"}},
+        "automatic_retry_allowed": {"const": false},
+        "follow_on_movement_authorized": {"const": false},
+        "lifecycle_sha256": {"$ref": "#/$defs/hash"}
+      }
+    },
+    "runtimeAdmission": {
+      "type": "object", "additionalProperties": false,
+      "required": ["sequence", "correlation_id", "frame_sha256", "wire_bytes_sha256", "message_sha256", "status", "hardware_write_count"],
+      "properties": {
+        "sequence": {"type": "integer", "minimum": 1},
+        "correlation_id": {"$ref": "#/$defs/identifier"},
+        "frame_sha256": {"$ref": "#/$defs/hash"},
+        "wire_bytes_sha256": {"$ref": "#/$defs/hash"},
+        "message_sha256": {"$ref": "#/$defs/hash"},
+        "status": {"const": "ADMITTED_CONTRACT_ONLY"},
+        "hardware_write_count": {"const": 0}
+      }
+    },
+    "runtimeAcknowledgment": {
+      "type": "object", "additionalProperties": false,
+      "required": ["sequence", "response_bytes_sha256", "status", "arrival_proven", "hardware_write_count"],
+      "properties": {
+        "sequence": {"type": "integer", "minimum": 1},
+        "response_bytes_sha256": {"$ref": "#/$defs/hash"},
+        "status": {"const": "ACCEPTED_ONCE"},
+        "arrival_proven": {"const": false},
+        "hardware_write_count": {"const": 0}
+      }
+    },
+    "lifecycleEvent": {
+      "type": "object", "additionalProperties": false,
+      "required": ["ordinal", "phase", "permit_binding_sha256", "event_monotonic_ns", "detail_sha256", "previous_event_sha256", "automatic_retry_allowed", "event_sha256"],
+      "properties": {
+        "ordinal": {"type": "integer", "minimum": 0, "maximum": 2},
+        "phase": {"enum": ["ACCEPTED", "STARTED", "COMPLETED", "FAILED", "UNCERTAIN"]},
+        "permit_binding_sha256": {"$ref": "#/$defs/hash"},
+        "event_monotonic_ns": {"oneOf": [{"type": "null"}, {"type": "integer", "minimum": 1}]},
+        "detail_sha256": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/hash"}]},
+        "previous_event_sha256": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/hash"}]},
+        "automatic_retry_allowed": {"const": false},
+        "event_sha256": {"$ref": "#/$defs/hash"}
+      }
+    }
+  }
+}

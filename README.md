@@ -2,18 +2,19 @@
 
 ![Tactevra — intent into action](assets/brand/tactevra-banner.svg)
 
-[![Offline verification](https://github.com/j-webtek/robot-arm-build/actions/workflows/offline-checks.yml/badge.svg?branch=main)](https://github.com/j-webtek/robot-arm-build/actions/workflows/offline-checks.yml)
+[![Offline verification](https://github.com/j-webtek/tactevra/actions/workflows/offline-checks.yml/badge.svg?branch=main)](https://github.com/j-webtek/tactevra/actions/workflows/offline-checks.yml)
 
 The CI badge covers [scoped hardware-free checks](docs/CI.md), not physical robot qualification.
 
 **An experimental local-first robotics platform connecting user intent, visual evidence, and checked physical actions.**
 
-[Get started](docs/GETTING_STARTED.md) · [Current capabilities](PROJECT_STATUS.md) · [Documentation](docs/README.md) · [Contribute](CONTRIBUTING.md)
+[Get started](docs/GETTING_STARTED.md) · [How the system works](docs/SYSTEM_OVERVIEW.md) · [Current capabilities](PROJECT_STATUS.md) · [Documentation](docs/README.md) · [Contribute](CONTRIBUTING.md)
 
 [Get help](SUPPORT.md) · [Report a vulnerability privately](SECURITY.md)
 
 Formerly **RoCell**. Existing `rocell` commands, package names, and hardware release
-paths remain unchanged for compatibility. The GitHub repository URL has not changed.
+paths remain unchanged for compatibility. The canonical source repository is now
+`j-webtek/tactevra`; GitHub redirects the former repository URL.
 
 Tactevra is an experimental robotics project with a long-term goal: let you
 give an AI a task in plain language and have a robot arm carry out the
@@ -36,7 +37,7 @@ are development goals, not completed capabilities.
 
 ## Where we are
 
-As of September 26, 2026, you can explore a local rehearsal interface, interpret
+As of September 27, 2026, you can explore a local rehearsal interface, interpret
 supported text requests offline, and inspect simulated coordinate and movement
 results. The AI v2 command assembler and arm validation interface have passed a
 shared test using synthetic evidence. Supervised noncontact arm movements are
@@ -56,11 +57,13 @@ are tracked separately.
 | I want to… | Read this |
 | --- | --- |
 | Try the project for the first time | [Getting started](docs/GETTING_STARTED.md) |
+| Understand the end-to-end system | [System overview](docs/SYSTEM_OVERVIEW.md) |
 | Understand what works and what comes next | [Project status](PROJECT_STATUS.md) |
 | Set up the code and contribute | [Developer setup](CONTRIBUTING.md) |
 | Explore the local interface | [Wizard workbench guide](software/docs/WIZARD_WORKBENCH.md) |
-| Build the physical workcell | [Step-by-step assembly guide](active-project/RoCell_v0_3/BUILD_BY_STEP/README.md) |
+| Build the physical workcell | [Hardware build guide](docs/HARDWARE_BUILD_GUIDE.md) |
 | Find architecture, test results, or procedures | [Documentation guide](docs/README.md) |
+| Decode project terminology | [Glossary](docs/GLOSSARY.md) |
 
 After completing the [base installation](docs/GETTING_STARTED.md#install-the-software),
 you can optionally launch the local rehearsal interface from
@@ -106,12 +109,15 @@ on this page are preserved in the
 
 ## License
 
-Copyright 2026 RoCell contributors. Historical copyright and attribution notices
+Copyright 2026 Tactevra contributors. Historical copyright and attribution notices
 remain unchanged during the Tactevra brand transition.
 
 Original contributions in this repository are licensed under the
 [Apache License, Version 2.0](LICENSE).
 Third-party code, models, drawings, and other vendor assets retain their
 respective licenses and attribution notices; this license does not relicense
-those materials. See their source and provenance documentation for applicable
-terms.
+those materials. Review the maintained [third-party notices](THIRD_PARTY_NOTICES.md)
+and linked provenance records for applicable terms and unresolved clearance.
+
+For repository history and citation metadata, see the [changelog](CHANGELOG.md),
+[versioning policy](docs/VERSIONING.md), and [citation file](CITATION.cff).

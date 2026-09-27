@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rocell.local/schemas/native_t102_executor_rehearsal_receipt_v1.schema.json",
+  "title": "RoCell native T102 executor rehearsal receipt v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "status", "authority_sha256", "approval_record_sha256",
+    "claim_sha256", "prepared_sha256", "frame_sha256",
+    "wire_bytes_sha256", "pinned_endpoint_sha256", "correlation_id",
+    "writer_instance_id", "controller_session_id", "requested_bytes",
+    "confirmed_bytes", "open_attempts", "write_attempts", "close_attempts",
+    "error_code", "automatic_retry_allowed", "hardware_access",
+    "physical_authority", "authentic_controller_receipt",
+    "physical_movement_verified", "receipt_sha256"
+  ],
+  "properties": {
+    "schema": {"const": "rocell.native_t102_executor_rehearsal_receipt.v1"},
+    "status": {
+      "enum": [
+        "INCAPABLE_BYTES_CONFIRMED_NOT_CONTROLLER_RECEIVED",
+        "NOT_OPENED_AUTHORITY_CONSUMED_NO_RETRY",
+        "WRITE_UNCERTAIN_NO_RETRY",
+        "CLOSE_UNCERTAIN_NO_RETRY"
+      ]
+    },
+    "authority_sha256": {"$ref": "#/$defs/hash"},
+    "approval_record_sha256": {"$ref": "#/$defs/hash"},
+    "claim_sha256": {"$ref": "#/$defs/hash"},
+    "prepared_sha256": {"$ref": "#/$defs/hash"},
+    "frame_sha256": {"$ref": "#/$defs/hash"},
+    "wire_bytes_sha256": {"$ref": "#/$defs/hash"},
+    "pinned_endpoint_sha256": {"$ref": "#/$defs/hash"},
+    "correlation_id": {"$ref": "#/$defs/identifier"},
+    "writer_instance_id": {"$ref": "#/$defs/identifier"},
+    "controller_session_id": {"$ref": "#/$defs/identifier"},
+    "requested_bytes": {"type": "integer", "minimum": 1},
+    "confirmed_bytes": {"type": "integer", "minimum": 0},
+    "open_attempts": {"type": "integer", "minimum": 0, "maximum": 1},
+    "write_attempts": {"type": "integer", "minimum": 0, "maximum": 1},
+    "close_attempts": {"type": "integer", "minimum": 0, "maximum": 1},
+    "error_code": {
+      "oneOf": [
+        {"type": "null"},
+        {"enum": [
+          "OPEN_FAILURE", "ZERO_WRITE", "PARTIAL_WRITE",
+          "WRITE_EXCEPTION", "INVALID_WRITE_COUNT", "CLOSE_FAILURE"
+        ]}
+      ]
+    },
+    "automatic_retry_allowed": {"const": false},
+    "hardware_access": {"const": false},
+    "physical_authority": {"const": false},
+    "authentic_controller_receipt": {"const": false},
+    "physical_movement_verified": {"const": false},
+    "receipt_sha256": {"$ref": "#/$defs/hash"}
+  },
+  "$defs": {
+    "hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "identifier": {
+      "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+    }
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rocell.local/schemas/native_t102_terminal_receipt_snapshot_v1.schema.json",
+  "title": "RoCell native T102 durable terminal receipt snapshot v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "phase", "started_sha256", "claim_sha256",
+    "authority_sha256", "frame_sha256", "terminal_sha256",
+    "receipt_sha256", "recovery_disposition", "automatic_retry_allowed",
+    "hardware_access", "physical_authority", "snapshot_sha256"
+  ],
+  "properties": {
+    "schema": {"const": "rocell.native_t102_terminal_receipt_snapshot.v1"},
+    "phase": {"enum": ["EXECUTION_STARTED", "TERMINAL_RECORDED"]},
+    "started_sha256": {"$ref": "#/$defs/hash"},
+    "claim_sha256": {"$ref": "#/$defs/hash"},
+    "authority_sha256": {"$ref": "#/$defs/hash"},
+    "frame_sha256": {"$ref": "#/$defs/hash"},
+    "terminal_sha256": {
+      "oneOf": [{"type": "null"}, {"$ref": "#/$defs/hash"}]
+    },
+    "receipt_sha256": {
+      "oneOf": [{"type": "null"}, {"$ref": "#/$defs/hash"}]
+    },
+    "recovery_disposition": {
+      "enum": ["RETRY_FORBIDDEN_EXECUTION_UNCERTAIN", "TERMINAL_NO_REPLAY"]
+    },
+    "automatic_retry_allowed": {"const": false},
+    "hardware_access": {"const": false},
+    "physical_authority": {"const": false},
+    "snapshot_sha256": {"$ref": "#/$defs/hash"}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"phase": {"const": "EXECUTION_STARTED"}}},
+      "then": {"properties": {
+        "terminal_sha256": {"type": "null"},
+        "receipt_sha256": {"type": "null"},
+        "recovery_disposition": {"const": "RETRY_FORBIDDEN_EXECUTION_UNCERTAIN"}
+      }}
+    },
+    {
+      "if": {"properties": {"phase": {"const": "TERMINAL_RECORDED"}}},
+      "then": {"properties": {
+        "terminal_sha256": {"$ref": "#/$defs/hash"},
+        "receipt_sha256": {"$ref": "#/$defs/hash"},
+        "recovery_disposition": {"const": "TERMINAL_NO_REPLAY"}
+      }}
+    }
+  ],
+  "$defs": {
+    "hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

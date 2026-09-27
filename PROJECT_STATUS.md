@@ -1,11 +1,12 @@
 # Tactevra project status
 
-Reviewed September 26, 2026 through the ARM-045 phase-local contact gate
-increment.
+Reviewed September 27, 2026 through the ARM-048 sole-writer dispatch lifecycle
+increment on merged `main`.
 Unmerged workstream branches are not included in this summary.
 This is a capability summary for readers; the
-[shared workplan](software/ai/docs/SHARED_AI_ARM_WORKPLAN.md) retains detailed
-stage ownership and test evidence as development continues.
+[shared workplan](software/ai/docs/SHARED_AI_ARM_WORKPLAN.md) retains current
+stage ownership, while the [evidence ledger](software/ai/docs/EVIDENCE_LEDGER.md)
+preserves detailed test records as development continues.
 
 Tactevra (formerly RoCell) is an experimental robot workcell intended to carry out keyboard and phone
 tasks from a person's text request. You can explore the software and run offline
@@ -23,8 +24,8 @@ being developed.
 - **Not demonstrated:** reliable camera-guided physical typing or phone operation.
   Merged firmware and clear simulated waypoints do not authorize movement.
 - **Distribution:** no source release is published at this checkpoint. The
-  earlier preview effort was [deferred, not completed](https://github.com/j-webtek/robot-arm-build/issues/25).
-  [Vendor-file redistribution provenance](https://github.com/j-webtek/robot-arm-build/issues/45)
+  earlier preview effort was [deferred, not completed](https://github.com/j-webtek/tactevra/issues/25).
+  [Vendor-file redistribution provenance](https://github.com/j-webtek/tactevra/issues/45)
   remains open for expert review.
 
 The sections below explain the evidence behind this summary. For setup help,
@@ -46,6 +47,8 @@ use the shared workplan linked above.
 | Conservative route collision evaluation | Robot poses are FK-derived at bounded samples; rigid motion is enclosed by URDF-derived margins, each adjacent pair requires a profile-bound cable envelope, and one exact contact allowance can be bound to a sealed no-write envelope | Synthetic fixtures test clear, collision, crossed-identity, contact-policy, and resource cases; installed engineering evidence and physical qualification still block release |
 | Controller-command preview | Sealed synthetic trajectories can be encoded into Waveshare T=102 bytes and a proposed dispatch schedule | Offline encoding and published schemas are tested; the preview has no transport and sends nothing to the arm |
 | Execution lifecycle rehearsal | Ownership, single-use reservations, fault handling, and restart reconciliation are modeled | Tests exercise no-retry and fault rules without device I/O; this is not an installed live execution service |
+| Reviewed permit bridge | A consumed single-action review can be bound to the existing safety supervisor and an exact-goal motion permit with hash-chained lifecycle acknowledgments | Portable tests cover accepted, started, completed, failed, and uncertain records; there is still no controller transport, physical execution, or independent outcome evidence |
+| Sole-writer dispatch rehearsal | One-use permit consumption, an exact encoded-write attempt, receipt hashing, and ordered settling checks | The passing fixture is hardware-incapable and in-memory; it does not establish native transport, independently acquired feedback, physical movement, or task outcome |
 | Controller evidence gate | Required controller identity, mapping, protocol, freshness, and review fields are checked | Modeled records test rejection behavior; even a passing record grants no transport or execution authority, and no physical originals were qualified |
 | Installed-controller compatibility | A passive r96 observation is recorded; an offline assessment checks the installed application's command surface | r96 lacks the required generic production command/feedback interface and remains blocked; its identity evidence is not independently qualified |
 | Production runtime contract | A host-side executable specification rehearses safe-idle startup, one writer, ordered commands, deadlines, and feedback checks | Software rules are testable without I/O; this is not replacement firmware or an installed execution service |
@@ -89,7 +92,9 @@ It opens no transport and sends no bytes.
 The newer controller-evidence gate checks whether a supplied record matches the
 encoding profile and its declared session, mapping, and protocol. Its success
 cases use modeled records, not independently authenticated physical evidence.
-See ARM-021/023 in the shared ledger; the gate does not collect that evidence.
+See ARM-021/023 in the
+[evidence ledger](software/ai/docs/EVIDENCE_LEDGER.md); the gate does not collect
+that evidence.
 
 Since that checkpoint, the arm lane recorded one passive controller observation
 without a restart or movement (ARM-024). The subsequent offline assessment found
@@ -131,10 +136,26 @@ and accepted no evaluation targets. Better pose estimates do not establish usabl
 confidence or erase that failure.
 
 Detailed evidence is in AI-035/036 and ARM-018/020 of the
-[shared ledger](software/ai/docs/SHARED_AI_ARM_WORKPLAN.md). ARM-020 records 229
+[evidence ledger](software/ai/docs/EVIDENCE_LEDGER.md). ARM-020 records 229
 passing tests in its selected integration run, with zero hardware writes and
 zero physical movements. Test selections overlap and are not a model-accuracy
 score, full-suite qualification, or physical typing success rate.
+
+The merged ARM-046/047 boundary now consumes one reviewed action at most once,
+rechecks the existing safety supervisor, derives capability from the frozen
+device and interaction semantics, and binds an exact-goal permit to
+hash-chained lifecycle acknowledgments. Terminal results prohibit automatic
+retry and follow-on movement. This makes the offline handoff more explicit; it
+does not add a native controller writer, authenticated feedback, settling,
+contact qualification, or independent device-input verification.
+
+The merged ARM-048 increment replaces caller-authored lifecycle start records
+with a hash-bound dispatch receipt at one exact encoded-write boundary. It also
+models conservative terminal outcomes for zero, partial, ambiguous, or unsettled
+writes and denies retry after every dispatch outcome. Its writer fixture cannot
+open a port or reach hardware, so the result qualifies the state machine and
+evidence contract only—not native transport, controller feedback, movement, or
+typing.
 
 Repository improvements include protected-main CI, support and private security
 reporting, contributor handoff templates, reviewed dependency updates, and an

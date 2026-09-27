@@ -5,9 +5,10 @@ and [current capabilities](../../../PROJECT_STATUS.md). This directory contains
 developer contracts, research records, and implementation plans.
 
 Contributors should start with the
-[shared AI-to-arm workplan and evidence backbone](SHARED_AI_ARM_WORKPLAN.md).
-It is the common stage board for the AI/model and arm/runtime workstreams and
-the append-only index for cross-lane evidence.
+[shared AI-to-arm workplan](SHARED_AI_ARM_WORKPLAN.md). It is the common stage
+board for the AI/model and arm/runtime workstreams. Detailed results are kept in
+the separate, append-only [AI/arm evidence ledger](EVIDENCE_LEDGER.md), so the
+current plan stays readable while the complete history remains available.
 
 Then read [the integration contract](CONTRACT.md), followed by the
 [model-to-arm translation assurance process](MODEL_TO_ARM_TRANSLATION_ASSURANCE.md),
@@ -21,8 +22,12 @@ llama.cpp multimodal observer fits beside the precision pose model, and the
 prioritized path to a physically qualified system.
 
 These documents include both implemented offline components and proposed work.
-Read each document's date, result, and limitations. Current RoCell
+Read each document's date, result, and limitations. Current Tactevra
 capabilities and physical status remain in the repository's
 [project status](../../../PROJECT_STATUS.md),
 [software architecture](../../docs/ARCHITECTURE.md), and code. The AI documents
 must be revised when those contracts change.
+
+Tactevra is the product name. The lowercase `rocell` name remains in package,
+command, schema, configuration, and historical identifiers for compatibility;
+see the repository [glossary](../../../docs/GLOSSARY.md).

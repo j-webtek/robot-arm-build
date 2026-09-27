@@ -13,8 +13,14 @@ import xml.etree.ElementTree as ET
 ROOT = Path(__file__).resolve().parents[2]
 DOCS = (
     'README.md', 'PROJECT_STATUS.md', 'CONTRIBUTING.md', 'SUPPORT.md', 'SECURITY.md',
+    'THIRD_PARTY_NOTICES.md',
     'CODE_OF_CONDUCT.md',
     'docs/README.md', 'docs/GETTING_STARTED.md', 'docs/RELEASING.md',
+    'docs/releases/README.md', 'docs/releases/READINESS.md',
+    'docs/SYSTEM_OVERVIEW.md', 'docs/GLOSSARY.md',
+    'docs/HARDWARE_BUILD_GUIDE.md',
+    'docs/DOCUMENTATION_STANDARD.md',
+    'docs/EVIDENCE_RETENTION.md',
     'docs/releases/EXPERIMENTAL_PREVIEW_DRAFT.md',
     'docs/releases/CANDIDATE_DCD87DB.md',
     'docs/releases/BASELINE_2026-09-26.md',
@@ -23,8 +29,13 @@ DOCS = (
     'docs/HARDWARE_PROVENANCE.md',
     'docs/REPOSITORY_OPERATIONS.md',
     'docs/MAINTAINER_CHECKLIST.md',
-    'docs/CI.md', 'docs/AUDIT_FIXTURE_REVIEW.md', 'software/README.md', 'software/ai/README.md',
+    'docs/CI.md', 'docs/AUDIT_FIXTURE_REVIEW.md', 'software/README.md',
+    'software/RUNTIME_IMPLEMENTATION_HISTORY.md', 'software/ai/README.md',
     'software/ai/docs/README.md', 'assets/brand/README.md',
+    'software/ai/docs/CONTRACT.md',
+    'software/ai/docs/SHARED_AI_ARM_WORKPLAN.md',
+    'software/ai/docs/EVIDENCE_LEDGER.md',
+    'software/docs/ARCHITECTURE.md',
     'docs/brand/BRAND_GUIDE.md', 'docs/brand/NAMING_REVIEW.md',
     'docs/brand/MIGRATION_PLAN.md',
 )
@@ -38,21 +49,101 @@ PUBLIC_TITLES = {
     'SUPPORT.md': 'Getting help with Tactevra',
     'SECURITY.md': 'Tactevra security reporting',
     'CODE_OF_CONDUCT.md': 'Tactevra community code of conduct',
+    'THIRD_PARTY_NOTICES.md': 'Tactevra third-party notices',
     'docs/README.md': 'Tactevra documentation',
     'docs/GETTING_STARTED.md': 'Getting started with Tactevra',
+    'docs/SYSTEM_OVERVIEW.md': 'Tactevra system overview',
+    'docs/GLOSSARY.md': 'Tactevra glossary',
+    'docs/HARDWARE_BUILD_GUIDE.md': 'Building the Tactevra RC03 workcell',
+    'docs/DOCUMENTATION_STANDARD.md': 'Tactevra documentation standard',
+    'docs/releases/READINESS.md': 'Tactevra experimental-preview readiness',
+    'software/README.md': 'Tactevra Runtime',
+    'software/RUNTIME_IMPLEMENTATION_HISTORY.md': 'Tactevra Runtime implementation history',
+    'software/ai/README.md': 'Tactevra AI',
+    'software/ai/docs/CONTRACT.md': 'AI-to-Tactevra Runtime integration contract',
+    'software/ai/docs/SHARED_AI_ARM_WORKPLAN.md': 'Shared AI-to-arm workplan',
+    'software/ai/docs/EVIDENCE_LEDGER.md': 'Tactevra AI/arm evidence ledger',
+    'software/docs/ARCHITECTURE.md': 'Tactevra Runtime software architecture',
+}
+
+REQUIRED_PHRASES = {
+    'docs/SYSTEM_OVERVIEW.md': (
+        '**Document status:** Current overview',
+        '**Authority:** Explanatory; it does not authorize hardware operation',
+    ),
+    'docs/GLOSSARY.md': ('**Document status:** Current reference',),
+    'docs/HARDWARE_BUILD_GUIDE.md': (
+        '**Document status:** Current builder guide',
+        '**Authority:** Explanatory; controlled RC03 records determine print and build eligibility',
+        '| Powered robot motion | **Not authorized** |',
+    ),
+    'docs/DOCUMENTATION_STANDARD.md': ('**Document status:** Current policy',),
+    'THIRD_PARTY_NOTICES.md': (
+        '**Document status:** Current attribution index',
+        '**Authority:** Informational inventory only.',
+        'redistribution is therefore **unresolved**',
+    ),
+    'docs/releases/README.md': (
+        '**Document status:** Current release index',
+        '**Authority:** Navigation and readiness context only; this page does not approve or publish a release',
+        'https://github.com/j-webtek/tactevra/issues/57',
+    ),
+    'docs/releases/READINESS.md': (
+        '**Document status:** Current release-readiness dashboard',
+        '**Authority:** Status and routing only; this page does not select a candidate, approve publication, or authorize hardware operation',
+        '**Not selected**',
+        '**Not approved or published**',
+        'https://github.com/j-webtek/tactevra/issues/56',
+        'https://github.com/j-webtek/tactevra/issues/61',
+        'https://github.com/j-webtek/tactevra/issues/88',
+    ),
+    'software/RUNTIME_IMPLEMENTATION_HISTORY.md': (
+        '**Document status:** Historical evidence index',
+        '**Authority:** Historical context only; it does not authorize hardware operation',
+    ),
+    'software/README.md': (
+        '**Document status:** Current software reference',
+        '**Authority:** Explanatory; this page does not authorize hardware operation',
+    ),
+    'software/ai/README.md': (
+        '**Document status:** Current research and integration reference',
+        '**Authority:** Research guidance only; this page grants no controller authority',
+    ),
+    'software/ai/docs/SHARED_AI_ARM_WORKPLAN.md': (
+        '**Status:** active coordination document',
+        '[Tactevra AI/arm evidence ledger](EVIDENCE_LEDGER.md)',
+    ),
+    'software/ai/docs/EVIDENCE_LEDGER.md': (
+        '**Document status:** Append-only evidence record',
+        'duplicate `E-20260926-INT-001` identifier',
+    ),
+    'docs/releases/EXPERIMENTAL_PREVIEW_DRAFT.md': (
+        '**Status:** Superseded preparation record; unpublished',
+        'https://github.com/j-webtek/tactevra/issues/57',
+    ),
+    'docs/releases/CANDIDATE_DCD87DB.md': (
+        '**Disposition: SUPERSEDED WITHOUT PUBLICATION.**',
+    ),
 }
 
 # (relative Markdown destination, optional exact plain ATX heading).
 PUBLIC_ROUTES = {
     'README.md': (
         ('docs/GETTING_STARTED.md#install-the-software', 'Install the software'),
+        ('docs/SYSTEM_OVERVIEW.md', None),
+        ('docs/HARDWARE_BUILD_GUIDE.md', None),
         ('PROJECT_STATUS.md', None), ('docs/README.md', None),
         ('SUPPORT.md', None), ('SECURITY.md', None),
+        ('THIRD_PARTY_NOTICES.md', None),
     ),
     'docs/README.md': (
         ('GETTING_STARTED.md', None), ('../PROJECT_STATUS.md', None),
+        ('SYSTEM_OVERVIEW.md', None), ('GLOSSARY.md', None),
+        ('HARDWARE_BUILD_GUIDE.md', None),
+        ('releases/READINESS.md', None), ('releases/README.md', None),
         ('../SUPPORT.md', None), ('../CONTRIBUTING.md', None),
         ('../SECURITY.md', None), ('../CODE_OF_CONDUCT.md', None),
+        ('../THIRD_PARTY_NOTICES.md', None),
     ),
     'SUPPORT.md': (
         ('docs/GETTING_STARTED.md#what-you-can-do-today', 'What you can do today'),
@@ -61,6 +152,15 @@ PUBLIC_ROUTES = {
     ),
     'docs/GETTING_STARTED.md': (
         ('../PROJECT_STATUS.md', None), ('../CONTRIBUTING.md', None),
+    ),
+    'docs/HARDWARE_BUILD_GUIDE.md': (
+        ('../PROJECT_STATUS.md', None), ('../SUPPORT.md', None),
+        ('../CONTRIBUTING.md', None),
+        ('../active-project/RoCell_v0_3/README_FIRST.md', None),
+        ('../active-project/RoCell_v0_3/PRINT_READINESS.md', None),
+        ('../active-project/RoCell_v0_3/PREHARDWARE_READINESS.md', None),
+        ('../active-project/RoCell_v0_3/BUILD_TRACKER.md', None),
+        ('../active-project/RoCell_v0_3/BUILD_BY_STEP/README.md', None),
     ),
 }
 
@@ -91,6 +191,9 @@ def public_entry_errors(relative: str, content: str, root: Path) -> list[str]:
     headings = re.findall(r'^# +(.+?)\s*$', content, flags=re.M)
     if title and headings != [title]:
         errors.append(f'expected one public title: # {title}')
+    for phrase in REQUIRED_PHRASES.get(relative, ()):
+        if phrase not in content:
+            errors.append(f'missing required status context: {phrase}')
     links = {target.strip().strip('<>')
              for target in re.findall(r'\]\(([^)]+)\)', content)}
     for target, heading in PUBLIC_ROUTES.get(relative, ()):
@@ -117,7 +220,7 @@ def issue_template_error(target: str, root: Path) -> str | None:
     """Check only this repository's template links, without network requests."""
     parsed = urlsplit(target)
     if (parsed.netloc.lower() != 'github.com'
-            or parsed.path.rstrip('/') != '/j-webtek/robot-arm-build/issues/new'):
+            or parsed.path.rstrip('/') != '/j-webtek/tactevra/issues/new'):
         return None
     templates = parse_qs(parsed.query, keep_blank_values=True).get('template')
     if templates is None:
@@ -142,6 +245,9 @@ def main() -> None:
             errors.append(f'Missing maintained document: {relative}')
             continue
         raw_content = path.read_text(encoding='utf-8')
+        if 'j-webtek/robot-arm-build' in without_fences(raw_content):
+            errors.append(
+                f'{relative}: stale canonical repository reference; use j-webtek/tactevra')
         errors.extend(f'{relative}: {error}'
                       for error in public_entry_errors(relative, raw_content, ROOT))
         content = without_fences(raw_content)

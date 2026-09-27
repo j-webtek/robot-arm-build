@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rocell.local/schemas/reviewed_motion_permit_admission_v1.schema.json",
+  "title": "RoCell reviewed motion permit admission v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "status", "review_sha256", "consumption_sha256",
+    "capability", "snapshot_sha256", "ordered_goal_sha256",
+    "permit_expires_at_monotonic", "permit_binding_sha256",
+    "single_use_exact_goals", "automatic_retry_allowed", "hardware_access",
+    "physical_authority"],
+  "properties": {
+    "schema": {"const": "rocell.reviewed_motion_permit_admission.v1"},
+    "status": {"const": "MOTION_PERMIT_ISSUED_BY_SAFETY_SUPERVISOR"},
+    "review_sha256": {"$ref": "#/$defs/hash"},
+    "consumption_sha256": {"$ref": "#/$defs/hash"},
+    "capability": {"enum": ["empty_cell_motion", "keyboard_contact", "phone_contact"]},
+    "snapshot_sha256": {"$ref": "#/$defs/hash"},
+    "ordered_goal_sha256": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/hash"}},
+    "permit_expires_at_monotonic": {"type": "number"},
+    "permit_binding_sha256": {"$ref": "#/$defs/hash"},
+    "single_use_exact_goals": {"const": true},
+    "automatic_retry_allowed": {"const": false},
+    "hardware_access": {"const": false},
+    "physical_authority": {"const": true}
+  },
+  "$defs": {"hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}
+}

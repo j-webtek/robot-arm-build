@@ -1,11 +1,18 @@
 # Vendor camera geometry
 
-## `B0477.STEP`
+## `B0477.STEP` reference (not redistributed)
 
 - Download source: <https://www.arducam.com/downloads/3D_Model/B0477.STEP>
 - Downloaded: 2026-09-06
 - SHA-256: `f0202344106113492277220debdd35197a1f38667fbbbb172fecd024bc5567a0`
 - Intended catalog item: Arducam B0477 / IMX283 USB 3 camera package
+
+The vendor STEP file is intentionally **not included** in this repository or in
+source archives. No file-specific redistribution permission was established, so
+the project uses a link-only reference rather than inferring a license. Obtain
+the file directly from the recorded vendor URL when its terms and your intended
+use permit that. Verify the SHA-256 before using it; do not commit the downloaded
+file back to this repository.
 
 Important: the STEP file's own header names the assembly
 `UVC3.0 (b0498).STEP`. Inspection also shows multiple optical components. It

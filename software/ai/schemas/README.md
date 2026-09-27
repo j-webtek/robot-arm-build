@@ -147,6 +147,35 @@ retaining `SYNTHETIC_EVIDENCE_NOT_INDEPENDENT`,
 `ready_for_epoch_intake=false`, and every physical authority flag false. This
 allows the workstreams to rehearse serialization and binding without confusing
 synthetic success with production review.
+The [owner AI-review acceptance](native_t102_owner_ai_review_acceptance_v1.schema.json)
+records the project owner's explicit governance choice to accept the exact,
+hash-bound internal ARM-054 AI technical review as the prerequisite for a later
+read-only endpoint-qualification intake. It preserves that no human review or
+external independence is claimed. Read-only intake eligibility is not endpoint
+open authority: controller startup, transport writes, execution, hardware
+access, and physical authority remain false.
+The [read-only endpoint intake](native_t102_read_only_endpoint_intake_v1.schema.json)
+binds that exact acceptance to one explicitly pinned serial identity and one
+bounded passive observation plan. It is a hardware-incapable prerequisite
+record only: it permits no endpoint open, startup, write, active request,
+movement, torque action, retry, or fallback. A valid intake is merely ready for
+a separate, explicit read-only authorization and cannot supply that authority
+itself.
+The [read-only endpoint qualification receipt](native_t102_read_only_endpoint_qualification_v1.schema.json)
+records the separately authorized one-open passive observation against that
+intake. It closes over the exact identity before and after open, bounded lines,
+lifecycle counts, zero outbound activity, and retained non-authority flags. A
+completed empty passive window proves only that the endpoint opened and closed
+under the zero-write policy; it does not prove controller protocol or firmware
+identity.
+The [active-feedback intake](native_t105_active_feedback_intake_v1.schema.json)
+binds that passive receipt and exact endpoint to the canonical ten bytes
+`{"T":105}\n`, one response line, one open/write/read/close lifecycle, and
+zero T=102, movement, torque, retry, purge, fallback, startup, or control-line
+assertion. Its fake-only rehearsal checks the lifecycle and strict T=1051
+parsing without accepting an arbitrary transport. The retained intake cannot
+open COM7 or authorize its active write; that requires a later explicit
+authorization naming its hash.
 The [measured configuration-epoch intake](controller_configuration_epoch_intake_v1.schema.json)
 and [intake assessment](controller_configuration_epoch_intake_report_v1.schema.json)
 require that full decision, rather than accepting only an arbitrary review hash

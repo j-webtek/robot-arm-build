@@ -328,7 +328,9 @@ class ProductionControllerRuntimeContractV1:
                 self._lock_terminal(type(exc).__name__)
                 raise
 
-    def rehearse_command_acknowledgment(self, response_bytes: bytes) -> None:
+    def rehearse_command_acknowledgment(
+        self, response_bytes: bytes,
+    ) -> RuntimeCommandAcknowledgmentRecordV1:
         """Consume one exact r97 accepted-once response without implying arrival."""
 
         with self._lock:
@@ -358,13 +360,14 @@ class ProductionControllerRuntimeContractV1:
                 ):
                     raise ProductionControllerRuntimeContractError(
                         "T=1021 acknowledgment differs from pending command")
-                self._acknowledgments.append(
-                    RuntimeCommandAcknowledgmentRecordV1(
-                        sequence=self._pending_ack_sequence,
-                        response_bytes_sha256=hashlib.sha256(
-                            response_bytes).hexdigest(),
-                    ))
+                record = RuntimeCommandAcknowledgmentRecordV1(
+                    sequence=self._pending_ack_sequence,
+                    response_bytes_sha256=hashlib.sha256(
+                        response_bytes).hexdigest(),
+                )
+                self._acknowledgments.append(record)
                 self._pending_ack_sequence = None
+                return record
             except Exception as exc:
                 self._lock_terminal(type(exc).__name__)
                 raise
@@ -382,9 +385,52 @@ class ProductionControllerRuntimeContractV1:
                     "no pending command can time out")
             self._lock_terminal("COMMAND_ACKNOWLEDGMENT_TIMEOUT_UNCERTAIN")
 
+    def mark_command_zero_write(self) -> None:
+        """Latch a known pre-controller failure after contract admission."""
+
+        with self._lock:
+            if (
+                self._state is not ProductionRuntimeState.WRITER_CLAIMED
+                or self._pending_ack_sequence is None
+            ):
+                self._lock_terminal("ZERO_WRITE_WITHOUT_PENDING_COMMAND")
+                raise ProductionControllerRuntimeContractError(
+                    "no pending command can be marked zero-write")
+            self._lock_terminal("COMMAND_ZERO_WRITE_CONFIRMED")
+
+    def mark_command_write_uncertain(self) -> None:
+        """Latch partial/disconnected write uncertainty without resending."""
+
+        with self._lock:
+            if (
+                self._state is not ProductionRuntimeState.WRITER_CLAIMED
+                or self._pending_ack_sequence is None
+            ):
+                self._lock_terminal("WRITE_UNCERTAIN_WITHOUT_PENDING_COMMAND")
+                raise ProductionControllerRuntimeContractError(
+                    "no pending command can be marked write-uncertain")
+            self._lock_terminal("COMMAND_WRITE_COMPLETION_UNCERTAIN")
+
+    def close_single_action(self, *, settled: bool) -> None:
+        """Terminally close one acknowledged action, successful or uncertain."""
+
+        if not isinstance(settled, bool):
+            raise TypeError("settled must be bool")
+        with self._lock:
+            if (
+                self._state is not ProductionRuntimeState.WRITER_CLAIMED
+                or self._pending_ack_sequence is not None
+            ):
+                self._lock_terminal("SINGLE_ACTION_CLOSE_INVALID_STATE")
+                raise ProductionControllerRuntimeContractError(
+                    "acknowledged single action is not closable")
+            self._lock_terminal(
+                "COMMAND_SETTLED_REHEARSAL_COMPLETE"
+                if settled else "COMMAND_ARRIVAL_UNCERTAIN")
+
     def rehearse_feedback_exchange(
         self, request_bytes: bytes, response_bytes: bytes,
-    ) -> None:
+    ) -> dict[str, Any]:
         with self._lock:
             try:
                 if self._state is not ProductionRuntimeState.WRITER_CLAIMED:
@@ -404,6 +450,7 @@ class ProductionControllerRuntimeContractV1:
                     raise ProductionControllerRuntimeContractError(
                         "T=1051 response lacks one or more required joint fields")
                 self._feedback_exchange_count += 1
+                return dict(parsed)
             except Exception as exc:
                 self._lock_terminal(type(exc).__name__)
                 raise

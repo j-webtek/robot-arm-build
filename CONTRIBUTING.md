@@ -9,13 +9,13 @@ schemas, historic release paths, and third-party attribution. See the
 
 ## Get the source
 
-You need Git, Python 3.10 or newer, and access to `j-webtek/robot-arm-build`.
+You need Git, Python 3.10 or newer, and access to `j-webtek/tactevra`.
 For a first software demonstration, use [getting started](docs/GETTING_STARTED.md).
 For development, install the runtime and test extra:
 
 ```powershell
-git clone https://github.com/j-webtek/robot-arm-build.git
-cd robot-arm-build
+git clone https://github.com/j-webtek/tactevra.git
+cd tactevra
 python -m venv .venv
 .\.venv\Scripts\python -m pip install -e './software[test]'
 ```
@@ -89,6 +89,13 @@ Remove credentials, signing keys, authorization headers, private device settings
 and unrelated images. Inspect archives as well as loose files. Never use
 `git add -f` to upload private backups or raw runs. Private repository visibility
 does not make credentials safe to commit. Retain the untouched original locally.
+
+Generated AI and experiment data also follow the
+[evidence-retention policy](docs/EVIDENCE_RETENTION.md). Commit compact manifests,
+scorecards and representative sanitized fixtures—not entire parameter-search or
+per-sample output sets. Ordinary changes have an automated reviewability budget;
+larger artifacts require an exact-digest exception linked to an owner-reviewed
+issue.
 
 ## CAD, releases, and access
 
