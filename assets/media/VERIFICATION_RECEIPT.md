@@ -4,7 +4,7 @@
 **Authority:** Byte identity and post-merge inspection only; this record is not a Blender rerender, third-party-rights disposition, or physical qualification
 
 The current overview-media revision was produced from commit
-`aa6705bc45bf720dda523819e1ddbf873bab8e78` through
+`fd24bc3f455b5f1736fc5955beffe0a8c20f9649` through
 [pull request #118](https://github.com/j-webtek/tactevra/pull/118). The
 machine-readable [verification receipt](verification_receipt.json) binds the
 committed media files to exact byte sizes and SHA-256 digests and records the
@@ -18,7 +18,7 @@ authority manifest used by the documented scene builder.
   the delivery duration.
 - Eight representative frames sampled across the committed MP4 were reviewed
   for sequence, readable labels, and the closing limitation notice.
-- The MP4, poster, captions, and dimension manifest match the byte identities
+- The MP4, poster, social preview, captions, chapters, and dimension manifest match the byte identities
   in the machine-readable receipt.
 
 Blender 4.3.2 and the identified FFmpeg build were observed during the full

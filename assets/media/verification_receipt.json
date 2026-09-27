@@ -1,7 +1,7 @@
 {
   "schema": "tactevra.published-media-verification.v1",
   "recorded_on": "2026-09-27",
-  "asset_revision_commit": "aa6705bc45bf720dda523819e1ddbf873bab8e78",
+  "asset_revision_commit": "fd24bc3f455b5f1736fc5955beffe0a8c20f9649",
   "source_pull_request": "https://github.com/j-webtek/tactevra/pull/118",
   "authority": {
     "path": "presentations/blender/dimension_manifest.json",
@@ -29,8 +29,8 @@
   "outputs": [
     {
       "path": "assets/media/tactevra-overview.mp4",
-      "size_bytes": 18629002,
-      "sha256": "b297269498cce0e4de1959ddf0a5456daa6cbb8e9acbe9e83875c02e0b12dd9f",
+      "size_bytes": 19162996,
+      "sha256": "346da059b8b86f130bd72e541904efb0993035c87ce0143ab4cee0928c7aac58",
       "media": {
         "duration_seconds": 77.003,
         "video": "H.264 1920x1080 24fps",
@@ -40,18 +40,28 @@
     },
     {
       "path": "assets/media/tactevra-overview-poster.jpg",
-      "size_bytes": 73389,
-      "sha256": "6e5d0dbac5fe26d22774796c9aea4a6358d345b12864f8ebeeb93057337c45a4"
+      "size_bytes": 73966,
+      "sha256": "624450b917a20501f9a886da332669fdd8b0101d8604e78344e9e2c685146cad"
     },
     {
       "path": "assets/media/tactevra-overview.en.vtt",
-      "size_bytes": 1504,
-      "sha256": "4b48f7541872b0700da1544d6383e5fa5393524037870bb0fa45a31f98bf88df"
+      "size_bytes": 1109,
+      "sha256": "6f6706465bab41e11654e8aa56232fae970a559f1d90690f20d671b689fac010"
+    },
+    {
+      "path": "assets/media/tactevra-overview.chapters.vtt",
+      "size_bytes": 200,
+      "sha256": "2adba5f6143dc7ec231498b685e07429cb9845c4a67db1fbbb2587319d0ea8a3"
+    },
+    {
+      "path": "assets/media/tactevra-social-preview.jpg",
+      "size_bytes": 63672,
+      "sha256": "9076f5b02db3e3890609a0a60f8fd2ea081547c11b1bdd9f6e6ff2073ddeb132"
     }
   ],
   "limitations": [
     "The Blender scene was fully rerendered for this revision; the published bytes, metadata, captions, representative frames, and final audio measurements were verified before publication.",
-    "The recorded visual review covers the camera and tag lock, rejected and accepted admission states, resolved H target, simulated tool contact, host observation, closed-loop payoff, and end card.",
+    "The recorded visual review covers one continuous arm identity, camera and tag lock, rejected and accepted admission states, an unobstructed resolved H target, simulated tool contact, host-screen observation, closed-loop payoff, and end card.",
     "The unresolved Waveshare URDF redistribution disposition remains tracked at https://github.com/j-webtek/tactevra/issues/88.",
     "The film is an architectural visualization, not physical-operation, collision, fabrication, or autonomous-task qualification."
   ]
