@@ -58,6 +58,16 @@ not influence training, prompts, decoding rules, or gates. Labels remain
 agent-authored with simulated review, and compiler acceptance is not physical
 outcome evidence.
 
+`mission_development_v2_train.jsonl` and
+`mission_development_v2_validation.jsonl` contain 1,280 and 320 mission-v1
+targets. Each split is exactly balanced across the same ten semantic
+categories, with 128 training and 32 validation records per category. The
+template-family IDs are disjoint, every target is validator and compiler
+checked, and the manifest records that only aggregate v1 failure metrics
+informed the design. There is intentionally no confirmation split. A separate
+confirmation source may be created only after the successor model, prompt,
+decoder, selection rule, and gates are frozen.
+
 `real_photo_seed_v0.manifest.json` inventories ten user-provided real setup
 JPEGs by hash and dimensions. The originals are copied only to ignored
 `raw/real_photo_seed_v0/`, preserving their EXIF locally. The tracked

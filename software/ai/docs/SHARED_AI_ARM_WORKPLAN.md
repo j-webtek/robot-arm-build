@@ -599,10 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-- AI lane / S1: freeze a balanced mission-development-v2 curriculum generator
-  from aggregate v1 failure evidence only; exclude the consumed v1 heldout and
-  defer every confirmation fixture until model, prompt, decoder, and gates are
-  selected and frozen.
 
 
 
@@ -9732,3 +9728,48 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Source-level preregistration only. Template balance and diversity do not prove natural-language coverage. Agent-authored labels have simulated review and no independent human review. In-memory compiler validation is semantic rather than physical evidence. No v2 dataset, model fit, selection, confirmation, qualification, runtime release, camera evidence, motion batch, or physical outcome exists.
 - Supersedes: AI-420 only as corrected source verification; failed evidence remains preserved.
 - Next dependency: Commit this generator before executing it. Then generate the development splits once and verify byte reproduction, exact balance, family separation, compiler outcomes, absence of confirmation, and unchanged mission/ModelMotionBatch boundaries.
+
+### E-20260927-AI-422 — balanced mission development v2 generation
+
+- Stage: S1
+- Lane: AI
+- Commit: `e1b6cc852942e4e7b3feec38c2323d235979d60a` (frozen generator source; generated development evidence, tests, documentation, and ledger committed in the successor)
+- Inputs/fixtures: Frozen generator SHA-256 `16c9596d02c4a33841babacc2cbdc6ff019b28e1299f4b469242a58fe8d05d7b`; strict mission validator, read-only compiler, and capability matrix SHA-256 `4fb6ec167ffc832d2eb0c7bee0d0c113d031a705edcc3e842df71fef1f801384`. No v1 heldout file, response, or case-level analysis was used.
+- Command: `Test-Path software/ai/data/mission_development_v2.manifest.json; python software/ai/train/build_mission_development_v2.py`
+- Result: PASS. The precondition returned `False`, then the frozen generator wrote 1,280 training and 320 validation records. Every one of ten categories has exactly 128 training and 32 validation cases. Training and validation contain 80 and 20 mutually disjoint template families. Train/validation SHA-256 are `ec8739514dfd0dc2f4556694f547f2aa28b489355a15eb6a3cb8772d4cf7fc9e` / `fc4b94d49ca7f0e0354f2aa70e186cca6edb5e8148451176eaf0fda37b30ca7b`; manifest SHA-256 is `2eb484610cf51a21ee41a10100631bdefe92fa94d79a797cfa195fbb1577ac34`. Confirmation is absent by construction.
+- Artifacts: `data/mission_development_v2_train.jsonl`; `data/mission_development_v2_validation.jsonl`; `data/mission_development_v2.manifest.json`; updates to `data/README.md` and `docs/MISSION_INTENT_V1.md`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Deterministic agent-authored templates and simulated review without independent human labels. Exact balance does not establish natural request prevalence or coverage. Compiler acceptance proves semantic representability and order, not vision, localization, contact, or physical outcome. No confirmation examples, model fit, qualification, runtime release, or authority change.
+- Supersedes: none; the failed v1 student and its consumed heldout remain preserved and excluded from successor selection.
+- Next dependency: Freeze the successor model recipe, prompt, structured decoder, selection metric, and promotion gates against development train/validation only. Before fitting, preregister that confirmation will use a separately authored generator and will run once after all choices freeze.
+
+### E-20260927-AI-423 — mission development v2 reproducibility and boundary verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `e1b6cc852942e4e7b3feec38c2323d235979d60a` (frozen generator; verification and ledger committed in the successor)
+- Inputs/fixtures: All development artifacts and hashes from AI-422; reproducibility test SHA-256 `54839200507356ff0a4050996ddd2244463c2963b8df01006e0da5038bb430db`; existing mission, legacy offline intent/compiler, and actual v2 batch-emitter fixtures.
+- Command: `python -m pytest -q software/ai/tests/test_mission_development_v2_source.py software/ai/tests/test_mission_development_v2.py software/ai/tests/test_mission_intent.py software/ai/tests/test_offline.py software/ai/tests/test_batch_emitter_v2.py; git diff --check`
+- Result: PASS: 47 tests in 5.76s and clean diff check. Tests reproduce every development byte and manifest hash; verify exact split/category/family counts and family separation; revalidate and recompile all 1,600 serialized targets; confirm expected accepted/blocked outcomes and zero-plan cases; prove stale and unverified-state cases retain execute semantics; prove no confirmation artifact or family exists; and preserve legacy semantic and actual ModelMotionBatchV2 emitter behavior.
+- Artifacts: `tests/test_mission_development_v2.py`; source test and generated artifacts from AI-421/AI-422; existing mission, offline, and batch-emitter tests.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Existing pytest-asyncio configuration warning. Offline deterministic evidence only. No language-model, independent confirmation, camera, localization, runtime, contact, or physical assurance. `ModelMotionBatch` did not change, so the full shared producer/consumer boundary suite was not triggered. Arm and integration statuses are unchanged.
+- Supersedes: none.
+- Next dependency: Same as AI-422.
+
+### E-20260927-AI-424 — mission development v2 snapshot review
+
+- Stage: S1
+- Lane: AI
+- Commit: `e1b6cc852942e4e7b3feec38c2323d235979d60a` (frozen generator; generated evidence, verification, review, and ledger committed in the successor)
+- Inputs/fixtures: Staged repository snapshot containing the frozen generator, balanced development train/validation files, manifest, source and reproduction tests, interpretation, and preserved v1 failure evidence.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS: 6,397 paths, 1,042.0 MiB, 0 unresolved review findings, and 14 reviewed synthetic fixtures.
+- Artifacts: all artifacts from AI-422 and AI-423 plus shared documentation.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic repository review only; not independent language, model, security, runtime, or physical assurance. No confirmation data, adapter, or model weights were added. No arm or integration status changes.
+- Supersedes: none.
+- Next dependency: Same as AI-422.

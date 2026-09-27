@@ -102,3 +102,11 @@ new preregistered development curriculum that improves ambiguity-reason
 separation, keyboard execution, quoted literals, stale-state semantics, and
 unavailable-operation classification before evaluation on a new confirmation
 population.
+
+The successor development curriculum is `mission_development_v2`. It contains
+1,280 training and 320 validation records, balanced equally across all ten
+mission categories. Training and validation use disjoint template families.
+It was designed from the aggregate v1 category metrics and does not load the
+consumed v1 heldout cases or predictions. It contains no confirmation split.
+A confirmation generator must be authored and frozen only after the successor
+model, prompt, decoder, selection rule, and promotion gates are fixed.
