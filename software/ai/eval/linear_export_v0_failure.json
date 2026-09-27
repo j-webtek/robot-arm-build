@@ -1,0 +1,10 @@
+{
+  "source_commit": "2baa41e793ca4f85eee35f1a6131843f64d54ced",
+  "command": "python software/ai/vision/export_linear_residual.py",
+  "result": "AssertionError at reference_prediction_sha256 check, before artifact writing",
+  "passed_before_failure": "max normalized delta <=1e-10",
+  "cause_hypothesis": "Reference numpy matrix multiplication changed from full800 rows to64-row batches; exact rounding can depend on multiplication shape",
+  "correction": "Preserve v0 source/plan; v1 concatenates reference descriptors before original full-array numpy operation; retain tolerance and coefficients unchanged",
+  "hardware_writes": 0,
+  "physical_movements": 0
+}

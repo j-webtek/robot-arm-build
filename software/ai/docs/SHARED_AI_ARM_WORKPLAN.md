@@ -7607,3 +7607,20 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic snapshot audit before final documentation append; not runtime qualification. Four analytical fits are training despite zero gradient optimizer updates. No runtime correction or qualification installed.
 - Supersedes: none; all failed mask candidates and arm/integration statuses retained.
 - Next dependency: Freeze the exact existing unmasked-control coefficients for an image-only export/parity/cost study; disclose reused-development selection. After parity, preregister untouched synthetic30M evaluation without refitting or tuning. No physical or integration gate completion.
+
+
+### E-20260926-AI-285 — preserved linear export reference failure
+
+- Stage: S1
+- Lane: AI
+- Commit: `2baa41e793ca4f85eee35f1a6131843f64d54ced` (frozen failed source)
+- Change: initial standalone export verification.
+- Inputs/fixtures: existing800 development images15000000..15000199 x4, exact unmasked coefficients from linear_residual_v0_report.json; source/checkpoint hashes in linear_export_v0_plan.json.
+- Command: `python software/ai/vision/export_linear_residual.py`
+- Result: FAIL at historical reference-prediction hash assertion. Exported prediction tolerance <=1e-10 passed before failure; no artifact or report was written. Exact max delta not printed in failed run. Preserved failure in eval/linear_export_v0_failure.json.
+- Artifacts: unchanged vision/export_linear_residual.py and eval/linear_export_v0_plan.json; failed evidence JSON; separate corrected v1 source/plan.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: reference computation used64-row matrix multiplications versus original800-row calculation; floating-point shape sensitivity suspected, not established until corrected replay. No fitting or fresh data consumed.
+- Supersedes: none; failed source and plan preserved.
+- Next dependency: run separately frozen v1 reference using original full-array multiplication; do not relax1e-10 exported-model tolerance or change coefficients. Fresh evaluation depends on parity success.
