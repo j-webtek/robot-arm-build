@@ -599,6 +599,8 @@ Copy this row and fill every field:
 
 ## Active work claims
 
+- AI lane / S1: final alpha1.0 refit, standalone export parity and separately frozen unused-scene confirmation; no runtime promotion or arm changes.
+
 
 
 
