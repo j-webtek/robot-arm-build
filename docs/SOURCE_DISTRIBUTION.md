@@ -89,10 +89,56 @@ python scripts/ci/verify_clean_checkout.py `
 ```
 
 It does not query GitHub issue, review, or approval state. Either mode can pass
-while an issue-based gate remains open. A receipt therefore does not satisfy the
-AI checkpoint evidence in issues
+or fail independently of the current GitHub issue state. Candidate mode now
+enforces the reviewed offline blocker registry in
+[`release-readiness.json`](../.github/release-readiness.json), so an entry marked
+`open` fails even if its linked issue was administratively closed. A receipt
+therefore does not itself satisfy the AI checkpoint evidence in issues
 [#56](https://github.com/j-webtek/tactevra/issues/56) and
 [#61](https://github.com/j-webtek/tactevra/issues/61), establish the Waveshare
 redistribution decision in
 [#88](https://github.com/j-webtek/tactevra/issues/88), select a candidate, or
 approve publication.
+
+## Review the duplicate inventory
+
+Generate a ranked, read-only inventory of every exact duplicate Git blob at or
+above the governed one-MiB threshold:
+
+```console
+python scripts/ci/inventory_source_archive_duplicates.py --format markdown
+python scripts/ci/inventory_source_archive_duplicates.py --format json
+```
+
+The report records object identity, blob size, copy count, avoidable duplicate
+bytes, every tracked path, provisional ownership, and any central-path canonical
+candidate already visible in the tree. The
+`inventory_source_archive_duplicates.py` report currently routes groups into:
+
+- central RC03 STL files repeated in build-step folders;
+- exact STL blobs spanning frozen RC02 material and current RC03 paths;
+- static-camera generated outputs repeated across live, revision, fallback, or
+  print-pack locations; and
+- unclassified exact duplicates requiring repository and workstream review.
+
+These classifications are triage, not deletion authority. A canonical candidate
+does not establish that step-local convenience copies, frozen revision evidence,
+or print-pack contents can be removed. Use the inventory to prepare small,
+owner-reviewed changes under
+[#130](https://github.com/j-webtek/tactevra/issues/130); rerun the footprint,
+clean-checkout, documentation, and applicable workstream checks after each one.
+
+At commit `c64d921b2c415c6632f26b39a9bb03855c27146e`, the inventory measured:
+
+| Provisional review route | Groups | Duplicate bytes | Duplicate MiB |
+| --- | ---: | ---: | ---: |
+| RC03 instructional STL copies | 10 | 210,018,152 | 200.29 |
+| Cross-revision and instructional STL copies | 3 | 14,670,456 | 13.99 |
+| Static-camera packaged-output copies | 6 | 9,833,904 | 9.38 |
+| **Total** | **19** | **234,522,512** | **223.66** |
+
+This is a measured triage baseline, not a cleanup prescription. Rerun the tool
+against the commit being reviewed rather than copying these values into a future
+decision record. Any proposed removal must identify the authoritative source,
+preserved provenance, affected builder or workstream route, and validation that
+replaces the convenience copy before it can be considered independently.

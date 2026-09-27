@@ -113,6 +113,8 @@ REQUIRED_PHRASES = {
         '**Document status:** Current repository policy',
         '**Authority:** Repository packaging and clone-cost guidance only.',
         'GitHub-generated source archives',
+        'release-readiness.json',
+        'inventory_source_archive_duplicates.py',
         'https://github.com/j-webtek/tactevra/issues/56',
         'https://github.com/j-webtek/tactevra/issues/61',
         'https://github.com/j-webtek/tactevra/issues/88',
