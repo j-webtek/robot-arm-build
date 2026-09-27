@@ -46,6 +46,11 @@ This creates local generated media under `tmp/blender-workcell-video/`:
 
 - `tactevra_workcell_explainer_v1.blend`
 - `tactevra_workcell_explainer_poster_v1.png`
+- `tactevra_workcell_explainer_v1.mp4` — 1080p master with sound design
+- `tactevra_workcell_explainer_silent_v1.mp4` — 1080p silent master
+- `tactevra_workcell_explainer_web_720p_v1.mp4` — smaller web delivery
+- `tactevra_workcell_explainer_captions_v1.srt` — accessible chapter captions
+- `tactevra_workcell_explainer_soundtrack_v1.wav` — narration-safe sound bed
 
 Review seven low-resolution editorial frames before the full render:
 
@@ -109,6 +114,20 @@ dimension-checked 3D render:
 - a persistent five-stage spine highlights the current system responsibility;
 - monospace cards show a nominal model proposal, admission result, resolved
   board target, execution permit, and verification result;
+- the deterministic check contrasts a rejected stale-frame example with an
+  accepted proposal, making the safety boundary visible instead of merely
+  describing it;
+- an explicit frame-chain card shows how `camera_px` becomes `board_mm`, then a
+  device-local named target;
+- a small persistent Tactevra/RC03 bug establishes brand continuity without
+  competing with chapter titles;
+- procedural birch and bench variation, subtle depth of field, animated focal
+  length, board-frame axes, a route reveal, and an admitted-command packet add
+  material and motion depth while keeping the official arm surface static;
+- a deterministic non-narrated soundtrack gives each state change a restrained
+  cue, with tonal space intentionally reserved for later narration;
+- silent 1080p, sound-design 1080p, web 720p, and SRT caption variants are
+  generated from the same authority;
 - the example card explicitly says `NOMINAL` so illustrative values cannot be
   mistaken for a live controller trace;
 - informational graphics are composited after transitions, keeping titles and
@@ -118,6 +137,11 @@ When revising the film, preserve these communication rules: one idea per shot,
 no unqualified capability claims, no raw model output presented as an admitted
 controller command, no critical text outside title-safe margins, and no visual
 effect that obscures the hardware evidence.
+
+The animated path and luminous packet are conceptual state graphics. They are
+not a TCP trace, servo simulation, collision result, or qualified trajectory.
+The exact official arm assembly remains static because it is a single vendor
+surface asset rather than a segmented, validated digital twin.
 
 ## Authoritative inputs
 

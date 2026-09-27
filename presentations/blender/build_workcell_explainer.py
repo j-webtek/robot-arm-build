@@ -19,9 +19,12 @@ from __future__ import annotations
 import json
 import hashlib
 import math
+import random
 import shutil
+import struct
 import subprocess
 import sys
+import wave
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
@@ -82,6 +85,27 @@ def material(name: str, color: tuple[float, float, float, float], *,
     if emission is not None:
         bsdf.inputs["Emission Color"].default_value = emission
         bsdf.inputs["Emission Strength"].default_value = emission_strength
+    return mat
+
+
+def textured_material(name: str, color: tuple[float, float, float, float], *,
+                      scale: float, detail: float, roughness: float,
+                      metallic: float = 0.0) -> bpy.types.Material:
+    """Create restrained procedural surface variation for presentation realism."""
+    mat = material(name, color, metallic=metallic, roughness=roughness)
+    nodes = mat.node_tree.nodes
+    links = mat.node_tree.links
+    bsdf = nodes.get("Principled BSDF")
+    tex = nodes.new("ShaderNodeTexNoise")
+    tex.inputs["Scale"].default_value = scale
+    tex.inputs["Detail"].default_value = detail
+    tex.inputs["Roughness"].default_value = 0.58
+    ramp = nodes.new("ShaderNodeValToRGB")
+    base = color[:3]
+    ramp.color_ramp.elements[0].color = (*[max(0.0, c * 0.62) for c in base], 1)
+    ramp.color_ramp.elements[1].color = (*[min(1.0, c * 1.28) for c in base], 1)
+    links.new(tex.outputs["Fac"], ramp.inputs["Fac"])
+    links.new(ramp.outputs["Color"], bsdf.inputs["Base Color"])
     return mat
 
 
@@ -180,6 +204,21 @@ def curve_line(name: str, points: list[Vector], mat: bpy.types.Material,
     bpy.context.collection.objects.link(obj)
     apply_material(obj, mat)
     return obj
+
+
+def animate_curve_reveal(obj: bpy.types.Object, start: int, end: int) -> None:
+    obj.data.bevel_factor_start = 0.0
+    obj.data.bevel_factor_end = 0.0
+    obj.data.keyframe_insert("bevel_factor_end", frame=start)
+    obj.data.bevel_factor_end = 1.0
+    obj.data.keyframe_insert("bevel_factor_end", frame=end)
+
+
+def add_axis(name: str, origin: Vector, endpoint: Vector,
+             mat: bpy.types.Material, start: int, end: int) -> bpy.types.Object:
+    axis = curve_line(name, [origin, endpoint], mat, 0.0022)
+    visibility(axis, start, end)
+    return axis
 
 
 def look_at(obj: bpy.types.Object, target: Vector) -> None:
@@ -390,7 +429,8 @@ def build() -> bpy.types.Scene:
         "metal": material("Machined metal", (0.22, 0.28, 0.34, 1), metallic=0.85, roughness=0.20),
         "arm_exact": material("Official RoArm assembly finish", (0.017, 0.022, 0.028, 1),
                               metallic=0.48, roughness=0.24),
-        "wood": material("Light birch", (0.55, 0.33, 0.16, 1), roughness=0.48),
+        "wood": textured_material("Light birch", (0.55, 0.33, 0.16, 1),
+                                    scale=7.0, detail=3.0, roughness=0.48),
         "keyboard": material("Keyboard body", (0.022, 0.027, 0.034, 1), roughness=0.28),
         "key": material("Keyboard keys", (0.055, 0.065, 0.078, 1), roughness=0.34),
         "phone": material("Phone edge", (0.03, 0.04, 0.05, 1), metallic=0.6, roughness=0.20),
@@ -410,7 +450,8 @@ def build() -> bpy.types.Scene:
     cube("MEASURED — 610 × 457 × 18 mm board", (0, 0, -0.009),
          (0.610, 0.457, 0.018), mats["wood"], 0.006)
     cube("Bench", (0, -0.01, -0.050), (1.15, 0.88, 0.065),
-         material("Bench", (0.055, 0.066, 0.080, 1), metallic=0.15, roughness=0.52), 0.012)
+         textured_material("Bench", (0.055, 0.066, 0.080, 1), scale=5.0,
+                           detail=2.0, metallic=0.15, roughness=0.52), 0.012)
     add_keyboard(layout, mats)
     add_phone(layout, mats)
     for tag_id, tag in layout["direct_tags"]["tags"].items():
@@ -450,6 +491,25 @@ def build() -> bpy.types.Scene:
         (473, Vector((0, 0.02, 0.44))), (END_FRAME, Vector((0, 0.02, 0.44))),
     ]
     animate_transform(camera, camera_positions, targets)
+
+    # A focus target tracks the same authored points as the camera aim. Depth
+    # of field remains subtle enough to preserve dimension evidence while
+    # separating foreground hardware from the studio background.
+    focus = _empty("Animated camera focus")
+    for frame, target in targets:
+        focus.location = target
+        focus.keyframe_insert("location", frame=frame)
+    camera.data.dof.use_dof = True
+    camera.data.dof.focus_object = focus
+    camera.data.dof.aperture_fstop = 5.6
+    lens_keys = (
+        (1, 46), (88, 54), (89, 54), (176, 62), (177, 64), (264, 72),
+        (265, 58), (336, 68), (337, 50), (408, 60), (409, 56), (472, 66),
+        (473, 48), (END_FRAME, 54),
+    )
+    for frame, focal_length in lens_keys:
+        camera.data.lens = focal_length
+        camera.data.keyframe_insert("lens", frame=frame)
 
     # Studio illumination.
     bpy.ops.object.light_add(type="AREA", location=(0.0, -0.18, 1.55))
@@ -508,6 +568,17 @@ def build() -> bpy.types.Scene:
     add_target_ring("Keyboard target I", 278.0, 188.0, 29, mats["amber"], 360, 446)
     add_target_ring("Phone target", 538.15, 166.4, 20, mats["green"], 374, 462)
 
+    # Coordinate-frame graphics make the camera/board/device transformation
+    # visible without pretending these presentation primitives are measured
+    # controller telemetry.
+    axis_origin = board_point(105, 100, 33)
+    add_axis("Board frame X", axis_origin, axis_origin + Vector((0.090, 0, 0)),
+             mats["cyan"], 342, 405)
+    add_axis("Board frame Y", axis_origin, axis_origin + Vector((0, 0.090, 0)),
+             mats["amber"], 342, 405)
+    add_axis("Board frame Z", axis_origin, axis_origin + Vector((0, 0, 0.090)),
+             mats["green"], 342, 405)
+
     checked = text_object("Motion label", "PROPOSE → VALIDATE → EXECUTE → VERIFY",
                           Vector((0.0, -0.15, 0.48)), 0.030, mats["white"], camera)
     visibility(checked, 414, 468)
@@ -516,6 +587,24 @@ def build() -> bpy.types.Scene:
                         board_point(216.55, 154, 48), board_point(390, 185, 105),
                         board_point(538.15, 166.4, 42)], mats["amber"], 0.003)
     visibility(route, 420, 468)
+    animate_curve_reveal(route, 420, 455)
+
+    # The luminous packet communicates admitted-command progression. It is a
+    # conceptual state marker, not a simulated TCP or qualified arm motion.
+    packet = cylinder("Admitted command packet", board_point(305, 410, 260),
+                      0.009, 0.012, mats["cyan"], 32)
+    packet.rotation_euler = (math.pi / 2, 0, 0)
+    visibility(packet, 422, 468)
+    packet_path = [
+        (422, board_point(305, 410, 260)),
+        (436, board_point(235, 180, 115)),
+        (447, board_point(216.55, 154, 48)),
+        (458, board_point(390, 185, 105)),
+        (468, board_point(538.15, 166.4, 42)),
+    ]
+    for frame, point in packet_path:
+        packet.location = point
+        packet.keyframe_insert("location", frame=frame)
 
     close = text_object("Closing title", "ONE SHARED CONTRACT\nFROM USER INTENT TO VERIFIED ACTION",
                         Vector((0.0, -0.21, 0.80)), 0.043, mats["white"], camera)
@@ -561,9 +650,12 @@ Style: Cyan,Arial,27,&H00F8C845,&H000000FF,&H90081119,&H70000000,-1,0,0,0,100,10
 Style: Warn,Arial,22,&H004C9BFF,&H000000FF,&H90081119,&H70000000,-1,0,0,0,100,100,0,0,1,3,1,2,75,75,48,1
 Style: Spine,Arial,23,&H00D8DEE8,&H000000FF,&H90081119,&H90000000,-1,0,0,0,100,100,1,0,1,3,1,2,60,60,24,1
 Style: Card,Consolas,24,&H00F3F6FA,&H000000FF,&H00373E49,&HC00A0E14,-1,0,0,0,100,100,0,0,3,2,0,7,90,90,205,1
+Style: Frame,Consolas,21,&H00D8DEE8,&H000000FF,&H00373E49,&HC00A0E14,0,0,0,0,100,100,0,0,3,2,0,7,90,90,382,1
+Style: Bug,Arial,20,&H00F8C845,&H000000FF,&H90081119,&H70000000,-1,0,0,0,100,100,1,0,1,2,1,9,50,50,32,1
 
 [Events]
 Format: Layer,Start,End,Style,Name,MarginL,MarginR,MarginV,Effect,Text
+Dialogue: 1,0:00:00.20,0:00:21.95,Bug,,0,0,0,,{\\fad(250,180)}TACTEVRA  /  RC03
 Dialogue: 0,0:00:00.20,0:00:03.55,Hero,,0,0,0,,{\\fad(300,250)}ONE REQUEST. ONE CHECKED PHYSICAL ACTION.
 Dialogue: 0,0:00:00.55,0:00:03.55,Cyan,,0,0,0,,{\\fad(300,250)}TACTEVRA CONNECTS USER INTENT TO A MEASURED, VERIFIED WORKCELL
 Dialogue: 0,0:00:03.72,0:00:07.25,Hero,,0,0,0,,{\\fad(180,220)}1 · PERCEIVE THE WORKSPACE
@@ -576,11 +668,13 @@ Dialogue: 0,0:00:07.72,0:00:10.40,Card,,0,0,0,,{\\fad(180,180)}{\\c&H00F8C845}NO
 Dialogue: 0,0:00:10.70,0:00:13.85,Hero,,0,0,0,,{\\fad(180,180)}3 · CHECK THE PLAN
 Dialogue: 0,0:00:10.95,0:00:13.85,Cyan,,0,0,0,,{\\fad(180,180)}DETERMINISTIC GATES VERIFY UNITS, FRAMES, REACH, CLEARANCE AND FRESHNESS
 Dialogue: 0,0:00:10.70,0:00:13.85,Spine,,0,0,0,,{\\fad(180,180)}PERCEIVE  →  PROPOSE  →  {\\c&H004C9BFF}CHECK{\\c&H00D8DEE8}  →  EXECUTE  →  VERIFY
-Dialogue: 0,0:00:10.98,0:00:13.70,Card,,0,0,0,,{\\fad(180,180)}{\\c&H004C9BFF}ADMISSION GATE{\\c&H00F3F6FA}\\Nunits       PASS\\Nframe       PASS\\Nreach       PASS\\Nclearance   PASS\\Nfreshness   PASS
+Dialogue: 0,0:00:10.98,0:00:12.22,Card,,0,0,0,,{\\fad(140,120)}{\\c&H004C9BFF}REJECTED EXAMPLE{\\c&H00F3F6FA}\\Nframe        camera_raw\\Ncalibration  stale\\Ndecision     REJECT
+Dialogue: 0,0:00:12.26,0:00:13.70,Card,,0,0,0,,{\\fad(120,180)}{\\c&H003DCC46}ADMISSION GATE · ACCEPT{\\c&H00F3F6FA}\\Nunits        PASS\\Nframe        PASS\\Nreach        PASS\\Nclearance    PASS\\Nfreshness    PASS
 Dialogue: 0,0:00:14.02,0:00:16.85,Hero,,0,0,0,,{\\fad(180,180)}3 · CHECK TARGET + ROUTE
 Dialogue: 0,0:00:14.25,0:00:16.85,Cyan,,0,0,0,,{\\fad(180,180)}NAMED KEYS AND PHONE CONTROLS RESOLVE THROUGH MEASURED DEVICE GEOMETRY
 Dialogue: 0,0:00:14.02,0:00:16.85,Spine,,0,0,0,,{\\fad(180,180)}PERCEIVE  →  PROPOSE  →  {\\c&H004C9BFF}CHECK{\\c&H00D8DEE8}  →  EXECUTE  →  VERIFY
 Dialogue: 0,0:00:14.28,0:00:16.70,Card,,0,0,0,,{\\fad(180,180)}{\\c&H004C9BFF}NOMINAL RESOLVED TARGET{\\c&H00F3F6FA}\\Nkey          H\\NX            216.55 mm\\NY            154.00 mm\\NZ            48.00 mm
+Dialogue: 0,0:00:14.42,0:00:16.70,Frame,,0,0,0,,{\\fad(180,180)}{\\c&H00F8C845}FRAME CHAIN{\\c&H00D8DEE8}\\Ncamera_px → board_mm → keyboard_local → key:H
 Dialogue: 0,0:00:17.02,0:00:18.45,Hero,,0,0,0,,{\\fad(150,150)}4 · EXECUTE ONE BOUNDED ACTION
 Dialogue: 0,0:00:17.20,0:00:18.45,Cyan,,0,0,0,,{\\fad(150,150)}THE SOLE CONTROLLER WRITER SENDS THE ADMITTED MOTION
 Dialogue: 0,0:00:17.02,0:00:18.45,Spine,,0,0,0,,{\\fad(150,150)}PERCEIVE  →  PROPOSE  →  CHECK  →  {\\c&H00F8C845}EXECUTE{\\c&H00D8DEE8}  →  VERIFY
@@ -594,6 +688,124 @@ Dialogue: 0,0:00:19.98,0:00:21.95,Sub,,0,0,0,,{\\fad(220,180)}FROM USER INTENT T
 Dialogue: 0,0:00:19.82,0:00:21.95,Warn,,0,0,0,,{\\fad(220,180)}PRESENTATION VISUALIZATION • STATIC OFFICIAL ARM POSE • NOT MOTION OR FABRICATION QUALIFICATION
 """,
         encoding="utf-8",
+    )
+
+
+def write_caption_file(path: Path) -> None:
+    """Write an accessible chapter transcript that does not depend on audio."""
+    path.write_text(
+        """1
+00:00:00,200 --> 00:00:03,550
+One request becomes one checked physical action.
+
+2
+00:00:03,720 --> 00:00:07,250
+Fixed vision and direct tags anchor the workspace to the board frame.
+
+3
+00:00:07,380 --> 00:00:10,550
+The model proposes intent, a named target, a coordinate frame, and confidence.
+
+4
+00:00:10,700 --> 00:00:13,850
+Deterministic gates reject stale or malformed proposals before accepting a valid plan.
+
+5
+00:00:14,020 --> 00:00:16,850
+Measured geometry resolves the named target through the camera, board, and device frames.
+
+6
+00:00:17,020 --> 00:00:18,450
+The sole controller writer sends one admitted, bounded action.
+
+7
+00:00:18,550 --> 00:00:19,600
+Telemetry and observation verify the result before the next action.
+
+8
+00:00:19,750 --> 00:00:21,950
+One shared contract connects user intent to verified physical action.
+""",
+        encoding="utf-8",
+    )
+
+
+def write_soundtrack(path: Path) -> None:
+    """Synthesize restrained, deterministic non-narrated sound design."""
+    sample_rate = 48_000
+    duration = END_FRAME / FPS
+    cue_times = (0.20, 3.72, 7.38, 10.70, 12.26, 14.02, 17.02, 18.55, 19.75)
+    rng = random.Random(30703)
+
+    def soft_pulse(t: float, center: float, freq: float, length: float = 0.34) -> float:
+        local = t - center
+        if local < 0 or local > length:
+            return 0.0
+        env = math.sin(math.pi * local / length) ** 2
+        return math.sin(2 * math.pi * freq * local) * env
+
+    with wave.open(str(path), "wb") as wav:
+        wav.setnchannels(2)
+        wav.setsampwidth(2)
+        wav.setframerate(sample_rate)
+        chunk = bytearray()
+        for index in range(int(sample_rate * duration)):
+            t = index / sample_rate
+            # Quiet tonal bed; kept deliberately below future narration space.
+            bed = (
+                0.030 * math.sin(2 * math.pi * 55.0 * t)
+                + 0.018 * math.sin(2 * math.pi * 82.5 * t + 0.6)
+                + 0.010 * math.sin(2 * math.pi * 110.0 * t + 1.2)
+            )
+            cue = 0.0
+            for cue_index, cue_time in enumerate(cue_times):
+                cue += 0.085 * soft_pulse(t, cue_time, 330.0 + cue_index * 42.0)
+            # A short low rejection cue followed by a clean acceptance chime.
+            cue += 0.080 * soft_pulse(t, 11.05, 165.0, 0.44)
+            cue += 0.110 * soft_pulse(t, 12.26, 740.0, 0.42)
+            cue += 0.080 * soft_pulse(t, 18.66, 930.0, 0.30)
+            # Very light transition air avoids dead cuts without becoming music.
+            air = 0.0
+            for transition in cue_times[1:]:
+                distance = abs(t - transition)
+                if distance < 0.16:
+                    air += (1.0 - distance / 0.16) * (rng.random() * 2.0 - 1.0) * 0.018
+            sample = max(-0.92, min(0.92, bed + cue + air))
+            pan = 0.04 * math.sin(2 * math.pi * 0.07 * t)
+            left = int(sample * (1.0 - pan) * 32767)
+            right = int(sample * (1.0 + pan) * 32767)
+            chunk.extend(struct.pack("<hh", left, right))
+            if len(chunk) >= 192_000:
+                wav.writeframesraw(chunk)
+                chunk.clear()
+        if chunk:
+            wav.writeframesraw(chunk)
+
+
+def mux_soundtrack_and_variants(silent_video: Path, final_video: Path,
+                                ffmpeg: str) -> None:
+    soundtrack = OUT / "tactevra_workcell_explainer_soundtrack_v1.wav"
+    captions = OUT / "tactevra_workcell_explainer_captions_v1.srt"
+    web_video = OUT / "tactevra_workcell_explainer_web_720p_v1.mp4"
+    write_soundtrack(soundtrack)
+    write_caption_file(captions)
+    subprocess.run(
+        [
+            ffmpeg, "-y", "-i", str(silent_video), "-i", str(soundtrack),
+            "-map", "0:v:0", "-map", "1:a:0", "-c:v", "copy",
+            "-c:a", "aac", "-b:a", "192k", "-shortest", "-movflags", "+faststart",
+            str(final_video),
+        ],
+        check=True,
+    )
+    subprocess.run(
+        [
+            ffmpeg, "-y", "-i", str(final_video), "-vf", "scale=1280:-2",
+            "-c:v", "libx264", "-preset", "medium", "-crf", "21",
+            "-c:a", "aac", "-b:a", "128k", "-movflags", "+faststart",
+            str(web_video),
+        ],
+        check=True,
     )
 
 
@@ -631,16 +843,18 @@ def composite_overlay(clean_video: Path, final_video: Path) -> None:
         )
         previous = output
     graph.append(f"[{previous}]ass='{ass_filter_path}'[finished]")
+    silent_video = OUT / "tactevra_workcell_explainer_silent_v1.mp4"
     subprocess.run(
         [
             ffmpeg, "-y", "-i", str(clean_video),
             "-filter_complex", ";".join(graph), "-map", "[finished]",
             "-c:v", "libx264", "-preset", "medium", "-crf", "18",
             "-pix_fmt", "yuv420p", "-movflags", "+faststart",
-            str(final_video),
+            str(silent_video),
         ],
         check=True,
     )
+    mux_soundtrack_and_variants(silent_video, final_video, ffmpeg)
 
 
 def main() -> None:
