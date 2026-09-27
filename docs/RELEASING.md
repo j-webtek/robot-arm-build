@@ -47,6 +47,10 @@ are a starting point, not a completed qualification record.
 - [ ] Run the snapshot audit at the candidate revision and review findings;
   inspect release contents for private data, license notices, and unexpected
   artifacts. This heuristic scan is not a full-history or security certification.
+- [ ] Review [`THIRD_PARTY_NOTICES.md`](../THIRD_PARTY_NOTICES.md) against the
+  exact candidate contents and resolved dependency set. Resolve every unknown
+  or incompatible redistribution term; in particular, do not publish the
+  derived Waveshare kinematic URDF until its redistribution basis is established.
 - [ ] Run `python scripts/ci/check_release_integrity.py --mode candidate` at the
   candidate revision. Candidate mode must pass without removing a blocker merely
   to silence the check; resolve the linked review issue or record an approved

@@ -116,8 +116,8 @@ Original contributions in this repository are licensed under the
 [Apache License, Version 2.0](LICENSE).
 Third-party code, models, drawings, and other vendor assets retain their
 respective licenses and attribution notices; this license does not relicense
-those materials. See their source and provenance documentation for applicable
-terms.
+those materials. Review the maintained [third-party notices](THIRD_PARTY_NOTICES.md)
+and linked provenance records for applicable terms and unresolved clearance.
 
 For repository history and citation metadata, see the [changelog](CHANGELOG.md),
 [versioning policy](docs/VERSIONING.md), and [citation file](CITATION.cff).

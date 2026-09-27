@@ -147,6 +147,8 @@ documents may exist only on the lab workstation; sharing them is covered in
   candidate and historical evidence records.
 - [Hardware provenance](HARDWARE_PROVENANCE.md): the owner's CAD/print-design
   authorship confirmation and its limits, including separate vendor rights.
+- [Third-party notices](../THIRD_PARTY_NOTICES.md): direct dependency sources,
+  external model/vendor boundaries, and unresolved redistribution clearance.
 - [Brand foundation](brand/BRAND_GUIDE.md): Tactevra naming and staged migration;
   commercial clearance remains pending.
 - [Private security reporting](../SECURITY.md) and [code of conduct](../CODE_OF_CONDUCT.md):
