@@ -15,8 +15,8 @@
   <meta property="og:image:height" content="630">
   <meta property="og:video" content="https://j-webtek.github.io/tactevra/media/tactevra-overview.mp4">
   <meta property="og:video:type" content="video/mp4">
-  <meta property="og:video:width" content="1920">
-  <meta property="og:video:height" content="1080">
+  <meta property="og:video:width" content="1600">
+  <meta property="og:video:height" content="900">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Tactevra — Checked physical intelligence">
   <meta name="twitter:description" content="From AI proposal to checked physical action in one shared control contract.">
@@ -50,7 +50,8 @@
     .button.secondary { color:#d9f4f7; background:transparent; }
     footer { padding:1rem 0 2rem; color:#829398; font-size:.86rem; }
     a { color:#6ed8e7; text-underline-offset:.2em; }
-    @media (max-width:760px) { .steps { grid-template-columns:1fr; } }
+    @media (max-width:1000px) { .steps { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+    @media (max-width:620px) { .steps { grid-template-columns:1fr; } }
   </style>
 </head>
 <body>
@@ -72,11 +73,11 @@
     <section aria-labelledby="stages-title">
       <h2 id="stages-title">One request, five controlled stages</h2>
       <div class="steps">
-        <button class="step" data-time="14"><strong>Perceive</strong><span>Anchor devices and targets to one shared frame.</span><time>0:14</time></button>
-        <button class="step" data-time="22"><strong>Propose</strong><span>Describe intent and coordinates—not motor commands.</span><time>0:22</time></button>
-        <button class="step" data-time="30"><strong>Check</strong><span>Reject stale, unsafe, or malformed proposals.</span><time>0:30</time></button>
-        <button class="step" data-time="51"><strong>Execute</strong><span>Send one bounded action through one controller.</span><time>0:51</time></button>
-        <button class="step" data-time="58"><strong>Verify</strong><span>Require robot telemetry and host-side evidence.</span><time>0:58</time></button>
+        <button class="step" data-time="14" aria-label="Play from Perceive, 0 minutes 14 seconds"><strong>Perceive</strong><span>Anchor devices and targets to one shared frame.</span><time>0:14</time></button>
+        <button class="step" data-time="22" aria-label="Play from Propose, 0 minutes 22 seconds"><strong>Propose</strong><span>Describe intent and coordinates—not motor commands.</span><time>0:22</time></button>
+        <button class="step" data-time="30" aria-label="Play from Check, 0 minutes 30 seconds"><strong>Check</strong><span>Reject stale, unsafe, or malformed proposals.</span><time>0:30</time></button>
+        <button class="step" data-time="51" aria-label="Play from Execute, 0 minutes 51 seconds"><strong>Execute</strong><span>Send one bounded action through one controller.</span><time>0:51</time></button>
+        <button class="step" data-time="58" aria-label="Play from Verify, 0 minutes 58 seconds"><strong>Verify</strong><span>Require robot telemetry and host-side evidence.</span><time>0:58</time></button>
       </div>
     </section>
     <details class="transcript">
