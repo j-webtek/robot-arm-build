@@ -325,7 +325,7 @@ def add_keyboard(layout: dict, mats: dict[str, bpy.types.Material]) -> dict[str,
     return named_keys
 
 
-def add_phone(layout: dict, mats: dict[str, bpy.types.Material]) -> None:
+def add_phone(layout: dict, mats: dict[str, bpy.types.Material]) -> dict[str, bpy.types.Object]:
     dev = layout["devices"]["phone"]
     ox, oy = dev["nominal_origin_xy"]
     sx, sy, sz = dev["configured_size"]
@@ -334,9 +334,11 @@ def add_phone(layout: dict, mats: dict[str, bpy.types.Material]) -> None:
     phone = cube("Measured phone envelope",
                  board_point(ox + sx / 2, oy + sy / 2, dev["support_plane_z"] + sz / 2),
                  (sx / 1000, sy / 1000, sz / 1000), mats["phone"], 0.006)
-    cube("Phone screen", board_point(ox + sx / 2, oy + sy / 2,
-                                     dev["nominal_screen_plane_z"] + 0.4),
-         ((sx - 5) / 1000, (sy - 8) / 1000, 0.0008), mats["screen"], 0.004).parent = phone
+    screen = cube("Phone screen", board_point(ox + sx / 2, oy + sy / 2,
+                                               dev["nominal_screen_plane_z"] + 0.4),
+                  ((sx - 5) / 1000, (sy - 8) / 1000, 0.0008), mats["screen"], 0.004)
+    screen.parent = phone
+    return {"root": phone, "screen": screen}
 
 
 def _empty(name: str, parent: bpy.types.Object | None = None) -> bpy.types.Object:
@@ -398,6 +400,79 @@ def _joint_marker(name: str, parent: bpy.types.Object, mat: bpy.types.Material,
     marker.parent = parent
     marker.location = (0, 0, 0)
     return marker
+
+
+def _world_beam(name: str, start: Vector, end: Vector, mat: bpy.types.Material,
+                width: float = 0.024) -> bpy.types.Object:
+    """Create one dimensioned presentation link between world-space points."""
+    vector = end - start
+    beam = cube(name, (start + end) / 2,
+                (width, width * 0.72, vector.length), mat, 0.004)
+    beam.rotation_mode = "QUATERNION"
+    beam.rotation_quaternion = vector.to_track_quat("Z", "Y")
+    return beam
+
+
+def add_continuous_press_arm(mats: dict[str, bpy.types.Material]) -> dict[str, object]:
+    """Build one continuous URDF-derived arm proxy ending at the H stylus.
+
+    The official assembly surface remains available as source evidence, but a
+    single articulated proxy is used on screen so the actuator never changes
+    identity between wide, resolve, execute, and verify shots.
+    """
+    manifest, _joints = _parse_arm_contract()
+    objects_before = set(bpy.context.scene.objects)
+    base = board_point(305, 405, 0)
+    shoulder = base + Vector((0, 0, 0.120))
+    wrist = board_point(216.55, 154.0, 0) + Vector((0, 0, 0.205))
+    length_a = 0.2387
+    length_b = 0.1550
+    direction = wrist - shoulder
+    distance = direction.length
+    axis = direction.normalized()
+    projection = (length_a ** 2 - length_b ** 2 + distance ** 2) / (2 * distance)
+    height = math.sqrt(max(length_a ** 2 - projection ** 2, 0.0))
+    side = axis.cross(Vector((0, 0, 1))).normalized()
+    normal = side.cross(axis).normalized()
+    elbow = shoulder + axis * projection + normal * height
+
+    cube("Continuous arm base", base + Vector((0, 0, 0.038)),
+         (0.112, 0.112, 0.076), mats["abs"], 0.010)
+    cylinder("Continuous arm turntable", base + Vector((0, 0, 0.084)),
+             0.052, 0.030, mats["servo"], 64)
+    for point, label in ((shoulder, "shoulder"), (elbow, "elbow"), (wrist, "wrist")):
+        cylinder(f"Continuous arm {label} servo", point, 0.033, 0.052,
+                 mats["servo"], 48).rotation_euler = (math.pi / 2, 0, 0)
+    rail_offset = side * 0.014
+    for suffix, offset in (("L", rail_offset), ("R", -rail_offset)):
+        _world_beam(f"Continuous upper rail {suffix}", shoulder + offset,
+                    elbow + offset, mats["carbon"], 0.019)
+        _world_beam(f"Continuous forearm rail {suffix}", elbow + offset,
+                    wrist + offset, mats["carbon"], 0.019)
+
+    holder = cube("Continuous arm stylus holder", wrist + Vector((0, 0, -0.030)),
+                  (0.052, 0.046, 0.060), mats["abs"], 0.006)
+    collar = cylinder("Continuous arm stylus collar", wrist + Vector((0, 0, -0.071)),
+                      0.012, 0.028, mats["arm_exact"], 48)
+    stylus_center = board_point(216.55, 154.0, 0) + Vector((0, 0, 0.105))
+    stylus = cylinder("Continuous arm stylus", stylus_center, 0.004, 0.140,
+                      mats["metal"], 48)
+    bpy.ops.mesh.primitive_cone_add(vertices=48, radius1=0.0012, radius2=0.004,
+                                    depth=0.012,
+                                    location=board_point(216.55, 154.0, 29))
+    tip = bpy.context.object
+    tip.name = "Continuous arm compliant stylus tip"
+    apply_material(tip, mats["arm_exact"])
+    moving = (holder, collar, stylus, tip)
+    for component in moving:
+        base_z = component.location.z
+        for frame, offset in ((1, 0.0), (1288, 0.0), (1300, -0.004),
+                              (1320, -0.004), (1332, 0.0), (END_FRAME, 0.0)):
+            component.location.z = base_z + offset
+            component.keyframe_insert("location", frame=frame)
+        component["evidence_status"] = "URDF_DERIVED_PRESENTATION_PROXY_NOT_KINEMATIC_EVIDENCE"
+    objects = tuple(obj for obj in bpy.context.scene.objects if obj not in objects_before)
+    return {"root": base, "objects": objects, "moving": moving, "manifest": manifest}
 
 
 def add_robot(mats: dict[str, bpy.types.Material]) -> dict[str, bpy.types.Object]:
@@ -502,79 +577,36 @@ def build() -> bpy.types.Scene:
          textured_material("Bench", (0.055, 0.066, 0.080, 1), scale=5.0,
                            detail=2.0, metallic=0.15, roughness=0.52), 0.012)
     keyboard_keys = add_keyboard(layout, mats)
-    add_phone(layout, mats)
+    phone = add_phone(layout, mats)
+    phone_dev = layout["devices"]["phone"]
+    phone_x = phone_dev["nominal_origin_xy"][0] + phone_dev["configured_size"][0] / 2
+    phone_y = phone_dev["nominal_origin_xy"][1] + phone_dev["configured_size"][1] / 2
     tag_objects: list[tuple[str, bpy.types.Object, tuple[float, float]]] = []
     for tag_id, tag in layout["direct_tags"]["tags"].items():
         xy = tuple(tag["detection_center_xy"])
         tag_objects.append(
             (tag_id, add_tag(tag_id, *xy, mats["white"], mats["abs"]), xy)
         )
-    robot = add_robot(mats)
-    # The plan-resolution insert is an unobstructed device-local view before
-    # execution. The same hero arm returns on the following frame.
-    robot["root"].hide_render = False
-    robot["root"].keyframe_insert("hide_render", frame=1056)
-    robot["root"].hide_render = True
-    robot["root"].keyframe_insert("hide_render", frame=1057)
-    robot["root"].keyframe_insert("hide_render", frame=1224)
-    robot["root"].hide_render = False
-    robot["root"].keyframe_insert("hide_render", frame=1225)
-
-    # The exact vendor assembly remains static because it is a single reference
-    # surface. A restrained presentation stylus and the H key communicate the
-    # admitted contact at the end effector without claiming kinematic evidence.
+    # The film uses one continuous arm-and-stylus assembly in every shot. The
+    # proxy is dimensioned from the pinned URDF contract and remains explicitly
+    # presentation-only; it avoids changing actuator identity between scenes.
+    robot = add_continuous_press_arm(mats)
+    # Resolve gets a full unobstructed hold. The identical arm reappears at the
+    # Execute cut; there is no substitute actuator or foreground sweep.
+    for component in robot["objects"]:
+        component.hide_render = False
+        component.keyframe_insert("hide_render", frame=1056)
+        component.hide_render = True
+        component.keyframe_insert("hide_render", frame=1057)
+        component.keyframe_insert("hide_render", frame=1224)
+        component.hide_render = False
+        component.keyframe_insert("hide_render", frame=1225)
     h_key = keyboard_keys["H"]
     h_key_z = h_key.location.z
     for frame, offset in ((1225, 0.0), (1288, 0.0), (1300, -0.004),
                           (1320, -0.004), (1332, 0.0), (1392, 0.0)):
         h_key.location.z = h_key_z + offset
         h_key.keyframe_insert("location", frame=frame)
-    stylus = cylinder("SIMULATED — admitted H contact indicator",
-                      board_point(216.55, 154.0, 105), 0.004, 0.140,
-                      mats["metal"], 48)
-    stylus.rotation_euler = (0, 0, 0)
-    visibility(stylus, 1225, 1392)
-    for frame, z_mm in ((1225, 105), (1288, 105), (1300, 101),
-                        (1320, 101), (1332, 105), (1392, 105)):
-        stylus.location = board_point(216.55, 154.0, z_mm)
-        stylus.keyframe_insert("location", frame=frame)
-    stylus["evidence_status"] = "SIMULATED_CONTACT_INDICATOR_NOT_PHYSICAL_TEST_EVIDENCE"
-    bpy.ops.mesh.primitive_cone_add(vertices=48, radius1=0.0012, radius2=0.004,
-                                    depth=0.012,
-                                    location=board_point(216.55, 154.0, 29))
-    stylus_tip = bpy.context.object
-    stylus_tip.name = "SIMULATED — compliant stylus tip"
-    apply_material(stylus_tip, mats["arm_exact"])
-    visibility(stylus_tip, 1225, 1392)
-    for frame, z_mm in ((1225, 29), (1288, 29), (1300, 25),
-                        (1320, 25), (1332, 29), (1392, 29)):
-        stylus_tip.location = board_point(216.55, 154.0, z_mm)
-        stylus_tip.keyframe_insert("location", frame=frame)
-    stylus_tip["evidence_status"] = "SIMULATED_CONTACT_INDICATOR_NOT_PHYSICAL_TEST_EVIDENCE"
-
-    # A finished tool holder keeps the contact indicator visually attached to
-    # an end-effector rather than reading as an unexplained floating bulb.
-    tool_holder = cube(
-        "SIMULATED — end-effector tool holder",
-        board_point(216.55, 154.0, 158), (0.052, 0.044, 0.058), mats["abs"], 0.006,
-    )
-    tool_collar = cylinder(
-        "SIMULATED — stylus retention collar",
-        board_point(216.55, 154.0, 124), 0.012, 0.026, mats["arm_exact"], 48,
-    )
-    tool_neck = cube(
-        "SIMULATED — wrist neck",
-        board_point(216.55, 169.0, 201), (0.056, 0.082, 0.042), mats["arm_exact"], 0.006,
-    )
-    for component in (tool_holder, tool_collar, tool_neck):
-        visibility(component, 1225, 1392)
-        base_z = component.location.z
-        for frame, offset in ((1225, 0.0), (1288, 0.0), (1300, -0.004),
-                              (1320, -0.004), (1332, 0.0), (1392, 0.0)):
-            component.location.z = base_z + offset
-            component.keyframe_insert("location", frame=frame)
-        component["evidence_status"] = "SIMULATED_TOOLING_NOT_KINEMATIC_EVIDENCE"
-
     # A recognizable camera hangs below the carriage instead of disappearing
     # inside the portal mounting plate. The optical axis remains centered on
     # the nominal board target.
@@ -615,9 +647,10 @@ def build() -> bpy.types.Scene:
         # Resolve top-down, execute close-up, verify, payoff, end card.
         # Unobstructed top-down keyboard resolution, then a medium tooling shot
         # that keeps the simulated holder, stylus, and H key in one frame.
-        (1057, Vector((-0.062, -0.070, 0.67))), (1224, Vector((-0.062, -0.070, 0.61))),
+        (1057, board_point(216.55, 154.0, 670)),
+        (1224, board_point(216.55, 154.0, 610)),
         (1225, Vector((0.48, -0.72, 0.48))), (1392, Vector((0.38, -0.60, 0.40))),
-        (1393, Vector((0.18, -0.88, 0.60))), (1560, Vector((0.12, -0.78, 0.56))),
+        (1393, Vector((0.02, -0.70, 0.54))), (1560, Vector((0.06, -0.64, 0.48))),
         (1561, Vector((0.94, -1.30, 0.78))), (1728, Vector((1.66, -1.94, 1.04))),
         (1729, Vector((1.66, -1.94, 1.04))), (END_FRAME, Vector((1.66, -1.94, 1.04))),
     ]
@@ -628,7 +661,8 @@ def build() -> bpy.types.Scene:
         (529, Vector((0, -0.02, 0.40))), (1056, Vector((0, -0.02, 0.40))),
         (1057, board_point(216.55, 154.0, 22)), (1224, board_point(216.55, 154.0, 22)),
         (1225, board_point(216.55, 154.0, 105)), (1392, board_point(216.55, 154.0, 92)),
-        (1393, Vector((0.08, -0.04, 0.20))), (1560, Vector((0.08, -0.04, 0.20))),
+        (1393, board_point(phone_x, phone_y, 42)),
+        (1560, board_point(phone_x, phone_y, 42)),
         (1561, Vector((0, 0.02, 0.45))), (END_FRAME, Vector((0, 0.02, 0.45))),
     ]
     animate_transform(camera, camera_positions, targets)
@@ -719,36 +753,36 @@ def build() -> bpy.types.Scene:
     visibility(x_label, 462, 528)
     visibility(y_label, 472, 528)
 
-    arm_detail = text_object("Arm detail label", "ROARM-M3\nOFFICIAL ASSEMBLY SURFACE",
+    arm_detail = text_object("Arm detail label", "ROARM-M3\nURDF-DERIVED ARM PROXY",
                              Vector((0.0, -0.10, 0.42)), 0.030, mats["white"], camera)
     visibility(arm_detail, 97, 240)
 
     devices = text_object("Device label", "INDEXED DEVICE GEOMETRY\nKEYBOARD + PHONE + DIRECT TAGS",
                           Vector((0.02, -0.14, 0.29)), 0.031, mats["white"], camera)
     visibility(devices, 409, 528)
-    add_target_ring("Keyboard target H", 216.55, 154.0, 29, mats["cyan"], 1057, 1224)
+    h_ring = add_target_ring("Keyboard target H", 216.55, 154.0, 29,
+                             mats["cyan"], 1057, 1320)
     h_target_label = board_text("Resolved H label", "H",
                                 board_point(216.55, 154.0, 32), 0.013, mats["cyan"])
-    visibility(h_target_label, 1120, 1224)
+    visibility(h_target_label, 1120, 1300)
 
-    # Coordinate-frame graphics make the camera/board/device transformation
-    # visible without pretending these presentation primitives are measured
-    # controller telemetry.
-    axis_origin = board_point(105, 100, 33)
-    add_axis("Board frame X", axis_origin, axis_origin + Vector((0.090, 0, 0)),
-             mats["cyan"], 1057, 1224)
-    add_axis("Board frame Y", axis_origin, axis_origin + Vector((0, 0.090, 0)),
-             mats["amber"], 1057, 1224)
-    add_axis("Board frame Z", axis_origin, axis_origin + Vector((0, 0, 0.090)),
-             mats["green"], 1057, 1224)
+    # One thin, flat trace is the only spatial guide in Resolve. Additional
+    # axis tubes looked like physical cables and obscured the keyboard.
     frame_trace = curve_line(
-        "Camera to board to keyboard to H trace",
-        [board_point(52, 390, 34), board_point(90, 250, 34),
-         board_point(145, 196, 34), board_point(216.55, 154.0, 34)],
-        mats["cyan"], 0.0026,
+        "Camera to H resolve trace",
+        [board_point(305, 228.5, 35), board_point(216.55, 154.0, 35)],
+        mats["cyan"], 0.0009,
     )
-    visibility(frame_trace, 1080, 1224)
-    animate_curve_reveal(frame_trace, 1080, 1176)
+    visibility(frame_trace, 1080, 1200)
+    animate_curve_reveal(frame_trace, 1080, 1148)
+
+    # Verification is grounded on the physical receiver screen, not a floating
+    # glyph. The phone is therefore introduced as the host display in use.
+    host_h = board_text("Verified host character H", "H",
+                        board_point(phone_x, phone_y,
+                                    phone_dev["nominal_screen_plane_z"] + 1.3),
+                        0.032, mats["green"])
+    visibility(host_h, 1438, 1560)
 
     checked = text_object("Motion label", "PROPOSE → VALIDATE → EXECUTE → VERIFY",
                           Vector((0.0, -0.15, 0.48)), 0.030, mats["white"], camera)
@@ -793,9 +827,8 @@ def build() -> bpy.types.Scene:
 
     scene["evidence_notice"] = (
         "Portal/stations are repository CAD; board/devices are RC03 measured envelopes; "
-        "the arm surface is a local hash-verified derivative of the official STEP assembly; "
-        "its default pose is static and not motion qualification; the H contact "
-        "indicator is an explicitly labeled presentation simulation."
+        "the continuous arm proxy is dimensioned from the pinned official URDF contract; "
+        "its pose and H contact are presentation simulations, not motion qualification."
     )
     scene["source_layout"] = str(LAYOUT_PATH.relative_to(ROOT))
     scene["source_portal"] = str(PORTAL_PATH.relative_to(ROOT))
@@ -831,7 +864,7 @@ Style: Loop,Arial,34,&H00D8DEE8,&H000000FF,&H90081119,&HA0000000,-1,0,0,0,100,10
 Style: EndTitle,Arial,112,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,-1,0,0,0,100,100,1,0,1,0,0,5,70,70,0,1
 Style: EndSub,Arial,40,&H00E7ECF2,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,0,0,5,70,70,0,1
 Style: EndURL,Consolas,30,&H00F8C845,&H000000FF,&H00000000,&H00000000,-1,0,0,0,100,100,0,0,1,0,0,5,70,70,0,1
-Style: EndFine,Arial,20,&H00959BA5,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,0,0,2,80,80,44,1
+Style: EndFine,Arial,28,&H00959BA5,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,0,0,2,80,80,44,1
 
 [Events]
 Format: Layer,Start,End,Style,Name,MarginL,MarginR,MarginV,Effect,Text
@@ -861,7 +894,6 @@ Dialogue: 1,0:00:44.00,0:00:51.00,RightCard,,0,0,0,,{\\fad(160,180)}{\\c&H00F8C8
 Dialogue: 1,0:00:51.00,0:00:58.00,Badge,,0,0,0,,{\\fad(140,160)}SIMULATED PRESS  ·  ACTION 1 OF 1  ·  CONTROLLER
 Dialogue: 1,0:00:58.20,0:01:03.00,VerifyCard,,0,0,0,,{\\pos(420,540)\\fad(160,180)}TELEMETRY\\N\\NJOINT TARGET REACHED  {\\c&H004FCC33}✓
 Dialogue: 1,0:00:59.00,0:01:03.00,VerifyCard,,0,0,0,,{\\pos(1500,540)\\fad(160,180)}HOST INPUT\\N\\NCHARACTER RECEIVED  {\\c&H004FCC33}✓
-Dialogue: 2,0:01:00.00,0:01:03.00,HostGlyph,,0,0,0,,{\\pos(1500,690)\\fad(120,180)}H
 Dialogue: 2,0:01:03.00,0:01:05.00,CenterCard,,0,0,0,,{\\pos(960,390)\\fad(140,180)\\c&H004FCC33\\fs68}VERIFIED{\\rCenterCard}
 Dialogue: 1,0:01:05.00,0:01:12.00,Hero,,0,0,0,,{\\fad(220,220)}ONE SHARED CONTRACT
 Dialogue: 1,0:01:05.30,0:01:12.00,Sub,,0,0,0,,{\\fad(220,220)}FROM USER INTENT TO VERIFIED PHYSICAL ACTION
@@ -874,7 +906,7 @@ Dialogue: 0,0:01:12.00,0:01:17.00,Black,,0,0,0,,{\\p1}m 0 0 l 1920 0 l 1920 1080
 Dialogue: 1,0:01:12.00,0:01:17.00,EndTitle,,0,0,0,,{\\pos(960,400)\\fad(220,0)}TACTEVRA
 Dialogue: 1,0:01:12.20,0:01:17.00,EndSub,,0,0,0,,{\\pos(960,545)}ONE REQUEST. ONE CHECKED PHYSICAL ACTION.
 Dialogue: 1,0:01:12.40,0:01:17.00,EndURL,,0,0,0,,{\\pos(960,630)}github.com/j-webtek/tactevra
-Dialogue: 1,0:01:12.00,0:01:17.00,EndFine,,0,0,0,,Presentation visualization · static official arm surface · simulated key contact
+Dialogue: 1,0:01:12.00,0:01:17.00,EndFine,,0,0,0,,Concept visualization · URDF-derived arm proxy · simulated key contact
 """,
         encoding="utf-8",
     )
@@ -1061,6 +1093,61 @@ Tactevra.
     )
 
 
+NARRATION_CUES = (
+    (4.0, 10.0, "When AI moves real hardware,\na wrong guess becomes real motion."),
+    (10.0, 14.0, "Tactevra turns one request into\none checked physical action."),
+    (14.0, 22.0, "A fixed camera reads four board markers,\nplacing every target in one shared frame."),
+    (22.0, 30.0, "The model proposes the action, named target,\ncoordinate frame, and confidence—never motor commands."),
+    (30.0, 37.0, "Deterministic gates stop stale or malformed plans\nbefore the arm can move."),
+    (37.0, 44.0, "Units. Frame. Reach. Clearance. Freshness.\nEvery gate must pass."),
+    (44.0, 51.0, "Measured geometry resolves the H key\ninto exact board coordinates."),
+    (51.0, 58.0, "The arm carries the stylus\nand sends one bounded press."),
+    (58.0, 65.0, "Telemetry confirms the target, while the host\nconfirms the character H."),
+    (65.0, 72.0, "That closes one shared contract, from intent\nto verified physical action."),
+    (72.0, 77.0, "Tactevra.\nPhysical intelligence, checked."),
+)
+
+
+def _caption_time(seconds: float, decimal: str) -> str:
+    whole = int(seconds)
+    milliseconds = int(round((seconds - whole) * 1000))
+    return f"{whole // 3600:02d}:{(whole % 3600) // 60:02d}:{whole % 60:02d}{decimal}{milliseconds:03d}"
+
+
+def write_caption_file(path: Path) -> None:
+    blocks = []
+    for index, (start, end, text) in enumerate(NARRATION_CUES, start=1):
+        blocks.append(
+            f"{index}\n{_caption_time(start, ',')} --> {_caption_time(end, ',')}\n{text}"
+        )
+    path.write_text("\n\n".join(blocks) + "\n", encoding="utf-8", newline="\n")
+
+
+def write_webvtt_file(path: Path) -> None:
+    blocks = ["WEBVTT"]
+    for start, end, text in NARRATION_CUES:
+        blocks.append(
+            f"{_caption_time(start, '.')} --> {_caption_time(end, '.')}\n{text}"
+        )
+    path.write_text("\n\n".join(blocks) + "\n", encoding="utf-8", newline="\n")
+
+
+def write_chapters_file(path: Path) -> None:
+    chapters = (
+        (14.0, 22.0, "Perceive"),
+        (22.0, 30.0, "Propose"),
+        (30.0, 44.0, "Check"),
+        (44.0, 58.0, "Execute"),
+        (58.0, 65.0, "Verify"),
+    )
+    blocks = ["WEBVTT"]
+    for start, end, label in chapters:
+        blocks.append(
+            f"{_caption_time(start, '.')} --> {_caption_time(end, '.')}\n{label}"
+        )
+    path.write_text("\n\n".join(blocks) + "\n", encoding="utf-8", newline="\n")
+
+
 def write_soundtrack(path: Path) -> None:
     """Synthesize a restrained bed with one semantic sound per event."""
     sample_rate = 48_000
@@ -1123,35 +1210,49 @@ def write_soundtrack(path: Path) -> None:
 
 
 def mux_soundtrack_and_variants(silent_video: Path, final_video: Path,
-                                ffmpeg: str) -> None:
+                                ffmpeg: str, external_voice_dir: Path | None = None) -> None:
     soundtrack = OUT / "tactevra_workcell_explainer_soundtrack_v2.wav"
     captions = OUT / "tactevra_workcell_explainer_captions_v2.srt"
     web_video = OUT / "tactevra_workcell_explainer_web_1080p_v2.mp4"
     social_video = OUT / "tactevra_workcell_explainer_social_square_v2.mp4"
-    voice_dir = OUT / "voiceover_v2"
+    voice_dir = external_voice_dir or (OUT / "voiceover_v3")
     write_soundtrack(soundtrack)
     write_caption_file(captions)
-    voice_script = SCRIPT.with_name("generate_voiceover.ps1")
-    powershell = shutil.which("pwsh") or shutil.which("powershell")
-    if not powershell:
-        raise RuntimeError("PowerShell is required to synthesize the narrated master")
-    subprocess.run(
-        [powershell, "-NoProfile", "-ExecutionPolicy", "Bypass", "-File",
-         str(voice_script), "-OutputDirectory", str(voice_dir)],
-        check=True,
-    )
+    if external_voice_dir is None:
+        voice_script = SCRIPT.with_name("generate_voiceover.ps1")
+        powershell = shutil.which("pwsh") or shutil.which("powershell")
+        if not powershell:
+            raise RuntimeError("PowerShell is required to synthesize the narrated master")
+        subprocess.run(
+            [powershell, "-NoProfile", "-ExecutionPolicy", "Bypass", "-File",
+             str(voice_script), "-OutputDirectory", str(voice_dir)],
+            check=True,
+        )
     voice_starts = (4, 10, 14, 22, 30, 37, 44, 51, 58, 65, 72)
-    voice_files = [voice_dir / f"voice_{index:02d}.wav" for index in range(1, 12)]
+    voice_ends = (10, 14, 22, 30, 37, 44, 51, 58, 65, 72, 77)
+    voice_files = []
+    for index in range(1, 12):
+        candidates = [voice_dir / f"voice_{index:02d}{suffix}"
+                      for suffix in (".wav", ".mp3", ".m4a")]
+        selected = next((candidate for candidate in candidates if candidate.is_file()), None)
+        if selected is None:
+            raise FileNotFoundError(
+                f"Missing voice_{index:02d}.wav/.mp3/.m4a in {voice_dir}"
+            )
+        voice_files.append(selected)
     inputs: list[str] = [ffmpeg, "-y", "-i", str(silent_video), "-i", str(soundtrack)]
     for voice_file in voice_files:
         inputs.extend(("-i", str(voice_file)))
-    audio_graph = ["[1:a]volume=0.13[bed]"]
+    audio_graph = ["[1:a]volume=0.17[bed]"]
     voice_labels = []
-    for input_index, start in enumerate(voice_starts, start=2):
+    for input_index, (start, end) in enumerate(zip(voice_starts, voice_ends), start=2):
         label = f"voice{input_index}"
         delay_ms = int(start * 1000)
+        duration = end - start - 0.10
+        fade_start = max(0.0, duration - 0.10)
         audio_graph.append(
             f"[{input_index}:a]aresample=48000,volume=1.0,"
+            f"atrim=duration={duration:.3f},afade=t=out:st={fade_start:.3f}:d=0.10,"
             f"adelay={delay_ms}|{delay_ms}[{label}]"
         )
         voice_labels.append(f"[{label}]")
@@ -1208,9 +1309,12 @@ def publish_homepage_media() -> None:
         )
     PUBLIC_MEDIA_DIR.mkdir(parents=True, exist_ok=True)
     captions = PUBLIC_MEDIA_DIR / "tactevra-overview.en.vtt"
+    chapters = PUBLIC_MEDIA_DIR / "tactevra-overview.chapters.vtt"
     public_video = PUBLIC_MEDIA_DIR / "tactevra-overview.mp4"
     poster = PUBLIC_MEDIA_DIR / "tactevra-overview-poster.jpg"
+    social_preview = PUBLIC_MEDIA_DIR / "tactevra-social-preview.jpg"
     write_webvtt_file(captions)
+    write_chapters_file(chapters)
     subprocess.run(
         [
             ffmpeg, "-y", "-i", str(source), "-i", str(captions),
@@ -1227,6 +1331,15 @@ def publish_homepage_media() -> None:
         [
             ffmpeg, "-y", "-ss", "11.50", "-i", str(source),
             "-frames:v", "1", "-update", "1",
+            "-vf", "scale=1200:675,crop=1200:630:0:22", "-q:v", "2",
+            str(social_preview),
+        ],
+        check=True,
+    )
+    subprocess.run(
+        [
+            ffmpeg, "-y", "-ss", "11.50", "-i", str(source),
+            "-frames:v", "1", "-update", "1",
             "-vf", "scale=1280:-2", "-q:v", "2",
             str(poster),
         ],
@@ -1234,7 +1347,8 @@ def publish_homepage_media() -> None:
     )
 
 
-def composite_overlay(clean_video: Path, final_video: Path) -> None:
+def composite_overlay(clean_video: Path, final_video: Path,
+                      external_voice_dir: Path | None = None) -> None:
     ffmpeg = shutil.which("ffmpeg")
     if not ffmpeg:
         raise RuntimeError("ffmpeg is required to composite informational labels")
@@ -1280,11 +1394,17 @@ def composite_overlay(clean_video: Path, final_video: Path) -> None:
         ],
         check=True,
     )
-    mux_soundtrack_and_variants(silent_video, final_video, ffmpeg)
+    mux_soundtrack_and_variants(silent_video, final_video, ffmpeg, external_voice_dir)
 
 
 def main() -> None:
     args = sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else []
+    voice_dir = None
+    if "--voiceover-dir" in args:
+        value_index = args.index("--voiceover-dir") + 1
+        if value_index >= len(args):
+            raise ValueError("--voiceover-dir requires a directory path")
+        voice_dir = Path(args[value_index]).resolve()
     if "--publish-homepage-media" in args:
         publish_homepage_media()
         print(f"TACTEVRA_PUBLIC_MEDIA={PUBLIC_MEDIA_DIR}")
@@ -1296,7 +1416,7 @@ def main() -> None:
             raise FileNotFoundError(
                 f"Overlay-only mode requires an existing clean render: {clean_video}"
             )
-        composite_overlay(clean_video, final_video)
+        composite_overlay(clean_video, final_video, voice_dir)
         print(f"TACTEVRA_OUTPUT={OUT}")
         return
 
@@ -1326,7 +1446,7 @@ def main() -> None:
         scene.frame_start = 1
         scene.frame_end = END_FRAME
         bpy.ops.render.render(animation=True)
-        composite_overlay(clean_video, final_video)
+        composite_overlay(clean_video, final_video, voice_dir)
     else:
         scene.frame_set(52)
         scene.render.image_settings.file_format = "PNG"

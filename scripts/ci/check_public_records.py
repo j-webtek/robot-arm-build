@@ -15,6 +15,8 @@ EXPECTED_MEDIA = {
     "assets/media/tactevra-overview.mp4",
     "assets/media/tactevra-overview-poster.jpg",
     "assets/media/tactevra-overview.en.vtt",
+    "assets/media/tactevra-overview.chapters.vtt",
+    "assets/media/tactevra-social-preview.jpg",
 }
 PAGES_WORKFLOW = Path(".github/workflows/pages.yml")
 CONFIGURE_PAGES_V6_SHA = "45bfe0192ca1faeb007ade9deae92b16b8254a0d"
