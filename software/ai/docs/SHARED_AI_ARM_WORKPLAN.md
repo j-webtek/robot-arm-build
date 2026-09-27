@@ -599,6 +599,10 @@ Copy this row and fill every field:
 
 ## Active work claims
 
+- AI lane / S1: evaluate frozen per-corner visibility and pose-to-landmark
+  residual features against ensemble disagreement on new 51M grouped scenes;
+  no fitting, calibration, runtime, contract, or arm changes.
+
 
 
 
