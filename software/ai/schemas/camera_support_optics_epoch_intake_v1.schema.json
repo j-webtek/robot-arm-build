@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rocell.local/schemas/camera_support_optics_epoch_intake_v1.schema.json",
+  "type": "object", "additionalProperties": false,
+  "required": [
+    "schema", "intake_id", "component_id", "source_baseline_commit",
+    "source_baseline_tree", "controlled_sources", "baseline_facts", "bindings",
+    "design_or_catalog_evidence_is_not_physical_original", "hardware_access",
+    "camera_open_authorized", "installation_authorized",
+    "controller_start_authorized", "transport_authorized",
+    "execution_authorized", "physical_authority", "intake_sha256"
+  ],
+  "properties": {
+    "schema": {"const": "rocell.camera_support_optics_epoch_intake.v1"},
+    "intake_id": {"const": "arm-070-camera-support-optics"},
+    "component_id": {"const": "camera_support_optics"},
+    "source_baseline_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "source_baseline_tree": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "controlled_sources": {
+      "type": "array", "minItems": 5, "maxItems": 5,
+      "items": {"type": "object", "additionalProperties": false,
+        "required": ["path", "sha256"],
+        "properties": {"path": {"type": "string"}, "sha256": {"$ref": "#/$defs/sha"}}}
+    },
+    "baseline_facts": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "camera_profile_record_state", "received_unit_confirmed",
+        "persistent_usb_identity_sha256", "commissioned_mode",
+        "camera_controls_snapshot_sha256", "support_state",
+        "unresolved_hardware_intake_rows"
+      ],
+      "properties": {
+        "camera_profile_record_state": {"type": "string"},
+        "received_unit_confirmed": {"type": ["boolean", "null"]},
+        "persistent_usb_identity_sha256": {"type": ["string", "null"]},
+        "commissioned_mode": {"type": ["object", "null"]},
+        "camera_controls_snapshot_sha256": {"type": ["string", "null"]},
+        "support_state": {"type": "string"},
+        "unresolved_hardware_intake_rows": {"type": "integer", "minimum": 0}
+      }
+    },
+    "bindings": {"type": "array", "maxItems": 4, "items": {"$ref": "#/$defs/binding"}},
+    "design_or_catalog_evidence_is_not_physical_original": {"const": true},
+    "hardware_access": {"const": false},
+    "camera_open_authorized": {"const": false},
+    "installation_authorized": {"const": false},
+    "controller_start_authorized": {"const": false},
+    "transport_authorized": {"const": false},
+    "execution_authorized": {"const": false},
+    "physical_authority": {"const": false},
+    "intake_sha256": {"$ref": "#/$defs/sha"}
+  },
+  "$defs": {
+    "sha": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "binding": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "binding_id", "evidence_sha256", "owner_ai_review_sha256",
+        "measured_monotonic_ns", "valid_until_monotonic_ns",
+        "evidence_origin", "review_disposition"
+      ],
+      "properties": {
+        "binding_id": {"enum": ["camera_receipt", "camera_identity", "camera_mode_controls", "support_witnesses"]},
+        "evidence_sha256": {"$ref": "#/$defs/sha"},
+        "owner_ai_review_sha256": {"$ref": "#/$defs/sha"},
+        "measured_monotonic_ns": {"type": "integer", "minimum": 1},
+        "valid_until_monotonic_ns": {"type": "integer", "minimum": 2},
+        "evidence_origin": {"enum": ["PHYSICAL_RETAINED_ORIGINALS", "SYNTHETIC_TEST_ONLY"]},
+        "review_disposition": {"enum": ["OWNER_AI_ACCEPTED", "UNREVIEWED", "REJECTED"]}
+      }
+    }
+  }
+}

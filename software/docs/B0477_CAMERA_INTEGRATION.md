@@ -452,3 +452,11 @@ Until those artifacts exist and a superseding controlled freeze is reviewed:
 - the arm must remain unpowered by this workflow;
 - live motion and descent are unauthorized; and
 - keyboard/phone contact is disabled.
+
+ARM-070 adds a content-addressed component intake around this boundary. Its
+retained baseline reads the real purchased profile, onboarding policy, epoch
+policy, support design, and hardware intake sheet. It reports
+`camera_receipt`, `camera_identity`, `camera_mode_controls`, and
+`support_witnesses` as missing and refuses component admission. A future pass
+requires retained physical originals and owner-AI review for all four; catalog
+claims, synthetic fixtures, or the digital support prototype cannot fill them.

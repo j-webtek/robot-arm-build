@@ -1,0 +1,48 @@
+{
+  "schema": "rocell.camera_support_optics_epoch_intake.v1",
+  "intake_id": "arm-070-camera-support-optics",
+  "component_id": "camera_support_optics",
+  "source_baseline_commit": "c9f7ab03d7ee2fab477828f4f4ef5566ddd46052",
+  "source_baseline_tree": "608a18b3de2a04c347af6ce235aa900c3bf3ba39",
+  "controlled_sources": [
+    {
+      "path": "config/camera_profiles/arducam_b0477_imx283_16mm.json",
+      "sha256": "c15264f866d81b99cc1155171e21d3416d3a1fa7a244b5ae97642cc989f2e024"
+    },
+    {
+      "path": "config/physical_onboarding_policy.json",
+      "sha256": "30af2bdf05d239b0eefc2079a88fb1916ab9d09cc4a1cb1a8a40b77f97369ee9"
+    },
+    {
+      "path": "config/configuration_epochs.json",
+      "sha256": "5e0af455425feae892791186c259cff0f124dad3259a37b4acd09598b71eefc7"
+    },
+    {
+      "path": "../hardware/static_overhead_camera/config/support_design.json",
+      "sha256": "2392257405b54022039be1da96e005690fe74df32256607a61d374d7c1720d1b"
+    },
+    {
+      "path": "../hardware/static_overhead_camera/hardware_intake_template.csv",
+      "sha256": "b54e3abd3f8b2c84aaa66ab32606cb9cde7890cda6cc56fe26ffbb3101169215"
+    }
+  ],
+  "baseline_facts": {
+    "camera_profile_record_state": "PURCHASED_PENDING_RECEIPT",
+    "received_unit_confirmed": null,
+    "persistent_usb_identity_sha256": null,
+    "commissioned_mode": null,
+    "camera_controls_snapshot_sha256": null,
+    "support_state": "SCREENING_CANDIDATE_PHYSICAL_QUALIFICATION_OPEN",
+    "unresolved_hardware_intake_rows": 55
+  },
+  "bindings": [],
+  "design_or_catalog_evidence_is_not_physical_original": true,
+  "hardware_access": false,
+  "camera_open_authorized": false,
+  "installation_authorized": false,
+  "controller_start_authorized": false,
+  "transport_authorized": false,
+  "execution_authorized": false,
+  "physical_authority": false,
+  "intake_sha256": "63757a5bdb2f835579d4b46f665ae86a889e226e64206e88c085696b7c6eac14"
+}

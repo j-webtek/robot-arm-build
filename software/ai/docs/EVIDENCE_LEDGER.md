@@ -3359,3 +3359,41 @@ rewriting history. New entries must use a unique evidence ID.
 - Next dependency: collect and owner-AI review retained
   `camera_support_optics` evidence while keeping the other six components
   visible as missing.
+
+### E-20260927-ARM-070 — camera/support/optics intake and honest gap assessment
+
+- Stage: S4
+- Lane: ARM
+- Source baseline: merge commit
+  `c9f7ab03d7ee2fab477828f4f4ef5566ddd46052`, tree
+  `608a18b3de2a04c347af6ce235aa900c3bf3ba39`.
+- Change: added a deterministic four-binding camera/support/optics intake,
+  readiness assessment, strict schemas, and an adapter that can create the
+  shared epoch component only after all four physical-original bindings are
+  current and owner-AI accepted.
+- Baseline facts: camera profile state `PURCHASED_PENDING_RECEIPT`; received
+  unit, persistent USB identity, commissioned mode, and controls snapshot are
+  null; support state is
+  `SCREENING_CANDIDATE_PHYSICAL_QUALIFICATION_OPEN`; all 55 hardware-intake rows
+  remain unresolved.
+- Artifacts: `software/ai/eval/arm070_camera_support_optics_intake.json`, intake
+  SHA-256 `63757a5bdb2f835579d4b46f665ae86a889e226e64206e88c085696b7c6eac14`;
+  `software/ai/eval/arm070_camera_support_optics_readiness.json`, assessment
+  SHA-256 `093fb631ffdba64cf415ebb962c90876625f4bef8d83df0aee1b3f080fddf6ce`.
+- Result: `BLOCKED`; `camera_receipt`, `camera_identity`,
+  `camera_mode_controls`, and `support_witnesses` are all `MISSING`. Component
+  admission is false and the ARM-069 epoch is unchanged.
+- Verification: deterministic source binding, schema validation, distinct
+  synthetic/stale/unreviewed/future-evidence blockers, cross-lineage rejection,
+  complete non-authority fixture, and retained-artifact equality are covered.
+- Endpoint opens: 0
+- Hardware writes: 0
+- Physical movements: 0
+- Authority: camera open, installation, startup, transport, execution,
+  hardware, and physical authority remain false.
+- Limitations: this implements and evaluates the intake; it does not create the
+  missing physical observations or qualify the purchased camera/support.
+- Supersedes: none. ARM-069 remains the current partial epoch.
+- Next dependency: use the existing physical onboarding workflow to retain and
+  owner-AI review the four originals, then rerun this intake with their exact
+  hashes and validity windows.
