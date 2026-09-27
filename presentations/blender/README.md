@@ -150,9 +150,13 @@ dimension-checked 3D render:
   device-local named target;
 - a small persistent Tactevra wordmark establishes brand continuity without
   competing with chapter titles;
-- procedural birch and bench variation, subtle depth of field, animated focal
-  length, board-frame axes, a route reveal, and an admitted-command packet add
-  material and motion depth while keeping the official arm surface static;
+- procedural birch and bench variation, restrained depth of field, animated
+  focal length, pulsing registration tags, board-frame axes, and a visible
+  camera-to-board-to-key trace add material and motion depth while keeping the
+  official arm surface static;
+- key legends, an H target ring, a finished simulated tool holder, and separate
+  telemetry and host-result panels make the target, action, and observed result
+  legible without implying a live controller trace;
 - calm local narration is the loudest element; the deterministic soundtrack
   uses one cue meaning per state and remains well below the voice;
 - silent 1080p, narrated 1080p, web 1080p, square social, and SRT caption
@@ -167,10 +171,11 @@ no unqualified capability claims, no raw model output presented as an admitted
 controller command, no critical text outside title-safe margins, and no visual
 effect that obscures the hardware evidence.
 
-The animated path and luminous packet are conceptual state graphics. They are
-not a TCP trace, servo simulation, collision result, or qualified trajectory.
-The exact official arm assembly remains static because it is a single vendor
-surface asset rather than a segmented, validated digital twin.
+The registration pulses and frame-chain trace are conceptual state graphics.
+They are not a TCP trace, servo simulation, collision result, or qualified
+trajectory. The rendered tool contact is explicitly labeled as a simulated
+press. The exact official arm assembly remains static because it is a single
+vendor surface asset rather than a segmented, validated digital twin.
 
 ## Authoritative inputs
 

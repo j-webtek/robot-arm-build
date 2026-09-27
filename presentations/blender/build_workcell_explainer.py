@@ -22,7 +22,6 @@ from __future__ import annotations
 import json
 import hashlib
 import math
-import random
 import shutil
 import struct
 import subprocess
@@ -183,6 +182,22 @@ def text_object(name: str, body: str, location: Vector, size: float,
     return obj
 
 
+def board_text(name: str, body: str, location: Vector, size: float,
+               mat: bpy.types.Material) -> bpy.types.Object:
+    """Create a flat, renderable label on board- or key-plane geometry."""
+    bpy.ops.object.text_add(location=location)
+    obj = bpy.context.object
+    obj.name = name
+    obj.data.body = body
+    obj.data.align_x = "CENTER"
+    obj.data.align_y = "CENTER"
+    obj.data.size = size
+    obj.data.extrude = size * 0.012
+    obj.data.bevel_depth = size * 0.006
+    apply_material(obj, mat)
+    return obj
+
+
 def visibility(obj: bpy.types.Object, start: int, end: int, scale: float = 1.0) -> None:
     obj.scale = (0, 0, 0)
     obj.keyframe_insert("scale", frame=max(1, start - 8))
@@ -191,6 +206,20 @@ def visibility(obj: bpy.types.Object, start: int, end: int, scale: float = 1.0) 
     obj.keyframe_insert("scale", frame=end)
     obj.scale = (0, 0, 0)
     obj.keyframe_insert("scale", frame=min(END_FRAME, end + 8))
+
+
+def pulse_visibility(obj: bpy.types.Object, start: int, end: int,
+                     scale: float = 1.0) -> None:
+    """Reveal an object with a readable pulse, then hold it until the shot ends."""
+    obj.scale = (0, 0, 0)
+    obj.keyframe_insert("scale", frame=max(1, start - 4))
+    obj.scale = (scale * 1.35, scale * 1.35, scale * 1.35)
+    obj.keyframe_insert("scale", frame=start + 5)
+    obj.scale = (scale, scale, scale)
+    obj.keyframe_insert("scale", frame=start + 12)
+    obj.keyframe_insert("scale", frame=end)
+    obj.scale = (0, 0, 0)
+    obj.keyframe_insert("scale", frame=min(END_FRAME, end + 6))
 
 
 def curve_line(name: str, points: list[Vector], mat: bpy.types.Material,
@@ -243,7 +272,7 @@ def animate_transform(obj: bpy.types.Object, frames_and_locations: list[tuple[in
 
 
 def add_tag(tag_id: str, x: float, y: float, white: bpy.types.Material,
-            black: bpy.types.Material) -> None:
+            black: bpy.types.Material) -> bpy.types.Object:
     base = cube(f"Tag {tag_id}", board_point(x, y, 0.8),
                 (0.055, 0.055, 0.0015), white, 0.001)
     # An original high-contrast visual motif, not a claimed AprilTag code.
@@ -251,6 +280,7 @@ def add_tag(tag_id: str, x: float, y: float, white: bpy.types.Material,
         cell = cube(f"Tag {tag_id} cell", board_point(x + ix * 13, y + iy * 13, 1.7),
                     (0.010, 0.010, 0.001), black)
         cell.parent = base
+    return base
 
 
 def add_keyboard(layout: dict, mats: dict[str, bpy.types.Material]) -> dict[str, bpy.types.Object]:
@@ -283,8 +313,15 @@ def add_keyboard(layout: dict, mats: dict[str, bpy.types.Material]) -> dict[str,
             key = cube(f"Key {row_i}-{col}", board_point(x, y, sz + 2.4),
                        (pitch * 0.82 / 1000, 0.021, 0.005), mats["key"], 0.002)
             if row_i < len(labels) and col < len(labels[row_i]):
-                key["legend"] = labels[row_i][col]
-                named_keys.setdefault(labels[row_i][col], key)
+                legend = labels[row_i][col]
+                key["legend"] = legend
+                named_keys.setdefault(legend, key)
+                if legend.strip():
+                    legend_size = 0.0054 if len(legend) <= 2 else 0.0035
+                    board_text(
+                        f"Key legend {legend}-{row_i}-{col}", legend,
+                        board_point(x, y, sz + 5.2), legend_size, mats["legend"],
+                    )
     return named_keys
 
 
@@ -441,9 +478,11 @@ def build() -> bpy.types.Scene:
                                     scale=7.0, detail=3.0, roughness=0.48),
         "keyboard": material("Keyboard body", (0.022, 0.027, 0.034, 1), roughness=0.28),
         "key": material("Keyboard keys", (0.055, 0.065, 0.078, 1), roughness=0.34),
+        "legend": material("Keyboard legends", (0.82, 0.87, 0.92, 1), roughness=0.42,
+                           emission=(0.18, 0.22, 0.28, 1), emission_strength=0.18),
         "phone": material("Phone edge", (0.03, 0.04, 0.05, 1), metallic=0.6, roughness=0.20),
-        "screen": material("Phone screen", (0.008, 0.028, 0.045, 1), metallic=0.15, roughness=0.12,
-                           emission=(0.00, 0.25, 0.55, 1), emission_strength=0.6),
+        "screen": material("Phone screen", (0.008, 0.015, 0.022, 1), metallic=0.15, roughness=0.16,
+                           emission=(0.01, 0.03, 0.05, 1), emission_strength=0.14),
         "white": material("Reference white", (0.92, 0.95, 0.98, 1), roughness=0.55),
         "cyan": material("Tactevra cyan", (0.00, 0.52, 0.92, 1), roughness=0.22,
                          emission=(0.00, 0.52, 0.92, 1), emission_strength=3.5),
@@ -451,6 +490,8 @@ def build() -> bpy.types.Scene:
                           emission=(1.00, 0.22, 0.01, 1), emission_strength=2.8),
         "green": material("Verified green", (0.05, 0.80, 0.38, 1), roughness=0.20,
                           emission=(0.02, 0.80, 0.28, 1), emission_strength=3.2),
+        "red": material("Blocked red", (0.86, 0.05, 0.08, 1), roughness=0.22,
+                        emission=(0.86, 0.02, 0.04, 1), emission_strength=2.8),
     }
 
     # Designed portal geometry is already expressed in board frame millimetres.
@@ -462,9 +503,22 @@ def build() -> bpy.types.Scene:
                            detail=2.0, metallic=0.15, roughness=0.52), 0.012)
     keyboard_keys = add_keyboard(layout, mats)
     add_phone(layout, mats)
+    tag_objects: list[tuple[str, bpy.types.Object, tuple[float, float]]] = []
     for tag_id, tag in layout["direct_tags"]["tags"].items():
-        add_tag(tag_id, *tag["detection_center_xy"], mats["white"], mats["abs"])
-    add_robot(mats)
+        xy = tuple(tag["detection_center_xy"])
+        tag_objects.append(
+            (tag_id, add_tag(tag_id, *xy, mats["white"], mats["abs"]), xy)
+        )
+    robot = add_robot(mats)
+    # The plan-resolution insert is an unobstructed device-local view before
+    # execution. The same hero arm returns on the following frame.
+    robot["root"].hide_render = False
+    robot["root"].keyframe_insert("hide_render", frame=1056)
+    robot["root"].hide_render = True
+    robot["root"].keyframe_insert("hide_render", frame=1057)
+    robot["root"].keyframe_insert("hide_render", frame=1224)
+    robot["root"].hide_render = False
+    robot["root"].keyframe_insert("hide_render", frame=1225)
 
     # The exact vendor assembly remains static because it is a single reference
     # surface. A restrained presentation stylus and the H key communicate the
@@ -498,12 +552,45 @@ def build() -> bpy.types.Scene:
         stylus_tip.keyframe_insert("location", frame=frame)
     stylus_tip["evidence_status"] = "SIMULATED_CONTACT_INDICATOR_NOT_PHYSICAL_TEST_EVIDENCE"
 
-    # Camera body at the nominal carriage axis and optical target.
-    cam_center = board_point(305, 228.5, 1034)
-    cube("Designed camera cage", cam_center, (0.055, 0.055, 0.045), mats["abs"], 0.004)
-    lens = cylinder("Machine vision lens", cam_center + Vector((0, 0, -0.042)),
-                    0.019, 0.045, mats["metal"])
+    # A finished tool holder keeps the contact indicator visually attached to
+    # an end-effector rather than reading as an unexplained floating bulb.
+    tool_holder = cube(
+        "SIMULATED — end-effector tool holder",
+        board_point(216.55, 154.0, 158), (0.052, 0.044, 0.058), mats["abs"], 0.006,
+    )
+    tool_collar = cylinder(
+        "SIMULATED — stylus retention collar",
+        board_point(216.55, 154.0, 124), 0.012, 0.026, mats["arm_exact"], 48,
+    )
+    tool_neck = cube(
+        "SIMULATED — wrist neck",
+        board_point(216.55, 169.0, 201), (0.056, 0.082, 0.042), mats["arm_exact"], 0.006,
+    )
+    for component in (tool_holder, tool_collar, tool_neck):
+        visibility(component, 1225, 1392)
+        base_z = component.location.z
+        for frame, offset in ((1225, 0.0), (1288, 0.0), (1300, -0.004),
+                              (1320, -0.004), (1332, 0.0), (1392, 0.0)):
+            component.location.z = base_z + offset
+            component.keyframe_insert("location", frame=frame)
+        component["evidence_status"] = "SIMULATED_TOOLING_NOT_KINEMATIC_EVIDENCE"
+
+    # A recognizable camera hangs below the carriage instead of disappearing
+    # inside the portal mounting plate. The optical axis remains centered on
+    # the nominal board target.
+    cam_center = board_point(305, 228.5, 970)
+    cube("Designed camera body", cam_center, (0.086, 0.066, 0.052), mats["abs"], 0.008)
+    cube("Designed camera top mount", cam_center + Vector((0, 0, 0.047)),
+         (0.046, 0.042, 0.044), mats["metal"], 0.005)
+    lens = cylinder("Machine vision lens", cam_center + Vector((0, 0, -0.047)),
+                    0.022, 0.050, mats["metal"])
     lens.rotation_euler = (0, 0, 0)
+    lens_glass = cylinder("Machine vision front glass",
+                          cam_center + Vector((0, 0, -0.073)),
+                          0.016, 0.003, mats["cyan"], 48)
+    lens_glass.rotation_euler = (0, 0, 0)
+    cylinder("Camera status light", cam_center + Vector((0.031, -0.034, 0.006)),
+             0.004, 0.003, mats["green"], 32).rotation_euler = (math.pi / 2, 0, 0)
 
     # Render camera and cinematic movement.
     bpy.ops.object.camera_add(location=(1.90, -2.10, 0.96))
@@ -518,16 +605,20 @@ def build() -> bpy.types.Scene:
         (97, Vector((1.72, -2.02, 1.04))), (240, Vector((1.42, -1.72, 0.94))),
         (241, Vector((1.42, -1.72, 0.94))), (336, Vector((1.28, -1.58, 0.90))),
         # Perceive: camera fixture, then its measured top-down view.
-        (337, Vector((0.78, -0.38, 1.28))), (408, Vector((0.62, -0.30, 1.18))),
-        (409, Vector((0.00, 0.00, 1.58))), (528, Vector((0.00, 0.00, 1.42))),
+        (337, Vector((0.58, -0.42, 1.16))), (408, Vector((0.42, -0.28, 1.08))),
+        # The lens POV begins below the physical camera body so the fixture
+        # cannot occlude or defocus the board evidence.
+        (409, Vector((0.00, 0.00, 0.89))), (528, Vector((0.00, 0.00, 0.85))),
         # Proposal and both gate decisions keep the arm visibly still.
         (529, Vector((-1.18, -1.42, 0.82))), (720, Vector((-0.98, -1.22, 0.75))),
         (721, Vector((-0.98, -1.22, 0.75))), (1056, Vector((-0.90, -1.14, 0.72))),
         # Resolve top-down, execute close-up, verify, payoff, end card.
-        (1057, Vector((0.18, -0.04, 1.30))), (1224, Vector((0.14, -0.03, 1.16))),
-        (1225, Vector((-0.26, -0.46, 0.33))), (1392, Vector((-0.20, -0.36, 0.29))),
+        # Unobstructed top-down keyboard resolution, then a medium tooling shot
+        # that keeps the simulated holder, stylus, and H key in one frame.
+        (1057, Vector((-0.062, -0.070, 0.67))), (1224, Vector((-0.062, -0.070, 0.61))),
+        (1225, Vector((0.48, -0.72, 0.48))), (1392, Vector((0.38, -0.60, 0.40))),
         (1393, Vector((0.18, -0.88, 0.60))), (1560, Vector((0.12, -0.78, 0.56))),
-        (1561, Vector((1.42, -1.72, 0.94))), (1728, Vector((1.66, -1.94, 1.04))),
+        (1561, Vector((0.94, -1.30, 0.78))), (1728, Vector((1.66, -1.94, 1.04))),
         (1729, Vector((1.66, -1.94, 1.04))), (END_FRAME, Vector((1.66, -1.94, 1.04))),
     ]
     targets = [
@@ -536,7 +627,7 @@ def build() -> bpy.types.Scene:
         (409, Vector((0, 0.00, 0.03))), (528, Vector((0, 0.00, 0.03))),
         (529, Vector((0, -0.02, 0.40))), (1056, Vector((0, -0.02, 0.40))),
         (1057, board_point(216.55, 154.0, 22)), (1224, board_point(216.55, 154.0, 22)),
-        (1225, board_point(216.55, 154.0, 32)), (1392, board_point(216.55, 154.0, 30)),
+        (1225, board_point(216.55, 154.0, 105)), (1392, board_point(216.55, 154.0, 92)),
         (1393, Vector((0.08, -0.04, 0.20))), (1560, Vector((0.08, -0.04, 0.20))),
         (1561, Vector((0, 0.02, 0.45))), (END_FRAME, Vector((0, 0.02, 0.45))),
     ]
@@ -551,11 +642,11 @@ def build() -> bpy.types.Scene:
         focus.keyframe_insert("location", frame=frame)
     camera.data.dof.use_dof = True
     camera.data.dof.focus_object = focus
-    camera.data.dof.aperture_fstop = 5.6
+    camera.data.dof.aperture_fstop = 11.0
     lens_keys = (
         (1, 35), (96, 35), (97, 35), (336, 42), (337, 58), (408, 72),
-        (409, 52), (528, 58), (529, 58), (1056, 68), (1057, 52),
-        (1224, 58), (1225, 72), (1392, 85), (1393, 58), (1560, 72),
+        (409, 38), (528, 40), (529, 58), (1056, 68), (1057, 52),
+        (1224, 58), (1225, 58), (1392, 68), (1393, 58), (1560, 72),
         (1561, 35), (END_FRAME, 42),
     )
     for frame, focal_length in lens_keys:
@@ -608,6 +699,26 @@ def build() -> bpy.types.Scene:
                        [board_point(305, 228.5, 995), board_point(305, 228.5, 14)], mats["cyan"], 0.002)
     visibility(sight, 337, 528)
 
+    # In the camera POV the four physical tags pulse in sequence and the board
+    # axes draw on the board itself, making perception visible without a card.
+    for index, (tag_id, _tag, xy) in enumerate(tag_objects):
+        ring = add_target_ring(f"Perception pulse {tag_id}", xy[0], xy[1], 4.2,
+                               mats["cyan"], 409, 528)
+        pulse_visibility(ring, 414 + index * 18, 528)
+    perceive_origin = board_point(42, 42, 5)
+    x_axis = add_axis("Perceive board X", perceive_origin,
+                      perceive_origin + Vector((0.115, 0, 0)), mats["cyan"], 448, 528)
+    y_axis = add_axis("Perceive board Y", perceive_origin,
+                      perceive_origin + Vector((0, 0.115, 0)), mats["cyan"], 458, 528)
+    animate_curve_reveal(x_axis, 448, 472)
+    animate_curve_reveal(y_axis, 458, 482)
+    x_label = board_text("Perceive X label", "X", perceive_origin + Vector((0.126, 0, 0.002)),
+                         0.015, mats["cyan"])
+    y_label = board_text("Perceive Y label", "Y", perceive_origin + Vector((0, 0.126, 0.002)),
+                         0.015, mats["cyan"])
+    visibility(x_label, 462, 528)
+    visibility(y_label, 472, 528)
+
     arm_detail = text_object("Arm detail label", "ROARM-M3\nOFFICIAL ASSEMBLY SURFACE",
                              Vector((0.0, -0.10, 0.42)), 0.030, mats["white"], camera)
     visibility(arm_detail, 97, 240)
@@ -616,6 +727,9 @@ def build() -> bpy.types.Scene:
                           Vector((0.02, -0.14, 0.29)), 0.031, mats["white"], camera)
     visibility(devices, 409, 528)
     add_target_ring("Keyboard target H", 216.55, 154.0, 29, mats["cyan"], 1057, 1224)
+    h_target_label = board_text("Resolved H label", "H",
+                                board_point(216.55, 154.0, 32), 0.013, mats["cyan"])
+    visibility(h_target_label, 1120, 1224)
 
     # Coordinate-frame graphics make the camera/board/device transformation
     # visible without pretending these presentation primitives are measured
@@ -627,6 +741,14 @@ def build() -> bpy.types.Scene:
              mats["amber"], 1057, 1224)
     add_axis("Board frame Z", axis_origin, axis_origin + Vector((0, 0, 0.090)),
              mats["green"], 1057, 1224)
+    frame_trace = curve_line(
+        "Camera to board to keyboard to H trace",
+        [board_point(52, 390, 34), board_point(90, 250, 34),
+         board_point(145, 196, 34), board_point(216.55, 154.0, 34)],
+        mats["cyan"], 0.0026,
+    )
+    visibility(frame_trace, 1080, 1224)
+    animate_curve_reveal(frame_trace, 1080, 1176)
 
     checked = text_object("Motion label", "PROPOSE → VALIDATE → EXECUTE → VERIFY",
                           Vector((0.0, -0.15, 0.48)), 0.030, mats["white"], camera)
@@ -634,15 +756,14 @@ def build() -> bpy.types.Scene:
     route = curve_line("Checked route",
                        [board_point(305, 410, 260), board_point(235, 180, 115),
                         board_point(216.55, 154, 48)], mats["amber"], 0.003)
-    visibility(route, 1225, 1392)
-    animate_curve_reveal(route, 1225, 1320)
+    route.hide_render = True
 
     # The luminous packet communicates admitted-command progression. It is a
     # conceptual state marker, not a simulated TCP or qualified arm motion.
     packet = cylinder("Admitted command packet", board_point(305, 410, 260),
                       0.009, 0.012, mats["cyan"], 32)
     packet.rotation_euler = (math.pi / 2, 0, 0)
-    visibility(packet, 1225, 1392)
+    packet.hide_render = True
     packet_path = [
         (1225, board_point(305, 410, 260)),
         (1280, board_point(235, 180, 115)),
@@ -700,9 +821,17 @@ Style: Sub,Arial,32,&H00E7ECF2,&H000000FF,&H90081119,&H70000000,0,0,0,0,100,100,
 Style: Tracker,Arial,24,&H00D8DEE8,&H000000FF,&H90081119,&H90000000,-1,0,0,0,100,100,1,0,1,3,1,2,60,60,26,1
 Style: Card,Consolas,30,&H00F3F6FA,&H000000FF,&H00373E49,&HD00A0E14,-1,0,0,0,100,100,0,0,3,2,0,7,150,150,245,1
 Style: CenterCard,Consolas,32,&H00F3F6FA,&H000000FF,&H00373E49,&HD00A0E14,-1,0,0,0,100,100,0,0,3,2,0,5,240,240,0,1
+Style: RightCard,Consolas,30,&H00F3F6FA,&H000000FF,&H00373E49,&HD00A0E14,-1,0,0,0,100,100,0,0,3,2,0,9,150,150,245,1
+Style: VerifyCard,Consolas,34,&H00F3F6FA,&H000000FF,&H00373E49,&HE00A0E14,-1,0,0,0,100,100,0,0,3,2,0,5,80,80,0,1
+Style: HostGlyph,Consolas,92,&H004FCC33,&H000000FF,&H00373E49,&HE00A0E14,-1,0,0,0,100,100,0,0,3,2,0,5,80,80,0,1
 Style: Badge,Arial,28,&H00FFFFFF,&H000000FF,&H00373E49,&HD00A0E14,-1,0,0,0,100,100,0,0,3,2,0,8,90,90,86,1
 Style: Bug,Arial,21,&H00F8C845,&H000000FF,&H90081119,&H70000000,-1,0,0,0,100,100,1,0,1,2,1,9,44,44,30,1
 Style: Fine,Arial,18,&H00898F99,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,0,0,2,80,80,28,1
+Style: Loop,Arial,34,&H00D8DEE8,&H000000FF,&H90081119,&HA0000000,-1,0,0,0,100,100,1,0,1,3,1,5,70,70,0,1
+Style: EndTitle,Arial,112,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,-1,0,0,0,100,100,1,0,1,0,0,5,70,70,0,1
+Style: EndSub,Arial,40,&H00E7ECF2,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,0,0,5,70,70,0,1
+Style: EndURL,Consolas,30,&H00F8C845,&H000000FF,&H00000000,&H00000000,-1,0,0,0,100,100,0,0,1,0,0,5,70,70,0,1
+Style: EndFine,Arial,20,&H00959BA5,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,0,0,2,80,80,44,1
 
 [Events]
 Format: Layer,Start,End,Style,Name,MarginL,MarginR,MarginV,Effect,Text
@@ -718,21 +847,34 @@ Dialogue: 1,0:00:44.00,0:00:51.00,Tracker,,0,0,0,,PERCEIVE  →  PROPOSE  →  {
 Dialogue: 1,0:00:51.00,0:00:58.00,Tracker,,0,0,0,,PERCEIVE  →  PROPOSE  →  CHECK  →  {\\c&H00F8C845}EXECUTE{\\c&H00D8DEE8}  →  VERIFY
 Dialogue: 1,0:00:58.00,0:01:05.00,Tracker,,0,0,0,,PERCEIVE  →  PROPOSE  →  CHECK  →  EXECUTE  →  {\\c&H004FCC33}VERIFY
 Dialogue: 1,0:00:14.00,0:00:16.10,Stage,,0,0,0,,{\\fad(180,180)}1 · PERCEIVE
-Dialogue: 1,0:00:16.10,0:00:22.00,CenterCard,,0,0,0,,{\\fad(180,180)}{\\c&H00F8C845}BOARD FRAME LOCKED{\\c&H00F3F6FA}\\N4 marker tags  ✓\\NX / Y axes      ✓
+Dialogue: 1,0:00:16.10,0:00:22.00,Badge,,0,0,0,,{\\fad(180,180)}{\\c&H00F8C845}4 TAGS LOCKED  ·  BOARD X/Y DRAWN
 Dialogue: 1,0:00:22.00,0:00:24.00,Stage,,0,0,0,,{\\fad(180,180)}2 · PROPOSE
 Dialogue: 1,0:00:24.00,0:00:30.00,Card,,0,0,0,,{\\fad(180,180)}{\\c&H004C9BFF}MODEL PROPOSAL{\\c&H00F3F6FA}\\Naction       press\\Ntarget       keyboard:H\\Nframe        board\\Nconfidence   0.97
 Dialogue: 1,0:00:30.00,0:00:31.80,Stage,,0,0,0,,{\\fad(150,150)}3 · CHECK
-Dialogue: 1,0:00:31.80,0:00:37.00,CenterCard,,0,0,0,,{\\fad(150,180)}{\\c&H00505AFF}GATE · REJECT{\\c&H00F3F6FA}\\Nframe        camera_raw  ✕\\Nfreshness    stale       ✕\\N\\NARM REMAINS STILL
-Dialogue: 1,0:00:37.00,0:00:44.00,CenterCard,,0,0,0,,{\\fad(150,180)}{\\c&H004FCC33}GATE · ACCEPT{\\c&H00F3F6FA}\\Nunits        ✓   frame      ✓\\Nreach        ✓   clearance  ✓\\Nfreshness    ✓
-Dialogue: 1,0:00:44.00,0:00:51.00,Card,,0,0,0,,{\\fad(160,180)}{\\c&H00F8C845}RESOLVED TARGET · H{\\c&H00F3F6FA}\\NX  216.55 mm\\NY  154.00 mm\\NZ   48.00 mm\\Ncamera → board → keyboard → H
+Dialogue: 1,0:00:31.80,0:00:37.00,Card,,0,0,0,,{\\pos(150,230)\\fad(150,180)}{\\c&H00505AFF}GATE · REJECT{\\c&H00F3F6FA}\\Nframe        camera_raw  ✕\\Nfreshness    stale       ✕\\N\\NARM REMAINS STILL
+Dialogue: 1,0:00:37.00,0:00:38.20,CenterCard,,0,0,0,,{\\fad(120,80)}{\\c&H004FCC33}GATE · ACCEPT{\\c&H00F3F6FA}\\Nunits        ✓
+Dialogue: 1,0:00:38.20,0:00:39.30,CenterCard,,0,0,0,,{\\fad(80,80)}{\\c&H004FCC33}GATE · ACCEPT{\\c&H00F3F6FA}\\Nunits        ✓\\Nframe        ✓
+Dialogue: 1,0:00:39.30,0:00:40.40,CenterCard,,0,0,0,,{\\fad(80,80)}{\\c&H004FCC33}GATE · ACCEPT{\\c&H00F3F6FA}\\Nunits        ✓\\Nframe        ✓\\Nreach        ✓
+Dialogue: 1,0:00:40.40,0:00:41.50,CenterCard,,0,0,0,,{\\fad(80,80)}{\\c&H004FCC33}GATE · ACCEPT{\\c&H00F3F6FA}\\Nunits        ✓\\Nframe        ✓\\Nreach        ✓\\Nclearance    ✓
+Dialogue: 1,0:00:41.50,0:00:44.00,CenterCard,,0,0,0,,{\\fad(80,180)}{\\c&H004FCC33}GATE · ACCEPT{\\c&H00F3F6FA}\\Nunits        ✓\\Nframe        ✓\\Nreach        ✓\\Nclearance    ✓\\Nfreshness    ✓
+Dialogue: 1,0:00:44.00,0:00:51.00,RightCard,,0,0,0,,{\\fad(160,180)}{\\c&H00F8C845}RESOLVED TARGET · H{\\c&H00F3F6FA}\\NX  216.55 mm\\NY  154.00 mm\\NZ   48.00 mm\\Ncamera → board → keyboard → H
 Dialogue: 1,0:00:51.00,0:00:58.00,Badge,,0,0,0,,{\\fad(140,160)}SIMULATED PRESS  ·  ACTION 1 OF 1  ·  CONTROLLER
-Dialogue: 1,0:00:58.00,0:01:05.00,CenterCard,,0,0,0,,{\\fad(160,180)}TELEMETRY  ✓     OBSERVATION  ✓\\N\\N{\\c&H004FCC33\\fs58}VERIFIED{\\rCenterCard}
+Dialogue: 1,0:00:58.20,0:01:03.00,VerifyCard,,0,0,0,,{\\pos(420,540)\\fad(160,180)}TELEMETRY\\N\\NJOINT TARGET REACHED  {\\c&H004FCC33}✓
+Dialogue: 1,0:00:59.00,0:01:03.00,VerifyCard,,0,0,0,,{\\pos(1500,540)\\fad(160,180)}HOST INPUT\\N\\NCHARACTER RECEIVED  {\\c&H004FCC33}✓
+Dialogue: 2,0:01:00.00,0:01:03.00,HostGlyph,,0,0,0,,{\\pos(1500,690)\\fad(120,180)}H
+Dialogue: 2,0:01:03.00,0:01:05.00,CenterCard,,0,0,0,,{\\pos(960,390)\\fad(140,180)\\c&H004FCC33\\fs68}VERIFIED{\\rCenterCard}
 Dialogue: 1,0:01:05.00,0:01:12.00,Hero,,0,0,0,,{\\fad(220,220)}ONE SHARED CONTRACT
 Dialogue: 1,0:01:05.30,0:01:12.00,Sub,,0,0,0,,{\\fad(220,220)}FROM USER INTENT TO VERIFIED PHYSICAL ACTION
+Dialogue: 2,0:01:05.20,0:01:06.30,Loop,,0,0,0,,{\\c&H00F8C845}PERCEIVE{\\c&H00D8DEE8}  →  PROPOSE  →  CHECK  →  EXECUTE  →  VERIFY
+Dialogue: 2,0:01:06.30,0:01:07.40,Loop,,0,0,0,,{\\c&H004FCC33}PERCEIVE  →  PROPOSE{\\c&H00D8DEE8}  →  CHECK  →  EXECUTE  →  VERIFY
+Dialogue: 2,0:01:07.40,0:01:08.50,Loop,,0,0,0,,{\\c&H004FCC33}PERCEIVE  →  PROPOSE  →  CHECK{\\c&H00D8DEE8}  →  EXECUTE  →  VERIFY
+Dialogue: 2,0:01:08.50,0:01:09.60,Loop,,0,0,0,,{\\c&H004FCC33}PERCEIVE  →  PROPOSE  →  CHECK  →  EXECUTE{\\c&H00D8DEE8}  →  VERIFY
+Dialogue: 2,0:01:09.60,0:01:12.00,Loop,,0,0,0,,{\\c&H004FCC33}PERCEIVE  →  PROPOSE  →  CHECK  →  EXECUTE  →  VERIFY  ↺
 Dialogue: 0,0:01:12.00,0:01:17.00,Black,,0,0,0,,{\\p1}m 0 0 l 1920 0 l 1920 1080 l 0 1080{\\p0}
-Dialogue: 1,0:01:12.00,0:01:17.00,Hero,,0,0,0,,{\\fad(220,0)}TACTEVRA
-Dialogue: 1,0:01:12.20,0:01:17.00,Sub,,0,0,0,,ONE REQUEST. ONE CHECKED PHYSICAL ACTION.\\Ngithub.com/j-webtek/tactevra
-Dialogue: 1,0:01:12.00,0:01:17.00,Fine,,0,0,0,,Presentation visualization · static official arm surface · simulated key contact
+Dialogue: 1,0:01:12.00,0:01:17.00,EndTitle,,0,0,0,,{\\pos(960,400)\\fad(220,0)}TACTEVRA
+Dialogue: 1,0:01:12.20,0:01:17.00,EndSub,,0,0,0,,{\\pos(960,545)}ONE REQUEST. ONE CHECKED PHYSICAL ACTION.
+Dialogue: 1,0:01:12.40,0:01:17.00,EndURL,,0,0,0,,{\\pos(960,630)}github.com/j-webtek/tactevra
+Dialogue: 1,0:01:12.00,0:01:17.00,EndFine,,0,0,0,,Presentation visualization · static official arm surface · simulated key contact
 """,
         encoding="utf-8",
     )
@@ -923,8 +1065,7 @@ def write_soundtrack(path: Path) -> None:
     """Synthesize a restrained bed with one semantic sound per event."""
     sample_rate = 48_000
     duration = END_FRAME / FPS
-    cue_times = (10.0, 14.0, 22.0, 30.0, 37.0, 44.0, 51.0, 58.0, 65.0, 72.0)
-    rng = random.Random(30703)
+    chord_roots = (55.0, 65.41, 73.42, 61.74)
 
     def soft_pulse(t: float, center: float, freq: float, length: float = 0.34) -> float:
         local = t - center
@@ -940,18 +1081,21 @@ def write_soundtrack(path: Path) -> None:
         chunk = bytearray()
         for index in range(int(sample_rate * duration)):
             t = index / sample_rate
-            # Quiet tonal bed, mixed well below narration downstream.
+            # A restrained four-chord bed gives the film continuity without
+            # becoming another attention layer beneath the narration.
+            root = chord_roots[int(t // 16) % len(chord_roots)]
+            breathe = 0.72 + 0.28 * math.sin(2 * math.pi * 0.0625 * t) ** 2
             bed = (
-                0.030 * math.sin(2 * math.pi * 55.0 * t)
-                + 0.018 * math.sin(2 * math.pi * 82.5 * t + 0.6)
-                + 0.010 * math.sin(2 * math.pi * 110.0 * t + 1.2)
-            )
+                0.025 * math.sin(2 * math.pi * root * t)
+                + 0.016 * math.sin(2 * math.pi * root * 1.5 * t + 0.6)
+                + 0.010 * math.sin(2 * math.pi * root * 2.0 * t + 1.2)
+                + 0.004 * math.sin(2 * math.pi * root * 4.0 * t + 0.3)
+            ) * breathe
             cue = 0.0
-            for cue_index, cue_time in enumerate(cue_times):
-                cue += 0.085 * soft_pulse(t, cue_time, 330.0 + cue_index * 42.0)
             # One semantic sound family per screenplay event.
             for key_tick in (0.55, 1.05, 1.55, 2.05):
                 cue += 0.040 * soft_pulse(t, key_tick, 980.0, 0.08)
+            cue += 0.045 * soft_pulse(t, 10.0, 420.0, 0.42)  # promise
             for tag_ping in (16.2, 17.1, 18.0, 18.9):
                 cue += 0.055 * soft_pulse(t, tag_ping, 620.0, 0.16)
             cue += 0.095 * soft_pulse(t, 34.0, 150.0, 0.55)  # reject
@@ -961,14 +1105,12 @@ def write_soundtrack(path: Path) -> None:
             cue += 0.115 * soft_pulse(t, 54.2, 1180.0, 0.11)  # key contact
             cue += 0.070 * soft_pulse(t, 60.0, 720.0, 0.18)
             cue += 0.070 * soft_pulse(t, 62.0, 820.0, 0.18)
-            cue += 0.110 * soft_pulse(t, 64.0, 930.0, 0.55)  # verified
-            # Very light transition air avoids dead cuts without becoming music.
-            air = 0.0
-            for transition in cue_times[1:]:
-                distance = abs(t - transition)
-                if distance < 0.16:
-                    air += (1.0 - distance / 0.16) * (rng.random() * 2.0 - 1.0) * 0.018
-            sample = max(-0.92, min(0.92, bed + cue + air))
+            for chord_tone in (523.25, 659.25, 783.99):
+                cue += 0.045 * soft_pulse(t, 64.0, chord_tone, 0.62)  # verified chord
+            for stage_index, stage_time in enumerate((65.4, 66.5, 67.6, 68.7, 69.8)):
+                cue += 0.045 * soft_pulse(t, stage_time, 520 + stage_index * 65, 0.15)
+            cue += 0.060 * soft_pulse(t, 75.5, 392.0, 0.62)  # clean end button
+            sample = max(-0.92, min(0.92, bed + cue))
             pan = 0.04 * math.sin(2 * math.pi * 0.07 * t)
             left = int(sample * (1.0 - pan) * 32767)
             right = int(sample * (1.0 + pan) * 32767)
@@ -1003,8 +1145,8 @@ def mux_soundtrack_and_variants(silent_video: Path, final_video: Path,
     inputs: list[str] = [ffmpeg, "-y", "-i", str(silent_video), "-i", str(soundtrack)]
     for voice_file in voice_files:
         inputs.extend(("-i", str(voice_file)))
-    audio_graph = ["[1:a]volume=0.16[bed]"]
-    mix_labels = ["[bed]"]
+    audio_graph = ["[1:a]volume=0.13[bed]"]
+    voice_labels = []
     for input_index, start in enumerate(voice_starts, start=2):
         label = f"voice{input_index}"
         delay_ms = int(start * 1000)
@@ -1012,11 +1154,19 @@ def mux_soundtrack_and_variants(silent_video: Path, final_video: Path,
             f"[{input_index}:a]aresample=48000,volume=1.0,"
             f"adelay={delay_ms}|{delay_ms}[{label}]"
         )
-        mix_labels.append(f"[{label}]")
+        voice_labels.append(f"[{label}]")
     audio_graph.append(
-        "".join(mix_labels)
-        + f"amix=inputs={len(mix_labels)}:duration=longest:normalize=0,"
-          "loudnorm=I=-14:TP=-1:LRA=7[mix]"
+        "".join(voice_labels)
+        + f"amix=inputs={len(voice_labels)}:duration=longest:normalize=0,"
+        "apad=whole_dur=77,asplit=2[voice_sidechain][voices]"
+    )
+    audio_graph.append(
+        "[bed][voice_sidechain]sidechaincompress=threshold=0.018:ratio=6:"
+        "attack=18:release=320[ducked]"
+    )
+    audio_graph.append(
+        "[ducked][voices]amix=inputs=2:duration=longest:normalize=0,"
+        "loudnorm=I=-14:TP=-1.5:LRA=7[mix]"
     )
     subprocess.run(
         inputs + ["-filter_complex", ";".join(audio_graph),
