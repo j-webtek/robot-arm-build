@@ -599,6 +599,8 @@ Copy this row and fill every field:
 
 ## Active work claims
 
+- AI lane / S1: final image-scale fit/export, then34000000..34000999 calibration and35000000..35000999 confirmation; fixed features/pose/rules, no arm changes.
+
 
 
 
