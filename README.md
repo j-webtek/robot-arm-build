@@ -12,6 +12,18 @@ The CI badge covers [scoped hardware-free checks](docs/CI.md), not physical robo
 
 [Get help](SUPPORT.md) · [Report a vulnerability privately](SECURITY.md)
 
+## See Tactevra in 22 seconds
+
+[![Watch the Tactevra system explainer](assets/media/tactevra-overview-poster.jpg)](assets/media/tactevra-overview.mp4)
+
+[Watch the explainer with playback controls and selectable English captions](assets/media/tactevra-overview.mp4)
+· [English captions (WebVTT)](assets/media/tactevra-overview.en.vtt)
+
+The film follows one request through Tactevra's five-stage architecture:
+**perceive, propose, check, execute, and verify**. It is a presentation of the
+current system design and measured workcell geometry—not evidence of autonomous
+operation or physical qualification.
+
 Formerly **RoCell**. Existing `rocell` commands, package names, and hardware release
 paths remain unchanged for compatibility. The canonical source repository is now
 `j-webtek/tactevra`; GitHub redirects the former repository URL.

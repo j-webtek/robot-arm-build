@@ -12,6 +12,9 @@ Blender 4.3+ usage:
 
 Generated outputs are intentionally written below /tmp and are not source
 artifacts. Source CAD and measured layout data remain authoritative.
+
+Use --publish-homepage-media only after reviewing the generated film. It writes
+the compact, captioned public derivative and poster below assets/media/.
 """
 
 from __future__ import annotations
@@ -50,6 +53,7 @@ STL_DIR = ROOT / "active-project" / "RoCell_v0_3" / "stl"
 DIMENSION_MANIFEST_PATH = SCRIPT.with_name("dimension_manifest.json")
 ARM_URDF_PATH = ROOT / "software" / "models" / "roarm_m3" / "roarm_m3_kinematic_40dbd84.urdf"
 OFFICIAL_ARM_STL_PATH = ROOT / "tmp" / "vendor" / "roarm_m3" / "roarm_m3_official_presentation.stl"
+PUBLIC_MEDIA_DIR = ROOT / "assets" / "media"
 
 FPS = 24
 END_FRAME = 22 * FPS
@@ -730,6 +734,39 @@ One shared contract connects user intent to verified physical action.
     )
 
 
+def write_webvtt_file(path: Path) -> None:
+    """Write browser-native captions matching the SRT chapter transcript."""
+    path.write_text(
+        """WEBVTT
+
+00:00:00.200 --> 00:00:03.550
+One request becomes one checked physical action.
+
+00:00:03.720 --> 00:00:07.250
+Fixed vision and direct tags anchor the workspace to the board frame.
+
+00:00:07.380 --> 00:00:10.550
+The model proposes intent, a named target, a coordinate frame, and confidence.
+
+00:00:10.700 --> 00:00:13.850
+Deterministic gates reject stale or malformed proposals before accepting a valid plan.
+
+00:00:14.020 --> 00:00:16.850
+Measured geometry resolves the named target through the camera, board, and device frames.
+
+00:00:17.020 --> 00:00:18.450
+The sole controller writer sends one admitted, bounded action.
+
+00:00:18.550 --> 00:00:19.600
+Telemetry and observation verify the result before the next action.
+
+00:00:19.750 --> 00:00:21.950
+One shared contract connects user intent to verified physical action.
+""",
+        encoding="utf-8",
+    )
+
+
 def write_soundtrack(path: Path) -> None:
     """Synthesize restrained, deterministic non-narrated sound design."""
     sample_rate = 48_000
@@ -809,6 +846,44 @@ def mux_soundtrack_and_variants(silent_video: Path, final_video: Path,
     )
 
 
+def publish_homepage_media() -> None:
+    """Publish the reviewed compact film, poster, and selectable captions."""
+    ffmpeg = shutil.which("ffmpeg")
+    if not ffmpeg:
+        raise RuntimeError("ffmpeg is required to publish homepage media")
+    source = OUT / "tactevra_workcell_explainer_web_720p_v1.mp4"
+    if not source.is_file():
+        raise FileNotFoundError(
+            f"Homepage publishing requires the reviewed web render: {source}"
+        )
+    PUBLIC_MEDIA_DIR.mkdir(parents=True, exist_ok=True)
+    captions = PUBLIC_MEDIA_DIR / "tactevra-overview.en.vtt"
+    public_video = PUBLIC_MEDIA_DIR / "tactevra-overview.mp4"
+    poster = PUBLIC_MEDIA_DIR / "tactevra-overview-poster.jpg"
+    write_webvtt_file(captions)
+    subprocess.run(
+        [
+            ffmpeg, "-y", "-i", str(source), "-i", str(captions),
+            "-map", "0:v:0", "-map", "0:a:0", "-map", "1:0",
+            "-c:v", "copy", "-c:a", "copy", "-c:s", "mov_text",
+            "-metadata:s:s:0", "language=eng",
+            "-metadata:s:s:0", "title=English",
+            "-disposition:s:0", "0", "-movflags", "+faststart",
+            str(public_video),
+        ],
+        check=True,
+    )
+    subprocess.run(
+        [
+            ffmpeg, "-y", "-ss", "1.35", "-i", str(source),
+            "-frames:v", "1", "-update", "1",
+            "-vf", "scale=1280:-2", "-q:v", "2",
+            str(poster),
+        ],
+        check=True,
+    )
+
+
 def composite_overlay(clean_video: Path, final_video: Path) -> None:
     ffmpeg = shutil.which("ffmpeg")
     if not ffmpeg:
@@ -859,6 +934,10 @@ def composite_overlay(clean_video: Path, final_video: Path) -> None:
 
 def main() -> None:
     args = sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else []
+    if "--publish-homepage-media" in args:
+        publish_homepage_media()
+        print(f"TACTEVRA_PUBLIC_MEDIA={PUBLIC_MEDIA_DIR}")
+        return
     if "--overlay-only" in args:
         clean_video = OUT / "tactevra_workcell_explainer_clean_v1.mp4"
         final_video = OUT / "tactevra_workcell_explainer_v1.mp4"

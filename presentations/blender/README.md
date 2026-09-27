@@ -73,6 +73,29 @@ video stay out of source control through the repository's existing `/tmp/`
 ignore rule; the source scene builder and production notes are the reviewable
 authorities.
 
+## Publish the repository overview
+
+After reviewing the 720p delivery render, publish the intentionally tracked
+README media with:
+
+```powershell
+& "C:\Program Files\Blender Foundation\Blender 4.3\blender.exe" `
+  --background --factory-startup `
+  --python presentations/blender/build_workcell_explainer.py -- `
+  --publish-homepage-media
+```
+
+This requires `ffmpeg` on `PATH` and writes three curated files to
+`assets/media/`: a compact MP4, a poster, and an English WebVTT sidecar. The MP4
+contains the same captions as a selectable `mov_text` subtitle stream, so they
+can be enabled or disabled by the viewer. Add future languages as separate
+WebVTT files and subtitle streams; do not burn accessibility text into the
+picture master.
+
+The repository README uses the poster as a durable GitHub-compatible preview
+that links directly to the captioned video. This avoids autoplay and respects
+reader choice while keeping the explainer prominent on the main page.
+
 When a clean render already exists and only screen-space labels changed, rebuild
 the final MP4 without rerendering the 3D frames:
 
