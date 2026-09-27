@@ -36,6 +36,7 @@ TESTS = (
     'software/tests/unit/test_native_t105_active_feedback_rehearsal_v1.py',
     'software/tests/unit/test_arm064_active_feedback_qualification_script.py',
     'software/tests/unit/test_arm064_active_feedback_qualification_receipt.py',
+    'software/tests/unit/test_r97_runtime_transition_assessment_v1.py',
     'software/tests/unit/test_model_motion_sequence_coordinator.py',
     'software/tests/unit/test_zero_write_waveshare_adapter_v1.py',
     'software/tests/unit/test_shadow_telemetry_replay_v1.py',
