@@ -180,6 +180,16 @@ authority. Packet status remains `AWAITING_EXTERNAL_INDEPENDENT_REVIEW`; this
 repository has not performed or impersonated that review. The next dependency
 is an external decision bound to the packet SHA-256, followed only under
 separate authorization by read-only endpoint qualification.
+ARM-056 now defines the closed return path for that outside decision. It binds
+the exact packet, manifest, candidate commit, adapter source, ordered
+adapter/composition checklist, reviewer declarations, findings, disposition,
+and explicit validity window. Synthetic, future, expired, rejected,
+packet-crossed, source-crossed, incomplete, author-conflicted, or open-finding
+decisions cannot become endpoint-qualification-intake ready. Even a valid
+external decision keeps endpoint open, controller start, execution, hardware,
+and physical authority false. No independent review is yet present; the next
+dependency remains a real outside decision and separately authorized read-only
+endpoint qualification.
 
 ## Stage definitions
 
