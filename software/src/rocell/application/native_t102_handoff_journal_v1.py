@@ -380,6 +380,33 @@ class DurableNativeT102HandoffV1:
     def snapshot(self) -> NativeT102HandoffSnapshotV1:
         return load_native_t102_handoff_v1(self.directory)
 
+    def verify_claimed_inputs(
+        self, frame: RuntimeCommandFrameV1,
+        admission: ReviewedMotionPermitAdmissionV1, *,
+        adapter_candidate_sha256: str, now_monotonic_ns: int,
+    ) -> NativeT102HandoffSnapshotV1:
+        """Revalidate the exact claimed handoff without creating authority."""
+
+        snapshot = self.snapshot()
+        if snapshot.phase is not NativeT102HandoffPhase.WRITER_CLAIMED:
+            raise NativeT102HandoffJournalError(
+                "native handoff does not have a committed writer claim")
+        prepared = _validate_prepared(_read(self.directory / "prepared.json"))
+        expected = _prepared_core(
+            frame, admission, adapter_candidate_sha256,
+            prepared["created_monotonic_ns"],
+        )
+        if prepared != {**expected, "prepared_sha256": _hash(expected)}:
+            raise NativeT102HandoffJournalError(
+                "executor inputs differ from the claimed native handoff")
+        _validate_claim(_read(self.directory / "claim.json"), prepared)
+        now = _positive_ns(now_monotonic_ns, "now_monotonic_ns")
+        if not prepared["created_monotonic_ns"] <= now \
+                < prepared["frame_expires_monotonic_ns"]:
+            raise NativeT102HandoffJournalError(
+                "claimed native handoff is stale")
+        return snapshot
+
     def claim_writer(
         self, frame: RuntimeCommandFrameV1,
         admission: ReviewedMotionPermitAdmissionV1, *,

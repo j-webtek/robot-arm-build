@@ -2635,3 +2635,62 @@ rewriting history. New entries must use a unique evidence ID.
   opens one pinned controller transport, publishes an authentic byte-accounted
   receipt, and never resends an ambiguous claim. Any physical use remains a
   separate explicitly authorized test.
+
+### E-20260926-ARM-051 — claimed native T=102 executor rehearsal
+
+- Stage: S4
+- Lane: ARM
+- Change: extended ARM-050 with read-only revalidation of the exact claimed
+  handoff and added a hardware-incapable executor rehearsal. A fresh authority
+  binds the external approval-record digest, durable claim, frame, writer,
+  controller session, and bounded monotonic lifetime. It has exactly one use
+  and explicitly grants neither hardware access nor physical authority.
+- Executor behavior: after revalidating the claim, adapter, reviewed admission,
+  encoded frame, session, profile, epoch, and freshness, the boundary consumes
+  authority before one exact in-memory open/write/close lifecycle. The receipt
+  binds the claimed and prepared records, authority, approval record, frame,
+  payload digest, pinned endpoint identity, correlation, writer, session,
+  requested byte count, confirmed byte count, API attempt counts, and a closed
+  error code. It never equates recorded bytes with controller receipt or
+  physical movement.
+- Failure behavior: unclaimed, stale, crossed, or tampered handoffs reject
+  before open. Expired/crossed/reused authority rejects before open. Concurrent
+  attempts have one authority consumer. Open failure, zero write, partial
+  write, write exception, invalid byte count, and uncertain close are terminal
+  with automatic retry forbidden. The rehearsal rejects subclasses so a real
+  transport cannot be smuggled through this qualification boundary.
+- Artifacts: `native_t102_executor_rehearsal_v1.py`; strengthened
+  `native_t102_handoff_journal_v1.py`; closed rehearsal-authority and receipt
+  schemas; public exports; exact-binding, fault, expiry, concurrency, schema,
+  and type-confinement tests; portable CI selection.
+- Artifact identity: executor implementation SHA-256
+  `804fd68dc4f484a24126296591f0768bf33a6ab0ab5b9f116198bd75a503aba1`;
+  strengthened handoff implementation SHA-256
+  `e1f744fa6f1678c227b1d8b330ce7d11cadbf940a6a04897f294e0a6f99ed298`;
+  authority and receipt schema SHA-256 values
+  `bbc97d0ac02715f4643042bd13f2b8a9a447574ebef6f4e27aca209b8546de9d`
+  and `b4d5151a48209921e27b60f90cae3c9fa343169d072098fb10cdcd52c8f68d08`.
+- Results: focused claim/executor suite PASS, 23 tests; expanded
+  runtime/permit/writer/T=102 suite PASS, 72 tests; portable shared AI/arm
+  selection PASS, 256 tests in 36.92 seconds; compile and diff checks PASS.
+- Evidence status: deterministic filesystem plus in-memory evidence only. The
+  exact accepted transport class has no serial factory, port, socket, callback,
+  device handle, controller process, firmware operation, or external I/O.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: the approval-record digest is a rehearsal binding, not a physical
+  authorization issuer. The endpoint digest is pinned but no endpoint is
+  opened. Confirmed bytes mean only that the incapable recorder accepted the
+  full payload. There is no authentic T=1021 acknowledgement, T=1051 feedback,
+  physical arrival, task outcome, or durable terminal execution receipt yet.
+- Supersedes: ARM-050's lack of a qualified executor lifecycle and byte-accounted
+  rehearsal. It does not supersede the durable pre-open ambiguity boundary,
+  native-adapter review, authentic receipt acquisition, physical qualification,
+  or independent task observation.
+- Next dependency: independently implement and review a production transport
+  adapter outside this incapable boundary, plus a durable terminal receipt
+  journal. The adapter must accept only the exact claimed handoff and an
+  externally issued single-use physical authority, open one pinned controller
+  endpoint, account for one write, collect authentic acknowledgement/feedback,
+  and never resend any ambiguous claim. Physical use remains a separate,
+  explicitly authorized test.
