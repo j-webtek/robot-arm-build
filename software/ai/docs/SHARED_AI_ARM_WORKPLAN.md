@@ -599,6 +599,10 @@ Copy this row and fill every field:
 
 ## Active work claims
 
+- AI lane / S1: calibrate metric radii and select one preregistered 25th-
+  percentile tail-risk acceptance gate on fresh 66M and 67M scenes; no model
+  training, runtime, contract, arm, or integration-status changes.
+
 
 
 
