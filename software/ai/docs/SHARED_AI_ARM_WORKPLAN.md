@@ -599,6 +599,10 @@ Copy this row and fill every field:
 
 ## Active work claims
 
+- AI lane / S1: evaluate one preregistered 1.15 radius inflation and 40th-
+  percentile risk gate on fresh 68M calibration and 69M selection scenes; no
+  model training, runtime, contract, arm, or integration-status changes.
+
 
 
 
