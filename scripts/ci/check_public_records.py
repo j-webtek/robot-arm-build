@@ -18,6 +18,7 @@ EXPECTED_MEDIA = {
 }
 PAGES_WORKFLOW = Path(".github/workflows/pages.yml")
 CONFIGURE_PAGES_V6_SHA = "45bfe0192ca1faeb007ade9deae92b16b8254a0d"
+DEPLOY_PAGES_V5_SHA = "368f82528645a54fb793d4d04e342629a3f51346"
 
 
 def sha256(path: Path) -> str:
@@ -150,6 +151,11 @@ def pages_workflow_errors(root: Path) -> list[str]:
     if workflow.count(expected_action) != 1:
         errors.append(
             f"{PAGES_WORKFLOW}: configure-pages must use the reviewed v6.0.0 SHA"
+        )
+    expected_deploy_action = f"actions/deploy-pages@{DEPLOY_PAGES_V5_SHA} # v5.0.1"
+    if workflow.count(expected_deploy_action) != 1:
+        errors.append(
+            f"{PAGES_WORKFLOW}: deploy-pages must use the reviewed v5.0.1 SHA"
         )
     return errors
 
