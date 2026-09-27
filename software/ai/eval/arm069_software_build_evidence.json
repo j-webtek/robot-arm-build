@@ -1,0 +1,80 @@
+{
+  "schema": "rocell.software_build_epoch_evidence.v1",
+  "evidence_id": "arm-069-r97-software-build",
+  "component_id": "software_build",
+  "source_baseline_commit": "1d7671a3eacb205788972f47ef36d36a09b63994",
+  "source_baseline_tree": "189016aab61678b5d2cd508cfe4b752dbb4ac749",
+  "release": {
+    "candidate": "r97",
+    "candidate_app_sha256": "7d2e47d40141e95b611fcf37ca38d495fcf3da4dc3051f128bbae95e10840d1d",
+    "app_size_bytes": 314640,
+    "review_packet_sha256": "987cbe86d98440734d8336c704f1ecd89692675a9cb1620cb674e4132957b416",
+    "manifest_sha256": "e7c67071d0485b016cf44e0158fddb92edc0373e1e73532a3b1847f976d5117e",
+    "compile_profile": "default-4mb-no-psram",
+    "compile_export_id": "wizard-20260926T173219601251Z-d485be98eea84923b79039bc01b7dbe4",
+    "protocol_source_sha256": "3647f6575de09a521503d02d192a8c5396ff5537015f946ef5d571c3f4a9a933",
+    "joint_mapping_source_sha256": "b99bd3590c1cd4855535863a9d19a873bb2643be24403f9760f376150a71483f"
+  },
+  "source_files": [
+    {
+      "path": "scripts/stage_r97_production_runtime.py",
+      "sha256": "9a71580b0ddb4a504dab0df5766ae1e8ff45eb78e29862787ba1be27d2753e5f"
+    },
+    {
+      "path": "scripts/compile_diagnostic_reference.py",
+      "sha256": "07a73bdc479ab11d1683789810d34aa09eb595656aef19f793ee5773b2a24405"
+    },
+    {
+      "path": "scripts/review_r97_production_runtime.py",
+      "sha256": "bdc9417bdd1b86abb482cf830ab31d4de72a3445239a9b354fb32e51df4e017b"
+    },
+    {
+      "path": "src/rocell/arm/all_joint_command.py",
+      "sha256": "3647f6575de09a521503d02d192a8c5396ff5537015f946ef5d571c3f4a9a933"
+    },
+    {
+      "path": "src/rocell/arm/joint_mapping.py",
+      "sha256": "b99bd3590c1cd4855535863a9d19a873bb2643be24403f9760f376150a71483f"
+    },
+    {
+      "path": "pyproject.toml",
+      "sha256": "608174146f3ef750ed8bc0ede622a2cb4b304600d9cd57426af4d1027c70374e"
+    },
+    {
+      "path": "firmware/toolchain.lock.json",
+      "sha256": "d879ac606b105ba03df5813e756e3f881dffdb7c847894a5ca11d01e589f1005"
+    },
+    {
+      "path": "config/configuration_epochs.json",
+      "sha256": "5e0af455425feae892791186c259cff0f124dad3259a37b4acd09598b71eefc7"
+    }
+  ],
+  "binding_evidence": [
+    {
+      "binding_id": "build_snapshot",
+      "evidence_sha256": "04887a72a0766497441541b3a427914a380eb4c4c7cfc3e6e2c054a19c847f6a"
+    },
+    {
+      "binding_id": "source_binding",
+      "evidence_sha256": "2b4b8a443524b350ab041f2fd365d9666e30790ca954c5739b1322594971da18"
+    },
+    {
+      "binding_id": "dependency_receipt",
+      "evidence_sha256": "5711b0561cdb4935c0b9a0add65893edbf735c9bbf73a36fb1d8b7dc0a921298"
+    },
+    {
+      "binding_id": "provider_hashes",
+      "evidence_sha256": "5470900ac134ee50b7c10a031f89e0def718efbca3f5aa24e5c8e587c9bc61f5"
+    }
+  ],
+  "evidence_origin": "RETAINED_ORIGINAL_SOFTWARE_BUILD_INPUTS",
+  "physical_measurement_claimed": false,
+  "reproducible_from_tracked_inputs": true,
+  "hardware_access": false,
+  "installation_authorized": false,
+  "controller_start_authorized": false,
+  "transport_authorized": false,
+  "execution_authorized": false,
+  "physical_authority": false,
+  "evidence_bundle_sha256": "3b482186b5e62d7fadc8b1241d6a5cd7365f328c19661d5421b553fc8b902610"
+}

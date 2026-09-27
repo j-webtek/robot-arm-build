@@ -117,6 +117,15 @@ epoch hash and cannot support an epoch-bound build proposal. Evidence must now
 be added component by component; a complete assessment still grants no
 installation, startup, transport, execution, hardware, or physical authority.
 
+ARM-069 adds the first component without controller access. The retained
+software-build bundle closes `build_snapshot`, `source_binding`,
+`dependency_receipt`, and `provider_hashes` against the exact reviewed r97
+identities and the merged ARM-068 source baseline. Its owner-AI review claims
+neither a human reviewer nor external independence. The resulting partial
+epoch has `software_build` ready and seven components missing, so its
+configuration-epoch hash is still null and it creates no build, installation,
+startup, transport, execution, hardware, or physical authority.
+
 ## Synthetic integration rehearsal
 
 A deterministic synthetic decision may be generated for software integration:

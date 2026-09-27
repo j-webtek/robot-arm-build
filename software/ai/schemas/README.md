@@ -205,6 +205,12 @@ partial evidence intake so every missing component and binding remains visible.
 Only a complete, current, physical-original, owner-AI-accepted eight-component
 draft receives a configuration-epoch hash. Even that result permits only an
 epoch-bound build proposal and grants no hardware authority.
+The [software-build evidence](software_build_epoch_evidence_v1.schema.json) and
+[owner-AI review](software_build_owner_ai_review_v1.schema.json) close the
+first owner-governed epoch component from tracked source and reviewed r97
+release identities. They distinguish retained original software inputs from a
+physical measurement, advance only `software_build`, and grant no controller
+or physical authority.
 The [synthetic epoch model-to-arm rehearsal](synthetic_epoch_model_arm_rehearsal_v1.schema.json)
 then binds that exact blocked epoch to one model batch, its indexed proposal, a
 sealed trajectory, the Waveshare encoding profile, and the zero-write receipt.

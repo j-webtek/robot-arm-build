@@ -1,0 +1,40 @@
+{
+  "schema": "rocell.software_build_owner_ai_review.v1",
+  "review_id": "arm-069-r97-software-build-owner-ai-review",
+  "component_id": "software_build",
+  "evidence_bundle_sha256": "3b482186b5e62d7fadc8b1241d6a5cd7365f328c19661d5421b553fc8b902610",
+  "checks": [
+    {
+      "check_id": "release_identity_closed",
+      "passed": true
+    },
+    {
+      "check_id": "tracked_source_set_closed",
+      "passed": true
+    },
+    {
+      "check_id": "dependency_receipt_closed",
+      "passed": true
+    },
+    {
+      "check_id": "provider_hashes_match_release",
+      "passed": true
+    },
+    {
+      "check_id": "authority_remains_zero",
+      "passed": true
+    }
+  ],
+  "disposition": "OWNER_AI_ACCEPTED",
+  "human_review_required": false,
+  "human_review_claimed": false,
+  "external_independence_claimed": false,
+  "owner_governance_override": true,
+  "hardware_access": false,
+  "installation_authorized": false,
+  "controller_start_authorized": false,
+  "transport_authorized": false,
+  "execution_authorized": false,
+  "physical_authority": false,
+  "review_sha256": "ac20a7122e365b7a688c2bde67358ddf214da3a049a211c1b9bc7e66d2748fee"
+}
