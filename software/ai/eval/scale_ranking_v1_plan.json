@@ -1,0 +1,19 @@
+{
+  "source": "eval/image_quality_scale_v1_report.json",
+  "source_sha256": "9b58bf614dde9006056e3ac92f90a7213ff3d8d78ca109e5ea51e14842104c80",
+  "script_sha256": "b6be8bd65e4019a3a78e110e58a19ebeadf89c359e8b0a2e54bc616da5792d20",
+  "retention_fractions": [
+    0.1,
+    0.25,
+    0.5,
+    0.75,
+    1.0
+  ],
+  "conditions": [
+    "standard",
+    "appearance_shift",
+    "partial",
+    "full"
+  ],
+  "scope": "Descriptive AUROC, rank correlation, fixed retention curves. No threshold selection or acceptance gate."
+}

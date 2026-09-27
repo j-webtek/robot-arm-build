@@ -599,6 +599,8 @@ Copy this row and fill every field:
 
 ## Active work claims
 
+- AI lane / S1: audit33M out-of-fold scale ranking and fixed retention risks; no fits/new images/calibration, preserve frozen models and arm boundary.
+
 
 
 
