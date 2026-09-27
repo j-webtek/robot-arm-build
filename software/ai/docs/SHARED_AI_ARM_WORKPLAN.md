@@ -599,6 +599,11 @@ Copy this row and fill every field:
 
 ## Active work claims
 
+- AI lane / S1: compare five preregistered monotonic ensemble-disagreement
+  mappings on new 41M mapping-calibration and disjoint 42M selection cohorts,
+  using unchanged coverage, 3 mm, and utility rules; no runtime, contract, or
+  arm changes.
+
 
 
 
