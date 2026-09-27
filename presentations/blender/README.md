@@ -178,11 +178,15 @@ dimension-checked 3D render:
 - a six-row compact keyboard reconstruction uses the measured RC03 envelope
   and the nominal 19.05 mm pitch encoded by the target profile, with realistic
   stagger, modifier-key widths, recessed key wells, beveled caps, legends,
-  enclosure trim, status lights, and a connected cable rather than a uniform
-  placeholder grid;
+  enclosure trim, the photographed rear protective-film band, status lights,
+  and a connected cable rather than a uniform placeholder grid;
 - a layered phone reconstruction adds an aluminum envelope, optical glass,
-  receiver, camera, side controls, cable, and a modeled host-verification UI
+  black bezel rails, receiver, front camera, side controls, charging-port
+  recess, and a modeled host-verification UI
   while preserving the configured phone origin and measured screen plane;
+- all six board markers use the exact released tag36h11 ID 0–5 cell grids from
+  `software/src/rocell/vision/apriltag_codebook.py`, drawn at the configured
+  40 mm detection edge on the configured 55 mm white tile;
 - a small persistent Tactevra wordmark establishes brand continuity without
   competing with chapter titles;
 - procedural birch and bench variation, restrained depth of field, animated
@@ -250,9 +254,16 @@ nominal robot transform are sourced directly from repository authorities. The
 station and portal shapes are imported from their actual STL files.
 
 The Blender build also asserts the rendered board envelope, device centers and
-envelopes, all three station origins, every direct-tag center, and the camera's
-nominal optical plane. A mismatch aborts the render and the saved scene records
-`PASS_RC03_BOARD_DEVICE_STATION_TAG_CAMERA` only after every assertion passes.
+envelopes, all three station origins, every direct-tag center/family/identity,
+and the camera's nominal optical plane. A mismatch aborts the render and the
+saved scene records `PASS_RC03_BOARD_DEVICE_STATION_TAG36H11_CAMERA` only after
+every assertion passes.
+
+The keyboard and phone outer dimensions and placements are measured RC03
+authorities. Their small surface features are photo-informed presentation
+geometry, not manufacturer CAD. Conversely, the six visible marker images are
+the exact released tag36h11 ID 0–5 patterns consumed by the vision contract,
+not illustrative substitutes.
 
 The visible arm is dimensioned from the pinned official URDF but is not a
 qualified digital twin. The optional vendor STEP and local tessellation remain

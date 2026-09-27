@@ -19,6 +19,7 @@ the compact, captioned public derivative and poster below assets/media/.
 
 from __future__ import annotations
 
+import ast
 import json
 import hashlib
 import math
@@ -51,6 +52,9 @@ PORTAL_PATH = (
 STL_DIR = ROOT / "active-project" / "RoCell_v0_3" / "stl"
 DIMENSION_MANIFEST_PATH = SCRIPT.with_name("dimension_manifest.json")
 ARM_URDF_PATH = ROOT / "software" / "models" / "roarm_m3" / "roarm_m3_kinematic_40dbd84.urdf"
+APRILTAG_CODEBOOK_PATH = (
+    ROOT / "software" / "src" / "rocell" / "vision" / "apriltag_codebook.py"
+)
 OFFICIAL_ARM_STL_PATH = ROOT / "tmp" / "vendor" / "roarm_m3" / "roarm_m3_official_presentation.stl"
 PUBLIC_MEDIA_DIR = ROOT / "assets" / "media"
 
@@ -327,8 +331,13 @@ def verify_scene_layout(scene: bpy.types.Scene, layout: dict,
 
     for tag_id, tag in layout["direct_tags"]["tags"].items():
         tx, ty = tag["detection_center_xy"]
-        assert_vector(scene.objects[f"Tag {tag_id}"].location,
-                      board_point(tx, ty, 0.8), f"tag {tag_id} center")
+        tag_object = scene.objects[f"Tag {tag_id}"]
+        assert_vector(tag_object.location, board_point(tx, ty, 0.8),
+                      f"tag {tag_id} center")
+        if tag_object.get("tag_family") != "tag36h11":
+            raise RuntimeError(f"tag {tag_id} family drift")
+        if int(tag_object.get("tag_numeric_id", -1)) != int(tag["id"]):
+            raise RuntimeError(f"tag {tag_id} identity drift")
 
     expected_optical_z = layout.get("presentation_camera_optical_z_mm", 1000.0) / 1000
     if abs(camera_front_z - expected_optical_z) > tolerance:
@@ -336,20 +345,49 @@ def verify_scene_layout(scene: bpy.types.Scene, layout: dict,
             f"camera optical plane drift: {camera_front_z} != {expected_optical_z}"
         )
 
-    scene["layout_verification"] = "PASS_RC03_BOARD_DEVICE_STATION_TAG_CAMERA"
+    scene["layout_verification"] = "PASS_RC03_BOARD_DEVICE_STATION_TAG36H11_CAMERA"
 
 
-def add_tag(tag_id: str, x: float, y: float, white: bpy.types.Material,
+def _released_apriltag_rows() -> dict[int, tuple[str, ...]]:
+    """Read the released tag36h11 cells without importing the runtime package."""
+    module = ast.parse(APRILTAG_CODEBOOK_PATH.read_text(encoding="utf-8"))
+    for node in module.body:
+        if isinstance(node, ast.AnnAssign) and isinstance(node.target, ast.Name):
+            if node.target.id == "_RELEASED_36H11_ROWS":
+                rows = ast.literal_eval(node.value)
+                return {int(tag_id): tuple(pattern) for tag_id, pattern in rows}
+    raise RuntimeError("Released tag36h11 codebook rows were not found")
+
+
+def add_tag(tag_id: str, numeric_id: int, x: float, y: float,
+            white: bpy.types.Material,
             black: bpy.types.Material) -> bpy.types.Object:
     base = cube(f"Tag {tag_id}", board_point(x, y, 0.8),
                 (0.055, 0.055, 0.0015), white, 0.001)
-    # An original high-contrast visual motif, not a claimed AprilTag code.
-    for ix, iy in ((-1, -1), (1, -1), (-1, 1), (1, 1), (0, 0)):
-        cell = cube(f"Tag {tag_id} cell", board_point(x + ix * 13, y + iy * 13, 1.7),
-                    (0.010, 0.010, 0.001), black)
-        # These coordinates are already in board/world space. Parenting here
-        # would reinterpret them as local coordinates and translate every cell
-        # by the tag center a second time.
+    try:
+        pattern = _released_apriltag_rows()[numeric_id]
+    except KeyError as exc:
+        raise RuntimeError(f"No released tag36h11 pattern for {tag_id}/{numeric_id}") from exc
+    if len(pattern) != 8 or any(len(row) != 8 for row in pattern):
+        raise RuntimeError(f"Invalid released tag36h11 grid for {tag_id}")
+    # The detection edge is exactly 40 mm on the 55 mm white tile: eight
+    # contiguous 5 mm cells. Row zero is board-local +Y and columns run left
+    # to right, matching the runtime codebook's marked orientation contract.
+    for row_index, row in enumerate(pattern):
+        for column_index, bit in enumerate(row):
+            if bit == "1":
+                continue
+            cx = x + (column_index - 3.5) * 5.0
+            cy = y + (3.5 - row_index) * 5.0
+            cube(
+                f"Tag {tag_id} black cell {row_index}-{column_index}",
+                board_point(cx, cy, 1.7),
+                (0.00505, 0.00505, 0.001),
+                black,
+            )
+    base["tag_family"] = "tag36h11"
+    base["tag_numeric_id"] = numeric_id
+    base["pattern_authority"] = str(APRILTAG_CODEBOOK_PATH.relative_to(ROOT))
     return base
 
 
@@ -378,6 +416,13 @@ def add_keyboard(layout: dict, mats: dict[str, bpy.types.Material]) -> dict[str,
          ((sx - 8.0) / 1000, 0.003, 0.0022), mats["keyboard_trim"], 0.001)
     cube("Keyboard rear accent", board_point(ox + sx / 2, oy + sy - 3.2, sz - 1.4),
          ((sx - 8.0) / 1000, 0.003, 0.0022), mats["keyboard_trim"], 0.001)
+    # The photographed unit retains a narrow reflective protective-film band
+    # along the rear/top bezel. Keep it inside the measured envelope and clear
+    # of the function-key field so it reads as the same physical keyboard.
+    cube("Keyboard photographed rear protective film",
+         board_point(ox + sx / 2, oy + sy - 5.8, sz + 0.35),
+         ((sx - 6.0) / 1000, 0.0085, 0.00045),
+         mats["keyboard_film"], 0.0012)
     # The printable shell remains a measured envelope. The principal key rows
     # below are positioned from software/config/static_nominal_target_profiles.json:
     # 19.05 mm pitch, exact first-center offsets, and therefore H at
@@ -469,6 +514,13 @@ def add_phone(layout: dict, mats: dict[str, bpy.types.Material]) -> dict[str, bp
                   board_point(ox + sx / 2, oy + sy / 2, screen_z),
                   ((sx - 4.2) / 1000, (sy - 7.0) / 1000, 0.0007),
                   mats["screen"], 0.0048)
+    # Thin black rails preserve the screen-up smartphone silhouette seen in
+    # the physical setup while the modeled host-result UI remains explicitly
+    # presentation content rather than a captured application screen.
+    cube("Phone top bezel", board_point(ox + sx / 2, oy + sy - 4.4, screen_z + 0.46),
+         ((sx - 5.0) / 1000, 0.0035, 0.00055), mats["screen_glass"], 0.0012)
+    cube("Phone bottom bezel", board_point(ox + sx / 2, oy + 4.4, screen_z + 0.46),
+         ((sx - 5.0) / 1000, 0.0035, 0.00055), mats["screen_glass"], 0.0012)
     # Physical details: speaker, front camera, side controls, rear camera rise.
     cube("Phone receiver slit", board_point(ox + sx / 2, oy + sy - 8.0, screen_z + 0.55),
          (0.018, 0.0018, 0.0007), mats["metal"], 0.0008)
@@ -481,6 +533,9 @@ def add_phone(layout: dict, mats: dict[str, bpy.types.Material]) -> dict[str, bp
     cube("Phone power button", board_point(ox + sx + 0.4, oy + sy * 0.61,
                                             dev["support_plane_z"] + sz * 0.62),
          (0.0012, 0.024, 0.0024), mats["metal"], 0.0007)
+    cube("Phone lower charging-port recess",
+         board_point(ox + sx / 2, oy - 0.25, dev["support_plane_z"] + sz * 0.46),
+         (0.012, 0.0010, 0.0022), mats["screen_glass"], 0.0005)
     camera_island = cube("Phone rear camera island",
                          board_point(ox + 15.0, oy + sy - 18.0,
                                      dev["support_plane_z"] + sz + 0.7),
@@ -855,6 +910,11 @@ def build() -> bpy.types.Scene:
                                   metallic=0.12, roughness=0.42),
         "keyboard_trim": material("Keyboard brushed edge", (0.14, 0.18, 0.22, 1),
                                   metallic=0.82, roughness=0.21),
+        "keyboard_film": textured_material(
+            "Photographed keyboard protective film",
+            (0.24, 0.27, 0.30, 1), scale=42.0, detail=4.0,
+            roughness=0.18, metallic=0.46,
+        ),
         "key": material("Keyboard keys", (0.003, 0.005, 0.008, 1), roughness=0.38),
         "key_side": material("Keyboard key wells", (0.0006, 0.0008, 0.0012, 1),
                              roughness=0.48),
@@ -911,7 +971,8 @@ def build() -> bpy.types.Scene:
     for tag_id, tag in layout["direct_tags"]["tags"].items():
         xy = tuple(tag["detection_center_xy"])
         tag_objects.append(
-            (tag_id, add_tag(tag_id, *xy, mats["white"], mats["abs"]), xy)
+            (tag_id, add_tag(tag_id, int(tag["id"]), *xy,
+                             mats["white"], mats["abs"]), xy)
         )
     # Hardware appearance and motion meaning are deliberately separate. The
     # hash-verified official Waveshare STEP derivative is the visual authority
@@ -1247,6 +1308,8 @@ def build() -> bpy.types.Scene:
 
     scene["evidence_notice"] = (
         "Portal/stations are repository CAD; board/devices are RC03 measured envelopes; "
+        "keyboard and phone surfaces are photo-informed presentation geometry; board tags "
+        "use the released tag36h11 ID 0-5 codebook patterns; "
         "the static arm beauty surface is a hash-verified local derivative of the official "
         "Waveshare STEP; the execution-only proxy is dimensioned from the pinned official "
         "URDF contract. Its pose and H contact are presentation simulations, not motion "
