@@ -25,7 +25,7 @@ implementation details or evidence for a specific part of the system.
 | Software contributor | [Contributing](../CONTRIBUTING.md) → [software reference](../software/README.md) → [architecture](../software/docs/ARCHITECTURE.md) |
 | AI contributor | [AI overview](../software/ai/README.md) → [AI documentation](../software/ai/docs/README.md) → [shared workplan](../software/ai/docs/SHARED_AI_ARM_WORKPLAN.md) |
 | Arm/runtime contributor | [System overview](SYSTEM_OVERVIEW.md) → [architecture](../software/docs/ARCHITECTURE.md) → [shared workplan](../software/ai/docs/SHARED_AI_ARM_WORKPLAN.md) |
-| Maintainer or release reviewer | [Repository operations](REPOSITORY_OPERATIONS.md) → [maintainer checklist](MAINTAINER_CHECKLIST.md) → [release procedure](RELEASING.md) |
+| Maintainer or release reviewer | [Repository operations](REPOSITORY_OPERATIONS.md) → [maintainer checklist](MAINTAINER_CHECKLIST.md) → [release records](releases/README.md) → [release procedure](RELEASING.md) |
 
 Use the [glossary](GLOSSARY.md) for product, interface, evidence, and execution
 terms. Contributors should follow the [documentation standard](DOCUMENTATION_STANDARD.md)
@@ -141,6 +141,8 @@ documents may exist only on the lab workstation; sharing them is covered in
   the technical interfaces preserved during the Tactevra transition.
 - [Experimental release checklist](RELEASING.md): requirements for a separately
   reviewed source preview; the checklist itself does not publish a release.
+- [Release records](releases/README.md): current readiness tracker and lifecycle
+  map for exact-revision candidate and historical evidence records.
 - [Hardware provenance](HARDWARE_PROVENANCE.md): the owner's CAD/print-design
   authorship confirmation and its limits, including separate vendor rights.
 - [Brand foundation](brand/BRAND_GUIDE.md): Tactevra naming and staged migration;
