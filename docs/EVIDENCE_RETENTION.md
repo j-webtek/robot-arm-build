@@ -37,6 +37,10 @@ external artifact must detect its absence, identify the expected digest and stop
 clearly. It must not download an unpinned replacement or silently skip a claimed
 qualification result.
 
+Use the [external artifact contract](EXTERNAL_ARTIFACTS.md) for a compact
+identity record and deterministic unavailable, mismatch, and verified states.
+Clean-clone and artifact-present outcomes are separate evidence.
+
 ## Ordinary change budget
 
 CI examines generated data changes under `evidence/` and `software/ai/eval/`.
