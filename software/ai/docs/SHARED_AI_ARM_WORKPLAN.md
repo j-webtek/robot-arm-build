@@ -599,7 +599,7 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-- AI lane / S1: final alpha1.0 refit, standalone export parity and separately frozen unused-scene confirmation; no runtime promotion or arm changes.
+
 
 
 
@@ -7843,3 +7843,51 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Training parity only; no independent accuracy result. Original baseline remains in use. No coordinate uncertainty/calibration qualification. ModelMotionBatchV2 unchanged; arm/integration status unchanged.
 - Supersedes: none; earlier rejected candidates and failed evaluation retained.
 - Next dependency: Freeze confirmation on unused30001000..30001999 x4 ellipse conditions; fixed original acceptance rule, zero tuning.
+
+
+### E-20260926-AI-299 — grouped candidate unused-scene confirmation
+
+- Stage: S1
+- Lane: AI
+- Commit: `4c26b75d7748131e30e148a7990a4c0cd9c65e3c` (confirmation source, artifact and plan frozen before new scenes; results/tests/docs in successor)
+- Inputs/fixtures:30001000..30001999 x4 conditions, ellipse obstruction,1000 cases per condition. Candidate artifact SHA256 c9f4ef6d8f9e50317a917154fccacce46506ab2e7cde8267396e28fec156147b. Full frozen hashes in eval/grouped_linear_confirmation_v1_plan.json; individual errors and pixel/prediction hashes in report SHA256 `0870d83f68ceb4b185b46e174e401e8c73e11f3b58c61e1d0f91a0eea823abad`.
+- Command: `python software/ai/vision/evaluate_grouped_linear_confirmation.py`
+- Result: PASS fixed acceptance:4000 images, baseline138 tails versus121 candidate (12.32% fewer);26 recovered and9 introduced. Standard23→20,appearance30→28,partial32→30,full53→43. Mean errors0.864370→0.858235,0.870828→0.863050,1.002389→0.968973,1.158315→1.106871mm. Combined obstruction85→73. All condition checks pass; standard yaw p95 increases0.516452→0.546551degrees within fixed10% allowance.
+- Artifacts: vision/evaluate_grouped_linear_confirmation.py; eval/grouped_linear_confirmation_v1_plan.json and report.json; tests/test_grouped_linear_confirmation.py; docs/GROUPED_MODEL_SELECTION.md.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Same-renderer synthetic confirmation, correlated variants, no physical-camera data or statistical-significance claim. No fits during confirmation; no threshold change or tuning. Range30001000..30001999 is now consumed. Candidate still has121 tails and9 newly introduced failures. No runtime promotion or calibrated uncertainty qualification; arm/integration statuses unchanged. Batch contract unchanged; boundary tests not triggered. Snapshot heuristic before final ledger append.
+- Supersedes: none; previous failed fresh test and rejected settings retained.
+- Next dependency: Freeze candidate weights. Audit remaining and introduced failures plus observation-quality signals, then specify an independent uncertainty/abstention calibration protocol. Consumed evaluation may inform diagnostics but cannot serve as fresh confirmation or calibration-selection evidence. Retain runtime baseline until separate qualification evidence exists.
+
+
+### E-20260926-AI-300 — refit and confirmation verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `4c26b75d7748131e30e148a7990a4c0cd9c65e3c` (confirmation source, artifact and plan frozen before new scenes; results/tests/docs in successor)
+- Inputs/fixtures:30001000..30001999 x4 conditions, ellipse obstruction,1000 cases per condition. Candidate artifact SHA256 c9f4ef6d8f9e50317a917154fccacce46506ab2e7cde8267396e28fec156147b. Full frozen hashes in eval/grouped_linear_confirmation_v1_plan.json; individual errors and pixel/prediction hashes in report SHA256 `0870d83f68ceb4b185b46e174e401e8c73e11f3b58c61e1d0f91a0eea823abad`.
+- Command: `python -m pytest -q software/ai/tests/test_grouped_linear_confirmation.py`
+- Result: PASS:4 tests in1.76s. All4000 scene-condition pairs, metric/transition recount, fixed acceptance, coefficient/export and source lineage checked. Existing pytest warning.
+- Artifacts: vision/evaluate_grouped_linear_confirmation.py; eval/grouped_linear_confirmation_v1_plan.json and report.json; tests/test_grouped_linear_confirmation.py; docs/GROUPED_MODEL_SELECTION.md.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Same-renderer synthetic confirmation, correlated variants, no physical-camera data or statistical-significance claim. No fits during confirmation; no threshold change or tuning. Range30001000..30001999 is now consumed. Candidate still has121 tails and9 newly introduced failures. No runtime promotion or calibrated uncertainty qualification; arm/integration statuses unchanged. Batch contract unchanged; boundary tests not triggered. Snapshot heuristic before final ledger append.
+- Supersedes: none; previous failed fresh test and rejected settings retained.
+- Next dependency: Freeze candidate weights. Audit remaining and introduced failures plus observation-quality signals, then specify an independent uncertainty/abstention calibration protocol. Consumed evaluation may inform diagnostics but cannot serve as fresh confirmation or calibration-selection evidence. Retain runtime baseline until separate qualification evidence exists.
+
+
+### E-20260926-AI-301 — confirmation snapshot audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `4c26b75d7748131e30e148a7990a4c0cd9c65e3c` (confirmation source, artifact and plan frozen before new scenes; results/tests/docs in successor)
+- Inputs/fixtures:30001000..30001999 x4 conditions, ellipse obstruction,1000 cases per condition. Candidate artifact SHA256 c9f4ef6d8f9e50317a917154fccacce46506ab2e7cde8267396e28fec156147b. Full frozen hashes in eval/grouped_linear_confirmation_v1_plan.json; individual errors and pixel/prediction hashes in report SHA256 `0870d83f68ceb4b185b46e174e401e8c73e11f3b58c61e1d0f91a0eea823abad`.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS:6205 paths,893.0MiB,0 unresolved findings,14 reviewed synthetic fixtures.
+- Artifacts: vision/evaluate_grouped_linear_confirmation.py; eval/grouped_linear_confirmation_v1_plan.json and report.json; tests/test_grouped_linear_confirmation.py; docs/GROUPED_MODEL_SELECTION.md.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Same-renderer synthetic confirmation, correlated variants, no physical-camera data or statistical-significance claim. No fits during confirmation; no threshold change or tuning. Range30001000..30001999 is now consumed. Candidate still has121 tails and9 newly introduced failures. No runtime promotion or calibrated uncertainty qualification; arm/integration statuses unchanged. Batch contract unchanged; boundary tests not triggered. Snapshot heuristic before final ledger append.
+- Supersedes: none; previous failed fresh test and rejected settings retained.
+- Next dependency: Freeze candidate weights. Audit remaining and introduced failures plus observation-quality signals, then specify an independent uncertainty/abstention calibration protocol. Consumed evaluation may inform diagnostics but cannot serve as fresh confirmation or calibration-selection evidence. Retain runtime baseline until separate qualification evidence exists.

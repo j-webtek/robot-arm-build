@@ -1,6 +1,6 @@
 # Grouped model selection
 
-Status: grouped selection executed; final refit and independent confirmation pending. Machine-readable rules: `../eval/grouped_linear_selection_v1_protocol.json`.
+Status: grouped selection, final refit, export parity and synthetic confirmation completed; physical qualification pending. Machine-readable rules: `../eval/grouped_linear_selection_v1_protocol.json`.
 
 ## Audit findings
 
@@ -24,3 +24,10 @@ No models were fitted by this audit. A synthetic selection result cannot establi
 Frozen source e38664763e51f99c81781c42779a3d631ccfa805 executed20 fits, with fold-only normalization and disjoint scene groups. Out-of-fold tails were107,76,69,61 for alphas0.001,0.01,0.1,1.0 against74 baseline. Only alpha1.0 met every preregistered condition. Combined partial/full tails dropped46 to36; all four mean errors improved. See eval/grouped_linear_v1_report.json for coefficients, predictions and checks, including the rejected settings. Three verification tests passed.
 
 This is selection evidence, not fresh confirmation. The original baseline remains in use. Next: freeze and execute a single final fit at alpha1.0, export with parity verification, then evaluate on separately preregistered unused scenes. No final fitting or hardware action occurred in this increment.
+
+
+## Final refit and confirmation
+
+The single alpha1.0 refit used all600 rectangle training scenes. The1132606-byte export matches the reference within2.22e-16 normalized units and reloads exactly. Previously unused30001000..30001999 x4 ellipse-condition images passed the fixed confirmation rule:138 baseline tails versus121 candidate tails,26 recovered and9 introduced. All four mean errors improved. Standard yaw p95 rose0.516452 to0.546551degrees, within the preregistered10% allowance. Four verification tests passed.
+
+Both30000000..30000999 and30001000..30001999 are now consumed. No tuning occurred during confirmation. This confirms a same-renderer synthetic improvement, not physical localization assurance. Candidate weights are frozen; runtime baseline remains unchanged. Next work is remaining-failure/quality-signal analysis and a separately designed uncertainty and abstention calibration protocol. No localization qualification or execution authority is installed.

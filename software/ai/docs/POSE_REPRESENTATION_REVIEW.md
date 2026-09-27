@@ -121,3 +121,8 @@ The three recent cohorts have no scene-ID overlap or exact cross-cohort image du
 ## Grouped training selection
 
 Five-fold scene-group validation selected ridge alpha1.0:61 tails versus74 baseline across2400 out-of-fold images. The other three frozen settings failed the full acceptance rule. Each fold fit1920 rectangle images and validated480 ellipse images, with normalization fit on training rows only. All scene variants stay together. This supports one final refit and a separate confirmation experiment; it does not promote a runtime model. See GROUPED_MODEL_SELECTION.md and evidence AI-295 throughAI-297.
+
+
+## Grouped candidate confirmation
+
+Selected alpha1.0 passed separately frozen synthetic confirmation on4000 images (30001000..30001999 x4):138→121 tails,26 recovered,9 introduced; mean error improved in every condition. Export/reference parity passed after one final fit. Unlike the earlier alpha0.01 candidate, this candidate meets the fixed confirmation rule. The result remains synthetic and does not provide calibrated coordinate uncertainty or physical qualification. Preserve both prior failure and current success. Next: freeze weights, audit failures and quality signals, specify independent uncertainty/abstention calibration. Evidence AI-298 throughAI-301.
