@@ -513,3 +513,33 @@ failure ordering. The next bounded study should combine the same finite metric
 output and pinball objective with one preregistered binary tail-ranking
 auxiliary loss on fresh grouped populations. It must retain all present metric,
 coverage, finite-range, and ranking gates before any calibration is allocated.
+
+## Bounded metric and tail-risk multitask head
+
+A 52,514-parameter model shared two hidden layers between the unchanged bounded
+97.5th-percentile metric output and a separate binary `error > 3 mm` logit. It
+trained on 16,000 new 62M images with the fixed objective
+`pinball + 0.05 * balanced_binary_cross_entropy`. Positive weight was fixed at
+26.072758 from 591 positive and 15,409 negative training images. No selection-
+based adjustment or loss-weight sweep occurred.
+
+On 8,000 untouched 63M images, metric coverage remained useful: 92.5375%
+overall and 88.4% under full obstruction. Mean pinball loss improved from the
+constant baseline's 0.083386 to 0.077572, the median bound fell from 3.328519 mm
+to 2.360533 mm, and all outputs remained within the frozen range. Every metric
+conditional image AUROC also passed.
+
+Joint training degraded the ordering that it was meant to recover. Metric scene
+AUROC fell to 0.685362 and auxiliary scene AUROC was 0.683133. The auxiliary
+full-obstruction image AUROC was 0.699576, narrowly below 0.70. Those three
+failed checks reject the complete model. The checkpoint is retained only as
+failed research evidence and has no calibration, runtime, qualification,
+physical-camera, or motion authority.
+
+This result closes shared-trunk multitask training at the fixed weighting. The
+metric and binary objectives interfere despite both succeeding more strongly in
+separate models. The next bounded study should use late fusion of the frozen
+specialized bounded-metric and tail-risk heads on fresh mapping-calibration and
+selection cohorts, without retraining either model. Any fusion must be fixed
+before those cohorts are evaluated and must preserve conditional coverage,
+utility, and zero accepted errors above 3 mm before independent confirmation.

@@ -599,10 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-- AI lane / S1: train one preregistered bounded metric plus tail-ranking
-  multitask head on fresh 62M training and 63M selection scenes; no runtime,
-  contract, arm, or integration-status changes.
-
 
 
 
@@ -9008,3 +9004,48 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic repository review before final ledger append; not model, runtime, or physical assurance. No arm or integration status changes.
 - Supersedes: none.
 - Next dependency: Same as AI-370.
+
+### E-20260927-AI-373 — bounded metric and tail-risk multitask selection
+
+- Stage: S1
+- Lane: AI
+- Commit: `9d72898ac177940a0db8ad169c25e0648a30c37e` (shared architecture, fixed multitask objective, unchanged metric gates, auxiliary gates, fresh populations, source, plan, and claim frozen before feature extraction or training; failed report, checkpoint, tests, interpretation, and claim removal committed in the successor)
+- Inputs/fixtures: Training scenes `62000000..62001999` (16,000 images) and selection scenes `63000000..63000999` (8,000 images), each with two styles and four conditions. Training pixel/feature/target SHA256 values `36d238a62bd848681c566120b53fea4460036d31a33350843b41c0cd91266370`, `e8f5e0da8954587525ffb0e0a73952d932b281685df2ef6967261a68d30a58a0`, and `8cbda5d05b567788b1dc47b938835f91322ead397940809d7045fc7a33970573`; selection values `f85e2cb4b4fe707d2f2ca957163bea9119cac0071fc255e9acd135bb45364395`, `cb59e6939e0de8043a7d304fbcbf10af490ba3002fe330982eda381fef4ee1b9`, and `09cd792eaa3962eaf5fa2fa0241fc8f17cc5fdc687f3c92dd2371f50daf40e67`; all pose prediction hashes are retained in the report. Plan SHA256 `7be0cd259544d99770fbe82b340c4078ecc8770fdcd663735a5565e5835e868f`; report SHA256 `0f15069352800f10b79fafa48ac52c886d57fe8f9c6a3f845c61a858ebd65a08`; checkpoint SHA256 `404da04151798ce5aba74e14848bfb5785f1a18bfe0864c815aa5455bdce8b99`; normalization SHA256 `4a053d1e933dcfebacf4ec21c3999d332d96873100dd1732beb6dc459b9536a7`; metric/risk prediction SHA256 values `03e9315d8183ee49e14daeeb38d928ecc1f642fc439a77e27cd087385de37e1b` and `7122b25b1eb2de0b4450b9db39bdf7bad8e775d6a15e8aca828f118749f112f5`.
+- Command: `python software/ai/train/train_multitask_upper_tail_head.py`
+- Result: FAIL fixed selection rule. The 52,514-parameter shared head trains with `pinball + 0.05 * balanced BCE` on 591 positive and 15,409 negative images, positive weight `26.072758037`. Metric coverage passes overall at `0.925375` and under full obstruction at `0.884`; mean pinball loss improves from `0.083385583` to `0.077571542`; median bound improves from `3.328519106` mm to `2.360533118` mm; all metric condition AUROCs and the finite range pass. Metric scene AUROC fails at `0.685361744`. Auxiliary scene AUROC fails its 0.72 gate at `0.683132568`, and auxiliary full-obstruction image AUROC fails 0.70 at `0.699576306`. One model fit, zero calibration fits, and 2,500 optimizer updates.
+- Artifacts: `vision/multitask_error_head.py`; `train/train_multitask_upper_tail_head.py`; `train/multitask_upper_tail_head_v1_plan.json`; `eval/multitask_upper_tail_head_v1_report.json`; `results/multitask_upper_tail_head_v1/model.pt`; `tests/test_multitask_upper_tail_head.py`; `docs/IMAGE_DEPENDENT_UNCERTAINTY.md`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Synthetic training-selection evidence for one seed, architecture, and fixed loss weight. The failed checkpoint is research evidence only. No metric calibration, independent confirmation, runtime installation, physical-camera evidence, or motion authority. ModelMotionBatchV2 and arm/integration statuses are unchanged.
+- Supersedes: none; the bounded single-task near miss and all earlier evidence remain preserved.
+- Next dependency: Close shared-trunk training at this fixed weight. Freeze a late-fusion mapping study using the already specialized bounded-metric and tail-risk checkpoints without retraining, on entirely fresh mapping-calibration and selection cohorts. Require the existing conditional coverage, utility, and zero accepted errors above 3 mm gates before independent confirmation.
+
+### E-20260927-AI-374 — bounded metric and tail-risk multitask verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `9d72898ac177940a0db8ad169c25e0648a30c37e` (frozen training-selection source; tests and documentation committed in the successor)
+- Inputs/fixtures: Same 24,000 images, frozen pose models, 52,514-parameter head, plan, failed report, and retained research checkpoint as AI-373; exact hashes are recorded there and in the report.
+- Command: `python -m pytest -q software/ai/tests/test_multitask_upper_tail_head.py`
+- Result: PASS: 2 tests in 2.42s. Tests verify dual output shapes and exact parameter count, immutable lineage, checkpoint integrity, exact grouped populations, complete metric and both ranking recounts, every fixed check including the three failed checks, and zero calibration, hardware, physical, qualification, or runtime authority.
+- Artifacts: `tests/test_multitask_upper_tail_head.py`; `eval/multitask_upper_tail_head_v1_report.json`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Existing pytest-asyncio configuration warning. Recount consistency only; no physical assurance. Contract unchanged, so shared boundary tests were not triggered.
+- Supersedes: none.
+- Next dependency: Same as AI-373.
+
+### E-20260927-AI-375 — bounded metric and tail-risk multitask snapshot review
+
+- Stage: S1
+- Lane: AI
+- Commit: `9d72898ac177940a0db8ad169c25e0648a30c37e` (frozen training-selection source; final ledger append in successor)
+- Inputs/fixtures: Repository snapshot containing the frozen study, failed report, retained research checkpoint, verification test, interpretation, and shared ledger; exact hashes recorded in AI-373.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS: 6,325 paths, 986.0 MiB, 0 unresolved review findings, 14 reviewed synthetic fixtures.
+- Artifacts: multitask plan/report/checkpoint; verification test; uncertainty documentation; shared ledger.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic repository review before final ledger append; not model, runtime, or physical assurance. No arm or integration status changes.
+- Supersedes: none.
+- Next dependency: Same as AI-373.
