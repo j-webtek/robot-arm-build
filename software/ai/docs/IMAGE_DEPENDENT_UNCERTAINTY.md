@@ -543,3 +543,30 @@ specialized bounded-metric and tail-risk heads on fresh mapping-calibration and
 selection cohorts, without retraining either model. Any fusion must be fixed
 before those cohorts are evaluated and must preserve conditional coverage,
 utility, and zero accepted errors above 3 mm before independent confirmation.
+
+## Late fusion of specialized metric and risk heads
+
+The frozen bounded-metric and tail-risk specialists were combined without model
+training. On 8,000 new 64M mapping-calibration images, tail-risk logits defined
+one empirical CDF. Each metric bound was multiplied by
+`exp(0.5 * (2 * risk_percentile - 1))`, a fixed range of approximately 0.61 to
+1.65, before fitting the rank-991 scene conformal quantile. The formula, gain,
+CDF convention, and quantile were then applied once to 8,000 untouched 65M
+selection images.
+
+The fusion achieved 99.2% marginal scene coverage and retained 1,170 images,
+or 14.625%. Every condition exceeded its utility minimum, and no accepted image
+had actual error above 3 mm. The complete selection nevertheless failed.
+Accepted-image coverage was 98.2906% and accepted-scene coverage was 98.5075%,
+both below 99%. Conditional accepted-image coverage was 98.9418% standard,
+99.5781% appearance shift, 96.6851% partial obstruction, and 94.1606% full
+obstruction. Twenty accepted images exceeded their predicted bound even though
+none exceeded the 3 mm research tolerance.
+
+Late fusion therefore improves useful retention and removes above-tolerance
+acceptances, but multiplicative scale adjustment alone does not provide the
+required calibrated accepted-subset coverage. No mapping is selected or
+installed. The next bounded study should keep both specialists and the metric
+calibration separate, then preregister an explicit risk-percentile acceptance
+gate on fresh mapping-calibration and selection cohorts. It must preserve the
+same utility, conditional coverage, and zero-above-tolerance requirements.

@@ -599,10 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-- AI lane / S1: calibrate and select one preregistered late fusion of the frozen
-  bounded-metric and tail-risk heads on fresh 64M and 65M scenes; no model
-  training, runtime, contract, arm, or integration-status changes.
-
 
 
 
@@ -9053,3 +9049,48 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic repository review before final ledger append; not model, runtime, or physical assurance. No arm or integration status changes.
 - Supersedes: none.
 - Next dependency: Same as AI-373.
+
+### E-20260927-AI-376 — specialized-head late-fusion mapping selection
+
+- Stage: S1
+- Lane: AI
+- Commit: `68461580d39f44a5abd7ea006d8605f3511bc827` (frozen specialist lineage, empirical-CDF fusion, fixed gain, mapping-calibration and selection populations, unchanged acceptance gates, source, plan, and claim frozen before inference; failed report, tests, interpretation, and claim removal committed in the successor)
+- Inputs/fixtures: Frozen bounded-metric checkpoint/report SHA256 `c9ee03b9962e28443fbac7644cdfbb9c068e544aeb75cc58dc2ba8b6b494b16c`/`d0632877b0918c8b71417a8c34e6e580b12599c6144cb4876d4bb11dcc821fb7`; frozen tail-risk checkpoint/report SHA256 `79d48b0ef63effea3642c2e08a20d8a6800f27f75e0ed97ed8050f146d4f326e`/`40524c98512aa98383f70aa0156b062276660572081ff1c4b808fdec460211cf`. Mapping-calibration scenes `64000000..64000999` and selection scenes `65000000..65000999`, each with two styles and four conditions for 8,000 images. Calibration pixel/feature/target/metric/risk SHA256 values `46ef043471b5914d9849b74566b2dac1d0ffc6b6d4fd656e31d696cb6e169b4f`, `48948cb778c8517bd6b64746023ca1c1d994474a2298d6a91d86e7842fa2c56b`, `18b41e38fd6a80a0bde473fbba03109a92993d4fa8b3e8711f9801a7e88e0369`, `7060f62b92a6ba6d130cb6a2116175bf1f0a00ba01291adc3c621cc22dd944d9`, and `ed33a9bf68b280e816c83640d6d8ed19241e1e0d21e385525e91a9bc5d23d6cb`; selection values `f5bb40d4c81482260ed2c9132ea2cb9bbb7de374d535b2ecac7525af2544d877`, `48e433f2f346542d10fbaf5a5553a4daee1186a785f9ad074fdda61e8325dc60`, `ea1c824ffbd05d21b536c56e68877d0074e61c8d79b6d20d038d6da772a449ca`, `052c3b72073db32db3243880cd55500d136022b77e26c114aecf6ff38dcc51ef`, and `0ceeeef19a53423711578f7c7fb2aac21420ff7251158d641fc171d8ee397b6e`. Risk-reference SHA256 `4f5eb482cb58de83adb1d3be827da565e0fafbd12124c569b96542f85de0cb7f`; plan SHA256 `2e271e19cf9670951c58445205ce0fea0cf644006925722d5fcbd16fb8a75df4`; report SHA256 `8296328aaad2c98dc659d4d8d409d39513f4ede04fb3d0d8cc66249ca4d29edb`.
+- Command: `python software/ai/train/select_late_fusion_mapping.py`
+- Result: FAIL fixed selection rule. The empirical-risk-CDF multiplier and rank-991 conformal fit yield normalized quantile `2.183702391`. On selection, marginal scene coverage is 99.2%; 1,170/8,000 images are accepted (14.625%); all condition utility checks pass; and zero accepted error exceeds 3 mm. Overall accepted-image coverage is `0.982905983` and accepted-scene coverage is `0.985074627`, below 0.99. Conditional accepted-image coverage is standard `0.989417989`, appearance `0.995780591`, partial `0.966850829`, and full `0.941605839`; standard, partial, and full fail. Twenty accepted images exceed their predicted radius. One mapping fit, zero new model fits, and zero optimizer updates.
+- Artifacts: `train/select_late_fusion_mapping.py`; `train/late_fusion_mapping_v1_plan.json`; `eval/late_fusion_mapping_v1_report.json`; `tests/test_late_fusion_mapping.py`; `docs/IMAGE_DEPENDENT_UNCERTAINTY.md`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Synthetic mapping-calibration and selection evidence for one fixed CDF fusion and gain. No independent confirmation was allocated after failure. No mapping, runtime installation, physical-camera evidence, qualification, or motion authority. ModelMotionBatchV2 and arm/integration statuses are unchanged.
+- Supersedes: none; the specialist, multitask, and earlier mapping evidence remains preserved.
+- Next dependency: Keep both specialists frozen. On entirely fresh mapping-calibration and selection cohorts, preregister one explicit risk-percentile acceptance gate layered over separately calibrated metric radii. Preserve the same marginal coverage, utility, conditional accepted-subset coverage, and zero accepted errors above 3 mm gates before independent confirmation.
+
+### E-20260927-AI-377 — specialized-head late-fusion verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `68461580d39f44a5abd7ea006d8605f3511bc827` (frozen mapping source; tests and documentation committed in the successor)
+- Inputs/fixtures: Same 16,000 fresh images, frozen specialists, empirical risk CDF, fusion plan, and failed report as AI-376; exact hashes are recorded there and in the report.
+- Command: `python -m pytest -q software/ai/tests/test_late_fusion_mapping.py`
+- Result: PASS: 2 tests in 2.05s. Tests verify empirical-CDF boundary semantics and exact fusion arithmetic, immutable lineage, exact grouped populations, risk-reference hash, all fused calibration rows, scene scores, rank and quantile, complete overall and conditional recounts, every fixed failed check, and zero model fitting, optimizer, hardware, physical, qualification, or runtime authority.
+- Artifacts: `tests/test_late_fusion_mapping.py`; `eval/late_fusion_mapping_v1_report.json`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Existing pytest-asyncio configuration warning. Recount consistency only; no physical assurance. Contract unchanged, so shared boundary tests were not triggered.
+- Supersedes: none.
+- Next dependency: Same as AI-376.
+
+### E-20260927-AI-378 — specialized-head late-fusion snapshot review
+
+- Stage: S1
+- Lane: AI
+- Commit: `68461580d39f44a5abd7ea006d8605f3511bc827` (frozen mapping source; final ledger append in successor)
+- Inputs/fixtures: Repository snapshot containing the frozen mapping study, failed report, verification test, interpretation, and shared ledger; exact hashes recorded in AI-376.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS: 6,330 paths, 992.9 MiB, 0 unresolved review findings, 14 reviewed synthetic fixtures.
+- Artifacts: late-fusion plan/report; verification test; uncertainty documentation; shared ledger.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic repository review before final ledger append; not model, runtime, or physical assurance. No arm or integration status changes.
+- Supersedes: none.
+- Next dependency: Same as AI-376.

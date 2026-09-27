@@ -1,0 +1,101 @@
+import hashlib
+import json
+import math
+import sys
+from pathlib import Path
+
+import numpy as np
+
+AI = Path(__file__).resolve().parents[1]
+ROOT = AI.parents[1]
+sys.path.insert(0, str(AI))
+
+from evidence_artifacts import verify_frozen_artifacts
+from train.select_ensemble_scale_mapping import evaluate_checks, checks_pass
+from train.select_late_fusion_mapping import empirical_percentile, fuse_rows
+from vision.evaluate_ensemble_scaled_uncertainty import summarize
+from vision.evaluate_grouped_uncertainty import calibrate
+
+
+def test_empirical_percentile_and_fusion_are_fixed():
+    reference = np.asarray([1.0, 2.0, 3.0])
+    assert empirical_percentile(reference, 0.0) == 0.0
+    assert empirical_percentile(reference, 2.0) == 2 / 3
+    assert empirical_percentile(reference, 4.0) == 1.0
+    fused = fuse_rows([{"error_mm": 1.0}], [2.0], [2.0], reference, 0.5)[0]
+    assert fused["risk_multiplier"] == math.exp(0.5 * (2 * (2 / 3) - 1))
+    assert fused["scale_mm"] == 2.0 * fused["risk_multiplier"]
+
+
+def test_report_recounts_late_fusion_and_preserves_failure():
+    plan_path = AI / "train/late_fusion_mapping_v1_plan.json"
+    plan = json.loads(plan_path.read_text())
+    verify_frozen_artifacts(ROOT, plan["file_sha256"])
+    report = json.loads((AI / "eval/late_fusion_mapping_v1_report.json").read_text())
+    assert report["plan_sha256"] == hashlib.sha256(plan_path.read_bytes()).hexdigest()
+    assert report["metric_report_sha256"] == plan["file_sha256"][plan["metric_report"]]
+    assert report["risk_report_sha256"] == plan["file_sha256"][plan["risk_report"]]
+
+    for name, (start, count) in plan["groups"].items():
+        rows = report[name]["rows"]
+        assert len(rows) == count * len(plan["styles"]) * len(plan["conditions"])
+        assert {(row["seed"], row["style"], row["condition"]) for row in rows} == {
+            (seed, style, condition)
+            for seed in range(start, start + count)
+            for style in plan["styles"]
+            for condition in plan["conditions"]
+        }
+
+    calibration = report["mapping_calibration"]["rows"]
+    reference = np.sort(np.asarray([row["tail_risk_score"] for row in calibration], dtype=np.float32))
+    assert report["risk_reference_sha256"] == hashlib.sha256(reference.tobytes()).hexdigest()
+    recounted = fuse_rows(
+        calibration,
+        [row["metric_bound_mm"] for row in calibration],
+        [row["tail_risk_score"] for row in calibration],
+        reference,
+        plan["risk_gain"],
+    )
+    for expected, actual in zip(calibration, recounted):
+        assert expected["tail_risk_percentile"] == actual["tail_risk_percentile"]
+        assert expected["risk_multiplier"] == actual["risk_multiplier"]
+        assert expected["scale_mm"] == actual["scale_mm"]
+
+    start, count = plan["groups"]["mapping_calibration"]
+    scene_scores = [
+        {
+            "seed": seed,
+            "normalized_max": max(
+                row["error_mm"] / row["scale_mm"]
+                for row in calibration
+                if row["seed"] == seed
+            ),
+        }
+        for seed in range(start, start + count)
+    ]
+    assert report["mapping_calibration"]["scene_scores"] == scene_scores
+    rank, quantile = calibrate(
+        [row["normalized_max"] for row in scene_scores], plan["alpha"]
+    )
+    assert report["rank"] == rank and report["normalized_quantile"] == quantile
+
+    selection = report["selection"]["rows"]
+    summary = summarize(selection, quantile, plan["tolerance_mm"])
+    conditions = {
+        condition: summarize(
+            [row for row in selection if row["condition"] == condition],
+            quantile,
+            plan["tolerance_mm"],
+        )
+        for condition in plan["conditions"]
+    }
+    checks = evaluate_checks(summary, conditions, plan)
+    assert report["selection"]["summary"] == summary
+    assert report["selection"]["conditions"] == conditions
+    assert report["checks"] == checks
+    assert not checks_pass(checks)
+    assert not report["passed_selection"]
+    assert report["mapping_fits"] == 1 and report["new_model_fits"] == 0
+    assert report["optimizer_updates"] == 0
+    assert report["hardware_writes"] == report["physical_movements"] == 0
+    assert not report["qualification_installed"]
