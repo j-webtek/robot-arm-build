@@ -52,3 +52,32 @@ Three regression tests passed. No fitting, new images, calibration or runtime ch
 ## Next bounded comparison
 
 Before fitting, freeze a training-only comparison of the existing56 raw-image features against the frozen pose backbone's512 pooled spatial features. Use the same33M scene folds and error labels, alpha1.0, fold-only normalization and log(error+0.1) target. Keep the pose network frozen. Compare per-condition out-of-fold log-error MSE, scene tail AUROC and the same fixed retention curves. Require lower MSE in every condition and higher scene tail AUROC than the56-feature reference before considering another full fit or calibration. Preserve all failures; do not choose retention thresholds from this diagnostic. No31M/32M/34M/35M fitting or selection is allowed. Any subsequent calibration and confirmation still require independent, separately frozen data.
+
+## Frozen-backbone comparison
+
+The registered 512-feature comparison was executed on the same 600 scenes and
+five grouped folds. The pose network and confirmed residual pose output remained
+frozen. Each uncertainty fit used pooled 4 by 4 spatial features from the frozen
+pose backbone, fixed ridge alpha 1.0, and the same `log(error + 0.1)` target as
+the 56-feature image-statistic model.
+
+The fixed comparison failed:
+
+| Condition | 56 image features | 512 backbone features | Better |
+| --- | ---: | ---: | --- |
+| Standard | 0.234846 | 0.227759 | Backbone |
+| Appearance shift | 0.246693 | 0.238840 | Backbone |
+| Partial obstruction | 0.233817 | 0.234341 | Image statistics |
+| Full obstruction | 0.254223 | 0.260045 | Image statistics |
+
+Scene tail-error AUROC also fell from 0.590133 to 0.562354. The candidate
+therefore fails both prerequisites for another calibration run: improvement in
+every condition and improvement in scene-level tail ranking. Three verification
+tests passed, and no new images or calibration ranges were consumed.
+
+This closes the simple linear-head path for the current representation. The
+next uncertainty experiment should learn an error-relevant representation on
+training-only scene groups while keeping the confirmed pose output frozen. It
+must improve partial/full obstruction metrics and scene-level tail ranking
+before any full fit, export, calibration, or confirmation is attempted. The
+consumed 31M, 32M, 34M, and 35M cohorts remain excluded from selection.

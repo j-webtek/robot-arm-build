@@ -599,9 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-- AI lane / S1: compare 512 frozen pose-backbone features with the existing
-  56 image-statistic uncertainty features on the same grouped 33M evidence;
-  no pose fitting, calibration data, runtime promotion, or arm changes.
 
 
 
@@ -8177,3 +8174,51 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic snapshot before final ledger append, not model or physical assurance; no boundary/arm status changes.
 - Supersedes: none.
 - Next dependency: Frozen training-only512-feature versus56-feature uncertainty comparison, as specified in AI-316; no further calibration without improvement.
+
+
+### E-20260927-AI-319 — frozen-backbone uncertainty comparison
+
+- Stage: S1
+- Lane: AI
+- Commit: `6c3d0ccf5d12d0afd52e80b4cb75f086917f96d5` (source and plan frozen before feature extraction or fitting; report, tests, and documentation committed in the successor)
+- Inputs/fixtures: Existing `33000000..33000599` uncertainty-training scenes, rectangle and ellipse styles, four conditions, 4,800 images, and the same five grouped scene folds. Frozen pose artifact SHA256 `c9f4ef6d8f9e50317a917154fccacce46506ab2e7cde8267396e28fec156147b`; reference report SHA256 `9b58bf614dde9006056e3ac92f90a7213ff3d8d78ca109e5ea51e14842104c80`. All source hashes are in `train/backbone_uncertainty_v1_plan.json`; report SHA256 `8d791d31a24918d875de0ecc833305145a4aa5a309730a100f7876079ec49491` retains fold fits and every out-of-fold prediction.
+- Command: `python software/ai/train/compare_backbone_uncertainty.py`
+- Result: FAIL fixed comparison. Backbone versus image-statistic log-error MSE: standard `0.227759 < 0.234846` and appearance shift `0.238840 < 0.246693`, but partial obstruction `0.234341 > 0.233817` and full obstruction `0.260045 > 0.254223`. Scene tail AUROC fell from `0.590133` to `0.562354`. The every-condition MSE and scene-ranking requirements both fail.
+- Artifacts: `train/compare_backbone_uncertainty.py`; `train/backbone_uncertainty_v1_plan.json`; `eval/backbone_uncertainty_v1_report.json`; `tests/test_backbone_uncertainty.py`; `docs/IMAGE_DEPENDENT_UNCERTAINTY.md`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Five uncertainty fits, zero pose fits, calibration fits, or new images. Reuses uncertainty-training evidence and cannot support a fresh confirmation claim. Frozen backbone features can contain synthetic shortcuts. No threshold was chosen, no model was exported, and no runtime qualification was installed. ModelMotionBatchV2 and arm/integration statuses are unchanged.
+- Supersedes: none; both zero-utility calibration results and the weak 56-feature ranking remain preserved.
+- Next dependency: Stop simple linear uncertainty heads on the current representation. Specify a grouped, training-only uncertainty representation experiment that learns error-relevant features explicitly while freezing the confirmed pose output; require obstruction-condition and scene-ranking gains before spending new calibration data.
+
+
+### E-20260927-AI-320 — backbone comparison verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `6c3d0ccf5d12d0afd52e80b4cb75f086917f96d5` (frozen evidence source; tests and documentation committed in the successor)
+- Inputs/fixtures: Same 4,800 saved 33M uncertainty-training rows and frozen artifacts as AI-319; report SHA256 `8d791d31a24918d875de0ecc833305145a4aa5a309730a100f7876079ec49491`.
+- Command: `python -m pytest -q software/ai/tests/test_backbone_uncertainty.py`
+- Result: PASS: 3 tests in 2.07s. Tests verify fit-row isolation, input rejection, bounded predictions, scene maximum aggregation, complete 4,800-row population, disjoint grouped folds, fold-only fits, every condition MSE, scene rankings, frozen lineage, and the failed acceptance decision.
+- Artifacts: `tests/test_backbone_uncertainty.py`; `eval/backbone_uncertainty_v1_report.json`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Existing pytest-asyncio configuration warning. Verification establishes reproducibility, not accuracy or physical assurance. Contract unchanged, so shared boundary tests were not triggered.
+- Supersedes: none.
+- Next dependency: Same as AI-319.
+
+
+### E-20260927-AI-321 — backbone comparison snapshot review
+
+- Stage: S1
+- Lane: AI
+- Commit: `6c3d0ccf5d12d0afd52e80b4cb75f086917f96d5` (frozen evidence source; final ledger append in successor)
+- Inputs/fixtures: Repository snapshot containing the frozen comparison and its generated report; exact hashes recorded in AI-319.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS: 6,239 paths, 901.6 MiB, 0 unresolved review findings, 14 reviewed synthetic fixtures.
+- Artifacts: `eval/backbone_uncertainty_v1_report.json`; `tests/test_backbone_uncertainty.py`; shared evidence ledger.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic repository review before the final ledger append; not model, runtime, or physical assurance. Arm and integration statuses remain unchanged.
+- Supersedes: none.
+- Next dependency: Same as AI-319.
