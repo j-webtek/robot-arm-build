@@ -1,0 +1,29 @@
+{
+  "source_report": "software/ai/eval/nonlinear_uncertainty_v1_report.json",
+  "artifact": "software/ai/results/grouped_linear_refit_v1/model.pt",
+  "groups": [33000000, 600],
+  "styles": ["rectangle", "ellipse"],
+  "conditions": ["standard", "appearance_shift", "partial", "full"],
+  "tail_mm": 3.0,
+  "seed": 271027,
+  "epochs": 30,
+  "batch_size": 64,
+  "learning_rate": 0.001,
+  "weight_decay": 0.0001,
+  "retention_fractions": [0.1, 0.25, 0.5, 0.75, 1.0],
+  "architecture": "Frozen 512 pooled pose features -> Linear32 -> GELU -> Linear8 -> GELU -> Linear1 logit. A scene is positive when any of its eight variants exceeds 3mm; its label is copied to all variants. Fold-training BCE uses negative/positive image ratio as pos_weight.",
+  "acceptance": "Classifier scene tail AUROC must exceed the fixed nonlinear-regression reference, and scene tail rates at fixed 25% and 50% retention must both be strictly lower than that reference.",
+  "scope": "Same grouped 33M uncertainty-training evidence; fixed class-balanced training, no sweep, early stopping, threshold selection, new images, calibration, confirmation, pose fitting, or runtime installation.",
+  "file_sha256": {
+    "software/ai/vision/tail_risk_classifier.py": "6110c94146dc05887c41cf2406848b7bb78f9c48c70c91e0109da2b376aad51c",
+    "software/ai/train/evaluate_tail_risk_classifier.py": "eeee5b55b71387075bc167813a6b9a0c5f450499d702d5167f3f95eb3efe38e3",
+    "software/ai/train/compare_backbone_uncertainty.py": "9bd5580862b178d4f62ef4aa8b3311f4f4992cc0571eb4aebd0be64b881faf0f",
+    "software/ai/eval/nonlinear_uncertainty_v1_report.json": "b9ac4856d8af925d19d2e3b25e049c22f738590fba2deb7e52ff9fedc0fc0d4d",
+    "software/ai/results/grouped_linear_refit_v1/model.pt": "c9f4ef6d8f9e50317a917154fccacce46506ab2e7cde8267396e28fec156147b",
+    "software/ai/vision/audit_scene_splits.py": "987ea313fbb67436c985646e96067dd8eb7ee5fd07398eb93a001e092f98fec0",
+    "software/ai/vision/evaluate_dark_only_normalization.py": "12289bfeeb52274678c62f46c7e99e057563036566fa48fc5f5cd1d58add4469",
+    "software/ai/vision/landmark_occlusions.py": "2d77d25077ab98dad632bb441b94c06cc6c139116d6621483cab7728d95c6aad",
+    "software/ai/vision/linear_residual_pose.py": "d46b24cbe48c43ae56d9f1a700459281fceef19475f85187469cd81c735af9cc",
+    "software/ai/vision/synthetic_keyboard.py": "b9a1662ea348ba78093909844e5e8bed86f4996babc289bfd63858b6b54f692c"
+  }
+}

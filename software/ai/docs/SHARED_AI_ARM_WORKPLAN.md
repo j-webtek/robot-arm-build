@@ -599,6 +599,10 @@ Copy this row and fill every field:
 
 ## Active work claims
 
+- AI lane / S1: train one fixed class-balanced scene-tail risk classifier on
+  frozen descriptors and grouped 33M scenes; no threshold selection, pose
+  fitting, calibration data, runtime promotion, or arm changes.
+
 
 
 
