@@ -599,11 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-- AI lane / S1: calibrate the selected obstruction-weighted metric head and
-  evaluate one preregistered 40th-percentile tail-risk gate on fresh 74M
-  calibration and 75M selection scenes; no training, runtime, contract, arm,
-  or integration-status changes.
-
 
 
 
@@ -9294,3 +9289,48 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic repository review before final ledger append; not model, runtime, or physical assurance. No arm or integration status changes.
 - Supersedes: none.
 - Next dependency: Same as AI-389.
+
+### E-20260927-AI-392 — obstruction-weighted metric risk-gate selection
+
+- Stage: S1
+- Lane: AI
+- Commit: `fe9de23ed3bbdf7bef4c91f2c4c0e51d2c66d62c` (selected metric and risk lineage, direct calibration, fixed 40th-percentile gate, fresh populations, unchanged final gates, source, plan, and claim committed before inference; passing report, tests, interpretation, and claim removal committed in the successor)
+- Inputs/fixtures: Obstruction-weighted metric checkpoint/report SHA256 `433d134b92b710566a0798c38dc344d1a768d2c87e44ef92135ffc075dfa9662`/`4ec0f5979b6739c28c56107f1296c05fcacbb6f982f1e05e3ef97162909b09f9`; tail-risk checkpoint/report SHA256 `79d48b0ef63effea3642c2e08a20d8a6800f27f75e0ed97ed8050f146d4f326e`/`40524c98512aa98383f70aa0156b062276660572081ff1c4b808fdec460211cf`. Mapping-calibration scenes `74000000..74000999` and selection scenes `75000000..75000999`, each with two styles and four conditions for 8,000 images. Calibration pixel/feature/target/metric/risk SHA256 values `25e3bb2d463d9b8bb726ab99bc2a0def52b076893f21374e2c5d780a4e223284`, `03b159fa0b28eec3da5181db4d9fbd5ea9ca1b3026c94ccc89b88089aeb49978`, `0a13ce4b93735e62c4abbf7fd2478d59de69ab574af013ae64193ebef3b65e94`, `da9aa238fadba92a3401bda33e4e8b545f8883c15987dfd98b0b93252aa98b5a`, and `9639324839685043cc520989ea345e0eeec704a286bc4c727f0487e5f431d8a7`; selection values `d6598df6961367b35660d5c65232ab6020d529f719b4bd2870ed502a37f13184`, `e48e15db76721bb68d84e7d94f69e28efaabdc8bd33f0146c4646fa9d2aa8e18`, `5c9f30a9c8ab869b088e96dd64a8402103e2449a9fdaba671b88ab9148ada782`, `b4591aece105dee7703db0f18b172967a0727516ad01f6ea626fc1ca00d22c8f`, and `4c53cfc485097ffd4d928a7704b1a7f938fac57b2ec6b86b1ae0f37c5ae47822`. Risk-reference SHA256 `5b7cd690c08027e1bba3346602fecb68e87d63168a0beccf4cf8b662089682da`; plan SHA256 `8c895befdfdcfad92e8405b5e993c68f6b266165d8f1894c68c528a7a3088684`; report SHA256 `0ea5d5e07a49390ac6fb5c967d31f0730ed69ba55c23ee3dd2c08844c4d37c02`.
+- Command: `python software/ai/train/select_obstruction_weighted_risk_gate.py`
+- Result: PASS fixed selection rule. Rank-991 direct metric calibration yields normalized quantile `1.678368111`. Marginal scene coverage is 99.6%; 454/8,000 images are accepted (5.675%); accepted-image and accepted-scene coverage are both 100%; zero accepted images exceed their predicted radius or 3 mm. Condition acceptance is standard 6.3%, appearance shift 10.8%, partial 3.15%, and full 2.45%, with 100% accepted-image coverage in every condition. One mapping fit, zero new model fits, and zero optimizer updates.
+- Artifacts: `train/select_obstruction_weighted_risk_gate.py`; `train/obstruction_weighted_risk_gate_v1_plan.json`; `eval/obstruction_weighted_risk_gate_v1_report.json`; `tests/test_obstruction_weighted_risk_gate.py`; `docs/IMAGE_DEPENDENT_UNCERTAINTY.md`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Synthetic mapping-calibration and selection evidence for one fixed gate. This is selection, not independent confirmation. The 3 mm threshold is a research tolerance, not a measured contact margin. No mapping installation, runtime behavior, physical-camera evidence, qualification, or motion authority. ModelMotionBatchV2 and arm/integration statuses are unchanged.
+- Supersedes: none; the selected metric feature and all earlier mapping evidence remain preserved.
+- Next dependency: Freeze this exact checkpoint pair, 74M risk reference, normalized quantile, gate, and acceptance rule before evaluating one entirely fresh independent confirmation population. No recalibration or selection-population adjustment is permitted.
+
+### E-20260927-AI-393 — obstruction-weighted metric risk-gate verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `fe9de23ed3bbdf7bef4c91f2c4c0e51d2c66d62c` (frozen mapping source; test and documentation committed in the successor)
+- Inputs/fixtures: Same 16,000 fresh images, frozen metric/risk specialists, empirical risk reference, direct calibration plan, and passing report as AI-392; exact hashes are recorded there and in the report.
+- Command: `python -m pytest -q software/ai/tests/test_obstruction_weighted_risk_gate.py`
+- Result: PASS: 1 test in 1.98s. The test verifies immutable lineage, both exact grouped populations, risk-reference hash, attached output reconstruction, scene scores, conformal rank and quantile, complete overall and conditional recounts, every fixed passing check, zero accepted violations, and zero model fitting, optimizer, hardware, physical, qualification, or runtime authority.
+- Artifacts: `tests/test_obstruction_weighted_risk_gate.py`; `eval/obstruction_weighted_risk_gate_v1_report.json`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Existing pytest-asyncio configuration warning. Recount consistency only; no physical assurance. Contract unchanged, so shared boundary tests were not triggered.
+- Supersedes: none.
+- Next dependency: Same as AI-392.
+
+### E-20260927-AI-394 — obstruction-weighted metric risk-gate snapshot review
+
+- Stage: S1
+- Lane: AI
+- Commit: `fe9de23ed3bbdf7bef4c91f2c4c0e51d2c66d62c` (frozen mapping source; final ledger append in successor)
+- Inputs/fixtures: Repository snapshot containing the frozen study, passing report, verification test, interpretation, and shared ledger; exact hashes recorded in AI-392.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS: 6,351 paths, 1,024.0 MiB, 0 unresolved review findings, 14 reviewed synthetic fixtures.
+- Artifacts: obstruction-weighted risk-gate plan/report; verification test; uncertainty documentation; shared ledger.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic repository review before final ledger append; not model, runtime, or physical assurance. No arm or integration status changes.
+- Supersedes: none.
+- Next dependency: Same as AI-392.

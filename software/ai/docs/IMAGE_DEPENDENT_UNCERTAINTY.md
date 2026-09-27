@@ -686,3 +686,47 @@ next increment may freeze one mapping-calibration and selection study on new
 populations, using this checkpoint with the existing specialist risk signal.
 All marginal, conditional, utility, and zero-above-tolerance gates remain in
 force before independent confirmation can be considered.
+
+## Obstruction-weighted metric with frozen risk gate
+
+The selected obstruction-weighted head and existing tail-risk specialist were
+frozen without retraining. A rank-991 scene conformal quantile of
+`1.678368111` and one empirical risk CDF were fit on 1,000 new 74M calibration
+scenes. The registered 40th-percentile risk gate and calibrated metric radius
+were applied once to 1,000 untouched 75M selection scenes.
+
+Every fixed selection gate passed. Marginal scene coverage was 99.6%. The
+mapping accepted 454/8,000 images, or 5.675%, with 100% accepted-image and
+accepted-scene coverage and zero accepted errors above 3 mm. Conditional
+acceptance was 6.3% standard, 10.8% appearance shift, 3.15% partial
+obstruction, and 2.45% full obstruction; every accepted conditional subset had
+100% empirical bound coverage.
+
+This selects a synthetic research mapping for a separately frozen independent
+confirmation study. It does not install a localization qualification or create
+runtime authority. The calibration and selection populations are consumed and
+cannot be reused for confirmation or threshold changes. Physical-camera data,
+target-region fit, and deployment-domain evidence remain absent.
+
+## Obstruction-weighted metric calibration and risk gate
+
+The selected obstruction-weighted head and existing tail-risk specialist were
+frozen without further training. A rank-991 scene conformal quantile was fit on
+1,000 new 74M mapping-calibration scenes. The resulting metric multiplier was
+`1.678368111`. Tail-risk logits from the same calibration cohort defined one
+empirical CDF. The already established 40th-percentile risk gate was applied
+without late-fusion scaling, radius inflation, or threshold search.
+
+The complete selection rule passed on 1,000 untouched 75M scenes. Marginal
+scene coverage was 99.6%. The mapping accepted 454/8,000 images, or 5.675%,
+with 100% accepted-image and accepted-scene coverage, zero accepted bound
+violations, and zero accepted errors above 3 mm. Condition acceptance was 6.3%
+standard, 10.8% appearance shift, 3.15% partial obstruction, and 2.45% full
+obstruction. Every condition had 100% accepted-image coverage.
+
+This is the first obstruction-aware metric mapping in this sequence to pass all
+frozen selection gates. It remains synthetic selection evidence and installs no
+qualification or runtime behavior. The mapping must now be frozen exactly and
+evaluated once on an independently generated confirmation population. Failure
+at confirmation must remain preserved and would reject this mapping; passing
+would still leave physical-camera and hardware qualification outstanding.
