@@ -142,7 +142,10 @@ and the measured planner does not yet reach physical execution admission. S4
 lists AI as ready because no new AI authority is required. The zero-write
 adapter and reviewed native-shaped T=102 bridge now share the controller's
 ordered joint encoding, but authentic native transport, independently acquired
-receipts, and physical qualification remain unfinished.
+receipts, and physical qualification remain unfinished. A durable native T=102
+handoff now commits an exclusive writer claim before any future transport open;
+restart after that claim is retry-forbidden even though native open authority is
+still absent.
 
 ## Stage definitions
 
@@ -545,7 +548,6 @@ remove it only in the same commit that appends the resulting evidence row.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| Arm runtime / ARM-050 | S4 | durable native T102 handoff journal, restart tests, schemas, evidence ledger | `feat/arm-050-native-admission` | ACTIVE |
 | Unclaimed | S2 | qualified perception adapter and complete shared gate | — | AVAILABLE |
 | Unclaimed | S4 | external reviewer publishes a typed decision for sealed r97 packet `987cbe86...b416`; collect/review all eight measured epoch components | — | AVAILABLE |
 

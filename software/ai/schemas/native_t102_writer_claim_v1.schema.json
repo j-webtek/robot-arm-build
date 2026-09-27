@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rocell.local/schemas/native_t102_writer_claim_v1.schema.json",
+  "title": "RoCell native T102 exclusive writer claim v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "status", "prepared_sha256", "frame_sha256",
+    "writer_instance_id", "controller_session_id", "claimed_monotonic_ns",
+    "previous_claim_sha256", "transport_open_authorized",
+    "physical_authority", "automatic_retry_allowed", "transport_open_count",
+    "physical_command_writes", "claim_sha256"
+  ],
+  "properties": {
+    "schema": {"const": "rocell.native_t102_writer_claim.v1"},
+    "status": {"const": "WRITER_CLAIM_COMMITTED_BEFORE_NATIVE_OPEN"},
+    "prepared_sha256": {"$ref": "#/$defs/hash"},
+    "frame_sha256": {"$ref": "#/$defs/hash"},
+    "writer_instance_id": {"$ref": "#/$defs/identifier"},
+    "controller_session_id": {"$ref": "#/$defs/identifier"},
+    "claimed_monotonic_ns": {"type": "integer", "minimum": 1},
+    "previous_claim_sha256": {"const": "0000000000000000000000000000000000000000000000000000000000000000"},
+    "transport_open_authorized": {"const": false},
+    "physical_authority": {"const": false},
+    "automatic_retry_allowed": {"const": false},
+    "transport_open_count": {"const": 0},
+    "physical_command_writes": {"const": 0},
+    "claim_sha256": {"$ref": "#/$defs/hash"}
+  },
+  "$defs": {
+    "hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "identifier": {
+      "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+    }
+  }
+}

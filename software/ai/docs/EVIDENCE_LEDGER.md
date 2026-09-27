@@ -2585,3 +2585,53 @@ rewriting history. New entries must use a unique evidence ID.
   profile contract, then acquire authentic controller acknowledgment, joint
   feedback, and independent task-outcome evidence under explicit physical-test
   authorization.
+
+### E-20260926-ARM-050 — durable native T=102 handoff boundary
+
+- Stage: S4
+- Lane: ARM
+- Change: added a filesystem-only durable handoff between ARM-049's exact
+  reviewed T=102 frame and a future separately reviewed native sole writer. An
+  immutable prepared record binds the review, permit, decoded goal, encoded
+  payload, frame, correlation, sequence, writer, controller session,
+  configuration epoch, encoding profile, adapter candidate, and frame lifetime.
+- Dispatch-boundary behavior: an exclusive `claim.json` marker is flushed before
+  any future transport may open. Exactly one concurrent claimant succeeds. A
+  restart before the claim is safely cancellable and requires fresh replanning
+  and authority; a restart after the claim is
+  `RETRY_FORBIDDEN_DISPATCH_UNCERTAIN`, even if no write was ultimately made.
+  A malformed or truncated claim marker fails closed instead of resuming.
+- Rejection behavior: duplicate preparation, duplicate/concurrent claim, stale
+  claim, crossed writer/session/epoch/profile/payload, tampered canonical data,
+  symlink roots, and unexpected journal entries reject without opening a
+  transport or writing controller bytes.
+- Artifacts: `native_t102_handoff_journal_v1.py`; closed prepared, writer-claim,
+  and recovery-snapshot schemas; public exports; concurrency, restart,
+  crossing, staleness, tamper, and filesystem-boundary tests; portable CI
+  selection.
+- Artifact identity: implementation SHA-256
+  `4e4da8347943184a0cfc6fe03f56ba47ae08989d740310c4bcdce1e63e4e3da0`;
+  prepared, writer-claim, and snapshot schema SHA-256 values
+  `33b71855fe653db978c5e96de0068c46d349522bce7ac22019a7c9d38d6fe9a9`,
+  `9f77344d3ccb7ed2782ea6a3d6da29d9222c411afe3c18dc0ef184c942b1c92a`,
+  and `8dd1648761ae5244de9473891ed9018c005fe2ecb727116ab886124b48408d28`.
+- Results: focused runtime/T=102/handoff suite PASS, 47 tests; portable shared
+  AI/arm selection PASS, 245 tests in 36.19 seconds; compile and diff checks
+  PASS.
+- Evidence status: deterministic local-filesystem evidence only. The module has
+  no serial factory, port, socket, device handle, callback, controller process,
+  firmware operation, or transport-open function.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: the writer claim deliberately grants no transport or physical
+  authority and contains no authentic controller receipt. Once claimed, even a
+  known pre-open crash requires manual reconciliation rather than resend. This
+  is conservative ambiguity containment, not proof of native execution.
+- Supersedes: ARM-049's volatile-only final handoff boundary. It does not
+  supersede native-adapter review, authentic receipt/feedback acquisition,
+  physical qualification, or independent task observation.
+- Next dependency: implement and independently review a native executor that
+  accepts only this exact claimed handoff plus fresh single-use authority,
+  opens one pinned controller transport, publishes an authentic byte-accounted
+  receipt, and never resends an ambiguous claim. Any physical use remains a
+  separate explicitly authorized test.
