@@ -599,6 +599,10 @@ Copy this row and fill every field:
 
 ## Active work claims
 
+- AI lane / S1: train one preregistered bounded metric plus tail-ranking
+  multitask head on fresh 62M training and 63M selection scenes; no runtime,
+  contract, arm, or integration-status changes.
+
 
 
 
