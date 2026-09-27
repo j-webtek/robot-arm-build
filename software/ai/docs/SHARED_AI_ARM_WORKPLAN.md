@@ -599,6 +599,11 @@ Copy this row and fill every field:
 
 ## Active work claims
 
+- AI lane / S1: evaluate one preregistered conservative gated late-fusion
+  mapping on fresh 70M calibration and 71M selection scenes, combining only
+  previously frozen gain, inflation, and risk-gate values; no model training,
+  runtime, contract, arm, or integration-status changes.
+
 
 
 
