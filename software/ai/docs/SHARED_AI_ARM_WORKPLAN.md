@@ -599,6 +599,8 @@ Copy this row and fill every field:
 
 ## Active work claims
 
+- AI lane / S1: prior resolution evidence and representation review; frozen scorecards/model source,no new training; AI evidence branch only.
+
 
 
 

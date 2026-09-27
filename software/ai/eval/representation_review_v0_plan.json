@@ -1,0 +1,11 @@
+{
+  "file_sha256": {
+    "software/ai/vision/review_pose_representation.py": "ef736534c5795c3231cdea6d68a185d3e0bd149bb6be832ef5e348b15609042a",
+    "software/ai/vision/pose_model.py": "7eccc2a3cabf3a37217b4a1c3114c439ffc740a917c08e4ef378065ff85c6ec5",
+    "software/ai/train/matched_resolution_v0_plan.json": "857b61faba747e727b533e141d45f34a5c2ddceea7802fe934164ffd40c06422",
+    "software/ai/eval/matched_resolution_v0_scorecard.json": "bb86efe49eb4eaf145655d209c96e6b78f2a40e9b23a15423233d280dbfc6bd9",
+    "software/ai/eval/clutter_ablation_v0_report.json": "d0c92b211df63ad9b8a65ca492112f5f3ce30146728d36a77c1493786018c76a",
+    "software/ai/eval/pose_clutter_pair_v0_report.json": "222f1806b824bb058cd6283c566845e08a5fb8ed084768d89c6400376b22d88b"
+  },
+  "scope": "Retained evidence and exact architecture review only; no parameter search or accuracy claims from untrained shape probe"
+}
