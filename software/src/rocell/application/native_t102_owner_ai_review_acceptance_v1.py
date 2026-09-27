@@ -240,10 +240,84 @@ def accept_native_t102_internal_ai_review_v1(
     )
 
 
+def parse_native_t102_owner_ai_review_acceptance_v1(
+    document: dict[str, Any],
+) -> NativeT102OwnerAIReviewAcceptanceV1:
+    """Strictly parse one retained owner acceptance and verify its hash."""
+
+    required = {
+        "schema", "status", "acceptance_id", "owner_id", "accepted_utc",
+        "source_review_file_sha256", "source_review_content_sha256",
+        "source_review_id", "reviewed_packet_sha256",
+        "reviewed_manifest_sha256", "reviewed_candidate_commit",
+        "reviewed_adapter_source_sha256", "technical_disposition",
+        "provenance_caveat", "human_review_claimed",
+        "external_independence_claimed", "owner_governance_override",
+        "ready_for_read_only_endpoint_qualification_intake",
+        "endpoint_open_authorized", "controller_start_authorized",
+        "transport_write_authorized", "execution_authorized",
+        "hardware_access", "physical_authority", "acceptance_sha256",
+    }
+    if type(document) is not dict or set(document) != required:
+        raise NativeT102OwnerAIReviewAcceptanceError(
+            "owner acceptance must contain exactly the closed fields")
+    constants = {
+        "status": "OWNER_ACCEPTED_AI_REVIEW_WITH_CAVEAT",
+        "technical_disposition": ACCEPTED_TECHNICAL_DISPOSITION,
+        "provenance_caveat": REQUIRED_GOVERNANCE_CAVEAT,
+        "human_review_claimed": False,
+        "external_independence_claimed": False,
+        "owner_governance_override": True,
+        "ready_for_read_only_endpoint_qualification_intake": True,
+        "endpoint_open_authorized": False,
+        "controller_start_authorized": False,
+        "transport_write_authorized": False,
+        "execution_authorized": False,
+        "hardware_access": False,
+        "physical_authority": False,
+    }
+    if any(document[key] != value for key, value in constants.items()):
+        raise NativeT102OwnerAIReviewAcceptanceError(
+            "owner acceptance status, caveat, or authority differs")
+    try:
+        parsed = NativeT102OwnerAIReviewAcceptanceV1(
+            acceptance_id=document["acceptance_id"],
+            owner_id=document["owner_id"],
+            accepted_utc=document["accepted_utc"],
+            source_review_file_sha256=document["source_review_file_sha256"],
+            source_review_content_sha256=(
+                document["source_review_content_sha256"]),
+            source_review_id=document["source_review_id"],
+            reviewed_packet_sha256=document["reviewed_packet_sha256"],
+            reviewed_manifest_sha256=document["reviewed_manifest_sha256"],
+            reviewed_candidate_commit=document["reviewed_candidate_commit"],
+            reviewed_adapter_source_sha256=(
+                document["reviewed_adapter_source_sha256"]),
+            schema=document["schema"],
+        )
+    except (KeyError, TypeError) as exc:
+        raise NativeT102OwnerAIReviewAcceptanceError(
+            "owner acceptance contains invalid typed values") from exc
+    if (
+        parsed.reviewed_packet_sha256 != PACKET_SHA256
+        or parsed.reviewed_manifest_sha256 != MANIFEST_SHA256
+        or parsed.reviewed_candidate_commit != CANDIDATE_COMMIT
+        or parsed.reviewed_adapter_source_sha256 != ADAPTER_SOURCE_SHA256
+        or parsed.source_review_id != AI_REVIEW_ID
+    ):
+        raise NativeT102OwnerAIReviewAcceptanceError(
+            "owner acceptance review identity differs")
+    if document["acceptance_sha256"] != parsed.acceptance_sha256:
+        raise NativeT102OwnerAIReviewAcceptanceError(
+            "owner acceptance content hash differs")
+    return parsed
+
+
 __all__ = [
     "ACCEPTED_TECHNICAL_DISPOSITION", "AI_REVIEW_ID",
     "REQUIRED_GOVERNANCE_CAVEAT",
     "REVIEW_SCHEMA", "SCHEMA", "NativeT102OwnerAIReviewAcceptanceError",
     "NativeT102OwnerAIReviewAcceptanceV1",
     "accept_native_t102_internal_ai_review_v1",
+    "parse_native_t102_owner_ai_review_acceptance_v1",
 ]

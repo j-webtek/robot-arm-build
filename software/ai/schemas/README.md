@@ -154,6 +154,13 @@ read-only endpoint-qualification intake. It preserves that no human review or
 external independence is claimed. Read-only intake eligibility is not endpoint
 open authority: controller startup, transport writes, execution, hardware
 access, and physical authority remain false.
+The [read-only endpoint intake](native_t102_read_only_endpoint_intake_v1.schema.json)
+binds that exact acceptance to one explicitly pinned serial identity and one
+bounded passive observation plan. It is a hardware-incapable prerequisite
+record only: it permits no endpoint open, startup, write, active request,
+movement, torque action, retry, or fallback. A valid intake is merely ready for
+a separate, explicit read-only authorization and cannot supply that authority
+itself.
 The [measured configuration-epoch intake](controller_configuration_epoch_intake_v1.schema.json)
 and [intake assessment](controller_configuration_epoch_intake_report_v1.schema.json)
 require that full decision, rather than accepting only an arbitrary review hash

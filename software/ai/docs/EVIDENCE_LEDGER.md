@@ -3029,3 +3029,37 @@ rewriting history. New entries must use a unique evidence ID.
   qualification, movement authority, or task verification.
 - Next dependency: implement the closed read-only endpoint-qualification intake
   and obtain separate authorization before any real endpoint is opened.
+
+### E-20260927-ARM-060 — closed read-only endpoint intake contract
+
+- Stage: S4
+- Lane: ARM
+- Change: added a strict, hardware-incapable intake that binds the exact
+  ARM-059 owner acceptance to one declared host, one pinned COM/USB serial
+  identity, and one finite passive observation plan. Closed parsing
+  reconstructs and rehashes both endpoint and intake and rejects crossed
+  identity, policy promotion, authority promotion, extra fields, and unbounded
+  capture values.
+- Observation policy: verify pinned identity before and after one open, capture
+  only bounded passive lines, then close once. Transport writes, active
+  requests, movement, torque commands, purge, fallback, retry, and DTR/RTS
+  assertion are all forbidden.
+- Artifacts: `native_t102_read_only_endpoint_intake_v1.py`, its closed JSON
+  schema, focused tests, public exports,
+  `NATIVE_T102_READ_ONLY_ENDPOINT_INTAKE.md`, and shared-plan updates.
+- Evidence status: deterministic offline and synthetic endpoint fixtures only.
+  No real COM name, USB identity, or host identity is claimed or retained.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: `READY_FOR_SEPARATE_READ_ONLY_AUTHORIZATION` is a proposal
+  readiness state, not permission to enumerate or open a port. Read-only
+  endpoint, controller-start, transport-write, execution, hardware, and
+  physical authority all remain false.
+- Supersedes: the missing intake-format implementation dependency after
+  ARM-059. It does not supersede actual endpoint identification, separate
+  operator authorization, passive qualification, controller provenance,
+  calibration/collision qualification, movement authority, or task
+  verification.
+- Next dependency: establish the exact physical host and endpoint identity,
+  retain a matching intake under separate authorization, and obtain a new
+  bounded authorization before the passive zero-write run.

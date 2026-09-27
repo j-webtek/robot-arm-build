@@ -217,6 +217,17 @@ controller startup, any transport write, execution, hardware access, or
 physical movement. Under this owner-defined policy the adapter review milestone
 is complete with caveat; the next arm-lane dependency is the closed read-only
 endpoint-qualification intake and its separately authorized physical run.
+ARM-060 now defines that closed intake. It binds the exact ARM-059 acceptance,
+one explicit host, one pinned COM/USB identity, and a finite passive-read plan.
+The proposed run may open and close that endpoint once but permits zero writes,
+zero active requests, zero movement or torque commands, no purge, no fallback,
+no retry, and no DTR/RTS assertion. The implementation performs no discovery,
+port open, or I/O. A valid record is only
+`READY_FOR_SEPARATE_READ_ONLY_AUTHORIZATION`; every endpoint, controller,
+transport, execution, hardware, and physical authority remains false. No real
+intake is retained until the actual host and endpoint identity are established
+without guessing. The next dependency is a separately authorized creation of
+that exact intake and then a separately bounded passive qualification run.
 
 ## Stage definitions
 
