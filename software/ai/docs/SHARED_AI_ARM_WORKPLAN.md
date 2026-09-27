@@ -285,6 +285,14 @@ review handoff operational without pretending that repository code can perform
 the independent review. The dependency is unchanged: a genuinely independent
 reviewer must return the decision, then all eight measured epoch components
 must be collected and reviewed.
+ARM-067 records the owner's decision that no human reviewer will be used. The
+exact r97 AI technical review is accepted through a hash-bound governance
+override that explicitly sets `human_review_claimed=false` and
+`external_independence_claimed=false`. External review is now optional rather
+than blocking. The next active dependency is an owner-governed configuration
+epoch containing retained physical evidence and AI review records for all
+eight controlled workcell components. This override creates no installation,
+startup, transport, execution, hardware, or physical authority.
 
 ## Stage definitions
 
@@ -688,7 +696,7 @@ remove it only in the same commit that appends the resulting evidence row.
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
 | Unclaimed | S2 | qualified perception adapter and complete shared gate | — | AVAILABLE |
-| Unclaimed | S4 | external reviewer publishes a typed decision for sealed r97 packet `987cbe86...b416`; collect/review all eight measured epoch components | — | AVAILABLE |
+| ARM | S4 | build the owner-governed measured configuration epoch for all eight controlled components using ARM-067 acceptance `76bac617...1698` | ARM-067 | ACTIVE |
 
 ## Worker update procedure
 
