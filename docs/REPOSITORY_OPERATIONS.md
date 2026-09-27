@@ -64,6 +64,10 @@ Required checks and branch-protection behavior are in [CI](CI.md). Cross-lane
 review is a contributor process, not an enforced independent-review rule:
 GitHub currently requires zero approving reviews so the solo maintainer can
 merge. The maintainer is responsible for checking the handoff fields.
+The repository accepts squash merges only and deletes a merged head branch
+automatically. This keeps one reviewed change per main-branch commit and reduces
+stale branch clutter; it does not replace the required checks, handoff review, or
+exact-commit evidence.
 
 ## Issue and PR triage
 

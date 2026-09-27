@@ -66,7 +66,8 @@ device access, restarts, torque changes, movement, or release publication.
 - [ ] Keep [project status](../PROJECT_STATUS.md) readable and date its evidence
   checkpoint. Do not silently promote a branch proposal into a released feature.
 - [ ] A merge is not a release. For publication, use the separate
-  [release checklist](RELEASING.md), an exact candidate commit and its own reviews.
+  [release records](releases/README.md) and [release checklist](RELEASING.md), an
+  exact candidate commit and its own reviews.
   If the candidate changes, reassess its evidence instead of reusing old sign-offs.
 - [ ] Before naming a preview candidate, run the release-integrity check in
   `candidate` mode. A normal CI pass validates the standing path policy but does
