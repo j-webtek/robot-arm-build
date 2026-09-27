@@ -192,6 +192,9 @@ dimension-checked 3D render:
   hardware beauty orbit, fixture-to-lens perception move, three distinct
   decision dollies, orthographic-like target resolution, tooling close-up,
   sharp phone macro, and wide payoff return;
+- the target-resolution camera is square to the keyboard, the execution view
+  keeps the complete servo-style rig and attached harness in frame, and the
+  payoff pushes closer so the physical system supports the closing summary;
 - key legends, an H target ring carried into contact, a connected stylus, and separate
   telemetry and host-result panels make the target, action, and observed result
   legible without implying a live controller trace;
@@ -204,6 +207,11 @@ dimension-checked 3D render:
   simulation evidence rather than as a live controller trace;
 - informational graphics are composited after transitions, keeping titles and
   evidence labels readable during every cut.
+
+The published poster and social card deliberately differ from an ordinary
+beauty frame. They pair the film's blocked stale-plan state with its verified
+host result under the headline “Physical intelligence, checked.” so the shared
+image explains the product even before a viewer presses play.
 
 When revising the film, preserve these communication rules: one idea per shot,
 no unqualified capability claims, no raw model output presented as an admitted

@@ -4,8 +4,8 @@
 **Authority:** Byte identity and post-merge inspection only; this record is not a Blender rerender, third-party-rights disposition, or physical qualification
 
 The current overview-media revision was produced from commit
-`1fc2337e54dca8484a12f5848492e5e7d9f9b494` through
-[pull request #138](https://github.com/j-webtek/tactevra/pull/138). The
+`cc0a73926ccae2ff220f958db7100f4d5ee279fa` through
+[pull request #144](https://github.com/j-webtek/tactevra/pull/144). The
 machine-readable [verification receipt](verification_receipt.json) binds the
 committed media files to exact byte sizes and SHA-256 digests and records the
 authority manifest used by the documented scene builder.
@@ -16,7 +16,7 @@ authority manifest used by the documented scene builder.
   with AAC stereo audio and a selectable English subtitle stream.
 - Eleven timestamp-ordered ElevenLabs narration clips were aligned to the
   documented scene windows without speech-rate modification.
-- Final audio measures −14.3 LUFS integrated with a −1.7 dBTP true peak, with
+- Final audio measures −14.4 LUFS integrated with a −1.6 dBTP true peak, with
   no interval of one second or longer below −45 dB.
 - The sidecar WebVTT file contains 11 ordered cues whose timing fits within
   the delivery duration.
@@ -34,11 +34,18 @@ authority manifest used by the documented scene builder.
   frame, optical glass, controls, camera hardware, cable, and modeled host UI.
 - Each chapter uses a distinct camera move, and the verification macro focuses
   on the actual modeled phone screen plane.
+- The keyboard resolve remains squared through the camera move. The execution
+  shot keeps the complete servo-style base, link structure, mounting plates,
+  servo caps, connectors, attached harness, wrist, and stylus in one visual
+  system rather than substituting a generic arm.
+- The closing architecture shot gives the arm more visual weight while
+  retaining clear message space. The poster and social card now tell a compact
+  rejection-to-verification story instead of showing a lone robot beauty shot.
 - The MP4, poster, social preview, captions, chapters, and dimension manifest match the byte identities
   in the machine-readable receipt.
 
 Blender 4.3.2 and the identified FFmpeg build were observed during the full
-rerender and final inspection. Pull request #138 records that render, visual
+rerender and final inspection. Pull request #144 records that render, visual
 review, selectable-caption check, and final audio-QA validation.
 
 ## Limits

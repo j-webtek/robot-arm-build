@@ -1,8 +1,8 @@
 {
   "schema": "tactevra.published-media-verification.v1",
   "recorded_on": "2026-09-27",
-  "asset_revision_commit": "1fc2337e54dca8484a12f5848492e5e7d9f9b494",
-  "source_pull_request": "https://github.com/j-webtek/tactevra/pull/138",
+  "asset_revision_commit": "cc0a73926ccae2ff220f958db7100f4d5ee279fa",
+  "source_pull_request": "https://github.com/j-webtek/tactevra/pull/144",
   "authority": {
     "path": "presentations/blender/dimension_manifest.json",
     "size_bytes": 2568,
@@ -27,6 +27,10 @@
       "higher-detail phone frame, glass, controls, camera, cable, and host-verification interface within the measured RC03 envelope",
       "distinct chapter camera grammar and corrected focus on the modeled phone screen plane",
       "reject and accept cards placed clear of the stationary gripper, with the persistent micro-label removed",
+      "square keyboard-resolve framing at both ends of the camera move",
+      "complete servo-style execution rig, including base, link structure, mounting plates, servo caps, cable connectors, and attached harness",
+      "closer closing architecture composition with readable message space",
+      "story-led poster and social card pairing rejection evidence with the verified host result",
       "integrated loudness and true-peak analysis of the final AAC delivery",
       "silence detection confirming no interval of one second or longer below -45 dB",
       "eleven timestamp-ordered ElevenLabs narration clips aligned to their documented scene windows"
@@ -36,8 +40,8 @@
   "outputs": [
     {
       "path": "assets/media/tactevra-overview.mp4",
-      "size_bytes": 9250712,
-      "sha256": "0786f7234d3d1efd4977fdce9d3b57f3fc5896939eb066a69b72f4253abc71ed",
+      "size_bytes": 8461009,
+      "sha256": "17680383ff01978d75fa1321721c685e2f63c1951c3f1529373c9bd81115bdcb",
       "media": {
         "duration_seconds": 77.013,
         "video": "H.264 1600x900 24fps",
@@ -47,8 +51,8 @@
     },
     {
       "path": "assets/media/tactevra-overview-poster.jpg",
-      "size_bytes": 49739,
-      "sha256": "98542939c8b727df5cd9683515540f87b0933e8914c4e8dac95e6c5d3feacc69"
+      "size_bytes": 84407,
+      "sha256": "2af6f9b51429cca4f8eafde5b0ccf282061388dc20be1a0fa4ad7a9449d4e65b"
     },
     {
       "path": "assets/media/tactevra-overview.en.vtt",
@@ -62,15 +66,15 @@
     },
     {
       "path": "assets/media/tactevra-social-preview.jpg",
-      "size_bytes": 44806,
-      "sha256": "c420e9be2851f9b28d862d3d7582ed76039efa448703f3fca56265de472d1c0b"
+      "size_bytes": 78460,
+      "sha256": "45b2a1e0940a1c062df21d83d49f19f7a03fdeda92a8febd42fcb9d7a90bb6fb"
     }
   ],
   "limitations": [
     "The Blender scene was fully rerendered for this revision; the published bytes, metadata, captions, representative frames, and final audio measurements were verified before publication.",
-    "The recorded visual review covers camera and tag lock, rejected and accepted admission states with the gripper unobstructed, a consistent detailed black keyboard, an unobstructed nominal H target, explicitly simulated tool contact, a sharp modeled host-screen observation, closed-loop payoff, and end card.",
+    "The recorded visual review covers camera and tag lock, rejected and accepted admission states with the gripper unobstructed, a consistent detailed black keyboard, a squared nominal H resolve, explicitly simulated tool contact by the complete servo-style presentation rig, a sharp modeled host-screen observation, closed-loop payoff, and end card.",
     "Keyboard and phone dimensions and target origins follow the measured RC03 configuration; their added surface details and host interface are presentation geometry, not manufacturer CAD or fabrication authority.",
-    "Static hardware-appearance shots use the hash-verified official RoArm-M3 STEP-derived surface; animated execution uses a hardware-shaped articulated presentation rig aligned to the official base and dimension contract.",
+    "Static hardware-appearance shots use the hash-verified official RoArm-M3 STEP-derived surface; animated execution uses a hardware-shaped articulated presentation rig aligned to the official base and dimension contract. The rig remains presentation geometry rather than manufacturer CAD.",
     "The unresolved Waveshare URDF redistribution disposition remains tracked at https://github.com/j-webtek/tactevra/issues/88.",
     "The GitHub delivery is intentionally encoded below the repository's 10 MiB ordinary-review ceiling; the documented build emits a separate higher-bitrate 1920x1080 upload master.",
     "The film is an architectural visualization, not physical-operation, collision, fabrication, or autonomous-task qualification."
