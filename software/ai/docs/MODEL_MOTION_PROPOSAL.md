@@ -168,6 +168,40 @@ the production emitter must abstain until the precision contract carries
 validated uncertainty/confidence and the fused sources come from one fresh,
 qualified capture.
 
+## Pose-output precision adapter and V2 producer
+
+`rocell_ai.precision_adapter_v2.adapt_pose_model_output` is the implemented
+adapter for the three normalized pose values emitted by KeyboardPoseNet and the
+compatible frozen linear residual model. It decodes the pose, transforms every
+named catalog target into board millimetres, and builds
+`rocell.ai_precision_observation.v2`. Qualification records remain trusted
+application inputs. If no exact model, catalog, domain and target-set match is
+installed, or confidence/freshness checks fail, the adapter emits the required
+`localization_uncalibrated` abstention.
+
+`rocell_ai.precision_batch_producer_v2.produce_model_motion_batch_v2` consumes
+that adapter result and an independently supplied placement-region map. It emits
+canonical `ModelMotionBatchV2` bytes only when the qualified planar disk remains
+inside each requested target region. It preserves semantic order, including
+repeated keys, punctuation and numbers. It emits no joints, motion policy,
+controller format, permit, transport access or physical authority.
+
+The held-out evidence in
+`eval/precision_adapter_localization_v1_bundle.json` has scope
+`SYNTHETIC_OFFLINE_ONLY`. Its disjoint 2,000-case calibration and 2,000-case
+evaluation cohorts produce 0.9975 measured coverage for a declared 0.99
+probability, with a conservative maximum-calibration planar bound of
+14.400834977 mm. That bound crosses ordinary key safe regions, so the evidence
+does not qualify keyboard contact. The candidate record is not installed for
+deployment and no physical-camera claim is made.
+
+`eval/precision_adapter_batch_v2_contract_fixture.json` proves that actual
+frozen-model output can flow through the adapter and producer while preserving
+the requested `H, H, 1, PERIOD` order. Its companion metadata explicitly marks
+the acceptance regions as broad synthetic contract envelopes. It is a
+serialization fixture and cannot be used as measured placement or deployment
+qualification.
+
 ## Planner-admission gate
 
 The next deterministic boundary is implemented by
