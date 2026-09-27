@@ -599,6 +599,8 @@ Copy this row and fill every field:
 
 ## Active work claims
 
+- AI lane / S1: fixed global uncertainty feasibility; reserve31000000..31000999 calibration and32000000..32000999 confirmation, frozen weights/rule, no arm changes.
+
 
 
 
