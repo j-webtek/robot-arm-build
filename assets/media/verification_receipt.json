@@ -1,8 +1,8 @@
 {
   "schema": "tactevra.published-media-verification.v1",
   "recorded_on": "2026-09-27",
-  "asset_revision_commit": "d981904935481e8dfe5128e3567305bbca995c28",
-  "source_pull_request": "https://github.com/j-webtek/tactevra/pull/131",
+  "asset_revision_commit": "6250415bd045652ab219e4a7b0ebf298c075a9d5",
+  "source_pull_request": "https://github.com/j-webtek/tactevra/pull/137",
   "authority": {
     "path": "presentations/blender/dimension_manifest.json",
     "size_bytes": 2568,
@@ -22,8 +22,10 @@
       "MP4 stream inventory, duration, dimensions, frame rate, audio, and selectable English subtitle stream",
       "WebVTT cue order and timing",
       "twelve representative frames sampled across the committed MP4",
-      "official RoArm-M3 static surface, nominal H-key registration, and explicit simulated-proxy labeling",
+      "official RoArm-M3 static surface, nominal H-key registration, and hardware-shaped articulated execution-rig labeling",
+      "reject and accept cards placed clear of the stationary gripper, with the persistent micro-label removed",
       "integrated loudness and true-peak analysis of the final AAC delivery",
+      "silence detection confirming no interval of one second or longer below -45 dB",
       "eleven timestamp-ordered ElevenLabs narration clips aligned to their documented scene windows"
     ],
     "visual_result": "PASS_WITH_RECORDED_LIMITATIONS"
@@ -31,10 +33,10 @@
   "outputs": [
     {
       "path": "assets/media/tactevra-overview.mp4",
-      "size_bytes": 7396067,
-      "sha256": "f7643bf8d52cc69d411fb8cc1c422043f890f52eb0ea90e5d26fcb77b127cc7d",
+      "size_bytes": 7080405,
+      "sha256": "7acc9b9d09b89eb8a65ae53c6f5212a6ab1538d5aa06f7e714516ea5ace3c0d8",
       "media": {
-        "duration_seconds": 77.002,
+        "duration_seconds": 77.013,
         "video": "H.264 1600x900 24fps",
         "audio": "AAC 48000Hz stereo",
         "subtitles": "mov_text English"
@@ -42,8 +44,8 @@
     },
     {
       "path": "assets/media/tactevra-overview-poster.jpg",
-      "size_bytes": 80386,
-      "sha256": "522e24843a7e03b20bc788b3e9826e1e0f8df6c804e5e53963ae55b1510b3f1c"
+      "size_bytes": 79792,
+      "sha256": "e3b201a93b34e6454500765d8a4961de2708f5b3f871ec8c203c2fb3d56eb323"
     },
     {
       "path": "assets/media/tactevra-overview.en.vtt",
@@ -53,20 +55,20 @@
     {
       "path": "assets/media/tactevra-overview.chapters.vtt",
       "size_bytes": 200,
-      "sha256": "2adba5f6143dc7ec231498b685e07429cb9845c4a67db1fbbb2587319d0ea8a3"
+      "sha256": "68b3a2e8157b6059629b7c1a2cb497a2ddc1dd8ac48ee884abd514decd6bb71d"
     },
     {
       "path": "assets/media/tactevra-social-preview.jpg",
-      "size_bytes": 68437,
-      "sha256": "9ff7017afc18d7cbbb8feb9426dc483d63b6d96fa95ac3686edb24ec5a50149a"
+      "size_bytes": 68143,
+      "sha256": "b20735845312ccb027d41ff3c21639609aff9c1f9eb43a6d545856012caf6b0d"
     }
   ],
   "limitations": [
     "The Blender scene was fully rerendered for this revision; the published bytes, metadata, captions, representative frames, and final audio measurements were verified before publication.",
-    "The recorded visual review covers one continuous arm identity, camera and tag lock, rejected and accepted admission states, an unobstructed nominal H target, explicitly simulated tool contact, host-screen observation, closed-loop payoff, and end card.",
-    "Static hardware-appearance shots use the hash-verified official RoArm-M3 STEP-derived surface; animated execution uses an explicitly labeled URDF-derived presentation proxy.",
+    "The recorded visual review covers camera and tag lock, rejected and accepted admission states with the gripper unobstructed, a consistent black keyboard, an unobstructed nominal H target, explicitly simulated tool contact, host-screen observation, closed-loop payoff, and end card.",
+    "Static hardware-appearance shots use the hash-verified official RoArm-M3 STEP-derived surface; animated execution uses a hardware-shaped articulated presentation rig aligned to the official base and dimension contract.",
     "The unresolved Waveshare URDF redistribution disposition remains tracked at https://github.com/j-webtek/tactevra/issues/88.",
-    "The GitHub delivery is intentionally encoded below the repository's 10 MiB ordinary-review ceiling; a higher-bitrate local master remains reproducible from the documented build.",
+    "The GitHub delivery is intentionally encoded below the repository's 10 MiB ordinary-review ceiling; the documented build emits a separate higher-bitrate 1920x1080 upload master.",
     "The film is an architectural visualization, not physical-operation, collision, fabrication, or autonomous-task qualification."
   ]
 }
