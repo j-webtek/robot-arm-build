@@ -599,11 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-- AI lane / S1: promote the two selected appearance-robust checkpoint hashes
-  and evaluate them once on a new 38M grouped development cohort using the
-  frozen ranking and member-quality rule; no fitting, calibration, runtime,
-  contract, or arm changes.
-
 
 
 
@@ -8468,3 +8463,51 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic repository review before final ledger append; not model, runtime, or physical assurance. No arm or integration status changes.
 - Supersedes: none.
 - Next dependency: Same as AI-334.
+
+
+### E-20260927-AI-337 — fresh appearance-robust development gate
+
+- Stage: S1
+- Lane: AI
+- Commit: `66596ec1afd061588178aaa1c0538feba5bbd2fa` (checkpoint hashes, 38M population, decision rule, source, and plan frozen before rendering or inference; report, tests, and documentation committed in the successor)
+- Inputs/fixtures: Selected SiLU checkpoint SHA256 `22ac55a2c869a0aaac8f1c03364cd2f05456c492e10fd4825a58f8727d0b425b`; separable checkpoint SHA256 `7236e5a4a25d3465bbac07ff6d41e3dc43508ee765a77e67f59c7bd0bc558dea`; frozen candidate SHA256 `c9f4ef6d8f9e50317a917154fccacce46506ab2e7cde8267396e28fec156147b`; selection report SHA256 `17815b1d24e593812a87d9b88257578722712bd0afc7d51e5d6b3be484aa9702`. Fresh scenes `38000000..38000999`, two styles, and four conditions total 8,000 images; development pixel SHA256 `1dd89bb56e6462c906ba322929e50e3a9e5ddc96642be45fdd7b522feb0a8ae1`; plan SHA256 `5f195d4d43c72f75094a8c2104d48617f3f6876f088227e489a89b7ba1276e31`; report SHA256 `1356b89880c06f84be3a7d83a5fc42d0bc3b07406f16b4664f1673f7528acdf8`. Prediction hashes for all three models are retained in the report.
+- Command: `python software/ai/vision/evaluate_appearance_robust_ensemble.py`
+- Result: PASS every fixed development check. Scene tail AUROC `0.725281` exceeds `0.70`. Overall failure is `84/1000` scenes (8.4%); 25% retention has `7/250` (2.8%) and 50% has `23/500` (4.6%), passing both relative reductions. SiLU and separable appearance means are `1.221354` mm and `1.366111` mm versus candidate `0.839518` mm; every appearance and all-condition member-quality check passes. Zero fits or optimizer updates.
+- Artifacts: tracked selected checkpoints under `results/appearance_robust_ensemble_v1_*`; `vision/evaluate_appearance_robust_ensemble.py`; development plan and report under `eval/`; `tests/test_appearance_robust_ensemble_development.py`; `docs/IMAGE_DEPENDENT_UNCERTAINTY.md`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Fresh grouped synthetic development evidence from the same renderer; no physical-camera evidence. Disagreement remains an uncalibrated rank, with no metric radius or runtime threshold. Passing permits only a separately frozen calibration and confirmation chain. No runtime installation, physical qualification, or motion authority. ModelMotionBatchV2 and arm/integration statuses are unchanged.
+- Supersedes: none; all earlier failed uncertainty and ensemble evidence remains preserved.
+- Next dependency: Freeze a monotonic disagreement-to-error scale, independent scene-grouped calibration and confirmation ranges, finite-sample coverage target, and nonzero utility rule before viewing either cohort. Retain the 3 mm research tolerance and preserve failure without tuning.
+
+
+### E-20260927-AI-338 — fresh development verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `66596ec1afd061588178aaa1c0538feba5bbd2fa` (frozen evaluation source; tests and documentation committed in the successor)
+- Inputs/fixtures: Same 8,000 fresh 38M images, three frozen model artifacts, plan, and report as AI-337; exact hashes are recorded there and in the report.
+- Command: `python -m pytest -q software/ai/tests/test_appearance_robust_ensemble_development.py`
+- Result: PASS: 2 tests in 1.93s. Tests verify frozen checkpoint lineage, fresh development-only scope, exact grouped population, candidate score recounts, scene aggregation and ranking, every fixed acceptance check, the passing composite decision, and zero fit, hardware, or physical authority.
+- Artifacts: `tests/test_appearance_robust_ensemble_development.py`; `eval/appearance_robust_ensemble_development_v1_report.json`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Existing pytest-asyncio configuration warning. Verification establishes internal reproducibility, not calibrated uncertainty or physical accuracy. Contract unchanged, so shared boundary tests were not triggered.
+- Supersedes: none.
+- Next dependency: Same as AI-337.
+
+
+### E-20260927-AI-339 — fresh development snapshot review
+
+- Stage: S1
+- Lane: AI
+- Commit: `66596ec1afd061588178aaa1c0538feba5bbd2fa` (frozen evaluation source; final ledger append in successor)
+- Inputs/fixtures: Repository snapshot containing the tracked selected checkpoints, frozen fresh-development plan and source, generated report, tests, and interpretation; exact hashes recorded in AI-337.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS: 6,268 paths, 921.6 MiB, 0 unresolved review findings, 14 reviewed synthetic fixtures.
+- Artifacts: selected checkpoints; fresh development plan/report; verification test; uncertainty documentation; shared evidence ledger.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic repository review before final ledger append; not model, runtime, or physical assurance. No arm or integration status changes.
+- Supersedes: none.
+- Next dependency: Same as AI-337.

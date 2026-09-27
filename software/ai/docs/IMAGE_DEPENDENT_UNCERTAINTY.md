@@ -208,3 +208,28 @@ calibration, confirmation, or physical authority. The 37,002,400 through
 development decision. The next step is one preregistered evaluation of these
 exact checkpoint hashes on a new grouped development cohort, using the stronger
 0.70 AUROC requirement and the same fixed-retention and member-quality rules.
+
+## Fresh appearance-robust development gate
+
+The two selected checkpoint hashes were promoted to tracked artifacts and
+evaluated without fitting on 1,000 new 38M scenes, totaling 8,000 images. The
+registered development rule passed in full. Scene tail AUROC was 0.725281. The
+cohort contained 84 failing scenes (8.4%); the lowest-disagreement 25% contained
+7 failures among 250 scenes (2.8%), and the lowest 50% contained 23 among 500
+(4.6%). Both retained rates satisfy their fixed relative-reduction limits.
+
+All member-quality checks also passed. Appearance-shift mean error was 1.221354
+mm for the SiLU member and 1.366111 mm for the separable member, versus 0.839518
+mm for the frozen candidate. The full-condition mean errors also remained below
+the fixed two-times-candidate limits. No training, calibration, or threshold
+selection occurred in this evaluation.
+
+This passage demonstrates repeatable synthetic failure ranking. It does not
+produce a metric uncertainty radius or a runtime acceptance threshold. The next
+bounded study must freeze a monotonic mapping from ensemble disagreement to an
+error scale, an independent scene-grouped calibration population, a finite-
+sample coverage target, and a separate confirmation population before viewing
+either new cohort. It must retain the 3 mm research tolerance, require nonzero
+accepted utility, and preserve failure without tuning. Physical-camera evidence,
+calibrated board-to-arm transforms, freshness, and capability checks remain
+separate requirements.
