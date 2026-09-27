@@ -15,6 +15,7 @@ implementation details or evidence for a specific part of the system.
 | Get help or report unclear guidance | [Support](../SUPPORT.md) |
 | Contribute code or documentation | [Contributing](../CONTRIBUTING.md) |
 | Explore physical build resources | [Hardware build guide](HARDWARE_BUILD_GUIDE.md) |
+| Build the system visualization | [Blender workcell explainer](../presentations/blender/README.md) |
 
 ## Choose by role
 
