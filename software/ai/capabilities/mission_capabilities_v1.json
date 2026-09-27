@@ -1,0 +1,45 @@
+{
+  "schema": "rocell.mission_capabilities.v1",
+  "capabilities": [
+    {
+      "capability_id": "keyboard.typing.lowercase",
+      "operation": "type_text",
+      "device": "keyboard",
+      "offline_compiler_available": true,
+      "semantic_profile_id": "development/keyboard-us-lowercase-semantic-v1",
+      "required_observation_policy": "verify_after_each_action",
+      "required_device_state": null,
+      "physical_runtime_released": false
+    },
+    {
+      "capability_id": "phone.typing.lowercase",
+      "operation": "type_text",
+      "device": "phone",
+      "offline_compiler_available": true,
+      "semantic_profile_id": "development/phone-lowercase-semantic-v1",
+      "required_observation_policy": "verify_after_each_state_change",
+      "required_device_state": "KEYBOARD_LOWER",
+      "physical_runtime_released": false
+    },
+    {
+      "capability_id": "keyboard.typing.shifted",
+      "operation": "type_text",
+      "device": "keyboard",
+      "offline_compiler_available": false,
+      "semantic_profile_id": null,
+      "required_observation_policy": "verify_after_each_action",
+      "required_device_state": null,
+      "physical_runtime_released": false
+    },
+    {
+      "capability_id": "phone.dialer.call",
+      "operation": "place_phone_call",
+      "device": "phone",
+      "offline_compiler_available": false,
+      "semantic_profile_id": null,
+      "required_observation_policy": "verify_after_each_state_change",
+      "required_device_state": null,
+      "physical_runtime_released": false
+    }
+  ]
+}

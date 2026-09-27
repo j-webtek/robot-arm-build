@@ -9499,3 +9499,48 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic repository review before final ledger append; not model, runtime, security, or physical assurance. No arm or integration status changes.
 - Supersedes: none.
 - Next dependency: Same as AI-403.
+
+### E-20260927-AI-406 — mission-intent v1 and capability boundary
+
+- Stage: S1
+- Lane: AI
+- Commit: `80d3bcc33184367b0b7d880765fd22fac5d48749` (parent evidence commit; mission implementation and ledger committed in the successor)
+- Inputs/fixtures: Existing `rocell.ai_task_proposal.v0`, read-only compiler adapter, development keyboard/phone semantic profiles, and `rocell.action_plan.v1`; new capability matrix SHA-256 `4fb6ec167ffc832d2eb0c7bee0d0c113d031a705edcc3e842df71fef1f801384`; mission-intent schema SHA-256 `7fc63a36dd906c770b96c2c053a877bce49246826dd790239dbfc098aad3c774`; mission-compilation schema SHA-256 `f9a1c2c45ccc9342f1025e19e5b66d94feb6f6166d1a0669c893719735f9c949`; runtime source SHA-256 `0b1c6d2cb720cb86d6b06a59261924567ef58593fbb79d0d1ef63d94ddaf0367`; focused test SHA-256 `6cf011ccc6ff5a7c4da4ce68b93916b6c1d716aa9f011fd0a7cb041df9874b4b`; operator/training documentation SHA-256 `bea8cffa0db9ff2a233ae3f7198f73c747b0f86c4e7c60a5ffdcdcd0b4c0461a`.
+- Command: `python -m pytest -q software/ai/tests/test_mission_intent.py`
+- Result: PASS: 6 tests in 0.13s. Added strict duplicate-free bounded JSON decoding, exact execute/clarify/unsupported shapes, canonical mission hashing, capability-operation-device-policy validation, and compiler-backed `rocell.mission_compilation.v1`. Keyboard `robot` compiles to exact ordered named keys `R,O,B,O,T`; phone typing requires fresh `KEYBOARD_LOWER`; recognized phone calling remains unavailable and emits no ActionPlan; stale state, unsupported characters, extra joint fields, capability mismatch, and policy mismatch reject or block. Four capabilities are explicit, two have offline compilers, and all four record `physical_runtime_released=false`.
+- Artifacts: `capabilities/mission_capabilities_v1.json`; `schemas/mission_intent_v1.schema.json`; `schemas/mission_compilation_v1.schema.json`; `rocell_ai/mission_intent.py`; `tests/test_mission_intent.py`; `docs/MISSION_INTENT_V1.md`; updates to `docs/CONTRACT.md` and `docs/ROADMAP.md`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Offline semantic compilation and dataset-target boundary only. The labels and capability choices have simulated review rather than independent human review. Only lowercase development typing compilers exist; shifted typing and phone calling remain unavailable. No model was trained, no perception was consumed, no ModelMotionBatch was emitted, and no runtime, physical, contact, permit, transport, or outcome authority changed.
+- Supersedes: none; the v0 proposal remains available for frozen compatibility evidence.
+- Next dependency: Freeze a compiler-checked mission curriculum with positive, clarification, unavailable, adversarial, stale-observation, and paraphrase-family-held-out examples before training or evaluating a new offline student.
+
+### E-20260927-AI-407 — mission-intent and existing-boundary regression
+
+- Stage: S1
+- Lane: AI
+- Commit: `80d3bcc33184367b0b7d880765fd22fac5d48749` (parent evidence commit; verification committed in the successor)
+- Inputs/fixtures: Mission artifacts from AI-406 plus the existing offline intent/compiler fixtures and shared v2 batch-emitter fixtures.
+- Command: `python -m pytest -q software/ai/tests/test_offline.py software/ai/tests/test_mission_intent.py software/ai/tests/test_batch_emitter_v2.py`
+- Result: PASS: 41 tests in 1.05s. The combined suite verifies legacy proposal/compiler behavior, all new mission invariants and schema/runtime agreement, and unchanged actual v2 batch assembly behavior.
+- Artifacts: same mission artifacts as AI-406 plus existing offline and v2 emitter tests.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Existing pytest-asyncio configuration warning. Offline regression only. `ModelMotionBatch` did not change, so the full shared producer/consumer boundary suite was not triggered. No arm or integration status changes.
+- Supersedes: none.
+- Next dependency: Same as AI-406.
+
+### E-20260927-AI-408 — mission-intent snapshot review
+
+- Stage: S1
+- Lane: AI
+- Commit: `80d3bcc33184367b0b7d880765fd22fac5d48749` (parent evidence commit; final ledger append in successor)
+- Inputs/fixtures: Repository snapshot containing the new mission schemas, capability matrix, compiler-backed adapter, tests, documentation, and shared ledger.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS: 6,374 paths, 1,040.2 MiB, 0 unresolved review findings, 14 reviewed synthetic fixtures.
+- Artifacts: mission artifacts and shared documentation from AI-406.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic repository review before final ledger append; not model, runtime, security, or physical assurance. No arm or integration status changes.
+- Supersedes: none.
+- Next dependency: Same as AI-406.

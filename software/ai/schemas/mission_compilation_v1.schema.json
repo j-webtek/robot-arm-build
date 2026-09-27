@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/j-webtek/robot-arm-build/software/ai/schemas/mission_compilation_v1.schema.json",
+  "title": "RoCell mission compilation v1",
+  "oneOf": [
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema",
+        "request_id",
+        "observation_ref",
+        "mission_sha256",
+        "capability_id",
+        "status",
+        "profile_id",
+        "plan_hash",
+        "action_plan"
+      ],
+      "properties": {
+        "schema": {"const": "rocell.mission_compilation.v1"},
+        "request_id": {"type": "string", "minLength": 1},
+        "observation_ref": {"type": "string", "minLength": 1},
+        "mission_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "capability_id": {"type": "string", "minLength": 1},
+        "status": {"const": "accepted"},
+        "profile_id": {"type": "string", "minLength": 1},
+        "plan_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "action_plan": {"type": "object"}
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema",
+        "request_id",
+        "observation_ref",
+        "mission_sha256",
+        "status",
+        "reason"
+      ],
+      "properties": {
+        "schema": {"const": "rocell.mission_compilation.v1"},
+        "request_id": {"type": "string", "minLength": 1},
+        "observation_ref": {"type": "string", "minLength": 1},
+        "mission_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "status": {"const": "blocked"},
+        "reason": {
+          "enum": [
+            "device_ambiguous",
+            "payload_ambiguous",
+            "intent_ambiguous",
+            "operation_not_available",
+            "unsupported_by_profile",
+            "stale_observation",
+            "phone_state_unverified",
+            "capability_mismatch",
+            "capability_not_available"
+          ]
+        }
+      }
+    }
+  ]
+}

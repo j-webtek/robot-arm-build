@@ -41,6 +41,17 @@ measured transforms, generate and screen the complete trajectory, and issue a
 separate permit before a controller command can exist. The model may not emit
 joint targets, PWM, protocol JSON, permits, or transport writes.
 
+The offline intent-training target is now
+[`rocell.mission_intent.v1`](MISSION_INTENT_V1.md). It binds an execute,
+clarify, or unsupported decision to one request and observation reference.
+Executable v1 missions carry only `type_text`, one device, exact literal text,
+one capability ID, and its required observation policy. A strict adapter binds
+the canonical mission hash and delegates to the existing read-only compiler,
+producing `rocell.mission_compilation.v1`. The committed capability matrix
+keeps phone calling and shifted keyboard typing unavailable and records zero
+physical release for every capability. This is an offline dataset and
+compilation boundary; `ModelMotionBatch` and physical authority are unchanged.
+
 ## Proposed first request
 
 This is an AI adapter proposal, **not** an existing RoCell schema:

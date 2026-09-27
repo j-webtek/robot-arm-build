@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/j-webtek/robot-arm-build/software/ai/schemas/mission_intent_v1.schema.json",
+  "title": "RoCell mission intent v1",
+  "oneOf": [
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema",
+        "request_id",
+        "observation_ref",
+        "decision",
+        "operation",
+        "device",
+        "arguments",
+        "required_capability",
+        "observation_policy"
+      ],
+      "properties": {
+        "schema": {"const": "rocell.mission_intent.v1"},
+        "request_id": {"type": "string", "minLength": 1},
+        "observation_ref": {"type": "string", "minLength": 1},
+        "decision": {"const": "execute"},
+        "operation": {"const": "type_text"},
+        "device": {"enum": ["keyboard", "phone"]},
+        "arguments": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["text"],
+          "properties": {
+            "text": {"type": "string", "minLength": 1}
+          }
+        },
+        "required_capability": {"type": "string", "minLength": 1},
+        "observation_policy": {
+          "enum": ["verify_after_each_action", "verify_after_each_state_change"]
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema", "request_id", "observation_ref", "decision", "reason"],
+      "properties": {
+        "schema": {"const": "rocell.mission_intent.v1"},
+        "request_id": {"type": "string", "minLength": 1},
+        "observation_ref": {"type": "string", "minLength": 1},
+        "decision": {"const": "clarify"},
+        "reason": {"enum": ["device_ambiguous", "payload_ambiguous", "intent_ambiguous"]}
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema",
+        "request_id",
+        "observation_ref",
+        "decision",
+        "operation",
+        "device",
+        "required_capability",
+        "reason"
+      ],
+      "properties": {
+        "schema": {"const": "rocell.mission_intent.v1"},
+        "request_id": {"type": "string", "minLength": 1},
+        "observation_ref": {"type": "string", "minLength": 1},
+        "decision": {"const": "unsupported"},
+        "operation": {"enum": ["type_text", "place_phone_call"]},
+        "device": {"enum": ["keyboard", "phone"]},
+        "required_capability": {"type": "string", "minLength": 1},
+        "reason": {"enum": ["operation_not_available", "unsupported_by_profile"]}
+      }
+    }
+  ]
+}

@@ -100,6 +100,15 @@ motion or contact.
 
 ## Immediate work package
 
+The structured student target is now `rocell.mission_intent.v1`, with a strict
+runtime validator, compiler-backed mission result, and committed capability
+matrix. The next intent increment should freeze a compiler-checked curriculum
+covering supported literal typing, paraphrases, quoted command words,
+ambiguity, unavailable capabilities, conflicting compound requests, stale
+observations, and stop behavior. Split paraphrase families before generating a
+new student result, and score wrong accepted operations separately from raw
+exact accuracy.
+
 The first offline implementation of steps 1–3 starts with `"type test on the keyboard"`
 and `"type test. on the phone"`; include `"type Hi!"` and
 `"call 555-0102"` as understood but currently unsupported. The broader v1
