@@ -34,6 +34,18 @@ def test_execute_binds_ids_and_exact_literal_without_model_generation():
     assert result["hardware_writes"] == result["physical_movements"] == 0
 
 
+def test_phone_keyboard_is_grounded_as_phone_without_false_device_conflict():
+    decision = decode({"schema": "rocell.mission_decision.v1", "decision": "execute", "device": "phone"})
+    result = assemble_mission_decision(
+        decision,
+        request_id="request-phone",
+        observation_ref="frame-phone",
+        request='Enter "hello" with the phone keyboard.',
+    )
+    assert result["status"] == "assembled"
+    assert result["mission_intent"]["device"] == "phone"
+
+
 @pytest.mark.parametrize(
     ("request_text", "device", "reason"),
     [

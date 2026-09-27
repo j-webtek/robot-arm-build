@@ -599,6 +599,10 @@ Copy this row and fill every field:
 
 ## Active work claims
 
+- AI lane / S1: freeze and generate a compact seven-class development
+  curriculum derived only from mission-development-v2; require deterministic
+  reassembly to reproduce every original MissionIntentV1 target exactly and
+  keep confirmation absent.
 
 
 
@@ -9833,3 +9837,33 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Offline contract and deterministic assembly only. Double-quoted literals and finite device/compound vocabularies deliberately reject valid language and are not a complete parser. The semantic classifier model and compact curriculum do not yet exist. No camera, localization, trajectory, contact, runtime, hardware, physical, qualification, arm, or integration evidence/status changed.
 - Supersedes: none; full-object student results remain preserved as failed evidence and motivation.
 - Next dependency: Freeze a derived compact-decision development dataset from the existing balanced v2 records. Targets must contain only the seven classes, while an independent test must reassemble each decision against the source request and reproduce the existing MissionIntentV1 target or a documented conservative downgrade. Then train a seven-class student without generating literals.
+
+### E-20260927-AI-429 — compact curriculum initial exact-reassembly failure
+
+- Stage: S1
+- Lane: AI
+- Commit: `a79b1cf2b925a557ee223643dfe488e4edccb37a` (compact boundary parent; failed derivation and correction committed in the successor)
+- Inputs/fixtures: Frozen 1,280/320 mission-development-v2 records and hashes; compact decision boundary from AI-428; new deterministic derivation source and source test.
+- Command: `python -m py_compile software/ai/train/build_mission_decision_curriculum_v1.py software/ai/tests/test_mission_decision_curriculum_source.py; python -m pytest -q software/ai/tests/test_mission_decision_curriculum_source.py software/ai/tests/test_mission_decision.py; git diff --check`
+- Result: FAIL: 2 failed and 7 passed in 0.29s. Exact reassembly stopped on the first supported-phone request, `Enter "cedar trail" with the phone keyboard.` The deterministic grounder treated `phone` and the component word `keyboard` as two competing devices and conservatively downgraded to `device_ambiguous`. No compact dataset file or model result was produced. The failure revealed a real compound device-name rule missing from the newly introduced boundary.
+- Artifacts: `train/build_mission_decision_curriculum_v1.py`; `tests/test_mission_decision_curriculum_source.py`; compact runtime/test modification in the successor; active S1 claim.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Development-source grounding failure only. No training, selection, confirmation, runtime release, or physical evidence. ModelMotionBatch and arm/integration statuses unchanged.
+- Supersedes: none; this failed evidence remains preserved.
+- Next dependency: Treat phone/mobile/handset keyboard as a phone input device unless the request explicitly contrasts it with a physical/desk/hardware/computer keyboard, add a focused regression, and rerun exact reassembly before freezing the generator.
+
+### E-20260927-AI-430 — compact decision curriculum generator freeze
+
+- Stage: S1
+- Lane: AI
+- Commit: `a79b1cf2b925a557ee223643dfe488e4edccb37a` (compact boundary parent; corrected runtime and frozen generator/test committed in the successor before dataset generation)
+- Inputs/fixtures: Generator SHA-256 `796b0098a408fbfee1a33493a0fcb2b73adab3b7404975c69cc1e4ad9a6b782a`; source-test SHA-256 `5f0d2d2242169434506b6e87e79863a4b0f72ef9b5689d9f5c59cccfb1be43ee`; corrected runtime/test SHA-256 `3748c170ed0aa23316b46b2fbe68be4dfabf90374b917ccb0050242d495d6d6a` / `5043912f690c52b8f121587ae103b762b031682335ecb9402e97f778ccd89b51`; source manifest/train/validation hashes pinned in the generator.
+- Command: `python -m pytest -q software/ai/tests/test_mission_decision_curriculum_source.py software/ai/tests/test_mission_decision.py; git diff --check`
+- Result: PASS: 10 tests in 1.25s and clean diff check. All 1,600 frozen development records map to one of seven compact classes and deterministically reassemble to their original MissionIntentV1 target exactly with zero downgrades. The model target contains no literal, request/observation binding, capability, policy, coordinate, joint, PWM, permit, or transport field. Added phone-keyboard compound grounding while retaining explicit cross-device conflict downgrade. Expected training class counts are 384 keyboard execute, 256 phone execute, and 128 for each of five clarification/unsupported classes; validation counts are one quarter of training. The generator records inverse-frequency weights rather than duplicating examples. No output dataset existed at this freeze.
+- Artifacts: derivation source/test from AI-429; corrected `rocell_ai/mission_decision.py`; corrected `tests/test_mission_decision.py`; shared ledger.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Source and in-memory deterministic development evidence only. The inputs remain agent-authored templates with simulated review. Exact reassembly proves transformation fidelity, not classifier generalization. No confirmation data or model exists. No physical or runtime authority changed.
+- Supersedes: AI-429 only as corrected source verification; failed evidence remains preserved.
+- Next dependency: Commit this corrected boundary and generator before executing it once. Then verify byte reproduction, source lineage, class counts and weights, exact reassembly hashes, zero confirmation artifacts, and unchanged downstream boundaries.

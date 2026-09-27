@@ -24,6 +24,10 @@ _DEVICE_WORDS = {
     "keyboard": re.compile(r"\b(?:keyboard|keys)\b", re.IGNORECASE),
     "phone": re.compile(r"\b(?:phone|mobile|handset)\b", re.IGNORECASE),
 }
+_EXPLICIT_KEYBOARD_CONFLICT = re.compile(
+    r"\b(?:physical|desk|hardware|computer)\s+keyboard\b|\bor\s+(?:the\s+)?keyboard\b",
+    re.IGNORECASE,
+)
 _EXTRA_OPERATION = re.compile(
     r"\b(?:email|publish|post|send|forward|open|launch|call|dial|close|start|navigate|navigation)\b",
     re.IGNORECASE,
@@ -122,9 +126,21 @@ def assemble_mission_decision(
     else:
         literals = _QUOTED.findall(request)
         outside = _QUOTED.sub(" ", request)
-        mentions = {
-            device for device, pattern in _DEVICE_WORDS.items() if pattern.search(outside)
-        }
+        phone_mentioned = bool(_DEVICE_WORDS["phone"].search(outside))
+        keyboard_mentioned = bool(_DEVICE_WORDS["keyboard"].search(outside))
+        if phone_mentioned and keyboard_mentioned:
+            mentions = (
+                {"phone", "keyboard"}
+                if _EXPLICIT_KEYBOARD_CONFLICT.search(outside)
+                else {"phone"}
+            )
+        else:
+            mentions = {
+                device for device, present in (
+                    ("keyboard", keyboard_mentioned),
+                    ("phone", phone_mentioned),
+                ) if present
+            }
         if len(literals) != 1:
             downgrade_reason = "payload_ambiguous"
         elif mentions != {decision["device"]}:
