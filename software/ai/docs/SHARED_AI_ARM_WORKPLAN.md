@@ -599,6 +599,8 @@ Copy this row and fill every field:
 
 ## Active work claims
 
+- AI lane / S1: image-only uncertainty scale prototype; reserve33000000..33000599 for uncertainty training-selection only, five grouped folds, frozen pose model, no calibration/arm changes.
+
 
 
 
