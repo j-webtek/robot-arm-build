@@ -28,3 +28,17 @@ updates:
         update-types: [minor, patch]
     commit-message:
       prefix: 'chore(deps)'
+  - package-ecosystem: pip
+    directory: /active-project/RoCell_v0_3
+    schedule:
+      interval: weekly
+      day: monday
+      time: '09:00'
+      timezone: America/New_York
+    open-pull-requests-limit: 2
+    groups:
+      rc03-tools-compatible:
+        patterns: ['*']
+        update-types: [minor, patch]
+    commit-message:
+      prefix: 'chore(rc03-deps)'

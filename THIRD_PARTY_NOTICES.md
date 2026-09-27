@@ -48,10 +48,11 @@ used as engineering references.
   [`roarm_m3_kinematic_40dbd84.urdf`](software/models/roarm_m3/roarm_m3_kinematic_40dbd84.urdf)
   is a reduced projection derived from the official
   [`waveshareteam/roarm_ws`](https://github.com/waveshareteam/roarm_ws) Xacro.
-  At the pinned commit, the upstream file has no license header, the repository
-  tree has no repository-level license file, and GitHub's license endpoint does
-  not identify a license. Redistribution clearance for this derived file is
-  therefore **unresolved** in
+  The upstream `roarm_description/package.xml` explicitly declares `MIT`, but
+  the pinned tree supplies no applicable MIT license text or copyright notice,
+  the Xacro has no license header, and GitHub's repository-license endpoint does
+  not identify a repository license. The exact notice/attribution needed for
+  redistribution is therefore **unresolved** in
   [issue #88](https://github.com/j-webtek/tactevra/issues/88) and must be
   established before selecting a separately tagged public source release.
 - The referenced

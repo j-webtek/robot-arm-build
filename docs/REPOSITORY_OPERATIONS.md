@@ -113,16 +113,20 @@ after merge. Do not create public test issues or submit private data for UI test
 ## Dependency-update operation
 
 [Dependabot configuration](../.github/dependabot.yml) proposes weekly updates for
-GitHub Actions and `software/pyproject.toml`, Monday at 09:00 America/New_York.
-It takes effect when merged to the default branch; its first successful run must
-be checked in GitHub before claiming the service is operating.
+GitHub Actions, `software/pyproject.toml`, and the active RC03 CAD/vision
+requirements, Monday at 09:00 America/New_York. Each scope takes effect when
+merged to the default branch; its first successful run must be checked in GitHub
+before claiming that scope is operating.
 
-- At most two open Actions version-update PRs and three Python version-update PRs.
+- At most two open Actions version-update PRs, three runtime Python update PRs,
+  and two RC03 tool update PRs.
 - Minor/patch version updates are grouped per ecosystem; majors remain separate.
 - These limits apply to version updates, not a total cap on security-update PRs.
 - No automatic merging or dependency installation on contributors' machines.
-- Historical RC02/RC03 requirements, local model weights, vendor firmware and
-  ignored toolchains are outside this configuration.
+- Historical RC02 requirements, local model weights, vendor firmware, and
+  ignored toolchains remain outside this configuration. RC03 coverage proposes
+  dependency changes only; it does not release prints, qualify CAD output,
+  validate cameras, or approve native installations.
 - Direct attribution and external-artifact boundaries are indexed in
   [`THIRD_PARTY_NOTICES.md`](../THIRD_PARTY_NOTICES.md). Dependabot coverage does
   not establish license compatibility or redistribution permission.
