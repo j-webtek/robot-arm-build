@@ -599,6 +599,10 @@ Copy this row and fill every field:
 
 ## Active work claims
 
+- AI lane / S1: freeze a balanced mission-development-v2 curriculum generator
+  from aggregate v1 failure evidence only; exclude the consumed v1 heldout and
+  defer every confirmation fixture until model, prompt, decoder, and gates are
+  selected and frozen.
 
 
 
@@ -9698,3 +9702,33 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic repository review only; not independent language, model, security, runtime, or physical assurance. Adapter weights and Ollama blobs remain outside Git. No arm or integration status changes.
 - Supersedes: none.
 - Next dependency: Same as AI-416.
+
+### E-20260927-AI-420 — mission development v2 initial source verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `511a6c8074824786183b4a02dc34ca2b036c9a6f` (failed v1 student evidence parent; failed test and correction committed in the successor)
+- Inputs/fixtures: Aggregate category metrics from failed `mission_student_v1`; existing strict mission validator, read-only compiler, and capability matrix; new balanced development-only generator and source test. The consumed v1 heldout examples and responses were not loaded or referenced as generator inputs.
+- Command: `python -m py_compile software/ai/train/build_mission_development_v2.py software/ai/tests/test_mission_development_v2_source.py; python -m pytest -q software/ai/tests/test_mission_development_v2_source.py software/ai/tests/test_mission_intent.py; git diff --check`
+- Result: FAIL: 1 failed and 8 passed in 1.48s. The source test prohibited the substring `mission_curriculum_v1_heldout`, but the generator manifest intentionally used that phrase in a human-readable statement naming excluded evidence. No file path was opened and no heldout content was consumed. The test therefore rejected the exclusion documentation itself. Python compilation completed; no data file, model, prompt, decoder, gate, confirmation fixture, or result was produced or changed.
+- Artifacts: `train/build_mission_development_v2.py`; `tests/test_mission_development_v2_source.py`; active S1 claim in this workplan.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Test-assertion failure before study freeze. Source-only evidence with agent-authored templates and simulated review. No model, runtime, camera, motion, hardware, or physical evidence. `ModelMotionBatch` and arm/integration statuses are unchanged.
+- Supersedes: none; this failed evidence remains preserved.
+- Next dependency: Narrow only the source assertion to prohibit an actual `mission_curriculum_v1_heldout.jsonl` path reference while retaining the explicit exclusion statement, then rerun the identical command.
+
+### E-20260927-AI-421 — balanced mission development v2 generator freeze
+
+- Stage: S1
+- Lane: AI
+- Commit: `511a6c8074824786183b4a02dc34ca2b036c9a6f` (failed v1 student evidence parent; frozen generator, test, and ledger committed in the successor before writing any v2 dataset)
+- Inputs/fixtures: Generator SHA-256 `16c9596d02c4a33841babacc2cbdc6ff019b28e1299f4b469242a58fe8d05d7b`; corrected source-test SHA-256 `1968f0f58a051e015e7e63652cf9861c3eb10440a053866e492db6e2e75882fb`; strict mission validator, read-only compiler, and existing capability matrix. Design uses only the category-level findings recorded in AI-416.
+- Command: `python -m py_compile software/ai/train/build_mission_development_v2.py software/ai/tests/test_mission_development_v2_source.py; python -m pytest -q software/ai/tests/test_mission_development_v2_source.py software/ai/tests/test_mission_intent.py; git diff --check`
+- Result: PASS: 9 tests in 2.04s and clean diff check. The frozen generator defines 1,280 training and 320 validation cases, exactly balanced across supported keyboard, supported phone, quoted command-word literal, stale observation, unverified phone state, device ambiguity, payload ambiguity, compound-intent ambiguity, shifted-text rejection, and unavailable phone call categories. Training has 80 template families and validation has 20; their IDs are disjoint. All 1,600 in-memory targets validate and compile to the expected accepted or blocked class. Stale and unverified phone-state targets retain execute semantics. Confirmation is explicitly absent and must come from a separately frozen generator after model, prompt, decoder, and gates are fixed.
+- Artifacts: same source and test artifacts as AI-420 plus this ledger.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Source-level preregistration only. Template balance and diversity do not prove natural-language coverage. Agent-authored labels have simulated review and no independent human review. In-memory compiler validation is semantic rather than physical evidence. No v2 dataset, model fit, selection, confirmation, qualification, runtime release, camera evidence, motion batch, or physical outcome exists.
+- Supersedes: AI-420 only as corrected source verification; failed evidence remains preserved.
+- Next dependency: Commit this generator before executing it. Then generate the development splits once and verify byte reproduction, exact balance, family separation, compiler outcomes, absence of confirmation, and unchanged mission/ModelMotionBatch boundaries.
