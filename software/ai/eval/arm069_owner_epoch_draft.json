@@ -1,0 +1,52 @@
+{
+  "schema": "rocell.owner_governed_configuration_epoch_draft.v1",
+  "epoch_id": "arm-069-owner-governed-measured-epoch",
+  "predecessor_configuration_epoch_sha256": null,
+  "owner_acceptance_sha256": "76bac6177af918fcee476f7645df6559a960ad52e68c68875db52cdf6a091698",
+  "r97_review_packet_sha256": "987cbe86d98440734d8336c704f1ecd89692675a9cb1620cb674e4132957b416",
+  "candidate_app_sha256": "7d2e47d40141e95b611fcf37ca38d495fcf3da4dc3051f128bbae95e10840d1d",
+  "protocol_source_sha256": "3647f6575de09a521503d02d192a8c5396ff5537015f946ef5d571c3f4a9a933",
+  "joint_mapping_source_sha256": "b99bd3590c1cd4855535863a9d19a873bb2643be24403f9760f376150a71483f",
+  "components": [
+    {
+      "component_id": "software_build",
+      "installation_state": "INSTALLED",
+      "evidence_bundle_sha256": "3b482186b5e62d7fadc8b1241d6a5cd7365f328c19661d5421b553fc8b902610",
+      "binding_evidence": [
+        {
+          "binding_id": "build_snapshot",
+          "evidence_sha256": "04887a72a0766497441541b3a427914a380eb4c4c7cfc3e6e2c054a19c847f6a"
+        },
+        {
+          "binding_id": "source_binding",
+          "evidence_sha256": "2b4b8a443524b350ab041f2fd365d9666e30790ca954c5739b1322594971da18"
+        },
+        {
+          "binding_id": "dependency_receipt",
+          "evidence_sha256": "5711b0561cdb4935c0b9a0add65893edbf735c9bbf73a36fb1d8b7dc0a921298"
+        },
+        {
+          "binding_id": "provider_hashes",
+          "evidence_sha256": "5470900ac134ee50b7c10a031f89e0def718efbca3f5aa24e5c8e587c9bc61f5"
+        }
+      ],
+      "owner_ai_review_sha256": "ac20a7122e365b7a688c2bde67358ddf214da3a049a211c1b9bc7e66d2748fee",
+      "measured_monotonic_ns": 1,
+      "valid_until_monotonic_ns": 9223372036854775807,
+      "evidence_origin": "PHYSICAL_RETAINED_ORIGINALS",
+      "review_disposition": "OWNER_AI_ACCEPTED"
+    }
+  ],
+  "epoch_scope": "OWNER_GOVERNED_RELEASE_PLUS_MEASURED_WORKCELL",
+  "human_review_required": false,
+  "human_review_claimed": false,
+  "external_independence_claimed": false,
+  "owner_governance_override": true,
+  "hardware_access": false,
+  "installation_authorized": false,
+  "controller_start_authorized": false,
+  "transport_authorized": false,
+  "execution_authorized": false,
+  "physical_authority": false,
+  "draft_sha256": "6b43fedbcdf8f865be19056724d824a3e94232e96ac4559e7db092ff43c89a40"
+}

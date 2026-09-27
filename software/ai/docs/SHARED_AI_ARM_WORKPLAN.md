@@ -303,6 +303,15 @@ correctly `BLOCKED`: all eight components and their 32 required bindings are
 missing. No configuration-epoch hash exists until the complete draft passes.
 The next work is evidence population, beginning with the reproducible
 `software_build` component; no controller operation is needed for that step.
+ARM-069 closes that first component from retained original software inputs. It
+binds the exact r97 app, packet, manifest, compile profile, source baseline,
+dependency declaration, protocol encoder, and joint mapping into four
+content-addressed binding records, then records a closed owner-AI review. The
+partial epoch assessment advances only `software_build`; the other seven
+components remain explicitly `MISSING`, the configuration-epoch hash remains
+null, and every hardware authority remains false. The next ARM dependency is
+the retained camera/support/optics evidence bundle, not another software-build
+or controller test.
 
 ## Stage definitions
 
@@ -706,7 +715,7 @@ remove it only in the same commit that appends the resulting evidence row.
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
 | Unclaimed | S2 | qualified perception adapter and complete shared gate | — | AVAILABLE |
-| ARM | S4 | populate the ARM-068 owner-governed epoch one physical-original component at a time, starting with `software_build`; preserve missing evidence as blockers | ARM-069 | ACTIVE |
+| ARM | S4 | collect and owner-AI review retained `camera_support_optics` evidence; preserve the seven remaining missing components as blockers | ARM-070 | AVAILABLE |
 
 ## Worker update procedure
 

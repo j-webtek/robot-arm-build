@@ -1,0 +1,134 @@
+{
+  "schema": "rocell.owner_governed_configuration_epoch_assessment.v1",
+  "status": "BLOCKED",
+  "draft_sha256": "6b43fedbcdf8f865be19056724d824a3e94232e96ac4559e7db092ff43c89a40",
+  "configuration_epoch_sha256": null,
+  "evaluated_monotonic_ns": 2,
+  "blockers": [
+    "COMPONENT_MISSING"
+  ],
+  "component_assessments": [
+    {
+      "component_id": "software_build",
+      "status": "READY",
+      "blockers": [],
+      "missing_binding_ids": []
+    },
+    {
+      "component_id": "camera_support_optics",
+      "status": "MISSING",
+      "blockers": [
+        "COMPONENT_MISSING"
+      ],
+      "missing_binding_ids": [
+        "camera_receipt",
+        "camera_identity",
+        "camera_mode_controls",
+        "support_witnesses"
+      ]
+    },
+    {
+      "component_id": "board_tags_bench",
+      "status": "MISSING",
+      "blockers": [
+        "COMPONENT_MISSING"
+      ],
+      "missing_binding_ids": [
+        "board_measurement",
+        "tag_map",
+        "bench_identity",
+        "board_reseat_test"
+      ]
+    },
+    {
+      "component_id": "arm_controller_tool",
+      "status": "MISSING",
+      "blockers": [
+        "COMPONENT_MISSING"
+      ],
+      "missing_binding_ids": [
+        "arm_identity",
+        "controller_identity",
+        "firmware_identity",
+        "tool_identity"
+      ]
+    },
+    {
+      "component_id": "power_system",
+      "status": "MISSING",
+      "blockers": [
+        "COMPONENT_MISSING"
+      ],
+      "missing_binding_ids": [
+        "power_topology",
+        "cutoff_test",
+        "containment_review",
+        "discharge_test"
+      ]
+    },
+    {
+      "component_id": "keyboard_station",
+      "status": "MISSING",
+      "blockers": [
+        "COMPONENT_MISSING"
+      ],
+      "missing_binding_ids": [
+        "keyboard_identity",
+        "keyboard_pose",
+        "keyboard_target_map"
+      ]
+    },
+    {
+      "component_id": "phone_station",
+      "status": "MISSING",
+      "blockers": [
+        "COMPONENT_MISSING"
+      ],
+      "missing_binding_ids": [
+        "phone_identity",
+        "phone_pose",
+        "screen_homography",
+        "phone_target_map",
+        "ui_state"
+      ]
+    },
+    {
+      "component_id": "empty_cell_safety",
+      "status": "MISSING",
+      "blockers": [
+        "COMPONENT_MISSING"
+      ],
+      "missing_binding_ids": [
+        "installed_object_inventory",
+        "collision_geometry",
+        "startup_sweep",
+        "empty_cell_witness"
+      ]
+    }
+  ],
+  "missing_component_ids": [
+    "camera_support_optics",
+    "board_tags_bench",
+    "arm_controller_tool",
+    "power_system",
+    "keyboard_station",
+    "phone_station",
+    "empty_cell_safety"
+  ],
+  "blocked_component_ids": [],
+  "ready_component_ids": [
+    "software_build"
+  ],
+  "epoch_bound_build_proposal_ready": false,
+  "human_review_required": false,
+  "human_review_claimed": false,
+  "external_independence_claimed": false,
+  "owner_governance_override": true,
+  "installation_authorized": false,
+  "controller_start_authorized": false,
+  "transport_authorized": false,
+  "execution_authorized": false,
+  "hardware_access": false,
+  "physical_authority": false,
+  "assessment_sha256": "a2e7b468a685813de164e2f81e9769fd10524ce76c665ce172110205385d8e97"
+}

@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rocell.local/schemas/software_build_owner_ai_review_v1.schema.json",
+  "title": "RoCell software-build owner AI review v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "review_id", "component_id", "evidence_bundle_sha256",
+    "checks", "disposition", "human_review_required",
+    "human_review_claimed", "external_independence_claimed",
+    "owner_governance_override", "hardware_access",
+    "installation_authorized", "controller_start_authorized",
+    "transport_authorized", "execution_authorized", "physical_authority",
+    "review_sha256"
+  ],
+  "properties": {
+    "schema": {"const": "rocell.software_build_owner_ai_review.v1"},
+    "review_id": {"const": "arm-069-r97-software-build-owner-ai-review"},
+    "component_id": {"const": "software_build"},
+    "evidence_bundle_sha256": {"$ref": "#/$defs/sha256"},
+    "checks": {
+      "type": "array", "minItems": 5, "maxItems": 5,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["check_id", "passed"],
+        "properties": {
+          "check_id": {"type": "string", "minLength": 1},
+          "passed": {"type": "boolean"}
+        }
+      }
+    },
+    "disposition": {"enum": ["OWNER_AI_ACCEPTED", "REJECTED"]},
+    "human_review_required": {"const": false},
+    "human_review_claimed": {"const": false},
+    "external_independence_claimed": {"const": false},
+    "owner_governance_override": {"const": true},
+    "hardware_access": {"const": false},
+    "installation_authorized": {"const": false},
+    "controller_start_authorized": {"const": false},
+    "transport_authorized": {"const": false},
+    "execution_authorized": {"const": false},
+    "physical_authority": {"const": false},
+    "review_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}
