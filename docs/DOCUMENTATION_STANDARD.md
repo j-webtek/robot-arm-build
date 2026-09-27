@@ -71,6 +71,18 @@ must remain distinct. State negative and failed results plainly.
   generated evidence. Follow [evidence retention](EVIDENCE_RETENTION.md).
 - Run `python scripts/ci/check_docs.py` before requesting review.
 
+Keep current guidance and chronology in separate layers:
+
+1. A public overview states what the project is and links to current status.
+2. A current reference explains supported setup, interfaces, and ownership.
+3. Active plans coordinate unfinished work.
+4. Evidence ledgers and historical indexes preserve detailed results.
+
+Do not make users traverse a long experiment chronology before reaching current
+installation or command guidance. When a current reference accumulates dated
+checkpoints, move the unchanged checkpoint text to a clearly labeled historical
+page, retain a forward link, and add both pages to documentation validation.
+
 Documentation checks catch selected structural errors; they do not verify every
 technical claim, external URL, screenshot, or physical procedure. Review remains
 required.

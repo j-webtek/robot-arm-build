@@ -26,7 +26,8 @@ DOCS = (
     'docs/HARDWARE_PROVENANCE.md',
     'docs/REPOSITORY_OPERATIONS.md',
     'docs/MAINTAINER_CHECKLIST.md',
-    'docs/CI.md', 'docs/AUDIT_FIXTURE_REVIEW.md', 'software/README.md', 'software/ai/README.md',
+    'docs/CI.md', 'docs/AUDIT_FIXTURE_REVIEW.md', 'software/README.md',
+    'software/RUNTIME_IMPLEMENTATION_HISTORY.md', 'software/ai/README.md',
     'software/ai/docs/README.md', 'assets/brand/README.md',
     'software/ai/docs/CONTRACT.md',
     'software/ai/docs/SHARED_AI_ARM_WORKPLAN.md',
@@ -50,6 +51,9 @@ PUBLIC_TITLES = {
     'docs/SYSTEM_OVERVIEW.md': 'Tactevra system overview',
     'docs/GLOSSARY.md': 'Tactevra glossary',
     'docs/DOCUMENTATION_STANDARD.md': 'Tactevra documentation standard',
+    'software/README.md': 'Tactevra Runtime',
+    'software/RUNTIME_IMPLEMENTATION_HISTORY.md': 'Tactevra Runtime implementation history',
+    'software/ai/README.md': 'Tactevra AI',
     'software/ai/docs/CONTRACT.md': 'AI-to-Tactevra Runtime integration contract',
     'software/ai/docs/SHARED_AI_ARM_WORKPLAN.md': 'Shared AI-to-arm workplan',
     'software/ai/docs/EVIDENCE_LEDGER.md': 'Tactevra AI/arm evidence ledger',
@@ -63,6 +67,18 @@ REQUIRED_PHRASES = {
     ),
     'docs/GLOSSARY.md': ('**Document status:** Current reference',),
     'docs/DOCUMENTATION_STANDARD.md': ('**Document status:** Current policy',),
+    'software/RUNTIME_IMPLEMENTATION_HISTORY.md': (
+        '**Document status:** Historical evidence index',
+        '**Authority:** Historical context only; it does not authorize hardware operation',
+    ),
+    'software/README.md': (
+        '**Document status:** Current software reference',
+        '**Authority:** Explanatory; this page does not authorize hardware operation',
+    ),
+    'software/ai/README.md': (
+        '**Document status:** Current research and integration reference',
+        '**Authority:** Research guidance only; this page grants no controller authority',
+    ),
     'software/ai/docs/SHARED_AI_ARM_WORKPLAN.md': (
         '**Status:** active coordination document',
         '[Tactevra AI/arm evidence ledger](EVIDENCE_LEDGER.md)',

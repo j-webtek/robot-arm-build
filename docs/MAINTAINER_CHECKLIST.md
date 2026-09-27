@@ -50,6 +50,9 @@ device access, restarts, torque changes, movement, or release publication.
 - [ ] Apply the [documentation standard](DOCUMENTATION_STANDARD.md). Label
   active plans, evidence records, historical pages, and release drafts; use the
   [glossary](GLOSSARY.md) for current explanatory prose.
+- [ ] Keep current setup and command guidance ahead of dated history. If a
+  reference becomes a chronology, preserve the unchanged records in a labeled
+  historical page and validate links to both documents.
 
 ## 3. Close the handoff after merge
 
