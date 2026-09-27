@@ -233,3 +233,27 @@ either new cohort. It must retain the 3 mm research tolerance, require nonzero
 accepted utility, and preserve failure without tuning. Physical-camera evidence,
 calibrated board-to-arm transforms, freshness, and capability checks remain
 separate requirements.
+
+## Ensemble-scale calibration and confirmation
+
+The first frozen mapping used `max(ensemble disagreement, 1 mm)` as its image
+scale. On 1,000 independent 39M calibration scenes, the 99% finite-sample scene
+quantile was 2.865444 at rank 991. An image's research radius was that quantile
+times its scale, and radius at most 3 mm was the only acceptance rule. A separate
+1,000-scene 40M confirmation cohort was then evaluated without adjustment.
+
+The composite rule failed. Marginal scene coverage passed at 994/1,000 (99.4%),
+and accepted-subset coverage was 352/353 images (99.7167%) and 137/138 scenes
+(99.2754%). Utility was 353/8,000 accepted images (4.4125%), below the frozen 5%
+minimum. One accepted partial-obstruction image exceeded both its predicted
+radius and the 3 mm tolerance. Partial accepted-image coverage was 62/63
+(98.4127%), below 99%. All four conditions had nonzero accepted utility, but the
+failed checks make the complete result a failure.
+
+The 39M calibration and 40M confirmation ranges are consumed. The 5% utility,
+3 mm tolerance, and accepted-subset requirements must not be weakened using
+this outcome. The next bounded effort should use a new training-selection cohort
+to compare a small preregistered family of monotonic disagreement mappings that
+can separate the lowest-risk images more sharply, with special attention to
+partial obstruction. Only a mapping selected without these consumed rows may
+enter another independently frozen calibration and confirmation chain.

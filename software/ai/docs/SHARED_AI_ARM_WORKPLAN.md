@@ -599,11 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-- AI lane / S1: calibrate the frozen ensemble-disagreement scale on a new 39M
-  grouped cohort and confirm it once on a disjoint 40M cohort using frozen 99%
-  coverage, 3 mm tolerance, and utility rules; no runtime, contract, or arm
-  changes.
-
 
 
 
@@ -8516,3 +8511,51 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic repository review before final ledger append; not model, runtime, or physical assurance. No arm or integration status changes.
 - Supersedes: none.
 - Next dependency: Same as AI-337.
+
+
+### E-20260927-AI-340 — ensemble-scale calibration and confirmation
+
+- Stage: S1
+- Lane: AI
+- Commit: `42d57f6afe17758e9223798568a56eff6f91fe18` (scale formula, finite-sample rule, both populations, coverage and utility checks, source, and plan frozen before rendering either cohort; report, tests, and documentation committed in the successor)
+- Inputs/fixtures: Tracked candidate and selected ensemble checkpoints with hashes frozen in the plan; development report SHA256 `1356b89880c06f84be3a7d83a5fc42d0bc3b07406f16b4664f1673f7528acdf8`. Calibration scenes `39000000..39000999` and confirmation scenes `40000000..40000999`, each with two styles and four conditions for 8,000 images. Calibration pixel SHA256 `f2f8a1ee8a791a10bad9c6ce4a059e820ec3d4211d937931a731ead4f09428bf`; confirmation pixel SHA256 `3dd3d60ad373492b44685731f7859806a30590e3dc88bacc1115b4adb2b8020d`; plan SHA256 `6cde5b1ad69692dadf4340a6b8974704af13926722bb4be29d5fcd792f527aa7`; report SHA256 `401813be12e9c5fece909f70d04825c63cb62dd9fc46d167b613bc07cd6c7f0f`. All six prediction hashes are retained in the report.
+- Command: `python software/ai/vision/evaluate_ensemble_scaled_uncertainty.py`
+- Result: FAIL fixed composite rule. The rank-991 99% calibration quantile is `2.865444`. Confirmation marginal scene coverage passes at `994/1000` (99.4%). Accepted utility is `353/8000` (4.4125%), below 5%. Accepted coverage is `352/353` images (99.7167%) and `137/138` scenes (99.2754%), but one accepted partial-obstruction image exceeds both its bound and 3 mm; partial accepted coverage is `62/63` (98.4127%), below 99%. Overall utility, zero accepted errors over tolerance, and partial conditional coverage checks fail. All condition utility checks pass.
+- Artifacts: `vision/evaluate_ensemble_scaled_uncertainty.py`; `eval/ensemble_scaled_uncertainty_v1_plan.json`; `eval/ensemble_scaled_uncertainty_v1_report.json`; `tests/test_ensemble_scaled_uncertainty.py`; `docs/IMAGE_DEPENDENT_UNCERTAINTY.md`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: One quantile calibration and zero model fits or optimizer updates. Synthetic marginal and accepted-subset coverage do not establish physical safety. The 3 mm research tolerance is not a measured contact margin. Both ranges are consumed. No threshold change, runtime installation, ModelMotionBatch qualification, physical qualification, or motion authority. Arm/integration statuses are unchanged.
+- Supersedes: none; the prior zero-utility scale failure and all negative evidence remain preserved.
+- Next dependency: Do not weaken the 5% utility or accepted-subset rules against this result. Use a new training-selection cohort to compare a small preregistered family of monotonic disagreement mappings, including partial-obstruction performance, before allocating another calibration and confirmation pair.
+
+
+### E-20260927-AI-341 — ensemble-scale verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `42d57f6afe17758e9223798568a56eff6f91fe18` (frozen calibration source; tests and documentation committed in the successor)
+- Inputs/fixtures: Same 16,000 images across independent calibration and confirmation cohorts, tracked frozen models, plan, and report as AI-340; exact hashes are recorded there and in the report.
+- Command: `python -m pytest -q software/ai/tests/test_ensemble_scaled_uncertainty.py`
+- Result: PASS: 2 tests in 1.91s. Tests verify summary accounting, frozen lineage, exact grouped populations, scale-floor computation, scene-score and rank-991 quantile recounts, overall and per-condition confirmation summaries, every registered check, the failed composite decision, and zero model, hardware, or physical authority.
+- Artifacts: `tests/test_ensemble_scaled_uncertainty.py`; `eval/ensemble_scaled_uncertainty_v1_report.json`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Existing pytest-asyncio configuration warning. Verification establishes internal recount consistency, not calibrated physical safety. Contract unchanged, so shared boundary tests were not triggered.
+- Supersedes: none.
+- Next dependency: Same as AI-340.
+
+
+### E-20260927-AI-342 — ensemble-scale snapshot review
+
+- Stage: S1
+- Lane: AI
+- Commit: `42d57f6afe17758e9223798568a56eff6f91fe18` (frozen calibration source; final ledger append in successor)
+- Inputs/fixtures: Repository snapshot containing the frozen calibration/confirmation plan and source, generated report, tests, and interpretation; exact hashes recorded in AI-340.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS: 6,272 paths, 925.3 MiB, 0 unresolved review findings, 14 reviewed synthetic fixtures.
+- Artifacts: ensemble-scale plan/report; verification test; uncertainty documentation; shared evidence ledger.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic repository review before final ledger append; not model, runtime, or physical assurance. No arm or integration status changes.
+- Supersedes: none.
+- Next dependency: Same as AI-340.
