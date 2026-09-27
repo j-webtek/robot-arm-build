@@ -81,7 +81,7 @@ REQUIRED_PHRASES = {
     'THIRD_PARTY_NOTICES.md': (
         '**Document status:** Current attribution index',
         '**Authority:** Informational inventory only.',
-        'clearance for this derived file is',
+        'redistribution is therefore **unresolved**',
     ),
     'docs/releases/README.md': (
         '**Document status:** Current release index',
