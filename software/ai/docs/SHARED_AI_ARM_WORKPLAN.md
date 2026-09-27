@@ -6614,3 +6614,17 @@ commissioning, or bounded physical result with its limitations intact.
   writable adapter so permit consumption occurs at the final outbound boundary,
   then bind controller receipt, feedback/settling, and independent outcome
   evidence without adding any retry path.
+
+
+### E-20260926-AI-227 — visual audit dependency failure
+
+- Stage: S1
+- Lane: AI
+- Commit: `6270eb27847a7c42e3fae2af89d4d5db7ab03fc7`
+- Command: `python software/ai/vision/audit_persistent_visual.py`
+- Inputs/fixtures: exact hashes in eval/persistent_visual_v0_plan.json,19 persistent cases and same-condition controls.
+- Result: FAILED before rendering: ModuleNotFoundError matplotlib. No report or figures produced.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Local plotting dependency absent; no visual conclusion.
+- Next dependency: install plotting dependency and rerun unchanged frozen script; preserve this failure.
