@@ -599,6 +599,8 @@ Copy this row and fill every field:
 
 ## Active work claims
 
+- AI lane / S1: residual correction diagnosis, existing training/development, all six checkpoints and one training-only offset comparator. No training, runtime correction, contract or arm changes.
+
 
 
 
