@@ -599,6 +599,11 @@ Copy this row and fill every field:
 
 ## Active work claims
 
+- AI lane / S1: independently confirm the frozen obstruction-weighted metric
+  mapping and 40th-percentile tail-risk gate once on untouched 76M scenes; no
+  recalibration, training, runtime, contract, arm, or integration-status
+  changes.
+
 
 
 
