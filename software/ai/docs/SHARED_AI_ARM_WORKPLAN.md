@@ -599,10 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-- AI lane / S1: evaluate one preregistered 1.15 radius inflation and 40th-
-  percentile risk gate on fresh 68M calibration and 69M selection scenes; no
-  model training, runtime, contract, arm, or integration-status changes.
-
 
 
 
@@ -9143,3 +9139,48 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic repository review before final ledger append; not model, runtime, or physical assurance. No arm or integration status changes.
 - Supersedes: none.
 - Next dependency: Same as AI-379.
+
+### E-20260927-AI-382 — inflated radius and broader risk-gate selection
+
+- Stage: S1
+- Lane: AI
+- Commit: `f2bc5401e4c0472d9a0540e1253c52b7d5ea56d1` (frozen specialist lineage, 1.15 radius inflation, 40th-percentile risk gate, fresh populations, unchanged final gates, source, plan, and claim committed before inference; failed report, tests, interpretation, and claim removal committed in the successor)
+- Inputs/fixtures: Frozen prior risk-gate report SHA256 `6c24ca9c2f19d098889b5ae6bcdfad6ecbf0fbd981ae8bda30784989bba0f468`; bounded-metric checkpoint/report SHA256 `c9ee03b9962e28443fbac7644cdfbb9c068e544aeb75cc58dc2ba8b6b494b16c`/`d0632877b0918c8b71417a8c34e6e580b12599c6144cb4876d4bb11dcc821fb7`; tail-risk checkpoint/report SHA256 `79d48b0ef63effea3642c2e08a20d8a6800f27f75e0ed97ed8050f146d4f326e`/`40524c98512aa98383f70aa0156b062276660572081ff1c4b808fdec460211cf`. Mapping-calibration scenes `68000000..68000999` and selection scenes `69000000..69000999`, each with two styles and four conditions for 8,000 images. Calibration pixel/feature/target/metric/risk SHA256 values `bda8c42df95efee8be43dfc3023d2db6c34e60c9886e2dc310cda3a9162efb22`, `5136017cf0c42a04b25c16df1418d45faf2ed3e73b8152694214be4a546435d8`, `d009c349eefe8b2ab96e52b90e64be952db8d4091973602e3017345c1edfb79a`, `d6c6be871eaf7a437e347191d6bcdb17d80663c423fb3db8656135db9e69bff2`, and `c9d2140388a6a58f5c08a736333ad6406c1991e15d057c1e03cfb00bc5f10576`; selection values `e8f1d0a43767ad558e0b488d1ec5718c5ab7ca8ac352080238beb5641b6fdbba`, `a15594ab03bac25302960997ba224765ca1f2199d88bab667c61e2352026abe1`, `05419b0b969231a892caf64799c71712f0fe5ef77c2a477638ac9294e38172ac`, `c9d9d57901fc32ea61e22dd78145b43c2cba1469a41d525a8512ae9195108f4c`, and `51a427d26cbd6b55b26cc3b7b1fdcdd9db41bfd4865d3272d8b3510e0a962e64`. Risk-reference SHA256 `bcacee7e443b3993c477e5142ce73d46000f9c68c9a4f5305801704ed287aefe`; plan SHA256 `8f40454c1dcef2692718f68251f5bc4c59b8c34125d0a456d83f665a3d6a77fd`; report SHA256 `5e6cbe95c00be3e3c77699ef69a05d128b7998b4110d2ce3131c2f045bf90c17`.
+- Command: `python software/ai/train/select_inflated_risk_gate.py`
+- Result: FAIL fixed selection rule by two utility checks. Independent metric calibration yields rank 991 and quantile `1.738460491`; the registered 1.15 multiplier yields applied quantile `1.999229564`. Marginal scene coverage is 99.3%; 280/8,000 images are accepted (3.5%); accepted-image and accepted-scene coverage are both 100%; every condition has 100% accepted-image coverage; and zero accepted error exceeds 3 mm. Overall utility fails the 5% minimum. Full obstruction retains 18/2,000 (0.9%), below 1%; partial obstruction is exactly 1%. One mapping fit, zero new model fits, and zero optimizer updates.
+- Artifacts: `train/select_inflated_risk_gate.py`; `train/inflated_risk_gate_v1_plan.json`; `eval/inflated_risk_gate_v1_report.json`; `tests/test_inflated_risk_gate.py`; `docs/IMAGE_DEPENDENT_UNCERTAINTY.md`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Synthetic mapping-calibration and selection evidence for one fixed inflation and risk gate. No independent confirmation was allocated after failure. The 3 mm threshold is a research tolerance, not a measured contact margin. No threshold, mapping, runtime installation, physical-camera evidence, qualification, or motion authority. ModelMotionBatchV2 and arm/integration statuses are unchanged.
+- Supersedes: none; the preceding risk-gate near miss and all earlier failed evidence remain preserved.
+- Next dependency: Do not tune on 69M. On entirely fresh grouped populations, preregister a bounded improvement to the metric proposal or a new selection mechanism that can recover overall and full-obstruction utility while retaining the unchanged marginal, accepted-subset, conditional, and zero-above-tolerance gates before independent confirmation.
+
+### E-20260927-AI-383 — inflated radius and broader risk-gate verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `f2bc5401e4c0472d9a0540e1253c52b7d5ea56d1` (frozen mapping source; tests and documentation committed in the successor)
+- Inputs/fixtures: Same 16,000 fresh images, frozen specialists, empirical risk reference, inflated-radius plan, and failed report as AI-382; exact hashes are recorded there and in the report.
+- Command: `python -m pytest -q software/ai/tests/test_inflated_risk_gate.py`
+- Result: PASS: 2 tests in 1.95s. Tests verify that inflation is applied once after calibration, immutable lineage, both exact grouped populations, risk-reference hash, attached output reconstruction, scene scores, conformal rank and both quantiles, complete overall and conditional recounts, every fixed passing and failed check, and zero model fitting, optimizer, hardware, physical, qualification, or runtime authority.
+- Artifacts: `tests/test_inflated_risk_gate.py`; `eval/inflated_risk_gate_v1_report.json`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Existing pytest-asyncio configuration warning. Recount consistency only; no physical assurance. Contract unchanged, so shared boundary tests were not triggered.
+- Supersedes: none.
+- Next dependency: Same as AI-382.
+
+### E-20260927-AI-384 — inflated radius and broader risk-gate snapshot review
+
+- Stage: S1
+- Lane: AI
+- Commit: `f2bc5401e4c0472d9a0540e1253c52b7d5ea56d1` (frozen mapping source; final ledger append in successor)
+- Inputs/fixtures: Repository snapshot containing the frozen study, failed report, verification test, interpretation, and shared ledger; exact hashes recorded in AI-382.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS: 6,338 paths, 1,004.8 MiB, 0 unresolved review findings, 14 reviewed synthetic fixtures.
+- Artifacts: inflated-risk-gate plan/report; verification test; uncertainty documentation; shared ledger.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic repository review before final ledger append; not model, runtime, or physical assurance. No arm or integration status changes.
+- Supersedes: none.
+- Next dependency: Same as AI-382.

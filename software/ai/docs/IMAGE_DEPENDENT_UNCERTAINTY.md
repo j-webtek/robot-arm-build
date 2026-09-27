@@ -599,3 +599,30 @@ error. The next study may preregister one slightly broader risk gate together
 with a small conservative radius inflation on entirely fresh cohorts. The pair
 must recover overall and full-obstruction utility while removing the two
 low-risk standard radius violations, under every unchanged final gate.
+
+## Inflated radius with broader risk gate
+
+The two specialist heads remained frozen. A new 68M mapping-calibration cohort
+fit the same rank-991 scene conformal quantile, `1.738460491`. The registered
+`1.15` multiplier was then applied exactly once, producing a final quantile of
+`1.999229564`. A separate empirical CDF from the 68M risk outputs defined the
+registered 40th-percentile acceptance gate. Neither threshold was swept or
+changed after observing the untouched 69M selection cohort.
+
+The conservative radius removed all accepted-subset bound violations. Marginal
+scene coverage was 99.3%, accepted-image coverage was 100%, accepted-scene
+coverage was 100%, every condition had 100% accepted-image coverage, and no
+accepted error exceeded 3 mm. The complete study still failed its fixed utility
+rule: only 280/8,000 images were accepted, or 3.5%, below 5%. Full obstruction
+accepted 18/2,000 images, or 0.9%, below 1%. Partial obstruction landed exactly
+on its 1% minimum.
+
+This result shows that modest radius inflation can repair the preserved
+accepted-radius violations, but broadening the risk percentile does not assure
+useful retention because the separately calibrated metric-radius condition is
+still restrictive on new populations. No threshold, mapping, qualification, or
+runtime behavior is installed. Further threshold adjustment on 69M would be
+post-selection tuning and is prohibited. The next study must use new grouped
+populations and improve the metric proposal itself or preregister a new
+selection mechanism before seeing those populations. Independent confirmation
+is not allocated after this failure.
