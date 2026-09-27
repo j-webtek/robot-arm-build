@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rocell.local/schemas/model_arm_operational_readiness_v1.schema.json",
+  "title": "Model/arm operational readiness v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "status", "source_artifacts", "stage_assessments",
+    "ready_stage_ids", "blocked_stage_ids", "single_action_review_ready",
+    "production_dispatch_allowed", "controller_commands",
+    "hardware_commands_generated", "hardware_access",
+    "camera_open_authorized", "controller_start_authorized",
+    "movement_authorized", "physical_authority", "readiness_sha256"
+  ],
+  "properties": {
+    "schema": {"const": "rocell.model_arm_operational_readiness.v1"},
+    "status": {"enum": ["BLOCKED", "READY_FOR_SINGLE_ACTION_REVIEW"]},
+    "source_artifacts": {
+      "type": "array", "minItems": 5, "maxItems": 5,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["path", "sha256"],
+        "properties": {
+          "path": {"type": "string", "minLength": 1},
+          "sha256": {"$ref": "#/$defs/sha256"}
+        }
+      }
+    },
+    "stage_assessments": {
+      "type": "array", "minItems": 6, "maxItems": 6,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["stage_id", "status", "evidence_sha256", "blockers", "next_dependency"],
+        "properties": {
+          "stage_id": {"$ref": "#/$defs/stage"},
+          "status": {"enum": ["READY", "BLOCKED"]},
+          "evidence_sha256": {"$ref": "#/$defs/sha256"},
+          "blockers": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+          "next_dependency": {"type": ["string", "null"], "minLength": 1}
+        }
+      }
+    },
+    "ready_stage_ids": {"$ref": "#/$defs/stages"},
+    "blocked_stage_ids": {"$ref": "#/$defs/stages"},
+    "single_action_review_ready": {"type": "boolean"},
+    "production_dispatch_allowed": {"const": false},
+    "controller_commands": {"type": "array", "maxItems": 0},
+    "hardware_commands_generated": {"const": 0},
+    "hardware_access": {"const": false},
+    "camera_open_authorized": {"const": false},
+    "controller_start_authorized": {"const": false},
+    "movement_authorized": {"const": false},
+    "physical_authority": {"const": false},
+    "readiness_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "stage": {
+      "enum": [
+        "wire_contract", "qualified_perception", "camera_support_optics",
+        "measured_configuration_epoch", "measured_planner_calibration",
+        "installed_controller_runtime"
+      ]
+    },
+    "stages": {
+      "type": "array", "uniqueItems": true,
+      "items": {"$ref": "#/$defs/stage"}
+    }
+  }
+}

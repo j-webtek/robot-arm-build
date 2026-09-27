@@ -264,6 +264,14 @@ from .model_motion_registry_v2 import (
     ingest_with_trusted_registry_v2,
     revalidate_with_trusted_registry_v2,
 )
+from .model_arm_operational_readiness_v1 import (
+    SCHEMA as MODEL_ARM_OPERATIONAL_READINESS_V1_SCHEMA,
+    SOURCE_PATHS as MODEL_ARM_OPERATIONAL_READINESS_V1_SOURCE_PATHS,
+    STAGE_IDS as MODEL_ARM_OPERATIONAL_READINESS_V1_STAGE_IDS,
+    ModelArmOperationalReadinessError,
+    assess_model_arm_operational_readiness_v1,
+    build_model_arm_operational_readiness_v1,
+)
 from .model_motion_planner_gate_v2 import (
     SCHEMA as MODEL_MOTION_PLANNER_GATE_V2_SCHEMA,
     ArmMotionPolicyV2,
@@ -1351,6 +1359,12 @@ __all__ = [
     "TrustedMotionRegistryV2",
     "ingest_with_trusted_registry_v2",
     "revalidate_with_trusted_registry_v2",
+    "MODEL_ARM_OPERATIONAL_READINESS_V1_SCHEMA",
+    "MODEL_ARM_OPERATIONAL_READINESS_V1_SOURCE_PATHS",
+    "MODEL_ARM_OPERATIONAL_READINESS_V1_STAGE_IDS",
+    "ModelArmOperationalReadinessError",
+    "assess_model_arm_operational_readiness_v1",
+    "build_model_arm_operational_readiness_v1",
     "MODEL_MOTION_PLANNER_GATE_V2_SCHEMA",
     "ArmMotionPolicyV2",
     "ModelMotionPlannerGateV2Error",
