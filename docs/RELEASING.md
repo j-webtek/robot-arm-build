@@ -41,6 +41,11 @@ are a starting point, not a completed qualification record.
   candidate revision. Candidate mode must pass without removing a blocker merely
   to silence the check; resolve the linked review issue or record an approved
   exclusion/replacement disposition in the same reviewed change.
+  A maintainer may instead dispatch the read-only
+  [Preview candidate audit](../.github/workflows/preview-candidate-audit.yml)
+  with the exact full candidate SHA. The workflow verifies the checkout identity,
+  runs candidate integrity, the snapshot audit, and maintained-document checks,
+  and publishes no artifact or release.
 - [ ] List known limitations, including native-helper prerequisites, absent lab
   records, unqualified real-camera localization, and physical typing status.
 - [ ] Review the draft notes and remove unresolved placeholders only when their
@@ -73,6 +78,9 @@ allowance is reviewed in `.github/release-integrity-policy.json`. A policy-mode
 pass means the inventory follows the recorded path policy; it does not override
 the stricter candidate blockers, inspect file contents, or establish third-party
 redistribution rights. The separate snapshot audit remains required.
+The manual candidate workflow is additional release evidence, not a protected
+merge check or a publication approval. A failed run is expected while a recorded
+candidate blocker remains and must not be bypassed or reclassified as success.
 
 ## If a release needs correction
 
