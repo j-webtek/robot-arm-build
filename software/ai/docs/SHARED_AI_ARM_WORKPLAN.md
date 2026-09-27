@@ -599,7 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-- AI lane / S1: fixed ridge residual diagnostic, training-only normalization/fit, alpha0.01, one shared constant-mask control and three learned-mask representations. No development tuning or arm/contract change.
 
 
 
@@ -7555,3 +7554,54 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic audit before final documentation append; not runtime assurance. No localization qualification or runtime model update.
 - Supersedes: none; ReLU failures and all arm/integration statuses retained.
 - Next dependency: Freeze one training-only regularized linear-readout diagnostic on fixed pooled descriptors, with training-only normalization and matched mask/control representations; report training fit/conditioning and reused-development errors without tuning regularization on development. No activation sweep or new holdout.
+
+
+### E-20260926-AI-282 — fixed ridge residual diagnostic
+
+- Stage: S1
+- Lane: AI
+- Commit: `033a6f98be1d7db165b4636a123798dd8d5bb3ea` (frozen diagnostic source; results/tests/docs committed together)
+- Change: fixed ridge residual diagnostic.
+- Inputs/fixtures: scenes29000000..29000599 x4training,15000000..15000199 x4development; baseline pose plus frozen512-dimensional pooled descriptors,constant-one mask or three learned heads. Alpha0.01 fixed,training-only mean/std and residual mean; no hyperparameter selection. Source/checkpoint hashes in eval/linear_residual_v0_plan.json; coefficients and input/prediction hashes in report SHA256 eafa4501b969d070796cfd7068fb691e4006c6c50fb24a92e77dea618b73fd99.
+- Command: `python software/ai/vision/probe_linear_residual.py`
+- Result: Four closed-form training fits. Shared unmasked control training/development tails16/20 versus development baseline32; control meets baseline-only mean/tail/yaw/obstruction rule. Mask candidates development tails26/27/27,full rule FAIL3/3. Control MSE0.000451740training/0.000715115development versus baseline0.000853410/0.000859203. Matrix condition15505..15842; normal-equation residual<6e-17.
+- Artifacts: vision/probe_linear_residual.py; eval/linear_residual_v0_plan.json and report.json; tests/test_linear_residual.py; docs/POSE_REPRESENTATION_REVIEW.md.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Reused synthetic development; selecting the control for follow-up is post-result model selection. No fresh holdout. Objective differs from anchored nonlinear key loss, so gains cannot be assigned solely to optimization. One deterministic control,three inherited-mask candidates,not independent optimization replications. Four analytical fits are training despite zero gradient optimizer updates. No runtime correction or qualification installed.
+- Supersedes: none; all failed mask candidates and arm/integration statuses retained.
+- Next dependency: Freeze the exact existing unmasked-control coefficients for an image-only export/parity/cost study; disclose reused-development selection. After parity, preregister untouched synthetic30M evaluation without refitting or tuning. No physical or integration gate completion.
+
+
+### E-20260926-AI-283 — ridge verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `033a6f98be1d7db165b4636a123798dd8d5bb3ea` (frozen diagnostic source; results/tests/docs committed together)
+- Change: ridge verification.
+- Inputs/fixtures: scenes29000000..29000599 x4training,15000000..15000199 x4development; baseline pose plus frozen512-dimensional pooled descriptors,constant-one mask or three learned heads. Alpha0.01 fixed,training-only mean/std and residual mean; no hyperparameter selection. Source/checkpoint hashes in eval/linear_residual_v0_plan.json; coefficients and input/prediction hashes in report SHA256 eafa4501b969d070796cfd7068fb691e4006c6c50fb24a92e77dea618b73fd99.
+- Command: `python -m pytest -q software/ai/tests/test_linear_residual.py`
+- Result: PASS:6tests in1.63s; known ridge solution and unpenalized intercept, constant columns, frozen training normalization, invalid alpha rejection, source/input hashes, equation residual and acceptance recount.
+- Artifacts: vision/probe_linear_residual.py; eval/linear_residual_v0_plan.json and report.json; tests/test_linear_residual.py; docs/POSE_REPRESENTATION_REVIEW.md.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Existing pytest-asyncio warning. Shared batch contract unchanged; boundary suite not triggered. Portable verifier permits absent ignored checkpoint bytes; verifies them when present. Four analytical fits are training despite zero gradient optimizer updates. No runtime correction or qualification installed.
+- Supersedes: none; all failed mask candidates and arm/integration statuses retained.
+- Next dependency: Freeze the exact existing unmasked-control coefficients for an image-only export/parity/cost study; disclose reused-development selection. After parity, preregister untouched synthetic30M evaluation without refitting or tuning. No physical or integration gate completion.
+
+
+### E-20260926-AI-284 — ridge snapshot audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `033a6f98be1d7db165b4636a123798dd8d5bb3ea` (frozen diagnostic source; results/tests/docs committed together)
+- Change: ridge snapshot audit.
+- Inputs/fixtures: scenes29000000..29000599 x4training,15000000..15000199 x4development; baseline pose plus frozen512-dimensional pooled descriptors,constant-one mask or three learned heads. Alpha0.01 fixed,training-only mean/std and residual mean; no hyperparameter selection. Source/checkpoint hashes in eval/linear_residual_v0_plan.json; coefficients and input/prediction hashes in report SHA256 eafa4501b969d070796cfd7068fb691e4006c6c50fb24a92e77dea618b73fd99.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS:6174paths,875.7MiB,0unresolved findings,14reviewed synthetic fixtures.
+- Artifacts: vision/probe_linear_residual.py; eval/linear_residual_v0_plan.json and report.json; tests/test_linear_residual.py; docs/POSE_REPRESENTATION_REVIEW.md.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic snapshot audit before final documentation append; not runtime qualification. Four analytical fits are training despite zero gradient optimizer updates. No runtime correction or qualification installed.
+- Supersedes: none; all failed mask candidates and arm/integration statuses retained.
+- Next dependency: Freeze the exact existing unmasked-control coefficients for an image-only export/parity/cost study; disclose reused-development selection. After parity, preregister untouched synthetic30M evaluation without refitting or tuning. No physical or integration gate completion.
