@@ -1,0 +1,36 @@
+{
+  "checkpoint": "software/ai/results/translation_weighted_v0_translation_weighted/pose_model.pt",
+  "seeds": [
+    260926,
+    260927,
+    260928
+  ],
+  "training_groups": [
+    29000000,
+    600
+  ],
+  "development_groups": [
+    15000000,
+    200
+  ],
+  "conditions": [
+    "standard",
+    "appearance_shift",
+    "partial",
+    "full"
+  ],
+  "epochs": 8,
+  "learning_rate": 0.001,
+  "minimum_iou": 0.8,
+  "file_sha256": {
+    "software/ai/train/train_segmentation_head_probe.py": "e1ee54d1ae48800aeed18127463e43890088ff6f30413c793002f89ac97ad53f",
+    "software/ai/train/segmentation_auxiliary.py": "40a581ef7b357644cea1672a3900f3c033c072da9422d2eb6c2b1acd6bc1cdb9",
+    "software/ai/vision/pose_model.py": "7eccc2a3cabf3a37217b4a1c3114c439ffc740a917c08e4ef378065ff85c6ec5",
+    "software/ai/vision/landmark_occlusions.py": "2d77d25077ab98dad632bb441b94c06cc6c139116d6621483cab7728d95c6aad",
+    "software/ai/vision/landmark_renderer.py": "e8535fbf98c8cfd3a838f5f793534a182d0dc5b8b9eabaa3bfa2173e649137de",
+    "software/ai/vision/synthetic_keyboard.py": "b9a1662ea348ba78093909844e5e8bed86f4996babc289bfd63858b6b54f692c",
+    "software/ai/vision/evaluate_dark_only_normalization.py": "12289bfeeb52274678c62f46c7e99e057563036566fa48fc5f5cd1d58add4469",
+    "software/ai/results/translation_weighted_v0_translation_weighted/pose_model.pt": "0fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d"
+  },
+  "selection": "Fixed final epoch,no selection or coefficient sweep;only33head parameters optimized"
+}

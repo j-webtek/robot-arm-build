@@ -599,6 +599,8 @@ Copy this row and fill every field:
 
 ## Active work claims
 
+- AI lane / S1: frozen-feature segmentation head learning probe,three seeds,eight fixed epochs;pose immutable,AI branch only.
+
 
 
 
