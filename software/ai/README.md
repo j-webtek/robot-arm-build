@@ -283,3 +283,8 @@ A subsequent larger study of the robust candidate passes its declared
 synthetic criteria: 6.038 mm bound, 494/500 held-out groups covered, and
 46/46 ideal center fits. See `eval/conservative_radius_v0_scorecard.json`.
 No qualification is installed; actual prediction margins still need testing.
+
+
+## View the current local baseline
+
+Open [the offline demonstration](eval/local_baseline_demo_v0/index.html) or read [its usage and limitations](docs/LOCAL_BASELINE_DEMO.md). Six recorded scenarios show actual pose predictions, semantic plans and blocked motion handoffs. No hardware execution is enabled.

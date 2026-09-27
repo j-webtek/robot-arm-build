@@ -599,7 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-- AI lane / S1: user-requested local baseline demonstration using grounded parser, baseline pose checkpoint and actual zero-evidence shared shadow decision; no training or contract changes.
 
 
 
@@ -7175,3 +7174,71 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic audit before final documentation append; not runtime qualification.
 - Supersedes: none; prior failed evidence retained; arm/integration statuses unchanged.
 - Next dependency: Freeze a learned-mask-conditioned residual pose readout feasibility design with parameter-matched constant-mask control, exact baseline initialization, no oracle inference inputs, and measured added cost. Verify representation before training; no auxiliary-coefficient sweep or promotion. Fresh30M remains unused. Publish only feature/translation-pair-evidence.
+
+
+### E-20260926-AI-260 — offline baseline demonstration
+
+- Stage: S1
+- Lane: AI
+- Commit: `1eb001f5dbcb72c8d956a49fbea8db712187494b` (frozen demonstration source; output/tests/docs committed together)
+- Change: offline baseline demonstration.
+- Inputs/fixtures: six frozen requests in eval/local_baseline_demo_v0_plan.json; scenes15000000/standard,15000027/appearance_shift,15000068/full; baseline checkpoint SHA256 0fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d. Exact source hashes in plan, image/catalog hashes in report. report.json SHA256 27136e43dcb6c764d55b830ec8f8095264c29b733005b01dd28cd53814f7d1e0; index.html SHA256 fa8e34fd9c52034f8e9aa5bee8f7dc99eacc8b088881fa34736a416f31a71344.
+- Command: `python software/ai/rocell_ai/local_baseline_demo.py`
+- Result: Six illustrative cases generated using actual CPU pose inference and grounded parser. Three semantic plans accepted; missing evidence blocks clear/lighting motion, explicit fixture obstruction abstains. Stale, ambiguous and call requests blocked. Max requested-key errors0.761534/4.100415/4.686925mm. All motion batches null; no assembly, IK or execution.
+- Artifacts: rocell_ai/local_baseline_demo.py; rocell_ai/local_baseline_demo.html; eval/local_baseline_demo_v0/index.html and report.json; tests/test_local_baseline_demo.py; docs/LOCAL_BASELINE_DEMO.md.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Selected reused synthetic cases, not a benchmark. No LLM/live camera. Obstruction/freshness are fixture declarations; simulator truth scores only. Local ignored checkpoint required for regeneration; committed standalone HTML works without it.
+- Supersedes: none; prior model failures and arm/integration status retained. User requested this baseline demonstration before additional training.
+- Next dependency: Use the demo as the current baseline; next research remains a predicted-mask-conditioned residual pose prototype with matched control and baseline-preserving initialization. No training resumed in this increment.
+
+
+### E-20260926-AI-261 — baseline demonstration verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `1eb001f5dbcb72c8d956a49fbea8db712187494b` (frozen demonstration source; output/tests/docs committed together)
+- Change: baseline demonstration verification.
+- Inputs/fixtures: six frozen requests in eval/local_baseline_demo_v0_plan.json; scenes15000000/standard,15000027/appearance_shift,15000068/full; baseline checkpoint SHA256 0fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d. Exact source hashes in plan, image/catalog hashes in report. report.json SHA256 27136e43dcb6c764d55b830ec8f8095264c29b733005b01dd28cd53814f7d1e0; index.html SHA256 fa8e34fd9c52034f8e9aa5bee8f7dc99eacc8b088881fa34736a416f31a71344.
+- Command: `python -m pytest -q software/ai/tests/test_local_baseline_demo.py`
+- Result: PASS:4 tests in2.05s; exact repeated-key order, stale/unsupported decisions, JSON script escaping, image/plan/source hashes, coordinate error recount and shared runner stopping before assembly.
+- Artifacts: rocell_ai/local_baseline_demo.py; rocell_ai/local_baseline_demo.html; eval/local_baseline_demo_v0/index.html and report.json; tests/test_local_baseline_demo.py; docs/LOCAL_BASELINE_DEMO.md.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Existing pytest-asyncio warning. No contract change; shared boundary suite not triggered. The null-input path deliberately cannot claim batch admission.
+- Supersedes: none; prior model failures and arm/integration status retained. User requested this baseline demonstration before additional training.
+- Next dependency: Use the demo as the current baseline; next research remains a predicted-mask-conditioned residual pose prototype with matched control and baseline-preserving initialization. No training resumed in this increment.
+
+
+### E-20260926-AI-262 — browser review
+
+- Stage: S1
+- Lane: AI
+- Commit: `1eb001f5dbcb72c8d956a49fbea8db712187494b` (frozen demonstration source; output/tests/docs committed together)
+- Change: browser review.
+- Inputs/fixtures: six frozen requests in eval/local_baseline_demo_v0_plan.json; scenes15000000/standard,15000027/appearance_shift,15000068/full; baseline checkpoint SHA256 0fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d. Exact source hashes in plan, image/catalog hashes in report. report.json SHA256 27136e43dcb6c764d55b830ec8f8095264c29b733005b01dd28cd53814f7d1e0; index.html SHA256 fa8e34fd9c52034f8e9aa5bee8f7dc99eacc8b088881fa34736a416f31a71344.
+- Command: `python -m http.server 8765 --bind 127.0.0.1 --directory software/ai/eval/local_baseline_demo_v0; browser UI: createBrowserTab(iab,http://127.0.0.1:8765), setValue(case,Lighting variation), click(truth), setValue(case,Arm obstruction), restore Clear keyboard/truth`
+- Result: PASS manual UI verification: page rendered; selection updates text plan, coordinate rows and error; truth checkbox hides truth cells; obstruction shows PERCEPTION_ABSTAIN_OBSTRUCTED. Clear case restored and tab left open.
+- Artifacts: rocell_ai/local_baseline_demo.py; rocell_ai/local_baseline_demo.html; eval/local_baseline_demo_v0/index.html and report.json; tests/test_local_baseline_demo.py; docs/LOCAL_BASELINE_DEMO.md.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Browser inspection of generated standalone artifact; no automated cross-browser coverage. Loopback server serves only demo directory and is temporary; HTML also opens directly offline.
+- Supersedes: none; prior model failures and arm/integration status retained. User requested this baseline demonstration before additional training.
+- Next dependency: Use the demo as the current baseline; next research remains a predicted-mask-conditioned residual pose prototype with matched control and baseline-preserving initialization. No training resumed in this increment.
+
+
+### E-20260926-AI-263 — baseline demonstration snapshot audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `1eb001f5dbcb72c8d956a49fbea8db712187494b` (frozen demonstration source; output/tests/docs committed together)
+- Change: baseline demonstration snapshot audit.
+- Inputs/fixtures: six frozen requests in eval/local_baseline_demo_v0_plan.json; scenes15000000/standard,15000027/appearance_shift,15000068/full; baseline checkpoint SHA256 0fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d. Exact source hashes in plan, image/catalog hashes in report. report.json SHA256 27136e43dcb6c764d55b830ec8f8095264c29b733005b01dd28cd53814f7d1e0; index.html SHA256 fa8e34fd9c52034f8e9aa5bee8f7dc99eacc8b088881fa34736a416f31a71344.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS:6135paths,868.9MiB,0 unresolved findings,14 reviewed synthetic fixtures.
+- Artifacts: rocell_ai/local_baseline_demo.py; rocell_ai/local_baseline_demo.html; eval/local_baseline_demo_v0/index.html and report.json; tests/test_local_baseline_demo.py; docs/LOCAL_BASELINE_DEMO.md.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic audit before final ledger append; not qualification.
+- Supersedes: none; prior model failures and arm/integration status retained. User requested this baseline demonstration before additional training.
+- Next dependency: Use the demo as the current baseline; next research remains a predicted-mask-conditioned residual pose prototype with matched control and baseline-preserving initialization. No training resumed in this increment.
