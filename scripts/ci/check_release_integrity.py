@@ -23,6 +23,7 @@ ISSUE_PREFIX = "https://github.com/j-webtek/tactevra/issues/"
 TOP_LEVEL_FIELDS = {
     "version",
     "archive_scope",
+    "forbidden_tracked_files",
     "forbidden_tracked_prefixes",
     "forbidden_tracked_basenames",
     "forbidden_tracked_basename_prefixes",
@@ -69,7 +70,7 @@ def load_policy(path: Path = POLICY_PATH) -> dict:
     if policy["archive_scope"] != "github-generated-source-archives":
         raise ValueError("archive_scope must be github-generated-source-archives")
 
-    for field in ("forbidden_tracked_prefixes",):
+    for field in ("forbidden_tracked_files", "forbidden_tracked_prefixes"):
         _string_list(policy, field, paths=True)
     for field in ("forbidden_tracked_basenames",
                   "forbidden_tracked_basename_prefixes",
@@ -132,6 +133,8 @@ def policy_errors(root: Path, policy: dict, tracked: list[str],
         elif sha256(disk_path) != entry["sha256"]:
             errors.append(f"allowed-file digest changed: {path}")
 
+    forbidden_files = set(
+        value.lower() for value in policy["forbidden_tracked_files"])
     prefixes = tuple(value.lower() for value in policy["forbidden_tracked_prefixes"])
     basenames = set(value.lower() for value in policy["forbidden_tracked_basenames"])
     basename_prefixes = tuple(
@@ -143,6 +146,8 @@ def policy_errors(root: Path, policy: dict, tracked: list[str],
         lower = path.lower()
         basename = PurePosixPath(lower).name
         reasons = []
+        if lower in forbidden_files:
+            reasons.append("forbidden file")
         if lower.startswith(prefixes):
             reasons.append("forbidden directory")
         if basename in basenames or basename.startswith(basename_prefixes):

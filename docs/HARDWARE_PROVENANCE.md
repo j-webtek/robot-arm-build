@@ -30,14 +30,23 @@ patent, regulatory, or physical-safety clearance.
 - New imported designs or third-party material need their own source and license
   records; this declaration is not blanket approval for future additions.
 
-### Explicit vendor exception
+### Explicit vendor exclusion
 
-The tracked [Arducam geometry proxy](../hardware/static_overhead_camera/vendor/README.md),
-`B0477.STEP`, is identified by its own record as a vendor download, not an original
-project design. The owner's confirmation above does not establish redistribution
-rights for that file. The source-preview review requires a recorded license or
-permission disposition before publishing archives containing it. No asset was
-removed or relicensed by this clarification.
+The [Arducam geometry proxy reference](../hardware/static_overhead_camera/vendor/README.md)
+identifies `B0477.STEP` as a vendor download, not an original project design. The
+owner's confirmation above does not establish redistribution rights for that
+file. Because no file-specific redistribution permission was established, the
+current repository and future source archives use a link-only reference: the
+vendor bytes are excluded, their source URL and SHA-256 remain recorded, and CI
+rejects reintroducing that path. This is a conservative distribution decision,
+not a conclusion about the vendor's rights or the legality of any particular
+downstream use.
+
+The file existed in earlier public Git history. Removing it from the current
+tree does not erase or clear those historical copies; history was not rewritten.
+No project CAD package imports the file at build or test time. Existing drawings
+and configuration use it only as a named geometry proxy and continue to require
+received-part measurements before fabrication or installation.
 
 A design's authorship does not establish print readiness, fit, strength, electrical
 compatibility, or safe robot operation. Follow the exact hardware revision's

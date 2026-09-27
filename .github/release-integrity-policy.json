@@ -1,6 +1,9 @@
 {
   "version": 1,
   "archive_scope": "github-generated-source-archives",
+  "forbidden_tracked_files": [
+    "hardware/static_overhead_camera/vendor/B0477.STEP"
+  ],
   "forbidden_tracked_prefixes": [
     "archives/",
     "software/calibrations/artifacts/",
@@ -50,11 +53,5 @@
       "rationale": "Empty placeholder preserving the ignored local-artifact directory without publishing an artifact."
     }
   ],
-  "candidate_blockers": [
-    {
-      "path": "hardware/static_overhead_camera/vendor/B0477.STEP",
-      "issue": "https://github.com/j-webtek/tactevra/issues/45",
-      "rationale": "Redistribution terms or an approved exclusion/replacement disposition have not been established."
-    }
-  ]
+  "candidate_blockers": []
 }
