@@ -1,12 +1,12 @@
 {
   "schema": "tactevra.published-media-verification.v1",
   "recorded_on": "2026-09-27",
-  "asset_revision_commit": "a9952dfda52d34e3f97111ca5f9f5ee35fdf843a",
-  "source_pull_request": "https://github.com/j-webtek/tactevra/pull/122",
+  "asset_revision_commit": "d981904935481e8dfe5128e3567305bbca995c28",
+  "source_pull_request": "https://github.com/j-webtek/tactevra/pull/131",
   "authority": {
     "path": "presentations/blender/dimension_manifest.json",
-    "size_bytes": 2272,
-    "sha256": "0f0f1dd8f6979a4cbbcebe8f77f155fdf87faaf3b8b8386d1e98241c940afd42"
+    "size_bytes": 2568,
+    "sha256": "c672f352eddc06046a229cf737192042955198ad8279cecd36d50514d1e98eb4"
   },
   "documented_build": {
     "blender_requirement": "4.3 or newer",
@@ -21,7 +21,8 @@
       "SHA-256 and byte size for the committed authority and all published files",
       "MP4 stream inventory, duration, dimensions, frame rate, audio, and selectable English subtitle stream",
       "WebVTT cue order and timing",
-      "eight representative frames sampled across the committed MP4",
+      "twelve representative frames sampled across the committed MP4",
+      "official RoArm-M3 static surface, nominal H-key registration, and explicit simulated-proxy labeling",
       "integrated loudness and true-peak analysis of the final AAC delivery",
       "eleven timestamp-ordered ElevenLabs narration clips aligned to their documented scene windows"
     ],
@@ -30,19 +31,19 @@
   "outputs": [
     {
       "path": "assets/media/tactevra-overview.mp4",
-      "size_bytes": 7519160,
-      "sha256": "5e7c6dd0f1be5021b76c543029378956dd553ec8a761228457584cf767764b89",
+      "size_bytes": 7396067,
+      "sha256": "f7643bf8d52cc69d411fb8cc1c422043f890f52eb0ea90e5d26fcb77b127cc7d",
       "media": {
         "duration_seconds": 77.002,
-        "video": "H.264 1920x1080 24fps",
+        "video": "H.264 1600x900 24fps",
         "audio": "AAC 48000Hz stereo",
         "subtitles": "mov_text English"
       }
     },
     {
       "path": "assets/media/tactevra-overview-poster.jpg",
-      "size_bytes": 73966,
-      "sha256": "624450b917a20501f9a886da332669fdd8b0101d8604e78344e9e2c685146cad"
+      "size_bytes": 80386,
+      "sha256": "522e24843a7e03b20bc788b3e9826e1e0f8df6c804e5e53963ae55b1510b3f1c"
     },
     {
       "path": "assets/media/tactevra-overview.en.vtt",
@@ -56,13 +57,14 @@
     },
     {
       "path": "assets/media/tactevra-social-preview.jpg",
-      "size_bytes": 63672,
-      "sha256": "9076f5b02db3e3890609a0a60f8fd2ea081547c11b1bdd9f6e6ff2073ddeb132"
+      "size_bytes": 68437,
+      "sha256": "9ff7017afc18d7cbbb8feb9426dc483d63b6d96fa95ac3686edb24ec5a50149a"
     }
   ],
   "limitations": [
     "The Blender scene was fully rerendered for this revision; the published bytes, metadata, captions, representative frames, and final audio measurements were verified before publication.",
-    "The recorded visual review covers one continuous arm identity, camera and tag lock, rejected and accepted admission states, an unobstructed resolved H target, simulated tool contact, host-screen observation, closed-loop payoff, and end card.",
+    "The recorded visual review covers one continuous arm identity, camera and tag lock, rejected and accepted admission states, an unobstructed nominal H target, explicitly simulated tool contact, host-screen observation, closed-loop payoff, and end card.",
+    "Static hardware-appearance shots use the hash-verified official RoArm-M3 STEP-derived surface; animated execution uses an explicitly labeled URDF-derived presentation proxy.",
     "The unresolved Waveshare URDF redistribution disposition remains tracked at https://github.com/j-webtek/tactevra/issues/88.",
     "The GitHub delivery is intentionally encoded below the repository's 10 MiB ordinary-review ceiling; a higher-bitrate local master remains reproducible from the documented build.",
     "The film is an architectural visualization, not physical-operation, collision, fabrication, or autonomous-task qualification."
