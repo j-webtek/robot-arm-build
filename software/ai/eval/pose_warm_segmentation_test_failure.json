@@ -1,0 +1,16 @@
+{
+  "command": "python -m pytest -q software/ai/tests/test_pose_warm_segmentation.py",
+  "frozen_execution_commit": "1ada8bacbdce064b9756153fafe67ff637d7263a",
+  "test_source_sha256": "c2a8a5df031211beaf35bd6eeb6b77fea5a2517e7604c1a5785186a32722ca86",
+  "result": "1 failed, 1 passed in 1.61s",
+  "failed_assertion": "a['summaries']==old_pair['results']['control']['summaries']",
+  "example": {
+    "seed": 260926,
+    "condition": "appearance_shift",
+    "current_control_mean_mm": 0.8082424139008907,
+    "historical_control_mean_mm": 0.807518299335391
+  },
+  "correction": "Remove exact historical GPU score equality; verify actual common initial state against baseline plus learned head, identical pixels/masks/teacher, and frozen hyperparameters. Acceptance rule and reports unchanged. Cross-run GPU nondeterminism is a limitation, not proof of a particular cause.",
+  "hardware_writes": 0,
+  "physical_movements": 0
+}

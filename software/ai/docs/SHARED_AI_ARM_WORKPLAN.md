@@ -599,7 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-- AI lane / S1: paired joint localization training with learned segmentation heads, three fixed seeds; preserve prior learning rate, loss coefficient, budget and selection. AI branch only; no contract or arm-status changes.
 
 
 
@@ -7037,3 +7036,88 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic snapshot audit; historical AI-041 blocker retained.
 - Supersedes: none; earlier failed evidence and arm/integration statuses retained.
 - Next dependency: Freeze paired joint training initialized with the corresponding trained head in both arms; retain previous joint-training budget, learning rate, pose loss, selection and auxiliary coefficient to isolate trained-head initialization. Evaluate localization against paired control and baseline; mask feasibility grants no coordinate qualification. Publish only feature/translation-pair-evidence.
+
+
+### E-20260926-AI-252 — learned-head joint training
+
+- Stage: S1
+- Lane: AI
+- Commit: `1ada8bacbdce064b9756153fafe67ff637d7263a` (frozen execution source; evidence and tests committed together)
+- Change: learned-head joint training.
+- Inputs/fixtures: Training 29000000..29000599 x4, development 15000000..15000199 x4; seeds260926/27/28; four joint epochs,9600 image presentations,152 updates per arm; same learned head per seed in both arms (additional304 head-only updates), AdamW0.0001,key loss+anchor1,candidate mask BCE0.001. Frozen source/input/checkpoint hashes in train/pose_warm_segmentation_*_plan.json; input/mask/teacher and output checkpoint hashes in per-seed reports.
+- Command: `python software/ai/train/train_pose_warm_segmentation.py`
+- Result: Full rule FAIL3/3; baseline rule PASS3/3. Candidate large-error totals21/23/24 versus paired control22/23/24 and baseline32each. Candidate mean mask IoU0.909181/0.888051/0.901049. No consistent localization benefit from trained heads.
+- Artifacts: train/train_pose_warm_segmentation.py; vision/summarize_pose_warm_segmentation.py; eval/pose_warm_segmentation_*_report.json; tests/test_pose_warm_segmentation.py; ignored local training/pose checkpoints.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Synthetic reused development selects epoch; GPU nondeterminism; no physical calibration or localization qualification.
+- Supersedes: none; failed evidence retained.
+- Next dependency: Stop this auxiliary-loss series without a coefficient sweep or promotion. Perform a frozen inference-only case-overlap audit of warmed candidates versus controls and the previously identified19 persistent failures, including recovered and newly failed cases, to choose the next representation change from evidence. Reused development cannot qualify localization; fresh30M data remains unused. Arm and integration statuses unchanged.
+
+
+### E-20260926-AI-253 — learned-head aggregation
+
+- Stage: S1
+- Lane: AI
+- Commit: `1ada8bacbdce064b9756153fafe67ff637d7263a` (frozen execution source; evidence and tests committed together)
+- Change: learned-head aggregation.
+- Inputs/fixtures: Training 29000000..29000599 x4, development 15000000..15000199 x4; seeds260926/27/28; four joint epochs,9600 image presentations,152 updates per arm; same learned head per seed in both arms (additional304 head-only updates), AdamW0.0001,key loss+anchor1,candidate mask BCE0.001. Frozen source/input/checkpoint hashes in train/pose_warm_segmentation_*_plan.json; input/mask/teacher and output checkpoint hashes in per-seed reports.
+- Command: `python software/ai/vision/summarize_pose_warm_segmentation.py`
+- Result: Full passes0/3; baseline passes3/3. Appearance mean candidate0.809012mm versus paired control0.810255mm and baseline0.833364mm. All seeds retained.
+- Artifacts: train/train_pose_warm_segmentation.py; vision/summarize_pose_warm_segmentation.py; eval/pose_warm_segmentation_*_report.json; tests/test_pose_warm_segmentation.py; ignored local training/pose checkpoints.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Same development scenes for all seeds; descriptive comparisons are not independent data replication.
+- Supersedes: none; failed evidence retained.
+- Next dependency: Stop this auxiliary-loss series without a coefficient sweep or promotion. Perform a frozen inference-only case-overlap audit of warmed candidates versus controls and the previously identified19 persistent failures, including recovered and newly failed cases, to choose the next representation change from evidence. Reused development cannot qualify localization; fresh30M data remains unused. Arm and integration statuses unchanged.
+
+
+### E-20260926-AI-254 — preserved verification failure
+
+- Stage: S1
+- Lane: AI
+- Commit: `1ada8bacbdce064b9756153fafe67ff637d7263a` (frozen execution source; evidence and tests committed together)
+- Change: preserved verification failure.
+- Inputs/fixtures: Training 29000000..29000599 x4, development 15000000..15000199 x4; seeds260926/27/28; four joint epochs,9600 image presentations,152 updates per arm; same learned head per seed in both arms (additional304 head-only updates), AdamW0.0001,key loss+anchor1,candidate mask BCE0.001. Frozen source/input/checkpoint hashes in train/pose_warm_segmentation_*_plan.json; input/mask/teacher and output checkpoint hashes in per-seed reports.
+- Command: `python -m pytest -q software/ai/tests/test_pose_warm_segmentation.py`
+- Result: FAIL:1 failed,1 passed in1.61s. Exact historical control score equality failed; example appearance0.8082424139008907 versus historical0.807518299335391mm. Failure source hash c2a8a5df031211beaf35bd6eeb6b77fea5a2517e7604c1a5785186a32722ca86. Structured failure retained in eval/pose_warm_segmentation_test_failure.json.
+- Artifacts: train/train_pose_warm_segmentation.py; vision/summarize_pose_warm_segmentation.py; eval/pose_warm_segmentation_*_report.json; tests/test_pose_warm_segmentation.py; ignored local training/pose checkpoints.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Exact independent GPU training replay was an invalid test requirement; historical score drift is preserved, not rounded away.
+- Supersedes: none; failed evidence retained.
+- Next dependency: Stop this auxiliary-loss series without a coefficient sweep or promotion. Perform a frozen inference-only case-overlap audit of warmed candidates versus controls and the previously identified19 persistent failures, including recovered and newly failed cases, to choose the next representation change from evidence. Reused development cannot qualify localization; fresh30M data remains unused. Arm and integration statuses unchanged.
+
+
+### E-20260926-AI-255 — corrected lineage verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `1ada8bacbdce064b9756153fafe67ff637d7263a` (frozen execution source; evidence and tests committed together)
+- Change: corrected lineage verification.
+- Inputs/fixtures: Training 29000000..29000599 x4, development 15000000..15000199 x4; seeds260926/27/28; four joint epochs,9600 image presentations,152 updates per arm; same learned head per seed in both arms (additional304 head-only updates), AdamW0.0001,key loss+anchor1,candidate mask BCE0.001. Frozen source/input/checkpoint hashes in train/pose_warm_segmentation_*_plan.json; input/mask/teacher and output checkpoint hashes in per-seed reports.
+- Command: `python -m pytest -q software/ai/tests/test_pose_warm_segmentation.py`
+- Result: PASS:2 tests in1.73s. Verify actual initial states equal baseline plus learned head; identical paired inputs, masks and teacher; unchanged hyperparameters; selected epoch; head training/control invariance; backbone-only export and aggregate hashes.
+- Artifacts: train/train_pose_warm_segmentation.py; vision/summarize_pose_warm_segmentation.py; eval/pose_warm_segmentation_*_report.json; tests/test_pose_warm_segmentation.py; ignored local training/pose checkpoints.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Test correction only; experiment reports and acceptance rule unchanged. Existing pytest-asyncio warning. Local checkpoint verification requires local bytes; portable source/report checks retained. Contract unchanged; shared boundary suite not triggered.
+- Supersedes: none; failed evidence retained.
+- Next dependency: Stop this auxiliary-loss series without a coefficient sweep or promotion. Perform a frozen inference-only case-overlap audit of warmed candidates versus controls and the previously identified19 persistent failures, including recovered and newly failed cases, to choose the next representation change from evidence. Reused development cannot qualify localization; fresh30M data remains unused. Arm and integration statuses unchanged.
+
+
+### E-20260926-AI-256 — publication snapshot audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `1ada8bacbdce064b9756153fafe67ff637d7263a` (frozen execution source; evidence and tests committed together)
+- Change: publication snapshot audit.
+- Inputs/fixtures: Training 29000000..29000599 x4, development 15000000..15000199 x4; seeds260926/27/28; four joint epochs,9600 image presentations,152 updates per arm; same learned head per seed in both arms (additional304 head-only updates), AdamW0.0001,key loss+anchor1,candidate mask BCE0.001. Frozen source/input/checkpoint hashes in train/pose_warm_segmentation_*_plan.json; input/mask/teacher and output checkpoint hashes in per-seed reports.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS:6123paths,868.0MiB,0unresolved findings,14reviewed synthetic fixtures.
+- Artifacts: train/train_pose_warm_segmentation.py; vision/summarize_pose_warm_segmentation.py; eval/pose_warm_segmentation_*_report.json; tests/test_pose_warm_segmentation.py; ignored local training/pose checkpoints.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Audit ran before final ledger and failure-artifact additions; heuristic snapshot audit, not runtime assurance.
+- Supersedes: none; failed evidence retained.
+- Next dependency: Stop this auxiliary-loss series without a coefficient sweep or promotion. Perform a frozen inference-only case-overlap audit of warmed candidates versus controls and the previously identified19 persistent failures, including recovered and newly failed cases, to choose the next representation change from evidence. Reused development cannot qualify localization; fresh30M data remains unused. Arm and integration statuses unchanged.
