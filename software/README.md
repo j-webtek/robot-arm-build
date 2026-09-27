@@ -58,6 +58,7 @@ guidance.
 - [Reach-layout diagnostic](docs/REACH_LAYOUT_STUDY.md)
 - [Bounded park-pose optimization](docs/PARK_OPTIMIZATION.md)
 - [Discrete route trajectory simulation](docs/TRAJECTORY_SIMULATION.md)
+- [Shadow telemetry replay qualification](docs/SHADOW_TELEMETRY_REPLAY.md)
 - [Pre-hardware layout sensitivity and mission-route coverage](docs/PREHARDWARE_MISSION_COVERAGE.md)
 - [Full-body collision foundation](docs/COLLISION_FOUNDATION.md)
 - [Offline eye-on-arm calibration](docs/EYE_ON_ARM_CALIBRATION.md)

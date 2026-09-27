@@ -558,6 +558,12 @@ Implement the following before any additional general-purpose arm movement:
       seeding at every densified waypoint, and attaches current collision-readiness
       evidence. Missing start telemetry and incomplete full-body/tool/cable collision
       geometry remain release-blocking; no controller command is generated.
+- [x] Add deterministic zero-write telemetry replay against the exact Waveshare
+      preview targets. Synthetic and retained-export origins remain distinct;
+      crossed session/correlation/waypoint identity, stale/non-monotonic timing,
+      malformed feedback, incomplete joints, and unstable/out-of-tolerance arrival
+      fail closed or remain unverified. Replay PASS explicitly proves neither
+      physical arrival nor independent visual outcome.
 - [ ] Adapt current visual targets and keyboard layout into `scene_targets`.
 - [ ] Wrap `static_task_rehearsal` as a `trajectory_candidate` producer.
 - [ ] Implement the safety report with explicit reject reason codes.

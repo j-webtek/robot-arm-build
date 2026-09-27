@@ -2956,3 +2956,44 @@ rewriting history. New entries must use a unique evidence ID.
   through an externally controlled channel and intake their authenticated
   decision. Only a later, separate authorization may permit read-only endpoint
   qualification.
+
+### E-20260927-ARM-058 — zero-write shadow telemetry replay
+
+- Stage: S4/S7
+- Lane: ARM
+- Change: added a deterministic assessor that binds the exact zero-write
+  Waveshare T=102 preview receipt to ordered synthetic or retained-export
+  T=1051 samples. It compares all six commanded and reported joints, requires
+  consecutive in-tolerance and mutually stable samples for every previewed
+  waypoint, and retains signed residuals, maximum residual, command and sample
+  hashes, timing, session, correlation, and origin.
+- Fail-closed behavior: crossed correlation or controller session, unknown
+  waypoint, pre-dispatch/stale/non-monotonic timing, malformed T=1051,
+  incomplete joints, unsupported origin, and unbound retained exports are
+  rejected. Out-of-tolerance or unstable complete data remains
+  `SIMULATION_REPLAY_UNVERIFIED` rather than becoming a false PASS.
+- Artifacts: `shadow_telemetry_replay_v1.py`, closed JSON result schema,
+  focused tests, portable CI selection,
+  `SHADOW_TELEMETRY_REPLAY.md`, and shared plan/checklist updates.
+- Results: focused zero-write/telemetry/sole-writer/integration suite PASS, 50
+  tests in 11.43 seconds; portable shared AI/arm selection PASS, 354 tests in
+  41.45 seconds; documentation checks PASS, 43 self-tests plus maintained-link,
+  evidence-scope, and release-integrity validation; compile and diff checks
+  PASS.
+- Evidence status: deterministic synthetic fixtures only in the committed test
+  run. The retained-export path requires a source hash but does not authenticate
+  that export as a live controller transaction.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: replay PASS proves only that the previewed command targets and
+  supplied telemetry agree under the declared policy. Physical arrival,
+  authentic controller provenance, collision safety, visual outcome, task
+  success, and repeatability remain unproven. Every report fixes transport,
+  execution, hardware, and physical authority false.
+- Supersedes: no prior physical evidence. It closes the missing automated
+  command-versus-telemetry simulation seam without changing the ARM-057
+  independent-review dependency.
+- Next dependency: obtain the genuine ARM-054 external review and separately
+  authorize read-only endpoint qualification. Authenticated retained telemetry
+  can then be replayed through this boundary and compared with an independent
+  visual observation; movement remains separately gated.

@@ -199,6 +199,15 @@ then retains a normalized decision, assessment report, and raw-document hash.
 Blocked reviews remain retained and non-authorizing. This tooling performs no
 hardware access and does not solve reviewer identity or custody; those remain
 external prerequisites.
+ARM-058 adds an automated zero-write command/telemetry replay seam. It consumes
+the exact Waveshare T=102 preview receipt and typed synthetic or retained-export
+T=1051 samples, binds correlation/session/waypoint identity and timing, and
+requires consecutive six-joint arrival plus stability at every previewed
+waypoint. Crossed, stale, non-monotonic, malformed, incomplete, unstable, and
+out-of-tolerance cases cannot become a replay PASS. Even PASS keeps physical
+arrival, visual outcome, transport access, execution, and physical authority
+false. This improves automated S4/S7 rehearsal coverage but does not satisfy
+the pending ARM-054 independent-review or read-only endpoint prerequisites.
 
 ## Stage definitions
 
