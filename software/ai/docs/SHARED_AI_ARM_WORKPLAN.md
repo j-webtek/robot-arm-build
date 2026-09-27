@@ -599,6 +599,8 @@ Copy this row and fill every field:
 
 ## Active work claims
 
+- AI lane / S1: RNG-preserving arm/ruler ablation,all800 cases,baseline pose checkpoint; AI evidence branch only,no training or qualification.
+
 
 
 

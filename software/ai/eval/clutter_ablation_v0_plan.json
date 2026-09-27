@@ -1,0 +1,37 @@
+{
+  "checkpoint": "software/ai/results/translation_weighted_v0_translation_weighted/pose_model.pt",
+  "conditions": [
+    "standard",
+    "appearance_shift",
+    "partial",
+    "full"
+  ],
+  "modes": {
+    "original": [],
+    "no_arm": [
+      "arm"
+    ],
+    "no_ruler": [
+      "ruler"
+    ],
+    "neither": [
+      "arm",
+      "ruler"
+    ]
+  },
+  "file_sha256": {
+    "software/ai/vision/clutter_ablation_renderer.py": "d2369bbd48b8c15fdfafc5d57241c44eba8ac8a59058a8e119c8c1332096e1be",
+    "software/ai/vision/clutter_ablation_occlusions.py": "2829c20c579d2be6438f5afdf92a283f177f08e64695c8f46051f47a19899252",
+    "software/ai/vision/evaluate_clutter_ablation.py": "a4538eea005eee7b0397dba2cb6d2a574d53f8683910846a10a6d1cb3147b48c",
+    "software/ai/vision/landmark_renderer.py": "e8535fbf98c8cfd3a838f5f793534a182d0dc5b8b9eabaa3bfa2173e649137de",
+    "software/ai/vision/landmark_occlusions.py": "2d77d25077ab98dad632bb441b94c06cc6c139116d6621483cab7728d95c6aad",
+    "software/ai/vision/evaluate_dark_only_normalization.py": "12289bfeeb52274678c62f46c7e99e057563036566fa48fc5f5cd1d58add4469",
+    "software/ai/vision/pose_model.py": "7eccc2a3cabf3a37217b4a1c3114c439ffc740a917c08e4ef378065ff85c6ec5",
+    "software/ai/vision/train_pose.py": "98c2ae6211b42c3b4b7c5bed3fb03aab82bffff79c30ebb546e3681b3be3a1b6",
+    "software/ai/vision/diagnose_pose_tail.py": "42da11417ceac91001e47fa732d2c127ef9f1763c479c56f9593ff3bd185fb90",
+    "software/ai/vision/synthetic_keyboard.py": "b9a1662ea348ba78093909844e5e8bed86f4996babc289bfd63858b6b54f692c",
+    "software/ai/eval/pose_landmark_v0_report.json": "16c143673d885de73ad1c4f07396ce75e42905bd36baa53e51e7cfaea6f01a94",
+    "software/ai/eval/persistent_pose_v0_report.json": "4ed48690c596e16280fdb97707650ebd0fe08573138929121a633884df67a09b",
+    "software/ai/results/translation_weighted_v0_translation_weighted/pose_model.pt": "0fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d"
+  }
+}
