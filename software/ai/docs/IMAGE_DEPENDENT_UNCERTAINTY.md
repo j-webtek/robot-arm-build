@@ -484,3 +484,32 @@ options include a bounded residual parameterization around a conservative base
 scale or a higher quantile with an explicit finite-bound penalty. Any candidate
 must be selected before a separate calibration and confirmation chain, and the
 failed coverage gates remain unchanged.
+
+## Bounded upper-tail metric head
+
+One new 52,481-parameter head used the same frozen inputs with a 97.5th-
+percentile pinball target. Its output was constrained before loss to
+`0.25 + 9.75 * sigmoid(raw)`, making every proposed bound finite and no greater
+than 10 mm. It trained for the fixed 20 epochs on 16,000 new 60M images and was
+evaluated once on 8,000 untouched 61M images.
+
+The finite formulation fixed both coverage failures from the preceding study.
+Overall coverage reached 92.525%, while standard, appearance-shift, partial,
+and full-obstruction coverage reached 94.8%, 95.5%, 93.45%, and 86.35%. The
+maximum predicted bound was 9.349887 mm. Mean pinball loss improved from
+0.086246 for the training-only constant bound to 0.076669, and the median bound
+fell from 3.268819 mm to 2.256930 mm. Every conditional image AUROC passed,
+ranging from 0.726437 under full obstruction to 0.931307 in standard scenes.
+
+The complete selection remains a failure. Grouped scene AUROC was 0.696362,
+below the frozen 0.70 minimum, although lowest-quartile and lowest-half failure
+rates were 3.2% and 4.8%. The single failed check prevents promotion or metric
+calibration. The checkpoint remains reproducible research evidence with no
+runtime, qualification, physical-camera, or motion authority.
+
+This result isolates the remaining tradeoff: the bounded high-quantile
+objective provides useful finite coverage but loses a small amount of scene
+failure ordering. The next bounded study should combine the same finite metric
+output and pinball objective with one preregistered binary tail-ranking
+auxiliary loss on fresh grouped populations. It must retain all present metric,
+coverage, finite-range, and ranking gates before any calibration is allocated.

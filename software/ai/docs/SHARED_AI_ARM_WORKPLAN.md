@@ -599,10 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-- AI lane / S1: train one preregistered bounded 97.5th-percentile metric head
-  on fresh 60M training and 61M selection scenes; no runtime, contract, arm, or
-  integration-status changes.
-
 
 
 
@@ -8963,3 +8959,48 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic repository review before final ledger append; not model, runtime, or physical assurance. No arm or integration status changes.
 - Supersedes: none.
 - Next dependency: Same as AI-367.
+
+### E-20260927-AI-370 — bounded upper-tail metric head selection
+
+- Stage: S1
+- Lane: AI
+- Commit: `a0ffc32e23c6e6533350ecf5218e969906f3d08b` (bounded 97.5th-percentile objective, unchanged metric/ranking gates, fresh populations, source, plan, and claim frozen before feature extraction or training; failed report, checkpoint, tests, interpretation, and claim removal committed in the successor)
+- Inputs/fixtures: Training scenes `60000000..60001999` (16,000 images) and selection scenes `61000000..61000999` (8,000 images), each with two styles and four conditions. Training pixel/feature/target SHA256 values `445a710ef31e5ea5089d0a3f7c11d3bfa1964d718547457e91ce490a03245632`, `732db4e3c86f33a79af1be26bd8d2122ec74dba660456fec95db2ee19112cafb`, and `ccb7a4bb799ec1b0df1f005d25b0ab1de7dc0d103e36496ce0c48ee9b91d6435`; selection values `068d9de2eb740b23795ef58b19f37b494066e98897107ae06d436cb4737b4ca1`, `acf07ca7c1ed7ce3eed35dbf0572c738f855b491089495a86d4c79f48b14a02b`, and `b6c3a94c4d4798b1b7485bb06b5a63b2363ce8a33bc1fa158ef8812c72b27247`; all pose prediction hashes are retained in the report. Plan SHA256 `4ff59806009d84bd889e1f63dd1ed13651c5fe3bb7190f1c772d03a772ee0262`; report SHA256 `d0632877b0918c8b71417a8c34e6e580b12599c6144cb4876d4bb11dcc821fb7`; checkpoint SHA256 `c9ee03b9962e28443fbac7644cdfbb9c068e544aeb75cc58dc2ba8b6b494b16c`; normalization SHA256 `0b02a9f05d7a1a5adb5e7dea20ac08b74224a898426b4cb5ee425c3a7052f293`; selection prediction SHA256 `5b47a703809359e1c3c5de12a849fa31eb73b570734a4ddef1532d45fe710e2a`.
+- Command: `python software/ai/train/train_bounded_upper_tail_head.py`
+- Result: FAIL fixed selection rule by one check. The 52,481-parameter head constrains output to `[0.25,10.0]` mm and reaches maximum `9.349886894` mm. Overall coverage is `0.92525`; standard/appearance/partial/full coverage is `0.948`/`0.955`/`0.9345`/`0.8635`, fixing both preceding coverage failures. Mean 0.975 pinball loss improves from `0.086245948` to `0.076668675`; median bound improves from `3.268818617` mm to `2.256930113` mm. Every conditional image AUROC passes at standard `0.931306934`, appearance `0.874005557`, partial `0.869377453`, and full `0.726436553`. Scene AUROC is `0.696362295`, below the frozen `0.70` minimum; all other checks pass. One model fit, zero calibration fits, and 2,500 optimizer updates.
+- Artifacts: `train/train_bounded_upper_tail_head.py`; `train/bounded_upper_tail_head_v1_plan.json`; `eval/bounded_upper_tail_head_v1_report.json`; `results/bounded_upper_tail_head_v1/model.pt`; `tests/test_bounded_upper_tail_head.py`; `docs/IMAGE_DEPENDENT_UNCERTAINTY.md`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Synthetic training-selection evidence for one seed, architecture, quantile, and frozen output range. The near-miss checkpoint is research evidence only. No metric calibration, independent confirmation, runtime installation, physical-camera evidence, or motion authority. ModelMotionBatchV2 and arm/integration statuses are unchanged.
+- Supersedes: none; both preceding metric failures and all earlier evidence remain preserved.
+- Next dependency: Preserve the bounded output, direct pinball target, and all present gates. On entirely fresh grouped populations, preregister one multitask head with a fixed binary `>3 mm` tail-ranking auxiliary loss to recover the missing scene ordering before any calibration allocation.
+
+### E-20260927-AI-371 — bounded upper-tail metric verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `a0ffc32e23c6e6533350ecf5218e969906f3d08b` (frozen training-selection source; tests and documentation committed in the successor)
+- Inputs/fixtures: Same 24,000 images, frozen pose models, 52,481-parameter head, plan, failed report, and retained research checkpoint as AI-370; exact hashes are recorded there and in the report.
+- Command: `python -m pytest -q software/ai/tests/test_bounded_upper_tail_head.py`
+- Result: PASS: 2 tests in 2.14s. Tests verify the frozen output transformation at its endpoints and midpoint, immutable lineage, checkpoint integrity, exact grouped populations, complete metric and ranking recounts, all fixed passing checks, the one failed scene-AUROC check, and zero calibration, hardware, physical, qualification, or runtime authority.
+- Artifacts: `tests/test_bounded_upper_tail_head.py`; `eval/bounded_upper_tail_head_v1_report.json`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Existing pytest-asyncio configuration warning. Recount consistency only; no physical assurance. Contract unchanged, so shared boundary tests were not triggered.
+- Supersedes: none.
+- Next dependency: Same as AI-370.
+
+### E-20260927-AI-372 — bounded upper-tail metric snapshot review
+
+- Stage: S1
+- Lane: AI
+- Commit: `a0ffc32e23c6e6533350ecf5218e969906f3d08b` (frozen training-selection source; final ledger append in successor)
+- Inputs/fixtures: Repository snapshot containing the frozen study, failed report, retained research checkpoint, verification test, interpretation, and shared ledger; exact hashes recorded in AI-370.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS: 6,319 paths, 979.3 MiB, 0 unresolved review findings, 14 reviewed synthetic fixtures.
+- Artifacts: bounded-head plan/report/checkpoint; verification test; uncertainty documentation; shared ledger.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic repository review before final ledger append; not model, runtime, or physical assurance. No arm or integration status changes.
+- Supersedes: none.
+- Next dependency: Same as AI-370.
