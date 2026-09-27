@@ -62,3 +62,33 @@ ready.
 
 The next milestone after a real accepted decision is a separately designed and
 authorized read-only endpoint qualification. Movement remains out of scope.
+
+## Offline exchange commands
+
+Build a fresh reviewer directory from the repository root:
+
+```powershell
+$env:PYTHONPATH='software/src'
+python software/scripts/build_arm054_adapter_review_exchange.py <new-output-directory>
+```
+
+The directory contains the immutable ARM-055 packet, both schemas, this
+procedure, and an exchange manifest. It intentionally contains no review
+decision. The builder refuses to overwrite an existing directory.
+
+After a real reviewer returns a decision through an independently controlled
+channel, assess it into another new directory:
+
+```powershell
+$env:PYTHONPATH='software/src'
+python software/scripts/assess_arm054_adapter_review_decision.py `
+  <returned-decision.json> <new-assessment-directory> `
+  --assessment-utc <YYYY-MM-DDTHH:MM:SSZ>
+```
+
+The intake rejects duplicate JSON fields, non-UTF-8 or oversized input,
+symlinked files, unknown fields, hash mismatches, and overwrite attempts. It
+retains the normalized decision, assessment report, raw input-document hash,
+and intake summary. Exit status is zero only when the decision is structurally
+ready for later read-only qualification intake; a blocked decision is retained
+and exits with status 2. Neither outcome accesses hardware.

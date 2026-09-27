@@ -2919,3 +2919,40 @@ rewriting history. New entries must use a unique evidence ID.
 - Next dependency: obtain and authenticate a genuinely independent decision
   bound to the exact ARM-055 packet, then separately design and authorize a
   read-only endpoint qualification. Movement remains out of scope.
+
+### E-20260927-ARM-057 — operational external-review exchange and intake
+
+- Stage: S4
+- Lane: ARM
+- Change: added a deterministic offline exchange builder that emits the exact
+  ARM-055 packet, decision and report schemas, reviewer procedure, and a
+  content-addressed manifest without fabricating a decision. Added a separate
+  strict return-intake CLI that normalizes and assesses one supplied decision
+  into an exclusive evidence directory.
+- Intake behavior: duplicate fields, non-UTF-8/malformed JSON, oversize input,
+  symlinked evidence, unknown fields, content-hash mismatch, and existing
+  output directories fail closed. Accepted and blocked decisions both retain
+  the raw input-document hash, normalized document, assessment report, and
+  summary; blocked decisions remain endpoint-intake ineligible.
+- Artifacts: `build_arm054_adapter_review_exchange.py`,
+  `assess_arm054_adapter_review_decision.py`, focused CLI tests, portable CI
+  selection, and updated external-review procedure/workplan.
+- Results: focused packet/decision/exchange suite PASS, 35 tests; portable
+  shared AI/arm selection PASS, 342 tests in 42.38 seconds; documentation
+  checks PASS, 43 self-tests plus maintained-link, evidence-scope, and
+  release-integrity validation; compile and diff checks PASS.
+- Evidence status: deterministic filesystem fixtures only. The exchange
+  contains no decision, and tests use explicitly non-proven review fixtures.
+  No reviewer authentication, external custody, or real decision is claimed.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: the intake verifies document structure and bindings, not who
+  controlled the reviewer identity or evidence channel. It grants no endpoint
+  open, controller start, execution, hardware, or physical authority.
+- Supersedes: ARM-056 only for operational packaging and return intake. It does
+  not supersede genuine independent review, authenticated custody, endpoint
+  qualification, controller provenance, or physical authorization.
+- Next dependency: transfer the exchange to a genuinely independent reviewer
+  through an externally controlled channel and intake their authenticated
+  decision. Only a later, separate authorization may permit read-only endpoint
+  qualification.
