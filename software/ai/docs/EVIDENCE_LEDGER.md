@@ -3092,3 +3092,41 @@ rewriting history. New entries must use a unique evidence ID.
   does not supersede separate authorization or the passive qualification run.
 - Next dependency: obtain an explicit authorization naming the retained intake
   hash before opening COM7 once for the bounded zero-write passive capture.
+
+### E-20260927-ARM-062 — bounded passive endpoint qualification
+
+- Stage: S4
+- Lane: ARM
+- Authorization: one open and one close against intake
+  `2d88fa8874088ce47b778343ea0ed07994bafb64267b8cd121765c52536ce1d9`,
+  maximum four passive lines, one-second read window, and zero writes, active
+  requests, startup, movement, torque changes, retry, fallback, purge, or
+  DTR/RTS assertion.
+- Result: `PASSIVE_CAPTURE_COMPLETED`. Exact PnP identity matched before and
+  after open; open succeeded once; close was attempted once and confirmed.
+  The passive window contained zero unsolicited complete or partial lines.
+- Artifact:
+  `software/ai/eval/arm062_passive_read_only_qualification_20260927.json`,
+  normalized retained-file SHA-256
+  `ac84722855d43e66e07d512bd60c3d19b2c468c0defe1505303f233bc4148aea`.
+  The direct PowerShell receipt had raw SHA-256
+  `5e3beac11908bef4c310ff599e86d44dc6dae407c2cd57e0f3bdc4dca6886ed9`;
+  repository retention changed only JSON whitespace from CRLF to LF.
+  The runner source and a closed receipt schema are retained with static and
+  semantic tests.
+- Endpoint opens: 1
+- Endpoint closes: 1 confirmed
+- Hardware writes: 0
+- Active requests: 0
+- Physical movements: 0
+- Limitations: an empty passive window proves no controller protocol, firmware,
+  telemetry, pose, or actuation property. Elapsed lifecycle time includes open,
+  post-open identity verification, read, and close overhead; the read loop was
+  bounded by the authorized monotonic one-second deadline.
+- Supersedes: the pending passive endpoint lifecycle qualification after
+  ARM-061. It does not supersede active controller identity/feedback
+  qualification, calibration/collision checks, movement authority, or outcome
+  verification.
+- Next dependency: design an active but still non-moving identity or feedback
+  qualification with its own exact write/request budget and separate owner
+  authorization. No passive retry is warranted.

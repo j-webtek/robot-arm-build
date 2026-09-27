@@ -67,3 +67,28 @@ The retained file is
 `2d88fa8874088ce47b778343ea0ed07994bafb64267b8cd121765c52536ce1d9`.
 It remains non-authorizing. Creating and validating this record did not open
 COM7, start the controller, send bytes, or perform movement.
+
+## ARM-062 passive qualification result
+
+The owner separately authorized the exact retained intake for one COM7 open,
+one close, at most four passive lines, and one overall second of passive read
+time. The dedicated runner passed its non-opening preflight and then executed
+once, with no retry.
+
+The retained receipt is
+`software/ai/eval/arm062_passive_read_only_qualification_20260927.json`.
+Its normalized retained-file SHA-256 is
+`ac84722855d43e66e07d512bd60c3d19b2c468c0defe1505303f233bc4148aea`.
+The direct PowerShell output used CRLF formatting and had raw SHA-256
+`5e3beac11908bef4c310ff599e86d44dc6dae407c2cd57e0f3bdc4dca6886ed9`;
+only JSON whitespace was normalized for repository retention.
+The exact PnP identity matched before and after the open, open and close each
+occurred once, close was confirmed, and all outbound/request/movement/torque,
+retry, purge, and DTR/RTS assertion counters remained zero. No unsolicited line
+arrived during the window.
+
+An empty passive window is not a controller protocol test. It establishes only
+that the pinned endpoint can complete this narrow zero-write lifecycle without
+an observed identity change or lifecycle failure. Active protocol queries,
+controller startup, firmware provenance, telemetry validity, and movement
+remain unqualified and require later, separate authority.
