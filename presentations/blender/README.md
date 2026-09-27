@@ -3,23 +3,30 @@
 This package builds a reproducible Blender scene and narrated informational film
 of the current Tactevra RC03 workcell concept.
 
-The scene deliberately separates four evidence classes:
+The scene deliberately separates six evidence classes:
 
 - **Measured** — RC03 board and device envelopes copied from
   `active-project/RoCell_v0_3/config/workcell_layout.json`.
 - **Designed** — repository-owned portal and station STL geometry.
+- **Hardware appearance authority** — a local, hash-verified tessellation of
+  Waveshare's official RoArm-M3 STEP assembly. It is shown in every static
+  architecture, proposal, validation, and verification shot.
 - **Kinematic authority** — the arm frame chain, joint origins, TCP, and nominal
   board-to-robot transform reconstructed from the separately hash-pinned URDF
   and frozen simulation profile.
-- **Presentation proxy** — one continuous arm-and-stylus silhouette dimensioned
-  from that pinned URDF. Its authored pose is not a solved trajectory.
+- **Execution-only presentation proxy** — an articulated arm-and-stylus
+  silhouette dimensioned from that pinned URDF and used only during the short
+  shot labeled `SIMULATED PRESS`. Its authored pose is not a solved trajectory.
 - **Conceptual** — target paths and explanatory motion graphics. These
   communicate intended behavior; they are not collision or motion
   qualification.
 
-No manufacturer robot surface mesh is redistributed. The optional preparation
-script verifies the pinned official STEP below ignored `/tmp/`. The film uses
-the same URDF-derived proxy in every scene so its actuator identity is clear.
+No manufacturer robot surface mesh is redistributed. The preparation script
+verifies the pinned official STEP below ignored `/tmp/`. The film uses that
+exact surface as its static visual authority and makes the one proxy-motion
+cut explicit on screen. Controller close-ups temporarily hide the tall camera
+portal to reveal the arm; the overlay identifies this as a presentation
+cutaway rather than a different hardware configuration.
 
 `dimension_manifest.json` records the values and source authorities used by the
 film. Run the validator before rendering:
@@ -41,14 +48,14 @@ Blender 4.3 or newer:
 
 This creates local generated media under `tmp/blender-workcell-video/`:
 
-- `tactevra_workcell_explainer_v2.blend`
-- `tactevra_workcell_explainer_poster_v2.png`
-- `tactevra_workcell_explainer_v2.mp4` — 1080p narrated master
-- `tactevra_workcell_explainer_silent_v2.mp4` — 1080p picture master
-- `tactevra_workcell_explainer_web_1080p_v2.mp4` — web delivery
-- `tactevra_workcell_explainer_social_square_v2.mp4` — square, captioned derivative
-- `tactevra_workcell_explainer_captions_v2.srt` — voice-matched captions
-- `tactevra_workcell_explainer_soundtrack_v2.wav` — restrained music and cues
+- `tactevra_workcell_explainer_v3.blend`
+- `tactevra_workcell_explainer_poster_v3.png`
+- `tactevra_workcell_explainer_v3.mp4` — 1080p narrated master
+- `tactevra_workcell_explainer_silent_v3.mp4` — 1080p picture master
+- `tactevra_workcell_explainer_web_1080p_v3.mp4` — web delivery
+- `tactevra_workcell_explainer_social_square_v3.mp4` — square, captioned derivative
+- `tactevra_workcell_explainer_captions_v3.srt` — voice-matched captions
+- `tactevra_workcell_explainer_soundtrack_v3.wav` — restrained music and cues
 
 Review thirteen low-resolution editorial frames before the full render:
 
@@ -155,12 +162,18 @@ dimension-checked 3D render:
   describing it;
 - an explicit frame-chain card shows how `camera_px` becomes `board_mm`, then a
   device-local named target;
+- the hash-verified official arm surface makes the expected motor housings,
+  dual-link architecture, fasteners, and gripper silhouette legible in every
+  static hardware shot;
+- a six-row compact keyboard reconstruction uses the measured RC03 envelope
+  and the nominal 19.05 mm pitch encoded by the target profile, with realistic
+  stagger and modifier-key widths rather than a uniform placeholder grid;
 - a small persistent Tactevra wordmark establishes brand continuity without
   competing with chapter titles;
 - procedural birch and bench variation, restrained depth of field, animated
   focal length, pulsing registration tags, board-frame axes, and a visible
   camera-to-board-to-key trace add material and motion depth while keeping the
-  continuous arm proxy visually coherent;
+  exact hardware surface visually coherent;
 - key legends, an H target ring carried into contact, a connected stylus, and separate
   telemetry and host-result panels make the target, action, and observed result
   legible without implying a live controller trace;
@@ -181,8 +194,9 @@ effect that obscures the hardware evidence.
 The registration pulses and frame-chain trace are conceptual state graphics.
 They are not a TCP trace, servo simulation, collision result, or qualified
 trajectory. The rendered tool contact is explicitly labeled as a simulated
-press. The URDF-derived arm is a presentation proxy, not a segmented, validated
-digital twin.
+press. The arm in that execution shot is a URDF-derived presentation proxy,
+not a segmented, validated digital twin. Static shots use the exact official
+assembly surface but do not establish an installed pose or clearance.
 
 ## Authoritative inputs
 

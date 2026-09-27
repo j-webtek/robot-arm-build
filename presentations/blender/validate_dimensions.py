@@ -76,6 +76,23 @@ def main() -> int:
     keyboard = layout["devices"]["keyboard"]
     assert_close(keyboard["nominal_origin_xy"], workcell["keyboard"]["origin_xy"], "keyboard origin")
     assert_close(keyboard["nominal_size"], workcell["keyboard"]["size_xyz"], "keyboard size")
+    target_profiles = json.loads(
+        resolve(workcell["keyboard"]["target_authority"]).read_text(encoding="utf-8")
+    )
+    target_keyboard = target_profiles["keyboard"]
+    if target_keyboard["profile_id"] != workcell["keyboard"]["target_profile_id"]:
+        fail("keyboard target profile id drift")
+    assert_close([target_keyboard["pitch_mm"]],
+                 [workcell["keyboard"]["nominal_pitch"]], "keyboard pitch")
+    home_row = next(row for row in target_keyboard["rows"] if "H" in row["key_ids"])
+    h_index = home_row["key_ids"].index("H")
+    h_local = [
+        home_row["first_center_xy_mm"][0] + home_row["step_xy_mm"][0] * h_index,
+        home_row["first_center_xy_mm"][1] + home_row["step_xy_mm"][1] * h_index,
+    ]
+    h_board = [keyboard["nominal_origin_xy"][axis] + h_local[axis] for axis in range(2)]
+    assert_close(h_board, workcell["keyboard"]["nominal_h_center_board_xy"],
+                 "keyboard H board coordinate")
     phone = layout["devices"]["phone"]
     assert_close(phone["nominal_origin_xy"], workcell["phone"]["origin_xy"], "phone origin")
     assert_close(phone["configured_size"], workcell["phone"]["size_xyz"], "phone size")
@@ -128,6 +145,7 @@ def main() -> int:
     print("Tactevra Blender dimension contract: PASS")
     print(f"  board/device layout: {workcell['authority']}")
     print(f"  portal STL: {portal['mesh_bounds_xyz']} mm")
+    print(f"  keyboard nominal H: {workcell['keyboard']['nominal_h_center_board_xy']} mm")
     print(f"  arm URDF SHA-256: {digest}")
     print(f"  validated arm joint origins: {len(arm['joint_origin_xyz_m'])}")
     if presentation_mesh.is_file():

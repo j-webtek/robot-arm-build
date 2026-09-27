@@ -6,7 +6,12 @@
     "board": [610.0, 457.0, 18.0],
     "keyboard": {
       "origin_xy": [85.0, 85.0],
-      "size_xyz": [315.0, 147.0, 21.0]
+      "size_xyz": [315.0, 147.0, 21.0],
+      "target_authority": "software/config/static_nominal_target_profiles.json",
+      "target_profile_id": "periboard-409-us-nominal-sim-v1-static-v1",
+      "nominal_pitch": 19.05,
+      "nominal_h_center_board_xy": [216.55, 154.0],
+      "target_status": "SIMULATION_ONLY_NOMINAL_UNMEASURED"
     },
     "phone": {
       "origin_xy": [499.2, 84.2],

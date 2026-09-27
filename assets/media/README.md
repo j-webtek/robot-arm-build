@@ -3,7 +3,7 @@
 These files provide the short Tactevra explainer featured near the top of the
 repository README:
 
-- `tactevra-overview.mp4` — 1920×1080 H.264/AAC narrated delivery file with a
+- `tactevra-overview.mp4` — 1600×900 H.264/AAC narrated delivery file with a
   selectable English subtitle stream;
 - `tactevra-overview.en.vtt` — English WebVTT sidecar for players and future
   web surfaces that support external caption tracks;
