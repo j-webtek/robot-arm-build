@@ -254,13 +254,18 @@ identified an input-controlled checkout in the manually dispatched candidate
 audit; the remediation keeps the SHA input as an equality assertion but makes
 GitHub's dispatch revision the only checkout source. CodeQL was initially
 observational while its first recurring and pull-request runs were observed.
-After successful
-scans on `main` and multiple pull-request revisions, the three app-bound analyzer
-contexts—`Analyze (actions)`, `Analyze (javascript-typescript)`, and
-`Analyze (python)`—were added to strict branch protection on September 27, 2026.
-They supplement rather than replace the four offline compatibility checks. A
-green scan is not a security certification, and an unavailable required result
-must be investigated rather than bypassed.
+After successful scans on `main` and multiple pull-request revisions, the three
+app-bound analyzer contexts—`Analyze (actions)`, `Analyze
+(javascript-typescript)`, and `Analyze (python)`—were initially added to strict
+branch protection on September 27, 2026. GitHub intentionally omits those
+language-specific jobs for changes that cannot affect a configured language,
+which left dependency-only PRs permanently blocked. Branch protection was then
+corrected to require the app-bound `CodeQL` summary instead: it succeeds after
+applicable analyzers complete and reports neutral when none apply. The focused
+RC03 manual-render job was also made required. These checks supplement rather
+than replace the four offline compatibility checks. A green or neutral summary
+is not a security certification, and an unavailable or unexpected result must be
+investigated rather than bypassed.
 
 Attempts to enable GitHub's optional non-provider-pattern and secret-validity
 scanning modes did not change their reported disabled state. Treat those modes as
