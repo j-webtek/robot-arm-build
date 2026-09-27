@@ -150,7 +150,11 @@ executor rehearsal: fresh claim-bound authority is consumed exactly once, an
 exactly typed in-memory transport records one open/write/close lifecycle, and a
 closed receipt distinguishes requested and confirmed bytes from authentic
 controller receipt or movement. A real serial transport and physical authority
-remain absent and require independent review.
+remain absent and require independent review. The executor lifecycle now also
+has a durable terminal receipt journal: a content-bound `started.json` is
+committed before the rehearsal transport may open, so pre-terminal restart is
+always retry-forbidden, and a separately flushed `terminal.json` seals the
+exact byte-accounted receipt with terminal no-replay semantics.
 
 ## Stage definitions
 

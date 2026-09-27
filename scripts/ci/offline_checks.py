@@ -23,6 +23,7 @@ TESTS = (
     'software/tests/unit/test_reviewed_t102_runtime_bridge_v1.py',
     'software/tests/unit/test_native_t102_handoff_journal_v1.py',
     'software/tests/unit/test_native_t102_executor_rehearsal_v1.py',
+    'software/tests/unit/test_native_t102_terminal_receipt_journal_v1.py',
     'software/tests/unit/test_model_motion_sequence_coordinator.py',
     'software/tests/unit/test_zero_write_waveshare_adapter_v1.py',
     'software/tests/unit/test_zero_write_sole_writer_v1.py',

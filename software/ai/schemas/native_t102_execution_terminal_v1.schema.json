@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rocell.local/schemas/native_t102_execution_terminal_v1.schema.json",
+  "title": "RoCell native T102 durable terminal receipt v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "status", "started_sha256", "receipt_sha256",
+    "completed_monotonic_ns", "executor_receipt", "recovery_disposition",
+    "automatic_retry_allowed", "hardware_access", "physical_authority",
+    "terminal_sha256"
+  ],
+  "properties": {
+    "schema": {"const": "rocell.native_t102_execution_terminal.v1"},
+    "status": {"const": "TERMINAL_RECEIPT_COMMITTED_NO_REPLAY"},
+    "started_sha256": {"$ref": "#/$defs/hash"},
+    "receipt_sha256": {"$ref": "#/$defs/hash"},
+    "completed_monotonic_ns": {"type": "integer", "minimum": 1},
+    "executor_receipt": {
+      "$ref": "native_t102_executor_rehearsal_receipt_v1.schema.json"
+    },
+    "recovery_disposition": {"const": "TERMINAL_NO_REPLAY"},
+    "automatic_retry_allowed": {"const": false},
+    "hardware_access": {"const": false},
+    "physical_authority": {"const": false},
+    "terminal_sha256": {"$ref": "#/$defs/hash"}
+  },
+  "$defs": {
+    "hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}
