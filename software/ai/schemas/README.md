@@ -161,6 +161,13 @@ record only: it permits no endpoint open, startup, write, active request,
 movement, torque action, retry, or fallback. A valid intake is merely ready for
 a separate, explicit read-only authorization and cannot supply that authority
 itself.
+The [read-only endpoint qualification receipt](native_t102_read_only_endpoint_qualification_v1.schema.json)
+records the separately authorized one-open passive observation against that
+intake. It closes over the exact identity before and after open, bounded lines,
+lifecycle counts, zero outbound activity, and retained non-authority flags. A
+completed empty passive window proves only that the endpoint opened and closed
+under the zero-write policy; it does not prove controller protocol or firmware
+identity.
 The [measured configuration-epoch intake](controller_configuration_epoch_intake_v1.schema.json)
 and [intake assessment](controller_configuration_epoch_intake_report_v1.schema.json)
 require that full decision, rather than accepting only an arbitrary review hash
