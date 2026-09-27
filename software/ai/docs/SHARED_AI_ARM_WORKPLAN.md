@@ -599,8 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-- AI lane / S1: visible-keyboard auxiliary labels/head feasibility,fixed training-only gradient probe; no optimizer updates or qualification.
-
 
 
 
@@ -6866,3 +6864,54 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic audit;AI-041 protected-main publication blocker retained.
 - Supersedes: none;prior failures and arm/integration status retained.
 - Next dependency: Implement and verify training-only visible-case segmentation labels and an auxiliary head at the shared stride-four feature map;ensure unchanged initial pose output,inspect fixed-batch gradient scale,then freeze a paired training study. No runtime segmentation authority,contract change or qualification. Publish only feature/translation-pair-evidence to j-webtek/tactevra.
+
+
+### E-20260926-AI-242 — visible-case auxiliary feasibility
+
+- Stage: S1
+- Lane: AI
+- Commit: `45836f58301d7173c4e7b72fd213b13a796eb758` (frozen source;results/tests committed with evidence)
+- Change: visible-case auxiliary feasibility.
+- Inputs/fixtures: training-only starts29000000/008/016/024,8groups x4conditions per batch,rectangle occlusion,CPU128x96. Initial checkpoint0fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d;seed260926,balanced mask BCE vs key loss,coefficient0.001 preregistered. Exact source hashes eval/segmentation_feasibility_v0_plan.json;pixel/target hashes in report.
+- Command: `python software/ai/vision/diagnose_segmentation_auxiliary.py`
+- Result: Completed:33extra parameters,24x32soft-area masks;exact initial pose equality on128 training images. Coefficient0.001 auxiliary/shared pose-gradient ratios0.012182/0.018737/0.002851/0.007475;cosines0.01051/0.00781/0.06435/0.04958. No empty masks in fixed probe;target mean16.1–16.5%;optimizer updates0.
+- Artifacts: train/segmentation_auxiliary.py;vision/diagnose_segmentation_auxiliary.py;eval/segmentation_feasibility_v0_report.json;tests/test_segmentation_auxiliary.py.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Four fixed training batches at initialization only;not proof of optimization stability or better localization. Mask geometry is not perceptual/physical truth.
+- Supersedes: none;prior failures and arm/integration status retained.
+- Next dependency: Freeze paired original-image training with identical auxiliary-head architecture/control initialization and no mask gradient in control,coefficient0.001 candidate. Same pose loss/anchor,data,budget/selection and three seeds;score original cluttered development images and retain segmentation metrics separately. No runtime or qualification change. Publish only feature/translation-pair-evidence to j-webtek/tactevra.
+
+
+### E-20260926-AI-243 — auxiliary label and head verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `45836f58301d7173c4e7b72fd213b13a796eb758` (frozen source;results/tests committed with evidence)
+- Change: auxiliary label and head verification.
+- Inputs/fixtures: training-only starts29000000/008/016/024,8groups x4conditions per batch,rectangle occlusion,CPU128x96. Initial checkpoint0fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d;seed260926,balanced mask BCE vs key loss,coefficient0.001 preregistered. Exact source hashes eval/segmentation_feasibility_v0_plan.json;pixel/target hashes in report.
+- Command: `python -m pytest -q software/ai/tests/test_segmentation_auxiliary.py`
+- Result: PASS,3 tests: exact area coverage/foreground subtraction,empty/full/soft-class finite loss gradients,unchanged initial pose,discardable head,source/checkpoint lineage and probe recount. Existing pytest-asyncio warning.
+- Artifacts: train/segmentation_auxiliary.py;vision/diagnose_segmentation_auxiliary.py;eval/segmentation_feasibility_v0_report.json;tests/test_segmentation_auxiliary.py.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Implementation verification only;batch contract unchanged,shared boundary suite not triggered.
+- Supersedes: none;prior failures and arm/integration status retained.
+- Next dependency: Freeze paired original-image training with identical auxiliary-head architecture/control initialization and no mask gradient in control,coefficient0.001 candidate. Same pose loss/anchor,data,budget/selection and three seeds;score original cluttered development images and retain segmentation metrics separately. No runtime or qualification change. Publish only feature/translation-pair-evidence to j-webtek/tactevra.
+
+
+### E-20260926-AI-244 — auxiliary feasibility publication audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `45836f58301d7173c4e7b72fd213b13a796eb758` (frozen source;results/tests committed with evidence)
+- Change: auxiliary feasibility publication audit.
+- Inputs/fixtures: training-only starts29000000/008/016/024,8groups x4conditions per batch,rectangle occlusion,CPU128x96. Initial checkpoint0fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d;seed260926,balanced mask BCE vs key loss,coefficient0.001 preregistered. Exact source hashes eval/segmentation_feasibility_v0_plan.json;pixel/target hashes in report.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS;6099paths,861.7MiB,0 unresolved findings,14 reviewed synthetic fixtures.
+- Artifacts: train/segmentation_auxiliary.py;vision/diagnose_segmentation_auxiliary.py;eval/segmentation_feasibility_v0_report.json;tests/test_segmentation_auxiliary.py.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic audit;AI-041 protected-main publication blocker retained.
+- Supersedes: none;prior failures and arm/integration status retained.
+- Next dependency: Freeze paired original-image training with identical auxiliary-head architecture/control initialization and no mask gradient in control,coefficient0.001 candidate. Same pose loss/anchor,data,budget/selection and three seeds;score original cluttered development images and retain segmentation metrics separately. No runtime or qualification change. Publish only feature/translation-pair-evidence to j-webtek/tactevra.

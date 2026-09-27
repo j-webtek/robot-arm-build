@@ -1,0 +1,75 @@
+{
+  "plan_sha256": "e5d6d7b25ad190b28d8be26ae06d17d4b3cd876c04d3da26504e4d2b9b4b1b72",
+  "rows": [
+    {
+      "start": 29000000,
+      "images": 32,
+      "pixels_sha256": "00172608af702804ea6bdccbf37ddb6165e1d9a6b5a2bd30af58f4b0a6998fb0",
+      "targets_sha256": "8c6c865a88c35be37626caaf46cda66705029f1596234fb17780167cc5483fe9",
+      "target_mean": 0.16504161059856415,
+      "empty_masks": 0,
+      "pose_loss": 0.0014576783869415522,
+      "mask_loss": 0.6598275303840637,
+      "pose_gradient_norm": 0.05690654739737511,
+      "mask_gradient_norm": 0.6932083368301392,
+      "weighted_gradient_ratio": 0.012181522324681282,
+      "gradient_cosine": 0.01051016803830862,
+      "pose_max_delta": 0.0
+    },
+    {
+      "start": 29000008,
+      "images": 32,
+      "pixels_sha256": "f398343ae2bf90493e146d0acb88aecdf5c50f540a6c581b8c86ec2470ac270c",
+      "targets_sha256": "b2eb200ba08a8746b8b82e039d65ebcb7b16c71df4502d32fab75dc1628f1373",
+      "target_mean": 0.16326904296875,
+      "empty_masks": 0,
+      "pose_loss": 0.0012460921425372362,
+      "mask_loss": 0.6617817282676697,
+      "pose_gradient_norm": 0.03487270325422287,
+      "mask_gradient_norm": 0.6534029841423035,
+      "weighted_gradient_ratio": 0.01873680390417576,
+      "gradient_cosine": 0.007806509733200073,
+      "pose_max_delta": 0.0
+    },
+    {
+      "start": 29000016,
+      "images": 32,
+      "pixels_sha256": "5761459e4c15e5648968e0eca2d68f17cf8028259d7210f5e8100f34a23b9515",
+      "targets_sha256": "ab946c7f0bd719da9ec5fadffbf1b581f5a8cfbb60dd1150c515adc6a81a96eb",
+      "target_mean": 0.16116778552532196,
+      "empty_masks": 0,
+      "pose_loss": 0.0037754925433546305,
+      "mask_loss": 0.6612017154693604,
+      "pose_gradient_norm": 0.23622822761535645,
+      "mask_gradient_norm": 0.6734851002693176,
+      "weighted_gradient_ratio": 0.0028509933035820723,
+      "gradient_cosine": 0.06434596329927444,
+      "pose_max_delta": 0.0
+    },
+    {
+      "start": 29000024,
+      "images": 32,
+      "pixels_sha256": "0d4d550df6537e6139068a01b1b7afde03eaf423a7929657c195e0aa7aca1819",
+      "targets_sha256": "d091fda0b89b443c70cb894adb0d29a2f1a8e8158e548ba40491ebf2f020c50a",
+      "target_mean": 0.16375859081745148,
+      "empty_masks": 0,
+      "pose_loss": 0.0014082370325922966,
+      "mask_loss": 0.6607116460800171,
+      "pose_gradient_norm": 0.09005177021026611,
+      "mask_gradient_norm": 0.6731091737747192,
+      "weighted_gradient_ratio": 0.007474691607058048,
+      "gradient_cosine": 0.04957851395010948,
+      "pose_max_delta": 0.0
+    }
+  ],
+  "extra_parameters": 33,
+  "optimizer_updates": 0,
+  "hardware_writes": 0,
+  "physical_movements": 0,
+  "qualification_installed": false,
+  "limitations": [
+    "Synthetic visible-case geometry minus foreground,not perceptual segmentation truth",
+    "Four fixed training batches at initialization;gradient ratios do not predict training stability",
+    "No evaluation or qualification evidence;head may be discarded at inference"
+  ]
+}
