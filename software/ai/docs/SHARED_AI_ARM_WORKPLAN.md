@@ -599,8 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-- AI lane / S1: paired clutter consistency training,three seeds,fixed coefficient1,original development only; feature/translation-pair-evidence.
-
 
 
 
@@ -6747,3 +6745,71 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic audit;AI-041 protected-main publication blocker retained.
 - Supersedes: none;prior failures and arm/integration status retained.
 - Next dependency: Freeze training-only paired-clutter consistency comparison with identical pose supervision,common budget and fixed coefficient;evaluate original unmodified development scenes. No runtime clutter removal or model qualification. Publish only feature/translation-pair-evidence to j-webtek/tactevra.
+
+
+### E-20260926-AI-235 — paired clutter consistency training
+
+- Stage: S1
+- Lane: AI
+- Commit: `193da276fb502aa86af2e0342746496be30f6227` (frozen source;results/tests committed with evidence)
+- Change: paired clutter consistency training.
+- Inputs/fixtures: training29000000..29000599 x4 paired original/removed-arm-and-ruler,identical pose supervision;4epochs,152updates,AdamW0.0001,batch64pairs,anchor1 in both arms,consistency1 candidate only,seeds260926/27/28. Original unmodified15M200 x4 development. Initial/teacher0fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d. Exact source hashes train/pose_clutter_pair_*_plan.json;pixel/teacher/checkpoint hashes in reports.
+- Command: `python software/ai/train/train_pose_clutter_pair.py`
+- Result: Full rule FAIL3/3,baseline pass1/3. Candidate tails20/22/26 vs paired-supervision control21/22/25 and baseline32each. Both arms see identical pair images/teacher predictions. Checkpoint SHA256: 260926/control=d00856fea028459271b8a6950c20e5abba60f40a1b78f9558ae6479e6157a3af; 260926/occlusion=a05ae9481cfae5af90703054f22820bc318b4e5a4c25841f8cb832e4a890c67c; 260927/control=e74d1d656e0b21e9522788aa24cf12d1c2a9f46e28b707e2a039d2217e11bfa5; 260927/occlusion=2f0cbd5e3906869abde4cb6d78cd1d90b7119f1f26cae68c956ee435ac7519a9; 260928/control=4e93e8da1331d0af156032c04bee9020d71bbf847b2657104c6c75c920e29842; 260928/occlusion=361e5037bb48d7644e148aedeb3a2df92060a52d2e9f255a9f333df04c11fa1e
+- Artifacts: train/train_pose_clutter_pair.py;vision/summarize_pose_clutter_pair.py;eval/pose_clutter_pair_*_report.json;tests/test_pose_clutter_pair.py.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Single fixed coefficient,three seeds,reused synthetic development. Symmetric consistency has no demonstrated advantage. Historical occlusion arm means consistency candidate. No model promotion or runtime cleanup.
+- Supersedes: none;prior failures and arm/integration status retained.
+- Next dependency: Stop consistency-coefficient tuning. Review earlier matched-resolution evidence against current clutter failures before choosing a bounded representation/input-resolution intervention; avoid duplicating a previously failed comparison. Original cluttered cases remain acceptance data; no qualification.
+
+
+### E-20260926-AI-236 — paired clutter consistency aggregation
+
+- Stage: S1
+- Lane: AI
+- Commit: `193da276fb502aa86af2e0342746496be30f6227` (frozen source;results/tests committed with evidence)
+- Change: paired clutter consistency aggregation.
+- Inputs/fixtures: training29000000..29000599 x4 paired original/removed-arm-and-ruler,identical pose supervision;4epochs,152updates,AdamW0.0001,batch64pairs,anchor1 in both arms,consistency1 candidate only,seeds260926/27/28. Original unmodified15M200 x4 development. Initial/teacher0fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d. Exact source hashes train/pose_clutter_pair_*_plan.json;pixel/teacher/checkpoint hashes in reports.
+- Command: `python software/ai/vision/summarize_pose_clutter_pair.py`
+- Result: All3 runs retained;mean total failures both22.667. Candidate appearance means0.808281/0.815878/0.841149,average0.821769 vs control0.814087 and baseline0.833364. One-seed improvement reverses on another.
+- Artifacts: train/train_pose_clutter_pair.py;vision/summarize_pose_clutter_pair.py;eval/pose_clutter_pair_*_report.json;tests/test_pose_clutter_pair.py.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Same evaluation images across seeds;descriptive ranges,not independent data replication or significance proof.
+- Supersedes: none;prior failures and arm/integration status retained.
+- Next dependency: Stop consistency-coefficient tuning. Review earlier matched-resolution evidence against current clutter failures before choosing a bounded representation/input-resolution intervention; avoid duplicating a previously failed comparison. Original cluttered cases remain acceptance data; no qualification.
+
+
+### E-20260926-AI-237 — paired clutter consistency verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `193da276fb502aa86af2e0342746496be30f6227` (frozen source;results/tests committed with evidence)
+- Change: paired clutter consistency verification.
+- Inputs/fixtures: training29000000..29000599 x4 paired original/removed-arm-and-ruler,identical pose supervision;4epochs,152updates,AdamW0.0001,batch64pairs,anchor1 in both arms,consistency1 candidate only,seeds260926/27/28. Original unmodified15M200 x4 development. Initial/teacher0fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d. Exact source hashes train/pose_clutter_pair_*_plan.json;pixel/teacher/checkpoint hashes in reports.
+- Command: `python -m pytest -q software/ai/tests/test_pose_clutter_pair.py`
+- Result: PASS,2 tests: symmetric nonzero gradients to both predictions,zero identical-pair loss,equal pair/input/teacher identities,2400pairs/epoch,19200presentations,checkpoint hashes,epoch selection,unchanged original development pixels and aggregate recount. Existing pytest-asyncio warning.
+- Artifacts: train/train_pose_clutter_pair.py;vision/summarize_pose_clutter_pair.py;eval/pose_clutter_pair_*_report.json;tests/test_pose_clutter_pair.py.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Implementation verification only;batch unchanged,shared boundary suite not triggered.
+- Supersedes: none;prior failures and arm/integration status retained.
+- Next dependency: Stop consistency-coefficient tuning. Review earlier matched-resolution evidence against current clutter failures before choosing a bounded representation/input-resolution intervention; avoid duplicating a previously failed comparison. Original cluttered cases remain acceptance data; no qualification.
+
+
+### E-20260926-AI-238 — paired clutter publication audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `193da276fb502aa86af2e0342746496be30f6227` (frozen source;results/tests committed with evidence)
+- Change: paired clutter publication audit.
+- Inputs/fixtures: training29000000..29000599 x4 paired original/removed-arm-and-ruler,identical pose supervision;4epochs,152updates,AdamW0.0001,batch64pairs,anchor1 in both arms,consistency1 candidate only,seeds260926/27/28. Original unmodified15M200 x4 development. Initial/teacher0fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d. Exact source hashes train/pose_clutter_pair_*_plan.json;pixel/teacher/checkpoint hashes in reports.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS;6089paths,861.7MiB,0 unresolved findings,14 reviewed synthetic fixtures.
+- Artifacts: train/train_pose_clutter_pair.py;vision/summarize_pose_clutter_pair.py;eval/pose_clutter_pair_*_report.json;tests/test_pose_clutter_pair.py.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic audit;AI-041 protected-main blocker retained.
+- Supersedes: none;prior failures and arm/integration status retained.
+- Next dependency: Stop consistency-coefficient tuning. Review earlier matched-resolution evidence against current clutter failures before choosing a bounded representation/input-resolution intervention; avoid duplicating a previously failed comparison. Original cluttered cases remain acceptance data; no qualification.
