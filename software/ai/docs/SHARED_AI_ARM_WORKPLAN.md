@@ -599,6 +599,11 @@ Copy this row and fill every field:
 
 ## Active work claims
 
+- AI lane / S1: promote the two selected appearance-robust checkpoint hashes
+  and evaluate them once on a new 38M grouped development cohort using the
+  frozen ranking and member-quality rule; no fitting, calibration, runtime,
+  contract, or arm changes.
+
 
 
 
