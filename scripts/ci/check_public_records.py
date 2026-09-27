@@ -81,8 +81,12 @@ def media_errors(root: Path) -> list[str]:
         errors.append(f"{RECEIPT}: unsupported schema")
     if not re.fullmatch(r"[0-9a-f]{40}", str(receipt.get("asset_revision_commit", ""))):
         errors.append(f"{RECEIPT}: asset_revision_commit must be a full lowercase SHA")
-    if receipt.get("source_pull_request") != "https://github.com/j-webtek/tactevra/pull/112":
-        errors.append(f"{RECEIPT}: unexpected source_pull_request")
+    source_pull_request = receipt.get("source_pull_request")
+    if not isinstance(source_pull_request, str) or not re.fullmatch(
+        r"https://github\.com/j-webtek/tactevra/pull/[1-9][0-9]*",
+        source_pull_request,
+    ):
+        errors.append(f"{RECEIPT}: source_pull_request must be a canonical Tactevra PR URL")
 
     errors.extend(identity_errors(root, receipt.get("authority"), "authority"))
     outputs = receipt.get("outputs")

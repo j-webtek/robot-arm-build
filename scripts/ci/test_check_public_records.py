@@ -75,6 +75,19 @@ class PublicRecordTests(unittest.TestCase):
             receipt_path.write_text(json.dumps(receipt), encoding="utf-8")
             self.assertTrue(any("exactly" in error for error in checks.media_errors(root)))
 
+    def test_noncanonical_source_pull_request_is_rejected(self):
+        with TemporaryDirectory() as folder:
+            root = Path(folder)
+            self.fixture(root)
+            receipt_path = root / checks.RECEIPT
+            receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+            receipt["source_pull_request"] = "https://example.com/pull/118"
+            receipt_path.write_text(json.dumps(receipt), encoding="utf-8")
+            self.assertTrue(any(
+                "canonical Tactevra PR URL" in error
+                for error in checks.media_errors(root)
+            ))
+
     def test_status_matches_latest_arm_record(self):
         with TemporaryDirectory() as folder:
             root = Path(folder)

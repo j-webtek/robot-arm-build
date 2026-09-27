@@ -1,8 +1,8 @@
 {
   "schema": "tactevra.published-media-verification.v1",
   "recorded_on": "2026-09-27",
-  "asset_revision_commit": "3e8be273cdf53daeef1818da8f027225b700c0e4",
-  "source_pull_request": "https://github.com/j-webtek/tactevra/pull/112",
+  "asset_revision_commit": "aa6705bc45bf720dda523819e1ddbf873bab8e78",
+  "source_pull_request": "https://github.com/j-webtek/tactevra/pull/118",
   "authority": {
     "path": "presentations/blender/dimension_manifest.json",
     "size_bytes": 2272,
@@ -14,22 +14,23 @@
     "publish_command": "blender --background --factory-startup --python presentations/blender/build_workcell_explainer.py -- --publish-homepage-media"
   },
   "post_merge_verification": {
-    "full_blender_rerender": false,
+    "full_blender_rerender": true,
     "observed_blender_version": "4.3.2",
     "observed_ffmpeg_version": "2024-11-21-git-f298507323-full_build",
     "checks": [
       "SHA-256 and byte size for the committed authority and all published files",
       "MP4 stream inventory, duration, dimensions, frame rate, audio, and selectable English subtitle stream",
       "WebVTT cue order and timing",
-      "seven representative frames sampled across the committed MP4"
+      "eight representative frames sampled across the committed MP4",
+      "integrated loudness and true-peak analysis of the final AAC delivery"
     ],
     "visual_result": "PASS_WITH_RECORDED_LIMITATIONS"
   },
   "outputs": [
     {
       "path": "assets/media/tactevra-overview.mp4",
-      "size_bytes": 16749452,
-      "sha256": "f9a2d7096abf37b2f19e05ebe5c0e81f43ed95269eaf6b72c3360e883bffd7b1",
+      "size_bytes": 18629002,
+      "sha256": "b297269498cce0e4de1959ddf0a5456daa6cbb8e9acbe9e83875c02e0b12dd9f",
       "media": {
         "duration_seconds": 77.003,
         "video": "H.264 1920x1080 24fps",
@@ -39,8 +40,8 @@
     },
     {
       "path": "assets/media/tactevra-overview-poster.jpg",
-      "size_bytes": 72549,
-      "sha256": "8b99e7d7b2c5ef1ad28e223d4203b40ded0bbece01d4b54b2c54836838413dd9"
+      "size_bytes": 73389,
+      "sha256": "6e5d0dbac5fe26d22774796c9aea4a6358d345b12864f8ebeeb93057337c45a4"
     },
     {
       "path": "assets/media/tactevra-overview.en.vtt",
@@ -49,8 +50,8 @@
     }
   ],
   "limitations": [
-    "This is a post-merge verification of committed bytes, metadata, captions, and representative frames; the Blender scene was not rerendered for this receipt.",
-    "The pull-request validation reports a complete render and audio QA; this separate receipt independently verifies committed bytes, delivery metadata, captions, and representative frames, but does not reproduce that full render.",
+    "The Blender scene was fully rerendered for this revision; the published bytes, metadata, captions, representative frames, and final audio measurements were verified before publication.",
+    "The recorded visual review covers the camera and tag lock, rejected and accepted admission states, resolved H target, simulated tool contact, host observation, closed-loop payoff, and end card.",
     "The unresolved Waveshare URDF redistribution disposition remains tracked at https://github.com/j-webtek/tactevra/issues/88.",
     "The film is an architectural visualization, not physical-operation, collision, fabrication, or autonomous-task qualification."
   ]
