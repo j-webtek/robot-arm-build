@@ -1419,7 +1419,9 @@ def mux_soundtrack_and_variants(silent_video: Path, final_video: Path,
     )
     audio_graph.append(
         "[ducked][voices]amix=inputs=2:duration=longest:normalize=0,"
-        "loudnorm=I=-14:TP=-1.5:LRA=7[mix]"
+        # Leave additional intersample headroom so the later compact AAC
+        # transcode remains at or below -1 dBTP on the public delivery.
+        "loudnorm=I=-14:TP=-2.0:LRA=7[mix]"
     )
     subprocess.run(
         inputs + ["-filter_complex", ";".join(audio_graph),
