@@ -599,11 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-- AI lane / S1: train one tail-aware failure-ranking head on frozen pose
-  descriptors and disagreement using new 54M scenes, then apply the unchanged
-  ranking gate once on disjoint 55M scenes; no calibration, runtime, contract,
-  or arm changes.
-
 
 
 
@@ -8829,3 +8824,48 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic repository review before final ledger append; not model, runtime, or physical assurance. No arm or integration status changes.
 - Supersedes: none.
 - Next dependency: Same as AI-358.
+
+### E-20260927-AI-361 — tail-aware pose-risk head selection
+
+- Stage: S1
+- Lane: AI
+- Commit: `baf71ec880a6a81ea21f3d9db348c4193c273f16` (balanced tail objective, unchanged gates, populations, source, plan, and claim frozen before feature extraction or training; report, checkpoint, tests, interpretation, and claim removal committed in the successor)
+- Inputs/fixtures: Training scenes `54000000..54001999` (16,000 images) and selection scenes `55000000..55000999` (8,000 images), each with two styles and four conditions. Training pixel/feature/target SHA256 values `f0c5c954a6cc71d9318b91a5ad029ced1ca3d47860d0ba7721a767f60db9ea0f`, `873485b2d2b0c1bfa1e54995717e36e70521770074fd7834252679bc7abdcd2e`, and `1b2569a21fa1d1e93fc61547234e51547cb4f22ba3d17448a1687e6d1dcdd6d2`; selection pixel/feature/target SHA256 values `cb370f30231e52fb4e7499c013e99cd5389010e5a530ab645c9126f518a84301`, `16135ee8f5548f438ca6a9a707a3af079eed6f80da37385302643a8a8b77e86c`, and `c0dbe7e5e7710acec97371b7ae4e3c7e9ebd167c911b74bc741027ddd9c60c6a`; all pose prediction hashes are retained in the report. Plan SHA256 `6d03ea52498af5d6c219733905f6c0c39e8ad189c5190d13c46ca3bf2438e045`; report SHA256 `40524c98512aa98383f70aa0156b062276660572081ff1c4b808fdec460211cf`; checkpoint SHA256 `79d48b0ef63effea3642c2e08a20d8a6800f27f75e0ed97ed8050f146d4f326e`; normalization SHA256 `6758071d393e432f969c0f90c72bf5645a3e26286c2acaaecf615a3d4f849691`; risk prediction SHA256 `da86af9621834e5f01d6aae5503df04d350e8aaf88d36804e12c7d583aaa1c45`.
+- Command: `python software/ai/train/train_tail_risk_head.py`
+- Result: PASS fixed training-selection rule. The 52,481-parameter head trains on 688 positive and 15,312 negative images with positive weight `22.25581395348837`. On untouched selection, scene AUROC rises from `0.6851` to `0.755266667`; lowest-quartile failure falls from 5.2% to 3.6%; lowest-half failure falls from 5.4% to 3.6%. Conditional image AUROC is standard `0.914617486`, appearance `0.924933862`, partial `0.783335065`, full `0.755343893`; every fixed check passes. One model fit, zero calibration fits, and 2,500 optimizer updates.
+- Artifacts: `train/train_tail_risk_head.py`; `train/tail_risk_head_v1_plan.json`; `eval/tail_risk_head_v1_report.json`; `results/tail_risk_head_v1/model.pt`; `tests/test_tail_risk_head.py`; `docs/IMAGE_DEPENDENT_UNCERTAINTY.md`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Synthetic training-selection evidence for one seed, candidate, and 3 mm binary target. Passing selects a ranking feature only. It supplies no metric radius, calibration, confirmation, runtime installation, physical-camera evidence, or motion authority. ModelMotionBatchV2 and arm/integration statuses are unchanged.
+- Supersedes: none; the regression near miss and all earlier failed evidence remain preserved.
+- Next dependency: Freeze one mapping study using this exact checkpoint on new grouped mapping-calibration and selection cohorts. Retain 99% marginal and accepted-subset coverage, per-condition utility/coverage, and zero accepted errors above 3 mm before allocating independent confirmation.
+
+### E-20260927-AI-362 — tail-aware pose-risk verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `baf71ec880a6a81ea21f3d9db348c4193c273f16` (frozen training-selection source; tests and documentation committed in the successor)
+- Inputs/fixtures: Same 24,000 images, frozen pose models, 52,481-parameter head, plan, report, and selected research checkpoint as AI-361; exact hashes are recorded there and in the report.
+- Command: `python -m pytest -q software/ai/tests/test_tail_risk_head.py`
+- Result: PASS: 1 test in 2.37s. The test verifies frozen lineage, exact grouped populations, training class balance and weight, complete ranking recounts, every fixed passing check, and zero calibration, hardware, or physical authority.
+- Artifacts: `tests/test_tail_risk_head.py`; `eval/tail_risk_head_v1_report.json`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Existing pytest-asyncio configuration warning. Recount consistency only; no physical assurance. Contract unchanged, so shared boundary tests were not triggered.
+- Supersedes: none.
+- Next dependency: Same as AI-361.
+
+### E-20260927-AI-363 — tail-aware pose-risk snapshot review
+
+- Stage: S1
+- Lane: AI
+- Commit: `baf71ec880a6a81ea21f3d9db348c4193c273f16` (frozen training-selection source; final ledger append in successor)
+- Inputs/fixtures: Repository snapshot containing the frozen study, report, selected research checkpoint, tests, interpretation, and shared ledger; exact hashes recorded in AI-361.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS: 6,305 paths, 962.9 MiB, 0 unresolved review findings, 14 reviewed synthetic fixtures.
+- Artifacts: tail-risk plan/report/checkpoint; verification test; uncertainty documentation; shared ledger.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic repository review before final ledger append; not model, runtime, or physical assurance. No arm or integration status changes.
+- Supersedes: none.
+- Next dependency: Same as AI-361.

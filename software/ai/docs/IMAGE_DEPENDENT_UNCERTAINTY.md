@@ -399,3 +399,24 @@ study should keep the frozen descriptor inputs and train one preregistered
 tail-aware head on entirely new training-selection cohorts, using a failure-
 weighted or ranking objective fixed before either cohort is evaluated. The
 failed gate must remain unchanged.
+
+## Tail-aware pose-risk head
+
+The same 52,481-parameter architecture and frozen 513 inputs were trained from
+scratch on 16,000 new 54M images. The sole change was the preregistered target:
+balanced binary cross entropy for maximum target error above 3 mm. The training
+cohort contained 688 positive and 15,312 negative images, fixing positive weight
+at 22.255814. All 20 epochs completed without selection-based stopping.
+
+The untouched 55M selection cohort passed every unchanged rule. Grouped scene
+AUROC improved from 0.685100 for disagreement to 0.755267. The lowest-risk 25%
+failure rate fell from 5.2% to 3.6%, and the lowest-risk 50% rate fell from 5.4%
+to 3.6%. Conditional image AUROC was 0.914617 standard, 0.924934 appearance,
+0.783335 partial obstruction, and 0.755344 full obstruction. All exceed 0.70.
+
+This selects a failure-ranking feature for further research. It does not yield
+millimetre uncertainty, an acceptance radius, or runtime authority. The tracked
+checkpoint may enter one separately frozen mapping study on new grouped
+mapping-calibration and selection cohorts. That study must preserve the 99%
+coverage, conditional coverage, nonzero utility, and zero accepted errors above
+3 mm rules before any independent confirmation is allocated.
