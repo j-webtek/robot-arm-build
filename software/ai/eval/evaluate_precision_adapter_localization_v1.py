@@ -12,24 +12,20 @@ AI = Path(__file__).resolve().parents[1]
 ROOT = AI.parents[1]
 sys.path[:0] = [str(AI), str(AI.parent / "src")]
 
-import numpy as np
-import torch
-
 from rocell_ai.precision_adapter_v2 import PoseModelOutputV2, adapt_pose_model_output
 from rocell_ai.scene_observation import canonical_hash
-from train.train_diverse_pose_ensemble import predict, render_set
-from vision.linear_residual_pose import LinearResidualPoseNet
-from vision.synthetic_keyboard import catalog_for_workspace, transform_target
-from vision.train_pose import _pose_from_prediction
 
 
-def _dataset_records(pixels, predictions, metadata, catalog):
+def _dataset_records(
+    pixels, predictions, metadata, catalog, *, pose_from_prediction,
+    transform_target,
+):
     records = []
     target_ids = sorted(catalog.keyboard_targets)
     for index, (raw, (seed, style, condition, truth)) in enumerate(
         zip(predictions, metadata)
     ):
-        predicted_pose = _pose_from_prediction(raw)
+        predicted_pose = pose_from_prediction(raw)
         errors = {}
         for target_id in target_ids:
             region = catalog.keyboard_targets[target_id]
@@ -62,21 +58,37 @@ def _dataset_records(pixels, predictions, metadata, catalog):
 
 def evaluate(plan_path: Path) -> dict[str, object]:
     plan = json.loads(plan_path.read_text())
+    required = [ROOT / name for name in plan["file_sha256"]]
+    required.append(ROOT / plan["model_checkpoint"])
+    missing = [path.relative_to(ROOT).as_posix() for path in required
+               if not path.is_file()]
+    if missing:
+        raise FileNotFoundError(
+            "precision evaluation requires external research artifacts: "
+            + ", ".join(missing))
     for name, digest in plan["file_sha256"].items():
         if hashlib.sha256((ROOT / name).read_bytes()).hexdigest() != digest:
             raise ValueError("source mismatch: " + name)
     checkpoint = ROOT / plan["model_checkpoint"]
     if hashlib.sha256(checkpoint.read_bytes()).hexdigest() != plan["model_checkpoint_sha256"]:
         raise ValueError("model checkpoint mismatch")
-    catalog = catalog_for_workspace(ROOT)
-    if catalog.content_sha256 != plan["target_catalog_sha256"]:
-        raise ValueError("target catalog mismatch")
     calibration_start, calibration_count = plan["calibration_group"]
     evaluation_start, evaluation_count = plan["evaluation_group"]
     if set(range(calibration_start, calibration_start + calibration_count)) & set(
         range(evaluation_start, evaluation_start + evaluation_count)
     ):
         raise ValueError("calibration and evaluation seeds overlap")
+
+    import numpy as np
+    import torch
+    from train.train_diverse_pose_ensemble import predict, render_set
+    from vision.linear_residual_pose import LinearResidualPoseNet
+    from vision.synthetic_keyboard import catalog_for_workspace, transform_target
+    from vision.train_pose import _pose_from_prediction
+
+    catalog = catalog_for_workspace(ROOT)
+    if catalog.content_sha256 != plan["target_catalog_sha256"]:
+        raise ValueError("target catalog mismatch")
 
     torch.set_num_threads(4)
     device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -90,7 +102,11 @@ def evaluate(plan_path: Path) -> dict[str, object]:
     ):
         pixels, _, metadata = render_set(*group, plan, catalog)
         predictions = predict(model, pixels, device, plan["batch_size"])
-        datasets[name] = _dataset_records(pixels, predictions, metadata, catalog)
+        datasets[name] = _dataset_records(
+            pixels, predictions, metadata, catalog,
+            pose_from_prediction=_pose_from_prediction,
+            transform_target=transform_target,
+        )
 
     calibration = datasets["calibration"]
     evaluation = datasets["evaluation"]
@@ -140,7 +156,7 @@ def evaluate(plan_path: Path) -> dict[str, object]:
         ]
         per_target[target_id] = {
             "sample_count": len(errors),
-            "errors_mm": errors,
+            "error_series_sha256": canonical_hash(errors),
             "failure_count": len(failure_ids),
             "failure_case_ids": failure_ids,
             "abstention_count": adapter_abstentions[target_id],

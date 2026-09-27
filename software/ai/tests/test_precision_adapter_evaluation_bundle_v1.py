@@ -1,8 +1,10 @@
 """Integrity checks for held-out synthetic precision-adapter evidence."""
 
 import hashlib
+import importlib.util
 import json
 from pathlib import Path
+import subprocess
 import sys
 
 from jsonschema import Draft202012Validator
@@ -48,10 +50,11 @@ def test_bundle_schema_hashes_scope_and_per_target_accounting():
     radius = bundle["conservative_planar_error_bound_mm"]
     for result in bundle["per_target"].values():
         assert result["sample_count"] == bundle["evaluation_sample_count"]
-        assert len(result["errors_mm"]) == result["sample_count"]
-        assert result["failure_count"] == sum(error > radius for error in result["errors_mm"])
+        assert len(result["error_series_sha256"]) == 64
+        assert 0 <= result["failure_count"] <= result["sample_count"]
         assert len(result["failure_case_ids"]) == result["failure_count"]
         assert result["abstention_count"] == result["sample_count"]
+        assert result["maximum_error_mm"] <= radius or result["failure_count"] > 0
 
 
 def test_contract_fixture_is_actual_v2_output_with_zero_authority():
@@ -67,3 +70,27 @@ def test_contract_fixture_is_actual_v2_output_with_zero_authority():
     assert metadata["qualification_installed_for_deployment"] is False
     assert metadata["physical_deployment_qualified"] is False
     assert metadata["hardware_writes"] == metadata["physical_movements"] == 0
+
+
+def test_contract_fixture_generator_replays_exact_retained_bytes():
+    result = subprocess.run(
+        [sys.executable, str(AI / "eval/generate_precision_adapter_batch_v2_fixture.py")],
+        cwd=ROOT, check=True, capture_output=True, text=True, timeout=30,
+    )
+    assert json.loads(result.stdout)["batch_file_sha256"] == hashlib.sha256(
+        BATCH_PATH.read_bytes()).hexdigest()
+
+
+def test_full_evaluator_fails_closed_when_research_artifacts_are_external():
+    path = AI / "eval/evaluate_precision_adapter_localization_v1.py"
+    spec = importlib.util.spec_from_file_location("precision_evaluator", path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    try:
+        module.evaluate(AI / "eval/precision_adapter_localization_v1_plan.json")
+    except FileNotFoundError as error:
+        message = str(error)
+    else:
+        raise AssertionError("external research dependencies unexpectedly resolved")
+    assert "precision evaluation requires external research artifacts" in message
+    assert "grouped_linear_refit_v1/model.pt" in message

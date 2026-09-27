@@ -193,14 +193,17 @@ evaluation cohorts produce 0.9975 measured coverage for a declared 0.99
 probability, with a conservative maximum-calibration planar bound of
 14.400834977 mm. That bound crosses ordinary key safe regions, so the evidence
 does not qualify keyboard contact. The candidate record is not installed for
-deployment and no physical-camera claim is made.
+deployment and no physical-camera claim is made. Mainline retains aggregate
+statistics, failure case IDs, and a digest of each target's ordered error
+series; bulk per-sample research arrays and the checkpoint remain external.
 
 `eval/precision_adapter_batch_v2_contract_fixture.json` proves that actual
 frozen-model output can flow through the adapter and producer while preserving
 the requested `H, H, 1, PERIOD` order. Its companion metadata explicitly marks
 the acceptance regions as broad synthetic contract envelopes. It is a
 serialization fixture and cannot be used as measured placement or deployment
-qualification.
+qualification. Its generator replays the exact retained bytes from the pinned
+model-output record and fails if either the batch or metadata drifts.
 
 ## Planner-admission gate
 

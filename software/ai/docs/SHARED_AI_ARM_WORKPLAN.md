@@ -328,6 +328,12 @@ receipts. It does not create evidence, perform a review, decide freshness,
 advance the epoch, open a camera, or authorize hardware. The physical collection
 dependency remains unchanged; once those originals exist, this adapter removes
 manual transcription from their ARM-070 intake.
+The AI precision lane now has a mainline-compatible pose-output adapter and v2
+batch producer. It preserves repeated targets and abstains on qualification,
+domain, freshness, identity, confidence, or containment failure. Its retained
+held-out evidence is still `SYNTHETIC_OFFLINE_ONLY`: the 14.400834977 mm bound
+crosses ordinary key safe regions, so no deployment qualification is installed
+and the operational-readiness perception gate remains blocked.
 
 ## Stage definitions
 
@@ -731,55 +737,12 @@ SHA-256 `2430ec5f8362aae76e8250d2d9da292f85375d93750addd944a969b1bc2e4dbd`.
 It binds the reviewed arm and AI commits, freezes the implemented v2 boundary,
 and provides shared accepted/rejected cases without advancing operational readiness.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 Workers add a short row before beginning a potentially overlapping change and
 remove it only in the same commit that appends the resulting evidence row.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| Unclaimed | S2 | qualified perception adapter and complete shared gate | — | AVAILABLE |
+| Unclaimed | S2/S3 | physical-camera deployment qualification and safe-region-fit precision evidence | — | AVAILABLE |
 | ARM | S4 | collect four physical-original `camera_support_optics` bindings through onboarding, then run the ARM-070 intake; no synthetic promotion | ARM-071 | WAITING_FOR_ORIGINALS |
 
 ## Worker update procedure
@@ -821,9 +784,10 @@ Each worker follows this process for every increment:
 1. **S1 software boundary — complete for zero authority:** v2 producer bytes,
    strict decoding, trusted registry, freshness, mutation rejection, and ordered
    `H,H,I` ingress are covered by the shared conformance profile.
-2. **AI S2:** produce a separately confirmed localization qualification and a
-   precision adapter. A research error scale or failed synthetic selection may
-   not populate the qualified uncertainty fields.
+2. **AI S2/S3:** qualify the implemented precision adapter from final-camera
+   physical originals and reduce or bound localization uncertainty inside the
+   applicable key safe regions. The current 14.400834977 mm synthetic bound is
+   retained evidence but may not populate deployment qualification.
 3. **Arm S4:** collect the four physical-original camera/support/optics bindings
    already named by ARM-070; do not synthesize the trusted registry from model output.
 4. **Integration S2:** rerun the conformance profile using actual qualified AI

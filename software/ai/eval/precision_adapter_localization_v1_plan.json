@@ -12,8 +12,17 @@
   "declared_coverage_probability": 0.99,
   "fixture_observation_confidence": 0.99,
   "replay_epoch_ms": 1800000000000,
+  "contract_fixture": {
+    "source_model_output": [-0.5535516518850586, 0.48056715938765016, -0.7107819493791543],
+    "source_case": {
+      "seed": 82100000,
+      "style": "rectangle",
+      "condition": "standard",
+      "input_pixels_sha256": "cfed90e872a92dae28062b0260345c212953889948cf728a86653aef9ba66031"
+    }
+  },
   "file_sha256": {
-    "software/ai/eval/evaluate_precision_adapter_localization_v1.py": "8d8f240d34f49310346feb68ef3ed3c3d27ad7bc9bc2e7ba2f5f77229361f4a8",
+    "software/ai/eval/evaluate_precision_adapter_localization_v1.py": "d86d88f6234a5ebec642c8a3a4a4df197f287f92a97733265824016c2c741409",
     "software/ai/rocell_ai/precision_adapter_v2.py": "868531d71bcf72372f51c6562967c690f1afc3a4ff60996ed303ca5e83c83e22",
     "software/ai/rocell_ai/precision_observation.py": "1cb30284ff780aab538f97006d901c109a7775d91db430aa38e866a06c0b42bf",
     "software/ai/rocell_ai/visual_observation.py": "47882111810e51e34fb3cb6ac73321b5135b3cbc8526f91ad7ffbce352046c2b",

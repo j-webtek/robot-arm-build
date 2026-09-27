@@ -17,8 +17,6 @@ AI = Path(__file__).resolve().parents[1]
 ROOT = AI.parents[1]
 sys.path[:0] = [str(AI), str(AI.parent / "src"), str(AI.parent / "tests/unit")]
 
-import torch
-
 import test_model_motion_ingress_v2 as arm
 from rocell.models import ActionPlan, Device, PressKey
 from rocell_ai.precision_adapter_v2 import (
@@ -31,28 +29,20 @@ from rocell_ai.precision_batch_producer_v2 import (
     produce_model_motion_batch_v2,
 )
 from rocell_ai.scene_observation import canonical_hash
-from train.train_diverse_pose_ensemble import predict, render_set
-from vision.linear_residual_pose import LinearResidualPoseNet
 from vision.synthetic_keyboard import catalog_for_workspace
 
 
-def main() -> None:
+def build() -> tuple[bytes, dict[str, object]]:
     plan = json.loads((AI / "eval/precision_adapter_localization_v1_plan.json").read_text())
     bundle_path = AI / "eval/precision_adapter_localization_v1_bundle.json"
     bundle = json.loads(bundle_path.read_text())
     qualification = bundle["qualification_candidate"]
     if qualification is None:
         raise ValueError("held-out evaluation produced no qualification candidate")
-    checkpoint = ROOT / plan["model_checkpoint"]
-    if hashlib.sha256(checkpoint.read_bytes()).hexdigest() != plan["model_checkpoint_sha256"]:
-        raise ValueError("checkpoint hash mismatch")
     catalog = catalog_for_workspace(ROOT)
-    pixels, _, metadata = render_set(plan["evaluation_group"][0], 1, plan, catalog)
-    model = LinearResidualPoseNet.from_export(
-        torch.load(checkpoint, weights_only=True, map_location="cpu")
-    )
-    raw = predict(model, pixels[:1], "cpu", 1)[0]
-    image_sha256 = hashlib.sha256(pixels[0].tobytes()).hexdigest()
+    source = plan["contract_fixture"]
+    raw = tuple(source["source_model_output"])
+    image_sha256 = source["source_case"]["input_pixels_sha256"]
     now = plan["replay_epoch_ms"]
     output = PoseModelOutputV2(
         model_id=plan["model_id"],
@@ -125,24 +115,15 @@ def main() -> None:
     )
     if payload is None:
         raise ValueError("contract fixture unexpectedly abstained")
-    output_path = AI / "eval/precision_adapter_batch_v2_contract_fixture.json"
-    metadata_path = AI / "eval/precision_adapter_batch_v2_contract_fixture_metadata.json"
-    if output_path.exists() or metadata_path.exists():
-        raise FileExistsError("existing precision adapter contract fixture")
-    output_path.write_bytes(payload + b"\n")
+    retained_payload = payload + b"\n"
     metadata = {
         "schema": "rocell.ai_precision_adapter_contract_fixture.v1",
         "scope": "SYNTHETIC_CONTRACT_FIXTURE_ONLY",
         "source_model_output": [float(value) for value in raw],
-        "source_case": {
-            "seed": metadata[0][0],
-            "style": metadata[0][1],
-            "condition": metadata[0][2],
-            "input_pixels_sha256": image_sha256,
-        },
+        "source_case": source["source_case"],
         "precision_observation_sha256": adapted.precision_observation["observation_sha256"],
         "evaluation_bundle_sha256": bundle["bundle_sha256"],
-        "batch_file_sha256": hashlib.sha256(output_path.read_bytes()).hexdigest(),
+        "batch_file_sha256": hashlib.sha256(retained_payload).hexdigest(),
         "requested_target_order": list(target_order),
         "qualification_installed_for_deployment": False,
         "physical_deployment_qualified": False,
@@ -150,6 +131,7 @@ def main() -> None:
         "physical_movements": 0,
         "limitations": [
             "The source pose is actual frozen-model inference on a synthetic renderer case.",
+            "Mainline retains the exact model-output record and image hash; the research checkpoint remains external by digest.",
             "The pose model has no calibrated confidence head; 0.99 is an explicit contract-fixture input.",
             "Acceptance regions are broad synthetic envelopes, not measured key safe regions.",
             "The held-out bound crosses ordinary key safe regions and therefore cannot authorize them.",
@@ -157,7 +139,25 @@ def main() -> None:
             "The batch has zero controller commands, hardware access, and physical authority."
         ]
     }
-    metadata_path.write_text(json.dumps(metadata, indent=2, allow_nan=False) + "\n")
+    return retained_payload, metadata
+
+
+def main() -> None:
+    payload, metadata = build()
+    output_path = AI / "eval/precision_adapter_batch_v2_contract_fixture.json"
+    metadata_path = AI / "eval/precision_adapter_batch_v2_contract_fixture_metadata.json"
+    if output_path.exists() or metadata_path.exists():
+        if not output_path.is_file() or not metadata_path.is_file():
+            raise FileExistsError("partial precision adapter contract fixture")
+        if output_path.read_bytes() != payload:
+            raise ValueError("retained precision adapter batch differs")
+        retained_metadata = json.loads(metadata_path.read_text())
+        if retained_metadata != metadata:
+            raise ValueError("retained precision adapter metadata differs")
+    else:
+        output_path.write_bytes(payload)
+        metadata_path.write_text(
+            json.dumps(metadata, indent=2, allow_nan=False) + "\n")
     print(json.dumps(metadata, indent=2))
 
 

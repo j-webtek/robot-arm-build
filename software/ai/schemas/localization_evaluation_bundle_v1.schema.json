@@ -70,16 +70,13 @@
     "target_result": {
       "type": "object", "additionalProperties": false,
       "required": [
-        "sample_count", "errors_mm", "failure_count", "failure_case_ids",
+        "sample_count", "error_series_sha256", "failure_count", "failure_case_ids",
         "abstention_count", "maximum_error_mm", "mean_error_mm",
         "p95_error_mm"
       ],
       "properties": {
         "sample_count": {"type": "integer", "minimum": 1},
-        "errors_mm": {
-          "type": "array", "minItems": 1,
-          "items": {"type": "number", "minimum": 0, "maximum": 1000}
-        },
+        "error_series_sha256": {"$ref": "#/$defs/sha256"},
         "failure_count": {"type": "integer", "minimum": 0},
         "failure_case_ids": {
           "type": "array", "uniqueItems": true,
