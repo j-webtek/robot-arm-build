@@ -599,6 +599,8 @@ Copy this row and fill every field:
 
 ## Active work claims
 
+- AI lane / S1: exact unmasked linear export, image-only parity and CPU cost; freeze subsequent untouched-data plan only after export verification. No refit or arm/contract change.
+
 
 
 
