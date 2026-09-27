@@ -233,6 +233,13 @@ the same batch and proposal to the epoch and encoder, but the schema fixes that
 preview as synthetic and fixes installation, startup, execution, retry,
 hardware access, physical authority, and production dispatch false. It is not
 model qualification or evidence that the measured planner can produce a route.
+The [model-to-arm conformance profile](model_arm_conformance_profile_v1.schema.json)
+freezes the shared v2 producer/consumer boundary as executable expectations. It
+distinguishes structural compatibility from operational readiness, preserves
+the initial keyboard/contact-only scope, and makes arm-owned motion policy and
+authority fields explicitly unavailable to model output. Its passing synthetic
+cases prove only that canonical AI bytes reach the correct arm gate and that
+unsafe or unsupported variants fail closed; they grant no hardware authority.
 
 [Precision observation v2](precision_observation_v2.schema.json) carries explicit
 localization abstention or a reference to externally qualified uncertainty.

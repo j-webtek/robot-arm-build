@@ -1,13 +1,15 @@
 # S1 AI contract-v2 semantic proposal
 
-Status: PROPOSED; arm-lane agreement pending. No published schema, decoder,
-emitter migration, installed qualification, or integration completion is implied.
-The shared stage board remains authoritative. This is a bounded AI design increment.
+Status: IMPLEMENTED AS A ZERO-AUTHORITY SOFTWARE BOUNDARY. The v2 schema,
+strict decoder, AI assembler, trusted-registry ingress, freshness recheck, and
+actual-producer integration tests are published. This does not imply an installed
+localization qualification, complete physical registry, executable trajectory,
+or hardware authority. The shared stage board remains authoritative.
 
 ## Boundary and migration
 
-Retain `ModelMotionBatch` as the only motion proposal boundary. Version the wire
-schema explicitly as v2 after agreement; preserve immutable v1 fixtures for offline
+Retain `ModelMotionBatch` as the only motion proposal boundary. The wire schema is
+explicitly versioned as v2; preserve immutable v1 fixtures for offline
 compatibility tests. Do not auto-upgrade v1 or invent absent v2 evidence. A v2-only
 consumer must reject v1 for that route. Existing v1 research behavior is unchanged.
 Unknown fields, duplicate keys, nonfinite numbers, booleans used as numbers, mixed
@@ -109,12 +111,13 @@ named target. Arm policy derives clearance, timing, contact, dynamics and settli
 This avoids carrying ambiguous v1 hints into a new contract. No learned dwell or
 motion-policy override is proposed.
 
-## Proposed acceptance matrix and next dependency
+## Implemented acceptance matrix and next dependency
 
-Before implementation, arm lane must accept or revise: UTC/clock policy and lease
-issuer; independent placement record/provenance; oriented target representation;
-uncertainty composition and coverage unit; confidence semantics; capability registry;
-removal of motion hints; exact canonical JSON schema and migration policy.
+The implemented boundary fixes the UTC/clock and external-lease policy,
+independent placement provenance, oriented target representation, conservative
+uncertainty composition, capability registry, removal of motion hints, strict
+canonical JSON, and explicit v1/v2 rejection. Operational use still requires
+qualified confidence/uncertainty semantics and physical-original registry inputs.
 
 Then publish a joint compatibility matrix and freeze actual emitter fixtures.
 Test repeated H,H,I ordering and independent one-field mutations for plan, image,
@@ -127,8 +130,10 @@ fixture cannot close the actual-producer integration gate.
 | Producer | Consumer | Current expectation |
 |---|---|---|
 | Existing v1 | Existing v1 | Existing offline regression behavior |
-| Existing v1 | Future v2-only | Explicit rejection; no synthesized evidence |
-| Future v2 | Existing v1 | Unknown version rejection |
-| Future v2 | Future v2 | Pending joint schema, implementation and gate evidence |
+| Existing v1 | Current v2-only | Explicit rejection; no synthesized evidence |
+| Current v2 | Existing v1 | Unknown version rejection |
+| Current v2 | Current v2 | Canonical bytes reach registry ingress and the measured planner blocker |
 
-No lane or gate is declared complete by this proposal.
+The software interface gate is complete only for zero-authority conformance.
+Perception qualification, physical commissioning, planning readiness, and
+execution remain separate blocked gates.

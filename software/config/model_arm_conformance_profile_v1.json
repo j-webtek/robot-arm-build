@@ -1,0 +1,98 @@
+{
+  "schema": "rocell.model_arm_conformance_profile.v1",
+  "profile_id": "keyboard-model-arm-v2-conformance-20260927",
+  "reviewed_sources": {
+    "arm_main_commit": "3e20e81c15591e8b5ef6dd2545dacbce458bae0d",
+    "ai_branch": "feature/translation-pair-evidence",
+    "ai_branch_commit": "caf1962389971de949a5aee40b3244bf48fcb607",
+    "ai_latest_study": "inflated_risk_gate_v1",
+    "ai_selection_passed": false,
+    "ai_qualification_installed": false
+  },
+  "wire_boundary": {
+    "batch_schema": "rocell.model_motion_batch.v2",
+    "proposal_schema": "rocell.model_motion_proposal.v2",
+    "coordinate_profile": "board_mm_xy_plane_v2",
+    "coordinate_units": "mm",
+    "maximum_actions": 64,
+    "supported_device": "keyboard",
+    "supported_action": "press_key",
+    "supported_interaction": "contact"
+  },
+  "model_must_supply": [
+    "exact_action_order",
+    "named_target_id",
+    "board_frame_target_xyz_mm",
+    "capture_and_image_identity",
+    "model_and_observation_hashes",
+    "external_scene_lease_reference",
+    "independent_placement_and_target_catalog_hashes",
+    "qualified_planar_error_bound",
+    "qualified_coverage_and_domain",
+    "observation_confidence"
+  ],
+  "arm_must_own": [
+    "trusted_registry_resolution",
+    "freshness_and_revocation",
+    "safe_region_and_error_composition",
+    "observed_start_state",
+    "inverse_kinematics",
+    "collision_screening",
+    "speed_clearance_contact_and_settling_policy",
+    "single_use_execution_admission",
+    "controller_encoding_and_transport",
+    "outcome_verification"
+  ],
+  "prohibited_model_fields": [
+    "joint_angles",
+    "servo_ids",
+    "pwm_values",
+    "speed",
+    "acceleration",
+    "clearance",
+    "controller_commands",
+    "execution_permit",
+    "hardware_authority"
+  ],
+  "conformance_cases": [
+    {
+      "case_id": "keyboard_hhi_ordered",
+      "expected_disposition": "accepted_for_fresh_sequential_planner_gates",
+      "expected_targets": ["H", "H", "I"]
+    },
+    {
+      "case_id": "missing_qualified_uncertainty",
+      "expected_disposition": "producer_abstains",
+      "expected_targets": []
+    },
+    {
+      "case_id": "phone_plan",
+      "expected_disposition": "unsupported_by_initial_profile",
+      "expected_targets": []
+    },
+    {
+      "case_id": "low_observation_confidence",
+      "expected_disposition": "consumer_rejects",
+      "expected_targets": []
+    },
+    {
+      "case_id": "uncertainty_crosses_safe_region",
+      "expected_disposition": "consumer_rejects",
+      "expected_targets": []
+    },
+    {
+      "case_id": "model_injects_arm_policy_or_authority",
+      "expected_disposition": "decoder_rejects",
+      "expected_targets": []
+    }
+  ],
+  "current_result": {
+    "contract_alignment": "ALIGNED",
+    "simulation_result": "AI_BYTES_REACH_ARM_GATE",
+    "planner_result": "BLOCKED_CALIBRATION_MISSING_OR_STALE",
+    "operational_result": "BLOCKED_PHYSICAL_EVIDENCE_AND_QUALIFIED_PERCEPTION_MISSING",
+    "controller_commands": [],
+    "hardware_access": false,
+    "physical_authority": false
+  }
+}

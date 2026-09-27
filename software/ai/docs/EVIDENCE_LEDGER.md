@@ -3397,3 +3397,42 @@ rewriting history. New entries must use a unique evidence ID.
 - Next dependency: use the existing physical onboarding workflow to retain and
   owner-AI review the four originals, then rerun this intake with their exact
   hashes and validity windows.
+
+### E-20260927-INT-071 — model/arm v2 conformance baseline
+
+- Stage: S1/S2 integration boundary.
+- Lane: INTEGRATION.
+- Reviewed sources: arm `main`
+  `3e20e81c15591e8b5ef6dd2545dacbce458bae0d`; AI branch
+  `feature/translation-pair-evidence`
+  `caf1962389971de949a5aee40b3244bf48fcb607`.
+- Change: froze a machine-readable division of model and arm responsibilities,
+  corrected the v2 contract status to match implemented code, and added an
+  executable conformance matrix around the actual AI batch assembler, strict
+  v2 decoder, consumer-owned registry ingress, and freshness gate.
+- Artifact: `software/config/model_arm_conformance_profile_v1.json`, SHA-256
+  `2430ec5f8362aae76e8250d2d9da292f85375d93750addd944a969b1bc2e4dbd`.
+- Result: `ALIGNED` for the zero-authority software boundary. Canonical producer
+  bytes preserve `H,H,I` and reach fresh sequential planner admission. Missing
+  qualified uncertainty abstains; phone plans, low confidence, safe-region
+  crossings, model-owned motion policy, controller commands, and authority
+  claims fail closed.
+- AI review result: latest `inflated_risk_gate_v1` selection is false and no
+  qualification is installed. Its synthetic research scale cannot populate the
+  arm's trusted localization qualification.
+- Planner result: `BLOCKED_CALIBRATION_MISSING_OR_STALE`; no synthetic promotion.
+- Verification: 37 focused producer/consumer tests passed, including JSON Schema
+  validation and all six shared conformance cases.
+- Endpoint/camera opens: 0.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Authority: controller commands remain empty; hardware and physical authority
+  remain false.
+- Limitations: this proves structural compatibility and fail-closed behavior,
+  not model accuracy, physical calibration, trajectory readiness, typing, or
+  device-effect verification.
+- Supersedes: the stale `PROPOSED` status text in the v2 design document; it does
+  not supersede any blocked physical gate or AI failure evidence.
+- Next dependency: AI produces separately confirmed qualified uncertainty and a
+  precision adapter; arm supplies physical-original camera, placement, target
+  region, surface, calibration, and capability records for a one-key integration.

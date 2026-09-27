@@ -50,6 +50,7 @@ TESTS = (
     'software/tests/integration/test_zero_write_waveshare_contract_v1.py',
     'software/tests/integration/test_native_t102_windows_composition_v1.py',
     'software/tests/integration/test_model_motion_v2_shared_gate.py',
+    'software/tests/integration/test_model_arm_conformance_profile_v1.py',
     'software/tests/integration/test_shared_shadow_runner_v2.py',
     'software/tests/integration/test_synthetic_epoch_model_arm_rehearsal_v1.py',
     'software/tests/integration/test_ai_emitted_epoch_model_arm_rehearsal_v1.py',
