@@ -779,6 +779,13 @@ SHA-256 `2430ec5f8362aae76e8250d2d9da292f85375d93750addd944a969b1bc2e4dbd`.
 It binds the reviewed arm and AI commits, freezes the implemented v2 boundary,
 and provides shared accepted/rejected cases without advancing operational readiness.
 
+The pose-keyloss research checkpoint is now represented by the focused external-
+artifact package in
+[`POSE_KEYLOSS_EXTERNAL_ARTIFACT.md`](POSE_KEYLOSS_EXTERNAL_ARTIFACT.md) and
+evidence `E-20260927-AI-410`. Its clean-clone state is explicitly unavailable,
+its separately present bytes are identity-verified, and neither result installs
+localization qualification or changes the AI-to-arm authority boundary.
+
 Workers add a short row before beginning a potentially overlapping change and
 remove it only in the same commit that appends the resulting evidence row.
 
