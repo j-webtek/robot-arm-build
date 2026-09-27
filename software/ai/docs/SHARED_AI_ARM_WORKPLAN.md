@@ -7827,3 +7827,19 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Training selection only, not independent confirmation or physical accuracy. Historical baseline selection remains conditional. Ellipse variants within training pool are derived selection data. Four alphas selected once using fixed rule; failed configurations retained. No final model, runtime promotion, calibrated uncertainty or qualification. ModelMotionBatchV2 unchanged; shared boundary suite not triggered. Snapshot audit heuristic, before final ledger append. Arm/integration statuses unchanged.
 - Supersedes: none; previous failed fresh evaluation retained.
 - Next dependency: Freeze one final fit at selected alpha1.0 on all600 rectangle scenes; verify standalone export parity; separately freeze an unused confirmation range after checking intervening use. Do not tune on consumed15M/30M evaluation.
+
+
+### E-20260926-AI-298 — selected refit and export parity
+
+- Stage: S1
+- Lane: AI
+- Commit: `becbef91e3834b4495ff7071ced03d7edca0e35d` (frozen before fit; evidence committed with confirmation source)
+- Inputs/fixtures:29000000..29000599 x4 rectangle variants,2400 training images. Full source and selection hashes in train/grouped_linear_refit_v1_plan.json. Pixel SHA256 fe9e1fdf76cf5cff6cb6f542e8e65034f0e6d692fd7267e50f2740d93542a77a.
+- Command: `python software/ai/train/refit_grouped_linear.py`
+- Result: PASS:one final closed-form fit at selected alpha1.0. Max normalized export/reference delta2.220446049250313e-16, below1e-10;2400-image reload exact, image preprocessing exact. Artifact1132606bytes SHA256 c9f4ef6d8f9e50317a917154fccacce46506ab2e7cde8267396e28fec156147b.
+- Artifacts: train/refit_grouped_linear.py; train/grouped_linear_refit_v1_plan.json; eval/grouped_linear_refit_v1_report.json; ignored results/grouped_linear_refit_v1/model.pt. Full coefficients retained in tracked report.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Training parity only; no independent accuracy result. Original baseline remains in use. No coordinate uncertainty/calibration qualification. ModelMotionBatchV2 unchanged; arm/integration status unchanged.
+- Supersedes: none; earlier rejected candidates and failed evaluation retained.
+- Next dependency: Freeze confirmation on unused30001000..30001999 x4 ellipse conditions; fixed original acceptance rule, zero tuning.
