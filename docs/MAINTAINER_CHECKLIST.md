@@ -37,6 +37,9 @@ device access, restarts, torque changes, movement, or release publication.
 - [ ] Match required [CI checks](CI.md) to the current revision. New commits or
   reconciliation with main require fresh checks. Missing or pending checks are
   not passes; do not use administrator bypass to finish a merge.
+- [ ] Confirm all three CodeQL analyzer contexts ran for the current revision,
+  not only the separate aggregate CodeQL summary. Inspect a failure or missing
+  result; do not remove the required context to clear the PR.
 - [ ] Use the repository's squash-merge path. Protected `main` requires linear
   history; do not work around it with a direct push, temporary force-push
   allowance, merge commit, or alternate merge method.

@@ -208,10 +208,15 @@ Python. C/C++ and C# are not covered by this initial setup. The first scan ran
 against commit `92d404ba401af3cafba41e1e6d79a3b50f2b28f2`. CodeQL immediately
 identified an input-controlled checkout in the manually dispatched candidate
 audit; the remediation keeps the SHA input as an equality assertion but makes
-GitHub's dispatch revision the only checkout source. CodeQL remains observational
-and is not yet a required branch-protection check. Require it only after recurring
-and pull-request behavior has been observed to be stable; a green scan is not a
-security certification.
+GitHub's dispatch revision the only checkout source. CodeQL was initially
+observational while its first recurring and pull-request runs were observed.
+After successful
+scans on `main` and multiple pull-request revisions, the three app-bound analyzer
+contexts—`Analyze (actions)`, `Analyze (javascript-typescript)`, and
+`Analyze (python)`—were added to strict branch protection on September 27, 2026.
+They supplement rather than replace the four offline compatibility checks. A
+green scan is not a security certification, and an unavailable required result
+must be investigated rather than bypassed.
 
 Attempts to enable GitHub's optional non-provider-pattern and secret-validity
 scanning modes did not change their reported disabled state. Treat those modes as
