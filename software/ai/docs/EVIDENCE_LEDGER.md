@@ -3130,3 +3130,33 @@ rewriting history. New entries must use a unique evidence ID.
 - Next dependency: design an active but still non-moving identity or feedback
   qualification with its own exact write/request budget and separate owner
   authorization. No passive retry is warranted.
+
+### E-20260927-ARM-063 — frozen active-feedback intake and fake rehearsal
+
+- Stage: S4
+- Lane: ARM
+- Change: bound the exact ARM-061 endpoint intake and ARM-062 passive receipt
+  to canonical request bytes `{"T":105}\n`, one bounded T=1051 response, and
+  one terminal open/write/read/close lifecycle. Added closed parsing, schema,
+  public exports, and a fake-only exchange runner that rejects arbitrary
+  transports.
+- Artifact: `software/ai/eval/arm063_active_feedback_intake.json`, intake
+  SHA-256
+  `3b44d5e011d8c44afda1bb6deb1cc479b1fc0c45e59e39308d285cde416b8fcc`;
+  request SHA-256
+  `2cace64403a9db92d57acd8814d55c833529c0341468529900bd89f089e1fa3c`.
+- Result: PASS in focused offline tests. The fake exchange proves exact request
+  bytes, stale-buffer rejection, single response parsing, six numeric joint
+  fields, unconditional close, and zero retry/T=102/movement/torque commands.
+- Endpoint opens: 0 physical; 1 fake per successful rehearsal
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: fake behavior does not prove that COM7 speaks the expected
+  protocol, that installed firmware emits valid T=1051, or that reported joint
+  values match physical pose. The intake explicitly leaves open, write,
+  execution, hardware, and physical authority false.
+- Supersedes: the missing design requested by ARM-062. It does not supersede
+  separate active-feedback authorization or live qualification.
+- Next dependency: obtain explicit authorization naming intake
+  `3b44d5e011d8c44afda1bb6deb1cc479b1fc0c45e59e39308d285cde416b8fcc`
+  before exactly one active non-moving COM7 feedback exchange.

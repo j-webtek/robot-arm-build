@@ -92,3 +92,23 @@ that the pinned endpoint can complete this narrow zero-write lifecycle without
 an observed identity change or lifecycle failure. Active protocol queries,
 controller startup, firmware provenance, telemetry validity, and movement
 remain unqualified and require later, separate authority.
+
+## ARM-063 active-feedback intake
+
+ARM-063 freezes the next proposed diagnostic without executing it. The retained
+`software/ai/eval/arm063_active_feedback_intake.json` has intake SHA-256
+`3b44d5e011d8c44afda1bb6deb1cc479b1fc0c45e59e39308d285cde416b8fcc`.
+It binds the ARM-061 intake and ARM-062 retained receipt to the exact canonical
+ten-byte request `{"T":105}\n` (SHA-256
+`2cace64403a9db92d57acd8814d55c833529c0341468529900bd89f089e1fa3c`).
+
+The proposed later operation permits one identity-bound open, one exact write,
+one bounded T=1051 line, and one close. It requires an empty receive buffer
+before the write and complete numeric `b/s/e/t/r/g` feedback. It permits no
+T=102, movement, torque command, retry, purge, fallback, controller startup, or
+DTR/RTS assertion. The fake-only rehearsal validates these invariants and
+terminal cleanup but cannot accept pyserial or any arbitrary transport object.
+
+ARM-063 grants no endpoint-open or transport-write authority. No COM7 access
+occurred while creating it. A live exchange requires separate explicit owner
+authorization naming the exact ARM-063 intake hash and remains non-moving.
