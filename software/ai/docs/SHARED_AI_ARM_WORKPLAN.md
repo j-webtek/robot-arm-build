@@ -599,6 +599,10 @@ Copy this row and fill every field:
 
 ## Active work claims
 
+- AI lane / S1: calibrate and select one preregistered late fusion of the frozen
+  bounded-metric and tail-risk heads on fresh 64M and 65M scenes; no model
+  training, runtime, contract, arm, or integration-status changes.
+
 
 
 
