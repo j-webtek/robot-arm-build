@@ -82,8 +82,10 @@ distinguishes these kinds of evidence.
 - [Wizard workbench](../software/docs/WIZARD_WORKBENCH.md): local browser and
   terminal interface usage.
 - [Software reference](../software/README.md): detailed component descriptions,
-  setup, commands, and earlier implementation checkpoints. Use project status
-  for the latest physical-test summary.
+  setup, commands, and architecture. Use project status for the latest
+  capability summary.
+- [Runtime implementation history](../software/RUNTIME_IMPLEMENTATION_HISTORY.md):
+  dated camera, USB, onboarding, and runtime checkpoints retained for provenance.
 - [Reviewed-hover protocol](../software/docs/REVIEWED_HOVER_RUNTIME_PROTOCOL_PLAN.md):
   command handling, feedback, and export contracts.
 - [Official Waveshare tooling reuse plan](../software/docs/OFFICIAL_TOOLING_REUSE_PLAN.md):

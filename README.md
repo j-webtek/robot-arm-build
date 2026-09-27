@@ -37,7 +37,7 @@ are development goals, not completed capabilities.
 
 ## Where we are
 
-As of September 26, 2026, you can explore a local rehearsal interface, interpret
+As of September 27, 2026, you can explore a local rehearsal interface, interpret
 supported text requests offline, and inspect simulated coordinate and movement
 results. The AI v2 command assembler and arm validation interface have passed a
 shared test using synthetic evidence. Supervised noncontact arm movements are
