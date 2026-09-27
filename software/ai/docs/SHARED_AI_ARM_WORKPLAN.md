@@ -139,8 +139,10 @@ integration fixture. Qualified perception has not yet supplied that fixture, so
 this is not the complete S2 path. S3 remains blocked
 from integration because no deployment localization qualification is installed
 and the measured planner does not yet reach physical execution admission. S4
-lists AI as ready because no new AI authority is required; the arm adapter and
-shared byte-level gate remain unfinished.
+lists AI as ready because no new AI authority is required. The zero-write
+adapter and reviewed native-shaped T=102 bridge now share the controller's
+ordered joint encoding, but authentic native transport, independently acquired
+receipts, and physical qualification remain unfinished.
 
 ## Stage definitions
 

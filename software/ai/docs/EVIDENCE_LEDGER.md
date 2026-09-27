@@ -2529,3 +2529,59 @@ rewriting history. New entries must use a unique evidence ID.
   feedback, and require independent task-outcome evidence before advancing an
   ordered model sequence. Native enablement requires its own explicit physical
   authorization and evidence review.
+
+### E-20260926-ARM-049 — reviewed native-shaped T=102 runtime bridge
+
+- Stage: S4
+- Lane: ARM
+- Change: resolved the ARM-048 Cartesian-fixture versus production-runtime
+  mismatch by binding the exact supervisor-issued permit and lifecycle to the
+  deterministic ordered joint frame used by the trajectory encoder and
+  controller contract: `T`, `base`, `shoulder`, `elbow`, `wrist`, `roll`,
+  `hand`, `spd`, `acc` (`T=102`).
+- Runtime binding: one decoded T=102 goal is content-bound to the review and
+  permit, writer identity, controller session, configuration epoch, encoding
+  profile, sequence, correlation ID, frame deadline, and encoded byte digest.
+  Authority is consumed immediately before one modeled outbound-byte write.
+- Receipt and feedback behavior: a full modeled write requires one exact
+  correlated `T=1021` `ACCEPTED_ONCE` acknowledgment and fresh monotonic
+  `T=1051` joint feedback. Two consecutive samples inside the configured joint
+  tolerance are required for modeled settlement. Zero write is `FAILED`;
+  partial/disconnected write, mismatched acknowledgment, stale/malformed
+  feedback, collection failure, or unsettled arrival is `UNCERTAIN`. Every
+  single-action outcome terminally closes that runtime instance and is never
+  retried.
+- Artifacts: `reviewed_t102_runtime_bridge_v1.py`, strengthened production
+  runtime return types and write-fault latches, two closed v1 schemas, public
+  exports, compatibility/fault/session/expiry/settling tests, and portable CI
+  selection.
+- Artifact identity: runtime contract, incapable sole-writer, and T=102 bridge
+  implementation SHA-256 values
+  `3a5a5bf651240211f250791d7f5a778df3e1135c49ab6b0d1d1b1ba38b110abd`,
+  `3ecab0ee2e45ae9bfb439fd77ff7dfe3074ce518a51992c629a3977fd59645d5`,
+  and `dc57e7382dd4fd1a3b61c8d0668257393ec722d7bf8e21bb9beb0aaacbc2e7bc`;
+  settlement and execution schema SHA-256 values
+  `e9b00aa0621db1e37cd2cb3b4f85df380b61cb6cf197f473eaca2748fb0f62bc`
+  and `60dbc94c3717b90e13c679b55cdacc3610d5de2d3f9df8d5c5994a20169210d6`.
+- Results: focused runtime/permit/writer/T=102 suite PASS, 49 tests; portable
+  shared AI/arm selection PASS, 233 tests in 37.28 seconds; documentation
+  checks PASS, 29 self-tests plus maintained-link/title validation; compile and
+  diff checks PASS.
+- Evidence status: deterministic in-memory evidence only. The I/O fixture owns
+  no serial factory, port, socket, callback, device handle, controller process,
+  or firmware operation.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: `T=1021` and `T=1051` inputs are modeled test bytes, not
+  independently acquired controller evidence. A completed rehearsal proves
+  contract compatibility and fail-closed lifecycle behavior; it does not prove
+  an authentic controller receipt, physical arrival, key contact, or task
+  outcome.
+- Supersedes: ARM-048's Cartesian final-boundary fixture and its unresolved
+  production-runtime shape mismatch. It does not supersede native-writer
+  enablement, physical qualification, or independent task observation.
+- Next dependency: externally review and qualify a separately implemented
+  native sole-writer transport that preserves this exact T=102/session/epoch/
+  profile contract, then acquire authentic controller acknowledgment, joint
+  feedback, and independent task-outcome evidence under explicit physical-test
+  authorization.

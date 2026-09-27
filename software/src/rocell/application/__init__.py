@@ -352,6 +352,13 @@ from .reviewed_motion_sole_writer_v1 import (
     assess_settlement_v1,
     execute_reviewed_motion_rehearsal_v1,
 )
+from .reviewed_t102_runtime_bridge_v1 import (
+    SCHEMA as REVIEWED_T102_RUNTIME_EXECUTION_REHEARSAL_SCHEMA,
+    SETTLEMENT_SCHEMA as REVIEWED_T102_JOINT_SETTLEMENT_SCHEMA,
+    JointSettlementPolicyV1,
+    ReviewedT102RuntimeBridgeError,
+    execute_reviewed_t102_runtime_rehearsal_v1,
+)
 from .zero_write_waveshare_adapter_v1 import (
     GRIPPER_BEHAVIOR as ZERO_WRITE_GRIPPER_BEHAVIOR,
     INTERPOLATION_MODE as ZERO_WRITE_INTERPOLATION_MODE,
@@ -1221,6 +1228,11 @@ __all__ = [
     "SettlementPolicyV1",
     "assess_settlement_v1",
     "execute_reviewed_motion_rehearsal_v1",
+    "REVIEWED_T102_RUNTIME_EXECUTION_REHEARSAL_SCHEMA",
+    "REVIEWED_T102_JOINT_SETTLEMENT_SCHEMA",
+    "JointSettlementPolicyV1",
+    "ReviewedT102RuntimeBridgeError",
+    "execute_reviewed_t102_runtime_rehearsal_v1",
     "ZERO_WRITE_GRIPPER_BEHAVIOR",
     "ZERO_WRITE_INTERPOLATION_MODE",
     "ZERO_WRITE_WAVESHARE_PERMIT_SCHEMA",
