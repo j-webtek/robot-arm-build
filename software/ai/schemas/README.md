@@ -147,6 +147,13 @@ retaining `SYNTHETIC_EVIDENCE_NOT_INDEPENDENT`,
 `ready_for_epoch_intake=false`, and every physical authority flag false. This
 allows the workstreams to rehearse serialization and binding without confusing
 synthetic success with production review.
+The [owner AI-review acceptance](native_t102_owner_ai_review_acceptance_v1.schema.json)
+records the project owner's explicit governance choice to accept the exact,
+hash-bound internal ARM-054 AI technical review as the prerequisite for a later
+read-only endpoint-qualification intake. It preserves that no human review or
+external independence is claimed. Read-only intake eligibility is not endpoint
+open authority: controller startup, transport writes, execution, hardware
+access, and physical authority remain false.
 The [measured configuration-epoch intake](controller_configuration_epoch_intake_v1.schema.json)
 and [intake assessment](controller_configuration_epoch_intake_report_v1.schema.json)
 require that full decision, rather than accepting only an arbitrary review hash

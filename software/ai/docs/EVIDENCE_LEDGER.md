@@ -2997,3 +2997,35 @@ rewriting history. New entries must use a unique evidence ID.
   authorize read-only endpoint qualification. Authenticated retained telemetry
   can then be replayed through this boundary and compared with an independent
   visual observation; movement remains separately gated.
+
+### E-20260927-ARM-059 — owner-accepted AI adapter review with caveat
+
+- Stage: S4
+- Lane: ARM
+- Change: added a separate owner-governance acceptance record for the exact
+  internal AI technical review of ARM-054. The record consumes bounded strict
+  JSON, binds the file and canonical-content hashes, and requires the exact
+  packet, manifest, candidate commit, adapter source, ordered 11-check pass,
+  passing technical disposition, retained non-independence provenance, and no
+  open technical findings.
+- Governance behavior: the project owner elects to treat that review as the
+  source-review prerequisite. The record explicitly keeps
+  `human_review_claimed=false` and `external_independence_claimed=false`; it
+  does not alter or impersonate the external-review decision schema.
+- Artifacts: `native_t102_owner_ai_review_acceptance_v1.py`, its closed JSON
+  schema, focused tests, public exports,
+  `NATIVE_T102_OWNER_AI_REVIEW_ACCEPTANCE.md`, and shared-plan updates.
+- Evidence status: deterministic parsing and synthetic fixtures. The accepted
+  source review is the exact owner-designated AI report; no live endpoint or
+  controller evidence is added.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: read-only endpoint-qualification intake eligibility is not
+  permission to open an endpoint. Controller startup, transport writes,
+  execution, hardware access, and physical authority all remain false.
+- Supersedes: the external-human-review dependency only under the owner's
+  explicitly stated project policy. It does not supersede the provenance
+  caveat, endpoint qualification, controller provenance, calibration/collision
+  qualification, movement authority, or task verification.
+- Next dependency: implement the closed read-only endpoint-qualification intake
+  and obtain separate authorization before any real endpoint is opened.
