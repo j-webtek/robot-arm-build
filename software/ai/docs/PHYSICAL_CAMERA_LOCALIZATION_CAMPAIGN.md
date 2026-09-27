@@ -1,7 +1,9 @@
 # Physical-camera localization qualification campaign
 
-**Stage:** AI S2/S3 preparation  
-**State:** ready for data collection after physical commissioning inputs exist  
+**Stage:** AI S2/S3 preparation
+
+**State:** ready for data collection after physical commissioning inputs exist
+
 **Authority:** read-only evidence preparation; no camera, controller, or movement authority
 
 This runbook freezes what must be collected when the final overhead camera is
