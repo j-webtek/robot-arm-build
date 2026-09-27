@@ -3588,3 +3588,69 @@ rewriting history. New entries must use a unique evidence ID.
   rest-to-rest, not measured controller latency or physically qualified speed.
 - Next dependency: T2B consumes the exact bounded samples with deterministic IK
   and installed-geometry collision screening, retaining action and hash binding.
+
+### E-20260927-AI-404 — pose-checkpoint package test collection failure
+
+- Stage: S1 artifact identity and retention.
+- Lane: AI.
+- Source baseline: protected GitHub `main`
+  `f32c3deadee78fb2871018e39e892079f096032a`.
+- Change: first combined source/contract test invocation for the focused #56/#61
+  pose-keyloss external-artifact package.
+- Command: `python -m pytest scripts/ci/test_check_external_artifact.py software/ai/tests/test_pose_checkpoint_external_artifact_source.py -q` from the repository root.
+- Result: FAIL during collection before any assertion because the new test did
+  not add `software/ai` to `sys.path`; `ModuleNotFoundError: No module named
+  'eval'`. The manifest, checkpoint identity, verifier behavior, and artifact
+  bytes were unchanged. The generic artifact-present checker and the focused
+  verifier independently returned `verified` during the same shell increment.
+- Endpoint/camera opens: 0.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Authority: no model load, controller access, permit, transport, or physical
+  authority.
+- Limitations: test-harness import-path failure only; no clean-clone receipt or
+  reviewable completion claim existed.
+- Supersedes: none; this failed collection remains preserved.
+- Next dependency: add only the missing test import path and rerun the identical
+  combined suite.
+
+### E-20260927-AI-405 — pose-keyloss external-artifact source freeze
+
+- Stage: S1 artifact identity and retention.
+- Lane: AI.
+- Source baseline: protected GitHub `main`
+  `f32c3deadee78fb2871018e39e892079f096032a`; research history branch
+  `feature/translation-pair-evidence` remains unchanged.
+- Change: pinned the translation-weighted pose-keyloss checkpoint as an external
+  artifact and froze a focused zero-authority verifier, tests, and reproduction
+  instructions before generating either requested receipt.
+- Identity: repository path
+  `software/ai/results/translation_weighted_v0_translation_weighted/pose_model.pt`;
+  exact size 1,111,650 bytes; SHA-256
+  `0fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d`;
+  manifest SHA-256
+  `bc67bee359bc9458adb99334ccc08830023c25467e59897b015cef58c5dc4a87`.
+- Provenance: frozen producer commit
+  `fe20dc15376361f38049e4791583af72b62e5a77`; credential-free command
+  `python software/ai/vision/train_translation_weighted.py`; retention owner
+  Tactevra AI producer (`j-webtek`), review after 2027-09-27.
+- Command: `python -m pytest scripts/ci/test_check_external_artifact.py software/ai/tests/test_pose_checkpoint_external_artifact_source.py -q`; `python -m py_compile software/ai/eval/verify_pose_checkpoint_artifact.py`; `git diff --check`.
+- Result: PASS: 8 tests in 0.07s, source compilation passed, and the diff check
+  was clean. Tests assert exact identity/provenance, the exact
+  `external_artifact_unavailable` clean-root state, and fail-closed expected-state
+  mismatch. The verifier binds the existing repository checker hash, records
+  separate artifact read/write counts, and accepts only unavailable or verified.
+- Artifacts: compact manifest, `verify_pose_checkpoint_artifact.py`, focused
+  source test, reproduction/provenance instructions, this evidence row.
+- Endpoint/camera opens: 0.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Authority: artifact identity only; no model promotion, qualification,
+  controller access, transport, or release approval.
+- Limitations: source and contract verification only. No receipt or compact
+  result scorecard is claimed in this increment. Reproduction additionally
+  requires the pinned external starting checkpoint and environment.
+- Supersedes: none.
+- Next dependency: commit this freeze, create a fresh worktree from that exact
+  commit and record `external_artifact_unavailable`, separately verify the local
+  external bytes as `verified`, then commit both receipts and a compact scorecard.
