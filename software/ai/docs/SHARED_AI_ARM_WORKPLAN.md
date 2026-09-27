@@ -599,6 +599,8 @@ Copy this row and fill every field:
 
 ## Active work claims
 
+- AI lane / S1: frozen-candidate failure decomposition on consumed confirmation evidence and independent uncertainty protocol; no fitting, new scenes or arm changes.
+
 
 
 

@@ -1,0 +1,13 @@
+{
+  "source": "eval/grouped_linear_confirmation_v1_report.json",
+  "source_sha256": "0870d83f68ceb4b185b46e174e401e8c73e11f3b58c61e1d0f91a0eea823abad",
+  "script_sha256": "dc894389988070270c4b6aa1e57e8b9b32e0e0cc4b9c70db1a648ca9189cdd97",
+  "conditions": [
+    "standard",
+    "appearance_shift",
+    "partial",
+    "full"
+  ],
+  "threshold_mm": 3,
+  "scope": "Descriptive audit only; no runtime uncertainty or threshold tuning"
+}
