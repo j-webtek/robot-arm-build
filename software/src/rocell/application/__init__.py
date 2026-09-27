@@ -587,6 +587,14 @@ from .r97_runtime_transition_assessment_v1 import (
     R97RuntimeTransitionAssessmentV1,
     assess_r97_runtime_transition_v1,
 )
+from .r97_owner_ai_review_acceptance_v1 import (
+    GOVERNANCE_CAVEAT as R97_OWNER_AI_GOVERNANCE_CAVEAT,
+    SCHEMA as R97_OWNER_AI_REVIEW_ACCEPTANCE_SCHEMA,
+    R97OwnerAIReviewAcceptanceError,
+    R97OwnerAIReviewAcceptanceV1,
+    accept_r97_internal_ai_review_v1,
+    parse_r97_owner_ai_review_acceptance_v1,
+)
 from .controller_configuration_epoch_intake_v1 import (
     BLOCKER_CODES as CONTROLLER_CONFIGURATION_EPOCH_BLOCKER_CODES,
     EXPECTED_COMPONENT_IDS as CONTROLLER_CONFIGURATION_EPOCH_COMPONENT_IDS,
@@ -1552,6 +1560,12 @@ __all__ = [
     "R97RuntimeTransitionAssessmentError",
     "R97RuntimeTransitionAssessmentV1",
     "assess_r97_runtime_transition_v1",
+    "R97_OWNER_AI_GOVERNANCE_CAVEAT",
+    "R97_OWNER_AI_REVIEW_ACCEPTANCE_SCHEMA",
+    "R97OwnerAIReviewAcceptanceError",
+    "R97OwnerAIReviewAcceptanceV1",
+    "accept_r97_internal_ai_review_v1",
+    "parse_r97_owner_ai_review_acceptance_v1",
     "CONTROLLER_CONFIGURATION_EPOCH_BLOCKER_CODES",
     "CONTROLLER_CONFIGURATION_EPOCH_COMPONENT_IDS",
     "CONTROLLER_CONFIGURATION_EPOCH_INTAKE_SCHEMA",

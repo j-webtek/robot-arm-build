@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rocell.local/schemas/r97_owner_ai_review_acceptance_v1.schema.json",
+  "title": "RoCell r97 owner AI-review acceptance v1",
+  "type": "object", "additionalProperties": false,
+  "required": ["schema", "status", "acceptance_id", "owner_id", "accepted_utc",
+    "source_ai_decision_sha256", "source_ai_review_status", "reviewed_packet_sha256",
+    "reviewed_manifest_sha256", "reviewed_app_sha256", "governance_caveat",
+    "human_review_required", "human_review_claimed", "external_independence_claimed",
+    "owner_governance_override", "ready_for_owner_governed_configuration_epoch_intake",
+    "installation_authorized", "controller_start_authorized", "transport_authorized",
+    "execution_authorized", "hardware_access", "physical_authority", "acceptance_sha256"],
+  "properties": {
+    "schema": {"const": "rocell.r97_owner_ai_review_acceptance.v1"},
+    "status": {"const": "OWNER_ACCEPTED_AI_REVIEW_GOVERNANCE_OVERRIDE"},
+    "acceptance_id": {"type": "string"}, "owner_id": {"type": "string"},
+    "accepted_utc": {"type": "string"},
+    "source_ai_decision_sha256": {"$ref": "#/$defs/sha256"},
+    "source_ai_review_status": {"const": "SYNTHETIC_REHEARSAL_ACCEPTED"},
+    "reviewed_packet_sha256": {"$ref": "#/$defs/sha256"},
+    "reviewed_manifest_sha256": {"$ref": "#/$defs/sha256"},
+    "reviewed_app_sha256": {"$ref": "#/$defs/sha256"},
+    "governance_caveat": {"const": "OWNER_ACCEPTED_NONINDEPENDENT_AI_TECHNICAL_REVIEW"},
+    "human_review_required": {"const": false}, "human_review_claimed": {"const": false},
+    "external_independence_claimed": {"const": false}, "owner_governance_override": {"const": true},
+    "ready_for_owner_governed_configuration_epoch_intake": {"const": true},
+    "installation_authorized": {"const": false}, "controller_start_authorized": {"const": false},
+    "transport_authorized": {"const": false}, "execution_authorized": {"const": false},
+    "hardware_access": {"const": false}, "physical_authority": {"const": false},
+    "acceptance_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {"sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}
+}
