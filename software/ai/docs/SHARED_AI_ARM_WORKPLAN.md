@@ -599,7 +599,7 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-- AI lane / S1: implement and run frozen five-fold training-scene ridge selection; twenty fold fits, no consumed-evaluation tuning, no arm changes.
+
 
 
 
@@ -7777,3 +7777,51 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: No new fits or unused evaluation images. Three cohorts only, not full historical pretraining. No exact duplicates does not exclude near duplicates. Coverage summaries do not establish failure causality. Baseline previously selected on15M; future grouped selection conditional on fixed baseline. Snapshot heuristic; existing pytest warning. Contract unchanged; shared boundary tests not triggered. Arm/integration statuses unchanged; no qualification installed.
 - Supersedes: none; failed test and failed previous fresh evaluation retained.
 - Next dependency: Freeze executable grouped training-only selection source/plan before fitting. Keep original baseline; reject all configurations if eligibility fails. Export parity and separately frozen unused confirmation required after any selection.
+
+
+### E-20260926-AI-295 — grouped training-only model selection
+
+- Stage: S1
+- Lane: AI
+- Commit: `e38664763e51f99c81781c42779a3d631ccfa805` (source/plan frozen before rendering or fitting; evidence/tests/docs in successor commit)
+- Inputs/fixtures:29000000..29000599, four conditions per scene, rectangle fit/ellipse validation. Five folds480 training and120 validation scenes each; all variants grouped. Fixed original baseline SHA2560fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d. Source/protocol/artifact hashes in train/grouped_linear_v1_plan.json; pixel/prediction hashes, all fold coefficients and all out-of-fold errors in report SHA256 `0d853d6e8a9e4c94221bbce3e228d47126b8ba92a25a3b4b7c1e94d5a11b6e70`.
+- Command: `python software/ai/train/select_grouped_linear.py`
+- Result: PASS selection:20 closed-form fits; alphas0.001/0.01/0.1/1.0 yield107/76/69/61 tails versus74 baseline. Only1.0 satisfies all-condition mean/tail/yaw and strict combined obstruction improvement. Selected condition tails11/14/13/23 versus14/14/19/27. Mean errors0.807134/0.830765/0.895669/1.042441mm versus0.834092/0.838270/0.950769/1.109897mm. Obstruction tails46 to36. No final fit.
+- Artifacts: train/select_grouped_linear.py; train/grouped_linear_v1_plan.json; eval/grouped_linear_v1_report.json; tests/test_grouped_linear_selection.py; docs/GROUPED_MODEL_SELECTION.md.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Training selection only, not independent confirmation or physical accuracy. Historical baseline selection remains conditional. Ellipse variants within training pool are derived selection data. Four alphas selected once using fixed rule; failed configurations retained. No final model, runtime promotion, calibrated uncertainty or qualification. ModelMotionBatchV2 unchanged; shared boundary suite not triggered. Snapshot audit heuristic, before final ledger append. Arm/integration statuses unchanged.
+- Supersedes: none; previous failed fresh evaluation retained.
+- Next dependency: Freeze one final fit at selected alpha1.0 on all600 rectangle scenes; verify standalone export parity; separately freeze an unused confirmation range after checking intervening use. Do not tune on consumed15M/30M evaluation.
+
+
+### E-20260926-AI-296 — grouped selection regression verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `e38664763e51f99c81781c42779a3d631ccfa805` (source/plan frozen before rendering or fitting; evidence/tests/docs in successor commit)
+- Inputs/fixtures:29000000..29000599, four conditions per scene, rectangle fit/ellipse validation. Five folds480 training and120 validation scenes each; all variants grouped. Fixed original baseline SHA2560fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d. Source/protocol/artifact hashes in train/grouped_linear_v1_plan.json; pixel/prediction hashes, all fold coefficients and all out-of-fold errors in report SHA256 `0d853d6e8a9e4c94221bbce3e228d47126b8ba92a25a3b4b7c1e94d5a11b6e70`.
+- Command: `python -m pytest -q software/ai/tests/test_grouped_linear_selection.py`
+- Result: PASS:3 tests in1.68s. Validation perturbations do not alter fold-training fit; rejection/tie rules, complete metric recount, disjoint fold populations and frozen lineage verified. Existing pytest-asyncio warning.
+- Artifacts: train/select_grouped_linear.py; train/grouped_linear_v1_plan.json; eval/grouped_linear_v1_report.json; tests/test_grouped_linear_selection.py; docs/GROUPED_MODEL_SELECTION.md.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Training selection only, not independent confirmation or physical accuracy. Historical baseline selection remains conditional. Ellipse variants within training pool are derived selection data. Four alphas selected once using fixed rule; failed configurations retained. No final model, runtime promotion, calibrated uncertainty or qualification. ModelMotionBatchV2 unchanged; shared boundary suite not triggered. Snapshot audit heuristic, before final ledger append. Arm/integration statuses unchanged.
+- Supersedes: none; previous failed fresh evaluation retained.
+- Next dependency: Freeze one final fit at selected alpha1.0 on all600 rectangle scenes; verify standalone export parity; separately freeze an unused confirmation range after checking intervening use. Do not tune on consumed15M/30M evaluation.
+
+
+### E-20260926-AI-297 — grouped selection snapshot audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `e38664763e51f99c81781c42779a3d631ccfa805` (source/plan frozen before rendering or fitting; evidence/tests/docs in successor commit)
+- Inputs/fixtures:29000000..29000599, four conditions per scene, rectangle fit/ellipse validation. Five folds480 training and120 validation scenes each; all variants grouped. Fixed original baseline SHA2560fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d. Source/protocol/artifact hashes in train/grouped_linear_v1_plan.json; pixel/prediction hashes, all fold coefficients and all out-of-fold errors in report SHA256 `0d853d6e8a9e4c94221bbce3e228d47126b8ba92a25a3b4b7c1e94d5a11b6e70`.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS:6198 paths,889.5MiB,0 unresolved findings,14 reviewed synthetic fixtures.
+- Artifacts: train/select_grouped_linear.py; train/grouped_linear_v1_plan.json; eval/grouped_linear_v1_report.json; tests/test_grouped_linear_selection.py; docs/GROUPED_MODEL_SELECTION.md.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Training selection only, not independent confirmation or physical accuracy. Historical baseline selection remains conditional. Ellipse variants within training pool are derived selection data. Four alphas selected once using fixed rule; failed configurations retained. No final model, runtime promotion, calibrated uncertainty or qualification. ModelMotionBatchV2 unchanged; shared boundary suite not triggered. Snapshot audit heuristic, before final ledger append. Arm/integration statuses unchanged.
+- Supersedes: none; previous failed fresh evaluation retained.
+- Next dependency: Freeze one final fit at selected alpha1.0 on all600 rectangle scenes; verify standalone export parity; separately freeze an unused confirmation range after checking intervening use. Do not tune on consumed15M/30M evaluation.

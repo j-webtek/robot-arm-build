@@ -116,3 +116,8 @@ Data accounting:30000000..30000999 is now consumed evaluation data and must not 
 ## Scene grouping audit after failed fresh evaluation
 
 The three recent cohorts have no scene-ID overlap or exact cross-cohort image duplicates. Training covers123/125 pose bins;19/1000 consumed evaluation scenes occupy empty training bins. Nearest-training-pose distance p95 is similar for development and evaluation (0.227889 versus0.228354), so the audit does not identify a causal explanation. See GROUPED_MODEL_SELECTION.md for the five-fold training-only protocol. No fitting occurred. The frozen audit and initial endpoint-test failure remain preserved; a separate corrected helper reproduces all report bins and passes the exact endpoint test. Seven tests passed. The original baseline remains selected; no localization qualification or arm authority is added.
+
+
+## Grouped training selection
+
+Five-fold scene-group validation selected ridge alpha1.0:61 tails versus74 baseline across2400 out-of-fold images. The other three frozen settings failed the full acceptance rule. Each fold fit1920 rectangle images and validated480 ellipse images, with normalization fit on training rows only. All scene variants stay together. This supports one final refit and a separate confirmation experiment; it does not promote a runtime model. See GROUPED_MODEL_SELECTION.md and evidence AI-295 throughAI-297.
