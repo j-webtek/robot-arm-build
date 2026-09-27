@@ -25,6 +25,11 @@ from rocell.application.model_motion_sequence_coordinator_v2 import (  # noqa: E
     ModelMotionSequenceCoordinatorV2, ModelMotionSequenceV2Error)
 from rocell.application.observed_planner_start_state import (  # noqa: E402
     ObservedPlannerStartState)
+from rocell.application.typing_execution_plan_v1 import (  # noqa: E402
+    TypingExecutionConfigV1, TypingExecutionPlanV1,
+    compile_typing_execution_plan_v1)
+from rocell.application.typing_trajectory_plan_v1 import (  # noqa: E402
+    TypingTrajectoryPolicyV1, compile_typing_trajectory_plan_v1)
 
 
 def _actual_bytes_and_registry():
@@ -63,6 +68,59 @@ def test_actual_ai_bytes_pass_registry_ingress_and_preplanner_gate():
     assert ingress["controller_commands"] == gate["controller_commands"] == []
     assert ingress["hardware_access"] is gate["hardware_access"] is False
     assert ingress["physical_authority"] is gate["physical_authority"] is False
+
+
+def test_actual_ai_bytes_compile_to_ordered_direct_typing_plan():
+    context, plan, args, registry = _actual_bytes_and_registry()
+    batch = arm.decode_model_motion_batch_v2_json(assemble(plan, **args))
+    ingress = ingest_with_trusted_registry_v2(
+        batch, plan, context, registry=registry,
+        current_time_epoch_ms=arm.T0 + 3_000,
+        current_monotonic_ns=9_000_000_000)
+    config = TypingExecutionConfigV1(
+        config_id="shared-gate-s0-offline-v1",
+        calibration_snapshot_sha256="1" * 64,
+        tool_profile_sha256="2" * 64,
+        dynamics_profile_sha256="3" * 64,
+        route_reference_point=arm.Point3Mm("board", 0.0, 0.0, 50.0),
+        hover_clearance_mm=25.0,
+        settle_position_tolerance_mm=0.5,
+        settle_velocity_tolerance_mm_s=1.0,
+        settle_hold_ms=100,
+        preview_horizon=1,
+        speed_class=arm.SpeedClass.SLOW)
+
+    execution = compile_typing_execution_plan_v1(
+        batch, ingress, config=config)
+    restored = TypingExecutionPlanV1.from_bytes(execution.to_bytes())
+
+    assert [item.target_id for item in execution.actions] == ["H", "H", "I"]
+    assert execution.actions[2].transition_source == execution.actions[1].retract_point
+    assert restored == execution
+    assert execution.to_dict()["commit_horizon"] == 1
+    assert execution.to_dict()["controller_commands"] == []
+    assert execution.to_dict()["hardware_access"] is False
+    assert execution.to_dict()["physical_authority"] is False
+
+    trajectory = compile_typing_trajectory_plan_v1(
+        execution,
+        policy=TypingTrajectoryPolicyV1(
+            policy_id="shared-gate-s0-quintic-v1",
+            maximum_cartesian_step_mm=5.0,
+            maximum_velocity_mm_s=80.0,
+            maximum_acceleration_mm_s2=160.0,
+            maximum_jerk_mm_s3=800.0,
+            hover_settle_ms=100,
+            contact_dwell_ms=60,
+        ),
+    )
+    assert [item.target_id for item in trajectory.phase_waypoints
+            if item.phase.value == "CONTACT"] == ["H", "H", "I"]
+    assert trajectory.metrics.direct_estimated_time_ms < (
+        trajectory.metrics.park_baseline_estimated_time_ms)
+    assert trajectory.to_dict()["ik_screening_executed"] is False
+    assert trajectory.to_dict()["controller_commands"] == []
+    assert trajectory.to_dict()["physical_authority"] is False
 
 
 @pytest.mark.parametrize("mutation", [
