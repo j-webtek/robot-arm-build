@@ -440,15 +440,23 @@ def _world_beam(name: str, start: Vector, end: Vector, mat: bpy.types.Material,
 
 
 def add_continuous_press_arm(mats: dict[str, bpy.types.Material]) -> dict[str, object]:
-    """Build one continuous URDF-derived arm proxy ending at the H stylus.
+    """Build one continuous, hardware-shaped arm rig ending at the H stylus.
 
     The official assembly surface remains available as source evidence, but a
-    single articulated proxy is used on screen so the actuator never changes
-    identity between wide, resolve, execute, and verify shots.
+    rig is required for the execution beat because the vendor STEP is a rigid
+    presentation surface.  The rig deliberately repeats the RoArm-M3 visual
+    language: rectangular serial servos, paired links, exposed fasteners,
+    compact wrist plates, and the same black/metal finish.  It is still a
+    presentation rig—not kinematic or collision evidence—but it must read as
+    the same machine rather than as a generic industrial robot.
     """
     manifest, _joints = _parse_arm_contract()
     objects_before = set(bpy.context.scene.objects)
-    base = board_point(305, 405, 0)
+    # Match the official surface's measured board-frame base exactly.  The
+    # prior proxy was 52 mm forward, which made the robot visibly jump at the
+    # execution cut.
+    tx, ty, _tz = manifest["arm"]["nominal_board_T_robot_world_translation"]
+    base = board_point(tx, ty, 0)
     shoulder = base + Vector((0, 0, 0.120))
     wrist = board_point(216.55, 154.0, 0) + Vector((0, 0, 0.205))
     length_a = 0.2387
@@ -462,13 +470,35 @@ def add_continuous_press_arm(mats: dict[str, bpy.types.Material]) -> dict[str, o
     normal = side.cross(axis).normalized()
     elbow = shoulder + axis * projection + normal * height
 
-    cube("Continuous arm base", base + Vector((0, 0, 0.038)),
-         (0.112, 0.112, 0.076), mats["abs"], 0.010)
-    cylinder("Continuous arm turntable", base + Vector((0, 0, 0.084)),
-             0.052, 0.030, mats["servo"], 64)
-    for point, label in ((shoulder, "shoulder"), (elbow, "elbow"), (wrist, "wrist")):
-        cylinder(f"Continuous arm {label} servo", point, 0.033, 0.052,
-                 mats["servo"], 48).rotation_euler = (math.pi / 2, 0, 0)
+    cube("Continuous arm base foot", base + Vector((0, 0, 0.020)),
+         (0.118, 0.108, 0.040), mats["abs"], 0.008)
+    cube("Continuous arm base electronics", base + Vector((0, 0, 0.057)),
+         (0.094, 0.082, 0.052), mats["servo"], 0.006)
+    cylinder("Continuous arm turntable", base + Vector((0, 0, 0.091)),
+             0.050, 0.020, mats["arm_exact"], 64)
+
+    # Rectangular servo bodies and round output bosses mirror the physical
+    # ST-series actuator silhouette seen in the reference photographs.
+    servo_points = ((shoulder, "shoulder", (0.068, 0.054, 0.080)),
+                    (elbow, "elbow", (0.066, 0.052, 0.076)),
+                    (wrist, "wrist", (0.058, 0.048, 0.066)))
+    for point, label, size in servo_points:
+        cube(f"Continuous arm {label} servo body", point, size,
+             mats["servo"], 0.007)
+        for sign in (-1, 1):
+            boss = cylinder(f"Continuous arm {label} output boss {sign:+d}",
+                            point + side * (size[1] * 0.51 * sign),
+                            0.021, 0.008, mats["metal"], 40)
+            boss.rotation_euler = (math.pi / 2, 0, 0)
+            cap = cylinder(f"Continuous arm {label} hub cap {sign:+d}",
+                           point + side * (size[1] * 0.56 * sign),
+                           0.014, 0.004, mats["arm_exact"], 32)
+            cap.rotation_euler = (math.pi / 2, 0, 0)
+        # Small brass identification plate makes the proxy read like the same
+        # serial-servo family without asserting a legible vendor mark.
+        cube(f"Continuous arm {label} identification plate",
+             point - side * (size[1] * 0.515) + Vector((0, 0, 0.004)),
+             (0.026, 0.003, 0.017), mats["brass"], 0.002)
     rail_offset = side * 0.014
     for suffix, offset in (("L", rail_offset), ("R", -rail_offset)):
         _world_beam(f"Continuous upper rail {suffix}", shoulder + offset,
@@ -476,8 +506,38 @@ def add_continuous_press_arm(mats: dict[str, bpy.types.Material]) -> dict[str, o
         _world_beam(f"Continuous forearm rail {suffix}", elbow + offset,
                     wrist + offset, mats["carbon"], 0.019)
 
-    holder = cube("Continuous arm stylus holder", wrist + Vector((0, 0, -0.030)),
-                  (0.052, 0.046, 0.060), mats["abs"], 0.006)
+    # Cross-braces and exposed bolts preserve the lightweight paired-link
+    # character of the actual arm rather than reading as solid industrial bars.
+    for link_name, start, end in (("upper", shoulder, elbow),
+                                  ("forearm", elbow, wrist)):
+        vector = end - start
+        for brace_index, alpha in enumerate((0.28, 0.56, 0.82), start=1):
+            center = start + vector * alpha
+            brace = _world_beam(
+                f"Continuous {link_name} cross brace {brace_index}",
+                center - side * 0.022, center + side * 0.022,
+                mats["arm_exact"], 0.008,
+            )
+            brace["presentation_detail"] = "ROARM_PAIRED_LINK_BRACE"
+        for endpoint_name, endpoint in (("start", start), ("end", end)):
+            for sign in (-1, 1):
+                bolt = cylinder(
+                    f"Continuous {link_name} {endpoint_name} bolt {sign:+d}",
+                    endpoint + side * (0.027 * sign), 0.005, 0.006,
+                    mats["metal"], 24,
+                )
+                bolt.rotation_euler = (math.pi / 2, 0, 0)
+
+    holder = cube("Continuous arm wrist servo", wrist + Vector((0, 0, -0.030)),
+                  (0.060, 0.050, 0.066), mats["servo"], 0.006)
+    wrist_plate = cube("Continuous arm gripper plate", wrist + Vector((0, 0, -0.073)),
+                       (0.072, 0.010, 0.050), mats["arm_exact"], 0.004)
+    jaw_left = cube("Continuous arm gripper jaw left",
+                    wrist + Vector((-0.023, 0, -0.112)),
+                    (0.012, 0.026, 0.070), mats["arm_exact"], 0.003)
+    jaw_right = cube("Continuous arm gripper jaw right",
+                     wrist + Vector((0.023, 0, -0.112)),
+                     (0.012, 0.026, 0.070), mats["arm_exact"], 0.003)
     collar = cylinder("Continuous arm stylus collar", wrist + Vector((0, 0, -0.071)),
                       0.012, 0.028, mats["arm_exact"], 48)
     stylus_center = board_point(216.55, 154.0, 0) + Vector((0, 0, 0.105))
@@ -489,7 +549,7 @@ def add_continuous_press_arm(mats: dict[str, bpy.types.Material]) -> dict[str, o
     tip = bpy.context.object
     tip.name = "Continuous arm compliant stylus tip"
     apply_material(tip, mats["arm_exact"])
-    moving = (holder, collar, stylus, tip)
+    moving = (holder, wrist_plate, jaw_left, jaw_right, collar, stylus, tip)
     for component in moving:
         base_z = component.location.z
         for frame, offset in ((1, 0.0), (1288, 0.0), (1300, -0.004),
@@ -574,7 +634,9 @@ def setup_render(scene: bpy.types.Scene) -> None:
     scene.render.image_settings.color_mode = "RGBA"
     scene.render.ffmpeg.format = "MPEG4"
     scene.render.ffmpeg.codec = "H264"
-    scene.render.ffmpeg.constant_rate_factor = "MEDIUM"
+    # Preserve a clean intermediate so the upload master is not merely
+    # up-bitrated from Blender's medium-quality animation output.
+    scene.render.ffmpeg.constant_rate_factor = "PERC_LOSSLESS"
     scene.render.ffmpeg.ffmpeg_preset = "GOOD"
     scene.render.use_file_extension = True
     scene.view_settings.look = "AgX - Medium High Contrast"
@@ -593,6 +655,8 @@ def build() -> bpy.types.Scene:
         "carbon": material("Carbon link", (0.018, 0.023, 0.028, 1), metallic=0.2, roughness=0.24),
         "servo": material("Black servo", (0.025, 0.032, 0.040, 1), metallic=0.35, roughness=0.27),
         "metal": material("Machined metal", (0.22, 0.28, 0.34, 1), metallic=0.85, roughness=0.20),
+        "brass": material("Servo identification brass", (0.42, 0.27, 0.07, 1),
+                           metallic=0.72, roughness=0.26),
         "arm_exact": material("Official RoArm assembly finish", (0.017, 0.022, 0.028, 1),
                               metallic=0.48, roughness=0.24),
         "wood": textured_material("Light birch", (0.55, 0.33, 0.16, 1),
@@ -729,7 +793,7 @@ def build() -> bpy.types.Scene:
         # that keeps the simulated holder, stylus, and H key in one frame.
         (1057, board_point(216.55, 154.0, 670)),
         (1224, board_point(216.55, 154.0, 610)),
-        (1225, Vector((0.48, -0.72, 0.48))), (1392, Vector((0.38, -0.60, 0.40))),
+        (1225, Vector((0.28, -0.98, 0.66))), (1392, Vector((0.20, -0.86, 0.56))),
         (1393, Vector((0.02, -0.70, 0.54))), (1560, Vector((0.06, -0.64, 0.48))),
         (1561, Vector((0.30, -1.18, 0.72))), (1728, Vector((0.34, -1.42, 0.84))),
         (1729, Vector((0.34, -1.42, 0.84))), (END_FRAME, Vector((0.34, -1.42, 0.84))),
@@ -760,7 +824,7 @@ def build() -> bpy.types.Scene:
     lens_keys = (
         (1, 35), (96, 35), (97, 35), (336, 42), (337, 58), (408, 72),
         (409, 38), (528, 40), (529, 58), (1056, 68), (1057, 52),
-        (1224, 58), (1225, 58), (1392, 68), (1393, 58), (1560, 72),
+        (1224, 58), (1225, 46), (1392, 54), (1393, 58), (1560, 72),
         (1561, 35), (END_FRAME, 42),
     )
     for frame, focal_length in lens_keys:
@@ -784,7 +848,9 @@ def build() -> bpy.types.Scene:
     bpy.ops.object.light_add(type="AREA", location=(-0.62, 0.34, 0.82))
     rim = bpy.context.object
     rim.data.energy = 110
-    rim.data.color = (1.0, 0.38, 0.18)
+    # Keep the black keyboard reading consistently black in every chapter.
+    # The former orange rim made the execution keyboard appear copper.
+    rim.data.color = (0.46, 0.66, 1.0)
     rim.data.size = 0.55
     look_at(rim, Vector((0, 0.04, 0.38)))
     bpy.ops.object.light_add(type="AREA", location=(-0.35, -0.42, 0.50))
@@ -964,15 +1030,14 @@ Dialogue: 1,0:00:58.00,0:01:05.00,Tracker,,0,0,0,,PERCEIVE  →  PROPOSE  →  C
 Dialogue: 1,0:00:14.00,0:00:16.10,Stage,,0,0,0,,{\\fad(180,180)}1 · PERCEIVE
 Dialogue: 1,0:00:16.10,0:00:22.00,Badge,,0,0,0,,{\\fad(180,180)}{\\c&H00F8C845}4 TAGS LOCKED  ·  BOARD X/Y DRAWN
 Dialogue: 1,0:00:22.00,0:00:24.00,Stage,,0,0,0,,{\\fad(180,180)}2 · PROPOSE
-Dialogue: 1,0:00:22.00,0:01:05.00,Fine,,0,0,0,,CONTROLLER CUTAWAY · CAMERA PORTAL HIDDEN FOR CLARITY
 Dialogue: 1,0:00:24.00,0:00:30.00,Card,,0,0,0,,{\\fad(180,180)}{\\c&H004C9BFF}MODEL PROPOSAL{\\c&H00F3F6FA}\\Naction       press\\Ntarget       keyboard:H\\Nframe        board\\Nconfidence   0.97
 Dialogue: 1,0:00:30.00,0:00:31.80,Stage,,0,0,0,,{\\fad(150,150)}3 · CHECK
-Dialogue: 1,0:00:31.80,0:00:37.00,Card,,0,0,0,,{\\pos(150,230)\\fad(150,180)}{\\c&H00505AFF}GATE · REJECT{\\c&H00F3F6FA}\\Nframe        camera_raw  ✕\\Nfreshness    stale       ✕\\N\\NARM REMAINS STILL
-Dialogue: 1,0:00:37.00,0:00:38.20,CenterCard,,0,0,0,,{\\fad(120,80)}{\\c&H004FCC33}GATE · ACCEPT{\\c&H00F3F6FA}\\Nunits        ✓
-Dialogue: 1,0:00:38.20,0:00:39.30,CenterCard,,0,0,0,,{\\fad(80,80)}{\\c&H004FCC33}GATE · ACCEPT{\\c&H00F3F6FA}\\Nunits        ✓\\Nframe        ✓
-Dialogue: 1,0:00:39.30,0:00:40.40,CenterCard,,0,0,0,,{\\fad(80,80)}{\\c&H004FCC33}GATE · ACCEPT{\\c&H00F3F6FA}\\Nunits        ✓\\Nframe        ✓\\Nreach        ✓
-Dialogue: 1,0:00:40.40,0:00:41.50,CenterCard,,0,0,0,,{\\fad(80,80)}{\\c&H004FCC33}GATE · ACCEPT{\\c&H00F3F6FA}\\Nunits        ✓\\Nframe        ✓\\Nreach        ✓\\Nclearance    ✓
-Dialogue: 1,0:00:41.50,0:00:44.00,CenterCard,,0,0,0,,{\\fad(80,180)}{\\c&H004FCC33}GATE · ACCEPT{\\c&H00F3F6FA}\\Nunits        ✓\\Nframe        ✓\\Nreach        ✓\\Nclearance    ✓\\Nfreshness    ✓
+Dialogue: 1,0:00:31.80,0:00:37.00,Card,,0,0,0,,{\\pos(92,230)\\fad(150,180)}{\\c&H00505AFF}GATE · REJECT{\\c&H00F3F6FA}\\Nframe        camera_raw  ✕\\Nfreshness    stale       ✕\\N\\NARM REMAINS STILL
+Dialogue: 1,0:00:37.00,0:00:38.20,Card,,0,0,0,,{\\pos(92,230)\\fad(120,80)}{\\c&H004FCC33}GATE · ACCEPT{\\c&H00F3F6FA}\\Nunits        ✓
+Dialogue: 1,0:00:38.20,0:00:39.30,Card,,0,0,0,,{\\pos(92,230)\\fad(80,80)}{\\c&H004FCC33}GATE · ACCEPT{\\c&H00F3F6FA}\\Nunits        ✓\\Nframe        ✓
+Dialogue: 1,0:00:39.30,0:00:40.40,Card,,0,0,0,,{\\pos(92,230)\\fad(80,80)}{\\c&H004FCC33}GATE · ACCEPT{\\c&H00F3F6FA}\\Nunits        ✓\\Nframe        ✓\\Nreach        ✓
+Dialogue: 1,0:00:40.40,0:00:41.50,Card,,0,0,0,,{\\pos(92,230)\\fad(80,80)}{\\c&H004FCC33}GATE · ACCEPT{\\c&H00F3F6FA}\\Nunits        ✓\\Nframe        ✓\\Nreach        ✓\\Nclearance    ✓
+Dialogue: 1,0:00:41.50,0:00:44.00,Card,,0,0,0,,{\\pos(92,230)\\fad(80,180)}{\\c&H004FCC33}GATE · ACCEPT{\\c&H00F3F6FA}\\Nunits        ✓\\Nframe        ✓\\Nreach        ✓\\Nclearance    ✓\\Nfreshness    ✓
 Dialogue: 1,0:00:44.00,0:00:51.00,RightCard,,0,0,0,,{\\fad(160,180)}{\\c&H00F8C845}RESOLVED TARGET · H{\\c&H00F3F6FA}\\NX  216.55 mm\\NY  154.00 mm\\NZ   48.00 mm\\Ncamera → board → keyboard → H
 Dialogue: 1,0:00:51.00,0:00:58.00,Badge,,0,0,0,,{\\fad(140,160)}SIMULATED PRESS  ·  ACTION 1 OF 1  ·  CONTROLLER
 Dialogue: 1,0:00:58.20,0:01:03.00,VerifyCard,,0,0,0,,{\\pos(420,540)\\fad(160,180)}TELEMETRY\\N\\NJOINT TARGET REACHED  {\\c&H004FCC33}✓
@@ -989,7 +1054,7 @@ Dialogue: 0,0:01:12.00,0:01:17.00,Black,,0,0,0,,{\\p1}m 0 0 l 1920 0 l 1920 1080
 Dialogue: 1,0:01:12.00,0:01:17.00,EndTitle,,0,0,0,,{\\pos(960,400)\\fad(220,0)}TACTEVRA
 Dialogue: 1,0:01:12.20,0:01:17.00,EndSub,,0,0,0,,{\\pos(960,545)}ONE REQUEST. ONE CHECKED PHYSICAL ACTION.
 Dialogue: 1,0:01:12.40,0:01:17.00,EndURL,,0,0,0,,{\\pos(960,630)}github.com/j-webtek/tactevra
-Dialogue: 1,0:01:12.00,0:01:17.00,EndFine,,0,0,0,,Concept visualization · URDF-derived arm proxy · simulated key contact
+Dialogue: 1,0:01:12.00,0:01:17.00,EndFine,,0,0,0,,Concept visualization · hardware-shaped articulated rig · simulated key contact
 """,
         encoding="utf-8",
     )
@@ -1219,8 +1284,8 @@ def write_chapters_file(path: Path) -> None:
     chapters = (
         (14.0, 22.0, "Perceive"),
         (22.0, 30.0, "Propose"),
-        (30.0, 44.0, "Check"),
-        (44.0, 58.0, "Execute"),
+        (30.0, 51.0, "Check"),
+        (51.0, 58.0, "Execute"),
         (58.0, 65.0, "Verify"),
     )
     blocks = ["WEBVTT"]
@@ -1297,6 +1362,7 @@ def mux_soundtrack_and_variants(silent_video: Path, final_video: Path,
     soundtrack = OUT / "tactevra_workcell_explainer_soundtrack_v3.wav"
     captions = OUT / "tactevra_workcell_explainer_captions_v3.srt"
     web_video = OUT / "tactevra_workcell_explainer_web_1080p_v3.mp4"
+    distribution_video = OUT / "tactevra_workcell_explainer_distribution_1080p_v3.mp4"
     social_video = OUT / "tactevra_workcell_explainer_social_square_v3.mp4"
     voice_dir = external_voice_dir or (OUT / "voiceover_v3")
     write_soundtrack(soundtrack)
@@ -1326,7 +1392,10 @@ def mux_soundtrack_and_variants(silent_video: Path, final_video: Path,
     inputs: list[str] = [ffmpeg, "-y", "-i", str(silent_video), "-i", str(soundtrack)]
     for voice_file in voice_files:
         inputs.extend(("-i", str(voice_file)))
-    audio_graph = ["[1:a]volume=0.17[bed]"]
+    # The generated bed is intentionally restrained at source. A 0.17 gain
+    # made it disappear between voice clips; 0.65 keeps it roughly 15–18 dB
+    # below dialogue and makes reject/pass/contact/verified cues audible.
+    audio_graph = ["[1:a]volume=0.65[bed]"]
     voice_labels = []
     for input_index, (start, end) in enumerate(zip(voice_starts, voice_ends), start=2):
         label = f"voice{input_index}"
@@ -1364,8 +1433,22 @@ def mux_soundtrack_and_variants(silent_video: Path, final_video: Path,
             ffmpeg, "-y", "-i", str(final_video),
             "-c:v", "libx264", "-preset", "slow", "-crf", "18",
             "-maxrate", "16M", "-bufsize", "24M",
-            "-c:a", "aac", "-b:a", "192k", "-movflags", "+faststart",
+            "-c:a", "aac", "-b:a", "192k", "-ar", "48000",
+            "-movflags", "+faststart",
             str(web_video),
+        ],
+        check=True,
+    )
+    # Separate high-quality upload master for LinkedIn and YouTube. The
+    # checked-in homepage delivery remains compact; this derivative keeps fine
+    # key legends and dark gradients at full 1080p and about 5 Mbps.
+    subprocess.run(
+        [
+            ffmpeg, "-y", "-i", str(final_video),
+            "-c:v", "libx264", "-preset", "slow", "-b:v", "5M",
+            "-maxrate", "6M", "-bufsize", "12M", "-pix_fmt", "yuv420p",
+            "-c:a", "aac", "-b:a", "192k", "-ar", "48000",
+            "-movflags", "+faststart", str(distribution_video),
         ],
         check=True,
     )
@@ -1374,7 +1457,8 @@ def mux_soundtrack_and_variants(silent_video: Path, final_video: Path,
         [ffmpeg, "-y", "-i", str(final_video),
          "-vf", f"crop=1080:1080:(iw-1080)/2:0,subtitles='{subtitle_filter}':force_style='FontName=Arial,FontSize=19,Outline=2,MarginV=54'",
          "-c:v", "libx264", "-preset", "medium", "-crf", "19",
-         "-c:a", "aac", "-b:a", "160k", "-movflags", "+faststart",
+         "-c:a", "aac", "-b:a", "160k", "-ar", "48000",
+         "-movflags", "+faststart",
          str(social_video)],
         check=True,
     )

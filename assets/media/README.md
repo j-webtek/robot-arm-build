@@ -7,6 +7,8 @@ repository README:
   selectable English subtitle stream;
 - `tactevra-overview.en.vtt` — English WebVTT sidecar for players and future
   web surfaces that support external caption tracks;
+- `tactevra-overview.chapters.vtt` — chapter boundaries shared by the player
+  and the accessible stage-jump controls;
 - `tactevra-overview-poster.jpg` — lightweight linked preview for GitHub and
   clients that do not render an inline video player.
 
@@ -20,6 +22,11 @@ The approximately 77-second MP4 includes an optional subtitle stream rather
 than burned-in captions. Viewers can enable it in a compatible player, and
 future translations can be added as separate `.vtt` files without rerendering
 the 3D film.
+
+The build also emits a separate 1920×1080 distribution master below the
+ignored `tmp/blender-workcell-video/` directory. That higher-bitrate file is
+intended for YouTube, LinkedIn, and editorial review; it is deliberately not
+used by the lightweight repository player.
 
 The [published-media verification receipt](VERIFICATION_RECEIPT.md) records
 the exact committed file identities, observed delivery metadata, and explicit

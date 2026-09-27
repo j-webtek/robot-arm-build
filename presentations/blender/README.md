@@ -14,9 +14,11 @@ The scene deliberately separates six evidence classes:
 - **Kinematic authority** — the arm frame chain, joint origins, TCP, and nominal
   board-to-robot transform reconstructed from the separately hash-pinned URDF
   and frozen simulation profile.
-- **Execution-only presentation proxy** — an articulated arm-and-stylus
-  silhouette dimensioned from that pinned URDF and used only during the short
-  shot labeled `SIMULATED PRESS`. Its authored pose is not a solved trajectory.
+- **Execution-only articulated presentation rig** — aligned to the official
+  base position and shaped with the RoArm-M3's rectangular serial servos,
+  paired links, exposed fasteners, wrist plates, and gripper language. It is
+  used only during the short shot labeled `SIMULATED PRESS`; its authored pose
+  is not a solved trajectory.
 - **Conceptual** — target paths and explanatory motion graphics. These
   communicate intended behavior; they are not collision or motion
   qualification.
@@ -53,6 +55,8 @@ This creates local generated media under `tmp/blender-workcell-video/`:
 - `tactevra_workcell_explainer_v3.mp4` — 1080p narrated master
 - `tactevra_workcell_explainer_silent_v3.mp4` — 1080p picture master
 - `tactevra_workcell_explainer_web_1080p_v3.mp4` — web delivery
+- `tactevra_workcell_explainer_distribution_1080p_v3.mp4` — high-quality
+  1920×1080, approximately 5 Mbps LinkedIn/YouTube upload master
 - `tactevra_workcell_explainer_social_square_v3.mp4` — square, captioned derivative
 - `tactevra_workcell_explainer_captions_v3.srt` — voice-matched captions
 - `tactevra_workcell_explainer_soundtrack_v3.wav` — restrained music and cues
@@ -178,7 +182,8 @@ dimension-checked 3D render:
   telemetry and host-result panels make the target, action, and observed result
   legible without implying a live controller trace;
 - calm local narration is the loudest element; the deterministic soundtrack
-  uses one cue meaning per state and remains well below the voice;
+  uses one cue meaning per state and stays audible between lines at roughly
+  18–22 dB below the voice;
 - silent 1080p, narrated 1080p, web 1080p, square social, and SRT caption
   variants are generated from the same authority;
 - proposal, resolution, and execution cards are framed as model, contract, and
@@ -194,8 +199,9 @@ effect that obscures the hardware evidence.
 The registration pulses and frame-chain trace are conceptual state graphics.
 They are not a TCP trace, servo simulation, collision result, or qualified
 trajectory. The rendered tool contact is explicitly labeled as a simulated
-press. The arm in that execution shot is a URDF-derived presentation proxy,
-not a segmented, validated digital twin. Static shots use the exact official
+press. The arm in that execution shot is a hardware-shaped articulated
+presentation rig aligned to the official base and URDF dimensions, not a
+segmented, validated digital twin. Static shots use the exact official
 assembly surface but do not establish an installed pose or clearance.
 
 ## Authoritative inputs
