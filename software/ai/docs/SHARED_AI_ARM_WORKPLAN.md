@@ -599,6 +599,8 @@ Copy this row and fill every field:
 
 ## Active work claims
 
+- AI lane / S1: paired residual-only training, three seeds, predicted-mask versus constant-mask control; frozen pose/head, eight epochs at0.001, unchanged acceptance. AI branch only; no contract or arm changes.
+
 
 
 
