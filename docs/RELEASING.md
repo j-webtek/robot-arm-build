@@ -10,6 +10,16 @@ Begin with the [current readiness dashboard](releases/READINESS.md), then use th
 superseded exact-revision evidence. Never update a historical candidate record
 to imply that it covers newer source.
 
+The machine-readable
+[`release-readiness.json`](../.github/release-readiness.json) registry is the
+offline candidate gate. Ordinary policy checks validate its schema; candidate
+mode fails for every entry still marked `open`. GitHub issue state is routing
+context, not clearance. A reviewed change may mark an entry `cleared` only with
+a resolution summary and durable evidence links. Repository-relative evidence
+must exist in the tracked candidate; external links remain subject to human
+review. This prevents network state or an administratively closed issue from
+silently authorizing a candidate.
+
 Vendor geometry that lacks established redistribution permission is link-only.
 In particular, `hardware/static_overhead_camera/vendor/B0477.STEP` must remain
 untracked; its source URL and digest are recorded in the adjacent vendor README.
@@ -59,7 +69,9 @@ are a starting point, not a completed qualification record.
 - [ ] Run `python scripts/ci/check_release_integrity.py --mode candidate` at the
   candidate revision. Candidate mode must pass without removing a blocker merely
   to silence the check; resolve the linked review issue or record an approved
-  exclusion/replacement disposition in the same reviewed change.
+  exclusion/replacement disposition and its evidence in the same reviewed
+  change. Reconcile the human-readable readiness dashboard and the machine-readable
+  registry before selecting the candidate.
   A maintainer may instead dispatch the read-only
   [Preview candidate audit](../.github/workflows/preview-candidate-audit.yml)
   from the intended protected `main` revision and provide that exact full SHA as
@@ -96,8 +108,9 @@ Ordinary CI runs the check in `policy` mode. That mode rejects newly tracked
 private-backup paths, credential filenames, keys, executable/native binaries,
 firmware images, model weights, and archives unless an exact path and SHA-256
 allowance is reviewed in `.github/release-integrity-policy.json`. A policy-mode
-pass means the inventory follows the recorded path policy; it does not override
-the stricter candidate blockers, inspect file contents, or establish third-party
+pass means the inventory follows the recorded path policy and the readiness
+registry is structurally valid; it does not override the stricter candidate
+blockers, inspect file contents, or establish third-party
 redistribution rights. The separate snapshot audit remains required.
 The manual candidate workflow is additional release evidence, not a protected
 merge check or a publication approval. A failed run is expected while a recorded

@@ -55,6 +55,7 @@ still being developed.
 | [Evidence retention](EVIDENCE_RETENTION.md) | Contributors: what evidence belongs in Git and how larger artifacts are reviewed |
 | [External artifact contract](EXTERNAL_ARTIFACTS.md) | AI and repository contributors: deterministic identity and availability checks for external checkpoints and datasets |
 | [Runtime implementation plan](../software/ai/docs/MODEL_COMMAND_RUNTIME_IMPLEMENTATION_PLAN.md) | Arm developers: planning, command handling and execution infrastructure |
+| [Optimized typing execution plan](../software/docs/OPTIMIZED_TYPING_EXECUTION_PLAN.md) | Arm and integration contributors: rolling-horizon planning, smooth transitions, one-action authority, verification, and speed qualification |
 | [AI system baseline](../software/ai/docs/AI_SYSTEM_BASELINE_AND_IMPLEMENTATION_PLAN.md) | Research context and dated model-evaluation results |
 
 ## Arm experiments and procedures
