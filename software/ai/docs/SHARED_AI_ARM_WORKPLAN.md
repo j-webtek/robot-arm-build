@@ -599,6 +599,11 @@ Copy this row and fill every field:
 
 ## Active work claims
 
+- AI lane / S1: train a localized multi-scale obstruction classifier on new
+  46M scenes and test the unchanged combined uncertainty rule on disjoint 47M
+  mapping-calibration and 48M selection cohorts; no runtime, contract, or arm
+  changes.
+
 
 
 
