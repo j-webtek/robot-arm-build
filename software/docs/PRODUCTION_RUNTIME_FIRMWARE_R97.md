@@ -108,6 +108,24 @@ human reviewer nor external independence; and permits progression only to an
 owner-governed measured configuration-epoch intake. Installation, startup,
 transport, execution, hardware, and physical authority remain false.
 
+ARM-068 supplies the corresponding owner-governed epoch draft and assessment.
+It preserves the older independent-review intake for historical verification,
+but new owner-governed work no longer depends on that path. The initial retained
+draft has no component evidence and its assessment enumerates all eight missing
+components plus their required bindings. It therefore has no configuration
+epoch hash and cannot support an epoch-bound build proposal. Evidence must now
+be added component by component; a complete assessment still grants no
+installation, startup, transport, execution, hardware, or physical authority.
+
+ARM-069 adds the first component without controller access. The retained
+software-build bundle closes `build_snapshot`, `source_binding`,
+`dependency_receipt`, and `provider_hashes` against the exact reviewed r97
+identities and the merged ARM-068 source baseline. Its owner-AI review claims
+neither a human reviewer nor external independence. The resulting partial
+epoch has `software_build` ready and seven components missing, so its
+configuration-epoch hash is still null and it creates no build, installation,
+startup, transport, execution, hardware, or physical authority.
+
 ## Synthetic integration rehearsal
 
 A deterministic synthetic decision may be generated for software integration:

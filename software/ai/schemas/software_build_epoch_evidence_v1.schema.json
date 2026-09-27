@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rocell.local/schemas/software_build_epoch_evidence_v1.schema.json",
+  "title": "RoCell software-build epoch evidence v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "evidence_id", "component_id", "source_baseline_commit",
+    "source_baseline_tree", "release", "source_files", "binding_evidence",
+    "evidence_origin", "physical_measurement_claimed",
+    "reproducible_from_tracked_inputs", "hardware_access",
+    "installation_authorized", "controller_start_authorized",
+    "transport_authorized", "execution_authorized", "physical_authority",
+    "evidence_bundle_sha256"
+  ],
+  "properties": {
+    "schema": {"const": "rocell.software_build_epoch_evidence.v1"},
+    "evidence_id": {"const": "arm-069-r97-software-build"},
+    "component_id": {"const": "software_build"},
+    "source_baseline_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "source_baseline_tree": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "release": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "candidate", "candidate_app_sha256", "app_size_bytes",
+        "review_packet_sha256", "manifest_sha256", "compile_profile",
+        "compile_export_id", "protocol_source_sha256",
+        "joint_mapping_source_sha256"
+      ],
+      "properties": {
+        "candidate": {"const": "r97"},
+        "candidate_app_sha256": {"$ref": "#/$defs/sha256"},
+        "app_size_bytes": {"const": 314640},
+        "review_packet_sha256": {"$ref": "#/$defs/sha256"},
+        "manifest_sha256": {"$ref": "#/$defs/sha256"},
+        "compile_profile": {"const": "default-4mb-no-psram"},
+        "compile_export_id": {"type": "string", "minLength": 1},
+        "protocol_source_sha256": {"$ref": "#/$defs/sha256"},
+        "joint_mapping_source_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "source_files": {
+      "type": "array", "minItems": 8, "maxItems": 8,
+      "items": {"$ref": "#/$defs/file"}
+    },
+    "binding_evidence": {
+      "type": "array", "minItems": 4, "maxItems": 4,
+      "items": {"$ref": "#/$defs/binding"}
+    },
+    "evidence_origin": {"const": "RETAINED_ORIGINAL_SOFTWARE_BUILD_INPUTS"},
+    "physical_measurement_claimed": {"const": false},
+    "reproducible_from_tracked_inputs": {"const": true},
+    "hardware_access": {"const": false},
+    "installation_authorized": {"const": false},
+    "controller_start_authorized": {"const": false},
+    "transport_authorized": {"const": false},
+    "execution_authorized": {"const": false},
+    "physical_authority": {"const": false},
+    "evidence_bundle_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "file": {
+      "type": "object", "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "binding": {
+      "type": "object", "additionalProperties": false,
+      "required": ["binding_id", "evidence_sha256"],
+      "properties": {
+        "binding_id": {"enum": [
+          "build_snapshot", "source_binding", "dependency_receipt",
+          "provider_hashes"
+        ]},
+        "evidence_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    }
+  }
+}

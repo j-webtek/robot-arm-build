@@ -293,6 +293,25 @@ than blocking. The next active dependency is an owner-governed configuration
 epoch containing retained physical evidence and AI review records for all
 eight controlled workcell components. This override creates no installation,
 startup, transport, execution, hardware, or physical authority.
+ARM-068 implements that next boundary without rewriting the historical
+independent-review epoch contract. Its owner-governed draft accepts zero through
+eight components, requires the policy-defined binding set for each component,
+and reports missing, stale, synthetic, or unreviewed evidence separately. A
+confirmed-not-installed station may be represented, but still requires retained
+physical evidence and owner-AI review. The retained initial assessment is
+correctly `BLOCKED`: all eight components and their 32 required bindings are
+missing. No configuration-epoch hash exists until the complete draft passes.
+The next work is evidence population, beginning with the reproducible
+`software_build` component; no controller operation is needed for that step.
+ARM-069 closes that first component from retained original software inputs. It
+binds the exact r97 app, packet, manifest, compile profile, source baseline,
+dependency declaration, protocol encoder, and joint mapping into four
+content-addressed binding records, then records a closed owner-AI review. The
+partial epoch assessment advances only `software_build`; the other seven
+components remain explicitly `MISSING`, the configuration-epoch hash remains
+null, and every hardware authority remains false. The next ARM dependency is
+the retained camera/support/optics evidence bundle, not another software-build
+or controller test.
 
 ## Stage definitions
 
@@ -696,7 +715,7 @@ remove it only in the same commit that appends the resulting evidence row.
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
 | Unclaimed | S2 | qualified perception adapter and complete shared gate | — | AVAILABLE |
-| ARM | S4 | build the owner-governed measured configuration epoch for all eight controlled components using ARM-067 acceptance `76bac617...1698` | ARM-067 | ACTIVE |
+| ARM | S4 | collect and owner-AI review retained `camera_support_optics` evidence; preserve the seven remaining missing components as blockers | ARM-070 | AVAILABLE |
 
 ## Worker update procedure
 

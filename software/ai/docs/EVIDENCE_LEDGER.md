@@ -3281,3 +3281,81 @@ rewriting history. New entries must use a unique evidence ID.
   external workflow remains an optional future path.
 - Next dependency: collect and AI-review retained physical evidence for the
   eight configuration components, then construct the owner-governed epoch.
+
+### E-20260927-ARM-068 — owner-governed epoch contract and missing-evidence baseline
+
+- Stage: S4
+- Lane: ARM
+- Change: added a parallel owner-governed configuration-epoch draft and
+  assessment rather than mutating the historical independent-review contract.
+  The draft is bound to ARM-067 acceptance and the exact r97 packet, app,
+  protocol-source, and joint-mapping identities.
+- Component policy: all eight controlled components remain ordered; each has
+  the exact required binding roster from `configuration_epochs.json`. Partial
+  drafts are accepted for assessment, while missing bindings, stale evidence,
+  synthetic evidence, and incomplete owner-AI review remain distinct blockers.
+- Artifacts: `software/ai/eval/arm068_owner_epoch_draft.json`, draft SHA-256
+  `72e00112d41fc5849dd58d1c0abd858980ce9849817d6e2a6a82bcb78c842dc6`;
+  `software/ai/eval/arm068_owner_epoch_missing_evidence_report.json`, assessment
+  SHA-256
+  `6931ed878e12d8daebf0a92597e687904bb85dc5979c302c5d42cee83b34fe70`.
+- Result: `BLOCKED` by `COMPONENT_MISSING`. All eight component IDs and all 32
+  required binding IDs are enumerated. The configuration-epoch SHA remains
+  null, as required for an incomplete draft.
+- Verification: 447 tests in the bounded offline CI selection passed; schema,
+  strict parsing, tamper rejection, acceptance/release mismatch, component
+  blocker separation, retained-artifact equality, and a complete non-authority
+  fixture are covered.
+- Endpoint opens: 0
+- Hardware writes: 0
+- Physical movements: 0
+- Authority: installation, startup, transport, execution, hardware, and
+  physical authority remain false. A future complete pass permits only an
+  epoch-bound build proposal.
+- Limitations: the contract and passing all-physical test fixture do not create
+  physical evidence. The retained artifact intentionally contains no component
+  records.
+- Supersedes: ARM-067's missing owner-governed epoch software boundary. It does
+  not supersede the need for measured retained evidence.
+- Next dependency: populate and owner-AI review each physical-original
+  component, starting with the reproducible `software_build` evidence bundle.
+
+### E-20260927-ARM-069 — reproducible software-build epoch evidence
+
+- Stage: S4
+- Lane: ARM
+- Source baseline: commit
+  `1d7671a3eacb205788972f47ef36d36a09b63994`, tree
+  `189016aab61678b5d2cd508cfe4b752dbb4ac749`.
+- Change: generated a deterministic retained-original software bundle for the
+  exact r97 release and closed the four `software_build` bindings:
+  `build_snapshot`, `source_binding`, `dependency_receipt`, and
+  `provider_hashes`. A separate closed owner-AI review binds that bundle while
+  explicitly claiming no human review, external independence, or physical
+  measurement.
+- Artifacts: `software/ai/eval/arm069_software_build_evidence.json`, bundle
+  SHA-256 `3b482186b5e62d7fadc8b1241d6a5cd7365f328c19661d5421b553fc8b902610`;
+  `software/ai/eval/arm069_software_build_owner_ai_review.json`, review SHA-256
+  `ac20a7122e365b7a688c2bde67358ddf214da3a049a211c1b9bc7e66d2748fee`;
+  `software/ai/eval/arm069_owner_epoch_draft.json`, draft SHA-256
+  `6b43fedbcdf8f865be19056724d824a3e94232e96ac4559e7db092ff43c89a40`;
+  `software/ai/eval/arm069_owner_epoch_partial_assessment.json`, assessment
+  SHA-256 `a2e7b468a685813de164e2f81e9769fd10524ce76c665ce172110205385d8e97`.
+- Result: `software_build` is `READY`; the other seven components remain
+  `MISSING`. Global status is `BLOCKED`, configuration-epoch SHA is null, and
+  no epoch-bound build proposal is ready.
+- Verification: deterministic rebuild, JSON Schema validation, provider-tamper
+  rejection, crossed-review rejection, retained-artifact equality, and partial
+  epoch state are covered by the bounded offline suite.
+- Endpoint opens: 0
+- Hardware writes: 0
+- Physical movements: 0
+- Authority: installation, startup, transport, execution, hardware, and
+  physical authority remain false.
+- Limitations: this closes software provenance only. It does not attest the
+  installed controller or measure camera, bench, tool, power, keyboard, phone,
+  or empty-cell state.
+- Supersedes: ARM-068 only for the missing `software_build` component.
+- Next dependency: collect and owner-AI review retained
+  `camera_support_optics` evidence while keeping the other six components
+  visible as missing.
