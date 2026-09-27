@@ -107,3 +107,27 @@ report AUROC plus tail rates at fixed retention fractions. It may not select a
 runtime threshold or use consumed calibration and confirmation cohorts. A
 passing classifier would still require a separately designed calibration and
 fresh confirmation chain before any runtime abstention gate could exist.
+
+## Explicit scene-tail classifier
+
+The fixed class-balanced classifier used the same 16,689-parameter architecture
+and grouped folds, with a positive label when any of a scene's eight variants
+exceeded 3 mm. Only 49 of 600 scenes were positive. Training labels were copied
+to all variants within a scene, while scene grouping prevented cross-fold
+leakage.
+
+The classifier failed every preregistered comparison. Scene AUROC fell from
+0.644431 for the nonlinear error ranker to 0.570540. At fixed 25% retention,
+the classifier retained 9 failing scenes out of 150 versus 4 for the reference.
+At 50%, it retained 22 failures out of 300 versus 17. Very low training losses
+did not transfer to held-out scenes.
+
+No further learned head should be fitted on this exact representation and
+600-scene population. The next inexpensive diagnostic is zero-fit geometric
+disagreement between the original baseline pose and the confirmed residual
+candidate, measured as maximum displacement over all 46 named keyboard targets.
+It is deployable because it uses two frozen model outputs and the target map,
+without simulator truth at inference. The diagnostic must use grouped 33M
+out-of-fold evidence and fixed retention comparisons. If it is weak, the next
+uncertainty effort needs either a genuinely diverse pose ensemble or a broader
+uncertainty-training population before any new calibration data is allocated.

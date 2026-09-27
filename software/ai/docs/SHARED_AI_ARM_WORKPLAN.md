@@ -599,9 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-- AI lane / S1: train one fixed class-balanced scene-tail risk classifier on
-  frozen descriptors and grouped 33M scenes; no threshold selection, pose
-  fitting, calibration data, runtime promotion, or arm changes.
 
 
 
@@ -8275,3 +8272,51 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic repository review before final ledger append; not model or physical assurance. No arm or integration status changes.
 - Supersedes: none.
 - Next dependency: Same as AI-322.
+
+
+### E-20260927-AI-325 — grouped scene-tail classifier study
+
+- Stage: S1
+- Lane: AI
+- Commit: `a3609e8187b5e17995052b19b4c441dd2d10a797` (labels, architecture, class balance, schedule, source, and plan frozen before fitting; evidence/tests/docs committed in the successor)
+- Inputs/fixtures: Existing `33000000..33000599` uncertainty-training scenes, eight variants each, 49 positive scenes with any error over 3 mm and 551 negative scenes. Frozen descriptor SHA256 `183a1780b4fcfb3fb908b021af08cab07a2662a0ef8fb9ae18abf42c8e2b05c8`; pose artifact SHA256 `c9f4ef6d8f9e50317a917154fccacce46506ab2e7cde8267396e28fec156147b`; source report SHA256 `b9ac4856d8af925d19d2e3b25e049c22f738590fba2deb7e52ff9fedc0fc0d4d`. Fixed 16,689-parameter classifier, fold-only normalization and class weighting, 30 epochs, batch 64, AdamW learning rate 0.001 and weight decay 0.0001. Full hashes in `train/tail_risk_classifier_v1_plan.json`; report SHA256 `8a6bf9c11ccb8ebb2f3ea8feadeec4d2f2b93684fba736fb6ee032981cb1059d` retains every fit and prediction.
+- Command: `python software/ai/train/evaluate_tail_risk_classifier.py`
+- Result: FAIL all fixed checks. Scene tail AUROC falls from the nonlinear-regression reference `0.644431` to `0.570540`. At 25% retention the classifier has `9/150` tails (6.0%) versus `4/150` (2.67%); at 50% it has `22/300` (7.33%) versus `17/300` (5.67%). Training weighted BCE reaches 0.0133..0.0367 while out-of-fold ranking worsens, consistent with overfitting but not a causal proof.
+- Artifacts: `vision/tail_risk_classifier.py`; `train/evaluate_tail_risk_classifier.py`; `train/tail_risk_classifier_v1_plan.json`; `eval/tail_risk_classifier_v1_report.json`; `tests/test_tail_risk_classifier.py`; `docs/IMAGE_DEPENDENT_UNCERTAINTY.md`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Five classifier fits, 9,000 optimizer updates total, zero pose/calibration fits or new images. Scene labels are copied to correlated variants. Only 49 positive scenes and one fixed architecture/schedule. Probabilities are uncalibrated ranks. No threshold, export, runtime installation, or physical qualification. ModelMotionBatchV2 and arm/integration statuses unchanged.
+- Supersedes: none; all prior failed uncertainty paths remain preserved.
+- Next dependency: Do not fit another head on the same descriptors and 600 scenes. First audit a zero-fit, deployable geometric signal: baseline-versus-confirmed-candidate target disagreement on grouped 33M rows. Require scene-ranking and fixed-retention improvement before considering a larger ensemble or broader uncertainty-training dataset.
+
+
+### E-20260927-AI-326 — scene-tail classifier verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `a3609e8187b5e17995052b19b4c441dd2d10a797` (frozen classifier source; tests and docs in successor)
+- Inputs/fixtures: Same 4,800 rows, 600 grouped scenes, and frozen artifacts as AI-325; report SHA256 `8a6bf9c11ccb8ebb2f3ea8feadeec4d2f2b93684fba736fb6ee032981cb1059d`.
+- Command: `python -m pytest -q software/ai/tests/test_tail_risk_classifier.py`
+- Result: PASS: 3 tests in 2.98s. Tests verify architecture, deterministic class-balanced fitting, input rejection, bounded probabilities, exact scene labels and class counts, fold isolation, optimizer counts, class weights, complete population, scene rankings, fixed-retention comparisons, lineage, and the failed decision.
+- Artifacts: `tests/test_tail_risk_classifier.py`; `eval/tail_risk_classifier_v1_report.json`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Existing pytest-asyncio configuration warning. Reproducibility only; no accuracy or physical assurance. Contract unchanged, so boundary tests were not triggered.
+- Supersedes: none.
+- Next dependency: Same as AI-325.
+
+
+### E-20260927-AI-327 — scene-tail classifier snapshot review
+
+- Stage: S1
+- Lane: AI
+- Commit: `a3609e8187b5e17995052b19b4c441dd2d10a797` (frozen classifier source; final ledger append in successor)
+- Inputs/fixtures: Repository snapshot containing the classifier study and evidence; exact hashes recorded in AI-325.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS: 6,249 paths, 910.5 MiB, 0 unresolved review findings, 14 reviewed synthetic fixtures.
+- Artifacts: `eval/tail_risk_classifier_v1_report.json`; `tests/test_tail_risk_classifier.py`; shared evidence ledger.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic snapshot before final ledger append; not model or physical assurance. No arm or integration status changes.
+- Supersedes: none.
+- Next dependency: Same as AI-325.
