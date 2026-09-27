@@ -599,6 +599,11 @@ Copy this row and fill every field:
 
 ## Active work claims
 
+- AI lane / S1: train one tail-aware failure-ranking head on frozen pose
+  descriptors and disagreement using new 54M scenes, then apply the unchanged
+  ranking gate once on disjoint 55M scenes; no calibration, runtime, contract,
+  or arm changes.
+
 
 
 
