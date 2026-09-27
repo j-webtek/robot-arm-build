@@ -7,6 +7,8 @@ Blender 4.3+ usage:
     --python presentations/blender/build_workcell_explainer.py -- --render-video
   blender --background --factory-startup \
     --python presentations/blender/build_workcell_explainer.py -- --overlay-only
+  blender --background --factory-startup \
+    --python presentations/blender/build_workcell_explainer.py -- --preview-shots
 
 Generated outputs are intentionally written below /tmp and are not source
 artifacts. Source CAD and measured layout data remain authoritative.
@@ -44,9 +46,10 @@ PORTAL_PATH = (
 STL_DIR = ROOT / "active-project" / "RoCell_v0_3" / "stl"
 DIMENSION_MANIFEST_PATH = SCRIPT.with_name("dimension_manifest.json")
 ARM_URDF_PATH = ROOT / "software" / "models" / "roarm_m3" / "roarm_m3_kinematic_40dbd84.urdf"
+OFFICIAL_ARM_STL_PATH = ROOT / "tmp" / "vendor" / "roarm_m3" / "roarm_m3_official_presentation.stl"
 
 FPS = 24
-END_FRAME = 18 * FPS
+END_FRAME = 22 * FPS
 BOARD_CENTER_MM = Vector((305.0, 228.5, 0.0))
 
 
@@ -314,70 +317,31 @@ def _joint_marker(name: str, parent: bpy.types.Object, mat: bpy.types.Material,
 
 
 def add_robot(mats: dict[str, bpy.types.Material]) -> dict[str, bpy.types.Object]:
-    """Build an exact URDF-frame arm with explicitly proxy surface geometry."""
+    """Place the hash-verified official assembly surface in the RC03 frame.
+
+    The official STEP assembly is prepared below /tmp and is not redistributed.
+    Its default pose is rigid in this presentation; URDF/controller motion
+    remains a separate contract.
+    """
     manifest, joints = _parse_arm_contract()
-    root = _empty("RoArm Wv — nominal board transform")
+    if not OFFICIAL_ARM_STL_PATH.is_file():
+        raise FileNotFoundError(
+            "The exact RoArm presentation mesh is missing. Run "
+            "`python presentations/blender/prepare_official_arm_asset.py` first."
+        )
     tx, ty, tz = manifest["arm"]["nominal_board_T_robot_world_translation"]
-    root.location = board_point(tx, ty, tz)
-    root.rotation_euler[2] = math.radians(manifest["arm"]["nominal_board_T_robot_world_yaw_deg"])
-    root["geometry_status"] = manifest["arm"]["surface_geometry"]["status"]
-    root["kinematic_authority_sha256"] = manifest["arm"]["kinematic_authority_sha256"]
-
-    world_base = _empty("world_to_base_link exact", root)
-    world_base.location = joints["world_to_base_link"]["xyz"]
-    base_fixed, q_base = _fixed_then_rotating("base", world_base, joints["base_link_to_link1"])
-    shoulder_fixed, q_shoulder = _fixed_then_rotating("shoulder", q_base, joints["link1_to_link2"])
-    elbow_fixed, q_elbow = _fixed_then_rotating("elbow", q_shoulder, joints["link2_to_link3"])
-    wrist_fixed, q_wrist = _fixed_then_rotating("wrist pitch", q_elbow, joints["link3_to_link4"])
-    roll_fixed, q_roll = _fixed_then_rotating("wrist roll", q_wrist, joints["link4_to_link5"])
-    gripper_fixed, q_gripper = _fixed_then_rotating("gripper", q_roll, joints["link5_to_gripper_link"])
-    tcp = _empty("hand_tcp exact", q_roll)
-    tcp.location = joints["link5_to_hand_tcp"]["xyz"]
-    tcp.rotation_euler = joints["link5_to_hand_tcp"]["rpy"]
-
-    # The surfaces below are original visual proxies. Every centerline endpoint
-    # is driven by the exact pinned URDF origin rather than hand-tuned lengths.
-    base = cube("Arm base visual proxy", (0, 0, 0), (0.105, 0.105, 0.070), mats["servo"], 0.007)
-    base.parent = root
-    base.location = (0, 0, 0.035)
-    _joint_marker("Base joint frame", base_fixed, mats["metal"], 0.040)
-    _beam_to("URDF link1 centerline", q_base, joints["link1_to_link2"]["xyz"], mats["carbon"], 0.038)
-    _joint_marker("Shoulder joint frame", shoulder_fixed, mats["servo"], 0.034)
-    _beam_to("URDF link2 centerline", q_shoulder, joints["link2_to_link3"]["xyz"], mats["carbon"], 0.036)
-    _joint_marker("Elbow joint frame", elbow_fixed, mats["servo"], 0.032)
-    _beam_to("URDF link3 centerline", q_elbow, joints["link3_to_link4"]["xyz"], mats["carbon"], 0.034)
-    _joint_marker("Wrist-pitch joint frame", wrist_fixed, mats["servo"], 0.029)
-    _beam_to("URDF link4 centerline", q_wrist, joints["link4_to_link5"]["xyz"], mats["carbon"], 0.030)
-    _joint_marker("Wrist-roll joint frame", roll_fixed, mats["metal"], 0.025)
-    _beam_to("URDF TCP centerline", q_roll, joints["link5_to_hand_tcp"]["xyz"], mats["carbon"], 0.026)
-    _joint_marker("Gripper joint frame", gripper_fixed, mats["servo"], 0.022)
-    palm = cube("Gripper visual proxy", (0, 0, 0), (0.050, 0.032, 0.050), mats["abs"], 0.004)
-    palm.parent = tcp
-    palm.location = (0, 0, 0)
-    for x in (-0.018, 0.018):
-        finger = cube("Gripper finger visual proxy", (0, 0, 0), (0.008, 0.014, 0.062), mats["metal"], 0.002)
-        finger.parent = tcp
-        finger.location = (x, 0, -0.050)
-
-    # All animated values remain inside the provisional simulation intersection.
-    # They demonstrate data flow only; they are not executable hardware plans.
-    poses = {
-        1: (0.0, 0.0, 2.618, -1.0472, 0.0),
-        270: (0.0, 0.0, 2.618, -1.0472, 0.0),
-        320: (-0.42, 0.18, 2.35, -1.12, 0.12),
-        362: (0.48, 0.12, 2.42, -1.00, -0.10),
-        406: (0.0, 0.0, 2.618, -1.0472, 0.0),
-        END_FRAME: (0.0, 0.0, 2.618, -1.0472, 0.0),
-    }
-    animated = (q_base, q_shoulder, q_elbow, q_wrist, q_roll)
-    for frame, values in poses.items():
-        for joint_obj, value in zip(animated, values):
-            joint_obj.rotation_euler = (0, 0, value)
-            joint_obj.keyframe_insert("rotation_euler", frame=frame)
-    q_gripper.rotation_euler = (0, 0, 0.35)
-    return {"root": root, "base": q_base, "shoulder": q_shoulder,
-            "elbow": q_elbow, "wrist": q_wrist, "roll": q_roll,
-            "gripper": q_gripper, "tcp": tcp}
+    arm = import_stl(
+        OFFICIAL_ARM_STL_PATH,
+        "VENDOR-SOURCED — Waveshare RoArm-M3 exact assembly surface",
+        mats["arm_exact"],
+        (tx, ty, tz),
+    )
+    arm.rotation_euler[2] = math.radians(manifest["arm"]["nominal_board_T_robot_world_yaw_deg"])
+    arm["surface_geometry"] = "HASH_VERIFIED_OFFICIAL_STEP_LOCAL_DERIVATIVE"
+    arm["source_archive_sha256"] = manifest["arm"]["surface_geometry"]["source_archive_sha256"]
+    arm["kinematic_authority_sha256"] = manifest["arm"]["kinematic_authority_sha256"]
+    arm["pose_status"] = "OFFICIAL_DEFAULT_ASSEMBLY_POSE_STATIC_PRESENTATION_ONLY"
+    return {"root": arm}
 
 
 def add_target_ring(name: str, x: float, y: float, z: float,
@@ -394,8 +358,8 @@ def add_target_ring(name: str, x: float, y: float, z: float,
 
 def setup_render(scene: bpy.types.Scene) -> None:
     scene.render.engine = "BLENDER_EEVEE_NEXT"
-    scene.render.resolution_x = 1280
-    scene.render.resolution_y = 720
+    scene.render.resolution_x = 1920
+    scene.render.resolution_y = 1080
     scene.render.resolution_percentage = 100
     scene.render.fps = FPS
     scene.frame_start = 1
@@ -424,6 +388,8 @@ def build() -> bpy.types.Scene:
         "carbon": material("Carbon link", (0.018, 0.023, 0.028, 1), metallic=0.2, roughness=0.24),
         "servo": material("Black servo", (0.025, 0.032, 0.040, 1), metallic=0.35, roughness=0.27),
         "metal": material("Machined metal", (0.22, 0.28, 0.34, 1), metallic=0.85, roughness=0.20),
+        "arm_exact": material("Official RoArm assembly finish", (0.017, 0.022, 0.028, 1),
+                              metallic=0.48, roughness=0.24),
         "wood": material("Light birch", (0.55, 0.33, 0.16, 1), roughness=0.48),
         "keyboard": material("Keyboard body", (0.022, 0.027, 0.034, 1), roughness=0.28),
         "key": material("Keyboard keys", (0.055, 0.065, 0.078, 1), roughness=0.34),
@@ -466,20 +432,22 @@ def build() -> bpy.types.Scene:
     camera.data.sensor_width = 36
     scene.camera = camera
     camera_positions = [
-        (1, Vector((1.90, -2.10, 0.96))),
-        (96, Vector((1.25, -1.55, 1.02))),
-        (192, Vector((0.0, -0.72, 1.58))),
-        (288, Vector((0.76, -0.98, 0.68))),
-        (384, Vector((0.96, -1.22, 0.72))),
-        (END_FRAME, Vector((1.62, -1.84, 0.96))),
+        (1, Vector((1.90, -2.18, 1.10))), (88, Vector((1.52, -1.86, 0.98))),
+        (89, Vector((-1.18, -1.42, 0.82))), (176, Vector((-0.90, -1.16, 0.72))),
+        (177, Vector((-0.25, -0.82, 0.62))), (264, Vector((-0.20, -0.68, 0.54))),
+        (265, Vector((-0.42, -0.40, 0.43))), (336, Vector((-0.29, -0.31, 0.39))),
+        (337, Vector((0.72, -0.32, 1.42))), (408, Vector((0.58, -0.24, 1.22))),
+        (409, Vector((0.04, -0.96, 0.68))), (472, Vector((0.02, -0.78, 0.58))),
+        (473, Vector((0.08, -1.92, 1.00))), (END_FRAME, Vector((0.04, -1.66, 0.92))),
     ]
     targets = [
-        (1, Vector((0, 0, 0.48))),
-        (96, Vector((0, 0.02, 0.55))),
-        (192, Vector((0, 0, 0.15))),
-        (288, Vector((0, -0.04, 0.20))),
-        (384, Vector((0, -0.04, 0.20))),
-        (END_FRAME, Vector((0, 0.02, 0.43))),
+        (1, Vector((0, 0.00, 0.48))), (88, Vector((0, 0.02, 0.45))),
+        (89, Vector((0, 0.02, 0.51))), (176, Vector((0, 0.02, 0.42))),
+        (177, Vector((0, -0.005, 0.25))), (264, Vector((0, -0.045, 0.29))),
+        (265, Vector((0, -0.095, 0.34))), (336, Vector((0, -0.095, 0.33))),
+        (337, Vector((0, 0.00, 0.04))), (408, Vector((0, 0.00, 0.06))),
+        (409, Vector((0.06, -0.03, 0.16))), (472, Vector((0.08, -0.04, 0.17))),
+        (473, Vector((0, 0.02, 0.44))), (END_FRAME, Vector((0, 0.02, 0.44))),
     ]
     animate_transform(camera, camera_positions, targets)
 
@@ -503,46 +471,59 @@ def build() -> bpy.types.Scene:
     rim.data.color = (1.0, 0.38, 0.18)
     rim.data.size = 0.55
     look_at(rim, Vector((0, 0.04, 0.38)))
+    bpy.ops.object.light_add(type="AREA", location=(-0.35, -0.42, 0.50))
+    arm_rim = bpy.context.object
+    arm_rim.name = "Arm detail strip"
+    arm_rim.data.energy = 235
+    arm_rim.data.color = (0.48, 0.72, 1.0)
+    arm_rim.data.shape = "RECTANGLE"
+    arm_rim.data.size = 0.42
+    arm_rim.data.size_y = 0.16
+    look_at(arm_rim, Vector((0, -0.05, 0.30)))
 
     # Shot labels. They are camera-facing 3D graphics, not post-production text.
     hero = text_object("Hero title", "TACTEVRA\nPHYSICAL INTELLIGENCE, CHECKED",
                        Vector((0.0, -0.23, 0.68)), 0.034, mats["white"], camera)
-    visibility(hero, 1, 88)
+    visibility(hero, 1, 86)
     evidence = text_object("Evidence label",
-                           "REAL RC03 CAD  •  MEASURED DEVICE ENVELOPES  •  EXACT URDF FRAMES / PROXY SURFACES",
+                           "REAL RC03 CAD  •  MEASURED DEVICE ENVELOPES  •  OFFICIAL ARM ASSEMBLY SURFACE",
                            Vector((0.0, -0.18, 0.59)), 0.010, mats["cyan"], camera)
-    visibility(evidence, 10, 90)
+    visibility(evidence, 10, 86)
 
     vision = text_object("Vision label", "STATIC VISION\n1000 mm NOMINAL OPTICAL TARGET",
                          Vector((0.0, 0.07, 1.14)), 0.035, mats["white"], camera)
-    visibility(vision, 100, 185)
+    visibility(vision, 94, 170)
     sight = curve_line("Vision ray",
                        [board_point(305, 228.5, 995), board_point(305, 228.5, 14)], mats["cyan"], 0.002)
-    visibility(sight, 110, 188)
+    visibility(sight, 108, 174)
+
+    arm_detail = text_object("Arm detail label", "ROARM-M3\nOFFICIAL ASSEMBLY SURFACE",
+                             Vector((0.0, -0.10, 0.42)), 0.030, mats["white"], camera)
+    visibility(arm_detail, 182, 330)
 
     devices = text_object("Device label", "INDEXED DEVICE GEOMETRY\nKEYBOARD + PHONE + DIRECT TAGS",
                           Vector((0.02, -0.14, 0.29)), 0.031, mats["white"], camera)
-    visibility(devices, 196, 278)
-    add_target_ring("Keyboard target H", 216.55, 154.0, 29, mats["cyan"], 212, 255)
-    add_target_ring("Keyboard target I", 278.0, 188.0, 29, mats["amber"], 230, 270)
-    add_target_ring("Phone target", 538.15, 166.4, 20, mats["green"], 242, 278)
+    visibility(devices, 340, 404)
+    add_target_ring("Keyboard target H", 216.55, 154.0, 29, mats["cyan"], 350, 430)
+    add_target_ring("Keyboard target I", 278.0, 188.0, 29, mats["amber"], 360, 446)
+    add_target_ring("Phone target", 538.15, 166.4, 20, mats["green"], 374, 462)
 
     checked = text_object("Motion label", "PROPOSE → VALIDATE → EXECUTE → VERIFY",
                           Vector((0.0, -0.15, 0.48)), 0.030, mats["white"], camera)
-    visibility(checked, 288, 386)
+    visibility(checked, 414, 468)
     route = curve_line("Checked route",
                        [board_point(305, 410, 260), board_point(235, 180, 115),
                         board_point(216.55, 154, 48), board_point(390, 185, 105),
                         board_point(538.15, 166.4, 42)], mats["amber"], 0.003)
-    visibility(route, 300, 378)
+    visibility(route, 420, 468)
 
     close = text_object("Closing title", "ONE SHARED CONTRACT\nFROM USER INTENT TO VERIFIED ACTION",
                         Vector((0.0, -0.21, 0.80)), 0.043, mats["white"], camera)
-    visibility(close, 390, END_FRAME)
+    visibility(close, 478, END_FRAME)
     disclaimer = text_object("Disclaimer",
                              "CONCEPT VISUALIZATION • RC03 NOMINAL GEOMETRY • NOT MOTION OR FABRICATION QUALIFICATION",
                              Vector((0.0, -0.20, 0.68)), 0.014, mats["amber"], camera)
-    visibility(disclaimer, 394, END_FRAME)
+    visibility(disclaimer, 482, END_FRAME)
 
     # Smooth cinematic interpolation without overshooting the bounded poses.
     for obj in scene.objects:
@@ -555,7 +536,8 @@ def build() -> bpy.types.Scene:
 
     scene["evidence_notice"] = (
         "Portal/stations are repository CAD; board/devices are RC03 measured envelopes; "
-        "arm frames are pinned URDF geometry; arm surfaces and motion are conceptual."
+        "the arm surface is a local hash-verified derivative of the official STEP assembly; "
+        "its default pose is static and not motion qualification."
     )
     scene["source_layout"] = str(LAYOUT_PATH.relative_to(ROOT))
     scene["source_portal"] = str(PORTAL_PATH.relative_to(ROOT))
@@ -567,30 +549,32 @@ def write_ass_overlay(path: Path) -> None:
     path.write_text(
         """[Script Info]
 ScriptType: v4.00+
-PlayResX: 1280
-PlayResY: 720
+PlayResX: 1920
+PlayResY: 1080
 WrapStyle: 2
 
 [V4+ Styles]
 Format: Name,Fontname,Fontsize,PrimaryColour,SecondaryColour,OutlineColour,BackColour,Bold,Italic,Underline,StrikeOut,ScaleX,ScaleY,Spacing,Angle,BorderStyle,Outline,Shadow,Alignment,MarginL,MarginR,MarginV,Encoding
-Style: Hero,Arial,47,&H00FFFFFF,&H000000FF,&H80081119,&H70000000,-1,0,0,0,100,100,0,0,1,2,1,8,70,70,48,1
-Style: Sub,Arial,22,&H00F6F8FA,&H000000FF,&H90081119,&H70000000,-1,0,0,0,100,100,0,0,1,2,1,8,80,80,54,1
-Style: Cyan,Arial,18,&H00F8C845,&H000000FF,&H90081119,&H70000000,-1,0,0,0,100,100,0,0,1,2,1,2,70,70,42,1
-Style: Warn,Arial,15,&H004C9BFF,&H000000FF,&H90081119,&H70000000,-1,0,0,0,100,100,0,0,1,2,1,2,55,55,34,1
+Style: Hero,Arial,68,&H00FFFFFF,&H000000FF,&H80081119,&H70000000,-1,0,0,0,100,100,0,0,1,3,1,8,90,90,66,1
+Style: Sub,Arial,32,&H00F6F8FA,&H000000FF,&H90081119,&H70000000,-1,0,0,0,100,100,0,0,1,3,1,8,100,100,74,1
+Style: Cyan,Arial,27,&H00F8C845,&H000000FF,&H90081119,&H70000000,-1,0,0,0,100,100,0,0,1,3,1,2,90,90,58,1
+Style: Warn,Arial,22,&H004C9BFF,&H000000FF,&H90081119,&H70000000,-1,0,0,0,100,100,0,0,1,3,1,2,75,75,48,1
 
 [Events]
 Format: Layer,Start,End,Style,Name,MarginL,MarginR,MarginV,Effect,Text
-Dialogue: 0,0:00:00.20,0:00:03.75,Hero,,0,0,0,,{\\fad(300,300)}TACTEVRA\\NPHYSICAL INTELLIGENCE, CHECKED
-Dialogue: 0,0:00:00.55,0:00:03.75,Cyan,,0,0,0,,{\\fad(300,300)}REAL RC03 CAD  •  MEASURED DEVICE ENVELOPES  •  EXACT URDF FRAMES / PROXY SURFACES
-Dialogue: 0,0:00:04.00,0:00:07.75,Hero,,0,0,0,,{\\fad(250,250)}STATIC VISION
-Dialogue: 0,0:00:04.25,0:00:07.75,Cyan,,0,0,0,,{\\fad(250,250)}1000 mm NOMINAL OPTICAL TARGET  •  FIXED BOARD FRAME
-Dialogue: 0,0:00:08.00,0:00:11.75,Hero,,0,0,0,,{\\fad(250,250)}INDEXED DEVICE GEOMETRY
-Dialogue: 0,0:00:08.25,0:00:11.75,Cyan,,0,0,0,,{\\fad(250,250)}KEYBOARD  •  PHONE  •  DIRECT REFERENCE TAGS
-Dialogue: 0,0:00:12.00,0:00:15.75,Hero,,0,0,0,,{\\fad(250,250)}PROPOSE → VALIDATE → EXECUTE → VERIFY
-Dialogue: 0,0:00:12.25,0:00:15.75,Cyan,,0,0,0,,{\\fad(250,250)}BOUNDED TARGETS  •  CHECKED ROUTES  •  OBSERVED RESULTS
-Dialogue: 0,0:00:16.00,0:00:17.95,Hero,,0,0,0,,{\\fad(250,200)}ONE SHARED CONTRACT
-Dialogue: 0,0:00:16.20,0:00:17.95,Sub,,0,0,0,,{\\fad(250,200)}FROM USER INTENT TO VERIFIED PHYSICAL ACTION
-Dialogue: 0,0:00:16.05,0:00:17.95,Warn,,0,0,0,,{\\fad(250,200)}CONCEPT VISUALIZATION • RC03 NOMINAL GEOMETRY • NOT MOTION OR FABRICATION QUALIFICATION
+Dialogue: 0,0:00:00.20,0:00:03.55,Hero,,0,0,0,,{\\fad(300,250)}TACTEVRA\\NPHYSICAL INTELLIGENCE, CHECKED
+Dialogue: 0,0:00:00.55,0:00:03.55,Cyan,,0,0,0,,{\\fad(300,250)}REAL RC03 CAD  •  MEASURED DEVICE ENVELOPES  •  OFFICIAL ARM ASSEMBLY SURFACE
+Dialogue: 0,0:00:03.72,0:00:07.25,Hero,,0,0,0,,{\\fad(180,220)}ENGINEERED WORKCELL
+Dialogue: 0,0:00:03.95,0:00:07.25,Cyan,,0,0,0,,{\\fad(180,220)}INDEXED BOARD  •  STATIC VISION  •  CONTROLLED DEVICE FIXTURES
+Dialogue: 0,0:00:07.38,0:00:13.85,Hero,,0,0,0,,{\\fad(180,220)}ROARM-M3 — OFFICIAL ASSEMBLY DETAIL
+Dialogue: 0,0:00:07.65,0:00:13.85,Cyan,,0,0,0,,{\\fad(180,220)}HASH-VERIFIED OFFICIAL STEP  •  REAL WRIST, GRIPPER, SERVO AND LINK SURFACES
+Dialogue: 0,0:00:14.02,0:00:16.85,Hero,,0,0,0,,{\\fad(180,220)}INDEXED DEVICE GEOMETRY
+Dialogue: 0,0:00:14.25,0:00:16.85,Cyan,,0,0,0,,{\\fad(180,220)}KEYBOARD  •  PHONE  •  DIRECT REFERENCE TAGS
+Dialogue: 0,0:00:17.02,0:00:19.60,Hero,,0,0,0,,{\\fad(180,220)}PROPOSE → VALIDATE → EXECUTE → VERIFY
+Dialogue: 0,0:00:17.25,0:00:19.60,Cyan,,0,0,0,,{\\fad(180,220)}BOUNDED TARGETS  •  CHECKED ROUTES  •  OBSERVED RESULTS
+Dialogue: 0,0:00:19.75,0:00:21.95,Hero,,0,0,0,,{\\fad(220,180)}ONE SHARED CONTRACT
+Dialogue: 0,0:00:19.98,0:00:21.95,Sub,,0,0,0,,{\\fad(220,180)}FROM USER INTENT TO VERIFIED PHYSICAL ACTION
+Dialogue: 0,0:00:19.82,0:00:21.95,Warn,,0,0,0,,{\\fad(220,180)}PRESENTATION VISUALIZATION • STATIC OFFICIAL ARM POSE • NOT MOTION OR FABRICATION QUALIFICATION
 """,
         encoding="utf-8",
     )
@@ -634,7 +618,15 @@ def main() -> None:
     blend_path = OUT / "tactevra_workcell_explainer_v1.blend"
     bpy.ops.wm.save_as_mainfile(filepath=str(blend_path))
 
-    if "--render-video" in args:
+    if "--preview-shots" in args:
+        preview_frames = (48, 132, 220, 300, 372, 440, 500)
+        scene.render.resolution_percentage = 55
+        for frame in preview_frames:
+            scene.frame_set(frame)
+            scene.render.image_settings.file_format = "PNG"
+            scene.render.filepath = str(OUT / f"preview_{frame:04d}.png")
+            bpy.ops.render.render(write_still=True)
+    elif "--render-video" in args:
         scene.render.image_settings.file_format = "FFMPEG"
         scene.render.ffmpeg.format = "MPEG4"
         scene.render.ffmpeg.codec = "H264"

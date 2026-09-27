@@ -110,11 +110,28 @@ def main() -> int:
             fail(f"URDF joint missing: {name}")
         assert_close(actual_origins[name], expected, f"URDF joint {name}", tolerance=1e-9)
 
+    surface = arm["surface_geometry"]
+    archive_path = ROOT / "tmp" / "vendor" / "roarm_m3" / "RoArm-M3_STEP_260310.zip"
+    if archive_path.is_file():
+        archive_hash = hashlib.sha256(archive_path.read_bytes()).hexdigest()
+        if archive_hash.lower() != surface["source_archive_sha256"].lower():
+            fail(f"Official arm archive SHA-256 drift: {archive_hash}")
+    presentation_mesh = ROOT / surface["presentation_mesh_path"]
+    if presentation_mesh.is_file():
+        assert_close(
+            stl_bounds(presentation_mesh),
+            surface["default_step_envelope_mm"],
+            "official arm presentation mesh bounds",
+            tolerance=1e-3,
+        )
+
     print("Tactevra Blender dimension contract: PASS")
     print(f"  board/device layout: {workcell['authority']}")
     print(f"  portal STL: {portal['mesh_bounds_xyz']} mm")
     print(f"  arm URDF SHA-256: {digest}")
     print(f"  validated arm joint origins: {len(arm['joint_origin_xyz_m'])}")
+    if presentation_mesh.is_file():
+        print(f"  official arm surface: {surface['default_step_envelope_mm']} mm")
     return 0
 
 

@@ -37,13 +37,13 @@
       "link5_to_hand_tcp": [0.0, 0.0, 0.115428]
     },
     "surface_geometry": {
-      "status": "CONCEPTUAL_VISUAL_PROXY_NOT_COLLISION_GEOMETRY",
-      "reason": "The pinned local projection contains the authoritative kinematic graph but no redistributable visual or collision mesh. Official STEP provenance is recorded elsewhere and remains outside this presentation package pending redistribution and physical-correlation review.",
-      "proxy_cross_sections_mm": {
-        "links": [34.0, 26.0],
-        "joint_markers_diameter": 58.0,
-        "base": [105.0, 105.0, 70.0]
-      }
+      "status": "HASH_VERIFIED_OFFICIAL_STEP_LOCAL_DERIVATIVE_NOT_REDISTRIBUTED",
+      "source_archive_url": "https://files.waveshare.com/wiki/RoArm-M3/RoArm-M3_STEP_260310.zip",
+      "source_archive_sha256": "1e2111145276aac14e521f47990fc41de87e2e735623d115a39cc176c9762da2",
+      "source_step_member": "RoArm-M3_STEP/RoArm-M3.step",
+      "presentation_mesh_path": "tmp/vendor/roarm_m3/roarm_m3_official_presentation.stl",
+      "default_step_envelope_mm": [405.8467893963, 85.2200000000, 389.3807688309],
+      "reason": "The beauty render uses a local hash-verified tessellation of Waveshare's official STEP assembly. The source and derivative remain ignored and are not redistributed. The assembly's default pose is static and is not a collision or motion qualification."
     }
   }
 }

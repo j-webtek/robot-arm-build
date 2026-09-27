@@ -8,24 +8,28 @@ The scene deliberately separates four evidence classes:
 - **Measured** — RC03 board and device envelopes copied from
   `active-project/RoCell_v0_3/config/workcell_layout.json`.
 - **Designed** — repository-owned portal and station STL geometry.
+- **Vendor surface authority** — the arm's visible base, links, servo housings,
+  wrist, fasteners, and gripper tessellated locally from Waveshare's
+  hash-verified official assembly STEP.
 - **Kinematic authority** — the arm frame chain, joint origins, TCP, and nominal
-  board-to-robot transform reconstructed from the hash-pinned RoArm-M3 URDF and
-  the frozen simulation profile.
-- **Conceptual** — the arm's visible housings, animated joint values, light
-  paths, and explanatory motion graphics. These communicate intended behavior;
-  they are not collision or motion qualification.
+  board-to-robot transform reconstructed from the separately hash-pinned URDF
+  and frozen simulation profile.
+- **Conceptual** — target paths and explanatory motion graphics. These
+  communicate intended behavior; they are not collision or motion
+  qualification.
 
-No manufacturer robot surface mesh is redistributed. The arm visual uses an
-exact URDF frame skeleton with original proxy surfaces assembled from Blender
-primitives. The distinction is intentional: link placement is dimension
-controlled, while exterior clearances still require a rights-cleared CAD model
-or physical correlation before collision qualification.
+No manufacturer robot surface mesh is redistributed. A preparation script
+downloads the pinned official archive, verifies its SHA-256, checks the STEP
+envelope, and creates a local presentation mesh below ignored `/tmp/`. The
+official assembly's default pose is shown as a static product visualization;
+the film does not claim that pose is a qualified live trajectory.
 
 `dimension_manifest.json` records the values and source authorities used by the
 film. Run the validator before rendering:
 
 ```powershell
 python presentations/blender/validate_dimensions.py
+python presentations/blender/prepare_official_arm_asset.py
 ```
 
 ## Build
@@ -43,7 +47,15 @@ This creates local generated media under `tmp/blender-workcell-video/`:
 - `tactevra_workcell_explainer_v1.blend`
 - `tactevra_workcell_explainer_poster_v1.png`
 
-Render the complete 18-second, 24 fps, 1280×720 film with:
+Review seven low-resolution editorial frames before the full render:
+
+```powershell
+& "C:\Program Files\Blender Foundation\Blender 4.3\blender.exe" `
+  --background --factory-startup `
+  --python presentations/blender/build_workcell_explainer.py -- --preview-shots
+```
+
+Render the complete 22-second, 24 fps, 1920×1080 film with:
 
 ```powershell
 & "C:\Program Files\Blender Foundation\Blender 4.3\blender.exe" `
@@ -69,11 +81,13 @@ the final MP4 without rerendering the 3D frames:
 
 | Time | Shot | Evidence communicated |
 |---:|---|---|
-| 0–4 s | Full-system hero | Designed portal plus measured work surface |
-| 4–8 s | Static-vision rise | 1000 mm nominal camera optical target |
-| 8–12 s | Device targeting | Measured keyboard/phone envelopes and indexed stations |
-| 12–16 s | Checked movement | Exact URDF frame geometry, conceptual motion, and bounded target highlights |
-| 16–18 s | System close | Request → perceive → plan → check → act → verify |
+| 0–3.7 s | Full-system hero | Designed portal, measured work surface, and official arm assembly |
+| 3.7–7.4 s | Reverse workcell view | Indexed board, static vision, and device fixtures |
+| 7.4–11 s | Arm profile | Official link, servo, base, and controller surfaces |
+| 11–14 s | Gripper close-up | Real wrist stack and gripper-head geometry |
+| 14–17 s | Overhead layout | Measured keyboard/phone envelopes and indexed stations |
+| 17–19.7 s | Operational detail | Conceptual checked route across bounded targets |
+| 19.7–22 s | System close | Request → perceive → plan → check → act → verify |
 
 The film ends with a visible qualification disclaimer. It must not be used as
 fabrication approval, camera-load approval, or robot-motion evidence.
@@ -96,12 +110,13 @@ tag centers, camera target, portal mesh, arm joint origins, TCP offset, and
 nominal robot transform are sourced directly from repository authorities. The
 station and portal shapes are imported from their actual STL files.
 
-The arm's exterior housings and links are visual proxies because the pinned
-local model contains no redistributable visual or collision mesh. Device
-manufacturing variation, cable geometry, the installed robot transform, tag
-stack height, and tool geometry also remain physical-measurement items. This
-film is therefore an accurate system-layout explainer, not a motion-clearance or
-fabrication release.
+The arm's visible geometry comes from the official vendor STEP, but the source
+and local tessellation remain untracked. Its STEP pose is static; it is not
+segmented or driven as a qualified digital twin. Device manufacturing
+variation, cable geometry, the installed robot transform, tag stack height,
+and tool geometry also remain physical-measurement items. This film is therefore
+an accurate system-layout and product-geometry explainer, not a motion-clearance
+or fabrication release.
 
 ## Narration guide
 
@@ -111,5 +126,6 @@ fabrication release.
 > deterministic planning validates coordinates, clearance, and route. Only an
 > admitted movement reaches the controller. The system then observes the result
 > before continuing. This visualization uses the current RC03 dimensions and
-> repository CAD. The arm follows the pinned URDF frame chain; its visible skin
-> and animated poses remain conceptual until physically qualified.
+> repository CAD. The arm surface is derived from the hash-verified official
+> assembly STEP and shown in its default static pose. Target paths remain
+> conceptual until physically qualified.
