@@ -599,7 +599,7 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-- AI lane / S1: three-cohort split/coverage audit and training-only grouped-selection protocol; all scene variants grouped, no fits, no new evaluation data, no arm changes.
+
 
 
 
@@ -7711,3 +7711,67 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic snapshot audit before final documentation append; not runtime assurance. Zero new fits; no runtime model update or localization qualification.
 - Supersedes: none; favorable development result and failed export attempt retained. Arm/integration statuses unchanged.
 - Next dependency: Retain original baseline. Audit grouped scene-split integrity and train/development/evaluation coverage, then define model selection confined to grouped training data before new fitting.30000000..30000999 is consumed; no retuning against it or renewed untouched-data claims. Later confirmation requires separately frozen unused data.
+
+
+### E-20260926-AI-291 — three-cohort split audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `c0bd40e686af7ff437a1b882a7a119510d95e8bc` (frozen audit source/plan; results, regression correction and protocol committed together in successor)
+- Inputs/fixtures:29M600 scenes rectangle,15M200 scenes ellipse,30M1000 consumed scenes ellipse; four conditions each. Full frozen source/input hashes in eval/scene_split_audit_v0_plan.json. Report SHA256 `a23e1163dd93fa37cfcbb5bdeb723eba5aa79cc051698216a9680fb6f6147e8a`; individual pixel hashes and poses retained.
+- Command: `python software/ai/vision/audit_scene_splits.py`
+- Result: PASS:7200 existing images,1800 scenes; zero shared IDs or exact cross-cohort pixel duplicates. Training123/125 bins;2 development and19 consumed-evaluation scenes in empty training bins. Five folds120 scenes each,30 per corner.
+- Artifacts: eval/scene_split_audit_v0_report.json; eval/scene_split_audit_v0_test_failure.json; eval/grouped_linear_selection_v1_protocol.json; vision/scene_pose_bins.py; tests/test_scene_split_audit.py; docs/GROUPED_MODEL_SELECTION.md.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: No new fits or unused evaluation images. Three cohorts only, not full historical pretraining. No exact duplicates does not exclude near duplicates. Coverage summaries do not establish failure causality. Baseline previously selected on15M; future grouped selection conditional on fixed baseline. Snapshot heuristic; existing pytest warning. Contract unchanged; shared boundary tests not triggered. Arm/integration statuses unchanged; no qualification installed.
+- Supersedes: none; failed test and failed previous fresh evaluation retained.
+- Next dependency: Freeze executable grouped training-only selection source/plan before fitting. Keep original baseline; reject all configurations if eligibility fails. Export parity and separately frozen unused confirmation required after any selection.
+
+
+### E-20260926-AI-292 — boundary regression failure
+
+- Stage: S1
+- Lane: AI
+- Commit: `c0bd40e686af7ff437a1b882a7a119510d95e8bc` (frozen audit source/plan; results, regression correction and protocol committed together in successor)
+- Inputs/fixtures:29M600 scenes rectangle,15M200 scenes ellipse,30M1000 consumed scenes ellipse; four conditions each. Full frozen source/input hashes in eval/scene_split_audit_v0_plan.json. Report SHA256 `a23e1163dd93fa37cfcbb5bdeb723eba5aa79cc051698216a9680fb6f6147e8a`; individual pixel hashes and poses retained.
+- Command: `python -m pytest -q software/ai/tests/test_scene_split_audit.py`
+- Result: FAIL:1 failed,6 passed in1.88s. Exact upper yaw endpoint rejected through floating rounding. Preserved frozen implementation/report and eval/scene_split_audit_v0_test_failure.json.
+- Artifacts: eval/scene_split_audit_v0_report.json; eval/scene_split_audit_v0_test_failure.json; eval/grouped_linear_selection_v1_protocol.json; vision/scene_pose_bins.py; tests/test_scene_split_audit.py; docs/GROUPED_MODEL_SELECTION.md.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: No new fits or unused evaluation images. Three cohorts only, not full historical pretraining. No exact duplicates does not exclude near duplicates. Coverage summaries do not establish failure causality. Baseline previously selected on15M; future grouped selection conditional on fixed baseline. Snapshot heuristic; existing pytest warning. Contract unchanged; shared boundary tests not triggered. Arm/integration statuses unchanged; no qualification installed.
+- Supersedes: none; failed test and failed previous fresh evaluation retained.
+- Next dependency: Freeze executable grouped training-only selection source/plan before fitting. Keep original baseline; reject all configurations if eligibility fails. Export parity and separately frozen unused confirmation required after any selection.
+
+
+### E-20260926-AI-293 — corrected helper and selection protocol verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `c0bd40e686af7ff437a1b882a7a119510d95e8bc` (frozen audit source/plan; results, regression correction and protocol committed together in successor)
+- Inputs/fixtures:29M600 scenes rectangle,15M200 scenes ellipse,30M1000 consumed scenes ellipse; four conditions each. Full frozen source/input hashes in eval/scene_split_audit_v0_plan.json. Report SHA256 `a23e1163dd93fa37cfcbb5bdeb723eba5aa79cc051698216a9680fb6f6147e8a`; individual pixel hashes and poses retained.
+- Command: `python -m pytest -q software/ai/tests/test_scene_split_audit.py`
+- Result: PASS:7 tests in1.79s. Separate scene_pose_bins helper fixes closed endpoint handling; recount matches all frozen report bins. Protocol specified, not executed; four fixed ridge alphas, five scene-group folds, fold-only normalization, consumed sets excluded.
+- Artifacts: eval/scene_split_audit_v0_report.json; eval/scene_split_audit_v0_test_failure.json; eval/grouped_linear_selection_v1_protocol.json; vision/scene_pose_bins.py; tests/test_scene_split_audit.py; docs/GROUPED_MODEL_SELECTION.md.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: No new fits or unused evaluation images. Three cohorts only, not full historical pretraining. No exact duplicates does not exclude near duplicates. Coverage summaries do not establish failure causality. Baseline previously selected on15M; future grouped selection conditional on fixed baseline. Snapshot heuristic; existing pytest warning. Contract unchanged; shared boundary tests not triggered. Arm/integration statuses unchanged; no qualification installed.
+- Supersedes: none; failed test and failed previous fresh evaluation retained.
+- Next dependency: Freeze executable grouped training-only selection source/plan before fitting. Keep original baseline; reject all configurations if eligibility fails. Export parity and separately frozen unused confirmation required after any selection.
+
+
+### E-20260926-AI-294 — split audit snapshot review
+
+- Stage: S1
+- Lane: AI
+- Commit: `c0bd40e686af7ff437a1b882a7a119510d95e8bc` (frozen audit source/plan; results, regression correction and protocol committed together in successor)
+- Inputs/fixtures:29M600 scenes rectangle,15M200 scenes ellipse,30M1000 consumed scenes ellipse; four conditions each. Full frozen source/input hashes in eval/scene_split_audit_v0_plan.json. Report SHA256 `a23e1163dd93fa37cfcbb5bdeb723eba5aa79cc051698216a9680fb6f6147e8a`; individual pixel hashes and poses retained.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS:6194 paths,882.1MiB,0 unresolved findings,14 reviewed synthetic fixtures.
+- Artifacts: eval/scene_split_audit_v0_report.json; eval/scene_split_audit_v0_test_failure.json; eval/grouped_linear_selection_v1_protocol.json; vision/scene_pose_bins.py; tests/test_scene_split_audit.py; docs/GROUPED_MODEL_SELECTION.md.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: No new fits or unused evaluation images. Three cohorts only, not full historical pretraining. No exact duplicates does not exclude near duplicates. Coverage summaries do not establish failure causality. Baseline previously selected on15M; future grouped selection conditional on fixed baseline. Snapshot heuristic; existing pytest warning. Contract unchanged; shared boundary tests not triggered. Arm/integration statuses unchanged; no qualification installed.
+- Supersedes: none; failed test and failed previous fresh evaluation retained.
+- Next dependency: Freeze executable grouped training-only selection source/plan before fitting. Keep original baseline; reject all configurations if eligibility fails. Export parity and separately frozen unused confirmation required after any selection.

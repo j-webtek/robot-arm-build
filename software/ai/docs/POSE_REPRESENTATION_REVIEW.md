@@ -111,3 +111,8 @@ The frozen4000-image evaluation on previously unused seeds30000000..30000999 fai
 Retain the original baseline and demo. This is a failed candidate with a working export, not a qualified localization model. No hardware activity, new fitting, uncertainty qualification or integration completion occurred.
 
 Data accounting:30000000..30000999 is now consumed evaluation data and must not be described as untouched again. The remaining30001000+ range has not been consumed by this evaluation. Before further model fitting, audit scene-group split integrity and training/development/evaluation coverage, and define model selection confined to grouped training splits. Keep all four condition variants of each seed together. The consumed evaluation may support diagnosis but must not become a repeatedly tuned validation gate. Any later confirmation requires a separately frozen unused range.
+
+
+## Scene grouping audit after failed fresh evaluation
+
+The three recent cohorts have no scene-ID overlap or exact cross-cohort image duplicates. Training covers123/125 pose bins;19/1000 consumed evaluation scenes occupy empty training bins. Nearest-training-pose distance p95 is similar for development and evaluation (0.227889 versus0.228354), so the audit does not identify a causal explanation. See GROUPED_MODEL_SELECTION.md for the five-fold training-only protocol. No fitting occurred. The frozen audit and initial endpoint-test failure remain preserved; a separate corrected helper reproduces all report bins and passes the exact endpoint test. Seven tests passed. The original baseline remains selected; no localization qualification or arm authority is added.

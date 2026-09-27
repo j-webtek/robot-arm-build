@@ -1,0 +1,9 @@
+{
+  "source_commit": "c0bd40e686af7ff437a1b882a7a119510d95e8bc",
+  "command": "python -m pytest -q software/ai/tests/test_scene_split_audit.py",
+  "result": "1 failed,6 passed in1.88s",
+  "failure": "Exact upper yaw support endpoint rounds above normalized1 and is rejected by frozen v0 pose_bins",
+  "impact": "Random cohort report completed; exact support endpoint helper defect found by regression test",
+  "hardware_writes": 0,
+  "physical_movements": 0
+}
