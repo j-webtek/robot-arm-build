@@ -8640,7 +8640,6 @@ commissioning, or bounded physical result with its limitations intact.
 - Supersedes: none.
 - Next dependency: Same as AI-346.
 
-
 ### E-20260927-AI-348 — obstruction-risk snapshot review
 
 - Stage: S1
@@ -8655,4 +8654,3 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic repository review; not model, runtime, or physical assurance. No arm or integration status changes.
 - Supersedes: none.
 - Next dependency: Same as AI-346.
-
