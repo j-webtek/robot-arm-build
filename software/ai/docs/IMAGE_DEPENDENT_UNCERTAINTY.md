@@ -350,3 +350,27 @@ such as landmark visibility and per-landmark residual or confidence, rather
 than another global probability transform. Any such feature must use new
 training-selection cohorts and cannot install runtime authority without a later
 independent calibration and confirmation chain.
+
+## Frozen localized geometric ranking
+
+Three localized scores were evaluated without fitting on 1,000 new 51M scenes:
+maximum pose-to-landmark corner residual, the same residual weighted by each
+corner's predicted visibility, and a fixed fusion with ensemble disagreement.
+All inputs came from frozen image models. No truth pose, geometric occlusion
+mask, or condition label entered a score.
+
+No localized score passed. Ensemble disagreement produced grouped scene AUROC
+0.681113 with failure rates 5.6% and 6.2% in its lowest-risk 25% and 50%.
+Maximum corner residual produced AUROC 0.566975; visibility weighting improved
+it to 0.599522. The fixed fusion reached only 0.637970, with lowest-quartile and
+lowest-half failure rates of 4.8% and 8.4%. Although its partial-obstruction
+image AUROC was 0.812289, full-obstruction image AUROC was 0.649021 and did not
+improve the disagreement baseline of 0.659727.
+
+This rejects using the existing landmark model as an external uncertainty
+probe for the pose estimator. Its spatial outputs were trained for keyboard
+corner geometry, not for the pose model's localization error, and their errors
+are not sufficiently coupled. The next bounded direction should train a compact
+image-conditioned error or heteroscedastic head against held-out pose residuals,
+with scene-grouped training and selection populations. Its uncertainty output
+must remain research-only until independent calibration and confirmation pass.

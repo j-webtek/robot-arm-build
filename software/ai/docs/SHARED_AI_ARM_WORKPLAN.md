@@ -599,10 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-- AI lane / S1: evaluate frozen per-corner visibility and pose-to-landmark
-  residual features against ensemble disagreement on new 51M grouped scenes;
-  no fitting, calibration, runtime, contract, or arm changes.
-
 
 
 
@@ -8738,3 +8734,48 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic repository review before final ledger append; not model, runtime, or physical assurance. No arm or integration status changes.
 - Supersedes: none.
 - Next dependency: Same as AI-352.
+
+### E-20260927-AI-355 — localized geometric risk ranking
+
+- Stage: S1
+- Lane: AI
+- Commit: `e660c05d6c4541b890411df04f5b1537aabbc8bf` (features, fresh population, ranking metrics, checks, selection rule, source, plan, and claim frozen before inference; report, tests, interpretation, and claim removal committed in the successor)
+- Inputs/fixtures: Frozen landmark checkpoint SHA256 `356a4dec05c6c2194c6d31542fed0d7199d5e989eb4b7678888d1a01aa493281`; fresh scenes `51000000..51000999`, two styles, and four conditions for 8,000 images. Raw pixel SHA256 `78eb226f682e15ee919bcdfe9f94dd6f433cc765dd2ab621daea96d7cb8a4de1`; resized pixel SHA256 `80beb65f03adb51a6129847d46d1f043863e3b244af8071a82ce46c9e124bea1`; candidate/SILU/separable prediction SHA256 values `c20c6d6a366f43daa7be2679038ab3bf05ef80d6969c7551523ee89dded933ad`, `fba477f93f06cd3e28071e8c404fa5db78142d81e418c9a53566a7d5113c8cd2`, and `cfe265e2f3d286209d5fc65741231621a4375c1b1983c0340a8ba83abd4163b1`; landmark prediction SHA256 `3532161eb9afb5491b35c14aa7a66f2a67fd9d1d1d382998c897ee4acf230397`; plan SHA256 `2794f8875bc41f839c5502ff38bb8a4c60ac9aef5fa74f67b8dacd9bc6368e58`; report SHA256 `ebcf7005d784445d4056003c6c74dbc39048251e3cde551e8d13c8515badf718`.
+- Command: `python software/ai/vision/evaluate_localized_geometric_risk.py`
+- Result: FAIL fixed selection rule; no feature selected. Ensemble disagreement scene AUROC is `0.681112862`, with `109/1000` failed scenes and 5.6%/6.2% failure in its lowest-risk 25%/50%. Maximum corner residual AUROC is `0.566974536`; visibility-weighted residual is `0.599522236`; fixed fusion is `0.637969913`, with 4.8%/8.4% low-risk failure. Fusion partial/full image AUROC is `0.812288727`/`0.649020753`; full does not improve the disagreement baseline `0.659726797`. Every localized feature fails minimum scene AUROC, required improvement, and both low-risk reductions. Zero model or calibration fits and zero optimizer updates.
+- Artifacts: `vision/evaluate_localized_geometric_risk.py`; `eval/localized_geometric_risk_v1_plan.json`; `eval/localized_geometric_risk_v1_report.json`; `tests/test_localized_geometric_risk.py`; `docs/IMAGE_DEPENDENT_UNCERTAINTY.md`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Fresh grouped synthetic ranking evidence, but the landmark model is an older synthetic research model and its outputs are not calibrated confidence. Three millimetres is only a research label. No feature selection, metric calibration, runtime installation, physical-camera evidence, or motion authority. ModelMotionBatchV2 and arm/integration statuses are unchanged.
+- Supersedes: none; the global probability and earlier uncertainty failures remain preserved.
+- Next dependency: Train a compact image-conditioned error or heteroscedastic head directly against frozen pose residuals using new scene-grouped training and selection populations. Require fresh failure ranking before allocating independent metric calibration and confirmation evidence.
+
+### E-20260927-AI-356 — localized geometric risk verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `e660c05d6c4541b890411df04f5b1537aabbc8bf` (frozen ranking source; tests and documentation committed in the successor)
+- Inputs/fixtures: Same 8,000 fresh images, frozen pose and landmark models, four ranking scores, plan, and report as AI-355; exact hashes are recorded there and in the report.
+- Command: `python -m pytest -q software/ai/tests/test_localized_geometric_risk.py`
+- Result: PASS: 2 tests in 3.09s. Tests verify image/pose-derived corner features, frozen lineage, exact grouped population, complete ranking recounts, every selection check, deterministic no-selection outcome, and zero fitting, hardware, or physical authority.
+- Artifacts: `tests/test_localized_geometric_risk.py`; `eval/localized_geometric_risk_v1_report.json`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Existing pytest-asyncio configuration warning. Recount consistency only; no physical assurance. Contract unchanged, so shared boundary tests were not triggered.
+- Supersedes: none.
+- Next dependency: Same as AI-355.
+
+### E-20260927-AI-357 — localized geometric risk snapshot review
+
+- Stage: S1
+- Lane: AI
+- Commit: `e660c05d6c4541b890411df04f5b1537aabbc8bf` (frozen ranking source; final ledger append in successor)
+- Inputs/fixtures: Repository snapshot containing the frozen study, report, tests, interpretation, and shared ledger; exact hashes recorded in AI-355.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS: 6,295 paths, 952.0 MiB, 0 unresolved review findings, 14 reviewed synthetic fixtures.
+- Artifacts: localized ranking plan/report; verification test; uncertainty documentation; shared ledger.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic repository review before final ledger append; not model, runtime, or physical assurance. No arm or integration status changes.
+- Supersedes: none.
+- Next dependency: Same as AI-355.
