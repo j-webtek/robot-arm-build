@@ -33,7 +33,8 @@ when adding or substantially revising a page.
 
 The overview introduces the project, status summarizes dated capability evidence,
 and getting started is the reproducible first-run path. The shared AI/arm
-workplan below is the detailed engineering record, not a beginner setup guide.
+workplan below coordinates current engineering work; the separate evidence
+ledger preserves the detailed history. Neither is a beginner setup guide.
 
 ## AI and arm integration
 
@@ -46,7 +47,8 @@ still being developed.
 | --- | --- |
 | [Getting started](GETTING_STARTED.md) | First-time users: install, try text interpretation, and explore rehearsal |
 | [AI overview](../software/ai/README.md) | Readers exploring intent parsing and vision experiments |
-| [Shared AI/arm workplan](../software/ai/docs/SHARED_AI_ARM_WORKPLAN.md) | Contributors: stage ownership, dependencies and recorded test evidence |
+| [Shared AI/arm workplan](../software/ai/docs/SHARED_AI_ARM_WORKPLAN.md) | Contributors: current stages, ownership, dependencies and operating rules |
+| [AI/arm evidence ledger](../software/ai/docs/EVIDENCE_LEDGER.md) | Contributors and reviewers: append-only test results, limitations and dependencies |
 | [Evidence retention](EVIDENCE_RETENTION.md) | Contributors: what evidence belongs in Git and how larger artifacts are reviewed |
 | [Runtime implementation plan](../software/ai/docs/MODEL_COMMAND_RUNTIME_IMPLEMENTATION_PLAN.md) | Arm developers: planning, command handling and execution infrastructure |
 | [AI system baseline](../software/ai/docs/AI_SYSTEM_BASELINE_AND_IMPLEMENTATION_PLAN.md) | Research context and dated model-evaluation results |

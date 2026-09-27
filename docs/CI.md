@@ -56,7 +56,9 @@ The reporter reads package metadata without importing camera or serial backends.
 It does not include environment-variable dumps, pip configuration, installation
 URLs, or local paths. Optional packages appearing in a local report do not mean
 the portable tests exercised them. GitHub run retention applies; save the exact
-run link and relevant evidence in the shared workplan for a promotion decision.
+run link and relevant result in the
+[AI/arm evidence ledger](../software/ai/docs/EVIDENCE_LEDGER.md) for a promotion
+decision, and update the shared workplan only when stage status or ownership changes.
 
 ## Run locally from the repository root
 

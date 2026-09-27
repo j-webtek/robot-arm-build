@@ -24,9 +24,11 @@ as the initial accountable maintainer. It documents routing but does not
 manufacture independent approval; specialist owners can replace or join these
 entries after accepting responsibility.
 
-The [shared workplan](../software/ai/docs/SHARED_AI_ARM_WORKPLAN.md) remains the
-engineering evidence ledger. The public [status page](../PROJECT_STATUS.md)
-summarizes capabilities, not every experiment. Update both only when relevant;
+The [shared workplan](../software/ai/docs/SHARED_AI_ARM_WORKPLAN.md) coordinates
+current engineering stages and ownership. The separate
+[AI/arm evidence ledger](../software/ai/docs/EVIDENCE_LEDGER.md) preserves the
+append-only test history. The public [status page](../PROJECT_STATUS.md)
+summarizes capabilities, not every experiment. Update each only when relevant;
 keep historical results intact and date new claims.
 
 ## Keep public documentation current
@@ -37,7 +39,7 @@ the getting-started or contribution guide. Update the README only when the short
 overview or supported entry path changes. A tooling-only change can state why no
 capability update is needed instead of rewriting the status page.
 
-Record a reviewed source commit and the relevant shared-ledger evidence IDs.
+Record a reviewed source commit and the relevant evidence-ledger IDs.
 Keep the date and checkpoint explicit: a proposed branch is not merged capability,
 and a documentation edit is not a new physical verification. For a feature PR,
 identify the reviewed implementation commit and label the claim as pending merge

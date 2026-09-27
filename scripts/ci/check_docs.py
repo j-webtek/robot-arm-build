@@ -30,6 +30,7 @@ DOCS = (
     'software/ai/docs/README.md', 'assets/brand/README.md',
     'software/ai/docs/CONTRACT.md',
     'software/ai/docs/SHARED_AI_ARM_WORKPLAN.md',
+    'software/ai/docs/EVIDENCE_LEDGER.md',
     'software/docs/ARCHITECTURE.md',
     'docs/brand/BRAND_GUIDE.md', 'docs/brand/NAMING_REVIEW.md',
     'docs/brand/MIGRATION_PLAN.md',
@@ -50,6 +51,8 @@ PUBLIC_TITLES = {
     'docs/GLOSSARY.md': 'Tactevra glossary',
     'docs/DOCUMENTATION_STANDARD.md': 'Tactevra documentation standard',
     'software/ai/docs/CONTRACT.md': 'AI-to-Tactevra Runtime integration contract',
+    'software/ai/docs/SHARED_AI_ARM_WORKPLAN.md': 'Shared AI-to-arm workplan',
+    'software/ai/docs/EVIDENCE_LEDGER.md': 'Tactevra AI/arm evidence ledger',
     'software/docs/ARCHITECTURE.md': 'Tactevra Runtime software architecture',
 }
 
@@ -60,6 +63,14 @@ REQUIRED_PHRASES = {
     ),
     'docs/GLOSSARY.md': ('**Document status:** Current reference',),
     'docs/DOCUMENTATION_STANDARD.md': ('**Document status:** Current policy',),
+    'software/ai/docs/SHARED_AI_ARM_WORKPLAN.md': (
+        '**Status:** active coordination document',
+        '[Tactevra AI/arm evidence ledger](EVIDENCE_LEDGER.md)',
+    ),
+    'software/ai/docs/EVIDENCE_LEDGER.md': (
+        '**Document status:** Append-only evidence record',
+        'duplicate `E-20260926-INT-001` identifier',
+    ),
     'docs/releases/EXPERIMENTAL_PREVIEW_DRAFT.md': (
         '**Status:** Superseded preparation record; unpublished',
         'https://github.com/j-webtek/tactevra/issues/57',
