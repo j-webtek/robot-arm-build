@@ -16,6 +16,8 @@ EXPECTED_MEDIA = {
     "assets/media/tactevra-overview-poster.jpg",
     "assets/media/tactevra-overview.en.vtt",
 }
+PAGES_WORKFLOW = Path(".github/workflows/pages.yml")
+CONFIGURE_PAGES_V6_SHA = "45bfe0192ca1faeb007ade9deae92b16b8254a0d"
 
 
 def sha256(path: Path) -> str:
@@ -132,6 +134,26 @@ def status_errors(root: Path) -> list[str]:
     return errors
 
 
+def pages_workflow_errors(root: Path) -> list[str]:
+    """Keep the public deployment on the reviewed hosted/runtime baseline."""
+    path = root / PAGES_WORKFLOW
+    try:
+        workflow = path.read_text(encoding="utf-8")
+    except (OSError, UnicodeError) as exc:
+        return [f"{PAGES_WORKFLOW}: cannot read workflow: {exc}"]
+    errors: list[str] = []
+    if workflow.count("runs-on: ubuntu-24.04") != 2:
+        errors.append(f"{PAGES_WORKFLOW}: both jobs must use ubuntu-24.04")
+    if "runs-on: ubuntu-latest" in workflow:
+        errors.append(f"{PAGES_WORKFLOW}: ubuntu-latest is not an accepted Pages runner")
+    expected_action = f"actions/configure-pages@{CONFIGURE_PAGES_V6_SHA} # v6.0.0"
+    if workflow.count(expected_action) != 1:
+        errors.append(
+            f"{PAGES_WORKFLOW}: configure-pages must use the reviewed v6.0.0 SHA"
+        )
+    return errors
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -140,13 +162,14 @@ def main() -> int:
     )
     args = parser.parse_args()
     errors = media_errors(ROOT)
+    errors.extend(pages_workflow_errors(ROOT))
     if not args.media_only:
         errors.extend(status_errors(ROOT))
     if errors:
         for error in errors:
             print(f"ERROR: {error}")
         return 1
-    scope = "published media" if args.media_only else "public records"
+    scope = "published media and Pages runtime" if args.media_only else "public records"
     print(f"PASS: {scope} identities and freshness checks")
     return 0
 
