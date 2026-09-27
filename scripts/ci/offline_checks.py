@@ -19,6 +19,7 @@ TESTS = (
     'software/tests/unit/test_phase_local_contact_envelope_gate.py',
     'software/tests/unit/test_single_action_execution_review_v1.py',
     'software/tests/unit/test_reviewed_motion_permit_bridge_v1.py',
+    'software/tests/unit/test_reviewed_motion_sole_writer_v1.py',
     'software/tests/unit/test_model_motion_sequence_coordinator.py',
     'software/tests/unit/test_zero_write_waveshare_adapter_v1.py',
     'software/tests/unit/test_zero_write_sole_writer_v1.py',

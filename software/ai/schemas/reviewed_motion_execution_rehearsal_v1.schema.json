@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rocell.local/schemas/reviewed_motion_execution_rehearsal_v1.schema.json",
+  "title": "RoCell reviewed motion execution rehearsal v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "status", "permit_binding_sha256", "dispatch",
+    "settlement", "lifecycle", "automatic_retry_allowed",
+    "follow_on_movement_authorized", "hardware_access", "physical_authority",
+    "physical_command_writes", "limitations", "execution_sha256"],
+  "properties": {
+    "schema": {"const": "rocell.reviewed_motion_execution_rehearsal.v1"},
+    "status": {"enum": ["COMPLETED", "FAILED", "UNCERTAIN"]},
+    "permit_binding_sha256": {"$ref": "#/$defs/hash"},
+    "dispatch": {"type": "object"},
+    "settlement": {"oneOf": [{"type": "null"}, {"type": "object"}]},
+    "lifecycle": {"type": "object"},
+    "automatic_retry_allowed": {"const": false},
+    "follow_on_movement_authorized": {"const": false},
+    "hardware_access": {"const": false},
+    "physical_authority": {"const": false},
+    "physical_command_writes": {"const": 0},
+    "limitations": {"const": ["HARDWARE_INCAPABLE_REPLAY",
+      "NO_AUTHENTIC_CONTROLLER_RECEIPT", "NO_INDEPENDENT_TASK_OUTCOME"]},
+    "execution_sha256": {"$ref": "#/$defs/hash"}
+  },
+  "$defs": {"hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}
+}

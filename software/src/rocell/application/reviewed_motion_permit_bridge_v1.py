@@ -29,6 +29,7 @@ from .single_action_execution_review_v1 import SingleActionExecutionReviewV1
 ADMISSION_SCHEMA = "rocell.reviewed_motion_permit_admission.v1"
 LIFECYCLE_SCHEMA = "rocell.reviewed_action_lifecycle.v1"
 _SHA256 = re.compile(r"^[0-9a-f]{64}$")
+_DISPATCH_RECEIPT_ISSUER = object()
 
 
 class ReviewedMotionPermitBridgeError(ValueError):
@@ -121,6 +122,103 @@ class ReviewedMotionPermitAdmissionV1:
             "hardware_access": False,
             "physical_authority": True,
         }
+
+
+class ReviewedMotionDispatchReceiptV1:
+    """Opaque verified receipt issued only by the owned writer boundary."""
+
+    def __init__(self, document: Mapping[str, Any], *, _issuer: object) -> None:
+        if _issuer is not _DISPATCH_RECEIPT_ISSUER:
+            raise ReviewedMotionPermitBridgeError(
+                "dispatch receipts may only be issued by the sole writer")
+        if not isinstance(document, Mapping):
+            raise ReviewedMotionPermitBridgeError("dispatch receipt must be a mapping")
+        copy = dict(document)
+        required = {
+            "schema", "status", "review_sha256", "permit_binding_sha256",
+            "goal_sha256", "payload_sha256", "payload_bytes",
+            "confirmed_bytes", "retained_bytes_sha256", "write_attempts",
+            "permit_consumed", "dispatched_monotonic_ns", "error_code",
+            "composition", "automatic_retry_allowed", "hardware_access",
+            "physical_authority", "physical_command_writes",
+            "dispatch_receipt_sha256",
+        }
+        if set(copy) != required:
+            raise ReviewedMotionPermitBridgeError(
+                "dispatch receipt fields are not exact")
+        _verified_hash(copy, "dispatch_receipt_sha256")
+        for field in (
+            "review_sha256", "permit_binding_sha256", "goal_sha256",
+            "payload_sha256", "retained_bytes_sha256",
+        ):
+            _digest(copy.get(field), field)
+        payload_bytes = copy.get("payload_bytes")
+        confirmed_bytes = copy.get("confirmed_bytes")
+        if (
+            isinstance(payload_bytes, bool) or not isinstance(payload_bytes, int)
+            or payload_bytes <= 0
+            or not (
+                confirmed_bytes is None
+                or (
+                    not isinstance(confirmed_bytes, bool)
+                    and isinstance(confirmed_bytes, int)
+                    and 0 <= confirmed_bytes <= payload_bytes
+                )
+            )
+            or not (
+                copy.get("error_code") is None
+                or (
+                    isinstance(copy.get("error_code"), str)
+                    and bool(copy.get("error_code"))
+                )
+            )
+        ):
+            raise ReviewedMotionPermitBridgeError(
+                "dispatch receipt byte accounting is invalid")
+        status = copy.get("status")
+        error_code = copy.get("error_code")
+        status_matches_bytes = (
+            (status == "REPLAY_WRITE_CONFIRMED"
+             and confirmed_bytes == payload_bytes and error_code is None)
+            or (status == "ZERO_WRITE_CONFIRMED"
+                and confirmed_bytes == 0 and error_code is None)
+            or (status == "PARTIAL_WRITE_CONFIRMED"
+                and isinstance(confirmed_bytes, int)
+                and 0 < confirmed_bytes < payload_bytes and error_code is None)
+            or (status == "WRITE_COMPLETION_UNCERTAIN"
+                and confirmed_bytes is None and error_code is not None)
+        )
+        if not status_matches_bytes:
+            raise ReviewedMotionPermitBridgeError(
+                "dispatch receipt status does not match byte accounting")
+        if (
+            copy.get("schema") != "rocell.reviewed_motion_dispatch_receipt.v1"
+            or copy.get("status") not in {
+                "REPLAY_WRITE_CONFIRMED", "ZERO_WRITE_CONFIRMED",
+                "PARTIAL_WRITE_CONFIRMED", "WRITE_COMPLETION_UNCERTAIN",
+            }
+            or copy.get("write_attempts") != 1
+            or copy.get("permit_consumed") is not True
+            or copy.get("composition") != "HARDWARE_INCAPABLE_REPLAY"
+            or copy.get("automatic_retry_allowed") is not False
+            or copy.get("hardware_access") is not False
+            or copy.get("physical_authority") is not False
+            or copy.get("physical_command_writes") != 0
+        ):
+            raise ReviewedMotionPermitBridgeError(
+                "dispatch receipt authority or status is invalid")
+        _positive_ns(copy.get("dispatched_monotonic_ns"),
+                     "dispatched_monotonic_ns")
+        self._document = copy
+
+    @classmethod
+    def _issue_from_owned_writer(
+        cls, document: Mapping[str, Any],
+    ) -> "ReviewedMotionDispatchReceiptV1":
+        return cls(document, _issuer=_DISPATCH_RECEIPT_ISSUER)
+
+    def to_dict(self) -> dict[str, Any]:
+        return dict(self._document)
 
 
 def issue_reviewed_motion_permit_v1(
@@ -232,14 +330,43 @@ class ReviewedActionLifecycleV1:
         self._events.append(sealed)
         return sealed
 
-    def started(self, *, goal_sha256: str, event_monotonic_ns: int) -> dict[str, Any]:
-        digest = _digest(goal_sha256, "goal_sha256")
+    def started_from_dispatch(
+        self, dispatch_receipt: ReviewedMotionDispatchReceiptV1, *,
+        event_monotonic_ns: int,
+    ) -> dict[str, Any]:
+        """Accept STARTED only from a sealed final-boundary dispatch receipt.
+
+        ARM-047 allowed a caller to supply only a goal digest.  That was useful
+        for defining the lifecycle, but it was not evidence that the permit had
+        actually been consumed at a writer boundary.  ARM-048 requires the
+        complete content-addressed receipt emitted by the sole-writer rehearsal.
+        """
+
+        if type(dispatch_receipt) is not ReviewedMotionDispatchReceiptV1:
+            raise ReviewedMotionPermitBridgeError(
+                "dispatch_receipt must be a verified sole-writer receipt")
+        document = dispatch_receipt.to_dict()
+        receipt_sha256 = _verified_hash(
+            document, "dispatch_receipt_sha256")
+        digest = _digest(document.get("goal_sha256"), "goal_sha256")
         now = _positive_ns(event_monotonic_ns, "event_monotonic_ns")
         with self._lock:
-            if self._phase != "ACCEPTED" or digest not in self._admission.ordered_goal_sha256:
+            if (
+                self._phase != "ACCEPTED"
+                or digest not in self._admission.ordered_goal_sha256
+                or document.get("schema")
+                != "rocell.reviewed_motion_dispatch_receipt.v1"
+                or document.get("permit_binding_sha256")
+                != self._admission.permit_binding_sha256
+                or document.get("review_sha256")
+                != self._admission.review_sha256
+                or document.get("permit_consumed") is not True
+                or document.get("write_attempts") != 1
+                or document.get("automatic_retry_allowed") is not False
+            ):
                 raise ReviewedMotionPermitBridgeError("invalid STARTED acknowledgement")
             self._phase = "STARTED"
-            return self._append("STARTED", now, digest)
+            return self._append("STARTED", now, receipt_sha256)
 
     def terminal(
         self, phase: str, *, detail_sha256: str, event_monotonic_ns: int,
@@ -269,6 +396,7 @@ class ReviewedActionLifecycleV1:
 
 __all__ = [
     "ADMISSION_SCHEMA", "LIFECYCLE_SCHEMA", "ReviewedActionLifecycleV1",
+    "ReviewedMotionDispatchReceiptV1",
     "ReviewedMotionPermitAdmissionV1", "ReviewedMotionPermitBridgeError",
     "issue_reviewed_motion_permit_v1",
 ]

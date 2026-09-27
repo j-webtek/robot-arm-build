@@ -3070,3 +3070,49 @@ commissioning, or bounded physical result with its limitations intact.
   writable adapter so permit consumption occurs at the final outbound boundary,
   then bind controller receipt, feedback/settling, and independent outcome
   evidence without adding any retry path.
+
+### E-20260926-ARM-048 — sole-writer dispatch and settling rehearsal
+
+- Stage: S4
+- Lane: ARM
+- Change: replaced caller-authored lifecycle start acknowledgements with a
+  hash-verified dispatch receipt emitted after the supervisor permit is consumed
+  at one exact encoded write boundary. Added a single-owner, single-use,
+  hardware-incapable writer rehearsal and closed dispatch, settlement, and
+  execution schemas.
+- Runtime behavior: validates exact admission/permit/goal identity, encodes
+  before consuming authority, performs exactly one write attempt, records
+  payload and retained-byte hashes, and requires fresh ordered consecutive
+  T=1051 pose samples inside explicit position/angle tolerances for a completed
+  motion lifecycle. Zero write is `FAILED`; partial write, disconnect after
+  write, stale/missing/invalid feedback, or unsettled arrival is `UNCERTAIN`.
+- Retry behavior: all dispatch outcomes consume the claimed session and permit;
+  every terminal explicitly denies retry and follow-on movement.
+- Artifacts: `reviewed_motion_sole_writer_v1.py`, three closed v1 schemas,
+  dispatch-receipt lifecycle binding, fault/settling/expiry/cross-binding tests,
+  public exports, and portable CI selection.
+- Artifact identity: writer and lifecycle-bridge implementation SHA-256 values
+  `64510f6bfbadd42f9cb5da7f0b91cadc15e249124664a75effe19701dd894c1c`
+  and `1fb9ae620c7718d0d534c2fcfff30aada94c1ee557860a2bdb4efe50db35a7d3`;
+  dispatch, settlement, and execution schema SHA-256 values
+  `821a626407bb3f255cc734a54c534d8a7409f982478bb9bfb726b3760b8fe12b`,
+  `c4f528699cacd3fc2876e1bc032777f42c41573a592f8c37004d32b29e60d824`,
+  and `6121e860323981dad22bd8155042bc6746355127ef68415a752d0c71bff41056`.
+- Results: focused ARM-047/048 suite PASS, 14 tests; portable shared AI/arm
+  selection PASS, 224 tests in 32.22 seconds; documentation checks PASS, 26
+  self-tests; compile and diff checks PASS.
+- Evidence status: deterministic in-memory evidence only. The I/O fixture has
+  no port, serial factory, callback, socket, or device handle.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: no authentic controller receipt, native transport write,
+  independently acquired feedback, or independent keyboard/phone outcome is
+  claimed. A settled replay proves only the arm-side state machine and evidence
+  contract.
+- Supersedes: ARM-047's caller-supplied lifecycle start seam. It does not
+  supersede native writer enablement or physical qualification.
+- Next dependency: bind the qualified receipt semantics to the separately
+  reviewed native sole-writer boundary, correlate independently acquired fresh
+  feedback, and require independent task-outcome evidence before advancing an
+  ordered model sequence. Native enablement requires its own explicit physical
+  authorization and evidence review.

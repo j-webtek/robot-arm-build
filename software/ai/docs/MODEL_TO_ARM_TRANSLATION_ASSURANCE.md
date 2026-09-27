@@ -272,6 +272,18 @@ completed, failed, and uncertain outcomes. Failure and uncertainty are terminal
 and never imply retry or follow-on movement. Native writer and feedback binding
 remain separate work.
 
+ARM-048 now replaces the caller-authored `STARTED` acknowledgement with a
+content-addressed dispatch receipt.  The hardware-incapable sole-writer
+rehearsal consumes the exact supervisor permit immediately before one encoded
+write attempt, records payload identity and confirmed byte count, and evaluates
+ordered post-dispatch T=1051 samples against explicit arrival and settling
+tolerances.  Zero writes fail; partial or completion-uncertain writes and stale,
+missing, malformed, or unsettled feedback terminate as `UNCERTAIN`.  No path
+retries or authorizes follow-on movement.  This qualifies the execution
+semantics only: the implementation has no serial factory, port, callback,
+socket, or device handle and therefore claims neither an authentic controller
+receipt nor independent task outcome.
+
 The S4 synthetic integration lane now proves the downstream identity plumbing
 without relaxing that physical gate. A typed assessor requires the exact
 synthetic r97 review decision and eight-component configuration epoch, the model
