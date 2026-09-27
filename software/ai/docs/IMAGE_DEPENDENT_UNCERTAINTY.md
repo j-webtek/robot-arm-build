@@ -257,3 +257,26 @@ to compare a small preregistered family of monotonic disagreement mappings that
 can separate the lowest-risk images more sharply, with special attention to
 partial obstruction. Only a mapping selected without these consumed rows may
 enter another independently frozen calibration and confirmation chain.
+
+## Monotonic mapping selection
+
+Five preregistered mappings raised the floored ensemble disagreement to powers
+1.0, 1.25, 1.5, 1.75, and 2.0. Each mapping used the same 1,000 new 41M scenes
+for a rank-991 quantile and the same disjoint 1,000-scene 42M cohort for its
+training-only selection decision. The 39M and 40M rows were excluded.
+
+No mapping passed. The linear mapping had the strongest near-pass: 99.2% scene
+coverage, 935/8,000 accepted images (11.6875%), and 926/935 accepted-image
+coverage (99.0374%). It still accepted six images above 3 mm, missed the 99%
+accepted-scene requirement at 295/298 (98.9933%), and failed conditional image
+coverage for partial and full obstruction. Powers 1.25 through 2.0 retained
+9.625% to 11.35% utility but worsened accepted-subset coverage; every mapping
+accepted the same six above-tolerance failures.
+
+This closes scalar monotonic remapping of the present disagreement signal. A
+monotonic transform cannot repair the ordering of low-disagreement obstruction
+failures. The next uncertainty feature must add a deployable obstruction-
+sensitive observable rather than another scalar transform. It should be trained
+and evaluated only on new grouped training-selection evidence and must improve
+partial/full accepted-subset ranking before another calibration pair is
+allocated.

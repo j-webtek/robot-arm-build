@@ -599,11 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-- AI lane / S1: compare five preregistered monotonic ensemble-disagreement
-  mappings on new 41M mapping-calibration and disjoint 42M selection cohorts,
-  using unchanged coverage, 3 mm, and utility rules; no runtime, contract, or
-  arm changes.
-
 
 
 
@@ -8564,3 +8559,51 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic repository review before final ledger append; not model, runtime, or physical assurance. No arm or integration status changes.
 - Supersedes: none.
 - Next dependency: Same as AI-340.
+
+
+### E-20260927-AI-343 — monotonic ensemble-scale mapping selection
+
+- Stage: S1
+- Lane: AI
+- Commit: `348f519ae5fe18d270ba578e07fb3b3b5eecc1b2` (mapping family, two populations, quantile, checks, winner rule, source, and plan frozen before rendering or inference; report, tests, and documentation committed in the successor)
+- Inputs/fixtures: Fixed powers `1.0, 1.25, 1.5, 1.75, 2.0`; mapping-calibration scenes `41000000..41000999` and disjoint selection scenes `42000000..42000999`, each with two styles and four conditions for 8,000 images. Mapping-calibration pixel SHA256 `cf94d0380a8765a27bbb0fbaae886da448191546a131d0d8046ba32cec1fb9f5`; selection pixel SHA256 `eacfbd41068cf380f26570f70a669168b1662ee715df3ccd337988adca5e01c1`; failed confirmation report SHA256 `401813be12e9c5fece909f70d04825c63cb62dd9fc46d167b613bc07cd6c7f0f`; plan SHA256 `afe4e0ce83827bae568ce17a99cba13a6728e0592ab403538deedad0fe17eb47`; report SHA256 `be52be07051648b7d0fdafb243a9690add5524f4b90ffd800df2763bb26a5042`. Model prediction hashes for both cohorts are retained in the report.
+- Command: `python software/ai/train/select_ensemble_scale_mapping.py`
+- Result: FAIL fixed selection rule; no mapping selected. The linear mapping has 99.2% scene coverage and `935/8000` accepted images (11.6875%), but accepts six images above 3 mm, accepted-scene coverage is `295/298` (98.9933%), and partial/full conditional image coverage fails. Powers 1.25, 1.5, 1.75, and 2.0 accept 11.35%, 10.1875%, 11.1875%, and 9.625%; each accepts the same six above-tolerance errors and fails accepted-subset coverage. Powers 1.75 and 2.0 also fail marginal scene coverage. Five quantile calibrations, zero model fits or optimizer updates.
+- Artifacts: `train/select_ensemble_scale_mapping.py`; `train/ensemble_scale_mapping_v1_plan.json`; `eval/ensemble_scale_mapping_v1_report.json`; `tests/test_ensemble_scale_mapping.py`; `docs/IMAGE_DEPENDENT_UNCERTAINTY.md`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Training-only synthetic mapping selection using shared cohorts across five preregistered candidates. No selected map, fresh calibration, confirmation, runtime threshold, physical-camera evidence, or motion authority. ModelMotionBatchV2 and arm/integration statuses are unchanged.
+- Supersedes: none; failed ensemble calibration and earlier failures remain preserved.
+- Next dependency: Stop scalar monotonic remapping of current disagreement. Add a deployable obstruction-sensitive observable and require improved partial/full accepted-subset ranking on new grouped training-selection evidence before another calibration allocation.
+
+
+### E-20260927-AI-344 — monotonic mapping verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `348f519ae5fe18d270ba578e07fb3b3b5eecc1b2` (frozen selection source; tests and documentation committed in the successor)
+- Inputs/fixtures: Same 16,000 images, five mappings, frozen models, plan, and report as AI-343; exact hashes are recorded there and in the report.
+- Command: `python -m pytest -q software/ai/tests/test_ensemble_scale_mapping.py`
+- Result: PASS: 2 tests in 2.57s. Tests verify monotonic power/floor behavior, frozen lineage, exact grouped populations, every rank-991 quantile, overall and per-condition summaries and checks for all five mappings, deterministic no-selection outcome, and zero model, hardware, or physical authority.
+- Artifacts: `tests/test_ensemble_scale_mapping.py`; `eval/ensemble_scale_mapping_v1_report.json`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Existing pytest-asyncio configuration warning. Verification establishes recount consistency, not physical safety. Contract unchanged, so shared boundary tests were not triggered.
+- Supersedes: none.
+- Next dependency: Same as AI-343.
+
+
+### E-20260927-AI-345 — monotonic mapping snapshot review
+
+- Stage: S1
+- Lane: AI
+- Commit: `348f519ae5fe18d270ba578e07fb3b3b5eecc1b2` (frozen selection source; final ledger append in successor)
+- Inputs/fixtures: Repository snapshot containing the frozen mapping study, generated report, tests, and interpretation; exact hashes recorded in AI-343.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS: 6,276 paths, 929.5 MiB, 0 unresolved review findings, 14 reviewed synthetic fixtures.
+- Artifacts: mapping plan/report; verification test; uncertainty documentation; shared evidence ledger.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic repository review before final ledger append; not model, runtime, or physical assurance. No arm or integration status changes.
+- Supersedes: none.
+- Next dependency: Same as AI-343.
