@@ -599,6 +599,10 @@ Copy this row and fill every field:
 
 ## Active work claims
 
+- AI lane / S1: select once among four preregistered two-level mappings for the
+  frozen tail-risk head on new 56M mapping-calibration and 57M selection scenes;
+  no model training, runtime, contract, or arm changes.
+
 
 
 
