@@ -61,7 +61,7 @@ are tracked separately.
 | Understand what works and what comes next | [Project status](PROJECT_STATUS.md) |
 | Set up the code and contribute | [Developer setup](CONTRIBUTING.md) |
 | Explore the local interface | [Wizard workbench guide](software/docs/WIZARD_WORKBENCH.md) |
-| Build the physical workcell | [Step-by-step assembly guide](active-project/RoCell_v0_3/BUILD_BY_STEP/README.md) |
+| Build the physical workcell | [Hardware build guide](docs/HARDWARE_BUILD_GUIDE.md) |
 | Find architecture, test results, or procedures | [Documentation guide](docs/README.md) |
 | Decode project terminology | [Glossary](docs/GLOSSARY.md) |
 

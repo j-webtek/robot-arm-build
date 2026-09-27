@@ -16,6 +16,7 @@ DOCS = (
     'CODE_OF_CONDUCT.md',
     'docs/README.md', 'docs/GETTING_STARTED.md', 'docs/RELEASING.md',
     'docs/SYSTEM_OVERVIEW.md', 'docs/GLOSSARY.md',
+    'docs/HARDWARE_BUILD_GUIDE.md',
     'docs/DOCUMENTATION_STANDARD.md',
     'docs/EVIDENCE_RETENTION.md',
     'docs/releases/EXPERIMENTAL_PREVIEW_DRAFT.md',
@@ -50,6 +51,7 @@ PUBLIC_TITLES = {
     'docs/GETTING_STARTED.md': 'Getting started with Tactevra',
     'docs/SYSTEM_OVERVIEW.md': 'Tactevra system overview',
     'docs/GLOSSARY.md': 'Tactevra glossary',
+    'docs/HARDWARE_BUILD_GUIDE.md': 'Building the Tactevra RC03 workcell',
     'docs/DOCUMENTATION_STANDARD.md': 'Tactevra documentation standard',
     'software/README.md': 'Tactevra Runtime',
     'software/RUNTIME_IMPLEMENTATION_HISTORY.md': 'Tactevra Runtime implementation history',
@@ -66,6 +68,11 @@ REQUIRED_PHRASES = {
         '**Authority:** Explanatory; it does not authorize hardware operation',
     ),
     'docs/GLOSSARY.md': ('**Document status:** Current reference',),
+    'docs/HARDWARE_BUILD_GUIDE.md': (
+        '**Document status:** Current builder guide',
+        '**Authority:** Explanatory; controlled RC03 records determine print and build eligibility',
+        '| Powered robot motion | **Not authorized** |',
+    ),
     'docs/DOCUMENTATION_STANDARD.md': ('**Document status:** Current policy',),
     'software/RUNTIME_IMPLEMENTATION_HISTORY.md': (
         '**Document status:** Historical evidence index',
@@ -101,12 +108,14 @@ PUBLIC_ROUTES = {
     'README.md': (
         ('docs/GETTING_STARTED.md#install-the-software', 'Install the software'),
         ('docs/SYSTEM_OVERVIEW.md', None),
+        ('docs/HARDWARE_BUILD_GUIDE.md', None),
         ('PROJECT_STATUS.md', None), ('docs/README.md', None),
         ('SUPPORT.md', None), ('SECURITY.md', None),
     ),
     'docs/README.md': (
         ('GETTING_STARTED.md', None), ('../PROJECT_STATUS.md', None),
         ('SYSTEM_OVERVIEW.md', None), ('GLOSSARY.md', None),
+        ('HARDWARE_BUILD_GUIDE.md', None),
         ('../SUPPORT.md', None), ('../CONTRIBUTING.md', None),
         ('../SECURITY.md', None), ('../CODE_OF_CONDUCT.md', None),
     ),
@@ -117,6 +126,15 @@ PUBLIC_ROUTES = {
     ),
     'docs/GETTING_STARTED.md': (
         ('../PROJECT_STATUS.md', None), ('../CONTRIBUTING.md', None),
+    ),
+    'docs/HARDWARE_BUILD_GUIDE.md': (
+        ('../PROJECT_STATUS.md', None), ('../SUPPORT.md', None),
+        ('../CONTRIBUTING.md', None),
+        ('../active-project/RoCell_v0_3/README_FIRST.md', None),
+        ('../active-project/RoCell_v0_3/PRINT_READINESS.md', None),
+        ('../active-project/RoCell_v0_3/PREHARDWARE_READINESS.md', None),
+        ('../active-project/RoCell_v0_3/BUILD_TRACKER.md', None),
+        ('../active-project/RoCell_v0_3/BUILD_BY_STEP/README.md', None),
     ),
 }
 

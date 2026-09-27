@@ -14,14 +14,14 @@ implementation details or evidence for a specific part of the system.
 | Understand capabilities and limitations | [Project status](../PROJECT_STATUS.md) |
 | Get help or report unclear guidance | [Support](../SUPPORT.md) |
 | Contribute code or documentation | [Contributing](../CONTRIBUTING.md) |
-| Explore physical build resources | [RC03 introduction](../active-project/RoCell_v0_3/README_FIRST.md) and [print readiness](../active-project/RoCell_v0_3/PRINT_READINESS.md) |
+| Explore physical build resources | [Hardware build guide](HARDWARE_BUILD_GUIDE.md) |
 
 ## Choose by role
 
 | Role | Primary path |
 | --- | --- |
 | User or evaluator | [Getting started](GETTING_STARTED.md) → [system overview](SYSTEM_OVERVIEW.md) → [project status](../PROJECT_STATUS.md) |
-| Hardware builder | [RC03 introduction](../active-project/RoCell_v0_3/README_FIRST.md) → [assembly steps](../active-project/RoCell_v0_3/BUILD_BY_STEP/README.md) → [print readiness](../active-project/RoCell_v0_3/PRINT_READINESS.md) |
+| Hardware builder | [Hardware build guide](HARDWARE_BUILD_GUIDE.md) → [print readiness](../active-project/RoCell_v0_3/PRINT_READINESS.md) → [assembly steps](../active-project/RoCell_v0_3/BUILD_BY_STEP/README.md) |
 | Software contributor | [Contributing](../CONTRIBUTING.md) → [software reference](../software/README.md) → [architecture](../software/docs/ARCHITECTURE.md) |
 | AI contributor | [AI overview](../software/ai/README.md) → [AI documentation](../software/ai/docs/README.md) → [shared workplan](../software/ai/docs/SHARED_AI_ARM_WORKPLAN.md) |
 | Arm/runtime contributor | [System overview](SYSTEM_OVERVIEW.md) → [architecture](../software/docs/ARCHITECTURE.md) → [shared workplan](../software/ai/docs/SHARED_AI_ARM_WORKPLAN.md) |
@@ -97,6 +97,8 @@ distinguishes these kinds of evidence.
 
 ## Hardware and camera
 
+- [Hardware build guide](HARDWARE_BUILD_GUIDE.md): current release position,
+  status vocabulary, and the controlled path for builders.
 - [RC03 package introduction](../active-project/RoCell_v0_3/README_FIRST.md)
   and [assembly steps](../active-project/RoCell_v0_3/BUILD_BY_STEP/README.md).
 - [Print readiness](../active-project/RoCell_v0_3/PRINT_READINESS.md): which
