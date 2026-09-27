@@ -1402,7 +1402,13 @@ def publish_homepage_media() -> None:
         [
             ffmpeg, "-y", "-i", str(source), "-i", str(captions),
             "-map", "0:v:0", "-map", "0:a:0", "-map", "1:0",
-            "-c:v", "copy", "-c:a", "copy", "-c:s", "mov_text",
+            # Keep the repository delivery below the ordinary 10 MiB review
+            # ceiling even when a detailed vendor surface raises scene entropy.
+            # The higher-bitrate 1080p master remains available in ignored tmp/.
+            "-vf", "scale=1600:-2", "-c:v", "libx264", "-preset", "slow",
+            "-crf", "24", "-maxrate", "1800k", "-bufsize", "3600k",
+            "-c:a", "aac", "-b:a", "128k", "-ar", "48000",
+            "-c:s", "mov_text",
             "-metadata:s:s:0", "language=eng",
             "-metadata:s:s:0", "title=English",
             "-disposition:s:0", "0", "-movflags", "+faststart",
