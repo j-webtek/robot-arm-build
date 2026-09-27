@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rocell.local/schemas/native_t102_owner_ai_review_acceptance_v1.schema.json",
+  "title": "RoCell owner acceptance of ARM-054 AI technical review v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "status", "acceptance_id", "owner_id", "accepted_utc",
+    "source_review_file_sha256", "source_review_content_sha256",
+    "source_review_id", "reviewed_packet_sha256",
+    "reviewed_manifest_sha256", "reviewed_candidate_commit",
+    "reviewed_adapter_source_sha256", "technical_disposition",
+    "provenance_caveat", "human_review_claimed",
+    "external_independence_claimed", "owner_governance_override",
+    "ready_for_read_only_endpoint_qualification_intake",
+    "endpoint_open_authorized", "controller_start_authorized",
+    "transport_write_authorized", "execution_authorized", "hardware_access",
+    "physical_authority", "acceptance_sha256"
+  ],
+  "properties": {
+    "schema": {"const": "rocell.native_t102_owner_ai_review_acceptance.v1"},
+    "status": {"const": "OWNER_ACCEPTED_AI_REVIEW_WITH_CAVEAT"},
+    "acceptance_id": {"$ref": "#/$defs/id"},
+    "owner_id": {"$ref": "#/$defs/id"},
+    "accepted_utc": {"$ref": "#/$defs/utc"},
+    "source_review_file_sha256": {"$ref": "#/$defs/sha256"},
+    "source_review_content_sha256": {"$ref": "#/$defs/sha256"},
+    "source_review_id": {"$ref": "#/$defs/id"},
+    "reviewed_packet_sha256": {"$ref": "#/$defs/sha256"},
+    "reviewed_manifest_sha256": {"$ref": "#/$defs/sha256"},
+    "reviewed_candidate_commit": {
+      "type": "string", "pattern": "^[0-9a-f]{40}$"
+    },
+    "reviewed_adapter_source_sha256": {"$ref": "#/$defs/sha256"},
+    "technical_disposition": {"const": "PASS_OFFLINE_REVIEW_SCOPE"},
+    "provenance_caveat": {"const": "BLOCKED_EXTERNAL_INDEPENDENCE_REQUIRED"},
+    "human_review_claimed": {"const": false},
+    "external_independence_claimed": {"const": false},
+    "owner_governance_override": {"const": true},
+    "ready_for_read_only_endpoint_qualification_intake": {"const": true},
+    "endpoint_open_authorized": {"const": false},
+    "controller_start_authorized": {"const": false},
+    "transport_write_authorized": {"const": false},
+    "execution_authorized": {"const": false},
+    "hardware_access": {"const": false},
+    "physical_authority": {"const": false},
+    "acceptance_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "id": {
+      "type": "string", "minLength": 1, "maxLength": 192,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:@/-]*$"
+    },
+    "utc": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$"
+    }
+  }
+}

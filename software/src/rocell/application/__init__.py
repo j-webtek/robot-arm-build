@@ -444,6 +444,12 @@ from .native_t102_adapter_review_decision_v1 import (
     build_synthetic_native_t102_adapter_review_rehearsal_v1,
     parse_native_t102_adapter_review_decision_v1,
 )
+from .native_t102_owner_ai_review_acceptance_v1 import (
+    SCHEMA as NATIVE_T102_OWNER_AI_REVIEW_ACCEPTANCE_SCHEMA,
+    NativeT102OwnerAIReviewAcceptanceError,
+    NativeT102OwnerAIReviewAcceptanceV1,
+    accept_native_t102_internal_ai_review_v1,
+)
 from .zero_write_waveshare_adapter_v1 import (
     GRIPPER_BEHAVIOR as ZERO_WRITE_GRIPPER_BEHAVIOR,
     INTERPOLATION_MODE as ZERO_WRITE_INTERPOLATION_MODE,
@@ -1400,6 +1406,10 @@ __all__ = [
     "assess_native_t102_adapter_review_decision_v1",
     "build_synthetic_native_t102_adapter_review_rehearsal_v1",
     "parse_native_t102_adapter_review_decision_v1",
+    "NATIVE_T102_OWNER_AI_REVIEW_ACCEPTANCE_SCHEMA",
+    "NativeT102OwnerAIReviewAcceptanceError",
+    "NativeT102OwnerAIReviewAcceptanceV1",
+    "accept_native_t102_internal_ai_review_v1",
     "ZERO_WRITE_GRIPPER_BEHAVIOR",
     "ZERO_WRITE_INTERPOLATION_MODE",
     "ZERO_WRITE_WAVESHARE_PERMIT_SCHEMA",

@@ -208,6 +208,15 @@ out-of-tolerance cases cannot become a replay PASS. Even PASS keeps physical
 arrival, visual outcome, transport access, execution, and physical authority
 false. This improves automated S4/S7 rehearsal coverage but does not satisfy
 the pending ARM-054 independent-review or read-only endpoint prerequisites.
+ARM-059 records the project owner's explicit acceptance of the exact internal
+AI technical review as the adapter source-review prerequisite, while preserving
+that no human review or external independence is claimed. The hash-bound owner
+acceptance makes the next read-only endpoint-qualification intake eligible for
+design and later separate authorization. It does not authorize endpoint open,
+controller startup, any transport write, execution, hardware access, or
+physical movement. Under this owner-defined policy the adapter review milestone
+is complete with caveat; the next arm-lane dependency is the closed read-only
+endpoint-qualification intake and its separately authorized physical run.
 
 ## Stage definitions
 
