@@ -1,0 +1,284 @@
+{
+  "plan_sha256": "f986fd27a6bb37746bb08b4819a3d1fd91fa6e7835e1e55b7923009700cbaaff",
+  "runs": [
+    {
+      "seed": 260926,
+      "initial": {
+        "balanced_bce": 0.6602017879486084,
+        "mean_iou": 0.6482860445976257
+      },
+      "final": {
+        "balanced_bce": 0.357558012008667,
+        "mean_iou": 0.9075170159339905
+      },
+      "train_final": {
+        "balanced_bce": 0.35853075981140137,
+        "mean_iou": 0.9000535011291504
+      },
+      "conditions": {
+        "standard": {
+          "balanced_bce": 0.3313833177089691,
+          "mean_iou": 0.9261254668235779
+        },
+        "appearance_shift": {
+          "balanced_bce": 0.4362023174762726,
+          "mean_iou": 0.8645848035812378
+        },
+        "partial": {
+          "balanced_bce": 0.3311832547187805,
+          "mean_iou": 0.9212832450866699
+        },
+        "full": {
+          "balanced_bce": 0.3312940299510956,
+          "mean_iou": 0.918074369430542
+        }
+      },
+      "history": [
+        {
+          "epoch": 1,
+          "train_bce": 0.6306832329432169,
+          "balanced_bce": 0.5999621152877808,
+          "mean_iou": 0.8023956418037415
+        },
+        {
+          "epoch": 2,
+          "train_bce": 0.5753224444389343,
+          "balanced_bce": 0.5491306781768799,
+          "mean_iou": 0.8214887976646423
+        },
+        {
+          "epoch": 3,
+          "train_bce": 0.5283456977208455,
+          "balanced_bce": 0.5057512521743774,
+          "mean_iou": 0.8459388017654419
+        },
+        {
+          "epoch": 4,
+          "train_bce": 0.48789080103238425,
+          "balanced_bce": 0.46803367137908936,
+          "mean_iou": 0.8685178160667419
+        },
+        {
+          "epoch": 5,
+          "train_bce": 0.4525921241442363,
+          "balanced_bce": 0.43505507707595825,
+          "mean_iou": 0.8840427994728088
+        },
+        {
+          "epoch": 6,
+          "train_bce": 0.4215965855121613,
+          "balanced_bce": 0.40599584579467773,
+          "mean_iou": 0.893929123878479
+        },
+        {
+          "epoch": 7,
+          "train_bce": 0.3942701784769694,
+          "balanced_bce": 0.38028448820114136,
+          "mean_iou": 0.9017748236656189
+        },
+        {
+          "epoch": 8,
+          "train_bce": 0.3700799028078715,
+          "balanced_bce": 0.357558012008667,
+          "mean_iou": 0.9075170159339905
+        }
+      ],
+      "backbone_before_sha256": "57ee76366006b6977a7f2d1c1734f461d321e05fc9a36baf2fdea5c878f691b3",
+      "backbone_after_sha256": "57ee76366006b6977a7f2d1c1734f461d321e05fc9a36baf2fdea5c878f691b3",
+      "pose_max_delta": 0.0,
+      "head_sha256": "7185562cf53ec53c5a8488f0941dc5c265f0a34c1ed578704aa29b25db757327",
+      "passed": true
+    },
+    {
+      "seed": 260927,
+      "initial": {
+        "balanced_bce": 0.6990104913711548,
+        "mean_iou": 0.04918496683239937
+      },
+      "final": {
+        "balanced_bce": 0.3830920457839966,
+        "mean_iou": 0.8817697167396545
+      },
+      "train_final": {
+        "balanced_bce": 0.38396748900413513,
+        "mean_iou": 0.8745477199554443
+      },
+      "conditions": {
+        "standard": {
+          "balanced_bce": 0.35734808444976807,
+          "mean_iou": 0.906817615032196
+        },
+        "appearance_shift": {
+          "balanced_bce": 0.46065473556518555,
+          "mean_iou": 0.8164313435554504
+        },
+        "partial": {
+          "balanced_bce": 0.35706597566604614,
+          "mean_iou": 0.9030963182449341
+        },
+        "full": {
+          "balanced_bce": 0.35713014006614685,
+          "mean_iou": 0.900733232498169
+        }
+      },
+      "history": [
+        {
+          "epoch": 1,
+          "train_bce": 0.6693293770154317,
+          "balanced_bce": 0.6384842395782471,
+          "mean_iou": 0.20916259288787842
+        },
+        {
+          "epoch": 2,
+          "train_bce": 0.6133486358324687,
+          "balanced_bce": 0.5868934988975525,
+          "mean_iou": 0.6423776745796204
+        },
+        {
+          "epoch": 3,
+          "train_bce": 0.5651578632990519,
+          "balanced_bce": 0.5418282747268677,
+          "mean_iou": 0.7322853803634644
+        },
+        {
+          "epoch": 4,
+          "train_bce": 0.5227996563911438,
+          "balanced_bce": 0.5019978284835815,
+          "mean_iou": 0.7884984612464905
+        },
+        {
+          "epoch": 5,
+          "train_bce": 0.4853454081217448,
+          "balanced_bce": 0.4666900038719177,
+          "mean_iou": 0.823261022567749
+        },
+        {
+          "epoch": 6,
+          "train_bce": 0.4521027938524882,
+          "balanced_bce": 0.43552038073539734,
+          "mean_iou": 0.8525102734565735
+        },
+        {
+          "epoch": 7,
+          "train_bce": 0.42266015768051146,
+          "balanced_bce": 0.40776002407073975,
+          "mean_iou": 0.8692744970321655
+        },
+        {
+          "epoch": 8,
+          "train_bce": 0.39649930834770203,
+          "balanced_bce": 0.3830920457839966,
+          "mean_iou": 0.8817697167396545
+        }
+      ],
+      "backbone_before_sha256": "57ee76366006b6977a7f2d1c1734f461d321e05fc9a36baf2fdea5c878f691b3",
+      "backbone_after_sha256": "57ee76366006b6977a7f2d1c1734f461d321e05fc9a36baf2fdea5c878f691b3",
+      "pose_max_delta": 0.0,
+      "head_sha256": "c23d1fa3c856d9c878cd2af517bd1dd54bb76f79cba984d38a687eaf082c78a0",
+      "passed": true
+    },
+    {
+      "seed": 260928,
+      "initial": {
+        "balanced_bce": 0.7159842252731323,
+        "mean_iou": 0.16640950739383698
+      },
+      "final": {
+        "balanced_bce": 0.38147056102752686,
+        "mean_iou": 0.9005639553070068
+      },
+      "train_final": {
+        "balanced_bce": 0.3820992708206177,
+        "mean_iou": 0.8941159248352051
+      },
+      "conditions": {
+        "standard": {
+          "balanced_bce": 0.35808950662612915,
+          "mean_iou": 0.9133568406105042
+        },
+        "appearance_shift": {
+          "balanced_bce": 0.45184817910194397,
+          "mean_iou": 0.8730840086936951
+        },
+        "partial": {
+          "balanced_bce": 0.35785484313964844,
+          "mean_iou": 0.9093053340911865
+        },
+        "full": {
+          "balanced_bce": 0.35794252157211304,
+          "mean_iou": 0.9065094590187073
+        }
+      },
+      "history": [
+        {
+          "epoch": 1,
+          "train_bce": 0.6767271359761556,
+          "balanced_bce": 0.6386918425559998,
+          "mean_iou": 0.3622038662433624
+        },
+        {
+          "epoch": 2,
+          "train_bce": 0.6098765476544699,
+          "balanced_bce": 0.5814564824104309,
+          "mean_iou": 0.8507933616638184
+        },
+        {
+          "epoch": 3,
+          "train_bce": 0.5590243005752563,
+          "balanced_bce": 0.5360525846481323,
+          "mean_iou": 0.8794692158699036
+        },
+        {
+          "epoch": 4,
+          "train_bce": 0.5170863644282023,
+          "balanced_bce": 0.49707865715026855,
+          "mean_iou": 0.8789555430412292
+        },
+        {
+          "epoch": 5,
+          "train_bce": 0.48060972452163697,
+          "balanced_bce": 0.462815523147583,
+          "mean_iou": 0.8843794465065002
+        },
+        {
+          "epoch": 6,
+          "train_bce": 0.44837468266487124,
+          "balanced_bce": 0.4324779212474823,
+          "mean_iou": 0.8918929100036621
+        },
+        {
+          "epoch": 7,
+          "train_bce": 0.41976972262064616,
+          "balanced_bce": 0.4055144786834717,
+          "mean_iou": 0.8960383534431458
+        },
+        {
+          "epoch": 8,
+          "train_bce": 0.39431553761164345,
+          "balanced_bce": 0.38147056102752686,
+          "mean_iou": 0.9005639553070068
+        }
+      ],
+      "backbone_before_sha256": "57ee76366006b6977a7f2d1c1734f461d321e05fc9a36baf2fdea5c878f691b3",
+      "backbone_after_sha256": "57ee76366006b6977a7f2d1c1734f461d321e05fc9a36baf2fdea5c878f691b3",
+      "pose_max_delta": 0.0,
+      "head_sha256": "61c43076c20c300a1328b32af51a605deebf6bf1a1fb3ce0471a1d30fb3e1502",
+      "passed": true
+    }
+  ],
+  "device": "cuda",
+  "training_pixels_sha256": "fe9e1fdf76cf5cff6cb6f542e8e65034f0e6d692fd7267e50f2740d93542a77a",
+  "development_pixels_sha256": "daadf03fc0c3f98e322d5230d541569ea3b8835608c66bd339bfa2e380f29a73",
+  "training_targets_sha256": "cc1b81aef1654456a82b7a0794c5c11a9525adfe342a159e3a3cd7a744353e77",
+  "development_targets_sha256": "3ef1407d317bd6ce62f5311bd6fcdf2fcff4a04c7dbd34c6f5e1cfd28432c910",
+  "head_updates_per_seed": 304,
+  "pose_updates": 0,
+  "hardware_writes": 0,
+  "physical_movements": 0,
+  "qualification_installed": false,
+  "limitations": [
+    "Fixed8epochs and0.5mask threshold;minimum per-condition IoU0.8 is a research feasibility criterion,not qualification",
+    "Reused synthetic development;geometric visible-case labels,not perceptual/physical truth",
+    "No localization accuracy change is possible with frozen pose weights"
+  ]
+}

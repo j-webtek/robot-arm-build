@@ -599,7 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-- AI lane / S1: frozen-feature segmentation head learning probe,three seeds,eight fixed epochs;pose immutable,AI branch only.
 
 
 
@@ -6985,3 +6984,54 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic audit;AI-041 protected-main blocker retained.
 - Supersedes: none;prior failures and arm/integration status retained.
 - Next dependency: Freeze a head-only visible-mask learning probe on frozen baseline features across all3 seeds;verify whether the33-parameter linear head can reliably learn the task before modifying shared features or sweeping auxiliary coefficients. Pose weights/predictions must remain identical;segmentation success alone grants no localization authority. Publish only feature/translation-pair-evidence to j-webtek/tactevra.
+
+
+### E-20260926-AI-249 — frozen-feature segmentation head learning
+
+- Stage: S1
+- Lane: AI
+- Commit: `746f11bd41f1dec5b3486841bbe0d9e6be160ec8` (frozen execution source; results/tests committed with this evidence)
+- Change: frozen-feature segmentation head learning.
+- Inputs/fixtures: training seeds 29000000..29000599 x4 conditions (2400 images); development 15000000..15000199 x4 (800 images); optimization seeds 260926/260927/260928; frozen baseline SHA256 0fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d. Only 33 head parameters trained, eight fixed epochs, AdamW 0.001, batch64. Plan SHA256 f986fd27a6bb37746bb08b4819a3d1fd91fa6e7835e1e55b7923009700cbaaff; per-input, mask, backbone and head hashes retained in report.
+- Command: `python software/ai/train/train_segmentation_head_probe.py`
+- Result: PASS mask feasibility 3/3 seeds. Final mean IoU 0.907517/0.881770/0.900564; balanced BCE 0.357558/0.383092/0.381471. Each condition mean IoU >=0.8 and BCE decreased. 304 head updates per seed; zero pose updates; pose output maximum delta exactly 0 on all 800 development images. Backbone hashes unchanged.
+- Artifacts: `eval/segmentation_head_probe_v0_report.json` SHA256 45a5f4bf73018ae48407c70f3f1e74ddf94e643662a91a5e6c4474773fdbe579; `train/segmentation_head_probe_v0_plan.json`; `train/train_segmentation_head_probe.py`; `tests/test_segmentation_head_probe.py`; ignored local per-seed head checkpoints.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Synthetic masks and reused development only; no localization improvement, calibrated uncertainty, model promotion, or runtime authority.
+- Supersedes: none; earlier failed evidence and arm/integration statuses retained.
+- Next dependency: Freeze paired joint training initialized with the corresponding trained head in both arms; retain previous joint-training budget, learning rate, pose loss, selection and auxiliary coefficient to isolate trained-head initialization. Evaluate localization against paired control and baseline; mask feasibility grants no coordinate qualification. Publish only feature/translation-pair-evidence.
+
+
+### E-20260926-AI-250 — head probe verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `746f11bd41f1dec5b3486841bbe0d9e6be160ec8` (frozen execution source; results/tests committed with this evidence)
+- Change: head probe verification.
+- Inputs/fixtures: training seeds 29000000..29000599 x4 conditions (2400 images); development 15000000..15000199 x4 (800 images); optimization seeds 260926/260927/260928; frozen baseline SHA256 0fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d. Only 33 head parameters trained, eight fixed epochs, AdamW 0.001, batch64. Plan SHA256 f986fd27a6bb37746bb08b4819a3d1fd91fa6e7835e1e55b7923009700cbaaff; per-input, mask, backbone and head hashes retained in report.
+- Command: `python -m pytest -q software/ai/tests/test_segmentation_head_probe.py`
+- Result: PASS: 2 tests; known IoU, frozen lineage, fixed budget, mask/pixel hashes, condition criteria, pose invariance, and available checkpoint hashes verified. Existing pytest-asyncio warning.
+- Artifacts: `eval/segmentation_head_probe_v0_report.json` SHA256 45a5f4bf73018ae48407c70f3f1e74ddf94e643662a91a5e6c4474773fdbe579; `train/segmentation_head_probe_v0_plan.json`; `train/train_segmentation_head_probe.py`; `tests/test_segmentation_head_probe.py`; ignored local per-seed head checkpoints.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Ignored local checkpoint bytes are checked when present; portable evidence retains hashes when absent. Batch contract unchanged; boundary suite not triggered.
+- Supersedes: none; earlier failed evidence and arm/integration statuses retained.
+- Next dependency: Freeze paired joint training initialized with the corresponding trained head in both arms; retain previous joint-training budget, learning rate, pose loss, selection and auxiliary coefficient to isolate trained-head initialization. Evaluate localization against paired control and baseline; mask feasibility grants no coordinate qualification. Publish only feature/translation-pair-evidence.
+
+
+### E-20260926-AI-251 — head probe publication audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `746f11bd41f1dec5b3486841bbe0d9e6be160ec8` (frozen execution source; results/tests committed with this evidence)
+- Change: head probe publication audit.
+- Inputs/fixtures: training seeds 29000000..29000599 x4 conditions (2400 images); development 15000000..15000199 x4 (800 images); optimization seeds 260926/260927/260928; frozen baseline SHA256 0fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d. Only 33 head parameters trained, eight fixed epochs, AdamW 0.001, batch64. Plan SHA256 f986fd27a6bb37746bb08b4819a3d1fd91fa6e7835e1e55b7923009700cbaaff; per-input, mask, backbone and head hashes retained in report.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS: 6113 paths; 864.9 MiB; 0 unresolved review findings; 14 reviewed synthetic fixtures.
+- Artifacts: `eval/segmentation_head_probe_v0_report.json` SHA256 45a5f4bf73018ae48407c70f3f1e74ddf94e643662a91a5e6c4474773fdbe579; `train/segmentation_head_probe_v0_plan.json`; `train/train_segmentation_head_probe.py`; `tests/test_segmentation_head_probe.py`; ignored local per-seed head checkpoints.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic snapshot audit; historical AI-041 blocker retained.
+- Supersedes: none; earlier failed evidence and arm/integration statuses retained.
+- Next dependency: Freeze paired joint training initialized with the corresponding trained head in both arms; retain previous joint-training budget, learning rate, pose loss, selection and auxiliary coefficient to isolate trained-head initialization. Evaluate localization against paired control and baseline; mask feasibility grants no coordinate qualification. Publish only feature/translation-pair-evidence.
