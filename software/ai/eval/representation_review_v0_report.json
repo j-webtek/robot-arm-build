@@ -1,0 +1,253 @@
+{
+  "plan_sha256": "7bd6029ea9044d31baf4548b284a703959e662bc839471895a3a5dafc3b97733",
+  "resolution": [
+    {
+      "input_size": [
+        128,
+        96
+      ],
+      "mean_mm": 0.9451284402366427,
+      "p95_mm": 2.064872655130977,
+      "within_1mm_fraction": 0.631159420289855,
+      "selected_epoch": 11
+    },
+    {
+      "input_size": [
+        256,
+        192
+      ],
+      "mean_mm": 1.4422039155607493,
+      "p95_mm": 3.5296516440680246,
+      "within_1mm_fraction": 0.3968840579710145,
+      "selected_epoch": 11
+    }
+  ],
+  "larger_to_smaller_mean_ratio": 1.5259343113192618,
+  "parameter_count": 276867,
+  "feature_shapes": {
+    "128x96": [
+      {
+        "layer": "Conv2d",
+        "shape": [
+          1,
+          16,
+          48,
+          64
+        ]
+      },
+      {
+        "layer": "ReLU",
+        "shape": [
+          1,
+          16,
+          48,
+          64
+        ]
+      },
+      {
+        "layer": "Conv2d",
+        "shape": [
+          1,
+          32,
+          24,
+          32
+        ]
+      },
+      {
+        "layer": "ReLU",
+        "shape": [
+          1,
+          32,
+          24,
+          32
+        ]
+      },
+      {
+        "layer": "Conv2d",
+        "shape": [
+          1,
+          64,
+          12,
+          16
+        ]
+      },
+      {
+        "layer": "ReLU",
+        "shape": [
+          1,
+          64,
+          12,
+          16
+        ]
+      },
+      {
+        "layer": "Conv2d",
+        "shape": [
+          1,
+          96,
+          6,
+          8
+        ]
+      },
+      {
+        "layer": "ReLU",
+        "shape": [
+          1,
+          96,
+          6,
+          8
+        ]
+      },
+      {
+        "layer": "AdaptiveAvgPool2d",
+        "shape": [
+          1,
+          96,
+          4,
+          4
+        ]
+      },
+      {
+        "layer": "Flatten",
+        "shape": [
+          1,
+          1536
+        ]
+      },
+      {
+        "layer": "Linear",
+        "shape": [
+          1,
+          128
+        ]
+      },
+      {
+        "layer": "ReLU",
+        "shape": [
+          1,
+          128
+        ]
+      }
+    ],
+    "256x192": [
+      {
+        "layer": "Conv2d",
+        "shape": [
+          1,
+          16,
+          96,
+          128
+        ]
+      },
+      {
+        "layer": "ReLU",
+        "shape": [
+          1,
+          16,
+          96,
+          128
+        ]
+      },
+      {
+        "layer": "Conv2d",
+        "shape": [
+          1,
+          32,
+          48,
+          64
+        ]
+      },
+      {
+        "layer": "ReLU",
+        "shape": [
+          1,
+          32,
+          48,
+          64
+        ]
+      },
+      {
+        "layer": "Conv2d",
+        "shape": [
+          1,
+          64,
+          24,
+          32
+        ]
+      },
+      {
+        "layer": "ReLU",
+        "shape": [
+          1,
+          64,
+          24,
+          32
+        ]
+      },
+      {
+        "layer": "Conv2d",
+        "shape": [
+          1,
+          96,
+          12,
+          16
+        ]
+      },
+      {
+        "layer": "ReLU",
+        "shape": [
+          1,
+          96,
+          12,
+          16
+        ]
+      },
+      {
+        "layer": "AdaptiveAvgPool2d",
+        "shape": [
+          1,
+          96,
+          4,
+          4
+        ]
+      },
+      {
+        "layer": "Flatten",
+        "shape": [
+          1,
+          1536
+        ]
+      },
+      {
+        "layer": "Linear",
+        "shape": [
+          1,
+          128
+        ]
+      },
+      {
+        "layer": "ReLU",
+        "shape": [
+          1,
+          128
+        ]
+      }
+    ]
+  },
+  "clutter_tails": {
+    "original": 32,
+    "no_arm": 17,
+    "no_ruler": 25,
+    "neither": 11
+  },
+  "decision": "Retain128x96;do not repeat unchanged higher-resolution adaptation. Prepare a keyboard-versus-clutter segmentation auxiliary-head feasibility study; no adoption before paired evidence.",
+  "hardware_writes": 0,
+  "physical_movements": 0,
+  "qualification_installed": false,
+  "limitations": [
+    "Prior resolution run used one seed and starting weights trained at128x96",
+    "Feature shapes describe architecture,not proof of causal clutter failure",
+    "Auxiliary segmentation is an untested hypothesis; earlier landmark route failed and is not promoted",
+    "No fresh data,training,inference checkpoint selection or runtime change"
+  ]
+}

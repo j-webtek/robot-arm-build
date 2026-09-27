@@ -599,8 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-- AI lane / S1: prior resolution evidence and representation review; frozen scorecards/model source,no new training; AI evidence branch only.
-
 
 
 
@@ -6815,3 +6813,54 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic audit;AI-041 protected-main blocker retained.
 - Supersedes: none;prior failures and arm/integration status retained.
 - Next dependency: Stop consistency-coefficient tuning. Review earlier matched-resolution evidence against current clutter failures before choosing a bounded representation/input-resolution intervention; avoid duplicating a previously failed comparison. Original cluttered cases remain acceptance data; no qualification.
+
+
+### E-20260926-AI-239 — resolution and representation evidence review
+
+- Stage: S1
+- Lane: AI
+- Commit: `45542e9bb679c982a08ce8e4631a5157939e23b2` (frozen source;results/review/tests committed with evidence)
+- Change: resolution and representation evidence review.
+- Inputs/fixtures: retained AI-025 resolution plan/scorecard,AI-232 clutter report,AI-236 paired-clutter aggregate,exact pose model source. All SHA256 pinned in eval/representation_review_v0_plan.json. Zero tensors used only to trace feature shapes,not accuracy.
+- Command: `python software/ai/vision/review_pose_representation.py`
+- Result: Completed. Prior128x96mean0.945128mm,p952.064873 versus256x192mean1.442204,p953.529652;larger mean52.59%worse in that adaptation study. Model276867parameters;last convolution spatial map6x8 vs12x16,both pooled4x4. Retain128x96 and prepare visible-keyboard segmentation auxiliary feasibility study.
+- Artifacts: vision/review_pose_representation.py;eval/representation_review_v0_report.json;docs/POSE_REPRESENTATION_REVIEW.md;tests/test_representation_review.py.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Old comparison one seed,128-trained starting weights,different conditions/loss;not proof higher resolution cannot help. Shape inspection not causal evidence. New head is untested;no training or model promotion.
+- Supersedes: none;prior failures and arm/integration status retained.
+- Next dependency: Implement and verify training-only visible-case segmentation labels and an auxiliary head at the shared stride-four feature map;ensure unchanged initial pose output,inspect fixed-batch gradient scale,then freeze a paired training study. No runtime segmentation authority,contract change or qualification. Publish only feature/translation-pair-evidence to j-webtek/tactevra.
+
+
+### E-20260926-AI-240 — representation review verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `45542e9bb679c982a08ce8e4631a5157939e23b2` (frozen source;results/review/tests committed with evidence)
+- Change: representation review verification.
+- Inputs/fixtures: retained AI-025 resolution plan/scorecard,AI-232 clutter report,AI-236 paired-clutter aggregate,exact pose model source. All SHA256 pinned in eval/representation_review_v0_plan.json. Zero tensors used only to trace feature shapes,not accuracy.
+- Command: `python -m pytest -q software/ai/tests/test_representation_review.py`
+- Result: PASS,1 test: frozen hashes,exact old metrics/ratio,clutter totals and zero-authority markers. Existing pytest-asyncio warning.
+- Artifacts: vision/review_pose_representation.py;eval/representation_review_v0_report.json;docs/POSE_REPRESENTATION_REVIEW.md;tests/test_representation_review.py.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Retained evidence verification only;batch unchanged,shared boundary suite not triggered.
+- Supersedes: none;prior failures and arm/integration status retained.
+- Next dependency: Implement and verify training-only visible-case segmentation labels and an auxiliary head at the shared stride-four feature map;ensure unchanged initial pose output,inspect fixed-batch gradient scale,then freeze a paired training study. No runtime segmentation authority,contract change or qualification. Publish only feature/translation-pair-evidence to j-webtek/tactevra.
+
+
+### E-20260926-AI-241 — representation review publication audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `45542e9bb679c982a08ce8e4631a5157939e23b2` (frozen source;results/review/tests committed with evidence)
+- Change: representation review publication audit.
+- Inputs/fixtures: retained AI-025 resolution plan/scorecard,AI-232 clutter report,AI-236 paired-clutter aggregate,exact pose model source. All SHA256 pinned in eval/representation_review_v0_plan.json. Zero tensors used only to trace feature shapes,not accuracy.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS;6094paths,861.7MiB,0 unresolved findings,14 reviewed synthetic fixtures.
+- Artifacts: vision/review_pose_representation.py;eval/representation_review_v0_report.json;docs/POSE_REPRESENTATION_REVIEW.md;tests/test_representation_review.py.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic audit;AI-041 protected-main publication blocker retained.
+- Supersedes: none;prior failures and arm/integration status retained.
+- Next dependency: Implement and verify training-only visible-case segmentation labels and an auxiliary head at the shared stride-four feature map;ensure unchanged initial pose output,inspect fixed-batch gradient scale,then freeze a paired training study. No runtime segmentation authority,contract change or qualification. Publish only feature/translation-pair-evidence to j-webtek/tactevra.
