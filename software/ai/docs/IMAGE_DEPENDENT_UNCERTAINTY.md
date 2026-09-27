@@ -81,3 +81,29 @@ training-only scene groups while keeping the confirmed pose output frozen. It
 must improve partial/full obstruction metrics and scene-level tail ranking
 before any full fit, export, calibration, or confirmation is attempted. The
 consumed 31M, 32M, 34M, and 35M cohorts remain excluded from selection.
+
+## Nonlinear frozen-feature study
+
+A fixed 16,689-parameter nonlinear head was trained on the same frozen 512
+descriptors with all scene variants grouped. The head used two GELU hidden
+layers, one deterministic seed per fold, and a fixed 30-epoch schedule. There
+was no architecture, learning-rate, epoch, or seed sweep.
+
+The nonlinear head improved scene tail-error AUROC from 0.590133 to 0.644431.
+It did not learn a reliable error magnitude: log-error MSE worsened from
+0.234846 to 0.312227 on standard images, 0.246693 to 0.263520 on appearance
+shift, 0.233817 to 0.336033 under partial obstruction, and 0.254223 to 0.336248
+under full obstruction. The registered composite requirement therefore fails.
+
+This separates two concerns that the previous experiments combined. The
+frozen descriptors contain some learnable signal for ranking risky scenes, but
+the tested nonlinear regressor does not provide a useful scale for calibrated
+metric bounds. Another scale-calibration run is not justified.
+
+The next bounded study should formulate scene-tail risk explicitly as a
+class-balanced classification problem on the same grouped training evidence.
+It must preregister one architecture and schedule, evaluate out of fold, and
+report AUROC plus tail rates at fixed retention fractions. It may not select a
+runtime threshold or use consumed calibration and confirmation cohorts. A
+passing classifier would still require a separately designed calibration and
+fresh confirmation chain before any runtime abstention gate could exist.

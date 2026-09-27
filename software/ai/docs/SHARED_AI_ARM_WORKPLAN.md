@@ -599,9 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-- AI lane / S1: train and evaluate one fixed nonlinear uncertainty head on
-  frozen pose features and grouped 33M scenes; no pose fitting, calibration
-  data, runtime promotion, or arm changes.
 
 
 
@@ -8226,3 +8223,51 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic repository review before the final ledger append; not model, runtime, or physical assurance. Arm and integration statuses remain unchanged.
 - Supersedes: none.
 - Next dependency: Same as AI-319.
+
+
+### E-20260927-AI-322 — nonlinear uncertainty representation study
+
+- Stage: S1
+- Lane: AI
+- Commit: `22c374ba8710427c4feb2ca5660aafcb3d90cd7d` (architecture, schedule, source, and plan frozen before fitting; report, tests, and documentation committed in the successor)
+- Inputs/fixtures: Existing `33000000..33000599` uncertainty-training scenes, rectangle and ellipse styles, four conditions, 4,800 images, and five grouped scene folds. Frozen pose artifact SHA256 `c9f4ef6d8f9e50317a917154fccacce46506ab2e7cde8267396e28fec156147b`; reference report SHA256 `9b58bf614dde9006056e3ac92f90a7213ff3d8d78ca109e5ea51e14842104c80`. Fixed 16,689-parameter `512→32→8→1` GELU head; 30 epochs, batch 64, AdamW learning rate 0.001 and weight decay 0.0001, fold seeds 270927..270931. Full hashes in `train/nonlinear_uncertainty_v1_plan.json`; report SHA256 `b9ac4856d8af925d19d2e3b25e049c22f738590fba2deb7e52ff9fedc0fc0d4d` retains all states and predictions.
+- Command: `python software/ai/train/evaluate_nonlinear_uncertainty.py`
+- Result: FAIL fixed composite rule. Scene tail AUROC improves from `0.590133` to `0.644431`, but log-error MSE worsens in every condition: standard `0.234846→0.312227`, appearance shift `0.246693→0.263520`, partial `0.233817→0.336033`, full `0.254223→0.336248`. The ranking check passes, while all four scale-error checks fail.
+- Artifacts: `vision/nonlinear_uncertainty.py`; `train/evaluate_nonlinear_uncertainty.py`; `train/nonlinear_uncertainty_v1_plan.json`; `eval/nonlinear_uncertainty_v1_report.json`; `tests/test_nonlinear_uncertainty.py`; `docs/IMAGE_DEPENDENT_UNCERTAINTY.md`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Five uncertainty-head fits, 9,000 optimizer updates total, zero pose/calibration fits or new images. One architecture and schedule, no sweep or early stopping. Reused synthetic uncertainty-training evidence; no confirmation claim. Improved ranking does not create a calibrated radius. No head export, threshold selection, runtime installation, or physical qualification. ModelMotionBatchV2 and arm/integration statuses unchanged.
+- Supersedes: none; prior failed linear heads and zero-utility bounds remain preserved.
+- Next dependency: Treat scale regression and tail-risk ranking as separate tasks. Specify one grouped training-only, class-balanced scene-tail classifier using the frozen descriptors, with fixed architecture/schedule and no threshold selection. Require materially better scene AUROC plus useful fixed-retention tail reduction before any calibration allocation.
+
+
+### E-20260927-AI-323 — nonlinear uncertainty verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `22c374ba8710427c4feb2ca5660aafcb3d90cd7d` (frozen experiment source; tests and docs in successor)
+- Inputs/fixtures: Same 4,800 grouped 33M rows and frozen artifacts as AI-322; report SHA256 `b9ac4856d8af925d19d2e3b25e049c22f738590fba2deb7e52ff9fedc0fc0d4d`.
+- Command: `python -m pytest -q software/ai/tests/test_nonlinear_uncertainty.py`
+- Result: PASS: 3 tests in 2.93s. Tests verify architecture and parameter count, strict inputs, deterministic training, training-row isolation, bounded inference, complete population and fold assignment, optimizer counts, all condition metrics, scene ranking, lineage, and the failed decision.
+- Artifacts: `tests/test_nonlinear_uncertainty.py`; `eval/nonlinear_uncertainty_v1_report.json`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Existing pytest-asyncio configuration warning. Verification establishes reproducibility only. Contract unchanged; shared boundary suite not triggered.
+- Supersedes: none.
+- Next dependency: Same as AI-322.
+
+
+### E-20260927-AI-324 — nonlinear uncertainty snapshot review
+
+- Stage: S1
+- Lane: AI
+- Commit: `22c374ba8710427c4feb2ca5660aafcb3d90cd7d` (frozen experiment source; final ledger append in successor)
+- Inputs/fixtures: Repository snapshot containing the nonlinear study and generated evidence; exact hashes recorded in AI-322.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS: 6,244 paths, 906.0 MiB, 0 unresolved review findings, 14 reviewed synthetic fixtures.
+- Artifacts: `eval/nonlinear_uncertainty_v1_report.json`; `tests/test_nonlinear_uncertainty.py`; shared evidence ledger.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic repository review before final ledger append; not model or physical assurance. No arm or integration status changes.
+- Supersedes: none.
+- Next dependency: Same as AI-322.
