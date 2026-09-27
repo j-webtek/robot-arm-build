@@ -599,7 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-- AI lane / S1: predicted-mask residual architecture feasibility; paired constant-mask control, exact baseline initialization, frozen features/head, image-only export and CPU cost. No fitting, contract or arm-status changes.
 
 
 
@@ -7244,3 +7243,54 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic audit before final ledger append; not qualification.
 - Supersedes: none; prior model failures and arm/integration status retained. User requested this baseline demonstration before additional training.
 - Next dependency: Use the demo as the current baseline; next research remains a predicted-mask-conditioned residual pose prototype with matched control and baseline-preserving initialization. No training resumed in this increment.
+
+
+### E-20260926-AI-264 — mask-conditioned residual feasibility
+
+- Stage: S1
+- Lane: AI
+- Commit: `c74b06648dc874d7a1c322bba2ce3e8b6453f52f` (frozen probe source; evidence/tests committed together)
+- Change: mask-conditioned residual feasibility.
+- Inputs/fixtures: training scenes29000000..29000007 x4conditions; learned heads260926/260927/260928; frozen baseline SHA256 0fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d. Exact source/head hashes in eval/mask_conditioned_probe_v0_plan.json; pixel SHA25600172608af702804ea6bdccbf37ddb6165e1d9a6b5a2bd30af58f4b0a6998fb0; output SHA256 ec2625fef214a878dfe032bb6eec8845e3a76809becc361a4ad5ed853e51332a.
+- Command: `python software/ai/vision/probe_mask_conditioned_pose.py`
+- Result: PASS:32images x3heads x2modes; initial pose delta0, exact initial/nonzero export roundtrips, finite residual gradients and no backbone/head gradients. Both293415parameters,16515trainable,1179040serialized bytes. Predicted-mask CPU medians0.7805/0.7716/0.7668ms versus baseline0.55255ms; batch1,fourthreads,10warmups,100iterations.
+- Artifacts: vision/mask_conditioned_pose.py; vision/probe_mask_conditioned_pose.py; eval/mask_conditioned_probe_v0_plan.json and report.json; tests/test_mask_conditioned_pose.py; docs/POSE_REPRESENTATION_REVIEW.md.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Manual nonzero residual assignment and backward passes test wiring only; zero optimizer updates. CPU timing is host-specific and sequential. No accuracy improvement or physical qualification. Inherited head pretraining304updates per seed; no new data/holdout.
+- Supersedes: none; all failed prior evidence and arm/integration statuses retained.
+- Next dependency: Freeze paired three-seed residual-only training with predicted-mask versus constant-mask input, same baseline/features/head/image order/budget/selection, and unchanged baseline/control acceptance criteria. No runtime model promotion or mask confidence qualification.
+
+
+### E-20260926-AI-265 — residual architecture verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `c74b06648dc874d7a1c322bba2ce3e8b6453f52f` (frozen probe source; evidence/tests committed together)
+- Change: residual architecture verification.
+- Inputs/fixtures: training scenes29000000..29000007 x4conditions; learned heads260926/260927/260928; frozen baseline SHA256 0fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d. Exact source/head hashes in eval/mask_conditioned_probe_v0_plan.json; pixel SHA25600172608af702804ea6bdccbf37ddb6165e1d9a6b5a2bd30af58f4b0a6998fb0; output SHA256 ec2625fef214a878dfe032bb6eec8845e3a76809becc361a4ad5ed853e51332a.
+- Command: `python -m pytest -q software/ai/tests/test_mask_conditioned_pose.py`
+- Result: PASS:8 tests in1.61s; image-only signature and size, spatial mask sensitivity, exact baseline/nonzero export, frozen gradients, malformed artifacts and frozen evidence lineage.
+- Artifacts: vision/mask_conditioned_pose.py; vision/probe_mask_conditioned_pose.py; eval/mask_conditioned_probe_v0_plan.json and report.json; tests/test_mask_conditioned_pose.py; docs/POSE_REPRESENTATION_REVIEW.md.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Existing pytest-asyncio warning; local source/report checks support ignored checkpoint absence. Batch contract unchanged; shared boundary suite not triggered. Inherited head pretraining304updates per seed; no new data/holdout.
+- Supersedes: none; all failed prior evidence and arm/integration statuses retained.
+- Next dependency: Freeze paired three-seed residual-only training with predicted-mask versus constant-mask input, same baseline/features/head/image order/budget/selection, and unchanged baseline/control acceptance criteria. No runtime model promotion or mask confidence qualification.
+
+
+### E-20260926-AI-266 — residual prototype snapshot audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `c74b06648dc874d7a1c322bba2ce3e8b6453f52f` (frozen probe source; evidence/tests committed together)
+- Change: residual prototype snapshot audit.
+- Inputs/fixtures: training scenes29000000..29000007 x4conditions; learned heads260926/260927/260928; frozen baseline SHA256 0fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d. Exact source/head hashes in eval/mask_conditioned_probe_v0_plan.json; pixel SHA25600172608af702804ea6bdccbf37ddb6165e1d9a6b5a2bd30af58f4b0a6998fb0; output SHA256 ec2625fef214a878dfe032bb6eec8845e3a76809becc361a4ad5ed853e51332a.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS:6140paths,868.9MiB,0unresolved findings,14reviewed synthetic fixtures.
+- Artifacts: vision/mask_conditioned_pose.py; vision/probe_mask_conditioned_pose.py; eval/mask_conditioned_probe_v0_plan.json and report.json; tests/test_mask_conditioned_pose.py; docs/POSE_REPRESENTATION_REVIEW.md.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic audit before final documentation append; not runtime assurance. Inherited head pretraining304updates per seed; no new data/holdout.
+- Supersedes: none; all failed prior evidence and arm/integration statuses retained.
+- Next dependency: Freeze paired three-seed residual-only training with predicted-mask versus constant-mask input, same baseline/features/head/image order/budget/selection, and unchanged baseline/control acceptance criteria. No runtime model promotion or mask confidence qualification.

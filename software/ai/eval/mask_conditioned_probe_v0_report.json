@@ -1,0 +1,145 @@
+{
+  "plan_sha256": "ce3f2220912539812134790b86b1ca397d0271761ee748578d06710dd6bf584c",
+  "input_pixels_sha256": "00172608af702804ea6bdccbf37ddb6165e1d9a6b5a2bd30af58f4b0a6998fb0",
+  "images": 32,
+  "baseline_parameters": 276867,
+  "baseline_timing": {
+    "median_ms": 0.55255,
+    "p95_ms": 0.7093149999999999,
+    "iterations": 100,
+    "warmup": 10,
+    "batch_size": 1
+  },
+  "runs": [
+    {
+      "seed": 260926,
+      "mode": "constant",
+      "parameters": 293415,
+      "trainable_parameters": 16515,
+      "artifact_bytes": 1179040,
+      "initial_max_pose_delta": 0.0,
+      "nonzero_residual_max_delta": 0.039835359901189804,
+      "roundtrip_exact": true,
+      "frozen_gradients_absent": true,
+      "residual_gradients_finite": true,
+      "timing": {
+        "median_ms": 0.7815,
+        "p95_ms": 0.895405,
+        "iterations": 100,
+        "warmup": 10,
+        "batch_size": 1
+      },
+      "nonzero_mask_conditioning_delta": 0.031833354383707047
+    },
+    {
+      "seed": 260926,
+      "mode": "predicted",
+      "parameters": 293415,
+      "trainable_parameters": 16515,
+      "artifact_bytes": 1179040,
+      "initial_max_pose_delta": 0.0,
+      "nonzero_residual_max_delta": 0.009265482425689697,
+      "roundtrip_exact": true,
+      "frozen_gradients_absent": true,
+      "residual_gradients_finite": true,
+      "timing": {
+        "median_ms": 0.7805,
+        "p95_ms": 0.9426749999999999,
+        "iterations": 100,
+        "warmup": 10,
+        "batch_size": 1
+      },
+      "nonzero_mask_conditioning_delta": 0.031833354383707047
+    },
+    {
+      "seed": 260927,
+      "mode": "constant",
+      "parameters": 293415,
+      "trainable_parameters": 16515,
+      "artifact_bytes": 1179040,
+      "initial_max_pose_delta": 0.0,
+      "nonzero_residual_max_delta": 0.041208505630493164,
+      "roundtrip_exact": true,
+      "frozen_gradients_absent": true,
+      "residual_gradients_finite": true,
+      "timing": {
+        "median_ms": 0.7924,
+        "p95_ms": 1.0272499999999993,
+        "iterations": 100,
+        "warmup": 10,
+        "batch_size": 1
+      },
+      "nonzero_mask_conditioning_delta": 0.030070126056671143
+    },
+    {
+      "seed": 260927,
+      "mode": "predicted",
+      "parameters": 293415,
+      "trainable_parameters": 16515,
+      "artifact_bytes": 1179040,
+      "initial_max_pose_delta": 0.0,
+      "nonzero_residual_max_delta": 0.012118816375732422,
+      "roundtrip_exact": true,
+      "frozen_gradients_absent": true,
+      "residual_gradients_finite": true,
+      "timing": {
+        "median_ms": 0.7716,
+        "p95_ms": 0.956355,
+        "iterations": 100,
+        "warmup": 10,
+        "batch_size": 1
+      },
+      "nonzero_mask_conditioning_delta": 0.030070126056671143
+    },
+    {
+      "seed": 260928,
+      "mode": "constant",
+      "parameters": 293415,
+      "trainable_parameters": 16515,
+      "artifact_bytes": 1179040,
+      "initial_max_pose_delta": 0.0,
+      "nonzero_residual_max_delta": 0.02953392267227173,
+      "roundtrip_exact": true,
+      "frozen_gradients_absent": true,
+      "residual_gradients_finite": true,
+      "timing": {
+        "median_ms": 0.7839,
+        "p95_ms": 0.9835050000000001,
+        "iterations": 100,
+        "warmup": 10,
+        "batch_size": 1
+      },
+      "nonzero_mask_conditioning_delta": 0.022258341312408447
+    },
+    {
+      "seed": 260928,
+      "mode": "predicted",
+      "parameters": 293415,
+      "trainable_parameters": 16515,
+      "artifact_bytes": 1179040,
+      "initial_max_pose_delta": 0.0,
+      "nonzero_residual_max_delta": 0.007867306470870972,
+      "roundtrip_exact": true,
+      "frozen_gradients_absent": true,
+      "residual_gradients_finite": true,
+      "timing": {
+        "median_ms": 0.7667999999999999,
+        "p95_ms": 1.012565,
+        "iterations": 100,
+        "warmup": 10,
+        "batch_size": 1
+      },
+      "nonzero_mask_conditioning_delta": 0.022258341312408447
+    }
+  ],
+  "optimizer_updates": 0,
+  "hardware_writes": 0,
+  "physical_movements": 0,
+  "qualification_installed": false,
+  "limitations": [
+    "CPU timings are descriptive for this host, not deployment latency guarantees",
+    "Backpropagation and manually assigned nonzero weights check wiring only; no model fitting or accuracy improvement",
+    "Both arms retain baseline and learned segmentation head; head pretraining cost304 updates per seed is inherited",
+    "No runtime calibration, uncertainty qualification, physical images, or new holdout"
+  ]
+}
