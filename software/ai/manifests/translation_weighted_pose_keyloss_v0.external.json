@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "artifact_id": "translation-weighted-pose-keyloss-v0",
+  "artifact_kind": "model-checkpoint",
+  "repository_path": "software/ai/results/translation_weighted_v0_translation_weighted/pose_model.pt",
+  "sha256": "0fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d",
+  "size_bytes": 1111650,
+  "storage": "external",
+  "required_for": [
+    "Reproducing the translation-weighted development-candidate aggregate scorecard",
+    "Artifact-present checkpoint identity verification for GitHub issue #56"
+  ],
+  "provenance": {
+    "source_commit": "fe20dc15376361f38049e4791583af72b62e5a77",
+    "producer_command": "python software/ai/vision/train_translation_weighted.py"
+  },
+  "retention": {
+    "owner": "Tactevra AI producer (j-webtek)",
+    "review_after": "2027-09-27"
+  },
+  "limitations": [
+    "Development-only candidate selected on synthetic development data; not independent confirmation or deployment qualification.",
+    "The checkpoint does not establish real-camera localization accuracy, physical contact accuracy, controller authority, or release readiness.",
+    "Reproduction also requires the external starting checkpoint and the software environment pinned by the producing source commit."
+  ]
+}

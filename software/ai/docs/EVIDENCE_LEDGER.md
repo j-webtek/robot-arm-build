@@ -3588,3 +3588,194 @@ rewriting history. New entries must use a unique evidence ID.
   rest-to-rest, not measured controller latency or physically qualified speed.
 - Next dependency: T2B consumes the exact bounded samples with deterministic IK
   and installed-geometry collision screening, retaining action and hash binding.
+
+### E-20260927-AI-404 — pose-checkpoint package test collection failure
+
+- Stage: S1 artifact identity and retention.
+- Lane: AI.
+- Source baseline: protected GitHub `main`
+  `f32c3deadee78fb2871018e39e892079f096032a`.
+- Change: first combined source/contract test invocation for the focused #56/#61
+  pose-keyloss external-artifact package.
+- Command: `python -m pytest scripts/ci/test_check_external_artifact.py software/ai/tests/test_pose_checkpoint_external_artifact_source.py -q` from the repository root.
+- Result: FAIL during collection before any assertion because the new test did
+  not add `software/ai` to `sys.path`; `ModuleNotFoundError: No module named
+  'eval'`. The manifest, checkpoint identity, verifier behavior, and artifact
+  bytes were unchanged. The generic artifact-present checker and the focused
+  verifier independently returned `verified` during the same shell increment.
+- Endpoint/camera opens: 0.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Authority: no model load, controller access, permit, transport, or physical
+  authority.
+- Limitations: test-harness import-path failure only; no clean-clone receipt or
+  reviewable completion claim existed.
+- Supersedes: none; this failed collection remains preserved.
+- Next dependency: add only the missing test import path and rerun the identical
+  combined suite.
+
+### E-20260927-AI-405 — pose-keyloss external-artifact source freeze
+
+- Stage: S1 artifact identity and retention.
+- Lane: AI.
+- Source baseline: protected GitHub `main`
+  `f32c3deadee78fb2871018e39e892079f096032a`; research history branch
+  `feature/translation-pair-evidence` remains unchanged.
+- Change: pinned the translation-weighted pose-keyloss checkpoint as an external
+  artifact and froze a focused zero-authority verifier, tests, and reproduction
+  instructions before generating either requested receipt.
+- Identity: repository path
+  `software/ai/results/translation_weighted_v0_translation_weighted/pose_model.pt`;
+  exact size 1,111,650 bytes; SHA-256
+  `0fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d`;
+  manifest SHA-256
+  `bc67bee359bc9458adb99334ccc08830023c25467e59897b015cef58c5dc4a87`.
+- Provenance: frozen producer commit
+  `fe20dc15376361f38049e4791583af72b62e5a77`; credential-free command
+  `python software/ai/vision/train_translation_weighted.py`; retention owner
+  Tactevra AI producer (`j-webtek`), review after 2027-09-27.
+- Command: `python -m pytest scripts/ci/test_check_external_artifact.py software/ai/tests/test_pose_checkpoint_external_artifact_source.py -q`; `python -m py_compile software/ai/eval/verify_pose_checkpoint_artifact.py`; `git diff --check`.
+- Result: PASS: 8 tests in 0.07s, source compilation passed, and the diff check
+  was clean. Tests assert exact identity/provenance, the exact
+  `external_artifact_unavailable` clean-root state, and fail-closed expected-state
+  mismatch. The verifier binds the existing repository checker hash, records
+  separate artifact read/write counts, and accepts only unavailable or verified.
+- Artifacts: compact manifest, `verify_pose_checkpoint_artifact.py`, focused
+  source test, reproduction/provenance instructions, this evidence row.
+- Endpoint/camera opens: 0.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Authority: artifact identity only; no model promotion, qualification,
+  controller access, transport, or release approval.
+- Limitations: source and contract verification only. No receipt or compact
+  result scorecard is claimed in this increment. Reproduction additionally
+  requires the pinned external starting checkpoint and environment.
+- Supersedes: none.
+- Next dependency: commit this freeze, create a fresh worktree from that exact
+  commit and record `external_artifact_unavailable`, separately verify the local
+  external bytes as `verified`, then commit both receipts and a compact scorecard.
+
+### E-20260927-AI-406 — first clean-worktree creation blocked by path length
+
+- Stage: S1 artifact identity and retention.
+- Lane: AI.
+- Commit: `88a018d75cb8245d079148503aa46929a0c4efc9`.
+- Change: attempted to create the requested clean evidence worktree beneath the
+  already deep workspace path.
+- Inputs/fixtures: committed source-freeze tree only; external checkpoint absent.
+- Command: `git worktree add --detach _tmp/pose-checkpoint-clean 88a018d75cb8245d079148503aa46929a0c4efc9`.
+- Result: BLOCKED before verification because Windows path length prevented the
+  checkout from materializing repository files. No receipt was generated and
+  the partial path was not used as evidence.
+- Artifacts: none.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: environment/path failure only; it establishes no artifact state.
+- Supersedes: none; this blocked attempt remains preserved.
+- Next dependency: create a registered detached worktree at a short canonical
+  path and rerun the unavailable check from that exact commit.
+
+### E-20260927-AI-407 — repository evidence-scope precheck lacked sparse input
+
+- Stage: S1 artifact identity and retention.
+- Lane: AI.
+- Commit: `88a018d75cb8245d079148503aa46929a0c4efc9`.
+- Change: ran the retention-budget precheck before the main sparse checkout
+  included its policy configuration.
+- Inputs/fixtures: changed pose artifact package; sparse checkout without
+  `.github/evidence-retention-exceptions.json`.
+- Command: `python scripts/ci/check_evidence_scope.py`.
+- Result: BLOCKED because the policy configuration was absent from the sparse
+  worktree. No evidence files were removed, rewritten, or exempted.
+- Artifacts: none.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: checkout-materialization failure only; it is not a policy pass.
+- Supersedes: none; the later successful run is recorded separately.
+- Next dependency: materialize `.github` and rerun the identical command.
+
+### E-20260927-AI-408 — portable-suite sparse-materialization failures
+
+- Stage: S1 artifact identity and retention.
+- Lane: AI.
+- Commit: `88a018d75cb8245d079148503aa46929a0c4efc9`.
+- Change: exercised the repository's portable install and test flow in fresh
+  detached worktree `C:\\p56`, preserving each incomplete sparse checkout.
+- Inputs/fixtures: clean committed tree with the external checkpoint absent;
+  progressively materialized `software/tests/integration`, `software/scripts`,
+  `software/native`, `software/firmware`, and `software/tests/fixtures`.
+- Command: `.\\.venv-ci\\Scripts\\python.exe scripts/ci/offline_checks.py test`
+  after each sparse-checkout increment.
+- Result: FAIL/BLOCKED in three attempts: first the integration test directory
+  was absent; next `software/scripts` was absent; then 480 passed, 16 failed,
+  and 4 skipped because native review, firmware, and zero-write fixture inputs
+  were absent. These were checkout omissions, not corrected test results.
+- Artifacts: console results only; no receipt was accepted from these attempts.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: the failed attempts did not evaluate a complete committed tree.
+- Supersedes: none; all failed attempts remain preserved.
+- Next dependency: materialize the named committed inputs and rerun the same
+  portable test command once against the complete required selection.
+
+### E-20260927-AI-409 — repository audit sparse-materialization failures
+
+- Stage: S1 artifact identity and retention.
+- Lane: AI.
+- Commit: `88a018d75cb8245d079148503aa46929a0c4efc9`.
+- Change: ran the maintained-document and public-record audits before their
+  tracked assets were materialized by the main sparse checkout.
+- Inputs/fixtures: focused six-path artifact package; sparse checkout initially
+  omitted `assets`, `active-project`, `presentations`, `software/freezes`, and
+  then `software/native/windows_usb_identity`.
+- Command: `python scripts/ci/check_docs.py`; `python scripts/ci/check_public_records.py`.
+- Result: BLOCKED. The first run reported missing tracked brand/media and linked
+  documentation; after adding their parent selections, the document check still
+  reported the omitted Windows USB identity README. Public-record validation
+  passed as soon as its tracked media receipt was materialized. No tracked file
+  was edited to suppress a result.
+- Artifacts: console results only.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: sparse checkout failures only; they are not audit passes.
+- Supersedes: none; final complete-input audit results are recorded separately.
+- Next dependency: materialize every named tracked input and rerun the identical
+  checks.
+
+### E-20260927-AI-410 — pose-keyloss external-artifact evidence package verified
+
+- Stage: S1 artifact identity and retention.
+- Lane: AI.
+- Commit: `88a018d75cb8245d079148503aa46929a0c4efc9`.
+- Change: completed the focused #56/#61 package with separate clean-clone and
+  artifact-present receipts, a compact reconciled scorecard, and no binary or
+  bulk report.
+- Inputs/fixtures: manifest SHA-256
+  `bc67bee359bc9458adb99334ccc08830023c25467e59897b015cef58c5dc4a87`;
+  external checkpoint size 1,111,650 and SHA-256
+  `0fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d`;
+  source scorecard SHA-256
+  `1af39548986a69deea0a4a7a03f75749ae5a9f78ee86fc418489cb3e88e4888f`.
+- Command: `python software/ai/eval/verify_pose_checkpoint_artifact.py --root C:\\p56 --manifest C:\\p56\\software/ai/manifests/translation_weighted_pose_keyloss_v0.external.json --expect external_artifact_unavailable --output software/ai/eval/pose_keyloss_external_artifact_unavailable_receipt.json`; `python software/ai/eval/verify_pose_checkpoint_artifact.py --root . --expect verified --output software/ai/eval/pose_keyloss_external_artifact_verified_receipt.json`; `python -m pytest scripts/ci/test_check_external_artifact.py software/ai/tests/test_pose_checkpoint_external_artifact_source.py software/ai/tests/test_pose_checkpoint_external_artifact_result.py -q`; `python scripts/ci/check_evidence_scope.py`; `python scripts/ci/check_docs.py`; `python scripts/ci/check_public_records.py`; `python scripts/ci/check_repository_artifacts.py`; `python scripts/ci/check_release_integrity.py`; and, in `C:\\p56`, `.\\.venv-ci\\Scripts\\python.exe scripts/ci/offline_checks.py test`.
+- Result: PASS. Clean clone returned exactly `external_artifact_unavailable`;
+  separately present bytes returned exactly `verified`; 11 focused tests passed
+  in 0.09s; evidence scope passed; portable suite passed 496 with 4 documented
+  Windows symlink skips in 66.93s. Documentation, public-record, repository-
+  artifact, and release-integrity audits passed with complete tracked inputs.
+  Development candidate metrics were mean key
+  error 0.906526367 mm, p95 2.051064264 mm, and within-1-mm fraction
+  0.690217391; model promotion and qualification remain false.
+- Artifacts: unavailable receipt SHA-256
+  `e9347f172421bc6faa8b8a75b176cbcf25f8e5b75ca6518e84673008abb8110c`;
+  verified receipt SHA-256
+  `09d0b08b20acbd120b255e018a69b1867de2c2b99fe7b497789adcc793ca8b7a`;
+  compact scorecard SHA-256
+  `0fb3077fcea31a61b4d6c977e4266f5b313ac69497af021bf697e02dcbc5fb3f`.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: synthetic development selection with one seed per arm; identity
+  verification does not establish real-camera accuracy, safe-region fit,
+  physical contact success, model promotion, qualification, or runtime authority.
+- Supersedes: none. AI-406 through AI-409 remain failed/blocked history.
+- Next dependency: review and merge the focused package, then obtain final-camera
+  physical originals and safe-region-fit uncertainty before qualification.
