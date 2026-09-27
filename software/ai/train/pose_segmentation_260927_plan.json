@@ -1,0 +1,67 @@
+{
+  "checkpoint": "software/ai/results/translation_weighted_v0_translation_weighted/pose_model.pt",
+  "file_sha256": {
+    "software/ai/vision/diagnose_landmarks.py": "7fbf2c6730ac6e1778a3e1fea61ffeed93eecfc8ce36b8f2ead579e2c50a4205",
+    "software/ai/vision/landmark_model.py": "d877060b029487382fcedf9eea4af0b6248029fbcf484d44d921f942579483fc",
+    "software/ai/vision/landmark_occlusions.py": "2d77d25077ab98dad632bb441b94c06cc6c139116d6621483cab7728d95c6aad",
+    "software/ai/vision/landmark_renderer.py": "e8535fbf98c8cfd3a838f5f793534a182d0dc5b8b9eabaa3bfa2173e649137de",
+    "software/ai/vision/evaluate_dark_only_normalization.py": "12289bfeeb52274678c62f46c7e99e057563036566fa48fc5f5cd1d58add4469",
+    "software/ai/eval/landmark_v0_scorecard.json": "8756daa676e33c2e89fb5b7cf45267b640970c0eff55d6e0a3f4756a8f99e467",
+    "software/ai/vision/diagnose_local_visibility.py": "12b72a895a99a88adf1cb35c110523aae88b828932fbf99e5fb453e5b0bee4bc",
+    "software/ai/vision/local_visibility_model.py": "011f411a32586e094553ac25f19162143a1309f15a75547ee864406db13d9b57",
+    "software/ai/vision/diagnose_landmark_visibility_response.py": "7555a1d85edd922d605b8d19d2ececa89c563b937e5c7c29a5c0fba6e6244729",
+    "software/ai/eval/landmark_local_visibility_v0_local_scorecard.json": "d09878972ad20c93779d33b2bd179daaae931f2458aa0d668452c2871e1adfaf",
+    "software/ai/eval/landmark_local_visibility_v0_global_scorecard.json": "a83b3c90f8d07917cd0fa183eb46142b1f627ba9832e608c9c1e5f843744ceae",
+    "software/ai/vision/diagnose_weighted_spread.py": "08be50691311b07c3282fbf728318c2988fb4e9071bdbb587bd20833946b2ebb",
+    "software/ai/vision/weighted_visibility_model.py": "4c2f7633f5ca3c1a450beb09fed1b37a54d9eead2a5315578bc983cdd98558ba",
+    "software/ai/eval/landmark_weighted_visibility_v0_weighted_scorecard.json": "e45d7e7e3a4766e83d2122d2ac8118d9fe6e32bb3d11ece5a26fe60df707ec87",
+    "software/ai/eval/weighted_visibility_weighted_parity_report.json": "28e18722f5056c4a4bd2e106d26174416f5bea8d61b456957337cc0cf287f485",
+    "software/ai/vision/diagnose_temperature_bias.py": "41ffd140ca75e78281e13425cd9319bc301d68863b6620000592ea84a45972cd",
+    "software/ai/vision/temperature_visibility_model.py": "b63084f2c554f5734111775f8ab6c891e2af190766c9dac2ffc2c03bb4420a89",
+    "software/ai/eval/landmark_temperature_v0_t05_scorecard.json": "0a0f613e0b1cd98c2beeb62bed5772dbd8b9db253c84283221d2fe92b1e74228",
+    "software/ai/eval/temperature_visibility_t05_parity_report.json": "6b54446acc04c6058351d76c4e5d04a663d4971c0100b5bf07f2b7b492d54312",
+    "software/ai/vision/diagnose_corner_attribution.py": "f4e5b13bdf732c6ebacdd52fa96c68145e116677a4e11403f2fac5d10af0b529",
+    "software/ai/vision/geometry_candidate_decoder.py": "6f98511d236d44a3eb8989ac57c3575df3bf63d559c4be0de85ac18a32a2dd99",
+    "software/ai/vision/evaluate_geometry_candidates.py": "98de569e2a71eda31b40dc513f89d680b6c26a0d6fc52c83dc4ba4bc56e9af5b",
+    "software/ai/train/train_landmarks.py": "fe255154e4cc3a6a0efecd2a8344519a201cd847b33b61d827ca8da1992a95bb",
+    "software/ai/vision/subpixel_candidate_decoder.py": "2b02f3f425700d131bc4187c435eca7825e8256f33311280a1c42afef1f7d5d0",
+    "software/ai/vision/evaluate_subpixel_candidates.py": "74fc905a5c2a0f7e46a95875bb16204690851daa30bacf40d62e82f659515991",
+    "software/ai/vision/evaluate_pose_landmark.py": "424d679f5cf716ef094140e7766997c7fbba209d91492c4c5dc0bfe34e38d4d9",
+    "software/ai/vision/diagnose_pose_tail.py": "42da11417ceac91001e47fa732d2c127ef9f1763c479c56f9593ff3bd185fb90",
+    "software/ai/eval/pose_landmark_v0_report.json": "16c143673d885de73ad1c4f07396ce75e42905bd36baa53e51e7cfaea6f01a94",
+    "software/ai/results/translation_weighted_v0_translation_weighted/pose_model.pt": "0fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d",
+    "software/ai/train/train_pose_occlusion.py": "e47536abe5308bf7e72c476e40484170e673353ffdd94230010152ead7f7aff1",
+    "software/ai/train/key_displacement_loss.py": "25368d50ea1791f8e48e27cb53d7ed2c954c2c2a591f0ed1e44edd9d181c0722",
+    "software/ai/train/train_pose_keyloss.py": "285eeedfe6d2babb16b9e42e969febea5f7e1ef11fa39394977780804adeca7b",
+    "software/ai/train/train_pose_anchor.py": "6a213a16355cc0dcb044a4619b1f254dc180ad65694a2d9bae6a1a64f403ebbc",
+    "software/ai/train/train_pose_segmentation.py": "18d0a5d4ff18120b3819d07bbf40348ec29083a9398efd7e20d0e37e116bc309",
+    "software/ai/train/segmentation_auxiliary.py": "40a581ef7b357644cea1672a3900f3c033c072da9422d2eb6c2b1acd6bc1cdb9"
+  },
+  "training_groups": [
+    29000000,
+    600
+  ],
+  "development_groups": [
+    15000000,
+    200
+  ],
+  "conditions": [
+    "standard",
+    "appearance_shift",
+    "partial",
+    "full"
+  ],
+  "seed": 260927,
+  "epochs": 4,
+  "learning_rate": 0.0001,
+  "loss_weights": [
+    4,
+    4,
+    1
+  ],
+  "selection": "Minimum common unweighted development MSE",
+  "rule": "Against both starting baseline and equal-budget control: no mean/tail regression any condition,yaw p95<=110%,strictly fewer combined partial/full tails. Development only; no fresh holdout unless passes.",
+  "intervention": "Both same SegmentationPoseNet initial state;key loss+anchor1 both;candidate adds balanced visible-case BCE0.001. Control head receives no gradient.4epochs,2400original images,9600presentations,152steps,three seeds. Identical original development pose-MSE selection,unchanged acceptance. Mask BCE/IoU descriptive only;no promotion from mask metrics.",
+  "anchor_coefficient": 1,
+  "segmentation_coefficient": 0.001
+}

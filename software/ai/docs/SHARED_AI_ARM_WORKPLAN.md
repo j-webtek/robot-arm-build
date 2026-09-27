@@ -599,6 +599,8 @@ Copy this row and fill every field:
 
 ## Active work claims
 
+- AI lane / S1: three-seed segmentation auxiliary training,coefficient0.001;identical heads/control initialization and original images;AI branch only.
+
 
 
 
