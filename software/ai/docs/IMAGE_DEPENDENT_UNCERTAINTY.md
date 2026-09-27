@@ -420,3 +420,36 @@ checkpoint may enter one separately frozen mapping study on new grouped
 mapping-calibration and selection cohorts. That study must preserve the 99%
 coverage, conditional coverage, nonzero utility, and zero accepted errors above
 3 mm rules before any independent confirmation is allocated.
+
+## Tail-risk to metric mapping
+
+The frozen tail-risk checkpoint was evaluated without additional model training
+on 1,000 new 56M mapping-calibration scenes and 1,000 disjoint 57M selection
+scenes. Four preregistered thresholds retained the lowest-risk 5%, 10%, 15%, or
+20% of calibration images at a 1 mm scale and assigned every other image a 10
+mm scale. Each mapping then received its own rank-991 scene conformal quantile.
+
+No mapping passed the fixed selection rule. The 5% mapping retained 440/8,000
+selection images, but reached only 97.7% marginal scene coverage, 89.7727%
+accepted-image coverage, and 78.8991% accepted-scene coverage. The 10%, 15%,
+and 20% mappings passed marginal scene coverage at 99.2%, 99.0%, and 99.0%, and
+retained 781, 1,211, and 1,653 images. Their accepted-scene coverage was only
+95.6757%, 96.3768%, and 97.2222%. They admitted 5, 8, and 11 errors above 3 mm.
+At 20%, overall accepted-image coverage reached 99.0321%, but full-obstruction
+accepted-image coverage was 95.9752% and 9 of its 323 accepted images exceeded
+3 mm.
+
+This preserves the distinction between ranking and calibrated uncertainty. A
+binary tail-risk score can improve AUROC while still interleaving enough rare
+localization failures among its low-risk images to defeat scene-wise and
+conditional accepted-subset guarantees. The checkpoint and mapping report
+remain research evidence only. No mapping, qualification, runtime behavior, or
+motion authority is installed.
+
+The next bounded direction should train a compact upper-tail error estimator on
+fresh grouped training and selection cohorts, with a preregistered high-quantile
+or exceedance objective that predicts a metric upper bound more directly. It
+must still undergo separate mapping calibration, selection, and independent
+confirmation with the present 99% coverage, per-condition utility, and zero
+accepted errors above 3 mm requirements. This failed result does not justify
+lowering any gate.

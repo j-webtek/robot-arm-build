@@ -599,10 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-- AI lane / S1: select once among four preregistered two-level mappings for the
-  frozen tail-risk head on new 56M mapping-calibration and 57M selection scenes;
-  no model training, runtime, contract, or arm changes.
-
 
 
 
@@ -8873,3 +8869,48 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic repository review before final ledger append; not model, runtime, or physical assurance. No arm or integration status changes.
 - Supersedes: none.
 - Next dependency: Same as AI-361.
+
+### E-20260927-AI-364 — tail-risk metric mapping selection
+
+- Stage: S1
+- Lane: AI
+- Commit: `22973ffaecef66bac74ed6f4c2cbaaa9d4f13127` (mapping family, immutable inputs, fresh populations, fixed checks, source, plan, and claim frozen before inference; failed report, tests, interpretation, and claim removal committed in the successor)
+- Inputs/fixtures: Frozen tail-risk checkpoint SHA256 `79d48b0ef63effea3642c2e08a20d8a6800f27f75e0ed97ed8050f146d4f326e`; mapping-calibration scenes `56000000..56000999` and selection scenes `57000000..57000999`, each with two styles and four conditions for 8,000 images. Calibration pixel/feature/target/risk-prediction SHA256 values `9eb1ac7e53fc73221b60c26e8a9e953cada1aacfd3427e30adf4c166e195ccf0`, `7e62e00321cb365e0a53400f5d25d4677ab1945a8825108231053bed5046ee39`, `f6e010a11c41085102e92f1a98af2c9d0e9481d70b8f94dcacf3221d251bb27c`, and `2f67f77971e7a27006eb51aa08c2a1a8b4ee8aec0e84daefb692227196ada238`; selection values `dbb044689b9122683a8508f6e4d6188264ae91114958bf2e9fb64b5e3445ccd0`, `01eb1ae79e87e965038c92639410607ccc3ccaf679ac32246a0471d1be44af98`, `c3f1359ab8a591d9f996b9bfa40acdcf2c1985ac59c743711906bf7786c52fbb`, and `d957b26c990ce48ef2f620ddb407761115fbe123e39099081427a9db0c7e2dd0`. Plan SHA256 `6ef7bfd12e827a9053071f1cf27a4fdbed9f3c556d6e0cf3d359c41d577d227e`; report SHA256 `d5d5a68459b6fa256c06391b3326283c587a4de7e7ab2ea2cac17b913f2c5db9`.
+- Command: `python software/ai/train/select_tail_risk_mapping.py`
+- Result: FAIL fixed selection rule; no mapping selected. Low-risk fractions 0.05, 0.10, 0.15, and 0.20 used thresholds `-11.917281151`, `-10.326743126`, `-9.127495766`, and `-8.262100220`, with rank-991 normalized quantiles `1.968840241`, `2.555912495`, `2.643276930`, and `2.805078506`. They retained 440, 781, 1,211, and 1,653 of 8,000 selection images. Marginal scene coverage was 97.7%, 99.2%, 99.0%, and 99.0%; accepted-image coverage was 89.7727%, 98.4635%, 98.7614%, and 99.0321%; accepted-scene coverage was 78.8991%, 95.6757%, 96.3768%, and 97.2222%. Accepted errors above 3 mm were 2, 5, 8, and 11. At 20%, full obstruction retained 323 images, covered 95.9752%, and admitted 9 errors above 3 mm. Four mapping fits, zero new model fits, and zero optimizer updates.
+- Artifacts: `train/select_tail_risk_mapping.py`; `train/tail_risk_mapping_v1_plan.json`; `eval/tail_risk_mapping_v1_report.json`; `tests/test_tail_risk_mapping.py`; `docs/IMAGE_DEPENDENT_UNCERTAINTY.md`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Synthetic mapping-calibration and selection evidence. The four mappings share their respective fixed cohorts, and no independent confirmation was allocated after failure. A binary risk ranking is not a calibrated millimetre radius. No mapping, qualification, runtime behavior, physical-camera evidence, or motion authority. ModelMotionBatchV2 and arm/integration statuses are unchanged.
+- Supersedes: none; the passed ranking evidence remains valid while all metric-mapping failures are preserved.
+- Next dependency: On entirely fresh grouped training-selection populations, preregister and train a compact upper-tail metric error estimator using a high-quantile or exceedance objective. It must later pass separate mapping calibration, selection, and independent confirmation under the unchanged 99% marginal/accepted-subset, per-condition utility, and zero accepted errors above 3 mm rules.
+
+### E-20260927-AI-365 — tail-risk metric mapping verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `22973ffaecef66bac74ed6f4c2cbaaa9d4f13127` (frozen mapping-selection source; tests and documentation committed in the successor)
+- Inputs/fixtures: Same 16,000 fresh images, frozen pose ensemble and tail-risk head, four two-level mappings, plan, and failed report as AI-364; exact hashes are recorded there and in the report.
+- Command: `python -m pytest -q software/ai/tests/test_tail_risk_mapping.py`
+- Result: PASS: 2 tests in 2.40s. Tests verify bounded two-level scale assignment, immutable input lineage, both exact grouped populations, all four thresholds, scene scores, conformal ranks and quantiles, complete overall and conditional summary recounts, every fixed check, deterministic no-selection outcome, and zero model fitting, optimizer, hardware, physical, qualification, or runtime authority.
+- Artifacts: `tests/test_tail_risk_mapping.py`; `eval/tail_risk_mapping_v1_report.json`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Existing pytest-asyncio configuration warning. Recount consistency only; no physical assurance. Contract unchanged, so shared boundary tests were not triggered.
+- Supersedes: none.
+- Next dependency: Same as AI-364.
+
+### E-20260927-AI-366 — tail-risk metric mapping snapshot review
+
+- Stage: S1
+- Lane: AI
+- Commit: `22973ffaecef66bac74ed6f4c2cbaaa9d4f13127` (frozen mapping-selection source; final ledger append in successor)
+- Inputs/fixtures: Repository snapshot containing the frozen study, failed report, verification test, interpretation, and shared ledger; exact hashes recorded in AI-364.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS: 6,310 paths, 967.6 MiB, 0 unresolved review findings, 14 reviewed synthetic fixtures.
+- Artifacts: mapping plan/report; verification test; uncertainty documentation; shared ledger.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic repository review before final ledger append; not model, runtime, or physical assurance. No arm or integration status changes.
+- Supersedes: none.
+- Next dependency: Same as AI-364.
