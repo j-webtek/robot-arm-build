@@ -237,6 +237,15 @@ hashes. No serial open occurred. The next boundary is unchanged: a separate,
 explicit authorization must name intake
 `2d88fa8874088ce47b778343ea0ed07994bafb64267b8cd121765c52536ce1d9`
 before the one-open, zero-write passive qualification may run.
+ARM-062 completed that separately authorized passive run exactly once. PnP
+identity matched before and after open; the endpoint opened and closed once;
+the close was confirmed; and no bytes, requests, movement, torque action,
+retry, purge, or DTR/RTS assertion occurred. The one-second window contained no
+unsolicited complete or partial lines. This qualifies only the pinned endpoint
+lifecycle under the passive zero-write policy. It does not qualify controller
+protocol, firmware, telemetry, actuation, or model-command execution. The next
+arm-lane dependency is a separately designed and authorized active identity or
+feedback qualification, not another passive retry.
 
 ## Stage definitions
 

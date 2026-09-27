@@ -1,0 +1,43 @@
+{
+  "schema": "rocell.native_t102_read_only_endpoint_qualification.v1",
+  "status": "PASSIVE_CAPTURE_COMPLETED",
+  "intake_sha256": "2d88fa8874088ce47b778343ea0ed07994bafb64267b8cd121765c52536ce1d9",
+  "intake_id": "arm061-read-only-endpoint-intake-20260927",
+  "host_id": "windows-host-sha256-e56132c821d6f85ebf7eb4b49584d5547d92765f96bfd7deb29796b3a1056e0b",
+  "endpoint_sha256": "5949fc7c52c4c567e4b6aceee9775fcbdb45c5398a8ac70a6b62d264882663eb",
+  "started_utc": "2026-09-27T12:48:36.928Z",
+  "finished_utc": "2026-09-27T12:48:37.965Z",
+  "elapsed_ms": 1031.18,
+  "identity_before": {
+    "status": "OK",
+    "friendly_name": "Silicon Labs CP210x USB to UART Bridge (COM7)",
+    "instance_id": "USB\\VID_10C4&PID_EA60\\52E4E1E8337FEF119E92181CEDD322A4"
+  },
+  "identity_after": {
+    "status": "OK",
+    "friendly_name": "Silicon Labs CP210x USB to UART Bridge (COM7)",
+    "instance_id": "USB\\VID_10C4&PID_EA60\\52E4E1E8337FEF119E92181CEDD322A4"
+  },
+  "open_attempts": 1,
+  "open_succeeded": true,
+  "close_attempts": 1,
+  "close_confirmed": true,
+  "maximum_passive_lines": 4,
+  "maximum_line_bytes": 2048,
+  "passive_read_timeout_s": 1,
+  "captured_lines": [],
+  "captured_line_count": 0,
+  "outbound_bytes": 0,
+  "active_requests": 0,
+  "movement_commands": 0,
+  "torque_commands": 0,
+  "retry_count": 0,
+  "purge_count": 0,
+  "dtr_asserted": false,
+  "rts_asserted": false,
+  "failure": null,
+  "controller_start_authorized": false,
+  "transport_write_authorized": false,
+  "execution_authorized": false,
+  "physical_authority": false
+}
