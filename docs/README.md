@@ -138,6 +138,8 @@ documents may exist only on the lab workstation; sharing them is covered in
 - [Routine maintainer checklist](MAINTAINER_CHECKLIST.md): triage, review, and handoffs.
 - [Hardware-free CI checks](CI.md) and [repository operations](REPOSITORY_OPERATIONS.md):
   verification scope, PR workflow, and dependency maintenance.
+- [Repository artifact governance](ARTIFACT_GOVERNANCE.md): limits for new
+  large or duplicate CAD, print, media, and document artifacts.
 - [Versioning and compatibility](VERSIONING.md): source-preview identifiers and
   the technical interfaces preserved during the Tactevra transition.
 - [Experimental release checklist](RELEASING.md): requirements for a separately

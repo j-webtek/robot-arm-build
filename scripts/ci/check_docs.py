@@ -21,6 +21,7 @@ DOCS = (
     'docs/HARDWARE_BUILD_GUIDE.md',
     'docs/DOCUMENTATION_STANDARD.md',
     'docs/EVIDENCE_RETENTION.md',
+    'docs/ARTIFACT_GOVERNANCE.md',
     'docs/releases/EXPERIMENTAL_PREVIEW_DRAFT.md',
     'docs/releases/CANDIDATE_DCD87DB.md',
     'docs/releases/BASELINE_2026-09-26.md',
@@ -80,6 +81,10 @@ REQUIRED_PHRASES = {
         '| Powered robot motion | **Not authorized** |',
     ),
     'docs/DOCUMENTATION_STANDARD.md': ('**Document status:** Current policy',),
+    'docs/ARTIFACT_GOVERNANCE.md': (
+        '**Document status:** Current repository policy',
+        '**Authority:** Repository placement and reviewability only;',
+    ),
     'THIRD_PARTY_NOTICES.md': (
         '**Document status:** Current attribution index',
         '**Authority:** Informational inventory only.',

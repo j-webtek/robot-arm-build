@@ -39,6 +39,10 @@ for the dated settings and how to propose another action without bypassing them.
 - A generated-evidence change budget that protects reviewability and clone cost;
   see [evidence retention](EVIDENCE_RETENTION.md).
   The list is in [offline_checks.py](../scripts/ci/offline_checks.py).
+- A delta-based [repository artifact policy](ARTIFACT_GOVERNANCE.md) that rejects
+  newly added or modified files over 10 MiB and byte-for-byte duplicate governed
+  binaries unless their exact path and digest have a reviewed exception. Existing
+  unchanged hardware-package duplication remains a historical baseline.
 - Unit coverage for the read-only [external artifact contract](EXTERNAL_ARTIFACTS.md),
   including unavailable, verified, size-mismatch, digest-mismatch, and unsafe
   manifest states. No external artifact is downloaded or required by CI.

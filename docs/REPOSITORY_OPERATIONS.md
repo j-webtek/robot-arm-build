@@ -54,6 +54,12 @@ Apply the [evidence-retention policy](EVIDENCE_RETENTION.md) before accepting
 generated reports. A green test suite does not make a multi-million-line data
 diff reviewable; require compact scorecards or an exact-digest exception.
 
+Apply [repository artifact governance](ARTIFACT_GOVERNANCE.md) to CAD, print,
+media, archive, and rendered-document changes. Prefer one canonical source plus
+a generator or manifest over repeated bytes in instructional folders. The
+delta-based check preserves the existing historical baseline; it does not
+authorize new duplication or replace privacy, provenance, or license review.
+
 Track remaining operations work in
 [repository maintenance issues](https://github.com/j-webtek/tactevra/issues?q=is%3Aissue%20is%3Aopen%20label%3Aarea%3Arepository).
 Each issue should name its scope, completion criteria, evidence and exclusions.
