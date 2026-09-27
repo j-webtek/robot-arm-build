@@ -15,6 +15,7 @@ DOCS = (
     'README.md', 'PROJECT_STATUS.md', 'CONTRIBUTING.md', 'SUPPORT.md', 'SECURITY.md',
     'CODE_OF_CONDUCT.md',
     'docs/README.md', 'docs/GETTING_STARTED.md', 'docs/RELEASING.md',
+    'docs/releases/README.md',
     'docs/SYSTEM_OVERVIEW.md', 'docs/GLOSSARY.md',
     'docs/HARDWARE_BUILD_GUIDE.md',
     'docs/DOCUMENTATION_STANDARD.md',
@@ -74,6 +75,11 @@ REQUIRED_PHRASES = {
         '| Powered robot motion | **Not authorized** |',
     ),
     'docs/DOCUMENTATION_STANDARD.md': ('**Document status:** Current policy',),
+    'docs/releases/README.md': (
+        '**Document status:** Current release index',
+        '**Authority:** Navigation and readiness context only; this page does not approve or publish a release',
+        'https://github.com/j-webtek/tactevra/issues/57',
+    ),
     'software/RUNTIME_IMPLEMENTATION_HISTORY.md': (
         '**Document status:** Historical evidence index',
         '**Authority:** Historical context only; it does not authorize hardware operation',
@@ -116,6 +122,7 @@ PUBLIC_ROUTES = {
         ('GETTING_STARTED.md', None), ('../PROJECT_STATUS.md', None),
         ('SYSTEM_OVERVIEW.md', None), ('GLOSSARY.md', None),
         ('HARDWARE_BUILD_GUIDE.md', None),
+        ('releases/README.md', None),
         ('../SUPPORT.md', None), ('../CONTRIBUTING.md', None),
         ('../SECURITY.md', None), ('../CODE_OF_CONDUCT.md', None),
     ),
