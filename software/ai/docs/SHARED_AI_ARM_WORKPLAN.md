@@ -599,6 +599,8 @@ Copy this row and fill every field:
 
 ## Active work claims
 
+- AI lane / S1: implement and run frozen five-fold training-scene ridge selection; twenty fold fits, no consumed-evaluation tuning, no arm changes.
+
 
 
 
