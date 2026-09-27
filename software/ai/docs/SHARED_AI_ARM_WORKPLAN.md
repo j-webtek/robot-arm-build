@@ -599,8 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-- AI lane / S1: eight-epoch fixed-corpus diversity comparison,three seeds,equal304 updates; no new scenes or qualification.
-
 
 
 
@@ -6458,3 +6456,71 @@ commissioning, or bounded physical result with its limitations intact.
   supervisor so it may consider a short-lived motion permit, then require the
   sole writer to consume that permit exactly once and emit correlated lifecycle
   acknowledgements without automatic retry.
+
+
+### E-20260926-AI-220 — longer fixed-budget diversity training
+
+- Stage: S1
+- Lane: AI
+- Commit: `d00e0578245b7df3bed732d8730ac67a52244dc0` (frozen source; results/tests committed with evidence)
+- Change: longer fixed-budget diversity training.
+- Inputs/fixtures: same training-only29000000..29002399 corpus; control600scenes repeated8times,candidate2400scenes cycled twice. Four conditions,8epochs,AdamW0.0001,batch64,key loss+anchor1,seeds260926/27/28; development15M200 x4. Initial/teacher0fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d. Source hashes in train/pose_diversity_long_*_plan.json; per-epoch pixels/teacher/checkpoint hashes in reports.
+- Command: `python software/ai/train/train_pose_diversity_long.py`
+- Result: Full rule FAIL3/3; baseline comparisons PASS3/3. Candidate total tails21/23/24 vs control22/23/21 and baseline32each. Checkpoint SHA256: 260926/control=670cc2885b7891f8fd90227b1a91f1cd37f929c8c95e66b1ec2cdad75669e3f6; 260926/occlusion=ecef71cc550bb0a96fd04c6a10d5fd6bfb3b181c2cfacd956271a3a9ac63da4f; 260927/control=7d99e0e65db8eeb45b5f9dbbd1823a0bb9d830e009fc82d985304a3dc46a5a2d; 260927/occlusion=e690a56152824b5d7f1dd89eeaa8674170d3c57667d2f2dbcdc788ea2955f7ab; 260928/control=1c40688832e5e390ddd31ece36e3b8fe919d3967d0c218a27022c5cbd80af58e; 260928/occlusion=007d23669bb0272f1da15e37ecfb8553eeaf90f82f1e4395d60c68ce912d92f1
+- Artifacts: train/train_pose_diversity_long.py; vision/summarize_pose_diversity_long.py; eval/pose_diversity_long_*_report.json; tests/test_pose_diversity_long.py.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Same reused development and GPU nondeterminism; no physical data or qualification. Both objectives unchanged; historical occlusion arm denotes diverse candidate.
+- Supersedes: none; failed evidence and ARM-046 retained; no arm/integration status changes.
+- Next dependency: Stop extending training budgets without diagnosis. Freeze cross-seed persistent-failure analysis of the retained long-run predictions,including failures shared by baseline/control/candidate and translation/rotation contributions. Identify systematic simulator or representation weaknesses before choosing another intervention; no qualification or runtime change.
+
+
+### E-20260926-AI-221 — longer diversity aggregation
+
+- Stage: S1
+- Lane: AI
+- Commit: `d00e0578245b7df3bed732d8730ac67a52244dc0` (frozen source; results/tests committed with evidence)
+- Change: longer diversity aggregation.
+- Inputs/fixtures: same training-only29000000..29002399 corpus; control600scenes repeated8times,candidate2400scenes cycled twice. Four conditions,8epochs,AdamW0.0001,batch64,key loss+anchor1,seeds260926/27/28; development15M200 x4. Initial/teacher0fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d. Source hashes in train/pose_diversity_long_*_plan.json; per-epoch pixels/teacher/checkpoint hashes in reports.
+- Command: `python software/ai/vision/summarize_pose_diversity_long.py`
+- Result: All3 seeds retained. Candidate appearance means0.818657/0.810537/0.815380mm,mean0.814858 vs control0.812969 and baseline0.833364. Four-epoch candidate tails23/25/25 become21/23/24; baseline passes2/3 become3/3. Paired-control dominance remains unestablished.
+- Artifacts: train/train_pose_diversity_long.py; vision/summarize_pose_diversity_long.py; eval/pose_diversity_long_*_report.json; tests/test_pose_diversity_long.py.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Four/eight epoch training reruns can differ numerically on GPU; descriptive comparison,not exact-prefix counterfactual. No winning-seed selection or acceptance relaxation.
+- Supersedes: none; failed evidence and ARM-046 retained; no arm/integration status changes.
+- Next dependency: Stop extending training budgets without diagnosis. Freeze cross-seed persistent-failure analysis of the retained long-run predictions,including failures shared by baseline/control/candidate and translation/rotation contributions. Identify systematic simulator or representation weaknesses before choosing another intervention; no qualification or runtime change.
+
+
+### E-20260926-AI-222 — longer diversity verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `d00e0578245b7df3bed732d8730ac67a52244dc0` (frozen source; results/tests committed with evidence)
+- Change: longer diversity verification.
+- Inputs/fixtures: same training-only29000000..29002399 corpus; control600scenes repeated8times,candidate2400scenes cycled twice. Four conditions,8epochs,AdamW0.0001,batch64,key loss+anchor1,seeds260926/27/28; development15M200 x4. Initial/teacher0fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d. Source hashes in train/pose_diversity_long_*_plan.json; per-epoch pixels/teacher/checkpoint hashes in reports.
+- Command: `python -m pytest -q software/ai/tests/test_pose_diversity_long.py`
+- Result: PASS,2 tests: corpus wrap/reuse,19200presentations/304updates each,first-epoch equality,exact reused image hashes versus four-epoch study,checkpoint/source lineage and aggregate reproduction. Existing pytest-asyncio warning.
+- Artifacts: train/train_pose_diversity_long.py; vision/summarize_pose_diversity_long.py; eval/pose_diversity_long_*_report.json; tests/test_pose_diversity_long.py.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Implementation verification only; batch unchanged,shared boundary suite not triggered.
+- Supersedes: none; failed evidence and ARM-046 retained; no arm/integration status changes.
+- Next dependency: Stop extending training budgets without diagnosis. Freeze cross-seed persistent-failure analysis of the retained long-run predictions,including failures shared by baseline/control/candidate and translation/rotation contributions. Identify systematic simulator or representation weaknesses before choosing another intervention; no qualification or runtime change.
+
+
+### E-20260926-AI-223 — longer diversity publication audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `d00e0578245b7df3bed732d8730ac67a52244dc0` (frozen source; results/tests committed with evidence)
+- Change: longer diversity publication audit.
+- Inputs/fixtures: same training-only29000000..29002399 corpus; control600scenes repeated8times,candidate2400scenes cycled twice. Four conditions,8epochs,AdamW0.0001,batch64,key loss+anchor1,seeds260926/27/28; development15M200 x4. Initial/teacher0fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d. Source hashes in train/pose_diversity_long_*_plan.json; per-epoch pixels/teacher/checkpoint hashes in reports.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS;6056paths,856.3MiB,0 unresolved findings,14 reviewed synthetic fixtures.
+- Artifacts: train/train_pose_diversity_long.py; vision/summarize_pose_diversity_long.py; eval/pose_diversity_long_*_report.json; tests/test_pose_diversity_long.py.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic audit; protected-main publication blocker AI-041 retained.
+- Supersedes: none; failed evidence and ARM-046 retained; no arm/integration status changes.
+- Next dependency: Stop extending training budgets without diagnosis. Freeze cross-seed persistent-failure analysis of the retained long-run predictions,including failures shared by baseline/control/candidate and translation/rotation contributions. Identify systematic simulator or representation weaknesses before choosing another intervention; no qualification or runtime change.
