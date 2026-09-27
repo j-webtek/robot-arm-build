@@ -1,7 +1,7 @@
 {
   "schema": "tactevra.published-media-verification.v1",
   "recorded_on": "2026-09-27",
-  "asset_revision_commit": "bee95eac52f7fccf94d9ce1447a880cab1f7fb91",
+  "asset_revision_commit": "a9952dfda52d34e3f97111ca5f9f5ee35fdf843a",
   "source_pull_request": "https://github.com/j-webtek/tactevra/pull/122",
   "authority": {
     "path": "presentations/blender/dimension_manifest.json",
@@ -30,12 +30,12 @@
   "outputs": [
     {
       "path": "assets/media/tactevra-overview.mp4",
-      "size_bytes": 19151157,
-      "sha256": "41e7971e15c87787d3e1fc49deba65662829a6a9c4b9adaadf92bd7ca1a1b724",
+      "size_bytes": 7519160,
+      "sha256": "5e7c6dd0f1be5021b76c543029378956dd553ec8a761228457584cf767764b89",
       "media": {
-        "duration_seconds": 77.003,
+        "duration_seconds": 77.002,
         "video": "H.264 1920x1080 24fps",
-        "audio": "AAC 96000Hz stereo",
+        "audio": "AAC 48000Hz stereo",
         "subtitles": "mov_text English"
       }
     },
@@ -64,6 +64,7 @@
     "The Blender scene was fully rerendered for this revision; the published bytes, metadata, captions, representative frames, and final audio measurements were verified before publication.",
     "The recorded visual review covers one continuous arm identity, camera and tag lock, rejected and accepted admission states, an unobstructed resolved H target, simulated tool contact, host-screen observation, closed-loop payoff, and end card.",
     "The unresolved Waveshare URDF redistribution disposition remains tracked at https://github.com/j-webtek/tactevra/issues/88.",
+    "The GitHub delivery is intentionally encoded below the repository's 10 MiB ordinary-review ceiling; a higher-bitrate local master remains reproducible from the documented build.",
     "The film is an architectural visualization, not physical-operation, collision, fabrication, or autonomous-task qualification."
   ]
 }
