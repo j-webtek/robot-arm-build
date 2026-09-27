@@ -34,6 +34,9 @@ for the dated settings and how to propose another action without bypassing them.
 - A generated-evidence change budget that protects reviewability and clone cost;
   see [evidence retention](EVIDENCE_RETENTION.md).
   The list is in [offline_checks.py](../scripts/ci/offline_checks.py).
+- Unit coverage for the read-only [external artifact contract](EXTERNAL_ARTIFACTS.md),
+  including unavailable, verified, size-mismatch, digest-mismatch, and unsafe
+  manifest states. No external artifact is downloaded or required by CI.
 - A release-integrity path policy that rejects newly tracked private-backup,
   credential, key, executable, firmware, model-weight, and archive paths unless
   their exact bytes have a reviewed allowance. Ordinary CI does not clear the

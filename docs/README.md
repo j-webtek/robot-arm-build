@@ -50,6 +50,7 @@ still being developed.
 | [Shared AI/arm workplan](../software/ai/docs/SHARED_AI_ARM_WORKPLAN.md) | Contributors: current stages, ownership, dependencies and operating rules |
 | [AI/arm evidence ledger](../software/ai/docs/EVIDENCE_LEDGER.md) | Contributors and reviewers: append-only test results, limitations and dependencies |
 | [Evidence retention](EVIDENCE_RETENTION.md) | Contributors: what evidence belongs in Git and how larger artifacts are reviewed |
+| [External artifact contract](EXTERNAL_ARTIFACTS.md) | AI and repository contributors: deterministic identity and availability checks for external checkpoints and datasets |
 | [Runtime implementation plan](../software/ai/docs/MODEL_COMMAND_RUNTIME_IMPLEMENTATION_PLAN.md) | Arm developers: planning, command handling and execution infrastructure |
 | [AI system baseline](../software/ai/docs/AI_SYSTEM_BASELINE_AND_IMPLEMENTATION_PLAN.md) | Research context and dated model-evaluation results |
 
