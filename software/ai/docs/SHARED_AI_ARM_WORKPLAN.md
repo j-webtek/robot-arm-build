@@ -599,7 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-- AI lane / S1: residual correction diagnosis, existing training/development, all six checkpoints and one training-only offset comparator. No training, runtime correction, contract or arm changes.
 
 
 
@@ -7365,3 +7364,54 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic snapshot audit before final documentation append; not runtime assurance.
 - Supersedes: none; failed evidence retained; arm/integration statuses unchanged.
 - Next dependency: Freeze an inference-only correction diagnostic on existing training/development: correction magnitude and per-axis variability/alignment versus true residual, with a training-only mean-offset comparator. No development-fit offset, runtime correction, architecture expansion or sweep. Keep demo baseline and fresh30M data unchanged.
+
+
+### E-20260926-AI-271 — residual correction diagnosis
+
+- Stage: S1
+- Lane: AI
+- Commit: `f6ce7a0c0d65e537b68cbf1063358dc497dd37b4` (frozen diagnostic source; results/tests/docs committed together)
+- Change: residual correction diagnosis.
+- Inputs/fixtures: scenes29000000..29000599 x4training,15000000..15000199 x4development; all6 residual checkpoints from seeds260926/27/28 and both modes. Exact checkpoint/source hashes in eval/residual_corrections_v0_plan.json; input/prediction hashes and metrics in report SHA256 37cc54d53016462bad59f7562d45c01c35ecd9fc1e8a0f3f5ae541642cf76785. Baseline SHA2560fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d.
+- Command: `python software/ai/vision/diagnose_residual_corrections.py`
+- Result: All6checkpoints evaluated. Seed260927 both modes near-constant: development X/Y std<4.5e-7mm,yaw<1.7e-7deg. Other predicted-mask seeds std X0.0111..0.0314mm,Y0.0687..0.0716mm,yaw0.0055..0.0073deg against needed0.9050mm/0.6286mm/0.3528deg. Training-only offset gives33development tails versus32baseline.
+- Artifacts: vision/diagnose_residual_corrections.py; eval/residual_corrections_v0_plan.json and report.json; tests/test_residual_corrections.py; docs/POSE_REPRESENTATION_REVIEW.md.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: CPU inference on GPU-trained checkpoints; no bitwise historical assertion. Near-zero-variance correlations are not meaningful learning evidence. Offset uses unweighted pose MSE, not anchored key loss. No causal activation diagnosis yet. Zero optimizer updates; reused synthetic data; no runtime correction/qualification installed.
+- Supersedes: none; prior failures and arm/integration statuses retained.
+- Next dependency: Freeze hidden-activation and output-bias diagnostic across all six checkpoints, comparing initial/trained activations on existing training inputs. Test the unit-collapse hypothesis before selecting activation/normalization changes. No new holdout or training sweep.
+
+
+### E-20260926-AI-272 — correction diagnostic verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `f6ce7a0c0d65e537b68cbf1063358dc497dd37b4` (frozen diagnostic source; results/tests/docs committed together)
+- Change: correction diagnostic verification.
+- Inputs/fixtures: scenes29000000..29000599 x4training,15000000..15000199 x4development; all6 residual checkpoints from seeds260926/27/28 and both modes. Exact checkpoint/source hashes in eval/residual_corrections_v0_plan.json; input/prediction hashes and metrics in report SHA256 37cc54d53016462bad59f7562d45c01c35ecd9fc1e8a0f3f5ae541642cf76785. Baseline SHA2560fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d.
+- Command: `python -m pytest -q software/ai/tests/test_residual_corrections.py`
+- Result: PASS:6tests in1.63s. Known variable/constant corrections, training-only offset counterexample, invalid-array rejection, physical-unit scales, source/input hashes and MSE decomposition identities.
+- Artifacts: vision/diagnose_residual_corrections.py; eval/residual_corrections_v0_plan.json and report.json; tests/test_residual_corrections.py; docs/POSE_REPRESENTATION_REVIEW.md.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Existing pytest-asyncio warning. Contract unchanged; shared boundary suite not triggered. Source verification permits absent ignored checkpoint bytes but checks them when available. Zero optimizer updates; reused synthetic data; no runtime correction/qualification installed.
+- Supersedes: none; prior failures and arm/integration statuses retained.
+- Next dependency: Freeze hidden-activation and output-bias diagnostic across all six checkpoints, comparing initial/trained activations on existing training inputs. Test the unit-collapse hypothesis before selecting activation/normalization changes. No new holdout or training sweep.
+
+
+### E-20260926-AI-273 — correction diagnostic snapshot audit
+
+- Stage: S1
+- Lane: AI
+- Commit: `f6ce7a0c0d65e537b68cbf1063358dc497dd37b4` (frozen diagnostic source; results/tests/docs committed together)
+- Change: correction diagnostic snapshot audit.
+- Inputs/fixtures: scenes29000000..29000599 x4training,15000000..15000199 x4development; all6 residual checkpoints from seeds260926/27/28 and both modes. Exact checkpoint/source hashes in eval/residual_corrections_v0_plan.json; input/prediction hashes and metrics in report SHA256 37cc54d53016462bad59f7562d45c01c35ecd9fc1e8a0f3f5ae541642cf76785. Baseline SHA2560fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS:6154paths,872.1MiB,0unresolved findings,14reviewed synthetic fixtures.
+- Artifacts: vision/diagnose_residual_corrections.py; eval/residual_corrections_v0_plan.json and report.json; tests/test_residual_corrections.py; docs/POSE_REPRESENTATION_REVIEW.md.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic audit before final documentation append; not runtime assurance. Zero optimizer updates; reused synthetic data; no runtime correction/qualification installed.
+- Supersedes: none; prior failures and arm/integration statuses retained.
+- Next dependency: Freeze hidden-activation and output-bias diagnostic across all six checkpoints, comparing initial/trained activations on existing training inputs. Test the unit-collapse hypothesis before selecting activation/normalization changes. No new holdout or training sweep.

@@ -56,3 +56,14 @@ The eight-epoch residual-only study (AI-267 onward) failed the full baseline-and
 Both arms used the same2,400 images,19,200 presentations,304 residual updates, AdamW0.001, key loss plus baseline anchor1, and minimum development pose-MSE epoch selection. Only16,515 parameters were trainable; baseline and learned head bytes stayed identical. Prior eight-epoch head training is additional shared cost. This budget was fixed before execution, with no coefficient or learning-rate sweep.
 
 Next diagnose correction magnitude, per-axis variability, and alignment with true pose residuals on the existing training and development sets. Compare actual learned corrections against a training-only mean-offset diagnostic evaluated unchanged on development. This can distinguish scene-dependent learning from a generic shift; it must not become a runtime correction or use development-fitted offsets. Do not increase model size or resume a sweep before this diagnosis. No fresh holdout has been consumed.
+
+
+## Correction diagnostic result
+
+CPU inference on the existing2,400 training and800 development images finds nearly constant corrections in seed260927 for both modes: development standard deviations below4.5e-7mm for X/Y and1.7e-7degrees yaw. Correlations at that scale are numerical descriptions, not meaningful scene-specific learning evidence. The cause has not been established; inspect hidden activations and final-bias contribution before calling it a dead-ReLU failure.
+
+For the other two predicted-mask seeds, development correction standard deviation is0.0111–0.0314mm X,0.0687–0.0716mm Y,0.0055–0.0073degrees yaw. The needed residual standard deviations are0.9050mm,0.6286mm,0.3528degrees. Y correlation is0.369–0.383; X0.063–0.137; yaw0.027–0.063. Some variation is learned, but its magnitude and alignment are limited, particularly in X and rotation. Training shows the same small variation; this is not evidence of a strong training fit that only fails on development.
+
+A single mean normalized offset fitted on training alone was[-0.0059134068,0.0015876684,-0.0006194752]. Applied unchanged to development, it produces33 large-error cases versus32 baseline. It minimizes normalized pose MSE, not the anchored key-loss objective, so it is only a diagnostic comparator. No offset was installed.
+
+Next freeze an activation/bias diagnostic for all six retained checkpoints: positive hidden-unit fractions, fully inactive units, hidden activation variation, output bias versus feature-dependent output, and initial-versus-trained activation statistics on the same training inputs. This can test whether hidden-unit collapse explains the constant seed before choosing an activation or normalization change. No extra training, architecture sweep, fresh holdout or runtime qualification is warranted by this diagnostic alone.
