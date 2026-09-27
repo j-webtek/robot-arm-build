@@ -12,17 +12,19 @@ The CI badge covers [scoped hardware-free checks](docs/CI.md), not physical robo
 
 [Get help](SUPPORT.md) · [Report a vulnerability privately](SECURITY.md)
 
-## See Tactevra in 22 seconds
+## See how Tactevra checks a physical action
 
 [![Watch the Tactevra system explainer](assets/media/tactevra-overview-poster.jpg)](https://j-webtek.github.io/tactevra/)
 
 [▶ Watch the explainer with mobile-friendly controls and selectable English captions](https://j-webtek.github.io/tactevra/)
 · [English captions (WebVTT)](assets/media/tactevra-overview.en.vtt)
 
-The film follows one request through Tactevra's five-stage architecture:
-**perceive, propose, check, execute, and verify**. It is a presentation of the
-current system design and measured workcell geometry—not evidence of autonomous
-operation or physical qualification.
+The narrated film follows “Press the H key” through Tactevra's five-stage
+architecture: **perceive, propose, check, execute, and verify**. It shows a bad
+proposal being rejected before a valid plan is admitted. The rendered keypress
+is explicitly labeled as a simulation; the film presents the current system
+design and measured workcell geometry, not autonomous-operation or physical-
+qualification evidence.
 
 Formerly **RoCell**. Existing `rocell` commands, package names, and hardware release
 paths remain unchanged for compatibility. The canonical source repository is now

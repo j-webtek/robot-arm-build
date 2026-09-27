@@ -1,7 +1,7 @@
 # Tactevra workcell explainer
 
-This package builds a reproducible Blender scene and short informational film of
-the current Tactevra RC03 workcell concept.
+This package builds a reproducible Blender scene and narrated informational film
+of the current Tactevra RC03 workcell concept.
 
 The scene deliberately separates four evidence classes:
 
@@ -44,15 +44,16 @@ Blender 4.3 or newer:
 
 This creates local generated media under `tmp/blender-workcell-video/`:
 
-- `tactevra_workcell_explainer_v1.blend`
-- `tactevra_workcell_explainer_poster_v1.png`
-- `tactevra_workcell_explainer_v1.mp4` — 1080p master with sound design
-- `tactevra_workcell_explainer_silent_v1.mp4` — 1080p silent master
-- `tactevra_workcell_explainer_web_720p_v1.mp4` — smaller web delivery
-- `tactevra_workcell_explainer_captions_v1.srt` — accessible chapter captions
-- `tactevra_workcell_explainer_soundtrack_v1.wav` — narration-safe sound bed
+- `tactevra_workcell_explainer_v2.blend`
+- `tactevra_workcell_explainer_poster_v2.png`
+- `tactevra_workcell_explainer_v2.mp4` — 1080p narrated master
+- `tactevra_workcell_explainer_silent_v2.mp4` — 1080p picture master
+- `tactevra_workcell_explainer_web_1080p_v2.mp4` — web delivery
+- `tactevra_workcell_explainer_social_square_v2.mp4` — square, captioned derivative
+- `tactevra_workcell_explainer_captions_v2.srt` — voice-matched captions
+- `tactevra_workcell_explainer_soundtrack_v2.wav` — restrained music and cues
 
-Review seven low-resolution editorial frames before the full render:
+Review thirteen low-resolution editorial frames before the full render:
 
 ```powershell
 & "C:\Program Files\Blender Foundation\Blender 4.3\blender.exe" `
@@ -60,7 +61,7 @@ Review seven low-resolution editorial frames before the full render:
   --python presentations/blender/build_workcell_explainer.py -- --preview-shots
 ```
 
-Render the complete 22-second, 24 fps, 1920×1080 film with:
+Render the complete 77-second, 24 fps, 1920×1080 film with:
 
 ```powershell
 & "C:\Program Files\Blender Foundation\Blender 4.3\blender.exe" `
@@ -75,7 +76,7 @@ authorities.
 
 ## Publish the repository overview
 
-After reviewing the 720p delivery render, publish the intentionally tracked
+After reviewing the 1080p delivery render, publish the intentionally tracked
 README media with:
 
 ```powershell
@@ -109,22 +110,27 @@ the final MP4 without rerendering the 3D frames:
 
 | Time | Shot | Evidence communicated |
 |---:|---|---|
-| 0–3.7 s | Product promise | One user request becomes one checked physical action |
-| 3.7–7.4 s | 1 — Perceive | Fixed vision and direct tags establish the shared board frame |
-| 7.4–10.7 s | 2 — Propose | AI supplies intent, target, frame, and confidence—not raw servo commands |
-| 10.7–14 s | 3 — Check | Deterministic gates validate units, frames, reach, clearance, and freshness |
-| 14–17 s | 3 — Check target + route | Named targets resolve through measured device geometry inside the deterministic check |
-| 17–18.5 s | 4 — Execute | The sole controller writer sends one admitted, bounded action |
-| 18.5–19.7 s | 5 — Verify | Telemetry and observation close the loop before the next action |
-| 19.7–22 s | System close | One shared contract connects intent to verified physical action |
+| 0–4 s | Request | One clear task: “Press the H key” |
+| 4–10 s | Stakes | Physical AI must be dependable because guesses become motion |
+| 10–14 s | Promise | One request becomes one checked physical action |
+| 14–22 s | 1 — Perceive | Fixed vision and tags establish a shared board frame |
+| 22–30 s | 2 — Propose | The model proposes an action and target, never raw motor commands |
+| 30–37 s | 3 — Reject | A stale, malformed plan is blocked while the arm stays still |
+| 37–44 s | 3 — Accept | Every deterministic admission gate passes |
+| 44–51 s | Resolve | The H key resolves through the camera, board, and device frames |
+| 51–58 s | 4 — Execute | A single rendered, explicitly simulated H contact is shown |
+| 58–65 s | 5 — Verify | Telemetry and observation close the loop |
+| 65–72 s | Payoff | The five stages join into one shared contract |
+| 72–77 s | End card | Brand, tagline, URL, and a restrained qualification note |
 
 The composited information layer maintains a persistent architecture spine—
 `PERCEIVE → PROPOSE → CHECK → EXECUTE → VERIFY`—and highlights the active
 stage in every chapter. This gives a first-time viewer a stable mental model
 while the camera moves between the workcell, arm, devices, and route.
 
-The film ends with a visible qualification disclaimer. It must not be used as
-fabrication approval, camera-load approval, or robot-motion evidence.
+The film ends with a small grey qualification note. It must not be used as
+fabrication approval, camera-load approval, robot-motion evidence, or evidence
+that a physical keypress occurred.
 
 ## Editorial system
 
@@ -142,17 +148,17 @@ dimension-checked 3D render:
   describing it;
 - an explicit frame-chain card shows how `camera_px` becomes `board_mm`, then a
   device-local named target;
-- a small persistent Tactevra/RC03 bug establishes brand continuity without
+- a small persistent Tactevra wordmark establishes brand continuity without
   competing with chapter titles;
 - procedural birch and bench variation, subtle depth of field, animated focal
   length, board-frame axes, a route reveal, and an admitted-command packet add
   material and motion depth while keeping the official arm surface static;
-- a deterministic non-narrated soundtrack gives each state change a restrained
-  cue, with tonal space intentionally reserved for later narration;
-- silent 1080p, sound-design 1080p, web 720p, and SRT caption variants are
-  generated from the same authority;
-- the example card explicitly says `NOMINAL` so illustrative values cannot be
-  mistaken for a live controller trace;
+- calm local narration is the loudest element; the deterministic soundtrack
+  uses one cue meaning per state and remains well below the voice;
+- silent 1080p, narrated 1080p, web 1080p, square social, and SRT caption
+  variants are generated from the same authority;
+- proposal, resolution, and execution cards are framed as model, contract, and
+  simulation evidence rather than as a live controller trace;
 - informational graphics are composited after transitions, keeping titles and
   evidence labels readable during every cut.
 
@@ -192,15 +198,15 @@ and tool geometry also remain physical-measurement items. This film is therefore
 an accurate system-layout and product-geometry explainer, not a motion-clearance
 or fabrication release.
 
-## Narration guide
+## Narration and truth boundary
 
-> One request enters Tactevra. First, fixed vision and direct tags anchor the
-> workspace to a shared board frame. The AI proposes intent, a named target,
-> coordinate frame, and confidence—but never raw servo commands. Deterministic
-> gates then check units, calibration, reach, clearance, and freshness. Measured
-> device geometry resolves a key or phone control into a bounded target. The
-> sole controller writer executes one admitted action. Telemetry and observation
-> verify the result before the system continues. This visualization uses current
-> RC03 dimensions and repository CAD. The arm surface comes from the
-> hash-verified official assembly STEP and is shown in its default static pose;
-> target paths remain conceptual until physically qualified.
+`generate_voiceover.ps1` creates local sentence-level narration using an
+installed Windows voice. The build aligns those segments to the screenplay,
+mixes the dialogue to approximately −14 LUFS with a −1 dBTP ceiling, and writes
+SRT and WebVTT captions matching the spoken script. Replace the local voice with
+a recorded human performance later without changing the timings or captions.
+
+The exact official arm remains a static surface. The moving contact indicator
+and H key are presentation animation, explicitly labeled `SIMULATED PRESS`.
+They explain the intended controller boundary; they are not a kinematic solve,
+collision check, or record of a physical robot action.

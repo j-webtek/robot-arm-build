@@ -56,7 +56,8 @@ OFFICIAL_ARM_STL_PATH = ROOT / "tmp" / "vendor" / "roarm_m3" / "roarm_m3_officia
 PUBLIC_MEDIA_DIR = ROOT / "assets" / "media"
 
 FPS = 24
-END_FRAME = 22 * FPS
+# V2 follows the narrated 12-beat screenplay: 77 seconds at 24 fps.
+END_FRAME = 77 * FPS
 BOARD_CENTER_MM = Vector((305.0, 228.5, 0.0))
 
 
@@ -252,7 +253,7 @@ def add_tag(tag_id: str, x: float, y: float, white: bpy.types.Material,
         cell.parent = base
 
 
-def add_keyboard(layout: dict, mats: dict[str, bpy.types.Material]) -> None:
+def add_keyboard(layout: dict, mats: dict[str, bpy.types.Material]) -> dict[str, bpy.types.Object]:
     dev = layout["devices"]["keyboard"]
     ox, oy = dev["nominal_origin_xy"]
     sx, sy, sz = dev["nominal_size"]
@@ -273,6 +274,7 @@ def add_keyboard(layout: dict, mats: dict[str, bpy.types.Material]) -> None:
     ]
     top = oy + sy - 18
     usable_x = sx - 22
+    named_keys: dict[str, bpy.types.Object] = {}
     for row_i, count in enumerate(rows):
         pitch = usable_x / count
         y = top - row_i * 27
@@ -282,6 +284,8 @@ def add_keyboard(layout: dict, mats: dict[str, bpy.types.Material]) -> None:
                        (pitch * 0.82 / 1000, 0.021, 0.005), mats["key"], 0.002)
             if row_i < len(labels) and col < len(labels[row_i]):
                 key["legend"] = labels[row_i][col]
+                named_keys.setdefault(labels[row_i][col], key)
+    return named_keys
 
 
 def add_phone(layout: dict, mats: dict[str, bpy.types.Material]) -> None:
@@ -456,11 +460,43 @@ def build() -> bpy.types.Scene:
     cube("Bench", (0, -0.01, -0.050), (1.15, 0.88, 0.065),
          textured_material("Bench", (0.055, 0.066, 0.080, 1), scale=5.0,
                            detail=2.0, metallic=0.15, roughness=0.52), 0.012)
-    add_keyboard(layout, mats)
+    keyboard_keys = add_keyboard(layout, mats)
     add_phone(layout, mats)
     for tag_id, tag in layout["direct_tags"]["tags"].items():
         add_tag(tag_id, *tag["detection_center_xy"], mats["white"], mats["abs"])
     add_robot(mats)
+
+    # The exact vendor assembly remains static because it is a single reference
+    # surface. A restrained presentation stylus and the H key communicate the
+    # admitted contact at the end effector without claiming kinematic evidence.
+    h_key = keyboard_keys["H"]
+    h_key_z = h_key.location.z
+    for frame, offset in ((1225, 0.0), (1288, 0.0), (1300, -0.004),
+                          (1320, -0.004), (1332, 0.0), (1392, 0.0)):
+        h_key.location.z = h_key_z + offset
+        h_key.keyframe_insert("location", frame=frame)
+    stylus = cylinder("SIMULATED — admitted H contact indicator",
+                      board_point(216.55, 154.0, 105), 0.004, 0.140,
+                      mats["metal"], 48)
+    stylus.rotation_euler = (0, 0, 0)
+    visibility(stylus, 1225, 1392)
+    for frame, z_mm in ((1225, 105), (1288, 105), (1300, 101),
+                        (1320, 101), (1332, 105), (1392, 105)):
+        stylus.location = board_point(216.55, 154.0, z_mm)
+        stylus.keyframe_insert("location", frame=frame)
+    stylus["evidence_status"] = "SIMULATED_CONTACT_INDICATOR_NOT_PHYSICAL_TEST_EVIDENCE"
+    bpy.ops.mesh.primitive_cone_add(vertices=48, radius1=0.0012, radius2=0.004,
+                                    depth=0.012,
+                                    location=board_point(216.55, 154.0, 29))
+    stylus_tip = bpy.context.object
+    stylus_tip.name = "SIMULATED — compliant stylus tip"
+    apply_material(stylus_tip, mats["arm_exact"])
+    visibility(stylus_tip, 1225, 1392)
+    for frame, z_mm in ((1225, 29), (1288, 29), (1300, 25),
+                        (1320, 25), (1332, 29), (1392, 29)):
+        stylus_tip.location = board_point(216.55, 154.0, z_mm)
+        stylus_tip.keyframe_insert("location", frame=frame)
+    stylus_tip["evidence_status"] = "SIMULATED_CONTACT_INDICATOR_NOT_PHYSICAL_TEST_EVIDENCE"
 
     # Camera body at the nominal carriage axis and optical target.
     cam_center = board_point(305, 228.5, 1034)
@@ -477,22 +513,32 @@ def build() -> bpy.types.Scene:
     camera.data.sensor_width = 36
     scene.camera = camera
     camera_positions = [
-        (1, Vector((1.90, -2.18, 1.10))), (88, Vector((1.52, -1.86, 0.98))),
-        (89, Vector((-1.18, -1.42, 0.82))), (176, Vector((-0.90, -1.16, 0.72))),
-        (177, Vector((-0.25, -0.82, 0.62))), (264, Vector((-0.20, -0.68, 0.54))),
-        (265, Vector((-0.42, -0.40, 0.43))), (336, Vector((-0.29, -0.31, 0.39))),
-        (337, Vector((0.72, -0.32, 1.42))), (408, Vector((0.58, -0.24, 1.22))),
-        (409, Vector((0.04, -0.96, 0.68))), (472, Vector((0.02, -0.78, 0.58))),
-        (473, Vector((0.08, -1.92, 1.00))), (END_FRAME, Vector((0.04, -1.66, 0.92))),
+        # Request / stakes / promise: one locked hero scene and a restrained orbit.
+        (1, Vector((1.90, -2.18, 1.10))), (96, Vector((1.90, -2.18, 1.10))),
+        (97, Vector((1.72, -2.02, 1.04))), (240, Vector((1.42, -1.72, 0.94))),
+        (241, Vector((1.42, -1.72, 0.94))), (336, Vector((1.28, -1.58, 0.90))),
+        # Perceive: camera fixture, then its measured top-down view.
+        (337, Vector((0.78, -0.38, 1.28))), (408, Vector((0.62, -0.30, 1.18))),
+        (409, Vector((0.00, 0.00, 1.58))), (528, Vector((0.00, 0.00, 1.42))),
+        # Proposal and both gate decisions keep the arm visibly still.
+        (529, Vector((-1.18, -1.42, 0.82))), (720, Vector((-0.98, -1.22, 0.75))),
+        (721, Vector((-0.98, -1.22, 0.75))), (1056, Vector((-0.90, -1.14, 0.72))),
+        # Resolve top-down, execute close-up, verify, payoff, end card.
+        (1057, Vector((0.18, -0.04, 1.30))), (1224, Vector((0.14, -0.03, 1.16))),
+        (1225, Vector((-0.26, -0.46, 0.33))), (1392, Vector((-0.20, -0.36, 0.29))),
+        (1393, Vector((0.18, -0.88, 0.60))), (1560, Vector((0.12, -0.78, 0.56))),
+        (1561, Vector((1.42, -1.72, 0.94))), (1728, Vector((1.66, -1.94, 1.04))),
+        (1729, Vector((1.66, -1.94, 1.04))), (END_FRAME, Vector((1.66, -1.94, 1.04))),
     ]
     targets = [
-        (1, Vector((0, 0.00, 0.48))), (88, Vector((0, 0.02, 0.45))),
-        (89, Vector((0, 0.02, 0.51))), (176, Vector((0, 0.02, 0.42))),
-        (177, Vector((0, -0.005, 0.25))), (264, Vector((0, -0.045, 0.29))),
-        (265, Vector((0, -0.095, 0.34))), (336, Vector((0, -0.095, 0.33))),
-        (337, Vector((0, 0.00, 0.04))), (408, Vector((0, 0.00, 0.06))),
-        (409, Vector((0.06, -0.03, 0.16))), (472, Vector((0.08, -0.04, 0.17))),
-        (473, Vector((0, 0.02, 0.44))), (END_FRAME, Vector((0, 0.02, 0.44))),
+        (1, Vector((0, 0.02, 0.45))), (336, Vector((0, 0.02, 0.45))),
+        (337, Vector((0, 0.02, 1.00))), (408, Vector((0, 0.02, 0.98))),
+        (409, Vector((0, 0.00, 0.03))), (528, Vector((0, 0.00, 0.03))),
+        (529, Vector((0, -0.02, 0.40))), (1056, Vector((0, -0.02, 0.40))),
+        (1057, board_point(216.55, 154.0, 22)), (1224, board_point(216.55, 154.0, 22)),
+        (1225, board_point(216.55, 154.0, 32)), (1392, board_point(216.55, 154.0, 30)),
+        (1393, Vector((0.08, -0.04, 0.20))), (1560, Vector((0.08, -0.04, 0.20))),
+        (1561, Vector((0, 0.02, 0.45))), (END_FRAME, Vector((0, 0.02, 0.45))),
     ]
     animate_transform(camera, camera_positions, targets)
 
@@ -507,9 +553,10 @@ def build() -> bpy.types.Scene:
     camera.data.dof.focus_object = focus
     camera.data.dof.aperture_fstop = 5.6
     lens_keys = (
-        (1, 46), (88, 54), (89, 54), (176, 62), (177, 64), (264, 72),
-        (265, 58), (336, 68), (337, 50), (408, 60), (409, 56), (472, 66),
-        (473, 48), (END_FRAME, 54),
+        (1, 35), (96, 35), (97, 35), (336, 42), (337, 58), (408, 72),
+        (409, 52), (528, 58), (529, 58), (1056, 68), (1057, 52),
+        (1224, 58), (1225, 72), (1392, 85), (1393, 58), (1560, 72),
+        (1561, 35), (END_FRAME, 42),
     )
     for frame, focal_length in lens_keys:
         camera.data.lens = focal_length
@@ -556,55 +603,51 @@ def build() -> bpy.types.Scene:
 
     vision = text_object("Vision label", "STATIC VISION\n1000 mm NOMINAL OPTICAL TARGET",
                          Vector((0.0, 0.07, 1.14)), 0.035, mats["white"], camera)
-    visibility(vision, 94, 170)
+    visibility(vision, 337, 408)
     sight = curve_line("Vision ray",
                        [board_point(305, 228.5, 995), board_point(305, 228.5, 14)], mats["cyan"], 0.002)
-    visibility(sight, 108, 174)
+    visibility(sight, 337, 528)
 
     arm_detail = text_object("Arm detail label", "ROARM-M3\nOFFICIAL ASSEMBLY SURFACE",
                              Vector((0.0, -0.10, 0.42)), 0.030, mats["white"], camera)
-    visibility(arm_detail, 182, 330)
+    visibility(arm_detail, 97, 240)
 
     devices = text_object("Device label", "INDEXED DEVICE GEOMETRY\nKEYBOARD + PHONE + DIRECT TAGS",
                           Vector((0.02, -0.14, 0.29)), 0.031, mats["white"], camera)
-    visibility(devices, 340, 404)
-    add_target_ring("Keyboard target H", 216.55, 154.0, 29, mats["cyan"], 350, 430)
-    add_target_ring("Keyboard target I", 278.0, 188.0, 29, mats["amber"], 360, 446)
-    add_target_ring("Phone target", 538.15, 166.4, 20, mats["green"], 374, 462)
+    visibility(devices, 409, 528)
+    add_target_ring("Keyboard target H", 216.55, 154.0, 29, mats["cyan"], 1057, 1224)
 
     # Coordinate-frame graphics make the camera/board/device transformation
     # visible without pretending these presentation primitives are measured
     # controller telemetry.
     axis_origin = board_point(105, 100, 33)
     add_axis("Board frame X", axis_origin, axis_origin + Vector((0.090, 0, 0)),
-             mats["cyan"], 342, 405)
+             mats["cyan"], 1057, 1224)
     add_axis("Board frame Y", axis_origin, axis_origin + Vector((0, 0.090, 0)),
-             mats["amber"], 342, 405)
+             mats["amber"], 1057, 1224)
     add_axis("Board frame Z", axis_origin, axis_origin + Vector((0, 0, 0.090)),
-             mats["green"], 342, 405)
+             mats["green"], 1057, 1224)
 
     checked = text_object("Motion label", "PROPOSE → VALIDATE → EXECUTE → VERIFY",
                           Vector((0.0, -0.15, 0.48)), 0.030, mats["white"], camera)
-    visibility(checked, 414, 468)
+    visibility(checked, 529, 1056)
     route = curve_line("Checked route",
                        [board_point(305, 410, 260), board_point(235, 180, 115),
-                        board_point(216.55, 154, 48), board_point(390, 185, 105),
-                        board_point(538.15, 166.4, 42)], mats["amber"], 0.003)
-    visibility(route, 420, 468)
-    animate_curve_reveal(route, 420, 455)
+                        board_point(216.55, 154, 48)], mats["amber"], 0.003)
+    visibility(route, 1225, 1392)
+    animate_curve_reveal(route, 1225, 1320)
 
     # The luminous packet communicates admitted-command progression. It is a
     # conceptual state marker, not a simulated TCP or qualified arm motion.
     packet = cylinder("Admitted command packet", board_point(305, 410, 260),
                       0.009, 0.012, mats["cyan"], 32)
     packet.rotation_euler = (math.pi / 2, 0, 0)
-    visibility(packet, 422, 468)
+    visibility(packet, 1225, 1392)
     packet_path = [
-        (422, board_point(305, 410, 260)),
-        (436, board_point(235, 180, 115)),
-        (447, board_point(216.55, 154, 48)),
-        (458, board_point(390, 185, 105)),
-        (468, board_point(538.15, 166.4, 42)),
+        (1225, board_point(305, 410, 260)),
+        (1280, board_point(235, 180, 115)),
+        (1320, board_point(216.55, 154, 48)),
+        (1392, board_point(216.55, 154, 48)),
     ]
     for frame, point in packet_path:
         packet.location = point
@@ -612,11 +655,11 @@ def build() -> bpy.types.Scene:
 
     close = text_object("Closing title", "ONE SHARED CONTRACT\nFROM USER INTENT TO VERIFIED ACTION",
                         Vector((0.0, -0.21, 0.80)), 0.043, mats["white"], camera)
-    visibility(close, 478, END_FRAME)
+    visibility(close, 1561, END_FRAME)
     disclaimer = text_object("Disclaimer",
                              "CONCEPT VISUALIZATION • RC03 NOMINAL GEOMETRY • NOT MOTION OR FABRICATION QUALIFICATION",
                              Vector((0.0, -0.20, 0.68)), 0.014, mats["amber"], camera)
-    visibility(disclaimer, 482, END_FRAME)
+    visibility(disclaimer, 1729, END_FRAME)
 
     # Smooth cinematic interpolation without overshooting the bounded poses.
     for obj in scene.objects:
@@ -630,7 +673,8 @@ def build() -> bpy.types.Scene:
     scene["evidence_notice"] = (
         "Portal/stations are repository CAD; board/devices are RC03 measured envelopes; "
         "the arm surface is a local hash-verified derivative of the official STEP assembly; "
-        "its default pose is static and not motion qualification."
+        "its default pose is static and not motion qualification; the H contact "
+        "indicator is an explicitly labeled presentation simulation."
     )
     scene["source_layout"] = str(LAYOUT_PATH.relative_to(ROOT))
     scene["source_portal"] = str(PORTAL_PATH.relative_to(ROOT))
@@ -648,89 +692,148 @@ WrapStyle: 2
 
 [V4+ Styles]
 Format: Name,Fontname,Fontsize,PrimaryColour,SecondaryColour,OutlineColour,BackColour,Bold,Italic,Underline,StrikeOut,ScaleX,ScaleY,Spacing,Angle,BorderStyle,Outline,Shadow,Alignment,MarginL,MarginR,MarginV,Encoding
-Style: Hero,Arial,68,&H00FFFFFF,&H000000FF,&H80081119,&H70000000,-1,0,0,0,100,100,0,0,1,3,1,8,90,90,66,1
-Style: Sub,Arial,32,&H00F6F8FA,&H000000FF,&H90081119,&H70000000,-1,0,0,0,100,100,0,0,1,3,1,8,100,100,74,1
-Style: Cyan,Arial,27,&H00F8C845,&H000000FF,&H90081119,&H70000000,-1,0,0,0,100,100,0,0,1,3,1,2,90,90,58,1
-Style: Warn,Arial,22,&H004C9BFF,&H000000FF,&H90081119,&H70000000,-1,0,0,0,100,100,0,0,1,3,1,2,75,75,48,1
-Style: Spine,Arial,23,&H00D8DEE8,&H000000FF,&H90081119,&H90000000,-1,0,0,0,100,100,1,0,1,3,1,2,60,60,24,1
-Style: Card,Consolas,24,&H00F3F6FA,&H000000FF,&H00373E49,&HC00A0E14,-1,0,0,0,100,100,0,0,3,2,0,7,90,90,205,1
-Style: Frame,Consolas,21,&H00D8DEE8,&H000000FF,&H00373E49,&HC00A0E14,0,0,0,0,100,100,0,0,3,2,0,7,90,90,382,1
-Style: Bug,Arial,20,&H00F8C845,&H000000FF,&H90081119,&H70000000,-1,0,0,0,100,100,1,0,1,2,1,9,50,50,32,1
+Style: Black,Arial,20,&H00000000,&H00000000,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,0,0,7,0,0,0,1
+Style: Request,Consolas,66,&H00FFFFFF,&H000000FF,&H80081119,&H00000000,-1,0,0,0,100,100,0,0,1,2,0,5,80,80,0,1
+Style: Hero,Arial,68,&H00FFFFFF,&H000000FF,&H80081119,&H70000000,-1,0,0,0,100,100,0,0,1,3,1,8,90,90,70,1
+Style: Stage,Arial,48,&H00FFFFFF,&H000000FF,&H80081119,&H70000000,-1,0,0,0,100,100,0,0,1,3,1,8,90,90,62,1
+Style: Sub,Arial,32,&H00E7ECF2,&H000000FF,&H90081119,&H70000000,0,0,0,0,100,100,0,0,1,2,1,8,100,100,70,1
+Style: Tracker,Arial,24,&H00D8DEE8,&H000000FF,&H90081119,&H90000000,-1,0,0,0,100,100,1,0,1,3,1,2,60,60,26,1
+Style: Card,Consolas,30,&H00F3F6FA,&H000000FF,&H00373E49,&HD00A0E14,-1,0,0,0,100,100,0,0,3,2,0,7,150,150,245,1
+Style: CenterCard,Consolas,32,&H00F3F6FA,&H000000FF,&H00373E49,&HD00A0E14,-1,0,0,0,100,100,0,0,3,2,0,5,240,240,0,1
+Style: Badge,Arial,28,&H00FFFFFF,&H000000FF,&H00373E49,&HD00A0E14,-1,0,0,0,100,100,0,0,3,2,0,8,90,90,86,1
+Style: Bug,Arial,21,&H00F8C845,&H000000FF,&H90081119,&H70000000,-1,0,0,0,100,100,1,0,1,2,1,9,44,44,30,1
+Style: Fine,Arial,18,&H00898F99,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,0,0,2,80,80,28,1
 
 [Events]
 Format: Layer,Start,End,Style,Name,MarginL,MarginR,MarginV,Effect,Text
-Dialogue: 1,0:00:00.20,0:00:21.95,Bug,,0,0,0,,{\\fad(250,180)}TACTEVRA  /  RC03
-Dialogue: 0,0:00:00.20,0:00:03.55,Hero,,0,0,0,,{\\fad(300,250)}ONE REQUEST. ONE CHECKED PHYSICAL ACTION.
-Dialogue: 0,0:00:00.55,0:00:03.55,Cyan,,0,0,0,,{\\fad(300,250)}TACTEVRA CONNECTS USER INTENT TO A MEASURED, VERIFIED WORKCELL
-Dialogue: 0,0:00:03.72,0:00:07.25,Hero,,0,0,0,,{\\fad(180,220)}1 · PERCEIVE THE WORKSPACE
-Dialogue: 0,0:00:03.95,0:00:07.25,Cyan,,0,0,0,,{\\fad(180,220)}FIXED VISION + DIRECT TAGS ANCHOR EVERY TARGET TO THE SAME BOARD FRAME
-Dialogue: 0,0:00:03.72,0:00:07.25,Spine,,0,0,0,,{\\fad(180,180)}{\\c&H00F8C845}PERCEIVE{\\c&H00D8DEE8}  →  PROPOSE  →  CHECK  →  EXECUTE  →  VERIFY
-Dialogue: 0,0:00:07.38,0:00:10.55,Hero,,0,0,0,,{\\fad(180,180)}2 · PROPOSE A TARGET
-Dialogue: 0,0:00:07.65,0:00:10.55,Cyan,,0,0,0,,{\\fad(180,180)}AI PRODUCES INTENT, TARGET, FRAME AND CONFIDENCE — NEVER RAW SERVO COMMANDS
-Dialogue: 0,0:00:07.38,0:00:10.55,Spine,,0,0,0,,{\\fad(180,180)}PERCEIVE  →  {\\c&H00F8C845}PROPOSE{\\c&H00D8DEE8}  →  CHECK  →  EXECUTE  →  VERIFY
-Dialogue: 0,0:00:07.72,0:00:10.40,Card,,0,0,0,,{\\fad(180,180)}{\\c&H00F8C845}NOMINAL MODEL PROPOSAL{\\c&H00F3F6FA}\\Naction       hover\\Ntarget       keyboard:H\\Nframe        board\\Nconfidence   0.97
-Dialogue: 0,0:00:10.70,0:00:13.85,Hero,,0,0,0,,{\\fad(180,180)}3 · CHECK THE PLAN
-Dialogue: 0,0:00:10.95,0:00:13.85,Cyan,,0,0,0,,{\\fad(180,180)}DETERMINISTIC GATES VERIFY UNITS, FRAMES, REACH, CLEARANCE AND FRESHNESS
-Dialogue: 0,0:00:10.70,0:00:13.85,Spine,,0,0,0,,{\\fad(180,180)}PERCEIVE  →  PROPOSE  →  {\\c&H004C9BFF}CHECK{\\c&H00D8DEE8}  →  EXECUTE  →  VERIFY
-Dialogue: 0,0:00:10.98,0:00:12.22,Card,,0,0,0,,{\\fad(140,120)}{\\c&H004C9BFF}REJECTED EXAMPLE{\\c&H00F3F6FA}\\Nframe        camera_raw\\Ncalibration  stale\\Ndecision     REJECT
-Dialogue: 0,0:00:12.26,0:00:13.70,Card,,0,0,0,,{\\fad(120,180)}{\\c&H003DCC46}ADMISSION GATE · ACCEPT{\\c&H00F3F6FA}\\Nunits        PASS\\Nframe        PASS\\Nreach        PASS\\Nclearance    PASS\\Nfreshness    PASS
-Dialogue: 0,0:00:14.02,0:00:16.85,Hero,,0,0,0,,{\\fad(180,180)}3 · CHECK TARGET + ROUTE
-Dialogue: 0,0:00:14.25,0:00:16.85,Cyan,,0,0,0,,{\\fad(180,180)}NAMED KEYS AND PHONE CONTROLS RESOLVE THROUGH MEASURED DEVICE GEOMETRY
-Dialogue: 0,0:00:14.02,0:00:16.85,Spine,,0,0,0,,{\\fad(180,180)}PERCEIVE  →  PROPOSE  →  {\\c&H004C9BFF}CHECK{\\c&H00D8DEE8}  →  EXECUTE  →  VERIFY
-Dialogue: 0,0:00:14.28,0:00:16.70,Card,,0,0,0,,{\\fad(180,180)}{\\c&H004C9BFF}NOMINAL RESOLVED TARGET{\\c&H00F3F6FA}\\Nkey          H\\NX            216.55 mm\\NY            154.00 mm\\NZ            48.00 mm
-Dialogue: 0,0:00:14.42,0:00:16.70,Frame,,0,0,0,,{\\fad(180,180)}{\\c&H00F8C845}FRAME CHAIN{\\c&H00D8DEE8}\\Ncamera_px → board_mm → keyboard_local → key:H
-Dialogue: 0,0:00:17.02,0:00:18.45,Hero,,0,0,0,,{\\fad(150,150)}4 · EXECUTE ONE BOUNDED ACTION
-Dialogue: 0,0:00:17.20,0:00:18.45,Cyan,,0,0,0,,{\\fad(150,150)}THE SOLE CONTROLLER WRITER SENDS THE ADMITTED MOTION
-Dialogue: 0,0:00:17.02,0:00:18.45,Spine,,0,0,0,,{\\fad(150,150)}PERCEIVE  →  PROPOSE  →  CHECK  →  {\\c&H00F8C845}EXECUTE{\\c&H00D8DEE8}  →  VERIFY
-Dialogue: 0,0:00:17.18,0:00:18.35,Card,,0,0,0,,{\\fad(120,120)}{\\c&H00F8C845}EXECUTION PERMIT{\\c&H00F3F6FA}\\Naction_count 1\\Nretry        none\\Nwriter       controller
-Dialogue: 0,0:00:18.55,0:00:19.60,Hero,,0,0,0,,{\\fad(120,150)}5 · VERIFY BEFORE CONTINUING
-Dialogue: 0,0:00:18.67,0:00:19.60,Cyan,,0,0,0,,{\\fad(120,150)}TELEMETRY + OBSERVATION CLOSE THE LOOP
-Dialogue: 0,0:00:18.55,0:00:19.60,Spine,,0,0,0,,{\\fad(120,150)}PERCEIVE  →  PROPOSE  →  CHECK  →  EXECUTE  →  {\\c&H003DCC46}VERIFY
-Dialogue: 0,0:00:18.66,0:00:19.48,Card,,0,0,0,,{\\fad(100,100)}{\\c&H003DCC46}RESULT{\\c&H00F3F6FA}\\Nsettled      PASS\\Nobserved     PASS
-Dialogue: 0,0:00:19.75,0:00:21.95,Hero,,0,0,0,,{\\fad(220,180)}ONE SHARED CONTRACT
-Dialogue: 0,0:00:19.98,0:00:21.95,Sub,,0,0,0,,{\\fad(220,180)}FROM USER INTENT TO VERIFIED PHYSICAL ACTION
-Dialogue: 0,0:00:19.82,0:00:21.95,Warn,,0,0,0,,{\\fad(220,180)}PRESENTATION VISUALIZATION • STATIC OFFICIAL ARM POSE • NOT MOTION OR FABRICATION QUALIFICATION
+Dialogue: 0,0:00:00.00,0:00:04.00,Black,,0,0,0,,{\\p1}m 0 0 l 1920 0 l 1920 1080 l 0 1080{\\p0}
+Dialogue: 1,0:00:00.35,0:00:04.00,Request,,0,0,0,,{\\fad(220,180)}> Press the H key.  ▌
+Dialogue: 2,0:00:04.00,0:01:12.00,Bug,,0,0,0,,TACTEVRA
+Dialogue: 2,0:00:10.00,0:00:14.00,Hero,,0,0,0,,{\\fad(250,220)}ONE REQUEST. ONE CHECKED PHYSICAL ACTION.
+Dialogue: 2,0:00:10.30,0:00:14.00,Sub,,0,0,0,,{\\fad(250,220)}TACTEVRA
+Dialogue: 1,0:00:14.00,0:00:22.00,Tracker,,0,0,0,,{\\c&H00F8C845}PERCEIVE{\\c&H00D8DEE8}  →  PROPOSE  →  CHECK  →  EXECUTE  →  VERIFY
+Dialogue: 1,0:00:22.00,0:00:30.00,Tracker,,0,0,0,,PERCEIVE  →  {\\c&H004C9BFF}PROPOSE{\\c&H00D8DEE8}  →  CHECK  →  EXECUTE  →  VERIFY
+Dialogue: 1,0:00:30.00,0:00:44.00,Tracker,,0,0,0,,PERCEIVE  →  PROPOSE  →  {\\c&H00505AFF}CHECK{\\c&H00D8DEE8}  →  EXECUTE  →  VERIFY
+Dialogue: 1,0:00:44.00,0:00:51.00,Tracker,,0,0,0,,PERCEIVE  →  PROPOSE  →  {\\c&H00F8C845}CHECK{\\c&H00D8DEE8}  →  EXECUTE  →  VERIFY
+Dialogue: 1,0:00:51.00,0:00:58.00,Tracker,,0,0,0,,PERCEIVE  →  PROPOSE  →  CHECK  →  {\\c&H00F8C845}EXECUTE{\\c&H00D8DEE8}  →  VERIFY
+Dialogue: 1,0:00:58.00,0:01:05.00,Tracker,,0,0,0,,PERCEIVE  →  PROPOSE  →  CHECK  →  EXECUTE  →  {\\c&H004FCC33}VERIFY
+Dialogue: 1,0:00:14.00,0:00:16.10,Stage,,0,0,0,,{\\fad(180,180)}1 · PERCEIVE
+Dialogue: 1,0:00:16.10,0:00:22.00,CenterCard,,0,0,0,,{\\fad(180,180)}{\\c&H00F8C845}BOARD FRAME LOCKED{\\c&H00F3F6FA}\\N4 marker tags  ✓\\NX / Y axes      ✓
+Dialogue: 1,0:00:22.00,0:00:24.00,Stage,,0,0,0,,{\\fad(180,180)}2 · PROPOSE
+Dialogue: 1,0:00:24.00,0:00:30.00,Card,,0,0,0,,{\\fad(180,180)}{\\c&H004C9BFF}MODEL PROPOSAL{\\c&H00F3F6FA}\\Naction       press\\Ntarget       keyboard:H\\Nframe        board\\Nconfidence   0.97
+Dialogue: 1,0:00:30.00,0:00:31.80,Stage,,0,0,0,,{\\fad(150,150)}3 · CHECK
+Dialogue: 1,0:00:31.80,0:00:37.00,CenterCard,,0,0,0,,{\\fad(150,180)}{\\c&H00505AFF}GATE · REJECT{\\c&H00F3F6FA}\\Nframe        camera_raw  ✕\\Nfreshness    stale       ✕\\N\\NARM REMAINS STILL
+Dialogue: 1,0:00:37.00,0:00:44.00,CenterCard,,0,0,0,,{\\fad(150,180)}{\\c&H004FCC33}GATE · ACCEPT{\\c&H00F3F6FA}\\Nunits        ✓   frame      ✓\\Nreach        ✓   clearance  ✓\\Nfreshness    ✓
+Dialogue: 1,0:00:44.00,0:00:51.00,Card,,0,0,0,,{\\fad(160,180)}{\\c&H00F8C845}RESOLVED TARGET · H{\\c&H00F3F6FA}\\NX  216.55 mm\\NY  154.00 mm\\NZ   48.00 mm\\Ncamera → board → keyboard → H
+Dialogue: 1,0:00:51.00,0:00:58.00,Badge,,0,0,0,,{\\fad(140,160)}SIMULATED PRESS  ·  ACTION 1 OF 1  ·  CONTROLLER
+Dialogue: 1,0:00:58.00,0:01:05.00,CenterCard,,0,0,0,,{\\fad(160,180)}TELEMETRY  ✓     OBSERVATION  ✓\\N\\N{\\c&H004FCC33\\fs58}VERIFIED{\\rCenterCard}
+Dialogue: 1,0:01:05.00,0:01:12.00,Hero,,0,0,0,,{\\fad(220,220)}ONE SHARED CONTRACT
+Dialogue: 1,0:01:05.30,0:01:12.00,Sub,,0,0,0,,{\\fad(220,220)}FROM USER INTENT TO VERIFIED PHYSICAL ACTION
+Dialogue: 0,0:01:12.00,0:01:17.00,Black,,0,0,0,,{\\p1}m 0 0 l 1920 0 l 1920 1080 l 0 1080{\\p0}
+Dialogue: 1,0:01:12.00,0:01:17.00,Hero,,0,0,0,,{\\fad(220,0)}TACTEVRA
+Dialogue: 1,0:01:12.20,0:01:17.00,Sub,,0,0,0,,ONE REQUEST. ONE CHECKED PHYSICAL ACTION.\\Ngithub.com/j-webtek/tactevra
+Dialogue: 1,0:01:12.00,0:01:17.00,Fine,,0,0,0,,Presentation visualization · static official arm surface · simulated key contact
 """,
         encoding="utf-8",
     )
 
 
 def write_caption_file(path: Path) -> None:
-    """Write an accessible chapter transcript that does not depend on audio."""
+    """Write captions that match the narrated screenplay word for word."""
     path.write_text(
         """1
-00:00:00,200 --> 00:00:03,550
-One request becomes one checked physical action.
+00:00:04,000 --> 00:00:06,800
+When AI moves real hardware,
+“usually right” isn't good enough.
 
 2
-00:00:03,720 --> 00:00:07,250
-Fixed vision and direct tags anchor the workspace to the board frame.
+00:00:06,800 --> 00:00:10,000
+A wrong guess isn't a typo.
+It's a motion.
 
 3
-00:00:07,380 --> 00:00:10,550
-The model proposes intent, a named target, a coordinate frame, and confidence.
+00:00:10,000 --> 00:00:14,000
+Tactevra turns one request into
+one checked physical action.
 
 4
-00:00:10,700 --> 00:00:13,850
-Deterministic gates reject stale or malformed proposals before accepting a valid plan.
+00:00:14,000 --> 00:00:18,000
+First, a fixed camera reads marker tags
+on the board,
 
 5
-00:00:14,020 --> 00:00:16,850
-Measured geometry resolves the named target through the camera, board, and device frames.
+00:00:18,000 --> 00:00:22,000
+so every target is measured
+in one shared frame.
 
 6
-00:00:17,020 --> 00:00:18,450
-The sole controller writer sends one admitted, bounded action.
+00:00:22,000 --> 00:00:24,500
+Next, the model proposes an action,
+a named target,
 
 7
-00:00:18,550 --> 00:00:19,600
-Telemetry and observation verify the result before the next action.
+00:00:24,500 --> 00:00:27,500
+a frame, and its confidence.
 
 8
-00:00:19,750 --> 00:00:21,950
-One shared contract connects user intent to verified physical action.
+00:00:27,500 --> 00:00:30,000
+Never raw motor commands.
+
+9
+00:00:30,000 --> 00:00:33,500
+Then deterministic gates
+check every proposal.
+
+10
+00:00:33,500 --> 00:00:37,000
+A stale or malformed plan is rejected
+before anything moves.
+
+11
+00:00:37,000 --> 00:00:40,500
+Units. Frame. Reach.
+Clearance. Freshness.
+
+12
+00:00:40,500 --> 00:00:44,000
+Only a plan that passes every gate
+is admitted.
+
+13
+00:00:44,000 --> 00:00:47,500
+Measured geometry turns “the H key”
+into exact millimeters,
+
+14
+00:00:47,500 --> 00:00:51,000
+through the camera, board,
+and device frames.
+
+15
+00:00:51,000 --> 00:00:58,000
+One controller, and only one,
+sends a single bounded motion.
+
+16
+00:00:58,000 --> 00:01:01,500
+Telemetry and the camera
+confirm the result
+
+17
+00:01:01,500 --> 00:01:05,000
+before the next action is allowed.
+
+18
+00:01:05,000 --> 00:01:12,000
+One shared contract, from user intent
+to verified physical action.
+
+19
+00:01:12,000 --> 00:01:14,000
+Tactevra.
 """,
         encoding="utf-8",
+        newline="\n",
     )
 
 
@@ -739,39 +842,88 @@ def write_webvtt_file(path: Path) -> None:
     path.write_text(
         """WEBVTT
 
-00:00:00.200 --> 00:00:03.550
-One request becomes one checked physical action.
+00:00:04.000 --> 00:00:06.800
+When AI moves real hardware,
+“usually right” isn't good enough.
 
-00:00:03.720 --> 00:00:07.250
-Fixed vision and direct tags anchor the workspace to the board frame.
+00:00:06.800 --> 00:00:10.000
+A wrong guess isn't a typo.
+It's a motion.
 
-00:00:07.380 --> 00:00:10.550
-The model proposes intent, a named target, a coordinate frame, and confidence.
+00:00:10.000 --> 00:00:14.000
+Tactevra turns one request into
+one checked physical action.
 
-00:00:10.700 --> 00:00:13.850
-Deterministic gates reject stale or malformed proposals before accepting a valid plan.
+00:00:14.000 --> 00:00:18.000
+First, a fixed camera reads marker tags
+on the board,
 
-00:00:14.020 --> 00:00:16.850
-Measured geometry resolves the named target through the camera, board, and device frames.
+00:00:18.000 --> 00:00:22.000
+so every target is measured
+in one shared frame.
 
-00:00:17.020 --> 00:00:18.450
-The sole controller writer sends one admitted, bounded action.
+00:00:22.000 --> 00:00:24.500
+Next, the model proposes an action,
+a named target,
 
-00:00:18.550 --> 00:00:19.600
-Telemetry and observation verify the result before the next action.
+00:00:24.500 --> 00:00:27.500
+a frame, and its confidence.
 
-00:00:19.750 --> 00:00:21.950
-One shared contract connects user intent to verified physical action.
+00:00:27.500 --> 00:00:30.000
+Never raw motor commands.
+
+00:00:30.000 --> 00:00:33.500
+Then deterministic gates
+check every proposal.
+
+00:00:33.500 --> 00:00:37.000
+A stale or malformed plan is rejected
+before anything moves.
+
+00:00:37.000 --> 00:00:40.500
+Units. Frame. Reach.
+Clearance. Freshness.
+
+00:00:40.500 --> 00:00:44.000
+Only a plan that passes every gate
+is admitted.
+
+00:00:44.000 --> 00:00:47.500
+Measured geometry turns “the H key”
+into exact millimeters,
+
+00:00:47.500 --> 00:00:51.000
+through the camera, board,
+and device frames.
+
+00:00:51.000 --> 00:00:58.000
+One controller, and only one,
+sends a single bounded motion.
+
+00:00:58.000 --> 00:01:01.500
+Telemetry and the camera
+confirm the result
+
+00:01:01.500 --> 00:01:05.000
+before the next action is allowed.
+
+00:01:05.000 --> 00:01:12.000
+One shared contract, from user intent
+to verified physical action.
+
+00:01:12.000 --> 00:01:14.000
+Tactevra.
 """,
         encoding="utf-8",
+        newline="\n",
     )
 
 
 def write_soundtrack(path: Path) -> None:
-    """Synthesize restrained, deterministic non-narrated sound design."""
+    """Synthesize a restrained bed with one semantic sound per event."""
     sample_rate = 48_000
     duration = END_FRAME / FPS
-    cue_times = (0.20, 3.72, 7.38, 10.70, 12.26, 14.02, 17.02, 18.55, 19.75)
+    cue_times = (10.0, 14.0, 22.0, 30.0, 37.0, 44.0, 51.0, 58.0, 65.0, 72.0)
     rng = random.Random(30703)
 
     def soft_pulse(t: float, center: float, freq: float, length: float = 0.34) -> float:
@@ -788,7 +940,7 @@ def write_soundtrack(path: Path) -> None:
         chunk = bytearray()
         for index in range(int(sample_rate * duration)):
             t = index / sample_rate
-            # Quiet tonal bed; kept deliberately below future narration space.
+            # Quiet tonal bed, mixed well below narration downstream.
             bed = (
                 0.030 * math.sin(2 * math.pi * 55.0 * t)
                 + 0.018 * math.sin(2 * math.pi * 82.5 * t + 0.6)
@@ -797,10 +949,19 @@ def write_soundtrack(path: Path) -> None:
             cue = 0.0
             for cue_index, cue_time in enumerate(cue_times):
                 cue += 0.085 * soft_pulse(t, cue_time, 330.0 + cue_index * 42.0)
-            # A short low rejection cue followed by a clean acceptance chime.
-            cue += 0.080 * soft_pulse(t, 11.05, 165.0, 0.44)
-            cue += 0.110 * soft_pulse(t, 12.26, 740.0, 0.42)
-            cue += 0.080 * soft_pulse(t, 18.66, 930.0, 0.30)
+            # One semantic sound family per screenplay event.
+            for key_tick in (0.55, 1.05, 1.55, 2.05):
+                cue += 0.040 * soft_pulse(t, key_tick, 980.0, 0.08)
+            for tag_ping in (16.2, 17.1, 18.0, 18.9):
+                cue += 0.055 * soft_pulse(t, tag_ping, 620.0, 0.16)
+            cue += 0.095 * soft_pulse(t, 34.0, 150.0, 0.55)  # reject
+            for index, gate_tick in enumerate((38.0, 39.0, 40.0, 41.0, 42.0)):
+                cue += 0.060 * soft_pulse(t, gate_tick, 520.0 + index * 70.0, 0.16)
+            cue += 0.110 * soft_pulse(t, 43.0, 860.0, 0.45)  # accept
+            cue += 0.115 * soft_pulse(t, 54.2, 1180.0, 0.11)  # key contact
+            cue += 0.070 * soft_pulse(t, 60.0, 720.0, 0.18)
+            cue += 0.070 * soft_pulse(t, 62.0, 820.0, 0.18)
+            cue += 0.110 * soft_pulse(t, 64.0, 930.0, 0.55)  # verified
             # Very light transition air avoids dead cuts without becoming music.
             air = 0.0
             for transition in cue_times[1:]:
@@ -821,27 +982,66 @@ def write_soundtrack(path: Path) -> None:
 
 def mux_soundtrack_and_variants(silent_video: Path, final_video: Path,
                                 ffmpeg: str) -> None:
-    soundtrack = OUT / "tactevra_workcell_explainer_soundtrack_v1.wav"
-    captions = OUT / "tactevra_workcell_explainer_captions_v1.srt"
-    web_video = OUT / "tactevra_workcell_explainer_web_720p_v1.mp4"
+    soundtrack = OUT / "tactevra_workcell_explainer_soundtrack_v2.wav"
+    captions = OUT / "tactevra_workcell_explainer_captions_v2.srt"
+    web_video = OUT / "tactevra_workcell_explainer_web_1080p_v2.mp4"
+    social_video = OUT / "tactevra_workcell_explainer_social_square_v2.mp4"
+    voice_dir = OUT / "voiceover_v2"
     write_soundtrack(soundtrack)
     write_caption_file(captions)
+    voice_script = SCRIPT.with_name("generate_voiceover.ps1")
+    powershell = shutil.which("pwsh") or shutil.which("powershell")
+    if not powershell:
+        raise RuntimeError("PowerShell is required to synthesize the narrated master")
     subprocess.run(
-        [
-            ffmpeg, "-y", "-i", str(silent_video), "-i", str(soundtrack),
-            "-map", "0:v:0", "-map", "1:a:0", "-c:v", "copy",
-            "-c:a", "aac", "-b:a", "192k", "-shortest", "-movflags", "+faststart",
-            str(final_video),
-        ],
+        [powershell, "-NoProfile", "-ExecutionPolicy", "Bypass", "-File",
+         str(voice_script), "-OutputDirectory", str(voice_dir)],
+        check=True,
+    )
+    voice_starts = (4, 10, 14, 22, 30, 37, 44, 51, 58, 65, 72)
+    voice_files = [voice_dir / f"voice_{index:02d}.wav" for index in range(1, 12)]
+    inputs: list[str] = [ffmpeg, "-y", "-i", str(silent_video), "-i", str(soundtrack)]
+    for voice_file in voice_files:
+        inputs.extend(("-i", str(voice_file)))
+    audio_graph = ["[1:a]volume=0.16[bed]"]
+    mix_labels = ["[bed]"]
+    for input_index, start in enumerate(voice_starts, start=2):
+        label = f"voice{input_index}"
+        delay_ms = int(start * 1000)
+        audio_graph.append(
+            f"[{input_index}:a]aresample=48000,volume=1.0,"
+            f"adelay={delay_ms}|{delay_ms}[{label}]"
+        )
+        mix_labels.append(f"[{label}]")
+    audio_graph.append(
+        "".join(mix_labels)
+        + f"amix=inputs={len(mix_labels)}:duration=longest:normalize=0,"
+          "loudnorm=I=-14:TP=-1:LRA=7[mix]"
+    )
+    subprocess.run(
+        inputs + ["-filter_complex", ";".join(audio_graph),
+                  "-map", "0:v:0", "-map", "[mix]", "-c:v", "copy",
+                  "-c:a", "aac", "-b:a", "256k", "-shortest",
+                  "-movflags", "+faststart", str(final_video)],
         check=True,
     )
     subprocess.run(
         [
-            ffmpeg, "-y", "-i", str(final_video), "-vf", "scale=1280:-2",
-            "-c:v", "libx264", "-preset", "medium", "-crf", "21",
-            "-c:a", "aac", "-b:a", "128k", "-movflags", "+faststart",
+            ffmpeg, "-y", "-i", str(final_video),
+            "-c:v", "libx264", "-preset", "slow", "-crf", "18",
+            "-maxrate", "16M", "-bufsize", "24M",
+            "-c:a", "aac", "-b:a", "192k", "-movflags", "+faststart",
             str(web_video),
         ],
+        check=True,
+    )
+    subtitle_filter = str(captions).replace("\\", "/").replace(":", "\\:")
+    subprocess.run(
+        [ffmpeg, "-y", "-i", str(final_video),
+         "-vf", f"crop=1080:1080:(iw-1080)/2:0,subtitles='{subtitle_filter}':force_style='FontName=Arial,FontSize=19,Outline=2,MarginV=54'",
+         "-c:v", "libx264", "-preset", "medium", "-crf", "19",
+         "-c:a", "aac", "-b:a", "160k", "-movflags", "+faststart",
+         str(social_video)],
         check=True,
     )
 
@@ -851,7 +1051,7 @@ def publish_homepage_media() -> None:
     ffmpeg = shutil.which("ffmpeg")
     if not ffmpeg:
         raise RuntimeError("ffmpeg is required to publish homepage media")
-    source = OUT / "tactevra_workcell_explainer_web_720p_v1.mp4"
+    source = OUT / "tactevra_workcell_explainer_web_1080p_v2.mp4"
     if not source.is_file():
         raise FileNotFoundError(
             f"Homepage publishing requires the reviewed web render: {source}"
@@ -875,7 +1075,7 @@ def publish_homepage_media() -> None:
     )
     subprocess.run(
         [
-            ffmpeg, "-y", "-ss", "1.35", "-i", str(source),
+            ffmpeg, "-y", "-ss", "11.50", "-i", str(source),
             "-frames:v", "1", "-update", "1",
             "-vf", "scale=1280:-2", "-q:v", "2",
             str(poster),
@@ -888,7 +1088,7 @@ def composite_overlay(clean_video: Path, final_video: Path) -> None:
     ffmpeg = shutil.which("ffmpeg")
     if not ffmpeg:
         raise RuntimeError("ffmpeg is required to composite informational labels")
-    ass_path = OUT / "tactevra_workcell_explainer_v1.ass"
+    ass_path = OUT / "tactevra_workcell_explainer_v2.ass"
     write_ass_overlay(ass_path)
     # libass filter paths require a forward-slash Windows path with an escaped
     # drive colon. subprocess avoids shell interpolation of the filter itself.
@@ -897,7 +1097,8 @@ def composite_overlay(clean_video: Path, final_video: Path) -> None:
     # cross-dissolve. Segment overlap preserves the source pixels; sequential
     # fade filters would destructively blacken the already-filtered stream.
     # Information graphics are composited last so chapter titles remain stable.
-    camera_cuts = (89 / FPS, 177 / FPS, 265 / FPS, 337 / FPS, 409 / FPS, 473 / FPS)
+    camera_cuts = (4.0, 10.0, 14.0, 22.0, 30.0, 37.0, 44.0,
+                   51.0, 58.0, 65.0, 72.0)
     overlap = 0.10
     dissolve = overlap * 2
     source_duration = END_FRAME / FPS
@@ -918,7 +1119,7 @@ def composite_overlay(clean_video: Path, final_video: Path) -> None:
         )
         previous = output
     graph.append(f"[{previous}]ass='{ass_filter_path}'[finished]")
-    silent_video = OUT / "tactevra_workcell_explainer_silent_v1.mp4"
+    silent_video = OUT / "tactevra_workcell_explainer_silent_v2.mp4"
     subprocess.run(
         [
             ffmpeg, "-y", "-i", str(clean_video),
@@ -939,8 +1140,8 @@ def main() -> None:
         print(f"TACTEVRA_PUBLIC_MEDIA={PUBLIC_MEDIA_DIR}")
         return
     if "--overlay-only" in args:
-        clean_video = OUT / "tactevra_workcell_explainer_clean_v1.mp4"
-        final_video = OUT / "tactevra_workcell_explainer_v1.mp4"
+        clean_video = OUT / "tactevra_workcell_explainer_clean_v2.mp4"
+        final_video = OUT / "tactevra_workcell_explainer_v2.mp4"
         if not clean_video.exists():
             raise FileNotFoundError(
                 f"Overlay-only mode requires an existing clean render: {clean_video}"
@@ -950,11 +1151,12 @@ def main() -> None:
         return
 
     scene = build()
-    blend_path = OUT / "tactevra_workcell_explainer_v1.blend"
+    blend_path = OUT / "tactevra_workcell_explainer_v2.blend"
     bpy.ops.wm.save_as_mainfile(filepath=str(blend_path))
 
     if "--preview-shots" in args:
-        preview_frames = (48, 132, 220, 300, 372, 440, 500)
+        preview_frames = (48, 168, 288, 384, 468, 624, 804, 972,
+                          1140, 1300, 1476, 1644, 1788)
         scene.render.resolution_percentage = 55
         for frame in preview_frames:
             scene.frame_set(frame)
@@ -965,8 +1167,8 @@ def main() -> None:
         scene.render.image_settings.file_format = "FFMPEG"
         scene.render.ffmpeg.format = "MPEG4"
         scene.render.ffmpeg.codec = "H264"
-        clean_video = OUT / "tactevra_workcell_explainer_clean_v1.mp4"
-        final_video = OUT / "tactevra_workcell_explainer_v1.mp4"
+        clean_video = OUT / "tactevra_workcell_explainer_clean_v2.mp4"
+        final_video = OUT / "tactevra_workcell_explainer_v2.mp4"
         # Blender treats render.filepath as a stem when animation numbering is
         # enabled. Disable extension synthesis and use the complete filename.
         scene.render.use_file_extension = False
@@ -978,7 +1180,7 @@ def main() -> None:
     else:
         scene.frame_set(52)
         scene.render.image_settings.file_format = "PNG"
-        scene.render.filepath = str(OUT / "tactevra_workcell_explainer_poster_v1.png")
+        scene.render.filepath = str(OUT / "tactevra_workcell_explainer_poster_v2.png")
         bpy.ops.render.render(write_still=True)
 
     print(f"TACTEVRA_OUTPUT={OUT}")
