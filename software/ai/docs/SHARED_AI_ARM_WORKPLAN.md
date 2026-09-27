@@ -599,10 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-- AI lane / S1: train one preregistered 95th-percentile metric error head on
-  fresh 58M training and 59M selection scenes; no runtime, contract, arm, or
-  integration-status changes.
-
 
 
 
@@ -8918,3 +8914,48 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic repository review before final ledger append; not model, runtime, or physical assurance. No arm or integration status changes.
 - Supersedes: none.
 - Next dependency: Same as AI-364.
+
+### E-20260927-AI-367 — direct upper-tail metric head selection
+
+- Stage: S1
+- Lane: AI
+- Commit: `d62c0f171e7cee6ca33fbf77fd49cd3b6c16455a` (95th-percentile objective, fixed gates, fresh populations, source, plan, and claim frozen before feature extraction or training; failed report, checkpoint, tests, interpretation, and claim removal committed in the successor)
+- Inputs/fixtures: Training scenes `58000000..58001999` (16,000 images) and selection scenes `59000000..59000999` (8,000 images), each with two styles and four conditions. Training pixel/feature/target SHA256 values `bce2adccce0f499ceb03f0b86d3305c7c6f3aea2c0f9851b61590e4eb76ac6c5`, `b9899fcaaf27ab7e41a4fff1b1e77cda3e51d2c656ea59e6af578d740da003bc`, and `a288b9a0c70feae510f03a5be0a38bdc4c91adb95beb827f5966a51586257b9c`; selection values `d4bea73e19f51b68d4fd47d7f65c217b3873f5a8bca047c829b8c0fd38b62cb5`, `1b629b28cfd4326b31cb5209b7b23f65767ed53cd843f5ef93dc686809a9d9ec`, and `c124a8c8abdc7c5471780fd5d9bee6b357cfeb8ca1f665be95c921e48340151e`; all pose prediction hashes are retained in the report. Plan SHA256 `1d3a99a717009b08e13b24c456628d3873a132c46fdce2cf5e43ce8bb0ccd67f`; report SHA256 `8213429fd1d2a48ff74f1018d661b76f7e52ccdb9e33ab1308e4406a06192b42`; checkpoint SHA256 `a14a2821256112367144af761ad2c6e3aaee9c1a3945950127883cee9867cf1e`; normalization SHA256 `66abe3396f48e9940bca5fab0867de50dc3aeb3f2c56b7cabdf783927bf63217`; selection prediction SHA256 `88e39598bab64a3cf282a2dfa4c9956f627b7db2f2a742a6d7013587aac8e707`.
+- Command: `python software/ai/train/train_upper_tail_error_head.py`
+- Result: FAIL fixed selection rule. The 52,481-parameter head reduces selection mean 0.95 pinball loss from `0.201363615` for the training-only constant bound to `0.113025096`, and median bound from `2.866124392` mm to `2.089084268` mm. Scene AUROC is `0.720850255`; lowest-quartile/half failure is 3.2%/4.8%; conditional image AUROCs are standard `0.913087980`, appearance `0.952179750`, partial `0.878273048`, and full `0.752727520`. Overall coverage is `0.892375`, below 0.90, and full-obstruction coverage is `0.81`, below 0.85; all other checks pass. Maximum predicted bound is `90.377532959` mm. One model fit, zero calibration fits, and 2,500 optimizer updates.
+- Artifacts: `train/train_upper_tail_error_head.py`; `train/upper_tail_error_head_v1_plan.json`; `eval/upper_tail_error_head_v1_report.json`; `results/upper_tail_error_head_v1/model.pt`; `tests/test_upper_tail_error_head.py`; `docs/IMAGE_DEPENDENT_UNCERTAINTY.md`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Synthetic training-selection evidence for one seed, architecture, and 0.95 quantile. The failed checkpoint is research evidence only. No metric calibration, independent confirmation, runtime installation, physical-camera evidence, or motion authority. ModelMotionBatchV2 and arm/integration statuses are unchanged.
+- Supersedes: none; the metric-mapping failure and all earlier evidence remain preserved.
+- Next dependency: Retain direct metric supervision but preregister one robust upper-tail formulation on entirely fresh grouped training-selection populations. It should address full-obstruction undercoverage and extreme outputs through a bounded residual parameterization or a higher quantile with an explicit finite-bound penalty before any calibration allocation.
+
+### E-20260927-AI-368 — direct upper-tail metric head verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `d62c0f171e7cee6ca33fbf77fd49cd3b6c16455a` (frozen training-selection source; tests and documentation committed in the successor)
+- Inputs/fixtures: Same 24,000 images, frozen pose models, 52,481-parameter head, plan, failed report, and retained research checkpoint as AI-367; exact hashes are recorded there and in the report.
+- Command: `python -m pytest -q software/ai/tests/test_upper_tail_error_head.py`
+- Result: PASS: 2 tests in 2.12s. Tests verify pinball direction, metric summaries, frozen lineage, checkpoint integrity, exact grouped populations, complete metric and ranking recounts, every fixed check including the two failed coverage checks, and zero calibration, hardware, physical, qualification, or runtime authority.
+- Artifacts: `tests/test_upper_tail_error_head.py`; `eval/upper_tail_error_head_v1_report.json`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Existing pytest-asyncio configuration warning. Recount consistency only; no physical assurance. Contract unchanged, so shared boundary tests were not triggered.
+- Supersedes: none.
+- Next dependency: Same as AI-367.
+
+### E-20260927-AI-369 — direct upper-tail metric snapshot review
+
+- Stage: S1
+- Lane: AI
+- Commit: `d62c0f171e7cee6ca33fbf77fd49cd3b6c16455a` (frozen training-selection source; final ledger append in successor)
+- Inputs/fixtures: Repository snapshot containing the frozen study, failed report, retained research checkpoint, verification test, interpretation, and shared ledger; exact hashes recorded in AI-367.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS: 6,314 paths, 973.4 MiB, 0 unresolved review findings, 14 reviewed synthetic fixtures.
+- Artifacts: upper-tail plan/report/checkpoint; verification test; uncertainty documentation; shared ledger.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic repository review before final ledger append; not model, runtime, or physical assurance. No arm or integration status changes.
+- Supersedes: none.
+- Next dependency: Same as AI-367.

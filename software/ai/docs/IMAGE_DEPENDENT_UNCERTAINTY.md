@@ -453,3 +453,34 @@ must still undergo separate mapping calibration, selection, and independent
 confirmation with the present 99% coverage, per-condition utility, and zero
 accepted errors above 3 mm requirements. This failed result does not justify
 lowering any gate.
+
+## Direct upper-tail metric head
+
+A 52,481-parameter head was trained from scratch on 16,000 new 58M images using
+95th-percentile pinball loss against maximum target error in millimetres. The
+input remained the frozen pose descriptor plus ensemble disagreement, and a
+softplus output constrained the predicted bound to be nonnegative. The fixed
+20 epochs completed without selection-based stopping or hyperparameter search.
+
+On 8,000 untouched 59M images, the learned bound reduced mean pinball loss from
+0.201364 for the training-only constant bound to 0.113025 and reduced its median
+from 2.866124 mm to 2.089084 mm. Its grouped scene AUROC was 0.720850, with 3.2%
+and 4.8% failure rates in the lowest predicted-bound quartile and half. Every
+conditional image AUROC passed: 0.913088 standard, 0.952180 appearance shift,
+0.878273 partial obstruction, and 0.752728 full obstruction.
+
+The complete selection still failed. Overall empirical bound coverage was
+89.2375%, below the frozen 90% minimum. Standard, appearance-shift, and partial
+coverage were 93.1%, 93.9%, and 88.95%, while full-obstruction coverage was only
+81.0%, below the 85% conditional minimum. A few extreme outputs also reached
+90.3775 mm, showing that the unconstrained upper tail needs explicit robustness
+even though the median and loss improved.
+
+The checkpoint remains research evidence with no metric calibration, runtime,
+qualification, or motion authority. The next study should retain direct metric
+supervision but address full-obstruction undercoverage and extreme outputs with
+a preregistered robust formulation on fresh grouped populations. Candidate
+options include a bounded residual parameterization around a conservative base
+scale or a higher quantile with an explicit finite-bound penalty. Any candidate
+must be selected before a separate calibration and confirmation chain, and the
+failed coverage gates remain unchanged.
