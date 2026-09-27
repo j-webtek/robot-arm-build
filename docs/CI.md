@@ -108,8 +108,9 @@ Use it only after identifying a proposed preview commit on protected `main`; a
 moving branch name is not a candidate identity. Confirm the completed run names
 the expected SHA. To assess some other revision without executing it in this
 workflow context, use the documented fresh-checkout local procedure. A tracked-
-path candidate blocker correctly fails the inventory step; issue-based gates are
-reviewed separately in the readiness dashboard.
+path candidate blocker or an `open` offline readiness-registry entry correctly
+fails the inventory step. The workflow does not query live issue state; the
+reviewed registry and readiness dashboard must be reconciled together.
 
 ### Find the versions behind a result
 
