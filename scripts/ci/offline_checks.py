@@ -38,6 +38,7 @@ TESTS = (
     'software/tests/unit/test_arm064_active_feedback_qualification_receipt.py',
     'software/tests/unit/test_r97_runtime_transition_assessment_v1.py',
     'software/tests/unit/test_r97_owner_ai_review_acceptance_v1.py',
+    'software/tests/unit/test_owner_governed_configuration_epoch_v1.py',
     'software/tests/unit/test_assess_r97_external_review_decision.py',
     'software/tests/unit/test_model_motion_sequence_coordinator.py',
     'software/tests/unit/test_zero_write_waveshare_adapter_v1.py',

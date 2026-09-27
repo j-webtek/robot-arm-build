@@ -3281,3 +3281,41 @@ rewriting history. New entries must use a unique evidence ID.
   external workflow remains an optional future path.
 - Next dependency: collect and AI-review retained physical evidence for the
   eight configuration components, then construct the owner-governed epoch.
+
+### E-20260927-ARM-068 — owner-governed epoch contract and missing-evidence baseline
+
+- Stage: S4
+- Lane: ARM
+- Change: added a parallel owner-governed configuration-epoch draft and
+  assessment rather than mutating the historical independent-review contract.
+  The draft is bound to ARM-067 acceptance and the exact r97 packet, app,
+  protocol-source, and joint-mapping identities.
+- Component policy: all eight controlled components remain ordered; each has
+  the exact required binding roster from `configuration_epochs.json`. Partial
+  drafts are accepted for assessment, while missing bindings, stale evidence,
+  synthetic evidence, and incomplete owner-AI review remain distinct blockers.
+- Artifacts: `software/ai/eval/arm068_owner_epoch_draft.json`, draft SHA-256
+  `72e00112d41fc5849dd58d1c0abd858980ce9849817d6e2a6a82bcb78c842dc6`;
+  `software/ai/eval/arm068_owner_epoch_missing_evidence_report.json`, assessment
+  SHA-256
+  `6931ed878e12d8daebf0a92597e687904bb85dc5979c302c5d42cee83b34fe70`.
+- Result: `BLOCKED` by `COMPONENT_MISSING`. All eight component IDs and all 32
+  required binding IDs are enumerated. The configuration-epoch SHA remains
+  null, as required for an incomplete draft.
+- Verification: 447 tests in the bounded offline CI selection passed; schema,
+  strict parsing, tamper rejection, acceptance/release mismatch, component
+  blocker separation, retained-artifact equality, and a complete non-authority
+  fixture are covered.
+- Endpoint opens: 0
+- Hardware writes: 0
+- Physical movements: 0
+- Authority: installation, startup, transport, execution, hardware, and
+  physical authority remain false. A future complete pass permits only an
+  epoch-bound build proposal.
+- Limitations: the contract and passing all-physical test fixture do not create
+  physical evidence. The retained artifact intentionally contains no component
+  records.
+- Supersedes: ARM-067's missing owner-governed epoch software boundary. It does
+  not supersede the need for measured retained evidence.
+- Next dependency: populate and owner-AI review each physical-original
+  component, starting with the reproducible `software_build` evidence bundle.

@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rocell.local/schemas/owner_governed_configuration_epoch_assessment_v1.schema.json",
+  "title": "RoCell owner-governed configuration epoch assessment v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "status", "draft_sha256", "configuration_epoch_sha256",
+    "evaluated_monotonic_ns", "blockers", "component_assessments",
+    "missing_component_ids", "blocked_component_ids", "ready_component_ids",
+    "epoch_bound_build_proposal_ready", "human_review_required",
+    "human_review_claimed", "external_independence_claimed",
+    "owner_governance_override", "installation_authorized",
+    "controller_start_authorized", "transport_authorized",
+    "execution_authorized", "hardware_access", "physical_authority",
+    "assessment_sha256"
+  ],
+  "properties": {
+    "schema": {"const": "rocell.owner_governed_configuration_epoch_assessment.v1"},
+    "status": {"enum": ["BLOCKED", "READY_FOR_EPOCH_BOUND_BUILD_PROPOSAL"]},
+    "draft_sha256": {"$ref": "#/$defs/sha256"},
+    "configuration_epoch_sha256": {
+      "oneOf": [{"$ref": "#/$defs/sha256"}, {"type": "null"}]
+    },
+    "evaluated_monotonic_ns": {"type": "integer", "minimum": 1},
+    "blockers": {
+      "type": "array", "uniqueItems": true,
+      "items": {"$ref": "#/$defs/blocker"}
+    },
+    "component_assessments": {
+      "type": "array", "minItems": 8, "maxItems": 8,
+      "items": {"$ref": "#/$defs/componentAssessment"}
+    },
+    "missing_component_ids": {"$ref": "#/$defs/componentIds"},
+    "blocked_component_ids": {"$ref": "#/$defs/componentIds"},
+    "ready_component_ids": {"$ref": "#/$defs/componentIds"},
+    "epoch_bound_build_proposal_ready": {"type": "boolean"},
+    "human_review_required": {"const": false},
+    "human_review_claimed": {"const": false},
+    "external_independence_claimed": {"const": false},
+    "owner_governance_override": {"const": true},
+    "installation_authorized": {"const": false},
+    "controller_start_authorized": {"const": false},
+    "transport_authorized": {"const": false},
+    "execution_authorized": {"const": false},
+    "hardware_access": {"const": false},
+    "physical_authority": {"const": false},
+    "assessment_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "componentId": {"enum": [
+      "software_build", "camera_support_optics", "board_tags_bench",
+      "arm_controller_tool", "power_system", "keyboard_station",
+      "phone_station", "empty_cell_safety"
+    ]},
+    "componentIds": {
+      "type": "array", "uniqueItems": true,
+      "items": {"$ref": "#/$defs/componentId"}
+    },
+    "blocker": {"enum": [
+      "OWNER_ACCEPTANCE_MISSING", "OWNER_ACCEPTANCE_MISMATCH",
+      "REVIEW_PACKET_MISMATCH", "CANDIDATE_APP_MISMATCH",
+      "PROTOCOL_SOURCE_MISMATCH", "JOINT_MAPPING_SOURCE_MISMATCH",
+      "COMPONENT_MISSING", "REQUIRED_BINDING_MISSING",
+      "EVALUATION_PREDATES_MEASUREMENT", "MEASUREMENT_STALE",
+      "COMPONENT_NOT_PHYSICAL_ORIGINAL",
+      "COMPONENT_OWNER_AI_REVIEW_INCOMPLETE"
+    ]},
+    "componentAssessment": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "component_id", "status", "blockers", "missing_binding_ids"
+      ],
+      "properties": {
+        "component_id": {"$ref": "#/$defs/componentId"},
+        "status": {"enum": ["MISSING", "BLOCKED", "READY"]},
+        "blockers": {
+          "type": "array", "uniqueItems": true,
+          "items": {"$ref": "#/$defs/blocker"}
+        },
+        "missing_binding_ids": {
+          "type": "array", "uniqueItems": true,
+          "items": {"type": "string"}
+        }
+      }
+    }
+  }
+}

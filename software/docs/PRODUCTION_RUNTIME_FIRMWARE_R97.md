@@ -108,6 +108,15 @@ human reviewer nor external independence; and permits progression only to an
 owner-governed measured configuration-epoch intake. Installation, startup,
 transport, execution, hardware, and physical authority remain false.
 
+ARM-068 supplies the corresponding owner-governed epoch draft and assessment.
+It preserves the older independent-review intake for historical verification,
+but new owner-governed work no longer depends on that path. The initial retained
+draft has no component evidence and its assessment enumerates all eight missing
+components plus their required bindings. It therefore has no configuration
+epoch hash and cannot support an epoch-bound build proposal. Evidence must now
+be added component by component; a complete assessment still grants no
+installation, startup, transport, execution, hardware, or physical authority.
+
 ## Synthetic integration rehearsal
 
 A deterministic synthetic decision may be generated for software integration:
