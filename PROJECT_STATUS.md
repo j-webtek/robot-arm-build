@@ -1,7 +1,7 @@
 # Tactevra project status
 
-Reviewed September 27, 2026 through the ARM-073 retained camera/support binding
-adapter and AI-403 precision-adapter integration on merged `main`.
+Reviewed September 27, 2026 through the ARM-074 T2A typing-trajectory
+preparation and AI-403 precision-adapter integration.
 Unmerged workstream branches are not included in this summary.
 This is a capability summary for readers; the
 [shared workplan](software/ai/docs/SHARED_AI_ARM_WORKPLAN.md) retains current
@@ -196,6 +196,13 @@ reads, safe relative paths, exact content hashes, closed review fields, and
 canonical binding order before constructing ARM-070 inputs. It eliminates
 manual transcription but does not create any missing observation, decide model
 accuracy, advance the epoch, or grant hardware authority.
+
+ARM-074 adds a zero-authority T2A compiler from ordered typing actions to
+semantic Cartesian endpoints, bounded-step IK/collision screening samples, and
+analytically jerk-bounded quintic timing estimates. It preserves repeated keys
+and compares direct hover-to-hover travel with the park-between-key baseline.
+It does not yet run IK, joint-dynamics, installed-geometry, or continuous
+collision screening and grants no physical authority.
 
 AI-403 then integrates the pose-output precision adapter and actual V2 batch
 producer on current `main`. The retained contract fixture deterministically

@@ -348,6 +348,36 @@ qualification. It does not yet perform IK, collision screening, jerk-limited
 time parameterization, fresh-state preview rebinding, controller encoding, or
 physical execution. Those remain T2 and later work.
 
+### Implemented checkpoint — T2A Cartesian shaping and screening preparation
+
+`typing_trajectory_plan_v1.py` now converts the T1 plan into two deliberately
+separate artifacts:
+
+- semantic phase endpoints timed with an exact quintic rest-to-rest profile;
+- Cartesian samples bounded by a configured maximum step for deterministic IK
+  and collision screening.
+
+For a segment of length `D` and duration `T`, the profile uses
+`10s^3 - 15s^4 + 6s^5`. The compiler chooses `T` so the profile's analytical
+peak velocity, acceleration, and jerk do not exceed the pinned Cartesian
+policy. It compares the direct hover-to-hover sequence with the same actions
+returning to the route reference after every key. Timing samples do not pretend
+the arm stops at every collision sample.
+
+The output is canonical and hash-bound to the T1 plan and timing policy. It
+contains ordered endpoints, dense screening samples, analytical peak demand,
+dwell time, direct and park-baseline estimates, and explicit zero-authority
+fields. Repeated targets remain separate actions even when their inter-key
+travel distance is zero.
+
+T2A does **not** claim IK feasibility, joint-dynamics feasibility, collision
+clearance, continuous collision proof, controller timing, or physical typing.
+Its status is
+`READY_FOR_DETERMINISTIC_IK_AND_COLLISION_SCREENING`; all corresponding
+screening flags remain false. T2B must feed the exact samples through the
+existing deterministic IK and installed-geometry collision machinery before
+the T2 gate can close.
+
 ### T1 — Schema and deterministic offline executor
 
 - Add `TypingExecutionPlanV1` and canonical serialization.
