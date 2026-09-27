@@ -57,6 +57,11 @@ results. The AI v2 command assembler and arm validation interface have passed a
 shared test using synthetic evidence. Supervised noncontact arm movements are
 also documented in the lab records.
 
+The repository now also carries a shared model/arm conformance profile and an
+operational-readiness gate. These make compatibility expectations and missing
+evidence explicit before arm execution is considered. They are software control
+boundaries, not permission to move hardware and not evidence of physical typing.
+
 These are separate research results, not an end-to-end autonomous product.
 The project has not demonstrated a camera-to-arm workflow that reliably types
 on a physical keyboard or operates a phone. Measured calibration, tool geometry,

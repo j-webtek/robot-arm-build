@@ -2,7 +2,7 @@
 
 **Document status:** Current release-readiness dashboard  
 **Authority:** Status and routing only; this page does not select a candidate, approve publication, or authorize hardware operation  
-**Last reconciled:** September 27, 2026, against protected `main` at `91c30eb`
+**Last reconciled:** September 27, 2026, against protected `main` at `8a637d4`
 
 Tactevra has not published a GitHub release. No source commit, tag, release notes,
 or downloadable asset set is currently approved. This dashboard is the concise
@@ -23,7 +23,7 @@ candidate SHA will be selected only after the blocking owner evidence closes.
 | External AI artifact identity | **Blocked on AI-owner evidence** | Complete the exact checkpoint manifest and artifact-absent/artifact-present proof in [issue #56](https://github.com/j-webtek/tactevra/issues/56). |
 | Reviewable AI evidence disposition | **Blocked on AI-owner evidence** | Land the focused replacement evidence described in [issue #61](https://github.com/j-webtek/tactevra/issues/61); do not revive the superseded bulk proposal. |
 | Waveshare URDF redistribution basis | **Blocked on repository/arm-owner evidence** | Resolve, replace, or remove the derived kinematic projection as required by [issue #88](https://github.com/j-webtek/tactevra/issues/88); do not infer a license from silence. |
-| AI and arm compatibility dispositions | **Not started for a candidate** | Record both workstream dispositions only after an exact candidate SHA is selected. |
+| AI and arm compatibility dispositions | **Infrastructure ready; candidate review not started** | Shared conformance and operational-readiness checks are on `main`; record both workstream dispositions only after an exact candidate SHA is selected. |
 | Exact candidate commit | **Not selected** | Wait for issues #56, #61, and #88 to close, then choose one full SHA already on protected `main`. |
 | Candidate audit and fresh-checkout review | **Not run** | Run against the selected SHA; ordinary development CI is not substitute evidence. |
 | Tag and pre-release | **Not approved or published** | Requires explicit maintainer approval of the exact tag, SHA, notes, and source-only asset scope. |
@@ -38,6 +38,9 @@ candidate SHA will be selected only after the blocking owner evidence closes.
   Actions, JavaScript/TypeScript, and Python when those languages are affected.
 - Repository policy distinguishes reviewable source and compact scorecards from
   external checkpoints and bulk generated evidence.
+- Shared model/arm conformance and operational-readiness checks now make tested
+  compatibility and evidence gaps machine-readable. They do not select a release
+  candidate, grant execution authority, or replace owner dispositions.
 - Historical candidate and baseline records remain bound to their recorded
   commits. None is the current candidate.
 - A merge, development CI pass, CodeQL pass, simulation result, or controller
