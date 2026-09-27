@@ -16,6 +16,7 @@ from rocell.application.native_t102_adapter_review_decision_v1 import (
 from rocell.application.native_t102_owner_ai_review_acceptance_v1 import (
     NativeT102OwnerAIReviewAcceptanceError,
     accept_native_t102_internal_ai_review_v1,
+    parse_native_t102_owner_ai_review_acceptance_v1,
 )
 
 
@@ -109,6 +110,20 @@ def test_owner_accepts_exact_ai_review_for_read_only_intake_only():
                          "native_t102_owner_ai_review_acceptance_v1.schema.json"
                          ).read_text(encoding="utf-8"))
     jsonschema.Draft202012Validator(schema).validate(document)
+    assert parse_native_t102_owner_ai_review_acceptance_v1(document) == result
+
+
+def test_owner_acceptance_parser_rejects_promotion_and_tampering():
+    document = accept().to_dict()
+    document["endpoint_open_authorized"] = True
+    with pytest.raises(NativeT102OwnerAIReviewAcceptanceError,
+                       match="authority differs"):
+        parse_native_t102_owner_ai_review_acceptance_v1(document)
+    document = accept().to_dict()
+    document["acceptance_sha256"] = "0" * 64
+    with pytest.raises(NativeT102OwnerAIReviewAcceptanceError,
+                       match="content hash"):
+        parse_native_t102_owner_ai_review_acceptance_v1(document)
 
 
 @pytest.mark.parametrize("field,value", [
