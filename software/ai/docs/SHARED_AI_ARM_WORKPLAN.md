@@ -3099,7 +3099,7 @@ commissioning, or bounded physical result with its limitations intact.
   `c4f528699cacd3fc2876e1bc032777f42c41573a592f8c37004d32b29e60d824`,
   and `6121e860323981dad22bd8155042bc6746355127ef68415a752d0c71bff41056`.
 - Results: focused ARM-047/048 suite PASS, 14 tests; portable shared AI/arm
-  selection PASS, 224 tests in 32.22 seconds; documentation checks PASS, 26
+  selection PASS, 224 tests in 32.12 seconds; documentation checks PASS, 26
   self-tests; compile and diff checks PASS.
 - Evidence status: deterministic in-memory evidence only. The I/O fixture has
   no port, serial factory, callback, socket, or device handle.
