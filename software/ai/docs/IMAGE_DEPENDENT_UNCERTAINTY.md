@@ -730,3 +730,27 @@ qualification or runtime behavior. The mapping must now be frozen exactly and
 evaluated once on an independently generated confirmation population. Failure
 at confirmation must remain preserved and would reject this mapping; passing
 would still leave physical-camera and hardware qualification outstanding.
+
+## Obstruction-weighted mapping independent confirmation
+
+The selected checkpoint pair, 74M empirical risk reference, normalized
+quantile `1.678368111`, 40th-percentile gate, 3 mm radius rule, and every pass
+threshold were frozen before generating 1,000 new 76M confirmation scenes. No
+training, recalibration, inflation, late fusion, or threshold adjustment was
+performed.
+
+The independent confirmation was a strict near miss and therefore failed.
+Marginal scene coverage was 99.5%. Accepted-image and accepted-scene coverage
+were both 100%, with zero accepted bound violations and zero accepted errors
+above 3 mm. Every condition passed its utility minimum: standard accepted 5.7%,
+appearance shift 10.1%, partial obstruction 2.2%, and full obstruction 1.8%.
+Overall acceptance was 396/8,000 images, or 4.95%, below the frozen 5% minimum
+by four images.
+
+The mapping is rejected under the registered rule despite preserving all
+safety-quality measurements. Rounding 4.95% to 5%, lowering the gate, or using
+76M to select a replacement would invalidate independence. This evidence
+narrows the remaining issue to cross-population utility stability near the
+acceptance boundary. Any successor must be preregistered on new development
+populations and then repeat a new independent confirmation chain. No runtime,
+physical-camera, hardware, or motion authority is installed.

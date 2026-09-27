@@ -599,11 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-- AI lane / S1: independently confirm the frozen obstruction-weighted metric
-  mapping and 40th-percentile tail-risk gate once on untouched 76M scenes; no
-  recalibration, training, runtime, contract, arm, or integration-status
-  changes.
-
 
 
 
@@ -9339,3 +9334,48 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic repository review before final ledger append; not model, runtime, or physical assurance. No arm or integration status changes.
 - Supersedes: none.
 - Next dependency: Same as AI-392.
+
+### E-20260927-AI-395 — obstruction-weighted mapping independent confirmation
+
+- Stage: S1
+- Lane: AI
+- Commit: `b5fb57f8e9d8d07cddfcd740813adce4fa70eb2c` (exact selected report, checkpoint pair, 74M risk reference, normalized quantile, gate, confirmation population, unchanged gates, source, plan, and claim committed before confirmation inference; failed report, test, interpretation, and claim removal committed in the successor)
+- Inputs/fixtures: Frozen selected mapping report SHA256 `0ea5d5e07a49390ac6fb5c967d31f0730ed69ba55c23ee3dd2c08844c4d37c02`; obstruction-weighted metric checkpoint SHA256 `433d134b92b710566a0798c38dc344d1a768d2c87e44ef92135ffc075dfa9662`; tail-risk checkpoint SHA256 `79d48b0ef63effea3642c2e08a20d8a6800f27f75e0ed97ed8050f146d4f326e`; exact 74M risk-reference SHA256 `5b7cd690c08027e1bba3346602fecb68e87d63168a0beccf4cf8b662089682da`; normalized quantile `1.678368111424729`. Confirmation scenes `76000000..76000999`, with two styles and four conditions for 8,000 images. Confirmation pixel/feature/target/metric/risk SHA256 values `1791e53adef43f80c67e9b9fd29e96d8355271f260b3040136d8ef6c6cb6a63f`, `94c62358bbc9a3974e41b1c2e875f8c218542163a9d766d33b56177aa86a0500`, `a63a7df65287f0d1a1d4706bd3caf8089b825b12ba0e83be66a647631257e074`, `c3106b05b48178f23204db5b7aee8f0a6a20b1b3cd9fa0387ba577abdbc2a752`, and `d350bdace7a9af8a0f26b5aa75a03961a1d2a4c96d1d7317b76af39c9811a045`; all pose prediction hashes are retained in the report. Plan SHA256 `ad11053605a43194f1294924e5b1a5c9b9123ecfb9ce761c2c04925b7d7e9aa3`; report SHA256 `b1c8501e4e51c46d1f16fc9a29bac86a8049b17bb8c5aac9928a3c402701d812`.
+- Command: `python software/ai/train/confirm_obstruction_weighted_risk_gate.py`
+- Result: FAIL independent confirmation by one fixed utility check. Marginal scene coverage is 99.5%; 396/8,000 images are accepted (`0.0495`), below the 5% minimum by four images. Accepted-image and accepted-scene coverage are both 100%; zero accepted images exceed their predicted radius or 3 mm. Every condition passes utility and accepted-image coverage: standard 5.7%, appearance shift 10.1%, partial 2.2%, and full 1.8%, all with 100% accepted-image coverage. Zero mapping fits, model fits, and optimizer updates.
+- Artifacts: `train/confirm_obstruction_weighted_risk_gate.py`; `train/obstruction_weighted_risk_gate_confirmation_v1_plan.json`; `eval/obstruction_weighted_risk_gate_confirmation_v1_report.json`; `tests/test_obstruction_weighted_risk_gate_confirmation.py`; `docs/IMAGE_DEPENDENT_UNCERTAINTY.md`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Synthetic independent confirmation only. The exact mapping is rejected under its fixed rule despite all safety-quality checks passing. The 3 mm threshold is a research tolerance, not a measured contact margin. No recalibration, mapping installation, runtime behavior, physical-camera evidence, qualification, or motion authority. ModelMotionBatchV2 and arm/integration statuses are unchanged.
+- Supersedes: none; the passing selection evidence remains preserved while this confirmation failure prevents promotion.
+- Next dependency: Do not round, lower the gate, or tune on 76M. A successor must be preregistered on entirely new development populations with a larger cross-population utility margin, then repeat fresh selection and independent confirmation under the unchanged safety-quality gates.
+
+### E-20260927-AI-396 — obstruction-weighted mapping confirmation verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `b5fb57f8e9d8d07cddfcd740813adce4fa70eb2c` (frozen confirmation source; test and documentation committed in the successor)
+- Inputs/fixtures: Same frozen mapping and 8,000-image confirmation cohort as AI-395; exact hashes are recorded there and in the report.
+- Command: `python -m pytest -q software/ai/tests/test_obstruction_weighted_risk_gate_confirmation.py`
+- Result: PASS: 1 test in 1.84s. The test verifies immutable lineage, exact frozen quantile and reconstructed risk reference, exact confirmation population, attached output reconstruction, complete overall and conditional recounts, the sole failed overall-utility check, every preserved safety-quality pass, and zero calibration, model fitting, optimizer, hardware, physical, qualification, or runtime authority.
+- Artifacts: `tests/test_obstruction_weighted_risk_gate_confirmation.py`; `eval/obstruction_weighted_risk_gate_confirmation_v1_report.json`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Existing pytest-asyncio configuration warning. Recount consistency only; no physical assurance. Contract unchanged, so shared boundary tests were not triggered.
+- Supersedes: none.
+- Next dependency: Same as AI-395.
+
+### E-20260927-AI-397 — obstruction-weighted mapping confirmation snapshot review
+
+- Stage: S1
+- Lane: AI
+- Commit: `b5fb57f8e9d8d07cddfcd740813adce4fa70eb2c` (frozen confirmation source; final ledger append in successor)
+- Inputs/fixtures: Repository snapshot containing the frozen confirmation, failed report, verification test, interpretation, and shared ledger; exact hashes recorded in AI-395.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS: 6,355 paths, 1,026.9 MiB, 0 unresolved review findings, 14 reviewed synthetic fixtures.
+- Artifacts: confirmation plan/report; verification test; uncertainty documentation; shared ledger.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic repository review before final ledger append; not model, runtime, or physical assurance. No arm or integration status changes.
+- Supersedes: none.
+- Next dependency: Same as AI-395.
