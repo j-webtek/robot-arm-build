@@ -599,6 +599,8 @@ Copy this row and fill every field:
 
 ## Active work claims
 
+- AI lane / S1: frozen retained-prediction overlap audit of all three warmed-head pairs and the prior19 persistent cases; no training, new inference or arm changes.
+
 
 
 

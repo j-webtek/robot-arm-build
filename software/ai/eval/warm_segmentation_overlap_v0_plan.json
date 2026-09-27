@@ -1,0 +1,22 @@
+{
+  "seeds": [
+    260926,
+    260927,
+    260928
+  ],
+  "reports": [
+    "software/ai/eval/pose_warm_segmentation_260926_report.json",
+    "software/ai/eval/pose_warm_segmentation_260927_report.json",
+    "software/ai/eval/pose_warm_segmentation_260928_report.json"
+  ],
+  "prior": "software/ai/eval/persistent_pose_v0_report.json",
+  "file_sha256": {
+    "software/ai/eval/pose_warm_segmentation_260926_report.json": "18d8e64dd8946560bbdb5baaccf39743051520cc60a3e0709ac5aef377ea49dc",
+    "software/ai/eval/pose_warm_segmentation_260927_report.json": "8a4e9cb8d03ba69e1bc7543b6fbab53879421ddd9822db7d7ba9910d181e3bd7",
+    "software/ai/eval/pose_warm_segmentation_260928_report.json": "60305abcfff5d2d49b74d11e02d3207d632fd04b4fb8093d72ac478f68035adc",
+    "software/ai/eval/persistent_pose_v0_report.json": "4ed48690c596e16280fdb97707650ebd0fe08573138929121a633884df67a09b",
+    "software/ai/vision/audit_warm_segmentation_overlap.py": "757e259534595d4f8eab02d3542485f37940de0f232d11d837c28e1be23eca68"
+  },
+  "threshold_mm": 3,
+  "scope": "Retained prediction overlap only; no new data, training, threshold sweep or qualification"
+}
