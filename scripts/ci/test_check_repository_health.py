@@ -18,6 +18,12 @@ def policy() -> dict[str, object]:
             "pages": {"url": "https://example.test/", "title_contains": "Tactevra"},
         },
         "owner": {
+            "repository_fields": {
+                "allow_squash_merge": True,
+                "allow_merge_commit": False,
+                "allow_rebase_merge": False,
+                "delete_branch_on_merge": True,
+            },
             "security_and_analysis": {"secret_scanning": "enabled"},
             "branch_protection": {
                 "strict_status_checks": True,
@@ -105,6 +111,10 @@ class RepositoryHealthTests(unittest.TestCase):
     def test_owner_health_passes(self):
         responses = {
             "/repos/j-webtek/tactevra": {
+                "allow_squash_merge": True,
+                "allow_merge_commit": False,
+                "allow_rebase_merge": False,
+                "delete_branch_on_merge": True,
                 "security_and_analysis": {"secret_scanning": {"status": "enabled"}}
             },
             "/repos/j-webtek/tactevra/branches/main/protection": {
@@ -147,6 +157,10 @@ class RepositoryHealthTests(unittest.TestCase):
         value["owner"]["branch_protection"]["enforce_admins"] = False
         responses = {
             "/repos/j-webtek/tactevra": {
+                "allow_squash_merge": True,
+                "allow_merge_commit": False,
+                "allow_rebase_merge": False,
+                "delete_branch_on_merge": True,
                 "security_and_analysis": {"secret_scanning": {"status": "enabled"}}
             },
             "/repos/j-webtek/tactevra/branches/main/protection": {

@@ -222,10 +222,11 @@ default-branch protection visibility, community profile health, required workflo
 state, and the live Pages title. A failure signals drift for a maintainer to
 review; the workflow cannot repair settings, merge changes, or publish a release.
 
-Owner-visible expectations include branch protection, selected-action policy,
-workflow-token permissions, security features, and Pages configuration. Run the
-owner audit manually with a short-lived authenticated environment as documented
-in [CI](CI.md#repository-health-drift-audit). Never add a personal token to the
+Owner-visible expectations include merge policy, branch protection,
+selected-action policy, workflow-token permissions, security features, and
+Pages configuration. Run the owner audit manually with a short-lived
+authenticated environment as documented in
+[CI](CI.md#repository-health-drift-audit). Never add a personal token to the
 workflow. After an intentional settings change, update the policy and its
 operations documentation in a reviewed PR so the declared baseline and GitHub
 state remain aligned.

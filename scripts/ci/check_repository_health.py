@@ -125,6 +125,10 @@ def evaluate_owner(policy: dict[str, object], fetch_json: JsonFetcher) -> tuple[
     rows: list[tuple[str, str]] = []
 
     repo = fetch_json(f"/repos/{repository}")
+    section_errors = compare_fields(repo, expected["repository_fields"], "owner repository settings")
+    errors.extend(section_errors)
+    rows.append(("Owner repository settings", "pass" if not section_errors else "drift"))
+
     security = repo.get("security_and_analysis", {}) if isinstance(repo, dict) else {}
     observed_security = {
         key: value.get("status") if isinstance(value, dict) else None
