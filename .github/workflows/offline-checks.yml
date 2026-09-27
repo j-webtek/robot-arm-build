@@ -64,3 +64,45 @@ jobs:
         run: python scripts/ci/offline_checks.py environment
       - name: Run bounded AI and arm contract tests
         run: python scripts/ci/offline_checks.py test
+
+  rc03-manual:
+    name: RC03 manual / Ubuntu 24.04 / Python 3.12
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.12'
+      - name: Select and install the RC03 manual toolchain
+        run: |
+          python scripts/ci/rc03_manual_qualification.py requirements \
+            --source active-project/RoCell_v0_3/requirements-cad.txt \
+            --output "$RUNNER_TEMP/rc03-manual-requirements.txt"
+          python -m pip install --disable-pip-version-check \
+            -r "$RUNNER_TEMP/rc03-manual-requirements.txt"
+      - name: Render the RC03 assembly manual
+        run: |
+          mkdir -p "$RUNNER_TEMP/rc03-manual"
+          python active-project/RoCell_v0_3/scripts/build_manual_pdf.py \
+            --source ASSEMBLY_MANUAL.md \
+            --output "$RUNNER_TEMP/rc03-manual/ASSEMBLY_MANUAL.pdf" \
+            --running-title "Tactevra RC03 - Assembly Manual"
+      - name: Validate and summarize the rendered PDF
+        run: |
+          python scripts/ci/rc03_manual_qualification.py validate \
+            --source active-project/RoCell_v0_3/ASSEMBLY_MANUAL.md \
+            --pdf "$RUNNER_TEMP/rc03-manual/ASSEMBLY_MANUAL.pdf" \
+            --summary "$RUNNER_TEMP/rc03-manual/qualification.json"
+          cat "$RUNNER_TEMP/rc03-manual/qualification.json" >> "$GITHUB_STEP_SUMMARY"
+      - name: Retain the PDF and qualification summary for visual review
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: rc03-assembly-manual-${{ github.sha }}
+          path: ${{ runner.temp }}/rc03-manual/
+          if-no-files-found: warn
+          retention-days: 14

@@ -156,10 +156,13 @@ Treat a lower-bound-only proposal according to why the floor would change:
 
 For example, the protected offline matrix does not install
 `active-project/RoCell_v0_3/requirements-cad.txt` or render the RC03 assembly
-manual. A WeasyPrint floor change therefore requires an isolated install, an
-actual Markdown-to-PDF render, basic PDF integrity checks, and representative
-page review before merge. Record failed qualification attempts as inconclusive;
-an unavailable package index is not compatibility evidence.
+manual in its four portable package jobs. The separate `RC03 manual` job selects
+the manual dependencies from that requirements file, performs an actual
+Markdown-to-PDF render, checks PDF integrity, and retains the result for
+representative-page review. That focused job plus human page review is the
+acceptance path for a WeasyPrint floor change. Record failed qualification
+attempts as inconclusive; an unavailable package index is not compatibility
+evidence.
 
 ### September 27, 2026 RC03 first-run triage
 
@@ -206,8 +209,9 @@ agent or reminder is created by this guide.
 
 ## Actions and security baseline
 
-The offline workflow uses full commit SHAs for checkout v7.0.1 and setup-python
-v7.0.0, verified against upstream release tags on September 26, 2026. The upgrade
+The offline workflow uses full commit SHAs for checkout v7.0.1, setup-python
+v7.0.0, and upload-artifact v7.0.1, verified against upstream release tags by
+September 27, 2026. The upgrade
 review covered the intervening Node 24 runner requirement, checkout credential
 handling, event restrictions, and setup-python input changes. The hosted matrix
 tests the combined revisions; no self-hosted runner compatibility is claimed.
@@ -276,16 +280,22 @@ Following the owner's approval, repository settings were changed and read back:
 
 | Control | Verified state |
 | --- | --- |
-| Allowed Actions | Selected only: `actions/checkout@*` and `actions/setup-python@*` |
+| Allowed Actions | Selected only: `actions/checkout@*`, `actions/setup-python@*`, and `actions/upload-artifact@*` |
 | Broad GitHub-owned / verified-creator allowances | Both disabled |
 | Full-length commit-SHA pinning | Required |
 | Outside-contributor fork workflows | Approval required for all outside contributors |
 | Default token / permission to approve PR reviews | Read-only / disabled, unchanged |
 
-The action patterns allow reviewed pin updates within these two repositories;
+The action patterns allow reviewed pin updates within these three repositories;
 they do not waive the separate full-SHA requirement. Adding a new action needs
 an owner-approved allowlist change and review of its source, requested permissions,
 and workflow use. Do not broaden the allowlist just to clear a failed run.
+
+The upload action was added on September 27, 2026 solely for the bounded RC03
+manual qualification artifact. It receives the generated PDF and JSON summary
+from the runner's temporary directory, retains them for 14 days, and has no
+release or deployment authority. Repository workflow permissions remain
+read-only; artifact retention is review evidence, not publication.
 
 Before approving an outside contributor's workflow, inspect the proposed code
 and workflow changes at the revision being approved. Approval allows CI code to
