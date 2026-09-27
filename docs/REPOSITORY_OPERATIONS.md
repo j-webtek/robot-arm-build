@@ -123,6 +123,9 @@ be checked in GitHub before claiming the service is operating.
 - No automatic merging or dependency installation on contributors' machines.
 - Historical RC02/RC03 requirements, local model weights, vendor firmware and
   ignored toolchains are outside this configuration.
+- Direct attribution and external-artifact boundaries are indexed in
+  [`THIRD_PARTY_NOTICES.md`](../THIRD_PARTY_NOTICES.md). Dependabot coverage does
+  not establish license compatibility or redistribution permission.
 - Ranged Python requirements may already admit newer versions without a manifest
   change. A missing Dependabot PR is not evidence that every dependency was checked
   or that the resolved environment is secure. CI still resolves supported ranges.
