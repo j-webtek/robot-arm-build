@@ -30,3 +30,8 @@ Runtime integration additionally needs measured board-to-arm calibration, qualif
 Frozen source7992e942194285390893a91b16c1e78e50c973f6 calibrated on31000000..31000999 and confirmed on32000000..32000999, four variants per scene. Both ranges are now consumed. Rank991 gives4.912064mm radius, exceeding the3mm research tolerance; all images abstain. Confirmation coverage is987/1000 scenes(98.7%), with95% Wilson interval97.7886%–99.2387%; image coverage3971/4000(99.275%). The image-level rate does not replace scene-level coverage. The fixed rule fails on coverage and utility. A nominal99% marginal target does not imply every finite cohort attains99%; the failed descriptive criterion remains preserved.
 
 Eight verification tests pass. An initial exact-endpoint assertion failed from3.47e-18 floating roundoff and is preserved separately; only its test tolerance changed. No model fitting, runtime bound or physical authority was added. Next is a training-only image-derived uncertainty feature specification and grouped assessment; any locally scaled calibration requires new independent data. Do not tune using these consumed cohorts.
+
+
+## Image-dependent follow-up
+
+A fixed56-feature image-only scale regressor passed five-fold uncertainty-training feasibility on600 newly allocated33M scenes. It improved log-error MSE over a constant predictor in all four conditions. See IMAGE_DEPENDENT_UNCERTAINTY.md for evidence and the next separate full-fit/export/calibration sequence. This does not revise the failed global bound, change pose weights or install runtime qualification.

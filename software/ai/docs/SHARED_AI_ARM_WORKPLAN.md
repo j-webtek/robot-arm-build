@@ -599,7 +599,7 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-- AI lane / S1: image-only uncertainty scale prototype; reserve33000000..33000599 for uncertainty training-selection only, five grouped folds, frozen pose model, no calibration/arm changes.
+
 
 
 
@@ -8009,3 +8009,51 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: One global-bound calibration fit, zero model fits. Both newly generated ranges now consumed. Same-renderer synthetic scenes; interval assumes binomial scene observations and is not physical-camera assurance.99% marginal target does not guarantee every1000-scene sample meets99%; observed rule nevertheless fails and utility is zero. No runtime bound installed or calibrated physical qualification. Contract unchanged; boundary suite not triggered. Existing pytest warning; arm/integration statuses unchanged.
 - Supersedes: none; zero-utility and initial test failure retained.
 - Next dependency: Specify image-derived uncertainty features and grouped training-only evaluation with frozen pose model; no training/threshold selection using these consumed calibration/confirmation cohorts. Any locally scaled bound requires a separately frozen calibration and independent confirmation allocation. Keep runtime baseline unchanged.
+
+
+### E-20260927-AI-309 — image-dependent scale training feasibility
+
+- Stage: S1
+- Lane: AI
+- Commit: `d5680841be29143c5fe0900c211f59c2a834c4f5` (source/features/plan frozen before rendering/fitting; report/tests/docs in successor)
+- Inputs/fixtures:33000000..33000599, rectangle/ellipse x4conditions,600 scenes/4800 images. Five folds3840 fit/960 validation images; all8 variants grouped. Frozen pose artifact SHA256 c9f4ef6d8f9e50317a917154fccacce46506ab2e7cde8267396e28fec156147b. Source hashes in train/image_quality_scale_v1_plan.json; report SHA256 `9b58bf614dde9006056e3ac92f90a7213ff3d8d78ca109e5ea51e14842104c80` includes pixel/feature/prediction hashes, fold coefficients and all row errors/scales.
+- Command: `python software/ai/train/evaluate_image_quality_scale.py`
+- Result: PASS fixed feasibility:five grouped fits on4800 images. Constant versus scale log-error MSE:standard0.242925→0.234846,appearance0.259529→0.246693,partial0.240460→0.233817,full0.270347→0.254223. All conditions improve. No final fit or bound calibration.
+- Artifacts: vision/image_quality_scale.py; train/evaluate_image_quality_scale.py; train/image_quality_scale_v1_plan.json; eval/image_quality_scale_v1_report.json; tests/test_image_quality_scale.py; docs/IMAGE_DEPENDENT_UNCERTAINTY.md.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Five uncertainty-regressor fits, zero pose fits/calibration fits. Freshly allocated uncertainty-training data only; no untouched confirmation claim. Error-scale output is not confidence or an upper bound. Modest synthetic MSE improvement cannot establish useful acceptance or physical-camera behavior. Historical pose selection remains fixed. No calibrated qualification/runtime gate installed. Batch contract unchanged; shared boundary suite not triggered. Snapshot heuristic before final docs; existing pytest warning. Arm/integration statuses unchanged.
+- Supersedes: none; failed global bound retained.
+- Next dependency: Freeze one full scale fit and export parity, then separately allocate/freeze independent normalized-score calibration and confirmation. Keep pose weights, features, alpha and3mm research tolerance fixed. Report accepted-subset violations without claiming conditional coverage from marginal calibration.
+
+
+### E-20260927-AI-310 — image-only scale regression verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `d5680841be29143c5fe0900c211f59c2a834c4f5` (source/features/plan frozen before rendering/fitting; report/tests/docs in successor)
+- Inputs/fixtures:33000000..33000599, rectangle/ellipse x4conditions,600 scenes/4800 images. Five folds3840 fit/960 validation images; all8 variants grouped. Frozen pose artifact SHA256 c9f4ef6d8f9e50317a917154fccacce46506ab2e7cde8267396e28fec156147b. Source hashes in train/image_quality_scale_v1_plan.json; report SHA256 `9b58bf614dde9006056e3ac92f90a7213ff3d8d78ca109e5ea51e14842104c80` includes pixel/feature/prediction hashes, fold coefficients and all row errors/scales.
+- Command: `python -m pytest -q software/ai/tests/test_image_quality_scale.py`
+- Result: PASS:3 tests in0.29s. RGB-only finite feature extraction, brightness/edge responses, training-only fit isolation, positive clipped outputs, complete4800-row fold/population/metric recount and lineage verified.
+- Artifacts: vision/image_quality_scale.py; train/evaluate_image_quality_scale.py; train/image_quality_scale_v1_plan.json; eval/image_quality_scale_v1_report.json; tests/test_image_quality_scale.py; docs/IMAGE_DEPENDENT_UNCERTAINTY.md.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Five uncertainty-regressor fits, zero pose fits/calibration fits. Freshly allocated uncertainty-training data only; no untouched confirmation claim. Error-scale output is not confidence or an upper bound. Modest synthetic MSE improvement cannot establish useful acceptance or physical-camera behavior. Historical pose selection remains fixed. No calibrated qualification/runtime gate installed. Batch contract unchanged; shared boundary suite not triggered. Snapshot heuristic before final docs; existing pytest warning. Arm/integration statuses unchanged.
+- Supersedes: none; failed global bound retained.
+- Next dependency: Freeze one full scale fit and export parity, then separately allocate/freeze independent normalized-score calibration and confirmation. Keep pose weights, features, alpha and3mm research tolerance fixed. Report accepted-subset violations without claiming conditional coverage from marginal calibration.
+
+
+### E-20260927-AI-311 — image-scale snapshot review
+
+- Stage: S1
+- Lane: AI
+- Commit: `d5680841be29143c5fe0900c211f59c2a834c4f5` (source/features/plan frozen before rendering/fitting; report/tests/docs in successor)
+- Inputs/fixtures:33000000..33000599, rectangle/ellipse x4conditions,600 scenes/4800 images. Five folds3840 fit/960 validation images; all8 variants grouped. Frozen pose artifact SHA256 c9f4ef6d8f9e50317a917154fccacce46506ab2e7cde8267396e28fec156147b. Source hashes in train/image_quality_scale_v1_plan.json; report SHA256 `9b58bf614dde9006056e3ac92f90a7213ff3d8d78ca109e5ea51e14842104c80` includes pixel/feature/prediction hashes, fold coefficients and all row errors/scales.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS:6221 paths,898.5MiB,0 unresolved findings,14 reviewed synthetic fixtures.
+- Artifacts: vision/image_quality_scale.py; train/evaluate_image_quality_scale.py; train/image_quality_scale_v1_plan.json; eval/image_quality_scale_v1_report.json; tests/test_image_quality_scale.py; docs/IMAGE_DEPENDENT_UNCERTAINTY.md.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Five uncertainty-regressor fits, zero pose fits/calibration fits. Freshly allocated uncertainty-training data only; no untouched confirmation claim. Error-scale output is not confidence or an upper bound. Modest synthetic MSE improvement cannot establish useful acceptance or physical-camera behavior. Historical pose selection remains fixed. No calibrated qualification/runtime gate installed. Batch contract unchanged; shared boundary suite not triggered. Snapshot heuristic before final docs; existing pytest warning. Arm/integration statuses unchanged.
+- Supersedes: none; failed global bound retained.
+- Next dependency: Freeze one full scale fit and export parity, then separately allocate/freeze independent normalized-score calibration and confirmation. Keep pose weights, features, alpha and3mm research tolerance fixed. Report accepted-subset violations without claiming conditional coverage from marginal calibration.
