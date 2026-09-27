@@ -57,6 +57,12 @@ surface, calibration, and capability records. The first integrated physical case
 should remain a single keyboard target with fresh observation and independent
 outcome verification.
 
+For the camera/support portion, the ARM-073 retained-original adapter now turns
+the four exact, hash-reviewed evidence files into the typed ARM-070 bindings
+without manual field transcription. It is intentionally downstream of physical
+collection and owner-AI review: it authenticates and binds those inputs but does
+not create them, judge model accuracy, or grant execution authority.
+
 The current cross-lane state is materialized by
 [`arm072_model_arm_operational_readiness.json`](../eval/arm072_model_arm_operational_readiness.json).
 That content-bound report prevents the passing wire-contract simulation from

@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rocell.local/schemas/camera_support_original_owner_ai_review_v1.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "status", "review_id", "binding_id",
+    "evidence_relative_path", "evidence_sha256", "measured_monotonic_ns",
+    "valid_until_monotonic_ns", "evidence_origin", "review_disposition",
+    "owner_ai_reviewer_id", "limitations", "human_review_claimed",
+    "external_independence_claimed", "camera_open_authorized",
+    "controller_start_authorized", "transport_authorized",
+    "execution_authorized", "hardware_access", "physical_authority",
+    "review_sha256"
+  ],
+  "properties": {
+    "schema": {"const": "rocell.camera_support_original_owner_ai_review.v1"},
+    "status": {"const": "OWNER_AI_ACCEPTED_PHYSICAL_RETAINED_ORIGINAL"},
+    "review_id": {"$ref": "#/$defs/id"},
+    "binding_id": {"enum": ["camera_receipt", "camera_identity", "camera_mode_controls", "support_witnesses"]},
+    "evidence_relative_path": {"type": "string", "minLength": 1, "maxLength": 1024},
+    "evidence_sha256": {"$ref": "#/$defs/sha"},
+    "measured_monotonic_ns": {"type": "integer", "minimum": 1},
+    "valid_until_monotonic_ns": {"type": "integer", "minimum": 2},
+    "evidence_origin": {"const": "PHYSICAL_RETAINED_ORIGINALS"},
+    "review_disposition": {"const": "OWNER_AI_ACCEPTED"},
+    "owner_ai_reviewer_id": {"$ref": "#/$defs/id"},
+    "limitations": {
+      "type": "array", "minItems": 1, "maxItems": 16,
+      "items": {"type": "string", "minLength": 1, "maxLength": 512}
+    },
+    "human_review_claimed": {"const": false},
+    "external_independence_claimed": {"const": false},
+    "camera_open_authorized": {"const": false},
+    "controller_start_authorized": {"const": false},
+    "transport_authorized": {"const": false},
+    "execution_authorized": {"const": false},
+    "hardware_access": {"const": false},
+    "physical_authority": {"const": false},
+    "review_sha256": {"$ref": "#/$defs/sha"}
+  },
+  "$defs": {
+    "id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:@/-]{0,191}$"},
+    "sha": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

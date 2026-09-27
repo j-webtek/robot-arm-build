@@ -1,12 +1,18 @@
 # Tactevra project status
 
-Reviewed September 27, 2026 through the ARM-070 camera/support/optics intake
-and gap assessment on merged `main`.
+Reviewed September 27, 2026 through the ARM-073 retained camera/support binding
+adapter on merged `main`.
 Unmerged workstream branches are not included in this summary.
 This is a capability summary for readers; the
 [shared workplan](software/ai/docs/SHARED_AI_ARM_WORKPLAN.md) retains current
 stage ownership, while the [evidence ledger](software/ai/docs/EVIDENCE_LEDGER.md)
 preserves detailed test records as development continues.
+
+Protected `main` also carries the shared model/arm conformance profile and
+operational-readiness gate from PRs #115 and #119. Those controls formalize
+software compatibility and evidence requirements but add no physical
+observation. The ARM-073 marker above advances only because the evidence ledger
+now records the retained camera/support binding adapter from PR #120.
 
 Tactevra (formerly RoCell) is an experimental robot workcell intended to carry out keyboard and phone
 tasks from a person's text request. You can explore the software and run offline
@@ -43,6 +49,7 @@ use the shared workplan linked above.
 | Scene assessment | Local vision adapters and experimental Gemma scene checks | Saved images can be assessed for device visibility and quality; results remain provisional |
 | Keyboard localization | KeyboardPoseNet trained on synthetic images | Candidate keyboard poses and key coordinates can be evaluated offline; real-camera accuracy remains unqualified |
 | AI-to-arm interface | V2 batch assembler, strict decoder, registry snapshot, and freshness checks | Actual assembler output passes shared software tests with synthetic evidence, preserving action order and rejecting tested invalid inputs |
+| Model/arm compatibility | Shared conformance profile and operational-readiness gate | Software can reject tested incompatibilities and incomplete evidence before execution; a pass does not authorize movement or qualify a physical setup |
 | Precision evidence | Identity and capture-receipt binding helpers | These establish software checks, not a qualified real-camera observation; authenticated capture and usable localization confidence remain open |
 | Arm planning adapter | Admitted v2 proposals enter the arm-owned measured planning policy | The tested valid input reaches the planner but stops for missing or stale calibration; no trajectory or controller command is produced |
 | Installed collision evidence | Strict measured profiles bind body geometry and clearance policy to the manifest, build, model, and base collision contract | The measured trajectory screener can consume this profile without falling back to nominal geometry, but continuous full-body sweep remains unimplemented and release stays blocked |
@@ -180,6 +187,13 @@ assessment. It records the current gap instead of manufacturing evidence: the
 camera receipt, persistent identity, commissioned mode and controls, and support
 witnesses are all missing. The component remains blocked, the ARM-069 partial
 epoch is unchanged, and no camera or hardware authority was granted.
+
+ARM-073 adds the strict file-backed bridge that those four missing originals
+will use after collection and owner-AI review. It verifies bounded regular-file
+reads, safe relative paths, exact content hashes, closed review fields, and
+canonical binding order before constructing ARM-070 inputs. It eliminates
+manual transcription but does not create any missing observation, decide model
+accuracy, advance the epoch, or grant hardware authority.
 
 Repository improvements include protected-main CI, support and private security
 reporting, contributor handoff templates, reviewed dependency updates, and an
