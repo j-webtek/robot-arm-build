@@ -14,6 +14,8 @@ class PublicRecordTests(unittest.TestCase):
             "assets/media/tactevra-overview.mp4": b"video",
             "assets/media/tactevra-overview-poster.jpg": b"poster",
             "assets/media/tactevra-overview.en.vtt": b"captions",
+            "assets/media/tactevra-overview.chapters.vtt": b"chapters",
+            "assets/media/tactevra-social-preview.jpg": b"social-preview",
         }
         records = []
         for relative, content in files.items():
