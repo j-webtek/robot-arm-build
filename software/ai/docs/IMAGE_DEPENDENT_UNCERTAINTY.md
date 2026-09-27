@@ -327,3 +327,26 @@ mappings or acceptance rules using the frozen classifier probability and pose
 disagreement, select once on new grouped cohorts, and preserve the same
 conditional coverage, utility, and 3 mm requirements. The classifier should not
 be retrained or selected again in that study.
+
+## Low-gain probability mapping selection
+
+The frozen classifier and pose ensemble were evaluated without training on new
+49M mapping-calibration and 50M selection cohorts. Four preregistered gains,
+0.05, 0.075, 0.10, and 0.125, scaled floored disagreement by
+`1 + gain * obstruction_probability`. No mapping passed.
+
+The mappings accepted 1,206 to 1,387 of 8,000 images, so overall and every
+conditional utility requirement passed. Their marginal scene coverage was only
+98.4%. Accepted-image coverage ranged from 98.4375% to 98.7562%, and accepted-
+scene coverage ranged from 97.5845% to 97.8972%. They admitted 7 to 11 actual
+errors above 3 mm. Partial accepted-image coverage ranged from 96.9697% to
+97.9487%; full accepted-image coverage ranged from 95.3947% to 95.8042%.
+
+This closes low-gain scalar multiplication of disagreement by obstruction
+probability. The classifier detects obstruction well, but a single image-level
+class probability does not rank localization error within partial and full
+obstruction. The next uncertainty feature needs localized geometric evidence,
+such as landmark visibility and per-landmark residual or confidence, rather
+than another global probability transform. Any such feature must use new
+training-selection cohorts and cannot install runtime authority without a later
+independent calibration and confirmation chain.

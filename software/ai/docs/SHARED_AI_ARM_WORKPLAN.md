@@ -599,11 +599,6 @@ Copy this row and fill every field:
 
 ## Active work claims
 
-- AI lane / S1: keep the localized obstruction classifier frozen and select
-  once among four preregistered low-gain probability/disagreement mappings on
-  new 49M mapping-calibration and 50M selection cohorts; no runtime, contract,
-  or arm changes.
-
 
 
 
@@ -8694,3 +8689,48 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Heuristic repository review before final ledger append; not model, runtime, or physical assurance. No arm or integration status changes.
 - Supersedes: none.
 - Next dependency: Same as AI-349.
+
+### E-20260927-AI-352 — frozen obstruction-probability mapping selection
+
+- Stage: S1
+- Lane: AI
+- Commit: `bd51f17b44dfbae07c862988b79a36c437e2a2c2` (four gains, two populations, finite-sample rule, checks, winner rule, source, plan, and active claim frozen before inference; report, tests, interpretation, and claim removal committed in the successor)
+- Inputs/fixtures: Frozen 34,381-parameter classifier SHA256 `96cc444276e9d9f35d0ed722891dc3eab2a7a1502960ed36df18ce17236200d9`; prior report SHA256 `d40396a5cfbb66aa200f6c400b7ae560dfb3d5d8538e64f32d6a5d2f4fb24e78`; gains `0.05, 0.075, 0.10, 0.125`; mapping-calibration scenes `49000000..49000999` and selection scenes `50000000..50000999`, each with two styles and four conditions for 8,000 images. Mapping raw-pixel SHA256 `b7334c7392575b830305f3c0e6348677117cd381de6fc8594efe2cae55a00129` and obstruction-prediction SHA256 `67afabd28d785e62414d6c46542ec7c9f09b640dd8e384b2de80f57f370ec29e`; selection raw-pixel SHA256 `f4e568831b117874777d65501299fdae87cc2db123bae21ee396150e23dc5f2e` and obstruction-prediction SHA256 `2c31b3f87d088866c766cded856ce4757fd21343cecb020ddad3339b4293c0d6`; plan SHA256 `6b55cabb6bbc904e32a5ddb863db68a8860cdb830b4184d0e64abd0de600bf9e`; report SHA256 `1b5a65b5e46acc9350f3a1595c7ee82a8efeb6f12bd9c09372085629f485abe6`. Pose prediction hashes are retained in the report.
+- Command: `python software/ai/train/select_multiscale_obstruction_mapping.py`
+- Result: FAIL fixed selection rule; no mapping selected. All gains pass overall and conditional utility, accepting 1,206 to 1,387 of 8,000 images. Every gain has only 98.4% marginal scene coverage. Accepted-image coverage is 98.4375% to 98.7562%, accepted-scene coverage is 97.5845% to 97.8972%, and each mapping accepts 7 to 11 errors over 3 mm. Partial accepted-image coverage is 96.9697% to 97.9487%; full accepted-image coverage is 95.3947% to 95.8042%. Four quantile calibrations, zero new model fits, and zero optimizer updates.
+- Artifacts: `train/select_multiscale_obstruction_mapping.py`; `train/multiscale_obstruction_mapping_v1_plan.json`; `eval/multiscale_obstruction_mapping_v1_report.json`; `tests/test_multiscale_obstruction_mapping.py`; `docs/IMAGE_DEPENDENT_UNCERTAINTY.md`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Training-only synthetic mapping selection using shared cohorts across four preregistered candidates. The strong classifier remains frozen, but its global probability does not rank conditional localization error. No selected map, fresh confirmation, runtime threshold, physical-camera evidence, or motion authority. ModelMotionBatchV2 and arm/integration statuses are unchanged.
+- Supersedes: none; all prior failed uncertainty evidence remains preserved.
+- Next dependency: Stop global scalar transforms. Preregister a localized geometric uncertainty feature based on landmark visibility and per-landmark residual or confidence, then test its ranking on new grouped training-selection evidence before allocating another calibration chain.
+
+### E-20260927-AI-353 — obstruction-probability mapping verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `bd51f17b44dfbae07c862988b79a36c437e2a2c2` (frozen mapping-selection source; tests and documentation committed in the successor)
+- Inputs/fixtures: Same 16,000 new images, frozen classifier and pose models, four gains, plan, and report as AI-352; exact hashes are recorded there and in the report.
+- Command: `python -m pytest -q software/ai/tests/test_multiscale_obstruction_mapping.py`
+- Result: PASS: 2 tests in 2.50s. Tests verify the exact mapping equation, frozen artifact lineage, grouped populations, all four rank-991 quantiles, summaries, conditional checks, deterministic no-selection result, and zero training, hardware, or physical authority.
+- Artifacts: `tests/test_multiscale_obstruction_mapping.py`; `eval/multiscale_obstruction_mapping_v1_report.json`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Existing pytest-asyncio configuration warning. Recount consistency only; no physical assurance. Contract unchanged, so shared boundary tests were not triggered.
+- Supersedes: none.
+- Next dependency: Same as AI-352.
+
+### E-20260927-AI-354 — obstruction-probability mapping snapshot review
+
+- Stage: S1
+- Lane: AI
+- Commit: `bd51f17b44dfbae07c862988b79a36c437e2a2c2` (frozen mapping-selection source; final ledger append in successor)
+- Inputs/fixtures: Repository snapshot containing the frozen study, report, tests, interpretation, and shared ledger; exact hashes recorded in AI-352.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS: 6,291 paths, 944.6 MiB, 0 unresolved review findings, 14 reviewed synthetic fixtures.
+- Artifacts: mapping plan/report; verification test; uncertainty documentation; shared ledger.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic repository review before final ledger append; not model, runtime, or physical assurance. No arm or integration status changes.
+- Supersedes: none.
+- Next dependency: Same as AI-352.
