@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rocell.local/schemas/native_t102_production_attempt_terminal_v1.schema.json",
+  "title": "RoCell native T102 production attempt terminal v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "status", "started_sha256", "completed_monotonic_ns", "transport_receipt", "automatic_retry_allowed", "replay_allowed", "terminal_sha256"],
+  "properties": {
+    "schema": {"const": "rocell.native_t102_production_attempt_terminal.v1"}, "status": {"const": "TERMINAL_NO_REPLAY"}, "started_sha256": {"$ref": "#/$defs/hash"}, "completed_monotonic_ns": {"type": "integer", "minimum": 1}, "transport_receipt": {"$ref": "native_t102_production_transport_receipt_v1.schema.json"}, "automatic_retry_allowed": {"const": false}, "replay_allowed": {"const": false}, "terminal_sha256": {"$ref": "#/$defs/hash"}
+  },
+  "$defs": {"hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}
+}
