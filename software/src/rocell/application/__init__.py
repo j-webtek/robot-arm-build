@@ -332,6 +332,14 @@ from .single_action_execution_review_v1 import (
     SingleUseExecutionReviewGateV1,
     build_single_action_execution_review_v1,
 )
+from .reviewed_motion_permit_bridge_v1 import (
+    ADMISSION_SCHEMA as REVIEWED_MOTION_PERMIT_ADMISSION_SCHEMA,
+    LIFECYCLE_SCHEMA as REVIEWED_ACTION_LIFECYCLE_SCHEMA,
+    ReviewedActionLifecycleV1,
+    ReviewedMotionPermitAdmissionV1,
+    ReviewedMotionPermitBridgeError,
+    issue_reviewed_motion_permit_v1,
+)
 from .zero_write_waveshare_adapter_v1 import (
     GRIPPER_BEHAVIOR as ZERO_WRITE_GRIPPER_BEHAVIOR,
     INTERPOLATION_MODE as ZERO_WRITE_INTERPOLATION_MODE,
@@ -1185,6 +1193,12 @@ __all__ = [
     "SingleActionExecutionReviewV1",
     "SingleUseExecutionReviewGateV1",
     "build_single_action_execution_review_v1",
+    "REVIEWED_MOTION_PERMIT_ADMISSION_SCHEMA",
+    "REVIEWED_ACTION_LIFECYCLE_SCHEMA",
+    "ReviewedActionLifecycleV1",
+    "ReviewedMotionPermitAdmissionV1",
+    "ReviewedMotionPermitBridgeError",
+    "issue_reviewed_motion_permit_v1",
     "ZERO_WRITE_GRIPPER_BEHAVIOR",
     "ZERO_WRITE_INTERPOLATION_MODE",
     "ZERO_WRITE_WAVESHARE_PERMIT_SCHEMA",
