@@ -1,7 +1,7 @@
 {
   "schema": "tactevra.published-media-verification.v1",
   "recorded_on": "2026-09-27",
-  "asset_revision_commit": "fd24bc3f455b5f1736fc5955beffe0a8c20f9649",
+  "asset_revision_commit": "bee95eac52f7fccf94d9ce1447a880cab1f7fb91",
   "source_pull_request": "https://github.com/j-webtek/tactevra/pull/122",
   "authority": {
     "path": "presentations/blender/dimension_manifest.json",
@@ -22,15 +22,16 @@
       "MP4 stream inventory, duration, dimensions, frame rate, audio, and selectable English subtitle stream",
       "WebVTT cue order and timing",
       "eight representative frames sampled across the committed MP4",
-      "integrated loudness and true-peak analysis of the final AAC delivery"
+      "integrated loudness and true-peak analysis of the final AAC delivery",
+      "eleven timestamp-ordered ElevenLabs narration clips aligned to their documented scene windows"
     ],
     "visual_result": "PASS_WITH_RECORDED_LIMITATIONS"
   },
   "outputs": [
     {
       "path": "assets/media/tactevra-overview.mp4",
-      "size_bytes": 19162996,
-      "sha256": "346da059b8b86f130bd72e541904efb0993035c87ce0143ab4cee0928c7aac58",
+      "size_bytes": 19151157,
+      "sha256": "41e7971e15c87787d3e1fc49deba65662829a6a9c4b9adaadf92bd7ca1a1b724",
       "media": {
         "duration_seconds": 77.003,
         "video": "H.264 1920x1080 24fps",

@@ -4,7 +4,7 @@
 **Authority:** Byte identity and post-merge inspection only; this record is not a Blender rerender, third-party-rights disposition, or physical qualification
 
 The current overview-media revision was produced from commit
-`fd24bc3f455b5f1736fc5955beffe0a8c20f9649` through
+`bee95eac52f7fccf94d9ce1447a880cab1f7fb91` through
 [pull request #122](https://github.com/j-webtek/tactevra/pull/122). The
 machine-readable [verification receipt](verification_receipt.json) binds the
 committed media files to exact byte sizes and SHA-256 digests and records the
@@ -14,6 +14,9 @@ authority manifest used by the documented scene builder.
 
 - The committed MP4 is 77.003 seconds of H.264 video at 1920×1080 and 24 fps,
   with AAC stereo audio and a selectable English subtitle stream.
+- Eleven timestamp-ordered ElevenLabs narration clips were aligned to the
+  documented scene windows without speech-rate modification.
+- Final audio measures −14.2 LUFS integrated with a −1.3 dBFS true peak.
 - The sidecar WebVTT file contains 19 ordered cues whose timing fits within
   the delivery duration.
 - Eight representative frames sampled across the committed MP4 were reviewed
@@ -22,7 +25,7 @@ authority manifest used by the documented scene builder.
   in the machine-readable receipt.
 
 Blender 4.3.2 and the identified FFmpeg build were observed during the full
-rerender and final inspection. Pull request #118 records that render, visual
+rerender and final inspection. Pull request #122 records that render, visual
 review, selectable-caption check, and final audio-QA validation.
 
 ## Limits
