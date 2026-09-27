@@ -2694,3 +2694,62 @@ rewriting history. New entries must use a unique evidence ID.
   endpoint, account for one write, collect authentic acknowledgement/feedback,
   and never resend any ambiguous claim. Physical use remains a separate,
   explicitly authorized test.
+
+### E-20260926-ARM-052 — durable T=102 terminal receipt journal
+
+- Stage: S4
+- Lane: ARM
+- Change: added a filesystem-backed journal around ARM-051's claimed executor
+  rehearsal. Before the incapable transport may open, an immutable
+  `started.json` binds the prepared handoff, exclusive claim, single-use
+  authority, approval record, exact T=102 frame and payload, pinned endpoint,
+  correlation, writer, controller session, and monotonic start. After the one
+  executor attempt, `terminal.json` seals the exact byte-accounted receipt.
+- Recovery behavior: an execution-started journal without a terminal record is
+  always `RETRY_FORBIDDEN_EXECUTION_UNCERTAIN`; a complete journal is
+  `TERMINAL_NO_REPLAY`. Both records are canonical JSON, content-hashed,
+  exclusive, flushed, and revalidated after restart. Truncated, malformed,
+  tampered, crossed, duplicated, symlinked, or unexpectedly extended journals
+  fail closed.
+- Receipt validation: terminal admission independently checks the exact receipt
+  fields and hash plus mutual consistency among status, error code, requested
+  and confirmed bytes, and open/write/close attempt counts. A rehashed but
+  internally inconsistent receipt cannot be sealed. All incapable executor
+  outcomes—including open, zero-write, partial-write, invalid-count,
+  write-exception, close, and full-recording paths—can be terminally retained
+  without claiming controller receipt or movement.
+- Artifacts: `native_t102_terminal_receipt_journal_v1.py`; closed execution-
+  started, terminal, and recovery-snapshot schemas; public exports; durable
+  wrapper; restart, concurrency, fault, schema, crossing, consistency,
+  truncation, unexpected-entry, and symlink tests; portable CI selection.
+- Artifact identity: implementation SHA-256
+  `b2c04ae8651dd7b65f1edbdccb5280c44aa325c7cbf0e1bfe041757a2bace55a`;
+  execution-started, terminal, and snapshot schema SHA-256 values
+  `57245097a4c2b51b10dfe7b4cb1276052456c97ffd0a4be7557b441906d00dfd`,
+  `3e6fc91c9589e92460c6bdb710ac4d3e7789d6e58a5cc157b84757956a11abd0`,
+  and `ec5a3fe76a1df211d7bcaf2b2a1667e0a1d4e2e73766201552253ce1e0174f88`.
+- Results: focused claimed-executor/terminal-journal suite PASS, 39 tests;
+  expanded runtime/permit/writer/T=102 suite PASS, 88 tests; portable shared
+  AI/arm selection PASS, 272 tests in 37.51 seconds; compile and diff checks
+  PASS.
+- Evidence status: deterministic local-filesystem and in-memory evidence only.
+  The accepted transport remains ARM-051's exact incapable class and this
+  journal owns no serial factory, port, socket, callback, device handle,
+  controller process, firmware operation, or external I/O.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: the execution authority remains rehearsal-only, the pinned
+  endpoint is a digest rather than an opened device, and recorded bytes remain
+  in memory. The terminal record is durable evidence of the rehearsal lifecycle,
+  not an authentic controller acknowledgement, joint-feedback stream, physical
+  arrival, task outcome, or production transport qualification.
+- Supersedes: ARM-051's volatile terminal receipt and unresolved crash window
+  after execution-started publication. It preserves ARM-050's pre-open claim
+  boundary and does not supersede native-adapter review, authentic receipt
+  acquisition, physical qualification, or independent task observation.
+- Next dependency: independently implement and review a production transport
+  adapter outside the incapable executor type. It must consume an externally
+  issued single-use physical authority, bind one resolved endpoint to the
+  pinned identity, reuse this pre-open/terminal journal discipline, account for
+  exactly one write, acquire authentic T=1021/T=1051 evidence, and never resend
+  an ambiguous execution. Physical use remains separately authorized.
