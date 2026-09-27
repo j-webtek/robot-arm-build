@@ -1,0 +1,24 @@
+{
+  "source_report": "software/ai/eval/nonlinear_uncertainty_v1_report.json",
+  "artifact": "software/ai/results/grouped_linear_refit_v1/model.pt",
+  "groups": [33000000, 600],
+  "styles": ["rectangle", "ellipse"],
+  "conditions": ["standard", "appearance_shift", "partial", "full"],
+  "retention_fractions": [0.1, 0.25, 0.5, 0.75, 1.0],
+  "error_recount_tolerance_mm": 1e-9,
+  "score": "Maximum displacement over all 46 named keyboard targets between the frozen baseline pose and frozen confirmed residual-candidate pose.",
+  "acceptance": "Disagreement scene tail AUROC must exceed the nonlinear-regression reference, and scene tail rates at fixed 25% and 50% retention must both be strictly lower.",
+  "scope": "Zero-fit diagnostic on existing grouped 33M uncertainty-training evidence; no new images, calibration, confirmation, threshold selection, export, or runtime installation.",
+  "file_sha256": {
+    "software/ai/vision/audit_pose_disagreement.py": "75d622e1d8dafd655e950a7ca0e30f37f0ffaedce02e044a62e508928edfad3b",
+    "software/ai/train/compare_backbone_uncertainty.py": "9bd5580862b178d4f62ef4aa8b3311f4f4992cc0571eb4aebd0be64b881faf0f",
+    "software/ai/eval/nonlinear_uncertainty_v1_report.json": "b9ac4856d8af925d19d2e3b25e049c22f738590fba2deb7e52ff9fedc0fc0d4d",
+    "software/ai/results/grouped_linear_refit_v1/model.pt": "c9f4ef6d8f9e50317a917154fccacce46506ab2e7cde8267396e28fec156147b",
+    "software/ai/vision/diagnose_pose_tail.py": "42da11417ceac91001e47fa732d2c127ef9f1763c479c56f9593ff3bd185fb90",
+    "software/ai/vision/evaluate_dark_only_normalization.py": "12289bfeeb52274678c62f46c7e99e057563036566fa48fc5f5cd1d58add4469",
+    "software/ai/vision/landmark_occlusions.py": "2d77d25077ab98dad632bb441b94c06cc6c139116d6621483cab7728d95c6aad",
+    "software/ai/vision/linear_residual_pose.py": "d46b24cbe48c43ae56d9f1a700459281fceef19475f85187469cd81c735af9cc",
+    "software/ai/vision/synthetic_keyboard.py": "b9a1662ea348ba78093909844e5e8bed86f4996babc289bfd63858b6b54f692c",
+    "software/ai/vision/train_pose.py": "98c2ae6211b42c3b4b7c5bed3fb03aab82bffff79c30ebb546e3681b3be3a1b6"
+  }
+}

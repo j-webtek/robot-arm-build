@@ -599,6 +599,10 @@ Copy this row and fill every field:
 
 ## Active work claims
 
+- AI lane / S1: zero-fit audit of baseline-versus-candidate geometric
+  disagreement on grouped 33M scenes; no model fitting, threshold selection,
+  calibration data, runtime promotion, or arm changes.
+
 
 
 
