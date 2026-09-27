@@ -275,6 +275,16 @@ epoch. No installation intake is ready, and no installation, startup,
 transport, execution, hardware, or physical authority was created. The shared
 next dependency is external r97 review plus the measured configuration epoch,
 followed by a separately reviewed hash-bound installation proposal.
+ARM-066 verified the ignored seven-member r97 packet directly from the retained
+compiled inputs; its SHA-256 remains
+`987cbe86d98440734d8336c704f1ecd89692675a9cb1620cb674e4132957b416`.
+It also adds the missing owner-side intake CLI for a returned external decision.
+That CLI strictly parses, normalizes, assesses, and immutably retains one
+decision while keeping every physical authority false. This makes the external
+review handoff operational without pretending that repository code can perform
+the independent review. The dependency is unchanged: a genuinely independent
+reviewer must return the decision, then all eight measured epoch components
+must be collected and reviewed.
 
 ## Stage definitions
 
