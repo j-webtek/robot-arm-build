@@ -56,3 +56,10 @@ populate the trusted registry from commissioned camera, placement, target-map,
 surface, calibration, and capability records. The first integrated physical case
 should remain a single keyboard target with fresh observation and independent
 outcome verification.
+
+The current cross-lane state is materialized by
+[`arm072_model_arm_operational_readiness.json`](../eval/arm072_model_arm_operational_readiness.json).
+That content-bound report prevents the passing wire-contract simulation from
+being mistaken for operational readiness and gives both workers one ordered
+blocker map. It also recognizes the owner's ARM-067 governance decision, so the
+superseded external-review dependency is not carried forward.

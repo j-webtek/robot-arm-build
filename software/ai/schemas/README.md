@@ -240,6 +240,13 @@ the initial keyboard/contact-only scope, and makes arm-owned motion policy and
 authority fields explicitly unavailable to model output. Its passing synthetic
 cases prove only that canonical AI bytes reach the correct arm gate and that
 unsafe or unsupported variants fail closed; they grant no hardware authority.
+The [model/arm operational-readiness report](model_arm_operational_readiness_v1.schema.json)
+composes that software boundary with the current owner-governed configuration
+epoch, physical camera/support intake, owner AI-governance acceptance, measured
+planner state, and installed-controller assessment. It removes the superseded
+external-human-review blocker while retaining every technical blocker. A READY
+result advances only to a separately reviewed single-action candidate; this
+report never permits dispatch or emits controller commands.
 
 [Precision observation v2](precision_observation_v2.schema.json) carries explicit
 localization abstention or a reference to externally qualified uncertainty.

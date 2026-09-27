@@ -3436,3 +3436,41 @@ rewriting history. New entries must use a unique evidence ID.
 - Next dependency: AI produces separately confirmed qualified uncertainty and a
   precision adapter; arm supplies physical-original camera, placement, target
   region, surface, calibration, and capability records for a one-key integration.
+
+### E-20260927-INT-072 — cross-lane operational-readiness gate
+
+- Stage: S2/S4 integration boundary.
+- Lane: INTEGRATION.
+- Source baseline: GitHub `main`
+  `c75811d419a999375ec0ba4e4da1a813e21e3480`.
+- Change: added a deterministic, content-bound readiness report that composes
+  the v2 conformance profile, ARM-067 owner-governance acceptance, ARM-069
+  measured-epoch assessment, ARM-070 camera/support intake, measured planner
+  status, and ARM-065 installed-runtime assessment.
+- Artifact: `software/ai/eval/arm072_model_arm_operational_readiness.json`,
+  readiness SHA-256
+  `12ae1acfe097151fe647aa9fe60ef60c0c3db359e735782c2f2d2640ff8338b9`.
+- Result: `wire_contract` is READY. `qualified_perception`,
+  `camera_support_optics`, `measured_configuration_epoch`,
+  `measured_planner_calibration`, and `installed_controller_runtime` remain
+  BLOCKED with exact next dependencies.
+- Governance correction: ARM-067 superseded the mandatory external-review
+  dependency. The composite report removes only that stale blocker; it retains
+  the unattested runtime, rejected active-feedback surface, missing measured
+  epoch, missing calibration, and missing physical-original evidence.
+- Verification: deterministic rebuild, strict JSON Schema validation, source
+  hashing, retained-report hash validation, camera-binding lineage rejection,
+  source substitution rejection, and zero-authority assertions are covered.
+- Endpoint/camera opens: 0.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Authority: controller commands remain empty; camera open, controller startup,
+  movement, dispatch, hardware, and physical authority remain false.
+- Limitations: this makes the current gap machine-readable; it does not create
+  physical originals, qualify perception, attest the runtime, commission
+  calibration, or authorize a physical action.
+- Supersedes: no evidence result. It supersedes only fragmented manual reading
+  of the five readiness blockers.
+- Next dependency: AI supplies qualified perception; arm collects the four
+  camera/support originals and remaining measured epoch components, commissions
+  planner calibration, and resolves installed-runtime feedback qualification.

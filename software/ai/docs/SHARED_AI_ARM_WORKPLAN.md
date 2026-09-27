@@ -781,6 +781,9 @@ Each worker follows this process for every increment:
    clearance, dynamics, encoding, transport, and retry remain arm-owned.
 6. Require independent device-effect verification before expanding from one key
    to strings or phone workflows.
+7. Rebuild `arm072_model_arm_operational_readiness.json` after any retained
+   source advances. Do not begin a single-action review unless all six stage
+   assessments are READY; the report itself never grants dispatch authority.
 
 ## Definition of shared completion
 
