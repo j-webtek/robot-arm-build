@@ -599,6 +599,11 @@ Copy this row and fill every field:
 
 ## Active work claims
 
+- AI lane / S1: train a compact image-only obstruction classifier on a new 43M
+  cohort and test a fixed classifier-weighted ensemble scale on disjoint 44M
+  mapping-calibration and 45M selection cohorts; no runtime, contract, or arm
+  changes.
+
 
 
 
