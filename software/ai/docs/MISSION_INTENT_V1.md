@@ -72,3 +72,10 @@ not emit `ModelMotionBatch`, install a capability, authorize contact, access
 hardware, or change arm/runtime status. A later dataset increment must freeze
 compiler-checked positive, clarification, unsupported, adversarial, and
 family-held-out examples before training the next student.
+
+That first curriculum is now committed as `mission_curriculum_v1`. It contains
+208 training, 80 validation, and 80 heldout cases with disjoint template-family
+IDs. Each validation and heldout category has eight cases. Stale and unverified
+state cases retain the correct semantic execute intent while the compiler
+result blocks before an ActionPlan; ambiguous and unavailable targets produce
+no plan. The heldout split is consumed only by a separately frozen evaluation.

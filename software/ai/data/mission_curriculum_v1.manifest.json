@@ -1,0 +1,108 @@
+{
+  "capability_matrix_sha256": "4fb6ec167ffc832d2eb0c7bee0d0c113d031a705edcc3e842df71fef1f801384",
+  "category_counts": {
+    "heldout:device_ambiguous": 8,
+    "heldout:intent_ambiguous": 8,
+    "heldout:payload_ambiguous": 8,
+    "heldout:phone_state_unverified": 8,
+    "heldout:quoted_command_word_literal": 8,
+    "heldout:stale_observation": 8,
+    "heldout:supported_keyboard": 8,
+    "heldout:supported_phone": 8,
+    "heldout:unavailable_operation": 8,
+    "heldout:unsupported_profile": 8,
+    "train:device_ambiguous": 8,
+    "train:intent_ambiguous": 8,
+    "train:payload_ambiguous": 8,
+    "train:phone_state_unverified": 8,
+    "train:quoted_command_word_literal": 8,
+    "train:stale_observation": 8,
+    "train:supported_keyboard": 80,
+    "train:supported_phone": 64,
+    "train:unavailable_operation": 8,
+    "train:unsupported_profile": 8,
+    "validation:device_ambiguous": 8,
+    "validation:intent_ambiguous": 8,
+    "validation:payload_ambiguous": 8,
+    "validation:phone_state_unverified": 8,
+    "validation:quoted_command_word_literal": 8,
+    "validation:stale_observation": 8,
+    "validation:supported_keyboard": 8,
+    "validation:supported_phone": 8,
+    "validation:unavailable_operation": 8,
+    "validation:unsupported_profile": 8
+  },
+  "family_policy": "Template family IDs are disjoint across train, validation, and heldout. Heldout must not influence model, prompt, decoder, or gate changes.",
+  "generator_sha256": "981b0966c17c273ee04f008a4b11fd724e4f88d0bf8e314cd67d6145dde08db8",
+  "hardware_writes": 0,
+  "human_reviewed": false,
+  "limitations": [
+    "Agent-authored templated English without independent human labels.",
+    "Compiler checks semantic support and order, not physical success.",
+    "Only current mission v1 operations and capabilities are represented.",
+    "No camera, coordinate, trajectory, controller, or outcome evidence."
+  ],
+  "mission_schema": "rocell.mission_intent.v1",
+  "physical_movements": 0,
+  "review_state": "compiler_checked_simulated_review_no_human",
+  "schema": "rocell.mission_curriculum.v1",
+  "seed": null,
+  "source": "deterministic_agent_authored_compiler_checked_templates",
+  "splits": {
+    "heldout": {
+      "count": 80,
+      "families": [
+        "heldout_call_novel",
+        "heldout_choice_novel",
+        "heldout_compound_novel",
+        "heldout_device_novel",
+        "heldout_keyboard_novel",
+        "heldout_literal_novel",
+        "heldout_phone_novel",
+        "heldout_shifted_novel",
+        "heldout_stale_novel",
+        "heldout_state_novel"
+      ],
+      "sha256": "f17b14b4e0d24d9de83b525cf460b9c6c0821f488f3118b41cfdeaa3c454f4fd"
+    },
+    "train": {
+      "count": 208,
+      "families": [
+        "train_compound_conflict",
+        "train_keyboard_enter",
+        "train_keyboard_put",
+        "train_keyboard_selected",
+        "train_keyboard_type",
+        "train_keyboard_write",
+        "train_literal_command_words",
+        "train_missing_device",
+        "train_payload_choice",
+        "train_phone_call_unavailable",
+        "train_phone_enter",
+        "train_phone_put",
+        "train_phone_state_semantics",
+        "train_phone_type",
+        "train_phone_write",
+        "train_shifted_unavailable",
+        "train_stale_semantics"
+      ],
+      "sha256": "f08dc9b87b31f65ba71790a392ea96c2a827a9d21176e8810a6c90df313fafbf"
+    },
+    "validation": {
+      "count": 80,
+      "families": [
+        "validation_call_novel",
+        "validation_choice_novel",
+        "validation_compound_novel",
+        "validation_device_novel",
+        "validation_keyboard_novel",
+        "validation_literal_novel",
+        "validation_phone_novel",
+        "validation_shifted_novel",
+        "validation_stale_novel",
+        "validation_state_novel"
+      ],
+      "sha256": "466189939a506725bb9e7e2fd77e2888cd2e002aeb5c295082d199e87bb7f3df"
+    }
+  }
+}

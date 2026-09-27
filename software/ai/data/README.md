@@ -45,6 +45,19 @@ validation set has 50 supported and 50 clarification labels. v7 was frozen
 before data generation. This is a template separation check, not independent
 human review or proof against semantic leakage.
 
+`mission_curriculum_v1_train.jsonl`, `mission_curriculum_v1_validation.jsonl`,
+and `mission_curriculum_v1_heldout.jsonl` contain 208, 80, and 80 full
+`rocell.mission_intent.v1` targets. Every target passes the strict mission
+validator and its expected result is reproduced through the read-only RoCell
+compiler. The splits use disjoint template-family IDs. Validation and heldout
+each contain eight cases in ten categories: supported keyboard typing,
+supported phone typing, quoted command-word literals, stale observations,
+unverified phone state, device ambiguity, payload ambiguity, compound-intent
+ambiguity, shifted typing, and unavailable phone calls. The heldout split must
+not influence training, prompts, decoding rules, or gates. Labels remain
+agent-authored with simulated review, and compiler acceptance is not physical
+outcome evidence.
+
 `real_photo_seed_v0.manifest.json` inventories ten user-provided real setup
 JPEGs by hash and dimensions. The originals are copied only to ignored
 `raw/real_photo_seed_v0/`, preserving their EXIF locally. The tracked

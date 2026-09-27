@@ -9559,3 +9559,48 @@ commissioning, or bounded physical result with its limitations intact.
 - Limitations: Source-level preregistration only. Templates and labels are agent-authored with simulated review. Compiler checks cannot establish physical task success or natural-language representativeness. No model, camera, motion batch, runtime, or integration status change.
 - Supersedes: none.
 - Next dependency: Commit this generator before running it once; then verify byte-for-byte regeneration, split-family separation, compiler outcomes, and manifest hashes without tuning on heldout contents.
+
+### E-20260927-AI-410 — compiler-checked mission curriculum v1 generation
+
+- Stage: S1
+- Lane: AI
+- Commit: `4c860db24fd426c847d20f592f6e36d61d9cb404` (frozen generator source; generated curriculum, tests, documentation, and ledger committed in the successor)
+- Inputs/fixtures: Frozen generator SHA-256 `981b0966c17c273ee04f008a4b11fd724e4f88d0bf8e314cd67d6145dde08db8`; capability matrix SHA-256 `4fb6ec167ffc832d2eb0c7bee0d0c113d031a705edcc3e842df71fef1f801384`; strict mission validator and existing read-only RoCell semantic compilers. Generated train/validation/heldout SHA-256 `f08dc9b87b31f65ba71790a392ea96c2a827a9d21176e8810a6c90df313fafbf` / `466189939a506725bb9e7e2fd77e2888cd2e002aeb5c295082d199e87bb7f3df` / `f17b14b4e0d24d9de83b525cf460b9c6c0821f488f3118b41cfdeaa3c454f4fd`; manifest SHA-256 `e19e603f29fee73482a5204c2d4a3bcf0ed38c9d8e69bb30d83e529bbef5fb4e`.
+- Command: `python software/ai/train/build_mission_curriculum_v1.py`
+- Result: PASS. Generated 208 training, 80 validation, and 80 heldout records. Training contains 17 families; validation and heldout contain ten families each; all family sets are pairwise disjoint. Validation and heldout each contain exactly eight cases in every one of ten categories: supported keyboard, supported phone, quoted command-word literal, stale observation, unverified phone state, device ambiguity, payload ambiguity, compound-intent ambiguity, unavailable shifted typing, and unavailable phone call. Every target passed strict mission validation and its expected compilation result was produced by the read-only compiler. Stale/state cases retain execute semantics but compile to zero plan; clarify and unsupported targets always compile to zero plan.
+- Artifacts: `data/mission_curriculum_v1_train.jsonl`; `data/mission_curriculum_v1_validation.jsonl`; `data/mission_curriculum_v1_heldout.jsonl`; `data/mission_curriculum_v1.manifest.json`; updates to `data/README.md` and `docs/MISSION_INTENT_V1.md`.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Deterministic agent-authored templates and simulated review without independent human labels. Family-ID separation does not prove semantic independence or broad language coverage. Compiler acceptance proves semantic representability and order, not camera localization, contact, or physical outcome. No model was trained or evaluated, and heldout is now reserved only for a separately frozen evaluation. The required short active-work claim was inadvertently absent during this increment; the branch was synchronized, no competing AI claim was present, and the omission is preserved here as a coordination-process failure rather than rewritten after completion.
+- Supersedes: none; older proposal-format SFT datasets remain preserved for historical comparisons.
+- Next dependency: Freeze a mission-v1 student training recipe and a heldout evaluator before fitting. The recipe must use only train for optimization, validation for checkpoint choice, grammar-constrained mission JSON, and preserve heldout for one post-freeze score. Promotion requires zero wrong accepted operations and zero changed literal payloads before considering coverage.
+
+### E-20260927-AI-411 — mission curriculum reproducibility and boundary verification
+
+- Stage: S1
+- Lane: AI
+- Commit: `4c860db24fd426c847d20f592f6e36d61d9cb404` (frozen generator; verification committed in the successor)
+- Inputs/fixtures: All generated artifacts and hashes from AI-410; verification test SHA-256 `3a31b0fae316b8b58d3dc48bdc8ba140b9d3b3d8072c490e3f08205cef935d23`; legacy offline intent/compiler and actual v2 batch-emitter fixtures.
+- Command: `python -m pytest -q software/ai/tests/test_offline.py software/ai/tests/test_mission_intent.py software/ai/tests/test_mission_curriculum.py software/ai/tests/test_batch_emitter_v2.py`
+- Result: PASS: 46 tests in 1.39s. Tests regenerate every curriculum byte, verify all manifest hashes and counts, prove pairwise family separation and balanced heldout categories, revalidate and recompile all 368 records, confirm stale/state and ambiguous/unavailable zero-plan behavior, reject forbidden motion/controller fields, preserve legacy intent behavior, and preserve actual v2 batch assembly.
+- Artifacts: `tests/test_mission_curriculum.py`; curriculum artifacts from AI-410; existing offline, mission, and v2 emitter tests.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Existing pytest-asyncio configuration warning. Offline deterministic evidence only. `ModelMotionBatch` did not change, so the full shared producer/consumer boundary suite was not triggered. No model-quality, camera, runtime, or physical assurance.
+- Supersedes: none.
+- Next dependency: Same as AI-410.
+
+### E-20260927-AI-412 — mission curriculum snapshot review
+
+- Stage: S1
+- Lane: AI
+- Commit: `4c860db24fd426c847d20f592f6e36d61d9cb404` (frozen generator; final ledger append in successor)
+- Inputs/fixtures: Repository snapshot containing the frozen generator, all generated curriculum splits, manifest, reproducibility tests, documentation, and shared ledger.
+- Command: `python scripts/audit_github_snapshot.py`
+- Result: PASS: 6,380 paths, 1,040.6 MiB, 0 unresolved review findings, 14 reviewed synthetic fixtures.
+- Artifacts: generator, curriculum files, manifest, tests, documentation, and shared ledger.
+- Hardware writes: 0
+- Physical movements: 0
+- Limitations: Heuristic repository review before final ledger append; not language-quality, runtime, security, or physical assurance. No arm or integration status changes.
+- Supersedes: none.
+- Next dependency: Same as AI-410.
