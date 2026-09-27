@@ -599,6 +599,8 @@ Copy this row and fill every field:
 
 ## Active work claims
 
+- AI lane / S1: paired clutter consistency training,three seeds,fixed coefficient1,original development only; feature/translation-pair-evidence.
+
 
 
 
