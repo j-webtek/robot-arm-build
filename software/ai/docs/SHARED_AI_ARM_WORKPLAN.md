@@ -599,6 +599,11 @@ Copy this row and fill every field:
 
 ## Active work claims
 
+- AI lane / S1: train and evaluate one preregistered obstruction-weighted
+  bounded metric uncertainty head on fresh 72M training and 73M selection
+  scenes; no calibration, runtime, contract, arm, or integration-status
+  changes.
+
 
 
 
