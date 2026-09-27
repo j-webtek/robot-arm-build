@@ -777,6 +777,7 @@ remove it only in the same commit that appends the resulting evidence row.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
+| AI | S2/S3 | physical-camera localization campaign contract, preflight, fixture, tests, operator plan, and AI evidence row | `codex/camera-localization-test-readiness` from `41966c62a04adf7036b502bd873cc12743e28e8e` | ACTIVE: prepare zero-authority final-camera qualification inputs; no camera access |
 | Unclaimed | S2/S3 | physical-camera deployment qualification and safe-region-fit precision evidence | — | AVAILABLE |
 | ARM | S4 | collect four physical-original `camera_support_optics` bindings through onboarding, then run the ARM-070 intake; no synthetic promotion | ARM-071 | WAITING_FOR_ORIGINALS |
 
