@@ -1,0 +1,1 @@
+{"bindings":{"artifact_sha256":"ac8ea3f74e64753a2a786874b587bf5236330d3a014dd3200742de69af6d2153","source_receipt_sha256":"cc7903364bbf87aaa4ea5c808938f072dbdd89ced1451b81e0eeef5873143bde"},"controller_commands":[],"hardware_access":false,"physical_authority":false,"schema":"rocell.typing_trace_stage_reference.v1","source":"PC2_SHADOW_RECEIPT","stage":"INGRESS"}

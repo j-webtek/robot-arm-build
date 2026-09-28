@@ -1,0 +1,1 @@
+{"bindings":{"artifact_sha256":"0b7e393e7f64b5e5a61726f7701895f6243c7ee07c91230f6b4805a262747255","source_receipt_sha256":"cc7903364bbf87aaa4ea5c808938f072dbdd89ced1451b81e0eeef5873143bde"},"controller_commands":[],"hardware_access":false,"physical_authority":false,"schema":"rocell.typing_trace_stage_reference.v1","source":"PC2_SHADOW_RECEIPT","stage":"COLLISION_SCREEN"}
