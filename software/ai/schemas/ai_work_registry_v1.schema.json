@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rocell.local/schemas/ai_work_registry_v1.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "purpose", "workstreams", "controller_authority",
+    "hardware_writes", "physical_movements", "registry_sha256"
+  ],
+  "properties": {
+    "schema": {"const": "tactevra.ai_work_registry.v1"},
+    "purpose": {"type": "string", "minLength": 1},
+    "workstreams": {
+      "type": "array", "minItems": 1, "uniqueItems": true,
+      "items": {"$ref": "#/$defs/workstream"}
+    },
+    "controller_authority": {"const": false},
+    "hardware_writes": {"const": 0},
+    "physical_movements": {"const": 0},
+    "registry_sha256": {"$ref": "#/$defs/sha"}
+  },
+  "$defs": {
+    "id": {"type": "string", "pattern": "^[a-z][a-z0-9_]{1,63}$"},
+    "sha": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "path": {"type": "string", "pattern": "^software/ai/[A-Za-z0-9_./-]+$"},
+    "paths": {
+      "type": "array", "minItems": 1, "uniqueItems": true,
+      "items": {"$ref": "#/$defs/path"}
+    },
+    "workstream": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "workstream_id", "title", "stages", "status", "objective",
+        "source_paths", "test_paths", "documentation_paths", "evidence_paths",
+        "current_result", "limitations", "next_gate", "model_motion_batch_boundary",
+        "controller_authority", "hardware_writes", "physical_movements"
+      ],
+      "properties": {
+        "workstream_id": {"$ref": "#/$defs/id"},
+        "title": {"type": "string", "minLength": 1},
+        "stages": {
+          "type": "array", "minItems": 1, "uniqueItems": true,
+          "items": {"enum": ["S0", "S1", "S2", "S3", "S4", "S5", "S6", "S7", "P1"]}
+        },
+        "status": {"enum": [
+          "RESEARCH_BLOCKED", "IMPLEMENTED_ZERO_AUTHORITY",
+          "PREPARED_PENDING_PHYSICAL_INPUTS"
+        ]},
+        "objective": {"type": "string", "minLength": 1},
+        "source_paths": {"$ref": "#/$defs/paths"},
+        "test_paths": {"$ref": "#/$defs/paths"},
+        "documentation_paths": {"$ref": "#/$defs/paths"},
+        "evidence_paths": {"$ref": "#/$defs/paths"},
+        "current_result": {"type": "string", "minLength": 1},
+        "limitations": {
+          "type": "array", "minItems": 1,
+          "items": {"type": "string", "minLength": 1}
+        },
+        "next_gate": {"type": "string", "minLength": 1},
+        "model_motion_batch_boundary": {"const": true},
+        "controller_authority": {"const": false},
+        "hardware_writes": {"const": 0},
+        "physical_movements": {"const": 0}
+      }
+    }
+  }
+}

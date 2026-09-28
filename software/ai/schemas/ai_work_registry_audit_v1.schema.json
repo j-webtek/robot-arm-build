@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rocell.local/schemas/ai_work_registry_audit_v1.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "status", "registry_sha256", "workstream_count",
+    "tracked_ai_test_count", "documented_ai_test_count", "referenced_path_count",
+    "unowned_test_paths", "multiply_owned_test_paths", "controller_authority",
+    "hardware_writes", "physical_movements", "limitations", "receipt_sha256"
+  ],
+  "properties": {
+    "schema": {"const": "tactevra.ai_work_registry_audit.v1"},
+    "status": {"const": "PASS"},
+    "registry_sha256": {"$ref": "#/$defs/sha"},
+    "workstream_count": {"type": "integer", "minimum": 1},
+    "tracked_ai_test_count": {"type": "integer", "minimum": 1},
+    "documented_ai_test_count": {"type": "integer", "minimum": 1},
+    "referenced_path_count": {"type": "integer", "minimum": 1},
+    "unowned_test_paths": {"const": []},
+    "multiply_owned_test_paths": {"const": []},
+    "controller_authority": {"const": false},
+    "hardware_writes": {"const": 0},
+    "physical_movements": {"const": 0},
+    "limitations": {
+      "type": "array", "minItems": 1,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "receipt_sha256": {"$ref": "#/$defs/sha"}
+  },
+  "$defs": {
+    "sha": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

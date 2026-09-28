@@ -19,6 +19,7 @@ the compact, captioned public derivative and poster below assets/media/.
 
 from __future__ import annotations
 
+import ast
 import json
 import hashlib
 import math
@@ -51,6 +52,9 @@ PORTAL_PATH = (
 STL_DIR = ROOT / "active-project" / "RoCell_v0_3" / "stl"
 DIMENSION_MANIFEST_PATH = SCRIPT.with_name("dimension_manifest.json")
 ARM_URDF_PATH = ROOT / "software" / "models" / "roarm_m3" / "roarm_m3_kinematic_40dbd84.urdf"
+APRILTAG_CODEBOOK_PATH = (
+    ROOT / "software" / "src" / "rocell" / "vision" / "apriltag_codebook.py"
+)
 OFFICIAL_ARM_STL_PATH = ROOT / "tmp" / "vendor" / "roarm_m3" / "roarm_m3_official_presentation.stl"
 PUBLIC_MEDIA_DIR = ROOT / "assets" / "media"
 
@@ -78,6 +82,7 @@ def clean_scene() -> None:
 
 def material(name: str, color: tuple[float, float, float, float], *,
              metallic: float = 0.0, roughness: float = 0.45,
+             ior_level: float = 0.5,
              emission: tuple[float, float, float, float] | None = None,
              emission_strength: float = 0.0) -> bpy.types.Material:
     mat = bpy.data.materials.new(name)
@@ -87,6 +92,11 @@ def material(name: str, color: tuple[float, float, float, float], *,
     bsdf.inputs["Base Color"].default_value = color
     bsdf.inputs["Metallic"].default_value = metallic
     bsdf.inputs["Roughness"].default_value = roughness
+    # Blender 4.x names this socket "IOR Level" or "Specular IOR Level"
+    # depending on the exact point release.
+    ior_socket = bsdf.inputs.get("IOR Level") or bsdf.inputs.get("Specular IOR Level")
+    if ior_socket is not None:
+        ior_socket.default_value = ior_level
     if emission is not None:
         bsdf.inputs["Emission Color"].default_value = emission
         bsdf.inputs["Emission Strength"].default_value = emission_strength
@@ -262,25 +272,128 @@ def look_at(obj: bpy.types.Object, target: Vector) -> None:
 
 def animate_transform(obj: bpy.types.Object, frames_and_locations: list[tuple[int, Vector]],
                       frames_and_targets: list[tuple[int, Vector]] | None = None) -> None:
+    obj.rotation_mode = "QUATERNION"
     for frame, loc in frames_and_locations:
         obj.location = loc
         obj.keyframe_insert("location", frame=frame)
     if frames_and_targets:
         for frame, target in frames_and_targets:
             obj.location = dict(frames_and_locations)[frame]
-            look_at(obj, target)
-            obj.keyframe_insert("rotation_euler", frame=frame)
+            obj.rotation_quaternion = (target - obj.location).to_track_quat("-Z", "Y")
+            obj.keyframe_insert("rotation_quaternion", frame=frame)
 
 
-def add_tag(tag_id: str, x: float, y: float, white: bpy.types.Material,
+def verify_scene_layout(scene: bpy.types.Scene, layout: dict,
+                        camera_front_z: float) -> None:
+    """Fail the render if presentation assets drift from the RC03 contract."""
+    tolerance = 0.00015
+
+    def assert_vector(actual: Vector, expected: Vector, label: str) -> None:
+        if (actual - expected).length > tolerance:
+            raise RuntimeError(
+                f"{label} presentation drift: {tuple(actual)} != {tuple(expected)}"
+            )
+
+    board = scene.objects["MEASURED — 610 × 457 × 18 mm board"]
+    assert_vector(board.location, Vector((0.0, 0.0, -0.009)), "board center")
+    assert_vector(board.dimensions, Vector((0.610, 0.457, 0.018)), "board envelope")
+
+    keyboard = layout["devices"]["keyboard"]
+    kx, ky = keyboard["nominal_origin_xy"]
+    ksx, ksy, ksz = keyboard["nominal_size"]
+    keyboard_body = scene.objects["Measured keyboard lower chassis"]
+    assert_vector(
+        keyboard_body.location,
+        board_point(kx + ksx / 2, ky + ksy / 2, ksz * 0.38),
+        "keyboard center",
+    )
+    assert_vector(
+        keyboard_body.dimensions,
+        Vector((ksx / 1000, ksy / 1000, ksz * 0.76 / 1000)),
+        "keyboard envelope",
+    )
+
+    phone = layout["devices"]["phone"]
+    px, py = phone["nominal_origin_xy"]
+    psx, psy, psz = phone["configured_size"]
+    phone_body = scene.objects["Measured phone aluminum frame"]
+    assert_vector(
+        phone_body.location,
+        board_point(px + psx / 2, py + psy / 2,
+                    phone["support_plane_z"] + psz / 2),
+        "phone center",
+    )
+    assert_vector(phone_body.dimensions, Vector((psx, psy, psz)) / 1000,
+                  "phone envelope")
+
+    for station_id, object_name in (
+        ("keyboard_left", "Designed keyboard station L"),
+        ("keyboard_right", "Designed keyboard station R"),
+        ("phone_tcp", "Designed phone station"),
+    ):
+        sx, sy = layout["stations"][station_id]["origin_xy"]
+        assert_vector(scene.objects[object_name].location, board_point(sx, sy, 0),
+                      f"{station_id} origin")
+
+    for tag_id, tag in layout["direct_tags"]["tags"].items():
+        tx, ty = tag["detection_center_xy"]
+        tag_object = scene.objects[f"Tag {tag_id}"]
+        assert_vector(tag_object.location, board_point(tx, ty, 0.8),
+                      f"tag {tag_id} center")
+        if tag_object.get("tag_family") != "tag36h11":
+            raise RuntimeError(f"tag {tag_id} family drift")
+        if int(tag_object.get("tag_numeric_id", -1)) != int(tag["id"]):
+            raise RuntimeError(f"tag {tag_id} identity drift")
+
+    expected_optical_z = layout.get("presentation_camera_optical_z_mm", 1000.0) / 1000
+    if abs(camera_front_z - expected_optical_z) > tolerance:
+        raise RuntimeError(
+            f"camera optical plane drift: {camera_front_z} != {expected_optical_z}"
+        )
+
+    scene["layout_verification"] = "PASS_RC03_BOARD_DEVICE_STATION_TAG36H11_CAMERA"
+
+
+def _released_apriltag_rows() -> dict[int, tuple[str, ...]]:
+    """Read the released tag36h11 cells without importing the runtime package."""
+    module = ast.parse(APRILTAG_CODEBOOK_PATH.read_text(encoding="utf-8"))
+    for node in module.body:
+        if isinstance(node, ast.AnnAssign) and isinstance(node.target, ast.Name):
+            if node.target.id == "_RELEASED_36H11_ROWS":
+                rows = ast.literal_eval(node.value)
+                return {int(tag_id): tuple(pattern) for tag_id, pattern in rows}
+    raise RuntimeError("Released tag36h11 codebook rows were not found")
+
+
+def add_tag(tag_id: str, numeric_id: int, x: float, y: float,
+            white: bpy.types.Material,
             black: bpy.types.Material) -> bpy.types.Object:
     base = cube(f"Tag {tag_id}", board_point(x, y, 0.8),
                 (0.055, 0.055, 0.0015), white, 0.001)
-    # An original high-contrast visual motif, not a claimed AprilTag code.
-    for ix, iy in ((-1, -1), (1, -1), (-1, 1), (1, 1), (0, 0)):
-        cell = cube(f"Tag {tag_id} cell", board_point(x + ix * 13, y + iy * 13, 1.7),
-                    (0.010, 0.010, 0.001), black)
-        cell.parent = base
+    try:
+        pattern = _released_apriltag_rows()[numeric_id]
+    except KeyError as exc:
+        raise RuntimeError(f"No released tag36h11 pattern for {tag_id}/{numeric_id}") from exc
+    if len(pattern) != 8 or any(len(row) != 8 for row in pattern):
+        raise RuntimeError(f"Invalid released tag36h11 grid for {tag_id}")
+    # The detection edge is exactly 40 mm on the 55 mm white tile: eight
+    # contiguous 5 mm cells. Row zero is board-local +Y and columns run left
+    # to right, matching the runtime codebook's marked orientation contract.
+    for row_index, row in enumerate(pattern):
+        for column_index, bit in enumerate(row):
+            if bit == "1":
+                continue
+            cx = x + (column_index - 3.5) * 5.0
+            cy = y + (3.5 - row_index) * 5.0
+            cube(
+                f"Tag {tag_id} black cell {row_index}-{column_index}",
+                board_point(cx, cy, 1.7),
+                (0.00505, 0.00505, 0.001),
+                black,
+            )
+    base["tag_family"] = "tag36h11"
+    base["tag_numeric_id"] = numeric_id
+    base["pattern_authority"] = str(APRILTAG_CODEBOOK_PATH.relative_to(ROOT))
     return base
 
 
@@ -289,10 +402,12 @@ def add_keyboard(layout: dict, mats: dict[str, bpy.types.Material]) -> dict[str,
     ox, oy = dev["nominal_origin_xy"]
     sx, sy, sz = dev["nominal_size"]
     # Repository station meshes are designed artifacts and placed by RC03 origins.
+    left_origin = (*layout["stations"]["keyboard_left"]["origin_xy"], 0.0)
+    right_origin = (*layout["stations"]["keyboard_right"]["origin_xy"], 0.0)
     import_stl(STL_DIR / "keyboard_station_left.stl", "Designed keyboard station L",
-               mats["abs"], (80.0, 72.0, 0.0))
+               mats["abs"], left_origin)
     import_stl(STL_DIR / "keyboard_station_right.stl", "Designed keyboard station R",
-               mats["abs"], (242.5, 72.0, 0.0))
+               mats["abs"], right_origin)
     cube("Measured keyboard lower chassis",
          board_point(ox + sx / 2, oy + sy / 2, sz * 0.38),
          (sx / 1000, sy / 1000, sz * 0.76 / 1000),
@@ -307,6 +422,13 @@ def add_keyboard(layout: dict, mats: dict[str, bpy.types.Material]) -> dict[str,
          ((sx - 8.0) / 1000, 0.003, 0.0022), mats["keyboard_trim"], 0.001)
     cube("Keyboard rear accent", board_point(ox + sx / 2, oy + sy - 3.2, sz - 1.4),
          ((sx - 8.0) / 1000, 0.003, 0.0022), mats["keyboard_trim"], 0.001)
+    # The photographed unit retains a narrow reflective protective-film band
+    # along the rear/top bezel. Keep it inside the measured envelope and clear
+    # of the function-key field so it reads as the same physical keyboard.
+    cube("Keyboard photographed rear protective film",
+         board_point(ox + sx / 2, oy + sy - 5.8, sz + 0.35),
+         ((sx - 6.0) / 1000, 0.0085, 0.00045),
+         mats["keyboard_film"], 0.0012)
     # The printable shell remains a measured envelope. The principal key rows
     # below are positioned from software/config/static_nominal_target_profiles.json:
     # 19.05 mm pitch, exact first-center offsets, and therefore H at
@@ -387,8 +509,9 @@ def add_phone(layout: dict, mats: dict[str, bpy.types.Material]) -> dict[str, bp
     dev = layout["devices"]["phone"]
     ox, oy = dev["nominal_origin_xy"]
     sx, sy, sz = dev["configured_size"]
+    station_origin = (*layout["stations"]["phone_tcp"]["origin_xy"], 0.0)
     import_stl(STL_DIR / "phone_tcp_station.stl", "Designed phone station",
-               mats["abs"], (411.0, 80.0, 0.0))
+               mats["abs"], station_origin)
     phone = cube("Measured phone aluminum frame",
                  board_point(ox + sx / 2, oy + sy / 2, dev["support_plane_z"] + sz / 2),
                  (sx / 1000, sy / 1000, sz / 1000), mats["phone"], 0.006)
@@ -397,6 +520,13 @@ def add_phone(layout: dict, mats: dict[str, bpy.types.Material]) -> dict[str, bp
                   board_point(ox + sx / 2, oy + sy / 2, screen_z),
                   ((sx - 4.2) / 1000, (sy - 7.0) / 1000, 0.0007),
                   mats["screen"], 0.0048)
+    # Thin black rails preserve the screen-up smartphone silhouette seen in
+    # the physical setup while the modeled host-result UI remains explicitly
+    # presentation content rather than a captured application screen.
+    cube("Phone top bezel", board_point(ox + sx / 2, oy + sy - 4.4, screen_z + 0.46),
+         ((sx - 5.0) / 1000, 0.0035, 0.00055), mats["screen_glass"], 0.0012)
+    cube("Phone bottom bezel", board_point(ox + sx / 2, oy + 4.4, screen_z + 0.46),
+         ((sx - 5.0) / 1000, 0.0035, 0.00055), mats["screen_glass"], 0.0012)
     # Physical details: speaker, front camera, side controls, rear camera rise.
     cube("Phone receiver slit", board_point(ox + sx / 2, oy + sy - 8.0, screen_z + 0.55),
          (0.018, 0.0018, 0.0007), mats["metal"], 0.0008)
@@ -409,6 +539,9 @@ def add_phone(layout: dict, mats: dict[str, bpy.types.Material]) -> dict[str, bp
     cube("Phone power button", board_point(ox + sx + 0.4, oy + sy * 0.61,
                                             dev["support_plane_z"] + sz * 0.62),
          (0.0012, 0.024, 0.0024), mats["metal"], 0.0007)
+    cube("Phone lower charging-port recess",
+         board_point(ox + sx / 2, oy - 0.25, dev["support_plane_z"] + sz * 0.46),
+         (0.012, 0.0010, 0.0022), mats["screen_glass"], 0.0005)
     camera_island = cube("Phone rear camera island",
                          board_point(ox + 15.0, oy + sy - 18.0,
                                      dev["support_plane_z"] + sz + 0.7),
@@ -761,6 +894,9 @@ def setup_render(scene: bpy.types.Scene) -> None:
 def build() -> bpy.types.Scene:
     clean_scene()
     layout = json.loads(LAYOUT_PATH.read_text(encoding="utf-8"))
+    dimension_manifest = json.loads(
+        DIMENSION_MANIFEST_PATH.read_text(encoding="utf-8")
+    )
     scene = bpy.context.scene
     setup_render(scene)
 
@@ -775,16 +911,24 @@ def build() -> bpy.types.Scene:
                               metallic=0.48, roughness=0.24),
         "wood": textured_material("Light birch", (0.55, 0.33, 0.16, 1),
                                     scale=7.0, detail=3.0, roughness=0.48),
-        "keyboard": material("Keyboard body", (0.001, 0.002, 0.004, 1), roughness=0.31),
+        "keyboard": material("Keyboard black body", (0.0002, 0.0003, 0.0005, 1),
+                             roughness=0.48, ior_level=0.20),
         "keyboard_side": material("Keyboard lower shell", (0.006, 0.008, 0.011, 1),
                                   metallic=0.12, roughness=0.42),
-        "keyboard_trim": material("Keyboard brushed edge", (0.14, 0.18, 0.22, 1),
-                                  metallic=0.82, roughness=0.21),
-        "key": material("Keyboard keys", (0.003, 0.005, 0.008, 1), roughness=0.38),
+        "keyboard_trim": material("Keyboard black brushed edge", (0.006, 0.008, 0.011, 1),
+                                  metallic=0.44, roughness=0.36, ior_level=0.24),
+        "keyboard_film": textured_material(
+            "Photographed keyboard protective film",
+            (0.24, 0.27, 0.30, 1), scale=42.0, detail=4.0,
+            roughness=0.18, metallic=0.46,
+        ),
+        "key": material("Keyboard black keys", (0.0003, 0.0005, 0.0008, 1),
+                        roughness=0.54, ior_level=0.18),
         "key_side": material("Keyboard key wells", (0.0006, 0.0008, 0.0012, 1),
                              roughness=0.48),
         "legend": material("Keyboard legends", (0.34, 0.39, 0.45, 1), roughness=0.50),
-        "phone": material("Phone edge", (0.03, 0.04, 0.05, 1), metallic=0.6, roughness=0.20),
+        "phone": material("Phone black edge", (0.002, 0.0025, 0.0032, 1),
+                          metallic=0.42, roughness=0.33, ior_level=0.22),
         "screen": material("Phone screen", (0.008, 0.015, 0.022, 1), metallic=0.15, roughness=0.16,
                            emission=(0.01, 0.03, 0.05, 1), emission_strength=0.14),
         "screen_glass": material("Phone optical glass", (0.004, 0.009, 0.016, 1),
@@ -836,7 +980,8 @@ def build() -> bpy.types.Scene:
     for tag_id, tag in layout["direct_tags"]["tags"].items():
         xy = tuple(tag["detection_center_xy"])
         tag_objects.append(
-            (tag_id, add_tag(tag_id, *xy, mats["white"], mats["abs"]), xy)
+            (tag_id, add_tag(tag_id, int(tag["id"]), *xy,
+                             mats["white"], mats["abs"]), xy)
         )
     # Hardware appearance and motion meaning are deliberately separate. The
     # hash-verified official Waveshare STEP derivative is the visual authority
@@ -864,31 +1009,46 @@ def build() -> bpy.types.Scene:
         h_key.location.z = h_key_z + offset
         h_key.keyframe_insert("location", frame=frame)
     # A recognizable camera hangs below the carriage instead of disappearing
-    # inside the portal mounting plate. The optical axis remains centered on
-    # the nominal board target.
-    cam_center = board_point(305, 228.5, 970)
+    # inside the portal mounting plate. The front glass is fixed at the
+    # manifest's 1000 mm nominal optical plane and the axis remains centered on
+    # the board. Body, mount, connector, cable, lens barrel, glass, and status
+    # light all remain visible in the establishing shot.
+    optical_z_mm = dimension_manifest["portal"]["nominal_camera_optical_z"]
+    cam_center = board_point(305, 228.5, optical_z_mm + 46.0)
     camera_hardware = [
         cube("Designed camera body", cam_center, (0.086, 0.066, 0.052), mats["abs"], 0.008),
-        cube("Designed camera top mount", cam_center + Vector((0, 0, 0.047)),
-             (0.046, 0.042, 0.044), mats["metal"], 0.005),
+        cube("Designed camera top mount", cam_center + Vector((0, 0, 0.033)),
+             (0.050, 0.044, 0.014), mats["metal"], 0.004),
+        cube("Camera rear I/O block", cam_center + Vector((0.045, 0.0, 0.006)),
+             (0.014, 0.034, 0.026), mats["metal"], 0.003),
+        cube("Camera mounting shoe", cam_center + Vector((0.0, 0.0, 0.040)),
+             (0.072, 0.030, 0.006), mats["metal"], 0.002),
     ]
-    lens = cylinder("Machine vision lens", cam_center + Vector((0, 0, -0.047)),
-                    0.022, 0.050, mats["metal"])
+    lens = cylinder("Machine vision lens", board_point(305, 228.5, optical_z_mm + 10.0),
+                    0.022, 0.020, mats["metal"])
     lens.rotation_euler = (0, 0, 0)
     lens_glass = cylinder("Machine vision front glass",
-                          cam_center + Vector((0, 0, -0.073)),
+                          board_point(305, 228.5, optical_z_mm - 1.5),
                           0.016, 0.003, mats["cyan"], 48)
     lens_glass.rotation_euler = (0, 0, 0)
     status_light = cylinder("Camera status light", cam_center + Vector((0.031, -0.034, 0.006)),
                             0.004, 0.003, mats["green"], 32)
     status_light.rotation_euler = (math.pi / 2, 0, 0)
     camera_hardware.extend((lens, lens_glass, status_light))
+    camera_cable = curve_line(
+        "Camera data and power cable",
+        [cam_center + Vector((0.051, 0.0, 0.009)),
+         cam_center + Vector((0.092, 0.0, 0.035)),
+         board_point(427, 228.5, 1090)],
+        mats["cable"], 0.0035,
+    )
+    camera_hardware.append(camera_cable)
     for component in camera_hardware:
         component.hide_render = False
         component.keyframe_insert("hide_render", frame=1)
-        component.keyframe_insert("hide_render", frame=528)
+        component.keyframe_insert("hide_render", frame=432)
         component.hide_render = True
-        component.keyframe_insert("hide_render", frame=529)
+        component.keyframe_insert("hide_render", frame=433)
         component.keyframe_insert("hide_render", frame=1560)
         component.hide_render = False
         component.keyframe_insert("hide_render", frame=1561)
@@ -908,10 +1068,12 @@ def build() -> bpy.types.Scene:
         (97, Vector((0.28, -1.30, 0.78))), (240, Vector((0.12, -1.10, 0.70))),
         (241, Vector((0.18, -1.18, 0.72))), (336, Vector((-0.02, -1.02, 0.66))),
         # Perceive: camera fixture, then its measured top-down view.
-        (337, Vector((0.62, -0.36, 1.18))), (408, Vector((0.28, -0.18, 1.02))),
+        (337, Vector((0.46, -0.56, 0.86))), (349, Vector((0.46, -0.56, 0.86))),
+        (420, Vector((0.30, -0.38, 0.90))), (432, Vector((0.30, -0.38, 0.90))),
         # The lens POV begins below the physical camera body so the fixture
         # cannot occlude or defocus the board evidence.
-        (409, Vector((-0.10, -0.04, 0.92))), (528, Vector((0.10, 0.04, 0.84))),
+        (433, Vector((0.0, 0.0, 1.00))), (445, Vector((0.0, 0.0, 1.00))),
+        (516, Vector((0.0, 0.0, 0.82))), (528, Vector((0.0, 0.0, 0.82))),
         # Proposal and both gate decisions keep the exact arm visibly still.
         # The previous reverse angle was dominated by a portal leg; this angle
         # preserves the workcell context behind the screen-space evidence card.
@@ -937,8 +1099,12 @@ def build() -> bpy.types.Scene:
     ]
     targets = [
         (1, Vector((0, 0.02, 0.38))), (336, Vector((0, 0.02, 0.38))),
-        (337, Vector((0, 0.02, 1.00))), (408, Vector((0, 0.02, 0.98))),
-        (409, Vector((0, 0.00, 0.03))), (528, Vector((0, 0.00, 0.03))),
+        (337, board_point(305, 228.5, optical_z_mm + 8)),
+        (349, board_point(305, 228.5, optical_z_mm + 8)),
+        (420, board_point(305, 228.5, optical_z_mm + 2)),
+        (432, board_point(305, 228.5, optical_z_mm + 2)),
+        (433, Vector((0, 0.00, 0.00))), (445, Vector((0, 0.00, 0.00))),
+        (516, Vector((0, 0.00, 0.00))), (528, Vector((0, 0.00, 0.00))),
         # Tilt the three decision shots toward the board. The arm remains the
         # hero, but the keyboard and calibrated surface now provide changing
         # spatial context instead of three nearly identical black backdrops.
@@ -964,11 +1130,12 @@ def build() -> bpy.types.Scene:
     camera_target_by_frame = dict(targets)
     for frame in (1057, 1224):
         camera.location = camera_location_by_frame[frame]
-        camera.rotation_euler = (
+        rolled = (
             camera_target_by_frame[frame] - camera.location
         ).to_track_quat("-Z", "Y").to_euler()
-        camera.rotation_euler.rotate_axis("Z", math.radians(-90))
-        camera.keyframe_insert("rotation_euler", frame=frame)
+        rolled.rotate_axis("Z", math.radians(-90))
+        camera.rotation_quaternion = rolled.to_quaternion()
+        camera.keyframe_insert("rotation_quaternion", frame=frame)
 
     # A focus target tracks the same authored points as the camera aim. Depth
     # of field remains subtle enough to preserve dimension evidence while
@@ -982,7 +1149,8 @@ def build() -> bpy.types.Scene:
     camera.data.dof.aperture_fstop = 11.0
     lens_keys = (
         (1, 38), (96, 42), (97, 50), (240, 72), (241, 54), (336, 70),
-        (337, 52), (408, 78), (409, 38), (528, 45),
+        (337, 58), (349, 58), (420, 74), (432, 74),
+        (433, 38), (445, 38), (516, 45), (528, 45),
         (529, 55), (720, 70), (721, 60), (888, 72),
         (889, 65), (1056, 82), (1057, 58), (1224, 70),
         (1225, 52), (1392, 68), (1393, 62), (1560, 74),
@@ -994,8 +1162,8 @@ def build() -> bpy.types.Scene:
     # Shot-specific depth of field separates architectural context from the
     # target-resolution, press, and phone-result macro beats.
     aperture_keys = (
-        (1, 8.0), (336, 7.1), (337, 6.3), (408, 5.6),
-        (409, 10.0), (528, 9.0), (529, 7.1), (1056, 6.3),
+        (1, 8.0), (336, 7.1), (337, 8.0), (432, 7.1),
+        (433, 11.0), (528, 10.0), (529, 7.1), (1056, 6.3),
         (1057, 9.0), (1224, 8.0), (1225, 6.3), (1392, 5.6),
         (1393, 9.0), (1560, 8.0), (1561, 7.1), (END_FRAME, 6.3),
     )
@@ -1046,17 +1214,21 @@ def build() -> bpy.types.Scene:
 
     vision = text_object("Vision label", "STATIC VISION\n1000 mm NOMINAL OPTICAL TARGET",
                          Vector((0.0, 0.07, 1.14)), 0.035, mats["white"], camera)
-    visibility(vision, 337, 408)
+    visibility(vision, 337, 432)
     sight = curve_line("Vision ray",
-                       [board_point(305, 228.5, 995), board_point(305, 228.5, 14)], mats["cyan"], 0.002)
-    visibility(sight, 337, 528)
+                       [board_point(305, 228.5, optical_z_mm),
+                        board_point(305, 228.5, 14)], mats["cyan"], 0.002)
+    # This is an exterior-shot explanatory ray, not a physical object. Hide it
+    # before switching through the lens so it cannot bloom down the optical
+    # axis and obscure the measured board view.
+    visibility(sight, 337, 432)
 
     # In the camera POV the four physical tags pulse in sequence and the board
     # axes draw on the board itself, making perception visible without a card.
     for index, (tag_id, _tag, xy) in enumerate(tag_objects):
         ring = add_target_ring(f"Perception pulse {tag_id}", xy[0], xy[1], 4.2,
-                               mats["cyan"], 409, 528)
-        pulse_visibility(ring, 414 + index * 18, 528)
+                               mats["cyan"], 433, 528)
+        pulse_visibility(ring, 440 + index * 13, 528)
     perceive_origin = board_point(42, 42, 5)
     x_axis = add_axis("Perceive board X", perceive_origin,
                       perceive_origin + Vector((0.115, 0, 0)), mats["cyan"], 448, 528)
@@ -1068,8 +1240,8 @@ def build() -> bpy.types.Scene:
                          0.015, mats["cyan"])
     y_label = board_text("Perceive Y label", "Y", perceive_origin + Vector((0, 0.126, 0.002)),
                          0.015, mats["cyan"])
-    visibility(x_label, 462, 528)
-    visibility(y_label, 472, 528)
+    visibility(x_label, 480, 528)
+    visibility(y_label, 490, 528)
 
     arm_detail = text_object("Arm detail label", "ROARM-M3\nURDF-DERIVED ARM PROXY",
                              Vector((0.0, -0.10, 0.42)), 0.030, mats["white"], camera)
@@ -1077,7 +1249,7 @@ def build() -> bpy.types.Scene:
 
     devices = text_object("Device label", "INDEXED DEVICE GEOMETRY\nKEYBOARD + PHONE + DIRECT TAGS",
                           Vector((0.02, -0.14, 0.29)), 0.031, mats["white"], camera)
-    visibility(devices, 409, 528)
+    visibility(devices, 433, 528)
     h_ring = add_target_ring("Keyboard target H", 216.55, 154.0, 29,
                              mats["cyan"], 1057, 1320)
     h_target_label = board_text("Resolved H label", "H",
@@ -1145,6 +1317,8 @@ def build() -> bpy.types.Scene:
 
     scene["evidence_notice"] = (
         "Portal/stations are repository CAD; board/devices are RC03 measured envelopes; "
+        "keyboard and phone surfaces are photo-informed presentation geometry; board tags "
+        "use the released tag36h11 ID 0-5 codebook patterns; "
         "the static arm beauty surface is a hash-verified local derivative of the official "
         "Waveshare STEP; the execution-only proxy is dimensioned from the pinned official "
         "URDF contract. Its pose and H contact are presentation simulations, not motion "
@@ -1152,6 +1326,7 @@ def build() -> bpy.types.Scene:
     )
     scene["source_layout"] = str(LAYOUT_PATH.relative_to(ROOT))
     scene["source_portal"] = str(PORTAL_PATH.relative_to(ROOT))
+    verify_scene_layout(scene, layout, optical_z_mm / 1000)
     return scene
 
 
@@ -1199,8 +1374,9 @@ Dialogue: 1,0:00:30.00,0:00:44.00,Tracker,,0,0,0,,PERCEIVE  →  PROPOSE  →  {
 Dialogue: 1,0:00:44.00,0:00:51.00,Tracker,,0,0,0,,PERCEIVE  →  PROPOSE  →  {\\c&H00F8C845}CHECK{\\c&H00D8DEE8}  →  EXECUTE  →  VERIFY
 Dialogue: 1,0:00:51.00,0:00:58.00,Tracker,,0,0,0,,PERCEIVE  →  PROPOSE  →  CHECK  →  {\\c&H00F8C845}EXECUTE{\\c&H00D8DEE8}  →  VERIFY
 Dialogue: 1,0:00:58.00,0:01:05.00,Tracker,,0,0,0,,PERCEIVE  →  PROPOSE  →  CHECK  →  EXECUTE  →  {\\c&H004FCC33}VERIFY
-Dialogue: 1,0:00:14.00,0:00:16.10,Stage,,0,0,0,,{\\fad(180,180)}1 · PERCEIVE
-Dialogue: 1,0:00:16.10,0:00:22.00,Badge,,0,0,0,,{\\fad(180,180)}{\\c&H00F8C845}4 TAGS LOCKED  ·  BOARD X/Y DRAWN
+Dialogue: 1,0:00:14.00,0:00:15.20,Stage,,0,0,0,,{\\fad(180,180)}1 · PERCEIVE
+Dialogue: 1,0:00:15.20,0:00:18.00,Badge,,0,0,0,,{\\fad(180,180)}{\\c&H00F8C845}FIXED OVERHEAD CAMERA  ·  1000 mm OPTICAL PLANE
+Dialogue: 1,0:00:18.00,0:00:22.00,Badge,,0,0,0,,{\\fad(180,180)}{\\c&H00F8C845}4 TAGS LOCKED  ·  BOARD X/Y DRAWN
 Dialogue: 1,0:00:22.00,0:00:24.00,Stage,,0,0,0,,{\\fad(180,180)}2 · PROPOSE
 Dialogue: 1,0:00:24.00,0:00:30.00,Card,,0,0,0,,{\\fad(180,180)}{\\c&H004C9BFF}MODEL PROPOSAL{\\c&H00F3F6FA}\\Naction       press\\Ntarget       keyboard:H\\Nframe        board\\Nconfidence   0.97
 Dialogue: 1,0:00:30.00,0:00:31.80,Stage,,0,0,0,,{\\fad(150,150)}3 · CHECK
@@ -1735,13 +1911,15 @@ def composite_overlay(clean_video: Path, final_video: Path,
     # libass filter paths require a forward-slash Windows path with an escaped
     # drive colon. subprocess avoids shell interpolation of the filter itself.
     ass_filter_path = str(ass_path).replace("\\", "/").replace(":", "\\:")
-    # Overlap 100 ms on each side of every camera cut and use a true 200 ms
-    # cross-dissolve. Segment overlap preserves the source pixels; sequential
+    # Overlap 180 ms on each side of every camera cut and use a true 360 ms
+    # cross-dissolve. This takes the edge off chapter cuts while remaining
+    # short enough that evidence from adjacent states is never conflated.
+    # Segment overlap preserves the source pixels; sequential
     # fade filters would destructively blacken the already-filtered stream.
     # Information graphics are composited last so chapter titles remain stable.
     camera_cuts = (4.0, 10.0, 14.0, 22.0, 30.0, 37.0, 44.0,
                    51.0, 58.0, 65.0, 72.0)
-    overlap = 0.10
+    overlap = 0.18
     dissolve = overlap * 2
     source_duration = END_FRAME / FPS
     starts = [0.0, *[cut - overlap for cut in camera_cuts]]
@@ -1803,7 +1981,7 @@ def main() -> None:
     bpy.ops.wm.save_as_mainfile(filepath=str(blend_path))
 
     if "--preview-shots" in args:
-        preview_frames = (48, 168, 288, 384, 468, 624, 804, 972,
+        preview_frames = (48, 168, 288, 360, 420, 468, 624, 804, 972,
                           1140, 1300, 1476, 1644, 1788)
         scene.render.resolution_percentage = 55
         for frame in preview_frames:

@@ -82,6 +82,7 @@ def test_contract_fixture_generator_replays_exact_retained_bytes():
 
 
 def test_full_evaluator_fails_closed_when_research_artifacts_are_external():
+    plan = _load(AI / "eval/precision_adapter_localization_v1_plan.json")
     path = AI / "eval/evaluate_precision_adapter_localization_v1.py"
     spec = importlib.util.spec_from_file_location("precision_evaluator", path)
     module = importlib.util.module_from_spec(spec)
@@ -92,5 +93,10 @@ def test_full_evaluator_fails_closed_when_research_artifacts_are_external():
         message = str(error)
     else:
         raise AssertionError("external research dependencies unexpectedly resolved")
-    assert "precision evaluation requires external research artifacts" in message
-    assert "grouped_linear_refit_v1/model.pt" in message
+    prefix = "precision evaluation requires external research artifacts: "
+    assert message.startswith(prefix)
+    missing = set(message.removeprefix(prefix).split(", "))
+    declared = set(plan["file_sha256"]) | {plan["model_checkpoint"]}
+    assert missing
+    assert missing <= declared
+    assert all(not (ROOT / relative).is_file() for relative in missing)

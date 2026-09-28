@@ -36,6 +36,13 @@ The governing criterion is
 `perception + calibration + tracking/settling + tool-tip uncertainty < target safe-region margin`.
 Additional broad ghost routines do not advance this baseline by themselves.
 
+The AI S2/S3 physical-camera campaign is prepared in
+[`PHYSICAL_CAMERA_LOCALIZATION_CAMPAIGN.md`](PHYSICAL_CAMERA_LOCALIZATION_CAMPAIGN.md).
+Its strict external-evidence manifest and read-only preflight freeze split
+separation, required lighting/occlusion/placement cases, independent surveyed
+ground truth, file identities, and zero authority before model evaluation. This
+preparation does not satisfy any missing physical-original or calibration gate.
+
 ## Purpose
 
 This is the common working backbone for two independently advancing workstreams:
@@ -778,6 +785,21 @@ artifact package in
 evidence `E-20260927-AI-410`. Its clean-clone state is explicitly unavailable,
 its separately present bytes are identity-verified, and neither result installs
 localization qualification or changes the AI-to-arm authority boundary.
+
+AI work and test documentation is maintained through the
+[`AI work and evidence handbook`](AI_WORK_AND_EVIDENCE_HANDBOOK.md), the
+machine-checked [`AI work registry`](AI_WORK_REGISTRY.json), and evidence
+`E-20260927-AI-419`. The registry assigns every tracked AI test module to one
+workstream and binds its source, governing documents, retained evidence,
+limitations, and next gate. This documentation baseline changes no lane or
+integration status.
+
+The post-preflight physical-camera evaluator is implemented at evidence
+`E-20260927-AI-422`. It revalidates retained campaign bytes, binds every
+prediction to image/model/preprocessing identities, derives an empirical bound
+from calibration only, scores held-out coverage and unsafe-scene acceptance,
+and checks a conservatively composed bound against the frozen target map. It
+emits only an offline review recommendation and installs no qualification.
 
 Workers add a short row before beginning a potentially overlapping change and
 remove it only in the same commit that appends the resulting evidence row.

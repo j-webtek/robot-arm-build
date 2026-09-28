@@ -147,7 +147,8 @@ accuracy checkpoints.
 | 0–4 s | Request | One clear task: “Press the H key” |
 | 4–10 s | Stakes | Physical AI must be dependable because guesses become motion |
 | 10–14 s | Promise | One request becomes one checked physical action |
-| 14–22 s | 1 — Perceive | Fixed vision and tags establish a shared board frame |
+| 14–18 s | Camera reveal | The physical fixed camera, cable, lens, and 1000 mm optical plane are shown before its viewpoint is used |
+| 18–22 s | 1 — Perceive | A centered lens view and direct tags establish the shared board frame |
 | 22–30 s | 2 — Propose | The model proposes an action and target, never raw motor commands |
 | 30–37 s | 3 — Reject | A stale, malformed plan is blocked while the arm stays still |
 | 37–44 s | 3 — Accept | Every deterministic admission gate passes |
@@ -171,8 +172,8 @@ that a physical keypress occurred.
 The final composite adds a controlled finishing layer without altering the
 dimension-checked 3D render:
 
-- true 200 ms cross-dissolves overlap adjacent camera setups without discarding
-  source frames;
+- true 360 ms cross-dissolves overlap adjacent camera setups without discarding
+  source frames or conflating neighboring evidence states;
 - chapter titles explain one architectural decision at a time;
 - a persistent five-stage spine highlights the current system responsibility;
 - monospace cards show a nominal model proposal, admission result, resolved
@@ -188,17 +189,25 @@ dimension-checked 3D render:
 - a six-row compact keyboard reconstruction uses the measured RC03 envelope
   and the nominal 19.05 mm pitch encoded by the target profile, with realistic
   stagger, modifier-key widths, recessed key wells, beveled caps, legends,
-  enclosure trim, status lights, and a connected cable rather than a uniform
-  placeholder grid;
+  matte-black enclosure and keys, the photographed rear protective-film band,
+  status lights, and a connected cable rather than a uniform placeholder grid;
 - a layered phone reconstruction adds an aluminum envelope, optical glass,
-  receiver, camera, side controls, cable, and a modeled host-verification UI
+  matte-black chassis and bezel rails, receiver, front camera, side controls, charging-port
+  recess, and a modeled host-verification UI
   while preserving the configured phone origin and measured screen plane;
+- all six board markers use the exact released tag36h11 ID 0–5 cell grids from
+  `software/src/rocell/vision/apriltag_codebook.py`, drawn at the configured
+  40 mm detection edge on the configured 55 mm white tile;
 - a small persistent Tactevra wordmark establishes brand continuity without
   competing with chapter titles;
 - procedural birch and bench variation, restrained depth of field, animated
   focal length, pulsing registration tags, board-frame axes, and a visible
   camera-to-board-to-key trace add material and motion depth while keeping the
   exact hardware surface visually coherent;
+- the perception chapter first reveals a modeled camera body, mount, rear I/O,
+  cable, lens barrel, front glass, and status light from outside the fixture;
+  only then does it cut through the lens to a square board-centered view, with
+  the explanatory sight ray removed from the optical shot;
 - every chapter has its own camera grammar: a complete workcell reveal,
   hardware beauty orbit, fixture-to-lens perception move, three distinct
   decision dollies, orthographic-like target resolution, tooling close-up,
@@ -254,6 +263,18 @@ The board, keyboard and phone envelopes, indexed station placement, reference
 tag centers, camera target, portal mesh, arm joint origins, TCP offset, and
 nominal robot transform are sourced directly from repository authorities. The
 station and portal shapes are imported from their actual STL files.
+
+The Blender build also asserts the rendered board envelope, device centers and
+envelopes, all three station origins, every direct-tag center/family/identity,
+and the camera's nominal optical plane. A mismatch aborts the render and the
+saved scene records `PASS_RC03_BOARD_DEVICE_STATION_TAG36H11_CAMERA` only after
+every assertion passes.
+
+The keyboard and phone outer dimensions and placements are measured RC03
+authorities. Their small surface features are photo-informed presentation
+geometry, not manufacturer CAD. Conversely, the six visible marker images are
+the exact released tag36h11 ID 0–5 patterns consumed by the vision contract,
+not illustrative substitutes.
 
 The visible arm is dimensioned from the pinned official URDF but is not a
 qualified digital twin. The optional vendor STEP and local tessellation remain
