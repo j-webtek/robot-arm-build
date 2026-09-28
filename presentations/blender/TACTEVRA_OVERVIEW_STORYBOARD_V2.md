@@ -10,6 +10,10 @@
   and tap Send.
 - **Evidence boundary:** every physical action shown is a workcell simulation until
   separately supported by physical qualification records.
+- **Toolhead:** one continuous RoArm gripper carries the repository's controlled
+  compliant body, keyed cap, split collar, two M3 retainers, and one nominal
+  OASO-style capacitive stylus. Printed-part shapes are source-accurate;
+  installed fit, protrusion, force, compliance, and TCP remain unmeasured.
 
 ## Product truth this film must preserve
 
@@ -81,8 +85,9 @@ without asking the viewer to relearn it ten times.
   the keyboard/laptop workflow and the phone workflow.
 - Hero wide or crane for architecture and payoff.
 - No single framing occupies more than about 25 percent of runtime.
-- Cuts preserve identical joint pose, stylus pose, cable state, and device
-  placement. No teleporting, snap zooms, or decorative spins.
+- Cuts preserve identical joint pose, gripper, printed cartridge, stylus pose,
+  cable state, and device placement. No teleporting, snap zooms, or decorative
+  spins.
 - The stale-evidence rejection cuts the music and holds the arm completely
   still. The next transition pushes toward the stylus as the permit token lands.
 
@@ -90,14 +95,14 @@ without asking the viewer to relearn it ten times.
 
 | # | Time | Stage | Picture, motion, and required information | Sound |
 |---:|---:|---|---|---|
-| 1 | 0:00–0:04 | — | **Cold open.** Macro: stylus hovering over the `r` key; blue uncertainty disk is still wider than the key. Pull focus to the stationary joints. No text appears yet. | One held mechanical tone; no narration. |
+| 1 | 0:00–0:04 | — | **Cold open.** Macro: the capacitive disc hovers over the `r` key while the source-accurate printed cartridge remains visibly captured between both jaw pads. The blue uncertainty disk is still wider than the key. Pull focus from disc to keyed cap and stationary wrist. No text appears yet. | One held mechanical tone; no narration. |
 | 2 | 0:04–0:09 | — | Operator laptop request console: `Type ready locally, then send on my way from the phone.` Phone and physical keyboard remain visibly separate. | Quiet input ticks. |
-| 3 | 0:09–0:15 | — | Hero wide reveals the exact workcell, detailed RoArm, clamped stylus, laptop, black RC03 keyboard, and indexed phone. The RC03 cable is visibly connected to the laptop; laptop keys never receive a typing close-up. | Music establishes restrained forward pulse. |
+| 3 | 0:09–0:15 | — | Hero wide reveals the exact workcell, detailed RoArm, printed contact cartridge and stylus, laptop, black RC03 keyboard, and indexed phone. The RC03 cable is visibly connected to the laptop; laptop keys never receive a typing close-up. | Music establishes restrained forward pulse. |
 | 4 | 0:15–0:21 | `UNDERSTAND` | Amber model card: ordered semantic actions, named targets, board-frame points, confidence, and error bounds. `speed`, `contact depth`, `retry`, and `timing` are greyed and locked: `runtime owned`. | Amber data ticks. |
 | 5 | 0:21–0:28 | `LOCATE` | Crane to the actual fixed camera, pass through its lens, then use its squared overhead view. Exact tags and device bounds lock; blue uncertainty disks contract. | Registration pings. |
 | 6 | 0:28–0:33 | `CHECK` | Red card in empty space: `scene capture 41 s old · limit 2 s → REJECTED · NO MOTION`. Arm and stylus remain unobscured and still. | Music drops out; one low reject thud. |
 | 7 | 0:33–0:40 | `CHECK` | Fresh capture. Immutable batch facts pass. Text reads `BATCH ADMITTED → PERMIT · 1 ACTION`. A green permit token begins traveling toward the stylus. End with a rack focus to the laptop as its screen changes from request console to local test pad. | Music returns; restrained gate ticks. |
-| 8 | 0:40–0:48 | `ACT` | **Teach the first key slowly.** Label all seven phases: `transit → align → settle → approach → contact → retract → verify`. The permit lands, `r` depresses, a cause/effect insert shows the laptop test pad add `r`, and the permit fades. The stage bar remains on `ACT`; a small three-dot loop indicator pulses through check/contact/verify. | One precise click and one verify tick. |
+| 8 | 0:40–0:48 | `ACT` | **Teach the first key slowly.** Begin with a toolhead insert: opposing jaw pads on the body's grip-flat band, keyed cap and two M3 heads, on-axis barrel, articulated disc. Label all seven phases: `transit → align → settle → approach → contact → retract → verify`. The permit lands, `r` depresses, a cause/effect insert shows the laptop test pad add `r`, and the permit fades. The stage bar remains on `ACT`; a small three-dot loop indicator pulses through check/contact/verify. | One precise click and one verify tick. |
 | 9 | 0:48–0:55 | `ACT` | Lateral track across `e`, `a`, `d`, `y`. The contract is now visual shorthand: one permit arrives, one contact occurs, and one verification tick appears. Do not repeat uncertainty and dotted-preview graphics. The stage bar remains stable on `ACT`. | Four increasingly rhythmic clicks, never rushed. |
 | 10 | 0:55–1:01 | `ACT` | Hold above keyboard. Laptop test pad reads `ready`; receipt shows `EXPECTED ready · OBSERVED ready ✓`. Phone is unchanged. The stable `ACT` bar remains while the compact loop indicator resolves on verify. | Local verification tone. |
 | 11 | 1:01–1:07 | `ACT` | Arm-follow dolly: full retract and high-clearance move from keyboard to phone, with continuous joint and cable motion. | Light transit mechanism texture. |
@@ -181,33 +186,38 @@ the next action.
 ## Mandatory continuity
 
 1. One detailed servo-style RoArm mesh and rig in every physical shot.
-2. One dark stylus visibly seated between the same gripper jaws throughout.
-3. One immutable workcell: board, robot, camera, keyboard, phone, fixtures,
+2. One controlled printed cartridge visibly captured at its grip-flat band by
+   the same opposing jaw pads throughout. Its keyed cap and two M3 heads never
+   change or disappear.
+3. One nominal 9 mm OASO-style stylus remains on the cartridge axis with the
+   same exposed length, collar, pivot, and capacitive disc throughout.
+4. One immutable workcell: board, robot, camera, keyboard, phone, fixtures,
    tags, cables, laptop, and transforms do not drift.
-4. One measured black RC03 keyboard with correct legends, proportions, cable,
+5. One measured black RC03 keyboard with correct legends, proportions, cable,
    protective rear film, and individually animatable `r/e/a/d/y` keys.
-5. One measured dark phone with consistent chassis, glass, camera, controls,
+6. One measured dark phone with consistent chassis, glass, camera, controls,
    station, cable, and modeled app states.
-6. The operator laptop is the request console and local test-pad host. Its UI
+7. The operator laptop is the request console and local test-pad host. Its UI
    modes are clearly distinct; it is never confused with the phone. The RC03
    keyboard cable remains visibly connected to it, and laptop keys are never
    shown in a typing close-up.
-7. Keyboard actions affect only the laptop test pad. Phone taps affect only the
+8. Keyboard actions affect only the laptop test pad. Phone taps affect only the
    phone.
-8. Lowercase copy remains lowercase in request, proposal, screens, captions,
+9. Lowercase copy remains lowercase in request, proposal, screens, captions,
    receipts, and narration.
-9. A preview is always dotted and always labeled `no authority`; only an active
+10. A preview is always dotted and always labeled `no authority`; only an active
    green permit may become solid.
-10. No overlay covers the robot, stylus, gripper, target, or contact point.
-11. Every cut preserves outgoing and incoming joint, stylus, and cable pose.
-12. `SIMULATED WORKCELL SEQUENCE` persists throughout rendered physical action.
+11. No overlay covers the robot, cartridge, stylus, gripper, target, or contact point.
+12. Every cut preserves outgoing and incoming joint, cartridge, stylus, and cable pose.
+13. `SIMULATED WORKCELL SEQUENCE` persists throughout rendered physical action.
 
 ## Asset and production requirements
 
 | Asset | Required condition |
 |---|---|
 | Robot | Detailed RoArm geometry, servo housings, dual links, fasteners, wiring, gripper, and one articulated rig used in all scenes. |
-| Stylus | Dark cylindrical body, plausible protrusion, finished compliant tip, correctly clamped between visible jaws. |
+| Gripper/tool mount | Same RoArm jaw architecture in every moving shot. Opposing pads contact the controlled 28 × 24 × 65 mm compliant body at its recessed grip band; keyed cap, split collar, and two M3 retainers use the repository STLs. |
+| Stylus | Nominal 9 mm OASO-style aluminum barrel running through the printed cartridge, with constant protrusion and an articulated capacitive contact disc. Installed dimensions remain explicitly unmeasured. |
 | Keyboard | Measured black RC03 asset, correct six-row layout and legends, animated lowercase target keys, associated only with the laptop test pad. |
 | Laptop | Distinct request-console and local-test-pad UI modes; displays `ready` only after physical keyboard presses. |
 | Phone | Measured phone/station asset with home, Messages composer, keyboard, Send, and sent-confirmation states; all UI labeled as modeled. |
@@ -244,6 +254,8 @@ The 30-second cut is not improvised. Use these named beats in order:
 - [ ] Blue uncertainty is fully inside a target before its permit becomes active.
 - [ ] Dotted previews remain zero-authority until promoted by their own permit.
 - [ ] Accurate robot, stylus, keyboard, phone, camera, board, and transforms persist across all cuts.
+- [ ] The printed cartridge, keyed cap, M3 retainers, collar, stylus, pivot, and
+      contact disc remain one continuous toolhead with no asset swap.
 - [ ] Local and phone observations remain independent through final receipts.
 - [ ] README player, captions, transcript, chapters, poster, and social cut use this vocabulary and timing.
 - [ ] Simulation qualification remains visible and no rendered action is presented as physical evidence.
