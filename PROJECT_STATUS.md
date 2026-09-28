@@ -1,6 +1,6 @@
 # Tactevra project status
 
-Reviewed September 28, 2026 through the ARM-084 PC5 bounded fault-campaign checkpoint,
+Reviewed September 28, 2026 through the ARM-085 PC5 owner-boundary completion,
 ARM-077 PC0 pre-camera qualification basis, ARM-076 typing collision-evidence
 intake, ARM-075 exact-sample offline IK screen, AI-403 precision-adapter
 integration, and merged physical-camera
@@ -294,6 +294,15 @@ preview reconstruction also enforce explicit depth, action-count, command-count,
 and payload limits. The affected 86-test suite passes with zero I/O. PC5 is not
 complete until the remaining planner, transport, crash, and cache observations
 are produced by their actual owner boundaries.
+
+ARM-085 completes PC5. All 35 required fault dispositions now have direct
+zero-hardware owner-boundary coverage spanning strict model decoding,
+identity/order validation, IK and dynamics screening, collision/clearance
+admission, transaction and protocol-emulator uncertainty, sequence handling,
+restart reconciliation, deadline/cancellation behavior, and a bounded
+hash-bound observation cache. The affected 145-test suite passes with no
+physical transport, command authority, movement, or automatic retry. PC6
+unified trace journaling and deterministic replay is ready.
 
 AI-403 then integrates the pose-output precision adapter and actual V2 batch
 producer on current `main`. The retained contract fixture deterministically

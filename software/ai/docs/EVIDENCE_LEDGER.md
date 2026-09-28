@@ -4525,3 +4525,53 @@ rewriting history. New entries must use a unique evidence ID.
 - Next dependency: connect the planning and transport/feedback fault families
   to existing IK, dynamics, collision, and lifecycle boundaries, then retain
   the resulting observations in the canonical campaign report.
+
+### E-20260928-ARM-085 — PC5 owner-boundary fault qualification completed
+
+- Stage: S1/S4/S7 pre-camera arm integration; PC5 complete, PC6 ready.
+- Lane: Arm/runtime shared boundary.
+- Commit: `51ee961`.
+- Change: completed the 35-case PC5 campaign by connecting each remaining
+  planning, identity/order, transport/feedback, process-restart, and runtime
+  case to its actual zero-hardware owner boundary. Added a canonical 64-entry
+  observation cache with exact fields, per-entry and outer hashes, strict
+  qualification identity, deterministic order, zero command authority, and
+  fail-closed corruption/resource handling.
+- Inputs/fixtures: actual V2 decoder failures; stale and crossed rolling-horizon
+  bindings; invalid V2 action order; canonical IK no-solution and joint-limit
+  rejection; weighted-Jacobian rank loss; bounded trajectory discontinuity;
+  dynamics overflow; missing collision evidence; clearance rejection; late and
+  missing feedback transactions; deterministic protocol-emulator malformed,
+  partial-write, disconnect, and reset faults; sequence mismatch and ambiguous
+  completion; all five restart timings; corrupt/crossed/oversized caches;
+  cancellation and deadline invalidation.
+- Commands: `python -m pytest tests/unit/test_typing_fault_owner_boundaries_v1.py
+  tests/unit/test_typing_fault_campaign_v1.py
+  tests/unit/test_model_motion_ingress_v2.py
+  tests/unit/test_typing_rolling_horizon_v1.py
+  tests/unit/test_typing_controller_bridge_v1.py
+  tests/unit/test_typing_trajectory_ik_screen_v1.py
+  tests/unit/test_typing_joint_schedule_v1.py
+  tests/unit/test_model_motion_sequence_coordinator.py
+  tests/unit/test_arm_protocol.py tests/unit/test_discrete_transaction.py -q`.
+- Result: PASS; 29 focused campaign tests and 145 affected owner-boundary tests
+  passed. All 35 cases retain stable machine-readable terminal dispositions;
+  no exception escaped, and no authority leak, automatic retry, reorder,
+  silent fallback, unbounded allocation, or inconsistent outcome was observed.
+- Artifacts: `software/src/rocell/application/typing_fault_campaign_v1.py`;
+  `software/ai/schemas/typing_fault_campaign_v1.schema.json`;
+  `software/ai/schemas/typing_fault_observation_cache_v1.schema.json`;
+  `software/tests/unit/test_typing_fault_campaign_v1.py`;
+  `software/tests/unit/test_typing_fault_owner_boundaries_v1.py`.
+- Hardware writes: 0 physical writes. Protocol-emulator writes were confined to
+  the incapable in-memory test transport.
+- Physical movements: 0.
+- Limitations: this is synthetic/offline fault qualification. It does not
+  establish installed controller tracking, measured collision clearance,
+  camera accuracy, contact behavior, typing speed, or physical authority.
+- Supersedes: ARM-084's in-progress PC5 status only; ARM-084 remains retained
+  as the campaign-contract checkpoint.
+- Next dependency: PC6 must journal the complete request-to-verification
+  correlation lineage and replay retained synthetic traces deterministically
+  without hardware, detecting mutation, deletion, truncation, and identity
+  crossing.

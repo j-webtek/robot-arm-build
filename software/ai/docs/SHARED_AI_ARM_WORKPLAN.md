@@ -456,6 +456,15 @@ campaign observations cannot record authority, retries, reordering, fallback,
 or escaped exceptions. PC5 remains in progress while the planner, transport,
 process-crash, and cache cases are connected to their actual owning boundaries.
 This checkpoint performs no hardware I/O and changes no physical qualification.
+ARM-085 completes PC5 by driving all 35 declared cases through the actual
+decoder, lineage/order, IK, joint-limit, Jacobian, trajectory, dynamics,
+collision-intake, clearance, transaction, protocol-emulator, sequence,
+restart-reconciliation, rolling-horizon, and bounded-cache owner boundaries.
+The hash-bound observation cache is capped at 64 entries and rejects corruption,
+identity crossing, malformed contents, duplicates, and exhaustion. The 145-test
+affected suite passes with no physical transport, permit, movement, retry, or
+authority. PC6 unified journaling and deterministic replay may now begin; all
+measured-workcell and camera qualification blockers remain unchanged.
 The AI precision lane now has a mainline-compatible pose-output adapter and v2
 batch producer. It preserves repeated targets and abstains on qualification,
 domain, freshness, identity, confidence, or containment failure. Its retained
