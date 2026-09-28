@@ -648,13 +648,13 @@ def animate_phone_message_sequence(
                          z + 0.8),
         0.0035, mats["white"],
     )
-    delivered = base.board_text(
-        "Phone sent message receipt", "Delivered ✓",
+    sent_receipt = base.board_text(
+        "Phone sent message receipt", "Sent ✓",
         base.board_point(ox + dev["configured_size"][0] - 24, oy + 81,
                          z + 0.8),
         0.0025, mats["green"],
     )
-    for obj in (sent_panel, sent, delivered):
+    for obj in (sent_panel, sent, sent_receipt):
         classify(obj, collection, "verified_phone_receipt")
         obj["presentation_only"] = True
         set_scale(obj, 1, 0.0)
@@ -858,7 +858,7 @@ def build() -> bpy.types.Scene:
         portal.keyframe_insert("hide_render", frame=1561)
         portal.keyframe_insert("hide_render", frame=2400)
 
-    # Four reusable rigs cover the shot palette without an add-on dependency.
+    # Six reusable rigs cover the shot palette without an add-on dependency.
     r_target = r_key.location + Vector((0, 0, 0.060))
     phone_target = base.board_point(538, 166, 35)
     board_target = Vector((0, 0, 0.14))
@@ -867,6 +867,10 @@ def build() -> bpy.types.Scene:
         "dolly": camera_rig("dolly", Vector((0.46, -1.04, 0.62)), board_target, 58, cameras),
         "arm_follow": camera_rig("arm_follow", Vector((0.52, -0.82, 0.54)), phone_target, 52, cameras),
         "hero": camera_rig("hero", Vector((0.38, -1.42, 0.84)), board_target, 44, cameras),
+        "overhead": camera_rig("overhead", Vector((0.0, 0.0, 1.28)), board_target, 48, cameras),
+        "low_three_quarter": camera_rig(
+            "low_three_quarter", Vector((0.50, -0.92, 0.30)), r_target, 58, cameras
+        ),
     }
     animate_camera(*rigs["macro"], 961, 1152,
                    Vector((0.28, -0.58, 0.35)), Vector((0.21, -0.50, 0.29)), r_target)
@@ -887,6 +891,10 @@ def build() -> bpy.types.Scene:
                    base.board_point(*phone_xy_mm, 35))
     animate_camera(*rigs["hero"], 1, 2400,
                    Vector((0.42, -1.48, 0.88)), Vector((0.31, -1.30, 0.78)), board_target)
+    animate_camera(*rigs["overhead"], 505, 672,
+                   Vector((0.0, 0.0, 1.28)), Vector((0.0, 0.0, 1.18)), board_target)
+    animate_camera(*rigs["low_three_quarter"], 793, 960,
+                   Vector((0.50, -0.92, 0.30)), Vector((0.44, -0.82, 0.33)), r_target)
 
     scene.timeline_markers.clear()
     for shot in manifest["shots"]:
@@ -937,12 +945,11 @@ def main() -> None:
     if preview_frames:
         for frame in preview_frames:
             scene.frame_set(frame)
-            scene.camera = (
-                bpy.data.objects["CAM_MACRO"] if frame <= 1152
-                else bpy.data.objects["CAM_DOLLY"] if frame <= 1464
-                else bpy.data.objects["CAM_ARM_FOLLOW"] if frame <= 1968
-                else bpy.data.objects["CAM_MACRO"]
+            shot = next(
+                shot for shot in manifest["shots"]
+                if shot["start"] <= frame <= shot["end"]
             )
+            scene.camera = rigs[shot["rig"]][0]
             scene.render.filepath = str(OUT / f"storyboard_{frame:04d}.png")
             bpy.ops.render.render(write_still=True)
     print(f"TACTEVRA_STORYBOARD_V21={blend_path}")

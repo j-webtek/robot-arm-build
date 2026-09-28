@@ -117,26 +117,28 @@ devices without visually connecting their data.
 | # | Time | Stage | Required picture and action | Sound |
 |---:|---:|---|---|---|
 | 1 | 0:00–0:04 | — | Macro over `r`; disc, printed cartridge, jaw pads, keyed cap, and M3 heads readable; uncertainty too wide; no text. | Held mechanism tone. |
-| 2 | 0:04–0:09 | UNDERSTAND | Laptop request: `Type ready locally, then send on my way from the phone.` | Input ticks. |
+| 2 | 0:04–0:09 | — | Laptop request close-up: `Type ready locally, then send on my way from the phone.` | Input ticks. |
 | 3 | 0:09–0:15 | — | Hero wide of exact workcell and one detailed arm/stylus rig. | Music pulse begins. |
 | 4 | 0:15–0:21 | UNDERSTAND | Amber semantic proposal; confidence and uncertainty visible; runtime fields locked. | Data ticks. |
 | 5 | 0:21–0:28 | LOCATE | Reveal real camera, pass through lens, register exact device geometry; blue circles shrink. | Registration pings. |
 | 6 | 0:28–0:33 | CHECK | `scene capture 41 s old · limit 2 s → REJECTED · NO MOTION`; arm visible and still. | Music cuts; reject thud. |
 | 7 | 0:33–0:40 | CHECK | Fresh capture; `BATCH ADMITTED → PERMIT · 1 ACTION`; token travels to stylus. | Music returns; gate ticks. |
-| 8 | 0:40–0:48 | ACT/VERIFY | Toolhead insert establishes grip-flat capture and positive cap retention; first `r` press then teaches transit, align, settle, approach, contact, retract, verify. Permit fades; laptop shows `r`. | One key click, one verify tick. |
-| 9 | 0:48–0:55 | CHECK/ACT/VERIFY | Lateral track through `e/a/d/y`; one circle, permit, press, and receipt per contact; dotted next preview. | Four rhythmic key clicks. |
-| 10 | 0:55–1:01 | VERIFY | Laptop test pad: `EXPECTED ready · OBSERVED ready ✓`; phone unchanged. | Verify tone. |
+| 8 | 0:40–0:48 | ACT | Toolhead insert establishes grip-flat capture and positive cap retention; first `r` press teaches transit, align, settle, approach, contact, retract, verify. Permit fades; laptop shows `r`. | One key click, one verify tick. |
+| 9 | 0:48–0:55 | ACT | Lateral track through `e/a/d/y`; use only one permit and one receipt tick per contact after the lesson. | Four rhythmic key clicks. |
+| 10 | 0:55–1:01 | ACT | Laptop test pad: `EXPECTED ready · OBSERVED ready ✓`; phone unchanged. | Verify tone. |
 | 11 | 1:01–1:07 | ACT | Full retract and continuous high-clearance arm-follow move to phone. | Transit texture. |
-| 12 | 1:07–1:14 | CHECK/ACT/VERIFY | Check `home`; one permit opens Messages; re-observe and verify `composer ready`. | Check, tap, check. |
-| 13 | 1:14–1:19 | CHECK/ACT/VERIFY | Build `on my way`; expected screen checked before each tap and visible effect confirmed after each. | Glass-tap rhythm. |
-| 14 | 1:19–1:24 | CHECK/ACT/VERIFY | Confirm composer; Send circle fits; its own permit arrives; one Send tap and retract. | Distinct Send tap. |
-| 15 | 1:24–1:31 | VERIFY | Split evidence: laptop `ready ✓`; phone `on my way · sent ✓`. | Two verify tones. |
-| 16 | 1:31–1:36 | all | Evidence trail aligns request, proposal, captures, per-contact permits, observations, and receipts. | Resolving rise. |
-| 17 | 1:36–1:40 | all | Hero wide, five-stage ribbon, brand, URL, and `SIMULATED WORKCELL SEQUENCE`. | Clean resolve; no black tail. |
+| 12 | 1:07–1:14 | ACT | Check `home`; one permit opens Messages; re-observe and verify `composer ready`. | Check, tap, check. |
+| 13 | 1:14–1:22 | ACT | Build `on my way`; show `o` and `n` naturally, then disclose `2×` for the remaining contacts; every visible character follows its own observed contact. | Two measured taps, then controlled faster rhythm. |
+| 14 | 1:22–1:27 | ACT | Confirm composer; Send receives its own permit; one tap and retract; outgoing bubble reads `Sent ✓`. | Distinct Send tap. |
+| 15 | 1:27–1:34 | VERIFY | Split evidence: laptop `ready ✓`; phone `on my way · sent ✓`. | Two verify tones. |
+| 16 | 1:34–1:36 | — | Five compact green ticks with `Every contact permitted. Every effect verified.` | Resolving rise. |
+| 17 | 1:36–1:40 | — | Hero wide, Tactevra logo, `Physical intelligence, checked.`, and `SIMULATED WORKCELL SEQUENCE`. | Clean resolve; no black tail. |
 
 ## Shot and editorial rules
 
-- No single framing runs longer than roughly 25 percent of the film.
+- Cumulative use of any reusable camera setup stays at or below 25 percent:
+  macro 22%, hero 23%, dolly 20%, arm-follow 21%, overhead 7%, and low
+  three-quarter 7%. The canonical shot-list validator enforces this.
 - Use macro, low three-quarter, lateral track, arm-follow dolly, camera POV,
   split screen, and hero wide for narrative reasons—not decorative variety.
 - Preserve exact joint, gripper, printed cartridge, stylus, cable, keyboard,

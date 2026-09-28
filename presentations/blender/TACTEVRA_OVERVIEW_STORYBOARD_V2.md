@@ -84,7 +84,9 @@ without asking the viewer to relearn it ten times.
   compare two independent receipts. They never imply a data connection between
   the keyboard/laptop workflow and the phone workflow.
 - Hero wide or crane for architecture and payoff.
-- No single framing occupies more than about 25 percent of runtime.
+- Cumulative use of any reusable camera setup stays at or below 25 percent of
+  runtime: macro 22%, hero 23%, dolly 20%, arm-follow 21%, overhead 7%, and
+  low three-quarter 7%. This is validated from the canonical shot list.
 - Cuts preserve identical joint pose, gripper, printed cartridge, stylus pose,
   cable state, and device placement. No teleporting, snap zooms, or decorative
   spins.
@@ -108,7 +110,7 @@ without asking the viewer to relearn it ten times.
 | 11 | 1:01–1:07 | `ACT` | Arm-follow dolly: full retract and high-clearance move from keyboard to phone, with continuous joint and cable motion. | Light transit mechanism texture. |
 | 12 | 1:07–1:14 | `ACT` | Show `EXPECTED home · OBSERVED home ✓` in full once. One permit authorizes the Messages-app tap. The app changes to a portrait conversation with contact header, two prior message bubbles, a composer immediately above the software keyboard, and Send fixed at the composer's right edge. The arm retracts and a fresh observation verifies `composer ready`. Later checks reduce to ticks; the stage bar remains on `ACT`. | State-check tick, glass tap, second check tick. |
 | 13 | 1:14–1:22 | `ACT` | `on my way` builds inside the lower composer while the existing conversation remains above it. Show `o` and `n` at natural pace with one permit and one tick each. Then display an honest `2×` badge and time-compress the remaining seven contacts. Each visible character still appears only after its own observed contact. | Two measured taps, then a controlled faster rhythm with quiet check ticks. |
-| 14 | 1:22–1:27 | `ACT` | Slow down. Confirm the lower composer contains `on my way`. Its adjacent Send control receives a separate green one-contact permit; one tap occurs, the arm retracts, and the text moves into a right-aligned outgoing conversation bubble with `Delivered ✓`. Keep the stage bar on `ACT`. | Bed narrows; one distinct Send tap. |
+| 14 | 1:22–1:27 | `ACT` | Slow down. Confirm the lower composer contains `on my way`. Its adjacent Send control receives a separate green one-contact permit; one tap occurs, the arm retracts, and the text moves into a right-aligned outgoing conversation bubble with `Sent ✓`. Keep the stage bar on `ACT`. | Bed narrows; one distinct Send tap. |
 | 15 | 1:27–1:34 | `VERIFY` | Split screen: laptop independently shows `ready ✓`; phone independently shows `on my way · sent ✓`. No visual data line joins the devices. | Two verification tones, left then right. |
 | 16 | 1:34–1:36 | — | One compact evidence line only: five green ticks for `UNDERSTAND · LOCATE · CHECK · ACT · VERIFY`, with `Every contact permitted. Every effect verified.` beneath it. | Restrained resolving rise. |
 | 17 | 1:36–1:40 | — | Hero wide and Tactevra logo. Show only `Physical intelligence, checked.` plus the small persistent qualifier `SIMULATED WORKCELL SEQUENCE`. | Clean brand resolve; no black tail. |
@@ -119,7 +121,7 @@ The scene durations total exactly 100 seconds.
 
 The timing plan is mirrored in `storyboard_v21_shots.json` and validated as 17
 contiguous scenes across exactly 2,400 frames. The editable Blender scaffold
-creates four reusable shot rigs, timeline camera bindings, locked reference
+creates six reusable shot rigs, timeline camera bindings, locked reference
 asset collections, and the three recurring authority graphics. The lowercase
 `r` contact is implemented as the first visual benchmark at 0:40–0:48. The
 same detailed rig then moves continuously through independently permitted

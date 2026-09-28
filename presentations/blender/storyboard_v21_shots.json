@@ -59,7 +59,7 @@
       "conversation_history_bubbles": 2,
       "composer": "immediately above software keyboard",
       "send": "right edge of composer",
-      "sent_receipt": "outgoing bubble in conversation with delivered tick"
+      "sent_receipt": "outgoing bubble in conversation with sent tick"
     },
     "time_compression": {"scene": 13, "start_frame": 1850, "end_frame": 1968, "rate": "2x", "disclosed": true},
     "visual_shorthand_after_first_contact": "permit plus verification tick only",
@@ -67,12 +67,12 @@
   },
   "shots": [
     {"id": 1, "start": 1, "end": 96, "seconds": "0:00–0:04", "stage": null, "rig": "macro", "slug": "cold-open-r-hover"},
-    {"id": 2, "start": 97, "end": 216, "seconds": "0:04–0:09", "stage": null, "rig": "hero", "slug": "operator-request"},
+    {"id": 2, "start": 97, "end": 216, "seconds": "0:04–0:09", "stage": null, "rig": "macro", "slug": "operator-request"},
     {"id": 3, "start": 217, "end": 360, "seconds": "0:09–0:15", "stage": null, "rig": "hero", "slug": "workcell-reveal"},
     {"id": 4, "start": 361, "end": 504, "seconds": "0:15–0:21", "stage": "UNDERSTAND", "rig": "dolly", "slug": "amber-model-proposal"},
-    {"id": 5, "start": 505, "end": 672, "seconds": "0:21–0:28", "stage": "LOCATE", "rig": "hero", "slug": "camera-to-overhead"},
+    {"id": 5, "start": 505, "end": 672, "seconds": "0:21–0:28", "stage": "LOCATE", "rig": "overhead", "slug": "camera-to-overhead"},
     {"id": 6, "start": 673, "end": 792, "seconds": "0:28–0:33", "stage": "CHECK", "rig": "dolly", "slug": "stale-evidence-reject"},
-    {"id": 7, "start": 793, "end": 960, "seconds": "0:33–0:40", "stage": "CHECK", "rig": "macro", "slug": "fresh-evidence-one-permit"},
+    {"id": 7, "start": 793, "end": 960, "seconds": "0:33–0:40", "stage": "CHECK", "rig": "low_three_quarter", "slug": "fresh-evidence-one-permit"},
     {"id": 8, "start": 961, "end": 1152, "seconds": "0:40–0:48", "stage": "ACT", "rig": "macro", "slug": "r-contact-benchmark"},
     {"id": 9, "start": 1153, "end": 1320, "seconds": "0:48–0:55", "stage": "ACT", "rig": "dolly", "slug": "eady-key-rhythm"},
     {"id": 10, "start": 1321, "end": 1464, "seconds": "0:55–1:01", "stage": "ACT", "rig": "hero", "slug": "ready-local-receipt"},

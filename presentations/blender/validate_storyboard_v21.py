@@ -3,10 +3,30 @@
 from __future__ import annotations
 
 import json
+import re
+from collections import Counter
 from pathlib import Path
 
 
 PATH = Path(__file__).with_name("storyboard_v21_shots.json")
+HANDOFF_PATH = Path(__file__).with_name("ADVERTISING_STORYBOARD_HANDOFF.md")
+
+
+def validate_handoff(shots: list[dict[str, object]]) -> None:
+    """Keep the collaborator-facing scene table aligned with the canonical JSON."""
+    text = HANDOFF_PATH.read_text(encoding="utf-8")
+    rows: list[tuple[int, str, str]] = []
+    for line in text.splitlines():
+        match = re.match(r"^\|\s*(\d+)\s*\|\s*([^|]+?)\s*\|\s*([^|]+?)\s*\|", line)
+        if match:
+            rows.append((int(match.group(1)), match.group(2), match.group(3).strip(" `")))
+    assert len(rows) == 17, "advertising handoff must contain exactly 17 scene rows"
+    expected = [
+        (shot["id"], shot["seconds"], shot["stage"] or "—") for shot in shots
+    ]
+    assert rows == expected, "advertising handoff scene IDs, timing, or stages drifted"
+    assert "CHECK/ACT/VERIFY" not in text
+    assert "Delivered" not in text
 
 
 def main() -> None:
@@ -25,10 +45,18 @@ def main() -> None:
         assert previous["end"] + 1 == current["start"], (
             f"gap or overlap between scenes {previous['id']} and {current['id']}"
         )
-    allowed_rigs = {"macro", "dolly", "arm_follow", "hero"}
+    allowed_rigs = {
+        "macro", "dolly", "arm_follow", "hero", "overhead", "low_three_quarter"
+    }
     assert {shot["rig"] for shot in shots} == allowed_rigs
-    # No framing may dominate more than one quarter of the film.
-    assert max(shot["end"] - shot["start"] + 1 for shot in shots) <= 25 * fps
+    # No reusable camera setup may dominate more than one quarter of the film.
+    rig_frames: Counter[str] = Counter()
+    for shot in shots:
+        rig_frames[shot["rig"]] += shot["end"] - shot["start"] + 1
+    assert max(rig_frames.values()) <= 25 * fps, dict(rig_frames)
+    assert shots[1]["rig"] == "macro"
+    assert shots[4]["rig"] == "overhead"
+    assert shots[6]["rig"] == "low_three_quarter"
     benchmark = data["benchmark"]
     assert benchmark["scene_id"] == 8
     assert benchmark["target"] == "keyboard:r"
@@ -78,7 +106,7 @@ def main() -> None:
         "conversation_history_bubbles": 2,
         "composer": "immediately above software keyboard",
         "send": "right edge of composer",
-        "sent_receipt": "outgoing bubble in conversation with delivered tick",
+        "sent_receipt": "outgoing bubble in conversation with sent tick",
     }
     assert phone["time_compression"] == {
         "scene": 13, "start_frame": 1850, "end_frame": 1968,
@@ -96,8 +124,10 @@ def main() -> None:
     assert all(shots[index]["stage"] == "ACT" for index in range(7, 14))
     assert (shots[12]["start"], shots[12]["end"]) == (1777, 1968)
     assert shots[15]["end"] - shots[15]["start"] + 1 == 2 * fps
+    validate_handoff(shots)
     print(
-        "PASS storyboard_v21: 17 contiguous scenes, 2400 frames, four rigs, "
+        "PASS storyboard_v21: 17 contiguous scenes, 2400 frames, six rigs, "
+        "no rig over 25 percent, synchronized advertising handoff, "
         "seven benchmark phases, four independently permitted rhythm contacts, "
         "one contact-free high-clearance crossing, and eleven independently "
         "permitted phone contacts with disclosed 2x montage timing"
