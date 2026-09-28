@@ -10,6 +10,15 @@
     "uncertainty": "blue bounded-error disk",
     "preview": "dotted target ghost with no authority"
   },
+  "camera_inserts": [
+    {
+      "scene_id": 8,
+      "start": 1049,
+      "end": 1068,
+      "rig": "macro",
+      "purpose": "brief key-depression insert inside the low-three-quarter first-contact lesson"
+    }
+  ],
   "benchmark": {
     "scene_id": 8,
     "target": "keyboard:r",
@@ -73,15 +82,15 @@
     {"id": 5, "start": 505, "end": 672, "seconds": "0:21–0:28", "stage": "LOCATE", "rig": "overhead", "slug": "camera-to-overhead"},
     {"id": 6, "start": 673, "end": 792, "seconds": "0:28–0:33", "stage": "CHECK", "rig": "dolly", "slug": "stale-evidence-reject"},
     {"id": 7, "start": 793, "end": 960, "seconds": "0:33–0:40", "stage": "CHECK", "rig": "low_three_quarter", "slug": "fresh-evidence-one-permit"},
-    {"id": 8, "start": 961, "end": 1152, "seconds": "0:40–0:48", "stage": "ACT", "rig": "macro", "slug": "r-contact-benchmark"},
+    {"id": 8, "start": 961, "end": 1152, "seconds": "0:40–0:48", "stage": "ACT", "rig": "low_three_quarter", "slug": "r-contact-benchmark"},
     {"id": 9, "start": 1153, "end": 1320, "seconds": "0:48–0:55", "stage": "ACT", "rig": "dolly", "slug": "eady-key-rhythm"},
     {"id": 10, "start": 1321, "end": 1464, "seconds": "0:55–1:01", "stage": "ACT", "rig": "hero", "slug": "ready-local-receipt"},
     {"id": 11, "start": 1465, "end": 1608, "seconds": "1:01–1:07", "stage": "ACT", "rig": "arm_follow", "slug": "keyboard-to-phone-crossing"},
     {"id": 12, "start": 1609, "end": 1776, "seconds": "1:07–1:14", "stage": "ACT", "rig": "arm_follow", "slug": "phone-state-and-messages"},
     {"id": 13, "start": 1777, "end": 1968, "seconds": "1:14–1:22", "stage": "ACT", "rig": "arm_follow", "slug": "phone-on-my-way"},
     {"id": 14, "start": 1969, "end": 2088, "seconds": "1:22–1:27", "stage": "ACT", "rig": "macro", "slug": "phone-send-permit"},
-    {"id": 15, "start": 2089, "end": 2256, "seconds": "1:27–1:34", "stage": "VERIFY", "rig": "hero", "slug": "independent-receipts"},
-    {"id": 16, "start": 2257, "end": 2304, "seconds": "1:34–1:36", "stage": null, "rig": "dolly", "slug": "evidence-trail"},
+    {"id": 15, "start": 2089, "end": 2232, "seconds": "1:27–1:33", "stage": "VERIFY", "rig": "hero", "slug": "independent-receipts"},
+    {"id": 16, "start": 2233, "end": 2304, "seconds": "1:33–1:36", "stage": null, "rig": "dolly", "slug": "evidence-trail"},
     {"id": 17, "start": 2305, "end": 2400, "seconds": "1:36–1:40", "stage": null, "rig": "hero", "slug": "brand-resolve"}
   ]
 }

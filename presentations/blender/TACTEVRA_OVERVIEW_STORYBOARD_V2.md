@@ -85,8 +85,9 @@ without asking the viewer to relearn it ten times.
   the keyboard/laptop workflow and the phone workflow.
 - Hero wide or crane for architecture and payoff.
 - Cumulative use of any reusable camera setup stays at or below 25 percent of
-  runtime: macro 22%, hero 23%, dolly 20%, arm-follow 21%, overhead 7%, and
-  low three-quarter 7%. This is validated from the canonical shot list.
+  runtime: macro 14.8%, hero 22%, dolly 21%, arm-follow 21%, overhead 7%, and
+  low three-quarter 14.2%. This includes the scene-8 macro insert and is
+  validated from the canonical shot list.
 - Cuts preserve identical joint pose, gripper, printed cartridge, stylus pose,
   cable state, and device placement. No teleporting, snap zooms, or decorative
   spins.
@@ -103,16 +104,16 @@ without asking the viewer to relearn it ten times.
 | 4 | 0:15–0:21 | `UNDERSTAND` | Amber model card: ordered semantic actions, named targets, board-frame points, confidence, and error bounds. `speed`, `contact depth`, `retry`, and `timing` are greyed and locked: `runtime owned`. | Amber data ticks. |
 | 5 | 0:21–0:28 | `LOCATE` | Crane to the actual fixed camera, pass through its lens, then use its squared overhead view. Exact tags and device bounds lock; blue uncertainty disks contract. | Registration pings. |
 | 6 | 0:28–0:33 | `CHECK` | Red card in empty space: `scene capture 41 s old · limit 2 s → REJECTED · NO MOTION`. Arm and stylus remain unobscured and still. | Music drops out; one low reject thud. |
-| 7 | 0:33–0:40 | `CHECK` | Fresh capture. Immutable batch facts pass. Text reads `BATCH ADMITTED → PERMIT · 1 ACTION`. A green permit token begins traveling toward the stylus. End with a rack focus to the laptop as its screen changes from request console to local test pad. | Music returns; restrained gate ticks. |
-| 8 | 0:40–0:48 | `ACT` | **Teach the first key slowly.** Begin with a toolhead insert: opposing jaw pads on the body's grip-flat band, keyed cap and two M3 heads, on-axis barrel, articulated disc. Label all seven phases: `transit → align → settle → approach → contact → retract → verify`. The permit lands, `r` depresses, a cause/effect insert shows the laptop test pad add `r`, and the permit fades. The stage bar remains on `ACT`; a small three-dot loop indicator pulses through check/contact/verify. | One precise click and one verify tick. |
+| 7 | 0:33–0:40 | `CHECK` | Fresh capture. Immutable batch facts pass. Text reads `BATCH ADMITTED → PERMIT · 1 ACTION`. In a low three-quarter push, establish opposing jaw pads on the body's grip-flat band, the keyed cap and two M3 heads, on-axis barrel, and articulated disc while the green permit travels toward the stylus. End with a rack focus to the laptop as its screen changes from request console to local test pad. | Music returns; restrained gate ticks. |
+| 8 | 0:40–0:48 | `ACT` | **Teach the first key slowly with the complete arm readable in low three-quarter.** Label the seven phases: `transit → align → settle → approach → contact → retract → verify`. At contact only, cut briefly to a macro insert of `r` depressing, then return to low three-quarter. A cause/effect insert shows the laptop test pad add `r`, and the permit fades. The stage bar remains on `ACT`; a small three-dot loop indicator pulses through check/contact/verify. | One precise click and one verify tick. |
 | 9 | 0:48–0:55 | `ACT` | Lateral track across `e`, `a`, `d`, `y`. The contract is now visual shorthand: one permit arrives, one contact occurs, and one verification tick appears. Do not repeat uncertainty and dotted-preview graphics. The stage bar remains stable on `ACT`. | Four increasingly rhythmic clicks, never rushed. |
 | 10 | 0:55–1:01 | `ACT` | Hold above keyboard. Laptop test pad reads `ready`; receipt shows `EXPECTED ready · OBSERVED ready ✓`. Phone is unchanged. The stable `ACT` bar remains while the compact loop indicator resolves on verify. | Local verification tone. |
 | 11 | 1:01–1:07 | `ACT` | Arm-follow dolly: full retract and high-clearance move from keyboard to phone, with continuous joint and cable motion. | Light transit mechanism texture. |
 | 12 | 1:07–1:14 | `ACT` | Show `EXPECTED home · OBSERVED home ✓` in full once. One permit authorizes the Messages-app tap. The app changes to a portrait conversation with contact header, two prior message bubbles, a composer immediately above the software keyboard, and Send fixed at the composer's right edge. The arm retracts and a fresh observation verifies `composer ready`. Later checks reduce to ticks; the stage bar remains on `ACT`. | State-check tick, glass tap, second check tick. |
 | 13 | 1:14–1:22 | `ACT` | `on my way` builds inside the lower composer while the existing conversation remains above it. Show `o` and `n` at natural pace with one permit and one tick each. Then display an honest `2×` badge and time-compress the remaining seven contacts. Each visible character still appears only after its own observed contact. | Two measured taps, then a controlled faster rhythm with quiet check ticks. |
 | 14 | 1:22–1:27 | `ACT` | Slow down. Confirm the lower composer contains `on my way`. Its adjacent Send control receives a separate green one-contact permit; one tap occurs, the arm retracts, and the text moves into a right-aligned outgoing conversation bubble with `Sent ✓`. Keep the stage bar on `ACT`. | Bed narrows; one distinct Send tap. |
-| 15 | 1:27–1:34 | `VERIFY` | Split screen: laptop independently shows `ready ✓`; phone independently shows `on my way · sent ✓`. No visual data line joins the devices. | Two verification tones, left then right. |
-| 16 | 1:34–1:36 | — | One compact evidence line only: five green ticks for `UNDERSTAND · LOCATE · CHECK · ACT · VERIFY`, with `Every contact permitted. Every effect verified.` beneath it. | Restrained resolving rise. |
+| 15 | 1:27–1:33 | `VERIFY` | Split screen: laptop independently shows `ready ✓`; phone independently shows `on my way · sent ✓`. No visual data line joins the devices. | Two verification tones, left then right. |
+| 16 | 1:33–1:36 | — | One compact evidence line only: five green ticks for `UNDERSTAND · LOCATE · CHECK · ACT · VERIFY`, with `Every contact permitted. Every effect verified.` beneath it. | Restrained resolving rise. |
 | 17 | 1:36–1:40 | — | Hero wide and Tactevra logo. Show only `Physical intelligence, checked.` plus the small persistent qualifier `SIMULATED WORKCELL SEQUENCE`. | Clean brand resolve; no black tail. |
 
 The scene durations total exactly 100 seconds.
@@ -161,7 +162,7 @@ Approximately 140 words; leave the action sounds exposed where marked.
 [1:14] [No narration. Let the phone-entry rhythm play.]
 [1:22] Send receives its own final permit.
 [1:27] Two interfaces. Two independent receipts.
-[1:34] Every contact permitted. Every effect verified.
+[1:33] Every contact permitted. Every effect verified.
 [1:36] Tactevra. Physical intelligence, checked.
 ```
 

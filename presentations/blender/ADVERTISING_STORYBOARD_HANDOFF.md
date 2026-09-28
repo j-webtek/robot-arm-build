@@ -122,23 +122,24 @@ devices without visually connecting their data.
 | 4 | 0:15–0:21 | UNDERSTAND | Amber semantic proposal; confidence and uncertainty visible; runtime fields locked. | Data ticks. |
 | 5 | 0:21–0:28 | LOCATE | Reveal real camera, pass through lens, register exact device geometry; blue circles shrink. | Registration pings. |
 | 6 | 0:28–0:33 | CHECK | `scene capture 41 s old · limit 2 s → REJECTED · NO MOTION`; arm visible and still. | Music cuts; reject thud. |
-| 7 | 0:33–0:40 | CHECK | Fresh capture; `BATCH ADMITTED → PERMIT · 1 ACTION`; token travels to stylus. | Music returns; gate ticks. |
-| 8 | 0:40–0:48 | ACT | Toolhead insert establishes grip-flat capture and positive cap retention; first `r` press teaches transit, align, settle, approach, contact, retract, verify. Permit fades; laptop shows `r`. | One key click, one verify tick. |
+| 7 | 0:33–0:40 | CHECK | Fresh capture; `BATCH ADMITTED → PERMIT · 1 ACTION`; a low three-quarter push establishes the complete toolhead while the token travels to the stylus. | Music returns; gate ticks. |
+| 8 | 0:40–0:48 | ACT | Keep the complete arm readable in low three-quarter while the first `r` press teaches transit, align, settle, approach, contact, retract, verify. Use macro only as a brief insert of the key depressing, then return. Permit fades; laptop shows `r`. | One key click, one verify tick. |
 | 9 | 0:48–0:55 | ACT | Lateral track through `e/a/d/y`; use only one permit and one receipt tick per contact after the lesson. | Four rhythmic key clicks. |
 | 10 | 0:55–1:01 | ACT | Laptop test pad: `EXPECTED ready · OBSERVED ready ✓`; phone unchanged. | Verify tone. |
 | 11 | 1:01–1:07 | ACT | Full retract and continuous high-clearance arm-follow move to phone. | Transit texture. |
 | 12 | 1:07–1:14 | ACT | Check `home`; one permit opens Messages; re-observe and verify `composer ready`. | Check, tap, check. |
 | 13 | 1:14–1:22 | ACT | Build `on my way`; show `o` and `n` naturally, then disclose `2×` for the remaining contacts; every visible character follows its own observed contact. | Two measured taps, then controlled faster rhythm. |
 | 14 | 1:22–1:27 | ACT | Confirm composer; Send receives its own permit; one tap and retract; outgoing bubble reads `Sent ✓`. | Distinct Send tap. |
-| 15 | 1:27–1:34 | VERIFY | Split evidence: laptop `ready ✓`; phone `on my way · sent ✓`. | Two verify tones. |
-| 16 | 1:34–1:36 | — | Five compact green ticks with `Every contact permitted. Every effect verified.` | Resolving rise. |
+| 15 | 1:27–1:33 | VERIFY | Split evidence: laptop `ready ✓`; phone `on my way · sent ✓`. | Two verify tones. |
+| 16 | 1:33–1:36 | — | Five compact green ticks with `Every contact permitted. Every effect verified.` | Resolving rise. |
 | 17 | 1:36–1:40 | — | Hero wide, Tactevra logo, `Physical intelligence, checked.`, and `SIMULATED WORKCELL SEQUENCE`. | Clean resolve; no black tail. |
 
 ## Shot and editorial rules
 
 - Cumulative use of any reusable camera setup stays at or below 25 percent:
-  macro 22%, hero 23%, dolly 20%, arm-follow 21%, overhead 7%, and low
-  three-quarter 7%. The canonical shot-list validator enforces this.
+  macro 14.8%, hero 22%, dolly 21%, arm-follow 21%, overhead 7%, and low
+  three-quarter 14.2%. These shares include the scene-8 macro insert; the
+  canonical shot-list validator enforces them.
 - Use macro, low three-quarter, lateral track, arm-follow dolly, camera POV,
   split screen, and hero wide for narrative reasons—not decorative variety.
 - Preserve exact joint, gripper, printed cartridge, stylus, cable, keyboard,

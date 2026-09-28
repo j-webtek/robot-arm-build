@@ -1,7 +1,7 @@
 """Build the reusable v2.1 production framework and the first `r` contact beat.
 
 This is a production scaffold, not evidence that a physical contact occurred.
-It reuses the measured RC03 workcell assets, creates four native Blender camera
+It reuses the measured RC03 workcell assets, creates six native Blender camera
 rigs, binds all 17 storyboard scenes to the timeline, and animates the three
 authority graphics plus the seven-phase first-contact benchmark.
 
@@ -893,7 +893,7 @@ def build() -> bpy.types.Scene:
                    Vector((0.42, -1.48, 0.88)), Vector((0.31, -1.30, 0.78)), board_target)
     animate_camera(*rigs["overhead"], 505, 672,
                    Vector((0.0, 0.0, 1.28)), Vector((0.0, 0.0, 1.18)), board_target)
-    animate_camera(*rigs["low_three_quarter"], 793, 960,
+    animate_camera(*rigs["low_three_quarter"], 793, 1152,
                    Vector((0.50, -0.92, 0.30)), Vector((0.44, -0.82, 0.33)), r_target)
 
     scene.timeline_markers.clear()
@@ -904,6 +904,18 @@ def build() -> bpy.types.Scene:
         marker.camera = rigs[shot["rig"]][0]
         marker["stage"] = shot["stage"] or "—"
         marker["seconds"] = shot["seconds"]
+    for insert in manifest["camera_inserts"]:
+        insert_marker = scene.timeline_markers.new(
+            f"S{insert['scene_id']:02d}_INSERT_{insert['rig'].upper()}",
+            frame=insert["start"],
+        )
+        insert_marker.camera = rigs[insert["rig"]][0]
+        parent = manifest["shots"][insert["scene_id"] - 1]
+        return_marker = scene.timeline_markers.new(
+            f"S{insert['scene_id']:02d}_RETURN_{parent['rig'].upper()}",
+            frame=insert["end"] + 1,
+        )
+        return_marker.camera = rigs[parent["rig"]][0]
     for phase in manifest["benchmark"]["phases"]:
         marker = scene.timeline_markers.new(
             f"R_{phase['name'].upper()}", frame=phase["frame"]
@@ -930,6 +942,7 @@ def build() -> bpy.types.Scene:
 
 def main() -> None:
     args = sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else []
+    manifest = json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
     scene = build()
     blend_path = OUT / "tactevra_storyboard_v21_benchmark.blend"
     bpy.ops.wm.save_as_mainfile(filepath=str(blend_path))
@@ -949,7 +962,15 @@ def main() -> None:
                 shot for shot in manifest["shots"]
                 if shot["start"] <= frame <= shot["end"]
             )
-            scene.camera = rigs[shot["rig"]][0]
+            insert = next(
+                (
+                    insert for insert in manifest["camera_inserts"]
+                    if insert["start"] <= frame <= insert["end"]
+                ),
+                None,
+            )
+            rig_name = insert["rig"] if insert else shot["rig"]
+            scene.camera = bpy.data.objects[f"CAM_{rig_name.upper()}"]
             scene.render.filepath = str(OUT / f"storyboard_{frame:04d}.png")
             bpy.ops.render.render(write_still=True)
     print(f"TACTEVRA_STORYBOARD_V21={blend_path}")

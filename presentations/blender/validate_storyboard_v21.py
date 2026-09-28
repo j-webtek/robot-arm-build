@@ -53,10 +53,39 @@ def main() -> None:
     rig_frames: Counter[str] = Counter()
     for shot in shots:
         rig_frames[shot["rig"]] += shot["end"] - shot["start"] + 1
+    inserts = data["camera_inserts"]
+    assert len(inserts) == 1
+    for insert in inserts:
+        parent = shots[insert["scene_id"] - 1]
+        assert parent["start"] <= insert["start"] <= insert["end"] <= parent["end"]
+        assert insert["rig"] in allowed_rigs
+        assert insert["rig"] != parent["rig"]
+        duration = insert["end"] - insert["start"] + 1
+        rig_frames[parent["rig"]] -= duration
+        rig_frames[insert["rig"]] += duration
+    assert rig_frames == Counter({
+        "macro": 356,
+        "hero": 528,
+        "dolly": 504,
+        "arm_follow": 504,
+        "overhead": 168,
+        "low_three_quarter": 340,
+    })
     assert max(rig_frames.values()) <= 25 * fps, dict(rig_frames)
     assert shots[1]["rig"] == "macro"
     assert shots[4]["rig"] == "overhead"
     assert shots[6]["rig"] == "low_three_quarter"
+    assert shots[7]["rig"] == "low_three_quarter"
+    assert inserts[0] == {
+        "scene_id": 8,
+        "start": 1049,
+        "end": 1068,
+        "rig": "macro",
+        "purpose": (
+            "brief key-depression insert inside the low-three-quarter "
+            "first-contact lesson"
+        ),
+    }
     benchmark = data["benchmark"]
     assert benchmark["scene_id"] == 8
     assert benchmark["target"] == "keyboard:r"
@@ -123,7 +152,8 @@ def main() -> None:
     assert shots[3]["stage"] == "UNDERSTAND"
     assert all(shots[index]["stage"] == "ACT" for index in range(7, 14))
     assert (shots[12]["start"], shots[12]["end"]) == (1777, 1968)
-    assert shots[15]["end"] - shots[15]["start"] + 1 == 2 * fps
+    assert shots[14]["end"] - shots[14]["start"] + 1 == 6 * fps
+    assert shots[15]["end"] - shots[15]["start"] + 1 == 3 * fps
     validate_handoff(shots)
     print(
         "PASS storyboard_v21: 17 contiguous scenes, 2400 frames, six rigs, "
