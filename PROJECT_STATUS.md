@@ -1,7 +1,7 @@
 # Tactevra project status
 
-Reviewed September 28, 2026 through the ARM-074 T2A typing-trajectory
-preparation, AI-403 precision-adapter integration, and merged physical-camera
+Reviewed September 28, 2026 through the ARM-075 exact-sample offline IK
+screen, AI-403 precision-adapter integration, and merged physical-camera
 campaign/evaluator work through PR #152. PR #151 subsequently updated the AI
 test dependency to Torch 2.13; that dependency merge does not change physical
 qualification or execution authority.
@@ -214,6 +214,13 @@ analytically jerk-bounded quintic timing estimates. It preserves repeated keys
 and compares direct hover-to-hover travel with the park-between-key baseline.
 It does not yet run IK, joint-dynamics, installed-geometry, or continuous
 collision screening and grants no physical authority.
+
+ARM-075 passes those exact T2A samples through the pinned numerical IK,
+calibrated joint bounds, joint-margin, task-Jacobian-rank, and adjacent-joint
+continuity gates. Its passing fixture is explicitly synthetic and local.
+Installed collision geometry, cable evidence, conservative segment sweeps,
+controller timing, and physical qualification remain required; the new receipt
+creates no controller commands or physical authority.
 
 AI-403 then integrates the pose-output precision adapter and actual V2 batch
 producer on current `main`. The retained contract fixture deterministically
