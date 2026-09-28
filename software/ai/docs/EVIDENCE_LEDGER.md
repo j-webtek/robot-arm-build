@@ -4283,3 +4283,56 @@ rewriting history. New entries must use a unique evidence ID.
 - Supersedes: none.
 - Next dependency: complete the remaining PC1 reports/tests before composing
   the PC2 golden end-to-end shadow pipeline.
+
+### E-20260928-ARM-079 — PC1 joint-dynamics gate completed offline
+
+- Stage: S4/S7 pre-camera arm integration; PC1 complete, PC2 ready.
+- Lane: Arm/runtime.
+- Commit: `547d3332e3e809bada20149dbc4ece94a0b5df1d`.
+- Change: completed the canonical joint-schedule artifact with one diagnostic
+  record per adjacent IK sample. Each record preserves semantic destination,
+  duration, velocity, acceleration, jerk, remaining per-joint margins, and its
+  limiting joint/constraint. Added strict canonical artifact reconstruction
+  that revalidates outer and profile hashes, typed fields, sample/segment order,
+  timestamps, and exact supported output.
+- Inputs/fixtures: ARM-078 compact PARK/TRANSIT/HOVER/CONTACT trajectory and
+  PC0 synthetic profile, plus stationary, reversal, crossed-order,
+  crossed-source, profile-hash, timestamp, and three independently limiting
+  dynamics profiles.
+- Commands: `python -m pytest -q
+  tests/unit/test_typing_joint_schedule_v1.py`; `python -m pytest -q
+  tests/unit/test_pre_camera_typing_qualification_basis_v1.py
+  tests/unit/test_typing_execution_plan_v1.py
+  tests/unit/test_typing_trajectory_plan_v1.py
+  tests/unit/test_typing_trajectory_ik_screen_v1.py
+  tests/unit/test_typing_joint_schedule_v1.py
+  tests/integration/test_model_motion_v2_shared_gate.py
+  tests/integration/test_zero_write_waveshare_contract_v1.py`;
+  `python scripts/ci/check_docs.py`; `python
+  scripts/ci/check_evidence_scope.py`; `python
+  scripts/ci/check_public_records.py`; `python
+  scripts/ci/check_repository_artifacts.py`; `python
+  scripts/ci/check_release_integrity.py`.
+- Result: PASS; 10 focused tests and 66 broader boundary tests passed. The
+  dynamic matrix selects velocity, acceleration, and jerk independently, passes
+  a just-inside maximum rescale, rejects a just-outside maximum rescale,
+  preserves stationary samples, and bounds a direction reversal. Crossed
+  profile hashes, timestamps, joint order, source lineage, non-finite limits,
+  invalid IK hashes, and excessive scaling reject. All five repository checks
+  passed; release integrity continues to report its one pre-existing recorded
+  candidate blocker.
+- Artifacts: `software/src/rocell/application/typing_joint_schedule_v1.py`;
+  `software/ai/schemas/typing_joint_schedule_v1.schema.json`;
+  `software/tests/unit/test_typing_joint_schedule_v1.py`;
+  `software/docs/PRE_CAMERA_ARM_INTEGRATION_COMPLETION_PLAN.md`.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: PC1 proves only deterministic behavior against synthetic
+  offline limits and IK values. It does not qualify installed dynamics,
+  controller interpolation/tracking, settling, collision clearance, camera
+  localization, contact behavior, typing speed, or physical authority.
+- Supersedes: ARM-078's in-progress PC1 status only; ARM-078 remains retained
+  as the first checkpoint and naming-seam finding.
+- Next dependency: PC2 must compose the real zero-I/O V2 decode, typing plan,
+  Cartesian trajectory, IK, PC1 schedule, and collision-evidence blocker into
+  retained golden traces without granting authority.

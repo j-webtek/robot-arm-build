@@ -1,6 +1,6 @@
 # Tactevra project status
 
-Reviewed September 28, 2026 through the ARM-078 PC1 joint-schedule checkpoint,
+Reviewed September 28, 2026 through the ARM-079 offline PC1 joint-dynamics gate,
 ARM-077 PC0 pre-camera qualification basis, ARM-076 typing collision-evidence
 intake, ARM-075 exact-sample offline IK screen, AI-403 precision-adapter
 integration, and merged physical-camera
@@ -248,6 +248,14 @@ reports schedule-wide demand and margin and retains explicit blockers for
 measured installed dynamics, controller tracking, collision evidence, and a
 fresh observed start. PC1 remains in progress; this checkpoint emits no
 controller command and establishes no physical typing speed or authority.
+
+ARM-079 completes that synthetic offline PC1 gate with per-segment duration,
+velocity, acceleration, jerk, margin, and limiting-constraint diagnostics plus
+strict schedule reconstruction. The retained tests exercise all three dynamic
+limits, just-inside/just-outside rescale bounds, stationary samples, direction
+reversal, and crossed lineage. This makes the zero-I/O PC2 shadow composition
+ready to begin; measured dynamics, tracking, collision evidence, fresh state,
+and physical authority remain blocked.
 
 AI-403 then integrates the pose-output precision adapter and actual V2 batch
 producer on current `main`. The retained contract fixture deterministically
