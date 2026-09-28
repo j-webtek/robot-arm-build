@@ -41,8 +41,9 @@ origins. Their shells, controls, legends, glass, interface, and cables are
 presentation-detail geometry: they make the intended device classes and
 interactions legible, but are not manufacturer CAD or fabrication authority.
 
-`dimension_manifest.json` records the values and source authorities used by the
-film. Run the validator before rendering:
+`dimension_manifest.json` records the published workcell authorities, while
+`contact_tool_manifest.json` separately pins the not-yet-published animated
+tool parts and their accuracy boundary. Run the validator before rendering:
 
 ```powershell
 python presentations/blender/validate_dimensions.py
@@ -368,6 +369,7 @@ assembly surface but do not establish an installed pose or clearance.
 - `active-project/RoCell_v0_3/stl/stylus_collar_9mm.stl`
 - `software/models/roarm_m3/roarm_m3_kinematic_40dbd84.urdf`
 - `presentations/blender/dimension_manifest.json`
+- `presentations/blender/contact_tool_manifest.json`
 
 ## Accuracy boundary
 

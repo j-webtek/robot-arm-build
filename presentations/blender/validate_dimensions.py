@@ -20,6 +20,7 @@ from pathlib import Path
 SCRIPT = Path(__file__).resolve()
 ROOT = SCRIPT.parents[2]
 MANIFEST_PATH = SCRIPT.with_name("dimension_manifest.json")
+CONTACT_TOOL_MANIFEST_PATH = SCRIPT.with_name("contact_tool_manifest.json")
 
 
 def fail(message: str) -> None:
@@ -143,18 +144,15 @@ def main() -> int:
             tolerance=1e-3,
         )
 
-    contact_tool = arm["presentation_contact_tool"]
-    for prefix, bounds_key in (
-        ("body", "body_mesh_envelope_mm"),
-        ("cap", "cap_mesh_envelope_mm"),
-        ("collar", "collar_mesh_envelope_mm"),
-    ):
-        tool_path = resolve(contact_tool[f"{prefix}_path"])
+    contact_tool = json.loads(CONTACT_TOOL_MANIFEST_PATH.read_text(encoding="utf-8"))
+    for prefix in ("body", "cap", "collar"):
+        part = contact_tool[prefix]
+        tool_path = resolve(part["path"])
         tool_digest = hashlib.sha256(tool_path.read_bytes()).hexdigest()
-        if tool_digest != contact_tool[f"{prefix}_sha256"]:
+        if tool_digest != part["sha256"]:
             fail(f"Contact-tool {prefix} SHA-256 drift: {tool_digest}")
         assert_close(
-            stl_bounds(tool_path), contact_tool[bounds_key],
+            stl_bounds(tool_path), part["mesh_envelope"],
             f"contact-tool {prefix} STL bounds", tolerance=0.03,
         )
 
