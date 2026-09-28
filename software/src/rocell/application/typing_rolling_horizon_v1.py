@@ -270,7 +270,7 @@ def parse_typing_rolling_horizon_v1(document: Mapping[str, Any]) -> Mapping[str,
     if (
         isinstance(document["action_count"], bool)
         or not isinstance(document["action_count"], int)
-        or document["action_count"] < 1
+        or not 1 <= document["action_count"] <= 64
         or isinstance(document["action_index"], bool)
         or not isinstance(document["action_index"], int)
         or not 0 <= document["action_index"] < document["action_count"]

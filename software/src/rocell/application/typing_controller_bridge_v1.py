@@ -31,6 +31,8 @@ STATUS = "ZERO_WRITE_T102_ACTION_PREVIEW"
 _SHA256 = re.compile(r"^[0-9a-f]{64}$")
 _IDENTIFIER = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$")
 _COMMAND_FIELDS = ("T", *JOINT_FIELDS, "spd", "acc")
+MAX_PREVIEW_COMMANDS = 4095
+MAX_COMMAND_PAYLOAD_BYTES = 1024
 
 
 class TypingControllerBridgeV1Error(ValueError):
@@ -356,6 +358,7 @@ def parse_typing_controller_preview_v1(
     if (
         not isinstance(commands, list)
         or not commands
+        or len(commands) > MAX_PREVIEW_COMMANDS
         or document["command_count"] != len(commands)
     ):
         raise TypingControllerBridgeV1Error("command accounting is invalid")
@@ -375,9 +378,18 @@ def parse_typing_controller_preview_v1(
             raise TypingControllerBridgeV1Error("command message fields are not canonical")
         wire = command["payload_utf8"].encode("utf-8") if isinstance(
             command["payload_utf8"], str) else b""
+        if not wire or len(wire) > MAX_COMMAND_PAYLOAD_BYTES:
+            raise TypingControllerBridgeV1Error("command payload size is invalid")
+        try:
+            decoded = decode_line(wire)
+            encoded = encode_line(message)
+        except (TypeError, ValueError) as exc:
+            raise TypingControllerBridgeV1Error(
+                "encoded command does not reconstruct"
+            ) from exc
         if (
-            decode_line(wire) != dict(message)
-            or encode_line(message) != wire
+            decoded != dict(message)
+            or encoded != wire
             or command["payload_bytes"] != len(wire)
             or command["payload_sha256"] != hashlib.sha256(wire).hexdigest()
             or command["action_index"] != document["action_index"]
@@ -431,7 +443,8 @@ def parse_typing_controller_preview_v1(
 
 
 __all__ = [
-    "PROFILE_SCHEMA", "QUALIFICATION_SCHEMA", "SCHEMA", "STATUS",
+    "MAX_COMMAND_PAYLOAD_BYTES", "MAX_PREVIEW_COMMANDS", "PROFILE_SCHEMA",
+    "QUALIFICATION_SCHEMA", "SCHEMA", "STATUS",
     "TypingControllerActionQualificationV1", "TypingControllerBridgeV1Error",
     "TypingControllerEncodingProfileV1", "parse_typing_controller_preview_v1",
     "preview_typing_controller_action_v1",
