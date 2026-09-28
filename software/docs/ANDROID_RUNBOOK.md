@@ -1,6 +1,6 @@
 # Android phone tapping runbook
 
-> **Active Freeze 011 camera architecture:** Phase 1 phone registration uses
+> **Active Freeze 012 camera architecture:** Phase 1 phone registration uses
 > the purchased Arducam B0477/IMX283 USB 3.0 camera and delivered nominal
 > 16 mm C-mount lens on a rigid static overhead eye-to-hand support. Received
 > identity, final support/height, mode/settings, and calibration remain open.
@@ -13,7 +13,7 @@ This runbook currently authorizes hardware-free planning and simulation only.
 It does not authorize powering or moving the RoArm-M3-Pro, opening a serial
 port, contacting the phone, or injecting Android input.
 
-Active Freeze 011 names a bare Samsung Galaxy A16 5G candidate, variant
+Active Freeze 012 names a bare Samsung Galaxy A16 5G candidate, variant
 `SM-A166B`. The retained Freeze-005-derived nominal phone target map
 approximates a portrait, lowercase Gboard-like layout with the USB connector at
 the device front. It is synthetic, not a screenshot-derived calibration. The

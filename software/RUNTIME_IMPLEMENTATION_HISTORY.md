@@ -34,9 +34,9 @@ keyboard and phone placemat. It reads the controlled hardware package, compiles
 text into semantic actions, checks a frozen nominal workcell, and produces
 deterministic simulation reports. It cannot command live motion or contact.
 
-Freeze-011 state is intentionally restrictive:
+Freeze-012 state is intentionally restrictive:
 
-- manifest `ROCELL-PHASE0-RC03-INT-R1-FREEZE-011`;
+- manifest `ROCELL-PHASE0-RC03-INT-R1-FREEZE-012`;
 - active build `2026-09-01_CELL-A`;
 - keyboard and phone routes selected;
 - measurement-gate status `15 PASS / 63 NOT_TESTED / 4 NA / 2 FAIL`;
@@ -193,7 +193,7 @@ base-rail, or source drift. Received geometry and every physical qualification
 remain open. This selection has zero physical authority and does not change any
 release, power, motion, or contact gate.
 
-Active Freeze 011 deliberately retains the legacy arm-camera fields in the
+Active Freeze 012 deliberately retains the legacy arm-camera fields in the
 canonical manifest and simulation hardware profile under
 `CAMERA_ARCHITECTURE_ALIGNMENT_HOLD`. The additive B0477 services and V2
 mission are the selected Phase-1 simulation path; they do not silently promote

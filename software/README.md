@@ -461,7 +461,7 @@ rocell verify-eye-on-arm-capture-bundle-offline --dataset .\capture.json --datas
 | `solve-eye-on-arm-offline` | Solve an optional Phase-2 strict, pre-split, hash-pinned eye-on-arm dataset and emit a zero-authority diagnostic candidate report |
 | `verify-eye-on-arm-fk-offline` | For optional Phase 2, bind exact dataset/evidence bytes to the verified active manifest/build/model and recompute every stored carrier pose from raw T=1051 fields; no commissioning or artifact promotion |
 | `verify-eye-on-arm-capture-bundle-offline` | For optional Phase 2, structurally bind exact dataset/evidence/bundle files, raw T=1051 lines, JPEGs, normalized detections, and capture brackets; physical timing and commissioning remain unqualified |
-| `arm-feedback` | Future gated one-shot T=105 request/T=1051 response; a single-use build capability is consumed at the serial boundary, and active Freeze 011 denies it before port access |
+| `arm-feedback` | Future gated one-shot T=105 request/T=1051 response; a single-use build capability is consumed at the serial boundary, and active Freeze 012 denies it before port access |
 
 `simulate-integrated-v2` writes durable journals and therefore requires a new,
 nonexistent `--journal-root` for an initial run. Reopening the exact same

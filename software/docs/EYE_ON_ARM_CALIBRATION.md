@@ -10,7 +10,7 @@
 
 This foundation records and checks offline calibration evidence for the
 historical Freeze-009 Waveshare IMX335 5MP USB Camera (B), SKU 26719, on the
-bundled moving upper-arm holder. Active Freeze 011 retains that legacy
+bundled moving upper-arm holder. Active Freeze 012 retains that legacy
 arm-camera profile under `CAMERA_ARCHITECTURE_ALIGNMENT_HOLD`; it is not the
 selected Phase-1 B0477 route and is not reinterpreted as static-camera
 evidence. This foundation does not access the camera, arm, serial transport,

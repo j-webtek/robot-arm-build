@@ -516,7 +516,7 @@ does not activate hardware or supersede a safety gate.
 - The current foundation validates with activation false. Its open migration
   gates can coexist with implemented M1 components; do not clear gates merely
   because a similarly named class or passing unit test exists.
-- Active Freeze 011 still has a camera-architecture hold. The static-overhead
+- Active Freeze 012 still has a camera-architecture hold. The static-overhead
   B0477 path needs the reviewed successor migration before physical use.
 - The purchased camera's exact identifiers, actual lens focus at the intended
   installation, installed firmware and measured geometry remain unverified.

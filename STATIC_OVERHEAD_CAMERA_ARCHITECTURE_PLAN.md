@@ -23,7 +23,7 @@
 Freeze 009 records the earlier choice of a camera on the RoArm upper arm and
 keeps a fixed 2020 mast only as an unselected fallback. The builder subsequently
 selected the opposite production direction: fixed overhead vision is primary,
-and an arm camera is optional later. The active Freeze 011 adds the B0477
+and an arm camera is optional later. The active Freeze 012 adds the B0477
 preparation/support path while deliberately retaining the legacy canonical
 arm-camera fields under `CAMERA_ARCHITECTURE_ALIGNMENT_HOLD`.
 
@@ -354,7 +354,7 @@ identity, plausibility, and the support/base witness.
 
 Implemented in this planning revision:
 
-- Active Freeze 011 retains the Freeze-009-derived arm-camera fields under
+- Active Freeze 012 retains the Freeze-009-derived arm-camera fields under
   `CAMERA_ARCHITECTURE_ALIGNMENT_HOLD`; historical eye-on-arm reports remain
   unchanged and are not reinterpreted as B0477 evidence.
 - `software/config/camera_architecture_plan.json` records the decision with zero
