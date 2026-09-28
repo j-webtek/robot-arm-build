@@ -399,6 +399,22 @@ these exact joint results to the installed collision profile, FK-derived rigid
 poses, configuration-sampled cable evidence, and conservative adjacent-sample
 sweep qualification.
 
+### Implemented checkpoint — T2B collision-evidence intake
+
+`typing_collision_intake_v1.py` now bridges the exact T2B-IK receipt to the
+existing collision pipeline without relabeling its `SYNTHETIC_OFFLINE` seed as
+measured controller feedback. It revalidates the T1/T2A/IK/build/calibration/
+model lineage, reuses the canonical bounded joint interpolation, and emits the
+exact rigid-attachment, configuration-sampled body, per-sample geometry, and
+adjacent-sample sweep-envelope slots required by the installed profile.
+
+The bridge fails closed when the measured installed collision profile is
+absent or crossed. Even with a matching profile it remains an evidence intake,
+not a collision pass: no geometry is inferred, collision screening remains
+false, and a fresh observed start state is still required before execution.
+This removes an integration ambiguity while preserving zero commands, zero
+hardware access, and zero physical authority.
+
 ### T1 — Schema and deterministic offline executor
 
 - Add `TypingExecutionPlanV1` and canonical serialization.

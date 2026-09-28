@@ -3625,6 +3625,39 @@ rewriting history. New entries must use a unique evidence ID.
   sweep boundaries. Until those measured inputs exist, retain
   `INSTALLED_GEOMETRY_COLLISION_SCREENING_REQUIRED`.
 
+### E-20260928-ARM-076 — typing collision-evidence intake seam
+
+- Stage: S5 optimization research; second software-only T2B increment.
+- Lane: ARM.
+- Source: ARM-075 exact-sample IK receipt and the existing installed-geometry,
+  FK-derived collision, bounded-segment, and conservative-sweep contracts.
+- Change: added a strict hash-bound intake that replays the exact T1/T2A
+  lineage, validates the T2B-IK/build/calibration/model identities, preserves
+  the `SYNTHETIC_OFFLINE` start-state classification, and reuses the canonical
+  bounded joint interpolation. It emits the exact rigid-attachment,
+  configuration-body, per-sample geometry, and adjacent-sample sweep-envelope
+  evidence slots required by the installed profile.
+- Coverage: deterministic missing-profile and matching-profile cases, JSON
+  schema validation, crossed/mutated IK rejection, and regression coverage for
+  the shared FK/bounded-segment machinery. Focused result: 17 tests passed.
+- Artifacts:
+  `software/src/rocell/application/typing_collision_intake_v1.py`;
+  `software/ai/schemas/typing_collision_intake_v1.schema.json`;
+  `software/tests/unit/test_typing_trajectory_ik_screen_v1.py`;
+  `software/docs/OPTIMIZED_TYPING_EXECUTION_PLAN.md`.
+- Endpoint/camera opens: 0.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Authority: the report contains no commands, transport access, hardware
+  access, collision-pass claim, observed-feedback claim, or physical authority.
+- Limitations: no measured installed profile is currently supplied to this
+  typing route, no cable geometry or sweep envelopes were created, and no
+  collision evaluation ran. The synthetic start remains execution-ineligible.
+- Next dependency: populate the already enumerated slots from independently
+  measured installed geometry and capture a fresh observed start state, then
+  pass the exact evidence through the existing FK, bounded-sample, and
+  conservative-sweep qualifiers.
+
 ### E-20260927-AI-404 — pose-checkpoint package test collection failure
 
 - Stage: S1 artifact identity and retention.
