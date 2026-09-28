@@ -134,6 +134,10 @@ the final MP4 without rerendering the 3D frames:
 The current published film follows the 77-second structure below. Its planned
 request-to-result replacement is documented in
 [`TACTEVRA_OVERVIEW_STORYBOARD_V2.md`](TACTEVRA_OVERVIEW_STORYBOARD_V2.md).
+The companion
+[`ADVERTISING_STORYBOARD_HANDOFF.md`](ADVERTISING_STORYBOARD_HANDOFF.md)
+packages five visual concept frames, the complete director's board, and the
+art-direction questions for an outside advertising collaborator.
 That treatment expands the demonstration from one H-key press to a compound
 `enter READY locally through the physical keyboard → send READY separately
 through phone-screen taps` workflow performed by one continuous detailed arm
