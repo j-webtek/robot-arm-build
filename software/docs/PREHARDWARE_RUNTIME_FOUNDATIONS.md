@@ -10,11 +10,12 @@ inconsistent evidence. It cannot establish physical accuracy or authorize
 power, motion, a key press, or a screen tap.
 
 The controlled baseline is
-`ROCELL-PHASE0-RC03-INT-R1-FREEZE-011`, active build
+`ROCELL-PHASE0-RC03-INT-R1-FREEZE-012`, active build
 `2026-09-01_CELL-A`. Freeze 009 remains immutable in its archive. Freeze 010
 source-locked the regenerated RC03 package and recorded the static-overhead
-B0477 selection conflict as an engineering alignment hold; active Freeze 011
-retains that hold while correcting a build-workflow dependency. The canonical
+B0477 selection conflict as an engineering alignment hold; Freeze 011 corrected
+a build-workflow dependency, and active Freeze 012 binds the approved
+hash-referenced build-step package layout while retaining the same hold. The canonical
 manifest and simulation profile therefore still contain legacy arm-camera
 fields. The additive B0477 services are the selected Phase-1 simulation path,
 not a physical camera release or a silent promotion of those fields. A later
@@ -278,7 +279,7 @@ and unmodeled cable motion all remain required physical gates.
 
 `application/placemat_uncertainty.py` answers whether the software is consuming
 the current RC03 geometry and how nominal target centres respond to bounded,
-assumed geometry error. It revalidates active Freeze 011, the 610 x 457 x
+assumed geometry error. It revalidates active Freeze 012, the 610 x 457 x
 18 mm board, keyboard and phone envelopes, all 46 keyboard and 29 phone target
 regions, the repaired static-support contract, and the purchased B0477 profile.
 The B0477/support binding identifies the selected static architecture; this
@@ -620,7 +621,7 @@ The following remain blocked until hardware is present and measured:
   qualified proxy, settling, route clearance, and recovery thresholds;
 - measured keyboard and phone targets, device identity/UI state, activation
   behavior, and independent host/Android outcome observers; and
-- a controlled successor to active Freeze 011 that explicitly releases each required
+- a controlled successor to active Freeze 012 that explicitly releases each required
   capability. Passing simulation must never create that release.
 
 ## First hardware substitution sequence
@@ -633,7 +634,7 @@ small, one-way steps:
    purchase profile. Keep the RoArm unpowered.
 2. Build and inspect the static support, positive retention, strain relief,
    lighting, and cable route. Update only additive design inputs; do not edit
-   active Freeze 011 or any archived freeze in place.
+   active Freeze 012 or any archived freeze in place.
 3. Implement a separate read-only UVC acquisition adapter with OS/device
    permissions that cannot open serial. Enumerate all real modes and controls,
    select the controlled configuration, flush/capture/reopen/reboot, and record

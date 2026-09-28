@@ -58,6 +58,16 @@ def _classify(paths: tuple[str, ...]) -> tuple[str, str, str, tuple[str, ...]]:
             "builder-route and regeneration review.",
             rc03_canonical,
         )
+    if rc03_canonical and crosses_revision:
+        return (
+            "frozen-cross-revision-stl-retention",
+            "arm, hardware, and repository workstreams",
+            "One exact STL blob is intentionally retained in frozen RC02 provenance and "
+            "the active canonical RC03 STL set. RC02 remains immutable historical evidence; "
+            "the RC03 path is the current canonical source. Removal requires a new owner "
+            "decision and is outside the approved Step 00 cleanup.",
+            rc03_canonical,
+        )
 
     camera_prefix = "hardware/static_overhead_camera/cad/output/"
     if all(path.startswith(camera_prefix) for path in paths):

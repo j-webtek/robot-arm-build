@@ -111,8 +111,8 @@
     },
     {
       "canonical_path": "README_FIRST.md",
-      "sha256": "ba84a14a17983d774a0278b4b68571d920b0dc4d186fd05c991b1d149d388a9e",
-      "size_bytes": 9962,
+      "sha256": "6e3e5a4bf57be1858e0b691c09b0c7683cc4266eb7df666d371136aa5800ee42",
+      "size_bytes": 10683,
       "roles": [
         "release entry point"
       ],
@@ -369,8 +369,8 @@
     },
     {
       "canonical_path": "print_plates_3mf/03C1_ABS_phone_clamp_rail.3mf",
-      "sha256": "e992ea3f29097bd346095a5c5ac08c33c9e2d35d7e9c27bce6041e43e3a9ef39",
-      "size_bytes": 343643,
+      "sha256": "da815d1b99c985a0d25285a66955a8793905d2ff27d3ef92c9df4bb6487a5844",
+      "size_bytes": 309687,
       "roles": [
         "geometry-only QIDI plate"
       ],
@@ -477,8 +477,8 @@
     },
     {
       "canonical_path": "scripts/build_step_packages.py",
-      "sha256": "09ec78a5512ee6cb6997b3200e7bd1cdb1418eeb2fb477f339f331f14191f8a2",
-      "size_bytes": 171609,
+      "sha256": "38b9b55bfaad6c80f2465bd99abc134b8a7b488d91e6fc357c3f93f05ec699b9",
+      "size_bytes": 175793,
       "roles": [
         "step-package generator and validator"
       ],
@@ -596,6 +596,18 @@
       "job_ids": []
     },
     {
+      "canonical_path": "scripts/stage_hash_bound_artifacts.py",
+      "sha256": "a18eb88d17b2adbe930857f4539079bad96090320c4ea161b5d38a29ec44e3d8",
+      "size_bytes": 8660,
+      "roles": [
+        "hash-bound canonical artifact staging and offline verification"
+      ],
+      "actions": [
+        "run_for_standalone_export"
+      ],
+      "job_ids": []
+    },
+    {
       "canonical_path": "scripts/step_evidence_common.py",
       "sha256": "93fb598ee2de6dc0ba60d6eec7291458a728cb087dbe724b9e3bf09aa8933f8a",
       "size_bytes": 9078,
@@ -685,9 +697,9 @@
       "job_ids": [
         "03D"
       ],
-      "local_operator_copy": "03 - STL MODELS/calibration_puck.stl",
-      "local_copy_sha256": "3d232103d1cc89d083cc700526abe40344db3f34f80609a5f134cb37a9247ce6",
-      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT",
+      "canonical_reference": "../../../stl/calibration_puck.stl",
+      "artifact_resolution": "canonical_hash_bound_reference"
     },
     {
       "canonical_path": "stl/phone_clamp_rail.stl",
@@ -702,9 +714,9 @@
       "job_ids": [
         "03C1"
       ],
-      "local_operator_copy": "03 - STL MODELS/phone_clamp_rail.stl",
-      "local_copy_sha256": "f766a24143f11769a0bcef7236b09938f4c02434b3b5d8e6d77b21b37f49dcff",
-      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT",
+      "canonical_reference": "../../../stl/phone_clamp_rail.stl",
+      "artifact_resolution": "canonical_hash_bound_reference"
     },
     {
       "canonical_path": "stl/phone_tcp_station.stl",
@@ -719,9 +731,9 @@
       "job_ids": [
         "03A"
       ],
-      "local_operator_copy": "03 - STL MODELS/phone_tcp_station.stl",
-      "local_copy_sha256": "63e02e28f9bb818007564eab7e82e2b9ce8417f30bdf3cbec3c3a86ec08ac32e",
-      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT",
+      "canonical_reference": "../../../stl/phone_tcp_station.stl",
+      "artifact_resolution": "canonical_hash_bound_reference"
     }
   ]
 }

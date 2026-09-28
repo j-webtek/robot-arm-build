@@ -33,9 +33,9 @@ rocell optimize-park --require-both-routes --json
 `--require-both-routes` changes only the exit status. It does not grant motion
 or contact authority.
 
-## Freeze-005-derived result retained through active Freeze 011
+## Freeze-005-derived result retained through active Freeze 012
 
-Freeze 009 first carried this historical input forward. Active Freeze 011
+Freeze 009 first carried this historical input forward. Active Freeze 012
 continues to source-bind it without relabeling the result or hashes as a new
 Freeze-011 execution.
 

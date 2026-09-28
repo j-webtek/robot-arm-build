@@ -1,7 +1,11 @@
 # Tactevra project status
 
-Reviewed September 27, 2026 through the ARM-074 T2A typing-trajectory
-preparation and AI-403 precision-adapter integration.
+Reviewed September 28, 2026 through the ARM-076 typing collision-evidence
+intake, ARM-075 exact-sample offline IK screen, AI-403 precision-adapter
+integration, and merged physical-camera
+campaign/evaluator work through PR #152. PR #151 subsequently updated the AI
+test dependency to Torch 2.13; that dependency merge does not change physical
+qualification or execution authority.
 Unmerged workstream branches are not included in this summary.
 This is a capability summary for readers; the
 [shared workplan](software/ai/docs/SHARED_AI_ARM_WORKPLAN.md) retains current
@@ -10,9 +14,17 @@ preserves detailed test records as development continues.
 
 Protected `main` also carries the shared model/arm conformance profile,
 operational-readiness gate, retained camera/support binding adapter, and the
-mainline precision adapter from PRs #115, #119, #120, and #126. These controls
+mainline precision adapter from PRs #115, #119, #120, and #126. PRs #147,
+#148, and #152 add the physical-camera campaign, AI evidence ownership, and
+strict localization evaluator. These controls
 formalize software compatibility and evidence requirements but add no physical
 observation or movement authority.
+
+The final-camera dependency is tracked as a targeted physical-integration hold
+in [the camera integration hold](docs/CAMERA_INTEGRATION_HOLD.md). Preparatory
+software, evidence, documentation, and distribution work may continue, but
+measured calibration and physical perception claims must wait for the fixed
+camera installation.
 
 Tactevra (formerly RoCell) is an experimental robot workcell intended to carry out keyboard and phone
 tasks from a person's text request. You can explore the software and run offline
@@ -203,6 +215,20 @@ analytically jerk-bounded quintic timing estimates. It preserves repeated keys
 and compares direct hover-to-hover travel with the park-between-key baseline.
 It does not yet run IK, joint-dynamics, installed-geometry, or continuous
 collision screening and grants no physical authority.
+
+ARM-075 passes those exact T2A samples through the pinned numerical IK,
+calibrated joint bounds, joint-margin, task-Jacobian-rank, and adjacent-joint
+continuity gates. Its passing fixture is explicitly synthetic and local.
+Installed collision geometry, cable evidence, conservative segment sweeps,
+controller timing, and physical qualification remain required; the new receipt
+creates no controller commands or physical authority.
+
+ARM-076 connects that receipt to the collision-evidence workflow without
+claiming that the synthetic seed is measured feedback. It deterministically
+builds the bounded joint sample plan and enumerates the exact installed-profile
+attachment, cable-geometry, and adjacent-sweep evidence slots. It fails closed
+when the measured installed profile is absent and still performs no collision
+screening, controller access, or physical movement.
 
 AI-403 then integrates the pose-output precision adapter and actual V2 batch
 producer on current `main`. The retained contract fixture deterministically

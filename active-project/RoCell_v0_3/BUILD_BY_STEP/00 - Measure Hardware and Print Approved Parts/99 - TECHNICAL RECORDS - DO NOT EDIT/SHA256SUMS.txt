@@ -12,7 +12,7 @@ bf837e547ec9a9e271660203db17e13b33886b96f8e8b7281ac0c98abe7cd611  ../../../PRINT
 ea0555461e87a475f844ffb1405a5dd756ab41f9d49617849c56204e275310bf  ../../../PRINT_PLAN.csv
 a8c75f05f727fa899c1f873ffea9852b5e6d343cdd302d5c4e02ee4124f74fc3  ../../../PRINT_READINESS.json
 5be5234644cbca322e93f16ec422cd5a6f04059055a2f56d68cf224d61f015b0  ../../../PRINT_READINESS.md
-ba84a14a17983d774a0278b4b68571d920b0dc4d186fd05c991b1d149d388a9e  ../../../README_FIRST.md
+6e3e5a4bf57be1858e0b691c09b0c7683cc4266eb7df666d371136aa5800ee42  ../../../README_FIRST.md
 2561bed996ff1a1c9bb15530b35467d15318812ea3822f77c2e76f80ed74008c  ../../../cad/step/cable_tie_saddle_fit_gauge.step
 122b24630f81598c894d1612c2a6a4c277a3caa51144d40d25899a2293dc0f13  ../../../cad/step/calibration_puck.step
 dea907ee079c77046150115a57bd506ed195e9ecbf436b4effbaf9cb2a89648d  ../../../cad/step/camera_plate_universal.step
@@ -113,7 +113,7 @@ a0933605a7fbc2c7205b93404508f94828e21075476c6e89db2aef5899459da6  ../../../print
 0f6e0900c6aec772e790d796ae389aa4506b5080550be71430cd05093acafbed  ../../../print_plates_3mf/03B_ABS_keyboard_clamps.3mf
 005ea3f467f64abc7f1e1af070e3436d1d90822e25b22b82c776b7baa24f7c3c  ../../../print_plates_3mf/03B_ABS_keyboard_clamps.PRINT_SETTINGS.md
 74d06febad8b82d7b8bbd7894ac344c146e942f64b0bd709a0b3ea0675c50a63  ../../../print_plates_3mf/03B_ABS_keyboard_clamps.print.json
-e992ea3f29097bd346095a5c5ac08c33c9e2d35d7e9c27bce6041e43e3a9ef39  ../../../print_plates_3mf/03C1_ABS_phone_clamp_rail.3mf
+da815d1b99c985a0d25285a66955a8793905d2ff27d3ef92c9df4bb6487a5844  ../../../print_plates_3mf/03C1_ABS_phone_clamp_rail.3mf
 0a0a5ea8323faf956099084619fece6f7c8e879f6d7ae8baa2aff406effec156  ../../../print_plates_3mf/03C1_ABS_phone_clamp_rail.PRINT_SETTINGS.md
 136b3c0808d549dd03f2aa3a212cf250fc5647b426205d5fbbcf8ba76a5a367c  ../../../print_plates_3mf/03C1_ABS_phone_clamp_rail.print.json
 6f84a4addac525d32ebe0685c5f11764a15270caf11d29bd6bda20338e1e3b6b  ../../../print_plates_3mf/03C2_ABS_board_setup_tools.3mf
@@ -157,7 +157,7 @@ aa830046f1152a28fd50d702b9233f8fc3c5854b65f1ea3db505fb4062f9fe19  ../../../print
 cb85e1aa58ac2567429b4105a925a120605a188e8a26d1d4fda45147cf8f945e  ../../../print_plates_3mf/07B_ASA_mast_foot_second.print.json
 6badf0daa975d8c0ab5de34cea5a7514dbff8469d2a7b499670a3002d428eb31  ../../../scripts/build_illustrated_assembly_guide.py
 4baf08d28e3566c3eb3869585275ebc318bf1e076744867221d4d79e2359f182  ../../../scripts/build_manual_pdf.py
-09ec78a5512ee6cb6997b3200e7bd1cdb1418eeb2fb477f339f331f14191f8a2  ../../../scripts/build_step_packages.py
+38b9b55bfaad6c80f2465bd99abc134b8a7b488d91e6fc357c3f93f05ec699b9  ../../../scripts/build_step_packages.py
 6090b47ff751ebb62c6ab8ecd4abc55fa54f79cabde5b86a4231484b2cc67e53  ../../../scripts/generate_build_tracker.py
 520cf48d2263beca0eca351d6960fbfae95e1f9c63e05aec1204957b47271a7f  ../../../scripts/generate_job_cards.py
 0a940eabc2ab22fcc0c4e2b2df9a67fa90224027168127917c2e7879a8725b93  ../../../scripts/initialize_step_evidence.py
@@ -167,6 +167,7 @@ cb85e1aa58ac2567429b4105a925a120605a188e8a26d1d4fda45147cf8f945e  ../../../print
 8e7467e8eccccbf6e04988820b828be3c0aa0c1c06167954f53bb46b5f8cf330  ../../../scripts/render_assembly_guide.py
 0f593f140437858b8cd72c87f4737b14af483c91ac3e9fcb45f07d4893327571  ../../../scripts/set_active_build.py
 caed2f3b929d24354ae7ff289178e70a94c8729d84ca5f2d55384c483032cbba  ../../../scripts/sign_off_step.py
+a18eb88d17b2adbe930857f4539079bad96090320c4ea161b5d38a29ec44e3d8  ../../../scripts/stage_hash_bound_artifacts.py
 93fb598ee2de6dc0ba60d6eec7291458a728cb087dbe724b9e3bf09aa8933f8a  ../../../scripts/step_evidence_common.py
 7dc6159c15826da700a66d9e271776f8daed14716db80081fedea2e8712fb2ed  ../../../scripts/validate_print_readiness.py
 9b954d47726e7c09423d31f7cdbd8b0e07dff1b78c11bf826274473062d66ed3  ../../../scripts/validate_release_package.py

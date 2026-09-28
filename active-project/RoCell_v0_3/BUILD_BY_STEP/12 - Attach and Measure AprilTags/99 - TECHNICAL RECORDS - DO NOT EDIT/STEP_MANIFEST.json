@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "layout_version": 4,
+  "layout_version": 6,
   "design_revision": "RC03-INT-R1",
-  "package_definition_hash": "7a6947f2de52f63133c5b9647b9b479ccd9d896906c2b575e76c106e1e5dccca",
-  "canonical_snapshot_hash": "05d11599e6d4a2937e0207535b298aa809ff08c79840350c7716666ce6d12755",
-  "canonical_input_hash": "05d11599e6d4a2937e0207535b298aa809ff08c79840350c7716666ce6d12755",
+  "package_definition_hash": "65bbe688892e0dcdd2115a28d9f155921587915d80e98f6b01d81aaedcbde3a5",
+  "canonical_snapshot_hash": "06efd7afc3a2b406d822f18b0ae06189c5edbb01dbbd069e0edf35718290f45c",
+  "canonical_input_hash": "06efd7afc3a2b406d822f18b0ae06189c5edbb01dbbd069e0edf35718290f45c",
   "step_id": "12",
   "slug": "apply_apriltags",
   "title": "Apply and measure the six AprilTags",
@@ -173,8 +173,8 @@
     },
     {
       "canonical_path": "README_FIRST.md",
-      "sha256": "ba84a14a17983d774a0278b4b68571d920b0dc4d186fd05c991b1d149d388a9e",
-      "size_bytes": 9962,
+      "sha256": "6e3e5a4bf57be1858e0b691c09b0c7683cc4266eb7df666d371136aa5800ee42",
+      "size_bytes": 10683,
       "roles": [
         "release entry point"
       ],
@@ -579,8 +579,8 @@
     },
     {
       "canonical_path": "scripts/build_step_packages.py",
-      "sha256": "09ec78a5512ee6cb6997b3200e7bd1cdb1418eeb2fb477f339f331f14191f8a2",
-      "size_bytes": 171609,
+      "sha256": "38b9b55bfaad6c80f2465bd99abc134b8a7b488d91e6fc357c3f93f05ec699b9",
+      "size_bytes": 175793,
       "roles": [
         "step-package generator and validator"
       ],
@@ -710,6 +710,18 @@
       "job_ids": []
     },
     {
+      "canonical_path": "scripts/stage_hash_bound_artifacts.py",
+      "sha256": "a18eb88d17b2adbe930857f4539079bad96090320c4ea161b5d38a29ec44e3d8",
+      "size_bytes": 8660,
+      "roles": [
+        "hash-bound canonical artifact staging and offline verification"
+      ],
+      "actions": [
+        "run_for_standalone_export"
+      ],
+      "job_ids": []
+    },
+    {
       "canonical_path": "scripts/step_evidence_common.py",
       "sha256": "93fb598ee2de6dc0ba60d6eec7291458a728cb087dbe724b9e3bf09aa8933f8a",
       "size_bytes": 9078,
@@ -784,33 +796,34 @@
       "job_ids": [
         "03C2"
       ],
-      "local_operator_copy": "03 - STL MODELS/tag_application_frame_55mm.stl",
-      "local_copy_sha256": "492f7e3c567a7aa3a4bc255d59425f73dc0c64ab240df8af8f9adf861d53a10f",
-      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT",
+      "canonical_reference": "../../../stl/tag_application_frame_55mm.stl",
+      "artifact_resolution": "canonical_hash_bound_reference"
     }
   ],
-  "local_stl_copy_count": 1,
+  "local_stl_copy_count": 0,
+  "hash_bound_stl_reference_count": 1,
   "next_step": "13",
   "operator_writable_directory": "06 - SAVE MEASUREMENTS AND PHOTOS",
   "generated_control_hashes": {
     "00 - START HERE.md": "fe068ecfb676cd87177ed5e5a672eb24b6fe7c667ee44547df205b9a728547bf",
     "01 - BEFORE YOU START.md": "6434201b0dbbf80fdf5719f12239a3871273a7e530c6d5e6fa8ef621d34fb229",
-    "02 - PARTS AND TOOLS CHECKLIST.md": "fc99f5d2d7ee01dbbda8aa088cbb96260dcec906824cb0a0118647035f096d21",
-    "03 - STL MODELS/READ ME - HOW TO USE THESE MODELS.md": "69f96ffee150c9e3671c2d8a926e23b867a15d71d9063a0793a92a6147cbb623",
-    "03 - STL MODELS/STL MODEL LIST.csv": "224cb545585769bbdf6bbdb86b002e2a9068986691a9eacf3edc61bb7aa6cda7",
+    "02 - PARTS AND TOOLS CHECKLIST.md": "c42fdf07fc9c3d8be3126da8e5957ac68c61b38cf3cc0573541fa66ce80f857c",
+    "03 - STL MODELS/READ ME - HOW TO USE THESE MODELS.md": "5786a1e3d9bc969c7f11488b437476e7c97438f8cfe2195e96d20ba12970b814",
+    "03 - STL MODELS/STL MODEL LIST.csv": "1967166e0c1668522fb1b7140ec1de1347115a152ad08cb5954c281f50782a13",
     "03B - PRINT SETTINGS FOR THIS STEP.md": "09e98891548ecee441cbda606fd28b46b91e1b0485d0c0ef8f5906291aeb9a54",
     "04 - STEP-BY-STEP INSTRUCTIONS.md": "5a328cc34dcc765a1af9ddde1d01b27ac0362284ec1f770cdf06b7ebdfc7c549",
     "05 - CHECK YOUR WORK.md": "996d26d89cd9ee757debb4197ac2318f8682354c9dcbeeb2f3fd58ecfe272bd5",
     "06 - SAVE MEASUREMENTS AND PHOTOS/READ ME - WHAT TO RECORD.md": "20195a5431f4dc53f9e312c174aed1c0dd3f3f292a3bef7b602bc5183c6c21c9",
-    "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/measurement_record.json": "2a8b407db588e71105572a9f7ffa7288158d810d63e5e76415f23e5c255842e6",
-    "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/signoff.json": "9824a2021a6ec92b4af16bc1d7c2f18968c628207c655d94bce19573915fb9a1",
+    "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/measurement_record.json": "543ecf3627fe39f07cb681a09b36163eca18cc76e4fad94a7935ef5fc57934f9",
+    "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/signoff.json": "12ffa5db0fe203e39cb0bc65929acfd153aeb61783224c458d0b66c81bf04efc",
     "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/Measurements Checklist.md": "fd89bd8480366e69df9188112ff5fca9ea3732f5a47d55da8f4331ccd7b7f603",
     "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/Finish and Sign Off.md": "745cf05d331fe8a320076344add0c2b04ecb8cf60be9a54f5c880a7eecc5f241",
     "07 - FINISH THIS STEP AND CONTINUE.md": "0ef8e420bceaf9e0b122095015ff989d155d314847c9cea5cd34fecf938aec30",
-    "99 - TECHNICAL RECORDS - DO NOT EDIT/OPEN CONTROLLED FILES.md": "be557882d28540f71fd30905c24916a40655ee9a1caac5b585d34e5e2fedfb11",
-    "99 - TECHNICAL RECORDS - DO NOT EDIT/FILE INDEX.csv": "a2c8a31e237ab32bbd172b42f8cc7f291990c76a82c0da6adfe434ff8aa55db3",
-    "99 - TECHNICAL RECORDS - DO NOT EDIT/FILE MANIFEST.json": "016abfac5cb0b0a6e5d6b0886938145f759f76512eea64dde28fe4d6ee49573d",
-    "99 - TECHNICAL RECORDS - DO NOT EDIT/SHA256SUMS.txt": "814f5c7e93770efc3e57f02566334196fdd82ab5d09e52936a430d52594e377a",
+    "99 - TECHNICAL RECORDS - DO NOT EDIT/OPEN CONTROLLED FILES.md": "f4759f548663b52b69512f9296269d5ba7cdd416d2f20dd75f57baadeab1bf39",
+    "99 - TECHNICAL RECORDS - DO NOT EDIT/FILE INDEX.csv": "aa2ad5143a71c11d1a718a804a5cb3040a4118bb17af983f5b9fc06256b417cb",
+    "99 - TECHNICAL RECORDS - DO NOT EDIT/FILE MANIFEST.json": "30dd643e8ea6e66ec6433e6dd227b8621a0c315e09fbeccccb6fad81736e795a",
+    "99 - TECHNICAL RECORDS - DO NOT EDIT/SHA256SUMS.txt": "5bba85c13ed34b43559b4407000aab3002d7f2bbed416816f7c2154a361312b4",
     "99 - TECHNICAL RECORDS - DO NOT EDIT/HARDWARE AND TOOLS.csv": "57716d4c6d58217f918ca164d1fafaf59aee1e40a263ff2ddd6c2b8f199ecb5d"
   }
 }

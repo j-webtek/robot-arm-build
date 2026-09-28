@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "layout_version": 4,
+  "layout_version": 6,
   "design_revision": "RC03-INT-R1",
-  "package_definition_hash": "7a6947f2de52f63133c5b9647b9b479ccd9d896906c2b575e76c106e1e5dccca",
-  "canonical_snapshot_hash": "05d11599e6d4a2937e0207535b298aa809ff08c79840350c7716666ce6d12755",
-  "canonical_input_hash": "05d11599e6d4a2937e0207535b298aa809ff08c79840350c7716666ce6d12755",
+  "package_definition_hash": "65bbe688892e0dcdd2115a28d9f155921587915d80e98f6b01d81aaedcbde3a5",
+  "canonical_snapshot_hash": "06efd7afc3a2b406d822f18b0ae06189c5edbb01dbbd069e0edf35718290f45c",
+  "canonical_input_hash": "06efd7afc3a2b406d822f18b0ae06189c5edbb01dbbd069e0edf35718290f45c",
   "step_id": "01",
   "slug": "prepare_board",
   "title": "Prepare and drill the structural board",
@@ -255,8 +255,8 @@
     },
     {
       "canonical_path": "README_FIRST.md",
-      "sha256": "ba84a14a17983d774a0278b4b68571d920b0dc4d186fd05c991b1d149d388a9e",
-      "size_bytes": 9962,
+      "sha256": "6e3e5a4bf57be1858e0b691c09b0c7683cc4266eb7df666d371136aa5800ee42",
+      "size_bytes": 10683,
       "roles": [
         "release entry point"
       ],
@@ -931,8 +931,8 @@
     },
     {
       "canonical_path": "scripts/build_step_packages.py",
-      "sha256": "09ec78a5512ee6cb6997b3200e7bd1cdb1418eeb2fb477f339f331f14191f8a2",
-      "size_bytes": 171609,
+      "sha256": "38b9b55bfaad6c80f2465bd99abc134b8a7b488d91e6fc357c3f93f05ec699b9",
+      "size_bytes": 175793,
       "roles": [
         "step-package generator and validator"
       ],
@@ -1050,6 +1050,18 @@
       "job_ids": []
     },
     {
+      "canonical_path": "scripts/stage_hash_bound_artifacts.py",
+      "sha256": "a18eb88d17b2adbe930857f4539079bad96090320c4ea161b5d38a29ec44e3d8",
+      "size_bytes": 8660,
+      "roles": [
+        "hash-bound canonical artifact staging and offline verification"
+      ],
+      "actions": [
+        "run_for_standalone_export"
+      ],
+      "job_ids": []
+    },
+    {
       "canonical_path": "scripts/step_evidence_common.py",
       "sha256": "93fb598ee2de6dc0ba60d6eec7291458a728cb087dbe724b9e3bf09aa8933f8a",
       "size_bytes": 9078,
@@ -1139,9 +1151,9 @@
         "DO_NOT_PRINT"
       ],
       "job_ids": [],
-      "local_operator_copy": "03 - STL MODELS/BOARD_REFERENCE_DO_NOT_PRINT.stl",
-      "local_copy_sha256": "3cc0c5972031730f19d4cad90d2303915a75daa4de75c8a387862e6e08a6a6fa",
-      "local_copy_usage": "DO_NOT_PRINT"
+      "local_copy_usage": "DO_NOT_PRINT",
+      "canonical_reference": "../../../stl/BOARD_REFERENCE_DO_NOT_PRINT.stl",
+      "artifact_resolution": "canonical_hash_bound_reference"
     },
     {
       "canonical_path": "stl/cable_tie_saddle_fit_gauge.stl",
@@ -1156,9 +1168,9 @@
       "job_ids": [
         "00B"
       ],
-      "local_operator_copy": "03 - STL MODELS/cable_tie_saddle_fit_gauge.stl",
-      "local_copy_sha256": "8de2b07efef5bef8ef9297407c0bd22dd7945adc16f84fd0dab236e304398598",
-      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT",
+      "canonical_reference": "../../../stl/cable_tie_saddle_fit_gauge.stl",
+      "artifact_resolution": "canonical_hash_bound_reference"
     },
     {
       "canonical_path": "stl/hardware_fit_gauge.stl",
@@ -1173,9 +1185,9 @@
       "job_ids": [
         "00A"
       ],
-      "local_operator_copy": "03 - STL MODELS/hardware_fit_gauge.stl",
-      "local_copy_sha256": "4a9a35b618a420931b7e8b6b717aee4a3eb68f8948fff04e5a69fd65266e9e42",
-      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT",
+      "canonical_reference": "../../../stl/hardware_fit_gauge.stl",
+      "artifact_resolution": "canonical_hash_bound_reference"
     },
     {
       "canonical_path": "stl/keyboard_corner_fit_test.stl",
@@ -1190,9 +1202,9 @@
       "job_ids": [
         "00A"
       ],
-      "local_operator_copy": "03 - STL MODELS/keyboard_corner_fit_test.stl",
-      "local_copy_sha256": "c12095d3506ea86025fcef6cd34702efb391aec1e00c9b23fd77bdb250703ad3",
-      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT",
+      "canonical_reference": "../../../stl/keyboard_corner_fit_test.stl",
+      "artifact_resolution": "canonical_hash_bound_reference"
     },
     {
       "canonical_path": "stl/keyboard_station_left.stl",
@@ -1207,9 +1219,9 @@
       "job_ids": [
         "01"
       ],
-      "local_operator_copy": "03 - STL MODELS/keyboard_station_left.stl",
-      "local_copy_sha256": "a19b4288b9d6c3fae66f3baa3aa7726fc4acaa440bdb3f16ad3a7ea7791e9a1f",
-      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT",
+      "canonical_reference": "../../../stl/keyboard_station_left.stl",
+      "artifact_resolution": "canonical_hash_bound_reference"
     },
     {
       "canonical_path": "stl/keyboard_station_right.stl",
@@ -1224,9 +1236,9 @@
       "job_ids": [
         "02"
       ],
-      "local_operator_copy": "03 - STL MODELS/keyboard_station_right.stl",
-      "local_copy_sha256": "bc9cc0d252da8d1702c56bbd0afaf6ed79e5dd9891d121dd54372e4692675cf0",
-      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT",
+      "canonical_reference": "../../../stl/keyboard_station_right.stl",
+      "artifact_resolution": "canonical_hash_bound_reference"
     },
     {
       "canonical_path": "stl/m4_captive_nut_fit_gauge.stl",
@@ -1241,9 +1253,9 @@
       "job_ids": [
         "00B"
       ],
-      "local_operator_copy": "03 - STL MODELS/m4_captive_nut_fit_gauge.stl",
-      "local_copy_sha256": "5771bfa01542ab24999c806f4347486d6cc1800f6a13a17ebfdb9264644e8aec",
-      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT",
+      "canonical_reference": "../../../stl/m4_captive_nut_fit_gauge.stl",
+      "artifact_resolution": "canonical_hash_bound_reference"
     },
     {
       "canonical_path": "stl/m4_washer_fit_gauge.stl",
@@ -1259,9 +1271,9 @@
         "00A",
         "00B"
       ],
-      "local_operator_copy": "03 - STL MODELS/m4_washer_fit_gauge.stl",
-      "local_copy_sha256": "98f27d3b7f274754a274f9856a8318c8b0c98f2fb5b485223fec74236ae349ff",
-      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT",
+      "canonical_reference": "../../../stl/m4_washer_fit_gauge.stl",
+      "artifact_resolution": "canonical_hash_bound_reference"
     },
     {
       "canonical_path": "stl/phone_m3_insert_fit_gauge.stl",
@@ -1276,9 +1288,9 @@
       "job_ids": [
         "00B"
       ],
-      "local_operator_copy": "03 - STL MODELS/phone_m3_insert_fit_gauge.stl",
-      "local_copy_sha256": "54a7990f706256dd30d3d5ea7487f479e970c1e1d8f212be1996b6df6d1a2e65",
-      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT",
+      "canonical_reference": "../../../stl/phone_m3_insert_fit_gauge.stl",
+      "artifact_resolution": "canonical_hash_bound_reference"
     },
     {
       "canonical_path": "stl/phone_tcp_station.stl",
@@ -1293,9 +1305,9 @@
       "job_ids": [
         "03A"
       ],
-      "local_operator_copy": "03 - STL MODELS/phone_tcp_station.stl",
-      "local_copy_sha256": "63e02e28f9bb818007564eab7e82e2b9ce8417f30bdf3cbec3c3a86ec08ac32e",
-      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT",
+      "canonical_reference": "../../../stl/phone_tcp_station.stl",
+      "artifact_resolution": "canonical_hash_bound_reference"
     },
     {
       "canonical_path": "stl/phone_width_fit_test.stl",
@@ -1310,9 +1322,9 @@
       "job_ids": [
         "00B"
       ],
-      "local_operator_copy": "03 - STL MODELS/phone_width_fit_test.stl",
-      "local_copy_sha256": "1091a6d591259a4a22b6d9fd7b36d4a8264807ef5c169fe3c5b1019a16420cfa",
-      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT",
+      "canonical_reference": "../../../stl/phone_width_fit_test.stl",
+      "artifact_resolution": "canonical_hash_bound_reference"
     },
     {
       "canonical_path": "stl/station_locator_fit_gauge.stl",
@@ -1328,33 +1340,34 @@
         "00A",
         "00B"
       ],
-      "local_operator_copy": "03 - STL MODELS/station_locator_fit_gauge.stl",
-      "local_copy_sha256": "7b34ff9a05495ce702310171cd27c5201e0c1ee54fede8c9cdbeea7260d3d1d5",
-      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT",
+      "canonical_reference": "../../../stl/station_locator_fit_gauge.stl",
+      "artifact_resolution": "canonical_hash_bound_reference"
     }
   ],
-  "local_stl_copy_count": 12,
+  "local_stl_copy_count": 0,
+  "hash_bound_stl_reference_count": 12,
   "next_step": "02",
   "operator_writable_directory": "06 - SAVE MEASUREMENTS AND PHOTOS",
   "generated_control_hashes": {
     "00 - START HERE.md": "3c37a7547ef3ef34aee6e0e6f27ee570754d6ab18ffbff2b76412ca6c03e75d7",
     "01 - BEFORE YOU START.md": "b15e00c8176b0c80f9b00f2784cd0d594fe20c0bcf9bc9dca7508e5d9438d181",
-    "02 - PARTS AND TOOLS CHECKLIST.md": "7c6e3a3ea6f8c007a3440601ff3bdcf7416058e7acc0086a3ebb0baeef0e6eba",
-    "03 - STL MODELS/READ ME - HOW TO USE THESE MODELS.md": "0e2f56f141600c9bc0fa31f983aedd235dbf0aed4c0fe2c4b73b2eb3976d27c9",
-    "03 - STL MODELS/STL MODEL LIST.csv": "d99890dce58a0c6335b7fcd1e14db227fca2e311fed6f26b786bde23c1f001ab",
+    "02 - PARTS AND TOOLS CHECKLIST.md": "0c1762ddf0cc9aa99c28ee97550ba12330642d454f6d5a0f5c7ccb533e34f6c4",
+    "03 - STL MODELS/READ ME - HOW TO USE THESE MODELS.md": "46b638d3f580667acf0f2e4f8ea17e802129278ef57dd3253e67c290d6443013",
+    "03 - STL MODELS/STL MODEL LIST.csv": "14e52b946cd840eba3e6cf8f47e268deaed21b4bff1e1b3da5d69268bb0d3cf2",
     "03B - PRINT SETTINGS FOR THIS STEP.md": "8dcc99a33992101ddc285d96f0c0e89bf550682b90457815b4e6a9058dd0ca02",
     "04 - STEP-BY-STEP INSTRUCTIONS.md": "d6ff900e5b616bd627ad34862b5954bb48a76718642ac8ad59bc956e1a89dbe5",
     "05 - CHECK YOUR WORK.md": "4c09b8a1d2c7ead72f20921b31a50411bd2648df0930005f34dc3426713ac2f0",
     "06 - SAVE MEASUREMENTS AND PHOTOS/READ ME - WHAT TO RECORD.md": "e60abb806575ee2217671842b47a529f39dfd1a740db7c5c1004dbca4bb388b0",
-    "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/measurement_record.json": "1852d2b6f116b88e92f030d2a0523b1d4478fa75031533316d5dfa0552f9ab46",
-    "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/signoff.json": "c258a506a7904ac9d57e812d8924c015783eec8a88e1feb46bc1681168f5ebcb",
+    "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/measurement_record.json": "c5890749ac7ba731040346fff8df77573820b6ad2e3a1c4a0d2f64095637f428",
+    "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/signoff.json": "5d006838305c7b63b34d0e3f4a0f5533715d5251fbee3e4495b889f8f7e9141b",
     "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/Measurements Checklist.md": "10b140d4e49fea03dcbd1323dffd6572b5e4e28ddf511ea52d464bad2fc27bdd",
     "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/Finish and Sign Off.md": "a7b85be1774ce06a321f620c20329a9e1b9fa1fe046f7a655703ffa328219ed8",
     "07 - FINISH THIS STEP AND CONTINUE.md": "d0e0d731b3fd24bdc7d844c3f9f8c78b23bd4b93808d2309ccc89420c31e9d12",
-    "99 - TECHNICAL RECORDS - DO NOT EDIT/OPEN CONTROLLED FILES.md": "e5a34709c0b2d60eec01f960481e5df36cf8f08d619eff4555b43747a7a11c8c",
-    "99 - TECHNICAL RECORDS - DO NOT EDIT/FILE INDEX.csv": "0ff931133fbb1a4b16ff52abcc3a812a52471a3e6e1eaa7cd1906fabe0cf2dc7",
-    "99 - TECHNICAL RECORDS - DO NOT EDIT/FILE MANIFEST.json": "15488f0c513541fcb3f1a7b2b49a85431954ad8146c6b93b40fbf30ce6564cca",
-    "99 - TECHNICAL RECORDS - DO NOT EDIT/SHA256SUMS.txt": "1e4ce18c6690690ae6945cd2d33a2c3c03cf9daacea3a571f5259a1b6203b8d8",
+    "99 - TECHNICAL RECORDS - DO NOT EDIT/OPEN CONTROLLED FILES.md": "2d0630cb3781d729ad0ff5017bb4833376eaa5b7204ad32846997f8d4c3f1ce3",
+    "99 - TECHNICAL RECORDS - DO NOT EDIT/FILE INDEX.csv": "3fd53e4f473f80a1438fb922ad89301fc45c82fa478b9edcbfd84eed2982939f",
+    "99 - TECHNICAL RECORDS - DO NOT EDIT/FILE MANIFEST.json": "caa1aac082d1f829bf305c7abdf5670c90be431dc8166023f3f8fd0c72b1c5e2",
+    "99 - TECHNICAL RECORDS - DO NOT EDIT/SHA256SUMS.txt": "155741c34e738938c6f8bdee9d42ae2c497bebba37ae4ea4f3f95f39ed74df3c",
     "99 - TECHNICAL RECORDS - DO NOT EDIT/HARDWARE AND TOOLS.csv": "36d5eae76d69357728532dac3f646334ca06225faee2200769e4286404dcbb54",
     "03A - PRINT AND ASSEMBLE THE BOARD DRILL GUIDE.md": "9bb4c1736097f6e562071a35808035523164f5846777902f987eadd7cfdd8d4f"
   }

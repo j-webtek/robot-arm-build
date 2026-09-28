@@ -1,7 +1,7 @@
 # RC03 build alignment and Phase 0 system freeze
 
-**Freeze ID:** `ROCELL-PHASE0-RC03-INT-R1-FREEZE-011`  
-**Date:** 2026-09-06  
+**Freeze ID:** `ROCELL-PHASE0-RC03-INT-R1-FREEZE-012`  
+**Date:** 2026-09-28  
 **Status:** `FROZEN_DIGITAL_ENGINEERING_HOLDS_CONTACT_BLOCKED`  
 **Machine-readable authority:** [`software/config/system_manifest.json`](software/config/system_manifest.json)
 
@@ -16,8 +16,8 @@ The additive, zero-authority detailed-screening baseline is in
 
 Freeze 010 originally synchronized the RC03 source hashes and recorded the
 conflict between that selection and the still-historical arm-mounted camera
-binding as an explicit `CAMERA_ARCHITECTURE_ALIGNMENT_HOLD`. Active Freeze 011
-carries that hold and those reconciled sources forward; neither revision
+binding as an explicit `CAMERA_ARCHITECTURE_ALIGNMENT_HOLD`. Active Freeze 012
+carries that hold and those reconciled sources forward; none of these revisions
 silently releases a camera route. Arm-mounted-primary and fixed-mast-fallback
 statements retained below describe historical Freeze 009 provenance, not
 current build instructions. Step 13, the final support geometry, collision
@@ -25,7 +25,7 @@ model, received hardware, optics, calibration, and physical evidence still
 require a later controlled release.
 
 Freeze 010 also originally recorded the operator-observed Job 00B results and
-the controlled Job 03C1 rework, which active Freeze 011 retains. The passed
+the controlled Job 03C1 rework, which active Freeze 012 retains. The passed
 6.2 mm rod locator and 9.2 mm washer recess remain unchanged. The old nominal
 N7.4 nut feature and narrow tie saddle are recorded `FAIL`; production geometry
 now uses a true 7.2 mm captive M4 nut seat and a 5.6 x 2.2 mm passage for
@@ -73,7 +73,7 @@ This freeze aligns the robot-typing roadmap to the current controlled RC03 build
 | Phone cable | StarTech R2CCR-1M-USB-CABLE candidate | Selected-unqualified; host/power, connector projection, relaxed bend, direction, strain relief, and port load open |
 | Camera included with RoArm package | None | Official package image includes the holder but no camera; the page's ESP32 is the arm controller |
 | Selected Phase-1 camera purchase | Static overhead Arducam B0477/IMX283 USB3 camera with delivered nominal 16 mm lens and metal case | `PURCHASED_PENDING_RECEIPT_INSPECTION`; selected by the additive architecture plan, not yet promoted into the legacy canonical manifest fields or physically qualified |
-| Legacy canonical camera binding under hold | Arm-mounted eye-on-arm Waveshare IMX335 5MP USB Camera (B), SKU 26719 | Retained in Freeze 011 only under `CAMERA_ARCHITECTURE_ALIGNMENT_HOLD`; not the selected Phase-1 hardware; optional Phase-2 research requires a separate controlled qualification |
+| Legacy canonical camera binding under hold | Arm-mounted eye-on-arm Waveshare IMX335 5MP USB Camera (B), SKU 26719 | Retained in Freeze 012 only under `CAMERA_ARCHITECTURE_ALIGNMENT_HOLD`; not the selected Phase-1 hardware; optional Phase-2 research requires a separate controlled qualification |
 | Legacy bundled camera holder | Waveshare RoArm holder on moving upper-arm twin 1020 rails | Included package inventory and historical binding; not the selected Phase-1 static support; any Phase-2 use needs exact revision, rail position, fasteners, mass/CG, cable, carrier-frame, payload, and collision evidence |
 | Optional external camera | Logitech C920e candidate on the RC03 independent 2020 mast route | Route unselected and held as a fallback design; it would require separate qualification/calibration and can never be an automatic substitute |
 | Keyboard tool | RC03 shared compliant body + 6 mm rod/bushing + TPU keyboard tip | Route selected; measurements and tool gates open |
@@ -86,13 +86,13 @@ This freeze aligns the robot-typing roadmap to the current controlled RC03 build
 | Motion transport | USB serial, 115200, newline JSON, typed mm/rad adapter | Frozen software boundary |
 | Contact primitive | T=104 only after characterization; T=1041 prohibited for contact | `spd` is a controller coefficient, not physical mm/s or mm/s² |
 
-The retained legacy route fields are `phone_stylus_route: true`, `keyboard_rod_route: true`, and `camera_mast_optional: false`. The false historical mast route leaves that old external fallback unselected; it does not override the additive plan's selected static B0477 primary or promote that selection into Freeze 011. The current print state is 20 selected jobs (5 `READY`, 15 `WAITING`) and 4 `NOT_SELECTED`. A `READY` print job is not a release of the robot, camera, motion, or contact system.
+The retained legacy route fields are `phone_stylus_route: true`, `keyboard_rod_route: true`, and `camera_mast_optional: false`. The false historical mast route leaves that old external fallback unselected; it does not override the additive plan's selected static B0477 primary or promote that selection into Freeze 012. The current print state is 20 selected jobs (5 `READY`, 15 `WAITING`) and 4 `NOT_SELECTED`. A `READY` print job is not a release of the robot, camera, motion, or contact system.
 
 ### 2.1 Standalone RoArm package and camera binding
 
 The purchased product is the standalone RoArm-M3 page with the Pro option, not the RoArm AI kit. The official Pro package image lists the arm, 12 V/5 A supply, accessory pack, expansion mounting plate, camera holder, EoAT expansion plate, and base mounting plate. No camera is listed. The description says the camera illustration is reference-only and identifies the onboard `ESP32-WROOM-32` as the arm controller.
 
-Waveshare does not name or explicitly recommend a camera model on the standalone arm page; it instructs the builder to use a corresponding-size camera or an adapter. The included holder drawing has 21.0 × 13.5 mm camera-hole centers. Freeze 004 selected the Waveshare IMX335 5MP USB Camera (B), SKU 26719, as an unqualified geometrically matched candidate because its official drawing has the same pattern; Freeze 005 retained that selection, and active Freeze 011 carries the legacy binding forward under `CAMERA_ARCHITECTURE_ALIGNMENT_HOLD`. It is historical Freeze-009-origin context, not the selected Phase-1 camera instruction. It is a USB/UVC camera, not an ESP camera. `usb_opencv` is the selected candidate backend for that legacy binding. `esp_http_mjpeg` is implemented only as an optional adapter for separately integrated hardware and is not selected. See [`software/config/camera_manifest.json`](software/config/camera_manifest.json) for the binding and evidence contract.
+Waveshare does not name or explicitly recommend a camera model on the standalone arm page; it instructs the builder to use a corresponding-size camera or an adapter. The included holder drawing has 21.0 × 13.5 mm camera-hole centers. Freeze 004 selected the Waveshare IMX335 5MP USB Camera (B), SKU 26719, as an unqualified geometrically matched candidate because its official drawing has the same pattern; Freeze 005 retained that selection, and active Freeze 012 carries the legacy binding forward under `CAMERA_ARCHITECTURE_ALIGNMENT_HOLD`. It is historical Freeze-009-origin context, not the selected Phase-1 camera instruction. It is a USB/UVC camera, not an ESP camera. `usb_opencv` is the selected candidate backend for that legacy binding. `esp_http_mjpeg` is implemented only as an optional adapter for separately integrated hardware and is not selected. See [`software/config/camera_manifest.json`](software/config/camera_manifest.json) for the binding and evidence contract.
 
 ## 3. Source precedence and runtime import contract
 
@@ -106,7 +106,7 @@ The runtime shall consume RC03 read-only in this order:
 
 The importer must create one immutable build snapshot. It must block hardware motion when the active build ID is null, the camera architecture is on hold, a required route is false, a required canonical gate or active-build signoff is missing/non-PASS, the tag map remains nominal, or any frozen hash disagrees.
 
-The current active build is `2026-09-01_CELL-A`. Active Freeze 011 retains the regenerated Job 00B/03C1 package from Freeze 010 and removes a latent Job 03C2 self-dependency; that workflow-only correction has no geometry or physical-release effect. Job 00A remains `POSTPRINT_PASS`: its keyboard-corner coupon is `PASS` with 0.0 mm compensation, its tray-clearance coupon is `PASS` under an explicitly operator-authorized prototype functional-fit waiver, and its keyboard-station registration coupon is `PASS` at the operator-confirmed 6.2 mm round/slot selection. The M4 screw major diameter remains a 4.0 mm nominal designation assumption rather than caliper metrology; the actual station screw passed cleanly at 4.4 mm and no smaller candidate passed; the actual production washer fit all recess candidates, with the photographed/current 9.2 mm recess retained for assembly margin. The measurement record now has 15 `PASS`, 63 `NOT_TESTED`, 4 `NA`, and the two explicit Job 00B `FAIL` results that are reassigned to Job 03C1 production qualification. The separate print-readiness projection remains 5 `READY`, 15 `WAITING`, and 4 `NOT_SELECTED`. The camera alignment, final anchor drilling, robot power-up, motion, and contact remain blocked. Physical system release remains `UNRELEASED`, `safe_to_power_robot` is `false`, and `contact_enabled` is `false`.
+The current active build is `2026-09-01_CELL-A`. Active Freeze 012 retains the regenerated Job 00B/03C1 package from Freeze 010 and the Freeze 011 workflow correction while binding the approved hash-referenced build-step package layout; these source/provenance changes have no geometry or physical-release effect. Job 00A remains `POSTPRINT_PASS`: its keyboard-corner coupon is `PASS` with 0.0 mm compensation, its tray-clearance coupon is `PASS` under an explicitly operator-authorized prototype functional-fit waiver, and its keyboard-station registration coupon is `PASS` at the operator-confirmed 6.2 mm round/slot selection. The M4 screw major diameter remains a 4.0 mm nominal designation assumption rather than caliper metrology; the actual station screw passed cleanly at 4.4 mm and no smaller candidate passed; the actual production washer fit all recess candidates, with the photographed/current 9.2 mm recess retained for assembly margin. The measurement record now has 15 `PASS`, 63 `NOT_TESTED`, 4 `NA`, and the two explicit Job 00B `FAIL` results that are reassigned to Job 03C1 production qualification. The separate print-readiness projection remains 5 `READY`, 15 `WAITING`, and 4 `NOT_SELECTED`. The camera alignment, final anchor drilling, robot power-up, motion, and contact remain blocked. Physical system release remains `UNRELEASED`, `safe_to_power_robot` is `false`, and `contact_enabled` is `false`.
 
 The 2026-09-02 transition chain is intentionally append-only:
 
@@ -117,6 +117,7 @@ The 2026-09-02 transition chain is intentionally append-only:
 - **Freeze 008 → 009:** a seven-source operator-confirmed functional-fit transition accepted `keyboard_station_registration_coupon_pass` at 6.2 mm round/slot geometry, advanced Job 00A to `POSTPRINT_PASS`, and produced the then-current 11/69/4 counts. It does not release any downstream print, robot power, motion, or contact capability.
 - **Freeze 009 → 010:** a 14-source controlled reconciliation captured the static-camera architecture conflict as an alignment hold, preserved the passed Job 00A/00B fits, recorded the loose N7.4 nut and narrow tie saddle as two explicit failures, and regenerated the Job 03C1 production-equivalent rail with a 7.2 mm captive nut seat and 5.6 x 2.2 mm tie passage. The current gate counts are 15 `PASS`, 63 `NOT_TESTED`, 4 `NA`, and 2 `FAIL`; physical release remains `UNRELEASED`.
 - **Freeze 010 → 011:** a four-source workflow correction removed Job 03C2's impossible self-dependency on `board_setup_template_scale_pass`, kept that paper-template check as an external prerequisite, and generalized validation against all postprint self-producer cycles. Geometry, Job 03C1 settings, gate counts, and physical authority are unchanged.
+- **Freeze 011 → 012:** a two-source package-provenance transition bound the regenerated `BUILD_BY_STEP` index and validation record after Steps 01–15 replaced traceability-only STL copies with exact canonical path and SHA-256 references. Step 00 print-stage copies, canonical RC03 STLs, frozen RC02 evidence, geometry, gate counts, and physical authority are unchanged.
 
 ## 4. Nominal values that are not contact coordinates
 
@@ -211,7 +212,7 @@ These require a controlled RC03 addendum or next revision before installation/us
 1. Continue active build `2026-09-01_CELL-A` through Step 00 without claiming any unperformed PASS; retain its build ID in every evidence record.
 2. Record the RoArm serial/controller/firmware, exact PERIBOARD-409, bare Galaxy A16 5G, received Arducam B0477/IMX283 identity, delivered 16 mm lens/case, persistent USB identity/modes/controls/cable, static-support parts and fasteners, clamp, spring, rod, stylus, board, and materials. Record the bundled arm-camera holder only as package inventory unless a separately controlled Phase-2 experiment is opened.
 3. Preserve Job 00A's `POSTPRINT_PASS` evidence and record Jobs 00B–00F before releasing any dependent production print; treat print readiness and lifecycle state as separate authoritative projections.
-4. Use the historical Freeze-005 simulation foundation, retained unchanged as provenance under active Freeze 011—the exact-byte bounded pinned Waveshare URDF projection and typed transforms/FK, separately framed controller FK/T=104 easing emulator, nominal RC03 scene, real-JPEG fixed-overview tag detection/planar pose, nominal target maps, deterministic tool-tip paths, bounded reach/park/full-route IK, solver-task numerical-rank diagnostics, strict virtual-workcell bootstrap, locked rank-1 multi-action virtual commissioning with pixel-gated hover/fault/record/replay, aggregate prehardware qualification, and offline raw-feedback/capture-bundle eye-on-arm checks—to reject bad assumptions early. It is simulation-only and supplies no physical evidence or authority.
+4. Use the historical Freeze-005 simulation foundation, retained unchanged as provenance under active Freeze 012—the exact-byte bounded pinned Waveshare URDF projection and typed transforms/FK, separately framed controller FK/T=104 easing emulator, nominal RC03 scene, real-JPEG fixed-overview tag detection/planar pose, nominal target maps, deterministic tool-tip paths, bounded reach/park/full-route IK, solver-task numerical-rank diagnostics, strict virtual-workcell bootstrap, locked rank-1 multi-action virtual commissioning with pixel-gated hover/fault/record/replay, aggregate prehardware qualification, and offline raw-feedback/capture-bundle eye-on-arm checks—to reject bad assumptions early. It is simulation-only and supplies no physical evidence or authority.
    The current software checkpoint additionally binds semantic profiles to their target catalogs, validates the placemat across 17 cross-source checks, locks the software simulation inputs by SHA-256, and can sweep every nominal target/phase/tool case plus required park. Under the nominal -100 mm virtual tool, contact screening accepts only 6/46 keyboard targets (`A`, `C`, `SPACE`, `TAB`, `X`, `Z`) but 29/29 phone targets. Across all tools and phases, 625/1200 target poses solve. The frozen nominal park solves only for the no-extension `hand_tcp_only` case at zero effective joint margin; the 80, 100, and 120 mm contact-tool cases reject it.
 
    A bounded park optimizer now selects the simulation-only board-frame overlay `(290, 10, 70) mm`. Both selected 100 mm tools accept that point independently, with `0.2704734350` worst normalized arm-joint margin and 10 mm modeled planar tool-tip clearance. With this overlay, the keyboard `"a"` route accepts 24/24 sampled waypoints and reports a diagnostic pass with unsupported checks. The phone `"a"` route still stops at `APPROACH` because its normalized arm margin is `0.000657824`, below the `0.01` gate; both fully screened reach finalists also reject phone `key_a` contact. The trajectory schema-v2 gate now rejects numerical rank loss in the solver's weighted five-constraint task Jacobian, but normalized conditioning is report-only. Full physical six-dimensional singularity/manipulability and all link/holder/camera/tool/cable collision volumes remain blockers. Treat the combined evidence as a mandatory base/tool/layout redesign input, not measured physical reach evidence.
@@ -243,8 +244,8 @@ Prepare the next software-only freeze without writing anything:
 
 ```powershell
 python software/tools/refreeze_build_alignment.py `
-  --expected-current-freeze-id ROCELL-PHASE0-RC03-INT-R1-FREEZE-011 `
-  --new-freeze-number 12 `
+  --expected-current-freeze-id ROCELL-PHASE0-RC03-INT-R1-FREEZE-012 `
+  --new-freeze-number 13 `
   --date YYYY-MM-DD `
   --reason "Approved complete RC03 source reconciliation" `
   --approval-reference "controlled review record or signer reference"
@@ -255,8 +256,8 @@ transaction path, input-set hash, and `plan_sha256`. Apply only that exact plan:
 
 ```powershell
 python software/tools/refreeze_build_alignment.py `
-  --expected-current-freeze-id ROCELL-PHASE0-RC03-INT-R1-FREEZE-011 `
-  --new-freeze-number 12 `
+  --expected-current-freeze-id ROCELL-PHASE0-RC03-INT-R1-FREEZE-012 `
+  --new-freeze-number 13 `
   --date YYYY-MM-DD `
   --reason "Approved complete RC03 source reconciliation" `
   --approval-reference "controlled review record or signer reference" `

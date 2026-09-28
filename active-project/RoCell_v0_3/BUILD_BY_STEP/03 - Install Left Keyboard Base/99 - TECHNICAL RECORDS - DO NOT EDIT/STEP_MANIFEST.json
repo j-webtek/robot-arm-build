@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "layout_version": 4,
+  "layout_version": 6,
   "design_revision": "RC03-INT-R1",
-  "package_definition_hash": "7a6947f2de52f63133c5b9647b9b479ccd9d896906c2b575e76c106e1e5dccca",
-  "canonical_snapshot_hash": "05d11599e6d4a2937e0207535b298aa809ff08c79840350c7716666ce6d12755",
-  "canonical_input_hash": "05d11599e6d4a2937e0207535b298aa809ff08c79840350c7716666ce6d12755",
+  "package_definition_hash": "65bbe688892e0dcdd2115a28d9f155921587915d80e98f6b01d81aaedcbde3a5",
+  "canonical_snapshot_hash": "06efd7afc3a2b406d822f18b0ae06189c5edbb01dbbd069e0edf35718290f45c",
+  "canonical_input_hash": "06efd7afc3a2b406d822f18b0ae06189c5edbb01dbbd069e0edf35718290f45c",
   "step_id": "03",
   "slug": "install_keyboard_master",
   "title": "Install the keyboard master station",
@@ -221,8 +221,8 @@
     },
     {
       "canonical_path": "README_FIRST.md",
-      "sha256": "ba84a14a17983d774a0278b4b68571d920b0dc4d186fd05c991b1d149d388a9e",
-      "size_bytes": 9962,
+      "sha256": "6e3e5a4bf57be1858e0b691c09b0c7683cc4266eb7df666d371136aa5800ee42",
+      "size_bytes": 10683,
       "roles": [
         "release entry point"
       ],
@@ -629,8 +629,8 @@
     },
     {
       "canonical_path": "scripts/build_step_packages.py",
-      "sha256": "09ec78a5512ee6cb6997b3200e7bd1cdb1418eeb2fb477f339f331f14191f8a2",
-      "size_bytes": 171609,
+      "sha256": "38b9b55bfaad6c80f2465bd99abc134b8a7b488d91e6fc357c3f93f05ec699b9",
+      "size_bytes": 175793,
       "roles": [
         "step-package generator and validator"
       ],
@@ -748,6 +748,18 @@
       "job_ids": []
     },
     {
+      "canonical_path": "scripts/stage_hash_bound_artifacts.py",
+      "sha256": "a18eb88d17b2adbe930857f4539079bad96090320c4ea161b5d38a29ec44e3d8",
+      "size_bytes": 8660,
+      "roles": [
+        "hash-bound canonical artifact staging and offline verification"
+      ],
+      "actions": [
+        "run_for_standalone_export"
+      ],
+      "job_ids": []
+    },
+    {
       "canonical_path": "scripts/step_evidence_common.py",
       "sha256": "93fb598ee2de6dc0ba60d6eec7291458a728cb087dbe724b9e3bf09aa8933f8a",
       "size_bytes": 9078,
@@ -837,9 +849,9 @@
       "job_ids": [
         "00A"
       ],
-      "local_operator_copy": "03 - STL MODELS/hardware_fit_gauge.stl",
-      "local_copy_sha256": "4a9a35b618a420931b7e8b6b717aee4a3eb68f8948fff04e5a69fd65266e9e42",
-      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT",
+      "canonical_reference": "../../../stl/hardware_fit_gauge.stl",
+      "artifact_resolution": "canonical_hash_bound_reference"
     },
     {
       "canonical_path": "stl/keyboard_corner_fit_test.stl",
@@ -854,9 +866,9 @@
       "job_ids": [
         "00A"
       ],
-      "local_operator_copy": "03 - STL MODELS/keyboard_corner_fit_test.stl",
-      "local_copy_sha256": "c12095d3506ea86025fcef6cd34702efb391aec1e00c9b23fd77bdb250703ad3",
-      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT",
+      "canonical_reference": "../../../stl/keyboard_corner_fit_test.stl",
+      "artifact_resolution": "canonical_hash_bound_reference"
     },
     {
       "canonical_path": "stl/keyboard_rear_clamp.stl",
@@ -871,9 +883,9 @@
       "job_ids": [
         "03B"
       ],
-      "local_operator_copy": "03 - STL MODELS/keyboard_rear_clamp.stl",
-      "local_copy_sha256": "78c591895ae8392a5af9832f56cb7f15cb6a401c490153a1914b71ff5bcba373",
-      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT",
+      "canonical_reference": "../../../stl/keyboard_rear_clamp.stl",
+      "artifact_resolution": "canonical_hash_bound_reference"
     },
     {
       "canonical_path": "stl/keyboard_station_left.stl",
@@ -888,9 +900,9 @@
       "job_ids": [
         "01"
       ],
-      "local_operator_copy": "03 - STL MODELS/keyboard_station_left.stl",
-      "local_copy_sha256": "a19b4288b9d6c3fae66f3baa3aa7726fc4acaa440bdb3f16ad3a7ea7791e9a1f",
-      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT",
+      "canonical_reference": "../../../stl/keyboard_station_left.stl",
+      "artifact_resolution": "canonical_hash_bound_reference"
     },
     {
       "canonical_path": "stl/m4_washer_fit_gauge.stl",
@@ -905,9 +917,9 @@
       "job_ids": [
         "00A"
       ],
-      "local_operator_copy": "03 - STL MODELS/m4_washer_fit_gauge.stl",
-      "local_copy_sha256": "98f27d3b7f274754a274f9856a8318c8b0c98f2fb5b485223fec74236ae349ff",
-      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT",
+      "canonical_reference": "../../../stl/m4_washer_fit_gauge.stl",
+      "artifact_resolution": "canonical_hash_bound_reference"
     },
     {
       "canonical_path": "stl/station_locator_fit_gauge.stl",
@@ -922,33 +934,34 @@
       "job_ids": [
         "00A"
       ],
-      "local_operator_copy": "03 - STL MODELS/station_locator_fit_gauge.stl",
-      "local_copy_sha256": "7b34ff9a05495ce702310171cd27c5201e0c1ee54fede8c9cdbeea7260d3d1d5",
-      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT",
+      "canonical_reference": "../../../stl/station_locator_fit_gauge.stl",
+      "artifact_resolution": "canonical_hash_bound_reference"
     }
   ],
-  "local_stl_copy_count": 6,
+  "local_stl_copy_count": 0,
+  "hash_bound_stl_reference_count": 6,
   "next_step": "04",
   "operator_writable_directory": "06 - SAVE MEASUREMENTS AND PHOTOS",
   "generated_control_hashes": {
     "00 - START HERE.md": "cf14904d57427a0003c7c8a69454b7fbbdb1eca1acc67c46dfdd1043ef067c89",
     "01 - BEFORE YOU START.md": "e47c096124bc45d25afd25ac60c5f1a6e28a776b77f51fe8a9a7b074759a9c87",
-    "02 - PARTS AND TOOLS CHECKLIST.md": "0ed7e7e108d74538e646da62cddd8c42ba61407428247e5b4ced09cfa50e5d66",
-    "03 - STL MODELS/READ ME - HOW TO USE THESE MODELS.md": "dc235d0bfbd4b9e3bc7dfd6096123f561e38a28a61db4702956b0398660b4055",
-    "03 - STL MODELS/STL MODEL LIST.csv": "821e19c3e607d8d79417a9e45a44bf20696867dde6000dc4fb3a406ab4f6cde7",
+    "02 - PARTS AND TOOLS CHECKLIST.md": "1c1753da5d1ee866d07ed3a413a301495b2852b9df722ff2311c811b2be8645b",
+    "03 - STL MODELS/READ ME - HOW TO USE THESE MODELS.md": "22359f667dc9d6e8ca0d92e0dc4b7b5ddf0bf8c56a8879469b71f55905ba4c82",
+    "03 - STL MODELS/STL MODEL LIST.csv": "24b6609013bb813074f9aa94c80321689ad723562243ebcc1bf1213383450e90",
     "03B - PRINT SETTINGS FOR THIS STEP.md": "33f4e0f8da1f1504412e73ef76e9b0b72192dd08af7a77c7d6100282c768b114",
     "04 - STEP-BY-STEP INSTRUCTIONS.md": "198cf3fb9b8e75636cc4701a626819e3bcf0f168f89f1ca3b9187c9bceaedee0",
     "05 - CHECK YOUR WORK.md": "969408a4ca60543f5746a556ec55a03bfdf85a3df0d54e8dd3694e3e36d590b5",
     "06 - SAVE MEASUREMENTS AND PHOTOS/READ ME - WHAT TO RECORD.md": "e836cb87481a247490778a6137653006cc2f97ffc564d5f5e9a77120c8fcd813",
-    "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/measurement_record.json": "77dd595f78f24267d6352d473c675099dcd13c02eae1f6602e27e2345a335588",
-    "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/signoff.json": "c2e17ab3b52d812723f65c4a1b42e48451b57caf44d262b15ba261f1a35a2fa2",
+    "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/measurement_record.json": "e17d37a058f8b91deb3733e585f09795655cdbbc6fc03fa6d203a39bdc7f7627",
+    "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/signoff.json": "03df682e9d4bfa90988820db11671dbaf278392010ad26e47fe5f4b3170300b4",
     "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/Measurements Checklist.md": "574bd5d82e78d37a01ec4aac645d6f4569dd3acaaf4145131cb58d7808babb45",
     "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/Finish and Sign Off.md": "f8d3d178039f8c68676bf06420a66a602b52db509e10a0435ee09e74ae83cf65",
     "07 - FINISH THIS STEP AND CONTINUE.md": "7787c30fe55bfe2ed590088767a74d544d52fd1e990ee38d7f4c8e9db60bd43e",
-    "99 - TECHNICAL RECORDS - DO NOT EDIT/OPEN CONTROLLED FILES.md": "1e031ac82f5114f40c4ebdd6e69457098cb725ca84b7379ca4642892efcfd0a1",
-    "99 - TECHNICAL RECORDS - DO NOT EDIT/FILE INDEX.csv": "eea9de52c674793f98c373edef2435d5766b890bbc7921db1f0da825e59a98a4",
-    "99 - TECHNICAL RECORDS - DO NOT EDIT/FILE MANIFEST.json": "46647629ae0bf3a85250b8276ea308cfa572a39a091f5ff9d33d961cd1261e77",
-    "99 - TECHNICAL RECORDS - DO NOT EDIT/SHA256SUMS.txt": "f63eb9ef89166d1a076dc0b565640a574cb4fa110b6365919d3a9ae4e2c2b30d",
+    "99 - TECHNICAL RECORDS - DO NOT EDIT/OPEN CONTROLLED FILES.md": "cead23383f3e5c8d9eb88ec9583a0cafe715980838b4afc4a0d3fbf3cf4eb969",
+    "99 - TECHNICAL RECORDS - DO NOT EDIT/FILE INDEX.csv": "70ca99d3c4b52406c639c5b52b6c1176b503cef33f391738641bd14c44ab1c42",
+    "99 - TECHNICAL RECORDS - DO NOT EDIT/FILE MANIFEST.json": "ed56361d65909860cf7bedc2ae81fac2188e80495f98916b23532bcd5f11f3f2",
+    "99 - TECHNICAL RECORDS - DO NOT EDIT/SHA256SUMS.txt": "1425966862c44448b8d3d8834153eded6244740d463b590833d029606579c18d",
     "99 - TECHNICAL RECORDS - DO NOT EDIT/HARDWARE AND TOOLS.csv": "f47bcc053a060e19d0a242c3550964453ec729c0b1f920a49269fd881c5e1bb4"
   }
 }

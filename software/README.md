@@ -358,6 +358,7 @@ rocell physical-onboard verify-v2-runtime --cell-id CELL-A --json
 rocell physical-onboard new-v2 --cell-id CELL-A --session-id arrival-v2-local-001 --json
 rocell physical-onboard verify-v2-runtime --cell-id CELL-A --session-id arrival-v2-local-001 --json
 rocell status --json
+rocell integration-readiness --json
 rocell bootstrap-sim --json
 rocell qualify-prehardware --profile quick --require-pass --json
 rocell qualify-prehardware --profile standard --require-pass --json
@@ -430,6 +431,7 @@ rocell verify-eye-on-arm-capture-bundle-offline --dataset .\capture.json --datas
 | `qualify-prehardware` | Run the locked aggregate startup/correction/contact/outcome/fault/determinism campaign; `standard` also requires a fresh 75/75 independent-route screen, while every result remains physically unready and zero-authority |
 | `replay-prehardware-qualification` | Strictly verify the dedicated six-artifact qualification package, reconstruct its locked policy, and recompute the complete quick/standard campaign before comparing every artifact |
 | `doctor --mode sim` | Side-effect-free diagnostics backed by the complete virtual bootstrap |
+| `integration-readiness` | Compose retained AI/arm evidence into one content-bound blocker report without opening a camera or controller; add `--require-ready` for a fail-closed automation gate |
 | `camera-profile` | Validate and report the exact B0477 purchase-time profile and its bounded synthetic projection without enumerating or opening hardware |
 | `rehearse-camera-commissioning` | Exercise synthetic persistent identity, full-native USB3/YUY2 mode, manual-control, and close/reopen gates; a pass never commissions a camera |
 | `rehearse-b0477-uvc-inventory` | Parse a bounded UVC inventory through a provider-neutral interface and deterministic fake provider; require persistent identity, exact native USB3/YUY2 negotiation, manual controls, and reopen stability without enumerating hardware |
@@ -459,7 +461,7 @@ rocell verify-eye-on-arm-capture-bundle-offline --dataset .\capture.json --datas
 | `solve-eye-on-arm-offline` | Solve an optional Phase-2 strict, pre-split, hash-pinned eye-on-arm dataset and emit a zero-authority diagnostic candidate report |
 | `verify-eye-on-arm-fk-offline` | For optional Phase 2, bind exact dataset/evidence bytes to the verified active manifest/build/model and recompute every stored carrier pose from raw T=1051 fields; no commissioning or artifact promotion |
 | `verify-eye-on-arm-capture-bundle-offline` | For optional Phase 2, structurally bind exact dataset/evidence/bundle files, raw T=1051 lines, JPEGs, normalized detections, and capture brackets; physical timing and commissioning remain unqualified |
-| `arm-feedback` | Future gated one-shot T=105 request/T=1051 response; a single-use build capability is consumed at the serial boundary, and active Freeze 011 denies it before port access |
+| `arm-feedback` | Future gated one-shot T=105 request/T=1051 response; a single-use build capability is consumed at the serial boundary, and active Freeze 012 denies it before port access |
 
 `simulate-integrated-v2` writes durable journals and therefore requires a new,
 nonexistent `--journal-root` for an initial run. Reopening the exact same

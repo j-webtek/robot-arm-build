@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "layout_version": 4,
+  "layout_version": 6,
   "design_revision": "RC03-INT-R1",
-  "package_definition_hash": "7a6947f2de52f63133c5b9647b9b479ccd9d896906c2b575e76c106e1e5dccca",
-  "canonical_snapshot_hash": "05d11599e6d4a2937e0207535b298aa809ff08c79840350c7716666ce6d12755",
-  "canonical_input_hash": "05d11599e6d4a2937e0207535b298aa809ff08c79840350c7716666ce6d12755",
+  "package_definition_hash": "65bbe688892e0dcdd2115a28d9f155921587915d80e98f6b01d81aaedcbde3a5",
+  "canonical_snapshot_hash": "06efd7afc3a2b406d822f18b0ae06189c5edbb01dbbd069e0edf35718290f45c",
+  "canonical_input_hash": "06efd7afc3a2b406d822f18b0ae06189c5edbb01dbbd069e0edf35718290f45c",
   "step_id": "09",
   "slug": "load_phone_and_route_cable",
   "title": "Load the phone and route its cable",
@@ -275,8 +275,8 @@
     },
     {
       "canonical_path": "README_FIRST.md",
-      "sha256": "ba84a14a17983d774a0278b4b68571d920b0dc4d186fd05c991b1d149d388a9e",
-      "size_bytes": 9962,
+      "sha256": "6e3e5a4bf57be1858e0b691c09b0c7683cc4266eb7df666d371136aa5800ee42",
+      "size_bytes": 10683,
       "roles": [
         "release entry point"
       ],
@@ -774,8 +774,8 @@
     },
     {
       "canonical_path": "print_plates_3mf/03C1_ABS_phone_clamp_rail.3mf",
-      "sha256": "e992ea3f29097bd346095a5c5ac08c33c9e2d35d7e9c27bce6041e43e3a9ef39",
-      "size_bytes": 343643,
+      "sha256": "da815d1b99c985a0d25285a66955a8793905d2ff27d3ef92c9df4bb6487a5844",
+      "size_bytes": 309687,
       "roles": [
         "geometry-only QIDI plate"
       ],
@@ -924,8 +924,8 @@
     },
     {
       "canonical_path": "scripts/build_step_packages.py",
-      "sha256": "09ec78a5512ee6cb6997b3200e7bd1cdb1418eeb2fb477f339f331f14191f8a2",
-      "size_bytes": 171609,
+      "sha256": "38b9b55bfaad6c80f2465bd99abc134b8a7b488d91e6fc357c3f93f05ec699b9",
+      "size_bytes": 175793,
       "roles": [
         "step-package generator and validator"
       ],
@@ -1043,6 +1043,18 @@
       "job_ids": []
     },
     {
+      "canonical_path": "scripts/stage_hash_bound_artifacts.py",
+      "sha256": "a18eb88d17b2adbe930857f4539079bad96090320c4ea161b5d38a29ec44e3d8",
+      "size_bytes": 8660,
+      "roles": [
+        "hash-bound canonical artifact staging and offline verification"
+      ],
+      "actions": [
+        "run_for_standalone_export"
+      ],
+      "job_ids": []
+    },
+    {
       "canonical_path": "scripts/step_evidence_common.py",
       "sha256": "93fb598ee2de6dc0ba60d6eec7291458a728cb087dbe724b9e3bf09aa8933f8a",
       "size_bytes": 9078,
@@ -1148,9 +1160,9 @@
       "job_ids": [
         "00B"
       ],
-      "local_operator_copy": "03 - STL MODELS/cable_tie_saddle_fit_gauge.stl",
-      "local_copy_sha256": "8de2b07efef5bef8ef9297407c0bd22dd7945adc16f84fd0dab236e304398598",
-      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT",
+      "canonical_reference": "../../../stl/cable_tie_saddle_fit_gauge.stl",
+      "artifact_resolution": "canonical_hash_bound_reference"
     },
     {
       "canonical_path": "stl/hardware_fit_gauge.stl",
@@ -1165,9 +1177,9 @@
       "job_ids": [
         "00E"
       ],
-      "local_operator_copy": "03 - STL MODELS/hardware_fit_gauge.stl",
-      "local_copy_sha256": "4a9a35b618a420931b7e8b6b717aee4a3eb68f8948fff04e5a69fd65266e9e42",
-      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT",
+      "canonical_reference": "../../../stl/hardware_fit_gauge.stl",
+      "artifact_resolution": "canonical_hash_bound_reference"
     },
     {
       "canonical_path": "stl/m4_captive_nut_fit_gauge.stl",
@@ -1182,9 +1194,9 @@
       "job_ids": [
         "00B"
       ],
-      "local_operator_copy": "03 - STL MODELS/m4_captive_nut_fit_gauge.stl",
-      "local_copy_sha256": "5771bfa01542ab24999c806f4347486d6cc1800f6a13a17ebfdb9264644e8aec",
-      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT",
+      "canonical_reference": "../../../stl/m4_captive_nut_fit_gauge.stl",
+      "artifact_resolution": "canonical_hash_bound_reference"
     },
     {
       "canonical_path": "stl/m4_washer_fit_gauge.stl",
@@ -1199,9 +1211,9 @@
       "job_ids": [
         "00B"
       ],
-      "local_operator_copy": "03 - STL MODELS/m4_washer_fit_gauge.stl",
-      "local_copy_sha256": "98f27d3b7f274754a274f9856a8318c8b0c98f2fb5b485223fec74236ae349ff",
-      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT",
+      "canonical_reference": "../../../stl/m4_washer_fit_gauge.stl",
+      "artifact_resolution": "canonical_hash_bound_reference"
     },
     {
       "canonical_path": "stl/phone_clamp_rail.stl",
@@ -1216,9 +1228,9 @@
       "job_ids": [
         "03C1"
       ],
-      "local_operator_copy": "03 - STL MODELS/phone_clamp_rail.stl",
-      "local_copy_sha256": "f766a24143f11769a0bcef7236b09938f4c02434b3b5d8e6d77b21b37f49dcff",
-      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT",
+      "canonical_reference": "../../../stl/phone_clamp_rail.stl",
+      "artifact_resolution": "canonical_hash_bound_reference"
     },
     {
       "canonical_path": "stl/phone_clamp_tip_TPU_M4.stl",
@@ -1234,9 +1246,9 @@
         "05A",
         "05B"
       ],
-      "local_operator_copy": "03 - STL MODELS/phone_clamp_tip_TPU_M4.stl",
-      "local_copy_sha256": "77883a940d153460346de3ffdfcf3a281e2572ab404dd1f4dc50ec8808afef94",
-      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT",
+      "canonical_reference": "../../../stl/phone_clamp_tip_TPU_M4.stl",
+      "artifact_resolution": "canonical_hash_bound_reference"
     },
     {
       "canonical_path": "stl/phone_m3_insert_fit_gauge.stl",
@@ -1251,9 +1263,9 @@
       "job_ids": [
         "00B"
       ],
-      "local_operator_copy": "03 - STL MODELS/phone_m3_insert_fit_gauge.stl",
-      "local_copy_sha256": "54a7990f706256dd30d3d5ea7487f479e970c1e1d8f212be1996b6df6d1a2e65",
-      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT",
+      "canonical_reference": "../../../stl/phone_m3_insert_fit_gauge.stl",
+      "artifact_resolution": "canonical_hash_bound_reference"
     },
     {
       "canonical_path": "stl/phone_tcp_station.stl",
@@ -1268,9 +1280,9 @@
       "job_ids": [
         "03A"
       ],
-      "local_operator_copy": "03 - STL MODELS/phone_tcp_station.stl",
-      "local_copy_sha256": "63e02e28f9bb818007564eab7e82e2b9ce8417f30bdf3cbec3c3a86ec08ac32e",
-      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT",
+      "canonical_reference": "../../../stl/phone_tcp_station.stl",
+      "artifact_resolution": "canonical_hash_bound_reference"
     },
     {
       "canonical_path": "stl/phone_width_fit_test.stl",
@@ -1285,9 +1297,9 @@
       "job_ids": [
         "00B"
       ],
-      "local_operator_copy": "03 - STL MODELS/phone_width_fit_test.stl",
-      "local_copy_sha256": "1091a6d591259a4a22b6d9fd7b36d4a8264807ef5c169fe3c5b1019a16420cfa",
-      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT",
+      "canonical_reference": "../../../stl/phone_width_fit_test.stl",
+      "artifact_resolution": "canonical_hash_bound_reference"
     },
     {
       "canonical_path": "stl/setup_hardware_fit_gauge.stl",
@@ -1302,9 +1314,9 @@
       "job_ids": [
         "00E"
       ],
-      "local_operator_copy": "03 - STL MODELS/setup_hardware_fit_gauge.stl",
-      "local_copy_sha256": "e6394a26fe104fb2af1b05df14865a5be2908bf6e99fab79c93aa034a2dc57b4",
-      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT",
+      "canonical_reference": "../../../stl/setup_hardware_fit_gauge.stl",
+      "artifact_resolution": "canonical_hash_bound_reference"
     },
     {
       "canonical_path": "stl/station_locator_fit_gauge.stl",
@@ -1319,9 +1331,9 @@
       "job_ids": [
         "00B"
       ],
-      "local_operator_copy": "03 - STL MODELS/station_locator_fit_gauge.stl",
-      "local_copy_sha256": "7b34ff9a05495ce702310171cd27c5201e0c1ee54fede8c9cdbeea7260d3d1d5",
-      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT",
+      "canonical_reference": "../../../stl/station_locator_fit_gauge.stl",
+      "artifact_resolution": "canonical_hash_bound_reference"
     },
     {
       "canonical_path": "stl/tpu_tip_retention_gauge.stl",
@@ -1336,33 +1348,34 @@
       "job_ids": [
         "00E"
       ],
-      "local_operator_copy": "03 - STL MODELS/tpu_tip_retention_gauge.stl",
-      "local_copy_sha256": "0476c9c867a9f28816c5df107f8bcff9e44b7e1ba79e8927501a8d1c6d32b777",
-      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT",
+      "canonical_reference": "../../../stl/tpu_tip_retention_gauge.stl",
+      "artifact_resolution": "canonical_hash_bound_reference"
     }
   ],
-  "local_stl_copy_count": 12,
+  "local_stl_copy_count": 0,
+  "hash_bound_stl_reference_count": 12,
   "next_step": "10",
   "operator_writable_directory": "06 - SAVE MEASUREMENTS AND PHOTOS",
   "generated_control_hashes": {
     "00 - START HERE.md": "c6ba6f9d3cbdcf95e75683f420e63010ad95c82b97cc29660926dded8cf7baff",
     "01 - BEFORE YOU START.md": "097f0bfdb454c1fca0929a416feea561324e5e755fc205eb82886630cc345377",
-    "02 - PARTS AND TOOLS CHECKLIST.md": "8dbf6c061070b4b0b0fc77ce729ae58c80a77dc58dd57cb2fd112c5939c56bb6",
-    "03 - STL MODELS/READ ME - HOW TO USE THESE MODELS.md": "5b2fc4100f5d7eb4f8d2f741d393c538024c57fd8e2aeb2c1d3a97cc8880442a",
-    "03 - STL MODELS/STL MODEL LIST.csv": "be2644a1fb0d5c663931874a5a89b1253867bff13b6756db38da527badea8d11",
+    "02 - PARTS AND TOOLS CHECKLIST.md": "5d7fb62c00482d5f137cb02707a1b9837fe1705e08b8f8c274a55f26bdcd8052",
+    "03 - STL MODELS/READ ME - HOW TO USE THESE MODELS.md": "a05eb725e78aa222442f9facdadd846715fcaab859f3b3fc63d6aac74626a149",
+    "03 - STL MODELS/STL MODEL LIST.csv": "781889944e526a1c6f1769306bc90c5fb348afe9a1b6683e7f2f984248a82640",
     "03B - PRINT SETTINGS FOR THIS STEP.md": "5dde99f833bfb72a4efb824a119ec78980d709aced2fbc3057bfb314b6457b89",
     "04 - STEP-BY-STEP INSTRUCTIONS.md": "555a1e3728b42fc8fa724c4060b4899f4b74a99cffae68fd19d778f8e9843c81",
     "05 - CHECK YOUR WORK.md": "03f4e3ca70884c5979c77d4b7ceaa099eeb20086865bf75ab3e2abefd6ed270a",
     "06 - SAVE MEASUREMENTS AND PHOTOS/READ ME - WHAT TO RECORD.md": "57008a219ecb9c616b1820fe562e52428d0c3a583ca6f43e1fa3badcf6f21354",
-    "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/measurement_record.json": "bae2b64199bd79e5ce6967880be418420bcdca1d5d2b71e7f6e48c65d2a9f76b",
-    "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/signoff.json": "8b95afc82cb35b675c3c6e7d9ad0c6f92e2ff3d28f09fd06a247d7136ea33f40",
+    "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/measurement_record.json": "a35ab2592b6cd6663cc2b4a29cd8e6d91b562cd0ab7b5072e30f8bb239154a27",
+    "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/signoff.json": "a7fb1dd5ed09276f3e0fe339f69b7a9ec397a8405ae01cb094c6324626fabc3e",
     "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/Measurements Checklist.md": "7c48b45de13e8d00298d5af5a7c4a584177f7e9b8a2ef5e26abfbe73db916375",
     "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/Finish and Sign Off.md": "f70db8d91bbaff0d15dcce84654b2eeb6643c08ac7a69cc0f2ccd949007abce9",
     "07 - FINISH THIS STEP AND CONTINUE.md": "3200fe202e0b6aef4ee24fa580093660abaf7b8781a8101714cc8048db1802ad",
-    "99 - TECHNICAL RECORDS - DO NOT EDIT/OPEN CONTROLLED FILES.md": "307f9a5691582f2424b9bb3f7072d7141dc3486950d4ac6bdff974d68bda2093",
-    "99 - TECHNICAL RECORDS - DO NOT EDIT/FILE INDEX.csv": "6a9af8da4fa450de8fa1cef3f6ecd37fd1dc6c2ac2bdfefec5dba8fd593adf88",
-    "99 - TECHNICAL RECORDS - DO NOT EDIT/FILE MANIFEST.json": "87e7a368cd9e0ce10057ca73e59a85c787c622e7041ed48a311fb1a0873ae24e",
-    "99 - TECHNICAL RECORDS - DO NOT EDIT/SHA256SUMS.txt": "68fa24b30e8777a6c70fbde5999c51170ad4b89cc87903ccb4e97df26e3e2996",
+    "99 - TECHNICAL RECORDS - DO NOT EDIT/OPEN CONTROLLED FILES.md": "2d6ac4f6bbe2c481b7a8fdcee97eae70de618181724b1544454d5a34177dc46b",
+    "99 - TECHNICAL RECORDS - DO NOT EDIT/FILE INDEX.csv": "fb2e9d04e35bcb7c3aaf4a6f98c735fa73cc0d555cebdb56ff17552f611c01d0",
+    "99 - TECHNICAL RECORDS - DO NOT EDIT/FILE MANIFEST.json": "7b38630f039714d90ab58557d64d774b35ed548b4550bd6b3029b162db1c338b",
+    "99 - TECHNICAL RECORDS - DO NOT EDIT/SHA256SUMS.txt": "276532e8cfb105aaa51c7d25f77f3032d215852e8b660304440395e398d658fa",
     "99 - TECHNICAL RECORDS - DO NOT EDIT/HARDWARE AND TOOLS.csv": "fc1515e1a2c2a585f540d5a439154a80a84c778e3e23ac612248db74a7b37b21"
   }
 }

@@ -1,6 +1,6 @@
 # Keyboard typing runbook
 
-> **Active Freeze 011 camera architecture:** Phase 1 keyboard registration
+> **Active Freeze 012 camera architecture:** Phase 1 keyboard registration
 > uses the purchased Arducam B0477/IMX283 USB 3.0 camera and delivered nominal
 > 16 mm C-mount lens on a rigid static overhead eye-to-hand support. Received
 > identity, final support/height, mode/settings, and calibration remain open.
@@ -13,7 +13,7 @@ This runbook currently authorizes hardware-free planning and simulation only.
 It does not authorize powering or moving the RoArm-M3-Pro, opening a serial
 port, lowering a tool, or pressing the keyboard.
 
-Active Freeze 011 names the Perixx PERIBOARD-409 U, USB Type-A, English (US),
+Active Freeze 012 names the Perixx PERIBOARD-409 U, USB Type-A, English (US),
 black as the selected-unqualified keyboard candidate. Its exact identity,
 physical layout, OS layout, pose, keys, press travel, and safe regions are not
 yet measured. The retained Freeze-005-derived nominal ANSI target map is a
