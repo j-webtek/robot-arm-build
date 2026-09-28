@@ -114,7 +114,8 @@ production scaffold rather than only a prose storyboard:
   contact benchmark;
 - `build_storyboard_v21_benchmark.py` reuses the measured workcell scene,
   organizes reference assets in a locked collection, creates four native
-  Blender camera rigs (`macro`, `dolly`, `arm_follow`, and `hero`), and adds
+  Blender camera rigs (`macro`, `dolly`, `arm_follow`, `hero`, `overhead`, and
+  `low_three_quarter`), and adds
   the green permit, blue uncertainty, and dotted no-authority preview;
 - `validate_storyboard_v21.py` fails when timings drift, a shot is missing, a
   camera rig is unused, or the first-contact phase order changes.
@@ -123,6 +124,15 @@ Validate the editorial contract without Blender:
 
 ```powershell
 python presentations/blender/validate_storyboard_v21.py
+```
+
+Render the scene-7 toolhead insert and laptop focus-pull checkpoints:
+
+```powershell
+& "C:\Program Files\Blender Foundation\Blender 4.3\blender.exe" `
+  --background --factory-startup `
+  --python presentations/blender/build_storyboard_v21_benchmark.py -- `
+  --preview-scene7
 ```
 
 Build the editable scene and six local benchmark frames:

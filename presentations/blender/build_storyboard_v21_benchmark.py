@@ -120,6 +120,40 @@ def animate_camera(camera: bpy.types.Object, aim: bpy.types.Object,
     key_pose(aim, end, target)
 
 
+def add_operator_laptop(
+    mats: dict[str, bpy.types.Material], collection: bpy.types.Collection,
+) -> Vector:
+    """Add the presentation laptop needed by the request and test-pad shots.
+
+    Its placement is editorial rather than a measured RC03 board interface, so
+    every object is marked presentation-only. The screen target gives scene 7
+    a real depth plane for its closing rack focus.
+    """
+    deck = base.cube(
+        "Presentation operator laptop deck", base.board_point(220, 455, 10),
+        (0.32, 0.19, 0.016), mats["abs"], 0.008,
+    )
+    screen_center = base.board_point(220, 520, 150)
+    lid = base.cube(
+        "Presentation operator laptop lid", screen_center,
+        (0.30, 0.014, 0.19), mats["abs"], 0.008,
+    )
+    display = base.cube(
+        "Presentation operator laptop display",
+        screen_center + Vector((0, -0.008, 0)),
+        (0.276, 0.002, 0.162), mats["screen"], 0.003,
+    )
+    label = base.board_text(
+        "Presentation operator laptop test pad", "LOCAL TEST PAD   ready",
+        screen_center + Vector((0, -0.010, 0)), 0.016, mats["legend"],
+    )
+    label.rotation_euler.x = math.radians(90)
+    for obj in (deck, lid, display, label):
+        obj["presentation_only"] = True
+        classify(obj, collection, "presentation_operator_laptop")
+    return screen_center + Vector((0, -0.012, 0))
+
+
 def set_scale(obj: bpy.types.Object, frame: int, scale: float) -> None:
     obj.scale = (scale, scale, scale)
     obj.keyframe_insert("scale", frame=frame)
@@ -780,6 +814,7 @@ def build() -> bpy.types.Scene:
             obj.hide_render = True
 
     mats = existing_materials()
+    laptop_focus = add_operator_laptop(mats, assets)
     # Preserve a readable dark phone surface under the brighter product-shot
     # lighting used by the v2.1 cameras. This affects presentation materials
     # only; the measured chassis and screen-plane dimensions stay unchanged.
@@ -872,6 +907,10 @@ def build() -> bpy.types.Scene:
             "low_three_quarter", Vector((0.50, -0.92, 0.30)), r_target, 58, cameras
         ),
     }
+    toolhead_target = base.board_point(*r_xy_mm, 110)
+    animate_camera(*rigs["macro"], 794, 840,
+                   Vector((0.11, -0.38, 0.27)), Vector((0.09, -0.34, 0.25)),
+                   toolhead_target)
     animate_camera(*rigs["macro"], 961, 1152,
                    Vector((0.28, -0.58, 0.35)), Vector((0.21, -0.50, 0.29)), r_target)
     animate_camera(*rigs["dolly"], 361, 504,
@@ -895,6 +934,16 @@ def build() -> bpy.types.Scene:
                    Vector((0.0, 0.0, 1.28)), Vector((0.0, 0.0, 1.18)), board_target)
     animate_camera(*rigs["low_three_quarter"], 793, 1152,
                    Vector((0.50, -0.92, 0.30)), Vector((0.44, -0.82, 0.33)), r_target)
+    # Scene 7 holds the composition while focus moves from the physical
+    # toolhead to the operator laptop in the background. Scene 8 begins with a
+    # deliberate edit back to the arm plane rather than an accidental drift.
+    low_camera = rigs["low_three_quarter"][0]
+    low_camera.data.dof.focus_object = None
+    for frame, distance in ((841, 0.78), (912, 0.78), (960, 1.20),
+                            (961, 0.78), (1152, 0.72)):
+        low_camera.data.dof.focus_distance = distance
+        low_camera.data.dof.keyframe_insert("focus_distance", frame=frame)
+    low_camera["scene_7_focus_destination"] = tuple(laptop_focus)
 
     scene.timeline_markers.clear()
     for shot in manifest["shots"]:
@@ -949,6 +998,8 @@ def main() -> None:
     preview_frames: tuple[int, ...] = ()
     if "--preview-benchmark" in args:
         preview_frames += (961, 1009, 1049, 1068, 1093, 1140)
+    if "--preview-scene7" in args:
+        preview_frames += (800, 840, 900, 960)
     if "--preview-rhythm" in args:
         preview_frames += (1153, 1165, 1178, 1207, 1220, 1249, 1262, 1291, 1304, 1320)
     if "--preview-crossing" in args:

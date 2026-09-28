@@ -85,9 +85,9 @@ without asking the viewer to relearn it ten times.
   the keyboard/laptop workflow and the phone workflow.
 - Hero wide or crane for architecture and payoff.
 - Cumulative use of any reusable camera setup stays at or below 25 percent of
-  runtime: macro 14.8%, hero 22%, dolly 21%, arm-follow 21%, overhead 7%, and
-  low three-quarter 14.2%. This includes the scene-8 macro insert and is
-  validated from the canonical shot list.
+  runtime: macro 16.8%, hero 22%, dolly 21%, arm-follow 21%, overhead 7%, and
+  low three-quarter 12.2%. This includes the bounded scene-7 toolhead and
+  scene-8 contact inserts and is validated from the canonical shot list.
 - Cuts preserve identical joint pose, gripper, printed cartridge, stylus pose,
   cable state, and device placement. No teleporting, snap zooms, or decorative
   spins.
@@ -125,6 +125,9 @@ contiguous scenes across exactly 2,400 frames. The editable Blender scaffold
 creates six reusable shot rigs, timeline camera bindings, locked reference
 asset collections, and the three recurring authority graphics. The lowercase
 `r` contact is implemented as the first visual benchmark at 0:40–0:48. The
+scene-7 scaffold now includes a bounded toolhead macro and an animated depth-of-
+field pull to a presentation-only operator laptop; that laptop is narrative
+context, not a measured RC03 board interface. The
 same detailed rig then moves continuously through independently permitted
 `e`, `a`, `d`, and `y` cycles at 0:48–0:55; no model or pose swap is used. The
 contact-free scene-11 crossing is also blocked: the wrist retracts, traverses

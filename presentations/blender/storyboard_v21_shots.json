@@ -12,6 +12,13 @@
   },
   "camera_inserts": [
     {
+      "scene_id": 7,
+      "start": 794,
+      "end": 840,
+      "rig": "macro",
+      "purpose": "toolhead construction close-up while the first permit travels"
+    },
+    {
       "scene_id": 8,
       "start": 1049,
       "end": 1068,

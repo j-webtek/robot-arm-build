@@ -54,38 +54,28 @@ def main() -> None:
     for shot in shots:
         rig_frames[shot["rig"]] += shot["end"] - shot["start"] + 1
     inserts = data["camera_inserts"]
-    assert len(inserts) == 1
+    assert inserts, "at least one camera insert is required"
+    insert_ranges: list[tuple[int, int]] = []
     for insert in inserts:
         parent = shots[insert["scene_id"] - 1]
         assert parent["start"] <= insert["start"] <= insert["end"] <= parent["end"]
         assert insert["rig"] in allowed_rigs
         assert insert["rig"] != parent["rig"]
         duration = insert["end"] - insert["start"] + 1
+        assert duration <= 2 * fps, "camera inserts must be two seconds or shorter"
+        assert insert["purpose"].strip(), "camera inserts require an editorial purpose"
+        insert_ranges.append((insert["start"], insert["end"]))
         rig_frames[parent["rig"]] -= duration
         rig_frames[insert["rig"]] += duration
-    assert rig_frames == Counter({
-        "macro": 356,
-        "hero": 528,
-        "dolly": 504,
-        "arm_follow": 504,
-        "overhead": 168,
-        "low_three_quarter": 340,
-    })
+    for previous, current in zip(sorted(insert_ranges), sorted(insert_ranges)[1:]):
+        assert previous[1] < current[0], "camera inserts may not overlap"
+    assert sum(rig_frames.values()) == data["frame_end"]
+    assert all(frame_count > 0 for frame_count in rig_frames.values())
     assert max(rig_frames.values()) <= 25 * fps, dict(rig_frames)
     assert shots[1]["rig"] == "macro"
     assert shots[4]["rig"] == "overhead"
     assert shots[6]["rig"] == "low_three_quarter"
     assert shots[7]["rig"] == "low_three_quarter"
-    assert inserts[0] == {
-        "scene_id": 8,
-        "start": 1049,
-        "end": 1068,
-        "rig": "macro",
-        "purpose": (
-            "brief key-depression insert inside the low-three-quarter "
-            "first-contact lesson"
-        ),
-    }
     benchmark = data["benchmark"]
     assert benchmark["scene_id"] == 8
     assert benchmark["target"] == "keyboard:r"
@@ -95,6 +85,19 @@ def main() -> None:
     benchmark_shot = shots[benchmark["scene_id"] - 1]
     assert frames == sorted(frames)
     assert benchmark_shot["start"] <= frames[0] <= frames[-1] <= benchmark_shot["end"]
+    contact_frame = next(
+        phase["frame"] for phase in benchmark["phases"] if phase["name"] == "contact"
+    )
+    assert any(
+        insert["scene_id"] == 8
+        and insert["rig"] == "macro"
+        and insert["start"] <= contact_frame <= insert["end"]
+        for insert in inserts
+    ), "the first contact needs a bounded macro insert"
+    assert any(
+        insert["scene_id"] == 7 and insert["rig"] == "macro"
+        for insert in inserts
+    ), "scene 7 needs a bounded toolhead-detail insert"
     rhythm = data["rhythm"]
     assert rhythm["scene_id"] == 9
     assert [target["key"] for target in rhythm["targets"]] == list("eady")

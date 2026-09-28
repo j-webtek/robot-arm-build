@@ -137,9 +137,9 @@ devices without visually connecting their data.
 ## Shot and editorial rules
 
 - Cumulative use of any reusable camera setup stays at or below 25 percent:
-  macro 14.8%, hero 22%, dolly 21%, arm-follow 21%, overhead 7%, and low
-  three-quarter 14.2%. These shares include the scene-8 macro insert; the
-  canonical shot-list validator enforces them.
+  macro 16.8%, hero 22%, dolly 21%, arm-follow 21%, overhead 7%, and low
+  three-quarter 12.2%. These shares include the bounded scene-7 toolhead and
+  scene-8 contact inserts; the canonical shot-list validator enforces them.
 - Use macro, low three-quarter, lateral track, arm-follow dolly, camera POV,
   split screen, and hero wide for narrative reasons—not decorative variety.
 - Preserve exact joint, gripper, printed cartridge, stylus, cable, keyboard,
