@@ -120,43 +120,52 @@ def animate_camera(camera: bpy.types.Object, aim: bpy.types.Object,
     key_pose(aim, end, target)
 
 
-def add_operator_laptop(
+def add_operator_display(
     mats: dict[str, bpy.types.Material], collection: bpy.types.Collection,
-    state_specs: list[dict[str, object]],
+    sequence: dict[str, object],
 ) -> dict[str, object]:
-    """Add the presentation laptop needed by the request and test-pad shots.
+    """Add the presentation-only operator display used by editorial shots.
 
-    Its placement is editorial rather than a measured RC03 board interface, so
-    every object is marked presentation-only. The screen target gives scene 7
-    a real depth plane for its closing rack focus.
+    The floating screen remains fully outside the measured board footprint,
+    keeping all four localization tags visible. It supplies a real depth plane
+    for scene 7's closing rack focus, but it is not product hardware.
     """
-    # Keep the presentation laptop left of the arm column from the scene-7
-    # camera so the focus destination is not geometrically occluded.
-    laptop_x = 70
-    deck = base.cube(
-        "Presentation operator laptop deck", base.board_point(laptop_x, 455, 10),
-        (0.32, 0.19, 0.016), mats["abs"], 0.008,
+    placement = sequence["placement"]
+    display_x, display_y = placement["center_board_xy_mm"]
+    screen_width, screen_height = placement["screen_size_mm"]
+    screen_z = placement["screen_center_z_mm"]
+    yaw = math.radians(placement["yaw_degrees"])
+    screen_center = base.board_point(display_x, display_y, screen_z)
+
+    housing = base.cube(
+        "Presentation operator display housing", screen_center,
+        (screen_width / 1000, 0.018, screen_height / 1000),
+        mats["abs"], 0.008,
     )
-    screen_center = base.board_point(laptop_x, 520, 150)
-    lid = base.cube(
-        "Presentation operator laptop lid", screen_center,
-        (0.30, 0.014, 0.19), mats["abs"], 0.008,
-    )
+    # The visible face is local -Y. Rotate its positional offset with the
+    # housing so the panel and UI cannot become embedded in (or fall behind)
+    # the shell when the display is angled toward the editorial cameras.
+    screen_offset = Vector((math.sin(yaw) * 0.010, -math.cos(yaw) * 0.010, 0))
+    label_offset = Vector((math.sin(yaw) * 0.012, -math.cos(yaw) * 0.012, 0))
     display = base.cube(
-        "Presentation operator laptop display",
-        screen_center + Vector((0, -0.008, 0)),
-        (0.276, 0.002, 0.162), mats["screen"], 0.003,
+        "Presentation operator display screen",
+        screen_center + screen_offset,
+        ((screen_width - 24) / 1000, 0.002, (screen_height - 24) / 1000),
+        mats["screen"], 0.003,
     )
+    for obj in (housing, display):
+        obj.rotation_euler.z = yaw
     states: list[bpy.types.Object] = []
-    for state in state_specs:
+    for state in sequence["states"]:
         state_name = state["name"]
         body = state["body"]
         start, end, size = state["start"], state["end"], state["size"]
         label = base.board_text(
-            f"Presentation operator laptop {state_name}", body,
-            screen_center + Vector((0, -0.010, 0)), size, mats["legend"],
+            f"Presentation operator display {state_name}", body,
+            screen_center + label_offset, size, mats["legend"],
         )
         label.rotation_euler.x = math.radians(90)
+        label.rotation_euler.z = yaw
         label.hide_render = True
         label.keyframe_insert("hide_render", frame=1)
         label.keyframe_insert("hide_render", frame=max(1, start - 1))
@@ -167,11 +176,11 @@ def add_operator_laptop(
             label.hide_render = True
             label.keyframe_insert("hide_render", frame=end + 1)
         states.append(label)
-    for obj in (deck, lid, display, *states):
+    for obj in (housing, display, *states):
         obj["presentation_only"] = True
-        classify(obj, collection, "presentation_operator_laptop")
+        classify(obj, collection, "presentation_operator_display")
     return {
-        "focus": screen_center + Vector((0, -0.012, 0)),
+        "focus": screen_center + label_offset,
         "states": states,
     }
 
@@ -836,8 +845,10 @@ def build() -> bpy.types.Scene:
             obj.hide_render = True
 
     mats = existing_materials()
-    laptop = add_operator_laptop(mats, assets, manifest["laptop_sequence"]["states"])
-    laptop_focus = laptop["focus"]
+    operator_display = add_operator_display(
+        mats, assets, manifest["operator_display_sequence"]
+    )
+    operator_display_focus = operator_display["focus"]
     # Preserve a readable dark phone surface under the brighter product-shot
     # lighting used by the v2.1 cameras. This affects presentation materials
     # only; the measured chassis and screen-plane dimensions stay unchanged.
@@ -933,7 +944,7 @@ def build() -> bpy.types.Scene:
     toolhead_target = base.board_point(*r_xy_mm, 110)
     animate_camera(*rigs["macro"], 97, 216,
                    Vector((-0.50, -0.35, 0.30)), Vector((-0.44, -0.29, 0.27)),
-                   laptop_focus)
+                   operator_display_focus)
     animate_camera(*rigs["macro"], 794, 840,
                    Vector((0.11, -0.38, 0.27)), Vector((0.09, -0.34, 0.25)),
                    toolhead_target)
@@ -961,7 +972,7 @@ def build() -> bpy.types.Scene:
     animate_camera(*rigs["low_three_quarter"], 793, 1152,
                    Vector((0.50, -0.92, 0.30)), Vector((0.44, -0.82, 0.33)), r_target)
     # Scene 7 holds the composition while focus moves from the physical
-    # toolhead to the operator laptop in the background. Scene 8 begins with a
+    # toolhead to the off-board operator display. Scene 8 begins with a
     # deliberate edit back to the arm plane rather than an accidental drift.
     low_camera = rigs["low_three_quarter"][0]
     low_camera.data.dof.focus_object = None
@@ -971,15 +982,17 @@ def build() -> bpy.types.Scene:
     toolhead_distance = (low_camera.matrix_world.translation - toolhead_target).length
     scene.frame_set(960)
     bpy.context.view_layer.update()
-    laptop_distance = (low_camera.matrix_world.translation - laptop_focus).length
+    operator_display_distance = (
+        low_camera.matrix_world.translation - operator_display_focus
+    ).length
     for frame, distance in ((841, toolhead_distance), (912, toolhead_distance),
-                            (960, laptop_distance), (961, toolhead_distance),
+                            (960, operator_display_distance), (961, toolhead_distance),
                             (1152, toolhead_distance)):
         low_camera.data.dof.focus_distance = distance
         low_camera.data.dof.keyframe_insert("focus_distance", frame=frame)
-    low_camera["scene_7_focus_destination"] = tuple(laptop_focus)
+    low_camera["scene_7_focus_destination"] = tuple(operator_display_focus)
     low_camera["scene_7_toolhead_focus_distance_m"] = toolhead_distance
-    low_camera["scene_7_laptop_focus_distance_m"] = laptop_distance
+    low_camera["scene_7_operator_display_focus_distance_m"] = operator_display_distance
 
     scene.timeline_markers.clear()
     for shot in manifest["shots"]:
@@ -1036,6 +1049,8 @@ def main() -> None:
         preview_frames += (961, 1009, 1049, 1068, 1093, 1140)
     if "--preview-scene2" in args:
         preview_frames += (97, 216)
+    if "--preview-locate" in args:
+        preview_frames += (505, 672)
     if "--preview-scene7" in args:
         preview_frames += (800, 840, 900, 960)
     if "--preview-rhythm" in args:

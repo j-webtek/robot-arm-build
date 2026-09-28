@@ -26,8 +26,18 @@
       "purpose": "brief key-depression insert inside the low-three-quarter first-contact lesson"
     }
   ],
-  "laptop_sequence": {
+  "operator_display_sequence": {
     "presentation_only": true,
+    "placement": {
+      "center_board_xy_mm": [-260, 320],
+      "screen_size_mm": [300, 190],
+      "screen_center_z_mm": 180,
+      "yaw_degrees": 35,
+      "board_overlap": false,
+      "overhead_camera_visible": false,
+      "minimum_robot_base_clearance_mm": 405.85,
+      "relation_to_board": "floating left of and fully outside the measured board footprint"
+    },
     "states": [
       {"name": "request console", "body": "REQUEST CONSOLE\nType ready locally.\nThen send on my way\nfrom the phone.", "start": 97, "end": 919, "size": 0.010},
       {"name": "empty test pad", "body": "LOCAL TEST PAD\n_", "start": 920, "end": 1063, "size": 0.016},

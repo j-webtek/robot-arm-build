@@ -566,11 +566,13 @@ def add_keyboard(layout: dict, mats: dict[str, bpy.types.Material]) -> dict[str,
     cable_start = board_point(ox + sx / 2, oy + sy, sz * 0.68)
     keyboard_cable = curve_line(
         "Keyboard signal cable",
-        [cable_start, cable_start + Vector((0.0, 0.040, 0.005)),
-         cable_start + Vector((0.065, 0.075, 0.002))],
+        [cable_start,
+         cable_start + Vector((0.0, 0.040, 0.005)),
+         board_point(55.0, oy + sy + 45.0, sz * 0.68 + 2.0),
+         board_point(-85.0, oy + sy + 65.0, sz * 0.68 + 2.0)],
         mats["cable"], 0.0022,
     )
-    keyboard_cable["presentation_detail"] = "KEYBOARD_CABLE_WITHIN_PRESENTATION_CLEARANCE"
+    keyboard_cable["presentation_detail"] = "KEYBOARD_CABLE_EXITS_OPERATOR_DISPLAY_SIDE_OFF_FRAME"
     return named_keys
 
 

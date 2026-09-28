@@ -5,7 +5,7 @@
 - **Runtime:** exactly 100 seconds
 - **Format:** 16:9 master, 24 fps
 - **Audience:** technical buyers, collaborators, and first-time GitHub visitors
-- **Demonstration:** type lowercase `ready` into the operator laptop's local test
+- **Demonstration:** type lowercase `ready` into the operator display's local test
   pad, then separately enter lowercase `on my way` in the phone's Messages app
   and tap Send.
 - **Evidence boundary:** every physical action shown is a workcell simulation until
@@ -33,12 +33,14 @@ The public stage vocabulary is:
 
 `UNDERSTAND → LOCATE → CHECK → ACT → VERIFY`
 
-## Workcell-display decision
+## Operator-display decision
 
-The **operator laptop is the local test-pad display**. It is already the host
-connected to the physical keyboard, so this choice adds no fictional hardware
-to the board. Its UI changes clearly from the opening request console to a
-dedicated local test-pad panel before typing begins. The phone remains an
+The **operator display is a presentation-only floating request and test-pad
+surface**. It sits to the left of and fully outside the measured board, so it does not
+cover localization tag T2, enter the arm workspace, or appear in the overhead
+Locate view. This adds no fictional hardware to the board. Its UI changes from
+the opening request console to a dedicated local test-pad panel before typing
+begins. The phone remains an
 independent target with its own screen, state machine, coordinate map, and
 verification evidence.
 
@@ -82,7 +84,7 @@ without asking the viewer to relearn it ten times.
 - Overhead only as the fixed camera's own view during `LOCATE`.
 - Split screens may place a physical cause beside its own observed effect, or
   compare two independent receipts. They never imply a data connection between
-  the keyboard/laptop workflow and the phone workflow.
+  the keyboard/operator-display workflow and the phone workflow.
 - Hero wide or crane for architecture and payoff.
 - Cumulative use of any reusable camera setup stays at or below 25 percent of
   runtime: macro 16.8%, hero 22%, dolly 21%, arm-follow 21%, overhead 7%, and
@@ -99,20 +101,20 @@ without asking the viewer to relearn it ten times.
 | # | Time | Stage | Picture, motion, and required information | Sound |
 |---:|---:|---|---|---|
 | 1 | 0:00–0:04 | — | **Cold open.** Macro: the capacitive disc hovers over the `r` key while the source-accurate printed cartridge remains visibly captured between both jaw pads. The blue uncertainty disk is still wider than the key. Pull focus from disc to keyed cap and stationary wrist. No text appears yet. | One held mechanical tone; no narration. |
-| 2 | 0:04–0:09 | — | Operator laptop request console: `Type ready locally, then send on my way from the phone.` Phone and physical keyboard remain visibly separate. | Quiet input ticks. |
-| 3 | 0:09–0:15 | — | Hero wide reveals the exact workcell, detailed RoArm, printed contact cartridge and stylus, laptop, black RC03 keyboard, and indexed phone. The RC03 cable is visibly connected to the laptop; laptop keys never receive a typing close-up. | Music establishes restrained forward pulse. |
+| 2 | 0:04–0:09 | — | Operator-display request console: `Type ready locally, then send on my way from the phone.` Phone and physical keyboard remain visibly separate. | Quiet input ticks. |
+| 3 | 0:09–0:15 | — | Hero wide reveals the exact workcell, detailed RoArm, printed contact cartridge and stylus, off-board operator display, black RC03 keyboard, and indexed phone. The display remains entirely beside the board. The RC03 cable exits the board on the display side and continues off-frame; no direct hardware connection is claimed. | Music establishes restrained forward pulse. |
 | 4 | 0:15–0:21 | `UNDERSTAND` | Amber model card: ordered semantic actions, named targets, board-frame points, confidence, and error bounds. `speed`, `contact depth`, `retry`, and `timing` are greyed and locked: `runtime owned`. | Amber data ticks. |
 | 5 | 0:21–0:28 | `LOCATE` | Crane to the actual fixed camera, pass through its lens, then use its squared overhead view. Exact tags and device bounds lock; blue uncertainty disks contract. | Registration pings. |
 | 6 | 0:28–0:33 | `CHECK` | Red card in empty space: `scene capture 41 s old · limit 2 s → REJECTED · NO MOTION`. Arm and stylus remain unobscured and still. | Music drops out; one low reject thud. |
-| 7 | 0:33–0:40 | `CHECK` | Fresh capture. Immutable batch facts pass. Text reads `BATCH ADMITTED → PERMIT · 1 ACTION`. In a low three-quarter push, establish opposing jaw pads on the body's grip-flat band, the keyed cap and two M3 heads, on-axis barrel, and articulated disc while the green permit travels toward the stylus. End with a rack focus to the laptop as its screen changes from request console to local test pad. | Music returns; restrained gate ticks. |
-| 8 | 0:40–0:48 | `ACT` | **Teach the first key slowly with the complete arm readable in low three-quarter.** Label the seven phases: `transit → align → settle → approach → contact → retract → verify`. At contact only, cut briefly to a macro insert of `r` depressing, then return to low three-quarter. A cause/effect insert shows the laptop test pad add `r`, and the permit fades. The stage bar remains on `ACT`; a small three-dot loop indicator pulses through check/contact/verify. | One precise click and one verify tick. |
+| 7 | 0:33–0:40 | `CHECK` | Fresh capture. Immutable batch facts pass. Text reads `BATCH ADMITTED → PERMIT · 1 ACTION`. In a low three-quarter push, establish opposing jaw pads on the body's grip-flat band, the keyed cap and two M3 heads, on-axis barrel, and articulated disc while the green permit travels toward the stylus. End with a rack focus to the off-board operator display as its screen changes from request console to local test pad. | Music returns; restrained gate ticks. |
+| 8 | 0:40–0:48 | `ACT` | **Teach the first key slowly with the complete arm readable in low three-quarter.** Label the seven phases: `transit → align → settle → approach → contact → retract → verify`. At contact only, cut briefly to a macro insert of `r` depressing, then return to low three-quarter. A cause/effect insert shows the operator-display test pad add `r`, and the permit fades. The stage bar remains on `ACT`; a small three-dot loop indicator pulses through check/contact/verify. | One precise click and one verify tick. |
 | 9 | 0:48–0:55 | `ACT` | Lateral track across `e`, `a`, `d`, `y`. The contract is now visual shorthand: one permit arrives, one contact occurs, and one verification tick appears. Do not repeat uncertainty and dotted-preview graphics. The stage bar remains stable on `ACT`. | Four increasingly rhythmic clicks, never rushed. |
-| 10 | 0:55–1:01 | `ACT` | Hold above keyboard. Laptop test pad reads `ready`; receipt shows `EXPECTED ready · OBSERVED ready ✓`. Phone is unchanged. The stable `ACT` bar remains while the compact loop indicator resolves on verify. | Local verification tone. |
+| 10 | 0:55–1:01 | `ACT` | Hold above keyboard. Operator-display test pad reads `ready`; receipt shows `EXPECTED ready · OBSERVED ready ✓`. Phone is unchanged. The stable `ACT` bar remains while the compact loop indicator resolves on verify. | Local verification tone. |
 | 11 | 1:01–1:07 | `ACT` | Arm-follow dolly: full retract and high-clearance move from keyboard to phone, with continuous joint and cable motion. | Light transit mechanism texture. |
 | 12 | 1:07–1:14 | `ACT` | Show `EXPECTED home · OBSERVED home ✓` in full once. One permit authorizes the Messages-app tap. The app changes to a portrait conversation with contact header, two prior message bubbles, a composer immediately above the software keyboard, and Send fixed at the composer's right edge. The arm retracts and a fresh observation verifies `composer ready`. Later checks reduce to ticks; the stage bar remains on `ACT`. | State-check tick, glass tap, second check tick. |
 | 13 | 1:14–1:22 | `ACT` | `on my way` builds inside the lower composer while the existing conversation remains above it. Show `o` and `n` at natural pace with one permit and one tick each. Then display an honest `2×` badge and time-compress the remaining seven contacts. Each visible character still appears only after its own observed contact. | Two measured taps, then a controlled faster rhythm with quiet check ticks. |
 | 14 | 1:22–1:27 | `ACT` | Slow down. Confirm the lower composer contains `on my way`. Its adjacent Send control receives a separate green one-contact permit; one tap occurs, the arm retracts, and the text moves into a right-aligned outgoing conversation bubble with `Sent ✓`. Keep the stage bar on `ACT`. | Bed narrows; one distinct Send tap. |
-| 15 | 1:27–1:33 | `VERIFY` | Split screen: laptop independently shows `ready ✓`; phone independently shows `on my way · sent ✓`. No visual data line joins the devices. | Two verification tones, left then right. |
+| 15 | 1:27–1:33 | `VERIFY` | Split screen: operator display independently shows `ready ✓`; phone independently shows `on my way · sent ✓`. No visual data line joins the devices. | Two verification tones, left then right. |
 | 16 | 1:33–1:36 | — | One compact evidence line only: five green ticks for `UNDERSTAND · LOCATE · CHECK · ACT · VERIFY`, with `Every contact permitted. Every effect verified.` beneath it. | Restrained resolving rise. |
 | 17 | 1:36–1:40 | — | Hero wide and Tactevra logo. Show only `Physical intelligence, checked.` plus the small persistent qualifier `SIMULATED WORKCELL SEQUENCE`. | Clean brand resolve; no black tail. |
 
@@ -126,8 +128,8 @@ creates six reusable shot rigs, timeline camera bindings, locked reference
 asset collections, and the three recurring authority graphics. The lowercase
 `r` contact is implemented as the first visual benchmark at 0:40–0:48. The
 scene-7 scaffold now includes a bounded toolhead macro and an animated depth-of-
-field pull to a presentation-only operator laptop; that laptop is narrative
-context, not a measured RC03 board interface. Its display is stateful rather
+field pull to a presentation-only operator display; that display is narrative
+context, not a measured RC03 board interface. Its UI is stateful rather
 than baked: request console in scene 2, empty test pad at the end of scene 7,
 then `r → re → rea → read → ready` after the corresponding observed
 contacts. The
@@ -201,16 +203,17 @@ the next action.
 3. One nominal 9 mm OASO-style stylus remains on the cartridge axis with the
    same exposed length, collar, pivot, and capacitive disc throughout.
 4. One immutable workcell: board, robot, camera, keyboard, phone, fixtures,
-   tags, cables, laptop, and transforms do not drift.
+   tags, cables, operator display, and transforms do not drift.
 5. One measured black RC03 keyboard with correct legends, proportions, cable,
    protective rear film, and individually animatable `r/e/a/d/y` keys.
 6. One measured dark phone with consistent chassis, glass, camera, controls,
    station, cable, and modeled app states.
-7. The operator laptop is the request console and local test-pad host. Its UI
-   modes are clearly distinct; it is never confused with the phone. The RC03
-   keyboard cable remains visibly connected to it, and laptop keys are never
-   shown in a typing close-up.
-8. Keyboard actions affect only the laptop test pad. Phone taps affect only the
+7. The presentation-only operator display is the request console and local
+   test-pad surface. It remains fully outside the board and overhead Locate
+   view, and is never confused with the phone. The RC03 cable leaves the board
+   on the display side and ends off-frame; the film does not claim a direct
+   physical connection.
+8. Keyboard actions affect only the operator-display test pad. Phone taps affect only the
    phone.
 9. Lowercase copy remains lowercase in request, proposal, screens, captions,
    receipts, and narration.
@@ -227,8 +230,8 @@ the next action.
 | Robot | Detailed RoArm geometry, servo housings, dual links, fasteners, wiring, gripper, and one articulated rig used in all scenes. |
 | Gripper/tool mount | Same RoArm jaw architecture in every moving shot. Opposing pads contact the controlled 28 × 24 × 65 mm compliant body at its recessed grip band; keyed cap, split collar, and two M3 retainers use the repository STLs. |
 | Stylus | Nominal 9 mm OASO-style aluminum barrel running through the printed cartridge, with constant protrusion and an articulated capacitive contact disc. Installed dimensions remain explicitly unmeasured. |
-| Keyboard | Measured black RC03 asset, correct six-row layout and legends, animated lowercase target keys, associated only with the laptop test pad. |
-| Laptop | Distinct request-console and local-test-pad UI modes; displays `ready` only after physical keyboard presses. |
+| Keyboard | Measured black RC03 asset, correct six-row layout and legends, animated lowercase target keys, associated only with the operator-display test pad. Its cable exits toward the display side and ends off-frame. |
+| Operator display | Presentation-only floating screen with distinct request-console and local-test-pad UI modes; displays `ready` only after physical keyboard presses. It does not overlap the board or appear in the overhead Locate view. |
 | Phone | Measured phone/station asset with home, Messages composer, keyboard, Send, and sent-confirmation states; all UI labeled as modeled. |
 | Camera | Recognizable physical camera body, mount, lens, and matching overhead optical view. |
 | Board | Exact released dimensions, tag36h11 IDs, indexed transforms, fixtures, and cable paths. |
@@ -252,7 +255,7 @@ The 30-second cut is not improvised. Use these named beats in order:
 
 - [ ] Greybox communicates the complete story without narration and at 390 px width.
 - [ ] Timings total exactly 100 seconds and all 17 scenes are present.
-- [ ] Laptop visibly serves as the local test-pad display; no new board display is invented.
+- [ ] Operator display visibly serves as the local test-pad surface, remains off-board, and never obscures a localization tag.
 - [ ] All typed strings are lowercase and the local string is at most eight characters.
 - [ ] Model card contains only model-owned outputs; runtime-owned fields are visibly locked.
 - [ ] Static batch admission is never depicted as physical authority for the full route.

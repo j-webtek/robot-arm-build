@@ -11,8 +11,9 @@ A request becomes two independently verified physical outcomes. Tactevra types
 same measured workcell and enters `on my way` on the phone before tapping Send.
 The audience sees the boundary between a model proposal and physical authority.
 
-The operator laptop is both the opening request console and the local test-pad
-host. Its two UI modes must look unmistakably different. The phone is a separate
+The presentation-only floating operator display is both the opening request
+console and the local test-pad surface. It sits left of and fully outside the measured
+board; its two UI modes must look unmistakably different. The phone is a separate
 target device and never acts as keyboard feedback.
 
 ## Product behavior the creative must preserve
@@ -55,7 +56,7 @@ policy.
 | Printed tool mount | Controlled 28 × 24 × 65 mm compliant-body STL, keyed-cap STL, split-collar STL, two visible M3 retainers, and grip-flat contact between the same opposing RoArm jaw pads |
 | Stylus | One nominal 9 mm OASO-style aluminum barrel, constant protrusion, pivot, and capacitive disc carried by the printed cartridge throughout |
 | Camera | Actual fixed-camera body, mount, lens, and matching optical view |
-| Laptop | Off-board operator console and local test-pad host; visually independent from the phone |
+| Operator display | Presentation-only floating screen beside and fully outside the board; request-console and local-test-pad UI; visually independent from the phone and excluded from the overhead Locate view |
 
 Existing images under `storyboard_v2/` are **geometry references only**. Their
 device footprints and board relationships are authoritative; their overhead
@@ -102,13 +103,13 @@ stylus route.
 
 ### E. Arm-follow crossing
 
-After the laptop receipt `ready ✓`, follow the full arm through a high-clearance
+After the operator-display receipt `ready ✓`, follow the full arm through a high-clearance
 arc from keyboard to phone. Preserve the same stylus, cable state, and rig; keep
 both devices visible long enough to retain spatial understanding.
 
 ### F. Independent receipts hero
 
-Balanced split evidence inside a hero wide: laptop test pad reads `ready ✓`;
+Balanced split evidence inside a hero wide: operator-display test pad reads `ready ✓`;
 the actual phone reads `on my way · sent ✓`. The retracted arm sits between the
 devices without visually connecting their data.
 
@@ -117,20 +118,20 @@ devices without visually connecting their data.
 | # | Time | Stage | Required picture and action | Sound |
 |---:|---:|---|---|---|
 | 1 | 0:00–0:04 | — | Macro over `r`; disc, printed cartridge, jaw pads, keyed cap, and M3 heads readable; uncertainty too wide; no text. | Held mechanism tone. |
-| 2 | 0:04–0:09 | — | Laptop request close-up: `Type ready locally, then send on my way from the phone.` | Input ticks. |
-| 3 | 0:09–0:15 | — | Hero wide of exact workcell and one detailed arm/stylus rig. | Music pulse begins. |
+| 2 | 0:04–0:09 | — | Operator-display request close-up: `Type ready locally, then send on my way from the phone.` | Input ticks. |
+| 3 | 0:09–0:15 | — | Hero wide of exact workcell and one detailed arm/stylus rig. Operator display is beside—not over—the board; keyboard cable exits toward it and ends off-frame. | Music pulse begins. |
 | 4 | 0:15–0:21 | UNDERSTAND | Amber semantic proposal; confidence and uncertainty visible; runtime fields locked. | Data ticks. |
 | 5 | 0:21–0:28 | LOCATE | Reveal real camera, pass through lens, register exact device geometry; blue circles shrink. | Registration pings. |
 | 6 | 0:28–0:33 | CHECK | `scene capture 41 s old · limit 2 s → REJECTED · NO MOTION`; arm visible and still. | Music cuts; reject thud. |
 | 7 | 0:33–0:40 | CHECK | Fresh capture; `BATCH ADMITTED → PERMIT · 1 ACTION`; a low three-quarter push establishes the complete toolhead while the token travels to the stylus. | Music returns; gate ticks. |
-| 8 | 0:40–0:48 | ACT | Keep the complete arm readable in low three-quarter while the first `r` press teaches transit, align, settle, approach, contact, retract, verify. Use macro only as a brief insert of the key depressing, then return. Permit fades; laptop shows `r`. | One key click, one verify tick. |
+| 8 | 0:40–0:48 | ACT | Keep the complete arm readable in low three-quarter while the first `r` press teaches transit, align, settle, approach, contact, retract, verify. Use macro only as a brief insert of the key depressing, then return. Permit fades; operator display shows `r`. | One key click, one verify tick. |
 | 9 | 0:48–0:55 | ACT | Lateral track through `e/a/d/y`; use only one permit and one receipt tick per contact after the lesson. | Four rhythmic key clicks. |
-| 10 | 0:55–1:01 | ACT | Laptop test pad: `EXPECTED ready · OBSERVED ready ✓`; phone unchanged. | Verify tone. |
+| 10 | 0:55–1:01 | ACT | Operator-display test pad: `EXPECTED ready · OBSERVED ready ✓`; phone unchanged. | Verify tone. |
 | 11 | 1:01–1:07 | ACT | Full retract and continuous high-clearance arm-follow move to phone. | Transit texture. |
 | 12 | 1:07–1:14 | ACT | Check `home`; one permit opens Messages; re-observe and verify `composer ready`. | Check, tap, check. |
 | 13 | 1:14–1:22 | ACT | Build `on my way`; show `o` and `n` naturally, then disclose `2×` for the remaining contacts; every visible character follows its own observed contact. | Two measured taps, then controlled faster rhythm. |
 | 14 | 1:22–1:27 | ACT | Confirm composer; Send receives its own permit; one tap and retract; outgoing bubble reads `Sent ✓`. | Distinct Send tap. |
-| 15 | 1:27–1:33 | VERIFY | Split evidence: laptop `ready ✓`; phone `on my way · sent ✓`. | Two verify tones. |
+| 15 | 1:27–1:33 | VERIFY | Split evidence: operator display `ready ✓`; phone `on my way · sent ✓`. | Two verify tones. |
 | 16 | 1:33–1:36 | — | Five compact green ticks with `Every contact permitted. Every effect verified.` | Resolving rise. |
 | 17 | 1:36–1:40 | — | Hero wide, Tactevra logo, `Physical intelligence, checked.`, and `SIMULATED WORKCELL SEQUENCE`. | Clean resolve; no black tail. |
 
@@ -153,7 +154,10 @@ devices without visually connecting their data.
 
 - Use lowercase `ready` and `on my way` everywhere; uppercase requires actions
   outside this demonstration.
-- The laptop—not an invented board display—shows the local test pad.
+- The presentation-only operator display—not an invented board display—shows
+  the local test pad. It remains fully outside the board and overhead Locate view.
+- The RC03 keyboard cable exits the board toward the operator-display side and
+  ends off-frame; do not imply a direct connection that the film has not established.
 - `BATCH ADMITTED` never means route-wide contact authority.
 - Every contact gets and consumes exactly one green permit.
 - The next target is dotted and marked `preview · no authority`.
@@ -191,7 +195,7 @@ devices without visually connecting their data.
 
 - Can a viewer explain the difference between proposal and permit?
 - Is it obvious that one permit authorizes exactly one contact?
-- Does the laptop read as the local test-pad host and the phone as a separate
+- Does the operator display read as the local test-pad surface and the phone as a separate
   physical interface?
 - Can the stale rejection be understood with sound off?
 - Does every phone tap visibly originate from a verified screen state?

@@ -23,6 +23,8 @@ This file keeps revision history out of the artist-facing production board.
 - Extended the phone-entry scene from five to eight seconds. The first two
   characters play naturally; the remaining seven are visibly marked `2×`.
 - Reduced the evidence and end-card copy to one contract line and one tagline.
-- Made the RC03-to-laptop connection and request-console/test-pad transition
-  explicit.
+- Moved the presentation-only operator display fully off-board so localization
+  tags remain visible; its request-console/test-pad transition stays explicit.
+- Routed the RC03 cable toward the operator-display side and off-frame without
+  asserting an unverified direct connection.
 - Named the source scenes for the 30-second edit.

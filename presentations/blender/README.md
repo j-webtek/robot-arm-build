@@ -126,7 +126,7 @@ Validate the editorial contract without Blender:
 python presentations/blender/validate_storyboard_v21.py
 ```
 
-Render the scene-7 toolhead insert and laptop focus-pull checkpoints:
+Render the scene-7 toolhead insert and operator-display focus-pull checkpoints:
 
 ```powershell
 & "C:\Program Files\Blender Foundation\Blender 4.3\blender.exe" `
@@ -142,6 +142,16 @@ Render the operator request-console close-up:
   --background --factory-startup `
   --python presentations/blender/build_storyboard_v21_benchmark.py -- `
   --preview-scene2
+```
+
+Render the overhead Locate checkpoints and confirm the presentation-only
+operator display remains outside the optical workcell view:
+
+```powershell
+& "C:\Program Files\Blender Foundation\Blender 4.3\blender.exe" `
+  --background --factory-startup `
+  --python presentations/blender/build_storyboard_v21_benchmark.py -- `
+  --preview-locate
 ```
 
 Build the editable scene and six local benchmark frames:
@@ -262,7 +272,7 @@ The companion
 packages six geometry-reference frames, the complete director's board, and the
 art-direction questions for an outside advertising collaborator.
 That treatment expands the demonstration from one H-key press to a compound
-`type ready in the laptop test pad through the physical keyboard → send on my
+`type ready in the operator-display test pad through the physical keyboard → send on my
 way separately through phone-screen taps` workflow performed by one continuous
 detailed arm and stylus. Physical authority is granted one contact at a time.
 The physical keyboard drives and verifies only local input; the phone checks
