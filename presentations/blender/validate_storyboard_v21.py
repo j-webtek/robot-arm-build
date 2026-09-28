@@ -77,6 +77,24 @@ def main() -> None:
     assert shots[4]["rig"] == "overhead"
     assert shots[6]["rig"] == "low_three_quarter"
     assert shots[7]["rig"] == "low_three_quarter"
+    articulation = data["arm_articulation"]
+    assert articulation == {
+        "presentation_only": True,
+        "kinematic_authority": (
+            "software/models/roarm_m3/roarm_m3_kinematic_40dbd84.urdf"
+        ),
+        "visible_joint_chain": [
+            "shoulder", "elbow", "wrist_pitch", "tool_wrist"
+        ],
+        "mount_side": {
+            "elbow_servo": "upper",
+            "wrist_pitch_servo": "forearm",
+            "tool_wrist_servo": "wrist_link",
+            "gripper_and_stylus": "tool",
+        },
+        "pivot_continuity": "parented chain",
+        "terminal_tool_orientation": "vertical in board frame",
+    }
     benchmark = data["benchmark"]
     assert benchmark["scene_id"] == 8
     assert benchmark["target"] == "keyboard:r"
@@ -200,6 +218,7 @@ def main() -> None:
         "PASS storyboard_v21: 17 contiguous scenes, 2400 frames, six rigs, "
         "no rig over 25 percent, synchronized advertising handoff, "
         "off-board stateful request-to-test-pad operator display, "
+        "four-pivot parented arm articulation with mount-side checks, "
         "seven benchmark phases, four independently permitted rhythm contacts, "
         "one contact-free high-clearance crossing, and eleven independently "
         "permitted phone contacts with disclosed 2x montage timing"

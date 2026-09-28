@@ -714,6 +714,51 @@ def _world_beam(name: str, start: Vector, end: Vector, mat: bpy.types.Material,
     return beam
 
 
+def presentation_arm_pose(
+    manifest: dict, target_xy: tuple[float, float], *, wrist_z: float = 0.205,
+) -> tuple[Vector, Vector, Vector, Vector]:
+    """Solve the three visible RoArm link stages for a vertical tool pose.
+
+    The upper and short wrist lengths come from the pinned URDF joint origins.
+    The visible forearm span is 155 mm because its rendered rail runs between
+    the outer servo mounting stacks, not between bare URDF frame origins. The
+    final short link follows the gross reach direction while the terminal tool
+    frame remains vertical. This is presentation IK, not controller evidence.
+    """
+    tx, ty, _tz = manifest["arm"]["nominal_board_T_robot_world_translation"]
+    shoulder = board_point(tx, ty, 0) + Vector((0, 0, 0.120))
+    wrist = board_point(*target_xy, 0) + Vector((0, 0, wrist_z))
+    upper_length = math.hypot(0.236815, 0.030002)
+    forearm_length = 0.1550
+    wrist_link_length = math.hypot(0.015147, 0.053653)
+
+    gross = wrist - shoulder
+    gross_axis = gross.normalized()
+    wrist_pitch = wrist - gross_axis * wrist_link_length
+    reach = wrist_pitch - shoulder
+    distance = reach.length
+    minimum = abs(upper_length - forearm_length)
+    maximum = upper_length + forearm_length
+    if not minimum <= distance <= maximum:
+        raise ValueError(
+            f"presentation arm target is unreachable: {distance:.4f} m not in "
+            f"[{minimum:.4f}, {maximum:.4f}] m"
+        )
+    reach_axis = reach.normalized()
+    projection = (
+        upper_length ** 2 - forearm_length ** 2 + distance ** 2
+    ) / (2 * distance)
+    height = math.sqrt(max(upper_length ** 2 - projection ** 2, 0.0))
+    side = reach_axis.cross(Vector((0, 0, 1)))
+    if side.length < 1e-9:
+        side = Vector((1, 0, 0))
+    else:
+        side.normalize()
+    bend_normal = side.cross(reach_axis).normalized()
+    elbow = shoulder + reach_axis * projection + bend_normal * height
+    return shoulder, elbow, wrist_pitch, wrist
+
+
 def add_continuous_press_arm(
     mats: dict[str, bpy.types.Material],
     *,
@@ -737,19 +782,13 @@ def add_continuous_press_arm(
     # execution cut.
     tx, ty, _tz = manifest["arm"]["nominal_board_T_robot_world_translation"]
     base = board_point(tx, ty, 0)
-    shoulder = base + Vector((0, 0, 0.120))
     target_x, target_y = target_xy
-    wrist = board_point(target_x, target_y, 0) + Vector((0, 0, 0.205))
-    length_a = 0.2387
-    length_b = 0.1550
-    direction = wrist - shoulder
-    distance = direction.length
-    axis = direction.normalized()
-    projection = (length_a ** 2 - length_b ** 2 + distance ** 2) / (2 * distance)
-    height = math.sqrt(max(length_a ** 2 - projection ** 2, 0.0))
-    side = axis.cross(Vector((0, 0, 1))).normalized()
-    normal = side.cross(axis).normalized()
-    elbow = shoulder + axis * projection + normal * height
+    shoulder, elbow, wrist_pitch, wrist = presentation_arm_pose(
+        manifest, target_xy
+    )
+    gross_axis = (wrist - shoulder).normalized()
+    side = gross_axis.cross(Vector((0, 0, 1))).normalized()
+    normal = side.cross(gross_axis).normalized()
 
     cube("Continuous arm base foot", base + Vector((0, 0, 0.020)),
          (0.118, 0.108, 0.040), mats["abs"], 0.008)
@@ -760,33 +799,47 @@ def add_continuous_press_arm(
 
     # Rectangular servo bodies and round output bosses mirror the physical
     # ST-series actuator silhouette seen in the reference photographs.
-    servo_points = ((shoulder, "shoulder", (0.068, 0.054, 0.080)),
-                    (elbow, "elbow", (0.066, 0.052, 0.076)),
-                    (wrist, "wrist", (0.058, 0.048, 0.066)))
-    for point, label, size in servo_points:
-        cube(f"Continuous arm {label} servo body", point, size,
-             mats["servo"], 0.007)
+    servo_points = (
+        (shoulder, "shoulder", (0.054, 0.044, 0.056), Vector((0, 0, 1))),
+        (elbow, "elbow", (0.052, 0.042, 0.052), (wrist_pitch - elbow).normalized()),
+        (wrist_pitch, "wrist pitch", (0.050, 0.040, 0.050),
+         (wrist - wrist_pitch).normalized()),
+        (wrist, "tool wrist", (0.046, 0.038, 0.046), Vector((0, 0, -1))),
+    )
+    for point, label, size, servo_axis in servo_points:
+        servo_rotation = servo_axis.to_track_quat("Z", "Y")
+        servo_body = cube(f"Continuous arm {label} servo body", point, size,
+                          mats["servo"], 0.007)
+        servo_body.rotation_mode = "QUATERNION"
+        servo_body.rotation_quaternion = servo_rotation
         # Layered end caps, mounting ears, and connector blocks break the
         # generic smooth-box silhouette and repeat the construction language
         # of the detailed ST-series servos visible in the official assembly.
-        cube(f"Continuous arm {label} front cap",
-             point + axis * (size[2] * 0.34),
-             (size[0] * 0.88, size[1] * 1.03, 0.010),
-             mats["servo"], 0.0025)
-        cube(f"Continuous arm {label} rear cap",
-             point - axis * (size[2] * 0.34),
-             (size[0] * 0.88, size[1] * 1.03, 0.010),
-             mats["servo"], 0.0025)
+        front_cap = cube(
+            f"Continuous arm {label} front cap",
+            point + servo_axis * (size[2] * 0.38),
+            (size[0] * 0.88, size[1] * 1.03, 0.008),
+            mats["servo"], 0.0025,
+        )
+        rear_cap = cube(
+            f"Continuous arm {label} rear cap",
+            point - servo_axis * (size[2] * 0.38),
+            (size[0] * 0.88, size[1] * 1.03, 0.008),
+            mats["servo"], 0.0025,
+        )
+        for cap in (front_cap, rear_cap):
+            cap.rotation_mode = "QUATERNION"
+            cap.rotation_quaternion = servo_rotation
         for ear_sign in (-1, 1):
             ear_center = point + side * (size[1] * 0.66 * ear_sign)
             _world_beam(
                 f"Continuous arm {label} mounting ear {ear_sign:+d}",
-                ear_center - axis * 0.026,
-                ear_center + axis * 0.026,
-                mats["carbon"], 0.010,
+                ear_center - servo_axis * (size[2] * 0.42),
+                ear_center + servo_axis * (size[2] * 0.42),
+                mats["carbon"], 0.008,
             )
         cube(f"Continuous arm {label} cable connector",
-             point + normal * (size[0] * 0.52) - axis * 0.010,
+             point + normal * (size[0] * 0.52) - servo_axis * 0.010,
              (0.018, 0.014, 0.014), mats["abs"], 0.002)
         for sign in (-1, 1):
             boss = cylinder(f"Continuous arm {label} output boss {sign:+d}",
@@ -807,20 +860,22 @@ def add_continuous_press_arm(
         _world_beam(f"Continuous upper rail {suffix}", shoulder + offset,
                     elbow + offset, mats["carbon"], 0.019)
         _world_beam(f"Continuous forearm rail {suffix}", elbow + offset,
-                    wrist + offset, mats["carbon"], 0.019)
+                    wrist_pitch + offset, mats["carbon"], 0.019)
+        _world_beam(f"Continuous wrist link {suffix}", wrist_pitch + offset,
+                    wrist + offset, mats["carbon"], 0.016)
         # Wider outer side plates make the paired-link architecture legible in
         # the execution shot instead of reading as two solid industrial bars.
         _world_beam(f"Continuous upper side plate {suffix}",
                     shoulder + offset * 1.55, elbow + offset * 1.55,
                     mats["carbon"], 0.010)
         _world_beam(f"Continuous forearm side plate {suffix}",
-                    elbow + offset * 1.55, wrist + offset * 1.55,
+                    elbow + offset * 1.55, wrist_pitch + offset * 1.55,
                     mats["carbon"], 0.010)
 
     # Cross-braces and exposed bolts preserve the lightweight paired-link
     # character of the actual arm rather than reading as solid industrial bars.
     for link_name, start, end in (("upper", shoulder, elbow),
-                                  ("forearm", elbow, wrist)):
+                                  ("forearm", elbow, wrist_pitch)):
         vector = end - start
         for brace_index, alpha in enumerate((0.28, 0.56, 0.82), start=1):
             center = start + vector * alpha
@@ -842,17 +897,19 @@ def add_continuous_press_arm(
     # A restrained, physically attached harness is a strong continuity cue in
     # the reference photographs. It follows the joint chain and cannot be
     # mistaken for the old loose cable crossing the keyboard.
-    harness = curve_line(
-        "Continuous arm servo harness",
-        [base + Vector((0.010, 0.0, 0.080)),
-         shoulder + normal * 0.030,
-         elbow + normal * 0.030,
-         wrist + normal * 0.024],
-        mats["wire"], 0.0028,
+    harness_segments = (
+        ("upper", shoulder + normal * 0.030, elbow + normal * 0.030),
+        ("forearm", elbow + normal * 0.030, wrist_pitch + normal * 0.026),
+        ("wrist", wrist_pitch + normal * 0.026, wrist + normal * 0.022),
     )
-    harness["presentation_detail"] = "JOINT_CHAIN_ATTACHED_SERVO_HARNESS"
+    for segment_name, start, end in harness_segments:
+        harness = curve_line(
+            f"Continuous {segment_name} servo harness", [start, end],
+            mats["wire"], 0.0028,
+        )
+        harness["presentation_detail"] = "JOINT_CHAIN_ATTACHED_SERVO_HARNESS"
 
-    holder = cube("Continuous arm wrist servo", wrist + Vector((0, 0, -0.030)),
+    holder = cube("Continuous arm terminal tool servo", wrist + Vector((0, 0, -0.030)),
                   (0.060, 0.050, 0.066), mats["servo"], 0.006)
     wrist_plate = cube("Continuous arm gripper plate", wrist + Vector((0, 0, -0.073)),
                        (0.072, 0.010, 0.050), mats["arm_exact"], 0.004)

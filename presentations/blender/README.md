@@ -429,6 +429,21 @@ their controlled repository STLs. This film is therefore
 an accurate system-layout and product-geometry explainer, not a motion-clearance
 or fabrication release.
 
+The v2.1 animated presentation rig uses a parented four-pivot visible chain:
+shoulder, elbow, wrist pitch, and tool wrist. Its servo bodies remain attached
+to the carrying side of each joint, its three link stages cannot separate
+during interpolation, and the terminal tool counter-rotates to keep the stylus
+vertical in the board frame. Render the five full-arm QA poses with:
+
+```powershell
+blender --background --factory-startup `
+  --python presentations/blender/build_storyboard_v21_benchmark.py -- `
+  --preview-arm-form
+```
+
+The resulting `tmp/blender-storyboard-v21/arm_form_*.png` files are review
+views only; they are not additional editorial cameras or film claims.
+
 ## Narration and truth boundary
 
 `generate_voiceover.ps1` creates fallback sentence-level narration using an

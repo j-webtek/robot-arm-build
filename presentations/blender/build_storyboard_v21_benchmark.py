@@ -192,21 +192,9 @@ def set_scale(obj: bpy.types.Object, frame: int, scale: float) -> None:
 
 def arm_pose(
     target_xy: tuple[float, float], manifest: dict, *, wrist_z: float = 0.205,
-) -> tuple[Vector, Vector, Vector]:
-    """Return shoulder, elbow, and wrist points for the presentation rig."""
-    tx, ty, _tz = manifest["arm"]["nominal_board_T_robot_world_translation"]
-    shoulder = base.board_point(tx, ty, 0) + Vector((0, 0, 0.120))
-    wrist = base.board_point(*target_xy, 0) + Vector((0, 0, wrist_z))
-    length_a, length_b = 0.2387, 0.1550
-    direction = wrist - shoulder
-    distance = direction.length
-    axis = direction.normalized()
-    projection = (length_a ** 2 - length_b ** 2 + distance ** 2) / (2 * distance)
-    height = math.sqrt(max(length_a ** 2 - projection ** 2, 0.0))
-    side = axis.cross(Vector((0, 0, 1))).normalized()
-    normal = side.cross(axis).normalized()
-    elbow = shoulder + axis * projection + normal * height
-    return shoulder, elbow, wrist
+) -> tuple[Vector, Vector, Vector, Vector]:
+    """Return URDF-dimensioned shoulder, elbow, wrist-pitch, and wrist points."""
+    return base.presentation_arm_pose(manifest, target_xy, wrist_z=wrist_z)
 
 
 def segment_rotation(start: Vector, end: Vector):
@@ -233,35 +221,75 @@ def add_articulation_controls(
     The shoulder is fixed; upper and forearm frames rotate as rigid link
     groups; the wrist frame translates while preserving the vertical stylus.
     """
-    shoulder, elbow, wrist = arm_pose(target_xy, rig["manifest"])
+    shoulder, elbow, wrist_pitch, wrist = arm_pose(target_xy, rig["manifest"])
     controls: dict[str, bpy.types.Object] = {}
-    for name, location, rotation in (
-        ("upper", shoulder, segment_rotation(shoulder, elbow)),
-        ("forearm", elbow, segment_rotation(elbow, wrist)),
-        ("wrist", wrist, None),
-    ):
+
+    def control(name: str, parent: bpy.types.Object | None = None) -> bpy.types.Object:
         obj = bpy.data.objects.new(f"CTRL_{name.upper()}_LINK", None)
         bpy.context.scene.collection.objects.link(obj)
-        obj.location = location
-        if rotation is not None:
-            obj.rotation_mode = "QUATERNION"
-            obj.rotation_quaternion = rotation
+        obj.rotation_mode = "QUATERNION"
+        obj.parent = parent
         classify(obj, collection, f"articulation_control:{name}")
         controls[name] = obj
+        return obj
+
+    upper = control("upper")
+    forearm = control("forearm", upper)
+    wrist_link = control("wrist_link", forearm)
+    tool = control("tool", wrist_link)
+    vertical_reference = control("tool_vertical_reference")
+    upper_q = segment_rotation(shoulder, elbow)
+    forearm_q = segment_rotation(elbow, wrist_pitch)
+    wrist_q = segment_rotation(wrist_pitch, wrist)
+    upper.location = shoulder
+    upper.rotation_quaternion = upper_q
+    forearm.location = (0, 0, (elbow - shoulder).length)
+    forearm.rotation_quaternion = upper_q.inverted() @ forearm_q
+    wrist_link.location = (0, 0, (wrist_pitch - elbow).length)
+    wrist_link.rotation_quaternion = forearm_q.inverted() @ wrist_q
+    tool.location = (0, 0, (wrist - wrist_pitch).length)
+    tool.rotation_quaternion = wrist_q.inverted()
+    stabilize = tool.constraints.new("COPY_ROTATION")
+    stabilize.name = "Keep stylus vertical in board frame"
+    stabilize.target = vertical_reference
+    stabilize.owner_space = "WORLD"
+    stabilize.target_space = "WORLD"
+    stabilize.mix_mode = "REPLACE"
 
     moving = set(rig["moving"])
     for obj in rig["objects"]:
         lower = obj.name.lower()
-        if "servo harness" in lower:
-            obj.hide_render = True
-            continue
-        if "forearm" in lower or "elbow" in lower:
-            parent_preserve_world(obj, controls["forearm"])
-        elif "upper" in lower:
-            parent_preserve_world(obj, controls["upper"])
-        elif "wrist" in lower or "gripper" in lower or "stylus" in lower or obj in moving:
+        tool_component = any(token in lower for token in (
+            "gripper", "jaw", "grip pad", "compliant", "stylus",
+            "tool cap", "stylus collar", "terminal tool",
+        ))
+        if tool_component:
             obj.animation_data_clear()
-            parent_preserve_world(obj, controls["wrist"])
+            parent_preserve_world(obj, controls["tool"])
+        elif ("wrist link" in lower or "wrist servo harness" in lower
+              or "tool wrist" in lower):
+            parent_preserve_world(obj, controls["wrist_link"])
+        elif "wrist pitch" in lower or "forearm" in lower:
+            parent_preserve_world(obj, controls["forearm"])
+        elif "elbow" in lower or "upper" in lower:
+            parent_preserve_world(obj, controls["upper"])
+        elif obj in moving:
+            obj.animation_data_clear()
+            parent_preserve_world(obj, controls["tool"])
+
+    required_mounts = {
+        "Continuous arm elbow servo body": upper,
+        "Continuous arm wrist pitch servo body": forearm,
+        "Continuous arm tool wrist servo body": wrist_link,
+        "Continuous arm gripper jaw left": tool,
+        "Continuous arm gripper jaw right": tool,
+    }
+    for name, expected_parent in required_mounts.items():
+        mounted = next(
+            (obj for obj in rig["objects"] if obj.name.startswith(name)), None
+        )
+        if mounted is None or mounted.parent is not expected_parent:
+            raise RuntimeError(f"incorrect articulated joint mount: {name}")
     return controls
 
 
@@ -270,18 +298,32 @@ def animate_arm_target(
     target_xy: tuple[float, float], frame: int, *, press: float = 0.0,
     wrist_z: float = 0.205,
 ) -> None:
-    shoulder, elbow, wrist = arm_pose(target_xy, manifest, wrist_z=wrist_z)
-    upper, forearm, wrist_control = controls["upper"], controls["forearm"], controls["wrist"]
+    shoulder, elbow, wrist_pitch, wrist = arm_pose(
+        target_xy, manifest, wrist_z=wrist_z
+    )
+    upper = controls["upper"]
+    forearm = controls["forearm"]
+    wrist_link = controls["wrist_link"]
+    tool = controls["tool"]
+    upper_q = segment_rotation(shoulder, elbow)
+    forearm_q = segment_rotation(elbow, wrist_pitch)
+    wrist_q = segment_rotation(wrist_pitch, wrist)
     upper.location = shoulder
-    upper.rotation_quaternion = segment_rotation(shoulder, elbow)
+    upper.rotation_quaternion = upper_q
     upper.keyframe_insert("location", frame=frame)
     upper.keyframe_insert("rotation_quaternion", frame=frame)
-    forearm.location = elbow
-    forearm.rotation_quaternion = segment_rotation(elbow, wrist)
+    forearm.location = (0, 0, (elbow - shoulder).length)
+    forearm.rotation_quaternion = upper_q.inverted() @ forearm_q
     forearm.keyframe_insert("location", frame=frame)
     forearm.keyframe_insert("rotation_quaternion", frame=frame)
-    wrist_control.location = wrist + Vector((0, 0, press))
-    wrist_control.keyframe_insert("location", frame=frame)
+    wrist_link.location = (0, 0, (wrist_pitch - elbow).length)
+    wrist_link.rotation_quaternion = forearm_q.inverted() @ wrist_q
+    wrist_link.keyframe_insert("location", frame=frame)
+    wrist_link.keyframe_insert("rotation_quaternion", frame=frame)
+    tool.location = Vector((0, 0, (wrist - wrist_pitch).length)) + (
+        wrist_q.inverted() @ Vector((0, 0, press))
+    )
+    tool.keyframe_insert("location", frame=frame)
 
 
 def animate_key_rhythm(
@@ -917,6 +959,9 @@ def build() -> bpy.types.Scene:
     )
     scene["phone_phrase"] = phone_sequence["phrase"]
     scene["phone_contact_count"] = len(phone_sequence["contacts"]) + 2
+    scene["arm_joint_chain"] = "shoulder>elbow>wrist_pitch>tool_wrist"
+    scene["arm_pivot_continuity"] = "PARENTED_CHAIN"
+    scene["tool_orientation_control"] = "WORLD_VERTICAL_COPY_ROTATION"
 
     # The camera portal was established in the LOCATE chapter. Keep it out of
     # the phone beauty shots so it cannot obscure the real phone and stylus.
@@ -1076,6 +1121,31 @@ def main() -> None:
             rig_name = insert["rig"] if insert else shot["rig"]
             scene.camera = bpy.data.objects[f"CAM_{rig_name.upper()}"]
             scene.render.filepath = str(OUT / f"storyboard_{frame:04d}.png")
+            bpy.ops.render.render(write_still=True)
+    if "--preview-arm-form" in args:
+        # A non-editorial QA camera shows the complete mechanism at the most
+        # important keyboard, crossing, and phone poses. It is deliberately
+        # absent from the canonical shot list and never changes film timing.
+        qa_collection = bpy.data.collections["TACTEVRA_SHOT_RIGS"]
+        qa_camera, qa_aim = camera_rig(
+            "arm_form_qa",
+            Vector((1.20, -2.60, 1.25)),
+            base.board_point(305, 300, 220),
+            50,
+            qa_collection,
+        )
+        qa_camera.data.dof.aperture_fstop = 8.0
+        # Disable editorial camera switching for this diagnostic-only pass.
+        for marker in scene.timeline_markers:
+            marker.camera = None
+        for frame in (1009, 1178, 1528, 1800, 2028):
+            scene.frame_set(frame)
+            # Timeline camera markers run during frame changes, so restore the
+            # QA camera afterwards rather than letting the editorial rig win.
+            scene.camera = qa_camera
+            qa_aim.location = base.board_point(305, 300, 220)
+            bpy.context.view_layer.update()
+            scene.render.filepath = str(OUT / f"arm_form_{frame:04d}.png")
             bpy.ops.render.render(write_still=True)
     print(f"TACTEVRA_STORYBOARD_V21={blend_path}")
 
