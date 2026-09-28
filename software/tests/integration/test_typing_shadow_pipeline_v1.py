@@ -6,6 +6,7 @@ from pathlib import Path
 import sys
 
 import pytest
+import jsonschema
 
 ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT / "software/tests/unit"))
@@ -22,6 +23,8 @@ from rocell.application.typing_joint_schedule_v1 import (  # noqa: E402
 )
 from rocell.application.typing_shadow_pipeline_v1 import (  # noqa: E402
     STATUS,
+    TypingShadowPipelineV1Error,
+    parse_typing_shadow_pipeline_v1,
     run_typing_shadow_pipeline_v1,
 )
 from rocell.application.typing_trajectory_plan_v1 import TypingTrajectoryPolicyV1  # noqa: E402
@@ -156,6 +159,13 @@ def test_real_boundaries_produce_one_deterministic_honest_blocker_receipt():
     assert first["controller_commands"] == []
     assert first["hardware_commands_generated"] == 0
     assert first["hardware_access"] is first["physical_authority"] is False
+    schema = json.loads(
+        (ROOT / "software/ai/schemas/typing_shadow_pipeline_v1.schema.json")
+        .read_text(encoding="utf-8")
+    )
+    jsonschema.Draft202012Validator(schema).validate(first)
+    parsed = parse_typing_shadow_pipeline_v1(first)
+    assert tuple(parsed["ordered_target_ids"]) == ("H", "I")
 
 
 @pytest.mark.parametrize(
@@ -189,4 +199,108 @@ def test_payload_mutation_fails_at_strict_decoder_before_any_stage_receipt():
     inputs["payload"] = bytes(payload)
 
     with pytest.raises(ValueError):
+        run_typing_shadow_pipeline_v1(**inputs)
+
+
+def _rehash_receipt(document: dict[str, object]) -> None:
+    import hashlib
+
+    document.pop("typing_shadow_pipeline_sha256", None)
+    payload = json.dumps(
+        document, sort_keys=True, separators=(",", ":"), allow_nan=False
+    ).encode("utf-8")
+    document["typing_shadow_pipeline_sha256"] = hashlib.sha256(payload).hexdigest()
+
+
+@pytest.mark.parametrize(
+    ("mutation", "message"),
+    (
+        ("profile_hash", "stage hashes"),
+        ("timestamp_lineage", "terminal blocker"),
+        ("action_count", "ordered targets"),
+        ("authority", "zero authority"),
+        ("extra", "fields differ"),
+    ),
+)
+def test_rehashed_receipt_mutations_still_fail_the_owning_rule(
+    mutation: str, message: str
+):
+    receipt = run_typing_shadow_pipeline_v1(**_inputs())
+    changed = json.loads(json.dumps(receipt))
+    if mutation == "profile_hash":
+        changed["stage_hashes"] = dict(reversed(changed["stage_hashes"].items()))
+    elif mutation == "timestamp_lineage":
+        changed["terminal_blockers"] = list(reversed(changed["terminal_blockers"]))
+    elif mutation == "action_count":
+        changed["action_count"] += 1
+    elif mutation == "authority":
+        changed["hardware_access"] = True
+    else:
+        changed["unexpected"] = True
+    _rehash_receipt(changed)
+
+    with pytest.raises(TypingShadowPipelineV1Error, match=message):
+        parse_typing_shadow_pipeline_v1(changed)
+
+
+@pytest.mark.parametrize(
+    ("mutation", "message"),
+    (
+        ("duplicate_json", "duplicate JSON"),
+        ("batch_hash", "batch_sha256"),
+        ("intent", "differs from the semantic plan"),
+        ("stale_capture", "future-dated or expired"),
+        ("expired_preplanner", "expired before planning"),
+        ("calibration", "identities differ"),
+        ("seed", "identities differ"),
+        ("dynamics", "exceeds the profile"),
+    ),
+)
+def test_single_field_stage_mutations_fail_at_the_earliest_owner(
+    mutation: str, message: str
+):
+    inputs = _inputs()
+    if mutation == "duplicate_json":
+        inputs["payload"] = inputs["payload"].replace(
+            b'"batch_id":', b'"batch_id":"duplicate","batch_id":', 1
+        )
+    elif mutation == "batch_hash":
+        payload = json.loads(inputs["payload"])
+        payload["request_id"] = "mutated"
+        inputs["payload"] = json.dumps(
+            payload, sort_keys=True, separators=(",", ":")
+        ).encode("utf-8")
+    elif mutation == "intent":
+        inputs["intent_plan"] = ActionPlan.from_text(
+            device=Device.KEYBOARD,
+            profile_id="keyboard-development-v1",
+            text="different",
+            actions=(PressKey("H"), PressKey("I")),
+            required_calibrations=("keyboard_pose", "keyboard_tcp"),
+        )
+    elif mutation == "stale_capture":
+        inputs["current_time_epoch_ms"] = ingress_fixture.T0 + 10_000
+    elif mutation == "expired_preplanner":
+        inputs["preplanner_monotonic_ns"] = 16_000_000_000
+    elif mutation == "calibration":
+        inputs["execution_config"] = replace(
+            inputs["execution_config"], calibration_snapshot_sha256="f" * 64
+        )
+    elif mutation == "seed":
+        inputs["ik_seed"] = replace(
+            inputs["ik_seed"], build_snapshot_sha256="f" * 64
+        )
+    else:
+        profile = inputs["joint_dynamics_profile"]
+        inputs["joint_dynamics_profile"] = replace(
+            profile,
+            maximum_velocity_rad_s={name: 1e-6 for name in profile.maximum_velocity_rad_s},
+            maximum_acceleration_rad_s2={
+                name: 1e-6 for name in profile.maximum_acceleration_rad_s2
+            },
+            maximum_jerk_rad_s3={name: 1e-6 for name in profile.maximum_jerk_rad_s3},
+            maximum_time_scale_factor=1.0,
+        )
+
+    with pytest.raises(ValueError, match=message):
         run_typing_shadow_pipeline_v1(**inputs)

@@ -428,6 +428,12 @@ preserve repeats and action order, and deterministically stop at the missing
 installed collision profile and fresh-state requirements. The checkpoint has
 no transport or writer surface. PC2 remains in progress pending a canonical
 receipt parser/schema and the full field-by-field owner-boundary mutation set.
+ARM-081 completes PC2 with a strict canonical receipt schema/parser and an
+owner-boundary mutation matrix. Independently rehashed changes to stage order,
+terminal lineage, action count, authority, or field set still reject, while
+duplicate JSON, crossed batch/intent/calibration/seed identities, stale
+admission, expired freshness, and dynamics overflow fail at their earliest real
+stage. PC3 rolling-horizon/restart work is ready; no physical blocker changes.
 The AI precision lane now has a mainline-compatible pose-output adapter and v2
 batch producer. It preserves repeated targets and abstains on qualification,
 domain, freshness, identity, confidence, or containment failure. Its retained

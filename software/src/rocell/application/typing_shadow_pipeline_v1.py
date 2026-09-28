@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
+from types import MappingProxyType
 from typing import Any, Mapping
 
 from rocell.calibration import PlannerCalibrationSnapshot
@@ -40,6 +42,22 @@ from .trajectory_simulation import TrajectorySimulationPolicy
 
 SCHEMA = "rocell.typing_shadow_pipeline.v1"
 STATUS = "BLOCKED_AT_HONEST_COLLISION_EVIDENCE_BOUNDARY"
+_SHA256 = re.compile(r"^[0-9a-f]{64}$")
+STAGE_HASH_KEYS = (
+    "payload_sha256",
+    "batch_sha256",
+    "ingress_sha256",
+    "freshness_sha256",
+    "typing_execution_plan_sha256",
+    "typing_trajectory_plan_sha256",
+    "typing_trajectory_ik_screen_sha256",
+    "typing_joint_schedule_sha256",
+    "typing_collision_intake_sha256",
+)
+TERMINAL_BLOCKERS = (
+    "INSTALLED_COLLISION_PROFILE_REQUIRED",
+    "FRESH_OBSERVED_START_STATE_REQUIRED_FOR_EXECUTION",
+)
 
 
 class TypingShadowPipelineV1Error(ValueError):
@@ -61,6 +79,100 @@ def _canonical(value: object) -> bytes:
 
 def _sha256(value: object) -> str:
     return hashlib.sha256(_canonical(value)).hexdigest()
+
+
+def _digest(value: object, label: str) -> str:
+    if not isinstance(value, str) or _SHA256.fullmatch(value) is None:
+        raise TypingShadowPipelineV1Error(f"{label} must be a SHA-256 digest")
+    return value
+
+
+def parse_typing_shadow_pipeline_v1(
+    document: Mapping[str, Any],
+) -> Mapping[str, Any]:
+    """Verify and freeze one exact PC2 zero-authority terminal receipt."""
+
+    if not isinstance(document, Mapping):
+        raise TypingShadowPipelineV1Error("shadow receipt must be an object")
+    expected = {
+        "schema",
+        "status",
+        "request_id",
+        "ordered_target_ids",
+        "action_count",
+        "stage_hashes",
+        "terminal_stage",
+        "terminal_stage_status",
+        "terminal_blockers",
+        "controller_commands",
+        "hardware_commands_generated",
+        "hardware_access",
+        "physical_authority",
+        "typing_shadow_pipeline_sha256",
+    }
+    if set(document) != expected:
+        raise TypingShadowPipelineV1Error(
+            "shadow receipt fields differ from the canonical contract"
+        )
+    claimed = _digest(
+        document["typing_shadow_pipeline_sha256"],
+        "typing_shadow_pipeline_sha256",
+    )
+    unsigned = dict(document)
+    unsigned.pop("typing_shadow_pipeline_sha256")
+    if _sha256(unsigned) != claimed:
+        raise TypingShadowPipelineV1Error("shadow receipt hash is invalid")
+    if document["schema"] != SCHEMA or document["status"] != STATUS:
+        raise TypingShadowPipelineV1Error("shadow receipt status or schema is invalid")
+    request_id = document["request_id"]
+    if (
+        not isinstance(request_id, str)
+        or not request_id
+        or request_id != request_id.strip()
+        or len(request_id) > 128
+    ):
+        raise TypingShadowPipelineV1Error("request_id is invalid")
+    targets = document["ordered_target_ids"]
+    if (
+        not isinstance(targets, list)
+        or not 1 <= len(targets) <= 64
+        or any(
+            not isinstance(item, str)
+            or not item
+            or item != item.strip()
+            or len(item) > 128
+            for item in targets
+        )
+        or document["action_count"] != len(targets)
+    ):
+        raise TypingShadowPipelineV1Error("ordered targets or action count is invalid")
+    hashes = document["stage_hashes"]
+    if not isinstance(hashes, Mapping) or tuple(hashes) != STAGE_HASH_KEYS:
+        raise TypingShadowPipelineV1Error(
+            "stage hashes must use the exact canonical stage order"
+        )
+    for key in STAGE_HASH_KEYS:
+        _digest(hashes[key], f"stage_hashes.{key}")
+    if (
+        document["terminal_stage"] != "COLLISION_EVIDENCE_INTAKE"
+        or document["terminal_stage_status"]
+        != "BLOCKED_INSTALLED_COLLISION_PROFILE_REQUIRED"
+        or tuple(document["terminal_blockers"]) != TERMINAL_BLOCKERS
+    ):
+        raise TypingShadowPipelineV1Error("terminal blocker lineage is invalid")
+    if (
+        document["controller_commands"] != []
+        or document["hardware_commands_generated"] != 0
+        or document["hardware_access"] is not False
+        or document["physical_authority"] is not False
+    ):
+        raise TypingShadowPipelineV1Error("shadow receipt violates zero authority")
+    frozen = dict(document)
+    frozen["ordered_target_ids"] = tuple(targets)
+    frozen["stage_hashes"] = MappingProxyType(dict(hashes))
+    frozen["terminal_blockers"] = tuple(document["terminal_blockers"])
+    frozen["controller_commands"] = ()
+    return MappingProxyType(frozen)
 
 
 def run_typing_shadow_pipeline_v1(
@@ -177,5 +289,6 @@ __all__ = [
     "SCHEMA",
     "STATUS",
     "TypingShadowPipelineV1Error",
+    "parse_typing_shadow_pipeline_v1",
     "run_typing_shadow_pipeline_v1",
 ]
