@@ -1,0 +1,192 @@
+from __future__ import annotations
+
+import json
+from dataclasses import replace
+from pathlib import Path
+import sys
+
+import pytest
+
+ROOT = Path(__file__).resolve().parents[3]
+sys.path.insert(0, str(ROOT / "software/tests/unit"))
+
+import test_model_motion_ingress_v2 as ingress_fixture  # noqa: E402
+import test_typing_trajectory_ik_screen_v1 as ik_fixture  # noqa: E402
+from rocell.application.model_motion_ingress_v2 import MeasuredTargetRegionV2  # noqa: E402
+from rocell.application.pre_camera_typing_qualification_basis_v1 import (  # noqa: E402
+    load_pre_camera_typing_qualification_basis_v1,
+)
+from rocell.application.typing_execution_plan_v1 import TypingExecutionConfigV1  # noqa: E402
+from rocell.application.typing_joint_schedule_v1 import (  # noqa: E402
+    dynamics_profile_from_pc0_basis_v1,
+)
+from rocell.application.typing_shadow_pipeline_v1 import (  # noqa: E402
+    STATUS,
+    run_typing_shadow_pipeline_v1,
+)
+from rocell.application.typing_trajectory_plan_v1 import TypingTrajectoryPolicyV1  # noqa: E402
+from rocell.models import (  # noqa: E402
+    ActionPlan,
+    Device,
+    ModelMotionBatchV2,
+    Point3Mm,
+    PressKey,
+    SpeedClass,
+)
+
+
+def _inputs(targets: tuple[str, ...] = ("H", "I"), text: str = "hi"):
+    context = ingress_fixture.load_simulation_context(
+        ingress_fixture.WORKSPACE, ingress_fixture.MANIFEST
+    )
+    snapshot = ik_fixture._snapshot(context)
+    tip = ik_fixture._ready_tip(context, snapshot)
+    plan = ActionPlan.from_text(
+        device=Device.KEYBOARD,
+        profile_id="keyboard-development-v1",
+        text=text,
+        actions=tuple(PressKey(target) for target in targets),
+        required_calibrations=("keyboard_pose", "keyboard_tcp"),
+    )
+    unique_targets = tuple(dict.fromkeys(targets))
+    contacts = {
+        target_id: Point3Mm(
+            "board", tip.x + 0.2 * index, tip.y, tip.z - 5.0
+        )
+        for index, target_id in enumerate(unique_targets)
+    }
+    base = ingress_fixture._batch(context, plan=plan)
+    batch = ModelMotionBatchV2(
+        batch_id=base.batch_id,
+        request_id=base.request_id,
+        intent_plan_sha256=base.intent_plan_sha256,
+        device=base.device,
+        capability=base.capability,
+        geometry=base.geometry,
+        evidence=base.evidence,
+        uncertainty=replace(base.uncertainty, covered_target_ids=unique_targets),
+        proposals=tuple(
+            ingress_fixture._proposal(
+                context, target_id, index, target=contacts[target_id]
+            )
+            for index, target_id in enumerate(targets)
+        ),
+    )
+    regions = tuple(
+        MeasuredTargetRegionV2(
+            target_id=target_id,
+            coordinate_frame="board",
+            coordinate_profile="board_mm_xy_plane_v2",
+            board_frame_definition_sha256=ingress_fixture.H["d"],
+            vertices_xy_mm=(
+                (point.x - 5.0, point.y - 5.0),
+                (point.x + 5.0, point.y - 5.0),
+                (point.x + 5.0, point.y + 5.0),
+                (point.x - 5.0, point.y + 5.0),
+            ),
+            surface_z_mm=point.z,
+            surface_normal_error_bound_mm=0.1,
+            placement_error_bound_mm=0.25,
+            placement_observation_sha256=ingress_fixture.H["e"],
+            target_catalog_sha256=context.targets.content_sha256,
+        )
+        for target_id, point in contacts.items()
+    )
+    registry = ingress_fixture._registry(
+        context,
+        qualification=ingress_fixture._qualification(
+            context, target_ids=unique_targets
+        ),
+        target_regions=regions,
+    )
+    execution_config = TypingExecutionConfigV1(
+        config_id="pc2-golden-hi-offline",
+        calibration_snapshot_sha256=snapshot.snapshot_sha256,
+        tool_profile_sha256="0" * 64,
+        dynamics_profile_sha256="1" * 64,
+        route_reference_point=Point3Mm("board", tip.x, tip.y, tip.z),
+        hover_clearance_mm=5.0,
+        settle_position_tolerance_mm=0.5,
+        settle_velocity_tolerance_mm_s=1.0,
+        settle_hold_ms=100,
+        preview_horizon=1,
+        speed_class=SpeedClass.SLOW,
+    )
+    basis = load_pre_camera_typing_qualification_basis_v1(ROOT)
+    return {
+        "payload": json.dumps(
+            batch.to_dict(), sort_keys=True, separators=(",", ":")
+        ).encode("utf-8"),
+        "intent_plan": plan,
+        "context": context,
+        "registry": registry,
+        "current_time_epoch_ms": ingress_fixture.T0 + 3_000,
+        "ingress_monotonic_ns": 9_000_000_000,
+        "preplanner_monotonic_ns": 10_000_000_000,
+        "execution_config": execution_config,
+        "trajectory_policy": TypingTrajectoryPolicyV1(
+            policy_id="pc2-golden-quintic",
+            maximum_cartesian_step_mm=1.0,
+            maximum_velocity_mm_s=40.0,
+            maximum_acceleration_mm_s2=80.0,
+            maximum_jerk_mm_s3=400.0,
+            hover_settle_ms=100,
+            contact_dwell_ms=60,
+        ),
+        "calibration_snapshot": snapshot,
+        "ik_seed": ik_fixture._seed(context, snapshot),
+        "joint_dynamics_profile": dynamics_profile_from_pc0_basis_v1(basis),
+    }
+
+
+def test_real_boundaries_produce_one_deterministic_honest_blocker_receipt():
+    inputs = _inputs()
+    first = run_typing_shadow_pipeline_v1(**inputs)
+    second = run_typing_shadow_pipeline_v1(**inputs)
+
+    assert first == second
+    assert first["status"] == STATUS
+    assert first["ordered_target_ids"] == ["H", "I"]
+    assert first["terminal_stage"] == "COLLISION_EVIDENCE_INTAKE"
+    assert first["terminal_stage_status"] == (
+        "BLOCKED_INSTALLED_COLLISION_PROFILE_REQUIRED"
+    )
+    assert "INSTALLED_COLLISION_PROFILE_REQUIRED" in first["terminal_blockers"]
+    assert len(first["stage_hashes"]) == 9
+    assert first["controller_commands"] == []
+    assert first["hardware_commands_generated"] == 0
+    assert first["hardware_access"] is first["physical_authority"] is False
+
+
+@pytest.mark.parametrize(
+    ("targets", "text"),
+    (
+        (("R", "O", "B", "O", "T"), "robot"),
+        (("H", "H", "1", "PERIOD"), "hh1."),
+    ),
+)
+def test_golden_typing_sequences_preserve_order_through_every_real_stage(
+    targets: tuple[str, ...], text: str
+):
+    report = run_typing_shadow_pipeline_v1(**_inputs(targets, text))
+    fixture = json.loads(
+        (ROOT / "software/tests/fixtures/typing_shadow_pipeline_v1_golden.json")
+        .read_text(encoding="utf-8")
+    )
+    fixture_key = "type_robot" if text == "robot" else "repeat_punctuation"
+
+    assert report == fixture[fixture_key]
+    assert report["ordered_target_ids"] == list(targets)
+    assert report["action_count"] == len(targets)
+    assert report["terminal_stage"] == "COLLISION_EVIDENCE_INTAKE"
+    assert report["hardware_commands_generated"] == 0
+
+
+def test_payload_mutation_fails_at_strict_decoder_before_any_stage_receipt():
+    inputs = _inputs()
+    payload = bytearray(inputs["payload"])
+    payload[-2] = ord("x")
+    inputs["payload"] = bytes(payload)
+
+    with pytest.raises(ValueError):
+        run_typing_shadow_pipeline_v1(**inputs)

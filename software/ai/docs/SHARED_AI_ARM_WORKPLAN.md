@@ -421,6 +421,13 @@ dynamic dimension at bounded just-inside/just-outside scale limits plus
 stationary and direction-reversal cases. PC2 shadow-pipeline composition may
 begin, but measured installed dynamics, controller tracking, collision
 evidence, fresh state, and all physical authority remain blocked.
+ARM-080 begins PC2 by composing the actual V2 decoder and every existing
+optimized typing boundary through collision-evidence intake behind one
+zero-I/O API. Golden `robot` and `H,H,1,PERIOD` receipts bind nine stage hashes,
+preserve repeats and action order, and deterministically stop at the missing
+installed collision profile and fresh-state requirements. The checkpoint has
+no transport or writer surface. PC2 remains in progress pending a canonical
+receipt parser/schema and the full field-by-field owner-boundary mutation set.
 The AI precision lane now has a mainline-compatible pose-output adapter and v2
 batch producer. It preserves repeated targets and abstains on qualification,
 domain, freshness, identity, confidence, or containment failure. Its retained

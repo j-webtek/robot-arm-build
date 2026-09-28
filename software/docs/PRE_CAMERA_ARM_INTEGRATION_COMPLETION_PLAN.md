@@ -97,7 +97,7 @@ and its evidence gate pass.
 | --- | --- | --- | ---: | ---: | --- |
 | PC0 | Freeze fixtures, profiles, metrics, and status vocabulary | Existing T1/T2 artifacts | No | None | COMPLETE |
 | PC1 | Joint-space dynamics and deterministic time scaling | PC0, T2B-IK | No | None | COMPLETE |
-| PC2 | Golden end-to-end shadow pipeline | PC1, collision intake | No | None | READY |
+| PC2 | Golden end-to-end shadow pipeline | PC1, collision intake | No | None | IN_PROGRESS |
 | PC3 | Rolling-horizon rebinding and restart safety | PC2 | No | None | NOT_STARTED |
 | PC4 | Typing-specific zero-write controller bridge | PC2, PC3 | No | None | NOT_STARTED |
 | PC5 | Fault injection and property testing | PC1-PC4 | No | None | NOT_STARTED |
@@ -185,6 +185,16 @@ reported margin. Every violation rejects deterministically. The artifact still
 states that controller tracking and settling are physically unqualified.
 
 ## PC2 — Golden end-to-end shadow pipeline
+
+**Checkpoint 2026-09-28:** one zero-I/O orchestration boundary now composes the
+real strict V2 decoder, trusted-registry admission and freshness recheck, T1
+typing compiler, T2A Cartesian planner, T2B-IK screen, PC1 joint schedule, and
+collision-evidence intake. Retained golden receipts for `robot` and
+`H,H,1,PERIOD` preserve repeated targets and all nine stage hashes before
+stopping at the honest installed-profile/fresh-state blocker. A strict payload
+mutation rejects before any receipt. PC2 remains in progress until the full
+one-field stage-owner mutation matrix and canonical receipt schema/parser are
+retained.
 
 ### Deliverables
 
