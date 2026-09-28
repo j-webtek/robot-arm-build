@@ -4,7 +4,7 @@
 - **Target runtime:** exactly 100 seconds
 - **Audience:** Technical buyers, collaborators, and first-time GitHub visitors
 - **Central demonstration:** A user asks Tactevra to enter `READY` in a local
-  computer interface, then send `READY` as a phone message. The system types
+  computer interface, then send `ON MY WAY` as a phone message. The system types
   the local input through the physical keyboard, verifies that local result,
   then separately operates the phone's Messages app through physical screen
   taps and verifies the sent message. The two devices never share an input,
@@ -78,20 +78,20 @@ These rules are mandatory for the next render.
 
 | # | Time | Stage | Beat | Picture and motion | On-screen information |
 |---:|---:|---|---|---|---|
-| 1 | 0:00–0:05 | — | **The ask** | Start on an unmistakable operator console. The AI request appears in its own panel, visually separate from both target interfaces. | `Enter READY locally, then text READY from the phone.` |
+| 1 | 0:00–0:05 | — | **The ask** | Start on an unmistakable operator console. The AI request appears in its own panel, visually separate from both target interfaces. | `Enter READY locally, then text ON MY WAY from the phone.` |
 | 2 | 0:05–0:11 | — | **The physical stakes** | Match-cut to the hero wide and orbit 12–15 degrees. The detailed arm is parked and its stylus is visibly clamped. The physical keyboard, local-computer display, and phone are all legible as separate objects. | No caption; let the narration explain that a guess becomes motion. |
-| 3 | 0:11–0:18 | `1 · UNDERSTAND` | **Model proposal** | An amber proposal card appears beside the stationary workcell. The request becomes two ordered, device-qualified intentions. | `LOCAL.TYPE_TEXT "READY" → PHONE.SEND_TEXT "READY"`; `frame board`; `confidence 0.96`; no joint angles. |
+| 3 | 0:11–0:18 | `1 · UNDERSTAND` | **Model proposal** | An amber proposal card appears beside the stationary workcell. The request becomes two ordered, device-qualified intentions. | `LOCAL.TYPE_TEXT "READY" → PHONE.SEND_TEXT "ON MY WAY"`; `frame board`; `confidence 0.96`; no joint angles. |
 | 4 | 0:18–0:25 | `2 · LOCATE` | **See the scene** | Crane to the fixed camera, pass through its lens, and settle into a square overhead view. Exact board tags pulse and independent device outlines lock. | `local keyboard found`; `local display found`; `phone found`; capture-quality indicators. |
-| 5 | 0:25–0:31 | `2 · LOCATE` | **Resolve independent targets** | Use two clearly separated blue target maps. The local branch highlights physical R/E/A/D/Y keys and the local input field. The phone branch highlights Messages, on-screen R/E/A/D/Y, and Send. No line connects one device's output to the other. | `local input · physical keyboard`; `message · phone touchscreen`; declared frames and uncertainty. |
+| 5 | 0:25–0:31 | `2 · LOCATE` | **Resolve independent targets** | Use two clearly separated blue target maps. The local branch highlights physical R/E/A/D/Y keys and the local input field. The phone branch highlights Messages, the on-screen targets needed for `ON MY WAY`, and Send. No line connects one device's output to the other. | `local input · physical keyboard`; `message · phone touchscreen`; declared frames and uncertainty. |
 | 6 | 0:31–0:37 | `3 · CHECK` | **Reject stale evidence** | A red card occupies empty frame space while the arm remains visibly still. | `scene capture 41 s old`; `limit 2 s`; `REJECTED · NO MOTION`. |
-| 7 | 0:37–0:44 | `3 · CHECK` | **Admit both device-local routines** | A fresh capture arrives. The compiled route draws park → local R/E/A/D/Y → verify local → Messages → phone R/E/A/D/Y → Send → verify phone. Gates tick and the decision turns green. | `device · app state · frame · freshness · reach · clearance · order · speed`; `2 INTENTS · 12 CONTACTS ADMITTED`. |
+| 7 | 0:37–0:44 | `3 · CHECK` | **Admit both device-local routines** | A fresh capture arrives. The compiled route draws park → local R/E/A/D/Y → verify local → Messages → phone `ON MY WAY` → Send → verify phone. Gates tick and the decision turns green. | `device · app state · frame · freshness · reach · clearance · order · speed`; `2 INTENTS · 15 CONTACTS ADMITTED`. |
 | 8 | 0:44–0:50 | `4 · ACT` | **Transit to physical keyboard** | One continuous medium-wide: the detailed arm leaves park and reaches the physical keyboard hover plane. | Small persistent corner tag begins: `SIMULATED WORKCELL SEQUENCE`. |
 | 9 | 0:50–1:00 | `4 · ACT` | **Enter READY locally** | Track with the whole arm for five visible physical-key presses. R/E/A/D/Y appear only in the local computer's input field. The phone remains unchanged. | `LOCAL · R ✓  E ✓  A ✓  D ✓  Y ✓`; green plus checks. |
 | 10 | 1:00–1:05 | `5 · VERIFY` | **Verify local input** | The arm holds above the keyboard. The local display reads `READY`; local input observation and telemetry agree. | `LOCAL EXPECTED: READY`; `LOCAL OBSERVED: READY ✓`; phone unchanged. |
 | 11 | 1:05–1:11 | `4 · ACT` | **Cross to the phone** | Wide diagonal dolly follows a high-clearance arc away from the keyboard and toward the phone while the wrist reorients. | Route progress: `local keyboard complete → phone`. |
-| 12 | 1:11–1:23 | `4 · ACT` | **Compose the phone message** | The same arm taps Messages, then physically taps R/E/A/D/Y on the phone's on-screen keyboard. Each character appears only in the phone's message field. Use no more than two brief contact inserts. | `PHONE · Messages ✓ · R ✓ E ✓ A ✓ D ✓ Y ✓`; compiled contacts 6–11 of 12. |
-| 13 | 1:23–1:28 | `4 · ACT` | **Tap Send** | Start medium-wide; use a contact macro no longer than two seconds. The same stylus taps Send once and retracts. | `PHONE.SEND_TEXT · CONTACT 12 OF 12`. |
-| 14 | 1:28–1:35 | `5 · VERIFY` | **Verify both outcomes** | The local display still shows its independent local `READY`. Separately, the phone moves its own `READY` into a sent message bubble. Two receipts resolve side by side without sharing data. | `LOCAL INPUT: READY ✓`; `PHONE MESSAGE: READY · SENT ✓`; telemetry and observation ✓. |
+| 12 | 1:11–1:23 | `4 · ACT` | **Compose the phone message** | The same arm taps Messages, then physically taps the phone's on-screen keys for `ON MY WAY`. Each character appears only in the phone's message field. Use no more than two brief contact inserts. | `PHONE · Messages ✓ · ON MY WAY`; compiled contacts 6–14 of 15. |
+| 13 | 1:23–1:28 | `4 · ACT` | **Tap Send** | Start medium-wide; use a contact macro no longer than two seconds. The same stylus taps Send once and retracts. | `PHONE.SEND_TEXT · CONTACT 15 OF 15`. |
+| 14 | 1:28–1:35 | `5 · VERIFY` | **Verify both outcomes** | The local display still shows its independent local `READY`. Separately, the phone moves `ON MY WAY` into a sent message bubble. Two receipts resolve side by side without sharing data. | `LOCAL INPUT: READY ✓`; `PHONE MESSAGE: ON MY WAY · SENT ✓`; telemetry and observation ✓. |
 | 15 | 1:35–1:40 | all | **Compatibility payoff and end card** | Pull back while `UNDERSTAND → LOCATE → CHECK → ACT → VERIFY` lights in order. The two device branches remain separate beneath one intent contract, then resolve into the logo and URL. No black tail. | `ONE INTENT CONTRACT · TWO DEVICE-SPECIFIC WORKFLOWS`; `TACTEVRA · Physical intelligence, checked.`; small grey boundary line. |
 
 ## Draft narration
@@ -104,7 +104,7 @@ The `/` marks a short natural breath.
 [0:05] When AI acts in the physical world, a guess becomes motion. /
        So intent can't go straight to the motors.
 [0:11] The model proposes two device-qualified intentions: / enter READY
-       locally, then send READY from the phone. Never joint angles.
+       locally, then send ON MY WAY from the phone. Never joint angles.
 [0:18] A fixed camera reads the board's tags / and locates each independent
        device in one shared workcell frame.
 [0:25] Each device keeps its own targets, controls, and observed state.
@@ -150,7 +150,7 @@ trajectory is qualified evidence.
 4. For each on-screen letter, repeat the same three-part tap primitive. Blend
    only the high-clearance lateral segments; do not round the contact descent.
 5. Keep the stylus axis plausibly aligned with the phone-screen normal.
-6. Pause over the phone while `READY` and the composer state are checked.
+6. Pause over the phone while `ON MY WAY` and the composer state are checked.
 7. Tap Send once with the same stylus and immediately retract.
 8. Hold while the modeled sent state and final verification receipt appear.
 
@@ -185,7 +185,7 @@ trajectory is qualified evidence.
 | Robot | Detailed RoArm geometry, servo housings, dual links, fasteners, wiring, gripper, and one articulated rig used for every shot. |
 | Stylus | Dark cylindrical body seated between visible jaws, plausible protrusion, finished compliant tip, no bulb-shaped placeholder. |
 | Keyboard | Current measured black RC03 asset, consistent material in all shots, correct legends and six-row layout, individually animatable R/E/A/D/Y key caps, its own physical-key target map, and a clearly associated local-computer input field. |
-| Phone | Current measured phone asset, consistent dark chassis and glass, home, Messages composer, on-screen keyboard, Send, and sent-confirmation states. Screen content is explicitly labeled as modeled UI. READY appears in this phone's input field as its five on-screen keys are tapped. |
+| Phone | Current measured phone asset, consistent dark chassis and glass, home, Messages composer, on-screen keyboard, Send, and sent-confirmation states. Screen content is explicitly labeled as modeled UI. `ON MY WAY` appears in this phone's input field through its own on-screen targets. |
 | Camera | Recognizable camera body, mount, lens, and optical point of view; visible during its introduction. |
 | Board | Exact released tag36h11 IDs and stable device/fixture transforms. |
 
@@ -200,7 +200,7 @@ trajectory is qualified evidence.
 - Do not use a whoosh on every edit.
 - Give the typing sequence rhythmic variation without making it unnaturally
   fast. The viewer must be able to count five physical-key presses, followed
-  later by the Messages tap, five on-screen-key taps, and the Send tap.
+  later by the Messages tap, the phone-specific `ON MY WAY` entry, and Send.
 - Deliver a high-quality 1920×1080 master, a web-optimized GitHub version, and
   captioned social derivatives from the same timeline.
 - Build a 30-second social cut from the ask, stale-evidence rejection, one
@@ -217,19 +217,19 @@ The video is ready for final render only when all checkpoints pass.
 - [ ] The greybox animatic remains understandable and every principal card is
       readable at a 390-pixel-wide phone preview.
 - [ ] The identical robot mesh and rig are present in every physical shot.
-- [ ] The stylus is visibly clamped before, during, and after all twelve
+- [ ] The stylus is visibly clamped before, during, and after all fifteen
       compiled contacts across the two workflows.
 - [ ] Physical R, E, A, D, and Y keys visibly depress in order, and only the
       local computer's input field changes during those contacts.
-- [ ] Messages, R, E, A, D, Y, and Send are correctly located on the phone and
-      visibly tapped in order.
+- [ ] Messages, the `ON MY WAY` on-screen targets, and Send are correctly
+      located on the phone and visibly tapped in order.
 - [ ] The physical keyboard remains a separate device and is never used as the
       phone's input or verification display.
 - [ ] The phone target and modeled confirmation state remain on the same phone.
-- [ ] READY appears in that phone's message field one character at a time, and
-      the same text appears as a sent message after the Send tap, based only on
-      the phone's own modeled app state.
-- [ ] The local `READY` and phone `READY` have separate observations and
+- [ ] `ON MY WAY` appears in that phone's message field and the same text
+      appears as a sent message after the Send tap, based only on the phone's
+      own modeled app state.
+- [ ] The local `READY` and phone `ON MY WAY` have separate observations and
       separate verification receipts; neither is evidence for the other.
 - [ ] Every camera cut preserves robot pose continuity.
 - [ ] The stale-plan example shows zero arm movement.

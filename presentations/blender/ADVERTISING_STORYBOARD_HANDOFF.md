@@ -10,8 +10,9 @@
 ## The idea in one sentence
 
 One natural-language request becomes two separately checked physical outcomes:
-the robot enters `READY` into a local computer through a physical keyboard,
-then independently sends `READY` from a phone through physical screen taps.
+the robot enters `READY` into a local computer through the build's physical
+keyboard, then independently sends `ON MY WAY` from the build's phone through
+physical screen taps.
 
 ## What the viewer should feel
 
@@ -21,23 +22,35 @@ introduce a credible risk, build trust through the rejection and admission
 beats, create energy through coordinated motion, and end with the calm
 confidence of two independently verified results.
 
-## Visual authority warning
+## Visual and asset authority
 
-The five images in this handoff are generated advertising concepts. Use them
-for composition, lighting, hierarchy, color, camera language, and emotional
-tone. Do **not** copy their incidental geometry, key layout, screen details,
-labels, cable paths, or robot joint construction into the production scene.
+The five primary images in this handoff are layout-accurate composites built
+from the repository's authoritative Blender scene. Their keyboard, phone,
+stations, board, fiducials, robot placement, scale, and top-down relationship
+come from the actual RC03 build assets. The added cards, target markers, crops,
+and modeled screen states are presentation graphics, not physical evidence.
 
 Production must use the repository's dimension manifest, official arm source,
 exact board tags, measured device envelopes, indexed transforms, accurate
 keyboard asset, phone asset, and the continuity requirements in
 [`TACTEVRA_OVERVIEW_STORYBOARD_V2.md`](TACTEVRA_OVERVIEW_STORYBOARD_V2.md).
 
-## Five visual anchors
+| Asset | Production authority |
+|---|---|
+| Board | 610 × 457 × 18 mm RC03 board from `dimension_manifest.json` |
+| Keyboard | Measured 315 × 147 × 21 mm chassis and nominal key map created by `build_workcell_explainer.py`; RC03 station STLs |
+| Phone | Measured 77.9 × 164.4 × 7.9 mm body and screen plane; RC03 phone-station STL |
+| Robot placement | Rear-center at board translation 305, 457, 0 mm and −90° nominal yaw |
+| Concept overlays | Rebuildable with `build_storyboard_layout_frames.py`; not geometry authority |
+
+The image-generated lighting study is retained only under
+`storyboard_v2/reference-only/`. It is not a layout or hardware reference.
+
+## Six visual anchors
 
 ### 1. Human intent enters the physical world
 
-![Opening intent and workcell hero](storyboard_v2/01-intent-hero.png)
+![Opening intent and workcell hero](storyboard_v2/01-intent-hero-layout-accurate.png)
 
 **Story purpose:** Establish immediately that the laptop is the operator
 console, while the keyboard and phone are separate physical targets.
@@ -56,7 +69,7 @@ captions and stage labels.
 
 ### 2. One intent contract, two independent device maps
 
-![Independent maps and stale-evidence rejection](storyboard_v2/02-device-maps-reject.png)
+![Measured board and independent device placements](storyboard_v2/02-device-maps-layout-accurate.png)
 
 **Story purpose:** Explain the architecture at a glance. The model proposes
 two device-qualified intentions. Deterministic software rejects stale scene
@@ -75,9 +88,22 @@ arrow from the keyboard output to the phone.
 
 **Sound:** Four quiet registration pings, then a muted low thud on `REJECTED`.
 
-### 3. Local typing is a local workflow
+### 3. Unsafe evidence produces no motion
 
-![Local physical-keyboard action](storyboard_v2/03-local-keyboard-action.png)
+![Stale-evidence rejection with fixed device geometry](storyboard_v2/03-stale-evidence-reject-layout-accurate.png)
+
+**Story purpose:** Make the safety promise legible in one glance. The same
+keyboard and phone remain indexed in place while stale evidence is rejected
+and the actual arm remains still.
+
+**Keep:** Fixed overhead geometry, red reserved for rejection, and the arm
+unobscured so the absence of motion is visible.
+
+**Camera:** Locked overhead. No orbit, push, or rack focus during rejection.
+
+### 4. Local typing is a local workflow
+
+![Local physical-keyboard action](storyboard_v2/04-local-keyboard-action-layout-accurate.png)
 
 **Story purpose:** Show the first useful outcome. The robot physically presses
 the keyboard while the associated local input changes. The phone remains idle.
@@ -97,9 +123,9 @@ second macro inserts across all five key presses.
 **Sound:** Five distinct physical-key clicks. Let the rhythm carry the shot;
 do not cover it with narration.
 
-### 4. The phone is a separate physical interface
+### 5. The phone is a separate physical interface
 
-![Independent phone-message action](storyboard_v2/04-phone-message-action.png)
+![Independent phone-message action](storyboard_v2/05-phone-action-layout-accurate.png)
 
 **Story purpose:** Demonstrate a second adapter and interaction vocabulary.
 The arm crosses the workcell, opens Messages, taps the phone's own on-screen
@@ -110,8 +136,9 @@ keyboard receding, full robot readable, screen interaction visibly physical.
 
 **Improve in production:** Use the exact phone transform and screen plane;
 animate a plausible wrist reorientation; make the on-screen target under the
-stylus unambiguous; leave the local input at `READY`; do not repeat the operator
-request on the local-result display.
+stylus unambiguous; build `ON MY WAY` only inside the phone composer; leave the
+local input at `READY`; do not repeat the operator request on the local-result
+display.
 
 **Camera:** 40–55 mm equivalent diagonal dolly that begins on the retract from
 the keyboard and lands on the phone hover pose.
@@ -119,9 +146,9 @@ the keyboard and lands on the phone hover pose.
 **Sound:** Quiet transit mechanism tone, Messages tap, five glass taps, and one
 distinct Send tap.
 
-### 5. Independent evidence, shared confidence
+### 6. Independent evidence, shared confidence
 
-![Dual verification payoff](storyboard_v2/05-dual-verification.png)
+![Dual verification payoff](storyboard_v2/06-dual-verification-layout-accurate.png)
 
 **Story purpose:** Close the promise without merging the workflows. The local
 computer independently confirms its input. The phone independently confirms
@@ -145,18 +172,18 @@ chord.
 
 | # | Time | Required picture | Camera and blocking | Graphic purpose | Sound |
 |---:|---:|---|---|---|---|
-| 1 | 0:00–0:05 | Operator console receives: `Enter READY locally, then text READY from the phone.` | Close console view; workcell soft in background | Human outcome, not motor instruction | Minimal input ticks |
+| 1 | 0:00–0:05 | Operator console receives: `Enter READY locally, then text ON MY WAY from the phone.` | Close console view; workcell soft in background | Human outcome, not motor instruction | Minimal input ticks |
 | 2 | 0:05–0:11 | Full workcell; arm parked; stylus clamped; keyboard, local display, and phone visibly separate | 12–15° hero orbit | Physical stakes | Bed and restrained room tone |
 | 3 | 0:11–0:18 | Amber `LOCAL.TYPE_TEXT` then `PHONE.SEND_TEXT` proposal | Settle beside stationary robot | Model proposes; no motor commands | Amber UI ticks |
 | 4 | 0:18–0:25 | Camera body, lens transition, exact tags, three device detections | Crane to fixed camera, then squared overhead | Ground the scene | Four registration pings |
 | 5 | 0:25–0:31 | Separate local-keyboard/local-display map and phone map | Locked overhead | Device-specific targets | Quiet trace tone |
 | 6 | 0:31–0:37 | `scene capture 41 s old · limit 2 s`; robot stays still | No camera motion | Fail closed | Low reject thud |
-| 7 | 0:37–0:44 | Fresh evidence; full two-routine route; 12 contacts admitted | Slow push toward gripper and stylus | Deterministic admission | Rising gate ticks |
+| 7 | 0:37–0:44 | Fresh evidence; full two-routine route; 15 contacts admitted | Slow push toward gripper and stylus | Deterministic admission | Rising gate ticks |
 | 8 | 0:44–0:50 | Arm leaves park and reaches keyboard hover | Medium-wide lateral start | Act begins | Mechanism tone |
 | 9 | 0:50–1:00 | Five physical key presses; local field builds `READY`; phone unchanged | Lateral track plus ≤2 macro inserts | Local outcome | Five key clicks |
 | 10 | 1:00–1:05 | Local `READY` verified; phone unchanged | Hold on arm and local display | Close first loop | Local verify tick |
 | 11 | 1:05–1:11 | Full retract and high-clearance cross-device arc | Wide diagonal dolly | Spatial continuity | Subtle transit tone |
-| 12 | 1:11–1:23 | Messages opens; five phone-key taps build `READY` | Medium-wide plus ≤2 contact inserts | Phone-specific action | Six glass taps |
+| 12 | 1:11–1:23 | Messages opens; phone-specific taps build `ON MY WAY` | Medium-wide plus ≤2 contact inserts | Phone-specific action | Restrained glass-tap rhythm |
 | 13 | 1:23–1:28 | One clear Send contact and retract | Medium-wide to brief macro | Complete phone intent | Distinct Send tap |
 | 14 | 1:28–1:35 | Local input and sent phone message verified independently | Balanced wide | Two outcomes, separate evidence | Two ticks and resolved chord |
 | 15 | 1:35–1:40 | Full workcell, five-stage ribbon, two branches, brand and URL | Slow pullback; no black tail | Product promise and next step | Clean music button |
@@ -201,7 +228,7 @@ chord.
 - [ ] One immutable workcell layout and one set of device transforms.
 - [ ] Physical keyboard affects only the local-computer interface.
 - [ ] Phone taps affect only the phone's Messages app.
-- [ ] Local and phone verification receipts remain independent.
+- [ ] Local `READY` and phone `ON MY WAY` verification receipts remain independent.
 - [ ] The phone remains unchanged during physical-keyboard typing.
 - [ ] The local result remains unchanged during phone operation.
 - [ ] Every motion cut preserves joint pose and cable continuity.
@@ -225,7 +252,8 @@ chord.
 
 - Does the first five seconds make the operator console distinct from both
   physical target devices?
-- Can a first-time viewer explain why the two `READY` results are independent?
+- Can a first-time viewer explain why local `READY` and phone `ON MY WAY` are
+  independent outcomes?
 - Is the reject beat understandable without narration?
 - Does the full robot remain identifiable during every transition?
 - Which shot provides the strongest campaign still?
