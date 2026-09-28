@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "manifest_id": "ROCELL-PHASE0-RC03-INT-R1-FREEZE-012",
+  "manifest_id": "ROCELL-PHASE0-RC03-INT-R1-FREEZE-013",
   "freeze_date": "2026-09-28",
   "status": "FROZEN_DIGITAL_ENGINEERING_HOLDS_CONTACT_BLOCKED",
   "scope": "RC03 build identity, mission routes, verified standalone RoArm package/holder, selected-unqualified direct-fit USB camera candidate, control architecture, and calibration/safety integration boundary",
@@ -82,11 +82,11 @@
       },
       {
         "path": "BUILD_BY_STEP/INDEX.json",
-        "sha256": "d7d0f152ca87b83a74faed57756d1b5f2ab4244dfe3e308cd127dbb348aa6da4"
+        "sha256": "780ef1c3f11aff0a0954e28612126540d924c3cc1014f4b60ecf2d54690b3c43"
       },
       {
         "path": "BUILD_BY_STEP/PACKAGE_VALIDATION.json",
-        "sha256": "f81322ca3774241e79f3fb422295f9b41708c1421a5d466501231b6c1e3643d5"
+        "sha256": "3ba457a0d44bc7c79ed755e1d8d6d6437848a76cf8ea37e1fcaee4c97075073e"
       },
       {
         "path": "drawings/documentation_sync.json",

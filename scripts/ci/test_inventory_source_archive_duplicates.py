@@ -41,6 +41,17 @@ class SourceArchiveDuplicateInventoryTests(unittest.TestCase):
         self.assertEqual(
             "cross-revision-and-instructional-stl", groups[0].classification)
 
+    def test_routes_frozen_cross_revision_pair_to_current_canonical_stl(self):
+        canonical = "active-project/RoCell_v0_3/stl/gauge.stl"
+        groups = inventory.inventory([
+            TreeEntry("a" * 40, 200, "active-project/RoCell_v0_2/stl/gauge.stl"),
+            TreeEntry("a" * 40, 200, canonical),
+        ], minimum_bytes=100)
+        self.assertEqual(
+            "frozen-cross-revision-stl-retention", groups[0].classification)
+        self.assertEqual((canonical,), groups[0].canonical_candidates)
+        self.assertIn("immutable historical evidence", groups[0].provenance_note)
+
     def test_routes_static_camera_outputs_without_asserting_canonical_path(self):
         groups = inventory.inventory([
             TreeEntry(

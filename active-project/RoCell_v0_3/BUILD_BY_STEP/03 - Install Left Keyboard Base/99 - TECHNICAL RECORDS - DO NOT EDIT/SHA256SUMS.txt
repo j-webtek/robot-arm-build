@@ -8,7 +8,7 @@ c9362cf401ca66f4e584c7fc294f6c54853c8ea546e610d551bc841782d6bcd0  ../../../BOM.c
 c8f1a8c4080147e6b24f4dc6c58dc6c4a17d9f1fa439eaf03e857e4e53172fe3  ../../../KEYBOARD_STATION_ENGINEERING_REVIEW.md
 a8c75f05f727fa899c1f873ffea9852b5e6d343cdd302d5c4e02ee4124f74fc3  ../../../PRINT_READINESS.json
 5be5234644cbca322e93f16ec422cd5a6f04059055a2f56d68cf224d61f015b0  ../../../PRINT_READINESS.md
-3f120c69dcee278cb67c449e84d3a43c0b5183bdfee1cf4cb86bb938e2a32d34  ../../../README_FIRST.md
+6e3e5a4bf57be1858e0b691c09b0c7683cc4266eb7df666d371136aa5800ee42  ../../../README_FIRST.md
 5c703f405245681d67ac4c495d2412e67bd52a35c49dd70900563c2e42f28de4  ../../../cad/step/hardware_fit_gauge.step
 923f4ea0c22e86fb8860d5221e1d1bf287c1e5bbc86018d64cfa1f5242ee7bce  ../../../cad/step/keyboard_corner_fit_test.step
 025b6af37e2f9b54fa93be473171289643227d30a32a3f9d3d40f7206acd0f64  ../../../cad/step/keyboard_rear_clamp.step
@@ -39,7 +39,7 @@ d594cad9ee0f35b55e65d2c37b6a9a0bf1bde50c2316d9b4b43dee99be2e1a3b  ../../../print
 74d06febad8b82d7b8bbd7894ac344c146e942f64b0bd709a0b3ea0675c50a63  ../../../print_plates_3mf/03B_ABS_keyboard_clamps.print.json
 6badf0daa975d8c0ab5de34cea5a7514dbff8469d2a7b499670a3002d428eb31  ../../../scripts/build_illustrated_assembly_guide.py
 4baf08d28e3566c3eb3869585275ebc318bf1e076744867221d4d79e2359f182  ../../../scripts/build_manual_pdf.py
-d36767cf22f6b4becf5716eb7ae2e7b8f8315dd13e30204732ff9f2c3007463a  ../../../scripts/build_step_packages.py
+38b9b55bfaad6c80f2465bd99abc134b8a7b488d91e6fc357c3f93f05ec699b9  ../../../scripts/build_step_packages.py
 6090b47ff751ebb62c6ab8ecd4abc55fa54f79cabde5b86a4231484b2cc67e53  ../../../scripts/generate_build_tracker.py
 520cf48d2263beca0eca351d6960fbfae95e1f9c63e05aec1204957b47271a7f  ../../../scripts/generate_job_cards.py
 0a940eabc2ab22fcc0c4e2b2df9a67fa90224027168127917c2e7879a8725b93  ../../../scripts/initialize_step_evidence.py

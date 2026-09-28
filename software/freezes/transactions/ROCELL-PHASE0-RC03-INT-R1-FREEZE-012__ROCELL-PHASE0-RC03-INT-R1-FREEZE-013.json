@@ -1,0 +1,263 @@
+{
+  "schema": "rocell.refreeze_transaction.v1",
+  "schema_version": 1,
+  "transaction_id": "ROCELL-REFREEZE-012-TO-013",
+  "commit_state": "APPLIED_WHEN_ACTIVE_MANIFEST_MATCHES_NEW_MANIFEST_SHA256",
+  "physical_release_effect": "NONE",
+  "old_manifest_id": "ROCELL-PHASE0-RC03-INT-R1-FREEZE-012",
+  "new_manifest_id": "ROCELL-PHASE0-RC03-INT-R1-FREEZE-013",
+  "freeze_date": "2026-09-28",
+  "reason": "Bind the governed Step 00 mixed-resolution package and canonical resolver hashes",
+  "approval_reference": "GitHub issue #142 ACCEPT WITH CONDITIONS",
+  "companion_change_reason": null,
+  "tool": {
+    "path": "software/tools/refreeze_build_alignment.py",
+    "sha256": "a618b88d6fffc9632ff957c295541d1ddd6b3425b8426dc62bfb62e22f424ca0"
+  },
+  "reviewed_active_output_set_sha256": "9a9af6ada4a63b23dfee91b9af2ec31f2d7290458adf1c997597f01f7e6f4187",
+  "planning_input_set_sha256": "f1ee17308f33a2578c8585472901047c41a82fe8ca21e3e9a1ae1ce4f47cc4f9",
+  "old_alias_archive": {
+    "system_manifest": {
+      "path": "software/freezes/ROCELL-PHASE0-RC03-INT-R1-FREEZE-012/system_manifest.json",
+      "sha256": "334f46eb36606589d51d251bf3129d41a6661f54ef9daa0baee442f955403a8c"
+    },
+    "camera_manifest": {
+      "path": "software/freezes/ROCELL-PHASE0-RC03-INT-R1-FREEZE-012/camera_manifest.json",
+      "sha256": "0f4bd909ea7059f9823a94e8247ede8e478af2831718f9871796a06c07c6b677"
+    },
+    "simulation_hardware_profile": {
+      "path": "software/freezes/ROCELL-PHASE0-RC03-INT-R1-FREEZE-012/simulation_hardware_profile.json",
+      "sha256": "b50ac8965a49c54e074733cc2163785ade80ba2f5079791875086b96b48d93eb"
+    },
+    "virtual_commissioning_profile": {
+      "path": "software/freezes/ROCELL-PHASE0-RC03-INT-R1-FREEZE-012/virtual_commissioning_profile.json",
+      "sha256": "d4b596f94eb429e341545550caf8d45e1335eb9e229c0932b51d8c1125a48b49"
+    },
+    "gate_projection": {
+      "path": "software/freezes/ROCELL-PHASE0-RC03-INT-R1-FREEZE-012/gate_projection.json",
+      "sha256": "ab4de04498cf41865eeacb26798b029047d752cd82f0b8957c7e79453132926d"
+    },
+    "simulation_bundle_lock": {
+      "path": "software/freezes/ROCELL-PHASE0-RC03-INT-R1-FREEZE-012/simulation_bundle_lock.json",
+      "sha256": "7cc8b88851a5daa43b0a8d6187d2b2acc5df6688118cfe330a33cc4d0c0ccf20"
+    },
+    "calibration_registry": {
+      "path": "software/freezes/ROCELL-PHASE0-RC03-INT-R1-FREEZE-012/calibration_registry.json",
+      "sha256": "f96c199d110aa5a5c96877a9679ecf64991da9d66f79568f0887301025edee24"
+    }
+  },
+  "new_active_aliases": {
+    "system_manifest": {
+      "path": "software/config/system_manifest.json",
+      "sha256": "0cfb19c0972d4fe5cc526ca78d44422b2ef9c52354a8da637ec608b8dec7f55d"
+    },
+    "camera_manifest": {
+      "path": "software/config/camera_manifest.json",
+      "sha256": "a9b61d6f0b5d80d00f1bd9e523e53bfa3df48664f9857c5ccf168bb0979ac012"
+    },
+    "simulation_hardware_profile": {
+      "path": "software/config/simulation_hardware_profile.json",
+      "sha256": "6c24745f8330d0aa77c423d9376adb7bb6c1a090426ed1a38814eb32f6dcd190"
+    },
+    "virtual_commissioning_profile": {
+      "path": "software/config/virtual_commissioning_profile.json",
+      "sha256": "38b348ace299140e5908cf367fc15f32b33bebe9b064d5efffe5dcf95f7b4634"
+    },
+    "gate_projection": {
+      "path": "software/config/gate_projection.json",
+      "sha256": "6f81d8e88902b086580c980538bd049e2c9c6dfbf230580653698ea17bdfc1d6"
+    },
+    "simulation_bundle_lock": {
+      "path": "software/config/simulation_bundle_lock.json",
+      "sha256": "66da7ead556a408aa3f4d6f08e1b667b9d75c6da1e99af4493c71423e8c379bf"
+    },
+    "calibration_registry": {
+      "path": "software/calibrations/registry.json",
+      "sha256": "92554e87b6d14b4b928e91ee3fff0738b741c0d317e7350c3122b45425ce9191"
+    }
+  },
+  "source_changes": [
+    {
+      "path": "BOM.csv",
+      "old_sha256": "c9362cf401ca66f4e584c7fc294f6c54853c8ea546e610d551bc841782d6bcd0",
+      "new_sha256": "c9362cf401ca66f4e584c7fc294f6c54853c8ea546e610d551bc841782d6bcd0",
+      "changed": false
+    },
+    {
+      "path": "config/workcell_layout.json",
+      "old_sha256": "e84db9aa7b88db442f042c6f546196e350c822a2e7609cb4b652b3da535df2e1",
+      "new_sha256": "e84db9aa7b88db442f042c6f546196e350c822a2e7609cb4b652b3da535df2e1",
+      "changed": false
+    },
+    {
+      "path": "config/parameters.json",
+      "old_sha256": "769808d9094672ff2f281d39eeafff68c1aa0e4e9ec9b552f22084334b1bb6fc",
+      "new_sha256": "769808d9094672ff2f281d39eeafff68c1aa0e4e9ec9b552f22084334b1bb6fc",
+      "changed": false
+    },
+    {
+      "path": "config/print_profiles.json",
+      "old_sha256": "5886a55b3fbdca28bf0d67ea8718a366333e78f2801e1884db00cc9f010ffc5e",
+      "new_sha256": "5886a55b3fbdca28bf0d67ea8718a366333e78f2801e1884db00cc9f010ffc5e",
+      "changed": false
+    },
+    {
+      "path": "config/print_jobs.json",
+      "old_sha256": "429bca9542193388581eee5266af57b2e7460881f87b23b34693eee3b77c66f4",
+      "new_sha256": "429bca9542193388581eee5266af57b2e7460881f87b23b34693eee3b77c66f4",
+      "changed": false
+    },
+    {
+      "path": "config/measurement_record.json",
+      "old_sha256": "1fb400eae3104547b9bc75a6824bb137f37acc8274e68d718db7a6d77e734ec9",
+      "new_sha256": "1fb400eae3104547b9bc75a6824bb137f37acc8274e68d718db7a6d77e734ec9",
+      "changed": false
+    },
+    {
+      "path": "config/assembly_steps.json",
+      "old_sha256": "af1920ac851d18c09ad749df5da2ed58dda6c9a40b066966e737430c448a546d",
+      "new_sha256": "af1920ac851d18c09ad749df5da2ed58dda6c9a40b066966e737430c448a546d",
+      "changed": false
+    },
+    {
+      "path": "config/v1_prehardware_configuration.json",
+      "old_sha256": "04c4e394e8ded36106811a1626b9e2265d7e652869b03c5c0cf76770932b3f63",
+      "new_sha256": "04c4e394e8ded36106811a1626b9e2265d7e652869b03c5c0cf76770932b3f63",
+      "changed": false
+    },
+    {
+      "path": "config/camera_architecture_decision.json",
+      "old_sha256": "93b51f5635373c7a2a3d561e5a6ed0eb23c5b20c5243f158261a144e78c63c6b",
+      "new_sha256": "93b51f5635373c7a2a3d561e5a6ed0eb23c5b20c5243f158261a144e78c63c6b",
+      "changed": false
+    },
+    {
+      "path": "config/hardware_candidates.json",
+      "old_sha256": "1e33702b54e54ba41789b8c50362eecc19977cf534f848e50a7231e70a546e2b",
+      "new_sha256": "1e33702b54e54ba41789b8c50362eecc19977cf534f848e50a7231e70a546e2b",
+      "changed": false
+    },
+    {
+      "path": "config/digital_fit_report.json",
+      "old_sha256": "1d7be5b0148d13d06875025af0531991feb94b3c63096742e616d450f9ba1deb",
+      "new_sha256": "1d7be5b0148d13d06875025af0531991feb94b3c63096742e616d450f9ba1deb",
+      "changed": false
+    },
+    {
+      "path": "config/robot_reach_screening.json",
+      "old_sha256": "348fccf9be88fc32299ab10fce14e764869422191a43963631e4f5f0ccb9e53b",
+      "new_sha256": "348fccf9be88fc32299ab10fce14e764869422191a43963631e4f5f0ccb9e53b",
+      "changed": false
+    },
+    {
+      "path": "fiducials/apriltag_map.json",
+      "old_sha256": "81c867d28660cdade79cb8024104d82e5568effa0736f07f0947c1007ac23700",
+      "new_sha256": "81c867d28660cdade79cb8024104d82e5568effa0736f07f0947c1007ac23700",
+      "changed": false
+    },
+    {
+      "path": "BUILD_BY_STEP/ACTIVE_BUILD.json",
+      "old_sha256": "0f6193f3ea96dba21ac42386c0e3d605d20e7471dc44ff72734eaccbd330d774",
+      "new_sha256": "0f6193f3ea96dba21ac42386c0e3d605d20e7471dc44ff72734eaccbd330d774",
+      "changed": false
+    },
+    {
+      "path": "BUILD_BY_STEP/INDEX.json",
+      "old_sha256": "d7d0f152ca87b83a74faed57756d1b5f2ab4244dfe3e308cd127dbb348aa6da4",
+      "new_sha256": "780ef1c3f11aff0a0954e28612126540d924c3cc1014f4b60ecf2d54690b3c43",
+      "changed": true
+    },
+    {
+      "path": "BUILD_BY_STEP/PACKAGE_VALIDATION.json",
+      "old_sha256": "f81322ca3774241e79f3fb422295f9b41708c1421a5d466501231b6c1e3643d5",
+      "new_sha256": "3ba457a0d44bc7c79ed755e1d8d6d6437848a76cf8ea37e1fcaee4c97075073e",
+      "changed": true
+    },
+    {
+      "path": "drawings/documentation_sync.json",
+      "old_sha256": "c80bea60c22db98e00ce6a095bf53186f0b8bca24366eba3e41d06023c1335a6",
+      "new_sha256": "c80bea60c22db98e00ce6a095bf53186f0b8bca24366eba3e41d06023c1335a6",
+      "changed": false
+    },
+    {
+      "path": "RELEASE_VALIDATION.json",
+      "old_sha256": "f756ecf6697982c90ea2c9fe17ca784a170224a748e628574b70a7bb7519e2f3",
+      "new_sha256": "f756ecf6697982c90ea2c9fe17ca784a170224a748e628574b70a7bb7519e2f3",
+      "changed": false
+    },
+    {
+      "path": "PRINT_READINESS.json",
+      "old_sha256": "a8c75f05f727fa899c1f873ffea9852b5e6d343cdd302d5c4e02ee4124f74fc3",
+      "new_sha256": "a8c75f05f727fa899c1f873ffea9852b5e6d343cdd302d5c4e02ee4124f74fc3",
+      "changed": false
+    },
+    {
+      "path": "BUILD_TRACKER.json",
+      "old_sha256": "0309256af31348620bb977aded9c591bc697c8ab7b9873027430aaa28c077b9a",
+      "new_sha256": "0309256af31348620bb977aded9c591bc697c8ab7b9873027430aaa28c077b9a",
+      "changed": false
+    },
+    {
+      "path": "PREHARDWARE_READINESS.json",
+      "old_sha256": "2f00bba3bbc17b24c5c64f9f2d49e6633fc25511c3da1b4732a0852cf019c3cc",
+      "new_sha256": "2f00bba3bbc17b24c5c64f9f2d49e6633fc25511c3da1b4732a0852cf019c3cc",
+      "changed": false
+    }
+  ],
+  "preflight": {
+    "rc03_release_status": "PASS",
+    "build_step_package_status": "PASS",
+    "physical_release": "UNRELEASED",
+    "active_build_id": "2026-09-01_CELL-A",
+    "print_readiness_summary": {
+      "ready": 5,
+      "waiting": 15,
+      "not_selected": 4,
+      "total_jobs": 24
+    },
+    "measurement_gate_status_counts": {
+      "FAIL": 2,
+      "NA": 4,
+      "NOT_TESTED": 63,
+      "PASS": 15
+    },
+    "prehardware_state": "DIGITALLY_CONSISTENT_ENGINEERING_AND_PHYSICAL_RELEASE_BLOCKED",
+    "prehardware_summary": {
+      "digital_pass": 9,
+      "digital_fail": 0,
+      "engineering_hold": 2,
+      "physical_hold": 8,
+      "decision_open": 0,
+      "checks": 21
+    }
+  },
+  "prospective_alignment_validation": {
+    "manifest_id": "ROCELL-PHASE0-RC03-INT-R1-FREEZE-013",
+    "camera_manifest_id": "ROCELL-CAMERA-BINDING-001",
+    "simulation_bundle_id": "ROCELL-SIM-BUNDLE-RC03-INT-R1-FREEZE-013-013",
+    "status": "ALIGNED_CAMERA_HOLD_CONTACT_BLOCKED",
+    "contact_enabled": false,
+    "errors": [],
+    "blockers": [
+      "FIXED_CAMERA_FALLBACK_ARCHITECTURE_NOT_RELEASED",
+      "CAMERA_ARCHITECTURE_ALIGNMENT_HOLD",
+      "MEASURED_TAG_MAP_MISSING",
+      "PHYSICAL_GATES_INCOMPLETE",
+      "PHYSICAL_RELEASE_UNRELEASED",
+      "EXACT_PHYSICAL_IDENTITIES_UNRECORDED",
+      "ARM_MOUNTED_CAMERA_RC03_ADDENDUM_MISSING",
+      "ARM_CAMERA_CARRIER_FRAME_AND_EXTRINSIC_MISSING",
+      "ARM_CAMERA_PAYLOAD_CABLE_COLLISION_ACCEPTANCE_MISSING",
+      "ARM_CAMERA_FRAME_JOINT_SYNC_AND_ZONE_VISIBILITY_MISSING",
+      "ROBOT_REACH_SCREENING_ONLY_NOT_PROVEN",
+      "ARM_FRAME_AND_REFERENCE_CONTRACT_MISSING",
+      "CAMERA_INTRINSICS_AND_INSTALLATION_MISSING",
+      "DEVICE_AND_STATION_ACCEPTANCE_MISSING",
+      "TOOL_ROUTE_ACCEPTANCE_MISSING",
+      "CONTACT_GUARD_CONTROLLED_ADDENDUM_MISSING",
+      "GRAVITY_SAFE_POWER_LOSS_CONTROLLED_ADDENDUM_MISSING",
+      "MOTION_AND_CONTACT_LIMIT_APPROVAL_MISSING",
+      "FINAL_COMMISSIONING_MISSING"
+    ]
+  }
+}

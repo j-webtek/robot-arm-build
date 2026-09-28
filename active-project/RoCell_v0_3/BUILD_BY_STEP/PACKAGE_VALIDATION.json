@@ -3,9 +3,9 @@
   "design_revision": "RC03-INT-R1",
   "status": "PASS",
   "physical_release": "UNRELEASED",
-  "package_definition_hash": "3d4d45a05327b35ffcc474b8df0f6bcb202a79fcfd98a3529062bd2c44ffc168",
-  "canonical_snapshot_hash": "d2a06fa67ec4ed0e36a8d40bd158aeb9e923890a00b310d3c6eacdfbaadfb34d",
-  "canonical_input_hash": "d2a06fa67ec4ed0e36a8d40bd158aeb9e923890a00b310d3c6eacdfbaadfb34d",
+  "package_definition_hash": "65bbe688892e0dcdd2115a28d9f155921587915d80e98f6b01d81aaedcbde3a5",
+  "canonical_snapshot_hash": "06efd7afc3a2b406d822f18b0ae06189c5edbb01dbbd069e0edf35718290f45c",
+  "canonical_input_hash": "06efd7afc3a2b406d822f18b0ae06189c5edbb01dbbd069e0edf35718290f45c",
   "step_count": 16,
   "assembly_panel_count": 15,
   "print_job_count": 24,
@@ -53,8 +53,8 @@
     }
   },
   "canonical_files_are_links_not_copies": true,
-  "local_stl_copies_verified": 32,
-  "hash_bound_stl_references_verified": 86,
+  "local_stl_copies_verified": 19,
+  "hash_bound_stl_references_verified": 99,
   "operator_evidence_preserved_on_regeneration": true,
   "readiness_summary": {
     "ready": 5,

@@ -11,6 +11,7 @@ ROOT = Path(__file__).resolve().parents[2]
 PYTHON = ROOT / '.venv-ci' / ('Scripts/python.exe' if sys.platform == 'win32' else 'bin/python')
 TESTS = (
     'hardware/static_overhead_camera/cad/test_stage_system_print_pack.py',
+    'active-project/RoCell_v0_3/tests/test_stage_step_00_bundle.py',
     'software/tests/unit/test_snapshot_audit.py',
     'software/tests/unit/test_model_motion_ingress_v2.py',
     'software/tests/unit/test_model_motion_planner_gate.py',

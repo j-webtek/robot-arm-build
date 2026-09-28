@@ -147,7 +147,10 @@ replaces the convenience copy before it can be considered independently.
 
 RC03 Steps 01–15 reference their authoritative project-level STL files by exact
 repository path and SHA-256 instead of retaining generated duplicate mesh bytes.
-Step 00 continues to retain its controlled print-stage convenience copies.
+Step 00 uses a mixed package: 19 small operator-facing models remain local, while
+13 large models resolve to canonical project-level STL files by exact path and
+SHA-256. This preserves the print-admission policy and model identity without
+keeping a second tracked copy of each large mesh.
 
 Maintainers can materialize every canonical artifact referenced by the generated
 step manifests into a new directory outside the checkout:
@@ -173,6 +176,45 @@ Verification requires only the staged tree and receipt. It fails on missing,
 modified, or unexpected artifact files. This is a controlled staging mechanism;
 it does not approve printing, transform a referenced STL, or make held material
 printable.
+
+## Stage the complete Step 00 package for offline use
+
+Maintainers who need a portable Step 00 package can materialize its 19 local
+models, 13 canonical referenced models, controlled instructions, and technical
+records into a new directory outside the checkout:
+
+```powershell
+cd active-project/RoCell_v0_3
+$bundle = Join-Path $env:TEMP "tactevra-rc03-step-00"
+python scripts/stage_step_00_bundle.py --output $bundle
+cd $bundle
+python verify_step_00_bundle.py --verify .
+```
+
+The staging command refuses an existing destination, validates the tracked
+`BUILD_BY_STEP` package before copying, verifies all canonical source hashes,
+and writes an exact bundle inventory. The copied verifier uses only the Python
+standard library and fails on missing, modified, unexpected, or path-escaping
+content. The bundle remains governed by `PRINT_VIA_READY_JOB_ONLY`; staging is
+not print authorization and does not change a job's readiness state.
+
+The Stage 3 conversion removes 13 tracked convenience copies totaling
+41,947,792 bytes. At the conversion baseline it reduces governed avoidable
+duplicate bytes from 46,837,944 to 4,890,152; rerun the inventory tool against
+the commit under review rather than treating those values as permanent.
+
+After this conversion, the only governed large duplicate groups are three exact
+STL pairs shared by frozen RC02 provenance and the active canonical RC03 set:
+`stylus_diameter_gauge.stl`, `mast_socket_fit_test.stl`, and
+`m5_nut_trap_fit_gauge.stl`. The arm, hardware, and repository workstreams own
+that retention decision. RC02 remains immutable historical evidence and RC03
+remains the current canonical source; neither copy is an unclassified staging
+artifact, and changing either requires a new owner-reviewed decision.
+
+Measured at commit `4dfcbbd67271e8b8c3d4ae60e727fd5ee2339fd7`, before this
+classification-only follow-up, the repository contained 5,932 tracked files,
+644,996,944 logical bytes, and 4,890,152 governed duplicate bytes. Both #130
+reduction targets are met without rewriting Git history.
 
 ## Stage the static-camera print pack for offline use
 

@@ -14,7 +14,7 @@ These are direct links to the single canonical files. They are intentionally not
 | reference_only | — | [PRINT_READINESS.json](<../../../PRINT_READINESS.json>) | machine-readable print readiness | `a8c75f05f727…` |
 | verify | — | [PRINT_READINESS.md](<../../../PRINT_READINESS.md>) | current print readiness | `5be5234644cb…` |
 | read | — | [RC03_INTEGRATED_BUILD_PLAN.md](<../../../RC03_INTEGRATED_BUILD_PLAN.md>) | route architecture | `c8cf80651860…` |
-| read | — | [README_FIRST.md](<../../../README_FIRST.md>) | release entry point | `3f120c69dcee…` |
+| read | — | [README_FIRST.md](<../../../README_FIRST.md>) | release entry point | `6e3e5a4bf57b…` |
 | reference_only | 04A | [cad/step/compliant_tool_body.step](<../../../cad/step/compliant_tool_body.step>) | neutral CAD companion | `a734ff981947…` |
 | reference_only | 00C | [cad/step/compliant_tool_grip_fit_test.step](<../../../cad/step/compliant_tool_grip_fit_test.step>) | neutral CAD companion | `6a055831d5b9…` |
 | reference_only | 04A | [cad/step/compliant_tool_top_cap.step](<../../../cad/step/compliant_tool_top_cap.step>) | neutral CAD companion | `311ad48322d9…` |
@@ -71,7 +71,7 @@ These are direct links to the single canonical files. They are intentionally not
 | consume_accepted_output | 05D | [print_plates_3mf/05D_TPU_keyboard_tips_and_spares.print.json](<../../../print_plates_3mf/05D_TPU_keyboard_tips_and_spares.print.json>) | controlled plate/profile/hash sidecar | `b283dd28900a…` |
 | reference_only | — | [scripts/build_illustrated_assembly_guide.py](<../../../scripts/build_illustrated_assembly_guide.py>) | illustrated-guide PDF generator | `6badf0daa975…` |
 | reference_only | — | [scripts/build_manual_pdf.py](<../../../scripts/build_manual_pdf.py>) | controlled detailed-manual PDF renderer | `4baf08d28e35…` |
-| run_from_project_root | — | [scripts/build_step_packages.py](<../../../scripts/build_step_packages.py>) | step-package generator and validator | `d36767cf22f6…` |
+| run_from_project_root | — | [scripts/build_step_packages.py](<../../../scripts/build_step_packages.py>) | step-package generator and validator | `38b9b55bfaad…` |
 | run_from_project_root | — | [scripts/generate_build_tracker.py](<../../../scripts/generate_build_tracker.py>) | job-lifecycle validator and tracker generator | `6090b47ff751…` |
 | reference_only | — | [scripts/generate_job_cards.py](<../../../scripts/generate_job_cards.py>) | controlled print-traveler instruction generator | `520cf48d2263…` |
 | run_before_each_step | — | [scripts/initialize_step_evidence.py](<../../../scripts/initialize_step_evidence.py>) | non-overwriting active-build evidence initializer | `0a940eabc2ab…` |
