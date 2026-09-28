@@ -18,7 +18,9 @@ from rocell.application.typing_fault_campaign_v1 import (
     TypingFaultCampaignV1Error,
     TypingFaultObservationV1,
     build_typing_fault_campaign_v1,
+    build_typing_fault_observation_cache_v1,
     parse_typing_fault_campaign_v1,
+    parse_typing_fault_observation_cache_v1,
 )
 from rocell.application.typing_rolling_horizon_v1 import (
     TypingRollingHorizonV1Error,
@@ -76,6 +78,21 @@ def test_complete_campaign_is_deterministic_schema_valid_and_zero_authority():
         WORKSPACE / "software/ai/schemas/typing_fault_campaign_v1.schema.json"
     ).read_text(encoding="utf-8"))
     jsonschema.Draft202012Validator(schema).validate(first)
+
+
+def test_observation_cache_is_schema_valid_hash_bound_and_zero_authority():
+    cache = build_typing_fault_observation_cache_v1(
+        _observations()[:3], qualification_basis_sha256=BASIS)
+    parsed = parse_typing_fault_observation_cache_v1(
+        cache, expected_qualification_basis_sha256=BASIS)
+    assert parsed["entry_count"] == 3
+    assert parsed["controller_commands"] == ()
+    assert parsed["hardware_access"] is parsed["physical_authority"] is False
+    schema = json.loads((
+        WORKSPACE
+        / "software/ai/schemas/typing_fault_observation_cache_v1.schema.json"
+    ).read_text(encoding="utf-8"))
+    jsonschema.Draft202012Validator(schema).validate(cache)
 
 
 @pytest.mark.parametrize("change", [

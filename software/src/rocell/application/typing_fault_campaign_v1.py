@@ -17,6 +17,7 @@ from typing import Any, Iterable, Mapping
 
 
 SCHEMA = "rocell.typing_fault_campaign.v1"
+CACHE_SCHEMA = "rocell.typing_fault_observation_cache.v1"
 STATUS = "PASS_ZERO_AUTHORITY_FAULT_CAMPAIGN"
 MAX_CAMPAIGN_CASES = 64
 _SHA256 = re.compile(r"^[0-9a-f]{64}$")
@@ -24,6 +25,13 @@ _IDENTIFIER = re.compile(r"^[A-Z0-9][A-Z0-9_]{0,95}$")
 
 REJECTED = "REJECTED_BEFORE_DISPATCH"
 UNCERTAIN = "OUTCOME_UNCERTAIN_RETRY_FORBIDDEN"
+_OBSERVATION_FIELDS = {
+    "case_id", "family", "reason_code", "terminal_outcome",
+    "boundary_sha256", "fault_observed", "exception_escaped",
+    "automatic_retry_allowed", "order_preserved", "silent_fallback_used",
+    "bounded_resources", "controller_commands", "hardware_access",
+    "physical_authority",
+}
 
 
 class TypingFaultCampaignV1Error(ValueError):
@@ -266,8 +274,138 @@ def parse_typing_fault_campaign_v1(document: Mapping[str, Any]) -> Mapping[str, 
     return MappingProxyType(frozen)
 
 
+def build_typing_fault_observation_cache_v1(
+    observations: Iterable[TypingFaultObservationV1],
+    *,
+    qualification_basis_sha256: str,
+) -> dict[str, Any]:
+    """Seal a bounded evidence cache; it cannot carry execution authority."""
+
+    basis = _digest(qualification_basis_sha256, "qualification_basis_sha256")
+    items = tuple(observations)
+    if len(items) > MAX_CAMPAIGN_CASES:
+        raise TypingFaultCampaignV1Error("fault cache exceeds bounded capacity")
+    if any(not isinstance(item, TypingFaultObservationV1) for item in items):
+        raise TypeError("observations must contain TypingFaultObservationV1 values")
+    if len({item.case_id for item in items}) != len(items):
+        raise TypingFaultCampaignV1Error("fault cache contains duplicate case ids")
+    entries = []
+    for item in sorted(items, key=lambda value: value.case_id):
+        observation = item.to_dict()
+        entries.append({
+            "case_id": item.case_id,
+            "observation": observation,
+            "entry_sha256": _sha256(observation),
+        })
+    cache: dict[str, Any] = {
+        "schema": CACHE_SCHEMA,
+        "qualification_basis_sha256": basis,
+        "entry_count": len(entries),
+        "entries": entries,
+        "controller_commands": [],
+        "hardware_access": False,
+        "physical_authority": False,
+    }
+    return {**cache, "fault_cache_sha256": _sha256(cache)}
+
+
+def parse_typing_fault_observation_cache_v1(
+    document: Mapping[str, Any],
+    *,
+    expected_qualification_basis_sha256: str,
+) -> Mapping[str, Any]:
+    """Reject corrupt or identity-crossed cached campaign observations."""
+
+    expected_basis = _digest(
+        expected_qualification_basis_sha256,
+        "expected_qualification_basis_sha256",
+    )
+    fields = {
+        "schema", "qualification_basis_sha256", "entry_count", "entries",
+        "controller_commands", "hardware_access", "physical_authority",
+        "fault_cache_sha256",
+    }
+    if not isinstance(document, Mapping) or set(document) != fields:
+        raise TypingFaultCampaignV1Error("fault cache fields are not exact")
+    unsigned = dict(document)
+    claimed = _digest(unsigned.pop("fault_cache_sha256"), "fault_cache_sha256")
+    if _sha256(unsigned) != claimed:
+        raise TypingFaultCampaignV1Error("fault cache hash is invalid")
+    if document["schema"] != CACHE_SCHEMA:
+        raise TypingFaultCampaignV1Error("fault cache schema is invalid")
+    basis = _digest(document["qualification_basis_sha256"],
+                    "qualification_basis_sha256")
+    if basis != expected_basis:
+        raise TypingFaultCampaignV1Error("fault cache qualification identity is crossed")
+    entries = document["entries"]
+    if (
+        not isinstance(entries, list)
+        or len(entries) > MAX_CAMPAIGN_CASES
+        or not isinstance(document["entry_count"], int)
+        or isinstance(document["entry_count"], bool)
+        or document["entry_count"] != len(entries)
+    ):
+        raise TypingFaultCampaignV1Error("fault cache accounting is invalid")
+    observations: list[TypingFaultObservationV1] = []
+    seen: set[str] = set()
+    for entry in entries:
+        if not isinstance(entry, Mapping) or set(entry) != {
+            "case_id", "observation", "entry_sha256"
+        }:
+            raise TypingFaultCampaignV1Error("fault cache entry fields are not exact")
+        observation = entry["observation"]
+        if (
+            not isinstance(observation, Mapping)
+            or set(observation) != _OBSERVATION_FIELDS
+        ):
+            raise TypingFaultCampaignV1Error(
+                "fault cache observation fields are not exact")
+        if _digest(entry["entry_sha256"], "entry_sha256") != _sha256(observation):
+            raise TypingFaultCampaignV1Error("fault cache entry hash is invalid")
+        if (
+            not isinstance(entry["case_id"], str)
+            or entry["case_id"] != observation.get("case_id")
+            or entry["case_id"] in seen
+        ):
+            raise TypingFaultCampaignV1Error("fault cache case identity is invalid")
+        seen.add(entry["case_id"])
+        observations.append(TypingFaultObservationV1(
+            case_id=observation["case_id"], family=observation["family"],
+            reason_code=observation["reason_code"],
+            terminal_outcome=observation["terminal_outcome"],
+            boundary_sha256=observation["boundary_sha256"],
+            fault_observed=observation["fault_observed"],
+            exception_escaped=observation["exception_escaped"],
+            automatic_retry_allowed=observation["automatic_retry_allowed"],
+            order_preserved=observation["order_preserved"],
+            silent_fallback_used=observation["silent_fallback_used"],
+            bounded_resources=observation["bounded_resources"],
+            controller_commands=tuple(observation["controller_commands"])
+            if isinstance(observation["controller_commands"], list) else (object(),),
+            hardware_access=observation["hardware_access"],
+            physical_authority=observation["physical_authority"],
+        ))
+    if [item.case_id for item in observations] != sorted(seen):
+        raise TypingFaultCampaignV1Error("fault cache entry order is invalid")
+    if (
+        document["controller_commands"] != []
+        or document["hardware_access"] is not False
+        or document["physical_authority"] is not False
+    ):
+        raise TypingFaultCampaignV1Error("fault cache violates zero authority")
+    frozen = dict(document)
+    frozen["entries"] = tuple(MappingProxyType({
+        **dict(item),
+        "observation": MappingProxyType(dict(item["observation"])),
+    }) for item in entries)
+    frozen["controller_commands"] = ()
+    return MappingProxyType(frozen)
+
+
 __all__ = [
-    "MAX_CAMPAIGN_CASES", "REJECTED", "REQUIRED_CASES", "SCHEMA", "STATUS",
+    "CACHE_SCHEMA", "MAX_CAMPAIGN_CASES", "REJECTED", "REQUIRED_CASES",
+    "SCHEMA", "STATUS",
     "UNCERTAIN", "TypingFaultCampaignV1Error", "TypingFaultObservationV1",
-    "build_typing_fault_campaign_v1", "parse_typing_fault_campaign_v1",
+    "build_typing_fault_campaign_v1", "build_typing_fault_observation_cache_v1",
+    "parse_typing_fault_campaign_v1", "parse_typing_fault_observation_cache_v1",
 ]
