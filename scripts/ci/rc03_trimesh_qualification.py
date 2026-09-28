@@ -11,7 +11,7 @@ from pathlib import Path, PureWindowsPath
 import re
 
 
-RUNTIME_PACKAGES = ("trimesh", "numpy")
+RUNTIME_PACKAGES = ("trimesh", "numpy", "networkx")
 ALLOWED_REFERENCE_STLS = {Path("stl/BOARD_REFERENCE_DO_NOT_PRINT.stl")}
 
 
