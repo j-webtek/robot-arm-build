@@ -93,13 +93,6 @@ synthetic uncertainty bound is too large for ordinary key safe regions, so it is
 not deployment-qualified. These are software control boundaries, not permission
 to move hardware and not evidence of physical typing.
 
-These are separate research results, not an end-to-end autonomous product.
-The project has not demonstrated a camera-to-arm workflow that reliably types
-on a physical keyboard or operates a phone. Measured calibration, tool geometry,
-final-camera localization, contact behavior, and confirmation of actual device
-input remain open. The next high-value test is fixed-camera measured calibration
-and held-out localization—not another broad ghost-motion sequence.
-
 Read [project status](PROJECT_STATUS.md) for the checkpoint, evidence, and
 next steps. Simulation results, servo feedback, and measured tip accuracy
 are tracked separately.
