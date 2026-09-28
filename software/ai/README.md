@@ -28,6 +28,12 @@ developer ownership, and the separate
 commands and experiment results below are a research reference; model evaluation
 commands require their own locally installed models and data.
 
+Use the [AI work, testing, and evidence handbook](docs/AI_WORK_AND_EVIDENCE_HANDBOOK.md)
+for the required experiment lifecycle, test levels, evidence retention, failure
+handling, physical-camera procedure, and worker handoff. The machine-readable
+[AI work registry](docs/AI_WORK_REGISTRY.json) is the coverage index for all
+tracked AI tests.
+
 The coordinate-producing model handoff is documented in
 [`docs/MODEL_MOTION_PROPOSAL.md`](docs/MODEL_MOTION_PROPOSAL.md). It accepts
 image-bound keyboard/phone coordinates for deterministic offline screening; it

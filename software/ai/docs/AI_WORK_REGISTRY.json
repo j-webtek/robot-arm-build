@@ -1,0 +1,321 @@
+{
+  "schema": "tactevra.ai_work_registry.v1",
+  "purpose": "Machine-readable ownership and evidence index for every tracked Tactevra AI test module.",
+  "workstreams": [
+    {
+      "workstream_id": "intent_and_language_grounding",
+      "title": "Intent parsing, local language-model research, and semantic compilation",
+      "stages": [
+        "S1",
+        "S2",
+        "P1"
+      ],
+      "status": "IMPLEMENTED_ZERO_AUTHORITY",
+      "objective": "Convert supported user text into an exact semantic ActionPlan or an explicit rejection without model-created payload substitution.",
+      "source_paths": [
+        "software/ai/rocell_ai/admission.py",
+        "software/ai/rocell_ai/adapter.py",
+        "software/ai/rocell_ai/grounded.py",
+        "software/ai/rocell_ai/model_eval.py",
+        "software/ai/run_offline.py",
+        "software/ai/train"
+      ],
+      "test_paths": [
+        "software/ai/tests/test_offline.py"
+      ],
+      "documentation_paths": [
+        "software/ai/docs/CONTRACT.md",
+        "software/ai/docs/MODEL_RESEARCH.md",
+        "software/ai/train/README.md"
+      ],
+      "evidence_paths": [
+        "software/ai/eval/README.md",
+        "software/ai/train/sft_v3_result.json"
+      ],
+      "current_result": "The deterministic grounded path is the intent reference; response-SFT candidates remain research because frozen evaluations contain wrong executable proposals or coverage regressions.",
+      "limitations": [
+        "Finite grammar coverage is narrower than general English.",
+        "No language-model checkpoint is authorized to bypass deterministic compilation or admission."
+      ],
+      "next_gate": "Freeze a new intent benchmark before changing model or admission policy, and retain exact false-execution and supported-request coverage metrics.",
+      "model_motion_batch_boundary": true,
+      "controller_authority": false,
+      "hardware_writes": 0,
+      "physical_movements": 0
+    },
+    {
+      "workstream_id": "scene_observation_and_fusion",
+      "title": "Offline scene observation, image quality, capture binding, and fusion",
+      "stages": [
+        "S1",
+        "S2",
+        "S3",
+        "P1"
+      ],
+      "status": "IMPLEMENTED_ZERO_AUTHORITY",
+      "objective": "Bind exact image bytes to device presence, visibility, quality, obstruction, and fail-closed scene decisions.",
+      "source_paths": [
+        "software/ai/rocell_ai/capture_binding.py",
+        "software/ai/rocell_ai/pixel_quality.py",
+        "software/ai/rocell_ai/scene_evaluation.py",
+        "software/ai/rocell_ai/scene_observation.py",
+        "software/ai/rocell_ai/shadow_preview.py",
+        "software/ai/rocell_ai/vision_fusion.py",
+        "software/ai/rocell_ai/vision_runtime.py",
+        "software/ai/rocell_ai/visual_observation.py"
+      ],
+      "test_paths": [
+        "software/ai/tests/test_capture_binding.py",
+        "software/ai/tests/test_frozen_vision_manifest.py",
+        "software/ai/tests/test_pixel_quality.py",
+        "software/ai/tests/test_scene_evaluation.py",
+        "software/ai/tests/test_shadow_preview.py",
+        "software/ai/tests/test_vision_fusion.py",
+        "software/ai/tests/test_vision_runtime.py",
+        "software/ai/tests/test_visual_coordinates.py"
+      ],
+      "documentation_paths": [
+        "software/ai/docs/REAL_PHOTO_SEED_ASSESSMENT.md",
+        "software/ai/docs/VISION_MOTION_INTEGRATION.md"
+      ],
+      "evidence_paths": [
+        "software/ai/eval/gemma3_4b_real_photo_seed_v0.json",
+        "software/ai/eval/gemma3_4b_scene_stress_v0.json"
+      ],
+      "current_result": "The provisional offline Gemma observer and deterministic pixel gate support image-bound shadow decisions; the real-photo seed is correlated setup evidence rather than deployment qualification.",
+      "limitations": [
+        "No final static-camera dataset or authenticated live capture service is qualified.",
+        "Scene confidence cannot substitute for coordinate uncertainty."
+      ],
+      "next_gate": "Collect final-camera physical originals and measure held-out scene and abstention behavior across the declared domain.",
+      "model_motion_batch_boundary": true,
+      "controller_authority": false,
+      "hardware_writes": 0,
+      "physical_movements": 0
+    },
+    {
+      "workstream_id": "pose_localization_and_uncertainty",
+      "title": "Keyboard pose training, localization evaluation, and uncertainty research",
+      "stages": [
+        "S1",
+        "S2",
+        "S3"
+      ],
+      "status": "RESEARCH_BLOCKED",
+      "objective": "Estimate keyboard placement and orientation, derive named-key coordinates, and quantify uncertainty without promoting synthetic results as physical calibration.",
+      "source_paths": [
+        "software/ai/vision",
+        "software/ai/train/train_localization_confidence.py",
+        "software/ai/rocell_ai/confidence_metrics.py",
+        "software/ai/rocell_ai/localization_stress.py"
+      ],
+      "test_paths": [
+        "software/ai/tests/test_confidence_metrics.py",
+        "software/ai/tests/test_conservative_radius.py",
+        "software/ai/tests/test_local_refinement.py",
+        "software/ai/tests/test_localization_radius.py",
+        "software/ai/tests/test_localization_stress.py",
+        "software/ai/tests/test_matched_resolution_evidence.py",
+        "software/ai/tests/test_pose_decomposition.py",
+        "software/ai/tests/test_prediction_margin.py",
+        "software/ai/tests/test_robust_pose.py",
+        "software/ai/tests/test_s1_geometry_cases.py",
+        "software/ai/tests/test_translation_weighted_evidence.py"
+      ],
+      "documentation_paths": [
+        "software/ai/docs/PRECISION_CONFIDENCE_METHOD.md",
+        "software/ai/docs/SYNTHETIC_VISION_TRAINING.md",
+        "software/ai/docs/POSE_KEYLOSS_EXTERNAL_ARTIFACT.md"
+      ],
+      "evidence_paths": [
+        "software/ai/eval/precision_adapter_localization_v1_bundle.json",
+        "software/ai/eval/pose_keyloss_external_artifact_scorecard.json",
+        "software/ai/manifests/translation_weighted_pose_keyloss_v0.external.json"
+      ],
+      "current_result": "The translation-weighted checkpoint improved synthetic development error, but the retained conservative adapter bound is 14.400834977 mm and no deployment qualification is installed.",
+      "limitations": [
+        "Synthetic renderer evidence does not establish final-camera performance.",
+        "The current bound crosses ordinary key safe regions."
+      ],
+      "next_gate": "Run the frozen model on disjoint final-camera calibration and held-out captures, then require composed uncertainty to fit per-target safe regions.",
+      "model_motion_batch_boundary": true,
+      "controller_authority": false,
+      "hardware_writes": 0,
+      "physical_movements": 0
+    },
+    {
+      "workstream_id": "precision_to_motion_batch",
+      "title": "Precision observations and ordered ModelMotionBatch production",
+      "stages": [
+        "S1",
+        "S2",
+        "S3"
+      ],
+      "status": "IMPLEMENTED_ZERO_AUTHORITY",
+      "objective": "Convert qualified named-target observations into strict, ordered, evidence-bound ModelMotionBatch proposals.",
+      "source_paths": [
+        "software/ai/rocell_ai/batch_emitter.py",
+        "software/ai/rocell_ai/batch_emitter_v2.py",
+        "software/ai/rocell_ai/precision_adapter_v2.py",
+        "software/ai/rocell_ai/precision_batch_producer_v2.py",
+        "software/ai/rocell_ai/precision_binding_v2.py",
+        "software/ai/rocell_ai/precision_observation.py"
+      ],
+      "test_paths": [
+        "software/ai/tests/test_batch_emitter.py",
+        "software/ai/tests/test_batch_emitter_v2.py",
+        "software/ai/tests/test_precision_adapter_evaluation_bundle_v1.py",
+        "software/ai/tests/test_precision_adapter_v2.py",
+        "software/ai/tests/test_precision_binding_v2.py"
+      ],
+      "documentation_paths": [
+        "software/ai/docs/MODEL_MOTION_PROPOSAL.md",
+        "software/ai/docs/MODEL_ARM_CONFORMANCE_V1.md"
+      ],
+      "evidence_paths": [
+        "software/ai/eval/precision_adapter_batch_v2_contract_fixture.json",
+        "software/ai/eval/precision_adapter_batch_v2_contract_fixture_metadata.json"
+      ],
+      "current_result": "Strict v2 production preserves semantic action order and exact evidence identities and abstains when localization is unqualified.",
+      "limitations": [
+        "The producer accepts supplied observations and is not a complete live camera pipeline.",
+        "No servo, PWM, transport, permit, or success authority is present."
+      ],
+      "next_gate": "Supply a physically qualified precision observation and replay the actual producer bytes through the shared zero-hardware integration gate.",
+      "model_motion_batch_boundary": true,
+      "controller_authority": false,
+      "hardware_writes": 0,
+      "physical_movements": 0
+    },
+    {
+      "workstream_id": "motion_assurance_and_simulation",
+      "title": "Coordinate continuity, motion assurance, and zero-write simulation",
+      "stages": [
+        "S0",
+        "S1",
+        "S2",
+        "S3",
+        "S4"
+      ],
+      "status": "IMPLEMENTED_ZERO_AUTHORITY",
+      "objective": "Trace named model targets through deterministic coordinate checks and zero-write planning while proving downstream physical stages remain blocked.",
+      "source_paths": [
+        "software/ai/rocell_ai/coordinate_preview.py",
+        "software/ai/rocell_ai/model_motion_simulation.py",
+        "software/ai/rocell_ai/motion_assurance.py",
+        "software/ai/rocell_ai/motion_sequence_simulation.py",
+        "software/ai/rocell_ai/shared_shadow_runner_v2.py",
+        "software/ai/rocell_ai/translation_assurance.py"
+      ],
+      "test_paths": [
+        "software/ai/tests/test_keyboard_rehearsal.py",
+        "software/ai/tests/test_keyboard_route_coverage.py",
+        "software/ai/tests/test_model_motion_simulation.py",
+        "software/ai/tests/test_motion_assurance.py",
+        "software/ai/tests/test_motion_sequence_simulation.py"
+      ],
+      "documentation_paths": [
+        "software/ai/docs/MODEL_TO_ARM_TRANSLATION_ASSURANCE.md",
+        "software/ai/docs/MODEL_COMMAND_RUNTIME_IMPLEMENTATION_PLAN.md"
+      ],
+      "evidence_paths": [
+        "software/ai/eval/keyboard_route_coverage_v0.json",
+        "software/ai/eval/sequence_clearance_study_v0.json"
+      ],
+      "current_result": "Synthetic named-target routes and shared shadow paths are reproducible and zero-write; missing physical calibration or qualification blocks execution admission.",
+      "limitations": [
+        "Passing simulation is not measured reachability, collision clearance, contact success, or controller qualification.",
+        "Independent keyboard outcome verification remains required."
+      ],
+      "next_gate": "Combine physically qualified perception with current calibration and configuration evidence, then run one zero-movement shadow batch before any physical review.",
+      "model_motion_batch_boundary": true,
+      "controller_authority": false,
+      "hardware_writes": 0,
+      "physical_movements": 0
+    },
+    {
+      "workstream_id": "artifact_and_camera_qualification",
+      "title": "External model artifacts and physical-camera qualification readiness",
+      "stages": [
+        "S2",
+        "S3"
+      ],
+      "status": "PREPARED_PENDING_PHYSICAL_INPUTS",
+      "objective": "Preserve exact checkpoint identity and provide a strict process for collecting, separating, and preflighting final-camera localization evidence.",
+      "source_paths": [
+        "software/ai/eval/preflight_physical_camera_campaign.py",
+        "software/ai/eval/verify_pose_checkpoint_artifact.py",
+        "software/ai/schemas/physical_camera_localization_campaign_v1.schema.json",
+        "software/ai/schemas/physical_camera_localization_preflight_receipt_v1.schema.json"
+      ],
+      "test_paths": [
+        "software/ai/tests/test_physical_camera_localization_campaign.py",
+        "software/ai/tests/test_pose_checkpoint_external_artifact_result.py",
+        "software/ai/tests/test_pose_checkpoint_external_artifact_source.py"
+      ],
+      "documentation_paths": [
+        "software/ai/docs/PHYSICAL_CAMERA_LOCALIZATION_CAMPAIGN.md",
+        "software/ai/docs/POSE_KEYLOSS_EXTERNAL_ARTIFACT.md"
+      ],
+      "evidence_paths": [
+        "software/ai/eval/arm070_camera_support_optics_readiness.json",
+        "software/ai/eval/pose_keyloss_external_artifact_unavailable_receipt.json",
+        "software/ai/eval/pose_keyloss_external_artifact_verified_receipt.json"
+      ],
+      "current_result": "Checkpoint bytes are externally identity-verified, and the final-camera campaign contract is prepared; no physical campaign has been collected.",
+      "limitations": [
+        "Artifact identity is not model qualification.",
+        "The four retained camera/support originals and commissioned transforms are still required."
+      ],
+      "next_gate": "Retain the ARM-070 originals, freeze the measured configuration, collect the external 300/300 campaign, and pass preflight before model evaluation.",
+      "model_motion_batch_boundary": true,
+      "controller_authority": false,
+      "hardware_writes": 0,
+      "physical_movements": 0
+    },
+    {
+      "workstream_id": "documentation_and_evidence_governance",
+      "title": "AI documentation, test ownership, and evidence governance",
+      "stages": [
+        "S1",
+        "S2",
+        "S3"
+      ],
+      "status": "IMPLEMENTED_ZERO_AUTHORITY",
+      "objective": "Keep AI procedures, source ownership, tests, retained evidence, limitations, and next dependencies discoverable and machine checked.",
+      "source_paths": [
+        "software/ai/requirements-test.txt",
+        "software/ai/eval/audit_ai_work_registry.py",
+        "software/ai/schemas/ai_work_registry_audit_v1.schema.json",
+        "software/ai/schemas/ai_work_registry_v1.schema.json"
+      ],
+      "test_paths": [
+        "software/ai/tests/test_ai_work_registry.py"
+      ],
+      "documentation_paths": [
+        "software/ai/docs/AI_WORK_AND_EVIDENCE_HANDBOOK.md",
+        "software/ai/docs/AI_WORK_REGISTRY.json",
+        "software/ai/tests/README.md"
+      ],
+      "evidence_paths": [
+        "software/ai/docs/EVIDENCE_LEDGER.md",
+        "software/ai/docs/SHARED_AI_ARM_WORKPLAN.md",
+        "software/ai/eval/ai_work_registry_audit_v1.json"
+      ],
+      "current_result": "Every tracked AI test has one documented workstream owner, and the registry audit verifies all referenced paths and zero-authority fields.",
+      "limitations": [
+        "Structural documentation coverage does not prove model correctness or physical readiness.",
+        "Workers must still update results and limitations when behavior changes."
+      ],
+      "next_gate": "Run the registry audit in repository CI and require registry updates whenever tracked AI tests or workstream ownership change.",
+      "model_motion_batch_boundary": true,
+      "controller_authority": false,
+      "hardware_writes": 0,
+      "physical_movements": 0
+    }
+  ],
+  "controller_authority": false,
+  "hardware_writes": 0,
+  "physical_movements": 0,
+  "registry_sha256": "ea5da4211f33041e8adad425e6e190bb3df4a5dc9e5f5f313f4956b4faaef34d"
+}

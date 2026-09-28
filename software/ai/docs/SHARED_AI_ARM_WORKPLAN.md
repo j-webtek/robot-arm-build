@@ -786,6 +786,14 @@ evidence `E-20260927-AI-410`. Its clean-clone state is explicitly unavailable,
 its separately present bytes are identity-verified, and neither result installs
 localization qualification or changes the AI-to-arm authority boundary.
 
+AI work and test documentation is maintained through the
+[`AI work and evidence handbook`](AI_WORK_AND_EVIDENCE_HANDBOOK.md), the
+machine-checked [`AI work registry`](AI_WORK_REGISTRY.json), and evidence
+`E-20260927-AI-419`. The registry assigns every tracked AI test module to one
+workstream and binds its source, governing documents, retained evidence,
+limitations, and next gate. This documentation baseline changes no lane or
+integration status.
+
 Workers add a short row before beginning a potentially overlapping change and
 remove it only in the same commit that appends the resulting evidence row.
 
