@@ -64,6 +64,13 @@ for the dated settings and how to propose another action without bypassing them.
   digests, and resolved package versions. It retains the PDF and JSON summary for
   14 days so representative pages can be reviewed. Structural success is not
   visual approval and does not qualify CAD or hardware.
+- A Linux/Python 3.12 RC03 ReportLab qualification that selects the repository's
+  declared ReportLab constraint, renders fresh Letter-tiled and 24-by-36-inch
+  controlled drill guides, and checks page geometry, safety text, feature and
+  tile identity, plus exact 100 mm X/Y scale vectors. The job retains both PDFs
+  and a version-bound JSON receipt for 14 days. Maintainers must still inspect
+  representative pages before approving a major ReportLab update; the automated
+  gate does not qualify printing, drilling, CAD, or physical hardware.
 
 The test extra declares `jsonschema`; no separate manual install is needed.
 Dependency ranges are not a lockfile: these jobs check fresh resolution within
