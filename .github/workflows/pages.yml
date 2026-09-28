@@ -72,3 +72,30 @@ jobs:
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
+      - name: Smoke-check the deployed public surface
+        env:
+          PAGE_URL: ${{ steps.deployment.outputs.page_url }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          page="${PAGE_URL%/}/"
+          for attempt in 1 2 3 4 5 6; do
+            if curl --fail --silent --show-error --location "$page" --output "$RUNNER_TEMP/tactevra-page.html"; then
+              break
+            fi
+            if [[ "$attempt" == "6" ]]; then
+              echo "Pages did not become readable after ${attempt} bounded attempts" >&2
+              exit 1
+            fi
+            sleep 10
+          done
+          grep -q '<title>.*Tactevra' "$RUNNER_TEMP/tactevra-page.html"
+          curl --fail --silent --show-error --location --head \
+            "${page}media/tactevra-overview-poster.jpg" >/dev/null
+          {
+            echo '### Pages deployment smoke check'
+            echo
+            echo "- Public page: ${page}"
+            echo '- Tactevra title: present'
+            echo '- Overview poster: reachable'
+          } >> "$GITHUB_STEP_SUMMARY"

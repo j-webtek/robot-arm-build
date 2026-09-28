@@ -95,15 +95,17 @@ the protected-branch behavior first.
 ## Issue and PR triage
 
 Reuse `bug`, `documentation`, `enhancement`, and `question` for issue type.
-Additional labels created on September 26, 2026:
+Maintained routing labels include:
 
 | Label | Use |
 | --- | --- |
 | `area:repository` | GitHub configuration, CI, maintenance and contributor experience |
 | `area:ai` | AI producer, model or vision changes |
 | `area:arm` | Arm consumer, planner or controller changes |
+| `area:hardware` | Mechanical, CAD, printable-part or hardware-package changes |
 | `cross-workstream` | Coordinated interface review is needed |
 | `needs-owner-review` | An affected owner has not recorded a disposition |
+| `documentation` | Maintained public or contributor documentation changes |
 | `release-readiness` | Release prerequisites and preparation |
 
 Multiple area labels are appropriate for shared changes. Labels route work; they
@@ -130,6 +132,36 @@ the proposer.
 For future edits, follow [GitHub's form syntax](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-issue-forms),
 check IDs and labels for uniqueness, and verify the chooser and unsubmitted forms
 after merge. Do not create public test issues or submit private data for UI testing.
+
+### Pull-request routing and contract handoff
+
+The [pull-request automation](../.github/workflows/pr-automation.yml) derives its
+labels from changed paths and replaces only labels listed as managed in
+`.github/automation-policy.json`; manually applied priority, ownership, and issue
+labels are preserved. Trusted same-repository PRs are updated automatically.
+Forked PRs receive the same completeness check without a mutation attempt because
+their workflow token is intentionally read-only.
+
+Most PRs must retain the template's user outcome, ownership/handoff, and evidence
+sections. A change of three or fewer documentation-only files may use a compact
+description. Shared AI/arm contract changes are never exempt: they must include
+producer/consumer test or fixture coverage, a documentation or migration-note
+change, a compatibility classification, and migration or rollback guidance.
+This is an early consistency gate, not owner approval or proof of runtime safety.
+
+### Release-readiness synchronization
+
+The release-readiness registry names its tracking issue and milestone. CI
+validates the registry structure on every PR; the weekly read-only repository
+health workflow compares blocker statuses with their linked issues and confirms
+the tracker/milestone relationship. A mismatch fails the audit so maintainers see
+drift without a bot editing issues, closing milestones, publishing a candidate,
+or weakening a blocker. Update the ledger and GitHub issue state as one reviewed
+operation.
+
+The Pages deployment performs a bounded post-deploy check for the public title
+and overview poster. A deploy success without those public resources is reported
+as a failure rather than silently accepted.
 
 ## Dependency-update operation
 
