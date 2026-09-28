@@ -44,12 +44,16 @@ def completeness_findings(body: str, result: dict[str, object]) -> list[str]:
         for heading in ("## what changes for the user?", "## ownership and handoff", "## evidence"):
             if heading not in normalized:
                 findings.append(f"missing PR section: {heading}")
-        placeholders = (
+        literal_placeholders = (
             "describe the outcome and link the relevant issue",
             "- lane: repository/docs / ai / arm / hardware / cross-workstream",
-            "- commands run and results:",
         )
-        if any(marker in normalized for marker in placeholders):
+        blank_prompts = (
+            r"(?m)^- commands run and results:\s*$",
+            r"(?m)^- change owner:\s*$",
+        )
+        if (any(marker in normalized for marker in literal_placeholders)
+                or any(re.search(pattern, body, re.I) for pattern in blank_prompts)):
             findings.append("PR template still contains an unanswered required prompt")
     if result["contract"]:
         paths = result["paths"]
