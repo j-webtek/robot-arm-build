@@ -448,6 +448,14 @@ timing, and gripper policy. The receipt binds all execution identities and
 requires bounded correlated T=1051 feedback, but opens no transport, consumes
 no physical permit, and grants no authority. PC5 adversarial campaigns are now
 ready; camera and installed-workcell blockers are unchanged.
+ARM-084 begins PC5 with a canonical six-family, 35-case fault-campaign receipt
+and stricter resource boundaries at AI V2 ingress, rolling-horizon parsing, and
+controller-preview reconstruction. Malformed, duplicate, missing, oversized,
+non-finite, and deeply nested model inputs now have bounded rejection tests;
+campaign observations cannot record authority, retries, reordering, fallback,
+or escaped exceptions. PC5 remains in progress while the planner, transport,
+process-crash, and cache cases are connected to their actual owning boundaries.
+This checkpoint performs no hardware I/O and changes no physical qualification.
 The AI precision lane now has a mainline-compatible pose-output adapter and v2
 batch producer. It preserves repeated targets and abstains on qualification,
 domain, freshness, identity, confidence, or containment failure. Its retained

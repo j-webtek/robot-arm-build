@@ -1,6 +1,6 @@
 # Tactevra project status
 
-Reviewed September 28, 2026 through the ARM-083 completed PC4 zero-write controller gate,
+Reviewed September 28, 2026 through the ARM-084 PC5 bounded fault-campaign checkpoint,
 ARM-077 PC0 pre-camera qualification basis, ARM-076 typing collision-evidence
 intake, ARM-075 exact-sample offline IK screen, AI-403 precision-adapter
 integration, and merged physical-camera
@@ -285,6 +285,15 @@ Joint ordering, timing, firmware speed/acceleration, gripper policy, deadlines,
 and feedback requirements remain arm-owned. Exact execution lineages are
 sealed into one dispatch-intent identity; no transport, permit consumption,
 automatic retry, movement, or physical authority was added. PC5 is ready.
+
+ARM-084 begins PC5. The repository now has one canonical synthetic-offline
+campaign receipt covering 35 stable dispositions across model input,
+identity/order, planning, transport/feedback, process-crash, and
+runtime/resource fault families. AI ingress, rolling horizons, and controller
+preview reconstruction also enforce explicit depth, action-count, command-count,
+and payload limits. The affected 86-test suite passes with zero I/O. PC5 is not
+complete until the remaining planner, transport, crash, and cache observations
+are produced by their actual owner boundaries.
 
 AI-403 then integrates the pose-output precision adapter and actual V2 batch
 producer on current `main`. The retained contract fixture deterministically

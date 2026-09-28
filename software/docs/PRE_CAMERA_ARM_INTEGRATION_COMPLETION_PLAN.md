@@ -100,7 +100,7 @@ and its evidence gate pass.
 | PC2 | Golden end-to-end shadow pipeline | PC1, collision intake | No | None | COMPLETE |
 | PC3 | Rolling-horizon rebinding and restart safety | PC2 | No | None | COMPLETE |
 | PC4 | Typing-specific zero-write controller bridge | PC2, PC3 | No | None | COMPLETE |
-| PC5 | Fault injection and property testing | PC1-PC4 | No | None | READY |
+| PC5 | Fault injection and property testing | PC1-PC4 | No | None | IN_PROGRESS |
 | PC6 | Unified trace journal and deterministic replay | PC2-PC5 | No | None | NOT_STARTED |
 | PC7 | Safe transition cache in shadow mode | PC3, PC6 | No | None | NOT_STARTED |
 | PC8 | Performance benchmark and readiness report | PC1-PC7 | No | None | NOT_STARTED |
@@ -289,6 +289,20 @@ One action maps to one sealed dispatch intent. No AI field can directly inject
 controller JSON, arbitrary dynamics, a port, retry behavior, or authority.
 
 ## PC5 — Fault injection and property testing
+
+**Checkpoint 2026-09-28:** a bounded, canonical campaign contract now freezes
+all 35 required cases across the six fault families below. Every observation
+must carry its stable reason and terminal disposition and prove zero escaped
+exception, authority leak, automatic retry, reorder, silent fallback, or
+unbounded allocation. The strict report parser independently reconstructs the
+campaign summary and hash. In parallel, the live V2 decoder gained a 32-level
+JSON-depth ceiling and stable recursion rejection; rolling horizons now cap at
+64 actions; and controller previews cap command count and per-command payload
+bytes while normalizing malformed protocol payloads. Twenty-three focused PC5
+tests and eighty-six affected ingress/horizon/controller tests pass with zero
+I/O. This is a foundation checkpoint: PC5 remains in progress until every
+planner, transport, process-crash, and cache case is driven through its owning
+boundary rather than only represented by the campaign contract.
 
 ### Required fault families
 

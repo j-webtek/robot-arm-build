@@ -4485,3 +4485,43 @@ rewriting history. New entries must use a unique evidence ID.
 - Next dependency: PC5 adversarial and property campaigns across malformed
   input, stale/crossed identity, planner failure, controller uncertainty,
   restart, cache, deadline, cancellation, and bounded-resource families.
+
+### E-20260928-ARM-084 — PC5 bounded fault-campaign checkpoint
+
+- Stage: S1/S4/S7 pre-camera arm integration; PC5 in progress.
+- Lane: Arm/runtime shared boundary.
+- Commit: `72a6d53`.
+- Change: added a canonical, hash-bound, zero-I/O fault-campaign receipt with
+  35 required cases across six families and stable reason/outcome mappings.
+  Hardened the actual V2 model decoder with a 32-level JSON-depth ceiling and
+  stable recursion failure, capped rolling horizons at 64 actions, and bounded
+  controller-preview command count and individual payload size while
+  normalizing malformed protocol payloads.
+- Inputs/fixtures: malformed, duplicate, missing, oversized, NaN, infinity,
+  and deeply nested JSON; all 35 PC5 disposition records; eight independent
+  safety-invariant violations; missing, duplicate, crossed, reordered, and
+  independently rehashed campaign mutations; excessive horizon and controller
+  payload cases.
+- Commands: `python -m pytest -q
+  tests/unit/test_typing_fault_campaign_v1.py
+  tests/unit/test_model_motion_ingress_v2.py
+  tests/unit/test_typing_rolling_horizon_v1.py
+  tests/unit/test_typing_controller_bridge_v1.py`.
+- Result: PASS; 23 focused PC5 tests and 86 affected ingress, horizon, and
+  controller tests passed. The canonical report contains zero uncaught
+  exceptions, authority leaks, automatic retries, reorders, silent fallbacks,
+  unbounded allocations, or inconsistent terminal outcomes.
+- Artifacts: `software/src/rocell/application/typing_fault_campaign_v1.py`;
+  `software/ai/schemas/typing_fault_campaign_v1.schema.json`;
+  `software/tests/unit/test_typing_fault_campaign_v1.py`; hardened ingress,
+  horizon, and controller-preview parsers.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: this checkpoint proves the campaign contract and representative
+  real parser/resource boundaries only. Remaining planner, transport,
+  process-crash, and cache cases must still be driven through their owning
+  boundaries before PC5 can complete. It installs no measured workcell data,
+  deployment qualification, permit, or physical authority.
+- Next dependency: connect the planning and transport/feedback fault families
+  to existing IK, dynamics, collision, and lifecycle boundaries, then retain
+  the resulting observations in the canonical campaign report.
