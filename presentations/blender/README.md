@@ -135,11 +135,12 @@ The current published film follows the 77-second structure below. Its planned
 request-to-result replacement is documented in
 [`TACTEVRA_OVERVIEW_STORYBOARD_V2.md`](TACTEVRA_OVERVIEW_STORYBOARD_V2.md).
 That treatment expands the demonstration from one H-key press to a compound
-`open Messages → type READY on the phone → tap Send` workflow performed by one
-continuous detailed arm and stylus. It keeps the physical keyboard and phone
-as independent device-specific target maps rather than treating the phone as
-keyboard feedback. Keep the current film published until that replacement
-passes its visual-continuity and accuracy checkpoints.
+`enter READY locally through the physical keyboard → send READY separately
+through phone-screen taps` workflow performed by one continuous detailed arm
+and stylus. The physical keyboard drives and verifies only local input; the
+phone uses its own app state, on-screen controls, and verification. Keep the
+current film published until that replacement passes its visual-continuity and
+accuracy checkpoints.
 
 | Time | Shot | Evidence communicated |
 |---:|---|---|

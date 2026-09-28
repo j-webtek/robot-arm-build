@@ -3,12 +3,12 @@
 - **Status:** Production plan; not yet rendered
 - **Target runtime:** exactly 100 seconds
 - **Audience:** Technical buyers, collaborators, and first-time GitHub visitors
-- **Central demonstration:** A user asks Tactevra to open Messages on the phone,
-  type `READY`, and send it. The system interprets the intent, identifies the
-  requested device and app state, admits a safe phone-interaction sequence,
-  executes it with one continuous robot and stylus, and verifies the observed
-  result. The physical keyboard remains a separate supported interaction
-  surface; it is never presented as the phone's input or feedback device.
+- **Central demonstration:** A user asks Tactevra to enter `READY` in a local
+  computer interface, then send `READY` as a phone message. The system types
+  the local input through the physical keyboard, verifies that local result,
+  then separately operates the phone's Messages app through physical screen
+  taps and verifies the sent message. The two devices never share an input,
+  display, or verification path.
 - **Evidence boundary:** Every physical action in this film is a presentation
   visualization until separately supported by physical qualification records.
 
@@ -17,9 +17,10 @@
 The film must feel like a complete transaction rather than a component tour.
 It begins with a human objective, not a servo command. Tactevra turns that
 objective into named actions, grounds them in the measured workcell, checks the
-whole route, and then carries out a visible multi-step routine inside the
-phone's own interface. The same servo-style RoArm and the same clamped stylus
-remain on screen throughout the physical sequence.
+whole route, and then carries out two visible device-local routines: physical
+keyboard input to the local computer, followed by physical touchscreen taps on
+the phone. The same servo-style RoArm and the same clamped stylus remain on
+screen throughout the physical sequence.
 
 The audience should understand this sentence without reading the repository:
 
@@ -77,21 +78,21 @@ These rules are mandatory for the next render.
 
 | # | Time | Stage | Beat | Picture and motion | On-screen information |
 |---:|---:|---|---|---|---|
-| 1 | 0:00–0:05 | — | **The ask** | Start on an unmistakable laptop/operator console, clearly separate from the target phone. The user request types in. | `Open Messages on the phone, type READY, and send it.` |
-| 2 | 0:05–0:12 | — | **The physical stakes** | Match-cut to the hero wide and orbit 12–15 degrees. The detailed arm is parked and its stylus is visibly clamped. | No caption; let the narration explain that a guess becomes motion. |
-| 3 | 0:12–0:19 | `1 · UNDERSTAND` | **Model proposal** | An amber proposal card appears beside the stationary workcell. The request becomes three named, ordered phone actions. | `OPEN phone:messages → TYPE_TEXT "READY" → TAP phone:send`; `device phone`; `frame board`; `confidence 0.96`; no joint angles. |
-| 4 | 0:19–0:27 | `2 · LOCATE` | **See the scene** | Crane to the recognizable fixed camera, pass through its lens, and settle into a square overhead view. Exact board tags pulse and device outlines lock. | `keyboard found`; `phone found`; capture-quality indicators. |
-| 5 | 0:27–0:33 | `2 · LOCATE` | **Resolve device and targets** | The keyboard and phone receive separate blue device outlines and target-map labels. The request selects the phone. On that phone, Messages, the on-screen R/E/A/D/Y keys, and Send illuminate in order. A thin blue path links only the selected phone targets. | `physical keyboard · compatible, not selected`; `phone · selected`; declared frame, candidate coordinates, and uncertainty. |
-| 6 | 0:33–0:39 | `3 · CHECK` | **Reject stale evidence** | A red card occupies empty frame space while the actual arm remains visibly still. Do not imply that the proposal itself aged; the scene evidence did. | `scene capture 41 s old`; `limit 2 s`; `REJECTED · NO MOTION`. |
-| 7 | 0:39–0:46 | `3 · CHECK` | **Admit the sequence** | A fresh capture arrives. The compiled contact route draws park → Messages → R → E → A → D → Y → Send → retract. Gates tick and the decision turns green. | `device · app state · frame · freshness · reach · clearance · order · speed`; `3 SEMANTIC ACTIONS · 7 CONTACTS ADMITTED`. |
-| 8 | 0:46–0:53 | `4 · ACT` | **Transit to phone** | One continuous medium-wide: the same detailed arm leaves park, clears the physical keyboard and fixtures without approaching them, and reaches the phone hover plane. | Small persistent corner tag begins: `SIMULATED WORKCELL SEQUENCE`. |
-| 9 | 0:53–0:59 | `4 · ACT` | **Open Messages** | The complete arm remains readable while the stylus taps the Messages app icon. The modeled phone transitions from its home screen into a message composer with an on-screen keyboard. | `ACTION 1 OF 3 · OPEN MESSAGES`; observed app state changes to `messages.compose`. |
-| 10 | 0:59–1:11 | `4 · ACT` | **Type READY on the phone** | Track with the whole arm for five visible taps on the phone's on-screen keyboard, using no more than two contact inserts. Each character appears in the same phone's message field. The physical keyboard remains untouched in the wider composition. | `R ✓  E ✓  A ✓  D ✓  Y ✓`; use both checks and green so state is not color-dependent. |
-| 11 | 1:11–1:16 | `5 · VERIFY` | **Verify the draft** | The arm holds above the phone. Camera observation reads `READY` in the phone's message field and confirms the expected composer state. | `EXPECTED draft: READY`; `OBSERVED draft: READY ✓`; `app: Messages ✓`. |
-| 12 | 1:16–1:22 | `4 · ACT` | **Tap Send** | Begin medium-wide; use a contact macro no longer than two seconds. The same stylus taps the phone's Send control once and retracts. | `ACTION 3 OF 3 · SEND`; compiled contact `7 OF 7`. |
-| 13 | 1:22–1:29 | `5 · VERIFY` | **Verify outcome** | The phone moves `READY` from its input field into a sent message bubble. Telemetry, app state, and camera observation combine into one green receipt. | `MESSAGE SENT: READY`; telemetry ✓; app state ✓; observation ✓; order ✓. |
-| 14 | 1:29–1:36 | all | **Compatibility payoff** | Pull back while `UNDERSTAND → LOCATE → CHECK → ACT → VERIFY` lights in order. A simple compatibility graphic shows the same semantic `TYPE_TEXT` contract branching to a physical-keyboard target map or a phone on-screen-key target map; the completed phone branch stays green and the unused keyboard branch stays blue. | `ONE INTENT CONTRACT · DEVICE-SPECIFIC TARGET MAPS`; `ONE CHECKED PHYSICAL WORKFLOW.` |
-| 15 | 1:36–1:40 | — | **End card** | Workcell silhouette, logo, and URL. If a suitable physical-workcell image exists, show it for the first two seconds under the label `THE REAL WORKCELL`, then resolve to the brand card. No black tail. | `TACTEVRA`; `Physical intelligence, checked.`; small grey line: `Concept visualization · physical qualification in progress`. |
+| 1 | 0:00–0:05 | — | **The ask** | Start on an unmistakable operator console. The AI request appears in its own panel, visually separate from both target interfaces. | `Enter READY locally, then text READY from the phone.` |
+| 2 | 0:05–0:11 | — | **The physical stakes** | Match-cut to the hero wide and orbit 12–15 degrees. The detailed arm is parked and its stylus is visibly clamped. The physical keyboard, local-computer display, and phone are all legible as separate objects. | No caption; let the narration explain that a guess becomes motion. |
+| 3 | 0:11–0:18 | `1 · UNDERSTAND` | **Model proposal** | An amber proposal card appears beside the stationary workcell. The request becomes two ordered, device-qualified intentions. | `LOCAL.TYPE_TEXT "READY" → PHONE.SEND_TEXT "READY"`; `frame board`; `confidence 0.96`; no joint angles. |
+| 4 | 0:18–0:25 | `2 · LOCATE` | **See the scene** | Crane to the fixed camera, pass through its lens, and settle into a square overhead view. Exact board tags pulse and independent device outlines lock. | `local keyboard found`; `local display found`; `phone found`; capture-quality indicators. |
+| 5 | 0:25–0:31 | `2 · LOCATE` | **Resolve independent targets** | Use two clearly separated blue target maps. The local branch highlights physical R/E/A/D/Y keys and the local input field. The phone branch highlights Messages, on-screen R/E/A/D/Y, and Send. No line connects one device's output to the other. | `local input · physical keyboard`; `message · phone touchscreen`; declared frames and uncertainty. |
+| 6 | 0:31–0:37 | `3 · CHECK` | **Reject stale evidence** | A red card occupies empty frame space while the arm remains visibly still. | `scene capture 41 s old`; `limit 2 s`; `REJECTED · NO MOTION`. |
+| 7 | 0:37–0:44 | `3 · CHECK` | **Admit both device-local routines** | A fresh capture arrives. The compiled route draws park → local R/E/A/D/Y → verify local → Messages → phone R/E/A/D/Y → Send → verify phone. Gates tick and the decision turns green. | `device · app state · frame · freshness · reach · clearance · order · speed`; `2 INTENTS · 12 CONTACTS ADMITTED`. |
+| 8 | 0:44–0:50 | `4 · ACT` | **Transit to physical keyboard** | One continuous medium-wide: the detailed arm leaves park and reaches the physical keyboard hover plane. | Small persistent corner tag begins: `SIMULATED WORKCELL SEQUENCE`. |
+| 9 | 0:50–1:00 | `4 · ACT` | **Enter READY locally** | Track with the whole arm for five visible physical-key presses. R/E/A/D/Y appear only in the local computer's input field. The phone remains unchanged. | `LOCAL · R ✓  E ✓  A ✓  D ✓  Y ✓`; green plus checks. |
+| 10 | 1:00–1:05 | `5 · VERIFY` | **Verify local input** | The arm holds above the keyboard. The local display reads `READY`; local input observation and telemetry agree. | `LOCAL EXPECTED: READY`; `LOCAL OBSERVED: READY ✓`; phone unchanged. |
+| 11 | 1:05–1:11 | `4 · ACT` | **Cross to the phone** | Wide diagonal dolly follows a high-clearance arc away from the keyboard and toward the phone while the wrist reorients. | Route progress: `local keyboard complete → phone`. |
+| 12 | 1:11–1:23 | `4 · ACT` | **Compose the phone message** | The same arm taps Messages, then physically taps R/E/A/D/Y on the phone's on-screen keyboard. Each character appears only in the phone's message field. Use no more than two brief contact inserts. | `PHONE · Messages ✓ · R ✓ E ✓ A ✓ D ✓ Y ✓`; compiled contacts 6–11 of 12. |
+| 13 | 1:23–1:28 | `4 · ACT` | **Tap Send** | Start medium-wide; use a contact macro no longer than two seconds. The same stylus taps Send once and retracts. | `PHONE.SEND_TEXT · CONTACT 12 OF 12`. |
+| 14 | 1:28–1:35 | `5 · VERIFY` | **Verify both outcomes** | The local display still shows its independent local `READY`. Separately, the phone moves its own `READY` into a sent message bubble. Two receipts resolve side by side without sharing data. | `LOCAL INPUT: READY ✓`; `PHONE MESSAGE: READY · SENT ✓`; telemetry and observation ✓. |
+| 15 | 1:35–1:40 | all | **Compatibility payoff and end card** | Pull back while `UNDERSTAND → LOCATE → CHECK → ACT → VERIFY` lights in order. The two device branches remain separate beneath one intent contract, then resolve into the logo and URL. No black tail. | `ONE INTENT CONTRACT · TWO DEVICE-SPECIFIC WORKFLOWS`; `TACTEVRA · Physical intelligence, checked.`; small grey boundary line. |
 
 ## Draft narration
 
@@ -102,24 +103,24 @@ The `/` marks a short natural breath.
 ```text
 [0:05] When AI acts in the physical world, a guess becomes motion. /
        So intent can't go straight to the motors.
-[0:12] The model proposes named, ordered actions: open Messages, type READY, /
-       then tap Send. Never joint angles.
-[0:19] A fixed camera reads the board's tags / and locates the keyboard and
-       the phone in one shared frame.
-[0:27] The request selects the phone. / Its app controls and on-screen keys
-       become measured targets.
-[0:33] If the scene is stale, the plan is rejected. / Nothing moves.
-[0:39] With fresh evidence, the whole sequence is checked: / frame, reach,
+[0:11] The model proposes two device-qualified intentions: / enter READY
+       locally, then send READY from the phone. Never joint angles.
+[0:18] A fixed camera reads the board's tags / and locates each independent
+       device in one shared workcell frame.
+[0:25] Each device keeps its own targets, controls, and observed state.
+[0:31] If the scene is stale, the plan is rejected. / Nothing moves.
+[0:37] With fresh evidence, both routines are checked: / frame, reach,
        clearance, order, speed. / Only then is it admitted.
-[0:46] One arm. One stylus. One controller.
-[0:53] Messages opens.
-[0:59] [No narration. Let the five phone-key taps carry the sequence.]
-[1:11] The draft is verified before the next step.
-[1:16] One tap on Send.
-[1:22] Telemetry, app state, and the camera agree: / the message was sent.
-[1:29] One intent contract can safely target a keyboard or a phone, /
-       with device-specific maps and controls.
-[1:36] Tactevra. Physical intelligence, checked.
+[0:44] One arm. One stylus. One controller.
+[0:50] [No narration. Let the five physical-key clicks carry the sequence.]
+[1:00] READY is confirmed in the local interface. / The phone is still unchanged.
+[1:05] The arm clears the keyboard and crosses to the separate phone workflow.
+[1:11] [No narration. Let the Messages and on-screen-key taps carry the sequence.]
+[1:23] One physical tap on Send.
+[1:28] The local input remains local. / The phone message is separately
+       observed as sent.
+[1:35] One intent contract. / Two device-specific workflows. /
+       Tactevra. Physical intelligence, checked.
 ```
 
 ## Robot performance choreography
@@ -127,10 +128,22 @@ The `/` marks a short natural breath.
 The motion must communicate control quality without pretending that a rendered
 trajectory is qualified evidence.
 
+### Local physical-keyboard sequence
+
+1. Leave park with a vertical and rearward clearance move.
+2. Travel to the physical keyboard's shared hover plane.
+3. For each physical letter key, use
+   `hover → controlled descent → visible key travel → retract`.
+4. Blend only high-clearance lateral segments; do not round the contact
+   descent.
+5. Keep the stylus plausibly aligned with the key-normal direction.
+6. Hold over the keyboard while the local-computer input field is observed.
+7. Do not change any phone state during this sequence.
+
 ### Phone sequence
 
-1. Leave park with a vertical and rearward clearance move that visibly clears
-   the physical keyboard and fixtures.
+1. Retract completely from the physical keyboard, then travel in a visible
+   high-clearance arc that clears the keyboard and fixtures.
 2. Reorient the wrist before descending to the phone hover plane.
 3. Tap the Messages icon using `hover → controlled descent → retract`, then
    hold while the modeled app transition is observed.
@@ -150,8 +163,8 @@ trajectory is qualified evidence.
   tap primitives.
 - Each adapter declares its own device identity, target map, frame, app state,
   contact geometry, and verification rule before compilation.
-- The film may show both maps for compatibility, but it must animate only the
-  phone branch selected by this request.
+- The film animates both selected branches in order, but their target maps,
+  interaction state, observations, and verification receipts remain separate.
 
 ### Animation quality
 
@@ -171,7 +184,7 @@ trajectory is qualified evidence.
 |---|---|
 | Robot | Detailed RoArm geometry, servo housings, dual links, fasteners, wiring, gripper, and one articulated rig used for every shot. |
 | Stylus | Dark cylindrical body seated between visible jaws, plausible protrusion, finished compliant tip, no bulb-shaped placeholder. |
-| Keyboard | Current measured black RC03 asset, consistent material in all shots, correct legends and six-row layout, and its own physical-key target map. It remains stationary and untouched in this phone demonstration. |
+| Keyboard | Current measured black RC03 asset, consistent material in all shots, correct legends and six-row layout, individually animatable R/E/A/D/Y key caps, its own physical-key target map, and a clearly associated local-computer input field. |
 | Phone | Current measured phone asset, consistent dark chassis and glass, home, Messages composer, on-screen keyboard, Send, and sent-confirmation states. Screen content is explicitly labeled as modeled UI. READY appears in this phone's input field as its five on-screen keys are tapped. |
 | Camera | Recognizable camera body, mount, lens, and optical point of view; visible during its introduction. |
 | Board | Exact released tag36h11 IDs and stable device/fixture transforms. |
@@ -186,13 +199,14 @@ trajectory is qualified evidence.
   for the phone, and one resolved chord for final verification.
 - Do not use a whoosh on every edit.
 - Give the typing sequence rhythmic variation without making it unnaturally
-  fast. The viewer must be able to count the Messages tap, five distinct
-  on-screen-key taps, and the Send tap.
+  fast. The viewer must be able to count five physical-key presses, followed
+  later by the Messages tap, five on-screen-key taps, and the Send tap.
 - Deliver a high-quality 1920×1080 master, a web-optimized GitHub version, and
   captioned social derivatives from the same timeline.
-- Build a 30-second social cut from the ask, stale-evidence rejection, READY
-  typing, sent-message verification, and end card. Give it separate burned-in
-  captions rather than cropping the 100-second captions.
+- Build a 30-second social cut from the ask, stale-evidence rejection, one
+  physical-key contact, one phone-key contact, dual verification, and end card.
+  Give it separate burned-in captions rather than cropping the 100-second
+  captions.
 
 ## Production checkpoints
 
@@ -203,16 +217,20 @@ The video is ready for final render only when all checkpoints pass.
 - [ ] The greybox animatic remains understandable and every principal card is
       readable at a 390-pixel-wide phone preview.
 - [ ] The identical robot mesh and rig are present in every physical shot.
-- [ ] The stylus is visibly clamped before, during, and after all seven compiled
-      phone contacts.
+- [ ] The stylus is visibly clamped before, during, and after all twelve
+      compiled contacts across the two workflows.
+- [ ] Physical R, E, A, D, and Y keys visibly depress in order, and only the
+      local computer's input field changes during those contacts.
 - [ ] Messages, R, E, A, D, Y, and Send are correctly located on the phone and
       visibly tapped in order.
-- [ ] The physical keyboard remains a separate, stationary device and is never
-      used as the phone's input or verification display.
+- [ ] The physical keyboard remains a separate device and is never used as the
+      phone's input or verification display.
 - [ ] The phone target and modeled confirmation state remain on the same phone.
 - [ ] READY appears in that phone's message field one character at a time, and
       the same text appears as a sent message after the Send tap, based only on
       the phone's own modeled app state.
+- [ ] The local `READY` and phone `READY` have separate observations and
+      separate verification receipts; neither is evidence for the other.
 - [ ] Every camera cut preserves robot pose continuity.
 - [ ] The stale-plan example shows zero arm movement.
 - [ ] No overlay hides the gripper, tool, target, or contact point.
@@ -229,9 +247,9 @@ The video is ready for final render only when all checkpoints pass.
 The earlier film proves that Tactevra has a safety architecture, but its visible
 payoff is only one isolated key. This treatment keeps the safety differentiator
 while making the product understandable: the user asks for a compound outcome,
-the system plans it, and a single recognizable machine opens an app, types a
-message on the phone's own on-screen keyboard, and sends it. The compatibility
-payoff makes clear that physical keyboards and phones use the same semantic
-intent contract but retain separate device-specific target maps, controls, and
-verification. The result is more dynamic, more legible, and more faithful to
-the project's intended architecture.
+the system plans it, and a single recognizable machine first enters local text
+through a physical keyboard, then operates a separate phone through physical
+screen taps. The compatibility payoff makes clear that both workflows can
+share a semantic intent contract while retaining separate device-specific
+target maps, controls, state, and verification. The result is more dynamic,
+more legible, and more faithful to the project's intended architecture.
