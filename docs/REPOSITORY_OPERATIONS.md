@@ -294,12 +294,16 @@ the runner selector; the CI guide documents this distinction.
 Dependabot can propose later pin updates; pinning does not itself prove the action is safe.
 The workflow retains read-only permissions, non-persisted checkout credentials,
 hosted runners and bounded jobs. It does not use `pull_request_target` or deploy.
-The manually dispatched preview-candidate audit uses the same two pinned actions,
-read-only permissions, and a hosted Ubuntu runner. GitHub selects the checkout
-revision; the caller-supplied full commit SHA is only an identity assertion and
-cannot select code to run. It audits only and has no release, artifact-upload,
-deployment, or hardware step. It is intentionally outside branch protection
-because it applies to a selected candidate rather than every development commit.
+The manually dispatched preview-candidate audit uses the same pinned checkout
+and setup actions plus the pinned upload-artifact action, read-only permissions,
+and a hosted Ubuntu runner. GitHub selects the checkout revision; the caller-
+supplied full commit SHA is only an identity assertion and cannot select code to
+run. It audits and uploads a 30-day identity-bound review packet, but has no tag,
+release, attestation, deployment, or hardware step. A failed candidate still
+produces the packet before the final gate fails. The packet is an audit aid, not
+a redistributable source bundle or publication approval. The workflow is
+intentionally outside branch protection because it applies to a selected
+candidate rather than every development commit.
 
 The initial September 26, 2026 inspection found Dependabot alerts/security updates
 and secret scanning/push protection disabled. The later approved repository

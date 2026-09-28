@@ -132,13 +132,19 @@ is a separate, manually dispatched, read-only workflow. It accepts one full
 that GitHub-selected revision, requires its immutable SHA to equal the assertion,
 runs the strict release candidate inventory policy, performs the snapshot audit,
 rechecks maintained documentation, and measures the source-archive footprint.
+It then uploads a 30-day review packet containing the exact Git-tree inventory,
+candidate and tree identities, check outcomes, and a SHA-256 digest of that
+inventory. The packet is generated even when a known blocker fails the final
+gate, making the failed disposition inspectable without treating it as success.
 The input never selects code to check out.
 This prevents an input-controlled revision from executing in the default-branch
 workflow cache scope. The workflow uses a hosted Ubuntu runner, read-only repository
 permission, non-persisted checkout credentials, and no repository secrets.
 
-This workflow does not install the project, exercise hardware, upload artifacts,
-create tags, or publish releases. It is not a required branch-protection check.
+This workflow does not install the project, exercise hardware, create tags,
+attest a build, assemble a redistributable source bundle, or publish releases.
+Its uploaded review packet is an audit aid rather than a release asset, SBOM,
+or approval record. It is not a required branch-protection check.
 Use it only after identifying a proposed preview commit on protected `main`; a
 moving branch name is not a candidate identity. Confirm the completed run names
 the expected SHA. To assess some other revision without executing it in this
