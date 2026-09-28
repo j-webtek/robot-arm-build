@@ -14,7 +14,8 @@ cannot selectively exclude tracked CAD, media, or historical project material.
 Calling that download “slim” without first changing the tracked tree would be
 misleading.
 
-At commit `1e0ed97974910b970b895d149f415b8aa7e6c521`, the committed tree measured:
+The reduction project began at commit
+`1e0ed97974910b970b895d149f415b8aa7e6c521`, where the committed tree measured:
 
 | Measure | Baseline |
 | --- | ---: |
@@ -40,9 +41,26 @@ Run the measurement with:
 python scripts/ci/check_source_archive_footprint.py --json
 ```
 
-The initial reduction target is at most 650 MiB of logical tracked content and
-10 MiB of duplicate large blobs. Reaching it requires reviewed changes, not a
-history rewrite performed during ordinary maintenance.
+The reduction target is at most 650 MiB of logical tracked content and 10 MiB
+of duplicate large blobs. It was reached through reviewed canonical-reference
+and staging changes, without rewriting Git history.
+
+## Verified post-reduction baseline
+
+After the three governed archive-reduction stages merged, commit
+`28e40d78633a0231bf4d857631aafd797a19f6e3` independently measured:
+
+| Measure | Original | Verified baseline | Change |
+| --- | ---: | ---: | ---: |
+| Tracked files | 5,953 | 5,932 | -21 |
+| Logical tracked bytes | 888,035,473 | 644,998,905 | -243,036,568 |
+| Duplicate bytes among exact blobs of at least 1 MiB | 234,522,512 | 4,890,152 | -229,632,360 |
+
+Both reduction targets pass. The remaining three large duplicate groups are
+intentional RC02/RC03 cross-revision provenance pairs documented below. The
+policy baseline now points to this merged commit so future checks have a stable,
+post-reduction reference. Containment ceilings remain deliberately above the
+baseline to detect material growth without making normal small changes brittle.
 
 The preferred order is:
 
@@ -57,8 +75,9 @@ The preferred order is:
 5. consider history migration only as a separately approved operation with a
    contributor migration plan.
 
-No current tracked file is removed by this policy. Existing duplication remains
-technical debt, while the delta-based
+The policy itself does not remove tracked files. The governed reduction work
+replaced approved convenience copies with verified canonical references while
+preserving historical evidence. The delta-based
 [artifact-governance check](ARTIFACT_GOVERNANCE.md) prevents new unreviewed
 duplication.
 
@@ -211,10 +230,10 @@ that retention decision. RC02 remains immutable historical evidence and RC03
 remains the current canonical source; neither copy is an unclassified staging
 artifact, and changing either requires a new owner-reviewed decision.
 
-Measured at commit `4dfcbbd67271e8b8c3d4ae60e727fd5ee2339fd7`, before this
-classification-only follow-up, the repository contained 5,932 tracked files,
-644,996,944 logical bytes, and 4,890,152 governed duplicate bytes. Both #130
-reduction targets are met without rewriting Git history.
+Measured on merged `main` at commit
+`28e40d78633a0231bf4d857631aafd797a19f6e3`, the repository contains 5,932
+tracked files, 644,998,905 logical bytes, and 4,890,152 governed duplicate
+bytes. Both #130 reduction targets are met without rewriting Git history.
 
 ## Stage the static-camera print pack for offline use
 
