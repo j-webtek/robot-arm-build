@@ -243,13 +243,18 @@
       "status": "PREPARED_PENDING_PHYSICAL_INPUTS",
       "objective": "Preserve exact checkpoint identity and provide a strict process for collecting, separating, and preflighting final-camera localization evidence.",
       "source_paths": [
+        "software/ai/eval/evaluate_physical_camera_localization.py",
         "software/ai/eval/preflight_physical_camera_campaign.py",
         "software/ai/eval/verify_pose_checkpoint_artifact.py",
+        "software/ai/schemas/physical_camera_localization_evaluation_plan_v1.schema.json",
+        "software/ai/schemas/physical_camera_localization_evaluation_result_v1.schema.json",
         "software/ai/schemas/physical_camera_localization_campaign_v1.schema.json",
+        "software/ai/schemas/physical_camera_localization_ground_truth_v1.schema.json",
         "software/ai/schemas/physical_camera_localization_preflight_receipt_v1.schema.json"
       ],
       "test_paths": [
         "software/ai/tests/test_physical_camera_localization_campaign.py",
+        "software/ai/tests/test_physical_camera_localization_evaluator.py",
         "software/ai/tests/test_pose_checkpoint_external_artifact_result.py",
         "software/ai/tests/test_pose_checkpoint_external_artifact_source.py"
       ],
@@ -262,12 +267,12 @@
         "software/ai/eval/pose_keyloss_external_artifact_unavailable_receipt.json",
         "software/ai/eval/pose_keyloss_external_artifact_verified_receipt.json"
       ],
-      "current_result": "Checkpoint bytes are externally identity-verified, and the final-camera campaign contract is prepared; no physical campaign has been collected.",
+      "current_result": "Checkpoint bytes are externally identity-verified, and strict final-camera preflight and held-out evaluation contracts are implemented; no physical campaign has been collected.",
       "limitations": [
         "Artifact identity is not model qualification.",
         "The four retained camera/support originals and commissioned transforms are still required."
       ],
-      "next_gate": "Retain the ARM-070 originals, freeze the measured configuration, collect the external 300/300 campaign, and pass preflight before model evaluation.",
+      "next_gate": "Retain the ARM-070 originals, freeze the measured configuration, collect the external 300/300 campaign, run frozen inference, and pass preflight plus held-out evaluation.",
       "model_motion_batch_boundary": true,
       "controller_authority": false,
       "hardware_writes": 0,
@@ -317,5 +322,5 @@
   "controller_authority": false,
   "hardware_writes": 0,
   "physical_movements": 0,
-  "registry_sha256": "ea5da4211f33041e8adad425e6e190bb3df4a5dc9e5f5f313f4956b4faaef34d"
+  "registry_sha256": "05f4b615b1ae1d9182d199b1e13ce66200f99b459996b113a3da0e58197961b9"
 }

@@ -1,0 +1,141 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rocell.local/schemas/physical_camera_localization_evaluation_result_v1.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "status", "campaign_id", "campaign_sha256", "preflight_receipt_sha256",
+    "plan_sha256", "evaluator_source_commit", "model_id", "model_sha256", "preprocessing_sha256", "model_artifact_manifest_sha256",
+    "keyboard_target_map_sha256", "calibration_capture_count", "evaluation_capture_count",
+    "calibration_target_error_count", "eligible_evaluation_target_event_count",
+    "covered_evaluation_target_event_count", "declared_coverage_probability",
+    "measured_coverage_probability", "calibration_localization_bound_mm",
+    "additional_uncertainty", "uncertainty_composition", "composed_error_bound_mm",
+    "calibration_abstention_count", "evaluation_abstention_count",
+    "unsafe_false_accept_count", "uncovered_case_ids", "unsafe_false_accept_case_ids",
+    "missing_target_metric_ids", "safe_region_failure_target_ids", "per_condition",
+    "per_target", "criteria", "qualification_recommended", "qualification_installed",
+    "physical_deployment_qualified", "model_motion_batch_emitted", "controller_started",
+    "hardware_writes", "physical_movements", "limitations", "result_sha256"
+  ],
+  "properties": {
+    "schema": {"const": "rocell.physical_camera_localization_evaluation_result.v1"},
+    "status": {"enum": ["QUALIFICATION_RECOMMENDED", "QUALIFICATION_BLOCKED"]},
+    "campaign_id": {"$ref": "#/$defs/id"},
+    "campaign_sha256": {"$ref": "#/$defs/sha"},
+    "preflight_receipt_sha256": {"$ref": "#/$defs/sha"},
+    "plan_sha256": {"$ref": "#/$defs/sha"},
+    "evaluator_source_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "model_id": {"$ref": "#/$defs/id"},
+    "model_sha256": {"$ref": "#/$defs/sha"},
+    "preprocessing_sha256": {"$ref": "#/$defs/sha"},
+    "model_artifact_manifest_sha256": {"$ref": "#/$defs/sha"},
+    "keyboard_target_map_sha256": {"$ref": "#/$defs/sha"},
+    "calibration_capture_count": {"type": "integer", "minimum": 300},
+    "evaluation_capture_count": {"type": "integer", "minimum": 300},
+    "calibration_target_error_count": {"type": "integer", "minimum": 1},
+    "eligible_evaluation_target_event_count": {"type": "integer", "minimum": 1},
+    "covered_evaluation_target_event_count": {"type": "integer", "minimum": 0},
+    "declared_coverage_probability": {"const": 0.99},
+    "measured_coverage_probability": {"type": "number", "minimum": 0, "maximum": 1},
+    "calibration_localization_bound_mm": {"type": "number", "minimum": 0},
+    "additional_uncertainty": {
+      "type": "object", "additionalProperties": false,
+      "required": ["camera_to_board", "board_to_robot", "tracking_and_settling", "tool_tip"],
+      "properties": {
+        "camera_to_board": {"$ref": "#/$defs/uncertainty"},
+        "board_to_robot": {"$ref": "#/$defs/uncertainty"},
+        "tracking_and_settling": {"$ref": "#/$defs/uncertainty"},
+        "tool_tip": {"$ref": "#/$defs/uncertainty"}
+      }
+    },
+    "uncertainty_composition": {"const": "CONSERVATIVE_LINEAR_SUM"},
+    "composed_error_bound_mm": {"type": "number", "minimum": 0},
+    "calibration_abstention_count": {"type": "integer", "minimum": 0},
+    "evaluation_abstention_count": {"type": "integer", "minimum": 0},
+    "unsafe_false_accept_count": {"type": "integer", "minimum": 0},
+    "uncovered_case_ids": {"$ref": "#/$defs/id_array"},
+    "unsafe_false_accept_case_ids": {"$ref": "#/$defs/id_array"},
+    "missing_target_metric_ids": {"$ref": "#/$defs/id_array"},
+    "safe_region_failure_target_ids": {"$ref": "#/$defs/id_array"},
+    "per_condition": {
+      "type": "object", "minProperties": 11,
+      "additionalProperties": {"$ref": "#/$defs/condition_metrics"}
+    },
+    "per_target": {
+      "type": "object", "minProperties": 1,
+      "propertyNames": {"pattern": "^[A-Z0-9][A-Z0-9_]{0,63}$"},
+      "additionalProperties": {"$ref": "#/$defs/target_metrics"}
+    },
+    "criteria": {
+      "type": "object", "additionalProperties": false,
+      "required": ["calibration_has_zero_abstentions", "held_out_coverage_met", "unsafe_false_accepts_zero", "all_targets_have_metrics", "composed_bound_fits_all_safe_regions"],
+      "properties": {
+        "calibration_has_zero_abstentions": {"type": "boolean"},
+        "held_out_coverage_met": {"type": "boolean"},
+        "unsafe_false_accepts_zero": {"type": "boolean"},
+        "all_targets_have_metrics": {"type": "boolean"},
+        "composed_bound_fits_all_safe_regions": {"type": "boolean"}
+      }
+    },
+    "qualification_recommended": {"type": "boolean"},
+    "qualification_installed": {"const": false},
+    "physical_deployment_qualified": {"const": false},
+    "model_motion_batch_emitted": {"const": false},
+    "controller_started": {"const": false},
+    "hardware_writes": {"const": 0},
+    "physical_movements": {"const": 0},
+    "limitations": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+    "result_sha256": {"$ref": "#/$defs/sha"}
+  },
+  "$defs": {
+    "id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:@/-]{0,191}$"},
+    "sha": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "id_array": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/id"}},
+    "uncertainty": {
+      "type": "object", "additionalProperties": false,
+      "required": ["bound_mm", "evidence_sha256"],
+      "properties": {
+        "bound_mm": {"type": "number", "minimum": 0, "maximum": 100},
+        "evidence_sha256": {"$ref": "#/$defs/sha"}
+      }
+    },
+    "condition_metrics": {
+      "type": "object", "additionalProperties": false,
+      "required": ["capture_count", "abstention_count", "false_accept_count", "target_error_count", "error_summary"],
+      "properties": {
+        "capture_count": {"type": "integer", "minimum": 0},
+        "abstention_count": {"type": "integer", "minimum": 0},
+        "false_accept_count": {"type": "integer", "minimum": 0},
+        "target_error_count": {"type": "integer", "minimum": 0},
+        "error_summary": {"oneOf": [{"$ref": "#/$defs/error_summary"}, {"type": "null"}]}
+      }
+    },
+    "target_metrics": {
+      "type": "object", "additionalProperties": false,
+      "required": ["sample_count", "mean_error_mm", "p95_error_mm", "p99_error_mm", "maximum_error_mm", "eligible_event_count", "covered_event_count", "abstention_count", "coverage_probability"],
+      "properties": {
+        "sample_count": {"type": "integer", "minimum": 1},
+        "mean_error_mm": {"type": "number", "minimum": 0},
+        "p95_error_mm": {"type": "number", "minimum": 0},
+        "p99_error_mm": {"type": "number", "minimum": 0},
+        "maximum_error_mm": {"type": "number", "minimum": 0},
+        "eligible_event_count": {"type": "integer", "minimum": 1},
+        "covered_event_count": {"type": "integer", "minimum": 0},
+        "abstention_count": {"type": "integer", "minimum": 0},
+        "coverage_probability": {"type": "number", "minimum": 0, "maximum": 1}
+      }
+    },
+    "error_summary": {
+      "type": "object", "additionalProperties": false,
+      "required": ["sample_count", "mean_error_mm", "p95_error_mm", "p99_error_mm", "maximum_error_mm"],
+      "properties": {
+        "sample_count": {"type": "integer", "minimum": 1},
+        "mean_error_mm": {"type": "number", "minimum": 0},
+        "p95_error_mm": {"type": "number", "minimum": 0},
+        "p99_error_mm": {"type": "number", "minimum": 0},
+        "maximum_error_mm": {"type": "number", "minimum": 0}
+      }
+    }
+  }
+}

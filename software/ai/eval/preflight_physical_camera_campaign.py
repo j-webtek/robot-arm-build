@@ -34,8 +34,16 @@ def _reject_duplicates(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
     return result
 
 
+def _reject_nonfinite(value: str) -> None:
+    raise ValueError(f"non-finite JSON number: {value}")
+
+
 def load_strict_json(path: Path) -> dict[str, Any]:
-    value = json.loads(path.read_text(encoding="utf-8"), object_pairs_hook=_reject_duplicates)
+    value = json.loads(
+        path.read_text(encoding="utf-8"),
+        object_pairs_hook=_reject_duplicates,
+        parse_constant=_reject_nonfinite,
+    )
     if not isinstance(value, dict):
         raise ValueError("campaign must be a JSON object")
     return value

@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rocell.local/schemas/physical_camera_localization_evaluation_plan_v1.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "plan_id", "source_commit", "campaign_sha256",
+    "preflight_receipt_sha256", "model_id", "model_sha256",
+    "model_artifact_manifest_sha256", "preprocessing_sha256",
+    "keyboard_target_map_sha256", "declared_coverage_probability",
+    "unsafe_conditions", "keyboard_target_map", "additional_uncertainty",
+    "calibration_predictions", "evaluation_predictions", "controller_start_authorized",
+    "execution_authorized", "hardware_writes", "physical_movements", "plan_sha256"
+  ],
+  "properties": {
+    "schema": {"const": "rocell.physical_camera_localization_evaluation_plan.v1"},
+    "plan_id": {"$ref": "#/$defs/id"},
+    "source_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "campaign_sha256": {"$ref": "#/$defs/sha"},
+    "preflight_receipt_sha256": {"$ref": "#/$defs/sha"},
+    "model_id": {"$ref": "#/$defs/id"},
+    "model_sha256": {"$ref": "#/$defs/sha"},
+    "model_artifact_manifest_sha256": {"$ref": "#/$defs/sha"},
+    "preprocessing_sha256": {"$ref": "#/$defs/sha"},
+    "keyboard_target_map_sha256": {"$ref": "#/$defs/sha"},
+    "declared_coverage_probability": {"const": 0.99},
+    "unsafe_conditions": {
+      "type": "array", "minItems": 4, "uniqueItems": true,
+      "contains": {"const": "device_absent"},
+      "items": {"enum": ["arm_occlusion", "tool_occlusion", "cable_occlusion", "device_absent"]}
+    },
+    "keyboard_target_map": {
+      "type": "object", "additionalProperties": false,
+      "required": ["schema", "coordinate_frame", "targets", "target_map_sha256"],
+      "properties": {
+        "schema": {"const": "rocell.keyboard_target_safe_regions.v1"},
+        "coordinate_frame": {"const": "board"},
+        "targets": {
+          "type": "object", "minProperties": 1,
+          "propertyNames": {"pattern": "^[A-Z0-9][A-Z0-9_]{0,63}$"},
+          "additionalProperties": {
+            "type": "object", "additionalProperties": false,
+            "required": ["center_mm", "safe_radius_mm"],
+            "properties": {
+              "center_mm": {"$ref": "#/$defs/point"},
+              "safe_radius_mm": {"type": "number", "exclusiveMinimum": 0, "maximum": 100}
+            }
+          }
+        },
+        "target_map_sha256": {"$ref": "#/$defs/sha"}
+      }
+    },
+    "additional_uncertainty": {
+      "type": "object", "additionalProperties": false,
+      "required": ["camera_to_board", "board_to_robot", "tracking_and_settling", "tool_tip"],
+      "properties": {
+        "camera_to_board": {"$ref": "#/$defs/uncertainty"},
+        "board_to_robot": {"$ref": "#/$defs/uncertainty"},
+        "tracking_and_settling": {"$ref": "#/$defs/uncertainty"},
+        "tool_tip": {"$ref": "#/$defs/uncertainty"}
+      }
+    },
+    "calibration_predictions": {"type": "array", "minItems": 300, "items": {"$ref": "#/$defs/prediction"}},
+    "evaluation_predictions": {"type": "array", "minItems": 300, "items": {"$ref": "#/$defs/prediction"}},
+    "controller_start_authorized": {"const": false},
+    "execution_authorized": {"const": false},
+    "hardware_writes": {"const": 0},
+    "physical_movements": {"const": 0},
+    "plan_sha256": {"$ref": "#/$defs/sha"}
+  },
+  "$defs": {
+    "id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:@/-]{0,191}$"},
+    "sha": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "point": {"type": "array", "minItems": 2, "maxItems": 2, "items": {"type": "number"}},
+    "uncertainty": {
+      "type": "object", "additionalProperties": false,
+      "required": ["bound_mm", "evidence_sha256"],
+      "properties": {
+        "bound_mm": {"type": "number", "minimum": 0, "maximum": 100},
+        "evidence_sha256": {"$ref": "#/$defs/sha"}
+      }
+    },
+    "prediction": {
+      "type": "object", "additionalProperties": false,
+      "required": ["capture_id", "image_sha256", "model_sha256", "preprocessing_sha256", "abstained", "abstain_reasons", "target_points_mm"],
+      "properties": {
+        "capture_id": {"$ref": "#/$defs/id"},
+        "image_sha256": {"$ref": "#/$defs/sha"},
+        "model_sha256": {"$ref": "#/$defs/sha"},
+        "preprocessing_sha256": {"$ref": "#/$defs/sha"},
+        "abstained": {"type": "boolean"},
+        "abstain_reasons": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "target_points_mm": {
+          "type": "object",
+          "propertyNames": {"pattern": "^[A-Z0-9][A-Z0-9_]{0,63}$"},
+          "additionalProperties": {"$ref": "#/$defs/point"}
+        }
+      }
+    }
+  }
+}
