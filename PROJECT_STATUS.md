@@ -1,6 +1,6 @@
 # Tactevra project status
 
-Reviewed September 28, 2026 through the ARM-088 contained trace replay command,
+Reviewed September 28, 2026 through the ARM-089 retained PC6 golden trace,
 ARM-077 PC0 pre-camera qualification basis, ARM-076 typing collision-evidence
 intake, ARM-075 exact-sample offline IK screen, AI-403 precision-adapter
 integration, and merged physical-camera
@@ -327,6 +327,14 @@ path escape, symlinks, sensitive keys, absolute paths, mutation, deletion, and
 unexpected entries while explicitly reporting zero hardware authority. The
 affected 117-test suite passes. PC6 now needs one actual adapter-produced golden
 package retained and replayed from a clean checkout.
+
+ARM-089 completes PC6. The repository now retains one bounded package produced
+through the actual ARM-087 PC2-PC5 adapter. A regeneration test proves all 16
+package files are byte-identical, and an isolated-workspace CLI test replays the
+checked-in package as `IDENTICAL` with no hardware imports, commands, or
+physical authority. The expanded affected suite passes 119 tests. PC7 safe
+transition-cache work may now begin; measured-workcell and camera gates remain
+unchanged.
 
 AI-403 then integrates the pose-output precision adapter and actual V2 batch
 producer on current `main`. The retained contract fixture deterministically

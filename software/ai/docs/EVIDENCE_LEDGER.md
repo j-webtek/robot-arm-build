@@ -4699,3 +4699,42 @@ rewriting history. New entries must use a unique evidence ID.
 - Next dependency: retain one bounded ARM-087 adapter-produced synthetic golden
   package and prove the checked-in package replays identically on a clean
   checkout before PC6 is marked complete.
+
+### E-20260928-ARM-089 — retained adapter-generated PC6 golden trace
+
+- Stage: S1/S4/S7 pre-camera arm integration; PC6 complete.
+- Lane: Arm/runtime shared boundary.
+- Commit: `18cde75`.
+- Change: retained one bounded synthetic trace package generated through the
+  actual ARM-087 PC2-PC5 adapter and added tests that regenerate all package
+  files byte-for-byte and replay the checked-in package through the CLI from an
+  isolated workspace.
+- Inputs/fixtures: deterministic single-target `H` V2 batch, golden shadow
+  receipt, rolling horizon, zero-write controller preview, completed fault
+  campaign, explicit effect-not-observed placeholder, and retained package
+  `typing-trace-58dba551903390ad42a42184`.
+- Commands: `python -m pytest tests/integration/test_typing_trace_golden_v1.py
+  tests/unit/test_typing_trace_package_v1.py
+  tests/integration/test_typing_trace_cli.py
+  tests/unit/test_typing_trace_journal_v1.py
+  tests/integration/test_typing_trace_adapter_v1.py
+  tests/integration/test_typing_shadow_pipeline_v1.py
+  tests/unit/test_typing_rolling_horizon_v1.py
+  tests/unit/test_typing_controller_bridge_v1.py
+  tests/unit/test_model_motion_sequence_journal.py
+  tests/unit/test_typing_fault_campaign_v1.py
+  tests/unit/test_typing_fault_owner_boundaries_v1.py -q`.
+- Result: PASS; the retained 16-file package exactly matches a fresh adapter
+  regeneration, the isolated CLI replay returns `IDENTICAL`, and all 119
+  affected PC2-PC6 tests pass.
+- Artifacts: `software/tests/fixtures/typing_trace_packages/
+  typing-trace-58dba551903390ad42a42184/` and
+  `software/tests/integration/test_typing_trace_golden_v1.py`.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: synthetic-only inputs; effect remains explicitly not observed;
+  no installed-workcell, camera, contact, controller-tracking, or physical
+  qualification is claimed.
+- Supersedes: ARM-088's missing retained adapter-produced golden package.
+- Next dependency: begin PC7 safe transition-cache shadow qualification while
+  preserving full per-use revalidation and zero physical authority.

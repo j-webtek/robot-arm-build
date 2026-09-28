@@ -101,7 +101,7 @@ and its evidence gate pass.
 | PC3 | Rolling-horizon rebinding and restart safety | PC2 | No | None | COMPLETE |
 | PC4 | Typing-specific zero-write controller bridge | PC2, PC3 | No | None | COMPLETE |
 | PC5 | Fault injection and property testing | PC1-PC4 | No | None | COMPLETE |
-| PC6 | Unified trace journal and deterministic replay | PC2-PC5 | No | None | IN_PROGRESS |
+| PC6 | Unified trace journal and deterministic replay | PC2-PC5 | No | None | COMPLETE |
 | PC7 | Safe transition cache in shadow mode | PC3, PC6 | No | None | NOT_STARTED |
 | PC8 | Performance benchmark and readiness report | PC1-PC7 | No | None | NOT_STARTED |
 | PC9 | Camera-arrival evidence tooling and dry run | PC6 | No for tooling | None before arrival | NOT_STARTED |
@@ -352,7 +352,11 @@ paths, symlinks, noncanonical JSON, deletion, mutation, and unexpected entries
 reject. `replay-typing-trace` verifies byte identity only and reports zero
 authority. Twelve package tests, two CLI tests, and the 117-test affected suite
 pass. PC6 remains in progress only until one actual adapter-produced golden
-package is retained and replayed from a clean checkout.
+package is retained and replayed from a clean checkout. ARM-089 completes the
+gate with an adapter-generated retained package containing the exact 14-stage
+trace. The adapter regenerates every retained byte identically, and the
+checked-in package replays through the CLI from an isolated workspace with
+zero hardware authority. The expanded affected suite passes 119 tests.
 
 ### Deliverables
 
@@ -501,7 +505,7 @@ For every PC increment:
 - [x] PC3 rolling horizon and restart safety complete
 - [x] PC4 zero-write typing controller bridge complete
 - [x] PC5 fault and property campaigns complete
-- [ ] PC6 trace journal and replay complete
+- [x] PC6 trace journal and replay complete
 - [ ] PC7 transition cache shadow qualification complete
 - [ ] PC8 performance report complete
 - [ ] PC9 camera-arrival tools dry-run complete
