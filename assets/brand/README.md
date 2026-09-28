@@ -1,7 +1,8 @@
 # Tactevra brand assets
 
-Repository-native SVG assets for GitHub and documentation. The path connects
-intent to a target; it is an abstract brand symbol, not a safety certification.
+Repository-native SVG assets for GitHub and documentation. The path represents
+a governed signal moving from perception toward a physical target; it is an
+abstract brand symbol, not a safety certification.
 
 - `tactevra-banner.svg`: dark, self-contained README wordmark and tagline.
 - `tactevra-mark.svg`: square path-to-target symbol.
