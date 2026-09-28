@@ -36,6 +36,13 @@ The governing criterion is
 `perception + calibration + tracking/settling + tool-tip uncertainty < target safe-region margin`.
 Additional broad ghost routines do not advance this baseline by themselves.
 
+The AI S2/S3 physical-camera campaign is prepared in
+[`PHYSICAL_CAMERA_LOCALIZATION_CAMPAIGN.md`](PHYSICAL_CAMERA_LOCALIZATION_CAMPAIGN.md).
+Its strict external-evidence manifest and read-only preflight freeze split
+separation, required lighting/occlusion/placement cases, independent surveyed
+ground truth, file identities, and zero authority before model evaluation. This
+preparation does not satisfy any missing physical-original or calibration gate.
+
 ## Purpose
 
 This is the common working backbone for two independently advancing workstreams:
