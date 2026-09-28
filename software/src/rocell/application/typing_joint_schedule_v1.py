@@ -271,12 +271,113 @@ class TimedTypingJointSampleV1:
 
 
 @dataclass(frozen=True, slots=True)
+class TypingJointSegmentDynamicsV1:
+    sequence: int
+    source_sample_sequence: int
+    destination_sample_sequence: int
+    duration_ns: int
+    destination_phase: str
+    action_index: int | None
+    target_id: str | None
+    velocity_rad_s: Mapping[str, float]
+    acceleration_rad_s2: Mapping[str, float]
+    jerk_rad_s3: Mapping[str, float]
+    velocity_margin_rad_s: Mapping[str, float]
+    acceleration_margin_rad_s2: Mapping[str, float]
+    jerk_margin_rad_s3: Mapping[str, float]
+    limiting_joint: str
+    limiting_constraint: str
+
+    def __post_init__(self) -> None:
+        for label, value in (
+            ("sequence", self.sequence),
+            ("source_sample_sequence", self.source_sample_sequence),
+            ("destination_sample_sequence", self.destination_sample_sequence),
+        ):
+            if isinstance(value, bool) or not isinstance(value, int) or value < 0:
+                raise TypingJointScheduleV1Error(
+                    f"{label} must be a nonnegative integer"
+                )
+        if (
+            isinstance(self.duration_ns, bool)
+            or not isinstance(self.duration_ns, int)
+            or self.duration_ns <= 0
+        ):
+            raise TypingJointScheduleV1Error("duration_ns must be positive")
+        if not isinstance(self.destination_phase, str) or not self.destination_phase:
+            raise TypingJointScheduleV1Error(
+                "destination_phase must be nonempty text"
+            )
+        if self.action_index is not None and (
+            isinstance(self.action_index, bool)
+            or not isinstance(self.action_index, int)
+            or self.action_index < 0
+        ):
+            raise TypingJointScheduleV1Error(
+                "action_index must be null or a nonnegative integer"
+            )
+        if self.target_id is not None:
+            _identifier(self.target_id, "target_id")
+        for field, maximum in (
+            ("velocity_rad_s", 100.0),
+            ("acceleration_rad_s2", 1_000.0),
+            ("jerk_rad_s3", 10_000.0),
+            ("velocity_margin_rad_s", 100.0),
+            ("acceleration_margin_rad_s2", 1_000.0),
+            ("jerk_margin_rad_s3", 10_000.0),
+        ):
+            value = getattr(self, field)
+            if not isinstance(value, Mapping) or tuple(value) != ARM_JOINT_NAMES:
+                raise TypingJointScheduleV1Error(
+                    f"{field} must use the exact canonical arm-joint order"
+                )
+            parsed: dict[str, float] = {}
+            for name in ARM_JOINT_NAMES:
+                raw = value[name]
+                if isinstance(raw, bool) or not isinstance(raw, (int, float)):
+                    raise TypingJointScheduleV1Error(
+                        f"{field}.{name} must be numeric"
+                    )
+                number = float(raw)
+                if not math.isfinite(number) or number < -1e-12 or number > maximum:
+                    raise TypingJointScheduleV1Error(
+                        f"{field}.{name} is outside its bounded range"
+                    )
+                parsed[name] = max(0.0, number)
+            object.__setattr__(self, field, MappingProxyType(parsed))
+        if self.limiting_joint not in ARM_JOINT_NAMES:
+            raise TypingJointScheduleV1Error("limiting_joint is not canonical")
+        if self.limiting_constraint not in {"VELOCITY", "ACCELERATION", "JERK"}:
+            raise TypingJointScheduleV1Error("limiting_constraint is invalid")
+
+    def to_dict(self) -> dict[str, object]:
+        return {
+            "sequence": self.sequence,
+            "source_sample_sequence": self.source_sample_sequence,
+            "destination_sample_sequence": self.destination_sample_sequence,
+            "duration_ns": self.duration_ns,
+            "destination_phase": self.destination_phase,
+            "action_index": self.action_index,
+            "target_id": self.target_id,
+            "velocity_rad_s": dict(self.velocity_rad_s),
+            "acceleration_rad_s2": dict(self.acceleration_rad_s2),
+            "jerk_rad_s3": dict(self.jerk_rad_s3),
+            "velocity_margin_rad_s": dict(self.velocity_margin_rad_s),
+            "acceleration_margin_rad_s2": dict(self.acceleration_margin_rad_s2),
+            "jerk_margin_rad_s3": dict(self.jerk_margin_rad_s3),
+            "limiting_joint": self.limiting_joint,
+            "limiting_constraint": self.limiting_constraint,
+        }
+
+
+@dataclass(frozen=True, slots=True)
 class TypingJointScheduleV1:
     source_trajectory_plan_sha256: str
     source_ik_screen_sha256: str
     profile: TypingJointDynamicsProfileV1
     time_scale_factor: float
     samples: tuple[TimedTypingJointSampleV1, ...]
+    segments: tuple[TypingJointSegmentDynamicsV1, ...]
     total_motion_and_dwell_time_ns: int
     peak_velocity_rad_s: Mapping[str, float]
     peak_acceleration_rad_s2: Mapping[str, float]
@@ -315,6 +416,25 @@ class TypingJointScheduleV1:
         ):
             raise TypingJointScheduleV1Error("sample timing is not strictly monotonic")
         object.__setattr__(self, "samples", samples)
+        segments = tuple(self.segments)
+        if len(segments) != len(samples) - 1:
+            raise TypingJointScheduleV1Error(
+                "segment count must equal sample count minus one"
+            )
+        if [segment.sequence for segment in segments] != list(range(len(segments))):
+            raise TypingJointScheduleV1Error("segment sequence is not contiguous")
+        for index, segment in enumerate(segments):
+            if (
+                segment.source_sample_sequence != index
+                or segment.destination_sample_sequence != index + 1
+                or segment.duration_ns
+                != samples[index + 1].time_from_start_ns
+                - samples[index].time_from_start_ns
+            ):
+                raise TypingJointScheduleV1Error(
+                    "segment/sample timing or lineage is crossed"
+                )
+        object.__setattr__(self, "segments", segments)
         for field, maximum in (
             ("peak_velocity_rad_s", 100.0),
             ("peak_acceleration_rad_s2", 1_000.0),
@@ -356,6 +476,8 @@ class TypingJointScheduleV1:
             "time_scale_factor": self.time_scale_factor,
             "samples": [sample.to_dict() for sample in self.samples],
             "sample_count": len(self.samples),
+            "segments": [segment.to_dict() for segment in self.segments],
+            "segment_count": len(self.segments),
             "total_motion_and_dwell_time_ns": self.total_motion_and_dwell_time_ns,
             "peak_velocity_rad_s": dict(self.peak_velocity_rad_s),
             "peak_acceleration_rad_s2": dict(self.peak_acceleration_rad_s2),
@@ -552,6 +674,51 @@ def _demands(
     return peaks(velocities), peaks(accelerations), peaks(jerks)
 
 
+def _demand_series(
+    timestamps: tuple[int, ...],
+    positions: tuple[Mapping[str, float], ...],
+) -> tuple[
+    tuple[dict[str, float], ...],
+    tuple[dict[str, float], ...],
+    tuple[dict[str, float], ...],
+]:
+    durations = [
+        (timestamps[index + 1] - timestamps[index]) / 1e9
+        for index in range(len(positions) - 1)
+    ]
+    velocities = [
+        {
+            name: (positions[index + 1][name] - positions[index][name])
+            / durations[index]
+            for name in ARM_JOINT_NAMES
+        }
+        for index in range(len(durations))
+    ]
+    zero = {name: 0.0 for name in ARM_JOINT_NAMES}
+    accelerations = [dict(zero) for _ in velocities]
+    acceleration_intervals = [0.0 for _ in velocities]
+    for index in range(1, len(velocities)):
+        interval = (durations[index - 1] + durations[index]) / 2.0
+        acceleration_intervals[index] = interval
+        accelerations[index] = {
+            name: (velocities[index][name] - velocities[index - 1][name])
+            / interval
+            for name in ARM_JOINT_NAMES
+        }
+    jerks = [dict(zero) for _ in velocities]
+    for index in range(2, len(accelerations)):
+        interval = (
+            acceleration_intervals[index - 1]
+            + acceleration_intervals[index]
+        ) / 2.0
+        jerks[index] = {
+            name: (accelerations[index][name] - accelerations[index - 1][name])
+            / interval
+            for name in ARM_JOINT_NAMES
+        }
+    return tuple(velocities), tuple(accelerations), tuple(jerks)
+
+
 def _validate_ik_report(
     plan: TypingTrajectoryPlanV1,
     report: Mapping[str, Any],
@@ -731,12 +898,86 @@ def compile_typing_joint_schedule_v1(
             )
         )
     _, limiting_joint, limiting_constraint = max(candidates)
+    velocity_series, acceleration_series, jerk_series = _demand_series(
+        timestamps, positions
+    )
+    segments: list[TypingJointSegmentDynamicsV1] = []
+    for index, (velocity_item, acceleration_item, jerk_item) in enumerate(
+        zip(velocity_series, acceleration_series, jerk_series, strict=True)
+    ):
+        absolute_velocity = {
+            name: abs(velocity_item[name]) for name in ARM_JOINT_NAMES
+        }
+        absolute_acceleration = {
+            name: abs(acceleration_item[name]) for name in ARM_JOINT_NAMES
+        }
+        absolute_jerk = {
+            name: abs(jerk_item[name]) for name in ARM_JOINT_NAMES
+        }
+        segment_candidates = []
+        for name in ARM_JOINT_NAMES:
+            segment_candidates.extend(
+                (
+                    (
+                        absolute_velocity[name]
+                        / profile.maximum_velocity_rad_s[name],
+                        name,
+                        "VELOCITY",
+                    ),
+                    (
+                        absolute_acceleration[name]
+                        / profile.maximum_acceleration_rad_s2[name],
+                        name,
+                        "ACCELERATION",
+                    ),
+                    (
+                        absolute_jerk[name]
+                        / profile.maximum_jerk_rad_s3[name],
+                        name,
+                        "JERK",
+                    ),
+                )
+            )
+        _, segment_joint, segment_constraint = max(segment_candidates)
+        destination = samples[index + 1]
+        segments.append(
+            TypingJointSegmentDynamicsV1(
+                sequence=index,
+                source_sample_sequence=index,
+                destination_sample_sequence=index + 1,
+                duration_ns=timestamps[index + 1] - timestamps[index],
+                destination_phase=destination.phase,
+                action_index=destination.action_index,
+                target_id=destination.target_id,
+                velocity_rad_s=absolute_velocity,
+                acceleration_rad_s2=absolute_acceleration,
+                jerk_rad_s3=absolute_jerk,
+                velocity_margin_rad_s={
+                    name: profile.maximum_velocity_rad_s[name]
+                    - absolute_velocity[name]
+                    for name in ARM_JOINT_NAMES
+                },
+                acceleration_margin_rad_s2={
+                    name: profile.maximum_acceleration_rad_s2[name]
+                    - absolute_acceleration[name]
+                    for name in ARM_JOINT_NAMES
+                },
+                jerk_margin_rad_s3={
+                    name: profile.maximum_jerk_rad_s3[name]
+                    - absolute_jerk[name]
+                    for name in ARM_JOINT_NAMES
+                },
+                limiting_joint=segment_joint,
+                limiting_constraint=segment_constraint,
+            )
+        )
     return TypingJointScheduleV1(
         source_trajectory_plan_sha256=plan.trajectory_plan_sha256,
         source_ik_screen_sha256=report_hash,
         profile=profile,
         time_scale_factor=scale,
         samples=samples,
+        segments=tuple(segments),
         total_motion_and_dwell_time_ns=total_ns,
         peak_velocity_rad_s=velocity,
         peak_acceleration_rad_s2=acceleration,
@@ -749,14 +990,123 @@ def compile_typing_joint_schedule_v1(
     )
 
 
+def parse_typing_joint_schedule_v1(
+    document: Mapping[str, Any],
+) -> TypingJointScheduleV1:
+    """Reconstruct and verify one canonical zero-authority schedule artifact."""
+
+    if not isinstance(document, Mapping):
+        raise TypingJointScheduleV1Error("joint schedule artifact must be an object")
+    artifact_hash = _digest(document.get("schedule_sha256"), "schedule_sha256")
+    unsigned = dict(document)
+    unsigned.pop("schedule_sha256", None)
+    if _sha256(unsigned) != artifact_hash:
+        raise TypingJointScheduleV1Error("joint schedule artifact hash is invalid")
+    try:
+        profile_document = document["profile"]
+        if not isinstance(profile_document, Mapping):
+            raise TypingJointScheduleV1Error("profile must be an object")
+        if _sha256(profile_document) != document["profile_sha256"]:
+            raise TypingJointScheduleV1Error("profile hash is invalid")
+        profile = TypingJointDynamicsProfileV1(
+            profile_id=profile_document["profile_id"],
+            source_kind=profile_document["source_kind"],
+            maximum_velocity_rad_s=profile_document["maximum_velocity_rad_s"],
+            maximum_acceleration_rad_s2=profile_document[
+                "maximum_acceleration_rad_s2"
+            ],
+            maximum_jerk_rad_s3=profile_document["maximum_jerk_rad_s3"],
+            maximum_time_scale_factor=profile_document[
+                "maximum_time_scale_factor"
+            ],
+            physical_tracking_qualification=profile_document[
+                "physical_tracking_qualification"
+            ],
+            minimum_segment_duration_ns=profile_document[
+                "minimum_segment_duration_ns"
+            ],
+            schema=profile_document["schema"],
+        )
+        samples = tuple(
+            TimedTypingJointSampleV1(
+                sequence=item["sequence"],
+                endpoint_sequence=item["endpoint_sequence"],
+                phase=item["phase"],
+                action_index=item["action_index"],
+                target_id=item["target_id"],
+                phase_endpoint=item["phase_endpoint"],
+                time_from_start_ns=item["time_from_start_ns"],
+                joint_positions_rad=item["joint_positions_rad"],
+            )
+            for item in document["samples"]
+        )
+        segments = tuple(
+            TypingJointSegmentDynamicsV1(
+                sequence=item["sequence"],
+                source_sample_sequence=item["source_sample_sequence"],
+                destination_sample_sequence=item["destination_sample_sequence"],
+                duration_ns=item["duration_ns"],
+                destination_phase=item["destination_phase"],
+                action_index=item["action_index"],
+                target_id=item["target_id"],
+                velocity_rad_s=item["velocity_rad_s"],
+                acceleration_rad_s2=item["acceleration_rad_s2"],
+                jerk_rad_s3=item["jerk_rad_s3"],
+                velocity_margin_rad_s=item["velocity_margin_rad_s"],
+                acceleration_margin_rad_s2=item["acceleration_margin_rad_s2"],
+                jerk_margin_rad_s3=item["jerk_margin_rad_s3"],
+                limiting_joint=item["limiting_joint"],
+                limiting_constraint=item["limiting_constraint"],
+            )
+            for item in document["segments"]
+        )
+        schedule = TypingJointScheduleV1(
+            source_trajectory_plan_sha256=document[
+                "source_trajectory_plan_sha256"
+            ],
+            source_ik_screen_sha256=document["source_ik_screen_sha256"],
+            profile=profile,
+            time_scale_factor=document["time_scale_factor"],
+            samples=samples,
+            segments=segments,
+            total_motion_and_dwell_time_ns=document[
+                "total_motion_and_dwell_time_ns"
+            ],
+            peak_velocity_rad_s=document["peak_velocity_rad_s"],
+            peak_acceleration_rad_s2=document["peak_acceleration_rad_s2"],
+            peak_jerk_rad_s3=document["peak_jerk_rad_s3"],
+            minimum_velocity_margin_rad_s=document[
+                "minimum_velocity_margin_rad_s"
+            ],
+            minimum_acceleration_margin_rad_s2=document[
+                "minimum_acceleration_margin_rad_s2"
+            ],
+            minimum_jerk_margin_rad_s3=document["minimum_jerk_margin_rad_s3"],
+            limiting_joint=document["limiting_joint"],
+            limiting_constraint=document["limiting_constraint"],
+            schema=document["schema"],
+        )
+    except KeyError as exc:
+        raise TypingJointScheduleV1Error(
+            f"joint schedule artifact is missing {exc.args[0]}"
+        ) from exc
+    if schedule.to_dict() != dict(document):
+        raise TypingJointScheduleV1Error(
+            "joint schedule artifact contains crossed or unsupported fields"
+        )
+    return schedule
+
+
 __all__ = [
     "PROFILE_SCHEMA",
     "READY_STATUS",
     "SCHEMA",
     "TimedTypingJointSampleV1",
     "TypingJointDynamicsProfileV1",
+    "TypingJointSegmentDynamicsV1",
     "TypingJointScheduleV1",
     "TypingJointScheduleV1Error",
     "compile_typing_joint_schedule_v1",
     "dynamics_profile_from_pc0_basis_v1",
+    "parse_typing_joint_schedule_v1",
 ]

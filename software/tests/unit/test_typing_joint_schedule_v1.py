@@ -16,6 +16,7 @@ from rocell.application.typing_joint_schedule_v1 import (
     TypingJointScheduleV1Error,
     compile_typing_joint_schedule_v1,
     dynamics_profile_from_pc0_basis_v1,
+    parse_typing_joint_schedule_v1,
 )
 from rocell.application.typing_trajectory_ik_screen_v1 import (
     READY_STATUS as IK_READY_STATUS,
@@ -197,6 +198,11 @@ def _rehash(report: dict[str, object]) -> None:
     ).hexdigest()
 
 
+def _rehash_schedule(document: dict[str, object]) -> None:
+    document.pop("schedule_sha256", None)
+    document["schedule_sha256"] = hashlib.sha256(_canonical(document)).hexdigest()
+
+
 def test_exact_ik_order_becomes_deterministic_zero_authority_schedule():
     plan = _plan()
     report = _ik_report(plan)
@@ -204,6 +210,7 @@ def test_exact_ik_order_becomes_deterministic_zero_authority_schedule():
     second = compile_typing_joint_schedule_v1(plan, report, _profile())
 
     assert first.to_dict() == second.to_dict()
+    assert parse_typing_joint_schedule_v1(first.to_dict()).to_dict() == first.to_dict()
     assert first.time_scale_factor > 1.0
     assert [item.sequence for item in first.samples] == [0, 1, 2, 3]
     assert [item.phase for item in first.samples] == [
@@ -214,6 +221,28 @@ def test_exact_ik_order_becomes_deterministic_zero_authority_schedule():
     ]
     assert [item.time_from_start_ns for item in first.samples] == sorted(
         item.time_from_start_ns for item in first.samples
+    )
+    assert len(first.segments) == len(first.samples) - 1
+    assert [segment.destination_sample_sequence for segment in first.segments] == [
+        1,
+        2,
+        3,
+    ]
+    assert all(
+        segment.duration_ns
+        == first.samples[index + 1].time_from_start_ns
+        - first.samples[index].time_from_start_ns
+        for index, segment in enumerate(first.segments)
+    )
+    assert all(
+        margin >= 0.0
+        for segment in first.segments
+        for margins in (
+            segment.velocity_margin_rad_s,
+            segment.acceleration_margin_rad_s2,
+            segment.jerk_margin_rad_s3,
+        )
+        for margin in margins.values()
     )
     assert first.to_dict()["controller_commands"] == []
     assert first.to_dict()["hardware_commands_generated"] == 0
@@ -281,3 +310,111 @@ def test_nonfinite_limits_and_unbounded_required_scaling_are_rejected():
             _ik_report(plan),
             _profile(maximum_time_scale_factor=1.01),
         )
+
+
+def test_stationary_sample_and_direction_reversal_remain_explicit_and_bounded():
+    plan = _plan()
+    report = _ik_report(plan)
+    results = report["joint_results"]  # type: ignore[assignment]
+    results[2]["solution_arm_joint_positions_rad"] = dict(  # type: ignore[index]
+        results[1]["solution_arm_joint_positions_rad"]  # type: ignore[index]
+    )
+    results[3]["solution_arm_joint_positions_rad"] = {  # type: ignore[index]
+        name: -0.1 / (index + 1)
+        for index, name in enumerate(ARM_JOINT_NAMES)
+    }
+    _rehash(report)
+
+    schedule = compile_typing_joint_schedule_v1(plan, report, _profile())
+
+    assert all(value == 0.0 for value in schedule.segments[1].velocity_rad_s.values())
+    assert any(
+        value > 0.0 for value in schedule.segments[2].acceleration_rad_s2.values()
+    )
+    assert all(
+        value >= 0.0
+        for segment in schedule.segments
+        for value in segment.velocity_margin_rad_s.values()
+    )
+
+
+def test_crossed_joint_order_and_source_lineage_reject_after_valid_rehash():
+    plan = _plan()
+    crossed = _ik_report(plan)
+    results = crossed["joint_results"]  # type: ignore[assignment]
+    joint_values = results[1]["solution_arm_joint_positions_rad"]  # type: ignore[index]
+    results[1]["solution_arm_joint_positions_rad"] = dict(  # type: ignore[index]
+        reversed(tuple(joint_values.items()))  # type: ignore[union-attr]
+    )
+    _rehash(crossed)
+    with pytest.raises(TypingJointScheduleV1Error, match="canonical arm-joint order"):
+        compile_typing_joint_schedule_v1(plan, crossed, _profile())
+
+    wrong_source = _ik_report(plan)
+    wrong_source["typing_trajectory_plan_sha256"] = "f" * 64
+    _rehash(wrong_source)
+    with pytest.raises(TypingJointScheduleV1Error, match="exact accepted"):
+        compile_typing_joint_schedule_v1(plan, wrong_source, _profile())
+
+
+def test_schedule_parser_rejects_crossed_profile_hash_and_timestamp():
+    schedule = compile_typing_joint_schedule_v1(
+        _plan(), _ik_report(_plan()), _profile()
+    ).to_dict()
+    crossed_profile = json.loads(json.dumps(schedule))
+    crossed_profile["profile_sha256"] = "f" * 64
+    _rehash_schedule(crossed_profile)
+    with pytest.raises(TypingJointScheduleV1Error, match="profile hash"):
+        parse_typing_joint_schedule_v1(crossed_profile)
+
+    crossed_time = json.loads(json.dumps(schedule))
+    crossed_time["samples"][1]["time_from_start_ns"] += 1  # type: ignore[index]
+    _rehash_schedule(crossed_time)
+    with pytest.raises(TypingJointScheduleV1Error, match="segment/sample timing"):
+        parse_typing_joint_schedule_v1(crossed_time)
+
+
+@pytest.mark.parametrize(
+    ("expected_constraint", "velocity", "acceleration", "jerk"),
+    (
+        ("VELOCITY", 0.1, 1_000.0, 10_000.0),
+        ("ACCELERATION", 100.0, 0.1, 10_000.0),
+        ("JERK", 100.0, 1_000.0, 0.1),
+    ),
+)
+def test_each_dynamic_dimension_has_a_bounded_just_inside_and_outside_scale(
+    expected_constraint: str,
+    velocity: float,
+    acceleration: float,
+    jerk: float,
+):
+    plan = _plan()
+    report = _ik_report(plan)
+    wide = _profile(
+        maximum_velocity_rad_s={name: velocity for name in ARM_JOINT_NAMES},
+        maximum_acceleration_rad_s2={
+            name: acceleration for name in ARM_JOINT_NAMES
+        },
+        maximum_jerk_rad_s3={name: jerk for name in ARM_JOINT_NAMES},
+        maximum_time_scale_factor=1_000.0,
+    )
+    baseline = compile_typing_joint_schedule_v1(plan, report, wide)
+    assert baseline.limiting_constraint == expected_constraint
+
+    just_inside = _profile(
+        maximum_velocity_rad_s=wide.maximum_velocity_rad_s,
+        maximum_acceleration_rad_s2=wide.maximum_acceleration_rad_s2,
+        maximum_jerk_rad_s3=wide.maximum_jerk_rad_s3,
+        maximum_time_scale_factor=baseline.time_scale_factor * (1.0 + 1e-6),
+    )
+    accepted = compile_typing_joint_schedule_v1(plan, report, just_inside)
+    assert accepted.time_scale_factor <= just_inside.maximum_time_scale_factor
+
+    just_outside = _profile(
+        maximum_velocity_rad_s=wide.maximum_velocity_rad_s,
+        maximum_acceleration_rad_s2=wide.maximum_acceleration_rad_s2,
+        maximum_jerk_rad_s3=wide.maximum_jerk_rad_s3,
+        maximum_time_scale_factor=baseline.time_scale_factor * (1.0 - 1e-6),
+    )
+    with pytest.raises(TypingJointScheduleV1Error, match="exceeds the profile"):
+        compile_typing_joint_schedule_v1(plan, report, just_outside)

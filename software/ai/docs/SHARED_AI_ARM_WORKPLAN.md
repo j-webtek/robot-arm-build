@@ -412,6 +412,15 @@ The receipt remains zero-authority and explicitly blocks on measured installed
 dynamics, controller tracking, installed collision evidence, and a fresh
 observed start. PC1 is still in progress pending per-segment reporting and the
 remaining boundary/reversal/duration qualification matrix.
+ARM-079 completes the synthetic offline PC1 gate. The schedule now retains a
+diagnostic record for every adjacent joint sample, including duration,
+velocity, acceleration, jerk, remaining margin, and limiting joint/constraint.
+A strict parser reconstructs the typed artifact and rejects crossed profile
+hashes, timestamps, segment lineage, or unsupported fields. Tests cover every
+dynamic dimension at bounded just-inside/just-outside scale limits plus
+stationary and direction-reversal cases. PC2 shadow-pipeline composition may
+begin, but measured installed dynamics, controller tracking, collision
+evidence, fresh state, and all physical authority remain blocked.
 The AI precision lane now has a mainline-compatible pose-output adapter and v2
 batch producer. It preserves repeated targets and abstains on qualification,
 domain, freshness, identity, confidence, or containment failure. Its retained

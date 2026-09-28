@@ -96,8 +96,8 @@ and its evidence gate pass.
 | ID | Deliverable | Depends on | Camera needed | Physical I/O | Initial status |
 | --- | --- | --- | ---: | ---: | --- |
 | PC0 | Freeze fixtures, profiles, metrics, and status vocabulary | Existing T1/T2 artifacts | No | None | COMPLETE |
-| PC1 | Joint-space dynamics and deterministic time scaling | PC0, T2B-IK | No | None | IN_PROGRESS |
-| PC2 | Golden end-to-end shadow pipeline | PC1, collision intake | No | None | NOT_STARTED |
+| PC1 | Joint-space dynamics and deterministic time scaling | PC0, T2B-IK | No | None | COMPLETE |
+| PC2 | Golden end-to-end shadow pipeline | PC1, collision intake | No | None | READY |
 | PC3 | Rolling-horizon rebinding and restart safety | PC2 | No | None | NOT_STARTED |
 | PC4 | Typing-specific zero-write controller bridge | PC2, PC3 | No | None | NOT_STARTED |
 | PC5 | Fault injection and property testing | PC1-PC4 | No | None | NOT_STARTED |
@@ -140,16 +140,19 @@ unbounded input fixtures fail closed. No test fixture is labeled measured.
 
 ## PC1 — Joint-space dynamics and deterministic time scaling
 
-**Checkpoint 2026-09-28:** the first PC1 boundary is implemented. It consumes
+**Completed 2026-09-28:** the PC1 boundary consumes
 the exact hash-valid T2B-IK sample order, explicitly maps the semantic PC0
 joint order onto the canonical URDF joint order, applies deterministic bounded
 time scaling, emits strictly monotonic nanosecond timestamps, reports whole-
-schedule velocity/acceleration/jerk demand and margin, and retains explicit
+schedule and per-segment velocity/acceleration/jerk demand and margin, and retains explicit
 installed-dynamics, controller-tracking, collision, and fresh-state blockers.
-The canonical schema and focused mutation tests are retained. PC1 remains in
-progress until per-segment demand/margin reporting plus the full exact-limit,
-stationary/reversal, duration-bound, and cross-platform test matrix below are
-complete. This checkpoint produces no controller command or physical authority.
+The canonical parser revalidates artifact and profile hashes, exact fields,
+sample/segment lineage, and timestamp consistency. Focused tests exercise all
+three limiting dimensions at just-inside and just-outside rescale bounds,
+stationary and reversal behavior, crossed order and source lineage, non-finite
+limits, and deterministic reconstruction. This gate is synthetic and offline;
+it produces no controller command or physical authority and does not qualify
+installed dynamics or tracking.
 
 ### Deliverables
 
@@ -411,7 +414,7 @@ For every PC increment:
 ## Completion checklist
 
 - [x] PC0 qualification basis frozen
-- [ ] PC1 joint dynamics and time scaling complete
+- [x] PC1 joint dynamics and time scaling complete
 - [ ] PC2 golden shadow pipeline complete
 - [ ] PC3 rolling horizon and restart safety complete
 - [ ] PC4 zero-write typing controller bridge complete
