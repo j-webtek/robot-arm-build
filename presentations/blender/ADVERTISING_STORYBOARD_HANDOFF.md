@@ -50,7 +50,7 @@ policy.
 | Asset | Production authority |
 |---|---|
 | Board | 610 × 457 × 18 mm RC03 board from `dimension_manifest.json` |
-| Keyboard | Measured 315 × 147 × 21 mm black RC03 chassis, six-row layout, legends, cable, and station |
+| Keyboard | Measured 315 × 147 × 21 mm black RC03 chassis, six-row layout, legends, and station; no cord depicted |
 | Phone | Measured 77.9 × 164.4 × 7.9 mm body, screen plane, controls, cable, and RC03 station |
 | Robot | Detailed RoArm source geometry with exposed controller PCB and standoffs, fixed lower chassis, separate yaw deck, and five-stage servo rig; rear-center placement at 305, 457, 0 mm and −90° nominal yaw |
 | Printed tool mount | Controlled 28 × 24 × 65 mm compliant-body STL, keyed-cap STL, split-collar STL, two visible M3 retainers, and grip-flat contact between the same opposing RoArm jaw pads |
@@ -104,7 +104,8 @@ stylus route.
 ### E. Arm-follow crossing
 
 After the operator-display receipt `ready ✓`, follow the full arm through a high-clearance
-arc from keyboard to phone. Preserve the same stylus, cable state, and rig; keep
+arc from keyboard to phone. Preserve the same stylus, attached arm-harness
+state, and rig; keep
 both devices visible long enough to retain spatial understanding.
 
 ### F. Independent receipts hero
@@ -119,7 +120,7 @@ devices without visually connecting their data.
 |---:|---:|---|---|---|
 | 1 | 0:00–0:04 | — | Macro over `r`; disc, printed cartridge, jaw pads, keyed cap, and M3 heads readable; uncertainty too wide; no text. | Held mechanism tone. |
 | 2 | 0:04–0:09 | — | Operator-display request close-up: `Type ready locally, then send on my way from the phone.` | Input ticks. |
-| 3 | 0:09–0:15 | — | Hero wide of exact workcell and one detailed arm/stylus rig. Operator display is beside—not over—the board; keyboard cable exits toward it and ends off-frame. | Music pulse begins. |
+| 3 | 0:09–0:15 | — | Hero wide of exact workcell and one detailed arm/stylus rig. Operator display is beside—not over—the board; no keyboard cord or connection method is depicted. | Music pulse begins. |
 | 4 | 0:15–0:21 | UNDERSTAND | Amber semantic proposal; confidence and uncertainty visible; runtime fields locked. | Data ticks. |
 | 5 | 0:21–0:28 | LOCATE | Reveal real camera, pass through lens, register exact device geometry; blue circles shrink. | Registration pings. |
 | 6 | 0:28–0:33 | CHECK | `scene capture 41 s old · limit 2 s → REJECTED · NO MOTION`; arm visible and still. | Music cuts; reject thud. |
@@ -156,8 +157,8 @@ devices without visually connecting their data.
   outside this demonstration.
 - The presentation-only operator display—not an invented board display—shows
   the local test pad. It remains fully outside the board and overhead Locate view.
-- The RC03 keyboard cable exits the board toward the operator-display side and
-  ends off-frame; do not imply a direct connection that the film has not established.
+- Do not depict a keyboard cord or imply a wired, wireless, or direct display
+  connection that the film has not established.
 - `BATCH ADMITTED` never means route-wide contact authority.
 - Every contact gets and consumes exactly one green permit.
 - The next target is dotted and marked `preview · no authority`.

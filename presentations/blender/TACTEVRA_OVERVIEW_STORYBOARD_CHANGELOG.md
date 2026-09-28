@@ -1,5 +1,11 @@
 # Tactevra overview storyboard changelog
 
+## Keyboard cord removal
+
+- Removed the presentation keyboard cord from all generated Blender scenes.
+- Updated the storyboard and advertising handoff to avoid implying any
+  unverified wired, wireless, or direct operator-display connection.
+
 ## Base and articulation verification correction
 
 - Replaced the solid presentation pedestal with an open controller PCB,
@@ -50,6 +56,6 @@ This file keeps revision history out of the artist-facing production board.
 - Reduced the evidence and end-card copy to one contract line and one tagline.
 - Moved the presentation-only operator display fully off-board so localization
   tags remain visible; its request-console/test-pad transition stays explicit.
-- Routed the RC03 cable toward the operator-display side and off-frame without
-  asserting an unverified direct connection.
+- Previously routed the RC03 cord off-frame without asserting a direct
+  connection; the later keyboard-cord-removal revision supersedes this choice.
 - Named the source scenes for the 30-second edit.

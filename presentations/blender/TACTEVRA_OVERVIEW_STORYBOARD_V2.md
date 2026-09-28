@@ -102,7 +102,7 @@ without asking the viewer to relearn it ten times.
 |---:|---:|---|---|---|
 | 1 | 0:00–0:04 | — | **Cold open.** Macro: the capacitive disc hovers over the `r` key while the source-accurate printed cartridge remains visibly captured between both jaw pads. The blue uncertainty disk is still wider than the key. Pull focus from disc to keyed cap and stationary wrist. No text appears yet. | One held mechanical tone; no narration. |
 | 2 | 0:04–0:09 | — | Operator-display request console: `Type ready locally, then send on my way from the phone.` Phone and physical keyboard remain visibly separate. | Quiet input ticks. |
-| 3 | 0:09–0:15 | — | Hero wide reveals the exact workcell, detailed RoArm, printed contact cartridge and stylus, off-board operator display, black RC03 keyboard, and indexed phone. The display remains entirely beside the board. The RC03 cable exits the board on the display side and continues off-frame; no direct hardware connection is claimed. | Music establishes restrained forward pulse. |
+| 3 | 0:09–0:15 | — | Hero wide reveals the exact workcell, detailed RoArm, printed contact cartridge and stylus, off-board operator display, black RC03 keyboard, and indexed phone. The display remains entirely beside the board. No keyboard cord is shown and the film makes no claim about the keyboard's electrical connection. | Music establishes restrained forward pulse. |
 | 4 | 0:15–0:21 | `UNDERSTAND` | Amber model card: ordered semantic actions, named targets, board-frame points, confidence, and error bounds. `speed`, `contact depth`, `retry`, and `timing` are greyed and locked: `runtime owned`. | Amber data ticks. |
 | 5 | 0:21–0:28 | `LOCATE` | Crane to the actual fixed camera, pass through its lens, then use its squared overhead view. Exact tags and device bounds lock; blue uncertainty disks contract. | Registration pings. |
 | 6 | 0:28–0:33 | `CHECK` | Red card in empty space: `scene capture 41 s old · limit 2 s → REJECTED · NO MOTION`. Arm and stylus remain unobscured and still. | Music drops out; one low reject thud. |
@@ -110,7 +110,7 @@ without asking the viewer to relearn it ten times.
 | 8 | 0:40–0:48 | `ACT` | **Teach the first key slowly with the complete arm readable in low three-quarter.** Label the seven phases: `transit → align → settle → approach → contact → retract → verify`. At contact only, cut briefly to a macro insert of `r` depressing, then return to low three-quarter. A cause/effect insert shows the operator-display test pad add `r`, and the permit fades. The stage bar remains on `ACT`; a small three-dot loop indicator pulses through check/contact/verify. | One precise click and one verify tick. |
 | 9 | 0:48–0:55 | `ACT` | Lateral track across `e`, `a`, `d`, `y`. The contract is now visual shorthand: one permit arrives, one contact occurs, and one verification tick appears. Do not repeat uncertainty and dotted-preview graphics. The stage bar remains stable on `ACT`. | Four increasingly rhythmic clicks, never rushed. |
 | 10 | 0:55–1:01 | `ACT` | Hold above keyboard. Operator-display test pad reads `ready`; receipt shows `EXPECTED ready · OBSERVED ready ✓`. Phone is unchanged. The stable `ACT` bar remains while the compact loop indicator resolves on verify. | Local verification tone. |
-| 11 | 1:01–1:07 | `ACT` | Arm-follow dolly: full retract and high-clearance move from keyboard to phone, with continuous joint and cable motion. | Light transit mechanism texture. |
+| 11 | 1:01–1:07 | `ACT` | Arm-follow dolly: full retract and high-clearance move from keyboard to phone, with continuous joint and attached servo-harness motion. | Light transit mechanism texture. |
 | 12 | 1:07–1:14 | `ACT` | Show `EXPECTED home · OBSERVED home ✓` in full once. One permit authorizes the Messages-app tap. The app changes to a portrait conversation with contact header, two prior message bubbles, a composer immediately above the software keyboard, and Send fixed at the composer's right edge. The arm retracts and a fresh observation verifies `composer ready`. Later checks reduce to ticks; the stage bar remains on `ACT`. | State-check tick, glass tap, second check tick. |
 | 13 | 1:14–1:22 | `ACT` | `on my way` builds inside the lower composer while the existing conversation remains above it. Show `o` and `n` at natural pace with one permit and one tick each. Then display an honest `2×` badge and time-compress the remaining seven contacts. Each visible character still appears only after its own observed contact. | Two measured taps, then a controlled faster rhythm with quiet check ticks. |
 | 14 | 1:22–1:27 | `ACT` | Slow down. Confirm the lower composer contains `on my way`. Its adjacent Send control receives a separate green one-contact permit; one tap occurs, the arm retracts, and the text moves into a right-aligned outgoing conversation bubble with `Sent ✓`. Keep the stage bar on `ACT`. | Bed narrows; one distinct Send tap. |
@@ -204,15 +204,14 @@ the next action.
    same exposed length, collar, pivot, and capacitive disc throughout.
 4. One immutable workcell: board, robot, camera, keyboard, phone, fixtures,
    tags, cables, operator display, and transforms do not drift.
-5. One measured black RC03 keyboard with correct legends, proportions, cable,
+5. One measured black RC03 keyboard with correct legends and proportions,
    protective rear film, and individually animatable `r/e/a/d/y` keys.
 6. One measured dark phone with consistent chassis, glass, camera, controls,
    station, cable, and modeled app states.
 7. The presentation-only operator display is the request console and local
    test-pad surface. It remains fully outside the board and overhead Locate
-   view, and is never confused with the phone. The RC03 cable leaves the board
-   on the display side and ends off-frame; the film does not claim a direct
-   physical connection.
+   view, and is never confused with the phone. No keyboard cord is shown; the
+   film does not claim a wired, wireless, or direct display connection.
 8. Keyboard actions affect only the operator-display test pad. Phone taps affect only the
    phone.
 9. Lowercase copy remains lowercase in request, proposal, screens, captions,
@@ -241,7 +240,7 @@ the next action.
 | Robot | Detailed RoArm geometry with an open controller chassis, rotating base-yaw deck, and one parented base-yaw–shoulder-pitch–elbow–wrist-pitch–tool-wrist chain; correctly mounted servo housings, dual links, short wrist link, fasteners, segmented wiring, gripper, and one articulated rig used in all scenes. |
 | Gripper/tool mount | Same RoArm jaw architecture in every moving shot. Opposing pads contact the controlled 28 × 24 × 65 mm compliant body at its recessed grip band; keyed cap, split collar, and two M3 retainers use the repository STLs. |
 | Stylus | Nominal 9 mm OASO-style aluminum barrel running through the printed cartridge, with constant protrusion and an articulated capacitive contact disc. Installed dimensions remain explicitly unmeasured. |
-| Keyboard | Measured black RC03 asset, correct six-row layout and legends, animated lowercase target keys, associated only with the operator-display test pad. Its cable exits toward the display side and ends off-frame. |
+| Keyboard | Measured black RC03 asset, correct six-row layout and legends, animated lowercase target keys, associated only with the operator-display test pad. No cord or unverified connection method is depicted. |
 | Operator display | Presentation-only floating screen with distinct request-console and local-test-pad UI modes; displays `ready` only after physical keyboard presses. It does not overlap the board or appear in the overhead Locate view. |
 | Phone | Measured phone/station asset with home, Messages composer, keyboard, Send, and sent-confirmation states; all UI labeled as modeled. |
 | Camera | Recognizable physical camera body, mount, lens, and matching overhead optical view. |
