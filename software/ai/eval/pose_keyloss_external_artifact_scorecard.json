@@ -1,0 +1,67 @@
+{
+  "schema": "tactevra.pose_keyloss_external_artifact_scorecard.v1",
+  "study_id": "translation_weighted_v0",
+  "scope": "DEVELOPMENT_ONLY_ARTIFACT_IDENTITY",
+  "source_commit": "fe20dc15376361f38049e4791583af72b62e5a77",
+  "source_plan_sha256": "ca5f31665e5cfdba2a6f0b4b98d9c6dc826350f237862cae20b37a36341b3be9",
+  "source_scorecard_sha256": "1af39548986a69deea0a4a7a03f75749ae5a9f78ee86fc418489cb3e88e4888f",
+  "external_manifest": {
+    "path": "software/ai/manifests/translation_weighted_pose_keyloss_v0.external.json",
+    "sha256": "bc67bee359bc9458adb99334ccc08830023c25467e59897b015cef58c5dc4a87"
+  },
+  "checkpoint": {
+    "repository_path": "software/ai/results/translation_weighted_v0_translation_weighted/pose_model.pt",
+    "size_bytes": 1111650,
+    "sha256": "0fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d",
+    "storage": "external"
+  },
+  "receipts": {
+    "clean_clone": {
+      "path": "software/ai/eval/pose_keyloss_external_artifact_unavailable_receipt.json",
+      "sha256": "e9347f172421bc6faa8b8a75b176cbcf25f8e5b75ca6518e84673008abb8110c",
+      "status": "external_artifact_unavailable"
+    },
+    "artifact_present": {
+      "path": "software/ai/eval/pose_keyloss_external_artifact_verified_receipt.json",
+      "sha256": "09d0b08b20acbd120b255e018a69b1867de2c2b99fe7b497789adcc793ca8b7a",
+      "status": "verified"
+    }
+  },
+  "population": {
+    "training_images": 3600,
+    "development_images": 600,
+    "target_views": 27600,
+    "input_size": [128, 96],
+    "conditions": ["standard", "appearance_shift", "challenge"]
+  },
+  "comparison": {
+    "control": {
+      "selected_epoch": 5,
+      "mean_key_error_mm": 0.9365509519099628,
+      "key_error_p95_mm": 2.1335929756556142,
+      "center_mean_error_mm": 0.8789340929376531,
+      "yaw_p95_degrees": 0.6165806424161752,
+      "within_1mm_fraction": 0.6480072463768116
+    },
+    "translation_weighted": {
+      "selected_epoch": 12,
+      "mean_key_error_mm": 0.9065263673844253,
+      "key_error_p95_mm": 2.0510642636320804,
+      "center_mean_error_mm": 0.8565903674883111,
+      "yaw_p95_degrees": 0.5711234880650456,
+      "within_1mm_fraction": 0.6902173913043478
+    },
+    "development_candidate_rule_passed": true
+  },
+  "artifact_identity_verified": true,
+  "model_promoted": false,
+  "qualification_installed": false,
+  "hardware_writes": 0,
+  "physical_movements": 0,
+  "limitations": [
+    "The candidate was selected and measured on synthetic development data, so metrics are optimistic selection evidence.",
+    "One seed per arm and no claim of statistical significance.",
+    "Artifact identity does not establish real-camera accuracy, calibrated safe-region fit, physical contact success, or runtime authority.",
+    "Checkpoint bytes and bulk reports remain external to Git."
+  ]
+}

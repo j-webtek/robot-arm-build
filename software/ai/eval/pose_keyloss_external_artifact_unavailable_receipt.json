@@ -1,0 +1,22 @@
+{
+  "artifact_reads": 0,
+  "artifact_writes": 0,
+  "checker_path": "scripts/ci/check_external_artifact.py",
+  "checker_sha256": "307d4ced5a2007e789d16f1f7705a17ae3384f09e3084f2328f3fabefaee233d",
+  "expected_status": "external_artifact_unavailable",
+  "hardware_writes": 0,
+  "manifest_path": "software/ai/manifests/translation_weighted_pose_keyloss_v0.external.json",
+  "manifest_sha256": "bc67bee359bc9458adb99334ccc08830023c25467e59897b015cef58c5dc4a87",
+  "physical_movements": 0,
+  "qualification_installed": false,
+  "result": {
+    "actual_sha256": null,
+    "actual_size_bytes": null,
+    "artifact_id": "translation-weighted-pose-keyloss-v0",
+    "expected_sha256": "0fd4ee3edd1dc6e0068c6e1530fdf7017a77a3e7841334682272e99aa344125d",
+    "expected_size_bytes": 1111650,
+    "repository_path": "software/ai/results/translation_weighted_v0_translation_weighted/pose_model.pt",
+    "status": "external_artifact_unavailable"
+  },
+  "schema": "tactevra.pose_checkpoint_external_artifact_receipt.v1"
+}
