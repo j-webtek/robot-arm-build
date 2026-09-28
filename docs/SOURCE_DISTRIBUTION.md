@@ -173,3 +173,38 @@ Verification requires only the staged tree and receipt. It fails on missing,
 modified, or unexpected artifact files. This is a controlled staging mechanism;
 it does not approve printing, transform a referenced STL, or make held material
 printable.
+
+## Stage the static-camera print pack for offline use
+
+The repository form of `SYSTEM_PRINT_PACK_v1` keeps the qualified 3MF queue,
+instructions, profiles, validation evidence, and safety states, but selected
+fallback STLs are exact path-and-SHA-256 references instead of duplicate tracked
+geometry. Materialize the complete delivery pack into a new directory outside
+the checkout:
+
+```powershell
+$pack = Join-Path $env:TEMP "SYSTEM_PRINT_PACK_v1"
+python hardware/static_overhead_camera/cad/stage_system_print_pack.py `
+  --output $pack
+```
+
+The resolver fails closed if a canonical source is absent or has the wrong
+hash. It copies each selected STL into the relative path expected by the print
+sidecars and checks every sidecar dependency. The resulting directory is
+standalone: after copying it to an offline machine, verify it without repository
+access:
+
+```powershell
+cd $pack
+python verify_system_print_pack.py --verify .
+```
+
+Keep `START_HERE.md`, `STL_HASH_REFERENCES.json`, profiles, manifests, and HOLD
+or `SUPERSEDED_DO_NOT_PRINT` records with the export. Materializing recovery
+geometry does not authorize printing a held or superseded part.
+
+The owner-reviewed camera stage replaces six tracked duplicate STL files
+totaling 9,833,904 bytes. Against the preceding `main` snapshot, the governed
+large-blob duplicate metric falls from 56,671,848 to 46,837,944 bytes. Source
+CAD, grounded-saddle revision evidence, the active 3MF queue, profiles, and HOLD
+or superseded records remain tracked; Git history is not rewritten.
