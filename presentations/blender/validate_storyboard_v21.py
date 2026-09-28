@@ -38,8 +38,22 @@ def main() -> None:
     benchmark_shot = shots[benchmark["scene_id"] - 1]
     assert frames == sorted(frames)
     assert benchmark_shot["start"] <= frames[0] <= frames[-1] <= benchmark_shot["end"]
+    rhythm = data["rhythm"]
+    assert rhythm["scene_id"] == 9
+    assert [target["key"] for target in rhythm["targets"]] == list("eady")
+    contacts = [target["contact_frame"] for target in rhythm["targets"]]
+    verifies = [target["verify_frame"] for target in rhythm["targets"]]
+    rhythm_shot = shots[rhythm["scene_id"] - 1]
+    assert contacts == [1178, 1220, 1262, 1304]
+    assert all(contact < verify for contact, verify in zip(contacts, verifies))
+    assert rhythm_shot["start"] <= contacts[0] < verifies[-1] <= rhythm_shot["end"]
+    assert rhythm["permit_scope"] == "one contact"
+    assert rhythm["next_target_authority"] == "preview only"
     assert data["stage_vocabulary"] == ["UNDERSTAND", "LOCATE", "CHECK", "ACT", "VERIFY"]
-    print("PASS storyboard_v21: 17 contiguous scenes, 2400 frames, four rigs, seven benchmark phases")
+    print(
+        "PASS storyboard_v21: 17 contiguous scenes, 2400 frames, four rigs, "
+        "seven benchmark phases, four independently permitted rhythm contacts"
+    )
 
 
 if __name__ == "__main__":

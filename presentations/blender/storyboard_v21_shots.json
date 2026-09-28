@@ -23,6 +23,17 @@
       {"name": "verify", "frame": 1129}
     ]
   },
+  "rhythm": {
+    "scene_id": 9,
+    "targets": [
+      {"key": "e", "contact_frame": 1178, "verify_frame": 1194},
+      {"key": "a", "contact_frame": 1220, "verify_frame": 1236},
+      {"key": "d", "contact_frame": 1262, "verify_frame": 1278},
+      {"key": "y", "contact_frame": 1304, "verify_frame": 1320}
+    ],
+    "permit_scope": "one contact",
+    "next_target_authority": "preview only"
+  },
   "shots": [
     {"id": 1, "start": 1, "end": 96, "seconds": "0:00–0:04", "stage": null, "rig": "macro", "slug": "cold-open-r-hover"},
     {"id": 2, "start": 97, "end": 216, "seconds": "0:04–0:09", "stage": "UNDERSTAND", "rig": "hero", "slug": "operator-request"},

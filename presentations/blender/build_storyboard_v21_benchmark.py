@@ -116,6 +116,164 @@ def set_scale(obj: bpy.types.Object, frame: int, scale: float) -> None:
     obj.keyframe_insert("scale", frame=frame)
 
 
+def arm_pose(target_xy: tuple[float, float], manifest: dict) -> tuple[Vector, Vector, Vector]:
+    """Return shoulder, elbow, and wrist points for the presentation rig."""
+    tx, ty, _tz = manifest["arm"]["nominal_board_T_robot_world_translation"]
+    shoulder = base.board_point(tx, ty, 0) + Vector((0, 0, 0.120))
+    wrist = base.board_point(*target_xy, 0) + Vector((0, 0, 0.205))
+    length_a, length_b = 0.2387, 0.1550
+    direction = wrist - shoulder
+    distance = direction.length
+    axis = direction.normalized()
+    projection = (length_a ** 2 - length_b ** 2 + distance ** 2) / (2 * distance)
+    height = math.sqrt(max(length_a ** 2 - projection ** 2, 0.0))
+    side = axis.cross(Vector((0, 0, 1))).normalized()
+    normal = side.cross(axis).normalized()
+    elbow = shoulder + axis * projection + normal * height
+    return shoulder, elbow, wrist
+
+
+def segment_rotation(start: Vector, end: Vector):
+    return (end - start).to_track_quat("Z", "Y")
+
+
+def parent_preserve_world(obj: bpy.types.Object, parent: bpy.types.Object) -> None:
+    world = obj.matrix_world.copy()
+    bpy.context.view_layer.update()
+    obj.parent = parent
+    obj.matrix_parent_inverse = parent.matrix_world.inverted()
+    obj.matrix_world = world
+
+
+def add_articulation_controls(
+    rig: dict[str, object],
+    target_xy: tuple[float, float],
+    collection: bpy.types.Collection,
+) -> dict[str, bpy.types.Object]:
+    """Parent the detailed fixed-pose geometry to three animatable frames.
+
+    This keeps every servo, rail, fastener, and gripper component from the
+    approved benchmark while allowing continuous target-to-target movement.
+    The shoulder is fixed; upper and forearm frames rotate as rigid link
+    groups; the wrist frame translates while preserving the vertical stylus.
+    """
+    shoulder, elbow, wrist = arm_pose(target_xy, rig["manifest"])
+    controls: dict[str, bpy.types.Object] = {}
+    for name, location, rotation in (
+        ("upper", shoulder, segment_rotation(shoulder, elbow)),
+        ("forearm", elbow, segment_rotation(elbow, wrist)),
+        ("wrist", wrist, None),
+    ):
+        obj = bpy.data.objects.new(f"CTRL_{name.upper()}_LINK", None)
+        bpy.context.scene.collection.objects.link(obj)
+        obj.location = location
+        if rotation is not None:
+            obj.rotation_mode = "QUATERNION"
+            obj.rotation_quaternion = rotation
+        classify(obj, collection, f"articulation_control:{name}")
+        controls[name] = obj
+
+    moving = set(rig["moving"])
+    for obj in rig["objects"]:
+        lower = obj.name.lower()
+        if "servo harness" in lower:
+            obj.hide_render = True
+            continue
+        if "forearm" in lower or "elbow" in lower:
+            parent_preserve_world(obj, controls["forearm"])
+        elif "upper" in lower:
+            parent_preserve_world(obj, controls["upper"])
+        elif "wrist" in lower or "gripper" in lower or "stylus" in lower or obj in moving:
+            obj.animation_data_clear()
+            parent_preserve_world(obj, controls["wrist"])
+    return controls
+
+
+def animate_arm_target(
+    controls: dict[str, bpy.types.Object], manifest: dict,
+    target_xy: tuple[float, float], frame: int, *, press: float = 0.0,
+) -> None:
+    shoulder, elbow, wrist = arm_pose(target_xy, manifest)
+    upper, forearm, wrist_control = controls["upper"], controls["forearm"], controls["wrist"]
+    upper.location = shoulder
+    upper.rotation_quaternion = segment_rotation(shoulder, elbow)
+    upper.keyframe_insert("location", frame=frame)
+    upper.keyframe_insert("rotation_quaternion", frame=frame)
+    forearm.location = elbow
+    forearm.rotation_quaternion = segment_rotation(elbow, wrist)
+    forearm.keyframe_insert("location", frame=frame)
+    forearm.keyframe_insert("rotation_quaternion", frame=frame)
+    wrist_control.location = wrist + Vector((0, 0, press))
+    wrist_control.keyframe_insert("location", frame=frame)
+
+
+def animate_key_rhythm(
+    controls: dict[str, bpy.types.Object], rig: dict[str, object],
+    keys: list[bpy.types.Object], authority: dict[str, bpy.types.Object],
+) -> None:
+    """Animate e-a-d-y as four independently permitted contact cycles."""
+    uncertainty = authority["uncertainty"]
+    permit = authority["permit"]
+    ghost = authority["ghost"]
+    cycles = ((1153, 1194), (1195, 1236), (1237, 1278), (1279, 1320))
+    previous_xy = (
+        (find_key("R").location.x * 1000) + base.BOARD_CENTER_MM.x,
+        (find_key("R").location.y * 1000) + base.BOARD_CENTER_MM.y,
+    )
+    for index, (key, (start, end)) in enumerate(zip(keys, cycles)):
+        target_xy = (
+            (key.location.x * 1000) + base.BOARD_CENTER_MM.x,
+            (key.location.y * 1000) + base.BOARD_CENTER_MM.y,
+        )
+        align, permit_frame = start + 12, start + 18
+        contact, release, verified = start + 25, start + 31, end
+        animate_arm_target(controls, rig["manifest"], previous_xy, start)
+        animate_arm_target(controls, rig["manifest"], target_xy, align)
+        animate_arm_target(controls, rig["manifest"], target_xy, contact, press=-0.004)
+        animate_arm_target(controls, rig["manifest"], target_xy, release, press=0.0)
+        animate_arm_target(controls, rig["manifest"], target_xy, verified)
+
+        target = key.location + Vector((0, 0, 0.009))
+        uncertainty.location = target
+        uncertainty.keyframe_insert("location", frame=start)
+        set_scale(uncertainty, start, 1.45)
+        uncertainty.location = target
+        uncertainty.keyframe_insert("location", frame=align)
+        set_scale(uncertainty, align, 0.62)
+        set_scale(uncertainty, contact, 0.62)
+        set_scale(uncertainty, release, 0.0)
+
+        permit.location = target + Vector((0, 0, 0.090))
+        permit.keyframe_insert("location", frame=align)
+        set_scale(permit, align, 0.0)
+        set_scale(permit, permit_frame, 1.0)
+        set_scale(ghost, align, 1.0)
+        set_scale(ghost, permit_frame, 0.0)
+        permit.location = target + Vector((0, 0, 0.020))
+        permit.keyframe_insert("location", frame=contact)
+        set_scale(permit, contact, 1.0)
+        set_scale(permit, release, 0.0)
+
+        base_z = key.location.z
+        for frame, offset in ((start, 0.0), (contact - 1, 0.0),
+                              (contact, -0.004), (release - 1, -0.004),
+                              (release, 0.0), (verified, 0.0)):
+            key.location.z = base_z + offset
+            key.keyframe_insert("location", frame=frame)
+
+        if index + 1 < len(keys):
+            next_key = keys[index + 1]
+            ghost.location = next_key.location + Vector((0, 0, 0.009))
+            ghost.keyframe_insert("location", frame=release)
+            set_scale(ghost, release, 0.0)
+            set_scale(ghost, release + 6, 1.0)
+            set_scale(ghost, verified, 1.0)
+        else:
+            set_scale(ghost, release, 0.0)
+            set_scale(ghost, verified, 0.0)
+        previous_xy = target_xy
+
+
 def make_authority_graphics(
     mats: dict[str, bpy.types.Material],
     collection: bpy.types.Collection,
@@ -230,13 +388,24 @@ def build() -> bpy.types.Scene:
     rig = base.add_continuous_press_arm(
         mats,
         target_xy=r_xy_mm,
-        motion_profile=((961, 0.0), (1032, 0.0), (1056, -0.004),
-                        (1084, -0.004), (1093, 0.0), (1152, 0.0)),
+        motion_profile=((961, 0.0), (1320, 0.0)),
     )
     for obj in rig["objects"]:
         classify(obj, action, "articulated_presentation_rig")
         obj["simulation_only"] = True
+    controls = add_articulation_controls(rig, r_xy_mm, action)
+    animate_arm_target(controls, rig["manifest"], r_xy_mm, 961)
+    animate_arm_target(controls, rig["manifest"], r_xy_mm, 1032)
+    animate_arm_target(controls, rig["manifest"], r_xy_mm, 1056, press=-0.004)
+    animate_arm_target(controls, rig["manifest"], r_xy_mm, 1084, press=-0.004)
+    animate_arm_target(controls, rig["manifest"], r_xy_mm, 1093)
+    animate_arm_target(controls, rig["manifest"], r_xy_mm, 1152)
     graphics_objects = make_authority_graphics(mats, graphics, r_key, e_key)
+    animate_key_rhythm(
+        controls, rig,
+        [find_key(letter) for letter in ("E", "A", "D", "Y")],
+        graphics_objects,
+    )
 
     # Four reusable rigs cover the shot palette without an add-on dependency.
     r_target = r_key.location + Vector((0, 0, 0.060))
@@ -252,6 +421,9 @@ def build() -> bpy.types.Scene:
                    Vector((0.28, -0.58, 0.35)), Vector((0.21, -0.50, 0.29)), r_target)
     animate_camera(*rigs["dolly"], 361, 504,
                    Vector((0.48, -1.06, 0.64)), Vector((0.28, -0.88, 0.55)), board_target)
+    animate_camera(*rigs["dolly"], 1153, 1320,
+                   Vector((0.34, -0.66, 0.40)), Vector((-0.04, -0.58, 0.34)),
+                   base.board_point(185, 154, 70))
     animate_camera(*rigs["arm_follow"], 1465, 1896,
                    Vector((0.18, -0.76, 0.53)), Vector((0.55, -0.72, 0.45)), phone_target)
     animate_camera(*rigs["hero"], 1, 2400,
@@ -272,7 +444,8 @@ def build() -> bpy.types.Scene:
         marker["benchmark_phase"] = True
 
     scene.camera = rigs["macro"][0]
-    for obj in (*graphics_objects.values(), *rig["moving"], r_key):
+    for obj in (*graphics_objects.values(), *rig["moving"], *controls.values(),
+                r_key, find_key("E"), find_key("A"), find_key("D"), find_key("Y")):
         if obj.animation_data and obj.animation_data.action:
             for curve in obj.animation_data.action.fcurves:
                 for point in curve.keyframe_points:
@@ -292,11 +465,19 @@ def main() -> None:
     scene = build()
     blend_path = OUT / "tactevra_storyboard_v21_benchmark.blend"
     bpy.ops.wm.save_as_mainfile(filepath=str(blend_path))
+    preview_frames: tuple[int, ...] = ()
     if "--preview-benchmark" in args:
-        for frame in (961, 1009, 1049, 1068, 1093, 1140):
+        preview_frames += (961, 1009, 1049, 1068, 1093, 1140)
+    if "--preview-rhythm" in args:
+        preview_frames += (1153, 1165, 1178, 1207, 1220, 1249, 1262, 1291, 1304, 1320)
+    if preview_frames:
+        for frame in preview_frames:
             scene.frame_set(frame)
-            scene.camera = bpy.data.objects["CAM_MACRO"]
-            scene.render.filepath = str(OUT / f"benchmark_{frame:04d}.png")
+            scene.camera = (
+                bpy.data.objects["CAM_MACRO"] if frame <= 1152
+                else bpy.data.objects["CAM_DOLLY"]
+            )
+            scene.render.filepath = str(OUT / f"storyboard_{frame:04d}.png")
             bpy.ops.render.render(write_still=True)
     print(f"TACTEVRA_STORYBOARD_V21={blend_path}")
 

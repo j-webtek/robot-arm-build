@@ -127,12 +127,28 @@ Build the editable scene and six local benchmark frames:
   --preview-benchmark
 ```
 
+Render the follow-on `e → a → d → y` rhythm checkpoints:
+
+```powershell
+& "C:\Program Files\Blender Foundation\Blender 4.3\blender.exe" `
+  --background --factory-startup `
+  --python presentations/blender/build_storyboard_v21_benchmark.py -- `
+  --preview-rhythm
+```
+
 Generated output is written to `tmp/blender-storyboard-v21/`. The first
 benchmark is intentionally limited to the lowercase `r` action at frames
 961–1152. It demonstrates `transit → align → settle → approach → contact →
 retract → verify`, consumes one permit, and reveals the dotted `e` preview
 only after verification. It remains a simulated presentation sequence, not
 physical qualification evidence.
+
+Scene 9 continues with the same detailed rig rather than swapping robot
+models. Rigid link controls preserve every servo, paired rail, fastener,
+gripper, and stylus component while the wrist travels continuously across
+`e`, `a`, `d`, and `y`. Each key receives its own uncertainty fit, permit,
+contact, retract, and verification interval; the next dotted target remains a
+preview until its permit is granted.
 
 The scaffold has no add-on dependency. Native cameras, constraints, markers,
 and collections keep CI and collaborator builds reproducible. Artists may use

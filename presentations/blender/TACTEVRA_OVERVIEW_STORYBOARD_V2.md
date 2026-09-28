@@ -118,8 +118,9 @@ The timing plan is mirrored in `storyboard_v21_shots.json` and validated as 17
 contiguous scenes across exactly 2,400 frames. The editable Blender scaffold
 creates four reusable shot rigs, timeline camera bindings, locked reference
 asset collections, and the three recurring authority graphics. The lowercase
-`r` contact is implemented as the first visual benchmark at 0:40–0:48; it is
-the continuity and readability gate before the remaining contacts are blocked.
+`r` contact is implemented as the first visual benchmark at 0:40–0:48. The
+same detailed rig then moves continuously through independently permitted
+`e`, `a`, `d`, and `y` cycles at 0:48–0:55; no model or pose swap is used.
 
 Run `python presentations/blender/validate_storyboard_v21.py`, then build the
 local benchmark with the Blender command documented in `README.md` using the
