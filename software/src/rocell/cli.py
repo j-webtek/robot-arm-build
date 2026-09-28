@@ -354,6 +354,43 @@ def _command_status(args: argparse.Namespace) -> int:
     return int(ExitCode.OK)
 
 
+def _command_integration_readiness(args: argparse.Namespace) -> int:
+    """Report the retained AI-to-arm gate without touching hardware."""
+
+    workspace = _find_workspace(args.workspace)
+    from rocell.application.model_arm_operational_readiness_v1 import (
+        ModelArmOperationalReadinessError,
+        build_model_arm_operational_readiness_v1,
+    )
+
+    try:
+        document = build_model_arm_operational_readiness_v1(workspace)
+    except (ModelArmOperationalReadinessError, OSError, ValueError) as exc:
+        raise ConfigurationError(
+            "INTEGRATION_READINESS_INVALID",
+            f"Could not build the retained AI-to-arm readiness report: {exc}",
+            details={"workspace": str(workspace)},
+        ) from exc
+
+    stages = document["stage_assessments"]
+    _emit(
+        document,
+        args.json,
+        (
+            f"AI-to-arm integration readiness: {document['status']}",
+            f"ready stages: {len(document['ready_stage_ids'])}/{len(stages)}",
+            "blocked stages: " + (
+                ", ".join(document["blocked_stage_ids"])
+                if document["blocked_stage_ids"] else "none"
+            ),
+            "hardware access: not attempted; physical authority: false",
+        ),
+    )
+    if args.require_ready and not document["single_action_review_ready"]:
+        return int(ExitCode.CONFIGURATION_ERROR)
+    return int(ExitCode.OK)
+
+
 def _command_doctor(args: argparse.Namespace) -> int:
     bootstrap = _load_virtual_bootstrap(args)
     snapshot = bootstrap.context.snapshot
@@ -5223,6 +5260,23 @@ def build_parser() -> argparse.ArgumentParser:
     )
     _add_json_argument(status)
     status.set_defaults(handler=_command_status)
+
+    integration_readiness = commands.add_parser(
+        "integration-readiness",
+        help="Report retained AI-to-arm readiness without hardware access",
+        description=(
+            "Compose the content-bound AI/arm evidence already retained in the "
+            "repository. This command never opens a camera or controller, emits "
+            "commands, or grants physical authority."
+        ),
+    )
+    integration_readiness.add_argument(
+        "--require-ready",
+        action="store_true",
+        help="Return nonzero unless every single-action review gate is ready",
+    )
+    _add_json_argument(integration_readiness)
+    integration_readiness.set_defaults(handler=_command_integration_readiness)
 
     doctor = commands.add_parser(
         "doctor", help="Run side-effect-free runtime diagnostics"

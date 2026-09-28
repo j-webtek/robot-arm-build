@@ -259,6 +259,52 @@ def test_status_reports_current_denials_without_hardware_imports(tmp_path: Path)
     assert not (workspace / "cv2-imported.txt").exists()
 
 
+def test_integration_readiness_reports_exact_holds_without_hardware_imports(
+    tmp_path: Path,
+) -> None:
+    completed, serial_marker, cv2_marker = _run_repository(
+        tmp_path,
+        "integration-readiness",
+        "--json",
+    )
+    assert completed.returncode == 0, completed.stderr
+    result = json.loads(completed.stdout)
+    assert result["schema"] == "rocell.model_arm_operational_readiness.v1"
+    assert result["status"] == "BLOCKED"
+    assert result["ready_stage_ids"] == ["wire_contract"]
+    assert result["blocked_stage_ids"] == [
+        "qualified_perception",
+        "camera_support_optics",
+        "measured_configuration_epoch",
+        "measured_planner_calibration",
+        "installed_controller_runtime",
+    ]
+    assert result["hardware_access"] is False
+    assert result["camera_open_authorized"] is False
+    assert result["controller_start_authorized"] is False
+    assert result["movement_authorized"] is False
+    assert result["physical_authority"] is False
+    assert not serial_marker.exists()
+    assert not cv2_marker.exists()
+
+
+def test_integration_readiness_can_fail_a_gate_without_touching_hardware(
+    tmp_path: Path,
+) -> None:
+    completed, serial_marker, cv2_marker = _run_repository(
+        tmp_path,
+        "integration-readiness",
+        "--require-ready",
+        "--json",
+    )
+    assert completed.returncode == 3, completed.stderr
+    result = json.loads(completed.stdout)
+    assert result["status"] == "BLOCKED"
+    assert result["single_action_review_ready"] is False
+    assert not serial_marker.exists()
+    assert not cv2_marker.exists()
+
+
 @pytest.mark.parametrize("abbreviation", ("--work", "--man"))
 def test_cli_rejects_abbreviated_source_override(
     tmp_path: Path,
