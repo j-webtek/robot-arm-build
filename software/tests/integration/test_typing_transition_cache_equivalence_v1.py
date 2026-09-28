@@ -4,6 +4,8 @@ from dataclasses import replace
 from pathlib import Path
 import sys
 
+import pytest
+
 
 ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT / "software/tests/unit"))
@@ -25,13 +27,27 @@ H = {letter: letter * 64 for letter in "abcdef0123456789"}
 VALID = "VALIDATED_FOR_CURRENT_SHADOW_ATTEMPT"
 
 
-def test_cached_seed_and_uncached_planning_are_schedule_equivalent():
-    inputs = _inputs(("H", "I"), "hi")
+@pytest.mark.parametrize(("targets", "text", "direction"), (
+    (("H", "I"), "hi", "FORWARD"),
+    (("I", "H"), "ih", "REVERSE"),
+    (("R", "O", "B", "O", "T"), "robot", "FORWARD"),
+    (("B", "O", "O", "K"), "book", "FORWARD"),
+    (("Q", "A", "Z"), "qaz", "FORWARD"),
+    (("P", "L", "M"), "plm", "REVERSE"),
+    (("H", "H", "1", "PERIOD"), "hh1.", "FORWARD"),
+    (("SPACE",), " ", "SAME_TARGET"),
+    (("ENTER",), "ENTER", "SAME_TARGET"),
+    (("A", "A", "A"), "aaa", "SAME_TARGET"),
+))
+def test_cached_seed_and_uncached_planning_are_schedule_equivalent(
+    targets: tuple[str, ...], text: str, direction: str,
+):
+    inputs = _inputs(targets, text)
     uncached = run_typing_shadow_pipeline_v1(**inputs)
     key = TypingTransitionCacheKeyV1(
-        source_target_id="H",
-        destination_target_id="I",
-        direction="FORWARD",
+        source_target_id=targets[0],
+        destination_target_id=targets[-1],
+        direction=direction,
         calibration_snapshot_sha256=(
             inputs["calibration_snapshot"].snapshot_sha256),
         target_catalog_sha256=inputs["context"].targets.content_sha256,

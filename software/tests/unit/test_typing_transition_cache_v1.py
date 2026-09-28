@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from copy import deepcopy
+import random
 
 import pytest
 
@@ -164,6 +165,46 @@ def test_identity_invalidation_removes_only_stale_entries():
     assert cache.metrics["invalidations"] == 1
     assert cache.lookup(current, _revalidation(current))["status"] == (
         "HIT_REVALIDATED")
+
+
+@pytest.mark.parametrize("field", [
+    "calibration_snapshot_sha256",
+    "target_catalog_sha256",
+    "tool_profile_sha256",
+    "arm_model_sha256",
+    "dynamics_profile_sha256",
+    "planner_policy_sha256",
+    "device_pose_epoch_sha256",
+])
+def test_every_bound_identity_invalidates_crossed_entries(field: str):
+    cache = TypingTransitionCacheV1()
+    stale = _key()
+    cache.put(stale, _seed())
+    assert cache.invalidate_identity(field, H["9"]) == 1
+    assert cache.metrics["current_entries"] == 0
+
+
+def test_seeded_randomized_capacity_campaign_is_deterministic_and_bounded():
+    def campaign():
+        rng = random.Random(20260928)
+        cache = TypingTransitionCacheV1(maximum_entries=8)
+        statuses = []
+        targets = tuple("ABCDEFGHIJKL")
+        for _ in range(128):
+            source, destination = rng.sample(targets, 2)
+            direction = "FORWARD" if source < destination else "REVERSE"
+            key = _key(source, destination, direction=direction)
+            cache.put(key, _seed(rng.randint(1, 1_000_000)))
+            statuses.append(cache.lookup(key, _revalidation(key))["status"])
+        return statuses, dict(cache.metrics)
+
+    first = campaign()
+    second = campaign()
+    assert first == second
+    assert set(first[0]) == {"HIT_REVALIDATED"}
+    assert first[1]["current_entries"] == 8
+    assert first[1]["hits"] == 128
+    assert first[1]["evictions"] > 0
 
 
 def test_key_direction_and_cache_capacity_are_strict():
