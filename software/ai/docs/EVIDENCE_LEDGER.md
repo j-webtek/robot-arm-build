@@ -4023,3 +4023,111 @@ rewriting history. New entries must use a unique evidence ID.
 - Next dependency: merge this documentation baseline, collect the four retained
   ARM-070 camera/support originals, and execute the frozen physical-camera
   campaign before any localization qualification claim.
+
+### E-20260927-AI-420 — prerequisite PR merge attempts blocked by repository policy
+
+- Stage: S2/S3 physical-camera evaluation preparation.
+- Lane: AI.
+- Commit: `555ddd72952cd5560c6ae1f4bc2605f8361d4e09`.
+- Change: attempted to land the camera campaign and documentation prerequisites
+  before creating the evaluator branch.
+- Inputs/fixtures: PR #147 at
+  `f357fa54536c9cb9315aee15107a5a610efce01a`; PR #148 at
+  `555ddd72952cd5560c6ae1f4bc2605f8361d4e09`; protected `main`.
+- Command: GitHub REST `PUT /repos/j-webtek/tactevra/pulls/147/merge` with
+  `merge_method=merge`, followed by the same endpoint with
+  `merge_method=squash`.
+- Result: BLOCKED in two preserved attempts. The repository rejected merge
+  commits, then rejected squash because protected `main` had advanced and six
+  required checks were expected on the updated base. No protection was bypassed.
+- Artifacts: GitHub PRs #147 and #148; console/API responses only.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: repository administration failure only; it evaluates no model,
+  camera, localization result, or runtime behavior.
+- Supersedes: none; the rejected attempts remain visible.
+- Next dependency: merge current protected `main` into both branches, retain
+  both workers' ledger content, rerun required checks, and use the permitted
+  squash method.
+
+### E-20260927-AI-421 — evaluator portable suite initially lacked sparse paths
+
+- Stage: S2/S3 physical-camera evaluation preparation.
+- Lane: AI.
+- Commit: `56252e47558e6aa0a351f61611d7de0e5a8a49c4`.
+- Change: ran the portable repository suite in detached worktree
+  `C:\\aievaluate` after exact-source AI verification.
+- Inputs/fixtures: clean source commit, installed `.venv-ci`, inherited sparse
+  worktree selection that omitted `software/tests/integration`.
+- Command: `.\\.venv-ci\\Scripts\\python.exe scripts/ci/offline_checks.py test`.
+- Result: BLOCKED before collection because
+  `software/tests/integration/test_zero_write_waveshare_contract_v1.py` was not
+  materialized. Git tree inspection confirmed the file was present in the
+  commit. No source or test list was changed.
+- Artifacts: console result only.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: worktree materialization failure only; it is not an evaluator or
+  repository regression.
+- Supersedes: none; the failed portable attempt remains preserved.
+- Next dependency: materialize the tracked integration, script, native,
+  firmware, and fixture paths and rerun the identical command.
+
+### E-20260927-AI-422 — fail-closed physical-camera evaluator verified
+
+- Stage: S2/S3 physical-camera localization evaluation.
+- Lane: AI.
+- Commit: `56252e47558e6aa0a351f61611d7de0e5a8a49c4`.
+- Change: implemented the offline post-preflight evaluator, strict ground-truth,
+  evaluation-plan, and result schemas, image/model/preprocessing prediction
+  binding, calibration-only empirical bound, held-out per-target/per-condition
+  metrics, unsafe-scene false-accept checks, evidenced uncertainty composition,
+  frozen target-safe-region checks, documentation, registry ownership, and
+  non-finite JSON rejection.
+- Inputs/fixtures: generated 300-calibration/300-evaluation retained campaign;
+  600 unique image and truth identities; 11 required conditions; two targets;
+  image-bound frozen prediction records; synthetic test-only 1.0 mm calibration
+  maximum, 0.4 mm additional evidenced uncertainty, and 2.0 mm safe radii. No
+  fixture or claimed physical score was retained.
+- Command: in clean detached worktree `C:\\aievaluate`, `python -m venv .venv-ai`;
+  `.\\.venv-ai\\Scripts\\python.exe -m pip install ".\\software[test]"`;
+  `.\\.venv-ai\\Scripts\\python.exe -m pip install -r software/ai/requirements-test.txt`;
+  `.\\.venv-ai\\Scripts\\python.exe -m pip check`;
+  `.\\.venv-ai\\Scripts\\python.exe -m pytest software/ai/tests -q`;
+  `.\\.venv-ai\\Scripts\\python.exe software/ai/eval/audit_ai_work_registry.py`;
+  `.\\.venv-ai\\Scripts\\python.exe scripts/ci/check_docs.py`;
+  `.\\.venv-ai\\Scripts\\python.exe scripts/ci/check_evidence_scope.py`;
+  `.\\.venv-ai\\Scripts\\python.exe scripts/ci/check_public_records.py`;
+  `.\\.venv-ai\\Scripts\\python.exe scripts/ci/check_repository_artifacts.py`;
+  `.\\.venv-ai\\Scripts\\python.exe scripts/ci/check_release_integrity.py`;
+  and, after materializing the tracked portable inputs,
+  `.\\.venv-ci\\Scripts\\python.exe scripts/ci/offline_checks.py test`.
+- Result: PASS. Clean full AI suite passed 174 tests and 47 subtests in 54.44
+  seconds. Registry audit passed with 7 workstreams, 35/35 uniquely owned AI
+  test modules, 110 referenced paths, registry SHA-256
+  `05f4b615b1ae1d9182d199b1e13ce66200f99b459996b113a3da0e58197961b9`,
+  and receipt SHA-256
+  `7cb7bb02ea9dacc607beccf12897f386ccc4e0da34039595d1f99975b3d63813`.
+  All six repository audits passed. The corrected portable suite passed 496
+  tests with 4 documented Windows symlink skips in 72.41 seconds. Focused tests
+  prove recommendation, safe-region blocking, unsafe false-accept blocking,
+  held-out coverage blocking, identity/coverage rejection, and non-finite-number
+  rejection.
+- Artifacts: `software/ai/eval/evaluate_physical_camera_localization.py`;
+  `software/ai/schemas/physical_camera_localization_ground_truth_v1.schema.json`;
+  `software/ai/schemas/physical_camera_localization_evaluation_plan_v1.schema.json`;
+  `software/ai/schemas/physical_camera_localization_evaluation_result_v1.schema.json`;
+  `software/ai/tests/test_physical_camera_localization_evaluator.py`;
+  `software/ai/docs/PHYSICAL_CAMERA_LOCALIZATION_CAMPAIGN.md`.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: synthetic fixtures validate evaluator behavior only. No physical
+  camera data, model inference, coordinate accuracy, calibration accuracy,
+  safe-region qualification, motion batch, key contact, or device outcome was
+  produced. Prediction provenance still depends on a separately frozen
+  inference producer. `QUALIFICATION_RECOMMENDED` remains an offline review
+  recommendation; installation is always false.
+- Supersedes: none. AI-420 and AI-421 remain preserved blocked history.
+- Next dependency: implement and freeze the image/model/preprocessing-bound
+  physical-camera inference producer, then collect the four ARM-070 originals
+  and external 300/300 campaign before running this evaluator on real evidence.

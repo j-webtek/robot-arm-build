@@ -109,6 +109,36 @@ After preflight passes:
 7. Require that the composed bound fits inside every target's declared safe
    region before proposing a deployment qualification.
 
+The frozen inference producer writes an external evaluation-plan JSON document
+conforming to
+[`physical_camera_localization_evaluation_plan_v1.schema.json`](../schemas/physical_camera_localization_evaluation_plan_v1.schema.json).
+Every prediction binds its capture, image, model, and preprocessing SHA-256.
+The plan embeds the frozen keyboard target map and binds each additional
+uncertainty component to its own evidence SHA-256. Ground-truth files conform
+to
+[`physical_camera_localization_ground_truth_v1.schema.json`](../schemas/physical_camera_localization_ground_truth_v1.schema.json).
+
+Run the evaluator only after preflight and frozen inference are complete:
+
+```powershell
+python software/ai/eval/evaluate_physical_camera_localization.py `
+  --campaign D:\tactevra-evidence\physical-camera-campaign\campaign.json `
+  --preflight D:\tactevra-evidence\physical-camera-campaign\receipts\preflight.json `
+  --plan D:\tactevra-evidence\physical-camera-campaign\evaluation-plan.json `
+  --evidence-root D:\tactevra-evidence\physical-camera-campaign `
+  --output D:\tactevra-evidence\physical-camera-campaign\receipts\evaluation.json
+```
+
+The evaluator replays preflight against the current retained bytes. It derives
+the localization bound from calibration records, applies that unchanged bound
+to held-out records, uses a conservative linear sum for the separately evidenced
+camera/robot/tracking/tool components, and checks every frozen safe radius. Its
+result validates against
+[`physical_camera_localization_evaluation_result_v1.schema.json`](../schemas/physical_camera_localization_evaluation_result_v1.schema.json).
+`QUALIFICATION_RECOMMENDED` is an offline review recommendation. The result
+always keeps `qualification_installed`, `physical_deployment_qualified`, and
+motion-batch emission false.
+
 The campaign fails closed if any identity drifts, splits overlap, condition
 coverage is incomplete, the declared 0.99 coverage is missed, an unsafe scene
 is accepted, or the composed bound crosses a target safe region. A failed
