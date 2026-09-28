@@ -12,6 +12,17 @@ accuracy, or describe physical typing as qualified.
 
 This is a targeted hold, not a general development freeze.
 
+At any time, inspect the retained cross-lane blocker map without opening a
+camera or controller:
+
+```powershell
+rocell integration-readiness --json
+```
+
+Automation may add `--require-ready` to receive a nonzero result while any
+single-action review gate remains blocked. A zero result without that option is
+only a successful read of current status, not a readiness claim.
+
 ## Work that may continue now
 
 - Keep the AI-to-arm schemas, freshness rules, uncertainty fields, capability
