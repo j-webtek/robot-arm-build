@@ -1,5 +1,17 @@
 # Tactevra overview storyboard changelog
 
+## Servo-form and articulation correction
+
+- Replaced the simplified two-link animation with the RoArm-shaped visible
+  shoulder–elbow–wrist-pitch–tool-wrist chain.
+- Mounted each servo housing and link group on the physically correct side of
+  its driven pivot and parented the chain to prevent gaps during interpolation.
+- Kept the gripper, printed cartridge, and stylus on one terminal tool frame;
+  that frame remains vertical at keyboard and phone contacts.
+- Added canonical articulation rules, build-time mount assertions, and five
+  full-arm QA renders spanning keyboard alignment, rhythm typing, crossing,
+  phone typing, and Send.
+
 This file keeps revision history out of the artist-facing production board.
 
 ## v2.1 corrections from v2

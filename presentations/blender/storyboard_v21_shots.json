@@ -10,6 +10,19 @@
     "uncertainty": "blue bounded-error disk",
     "preview": "dotted target ghost with no authority"
   },
+  "arm_articulation": {
+    "presentation_only": true,
+    "kinematic_authority": "software/models/roarm_m3/roarm_m3_kinematic_40dbd84.urdf",
+    "visible_joint_chain": ["shoulder", "elbow", "wrist_pitch", "tool_wrist"],
+    "mount_side": {
+      "elbow_servo": "upper",
+      "wrist_pitch_servo": "forearm",
+      "tool_wrist_servo": "wrist_link",
+      "gripper_and_stylus": "tool"
+    },
+    "pivot_continuity": "parented chain",
+    "terminal_tool_orientation": "vertical in board frame"
+  },
   "camera_inserts": [
     {
       "scene_id": 7,

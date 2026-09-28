@@ -222,12 +222,20 @@ the next action.
 11. No overlay covers the robot, cartridge, stylus, gripper, target, or contact point.
 12. Every cut preserves outgoing and incoming joint, cartridge, stylus, and cable pose.
 13. `SIMULATED WORKCELL SEQUENCE` persists throughout rendered physical action.
+14. The visible arm always uses the same four-pivot presentation chain:
+    shoulder, elbow, wrist pitch, and tool wrist. The elbow servo remains on
+    the upper link, the wrist-pitch servo remains on the forearm, and the tool
+    wrist servo remains on the short wrist link.
+15. Link endpoints remain joined at their servo pivots through interpolation;
+    no rail may stretch, detach, or slide through its housing. The terminal
+    tool frame counter-rotates so the stylus stays vertical to the board during
+    keyboard and phone contact scenes.
 
 ## Asset and production requirements
 
 | Asset | Required condition |
 |---|---|
-| Robot | Detailed RoArm geometry, servo housings, dual links, fasteners, wiring, gripper, and one articulated rig used in all scenes. |
+| Robot | Detailed RoArm geometry with one parented shoulder–elbow–wrist-pitch–tool-wrist chain, correctly mounted servo housings, dual links, short wrist link, fasteners, segmented wiring, gripper, and one articulated rig used in all scenes. |
 | Gripper/tool mount | Same RoArm jaw architecture in every moving shot. Opposing pads contact the controlled 28 × 24 × 65 mm compliant body at its recessed grip band; keyed cap, split collar, and two M3 retainers use the repository STLs. |
 | Stylus | Nominal 9 mm OASO-style aluminum barrel running through the printed cartridge, with constant protrusion and an articulated capacitive contact disc. Installed dimensions remain explicitly unmeasured. |
 | Keyboard | Measured black RC03 asset, correct six-row layout and legends, animated lowercase target keys, associated only with the operator-display test pad. Its cable exits toward the display side and ends off-frame. |
