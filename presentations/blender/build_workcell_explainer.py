@@ -643,8 +643,13 @@ def _world_beam(name: str, start: Vector, end: Vector, mat: bpy.types.Material,
     return beam
 
 
-def add_continuous_press_arm(mats: dict[str, bpy.types.Material]) -> dict[str, object]:
-    """Build one continuous, hardware-shaped arm rig ending at the H stylus.
+def add_continuous_press_arm(
+    mats: dict[str, bpy.types.Material],
+    *,
+    target_xy: tuple[float, float] = (216.55, 154.0),
+    motion_profile: tuple[tuple[int, float], ...] | None = None,
+) -> dict[str, object]:
+    """Build one continuous, hardware-shaped arm rig ending at a named target.
 
     The official assembly surface remains available as source evidence, but a
     rig is required for the execution beat because the vendor STEP is a rigid
@@ -662,7 +667,8 @@ def add_continuous_press_arm(mats: dict[str, bpy.types.Material]) -> dict[str, o
     tx, ty, _tz = manifest["arm"]["nominal_board_T_robot_world_translation"]
     base = board_point(tx, ty, 0)
     shoulder = base + Vector((0, 0, 0.120))
-    wrist = board_point(216.55, 154.0, 0) + Vector((0, 0, 0.205))
+    target_x, target_y = target_xy
+    wrist = board_point(target_x, target_y, 0) + Vector((0, 0, 0.205))
     length_a = 0.2387
     length_b = 0.1550
     direction = wrist - shoulder
@@ -787,23 +793,28 @@ def add_continuous_press_arm(mats: dict[str, bpy.types.Material]) -> dict[str, o
                      (0.012, 0.026, 0.070), mats["arm_exact"], 0.003)
     collar = cylinder("Continuous arm stylus collar", wrist + Vector((0, 0, -0.071)),
                       0.012, 0.028, mats["arm_exact"], 48)
-    stylus_center = board_point(216.55, 154.0, 0) + Vector((0, 0, 0.105))
+    stylus_center = board_point(target_x, target_y, 0) + Vector((0, 0, 0.105))
     stylus = cylinder("Continuous arm stylus", stylus_center, 0.004, 0.140,
                       mats["metal"], 48)
     bpy.ops.mesh.primitive_cone_add(vertices=48, radius1=0.0012, radius2=0.004,
                                     depth=0.012,
-                                    location=board_point(216.55, 154.0, 29))
+                                    location=board_point(target_x, target_y, 29))
     tip = bpy.context.object
     tip.name = "Continuous arm compliant stylus tip"
     apply_material(tip, mats["arm_exact"])
     moving = (holder, wrist_plate, jaw_left, jaw_right, collar, stylus, tip)
+    if motion_profile is None:
+        motion_profile = (
+            (1, 0.0), (1288, 0.0), (1300, -0.004),
+            (1320, -0.004), (1332, 0.0), (END_FRAME, 0.0),
+        )
     for component in moving:
         base_z = component.location.z
-        for frame, offset in ((1, 0.0), (1288, 0.0), (1300, -0.004),
-                              (1320, -0.004), (1332, 0.0), (END_FRAME, 0.0)):
+        for frame, offset in motion_profile:
             component.location.z = base_z + offset
             component.keyframe_insert("location", frame=frame)
         component["evidence_status"] = "URDF_DERIVED_PRESENTATION_PROXY_NOT_KINEMATIC_EVIDENCE"
+        component["presentation_target_xy_mm"] = target_xy
     objects = tuple(obj for obj in bpy.context.scene.objects if obj not in objects_before)
     return {"root": base, "objects": objects, "moving": moving, "manifest": manifest}
 

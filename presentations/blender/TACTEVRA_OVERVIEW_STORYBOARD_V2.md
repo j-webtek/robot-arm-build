@@ -1,6 +1,7 @@
 # Tactevra overview film — storyboard v2.1
 
-- **Status:** production plan; not yet rendered
+- **Status:** production plan with Blender framework and first-contact benchmark;
+  full sequence not yet rendered
 - **Runtime:** exactly 100 seconds
 - **Format:** 16:9 master, 24 fps
 - **Audience:** technical buyers, collaborators, and first-time GitHub visitors
@@ -110,6 +111,20 @@ white/grey is explanation or locked runtime policy.
 | 17 | 1:36–1:40 | all | Hero wide and logo. Stage ribbon lights in order. `ONE INTENT CONTRACT · DEVICE-SPECIFIC CONTROL · ONE CONTACT AT A TIME`. Persistent qualifier: `SIMULATED WORKCELL SEQUENCE`. | Clean brand resolve; no black tail. |
 
 The scene durations total exactly 100 seconds.
+
+## Production implementation checkpoint
+
+The timing plan is mirrored in `storyboard_v21_shots.json` and validated as 17
+contiguous scenes across exactly 2,400 frames. The editable Blender scaffold
+creates four reusable shot rigs, timeline camera bindings, locked reference
+asset collections, and the three recurring authority graphics. The lowercase
+`r` contact is implemented as the first visual benchmark at 0:40–0:48; it is
+the continuity and readability gate before the remaining contacts are blocked.
+
+Run `python presentations/blender/validate_storyboard_v21.py`, then build the
+local benchmark with the Blender command documented in `README.md` using the
+`--preview-benchmark` option. Generated `.blend` and PNG output remains under
+`tmp/` and is not a source artifact or physical qualification record.
 
 ## Narration script
 

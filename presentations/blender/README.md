@@ -97,6 +97,48 @@ video stay out of source control through the repository's existing `/tmp/`
 ignore rule; the source scene builder and production notes are the reviewable
 authorities.
 
+## Build the v2.1 production framework
+
+The 100-second replacement film is now encoded as a deterministic Blender
+production scaffold rather than only a prose storyboard:
+
+- `storyboard_v21_shots.json` is the source of truth for all 17 contiguous
+  scenes, stage names, camera-rig assignments, and the seven-phase first
+  contact benchmark;
+- `build_storyboard_v21_benchmark.py` reuses the measured workcell scene,
+  organizes reference assets in a locked collection, creates four native
+  Blender camera rigs (`macro`, `dolly`, `arm_follow`, and `hero`), and adds
+  the green permit, blue uncertainty, and dotted no-authority preview;
+- `validate_storyboard_v21.py` fails when timings drift, a shot is missing, a
+  camera rig is unused, or the first-contact phase order changes.
+
+Validate the editorial contract without Blender:
+
+```powershell
+python presentations/blender/validate_storyboard_v21.py
+```
+
+Build the editable scene and six local benchmark frames:
+
+```powershell
+& "C:\Program Files\Blender Foundation\Blender 4.3\blender.exe" `
+  --background --factory-startup `
+  --python presentations/blender/build_storyboard_v21_benchmark.py -- `
+  --preview-benchmark
+```
+
+Generated output is written to `tmp/blender-storyboard-v21/`. The first
+benchmark is intentionally limited to the lowercase `r` action at frames
+961–1152. It demonstrates `transit → align → settle → approach → contact →
+retract → verify`, consumes one permit, and reveals the dotted `e` preview
+only after verification. It remains a simulated presentation sequence, not
+physical qualification evidence.
+
+The scaffold has no add-on dependency. Native cameras, constraints, markers,
+and collections keep CI and collaborator builds reproducible. Artists may use
+free camera or editing add-ons for exploration, but must bake approved motion
+into these native rigs before delivery.
+
 ## Publish the repository overview
 
 After reviewing the 1080p delivery render, publish the intentionally tracked
