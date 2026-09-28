@@ -1,6 +1,6 @@
 # Tactevra project status
 
-Reviewed September 28, 2026 through the ARM-079 offline PC1 joint-dynamics gate,
+Reviewed September 28, 2026 through the ARM-080 PC2 shadow-pipeline checkpoint,
 ARM-077 PC0 pre-camera qualification basis, ARM-076 typing collision-evidence
 intake, ARM-075 exact-sample offline IK screen, AI-403 precision-adapter
 integration, and merged physical-camera
@@ -256,6 +256,13 @@ limits, just-inside/just-outside rescale bounds, stationary samples, direction
 reversal, and crossed lineage. This makes the zero-I/O PC2 shadow composition
 ready to begin; measured dynamics, tracking, collision evidence, fresh state,
 and physical authority remain blocked.
+
+ARM-080 composes the actual strict V2 decoder and existing T1/T2/PC1/collision-
+intake boundaries behind one zero-I/O API. Retained `robot` and
+`H,H,1,PERIOD` receipts preserve order and repetition, bind nine stage hashes,
+and stop at the honest installed-collision-profile and fresh-state blockers.
+PC2 remains in progress; the new boundary has no writer, transport, or physical
+authority.
 
 AI-403 then integrates the pose-output precision adapter and actual V2 batch
 producer on current `main`. The retained contract fixture deterministically

@@ -4336,3 +4336,42 @@ rewriting history. New entries must use a unique evidence ID.
 - Next dependency: PC2 must compose the real zero-I/O V2 decode, typing plan,
   Cartesian trajectory, IK, PC1 schedule, and collision-evidence blocker into
   retained golden traces without granting authority.
+
+### E-20260928-ARM-080 — PC2 golden shadow composition checkpoint
+
+- Stage: S1/S4/S7 pre-camera arm integration; PC2 in progress.
+- Lane: Arm/runtime.
+- Commit: `d6dad60ac732e5c08888344bcb1e11a961ca5535`.
+- Change: added one zero-I/O API that composes the real strict V2 decoder,
+  trusted-registry ingress and freshness gate, ordered typing compiler,
+  Cartesian trajectory, exact-sample IK, PC1 joint schedule, and collision-
+  evidence intake. It returns one content-addressed terminal receipt with nine
+  stage hashes and no writer or transport surface.
+- Inputs/fixtures: actual canonical V2 bytes for synthetic-local `robot`,
+  `H,H,1,PERIOD`, and `H,I` sequences; synthetic PC0 dynamics; pinned model,
+  build, calibration, registry, and IK seed identities.
+- Commands: `python -m pytest -q
+  tests/integration/test_typing_shadow_pipeline_v1.py`; and the 70-test shared
+  PC0/PC1/T1/T2/V2/zero-write command recorded in the PC2 plan checkpoint;
+  all five repository audit commands.
+- Result: PASS; 4 focused integration tests and 70 broader boundary tests
+  passed. Both retained golden receipts reproduce exactly, preserve repeated
+  targets and order, bind nine stage hashes, and stop at
+  `BLOCKED_INSTALLED_COLLISION_PROFILE_REQUIRED` with the fresh observed-state
+  blocker also retained. A strict payload mutation rejects before a receipt.
+  All five repository audits passed; the existing release-integrity candidate
+  blocker is unchanged.
+- Artifacts: `software/src/rocell/application/typing_shadow_pipeline_v1.py`;
+  `software/tests/integration/test_typing_shadow_pipeline_v1.py`;
+  `software/tests/fixtures/typing_shadow_pipeline_v1_golden.json`;
+  `software/docs/PRE_CAMERA_ARM_INTEGRATION_COMPLETION_PLAN.md`.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: fixtures use synthetic local perception, calibration, dynamics,
+  and start-state evidence. No measured collision profile, fresh controller
+  state, camera qualification, controller encoding, transport, movement, or
+  typing outcome is established. PC2 remains in progress pending its canonical
+  receipt parser/schema and full single-field stage-owner mutation matrix.
+- Supersedes: none.
+- Next dependency: finish PC2 mutation ownership and receipt validation before
+  PC3 rolling-horizon/restart work begins.
