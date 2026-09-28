@@ -203,6 +203,19 @@ The Stage 3 conversion removes 13 tracked convenience copies totaling
 duplicate bytes from 46,837,944 to 4,890,152; rerun the inventory tool against
 the commit under review rather than treating those values as permanent.
 
+After this conversion, the only governed large duplicate groups are three exact
+STL pairs shared by frozen RC02 provenance and the active canonical RC03 set:
+`stylus_diameter_gauge.stl`, `mast_socket_fit_test.stl`, and
+`m5_nut_trap_fit_gauge.stl`. The arm, hardware, and repository workstreams own
+that retention decision. RC02 remains immutable historical evidence and RC03
+remains the current canonical source; neither copy is an unclassified staging
+artifact, and changing either requires a new owner-reviewed decision.
+
+Measured at commit `4dfcbbd67271e8b8c3d4ae60e727fd5ee2339fd7`, before this
+classification-only follow-up, the repository contained 5,932 tracked files,
+644,996,944 logical bytes, and 4,890,152 governed duplicate bytes. Both #130
+reduction targets are met without rewriting Git history.
+
 ## Stage the static-camera print pack for offline use
 
 The repository form of `SYSTEM_PRINT_PACK_v1` keeps the qualified 3MF queue,
