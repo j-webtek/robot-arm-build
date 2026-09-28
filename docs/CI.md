@@ -71,6 +71,12 @@ for the dated settings and how to propose another action without bypassing them.
   and a version-bound JSON receipt for 14 days. Maintainers must still inspect
   representative pages before approving a major ReportLab update; the automated
   gate does not qualify printing, drilling, CAD, or physical hardware.
+- A Linux/Python 3.12 RC03 Trimesh qualification that installs only the declared
+  Trimesh and NumPy ranges, independently reads every released STL listed in
+  `PART_VALIDATION.csv`, and verifies inventory coverage, watertightness, winding,
+  connected-body count, positive volume, and recorded extents within 0.05 mm.
+  The retained version-bound JSON receipt makes major mesh-reader upgrades
+  reviewable without claiming CAD regeneration, slicer behavior, or physical fit.
 
 The test extra declares `jsonschema`; no separate manual install is needed.
 Dependency ranges are not a lockfile: these jobs check fresh resolution within

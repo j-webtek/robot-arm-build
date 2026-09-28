@@ -152,3 +152,39 @@ jobs:
           path: ${{ runner.temp }}/rc03-reportlab/
           if-no-files-found: warn
           retention-days: 14
+
+  rc03-trimesh:
+    name: RC03 Trimesh outputs / Ubuntu 24.04 / Python 3.12
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.12'
+      - name: Select and install the RC03 mesh readback toolchain
+        run: |
+          python scripts/ci/rc03_trimesh_qualification.py requirements \
+            --source active-project/RoCell_v0_3/requirements-cad.txt \
+            --output "$RUNNER_TEMP/rc03-trimesh-requirements.txt"
+          python -m pip install --disable-pip-version-check \
+            -r "$RUNNER_TEMP/rc03-trimesh-requirements.txt"
+      - name: Qualify released STL inventory
+        run: |
+          mkdir -p "$RUNNER_TEMP/rc03-trimesh"
+          python scripts/ci/rc03_trimesh_qualification.py validate \
+            --root active-project/RoCell_v0_3 \
+            --manifest active-project/RoCell_v0_3/PART_VALIDATION.csv \
+            --summary "$RUNNER_TEMP/rc03-trimesh/qualification.json"
+          cat "$RUNNER_TEMP/rc03-trimesh/qualification.json" >> "$GITHUB_STEP_SUMMARY"
+      - name: Retain version-bound mesh qualification receipt
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: rc03-trimesh-${{ github.sha }}
+          path: ${{ runner.temp }}/rc03-trimesh/
+          if-no-files-found: warn
+          retention-days: 14
