@@ -103,7 +103,7 @@ and its evidence gate pass.
 | PC5 | Fault injection and property testing | PC1-PC4 | No | None | COMPLETE |
 | PC6 | Unified trace journal and deterministic replay | PC2-PC5 | No | None | COMPLETE |
 | PC7 | Safe transition cache in shadow mode | PC3, PC6 | No | None | COMPLETE |
-| PC8 | Performance benchmark and readiness report | PC1-PC7 | No | None | NOT_STARTED |
+| PC8 | Performance benchmark and readiness report | PC1-PC7 | No | None | IN_PROGRESS |
 | PC9 | Camera-arrival evidence tooling and dry run | PC6 | No for tooling | None before arrival | NOT_STARTED |
 | PC10 | Pre-camera integration closure | PC0-PC9 | No | None | NOT_STARTED |
 
@@ -415,6 +415,18 @@ declared deterministic contract. A cache hit never changes safety disposition
 or creates authority. Crossed or stale entries are rejected rather than used.
 
 ## PC8 — Performance benchmark and readiness report
+
+**Checkpoint 2026-09-28:** ARM-092 adds the bounded performance-report
+contract. It requires at least 50 unique samples for cold cache, warm cache,
+long strings, repeated keys, punctuation, keyboard extremes, forced rejection,
+direct hover, and park-between-key baseline scenarios. Every sample accounts
+for the nine declared CPU stages, total CPU, action and screening-sample counts,
+serialized bytes, peak process memory, predicted route duration, cache result,
+and estimated time saved. The report computes deterministic nearest-rank
+p50/p95/p99 statistics, enforces all retained PC0 ceilings, and permanently
+labels simulated duration as not being measured typing speed. Eight focused
+tests and the 158-test affected suite pass. PC8 remains in progress pending an
+instrumented pipeline runner, retained report, and bottleneck/readiness review.
 
 ### Deliverables
 

@@ -4823,3 +4823,43 @@ rewriting history. New entries must use a unique evidence ID.
 - Supersedes: ARM-090's limited single-route equivalence coverage.
 - Next dependency: begin PC8 reproducible cold/warm-cache performance and
   readiness benchmarking without presenting simulated timing as typing speed.
+
+### E-20260928-ARM-092 — PC8 bounded performance-report contract
+
+- Stage: S1/S4/S7 pre-camera arm integration; PC8 in progress.
+- Lane: Arm/runtime shared boundary.
+- Commit: `39af922`.
+- Change: added a strict synthetic-only benchmark sample and report contract
+  with deterministic percentile aggregation, scenario completeness, cache and
+  route comparison, resource accounting, and retained PC0 ceiling enforcement.
+- Inputs/fixtures: 50 deterministic samples for each of cold cache, warm cache,
+  long string, repeated key, punctuation, keyboard extreme, forced rejection,
+  direct hover, and park baseline; duplicate, incomplete, false-acceptance, and
+  resource-ceiling failure cases.
+- Commands: `python -m pytest
+  tests/unit/test_typing_performance_report_v1.py
+  tests/unit/test_typing_transition_cache_v1.py
+  tests/integration/test_typing_transition_cache_equivalence_v1.py
+  tests/integration/test_typing_trace_golden_v1.py
+  tests/unit/test_typing_trace_package_v1.py
+  tests/integration/test_typing_trace_cli.py
+  tests/unit/test_typing_trace_journal_v1.py
+  tests/integration/test_typing_trace_adapter_v1.py
+  tests/integration/test_typing_shadow_pipeline_v1.py
+  tests/unit/test_typing_rolling_horizon_v1.py
+  tests/unit/test_typing_controller_bridge_v1.py
+  tests/unit/test_model_motion_sequence_journal.py
+  tests/unit/test_typing_fault_campaign_v1.py
+  tests/unit/test_typing_fault_owner_boundaries_v1.py -q`.
+- Result: PASS; eight focused PC8 tests and 158 affected PC2-PC8 tests pass.
+  Required p50/p95/p99 distributions, cache metrics, route comparison, resource
+  maxima, and all ceiling dispositions are deterministic.
+- Artifacts: `software/src/rocell/application/typing_performance_report_v1.py`
+  and `software/tests/unit/test_typing_performance_report_v1.py`.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: current samples are contract fixtures, not instrumented pipeline
+  measurements; no retained performance report or physical speed claim exists.
+- Next dependency: instrument the actual PC2-PC7 boundaries, run and retain the
+  bounded cold/warm benchmark, then publish bottlenecks and readiness without
+  converting predicted duration into a physical claim.

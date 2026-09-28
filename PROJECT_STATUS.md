@@ -1,6 +1,6 @@
 # Tactevra project status
 
-Reviewed September 28, 2026 through the ARM-091 PC7 equivalence campaign,
+Reviewed September 28, 2026 through the ARM-092 PC8 measurement contract,
 ARM-077 PC0 pre-camera qualification basis, ARM-076 typing collision-evidence
 intake, ARM-075 exact-sample offline IK screen, AI-403 precision-adapter
 integration, and merged physical-camera
@@ -353,6 +353,14 @@ are exercised for invalidation, and a seeded 128-operation campaign proves
 bounded deterministic capacity behavior. Thirty-one focused tests and the
 150-test affected PC2-PC7 suite pass with identical planning receipts and joint
 schedule hashes. PC8 performance benchmarking is now unblocked.
+
+ARM-092 begins PC8 with a strict synthetic performance-report contract. It
+requires nine named scenario classes with at least 50 samples each, exact CPU
+stage accounting, cache results, resource maxima, predicted route duration,
+and deterministic p50/p95/p99 summaries. All retained PC0 ceilings are enforced
+and simulation timing is explicitly prohibited from being reported as physical
+typing speed. Eight focused tests and the 158-test affected suite pass. An
+instrumented runner and retained measured report remain before PC8 completion.
 
 AI-403 then integrates the pose-output precision adapter and actual V2 batch
 producer on current `main`. The retained contract fixture deterministically

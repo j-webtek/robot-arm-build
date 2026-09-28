@@ -508,6 +508,13 @@ Every bound identity dimension is invalidation-tested, and a seeded
 focused and 150 affected tests pass with identical cached-versus-uncached
 receipts and schedule hashes and zero authority. PC8 performance benchmarking
 may now begin.
+ARM-092 begins PC8 with the shared bounded performance-report contract. Nine
+required scenarios each need at least 50 samples; reports include exact stage
+CPU distributions, resource maxima, cache behavior, route-duration prediction,
+and direct-versus-park comparison. PC0 ceilings reject rather than being
+silently exceeded, and simulated timing can never be labeled measured typing
+speed. Eight focused and 158 affected tests pass. The instrumented runner and
+retained readiness report remain outstanding.
 The AI precision lane now has a mainline-compatible pose-output adapter and v2
 batch producer. It preserves repeated targets and abstains on qualification,
 domain, freshness, identity, confidence, or containment failure. Its retained
