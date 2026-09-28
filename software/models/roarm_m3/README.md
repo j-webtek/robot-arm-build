@@ -109,7 +109,7 @@ The arm includes the holder but not camera electronics and does not name an
 exact supported camera SKU. The Waveshare IMX335 5MP USB Camera (B), SKU 26719,
 was the Freeze-009 arm-camera candidate. Its official 21.0 x 13.5 mm
 mounting-hole pattern geometrically matches the holder drawing, but it is not
-the selected Phase-1 camera. Active Freeze 011 retains these legacy fields
+the selected Phase-1 camera. Active Freeze 012 retains these legacy fields
 under `CAMERA_ARCHITECTURE_ALIGNMENT_HOLD`; they are not B0477 evidence. The
 IMX335 is a USB/UVC camera, not an ESP camera. Any future Phase-2 use still
 requires receipt identity, USB descriptors/modes, installed rail position,

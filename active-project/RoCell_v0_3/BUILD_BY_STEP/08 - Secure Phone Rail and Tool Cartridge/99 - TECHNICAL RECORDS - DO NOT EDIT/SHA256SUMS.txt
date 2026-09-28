@@ -7,7 +7,7 @@ c9362cf401ca66f4e584c7fc294f6c54853c8ea546e610d551bc841782d6bcd0  ../../../BOM.c
 2c93199c0703d975d47870c2537dd4acf39c376c6f42fbab17fcddeba4004516  ../../../JOB_KITS.csv
 a8c75f05f727fa899c1f873ffea9852b5e6d343cdd302d5c4e02ee4124f74fc3  ../../../PRINT_READINESS.json
 5be5234644cbca322e93f16ec422cd5a6f04059055a2f56d68cf224d61f015b0  ../../../PRINT_READINESS.md
-ba84a14a17983d774a0278b4b68571d920b0dc4d186fd05c991b1d149d388a9e  ../../../README_FIRST.md
+3f120c69dcee278cb67c449e84d3a43c0b5183bdfee1cf4cb86bb938e2a32d34  ../../../README_FIRST.md
 122b24630f81598c894d1612c2a6a4c277a3caa51144d40d25899a2293dc0f13  ../../../cad/step/calibration_puck.step
 95caeb099f5f2827293eef481619369c9dfb44fe945acf8f5ff6f0b96ee26349  ../../../cad/step/phone_clamp_rail.step
 d44b5a93445dc761df13682001579da495c733eaf83701b988592362eea476a8  ../../../cad/step/phone_tcp_station.step
@@ -27,7 +27,7 @@ e00b59851cfd50d7facbfc16d6bfd9ca3e2707279c1597ab74a997df96764174  ../../../outpu
 63cf85413ed08193b08445859bfcc8116c2e47064f2a086fdbfdb8bd7339e565  ../../../print_plates_3mf/03A_ABS_phone_TCP_station.3mf
 c3fd921347d91842d1f16728e8e88a45d25a776aa3aedd6d8810c9db9773c7b9  ../../../print_plates_3mf/03A_ABS_phone_TCP_station.PRINT_SETTINGS.md
 a0933605a7fbc2c7205b93404508f94828e21075476c6e89db2aef5899459da6  ../../../print_plates_3mf/03A_ABS_phone_TCP_station.print.json
-e992ea3f29097bd346095a5c5ac08c33c9e2d35d7e9c27bce6041e43e3a9ef39  ../../../print_plates_3mf/03C1_ABS_phone_clamp_rail.3mf
+da815d1b99c985a0d25285a66955a8793905d2ff27d3ef92c9df4bb6487a5844  ../../../print_plates_3mf/03C1_ABS_phone_clamp_rail.3mf
 0a0a5ea8323faf956099084619fece6f7c8e879f6d7ae8baa2aff406effec156  ../../../print_plates_3mf/03C1_ABS_phone_clamp_rail.PRINT_SETTINGS.md
 136b3c0808d549dd03f2aa3a212cf250fc5647b426205d5fbbcf8ba76a5a367c  ../../../print_plates_3mf/03C1_ABS_phone_clamp_rail.print.json
 597423729e6d84ed39847ef9093fec57dcce2d5a51fee3c1bf17228d5045c8f7  ../../../print_plates_3mf/03D_ABS_TCP_datum_cartridges.3mf
@@ -35,7 +35,7 @@ e992ea3f29097bd346095a5c5ac08c33c9e2d35d7e9c27bce6041e43e3a9ef39  ../../../print
 9cef17736c2c98614135777d8a69034e80e44a27a548a66bcc50e66d58305ce8  ../../../print_plates_3mf/03D_ABS_TCP_datum_cartridges.print.json
 6badf0daa975d8c0ab5de34cea5a7514dbff8469d2a7b499670a3002d428eb31  ../../../scripts/build_illustrated_assembly_guide.py
 4baf08d28e3566c3eb3869585275ebc318bf1e076744867221d4d79e2359f182  ../../../scripts/build_manual_pdf.py
-09ec78a5512ee6cb6997b3200e7bd1cdb1418eeb2fb477f339f331f14191f8a2  ../../../scripts/build_step_packages.py
+d36767cf22f6b4becf5716eb7ae2e7b8f8315dd13e30204732ff9f2c3007463a  ../../../scripts/build_step_packages.py
 6090b47ff751ebb62c6ab8ecd4abc55fa54f79cabde5b86a4231484b2cc67e53  ../../../scripts/generate_build_tracker.py
 520cf48d2263beca0eca351d6960fbfae95e1f9c63e05aec1204957b47271a7f  ../../../scripts/generate_job_cards.py
 0a940eabc2ab22fcc0c4e2b2df9a67fa90224027168127917c2e7879a8725b93  ../../../scripts/initialize_step_evidence.py
@@ -45,6 +45,7 @@ e992ea3f29097bd346095a5c5ac08c33c9e2d35d7e9c27bce6041e43e3a9ef39  ../../../print
 8e7467e8eccccbf6e04988820b828be3c0aa0c1c06167954f53bb46b5f8cf330  ../../../scripts/render_assembly_guide.py
 0f593f140437858b8cd72c87f4737b14af483c91ac3e9fcb45f07d4893327571  ../../../scripts/set_active_build.py
 caed2f3b929d24354ae7ff289178e70a94c8729d84ca5f2d55384c483032cbba  ../../../scripts/sign_off_step.py
+a18eb88d17b2adbe930857f4539079bad96090320c4ea161b5d38a29ec44e3d8  ../../../scripts/stage_hash_bound_artifacts.py
 93fb598ee2de6dc0ba60d6eec7291458a728cb087dbe724b9e3bf09aa8933f8a  ../../../scripts/step_evidence_common.py
 7dc6159c15826da700a66d9e271776f8daed14716db80081fedea2e8712fb2ed  ../../../scripts/validate_print_readiness.py
 9b954d47726e7c09423d31f7cdbd8b0e07dff1b78c11bf826274473062d66ed3  ../../../scripts/validate_release_package.py

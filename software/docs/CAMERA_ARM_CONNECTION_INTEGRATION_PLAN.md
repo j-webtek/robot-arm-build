@@ -188,7 +188,7 @@ installed calibration and motion/contact remain pending.
 **Date:** 2026-09-07  
 **Status:** implementation in progress; diagnostic workbench, thirteen-stage durable camera/arm/reference rehearsal plus stage-14 NC-01 gap diagnostics, original-store reopening, native camera identity and standalone capture datasets built; consult the implementation record for completed verification. Physical connection/activation, installed calibration, NC-02/03 and handoff are not released.  
 **Target:** Windows host, RoArm-M3 Pro, static-overhead Arducam B0477/IMX283 with the purchased nominal 16 mm C-mount lens  
-**Current baseline:** RC03 / `2026-09-01_CELL-A` / active Freeze 011; static-primary successor still requires controlled migration
+**Current baseline:** RC03 / `2026-09-01_CELL-A` / active Freeze 012; static-primary successor still requires controlled migration
 
 **Developer companion:** use the [developer playbook](CAMERA_ARM_DEVELOPER_PLAYBOOK.md)
 for environment setup, existing code entry points, dependency-ordered tickets,

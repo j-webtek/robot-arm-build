@@ -2,7 +2,7 @@
 
 **Controlled revision:** `RC03-INT-R1`
 
-Start with `BUILD_BY_STEP/00 - START HERE.md`, then follow `01 - COMPLETE BUILD ORDER.md`. Step 00 measures hardware, qualifies printing, produces only approved jobs, and organizes accepted parts; Steps 01-15 match the illustrated assembly sequence. Every step uses the same plain-language order: `00 - START HERE`, `01 - BEFORE YOU START`, `02 - PARTS AND TOOLS CHECKLIST`, `03 - STL MODELS`, `04 - STEP-BY-STEP INSTRUCTIONS`, `05 - CHECK YOUR WORK`, `06 - SAVE MEASUREMENTS AND PHOTOS`, and `07 - FINISH THIS STEP AND CONTINUE`. Machine manifests and hashes are separated under `99 - TECHNICAL RECORDS - DO NOT EDIT`. Select one active physical build with `scripts/set_active_build.py`, regenerate, then initialize each ready step once with `scripts/initialize_step_evidence.py`; only that build ID can affect computed step states. Canonical STL basenames remain unchanged for job-card compatibility. Use `output/pdf/RC03_ILLUSTRATED_ASSEMBLY_GUIDE.pdf` for the visual sequence and `ASSEMBLY_MANUAL.pdf` for the complete engineering detail.
+Start with `BUILD_BY_STEP/00 - START HERE.md`, then follow `01 - COMPLETE BUILD ORDER.md`. Step 00 measures hardware, qualifies printing, produces only approved jobs, and organizes accepted parts; Steps 01-15 match the illustrated assembly sequence. Every step uses the same plain-language order: `00 - START HERE`, `01 - BEFORE YOU START`, `02 - PARTS AND TOOLS CHECKLIST`, `03 - STL MODELS`, `04 - STEP-BY-STEP INSTRUCTIONS`, `05 - CHECK YOUR WORK`, `06 - SAVE MEASUREMENTS AND PHOTOS`, and `07 - FINISH THIS STEP AND CONTINUE`. Machine manifests and hashes are separated under `99 - TECHNICAL RECORDS - DO NOT EDIT`. Step 00 retains its hash-verified print-stage STL copies; Steps 01-15 link to the canonical project-level meshes by path and SHA-256 without duplicating their bytes. Use `scripts/stage_hash_bound_artifacts.py` when a verified external artifact tree is required. Select one active physical build with `scripts/set_active_build.py`, regenerate, then initialize each ready step once with `scripts/initialize_step_evidence.py`; only that build ID can affect computed step states. Canonical STL basenames remain unchanged for job-card compatibility. Use `output/pdf/RC03_ILLUSTRATED_ASSEMBLY_GUIDE.pdf` for the visual sequence and `ASSEMBLY_MANUAL.pdf` for the complete engineering detail.
 
 ## What changed
 
@@ -49,6 +49,7 @@ Start with `BUILD_BY_STEP/00 - START HERE.md`, then follow `01 - COMPLETE BUILD 
 - `PART_VALIDATION.csv` and `RELEASE_VALIDATION.json` - independent geometry/package checks.
 - `outputs/` - the rendered print-compatibility workbook with route, gate, queue, profile, part, board, kit, and lifecycle views.
 - `BUILD_BY_STEP/` - generated Step 00 plus Steps 01-15 operator work packages. Controlled source files stay canonical; only `ACTIVE_BUILD.json` (through its selector) and each step's `06 - SAVE MEASUREMENTS AND PHOTOS/` area are writable.
+- `scripts/stage_hash_bound_artifacts.py` - fail-closed resolver for materializing and independently verifying manifest-bound canonical artifacts outside the checkout.
 
 ## Critical first steps
 

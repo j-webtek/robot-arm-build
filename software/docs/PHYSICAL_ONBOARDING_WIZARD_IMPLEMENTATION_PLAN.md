@@ -5,7 +5,7 @@
 **Status:** reviewed v2 implementation contract; Phase-0 foundation and the M1
 qualified zero-hardware application runtime are implemented, while M2 effect
 coordination and every physical provider remain blocked; no physical authority  
-**Current build baseline:** `2026-09-01_CELL-A`, active Freeze 011  
+**Current build baseline:** `2026-09-01_CELL-A`, active Freeze 012  
 **Selected Phase-1 vision:** rigid static-overhead Arducam B0477 / Sony
 IMX283 / included nominal 16 mm lens  
 **Successful wizard end state:** `COMPLETE_DIAGNOSTIC`, never “ready to type”

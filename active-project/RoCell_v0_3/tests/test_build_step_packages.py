@@ -149,6 +149,39 @@ class BuildStepPackageTests(unittest.TestCase):
         self.assertEqual(result["print_job_count"], 24)
         self.assertTrue(result["print_job_single_owner"])
         self.assertTrue(result["canonical_files_are_links_not_copies"])
+        self.assertEqual(result["local_stl_copies_verified"], 32)
+        self.assertEqual(result["hash_bound_stl_references_verified"], 86)
+
+    def test_only_step_00_retains_generated_stl_copy_bytes(self) -> None:
+        config, _, _, _ = build_step_packages.load_sources()
+        for step in config["steps"]:
+            folder = ROOT / "BUILD_BY_STEP" / build_step_packages.step_folder_name(step)
+            manifest = json.loads((folder / build_step_packages.STEP_MANIFEST_FILE).read_text(encoding="utf-8"))
+            stl_records = [
+                record
+                for record in manifest["canonical_files"]
+                if record["canonical_path"].startswith("stl/")
+                and record["canonical_path"].lower().endswith(".stl")
+            ]
+            local_stls = list((folder / build_step_packages.STEP_STL_DIRECTORY).glob("*.stl"))
+            if step["id"] == "00":
+                self.assertEqual(len(local_stls), len(stl_records))
+                self.assertTrue(
+                    all(record["artifact_resolution"] == "local_hash_verified_copy" for record in stl_records)
+                )
+            else:
+                self.assertEqual(local_stls, [], step["id"])
+                self.assertTrue(
+                    all(
+                        record["artifact_resolution"] == "canonical_hash_bound_reference"
+                        and record["local_copy_usage"]
+                        in {"TRACEABILITY_ONLY_DO_NOT_PRINT", "DO_NOT_PRINT"}
+                        and "local_operator_copy" not in record
+                        and "local_copy_sha256" not in record
+                        for record in stl_records
+                    ),
+                    step["id"],
+                )
 
     def test_empty_completion_gates_can_complete_from_valid_active_signoff(self) -> None:
         step = {

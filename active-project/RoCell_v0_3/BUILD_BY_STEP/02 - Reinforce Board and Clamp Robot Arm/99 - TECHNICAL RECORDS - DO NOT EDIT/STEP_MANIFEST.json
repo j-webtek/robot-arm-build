@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "layout_version": 4,
+  "layout_version": 5,
   "design_revision": "RC03-INT-R1",
-  "package_definition_hash": "7a6947f2de52f63133c5b9647b9b479ccd9d896906c2b575e76c106e1e5dccca",
-  "canonical_snapshot_hash": "05d11599e6d4a2937e0207535b298aa809ff08c79840350c7716666ce6d12755",
-  "canonical_input_hash": "05d11599e6d4a2937e0207535b298aa809ff08c79840350c7716666ce6d12755",
+  "package_definition_hash": "3d4d45a05327b35ffcc474b8df0f6bcb202a79fcfd98a3529062bd2c44ffc168",
+  "canonical_snapshot_hash": "d2a06fa67ec4ed0e36a8d40bd158aeb9e923890a00b310d3c6eacdfbaadfb34d",
+  "canonical_input_hash": "d2a06fa67ec4ed0e36a8d40bd158aeb9e923890a00b310d3c6eacdfbaadfb34d",
   "step_id": "02",
   "slug": "reinforce_and_clamp_arm",
   "title": "Reinforce the board and clamp the arm",
@@ -157,8 +157,8 @@
     },
     {
       "canonical_path": "README_FIRST.md",
-      "sha256": "ba84a14a17983d774a0278b4b68571d920b0dc4d186fd05c991b1d149d388a9e",
-      "size_bytes": 9962,
+      "sha256": "3f120c69dcee278cb67c449e84d3a43c0b5183bdfee1cf4cb86bb938e2a32d34",
+      "size_bytes": 10392,
       "roles": [
         "release entry point"
       ],
@@ -325,8 +325,8 @@
     },
     {
       "canonical_path": "scripts/build_step_packages.py",
-      "sha256": "09ec78a5512ee6cb6997b3200e7bd1cdb1418eeb2fb477f339f331f14191f8a2",
-      "size_bytes": 171609,
+      "sha256": "d36767cf22f6b4becf5716eb7ae2e7b8f8315dd13e30204732ff9f2c3007463a",
+      "size_bytes": 174644,
       "roles": [
         "step-package generator and validator"
       ],
@@ -444,6 +444,18 @@
       "job_ids": []
     },
     {
+      "canonical_path": "scripts/stage_hash_bound_artifacts.py",
+      "sha256": "a18eb88d17b2adbe930857f4539079bad96090320c4ea161b5d38a29ec44e3d8",
+      "size_bytes": 8660,
+      "roles": [
+        "hash-bound canonical artifact staging and offline verification"
+      ],
+      "actions": [
+        "run_for_standalone_export"
+      ],
+      "job_ids": []
+    },
+    {
       "canonical_path": "scripts/step_evidence_common.py",
       "sha256": "93fb598ee2de6dc0ba60d6eec7291458a728cb087dbe724b9e3bf09aa8933f8a",
       "size_bytes": 9078,
@@ -493,6 +505,7 @@
     }
   ],
   "local_stl_copy_count": 0,
+  "hash_bound_stl_reference_count": 0,
   "next_step": "03",
   "operator_writable_directory": "06 - SAVE MEASUREMENTS AND PHOTOS",
   "generated_control_hashes": {
@@ -505,15 +518,15 @@
     "04 - STEP-BY-STEP INSTRUCTIONS.md": "62d57ab7ccdaedb6e6dacd65c855c15e7fca6e055194caea3f74471bde7abfca",
     "05 - CHECK YOUR WORK.md": "19d350edde04173065a9c04df768bd81c5b43f3e836f69198048370093112823",
     "06 - SAVE MEASUREMENTS AND PHOTOS/READ ME - WHAT TO RECORD.md": "10f97f232a6ee30ce0c76ded23a40a4d15bb5f9f81a270879b3f8fe5545c6cf6",
-    "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/measurement_record.json": "f8089844b584a16175f97d1836d6749762cd56e36c51eb0b67cd32448b680838",
-    "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/signoff.json": "a6201ae23be8c48fc12808762a7ed652b38dde84649572b3377b36d740c89b37",
+    "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/measurement_record.json": "85aa3599c9275d6a801397e70592c47076c968ed58302116684efcd929d804e8",
+    "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/signoff.json": "cd0606f51fbd54f13ac1db46bc295f73e1122abe6fa937328b48e7d8887eef34",
     "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/Measurements Checklist.md": "5961c1b02348305a3a23c4abac3df9bdafdc040cfdd3a0632af0e3b245e6e599",
     "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/Finish and Sign Off.md": "b9e6893f788dfec37518df7f6de6d634a4084a80b9c90a94ec6dd728d4e8a4ae",
     "07 - FINISH THIS STEP AND CONTINUE.md": "6e7777c5d1e21d81be1418aac821dce017736bb51d9ac3b7c0481e40f0338daa",
-    "99 - TECHNICAL RECORDS - DO NOT EDIT/OPEN CONTROLLED FILES.md": "f0f3e473eba4be583b6cfd57d6162ac3f4963ad352c84e5d33c093a227ce0bfd",
-    "99 - TECHNICAL RECORDS - DO NOT EDIT/FILE INDEX.csv": "884e28be8bf29ca6e9624c0a5bfd56b38fffd694728f14f5b5aa6a07366155fa",
-    "99 - TECHNICAL RECORDS - DO NOT EDIT/FILE MANIFEST.json": "f427a3379984209ee484e0ecc5b202e8e10e8d134176e4d9fbda5bed4b02909c",
-    "99 - TECHNICAL RECORDS - DO NOT EDIT/SHA256SUMS.txt": "b76de6e2929b076bd2ef8234ba8ce845ed41ef5d104a036180ac3fdece0fd3e8",
+    "99 - TECHNICAL RECORDS - DO NOT EDIT/OPEN CONTROLLED FILES.md": "f8b13462253b801f14d58ccb6d2e2546402848f77bc18ef5996c75e3306a6ef7",
+    "99 - TECHNICAL RECORDS - DO NOT EDIT/FILE INDEX.csv": "10a5017a2d76cdb09042090298da8af926f7910eb4a166fb742831765d5b7e14",
+    "99 - TECHNICAL RECORDS - DO NOT EDIT/FILE MANIFEST.json": "26db64442ecb57541bfc34dfcaf6fbcaca2ec629013307bdcf2dffa8ba96f990",
+    "99 - TECHNICAL RECORDS - DO NOT EDIT/SHA256SUMS.txt": "9038fc8057d7f390e88f12636d65c98cfb6e1d53b9e6ae145ae40918b3172b87",
     "99 - TECHNICAL RECORDS - DO NOT EDIT/HARDWARE AND TOOLS.csv": "eb7cb38cde9948529e2dd6a6f2c8f0c790d28df8ea76bc1639603bc3992840c6"
   }
 }

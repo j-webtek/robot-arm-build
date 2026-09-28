@@ -12,7 +12,7 @@ configuration namespace for compatibility. Tactevra is the product name; see
 the repository [glossary](../../docs/GLOSSARY.md).
 
 The controlled baseline is manifest
-`ROCELL-PHASE0-RC03-INT-R1-FREEZE-011`, design revision `RC03-INT-R1`, active
+`ROCELL-PHASE0-RC03-INT-R1-FREEZE-012`, design revision `RC03-INT-R1`, active
 build `2026-09-01_CELL-A`. Both typing routes are selected. Physical release is
 `UNRELEASED`; `safe_to_power_robot` and `contact_enabled` are false. Those
 values are imported from the verified build snapshot and are never promoted by
@@ -42,7 +42,7 @@ controlled release before physical use.
 
 References below to Freeze-009 arm-camera choices are retained as provenance
 for that earlier direction and are explicitly historical or optional Phase 2.
-They must not be read as current hardware instructions. Active Freeze 011
+They must not be read as current hardware instructions. Active Freeze 012
 keeps the legacy canonical camera fields under
 `CAMERA_ARCHITECTURE_ALIGNMENT_HOLD`; replacing them still requires a
 synchronized superseding controlled freeze.
@@ -277,7 +277,7 @@ the installed device, puck, tags, arm base, camera, and TCP are measured.
 | `solve-eye-on-arm-offline` | Optional Phase-2 hash-pinned, pre-split `A X C = Z` numerical candidate with observability and residual diagnostics | Trusted FK, qualified timing, physical calibration promotion, camera access, or arm access |
 | `verify-eye-on-arm-fk-offline` | Optional Phase-2 exact-file-pinned raw T=1051 joint projection and `Wv_T_E` recomputation through the reviewed URDF | Authentic physical capture, qualified timing, correct measured registration, commissioning, artifact promotion, or hardware access |
 | `verify-eye-on-arm-capture-bundle-offline` | Optional Phase-2 exact-file-pinned structural agreement among the dataset, decoded feedback evidence, raw T=1051 wire lines, JPEGs, normalized detections, and pre/exposure/post brackets | Device measurement time, qualified clock correlation, registry-resolved identities, raw tag corners/inliers/covariance, commissioning, or capture |
-| `arm-feedback` | In a future released build, issue one T=105 request and parse its T=1051 snapshot from an explicitly commissioned port | Motion or contact; it is denied before port access in active Freeze 011 |
+| `arm-feedback` | In a future released build, issue one T=105 request and parse its T=1051 snapshot from an explicitly commissioned port | Motion or contact; it is denied before port access in active Freeze 012 |
 
 `--require-all` on `sweep-targets` and `screen-mission-routes`,
 `--require-complete` on `optimize-layout`, `--require-both-routes` on

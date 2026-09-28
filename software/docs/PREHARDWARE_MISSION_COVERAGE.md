@@ -1,6 +1,6 @@
 # Pre-hardware layout sensitivity and mission-route coverage
 
-> **Active Freeze 011 camera architecture:** Phase 1 registration uses the
+> **Active Freeze 012 camera architecture:** Phase 1 registration uses the
 > purchased Arducam B0477/IMX283 USB 3.0 camera with its delivered nominal
 > 16 mm C-mount lens on a rigid static overhead eye-to-hand support. This route
 > study remains camera-hardware-independent and zero-authority; received
@@ -189,7 +189,7 @@ provenance. The Freeze 006 to Freeze 007 evidence-only traceability transition,
 Freeze 007 to Freeze 008 operator-waived Job 00A functional-fit transition,
 Freeze 008 to Freeze 009 operator-confirmed 6.2 mm station-registration
 transition, Freeze 009 to Freeze 010 camera-hold/Job 03C1 reconciliation, and
-Freeze 010 to active Freeze 011 workflow correction regenerated controlled
+Freeze 010 to active Freeze 012 workflow correction regenerated controlled
 derivatives, not these study inputs. No relabeling of the recorded reports is
 claimed. The source-bound
 broader study reports

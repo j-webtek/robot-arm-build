@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "layout_version": 4,
+  "layout_version": 5,
   "design_revision": "RC03-INT-R1",
-  "package_definition_hash": "7a6947f2de52f63133c5b9647b9b479ccd9d896906c2b575e76c106e1e5dccca",
-  "canonical_snapshot_hash": "05d11599e6d4a2937e0207535b298aa809ff08c79840350c7716666ce6d12755",
-  "canonical_input_hash": "05d11599e6d4a2937e0207535b298aa809ff08c79840350c7716666ce6d12755",
+  "package_definition_hash": "3d4d45a05327b35ffcc474b8df0f6bcb202a79fcfd98a3529062bd2c44ffc168",
+  "canonical_snapshot_hash": "d2a06fa67ec4ed0e36a8d40bd158aeb9e923890a00b310d3c6eacdfbaadfb34d",
+  "canonical_input_hash": "d2a06fa67ec4ed0e36a8d40bd158aeb9e923890a00b310d3c6eacdfbaadfb34d",
   "step_id": "15",
   "slug": "final_cell",
   "title": "Final proof, calibration, and commissioning",
@@ -163,8 +163,8 @@
     },
     {
       "canonical_path": "README_FIRST.md",
-      "sha256": "ba84a14a17983d774a0278b4b68571d920b0dc4d186fd05c991b1d149d388a9e",
-      "size_bytes": 9962,
+      "sha256": "3f120c69dcee278cb67c449e84d3a43c0b5183bdfee1cf4cb86bb938e2a32d34",
+      "size_bytes": 10392,
       "roles": [
         "release entry point"
       ],
@@ -345,8 +345,8 @@
     },
     {
       "canonical_path": "scripts/build_step_packages.py",
-      "sha256": "09ec78a5512ee6cb6997b3200e7bd1cdb1418eeb2fb477f339f331f14191f8a2",
-      "size_bytes": 171609,
+      "sha256": "d36767cf22f6b4becf5716eb7ae2e7b8f8315dd13e30204732ff9f2c3007463a",
+      "size_bytes": 174644,
       "roles": [
         "step-package generator and validator"
       ],
@@ -464,6 +464,18 @@
       "job_ids": []
     },
     {
+      "canonical_path": "scripts/stage_hash_bound_artifacts.py",
+      "sha256": "a18eb88d17b2adbe930857f4539079bad96090320c4ea161b5d38a29ec44e3d8",
+      "size_bytes": 8660,
+      "roles": [
+        "hash-bound canonical artifact staging and offline verification"
+      ],
+      "actions": [
+        "run_for_standalone_export"
+      ],
+      "job_ids": []
+    },
+    {
       "canonical_path": "scripts/step_evidence_common.py",
       "sha256": "93fb598ee2de6dc0ba60d6eec7291458a728cb087dbe724b9e3bf09aa8933f8a",
       "size_bytes": 9078,
@@ -525,6 +537,7 @@
     }
   ],
   "local_stl_copy_count": 0,
+  "hash_bound_stl_reference_count": 0,
   "next_step": null,
   "operator_writable_directory": "06 - SAVE MEASUREMENTS AND PHOTOS",
   "generated_control_hashes": {
@@ -537,15 +550,15 @@
     "04 - STEP-BY-STEP INSTRUCTIONS.md": "be1233ff0450ee523e0ea56aa7724f4bdfc3f03fee88b605e04a62699cf64132",
     "05 - CHECK YOUR WORK.md": "ec88d5d67f3cbe1de7fb6d9a6727488d8c97f7ace4a3157e5c74bdae5b782cc7",
     "06 - SAVE MEASUREMENTS AND PHOTOS/READ ME - WHAT TO RECORD.md": "e61ef893c799f653f2e7500a940d33069553f6635654df20967b47c90d4861bb",
-    "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/measurement_record.json": "0555c005875ec7c036bfb107f726d3eb6fe2982563883b77e723de4f048b5a7c",
-    "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/signoff.json": "d14f112c5c50679b5a4238a5c830c7fd1b6ab406e1e7caddfee617e44cb9d1d9",
+    "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/measurement_record.json": "57cfa68dc214c00f50788750aa13df338114a3701250e989d8ead4e79b62d1bc",
+    "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/signoff.json": "e41f4b2d5fa0002145094ba1f6b68cd9b55f74ffa274c01973ce1252d15169e8",
     "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/Measurements Checklist.md": "da6d329caab6f0447707642bc8513c5a1000205961fc037390fa6f966843c22d",
     "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/Finish and Sign Off.md": "3eda299277e45ac335933174a782040cb26e8cb775c50927f16a0f8a038034b3",
     "07 - FINISH THIS STEP AND CONTINUE.md": "07657d459ba62b64e0b0ffe36a9b79a72a244e8beffc25ff27828da748374501",
-    "99 - TECHNICAL RECORDS - DO NOT EDIT/OPEN CONTROLLED FILES.md": "376d1091ad993e2deae1812758725292ca23d09f43e27aa55d54e3a25789bf35",
-    "99 - TECHNICAL RECORDS - DO NOT EDIT/FILE INDEX.csv": "a5aade6164a5e496bac6559771a385aa3f96cbae57df33e82bebf499e2b1fb1b",
-    "99 - TECHNICAL RECORDS - DO NOT EDIT/FILE MANIFEST.json": "1142ddbc92394f7163099837ab8eb4ad673bc8936f3c778d5be98f1eee4b54e2",
-    "99 - TECHNICAL RECORDS - DO NOT EDIT/SHA256SUMS.txt": "a412c37e050a925f378a8b9020918d0925a5f9e2589fc88069b9ce41cee03afd",
+    "99 - TECHNICAL RECORDS - DO NOT EDIT/OPEN CONTROLLED FILES.md": "9105074877a6b2aa98d4d1df2eb4c2495d33bd8b66c6eb9aa381b835300b3962",
+    "99 - TECHNICAL RECORDS - DO NOT EDIT/FILE INDEX.csv": "527d24ce1d45ff7d219e8b4abd7207759a17d6e16791698af6397732b031327f",
+    "99 - TECHNICAL RECORDS - DO NOT EDIT/FILE MANIFEST.json": "783275e01faca9b571be59f77bca1f5f47820d7c36ab53407bfb508e7e72d5b2",
+    "99 - TECHNICAL RECORDS - DO NOT EDIT/SHA256SUMS.txt": "7e8829199f2683d8993e15ae6d11f3335f5f4d39972e046276e512c67982bdfe",
     "99 - TECHNICAL RECORDS - DO NOT EDIT/HARDWARE AND TOOLS.csv": "e7582f93cc56cec9e4046e5d172d607bd418b06bf742e1fa4a13efc41de89873"
   }
 }
