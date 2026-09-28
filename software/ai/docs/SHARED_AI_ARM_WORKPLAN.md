@@ -55,6 +55,12 @@ preparation does not satisfy any missing physical-original or calibration gate.
 
 ## Purpose
 
+The arm lane's ordered, camera-independent implementation backlog is maintained
+in the
+[pre-camera arm integration completion plan](../../docs/PRE_CAMERA_ARM_INTEGRATION_COMPLETION_PLAN.md).
+It operationalizes the arm-side portions of S2, S4, and S7 without changing the
+shared stage gates or granting physical authority.
+
 This is the common working backbone for two independently advancing workstreams:
 
 1. **AI/model lane:** understand the user's request, assess the scene, localize
