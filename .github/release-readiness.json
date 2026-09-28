@@ -8,16 +8,30 @@
       "issue": "https://github.com/j-webtek/tactevra/issues/56",
       "owner": "AI workstream",
       "requirement": "Record the exact checkpoint manifest plus deterministic artifact-absent and independently verified artifact-present clean-clone evidence.",
-      "status": "open",
-      "resolution": null
+      "status": "cleared",
+      "resolution": {
+        "summary": "Focused PR #145 retained the checkpoint as an exact-identity external artifact with deterministic unavailable and independently verified present states; issue #56 was closed after post-merge verification.",
+        "evidence": [
+          "https://github.com/j-webtek/tactevra/pull/145",
+          "https://github.com/j-webtek/tactevra/issues/56#issuecomment-5860805329",
+          "software/ai/manifests/translation_weighted_pose_keyloss_v0.external.json"
+        ]
+      }
     },
     {
       "id": "ai-evidence-retention",
       "issue": "https://github.com/j-webtek/tactevra/issues/61",
       "owner": "AI workstream with repository review",
       "requirement": "Land compact reviewable replacement evidence and an approved disposition for bulk generated output.",
-      "status": "open",
-      "resolution": null
+      "status": "cleared",
+      "resolution": {
+        "summary": "Focused PR #145 retained only reviewable source, tests, a manifest, representative fixtures and compact evidence while keeping checkpoint and bulk generated output external; issue #61 was closed after repository review.",
+        "evidence": [
+          "https://github.com/j-webtek/tactevra/pull/145",
+          "https://github.com/j-webtek/tactevra/issues/61#issuecomment-5860805521",
+          "docs/EVIDENCE_RETENTION.md"
+        ]
+      }
     },
     {
       "id": "waveshare-urdf-redistribution",
