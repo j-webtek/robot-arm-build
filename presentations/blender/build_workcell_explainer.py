@@ -50,6 +50,9 @@ PORTAL_PATH = (
     / "printable_camera_portal_printed_parts_only.stl"
 )
 STL_DIR = ROOT / "active-project" / "RoCell_v0_3" / "stl"
+COMPLIANT_TOOL_BODY_PATH = STL_DIR / "compliant_tool_body.stl"
+COMPLIANT_TOOL_CAP_PATH = STL_DIR / "compliant_tool_top_cap.stl"
+STYLUS_COLLAR_PATH = STL_DIR / "stylus_collar_9mm.stl"
 DIMENSION_MANIFEST_PATH = SCRIPT.with_name("dimension_manifest.json")
 ARM_URDF_PATH = ROOT / "software" / "models" / "roarm_m3" / "roarm_m3_kinematic_40dbd84.urdf"
 APRILTAG_CODEBOOK_PATH = (
@@ -165,6 +168,26 @@ def import_stl(path: Path, name: str, mat: bpy.types.Material,
     obj.scale = (0.001, 0.001, 0.001)
     obj.location = board_point(*offset_mm)
     bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
+    apply_material(obj, mat)
+    return obj
+
+
+def import_stl_centered(path: Path, name: str, mat: bpy.types.Material,
+                        center_world: Vector) -> bpy.types.Object:
+    """Import a millimetre STL and place its mesh-bounds centre in world space.
+
+    Unlike the workcell parts, the compliant-tool files use part-local origins.
+    Centering their evaluated bounds makes the presentation transform explicit
+    without changing or globally scaling the controlled source meshes.
+    """
+    bpy.ops.wm.stl_import(filepath=str(path))
+    obj = bpy.context.object
+    obj.name = name
+    obj.scale = (0.001, 0.001, 0.001)
+    bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
+    local_corners = [Vector(corner) for corner in obj.bound_box]
+    local_center = sum(local_corners, Vector()) / len(local_corners)
+    obj.location = center_world - local_center
     apply_material(obj, mat)
     return obj
 
@@ -831,24 +854,92 @@ def add_continuous_press_arm(
                   (0.060, 0.050, 0.066), mats["servo"], 0.006)
     wrist_plate = cube("Continuous arm gripper plate", wrist + Vector((0, 0, -0.073)),
                        (0.072, 0.010, 0.050), mats["arm_exact"], 0.004)
+    # The moving presentation arm uses the same end-effector architecture as
+    # the physical build: two opposing RoArm jaw plates capture the recessed
+    # flats on the repository-owned compliant-tool body. The older proxy left
+    # a visible air gap and made the stylus look suspended between generic jaws.
     jaw_left = cube("Continuous arm gripper jaw left",
-                    wrist + Vector((-0.023, 0, -0.112)),
-                    (0.012, 0.026, 0.070), mats["arm_exact"], 0.003)
+                    wrist + Vector((-0.0195, 0, -0.112)),
+                    (0.011, 0.026, 0.070), mats["arm_exact"], 0.003)
     jaw_right = cube("Continuous arm gripper jaw right",
-                     wrist + Vector((0.023, 0, -0.112)),
-                     (0.012, 0.026, 0.070), mats["arm_exact"], 0.003)
-    collar = cylinder("Continuous arm stylus collar", wrist + Vector((0, 0, -0.071)),
-                      0.012, 0.028, mats["arm_exact"], 48)
+                     wrist + Vector((0.0195, 0, -0.112)),
+                     (0.011, 0.026, 0.070), mats["arm_exact"], 0.003)
+    for side_name, x_sign in (("left", -1), ("right", 1)):
+        cube(f"Continuous arm {side_name} grip pad",
+             wrist + Vector((x_sign * 0.0146, 0, -0.112)),
+             (0.0022, 0.019, 0.028), mats["abs"], 0.001)
+        for z_offset in (-0.026, 0.026):
+            fastener = cylinder(
+                f"Continuous arm {side_name} jaw fastener {z_offset:+.3f}",
+                wrist + Vector((x_sign * 0.0252, 0, -0.112 + z_offset)),
+                0.0042, 0.0032, mats["metal"], 24,
+            )
+            fastener.rotation_euler = (0, math.pi / 2, 0)
+
+    # Source-accurate printed contact cartridge. These are controlled RoCell
+    # STLs, not a hand-modelled stand-in. The cap and two M3 heads make the
+    # positive stylus retention legible in the macro press shot.
+    tool_center = wrist + Vector((0, 0, -0.1140))
+    tool_body = import_stl_centered(
+        COMPLIANT_TOOL_BODY_PATH,
+        "Continuous arm compliant tool body — controlled STL",
+        mats["tool_print"], tool_center,
+    )
+    body_bottom_z = tool_center.z - 0.0331
+    cap_center = Vector((tool_center.x, tool_center.y, body_bottom_z + 0.0675))
+    tool_cap = import_stl_centered(
+        COMPLIANT_TOOL_CAP_PATH,
+        "Continuous arm keyed compliant tool cap — controlled STL",
+        mats["tool_cap"], cap_center,
+    )
+    collar_center = Vector((tool_center.x, tool_center.y, body_bottom_z + 0.05075))
+    collar = import_stl_centered(
+        STYLUS_COLLAR_PATH,
+        "Continuous arm split stylus collar — controlled STL",
+        mats["tool_cap"], collar_center,
+    )
+    for screw_name, dx, dy in (("A", -0.009, -0.007), ("B", 0.009, 0.007)):
+        shank = cylinder(
+            f"Continuous arm compliant cap M3 screw {screw_name}",
+            cap_center + Vector((dx, dy, 0.0037)), 0.0015, 0.010,
+            mats["metal"], 24,
+        )
+        head = cylinder(
+            f"Continuous arm compliant cap M3 head {screw_name}",
+            cap_center + Vector((dx, dy, 0.0062)), 0.0030, 0.0022,
+            mats["metal"], 32,
+        )
+        shank["presentation_detail"] = "TWO_M3_RETAINING_SCREWS"
+        head["presentation_detail"] = "TWO_M3_RETAINING_SCREWS"
     stylus_center = board_point(target_x, target_y, 0) + Vector((0, 0, 0.105))
-    stylus = cylinder("Continuous arm stylus", stylus_center, 0.004, 0.140,
-                      mats["metal"], 48)
-    bpy.ops.mesh.primitive_cone_add(vertices=48, radius1=0.0012, radius2=0.004,
-                                    depth=0.012,
-                                    location=board_point(target_x, target_y, 29))
-    tip = bpy.context.object
-    tip.name = "Continuous arm compliant stylus tip"
-    apply_material(tip, mats["arm_exact"])
-    moving = (holder, wrist_plate, jaw_left, jaw_right, collar, stylus, tip)
+    stylus = cylinder("Continuous arm OASO-style 9 mm stylus barrel (nominal)",
+                      stylus_center, 0.0045, 0.140, mats["stylus"], 64)
+    tip = cylinder(
+        "Continuous arm articulated stylus tip stem (nominal)",
+        board_point(target_x, target_y, 29), 0.0012, 0.012,
+        mats["metal"], 32,
+    )
+    disc = cylinder(
+        "Continuous arm capacitive stylus contact disc (nominal)",
+        board_point(target_x, target_y, 22.7), 0.0050, 0.0009,
+        mats["stylus_disc"], 64,
+    )
+    pivot = cylinder(
+        "Continuous arm stylus disc pivot (nominal)",
+        board_point(target_x, target_y, 23.5), 0.0022, 0.0022,
+        mats["metal"], 32,
+    )
+    moving = tuple(
+        obj for obj in bpy.context.scene.objects
+        if obj not in objects_before and (
+            "wrist" in obj.name.lower()
+            or "gripper" in obj.name.lower()
+            or "jaw" in obj.name.lower()
+            or "compliant" in obj.name.lower()
+            or "stylus" in obj.name.lower()
+            or "grip pad" in obj.name.lower()
+        )
+    )
     if motion_profile is None:
         motion_profile = (
             (1, 0.0), (1288, 0.0), (1300, -0.004),
@@ -861,6 +952,11 @@ def add_continuous_press_arm(
             component.keyframe_insert("location", frame=frame)
         component["evidence_status"] = "URDF_DERIVED_PRESENTATION_PROXY_NOT_KINEMATIC_EVIDENCE"
         component["presentation_target_xy_mm"] = target_xy
+    tool_body["geometry_authority"] = str(COMPLIANT_TOOL_BODY_PATH.relative_to(ROOT)).replace("\\", "/")
+    tool_body["source_dimensions_mm"] = "28 x 24 x 66.2 mesh envelope; 65 nominal body"
+    tool_cap["geometry_authority"] = str(COMPLIANT_TOOL_CAP_PATH.relative_to(ROOT)).replace("\\", "/")
+    collar["geometry_authority"] = str(STYLUS_COLLAR_PATH.relative_to(ROOT)).replace("\\", "/")
+    stylus["evidence_status"] = "NOMINAL_9MM_BARREL_UNMEASURED_INSTALLED_TOOL"
     objects = tuple(obj for obj in bpy.context.scene.objects if obj not in objects_before)
     return {"root": base, "objects": objects, "moving": moving, "manifest": manifest}
 
@@ -966,6 +1062,17 @@ def build() -> bpy.types.Scene:
                            metallic=0.72, roughness=0.26),
         "arm_exact": material("Official RoArm assembly finish", (0.017, 0.022, 0.028, 1),
                               metallic=0.48, roughness=0.24),
+        "tool_print": textured_material(
+            "Printed compliant tool body", (0.025, 0.032, 0.039, 1),
+            scale=115.0, detail=2.5, roughness=0.48, metallic=0.02,
+        ),
+        "tool_cap": material("Printed tool route accent", (0.030, 0.045, 0.060, 1),
+                             metallic=0.04, roughness=0.48),
+        "stylus": material("OASO-style aluminum stylus", (0.24, 0.28, 0.32, 1),
+                           metallic=0.88, roughness=0.18),
+        "stylus_disc": material("OASO-style capacitive contact disc",
+                                (0.20, 0.48, 0.62, 1), metallic=0.22,
+                                roughness=0.12, ior_level=0.62),
         "wood": textured_material("Light birch", (0.55, 0.33, 0.16, 1),
                                     scale=7.0, detail=3.0, roughness=0.48),
         "keyboard": material("Keyboard black body", (0.0002, 0.0003, 0.0005, 1),

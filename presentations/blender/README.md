@@ -19,6 +19,12 @@ The scene deliberately separates six evidence classes:
   paired links, exposed fasteners, wrist plates, and gripper language. It is
   used only during the short shot labeled `SIMULATED PRESS`; its authored pose
   is not a solved trajectory.
+- **Controlled presentation tool geometry** — the moving rig imports the
+  repository's compliant body, keyed cap, and 9 mm split-collar STLs. Opposing
+  jaw pads visibly capture the body's modeled grip-flat band; the positive cap
+  retention is shown with two M3 screws. The depicted OASO-style stylus barrel,
+  installed transform, protrusion, and capacitive disc remain nominal until the
+  physical assembly is measured and qualified.
 - **Conceptual** — target paths and explanatory motion graphics. These
   communicate intended behavior; they are not collision or motion
   qualification.
@@ -357,6 +363,9 @@ assembly surface but do not establish an installed pose or clearance.
 - `active-project/RoCell_v0_3/stl/keyboard_station_left.stl`
 - `active-project/RoCell_v0_3/stl/keyboard_station_right.stl`
 - `active-project/RoCell_v0_3/stl/phone_tcp_station.stl`
+- `active-project/RoCell_v0_3/stl/compliant_tool_body.stl`
+- `active-project/RoCell_v0_3/stl/compliant_tool_top_cap.stl`
+- `active-project/RoCell_v0_3/stl/stylus_collar_9mm.stl`
 - `software/models/roarm_m3/roarm_m3_kinematic_40dbd84.urdf`
 - `presentations/blender/dimension_manifest.json`
 
@@ -383,7 +392,9 @@ The visible arm is dimensioned from the pinned official URDF but is not a
 qualified digital twin. The optional vendor STEP and local tessellation remain
 untracked. Device manufacturing
 variation, cable geometry, the installed robot transform, tag stack height,
-and tool geometry also remain physical-measurement items. This film is therefore
+and the installed tool transform/stylus geometry also remain physical-measurement
+items. The compliant body, cap, and collar shapes themselves are imported from
+their controlled repository STLs. This film is therefore
 an accurate system-layout and product-geometry explainer, not a motion-clearance
 or fabrication release.
 

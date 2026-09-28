@@ -1,8 +1,9 @@
 """Validate the Blender explainer's dimensional source contract.
 
 This script intentionally uses only the Python standard library so it can run
-in CI without Blender. It checks the RC03 layout values, portal STL bounds, and
-the hash-pinned RoArm-M3 URDF joint origins used by the presentation.
+in CI without Blender. It checks the RC03 layout values, portal and contact-tool
+STL bounds, and the hash-pinned RoArm-M3 URDF joint origins used by the
+presentation.
 """
 
 from __future__ import annotations
@@ -142,6 +143,21 @@ def main() -> int:
             tolerance=1e-3,
         )
 
+    contact_tool = arm["presentation_contact_tool"]
+    for prefix, bounds_key in (
+        ("body", "body_mesh_envelope_mm"),
+        ("cap", "cap_mesh_envelope_mm"),
+        ("collar", "collar_mesh_envelope_mm"),
+    ):
+        tool_path = resolve(contact_tool[f"{prefix}_path"])
+        tool_digest = hashlib.sha256(tool_path.read_bytes()).hexdigest()
+        if tool_digest != contact_tool[f"{prefix}_sha256"]:
+            fail(f"Contact-tool {prefix} SHA-256 drift: {tool_digest}")
+        assert_close(
+            stl_bounds(tool_path), contact_tool[bounds_key],
+            f"contact-tool {prefix} STL bounds", tolerance=0.03,
+        )
+
     print("Tactevra Blender dimension contract: PASS")
     print(f"  board/device layout: {workcell['authority']}")
     print(f"  portal STL: {portal['mesh_bounds_xyz']} mm")
@@ -150,6 +166,7 @@ def main() -> int:
     print(f"  validated arm joint origins: {len(arm['joint_origin_xyz_m'])}")
     if presentation_mesh.is_file():
         print(f"  official arm surface: {surface['default_step_envelope_mm']} mm")
+    print("  controlled contact tool: body + keyed cap + split collar")
     return 0
 
 

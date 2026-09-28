@@ -49,6 +49,21 @@
       "presentation_mesh_path": "tmp/vendor/roarm_m3/roarm_m3_official_presentation.stl",
       "default_step_envelope_mm": [405.8467893963, 85.2200000000, 389.3807688309],
       "reason": "The beauty render uses a local hash-verified tessellation of Waveshare's official STEP assembly. The source and derivative remain ignored and are not redistributed. The assembly's default pose is static and is not a collision or motion qualification."
+    },
+    "presentation_contact_tool": {
+      "status": "CONTROLLED_REPOSITORY_STL_GEOMETRY_WITH_UNMEASURED_INSTALLED_STYLUS",
+      "body_path": "active-project/RoCell_v0_3/stl/compliant_tool_body.stl",
+      "body_sha256": "18c8d7ff2d57c0785b324c58e93b3c6558db7c56c339270ab183307b991225ba",
+      "body_mesh_envelope_mm": [28.0, 24.0, 66.2],
+      "body_nominal_mm": [28.0, 24.0, 65.0],
+      "cap_path": "active-project/RoCell_v0_3/stl/compliant_tool_top_cap.stl",
+      "cap_sha256": "e7adbf51fd9382a4eb2b9a9dd25df677d43fd488c4584c2bf3e3e7d1599b9081",
+      "cap_mesh_envelope_mm": [28.0, 24.0, 5.0],
+      "collar_path": "active-project/RoCell_v0_3/stl/stylus_collar_9mm.stl",
+      "collar_sha256": "abc908bcd256e8836d13c94cf58320654f78d972e0eb1923f50a6575233f2c8e",
+      "collar_mesh_envelope_mm": [13.6, 13.6, 5.5],
+      "stylus_nominal_diameter_mm": 9.0,
+      "accuracy_boundary": "Printed-part geometry is source-accurate. Jaw fit, installed tool transform, stylus diameter, exposed length, compliance, force, and TCP remain unmeasured presentation assumptions."
     }
   }
 }
