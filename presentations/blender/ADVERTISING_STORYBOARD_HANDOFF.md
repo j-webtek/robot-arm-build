@@ -52,7 +52,7 @@ policy.
 | Board | 610 × 457 × 18 mm RC03 board from `dimension_manifest.json` |
 | Keyboard | Measured 315 × 147 × 21 mm black RC03 chassis, six-row layout, legends, cable, and station |
 | Phone | Measured 77.9 × 164.4 × 7.9 mm body, screen plane, controls, cable, and RC03 station |
-| Robot | Detailed RoArm source geometry and servo rig; rear-center placement at 305, 457, 0 mm and −90° nominal yaw |
+| Robot | Detailed RoArm source geometry with exposed controller PCB and standoffs, fixed lower chassis, separate yaw deck, and five-stage servo rig; rear-center placement at 305, 457, 0 mm and −90° nominal yaw |
 | Printed tool mount | Controlled 28 × 24 × 65 mm compliant-body STL, keyed-cap STL, split-collar STL, two visible M3 retainers, and grip-flat contact between the same opposing RoArm jaw pads |
 | Stylus | One nominal 9 mm OASO-style aluminum barrel, constant protrusion, pivot, and capacitive disc carried by the printed cartridge throughout |
 | Camera | Actual fixed-camera body, mount, lens, and matching optical view |
@@ -166,10 +166,13 @@ devices without visually connecting their data.
 - Model-owned fields are amber; runtime-owned policy fields are grey and locked.
 - The accurate RoArm, same jaw pair, same printed cartridge, and same stylus
   perform every physical action.
-- The RoArm always shows the same shoulder, elbow, wrist-pitch, and tool-wrist
-  pivots. Servo housings stay on their correct carrying links, every pivot
+- The RoArm always shows the same base-yaw, shoulder-pitch, elbow,
+  wrist-pitch, and tool-wrist pivots. The controller chassis stays fixed while
+  the yaw deck and arm rotate above it. Servo housings stay on their correct
+  carrying links, every pivot
   remains connected during interpolation, and the stylus remains vertical to
-  the board at keyboard and phone contacts.
+  the board at keyboard and phone contacts. Contact uses whole-chain motion,
+  never an independently translated toolhead.
 - The black keyboard and dark phone never change appearance or placement.
 - Physical animation carries `SIMULATED WORKCELL SEQUENCE` throughout.
 
