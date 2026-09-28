@@ -1,10 +1,12 @@
 """Offline regression checks for public issue-template routing."""
+import json
 from pathlib import Path
 import tempfile
 import unittest
 
 from check_docs import (PUBLIC_ROUTES, PUBLIC_TITLES, issue_template_error,
-                        public_entry_errors, without_fences)
+                        public_entry_errors, readiness_dashboard_errors,
+                        without_fences)
 
 
 BASE = 'https://github.com/j-webtek/tactevra/issues/new'
@@ -114,6 +116,39 @@ class PublicEntryTests(unittest.TestCase):
     def test_fence_length_and_kind(self):
         self.assertEqual(without_fences('before\n````md\n```\n~~~\nhidden\n````\nafter'),
                          'before\nafter')
+
+
+class ReadinessDashboardTests(unittest.TestCase):
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temp.cleanup)
+        self.root = Path(self.temp.name)
+        (self.root / '.github').mkdir()
+
+    def write_registry(self, blockers):
+        (self.root / '.github' / 'release-readiness.json').write_text(
+            json.dumps({'blockers': blockers}), encoding='utf-8')
+
+    def test_open_count_and_routes_match(self):
+        issue = 'https://github.com/j-webtek/tactevra/issues/167'
+        self.write_registry([{'status': 'open', 'issue': issue}])
+        content = f'The registry currently has one open blocker.\nSee {issue}.\n'
+        self.assertEqual(readiness_dashboard_errors(content, self.root), [])
+
+    def test_count_drift_is_reported(self):
+        issue = 'https://github.com/j-webtek/tactevra/issues/167'
+        self.write_registry([{'status': 'open', 'issue': issue}])
+        errors = readiness_dashboard_errors(
+            f'The registry currently has two open blockers.\nSee {issue}.\n', self.root)
+        self.assertTrue(any('expected public open-blocker count: one' in e
+                            for e in errors))
+
+    def test_missing_open_issue_route_is_reported(self):
+        issue = 'https://github.com/j-webtek/tactevra/issues/167'
+        self.write_registry([{'status': 'open', 'issue': issue}])
+        errors = readiness_dashboard_errors(
+            'The registry currently has one open blocker.\n', self.root)
+        self.assertTrue(any(issue in e for e in errors))
 
 
 if __name__ == '__main__':
