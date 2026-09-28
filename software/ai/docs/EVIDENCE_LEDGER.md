@@ -4375,3 +4375,38 @@ rewriting history. New entries must use a unique evidence ID.
 - Supersedes: none.
 - Next dependency: finish PC2 mutation ownership and receipt validation before
   PC3 rolling-horizon/restart work begins.
+
+### E-20260928-ARM-081 — PC2 golden shadow gate completed
+
+- Stage: S1/S4/S7 pre-camera arm integration; PC2 complete, PC3 ready.
+- Lane: Arm/runtime.
+- Commit: `d24ec737196796d11dfadd3098f1dda1f88724bb`.
+- Change: added the canonical PC2 receipt schema and strict parser, then
+  completed stage-owner mutation coverage. The parser revalidates the receipt
+  hash, exact fields, canonical nine-stage hash order, target count/order,
+  terminal collision/fresh-state lineage, and zero-authority assertions.
+- Inputs/fixtures: ARM-080 golden `robot`, `H,H,1,PERIOD`, and `H,I` traces;
+  five independently rehashed receipt mutations and eight single-field stage
+  mutations covering duplicate JSON, batch hash, semantic intent, capture
+  expiry, preplanner expiry, calibration identity, seed/build identity, and
+  dynamics overflow.
+- Commands: `python -m pytest -q
+  tests/integration/test_typing_shadow_pipeline_v1.py`; the complete 83-test
+  affected PC0-PC2/T1/T2/V2/zero-write suite; and all five repository audits.
+- Result: PASS; 17 focused integration tests and 83 affected tests passed.
+  Every mutation rejected at its earliest responsible existing boundary; both
+  golden receipts remained byte-stable. All repository audits passed with the
+  existing unrelated release-integrity candidate blocker unchanged.
+- Artifacts: `software/src/rocell/application/typing_shadow_pipeline_v1.py`;
+  `software/ai/schemas/typing_shadow_pipeline_v1.schema.json`;
+  `software/tests/integration/test_typing_shadow_pipeline_v1.py`;
+  `software/tests/fixtures/typing_shadow_pipeline_v1_golden.json`.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: all inputs remain synthetic offline. PC2 does not establish
+  measured collision geometry, fresh controller feedback, camera precision,
+  controller encoding/tracking, key contact, typing speed, or authority.
+- Supersedes: ARM-080's in-progress PC2 status only; ARM-080 remains retained
+  as the initial composition checkpoint.
+- Next dependency: PC3 one-action rolling horizon, observed-state rebinding,
+  invalidation, and ambiguous-restart behavior.
