@@ -177,7 +177,10 @@ class MeasuredSegmentConfigurationSample:
         if (
             not isinstance(self.sample_plan_sha256, str)
             or len(self.sample_plan_sha256) != 64
-            or any(character not in "0123456789abcdef" for character in self.sample_plan_sha256)
+            or any(
+                character not in "0123456789abcdef"
+                for character in self.sample_plan_sha256
+            )
         ):
             raise BoundedSegmentCollisionQualificationError(
                 "sample_plan_sha256 must be a lowercase SHA-256 digest"
@@ -211,15 +214,63 @@ def build_bounded_joint_sample_plan(
         raise BoundedSegmentCollisionQualificationError(
             "trajectory waypoint collections are incomplete"
         )
+    if any(
+        not isinstance(waypoint, Mapping) or waypoint.get("sequence") != index
+        for index, waypoint in enumerate(waypoints)
+    ):
+        raise BoundedSegmentCollisionQualificationError(
+            "trajectory waypoints are not canonically ordered"
+        )
     previous = _joint_map(
         route.get("observed_start_joint_positions_rad"), "observed start"
     )
+    return build_bounded_joint_sample_plan_from_results(
+        previous,
+        results,
+        selected,
+    )
+
+
+def build_bounded_joint_sample_plan_from_results(
+    start_joint_positions_rad: Mapping[str, float],
+    joint_results: Sequence[Mapping[str, Any]],
+    policy: BoundedSegmentSamplingPolicy | None = None,
+) -> tuple[BoundedJointConfigurationSample, ...]:
+    """Expand one explicitly classified start state and canonical IK results.
+
+    This schema-neutral helper lets offline-only producers reuse the exact same
+    interpolation and resource limits without claiming their start state was
+    measured controller feedback.  Authority-bearing callers remain responsible
+    for proving the provenance required by their own boundary.
+    """
+
+    selected = policy or BoundedSegmentSamplingPolicy()
+    if not isinstance(selected, BoundedSegmentSamplingPolicy):
+        raise TypeError("policy must be BoundedSegmentSamplingPolicy")
+    previous = _joint_map(start_joint_positions_rad, "start state")
+    try:
+        iterator = iter(joint_results)
+    except TypeError as exc:
+        raise TypeError("joint_results must be a finite sequence") from exc
+    bounded_results: list[Mapping[str, Any]] = []
+    for _ in range(selected.maximum_samples + 1):
+        try:
+            bounded_results.append(next(iterator))
+        except StopIteration:
+            break
+    results = tuple(bounded_results)
+    if not results:
+        raise BoundedSegmentCollisionQualificationError(
+            "at least one accepted joint result is required"
+        )
+    if len(results) > selected.maximum_samples:
+        raise BoundedSegmentCollisionQualificationError(
+            "joint result count exceeds policy maximum"
+        )
     samples: list[BoundedJointConfigurationSample] = []
-    for segment_index, (waypoint, result) in enumerate(zip(waypoints, results, strict=True)):
+    for segment_index, result in enumerate(results):
         if (
-            not isinstance(waypoint, Mapping)
-            or waypoint.get("sequence") != segment_index
-            or not isinstance(result, Mapping)
+            not isinstance(result, Mapping)
             or result.get("waypoint_sequence") != segment_index
             or result.get("accepted") is not True
         ):
@@ -230,7 +281,9 @@ def build_bounded_joint_sample_plan(
             result.get("solution_arm_joint_positions_rad"),
             f"segment {segment_index} endpoint",
         )
-        maximum_delta = max(abs(endpoint[name] - previous[name]) for name in ARM_JOINT_NAMES)
+        maximum_delta = max(
+            abs(endpoint[name] - previous[name]) for name in ARM_JOINT_NAMES
+        )
         subdivision_count = max(
             1, math.ceil(maximum_delta / float(selected.maximum_joint_step_rad))
         )
@@ -371,9 +424,7 @@ def qualify_bounded_segment_collisions(
         "schema": SCHEMA,
         "status": status,
         "source_trajectory_screening_sha256": source["trajectory_screening_sha256"],
-        "expanded_trajectory_screening_sha256": expanded[
-            "trajectory_screening_sha256"
-        ],
+        "expanded_trajectory_screening_sha256": expanded["trajectory_screening_sha256"],
         "installed_collision_profile_sha256": installed_profile.content_sha256,
         "sampling_policy": {
             **selected.to_dict(),

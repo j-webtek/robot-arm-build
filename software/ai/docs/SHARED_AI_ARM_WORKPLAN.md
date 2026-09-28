@@ -382,6 +382,13 @@ joint-margin, Jacobian-rank, and adjacent-joint continuity gates. Passing
 samples advance only to `READY_FOR_INSTALLED_GEOMETRY_COLLISION_SCREENING`;
 installed collision geometry, cable evidence, conservative segment sweeps,
 controller access, and all physical authority remain absent.
+ARM-076 adds the next zero-authority intake seam. It validates the exact
+T1/T2A/IK lineage, preserves the synthetic start-state label, and produces the
+bounded joint-sample plan plus exact installed-profile evidence slots needed by
+the existing FK/collision/sweep pipeline. It refuses to substitute nominal
+geometry for a measured installed profile and never presents its synthetic seed
+as observed feedback. Physical evidence population and a fresh observed start
+state remain the next dependencies.
 The AI precision lane now has a mainline-compatible pose-output adapter and v2
 batch producer. It preserves repeated targets and abstains on qualification,
 domain, freshness, identity, confidence, or containment failure. Its retained

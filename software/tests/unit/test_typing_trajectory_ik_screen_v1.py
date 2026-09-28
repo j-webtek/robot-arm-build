@@ -1,14 +1,31 @@
 from __future__ import annotations
 
 import hashlib
+import itertools
 import json
 import math
 from pathlib import Path
 
 import pytest
+import jsonschema
 
 from rocell.application._pinned_model import load_pinned_urdf
 from rocell.application.context import load_simulation_context
+from rocell.application.collision_readiness import assess_current_collision_readiness
+from rocell.application.bounded_segment_collision_qualification import (
+    BoundedSegmentCollisionQualificationError,
+    BoundedSegmentSamplingPolicy,
+    build_bounded_joint_sample_plan_from_results,
+)
+from rocell.application.installed_collision_geometry import (
+    InstalledCollisionGeometryProfile,
+)
+from rocell.application.typing_collision_intake_v1 import (
+    PROFILE_REQUIRED_STATUS,
+    READY_STATUS as COLLISION_INTAKE_READY_STATUS,
+    TypingCollisionIntakeV1Error,
+    prepare_typing_collision_intake_v1,
+)
 from rocell.application.typing_execution_plan_v1 import (
     TypingExecutionConfigV1,
     compile_typing_execution_plan_v1,
@@ -24,8 +41,19 @@ from rocell.application.typing_trajectory_plan_v1 import (
     compile_typing_trajectory_plan_v1,
 )
 from rocell.calibration import PlannerCalibrationSnapshot, required_planner_artifact_ids
-from rocell.geometry import JointPosition, Point3Mm as GeometryPoint3Mm, RigidTransform, Rotation3, Vec3
-from rocell.kinematics import ARM_JOINT_NAMES, BoardToolTipTarget, IkOptions, RoArmM3NumericalIk
+from rocell.geometry import (
+    JointPosition,
+    Point3Mm as GeometryPoint3Mm,
+    RigidTransform,
+    Rotation3,
+    Vec3,
+)
+from rocell.kinematics import (
+    ARM_JOINT_NAMES,
+    BoardToolTipTarget,
+    IkOptions,
+    RoArmM3NumericalIk,
+)
 from rocell.models import (
     Interaction,
     ModelMotionBatchV2,
@@ -38,6 +66,15 @@ from rocell.models import (
     ProposalDevice,
     SpeedClass,
     UncertaintyBoundType,
+)
+from rocell.simulation.collision import (
+    CollisionBindingMode,
+    CollisionBody,
+    CollisionClearanceEvidenceState,
+    CollisionClearancePolicy,
+    CollisionEvidenceState,
+    CollisionGeometryContract,
+    SphereMm,
 )
 
 
@@ -58,7 +95,9 @@ def context():
 
 def _snapshot(context) -> PlannerCalibrationSnapshot:
     scenario = context.scenario
-    bounds = [scenario.controller_joint_intersection_rad[name] for name in ARM_JOINT_NAMES]
+    bounds = [
+        scenario.controller_joint_intersection_rad[name] for name in ARM_JOINT_NAMES
+    ]
     gripper = scenario.controller_gripper_intersection_rad
     return PlannerCalibrationSnapshot(
         device="keyboard",
@@ -243,6 +282,54 @@ def _seed(context, snapshot: PlannerCalibrationSnapshot) -> TypingTrajectoryIkSe
     )
 
 
+def _installed_profile(context) -> InstalledCollisionGeometryProfile:
+    readiness = assess_current_collision_readiness(context)
+    bodies = tuple(
+        CollisionBody(
+            requirement.body_id,
+            requirement.parent_frame,
+            requirement.role,
+            CollisionEvidenceState.ACCEPTED_MEASURED,
+            (
+                ()
+                if requirement.binding_mode
+                is CollisionBindingMode.CONFIGURATION_SAMPLED
+                else (SphereMm(Vec3(50_000.0 + index, 0.0, 0.0), 0.1),)
+            ),
+            requirement.binding_mode,
+            "unit-test measured geometry",
+        )
+        for index, requirement in enumerate(readiness.contract.requirements)
+    )
+    contract = CollisionGeometryContract(
+        "typing-collision-intake-test",
+        readiness.contract.root_frame,
+        readiness.contract.requirements,
+        bodies,
+        readiness.contract.pair_exclusions,
+    )
+    return InstalledCollisionGeometryProfile(
+        "typing-collision-intake-profile",
+        readiness.manifest_id,
+        readiness.manifest_sha256,
+        readiness.active_build_id,
+        readiness.build_snapshot_hash,
+        readiness.urdf_sha256,
+        readiness.contract.content_hash,
+        {"metrology": "4" * 64, "holder": "7" * 64, "camera": "8" * 64},
+        contract,
+        CollisionClearancePolicy(
+            0.1,
+            0.05,
+            0.05,
+            CollisionClearanceEvidenceState.ACCEPTED_MEASURED,
+            "unit-test measured clearance",
+        ),
+        "5" * 64,
+        "6" * 64,
+    )
+
+
 def test_exact_t2a_samples_run_through_canonical_ik_with_zero_authority(context):
     snapshot = _snapshot(context)
     execution, trajectory = _trajectory(context, snapshot)
@@ -268,16 +355,22 @@ def test_exact_t2a_samples_run_through_canonical_ik_with_zero_authority(context)
 def test_seed_is_identity_bound_and_rejects_nonfinite_or_noncanonical_values(context):
     snapshot = _snapshot(context)
     values = _ready_joint_values(context)
-    with pytest.raises(TypingTrajectoryIkScreenV1Error, match="canonical arm-joint set"):
+    with pytest.raises(
+        TypingTrajectoryIkScreenV1Error, match="canonical arm-joint set"
+    ):
         TypingTrajectoryIkSeedV1(
-            "bad-set", snapshot.snapshot_sha256, context.snapshot.snapshot_hash,
+            "bad-set",
+            snapshot.snapshot_sha256,
+            context.snapshot.snapshot_hash,
             {"wrong": 0.0},
         )
     values[ARM_JOINT_NAMES[0]] = math.inf
     with pytest.raises(TypingTrajectoryIkScreenV1Error, match="must be finite"):
         TypingTrajectoryIkSeedV1(
-            "bad-finite", snapshot.snapshot_sha256,
-            context.snapshot.snapshot_hash, values,
+            "bad-finite",
+            snapshot.snapshot_sha256,
+            context.snapshot.snapshot_hash,
+            values,
         )
 
     good = _seed(context, snapshot)
@@ -312,4 +405,97 @@ def test_sample_resource_bound_fails_before_ik(context):
                 maximum_waypoints_per_round=8,
                 maximum_total_ik_solves=8,
             ),
+        )
+
+
+def test_collision_intake_preserves_synthetic_start_and_lists_missing_profile(context):
+    snapshot = _snapshot(context)
+    execution, trajectory = _trajectory(context, snapshot)
+    ik = screen_typing_trajectory_ik_v1(
+        execution, trajectory, context, snapshot, _seed(context, snapshot)
+    )
+
+    first = prepare_typing_collision_intake_v1(
+        execution, trajectory, ik, context, snapshot
+    )
+    second = prepare_typing_collision_intake_v1(
+        execution, trajectory, ik, context, snapshot
+    )
+
+    assert first == second
+    assert first["status"] == PROFILE_REQUIRED_STATUS
+    assert first["start_state_source_kind"] == "SYNTHETIC_OFFLINE"
+    assert first["start_state_execution_eligible"] is False
+    assert first["bounded_sample_count"] > 1
+    assert first["installed_collision_profile_sha256"] is None
+    assert first["blockers"] == [
+        "INSTALLED_COLLISION_PROFILE_REQUIRED",
+        "FRESH_OBSERVED_START_STATE_REQUIRED_FOR_EXECUTION",
+    ]
+    assert first["controller_commands"] == []
+    assert first["hardware_access"] is first["physical_authority"] is False
+
+
+def test_collision_intake_enumerates_exact_profile_bound_evidence_slots(context):
+    snapshot = _snapshot(context)
+    execution, trajectory = _trajectory(context, snapshot)
+    ik = screen_typing_trajectory_ik_v1(
+        execution, trajectory, context, snapshot, _seed(context, snapshot)
+    )
+    profile = _installed_profile(context)
+
+    report = prepare_typing_collision_intake_v1(
+        execution, trajectory, ik, context, snapshot, profile
+    )
+
+    assert report["status"] == COLLISION_INTAKE_READY_STATUS
+    assert report["installed_collision_profile_sha256"] == profile.content_sha256
+    assert report["required_configuration_body_ids"] == [
+        "attachment:moving_camera_cable"
+    ]
+    slots = report["required_evidence_slots"]
+    assert (
+        slots["configuration_geometry_binding_count"] == report["bounded_sample_count"]
+    )
+    assert slots["configuration_sweep_envelope_count"] == (
+        report["bounded_sample_count"] - 1
+    )
+    assert report["installed_geometry_collision_screening_executed"] is False
+    assert "FRESH_OBSERVED_START_STATE_REQUIRED_FOR_EXECUTION" in report["blockers"]
+    schema = json.loads(
+        (
+            WORKSPACE / "software/ai/schemas/typing_collision_intake_v1.schema.json"
+        ).read_text(encoding="utf-8")
+    )
+    jsonschema.Draft202012Validator(schema).validate(report)
+
+
+def test_collision_intake_rejects_mutated_or_crossed_ik_evidence(context):
+    snapshot = _snapshot(context)
+    execution, trajectory = _trajectory(context, snapshot)
+    ik = screen_typing_trajectory_ik_v1(
+        execution, trajectory, context, snapshot, _seed(context, snapshot)
+    )
+    mutated = dict(ik)
+    mutated["sample_count"] += 1
+    with pytest.raises(TypingCollisionIntakeV1Error, match="hash is invalid"):
+        prepare_typing_collision_intake_v1(
+            execution, trajectory, mutated, context, snapshot
+        )
+
+
+def test_schema_neutral_joint_sampling_is_resource_bounded(context):
+    result = {
+        "waypoint_sequence": 0,
+        "accepted": True,
+        "solution_arm_joint_positions_rad": _ready_joint_values(context),
+    }
+    with pytest.raises(
+        BoundedSegmentCollisionQualificationError,
+        match="joint result count exceeds",
+    ):
+        build_bounded_joint_sample_plan_from_results(
+            _ready_joint_values(context),
+            itertools.repeat(result),
+            BoundedSegmentSamplingPolicy(maximum_samples=2),
         )

@@ -1,0 +1,124 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rocell.local/schemas/typing_collision_intake_v1.schema.json",
+  "title": "RoCell optimized typing collision intake v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "status", "typing_execution_plan_sha256",
+    "typing_trajectory_plan_sha256", "typing_trajectory_ik_screen_sha256",
+    "calibration_snapshot_sha256", "build_snapshot_sha256",
+    "kinematic_model_sha256", "start_state_source_kind",
+    "start_state_execution_eligible", "installed_collision_profile_sha256",
+    "collision_contract_sha256", "accepted_profile_source_sha256_values",
+    "sampling_policy", "bounded_sample_count", "bounded_joint_sample_plan",
+    "required_rigid_attachment_frames", "required_configuration_body_ids",
+    "required_evidence_slots", "installed_geometry_collision_screening_executed",
+    "continuous_collision_proven", "blockers", "next_required_stage",
+    "controller_commands", "hardware_commands_generated", "hardware_access",
+    "physical_authority", "typing_collision_intake_sha256"
+  ],
+  "properties": {
+    "schema": {"const": "rocell.typing_collision_intake.v1"},
+    "status": {"enum": [
+      "BLOCKED_INSTALLED_COLLISION_PROFILE_REQUIRED",
+      "READY_FOR_OFFLINE_PROFILE_BOUND_COLLISION_EVIDENCE"
+    ]},
+    "typing_execution_plan_sha256": {"$ref": "#/$defs/hash"},
+    "typing_trajectory_plan_sha256": {"$ref": "#/$defs/hash"},
+    "typing_trajectory_ik_screen_sha256": {"$ref": "#/$defs/hash"},
+    "calibration_snapshot_sha256": {"$ref": "#/$defs/hash"},
+    "build_snapshot_sha256": {"$ref": "#/$defs/hash"},
+    "kinematic_model_sha256": {"$ref": "#/$defs/hash"},
+    "start_state_source_kind": {"const": "SYNTHETIC_OFFLINE"},
+    "start_state_execution_eligible": {"const": false},
+    "installed_collision_profile_sha256": {
+      "oneOf": [{"$ref": "#/$defs/hash"}, {"type": "null"}]
+    },
+    "collision_contract_sha256": {"$ref": "#/$defs/hash"},
+    "accepted_profile_source_sha256_values": {
+      "type": "array", "uniqueItems": true,
+      "items": {"$ref": "#/$defs/hash"}
+    },
+    "sampling_policy": {
+      "type": "object", "additionalProperties": false,
+      "required": ["maximum_joint_step_rad", "maximum_samples", "sampling_policy_sha256"],
+      "properties": {
+        "maximum_joint_step_rad": {"type": "number", "exclusiveMinimum": 0, "maximum": 0.25},
+        "maximum_samples": {"type": "integer", "minimum": 2, "maximum": 256},
+        "sampling_policy_sha256": {"$ref": "#/$defs/hash"}
+      }
+    },
+    "bounded_sample_count": {"type": "integer", "minimum": 2, "maximum": 256},
+    "bounded_joint_sample_plan": {
+      "type": "array", "minItems": 2, "maxItems": 256,
+      "items": {"$ref": "#/$defs/sample"}
+    },
+    "required_rigid_attachment_frames": {
+      "type": "array", "uniqueItems": true,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "required_configuration_body_ids": {
+      "type": "array", "uniqueItems": true,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "required_evidence_slots": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "rigid_attachment_binding_count", "configuration_sample_count",
+        "configuration_body_count_per_sample", "configuration_geometry_binding_count",
+        "adjacent_sample_segment_count", "configuration_sweep_envelope_count"
+      ],
+      "properties": {
+        "rigid_attachment_binding_count": {"type": "integer", "minimum": 0},
+        "configuration_sample_count": {"type": "integer", "minimum": 2, "maximum": 256},
+        "configuration_body_count_per_sample": {"type": "integer", "minimum": 0},
+        "configuration_geometry_binding_count": {"type": "integer", "minimum": 0},
+        "adjacent_sample_segment_count": {"type": "integer", "minimum": 1, "maximum": 255},
+        "configuration_sweep_envelope_count": {"type": "integer", "minimum": 0}
+      }
+    },
+    "installed_geometry_collision_screening_executed": {"const": false},
+    "continuous_collision_proven": {"const": false},
+    "blockers": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+    "next_required_stage": {"type": "string", "minLength": 1},
+    "controller_commands": {"type": "array", "maxItems": 0},
+    "hardware_commands_generated": {"const": 0},
+    "hardware_access": {"const": false},
+    "physical_authority": {"const": false},
+    "typing_collision_intake_sha256": {"$ref": "#/$defs/hash"}
+  },
+  "$defs": {
+    "hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "sample": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "sample_sequence", "sample_id", "source_segment_index",
+        "subdivision_index", "subdivision_count", "interpolation_ratio",
+        "joint_positions_rad"
+      ],
+      "properties": {
+        "sample_sequence": {"type": "integer", "minimum": 0},
+        "sample_id": {"type": "string", "pattern": "^segment-[0-9]{4}-sample-[0-9]{4}$"},
+        "source_segment_index": {"type": "integer", "minimum": 0},
+        "subdivision_index": {"type": "integer", "minimum": 0},
+        "subdivision_count": {"type": "integer", "minimum": 1},
+        "interpolation_ratio": {"type": "number", "minimum": 0, "maximum": 1},
+        "joint_positions_rad": {
+          "type": "object", "additionalProperties": false,
+          "required": [
+            "base_link_to_link1", "link1_to_link2", "link2_to_link3",
+            "link3_to_link4", "link4_to_link5"
+          ],
+          "properties": {
+            "base_link_to_link1": {"type": "number"},
+            "link1_to_link2": {"type": "number"},
+            "link2_to_link3": {"type": "number"},
+            "link3_to_link4": {"type": "number"},
+            "link4_to_link5": {"type": "number"}
+          }
+        }
+      }
+    }
+  }
+}
