@@ -557,22 +557,13 @@ def add_keyboard(layout: dict, mats: dict[str, bpy.types.Material]) -> dict[str,
         add_key(label, x, y, width, "modifier", col,
                 legend_size=0.0025 if len(label) > 3 else None,
                 name_prefix="Modifier")
-    # Three small status lights and a recessed cable exit add scale cues that
-    # survive the overhead and macro shots.
+    # Three small status lights add scale cues that survive the overhead and
+    # macro shots. The presentation intentionally omits a keyboard cord;
+    # electrical connectivity is outside this film's demonstrated scope.
     for index, state_mat in enumerate((mats["green"], mats["cyan"], mats["amber"])):
         cylinder(f"Keyboard status LED {index + 1}",
                  board_point(ox + sx - 12.0 - index * 7.0, oy + sy - 10.0, sz + 2.0),
                  0.0015, 0.0010, state_mat, 24)
-    cable_start = board_point(ox + sx / 2, oy + sy, sz * 0.68)
-    keyboard_cable = curve_line(
-        "Keyboard signal cable",
-        [cable_start,
-         cable_start + Vector((0.0, 0.040, 0.005)),
-         board_point(55.0, oy + sy + 45.0, sz * 0.68 + 2.0),
-         board_point(-85.0, oy + sy + 65.0, sz * 0.68 + 2.0)],
-        mats["cable"], 0.0022,
-    )
-    keyboard_cable["presentation_detail"] = "KEYBOARD_CABLE_EXITS_OPERATOR_DISPLAY_SIDE_OFF_FRAME"
     return named_keys
 
 
