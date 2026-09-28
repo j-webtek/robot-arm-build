@@ -16,7 +16,7 @@
     "area:hardware": ["hardware/**", "active-project/**"]
   },
   "documentation": ["docs/**", "README.md", "CONTRIBUTING.md", "SECURITY.md", "**/*.md"],
-  "release_readiness": [".github/release-readiness.json", "docs/releases/**", "docs/RELEASING.md", ".github/workflows/preview-candidate-audit.yml"],
+  "release_readiness": [".github/release-readiness.json", "docs/releases/**", "docs/RELEASING.md", ".github/workflows/preview-candidate-audit.yml", "scripts/ci/build_release_review_packet.py", "scripts/ci/test_build_release_review_packet.py"],
   "contracts": [
     "software/ai/schemas/**",
     "software/ai/rocell_ai/contract.py",
