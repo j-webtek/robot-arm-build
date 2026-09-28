@@ -4200,3 +4200,38 @@ rewriting history. New entries must use a unique evidence ID.
 - Next dependency: implement and freeze the image/model/preprocessing-bound
   physical-camera inference producer, then collect the four ARM-070 originals
   and external 300/300 campaign before running this evaluator on real evidence.
+
+### E-20260928-ARM-077 — PC0 pre-camera typing qualification basis frozen
+
+- Stage: S2/S4/S7 pre-camera arm integration; PC0.
+- Lane: Arm/runtime.
+- Commit: `a8ec13667f55329c8a3bcbdec1c0baba59962e22`.
+- Change: added the strict `rocell.pre_camera_typing_qualification_basis.v1`
+  loader and retained basis. The basis freezes eight ordered typing fixtures,
+  five content-addressed source pins, synthetic calibration/dynamics/controller
+  identities, Cartesian policy, stable outcome codes, authority-denial flags,
+  and benchmark/resource ceilings.
+- Inputs/fixtures: `robot`, `book`, `qaz`, `plm`, `H,H,1,PERIOD`, space, enter,
+  and same-key repetition; frozen system manifest; static nominal target
+  catalog; pinned RoArm-M3 URDF; V2 batch schema; zero-write T=102 profile
+  schema. All dynamics, calibration, and controller values remain explicitly
+  `SYNTHETIC_OFFLINE_ONLY`.
+- Commands: `python -m pytest tests/unit/test_pre_camera_typing_qualification_basis_v1.py -q`;
+  `python -m pytest tests/unit/test_typing_execution_plan_v1.py tests/unit/test_typing_trajectory_plan_v1.py tests/unit/test_typing_trajectory_ik_screen_v1.py -q`.
+- Result: PASS; 10 focused tests and 18 existing T1/T2 regression tests passed.
+  Mutation coverage rejects authority promotion, evidence-class promotion,
+  fixture reorder, required-outcome deletion, physical-tracking claims,
+  transport enablement, crossed source hashes, and crossed fixture identities.
+- Artifacts: `software/config/pre_camera_typing_qualification_basis_v1.json`;
+  `software/src/rocell/application/pre_camera_typing_qualification_basis_v1.py`;
+  `software/tests/unit/test_pre_camera_typing_qualification_basis_v1.py`;
+  `software/docs/PRE_CAMERA_ARM_INTEGRATION_COMPLETION_PLAN.md`.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: this is an offline test-basis freeze. It does not establish
+  measured joint dynamics, controller tracking/settling, installed collision
+  geometry, camera localization, contact behavior, typing speed, or physical
+  authority.
+- Supersedes: none.
+- Next dependency: PC1 joint-space dynamics and deterministic time scaling over
+  the exact ordered T2B-IK results.

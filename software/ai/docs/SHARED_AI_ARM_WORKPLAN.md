@@ -395,6 +395,14 @@ the existing FK/collision/sweep pipeline. It refuses to substitute nominal
 geometry for a measured installed profile and never presents its synthetic seed
 as observed feedback. Physical evidence population and a fresh observed start
 state remain the next dependencies.
+ARM-077 freezes the PC0 pre-camera typing qualification basis. The retained
+artifact pins canonical typing sequences, source hashes, synthetic-only
+calibration/dynamics/controller identities, Cartesian policy, status codes,
+resource ceilings, and benchmark requirements. A strict loader verifies those
+sources and rejects authority promotion, reordered fixtures, crossed identities,
+unsafe paths, non-finite limits, and physical claims. This establishes the
+repeatable offline basis for PC1 joint-space timing; it does not qualify any
+installed dynamics, controller timing, camera, collision profile, or movement.
 The AI precision lane now has a mainline-compatible pose-output adapter and v2
 batch producer. It preserves repeated targets and abstains on qualification,
 domain, freshness, identity, confidence, or containment failure. Its retained
