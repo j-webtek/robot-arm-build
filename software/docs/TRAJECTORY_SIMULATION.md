@@ -88,9 +88,9 @@ Policy arguments are intentionally bounded:
 `--require-pass` changes only the process exit status. It cannot authorize
 hardware, calibration, motion, or contact.
 
-## Freeze-005-derived result retained through active Freeze 011
+## Freeze-005-derived result retained through active Freeze 012
 
-Freeze 009 first carried this historical input forward. Active Freeze 011
+Freeze 009 first carried this historical input forward. Active Freeze 012
 continues to source-bind it without relabeling the result or hashes as a new
 Freeze-011 execution.
 

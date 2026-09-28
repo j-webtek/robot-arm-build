@@ -5,8 +5,8 @@ This is the operator-facing sequence for `RC03-INT-R1`. The CAD, configuration, 
 **Physical state:** `UNRELEASED`  
 **Active build ID:** `2026-09-01_CELL-A`  
 **Print readiness:** 5 READY / 15 WAITING / 4 NOT_SELECTED  
-**Package definition hash:** `7a6947f2de52f63133c5b9647b9b479ccd9d896906c2b575e76c106e1e5dccca`  
-**Canonical snapshot hash:** `05d11599e6d4a2937e0207535b298aa809ff08c79840350c7716666ce6d12755`  
+**Package definition hash:** `65bbe688892e0dcdd2115a28d9f155921587915d80e98f6b01d81aaedcbde3a5`  
+**Canonical snapshot hash:** `06efd7afc3a2b406d822f18b0ae06189c5edbb01dbbd069e0edf35718290f45c`  
 **Selected routes:** phone stylus=True, keyboard rod=True, fixed-mast camera fallback=False (selection is not release)
 
 ## How to use this folder

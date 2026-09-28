@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "projection_id": "ROCELL-RC03-CAPABILITIES-FREEZE-011",
-  "system_manifest_id": "ROCELL-PHASE0-RC03-INT-R1-FREEZE-011",
+  "projection_id": "ROCELL-RC03-CAPABILITIES-FREEZE-013",
+  "system_manifest_id": "ROCELL-PHASE0-RC03-INT-R1-FREEZE-013",
   "capabilities": {
     "digital_plan": {
       "allowed": true,

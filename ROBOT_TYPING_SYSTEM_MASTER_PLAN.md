@@ -1,6 +1,6 @@
 # RoCell robot typing system master plan
 
-**Planning baseline:** active Freeze 011 with the 2026-09-05 static-overhead-primary decision; Freeze 009 remains archived historical provenance  
+**Planning baseline:** active Freeze 012 with the 2026-09-05 static-overhead-primary decision; Freeze 009 remains archived historical provenance  
 **Hardware release in scope:** RC03-INT-R1  
 **Robot:** Waveshare RoArm-M3 Pro; the M3-S is outside this freeze and requires a separate qualified profile  
 **Document role:** Governing roadmap for the software, calibration, verification, and commissioning work that turns the RC03 hardware cell into a physical keyboard-typing and phone-tapping system  
@@ -79,7 +79,7 @@ wired to a public stage-advance command. Their strongest positive result is
 source change invalidates execution for an existing session; a stale challenge,
 journal rollback, malformed/extra evidence, ambiguous device identity, or
 uncertain side effect fails closed. The overhead architecture is selected for
-new work but remains unpromoted relative to active Freeze 011; Freeze 009 is
+new work but remains unpromoted relative to active Freeze 012; Freeze 009 is
 retained only as immutable archived provenance.
 
 ## 1. Executive decision
@@ -222,7 +222,7 @@ These device origins, screen/TCP Z values, station origins, candidate fit dimens
 The digital RC03 package is internally validated, but the physical cell is not released:
 
 - active build `2026-09-01_CELL-A` is assigned and must remain bound to all evidence;
-- active Freeze 011 is the current synchronized snapshot, and the canonical
+- active Freeze 012 is the current synchronized snapshot, and the canonical
   alignment validator reports `ALIGNED_CAMERA_HOLD_CONTACT_BLOCKED`;
 - Freeze 005 → 006 was the seven-source Job 00A lifecycle transition that
   recorded Job 00A as `PRINTED` and the keyboard-corner coupon as `PASS` at
@@ -247,12 +247,12 @@ The digital RC03 package is internally validated, but the physical cell is not r
 - Freeze 005 remains the explicitly historical 14-source hardware-alignment
   and park/reach/simulation provenance baseline. Freezes 006–011 rebind the
   regenerated RC03 evidence and do not re-run or relabel those study results;
-- both tool routes are selected. Active Freeze 011 deliberately retains the
+- both tool routes are selected. Active Freeze 012 deliberately retains the
   legacy arm-camera and `camera_mast_optional: false` fields under
   `CAMERA_ARCHITECTURE_ALIGNMENT_HOLD`; the approved 2026-09-05 change plan
   selects `camera_overhead_primary`, but the active project route schema has
   not yet been regenerated and must not be reinterpreted in place;
-- active Freeze 011 reports 20 selected jobs (5 `READY`, 15 `WAITING`) and four
+- active Freeze 012 reports 20 selected jobs (5 `READY`, 15 `WAITING`) and four
   optional-mast jobs as `NOT_SELECTED`; these are historical routing facts, not
   authority to omit the new static support from the superseding build package;
 - the measurement record has 15 `PASS`, 63 `NOT_TESTED`, 4 `NA`, and 2 explicit
@@ -289,7 +289,7 @@ The digital RC03 package is internally validated, but the physical cell is not r
   margin; this remains evidence to refine measured placement/tool hypotheses,
   not proof that the received physical arm is incapable;
 - the bounded historical Freeze-005 park optimizer, retained unchanged as
-  provenance by active Freeze 011, selected a simulation-only board-frame
+  provenance by active Freeze 012, selected a simulation-only board-frame
   overlay at `(290, 10, 70) mm`; both 100 mm tools pass its independent
   pointwise IK screen with 0.2704734350 worst normalized arm-joint margin and
   10 mm modeled planar tool-tip clearance, but it changes no canonical geometry
@@ -351,7 +351,7 @@ The digital RC03 package is internally validated, but the physical cell is not r
   support geometry, height, lighting, static extrinsic, cable route, collision
   model, visibility atlas, and robot-frame registration remain open; and
 - the historical Freeze-005 simulation runtime remains under `software/` as
-  preserved study/replay provenance; active Freeze 011 rebinds the regenerated
+  preserved study/replay provenance; active Freeze 012 rebinds the regenerated
   RC03 source snapshot without rewriting those reach, park, or simulation
   results: strict T=104/T=105/T=1051 protocol and replay boundaries, lazy
   serial transport, USB/OpenCV and optional ESP HTTP camera adapters, immutable
@@ -729,7 +729,7 @@ catalog screen intentionally covers only the ranked top eight; 41 passes are
 reported as omitted. Six are eligible for a separate mission-route screen.
 Rank 1 accepts all 75 independent park-to-target-to-park routes, whereas the
 explicitly historical Freeze-005 baseline, retained unchanged as simulation
-provenance under active Freeze 011, accepts 38/75. This establishes a useful region
+provenance under active Freeze 012, accepts 38/75. This establishes a useful region
 for physical measurement and redesign. It does not establish that rank 1 is
 mechanically possible, nor does it prove a continuous multi-target sequence.
 
@@ -772,7 +772,7 @@ simulation/calibration evidence.
 
 The source-bound [`stress-placemat-geometry`](software/docs/PLACEMAT_GEOMETRY_SENSITIVITY.md)
 service now distinguishes nominal data-flow alignment from robustness to
-assumed build error. It binds active Freeze 011, the current RC03 layout and
+assumed build error. It binds active Freeze 012, the current RC03 layout and
 75-target catalog, the repaired static-support design, the purchased B0477
 profile, and its implementation identity. Its default 59-case matrix reports
 0/46 keyboard and 27/29 phone targets with sampled gaps; the zero-bound control
@@ -1947,7 +1947,7 @@ Phone screenshots and typed text may contain sensitive information. Default to t
 
 ### Phase 2 — Software skeleton, schemas, simulator, and RC03 importer
 
-**Implemented beginning in Freeze 004, historically synchronized under Freeze 005, and retained under active Freeze 011 (software-only; physical release unchanged)**
+**Implemented beginning in Freeze 004, historically synchronized under Freeze 005, and retained under active Freeze 012 (software-only; physical release unchanged)**
 
 - Installable package layout, typed units/frames/actions, immutable RC03 import, capability projection, strict protocol/replay boundaries, safety preflight, semantic compilers, and deterministic fixtures.
 - Typed rigid transforms, strict parsing of a local kinematic projection pinned to the official Waveshare ROS Xacro, and forward kinematics.
@@ -2476,7 +2476,7 @@ If QWERTY fails the geometric error-budget gate, it is not advertised even if oc
   physical buffering/timing remains open;
   the first physical session remains one bounded T=105 request, and installed
   firmware is read only through a separately approved
-  non-motion method. None of these checks updates active Freeze 011 or satisfies a
+  non-motion method. None of these checks updates active Freeze 012 or satisfies a
   physical gate.
 - The support candidate uses 1200 mm 4040 upright stock, 800 mm front rails,
   two 400 mm high booms, a 200 mm camera bridge, reversible board-edge
@@ -2526,7 +2526,7 @@ The 2026-09-05 static-overhead plan and additive hardware package control all
 new camera work. They have planning and simulation authority only. The
 user-confirmed B0477 catalog purchase is recorded as
 `PURCHASED_PENDING_RECEIPT_INSPECTION`; it does not promote the legacy camera
-fields retained in active Freeze 011 or rewrite any archived freeze,
+fields retained in active Freeze 012 or rewrite any archived freeze,
 release the old mast, verify or physically qualify the received camera, or
 enable power, motion, descent, or contact. The next controlled freeze must
 migrate routes, configuration, geometry, instructions, evidence gates,
@@ -2656,7 +2656,7 @@ confer no physical authority.
 
 The current software checkpoint is specific: the documented historical
 Freeze-005 placement, retained unchanged as historical simulation provenance
-under active Freeze 011, accepts 38/75 independent target routes, including keyboard `"a"`
+under active Freeze 012, accepts 38/75 independent target routes, including keyboard `"a"`
 but excluding phone `"a"`. The locked, unmeasured rank-1 sensitivity overlay
 accepts all 75 independent routes and completes the `test`/`test.` virtual
 acceptance pair. The current recorded keyboard golden replays identically.

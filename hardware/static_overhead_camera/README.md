@@ -45,6 +45,20 @@ topology and protected printer envelope, reconciles every printed quantity and
 hardware count, verifies every sidecar/hash/process mapping, and requires all
 generated interface reports to pass.
 
+For an offline copy of the maintained system print pack, do not copy the
+repository directory directly. Materialize and verify its hash-bound fallback
+STLs into a fresh external directory:
+
+```powershell
+python hardware/static_overhead_camera/cad/stage_system_print_pack.py --output C:\staging\SYSTEM_PRINT_PACK_v1
+python hardware/static_overhead_camera/cad/stage_system_print_pack.py --verify C:\staging\SYSTEM_PRINT_PACK_v1
+```
+
+The exported pack preserves the 3MF queue, relative dependencies, profiles,
+manifests, validation evidence, and all HOLD and superseded warnings. It also
+contains `verify_system_print_pack.py`, so the copied pack can be checked again
+on an offline machine without the repository.
+
 ## Current mechanical choices
 
 - no drilled board holes and no wood screws;

@@ -28,7 +28,7 @@ STAGING = ROOT / "BUILD_BY_STEP.__staging__"
 PREVIOUS = ROOT / "BUILD_BY_STEP.__previous__"
 SENTINEL = ".generated_by_build_step_packages"
 ACTIVE_BUILD_FILE = "ACTIVE_BUILD.json"
-LAYOUT_VERSION = 4
+LAYOUT_VERSION = 6
 BUILD_ID_PATTERN = re.compile(r"[A-Za-z0-9][A-Za-z0-9._-]{0,79}\Z")
 WINDOWS_RESERVED_NAMES = {
     "CON", "PRN", "AUX", "NUL",
@@ -87,6 +87,21 @@ REQUIRED_GEOMETRY_OVERRIDE_KEYS = {
     "zip_tie_tunnel_h",
 }
 LEGACY_GENERATED_STL_COPIES = {"m3_insert_fit_gauge.stl"}
+STEP_00_CANONICAL_REFERENCE_STLS = {
+    "hardware_fit_gauge.stl",
+    "keyboard_station_left.stl",
+    "m3_head_fit_gauge.stl",
+    "m4_washer_fit_gauge.stl",
+    "m5_nut_trap_fit_gauge.stl",
+    "mast_socket_fit_test.stl",
+    "phone_clamp_rail.stl",
+    "phone_m3_insert_fit_gauge.stl",
+    "phone_tcp_station.stl",
+    "setup_hardware_fit_gauge.stl",
+    "station_locator_fit_gauge.stl",
+    "stylus_diameter_gauge.stl",
+    "tool_m3_insert_fit_gauge.stl",
+}
 
 REQUIRED_STEP_FILES = (
     STEP_START_FILE,
@@ -140,6 +155,11 @@ CORE_REFERENCES = (
     ("config/assembly_steps.json", "canonical step-to-file relationship map", "reference_only"),
     ("slicer_profiles/QIDI_PLUS4/README.md", "QIDI process-preset import guide", "read"),
     ("scripts/build_step_packages.py", "step-package generator and validator", "run_from_project_root"),
+    (
+        "scripts/stage_hash_bound_artifacts.py",
+        "hash-bound canonical artifact staging and offline verification",
+        "run_for_standalone_export",
+    ),
     ("scripts/validate_print_readiness.py", "typed gate and print-readiness validator", "run_from_project_root"),
     ("scripts/validate_release_package.py", "whole-package release validator", "run_from_project_root"),
     ("scripts/generate_build_tracker.py", "job-lifecycle validator and tracker generator", "run_from_project_root"),
@@ -283,6 +303,11 @@ def remove_known_legacy_stl_copies(base: Path) -> None:
 def markdown_link(label: str, from_dir: Path, target: Path) -> str:
     relative = Path(os.path.relpath(target, from_dir)).as_posix()
     return f"[{label}](<{relative}>)"
+
+
+def step_stl_is_local_copy(step_id: str, filename: str) -> bool:
+    """Return whether the tracked step package intentionally embeds this STL."""
+    return step_id == "00" and filename not in STEP_00_CANONICAL_REFERENCE_STLS
 
 
 def csv_write(path: Path, headers: Iterable[str], rows: Iterable[Iterable[Any]]) -> None:
@@ -1468,27 +1493,34 @@ def render_step(
             }
         )
 
-    local_stl_records: list[dict[str, Any]] = []
+    stl_records: list[dict[str, Any]] = []
     for record in files:
         canonical_path = record["canonical_path"]
         if not canonical_path.startswith("stl/") or not canonical_path.lower().endswith(".stl"):
             continue
         source = ROOT / canonical_path
-        destination = stl_dir / source.name
-        shutil.copy2(source, destination)
-        copied_hash = sha256(destination)
-        if copied_hash != record["sha256"]:
-            raise RuntimeError(f"STL copy hash mismatch for {canonical_path}")
         if "DO_NOT_PRINT" in record["actions"] or "DO_NOT_PRINT" in source.name:
             usage = "DO_NOT_PRINT"
         elif step["id"] == "00":
             usage = "PRINT_VIA_READY_JOB_ONLY"
         else:
             usage = "TRACEABILITY_ONLY_DO_NOT_PRINT"
-        record["local_operator_copy"] = destination.relative_to(folder).as_posix()
-        record["local_copy_sha256"] = copied_hash
         record["local_copy_usage"] = usage
-        local_stl_records.append(record)
+        if step_stl_is_local_copy(step["id"], source.name):
+            destination = stl_dir / source.name
+            shutil.copy2(source, destination)
+            copied_hash = sha256(destination)
+            if copied_hash != record["sha256"]:
+                raise RuntimeError(f"STL copy hash mismatch for {canonical_path}")
+            record["local_operator_copy"] = destination.relative_to(folder).as_posix()
+            record["local_copy_sha256"] = copied_hash
+            record["artifact_resolution"] = "local_hash_verified_copy"
+        else:
+            record["canonical_reference"] = Path(
+                os.path.relpath(source, stl_dir)
+            ).as_posix()
+            record["artifact_resolution"] = "canonical_hash_bound_reference"
+        stl_records.append(record)
 
     csv_write(
         stl_dir / STEP_STL_CATALOG,
@@ -1502,6 +1534,7 @@ def render_step(
             "selections",
             "canonical_path",
             "sha256",
+            "artifact_resolution",
         ),
         (
             (
@@ -1517,15 +1550,20 @@ def render_step(
                 "; ".join(dict.fromkeys(jobs[job_id]["selection"] for job_id in row["job_ids"])),
                 row["canonical_path"],
                 row["sha256"],
+                row["artifact_resolution"],
             )
-            for row in local_stl_records
+            for row in stl_records
         ),
     )
-    if local_stl_records:
+    if stl_records:
         stl_lines = [
             "# STL files for this step",
             "",
-            "These are generated, hash-verified convenience copies of the canonical STL files used or inspected in this step. The originals in the project-level `stl/` directory remain authoritative.",
+            (
+                "Step 00 uses a governed mix of small generated convenience copies and hash-bound "
+                "links to the authoritative project-level `stl/` files. Steps 01–15 use only "
+                "hash-bound links and intentionally contain no duplicate STL bytes."
+            ),
             "",
             "## Rules",
             "",
@@ -1533,14 +1571,25 @@ def render_step(
             "- Never globally scale or auto-repair a production STL without reopening the measurement, regeneration, and validation workflow.",
             "- A file marked `DO_NOT_PRINT` is a visualization/reference body only.",
             f"- Compare against `{STEP_STL_CATALOG}`; any hash mismatch is a STOP.",
+            (
+                "- For a complete no-repository Step 00 package, run "
+                "`python scripts/stage_step_00_bundle.py --output <fresh-directory>` from the "
+                "RC03 project root, then use the verifier copied into that bundle."
+                if step["id"] == "00"
+                else "- Return to Step 00 and its qualified ready-job workflow if an accepted part is missing."
+            ),
             "",
             "| STL | Usage | Job reference | SHA-256 |",
             "| --- | --- | --- | --- |",
         ]
-        for row in local_stl_records:
+        for row in stl_records:
             filename = Path(row["canonical_path"]).name
+            if row.get("local_operator_copy"):
+                link = f"[{filename}](<{filename}>)"
+            else:
+                link = markdown_link(filename, stl_dir, ROOT / row["canonical_path"])
             stl_lines.append(
-                f"| [{filename}](<{filename}>) | **{row['local_copy_usage']}** | "
+                f"| {link} | **{row['local_copy_usage']}** | "
                 f"{', '.join(row['job_ids']) or 'reference only'} | `{row['sha256']}` |"
             )
     else:
@@ -1582,7 +1631,10 @@ def render_step(
         "panel": step.get("panel"),
         "print_jobs": job_rows,
         "canonical_files": files,
-        "local_stl_copy_count": len(local_stl_records),
+        "local_stl_copy_count": sum(bool(row.get("local_operator_copy")) for row in stl_records),
+        "hash_bound_stl_reference_count": sum(
+            row.get("artifact_resolution") == "canonical_hash_bound_reference" for row in stl_records
+        ),
         "next_step": next_step["id"] if next_step else None,
         "operator_writable_directory": STEP_EVIDENCE_DIRECTORY,
     }
@@ -1795,9 +1847,14 @@ def render_step(
                 "- The standard " + markdown_link(STEP_PRINT_SETTINGS_FILE, folder, folder / STEP_PRINT_SETTINGS_FILE) + " explicitly records that no printing is allowed here.",
             ]
         )
-    if local_stl_records:
+    if stl_records:
+        model_description = (
+            "local model file(s)"
+            if step["id"] == "00"
+            else "hash-bound canonical model reference(s)"
+        )
         parts_lines.append(
-            f"- Review the {len(local_stl_records)} local model file(s) and their exact usage labels in "
+            f"- Review the {len(stl_records)} {model_description} and their exact usage labels in "
             + markdown_link("03 - STL MODELS", folder, stl_dir / STEP_STL_README)
             + "."
         )
@@ -2570,6 +2627,7 @@ def validate_tree(
     step_ids = [step["id"] for step in steps]
     referenced_paths: set[str] = set()
     local_stl_copy_total = 0
+    hash_bound_stl_reference_total = 0
 
     if not (base / SENTINEL).is_file():
         errors.append(f"missing {SENTINEL}")
@@ -2820,12 +2878,6 @@ def validate_tree(
             elif sha256(path) != recorded_hash:
                 errors.append(f"{folder.name} source hash changed: {canonical_path}")
             if canonical_path.startswith("stl/") and canonical_path.lower().endswith(".stl"):
-                local_copy = record.get("local_operator_copy")
-                if not isinstance(local_copy, str) or not local_copy:
-                    errors.append(f"{folder.name} lacks a local STL copy for {canonical_path}")
-                    continue
-                local_path = folder / local_copy
-                expected_local_stls.add(local_path.name)
                 expected_usage = (
                     "DO_NOT_PRINT"
                     if "DO_NOT_PRINT" in record.get("actions", []) or "DO_NOT_PRINT" in Path(canonical_path).name
@@ -2833,12 +2885,35 @@ def validate_tree(
                 )
                 if record.get("local_copy_usage") != expected_usage:
                     errors.append(f"{folder.name} has wrong STL usage label for {canonical_path}")
-                if not local_path.is_file():
-                    errors.append(f"{folder.name} missing local STL {local_copy}")
-                elif sha256(local_path) != recorded_hash:
-                    errors.append(f"{folder.name} local STL hash mismatch: {local_copy}")
+                if step_stl_is_local_copy(step["id"], Path(canonical_path).name):
+                    local_copy = record.get("local_operator_copy")
+                    if not isinstance(local_copy, str) or not local_copy:
+                        errors.append(f"{folder.name} lacks a local STL copy for {canonical_path}")
+                        continue
+                    local_path = folder / local_copy
+                    expected_local_stls.add(local_path.name)
+                    if record.get("artifact_resolution") != "local_hash_verified_copy":
+                        errors.append(f"{folder.name} has wrong STL resolution for {canonical_path}")
+                    if record.get("local_copy_sha256") != recorded_hash:
+                        errors.append(f"{folder.name} local copy record hash mismatch: {local_copy}")
+                    if not local_path.is_file():
+                        errors.append(f"{folder.name} missing local STL {local_copy}")
+                    elif sha256(local_path) != recorded_hash:
+                        errors.append(f"{folder.name} local STL hash mismatch: {local_copy}")
+                    else:
+                        local_stl_copy_total += 1
                 else:
-                    local_stl_copy_total += 1
+                    expected_reference = Path(os.path.relpath(path, folder / STEP_STL_DIRECTORY)).as_posix()
+                    if record.get("artifact_resolution") != "canonical_hash_bound_reference":
+                        errors.append(f"{folder.name} has wrong canonical STL resolution for {canonical_path}")
+                    if record.get("canonical_reference") != expected_reference:
+                        errors.append(f"{folder.name} has stale canonical STL reference for {canonical_path}")
+                    if any(
+                        key in record
+                        for key in ("local_operator_copy", "local_copy_sha256")
+                    ):
+                        errors.append(f"{folder.name} retains local-copy fields for {canonical_path}")
+                    hash_bound_stl_reference_total += 1
         if instructions_path.is_file():
             instructions_text = instructions_path.read_text(encoding="utf-8")
             try:
@@ -2896,6 +2971,12 @@ def validate_tree(
             )
         if manifest.get("local_stl_copy_count") != len(expected_local_stls):
             errors.append(f"{folder.name} local_stl_copy_count is wrong")
+        expected_reference_count = sum(
+            record.get("artifact_resolution") == "canonical_hash_bound_reference"
+            for record in canonical_file_rows
+        )
+        if manifest.get("hash_bound_stl_reference_count") != expected_reference_count:
+            errors.append(f"{folder.name} hash_bound_stl_reference_count is wrong")
         stl_directory = folder / STEP_STL_DIRECTORY
         actual_stl_entries = {path.name for path in stl_directory.iterdir()} if stl_directory.is_dir() else set()
         expected_stl_entries = expected_local_stls | {STEP_STL_README, STEP_STL_CATALOG}
@@ -3196,6 +3277,7 @@ def validate_tree(
         "canonical_artifact_coverage": coverage_counts,
         "canonical_files_are_links_not_copies": True,
         "local_stl_copies_verified": local_stl_copy_total,
+        "hash_bound_stl_references_verified": hash_bound_stl_reference_total,
         "operator_evidence_preserved_on_regeneration": True,
         "readiness_summary": readiness["summary"],
         "errors": errors,

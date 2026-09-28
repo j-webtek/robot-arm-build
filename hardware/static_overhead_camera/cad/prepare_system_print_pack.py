@@ -1,4 +1,5 @@
 """Exact-coordinate topology repair and scoped remaining-system print package."""
+import argparse
 from pathlib import Path
 import hashlib
 import json
@@ -13,11 +14,18 @@ import trimesh
 from repair_00g_c1_mesh import NS, inspect
 
 BASE = Path(__file__).resolve().parent.parent
-OUT = BASE / 'cad/output/revisions/SYSTEM_PRINT_PACK_v1'
+REPO_ROOT = BASE.parents[1]
+PACK_TEMPLATE = BASE / 'cad/output/revisions/SYSTEM_PRINT_PACK_v1'
+OUT = None
 
 
 def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def build_signature(root):
+    build = root.find(NS+'build')
+    return [(item.tag, tuple(sorted(item.attrib.items()))) for item in list(build)]
 
 
 def package_archive():
@@ -26,14 +34,34 @@ def package_archive():
     saddle_source=BASE/'cad/output/revisions/SADDLES_GROUNDED_v2'
     for filename in ('PRINT_THIS_REVISION.md','MANIFEST.json','saddle_side_comparison.png'):
         shutil.copy2(saddle_source/filename,revision_notes/filename)
-    with zipfile.ZipFile(OUT.parent/'SYSTEM_PRINT_PACK_v1.zip','w',zipfile.ZIP_DEFLATED) as archive:
+    with zipfile.ZipFile(OUT.with_suffix('.zip'),'w',zipfile.ZIP_DEFLATED) as archive:
         for path in sorted(OUT.rglob('*')):
             if path.is_file():
                 archive.write(path,path.relative_to(OUT.parent))
 
 
 def main():
+    global OUT
+    parser = argparse.ArgumentParser(
+        description='Build a fresh standalone system print pack outside the repository.'
+    )
+    parser.add_argument('--output', type=Path, required=True,
+                        help='fresh destination directory outside the repository')
+    args = parser.parse_args()
+    OUT = args.output.resolve()
+    try:
+        OUT.relative_to(REPO_ROOT.resolve())
+    except ValueError:
+        pass
+    else:
+        raise ValueError('Output must be outside the repository')
+    if OUT.exists():
+        raise ValueError(f'Output must not already exist: {OUT}')
     OUT.mkdir(parents=True,exist_ok=True)
+    for filename in ('START_HERE.md', 'M5_SOCKET_HEAD_CHECK.json', 'STL_HASH_REFERENCES.json'):
+        shutil.copy2(PACK_TEMPLATE/filename, OUT/filename)
+    shutil.copy2(Path(__file__).with_name('stage_system_print_pack.py'), OUT/'verify_system_print_pack.py')
+    shutil.copytree(PACK_TEMPLATE/'SUPERSEDED_DO_NOT_PRINT', OUT/'SUPERSEDED_DO_NOT_PRINT')
     (OUT/'profiles').mkdir(exist_ok=True)
     (OUT/'STL_fallback').mkdir(exist_ok=True)
     records=[]
@@ -71,22 +99,31 @@ def main():
                     build.remove(item)
             side['objects']=[o for o in side['objects'] if o['part']!='camera_top_compression_pad']
             side['expected_object_count']=4
-        original_build=ET.tostring(root.find(NS+'build'))
-        mesh_records=inspect(root,True)
-        assert ET.tostring(root.find(NS+'build'))==original_build
-        data=ET.tostring(root,encoding='utf-8',xml_declaration=True)
-        assert b'<model ' in data and b'<mesh>' in data and b'<ns0:' not in data
-        files['3D/3dmodel.model']=data
+        original_build=build_signature(root)
+        mesh_records=[]
+        for entry,content in list(files.items()):
+            if not entry.lower().endswith('.model'):
+                continue
+            model_root=root if entry=='3D/3dmodel.model' else ET.fromstring(content)
+            mesh_records.extend(inspect(model_root,True))
+            data=ET.tostring(model_root,encoding='utf-8',xml_declaration=True)
+            assert b'<model ' in data and b'<ns0:' not in data
+            files[entry]=data
+        assert build_signature(ET.fromstring(files['3D/3dmodel.model']))==original_build
         with zipfile.ZipFile(target,'w',zipfile.ZIP_DEFLATED) as archive:
             for entry,content in files.items():
                 archive.writestr(entry,content)
         tags=Counter()
+        final_records=[]
         with zipfile.ZipFile(target) as archive:
-            disk_data=archive.read('3D/3dmodel.model')
-            final_records=inspect(ET.fromstring(disk_data),False)
-            parser=xml.parsers.expat.ParserCreate()
-            parser.StartElementHandler=lambda tag,attrs:tags.update([tag])
-            parser.Parse(disk_data,True)
+            for entry in archive.namelist():
+                if not entry.lower().endswith('.model'):
+                    continue
+                disk_data=archive.read(entry)
+                final_records.extend(inspect(ET.fromstring(disk_data),False))
+                parser=xml.parsers.expat.ParserCreate()
+                parser.StartElementHandler=lambda tag,attrs:tags.update([tag])
+                parser.Parse(disk_data,True)
         scene=trimesh.load(target,process=False)
         expected=side['expected_object_count']
         assert len(final_records)==tags['mesh']==tags['item']==len(scene.geometry)==expected
@@ -130,10 +167,25 @@ def main():
         (folder/(name+'.validation.json')).write_text(json.dumps(report,indent=2)+'\n')
         records.append(report)
         print(f"{side['subplate_id']}: {report['status']} | {expected} closed objects",flush=True)
+    reference_payload=json.loads((OUT/'STL_HASH_REFERENCES.json').read_text())
+    for reference in reference_payload['references']:
+        canonical=(REPO_ROOT/reference['canonical']).resolve()
+        assert canonical.is_relative_to(REPO_ROOT.resolve()) and canonical.is_file()
+        assert sha(canonical)==reference['sha256']
+        materialized=(OUT/reference['target']).resolve()
+        assert materialized.is_relative_to(OUT.resolve())
+        materialized.parent.mkdir(parents=True,exist_ok=True)
+        if materialized.exists():
+            assert sha(materialized)==reference['sha256']
+        else:
+            shutil.copy2(canonical,materialized)
     assert len(records)==18
     assert sum(r['status']=='PASS_MESH' for r in records)==17
     manifest=dict(description='16 ABS frame plates plus four TPU board pads on one plate; one repaired carriage plate on HOLD',
-                  original_files_preserved=True,plates=records)
+                  original_files_preserved=True,
+                  standalone_offline_export=True,
+                  hash_reference_manifest='STL_HASH_REFERENCES.json',
+                  plates=records)
     (OUT/'MANIFEST.json').write_text(json.dumps(manifest,indent=2)+'\n')
     # Package all relative dependencies. The README is maintained alongside the
     # generated reports and is included if present. No originals are overwritten.

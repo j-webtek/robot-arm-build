@@ -221,10 +221,10 @@ sample is clear, the only valid status is
 false. Dynamics, unmodeled deformation, payload effects, and events between
 samples are not inferred.
 
-## Freeze-005 readiness-audit provenance retained through active Freeze 011
+## Freeze-005 readiness-audit provenance retained through active Freeze 012
 
 The following is the exact Freeze-005 result recorded on 2026-09-01. Freeze 009
-first retained it as historical report provenance, and active Freeze 011 still
+first retained it as historical report provenance, and active Freeze 012 still
 does so; the listed manifest and report hashes are not relabeled as a
 Freeze-009 or Freeze-011 execution. It is reproducible only against its
 originally bound source hashes.

@@ -7,7 +7,7 @@ c9362cf401ca66f4e584c7fc294f6c54853c8ea546e610d551bc841782d6bcd0  ../../../BOM.c
 2c93199c0703d975d47870c2537dd4acf39c376c6f42fbab17fcddeba4004516  ../../../JOB_KITS.csv
 a8c75f05f727fa899c1f873ffea9852b5e6d343cdd302d5c4e02ee4124f74fc3  ../../../PRINT_READINESS.json
 5be5234644cbca322e93f16ec422cd5a6f04059055a2f56d68cf224d61f015b0  ../../../PRINT_READINESS.md
-ba84a14a17983d774a0278b4b68571d920b0dc4d186fd05c991b1d149d388a9e  ../../../README_FIRST.md
+6e3e5a4bf57be1858e0b691c09b0c7683cc4266eb7df666d371136aa5800ee42  ../../../README_FIRST.md
 207554f3b727467da31e6682f5a331e5e3be09ba5a1aa920250433417e89c86c  ../../../cad/step/board_610x457x18_RC03.step
 2561bed996ff1a1c9bb15530b35467d15318812ea3822f77c2e76f80ed74008c  ../../../cad/step/cable_tie_saddle_fit_gauge.step
 5c703f405245681d67ac4c495d2412e67bd52a35c49dd70900563c2e42f28de4  ../../../cad/step/hardware_fit_gauge.step
@@ -58,7 +58,7 @@ c3fd921347d91842d1f16728e8e88a45d25a776aa3aedd6d8810c9db9773c7b9  ../../../print
 a0933605a7fbc2c7205b93404508f94828e21075476c6e89db2aef5899459da6  ../../../print_plates_3mf/03A_ABS_phone_TCP_station.print.json
 6badf0daa975d8c0ab5de34cea5a7514dbff8469d2a7b499670a3002d428eb31  ../../../scripts/build_illustrated_assembly_guide.py
 4baf08d28e3566c3eb3869585275ebc318bf1e076744867221d4d79e2359f182  ../../../scripts/build_manual_pdf.py
-09ec78a5512ee6cb6997b3200e7bd1cdb1418eeb2fb477f339f331f14191f8a2  ../../../scripts/build_step_packages.py
+38b9b55bfaad6c80f2465bd99abc134b8a7b488d91e6fc357c3f93f05ec699b9  ../../../scripts/build_step_packages.py
 6090b47ff751ebb62c6ab8ecd4abc55fa54f79cabde5b86a4231484b2cc67e53  ../../../scripts/generate_build_tracker.py
 520cf48d2263beca0eca351d6960fbfae95e1f9c63e05aec1204957b47271a7f  ../../../scripts/generate_job_cards.py
 0a940eabc2ab22fcc0c4e2b2df9a67fa90224027168127917c2e7879a8725b93  ../../../scripts/initialize_step_evidence.py
@@ -68,6 +68,7 @@ a0933605a7fbc2c7205b93404508f94828e21075476c6e89db2aef5899459da6  ../../../print
 8e7467e8eccccbf6e04988820b828be3c0aa0c1c06167954f53bb46b5f8cf330  ../../../scripts/render_assembly_guide.py
 0f593f140437858b8cd72c87f4737b14af483c91ac3e9fcb45f07d4893327571  ../../../scripts/set_active_build.py
 caed2f3b929d24354ae7ff289178e70a94c8729d84ca5f2d55384c483032cbba  ../../../scripts/sign_off_step.py
+a18eb88d17b2adbe930857f4539079bad96090320c4ea161b5d38a29ec44e3d8  ../../../scripts/stage_hash_bound_artifacts.py
 93fb598ee2de6dc0ba60d6eec7291458a728cb087dbe724b9e3bf09aa8933f8a  ../../../scripts/step_evidence_common.py
 7dc6159c15826da700a66d9e271776f8daed14716db80081fedea2e8712fb2ed  ../../../scripts/validate_print_readiness.py
 9b954d47726e7c09423d31f7cdbd8b0e07dff1b78c11bf826274473062d66ed3  ../../../scripts/validate_release_package.py

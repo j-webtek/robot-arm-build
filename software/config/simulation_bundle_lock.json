@@ -1,16 +1,16 @@
 {
   "schema": "rocell.simulation_bundle_lock.v1",
   "schema_version": 1,
-  "bundle_id": "ROCELL-SIM-BUNDLE-RC03-INT-R1-FREEZE-011-011",
+  "bundle_id": "ROCELL-SIM-BUNDLE-RC03-INT-R1-FREEZE-013-013",
   "status": "SIMULATION_ONLY_LOCKED_PHYSICAL_AUTHORITY_NONE",
   "simulation_only": true,
   "physical_release_effect": "NONE",
-  "system_manifest_id": "ROCELL-PHASE0-RC03-INT-R1-FREEZE-011",
+  "system_manifest_id": "ROCELL-PHASE0-RC03-INT-R1-FREEZE-013",
   "design_revision": "RC03-INT-R1",
   "artifacts": {
     "simulation_hardware_profile": {
       "path": "software/config/simulation_hardware_profile.json",
-      "sha256": "b79ca2653fe0c95ecd328412a44b160d2d0beae1a0dc5c3e2fd09bb94a487990"
+      "sha256": "6c24745f8330d0aa77c423d9376adb7bb6c1a090426ed1a38814eb32f6dcd190"
     },
     "nominal_target_profiles": {
       "path": "software/config/nominal_target_profiles.json",
@@ -22,11 +22,11 @@
     },
     "camera_manifest": {
       "path": "software/config/camera_manifest.json",
-      "sha256": "343e22519d75f2c2e93a7ac1a309a62f61cb4fa92f1123318172e932d7857f25"
+      "sha256": "a9b61d6f0b5d80d00f1bd9e523e53bfa3df48664f9857c5ccf168bb0979ac012"
     },
     "virtual_commissioning_profile": {
       "path": "software/config/virtual_commissioning_profile.json",
-      "sha256": "c8f8440e9e4d2bdd8eaf61b5755d8c57235b5b1a0fb2f62c6953f9b6e20338cf"
+      "sha256": "38b348ace299140e5908cf367fc15f32b33bebe9b064d5efffe5dcf95f7b4634"
     },
     "local_roarm_urdf": {
       "path": "software/models/roarm_m3/roarm_m3_kinematic_40dbd84.urdf",
