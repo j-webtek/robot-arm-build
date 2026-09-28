@@ -473,6 +473,13 @@ detects missing, changed, truncated, extra, reordered, and identity-crossed
 artifacts without parsing them into commands or exposing any execution surface.
 PC6 remains in progress pending adapters for retained PC2-PC5 artifacts, a
 clean-checkout replay command, and path-containment/redaction qualification.
+ARM-087 connects that backbone to the actual strict PC2-PC5 contracts. The
+adapter parses and cross-binds the V2 batch, golden shadow receipt, rolling
+horizon, zero-write controller preview, and completed fault campaign before it
+derives replay artifacts. Crossed request, target order, horizon, or schedule
+identity rejects before journal creation. The journal still retains hashes and
+sizes only and the effect stage remains explicitly not observed. PC6 now waits
+on the contained clean-checkout replay command and redaction/path qualification.
 The AI precision lane now has a mainline-compatible pose-output adapter and v2
 batch producer. It preserves repeated targets and abstains on qualification,
 domain, freshness, identity, confidence, or containment failure. Its retained

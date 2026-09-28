@@ -4613,3 +4613,44 @@ rewriting history. New entries must use a unique evidence ID.
 - Next dependency: bind actual retained golden shadow, rolling-horizon,
   controller-preview, sequence-journal, and fault-campaign artifacts into the
   manifest, then add a contained clean-checkout replay command.
+
+### E-20260928-ARM-087 — actual PC2-PC5 typing trace adapter
+
+- Stage: S1/S4/S7 pre-camera arm integration; PC6 in progress.
+- Lane: Arm/runtime shared boundary.
+- Commit: `b7666d9`.
+- Change: added an adapter that validates the actual strict V2 batch, PC2
+  shadow receipt, PC3 rolling horizon, PC4 zero-write controller preview, and
+  PC5 fault campaign; cross-checks request, action, horizon, and joint-schedule
+  lineage; and derives the exact 14 PC6 replay artifacts. Planning stages use
+  hash-only references to the existing PC2 receipt. The permit, encoding,
+  dispatch, and feedback stages preserve existing PC4 identities. Effect
+  verification is explicitly `NOT_OBSERVED_SYNTHETIC_PLACEHOLDER`.
+- Inputs/fixtures: actual one-key PC2 golden pipeline output; valid PC3 horizon;
+  reconstructed valid PC4 preview; complete PC5 campaign; crossed request,
+  schedule, and target-order mutations.
+- Commands: `python -m pytest tests/unit/test_typing_trace_journal_v1.py
+  tests/integration/test_typing_trace_adapter_v1.py
+  tests/integration/test_typing_shadow_pipeline_v1.py
+  tests/unit/test_typing_rolling_horizon_v1.py
+  tests/unit/test_typing_controller_bridge_v1.py
+  tests/unit/test_model_motion_sequence_journal.py
+  tests/unit/test_typing_fault_campaign_v1.py
+  tests/unit/test_typing_fault_owner_boundaries_v1.py -q`.
+- Result: PASS; 4 focused adapter tests and 103 combined trace, shadow,
+  horizon, controller, journal, and campaign tests passed. Valid inputs replay
+  identically; crossed request, planning, and action lineage rejects before
+  the trace is sealed.
+- Artifacts: `software/src/rocell/application/typing_trace_adapter_v1.py`;
+  `software/tests/integration/test_typing_trace_adapter_v1.py`; ARM-086 trace
+  journal, schema, and replay verifier.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: the integration fixture is synthetic and zero-I/O. The adapter
+  does not provide persistent evidence storage, CLI replay, path containment,
+  redaction, installed geometry, camera evidence, or physical authority.
+- Supersedes: ARM-086's missing-adapter limitation only; ARM-086 remains the
+  trace-contract checkpoint.
+- Next dependency: implement a contained clean-checkout replay package/command
+  that verifies every artifact before reporting an identical replay and never
+  interprets retained bytes as executable commands.

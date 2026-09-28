@@ -339,9 +339,13 @@ its byte count and SHA-256 digest in a stage-order hash chain; raw payloads are
 not copied into the journal. Deterministic replay detects missing, mutated,
 empty/truncated, extra, reordered, and correlation/request-crossed artifacts.
 The seven focused tests and 99-test affected journal/planning suite pass with
-zero hardware access or authority. PC6 remains in progress until adapters bind
-the actual retained PC2-PC5 artifacts, a clean-checkout replay command is
-provided, and redaction/path-containment behavior is qualified.
+zero hardware access or authority. The next checkpoint adds the real PC2-PC5
+adapter: it validates the strict batch, shadow receipt, rolling horizon,
+controller preview, and fault-campaign contracts; rejects crossed request,
+action, horizon, or schedule lineage; and derives the exact replay artifacts
+and explicit not-observed effect placeholder. The combined 103-test suite
+passes. PC6 remains in progress until a clean-checkout replay command and
+redaction/path-containment behavior are qualified.
 
 ### Deliverables
 

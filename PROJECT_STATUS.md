@@ -1,6 +1,6 @@
 # Tactevra project status
 
-Reviewed September 28, 2026 through the ARM-086 PC6 trace-replay checkpoint,
+Reviewed September 28, 2026 through the ARM-087 PC2-PC5 trace adapter,
 ARM-077 PC0 pre-camera qualification basis, ARM-076 typing collision-evidence
 intake, ARM-075 exact-sample offline IK screen, AI-403 precision-adapter
 integration, and merged physical-camera
@@ -311,6 +311,14 @@ Replay deterministically rejects missing, changed, truncated, extra, reordered,
 or identity-crossed artifacts and cannot execute their contents. The affected
 99-test journal/planning suite passes. Actual retained PC2-PC5 adapters and a
 clean-checkout replay command remain before PC6 can complete.
+
+ARM-087 connects the PC6 manifest to the actual strict PC2-PC5 contracts. The
+adapter validates and cross-binds the batch, shadow receipt, rolling horizon,
+controller preview, and fault campaign, then derives the 14 replay artifacts
+and an explicit not-observed effect placeholder. Crossed request, action order,
+horizon, or schedule lineage rejects before sealing. The combined 103-test
+suite passes with no hardware access. PC6 still needs the contained
+clean-checkout replay command and path/redaction qualification.
 
 AI-403 then integrates the pose-output precision adapter and actual V2 batch
 producer on current `main`. The retained contract fixture deterministically
