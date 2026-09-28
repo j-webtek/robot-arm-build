@@ -34,6 +34,15 @@
     "permit_scope": "one contact",
     "next_target_authority": "preview only"
   },
+  "crossing": {
+    "scene_id": 11,
+    "start_frame": 1465,
+    "midpoint_frame": 1528,
+    "end_frame": 1608,
+    "minimum_authored_wrist_height_mm": 255,
+    "contact_authority": "none",
+    "continuity": "same articulated rig and stylus"
+  },
   "shots": [
     {"id": 1, "start": 1, "end": 96, "seconds": "0:00–0:04", "stage": null, "rig": "macro", "slug": "cold-open-r-hover"},
     {"id": 2, "start": 97, "end": 216, "seconds": "0:04–0:09", "stage": "UNDERSTAND", "rig": "hero", "slug": "operator-request"},

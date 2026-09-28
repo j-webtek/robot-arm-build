@@ -116,11 +116,13 @@ def set_scale(obj: bpy.types.Object, frame: int, scale: float) -> None:
     obj.keyframe_insert("scale", frame=frame)
 
 
-def arm_pose(target_xy: tuple[float, float], manifest: dict) -> tuple[Vector, Vector, Vector]:
+def arm_pose(
+    target_xy: tuple[float, float], manifest: dict, *, wrist_z: float = 0.205,
+) -> tuple[Vector, Vector, Vector]:
     """Return shoulder, elbow, and wrist points for the presentation rig."""
     tx, ty, _tz = manifest["arm"]["nominal_board_T_robot_world_translation"]
     shoulder = base.board_point(tx, ty, 0) + Vector((0, 0, 0.120))
-    wrist = base.board_point(*target_xy, 0) + Vector((0, 0, 0.205))
+    wrist = base.board_point(*target_xy, 0) + Vector((0, 0, wrist_z))
     length_a, length_b = 0.2387, 0.1550
     direction = wrist - shoulder
     distance = direction.length
@@ -192,8 +194,9 @@ def add_articulation_controls(
 def animate_arm_target(
     controls: dict[str, bpy.types.Object], manifest: dict,
     target_xy: tuple[float, float], frame: int, *, press: float = 0.0,
+    wrist_z: float = 0.205,
 ) -> None:
-    shoulder, elbow, wrist = arm_pose(target_xy, manifest)
+    shoulder, elbow, wrist = arm_pose(target_xy, manifest, wrist_z=wrist_z)
     upper, forearm, wrist_control = controls["upper"], controls["forearm"], controls["wrist"]
     upper.location = shoulder
     upper.rotation_quaternion = segment_rotation(shoulder, elbow)
@@ -274,6 +277,25 @@ def animate_key_rhythm(
         previous_xy = target_xy
 
 
+def animate_keyboard_to_phone_crossing(
+    controls: dict[str, bpy.types.Object], rig: dict[str, object],
+    keyboard_xy: tuple[float, float], phone_xy: tuple[float, float],
+) -> None:
+    """Retract, cross through a high corridor, and finish above the phone."""
+    waypoints = (
+        (1320, keyboard_xy, 0.205),
+        (1340, keyboard_xy, 0.255),
+        (1464, keyboard_xy, 0.255),
+        (1465, keyboard_xy, 0.255),
+        (1528, (360.0, 190.0), 0.275),
+        (1608, phone_xy, 0.255),
+    )
+    for frame, target_xy, wrist_z in waypoints:
+        animate_arm_target(
+            controls, rig["manifest"], target_xy, frame, wrist_z=wrist_z,
+        )
+
+
 def make_authority_graphics(
     mats: dict[str, bpy.types.Material],
     collection: bpy.types.Collection,
@@ -337,6 +359,7 @@ def make_authority_graphics(
 
 def build() -> bpy.types.Scene:
     manifest = json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
+    layout = json.loads(base.LAYOUT_PATH.read_text(encoding="utf-8"))
     scene = base.build()
     scene.frame_start = manifest["frame_start"]
     scene.frame_end = manifest["frame_end"]
@@ -406,6 +429,20 @@ def build() -> bpy.types.Scene:
         [find_key(letter) for letter in ("E", "A", "D", "Y")],
         graphics_objects,
     )
+    y_key = find_key("Y")
+    y_xy_mm = (
+        (y_key.location.x * 1000) + base.BOARD_CENTER_MM.x,
+        (y_key.location.y * 1000) + base.BOARD_CENTER_MM.y,
+    )
+    phone_dev = layout["devices"]["phone"]
+    phone_xy_mm = (
+        phone_dev["nominal_origin_xy"][0] + phone_dev["configured_size"][0] / 2,
+        phone_dev["nominal_origin_xy"][1] + phone_dev["configured_size"][1] / 2,
+    )
+    animate_keyboard_to_phone_crossing(controls, rig, y_xy_mm, phone_xy_mm)
+    for graphic in graphics_objects.values():
+        set_scale(graphic, 1320, 0.0)
+        set_scale(graphic, 1608, 0.0)
 
     # Four reusable rigs cover the shot palette without an add-on dependency.
     r_target = r_key.location + Vector((0, 0, 0.060))
@@ -426,6 +463,8 @@ def build() -> bpy.types.Scene:
                    base.board_point(185, 154, 70))
     animate_camera(*rigs["arm_follow"], 1465, 1896,
                    Vector((0.18, -0.76, 0.53)), Vector((0.55, -0.72, 0.45)), phone_target)
+    key_pose(rigs["arm_follow"][1], 1465, base.board_point(*y_xy_mm, 90))
+    key_pose(rigs["arm_follow"][1], 1608, base.board_point(*phone_xy_mm, 90))
     animate_camera(*rigs["hero"], 1, 2400,
                    Vector((0.42, -1.48, 0.88)), Vector((0.31, -1.30, 0.78)), board_target)
 
@@ -470,12 +509,15 @@ def main() -> None:
         preview_frames += (961, 1009, 1049, 1068, 1093, 1140)
     if "--preview-rhythm" in args:
         preview_frames += (1153, 1165, 1178, 1207, 1220, 1249, 1262, 1291, 1304, 1320)
+    if "--preview-crossing" in args:
+        preview_frames += (1320, 1340, 1465, 1528, 1608)
     if preview_frames:
         for frame in preview_frames:
             scene.frame_set(frame)
             scene.camera = (
                 bpy.data.objects["CAM_MACRO"] if frame <= 1152
-                else bpy.data.objects["CAM_DOLLY"]
+                else bpy.data.objects["CAM_DOLLY"] if frame <= 1464
+                else bpy.data.objects["CAM_ARM_FOLLOW"]
             )
             scene.render.filepath = str(OUT / f"storyboard_{frame:04d}.png")
             bpy.ops.render.render(write_still=True)

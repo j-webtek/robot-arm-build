@@ -136,6 +136,15 @@ Render the follow-on `e → a → d → y` rhythm checkpoints:
   --preview-rhythm
 ```
 
+Render the continuous keyboard-to-phone crossing checkpoints:
+
+```powershell
+& "C:\Program Files\Blender Foundation\Blender 4.3\blender.exe" `
+  --background --factory-startup `
+  --python presentations/blender/build_storyboard_v21_benchmark.py -- `
+  --preview-crossing
+```
+
 Generated output is written to `tmp/blender-storyboard-v21/`. The first
 benchmark is intentionally limited to the lowercase `r` action at frames
 961–1152. It demonstrates `transit → align → settle → approach → contact →
@@ -149,6 +158,13 @@ gripper, and stylus component while the wrist travels continuously across
 `e`, `a`, `d`, and `y`. Each key receives its own uncertainty fit, permit,
 contact, retract, and verification interval; the next dotted target remains a
 preview until its permit is granted.
+
+After local verification, the rig retracts to a 255 mm wrist height, holds
+through the receipt beat, and crosses through a 275 mm midpoint before ending
+above the phone at 255 mm. Permit, uncertainty, and preview graphics stay
+inactive because this is contact-free transit. The arm-follow camera moves its
+aim from the final keyboard key to the measured phone center without a pose,
+stylus, or robot swap.
 
 The scaffold has no add-on dependency. Native cameras, constraints, markers,
 and collections keep CI and collaborator builds reproducible. Artists may use

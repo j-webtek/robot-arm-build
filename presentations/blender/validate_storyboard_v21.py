@@ -49,10 +49,21 @@ def main() -> None:
     assert rhythm_shot["start"] <= contacts[0] < verifies[-1] <= rhythm_shot["end"]
     assert rhythm["permit_scope"] == "one contact"
     assert rhythm["next_target_authority"] == "preview only"
+    crossing = data["crossing"]
+    assert crossing["scene_id"] == 11
+    assert (crossing["start_frame"], crossing["midpoint_frame"], crossing["end_frame"]) == (
+        1465, 1528, 1608
+    )
+    crossing_shot = shots[crossing["scene_id"] - 1]
+    assert crossing_shot["start"] == crossing["start_frame"]
+    assert crossing_shot["end"] == crossing["end_frame"]
+    assert crossing["minimum_authored_wrist_height_mm"] >= 255
+    assert crossing["contact_authority"] == "none"
     assert data["stage_vocabulary"] == ["UNDERSTAND", "LOCATE", "CHECK", "ACT", "VERIFY"]
     print(
         "PASS storyboard_v21: 17 contiguous scenes, 2400 frames, four rigs, "
-        "seven benchmark phases, four independently permitted rhythm contacts"
+        "seven benchmark phases, four independently permitted rhythm contacts, "
+        "and one contact-free high-clearance crossing"
     )
 
 

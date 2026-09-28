@@ -120,7 +120,10 @@ creates four reusable shot rigs, timeline camera bindings, locked reference
 asset collections, and the three recurring authority graphics. The lowercase
 `r` contact is implemented as the first visual benchmark at 0:40–0:48. The
 same detailed rig then moves continuously through independently permitted
-`e`, `a`, `d`, and `y` cycles at 0:48–0:55; no model or pose swap is used.
+`e`, `a`, `d`, and `y` cycles at 0:48–0:55; no model or pose swap is used. The
+contact-free scene-11 crossing is also blocked: the wrist retracts, traverses
+a high corridor, and finishes above the measured phone center while the
+arm-follow camera moves with it.
 
 Run `python presentations/blender/validate_storyboard_v21.py`, then build the
 local benchmark with the Blender command documented in `README.md` using the
