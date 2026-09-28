@@ -1,7 +1,7 @@
 # Tactevra overview film — story and storyboard v2
 
 - **Status:** Production plan; not yet rendered
-- **Target runtime:** 100–105 seconds
+- **Target runtime:** exactly 100 seconds
 - **Audience:** Technical buyers, collaborators, and first-time GitHub visitors
 - **Central demonstration:** A user asks Tactevra to type `READY`, then tap
   `Send`. The system interprets the intent, locates the keyboard and phone,
@@ -24,8 +24,9 @@ The audience should understand this sentence without reading the repository:
 > Ask for an outcome. Tactevra converts it into checked physical actions,
 > performs them across real interfaces, and verifies what happened.
 
-The five-stage architecture remains, but it supports the story rather than
-becoming the story:
+The film adopts one buyer-facing five-stage vocabulary. It must replace the
+older public vocabulary in the player, chapters, captions, transcript, and
+README in the same change that publishes the new render:
 
 `UNDERSTAND → LOCATE → CHECK → ACT → VERIFY`
 
@@ -68,24 +69,51 @@ These rules are mandatory for the next render.
 
 ## Scene-by-scene storyboard
 
-| # | Time | Story beat | Picture and motion | On-screen information | Narration intention |
+| # | Time | Stage | Beat | Picture and motion | On-screen information |
 |---:|---:|---|---|---|---|
-| 1 | 0:00–0:06 | **The ask** | Start close on a simple AI conversation. A user message appears: “Type READY, then tap Send.” Pull back just enough to reveal that the request is connected to a physical workcell, not an ordinary chatbot. | User request only. Small status: `Awaiting interpretation`. | Establish that the user describes an outcome in ordinary language. |
-| 2 | 0:06–0:13 | **The physical stakes** | Match-cut from the word `Send` to the stationary robot, keyboard, and phone in a complete hero wide. Slowly orbit 12–15 degrees. The detailed arm is parked and the stylus is already clamped. | `AI THAT ACTS IN THE PHYSICAL WORLD` | A software guess becomes real motion, so intent cannot go straight to motors. |
-| 3 | 0:13–0:20 | **Understand the intent** | Split the request into a compact ordered task strip beside the still workcell: `TYPE "READY"` → `TAP phone:send`. The strip is large enough to read on a phone. | `1 · UNDERSTAND` and two semantic actions. No joint angles. | Explain that the AI produces named, ordered actions—not servo commands. |
-| 4 | 0:20–0:28 | **See the scene** | Crane upward to show the recognizable overhead camera, then transition through its lens into a square top-down view. Exact board tags pulse once. Keyboard and phone outlines lock into place. | `2 · LOCATE`; `keyboard found`; `phone found`; capture-quality indicators. | The camera anchors both devices to the board's shared coordinate frame. |
-| 5 | 0:28–0:36 | **Resolve the targets** | Keep the overhead view. The letters R, E, A, D, and Y illuminate in order on the accurate keyboard. Then the phone's Send control illuminates. A thin blue path links the six named targets without showing raw motor motion. | Named target list with declared frame and uncertainty. | Known layouts turn semantic targets into candidate board coordinates. |
-| 6 | 0:36–0:43 | **Show the safety boundary** | A deliberately stale proposal briefly replaces the current scene record. A red `REJECTED` card appears in unused space while the arm remains completely still. | `STALE SCENE → REJECT`; `NO MOTION AUTHORIZED`. | Demonstrate that a plausible command is not enough when its evidence is stale. |
-| 7 | 0:43–0:51 | **Check the complete sequence** | The fresh sequence returns. An uncluttered route visualization runs above the surfaces: park → R → E → A → D → Y → retract → phone Send → verify. Gates tick in sequence. Keep the actual arm visible at rest. | `3 · CHECK`; frame, freshness, reach, clearance, ordering, speed class. | The system checks the batch and the transitions between actions, not only isolated endpoints. |
-| 8 | 0:51–0:57 | **Authorize execution** | Green admission state. The camera moves from the plan card to the real stylus clamped in the servo gripper, then widens to include the complete robot and first target. | `SEQUENCE ADMITTED`; `6 actions`; `SIMULATED WORKCELL SEQUENCE`. | Make the contract boundary clear: only the checked sequence reaches the controller. |
-| 9 | 0:57–1:07 | **Move to the keyboard** | One continuous medium-wide shot. The detailed arm rises from park, clears the fixtures, rotates toward the keyboard, and approaches a shared hover plane. All links, motors, wiring, gripper, and stylus move as one rig. | Small route progress: `TRANSIT → KEYBOARD HOVER`. | Introduce smooth coordinated motion, with no contact yet. |
-| 10 | 1:07–1:20 | **Type READY** | Track laterally with the complete arm while it moves across the keyboard. For each letter: hover, short vertical press, visible key travel, retract, then smooth transit. Use two match-cut angles while preserving joint continuity. Brief macro inserts may show R and Y contact, but always return to the full mechanism. | `R  E  A  D  Y`; each character changes from outline to green after observed contact. | Show a useful multi-target behavior rather than one isolated H press. |
-| 11 | 1:20–1:28 | **Verify the text** | Arm holds above the keyboard. A host observation panel shows `READY`; telemetry and visual observation agree. Only then does the route advance. | `EXPECTED: READY`; `OBSERVED: READY`; `STEP VERIFIED`. | Verification is part of the action loop, not an end-of-film decoration. |
-| 12 | 1:28–1:38 | **Cross-device transition** | Wide diagonal composition. The arm retracts to a safe height, sweeps across the board, rotates the wrist to the phone approach orientation, and settles above the phone. The camera dollies with it so the travel reads spatially. | Route progress moves from `keyboard` to `phone:send`. | Show that the same checked coordinate system supports movement between interfaces. |
-| 13 | 1:38–1:46 | **Tap Send** | Begin medium-wide with the detailed arm and phone together. Cut to a short macro only for the final stylus descent. The same stylus taps the modeled Send control once, retracts, and remains visible. | `ACTION 6 OF 6 · TAP SEND`; target ring fades on contact. | Complete the user's original compound intent. |
-| 14 | 1:46–1:55 | **Verify the outcome** | Phone interface changes to a clear sent/confirmed state. The fixed-camera observation and controller telemetry converge into one green receipt while the arm holds position. | `COMMAND SENT`; telemetry ✓, observation ✓, ordered batch ✓. | The result—not merely arrival at a coordinate—closes the loop. |
-| 15 | 1:55–2:03 | **The system payoff** | Pull back to the full workcell. The architecture ribbon lights in sequence: Understand, Locate, Check, Act, Verify. A single line connects user request, task plan, devices, and result. | `ONE INTENT. ONE CHECKED PHYSICAL WORKFLOW.` | Summarize the system as a reusable workflow, not a keyboard trick. |
-| 16 | 2:03–2:08 | **End card** | Clean branded frame using the workcell silhouette. Do not end on a disclaimer or black tail. | `TACTEVRA`; `Physical intelligence, checked.`; project URL. Small grey line: `Concept visualization · physical qualification in progress`. | Finish on the promise and provide a next step. |
+| 1 | 0:00–0:05 | — | **The ask** | Start on an unmistakable laptop/operator console, clearly separate from the target phone. The user request types in. | `Type READY, then tap Send.` |
+| 2 | 0:05–0:12 | — | **The physical stakes** | Match-cut to the hero wide and orbit 12–15 degrees. The detailed arm is parked and its stylus is visibly clamped. | No caption; let the narration explain that a guess becomes motion. |
+| 3 | 0:12–0:19 | `1 · UNDERSTAND` | **Model proposal** | An amber proposal card appears beside the stationary workcell. The request becomes two named, ordered actions. | `TYPE "READY" → TAP phone:send`; `frame board`; `confidence 0.96`; no joint angles. |
+| 4 | 0:19–0:27 | `2 · LOCATE` | **See the scene** | Crane to the recognizable fixed camera, pass through its lens, and settle into a square overhead view. Exact board tags pulse and device outlines lock. | `keyboard found`; `phone found`; capture-quality indicators. |
+| 5 | 0:27–0:33 | `2 · LOCATE` | **Resolve targets** | R, E, A, D, and Y illuminate in order, followed by the phone's Send control. A thin blue path links the named targets. | Declared frame, candidate coordinates, and uncertainty. |
+| 6 | 0:33–0:39 | `3 · CHECK` | **Reject stale evidence** | A red card occupies empty frame space while the actual arm remains visibly still. Do not imply that the proposal itself aged; the scene evidence did. | `scene capture 41 s old`; `limit 2 s`; `REJECTED · NO MOTION`. |
+| 7 | 0:39–0:46 | `3 · CHECK` | **Admit the sequence** | A fresh capture arrives. The route draws park → R → E → A → D → Y → retract → Send. Gates tick and the decision turns green. | `frame · freshness · reach · clearance · order · speed`; `6 ACTIONS ADMITTED`. |
+| 8 | 0:46–0:53 | `4 · ACT` | **Transit** | One continuous medium-wide: the same detailed arm leaves park, clears the fixtures, and reaches the keyboard hover plane. | Small persistent corner tag begins: `SIMULATED WORKCELL SEQUENCE`. |
+| 9 | 0:53–1:05 | `4 · ACT` | **Type READY** | Track laterally with the whole arm for five visible presses and no more than two brief contact inserts. As each key is pressed, that letter appears in the target phone's message field. | `R ✓  E ✓  A ✓  D ✓  Y ✓`; use both checks and green so state is not color-dependent. |
+| 10 | 1:05–1:10 | `5 · VERIFY` | **Verify the text** | The arm holds above the keyboard. The same phone—not a floating host panel—shows `READY` in its message field. | `EXPECTED READY`; `OBSERVED READY ✓`. |
+| 11 | 1:10–1:17 | `4 · ACT` | **Cross to phone** | Wide diagonal dolly follows a high-clearance arc from keyboard to phone while the wrist reorients. | Route progress: `keyboard → phone:send`. |
+| 12 | 1:17–1:23 | `4 · ACT` | **Tap Send** | Start medium-wide; use a contact macro no longer than two seconds. The same stylus taps Send once and retracts. | `ACTION 6 OF 6`. |
+| 13 | 1:23–1:30 | `5 · VERIFY` | **Verify outcome** | The phone moves `READY` from its input field into a sent message bubble. Telemetry and camera observation combine into one green receipt. | `MESSAGE SENT: READY`; telemetry ✓; observation ✓; order ✓. |
+| 14 | 1:30–1:36 | all | **Payoff** | Pull back while `UNDERSTAND → LOCATE → CHECK → ACT → VERIFY` lights in order and a single line connects request, plan, devices, and result. | `ONE INTENT. ONE CHECKED PHYSICAL WORKFLOW.` |
+| 15 | 1:36–1:40 | — | **End card** | Workcell silhouette, logo, and URL. If a suitable physical-workcell image exists, show it for the first two seconds under the label `THE REAL WORKCELL`, then resolve to the brand card. No black tail. | `TACTEVRA`; `Physical intelligence, checked.`; small grey line: `Concept visualization · physical qualification in progress`. |
+
+## Draft narration
+
+This approximately 150-word draft deliberately leaves scene 9 open for the
+five typing sounds. Read it calmly and precisely; do not use a trailer voice.
+The `/` marks a short natural breath.
+
+```text
+[0:05] When AI acts in the physical world, a guess becomes motion. /
+       So intent can't go straight to the motors.
+[0:12] The model proposes named, ordered actions: type READY, then tap Send. /
+       Never joint angles.
+[0:19] A fixed camera reads the board's tags / and locates the keyboard and
+       the phone in one shared frame.
+[0:27] Each named target becomes a measured coordinate.
+[0:33] If the scene is stale, the plan is rejected. / Nothing moves.
+[0:39] With fresh evidence, the whole sequence is checked: / frame, reach,
+       clearance, order, speed. / Only then is it admitted.
+[0:46] One arm. One stylus. One controller.
+[0:53] [No narration. Let the five key clicks carry the sequence.]
+[1:05] The text is verified before the next step.
+[1:10] The arm clears the keyboard and crosses to the phone.
+[1:17] One tap on Send.
+[1:23] Telemetry and the camera agree: / the message was sent.
+[1:30] Ask for an outcome. / Tactevra turns it into checked physical actions, /
+       and verifies what happened.
+[1:36] Tactevra. Physical intelligence, checked.
+```
 
 ## Robot performance choreography
 
@@ -132,7 +160,7 @@ trajectory is qualified evidence.
 | Robot | Detailed RoArm geometry, servo housings, dual links, fasteners, wiring, gripper, and one articulated rig used for every shot. |
 | Stylus | Dark cylindrical body seated between visible jaws, plausible protrusion, finished compliant tip, no bulb-shaped placeholder. |
 | Keyboard | Current measured black RC03 asset, consistent material in all shots, correct legends and six-row layout, individually animatable R/E/A/D/Y caps. |
-| Phone | Current measured phone asset, consistent dark chassis and glass, readable Send and sent-confirmation states, screen content explicitly labeled as modeled UI. |
+| Phone | Current measured phone asset, consistent dark chassis and glass, readable message-input, Send, and sent-confirmation states, screen content explicitly labeled as modeled UI. READY must appear in this phone's input field as the five keyboard contacts occur. |
 | Camera | Recognizable camera body, mount, lens, and optical point of view; visible during its introduction. |
 | Board | Exact released tag36h11 IDs and stable device/fixture transforms. |
 
@@ -149,6 +177,9 @@ trajectory is qualified evidence.
   fast. The viewer must be able to count five distinct contacts.
 - Deliver a high-quality 1920×1080 master, a web-optimized GitHub version, and
   captioned social derivatives from the same timeline.
+- Build a 30-second social cut from the ask, stale-evidence rejection, READY
+  typing, sent-message verification, and end card. Give it separate burned-in
+  captions rather than cropping the 100-second captions.
 
 ## Production checkpoints
 
@@ -156,15 +187,23 @@ The video is ready for final render only when all checkpoints pass.
 
 - [ ] A greybox animatic communicates the full request-to-result story without
       narration.
+- [ ] The greybox animatic remains understandable and every principal card is
+      readable at a 390-pixel-wide phone preview.
 - [ ] The identical robot mesh and rig are present in every physical shot.
 - [ ] The stylus is visibly clamped before, during, and after all six actions.
 - [ ] R, E, A, D, and Y are correctly located and visibly depress in order.
 - [ ] The phone target and modeled confirmation state remain on the same phone.
+- [ ] READY appears in that phone's message field one character at a time, and
+      the same text appears as a sent message after the Send tap.
 - [ ] Every camera cut preserves robot pose continuity.
 - [ ] The stale-plan example shows zero arm movement.
 - [ ] No overlay hides the gripper, tool, target, or contact point.
 - [ ] All device and fixture transforms match the dimension manifest.
 - [ ] Captions, narration, graphics, and action order agree exactly.
+- [ ] The player page, stage buttons, chapter track, captions, transcript,
+      poster, social preview, and README adopt the new stage vocabulary and
+      timings in the same PR that publishes the replacement render.
+- [ ] A 30-second social cut exists with its own burned-in captions.
 - [ ] The end card accurately states the concept-visualization boundary.
 
 ## Why this version is stronger
