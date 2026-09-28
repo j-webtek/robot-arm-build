@@ -1,7 +1,7 @@
 {
   "schema": "tactevra.published-media-verification.v1",
   "recorded_on": "2026-09-27",
-  "asset_revision_commit": "f820067db59b30eb6c209c76f325191c75d6d91c",
+  "asset_revision_commit": "aa951e945c8b93862de8c626d6055d4bbf3a8191",
   "source_pull_request": "https://github.com/j-webtek/tactevra/pull/146",
   "authority": {
     "path": "presentations/blender/dimension_manifest.json",
@@ -23,11 +23,12 @@
       "WebVTT cue order and timing",
       "twelve representative frames sampled across the committed MP4",
       "official RoArm-M3 static surface, nominal H-key registration, and hardware-shaped articulated execution-rig labeling",
-      "higher-detail keyboard enclosure, key field, legends, status lights, trim, and cable within the measured RC03 envelope",
-      "higher-detail phone frame, glass, controls, camera, cable, and host-verification interface within the measured RC03 envelope",
+      "photo-matched matte-black keyboard enclosure, six-row key field, legends, status lights, rear protective-film band, trim, and cable within the measured RC03 envelope",
+      "photo-informed matte-black phone frame, bezel rails, glass, receiver, front camera, side controls, charging recess, and host-verification interface within the measured RC03 envelope",
+      "exact released tag36h11 ID 0-5 cell patterns drawn from the repository codebook at the configured 40 mm detection edge",
       "distinct chapter camera grammar, quaternion camera orientation, clamped easing, and corrected focus on the modeled phone screen plane",
       "exterior overhead-camera reveal followed by a centered optical viewpoint with no camera hardware or explanatory ray in the lens view",
-      "render-time placement assertions for the board, keyboard, phone, three stations, every direct tag, and the 1000 mm optical plane",
+      "render-time placement assertions for the board, keyboard, phone, three stations, every direct-tag center/family/identity, and the 1000 mm optical plane",
       "360 ms chapter cross-dissolves with explicit camera holds at the exterior-to-optical handoff",
       "reject and accept cards placed clear of the stationary gripper, with the persistent micro-label removed",
       "square keyboard-resolve framing at both ends of the camera move",
@@ -43,8 +44,8 @@
   "outputs": [
     {
       "path": "assets/media/tactevra-overview.mp4",
-      "size_bytes": 7737482,
-      "sha256": "5f243a09320863b5d4073a8b99d4a6ecb1b2e92d83802ad767706d1e2e63e18b",
+      "size_bytes": 7697051,
+      "sha256": "15a3416ac15b6c17ccea5f6ccd67315d4b33cce23b1c0833bccfcb5abbc20baf",
       "media": {
         "duration_seconds": 77.013,
         "video": "H.264 1600x900 24fps",
@@ -54,8 +55,8 @@
     },
     {
       "path": "assets/media/tactevra-overview-poster.jpg",
-      "size_bytes": 84756,
-      "sha256": "2aa573e156eb57d064c6ffd50e3c935d551e01aae6e198f218e02e5cbe410f80"
+      "size_bytes": 85612,
+      "sha256": "25634f2f1f350ad0954bacb6724f89f0e8e2e3c2462c7ed7e93e20ca8ae60e8e"
     },
     {
       "path": "assets/media/tactevra-overview.en.vtt",
@@ -69,14 +70,14 @@
     },
     {
       "path": "assets/media/tactevra-social-preview.jpg",
-      "size_bytes": 78782,
-      "sha256": "016b827b33f351513c31281c5eb107678b2accd4bf6df3cccf0985014af0bdac"
+      "size_bytes": 79682,
+      "sha256": "a09894d58bcdff25d6c191b2491310e618b690fe5f3165d3f418b1bd4ec4b5ed"
     }
   ],
   "limitations": [
     "The Blender scene was fully rerendered for this revision; the published bytes, metadata, captions, representative frames, and final audio measurements were verified before publication.",
     "The recorded visual review covers the exterior camera fixture and lens, the centered optical board view and tag lock, rejected and accepted admission states with the gripper unobstructed, a consistent detailed black keyboard, a squared nominal H resolve, explicitly simulated tool contact by the complete servo-style presentation rig, a sharp modeled host-screen observation, closed-loop payoff, and end card.",
-    "Keyboard and phone dimensions and target origins follow the measured RC03 configuration; their added surface details and host interface are presentation geometry, not manufacturer CAD or fabrication authority.",
+    "Keyboard and phone dimensions and target origins follow the measured RC03 configuration; their photo-informed surface details and host interface are presentation geometry, not manufacturer CAD or fabrication authority. The direct-tag images, however, use the exact released tag36h11 ID 0-5 codebook patterns.",
     "Static hardware-appearance shots use the hash-verified official RoArm-M3 STEP-derived surface; animated execution uses a hardware-shaped articulated presentation rig aligned to the official base and dimension contract. The rig remains presentation geometry rather than manufacturer CAD.",
     "The unresolved Waveshare URDF redistribution disposition remains tracked at https://github.com/j-webtek/tactevra/issues/88.",
     "The GitHub delivery is intentionally encoded below the repository's 10 MiB ordinary-review ceiling; the documented build emits a separate higher-bitrate 1920x1080 upload master.",
