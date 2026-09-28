@@ -5,6 +5,7 @@ Also enforces explicit public-page titles and required navigation routes.
 Only explicitly listed plain-heading anchors are checked; this is not a general
 Markdown parser, URL reachability check, or visual review.
 """
+import json
 from pathlib import Path
 import re
 from urllib.parse import parse_qs, unquote, urlsplit
@@ -93,6 +94,7 @@ REQUIRED_PHRASES = {
         '**Authority:** Planning and navigation only.',
         '[project status](PROJECT_STATUS.md)',
         'https://github.com/j-webtek/tactevra/issues/88',
+        'https://github.com/j-webtek/tactevra/issues/167',
     ),
     'docs/SYSTEM_OVERVIEW.md': (
         '**Document status:** Current overview',
@@ -118,6 +120,7 @@ REQUIRED_PHRASES = {
         'https://github.com/j-webtek/tactevra/issues/56',
         'https://github.com/j-webtek/tactevra/issues/61',
         'https://github.com/j-webtek/tactevra/issues/88',
+        'https://github.com/j-webtek/tactevra/issues/167',
     ),
     'THIRD_PARTY_NOTICES.md': (
         '**Document status:** Current attribution index',
@@ -137,6 +140,7 @@ REQUIRED_PHRASES = {
         'https://github.com/j-webtek/tactevra/issues/56',
         'https://github.com/j-webtek/tactevra/issues/61',
         'https://github.com/j-webtek/tactevra/issues/88',
+        'https://github.com/j-webtek/tactevra/issues/167',
     ),
     'software/RUNTIME_IMPLEMENTATION_HISTORY.md': (
         '**Document status:** Historical evidence index',
@@ -289,6 +293,34 @@ def issue_template_error(target: str, root: Path) -> str | None:
     return None
 
 
+def readiness_dashboard_errors(content: str, root: Path) -> list[str]:
+    """Keep the public blocker count and routes aligned with the offline registry."""
+    path = root / '.github' / 'release-readiness.json'
+    try:
+        registry = json.loads(path.read_text(encoding='utf-8'))
+        blockers = registry['blockers']
+    except (OSError, json.JSONDecodeError, KeyError, TypeError) as exc:
+        return [f'invalid release-readiness registry: {exc}']
+    if not isinstance(blockers, list):
+        return ['invalid release-readiness registry: blockers must be a list']
+    open_entries = [entry for entry in blockers
+                    if isinstance(entry, dict) and entry.get('status') == 'open']
+    errors = []
+    match = re.search(r'currently has (\w+) open blocker(?:s)?\.', content)
+    words = {
+        0: 'zero', 1: 'one', 2: 'two', 3: 'three', 4: 'four', 5: 'five',
+        6: 'six', 7: 'seven', 8: 'eight', 9: 'nine', 10: 'ten',
+    }
+    expected = words.get(len(open_entries), str(len(open_entries)))
+    if not match or match.group(1) != expected:
+        errors.append(f'expected public open-blocker count: {expected}')
+    for entry in open_entries:
+        issue = entry.get('issue')
+        if not isinstance(issue, str) or issue not in content:
+            errors.append(f'missing open readiness blocker route: {issue!r}')
+    return errors
+
+
 def main() -> None:
     errors = []
     for relative in DOCS:
@@ -302,6 +334,9 @@ def main() -> None:
                 f'{relative}: stale canonical repository reference; use j-webtek/tactevra')
         errors.extend(f'{relative}: {error}'
                       for error in public_entry_errors(relative, raw_content, ROOT))
+        if relative == 'docs/releases/READINESS.md':
+            errors.extend(f'{relative}: {error}' for error in
+                          readiness_dashboard_errors(raw_content, ROOT))
         content = without_fences(raw_content)
         for target in re.findall(r'\]\(([^)]+)\)', content):
             target = target.strip().strip('<>')

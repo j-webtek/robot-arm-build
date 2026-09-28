@@ -2,7 +2,7 @@
 
 **Document status:** Current release-readiness dashboard  
 **Authority:** Status and routing only; this page does not select a candidate, approve publication, or authorize hardware operation  
-**Last reconciled:** September 28, 2026, against protected `main` at `a8bf36f`
+**Last reconciled:** September 28, 2026, against protected `main` at `cac46b9`
 
 Tactevra has not published a GitHub release. No source commit, tag, release notes,
 or downloadable asset set is currently approved. This dashboard is the concise
@@ -11,7 +11,7 @@ public summary of the first source-only experimental preview. Use
 checklist and the [release procedure](../RELEASING.md) for the required process.
 The reviewed [machine-readable readiness registry](../../.github/release-readiness.json)
 is the offline enforcement source. It retains cleared entries for audit history
-and currently has one open blocker.
+and currently has two open blockers.
 
 `main` may advance after the reconciliation commit above. A later merge does not
 silently become the candidate and does not inherit earlier evidence. The exact
@@ -25,9 +25,10 @@ candidate SHA will be selected only after the blocking owner evidence closes.
 | Tracked-content policy | **Ready for candidate preparation** | Release-integrity policy and snapshot review tooling are present. The earlier Arducam redistribution blocker was resolved in [issue #45](https://github.com/j-webtek/tactevra/issues/45). |
 | External AI artifact identity | **Cleared for candidate preparation** | Focused PR #145 established the exact external-artifact manifest and separate unavailable/verified states; [issue #56](https://github.com/j-webtek/tactevra/issues/56) is closed. This is identity evidence, not model promotion. |
 | Reviewable AI evidence disposition | **Cleared for candidate preparation** | Focused PR #145 retained compact reviewable evidence while leaving checkpoints and bulk reports external; [issue #61](https://github.com/j-webtek/tactevra/issues/61) is closed. |
+| Static simulation bundle | **Blocked on AI/repository-owner evidence** | Reconcile the bundle lock with the current system manifest and restore the maintained full AI suite as required by [issue #167](https://github.com/j-webtek/tactevra/issues/167). |
 | Waveshare URDF redistribution basis | **Blocked on repository/arm-owner evidence** | Resolve, replace, or remove the derived kinematic projection as required by [issue #88](https://github.com/j-webtek/tactevra/issues/88); do not infer a license from silence. |
-| AI and arm compatibility dispositions | **Infrastructure ready; candidate review not started** | Shared conformance and operational-readiness checks are on `main`; record both workstream dispositions only after an exact candidate SHA is selected. |
-| Exact candidate commit | **Not selected** | Resolve issue #88, then choose one full SHA already on protected `main`. Cleared issues #56 and #61 do not need to be repeated. |
+| AI and arm compatibility dispositions | **AI readiness held; candidate review not started** | Shared conformance and operational-readiness checks are on `main`; close issue #167, then record both workstream dispositions only after an exact candidate SHA is selected. |
+| Exact candidate commit | **Not selected** | Resolve issues #88 and #167, then choose one full SHA already on protected `main`. Cleared issues #56 and #61 do not need to be repeated. |
 | Candidate audit and fresh-checkout review | **Not run** | Run against the selected SHA; ordinary development CI is not substitute evidence. |
 | Tag and pre-release | **Not approved or published** | Requires explicit maintainer approval of the exact tag, SHA, notes, and source-only asset scope. |
 
@@ -56,17 +57,21 @@ Issues [#56](https://github.com/j-webtek/tactevra/issues/56) and
 PR #145. Their cleared machine-readable entries remain in the registry as an
 audit trail and grant no model or hardware authority.
 
-1. The repository and arm owners complete
+1. The AI and repository owners complete
+   [issue #167](https://github.com/j-webtek/tactevra/issues/167) by reconciling
+   the static simulation bundle through the governed procedure and restoring a
+   passing maintained full AI suite.
+2. The repository and arm owners complete
    [issue #88](https://github.com/j-webtek/tactevra/issues/88) with a reviewed
    redistribution basis or a replacement/removal disposition for the derived
    Waveshare URDF.
-2. The maintainer reconciles issue #57, selects a full SHA on protected `main`,
+3. The maintainer reconciles issue #57, selects a full SHA on protected `main`,
    and creates a new candidate record. Do not reuse the superseded `dcd87db`
    record.
-3. AI and arm owners record compatibility dispositions against that same SHA.
-4. The maintainer runs the exact-SHA candidate audit, fresh-checkout checks,
+4. AI and arm owners record compatibility dispositions against that same SHA.
+5. The maintainer runs the exact-SHA candidate audit, fresh-checkout checks,
    tracked-content/provenance review, and release-note review.
-5. Publication occurs only after explicit approval of the exact tag, SHA, notes,
+6. Publication occurs only after explicit approval of the exact tag, SHA, notes,
    and asset scope. A candidate passing every technical check is still not
    self-authorizing.
 
@@ -76,6 +81,7 @@ audit trail and grant no model or hardware authority.
 | --- | --- | --- |
 | Pose-checkpoint manifest and verification | AI | **Complete:** PR #145 merged; issue #56 acceptance evidence recorded |
 | Compact AI evidence and bulk-output disposition | AI with repository review | **Complete:** PR #145 merged; issue #61 acceptance evidence recorded |
+| Static simulation-bundle reconciliation | AI with repository review | Bundle lock and current manifest agree through the governed process; maintained full AI suite passes; issue #167 closed |
 | Waveshare URDF redistribution disposition | Repository with arm-owner review | Durable rights evidence or reviewed replacement/removal merged; issue #88 closed |
 | Arm compatibility disposition | Arm | Review recorded against the selected candidate SHA |
 | Repository inventory, candidate audit, and release notes | Repository maintainer | Exact-SHA record links every required result |
