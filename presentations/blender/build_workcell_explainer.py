@@ -422,72 +422,118 @@ def add_keyboard(layout: dict, mats: dict[str, bpy.types.Material]) -> dict[str,
          ((sx - 8.0) / 1000, 0.003, 0.0022), mats["keyboard_trim"], 0.001)
     cube("Keyboard rear accent", board_point(ox + sx / 2, oy + sy - 3.2, sz - 1.4),
          ((sx - 8.0) / 1000, 0.003, 0.0022), mats["keyboard_trim"], 0.001)
-    # The photographed unit retains a narrow reflective protective-film band
-    # along the rear/top bezel. Keep it inside the measured envelope and clear
-    # of the function-key field so it reads as the same physical keyboard.
+    # The photographed unit has a glossy, film-covered control strip behind
+    # the function row. Keep it inside the measured envelope and preserve the
+    # dark keyboard silhouette instead of rendering it as a metallic panel.
     cube("Keyboard photographed rear protective film",
-         board_point(ox + sx / 2, oy + sy - 5.8, sz + 0.35),
-         ((sx - 6.0) / 1000, 0.0085, 0.00045),
+         board_point(ox + sx / 2, oy + sy - 5.0, sz + 0.35),
+         ((sx - 6.0) / 1000, 0.0100, 0.00045),
          mats["keyboard_film"], 0.0012)
+    for index, icon in enumerate(("□", "A", "1", "▣")):
+        icon_x = ox + 61.0 + index * 27.0
+        cube(f"Keyboard touch icon well {index + 1}",
+             board_point(icon_x, oy + sy - 5.0, sz + 0.75),
+             (0.017, 0.0065, 0.00035), mats["keyboard_trim"], 0.0014)
+        board_text(f"Keyboard touch icon {index + 1}", icon,
+                   board_point(icon_x, oy + sy - 5.0, sz + 1.2),
+                   0.0036, mats["legend"])
+    # Low-relief seams catch highlights like the wrinkled protective film in
+    # the supplied physical reference without baking a photograph into the
+    # distributable asset.
+    for index, offset in enumerate((-2.4, 0.0, 2.4)):
+        points = [
+            board_point(ox + 8.0, oy + sy - 5.0 + offset, sz + 0.82),
+            board_point(ox + sx * 0.35, oy + sy - 4.4 + offset, sz + 0.88),
+            board_point(ox + sx * 0.68, oy + sy - 5.6 + offset, sz + 0.84),
+            board_point(ox + sx - 8.0, oy + sy - 4.8 + offset, sz + 0.86),
+        ]
+        curve_line(f"Keyboard protective film seam {index + 1}", points,
+                   mats["keyboard_film"], 0.00016)
     # The printable shell remains a measured envelope. The principal key rows
     # below are positioned from software/config/static_nominal_target_profiles.json:
     # 19.05 mm pitch, exact first-center offsets, and therefore H at
     # board (216.55, 154.00). Function and modifier caps are presentation
     # context only and stay inside the same measured chassis.
     pitch = 19.05
-    rows = [
-        ("ESC F1 F2 F3 F4 F5 F6 F7 F8 F9 F10 F11 F12 PRT SCR".split(),
-         ox + 10.0, oy + 135.0, 0.82),
-        (list("1234567890") + ["-", "="],
-         ox + 22.0, oy + 111.0, 0.82),
-        (list("QWERTYUIOP"),
-         ox + 31.5, oy + 90.0, 0.82),
-        (list("ASDFGHJKL") + [";", "'"],
-         ox + 36.3, oy + 69.0, 0.82),
-        (list("ZXCVBNM") + [",", ".", "/"],
-         ox + 45.8, oy + 48.0, 0.82),
-    ]
     named_keys: dict[str, bpy.types.Object] = {}
+
+    def add_key(label: str, x: float, y: float, width: float,
+                row_id: str, col: int, *, legend_size: float | None = None,
+                name_prefix: str = "Key") -> bpy.types.Object:
+        cube(f"{name_prefix} well {row_id}-{col}", board_point(x, y, sz + 1.7),
+             (max(0.009, (width - 1.7) / 1000), 0.0180, 0.0034),
+             mats["key_side"], 0.0018)
+        key = cube(f"{name_prefix} cap {row_id}-{col}",
+                   board_point(x, y, sz + 4.0),
+                   (max(0.008, (width - 3.0) / 1000), 0.0162, 0.0042),
+                   mats["key"], 0.0024)
+        key["legend"] = label
+        named_keys.setdefault(label, key)
+        size = legend_size if legend_size is not None else (
+            0.0048 if len(label) <= 2 else 0.0028
+        )
+        board_text(f"{name_prefix} legend {label}-{row_id}-{col}", label,
+                   board_point(x, y, sz + 6.2), size, mats["legend"])
+        return key
+
+    # The physical RC03 reference has a compressed 18-key function row,
+    # including the four-key navigation cluster at the far right.
+    function_legends = (
+        "Esc", "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8",
+        "F9", "F10", "F11", "F12", "Prt", "Scr", "Pau", "Del",
+    )
+    function_step = (sx - 20.0) / (len(function_legends) - 1)
+    for col, legend in enumerate(function_legends):
+        add_key(legend, ox + 10.0 + col * function_step, oy + 130.0,
+                function_step * 0.86, "function", col,
+                legend_size=0.0025, name_prefix="Function")
+
+    # Main alphanumeric centers remain pinned to the software target profile;
+    # visual improvements must never drift the nominal control coordinates.
+    rows = [
+        (list("1234567890") + ["-", "="], ox + 22.0, oy + 111.0, 0.82),
+        (list("QWERTYUIOP"), ox + 31.5, oy + 90.0, 0.82),
+        (list("ASDFGHJKL") + [";", "'"], ox + 36.3, oy + 69.0, 0.82),
+        (list("ZXCVBNM") + [",", ".", "/"], ox + 45.8, oy + 48.0, 0.82),
+    ]
     for row_i, (legends, first_x, y, width_ratio) in enumerate(rows):
         for col, legend in enumerate(legends):
             x = first_x + col * pitch
             key_width = pitch * width_ratio
-            lower = cube(f"Key well {row_i}-{col}", board_point(x, y, sz + 1.7),
-                         (max(0.009, (key_width - 1.7) / 1000), 0.0180, 0.0034),
-                         mats["key_side"], 0.0018)
-            key = cube(f"Key cap {row_i}-{col}", board_point(x, y, sz + 4.0),
-                       (max(0.008, (key_width - 3.0) / 1000), 0.0162, 0.0042),
-                       mats["key"], 0.0024)
-            lower["legend"] = legend
-            key["legend"] = legend
-            named_keys.setdefault(legend, key)
-            legend_size = 0.0048 if len(legend) <= 2 else 0.0028
-            board_text(
-                f"Key legend {legend}-{row_i}-{col}", legend,
-                board_point(x, y, sz + 6.2), legend_size, mats["legend"],
-            )
+            add_key(legend, x, y, key_width, str(row_i), col)
     # Presentation-only outer modifiers, sized to resemble the photographed
     # compact keyboard without changing any named target coordinate.
-    for label, x, y, width in (
+    for col, (label, x, y, width) in enumerate((
         ("TAB", ox + 12.0, oy + 90.0, 22.0),
         ("CAPS", ox + 15.0, oy + 69.0, 28.0),
         ("SHIFT", ox + 20.0, oy + 48.0, 37.0),
-        ("CTRL", ox + 14.0, oy + 24.0, 26.0),
-        ("ALT", ox + 48.0, oy + 24.0, 24.0),
-        ("SPACE", ox + 128.0, oy + 24.0, 112.0),
-        ("ALT", ox + 201.0, oy + 24.0, 24.0),
-        ("LEFT", ox + 247.0, oy + 24.0, 17.0),
-        ("DOWN", ox + 266.0, oy + 24.0, 17.0),
-        ("RIGHT", ox + 285.0, oy + 24.0, 17.0),
-    ):
-        cube(f"Modifier well {label}-{x}", board_point(x, y, sz + 1.7),
-             ((width + 0.5) / 1000, 0.0180, 0.0034), mats["key_side"], 0.0018)
-        key = cube(f"Modifier cap {label}-{x}", board_point(x, y, sz + 4.0),
-                   ((width - 1.0) / 1000, 0.0162, 0.0042), mats["key"], 0.0024)
-        board_text(f"Modifier legend {label}-{x}", label,
-                   board_point(x, y, sz + 6.2),
-                   0.0048 if len(label) <= 2 else 0.0028, mats["legend"])
-        named_keys.setdefault(label, key)
+        ("BACK", ox + 264.0, oy + 111.0, 40.0),
+        ("HOME", ox + 298.0, oy + 111.0, 20.0),
+        ("[", ox + 231.5, oy + 90.0, 15.6),
+        ("]", ox + 250.5, oy + 90.0, 15.6),
+        ("\\", ox + 269.5, oy + 90.0, 15.6),
+        ("PGUP", ox + 298.0, oy + 90.0, 20.0),
+        ("ENTER", ox + 264.0, oy + 69.0, 40.0),
+        ("PGDN", ox + 298.0, oy + 69.0, 20.0),
+        ("SHIFT", ox + 264.0, oy + 48.0, 40.0),
+        ("UP", ox + 289.0, oy + 48.0, 17.0),
+        ("END", ox + 307.0, oy + 48.0, 17.0),
+        ("CTRL", ox + 14.0, oy + 24.0, 23.0),
+        ("START", ox + 39.0, oy + 24.0, 24.0),
+        ("FN", ox + 61.0, oy + 24.0, 18.0),
+        ("ALT", ox + 80.0, oy + 24.0, 18.0),
+        ("SPACE", ox + 141.0, oy + 24.0, 104.0),
+        ("ALTGR", ox + 205.0, oy + 24.0, 22.0),
+        ("MENU", ox + 226.0, oy + 24.0, 17.0),
+        ("CTRL", ox + 246.0, oy + 24.0, 20.0),
+        ("INS", ox + 264.0, oy + 24.0, 15.0),
+        ("LEFT", ox + 276.5, oy + 24.0, 14.0),
+        ("DOWN", ox + 292.0, oy + 24.0, 14.0),
+        ("RIGHT", ox + 307.5, oy + 24.0, 14.0),
+    )):
+        add_key(label, x, y, width, "modifier", col,
+                legend_size=0.0025 if len(label) > 3 else None,
+                name_prefix="Modifier")
     # Three small status lights and a recessed cable exit add scale cues that
     # survive the overhead and macro shots.
     for index, state_mat in enumerate((mats["green"], mats["cyan"], mats["amber"])):
@@ -930,8 +976,8 @@ def build() -> bpy.types.Scene:
                                   metallic=0.44, roughness=0.36, ior_level=0.24),
         "keyboard_film": textured_material(
             "Photographed keyboard protective film",
-            (0.24, 0.27, 0.30, 1), scale=42.0, detail=4.0,
-            roughness=0.18, metallic=0.46,
+            (0.004, 0.006, 0.009, 1), scale=42.0, detail=4.0,
+            roughness=0.12, metallic=0.16,
         ),
         "key": material("Keyboard black keys", (0.0003, 0.0005, 0.0008, 1),
                         roughness=0.54, ior_level=0.18),
