@@ -157,12 +157,12 @@ devices without visually connecting their data.
 
 ## Geometry-reference images
 
-- `storyboard_v2/01-intent-hero-layout-accurate.png`
-- `storyboard_v2/02-device-maps-layout-accurate.png`
-- `storyboard_v2/03-stale-evidence-reject-layout-accurate.png`
-- `storyboard_v2/04-local-keyboard-action-layout-accurate.png`
-- `storyboard_v2/05-phone-action-layout-accurate.png`
-- `storyboard_v2/06-dual-verification-layout-accurate.png`
+- `storyboard_v2/01-intent-hero-layout-accurate.jpg`
+- `storyboard_v2/02-device-maps-layout-accurate.jpg`
+- `storyboard_v2/03-stale-evidence-reject-layout-accurate.jpg`
+- `storyboard_v2/04-local-keyboard-action-layout-accurate.jpg`
+- `storyboard_v2/05-phone-action-layout-accurate.jpg`
+- `storyboard_v2/06-dual-verification-layout-accurate.jpg`
 
 ## Requested advertising deliverables
 

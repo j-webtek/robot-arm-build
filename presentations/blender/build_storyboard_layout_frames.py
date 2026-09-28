@@ -14,7 +14,7 @@ from PIL import Image, ImageDraw, ImageEnhance, ImageFilter, ImageFont
 
 ROOT = Path(__file__).resolve().parent
 OUT = ROOT / "storyboard_v2"
-SOURCE = OUT / "source" / "workcell-layout-authoritative.png"
+SOURCE = OUT / "source" / "workcell-layout-authoritative.jpg"
 SIZE = (1920, 1080)
 
 INK = (242, 246, 250, 255)
@@ -90,7 +90,13 @@ def header(image: Image.Image, stage: str, title: str, accent=CYAN) -> ImageDraw
 
 
 def save(image: Image.Image, name: str) -> None:
-    image.convert("RGB").save(OUT / name, quality=95, optimize=True)
+    image.convert("RGB").save(
+        OUT / name,
+        quality=84,
+        optimize=True,
+        progressive=True,
+        subsampling=2,
+    )
 
 
 def marker(draw: ImageDraw.ImageDraw, xy: tuple[int, int], label: str,
@@ -116,7 +122,7 @@ def frame_01() -> None:
     draw.text((1624, 187), "FIXED WORKCELL", font=font(20, True, True), fill=CYAN)
     draw.text((1624, 232), "Keyboard · local input\nPhone · separate touch UI\nRobot · rear-center",
               font=font(18), fill=INK, spacing=9)
-    save(image, "01-intent-hero-layout-accurate.png")
+    save(image, "01-intent-hero-layout-accurate.jpg")
 
 
 def frame_02() -> None:
@@ -141,7 +147,7 @@ def frame_02() -> None:
     draw.line((1586, 455, 1536, 550), fill=CYAN, width=3)
     draw.text((742, 1014), "SAME BOARD · SAME ASSETS · SAME TRANSFORMS IN EVERY SHOT",
               font=font(22, True, True), fill=INK, anchor="mm")
-    save(image, "02-device-maps-layout-accurate.png")
+    save(image, "02-device-maps-layout-accurate.jpg")
 
 
 def frame_03() -> None:
@@ -157,7 +163,7 @@ def frame_03() -> None:
     draw.rounded_rectangle((490, 455, 1168, 870), radius=16, outline=(84, 105, 126, 255), width=3)
     draw.rounded_rectangle((1332, 410, 1536, 866), radius=16, outline=(84, 105, 126, 255), width=3)
     draw.text((1595, 925), "ARM REMAINS STATIONARY", font=font(21, True, True), fill=MUTED)
-    save(image, "03-stale-evidence-reject-layout-accurate.png")
+    save(image, "03-stale-evidence-reject-layout-accurate.jpg")
 
 
 def frame_04() -> None:
@@ -189,7 +195,7 @@ def frame_04() -> None:
     draw.text((1450, 168), "LOCAL RESULT", font=font(21, True, True), fill=GREEN)
     draw.text((1450, 218), "ready · confirmed", font=font(32, True, True), fill=INK)
     draw.text((1450, 274), "Phone remains unchanged", font=font(18, False, True), fill=MUTED)
-    save(image, "04-local-keyboard-action-layout-accurate.png")
+    save(image, "04-local-keyboard-action-layout-accurate.jpg")
 
 
 def frame_05() -> None:
@@ -207,7 +213,7 @@ def frame_05() -> None:
     draw.text((1596, 177), "PHONE WORKFLOW", font=font(20, True, True), fill=AMBER)
     draw.multiline_text((1596, 224), "on my way\nready to send", font=font(25, True),
                         fill=INK, spacing=7)
-    save(image, "05-phone-action-layout-accurate.png")
+    save(image, "05-phone-action-layout-accurate.jpg")
 
 
 def frame_06() -> None:
@@ -224,7 +230,7 @@ def frame_06() -> None:
     draw.text((1596, 177), "PHONE RECEIPT", font=font(20, True, True), fill=GREEN)
     draw.multiline_text((1596, 224), "on my way\nsent", font=font(31, True), fill=INK, spacing=7)
     draw.text((1596, 318), "touchscreen taps", font=font(18, False, True), fill=MUTED)
-    save(image, "06-dual-verification-layout-accurate.png")
+    save(image, "06-dual-verification-layout-accurate.jpg")
 
 
 def main() -> None:
