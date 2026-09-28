@@ -4781,3 +4781,45 @@ rewriting history. New entries must use a unique evidence ID.
 - Next dependency: run broader directional-pair, repeated-key, identity-churn,
   bounded-capacity, and randomized cached-versus-uncached equivalence campaigns
   before PC7 completion.
+
+### E-20260928-ARM-091 — PC7 equivalence and stress completion
+
+- Stage: S1/S4/S7 pre-camera arm integration; PC7 complete.
+- Lane: Arm/runtime shared boundary.
+- Commit: `d754e20`.
+- Change: expanded cached-versus-uncached planning equivalence to every
+  canonical PC0 typing fixture plus explicit reverse travel. Added exhaustive
+  invalidation coverage for all seven bound identity dimensions and a seeded
+  128-operation bounded-capacity campaign.
+- Inputs/fixtures: `robot`, `book`, `qaz`, `plm`, `hh1.`, space, enter, `aaa`,
+  and reverse I-to-H; calibration, catalog, tool, arm-model, dynamics,
+  planner-policy, and device-pose identity churn; deterministic capacity seed
+  `20260928`.
+- Commands: `python -m pytest
+  tests/unit/test_typing_transition_cache_v1.py
+  tests/integration/test_typing_transition_cache_equivalence_v1.py
+  tests/integration/test_typing_trace_golden_v1.py
+  tests/unit/test_typing_trace_package_v1.py
+  tests/integration/test_typing_trace_cli.py
+  tests/unit/test_typing_trace_journal_v1.py
+  tests/integration/test_typing_trace_adapter_v1.py
+  tests/integration/test_typing_shadow_pipeline_v1.py
+  tests/unit/test_typing_rolling_horizon_v1.py
+  tests/unit/test_typing_controller_bridge_v1.py
+  tests/unit/test_model_motion_sequence_journal.py
+  tests/unit/test_typing_fault_campaign_v1.py
+  tests/unit/test_typing_fault_owner_boundaries_v1.py -q`.
+- Result: PASS; 31 focused PC7 tests and 150 affected PC2-PC7 tests pass. Every
+  cached route reproduces the uncached receipt and joint schedule hash. The
+  randomized campaign stays at eight entries and records deterministic FIFO
+  evictions while every immediate lookup is revalidated.
+- Artifacts: `software/tests/unit/test_typing_transition_cache_v1.py` and
+  `software/tests/integration/test_typing_transition_cache_equivalence_v1.py`.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: timing-saved values remain declared estimates rather than
+  measured physical performance; installed-workcell, camera, contact, and
+  controller-tracking qualification remain blocked.
+- Supersedes: ARM-090's limited single-route equivalence coverage.
+- Next dependency: begin PC8 reproducible cold/warm-cache performance and
+  readiness benchmarking without presenting simulated timing as typing speed.

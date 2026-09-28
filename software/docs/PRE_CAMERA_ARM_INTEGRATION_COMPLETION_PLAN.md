@@ -102,7 +102,7 @@ and its evidence gate pass.
 | PC4 | Typing-specific zero-write controller bridge | PC2, PC3 | No | None | COMPLETE |
 | PC5 | Fault injection and property testing | PC1-PC4 | No | None | COMPLETE |
 | PC6 | Unified trace journal and deterministic replay | PC2-PC5 | No | None | COMPLETE |
-| PC7 | Safe transition cache in shadow mode | PC3, PC6 | No | None | IN_PROGRESS |
+| PC7 | Safe transition cache in shadow mode | PC3, PC6 | No | None | COMPLETE |
 | PC8 | Performance benchmark and readiness report | PC1-PC7 | No | None | NOT_STARTED |
 | PC9 | Camera-arrival evidence tooling and dry run | PC6 | No for tooling | None before arrival | NOT_STARTED |
 | PC10 | Pre-camera integration closure | PC0-PC9 | No | None | NOT_STARTED |
@@ -390,9 +390,13 @@ planning and full safety screening and carries no command, permit, or authority.
 FIFO eviction, identity invalidation, corruption discard, and hit/miss/
 validation/discard/time-saved metrics are deterministic. Fourteen focused tests
 pass, including an actual cached-versus-uncached PC2 pipeline comparison, and
-the affected PC2-PC7 suite passes 133 tests. PC7 remains in progress pending a
-broader directional-pair, repeated-key, identity-churn, and randomized
-equivalence campaign.
+the affected PC2-PC7 suite passes 133 tests. ARM-091 completes the broader
+campaign across every canonical PC0 typing fixture plus explicit reverse
+travel, repeated keys, number/punctuation, and single-key routes. All seven
+bound identity dimensions invalidate stale entries, and a seeded 128-operation
+capacity campaign is deterministic and bounded. Thirty-one focused tests and
+the 150-test affected suite pass. Cached and uncached receipts and schedule
+hashes remain identical, satisfying the PC7 gate.
 
 ### Deliverables
 
@@ -521,7 +525,7 @@ For every PC increment:
 - [x] PC4 zero-write typing controller bridge complete
 - [x] PC5 fault and property campaigns complete
 - [x] PC6 trace journal and replay complete
-- [ ] PC7 transition cache shadow qualification complete
+- [x] PC7 transition cache shadow qualification complete
 - [ ] PC8 performance report complete
 - [ ] PC9 camera-arrival tools dry-run complete
 - [ ] PC10 clean-checkout pre-camera closure recorded

@@ -501,6 +501,13 @@ dynamics, and permit-policy validation; fresh planning and all safety gates
 remain mandatory. No command, permit, admission, or physical authority is
 cached. The focused 14-test and affected 133-test suites pass. Broader pair,
 repeat, identity-churn, and randomized equivalence testing remains for PC7.
+ARM-091 completes PC7. Equivalence now covers all canonical PC0 typing
+fixtures, reverse travel, repeats, number/punctuation, and single-key routes.
+Every bound identity dimension is invalidation-tested, and a seeded
+128-operation capacity campaign remains deterministic and bounded. The 31
+focused and 150 affected tests pass with identical cached-versus-uncached
+receipts and schedule hashes and zero authority. PC8 performance benchmarking
+may now begin.
 The AI precision lane now has a mainline-compatible pose-output adapter and v2
 batch producer. It preserves repeated targets and abstains on qualification,
 domain, freshness, identity, confidence, or containment failure. Its retained
