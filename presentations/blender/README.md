@@ -135,6 +135,15 @@ Render the scene-7 toolhead insert and laptop focus-pull checkpoints:
   --preview-scene7
 ```
 
+Render the operator request-console close-up:
+
+```powershell
+& "C:\Program Files\Blender Foundation\Blender 4.3\blender.exe" `
+  --background --factory-startup `
+  --python presentations/blender/build_storyboard_v21_benchmark.py -- `
+  --preview-scene2
+```
+
 Build the editable scene and six local benchmark frames:
 
 ```powershell

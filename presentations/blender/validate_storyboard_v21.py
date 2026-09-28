@@ -110,6 +110,25 @@ def main() -> None:
     assert rhythm["permit_scope"] == "one contact"
     assert rhythm["next_target_authority"] == "preview only"
     assert rhythm["visual_shorthand"] == "permit plus verification tick only"
+    laptop = data["laptop_sequence"]
+    assert laptop["presentation_only"] is True
+    laptop_states = laptop["states"]
+    assert [state["name"] for state in laptop_states] == [
+        "request console", "empty test pad", "test pad r", "test pad re",
+        "test pad rea", "test pad read", "test pad ready",
+    ]
+    assert laptop_states[0]["start"] <= shots[1]["start"]
+    assert laptop_states[0]["end"] >= shots[1]["end"]
+    assert laptop_states[1]["start"] <= 960 <= laptop_states[1]["end"]
+    assert laptop_states[0]["body"].startswith("REQUEST CONSOLE")
+    assert laptop_states[1]["body"] == "LOCAL TEST PAD\n_"
+    assert [state["body"].split("\n")[-1] for state in laptop_states[2:]] == [
+        "r", "re", "rea", "read", "ready",
+    ]
+    for previous, current in zip(laptop_states, laptop_states[1:]):
+        assert previous["end"] + 1 == current["start"]
+    assert laptop_states[-1]["end"] == data["frame_end"]
+    assert [state["start"] for state in laptop_states[2:]] == [1064, *contacts]
     crossing = data["crossing"]
     assert crossing["scene_id"] == 11
     assert (crossing["start_frame"], crossing["midpoint_frame"], crossing["end_frame"]) == (
@@ -161,6 +180,7 @@ def main() -> None:
     print(
         "PASS storyboard_v21: 17 contiguous scenes, 2400 frames, six rigs, "
         "no rig over 25 percent, synchronized advertising handoff, "
+        "stateful request-to-test-pad laptop, "
         "seven benchmark phases, four independently permitted rhythm contacts, "
         "one contact-free high-clearance crossing, and eleven independently "
         "permitted phone contacts with disclosed 2x montage timing"

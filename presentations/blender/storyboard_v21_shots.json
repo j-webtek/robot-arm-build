@@ -26,6 +26,18 @@
       "purpose": "brief key-depression insert inside the low-three-quarter first-contact lesson"
     }
   ],
+  "laptop_sequence": {
+    "presentation_only": true,
+    "states": [
+      {"name": "request console", "body": "REQUEST CONSOLE\nType ready locally.\nThen send on my way\nfrom the phone.", "start": 97, "end": 919, "size": 0.010},
+      {"name": "empty test pad", "body": "LOCAL TEST PAD\n_", "start": 920, "end": 1063, "size": 0.016},
+      {"name": "test pad r", "body": "LOCAL TEST PAD\nr", "start": 1064, "end": 1177, "size": 0.016},
+      {"name": "test pad re", "body": "LOCAL TEST PAD\nre", "start": 1178, "end": 1219, "size": 0.016},
+      {"name": "test pad rea", "body": "LOCAL TEST PAD\nrea", "start": 1220, "end": 1261, "size": 0.016},
+      {"name": "test pad read", "body": "LOCAL TEST PAD\nread", "start": 1262, "end": 1303, "size": 0.016},
+      {"name": "test pad ready", "body": "LOCAL TEST PAD\nready", "start": 1304, "end": 2400, "size": 0.016}
+    ]
+  },
   "benchmark": {
     "scene_id": 8,
     "target": "keyboard:r",

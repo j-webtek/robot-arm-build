@@ -127,7 +127,10 @@ asset collections, and the three recurring authority graphics. The lowercase
 `r` contact is implemented as the first visual benchmark at 0:40–0:48. The
 scene-7 scaffold now includes a bounded toolhead macro and an animated depth-of-
 field pull to a presentation-only operator laptop; that laptop is narrative
-context, not a measured RC03 board interface. The
+context, not a measured RC03 board interface. Its display is stateful rather
+than baked: request console in scene 2, empty test pad at the end of scene 7,
+then `r → re → rea → read → ready` after the corresponding observed
+contacts. The
 same detailed rig then moves continuously through independently permitted
 `e`, `a`, `d`, and `y` cycles at 0:48–0:55; no model or pose swap is used. The
 contact-free scene-11 crossing is also blocked: the wrist retracts, traverses
