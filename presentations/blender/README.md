@@ -136,15 +136,16 @@ request-to-result replacement is documented in
 [`TACTEVRA_OVERVIEW_STORYBOARD_V2.md`](TACTEVRA_OVERVIEW_STORYBOARD_V2.md).
 The companion
 [`ADVERTISING_STORYBOARD_HANDOFF.md`](ADVERTISING_STORYBOARD_HANDOFF.md)
-packages five visual concept frames, the complete director's board, and the
+packages six geometry-reference frames, the complete director's board, and the
 art-direction questions for an outside advertising collaborator.
 That treatment expands the demonstration from one H-key press to a compound
-`enter READY locally through the physical keyboard → send READY separately
-through phone-screen taps` workflow performed by one continuous detailed arm
-and stylus. The physical keyboard drives and verifies only local input; the
-phone uses its own app state, on-screen controls, and verification. Keep the
-current film published until that replacement passes its visual-continuity and
-accuracy checkpoints.
+`type ready in the laptop test pad through the physical keyboard → send on my
+way separately through phone-screen taps` workflow performed by one continuous
+detailed arm and stylus. Physical authority is granted one contact at a time.
+The physical keyboard drives and verifies only local input; the phone checks
+its expected screen before every tap and uses its own state and verification.
+Keep the current film published until that replacement passes its continuity,
+accuracy, and per-contact-authority checkpoints.
 
 | Time | Shot | Evidence communicated |
 |---:|---|---|

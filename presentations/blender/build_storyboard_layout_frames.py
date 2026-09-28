@@ -62,9 +62,9 @@ def phone_messages_ui(draw: ImageDraw.ImageDraw, *, sent: bool = False,
     draw.line((1388, 558, 1495, 558), fill=(74, 91, 109, 255), width=2)
     if sent:
         draw.rounded_rectangle((1393, 594, 1494, 650), radius=14, fill=(40, 111, 245, 255))
-        draw.multiline_text((1405, 606), "ON MY\nWAY", font=font(16, True), fill=INK,
+        draw.multiline_text((1405, 606), "on my\nway", font=font(16, True), fill=INK,
                             spacing=2)
-        draw.text((1490, 657), "SENT", font=font(10, True, True), fill=GREEN, anchor="ra")
+        draw.text((1490, 657), "sent", font=font(10, True, True), fill=GREEN, anchor="ra")
     else:
         draw.rounded_rectangle((1390, 747, 1493, 782), radius=13,
                                fill=(30, 42, 56, 255), outline=(92, 109, 127, 255), width=1)
@@ -84,7 +84,7 @@ def header(image: Image.Image, stage: str, title: str, accent=CYAN) -> ImageDraw
     draw.rectangle((0, 0, 1920, 74), fill=(5, 9, 15, 238))
     draw.text((42, 18), stage, font=font(25, True, True), fill=accent)
     draw.text((300, 15), title, font=font(34, True), fill=INK)
-    draw.text((1535, 22), "LAYOUT-ACCURATE CONCEPT", font=font(18, True, True), fill=MUTED)
+    draw.text((1535, 22), "GEOMETRY REFERENCE", font=font(18, True, True), fill=MUTED)
     draw.rectangle((0, 1070, 1920, 1080), fill=accent)
     return draw
 
@@ -109,7 +109,7 @@ def frame_01() -> None:
     phone_messages_ui(draw, sent=False)
     rounded(draw, (32, 122, 326, 500), fill=PANEL, outline=AMBER)
     draw.text((56, 148), "USER REQUEST", font=font(20, True, True), fill=AMBER)
-    draw.multiline_text((56, 202), "Enter READY\nin the local app.\n\nThen send\nON MY WAY\nfrom the phone.",
+    draw.multiline_text((56, 202), "Type ready\nin the local test pad.\n\nThen send\non my way\nfrom the phone.",
                         font=font(26, True), fill=INK, spacing=7)
     draw.text((56, 458), "No motor command yet", font=font(17, False, True), fill=MUTED)
     rounded(draw, (1600, 160, 1882, 328), fill=PANEL_SOFT, outline=CYAN)
@@ -187,7 +187,7 @@ def frame_04() -> None:
     draw.line(points, fill=GREEN, width=5, joint="curve")
     rounded(draw, (1420, 140, 1886, 310), fill=PANEL, outline=GREEN)
     draw.text((1450, 168), "LOCAL RESULT", font=font(21, True, True), fill=GREEN)
-    draw.text((1450, 218), "READY · CONFIRMED", font=font(32, True, True), fill=INK)
+    draw.text((1450, 218), "ready · confirmed", font=font(32, True, True), fill=INK)
     draw.text((1450, 274), "Phone remains unchanged", font=font(18, False, True), fill=MUTED)
     save(image, "04-local-keyboard-action-layout-accurate.png")
 
@@ -196,16 +196,16 @@ def frame_05() -> None:
     image = base(0.68)
     cover_legacy_labels(image, footer_text="PHYSICAL TOUCHSCREEN WORKFLOW")
     draw = header(image, "04 · ACT", "PHONE IS A SEPARATE PHYSICAL INTERFACE", AMBER)
-    phone_messages_ui(draw, draft="ON MY WAY")
+    phone_messages_ui(draw, draft="on my way")
     draw.rounded_rectangle((1332, 410, 1536, 866), radius=16, outline=AMBER, width=5)
     marker(draw, (1480, 761), "SEND", GREEN, 15)
     rounded(draw, (32, 150, 365, 342), fill=PANEL, outline=GREEN)
     draw.text((58, 177), "LOCAL WORKFLOW", font=font(20, True, True), fill=GREEN)
-    draw.text((58, 224), "READY · CONFIRMED", font=font(27, True, True), fill=INK)
+    draw.text((58, 224), "ready · confirmed", font=font(27, True, True), fill=INK)
     draw.text((58, 283), "remains unchanged", font=font(20, False, True), fill=MUTED)
     rounded(draw, (1570, 150, 1888, 342), fill=PANEL, outline=AMBER)
     draw.text((1596, 177), "PHONE WORKFLOW", font=font(20, True, True), fill=AMBER)
-    draw.multiline_text((1596, 224), "ON MY WAY\nREADY TO SEND", font=font(25, True),
+    draw.multiline_text((1596, 224), "on my way\nready to send", font=font(25, True),
                         fill=INK, spacing=7)
     save(image, "05-phone-action-layout-accurate.png")
 
@@ -218,11 +218,11 @@ def frame_06() -> None:
     draw.rounded_rectangle((1332, 410, 1536, 866), radius=16, outline=GREEN, width=5)
     rounded(draw, (32, 150, 365, 342), fill=PANEL, outline=GREEN)
     draw.text((58, 177), "LOCAL RECEIPT", font=font(20, True, True), fill=GREEN)
-    draw.text((58, 224), "READY · CONFIRMED", font=font(27, True, True), fill=INK)
+    draw.text((58, 224), "ready · confirmed", font=font(27, True, True), fill=INK)
     draw.text((58, 283), "physical keyboard", font=font(20, False, True), fill=MUTED)
     rounded(draw, (1570, 150, 1888, 366), fill=PANEL, outline=GREEN)
     draw.text((1596, 177), "PHONE RECEIPT", font=font(20, True, True), fill=GREEN)
-    draw.multiline_text((1596, 224), "ON MY WAY\nSENT", font=font(31, True), fill=INK, spacing=7)
+    draw.multiline_text((1596, 224), "on my way\nsent", font=font(31, True), fill=INK, spacing=7)
     draw.text((1596, 318), "touchscreen taps", font=font(18, False, True), fill=MUTED)
     save(image, "06-dual-verification-layout-accurate.png")
 

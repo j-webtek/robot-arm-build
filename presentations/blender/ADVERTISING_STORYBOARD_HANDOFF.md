@@ -1,261 +1,187 @@
-# Tactevra advertising storyboard handoff
+# Tactevra advertising storyboard handoff — v2.1
 
-- **Purpose:** Art-direction and scene-development brief
-- **Film target:** 100 seconds, 16:9 master, 24 fps
-- **Audience:** Advertising creative director, storyboard artist, motion
-  designer, cinematographer, sound designer, and Blender artist
-- **Status:** Concept package; the images below are visual mockups, not final
-  renders or engineering evidence
+- **Purpose:** art-direction and motion-production brief
+- **Runtime:** exactly 100 seconds, 17 scenes, 16:9, 24 fps
+- **Status:** concept package; visuals are not engineering evidence
 
-## The idea in one sentence
+## Campaign idea
 
-One natural-language request becomes two separately checked physical outcomes:
-the robot enters `READY` into a local computer through the build's physical
-keyboard, then independently sends `ON MY WAY` from the build's phone through
-physical screen taps.
+A request becomes two independently verified physical outcomes. Tactevra types
+`ready` into a local test pad through the real black keyboard, then crosses the
+same measured workcell and enters `on my way` on the phone before tapping Send.
+The audience sees the boundary between a model proposal and physical authority.
 
-## What the viewer should feel
+The operator laptop is both the opening request console and the local test-pad
+host. Its two UI modes must look unmistakably different. The phone is a separate
+target device and never acts as keyboard feedback.
 
-Tactevra is not a robot performing a party trick. It is a disciplined bridge
-between AI intent and physical interfaces. The film should begin with curiosity,
-introduce a credible risk, build trust through the rejection and admission
-beats, create energy through coordinated motion, and end with the calm
-confidence of two independently verified results.
+## Product behavior the creative must preserve
 
-## Visual and asset authority
+The model supplies ordered semantic actions, named targets, proposed
+coordinates, confidence, and bounded uncertainty. It does **not** supply joint
+commands, speed, acceleration, contact depth, timing, retry policy, or authority.
+Those are deterministic runtime responsibilities and appear greyed out and
+locked on the amber proposal card.
 
-The five primary images in this handoff are layout-accurate composites built
-from the repository's authoritative Blender scene. Their keyboard, phone,
-stations, board, fiducials, robot placement, scale, and top-down relationship
-come from the actual RC03 build assets. The added cards, target markers, crops,
-and modeled screen states are presentation graphics, not physical evidence.
+The runtime may admit immutable batch facts once, but each press or tap requires
+its own short-lived permit. It checks current state, grants one permit, consumes
+it on one contact, observes the effect, and only then considers the next action.
+The phone's expected screen is checked before every tap and re-observed after a
+state change.
 
-Production must use the repository's dimension manifest, official arm source,
-exact board tags, measured device envelopes, indexed transforms, accurate
-keyboard asset, phone asset, and the continuity requirements in
-[`TACTEVRA_OVERVIEW_STORYBOARD_V2.md`](TACTEVRA_OVERVIEW_STORYBOARD_V2.md).
+Public stages: `UNDERSTAND → LOCATE → CHECK → ACT → VERIFY`.
+
+## Recurring visual system
+
+1. A **green permit token** travels down the arm, authorizes one contact, and
+   fades when consumed.
+2. A **blue uncertainty circle** contracts until its complete bound fits inside
+   the intended key or control.
+3. A **dotted target ghost** is always labeled `preview · no authority`; it
+   becomes solid only when its own permit arrives.
+
+Amber belongs to model output, blue to measured geometry, red to rejection,
+green to permit or verified outcome, and grey to explanation or locked runtime
+policy.
+
+## Hardware and layout authority
 
 | Asset | Production authority |
 |---|---|
 | Board | 610 × 457 × 18 mm RC03 board from `dimension_manifest.json` |
-| Keyboard | Measured 315 × 147 × 21 mm chassis and nominal key map created by `build_workcell_explainer.py`; RC03 station STLs |
-| Phone | Measured 77.9 × 164.4 × 7.9 mm body and screen plane; RC03 phone-station STL |
-| Robot placement | Rear-center at board translation 305, 457, 0 mm and −90° nominal yaw |
-| Concept overlays | Rebuildable with `build_storyboard_layout_frames.py`; not geometry authority |
+| Keyboard | Measured 315 × 147 × 21 mm black RC03 chassis, six-row layout, legends, cable, and station |
+| Phone | Measured 77.9 × 164.4 × 7.9 mm body, screen plane, controls, cable, and RC03 station |
+| Robot | Detailed RoArm source geometry and servo rig; rear-center placement at 305, 457, 0 mm and −90° nominal yaw |
+| Stylus | One dark stylus correctly seated in the same gripper throughout |
+| Camera | Actual fixed-camera body, mount, lens, and matching optical view |
+| Laptop | Off-board operator console and local test-pad host; visually independent from the phone |
 
-The image-generated lighting study is retained only under
-`storyboard_v2/reference-only/`. It is not a layout or hardware reference.
+Existing images under `storyboard_v2/` are **geometry references only**. Their
+device footprints and board relationships are authoritative; their overhead
+framing is not final art direction.
 
-## Six visual anchors
+## Six new art-direction anchors
 
-### 1. Human intent enters the physical world
+### A. Cold-open authority macro
 
-![Opening intent and workcell hero](storyboard_v2/01-intent-hero-layout-accurate.png)
+Stylus hovers over lowercase `r`. The blue uncertainty disk is too wide, the
+next target is dotted, and the label reads `NO PERMIT · NO CONTACT`. Show enough
+of the real servo wrist and keyboard to identify both assets.
 
-**Story purpose:** Establish immediately that the laptop is the operator
-console, while the keyboard and phone are separate physical targets.
+**Camera:** 85–100 mm equivalent; focus pull from key to wrist.
 
-**Keep:** Foreground-to-background depth, readable request, parked robot,
-stylus visible before motion, complete workcell, blue-and-amber lighting.
+### B. Model proposal with locked policy
 
-**Improve in production:** Match the real board layout and portal; seat the
-stylus exactly inside the real gripper; use the accurate compact keyboard and
-phone; reduce background laboratory clutter; reserve negative space for
-captions and stage labels.
+Low three-quarter hero of the stationary workcell. Amber card identifies
+`keyboard.type "ready"` and `phone.send "on my way"`, named targets,
+confidence, and error bounds. Grey locked rows read `runtime owned` for speed,
+contact, retry, and timing.
 
-**Camera:** 32–38 mm equivalent, slow 12-degree orbit with a restrained push.
+**Camera:** 40–50 mm equivalent; restrained push; card in negative space.
 
-**Transition:** Match-cut the word `READY` to the first amber proposal row.
+### C. The camera's own view
 
-### 2. One intent contract, two independent device maps
+Show the recognizable fixed camera and lens, then pass through it into a
+squared optical view. Blue outlines register the real board, devices, tags,
+and uncertainty. Overhead appears nowhere else except this locate sequence and
+the stale-evidence hold.
 
-![Measured board and independent device placements](storyboard_v2/02-device-maps-layout-accurate.png)
+### D. Permit lands on the stylus
 
-**Story purpose:** Explain the architecture at a glance. The model proposes
-two device-qualified intentions. Deterministic software rejects stale scene
-evidence before either device is touched.
+Fresh evidence admits static batch facts, but the graphic reads
+`BATCH ADMITTED → PERMIT · 1 ACTION`. A green token travels down the actual arm
+and lands at the stylus while `r` becomes solid. The next `e` remains dotted
+and powerless.
 
-**Keep:** Stable overhead geometry, blue device boundaries, amber proposal,
-red one-glance rejection, stationary robot, information placed in unused board
-space.
+**Camera:** low three-quarter, 55–70 mm, slow push timed to token arrival.
 
-**Improve in production:** Use the exact physical-keyboard map, actual phone
-app-state model, exact tag family/IDs, and clean copy from the production
-storyboard. Keep a visible gap between the two blue device maps. Never draw an
-arrow from the keyboard output to the phone.
+### E. Arm-follow crossing
 
-**Camera:** Fixed overhead, squared to the board. No orbit during rejection.
+After the laptop receipt `ready ✓`, follow the full arm through a high-clearance
+arc from keyboard to phone. Preserve the same stylus, cable state, and rig; keep
+both devices visible long enough to retain spatial understanding.
 
-**Sound:** Four quiet registration pings, then a muted low thud on `REJECTED`.
+### F. Independent receipts hero
 
-### 3. Unsafe evidence produces no motion
+Balanced split evidence inside a hero wide: laptop test pad reads `ready ✓`;
+the actual phone reads `on my way · sent ✓`. The retracted arm sits between the
+devices without visually connecting their data.
 
-![Stale-evidence rejection with fixed device geometry](storyboard_v2/03-stale-evidence-reject-layout-accurate.png)
+## Exact 17-scene director board
 
-**Story purpose:** Make the safety promise legible in one glance. The same
-keyboard and phone remain indexed in place while stale evidence is rejected
-and the actual arm remains still.
+| # | Time | Stage | Required picture and action | Sound |
+|---:|---:|---|---|---|
+| 1 | 0:00–0:04 | — | Macro over `r`; uncertainty too wide; `NO PERMIT · NO CONTACT`. | Held mechanism tone. |
+| 2 | 0:04–0:09 | UNDERSTAND | Laptop request: `Type ready locally, then send on my way from the phone.` | Input ticks. |
+| 3 | 0:09–0:15 | — | Hero wide of exact workcell and one detailed arm/stylus rig. | Music pulse begins. |
+| 4 | 0:15–0:21 | UNDERSTAND | Amber semantic proposal; confidence and uncertainty visible; runtime fields locked. | Data ticks. |
+| 5 | 0:21–0:28 | LOCATE | Reveal real camera, pass through lens, register exact device geometry; blue circles shrink. | Registration pings. |
+| 6 | 0:28–0:33 | CHECK | `scene capture 41 s old · limit 2 s → REJECTED · NO MOTION`; arm visible and still. | Music cuts; reject thud. |
+| 7 | 0:33–0:40 | CHECK | Fresh capture; `BATCH ADMITTED → PERMIT · 1 ACTION`; token travels to stylus. | Music returns; gate ticks. |
+| 8 | 0:40–0:48 | ACT/VERIFY | First `r` press teaches transit, align, settle, approach, contact, retract, verify. Permit fades; laptop shows `r`. | One key click, one verify tick. |
+| 9 | 0:48–0:55 | CHECK/ACT/VERIFY | Lateral track through `e/a/d/y`; one circle, permit, press, and receipt per contact; dotted next preview. | Four rhythmic key clicks. |
+| 10 | 0:55–1:01 | VERIFY | Laptop test pad: `EXPECTED ready · OBSERVED ready ✓`; phone unchanged. | Verify tone. |
+| 11 | 1:01–1:07 | ACT | Full retract and continuous high-clearance arm-follow move to phone. | Transit texture. |
+| 12 | 1:07–1:14 | CHECK/ACT/VERIFY | Check `home`; one permit opens Messages; re-observe and verify `composer ready`. | Check, tap, check. |
+| 13 | 1:14–1:19 | CHECK/ACT/VERIFY | Build `on my way`; expected screen checked before each tap and visible effect confirmed after each. | Glass-tap rhythm. |
+| 14 | 1:19–1:24 | CHECK/ACT/VERIFY | Confirm composer; Send circle fits; its own permit arrives; one Send tap and retract. | Distinct Send tap. |
+| 15 | 1:24–1:31 | VERIFY | Split evidence: laptop `ready ✓`; phone `on my way · sent ✓`. | Two verify tones. |
+| 16 | 1:31–1:36 | all | Evidence trail aligns request, proposal, captures, per-contact permits, observations, and receipts. | Resolving rise. |
+| 17 | 1:36–1:40 | all | Hero wide, five-stage ribbon, brand, URL, and `SIMULATED WORKCELL SEQUENCE`. | Clean resolve; no black tail. |
 
-**Keep:** Fixed overhead geometry, red reserved for rejection, and the arm
-unobscured so the absence of motion is visible.
+## Shot and editorial rules
 
-**Camera:** Locked overhead. No orbit, push, or rack focus during rejection.
+- No single framing runs longer than roughly 25 percent of the film.
+- Use macro, low three-quarter, lateral track, arm-follow dolly, camera POV,
+  split screen, and hero wide for narrative reasons—not decorative variety.
+- Preserve exact joint, stylus, cable, keyboard, phone, and fixture continuity.
+- One principal card plus the stage ribbon is the maximum information load.
+- Keep cards in negative space and never over the mechanism or target.
+- Music sits 15–18 dB below narration and cuts completely for rejection.
+- Test every graphic at 390 px width before final lighting.
 
-### 4. Local typing is a local workflow
+## Non-negotiable copy and behavior
 
-![Local physical-keyboard action](storyboard_v2/04-local-keyboard-action-layout-accurate.png)
+- Use lowercase `ready` and `on my way` everywhere; uppercase requires actions
+  outside this demonstration.
+- The laptop—not an invented board display—shows the local test pad.
+- `BATCH ADMITTED` never means route-wide contact authority.
+- Every contact gets and consumes exactly one green permit.
+- The next target is dotted and marked `preview · no authority`.
+- Every phone tap begins from a verified expected screen; changed screens force
+  re-observation.
+- Model-owned fields are amber; runtime-owned policy fields are grey and locked.
+- The accurate RoArm and the same stylus perform every physical action.
+- The black keyboard and dark phone never change appearance or placement.
+- Physical animation carries `SIMULATED WORKCELL SEQUENCE` throughout.
 
-**Story purpose:** Show the first useful outcome. The robot physically presses
-the keyboard while the associated local input changes. The phone remains idle.
+## Geometry-reference images
 
-**Keep:** Entire mechanism visible, low three-quarter angle, readable key
-contact, stylus-to-key relationship, independent phone in frame, local result
-behind the keyboard.
+- `storyboard_v2/01-intent-hero-layout-accurate.png`
+- `storyboard_v2/02-device-maps-layout-accurate.png`
+- `storyboard_v2/03-stale-evidence-reject-layout-accurate.png`
+- `storyboard_v2/04-local-keyboard-action-layout-accurate.png`
+- `storyboard_v2/05-phone-action-layout-accurate.png`
+- `storyboard_v2/06-dual-verification-layout-accurate.png`
 
-**Improve in production:** Animate the accurate RoArm rig rather than the
-concept geometry; visibly seat the stylus between both jaws; use correct R/E/A/D/Y
-locations; show restrained cap travel; keep the phone screen unchanged for the
-whole local sequence.
+## Requested advertising deliverables
 
-**Camera:** 55–70 mm equivalent lateral track. Use no more than two sub-two-
-second macro inserts across all five key presses.
+1. Six new style frames matching anchors A–F while preserving measured layout.
+2. A 100-second greybox animatic using all 17 timed scenes.
+3. Two alternate treatments for the first-key lesson, crossing shot, and Send.
+4. Motion tests for permit token, uncertainty circle, and no-authority ghost.
+5. Typography and graphics at desktop and 390 px widths.
+6. Sound concept for rejection, permits, keys, phone checks, Send, and receipts.
+7. Poster, GitHub player thumbnail, and separately captioned 30-second social cut.
+8. Continuity report confirming one robot, one stylus, measured layout,
+   lowercase copy, per-contact authority, and device-local verification.
 
-**Sound:** Five distinct physical-key clicks. Let the rhythm carry the shot;
-do not cover it with narration.
+## Review questions
 
-### 5. The phone is a separate physical interface
-
-![Independent phone-message action](storyboard_v2/05-phone-action-layout-accurate.png)
-
-**Story purpose:** Demonstrate a second adapter and interaction vocabulary.
-The arm crosses the workcell, opens Messages, taps the phone's own on-screen
-keys, then reaches Send. The keyboard has finished its job.
-
-**Keep:** Strong diagonal travel, spatial separation, phone foreground,
-keyboard receding, full robot readable, screen interaction visibly physical.
-
-**Improve in production:** Use the exact phone transform and screen plane;
-animate a plausible wrist reorientation; make the on-screen target under the
-stylus unambiguous; build `ON MY WAY` only inside the phone composer; leave the
-local input at `READY`; do not repeat the operator request on the local-result
-display.
-
-**Camera:** 40–55 mm equivalent diagonal dolly that begins on the retract from
-the keyboard and lands on the phone hover pose.
-
-**Sound:** Quiet transit mechanism tone, Messages tap, five glass taps, and one
-distinct Send tap.
-
-### 6. Independent evidence, shared confidence
-
-![Dual verification payoff](storyboard_v2/06-dual-verification-layout-accurate.png)
-
-**Story purpose:** Close the promise without merging the workflows. The local
-computer independently confirms its input. The phone independently confirms
-its sent message. The five-stage contract explains why both results can be
-trusted.
-
-**Keep:** Symmetrical hierarchy, safely retracted arm centered between devices,
-separate result panels, confident green completion state, strong stage ribbon.
-
-**Improve in production:** Restore the complete board and portal silhouette;
-use the exact stylus and robot; show the phone's sent state rather than an
-editable composer; ensure the local and phone receipts use distinct labels and
-never visually join before the final architectural summary.
-
-**Camera:** 35–40 mm equivalent, slow pullback into the end composition.
-
-**Sound:** Two quiet verification ticks followed by one restrained resolved
-chord.
-
-## Complete 15-scene director's board
-
-| # | Time | Required picture | Camera and blocking | Graphic purpose | Sound |
-|---:|---:|---|---|---|---|
-| 1 | 0:00–0:05 | Operator console receives: `Enter READY locally, then text ON MY WAY from the phone.` | Close console view; workcell soft in background | Human outcome, not motor instruction | Minimal input ticks |
-| 2 | 0:05–0:11 | Full workcell; arm parked; stylus clamped; keyboard, local display, and phone visibly separate | 12–15° hero orbit | Physical stakes | Bed and restrained room tone |
-| 3 | 0:11–0:18 | Amber `LOCAL.TYPE_TEXT` then `PHONE.SEND_TEXT` proposal | Settle beside stationary robot | Model proposes; no motor commands | Amber UI ticks |
-| 4 | 0:18–0:25 | Camera body, lens transition, exact tags, three device detections | Crane to fixed camera, then squared overhead | Ground the scene | Four registration pings |
-| 5 | 0:25–0:31 | Separate local-keyboard/local-display map and phone map | Locked overhead | Device-specific targets | Quiet trace tone |
-| 6 | 0:31–0:37 | `scene capture 41 s old · limit 2 s`; robot stays still | No camera motion | Fail closed | Low reject thud |
-| 7 | 0:37–0:44 | Fresh evidence; full two-routine route; 15 contacts admitted | Slow push toward gripper and stylus | Deterministic admission | Rising gate ticks |
-| 8 | 0:44–0:50 | Arm leaves park and reaches keyboard hover | Medium-wide lateral start | Act begins | Mechanism tone |
-| 9 | 0:50–1:00 | Five physical key presses; local field builds `READY`; phone unchanged | Lateral track plus ≤2 macro inserts | Local outcome | Five key clicks |
-| 10 | 1:00–1:05 | Local `READY` verified; phone unchanged | Hold on arm and local display | Close first loop | Local verify tick |
-| 11 | 1:05–1:11 | Full retract and high-clearance cross-device arc | Wide diagonal dolly | Spatial continuity | Subtle transit tone |
-| 12 | 1:11–1:23 | Messages opens; phone-specific taps build `ON MY WAY` | Medium-wide plus ≤2 contact inserts | Phone-specific action | Restrained glass-tap rhythm |
-| 13 | 1:23–1:28 | One clear Send contact and retract | Medium-wide to brief macro | Complete phone intent | Distinct Send tap |
-| 14 | 1:28–1:35 | Local input and sent phone message verified independently | Balanced wide | Two outcomes, separate evidence | Two ticks and resolved chord |
-| 15 | 1:35–1:40 | Full workcell, five-stage ribbon, two branches, brand and URL | Slow pullback; no black tail | Product promise and next step | Clean music button |
-
-## Art-direction system
-
-### Color ownership
-
-| Color | Meaning | Exclusive use |
-|---|---|---|
-| Amber | Model output | Proposal card and selected semantic actions |
-| Cool blue | Measured system fact | Device bounds, target maps, tags, axes, coordinates |
-| Red | Blocked | Stale evidence and rejected motion only |
-| Green | Verified | Completed contacts, admitted route, observed results |
-| White/grey | Explanation | Titles, narration support, qualification copy |
-
-### Camera language
-
-- Wide lenses establish architecture; longer lenses reveal contact.
-- Every move must have a narrative reason: reveal, locate, follow, or verify.
-- Use eased dollies and orbits. Avoid snap zooms, handheld motion, speed ramps,
-  and decorative rotations.
-- Preserve robot pose across cuts. Incoming and outgoing joint transforms must
-  match exactly.
-- Show the entire arm for all major transits. Macros are evidence inserts, not
-  substitutes for motion continuity.
-
-### Typography and overlays
-
-- Use one clean sans-serif family and one monospace family for structured data.
-- Minimum 1080p sizes: headline 64 px, stage 48 px, card body 28 px, ribbon
-  24 px, qualification 18 px.
-- Display the stage ribbon plus only one title or one card at a time.
-- Keep cards away from the robot, gripper, stylus, targets, and contact points.
-- Test the animatic at 390 px wide before final lighting or simulation.
-
-## Non-negotiable continuity checklist
-
-- [ ] One accurate RoArm rig in every physical shot; never use the block-arm
-      contact proxy.
-- [ ] One stylus visibly and correctly clamped through every move.
-- [ ] One immutable workcell layout and one set of device transforms.
-- [ ] Physical keyboard affects only the local-computer interface.
-- [ ] Phone taps affect only the phone's Messages app.
-- [ ] Local `READY` and phone `ON MY WAY` verification receipts remain independent.
-- [ ] The phone remains unchanged during physical-keyboard typing.
-- [ ] The local result remains unchanged during phone operation.
-- [ ] Every motion cut preserves joint pose and cable continuity.
-- [ ] Rendered actions carry the persistent `SIMULATED WORKCELL SEQUENCE`
-      qualifier.
-
-## Deliverables requested from the advertising collaborator
-
-1. Annotated feedback on the five anchor frames.
-2. A greybox animatic timed to the 100-second director's board.
-3. Two alternative camera treatments for scenes 9, 11, and 12.
-4. A typography and motion-graphics style frame using the established color
-   ownership.
-5. A sound concept covering reject, gate admission, physical keys, glass taps,
-   Send, and dual verification.
-6. A poster composition and a 30-second social cut derived from the same visual
-   language.
-7. A list of any scene whose meaning is unclear at 390 px wide.
-
-## Suggested feedback questions
-
-- Does the first five seconds make the operator console distinct from both
-  physical target devices?
-- Can a first-time viewer explain why local `READY` and phone `ON MY WAY` are
-  independent outcomes?
-- Is the reject beat understandable without narration?
-- Does the full robot remain identifiable during every transition?
-- Which shot provides the strongest campaign still?
-- Where can the film become more emotionally engaging without weakening
-  technical credibility?
+- Can a viewer explain the difference between proposal and permit?
+- Is it obvious that one permit authorizes exactly one contact?
+- Does the laptop read as the local test-pad host and the phone as a separate
+  physical interface?
+- Can the stale rejection be understood with sound off?
+- Does every phone tap visibly originate from a verified screen state?
+- Does the film remain clear and engaging on a phone-sized GitHub preview?
