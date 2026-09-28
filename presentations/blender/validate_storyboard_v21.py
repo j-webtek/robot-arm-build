@@ -72,6 +72,14 @@ def main() -> None:
     assert phone["permit_scope"] == "one contact"
     assert phone["screen_check_before_each_contact"] is True
     assert phone["verify_after_each_state_change"] is True
+    assert phone["ui_layout"] == {
+        "orientation": "portrait",
+        "header": "contact identity at top",
+        "conversation_history_bubbles": 2,
+        "composer": "immediately above software keyboard",
+        "send": "right edge of composer",
+        "sent_receipt": "outgoing bubble in conversation with delivered tick",
+    }
     assert phone["time_compression"] == {
         "scene": 13, "start_frame": 1850, "end_frame": 1968,
         "rate": "2x", "disclosed": True

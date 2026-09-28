@@ -313,6 +313,18 @@ def add_phone_message_ui(
         "Modeled Messages matte display", (0.003, 0.009, 0.018, 1),
         metallic=0.0, roughness=0.96, ior_level=0.0,
     )
+    header_bg = base.material(
+        "Modeled Messages header", (0.012, 0.022, 0.034, 1),
+        metallic=0.0, roughness=0.72, ior_level=0.02,
+    )
+    keyboard_bg = base.material(
+        "Modeled phone keyboard background", (0.020, 0.028, 0.038, 1),
+        metallic=0.0, roughness=0.84, ior_level=0.02,
+    )
+    incoming_bg = base.material(
+        "Modeled incoming message bubble", (0.060, 0.075, 0.092, 1),
+        metallic=0.0, roughness=0.66, ior_level=0.04,
+    )
 
     # Hide the older generic verification treatment in favor of one coherent
     # Messages state throughout the phone chapter.
@@ -342,26 +354,84 @@ def add_phone_message_ui(
     home_ui.extend((expected_home, messages_icon, messages_label))
     targets["messages_app"] = (ox + sx / 2, oy + sy / 2)
 
-    header = base.board_text(
-        "Phone Messages header", "MESSAGES · CONTACT",
-        base.board_point(ox + sx / 2, oy + sy - 18, z), 0.0042, mats["white"],
+    header_panel = base.cube(
+        "Phone Messages header panel",
+        base.board_point(ox + sx / 2, oy + sy - 17, z - 0.0002),
+        ((sx - 7) / 1000, 0.025, 0.00045), header_bg, 0.004,
     )
+    avatar = base.cylinder(
+        "Phone Messages contact avatar",
+        base.board_point(ox + 13, oy + sy - 17, z),
+        0.0065, 0.00055, mats["phone_panel"], 36,
+    )
+    header = base.board_text(
+        "Phone Messages contact name", "Alex",
+        base.board_point(ox + sx / 2, oy + sy - 14, z + 0.8),
+        0.0042, mats["white"],
+    )
+    header_status = base.board_text(
+        "Phone Messages contact status", "Messages",
+        base.board_point(ox + sx / 2, oy + sy - 21, z + 0.8),
+        0.0027, mats["legend"],
+    )
+
+    incoming_bubble = base.cube(
+        "Phone incoming conversation bubble",
+        base.board_point(ox + 23, oy + 133, z - 0.0002),
+        (0.038, 0.014, 0.00045), incoming_bg, 0.006,
+    )
+    incoming_text = base.board_text(
+        "Phone incoming conversation text", "Are you close?",
+        base.board_point(ox + 23, oy + 133, z + 0.8),
+        0.0030, mats["white"],
+    )
+    outgoing_bubble = base.cube(
+        "Phone previous outgoing conversation bubble",
+        base.board_point(ox + sx - 22, oy + 112, z - 0.0002),
+        (0.036, 0.014, 0.00045), mats["phone_panel"], 0.006,
+    )
+    outgoing_text = base.board_text(
+        "Phone previous outgoing conversation text", "Leaving now",
+        base.board_point(ox + sx - 22, oy + 112, z + 0.8),
+        0.0030, mats["white"],
+    )
+
+    keyboard_panel = base.cube(
+        "Phone software keyboard panel",
+        base.board_point(ox + sx / 2, oy + 31, z - 0.00035),
+        ((sx - 5) / 1000, 0.060, 0.00032), keyboard_bg, 0.0035,
+    )
+    composer_y = oy + 70
     composer = base.cube(
         "Phone composer field",
-        base.board_point(ox + sx / 2 - 4, oy + sy - 42, z - 0.0002),
-        ((sx - 20) / 1000, 0.018, 0.00045), mats["phone_panel"], 0.004,
+        base.board_point(ox + sx / 2 - 4, composer_y, z - 0.0002),
+        ((sx - 20) / 1000, 0.016, 0.00045), mats["phone_panel"], 0.006,
+    )
+    composer_placeholder = base.board_text(
+        "Phone composer placeholder", "Message",
+        base.board_point(ox + 22, composer_y, z + 0.8),
+        0.0030, mats["legend"],
     )
     send = base.cylinder(
-        "Phone Send target", base.board_point(ox + sx - 9, oy + sy - 42, z),
+        "Phone Send target", base.board_point(ox + sx - 9, composer_y, z),
         0.0062, 0.00055, mats["cyan"], 36,
     )
-    messages_ui.extend((header, composer, send))
-    targets["send"] = (ox + sx - 9, oy + sy - 42)
+    send_arrow = base.board_text(
+        "Phone Send arrow", "↑",
+        base.board_point(ox + sx - 9, composer_y, z + 0.8),
+        0.0045, mats["white"],
+    )
+    messages_ui.extend((
+        header_panel, avatar, header, header_status,
+        incoming_bubble, incoming_text, outgoing_bubble, outgoing_text,
+        keyboard_panel, composer, composer_placeholder, send, send_arrow,
+    ))
+    targets["send"] = (ox + sx - 9, composer_y)
 
     rows = (
-        ("qwertyuiop", oy + 70, ox + 6, ox + sx - 6),
-        ("asdfghjkl", oy + 52, ox + 9, ox + sx - 9),
-        ("zxcvbnm", oy + 34, ox + 14, ox + sx - 14),
+        ("qwertyuiop", oy + 52, ox + 6, ox + sx - 6),
+        ("asdfghjkl", oy + 36, ox + 9, ox + sx - 9),
+        ("zxcvbnm", oy + 20, ox + 14, ox + sx - 14),
     )
     for letters, y, left, right in rows:
         step = (right - left) / (len(letters) - 1)
@@ -378,7 +448,7 @@ def add_phone_message_ui(
             messages_ui.extend((key, label))
             targets[letter] = (x, y)
 
-    space_xy = (ox + sx / 2, oy + 16)
+    space_xy = (ox + sx / 2, oy + 7)
     space = base.cube(
         "Phone key space", base.board_point(*space_xy, z - 0.0002),
         (0.040, 0.0115, 0.00040), mats["screen_glass"], 0.0025,
@@ -392,7 +462,7 @@ def add_phone_message_ui(
 
     compression_badge_panel = base.cube(
         "Phone disclosed time compression badge",
-        base.board_point(ox + sx / 2, oy + 92, z - 0.0001),
+        base.board_point(ox + sx / 2, oy + 91, z - 0.0001),
         (0.018, 0.014, 0.00055), mats["amber"], 0.005,
     )
     compression_badge_panel["meaning"] = "disclosed editorial time compression"
@@ -400,7 +470,7 @@ def add_phone_message_ui(
         "Phone disclosed time compression label", "2×",
         # Lift the type a full millimetre above the badge face. The phone UI
         # uses millimetre board coordinates, while mesh dimensions are metres.
-        base.board_point(ox + sx / 2, oy + 92, z + 1.0),
+        base.board_point(ox + sx / 2, oy + 91, z + 1.0),
         0.0065, mats["white"],
     )
     compression_badge["meaning"] = "disclosed editorial time compression"
@@ -423,12 +493,17 @@ def add_phone_message_ui(
         set_scale(obj, 1691, 0.0)
         set_scale(obj, 1692, 1.0)
         set_scale(obj, 2256, 1.0)
+    set_scale(composer_placeholder, 1692, 1.0)
+    set_scale(composer_placeholder, 1776, 1.0)
+    set_scale(composer_placeholder, 1777, 0.0)
+    set_scale(composer_placeholder, 2256, 0.0)
     for obj in (compression_badge_panel, compression_badge):
         set_scale(obj, 1692, 0.0)
         set_scale(obj, 1849, 0.0)
         set_scale(obj, 1850, 1.0)
         set_scale(obj, 1968, 1.0)
         set_scale(obj, 1969, 0.0)
+        set_scale(obj, 2256, 0.0)
     return targets, ui
 
 
@@ -518,7 +593,7 @@ def animate_phone_message_sequence(
         prefix = phrase[: index + 1]
         label = base.board_text(
             f"Phone observed composer {index + 1:02d}", prefix,
-            base.board_point(ox + 28, oy + dev["configured_size"][1] - 42, z),
+            base.board_point(ox + 25, oy + 70, z + 0.8),
             0.0040, mats["white"],
         )
         classify(label, collection, "observed_phone_composer_state")
@@ -557,18 +632,31 @@ def animate_phone_message_sequence(
     set_scale(tick, 2060, 1.0)
     set_scale(tick, 2068, 0.0)
 
-    sent = base.board_text(
-        "Phone sent receipt", "on my way · sent ✓",
-        base.board_point(ox + dev["configured_size"][0] / 2,
-                         oy + dev["configured_size"][1] - 65, z),
-        0.0040, mats["green"],
+    sent_panel = base.cube(
+        "Phone sent message bubble",
+        base.board_point(ox + dev["configured_size"][0] - 24, oy + 91,
+                         z - 0.0002),
+        (0.041, 0.014, 0.00045), mats["phone_panel"], 0.006,
     )
-    classify(sent, collection, "verified_phone_receipt")
-    sent["presentation_only"] = True
-    set_scale(sent, 1, 0.0)
-    set_scale(sent, 2059, 0.0)
-    set_scale(sent, 2060, 1.0)
-    set_scale(sent, 2256, 1.0)
+    sent = base.board_text(
+        "Phone sent message text", "on my way",
+        base.board_point(ox + dev["configured_size"][0] - 24, oy + 91,
+                         z + 0.8),
+        0.0035, mats["white"],
+    )
+    delivered = base.board_text(
+        "Phone sent message receipt", "Delivered ✓",
+        base.board_point(ox + dev["configured_size"][0] - 24, oy + 81,
+                         z + 0.8),
+        0.0025, mats["green"],
+    )
+    for obj in (sent_panel, sent, delivered):
+        classify(obj, collection, "verified_phone_receipt")
+        obj["presentation_only"] = True
+        set_scale(obj, 1, 0.0)
+        set_scale(obj, 2059, 0.0)
+        set_scale(obj, 2060, 1.0)
+        set_scale(obj, 2256, 1.0)
     return {
         "phrase": phrase, "messages_app_contact": app_contact,
         "contacts": contacts, "send_contact": 2028,

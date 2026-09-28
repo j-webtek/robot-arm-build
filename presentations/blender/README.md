@@ -177,7 +177,9 @@ stylus, or robot swap.
 
 Scenes 12–14 use a presentation-only Messages interface constrained to the
 measured phone glass. One fully shown home-screen check permits the Messages
-app contact. The same rig then types lowercase `on my way` with nine
+app contact. The portrait app state keeps a contact header and prior messages
+above a lower composer, places Send at the composer's right edge, and keeps the
+software keyboard below both. The same rig then types lowercase `on my way` with nine
 screen-check/permit/contact/verify cycles before slowing for a separately
 checked Send contact. The first two characters play naturally; the remaining
 seven carry a visible `2×` disclosure. The UI is explicitly modeled—not
