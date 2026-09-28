@@ -4,10 +4,20 @@
 **Owners:** AI/model workstream and arm/runtime workstream  
 **Started:** 2026-09-26  
 **Repository:** `j-webtek/tactevra`
-**Current capability baseline:** merged PR #126 (`AI-403` precision-adapter integration)
+**Current capability baseline:** protected `main` at `a8bf36f` through merged
+PR #152 (physical-camera localization evaluator) and PR #151 (Torch 2.13 test
+dependency update)
 **Authority:** this document coordinates development; it grants no hardware authority
 
 ## Paused baseline and next test campaign
+
+The final-camera dependency is now recorded as an explicit targeted hold in
+[`CAMERA_INTEGRATION_HOLD.md`](../../../docs/CAMERA_INTEGRATION_HOLD.md). Work on
+contracts, zero-write paths, deterministic runtime behavior, campaign tooling,
+evidence, documentation, and distribution may continue. Real-camera
+calibration, localization qualification, perception-driven hover, contact, and
+typing claims remain deferred until the fixed camera installation satisfies the
+documented resume conditions.
 
 The software wire contract is ready, but operational readiness remains blocked
 on qualified perception, retained camera/support evidence, a complete measured

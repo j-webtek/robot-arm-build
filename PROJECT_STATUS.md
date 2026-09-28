@@ -1,7 +1,10 @@
 # Tactevra project status
 
-Reviewed September 27, 2026 through the ARM-074 T2A typing-trajectory
-preparation and AI-403 precision-adapter integration.
+Reviewed September 28, 2026 through the ARM-074 T2A typing-trajectory
+preparation, AI-403 precision-adapter integration, and merged physical-camera
+campaign/evaluator work through PR #152. PR #151 subsequently updated the AI
+test dependency to Torch 2.13; that dependency merge does not change physical
+qualification or execution authority.
 Unmerged workstream branches are not included in this summary.
 This is a capability summary for readers; the
 [shared workplan](software/ai/docs/SHARED_AI_ARM_WORKPLAN.md) retains current
@@ -10,9 +13,17 @@ preserves detailed test records as development continues.
 
 Protected `main` also carries the shared model/arm conformance profile,
 operational-readiness gate, retained camera/support binding adapter, and the
-mainline precision adapter from PRs #115, #119, #120, and #126. These controls
+mainline precision adapter from PRs #115, #119, #120, and #126. PRs #147,
+#148, and #152 add the physical-camera campaign, AI evidence ownership, and
+strict localization evaluator. These controls
 formalize software compatibility and evidence requirements but add no physical
 observation or movement authority.
+
+The final-camera dependency is tracked as a targeted physical-integration hold
+in [the camera integration hold](docs/CAMERA_INTEGRATION_HOLD.md). Preparatory
+software, evidence, documentation, and distribution work may continue, but
+measured calibration and physical perception claims must wait for the fixed
+camera installation.
 
 Tactevra (formerly RoCell) is an experimental robot workcell intended to carry out keyboard and phone
 tasks from a person's text request. You can explore the software and run offline
