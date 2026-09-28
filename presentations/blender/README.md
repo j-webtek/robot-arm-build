@@ -176,10 +176,16 @@ aim from the final keyboard key to the measured phone center without a pose,
 stylus, or robot swap.
 
 Scenes 12–14 use a presentation-only Messages interface constrained to the
-measured phone glass. The same rig types lowercase `on my way` with nine
-screen-check/permit/contact/verify cycles, then slows for a separately checked
-and permitted Send contact. The UI is explicitly modeled—not represented as a
-captured app—and the physical chassis and indexed placement remain canonical.
+measured phone glass. One fully shown home-screen check permits the Messages
+app contact. The same rig then types lowercase `on my way` with nine
+screen-check/permit/contact/verify cycles before slowing for a separately
+checked Send contact. The first two characters play naturally; the remaining
+seven carry a visible `2×` disclosure. The UI is explicitly modeled—not
+represented as a captured app—and the physical chassis and indexed placement
+remain canonical.
+
+Revision history lives in `TACTEVRA_OVERVIEW_STORYBOARD_CHANGELOG.md` so the
+primary storyboard remains an artist-facing production document.
 
 The scaffold has no add-on dependency. Native cameras, constraints, markers,
 and collections keep CI and collaborator builds reproducible. Artists may use

@@ -62,6 +62,7 @@ def existing_materials() -> dict[str, bpy.types.Material]:
         "wire": "Servo harness",
         "green": "Verified green",
         "cyan": "Tactevra cyan",
+        "amber": "Validation amber",
         "white": "Reference white",
         "phone_panel": "Phone interface panel",
         "legend": "Keyboard legends",
@@ -222,6 +223,7 @@ def animate_key_rhythm(
     uncertainty = authority["uncertainty"]
     permit = authority["permit"]
     ghost = authority["ghost"]
+    tick = authority["tick"]
     cycles = ((1153, 1194), (1195, 1236), (1237, 1278), (1279, 1320))
     previous_xy = (
         (find_key("R").location.x * 1000) + base.BOARD_CENTER_MM.x,
@@ -241,21 +243,15 @@ def animate_key_rhythm(
         animate_arm_target(controls, rig["manifest"], target_xy, verified)
 
         target = key.location + Vector((0, 0, 0.009))
-        uncertainty.location = target
-        uncertainty.keyframe_insert("location", frame=start)
-        set_scale(uncertainty, start, 1.45)
-        uncertainty.location = target
-        uncertainty.keyframe_insert("location", frame=align)
-        set_scale(uncertainty, align, 0.62)
-        set_scale(uncertainty, contact, 0.62)
-        set_scale(uncertainty, release, 0.0)
+        # Scene 8 already taught uncertainty and preview semantics. The rhythm
+        # deliberately reduces the overlay to one permit and one result tick.
+        set_scale(uncertainty, start, 0.0)
+        set_scale(ghost, start, 0.0)
 
         permit.location = target + Vector((0, 0, 0.090))
         permit.keyframe_insert("location", frame=align)
         set_scale(permit, align, 0.0)
         set_scale(permit, permit_frame, 1.0)
-        set_scale(ghost, align, 1.0)
-        set_scale(ghost, permit_frame, 0.0)
         permit.location = target + Vector((0, 0, 0.020))
         permit.keyframe_insert("location", frame=contact)
         set_scale(permit, contact, 1.0)
@@ -268,16 +264,11 @@ def animate_key_rhythm(
             key.location.z = base_z + offset
             key.keyframe_insert("location", frame=frame)
 
-        if index + 1 < len(keys):
-            next_key = keys[index + 1]
-            ghost.location = next_key.location + Vector((0, 0, 0.009))
-            ghost.keyframe_insert("location", frame=release)
-            set_scale(ghost, release, 0.0)
-            set_scale(ghost, release + 6, 1.0)
-            set_scale(ghost, verified, 1.0)
-        else:
-            set_scale(ghost, release, 0.0)
-            set_scale(ghost, verified, 0.0)
+        tick.location = target + Vector((0, 0, 0.012))
+        tick.keyframe_insert("location", frame=verified - 5)
+        set_scale(tick, verified - 6, 0.0)
+        set_scale(tick, verified - 5, 1.0)
+        set_scale(tick, verified, 0.0)
         previous_xy = target_xy
 
 
@@ -315,6 +306,8 @@ def add_phone_message_ui(
     sx, sy, _sz = dev["configured_size"]
     z = dev["nominal_screen_plane_z"] + 1.25
     ui: list[bpy.types.Object] = []
+    home_ui: list[bpy.types.Object] = []
+    messages_ui: list[bpy.types.Object] = []
     targets: dict[str, tuple[float, float]] = {}
     messages_bg = base.material(
         "Modeled Messages matte display", (0.003, 0.009, 0.018, 1),
@@ -332,6 +325,23 @@ def add_phone_message_ui(
         base.board_point(ox + sx / 2, oy + sy / 2, z - 0.00055),
         ((sx - 5.0) / 1000, (sy - 8.0) / 1000, 0.00035), messages_bg, 0.0035,
     )
+    expected_home = base.board_text(
+        "Phone expected home state", "EXPECTED home · OBSERVED home ✓",
+        base.board_point(ox + sx / 2, oy + sy - 25, z), 0.0030, mats["green"],
+    )
+    messages_icon = base.cube(
+        "Phone Messages app target",
+        base.board_point(ox + sx / 2, oy + sy / 2, z - 0.0002),
+        (0.026, 0.026, 0.00045), mats["cyan"], 0.006,
+    )
+    messages_label = base.board_text(
+        "Phone Messages app label", "Messages",
+        base.board_point(ox + sx / 2, oy + sy / 2 - 18, z),
+        0.0034, mats["white"],
+    )
+    home_ui.extend((expected_home, messages_icon, messages_label))
+    targets["messages_app"] = (ox + sx / 2, oy + sy / 2)
+
     header = base.board_text(
         "Phone Messages header", "MESSAGES · CONTACT",
         base.board_point(ox + sx / 2, oy + sy - 18, z), 0.0042, mats["white"],
@@ -345,7 +355,7 @@ def add_phone_message_ui(
         "Phone Send target", base.board_point(ox + sx - 9, oy + sy - 42, z),
         0.0062, 0.00055, mats["cyan"], 36,
     )
-    ui.extend((backdrop, header, composer, send))
+    messages_ui.extend((header, composer, send))
     targets["send"] = (ox + sx - 9, oy + sy - 42)
 
     rows = (
@@ -365,7 +375,7 @@ def add_phone_message_ui(
                 f"Phone key legend {letter}", letter,
                 base.board_point(x, y, z + 0.0005), 0.0032, mats["white"],
             )
-            ui.extend((key, label))
+            messages_ui.extend((key, label))
             targets[letter] = (x, y)
 
     space_xy = (ox + sx / 2, oy + 16)
@@ -377,16 +387,48 @@ def add_phone_message_ui(
         "Phone key legend space", "space", base.board_point(*space_xy, z + 0.0005),
         0.0028, mats["legend"],
     )
-    ui.extend((space, space_label))
+    messages_ui.extend((space, space_label))
     targets[" "] = space_xy
+
+    compression_badge_panel = base.cube(
+        "Phone disclosed time compression badge",
+        base.board_point(ox + sx / 2, oy + 92, z - 0.0001),
+        (0.018, 0.014, 0.00055), mats["amber"], 0.005,
+    )
+    compression_badge_panel["meaning"] = "disclosed editorial time compression"
+    compression_badge = base.board_text(
+        "Phone disclosed time compression label", "2×",
+        # Lift the type a full millimetre above the badge face. The phone UI
+        # uses millimetre board coordinates, while mesh dimensions are metres.
+        base.board_point(ox + sx / 2, oy + 92, z + 1.0),
+        0.0065, mats["white"],
+    )
+    compression_badge["meaning"] = "disclosed editorial time compression"
+    messages_ui.extend((compression_badge_panel, compression_badge))
+
+    ui.extend((backdrop, *home_ui, *messages_ui))
 
     for obj in ui:
         classify(obj, collection, "modeled_phone_messages_ui")
         obj["presentation_only"] = True
         set_scale(obj, 1, 0.0)
         set_scale(obj, 1608, 0.0)
+    set_scale(backdrop, 1609, 1.0)
+    set_scale(backdrop, 2256, 1.0)
+    for obj in home_ui:
         set_scale(obj, 1609, 1.0)
-        set_scale(obj, 2184, 1.0)
+        set_scale(obj, 1691, 1.0)
+        set_scale(obj, 1692, 0.0)
+    for obj in messages_ui:
+        set_scale(obj, 1691, 0.0)
+        set_scale(obj, 1692, 1.0)
+        set_scale(obj, 2256, 1.0)
+    for obj in (compression_badge_panel, compression_badge):
+        set_scale(obj, 1692, 0.0)
+        set_scale(obj, 1849, 0.0)
+        set_scale(obj, 1850, 1.0)
+        set_scale(obj, 1968, 1.0)
+        set_scale(obj, 1969, 0.0)
     return targets, ui
 
 
@@ -396,9 +438,10 @@ def animate_phone_message_sequence(
     layout: dict, mats: dict[str, bpy.types.Material],
     collection: bpy.types.Collection,
 ) -> dict[str, object]:
-    """Type `on my way`, then grant a separate permit for Send."""
+    """Open Messages, type `on my way`, then separately permit Send."""
     phrase = "on my way"
-    contacts = (1634, 1668, 1702, 1736, 1788, 1814, 1840, 1866, 1892)
+    app_contact = 1660
+    contacts = (1800, 1840, 1872, 1888, 1904, 1920, 1936, 1952, 1960)
     uncertainty, permit, ghost = (
         authority["uncertainty"], authority["permit"], authority["ghost"]
     )
@@ -407,23 +450,59 @@ def animate_phone_message_sequence(
     z = dev["nominal_screen_plane_z"] + 1.9
     state_labels: list[bpy.types.Object] = []
 
-    # Re-enter from the high-clearance crossing and show each observed prefix.
+    # Teach the phone-state check once in full before simplifying later taps.
+    app_xy = targets["messages_app"]
+    app_target = base.board_point(*app_xy, z)
+    animate_arm_target(controls, rig["manifest"], app_xy, 1609, wrist_z=0.255)
+    animate_arm_target(controls, rig["manifest"], app_xy, 1640, wrist_z=0.215)
+    animate_arm_target(controls, rig["manifest"], app_xy, app_contact, press=-0.004)
+    animate_arm_target(controls, rig["manifest"], app_xy, 1670)
+    animate_arm_target(controls, rig["manifest"], app_xy, 1692, wrist_z=0.225)
+    uncertainty.location = app_target
+    uncertainty.keyframe_insert("location", frame=1640)
+    set_scale(uncertainty, 1640, 1.05)
+    set_scale(uncertainty, 1650, 0.42)
+    set_scale(uncertainty, 1670, 0.0)
+    ghost.location = app_target
+    ghost.keyframe_insert("location", frame=1640)
+    set_scale(ghost, 1640, 0.65)
+    set_scale(ghost, 1650, 0.0)
+    permit.location = app_target + Vector((0, 0, 0.060))
+    permit.keyframe_insert("location", frame=1650)
+    set_scale(permit, 1640, 0.0)
+    set_scale(permit, 1650, 0.75)
+    permit.location = app_target + Vector((0, 0, 0.012))
+    permit.keyframe_insert("location", frame=app_contact)
+    set_scale(permit, app_contact, 0.75)
+    set_scale(permit, 1670, 0.0)
+
+    tick = base.board_text(
+        "Phone compact verification tick", "✓",
+        base.board_point(ox + 10, oy + dev["configured_size"][1] - 18, z),
+        0.0052, mats["green"],
+    )
+    classify(tick, collection, "compact_per_contact_verification")
+    tick["presentation_only"] = True
+    set_scale(tick, 1, 0.0)
+    set_scale(tick, 1692, 1.0)
+    set_scale(tick, 1700, 0.0)
+
+    # Re-enter from the verified composer and show each observed prefix. The
+    # first two characters run at full pace; the remaining montage is visibly
+    # marked 2x. From here onward only the permit and verification tick remain.
     first_xy = targets[phrase[0]]
-    animate_arm_target(controls, rig["manifest"], first_xy, 1609, wrist_z=0.255)
+    animate_arm_target(controls, rig["manifest"], first_xy, 1777, wrist_z=0.225)
     for index, (character, contact) in enumerate(zip(phrase, contacts)):
         target_xy = targets[character]
-        check, permit_frame, release, verify = contact - 16, contact - 9, contact + 5, contact + 11
+        check, permit_frame, release, verify = contact - 8, contact - 4, contact + 3, contact + 6
         animate_arm_target(controls, rig["manifest"], target_xy, check, wrist_z=0.205)
         animate_arm_target(controls, rig["manifest"], target_xy, contact, press=-0.004)
         animate_arm_target(controls, rig["manifest"], target_xy, release)
         animate_arm_target(controls, rig["manifest"], target_xy, verify)
 
         target = base.board_point(*target_xy, z)
-        uncertainty.location = target
-        uncertainty.keyframe_insert("location", frame=check)
-        set_scale(uncertainty, check, 1.1)
-        set_scale(uncertainty, permit_frame, 0.42)
-        set_scale(uncertainty, release, 0.0)
+        set_scale(uncertainty, check, 0.0)
+        set_scale(ghost, check, 0.0)
         permit.location = target + Vector((0, 0, 0.060))
         permit.keyframe_insert("location", frame=permit_frame)
         set_scale(permit, check, 0.0)
@@ -432,10 +511,9 @@ def animate_phone_message_sequence(
         permit.keyframe_insert("location", frame=contact)
         set_scale(permit, contact, 0.75)
         set_scale(permit, release, 0.0)
-        set_scale(ghost, check, 0.65)
-        ghost.location = target
-        ghost.keyframe_insert("location", frame=check)
-        set_scale(ghost, permit_frame, 0.0)
+        set_scale(tick, verify - 1, 0.0)
+        set_scale(tick, verify, 1.0)
+        set_scale(tick, verify + 5, 0.0)
 
         prefix = phrase[: index + 1]
         label = base.board_text(
@@ -449,35 +527,35 @@ def animate_phone_message_sequence(
         set_scale(label, 1, 0.0)
         set_scale(label, verify - 1, 0.0)
         set_scale(label, verify, 1.0)
-        next_contact = contacts[index + 1] if index + 1 < len(contacts) else 1966
-        set_scale(label, next_contact - 17, 1.0)
-        set_scale(label, next_contact - 16, 0.0)
+        if index + 1 < len(contacts):
+            next_contact = contacts[index + 1]
+            set_scale(label, next_contact - 9, 1.0)
+            set_scale(label, next_contact - 8, 0.0)
+        else:
+            set_scale(label, 2059, 1.0)
+            set_scale(label, 2060, 0.0)
         state_labels.append(label)
 
     # Send is a distinct, slower commitment with its own screen check and permit.
     send_xy = targets["send"]
-    animate_arm_target(controls, rig["manifest"], send_xy, 1928, wrist_z=0.215)
-    animate_arm_target(controls, rig["manifest"], send_xy, 1966, press=-0.004)
-    animate_arm_target(controls, rig["manifest"], send_xy, 1980)
-    animate_arm_target(controls, rig["manifest"], send_xy, 2016, wrist_z=0.245)
+    animate_arm_target(controls, rig["manifest"], send_xy, 1988, wrist_z=0.215)
+    animate_arm_target(controls, rig["manifest"], send_xy, 2028, press=-0.004)
+    animate_arm_target(controls, rig["manifest"], send_xy, 2040)
+    animate_arm_target(controls, rig["manifest"], send_xy, 2088, wrist_z=0.245)
     send_target = base.board_point(*send_xy, z)
-    uncertainty.location = send_target
-    uncertainty.keyframe_insert("location", frame=1928)
-    set_scale(uncertainty, 1928, 1.15)
-    set_scale(uncertainty, 1948, 0.42)
-    set_scale(uncertainty, 1980, 0.0)
-    ghost.location = send_target
-    ghost.keyframe_insert("location", frame=1928)
-    set_scale(ghost, 1928, 0.65)
-    set_scale(ghost, 1948, 0.0)
+    set_scale(uncertainty, 1988, 0.0)
+    set_scale(ghost, 1988, 0.0)
     permit.location = send_target + Vector((0, 0, 0.070))
-    permit.keyframe_insert("location", frame=1948)
-    set_scale(permit, 1928, 0.0)
-    set_scale(permit, 1948, 0.85)
+    permit.keyframe_insert("location", frame=2012)
+    set_scale(permit, 1988, 0.0)
+    set_scale(permit, 2012, 0.85)
     permit.location = send_target + Vector((0, 0, 0.012))
-    permit.keyframe_insert("location", frame=1966)
-    set_scale(permit, 1966, 0.85)
-    set_scale(permit, 1980, 0.0)
+    permit.keyframe_insert("location", frame=2028)
+    set_scale(permit, 2028, 0.85)
+    set_scale(permit, 2040, 0.0)
+    set_scale(tick, 2059, 0.0)
+    set_scale(tick, 2060, 1.0)
+    set_scale(tick, 2068, 0.0)
 
     sent = base.board_text(
         "Phone sent receipt", "on my way · sent ✓",
@@ -488,10 +566,13 @@ def animate_phone_message_sequence(
     classify(sent, collection, "verified_phone_receipt")
     sent["presentation_only"] = True
     set_scale(sent, 1, 0.0)
-    set_scale(sent, 1987, 0.0)
-    set_scale(sent, 1988, 1.0)
-    set_scale(sent, 2184, 1.0)
-    return {"phrase": phrase, "contacts": contacts, "send_contact": 1966}
+    set_scale(sent, 2059, 0.0)
+    set_scale(sent, 2060, 1.0)
+    set_scale(sent, 2256, 1.0)
+    return {
+        "phrase": phrase, "messages_app_contact": app_contact,
+        "contacts": contacts, "send_contact": 2028,
+    }
 
 
 def make_authority_graphics(
@@ -552,7 +633,18 @@ def make_authority_graphics(
     set_scale(ghost_root, 1128, 0.0)
     set_scale(ghost_root, 1140, 1.0)
     set_scale(ghost_root, 1152, 1.0)
-    return {"uncertainty": uncertainty, "permit": permit, "ghost": ghost_root}
+    tick = base.board_text(
+        "AUTH_COMPACT_VERIFICATION_TICK", "✓", e_target + Vector((0, 0, 0.012)),
+        0.009, mats["green"],
+    )
+    classify(tick, collection, "compact_verification_tick")
+    tick["meaning"] = "compact observed-effect confirmation after taught contact"
+    set_scale(tick, 1, 0.0)
+    set_scale(tick, 2400, 0.0)
+    return {
+        "uncertainty": uncertainty, "permit": permit,
+        "ghost": ghost_root, "tick": tick,
+    }
 
 
 def build() -> bpy.types.Scene:
@@ -663,7 +755,7 @@ def build() -> bpy.types.Scene:
         controls, rig, phone_targets, graphics_objects, layout, mats, phone_ui,
     )
     scene["phone_phrase"] = phone_sequence["phrase"]
-    scene["phone_contact_count"] = len(phone_sequence["contacts"]) + 1
+    scene["phone_contact_count"] = len(phone_sequence["contacts"]) + 2
 
     # The camera portal was established in the LOCATE chapter. Keep it out of
     # the phone beauty shots so it cannot obscure the real phone and stylus.
@@ -695,10 +787,10 @@ def build() -> bpy.types.Scene:
                    Vector((0.18, -0.76, 0.53)), Vector((0.48, -0.48, 0.44)), phone_target)
     key_pose(rigs["arm_follow"][1], 1465, base.board_point(*y_xy_mm, 90))
     key_pose(rigs["arm_follow"][1], 1608, base.board_point(*phone_xy_mm, 90))
-    animate_camera(*rigs["arm_follow"], 1609, 1896,
+    animate_camera(*rigs["arm_follow"], 1609, 1968,
                    Vector((0.58, -0.34, 0.42)), Vector((0.62, 0.02, 0.36)),
                    base.board_point(*phone_xy_mm, 28))
-    animate_camera(*rigs["macro"], 1897, 2016,
+    animate_camera(*rigs["macro"], 1969, 2088,
                    Vector((0.62, -0.28, 0.36)), Vector((0.56, -0.22, 0.30)),
                    base.board_point(*phone_xy_mm, 35))
     animate_camera(*rigs["hero"], 1, 2400,
@@ -749,14 +841,14 @@ def main() -> None:
     if "--preview-crossing" in args:
         preview_frames += (1320, 1340, 1465, 1528, 1608)
     if "--preview-phone" in args:
-        preview_frames += (1609, 1634, 1702, 1788, 1892, 1928, 1966, 1988, 2016)
+        preview_frames += (1609, 1660, 1692, 1800, 1840, 1872, 1960, 1988, 2028, 2060, 2088)
     if preview_frames:
         for frame in preview_frames:
             scene.frame_set(frame)
             scene.camera = (
                 bpy.data.objects["CAM_MACRO"] if frame <= 1152
                 else bpy.data.objects["CAM_DOLLY"] if frame <= 1464
-                else bpy.data.objects["CAM_ARM_FOLLOW"] if frame <= 1896
+                else bpy.data.objects["CAM_ARM_FOLLOW"] if frame <= 1968
                 else bpy.data.objects["CAM_MACRO"]
             )
             scene.render.filepath = str(OUT / f"storyboard_{frame:04d}.png")
