@@ -1,7 +1,8 @@
 # Tactevra project status
 
-Reviewed September 28, 2026 through the ARM-077 PC0 pre-camera qualification
-basis, ARM-076 typing collision-evidence intake, ARM-075 exact-sample offline IK screen, AI-403 precision-adapter
+Reviewed September 28, 2026 through the ARM-078 PC1 joint-schedule checkpoint,
+ARM-077 PC0 pre-camera qualification basis, ARM-076 typing collision-evidence
+intake, ARM-075 exact-sample offline IK screen, AI-403 precision-adapter
 integration, and merged physical-camera
 campaign/evaluator work through PR #152. PR #151 subsequently updated the AI
 test dependency to Torch 2.13; that dependency merge does not change physical
@@ -238,6 +239,15 @@ reject authority promotion, reordered fixtures, crossed identities, and source
 drift. This creates a repeatable basis for joint-space timing work; it does not
 qualify installed dynamics, controller timing, camera evidence, collision
 geometry, or physical movement.
+
+ARM-078 adds the first PC1 deterministic joint-schedule boundary. Exact ordered
+offline IK samples are lineage-checked, mapped from the frozen semantic joint
+order to canonical URDF joints, timestamped, and time-scaled against the
+synthetic PC0 velocity, acceleration, and jerk ceilings. The canonical receipt
+reports schedule-wide demand and margin and retains explicit blockers for
+measured installed dynamics, controller tracking, collision evidence, and a
+fresh observed start. PC1 remains in progress; this checkpoint emits no
+controller command and establishes no physical typing speed or authority.
 
 AI-403 then integrates the pose-output precision adapter and actual V2 batch
 producer on current `main`. The retained contract fixture deterministically

@@ -4235,3 +4235,51 @@ rewriting history. New entries must use a unique evidence ID.
 - Supersedes: none.
 - Next dependency: PC1 joint-space dynamics and deterministic time scaling over
   the exact ordered T2B-IK results.
+
+### E-20260928-ARM-078 — deterministic PC1 joint schedule checkpoint
+
+- Stage: S4/S7 pre-camera arm integration; PC1 in progress.
+- Lane: Arm/runtime.
+- Commit: `7ba7c734b57ccb2ef79f6cd5e6e58abbf4a215d4`.
+- Change: added the typed, canonical
+  `rocell.typing_joint_schedule.v1` boundary. It consumes the exact ordered,
+  hash-valid T2B-IK sample results without regenerating Cartesian geometry;
+  explicitly maps the frozen semantic PC0 joint order onto canonical URDF joint
+  names; derives deterministic host timestamps from the T2A quintic sample
+  order; and time-scales until sampled velocity, acceleration, and jerk demands
+  fit the bounded synthetic PC0 profile or reject.
+- Inputs/fixtures: one compact PARK/TRANSIT/HOVER/CONTACT trajectory and
+  hash-bound synthetic IK result; the retained PC0 joint-dynamics profile;
+  existing T1, T2A, T2B-IK, shared V2, and zero-write controller fixtures.
+- Commands: `python -m pytest -q
+  tests/unit/test_typing_joint_schedule_v1.py`; `python -m pytest -q
+  tests/unit/test_pre_camera_typing_qualification_basis_v1.py
+  tests/unit/test_typing_execution_plan_v1.py
+  tests/unit/test_typing_trajectory_plan_v1.py
+  tests/unit/test_typing_trajectory_ik_screen_v1.py
+  tests/unit/test_typing_joint_schedule_v1.py
+  tests/integration/test_model_motion_v2_shared_gate.py
+  tests/integration/test_zero_write_waveshare_contract_v1.py`.
+- Result: PASS; 4 focused tests and 60 broader boundary tests passed. The first
+  adversarial focused run exposed the expected semantic-PC0 versus URDF joint
+  naming seam; the implementation was corrected with one explicit positional
+  mapping while preserving both source contracts. Tests now cover deterministic
+  bytes and hashes, strict timestamp/order retention, bounded rescaling,
+  schedule-wide limit compliance and margins, canonical-schema validation,
+  crossed semantic results, invalid report hashes, non-finite profile values,
+  and scale-bound rejection.
+- Artifacts: `software/src/rocell/application/typing_joint_schedule_v1.py`;
+  `software/ai/schemas/typing_joint_schedule_v1.schema.json`;
+  `software/tests/unit/test_typing_joint_schedule_v1.py`;
+  `software/docs/PRE_CAMERA_ARM_INTEGRATION_COMPLETION_PLAN.md`.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: all limits and IK values are synthetic offline fixtures. The
+  checkpoint does not qualify installed velocity, acceleration, jerk,
+  controller tracking, settling, collision clearance, typing speed, or physical
+  authority. PC1 is not complete because per-segment demand/margin output and
+  the remaining exact-limit, stationary/reversal, duration-bound, and
+  cross-platform matrix are pending.
+- Supersedes: none.
+- Next dependency: complete the remaining PC1 reports/tests before composing
+  the PC2 golden end-to-end shadow pipeline.
