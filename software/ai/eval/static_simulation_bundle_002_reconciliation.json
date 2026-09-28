@@ -1,0 +1,102 @@
+{
+  "schema": "rocell.static_simulation_bundle_reconciliation.v1",
+  "issue": "https://github.com/j-webtek/tactevra/issues/167",
+  "decision": "ACCEPT_FREEZE_013_AS_INTENDED_STATIC_SIMULATION_SOURCE_STATE",
+  "review_basis": "Repository-owner-directed AI/repository reconciliation with exact byte and field comparison; this is not an independent model, hardware, rights, or physical-readiness review.",
+  "prior_boundary": {
+    "bundle_id": "ROCELL-STATIC-B0477-SIM-BUNDLE-001",
+    "lock_path": "software/config/static_simulation_bundle_lock.json",
+    "lock_sha256": "e825dd29cf856cea44d9ce40ca3bfb5fc305d3493cd129d6b6bea9f04c800f7c",
+    "source_commit": "bae819c0fc2c9dd3b8e55773ce3cbcc3f5d04a81",
+    "system_manifest_id": "ROCELL-PHASE0-RC03-INT-R1-FREEZE-011",
+    "system_manifest_sha256": "e85120de64b2128a2f5ab0f4e9f8868f6070e485f747234f89c813d910b5b0f1"
+  },
+  "active_boundary": {
+    "bundle_id": "ROCELL-STATIC-B0477-SIM-BUNDLE-002",
+    "lock_path": "software/config/static_simulation_bundle_lock.json",
+    "lock_sha256": "1f6271a2b625fb17807b3059afce7a99a5ec87c922f6b03c434da1c7b65570f3",
+    "system_manifest_path": "software/config/system_manifest.json",
+    "system_manifest_id": "ROCELL-PHASE0-RC03-INT-R1-FREEZE-013",
+    "system_manifest_sha256": "0cfb19c0972d4fe5cc526ca78d44422b2ef9c52354a8da637ec608b8dec7f55d"
+  },
+  "governing_refreeze": {
+    "transaction_id": "ROCELL-REFREEZE-012-TO-013",
+    "path": "software/freezes/transactions/ROCELL-PHASE0-RC03-INT-R1-FREEZE-012__ROCELL-PHASE0-RC03-INT-R1-FREEZE-013.json",
+    "sha256": "d1c9175a71b7e6c7a5dcbf5c43eaea70c300c3f7df15f67313355812944e571b",
+    "approval_reference": "GitHub issue #142 ACCEPT WITH CONDITIONS",
+    "physical_release_effect": "NONE"
+  },
+  "manifest_delta_from_prior_boundary": [
+    {
+      "json_path": "freeze_date",
+      "old": "2026-09-06",
+      "new": "2026-09-28"
+    },
+    {
+      "json_path": "manifest_id",
+      "old": "ROCELL-PHASE0-RC03-INT-R1-FREEZE-011",
+      "new": "ROCELL-PHASE0-RC03-INT-R1-FREEZE-013"
+    },
+    {
+      "json_path": "rc03.source_snapshot[14].sha256",
+      "source_path": "BUILD_BY_STEP/INDEX.json",
+      "old": "1d239d1c8f54923c5594a80510c53d927beec8d295cfefcdae3b8da6686a4a21",
+      "new": "780ef1c3f11aff0a0954e28612126540d924c3cc1014f4b60ecf2d54690b3c43"
+    },
+    {
+      "json_path": "rc03.source_snapshot[15].sha256",
+      "source_path": "BUILD_BY_STEP/PACKAGE_VALIDATION.json",
+      "old": "671be802804742f0c232ed02b1455a9b7117bc4303afbac919e52c025c5f6078",
+      "new": "3ba457a0d44bc7c79ed755e1d8d6d6437848a76cf8ea37e1fcaee4c97075073e"
+    }
+  ],
+  "classification": {
+    "manifest_change": "FREEZE_IDENTITY_AND_STEP_00_PACKAGE_PROVENANCE_ONLY",
+    "simulation_hardware_profile_change": "SYSTEM_MANIFEST_ID_BINDING_ONLY",
+    "robot_numerical_geometry_changed": false,
+    "target_catalog_changed": false,
+    "camera_or_optical_contract_changed": false,
+    "support_design_changed": false,
+    "kinematic_model_changed": false,
+    "arm_frame_contract_changed": false,
+    "semantic_bindings_changed": false
+  },
+  "unchanged_bundle_artifacts": {
+    "static_targets": "0cc4b46ce6a7b94f32ba1d64f9818c094f6005636c4d56480f5907b773cd5276",
+    "legacy_geometry_seed": "6779213e832ab27eeda1e7fb245f57ff8cb0d56707b5aa73a8f31ec483a620f2",
+    "architecture": "e5414dc7295ab8a4c9c1e7e813bedf38e336755b73b9fad9431572da6e1913bf",
+    "purchased_camera": "c15264f866d81b99cc1155171e21d3416d3a1fa7a244b5ae97642cc989f2e024",
+    "support_design": "2392257405b54022039be1da96e005690fe74df32256607a61d374d7c1720d1b",
+    "kinematic_model": "a565718e7d74b07702802cf41eb9549a6e38e50b5e80aa9b887ab1ae3d0d8190",
+    "arm_frame_contract": "5e3d39388149bdd191855e0bdd8c5eb7387f0419da9bc31a15cf3d807f1b9d6d"
+  },
+  "bundle_artifact_delta": {
+    "system_manifest": {
+      "path": "software/config/system_manifest.json",
+      "old_sha256": "e85120de64b2128a2f5ab0f4e9f8868f6070e485f747234f89c813d910b5b0f1",
+      "new_sha256": "0cfb19c0972d4fe5cc526ca78d44422b2ef9c52354a8da637ec608b8dec7f55d"
+    },
+    "robot_numerical_seed": {
+      "path": "software/config/simulation_hardware_profile.json",
+      "old_sha256": "b79ca2653fe0c95ecd328412a44b160d2d0beae1a0dc5c3e2fd09bb94a487990",
+      "new_sha256": "6c24745f8330d0aa77c423d9376adb7bb6c1a090426ed1a38814eb32f6dcd190",
+      "only_changed_json_path": "binding.system_manifest_id",
+      "old_value": "ROCELL-PHASE0-RC03-INT-R1-FREEZE-011",
+      "new_value": "ROCELL-PHASE0-RC03-INT-R1-FREEZE-013"
+    }
+  },
+  "authority": {
+    "simulation_only": true,
+    "physical_authority": false,
+    "physical_freeze_promoted": false,
+    "model_promotion": false,
+    "hardware_writes": 0,
+    "physical_movements": 0
+  },
+  "validation": {
+    "status": "PENDING_CLEAN_ENVIRONMENT_VERIFICATION",
+    "full_ai_suite": null,
+    "portable_repository_suite": null,
+    "repository_audits": null
+  }
+}

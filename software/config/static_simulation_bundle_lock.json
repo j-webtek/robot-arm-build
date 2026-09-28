@@ -1,6 +1,6 @@
 {
   "schema": "rocell.static_simulation_bundle_lock.v1",
-  "bundle_id": "ROCELL-STATIC-B0477-SIM-BUNDLE-001",
+  "bundle_id": "ROCELL-STATIC-B0477-SIM-BUNDLE-002",
   "simulation_only": true,
   "physical_authority": false,
   "physical_freeze_promoted": false,
@@ -71,11 +71,11 @@
   "artifacts": {
     "system_manifest": {
       "path": "software/config/system_manifest.json",
-      "sha256": "e85120de64b2128a2f5ab0f4e9f8868f6070e485f747234f89c813d910b5b0f1"
+      "sha256": "0cfb19c0972d4fe5cc526ca78d44422b2ef9c52354a8da637ec608b8dec7f55d"
     },
     "robot_numerical_seed": {
       "path": "software/config/simulation_hardware_profile.json",
-      "sha256": "b79ca2653fe0c95ecd328412a44b160d2d0beae1a0dc5c3e2fd09bb94a487990"
+      "sha256": "6c24745f8330d0aa77c423d9376adb7bb6c1a090426ed1a38814eb32f6dcd190"
     },
     "static_targets": {
       "path": "software/config/static_nominal_target_profiles.json",
