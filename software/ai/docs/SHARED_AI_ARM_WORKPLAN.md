@@ -799,6 +799,7 @@ remove it only in the same commit that appends the resulting evidence row.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
+| AI | S2/S3 | physical-camera localization evaluator, result schema, evaluator tests, AI registry, and append-only evidence | `codex/physical-camera-localization-evaluator` | ACTIVE: implement offline post-preflight metrics and fail-closed qualification recommendation; zero authority |
 | Unclaimed | S2/S3 | physical-camera deployment qualification and safe-region-fit precision evidence | — | AVAILABLE |
 | ARM | S4 | collect four physical-original `camera_support_optics` bindings through onboarding, then run the ARM-070 intake; no synthetic promotion | ARM-071 | WAITING_FOR_ORIGINALS |
 
