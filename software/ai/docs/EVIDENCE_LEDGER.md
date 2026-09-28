@@ -4446,3 +4446,42 @@ rewriting history. New entries must use a unique evidence ID.
   completed PC2 evidence.
 - Next dependency: PC4 must bind one qualified timed joint action to exact
   deterministic Waveshare bytes behind the existing zero-write boundary.
+
+### E-20260928-ARM-083 — PC4 zero-write typing controller gate completed
+
+- Stage: S1/S4/S7 pre-camera arm integration; PC4 complete, PC5 ready.
+- Lane: Arm/runtime.
+- Commits: `866f672f8a0d554e6e9bbf4c11b9d47caf5b0b7c` and
+  `31962c0f9d2860c5759ed5e5b4ea55035c6880af`.
+- Change: added a typing-specific zero-write controller bridge that selects
+  only the PC3 current action, verifies the exact timed schedule against its
+  source trajectory semantics, and encodes pinned Waveshare T=102 bytes using
+  arm-owned joint order, fixed gripper, speed, acceleration, and timing policy.
+- Inputs/fixtures: synthetic action-0 H schedule, repeated H at action index 1,
+  frozen three-waypoint golden bytes, crossed horizon/trajectory/schedule/
+  session/epoch identities, expired and insufficient feedback windows, invalid
+  firmware settings, and independently rehashed payload/authority/binding/order
+  mutations.
+- Commands: `python -m pytest -q
+  tests/unit/test_typing_controller_bridge_v1.py`; the 83-test affected PC1,
+  PC3, pinned-protocol, and zero-write adapter suite; and all five repository
+  audits.
+- Result: PASS; 15 focused tests and 83 affected tests passed. Exact bytes were
+  deterministic and reconstructed through the pinned protocol. Repeated target
+  actions retained distinct dispatch identities. Crossed semantics and every
+  tested authority or byte mutation rejected. All repository audits passed;
+  the existing recorded release-integrity candidate blocker is unchanged.
+- Artifacts: `software/src/rocell/application/typing_controller_bridge_v1.py`;
+  `software/ai/schemas/typing_controller_preview_v1.schema.json`;
+  `software/tests/unit/test_typing_controller_bridge_v1.py`;
+  `software/tests/fixtures/typing_controller_golden_bytes_v1.json`.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: qualification, permit, collision, state, and timing identities
+  are synthetic offline fixtures. This does not establish installed controller
+  tracking, collision clearance, contact, typing speed, or physical authority.
+- Supersedes: ARM-082's PC4-ready status only; ARM-082 remains retained as the
+  completed PC3 evidence.
+- Next dependency: PC5 adversarial and property campaigns across malformed
+  input, stale/crossed identity, planner failure, controller uncertainty,
+  restart, cache, deadline, cancellation, and bounded-resource families.

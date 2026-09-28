@@ -441,6 +441,13 @@ Any drift discards the horizon. Pre-dispatch restart reconstructs intent without
 replay; restart after retained dispatch intent becomes `OUTCOME_UNCERTAIN` with
 retry forbidden. PC4 zero-write controller encoding is now ready; measured
 workcell evidence and physical authority remain unchanged.
+ARM-083 completes PC4. One PC3 current action is selected from the exact timed
+joint schedule, checked against its trajectory semantics, and encoded into
+pinned deterministic T=102 bytes with arm-owned joint order, firmware settings,
+timing, and gripper policy. The receipt binds all execution identities and
+requires bounded correlated T=1051 feedback, but opens no transport, consumes
+no physical permit, and grants no authority. PC5 adversarial campaigns are now
+ready; camera and installed-workcell blockers are unchanged.
 The AI precision lane now has a mainline-compatible pose-output adapter and v2
 batch producer. It preserves repeated targets and abstains on qualification,
 domain, freshness, identity, confidence, or containment failure. Its retained

@@ -99,8 +99,8 @@ and its evidence gate pass.
 | PC1 | Joint-space dynamics and deterministic time scaling | PC0, T2B-IK | No | None | COMPLETE |
 | PC2 | Golden end-to-end shadow pipeline | PC1, collision intake | No | None | COMPLETE |
 | PC3 | Rolling-horizon rebinding and restart safety | PC2 | No | None | COMPLETE |
-| PC4 | Typing-specific zero-write controller bridge | PC2, PC3 | No | None | READY |
-| PC5 | Fault injection and property testing | PC1-PC4 | No | None | NOT_STARTED |
+| PC4 | Typing-specific zero-write controller bridge | PC2, PC3 | No | None | COMPLETE |
+| PC5 | Fault injection and property testing | PC1-PC4 | No | None | READY |
 | PC6 | Unified trace journal and deterministic replay | PC2-PC5 | No | None | NOT_STARTED |
 | PC7 | Safe transition cache in shadow mode | PC3, PC6 | No | None | NOT_STARTED |
 | PC8 | Performance benchmark and readiness report | PC1-PC7 | No | None | NOT_STARTED |
@@ -252,6 +252,21 @@ the preview. Pre-dispatch restart may safely reconstruct intent; post-dispatch
 or ambiguous restart terminates `OUTCOME_UNCERTAIN` with retry forbidden.
 
 ## PC4 — Typing-specific zero-write controller bridge
+
+**Completed 2026-09-28:** `typing_controller_bridge_v1` now selects only the
+PC3 current action from the exact arm-owned timed joint schedule, cross-checks
+its semantics against the bound trajectory, and encodes deterministic pinned
+Waveshare T=102 bytes. The sealed preview binds the action, schedule, dynamics,
+configuration epoch, observed state, controller session, collision
+qualification, execution envelope, single-use permit identity, and encoding
+profile. It records bounded T=105/T=1051 feedback requirements but neither
+consumes the physical permit nor opens a transport. Frozen golden bytes cover
+ordinary motion, while focused tests cover repeated-target identity,
+controller-setting boundaries, crossed lineages, expiry, feedback deadlines,
+and independently rehashed mutations. Fifteen focused tests and eighty-three
+affected protocol/planning tests pass with zero writes. PC5 fault campaigns may
+now begin; installed-workcell qualification and physical authority remain
+blocked.
 
 ### Deliverables
 
@@ -443,7 +458,7 @@ For every PC increment:
 - [x] PC1 joint dynamics and time scaling complete
 - [x] PC2 golden shadow pipeline complete
 - [x] PC3 rolling horizon and restart safety complete
-- [ ] PC4 zero-write typing controller bridge complete
+- [x] PC4 zero-write typing controller bridge complete
 - [ ] PC5 fault and property campaigns complete
 - [ ] PC6 trace journal and replay complete
 - [ ] PC7 transition cache shadow qualification complete

@@ -1,6 +1,6 @@
 # Tactevra project status
 
-Reviewed September 28, 2026 through the ARM-082 completed PC3 rolling-horizon gate,
+Reviewed September 28, 2026 through the ARM-083 completed PC4 zero-write controller gate,
 ARM-077 PC0 pre-camera qualification basis, ARM-076 typing collision-evidence
 intake, ARM-075 exact-sample offline IK screen, AI-403 precision-adapter
 integration, and merged physical-camera
@@ -278,6 +278,13 @@ pre-dispatch restart reconstructs without replay, while a restart after durable
 dispatch intent is terminal `OUTCOME_UNCERTAIN` with retry forbidden. PC4 is
 ready; no controller bytes, transport access, movement, or physical authority
 were added.
+
+ARM-083 completes PC4. The current action's exact timed joint samples now map
+deterministically to pinned Waveshare T=102 bytes behind a zero-write boundary.
+Joint ordering, timing, firmware speed/acceleration, gripper policy, deadlines,
+and feedback requirements remain arm-owned. Exact execution lineages are
+sealed into one dispatch-intent identity; no transport, permit consumption,
+automatic retry, movement, or physical authority was added. PC5 is ready.
 
 AI-403 then integrates the pose-output precision adapter and actual V2 batch
 producer on current `main`. The retained contract fixture deterministically
