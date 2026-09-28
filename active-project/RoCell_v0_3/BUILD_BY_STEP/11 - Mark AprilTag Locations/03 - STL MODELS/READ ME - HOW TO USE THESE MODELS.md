@@ -1,6 +1,6 @@
 # STL files for this step
 
-These are generated, hash-verified convenience copies of the canonical STL files used or inspected in this step. The originals in the project-level `stl/` directory remain authoritative.
+Step 00 contains generated, hash-verified convenience copies. Steps 01–15 use hash-bound links to the authoritative project-level `stl/` files and intentionally contain no duplicate STL bytes.
 
 ## Rules
 
@@ -11,4 +11,4 @@ These are generated, hash-verified convenience copies of the canonical STL files
 
 | STL | Usage | Job reference | SHA-256 |
 | --- | --- | --- | --- |
-| [tag_application_frame_55mm.stl](<tag_application_frame_55mm.stl>) | **TRACEABILITY_ONLY_DO_NOT_PRINT** | 03C2 | `492f7e3c567a7aa3a4bc255d59425f73dc0c64ab240df8af8f9adf861d53a10f` |
+| [tag_application_frame_55mm.stl](<../../../stl/tag_application_frame_55mm.stl>) | **TRACEABILITY_ONLY_DO_NOT_PRINT** | 03C2 | `492f7e3c567a7aa3a4bc255d59425f73dc0c64ab240df8af8f9adf861d53a10f` |

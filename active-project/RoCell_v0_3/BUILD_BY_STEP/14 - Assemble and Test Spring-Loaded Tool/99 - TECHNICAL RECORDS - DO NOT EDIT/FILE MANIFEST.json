@@ -123,8 +123,8 @@
     },
     {
       "canonical_path": "README_FIRST.md",
-      "sha256": "ba84a14a17983d774a0278b4b68571d920b0dc4d186fd05c991b1d149d388a9e",
-      "size_bytes": 9962,
+      "sha256": "3f120c69dcee278cb67c449e84d3a43c0b5183bdfee1cf4cb86bb938e2a32d34",
+      "size_bytes": 10392,
       "roles": [
         "release entry point"
       ],
@@ -898,8 +898,8 @@
     },
     {
       "canonical_path": "scripts/build_step_packages.py",
-      "sha256": "09ec78a5512ee6cb6997b3200e7bd1cdb1418eeb2fb477f339f331f14191f8a2",
-      "size_bytes": 171609,
+      "sha256": "d36767cf22f6b4becf5716eb7ae2e7b8f8315dd13e30204732ff9f2c3007463a",
+      "size_bytes": 174644,
       "roles": [
         "step-package generator and validator"
       ],
@@ -1013,6 +1013,18 @@
       ],
       "actions": [
         "run_after_step_tests"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "scripts/stage_hash_bound_artifacts.py",
+      "sha256": "a18eb88d17b2adbe930857f4539079bad96090320c4ea161b5d38a29ec44e3d8",
+      "size_bytes": 8660,
+      "roles": [
+        "hash-bound canonical artifact staging and offline verification"
+      ],
+      "actions": [
+        "run_for_standalone_export"
       ],
       "job_ids": []
     },
@@ -1137,9 +1149,9 @@
       "job_ids": [
         "04A"
       ],
-      "local_operator_copy": "03 - STL MODELS/compliant_tool_body.stl",
-      "local_copy_sha256": "18c8d7ff2d57c0785b324c58e93b3c6558db7c56c339270ab183307b991225ba",
-      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT",
+      "canonical_reference": "../../../stl/compliant_tool_body.stl",
+      "artifact_resolution": "canonical_hash_bound_reference"
     },
     {
       "canonical_path": "stl/compliant_tool_grip_fit_test.stl",
@@ -1154,9 +1166,9 @@
       "job_ids": [
         "00C"
       ],
-      "local_operator_copy": "03 - STL MODELS/compliant_tool_grip_fit_test.stl",
-      "local_copy_sha256": "2c892ebeccd9d4512bf877cac3c1d56c87329c1a30a47165221480021104d935",
-      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT",
+      "canonical_reference": "../../../stl/compliant_tool_grip_fit_test.stl",
+      "artifact_resolution": "canonical_hash_bound_reference"
     },
     {
       "canonical_path": "stl/compliant_tool_top_cap.stl",
@@ -1171,9 +1183,9 @@
       "job_ids": [
         "04A"
       ],
-      "local_operator_copy": "03 - STL MODELS/compliant_tool_top_cap.stl",
-      "local_copy_sha256": "e7adbf51fd9382a4eb2b9a9dd25df677d43fd488c4584c2bf3e3e7d1599b9081",
-      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT",
+      "canonical_reference": "../../../stl/compliant_tool_top_cap.stl",
+      "artifact_resolution": "canonical_hash_bound_reference"
     },
     {
       "canonical_path": "stl/hardware_fit_gauge.stl",
@@ -1188,9 +1200,9 @@
       "job_ids": [
         "00E"
       ],
-      "local_operator_copy": "03 - STL MODELS/hardware_fit_gauge.stl",
-      "local_copy_sha256": "4a9a35b618a420931b7e8b6b717aee4a3eb68f8948fff04e5a69fd65266e9e42",
-      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT",
+      "canonical_reference": "../../../stl/hardware_fit_gauge.stl",
+      "artifact_resolution": "canonical_hash_bound_reference"
     },
     {
       "canonical_path": "stl/keyboard_tip_TPU_6mm.stl",
@@ -1206,9 +1218,9 @@
         "05C",
         "05D"
       ],
-      "local_operator_copy": "03 - STL MODELS/keyboard_tip_TPU_6mm.stl",
-      "local_copy_sha256": "22ba42201e769ff4ed146b125d69d585b7188b7f274a1b3430b741ad62931d37",
-      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT",
+      "canonical_reference": "../../../stl/keyboard_tip_TPU_6mm.stl",
+      "artifact_resolution": "canonical_hash_bound_reference"
     },
     {
       "canonical_path": "stl/m3_head_fit_gauge.stl",
@@ -1223,9 +1235,9 @@
       "job_ids": [
         "00C"
       ],
-      "local_operator_copy": "03 - STL MODELS/m3_head_fit_gauge.stl",
-      "local_copy_sha256": "7d1206ee09722d99cff871031562943e405c263ea5d1d1f5d82e193bf403cb2e",
-      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT",
+      "canonical_reference": "../../../stl/m3_head_fit_gauge.stl",
+      "artifact_resolution": "canonical_hash_bound_reference"
     },
     {
       "canonical_path": "stl/rod_bushing_6_to_9mm.stl",
@@ -1240,9 +1252,9 @@
       "job_ids": [
         "04C"
       ],
-      "local_operator_copy": "03 - STL MODELS/rod_bushing_6_to_9mm.stl",
-      "local_copy_sha256": "c30bee2a303f025e94b21e1cf2c5639babbf5d75d3bb008711ea86b5e8160d63",
-      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT",
+      "canonical_reference": "../../../stl/rod_bushing_6_to_9mm.stl",
+      "artifact_resolution": "canonical_hash_bound_reference"
     },
     {
       "canonical_path": "stl/setup_hardware_fit_gauge.stl",
@@ -1257,9 +1269,9 @@
       "job_ids": [
         "00E"
       ],
-      "local_operator_copy": "03 - STL MODELS/setup_hardware_fit_gauge.stl",
-      "local_copy_sha256": "e6394a26fe104fb2af1b05df14865a5be2908bf6e99fab79c93aa034a2dc57b4",
-      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT",
+      "canonical_reference": "../../../stl/setup_hardware_fit_gauge.stl",
+      "artifact_resolution": "canonical_hash_bound_reference"
     },
     {
       "canonical_path": "stl/spring_fit_gauge.stl",
@@ -1274,9 +1286,9 @@
       "job_ids": [
         "00C"
       ],
-      "local_operator_copy": "03 - STL MODELS/spring_fit_gauge.stl",
-      "local_copy_sha256": "0b8464e8506bea26cc8972ce32fcfc4e7366c800eac4ee23e6fcd16677672f4c",
-      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT",
+      "canonical_reference": "../../../stl/spring_fit_gauge.stl",
+      "artifact_resolution": "canonical_hash_bound_reference"
     },
     {
       "canonical_path": "stl/stylus_collar_9mm.stl",
@@ -1291,9 +1303,9 @@
       "job_ids": [
         "04B"
       ],
-      "local_operator_copy": "03 - STL MODELS/stylus_collar_9mm.stl",
-      "local_copy_sha256": "abc908bcd256e8836d13c94cf58320654f78d972e0eb1923f50a6575233f2c8e",
-      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT",
+      "canonical_reference": "../../../stl/stylus_collar_9mm.stl",
+      "artifact_resolution": "canonical_hash_bound_reference"
     },
     {
       "canonical_path": "stl/stylus_diameter_gauge.stl",
@@ -1308,9 +1320,9 @@
       "job_ids": [
         "00D"
       ],
-      "local_operator_copy": "03 - STL MODELS/stylus_diameter_gauge.stl",
-      "local_copy_sha256": "556c8114547de14b36d8990444de96f3229f99c93f6d06fb62216880c6f72c77",
-      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT",
+      "canonical_reference": "../../../stl/stylus_diameter_gauge.stl",
+      "artifact_resolution": "canonical_hash_bound_reference"
     },
     {
       "canonical_path": "stl/tool_m3_insert_fit_gauge.stl",
@@ -1325,9 +1337,9 @@
       "job_ids": [
         "00C"
       ],
-      "local_operator_copy": "03 - STL MODELS/tool_m3_insert_fit_gauge.stl",
-      "local_copy_sha256": "8ff0775cb466170e0749bf125b4b2743f134df072f75ac17090d61854fbc7d8d",
-      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT",
+      "canonical_reference": "../../../stl/tool_m3_insert_fit_gauge.stl",
+      "artifact_resolution": "canonical_hash_bound_reference"
     },
     {
       "canonical_path": "stl/tpu_tip_retention_gauge.stl",
@@ -1342,9 +1354,9 @@
       "job_ids": [
         "00E"
       ],
-      "local_operator_copy": "03 - STL MODELS/tpu_tip_retention_gauge.stl",
-      "local_copy_sha256": "0476c9c867a9f28816c5df107f8bcff9e44b7e1ba79e8927501a8d1c6d32b777",
-      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT",
+      "canonical_reference": "../../../stl/tpu_tip_retention_gauge.stl",
+      "artifact_resolution": "canonical_hash_bound_reference"
     }
   ]
 }

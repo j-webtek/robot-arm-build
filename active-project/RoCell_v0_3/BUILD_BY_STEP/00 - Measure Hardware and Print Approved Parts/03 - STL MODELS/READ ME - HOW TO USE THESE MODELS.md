@@ -1,6 +1,6 @@
 # STL files for this step
 
-These are generated, hash-verified convenience copies of the canonical STL files used or inspected in this step. The originals in the project-level `stl/` directory remain authoritative.
+Step 00 contains generated, hash-verified convenience copies. Steps 01–15 use hash-bound links to the authoritative project-level `stl/` files and intentionally contain no duplicate STL bytes.
 
 ## Rules
 

@@ -8,7 +8,7 @@ c9362cf401ca66f4e584c7fc294f6c54853c8ea546e610d551bc841782d6bcd0  ../../../BOM.c
 a8c75f05f727fa899c1f873ffea9852b5e6d343cdd302d5c4e02ee4124f74fc3  ../../../PRINT_READINESS.json
 5be5234644cbca322e93f16ec422cd5a6f04059055a2f56d68cf224d61f015b0  ../../../PRINT_READINESS.md
 c8cf80651860f9c6b13f1227eb542356968f7282f591aa76acfa5950707898b0  ../../../RC03_INTEGRATED_BUILD_PLAN.md
-ba84a14a17983d774a0278b4b68571d920b0dc4d186fd05c991b1d149d388a9e  ../../../README_FIRST.md
+3f120c69dcee278cb67c449e84d3a43c0b5183bdfee1cf4cb86bb938e2a32d34  ../../../README_FIRST.md
 a734ff981947886e932f45745f92235d1dc34be5a87c4d585d3e5d06bedb6c93  ../../../cad/step/compliant_tool_body.step
 6a055831d5b962a4cc0050a252000c00bbe5a751fd3efdd44f526ae6e020d257  ../../../cad/step/compliant_tool_grip_fit_test.step
 311ad48322d9b0c635cd24137087e385b037b7f7865ddb2d889db1414dcd17f8  ../../../cad/step/compliant_tool_top_cap.step
@@ -65,7 +65,7 @@ c2f91ab16e4faeea96945bdef95eba4cfb142430f44302565ebee51ca891ce9f  ../../../print
 b283dd28900a832352cd281477309a16aacbe36811720ec7e80f77d9b9447799  ../../../print_plates_3mf/05D_TPU_keyboard_tips_and_spares.print.json
 6badf0daa975d8c0ab5de34cea5a7514dbff8469d2a7b499670a3002d428eb31  ../../../scripts/build_illustrated_assembly_guide.py
 4baf08d28e3566c3eb3869585275ebc318bf1e076744867221d4d79e2359f182  ../../../scripts/build_manual_pdf.py
-09ec78a5512ee6cb6997b3200e7bd1cdb1418eeb2fb477f339f331f14191f8a2  ../../../scripts/build_step_packages.py
+d36767cf22f6b4becf5716eb7ae2e7b8f8315dd13e30204732ff9f2c3007463a  ../../../scripts/build_step_packages.py
 6090b47ff751ebb62c6ab8ecd4abc55fa54f79cabde5b86a4231484b2cc67e53  ../../../scripts/generate_build_tracker.py
 520cf48d2263beca0eca351d6960fbfae95e1f9c63e05aec1204957b47271a7f  ../../../scripts/generate_job_cards.py
 0a940eabc2ab22fcc0c4e2b2df9a67fa90224027168127917c2e7879a8725b93  ../../../scripts/initialize_step_evidence.py
@@ -75,6 +75,7 @@ b283dd28900a832352cd281477309a16aacbe36811720ec7e80f77d9b9447799  ../../../print
 8e7467e8eccccbf6e04988820b828be3c0aa0c1c06167954f53bb46b5f8cf330  ../../../scripts/render_assembly_guide.py
 0f593f140437858b8cd72c87f4737b14af483c91ac3e9fcb45f07d4893327571  ../../../scripts/set_active_build.py
 caed2f3b929d24354ae7ff289178e70a94c8729d84ca5f2d55384c483032cbba  ../../../scripts/sign_off_step.py
+a18eb88d17b2adbe930857f4539079bad96090320c4ea161b5d38a29ec44e3d8  ../../../scripts/stage_hash_bound_artifacts.py
 93fb598ee2de6dc0ba60d6eec7291458a728cb087dbe724b9e3bf09aa8933f8a  ../../../scripts/step_evidence_common.py
 7dc6159c15826da700a66d9e271776f8daed14716db80081fedea2e8712fb2ed  ../../../scripts/validate_print_readiness.py
 9b954d47726e7c09423d31f7cdbd8b0e07dff1b78c11bf826274473062d66ed3  ../../../scripts/validate_release_package.py

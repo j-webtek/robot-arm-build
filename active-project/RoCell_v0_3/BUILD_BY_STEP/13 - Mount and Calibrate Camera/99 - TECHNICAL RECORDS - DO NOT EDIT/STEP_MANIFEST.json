@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "layout_version": 4,
+  "layout_version": 5,
   "design_revision": "RC03-INT-R1",
-  "package_definition_hash": "7a6947f2de52f63133c5b9647b9b479ccd9d896906c2b575e76c106e1e5dccca",
-  "canonical_snapshot_hash": "05d11599e6d4a2937e0207535b298aa809ff08c79840350c7716666ce6d12755",
-  "canonical_input_hash": "05d11599e6d4a2937e0207535b298aa809ff08c79840350c7716666ce6d12755",
+  "package_definition_hash": "3d4d45a05327b35ffcc474b8df0f6bcb202a79fcfd98a3529062bd2c44ffc168",
+  "canonical_snapshot_hash": "d2a06fa67ec4ed0e36a8d40bd158aeb9e923890a00b310d3c6eacdfbaadfb34d",
+  "canonical_input_hash": "d2a06fa67ec4ed0e36a8d40bd158aeb9e923890a00b310d3c6eacdfbaadfb34d",
   "step_id": "13",
   "slug": "mount_camera_and_check_fov",
   "title": "Resolve the camera architecture, then mount and prove route-specific vision",
@@ -272,8 +272,8 @@
     },
     {
       "canonical_path": "README_FIRST.md",
-      "sha256": "ba84a14a17983d774a0278b4b68571d920b0dc4d186fd05c991b1d149d388a9e",
-      "size_bytes": 9962,
+      "sha256": "3f120c69dcee278cb67c449e84d3a43c0b5183bdfee1cf4cb86bb938e2a32d34",
+      "size_bytes": 10392,
       "roles": [
         "release entry point"
       ],
@@ -867,8 +867,8 @@
     },
     {
       "canonical_path": "scripts/build_step_packages.py",
-      "sha256": "09ec78a5512ee6cb6997b3200e7bd1cdb1418eeb2fb477f339f331f14191f8a2",
-      "size_bytes": 171609,
+      "sha256": "d36767cf22f6b4becf5716eb7ae2e7b8f8315dd13e30204732ff9f2c3007463a",
+      "size_bytes": 174644,
       "roles": [
         "step-package generator and validator"
       ],
@@ -982,6 +982,18 @@
       ],
       "actions": [
         "run_after_step_tests"
+      ],
+      "job_ids": []
+    },
+    {
+      "canonical_path": "scripts/stage_hash_bound_artifacts.py",
+      "sha256": "a18eb88d17b2adbe930857f4539079bad96090320c4ea161b5d38a29ec44e3d8",
+      "size_bytes": 8660,
+      "roles": [
+        "hash-bound canonical artifact staging and offline verification"
+      ],
+      "actions": [
+        "run_for_standalone_export"
       ],
       "job_ids": []
     },
@@ -1126,9 +1138,9 @@
       "job_ids": [
         "03C3"
       ],
-      "local_operator_copy": "03 - STL MODELS/camera_plate_universal.stl",
-      "local_copy_sha256": "7fb63205ddc37b517ee452eda352893c7912cebe74086d977ef0beb8ec2d006f",
-      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT",
+      "canonical_reference": "../../../stl/camera_plate_universal.stl",
+      "artifact_resolution": "canonical_hash_bound_reference"
     },
     {
       "canonical_path": "stl/hardware_fit_gauge.stl",
@@ -1143,9 +1155,9 @@
       "job_ids": [
         "00E"
       ],
-      "local_operator_copy": "03 - STL MODELS/hardware_fit_gauge.stl",
-      "local_copy_sha256": "4a9a35b618a420931b7e8b6b717aee4a3eb68f8948fff04e5a69fd65266e9e42",
-      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT",
+      "canonical_reference": "../../../stl/hardware_fit_gauge.stl",
+      "artifact_resolution": "canonical_hash_bound_reference"
     },
     {
       "canonical_path": "stl/m5_nut_trap_fit_gauge.stl",
@@ -1160,9 +1172,9 @@
       "job_ids": [
         "06"
       ],
-      "local_operator_copy": "03 - STL MODELS/m5_nut_trap_fit_gauge.stl",
-      "local_copy_sha256": "a6a8dd06689060766bb31f7eca10e6910fb3313a758af185bcbcdfde3c40a01e",
-      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT",
+      "canonical_reference": "../../../stl/m5_nut_trap_fit_gauge.stl",
+      "artifact_resolution": "canonical_hash_bound_reference"
     },
     {
       "canonical_path": "stl/mast_foot_2020.stl",
@@ -1178,9 +1190,9 @@
         "07A",
         "07B"
       ],
-      "local_operator_copy": "03 - STL MODELS/mast_foot_2020.stl",
-      "local_copy_sha256": "2b6384b63a5b191ef88ae5590b50ffb5cd0c64d2102b3145b8336b2fb901faa5",
-      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT",
+      "canonical_reference": "../../../stl/mast_foot_2020.stl",
+      "artifact_resolution": "canonical_hash_bound_reference"
     },
     {
       "canonical_path": "stl/mast_socket_fit_test.stl",
@@ -1195,9 +1207,9 @@
       "job_ids": [
         "06"
       ],
-      "local_operator_copy": "03 - STL MODELS/mast_socket_fit_test.stl",
-      "local_copy_sha256": "3a8e939ae308baa04fda3891dfc8851a0a3b2caa9e2a91148414255e1114905b",
-      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT",
+      "canonical_reference": "../../../stl/mast_socket_fit_test.stl",
+      "artifact_resolution": "canonical_hash_bound_reference"
     },
     {
       "canonical_path": "stl/setup_hardware_fit_gauge.stl",
@@ -1212,9 +1224,9 @@
       "job_ids": [
         "00E"
       ],
-      "local_operator_copy": "03 - STL MODELS/setup_hardware_fit_gauge.stl",
-      "local_copy_sha256": "e6394a26fe104fb2af1b05df14865a5be2908bf6e99fab79c93aa034a2dc57b4",
-      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT",
+      "canonical_reference": "../../../stl/setup_hardware_fit_gauge.stl",
+      "artifact_resolution": "canonical_hash_bound_reference"
     },
     {
       "canonical_path": "stl/tpu_tip_retention_gauge.stl",
@@ -1229,33 +1241,34 @@
       "job_ids": [
         "00E"
       ],
-      "local_operator_copy": "03 - STL MODELS/tpu_tip_retention_gauge.stl",
-      "local_copy_sha256": "0476c9c867a9f28816c5df107f8bcff9e44b7e1ba79e8927501a8d1c6d32b777",
-      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT"
+      "local_copy_usage": "TRACEABILITY_ONLY_DO_NOT_PRINT",
+      "canonical_reference": "../../../stl/tpu_tip_retention_gauge.stl",
+      "artifact_resolution": "canonical_hash_bound_reference"
     }
   ],
-  "local_stl_copy_count": 7,
+  "local_stl_copy_count": 0,
+  "hash_bound_stl_reference_count": 7,
   "next_step": "14",
   "operator_writable_directory": "06 - SAVE MEASUREMENTS AND PHOTOS",
   "generated_control_hashes": {
     "00 - START HERE.md": "db79efaac934fa774065ff97e9fdcb150b6434c44263ea916c8cb0a7a2d17b0e",
     "01 - BEFORE YOU START.md": "ca04358485cd085f14ae7a8dd027dbb5d1944de99dd6b53992ec81792f1fdf52",
-    "02 - PARTS AND TOOLS CHECKLIST.md": "d6692fa4a43123139eb73d3147152458d4aeb5344934b16be8c6a10653681955",
-    "03 - STL MODELS/READ ME - HOW TO USE THESE MODELS.md": "f35a8909ef3b363d7e5fdd60e3c769d329d75dc82c16a648fed4ebd1ea55b839",
+    "02 - PARTS AND TOOLS CHECKLIST.md": "4233f415eb3e7d2095d1a2ccc664ed5202f1a45684458d980442f03a4effbec0",
+    "03 - STL MODELS/READ ME - HOW TO USE THESE MODELS.md": "93a93c5e54fbd58c76a35eb6eba84be92bc8cc27032bb4e2011aef027ee52fd1",
     "03 - STL MODELS/STL MODEL LIST.csv": "490fcf76c73d94861e04f73fe9a98f1f22c014e588465faa8647f137b4294eb8",
     "03B - PRINT SETTINGS FOR THIS STEP.md": "4191772ef35c7ef76f189d4978d1da54b4206393de1bc13f2a7418e4763c226e",
     "04 - STEP-BY-STEP INSTRUCTIONS.md": "e68d9a58e80549befb007fb7b7aa0fc1cd845a4eb2717214c142754b152d0913",
     "05 - CHECK YOUR WORK.md": "3cdd5e5f99ec7440fcb24fcecad4f61af9b10e223ad4a299f81acb741d4a1d50",
     "06 - SAVE MEASUREMENTS AND PHOTOS/READ ME - WHAT TO RECORD.md": "1917a98e199ac446959e0f13861cea1a50b889575b27ba38c1d81fb06af35560",
-    "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/measurement_record.json": "5ee4bb4949fa113709e919a657f056432d3082169b83ea3d05432a42169fac01",
-    "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/signoff.json": "40fe8b644337397c4f00eb3d3828d15050921c498015379f11f9560aa8982468",
+    "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/measurement_record.json": "ffe2c5cabfe9334b842b90a8e8c5157b9cc70f572e23a945c8e69ec4f5f07ec5",
+    "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/signoff.json": "756cbed2b1a300d15f931cd0e73c290e6f562b4b234517511e4dd25557607dc5",
     "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/Measurements Checklist.md": "3f6c7cd56b8a02fb896d81756fee85da7453983c788a651817427d211b9cecb3",
     "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/Finish and Sign Off.md": "f48edf260a1d1423574a71af7e906819e6be6dc1387c1abcf6b5a7fd0f39400a",
     "07 - FINISH THIS STEP AND CONTINUE.md": "8134475c19fbe9c24609597beff32e1b267560dc0d4c832cb4f752548c8df1e7",
-    "99 - TECHNICAL RECORDS - DO NOT EDIT/OPEN CONTROLLED FILES.md": "ae84d248b3f4c6e1bc9af272001a9aa390cfa427f4033e47ca5259d0a5da6b27",
-    "99 - TECHNICAL RECORDS - DO NOT EDIT/FILE INDEX.csv": "f32369ce1d1c790bdf44b1f8f3c8ca5993441b4ced10f99064c58ec8ccbc11bf",
-    "99 - TECHNICAL RECORDS - DO NOT EDIT/FILE MANIFEST.json": "5625a193ea77735dcb1f80ff1a3b6c0310a928ad76154210b644b45f336a818d",
-    "99 - TECHNICAL RECORDS - DO NOT EDIT/SHA256SUMS.txt": "db604365960f8c60ab88a732e5670144b049354112cf85dd11a738081fe1265b",
+    "99 - TECHNICAL RECORDS - DO NOT EDIT/OPEN CONTROLLED FILES.md": "0dfc049b7be2bff00e565c2dbd51e5cf5a8aec520fe66b919a00fd4c3b5bf07a",
+    "99 - TECHNICAL RECORDS - DO NOT EDIT/FILE INDEX.csv": "6bd160dabb3106aca16dfacfa8430dc23915a47f9a99e56667cbae5a03f3ab8f",
+    "99 - TECHNICAL RECORDS - DO NOT EDIT/FILE MANIFEST.json": "b47ca70075df43e22b2d2ed12658bb07f09564fd11bda5fb875dce3e1541c92c",
+    "99 - TECHNICAL RECORDS - DO NOT EDIT/SHA256SUMS.txt": "a24ed770ad8f6ef50b3ef4ff53d6d1fde786d2753b63ae63d2b9bccb8d010ea3",
     "99 - TECHNICAL RECORDS - DO NOT EDIT/HARDWARE AND TOOLS.csv": "1635f2f8365cf439455cb3f4edb5f2e77477348665e279722cad08636e60ccff"
   }
 }

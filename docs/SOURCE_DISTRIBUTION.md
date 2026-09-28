@@ -142,3 +142,34 @@ against the commit being reviewed rather than copying these values into a future
 decision record. Any proposed removal must identify the authoritative source,
 preserved provenance, affected builder or workstream route, and validation that
 replaces the convenience copy before it can be considered independently.
+
+## Stage hash-bound artifacts for offline use
+
+RC03 Steps 01–15 reference their authoritative project-level STL files by exact
+repository path and SHA-256 instead of retaining generated duplicate mesh bytes.
+Step 00 continues to retain its controlled print-stage convenience copies.
+
+Maintainers can materialize every canonical artifact referenced by the generated
+step manifests into a new directory outside the checkout:
+
+```powershell
+cd active-project/RoCell_v0_3
+$stage = Join-Path $env:TEMP "tactevra-rc03-artifacts"
+python scripts/stage_hash_bound_artifacts.py `
+  --all-step-manifests `
+  --output $stage
+```
+
+The command refuses an existing output directory, rejects absolute and traversal
+paths, verifies every source hash before and after copying, and writes
+`HASH_BOUND_ARTIFACTS.json`. Copy the staged directory anywhere, including to a
+machine without the repository, and verify it independently:
+
+```powershell
+python scripts/stage_hash_bound_artifacts.py --verify $stage
+```
+
+Verification requires only the staged tree and receipt. It fails on missing,
+modified, or unexpected artifact files. This is a controlled staging mechanism;
+it does not approve printing, transform a referenced STL, or make held material
+printable.
