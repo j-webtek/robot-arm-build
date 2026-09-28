@@ -378,6 +378,43 @@ screening flags remain false. T2B must feed the exact samples through the
 existing deterministic IK and installed-geometry collision machinery before
 the T2 gate can close.
 
+### Implemented checkpoint — T2B-IK exact-sample screening
+
+`typing_trajectory_ik_screen_v1.py` now consumes the exact T2A screening
+samples without regenerating or interpolating the route. It binds the plan to
+the pinned build, calibration snapshot, numerical IK implementation, canonical
+joint bounds, and an explicitly `SYNTHETIC_OFFLINE` joint seed. Every sample is
+evaluated through the existing joint-limit, normalized-margin, task-Jacobian
+rank, and adjacent-joint continuity gates. The output is canonical,
+hash-bound, deterministic, and retains zero controller commands, zero hardware
+access, and zero physical authority.
+
+This is the low-hanging first half of T2B, not closure of T2. A passing report
+has status `READY_FOR_INSTALLED_GEOMETRY_COLLISION_SCREENING` and still carries
+the blocker `INSTALLED_GEOMETRY_COLLISION_SCREENING_REQUIRED`. It does not
+claim that an offline seed is observed feedback, and it does not claim discrete
+or continuous collision clearance, controller timing, physical reachability in
+the installed cell, or qualified typing. The remaining T2B increment must bind
+these exact joint results to the installed collision profile, FK-derived rigid
+poses, configuration-sampled cable evidence, and conservative adjacent-sample
+sweep qualification.
+
+### Implemented checkpoint — T2B collision-evidence intake
+
+`typing_collision_intake_v1.py` now bridges the exact T2B-IK receipt to the
+existing collision pipeline without relabeling its `SYNTHETIC_OFFLINE` seed as
+measured controller feedback. It revalidates the T1/T2A/IK/build/calibration/
+model lineage, reuses the canonical bounded joint interpolation, and emits the
+exact rigid-attachment, configuration-sampled body, per-sample geometry, and
+adjacent-sample sweep-envelope slots required by the installed profile.
+
+The bridge fails closed when the measured installed collision profile is
+absent or crossed. Even with a matching profile it remains an evidence intake,
+not a collision pass: no geometry is inferred, collision screening remains
+false, and a fresh observed start state is still required before execution.
+This removes an integration ambiguity while preserving zero commands, zero
+hardware access, and zero physical authority.
+
 ### T1 — Schema and deterministic offline executor
 
 - Add `TypingExecutionPlanV1` and canonical serialization.

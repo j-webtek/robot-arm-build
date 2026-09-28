@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "layout_version": 4,
+  "layout_version": 6,
   "design_revision": "RC03-INT-R1",
-  "package_definition_hash": "7a6947f2de52f63133c5b9647b9b479ccd9d896906c2b575e76c106e1e5dccca",
-  "canonical_snapshot_hash": "05d11599e6d4a2937e0207535b298aa809ff08c79840350c7716666ce6d12755",
-  "canonical_input_hash": "05d11599e6d4a2937e0207535b298aa809ff08c79840350c7716666ce6d12755",
+  "package_definition_hash": "65bbe688892e0dcdd2115a28d9f155921587915d80e98f6b01d81aaedcbde3a5",
+  "canonical_snapshot_hash": "06efd7afc3a2b406d822f18b0ae06189c5edbb01dbbd069e0edf35718290f45c",
+  "canonical_input_hash": "06efd7afc3a2b406d822f18b0ae06189c5edbb01dbbd069e0edf35718290f45c",
   "step_id": "02",
   "slug": "reinforce_and_clamp_arm",
   "title": "Reinforce the board and clamp the arm",
@@ -157,8 +157,8 @@
     },
     {
       "canonical_path": "README_FIRST.md",
-      "sha256": "ba84a14a17983d774a0278b4b68571d920b0dc4d186fd05c991b1d149d388a9e",
-      "size_bytes": 9962,
+      "sha256": "6e3e5a4bf57be1858e0b691c09b0c7683cc4266eb7df666d371136aa5800ee42",
+      "size_bytes": 10683,
       "roles": [
         "release entry point"
       ],
@@ -325,8 +325,8 @@
     },
     {
       "canonical_path": "scripts/build_step_packages.py",
-      "sha256": "09ec78a5512ee6cb6997b3200e7bd1cdb1418eeb2fb477f339f331f14191f8a2",
-      "size_bytes": 171609,
+      "sha256": "38b9b55bfaad6c80f2465bd99abc134b8a7b488d91e6fc357c3f93f05ec699b9",
+      "size_bytes": 175793,
       "roles": [
         "step-package generator and validator"
       ],
@@ -444,6 +444,18 @@
       "job_ids": []
     },
     {
+      "canonical_path": "scripts/stage_hash_bound_artifacts.py",
+      "sha256": "a18eb88d17b2adbe930857f4539079bad96090320c4ea161b5d38a29ec44e3d8",
+      "size_bytes": 8660,
+      "roles": [
+        "hash-bound canonical artifact staging and offline verification"
+      ],
+      "actions": [
+        "run_for_standalone_export"
+      ],
+      "job_ids": []
+    },
+    {
       "canonical_path": "scripts/step_evidence_common.py",
       "sha256": "93fb598ee2de6dc0ba60d6eec7291458a728cb087dbe724b9e3bf09aa8933f8a",
       "size_bytes": 9078,
@@ -493,6 +505,7 @@
     }
   ],
   "local_stl_copy_count": 0,
+  "hash_bound_stl_reference_count": 0,
   "next_step": "03",
   "operator_writable_directory": "06 - SAVE MEASUREMENTS AND PHOTOS",
   "generated_control_hashes": {
@@ -500,20 +513,20 @@
     "01 - BEFORE YOU START.md": "d251f4ff7fdef9f0ef349998abdb11ff4f7fad8fed690643262ccb85b0eae411",
     "02 - PARTS AND TOOLS CHECKLIST.md": "7b365402999cef444f605a1fb66b1076232c22cf9125326dc4fd4607e4409103",
     "03 - STL MODELS/READ ME - HOW TO USE THESE MODELS.md": "0de2386115ec2c668f3c0f5be2de7572a9ccba5a7b738f51495f42ae0e231f3b",
-    "03 - STL MODELS/STL MODEL LIST.csv": "40e3efc580e0e639a309652648ed54c1ff153447f2da70a923a56e7cdb8ccb58",
+    "03 - STL MODELS/STL MODEL LIST.csv": "aedca8478531012bf1da51f1210c7c03064183bb23bd9498df4056388500579c",
     "03B - PRINT SETTINGS FOR THIS STEP.md": "b7a263fc01232dcd568eabfd46ed198bcf3a283d63ab6f9aeac39ceb4bb70644",
     "04 - STEP-BY-STEP INSTRUCTIONS.md": "62d57ab7ccdaedb6e6dacd65c855c15e7fca6e055194caea3f74471bde7abfca",
     "05 - CHECK YOUR WORK.md": "19d350edde04173065a9c04df768bd81c5b43f3e836f69198048370093112823",
     "06 - SAVE MEASUREMENTS AND PHOTOS/READ ME - WHAT TO RECORD.md": "10f97f232a6ee30ce0c76ded23a40a4d15bb5f9f81a270879b3f8fe5545c6cf6",
-    "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/measurement_record.json": "f8089844b584a16175f97d1836d6749762cd56e36c51eb0b67cd32448b680838",
-    "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/signoff.json": "a6201ae23be8c48fc12808762a7ed652b38dde84649572b3377b36d740c89b37",
+    "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/measurement_record.json": "bea01642cb4dba756ff7325e029ddb258a72aaa228bcdc589bb75448e532dbcf",
+    "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/signoff.json": "b859ff930c9ba0b23d3ed6a4a1bc82c5062f5b7f196abbed72086a2325fb8ff6",
     "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/Measurements Checklist.md": "5961c1b02348305a3a23c4abac3df9bdafdc040cfdd3a0632af0e3b245e6e599",
     "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/Finish and Sign Off.md": "b9e6893f788dfec37518df7f6de6d634a4084a80b9c90a94ec6dd728d4e8a4ae",
     "07 - FINISH THIS STEP AND CONTINUE.md": "6e7777c5d1e21d81be1418aac821dce017736bb51d9ac3b7c0481e40f0338daa",
-    "99 - TECHNICAL RECORDS - DO NOT EDIT/OPEN CONTROLLED FILES.md": "f0f3e473eba4be583b6cfd57d6162ac3f4963ad352c84e5d33c093a227ce0bfd",
-    "99 - TECHNICAL RECORDS - DO NOT EDIT/FILE INDEX.csv": "884e28be8bf29ca6e9624c0a5bfd56b38fffd694728f14f5b5aa6a07366155fa",
-    "99 - TECHNICAL RECORDS - DO NOT EDIT/FILE MANIFEST.json": "f427a3379984209ee484e0ecc5b202e8e10e8d134176e4d9fbda5bed4b02909c",
-    "99 - TECHNICAL RECORDS - DO NOT EDIT/SHA256SUMS.txt": "b76de6e2929b076bd2ef8234ba8ce845ed41ef5d104a036180ac3fdece0fd3e8",
+    "99 - TECHNICAL RECORDS - DO NOT EDIT/OPEN CONTROLLED FILES.md": "37d95b7b1d99dc412beec4a200cdfcfa4ac56cfcd7b7da949e15de58fff83695",
+    "99 - TECHNICAL RECORDS - DO NOT EDIT/FILE INDEX.csv": "604794540305f2812233278f6943d8e1379d29eb8805171fa3d4792b735a8b81",
+    "99 - TECHNICAL RECORDS - DO NOT EDIT/FILE MANIFEST.json": "badc7800fe7d92ca0ba4ef34c6f88fc2d9f9bf558f2206ca815c1d5e8fbb23d1",
+    "99 - TECHNICAL RECORDS - DO NOT EDIT/SHA256SUMS.txt": "788e676661d36c033c2c4ced19d1c727fa0aa8affa1bc8d5257254da975a28ae",
     "99 - TECHNICAL RECORDS - DO NOT EDIT/HARDWARE AND TOOLS.csv": "eb7cb38cde9948529e2dd6a6f2c8f0c790d28df8ea76bc1639603bc3992840c6"
   }
 }

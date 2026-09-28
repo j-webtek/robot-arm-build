@@ -14,7 +14,7 @@ These are direct links to the single canonical files. They are intentionally not
 | reference_only | — | [PRINT_READINESS.json](<../../../PRINT_READINESS.json>) | machine-readable print readiness | `a8c75f05f727…` |
 | verify | — | [PRINT_READINESS.md](<../../../PRINT_READINESS.md>) | current print readiness | `5be5234644cb…` |
 | read | — | [RC03_INTEGRATED_BUILD_PLAN.md](<../../../RC03_INTEGRATED_BUILD_PLAN.md>) | station architecture | `c8cf80651860…` |
-| read | — | [README_FIRST.md](<../../../README_FIRST.md>) | release entry point | `ba84a14a1798…` |
+| read | — | [README_FIRST.md](<../../../README_FIRST.md>) | release entry point | `6e3e5a4bf57b…` |
 | reference_only | 00B | [cad/step/cable_tie_saddle_fit_gauge.step](<../../../cad/step/cable_tie_saddle_fit_gauge.step>) | neutral CAD companion | `2561bed996ff…` |
 | reference_only | 00B | [cad/step/m4_captive_nut_fit_gauge.step](<../../../cad/step/m4_captive_nut_fit_gauge.step>) | neutral CAD companion | `e9cb6408e7a2…` |
 | reference_only | 00B | [cad/step/m4_washer_fit_gauge.step](<../../../cad/step/m4_washer_fit_gauge.step>) | neutral CAD companion | `9cc2e4910b7d…` |
@@ -42,7 +42,7 @@ These are direct links to the single canonical files. They are intentionally not
 | consume_accepted_output | 03A | [print_plates_3mf/03A_ABS_phone_TCP_station.print.json](<../../../print_plates_3mf/03A_ABS_phone_TCP_station.print.json>) | controlled plate/profile/hash sidecar | `a0933605a7fb…` |
 | reference_only | — | [scripts/build_illustrated_assembly_guide.py](<../../../scripts/build_illustrated_assembly_guide.py>) | illustrated-guide PDF generator | `6badf0daa975…` |
 | reference_only | — | [scripts/build_manual_pdf.py](<../../../scripts/build_manual_pdf.py>) | controlled detailed-manual PDF renderer | `4baf08d28e35…` |
-| run_from_project_root | — | [scripts/build_step_packages.py](<../../../scripts/build_step_packages.py>) | step-package generator and validator | `09ec78a5512e…` |
+| run_from_project_root | — | [scripts/build_step_packages.py](<../../../scripts/build_step_packages.py>) | step-package generator and validator | `38b9b55bfaad…` |
 | run_from_project_root | — | [scripts/generate_build_tracker.py](<../../../scripts/generate_build_tracker.py>) | job-lifecycle validator and tracker generator | `6090b47ff751…` |
 | reference_only | — | [scripts/generate_job_cards.py](<../../../scripts/generate_job_cards.py>) | controlled print-traveler instruction generator | `520cf48d2263…` |
 | run_before_each_step | — | [scripts/initialize_step_evidence.py](<../../../scripts/initialize_step_evidence.py>) | non-overwriting active-build evidence initializer | `0a940eabc2ab…` |
@@ -52,6 +52,7 @@ These are direct links to the single canonical files. They are intentionally not
 | reference_only | — | [scripts/render_assembly_guide.py](<../../../scripts/render_assembly_guide.py>) | assembly-panel source renderer | `8e7467e8eccc…` |
 | run_before_recording_evidence | — | [scripts/set_active_build.py](<../../../scripts/set_active_build.py>) | active physical-build selector | `0f593f140437…` |
 | run_after_step_tests | — | [scripts/sign_off_step.py](<../../../scripts/sign_off_step.py>) | validated step signoff recorder | `caed2f3b929d…` |
+| run_for_standalone_export | — | [scripts/stage_hash_bound_artifacts.py](<../../../scripts/stage_hash_bound_artifacts.py>) | hash-bound canonical artifact staging and offline verification | `a18eb88d17b2…` |
 | reference_only | — | [scripts/step_evidence_common.py](<../../../scripts/step_evidence_common.py>) | shared step-evidence containment and schema controls | `93fb598ee2de…` |
 | run_from_project_root | — | [scripts/validate_print_readiness.py](<../../../scripts/validate_print_readiness.py>) | typed gate and print-readiness validator | `7dc6159c1582…` |
 | run_from_project_root | — | [scripts/validate_release_package.py](<../../../scripts/validate_release_package.py>) | whole-package release validator | `9b954d47726e…` |

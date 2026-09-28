@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "layout_version": 4,
+  "layout_version": 6,
   "design_revision": "RC03-INT-R1",
-  "package_definition_hash": "7a6947f2de52f63133c5b9647b9b479ccd9d896906c2b575e76c106e1e5dccca",
-  "canonical_snapshot_hash": "05d11599e6d4a2937e0207535b298aa809ff08c79840350c7716666ce6d12755",
-  "canonical_input_hash": "05d11599e6d4a2937e0207535b298aa809ff08c79840350c7716666ce6d12755",
-  "generated_at": "2026-09-06T18:24:58.708779+00:00",
+  "package_definition_hash": "65bbe688892e0dcdd2115a28d9f155921587915d80e98f6b01d81aaedcbde3a5",
+  "canonical_snapshot_hash": "06efd7afc3a2b406d822f18b0ae06189c5edbb01dbbd069e0edf35718290f45c",
+  "canonical_input_hash": "06efd7afc3a2b406d822f18b0ae06189c5edbb01dbbd069e0edf35718290f45c",
+  "generated_at": "2026-09-28T21:02:07.961577+00:00",
   "physical_release": "UNRELEASED",
   "active_build_id": "2026-09-01_CELL-A",
   "print_readiness": {
@@ -419,9 +419,9 @@
   ],
   "generated_root_control_hashes": {
     "README.md": "b6a92062cb0388ae5b323e46c100481c836c94054c1160d8a1d850d0ad2917b0",
-    "00 - START HERE.md": "7b310290ef132cc4c3e78346ed313abda047b5a01fa33045c3258b9b6b2ece0a",
+    "00 - START HERE.md": "3200c42e230a6fcacad6ffea24fc9b739be8d51eee2f22ead5a0a5a7a95fcc9a",
     "01 - COMPLETE BUILD ORDER.md": "886d953d0f1e4533e22e91cef446433cae90c8b2835c83ffa02ed7ab7438857d",
-    "02 - HOW TO SAVE MEASUREMENTS AND PHOTOS.md": "85a65d0d93ea81be77feb8e95ee0c178c6767522f02890e47f5613baaa862e35",
+    "02 - HOW TO SAVE MEASUREMENTS AND PHOTOS.md": "488192444a2ac7b17820e3305d03963705612a511cd02f992a92d55b217799bf",
     "03 - PART NAMES AND TECHNICAL TERMS.md": "f65e9c2d6896bbc9d8808276d646e86d5f6a56cb53a6fc2f32ed753bc673155d",
     "PRINT_JOB_OWNERSHIP.csv": "b304f6eeb2dfe563bd1737fb6ca0e0097cc3f5dd493841879af5c5d744ddafb3"
   }

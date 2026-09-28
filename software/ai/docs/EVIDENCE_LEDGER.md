@@ -3589,6 +3589,75 @@ rewriting history. New entries must use a unique evidence ID.
 - Next dependency: T2B consumes the exact bounded samples with deterministic IK
   and installed-geometry collision screening, retaining action and hash binding.
 
+### E-20260928-ARM-075 — T2B exact-sample deterministic IK screen
+
+- Stage: S5 optimization research; first software-only half of T2B in the
+  optimized typing execution plan.
+- Lane: ARM.
+- Source: T2A `TypingTrajectoryPlanV1` and the canonical numerical IK acceptance
+  gates on branch `codex/typing-t2b-offline-screening`.
+- Change: added a hash-bound adapter that consumes the exact ordered T2A
+  screening samples, binds them to the pinned build and planner calibration,
+  and evaluates each sample through the existing numerical IK, calibrated joint
+  bounds, normalized joint margin, task-Jacobian rank, and adjacent-joint
+  continuity checks. The seed type accepts only the explicit
+  `SYNTHETIC_OFFLINE` classification and cannot claim feedback or measurement.
+- Coverage: a local five-millimetre synthetic cycle derived from the pinned
+  ready-state FK passes every exact sample deterministically; crossed
+  calibration identity, malformed/non-finite joint seeds, and resource limits
+  fail closed. Focused result: 3 tests passed.
+- Artifacts:
+  `software/src/rocell/application/typing_trajectory_ik_screen_v1.py`;
+  `software/tests/unit/test_typing_trajectory_ik_screen_v1.py`;
+  `software/docs/OPTIMIZED_TYPING_EXECUTION_PLAN.md`.
+- Endpoint/camera opens: 0.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Authority: the report contains no controller commands, permits, transport,
+  hardware access, observed-feedback claim, or physical authority.
+- Limitations: the passing fixture is synthetic and local. No installed
+  collision geometry, configuration-sampled cable evidence, conservative
+  segment sweep, controller timing, measured route, or physical qualification
+  has run. A pass means only that the pinned offline IK acceptance gates accept
+  the supplied exact samples.
+- Next dependency: bind the exact accepted joint results to the existing
+  FK-derived installed-geometry collision sequence and conservative segment
+  sweep boundaries. Until those measured inputs exist, retain
+  `INSTALLED_GEOMETRY_COLLISION_SCREENING_REQUIRED`.
+
+### E-20260928-ARM-076 — typing collision-evidence intake seam
+
+- Stage: S5 optimization research; second software-only T2B increment.
+- Lane: ARM.
+- Source: ARM-075 exact-sample IK receipt and the existing installed-geometry,
+  FK-derived collision, bounded-segment, and conservative-sweep contracts.
+- Change: added a strict hash-bound intake that replays the exact T1/T2A
+  lineage, validates the T2B-IK/build/calibration/model identities, preserves
+  the `SYNTHETIC_OFFLINE` start-state classification, and reuses the canonical
+  bounded joint interpolation. It emits the exact rigid-attachment,
+  configuration-body, per-sample geometry, and adjacent-sample sweep-envelope
+  evidence slots required by the installed profile.
+- Coverage: deterministic missing-profile and matching-profile cases, JSON
+  schema validation, crossed/mutated IK rejection, and regression coverage for
+  the shared FK/bounded-segment machinery. Focused result: 17 tests passed.
+- Artifacts:
+  `software/src/rocell/application/typing_collision_intake_v1.py`;
+  `software/ai/schemas/typing_collision_intake_v1.schema.json`;
+  `software/tests/unit/test_typing_trajectory_ik_screen_v1.py`;
+  `software/docs/OPTIMIZED_TYPING_EXECUTION_PLAN.md`.
+- Endpoint/camera opens: 0.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Authority: the report contains no commands, transport access, hardware
+  access, collision-pass claim, observed-feedback claim, or physical authority.
+- Limitations: no measured installed profile is currently supplied to this
+  typing route, no cable geometry or sweep envelopes were created, and no
+  collision evaluation ran. The synthetic start remains execution-ineligible.
+- Next dependency: populate the already enumerated slots from independently
+  measured installed geometry and capture a fresh observed start state, then
+  pass the exact evidence through the existing FK, bounded-sample, and
+  conservative-sweep qualifiers.
+
 ### E-20260927-AI-404 — pose-checkpoint package test collection failure
 
 - Stage: S1 artifact identity and retention.

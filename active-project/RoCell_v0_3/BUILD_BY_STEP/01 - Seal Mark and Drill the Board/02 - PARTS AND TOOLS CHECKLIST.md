@@ -36,6 +36,6 @@ Each configured physical-input requirement and each distinct structured register
 - Use the accepted, labeled Step-00 kit parts. Do not print the traceability copies during this assembly step.
 - Relevant job IDs: `00A, 00B, 01, 02, 03A`.
 - Open [03B - PRINT SETTINGS FOR THIS STEP.md](<03B - PRINT SETTINGS FOR THIS STEP.md>) for the exact per-job preset files and current authority.
-- Review the 12 local model file(s) and their exact usage labels in [03 - STL MODELS](<03 - STL MODELS/READ ME - HOW TO USE THESE MODELS.md>).
+- Review the 12 hash-bound canonical model reference(s) and their exact usage labels in [03 - STL MODELS](<03 - STL MODELS/READ ME - HOW TO USE THESE MODELS.md>).
 
 The machine-readable source list is in [99 - TECHNICAL RECORDS - DO NOT EDIT](<99 - TECHNICAL RECORDS - DO NOT EDIT/HARDWARE AND TOOLS.csv>).

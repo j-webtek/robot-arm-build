@@ -1,0 +1,51 @@
+{
+  "schema": "tactevra.camera-print-pack.hash-bound-stl-references.v1",
+  "package": "SYSTEM_PRINT_PACK_v1",
+  "policy": "Referenced files are recovery inputs, not authority to print held or superseded parts. Materialize a standalone pack with cad/stage_system_print_pack.py.",
+  "references": [
+    {
+      "target": "STL_fallback/08A-S1_ABS_left_bench_saddle_GROUNDED_v2.stl",
+      "canonical": "hardware/static_overhead_camera/cad/output/revisions/SADDLES_GROUNDED_v2/08A-S1_ABS_left_bench_saddle_GROUNDED_v2.stl",
+      "sha256": "c6dca16e2c221a4b7ba87c0b848ea180203734ce07df3e17fe8eba114bb4847c",
+      "status": "PRINTABLE_PROTOTYPE_GROUNDED_V2"
+    },
+    {
+      "target": "STL_fallback/08B-S1_ABS_right_bench_saddle_GROUNDED_v2.stl",
+      "canonical": "hardware/static_overhead_camera/cad/output/revisions/SADDLES_GROUNDED_v2/08B-S1_ABS_right_bench_saddle_GROUNDED_v2.stl",
+      "sha256": "59f1884f32250e1cbfca3c6888d62ad45a7bcbe29ac66011057752a61f24b12f",
+      "status": "PRINTABLE_PROTOTYPE_GROUNDED_V2"
+    },
+    {
+      "target": "STL_fallback/board_corner_saddle_left.stl",
+      "canonical": "hardware/static_overhead_camera/cad/output/stl/board_corner_saddle_left.stl",
+      "sha256": "12b24a0ac415b5672a2ccf40d782201a33b3a194f8283d6933c3083d74e64eb1",
+      "status": "SUPERSEDED_DO_NOT_PRINT",
+      "materialization_only": true
+    },
+    {
+      "target": "STL_fallback/board_corner_saddle_right.stl",
+      "canonical": "hardware/static_overhead_camera/cad/output/stl/board_corner_saddle_right.stl",
+      "sha256": "26763204db3fcf93368579571d3308999c8703bb8fea8709ea993fcb8ee1e6cf",
+      "status": "SUPERSEDED_DO_NOT_PRINT",
+      "legacy_removed_path": "SUPERSEDED_DO_NOT_PRINT/board_corner_saddle_right.stl"
+    },
+    {
+      "target": "STL_fallback/boom_crossbar_node.stl",
+      "canonical": "hardware/static_overhead_camera/cad/output/stl/boom_crossbar_node.stl",
+      "sha256": "165b2acf91d97b246fcaea7447c78e8054dc9672ac970f2343ce0d32941adf58",
+      "status": "PROTOTYPE_RECOVERY_INPUT"
+    },
+    {
+      "target": "STL_fallback/boom_root_truss_segment_164p25.stl",
+      "canonical": "hardware/static_overhead_camera/cad/output/stl/boom_root_truss_segment_164p25.stl",
+      "sha256": "c90c48b5d0b714622cd4d91792e7af9904ae1dbc68848ad0b35e3d04d83e03fd",
+      "status": "PROTOTYPE_RECOVERY_INPUT"
+    },
+    {
+      "target": "STL_fallback/camera_xy_carriage.stl",
+      "canonical": "hardware/static_overhead_camera/cad/output/stl/camera_xy_carriage.stl",
+      "sha256": "3de3b975d353a062d257c74445a93e1e2d6570c723f1922db1a0182b162b511b",
+      "status": "HOLD_DESIGN_DO_NOT_PRINT"
+    }
+  ]
+}

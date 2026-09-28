@@ -1,6 +1,6 @@
 # Virtual commissioning without physical hardware
 
-> **Active Freeze 011 camera architecture:** Phase 1 uses the purchased
+> **Active Freeze 012 camera architecture:** Phase 1 uses the purchased
 > Arducam B0477/IMX283 USB 3.0 camera with its delivered nominal 16 mm C-mount
 > lens as a rigid static overhead eye-to-hand source. The received identity,
 > final support, working height, capture mode/settings, and calibration remain

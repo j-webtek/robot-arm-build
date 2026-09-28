@@ -1,6 +1,6 @@
 # Pixel vision simulation
 
-> **Active Freeze 011 camera architecture:** Phase 1 uses the purchased
+> **Active Freeze 012 camera architecture:** Phase 1 uses the purchased
 > Arducam B0477/IMX283 USB 3.0 camera and delivered nominal 16 mm C-mount lens
 > as a rigid static overhead eye-to-hand source. The fixed-overview path here
 > is its software topology, but all present images, intrinsics, and poses are

@@ -1,5 +1,30 @@
 # System print pack v1 — start with the left saddle
 
+## Standalone export
+
+The repository form of this directory uses exact path-and-SHA-256 references
+for selected fallback STLs. It is therefore a working set, not by itself the
+offline delivery artifact. From a trusted checkout, create a complete pack in
+a fresh directory outside the repository:
+
+```powershell
+python hardware/static_overhead_camera/cad/stage_system_print_pack.py --output C:\staging\SYSTEM_PRINT_PACK_v1
+python hardware/static_overhead_camera/cad/stage_system_print_pack.py --verify C:\staging\SYSTEM_PRINT_PACK_v1
+```
+
+The staged directory contains every relative STL dependency used by the print
+sidecars and can be copied to an offline printing machine without Python or
+repository access. `STL_HASH_REFERENCES.json` preserves each canonical source,
+hash, provenance status, and HOLD or superseded warning. Never substitute a
+same-named newer mesh when a hash check fails.
+
+For verification on the offline machine itself, the staged pack includes a
+portable verifier. From inside the staged directory run:
+
+```powershell
+python verify_system_print_pack.py --verify .
+```
+
 Prepared 2026-09-16. This is a prototype print queue, not certification for
 overhead use, unattended operation, or robot motion. All original files remain
 unchanged. The revised USB camera cover is separate and is provisionally
