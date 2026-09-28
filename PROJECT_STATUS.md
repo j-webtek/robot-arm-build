@@ -1,6 +1,6 @@
 # Tactevra project status
 
-Reviewed September 28, 2026 through the ARM-092 PC8 measurement contract,
+Reviewed September 28, 2026 through the ARM-093 PC8 instrumented runner,
 ARM-077 PC0 pre-camera qualification basis, ARM-076 typing collision-evidence
 intake, ARM-075 exact-sample offline IK screen, AI-403 precision-adapter
 integration, and merged physical-camera
@@ -361,6 +361,15 @@ and deterministic p50/p95/p99 summaries. All retained PC0 ceilings are enforced
 and simulation timing is explicitly prohibited from being reported as physical
 typing speed. Eight focused tests and the 158-test affected suite pass. An
 instrumented runner and retained measured report remain before PC8 completion.
+
+ARM-093 instruments the actual zero-I/O PC2 route. The runner measures process
+CPU across decode, static validation, planning, IK, time scaling, collision
+intake, and receipt creation, plus peak working-set memory, screening samples,
+serialized bytes, predicted schedule duration, and declared cache estimates.
+It preserves the ordinary receipt exactly and records zero for preview and
+encoding because the honest collision-evidence blocker precedes those stages.
+Ten focused tests and the 160-test affected suite pass. The bounded retained
+campaign and bottleneck/readiness report remain outstanding.
 
 AI-403 then integrates the pose-output precision adapter and actual V2 batch
 producer on current `main`. The retained contract fixture deterministically

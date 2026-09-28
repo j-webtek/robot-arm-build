@@ -515,6 +515,13 @@ and direct-versus-park comparison. PC0 ceilings reject rather than being
 silently exceeded, and simulated timing can never be labeled measured typing
 speed. Eight focused and 158 affected tests pass. The instrumented runner and
 retained readiness report remain outstanding.
+ARM-093 adds the actual zero-I/O PC2 instrumentation runner. It measures the
+existing decode-through-collision path, process CPU, peak working set, screening
+samples, receipt bytes, predicted route duration, and cache estimates without
+changing the ordinary receipt. Preview and encoding remain measured as zero
+when the honest collision-evidence blocker prevents those stages. Ten focused
+and 160 affected tests pass. PC8 still needs the retained multi-scenario run and
+readiness interpretation.
 The AI precision lane now has a mainline-compatible pose-output adapter and v2
 batch producer. It preserves repeated targets and abstains on qualification,
 domain, freshness, identity, confidence, or containment failure. Its retained

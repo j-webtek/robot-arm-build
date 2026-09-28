@@ -4863,3 +4863,42 @@ rewriting history. New entries must use a unique evidence ID.
 - Next dependency: instrument the actual PC2-PC7 boundaries, run and retain the
   bounded cold/warm benchmark, then publish bottlenecks and readiness without
   converting predicted duration into a physical claim.
+
+### E-20260928-ARM-093 — actual PC2 performance instrumentation
+
+- Stage: S1/S4/S7 pre-camera arm integration; PC8 in progress.
+- Lane: Arm/runtime shared boundary.
+- Commit: `4266602`.
+- Change: added a zero-I/O profiling runner over the actual PC2 decode, ingress
+  and freshness checks, execution/trajectory planning, IK, joint time scaling,
+  collision intake, and receipt creation boundaries. It also samples peak
+  process working set and bounded output/resource counts.
+- Inputs/fixtures: `robot` cold-cache route and `hh1.` warm-cache route using
+  the existing golden PC2 construction.
+- Commands: `python -m pytest
+  tests/integration/test_typing_performance_runner_v1.py
+  tests/unit/test_typing_performance_report_v1.py
+  tests/unit/test_typing_transition_cache_v1.py
+  tests/integration/test_typing_transition_cache_equivalence_v1.py
+  tests/integration/test_typing_trace_golden_v1.py
+  tests/unit/test_typing_trace_package_v1.py
+  tests/integration/test_typing_trace_cli.py
+  tests/unit/test_typing_trace_journal_v1.py
+  tests/integration/test_typing_trace_adapter_v1.py
+  tests/integration/test_typing_shadow_pipeline_v1.py
+  tests/unit/test_typing_rolling_horizon_v1.py
+  tests/unit/test_typing_controller_bridge_v1.py
+  tests/unit/test_model_motion_sequence_journal.py
+  tests/unit/test_typing_fault_campaign_v1.py
+  tests/unit/test_typing_fault_owner_boundaries_v1.py -q`.
+- Result: PASS; profiled receipts equal ordinary receipts, ten focused
+  runner/report tests pass, and the 160-test affected PC2-PC8 suite passes.
+- Artifacts: `software/src/rocell/application/typing_performance_runner_v1.py`
+  and `software/tests/integration/test_typing_performance_runner_v1.py`.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: preview and encoding are correctly zero in this runner because
+  the honest installed-collision-evidence blocker stops the route first; the
+  retained 50-iteration scenario campaign has not yet run.
+- Next dependency: run the bounded scenario campaign in an isolated process,
+  retain its report, and publish the bottleneck/readiness interpretation.

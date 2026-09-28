@@ -427,6 +427,14 @@ p50/p95/p99 statistics, enforces all retained PC0 ceilings, and permanently
 labels simulated duration as not being measured typing speed. Eight focused
 tests and the 158-test affected suite pass. PC8 remains in progress pending an
 instrumented pipeline runner, retained report, and bottleneck/readiness review.
+ARM-093 adds the instrumented runner over the actual PC2 decoding, static
+validation, planning, IK, time-scaling, collision-intake, and receipt boundaries.
+It records process CPU, peak working set, screening samples, serialized receipt
+bytes, predicted schedule duration, and declared cache estimates while keeping
+preview and encoding at zero where the honest collision-evidence blocker stops
+the route. Profiled and ordinary receipts are byte-equivalent. Ten focused
+runner/report tests and the 160-test affected suite pass. A retained 50-sample-
+per-scenario campaign and readiness analysis remain.
 
 ### Deliverables
 
