@@ -1,6 +1,6 @@
 # Tactevra
 
-![Tactevra — intent into action](assets/brand/tactevra-banner.svg)
+![Tactevra — the nervous system for embodied AI](assets/brand/tactevra-banner.svg)
 
 [![Offline verification](https://github.com/j-webtek/tactevra/actions/workflows/offline-checks.yml/badge.svg?branch=main)](https://github.com/j-webtek/tactevra/actions/workflows/offline-checks.yml)
 
