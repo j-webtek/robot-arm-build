@@ -164,7 +164,7 @@ def main() -> int:
     print(f"  validated arm joint origins: {len(arm['joint_origin_xyz_m'])}")
     if presentation_mesh.is_file():
         print(f"  official arm surface: {surface['default_step_envelope_mm']} mm")
-    print("  controlled contact tool: body + keyed cap + split collar")
+    print("  proposed contact-tool CAD available: body + keyed cap + split collar")
     return 0
 
 

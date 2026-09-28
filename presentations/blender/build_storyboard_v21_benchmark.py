@@ -23,6 +23,7 @@ import sys
 from pathlib import Path
 
 import bpy
+from bpy_extras.object_utils import world_to_camera_view
 from mathutils import Vector
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -61,8 +62,6 @@ def existing_materials() -> dict[str, bpy.types.Material]:
         "pcb": "Controller PCB",
         "status_led": "Controller status LED",
         "arm_exact": "Official RoArm assembly finish",
-        "tool_print": "Printed compliant tool body",
-        "tool_cap": "Printed tool route accent",
         "stylus": "OASO-style aluminum stylus",
         "stylus_disc": "OASO-style capacitive contact disc",
         "wire": "Servo harness",
@@ -1069,7 +1068,9 @@ def build() -> bpy.types.Scene:
     )
     scene["phone_phrase"] = phone_sequence["phrase"]
     scene["phone_contact_count"] = len(phone_sequence["contacts"]) + 2
-    scene["arm_joint_chain"] = "shoulder>elbow>wrist_pitch>tool_wrist"
+    scene["arm_joint_chain"] = (
+        "base_yaw>shoulder_pitch>elbow>wrist_pitch>tool_wrist"
+    )
     scene["arm_pivot_continuity"] = "PARENTED_CHAIN"
     scene["tool_orientation_control"] = "WORLD_VERTICAL_COPY_ROTATION"
 
@@ -1086,12 +1087,19 @@ def build() -> bpy.types.Scene:
     r_target = r_key.location + Vector((0, 0, 0.060))
     phone_target = base.board_point(538, 166, 35)
     board_target = Vector((0, 0, 0.14))
+    overhead_contract = manifest["camera_contract"]["overhead"]
     rigs = {
         "macro": camera_rig("macro", Vector((0.26, -0.62, 0.34)), r_target, 72, cameras),
         "dolly": camera_rig("dolly", Vector((0.46, -1.04, 0.62)), board_target, 58, cameras),
         "arm_follow": camera_rig("arm_follow", Vector((0.52, -0.82, 0.54)), phone_target, 52, cameras),
         "hero": camera_rig("hero", Vector((0.38, -1.42, 0.84)), board_target, 44, cameras),
-        "overhead": camera_rig("overhead", Vector((0.0, 0.0, 1.28)), board_target, 48, cameras),
+        "overhead": camera_rig(
+            "overhead",
+            Vector(overhead_contract["start_position_m"]),
+            Vector(overhead_contract["target_m"]),
+            overhead_contract["lens_mm"],
+            cameras,
+        ),
         "low_three_quarter": camera_rig(
             "low_three_quarter", Vector((0.50, -0.92, 0.30)), r_target, 58, cameras
         ),
@@ -1123,7 +1131,9 @@ def build() -> bpy.types.Scene:
     animate_camera(*rigs["hero"], 1, 2400,
                    Vector((0.42, -1.48, 0.88)), Vector((0.31, -1.30, 0.78)), board_target)
     animate_camera(*rigs["overhead"], 505, 672,
-                   Vector((0.0, 0.0, 1.28)), Vector((0.0, 0.0, 1.18)), board_target)
+                   Vector(overhead_contract["start_position_m"]),
+                   Vector(overhead_contract["end_position_m"]),
+                   Vector(overhead_contract["target_m"]))
     animate_camera(*rigs["low_three_quarter"], 793, 1152,
                    Vector((0.50, -0.92, 0.30)), Vector((0.44, -0.82, 0.33)), r_target)
     # Scene 7 holds the composition while focus moves from the physical
@@ -1132,6 +1142,13 @@ def build() -> bpy.types.Scene:
     low_camera = rigs["low_three_quarter"][0]
     low_camera.data.dof.focus_object = None
     low_camera.data.dof.aperture_fstop = 3.2
+    low_aim = rigs["low_three_quarter"][1]
+    # A focus pull to an off-screen object is not a visible story beat. Tilt
+    # the shot up as focus travels so the display is actually framed at 960,
+    # then use the scene-8 cut to restore the arm target.
+    key_pose(low_aim, 912, r_target)
+    key_pose(low_aim, 960, operator_display_focus)
+    key_pose(low_aim, 961, r_target)
     scene.frame_set(900)
     bpy.context.view_layer.update()
     toolhead_distance = (low_camera.matrix_world.translation - toolhead_target).length
@@ -1148,6 +1165,17 @@ def build() -> bpy.types.Scene:
     low_camera["scene_7_focus_destination"] = tuple(operator_display_focus)
     low_camera["scene_7_toolhead_focus_distance_m"] = toolhead_distance
     low_camera["scene_7_operator_display_focus_distance_m"] = operator_display_distance
+    scene.frame_set(960)
+    bpy.context.view_layer.update()
+    display_ndc = world_to_camera_view(scene, low_camera, operator_display_focus)
+    if not (0.05 <= display_ndc.x <= 0.95 and 0.05 <= display_ndc.y <= 0.95
+            and display_ndc.z > 0):
+        raise RuntimeError(
+            "scene 7 focus destination is outside the visible frame: "
+            f"({display_ndc.x:.3f}, {display_ndc.y:.3f}, {display_ndc.z:.3f})"
+        )
+    scene["scene_7_display_frame_validation"] = "PASS_VISIBLE_AT_FRAME_960"
+    scene["scene_7_display_ndc"] = tuple(display_ndc)
 
     scene.timeline_markers.clear()
     for shot in manifest["shots"]:

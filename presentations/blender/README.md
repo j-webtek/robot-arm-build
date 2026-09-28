@@ -19,12 +19,11 @@ The scene deliberately separates six evidence classes:
   paired links, exposed fasteners, wrist plates, and gripper language. It is
   used only during the short shot labeled `SIMULATED PRESS`; its authored pose
   is not a solved trajectory.
-- **Controlled presentation tool geometry** — the moving rig imports the
-  repository's compliant body, keyed cap, and 9 mm split-collar STLs. Opposing
-  jaw pads visibly capture the body's modeled grip-flat band; the positive cap
-  retention is shown with two M3 screws. The depicted OASO-style stylus barrel,
-  installed transform, protrusion, and capacitive disc remain nominal until the
-  physical assembly is measured and qualified.
+- **Photo-informed current tool state** — the moving rig shows the bare nominal
+  9 mm OASO-style stylus barrel held directly between the opposing RoArm jaw
+  pads, matching the current photographed assembly. No printed cartridge,
+  collar, cap, or retention screws are depicted. Installed transform,
+  protrusion, grip force, and capacitive-disc geometry remain unmeasured.
 - **Conceptual** — target paths and explanatory motion graphics. These
   communicate intended behavior; they are not collision or motion
   qualification.
@@ -424,8 +423,8 @@ qualified digital twin. The optional vendor STEP and local tessellation remain
 untracked. Device manufacturing
 variation, cable geometry, the installed robot transform, tag stack height,
 and the installed tool transform/stylus geometry also remain physical-measurement
-items. The compliant body, cap, and collar shapes themselves are imported from
-their controlled repository STLs. This film is therefore
+items. The current bare-stylus jaw grip is photo-informed rather than qualified
+CAD. This film is therefore
 an accurate system-layout and product-geometry explainer, not a motion-clearance
 or fabrication release.
 

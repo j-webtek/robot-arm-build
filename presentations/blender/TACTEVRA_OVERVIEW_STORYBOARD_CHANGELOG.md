@@ -1,5 +1,15 @@
 # Tactevra overview storyboard changelog
 
+## Scene-7 visibility and current tool truth
+
+- Reframed the closing scene-7 focus pull so the lowered operator display is
+  visibly inside frame 960 instead of merely becoming the focus distance.
+- Replaced the hand-set overhead-visibility flag with a camera-frustum
+  calculation using the authored lens, camera position, display dimensions,
+  and a required exclusion margin.
+- Removed the uninstalled printed cartridge, cap, collar, and retaining screws;
+  the bare nominal stylus barrel is now held directly by both RoArm jaw pads.
+
 ## Keyboard cord removal
 
 - Removed the presentation keyboard cord from all generated Blender scenes.
@@ -25,7 +35,7 @@
   shoulder–elbow–wrist-pitch–tool-wrist chain.
 - Mounted each servo housing and link group on the physically correct side of
   its driven pivot and parented the chain to prevent gaps during interpolation.
-- Kept the gripper, printed cartridge, and stylus on one terminal tool frame;
+- Kept the gripper and bare stylus on one terminal tool frame;
   that frame remains vertical at keyboard and phone contacts.
 - Added canonical articulation rules, build-time mount assertions, and five
   full-arm QA renders spanning keyboard alignment, rhythm typing, crossing,
