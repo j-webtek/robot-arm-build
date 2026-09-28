@@ -4738,3 +4738,46 @@ rewriting history. New entries must use a unique evidence ID.
 - Supersedes: ARM-088's missing retained adapter-produced golden package.
 - Next dependency: begin PC7 safe transition-cache shadow qualification while
   preserving full per-use revalidation and zero physical authority.
+
+### E-20260928-ARM-090 — PC7 zero-authority transition-cache checkpoint
+
+- Stage: S1/S4/S7 pre-camera arm integration; PC7 in progress.
+- Lane: Arm/runtime shared boundary.
+- Commit: `196f161`.
+- Change: added a bounded FIFO transition cache keyed by directional targets,
+  calibration, catalog, tool, arm model, dynamics, planner policy, and
+  device-pose epoch. Entries contain only canonical joint seed positions,
+  timing estimates, and an earlier admitted schedule hash. Every hit requires
+  fresh start-state, IK, collision, dynamics, and permit-policy validation and
+  returns a hint that still requires fresh planning and full safety screening.
+- Inputs/fixtures: deterministic H-to-I PC2 shadow route; hit, miss, stale,
+  crossed-start, crossed-key, each-owner rejection, corruption, eviction, and
+  device-pose invalidation cases.
+- Commands: `python -m pytest
+  tests/unit/test_typing_transition_cache_v1.py
+  tests/integration/test_typing_transition_cache_equivalence_v1.py
+  tests/integration/test_typing_trace_golden_v1.py
+  tests/unit/test_typing_trace_package_v1.py
+  tests/integration/test_typing_trace_cli.py
+  tests/unit/test_typing_trace_journal_v1.py
+  tests/integration/test_typing_trace_adapter_v1.py
+  tests/integration/test_typing_shadow_pipeline_v1.py
+  tests/unit/test_typing_rolling_horizon_v1.py
+  tests/unit/test_typing_controller_bridge_v1.py
+  tests/unit/test_model_motion_sequence_journal.py
+  tests/unit/test_typing_fault_campaign_v1.py
+  tests/unit/test_typing_fault_owner_boundaries_v1.py -q`.
+- Result: PASS; 14 focused tests and 133 affected PC2-PC7 tests pass. Cached
+  seed and uncached planning produce the identical PC2 receipt and joint
+  schedule hash. Rejection and corruption return no seed or authority.
+- Artifacts: `software/src/rocell/application/typing_transition_cache_v1.py`;
+  `software/tests/unit/test_typing_transition_cache_v1.py`;
+  `software/tests/integration/test_typing_transition_cache_equivalence_v1.py`.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: one deterministic H-to-I equivalence route is qualified so far;
+  timing savings are declared estimates, not measured typing performance; no
+  installed-workcell or physical qualification is claimed.
+- Next dependency: run broader directional-pair, repeated-key, identity-churn,
+  bounded-capacity, and randomized cached-versus-uncached equivalence campaigns
+  before PC7 completion.

@@ -102,7 +102,7 @@ and its evidence gate pass.
 | PC4 | Typing-specific zero-write controller bridge | PC2, PC3 | No | None | COMPLETE |
 | PC5 | Fault injection and property testing | PC1-PC4 | No | None | COMPLETE |
 | PC6 | Unified trace journal and deterministic replay | PC2-PC5 | No | None | COMPLETE |
-| PC7 | Safe transition cache in shadow mode | PC3, PC6 | No | None | NOT_STARTED |
+| PC7 | Safe transition cache in shadow mode | PC3, PC6 | No | None | IN_PROGRESS |
 | PC8 | Performance benchmark and readiness report | PC1-PC7 | No | None | NOT_STARTED |
 | PC9 | Camera-arrival evidence tooling and dry run | PC6 | No for tooling | None before arrival | NOT_STARTED |
 | PC10 | Pre-camera integration closure | PC0-PC9 | No | None | NOT_STARTED |
@@ -378,6 +378,21 @@ and hashes. Mutation, deletion, truncation, or lineage crossing is detected and
 cannot be reported as a pass.
 
 ## PC7 — Safe transition cache in shadow mode
+
+**Checkpoint 2026-09-28:** ARM-090 adds the first bounded, deterministic
+transition cache. Its exact directional key binds source and destination
+targets, calibration, catalog, tool, arm model, dynamics, planner policy, and
+device-pose epoch. Entries retain only canonical joint seed positions, a route
+duration estimate, a planning-time-saved estimate, and the prior schedule hash.
+Every hit requires fresh matching start state plus explicit IK, collision,
+dynamics, and permit-policy validation; the returned hint still requires fresh
+planning and full safety screening and carries no command, permit, or authority.
+FIFO eviction, identity invalidation, corruption discard, and hit/miss/
+validation/discard/time-saved metrics are deterministic. Fourteen focused tests
+pass, including an actual cached-versus-uncached PC2 pipeline comparison, and
+the affected PC2-PC7 suite passes 133 tests. PC7 remains in progress pending a
+broader directional-pair, repeated-key, identity-churn, and randomized
+equivalence campaign.
 
 ### Deliverables
 

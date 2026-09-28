@@ -1,6 +1,6 @@
 # Tactevra project status
 
-Reviewed September 28, 2026 through the ARM-089 retained PC6 golden trace,
+Reviewed September 28, 2026 through the ARM-090 PC7 transition-cache checkpoint,
 ARM-077 PC0 pre-camera qualification basis, ARM-076 typing collision-evidence
 intake, ARM-075 exact-sample offline IK screen, AI-403 precision-adapter
 integration, and merged physical-camera
@@ -335,6 +335,16 @@ checked-in package as `IDENTICAL` with no hardware imports, commands, or
 physical authority. The expanded affected suite passes 119 tests. PC7 safe
 transition-cache work may now begin; measured-workcell and camera gates remain
 unchanged.
+
+ARM-090 begins PC7 with a bounded zero-authority cache for directional typing
+transitions. Keys bind every geometry, calibration, model, dynamics, policy,
+tool, and device-pose identity. Values contain only a joint planning seed,
+timing estimates, and the prior schedule hash. Every hit revalidates start
+state, IK, collision evidence, dynamics, and permit policy and still requires a
+fresh plan; it cannot emit commands or reuse admission. Deterministic FIFO
+eviction, invalidation, corruption handling, and metrics are covered. Fourteen
+focused tests and the 133-test affected suite pass. Broader pair and randomized
+equivalence coverage remains before PC7 completion.
 
 AI-403 then integrates the pose-output precision adapter and actual V2 batch
 producer on current `main`. The retained contract fixture deterministically
