@@ -33,7 +33,8 @@ TOP_LEVEL_FIELDS = {
     "allowed_tracked_files",
     "candidate_blockers",
 }
-READINESS_FIELDS = {"version", "release_scope", "authority", "blockers"}
+READINESS_FIELDS = {"version", "release_scope", "authority", "tracker", "blockers"}
+READINESS_TRACKER_FIELDS = {"issue", "expected_state", "milestone", "milestone_state"}
 READINESS_BLOCKER_FIELDS = {
     "id", "issue", "owner", "requirement", "status", "resolution",
 }
@@ -132,6 +133,18 @@ def load_readiness(path: Path = READINESS_PATH) -> dict:
     if (not isinstance(readiness["authority"], str)
             or not readiness["authority"].strip()):
         raise ValueError("readiness authority must be a non-empty string")
+    tracker = readiness["tracker"]
+    if not isinstance(tracker, dict) or set(tracker) != READINESS_TRACKER_FIELDS:
+        raise ValueError(
+            f"readiness tracker must contain exactly {sorted(READINESS_TRACKER_FIELDS)}")
+    if not isinstance(tracker["issue"], int) or tracker["issue"] < 1:
+        raise ValueError("readiness tracker issue must be a positive integer")
+    if tracker["expected_state"] not in {"open", "closed"}:
+        raise ValueError("readiness tracker expected_state must be open or closed")
+    if tracker["milestone_state"] not in {"open", "closed"}:
+        raise ValueError("readiness tracker milestone_state must be open or closed")
+    if not isinstance(tracker["milestone"], str) or not tracker["milestone"].strip():
+        raise ValueError("readiness tracker milestone must be a non-empty string")
     blockers = readiness["blockers"]
     if not isinstance(blockers, list):
         raise ValueError("readiness blockers must be a list")

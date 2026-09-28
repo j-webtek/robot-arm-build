@@ -1,0 +1,40 @@
+{
+  "schema": "tactevra.automation-policy.v1",
+  "managed_labels": [
+    "area:repository",
+    "area:ai",
+    "area:arm",
+    "area:hardware",
+    "cross-workstream",
+    "documentation",
+    "release-readiness"
+  ],
+  "lanes": {
+    "area:repository": [".github/**", "scripts/ci/**", "docs/**", "README.md", "CONTRIBUTING.md", "SECURITY.md", "site/**", "assets/**"],
+    "area:ai": ["software/ai/**"],
+    "area:arm": ["software/src/rocell/**", "software/tests/**", "software/firmware/**", "software/native/**", "software/config/**"],
+    "area:hardware": ["hardware/**", "active-project/**"]
+  },
+  "documentation": ["docs/**", "README.md", "CONTRIBUTING.md", "SECURITY.md", "**/*.md"],
+  "release_readiness": [".github/release-readiness.json", "docs/releases/**", "docs/RELEASING.md", ".github/workflows/preview-candidate-audit.yml"],
+  "contracts": [
+    "software/ai/schemas/**",
+    "software/ai/rocell_ai/contract.py",
+    "software/src/rocell/models/motion_proposal.py",
+    "software/src/rocell/workcell/interface_contract.py",
+    "software/config/arm_frame_contract.json",
+    "software/config/system_manifest.json",
+    "software/config/camera_manifest.json"
+  ],
+  "portable_full": [
+    "software/**",
+    "pyproject.toml",
+    "software/pyproject.toml",
+    ".github/workflows/offline-checks.yml",
+    ".github/automation-policy.json",
+    "scripts/ci/**"
+  ],
+  "rc03_manual": ["active-project/RoCell_v0_3/ASSEMBLY_MANUAL.md", "active-project/RoCell_v0_3/scripts/build_manual_pdf.py", "active-project/RoCell_v0_3/requirements-cad.txt", "scripts/ci/rc03_manual_qualification.py", ".github/workflows/offline-checks.yml"],
+  "rc03_reportlab": ["active-project/RoCell_v0_3/scripts/generate_drawings.py", "active-project/RoCell_v0_3/requirements-cad.txt", "scripts/ci/rc03_reportlab_qualification.py", ".github/workflows/offline-checks.yml"],
+  "rc03_trimesh": ["active-project/RoCell_v0_3/**", "hardware/static_overhead_camera/**", "scripts/ci/rc03_trimesh_qualification.py", ".github/workflows/offline-checks.yml"]
+}

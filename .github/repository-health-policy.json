@@ -16,6 +16,7 @@
     "required_workflows": {
       ".github/workflows/offline-checks.yml": "active",
       ".github/workflows/pages.yml": "active",
+      ".github/workflows/pr-automation.yml": "active",
       ".github/workflows/preview-candidate-audit.yml": "active",
       ".github/workflows/repository-health.yml": "active"
     },
