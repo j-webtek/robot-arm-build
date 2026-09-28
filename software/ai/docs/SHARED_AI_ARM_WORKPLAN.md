@@ -403,6 +403,15 @@ sources and rejects authority promotion, reordered fixtures, crossed identities,
 unsafe paths, non-finite limits, and physical claims. This establishes the
 repeatable offline basis for PC1 joint-space timing; it does not qualify any
 installed dynamics, controller timing, camera, collision profile, or movement.
+ARM-078 begins PC1 with a typed canonical joint-schedule boundary over the exact
+accepted T2B-IK samples. It closes the semantic-PC0-to-URDF joint-name seam,
+preserves sample/action order, generates strictly monotonic host timestamps,
+and deterministically rescales the route until synthetic velocity,
+acceleration, and jerk ceilings are satisfied or the bounded scale is rejected.
+The receipt remains zero-authority and explicitly blocks on measured installed
+dynamics, controller tracking, installed collision evidence, and a fresh
+observed start. PC1 is still in progress pending per-segment reporting and the
+remaining boundary/reversal/duration qualification matrix.
 The AI precision lane now has a mainline-compatible pose-output adapter and v2
 batch producer. It preserves repeated targets and abstains on qualification,
 domain, freshness, identity, confidence, or containment failure. Its retained
