@@ -4410,3 +4410,39 @@ rewriting history. New entries must use a unique evidence ID.
   as the initial composition checkpoint.
 - Next dependency: PC3 one-action rolling horizon, observed-state rebinding,
   invalidation, and ambiguous-restart behavior.
+
+### E-20260928-ARM-082 — PC3 rolling-horizon and restart gate completed
+
+- Stage: S1/S4/S7 pre-camera arm integration; PC3 complete, PC4 ready.
+- Lane: Arm/runtime.
+- Commit: `3170757aff03353b49dbb800a765f9b9120b682b`.
+- Change: added a canonical one-action commit/one-action preview state machine.
+  The current action is bound to the exact observed-state, feedback receipt,
+  controller session, configuration epoch, calibration, tool, dynamics,
+  freshness, plan, and deadline identities. Preview slots explicitly contain
+  no permit, controller command, hardware access, or physical authority.
+- Inputs/fixtures: synthetic `H,H,1,PERIOD` typing plan, synthetic observed
+  execution bindings, every required drift/expiry family, pre-dispatch restart,
+  retained-dispatch restart, completion, and independently rehashed mutations.
+- Commands: `python -m pytest -q
+  tests/unit/test_typing_rolling_horizon_v1.py`; the 54-test affected typing,
+  shadow-pipeline, and reviewed-lifecycle suite; and all five repository audits.
+- Result: PASS; 24 focused tests and 54 affected tests passed. Revalidation
+  discarded both slots on state, session, configuration, calibration, tool,
+  dynamics, freshness, or deadline change. Pre-dispatch restart reconstructed
+  intent without replay. Restart after retained dispatch intent produced
+  `OUTCOME_UNCERTAIN` with automatic retry forbidden. Crossed indices, epochs,
+  roles, hashes, and authority mutations rejected.
+- Artifacts: `software/src/rocell/application/typing_rolling_horizon_v1.py`;
+  `software/ai/schemas/typing_rolling_horizon_v1.schema.json`;
+  `software/tests/unit/test_typing_rolling_horizon_v1.py`;
+  `software/docs/PRE_CAMERA_ARM_INTEGRATION_COMPLETION_PLAN.md`.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: this is synthetic offline orchestration evidence. It does not
+  establish installed collision geometry, fresh live state, controller bytes,
+  tracking, contact, typing speed, or physical authority.
+- Supersedes: ARM-081's PC3-ready status only; ARM-081 remains retained as the
+  completed PC2 evidence.
+- Next dependency: PC4 must bind one qualified timed joint action to exact
+  deterministic Waveshare bytes behind the existing zero-write boundary.

@@ -434,6 +434,13 @@ terminal lineage, action count, authority, or field set still reject, while
 duplicate JSON, crossed batch/intent/calibration/seed identities, stale
 admission, expired freshness, and dynamics overflow fail at their earliest real
 stage. PC3 rolling-horizon/restart work is ready; no physical blocker changes.
+ARM-082 completes PC3 with a one-action current slot and one zero-authority
+preview slot bound to observed state, feedback, controller session,
+configuration epoch, calibration, tool, dynamics, freshness, and deadline.
+Any drift discards the horizon. Pre-dispatch restart reconstructs intent without
+replay; restart after retained dispatch intent becomes `OUTCOME_UNCERTAIN` with
+retry forbidden. PC4 zero-write controller encoding is now ready; measured
+workcell evidence and physical authority remain unchanged.
 The AI precision lane now has a mainline-compatible pose-output adapter and v2
 batch producer. It preserves repeated targets and abstains on qualification,
 domain, freshness, identity, confidence, or containment failure. Its retained

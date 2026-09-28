@@ -1,6 +1,6 @@
 # Tactevra project status
 
-Reviewed September 28, 2026 through the ARM-081 completed PC2 shadow gate,
+Reviewed September 28, 2026 through the ARM-082 completed PC3 rolling-horizon gate,
 ARM-077 PC0 pre-camera qualification basis, ARM-076 typing collision-evidence
 intake, ARM-075 exact-sample offline IK screen, AI-403 precision-adapter
 integration, and merged physical-camera
@@ -270,6 +270,14 @@ semantic ingress, freshness, IK lineage, and dynamics boundaries fail closed
 while the retained golden traces remain deterministic. PC3 rolling-horizon and
 restart-safety work is now ready; physical evidence and authority remain
 unchanged.
+
+ARM-082 completes PC3. The runtime now retains one current typing action and at
+most one non-authoritative preview, both bound to exact observed-state and
+configuration identities. Drift or expiry invalidates the horizon;
+pre-dispatch restart reconstructs without replay, while a restart after durable
+dispatch intent is terminal `OUTCOME_UNCERTAIN` with retry forbidden. PC4 is
+ready; no controller bytes, transport access, movement, or physical authority
+were added.
 
 AI-403 then integrates the pose-output precision adapter and actual V2 batch
 producer on current `main`. The retained contract fixture deterministically

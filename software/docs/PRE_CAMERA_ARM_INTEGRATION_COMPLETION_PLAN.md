@@ -98,8 +98,8 @@ and its evidence gate pass.
 | PC0 | Freeze fixtures, profiles, metrics, and status vocabulary | Existing T1/T2 artifacts | No | None | COMPLETE |
 | PC1 | Joint-space dynamics and deterministic time scaling | PC0, T2B-IK | No | None | COMPLETE |
 | PC2 | Golden end-to-end shadow pipeline | PC1, collision intake | No | None | COMPLETE |
-| PC3 | Rolling-horizon rebinding and restart safety | PC2 | No | None | READY |
-| PC4 | Typing-specific zero-write controller bridge | PC2, PC3 | No | None | NOT_STARTED |
+| PC3 | Rolling-horizon rebinding and restart safety | PC2 | No | None | COMPLETE |
+| PC4 | Typing-specific zero-write controller bridge | PC2, PC3 | No | None | READY |
 | PC5 | Fault injection and property testing | PC1-PC4 | No | None | NOT_STARTED |
 | PC6 | Unified trace journal and deterministic replay | PC2-PC5 | No | None | NOT_STARTED |
 | PC7 | Safe transition cache in shadow mode | PC3, PC6 | No | None | NOT_STARTED |
@@ -219,6 +219,19 @@ unmeasured path stops at its honest evidence blocker; the synthetic path cannot
 gain permits, transport, or deployment status.
 
 ## PC3 — Rolling-horizon rebinding and restart safety
+
+**Completed 2026-09-28:** `typing_rolling_horizon_v1` now retains exactly one
+current action and at most one zero-authority preview. Each horizon is bound to
+the exact observed start state, feedback receipt, controller session,
+configuration epoch, calibration, tool profile, dynamics profile, freshness
+limit, plan, and deadline. Revalidation deterministically invalidates and
+discards both slots when any bound identity drifts or evidence expires.
+Pre-dispatch restart reconstructs intent without replay; once a dispatch intent
+has been retained, restart terminates `OUTCOME_UNCERTAIN` with automatic retry
+forbidden. A strict parser and JSON Schema reject crossed indices, epochs,
+hashes, roles, or authority fields. Twenty-four focused tests and fifty-four
+affected lifecycle/planning tests pass with zero hardware access. This is
+offline orchestration evidence only; it issues no permit or controller command.
 
 ### Deliverables
 
@@ -429,7 +442,7 @@ For every PC increment:
 - [x] PC0 qualification basis frozen
 - [x] PC1 joint dynamics and time scaling complete
 - [x] PC2 golden shadow pipeline complete
-- [ ] PC3 rolling horizon and restart safety complete
+- [x] PC3 rolling horizon and restart safety complete
 - [ ] PC4 zero-write typing controller bridge complete
 - [ ] PC5 fault and property campaigns complete
 - [ ] PC6 trace journal and replay complete
