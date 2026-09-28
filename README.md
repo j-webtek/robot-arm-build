@@ -6,7 +6,8 @@
 
 The CI badge covers [scoped hardware-free checks](docs/CI.md), not physical robot qualification.
 
-**An experimental local-first robotics platform connecting user intent, visual evidence, and checked physical actions.**
+**The experimental, local-first nervous system for embodied AI: connecting
+language and vision to checked robot-arm actions in the physical world.**
 
 [Get started](docs/GETTING_STARTED.md) · [How the system works](docs/SYSTEM_OVERVIEW.md) · [Current capabilities](PROJECT_STATUS.md) · [Roadmap](ROADMAP.md) · [Documentation](docs/README.md) · [Contribute](CONTRIBUTING.md) · [Governance](GOVERNANCE.md)
 
@@ -30,24 +31,51 @@ Formerly **RoCell**. Existing `rocell` commands, package names, and hardware rel
 paths remain unchanged for compatibility. The canonical source repository is now
 `j-webtek/tactevra`; GitHub redirects the former repository URL.
 
-Tactevra is an experimental robotics project with a long-term goal: let you
-give an AI a task in plain language and have a robot arm carry out the
-keyboard and phone actions on your behalf.
+Tactevra is a semantic and operational bridge between AI models and physical
+tools. It is designed so specialized or task-trained models can interpret a
+request, inspect a scene, and propose what should happen without directly
+driving a motor. A deterministic runtime then decides whether the proposal is
+current, reachable, and permitted before translating it into bounded robot-arm
+motion.
 
-Using a Waveshare RoArm-M3, we are first building reliable physical control:
-positioning the arm, pressing keyboard keys, and tapping a phone with a
-stylus. This repository contains the control software, simulations, test
-records, and printable workcell designs that support that work.
+Think of the platform as a nervous system for embodied AI. Language supplies
+the objective. Vision supplies the senses. Typed contracts carry the signal.
+The runtime provides reflexes and guardrails. The arm is the appendage, and
+independent observation closes the feedback loop. That separation lets models
+reason about *what* to do while accountable software controls *how* physical
+movement is admitted and performed.
 
-AI and arm software are being developed together. The offline AI pipeline
-interprets supported requests and proposes target coordinates. The arm software
-checks those proposals before planning movement. A future request to enter text
-or navigate a phone app would become a sequence of checked physical actions with
-confirmation that the intended input occurred.
+The first workcell uses a Waveshare RoArm-M3 to research interaction with
+ordinary human interfaces: positioning over keyboard keys and phone controls,
+then eventually pressing or tapping them and confirming the observed result.
+This repository brings the AI interface, motion runtime, simulations, evidence,
+and printable workcell designs into one inspectable system.
 
-Today's movement and feedback tests build the foundation for that future
-system. Reliable typing, phone interaction, and AI-directed task execution
-are development goals, not completed capabilities.
+## From meaning to movement
+
+```mermaid
+flowchart LR
+    A[Language request] --> B[Understand intent]
+    C[Camera evidence] --> D[Locate devices and targets]
+    B --> E[Semantic action proposal]
+    D --> E
+    E --> F[Deterministic checks]
+    F --> G[Bounded arm motion]
+    G --> H[Observe the result]
+    H -->|verified feedback| B
+    F -->|reject or hold| I[No motion]
+```
+
+The AI-facing boundary uses named actions, coordinate frames, confidence,
+uncertainty, and evidence identity—not raw servo commands. Tactevra Runtime owns
+calibration, transforms, reachability, collision screening, motion policy,
+single-use authority, controller communication, and outcome records. This is
+the central product idea: a model can participate in physical work without
+being given unchecked control of the hardware.
+
+Today's movement, interface, and feedback tests build the foundation for that
+future system. Reliable camera-guided typing, phone interaction, and
+AI-directed task execution are development goals, not completed capabilities.
 
 ## Where we are
 

@@ -6,6 +6,12 @@
 
 ## Campaign idea
 
+A nervous system for embodied AI: language states the objective, vision locates
+the physical world, a semantic contract carries the proposed action, and a
+deterministic runtime governs movement and feedback. The metaphor must resolve
+into this concrete architecture; it must never imply sentience or unchecked
+autonomy.
+
 A request becomes two independently verified physical outcomes. Tactevra types
 `ready` into a local test pad through the real black keyboard, then crosses the
 same measured workcell and enters `on my way` on the phone before tapping Send.
@@ -31,6 +37,13 @@ The phone's expected screen is checked before every tap and re-observed after a
 state change.
 
 Public stages: `UNDERSTAND → LOCATE → CHECK → ACT → VERIFY`.
+
+Primary message: **The nervous system for embodied AI.**
+
+Supporting promise: **Language and vision in. Checked movement and verified
+feedback out.**
+
+Trust line: **Physical intelligence, checked.**
 
 ## Recurring visual system
 
@@ -193,6 +206,8 @@ devices without visually connecting their data.
 
 ## Review questions
 
+- Does the viewer understand Tactevra as the governed connection between an AI
+  model's judgment and an arm's physical movement?
 - Can a viewer explain the difference between proposal and permit?
 - Is it obvious that one permit authorizes exactly one contact?
 - Does the operator display read as the local test-pad surface and the phone as a separate

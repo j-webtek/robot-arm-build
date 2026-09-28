@@ -4,10 +4,12 @@
 - **Audience:** Users, contributors, reviewers, and integrators
 - **Authority:** Explanatory; it does not authorize hardware operation
 
-Tactevra connects a person's request to an inspectable series of software
-decisions and, eventually, a verified physical action. The project deliberately
-keeps interpretation, motion authority, controller communication, and outcome
-verification separate. Passing one stage never implies that a later stage ran.
+Tactevra is a governed interface between AI models and the physical world. It
+connects a person's request and fresh visual evidence to an inspectable series
+of software decisions and, eventually, a verified physical action. The project
+deliberately keeps interpretation, motion authority, controller communication,
+and outcome verification separate. Passing one stage never implies that a later
+stage ran.
 
 For the latest evidence-backed capability statement, read
 [project status](../PROJECT_STATUS.md). For terms used below, see the
@@ -32,6 +34,26 @@ flowchart LR
 The repository contains implemented pieces of this flow, but it does not yet
 contain a generally qualified camera-to-arm typing system. The default public
 walkthrough stops before physical execution.
+
+## The nervous-system analogy
+
+“Nervous system for embodied AI” is a product metaphor for the boundaries in
+the architecture; it is not a claim that the software is conscious or
+biological.
+
+| Metaphor | Tactevra responsibility |
+| --- | --- |
+| Objective | A person states the desired outcome in language |
+| Senses | Cameras and declared context provide fresh scene evidence |
+| Perception | AI components interpret the request and locate named targets |
+| Nerve signal | Versioned semantic contracts carry actions, frames, confidence, uncertainty, and evidence identity |
+| Reflexes and guardrails | Deterministic checks reject stale, malformed, unreachable, or unqualified proposals |
+| Appendage | The robot arm performs only the motion granted by the runtime |
+| Feedback | Independent observation determines whether the intended device interaction occurred |
+
+This division is intentional. Models propose *what* the interaction means;
+Tactevra Runtime owns *how* a physical action is checked, planned, authorized,
+encoded, and recorded.
 
 ## Component responsibilities
 

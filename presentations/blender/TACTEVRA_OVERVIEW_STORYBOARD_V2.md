@@ -50,6 +50,12 @@ does not perform.
 
 ## Story and visual language
 
+Tactevra is introduced as a nervous system for embodied AI: language supplies
+the objective, vision supplies the senses, a semantic contract carries the
+signal, the deterministic runtime supplies reflexes and guardrails, the arm is
+the appendage, and observation closes the loop. This is an architectural
+metaphor, not a claim of sentience or unchecked autonomy.
+
 One natural-language request becomes two independently checked physical
 outcomes. A stale scene fails closed. Fresh evidence permits one action at a
 time. The first key is deliberately slow and teaches the control loop; the next

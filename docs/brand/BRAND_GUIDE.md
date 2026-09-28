@@ -14,25 +14,40 @@ These documents do not change software or hardware behavior.
 
 ## Positioning
 
-Product category: local-first robotics software and workcell integration.
+Product category: governed interface for embodied AI.
 
 Positioning statement:
 
-> An experimental local-first robotics platform connecting user intent,
-> visual evidence, and checked physical actions.
+> Tactevra is an experimental, local-first nervous system for embodied AI,
+> connecting language and vision to checked robot-arm actions in the physical
+> world.
 
 Short description for current use:
 
-> Tactevra brings AI target proposals and robot control into one inspectable
-> workflow. It supports offline research, command validation, and supervised
-> movement experiments while physical typing and phone interaction are developed.
+> Tactevra gives specialized AI models a governed path from understanding and
+> visual evidence to bounded physical movement. Models propose what should
+> happen; deterministic software decides what may move and verifies what
+> happened next.
 
-Future brand tagline candidate: **Intent into action.** This is a creative
-proposal, not a cleared slogan or a claim of completed autonomous operation.
+Messaging hierarchy:
 
-The differentiating story is the connection between intent, evidence, planning,
-execution, and verification. Do not describe this as legally unique, patented,
-certified safe, or superior to competitors without supporting evidence.
+1. **Category line:** Governed interface for embodied AI.
+2. **Core metaphor:** The nervous system for embodied AI.
+3. **Process line:** Observe. Understand. Check. Act. Verify.
+4. **Trust line:** Physical intelligence, checked.
+
+The core metaphor explains a system boundary; it must not be used to imply
+sentience, biological equivalence, or autonomous capability. **Intent into
+action** remains a compact legacy line for constrained placements, but it is
+secondary to the hierarchy above. All lines are creative proposals, not cleared
+slogans or claims of completed autonomous operation.
+
+The differentiating story is the semantic bridge and closed feedback loop
+between intent, visual evidence, planning, execution, and verification. Tactevra
+does not hand model output directly to motors: AI proposes *what* to do, while
+the runtime governs *how* and whether physical movement can occur. Do not
+describe this as legally unique, patented, certified safe, or superior to
+competitors without supporting evidence.
 
 Initial audience: technical builders and developers integrating AI with physical
 device interaction. Consumer convenience is the product direction, not proof of
@@ -59,6 +74,11 @@ in historical records and compatibility identifiers. Do not rename third-party m
 ## Voice and capability language
 
 - Lead with what the user can do, then explain prerequisites and limitations.
+- Pair the “nervous system” metaphor with a concrete explanation of the
+  language/vision input, typed proposal boundary, deterministic runtime, arm,
+  and observed feedback loop.
+- Prefer “embodied AI” or “AI-to-physical-world interface” over “AI robot
+  brain.” Tactevra connects components; it is not a claim of sentience.
 - Prefer “requested target” to “intent payload,” and explain technical terms.
 - Distinguish “accepted for planning,” “command sent,” “position reported,” and
   “intended input verified.” Never collapse them into a generic “success.”
