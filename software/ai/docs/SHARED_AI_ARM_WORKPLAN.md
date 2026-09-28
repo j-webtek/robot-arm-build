@@ -794,6 +794,13 @@ workstream and binds its source, governing documents, retained evidence,
 limitations, and next gate. This documentation baseline changes no lane or
 integration status.
 
+The post-preflight physical-camera evaluator is implemented at evidence
+`E-20260927-AI-422`. It revalidates retained campaign bytes, binds every
+prediction to image/model/preprocessing identities, derives an empirical bound
+from calibration only, scores held-out coverage and unsafe-scene acceptance,
+and checks a conservatively composed bound against the frozen target map. It
+emits only an offline review recommendation and installs no qualification.
+
 Workers add a short row before beginning a potentially overlapping change and
 remove it only in the same commit that appends the resulting evidence row.
 
