@@ -154,6 +154,45 @@ def test_preview_is_deterministic_and_each_wire_hash_is_reconstructible():
         assert len(raw) == command["payload_bytes"]
 
 
+def test_golden_bytes_are_frozen_and_repeated_target_action_stays_distinct():
+    first = _preview()
+    golden = json.loads((
+        WORKSPACE / "software/tests/fixtures/typing_controller_golden_bytes_v1.json"
+    ).read_text(encoding="utf-8"))
+    assert [item["payload_utf8"] for item in first["commands"]] == golden["payload_utf8"]
+    assert [item["payload_sha256"] for item in first["commands"]] == golden["payload_sha256"]
+    assert first["ordered_wire_sha256"] == golden["ordered_wire_sha256"]
+
+    original_trajectory = support._plan()
+    repeated_trajectory = replace(
+        original_trajectory,
+        phase_waypoints=tuple(
+            replace(item, action_index=1) if item.action_index is not None else item
+            for item in original_trajectory.phase_waypoints
+        ),
+        screening_samples=tuple(
+            replace(item, action_index=1) if item.action_index is not None else item
+            for item in original_trajectory.screening_samples
+        ),
+    )
+    repeated_schedule = compile_typing_joint_schedule_v1(
+        repeated_trajectory, support._ik_report(repeated_trajectory), support._profile())
+    repeated_horizon = _horizon(repeated_schedule)
+    repeated_horizon.pop("rolling_horizon_sha256")
+    repeated_horizon["action_count"] = 2
+    repeated_horizon["action_index"] = 1
+    repeated_horizon["current"]["action_index"] = 1
+    repeated_horizon["current"]["action_sha256"] = "f" * 64
+    repeated_horizon["rolling_horizon_sha256"] = hashlib.sha256(
+        _canonical(repeated_horizon)).hexdigest()
+    repeated = preview_typing_controller_action_v1(
+        repeated_schedule, repeated_trajectory, repeated_horizon,
+        _qualification(repeated_horizon), _profile(), now_monotonic_ns=1_000)
+    assert repeated["target_id"] == first["target_id"] == "H"
+    assert repeated["action_index"] == 1
+    assert repeated["dispatch_intent_sha256"] != first["dispatch_intent_sha256"]
+
+
 @pytest.mark.parametrize(("profile_change", "message"), [
     ({"controller_session_id": "other"}, "session or epoch"),
     ({"configuration_epoch_sha256": "f" * 64}, "session or epoch"),
