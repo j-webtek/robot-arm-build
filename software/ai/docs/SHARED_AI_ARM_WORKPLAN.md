@@ -480,6 +480,13 @@ derives replay artifacts. Crossed request, target order, horizon, or schedule
 identity rejects before journal creation. The journal still retains hashes and
 sizes only and the effect stage remains explicitly not observed. PC6 now waits
 on the contained clean-checkout replay command and redaction/path qualification.
+ARM-088 adds that contained package and `replay-typing-trace` CLI. Packages are
+confined beneath an explicit nonsymlink evidence root, use fixed filenames and
+bounded canonical JSON, and reject path escape, symlinks, sensitive keys,
+absolute paths, mutation, deletion, or unexpected entries. Replay compares
+bytes and hashes only; it never decodes retained material into an execution
+request. PC6 now waits only on retaining and replaying one actual
+adapter-produced golden package from a clean checkout.
 The AI precision lane now has a mainline-compatible pose-output adapter and v2
 batch producer. It preserves repeated targets and abstains on qualification,
 domain, freshness, identity, confidence, or containment failure. Its retained

@@ -1,6 +1,6 @@
 # Tactevra project status
 
-Reviewed September 28, 2026 through the ARM-087 PC2-PC5 trace adapter,
+Reviewed September 28, 2026 through the ARM-088 contained trace replay command,
 ARM-077 PC0 pre-camera qualification basis, ARM-076 typing collision-evidence
 intake, ARM-075 exact-sample offline IK screen, AI-403 precision-adapter
 integration, and merged physical-camera
@@ -319,6 +319,14 @@ and an explicit not-observed effect placeholder. Crossed request, action order,
 horizon, or schedule lineage rejects before sealing. The combined 103-test
 suite passes with no hardware access. PC6 still needs the contained
 clean-checkout replay command and path/redaction qualification.
+
+ARM-088 adds a contained trace package and `replay-typing-trace` command.
+Packages stay beneath an explicit nonsymlink evidence root and contain only
+bounded canonical files with fixed names and verified hashes. Replay rejects
+path escape, symlinks, sensitive keys, absolute paths, mutation, deletion, and
+unexpected entries while explicitly reporting zero hardware authority. The
+affected 117-test suite passes. PC6 now needs one actual adapter-produced golden
+package retained and replayed from a clean checkout.
 
 AI-403 then integrates the pose-output precision adapter and actual V2 batch
 producer on current `main`. The retained contract fixture deterministically

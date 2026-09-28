@@ -4654,3 +4654,48 @@ rewriting history. New entries must use a unique evidence ID.
 - Next dependency: implement a contained clean-checkout replay package/command
   that verifies every artifact before reporting an identical replay and never
   interprets retained bytes as executable commands.
+
+### E-20260928-ARM-088 — contained PC6 replay package and CLI
+
+- Stage: S1/S4/S7 pre-camera arm integration; PC6 in progress.
+- Lane: Arm/runtime shared boundary.
+- Commit: `00a4290`.
+- Change: added canonical contained trace packages and the
+  `replay-typing-trace` CLI. The writer validates trace identity, byte-identical
+  replay, canonical JSON, redaction, and bounded sizes before creating fixed
+  journal/artifact/manifest paths beneath an existing nonsymlink evidence root.
+  Replay validates every filename, file type, size, digest, stage, chain,
+  package identity, and authority field without interpreting artifact contents.
+- Inputs/fixtures: deterministic 14-stage `robot` trace; changed, deleted, and
+  extra files; invalid escape identifiers; sensitive credential/port keys;
+  Windows and POSIX absolute paths; noncanonical JSON; CLI identical and escape
+  cases under hardware-import sentinels.
+- Commands: `python -m pytest tests/unit/test_typing_trace_package_v1.py
+  tests/integration/test_typing_trace_cli.py
+  tests/unit/test_typing_trace_journal_v1.py
+  tests/integration/test_typing_trace_adapter_v1.py
+  tests/integration/test_typing_shadow_pipeline_v1.py
+  tests/unit/test_typing_rolling_horizon_v1.py
+  tests/unit/test_typing_controller_bridge_v1.py
+  tests/unit/test_model_motion_sequence_journal.py
+  tests/unit/test_typing_fault_campaign_v1.py
+  tests/unit/test_typing_fault_owner_boundaries_v1.py -q`.
+- Result: PASS; 12 focused package tests, 2 CLI tests, and 117 affected PC2-PC6
+  tests passed. Identical packages return success; containment or integrity
+  failures return stable CLI configuration errors with zero hardware access.
+- Artifacts: `software/src/rocell/application/typing_trace_package_v1.py`;
+  `software/src/rocell/cli.py`;
+  `software/ai/schemas/typing_trace_package_v1.schema.json`;
+  `software/tests/unit/test_typing_trace_package_v1.py`;
+  `software/tests/integration/test_typing_trace_cli.py`.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: the CLI-qualified package is generated from deterministic test
+  artifacts during the test. No actual ARM-087 adapter-produced golden package
+  is retained in the repository yet. This adds no installed-workcell, camera,
+  controller-tracking, contact, or physical qualification.
+- Supersedes: ARM-087's missing CLI/containment/redaction limitations only;
+  ARM-087 remains the actual contract-adapter checkpoint.
+- Next dependency: retain one bounded ARM-087 adapter-produced synthetic golden
+  package and prove the checked-in package replays identically on a clean
+  checkout before PC6 is marked complete.

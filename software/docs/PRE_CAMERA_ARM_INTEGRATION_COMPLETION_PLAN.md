@@ -344,8 +344,15 @@ adapter: it validates the strict batch, shadow receipt, rolling horizon,
 controller preview, and fault-campaign contracts; rejects crossed request,
 action, horizon, or schedule lineage; and derives the exact replay artifacts
 and explicit not-observed effect placeholder. The combined 103-test suite
-passes. PC6 remains in progress until a clean-checkout replay command and
-redaction/path-containment behavior are qualified.
+passes. ARM-088 adds the contained package and CLI: canonical
+manifest/journal files plus 14 exact artifact files live beneath a
+caller-selected nonsymlink evidence root; package identifiers cannot contain
+paths; every file is bounded and hash-checked; and sensitive keys, absolute
+paths, symlinks, noncanonical JSON, deletion, mutation, and unexpected entries
+reject. `replay-typing-trace` verifies byte identity only and reports zero
+authority. Twelve package tests, two CLI tests, and the 117-test affected suite
+pass. PC6 remains in progress only until one actual adapter-produced golden
+package is retained and replayed from a clean checkout.
 
 ### Deliverables
 
