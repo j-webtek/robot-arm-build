@@ -1,5 +1,18 @@
 # Tactevra overview storyboard changelog
 
+## Base and articulation verification correction
+
+- Replaced the solid presentation pedestal with an open controller PCB,
+  standoffs, fixed lower chassis, bearing, and separate rotating yaw deck.
+- Added base yaw and shoulder pitch to the declared five-stage visible joint
+  chain and mounted each servo on the mechanically carrying link.
+- Reworked contact descent to use complete-chain IK instead of moving the
+  toolhead independently of the wrist.
+- Added sampled full-timeline checks for fixed base position, link-length and
+  pivot continuity, vertical yaw/tool axes, and bounded joint/yaw steps.
+- Added close full-arm and joint-interface QA render modes for review without
+  adding presentation claims or editorial cameras.
+
 ## Servo-form and articulation correction
 
 - Replaced the simplified two-link animation with the RoArm-shaped visible

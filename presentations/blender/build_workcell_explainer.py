@@ -32,7 +32,7 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 
 import bpy
-from mathutils import Vector
+from mathutils import Quaternion, Vector
 
 
 SCRIPT = Path(__file__).resolve()
@@ -722,8 +722,9 @@ def presentation_arm_pose(
     The upper and short wrist lengths come from the pinned URDF joint origins.
     The visible forearm span is 155 mm because its rendered rail runs between
     the outer servo mounting stacks, not between bare URDF frame origins. The
-    final short link follows the gross reach direction while the terminal tool
-    frame remains vertical. This is presentation IK, not controller evidence.
+    final short link uses the pinned link4-to-link5 offset as a down-and-forward
+    wrist drop while the terminal tool frame remains vertical. This is
+    presentation IK, not controller evidence.
     """
     tx, ty, _tz = manifest["arm"]["nominal_board_T_robot_world_translation"]
     shoulder = board_point(tx, ty, 0) + Vector((0, 0, 0.120))
@@ -732,13 +733,45 @@ def presentation_arm_pose(
     forearm_length = 0.1550
     wrist_link_length = math.hypot(0.015147, 0.053653)
 
-    gross = wrist - shoulder
-    gross_axis = gross.normalized()
-    wrist_pitch = wrist - gross_axis * wrist_link_length
+    planar = wrist - shoulder
+    planar.z = 0
+    if planar.length < 1e-9:
+        radial_axis = Vector((1, 0, 0))
+    else:
+        radial_axis = planar.normalized()
+    preferred_wrist_drop = (
+        radial_axis * 0.015147 + Vector((0, 0, -0.053653))
+    ).normalized() * wrist_link_length
+    gross_axis = (wrist - shoulder).normalized()
+    gross_distance = (wrist - shoulder).length
+    maximum = upper_length + forearm_length
+    desired_direction = preferred_wrist_drop.normalized()
+    required_cosine = (
+        gross_distance ** 2 + wrist_link_length ** 2 - (maximum - 1e-5) ** 2
+    ) / (2 * gross_distance * wrist_link_length)
+    required_cosine = max(-1.0, min(1.0, required_cosine))
+    current_cosine = desired_direction.dot(gross_axis)
+    if current_cosine < required_cosine:
+        # High-clearance crossing poses need more of the short wrist link's
+        # reach. Rotate it only as far toward the gross reach axis as required,
+        # retaining the preferred down-and-forward silhouette elsewhere.
+        perpendicular = desired_direction - gross_axis * current_cosine
+        if perpendicular.length < 1e-9:
+            perpendicular = radial_axis.cross(gross_axis)
+        if perpendicular.length < 1e-9:
+            perpendicular = Vector((0, 0, -1))
+        perpendicular.normalize()
+        adjusted_direction = (
+            gross_axis * required_cosine
+            + perpendicular * math.sqrt(max(1.0 - required_cosine ** 2, 0.0))
+        ).normalized()
+        wrist_drop = adjusted_direction * wrist_link_length
+    else:
+        wrist_drop = preferred_wrist_drop
+    wrist_pitch = wrist - wrist_drop
     reach = wrist_pitch - shoulder
     distance = reach.length
     minimum = abs(upper_length - forearm_length)
-    maximum = upper_length + forearm_length
     if not minimum <= distance <= maximum:
         raise ValueError(
             f"presentation arm target is unreachable: {distance:.4f} m not in "
@@ -757,6 +790,22 @@ def presentation_arm_pose(
     bend_normal = side.cross(reach_axis).normalized()
     elbow = shoulder + reach_axis * projection + bend_normal * height
     return shoulder, elbow, wrist_pitch, wrist
+
+
+def presentation_base_yaw(
+    manifest: dict, target_xy: tuple[float, float]
+) -> tuple[Vector, Quaternion]:
+    """Return the fixed base origin and yaw quaternion for a board target."""
+    tx, ty, _tz = manifest["arm"]["nominal_board_T_robot_world_translation"]
+    base = board_point(tx, ty, 0)
+    target = board_point(*target_xy, 0)
+    radial = target - base
+    radial.z = 0
+    if radial.length < 1e-9:
+        yaw = math.radians(manifest["arm"]["nominal_board_T_robot_world_yaw_deg"])
+    else:
+        yaw = math.atan2(radial.y, radial.x)
+    return base, Quaternion((0, 0, 1), yaw)
 
 
 def add_continuous_press_arm(
@@ -786,16 +835,61 @@ def add_continuous_press_arm(
     shoulder, elbow, wrist_pitch, wrist = presentation_arm_pose(
         manifest, target_xy
     )
-    gross_axis = (wrist - shoulder).normalized()
-    side = gross_axis.cross(Vector((0, 0, 1))).normalized()
-    normal = side.cross(gross_axis).normalized()
+    radial_axis = wrist - shoulder
+    radial_axis.z = 0
+    radial_axis.normalize()
+    side = radial_axis.cross(Vector((0, 0, 1))).normalized()
+    normal = Vector((0, 0, 1))
 
-    cube("Continuous arm base foot", base + Vector((0, 0, 0.020)),
-         (0.118, 0.108, 0.040), mats["abs"], 0.008)
-    cube("Continuous arm base electronics", base + Vector((0, 0, 0.057)),
-         (0.094, 0.082, 0.052), mats["servo"], 0.006)
-    cylinder("Continuous arm turntable", base + Vector((0, 0, 0.091)),
-             0.050, 0.020, mats["arm_exact"], 64)
+    # Match the open construction visible on the physical RoArm: a shallow
+    # lower plate, exposed controller PCB on brass standoffs, rotating upper
+    # deck, and open shoulder yoke. The previous solid electronics block made
+    # the base look like an unrelated industrial pedestal.
+    cube("Continuous arm base lower plate", base + Vector((0, 0, 0.010)),
+         (0.112, 0.102, 0.020), mats["abs"], 0.008)
+    for x_sign in (-1, 1):
+        for y_sign in (-1, 1):
+            cylinder(
+                f"Continuous arm base rubber foot {x_sign:+d} {y_sign:+d}",
+                base + Vector((x_sign * 0.044, y_sign * 0.039, 0.003)),
+                0.009, 0.006, mats["abs"], 32,
+            )
+            cylinder(
+                f"Continuous arm base PCB standoff {x_sign:+d} {y_sign:+d}",
+                base + Vector((x_sign * 0.037, y_sign * 0.029, 0.032)),
+                0.0032, 0.028, mats["brass"], 24,
+            )
+    cube("Continuous arm base controller PCB", base + Vector((0, 0, 0.022)),
+         (0.088, 0.070, 0.004), mats["pcb"], 0.002)
+    for index, (dx, dy, sx, sy) in enumerate((
+        (-0.023, -0.012, 0.022, 0.016),
+        (0.017, -0.013, 0.016, 0.013),
+        (-0.020, 0.018, 0.012, 0.009),
+        (0.020, 0.018, 0.024, 0.010),
+    ), start=1):
+        cube(
+            f"Continuous arm base PCB component {index}",
+            base + Vector((dx, dy, 0.026)),
+            (sx, sy, 0.006), mats["servo"], 0.001,
+        )
+    led = cylinder("Continuous arm base status LED",
+                   base + Vector((0.033, -0.022, 0.030)),
+                   0.0025, 0.005, mats["status_led"], 24)
+    led["presentation_detail"] = "CONTROLLER_STATUS_INDICATOR"
+    cube("Continuous arm base yaw rotating deck", base + Vector((0, 0, 0.051)),
+         (0.086, 0.074, 0.008), mats["arm_exact"], 0.004)
+    cylinder("Continuous arm fixed yaw bearing", base + Vector((0, 0, 0.060)),
+             0.036, 0.014, mats["metal"], 64)
+    cylinder("Continuous arm base yaw turntable", base + Vector((0, 0, 0.070)),
+             0.040, 0.010, mats["arm_exact"], 64)
+    for yoke_sign in (-1, 1):
+        yoke_offset = side * (0.032 * yoke_sign)
+        _world_beam(
+            f"Continuous arm base yaw yoke {yoke_sign:+d}",
+            base + yoke_offset + Vector((0, 0, 0.067)),
+            shoulder + yoke_offset,
+            mats["arm_exact"], 0.010,
+        )
 
     # Rectangular servo bodies and round output bosses mirror the physical
     # ST-series actuator silhouette seen in the reference photographs.
@@ -845,11 +939,13 @@ def add_continuous_press_arm(
             boss = cylinder(f"Continuous arm {label} output boss {sign:+d}",
                             point + side * (size[1] * 0.51 * sign),
                             0.021, 0.008, mats["metal"], 40)
-            boss.rotation_euler = (math.pi / 2, 0, 0)
+            boss.rotation_mode = "QUATERNION"
+            boss.rotation_quaternion = side.to_track_quat("Z", "Y")
             cap = cylinder(f"Continuous arm {label} hub cap {sign:+d}",
                            point + side * (size[1] * 0.56 * sign),
                            0.014, 0.004, mats["arm_exact"], 32)
-            cap.rotation_euler = (math.pi / 2, 0, 0)
+            cap.rotation_mode = "QUATERNION"
+            cap.rotation_quaternion = side.to_track_quat("Z", "Y")
         # Small brass identification plate makes the proxy read like the same
         # serial-servo family without asserting a legible vendor mark.
         cube(f"Continuous arm {label} identification plate",
@@ -1119,6 +1215,12 @@ def build() -> bpy.types.Scene:
         "metal": material("Machined metal", (0.22, 0.28, 0.34, 1), metallic=0.85, roughness=0.20),
         "brass": material("Servo identification brass", (0.42, 0.27, 0.07, 1),
                            metallic=0.72, roughness=0.26),
+        "pcb": material("Controller PCB", (0.015, 0.085, 0.075, 1),
+                        metallic=0.22, roughness=0.34),
+        "status_led": material("Controller status LED", (0.02, 0.20, 0.42, 1),
+                               roughness=0.14,
+                               emission=(0.02, 0.40, 1.00, 1),
+                               emission_strength=5.0),
         "arm_exact": material("Official RoArm assembly finish", (0.017, 0.022, 0.028, 1),
                               metallic=0.48, roughness=0.24),
         "tool_print": textured_material(

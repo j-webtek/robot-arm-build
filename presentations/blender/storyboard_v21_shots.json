@@ -13,13 +13,16 @@
   "arm_articulation": {
     "presentation_only": true,
     "kinematic_authority": "software/models/roarm_m3/roarm_m3_kinematic_40dbd84.urdf",
-    "visible_joint_chain": ["shoulder", "elbow", "wrist_pitch", "tool_wrist"],
+    "visible_joint_chain": ["base_yaw", "shoulder_pitch", "elbow", "wrist_pitch", "tool_wrist"],
     "mount_side": {
+      "shoulder_servo": "base_yaw_turntable",
       "elbow_servo": "upper",
       "wrist_pitch_servo": "forearm",
       "tool_wrist_servo": "wrist_link",
       "gripper_and_stylus": "tool"
     },
+    "base_construction": "open controller PCB and standoffs beneath a rotating yaw deck",
+    "contact_descent": "whole-chain IK; no detached tool translation",
     "pivot_continuity": "parented chain",
     "terminal_tool_orientation": "vertical in board frame"
   },

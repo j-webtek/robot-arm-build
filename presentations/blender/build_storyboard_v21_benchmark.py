@@ -58,6 +58,8 @@ def existing_materials() -> dict[str, bpy.types.Material]:
         "servo": "Black servo",
         "metal": "Machined metal",
         "brass": "Servo identification brass",
+        "pcb": "Controller PCB",
+        "status_led": "Controller status LED",
         "arm_exact": "Official RoArm assembly finish",
         "tool_print": "Printed compliant tool body",
         "tool_cap": "Printed tool route accent",
@@ -233,16 +235,20 @@ def add_articulation_controls(
         controls[name] = obj
         return obj
 
-    upper = control("upper")
+    base_yaw = control("base_yaw")
+    upper = control("upper", base_yaw)
     forearm = control("forearm", upper)
     wrist_link = control("wrist_link", forearm)
     tool = control("tool", wrist_link)
     vertical_reference = control("tool_vertical_reference")
+    base_origin, yaw_q = base.presentation_base_yaw(rig["manifest"], target_xy)
     upper_q = segment_rotation(shoulder, elbow)
     forearm_q = segment_rotation(elbow, wrist_pitch)
     wrist_q = segment_rotation(wrist_pitch, wrist)
-    upper.location = shoulder
-    upper.rotation_quaternion = upper_q
+    base_yaw.location = base_origin
+    base_yaw.rotation_quaternion = yaw_q
+    upper.location = yaw_q.inverted() @ (shoulder - base_origin)
+    upper.rotation_quaternion = yaw_q.inverted() @ upper_q
     forearm.location = (0, 0, (elbow - shoulder).length)
     forearm.rotation_quaternion = upper_q.inverted() @ forearm_q
     wrist_link.location = (0, 0, (wrist_pitch - elbow).length)
@@ -266,6 +272,8 @@ def add_articulation_controls(
         if tool_component:
             obj.animation_data_clear()
             parent_preserve_world(obj, controls["tool"])
+        elif ("base yaw" in lower or "shoulder servo" in lower):
+            parent_preserve_world(obj, controls["base_yaw"])
         elif ("wrist link" in lower or "wrist servo harness" in lower
               or "tool wrist" in lower):
             parent_preserve_world(obj, controls["wrist_link"])
@@ -278,6 +286,8 @@ def add_articulation_controls(
             parent_preserve_world(obj, controls["tool"])
 
     required_mounts = {
+        "Continuous arm base yaw turntable": base_yaw,
+        "Continuous arm shoulder servo body": base_yaw,
         "Continuous arm elbow servo body": upper,
         "Continuous arm wrist pitch servo body": forearm,
         "Continuous arm tool wrist servo body": wrist_link,
@@ -298,18 +308,26 @@ def animate_arm_target(
     target_xy: tuple[float, float], frame: int, *, press: float = 0.0,
     wrist_z: float = 0.205,
 ) -> None:
+    # Contact is a small Cartesian descent of the complete connected chain,
+    # not a detached tool translation at the final wrist joint.
     shoulder, elbow, wrist_pitch, wrist = arm_pose(
-        target_xy, manifest, wrist_z=wrist_z
+        target_xy, manifest, wrist_z=wrist_z + press
     )
+    base_yaw = controls["base_yaw"]
     upper = controls["upper"]
     forearm = controls["forearm"]
     wrist_link = controls["wrist_link"]
     tool = controls["tool"]
+    base_origin, yaw_q = base.presentation_base_yaw(manifest, target_xy)
     upper_q = segment_rotation(shoulder, elbow)
     forearm_q = segment_rotation(elbow, wrist_pitch)
     wrist_q = segment_rotation(wrist_pitch, wrist)
-    upper.location = shoulder
-    upper.rotation_quaternion = upper_q
+    base_yaw.location = base_origin
+    base_yaw.rotation_quaternion = yaw_q
+    base_yaw.keyframe_insert("location", frame=frame)
+    base_yaw.keyframe_insert("rotation_quaternion", frame=frame)
+    upper.location = yaw_q.inverted() @ (shoulder - base_origin)
+    upper.rotation_quaternion = yaw_q.inverted() @ upper_q
     upper.keyframe_insert("location", frame=frame)
     upper.keyframe_insert("rotation_quaternion", frame=frame)
     forearm.location = (0, 0, (elbow - shoulder).length)
@@ -320,10 +338,102 @@ def animate_arm_target(
     wrist_link.rotation_quaternion = forearm_q.inverted() @ wrist_q
     wrist_link.keyframe_insert("location", frame=frame)
     wrist_link.keyframe_insert("rotation_quaternion", frame=frame)
-    tool.location = Vector((0, 0, (wrist - wrist_pitch).length)) + (
-        wrist_q.inverted() @ Vector((0, 0, press))
-    )
+    tool.location = Vector((0, 0, (wrist - wrist_pitch).length))
     tool.keyframe_insert("location", frame=frame)
+
+
+def validate_articulation_motion(
+    scene: bpy.types.Scene,
+    controls: dict[str, bpy.types.Object],
+) -> None:
+    """Sample the animated rig and reject disconnected or implausible motion."""
+    expected_lengths = {
+        ("base_yaw", "upper"): 0.120,
+        ("upper", "forearm"): math.hypot(0.236815, 0.030002),
+        ("forearm", "wrist_link"): 0.1550,
+        ("wrist_link", "tool"): math.hypot(0.015147, 0.053653),
+    }
+    authored = {
+        int(point.co.x)
+        for control in controls.values()
+        if control.animation_data and control.animation_data.action
+        for curve in control.animation_data.action.fcurves
+        for point in curve.keyframe_points
+    }
+    frames = sorted(set(range(961, 2089, 4)) | authored)
+    previous: dict[str, Vector] | None = None
+    fixed_base_origin: Vector | None = None
+    previous_yaw_forward: Vector | None = None
+    max_step = 0.0
+    max_yaw_step = 0.0
+    max_length_error = 0.0
+    minimum_tool_vertical = 1.0
+    for frame in frames:
+        scene.frame_set(frame)
+        bpy.context.view_layer.update()
+        positions = {
+            name: control.matrix_world.translation.copy()
+            for name, control in controls.items()
+        }
+        if fixed_base_origin is None:
+            fixed_base_origin = positions["base_yaw"].copy()
+        elif (positions["base_yaw"] - fixed_base_origin).length > 1e-8:
+            raise RuntimeError(f"base origin translated at frame {frame}")
+        for (parent_name, child_name), expected in expected_lengths.items():
+            observed = (positions[child_name] - positions[parent_name]).length
+            error = abs(observed - expected)
+            max_length_error = max(max_length_error, error)
+            if error > 1e-5:
+                raise RuntimeError(
+                    f"arm pivot separated at frame {frame}: "
+                    f"{parent_name}->{child_name} error {error:.7f} m"
+                )
+        tool_up = (
+            controls["tool"].matrix_world.to_quaternion()
+            @ Vector((0, 0, 1))
+        ).normalized()
+        vertical = tool_up.dot(Vector((0, 0, 1)))
+        minimum_tool_vertical = min(minimum_tool_vertical, vertical)
+        if vertical < 0.9999:
+            raise RuntimeError(
+                f"terminal tool lost vertical orientation at frame {frame}: {vertical}"
+            )
+        yaw_up = (
+            controls["base_yaw"].matrix_world.to_quaternion()
+            @ Vector((0, 0, 1))
+        ).normalized()
+        if yaw_up.dot(Vector((0, 0, 1))) < 0.999999:
+            raise RuntimeError(f"base yaw axis tilted at frame {frame}")
+        yaw_forward = (
+            controls["base_yaw"].matrix_world.to_quaternion()
+            @ Vector((1, 0, 0))
+        ).normalized()
+        if previous_yaw_forward is not None:
+            yaw_step = previous_yaw_forward.angle(yaw_forward)
+            max_yaw_step = max(max_yaw_step, yaw_step)
+            if yaw_step > math.radians(35):
+                raise RuntimeError(
+                    f"base yaw discontinuity at frame {frame}: "
+                    f"{math.degrees(yaw_step):.2f} degrees"
+                )
+        previous_yaw_forward = yaw_forward
+        if previous is not None:
+            step = max(
+                (positions[name] - previous[name]).length
+                for name in ("forearm", "wrist_link", "tool")
+            )
+            max_step = max(max_step, step)
+            if step > 0.080:
+                raise RuntimeError(
+                    f"arm joint discontinuity at frame {frame}: {step:.4f} m"
+                )
+        previous = positions
+    scene["arm_motion_validation"] = "PASS_CONNECTED_SMOOTH_VERTICAL"
+    scene["arm_motion_sample_count"] = len(frames)
+    scene["arm_motion_max_link_error_mm"] = max_length_error * 1000
+    scene["arm_motion_max_sample_step_mm"] = max_step * 1000
+    scene["arm_motion_max_yaw_sample_step_degrees"] = math.degrees(max_yaw_step)
+    scene["arm_motion_minimum_tool_vertical_dot"] = minimum_tool_vertical
 
 
 def animate_key_rhythm(
@@ -1075,6 +1185,8 @@ def build() -> bpy.types.Scene:
                     point.interpolation = "BEZIER"
                     point.easing = "AUTO"
 
+    validate_articulation_motion(scene, controls)
+
     scene.render.resolution_x = 1920
     scene.render.resolution_y = 1080
     scene.render.resolution_percentage = 50
@@ -1129,23 +1241,50 @@ def main() -> None:
         qa_collection = bpy.data.collections["TACTEVRA_SHOT_RIGS"]
         qa_camera, qa_aim = camera_rig(
             "arm_form_qa",
-            Vector((1.20, -2.60, 1.25)),
-            base.board_point(305, 300, 220),
-            50,
+            Vector((0.74, -1.55, 0.82)),
+            base.board_point(305, 300, 205),
+            52,
             qa_collection,
         )
         qa_camera.data.dof.aperture_fstop = 8.0
         # Disable editorial camera switching for this diagnostic-only pass.
         for marker in scene.timeline_markers:
             marker.camera = None
+        portal = scene.objects.get("DESIGNED — printable camera portal")
+        if portal is not None:
+            portal.hide_render = True
         for frame in (1009, 1178, 1528, 1800, 2028):
             scene.frame_set(frame)
             # Timeline camera markers run during frame changes, so restore the
             # QA camera afterwards rather than letting the editorial rig win.
             scene.camera = qa_camera
-            qa_aim.location = base.board_point(305, 300, 220)
+            qa_aim.location = base.board_point(305, 300, 205)
             bpy.context.view_layer.update()
             scene.render.filepath = str(OUT / f"arm_form_{frame:04d}.png")
+            bpy.ops.render.render(write_still=True)
+    if "--preview-arm-joints" in args:
+        # A tighter diagnostic angle exposes the rotating deck, shoulder,
+        # elbow, wrist-pitch, and tool-wrist interfaces in one image.
+        qa_collection = bpy.data.collections["TACTEVRA_SHOT_RIGS"]
+        joint_camera, joint_aim = camera_rig(
+            "arm_joints_qa",
+            Vector((0.62, -1.05, 0.50)),
+            base.board_point(300, 365, 145),
+            55,
+            qa_collection,
+        )
+        joint_camera.data.dof.aperture_fstop = 10.0
+        for marker in scene.timeline_markers:
+            marker.camera = None
+        portal = scene.objects.get("DESIGNED — printable camera portal")
+        if portal is not None:
+            portal.hide_render = True
+        for frame in (1009, 1528, 1800):
+            scene.frame_set(frame)
+            scene.camera = joint_camera
+            joint_aim.location = base.board_point(300, 365, 145)
+            bpy.context.view_layer.update()
+            scene.render.filepath = str(OUT / f"arm_joints_{frame:04d}.png")
             bpy.ops.render.render(write_still=True)
     print(f"TACTEVRA_STORYBOARD_V21={blend_path}")
 

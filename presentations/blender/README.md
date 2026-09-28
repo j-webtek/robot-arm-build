@@ -429,8 +429,11 @@ their controlled repository STLs. This film is therefore
 an accurate system-layout and product-geometry explainer, not a motion-clearance
 or fabrication release.
 
-The v2.1 animated presentation rig uses a parented four-pivot visible chain:
-shoulder, elbow, wrist pitch, and tool wrist. Its servo bodies remain attached
+The v2.1 animated presentation rig uses a parented five-stage visible chain:
+base yaw, shoulder pitch, elbow, wrist pitch, and tool wrist. The fixed lower
+chassis exposes the controller PCB and standoffs beneath a separate rotating
+yaw deck, matching the physical RoArm architecture rather than reading as a
+solid generic pedestal. Its servo bodies remain attached
 to the carrying side of each joint, its three link stages cannot separate
 during interpolation, and the terminal tool counter-rotates to keep the stylus
 vertical in the board frame. Render the five full-arm QA poses with:
@@ -443,6 +446,10 @@ blender --background --factory-startup `
 
 The resulting `tmp/blender-storyboard-v21/arm_form_*.png` files are review
 views only; they are not additional editorial cameras or film claims.
+Use `--preview-arm-joints` for tighter diagnostic views of the base and every
+joint interface. The build samples the complete animated interval and aborts
+on a translated base, separated pivot, tilted yaw axis, detached contact
+motion, nonvertical tool, or discontinuous joint/yaw step.
 
 ## Narration and truth boundary
 
