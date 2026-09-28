@@ -1,7 +1,7 @@
 # Tactevra project status
 
-Reviewed September 28, 2026 through the ARM-076 typing collision-evidence
-intake, ARM-075 exact-sample offline IK screen, AI-403 precision-adapter
+Reviewed September 28, 2026 through the ARM-077 PC0 pre-camera qualification
+basis, ARM-076 typing collision-evidence intake, ARM-075 exact-sample offline IK screen, AI-403 precision-adapter
 integration, and merged physical-camera
 campaign/evaluator work through PR #152. PR #151 subsequently updated the AI
 test dependency to Torch 2.13; that dependency merge does not change physical
@@ -229,6 +229,15 @@ builds the bounded joint sample plan and enumerates the exact installed-profile
 attachment, cable-geometry, and adjacent-sweep evidence slots. It fails closed
 when the measured installed profile is absent and still performs no collision
 screening, controller access, or physical movement.
+
+ARM-077 freezes the offline PC0 qualification basis for the remaining
+pre-camera arm integration work. It content-binds the canonical typing
+fixtures, source files, synthetic-only calibration/dynamics/controller
+identities, outcome vocabulary, and benchmark/resource ceilings. Strict tests
+reject authority promotion, reordered fixtures, crossed identities, and source
+drift. This creates a repeatable basis for joint-space timing work; it does not
+qualify installed dynamics, controller timing, camera evidence, collision
+geometry, or physical movement.
 
 AI-403 then integrates the pose-output precision adapter and actual V2 batch
 producer on current `main`. The retained contract fixture deterministically

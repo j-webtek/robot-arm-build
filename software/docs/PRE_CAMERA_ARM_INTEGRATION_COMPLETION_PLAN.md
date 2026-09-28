@@ -95,8 +95,8 @@ and its evidence gate pass.
 
 | ID | Deliverable | Depends on | Camera needed | Physical I/O | Initial status |
 | --- | --- | --- | ---: | ---: | --- |
-| PC0 | Freeze fixtures, profiles, metrics, and status vocabulary | Existing T1/T2 artifacts | No | None | READY |
-| PC1 | Joint-space dynamics and deterministic time scaling | PC0, T2B-IK | No | None | NOT_STARTED |
+| PC0 | Freeze fixtures, profiles, metrics, and status vocabulary | Existing T1/T2 artifacts | No | None | COMPLETE |
+| PC1 | Joint-space dynamics and deterministic time scaling | PC0, T2B-IK | No | None | READY |
 | PC2 | Golden end-to-end shadow pipeline | PC1, collision intake | No | None | NOT_STARTED |
 | PC3 | Rolling-horizon rebinding and restart safety | PC2 | No | None | NOT_STARTED |
 | PC4 | Typing-specific zero-write controller bridge | PC2, PC3 | No | None | NOT_STARTED |
@@ -108,6 +108,17 @@ and its evidence gate pass.
 | PC10 | Pre-camera integration closure | PC0-PC9 | No | None | NOT_STARTED |
 
 ## PC0 — Freeze the qualification basis
+
+**Completed 2026-09-28:** the retained
+`pre_camera_typing_qualification_basis_v1.json` now pins the canonical source
+files, fixture sequences, synthetic-only calibration/dynamics/controller
+identities, Cartesian policy, stable terminal vocabulary, resource ceilings,
+and benchmark requirements. A strict bounded loader rejects duplicate JSON
+members, authority promotion, reordered fixtures, crossed identity hashes,
+unsafe paths, source drift, non-finite dynamics, and physical claims. Ten
+focused tests and eighteen existing T1/T2 regression tests pass with no
+hardware access. This completion freezes the offline test basis only; none of
+its synthetic values are installed-workcell measurements.
 
 ### Deliverables
 
@@ -388,7 +399,7 @@ For every PC increment:
 
 ## Completion checklist
 
-- [ ] PC0 qualification basis frozen
+- [x] PC0 qualification basis frozen
 - [ ] PC1 joint dynamics and time scaling complete
 - [ ] PC2 golden shadow pipeline complete
 - [ ] PC3 rolling horizon and restart safety complete
