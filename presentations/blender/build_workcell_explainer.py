@@ -50,6 +50,9 @@ PORTAL_PATH = (
     / "printable_camera_portal_printed_parts_only.stl"
 )
 STL_DIR = ROOT / "active-project" / "RoCell_v0_3" / "stl"
+COMPLIANT_TOOL_BODY_PATH = STL_DIR / "compliant_tool_body.stl"
+COMPLIANT_TOOL_CAP_PATH = STL_DIR / "compliant_tool_top_cap.stl"
+STYLUS_COLLAR_PATH = STL_DIR / "stylus_collar_9mm.stl"
 DIMENSION_MANIFEST_PATH = SCRIPT.with_name("dimension_manifest.json")
 ARM_URDF_PATH = ROOT / "software" / "models" / "roarm_m3" / "roarm_m3_kinematic_40dbd84.urdf"
 APRILTAG_CODEBOOK_PATH = (
@@ -165,6 +168,26 @@ def import_stl(path: Path, name: str, mat: bpy.types.Material,
     obj.scale = (0.001, 0.001, 0.001)
     obj.location = board_point(*offset_mm)
     bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
+    apply_material(obj, mat)
+    return obj
+
+
+def import_stl_centered(path: Path, name: str, mat: bpy.types.Material,
+                        center_world: Vector) -> bpy.types.Object:
+    """Import a millimetre STL and place its mesh-bounds centre in world space.
+
+    Unlike the workcell parts, the compliant-tool files use part-local origins.
+    Centering their evaluated bounds makes the presentation transform explicit
+    without changing or globally scaling the controlled source meshes.
+    """
+    bpy.ops.wm.stl_import(filepath=str(path))
+    obj = bpy.context.object
+    obj.name = name
+    obj.scale = (0.001, 0.001, 0.001)
+    bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
+    local_corners = [Vector(corner) for corner in obj.bound_box]
+    local_center = sum(local_corners, Vector()) / len(local_corners)
+    obj.location = center_world - local_center
     apply_material(obj, mat)
     return obj
 
@@ -422,72 +445,118 @@ def add_keyboard(layout: dict, mats: dict[str, bpy.types.Material]) -> dict[str,
          ((sx - 8.0) / 1000, 0.003, 0.0022), mats["keyboard_trim"], 0.001)
     cube("Keyboard rear accent", board_point(ox + sx / 2, oy + sy - 3.2, sz - 1.4),
          ((sx - 8.0) / 1000, 0.003, 0.0022), mats["keyboard_trim"], 0.001)
-    # The photographed unit retains a narrow reflective protective-film band
-    # along the rear/top bezel. Keep it inside the measured envelope and clear
-    # of the function-key field so it reads as the same physical keyboard.
+    # The photographed unit has a glossy, film-covered control strip behind
+    # the function row. Keep it inside the measured envelope and preserve the
+    # dark keyboard silhouette instead of rendering it as a metallic panel.
     cube("Keyboard photographed rear protective film",
-         board_point(ox + sx / 2, oy + sy - 5.8, sz + 0.35),
-         ((sx - 6.0) / 1000, 0.0085, 0.00045),
+         board_point(ox + sx / 2, oy + sy - 5.0, sz + 0.35),
+         ((sx - 6.0) / 1000, 0.0100, 0.00045),
          mats["keyboard_film"], 0.0012)
+    for index, icon in enumerate(("□", "A", "1", "▣")):
+        icon_x = ox + 61.0 + index * 27.0
+        cube(f"Keyboard touch icon well {index + 1}",
+             board_point(icon_x, oy + sy - 5.0, sz + 0.75),
+             (0.017, 0.0065, 0.00035), mats["keyboard_trim"], 0.0014)
+        board_text(f"Keyboard touch icon {index + 1}", icon,
+                   board_point(icon_x, oy + sy - 5.0, sz + 1.2),
+                   0.0036, mats["legend"])
+    # Low-relief seams catch highlights like the wrinkled protective film in
+    # the supplied physical reference without baking a photograph into the
+    # distributable asset.
+    for index, offset in enumerate((-2.4, 0.0, 2.4)):
+        points = [
+            board_point(ox + 8.0, oy + sy - 5.0 + offset, sz + 0.82),
+            board_point(ox + sx * 0.35, oy + sy - 4.4 + offset, sz + 0.88),
+            board_point(ox + sx * 0.68, oy + sy - 5.6 + offset, sz + 0.84),
+            board_point(ox + sx - 8.0, oy + sy - 4.8 + offset, sz + 0.86),
+        ]
+        curve_line(f"Keyboard protective film seam {index + 1}", points,
+                   mats["keyboard_film"], 0.00016)
     # The printable shell remains a measured envelope. The principal key rows
     # below are positioned from software/config/static_nominal_target_profiles.json:
     # 19.05 mm pitch, exact first-center offsets, and therefore H at
     # board (216.55, 154.00). Function and modifier caps are presentation
     # context only and stay inside the same measured chassis.
     pitch = 19.05
-    rows = [
-        ("ESC F1 F2 F3 F4 F5 F6 F7 F8 F9 F10 F11 F12 PRT SCR".split(),
-         ox + 10.0, oy + 135.0, 0.82),
-        (list("1234567890") + ["-", "="],
-         ox + 22.0, oy + 111.0, 0.82),
-        (list("QWERTYUIOP"),
-         ox + 31.5, oy + 90.0, 0.82),
-        (list("ASDFGHJKL") + [";", "'"],
-         ox + 36.3, oy + 69.0, 0.82),
-        (list("ZXCVBNM") + [",", ".", "/"],
-         ox + 45.8, oy + 48.0, 0.82),
-    ]
     named_keys: dict[str, bpy.types.Object] = {}
+
+    def add_key(label: str, x: float, y: float, width: float,
+                row_id: str, col: int, *, legend_size: float | None = None,
+                name_prefix: str = "Key") -> bpy.types.Object:
+        cube(f"{name_prefix} well {row_id}-{col}", board_point(x, y, sz + 1.7),
+             (max(0.009, (width - 1.7) / 1000), 0.0180, 0.0034),
+             mats["key_side"], 0.0018)
+        key = cube(f"{name_prefix} cap {row_id}-{col}",
+                   board_point(x, y, sz + 4.0),
+                   (max(0.008, (width - 3.0) / 1000), 0.0162, 0.0042),
+                   mats["key"], 0.0024)
+        key["legend"] = label
+        named_keys.setdefault(label, key)
+        size = legend_size if legend_size is not None else (
+            0.0048 if len(label) <= 2 else 0.0028
+        )
+        board_text(f"{name_prefix} legend {label}-{row_id}-{col}", label,
+                   board_point(x, y, sz + 6.2), size, mats["legend"])
+        return key
+
+    # The physical RC03 reference has a compressed 18-key function row,
+    # including the four-key navigation cluster at the far right.
+    function_legends = (
+        "Esc", "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8",
+        "F9", "F10", "F11", "F12", "Prt", "Scr", "Pau", "Del",
+    )
+    function_step = (sx - 20.0) / (len(function_legends) - 1)
+    for col, legend in enumerate(function_legends):
+        add_key(legend, ox + 10.0 + col * function_step, oy + 130.0,
+                function_step * 0.86, "function", col,
+                legend_size=0.0025, name_prefix="Function")
+
+    # Main alphanumeric centers remain pinned to the software target profile;
+    # visual improvements must never drift the nominal control coordinates.
+    rows = [
+        (list("1234567890") + ["-", "="], ox + 22.0, oy + 111.0, 0.82),
+        (list("QWERTYUIOP"), ox + 31.5, oy + 90.0, 0.82),
+        (list("ASDFGHJKL") + [";", "'"], ox + 36.3, oy + 69.0, 0.82),
+        (list("ZXCVBNM") + [",", ".", "/"], ox + 45.8, oy + 48.0, 0.82),
+    ]
     for row_i, (legends, first_x, y, width_ratio) in enumerate(rows):
         for col, legend in enumerate(legends):
             x = first_x + col * pitch
             key_width = pitch * width_ratio
-            lower = cube(f"Key well {row_i}-{col}", board_point(x, y, sz + 1.7),
-                         (max(0.009, (key_width - 1.7) / 1000), 0.0180, 0.0034),
-                         mats["key_side"], 0.0018)
-            key = cube(f"Key cap {row_i}-{col}", board_point(x, y, sz + 4.0),
-                       (max(0.008, (key_width - 3.0) / 1000), 0.0162, 0.0042),
-                       mats["key"], 0.0024)
-            lower["legend"] = legend
-            key["legend"] = legend
-            named_keys.setdefault(legend, key)
-            legend_size = 0.0048 if len(legend) <= 2 else 0.0028
-            board_text(
-                f"Key legend {legend}-{row_i}-{col}", legend,
-                board_point(x, y, sz + 6.2), legend_size, mats["legend"],
-            )
+            add_key(legend, x, y, key_width, str(row_i), col)
     # Presentation-only outer modifiers, sized to resemble the photographed
     # compact keyboard without changing any named target coordinate.
-    for label, x, y, width in (
+    for col, (label, x, y, width) in enumerate((
         ("TAB", ox + 12.0, oy + 90.0, 22.0),
         ("CAPS", ox + 15.0, oy + 69.0, 28.0),
         ("SHIFT", ox + 20.0, oy + 48.0, 37.0),
-        ("CTRL", ox + 14.0, oy + 24.0, 26.0),
-        ("ALT", ox + 48.0, oy + 24.0, 24.0),
-        ("SPACE", ox + 128.0, oy + 24.0, 112.0),
-        ("ALT", ox + 201.0, oy + 24.0, 24.0),
-        ("LEFT", ox + 247.0, oy + 24.0, 17.0),
-        ("DOWN", ox + 266.0, oy + 24.0, 17.0),
-        ("RIGHT", ox + 285.0, oy + 24.0, 17.0),
-    ):
-        cube(f"Modifier well {label}-{x}", board_point(x, y, sz + 1.7),
-             ((width + 0.5) / 1000, 0.0180, 0.0034), mats["key_side"], 0.0018)
-        key = cube(f"Modifier cap {label}-{x}", board_point(x, y, sz + 4.0),
-                   ((width - 1.0) / 1000, 0.0162, 0.0042), mats["key"], 0.0024)
-        board_text(f"Modifier legend {label}-{x}", label,
-                   board_point(x, y, sz + 6.2),
-                   0.0048 if len(label) <= 2 else 0.0028, mats["legend"])
-        named_keys.setdefault(label, key)
+        ("BACK", ox + 264.0, oy + 111.0, 40.0),
+        ("HOME", ox + 298.0, oy + 111.0, 20.0),
+        ("[", ox + 231.5, oy + 90.0, 15.6),
+        ("]", ox + 250.5, oy + 90.0, 15.6),
+        ("\\", ox + 269.5, oy + 90.0, 15.6),
+        ("PGUP", ox + 298.0, oy + 90.0, 20.0),
+        ("ENTER", ox + 264.0, oy + 69.0, 40.0),
+        ("PGDN", ox + 298.0, oy + 69.0, 20.0),
+        ("SHIFT", ox + 264.0, oy + 48.0, 40.0),
+        ("UP", ox + 289.0, oy + 48.0, 17.0),
+        ("END", ox + 307.0, oy + 48.0, 17.0),
+        ("CTRL", ox + 14.0, oy + 24.0, 23.0),
+        ("START", ox + 39.0, oy + 24.0, 24.0),
+        ("FN", ox + 61.0, oy + 24.0, 18.0),
+        ("ALT", ox + 80.0, oy + 24.0, 18.0),
+        ("SPACE", ox + 141.0, oy + 24.0, 104.0),
+        ("ALTGR", ox + 205.0, oy + 24.0, 22.0),
+        ("MENU", ox + 226.0, oy + 24.0, 17.0),
+        ("CTRL", ox + 246.0, oy + 24.0, 20.0),
+        ("INS", ox + 264.0, oy + 24.0, 15.0),
+        ("LEFT", ox + 276.5, oy + 24.0, 14.0),
+        ("DOWN", ox + 292.0, oy + 24.0, 14.0),
+        ("RIGHT", ox + 307.5, oy + 24.0, 14.0),
+    )):
+        add_key(label, x, y, width, "modifier", col,
+                legend_size=0.0025 if len(label) > 3 else None,
+                name_prefix="Modifier")
     # Three small status lights and a recessed cable exit add scale cues that
     # survive the overhead and macro shots.
     for index, state_mat in enumerate((mats["green"], mats["cyan"], mats["amber"])):
@@ -497,11 +566,13 @@ def add_keyboard(layout: dict, mats: dict[str, bpy.types.Material]) -> dict[str,
     cable_start = board_point(ox + sx / 2, oy + sy, sz * 0.68)
     keyboard_cable = curve_line(
         "Keyboard signal cable",
-        [cable_start, cable_start + Vector((0.0, 0.040, 0.005)),
-         cable_start + Vector((0.065, 0.075, 0.002))],
+        [cable_start,
+         cable_start + Vector((0.0, 0.040, 0.005)),
+         board_point(55.0, oy + sy + 45.0, sz * 0.68 + 2.0),
+         board_point(-85.0, oy + sy + 65.0, sz * 0.68 + 2.0)],
         mats["cable"], 0.0022,
     )
-    keyboard_cable["presentation_detail"] = "KEYBOARD_CABLE_WITHIN_PRESENTATION_CLEARANCE"
+    keyboard_cable["presentation_detail"] = "KEYBOARD_CABLE_EXITS_OPERATOR_DISPLAY_SIDE_OFF_FRAME"
     return named_keys
 
 
@@ -643,8 +714,13 @@ def _world_beam(name: str, start: Vector, end: Vector, mat: bpy.types.Material,
     return beam
 
 
-def add_continuous_press_arm(mats: dict[str, bpy.types.Material]) -> dict[str, object]:
-    """Build one continuous, hardware-shaped arm rig ending at the H stylus.
+def add_continuous_press_arm(
+    mats: dict[str, bpy.types.Material],
+    *,
+    target_xy: tuple[float, float] = (216.55, 154.0),
+    motion_profile: tuple[tuple[int, float], ...] | None = None,
+) -> dict[str, object]:
+    """Build one continuous, hardware-shaped arm rig ending at a named target.
 
     The official assembly surface remains available as source evidence, but a
     rig is required for the execution beat because the vendor STEP is a rigid
@@ -662,7 +738,8 @@ def add_continuous_press_arm(mats: dict[str, bpy.types.Material]) -> dict[str, o
     tx, ty, _tz = manifest["arm"]["nominal_board_T_robot_world_translation"]
     base = board_point(tx, ty, 0)
     shoulder = base + Vector((0, 0, 0.120))
-    wrist = board_point(216.55, 154.0, 0) + Vector((0, 0, 0.205))
+    target_x, target_y = target_xy
+    wrist = board_point(target_x, target_y, 0) + Vector((0, 0, 0.205))
     length_a = 0.2387
     length_b = 0.1550
     direction = wrist - shoulder
@@ -779,31 +856,109 @@ def add_continuous_press_arm(mats: dict[str, bpy.types.Material]) -> dict[str, o
                   (0.060, 0.050, 0.066), mats["servo"], 0.006)
     wrist_plate = cube("Continuous arm gripper plate", wrist + Vector((0, 0, -0.073)),
                        (0.072, 0.010, 0.050), mats["arm_exact"], 0.004)
+    # The moving presentation arm uses the same end-effector architecture as
+    # the physical build: two opposing RoArm jaw plates capture the recessed
+    # flats on the repository-owned compliant-tool body. The older proxy left
+    # a visible air gap and made the stylus look suspended between generic jaws.
     jaw_left = cube("Continuous arm gripper jaw left",
-                    wrist + Vector((-0.023, 0, -0.112)),
-                    (0.012, 0.026, 0.070), mats["arm_exact"], 0.003)
+                    wrist + Vector((-0.0195, 0, -0.112)),
+                    (0.011, 0.026, 0.070), mats["arm_exact"], 0.003)
     jaw_right = cube("Continuous arm gripper jaw right",
-                     wrist + Vector((0.023, 0, -0.112)),
-                     (0.012, 0.026, 0.070), mats["arm_exact"], 0.003)
-    collar = cylinder("Continuous arm stylus collar", wrist + Vector((0, 0, -0.071)),
-                      0.012, 0.028, mats["arm_exact"], 48)
-    stylus_center = board_point(216.55, 154.0, 0) + Vector((0, 0, 0.105))
-    stylus = cylinder("Continuous arm stylus", stylus_center, 0.004, 0.140,
-                      mats["metal"], 48)
-    bpy.ops.mesh.primitive_cone_add(vertices=48, radius1=0.0012, radius2=0.004,
-                                    depth=0.012,
-                                    location=board_point(216.55, 154.0, 29))
-    tip = bpy.context.object
-    tip.name = "Continuous arm compliant stylus tip"
-    apply_material(tip, mats["arm_exact"])
-    moving = (holder, wrist_plate, jaw_left, jaw_right, collar, stylus, tip)
+                     wrist + Vector((0.0195, 0, -0.112)),
+                     (0.011, 0.026, 0.070), mats["arm_exact"], 0.003)
+    for side_name, x_sign in (("left", -1), ("right", 1)):
+        cube(f"Continuous arm {side_name} grip pad",
+             wrist + Vector((x_sign * 0.0146, 0, -0.112)),
+             (0.0022, 0.019, 0.028), mats["abs"], 0.001)
+        for z_offset in (-0.026, 0.026):
+            fastener = cylinder(
+                f"Continuous arm {side_name} jaw fastener {z_offset:+.3f}",
+                wrist + Vector((x_sign * 0.0252, 0, -0.112 + z_offset)),
+                0.0042, 0.0032, mats["metal"], 24,
+            )
+            fastener.rotation_euler = (0, math.pi / 2, 0)
+
+    # Source-accurate printed contact cartridge. These are controlled RoCell
+    # STLs, not a hand-modelled stand-in. The cap and two M3 heads make the
+    # positive stylus retention legible in the macro press shot.
+    tool_center = wrist + Vector((0, 0, -0.1140))
+    tool_body = import_stl_centered(
+        COMPLIANT_TOOL_BODY_PATH,
+        "Continuous arm compliant tool body — controlled STL",
+        mats["tool_print"], tool_center,
+    )
+    body_bottom_z = tool_center.z - 0.0331
+    cap_center = Vector((tool_center.x, tool_center.y, body_bottom_z + 0.0675))
+    tool_cap = import_stl_centered(
+        COMPLIANT_TOOL_CAP_PATH,
+        "Continuous arm keyed compliant tool cap — controlled STL",
+        mats["tool_cap"], cap_center,
+    )
+    collar_center = Vector((tool_center.x, tool_center.y, body_bottom_z + 0.05075))
+    collar = import_stl_centered(
+        STYLUS_COLLAR_PATH,
+        "Continuous arm split stylus collar — controlled STL",
+        mats["tool_cap"], collar_center,
+    )
+    for screw_name, dx, dy in (("A", -0.009, -0.007), ("B", 0.009, 0.007)):
+        shank = cylinder(
+            f"Continuous arm compliant cap M3 screw {screw_name}",
+            cap_center + Vector((dx, dy, 0.0037)), 0.0015, 0.010,
+            mats["metal"], 24,
+        )
+        head = cylinder(
+            f"Continuous arm compliant cap M3 head {screw_name}",
+            cap_center + Vector((dx, dy, 0.0062)), 0.0030, 0.0022,
+            mats["metal"], 32,
+        )
+        shank["presentation_detail"] = "TWO_M3_RETAINING_SCREWS"
+        head["presentation_detail"] = "TWO_M3_RETAINING_SCREWS"
+    stylus_center = board_point(target_x, target_y, 0) + Vector((0, 0, 0.105))
+    stylus = cylinder("Continuous arm OASO-style 9 mm stylus barrel (nominal)",
+                      stylus_center, 0.0045, 0.140, mats["stylus"], 64)
+    tip = cylinder(
+        "Continuous arm articulated stylus tip stem (nominal)",
+        board_point(target_x, target_y, 29), 0.0012, 0.012,
+        mats["metal"], 32,
+    )
+    disc = cylinder(
+        "Continuous arm capacitive stylus contact disc (nominal)",
+        board_point(target_x, target_y, 22.7), 0.0050, 0.0009,
+        mats["stylus_disc"], 64,
+    )
+    pivot = cylinder(
+        "Continuous arm stylus disc pivot (nominal)",
+        board_point(target_x, target_y, 23.5), 0.0022, 0.0022,
+        mats["metal"], 32,
+    )
+    moving = tuple(
+        obj for obj in bpy.context.scene.objects
+        if obj not in objects_before and (
+            "wrist" in obj.name.lower()
+            or "gripper" in obj.name.lower()
+            or "jaw" in obj.name.lower()
+            or "compliant" in obj.name.lower()
+            or "stylus" in obj.name.lower()
+            or "grip pad" in obj.name.lower()
+        )
+    )
+    if motion_profile is None:
+        motion_profile = (
+            (1, 0.0), (1288, 0.0), (1300, -0.004),
+            (1320, -0.004), (1332, 0.0), (END_FRAME, 0.0),
+        )
     for component in moving:
         base_z = component.location.z
-        for frame, offset in ((1, 0.0), (1288, 0.0), (1300, -0.004),
-                              (1320, -0.004), (1332, 0.0), (END_FRAME, 0.0)):
+        for frame, offset in motion_profile:
             component.location.z = base_z + offset
             component.keyframe_insert("location", frame=frame)
         component["evidence_status"] = "URDF_DERIVED_PRESENTATION_PROXY_NOT_KINEMATIC_EVIDENCE"
+        component["presentation_target_xy_mm"] = target_xy
+    tool_body["geometry_authority"] = str(COMPLIANT_TOOL_BODY_PATH.relative_to(ROOT)).replace("\\", "/")
+    tool_body["source_dimensions_mm"] = "28 x 24 x 66.2 mesh envelope; 65 nominal body"
+    tool_cap["geometry_authority"] = str(COMPLIANT_TOOL_CAP_PATH.relative_to(ROOT)).replace("\\", "/")
+    collar["geometry_authority"] = str(STYLUS_COLLAR_PATH.relative_to(ROOT)).replace("\\", "/")
+    stylus["evidence_status"] = "NOMINAL_9MM_BARREL_UNMEASURED_INSTALLED_TOOL"
     objects = tuple(obj for obj in bpy.context.scene.objects if obj not in objects_before)
     return {"root": base, "objects": objects, "moving": moving, "manifest": manifest}
 
@@ -909,6 +1064,17 @@ def build() -> bpy.types.Scene:
                            metallic=0.72, roughness=0.26),
         "arm_exact": material("Official RoArm assembly finish", (0.017, 0.022, 0.028, 1),
                               metallic=0.48, roughness=0.24),
+        "tool_print": textured_material(
+            "Printed compliant tool body", (0.025, 0.032, 0.039, 1),
+            scale=115.0, detail=2.5, roughness=0.48, metallic=0.02,
+        ),
+        "tool_cap": material("Printed tool route accent", (0.030, 0.045, 0.060, 1),
+                             metallic=0.04, roughness=0.48),
+        "stylus": material("OASO-style aluminum stylus", (0.24, 0.28, 0.32, 1),
+                           metallic=0.88, roughness=0.18),
+        "stylus_disc": material("OASO-style capacitive contact disc",
+                                (0.20, 0.48, 0.62, 1), metallic=0.22,
+                                roughness=0.12, ior_level=0.62),
         "wood": textured_material("Light birch", (0.55, 0.33, 0.16, 1),
                                     scale=7.0, detail=3.0, roughness=0.48),
         "keyboard": material("Keyboard black body", (0.0002, 0.0003, 0.0005, 1),
@@ -919,8 +1085,8 @@ def build() -> bpy.types.Scene:
                                   metallic=0.44, roughness=0.36, ior_level=0.24),
         "keyboard_film": textured_material(
             "Photographed keyboard protective film",
-            (0.24, 0.27, 0.30, 1), scale=42.0, detail=4.0,
-            roughness=0.18, metallic=0.46,
+            (0.004, 0.006, 0.009, 1), scale=42.0, detail=4.0,
+            roughness=0.12, metallic=0.16,
         ),
         "key": material("Keyboard black keys", (0.0003, 0.0005, 0.0008, 1),
                         roughness=0.54, ior_level=0.18),

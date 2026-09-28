@@ -1,0 +1,125 @@
+{
+  "title": "Tactevra overview film v2.1",
+  "fps": 24,
+  "duration_seconds": 100,
+  "frame_start": 1,
+  "frame_end": 2400,
+  "stage_vocabulary": ["UNDERSTAND", "LOCATE", "CHECK", "ACT", "VERIFY"],
+  "authority_graphics": {
+    "permit": "green one-contact token",
+    "uncertainty": "blue bounded-error disk",
+    "preview": "dotted target ghost with no authority"
+  },
+  "camera_inserts": [
+    {
+      "scene_id": 7,
+      "start": 794,
+      "end": 840,
+      "rig": "macro",
+      "purpose": "toolhead construction close-up while the first permit travels"
+    },
+    {
+      "scene_id": 8,
+      "start": 1049,
+      "end": 1068,
+      "rig": "macro",
+      "purpose": "brief key-depression insert inside the low-three-quarter first-contact lesson"
+    }
+  ],
+  "operator_display_sequence": {
+    "presentation_only": true,
+    "placement": {
+      "center_board_xy_mm": [-260, 320],
+      "screen_size_mm": [300, 190],
+      "screen_center_z_mm": 180,
+      "yaw_degrees": 35,
+      "board_overlap": false,
+      "overhead_camera_visible": false,
+      "minimum_robot_base_clearance_mm": 405.85,
+      "relation_to_board": "floating left of and fully outside the measured board footprint"
+    },
+    "states": [
+      {"name": "request console", "body": "REQUEST CONSOLE\nType ready locally.\nThen send on my way\nfrom the phone.", "start": 97, "end": 919, "size": 0.010},
+      {"name": "empty test pad", "body": "LOCAL TEST PAD\n_", "start": 920, "end": 1063, "size": 0.016},
+      {"name": "test pad r", "body": "LOCAL TEST PAD\nr", "start": 1064, "end": 1177, "size": 0.016},
+      {"name": "test pad re", "body": "LOCAL TEST PAD\nre", "start": 1178, "end": 1219, "size": 0.016},
+      {"name": "test pad rea", "body": "LOCAL TEST PAD\nrea", "start": 1220, "end": 1261, "size": 0.016},
+      {"name": "test pad read", "body": "LOCAL TEST PAD\nread", "start": 1262, "end": 1303, "size": 0.016},
+      {"name": "test pad ready", "body": "LOCAL TEST PAD\nready", "start": 1304, "end": 2400, "size": 0.016}
+    ]
+  },
+  "benchmark": {
+    "scene_id": 8,
+    "target": "keyboard:r",
+    "phases": [
+      {"name": "transit", "frame": 961},
+      {"name": "align", "frame": 985},
+      {"name": "settle", "frame": 1009},
+      {"name": "approach", "frame": 1033},
+      {"name": "contact", "frame": 1057},
+      {"name": "retract", "frame": 1093},
+      {"name": "verify", "frame": 1129}
+    ]
+  },
+  "rhythm": {
+    "scene_id": 9,
+    "targets": [
+      {"key": "e", "contact_frame": 1178, "verify_frame": 1194},
+      {"key": "a", "contact_frame": 1220, "verify_frame": 1236},
+      {"key": "d", "contact_frame": 1262, "verify_frame": 1278},
+      {"key": "y", "contact_frame": 1304, "verify_frame": 1320}
+    ],
+    "permit_scope": "one contact",
+    "next_target_authority": "preview only",
+    "visual_shorthand": "permit plus verification tick only"
+  },
+  "crossing": {
+    "scene_id": 11,
+    "start_frame": 1465,
+    "midpoint_frame": 1528,
+    "end_frame": 1608,
+    "minimum_authored_wrist_height_mm": 255,
+    "contact_authority": "none",
+    "continuity": "same articulated rig and stylus"
+  },
+  "phone_sequence": {
+    "scenes": [12, 13, 14],
+    "phrase": "on my way",
+    "messages_app_contact_frame": 1660,
+    "contact_frames": [1800, 1840, 1872, 1888, 1904, 1920, 1936, 1952, 1960],
+    "send_contact_frame": 2028,
+    "permit_scope": "one contact",
+    "screen_check_before_each_contact": true,
+    "verify_after_each_state_change": true,
+    "ui_layout": {
+      "orientation": "portrait",
+      "header": "contact identity at top",
+      "conversation_history_bubbles": 2,
+      "composer": "immediately above software keyboard",
+      "send": "right edge of composer",
+      "sent_receipt": "outgoing bubble in conversation with sent tick"
+    },
+    "time_compression": {"scene": 13, "start_frame": 1850, "end_frame": 1968, "rate": "2x", "disclosed": true},
+    "visual_shorthand_after_first_contact": "permit plus verification tick only",
+    "runtime_locked_fields": ["speed", "contact_depth", "retry_policy", "timing"]
+  },
+  "shots": [
+    {"id": 1, "start": 1, "end": 96, "seconds": "0:00–0:04", "stage": null, "rig": "macro", "slug": "cold-open-r-hover"},
+    {"id": 2, "start": 97, "end": 216, "seconds": "0:04–0:09", "stage": null, "rig": "macro", "slug": "operator-request"},
+    {"id": 3, "start": 217, "end": 360, "seconds": "0:09–0:15", "stage": null, "rig": "hero", "slug": "workcell-reveal"},
+    {"id": 4, "start": 361, "end": 504, "seconds": "0:15–0:21", "stage": "UNDERSTAND", "rig": "dolly", "slug": "amber-model-proposal"},
+    {"id": 5, "start": 505, "end": 672, "seconds": "0:21–0:28", "stage": "LOCATE", "rig": "overhead", "slug": "camera-to-overhead"},
+    {"id": 6, "start": 673, "end": 792, "seconds": "0:28–0:33", "stage": "CHECK", "rig": "dolly", "slug": "stale-evidence-reject"},
+    {"id": 7, "start": 793, "end": 960, "seconds": "0:33–0:40", "stage": "CHECK", "rig": "low_three_quarter", "slug": "fresh-evidence-one-permit"},
+    {"id": 8, "start": 961, "end": 1152, "seconds": "0:40–0:48", "stage": "ACT", "rig": "low_three_quarter", "slug": "r-contact-benchmark"},
+    {"id": 9, "start": 1153, "end": 1320, "seconds": "0:48–0:55", "stage": "ACT", "rig": "dolly", "slug": "eady-key-rhythm"},
+    {"id": 10, "start": 1321, "end": 1464, "seconds": "0:55–1:01", "stage": "ACT", "rig": "hero", "slug": "ready-local-receipt"},
+    {"id": 11, "start": 1465, "end": 1608, "seconds": "1:01–1:07", "stage": "ACT", "rig": "arm_follow", "slug": "keyboard-to-phone-crossing"},
+    {"id": 12, "start": 1609, "end": 1776, "seconds": "1:07–1:14", "stage": "ACT", "rig": "arm_follow", "slug": "phone-state-and-messages"},
+    {"id": 13, "start": 1777, "end": 1968, "seconds": "1:14–1:22", "stage": "ACT", "rig": "arm_follow", "slug": "phone-on-my-way"},
+    {"id": 14, "start": 1969, "end": 2088, "seconds": "1:22–1:27", "stage": "ACT", "rig": "macro", "slug": "phone-send-permit"},
+    {"id": 15, "start": 2089, "end": 2232, "seconds": "1:27–1:33", "stage": "VERIFY", "rig": "hero", "slug": "independent-receipts"},
+    {"id": 16, "start": 2233, "end": 2304, "seconds": "1:33–1:36", "stage": null, "rig": "dolly", "slug": "evidence-trail"},
+    {"id": 17, "start": 2305, "end": 2400, "seconds": "1:36–1:40", "stage": null, "rig": "hero", "slug": "brand-resolve"}
+  ]
+}
