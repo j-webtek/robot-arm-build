@@ -465,6 +465,14 @@ identity crossing, malformed contents, duplicates, and exhaustion. The 145-test
 affected suite passes with no physical transport, permit, movement, retry, or
 authority. PC6 unified journaling and deterministic replay may now begin; all
 measured-workcell and camera qualification blockers remain unchanged.
+ARM-086 begins PC6 with a canonical, replay-only trace manifest. Fourteen exact
+stages are bounded and hash-chained from request/AI input through planning,
+controller rehearsal, feedback rehearsal, and the effect-verification
+placeholder. The journal retains only identifiers, sizes, and hashes; replay
+detects missing, changed, truncated, extra, reordered, and identity-crossed
+artifacts without parsing them into commands or exposing any execution surface.
+PC6 remains in progress pending adapters for retained PC2-PC5 artifacts, a
+clean-checkout replay command, and path-containment/redaction qualification.
 The AI precision lane now has a mainline-compatible pose-output adapter and v2
 batch producer. It preserves repeated targets and abstains on qualification,
 domain, freshness, identity, confidence, or containment failure. Its retained

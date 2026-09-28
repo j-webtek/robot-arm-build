@@ -4575,3 +4575,41 @@ rewriting history. New entries must use a unique evidence ID.
   correlation lineage and replay retained synthetic traces deterministically
   without hardware, detecting mutation, deletion, truncation, and identity
   crossing.
+
+### E-20260928-ARM-086 — PC6 deterministic trace-replay backbone
+
+- Stage: S1/S4/S7 pre-camera arm integration; PC6 in progress.
+- Lane: Arm/runtime shared boundary.
+- Commit: `f65ff31`.
+- Change: added a canonical zero-authority trace journal with an exact 14-stage
+  order from request and AI batch through planning, controller/feedback
+  rehearsal, and effect-verification placeholder. Each entry binds ordinal,
+  bounded byte count, artifact digest, prior-stage digest, and stage digest.
+  Added a deterministic replay verifier that compares caller-supplied retained
+  artifacts but never interprets or executes them.
+- Inputs/fixtures: synthetic `robot` sequence; one bounded canonical artifact
+  for each required stage; missing IK artifact; changed joint schedule; empty
+  collision artifact; unreviewed extra artifact; reversed and truncated stage
+  chains; crossed request/correlation identities; oversized artifact.
+- Commands: `python -m pytest tests/unit/test_typing_trace_journal_v1.py
+  tests/integration/test_typing_shadow_pipeline_v1.py
+  tests/unit/test_typing_rolling_horizon_v1.py
+  tests/unit/test_typing_controller_bridge_v1.py
+  tests/unit/test_model_motion_sequence_journal.py
+  tests/unit/test_typing_fault_campaign_v1.py
+  tests/unit/test_typing_fault_owner_boundaries_v1.py -q`.
+- Result: PASS; 7 focused trace tests and 99 affected journal/planning tests
+  passed. Identical replay is explicit; missing, mutated, truncated, extra,
+  reordered, and identity-crossed inputs cannot be reported identical.
+- Artifacts: `software/src/rocell/application/typing_trace_journal_v1.py`;
+  `software/ai/schemas/typing_trace_journal_v1.schema.json`;
+  `software/tests/unit/test_typing_trace_journal_v1.py`.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: the checkpoint uses bounded synthetic in-memory artifacts. It
+  does not yet adapt the actual retained PC2-PC5 outputs, provide the final
+  clean-checkout replay command, persist private evidence, qualify path
+  containment/redaction, or grant physical authority.
+- Next dependency: bind actual retained golden shadow, rolling-horizon,
+  controller-preview, sequence-journal, and fault-campaign artifacts into the
+  manifest, then add a contained clean-checkout replay command.

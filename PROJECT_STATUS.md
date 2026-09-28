@@ -1,6 +1,6 @@
 # Tactevra project status
 
-Reviewed September 28, 2026 through the ARM-085 PC5 owner-boundary completion,
+Reviewed September 28, 2026 through the ARM-086 PC6 trace-replay checkpoint,
 ARM-077 PC0 pre-camera qualification basis, ARM-076 typing collision-evidence
 intake, ARM-075 exact-sample offline IK screen, AI-403 precision-adapter
 integration, and merged physical-camera
@@ -303,6 +303,14 @@ restart reconciliation, deadline/cancellation behavior, and a bounded
 hash-bound observation cache. The affected 145-test suite passes with no
 physical transport, command authority, movement, or automatic retry. PC6
 unified trace journaling and deterministic replay is ready.
+
+ARM-086 begins PC6. A zero-authority trace manifest now binds 14 ordered stages
+from request and AI batch through controller/feedback rehearsal and an explicit
+effect-verification placeholder. Only bounded sizes and hashes are retained.
+Replay deterministically rejects missing, changed, truncated, extra, reordered,
+or identity-crossed artifacts and cannot execute their contents. The affected
+99-test journal/planning suite passes. Actual retained PC2-PC5 adapters and a
+clean-checkout replay command remain before PC6 can complete.
 
 AI-403 then integrates the pose-output precision adapter and actual V2 batch
 producer on current `main`. The retained contract fixture deterministically

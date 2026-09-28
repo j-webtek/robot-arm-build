@@ -101,7 +101,7 @@ and its evidence gate pass.
 | PC3 | Rolling-horizon rebinding and restart safety | PC2 | No | None | COMPLETE |
 | PC4 | Typing-specific zero-write controller bridge | PC2, PC3 | No | None | COMPLETE |
 | PC5 | Fault injection and property testing | PC1-PC4 | No | None | COMPLETE |
-| PC6 | Unified trace journal and deterministic replay | PC2-PC5 | No | None | READY |
+| PC6 | Unified trace journal and deterministic replay | PC2-PC5 | No | None | IN_PROGRESS |
 | PC7 | Safe transition cache in shadow mode | PC3, PC6 | No | None | NOT_STARTED |
 | PC8 | Performance benchmark and readiness report | PC1-PC7 | No | None | NOT_STARTED |
 | PC9 | Camera-arrival evidence tooling and dry run | PC6 | No for tooling | None before arrival | NOT_STARTED |
@@ -329,6 +329,19 @@ automatic retry, reorder, silent fallback, unbounded allocation, or inconsistent
 terminal outcome. Every rejected case has a stable machine-readable reason.
 
 ## PC6 — Unified trace journal and deterministic replay
+
+**Checkpoint 2026-09-28:** the first replay-only backbone now seals an exact
+14-stage lineage from request and AI batch through ingress, execution plan,
+trajectory, IK, joint schedule, collision screening, controller preview,
+permit policy, encoding, dispatch rehearsal, feedback rehearsal, and the
+effect-verification placeholder. Each bounded artifact is represented only by
+its byte count and SHA-256 digest in a stage-order hash chain; raw payloads are
+not copied into the journal. Deterministic replay detects missing, mutated,
+empty/truncated, extra, reordered, and correlation/request-crossed artifacts.
+The seven focused tests and 99-test affected journal/planning suite pass with
+zero hardware access or authority. PC6 remains in progress until adapters bind
+the actual retained PC2-PC5 artifacts, a clean-checkout replay command is
+provided, and redaction/path-containment behavior is qualified.
 
 ### Deliverables
 
