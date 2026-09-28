@@ -40,6 +40,14 @@
       "requirement": "Establish a durable redistribution basis or merge a reviewed replacement or removal of the derived Waveshare URDF.",
       "status": "open",
       "resolution": null
+    },
+    {
+      "id": "static-simulation-bundle",
+      "issue": "https://github.com/j-webtek/tactevra/issues/167",
+      "owner": "AI workstream with repository review",
+      "requirement": "Reconcile the static simulation bundle with the current system manifest and restore a passing maintained full AI test suite without weakening the freeze or evidence boundary.",
+      "status": "open",
+      "resolution": null
     }
   ]
 }

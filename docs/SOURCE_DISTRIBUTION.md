@@ -116,8 +116,9 @@ therefore does not itself satisfy the AI checkpoint evidence in issues
 [#56](https://github.com/j-webtek/tactevra/issues/56) and
 [#61](https://github.com/j-webtek/tactevra/issues/61), establish the Waveshare
 redistribution decision in
-[#88](https://github.com/j-webtek/tactevra/issues/88), select a candidate, or
-approve publication.
+[#88](https://github.com/j-webtek/tactevra/issues/88), satisfy the static-bundle
+integration gate in [#167](https://github.com/j-webtek/tactevra/issues/167),
+select a candidate, or approve publication.
 
 ## Review the duplicate inventory
 
