@@ -3779,3 +3779,355 @@ rewriting history. New entries must use a unique evidence ID.
 - Supersedes: none. AI-406 through AI-409 remain failed/blocked history.
 - Next dependency: review and merge the focused package, then obtain final-camera
   physical originals and safe-region-fit uncertainty before qualification.
+
+### E-20260927-AI-411 — camera campaign source-freeze diff failure
+
+- Stage: S2/S3 physical-camera localization readiness.
+- Lane: AI.
+- Commit: `844f1e58fb2cb31b2d8555d9f76d12259d90a65d`.
+- Change: first source freeze for the physical-camera campaign contract,
+  preflight, runbook, schemas, and focused tests.
+- Inputs/fixtures: schema-authored 300-capture calibration and 300-capture
+  evaluation fixture with 1,200 retained temporary files and all 11 required
+  evaluation conditions.
+- Command: `git diff --cached --check`.
+- Result: FAIL: two Markdown lines in the new runbook had trailing whitespace.
+  The commit completed because the shell command did not stop on that nonzero
+  subcommand; the failure is retained instead of being rewritten as a pass.
+- Artifacts: source commit above; no evaluation receipt or physical original.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: formatting failure only; it is not evidence that preflight or
+  physical localization succeeded.
+- Supersedes: none.
+- Next dependency: remove only the trailing whitespace in a separate commit,
+  rerun the diff check, and verify the corrected source.
+
+### E-20260927-AI-412 — portable-runner environment failures
+
+- Stage: S2/S3 physical-camera localization readiness.
+- Lane: AI.
+- Commit: `3a8ef7a5a946f3b10d685522da365880bbc5a0b1`.
+- Change: attempted the repository portable suite against the corrected camera
+  campaign source before the detached test environment was complete.
+- Inputs/fixtures: corrected committed source; no physical camera files.
+- Command: `python scripts/ci/offline_checks.py test`; then
+  `C:\\camtest\\.venv-ci\\Scripts\\python.exe scripts/ci/offline_checks.py install-base`,
+  `smoke`, `install-tests`, and `test`; then, from `C:\\camtest`,
+  `.\\.venv-ci\\Scripts\\python.exe scripts/ci/offline_checks.py test`.
+- Result: BLOCKED in three preserved attempts: the primary worktree lacked
+  `.venv-ci`; the next invocation used the wrong current directory; and the
+  first detached-worktree test lacked sparse-selected integration files. No
+  test failure was converted into a pass and no source was changed to bypass
+  the runner.
+- Artifacts: console output only.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: environment and sparse-checkout failures only; they do not
+  assess physical data or model accuracy.
+- Supersedes: none.
+- Next dependency: materialize the runner's committed integration, script,
+  native, firmware, and fixture inputs, then rerun the identical test command.
+
+### E-20260927-AI-413 — physical-camera localization test baseline prepared
+
+- Stage: S2/S3 physical-camera localization readiness.
+- Lane: AI.
+- Commit: `3a8ef7a5a946f3b10d685522da365880bbc5a0b1`.
+- Change: froze a strict external physical-camera campaign contract, a
+  content-verifying read-only preflight receipt, an operator runbook, and
+  focused tests. The package requires disjoint calibration/evaluation sessions,
+  at least 300 captures per split, at least 20 held-out captures for each of 11
+  lighting/blur/occlusion/placement/absence conditions, immutable camera/mode/
+  epoch identities, and independent surveyed-fiducial ground truth.
+- Inputs/fixtures: generated temporary 300/300 split fixture; 600 unique image
+  identities, 600 unique ground-truth identities, two disjoint sessions, and
+  minimum held-out condition count 27. No fixture bytes were retained in Git.
+- Command: `python -m pytest software/ai/tests/test_physical_camera_localization_campaign.py -q`; `python -m py_compile software/ai/eval/preflight_physical_camera_campaign.py`; `git diff --check`; `python scripts/ci/check_evidence_scope.py`; `python scripts/ci/check_docs.py`; `python scripts/ci/check_public_records.py`; `python scripts/ci/check_repository_artifacts.py`; `python scripts/ci/check_release_integrity.py`; and, in detached worktree `C:\\camtest`, `.\\.venv-ci\\Scripts\\python.exe scripts/ci/offline_checks.py test`.
+- Result: PASS: 6 focused tests in 2.60 seconds; compilation and all repository
+  audits passed; portable suite passed 496 with 4 documented Windows symlink
+  skips in 72.62 seconds. Tests reject duplicate JSON fields, split-session
+  overlap, declared-only condition coverage, and altered retained bytes.
+- Artifacts: `software/ai/docs/PHYSICAL_CAMERA_LOCALIZATION_CAMPAIGN.md`;
+  `software/ai/schemas/physical_camera_localization_campaign_v1.schema.json`;
+  `software/ai/schemas/physical_camera_localization_preflight_receipt_v1.schema.json`;
+  `software/ai/eval/preflight_physical_camera_campaign.py`.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: readiness contract only. No camera was opened, no physical image
+  was collected, no model was loaded, no localization metric was measured, no
+  qualification was installed, and no arm or integration status changed.
+- Supersedes: none. AI-411 and AI-412 remain failed/blocked history.
+- Next dependency: retain the four ARM-070 physical originals, freeze the final
+  configuration epoch and calibrations, collect the external campaign, and run
+  this preflight before any model evaluation.
+
+### E-20260927-AI-414 — initial full AI suite exposed environment-sensitive assertion
+
+- Stage: S1/S2/S3 documentation and test governance.
+- Lane: AI.
+- Commit: `10a148ff8730c0ed54a1fbb643fb6718d764a84d`.
+- Change: exercised every AI test while assembling the workstream registry and
+  found an existing assertion that assumed one external research checkpoint was
+  always absent even when its bytes happened to exist locally.
+- Inputs/fixtures: all 34 tracked AI test modules; local external research
+  artifact state, with several declared sources absent and one checkpoint
+  present.
+- Command: `python -m pytest software/ai/tests -q`.
+- Result: FAIL: 1 failed and 166 passed. The evaluator correctly failed closed
+  for missing declared research inputs, but
+  `test_full_evaluator_fails_closed_when_research_artifacts_are_external`
+  asserted one hard-coded missing path instead of the evaluator's actual
+  declared missing set.
+- Artifacts: corrected source is retained in the named commit; the test now
+  verifies a nonempty missing set, membership in declared dependencies, and
+  actual absence for every reported path.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: developer-environment portability failure only; no model metric,
+  checkpoint quality, calibration, or physical behavior was evaluated.
+- Supersedes: none; the failed result remains preserved.
+- Next dependency: rerun the complete AI suite after freezing the corrected
+  assertion and its declared dependency set.
+
+### E-20260927-AI-415 — registry source freeze rejected CRLF-generated JSON
+
+- Stage: S1/S2/S3 documentation and test governance.
+- Lane: AI.
+- Commit: `10a148ff8730c0ed54a1fbb643fb6718d764a84d`.
+- Change: attempted the first staged source freeze for the handbook, registry,
+  schemas, audit receipt, and ownership tests.
+- Inputs/fixtures: staged registry and receipt generated by Windows text-mode
+  writes.
+- Command: `git diff --cached --check`.
+- Result: FAIL: every generated JSON line was reported with trailing
+  whitespace because CRLF bytes reached the staged files. The source was
+  normalized to LF and the receipt writer was changed to `write_bytes` before
+  the named commit was created.
+- Artifacts: `software/ai/eval/audit_ai_work_registry.py` and the normalized
+  registry/receipt in the named commit.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: source-format failure only; it established no documentation
+  completeness or model result.
+- Supersedes: none; the failed freeze remains preserved.
+- Next dependency: rerun the registry audit and staged diff check using the
+  byte-stable writer.
+
+### E-20260927-AI-416 — clean standard test environment lacked AI research dependencies
+
+- Stage: S1/S2/S3 documentation and test governance.
+- Lane: AI.
+- Commit: `10a148ff8730c0ed54a1fbb643fb6718d764a84d`.
+- Change: ran the entire AI suite in a detached clean environment containing
+  only the repository's standard base and test dependencies.
+- Inputs/fixtures: exact committed tree in `C:\\aidocs`; `.venv-ci` created by
+  the maintained portable installer; no model binary was added.
+- Command: `.\\.venv-ci\\Scripts\\python.exe -m pytest software/ai/tests -q`.
+- Result: BLOCKED during collection: five localization research modules raised
+  `ModuleNotFoundError: No module named 'numpy'`. This showed that the full AI
+  suite depended on undeclared research packages even though the portable
+  boundary suite passed 496 tests with 4 documented Windows symlink skips.
+- Artifacts: console result only; no failed receipt was promoted.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: dependency declaration failure only; it did not evaluate model
+  quality or physical readiness.
+- Supersedes: none; the blocked clean run remains preserved.
+- Next dependency: declare an isolated, exact AI test dependency set and repeat
+  the full suite from a clean committed checkout.
+
+### E-20260927-AI-417 — first isolated AI environment command used the wrong installer contract
+
+- Stage: S1/S2/S3 documentation and test governance.
+- Lane: AI.
+- Commit: `429ac7a9de3afa4354ae2410c8b61fb618158570`.
+- Change: tested the first written `.venv-ai` setup procedure in a detached
+  checkout.
+- Inputs/fixtures: clean commit, newly created `.venv-ai`, exact
+  `numpy==2.2.6` and `torch==2.5.1` requirements file.
+- Command: `.\\.venv-ai\\Scripts\\python.exe scripts/ci/offline_checks.py install-base`.
+- Result: FAIL before installation: `offline_checks.py` intentionally requires
+  a repository-root `.venv-ci` and rejected `.venv-ai`. The procedure was
+  corrected to invoke `pip install ".\\software[test]"` directly in the isolated
+  AI environment.
+- Artifacts: corrected instructions are retained in commit
+  `d33326716ce02d461046c76fbe4f9b301bb1d6dc`.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: procedure validation failure only; no tests or model evaluation
+  ran.
+- Supersedes: none; the invalid command remains preserved.
+- Next dependency: recreate the environment from the corrected committed
+  instructions and run `pip check` before testing.
+
+### E-20260927-AI-418 — sparse clean-checkout materialization failures
+
+- Stage: S1/S2/S3 documentation and test governance.
+- Lane: AI.
+- Commit: `d33326716ce02d461046c76fbe4f9b301bb1d6dc`.
+- Change: validated the corrected AI environment and full suite in a deliberately
+  sparse detached worktree before expanding it to the complete committed tree.
+- Inputs/fixtures: sparse selections initially omitted `software/src`, then
+  arm unit-test helper modules, and then configuration/static simulation files.
+- Command: `.\\.venv-ai\\Scripts\\python.exe -m pip install ".\\software[test]"`;
+  then `.\\.venv-ai\\Scripts\\python.exe -m pytest software/ai/tests -q` after
+  each sparse expansion.
+- Result: BLOCKED/FAIL in preserved attempts: package build first reported
+  missing `src`; collection next reported four missing
+  `test_model_motion_ingress_v2` imports; the following run reached 105 passes
+  but ended with 58 failures and 4 errors because target profiles and the static
+  simulation bundle were not materialized. These files exist in the commit and
+  a full checkout; no source was changed to hide the failures.
+- Artifacts: console results only.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: sparse-checkout construction failures only. They are not AI
+  behavior regressions or a valid clean-clone test result.
+- Supersedes: none; all sparse failures remain preserved.
+- Next dependency: disable sparse checkout and rerun identical environment,
+  suite, and audit commands against the complete committed tree.
+
+### E-20260927-AI-419 — AI work, testing, and evidence baseline verified
+
+- Stage: S1/S2/S3 documentation and test governance.
+- Lane: AI.
+- Commit: `d33326716ce02d461046c76fbe4f9b301bb1d6dc`.
+- Change: completed the maintained AI handbook, seven-workstream registry,
+  registry and receipt schemas, machine audit, test ownership guide, exact AI
+  research test requirements, navigation, and portable failure correction.
+- Inputs/fixtures: complete clean committed checkout; Python 3.12.0;
+  `numpy==2.2.6`; `torch==2.5.1`; 34 tracked AI test modules; 105 registry
+  source/document/test/evidence paths; all repository portable fixtures.
+- Command: `python -m venv .venv-ai`; `.\\.venv-ai\\Scripts\\python.exe -m pip install ".\\software[test]"`; `.\\.venv-ai\\Scripts\\python.exe -m pip install -r software/ai/requirements-test.txt`; `.\\.venv-ai\\Scripts\\python.exe -m pip check`; `.\\.venv-ai\\Scripts\\python.exe -m pytest software/ai/tests -q`; `.\\.venv-ai\\Scripts\\python.exe software/ai/eval/audit_ai_work_registry.py`; `.\\.venv-ai\\Scripts\\python.exe scripts/ci/check_docs.py`; `.\\.venv-ai\\Scripts\\python.exe scripts/ci/check_evidence_scope.py`; `.\\.venv-ai\\Scripts\\python.exe scripts/ci/check_public_records.py`; `.\\.venv-ai\\Scripts\\python.exe scripts/ci/check_repository_artifacts.py`; `.\\.venv-ai\\Scripts\\python.exe scripts/ci/check_release_integrity.py`; then `python -m venv .venv-ci` and `.\\.venv-ci\\Scripts\\python.exe scripts/ci/offline_checks.py install-base`, `smoke`, `install-tests`, and `test`.
+- Result: PASS: `pip check` reported no broken requirements; the full AI suite
+  passed 167 tests and 47 subtests in 38.04 seconds; the registry audit passed
+  with 7 workstreams, 34/34 uniquely owned test modules, 105 existing referenced
+  paths, registry SHA-256
+  `ea5da4211f33041e8adad425e6e190bb3df4a5dc9e5f5f313f4956b4faaef34d`,
+  and receipt SHA-256
+  `db64a0b41fa9044be5056c5b56073034aa83771358452e627976a0953a411b10`;
+  all six repository audits passed; the portable suite passed 496 tests with 4
+  documented Windows symlink skips in 71.81 seconds.
+- Artifacts: `software/ai/docs/AI_WORK_AND_EVIDENCE_HANDBOOK.md`;
+  `software/ai/docs/AI_WORK_REGISTRY.json`;
+  `software/ai/eval/ai_work_registry_audit_v1.json`;
+  `software/ai/tests/README.md`; `software/ai/requirements-test.txt`.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: this proves documentation coverage, path integrity, test
+  reproducibility, and declared zero authority. It does not prove model
+  correctness outside retained benchmarks, camera calibration, localization
+  qualification, key contact, phone operation, or integration readiness.
+- Supersedes: none. AI-414 through AI-418 remain visible failed/blocked history.
+- Next dependency: merge this documentation baseline, collect the four retained
+  ARM-070 camera/support originals, and execute the frozen physical-camera
+  campaign before any localization qualification claim.
+
+### E-20260927-AI-420 — prerequisite PR merge attempts blocked by repository policy
+
+- Stage: S2/S3 physical-camera evaluation preparation.
+- Lane: AI.
+- Commit: `555ddd72952cd5560c6ae1f4bc2605f8361d4e09`.
+- Change: attempted to land the camera campaign and documentation prerequisites
+  before creating the evaluator branch.
+- Inputs/fixtures: PR #147 at
+  `f357fa54536c9cb9315aee15107a5a610efce01a`; PR #148 at
+  `555ddd72952cd5560c6ae1f4bc2605f8361d4e09`; protected `main`.
+- Command: GitHub REST `PUT /repos/j-webtek/tactevra/pulls/147/merge` with
+  `merge_method=merge`, followed by the same endpoint with
+  `merge_method=squash`.
+- Result: BLOCKED in two preserved attempts. The repository rejected merge
+  commits, then rejected squash because protected `main` had advanced and six
+  required checks were expected on the updated base. No protection was bypassed.
+- Artifacts: GitHub PRs #147 and #148; console/API responses only.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: repository administration failure only; it evaluates no model,
+  camera, localization result, or runtime behavior.
+- Supersedes: none; the rejected attempts remain visible.
+- Next dependency: merge current protected `main` into both branches, retain
+  both workers' ledger content, rerun required checks, and use the permitted
+  squash method.
+
+### E-20260927-AI-421 — evaluator portable suite initially lacked sparse paths
+
+- Stage: S2/S3 physical-camera evaluation preparation.
+- Lane: AI.
+- Commit: `56252e47558e6aa0a351f61611d7de0e5a8a49c4`.
+- Change: ran the portable repository suite in detached worktree
+  `C:\\aievaluate` after exact-source AI verification.
+- Inputs/fixtures: clean source commit, installed `.venv-ci`, inherited sparse
+  worktree selection that omitted `software/tests/integration`.
+- Command: `.\\.venv-ci\\Scripts\\python.exe scripts/ci/offline_checks.py test`.
+- Result: BLOCKED before collection because
+  `software/tests/integration/test_zero_write_waveshare_contract_v1.py` was not
+  materialized. Git tree inspection confirmed the file was present in the
+  commit. No source or test list was changed.
+- Artifacts: console result only.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: worktree materialization failure only; it is not an evaluator or
+  repository regression.
+- Supersedes: none; the failed portable attempt remains preserved.
+- Next dependency: materialize the tracked integration, script, native,
+  firmware, and fixture paths and rerun the identical command.
+
+### E-20260927-AI-422 — fail-closed physical-camera evaluator verified
+
+- Stage: S2/S3 physical-camera localization evaluation.
+- Lane: AI.
+- Commit: `56252e47558e6aa0a351f61611d7de0e5a8a49c4`.
+- Change: implemented the offline post-preflight evaluator, strict ground-truth,
+  evaluation-plan, and result schemas, image/model/preprocessing prediction
+  binding, calibration-only empirical bound, held-out per-target/per-condition
+  metrics, unsafe-scene false-accept checks, evidenced uncertainty composition,
+  frozen target-safe-region checks, documentation, registry ownership, and
+  non-finite JSON rejection.
+- Inputs/fixtures: generated 300-calibration/300-evaluation retained campaign;
+  600 unique image and truth identities; 11 required conditions; two targets;
+  image-bound frozen prediction records; synthetic test-only 1.0 mm calibration
+  maximum, 0.4 mm additional evidenced uncertainty, and 2.0 mm safe radii. No
+  fixture or claimed physical score was retained.
+- Command: in clean detached worktree `C:\\aievaluate`, `python -m venv .venv-ai`;
+  `.\\.venv-ai\\Scripts\\python.exe -m pip install ".\\software[test]"`;
+  `.\\.venv-ai\\Scripts\\python.exe -m pip install -r software/ai/requirements-test.txt`;
+  `.\\.venv-ai\\Scripts\\python.exe -m pip check`;
+  `.\\.venv-ai\\Scripts\\python.exe -m pytest software/ai/tests -q`;
+  `.\\.venv-ai\\Scripts\\python.exe software/ai/eval/audit_ai_work_registry.py`;
+  `.\\.venv-ai\\Scripts\\python.exe scripts/ci/check_docs.py`;
+  `.\\.venv-ai\\Scripts\\python.exe scripts/ci/check_evidence_scope.py`;
+  `.\\.venv-ai\\Scripts\\python.exe scripts/ci/check_public_records.py`;
+  `.\\.venv-ai\\Scripts\\python.exe scripts/ci/check_repository_artifacts.py`;
+  `.\\.venv-ai\\Scripts\\python.exe scripts/ci/check_release_integrity.py`;
+  and, after materializing the tracked portable inputs,
+  `.\\.venv-ci\\Scripts\\python.exe scripts/ci/offline_checks.py test`.
+- Result: PASS. Clean full AI suite passed 174 tests and 47 subtests in 54.44
+  seconds. Registry audit passed with 7 workstreams, 35/35 uniquely owned AI
+  test modules, 110 referenced paths, registry SHA-256
+  `05f4b615b1ae1d9182d199b1e13ce66200f99b459996b113a3da0e58197961b9`,
+  and receipt SHA-256
+  `7cb7bb02ea9dacc607beccf12897f386ccc4e0da34039595d1f99975b3d63813`.
+  All six repository audits passed. The corrected portable suite passed 496
+  tests with 4 documented Windows symlink skips in 72.41 seconds. Focused tests
+  prove recommendation, safe-region blocking, unsafe false-accept blocking,
+  held-out coverage blocking, identity/coverage rejection, and non-finite-number
+  rejection.
+- Artifacts: `software/ai/eval/evaluate_physical_camera_localization.py`;
+  `software/ai/schemas/physical_camera_localization_ground_truth_v1.schema.json`;
+  `software/ai/schemas/physical_camera_localization_evaluation_plan_v1.schema.json`;
+  `software/ai/schemas/physical_camera_localization_evaluation_result_v1.schema.json`;
+  `software/ai/tests/test_physical_camera_localization_evaluator.py`;
+  `software/ai/docs/PHYSICAL_CAMERA_LOCALIZATION_CAMPAIGN.md`.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: synthetic fixtures validate evaluator behavior only. No physical
+  camera data, model inference, coordinate accuracy, calibration accuracy,
+  safe-region qualification, motion batch, key contact, or device outcome was
+  produced. Prediction provenance still depends on a separately frozen
+  inference producer. `QUALIFICATION_RECOMMENDED` remains an offline review
+  recommendation; installation is always false.
+- Supersedes: none. AI-420 and AI-421 remain preserved blocked history.
+- Next dependency: implement and freeze the image/model/preprocessing-bound
+  physical-camera inference producer, then collect the four ARM-070 originals
+  and external 300/300 campaign before running this evaluator on real evidence.

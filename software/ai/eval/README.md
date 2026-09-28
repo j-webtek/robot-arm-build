@@ -9,6 +9,22 @@ families split between training and held-out evaluation.
 Generated scorecards and run outputs belong in ignored `results/`. The
 [roadmap](../docs/ROADMAP.md) defines the first baseline sequence.
 
+Physical final-camera localization uses the strict
+[`physical_camera_localization_campaign_v1`](../schemas/physical_camera_localization_campaign_v1.schema.json)
+manifest and the
+[campaign runbook](../docs/PHYSICAL_CAMERA_LOCALIZATION_CAMPAIGN.md). Run
+`preflight_physical_camera_campaign.py` against external retained images before
+model evaluation. Preflight verifies evidence identity and split/condition
+coverage only and grants no camera or physical authority.
+
+After a frozen inference producer has emitted image/model/preprocessing-bound
+predictions, `evaluate_physical_camera_localization.py` replays preflight,
+derives a calibration-only empirical bound, scores held-out per-target and
+per-condition behavior, rejects unsafe-scene false acceptance, composes
+separately evidenced uncertainty conservatively, and checks the frozen key-safe
+regions. It emits a review recommendation with zero installed qualification,
+motion batches, controller starts, hardware writes, or physical movements.
+
 `benchmark_v0.jsonl` is an agent-authored 28-case sanity set pinned by
 `benchmark_v0.manifest.json`. The checked-in `baseline_v0_scorecard.json` is
 the deterministic baseline result. Its 28/28 match shows this narrow contract

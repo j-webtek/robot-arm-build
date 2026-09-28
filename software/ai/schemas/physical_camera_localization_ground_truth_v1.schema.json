@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rocell.local/schemas/physical_camera_localization_ground_truth_v1.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "capture_id", "device_present", "target_points_mm"],
+  "properties": {
+    "schema": {"const": "rocell.physical_camera_localization_ground_truth.v1"},
+    "capture_id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:@/-]{0,191}$"},
+    "device_present": {"type": "boolean"},
+    "target_points_mm": {"$ref": "#/$defs/points"}
+  },
+  "$defs": {
+    "points": {
+      "type": "object",
+      "propertyNames": {"pattern": "^[A-Z0-9][A-Z0-9_]{0,63}$"},
+      "additionalProperties": {"$ref": "#/$defs/point"}
+    },
+    "point": {
+      "type": "array", "minItems": 2, "maxItems": 2,
+      "items": {"type": "number"}
+    }
+  }
+}
