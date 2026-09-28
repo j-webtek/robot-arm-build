@@ -59,11 +59,26 @@ def main() -> None:
     assert crossing_shot["end"] == crossing["end_frame"]
     assert crossing["minimum_authored_wrist_height_mm"] >= 255
     assert crossing["contact_authority"] == "none"
+    phone = data["phone_sequence"]
+    assert phone["scenes"] == [12, 13, 14]
+    assert phone["phrase"] == "on my way"
+    assert len(phone["contact_frames"]) == len(phone["phrase"])
+    assert phone["contact_frames"] == sorted(phone["contact_frames"])
+    assert shots[11]["start"] <= phone["contact_frames"][0]
+    assert phone["contact_frames"][-1] <= shots[12]["end"]
+    assert shots[13]["start"] <= phone["send_contact_frame"] <= shots[13]["end"]
+    assert phone["permit_scope"] == "one contact"
+    assert phone["screen_check_before_each_contact"] is True
+    assert phone["verify_after_each_state_change"] is True
+    assert phone["runtime_locked_fields"] == [
+        "speed", "contact_depth", "retry_policy", "timing"
+    ]
     assert data["stage_vocabulary"] == ["UNDERSTAND", "LOCATE", "CHECK", "ACT", "VERIFY"]
     print(
         "PASS storyboard_v21: 17 contiguous scenes, 2400 frames, four rigs, "
         "seven benchmark phases, four independently permitted rhythm contacts, "
-        "and one contact-free high-clearance crossing"
+        "one contact-free high-clearance crossing, and ten independently "
+        "permitted phone contacts"
     )
 
 

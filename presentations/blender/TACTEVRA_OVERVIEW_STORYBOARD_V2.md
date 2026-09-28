@@ -123,7 +123,10 @@ same detailed rig then moves continuously through independently permitted
 `e`, `a`, `d`, and `y` cycles at 0:48–0:55; no model or pose swap is used. The
 contact-free scene-11 crossing is also blocked: the wrist retracts, traverses
 a high corridor, and finishes above the measured phone center while the
-arm-follow camera moves with it.
+arm-follow camera moves with it. Scenes 12–14 now continue on that same rig
+through nine independently permitted lowercase `on my way` contacts and a
+separate, slower Send permit. The modeled Messages UI fits the measured glass,
+shows each observed composer prefix, and ends on a device-local sent receipt.
 
 Run `python presentations/blender/validate_storyboard_v21.py`, then build the
 local benchmark with the Blender command documented in `README.md` using the

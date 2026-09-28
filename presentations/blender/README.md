@@ -145,6 +145,15 @@ Render the continuous keyboard-to-phone crossing checkpoints:
   --preview-crossing
 ```
 
+Render the modeled Messages sequence and its independently permitted taps:
+
+```powershell
+& "C:\Program Files\Blender Foundation\Blender 4.3\blender.exe" `
+  --background --factory-startup `
+  --python presentations/blender/build_storyboard_v21_benchmark.py -- `
+  --preview-phone
+```
+
 Generated output is written to `tmp/blender-storyboard-v21/`. The first
 benchmark is intentionally limited to the lowercase `r` action at frames
 961–1152. It demonstrates `transit → align → settle → approach → contact →
@@ -165,6 +174,12 @@ above the phone at 255 mm. Permit, uncertainty, and preview graphics stay
 inactive because this is contact-free transit. The arm-follow camera moves its
 aim from the final keyboard key to the measured phone center without a pose,
 stylus, or robot swap.
+
+Scenes 12–14 use a presentation-only Messages interface constrained to the
+measured phone glass. The same rig types lowercase `on my way` with nine
+screen-check/permit/contact/verify cycles, then slows for a separately checked
+and permitted Send contact. The UI is explicitly modeled—not represented as a
+captured app—and the physical chassis and indexed placement remain canonical.
 
 The scaffold has no add-on dependency. Native cameras, constraints, markers,
 and collections keep CI and collaborator builds reproducible. Artists may use

@@ -63,6 +63,10 @@ def existing_materials() -> dict[str, bpy.types.Material]:
         "green": "Verified green",
         "cyan": "Tactevra cyan",
         "white": "Reference white",
+        "phone_panel": "Phone interface panel",
+        "legend": "Keyboard legends",
+        "screen_glass": "Phone optical glass",
+        "screen": "Phone screen",
     }
     return {key: bpy.data.materials[value] for key, value in names.items()}
 
@@ -296,6 +300,200 @@ def animate_keyboard_to_phone_crossing(
         )
 
 
+def add_phone_message_ui(
+    layout: dict, mats: dict[str, bpy.types.Material],
+    collection: bpy.types.Collection,
+) -> tuple[dict[str, tuple[float, float]], list[bpy.types.Object]]:
+    """Build a measured, presentation-only Messages keyboard on the phone.
+
+    The physical chassis remains the canonical measured asset. These thin
+    screen-plane objects visualize the expected app state and tap targets; they
+    are not represented as captured software evidence.
+    """
+    dev = layout["devices"]["phone"]
+    ox, oy = dev["nominal_origin_xy"]
+    sx, sy, _sz = dev["configured_size"]
+    z = dev["nominal_screen_plane_z"] + 1.25
+    ui: list[bpy.types.Object] = []
+    targets: dict[str, tuple[float, float]] = {}
+    messages_bg = base.material(
+        "Modeled Messages matte display", (0.003, 0.009, 0.018, 1),
+        metallic=0.0, roughness=0.96, ior_level=0.0,
+    )
+
+    # Hide the older generic verification treatment in favor of one coherent
+    # Messages state throughout the phone chapter.
+    for obj in tuple(bpy.context.scene.objects):
+        if obj.name.startswith("Phone UI"):
+            obj.hide_render = True
+
+    backdrop = base.cube(
+        "Phone Messages matte backdrop",
+        base.board_point(ox + sx / 2, oy + sy / 2, z - 0.00055),
+        ((sx - 5.0) / 1000, (sy - 8.0) / 1000, 0.00035), messages_bg, 0.0035,
+    )
+    header = base.board_text(
+        "Phone Messages header", "MESSAGES · CONTACT",
+        base.board_point(ox + sx / 2, oy + sy - 18, z), 0.0042, mats["white"],
+    )
+    composer = base.cube(
+        "Phone composer field",
+        base.board_point(ox + sx / 2 - 4, oy + sy - 42, z - 0.0002),
+        ((sx - 20) / 1000, 0.018, 0.00045), mats["phone_panel"], 0.004,
+    )
+    send = base.cylinder(
+        "Phone Send target", base.board_point(ox + sx - 9, oy + sy - 42, z),
+        0.0062, 0.00055, mats["cyan"], 36,
+    )
+    ui.extend((backdrop, header, composer, send))
+    targets["send"] = (ox + sx - 9, oy + sy - 42)
+
+    rows = (
+        ("qwertyuiop", oy + 70, ox + 6, ox + sx - 6),
+        ("asdfghjkl", oy + 52, ox + 9, ox + sx - 9),
+        ("zxcvbnm", oy + 34, ox + 14, ox + sx - 14),
+    )
+    for letters, y, left, right in rows:
+        step = (right - left) / (len(letters) - 1)
+        for index, letter in enumerate(letters):
+            x = left + step * index
+            key = base.cube(
+                f"Phone key {letter}", base.board_point(x, y, z - 0.0002),
+                (0.0062, 0.012, 0.00040), mats["screen_glass"], 0.0022,
+            )
+            label = base.board_text(
+                f"Phone key legend {letter}", letter,
+                base.board_point(x, y, z + 0.0005), 0.0032, mats["white"],
+            )
+            ui.extend((key, label))
+            targets[letter] = (x, y)
+
+    space_xy = (ox + sx / 2, oy + 16)
+    space = base.cube(
+        "Phone key space", base.board_point(*space_xy, z - 0.0002),
+        (0.040, 0.0115, 0.00040), mats["screen_glass"], 0.0025,
+    )
+    space_label = base.board_text(
+        "Phone key legend space", "space", base.board_point(*space_xy, z + 0.0005),
+        0.0028, mats["legend"],
+    )
+    ui.extend((space, space_label))
+    targets[" "] = space_xy
+
+    for obj in ui:
+        classify(obj, collection, "modeled_phone_messages_ui")
+        obj["presentation_only"] = True
+        set_scale(obj, 1, 0.0)
+        set_scale(obj, 1608, 0.0)
+        set_scale(obj, 1609, 1.0)
+        set_scale(obj, 2184, 1.0)
+    return targets, ui
+
+
+def animate_phone_message_sequence(
+    controls: dict[str, bpy.types.Object], rig: dict[str, object],
+    targets: dict[str, tuple[float, float]], authority: dict[str, bpy.types.Object],
+    layout: dict, mats: dict[str, bpy.types.Material],
+    collection: bpy.types.Collection,
+) -> dict[str, object]:
+    """Type `on my way`, then grant a separate permit for Send."""
+    phrase = "on my way"
+    contacts = (1634, 1668, 1702, 1736, 1788, 1814, 1840, 1866, 1892)
+    uncertainty, permit, ghost = (
+        authority["uncertainty"], authority["permit"], authority["ghost"]
+    )
+    dev = layout["devices"]["phone"]
+    ox, oy = dev["nominal_origin_xy"]
+    z = dev["nominal_screen_plane_z"] + 1.9
+    state_labels: list[bpy.types.Object] = []
+
+    # Re-enter from the high-clearance crossing and show each observed prefix.
+    first_xy = targets[phrase[0]]
+    animate_arm_target(controls, rig["manifest"], first_xy, 1609, wrist_z=0.255)
+    for index, (character, contact) in enumerate(zip(phrase, contacts)):
+        target_xy = targets[character]
+        check, permit_frame, release, verify = contact - 16, contact - 9, contact + 5, contact + 11
+        animate_arm_target(controls, rig["manifest"], target_xy, check, wrist_z=0.205)
+        animate_arm_target(controls, rig["manifest"], target_xy, contact, press=-0.004)
+        animate_arm_target(controls, rig["manifest"], target_xy, release)
+        animate_arm_target(controls, rig["manifest"], target_xy, verify)
+
+        target = base.board_point(*target_xy, z)
+        uncertainty.location = target
+        uncertainty.keyframe_insert("location", frame=check)
+        set_scale(uncertainty, check, 1.1)
+        set_scale(uncertainty, permit_frame, 0.42)
+        set_scale(uncertainty, release, 0.0)
+        permit.location = target + Vector((0, 0, 0.060))
+        permit.keyframe_insert("location", frame=permit_frame)
+        set_scale(permit, check, 0.0)
+        set_scale(permit, permit_frame, 0.75)
+        permit.location = target + Vector((0, 0, 0.012))
+        permit.keyframe_insert("location", frame=contact)
+        set_scale(permit, contact, 0.75)
+        set_scale(permit, release, 0.0)
+        set_scale(ghost, check, 0.65)
+        ghost.location = target
+        ghost.keyframe_insert("location", frame=check)
+        set_scale(ghost, permit_frame, 0.0)
+
+        prefix = phrase[: index + 1]
+        label = base.board_text(
+            f"Phone observed composer {index + 1:02d}", prefix,
+            base.board_point(ox + 28, oy + dev["configured_size"][1] - 42, z),
+            0.0040, mats["white"],
+        )
+        classify(label, collection, "observed_phone_composer_state")
+        label["observed_text"] = prefix
+        label["presentation_only"] = True
+        set_scale(label, 1, 0.0)
+        set_scale(label, verify - 1, 0.0)
+        set_scale(label, verify, 1.0)
+        next_contact = contacts[index + 1] if index + 1 < len(contacts) else 1966
+        set_scale(label, next_contact - 17, 1.0)
+        set_scale(label, next_contact - 16, 0.0)
+        state_labels.append(label)
+
+    # Send is a distinct, slower commitment with its own screen check and permit.
+    send_xy = targets["send"]
+    animate_arm_target(controls, rig["manifest"], send_xy, 1928, wrist_z=0.215)
+    animate_arm_target(controls, rig["manifest"], send_xy, 1966, press=-0.004)
+    animate_arm_target(controls, rig["manifest"], send_xy, 1980)
+    animate_arm_target(controls, rig["manifest"], send_xy, 2016, wrist_z=0.245)
+    send_target = base.board_point(*send_xy, z)
+    uncertainty.location = send_target
+    uncertainty.keyframe_insert("location", frame=1928)
+    set_scale(uncertainty, 1928, 1.15)
+    set_scale(uncertainty, 1948, 0.42)
+    set_scale(uncertainty, 1980, 0.0)
+    ghost.location = send_target
+    ghost.keyframe_insert("location", frame=1928)
+    set_scale(ghost, 1928, 0.65)
+    set_scale(ghost, 1948, 0.0)
+    permit.location = send_target + Vector((0, 0, 0.070))
+    permit.keyframe_insert("location", frame=1948)
+    set_scale(permit, 1928, 0.0)
+    set_scale(permit, 1948, 0.85)
+    permit.location = send_target + Vector((0, 0, 0.012))
+    permit.keyframe_insert("location", frame=1966)
+    set_scale(permit, 1966, 0.85)
+    set_scale(permit, 1980, 0.0)
+
+    sent = base.board_text(
+        "Phone sent receipt", "on my way · sent ✓",
+        base.board_point(ox + dev["configured_size"][0] / 2,
+                         oy + dev["configured_size"][1] - 65, z),
+        0.0040, mats["green"],
+    )
+    classify(sent, collection, "verified_phone_receipt")
+    sent["presentation_only"] = True
+    set_scale(sent, 1, 0.0)
+    set_scale(sent, 1987, 0.0)
+    set_scale(sent, 1988, 1.0)
+    set_scale(sent, 2184, 1.0)
+    return {"phrase": phrase, "contacts": contacts, "send_contact": 1966}
+
+
 def make_authority_graphics(
     mats: dict[str, bpy.types.Material],
     collection: bpy.types.Collection,
@@ -383,6 +581,7 @@ def build() -> bpy.types.Scene:
     cameras = production_collection("TACTEVRA_SHOT_RIGS")
     graphics = production_collection("TACTEVRA_AUTHORITY_GRAPHICS")
     action = production_collection("TACTEVRA_R_CONTACT_BENCHMARK")
+    phone_ui = production_collection("TACTEVRA_PHONE_MESSAGE_SEQUENCE")
 
     for obj in tuple(scene.objects):
         if obj.type in {"MESH", "CURVE"} and not obj.name.startswith("Continuous"):
@@ -397,6 +596,20 @@ def build() -> bpy.types.Scene:
             obj.hide_render = True
 
     mats = existing_materials()
+    # Preserve a readable dark phone surface under the brighter product-shot
+    # lighting used by the v2.1 cameras. This affects presentation materials
+    # only; the measured chassis and screen-plane dimensions stay unchanged.
+    for key, base_color, roughness, metallic, emission_strength in (
+        ("screen", (0.004, 0.010, 0.022, 1), 0.30, 0.06, 0.04),
+        ("screen_glass", (0.003, 0.007, 0.014, 1), 0.24, 0.12, None),
+        ("phone_panel", (0.010, 0.028, 0.048, 1), 0.32, 0.04, 0.28),
+    ):
+        bsdf = mats[key].node_tree.nodes.get("Principled BSDF")
+        bsdf.inputs["Base Color"].default_value = base_color
+        bsdf.inputs["Roughness"].default_value = roughness
+        bsdf.inputs["Metallic"].default_value = metallic
+        if emission_strength is not None:
+            bsdf.inputs["Emission Strength"].default_value = emission_strength
     r_key = find_key("R")
     e_key = find_key("E")
     r_base_z = r_key.location.z
@@ -443,6 +656,23 @@ def build() -> bpy.types.Scene:
     for graphic in graphics_objects.values():
         set_scale(graphic, 1320, 0.0)
         set_scale(graphic, 1608, 0.0)
+    phone_targets, phone_ui_objects = add_phone_message_ui(
+        layout, mats, phone_ui,
+    )
+    phone_sequence = animate_phone_message_sequence(
+        controls, rig, phone_targets, graphics_objects, layout, mats, phone_ui,
+    )
+    scene["phone_phrase"] = phone_sequence["phrase"]
+    scene["phone_contact_count"] = len(phone_sequence["contacts"]) + 1
+
+    # The camera portal was established in the LOCATE chapter. Keep it out of
+    # the phone beauty shots so it cannot obscure the real phone and stylus.
+    portal = scene.objects.get("DESIGNED — printable camera portal")
+    if portal is not None:
+        portal.hide_render = True
+        portal.keyframe_insert("hide_render", frame=1465)
+        portal.keyframe_insert("hide_render", frame=1561)
+        portal.keyframe_insert("hide_render", frame=2400)
 
     # Four reusable rigs cover the shot palette without an add-on dependency.
     r_target = r_key.location + Vector((0, 0, 0.060))
@@ -461,10 +691,16 @@ def build() -> bpy.types.Scene:
     animate_camera(*rigs["dolly"], 1153, 1320,
                    Vector((0.34, -0.66, 0.40)), Vector((-0.04, -0.58, 0.34)),
                    base.board_point(185, 154, 70))
-    animate_camera(*rigs["arm_follow"], 1465, 1896,
-                   Vector((0.18, -0.76, 0.53)), Vector((0.55, -0.72, 0.45)), phone_target)
+    animate_camera(*rigs["arm_follow"], 1465, 1608,
+                   Vector((0.18, -0.76, 0.53)), Vector((0.48, -0.48, 0.44)), phone_target)
     key_pose(rigs["arm_follow"][1], 1465, base.board_point(*y_xy_mm, 90))
     key_pose(rigs["arm_follow"][1], 1608, base.board_point(*phone_xy_mm, 90))
+    animate_camera(*rigs["arm_follow"], 1609, 1896,
+                   Vector((0.58, -0.34, 0.42)), Vector((0.62, 0.02, 0.36)),
+                   base.board_point(*phone_xy_mm, 28))
+    animate_camera(*rigs["macro"], 1897, 2016,
+                   Vector((0.62, -0.28, 0.36)), Vector((0.56, -0.22, 0.30)),
+                   base.board_point(*phone_xy_mm, 35))
     animate_camera(*rigs["hero"], 1, 2400,
                    Vector((0.42, -1.48, 0.88)), Vector((0.31, -1.30, 0.78)), board_target)
 
@@ -484,7 +720,8 @@ def build() -> bpy.types.Scene:
 
     scene.camera = rigs["macro"][0]
     for obj in (*graphics_objects.values(), *rig["moving"], *controls.values(),
-                r_key, find_key("E"), find_key("A"), find_key("D"), find_key("Y")):
+                *phone_ui_objects, r_key, find_key("E"), find_key("A"),
+                find_key("D"), find_key("Y")):
         if obj.animation_data and obj.animation_data.action:
             for curve in obj.animation_data.action.fcurves:
                 for point in curve.keyframe_points:
@@ -511,13 +748,16 @@ def main() -> None:
         preview_frames += (1153, 1165, 1178, 1207, 1220, 1249, 1262, 1291, 1304, 1320)
     if "--preview-crossing" in args:
         preview_frames += (1320, 1340, 1465, 1528, 1608)
+    if "--preview-phone" in args:
+        preview_frames += (1609, 1634, 1702, 1788, 1892, 1928, 1966, 1988, 2016)
     if preview_frames:
         for frame in preview_frames:
             scene.frame_set(frame)
             scene.camera = (
                 bpy.data.objects["CAM_MACRO"] if frame <= 1152
                 else bpy.data.objects["CAM_DOLLY"] if frame <= 1464
-                else bpy.data.objects["CAM_ARM_FOLLOW"]
+                else bpy.data.objects["CAM_ARM_FOLLOW"] if frame <= 1896
+                else bpy.data.objects["CAM_MACRO"]
             )
             scene.render.filepath = str(OUT / f"storyboard_{frame:04d}.png")
             bpy.ops.render.render(write_still=True)
