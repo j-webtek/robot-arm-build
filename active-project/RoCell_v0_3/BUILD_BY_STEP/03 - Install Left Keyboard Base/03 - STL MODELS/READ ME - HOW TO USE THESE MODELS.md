@@ -1,6 +1,6 @@
 # STL files for this step
 
-Step 00 contains generated, hash-verified convenience copies. Steps 01–15 use hash-bound links to the authoritative project-level `stl/` files and intentionally contain no duplicate STL bytes.
+Step 00 uses a governed mix of small generated convenience copies and hash-bound links to the authoritative project-level `stl/` files. Steps 01–15 use only hash-bound links and intentionally contain no duplicate STL bytes.
 
 ## Rules
 
@@ -8,6 +8,7 @@ Step 00 contains generated, hash-verified convenience copies. Steps 01–15 use 
 - Never globally scale or auto-repair a production STL without reopening the measurement, regeneration, and validation workflow.
 - A file marked `DO_NOT_PRINT` is a visualization/reference body only.
 - Compare against `STL MODEL LIST.csv`; any hash mismatch is a STOP.
+- Return to Step 00 and its qualified ready-job workflow if an accepted part is missing.
 
 | STL | Usage | Job reference | SHA-256 |
 | --- | --- | --- | --- |

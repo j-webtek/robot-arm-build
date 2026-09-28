@@ -12,7 +12,7 @@ bf837e547ec9a9e271660203db17e13b33886b96f8e8b7281ac0c98abe7cd611  ../../../PRINT
 ea0555461e87a475f844ffb1405a5dd756ab41f9d49617849c56204e275310bf  ../../../PRINT_PLAN.csv
 a8c75f05f727fa899c1f873ffea9852b5e6d343cdd302d5c4e02ee4124f74fc3  ../../../PRINT_READINESS.json
 5be5234644cbca322e93f16ec422cd5a6f04059055a2f56d68cf224d61f015b0  ../../../PRINT_READINESS.md
-3f120c69dcee278cb67c449e84d3a43c0b5183bdfee1cf4cb86bb938e2a32d34  ../../../README_FIRST.md
+6e3e5a4bf57be1858e0b691c09b0c7683cc4266eb7df666d371136aa5800ee42  ../../../README_FIRST.md
 2561bed996ff1a1c9bb15530b35467d15318812ea3822f77c2e76f80ed74008c  ../../../cad/step/cable_tie_saddle_fit_gauge.step
 122b24630f81598c894d1612c2a6a4c277a3caa51144d40d25899a2293dc0f13  ../../../cad/step/calibration_puck.step
 dea907ee079c77046150115a57bd506ed195e9ecbf436b4effbaf9cb2a89648d  ../../../cad/step/camera_plate_universal.step
@@ -157,7 +157,7 @@ aa830046f1152a28fd50d702b9233f8fc3c5854b65f1ea3db505fb4062f9fe19  ../../../print
 cb85e1aa58ac2567429b4105a925a120605a188e8a26d1d4fda45147cf8f945e  ../../../print_plates_3mf/07B_ASA_mast_foot_second.print.json
 6badf0daa975d8c0ab5de34cea5a7514dbff8469d2a7b499670a3002d428eb31  ../../../scripts/build_illustrated_assembly_guide.py
 4baf08d28e3566c3eb3869585275ebc318bf1e076744867221d4d79e2359f182  ../../../scripts/build_manual_pdf.py
-d36767cf22f6b4becf5716eb7ae2e7b8f8315dd13e30204732ff9f2c3007463a  ../../../scripts/build_step_packages.py
+38b9b55bfaad6c80f2465bd99abc134b8a7b488d91e6fc357c3f93f05ec699b9  ../../../scripts/build_step_packages.py
 6090b47ff751ebb62c6ab8ecd4abc55fa54f79cabde5b86a4231484b2cc67e53  ../../../scripts/generate_build_tracker.py
 520cf48d2263beca0eca351d6960fbfae95e1f9c63e05aec1204957b47271a7f  ../../../scripts/generate_job_cards.py
 0a940eabc2ab22fcc0c4e2b2df9a67fa90224027168127917c2e7879a8725b93  ../../../scripts/initialize_step_evidence.py
