@@ -221,6 +221,18 @@ denies collision use: the raw visual meshes contain 38,344 triangles, `link1`
 and `link5` are not watertight, an extra left-gripper mesh is unreferenced, and
 no convex reduction or self-collision policy has been reviewed.
 
+[`link_mesh_reduction_probe.py`](link_mesh_reduction_probe.py) derives a
+deterministic conservative candidate set from those pinned meshes. It emits
+one link-local identity-oriented box per processed connected component, except
+that `link5` exceeds the runtime contract's 64-primitives-per-body limit and
+therefore uses one declared whole-link envelope. The retained
+[`reduction receipt`](evidence/roarm_m3_link_mesh_reduction_20260929.json)
+contains 14 boxes across seven links and records zero source-vertex overflow.
+These remain uninstalled candidates: the largest measured box/source volume
+ratio among watertight components is 21.141, two candidate sources are not
+watertight, and neither false-positive collision behavior nor self-collision
+pair policy has been qualified.
+
 Reproduce it on the designated runner from the repository root:
 
 ```powershell
@@ -267,6 +279,17 @@ C:\IsaacSim\env_6_1_0\Scripts\python.exe software\integrations\isaac_sim\upstrea
   --pose-receipt software\integrations\isaac_sim\evidence\roarm_m3_step_pose_binding_20260929.json `
   --output C:\IsaacSim\evidence\upstream_link_meshes_001.json `
   --status-output C:\IsaacSim\evidence\upstream_link_meshes_001.status.json
+```
+
+Reproduce the conservative candidate reduction without installing a profile:
+
+```powershell
+$env:PYTHONUTF8='1'
+C:\IsaacSim\env_6_1_0\Scripts\python.exe software\integrations\isaac_sim\link_mesh_reduction_probe.py `
+  --upstream-repo C:\IsaacSim\sources\roarm_ws-40dbd84 `
+  --mesh-receipt software\integrations\isaac_sim\evidence\roarm_m3_upstream_link_meshes_20260929.json `
+  --output C:\IsaacSim\evidence\link_mesh_reduction_003.json `
+  --status-output C:\IsaacSim\evidence\link_mesh_reduction_003.status.json
 ```
 
 ## Verify WP0
