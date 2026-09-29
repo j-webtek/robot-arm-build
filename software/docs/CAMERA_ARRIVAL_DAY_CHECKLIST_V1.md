@@ -68,6 +68,22 @@ complete result says only `READY_FOR_OFFLINE_QUALIFICATION_REVIEW`; it does not
 accept calibration, advance an epoch, update a registry, open either device, or
 authorize movement.
 
+After that structural result is complete, bind every original to the exact
+consumer source, downstream schema, and field binding in the current checkout:
+
+```powershell
+python -m rocell.application.camera_arrival_consumer_handoff_v1 `
+  --workspace . `
+  --evidence-root <external-root>
+```
+
+The source wrapper is
+`software/scripts/route_camera_arrival_consumers_v1.py`. A successful result
+says only `READY_FOR_OFFLINE_CONSUMER_VALIDATION`. It proves that the intact
+15-slot epoch can be routed to the current repository dependencies; it does not
+invoke those consumers, complete their validation, install qualification, or
+grant physical admission.
+
 ## Collect the four camera/support originals
 
 Use the existing explicitly authorized camera onboarding workflow to collect
