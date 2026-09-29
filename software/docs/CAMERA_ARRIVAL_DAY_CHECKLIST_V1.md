@@ -1,0 +1,146 @@
+# Camera Arrival-Day Checklist V1
+
+## Purpose and authority
+
+This checklist turns the final fixed-camera arrival into a bounded evidence
+collection session. It coordinates files and reviews; it does not authorize arm
+movement, controller startup, contact, or deployment qualification.
+
+The canonical dry-run map is
+`software/ai/eval/camera_arrival_kit_dry_run_v1.json`. It contains 15 required
+evidence slots and intentionally contains no measured hashes. Never edit that
+file into a physical record. Create physical originals under an owner-selected
+external evidence root and bind each with a sidecar conforming to
+`software/ai/schemas/camera_arrival_original_v1.schema.json`.
+
+## Before connecting the camera
+
+- [ ] Final camera housing and support revision are identified.
+- [ ] Camera is rigidly secured in its intended fixed-overview position.
+- [ ] Safety tether, fasteners, witness marks, cable routing, and strain relief
+  are visible and ready to document.
+- [ ] Arm is disabled or held outside the capture volume.
+- [ ] No camera capture is combined with a motion test.
+- [ ] Board, robot base, keyboard, tool, lighting, and allowed placement domain
+  are frozen for this configuration epoch.
+- [ ] An external evidence root exists outside Git with restricted ownership.
+- [ ] System clock, operator identity, session ID, and configuration-epoch ID
+  are available for every sidecar.
+
+Stop immediately if the support is not rigid, the cable can enter the arm
+sweep, an identity is ambiguous, or any physical component moves after the
+session begins.
+
+## Verify the software kit
+
+From a clean checkout, run the focused zero-I/O checks:
+
+```powershell
+cd software
+python -m pytest `
+  tests/unit/test_camera_arrival_kit_v1.py `
+  tests/unit/test_camera_arrival_original_schema_v1.py `
+  tests/integration/test_retained_camera_arrival_kit_v1.py `
+  ai/tests/test_physical_camera_localization_campaign.py `
+  ai/tests/test_physical_camera_localization_evaluator.py `
+  tests/unit/test_camera_support_optics_epoch_intake_v1.py -q
+```
+
+The retained dry run must report zero measured slots, camera opens, controller
+starts, writes, movements, and physical authority. A synthetic result never
+advances the measured configuration epoch or deployment registry.
+
+## Collect the four camera/support originals
+
+Use the existing explicitly authorized camera onboarding workflow to collect
+and retain, in order:
+
+1. `camera_receipt`
+2. `camera_identity`
+3. `camera_mode_controls`
+4. `support_witnesses`
+
+For every source file:
+
+- [ ] Keep the original bytes unchanged.
+- [ ] Record its external-root-relative path, byte size, and lowercase SHA-256.
+- [ ] Record capture time and configuration-epoch ID.
+- [ ] Complete the independent review fields.
+- [ ] Reject rather than repair an incomplete or mismatched original.
+
+Close and reopen the camera using the commissioned path and verify that
+persistent identity, resolution, frame rate, pixel format, orientation, focus,
+exposure, gain, and white balance remain unchanged. Drift ends the epoch.
+
+## Collect calibration originals
+
+Commission and retain independent evidence for:
+
+- [ ] Camera intrinsics and distortion.
+- [ ] Camera-to-board transform.
+- [ ] Board-to-robot transform.
+- [ ] Keyboard-to-board transform.
+- [ ] Tool-to-joint/TCP transform.
+
+Every calibration record must declare units, method, uncertainty, source-file
+hashes, held-out validation evidence, and configuration epoch. Nominal CAD,
+photographic estimates, model predictions, and manually adjusted predictions
+are not measured calibration.
+
+Stop if a required uncertainty is missing, a held-out residual fails its bound,
+or any calibrated object moves.
+
+## Collect installed-workcell originals
+
+- [ ] Installed robot, base, clamp, board, camera/support, keyboard, tool, and
+  nearby fixtures are represented in the installed geometry record.
+- [ ] Cable envelope covers every allowed arm posture and cable-routing state.
+- [ ] Keyboard profile binds physical dimensions and the exact target catalog.
+- [ ] Tool profile binds dimensions, effective tip, mass/center-of-gravity where
+  required, and the tool-to-joint calibration.
+- [ ] Every record has an accepted review sidecar and immutable source hash.
+
+Incomplete geometry remains unbounded. It cannot be replaced with an increased
+software clearance guess.
+
+## Run the localization campaign
+
+Follow
+`software/ai/docs/PHYSICAL_CAMERA_LOCALIZATION_CAMPAIGN.md`. Keep calibration
+and held-out sessions disjoint, preserve failed and obstructed images, and use
+independently surveyed truth.
+
+Run preflight only after all external files exist:
+
+```powershell
+python software/ai/eval/preflight_physical_camera_campaign.py `
+  --campaign <external-root>\localization\campaign.json `
+  --evidence-root <external-root> `
+  --output <external-root>\localization\preflight.json
+```
+
+Then run the frozen evaluator exactly once on the held-out split as documented
+in the campaign runbook. An offline `QUALIFICATION_RECOMMENDED` result remains
+a review recommendation; it does not install qualification or authorize motion.
+
+## Mandatory stop conditions
+
+Stop and retain the failure evidence on any of these conditions:
+
+- Camera identity, mode, controls, focus, crop, or orientation drifts.
+- Camera support, board, robot base, keyboard, tool, or cable routing moves.
+- A source byte count or SHA-256 differs from its sidecar.
+- A physical original is missing, unreviewed, or rejected.
+- Calibration and held-out splits overlap by image, truth, session, or capture.
+- Required uncertainty is absent or exceeds a target safe-region margin.
+- Installed collision geometry or cable envelope is incomplete.
+- Any workflow unexpectedly opens the controller, writes hardware, moves the
+  arm, advances an epoch, or updates a deployment registry.
+
+## Arrival-day completion record
+
+The evidence-collection session is complete only when every one of the 15
+arrival-kit slots has a separately retained physical original, valid sidecar,
+accepted review, immutable hash, and downstream-consumer receipt. Completion
+means the evidence is ready for offline qualification review. It does not mean
+the arm may move or type.

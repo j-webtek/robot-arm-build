@@ -104,7 +104,7 @@ and its evidence gate pass.
 | PC6 | Unified trace journal and deterministic replay | PC2-PC5 | No | None | COMPLETE |
 | PC7 | Safe transition cache in shadow mode | PC3, PC6 | No | None | COMPLETE |
 | PC8 | Performance benchmark and readiness report | PC1-PC7 | No | None | COMPLETE |
-| PC9 | Camera-arrival evidence tooling and dry run | PC6 | No for tooling | None before arrival | NOT_STARTED |
+| PC9 | Camera-arrival evidence tooling and dry run | PC6 | No for tooling | None before arrival | IN_PROGRESS |
 | PC10 | Pre-camera integration closure | PC0-PC9 | No | None | NOT_STARTED |
 
 ## PC0 — Freeze the qualification basis
@@ -473,6 +473,20 @@ claims.
 
 ## PC9 — Camera-arrival evidence tooling and dry run
 
+**Checkpoint 2026-09-28:** ARM-095 adds a canonical 15-slot arrival kit spanning
+the four camera/support originals, five calibration originals, installed
+geometry, cable envelope, keyboard/tool profiles, and localization campaign and
+evaluation records. Every slot binds an external destination, one strict
+physical-original sidecar schema, units/uncertainty requirements, review
+fields, and downstream consumers. The retained synthetic dry run has zero
+measured hashes and cannot advance an epoch, update a registry, install a
+qualification, open a camera, start a controller, write hardware, or move the
+arm. Mutation tests reject every attempted synthetic escalation. Thirty-three
+combined arrival-kit, schema, campaign, evaluator, and camera/support-intake
+tests pass. The arrival-day checklist records collection order and stop
+conditions. PC9 remains in progress pending consolidated dry runs for the
+remaining installed-geometry and calibration intake consumers.
+
 ### Deliverables
 
 - Prepare bounded commands and templates for original image capture, file
@@ -568,6 +582,7 @@ For every PC increment:
 
 - [Optimized typing execution plan](OPTIMIZED_TYPING_EXECUTION_PLAN.md)
 - [Typing performance readiness report](TYPING_PERFORMANCE_READINESS_REPORT_V1.md)
+- [Camera arrival-day checklist](CAMERA_ARRIVAL_DAY_CHECKLIST_V1.md)
 - [Shared AI/arm workplan](../ai/docs/SHARED_AI_ARM_WORKPLAN.md)
 - [Model command runtime implementation plan](../ai/docs/MODEL_COMMAND_RUNTIME_IMPLEMENTATION_PLAN.md)
 - [Camera integration hold](../../docs/CAMERA_INTEGRATION_HOLD.md)

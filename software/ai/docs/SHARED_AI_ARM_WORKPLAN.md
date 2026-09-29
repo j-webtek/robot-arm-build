@@ -530,6 +530,14 @@ predicts an 8.98 percent shorter direct-hover duration than park-between-keys;
 this is not measured physical speed. Exact retained hashes, 12 focused tests,
 and 162 affected tests pass with zero hardware access or physical authority.
 PC9 camera-arrival evidence tooling is now the next pre-camera plan stage.
+ARM-095 begins PC9 with a shared 15-slot arrival map. Each required physical
+original has an external destination, strict sidecar schema, review fields,
+units/uncertainty requirements, and named downstream consumers. The exact
+synthetic dry run retains blank measured slots and rejects any attempt to imply
+epoch advancement, registry update, qualification, camera access, controller
+access, writes, movement, or authority. Thirty-three combined cross-lane tests
+pass. The arrival-day checklist is ready; remaining calibration and installed-
+geometry consumer dry runs keep PC9 in progress.
 The AI precision lane now has a mainline-compatible pose-output adapter and v2
 batch producer. It preserves repeated targets and abstains on qualification,
 domain, freshness, identity, confidence, or containment failure. Its retained

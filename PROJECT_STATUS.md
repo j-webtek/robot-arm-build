@@ -1,6 +1,6 @@
 # Tactevra project status
 
-Reviewed September 28, 2026 through the ARM-094 PC8 performance completion,
+Reviewed September 28, 2026 through the ARM-095 PC9 arrival-kit checkpoint,
 ARM-077 PC0 pre-camera qualification basis, ARM-076 typing collision-evidence
 intake, ARM-075 exact-sample offline IK screen, AI-403 precision-adapter
 integration, and merged physical-camera
@@ -381,6 +381,17 @@ baseline, but explicitly makes no physical speed claim. Twelve focused and 162
 affected tests pass with zero hardware access, commands, or physical authority.
 PC9 camera-arrival evidence tooling is next; installed geometry, calibration,
 observed state, tracking, contact, and outcome verification remain blocked.
+
+ARM-095 begins PC9 with one canonical, fail-closed camera-arrival kit. Its 15
+slots map camera/support originals, calibrations, installed geometry, cable
+envelope, keyboard/tool profiles, and localization evidence to exact external
+destinations, schema, review fields, units/uncertainty, and downstream
+consumers. The retained synthetic dry run cannot populate measured hashes,
+advance an epoch, update a registry, install qualification, open the camera,
+start a controller, write hardware, or move the arm. Thirty-three combined
+tests pass. The operator checklist now defines collection order and mandatory
+stop conditions; PC9 remains in progress while remaining calibration and
+installed-geometry consumer dry runs are consolidated.
 
 AI-403 then integrates the pose-output precision adapter and actual V2 batch
 producer on current `main`. The retained contract fixture deterministically

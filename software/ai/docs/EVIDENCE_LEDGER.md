@@ -4955,3 +4955,38 @@ rewriting history. New entries must use a unique evidence ID.
   historical limitations remain accurate for their respective checkpoints.
 - Next dependency: PC9 camera-arrival evidence tooling and dry run, without
   weakening installed geometry, calibration, observed-state, or contact gates.
+
+### E-20260928-ARM-095 — fail-closed camera-arrival kit
+
+- Stage: S1/S2/S3/S7 pre-camera integration; PC9 in progress.
+- Lane: Shared AI/arm evidence boundary.
+- Commit: `bef76c3`.
+- Change: added a canonical 15-slot physical-original map, strict sidecar JSON
+  schema, zero-I/O generator, retained synthetic dry run, exact-file regression,
+  synthetic-escalation mutation tests, and arrival-day checklist.
+- Inputs/fixtures: blank synthetic-only slots for camera receipt, identity,
+  mode/controls, support witnesses, five calibration originals, installed
+  geometry, cable envelope, keyboard/tool profiles, localization campaign, and
+  localization evaluation.
+- Commands: `python -m pytest
+  tests/unit/test_camera_arrival_kit_v1.py
+  tests/unit/test_camera_arrival_original_schema_v1.py
+  tests/integration/test_retained_camera_arrival_kit_v1.py
+  ai/tests/test_physical_camera_localization_campaign.py
+  ai/tests/test_physical_camera_localization_evaluator.py
+  tests/unit/test_camera_support_optics_epoch_intake_v1.py -q`.
+- Result: PASS; 33 tests. Retained kit SHA-256
+  `26a6604760cf129a61ac49660b46f90517d108aa745fc8b923359b909a694eeb`;
+  retained file SHA-256
+  `2a3c71f578626e6e4c8e0f1b56e7004f64c99643ce734325545b7a4d043b5808`.
+  All 15 measured evidence hashes remain null.
+- Artifacts: `software/src/rocell/application/camera_arrival_kit_v1.py`,
+  `software/ai/schemas/camera_arrival_original_v1.schema.json`,
+  `software/ai/eval/camera_arrival_kit_dry_run_v1.json`, and
+  `software/docs/CAMERA_ARRIVAL_DAY_CHECKLIST_V1.md`.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: this is a synthetic coordination dry run, not received-camera,
+  calibration, installed-geometry, localization, or deployment evidence.
+- Next dependency: consolidate dry-run validation for the calibration and
+  installed-geometry consumers while preserving blank physical slots.
