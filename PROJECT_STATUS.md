@@ -1,7 +1,7 @@
 # Tactevra project status
 
-Reviewed September 29, 2026 through the ARM-107 restart-safe camera-arrival
-session boundary,
+Reviewed September 29, 2026 through the ARM-108 synthetic cable-envelope intake
+boundary,
 ARM-077 PC0 pre-camera qualification basis, ARM-076 typing collision-evidence
 intake, ARM-075 exact-sample offline IK screen, AI-403 precision-adapter
 integration, and merged physical-camera
@@ -495,6 +495,13 @@ reruns the commissioning orchestrator and requires an exact rebuilt manifest.
 The five states keep structural completion separate from validation progress,
 and even the strongest state leaves measured commissioning held. The governed
 offline matrix now passes 575 tests.
+
+ARM-108 begins PC15 with a typed, bounded cable-envelope contract. It binds
+ordered synthetic posture samples and every adjacent swept envelope to one
+installed-collision profile and retained source hash. Its evidence is labeled
+`SYNTHETIC_OFFLINE_ONLY`; missing or crossed evidence rejects, and the type can
+satisfy only the cable receipt route. It cannot install physical collision
+qualification. The governed offline matrix now passes 579 tests.
 
 AI-403 then integrates the pose-output precision adapter and actual V2 batch
 producer on current `main`. The retained contract fixture deterministically

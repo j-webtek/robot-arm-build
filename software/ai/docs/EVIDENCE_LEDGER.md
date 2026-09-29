@@ -5470,3 +5470,37 @@ rewriting history. New entries must use a unique evidence ID.
 - Next dependency: PC15 must exercise complete, incomplete, boundary, and
   crossed synthetic installed-geometry and cable-envelope inputs through the
   real typed collision consumer without promoting synthetic qualification.
+
+### E-20260929-ARM-108 — Typed synthetic cable-envelope intake
+
+- Stage: PC15 post-closure pre-camera continuation, increment 1.
+- Lane: arm/runtime installed collision evidence.
+- Implementation commit: `4f23b638b4dd126caea7397d633502acec21c1b9`.
+- Change: added a typed cable-envelope intake and JSON Schema that bind two to
+  64 ordered posture samples, every adjacent swept envelope, uncertainty, the
+  exact installed-collision profile, required sampled cable body, and one
+  profile source hash. Extended the typed collision emitter/operator so this
+  evidence can satisfy only the `cable_envelope` route.
+- Result: PASS in detached clean checkout. The governed matrix passed 579
+  tests; repository-policy tests passed 115; all maintained audits passed.
+  Focused cases cover the complete deterministic template, schema validation,
+  missing sweep, crossed adjacency, unknown source hash, and route misuse.
+- Artifacts: `software/src/rocell/application/installed_cable_envelope_intake_v1.py`,
+  `software/ai/schemas/installed_cable_envelope_intake_v1.schema.json`, the
+  collision receipt emitter/operator, and focused emitter tests.
+- Camera opens: 0.
+- Transport opens: 0.
+- Controller starts: 0.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: the included geometry is deliberately far-field synthetic test
+  data and is labeled `SYNTHETIC_OFFLINE_ONLY`. A route-local receipt pass is a
+  template/consumer compatibility result, not measured cable clearance,
+  physical collision qualification, installation, or movement authority.
+  Rigid/attachment templates, retained full campaign output, and measurement
+  diagnostics remain outstanding for PC15.
+- Supersedes: none; ARM-103/106 collision receipt behavior for a bare installed
+  profile remains unchanged and honestly blocked for sampled cable evidence.
+- Next dependency: complete PC15's rigid-body, attachment, uncertainty,
+  provenance, review, boundary, and crossed-lineage campaign around this cable
+  contract, retaining exact missing-measurement diagnostics.

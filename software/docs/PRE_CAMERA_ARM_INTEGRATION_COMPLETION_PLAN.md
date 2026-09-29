@@ -744,6 +744,19 @@ previous pass.
 
 ## PC15 — Installed-geometry and cable-envelope intake rehearsal
 
+**In progress 2026-09-29:** ARM-108 adds the first typed cable-envelope intake
+boundary. It binds a bounded ordered posture set and every adjacent swept
+envelope to the exact installed-collision profile and one accepted profile
+source hash. The deterministic template is explicitly
+`SYNTHETIC_OFFLINE_ONLY`; it installs no qualification and grants no physical
+authority. The existing collision receipt emitter accepts this typed evidence
+only for `cable_envelope`; it cannot satisfy `installed_geometry`. Missing
+sweeps, crossed posture lineage, unknown source hashes, and route misuse reject.
+Commit `4f23b638b4dd126caea7397d633502acec21c1b9` passed 579 governed tests,
+115 repository-policy tests, and all maintained audits in a detached clean
+checkout. PC15 remains in progress pending full rigid/attachment templates,
+boundary fixtures, retained campaign output, and operator diagnostics.
+
 ### Objective
 
 Remove avoidable friction from the two currently blocked collision consumers
