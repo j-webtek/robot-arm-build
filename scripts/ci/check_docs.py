@@ -41,6 +41,7 @@ DOCS = (
     'software/ai/docs/SHARED_AI_ARM_WORKPLAN.md',
     'software/ai/docs/EVIDENCE_LEDGER.md',
     'software/docs/ARCHITECTURE.md',
+    'software/docs/ISAAC_SIM_INTEGRATION_PLAN.md',
     'docs/brand/BRAND_GUIDE.md', 'docs/brand/NAMING_REVIEW.md',
     'docs/brand/MIGRATION_PLAN.md',
     'assets/media/README.md', 'assets/media/VERIFICATION_RECEIPT.md',
@@ -74,6 +75,7 @@ PUBLIC_TITLES = {
     'software/ai/docs/SHARED_AI_ARM_WORKPLAN.md': 'Shared AI-to-arm workplan',
     'software/ai/docs/EVIDENCE_LEDGER.md': 'Tactevra AI/arm evidence ledger',
     'software/docs/ARCHITECTURE.md': 'Tactevra Runtime software architecture',
+    'software/docs/ISAAC_SIM_INTEGRATION_PLAN.md': 'Tactevra Isaac Sim integration plan',
     'assets/media/VERIFICATION_RECEIPT.md': 'Tactevra overview-media verification receipt',
 }
 
@@ -161,6 +163,13 @@ REQUIRED_PHRASES = {
     'software/ai/docs/EVIDENCE_LEDGER.md': (
         '**Document status:** Append-only evidence record',
         'duplicate `E-20260926-INT-001` identifier',
+    ),
+    'software/docs/ISAAC_SIM_INTEGRATION_PLAN.md': (
+        '**Document status:** Active integration plan',
+        '**Authority:** Planning and software-test guidance only.',
+        'hardware_access=false',
+        'physical_authority=false',
+        'no simulator result can promote a physical hardware gate',
     ),
     'assets/media/VERIFICATION_RECEIPT.md': (
         '**Document status:** Current published-media verification',

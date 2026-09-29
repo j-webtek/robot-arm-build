@@ -41,6 +41,7 @@ the [evidence ledger](software/ai/docs/EVIDENCE_LEDGER.md) for detailed records.
 | --- | --- | --- |
 | AI and perception | Produce typed intent, scene-quality evidence, and candidate targets with declared frames and confidence | [AI-to-runtime contract](software/ai/docs/CONTRACT.md) |
 | Arm runtime | Validate proposals, calibration, geometry, permissions, lifecycle, and feedback before any dispatch | [Runtime architecture](software/docs/ARCHITECTURE.md) |
+| Higher-fidelity simulation | Replay already-admitted trajectories in a pinned external simulator; compare collision, tracking, contact, and camera evidence without gaining hardware authority | [Isaac Sim integration plan](software/docs/ISAAC_SIM_INTEGRATION_PLAN.md) |
 | Physical workcell | Establish measured installation, tool geometry, clearance, and repeatable observation | [Hardware build guide](docs/HARDWARE_BUILD_GUIDE.md) |
 | Repository and release | Preserve reviewable evidence, compatibility, security controls, and honest public claims | [Repository operations](docs/REPOSITORY_OPERATIONS.md) and [release readiness](docs/releases/READINESS.md) |
 
