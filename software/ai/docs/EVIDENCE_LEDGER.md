@@ -5187,3 +5187,37 @@ rewriting history. New entries must use a unique evidence ID.
 - Next dependency: bind a structurally complete preflight report to the existing
   per-slot consumer map for offline qualification routing after real originals
   exist.
+
+### E-20260929-ARM-100 — Hash-bound camera-arrival consumer handoff
+
+- Stage: post-PC10 camera commissioning preparation.
+- Lane: arm/runtime evidence routing.
+- Implementation commit: `6a921ba60be3ae61d693950cf6e3be24725a4530`.
+- Change: added a canonical, schema-validated handoff that joins the parsed
+  15-slot arrival preflight to the current repository-built consumer map. Every
+  route binds artifact identity, sidecar/source hashes, configuration epoch,
+  consumer source/schema hashes, and exact consumer field binding.
+- Installed invocation:
+  `python -m rocell.application.camera_arrival_consumer_handoff_v1 --workspace . --evidence-root <external-root>`.
+- Result: PASS. Empty and structurally complete synthetic roots, one corrupted
+  source, altered consumer-map content, rehashed authority, and route-admission
+  mutations were exercised. Twenty-three focused/PC9 regression tests passed;
+  the governed offline matrix passed 527 tests. All 115 repository-policy tests
+  and maintained documentation, public-record, evidence-scope,
+  repository-artifact, repository-health, and release-integrity checks passed.
+- Admission semantics: a complete consistent set becomes only
+  `READY_FOR_OFFLINE_CONSUMER_VALIDATION`. The handoff does not invoke any
+  consumer and records `consumer_validation_completed=false` globally and per
+  route, with `physical_admission_ready=false` for every route.
+- Camera opens: 0.
+- Controller starts: 0.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: repository routing readiness is not downstream measurement
+  validation, calibration acceptance, localization qualification, installed
+  collision/cable clearance, epoch commissioning, or deployment authority.
+  Actual camera-arrival originals remain unavailable.
+- Supersedes: ARM-099's unbound downstream-routing dependency.
+- Next dependency: after actual originals arrive and preflight passes, run each
+  route's named offline consumer and retain its independent validation receipt
+  before considering any epoch or deployment transition.

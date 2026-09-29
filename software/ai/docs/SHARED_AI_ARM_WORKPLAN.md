@@ -564,6 +564,12 @@ parser, and exposes the same implementation as an installed Python module. The
 installed-package smoke test produced the expected blocked 15-slot report with
 zero authority. Rehashed semantic mutations reject, package metadata remains
 unchanged, and the governed offline matrix passes 518 tests.
+ARM-100 joins that verified preflight to the repository-bound 15-slot consumer
+map. Each route now carries the original sidecar/source hashes, shared epoch,
+consumer source/schema hashes, and exact consumer binding. A complete set is
+ready only for offline consumer validation: no consumer has run, no
+qualification is installed, and no physical-admission or execution authority
+is created. The governed offline matrix passes 527 tests.
 The AI precision lane now has a mainline-compatible pose-output adapter and v2
 batch producer. It preserves repeated targets and abstains on qualification,
 domain, freshness, identity, confidence, or containment failure. Its retained
