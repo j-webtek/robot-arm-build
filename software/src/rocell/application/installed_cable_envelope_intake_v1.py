@@ -211,7 +211,9 @@ def build_synthetic_cable_envelope_intake_v1(
 ) -> InstalledCableEnvelopeIntakeV1:
     """Build a deterministic far-field fixture for contract rehearsal only."""
 
-    source = sorted(profile.source_bindings.values())[0]
+    source = profile.source_bindings.get(
+        "synthetic_cable_envelope", sorted(profile.source_bindings.values())[0]
+    )
     names = ("synthetic-park", "synthetic-left", "synthetic-right")
     postures = tuple({
         "sequence": index, "posture_id": name,
