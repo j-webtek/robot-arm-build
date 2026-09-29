@@ -69,6 +69,7 @@ TESTS = (
     "software/tests/unit/test_typing_planner_preparation_v1.py",
     "software/tests/unit/test_typing_planner_preparation_benchmark_v1.py",
     "software/tests/unit/test_typing_ik_effort_campaign_v1.py",
+    "software/tests/unit/test_typing_exact_ik_cache_benchmark_v1.py",
     "software/tests/unit/test_pre_camera_host_benchmark_v1.py",
     "software/tests/unit/test_assess_r97_external_review_decision.py",
     "software/tests/unit/test_model_motion_sequence_coordinator.py",
