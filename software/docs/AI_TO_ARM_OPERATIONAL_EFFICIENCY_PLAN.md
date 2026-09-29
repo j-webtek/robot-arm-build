@@ -443,6 +443,23 @@ Deliver:
 Gate: cold and warm paths remain semantically identical and stale state cannot
 survive an epoch change.
 
+Implementation checkpoint (2026-09-29): E1 has begun with an immutable
+`SimulationContextValidationLeaseV1`. Profiling showed that trusted batch
+admission was dominated by reloading and hashing the complete locked simulation
+context for every request. Lease issuance still performs that full source
+validation once. Warm admission then requires the same in-memory context object,
+content-derived context epoch, service instance, and generation, and it rechecks
+the lease hash and zero-authority fields. Any epoch advance, service restart,
+generation invalidation, context replacement, or lease mutation fails closed.
+
+Focused tests prove byte-for-byte and hash-for-hash equivalence between full and
+leased admission. A provisional 20/20 local comparison reduced admission from
+33.349 ms p50 / 34.715 ms p95 to 0.116 ms p50 / 0.150 ms p95. These numbers are
+not retained evidence or performance authority yet; a clean-commit benchmark is
+the next E1 deliverable. Model/camera/planner/controller lifecycle design, broader
+static/dynamic validation separation, warm-up campaigns, and restart matrices
+remain open.
+
 ### E2 — Accelerate IK and collision preparation
 
 Deliver:

@@ -12,7 +12,7 @@ from types import MappingProxyType
 from typing import Any, Mapping
 
 from rocell.models import ActionPlan, ModelMotionBatchV2
-from .context import SimulationContext
+from .context import SimulationContext, SimulationContextValidationLeaseV1
 from .model_motion_ingress_v2 import (
     MeasuredTargetRegionV2, ModelMotionIngressV2Error,
     TrustedLocalizationQualificationV2, ingest_model_motion_batch_v2,
@@ -95,6 +95,10 @@ def ingest_with_trusted_registry_v2(
     batch: ModelMotionBatchV2, plan: ActionPlan, context: SimulationContext, *,
     registry: TrustedMotionRegistryV2, current_time_epoch_ms: int,
     current_monotonic_ns: int,
+    context_validation_lease: SimulationContextValidationLeaseV1 | None = None,
+    active_context_epoch_sha256: str | None = None,
+    active_service_instance_id: str | None = None,
+    active_context_generation: int | None = None,
 ) -> dict[str, Any]:
     """Admit using one coherent consumer-owned registry snapshot."""
     if not isinstance(registry, TrustedMotionRegistryV2):
@@ -129,7 +133,11 @@ def ingest_with_trusted_registry_v2(
         measured_target_regions=registry.target_region_map,
         minimum_observation_confidence=registry.minimum_observation_confidence,
         maximum_surface_normal_error_mm=(
-            registry.maximum_surface_normal_error_mm))
+            registry.maximum_surface_normal_error_mm),
+        context_validation_lease=context_validation_lease,
+        active_context_epoch_sha256=active_context_epoch_sha256,
+        active_service_instance_id=active_service_instance_id,
+        active_context_generation=active_context_generation)
 
 
 def revalidate_with_trusted_registry_v2(
