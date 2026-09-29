@@ -247,6 +247,20 @@ def main() -> None:
         "speed", "contact_depth", "retry_policy", "timing"
     ]
     assert data["stage_vocabulary"] == ["UNDERSTAND", "LOCATE", "CHECK", "ACT", "VERIFY"]
+    narration = data["narration"]
+    assert [cue["id"] for cue in narration] == list(range(1, 15))
+    assert all(0 <= cue["start"] < cue["end"] <= data["duration_seconds"] for cue in narration)
+    assert all(first["end"] <= second["start"] for first, second in zip(narration, narration[1:]))
+    assert all(cue["text"].strip() for cue in narration)
+    assert [(cue["start"], cue["end"]) for cue in narration] == [
+        (4, 9), (9, 15), (15, 21), (21, 28), (28, 33), (33, 40),
+        (40, 48), (55, 61), (61, 67), (67, 74), (82, 87), (87, 93),
+        (93, 96), (96, 100),
+    ]
+    chapters = data["chapters"]
+    assert chapters[0]["start"] == 0
+    assert chapters[-1]["end"] == data["duration_seconds"]
+    assert all(first["end"] == second["start"] for first, second in zip(chapters, chapters[1:]))
     assert shots[1]["stage"] is None
     assert shots[3]["stage"] == "UNDERSTAND"
     assert all(shots[index]["stage"] == "ACT" for index in range(7, 14))
@@ -260,7 +274,8 @@ def main() -> None:
         "off-board stateful request-to-test-pad operator display, "
         f"computed overhead exclusion margin {exclusion_margin:.1%}, "
         "five-stage parented arm articulation with mount-side checks, "
-        "seven benchmark phases, four independently permitted rhythm contacts, "
+        "fourteen timed narration cues, six contiguous chapters, seven benchmark "
+        "phases, four independently permitted rhythm contacts, "
         "one contact-free high-clearance crossing, and eleven independently "
         "permitted phone contacts with disclosed 2x montage timing"
     )
