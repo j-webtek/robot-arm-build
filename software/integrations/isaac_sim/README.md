@@ -210,6 +210,17 @@ ambiguous instances and 19 groups whose bounds cross a governed joint origin.
 All reviewed assignments remain null: the fixed STEP has no reviewed joint or
 mate graph, and one static pose cannot separate coincident rigid groups.
 
+[`upstream_link_mesh_probe.py`](upstream_link_mesh_probe.py) follows the
+independent official ROS description at its pinned Git commit. The Xacro binds
+seven link-specific STL files identically as visual and collision geometry.
+After the governed home-pose transforms, their union envelope matches the
+independently converted STEP assembly within 1.911 mm. This supports the
+upstream per-link grouping, while the retained
+[`mesh receipt`](evidence/roarm_m3_upstream_link_meshes_20260929.json) still
+denies collision use: the raw visual meshes contain 38,344 triangles, `link1`
+and `link5` are not watertight, an extra left-gripper mesh is unreferenced, and
+no convex reduction or self-collision policy has been reviewed.
+
 Reproduce it on the designated runner from the repository root:
 
 ```powershell
@@ -243,6 +254,19 @@ C:\IsaacSim\env_6_1_0\Scripts\python.exe software\integrations\isaac_sim\step_li
   --pose-receipt software\integrations\isaac_sim\evidence\roarm_m3_step_pose_binding_20260929.json `
   --output C:\IsaacSim\evidence\step_link_membership_001.json `
   --status-output C:\IsaacSim\evidence\step_link_membership_001.status.json
+```
+
+Reproduce the pinned upstream link-mesh inspection:
+
+```powershell
+$env:PYTHONUTF8='1'
+C:\IsaacSim\env_6_1_0\Scripts\python.exe software\integrations\isaac_sim\upstream_link_mesh_probe.py `
+  --workspace . `
+  --upstream-repo C:\IsaacSim\sources\roarm_ws-40dbd84 `
+  --step-receipt software\integrations\isaac_sim\evidence\roarm_m3_step_inspection_20260929.json `
+  --pose-receipt software\integrations\isaac_sim\evidence\roarm_m3_step_pose_binding_20260929.json `
+  --output C:\IsaacSim\evidence\upstream_link_meshes_001.json `
+  --status-output C:\IsaacSim\evidence\upstream_link_meshes_001.status.json
 ```
 
 ## Verify WP0
