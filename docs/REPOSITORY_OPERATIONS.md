@@ -151,13 +151,28 @@ This is an early consistency gate, not owner approval or proof of runtime safety
 
 ### Release-readiness synchronization
 
-The release-readiness registry names its tracking issue and milestone. CI
-validates the registry structure on every PR; the weekly read-only repository
-health workflow compares blocker statuses with their linked issues and confirms
-the tracker/milestone relationship. A mismatch fails the audit so maintainers see
-drift without a bot editing issues, closing milestones, publishing a candidate,
-or weakening a blocker. Update the ledger and GitHub issue state as one reviewed
-operation.
+The release-readiness registry names its tracking issue and milestone and is the
+source for the generated dashboard status, issue #57 body, and milestone
+description. CI validates the registry and dashboard on every PR. The weekly
+read-only repository-health workflow compares blocker statuses and generated
+text with live GitHub state. A mismatch fails the audit; the scheduled workflow
+cannot edit issues, close milestones, publish a candidate, or weaken a blocker.
+
+After a reviewed registry change, regenerate the dashboard and deliberately
+repair the live surfaces with an authenticated maintainer shell:
+
+```powershell
+.\maintain-repository.ps1 sync-readiness
+$env:GITHUB_TOKEN = '<short-lived token>'
+.\maintain-repository.ps1 sync-readiness -ApplyGitHub
+Remove-Item Env:GITHUB_TOKEN
+```
+
+Review the diff before committing. The GitHub operation updates only the tracker
+body and existing milestone description; it never changes blocker issue state.
+The prepared [independent kinematic-model replacement plan](WAVESHARE_MODEL_REPLACEMENT_PLAN.md)
+is the non-blocking fallback for issue #88. It does not resolve that issue or
+make a legal determination.
 
 The Pages deployment performs a bounded post-deploy check for the public title
 and overview poster. A deploy success without those public resources is reported
@@ -277,6 +292,28 @@ authenticated environment as documented in
 workflow. After an intentional settings change, update the policy and its
 operations documentation in a reviewed PR so the declared baseline and GitHub
 state remain aligned.
+
+Each scheduled run also retains a 30-day Markdown/JSON operations report with
+the current registry counts, workflow inventory, dependency-monitor presence,
+tracked-file count, and shared-contract routing coverage. It is a triage aid,
+not a release, security, model, rights, or hardware approval.
+
+## One-command local maintenance
+
+From the repository root, run the same CI-unit and repository-policy checks used
+for routine review:
+
+```powershell
+.\maintain-repository.ps1 verify
+```
+
+Use `-Full` only in an environment where package test dependencies are already
+installed. Generate the bounded operations report with
+`.\maintain-repository.ps1 report`. The Python entry point
+`python scripts/maintain_repository.py ...` provides the same interface on other
+platforms. These commands are hardware-free and do not install dependencies,
+start the controller, move the arm, publish, or mutate GitHub unless the explicit
+`sync-readiness -ApplyGitHub` operation is chosen.
 
 ## Actions and security baseline
 

@@ -24,7 +24,16 @@
     "software/src/rocell/workcell/interface_contract.py",
     "software/config/arm_frame_contract.json",
     "software/config/system_manifest.json",
-    "software/config/camera_manifest.json"
+    "software/config/camera_manifest.json",
+    "software/config/model_arm_conformance_profile_v1.json",
+    "software/config/static_simulation_bundle_lock.json",
+    "software/config/simulation_bundle_lock.json",
+    "software/config/simulation_hardware_profile.json",
+    "software/config/static_nominal_target_profiles.json",
+    "software/config/nominal_target_profiles.json",
+    "software/src/rocell/application/model_motion_ingress.py",
+    "software/src/rocell/application/model_motion_ingress_v2.py",
+    "software/src/rocell/application/production_controller_runtime_contract_v1.py"
   ],
   "portable_full": [
     "software/**",
