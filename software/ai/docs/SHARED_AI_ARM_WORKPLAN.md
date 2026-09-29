@@ -1092,8 +1092,14 @@ offline PC11-PC16 boundaries, split evenly between fresh and retained artifact
 trees and covering pass, blocked, and pending outcomes. Every timed decision
 matched an independent verification hash. The measurements expose software
 bottlenecks but cannot influence admission or claim model, controller, or
-physical typing performance. PC18's actual AI-output compatibility corpus and
-gate is the next shared increment.
+physical typing performance. PC18 is complete at ARM-113. Its retained corpus
+binds exact output bytes from the actual shared emitter, precision adapter, and
+localization-abstention path. H,H,I reaches zero-authority trajectory
+compilation in exact order; the actual H,H,1,PERIOD precision fixture is
+decoded in exact order but correctly blocked because its 14.400834977 mm bound
+does not fit measured key-safe regions. Unsupported, stale, crossed-identity,
+low-confidence, and uncalibrated cases stop at their declared owner. This
+proves contract compatibility, not localization accuracy or physical typing.
 
 1. **S1 software boundary — complete for zero authority:** v2 producer bytes,
    strict decoding, trusted registry, freshness, mutation rejection, and ordered

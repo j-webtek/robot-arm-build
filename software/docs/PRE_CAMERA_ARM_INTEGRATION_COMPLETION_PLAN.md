@@ -115,7 +115,7 @@ and its evidence gate pass.
 | PC15 | Installed-geometry and cable-envelope intake rehearsal | PC13-PC14 | No | None | COMPLETE |
 | PC16 | Immutable camera-replay runner | PC11-PC14 | No live camera | None | COMPLETE |
 | PC17 | Timing and observability report | PC11-PC16 | No | None | COMPLETE |
-| PC18 | Actual AI-output compatibility corpus and gate | PC11, shared AI producer | No | None | PLANNED |
+| PC18 | Actual AI-output compatibility corpus and gate | PC11, shared AI producer | No | None | COMPLETE |
 
 ## PC0 — Freeze the qualification basis
 
@@ -878,6 +878,20 @@ speed claim.
 
 ## PC18 — Actual AI-output compatibility corpus and gate
 
+**Completed 2026-09-29:** the retained PC18 corpus now binds exact bytes from
+the actual shared batch emitter, the actual precision-adapter H,H,1,PERIOD
+fixture, and the retained localization-abstention record. Seven cases reproduce
+the expected producer or arm-owned disposition. The supported H,H,I case
+preserves repetition and order through strict decode, registry admission,
+preplanner revalidation, execution compilation, and trajectory compilation.
+The real precision output preserves repetition, digit, and punctuation order
+but stops at arm ingress because its 14.400834977 mm model bound plus placement
+error leaves measured key-safe regions. Unsupported phone input, uncalibrated
+localization, exact expiry, crossed image identity, and low confidence all fail
+closed at their declared owner. The content-addressed report contains no
+controller commands, hardware access, physical authority, installation,
+startup, execution, or automatic-retry permission.
+
 ### Objective
 
 Continuously prove that the real AI producer and the arm runtime agree on the
@@ -953,7 +967,7 @@ For every PC increment:
 - [x] PC15 installed-geometry and cable-envelope rehearsal complete
 - [x] PC16 immutable camera-replay runner complete
 - [x] PC17 timing and observability report complete
-- [ ] PC18 actual AI-output compatibility corpus and gate complete
+- [x] PC18 actual AI-output compatibility corpus and gate complete
 
 ## Related documents
 

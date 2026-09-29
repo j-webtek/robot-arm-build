@@ -5666,3 +5666,50 @@ rewriting history. New entries must use a unique evidence ID.
   remains authoritative.
 - Next dependency: PC18 must run the actual AI producer's retained corpus
   through the arm-owned compatibility gate with exact expected outcomes.
+
+### E-20260929-ARM-113 — Actual AI-output compatibility corpus and gate
+
+- Stage: PC18 post-closure pre-camera continuation, completion.
+- Lane: shared AI producer and arm/runtime consumer boundary.
+- Implementation commit: `b4343ba548f58164c6ff461cd5cd8debc2d324c2`.
+- Change: retained and content-addressed exact bytes from the actual shared AI
+  batch emitter for H,H,I, the actual frozen precision-adapter fixture for
+  H,H,1,PERIOD, and the current localization-abstention record. Added a strict
+  seven-case compatibility runner, corpus/report schemas, deterministic
+  regeneration, expected-owner/result checks, and mutation tests. The
+  supported H,H,I output passes strict decoding, trusted-registry admission,
+  monotonic preplanner revalidation, execution-plan compilation, and quintic
+  trajectory compilation with exact repeat/order preservation. The retained
+  precision output decodes with exact repeat/digit/punctuation order but is
+  blocked by the arm because its 14.400834977 mm model bound plus placement
+  error leaves measured key-safe regions. Unsupported phone input,
+  uncalibrated localization, exact expiry, crossed image identity, and low
+  confidence stop at their declared owner.
+- Command: `.\\.venv\\Scripts\\python.exe -c "import pytest; from
+  scripts.ci.offline_checks import TESTS; raise
+  SystemExit(pytest.main(['-q', *TESTS]))"`; followed by
+  `.\\.venv\\Scripts\\python.exe scripts/maintain_repository.py verify`.
+- Result: PASS. The governed matrix passed 616 tests; repository-policy tests
+  passed 115; all maintained audits passed. All seven corpus cases matched
+  their exact expected disposition. The retained report identity is
+  `9093213b064b08b2abfc6f300f04b5fda03725969fa0a32379f134c51471ff0f`.
+- Artifacts: `software/ai/rocell_ai/actual_output_compatibility_v1.py`,
+  `software/ai/eval/actual_ai_arm_compatibility_corpus_v1.json`,
+  `software/ai/eval/actual_ai_arm_compatibility_report_v1.json`, the retained
+  H,H,I batch, two JSON Schemas, deterministic generator, and governed tests.
+- Camera opens: 0.
+- Model runtime loads: 0. The retained precision result was not recomputed.
+- Transport opens: 0.
+- Controller starts: 0.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: all work remains `SYNTHETIC_OFFLINE_ONLY`. Trajectory
+  compilation proves structural consumer compatibility, not IK/collision
+  qualification, installed calibration, transport timing, controller response,
+  key contact, device effect, or physical typing speed. The actual precision
+  result remains unsafe for deployment and is deliberately blocked.
+- Supersedes: none. AI-owned localization evidence and arm-owned admission
+  policy remain authoritative.
+- Next dependency: after final-camera originals arrive, reduce or qualify the
+  localization uncertainty inside applicable key-safe regions, commission the
+  measured epoch, and rerun this boundary beginning with one non-contact target.
