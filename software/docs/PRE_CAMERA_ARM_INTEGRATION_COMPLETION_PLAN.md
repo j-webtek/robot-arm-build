@@ -892,6 +892,17 @@ closed at their declared owner. The content-addressed report contains no
 controller commands, hardware access, physical authority, installation,
 startup, execution, or automatic-retry permission.
 
+**Refined at ARM-114 / PC18.1:** the retained corpus now also includes an
+actual-emitter 15-action mixed phrase with repeated letters, Space, digits,
+period, and Enter, plus one actual-emitter batch covering all 46 named keyboard
+targets. Both preserve exact target/contact order through offline trajectory
+compilation. Strict decoding now records exact blockers for authority
+injection, duplicate JSON members, non-finite coordinates, and reordered
+actions derived from the retained H,H,I bytes. The report records the canonical
+64-proposal and 1 MiB input ceilings; the largest retained case uses 46
+proposals and 15,022 bytes. This is broader software-contract evidence, not
+physical route or localization qualification.
+
 ### Objective
 
 Continuously prove that the real AI producer and the arm runtime agree on the

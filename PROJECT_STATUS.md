@@ -1,6 +1,6 @@
 # Tactevra project status
 
-Reviewed September 29, 2026 through the ARM-113 PC18 actual AI-output compatibility gate,
+Reviewed September 29, 2026 through the ARM-114 PC18.1 compatibility refinement,
 ARM-077 PC0 pre-camera qualification basis, ARM-076 typing collision-evidence
 intake, ARM-075 exact-sample offline IK screen, AI-403 precision-adapter
 integration, and merged physical-camera
@@ -551,6 +551,17 @@ crossed image identity, and low confidence stop at their declared owner. All
 seven cases carry zero commands and zero physical authority. The governed
 offline matrix now passes 616 tests. This establishes software compatibility,
 not camera accuracy, IK/collision qualification, or physical typing.
+
+ARM-114 refines that boundary with two more retained outputs from the actual
+shared emitter: a 15-action mixed typing sequence (`robot book 10.` plus Enter)
+and a 46-action catalog sweep containing every named keyboard target. Both
+preserve exact order through zero-authority trajectory compilation. Four
+derived attacks against the real H,H,I payload—authority injection, duplicate
+JSON, a non-finite coordinate, and reordered actions—now have exact strict-
+decoder outcomes. The report also records the existing 64-proposal and 1 MiB
+input ceilings; its largest retained batch is 46 proposals and 15,022 bytes.
+The governed offline matrix now passes 619 tests. This remains structural
+coverage and does not make the 46 routes physically qualified.
 
 AI-403 then integrates the pose-output precision adapter and actual V2 batch
 producer on current `main`. The retained contract fixture deterministically

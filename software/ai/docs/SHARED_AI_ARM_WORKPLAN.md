@@ -1100,6 +1100,12 @@ decoded in exact order but correctly blocked because its 14.400834977 mm bound
 does not fit measured key-safe regions. Unsupported, stale, crossed-identity,
 low-confidence, and uncalibrated cases stop at their declared owner. This
 proves contract compatibility, not localization accuracy or physical typing.
+ARM-114 refines PC18 with retained actual-emitter outputs for a 15-action mixed
+phrase and all 46 named keyboard targets, exact strict-decoder dispositions for
+four hostile mutations, and explicit input-resource ceilings. Exact order is
+preserved through offline trajectory compilation for both new accepted cases.
+The refinement remains zero-authority and does not turn catalog coverage into
+IK, collision, calibration, contact, or physical typing evidence.
 
 1. **S1 software boundary — complete for zero authority:** v2 producer bytes,
    strict decoding, trusted registry, freshness, mutation rejection, and ordered
