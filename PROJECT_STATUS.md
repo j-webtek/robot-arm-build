@@ -1,6 +1,6 @@
 # Tactevra project status
 
-Reviewed September 29, 2026 through the ARM-111 PC17 decision-neutral observability,
+Reviewed September 29, 2026 through the ARM-112 PC17 retained host benchmark,
 ARM-077 PC0 pre-camera qualification basis, ARM-076 typing collision-evidence
 intake, ARM-075 exact-sample offline IK screen, AI-403 precision-adapter
 integration, and merged physical-camera
@@ -527,8 +527,18 @@ after instrumentation. p50/p95/p99 are withheld until their declared sample
 counts are met. Timing cannot feed admission or claim physical performance,
 and the report carries zero camera, transport, controller, write, movement,
 and physical authority. The governed offline matrix now passes 608 tests.
-PC17 remains in progress pending a retained host-measured benchmark through
-the existing stage workflows.
+That increment established the contract; ARM-112 supplies the retained
+host-measured benchmark through the existing stage workflows.
+
+ARM-112 completes PC17 with 120 measurements through the real offline
+PC11-PC16 boundaries: 20 per stage, split evenly between freshly materialized
+and retained artifact trees. The report records 61 pass, 33 blocked, and 26
+pending outcomes; every timed result exactly matches its verification hash.
+The dominant measured software work is the complete PC12 fault campaign
+(1,333.4719 ms p95) and PC15 collision/cable campaign (256.4344 ms p95) on
+this Windows/Python 3.10 host. These are diagnostic host measurements, not
+admission thresholds or physical-speed claims. The governed offline matrix now
+passes 610 tests. PC18 actual AI-output compatibility is next.
 
 AI-403 then integrates the pose-output precision adapter and actual V2 batch
 producer on current `main`. The retained contract fixture deterministically

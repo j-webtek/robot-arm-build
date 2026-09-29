@@ -5624,3 +5624,45 @@ rewriting history. New entries must use a unique evidence ID.
 - Next dependency: collect retained host-measured cold/warm pass, blocked, and
   pending observations through PC11-PC16 without changing their canonical
   decisions, then publish the bounded report as PC17 increment 2.
+
+### E-20260929-ARM-112 — Retained PC11-PC16 host benchmark
+
+- Stage: PC17 post-closure pre-camera continuation, completion.
+- Lane: arm/runtime workflow timing and observability.
+- Implementation commit: `9583b51f03584bdd389ca8a7c9d69632a0417cbc`.
+- Change: added a hardware-incapable host benchmark that invokes the real PC11
+  commissioning orchestrator, PC12 18-case fault campaign, PC13 native
+  consumer operator, PC14 session-manifest builder, PC15 installed-geometry
+  and cable rehearsal, and PC16 immutable replay. Each stage runs 20 times:
+  ten against freshly materialized synthetic artifact trees (`COLD`/cache
+  miss) and ten against retained trees (`WARM`/cache hit). The timed result is
+  followed by an independent verification execution and exact decision-hash
+  comparison.
+- Command: `.\\.venv\\Scripts\\python.exe
+  software/scripts/run_pre_camera_host_benchmark_v1.py --workspace .
+  --samples-per-stage 20 --report-id pc17-host-windows-py310-20260929
+  --output software/ai/eval/pre_camera_host_benchmark_v1.json`; then the
+  governed matrix and `.\\.venv\\Scripts\\python.exe
+  scripts/maintain_repository.py verify`.
+- Result: PASS. The retained 120-sample report contains 60 cold and 60 warm
+  samples, 61 pass, 33 blocked, and 26 pending outcomes. Overall p95 was
+  1,309.2169 ms and p99 was 1,333.4719 ms. Per-stage p95 was 93.564 ms
+  (PC11), 1,333.4719 ms (PC12), 0.236 ms (PC13), 0.8717 ms (PC14),
+  256.4344 ms (PC15), and 2.1538 ms (PC16). All pre/post decision hashes
+  match. The governed matrix passed 610 tests; repository-policy tests passed
+  115; all maintained audits passed.
+- Retained report: `software/ai/eval/pre_camera_host_benchmark_v1.json`, SHA-256
+  identity `fb893be0f4c7915e6028a069b195145b77b92937023cc623f19737bae3f96a96`.
+- Camera opens: 0.
+- Model runtime loads: 0.
+- Transport opens: 0.
+- Controller starts: 0.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: one Windows/Python 3.10 host and synthetic artifact content;
+  timings are diagnostic samples, not cross-host claims, model inference
+  latency, controller response, typing throughput, or safety thresholds.
+- Supersedes: ARM-111 only for PC17 stage completeness; the ARM-111 contract
+  remains authoritative.
+- Next dependency: PC18 must run the actual AI producer's retained corpus
+  through the arm-owned compatibility gate with exact expected outcomes.

@@ -114,7 +114,7 @@ and its evidence gate pass.
 | PC14 | Arrival-session manifest and state machine | PC11-PC13 | No | None | COMPLETE |
 | PC15 | Installed-geometry and cable-envelope intake rehearsal | PC13-PC14 | No | None | COMPLETE |
 | PC16 | Immutable camera-replay runner | PC11-PC14 | No live camera | None | COMPLETE |
-| PC17 | Timing and observability report | PC11-PC16 | No | None | IN PROGRESS |
+| PC17 | Timing and observability report | PC11-PC16 | No | None | COMPLETE |
 | PC18 | Actual AI-output compatibility corpus and gate | PC11, shared AI producer | No | None | PLANNED |
 
 ## PC0 — Freeze the qualification basis
@@ -842,8 +842,19 @@ Percentiles are emitted only at supported sample counts (p50 at two, p95 at
 20, and p99 at 100 observations). Reports explicitly carry zero performance,
 physical-speed, camera, transport, controller, write, movement, or physical
 authority. This increment defines and validates the reporting boundary; PC17
-remains in progress until retained host-measured cold/warm observations are
-captured through the PC11-PC16 workflows.
+continued to a retained host-measured benchmark in ARM-112.
+
+**Completed 2026-09-29:** ARM-112 executes the real offline PC11-PC16
+boundaries 20 times per stage: ten freshly materialized artifact-tree runs and
+ten retained-tree runs. The 120-sample report contains 61 pass, 33 blocked,
+and 26 pending decisions. Every timed decision exactly matches a separate
+verification execution. Per-stage p95 latency on the recorded Windows/Python
+3.10 host was 93.564 ms (PC11), 1,333.4719 ms (PC12), 0.236 ms (PC13),
+0.8717 ms (PC14), 256.4344 ms (PC15), and 2.1538 ms (PC16). These values
+locate software bottlenecks; they are not admission thresholds, cross-host
+benchmarks, model inference latency, controller timing, or physical typing
+speed. The retained report hash is
+`fb893be0f4c7915e6028a069b195145b77b92937023cc623f19737bae3f96a96`.
 
 ### Objective
 
@@ -941,7 +952,7 @@ For every PC increment:
 - [x] PC14 arrival-session manifest and state machine complete
 - [x] PC15 installed-geometry and cable-envelope rehearsal complete
 - [x] PC16 immutable camera-replay runner complete
-- [ ] PC17 timing and observability report complete
+- [x] PC17 timing and observability report complete
 - [ ] PC18 actual AI-output compatibility corpus and gate complete
 
 ## Related documents
