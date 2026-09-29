@@ -244,6 +244,12 @@ from .pre_camera_observability_v1 import (
     build_pre_camera_observability_report_v1,
     parse_pre_camera_observability_report_v1,
 )
+from .pre_camera_host_benchmark_v1 import (
+    DEFAULT_SAMPLES_PER_STAGE as PRE_CAMERA_HOST_BENCHMARK_DEFAULT_SAMPLES,
+    MAX_SAMPLES_PER_STAGE as PRE_CAMERA_HOST_BENCHMARK_MAX_SAMPLES,
+    PreCameraHostBenchmarkV1Error,
+    run_pre_camera_host_benchmark_v1,
+)
 from .measured_waypoint_collision_sequence import (
     MAX_WAYPOINT_COLLISION_SAMPLES,
     SCHEMA as MEASURED_WAYPOINT_COLLISION_SEQUENCE_SCHEMA,
@@ -1428,6 +1434,10 @@ __all__ = [
     "PreCameraObservabilityV1Error",
     "build_pre_camera_observability_report_v1",
     "parse_pre_camera_observability_report_v1",
+    "PRE_CAMERA_HOST_BENCHMARK_DEFAULT_SAMPLES",
+    "PRE_CAMERA_HOST_BENCHMARK_MAX_SAMPLES",
+    "PreCameraHostBenchmarkV1Error",
+    "run_pre_camera_host_benchmark_v1",
     "MAX_WAYPOINT_COLLISION_SAMPLES",
     "MEASURED_WAYPOINT_COLLISION_SEQUENCE_SCHEMA",
     "MeasuredWaypointCollisionSample",
