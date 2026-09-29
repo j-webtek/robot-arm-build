@@ -11,9 +11,15 @@ installed-workcell safety, contact reliability, or controller tracking.
 The canonical report is
 `software/ai/eval/typing_performance_report_v1.json`. Its embedded content
 SHA-256 is
-`34273dcb73ba13295cd55a8b1dfafe7ac4aea06b06c7068c141868426ae084a8`;
+`a43a25056cff135d8756fbe7b15160b7a9ad0b49964e21e0c16a6c5eb2df291c`;
 the retained file SHA-256, including its final newline, is
-`8f8203e60d3e9a6a5f2e4380343c92284bf77498d47d5d04f362eec5ba460b1c`.
+`024c5111810e9d0a5b67ea78389d2c7e5d19041ba31960fb3fcb495be98f74f6`.
+
+These identities reflect the later FREEZE-013 qualification-basis rebind in
+commit `baa5745a966284bb94204307f1d37994e4e5bf3c`. The retained measurements
+and dispositions did not change. The earlier identities remain in the
+append-only evidence ledger as historical evidence from the original PC8
+retention; they are not the identities of the current canonical file.
 
 ## Measured software results
 

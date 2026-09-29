@@ -516,6 +516,7 @@ the arm move does not alone satisfy this definition.
 
 ## Related documents
 
+- [AI-to-arm operational efficiency plan](AI_TO_ARM_OPERATIONAL_EFFICIENCY_PLAN.md)
 - [Pre-camera arm integration completion plan](PRE_CAMERA_ARM_INTEGRATION_COMPLETION_PLAN.md)
 - [Shared AI/arm workplan](../ai/docs/SHARED_AI_ARM_WORKPLAN.md)
 - [Model command runtime implementation plan](../ai/docs/MODEL_COMMAND_RUNTIME_IMPLEMENTATION_PLAN.md)

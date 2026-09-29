@@ -41,6 +41,7 @@ DOCS = (
     'software/ai/docs/SHARED_AI_ARM_WORKPLAN.md',
     'software/ai/docs/EVIDENCE_LEDGER.md',
     'software/docs/ARCHITECTURE.md',
+    'software/docs/AI_TO_ARM_OPERATIONAL_EFFICIENCY_PLAN.md',
     'docs/brand/BRAND_GUIDE.md', 'docs/brand/NAMING_REVIEW.md',
     'docs/brand/MIGRATION_PLAN.md',
     'assets/media/README.md', 'assets/media/VERIFICATION_RECEIPT.md',
