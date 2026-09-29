@@ -4792,3 +4792,66 @@ rewriting history. New entries must use a unique evidence ID.
   assign complete CAD groups to dynamic links, and generate conservative
   reduced link-local shapes before collision differential or hover replay can
   become admissible.
+
+### E-20260929-INT-436 — official CAD assembly pose classified against governed states
+
+- Stage: S2/S3 simulation oracle WP2.
+- Lane: INTEGRATION.
+- Commit: `9775ab3b875eede9a941a55a10af573ffc507e42`.
+- Change: derived a CAD-to-URDF world translation from the pinned assembly's
+  paired shoulder-servo envelopes and assembly floor, compared six governed
+  URDF link origins in fixed zero, home, and ready states against six named CAD
+  product envelopes, selected the strongly separated home-pose hypothesis, and
+  retained dynamic-link assignment, collision geometry, and clearance replay
+  as explicitly inadmissible.
+- Inputs/fixtures: probe SHA-256
+  `930b9d8d5ecfba3c8decc1af4f0f496ba841341bf1492ef704b9984a108a4abf`;
+  test SHA-256
+  `64c30e83ebbdca02c2945ff94a906d96449ef0807e77e2ab54253a9cac9858c6`;
+  committed receipt file SHA-256
+  `e4271e62147c8e421e4d303365563514da24fbe33b1ae46328dddffad3827f50`;
+  receipt content SHA-256
+  `3817f28d9171ee3cb33d024f3f31e57495b02fb383ba60277953f6148ba00f3`;
+  external receipt file SHA-256
+  `c62be383dba83a440635ae2c2283cd09beb56ab18de0257c2ff275106c214acc`
+  (same canonical JSON content; Windows external output uses CRLF);
+  external status-file SHA-256
+  `4e8962bc08c3e74583ec91d4cf483a812a45485737638e2f15b5425d54732424`;
+  CAD USD SHA-256
+  `cfcd4e6170350d948de1976164665ddde99cfad457b72730f7ffcbdd119496d3`;
+  STEP inspection receipt content SHA-256
+  `b51c20e34c3b3edfa4ba40b88d04299aa346803b43b12909dade7c41c44cf967`;
+  governed URDF SHA-256
+  `a565718e7d74b07702802cf41eb9549a6e38e50b5e80aa9b887ab1ae3d0d8190`.
+- Command: `C:\IsaacSim\env_6_1_0\Scripts\python.exe software\integrations\isaac_sim\step_pose_binding_probe.py --workspace . --cad-usd C:\IsaacSim\artifacts\issue190\wp2-cad-004\roarm_m3_official.usda --step-receipt software\integrations\isaac_sim\evidence\roarm_m3_step_inspection_20260929.json --output C:\IsaacSim\evidence\step_pose_binding_001.json --status-output C:\IsaacSim\evidence\step_pose_binding_001.status.json`;
+  `python -m py_compile software/integrations/isaac_sim/step_pose_binding_probe.py software/tests/unit/test_isaac_sim_step_pose_binding_evidence.py`;
+  `python -m pytest software/tests/unit/test_isaac_sim_step_pose_binding_evidence.py software/tests/unit/test_isaac_sim_step_inspection_evidence.py software/tests/unit/test_isaac_sim_rc03_scene_evidence.py software/tests/unit/test_isaac_sim_urdf_import_evidence.py software/tests/unit/test_isaac_sim_fk_parity_evidence.py software/tests/unit/test_isaac_sim_first_launch_evidence.py software/tests/unit/test_isaac_sim_host_probe.py software/tests/unit/test_isaac_sim_contracts.py -q`;
+  `python scripts/ci/check_docs.py`; `python scripts/ci/check_evidence_scope.py`;
+  `python scripts/ci/check_public_records.py`;
+  `python scripts/ci/check_repository_artifacts.py`; `git diff --check`.
+- Result: PASS_WITH_BLOCKERS for the bounded pose hypothesis. The derived
+  `CAD_T_URDF_WORLD` has identity rotation and translation
+  `[7.005001, 0, 0]` mm. Home supported all six witnesses with maximum residual
+  2.215515 mm and RMS residual 0.904480 mm. Ready was the runner-up at
+  133.237718 mm maximum residual, producing a 131.022203 mm classification
+  margin; zero reached 305.130844 mm. The focused suite passed 43 tests in
+  1.93 seconds and all four repository audits passed.
+- Artifacts:
+  `software/integrations/isaac_sim/evidence/roarm_m3_step_pose_binding_20260929.json`;
+  `software/integrations/isaac_sim/step_pose_binding_probe.py`;
+  `software/tests/unit/test_isaac_sim_step_pose_binding_evidence.py`;
+  external generated receipt and status under `C:\IsaacSim\evidence`.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: AABB witnesses classify the fixed assembly pose but do not prove
+  exact joint-axis correspondence or define complete CAD-product membership per
+  dynamic link. No reduced collision shapes, self-collision validation, valid
+  inertia, tool geometry, camera-support geometry, measured robot placement,
+  dynamics, trajectory, clearance, contact, rendering, controller, hardware,
+  or physical qualification resulted. The Isaac toolchain lock remains
+  `UNSELECTED`. No AI, arm, or integration gate status changed.
+- Supersedes: the assembly-pose uncertainty stated by INT-435 only; INT-435 and
+  all earlier failed evidence remain retained.
+- Next dependency: review complete CAD-product membership for each dynamic link
+  and generate conservative reduced link-local shapes before any collision
+  differential or hover replay can become admissible.
