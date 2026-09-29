@@ -7,7 +7,9 @@
   "required": [
     "schema", "corpus_id", "corpus_file_sha256", "case_count",
     "passed_case_count", "cases", "actual_sources",
-    "derived_adversarial_cases", "production_dispatch_allowed",
+    "derived_adversarial_cases", "maximum_batch_bytes",
+    "maximum_batch_proposals", "largest_retained_batch_bytes",
+    "largest_retained_proposal_count", "production_dispatch_allowed",
     "installation_authorized", "controller_start_authorized",
     "execution_authorized", "automatic_retry", "controller_commands",
     "hardware_commands_generated", "hardware_access", "physical_authority",
@@ -44,6 +46,7 @@
           "batch_payload_sha256": {"$ref": "#/$defs/digest"},
           "batch_sha256": {"$ref": "#/$defs/digest"},
           "source_file_sha256": {"$ref": "#/$defs/digest"},
+          "mutated_payload_sha256": {"$ref": "#/$defs/digest"},
           "ingress_sha256": {"$ref": "#/$defs/digest"},
           "preplanner_gate_sha256": {"$ref": "#/$defs/digest"},
           "execution_plan_sha256": {"$ref": "#/$defs/digest"},
@@ -55,8 +58,12 @@
         "additionalProperties": false
       }
     },
-    "actual_sources": {"const": 3},
-    "derived_adversarial_cases": {"const": 3},
+    "actual_sources": {"const": 5},
+    "derived_adversarial_cases": {"const": 7},
+    "maximum_batch_bytes": {"const": 1048576},
+    "maximum_batch_proposals": {"const": 64},
+    "largest_retained_batch_bytes": {"type": "integer", "minimum": 1, "maximum": 1048576},
+    "largest_retained_proposal_count": {"type": "integer", "minimum": 1, "maximum": 64},
     "production_dispatch_allowed": {"const": false},
     "installation_authorized": {"const": false},
     "controller_start_authorized": {"const": false},

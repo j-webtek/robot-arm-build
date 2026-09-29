@@ -34,7 +34,10 @@ from rocell.application.typing_trajectory_plan_v1 import (
 from rocell.models import (
     ActionPlan,
     Device,
+    MAX_BATCH_BYTES_V2,
+    MAX_BATCH_PROPOSALS_V2,
     ModelMotionBatchV2,
+    ModelMotionBatchV2Error,
     MotionCapabilityV2,
     MotionEvidenceV2,
     MotionGeometryV2,
@@ -110,9 +113,20 @@ def _baseline_parts(context: Any, targets: tuple[str, ...]) -> dict[str, Any]:
 
 def build_actual_emitter_hhi_payload(workspace: Path) -> bytes:
     """Run the real shared AI assembler and return its canonical H,H,I bytes."""
+    return build_actual_emitter_payload(
+        workspace, text="hhi", targets=("H", "H", "I"),
+        batch_id="pc18-actual-emitter-hhi-v1",
+        request_id="pc18-request-hhi-v1",
+    )
+
+
+def build_actual_emitter_payload(
+    workspace: Path, *, text: str, targets: tuple[str, ...], batch_id: str,
+    request_id: str,
+) -> bytes:
+    """Run the actual shared assembler for one bounded keyboard sequence."""
     context = load_simulation_context(
         workspace, workspace / "software/config/system_manifest.json")
-    targets = ("H", "H", "I")
     parts = _baseline_parts(context, targets)
     observations = {
         target: TargetObservationV2(
@@ -120,8 +134,8 @@ def build_actual_emitter_hhi_payload(workspace: Path) -> bytes:
         for target in dict.fromkeys(targets)
     }
     payload = assemble(
-        _plan("hhi", targets), batch_id="pc18-actual-emitter-hhi-v1",
-        request_id="pc18-request-hhi-v1", observations=observations, **parts,
+        _plan(text, targets), batch_id=batch_id, request_id=request_id,
+        observations=observations, **parts,
     )
     if payload is None:
         raise ActualOutputCompatibilityError("actual HHI emitter abstained")
@@ -206,6 +220,21 @@ def _blocker_code(exc: Exception) -> str:
         f"unclassified arm blocker: {type(exc).__name__}: {message}") from exc
 
 
+def _decoder_blocker_code(exc: Exception) -> str:
+    message = str(exc)
+    known = {
+        "violates zero authority": "AUTHORITY_INJECTION",
+        "duplicate JSON field": "DUPLICATE_JSON_FIELD",
+        "non-finite JSON constant": "NONFINITE_NUMBER",
+        "action indexes must be ordered and contiguous": "REORDERED_ACTIONS",
+    }
+    for fragment, code in known.items():
+        if fragment in message:
+            return code
+    raise ActualOutputCompatibilityError(
+        f"unclassified decoder blocker: {type(exc).__name__}: {message}") from exc
+
+
 def _zero_authority(result: Mapping[str, Any]) -> None:
     if (result.get("controller_commands") != []
             or result.get("hardware_access") is not False
@@ -213,14 +242,18 @@ def _zero_authority(result: Mapping[str, Any]) -> None:
         raise ActualOutputCompatibilityError("case crossed zero-authority boundary")
 
 
-def _accepted_hhi_case(workspace: Path, retained: bytes) -> dict[str, Any]:
-    reproduced = build_actual_emitter_hhi_payload(workspace)
+def _accepted_case(
+    workspace: Path, retained: bytes, *, case_id: str, text: str,
+    targets: tuple[str, ...], batch_id: str, request_id: str,
+) -> dict[str, Any]:
+    reproduced = build_actual_emitter_payload(
+        workspace, text=text, targets=targets, batch_id=batch_id,
+        request_id=request_id)
     if retained != reproduced + b"\n":
         raise ActualOutputCompatibilityError("retained HHI bytes do not reproduce")
     context = load_simulation_context(
         workspace, workspace / "software/config/system_manifest.json")
-    targets = ("H", "H", "I")
-    plan = _plan("hhi", targets)
+    plan = _plan(text, targets)
     batch = decode_model_motion_batch_v2_json(retained)
     registry = _registry_for_batch(context, batch)
     ingress = ingest_with_trusted_registry_v2(
@@ -263,7 +296,7 @@ def _accepted_hhi_case(workspace: Path, retained: bytes) -> dict[str, Any]:
         if item.phase.value == "CONTACT"
     ]
     result = {
-        "case_id": "actual-emitter-hhi-supported",
+        "case_id": case_id,
         "source_class": "ACTUAL_AI_BATCH_EMITTER",
         "disposition": "TRAJECTORY_COMPILED",
         "ordered_target_ids": list(targets),
@@ -279,6 +312,15 @@ def _accepted_hhi_case(workspace: Path, retained: bytes) -> dict[str, Any]:
     }
     _zero_authority(result)
     return result
+
+
+def _accepted_hhi_case(workspace: Path, retained: bytes) -> dict[str, Any]:
+    return _accepted_case(
+        workspace, retained, case_id="actual-emitter-hhi-supported",
+        text="hhi", targets=("H", "H", "I"),
+        batch_id="pc18-actual-emitter-hhi-v1",
+        request_id="pc18-request-hhi-v1",
+    )
 
 
 def _blocked_case(
@@ -389,6 +431,47 @@ def _unsupported_phone_case(workspace: Path) -> dict[str, Any]:
     raise ActualOutputCompatibilityError("unsupported phone request was emitted")
 
 
+def _decoder_blocked_case(
+    *, case_id: str, retained: bytes, mutation: str,
+) -> dict[str, Any]:
+    document = json.loads(retained)
+    targets = [item["target_id"] for item in document["proposals"]]
+    if mutation == "authority":
+        document["hardware_access"] = True
+        payload = _canonical(document)
+    elif mutation == "duplicate":
+        text = retained.decode("utf-8")
+        needle = f'"batch_id":"{document["batch_id"]}"'
+        payload = text.replace(
+            needle, needle + ',"batch_id":"other-batch"', 1).encode("utf-8")
+    elif mutation == "nonfinite":
+        document["proposals"][0]["target_mm"]["x"] = float("nan")
+        payload = json.dumps(
+            document, sort_keys=True, separators=(",", ":"), allow_nan=True,
+        ).encode("utf-8")
+    elif mutation == "reorder":
+        document["proposals"] = list(reversed(document["proposals"]))
+        targets = [item["target_id"] for item in document["proposals"]]
+        payload = _canonical(document)
+    else:
+        raise ActualOutputCompatibilityError("unsupported decoder mutation")
+    try:
+        decode_model_motion_batch_v2_json(payload)
+    except ModelMotionBatchV2Error as exc:
+        return {
+            "case_id": case_id,
+            "source_class": "DERIVED_FROM_ACTUAL_AI_BATCH",
+            "disposition": "STRICT_DECODER_BLOCKED",
+            "blocker_code": _decoder_blocker_code(exc),
+            "ordered_target_ids": targets,
+            "source_file_sha256": _sha256(retained),
+            "mutated_payload_sha256": _sha256(payload),
+            "controller_commands": [], "hardware_access": False,
+            "physical_authority": False,
+        }
+    raise ActualOutputCompatibilityError(f"{case_id} passed strict decoding")
+
+
 def run_actual_output_compatibility_v1(
     workspace: Path, corpus_path: Path,
 ) -> dict[str, Any]:
@@ -416,6 +499,12 @@ def run_actual_output_compatibility_v1(
     actual_hhi = retained["actual_emitter_hhi"]
     hhi_batch = decode_model_motion_batch_v2_json(actual_hhi)
     hhi_plan = _plan("hhi", ("H", "H", "I"))
+    mixed_targets = (
+        "R", "O", "B", "O", "T", "SPACE", "B", "O", "O", "K", "SPACE",
+        "1", "0", "PERIOD", "ENTER")
+    all46_targets = tuple(sorted(load_simulation_context(
+        workspace, workspace / "software/config/system_manifest.json"
+    ).targets.keyboard_targets))
     context = load_simulation_context(
         workspace, workspace / "software/config/system_manifest.json")
     baseline_registry = _registry_for_batch(context, hhi_batch)
@@ -431,6 +520,18 @@ def run_actual_output_compatibility_v1(
     low_confidence = _derived_payload(workspace, confidence=0.4)
     cases = [
         _accepted_hhi_case(workspace, actual_hhi),
+        _accepted_case(
+            workspace, retained["actual_emitter_mixed"],
+            case_id="actual-emitter-mixed-supported",
+            text="robot book 10.\n", targets=mixed_targets,
+            batch_id="pc18-actual-emitter-mixed-v1",
+            request_id="pc18-request-mixed-v1"),
+        _accepted_case(
+            workspace, retained["actual_emitter_all46"],
+            case_id="actual-emitter-all46-supported",
+            text="all-46-keyboard-targets-v1", targets=all46_targets,
+            batch_id="pc18-actual-emitter-all46-v1",
+            request_id="pc18-request-all46-v1"),
         precision_case,
         _validate_abstention(retained["localization_abstention"]),
         _unsupported_phone_case(workspace),
@@ -447,6 +548,18 @@ def run_actual_output_compatibility_v1(
             workspace, case_id="derived-low-confidence", payload=low_confidence,
             plan=hhi_plan,
         ),
+        _decoder_blocked_case(
+            case_id="derived-authority-injection", retained=actual_hhi,
+            mutation="authority"),
+        _decoder_blocked_case(
+            case_id="derived-duplicate-json", retained=actual_hhi,
+            mutation="duplicate"),
+        _decoder_blocked_case(
+            case_id="derived-nonfinite-coordinate", retained=actual_hhi,
+            mutation="nonfinite"),
+        _decoder_blocked_case(
+            case_id="derived-reordered-actions", retained=actual_hhi,
+            mutation="reorder"),
     ]
     expected = corpus.get("expected_cases")
     observed = {
@@ -469,8 +582,20 @@ def run_actual_output_compatibility_v1(
         "case_count": len(cases),
         "passed_case_count": len(cases),
         "cases": cases,
-        "actual_sources": 3,
-        "derived_adversarial_cases": 3,
+        "actual_sources": 5,
+        "derived_adversarial_cases": 7,
+        "maximum_batch_bytes": MAX_BATCH_BYTES_V2,
+        "maximum_batch_proposals": MAX_BATCH_PROPOSALS_V2,
+        "largest_retained_batch_bytes": max(
+            len(actual_hhi), len(retained["actual_emitter_mixed"]),
+            len(retained["actual_emitter_all46"]), len(precision)),
+        "largest_retained_proposal_count": max(
+            len(hhi_batch.proposals),
+            len(decode_model_motion_batch_v2_json(
+                retained["actual_emitter_mixed"]).proposals),
+            len(decode_model_motion_batch_v2_json(
+                retained["actual_emitter_all46"]).proposals),
+            len(decode_model_motion_batch_v2_json(precision).proposals)),
         "production_dispatch_allowed": False,
         "installation_authorized": False,
         "controller_start_authorized": False,
@@ -486,5 +611,6 @@ def run_actual_output_compatibility_v1(
 
 __all__ = [
     "ActualOutputCompatibilityError", "CORPUS_SCHEMA", "SCHEMA",
-    "build_actual_emitter_hhi_payload", "run_actual_output_compatibility_v1",
+    "build_actual_emitter_hhi_payload", "build_actual_emitter_payload",
+    "run_actual_output_compatibility_v1",
 ]

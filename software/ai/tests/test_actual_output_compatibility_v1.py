@@ -39,7 +39,7 @@ def test_retained_corpus_and_report_reproduce_and_validate():
         (SCHEMAS / "actual_ai_arm_compatibility_report_v1.schema.json").read_text()
     )).validate(report)
     assert json.loads(REPORT.read_text()) == report
-    assert report["passed_case_count"] == report["case_count"] == 7
+    assert report["passed_case_count"] == report["case_count"] == 13
     assert report["controller_commands"] == []
     assert report["hardware_commands_generated"] == 0
     assert report["hardware_access"] is report["physical_authority"] is False
@@ -61,6 +61,41 @@ def test_actual_precision_output_preserves_repeat_digit_and_punctuation_but_bloc
     assert case["disposition"] == "ARM_INGRESS_BLOCKED"
     assert case["blocker_code"] == "COMPOSED_UNCERTAINTY_OUTSIDE_REGION"
     assert case["controller_commands"] == []
+
+
+def test_mixed_and_full_catalog_actual_outputs_compile_in_exact_order():
+    cases = {item["case_id"]: item for item in _report()["cases"]}
+    mixed = cases["actual-emitter-mixed-supported"]
+    assert mixed["ordered_target_ids"] == mixed["contact_target_ids"]
+    assert mixed["ordered_target_ids"] == [
+        "R", "O", "B", "O", "T", "SPACE", "B", "O", "O", "K",
+        "SPACE", "1", "0", "PERIOD", "ENTER"]
+    full = cases["actual-emitter-all46-supported"]
+    assert len(full["ordered_target_ids"]) == 46
+    assert full["ordered_target_ids"] == full["contact_target_ids"]
+    assert len(set(full["ordered_target_ids"])) == 46
+
+
+def test_decoder_attacks_have_exact_stable_owners_and_codes():
+    cases = {item["case_id"]: item for item in _report()["cases"]}
+    expected = {
+        "derived-authority-injection": "AUTHORITY_INJECTION",
+        "derived-duplicate-json": "DUPLICATE_JSON_FIELD",
+        "derived-nonfinite-coordinate": "NONFINITE_NUMBER",
+        "derived-reordered-actions": "REORDERED_ACTIONS",
+    }
+    for case_id, code in expected.items():
+        assert cases[case_id]["disposition"] == "STRICT_DECODER_BLOCKED"
+        assert cases[case_id]["blocker_code"] == code
+        assert cases[case_id]["controller_commands"] == []
+
+
+def test_retained_resource_bounds_are_explicit_and_respected():
+    report = _report()
+    assert report["largest_retained_batch_bytes"] == 15022
+    assert report["largest_retained_batch_bytes"] < report["maximum_batch_bytes"]
+    assert report["largest_retained_proposal_count"] == 46
+    assert report["largest_retained_proposal_count"] < report["maximum_batch_proposals"]
 
 
 @pytest.mark.parametrize("mutation", ["retained_hash", "expected_outcome"])
