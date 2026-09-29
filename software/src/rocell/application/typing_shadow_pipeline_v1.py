@@ -30,6 +30,7 @@ from .typing_joint_schedule_v1 import (
     compile_typing_joint_schedule_v1,
 )
 from .typing_planner_preparation_v1 import PreparedTypingPlannerV1
+from .typing_ik_effort_telemetry_v1 import TypingIkEffortRecorderV1
 from .typing_trajectory_ik_screen_v1 import (
     READY_STATUS as IK_READY_STATUS,
     TypingTrajectoryIkSeedV1,
@@ -196,6 +197,7 @@ def run_typing_shadow_pipeline_v1(
     collision_sampling_policy: BoundedSegmentSamplingPolicy | None = None,
     context_lifecycle: SimulationContextLifecycleV1 | None = None,
     prepared_planner: PreparedTypingPlannerV1 | None = None,
+    ik_effort_recorder: TypingIkEffortRecorderV1 | None = None,
 ) -> dict[str, Any]:
     """Run exact production boundaries through their honest offline blocker.
 
@@ -241,6 +243,7 @@ def run_typing_shadow_pipeline_v1(
         policy=ik_policy,
         prepared_planner=prepared_planner,
         context_lifecycle=context_lifecycle,
+        effort_recorder=ik_effort_recorder,
     )
     if ik.get("status") != IK_READY_STATUS:
         raise TypingShadowPipelineV1Error(

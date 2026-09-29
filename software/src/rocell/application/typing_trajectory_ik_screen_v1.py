@@ -45,6 +45,7 @@ from .typing_planner_preparation_v1 import (
     PreparedTypingPlannerV1,
     validate_prepared_typing_planner_v1,
 )
+from .typing_ik_effort_telemetry_v1 import TypingIkEffortRecorderV1
 
 
 SCHEMA = "rocell.typing_trajectory_ik_screen.v1"
@@ -191,6 +192,7 @@ def screen_typing_trajectory_ik_v1(
     policy: TrajectorySimulationPolicy | None = None,
     prepared_planner: PreparedTypingPlannerV1 | None = None,
     context_lifecycle: SimulationContextLifecycleV1 | None = None,
+    effort_recorder: TypingIkEffortRecorderV1 | None = None,
     _lifecycle_binding: SimulationContextLifecycleBindingV1 | None = None,
 ) -> dict[str, Any]:
     """Run the canonical deterministic IK gates over every exact T2A sample."""
@@ -205,6 +207,10 @@ def screen_typing_trajectory_ik_v1(
         raise TypeError("snapshot must be a PlannerCalibrationSnapshot")
     if not isinstance(seed, TypingTrajectoryIkSeedV1):
         raise TypeError("seed must be a TypingTrajectoryIkSeedV1")
+    if effort_recorder is not None and not isinstance(
+        effort_recorder, TypingIkEffortRecorderV1
+    ):
+        raise TypeError("effort_recorder must be a TypingIkEffortRecorderV1")
     if context_lifecycle is not None:
         if _lifecycle_binding is not None:
             raise TypingTrajectoryIkScreenV1Error(
@@ -226,6 +232,7 @@ def screen_typing_trajectory_ik_v1(
                 seed,
                 policy=policy,
                 prepared_planner=prepared_planner,
+                effort_recorder=effort_recorder,
                 _lifecycle_binding=binding,
             )
     if _lifecycle_binding is None:
@@ -350,6 +357,12 @@ def screen_typing_trajectory_ik_v1(
                     },
                 ),
             )
+            if effort_recorder is not None:
+                effort_recorder.observe(
+                    index,
+                    solved,
+                    previous_solution_seed_supplied=index > 0,
+                )
             evaluated = evaluate_joint_trajectory_solution(
                 waypoint,
                 solved,

@@ -31,6 +31,11 @@ from rocell.application.typing_shadow_pipeline_v1 import (  # noqa: E402
 from rocell.application.typing_planner_preparation_v1 import (  # noqa: E402
     prepare_typing_planner_v1,
 )
+from rocell.application.typing_ik_effort_telemetry_v1 import (  # noqa: E402
+    TypingIkEffortRecorderV1,
+    TypingIkEffortTelemetryV1Error,
+    parse_typing_ik_effort_telemetry_v1,
+)
 from rocell.application.typing_trajectory_plan_v1 import TypingTrajectoryPolicyV1  # noqa: E402
 from rocell.models import (  # noqa: E402
     ActionPlan,
@@ -186,13 +191,74 @@ def test_epoch_prepared_pipeline_is_exactly_equivalent_to_full_source_path():
     inputs = _inputs(context=context)
     reference = run_typing_shadow_pipeline_v1(**inputs)
     prepared = prepare_typing_planner_v1(context, lifecycle)
+    recorder = TypingIkEffortRecorderV1()
     optimized = run_typing_shadow_pipeline_v1(
         **inputs,
         context_lifecycle=lifecycle,
         prepared_planner=prepared,
+        ik_effort_recorder=recorder,
     )
     assert optimized == reference
     assert optimized["hardware_access"] is optimized["physical_authority"] is False
+    effort = recorder.build(
+        typing_trajectory_plan_sha256=optimized["stage_hashes"][
+            "typing_trajectory_plan_sha256"
+        ],
+        typing_trajectory_ik_screen_sha256=optimized["stage_hashes"][
+            "typing_trajectory_ik_screen_sha256"
+        ],
+    )
+    assert effort["sample_count"] > 0
+    assert effort["decision_input"] is False
+
+
+def test_ik_effort_side_channel_preserves_every_canonical_decision_hash():
+    inputs = _inputs(("R", "O", "B", "O", "T"), "robot")
+    reference = run_typing_shadow_pipeline_v1(**inputs)
+    recorder = TypingIkEffortRecorderV1()
+    observed = run_typing_shadow_pipeline_v1(
+        **inputs,
+        ik_effort_recorder=recorder,
+    )
+    assert observed == reference
+    report = recorder.build(
+        typing_trajectory_plan_sha256=observed["stage_hashes"][
+            "typing_trajectory_plan_sha256"
+        ],
+        typing_trajectory_ik_screen_sha256=observed["stage_hashes"][
+            "typing_trajectory_ik_screen_sha256"
+        ],
+    )
+    assert dict(parse_typing_ik_effort_telemetry_v1(report)) == report
+    assert report["sample_count"] > 0
+    assert report["totals"]["attempt_count"] >= report["sample_count"]
+    assert report["totals"]["total_iterations"] > 0
+    assert report["totals"]["previous_solution_seed_supplied_count"] == (
+        report["sample_count"] - 1
+    )
+    assert report["decision_input"] is False
+    assert report["controller_commands"] == []
+    assert report["hardware_access"] is report["physical_authority"] is False
+
+    changed = json.loads(json.dumps(report))
+    changed["totals"]["total_iterations"] += 1
+    changed.pop("typing_ik_effort_telemetry_sha256")
+    import hashlib
+
+    changed["typing_ik_effort_telemetry_sha256"] = hashlib.sha256(
+        json.dumps(
+            changed, sort_keys=True, separators=(",", ":"), allow_nan=False
+        ).encode("utf-8")
+    ).hexdigest()
+    with pytest.raises(TypingIkEffortTelemetryV1Error, match="totals differ"):
+        parse_typing_ik_effort_telemetry_v1(changed)
+
+
+def test_ik_effort_recorder_is_bounded_and_append_only():
+    inputs = _inputs()
+    recorder = TypingIkEffortRecorderV1(maximum_samples=1)
+    with pytest.raises(TypingIkEffortTelemetryV1Error, match="bound exceeded"):
+        run_typing_shadow_pipeline_v1(**inputs, ik_effort_recorder=recorder)
 
 
 @pytest.mark.parametrize(

@@ -1,7 +1,8 @@
 # Tactevra project status
 
-Reviewed September 29, 2026 through the ARM-118 retained typing preparation
-benchmark and ARM-117 typing planner preparation,
+Reviewed September 29, 2026 through the ARM-119 decision-neutral IK effort
+telemetry, ARM-118 retained typing preparation benchmark, and ARM-117 typing
+planner preparation,
 ARM-077 PC0 pre-camera qualification basis, ARM-076 typing collision-evidence
 intake, ARM-075 exact-sample offline IK screen, AI-403 precision-adapter
 integration, and merged physical-camera
@@ -594,6 +595,14 @@ shadow runs per path, immutable preparation reduced p50 from 1.667267 s to
 reload, restart, forged preparation, and unmanaged preparation all rejected.
 The result is host-measured optimization evidence only: it does not set an
 admission threshold or grant controller, transport, or physical authority.
+
+ARM-119 begins E2 by exposing bounded solver-effort telemetry as a separate
+diagnostic output. Enabling it leaves every canonical planning and terminal
+receipt hash unchanged. An initial non-retained `ROBOT` run observed 57
+waypoints, 228 attempts, and 660 iterations. The first seed converged at every
+waypoint but was the selected minimum-residual solution at only 4 waypoints, so
+first-convergence early exit is explicitly unsafe for exact equivalence. A
+representative retained solver campaign is the next dependency.
 
 AI-403 then integrates the pose-output precision adapter and actual V2 batch
 producer on current `main`. The retained contract fixture deterministically

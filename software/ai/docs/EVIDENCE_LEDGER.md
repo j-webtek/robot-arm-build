@@ -5909,3 +5909,33 @@ rewriting history. New entries must use a unique evidence ID.
 - Next dependency: instrument solver iterations and evaluate bounded warm-start
   or endpoint-atlas candidates under E2 without changing accepted or rejected
   decisions.
+
+### E-20260929-ARM-119 — decision-neutral typing IK effort telemetry
+
+- Stage: operational efficiency E2, solver instrumentation slice.
+- Lane: arm/runtime typing shadow pipeline.
+- Change: added opt-in bounded telemetry for per-waypoint attempt counts,
+  total and selected iterations, convergence counts, selected-attempt index,
+  and carried-forward-seed usage. Telemetry is emitted as a separate hashed
+  zero-authority report and is never consumed by planning or admission.
+- Result: PASS. The same full-source and lifecycle-prepared shadow requests
+  produce byte-identical canonical receipts with telemetry disabled or enabled.
+  Mutation, capacity, and append-order checks fail closed.
+- Initial diagnostic: one non-retained `ROBOT` run observed 57 waypoints, 228
+  attempts, 660 total iterations, and 274 selected-attempt iterations. Attempt
+  zero converged at every waypoint but was selected at only 4, which rules out
+  first-convergence early exit as an exact-equivalence optimization.
+- Camera opens: 0.
+- Model runtime loads: 0.
+- Transport opens: 0.
+- Controller starts: 0.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: the initial diagnostic is not retained benchmark evidence and
+  covers one synthetic sequence. Telemetry does not measure controller timing,
+  physical throughput, or collision execution and grants no authority.
+- Supersedes: ARM-118 only for its next instrumentation dependency; ARM-118
+  remains authoritative for retained full-pipeline timing.
+- Next dependency: retain a representative multi-sequence solver-effort
+  campaign and quantify exact input-key reuse before designing a bounded cache
+  or endpoint atlas.

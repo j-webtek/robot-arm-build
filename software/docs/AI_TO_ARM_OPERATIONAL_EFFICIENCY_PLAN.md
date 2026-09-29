@@ -510,6 +510,23 @@ remains the dominant software cost.
 
 ### E2 — Accelerate IK and collision preparation
 
+**Status:** in progress through ARM-119 solver-effort instrumentation.
+
+ARM-119 adds an opt-in, bounded `TypingIkEffortRecorderV1` side channel. It
+records attempt and iteration counts only after each deterministic solve. The
+canonical IK report, stage hashes, terminal receipt, admission rules, and
+authority fields do not consume the telemetry and remain byte-identical with
+or without it.
+
+An initial non-retained `ROBOT` diagnostic observed 57 waypoints, 228 attempts,
+and 660 iterations. The first/carry-forward seed converged at all 57 waypoints,
+but the reference solver selected attempt zero only 4 times because it evaluates
+every configured candidate and selects the lowest residual. This explicitly
+rules out first-convergence early exit as an equivalence-preserving
+optimization. The next retained campaign must measure representative sequences,
+iteration distributions, selected-attempt behavior, and exact reusable input
+keys before any warm-start or endpoint cache is proposed.
+
 Deliver:
 
 - actual transition-cache integration;
