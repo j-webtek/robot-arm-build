@@ -84,6 +84,18 @@ says only `READY_FOR_OFFLINE_CONSUMER_VALIDATION`. It proves that the intact
 invoke those consumers, complete their validation, install qualification, or
 grant physical admission.
 
+Each downstream consumer must emit a receipt conforming to
+`software/ai/schemas/camera_arrival_consumer_validation_receipt_v1.schema.json`.
+The receipt must bind the handoff, original source/sidecar hashes, consumer
+source/schema hashes, exact field binding, validator identity/version, and
+consumer output. Failed validation is retained as `BLOCKED`; it is never
+rewritten as a missing receipt. The aggregate contract in
+`rocell.application.camera_arrival_consumer_validation_v1` accepts all 15
+receipts only when they match the handoff exactly. Its strongest result,
+`CONSUMER_VALIDATION_COMPLETE_FOR_OFFLINE_REVIEW`, still does not commission the
+epoch, update the deployment registry, install qualification, or authorize
+physical execution.
+
 ## Collect the four camera/support originals
 
 Use the existing explicitly authorized camera onboarding workflow to collect
