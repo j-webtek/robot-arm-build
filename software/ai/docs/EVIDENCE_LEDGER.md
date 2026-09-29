@@ -4995,3 +4995,75 @@ rewriting history. New entries must use a unique evidence ID.
   seven pinned link meshes, quantify enclosure error against each source mesh,
   and review the self-collision pair policy before any collision query can be
   admissible.
+
+### E-20260929-INT-439 — conservative link-local box candidates retained
+
+- Stage: S2/S3 simulation oracle WP2.
+- Lane: INTEGRATION.
+- Commit: `5abd805bf5958d3b2c38a55398d426f6ad103306`.
+- Change: reduced each pinned official link mesh to deterministic link-local
+  identity-oriented box candidates. Connected components receive separate
+  boxes unless their count exceeds the runtime contract's 64-primitives-per-
+  body limit; `link5` therefore uses one declared whole-link envelope. The
+  change emits evidence only and installs no collision geometry profile.
+- Inputs/fixtures: probe SHA-256
+  `f0f056ff8beb4c7e9552c9b37969a81ddeaea1339afc745ed1959aba8be6065c`;
+  test SHA-256
+  `90cf7bb0346fd1e9f6dec1dc0e63951266e2a0b706e645f062de4be07e51a0a0`;
+  committed receipt file SHA-256
+  `e7007e4c4b0e5924cbaf77ab3257eaf7338711150f5d28f1b1f372740a93b70e`;
+  receipt content SHA-256
+  `91708da2a349ae3f5e6469d8f6809c2e94543f93a401f98cfd6325303a9e79e1`;
+  external final receipt SHA-256
+  `e7007e4c4b0e5924cbaf77ab3257eaf7338711150f5d28f1b1f372740a93b70e`;
+  external final status SHA-256
+  `a92fb5c252ba523fbba0683879c64c80c1dd40985593acb9be32049deff8a0ed`;
+  source mesh receipt file SHA-256
+  `ab8749f813a20cc93e804eddfaccca8d1997a9d6ef86eb6cebf7368e6e368640`
+  and content SHA-256
+  `77b7c16e2d7c7a8ee0579b071d6a911516a8ba6d675188971e0c54e466b30954`.
+- Failed/corrected evidence retained: run 001 rejected a zero-thickness
+  `link5` component rather than emit an invalid runtime box; status SHA-256
+  `d875833cd48cec5f15ee91b998f80d0ad8e61b49ccbce6839cbe2e5050c46a75`.
+  Run 002 added a declared 0.000001 mm half-extent floor and contained every
+  vertex, but its 114 `link5` component boxes exceeded the runtime limit;
+  receipt SHA-256
+  `5c349123667f2a652c5aae8ce27cc83f121e3ba05e70a14f4bdd5f51783fb1b8`
+  and status SHA-256
+  `c85e3aa012a4a67036c00120f4f1554ea6b5a7caae8f1a7ca7dd688ad5a3212d`.
+  Neither intermediate was promoted or overwritten.
+- Command: `$env:PYTHONUTF8='1'; C:\IsaacSim\env_6_1_0\Scripts\python.exe software\integrations\isaac_sim\link_mesh_reduction_probe.py --upstream-repo C:\IsaacSim\sources\roarm_ws-40dbd84 --mesh-receipt software\integrations\isaac_sim\evidence\roarm_m3_upstream_link_meshes_20260929.json --output C:\IsaacSim\evidence\link_mesh_reduction_003.json --status-output C:\IsaacSim\evidence\link_mesh_reduction_003.status.json`;
+  `python -m py_compile software/integrations/isaac_sim/link_mesh_reduction_probe.py software/tests/unit/test_isaac_sim_link_mesh_reduction_evidence.py`;
+  `python -m pytest software/tests/unit/test_isaac_sim_link_mesh_reduction_evidence.py software/tests/unit/test_isaac_sim_upstream_link_mesh_evidence.py software/tests/unit/test_isaac_sim_step_link_membership_evidence.py software/tests/unit/test_isaac_sim_step_pose_binding_evidence.py software/tests/unit/test_isaac_sim_step_inspection_evidence.py software/tests/unit/test_isaac_sim_rc03_scene_evidence.py software/tests/unit/test_isaac_sim_urdf_import_evidence.py software/tests/unit/test_isaac_sim_fk_parity_evidence.py software/tests/unit/test_isaac_sim_first_launch_evidence.py software/tests/unit/test_isaac_sim_host_probe.py software/tests/unit/test_isaac_sim_contracts.py -q`;
+  `python scripts/ci/check_docs.py`; `python scripts/ci/check_evidence_scope.py`;
+  `python scripts/ci/check_public_records.py`;
+  `python scripts/ci/check_repository_artifacts.py`; `git diff --check`.
+- Result: PASS_WITH_BLOCKERS. Fourteen candidate boxes across seven links cover
+  all 19,030 processed source vertices with 0.0 mm maximum vertex overflow.
+  Twelve candidate sources are watertight and two are not. For watertight
+  sources, the median box/source volume ratio is 1.822853 and the maximum is
+  21.140792. `link5` has 114 processed face-connected fragments and uses one
+  whole-link envelope to remain within the primitive-count contract. The
+  focused suite passed 58 tests in 2.72 seconds and all four repository audits
+  passed.
+- Artifacts:
+  `software/integrations/isaac_sim/evidence/roarm_m3_link_mesh_reduction_20260929.json`;
+  `software/integrations/isaac_sim/link_mesh_reduction_probe.py`;
+  `software/tests/unit/test_isaac_sim_link_mesh_reduction_evidence.py`;
+  external run 001, 002, and 003 receipts/status under `C:\IsaacSim\evidence`.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: vertex containment proves only that each box encloses its source
+  vertices. It does not qualify collision false positives, clearance, contact,
+  or self-collision exclusions. Volume ratios are omitted for non-watertight
+  sources, and the 21.140792 maximum plus `link5` whole-link fallback may be too
+  conservative for useful planning. Tool, camera-support, static-environment,
+  measured-placement, dynamics, trajectory, controller, hardware, and physical
+  qualification remain absent. The Isaac toolchain lock remains `UNSELECTED`.
+  No AI, arm, or integration gate status changed.
+- Supersedes: none. INT-438 remains the source-link grouping evidence; this row
+  supplies bounded candidate geometry without installing it.
+- Next dependency: run a collision differential corpus against the raw meshes,
+  refine high-inflation and `link5` candidates within the 64-primitive limit,
+  then review the self-collision pair policy before proposing any installed
+  collision geometry profile.
