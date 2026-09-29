@@ -10,10 +10,10 @@
   and tap Send.
 - **Evidence boundary:** every physical action shown is a workcell simulation until
   separately supported by physical qualification records.
-- **Toolhead:** one continuous RoArm gripper carries the repository's controlled
-  compliant body, keyed cap, split collar, two M3 retainers, and one nominal
-  OASO-style capacitive stylus. Printed-part shapes are source-accurate;
-  installed fit, protrusion, force, compliance, and TCP remain unmeasured.
+- **Toolhead:** one continuous RoArm gripper holds one nominal 9 mm OASO-style
+  capacitive stylus barrel directly between its opposing jaw pads, matching the
+  current photographed assembly. Grip force, installed fit, protrusion, and TCP
+  remain unmeasured.
 
 ## Product truth this film must preserve
 
@@ -90,7 +90,7 @@ without asking the viewer to relearn it ten times.
   runtime: macro 16.8%, hero 22%, dolly 21%, arm-follow 21%, overhead 7%, and
   low three-quarter 12.2%. This includes the bounded scene-7 toolhead and
   scene-8 contact inserts and is validated from the canonical shot list.
-- Cuts preserve identical joint pose, gripper, printed cartridge, stylus pose,
+- Cuts preserve identical joint pose, gripper, bare stylus pose,
   cable state, and device placement. No teleporting, snap zooms, or decorative
   spins.
 - The stale-evidence rejection cuts the music and holds the arm completely
@@ -100,13 +100,13 @@ without asking the viewer to relearn it ten times.
 
 | # | Time | Stage | Picture, motion, and required information | Sound |
 |---:|---:|---|---|---|
-| 1 | 0:00–0:04 | — | **Cold open.** Macro: the capacitive disc hovers over the `r` key while the source-accurate printed cartridge remains visibly captured between both jaw pads. The blue uncertainty disk is still wider than the key. Pull focus from disc to keyed cap and stationary wrist. No text appears yet. | One held mechanical tone; no narration. |
+| 1 | 0:00–0:04 | — | **Cold open.** Macro: the capacitive disc hovers over the `r` key while the bare stylus barrel remains visibly captured directly between both jaw pads. The blue uncertainty disk is still wider than the key. Pull focus from disc to the jaw grip and stationary wrist. No text appears yet. | One held mechanical tone; no narration. |
 | 2 | 0:04–0:09 | — | Operator-display request console: `Type ready locally, then send on my way from the phone.` Phone and physical keyboard remain visibly separate. | Quiet input ticks. |
 | 3 | 0:09–0:15 | — | Hero wide reveals the exact workcell, detailed RoArm, printed contact cartridge and stylus, off-board operator display, black RC03 keyboard, and indexed phone. The display remains entirely beside the board. No keyboard cord is shown and the film makes no claim about the keyboard's electrical connection. | Music establishes restrained forward pulse. |
 | 4 | 0:15–0:21 | `UNDERSTAND` | Amber model card: ordered semantic actions, named targets, board-frame points, confidence, and error bounds. `speed`, `contact depth`, `retry`, and `timing` are greyed and locked: `runtime owned`. | Amber data ticks. |
 | 5 | 0:21–0:28 | `LOCATE` | Crane to the actual fixed camera, pass through its lens, then use its squared overhead view. Exact tags and device bounds lock; blue uncertainty disks contract. | Registration pings. |
 | 6 | 0:28–0:33 | `CHECK` | Red card in empty space: `scene capture 41 s old · limit 2 s → REJECTED · NO MOTION`. Arm and stylus remain unobscured and still. | Music drops out; one low reject thud. |
-| 7 | 0:33–0:40 | `CHECK` | Fresh capture. Immutable batch facts pass. Text reads `BATCH ADMITTED → PERMIT · 1 ACTION`. In a low three-quarter push, establish opposing jaw pads on the body's grip-flat band, the keyed cap and two M3 heads, on-axis barrel, and articulated disc while the green permit travels toward the stylus. End with a rack focus to the off-board operator display as its screen changes from request console to local test pad. | Music returns; restrained gate ticks. |
+| 7 | 0:33–0:40 | `CHECK` | Fresh capture. Immutable batch facts pass. Text reads `BATCH ADMITTED → PERMIT · 1 ACTION`. In a low three-quarter push, establish the bare barrel captured directly between the opposing jaw pads and the articulated disc while the green permit travels toward the stylus. End with a visible tilt and rack focus to the lowered off-board operator display as its screen changes from request console to local test pad. | Music returns; restrained gate ticks. |
 | 8 | 0:40–0:48 | `ACT` | **Teach the first key slowly with the complete arm readable in low three-quarter.** Label the seven phases: `transit → align → settle → approach → contact → retract → verify`. At contact only, cut briefly to a macro insert of `r` depressing, then return to low three-quarter. A cause/effect insert shows the operator-display test pad add `r`, and the permit fades. The stage bar remains on `ACT`; a small three-dot loop indicator pulses through check/contact/verify. | One precise click and one verify tick. |
 | 9 | 0:48–0:55 | `ACT` | Lateral track across `e`, `a`, `d`, `y`. The contract is now visual shorthand: one permit arrives, one contact occurs, and one verification tick appears. Do not repeat uncertainty and dotted-preview graphics. The stage bar remains stable on `ACT`. | Four increasingly rhythmic clicks, never rushed. |
 | 10 | 0:55–1:01 | `ACT` | Hold above keyboard. Operator-display test pad reads `ready`; receipt shows `EXPECTED ready · OBSERVED ready ✓`. Phone is unchanged. The stable `ACT` bar remains while the compact loop indicator resolves on verify. | Local verification tone. |
@@ -197,11 +197,11 @@ the next action.
 ## Mandatory continuity
 
 1. One detailed servo-style RoArm mesh and rig in every physical shot.
-2. One controlled printed cartridge visibly captured at its grip-flat band by
-   the same opposing jaw pads throughout. Its keyed cap and two M3 heads never
-   change or disappear.
-3. One nominal 9 mm OASO-style stylus remains on the cartridge axis with the
-   same exposed length, collar, pivot, and capacitive disc throughout.
+2. One bare nominal 9 mm OASO-style stylus barrel remains directly captured by
+   the same opposing jaw pads throughout; no uninstalled cartridge, collar,
+   cap, or tool-retention screws appear.
+3. The stylus retains the same exposed length, pivot, and capacitive disc
+   throughout.
 4. One immutable workcell: board, robot, camera, keyboard, phone, fixtures,
    tags, cables, operator display, and transforms do not drift.
 5. One measured black RC03 keyboard with correct legends and proportions,
@@ -218,8 +218,8 @@ the next action.
    receipts, and narration.
 10. A preview is always dotted and always labeled `no authority`; only an active
    green permit may become solid.
-11. No overlay covers the robot, cartridge, stylus, gripper, target, or contact point.
-12. Every cut preserves outgoing and incoming joint, cartridge, stylus, and cable pose.
+11. No overlay covers the robot, stylus, gripper, target, or contact point.
+12. Every cut preserves outgoing and incoming joint, stylus, and arm-harness pose.
 13. `SIMULATED WORKCELL SEQUENCE` persists throughout rendered physical action.
 14. The visible arm always uses the same five-stage presentation chain:
     base yaw, shoulder pitch, elbow, wrist pitch, and tool wrist. The fixed
@@ -238,8 +238,8 @@ the next action.
 | Asset | Required condition |
 |---|---|
 | Robot | Detailed RoArm geometry with an open controller chassis, rotating base-yaw deck, and one parented base-yaw–shoulder-pitch–elbow–wrist-pitch–tool-wrist chain; correctly mounted servo housings, dual links, short wrist link, fasteners, segmented wiring, gripper, and one articulated rig used in all scenes. |
-| Gripper/tool mount | Same RoArm jaw architecture in every moving shot. Opposing pads contact the controlled 28 × 24 × 65 mm compliant body at its recessed grip band; keyed cap, split collar, and two M3 retainers use the repository STLs. |
-| Stylus | Nominal 9 mm OASO-style aluminum barrel running through the printed cartridge, with constant protrusion and an articulated capacitive contact disc. Installed dimensions remain explicitly unmeasured. |
+| Gripper/tool mount | Same RoArm jaw architecture in every moving shot. Opposing pads directly contact the bare stylus barrel, matching the current photographed assembly. No proposed printed mount is shown. |
+| Stylus | Nominal 9 mm OASO-style aluminum barrel with constant protrusion and an articulated capacitive contact disc. Installed dimensions and grip force remain explicitly unmeasured. |
 | Keyboard | Measured black RC03 asset, correct six-row layout and legends, animated lowercase target keys, associated only with the operator-display test pad. No cord or unverified connection method is depicted. |
 | Operator display | Presentation-only floating screen with distinct request-console and local-test-pad UI modes; displays `ready` only after physical keyboard presses. It does not overlap the board or appear in the overhead Locate view. |
 | Phone | Measured phone/station asset with home, Messages composer, keyboard, Send, and sent-confirmation states; all UI labeled as modeled. |
@@ -276,8 +276,8 @@ The 30-second cut is not improvised. Use these named beats in order:
 - [ ] Blue uncertainty is fully inside a target before its permit becomes active.
 - [ ] Dotted previews remain zero-authority until promoted by their own permit.
 - [ ] Accurate robot, stylus, keyboard, phone, camera, board, and transforms persist across all cuts.
-- [ ] The printed cartridge, keyed cap, M3 retainers, collar, stylus, pivot, and
-      contact disc remain one continuous toolhead with no asset swap.
+- [ ] The same bare stylus, direct jaw grip, pivot, and contact disc remain one
+      continuous toolhead with no asset swap.
 - [ ] Local and phone observations remain independent through final receipts.
 - [ ] README player, captions, transcript, chapters, poster, and social cut use this vocabulary and timing.
 - [ ] Simulation qualification remains visible and no rendered action is presented as physical evidence.

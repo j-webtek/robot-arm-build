@@ -53,8 +53,8 @@ policy.
 | Keyboard | Measured 315 × 147 × 21 mm black RC03 chassis, six-row layout, legends, and station; no cord depicted |
 | Phone | Measured 77.9 × 164.4 × 7.9 mm body, screen plane, controls, cable, and RC03 station |
 | Robot | Detailed RoArm source geometry with exposed controller PCB and standoffs, fixed lower chassis, separate yaw deck, and five-stage servo rig; rear-center placement at 305, 457, 0 mm and −90° nominal yaw |
-| Printed tool mount | Controlled 28 × 24 × 65 mm compliant-body STL, keyed-cap STL, split-collar STL, two visible M3 retainers, and grip-flat contact between the same opposing RoArm jaw pads |
-| Stylus | One nominal 9 mm OASO-style aluminum barrel, constant protrusion, pivot, and capacitive disc carried by the printed cartridge throughout |
+| Direct stylus grip | Current photographed configuration: opposing RoArm jaw pads directly capture the bare stylus barrel; no proposed printed mount is depicted |
+| Stylus | One nominal 9 mm OASO-style aluminum barrel with constant protrusion, pivot, and capacitive disc throughout |
 | Camera | Actual fixed-camera body, mount, lens, and matching optical view |
 | Operator display | Presentation-only floating screen beside and fully outside the board; request-console and local-test-pad UI; visually independent from the phone and excluded from the overhead Locate view |
 
@@ -68,7 +68,7 @@ framing is not final art direction.
 
 The capacitive disc hovers over lowercase `r`. The blue uncertainty disk is too
 wide and the next target is dotted. Show enough of the real servo wrist,
-opposing jaw pads, recessed grip-flat band, keyed cap, two M3 heads, and keyboard
+opposing jaw pads directly contacting the bare barrel, articulated disc, and keyboard
 to identify the complete tool stack. Do not add text before the viewer learns
 what a permit is.
 
@@ -94,10 +94,10 @@ the stale-evidence hold.
 
 Fresh evidence admits static batch facts, but the graphic reads
 `BATCH ADMITTED → PERMIT · 1 ACTION`. A green token travels down the actual arm
-and lands at the keyed cartridge/stylus assembly while `r` becomes solid. The
+and lands at the directly gripped stylus while `r` becomes solid. The
 next `e` remains dotted and powerless. The push-in should reveal that the jaws
-hold the printed body—not the barrel—and that the cap positively retains the
-stylus route.
+directly hold the bare barrel at both pads, matching the current photographed
+assembly.
 
 **Camera:** low three-quarter, 55–70 mm, slow push timed to token arrival.
 
@@ -118,13 +118,13 @@ devices without visually connecting their data.
 
 | # | Time | Stage | Required picture and action | Sound |
 |---:|---:|---|---|---|
-| 1 | 0:00–0:04 | — | Macro over `r`; disc, printed cartridge, jaw pads, keyed cap, and M3 heads readable; uncertainty too wide; no text. | Held mechanism tone. |
+| 1 | 0:00–0:04 | — | Macro over `r`; disc, bare barrel, and direct contact at both jaw pads readable; uncertainty too wide; no text. | Held mechanism tone. |
 | 2 | 0:04–0:09 | — | Operator-display request close-up: `Type ready locally, then send on my way from the phone.` | Input ticks. |
 | 3 | 0:09–0:15 | — | Hero wide of exact workcell and one detailed arm/stylus rig. Operator display is beside—not over—the board; no keyboard cord or connection method is depicted. | Music pulse begins. |
 | 4 | 0:15–0:21 | UNDERSTAND | Amber semantic proposal; confidence and uncertainty visible; runtime fields locked. | Data ticks. |
 | 5 | 0:21–0:28 | LOCATE | Reveal real camera, pass through lens, register exact device geometry; blue circles shrink. | Registration pings. |
 | 6 | 0:28–0:33 | CHECK | `scene capture 41 s old · limit 2 s → REJECTED · NO MOTION`; arm visible and still. | Music cuts; reject thud. |
-| 7 | 0:33–0:40 | CHECK | Fresh capture; `BATCH ADMITTED → PERMIT · 1 ACTION`; a low three-quarter push establishes the complete toolhead while the token travels to the stylus. | Music returns; gate ticks. |
+| 7 | 0:33–0:40 | CHECK | Fresh capture; `BATCH ADMITTED → PERMIT · 1 ACTION`; a low three-quarter push establishes the direct stylus grip while the token travels to it, then visibly tilts and racks focus to the lowered operator display. | Music returns; gate ticks. |
 | 8 | 0:40–0:48 | ACT | Keep the complete arm readable in low three-quarter while the first `r` press teaches transit, align, settle, approach, contact, retract, verify. Use macro only as a brief insert of the key depressing, then return. Permit fades; operator display shows `r`. | One key click, one verify tick. |
 | 9 | 0:48–0:55 | ACT | Lateral track through `e/a/d/y`; use only one permit and one receipt tick per contact after the lesson. | Four rhythmic key clicks. |
 | 10 | 0:55–1:01 | ACT | Operator-display test pad: `EXPECTED ready · OBSERVED ready ✓`; phone unchanged. | Verify tone. |
@@ -144,7 +144,7 @@ devices without visually connecting their data.
   scene-8 contact inserts; the canonical shot-list validator enforces them.
 - Use macro, low three-quarter, lateral track, arm-follow dolly, camera POV,
   split screen, and hero wide for narrative reasons—not decorative variety.
-- Preserve exact joint, gripper, printed cartridge, stylus, cable, keyboard,
+- Preserve exact joint, gripper, bare stylus, attached arm harness, keyboard,
   phone, and fixture continuity.
 - One principal card plus the stage ribbon is the maximum information load.
 - Keep cards in negative space and never over the mechanism or target.
@@ -165,7 +165,7 @@ devices without visually connecting their data.
 - Every phone tap begins from a verified expected screen; changed screens force
   re-observation.
 - Model-owned fields are amber; runtime-owned policy fields are grey and locked.
-- The accurate RoArm, same jaw pair, same printed cartridge, and same stylus
+- The accurate RoArm, same direct jaw grip, and same bare stylus
   perform every physical action.
 - The RoArm always shows the same base-yaw, shoulder-pitch, elbow,
   wrist-pitch, and tool-wrist pivots. The controller chassis stays fixed while
@@ -195,8 +195,8 @@ devices without visually connecting their data.
 5. Typography and graphics at desktop and 390 px widths.
 6. Sound concept for rejection, permits, keys, phone checks, Send, and receipts.
 7. Poster, GitHub player thumbnail, and separately captioned 30-second social cut.
-8. Continuity report confirming one robot, one printed cartridge/tool stack,
-   one stylus, measured layout,
+8. Continuity report confirming one robot, one direct stylus grip, one stylus,
+   measured layout,
    lowercase copy, per-contact authority, and device-local verification.
 
 ## Review questions

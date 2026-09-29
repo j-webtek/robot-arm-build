@@ -138,9 +138,9 @@ def main() -> None:
     assert operator_display["presentation_only"] is True
     placement = operator_display["placement"]
     assert placement["board_overlap"] is False
-    assert placement["overhead_camera_visible"] is False
     center_x, center_y = placement["center_board_xy_mm"]
     width, height = placement["screen_size_mm"]
+    depth_mm = placement["screen_depth_mm"]
     yaw = math.radians(placement["yaw_degrees"])
     projected_half_width = (width / 2) * abs(math.cos(yaw)) + 9 * abs(math.sin(yaw))
     projected_half_depth = (width / 2) * abs(math.sin(yaw)) + 9 * abs(math.cos(yaw))
@@ -154,6 +154,37 @@ def main() -> None:
                     center_y + projected_half_depth)
     clearance = math.hypot(robot_x - nearest_x, robot_y - nearest_y)
     assert clearance >= placement["minimum_robot_base_clearance_mm"]
+    # Compute exclusion from the authored overhead pinhole camera rather than
+    # trusting a hand-set visibility flag. The display sits wholly to camera
+    # left, so its rightmost/lower corner is the limiting point.
+    camera_contract = data["camera_contract"]
+    overhead = camera_contract["overhead"]
+    camera_start = overhead["start_position_m"]
+    camera_end = overhead["end_position_m"]
+    target = overhead["target_m"]
+    assert camera_start[:2] == target[:2] == camera_end[:2], (
+        "overhead exclusion calculation requires a vertical optical axis"
+    )
+    center_world_x = (center_x - 305.0) / 1000.0
+    rightmost_world_x = center_world_x + (
+        (width / 2) * abs(math.cos(yaw))
+        + (depth_mm / 2) * abs(math.sin(yaw))
+    ) / 1000.0
+    lowest_display_z = (placement["screen_center_z_mm"] - height / 2) / 1000.0
+    widest_camera_z = max(camera_start[2], camera_end[2])
+    optical_depth = widest_camera_z - lowest_display_z
+    horizontal_half_frame = (
+        optical_depth * camera_contract["sensor_width_mm"]
+        / (2 * overhead["lens_mm"])
+    )
+    right_edge_from_camera = rightmost_world_x - camera_start[0]
+    exclusion_margin = (
+        -horizontal_half_frame - right_edge_from_camera
+    ) / horizontal_half_frame
+    assert exclusion_margin >= overhead["minimum_horizontal_exclusion_margin"], (
+        "operator display enters the authored overhead camera frustum: "
+        f"normalized margin {exclusion_margin:.4f}"
+    )
     display_states = operator_display["states"]
     assert [state["name"] for state in display_states] == [
         "request console", "empty test pad", "test pad r", "test pad re",
@@ -223,6 +254,7 @@ def main() -> None:
         "PASS storyboard_v21: 17 contiguous scenes, 2400 frames, six rigs, "
         "no rig over 25 percent, synchronized advertising handoff, "
         "off-board stateful request-to-test-pad operator display, "
+        f"computed overhead exclusion margin {exclusion_margin:.1%}, "
         "five-stage parented arm articulation with mount-side checks, "
         "seven benchmark phases, four independently permitted rhythm contacts, "
         "one contact-free high-clearance crossing, and eleven independently "

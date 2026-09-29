@@ -50,9 +50,6 @@ PORTAL_PATH = (
     / "printable_camera_portal_printed_parts_only.stl"
 )
 STL_DIR = ROOT / "active-project" / "RoCell_v0_3" / "stl"
-COMPLIANT_TOOL_BODY_PATH = STL_DIR / "compliant_tool_body.stl"
-COMPLIANT_TOOL_CAP_PATH = STL_DIR / "compliant_tool_top_cap.stl"
-STYLUS_COLLAR_PATH = STL_DIR / "stylus_collar_9mm.stl"
 DIMENSION_MANIFEST_PATH = SCRIPT.with_name("dimension_manifest.json")
 ARM_URDF_PATH = ROOT / "software" / "models" / "roarm_m3" / "roarm_m3_kinematic_40dbd84.urdf"
 APRILTAG_CODEBOOK_PATH = (
@@ -1000,63 +997,28 @@ def add_continuous_press_arm(
                   (0.060, 0.050, 0.066), mats["servo"], 0.006)
     wrist_plate = cube("Continuous arm gripper plate", wrist + Vector((0, 0, -0.073)),
                        (0.072, 0.010, 0.050), mats["arm_exact"], 0.004)
-    # The moving presentation arm uses the same end-effector architecture as
-    # the physical build: two opposing RoArm jaw plates capture the recessed
-    # flats on the repository-owned compliant-tool body. The older proxy left
-    # a visible air gap and made the stylus look suspended between generic jaws.
+    # Match the current photographed tool state: the bare 9 mm OASO-style
+    # barrel is held directly between the two opposing RoArm jaw pads. Do not
+    # add the proposed printed cartridge, cap, collar, or retention screws
+    # until that hardware is physically installed and photographed.
     jaw_left = cube("Continuous arm gripper jaw left",
-                    wrist + Vector((-0.0195, 0, -0.112)),
+                    wrist + Vector((-0.0111, 0, -0.112)),
                     (0.011, 0.026, 0.070), mats["arm_exact"], 0.003)
     jaw_right = cube("Continuous arm gripper jaw right",
-                     wrist + Vector((0.0195, 0, -0.112)),
+                     wrist + Vector((0.0111, 0, -0.112)),
                      (0.011, 0.026, 0.070), mats["arm_exact"], 0.003)
     for side_name, x_sign in (("left", -1), ("right", 1)):
         cube(f"Continuous arm {side_name} grip pad",
-             wrist + Vector((x_sign * 0.0146, 0, -0.112)),
+             wrist + Vector((x_sign * 0.0056, 0, -0.112)),
              (0.0022, 0.019, 0.028), mats["abs"], 0.001)
         for z_offset in (-0.026, 0.026):
             fastener = cylinder(
                 f"Continuous arm {side_name} jaw fastener {z_offset:+.3f}",
-                wrist + Vector((x_sign * 0.0252, 0, -0.112 + z_offset)),
+                wrist + Vector((x_sign * 0.0122, 0, -0.112 + z_offset)),
                 0.0042, 0.0032, mats["metal"], 24,
             )
             fastener.rotation_euler = (0, math.pi / 2, 0)
 
-    # Source-accurate printed contact cartridge. These are controlled RoCell
-    # STLs, not a hand-modelled stand-in. The cap and two M3 heads make the
-    # positive stylus retention legible in the macro press shot.
-    tool_center = wrist + Vector((0, 0, -0.1140))
-    tool_body = import_stl_centered(
-        COMPLIANT_TOOL_BODY_PATH,
-        "Continuous arm compliant tool body — controlled STL",
-        mats["tool_print"], tool_center,
-    )
-    body_bottom_z = tool_center.z - 0.0331
-    cap_center = Vector((tool_center.x, tool_center.y, body_bottom_z + 0.0675))
-    tool_cap = import_stl_centered(
-        COMPLIANT_TOOL_CAP_PATH,
-        "Continuous arm keyed compliant tool cap — controlled STL",
-        mats["tool_cap"], cap_center,
-    )
-    collar_center = Vector((tool_center.x, tool_center.y, body_bottom_z + 0.05075))
-    collar = import_stl_centered(
-        STYLUS_COLLAR_PATH,
-        "Continuous arm split stylus collar — controlled STL",
-        mats["tool_cap"], collar_center,
-    )
-    for screw_name, dx, dy in (("A", -0.009, -0.007), ("B", 0.009, 0.007)):
-        shank = cylinder(
-            f"Continuous arm compliant cap M3 screw {screw_name}",
-            cap_center + Vector((dx, dy, 0.0037)), 0.0015, 0.010,
-            mats["metal"], 24,
-        )
-        head = cylinder(
-            f"Continuous arm compliant cap M3 head {screw_name}",
-            cap_center + Vector((dx, dy, 0.0062)), 0.0030, 0.0022,
-            mats["metal"], 32,
-        )
-        shank["presentation_detail"] = "TWO_M3_RETAINING_SCREWS"
-        head["presentation_detail"] = "TWO_M3_RETAINING_SCREWS"
     stylus_center = board_point(target_x, target_y, 0) + Vector((0, 0, 0.105))
     stylus = cylinder("Continuous arm OASO-style 9 mm stylus barrel (nominal)",
                       stylus_center, 0.0045, 0.140, mats["stylus"], 64)
@@ -1081,7 +1043,6 @@ def add_continuous_press_arm(
             "wrist" in obj.name.lower()
             or "gripper" in obj.name.lower()
             or "jaw" in obj.name.lower()
-            or "compliant" in obj.name.lower()
             or "stylus" in obj.name.lower()
             or "grip pad" in obj.name.lower()
         )
@@ -1098,11 +1059,7 @@ def add_continuous_press_arm(
             component.keyframe_insert("location", frame=frame)
         component["evidence_status"] = "URDF_DERIVED_PRESENTATION_PROXY_NOT_KINEMATIC_EVIDENCE"
         component["presentation_target_xy_mm"] = target_xy
-    tool_body["geometry_authority"] = str(COMPLIANT_TOOL_BODY_PATH.relative_to(ROOT)).replace("\\", "/")
-    tool_body["source_dimensions_mm"] = "28 x 24 x 66.2 mesh envelope; 65 nominal body"
-    tool_cap["geometry_authority"] = str(COMPLIANT_TOOL_CAP_PATH.relative_to(ROOT)).replace("\\", "/")
-    collar["geometry_authority"] = str(STYLUS_COLLAR_PATH.relative_to(ROOT)).replace("\\", "/")
-    stylus["evidence_status"] = "NOMINAL_9MM_BARREL_UNMEASURED_INSTALLED_TOOL"
+    stylus["evidence_status"] = "PHOTO_INFORMED_BARE_9MM_BARREL_DIRECT_JAW_GRIP"
     objects = tuple(obj for obj in bpy.context.scene.objects if obj not in objects_before)
     return {"root": base, "objects": objects, "moving": moving, "manifest": manifest}
 
@@ -1214,12 +1171,6 @@ def build() -> bpy.types.Scene:
                                emission_strength=5.0),
         "arm_exact": material("Official RoArm assembly finish", (0.017, 0.022, 0.028, 1),
                               metallic=0.48, roughness=0.24),
-        "tool_print": textured_material(
-            "Printed compliant tool body", (0.025, 0.032, 0.039, 1),
-            scale=115.0, detail=2.5, roughness=0.48, metallic=0.02,
-        ),
-        "tool_cap": material("Printed tool route accent", (0.030, 0.045, 0.060, 1),
-                             metallic=0.04, roughness=0.48),
         "stylus": material("OASO-style aluminum stylus", (0.24, 0.28, 0.32, 1),
                            metallic=0.88, roughness=0.18),
         "stylus_disc": material("OASO-style capacitive contact disc",
