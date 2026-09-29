@@ -13,6 +13,7 @@ from typing import Any, Mapping
 
 from rocell.models import ActionPlan, ModelMotionBatchV2
 from .context import SimulationContext, SimulationContextValidationLeaseV1
+from .context_lifecycle_v1 import SimulationContextLifecycleV1
 from .model_motion_ingress_v2 import (
     MeasuredTargetRegionV2, ModelMotionIngressV2Error,
     TrustedLocalizationQualificationV2, ingest_model_motion_batch_v2,
@@ -99,8 +100,33 @@ def ingest_with_trusted_registry_v2(
     active_context_epoch_sha256: str | None = None,
     active_service_instance_id: str | None = None,
     active_context_generation: int | None = None,
+    context_lifecycle: SimulationContextLifecycleV1 | None = None,
 ) -> dict[str, Any]:
     """Admit using one coherent consumer-owned registry snapshot."""
+    manual_lifecycle = (
+        context_validation_lease,
+        active_context_epoch_sha256,
+        active_service_instance_id,
+        active_context_generation,
+    )
+    if context_lifecycle is not None:
+        if not isinstance(context_lifecycle, SimulationContextLifecycleV1):
+            raise TypeError("context_lifecycle must be SimulationContextLifecycleV1")
+        if any(value is not None for value in manual_lifecycle):
+            raise ModelMotionIngressV2Error(
+                "lifecycle-managed admission cannot accept manual lease identity"
+            )
+        with context_lifecycle.validation_scope(context) as binding:
+            return ingest_with_trusted_registry_v2(
+                batch, plan, context,
+                registry=registry,
+                current_time_epoch_ms=current_time_epoch_ms,
+                current_monotonic_ns=current_monotonic_ns,
+                context_validation_lease=binding.lease,
+                active_context_epoch_sha256=binding.context_epoch_sha256,
+                active_service_instance_id=binding.service_instance_id,
+                active_context_generation=binding.generation,
+            )
     if not isinstance(registry, TrustedMotionRegistryV2):
         raise TypeError("registry must be TrustedMotionRegistryV2")
     if registry.target_catalog_sha256 != context.targets.content_sha256:

@@ -137,6 +137,10 @@ from .context import (
     load_simulation_context,
     revalidate_simulation_context,
 )
+from .context_lifecycle_v1 import (
+    SimulationContextLifecycleBindingV1,
+    SimulationContextLifecycleV1,
+)
 from .observed_planner_start_state import (
     ObservedPlannerStartState,
     ObservedPlannerStartStateError,

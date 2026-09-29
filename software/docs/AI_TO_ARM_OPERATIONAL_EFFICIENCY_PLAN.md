@@ -469,9 +469,23 @@ service identity, changed generation, replaced context object, and mutated lease
 content. Timing never participates in admission, and the report contains zero
 controller commands, transport access, writes, movement, or physical authority.
 This closes only the retained context-validation benchmark slice of E1.
-Model/camera/planner/controller lifecycle design, broader static/dynamic
-validation separation, component warm-up campaigns, and their restart matrices
-remain open.
+The subsequent runtime-owned `SimulationContextLifecycleV1` closes the matching
+simulation-context lifecycle slice. It loads and validates the active context,
+owns the service identity and monotonically advancing generation, issues the
+lease, and holds one lifecycle lock across complete trusted-registry admission.
+Source reload cannot interleave with an admitted batch. A successful reload
+atomically installs a new context object and generation; a failed reload leaves
+the previous active binding intact. Explicit invalidation and service restart
+revoke the old lifecycle before a successor can be used. Callers cannot combine
+lifecycle-managed admission with manually supplied lease identities.
+
+Governed fault tests cover same-output admission, reload, failed reload,
+invalidation, restart, stale-context rejection, manual-identity rejection, and
+concurrent invalidation. This adds no filesystem watcher, controller process,
+hardware access, or execution authority. Model/camera/planner/controller
+lifecycle design beyond this simulation-context boundary, broader
+static/dynamic validation separation, component warm-up campaigns, and their
+restart matrices remain open.
 
 ### E2 — Accelerate IK and collision preparation
 

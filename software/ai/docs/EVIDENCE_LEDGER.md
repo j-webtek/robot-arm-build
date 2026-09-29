@@ -5797,3 +5797,37 @@ rewriting history. New entries must use a unique evidence ID.
 - Next dependency: implement and test the authoritative epoch lifecycle and
   extend the retained cold/warm method to planner, geometry, camera, model, and
   controller-service startup boundaries.
+
+### E-20260929-ARM-116 — runtime-owned simulation-context epoch lifecycle
+
+- Stage: operational efficiency E1, context lifecycle slice.
+- Lane: arm/runtime trusted registry admission.
+- Change: added `SimulationContextLifecycleV1` as the sole owner of the active
+  simulation context object, service identity, generation, and validation
+  lease. Trusted-registry admission can now consume the lifecycle directly;
+  it holds the lifecycle lock for the entire admission so reload,
+  invalidation, or restart cannot interleave after validation. Manually
+  supplied epoch/lease fields are rejected when lifecycle management is used.
+- Command: focused lifecycle, lease, benchmark, and v2 ingress tests; governed
+  offline test manifest; repository verification.
+- Result: PASS. Tests establish exact equality with full source validation,
+  atomic successful reload, preservation of the prior state after failed
+  reload, old-context rejection, explicit invalidation, distinct-service
+  restart, lock serialization, and rejection of mixed/manual lifecycle input.
+- Artifacts: `software/src/rocell/application/context_lifecycle_v1.py`, its
+  trusted-registry integration, and governed unit coverage.
+- Camera opens: 0.
+- Model runtime loads: 0.
+- Transport opens: 0.
+- Controller starts: 0.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: this lifecycle is an in-process application service, not a
+  filesystem watcher or deployed daemon. Only consumers using its managed
+  scope receive its serialization guarantee. It does not qualify IK,
+  collision, controller timing, contact, or device outcomes.
+- Supersedes: ARM-115's stated next dependency for the simulation-context
+  lifecycle only; ARM-115 remains the retained timing evidence.
+- Next dependency: move the next dominant immutable startup products—planner
+  model/solver structures and installed collision acceleration data—behind
+  equivalent measured lifecycle boundaries without weakening dynamic checks.

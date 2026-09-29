@@ -1,6 +1,6 @@
 # Tactevra project status
 
-Reviewed September 29, 2026 through the ARM-115 context-validation efficiency evidence,
+Reviewed September 29, 2026 through the ARM-116 context epoch lifecycle,
 ARM-077 PC0 pre-camera qualification basis, ARM-076 typing collision-evidence
 intake, ARM-075 exact-sample offline IK screen, AI-403 precision-adapter
 integration, and merged physical-camera
@@ -572,6 +572,14 @@ restarted service identity, changed generation, replaced context object, and
 mutated lease all blocked. This is bounded offline host evidence, not a runtime
 service, admission threshold, controller benchmark, or physical-speed claim.
 The governed offline matrix now passes 655 tests.
+
+ARM-116 connects that lease to a runtime-owned in-process lifecycle. The
+lifecycle owns the active context, service identity, and generation, and locks
+the complete trusted-registry admission against concurrent reload or
+invalidation. Successful reload advances the generation atomically; failed
+reload preserves the prior valid state; restart and invalidation revoke stale
+bindings. This remains hardware-free application scaffolding rather than a
+deployed daemon or physical-performance qualification.
 
 AI-403 then integrates the pose-output precision adapter and actual V2 batch
 producer on current `main`. The retained contract fixture deterministically
