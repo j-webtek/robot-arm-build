@@ -4693,3 +4693,102 @@ rewriting history. New entries must use a unique evidence ID.
   tool and camera support, replace fixture proxies with governed solid heights,
   and obtain measured robot placement before any clearance or hover oracle is
   admissible.
+
+### E-20260929-INT-434 — STEP probe import-order attempt failed closed
+
+- Stage: S2/S3 simulation oracle WP2.
+- Lane: INTEGRATION.
+- Commit: `204fe02906d1e914bed0a20a753a2fb6e61dbfe0`.
+- Change: attempted the first repository-owned inspection of the pinned
+  official RoArm STEP assembly with the installed Isaac HOOPS converter.
+- Inputs/fixtures: official archive SHA-256
+  `1e2111145276aac14e521f47990fc41de87e2e735623d115a39cc176c9762da2`;
+  extracted STEP SHA-256
+  `728eb52f0bdd32dc0b907c9bb983d3d0b8adf7a5ea945949785a6e496f5089ff`;
+  failed status-file SHA-256
+  `96ad33a2d241d21cb26e6adbb44fb62f31b9f78dc0dd00e492fae346511c6f36`.
+- Command: `$env:OMNI_KIT_ACCEPT_EULA='YES'; C:\IsaacSim\env_6_1_0\Scripts\python.exe software\integrations\isaac_sim\step_inspection_probe.py --archive C:\IsaacSim\sources\roarm-m3-step-260310\RoArm-M3_STEP_260310.zip --step C:\IsaacSim\sources\roarm-m3-step-260310\extracted\RoArm-M3_STEP\RoArm-M3.step --output-dir C:\IsaacSim\artifacts\issue190\wp2-cad-002 --receipt C:\IsaacSim\evidence\step_inspection_002.json --status-output C:\IsaacSim\evidence\step_inspection_002.status.json`.
+- Result: FAIL. The probe imported `omni.converter.hoops` before enabling
+  `omni.kit.converter.hoops_core`; the explicit status recorded
+  `ModuleNotFoundError: No module named 'omni.converter'`. Isaac shutdown again
+  forced process exit zero, so the status sidecar rather than the process code
+  preserved the failure.
+- Artifacts: failed status and log retained externally under
+  `C:\IsaacSim\evidence`; the empty output directory contains no promoted USD.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: initialization-order evidence only. No CAD conversion, geometry
+  inventory, collision shape, physics step, trajectory, hardware, or physical
+  qualification resulted.
+- Supersedes: none; this failure remains visible beside INT-435.
+- Next dependency: enable the HOOPS core extension, advance Kit startup, then
+  import the backend and rerun the same pinned inputs with explicit status
+  validation.
+
+### E-20260929-INT-435 — pinned official STEP inspection retained
+
+- Stage: S2/S3 simulation oracle WP2.
+- Lane: INTEGRATION.
+- Commit: `204fe02906d1e914bed0a20a753a2fb6e61dbfe0`.
+- Change: downloaded and hash-verified the pinned official Waveshare archive,
+  verified its sole STEP member byte for byte, converted it twice with the
+  installed HOOPS backend, inventoried the resulting USD, retained four named
+  upstream structural components as unassigned collision seeds, and added a
+  compact canonical receipt plus hardware-free tests. No generated vendor CAD
+  asset is committed.
+- Inputs/fixtures: probe SHA-256
+  `417d37f34e9bd05f985e7fedf5d0571920b88e108e7e516fcde28fd3ce1b2e66`;
+  test SHA-256
+  `65822a8d2784eeae22afb6fc5d9f1d9ab758c028393d740bb646cd5b4618f528`;
+  committed receipt file SHA-256
+  `255a3612d1c932646f3ba4c09357f5337b679d46a1aeb210ffe9976a5c93ddbb`;
+  receipt content SHA-256
+  `b51c20e34c3b3edfa4ba40b88d04299aa346803b43b12909dade7c41c44cf967`;
+  archive SHA-256
+  `1e2111145276aac14e521f47990fc41de87e2e735623d115a39cc176c9762da2`;
+  extracted STEP SHA-256
+  `728eb52f0bdd32dc0b907c9bb983d3d0b8adf7a5ea945949785a6e496f5089ff`.
+- Command: `Invoke-WebRequest -Uri https://files.waveshare.com/wiki/RoArm-M3/RoArm-M3_STEP_260310.zip -OutFile C:\IsaacSim\sources\roarm-m3-step-260310\RoArm-M3_STEP_260310.zip`;
+  `$env:OMNI_KIT_ACCEPT_EULA='YES'; C:\IsaacSim\env_6_1_0\Scripts\python.exe software\integrations\isaac_sim\step_inspection_probe.py --archive C:\IsaacSim\sources\roarm-m3-step-260310\RoArm-M3_STEP_260310.zip --step C:\IsaacSim\sources\roarm-m3-step-260310\extracted\RoArm-M3_STEP\RoArm-M3.step --output-dir C:\IsaacSim\artifacts\issue190\wp2-cad-003 --receipt C:\IsaacSim\evidence\step_inspection_003.json --status-output C:\IsaacSim\evidence\step_inspection_003.status.json`;
+  `$env:OMNI_KIT_ACCEPT_EULA='YES'; C:\IsaacSim\env_6_1_0\Scripts\python.exe software\integrations\isaac_sim\step_inspection_probe.py --archive C:\IsaacSim\sources\roarm-m3-step-260310\RoArm-M3_STEP_260310.zip --step C:\IsaacSim\sources\roarm-m3-step-260310\extracted\RoArm-M3_STEP\RoArm-M3.step --output-dir C:\IsaacSim\artifacts\issue190\wp2-cad-004 --receipt C:\IsaacSim\evidence\step_inspection_004.json --status-output C:\IsaacSim\evidence\step_inspection_004.status.json`;
+  `python -m py_compile software/integrations/isaac_sim/step_inspection_probe.py software/tests/unit/test_isaac_sim_step_inspection_evidence.py`;
+  `python -m pytest software/tests/unit/test_isaac_sim_step_inspection_evidence.py software/tests/unit/test_isaac_sim_rc03_scene_evidence.py software/tests/unit/test_isaac_sim_urdf_import_evidence.py software/tests/unit/test_isaac_sim_fk_parity_evidence.py software/tests/unit/test_isaac_sim_first_launch_evidence.py software/tests/unit/test_isaac_sim_host_probe.py software/tests/unit/test_isaac_sim_contracts.py -q`;
+  `python scripts/ci/check_docs.py`; `python scripts/ci/check_evidence_scope.py`;
+  `python scripts/ci/check_public_records.py`;
+  `python scripts/ci/check_repository_artifacts.py`; `git diff --check`.
+- Result: PASS_WITH_BLOCKERS for pinned CAD inspection. Isaac identified the
+  source as millimetre/Z-up and produced 2,893 prims and 770 meshes over an
+  assembly bound from `[-48.994985,-42.71,0]` to
+  `[356.851785,42.51,389.380716]` mm. Separate corrected conversions produced
+  the identical 26,872,057-byte USD SHA-256
+  `cfcd4e6170350d948de1976164665ddde99cfad457b72730f7ffcbdd119496d3`;
+  its canonical external manifest digest is
+  `9e7fbf1d2a81cdc039603613aabdf91b63a301c46e0230da78b733e7934485b9`.
+  The two passing status-file SHA-256 values are
+  `2a145f2793d66d0d3a2c27ccea412f5c7f31ef39b382ddb1015252c5328c5ef4`
+  and `a4ed5791b6f7950871dfc42cc97b53e24a118000f7f97d14f9e46d21cb31e1ad`.
+  The focused suite passed 38 tests in 1.71 seconds and all four repository
+  audits passed.
+- Artifacts:
+  `software/integrations/isaac_sim/evidence/roarm_m3_step_inspection_20260929.json`;
+  `software/integrations/isaac_sim/step_inspection_probe.py`;
+  `software/tests/unit/test_isaac_sim_step_inspection_evidence.py`;
+  generated CAD USD, status, and logs retained externally under
+  `C:\IsaacSim\artifacts\issue190\wp2-cad-004` and
+  `C:\IsaacSim\evidence`.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: the STEP assembly pose is not bound to a governed URDF joint
+  state. `AL-BASE`, `AL-SHOULDER`, `AL-ELBOW-A`, and `AL-ELBOW-B` retain null
+  dynamic-link assignments and are incomplete inspection seeds. No reduced
+  shapes, arm collision geometry, valid inertia, tool, camera support, measured
+  placement, clearance, trajectory, contact, rendering, controller, hardware,
+  or physical qualification exists. Upstream redistribution scope remains
+  unconfirmed, and the toolchain lock remains `UNSELECTED`. No AI, arm, or
+  integration gate status changed.
+- Supersedes: none. INT-434 remains retained failed evidence; INT-433 remains
+  the governing nominal rigid-scene composition evidence.
+- Next dependency: derive and review the assembly-pose-to-URDF-state binding,
+  assign complete CAD groups to dynamic links, and generate conservative
+  reduced link-local shapes before collision differential or hover replay can
+  become admissible.
