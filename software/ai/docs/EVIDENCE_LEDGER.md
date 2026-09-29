@@ -4855,3 +4855,67 @@ rewriting history. New entries must use a unique evidence ID.
 - Next dependency: review complete CAD-product membership for each dynamic link
   and generate conservative reduced link-local shapes before any collision
   differential or hover replay can become admissible.
+
+### E-20260929-INT-437 — fixed-pose CAD link-membership candidates retained
+
+- Stage: S2/S3 simulation oracle WP2.
+- Lane: INTEGRATION.
+- Commit: `5ac4ae5079814d21ccc4572848459a64f936c62d`.
+- Change: partitioned every mesh in the pinned converted STEP assembly by its
+  direct component instance, ranked two governed-link candidates for each
+  component from its AABB centroid distance to the classified home-pose link
+  skeleton, identified component groups crossing governed joint origins, and
+  retained every reviewed dynamic-link assignment as null.
+- Inputs/fixtures: probe SHA-256
+  `cb6245e1894d80e083a5e1358895c8aae4c8c40829e0d54414cf46f0b2f74057`;
+  test SHA-256
+  `0768f5d461b3922fa5ac6a90aa763e7d60f2e694a2ddc1b9ab64a111b1c155f8`;
+  committed receipt file SHA-256
+  `711437e98d148e16bfaa03cd2f69ee459efa276c15a95775535946991e2a9386`;
+  receipt content SHA-256
+  `c1ecd6b636368e38ae815aca436699d9fa44ca7e70e1456048794d0f5769fd78`;
+  external receipt file SHA-256
+  `e5c303d5b0f609d9f1cc63abb63d89d20d5fe88f80e9a65c0bdcc29ed7498f42`
+  (same canonical JSON content; Windows external output uses CRLF);
+  external status-file SHA-256
+  `d8f1c151775095228c162c7eaa11c95c65d046b6cc4d3b2b03f1da7e6222dd04`;
+  CAD USD SHA-256
+  `cfcd4e6170350d948de1976164665ddde99cfad457b72730f7ffcbdd119496d3`;
+  pose receipt content SHA-256
+  `3817f28d9171ee3cb33d024f3f31e57495b02fb383ba60277953f6148ba00f3f`;
+  governed URDF SHA-256
+  `a565718e7d74b07702802cf41eb9549a6e38e50b5e80aa9b887ab1ae3d0d8190`.
+- Command: `$env:PYTHONUTF8='1'; C:\IsaacSim\env_6_1_0\Scripts\python.exe software\integrations\isaac_sim\step_link_membership_probe.py --workspace . --cad-usd C:\IsaacSim\artifacts\issue190\wp2-cad-004\roarm_m3_official.usda --pose-receipt software\integrations\isaac_sim\evidence\roarm_m3_step_pose_binding_20260929.json --output C:\IsaacSim\evidence\step_link_membership_001.json --status-output C:\IsaacSim\evidence\step_link_membership_001.status.json`;
+  `python -m py_compile software/integrations/isaac_sim/step_link_membership_probe.py software/tests/unit/test_isaac_sim_step_link_membership_evidence.py`;
+  `python -m pytest software/tests/unit/test_isaac_sim_step_link_membership_evidence.py software/tests/unit/test_isaac_sim_step_pose_binding_evidence.py software/tests/unit/test_isaac_sim_step_inspection_evidence.py software/tests/unit/test_isaac_sim_rc03_scene_evidence.py software/tests/unit/test_isaac_sim_urdf_import_evidence.py software/tests/unit/test_isaac_sim_fk_parity_evidence.py software/tests/unit/test_isaac_sim_first_launch_evidence.py software/tests/unit/test_isaac_sim_host_probe.py software/tests/unit/test_isaac_sim_contracts.py -q`;
+  `python scripts/ci/check_docs.py`; `python scripts/ci/check_evidence_scope.py`;
+  `python scripts/ci/check_public_records.py`;
+  `python scripts/ci/check_repository_artifacts.py`; `git diff --check`.
+- Result: PASS_WITH_BLOCKERS for the complete candidate inventory. The 162
+  direct component instances partition all 770 stage meshes. Forty-eight
+  instances have a nearest-link margin above 10 mm; 114 remain ambiguous and
+  19 component envelopes cross at least one governed joint origin. The nearest
+  candidate distribution is base_link 33, link1 35, link2 27, link3 26, link4
+  11, link5 23, and gripper_link 7. Reviewed assignment count remains zero.
+  The focused suite passed 48 tests in 2.17 seconds and all four repository
+  audits passed.
+- Artifacts:
+  `software/integrations/isaac_sim/evidence/roarm_m3_step_link_membership_candidates_20260929.json`;
+  `software/integrations/isaac_sim/step_link_membership_probe.py`;
+  `software/tests/unit/test_isaac_sim_step_link_membership_evidence.py`;
+  external generated receipt and status under `C:\IsaacSim\evidence`.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: nearest support-segment ranking is a review aid, not proof of
+  rigid membership. The fixed-pose STEP contains no reviewed joint or mate
+  graph; one pose cannot separate components that move together in that pose;
+  and direct component subtrees can contain parts on both sides of a joint.
+  No link-local collision shapes, inertia, dynamics, trajectory, clearance,
+  contact, rendering, controller, hardware, or physical qualification
+  resulted. The tool, camera support, measured placement, and Isaac toolchain
+  lock remain unresolved. No AI, arm, or integration gate status changed.
+- Supersedes: none. INT-436 remains the governing pose-classification evidence;
+  this row quantifies its unresolved membership dependency.
+- Next dependency: obtain a reviewed STEP joint/mate graph or at least one
+  independently identified articulated CAD state, then establish leaf-level
+  rigid motion groups before reducing any component to collision geometry.
