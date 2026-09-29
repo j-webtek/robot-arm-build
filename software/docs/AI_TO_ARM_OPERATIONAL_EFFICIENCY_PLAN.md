@@ -510,7 +510,7 @@ remains the dominant software cost.
 
 ### E2 — Accelerate IK and collision preparation
 
-**Status:** in progress through ARM-123 single-owner runtime integration.
+**Status:** in progress through ARM-124 retained owner lifecycle/fault campaign.
 
 ARM-119 adds an opt-in, bounded `TypingIkEffortRecorderV1` side channel. It
 records attempt and iteration counts only after each deterministic solve. The
@@ -576,10 +576,20 @@ Its hashed diagnostic snapshot exposes run/failure, generation-transition,
 retirement, and nested cache counters, while remaining excluded from admission
 and permanently reporting zero controller and physical authority.
 
+ARM-124 retains the clean-commit owner campaign. Normal cold/warm reuse,
+successful reload retirement, successful restart retirement, explicit
+invalidation, forced reload-preparation failure, and forced
+restart-preparation failure all passed their exact expected outcomes. Every
+successful execution emitted the same terminal receipt. Every transition that
+could not safely replace resources retired the old cache and left execution
+blocked; neither failure path silently reused stale resources. The campaign
+and nested owner/cache diagnostics remained outside admission with zero
+controller, transport, hardware-write, movement, and physical authority.
+
 Deliver:
 
-- retained owner lifecycle/fault campaign, including forced refresh failure;
 - service wiring that uses the owner without broadening physical authority;
+- bounded service-level cancellation and generation-race tests;
 - endpoint-atlas and warm-start experiments;
 - solver iteration telemetry;
 - analytical/hybrid feasibility study;

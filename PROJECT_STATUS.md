@@ -1,7 +1,8 @@
 # Tactevra project status
 
-Reviewed September 29, 2026 through the ARM-123 single-owner cache integration,
-the ARM-122 retained exact-result cache benchmark and invalidation matrix,
+Reviewed September 29, 2026 through the ARM-124 retained owner fault campaign,
+ARM-123 single-owner cache integration, the ARM-122 retained exact-result cache
+benchmark and invalidation matrix,
 ARM-121 lifecycle-bound cache experiment,
 ARM-120 retained multi-sequence IK effort campaign, ARM-119
 decision-neutral IK effort telemetry, ARM-118 retained
@@ -645,6 +646,15 @@ closed. Hashed diagnostics expose only lifecycle and cache counters and remain
 outside admission. Governed tests preserve cold/warm canonical equivalence,
 prove old-cache retirement, reject old-context inputs and caller overrides,
 and verify zero controller, hardware, and physical authority.
+
+ARM-124 retains a clean-commit six-case owner campaign. Normal cold/warm reuse,
+reload retirement, restart retirement, and explicit invalidation passed.
+Forced preparation failure during both reload and restart also retired the old
+cache and left the owner unready, with later execution blocked. All successful
+cases preserved one identical terminal receipt. The retained evidence grants
+no controller, transport, hardware, movement, or physical authority. The next
+dependency is service wiring plus bounded cancellation and generation-race
+coverage without weakening the sole-writer boundary.
 
 AI-403 then integrates the pose-output precision adapter and actual V2 batch
 producer on current `main`. The retained contract fixture deterministically

@@ -12,6 +12,16 @@ import rocell.application.typing_exact_ik_cache_owner_campaign_v1 as campaign
 
 
 ROOT = Path(__file__).resolve().parents[3]
+RETAINED = (
+    ROOT / "software/ai/eval/typing_exact_ik_cache_owner_campaign_v1.json"
+)
+RETAINED_FILE_SHA256 = (
+    "a644c5b46d6c15d70a3d9a207530620d3e89deb4058baa5937fc3672a016553a"
+)
+RETAINED_CAMPAIGN_SHA256 = (
+    "1f9b14fcd4fd76f068902efcf6ac3944435b051aed1b828f4ba3eec82e5200eb"
+)
+RETAINED_SOURCE_COMMIT = "a07ca2730f04dfccb5f072e210f8413e5c64e198"
 VALIDATOR = Draft202012Validator(json.loads((
     ROOT
     / "software/ai/schemas/typing_exact_ik_cache_owner_campaign_v1.schema.json"
@@ -132,6 +142,34 @@ def test_owner_campaign_is_schema_valid_complete_and_zero_authority():
     assert report["all_expected_outcomes"] is True
     assert report["diagnostics_used_for_admission"] is False
     assert report["controller_commands"] == []
+    assert report["physical_authority"] is False
+
+
+def test_retained_owner_campaign_is_exact_complete_and_fail_closed():
+    raw = RETAINED.read_bytes()
+    assert hashlib.sha256(raw).hexdigest() == RETAINED_FILE_SHA256
+    report = json.loads(raw)
+    assert list(VALIDATOR.iter_errors(report)) == []
+    assert dict(
+        campaign.parse_typing_exact_ik_cache_owner_campaign_v1(report)
+    ) == report
+    assert report["campaign_sha256"] == RETAINED_CAMPAIGN_SHA256
+    assert report["environment"]["repository_commit"] == RETAINED_SOURCE_COMMIT
+    assert report["environment"]["repository_dirty"] is False
+    assert [item["case"] for item in report["cases"]] == list(campaign.CASES)
+    assert all(item["status"] == "PASS" for item in report["cases"])
+    assert report["cases"][0]["after_owner_snapshot"]["runs"] == 2
+    assert report["cases"][1]["after_owner_snapshot"]["reloads"] == 1
+    assert report["cases"][2]["after_owner_snapshot"]["restarts"] == 1
+    assert report["cases"][3]["after_owner_snapshot"]["invalidations"] == 1
+    assert report["cases"][4]["after_owner_snapshot"]["refresh_failures"] == 1
+    assert report["cases"][5]["after_owner_snapshot"]["refresh_failures"] == 1
+    assert report["diagnostics_used_for_admission"] is False
+    assert report["controller_opened"] is False
+    assert report["transport_opened"] is False
+    assert report["controller_commands"] == []
+    assert report["hardware_writes"] == 0
+    assert report["physical_movements"] == 0
     assert report["physical_authority"] is False
 
 

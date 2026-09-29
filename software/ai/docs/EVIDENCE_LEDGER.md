@@ -6083,3 +6083,37 @@ rewriting history. New entries must use a unique evidence ID.
 - Next dependency: retain an owner lifecycle/fault campaign including forced
   replacement failure, then define service wiring without relaxing any dynamic
   gate or sole-writer boundary.
+
+### E-20260929-ARM-124 — retained exact IK cache owner lifecycle/fault campaign
+
+- Stage: operational efficiency E2, retained owner fault evidence.
+- Lane: arm/runtime typing shadow pipeline.
+- Source commit: `a07ca2730f04dfccb5f072e210f8413e5c64e198`.
+- Change: retained six exact owner cases: normal cold/warm reuse, reload cache
+  retirement, restart cache retirement, explicit invalidation, forced reload
+  preparation failure, and forced restart preparation failure.
+- Result: PASS. All successful cases emitted the same terminal receipt. Reload
+  and restart retired the old cache and provisioned an empty replacement.
+  Explicit invalidation retired cache and lifecycle. Both forced replacement
+  failures retired the old cache, incremented the refresh-failure diagnostic,
+  left the owner unready, and blocked later execution.
+- Artifact: `typing_exact_ik_cache_owner_campaign_v1.json`; file SHA-256
+  `a644c5b46d6c15d70a3d9a207530620d3e89deb4058baa5937fc3672a016553a`;
+  embedded campaign SHA-256
+  `1f9b14fcd4fd76f068902efcf6ac3944435b051aed1b828f4ba3eec82e5200eb`.
+- Diagnostics used for admission: false.
+- Camera opens: 0.
+- Model runtime loads: 0.
+- Transport opens: 0.
+- Controller starts: 0.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Physical authority: false.
+- Limitations: the campaign is host/offline fault evidence around the shadow
+  owner. It does not wire a physical executor, test controller concurrency, or
+  measure physical throughput.
+- Supersedes: ARM-123 only for its retained fault-campaign dependency; ARM-123
+  remains authoritative for owner mechanics and diagnostic semantics.
+- Next dependency: wire the owner into a bounded service boundary and retain
+  cancellation/generation-race tests without weakening sole-writer or dynamic
+  admission gates.
