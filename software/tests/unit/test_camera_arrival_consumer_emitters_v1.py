@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 
 import pytest
+from jsonschema import Draft202012Validator
 
 from rocell.application.camera_arrival_consumer_emitters_v1 import (
     CameraArrivalConsumerEmitterV1Error,
@@ -33,6 +34,11 @@ from rocell.application.context import load_simulation_context
 from rocell.application.installed_collision_geometry import (
     InstalledCollisionGeometryProfile,
 )
+from rocell.application.installed_cable_envelope_intake_v1 import (
+    InstalledCableEnvelopeIntakeV1,
+    InstalledCableEnvelopeIntakeV1Error,
+    build_synthetic_cable_envelope_intake_v1,
+)
 from rocell.calibration.planner_snapshot import PlannerCalibrationSnapshot
 from rocell.geometry import RigidTransform, Rotation3, Vec3
 from rocell.simulation.collision import (
@@ -44,6 +50,9 @@ from rocell.simulation.collision import (
 ROOT = Path(__file__).resolve().parents[3]
 H = "a" * 64
 WHEN = "2026-09-29T15:00:00Z"
+CABLE_VALIDATOR = Draft202012Validator(json.loads((
+    ROOT / "software/ai/schemas/installed_cable_envelope_intake_v1.schema.json"
+).read_text(encoding="utf-8")))
 
 
 def _hash(core: dict) -> str:
@@ -271,6 +280,51 @@ def test_typed_collision_profile_preserves_geometry_and_cable_gaps(tmp_path: Pat
     assert cable["validation_status"] == "BLOCKED"
     assert "CONFIGURATION_SAMPLED_BODY:attachment:moving_camera_cable" in cable["blockers"]
     assert geometry["output_sha256"] == cable["output_sha256"]
+
+
+def test_complete_synthetic_cable_template_passes_only_cable_receipt(
+    tmp_path: Path,
+):
+    _populate(tmp_path)
+    handoff = build_camera_arrival_consumer_handoff_v1(ROOT, tmp_path)
+    profile = _incomplete_collision_profile()
+    intake = build_synthetic_cable_envelope_intake_v1(profile)
+    document = intake.to_dict()
+    CABLE_VALIDATOR.validate(document)
+    assert document["evidence_class"] == "SYNTHETIC_OFFLINE_ONLY"
+    assert document["template_complete"] is True
+    assert document["qualification_installed"] is False
+    assert document["physical_authority"] is False
+    cable = emit_installed_collision_consumer_receipt_v1(
+        handoff, "cable_envelope", intake, validated_at_utc=WHEN
+    )
+    assert cable["validation_status"] == "PASS"
+    with pytest.raises(CameraArrivalConsumerEmitterV1Error, match="only"):
+        emit_installed_collision_consumer_receipt_v1(
+            handoff, "installed_geometry", intake, validated_at_utc=WHEN
+        )
+
+
+@pytest.mark.parametrize("mutation", ("missing_sweep", "crossed", "source"))
+def test_synthetic_cable_template_rejects_incomplete_or_crossed_lineage(
+    mutation: str,
+):
+    profile = _incomplete_collision_profile()
+    fixture = build_synthetic_cable_envelope_intake_v1(profile)
+    postures = tuple(dict(row) for row in fixture.postures)
+    sweeps = tuple(dict(row) for row in fixture.swept_envelopes)
+    source = fixture.source_sha256
+    if mutation == "missing_sweep":
+        sweeps = sweeps[:-1]
+    elif mutation == "crossed":
+        sweeps[0]["end_posture_id"] = postures[-1]["posture_id"]
+    else:
+        source = "f" * 64
+    with pytest.raises(InstalledCableEnvelopeIntakeV1Error):
+        InstalledCableEnvelopeIntakeV1(
+            profile, fixture.sampled_body_id, source,
+            fixture.maximum_uncertainty_mm, postures, sweeps,
+        )
 
 
 def test_domain_emitters_account_for_all_fifteen_routes(tmp_path: Path):

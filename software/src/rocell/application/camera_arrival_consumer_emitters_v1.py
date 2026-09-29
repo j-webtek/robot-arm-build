@@ -17,6 +17,7 @@ from .camera_arrival_consumer_validation_v1 import (
     parse_camera_arrival_consumer_validation_receipt_v1,
 )
 from .installed_collision_geometry import InstalledCollisionGeometryProfile
+from .installed_cable_envelope_intake_v1 import InstalledCableEnvelopeIntakeV1
 
 
 _SUPPORT_SOURCE = (
@@ -300,20 +301,29 @@ def emit_planner_snapshot_consumer_receipt_v1(
 
 def emit_installed_collision_consumer_receipt_v1(
     handoff: Mapping[str, Any], artifact_id: str,
-    profile: InstalledCollisionGeometryProfile, *, validated_at_utc: str,
+    profile: InstalledCollisionGeometryProfile | InstalledCableEnvelopeIntakeV1,
+    *, validated_at_utc: str,
 ) -> dict[str, Any]:
     """Emit installed-geometry or cable-envelope status from a typed profile."""
 
     if artifact_id not in _COLLISION_IDS:
         raise CameraArrivalConsumerEmitterV1Error("artifact is not collision-owned")
-    if not isinstance(profile, InstalledCollisionGeometryProfile):
+    cable_intake = (
+        profile if isinstance(profile, InstalledCableEnvelopeIntakeV1) else None
+    )
+    installed_profile = cable_intake.profile if cable_intake else profile
+    if not isinstance(installed_profile, InstalledCollisionGeometryProfile):
         raise CameraArrivalConsumerEmitterV1Error(
-            "collision output must be a typed InstalledCollisionGeometryProfile"
+            "collision output must be a typed installed profile or cable intake"
+        )
+    if cable_intake is not None and artifact_id != "cable_envelope":
+        raise CameraArrivalConsumerEmitterV1Error(
+            "cable intake can satisfy only the cable_envelope route"
         )
     verified, route = _route(handoff, artifact_id)
     if route["consumer_source"] != _COLLISION_SOURCE:
         raise CameraArrivalConsumerEmitterV1Error("collision consumer source differs")
-    document = profile.to_dict()
+    document = installed_profile.to_dict()
     audit = document.get("geometry_audit")
     if (
         document.get("schema") != "rocell.installed_collision_geometry_profile.v1"
@@ -335,6 +345,13 @@ def emit_installed_collision_consumer_receipt_v1(
         if not passed and not blockers:
             blockers = ["INSTALLED_GEOMETRY_NOT_DIAGNOSTIC_READY"]
     else:
+        if cable_intake is not None:
+            cable_document = cable_intake.to_dict()
+            return _receipt(
+                verified, route, validator_id="installed-cable-envelope-intake-v1",
+                validated_at_utc=validated_at_utc, status="PASS", blockers=[],
+                output_sha256=_hash(cable_document),
+            )
         sampled = audit.get("configuration_sampled_body_ids")
         if not isinstance(sampled, list):
             raise CameraArrivalConsumerEmitterV1Error(

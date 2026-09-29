@@ -216,6 +216,12 @@ from .installed_collision_geometry import (
     load_installed_collision_geometry_for_context,
     load_installed_collision_geometry_profile,
 )
+from .installed_cable_envelope_intake_v1 import (
+    SCHEMA as INSTALLED_CABLE_ENVELOPE_INTAKE_SCHEMA,
+    InstalledCableEnvelopeIntakeV1,
+    InstalledCableEnvelopeIntakeV1Error,
+    build_synthetic_cable_envelope_intake_v1,
+)
 from .measured_waypoint_collision_sequence import (
     MAX_WAYPOINT_COLLISION_SAMPLES,
     SCHEMA as MEASURED_WAYPOINT_COLLISION_SEQUENCE_SCHEMA,
@@ -1380,6 +1386,9 @@ __all__ = [
     "INSTALLED_COLLISION_GEOMETRY_PROFILE_SCHEMA",
     "InstalledCollisionGeometryError",
     "InstalledCollisionGeometryProfile",
+    "INSTALLED_CABLE_ENVELOPE_INTAKE_SCHEMA",
+    "InstalledCableEnvelopeIntakeV1",
+    "InstalledCableEnvelopeIntakeV1Error",
     "MAX_WAYPOINT_COLLISION_SAMPLES",
     "MEASURED_WAYPOINT_COLLISION_SEQUENCE_SCHEMA",
     "MeasuredWaypointCollisionSample",
@@ -1843,6 +1852,7 @@ __all__ = [
     "inspect_pinned_urdf_collision_evidence",
     "load_installed_collision_geometry_for_context",
     "load_installed_collision_geometry_profile",
+    "build_synthetic_cable_envelope_intake_v1",
     "ingest_model_motion_batch",
     "run_simulation",
     "run_target_sweep",

@@ -21,6 +21,7 @@ from .camera_arrival_consumer_validation_v1 import (
     parse_camera_arrival_consumer_validation_receipt_v1,
 )
 from .installed_collision_geometry import InstalledCollisionGeometryProfile
+from .installed_cable_envelope_intake_v1 import InstalledCableEnvelopeIntakeV1
 
 
 MAX_INPUT_BYTES = 2_097_152
@@ -93,7 +94,7 @@ def _output_root(path: Path) -> Path:
 def emit_camera_arrival_consumer_operator_receipt_v1(
     handoff: Mapping[str, Any], artifact_id: str,
     native_output: Mapping[str, Any] | PlannerCalibrationSnapshot
-    | InstalledCollisionGeometryProfile,
+    | InstalledCollisionGeometryProfile | InstalledCableEnvelopeIntakeV1,
     *, validated_at_utc: str,
 ) -> dict[str, Any]:
     """Dispatch one route to its existing typed emitter without changing semantics."""
@@ -136,9 +137,11 @@ def emit_camera_arrival_consumer_operator_receipt_v1(
                 validated_at_utc=validated_at_utc,
             )
         elif artifact_id in COLLISION_IDS:
-            if not isinstance(native_output, InstalledCollisionGeometryProfile):
+            if not isinstance(native_output, (
+                InstalledCollisionGeometryProfile, InstalledCableEnvelopeIntakeV1,
+            )):
                 raise CameraArrivalConsumerOperatorV1Error(
-                    "collision native output must be a typed InstalledCollisionGeometryProfile"
+                    "collision native output must be a typed installed profile or cable intake"
                 )
             receipt = emit_installed_collision_consumer_receipt_v1(
                 handoff, artifact_id, native_output,
@@ -156,7 +159,7 @@ def emit_camera_arrival_consumer_operator_receipt_v1(
 def write_camera_arrival_consumer_operator_receipt_v1(
     handoff: Mapping[str, Any], artifact_id: str,
     native_output: Mapping[str, Any] | PlannerCalibrationSnapshot
-    | InstalledCollisionGeometryProfile,
+    | InstalledCollisionGeometryProfile | InstalledCableEnvelopeIntakeV1,
     *, validated_at_utc: str, output_root: Path,
 ) -> tuple[dict[str, Any], Path]:
     """Emit and exclusively create one canonical `<artifact_id>.json` receipt."""
