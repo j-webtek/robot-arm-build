@@ -10,6 +10,7 @@ sys.path.insert(0, str(ROOT / "software/tests/unit"))
 from test_typing_shadow_pipeline_v1 import _inputs  # noqa: E402
 
 from rocell.application.typing_performance_runner_v1 import (  # noqa: E402
+    profile_forced_decode_rejection_v1,
     profile_typing_shadow_pipeline_v1,
 )
 from rocell.application.typing_shadow_pipeline_v1 import (  # noqa: E402
@@ -60,3 +61,16 @@ def test_warm_profile_records_only_declared_cache_estimate():
     assert profiled.sample.estimated_cache_time_saved_ns == 1234
     assert profiled.receipt["status"] == (
         "BLOCKED_AT_HONEST_COLLISION_EVIDENCE_BOUNDARY")
+
+
+def test_forced_decode_rejection_is_measured_without_later_stages():
+    sample = profile_forced_decode_rejection_v1(b"{}", iteration=4)
+    assert sample.scenario == "FORCED_REJECTION"
+    assert sample.outcome == "REJECTED"
+    assert sample.stage_cpu_ns["decode"] >= 0
+    assert all(
+        value == 0
+        for stage, value in sample.stage_cpu_ns.items()
+        if stage != "decode"
+    )
+    assert sample.predicted_route_duration_ns == 0

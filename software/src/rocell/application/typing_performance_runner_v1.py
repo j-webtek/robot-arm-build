@@ -17,7 +17,11 @@ import time
 from typing import Any
 
 from rocell.calibration import PlannerCalibrationSnapshot
-from rocell.models import ActionPlan, decode_model_motion_batch_v2_json
+from rocell.models import (
+    ActionPlan,
+    ModelMotionBatchV2Error,
+    decode_model_motion_batch_v2_json,
+)
 
 from .bounded_segment_collision_qualification import BoundedSegmentSamplingPolicy
 from .context import SimulationContext
@@ -252,7 +256,14 @@ def profile_typing_shadow_pipeline_v1(
     stage_cpu["receipt_creation"] = time.process_time_ns() - receipt_started
     total_cpu = time.process_time_ns() - total_started
     peak_memory = max(memory_before, _peak_process_memory_bytes())
-    predicted_duration = schedule.samples[-1].time_from_start_ns
+    if scenario == "DIRECT_HOVER":
+        predicted_duration = round(
+            trajectory.metrics.direct_estimated_time_ms * 1_000_000)
+    elif scenario == "PARK_BASELINE":
+        predicted_duration = round(
+            trajectory.metrics.park_baseline_estimated_time_ms * 1_000_000)
+    else:
+        predicted_duration = schedule.samples[-1].time_from_start_ns
     sample = TypingBenchmarkSampleV1(
         scenario=scenario,
         iteration=iteration,
@@ -271,4 +282,46 @@ def profile_typing_shadow_pipeline_v1(
     return ProfiledTypingShadowRunV1(sample=sample, receipt=receipt)
 
 
-__all__ = ["ProfiledTypingShadowRunV1", "profile_typing_shadow_pipeline_v1"]
+def profile_forced_decode_rejection_v1(
+    payload: bytes,
+    *,
+    iteration: int,
+) -> TypingBenchmarkSampleV1:
+    """Measure one canonical malformed-batch rejection without other stages."""
+
+    total_started = time.process_time_ns()
+    memory_before = _peak_process_memory_bytes()
+    decode_started = time.process_time_ns()
+    try:
+        decode_model_motion_batch_v2_json(payload)
+    except ModelMotionBatchV2Error:
+        pass
+    else:
+        raise TypingShadowPipelineV1Error(
+            "forced-rejection payload unexpectedly decoded")
+    decode_cpu = time.process_time_ns() - decode_started
+    total_cpu = time.process_time_ns() - total_started
+    stages = {stage: 0 for stage in STAGES}
+    stages["decode"] = decode_cpu
+    return TypingBenchmarkSampleV1(
+        scenario="FORCED_REJECTION",
+        iteration=iteration,
+        action_count=1,
+        cache_state="NOT_APPLICABLE",
+        cache_result="NOT_APPLICABLE",
+        outcome="REJECTED",
+        stage_cpu_ns=stages,
+        total_cpu_ns=total_cpu,
+        peak_screening_samples=0,
+        serialized_artifact_bytes=len(payload),
+        peak_process_memory_bytes=max(
+            memory_before, _peak_process_memory_bytes()),
+        predicted_route_duration_ns=0,
+        estimated_cache_time_saved_ns=0,
+    )
+
+
+__all__ = [
+    "ProfiledTypingShadowRunV1", "profile_forced_decode_rejection_v1",
+    "profile_typing_shadow_pipeline_v1",
+]
