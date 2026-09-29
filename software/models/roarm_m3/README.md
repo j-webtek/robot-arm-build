@@ -28,6 +28,16 @@ as a nominal kinematic seed. Nothing here releases power, motion, or contact.
 The canonical raw Xacro hash is byte-sensitive. Do not replace it with a Git
 checkout hash produced after automatic Windows line-ending conversion.
 
+## License and provenance disposition
+
+The upstream `roarm_description/package.xml` explicitly declares `MIT`, while
+the pinned tree does not include an applicable complete MIT text or copyright
+notice and the Xacro has no file-level header. Tactevra records the projection
+as **upstream-declared MIT; complete notice and scope unconfirmed**. See
+[decision 0001](../../../docs/decisions/0001-waveshare-model-license-disposition.md)
+and [third-party notices](../../../THIRD_PARTY_NOTICES.md). The root Apache-2.0
+license does not relicense this vendor-derived projection.
+
 ## Kinematic contract
 
 All revolute axes in the pinned model are joint-local +Z. Linear origins below

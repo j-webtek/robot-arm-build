@@ -45,8 +45,8 @@ being developed.
   earlier preview effort was [deferred, not completed](https://github.com/j-webtek/tactevra/issues/25).
   [Issue #45](https://github.com/j-webtek/tactevra/issues/45) was closed by
   removing the tracked vendor file and retaining a link-only boundary. The
-  broader [Waveshare URDF disposition](https://github.com/j-webtek/tactevra/issues/88)
-  remains open for expert review.
+  broader [Waveshare model license disposition](docs/decisions/0001-waveshare-model-license-disposition.md)
+  now records the upstream declaration, owner decision, and remaining caveat.
 
 The sections below explain the evidence behind this summary. For setup help,
 use [support](SUPPORT.md); for implementation ownership and newer increments,

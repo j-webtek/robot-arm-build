@@ -114,9 +114,9 @@ enforces the reviewed offline blocker registry in
 `open` fails even if its linked issue was administratively closed. A receipt
 therefore does not itself satisfy the AI checkpoint evidence in issues
 [#56](https://github.com/j-webtek/tactevra/issues/56) and
-[#61](https://github.com/j-webtek/tactevra/issues/61), establish the Waveshare
-redistribution decision in
-[#88](https://github.com/j-webtek/tactevra/issues/88), satisfy the static-bundle
+[#61](https://github.com/j-webtek/tactevra/issues/61), replace the recorded
+Waveshare disposition in
+[decision 0001](decisions/0001-waveshare-model-license-disposition.md), satisfy the static-bundle
 integration gate in [#167](https://github.com/j-webtek/tactevra/issues/167),
 select a candidate, or approve publication.
 

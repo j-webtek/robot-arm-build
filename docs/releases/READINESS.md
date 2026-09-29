@@ -11,20 +11,20 @@ public summary of the first source-only experimental preview. Use
 checklist and the [release procedure](../RELEASING.md) for the required process.
 The reviewed [machine-readable readiness registry](../../.github/release-readiness.json)
 is the offline enforcement source. It retains cleared entries for audit history
-and currently has one open blocker.
+and currently has zero open blockers.
 
 An ordinary merge does not silently become the candidate and does not inherit
-earlier evidence. The exact candidate SHA will be selected only after the
-blocking owner evidence closes.
+earlier evidence. The exact candidate SHA still requires explicit selection and
+review.
 
 <!-- BEGIN GENERATED READINESS STATUS -->
-**Registry status:** 1 open blocker.
+**Registry status:** 0 open blockers.
 
 | Blocker | Owner | State |
 | --- | --- | --- |
 | [#56](https://github.com/j-webtek/tactevra/issues/56) — ai-artifact-reproducibility | AI workstream | **Cleared** |
 | [#61](https://github.com/j-webtek/tactevra/issues/61) — ai-evidence-retention | AI workstream with repository review | **Cleared** |
-| [#88](https://github.com/j-webtek/tactevra/issues/88) — waveshare-urdf-redistribution | Repository maintainer with arm-owner and rights review | **Open** |
+| [#88](https://github.com/j-webtek/tactevra/issues/88) — waveshare-urdf-redistribution | Repository maintainer with arm-owner and rights review | **Cleared** |
 | [#167](https://github.com/j-webtek/tactevra/issues/167) — static-simulation-bundle | AI workstream with repository review | **Cleared** |
 <!-- END GENERATED READINESS STATUS -->
 
@@ -37,9 +37,9 @@ blocking owner evidence closes.
 | External AI artifact identity | **Cleared for candidate preparation** | Focused PR #145 established the exact external-artifact manifest and separate unavailable/verified states; [issue #56](https://github.com/j-webtek/tactevra/issues/56) is closed. This is identity evidence, not model promotion. |
 | Reviewable AI evidence disposition | **Cleared for candidate preparation** | Focused PR #145 retained compact reviewable evidence while leaving checkpoints and bulk reports external; [issue #61](https://github.com/j-webtek/tactevra/issues/61) is closed. |
 | Static simulation bundle | **Cleared for candidate preparation** | Bundle 002 binds the intended FREEZE-013 source state, preserves bundle 001 as a prior boundary, and passed the clean maintained AI and portable suites; [issue #167](https://github.com/j-webtek/tactevra/issues/167) is resolved by the retained [reconciliation record](../../software/ai/eval/static_simulation_bundle_002_reconciliation.json). |
-| Waveshare URDF redistribution basis | **Blocked on repository/arm-owner evidence** | Resolve, replace, or remove the derived kinematic projection as required by [issue #88](https://github.com/j-webtek/tactevra/issues/88); do not infer a license from silence. |
-| AI and arm compatibility dispositions | **Candidate review not started** | Shared conformance and operational-readiness checks are on `main`; record both workstream dispositions only after issue #88 closes and an exact candidate SHA is selected. |
-| Exact candidate commit | **Not selected** | Resolve issue #88, then choose one full SHA already on protected `main`. Cleared issues #56, #61, and #167 do not need to be repeated. |
+| Waveshare URDF redistribution disposition | **Cleared with recorded caveat** | [Decision 0001](../decisions/0001-waveshare-model-license-disposition.md) accepts the upstream package-level MIT declaration while preserving the missing-notice and unconfirmed-scope caveat, exact provenance, and reconsideration triggers. |
+| AI and arm compatibility dispositions | **Candidate review not started** | Shared conformance and operational-readiness checks are on `main`; record both workstream dispositions against the exact candidate SHA. |
+| Exact candidate commit | **Not selected** | Choose one full SHA already on protected `main`. Cleared issues #56, #61, #88, and #167 do not need to be repeated. |
 | Candidate audit and fresh-checkout review | **Not run** | Run against the selected SHA; ordinary development CI is not substitute evidence. |
 | Tag and pre-release | **Not approved or published** | Requires explicit maintainer approval of the exact tag, SHA, notes, and source-only asset scope. |
 
@@ -73,17 +73,18 @@ bundle 002 and evidence entry E-20260928-AI-423. The reconciliation changed no
 robot numerics or physical authority and is retained as a new boundary rather
 than rewriting bundle 001.
 
-1. The repository and arm owners complete
-   [issue #88](https://github.com/j-webtek/tactevra/issues/88) with a reviewed
-   redistribution basis or a replacement/removal disposition for the derived
-   Waveshare URDF.
-2. The maintainer reconciles issue #57, selects a full SHA on protected `main`,
+Issue [#88](https://github.com/j-webtek/tactevra/issues/88) is completed by
+[decision 0001](../decisions/0001-waveshare-model-license-disposition.md).
+The disposition preserves the explicit upstream package-level MIT declaration,
+the absent-notice caveat, and the independent-replacement contingency together.
+
+1. The maintainer reconciles issue #57, selects a full SHA on protected `main`,
    and creates a new candidate record. Do not reuse the superseded `dcd87db`
    record.
-3. AI and arm owners record compatibility dispositions against that same SHA.
-4. The maintainer runs the exact-SHA candidate audit, fresh-checkout checks,
+2. AI and arm owners record compatibility dispositions against that same SHA.
+3. The maintainer runs the exact-SHA candidate audit, fresh-checkout checks,
    tracked-content/provenance review, and release-note review.
-5. Publication occurs only after explicit approval of the exact tag, SHA, notes,
+4. Publication occurs only after explicit approval of the exact tag, SHA, notes,
    and asset scope. A candidate passing every technical check is still not
    self-authorizing.
 
@@ -94,7 +95,7 @@ than rewriting bundle 001.
 | Pose-checkpoint manifest and verification | AI | **Complete:** PR #145 merged; issue #56 acceptance evidence recorded |
 | Compact AI evidence and bulk-output disposition | AI with repository review | **Complete:** PR #145 merged; issue #61 acceptance evidence recorded |
 | Static simulation-bundle reconciliation | AI with repository review | **Complete:** bundle 002 and E-20260928-AI-423 retain the exact reconciliation and passing clean-suite evidence; issue #167 resolved |
-| Waveshare URDF redistribution disposition | Repository with arm-owner review | Durable rights evidence or reviewed replacement/removal merged; issue #88 closed |
+| Waveshare URDF redistribution disposition | Repository with arm-owner review | **Complete:** decision 0001 records owner acceptance, caveats, provenance, and reconsideration triggers; issue #88 closed |
 | Arm compatibility disposition | Arm | Review recorded against the selected candidate SHA |
 | Repository inventory, candidate audit, and release notes | Repository maintainer | Exact-SHA record links every required result |
 | Publication approval | Repository owner | Explicit approval names the tag, SHA, notes, and source-only assets |
