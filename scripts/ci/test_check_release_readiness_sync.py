@@ -41,8 +41,25 @@ class ReleaseReadinessSyncTests(unittest.TestCase):
         self.assertIn("**0 open blockers**", tracker)
         self.assertIn("- [x] #88", tracker)
         self.assertIn("- [x] #167", tracker)
+        self.assertIn("**Phase:** Candidate qualification is ready to begin.", tracker)
+        self.assertIn("**Decision owner:** @j-webtek", tracker)
+        self.assertIn("**AI owner:** record the AI compatibility disposition", tracker)
+        self.assertIn("**Arm owner:** record the runtime/controller compatibility disposition", tracker)
+        self.assertIn("**Not planned:** explicitly abandon the milestone", tracker)
         self.assertIn("open blockers: none", milestone)
+        self.assertIn("candidate qualification ready; candidate unselected", milestone)
         self.assertIn("0 open blockers", dashboard)
+
+    def test_open_blocker_state_keeps_candidate_selection_held(self):
+        registry = load_registry()
+        blocked = copy.deepcopy(registry)
+        blocked["blockers"][0]["status"] = "open"
+        blocked["blockers"][0]["resolution"] = None
+        tracker = render_tracker_body(blocked)
+        milestone = render_milestone_description(blocked)
+        self.assertIn("**Phase:** Readiness-blocker resolution.", tracker)
+        self.assertNotIn("## Next accountable decision", tracker)
+        self.assertIn("Phase: blocker resolution", milestone)
 
     def test_dashboard_drift_is_detected_and_repairable(self):
         registry = load_registry()
