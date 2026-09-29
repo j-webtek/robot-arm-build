@@ -20,7 +20,7 @@ _FIELDS = {
     "physical_authority", "typing_ik_effort_telemetry_sha256",
 }
 _SAMPLE_FIELDS = {
-    "sequence", "previous_solution_seed_supplied", "attempt_count",
+    "sequence", "solver_input_sha256", "previous_solution_seed_supplied", "attempt_count",
     "total_iterations", "selected_attempt_index", "selected_iterations",
     "converged_attempt_count", "first_attempt_converged",
     "selected_first_attempt",
@@ -71,6 +71,7 @@ class TypingIkEffortRecorderV1:
 
     def observe(
         self, sequence: int, solved: IkResult, *,
+        solver_input_sha256: str,
         previous_solution_seed_supplied: bool,
     ) -> None:
         """Capture bounded solver diagnostics after one completed IK solve."""
@@ -87,6 +88,7 @@ class TypingIkEffortRecorderV1:
             raise TypingIkEffortTelemetryV1Error(
                 "previous-solution seed flag must be boolean"
             )
+        solver_input = _digest(solver_input_sha256, "solver input")
         selected = solved.selected_attempt_index
         if isinstance(selected, bool) or not 0 <= selected < len(solved.attempts):
             raise TypingIkEffortTelemetryV1Error(
@@ -100,6 +102,7 @@ class TypingIkEffortRecorderV1:
             raise TypingIkEffortTelemetryV1Error("attempt iterations are invalid")
         self._samples.append({
             "sequence": sequence,
+            "solver_input_sha256": solver_input,
             "previous_solution_seed_supplied": previous_solution_seed_supplied,
             "attempt_count": len(solved.attempts),
             "total_iterations": sum(iterations),
@@ -205,6 +208,7 @@ def parse_typing_ik_effort_telemetry_v1(
                 raise TypingIkEffortTelemetryV1Error(
                     f"{field} must be boolean"
                 )
+        _digest(sample.get("solver_input_sha256"), "solver input")
         if sample["selected_first_attempt"] != (
             sample["selected_attempt_index"] == 0
         ):

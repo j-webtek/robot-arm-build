@@ -348,6 +348,34 @@ def screen_typing_trajectory_ik_v1(
         ik_executed = True
         for index in range(len(samples)):
             waypoint = _waypoint(plan, index)
+            solver_input_sha256 = _sha256({
+                "schema": "rocell.typing_ik_solver_input.v1",
+                "build_snapshot_sha256": context.snapshot.snapshot_hash,
+                "kinematic_model_sha256": context.scenario.model_sha256,
+                "calibration_snapshot_sha256": snapshot.snapshot_sha256,
+                "target_board_mm": {
+                    "frame": waypoint.point_board.frame,
+                    "x": waypoint.point_board.x,
+                    "y": waypoint.point_board.y,
+                    "z": waypoint.point_board.z,
+                },
+                "incoming_seed_joint_positions_rad": {
+                    name: previous[name] for name in ARM_JOINT_NAMES
+                },
+                "joint_bounds_rad": {
+                    name: list(bounds[name]) for name in ARM_JOINT_NAMES
+                },
+                "fixed_gripper_position_rad": (
+                    context.scenario.fixed_gripper_position.value
+                ),
+                "ik_options": {
+                    "max_attempts": context.scenario.ik_policy.max_attempts,
+                    "max_iterations_per_attempt": (
+                        context.scenario.ik_policy.max_iterations_per_attempt
+                    ),
+                },
+                "algorithm": "DETERMINISTIC_BOUNDED_DLS_V1",
+            })
             solved = solver.solve(
                 BoardToolTipTarget(waypoint.point_board),
                 seed_joint_positions=(
@@ -361,6 +389,7 @@ def screen_typing_trajectory_ik_v1(
                 effort_recorder.observe(
                     index,
                     solved,
+                    solver_input_sha256=solver_input_sha256,
                     previous_solution_seed_supplied=index > 0,
                 )
             evaluated = evaluate_joint_trajectory_solution(
