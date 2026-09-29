@@ -44,8 +44,16 @@
       "issue": "https://github.com/j-webtek/tactevra/issues/88",
       "owner": "Repository maintainer with arm-owner and rights review",
       "requirement": "Establish a durable redistribution basis or merge a reviewed replacement or removal of the derived Waveshare URDF.",
-      "status": "open",
-      "resolution": null
+      "status": "cleared",
+      "resolution": {
+        "summary": "Decision 0001 records the repository owner's acceptance of the upstream package-level MIT declaration for the pinned projection while retaining the missing-notice and unconfirmed-scope caveat, exact provenance, and reconsideration triggers.",
+        "evidence": [
+          "docs/decisions/0001-waveshare-model-license-disposition.md",
+          "https://github.com/j-webtek/tactevra/issues/88",
+          "https://github.com/waveshareteam/roarm_ws/issues/12",
+          "software/models/roarm_m3/README.md"
+        ]
+      }
     },
     {
       "id": "static-simulation-bundle",

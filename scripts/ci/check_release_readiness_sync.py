@@ -99,6 +99,13 @@ def expected_dashboard(registry: dict, path: Path = DASHBOARD) -> str:
     return replace_generated_status(path.read_text(encoding="utf-8"), render_dashboard_status(registry))
 
 
+def write_dashboard(registry: dict, path: Path = DASHBOARD) -> None:
+    """Render before opening the destination so its existing body is preserved."""
+    updated_dashboard = expected_dashboard(registry, path)
+    with path.open("w", encoding="utf-8", newline="\n") as handle:
+        handle.write(updated_dashboard)
+
+
 def github_json(url: str, token: str, method: str = "GET", payload: dict | None = None):
     data = None if payload is None else json.dumps(payload).encode("utf-8")
     request = urllib.request.Request(url, data=data, method=method)
@@ -165,8 +172,7 @@ def main() -> int:
     try:
         registry = load_registry()
         if args.write_dashboard:
-            with DASHBOARD.open("w", encoding="utf-8", newline="\n") as handle:
-                handle.write(expected_dashboard(registry))
+            write_dashboard(registry)
         findings = check_dashboard(registry)
         if args.online or args.apply_github:
             token = os.environ.get("GITHUB_TOKEN", "")

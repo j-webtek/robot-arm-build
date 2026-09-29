@@ -46,9 +46,10 @@ sign-off remain separate.
 - Scoped Linux/Windows CI, explicit audit-fixture review, support guidance, and
   private vulnerability reporting.
 
-Generated source archives include tracked historical CAD/print material and a
-vendor camera geometry file. They are not software-only packages or newly
-qualified print bundles. Vendor redistribution review remains unresolved.
+Generated source archives include tracked historical CAD/print material. They
+are not software-only packages or newly qualified print bundles. Vendor terms
+and caveats remain governed by `THIRD_PARTY_NOTICES.md`, including the recorded
+Waveshare disposition and the link-only camera-geometry boundary.
 
 ## Important limitations
 

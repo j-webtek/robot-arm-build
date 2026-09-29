@@ -48,13 +48,15 @@ used as engineering references.
   [`roarm_m3_kinematic_40dbd84.urdf`](software/models/roarm_m3/roarm_m3_kinematic_40dbd84.urdf)
   is a reduced projection derived from the official
   [`waveshareteam/roarm_ws`](https://github.com/waveshareteam/roarm_ws) Xacro.
-  The upstream `roarm_description/package.xml` explicitly declares `MIT`, but
-  the pinned tree supplies no applicable MIT license text or copyright notice,
-  the Xacro has no license header, and GitHub's repository-license endpoint does
-  not identify a repository license. The exact notice/attribution needed for
-  redistribution is therefore **unresolved** in
-  [issue #88](https://github.com/j-webtek/tactevra/issues/88) and must be
-  established before selecting a separately tagged public source release.
+  The upstream `roarm_description/package.xml` explicitly declares `MIT`. The
+  pinned tree supplies no applicable complete MIT license text or copyright
+  notice, the Xacro has no license header, and GitHub's repository-license
+  endpoint does not identify a repository license. Tactevra therefore records
+  this as **upstream-declared MIT; complete notice and scope unconfirmed**. The
+  repository-owner disposition, caveats, exact identities, and reconsideration
+  triggers are preserved in
+  [decision 0001](docs/decisions/0001-waveshare-model-license-disposition.md).
+  This is not a claim that Tactevra owns or relicenses the vendor material.
 - The referenced
   [`waveshare_roarm_sdk`](https://github.com/waveshareteam/waveshare_roarm_sdk)
   repository identifies its license as AGPL-3.0. Tactevra links to and compares

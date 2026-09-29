@@ -171,8 +171,10 @@ Remove-Item Env:GITHUB_TOKEN
 Review the diff before committing. The GitHub operation updates only the tracker
 body and existing milestone description; it never changes blocker issue state.
 The prepared [independent kinematic-model replacement plan](WAVESHARE_MODEL_REPLACEMENT_PLAN.md)
-is the non-blocking fallback for issue #88. It does not resolve that issue or
-make a legal determination.
+remains a non-blocking contingency after
+[decision 0001](decisions/0001-waveshare-model-license-disposition.md). That
+owner disposition records the upstream declaration and caveat; it is not a
+legal determination.
 
 The Pages deployment performs a bounded post-deploy check for the public title
 and overview poster. A deploy success without those public resources is reported

@@ -87,7 +87,7 @@ REQUIRED_PHRASES = {
         '**Document status:** Current decision-process index',
         '**Authority:** Documentation and traceability only;',
         '[the template](TEMPLATE.md)',
-        'No durable decisions have been recorded under this process yet.',
+        '[0001 — Waveshare model license disposition](0001-waveshare-model-license-disposition.md)',
     ),
     'ROADMAP.md': (
         '**Document status:** Current public roadmap',
@@ -119,13 +119,13 @@ REQUIRED_PHRASES = {
         'inventory_source_archive_duplicates.py',
         'https://github.com/j-webtek/tactevra/issues/56',
         'https://github.com/j-webtek/tactevra/issues/61',
-        'https://github.com/j-webtek/tactevra/issues/88',
+        'decisions/0001-waveshare-model-license-disposition.md',
         'https://github.com/j-webtek/tactevra/issues/167',
     ),
     'THIRD_PARTY_NOTICES.md': (
         '**Document status:** Current attribution index',
         '**Authority:** Informational inventory only.',
-        'redistribution is therefore **unresolved**',
+        '**upstream-declared MIT; complete notice and scope unconfirmed**',
     ),
     'docs/releases/README.md': (
         '**Document status:** Current release index',
@@ -165,7 +165,7 @@ REQUIRED_PHRASES = {
     'assets/media/VERIFICATION_RECEIPT.md': (
         '**Document status:** Current published-media verification',
         '**Authority:** Byte identity and post-merge inspection only;',
-        'https://github.com/j-webtek/tactevra/issues/88',
+        'decision 0001',
         'not a Blender rerender',
         'does not qualify robot motion',
     ),

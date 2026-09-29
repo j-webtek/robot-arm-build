@@ -37,6 +37,9 @@ pull request, workplan, or evidence ledger.
 
 ## Index
 
-No durable decisions have been recorded under this process yet. Existing dated
-plans and release records remain evidence in their current locations; they are
-not retroactively converted into accepted decisions.
+| Decision | Status | Scope |
+| --- | --- | --- |
+| [0001 — Waveshare model license disposition](0001-waveshare-model-license-disposition.md) | Accepted | Retain the pinned projection under the upstream package-level MIT declaration while preserving the incomplete-notice caveat and provenance |
+
+Existing dated plans and release records remain evidence in their current
+locations; they are not retroactively converted into accepted decisions.

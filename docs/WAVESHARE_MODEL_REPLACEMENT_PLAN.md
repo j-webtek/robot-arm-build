@@ -1,23 +1,25 @@
 # Independent Waveshare kinematic-model replacement plan
 
-**Status:** Prepared fallback for [issue #88](https://github.com/j-webtek/tactevra/issues/88)  
+**Status:** Retained contingency after [decision 0001](decisions/0001-waveshare-model-license-disposition.md)
 **Authority:** Process proposal only; this document is not legal advice, a rights determination, or permission to redistribute any existing file
 
-Issue #88 remains the sole registry-controlled preview blocker. Upstream package
+Issue #88 originally tracked the registry-controlled preview blocker. Upstream package
 metadata and the requested clarification are useful evidence, but neither silence
 nor a repository-level license automatically establishes the provenance of every
 derived artifact. This fallback gives the project a bounded way to replace the
 current projection if durable clearance does not arrive.
 
-## Completion choices
+## Contingency activation choices
 
-The issue may close only after repository and arm-owner review accepts one of:
+Decision 0001 closed the wait-for-clarification blocker while retaining this
+plan. A future maintainer may activate replacement after review accepts one of:
 
 1. durable, artifact-specific redistribution evidence;
 2. an independently produced replacement merged with the evidence below; or
 3. removal of the affected artifact and every maintained dependency on it.
 
-This plan does not preselect a choice.
+This plan does not preselect a replacement choice and is not required for the
+current owner disposition.
 
 ## Independent replacement procedure
 
@@ -55,9 +57,9 @@ This plan does not preselect a choice.
 - A replacement provenance record with exact commit and file digests.
 - Passing deterministic kinematic, shared-contract, source-distribution, and
   fresh-checkout checks at that exact commit.
-- Recorded repository and arm-owner dispositions in issue #88.
+- Recorded repository and arm-owner dispositions in decision 0001 and issue #88.
 - A readiness-registry update that cites the merged replacement or removal.
 
-Until all applicable evidence exists, keep issue #88 and the experimental-preview
-gate open. This plan can reduce waiting time; it cannot manufacture permission or
-turn a planned replacement into completed provenance.
+Until all applicable evidence exists, do not claim an independent replacement
+has been completed. This contingency can reduce future migration time; it cannot
+manufacture permission or turn a planned replacement into completed provenance.
