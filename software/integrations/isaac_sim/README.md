@@ -233,6 +233,16 @@ ratio among watertight components is 21.141, two candidate sources are not
 watertight, and neither false-positive collision behavior nor self-collision
 pair policy has been qualified.
 
+[`collision_differential_probe.py`](collision_differential_probe.py) compares
+those candidates with the pinned raw meshes through an identity-bound
+python-fcl wheel. Across all 21 unordered link pairs at the governed zero,
+home, and ready poses, the retained
+[`differential receipt`](evidence/roarm_m3_collision_differential_20260929.json)
+records 48 free-space agreements, three collision agreements, 12 box false
+positives, and zero box false negatives. Every observed false positive is an
+adjacent-link pair. This is a bounded three-pose diagnostic; it does not select
+pair exclusions, cover continuous joint space, or admit collision queries.
+
 Reproduce it on the designated runner from the repository root:
 
 ```powershell
@@ -290,6 +300,20 @@ C:\IsaacSim\env_6_1_0\Scripts\python.exe software\integrations\isaac_sim\link_me
   --mesh-receipt software\integrations\isaac_sim\evidence\roarm_m3_upstream_link_meshes_20260929.json `
   --output C:\IsaacSim\evidence\link_mesh_reduction_003.json `
   --status-output C:\IsaacSim\evidence\link_mesh_reduction_003.status.json
+```
+
+Reproduce the raw-mesh versus candidate-box differential:
+
+```powershell
+$env:PYTHONUTF8='1'
+C:\IsaacSim\env_6_1_0\Scripts\python.exe software\integrations\isaac_sim\collision_differential_probe.py `
+  --workspace . `
+  --upstream-repo C:\IsaacSim\sources\roarm_ws-40dbd84 `
+  --mesh-receipt software\integrations\isaac_sim\evidence\roarm_m3_upstream_link_meshes_20260929.json `
+  --reduction-receipt software\integrations\isaac_sim\evidence\roarm_m3_link_mesh_reduction_20260929.json `
+  --fcl-wheel C:\IsaacSim\sources\python-fcl-0.7.0.11\python_fcl-0.7.0.11-cp312-cp312-win_amd64.whl `
+  --output C:\IsaacSim\evidence\collision_differential_002.json `
+  --status-output C:\IsaacSim\evidence\collision_differential_002.status.json
 ```
 
 ## Verify WP0
