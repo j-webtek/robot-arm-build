@@ -5067,3 +5067,105 @@ rewriting history. New entries must use a unique evidence ID.
   refine high-inflation and `link5` candidates within the 64-primitive limit,
   then review the self-collision pair policy before proposing any installed
   collision geometry profile.
+
+### E-20260929-INT-440 — serialized containment correction retained
+
+- Stage: S2/S3 simulation oracle WP2.
+- Lane: INTEGRATION.
+- Commit: `d0f66c753adfee8be280d1df20f56ab4f442eab0`.
+- Change: checked the exact six-decimal candidate primitives emitted by
+  INT-439 against their source vertices, found that serialization rounding
+  could shrink a box, and added a declared 0.000002 mm half-extent containment
+  pad before serialization. The corrected receipt replaces the tracked
+  candidate artifact while the earlier receipt remains preserved in Git and
+  INT-439.
+- Inputs/fixtures: corrected probe SHA-256
+  `84db7f1931be14eb08ddb63493c04373ededae126d7b4dc31154be8717f36bd1`;
+  corrected test SHA-256
+  `cd4378e37031f65d4ee8e1febf6e1caac52dee8a58d6605f16eb96bf14933879`;
+  corrected committed receipt file SHA-256
+  `7176ac55e0a4f5a7099d48a6968e53e3e0134ee027f55837c594470b53eb5431`;
+  corrected receipt content SHA-256
+  `e714a88c01b567f54b2e8c91b8f1144fcc35db38d2953dfe2c6f31e1d576adab`;
+  external receipt SHA-256
+  `73e59e8e14785db2f5907d0924e5fa3246bb5b4f9f74387755e5b07e9f853610`;
+  external status SHA-256
+  `87e27d0d35cfa90ba0707989c9ec087154d851dd78471d3767dadd36d2ff0f89`.
+- Command: exact serialized-candidate replay against each sorted source
+  component with `C:\IsaacSim\env_6_1_0\Scripts\python.exe` found a maximum
+  overflow of `0.000000881713866363043 mm` at `gripper_link` component zero;
+  `$env:PYTHONUTF8='1'; C:\IsaacSim\env_6_1_0\Scripts\python.exe software\integrations\isaac_sim\link_mesh_reduction_probe.py --upstream-repo C:\IsaacSim\sources\roarm_ws-40dbd84 --mesh-receipt software\integrations\isaac_sim\evidence\roarm_m3_upstream_link_meshes_20260929.json --output C:\IsaacSim\evidence\link_mesh_reduction_004.json --status-output C:\IsaacSim\evidence\link_mesh_reduction_004.status.json`;
+  `python -m pytest software/tests/unit/test_isaac_sim_link_mesh_reduction_evidence.py -q`;
+  `git diff --check`.
+- Result: CORRECTED_PASS_WITH_BLOCKERS. Exact serialized boxes now retain 0.0
+  mm maximum vertex overflow. Candidate count remains 14; median watertight
+  volume ratio remains 1.822853 and the padded maximum becomes 21.140797.
+  Five focused tests passed.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: this correction establishes serialized vertex containment only.
+  All collision, clearance, self-collision-policy, tool, camera-support,
+  placement, controller, hardware, and physical blockers from INT-439 remain.
+  No AI, arm, or integration gate status changed.
+- Supersedes: INT-439 only for the tracked candidate receipt identity and exact
+  serialized-containment claim. INT-439 remains the retained original result.
+- Next dependency: run the corrected boxes through the raw-mesh collision
+  differential corpus before considering any installation proposal.
+
+### E-20260929-INT-441 — three-pose raw-mesh collision differential
+
+- Stage: S2/S3 simulation oracle WP2.
+- Lane: INTEGRATION.
+- Commit: `7fea403cd4d81408cb1487ba5cfc17148e95eded`.
+- Change: compared the corrected 14-box candidates with the immutable official
+  raw link meshes for every unordered link pair at the governed zero, home,
+  and ready poses using an identity-bound python-fcl wheel through trimesh.
+  Adjacent pairs were measured rather than silently excluded.
+- Inputs/fixtures: probe SHA-256
+  `8496df7cf5efaa7febbfacaff2f077a2c04649e7e878fea311a0681236646bd6`;
+  test SHA-256
+  `509c5b83336c41b40cdf99974b8a779fc3f6938b28d0ee15498f6ed134c523ed`;
+  committed receipt file SHA-256
+  `33a4377ab12f33719bd7d001300e4b37dc7ecbd1aee9437ee7b9407eb0adfbab`;
+  receipt content SHA-256
+  `46e9133e7e8bc0529f03f3e1fb97e0927a5e3eff77a3d1d0282498c2d397f58f`;
+  external status SHA-256
+  `2d7223583a89d5b48a9a78fc4e71695344cfc7f6b2d0b6ebbac173d002dc648d`;
+  python-fcl 0.7.0.11 Windows CPython 3.12 wheel SHA-256
+  `63c662c8ff30eeb78913624a4ac56209a6061248ed97066c3b744255d943299f`;
+  corrected reduction receipt content SHA-256
+  `e714a88c01b567f54b2e8c91b8f1144fcc35db38d2953dfe2c6f31e1d576adab`.
+- Command: `C:\IsaacSim\env_6_1_0\Scripts\python.exe -m pip download --no-deps --only-binary=:all: --dest C:\IsaacSim\sources\python-fcl-0.7.0.11 python-fcl==0.7.0.11`;
+  `C:\IsaacSim\env_6_1_0\Scripts\python.exe -m pip install C:\IsaacSim\sources\python-fcl-0.7.0.11\python_fcl-0.7.0.11-cp312-cp312-win_amd64.whl`;
+  `$env:PYTHONUTF8='1'; C:\IsaacSim\env_6_1_0\Scripts\python.exe software\integrations\isaac_sim\collision_differential_probe.py --workspace . --upstream-repo C:\IsaacSim\sources\roarm_ws-40dbd84 --mesh-receipt software\integrations\isaac_sim\evidence\roarm_m3_upstream_link_meshes_20260929.json --reduction-receipt software\integrations\isaac_sim\evidence\roarm_m3_link_mesh_reduction_20260929.json --fcl-wheel C:\IsaacSim\sources\python-fcl-0.7.0.11\python_fcl-0.7.0.11-cp312-cp312-win_amd64.whl --output C:\IsaacSim\evidence\collision_differential_002.json --status-output C:\IsaacSim\evidence\collision_differential_002.status.json`;
+  `python -m py_compile software/integrations/isaac_sim/collision_differential_probe.py software/tests/unit/test_isaac_sim_collision_differential_evidence.py`;
+  `python -m pytest software/tests/unit/test_isaac_sim_collision_differential_evidence.py software/tests/unit/test_isaac_sim_link_mesh_reduction_evidence.py software/tests/unit/test_isaac_sim_upstream_link_mesh_evidence.py software/tests/unit/test_isaac_sim_step_link_membership_evidence.py software/tests/unit/test_isaac_sim_step_pose_binding_evidence.py software/tests/unit/test_isaac_sim_step_inspection_evidence.py software/tests/unit/test_isaac_sim_rc03_scene_evidence.py software/tests/unit/test_isaac_sim_urdf_import_evidence.py software/tests/unit/test_isaac_sim_fk_parity_evidence.py software/tests/unit/test_isaac_sim_first_launch_evidence.py software/tests/unit/test_isaac_sim_host_probe.py software/tests/unit/test_isaac_sim_contracts.py -q`;
+  `python scripts/ci/check_docs.py`; `python scripts/ci/check_evidence_scope.py`;
+  `python scripts/ci/check_public_records.py`;
+  `python scripts/ci/check_repository_artifacts.py`; `git diff --check`.
+- Result: PASS_WITH_BLOCKERS across 63 pair-pose cases: 48 free-space
+  agreements, three collision agreements, 12 candidate false positives, and
+  zero candidate false negatives. Each pose has the same four false-positive
+  adjacent pairs: `link1/link2`, `link2/link3`, `link3/link4`, and
+  `link5/gripper_link`. All 45 nonadjacent pair-pose cases agree. The focused
+  suite passed 63 tests in 3.05 seconds and all four repository audits passed.
+- Artifacts:
+  `software/integrations/isaac_sim/evidence/roarm_m3_collision_differential_20260929.json`;
+  `software/integrations/isaac_sim/collision_differential_probe.py`;
+  `software/tests/unit/test_isaac_sim_collision_differential_evidence.py`;
+  exact external wheel under `C:\IsaacSim\sources` and generated receipt/status
+  under `C:\IsaacSim\evidence`.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: three static poses do not cover continuous joint space. The
+  diagnostic reports adjacent contacts without selecting exclusions. Two raw
+  meshes remain non-watertight. Tool, camera-support, environment, measured
+  placement, clearance, contact dynamics, controller, hardware, and physical
+  qualification remain absent. The Isaac toolchain lock remains `UNSELECTED`.
+  Collision query, clearance replay, and candidate installation remain false.
+  No AI, arm, or integration gate status changed.
+- Supersedes: none. INT-440 governs the candidate receipt identity; this row
+  measures its bounded differential without promoting it.
+- Next dependency: review the four adjacent-pair relationships against the
+  kinematic design, expand the corpus beyond three poses, and refine the high-
+  inflation shapes before proposing any pair exclusions or installed profile.
