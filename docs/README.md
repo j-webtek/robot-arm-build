@@ -10,6 +10,7 @@ implementation details or evidence for a specific part of the system.
 | Your goal | Start here |
 | --- | --- |
 | Try it without hardware or downloaded models | [Getting started](GETTING_STARTED.md) |
+| Plan the parts and materials needed to replicate the workcell | [Workcell replication guide](WORKCELL_REPLICATION.md) |
 | Understand the complete request-to-result flow | [System overview](SYSTEM_OVERVIEW.md) |
 | Understand capabilities and limitations | [Project status](../PROJECT_STATUS.md) |
 | Follow delivery stages and completion evidence | [Roadmap](../ROADMAP.md) |
@@ -102,6 +103,9 @@ distinguishes these kinds of evidence.
 
 ## Hardware and camera
 
+- [Workcell replication guide](WORKCELL_REPLICATION.md): consolidated
+  procurement categories, known requirements, unresolved selections, and links
+  to the controlled BOMs.
 - [Hardware build guide](HARDWARE_BUILD_GUIDE.md): current release position,
   status vocabulary, and the controlled path for builders.
 - [RC03 package introduction](../active-project/RoCell_v0_3/README_FIRST.md)

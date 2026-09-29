@@ -64,10 +64,11 @@ The system follows five stages:
 This separation is the core design: model reasoning remains useful without
 making model output the final authority over physical movement.
 
-## Explore it today
+## Hardware-free software preview
 
-The repository includes a hardware-free path that demonstrates the software
-boundary without moving an arm or downloading a model.
+For reviewers and contributors, the repository includes a hardware-free path
+that demonstrates the software boundary without moving an arm or downloading a
+model. This is an engineering preview, not a general-availability release.
 
 ### 1. Install
 
@@ -102,6 +103,28 @@ execution. The preview deliberately produces no controller commands.
 
 For expected results, troubleshooting, and the optional local interface, follow
 the complete [getting-started guide](docs/GETTING_STARTED.md).
+
+## Replicating the workcell
+
+The physical system combines a robot arm, a registered work surface, printed
+fixtures, input devices, camera hardware, fasteners, and calibrated tooling.
+Because several selections still depend on measured fit, the project does not
+present a single-click shopping cart as if every component were fully qualified.
+
+Start with the [workcell replication guide](docs/WORKCELL_REPLICATION.md). It
+collects the currently specified parts and materials, distinguishes confirmed
+requirements from candidates and measurement-dependent selections, and points
+to the authoritative BOMs:
+
+- [`active-project/RoCell_v0_3/BOM.csv`](active-project/RoCell_v0_3/BOM.csv)
+  for the RC03 workcell;
+- [`hardware/static_overhead_camera/BOM_PRINTABLE_FRAME.csv`](hardware/static_overhead_camera/BOM_PRINTABLE_FRAME.csv)
+  for the printed camera portal; and
+- the [hardware build guide](docs/HARDWARE_BUILD_GUIDE.md) for readiness,
+  fabrication, and assembly controls.
+
+The replication guide is a maintained procurement index. Controlled BOMs,
+revisioned build records, and physical acceptance checks remain authoritative.
 
 ## Current project surface
 
@@ -161,6 +184,7 @@ integration ownership.
 | Explore the local interface | [Tactevra Studio workbench](software/docs/WIZARD_WORKBENCH.md) |
 | Integrate AI output with arm software | [Shared AI/arm workplan](software/ai/docs/SHARED_AI_ARM_WORKPLAN.md) |
 | Develop the runtime | [Software reference](software/README.md) |
+| Plan or source a workcell | [Workcell replication guide](docs/WORKCELL_REPLICATION.md) |
 | Build the workcell | [Hardware build guide](docs/HARDWARE_BUILD_GUIDE.md) |
 | Contribute or maintain the repository | [Contributing](CONTRIBUTING.md) · [Repository operations](docs/REPOSITORY_OPERATIONS.md) |
 | Find a specific technical document | [Documentation index](docs/README.md) · [Glossary](docs/GLOSSARY.md) |
