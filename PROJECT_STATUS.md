@@ -1,6 +1,6 @@
 # Tactevra project status
 
-Reviewed September 29, 2026 through the ARM-102 explicit consumer emitters,
+Reviewed September 29, 2026 through the ARM-103 complete typed emitter set,
 ARM-077 PC0 pre-camera qualification basis, ARM-076 typing collision-evidence
 intake, ARM-075 exact-sample offline IK screen, AI-403 precision-adapter
 integration, and merged physical-camera
@@ -454,6 +454,14 @@ native output hashes are retained; validator identity is bound to the mapped
 consumer source. Eight exact passes leave seven routes pending, so this partial
 coverage cannot complete offline review or grant authority. The governed
 offline matrix now passes 540 tests.
+
+ARM-103 completes emitter coverage with five typed planner-snapshot routes and
+two typed installed-collision/cable routes. A full synthetic assembly now
+accounts for all 15 route identities, but the current incomplete geometry and
+configuration-sampled moving cable correctly remain blocked: 13 passes, 2
+blockers, and 0 pending is not completion. This makes route coverage distinct
+from qualification readiness. The governed offline matrix now passes 543
+tests.
 
 AI-403 then integrates the pose-output precision adapter and actual V2 batch
 producer on current `main`. The retained contract fixture deterministically

@@ -582,6 +582,13 @@ eight routes now preserve native output hashes and failures in the shared
 receipt format. The remaining planner-calibration and installed-collision/cable
 routes stay pending, so partial adapter coverage cannot complete the aggregate.
 The governed offline matrix passes 540 tests.
+ARM-103 adds the typed planner-snapshot and installed-collision/cable emitters,
+covering all 15 route identities. Planner receipts require a keyboard
+`PlannerCalibrationSnapshot`; geometry receipts require an
+`InstalledCollisionGeometryProfile`. The cable route requires physical
+geometry completeness rather than diagnostic readiness, so the current sampled
+cable evidence stays blocked. Full route accounting therefore cannot be
+mistaken for full validation. The governed offline matrix passes 543 tests.
 The AI precision lane now has a mainline-compatible pose-output adapter and v2
 batch producer. It preserves repeated targets and abstains on qualification,
 domain, freshness, identity, confidence, or containment failure. Its retained

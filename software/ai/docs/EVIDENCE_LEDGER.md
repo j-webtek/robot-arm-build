@@ -5284,3 +5284,35 @@ rewriting history. New entries must use a unique evidence ID.
 - Next dependency: add typed planner-snapshot and installed-collision/cable
   receipt emitters while preserving their existing measured-evidence and
   geometry-completeness semantics.
+
+### E-20260929-ARM-103 — Complete typed camera consumer emitter set
+
+- Stage: post-PC10 camera commissioning preparation.
+- Lane: arm/runtime domain-consumer integration.
+- Implementation commit: `20a9f9423e5e27a4534cac0140ffdaac1ec8ec77`.
+- Change: added five receipt emitters from the typed keyboard
+  `PlannerCalibrationSnapshot` and two from the typed
+  `InstalledCollisionGeometryProfile`. Planner receipts bind one decoded
+  snapshot; installed geometry uses diagnostic readiness, while the cable route
+  requires physical geometry completeness with no configuration-sampled body.
+- Result: PASS. The full domain-emitter fixture accounts for all 15 handoff
+  route identities. Thirteen pass, while incomplete installed geometry and the
+  sampled moving-camera cable retain two blocked receipts; pending count is
+  zero and aggregate completion remains false. Sixteen focused emitter/gate
+  tests passed; the governed offline matrix passed 543 tests. All 115
+  repository-policy tests and maintained documentation, public-record,
+  evidence-scope, repository-artifact, repository-health, and
+  release-integrity checks passed.
+- Camera opens: 0.
+- Controller starts: 0.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: typed fixtures prove contract composition, not actual measured
+  calibration or installed geometry. The current synthetic collision profile
+  is intentionally incomplete and cannot produce 15 passing receipts. No
+  epoch, registry, qualification, physical admission, or authority changes.
+- Supersedes: ARM-102's seven pending domain-emitter implementations.
+- Next dependency: once physical originals exist, run the actual native
+  consumers and use their typed/hash-bound outputs to produce the 15 real
+  receipts. Installed geometry and the moving cable envelope must independently
+  satisfy their native completeness criteria before aggregate offline review.
