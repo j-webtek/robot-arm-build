@@ -229,6 +229,15 @@ from .installed_geometry_cable_rehearsal_v1 import (
     parse_installed_geometry_cable_rehearsal_v1,
     run_installed_geometry_cable_rehearsal_v1,
 )
+from .immutable_camera_replay_v1 import (
+    MANIFEST_SCHEMA as IMMUTABLE_CAMERA_REPLAY_MANIFEST_SCHEMA,
+    REPORT_SCHEMA as IMMUTABLE_CAMERA_REPLAY_REPORT_SCHEMA,
+    ImmutableCameraReplayV1Error,
+    build_immutable_camera_replay_manifest_v1,
+    parse_immutable_camera_replay_manifest_v1,
+    parse_immutable_camera_replay_report_v1,
+    run_immutable_camera_replay_v1,
+)
 from .measured_waypoint_collision_sequence import (
     MAX_WAYPOINT_COLLISION_SAMPLES,
     SCHEMA as MEASURED_WAYPOINT_COLLISION_SEQUENCE_SCHEMA,
@@ -1402,6 +1411,13 @@ __all__ = [
     "build_synthetic_installed_collision_profile_v1",
     "parse_installed_geometry_cable_rehearsal_v1",
     "run_installed_geometry_cable_rehearsal_v1",
+    "IMMUTABLE_CAMERA_REPLAY_MANIFEST_SCHEMA",
+    "IMMUTABLE_CAMERA_REPLAY_REPORT_SCHEMA",
+    "ImmutableCameraReplayV1Error",
+    "build_immutable_camera_replay_manifest_v1",
+    "parse_immutable_camera_replay_manifest_v1",
+    "parse_immutable_camera_replay_report_v1",
+    "run_immutable_camera_replay_v1",
     "MAX_WAYPOINT_COLLISION_SAMPLES",
     "MEASURED_WAYPOINT_COLLISION_SEQUENCE_SCHEMA",
     "MeasuredWaypointCollisionSample",
