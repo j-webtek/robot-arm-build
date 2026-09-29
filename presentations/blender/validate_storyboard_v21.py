@@ -47,7 +47,8 @@ def main() -> None:
             f"gap or overlap between scenes {previous['id']} and {current['id']}"
         )
     allowed_rigs = {
-        "macro", "dolly", "arm_follow", "hero", "overhead", "low_three_quarter"
+        "macro", "dolly", "arm_follow", "hero", "overhead", "low_three_quarter",
+        "contact_three_quarter",
     }
     assert {shot["rig"] for shot in shots} == allowed_rigs
     # No reusable camera setup may dominate more than one quarter of the film.
@@ -76,7 +77,10 @@ def main() -> None:
     assert shots[1]["rig"] == "macro"
     assert shots[4]["rig"] == "overhead"
     assert shots[6]["rig"] == "low_three_quarter"
-    assert shots[7]["rig"] == "low_three_quarter"
+    assert shots[7]["rig"] == "contact_three_quarter"
+    scene_cut = data["camera_contract"]["scene_7_to_8"]
+    assert scene_cut["edit"] == "deliberate_cut"
+    assert scene_cut["minimum_camera_displacement_m"] >= 0.10
     articulation = data["arm_articulation"]
     assert articulation == {
         "presentation_only": True,
@@ -251,7 +255,7 @@ def main() -> None:
     assert shots[15]["end"] - shots[15]["start"] + 1 == 3 * fps
     validate_handoff(shots)
     print(
-        "PASS storyboard_v21: 17 contiguous scenes, 2400 frames, six rigs, "
+        "PASS storyboard_v21: 17 contiguous scenes, 2400 frames, seven rigs, "
         "no rig over 25 percent, synchronized advertising handoff, "
         "off-board stateful request-to-test-pad operator display, "
         f"computed overhead exclusion margin {exclusion_margin:.1%}, "

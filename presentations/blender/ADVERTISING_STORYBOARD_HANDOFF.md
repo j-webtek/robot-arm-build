@@ -125,7 +125,7 @@ devices without visually connecting their data.
 | 5 | 0:21–0:28 | LOCATE | Reveal real camera, pass through lens, register exact device geometry; blue circles shrink. | Registration pings. |
 | 6 | 0:28–0:33 | CHECK | `scene capture 41 s old · limit 2 s → REJECTED · NO MOTION`; arm visible and still. | Music cuts; reject thud. |
 | 7 | 0:33–0:40 | CHECK | Fresh capture; `BATCH ADMITTED → PERMIT · 1 ACTION`; a low three-quarter push establishes the direct stylus grip while the token travels to it, then visibly tilts and racks focus to the lowered operator display. | Music returns; gate ticks. |
-| 8 | 0:40–0:48 | ACT | Keep the complete arm readable in low three-quarter while the first `r` press teaches transit, align, settle, approach, contact, retract, verify. Use macro only as a brief insert of the key depressing, then return. Permit fades; operator display shows `r`. | One key click, one verify tick. |
+| 8 | 0:40–0:48 | ACT | Cut to a visibly displaced contact three-quarter camera, then keep the complete arm readable while the first `r` press teaches transit, align, settle, approach, contact, retract, verify. Use macro only as a brief insert of the key depressing, then return. Permit fades; operator display shows `r`. | One key click, one verify tick. |
 | 9 | 0:48–0:55 | ACT | Lateral track through `e/a/d/y`; use only one permit and one receipt tick per contact after the lesson. | Four rhythmic key clicks. |
 | 10 | 0:55–1:01 | ACT | Operator-display test pad: `EXPECTED ready · OBSERVED ready ✓`; phone unchanged. | Verify tone. |
 | 11 | 1:01–1:07 | ACT | Full retract and continuous high-clearance arm-follow move to phone. | Transit texture. |
@@ -139,10 +139,12 @@ devices without visually connecting their data.
 ## Shot and editorial rules
 
 - Cumulative use of any reusable camera setup stays at or below 25 percent:
-  macro 16.8%, hero 22%, dolly 21%, arm-follow 21%, overhead 7%, and low
-  three-quarter 12.2%. These shares include the bounded scene-7 toolhead and
-  scene-8 contact inserts; the canonical shot-list validator enforces them.
-- Use macro, low three-quarter, lateral track, arm-follow dolly, camera POV,
+  macro 16.8%, hero 22%, dolly 21%, arm-follow 21%, overhead 7%, low
+  three-quarter 5.0%, and contact three-quarter 7.2%. These shares include the
+  bounded scene-7 toolhead and scene-8 contact inserts; the canonical
+  shot-list validator enforces them.
+- Use macro, low three-quarter, contact three-quarter, lateral track,
+  arm-follow dolly, camera POV,
   split screen, and hero wide for narrative reasons—not decorative variety.
 - Preserve exact joint, gripper, bare stylus, attached arm harness, keyboard,
   phone, and fixture continuity.
