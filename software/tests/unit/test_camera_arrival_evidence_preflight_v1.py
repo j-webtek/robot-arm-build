@@ -4,6 +4,7 @@ import hashlib
 import json
 from pathlib import Path
 
+from jsonschema import Draft202012Validator
 import pytest
 
 from rocell.application.camera_arrival_evidence_preflight_v1 import (
@@ -11,12 +12,27 @@ from rocell.application.camera_arrival_evidence_preflight_v1 import (
     READY_STATUS,
     CameraArrivalEvidencePreflightV1Error,
     inspect_camera_arrival_evidence_v1,
+    parse_camera_arrival_evidence_preflight_v1,
 )
 from rocell.application.camera_arrival_kit_v1 import build_camera_arrival_kit_v1
 
 
 ROOT = Path(__file__).resolve().parents[3]
 H = "a" * 64
+REPORT_SCHEMA = json.loads(
+    (
+        ROOT / "software/ai/schemas/camera_arrival_evidence_preflight_v1.schema.json"
+    ).read_text(encoding="utf-8")
+)
+REPORT_VALIDATOR = Draft202012Validator(REPORT_SCHEMA)
+
+
+def _rehash(document: dict[str, object]) -> None:
+    document.pop("preflight_sha256", None)
+    payload = json.dumps(
+        document, sort_keys=True, separators=(",", ":"), allow_nan=False
+    ).encode("utf-8")
+    document["preflight_sha256"] = hashlib.sha256(payload).hexdigest()
 
 
 def _populate(root: Path, *, epoch: str = "camera-epoch-001") -> None:
@@ -59,6 +75,8 @@ def _populate(root: Path, *, epoch: str = "camera-epoch-001") -> None:
 
 def test_empty_root_reports_all_slots_missing_without_authority(tmp_path: Path):
     report = inspect_camera_arrival_evidence_v1(ROOT, tmp_path)
+    assert list(REPORT_VALIDATOR.iter_errors(report)) == []
+    assert dict(parse_camera_arrival_evidence_preflight_v1(report)) == report
     assert report["status"] == BLOCKED_STATUS
     assert report["required_slot_count"] == 15
     assert report["valid_slot_count"] == 0
@@ -73,6 +91,8 @@ def test_complete_structural_set_is_ready_only_for_offline_review(tmp_path: Path
     first = inspect_camera_arrival_evidence_v1(ROOT, tmp_path)
     second = inspect_camera_arrival_evidence_v1(ROOT, tmp_path)
     assert first == second
+    assert list(REPORT_VALIDATOR.iter_errors(first)) == []
+    assert dict(parse_camera_arrival_evidence_preflight_v1(first)) == first
     assert first["status"] == READY_STATUS
     assert first["valid_slot_count"] == 15
     assert first["configuration_epoch_ids"] == ["camera-epoch-001"]
@@ -127,3 +147,19 @@ def test_mixed_configuration_epochs_fail_closed(tmp_path: Path):
 def test_nonexistent_or_symlink_root_is_rejected(tmp_path: Path):
     with pytest.raises(CameraArrivalEvidencePreflightV1Error):
         inspect_camera_arrival_evidence_v1(ROOT, tmp_path / "missing")
+
+
+@pytest.mark.parametrize("mutation", ("hash", "authority", "slot"))
+def test_parser_rejects_mutated_or_rehashed_reports(tmp_path: Path, mutation: str):
+    report = inspect_camera_arrival_evidence_v1(ROOT, tmp_path)
+    changed = json.loads(json.dumps(report))
+    if mutation == "hash":
+        changed["preflight_sha256"] = H
+    elif mutation == "authority":
+        changed["physical_authority"] = True
+        _rehash(changed)
+    else:
+        changed["slots"][0]["status"] = "VALID"
+        _rehash(changed)
+    with pytest.raises(CameraArrivalEvidencePreflightV1Error):
+        parse_camera_arrival_evidence_preflight_v1(changed)

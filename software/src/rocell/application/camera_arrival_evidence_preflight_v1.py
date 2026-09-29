@@ -7,12 +7,14 @@ accept calibration, advance an epoch, update a registry, or authorize hardware.
 
 from __future__ import annotations
 
+import argparse
 import hashlib
 import json
 import re
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Mapping
+from types import MappingProxyType
+from typing import Any, Mapping, Sequence
 
 from .camera_arrival_kit_v1 import build_camera_arrival_kit_v1
 
@@ -45,6 +47,55 @@ _ARTIFACT_CLASSES = {
 }
 _UNITS = {"px", "mm", "rad"}
 _HASH = re.compile(r"^[0-9a-f]{64}$")
+_REPORT_FIELDS = {
+    "schema",
+    "status",
+    "evidence_root",
+    "arrival_kit_sha256",
+    "sidecar_schema_sha256",
+    "required_slot_count",
+    "valid_slot_count",
+    "configuration_epoch_ids",
+    "global_blockers",
+    "slots",
+    "ready_for_offline_qualification_review",
+    "configuration_epoch_advanced",
+    "deployment_registry_updated",
+    "qualification_installed",
+    "camera_opened",
+    "controller_started",
+    "hardware_writes",
+    "physical_movements",
+    "physical_authority",
+    "preflight_sha256",
+}
+_SLOT_REPORT_FIELDS = {
+    "artifact_id",
+    "sidecar_relative_path",
+    "status",
+    "blockers",
+    "sidecar_sha256",
+    "source_relative_path",
+    "source_sha256",
+    "configuration_epoch_id",
+    "review_disposition",
+}
+_SLOT_BLOCKERS = {
+    "SIDECAR_MISSING",
+    "SIDECAR_UNSAFE",
+    "SIDECAR_INVALID_JSON",
+    "SIDECAR_SCHEMA_INVALID",
+    "ARTIFACT_ID_MISMATCH",
+    "ARTIFACT_CLASS_MISMATCH",
+    "UNITS_MISMATCH",
+    "SOURCE_PATH_UNSAFE",
+    "SOURCE_MISSING_OR_UNSAFE",
+    "SOURCE_READ_FAILED",
+    "SOURCE_SIZE_MISMATCH",
+    "SOURCE_HASH_MISMATCH",
+    "SOURCE_PATH_INVALID",
+    "REVIEW_NOT_ACCEPTED",
+}
 
 
 class CameraArrivalEvidencePreflightV1Error(ValueError):
@@ -308,10 +359,136 @@ def inspect_camera_arrival_evidence_v1(
     return {**core, "preflight_sha256": _sha256_bytes(_canonical(core))}
 
 
+def parse_camera_arrival_evidence_preflight_v1(
+    value: Mapping[str, Any],
+) -> Mapping[str, Any]:
+    """Verify a report before a downstream offline consumer trusts its fields."""
+
+    if not isinstance(value, Mapping) or set(value) != _REPORT_FIELDS:
+        raise CameraArrivalEvidencePreflightV1Error(
+            "preflight report fields differ from the v1 contract"
+        )
+    unsigned = dict(value)
+    digest = unsigned.pop("preflight_sha256")
+    if not _hash(digest) or _sha256_bytes(_canonical(unsigned)) != digest:
+        raise CameraArrivalEvidencePreflightV1Error(
+            "preflight report hash does not match its content"
+        )
+    slots = value.get("slots")
+    if not isinstance(slots, list) or len(slots) != 15:
+        raise CameraArrivalEvidencePreflightV1Error(
+            "preflight report must contain 15 slots"
+        )
+    expected_slots = build_camera_arrival_kit_v1()["slots"]
+    expected_ids = [slot["artifact_id"] for slot in expected_slots]
+    actual_ids = [
+        slot.get("artifact_id") if isinstance(slot, Mapping) else None for slot in slots
+    ]
+    if actual_ids != expected_ids:
+        raise CameraArrivalEvidencePreflightV1Error(
+            "preflight slot order or identity differs from the arrival kit"
+        )
+    for slot, expected in zip(slots, expected_slots):
+        if not isinstance(slot, Mapping) or set(slot) != _SLOT_REPORT_FIELDS:
+            raise CameraArrivalEvidencePreflightV1Error(
+                "preflight slot fields differ from the v1 contract"
+            )
+        status = slot.get("status")
+        slot_blockers = slot.get("blockers")
+        if (
+            slot.get("sidecar_relative_path")
+            != expected["destination_relative_to_external_evidence_root"]
+            or status not in {"MISSING", "INVALID", "VALID"}
+            or not isinstance(slot_blockers, list)
+            or len(slot_blockers) != len(set(slot_blockers))
+            or any(blocker not in _SLOT_BLOCKERS for blocker in slot_blockers)
+            or not (
+                slot.get("sidecar_sha256") is None or _hash(slot.get("sidecar_sha256"))
+            )
+            or not (
+                slot.get("source_sha256") is None or _hash(slot.get("source_sha256"))
+            )
+            or slot.get("review_disposition") not in {None, "ACCEPTED", "REJECTED"}
+        ):
+            raise CameraArrivalEvidencePreflightV1Error(
+                "preflight slot semantics are inconsistent"
+            )
+        if status == "VALID" and (
+            slot_blockers
+            or slot.get("sidecar_sha256") is None
+            or slot.get("source_sha256") is None
+            or not isinstance(slot.get("source_relative_path"), str)
+            or not isinstance(slot.get("configuration_epoch_id"), str)
+            or slot.get("review_disposition") != "ACCEPTED"
+        ):
+            raise CameraArrivalEvidencePreflightV1Error(
+                "valid preflight slot is not fully bound"
+            )
+        if status == "MISSING" and slot_blockers != ["SIDECAR_MISSING"]:
+            raise CameraArrivalEvidencePreflightV1Error(
+                "missing preflight slot has inconsistent blockers"
+            )
+    valid_count = sum(
+        isinstance(slot, Mapping) and slot.get("status") == "VALID" for slot in slots
+    )
+    ready = value.get("ready_for_offline_qualification_review") is True
+    epochs = value.get("configuration_epoch_ids")
+    blockers = value.get("global_blockers")
+    if (
+        value.get("schema") != SCHEMA
+        or value.get("required_slot_count") != 15
+        or value.get("valid_slot_count") != valid_count
+        or not isinstance(epochs, list)
+        or not isinstance(blockers, list)
+        or ready != (valid_count == 15 and len(epochs) == 1 and not blockers)
+        or value.get("status") != (READY_STATUS if ready else BLOCKED_STATUS)
+        or any(
+            value.get(field) is not False
+            for field in (
+                "configuration_epoch_advanced",
+                "deployment_registry_updated",
+                "qualification_installed",
+                "camera_opened",
+                "controller_started",
+                "physical_authority",
+            )
+        )
+        or value.get("hardware_writes") != 0
+        or value.get("physical_movements") != 0
+    ):
+        raise CameraArrivalEvidencePreflightV1Error(
+            "preflight report semantics are inconsistent"
+        )
+    return MappingProxyType(dict(value))
+
+
+def main(argv: Sequence[str] | None = None) -> int:
+    """Installed, read-only command entry point."""
+
+    parser = argparse.ArgumentParser(
+        description="Inspect final-camera arrival evidence without device access."
+    )
+    parser.add_argument("--workspace", type=Path, required=True)
+    parser.add_argument("--evidence-root", type=Path, required=True)
+    args = parser.parse_args(argv)
+    try:
+        report = inspect_camera_arrival_evidence_v1(args.workspace, args.evidence_root)
+    except CameraArrivalEvidencePreflightV1Error as exc:
+        parser.error(str(exc))
+    print(json.dumps(report, indent=2, sort_keys=True))
+    return 0 if report["ready_for_offline_qualification_review"] else 2
+
+
 __all__ = [
     "BLOCKED_STATUS",
     "READY_STATUS",
     "SCHEMA",
     "CameraArrivalEvidencePreflightV1Error",
     "inspect_camera_arrival_evidence_v1",
+    "main",
+    "parse_camera_arrival_evidence_preflight_v1",
 ]
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

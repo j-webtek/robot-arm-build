@@ -6,9 +6,15 @@ from pathlib import Path
 import subprocess
 import sys
 
+from rocell.application.camera_arrival_evidence_preflight_v1 import main
+
 
 ROOT = Path(__file__).resolve().parents[3]
 SCRIPT = ROOT / "software/scripts/preflight_camera_arrival_evidence_v1.py"
+
+
+def test_installed_module_exposes_the_same_application_entry_point():
+    assert callable(main)
 
 
 def test_cli_reports_empty_root_as_bounded_incomplete(tmp_path: Path):

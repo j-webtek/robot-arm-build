@@ -54,11 +54,14 @@ Before and after each collection block, inventory the external evidence root
 with the read-only structural preflight:
 
 ```powershell
-$env:PYTHONPATH = "$PWD\software\src;$PWD\software"
-python software/scripts/preflight_camera_arrival_evidence_v1.py `
+python -m rocell.application.camera_arrival_evidence_preflight_v1 `
   --workspace . `
   --evidence-root <external-root>
 ```
+
+The source-checkout wrapper remains available at
+`software/scripts/preflight_camera_arrival_evidence_v1.py`; the installed-module
+command and wrapper use the same application entry point.
 
 An incomplete root exits nonzero and names each missing or invalid slot. A
 complete result says only `READY_FOR_OFFLINE_QUALIFICATION_REVIEW`; it does not
