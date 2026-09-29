@@ -12,6 +12,14 @@ import rocell.application.typing_exact_ik_cache_benchmark_v1 as benchmark
 
 
 ROOT = Path(__file__).resolve().parents[3]
+RETAINED = ROOT / "software/ai/eval/typing_exact_ik_cache_benchmark_v1.json"
+RETAINED_FILE_SHA256 = (
+    "6ad55c649fc37a9215264e124b9d7f10edf2bc405de0d559b7290de7de1bd7cf"
+)
+RETAINED_REPORT_SHA256 = (
+    "ce869a13a01339fbf5a7fc5755740273d8fb8f6a4b9134d951bb5e26fc108e21"
+)
+RETAINED_SOURCE_COMMIT = "402e0d849cc41d694bebf8029644f0bfaa3fc3af"
 VALIDATOR = Draft202012Validator(json.loads((
     ROOT / "software/ai/schemas/typing_exact_ik_cache_benchmark_v1.schema.json"
 ).read_text(encoding="utf-8")))
@@ -122,6 +130,35 @@ def test_cache_benchmark_is_schema_valid_equivalent_and_zero_authority():
     assert report["timing_used_for_admission"] is False
     assert report["performance_authority"] is False
     assert report["controller_commands"] == []
+    assert report["physical_authority"] is False
+
+
+def test_retained_cache_benchmark_is_exact_and_fail_closed():
+    raw = RETAINED.read_bytes()
+    assert hashlib.sha256(raw).hexdigest() == RETAINED_FILE_SHA256
+    report = json.loads(raw)
+    assert list(VALIDATOR.iter_errors(report)) == []
+    assert dict(benchmark.parse_typing_exact_ik_cache_benchmark_v1(report)) == report
+    assert report["report_sha256"] == RETAINED_REPORT_SHA256
+    assert report["environment"]["repository_commit"] == RETAINED_SOURCE_COMMIT
+    assert report["environment"]["repository_dirty"] is False
+    assert report["sample_count"] == 40
+    assert report["semantic_equivalence"]["all_outputs_identical"] is True
+    assert report["summaries"]["CACHE_DISABLED"]["p50_ns"] == 2_919_987_900
+    assert report["summaries"]["CACHE_WARM"]["p50_ns"] == 301_629_900
+    assert report["summaries"]["warm_p50_reduction_ns"] == 2_618_358_000
+    assert report["summaries"]["warm_p95_reduction_ns"] == 2_639_823_900
+    assert report["cache_totals"]["CACHE_COLD"]["hits"] == 110
+    assert report["cache_totals"]["CACHE_WARM"]["hits"] == 570
+    assert report["cache_totals"]["CACHE_WARM"]["misses"] == 0
+    assert report["cache_totals"]["CACHE_CAPACITY_ONE"]["capacity_skips"] == 550
+    assert report["invalidation_results"] == _invalidations()
+    assert report["cache_used_for_admission"] is False
+    assert report["timing_used_for_admission"] is False
+    assert report["performance_authority"] is False
+    assert report["controller_commands"] == []
+    assert report["hardware_writes"] == 0
+    assert report["physical_movements"] == 0
     assert report["physical_authority"] is False
 
 

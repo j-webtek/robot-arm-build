@@ -6009,3 +6009,42 @@ rewriting history. New entries must use a unique evidence ID.
 - Next dependency: retain a cold/warm/capacity benchmark and lifecycle
   invalidation matrix before deciding whether exact-result caching provides
   enough end-to-end value for further integration.
+
+### E-20260929-ARM-122 — retained exact IK cache benchmark and invalidation matrix
+
+- Stage: operational efficiency E2, retained host-measured reuse evidence.
+- Lane: arm/runtime typing shadow pipeline.
+- Source commit: `402e0d849cc41d694bebf8029644f0bfaa3fc3af`.
+- Change: retained 40 interleaved samples—10 each with cache disabled, cold,
+  fully warm, and capacity-limited to one entry—against the exact same prepared
+  `ROBOT` shadow pipeline. Each sample records timing, receipt identity, stage
+  identity, and cache-counter deltas.
+- Result: PASS. Disabled p50/p95 was 2,919,987,900 / 2,946,669,700 ns. Warm
+  p50/p95 was 301,629,900 / 306,845,800 ns, a reduction of 2,618,358,000 /
+  2,639,823,900 ns. Cold p50 was 2,312,926,300 ns; capacity-one p50 was
+  2,778,198,400 ns.
+- Reuse: cold execution recorded 110 hits and 460 misses across 570 lookups;
+  warm execution recorded 570 hits and zero misses. Capacity-one execution
+  recorded 10 hits, 560 misses, 10 stores, and 550 capacity skips.
+- Equivalence: all 40 terminal receipt hashes and complete stage-hash sets were
+  identical. Cache and timing evidence remained excluded from admission.
+- Invalidation matrix: explicit invalidation, context reload, service restart,
+  crossed context, integrity corruption, and unmanaged cache use all blocked.
+- Artifact: `typing_exact_ik_cache_benchmark_v1.json`; file SHA-256
+  `6ad55c649fc37a9215264e124b9d7f10edf2bc405de0d559b7290de7de1bd7cf`;
+  embedded report SHA-256
+  `ce869a13a01339fbf5a7fc5755740273d8fb8f6a4b9134d951bb5e26fc108e21`.
+- Camera opens: 0.
+- Model runtime loads: 0.
+- Transport opens: 0.
+- Controller starts: 0.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: timing is specific to this host, exact synthetic geometry, and
+  the measured `ROBOT` sequence. It does not measure controller, settling,
+  contact, verification, or physical typing speed and grants no deployment or
+  physical authority.
+- Supersedes: ARM-121 only for its retained timing and invalidation dependency;
+  ARM-121 remains authoritative for cache mechanics and integrity semantics.
+- Next dependency: design bounded cache ownership and observability for runtime
+  integration while retaining complete miss behavior and all dynamic gates.

@@ -510,8 +510,8 @@ remains the dominant software cost.
 
 ### E2 — Accelerate IK and collision preparation
 
-**Status:** in progress through ARM-121 lifecycle-bound exact-result cache
-experiment.
+**Status:** in progress through ARM-122 retained exact-result cache benchmark
+and invalidation matrix.
 
 ARM-119 adds an opt-in, bounded `TypingIkEffortRecorderV1` side channel. It
 records attempt and iteration counts only after each deterministic solve. The
@@ -553,10 +553,22 @@ receipts. Cache counters remain a zero-authority diagnostic side channel and
 are never admission inputs. This establishes safe experimental mechanics, not
 measured speed benefit, deployment qualification, or physical authority.
 
+ARM-122 supplies the retained host evidence. Ten interleaved samples per path
+compared the same prepared `ROBOT` pipeline with caching disabled, cold, fully
+warm, and limited to one entry. Disabled p50/p95 measured 2.919988 s / 2.946670
+s; warm p50/p95 measured 0.301630 s / 0.306846 s, reductions of 2.618358 s and
+2.639824 s respectively. The cold path measured 2.312926 s p50 because 110 of
+570 lookups reused exact inputs within the same sequences. The one-entry path
+measured 2.778198 s p50 while recording 550 capacity skips. All 40 canonical
+receipts and stage-hash sets were identical. Explicit invalidation, context
+reload, service restart, crossed context, result corruption, and unmanaged use
+all blocked. These are host/offline results, not physical throughput evidence
+or permission to bypass any dynamic check.
+
 Deliver:
 
-- retained cold/warm/capacity timing and invalidation campaign;
-- actual transition-cache integration only if retained evidence supports it;
+- bounded runtime integration design for the now-supported exact-result cache;
+- cache ownership, lifecycle invalidation, and observability integration;
 - endpoint-atlas and warm-start experiments;
 - solver iteration telemetry;
 - analytical/hybrid feasibility study;

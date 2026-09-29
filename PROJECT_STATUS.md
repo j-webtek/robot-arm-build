@@ -1,7 +1,8 @@
 # Tactevra project status
 
-Reviewed September 29, 2026 through the ARM-121 lifecycle-bound exact-result
-cache experiment, ARM-120 retained multi-sequence IK effort campaign, ARM-119
+Reviewed September 29, 2026 through the ARM-122 retained exact-result cache
+benchmark and invalidation matrix, ARM-121 lifecycle-bound cache experiment,
+ARM-120 retained multi-sequence IK effort campaign, ARM-119
 decision-neutral IK effort telemetry, ARM-118 retained
 typing preparation benchmark, and ARM-117 typing planner preparation,
 ARM-077 PC0 pre-camera qualification basis, ARM-076 typing collision-evidence
@@ -622,6 +623,17 @@ cross-context, or corrupt reuse rejects. Its counters are non-authoritative and
 it creates no controller commands or hardware access. No retained performance
 claim has been made yet; the next dependency is a clean cold/warm/capacity
 benchmark plus an explicit lifecycle invalidation matrix.
+
+ARM-122 completes that dependency with 40 interleaved clean-commit samples.
+For the prepared `ROBOT` path, cache-disabled p50 was 2.919988 s and warm-cache
+p50 was 0.301630 s, a 2.618358 s reduction (about 89.7%). Warm p95 improved by
+2.639824 s. All receipts and stage hashes remained identical. The cold cache
+also reused 110 of 570 inputs inside the measured sequences, while the warm
+cache served all 570 lookups without a miss. Explicit invalidation, reload,
+restart, crossed context, corruption, and unmanaged use all blocked. This is
+strong host-side evidence for bounded integration, but it is not physical
+typing throughput, a deployment qualification, or authority to skip safety,
+freshness, collision, or verification gates.
 
 AI-403 then integrates the pose-output precision adapter and actual V2 batch
 producer on current `main`. The retained contract fixture deterministically
