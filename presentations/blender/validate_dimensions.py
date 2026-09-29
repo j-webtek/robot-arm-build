@@ -1,8 +1,9 @@
 """Validate the Blender explainer's dimensional source contract.
 
 This script intentionally uses only the Python standard library so it can run
-in CI without Blender. It checks the RC03 layout values, portal STL bounds, and
-the hash-pinned RoArm-M3 URDF joint origins used by the presentation.
+in CI without Blender. It checks the RC03 layout values, portal and contact-tool
+STL bounds, and the hash-pinned RoArm-M3 URDF joint origins used by the
+presentation.
 """
 
 from __future__ import annotations
@@ -19,6 +20,7 @@ from pathlib import Path
 SCRIPT = Path(__file__).resolve()
 ROOT = SCRIPT.parents[2]
 MANIFEST_PATH = SCRIPT.with_name("dimension_manifest.json")
+CONTACT_TOOL_MANIFEST_PATH = SCRIPT.with_name("contact_tool_manifest.json")
 
 
 def fail(message: str) -> None:
@@ -142,6 +144,18 @@ def main() -> int:
             tolerance=1e-3,
         )
 
+    contact_tool = json.loads(CONTACT_TOOL_MANIFEST_PATH.read_text(encoding="utf-8"))
+    for prefix in ("body", "cap", "collar"):
+        part = contact_tool[prefix]
+        tool_path = resolve(part["path"])
+        tool_digest = hashlib.sha256(tool_path.read_bytes()).hexdigest()
+        if tool_digest != part["sha256"]:
+            fail(f"Contact-tool {prefix} SHA-256 drift: {tool_digest}")
+        assert_close(
+            stl_bounds(tool_path), part["mesh_envelope"],
+            f"contact-tool {prefix} STL bounds", tolerance=0.03,
+        )
+
     print("Tactevra Blender dimension contract: PASS")
     print(f"  board/device layout: {workcell['authority']}")
     print(f"  portal STL: {portal['mesh_bounds_xyz']} mm")
@@ -150,6 +164,7 @@ def main() -> int:
     print(f"  validated arm joint origins: {len(arm['joint_origin_xyz_m'])}")
     if presentation_mesh.is_file():
         print(f"  official arm surface: {surface['default_step_envelope_mm']} mm")
+    print("  proposed contact-tool CAD available: body + keyed cap + split collar")
     return 0
 
 

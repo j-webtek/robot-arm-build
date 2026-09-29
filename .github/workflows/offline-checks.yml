@@ -14,11 +14,71 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  classify:
+    name: Classify verification scope
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    outputs:
+      portable_full: ${{ steps.scope.outputs.portable_full }}
+      rc03_manual: ${{ steps.scope.outputs.rc03_manual }}
+      rc03_reportlab: ${{ steps.scope.outputs.rc03_reportlab }}
+      rc03_trimesh: ${{ steps.scope.outputs.rc03_trimesh }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.12'
+      - name: Classify changed paths
+        id: scope
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+          HEAD_SHA: ${{ github.sha }}
+          FORCE_FULL: ${{ github.event_name == 'workflow_dispatch' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          args=(--github-output "$GITHUB_OUTPUT")
+          if [[ "$FORCE_FULL" == "true" || -z "${BASE_SHA:-}" || "$BASE_SHA" =~ ^0+$ ]]; then
+            args+=(--paths .github/workflows/offline-checks.yml --force-full)
+          else
+            args+=(--base "$BASE_SHA" --head "$HEAD_SHA")
+          fi
+          python scripts/ci/change_classifier.py "${args[@]}" | tee -a "$GITHUB_STEP_SUMMARY"
+
+  policy:
+    name: Repository policy and documentation
+    needs: classify
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 2
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.12'
+      - name: Check maintained repository policy once
+        run: |
+          python scripts/ci/check_docs.py
+          python scripts/ci/check_public_records.py
+          python scripts/ci/check_evidence_scope.py
+          python scripts/ci/check_repository_artifacts.py
+          python scripts/ci/check_repository_health.py --policy-only
+          python scripts/ci/check_source_archive_footprint.py
+          python scripts/ci/check_release_integrity.py --mode policy
+          python scripts/ci/check_release_readiness_sync.py
+
   offline:
     # Keep the established check labels while pinning the actual Linux image.
     # Branch protection keys off these names; the runner identity is reported
     # separately in the environment summary.
     name: Offline / ${{ matrix.check_os }} / Python ${{ matrix.python }}
+    needs: [classify, policy]
+    if: ${{ always() }}
     runs-on: ${{ matrix.runner }}
     timeout-minutes: 15
     strategy:
@@ -38,39 +98,52 @@ jobs:
             check_os: windows-latest
             python: '3.12'
     steps:
+      - name: Require repository policy verification
+        if: needs.policy.result != 'success'
+        run: |
+          echo 'Repository policy verification did not pass.'
+          exit 1
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        if: needs.policy.result == 'success'
         with:
           persist-credentials: false
           fetch-depth: 2
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        if: needs.policy.result == 'success'
         with:
           python-version: ${{ matrix.python }}
+          cache: pip
+          cache-dependency-path: software/pyproject.toml
       - name: Install base package in isolated environment
+        if: needs.policy.result == 'success' && needs.classify.outputs.portable_full == 'true'
         run: |
           python -m venv .venv-ci
           python scripts/ci/offline_checks.py install-base
       - name: Verify installed package and documented offline demo
+        if: needs.policy.result == 'success' && needs.classify.outputs.portable_full == 'true'
         run: python scripts/ci/offline_checks.py smoke
-      - name: Check maintained documentation links and branding assets
+      - name: Run portable CI-unit checks
+        if: needs.policy.result == 'success'
         run: |
           python -m compileall -q scripts/ci
           python -m unittest discover -s scripts/ci -p "test_*.py"
-          python scripts/ci/check_docs.py
-          python scripts/ci/check_public_records.py
-          python scripts/ci/check_evidence_scope.py
-          python scripts/ci/check_repository_artifacts.py
-          python scripts/ci/check_repository_health.py --policy-only
-          python scripts/ci/check_source_archive_footprint.py
-          python scripts/ci/check_release_integrity.py --mode policy
       - name: Install test extra
+        if: needs.policy.result == 'success' && needs.classify.outputs.portable_full == 'true'
         run: python scripts/ci/offline_checks.py install-tests
       - name: Summarize resolved verification environment
+        if: needs.policy.result == 'success' && needs.classify.outputs.portable_full == 'true'
         run: python scripts/ci/offline_checks.py environment
       - name: Run bounded AI and arm contract tests
+        if: needs.policy.result == 'success' && needs.classify.outputs.portable_full == 'true'
         run: python scripts/ci/offline_checks.py test
+      - name: Record lightweight verification
+        if: needs.policy.result == 'success' && needs.classify.outputs.portable_full != 'true'
+        shell: bash
+        run: echo 'Path classification selected policy, documentation, and CI-unit checks without package installation.' >> "$GITHUB_STEP_SUMMARY"
 
   rc03-manual:
     name: RC03 manual / Ubuntu 24.04 / Python 3.12
+    needs: classify
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
@@ -81,7 +154,10 @@ jobs:
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: '3.12'
+          cache: pip
+          cache-dependency-path: active-project/RoCell_v0_3/requirements-cad.txt
       - name: Select and install the RC03 manual toolchain
+        if: needs.classify.outputs.rc03_manual == 'true'
         run: |
           python scripts/ci/rc03_manual_qualification.py requirements \
             --source active-project/RoCell_v0_3/requirements-cad.txt \
@@ -89,6 +165,7 @@ jobs:
           python -m pip install --disable-pip-version-check \
             -r "$RUNNER_TEMP/rc03-manual-requirements.txt"
       - name: Render the RC03 assembly manual
+        if: needs.classify.outputs.rc03_manual == 'true'
         run: |
           mkdir -p "$RUNNER_TEMP/rc03-manual"
           python active-project/RoCell_v0_3/scripts/build_manual_pdf.py \
@@ -96,6 +173,7 @@ jobs:
             --output "$RUNNER_TEMP/rc03-manual/ASSEMBLY_MANUAL.pdf" \
             --running-title "Tactevra RC03 - Assembly Manual"
       - name: Validate and summarize the rendered PDF
+        if: needs.classify.outputs.rc03_manual == 'true'
         run: |
           python scripts/ci/rc03_manual_qualification.py validate \
             --source active-project/RoCell_v0_3/ASSEMBLY_MANUAL.md \
@@ -103,16 +181,20 @@ jobs:
             --summary "$RUNNER_TEMP/rc03-manual/qualification.json"
           cat "$RUNNER_TEMP/rc03-manual/qualification.json" >> "$GITHUB_STEP_SUMMARY"
       - name: Retain the PDF and qualification summary for visual review
-        if: always()
+        if: always() && needs.classify.outputs.rc03_manual == 'true'
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: rc03-assembly-manual-${{ github.sha }}
           path: ${{ runner.temp }}/rc03-manual/
           if-no-files-found: warn
           retention-days: 14
+      - name: Record unchanged manual scope
+        if: needs.classify.outputs.rc03_manual != 'true'
+        run: echo 'RC03 manual inputs are unchanged; focused render was not required.' >> "$GITHUB_STEP_SUMMARY"
 
   rc03-reportlab:
     name: RC03 ReportLab outputs / Ubuntu 24.04 / Python 3.12
+    needs: classify
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
@@ -123,7 +205,10 @@ jobs:
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: '3.12'
+          cache: pip
+          cache-dependency-path: active-project/RoCell_v0_3/requirements-cad.txt
       - name: Select and install the RC03 ReportLab toolchain
+        if: needs.classify.outputs.rc03_reportlab == 'true'
         run: |
           python scripts/ci/rc03_reportlab_qualification.py requirements \
             --source active-project/RoCell_v0_3/requirements-cad.txt \
@@ -131,12 +216,14 @@ jobs:
           python -m pip install --disable-pip-version-check \
             -r "$RUNNER_TEMP/rc03-reportlab-requirements.txt"
       - name: Render fresh controlled drill guides
+        if: needs.classify.outputs.rc03_reportlab == 'true'
         run: |
           mkdir -p "$RUNNER_TEMP/rc03-reportlab"
           python scripts/ci/rc03_reportlab_qualification.py render \
             --source active-project/RoCell_v0_3/scripts/generate_drawings.py \
             --output-dir "$RUNNER_TEMP/rc03-reportlab"
       - name: Validate ReportLab geometry and required content
+        if: needs.classify.outputs.rc03_reportlab == 'true'
         run: |
           python scripts/ci/rc03_reportlab_qualification.py validate \
             --source active-project/RoCell_v0_3/scripts/generate_drawings.py \
@@ -145,16 +232,20 @@ jobs:
             --summary "$RUNNER_TEMP/rc03-reportlab/qualification.json"
           cat "$RUNNER_TEMP/rc03-reportlab/qualification.json" >> "$GITHUB_STEP_SUMMARY"
       - name: Retain PDFs and qualification summary for visual review
-        if: always()
+        if: always() && needs.classify.outputs.rc03_reportlab == 'true'
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: rc03-reportlab-${{ github.sha }}
           path: ${{ runner.temp }}/rc03-reportlab/
           if-no-files-found: warn
           retention-days: 14
+      - name: Record unchanged ReportLab scope
+        if: needs.classify.outputs.rc03_reportlab != 'true'
+        run: echo 'RC03 ReportLab inputs are unchanged; focused render was not required.' >> "$GITHUB_STEP_SUMMARY"
 
   rc03-trimesh:
     name: RC03 Trimesh outputs / Ubuntu 24.04 / Python 3.12
+    needs: classify
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
@@ -165,7 +256,10 @@ jobs:
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: '3.12'
+          cache: pip
+          cache-dependency-path: active-project/RoCell_v0_3/requirements-cad.txt
       - name: Select and install the RC03 mesh readback toolchain
+        if: needs.classify.outputs.rc03_trimesh == 'true'
         run: |
           python scripts/ci/rc03_trimesh_qualification.py requirements \
             --source active-project/RoCell_v0_3/requirements-cad.txt \
@@ -173,6 +267,7 @@ jobs:
           python -m pip install --disable-pip-version-check \
             -r "$RUNNER_TEMP/rc03-trimesh-requirements.txt"
       - name: Qualify released STL inventory
+        if: needs.classify.outputs.rc03_trimesh == 'true'
         run: |
           mkdir -p "$RUNNER_TEMP/rc03-trimesh"
           python scripts/ci/rc03_trimesh_qualification.py validate \
@@ -180,11 +275,34 @@ jobs:
             --manifest active-project/RoCell_v0_3/PART_VALIDATION.csv \
             --summary "$RUNNER_TEMP/rc03-trimesh/qualification.json"
           cat "$RUNNER_TEMP/rc03-trimesh/qualification.json" >> "$GITHUB_STEP_SUMMARY"
+      - name: Install the static-camera CAD dependency
+        if: needs.classify.outputs.rc03_trimesh == 'true'
+        run: >-
+          python -m pip install --disable-pip-version-check
+          "cadquery>=2.5,<3" "lxml>=5,<7"
+      - name: Build and verify the standalone static-camera print pack
+        if: needs.classify.outputs.rc03_trimesh == 'true'
+        run: |
+          python hardware/static_overhead_camera/cad/validate_printable_frame_package.py
+          python hardware/static_overhead_camera/cad/prepare_system_print_pack.py \
+            --output "$RUNNER_TEMP/SYSTEM_PRINT_PACK_v1"
+          cd "$RUNNER_TEMP/SYSTEM_PRINT_PACK_v1"
+          python verify_system_print_pack.py --verify .
+      - name: Build and verify the standalone RC03 Step 00 bundle
+        if: needs.classify.outputs.rc03_trimesh == 'true'
+        run: |
+          python "$GITHUB_WORKSPACE/active-project/RoCell_v0_3/scripts/stage_step_00_bundle.py" \
+            --output "$RUNNER_TEMP/RC03_STEP_00_BUNDLE"
+          cd "$RUNNER_TEMP/RC03_STEP_00_BUNDLE"
+          python verify_step_00_bundle.py --verify .
       - name: Retain version-bound mesh qualification receipt
-        if: always()
+        if: always() && needs.classify.outputs.rc03_trimesh == 'true'
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: rc03-trimesh-${{ github.sha }}
           path: ${{ runner.temp }}/rc03-trimesh/
           if-no-files-found: warn
           retention-days: 14
+      - name: Record unchanged mesh scope
+        if: needs.classify.outputs.rc03_trimesh != 'true'
+        run: echo 'RC03 mesh and static-camera inputs are unchanged; focused qualification was not required.' >> "$GITHUB_STEP_SUMMARY"

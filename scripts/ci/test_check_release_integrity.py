@@ -33,6 +33,12 @@ def readiness(*, blockers=None) -> dict:
         "version": 1,
         "release_scope": "source-only-experimental-preview",
         "authority": "Test-only registry.",
+        "tracker": {
+            "issue": 57,
+            "expected_state": "open",
+            "milestone": "Tactevra v0.1 experimental preview",
+            "milestone_state": "open",
+        },
         "blockers": blockers or [],
     }
 

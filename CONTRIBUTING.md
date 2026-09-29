@@ -33,6 +33,11 @@ Optional camera/serial dependencies and live commissioning are documented in
 `software/README.md`. Do not run installers, deployment scripts, or hardware
 campaigns as part of ordinary source setup.
 
+For a fast repository-maintenance baseline, run
+`.\maintain-repository.ps1 verify` on Windows or
+`python scripts/maintain_repository.py verify` on any supported platform. This
+checks maintained policy, documentation, and CI units without touching hardware.
+
 ## Work in reviewable increments
 
 Use the [repository operations guide](docs/REPOSITORY_OPERATIONS.md) for ownership,

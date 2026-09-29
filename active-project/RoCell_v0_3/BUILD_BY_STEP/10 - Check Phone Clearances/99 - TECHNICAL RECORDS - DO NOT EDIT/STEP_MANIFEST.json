@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "layout_version": 5,
+  "layout_version": 6,
   "design_revision": "RC03-INT-R1",
-  "package_definition_hash": "3d4d45a05327b35ffcc474b8df0f6bcb202a79fcfd98a3529062bd2c44ffc168",
-  "canonical_snapshot_hash": "d2a06fa67ec4ed0e36a8d40bd158aeb9e923890a00b310d3c6eacdfbaadfb34d",
-  "canonical_input_hash": "d2a06fa67ec4ed0e36a8d40bd158aeb9e923890a00b310d3c6eacdfbaadfb34d",
+  "package_definition_hash": "65bbe688892e0dcdd2115a28d9f155921587915d80e98f6b01d81aaedcbde3a5",
+  "canonical_snapshot_hash": "06efd7afc3a2b406d822f18b0ae06189c5edbb01dbbd069e0edf35718290f45c",
+  "canonical_input_hash": "06efd7afc3a2b406d822f18b0ae06189c5edbb01dbbd069e0edf35718290f45c",
   "step_id": "10",
   "slug": "verify_phone_no_go_zones",
   "title": "Verify every phone no-go zone",
@@ -224,8 +224,8 @@
     },
     {
       "canonical_path": "README_FIRST.md",
-      "sha256": "3f120c69dcee278cb67c449e84d3a43c0b5183bdfee1cf4cb86bb938e2a32d34",
-      "size_bytes": 10392,
+      "sha256": "6e3e5a4bf57be1858e0b691c09b0c7683cc4266eb7df666d371136aa5800ee42",
+      "size_bytes": 10683,
       "roles": [
         "release entry point"
       ],
@@ -635,8 +635,8 @@
     },
     {
       "canonical_path": "scripts/build_step_packages.py",
-      "sha256": "d36767cf22f6b4becf5716eb7ae2e7b8f8315dd13e30204732ff9f2c3007463a",
-      "size_bytes": 174644,
+      "sha256": "38b9b55bfaad6c80f2465bd99abc134b8a7b488d91e6fc357c3f93f05ec699b9",
+      "size_bytes": 175793,
       "roles": [
         "step-package generator and validator"
       ],
@@ -904,21 +904,21 @@
     "00 - START HERE.md": "5698cce217bcc091b90bd0fdf6dd93a8e478d26aeeb5baa2bd4171f78bccefff",
     "01 - BEFORE YOU START.md": "b22e8495ccc12d2b5fd364a2391be67768fb72759ed196efef31a5675cb32555",
     "02 - PARTS AND TOOLS CHECKLIST.md": "b5c0c9e50e4bae2aee261f0413704fa81e795adfe241a46858b8ffde6f89fdca",
-    "03 - STL MODELS/READ ME - HOW TO USE THESE MODELS.md": "5e503c0b2f3268f9d0a61b24874589758f7764ef32262ed62ad94f7d30f0a16b",
-    "03 - STL MODELS/STL MODEL LIST.csv": "99ec03487b4c1ca16596b7f68dd682d4f7158718977f56ec0b70a4114a85b782",
+    "03 - STL MODELS/READ ME - HOW TO USE THESE MODELS.md": "346d06c8a1d0184a3c42bcc31b7495ba68d57b81ea53dd303e0c0c06d3f00357",
+    "03 - STL MODELS/STL MODEL LIST.csv": "c30844164998cf13033148d23fa70444e7158fcccd9101d7266a03695ead7bf0",
     "03B - PRINT SETTINGS FOR THIS STEP.md": "a690e6ab917952832664865ab844db8ba1dabeba7738aaa9ec228e86f27c1812",
     "04 - STEP-BY-STEP INSTRUCTIONS.md": "c19ee56f8b21aadbcc86efba7058cfdfe8e7e5a38531c3ed631a6c03a950d46e",
     "05 - CHECK YOUR WORK.md": "b6f038fec254435d85b62e0a7df25e9b87ea89b5784e485d50a90490e7345980",
     "06 - SAVE MEASUREMENTS AND PHOTOS/READ ME - WHAT TO RECORD.md": "02a183c7f1eea03c7e9f7b59785328de681b380deb12567945a88f69190492c7",
-    "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/measurement_record.json": "71d2e969e33aa346c4b3040b3facfda5253822fea95fc45210265f9afb6a0cbd",
-    "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/signoff.json": "01fef0134c64eb09ef98d4d4c0ebb837a7ffd574ff8d162a694910b425c65984",
+    "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/measurement_record.json": "b3b45978ffe10a9c30149c8545e426d4d4362b975ce2df88f43a949e72614a24",
+    "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/signoff.json": "313865eda7cad239c52915c7227bdd284ca0339c1037efaac85fdd407ce93766",
     "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/Measurements Checklist.md": "fb2a62d5708442a61ff47dac4d528e91014f35d450a3b784984fa0fa0c6c8194",
     "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/Finish and Sign Off.md": "9610378a7f90690f5be8c4aa20fb0ebf5644b31ecf50397dbff4e0b1bafe06af",
     "07 - FINISH THIS STEP AND CONTINUE.md": "be794b056b53f0b179d1c7a49f296ba2e2e7109c7e2391cf01cc15b2af2e648d",
-    "99 - TECHNICAL RECORDS - DO NOT EDIT/OPEN CONTROLLED FILES.md": "e0e34cbaa504185dbe14bd760ea7604664355f5081a61b2f5b63455696c5c4e9",
-    "99 - TECHNICAL RECORDS - DO NOT EDIT/FILE INDEX.csv": "3e526de4bb3e43bc8ccc8377b74193887db25795e3ba23b5d91a2e6afc00b1e0",
-    "99 - TECHNICAL RECORDS - DO NOT EDIT/FILE MANIFEST.json": "dcaec5fbaf543330854dbfc66af48403a7b20e74a4100c6eeea395451a208346",
-    "99 - TECHNICAL RECORDS - DO NOT EDIT/SHA256SUMS.txt": "3f73a5db7ef5e9b602ff317627ed414818e0889dd6b4e567c1640a1d7517b36e",
+    "99 - TECHNICAL RECORDS - DO NOT EDIT/OPEN CONTROLLED FILES.md": "6ac1a1ddcb3c8a102eed9c49b4230772524c2e210851758029f64bfb7d83802e",
+    "99 - TECHNICAL RECORDS - DO NOT EDIT/FILE INDEX.csv": "ad0f50d0ba7413af9e19346f63da83d44c51996f0c5b72f1cff189e42d57b136",
+    "99 - TECHNICAL RECORDS - DO NOT EDIT/FILE MANIFEST.json": "a9d39e7ac50bf0171daacb95421eaa5e99d0598f2edc28dc24eddff2c98b5c3d",
+    "99 - TECHNICAL RECORDS - DO NOT EDIT/SHA256SUMS.txt": "fec069aa6719646037c7e479c96f88fe24ae00f91448dc46a09d98e1f5647d7c",
     "99 - TECHNICAL RECORDS - DO NOT EDIT/HARDWARE AND TOOLS.csv": "192e9d89ae01e1de054f67f34ae16313701ed3f5a1783fe9f814dd959a169b5a"
   }
 }

@@ -13,6 +13,28 @@ continuity, but the workflow's actual `runs-on` value is pinned to
 Changing that image requires a reviewed workflow and documentation update; it
 must not happen implicitly when GitHub moves the `ubuntu-latest` alias.
 
+## Path-aware verification
+
+The workflow classifies changed paths using
+[`.github/automation-policy.json`](../.github/automation-policy.json) before it
+runs the protected jobs. Required status names never disappear: each protected
+job either performs its full qualification or records that its governed inputs
+are unchanged. This avoids making branch protection depend on conditional jobs.
+
+- Documentation and branding changes run CI-unit, policy, link, record, and
+  release-ledger checks without installing the application package or CAD stacks.
+- Software, shared-contract, CI-policy, and dependency changes run the complete
+  portable package and contract suite.
+- RC03 manual, ReportLab, and mesh/static-camera qualifications run only when
+  their declared inputs change. Editing the classifier or offline workflow runs
+  every qualification so routing changes validate themselves.
+- A manual workflow dispatch always selects the full path.
+
+The classifier optimizes coverage selection; it does not weaken evidence claims
+or infer physical qualification. Add new governed paths to the policy and its
+unit tests in the same PR. Run `python scripts/ci/change_classifier.py --paths
+<path> ...` to inspect a proposed classification locally.
+
 Repository policy requires full commit-SHA action pins and permits only
 `actions/checkout`, `actions/setup-python`, `actions/upload-artifact`,
 `actions/configure-pages`, and `actions/deploy-pages`. Fork workflows from
@@ -110,13 +132,19 @@ is a separate, manually dispatched, read-only workflow. It accepts one full
 that GitHub-selected revision, requires its immutable SHA to equal the assertion,
 runs the strict release candidate inventory policy, performs the snapshot audit,
 rechecks maintained documentation, and measures the source-archive footprint.
+It then uploads a 30-day review packet containing the exact Git-tree inventory,
+candidate and tree identities, check outcomes, and a SHA-256 digest of that
+inventory. The packet is generated even when a known blocker fails the final
+gate, making the failed disposition inspectable without treating it as success.
 The input never selects code to check out.
 This prevents an input-controlled revision from executing in the default-branch
 workflow cache scope. The workflow uses a hosted Ubuntu runner, read-only repository
 permission, non-persisted checkout credentials, and no repository secrets.
 
-This workflow does not install the project, exercise hardware, upload artifacts,
-create tags, or publish releases. It is not a required branch-protection check.
+This workflow does not install the project, exercise hardware, create tags,
+attest a build, assemble a redistributable source bundle, or publish releases.
+Its uploaded review packet is an audit aid rather than a release asset, SBOM,
+or approval record. It is not a required branch-protection check.
 Use it only after identifying a proposed preview commit on protected `main`; a
 moving branch name is not a candidate identity. Confirm the completed run names
 the expected SHA. To assess some other revision without executing it in this
@@ -155,6 +183,7 @@ python scripts/ci/check_public_records.py
 python scripts/ci/check_repository_health.py --policy-only
 python scripts/ci/check_source_archive_footprint.py
 python scripts/ci/check_release_integrity.py --mode policy
+python scripts/ci/check_release_readiness_sync.py
 python scripts/ci/offline_checks.py install-tests
 python scripts/ci/offline_checks.py environment
 python scripts/ci/offline_checks.py test

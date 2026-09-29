@@ -1,0 +1,45 @@
+name: Pull request automation
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, edited, ready_for_review]
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: pr-automation-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  route-and-check:
+    name: Route and check pull request
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.12'
+      - name: Route trusted same-repository change and check handoff completeness
+        if: github.event.pull_request.head.repo.full_name == github.repository && github.actor != 'dependabot[bot]'
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: >-
+          python scripts/ci/pr_automation.py
+          --event "$GITHUB_EVENT_PATH"
+          --apply-labels
+          --summary "$GITHUB_STEP_SUMMARY"
+      - name: Check forked contribution without attempting mutation
+        if: github.event.pull_request.head.repo.full_name != github.repository || github.actor == 'dependabot[bot]'
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: >-
+          python scripts/ci/pr_automation.py
+          --event "$GITHUB_EVENT_PATH"
+          --summary "$GITHUB_STEP_SUMMARY"

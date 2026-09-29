@@ -14,9 +14,9 @@
     "max_duplicate_bytes": 10485760
   },
   "baseline": {
-    "commit": "1e0ed97974910b970b895d149f415b8aa7e6c521",
-    "tracked_files": 5953,
-    "logical_bytes": 888035473,
-    "duplicate_bytes": 234522512
+    "commit": "28e40d78633a0231bf4d857631aafd797a19f6e3",
+    "tracked_files": 5932,
+    "logical_bytes": 644998905,
+    "duplicate_bytes": 4890152
   }
 }

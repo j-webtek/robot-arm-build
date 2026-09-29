@@ -95,15 +95,17 @@ the protected-branch behavior first.
 ## Issue and PR triage
 
 Reuse `bug`, `documentation`, `enhancement`, and `question` for issue type.
-Additional labels created on September 26, 2026:
+Maintained routing labels include:
 
 | Label | Use |
 | --- | --- |
 | `area:repository` | GitHub configuration, CI, maintenance and contributor experience |
 | `area:ai` | AI producer, model or vision changes |
 | `area:arm` | Arm consumer, planner or controller changes |
+| `area:hardware` | Mechanical, CAD, printable-part or hardware-package changes |
 | `cross-workstream` | Coordinated interface review is needed |
 | `needs-owner-review` | An affected owner has not recorded a disposition |
+| `documentation` | Maintained public or contributor documentation changes |
 | `release-readiness` | Release prerequisites and preparation |
 
 Multiple area labels are appropriate for shared changes. Labels route work; they
@@ -130,6 +132,51 @@ the proposer.
 For future edits, follow [GitHub's form syntax](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-issue-forms),
 check IDs and labels for uniqueness, and verify the chooser and unsubmitted forms
 after merge. Do not create public test issues or submit private data for UI testing.
+
+### Pull-request routing and contract handoff
+
+The [pull-request automation](../.github/workflows/pr-automation.yml) derives its
+labels from changed paths and replaces only labels listed as managed in
+`.github/automation-policy.json`; manually applied priority, ownership, and issue
+labels are preserved. Trusted same-repository PRs are updated automatically.
+Forked PRs receive the same completeness check without a mutation attempt because
+their workflow token is intentionally read-only.
+
+Most PRs must retain the template's user outcome, ownership/handoff, and evidence
+sections. A change of three or fewer documentation-only files may use a compact
+description. Shared AI/arm contract changes are never exempt: they must include
+producer/consumer test or fixture coverage, a documentation or migration-note
+change, a compatibility classification, and migration or rollback guidance.
+This is an early consistency gate, not owner approval or proof of runtime safety.
+
+### Release-readiness synchronization
+
+The release-readiness registry names its tracking issue and milestone and is the
+source for the generated dashboard status, issue #57 body, and milestone
+description. CI validates the registry and dashboard on every PR. The weekly
+read-only repository-health workflow compares blocker statuses and generated
+text with live GitHub state. A mismatch fails the audit; the scheduled workflow
+cannot edit issues, close milestones, publish a candidate, or weaken a blocker.
+
+After a reviewed registry change, regenerate the dashboard and deliberately
+repair the live surfaces with an authenticated maintainer shell:
+
+```powershell
+.\maintain-repository.ps1 sync-readiness
+$env:GITHUB_TOKEN = '<short-lived token>'
+.\maintain-repository.ps1 sync-readiness -ApplyGitHub
+Remove-Item Env:GITHUB_TOKEN
+```
+
+Review the diff before committing. The GitHub operation updates only the tracker
+body and existing milestone description; it never changes blocker issue state.
+The prepared [independent kinematic-model replacement plan](WAVESHARE_MODEL_REPLACEMENT_PLAN.md)
+is the non-blocking fallback for issue #88. It does not resolve that issue or
+make a legal determination.
+
+The Pages deployment performs a bounded post-deploy check for the public title
+and overview poster. A deploy success without those public resources is reported
+as a failure rather than silently accepted.
 
 ## Dependency-update operation
 
@@ -246,6 +293,28 @@ workflow. After an intentional settings change, update the policy and its
 operations documentation in a reviewed PR so the declared baseline and GitHub
 state remain aligned.
 
+Each scheduled run also retains a 30-day Markdown/JSON operations report with
+the current registry counts, workflow inventory, dependency-monitor presence,
+tracked-file count, and shared-contract routing coverage. It is a triage aid,
+not a release, security, model, rights, or hardware approval.
+
+## One-command local maintenance
+
+From the repository root, run the same CI-unit and repository-policy checks used
+for routine review:
+
+```powershell
+.\maintain-repository.ps1 verify
+```
+
+Use `-Full` only in an environment where package test dependencies are already
+installed. Generate the bounded operations report with
+`.\maintain-repository.ps1 report`. The Python entry point
+`python scripts/maintain_repository.py ...` provides the same interface on other
+platforms. These commands are hardware-free and do not install dependencies,
+start the controller, move the arm, publish, or mutate GitHub unless the explicit
+`sync-readiness -ApplyGitHub` operation is chosen.
+
 ## Actions and security baseline
 
 The offline workflow uses full commit SHAs for checkout v7.0.1, setup-python
@@ -262,12 +331,16 @@ the runner selector; the CI guide documents this distinction.
 Dependabot can propose later pin updates; pinning does not itself prove the action is safe.
 The workflow retains read-only permissions, non-persisted checkout credentials,
 hosted runners and bounded jobs. It does not use `pull_request_target` or deploy.
-The manually dispatched preview-candidate audit uses the same two pinned actions,
-read-only permissions, and a hosted Ubuntu runner. GitHub selects the checkout
-revision; the caller-supplied full commit SHA is only an identity assertion and
-cannot select code to run. It audits only and has no release, artifact-upload,
-deployment, or hardware step. It is intentionally outside branch protection
-because it applies to a selected candidate rather than every development commit.
+The manually dispatched preview-candidate audit uses the same pinned checkout
+and setup actions plus the pinned upload-artifact action, read-only permissions,
+and a hosted Ubuntu runner. GitHub selects the checkout revision; the caller-
+supplied full commit SHA is only an identity assertion and cannot select code to
+run. It audits and uploads a 30-day identity-bound review packet, but has no tag,
+release, attestation, deployment, or hardware step. A failed candidate still
+produces the packet before the final gate fails. The packet is an audit aid, not
+a redistributable source bundle or publication approval. The workflow is
+intentionally outside branch protection because it applies to a selected
+candidate rather than every development commit.
 
 The initial September 26, 2026 inspection found Dependabot alerts/security updates
 and secret scanning/push protection disabled. The later approved repository

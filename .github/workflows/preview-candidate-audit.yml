@@ -54,6 +54,7 @@ jobs:
           print(f'Candidate identity verified: {actual}')
           PY
       - name: Run read-only candidate audits
+        id: audits
         env:
           EXPECTED_SHA: ${{ inputs.expected_sha }}
         shell: bash
@@ -70,18 +71,48 @@ jobs:
           set -e
 
           {
-            echo '### Source preview candidate audit'
-            echo
-            echo "Candidate: \`${EXPECTED_SHA}\`"
-            echo
-            echo "- Release-integrity candidate check exit: \`${integrity_status}\`"
-            echo "- Snapshot audit exit: \`${snapshot_status}\`"
-            echo "- Maintained-document check exit: \`${docs_status}\`"
-            echo "- Source-archive footprint exit: \`${footprint_status}\`"
-            echo
-            echo 'This workflow is read-only and publishes no release or artifact.'
-          } >> "$GITHUB_STEP_SUMMARY"
+            echo "integrity_status=${integrity_status}"
+            echo "snapshot_status=${snapshot_status}"
+            echo "docs_status=${docs_status}"
+            echo "footprint_status=${footprint_status}"
+          } >> "$GITHUB_OUTPUT"
 
-          if (( integrity_status != 0 || snapshot_status != 0 || docs_status != 0 || footprint_status != 0 )); then
+      - name: Build deterministic review packet
+        env:
+          EXPECTED_SHA: ${{ inputs.expected_sha }}
+          INTEGRITY_STATUS: ${{ steps.audits.outputs.integrity_status }}
+          SNAPSHOT_STATUS: ${{ steps.audits.outputs.snapshot_status }}
+          DOCS_STATUS: ${{ steps.audits.outputs.docs_status }}
+          FOOTPRINT_STATUS: ${{ steps.audits.outputs.footprint_status }}
+        shell: bash
+        run: |
+          python scripts/ci/build_release_review_packet.py \
+            --expected-sha "$EXPECTED_SHA" \
+            --output release-review-packet \
+            --check "release_integrity=${INTEGRITY_STATUS}" \
+            --check "snapshot_audit=${SNAPSHOT_STATUS}" \
+            --check "maintained_docs=${DOCS_STATUS}" \
+            --check "source_footprint=${FOOTPRINT_STATUS}" \
+            | tee release-review-summary.md
+          cat release-review-summary.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload non-publishing review packet
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: source-preview-review-${{ inputs.expected_sha }}
+          path: release-review-packet/
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Enforce candidate gate
+        env:
+          INTEGRITY_STATUS: ${{ steps.audits.outputs.integrity_status }}
+          SNAPSHOT_STATUS: ${{ steps.audits.outputs.snapshot_status }}
+          DOCS_STATUS: ${{ steps.audits.outputs.docs_status }}
+          FOOTPRINT_STATUS: ${{ steps.audits.outputs.footprint_status }}
+        shell: bash
+        run: |
+          if (( INTEGRITY_STATUS != 0 || SNAPSHOT_STATUS != 0 || DOCS_STATUS != 0 || FOOTPRINT_STATUS != 0 )); then
+            echo 'Candidate remains blocked; inspect the uploaded review packet.'
             exit 1
           fi

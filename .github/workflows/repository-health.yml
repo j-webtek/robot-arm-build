@@ -31,3 +31,25 @@ jobs:
             --scope public \
             --repository "$GITHUB_REPOSITORY" \
             --summary "$GITHUB_STEP_SUMMARY"
+      - name: Compare release ledger with tracker, milestone, and blocker issues
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: >-
+          python scripts/ci/check_release_readiness_sync.py
+          --online
+          --repository "$GITHUB_REPOSITORY"
+          --summary "$GITHUB_STEP_SUMMARY"
+      - name: Build bounded operations report
+        if: always()
+        run: >-
+          python scripts/ci/build_repository_operations_report.py
+          --output-dir "$RUNNER_TEMP/repository-operations"
+          --summary "$GITHUB_STEP_SUMMARY"
+      - name: Retain operations report
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: repository-operations-${{ github.run_id }}
+          path: ${{ runner.temp }}/repository-operations/
+          if-no-files-found: error
+          retention-days: 30

@@ -2,6 +2,12 @@
   "version": 1,
   "release_scope": "source-only-experimental-preview",
   "authority": "This registry blocks candidate validation; it does not select a candidate or authorize publication.",
+  "tracker": {
+    "issue": 57,
+    "expected_state": "open",
+    "milestone": "Tactevra v0.1 experimental preview",
+    "milestone_state": "open"
+  },
   "blockers": [
     {
       "id": "ai-artifact-reproducibility",
@@ -40,6 +46,22 @@
       "requirement": "Establish a durable redistribution basis or merge a reviewed replacement or removal of the derived Waveshare URDF.",
       "status": "open",
       "resolution": null
+    },
+    {
+      "id": "static-simulation-bundle",
+      "issue": "https://github.com/j-webtek/tactevra/issues/167",
+      "owner": "AI workstream with repository review",
+      "requirement": "Reconcile the static simulation bundle with the current system manifest and restore a passing maintained full AI test suite without weakening the freeze or evidence boundary.",
+      "status": "cleared",
+      "resolution": {
+        "summary": "Bundle 002 binds the intended FREEZE-013 manifest and its manifest-ID-only simulation profile update while preserving the prior bundle boundary, exact validation, zero physical authority, and a passing clean full AI suite.",
+        "evidence": [
+          "https://github.com/j-webtek/tactevra/pull/178",
+          "https://github.com/j-webtek/tactevra/issues/167",
+          "software/ai/eval/static_simulation_bundle_002_reconciliation.json",
+          "software/ai/docs/EVIDENCE_LEDGER.md"
+        ]
+      }
     }
   ]
 }

@@ -77,8 +77,13 @@ are a starting point, not a completed qualification record.
   from the intended protected `main` revision and provide that exact full SHA as
   the identity assertion. The input does not select a checkout. The workflow
   verifies the GitHub-selected revision against the assertion, runs candidate
-  integrity, the snapshot audit, and maintained-document checks, and publishes
-  no artifact or release.
+  integrity, the snapshot audit, maintained-document checks, and the source-
+  archive footprint check. It uploads a 30-day review packet containing the
+  exact Git-tree inventory, candidate metadata, check outcomes, and manifest
+  digest. The packet is evidence for review, not a release asset; the workflow
+  creates no tag, source archive, attestation, or GitHub release. A blocked
+  candidate still receives a packet and then fails the final gate so reviewers
+  can inspect the exact disposition without mistaking it for approval.
 - [ ] List known limitations, including native-helper prerequisites, absent lab
   records, unqualified real-camera localization, and physical typing status.
 - [ ] Review the draft notes and remove unresolved placeholders only when their
@@ -113,8 +118,10 @@ registry is structurally valid; it does not override the stricter candidate
 blockers, inspect file contents, or establish third-party
 redistribution rights. The separate snapshot audit remains required.
 The manual candidate workflow is additional release evidence, not a protected
-merge check or a publication approval. A failed run is expected while a recorded
-candidate blocker remains and must not be bypassed or reclassified as success.
+merge check or a publication approval. Its uploaded review packet is not an
+SBOM, binary provenance attestation, redistributable source bundle, or approval
+record. A failed run is expected while a recorded candidate blocker remains and
+must not be bypassed or reclassified as success.
 
 ## If a release needs correction
 

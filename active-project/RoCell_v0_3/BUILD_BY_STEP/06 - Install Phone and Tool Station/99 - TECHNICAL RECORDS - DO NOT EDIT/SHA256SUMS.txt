@@ -8,7 +8,7 @@ c9362cf401ca66f4e584c7fc294f6c54853c8ea546e610d551bc841782d6bcd0  ../../../BOM.c
 a8c75f05f727fa899c1f873ffea9852b5e6d343cdd302d5c4e02ee4124f74fc3  ../../../PRINT_READINESS.json
 5be5234644cbca322e93f16ec422cd5a6f04059055a2f56d68cf224d61f015b0  ../../../PRINT_READINESS.md
 c8cf80651860f9c6b13f1227eb542356968f7282f591aa76acfa5950707898b0  ../../../RC03_INTEGRATED_BUILD_PLAN.md
-3f120c69dcee278cb67c449e84d3a43c0b5183bdfee1cf4cb86bb938e2a32d34  ../../../README_FIRST.md
+6e3e5a4bf57be1858e0b691c09b0c7683cc4266eb7df666d371136aa5800ee42  ../../../README_FIRST.md
 2561bed996ff1a1c9bb15530b35467d15318812ea3822f77c2e76f80ed74008c  ../../../cad/step/cable_tie_saddle_fit_gauge.step
 e9cb6408e7a2f02c388c0f299c60e2bf3c97467710c5f0b523938669dfbfe85d  ../../../cad/step/m4_captive_nut_fit_gauge.step
 9cc2e4910b7dbeee4f37d240e88bfb2f861ff19121487380d0c3d404f5644cfe  ../../../cad/step/m4_washer_fit_gauge.step
@@ -36,7 +36,7 @@ c3fd921347d91842d1f16728e8e88a45d25a776aa3aedd6d8810c9db9773c7b9  ../../../print
 a0933605a7fbc2c7205b93404508f94828e21075476c6e89db2aef5899459da6  ../../../print_plates_3mf/03A_ABS_phone_TCP_station.print.json
 6badf0daa975d8c0ab5de34cea5a7514dbff8469d2a7b499670a3002d428eb31  ../../../scripts/build_illustrated_assembly_guide.py
 4baf08d28e3566c3eb3869585275ebc318bf1e076744867221d4d79e2359f182  ../../../scripts/build_manual_pdf.py
-d36767cf22f6b4becf5716eb7ae2e7b8f8315dd13e30204732ff9f2c3007463a  ../../../scripts/build_step_packages.py
+38b9b55bfaad6c80f2465bd99abc134b8a7b488d91e6fc357c3f93f05ec699b9  ../../../scripts/build_step_packages.py
 6090b47ff751ebb62c6ab8ecd4abc55fa54f79cabde5b86a4231484b2cc67e53  ../../../scripts/generate_build_tracker.py
 520cf48d2263beca0eca351d6960fbfae95e1f9c63e05aec1204957b47271a7f  ../../../scripts/generate_job_cards.py
 0a940eabc2ab22fcc0c4e2b2df9a67fa90224027168127917c2e7879a8725b93  ../../../scripts/initialize_step_evidence.py

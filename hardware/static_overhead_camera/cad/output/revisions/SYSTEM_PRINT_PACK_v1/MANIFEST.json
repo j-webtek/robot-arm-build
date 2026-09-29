@@ -1,6 +1,9 @@
 {
   "description": "16 ABS frame plates plus four TPU board pads on one plate; one repaired carriage plate on HOLD",
   "original_files_preserved": true,
+  "repository_form": "HASH_BOUND_SELECTED_FALLBACK_STLS",
+  "standalone_export_command": "python hardware/static_overhead_camera/cad/stage_system_print_pack.py --output <outside-repository-destination>",
+  "hash_reference_manifest": "STL_HASH_REFERENCES.json",
   "plates": [
     {
       "plate": "00G-P1",

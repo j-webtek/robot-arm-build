@@ -19,6 +19,11 @@ The scene deliberately separates six evidence classes:
   paired links, exposed fasteners, wrist plates, and gripper language. It is
   used only during the short shot labeled `SIMULATED PRESS`; its authored pose
   is not a solved trajectory.
+- **Photo-informed current tool state** — the moving rig shows the bare nominal
+  9 mm OASO-style stylus barrel held directly between the opposing RoArm jaw
+  pads, matching the current photographed assembly. No printed cartridge,
+  collar, cap, or retention screws are depicted. Installed transform,
+  protrusion, grip force, and capacitive-disc geometry remain unmeasured.
 - **Conceptual** — target paths and explanatory motion graphics. These
   communicate intended behavior; they are not collision or motion
   qualification.
@@ -35,8 +40,9 @@ origins. Their shells, controls, legends, glass, interface, and cables are
 presentation-detail geometry: they make the intended device classes and
 interactions legible, but are not manufacturer CAD or fabrication authority.
 
-`dimension_manifest.json` records the values and source authorities used by the
-film. Run the validator before rendering:
+`dimension_manifest.json` records the published workcell authorities, while
+`contact_tool_manifest.json` separately pins the not-yet-published animated
+tool parts and their accuracy boundary. Run the validator before rendering:
 
 ```powershell
 python presentations/blender/validate_dimensions.py
@@ -97,6 +103,132 @@ video stay out of source control through the repository's existing `/tmp/`
 ignore rule; the source scene builder and production notes are the reviewable
 authorities.
 
+## Build the v2.1 production framework
+
+The 100-second replacement film is now encoded as a deterministic Blender
+production scaffold rather than only a prose storyboard:
+
+- `storyboard_v21_shots.json` is the source of truth for all 17 contiguous
+  scenes, stage names, camera-rig assignments, and the seven-phase first
+  contact benchmark;
+- `build_storyboard_v21_benchmark.py` reuses the measured workcell scene,
+  organizes reference assets in a locked collection, creates seven native
+  Blender camera rigs (`macro`, `dolly`, `arm_follow`, `hero`, `overhead`, and
+  `low_three_quarter`, `contact_three_quarter`), and adds
+  the green permit, blue uncertainty, and dotted no-authority preview;
+- `validate_storyboard_v21.py` fails when timings drift, a shot is missing, a
+  camera rig is unused, or the first-contact phase order changes.
+
+Validate the editorial contract without Blender:
+
+```powershell
+python presentations/blender/validate_storyboard_v21.py
+```
+
+Render the scene-7 toolhead insert and operator-display focus-pull checkpoints:
+
+```powershell
+& "C:\Program Files\Blender Foundation\Blender 4.3\blender.exe" `
+  --background --factory-startup `
+  --python presentations/blender/build_storyboard_v21_benchmark.py -- `
+  --preview-scene7
+```
+
+Render the operator request-console close-up:
+
+```powershell
+& "C:\Program Files\Blender Foundation\Blender 4.3\blender.exe" `
+  --background --factory-startup `
+  --python presentations/blender/build_storyboard_v21_benchmark.py -- `
+  --preview-scene2
+```
+
+Render the overhead Locate checkpoints and confirm the presentation-only
+operator display remains outside the optical workcell view:
+
+```powershell
+& "C:\Program Files\Blender Foundation\Blender 4.3\blender.exe" `
+  --background --factory-startup `
+  --python presentations/blender/build_storyboard_v21_benchmark.py -- `
+  --preview-locate
+```
+
+Build the editable scene and six local benchmark frames:
+
+```powershell
+& "C:\Program Files\Blender Foundation\Blender 4.3\blender.exe" `
+  --background --factory-startup `
+  --python presentations/blender/build_storyboard_v21_benchmark.py -- `
+  --preview-benchmark
+```
+
+Render the follow-on `e → a → d → y` rhythm checkpoints:
+
+```powershell
+& "C:\Program Files\Blender Foundation\Blender 4.3\blender.exe" `
+  --background --factory-startup `
+  --python presentations/blender/build_storyboard_v21_benchmark.py -- `
+  --preview-rhythm
+```
+
+Render the continuous keyboard-to-phone crossing checkpoints:
+
+```powershell
+& "C:\Program Files\Blender Foundation\Blender 4.3\blender.exe" `
+  --background --factory-startup `
+  --python presentations/blender/build_storyboard_v21_benchmark.py -- `
+  --preview-crossing
+```
+
+Render the modeled Messages sequence and its independently permitted taps:
+
+```powershell
+& "C:\Program Files\Blender Foundation\Blender 4.3\blender.exe" `
+  --background --factory-startup `
+  --python presentations/blender/build_storyboard_v21_benchmark.py -- `
+  --preview-phone
+```
+
+Generated output is written to `tmp/blender-storyboard-v21/`. The first
+benchmark is intentionally limited to the lowercase `r` action at frames
+961–1152. It demonstrates `transit → align → settle → approach → contact →
+retract → verify`, consumes one permit, and reveals the dotted `e` preview
+only after verification. It remains a simulated presentation sequence, not
+physical qualification evidence.
+
+Scene 9 continues with the same detailed rig rather than swapping robot
+models. Rigid link controls preserve every servo, paired rail, fastener,
+gripper, and stylus component while the wrist travels continuously across
+`e`, `a`, `d`, and `y`. Each key receives its own uncertainty fit, permit,
+contact, retract, and verification interval; the next dotted target remains a
+preview until its permit is granted.
+
+After local verification, the rig retracts to a 255 mm wrist height, holds
+through the receipt beat, and crosses through a 275 mm midpoint before ending
+above the phone at 255 mm. Permit, uncertainty, and preview graphics stay
+inactive because this is contact-free transit. The arm-follow camera moves its
+aim from the final keyboard key to the measured phone center without a pose,
+stylus, or robot swap.
+
+Scenes 12–14 use a presentation-only Messages interface constrained to the
+measured phone glass. One fully shown home-screen check permits the Messages
+app contact. The portrait app state keeps a contact header and prior messages
+above a lower composer, places Send at the composer's right edge, and keeps the
+software keyboard below both. The same rig then types lowercase `on my way` with nine
+screen-check/permit/contact/verify cycles before slowing for a separately
+checked Send contact. The first two characters play naturally; the remaining
+seven carry a visible `2×` disclosure. The UI is explicitly modeled—not
+represented as a captured app—and the physical chassis and indexed placement
+remain canonical.
+
+Revision history lives in `TACTEVRA_OVERVIEW_STORYBOARD_CHANGELOG.md` so the
+primary storyboard remains an artist-facing production document.
+
+The scaffold has no add-on dependency. Native cameras, constraints, markers,
+and collections keep CI and collaborator builds reproducible. Artists may use
+free camera or editing add-ons for exploration, but must bake approved motion
+into these native rigs before delivery.
+
 ## Publish the repository overview
 
 After reviewing the 1080p delivery render, publish the intentionally tracked
@@ -136,15 +268,16 @@ request-to-result replacement is documented in
 [`TACTEVRA_OVERVIEW_STORYBOARD_V2.md`](TACTEVRA_OVERVIEW_STORYBOARD_V2.md).
 The companion
 [`ADVERTISING_STORYBOARD_HANDOFF.md`](ADVERTISING_STORYBOARD_HANDOFF.md)
-packages five visual concept frames, the complete director's board, and the
+packages six geometry-reference frames, the complete director's board, and the
 art-direction questions for an outside advertising collaborator.
 That treatment expands the demonstration from one H-key press to a compound
-`enter READY locally through the physical keyboard → send READY separately
-through phone-screen taps` workflow performed by one continuous detailed arm
-and stylus. The physical keyboard drives and verifies only local input; the
-phone uses its own app state, on-screen controls, and verification. Keep the
-current film published until that replacement passes its visual-continuity and
-accuracy checkpoints.
+`type ready in the operator-display test pad through the physical keyboard → send on my
+way separately through phone-screen taps` workflow performed by one continuous
+detailed arm and stylus. Physical authority is granted one contact at a time.
+The physical keyboard drives and verifies only local input; the phone checks
+its expected screen before every tap and uses its own state and verification.
+Keep the current film published until that replacement passes its continuity,
+accuracy, and per-contact-authority checkpoints.
 
 | Time | Shot | Evidence communicated |
 |---:|---|---|
@@ -192,9 +325,10 @@ dimension-checked 3D render:
   static hardware shot;
 - a six-row compact keyboard reconstruction uses the measured RC03 envelope
   and the nominal 19.05 mm pitch encoded by the target profile, with realistic
-  stagger, modifier-key widths, recessed key wells, beveled caps, legends,
-  matte-black enclosure and keys, the photographed rear protective-film band,
-  status lights, and a connected cable rather than a uniform placeholder grid;
+  stagger, modifier-key widths, recessed key wells, beveled caps, white legends,
+  a compressed function row, right-side navigation keys, matte-black enclosure
+  and keys, the photographed glossy control-strip film, status lights, and a
+  centered connected cable rather than a uniform placeholder grid;
 - a layered phone reconstruction adds an aluminum envelope, optical glass,
   matte-black chassis and bezel rails, receiver, front camera, side controls, charging-port
   recess, and a modeled host-verification UI
@@ -258,8 +392,12 @@ assembly surface but do not establish an installed pose or clearance.
 - `active-project/RoCell_v0_3/stl/keyboard_station_left.stl`
 - `active-project/RoCell_v0_3/stl/keyboard_station_right.stl`
 - `active-project/RoCell_v0_3/stl/phone_tcp_station.stl`
+- `active-project/RoCell_v0_3/stl/compliant_tool_body.stl`
+- `active-project/RoCell_v0_3/stl/compliant_tool_top_cap.stl`
+- `active-project/RoCell_v0_3/stl/stylus_collar_9mm.stl`
 - `software/models/roarm_m3/roarm_m3_kinematic_40dbd84.urdf`
 - `presentations/blender/dimension_manifest.json`
+- `presentations/blender/contact_tool_manifest.json`
 
 ## Accuracy boundary
 
@@ -284,9 +422,33 @@ The visible arm is dimensioned from the pinned official URDF but is not a
 qualified digital twin. The optional vendor STEP and local tessellation remain
 untracked. Device manufacturing
 variation, cable geometry, the installed robot transform, tag stack height,
-and tool geometry also remain physical-measurement items. This film is therefore
+and the installed tool transform/stylus geometry also remain physical-measurement
+items. The current bare-stylus jaw grip is photo-informed rather than qualified
+CAD. This film is therefore
 an accurate system-layout and product-geometry explainer, not a motion-clearance
 or fabrication release.
+
+The v2.1 animated presentation rig uses a parented five-stage visible chain:
+base yaw, shoulder pitch, elbow, wrist pitch, and tool wrist. The fixed lower
+chassis exposes the controller PCB and standoffs beneath a separate rotating
+yaw deck, matching the physical RoArm architecture rather than reading as a
+solid generic pedestal. Its servo bodies remain attached
+to the carrying side of each joint, its three link stages cannot separate
+during interpolation, and the terminal tool counter-rotates to keep the stylus
+vertical in the board frame. Render the five full-arm QA poses with:
+
+```powershell
+blender --background --factory-startup `
+  --python presentations/blender/build_storyboard_v21_benchmark.py -- `
+  --preview-arm-form
+```
+
+The resulting `tmp/blender-storyboard-v21/arm_form_*.png` files are review
+views only; they are not additional editorial cameras or film claims.
+Use `--preview-arm-joints` for tighter diagnostic views of the base and every
+joint interface. The build samples the complete animated interval and aborts
+on a translated base, separated pivot, tilted yaw axis, detached contact
+motion, nonvertical tool, or discontinuous joint/yaw step.
 
 ## Narration and truth boundary
 

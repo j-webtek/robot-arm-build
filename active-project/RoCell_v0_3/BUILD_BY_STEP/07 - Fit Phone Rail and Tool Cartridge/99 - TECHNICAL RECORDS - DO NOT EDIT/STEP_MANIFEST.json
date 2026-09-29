@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "layout_version": 5,
+  "layout_version": 6,
   "design_revision": "RC03-INT-R1",
-  "package_definition_hash": "3d4d45a05327b35ffcc474b8df0f6bcb202a79fcfd98a3529062bd2c44ffc168",
-  "canonical_snapshot_hash": "d2a06fa67ec4ed0e36a8d40bd158aeb9e923890a00b310d3c6eacdfbaadfb34d",
-  "canonical_input_hash": "d2a06fa67ec4ed0e36a8d40bd158aeb9e923890a00b310d3c6eacdfbaadfb34d",
+  "package_definition_hash": "65bbe688892e0dcdd2115a28d9f155921587915d80e98f6b01d81aaedcbde3a5",
+  "canonical_snapshot_hash": "06efd7afc3a2b406d822f18b0ae06189c5edbb01dbbd069e0edf35718290f45c",
+  "canonical_input_hash": "06efd7afc3a2b406d822f18b0ae06189c5edbb01dbbd069e0edf35718290f45c",
   "step_id": "07",
   "slug": "seat_phone_rail_and_cartridge",
   "title": "Seat the phone rail and TCP cartridge",
@@ -258,8 +258,8 @@
     },
     {
       "canonical_path": "README_FIRST.md",
-      "sha256": "3f120c69dcee278cb67c449e84d3a43c0b5183bdfee1cf4cb86bb938e2a32d34",
-      "size_bytes": 10392,
+      "sha256": "6e3e5a4bf57be1858e0b691c09b0c7683cc4266eb7df666d371136aa5800ee42",
+      "size_bytes": 10683,
       "roles": [
         "release entry point"
       ],
@@ -836,8 +836,8 @@
     },
     {
       "canonical_path": "scripts/build_step_packages.py",
-      "sha256": "d36767cf22f6b4becf5716eb7ae2e7b8f8315dd13e30204732ff9f2c3007463a",
-      "size_bytes": 174644,
+      "sha256": "38b9b55bfaad6c80f2465bd99abc134b8a7b488d91e6fc357c3f93f05ec699b9",
+      "size_bytes": 175793,
       "roles": [
         "step-package generator and validator"
       ],
@@ -1241,21 +1241,21 @@
     "00 - START HERE.md": "80cbe27bd0b0bf81493aa2f813a0af44cf205b11ff56e3c881fbf544d3d80784",
     "01 - BEFORE YOU START.md": "d124a7abd6cab3b64c44dd5ee359b32d93d83c35d311a2533b3a98e3314d0e06",
     "02 - PARTS AND TOOLS CHECKLIST.md": "14f79c6946b706b442af9ba494efe6a5e788ae4123038d3881fe2ef82d5ac78a",
-    "03 - STL MODELS/READ ME - HOW TO USE THESE MODELS.md": "a85de326e1ebc6fd1b8897fe10afd3c12def4deb826028cca48b1ae2487e67d5",
-    "03 - STL MODELS/STL MODEL LIST.csv": "0062c5babf4abbae35981d139bdfaf73e345cd25e90b457c8c75780e4f3b2faa",
+    "03 - STL MODELS/READ ME - HOW TO USE THESE MODELS.md": "a8a1a39b7380f3ee8cedf4bf93bb33779a32a04de0327ee787b47b6afc801bbb",
+    "03 - STL MODELS/STL MODEL LIST.csv": "61a4f24026419d4ef3ac9574f0e46293320dccb5e48c70618b488b6c3c61b93d",
     "03B - PRINT SETTINGS FOR THIS STEP.md": "88ebaeb91cbd9e13c7012ce0d1c2e42592453faec50149c3e3dedd024df969ea",
     "04 - STEP-BY-STEP INSTRUCTIONS.md": "cddccfbeb14a4d86daab2eda9088ad6e9f0227f24901361839a6e9bac466440a",
     "05 - CHECK YOUR WORK.md": "8447812d3198ec538f5a9f984b307fdcee9b74c9c03c4570a762a5828ade8c49",
     "06 - SAVE MEASUREMENTS AND PHOTOS/READ ME - WHAT TO RECORD.md": "a3949029518253a959f126a53a142d07e45e15b6314bd06c532186745b7d6fc5",
-    "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/measurement_record.json": "cfd0f3378c7cff020a31f7d1a17fa021765482003429e09142b048dca4b82b05",
-    "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/signoff.json": "b2b5eaf41eef3815159bc0d833a20b10b037b2a5720263af73cdd83be9809594",
+    "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/measurement_record.json": "e25d5665f7953ec3123476032addf517aa15a70d6ea7407777de2ef6709698f7",
+    "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/signoff.json": "c5846bc9d3189ff936f13b13d0317f35b122e2954bc530dadcfb778899c0dc9f",
     "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/Measurements Checklist.md": "a870c613dbf85edfb298c2088297cfe0f5734364d66d6621343c3b5f14606840",
     "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/Finish and Sign Off.md": "2e6966e5e4dbf2359d840b7555ab0e8690d901ed9613d88d1da828de3db10fc7",
     "07 - FINISH THIS STEP AND CONTINUE.md": "0a1a7659003a02fdaa9adcf3e450a6f6b87fe40fae930e0dc97897bfd0897a69",
-    "99 - TECHNICAL RECORDS - DO NOT EDIT/OPEN CONTROLLED FILES.md": "18cfaa9243830150defd41690b7d69689017f1b691010d83fe1159479e28dd35",
-    "99 - TECHNICAL RECORDS - DO NOT EDIT/FILE INDEX.csv": "30788efc6412989a72d33fa8d669359eb58d77c56ac1da00c870d5ab7a8abfb6",
-    "99 - TECHNICAL RECORDS - DO NOT EDIT/FILE MANIFEST.json": "8c33914fdfc38297a2b45667a40d6d8d33a8b01ae120e2b006c98316af414ba3",
-    "99 - TECHNICAL RECORDS - DO NOT EDIT/SHA256SUMS.txt": "0fcd9c7901e2ad3371da424412ac974019a7a105d8edc34994698555fc16e66d",
+    "99 - TECHNICAL RECORDS - DO NOT EDIT/OPEN CONTROLLED FILES.md": "c1deb068e7b3e7e96816d3201004842072bb30c959b0668e31e2a4ba48b582c2",
+    "99 - TECHNICAL RECORDS - DO NOT EDIT/FILE INDEX.csv": "eedf9e5900c8540a02cfe3f243d4aaf6dd9379893a2421832c2bcefe1d8458b0",
+    "99 - TECHNICAL RECORDS - DO NOT EDIT/FILE MANIFEST.json": "d0427eaeee05043ea6c896af23cb8b088cf8f471933cbc4650e8d6e645e1dfc0",
+    "99 - TECHNICAL RECORDS - DO NOT EDIT/SHA256SUMS.txt": "c7d58c0df0c01fdef728cd2cbc7d0fe41a388700967b0c6ebcaab78e7a9050ac",
     "99 - TECHNICAL RECORDS - DO NOT EDIT/HARDWARE AND TOOLS.csv": "fdb7fb277aa5cb3160d4f4abfa42d2e732ed797e998d5b5e83cd6f7ef59a69b4"
   }
 }

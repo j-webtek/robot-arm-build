@@ -32,7 +32,7 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 
 import bpy
-from mathutils import Vector
+from mathutils import Quaternion, Vector
 
 
 SCRIPT = Path(__file__).resolve()
@@ -165,6 +165,26 @@ def import_stl(path: Path, name: str, mat: bpy.types.Material,
     obj.scale = (0.001, 0.001, 0.001)
     obj.location = board_point(*offset_mm)
     bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
+    apply_material(obj, mat)
+    return obj
+
+
+def import_stl_centered(path: Path, name: str, mat: bpy.types.Material,
+                        center_world: Vector) -> bpy.types.Object:
+    """Import a millimetre STL and place its mesh-bounds centre in world space.
+
+    Unlike the workcell parts, the compliant-tool files use part-local origins.
+    Centering their evaluated bounds makes the presentation transform explicit
+    without changing or globally scaling the controlled source meshes.
+    """
+    bpy.ops.wm.stl_import(filepath=str(path))
+    obj = bpy.context.object
+    obj.name = name
+    obj.scale = (0.001, 0.001, 0.001)
+    bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
+    local_corners = [Vector(corner) for corner in obj.bound_box]
+    local_center = sum(local_corners, Vector()) / len(local_corners)
+    obj.location = center_world - local_center
     apply_material(obj, mat)
     return obj
 
@@ -422,86 +442,125 @@ def add_keyboard(layout: dict, mats: dict[str, bpy.types.Material]) -> dict[str,
          ((sx - 8.0) / 1000, 0.003, 0.0022), mats["keyboard_trim"], 0.001)
     cube("Keyboard rear accent", board_point(ox + sx / 2, oy + sy - 3.2, sz - 1.4),
          ((sx - 8.0) / 1000, 0.003, 0.0022), mats["keyboard_trim"], 0.001)
-    # The photographed unit retains a narrow reflective protective-film band
-    # along the rear/top bezel. Keep it inside the measured envelope and clear
-    # of the function-key field so it reads as the same physical keyboard.
+    # The photographed unit has a glossy, film-covered control strip behind
+    # the function row. Keep it inside the measured envelope and preserve the
+    # dark keyboard silhouette instead of rendering it as a metallic panel.
     cube("Keyboard photographed rear protective film",
-         board_point(ox + sx / 2, oy + sy - 5.8, sz + 0.35),
-         ((sx - 6.0) / 1000, 0.0085, 0.00045),
+         board_point(ox + sx / 2, oy + sy - 5.0, sz + 0.35),
+         ((sx - 6.0) / 1000, 0.0100, 0.00045),
          mats["keyboard_film"], 0.0012)
+    for index, icon in enumerate(("□", "A", "1", "▣")):
+        icon_x = ox + 61.0 + index * 27.0
+        cube(f"Keyboard touch icon well {index + 1}",
+             board_point(icon_x, oy + sy - 5.0, sz + 0.75),
+             (0.017, 0.0065, 0.00035), mats["keyboard_trim"], 0.0014)
+        board_text(f"Keyboard touch icon {index + 1}", icon,
+                   board_point(icon_x, oy + sy - 5.0, sz + 1.2),
+                   0.0036, mats["legend"])
+    # Low-relief seams catch highlights like the wrinkled protective film in
+    # the supplied physical reference without baking a photograph into the
+    # distributable asset.
+    for index, offset in enumerate((-2.4, 0.0, 2.4)):
+        points = [
+            board_point(ox + 8.0, oy + sy - 5.0 + offset, sz + 0.82),
+            board_point(ox + sx * 0.35, oy + sy - 4.4 + offset, sz + 0.88),
+            board_point(ox + sx * 0.68, oy + sy - 5.6 + offset, sz + 0.84),
+            board_point(ox + sx - 8.0, oy + sy - 4.8 + offset, sz + 0.86),
+        ]
+        curve_line(f"Keyboard protective film seam {index + 1}", points,
+                   mats["keyboard_film"], 0.00016)
     # The printable shell remains a measured envelope. The principal key rows
     # below are positioned from software/config/static_nominal_target_profiles.json:
     # 19.05 mm pitch, exact first-center offsets, and therefore H at
     # board (216.55, 154.00). Function and modifier caps are presentation
     # context only and stay inside the same measured chassis.
     pitch = 19.05
-    rows = [
-        ("ESC F1 F2 F3 F4 F5 F6 F7 F8 F9 F10 F11 F12 PRT SCR".split(),
-         ox + 10.0, oy + 135.0, 0.82),
-        (list("1234567890") + ["-", "="],
-         ox + 22.0, oy + 111.0, 0.82),
-        (list("QWERTYUIOP"),
-         ox + 31.5, oy + 90.0, 0.82),
-        (list("ASDFGHJKL") + [";", "'"],
-         ox + 36.3, oy + 69.0, 0.82),
-        (list("ZXCVBNM") + [",", ".", "/"],
-         ox + 45.8, oy + 48.0, 0.82),
-    ]
     named_keys: dict[str, bpy.types.Object] = {}
+
+    def add_key(label: str, x: float, y: float, width: float,
+                row_id: str, col: int, *, legend_size: float | None = None,
+                name_prefix: str = "Key") -> bpy.types.Object:
+        cube(f"{name_prefix} well {row_id}-{col}", board_point(x, y, sz + 1.7),
+             (max(0.009, (width - 1.7) / 1000), 0.0180, 0.0034),
+             mats["key_side"], 0.0018)
+        key = cube(f"{name_prefix} cap {row_id}-{col}",
+                   board_point(x, y, sz + 4.0),
+                   (max(0.008, (width - 3.0) / 1000), 0.0162, 0.0042),
+                   mats["key"], 0.0024)
+        key["legend"] = label
+        named_keys.setdefault(label, key)
+        size = legend_size if legend_size is not None else (
+            0.0048 if len(label) <= 2 else 0.0028
+        )
+        board_text(f"{name_prefix} legend {label}-{row_id}-{col}", label,
+                   board_point(x, y, sz + 6.2), size, mats["legend"])
+        return key
+
+    # The physical RC03 reference has a compressed 18-key function row,
+    # including the four-key navigation cluster at the far right.
+    function_legends = (
+        "Esc", "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8",
+        "F9", "F10", "F11", "F12", "Prt", "Scr", "Pau", "Del",
+    )
+    function_step = (sx - 20.0) / (len(function_legends) - 1)
+    for col, legend in enumerate(function_legends):
+        add_key(legend, ox + 10.0 + col * function_step, oy + 130.0,
+                function_step * 0.86, "function", col,
+                legend_size=0.0025, name_prefix="Function")
+
+    # Main alphanumeric centers remain pinned to the software target profile;
+    # visual improvements must never drift the nominal control coordinates.
+    rows = [
+        (list("1234567890") + ["-", "="], ox + 22.0, oy + 111.0, 0.82),
+        (list("QWERTYUIOP"), ox + 31.5, oy + 90.0, 0.82),
+        (list("ASDFGHJKL") + [";", "'"], ox + 36.3, oy + 69.0, 0.82),
+        (list("ZXCVBNM") + [",", ".", "/"], ox + 45.8, oy + 48.0, 0.82),
+    ]
     for row_i, (legends, first_x, y, width_ratio) in enumerate(rows):
         for col, legend in enumerate(legends):
             x = first_x + col * pitch
             key_width = pitch * width_ratio
-            lower = cube(f"Key well {row_i}-{col}", board_point(x, y, sz + 1.7),
-                         (max(0.009, (key_width - 1.7) / 1000), 0.0180, 0.0034),
-                         mats["key_side"], 0.0018)
-            key = cube(f"Key cap {row_i}-{col}", board_point(x, y, sz + 4.0),
-                       (max(0.008, (key_width - 3.0) / 1000), 0.0162, 0.0042),
-                       mats["key"], 0.0024)
-            lower["legend"] = legend
-            key["legend"] = legend
-            named_keys.setdefault(legend, key)
-            legend_size = 0.0048 if len(legend) <= 2 else 0.0028
-            board_text(
-                f"Key legend {legend}-{row_i}-{col}", legend,
-                board_point(x, y, sz + 6.2), legend_size, mats["legend"],
-            )
+            add_key(legend, x, y, key_width, str(row_i), col)
     # Presentation-only outer modifiers, sized to resemble the photographed
     # compact keyboard without changing any named target coordinate.
-    for label, x, y, width in (
+    for col, (label, x, y, width) in enumerate((
         ("TAB", ox + 12.0, oy + 90.0, 22.0),
         ("CAPS", ox + 15.0, oy + 69.0, 28.0),
         ("SHIFT", ox + 20.0, oy + 48.0, 37.0),
-        ("CTRL", ox + 14.0, oy + 24.0, 26.0),
-        ("ALT", ox + 48.0, oy + 24.0, 24.0),
-        ("SPACE", ox + 128.0, oy + 24.0, 112.0),
-        ("ALT", ox + 201.0, oy + 24.0, 24.0),
-        ("LEFT", ox + 247.0, oy + 24.0, 17.0),
-        ("DOWN", ox + 266.0, oy + 24.0, 17.0),
-        ("RIGHT", ox + 285.0, oy + 24.0, 17.0),
-    ):
-        cube(f"Modifier well {label}-{x}", board_point(x, y, sz + 1.7),
-             ((width + 0.5) / 1000, 0.0180, 0.0034), mats["key_side"], 0.0018)
-        key = cube(f"Modifier cap {label}-{x}", board_point(x, y, sz + 4.0),
-                   ((width - 1.0) / 1000, 0.0162, 0.0042), mats["key"], 0.0024)
-        board_text(f"Modifier legend {label}-{x}", label,
-                   board_point(x, y, sz + 6.2),
-                   0.0048 if len(label) <= 2 else 0.0028, mats["legend"])
-        named_keys.setdefault(label, key)
-    # Three small status lights and a recessed cable exit add scale cues that
-    # survive the overhead and macro shots.
+        ("BACK", ox + 264.0, oy + 111.0, 40.0),
+        ("HOME", ox + 298.0, oy + 111.0, 20.0),
+        ("[", ox + 231.5, oy + 90.0, 15.6),
+        ("]", ox + 250.5, oy + 90.0, 15.6),
+        ("\\", ox + 269.5, oy + 90.0, 15.6),
+        ("PGUP", ox + 298.0, oy + 90.0, 20.0),
+        ("ENTER", ox + 264.0, oy + 69.0, 40.0),
+        ("PGDN", ox + 298.0, oy + 69.0, 20.0),
+        ("SHIFT", ox + 264.0, oy + 48.0, 40.0),
+        ("UP", ox + 289.0, oy + 48.0, 17.0),
+        ("END", ox + 307.0, oy + 48.0, 17.0),
+        ("CTRL", ox + 14.0, oy + 24.0, 23.0),
+        ("START", ox + 39.0, oy + 24.0, 24.0),
+        ("FN", ox + 61.0, oy + 24.0, 18.0),
+        ("ALT", ox + 80.0, oy + 24.0, 18.0),
+        ("SPACE", ox + 141.0, oy + 24.0, 104.0),
+        ("ALTGR", ox + 205.0, oy + 24.0, 22.0),
+        ("MENU", ox + 226.0, oy + 24.0, 17.0),
+        ("CTRL", ox + 246.0, oy + 24.0, 20.0),
+        ("INS", ox + 264.0, oy + 24.0, 15.0),
+        ("LEFT", ox + 276.5, oy + 24.0, 14.0),
+        ("DOWN", ox + 292.0, oy + 24.0, 14.0),
+        ("RIGHT", ox + 307.5, oy + 24.0, 14.0),
+    )):
+        add_key(label, x, y, width, "modifier", col,
+                legend_size=0.0025 if len(label) > 3 else None,
+                name_prefix="Modifier")
+    # Three small status lights add scale cues that survive the overhead and
+    # macro shots. The presentation intentionally omits a keyboard cord;
+    # electrical connectivity is outside this film's demonstrated scope.
     for index, state_mat in enumerate((mats["green"], mats["cyan"], mats["amber"])):
         cylinder(f"Keyboard status LED {index + 1}",
                  board_point(ox + sx - 12.0 - index * 7.0, oy + sy - 10.0, sz + 2.0),
                  0.0015, 0.0010, state_mat, 24)
-    cable_start = board_point(ox + sx / 2, oy + sy, sz * 0.68)
-    keyboard_cable = curve_line(
-        "Keyboard signal cable",
-        [cable_start, cable_start + Vector((0.0, 0.040, 0.005)),
-         cable_start + Vector((0.065, 0.075, 0.002))],
-        mats["cable"], 0.0022,
-    )
-    keyboard_cable["presentation_detail"] = "KEYBOARD_CABLE_WITHIN_PRESENTATION_CLEARANCE"
     return named_keys
 
 
@@ -643,8 +702,107 @@ def _world_beam(name: str, start: Vector, end: Vector, mat: bpy.types.Material,
     return beam
 
 
-def add_continuous_press_arm(mats: dict[str, bpy.types.Material]) -> dict[str, object]:
-    """Build one continuous, hardware-shaped arm rig ending at the H stylus.
+def presentation_arm_pose(
+    manifest: dict, target_xy: tuple[float, float], *, wrist_z: float = 0.205,
+) -> tuple[Vector, Vector, Vector, Vector]:
+    """Solve the three visible RoArm link stages for a vertical tool pose.
+
+    The upper and short wrist lengths come from the pinned URDF joint origins.
+    The visible forearm span is 155 mm because its rendered rail runs between
+    the outer servo mounting stacks, not between bare URDF frame origins. The
+    final short link uses the pinned link4-to-link5 offset as a down-and-forward
+    wrist drop while the terminal tool frame remains vertical. This is
+    presentation IK, not controller evidence.
+    """
+    tx, ty, _tz = manifest["arm"]["nominal_board_T_robot_world_translation"]
+    shoulder = board_point(tx, ty, 0) + Vector((0, 0, 0.120))
+    wrist = board_point(*target_xy, 0) + Vector((0, 0, wrist_z))
+    upper_length = math.hypot(0.236815, 0.030002)
+    forearm_length = 0.1550
+    wrist_link_length = math.hypot(0.015147, 0.053653)
+
+    planar = wrist - shoulder
+    planar.z = 0
+    if planar.length < 1e-9:
+        radial_axis = Vector((1, 0, 0))
+    else:
+        radial_axis = planar.normalized()
+    preferred_wrist_drop = (
+        radial_axis * 0.015147 + Vector((0, 0, -0.053653))
+    ).normalized() * wrist_link_length
+    gross_axis = (wrist - shoulder).normalized()
+    gross_distance = (wrist - shoulder).length
+    maximum = upper_length + forearm_length
+    desired_direction = preferred_wrist_drop.normalized()
+    required_cosine = (
+        gross_distance ** 2 + wrist_link_length ** 2 - (maximum - 1e-5) ** 2
+    ) / (2 * gross_distance * wrist_link_length)
+    required_cosine = max(-1.0, min(1.0, required_cosine))
+    current_cosine = desired_direction.dot(gross_axis)
+    if current_cosine < required_cosine:
+        # High-clearance crossing poses need more of the short wrist link's
+        # reach. Rotate it only as far toward the gross reach axis as required,
+        # retaining the preferred down-and-forward silhouette elsewhere.
+        perpendicular = desired_direction - gross_axis * current_cosine
+        if perpendicular.length < 1e-9:
+            perpendicular = radial_axis.cross(gross_axis)
+        if perpendicular.length < 1e-9:
+            perpendicular = Vector((0, 0, -1))
+        perpendicular.normalize()
+        adjusted_direction = (
+            gross_axis * required_cosine
+            + perpendicular * math.sqrt(max(1.0 - required_cosine ** 2, 0.0))
+        ).normalized()
+        wrist_drop = adjusted_direction * wrist_link_length
+    else:
+        wrist_drop = preferred_wrist_drop
+    wrist_pitch = wrist - wrist_drop
+    reach = wrist_pitch - shoulder
+    distance = reach.length
+    minimum = abs(upper_length - forearm_length)
+    if not minimum <= distance <= maximum:
+        raise ValueError(
+            f"presentation arm target is unreachable: {distance:.4f} m not in "
+            f"[{minimum:.4f}, {maximum:.4f}] m"
+        )
+    reach_axis = reach.normalized()
+    projection = (
+        upper_length ** 2 - forearm_length ** 2 + distance ** 2
+    ) / (2 * distance)
+    height = math.sqrt(max(upper_length ** 2 - projection ** 2, 0.0))
+    side = reach_axis.cross(Vector((0, 0, 1)))
+    if side.length < 1e-9:
+        side = Vector((1, 0, 0))
+    else:
+        side.normalize()
+    bend_normal = side.cross(reach_axis).normalized()
+    elbow = shoulder + reach_axis * projection + bend_normal * height
+    return shoulder, elbow, wrist_pitch, wrist
+
+
+def presentation_base_yaw(
+    manifest: dict, target_xy: tuple[float, float]
+) -> tuple[Vector, Quaternion]:
+    """Return the fixed base origin and yaw quaternion for a board target."""
+    tx, ty, _tz = manifest["arm"]["nominal_board_T_robot_world_translation"]
+    base = board_point(tx, ty, 0)
+    target = board_point(*target_xy, 0)
+    radial = target - base
+    radial.z = 0
+    if radial.length < 1e-9:
+        yaw = math.radians(manifest["arm"]["nominal_board_T_robot_world_yaw_deg"])
+    else:
+        yaw = math.atan2(radial.y, radial.x)
+    return base, Quaternion((0, 0, 1), yaw)
+
+
+def add_continuous_press_arm(
+    mats: dict[str, bpy.types.Material],
+    *,
+    target_xy: tuple[float, float] = (216.55, 154.0),
+    motion_profile: tuple[tuple[int, float], ...] | None = None,
+) -> dict[str, object]:
+    """Build one continuous, hardware-shaped arm rig ending at a named target.
 
     The official assembly surface remains available as source evidence, but a
     rig is required for the execution beat because the vendor STEP is a rigid
@@ -661,65 +819,121 @@ def add_continuous_press_arm(mats: dict[str, bpy.types.Material]) -> dict[str, o
     # execution cut.
     tx, ty, _tz = manifest["arm"]["nominal_board_T_robot_world_translation"]
     base = board_point(tx, ty, 0)
-    shoulder = base + Vector((0, 0, 0.120))
-    wrist = board_point(216.55, 154.0, 0) + Vector((0, 0, 0.205))
-    length_a = 0.2387
-    length_b = 0.1550
-    direction = wrist - shoulder
-    distance = direction.length
-    axis = direction.normalized()
-    projection = (length_a ** 2 - length_b ** 2 + distance ** 2) / (2 * distance)
-    height = math.sqrt(max(length_a ** 2 - projection ** 2, 0.0))
-    side = axis.cross(Vector((0, 0, 1))).normalized()
-    normal = side.cross(axis).normalized()
-    elbow = shoulder + axis * projection + normal * height
+    target_x, target_y = target_xy
+    shoulder, elbow, wrist_pitch, wrist = presentation_arm_pose(
+        manifest, target_xy
+    )
+    radial_axis = wrist - shoulder
+    radial_axis.z = 0
+    radial_axis.normalize()
+    side = radial_axis.cross(Vector((0, 0, 1))).normalized()
+    normal = Vector((0, 0, 1))
 
-    cube("Continuous arm base foot", base + Vector((0, 0, 0.020)),
-         (0.118, 0.108, 0.040), mats["abs"], 0.008)
-    cube("Continuous arm base electronics", base + Vector((0, 0, 0.057)),
-         (0.094, 0.082, 0.052), mats["servo"], 0.006)
-    cylinder("Continuous arm turntable", base + Vector((0, 0, 0.091)),
-             0.050, 0.020, mats["arm_exact"], 64)
+    # Match the open construction visible on the physical RoArm: a shallow
+    # lower plate, exposed controller PCB on brass standoffs, rotating upper
+    # deck, and open shoulder yoke. The previous solid electronics block made
+    # the base look like an unrelated industrial pedestal.
+    cube("Continuous arm base lower plate", base + Vector((0, 0, 0.010)),
+         (0.112, 0.102, 0.020), mats["abs"], 0.008)
+    for x_sign in (-1, 1):
+        for y_sign in (-1, 1):
+            cylinder(
+                f"Continuous arm base rubber foot {x_sign:+d} {y_sign:+d}",
+                base + Vector((x_sign * 0.044, y_sign * 0.039, 0.003)),
+                0.009, 0.006, mats["abs"], 32,
+            )
+            cylinder(
+                f"Continuous arm base PCB standoff {x_sign:+d} {y_sign:+d}",
+                base + Vector((x_sign * 0.037, y_sign * 0.029, 0.032)),
+                0.0032, 0.028, mats["brass"], 24,
+            )
+    cube("Continuous arm base controller PCB", base + Vector((0, 0, 0.022)),
+         (0.088, 0.070, 0.004), mats["pcb"], 0.002)
+    for index, (dx, dy, sx, sy) in enumerate((
+        (-0.023, -0.012, 0.022, 0.016),
+        (0.017, -0.013, 0.016, 0.013),
+        (-0.020, 0.018, 0.012, 0.009),
+        (0.020, 0.018, 0.024, 0.010),
+    ), start=1):
+        cube(
+            f"Continuous arm base PCB component {index}",
+            base + Vector((dx, dy, 0.026)),
+            (sx, sy, 0.006), mats["servo"], 0.001,
+        )
+    led = cylinder("Continuous arm base status LED",
+                   base + Vector((0.033, -0.022, 0.030)),
+                   0.0025, 0.005, mats["status_led"], 24)
+    led["presentation_detail"] = "CONTROLLER_STATUS_INDICATOR"
+    cube("Continuous arm base yaw rotating deck", base + Vector((0, 0, 0.051)),
+         (0.086, 0.074, 0.008), mats["arm_exact"], 0.004)
+    cylinder("Continuous arm fixed yaw bearing", base + Vector((0, 0, 0.060)),
+             0.036, 0.014, mats["metal"], 64)
+    cylinder("Continuous arm base yaw turntable", base + Vector((0, 0, 0.070)),
+             0.040, 0.010, mats["arm_exact"], 64)
+    for yoke_sign in (-1, 1):
+        yoke_offset = side * (0.032 * yoke_sign)
+        _world_beam(
+            f"Continuous arm base yaw yoke {yoke_sign:+d}",
+            base + yoke_offset + Vector((0, 0, 0.067)),
+            shoulder + yoke_offset,
+            mats["arm_exact"], 0.010,
+        )
 
     # Rectangular servo bodies and round output bosses mirror the physical
     # ST-series actuator silhouette seen in the reference photographs.
-    servo_points = ((shoulder, "shoulder", (0.068, 0.054, 0.080)),
-                    (elbow, "elbow", (0.066, 0.052, 0.076)),
-                    (wrist, "wrist", (0.058, 0.048, 0.066)))
-    for point, label, size in servo_points:
-        cube(f"Continuous arm {label} servo body", point, size,
-             mats["servo"], 0.007)
+    servo_points = (
+        (shoulder, "shoulder", (0.054, 0.044, 0.056), Vector((0, 0, 1))),
+        (elbow, "elbow", (0.052, 0.042, 0.052), (wrist_pitch - elbow).normalized()),
+        (wrist_pitch, "wrist pitch", (0.050, 0.040, 0.050),
+         (wrist - wrist_pitch).normalized()),
+        (wrist, "tool wrist", (0.046, 0.038, 0.046), Vector((0, 0, -1))),
+    )
+    for point, label, size, servo_axis in servo_points:
+        servo_rotation = servo_axis.to_track_quat("Z", "Y")
+        servo_body = cube(f"Continuous arm {label} servo body", point, size,
+                          mats["servo"], 0.007)
+        servo_body.rotation_mode = "QUATERNION"
+        servo_body.rotation_quaternion = servo_rotation
         # Layered end caps, mounting ears, and connector blocks break the
         # generic smooth-box silhouette and repeat the construction language
         # of the detailed ST-series servos visible in the official assembly.
-        cube(f"Continuous arm {label} front cap",
-             point + axis * (size[2] * 0.34),
-             (size[0] * 0.88, size[1] * 1.03, 0.010),
-             mats["servo"], 0.0025)
-        cube(f"Continuous arm {label} rear cap",
-             point - axis * (size[2] * 0.34),
-             (size[0] * 0.88, size[1] * 1.03, 0.010),
-             mats["servo"], 0.0025)
+        front_cap = cube(
+            f"Continuous arm {label} front cap",
+            point + servo_axis * (size[2] * 0.38),
+            (size[0] * 0.88, size[1] * 1.03, 0.008),
+            mats["servo"], 0.0025,
+        )
+        rear_cap = cube(
+            f"Continuous arm {label} rear cap",
+            point - servo_axis * (size[2] * 0.38),
+            (size[0] * 0.88, size[1] * 1.03, 0.008),
+            mats["servo"], 0.0025,
+        )
+        for cap in (front_cap, rear_cap):
+            cap.rotation_mode = "QUATERNION"
+            cap.rotation_quaternion = servo_rotation
         for ear_sign in (-1, 1):
             ear_center = point + side * (size[1] * 0.66 * ear_sign)
             _world_beam(
                 f"Continuous arm {label} mounting ear {ear_sign:+d}",
-                ear_center - axis * 0.026,
-                ear_center + axis * 0.026,
-                mats["carbon"], 0.010,
+                ear_center - servo_axis * (size[2] * 0.42),
+                ear_center + servo_axis * (size[2] * 0.42),
+                mats["carbon"], 0.008,
             )
         cube(f"Continuous arm {label} cable connector",
-             point + normal * (size[0] * 0.52) - axis * 0.010,
+             point + normal * (size[0] * 0.52) - servo_axis * 0.010,
              (0.018, 0.014, 0.014), mats["abs"], 0.002)
         for sign in (-1, 1):
             boss = cylinder(f"Continuous arm {label} output boss {sign:+d}",
                             point + side * (size[1] * 0.51 * sign),
                             0.021, 0.008, mats["metal"], 40)
-            boss.rotation_euler = (math.pi / 2, 0, 0)
+            boss.rotation_mode = "QUATERNION"
+            boss.rotation_quaternion = side.to_track_quat("Z", "Y")
             cap = cylinder(f"Continuous arm {label} hub cap {sign:+d}",
                            point + side * (size[1] * 0.56 * sign),
                            0.014, 0.004, mats["arm_exact"], 32)
-            cap.rotation_euler = (math.pi / 2, 0, 0)
+            cap.rotation_mode = "QUATERNION"
+            cap.rotation_quaternion = side.to_track_quat("Z", "Y")
         # Small brass identification plate makes the proxy read like the same
         # serial-servo family without asserting a legible vendor mark.
         cube(f"Continuous arm {label} identification plate",
@@ -730,20 +944,22 @@ def add_continuous_press_arm(mats: dict[str, bpy.types.Material]) -> dict[str, o
         _world_beam(f"Continuous upper rail {suffix}", shoulder + offset,
                     elbow + offset, mats["carbon"], 0.019)
         _world_beam(f"Continuous forearm rail {suffix}", elbow + offset,
-                    wrist + offset, mats["carbon"], 0.019)
+                    wrist_pitch + offset, mats["carbon"], 0.019)
+        _world_beam(f"Continuous wrist link {suffix}", wrist_pitch + offset,
+                    wrist + offset, mats["carbon"], 0.016)
         # Wider outer side plates make the paired-link architecture legible in
         # the execution shot instead of reading as two solid industrial bars.
         _world_beam(f"Continuous upper side plate {suffix}",
                     shoulder + offset * 1.55, elbow + offset * 1.55,
                     mats["carbon"], 0.010)
         _world_beam(f"Continuous forearm side plate {suffix}",
-                    elbow + offset * 1.55, wrist + offset * 1.55,
+                    elbow + offset * 1.55, wrist_pitch + offset * 1.55,
                     mats["carbon"], 0.010)
 
     # Cross-braces and exposed bolts preserve the lightweight paired-link
     # character of the actual arm rather than reading as solid industrial bars.
     for link_name, start, end in (("upper", shoulder, elbow),
-                                  ("forearm", elbow, wrist)):
+                                  ("forearm", elbow, wrist_pitch)):
         vector = end - start
         for brace_index, alpha in enumerate((0.28, 0.56, 0.82), start=1):
             center = start + vector * alpha
@@ -765,45 +981,85 @@ def add_continuous_press_arm(mats: dict[str, bpy.types.Material]) -> dict[str, o
     # A restrained, physically attached harness is a strong continuity cue in
     # the reference photographs. It follows the joint chain and cannot be
     # mistaken for the old loose cable crossing the keyboard.
-    harness = curve_line(
-        "Continuous arm servo harness",
-        [base + Vector((0.010, 0.0, 0.080)),
-         shoulder + normal * 0.030,
-         elbow + normal * 0.030,
-         wrist + normal * 0.024],
-        mats["wire"], 0.0028,
+    harness_segments = (
+        ("upper", shoulder + normal * 0.030, elbow + normal * 0.030),
+        ("forearm", elbow + normal * 0.030, wrist_pitch + normal * 0.026),
+        ("wrist", wrist_pitch + normal * 0.026, wrist + normal * 0.022),
     )
-    harness["presentation_detail"] = "JOINT_CHAIN_ATTACHED_SERVO_HARNESS"
+    for segment_name, start, end in harness_segments:
+        harness = curve_line(
+            f"Continuous {segment_name} servo harness", [start, end],
+            mats["wire"], 0.0028,
+        )
+        harness["presentation_detail"] = "JOINT_CHAIN_ATTACHED_SERVO_HARNESS"
 
-    holder = cube("Continuous arm wrist servo", wrist + Vector((0, 0, -0.030)),
+    holder = cube("Continuous arm terminal tool servo", wrist + Vector((0, 0, -0.030)),
                   (0.060, 0.050, 0.066), mats["servo"], 0.006)
     wrist_plate = cube("Continuous arm gripper plate", wrist + Vector((0, 0, -0.073)),
                        (0.072, 0.010, 0.050), mats["arm_exact"], 0.004)
+    # Match the current photographed tool state: the bare 9 mm OASO-style
+    # barrel is held directly between the two opposing RoArm jaw pads. Do not
+    # add the proposed printed cartridge, cap, collar, or retention screws
+    # until that hardware is physically installed and photographed.
     jaw_left = cube("Continuous arm gripper jaw left",
-                    wrist + Vector((-0.023, 0, -0.112)),
-                    (0.012, 0.026, 0.070), mats["arm_exact"], 0.003)
+                    wrist + Vector((-0.0111, 0, -0.112)),
+                    (0.011, 0.026, 0.070), mats["arm_exact"], 0.003)
     jaw_right = cube("Continuous arm gripper jaw right",
-                     wrist + Vector((0.023, 0, -0.112)),
-                     (0.012, 0.026, 0.070), mats["arm_exact"], 0.003)
-    collar = cylinder("Continuous arm stylus collar", wrist + Vector((0, 0, -0.071)),
-                      0.012, 0.028, mats["arm_exact"], 48)
-    stylus_center = board_point(216.55, 154.0, 0) + Vector((0, 0, 0.105))
-    stylus = cylinder("Continuous arm stylus", stylus_center, 0.004, 0.140,
-                      mats["metal"], 48)
-    bpy.ops.mesh.primitive_cone_add(vertices=48, radius1=0.0012, radius2=0.004,
-                                    depth=0.012,
-                                    location=board_point(216.55, 154.0, 29))
-    tip = bpy.context.object
-    tip.name = "Continuous arm compliant stylus tip"
-    apply_material(tip, mats["arm_exact"])
-    moving = (holder, wrist_plate, jaw_left, jaw_right, collar, stylus, tip)
+                     wrist + Vector((0.0111, 0, -0.112)),
+                     (0.011, 0.026, 0.070), mats["arm_exact"], 0.003)
+    for side_name, x_sign in (("left", -1), ("right", 1)):
+        cube(f"Continuous arm {side_name} grip pad",
+             wrist + Vector((x_sign * 0.0056, 0, -0.112)),
+             (0.0022, 0.019, 0.028), mats["abs"], 0.001)
+        for z_offset in (-0.026, 0.026):
+            fastener = cylinder(
+                f"Continuous arm {side_name} jaw fastener {z_offset:+.3f}",
+                wrist + Vector((x_sign * 0.0122, 0, -0.112 + z_offset)),
+                0.0042, 0.0032, mats["metal"], 24,
+            )
+            fastener.rotation_euler = (0, math.pi / 2, 0)
+
+    stylus_center = board_point(target_x, target_y, 0) + Vector((0, 0, 0.105))
+    stylus = cylinder("Continuous arm OASO-style 9 mm stylus barrel (nominal)",
+                      stylus_center, 0.0045, 0.140, mats["stylus"], 64)
+    tip = cylinder(
+        "Continuous arm articulated stylus tip stem (nominal)",
+        board_point(target_x, target_y, 29), 0.0012, 0.012,
+        mats["metal"], 32,
+    )
+    disc = cylinder(
+        "Continuous arm capacitive stylus contact disc (nominal)",
+        board_point(target_x, target_y, 22.7), 0.0050, 0.0009,
+        mats["stylus_disc"], 64,
+    )
+    pivot = cylinder(
+        "Continuous arm stylus disc pivot (nominal)",
+        board_point(target_x, target_y, 23.5), 0.0022, 0.0022,
+        mats["metal"], 32,
+    )
+    moving = tuple(
+        obj for obj in bpy.context.scene.objects
+        if obj not in objects_before and (
+            "wrist" in obj.name.lower()
+            or "gripper" in obj.name.lower()
+            or "jaw" in obj.name.lower()
+            or "stylus" in obj.name.lower()
+            or "grip pad" in obj.name.lower()
+        )
+    )
+    if motion_profile is None:
+        motion_profile = (
+            (1, 0.0), (1288, 0.0), (1300, -0.004),
+            (1320, -0.004), (1332, 0.0), (END_FRAME, 0.0),
+        )
     for component in moving:
         base_z = component.location.z
-        for frame, offset in ((1, 0.0), (1288, 0.0), (1300, -0.004),
-                              (1320, -0.004), (1332, 0.0), (END_FRAME, 0.0)):
+        for frame, offset in motion_profile:
             component.location.z = base_z + offset
             component.keyframe_insert("location", frame=frame)
         component["evidence_status"] = "URDF_DERIVED_PRESENTATION_PROXY_NOT_KINEMATIC_EVIDENCE"
+        component["presentation_target_xy_mm"] = target_xy
+    stylus["evidence_status"] = "PHOTO_INFORMED_BARE_9MM_BARREL_DIRECT_JAW_GRIP"
     objects = tuple(obj for obj in bpy.context.scene.objects if obj not in objects_before)
     return {"root": base, "objects": objects, "moving": moving, "manifest": manifest}
 
@@ -907,8 +1163,19 @@ def build() -> bpy.types.Scene:
         "metal": material("Machined metal", (0.22, 0.28, 0.34, 1), metallic=0.85, roughness=0.20),
         "brass": material("Servo identification brass", (0.42, 0.27, 0.07, 1),
                            metallic=0.72, roughness=0.26),
+        "pcb": material("Controller PCB", (0.015, 0.085, 0.075, 1),
+                        metallic=0.22, roughness=0.34),
+        "status_led": material("Controller status LED", (0.02, 0.20, 0.42, 1),
+                               roughness=0.14,
+                               emission=(0.02, 0.40, 1.00, 1),
+                               emission_strength=5.0),
         "arm_exact": material("Official RoArm assembly finish", (0.017, 0.022, 0.028, 1),
                               metallic=0.48, roughness=0.24),
+        "stylus": material("OASO-style aluminum stylus", (0.24, 0.28, 0.32, 1),
+                           metallic=0.88, roughness=0.18),
+        "stylus_disc": material("OASO-style capacitive contact disc",
+                                (0.20, 0.48, 0.62, 1), metallic=0.22,
+                                roughness=0.12, ior_level=0.62),
         "wood": textured_material("Light birch", (0.55, 0.33, 0.16, 1),
                                     scale=7.0, detail=3.0, roughness=0.48),
         "keyboard": material("Keyboard black body", (0.0002, 0.0003, 0.0005, 1),
@@ -919,8 +1186,8 @@ def build() -> bpy.types.Scene:
                                   metallic=0.44, roughness=0.36, ior_level=0.24),
         "keyboard_film": textured_material(
             "Photographed keyboard protective film",
-            (0.24, 0.27, 0.30, 1), scale=42.0, detail=4.0,
-            roughness=0.18, metallic=0.46,
+            (0.004, 0.006, 0.009, 1), scale=42.0, detail=4.0,
+            roughness=0.12, metallic=0.16,
         ),
         "key": material("Keyboard black keys", (0.0003, 0.0005, 0.0008, 1),
                         roughness=0.54, ior_level=0.18),

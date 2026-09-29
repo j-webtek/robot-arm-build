@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "layout_version": 5,
+  "layout_version": 6,
   "design_revision": "RC03-INT-R1",
-  "package_definition_hash": "3d4d45a05327b35ffcc474b8df0f6bcb202a79fcfd98a3529062bd2c44ffc168",
-  "canonical_snapshot_hash": "d2a06fa67ec4ed0e36a8d40bd158aeb9e923890a00b310d3c6eacdfbaadfb34d",
-  "canonical_input_hash": "d2a06fa67ec4ed0e36a8d40bd158aeb9e923890a00b310d3c6eacdfbaadfb34d",
+  "package_definition_hash": "65bbe688892e0dcdd2115a28d9f155921587915d80e98f6b01d81aaedcbde3a5",
+  "canonical_snapshot_hash": "06efd7afc3a2b406d822f18b0ae06189c5edbb01dbbd069e0edf35718290f45c",
+  "canonical_input_hash": "06efd7afc3a2b406d822f18b0ae06189c5edbb01dbbd069e0edf35718290f45c",
   "step_id": "01",
   "slug": "prepare_board",
   "title": "Prepare and drill the structural board",
@@ -255,8 +255,8 @@
     },
     {
       "canonical_path": "README_FIRST.md",
-      "sha256": "3f120c69dcee278cb67c449e84d3a43c0b5183bdfee1cf4cb86bb938e2a32d34",
-      "size_bytes": 10392,
+      "sha256": "6e3e5a4bf57be1858e0b691c09b0c7683cc4266eb7df666d371136aa5800ee42",
+      "size_bytes": 10683,
       "roles": [
         "release entry point"
       ],
@@ -931,8 +931,8 @@
     },
     {
       "canonical_path": "scripts/build_step_packages.py",
-      "sha256": "d36767cf22f6b4becf5716eb7ae2e7b8f8315dd13e30204732ff9f2c3007463a",
-      "size_bytes": 174644,
+      "sha256": "38b9b55bfaad6c80f2465bd99abc134b8a7b488d91e6fc357c3f93f05ec699b9",
+      "size_bytes": 175793,
       "roles": [
         "step-package generator and validator"
       ],
@@ -1353,21 +1353,21 @@
     "00 - START HERE.md": "3c37a7547ef3ef34aee6e0e6f27ee570754d6ab18ffbff2b76412ca6c03e75d7",
     "01 - BEFORE YOU START.md": "b15e00c8176b0c80f9b00f2784cd0d594fe20c0bcf9bc9dca7508e5d9438d181",
     "02 - PARTS AND TOOLS CHECKLIST.md": "0c1762ddf0cc9aa99c28ee97550ba12330642d454f6d5a0f5c7ccb533e34f6c4",
-    "03 - STL MODELS/READ ME - HOW TO USE THESE MODELS.md": "05e26b0c503da9e710879449ad53988f64aaaf6cc10e455393670289ff5b53ff",
-    "03 - STL MODELS/STL MODEL LIST.csv": "d99890dce58a0c6335b7fcd1e14db227fca2e311fed6f26b786bde23c1f001ab",
+    "03 - STL MODELS/READ ME - HOW TO USE THESE MODELS.md": "46b638d3f580667acf0f2e4f8ea17e802129278ef57dd3253e67c290d6443013",
+    "03 - STL MODELS/STL MODEL LIST.csv": "14e52b946cd840eba3e6cf8f47e268deaed21b4bff1e1b3da5d69268bb0d3cf2",
     "03B - PRINT SETTINGS FOR THIS STEP.md": "8dcc99a33992101ddc285d96f0c0e89bf550682b90457815b4e6a9058dd0ca02",
     "04 - STEP-BY-STEP INSTRUCTIONS.md": "d6ff900e5b616bd627ad34862b5954bb48a76718642ac8ad59bc956e1a89dbe5",
     "05 - CHECK YOUR WORK.md": "4c09b8a1d2c7ead72f20921b31a50411bd2648df0930005f34dc3426713ac2f0",
     "06 - SAVE MEASUREMENTS AND PHOTOS/READ ME - WHAT TO RECORD.md": "e60abb806575ee2217671842b47a529f39dfd1a740db7c5c1004dbca4bb388b0",
-    "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/measurement_record.json": "142056d967580daeb4354b9ad39d2f78c15d5996dcb0dbae1ca0c947798e67d6",
-    "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/signoff.json": "aa60965803fc9649a191d1b4d160ee6ec14dd44426ec3dd1247beaeb1d5798e1",
+    "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/measurement_record.json": "c5890749ac7ba731040346fff8df77573820b6ad2e3a1c4a0d2f64095637f428",
+    "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/signoff.json": "5d006838305c7b63b34d0e3f4a0f5533715d5251fbee3e4495b889f8f7e9141b",
     "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/Measurements Checklist.md": "10b140d4e49fea03dcbd1323dffd6572b5e4e28ddf511ea52d464bad2fc27bdd",
     "06 - SAVE MEASUREMENTS AND PHOTOS/BUILD_ID_TEMPLATE/Finish and Sign Off.md": "a7b85be1774ce06a321f620c20329a9e1b9fa1fe046f7a655703ffa328219ed8",
     "07 - FINISH THIS STEP AND CONTINUE.md": "d0e0d731b3fd24bdc7d844c3f9f8c78b23bd4b93808d2309ccc89420c31e9d12",
-    "99 - TECHNICAL RECORDS - DO NOT EDIT/OPEN CONTROLLED FILES.md": "128befd6d1186cd512c50c6367f5267bb674a714c18bc1cd091d0fd0a707feac",
-    "99 - TECHNICAL RECORDS - DO NOT EDIT/FILE INDEX.csv": "47acf73af897fe50adb7c9d498ff02066597c86d4d7d97a9d673f9fd9c3297b3",
-    "99 - TECHNICAL RECORDS - DO NOT EDIT/FILE MANIFEST.json": "3d4a1d2b9052a439f3d560d7f45754fece8ce9ac7589f932ca988a0395b65199",
-    "99 - TECHNICAL RECORDS - DO NOT EDIT/SHA256SUMS.txt": "15aea33f32508b21f7359c2efea8119aef7ef0845d33d8c0a4b93d94148743d9",
+    "99 - TECHNICAL RECORDS - DO NOT EDIT/OPEN CONTROLLED FILES.md": "2d0630cb3781d729ad0ff5017bb4833376eaa5b7204ad32846997f8d4c3f1ce3",
+    "99 - TECHNICAL RECORDS - DO NOT EDIT/FILE INDEX.csv": "3fd53e4f473f80a1438fb922ad89301fc45c82fa478b9edcbfd84eed2982939f",
+    "99 - TECHNICAL RECORDS - DO NOT EDIT/FILE MANIFEST.json": "caa1aac082d1f829bf305c7abdf5670c90be431dc8166023f3f8fd0c72b1c5e2",
+    "99 - TECHNICAL RECORDS - DO NOT EDIT/SHA256SUMS.txt": "155741c34e738938c6f8bdee9d42ae2c497bebba37ae4ea4f3f95f39ed74df3c",
     "99 - TECHNICAL RECORDS - DO NOT EDIT/HARDWARE AND TOOLS.csv": "36d5eae76d69357728532dac3f646334ca06225faee2200769e4286404dcbb54",
     "03A - PRINT AND ASSEMBLE THE BOARD DRILL GUIDE.md": "9bb4c1736097f6e562071a35808035523164f5846777902f987eadd7cfdd8d4f"
   }
