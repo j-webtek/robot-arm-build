@@ -510,7 +510,7 @@ remains the dominant software cost.
 
 ### E2 — Accelerate IK and collision preparation
 
-**Status:** in progress through ARM-119 solver-effort instrumentation.
+**Status:** in progress through ARM-120 retained solver-effort campaign.
 
 ARM-119 adds an opt-in, bounded `TypingIkEffortRecorderV1` side channel. It
 records attempt and iteration counts only after each deterministic solve. The
@@ -526,6 +526,18 @@ rules out first-convergence early exit as an equivalence-preserving
 optimization. The next retained campaign must measure representative sequences,
 iteration distributions, selected-attempt behavior, and exact reusable input
 keys before any warm-start or endpoint cache is proposed.
+
+ARM-120 supplies that retained campaign across five representative sequences:
+home-row transition, `ROBOT`, repeat/number/punctuation, alphabetic extremes,
+and number/space/enter. Its 186 waypoint observations contained 744 attempts
+and 2,393 iterations; selected attempts accounted for 872 iterations. All 186
+first attempts converged, but only 15 were selected, confirming that early exit
+is not equivalent. Content-addressed keys bound the active solver source,
+build, model, calibration, target, incoming seed, joint bounds, gripper,
+options, and algorithm. The campaign found 48 unique keys, 138 repeat
+observations across 35 reusable identities, and a maximum recurrence of 11.
+This justifies designing an exact-result cache experiment, but authorizes no
+cache, decision change, controller operation, or physical execution.
 
 Deliver:
 

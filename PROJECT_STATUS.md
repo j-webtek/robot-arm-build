@@ -1,8 +1,8 @@
 # Tactevra project status
 
-Reviewed September 29, 2026 through the ARM-119 decision-neutral IK effort
-telemetry, ARM-118 retained typing preparation benchmark, and ARM-117 typing
-planner preparation,
+Reviewed September 29, 2026 through the ARM-120 retained multi-sequence IK
+effort campaign, ARM-119 decision-neutral IK effort telemetry, ARM-118 retained
+typing preparation benchmark, and ARM-117 typing planner preparation,
 ARM-077 PC0 pre-camera qualification basis, ARM-076 typing collision-evidence
 intake, ARM-075 exact-sample offline IK screen, AI-403 precision-adapter
 integration, and merged physical-camera
@@ -603,6 +603,14 @@ waypoints, 228 attempts, and 660 iterations. The first seed converged at every
 waypoint but was the selected minimum-residual solution at only 4 waypoints, so
 first-convergence early exit is explicitly unsafe for exact equivalence. A
 representative retained solver campaign is the next dependency.
+
+ARM-120 completes that retained campaign across five synthetic typing
+sequences. It measured 186 waypoints, 744 attempts, and 2,393 iterations. Exact
+solver inputs were bound to the active solver source and every relevant
+configuration identity: only 48 were unique, leaving 138 repeat observations
+across 35 identities and a maximum recurrence of 11. This establishes a strong
+candidate for an exact content-addressed result-cache experiment. It does not
+authorize caching, relaxed checking, controller access, or physical motion.
 
 AI-403 then integrates the pose-output precision adapter and actual V2 batch
 producer on current `main`. The retained contract fixture deterministically

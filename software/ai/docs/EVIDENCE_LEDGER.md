@@ -5939,3 +5939,40 @@ rewriting history. New entries must use a unique evidence ID.
 - Next dependency: retain a representative multi-sequence solver-effort
   campaign and quantify exact input-key reuse before designing a bounded cache
   or endpoint atlas.
+
+### E-20260929-ARM-120 — retained multi-sequence IK effort campaign
+
+- Stage: operational efficiency E2, solver measurement and reuse analysis.
+- Lane: arm/runtime typing shadow pipeline.
+- Change: retained five representative sequence cases with decision-neutral IK
+  effort telemetry. Each per-waypoint solver-input identity binds the active
+  solver source hash, build snapshot, model, calibration, target, incoming
+  seed, joint bounds, gripper state, options, implementation identity, and
+  algorithm version.
+- Command: `python software/scripts/run_typing_ik_effort_campaign_v1.py` from
+  clean source commit `99ea05af9377e082ff1d564ec210271ccc9caac1`.
+- Result: PASS. Five cases produced 186 waypoints, 744 attempts, 2,393 total
+  iterations, and 872 selected-attempt iterations. Attempt zero converged for
+  all 186 waypoints but was selected for only 15, independently confirming
+  first-convergence early exit is not exact-equivalent.
+- Exact reuse analysis: 186 observations reduced to 48 unique input identities;
+  138 observations repeated across 35 identities, and one identity appeared 11
+  times. Cache authorization remained false.
+- Artifact: `typing_ik_effort_campaign_v1.json`; file SHA-256
+  `876819e727cd40a78a6a368e886540053e30c2ab6e86b3522822b3c1a56096b0`;
+  embedded campaign SHA-256
+  `8d0d31a76ea1c1b264e1aeff4260c5fbd9ea4bd42a097d440c882d8f48ccdd0d`.
+- Camera opens: 0.
+- Model runtime loads: 0.
+- Transport opens: 0.
+- Controller starts: 0.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: cases use deterministic synthetic geometry and host software;
+  the campaign does not measure controller or physical timing. Reuse frequency
+  is evidence for an experiment, not permission to cache or skip validation.
+- Supersedes: ARM-119 only for its retained-campaign dependency; ARM-119 remains
+  authoritative for telemetry semantics and decision neutrality.
+- Next dependency: implement a bounded offline exact-result cache experiment
+  behind the full reference solver, prove hit/miss equivalence and invalidation,
+  and measure end-to-end benefit before considering runtime integration.

@@ -13,6 +13,14 @@ from rocell.application.typing_ik_effort_telemetry_v1 import _sha as telemetry_s
 
 
 ROOT = Path(__file__).resolve().parents[3]
+RETAINED = ROOT / "software/ai/eval/typing_ik_effort_campaign_v1.json"
+RETAINED_FILE_SHA256 = (
+    "876819e727cd40a78a6a368e886540053e30c2ab6e86b3522822b3c1a56096b0"
+)
+RETAINED_CAMPAIGN_SHA256 = (
+    "8d0d31a76ea1c1b264e1aeff4260c5fbd9ea4bd42a097d440c882d8f48ccdd0d"
+)
+RETAINED_SOURCE_COMMIT = "99ea05af9377e082ff1d564ec210271ccc9caac1"
 VALIDATOR = Draft202012Validator(json.loads((
     ROOT / "software/ai/schemas/typing_ik_effort_campaign_v1.schema.json"
 ).read_text(encoding="utf-8")))
@@ -112,6 +120,40 @@ def test_campaign_is_schema_valid_derived_and_zero_authority():
     assert report["exact_reuse_analysis"]["repeated_observation_count"] == 1
     assert report["exact_reuse_analysis"]["cache_authorized"] is False
     assert report["telemetry_used_for_admission"] is False
+    assert report["physical_authority"] is False
+
+
+def test_retained_campaign_is_exact_clean_and_zero_authority():
+    raw = RETAINED.read_bytes()
+    assert hashlib.sha256(raw).hexdigest() == RETAINED_FILE_SHA256
+    report = json.loads(raw)
+    assert list(VALIDATOR.iter_errors(report)) == []
+    assert dict(campaign.parse_typing_ik_effort_campaign_v1(report)) == report
+    assert report["campaign_sha256"] == RETAINED_CAMPAIGN_SHA256
+    assert report["environment"]["repository_commit"] == RETAINED_SOURCE_COMMIT
+    assert report["environment"]["repository_dirty"] is False
+    assert report["case_count"] == 5
+    assert report["aggregate"] == {
+        "waypoint_count": 186,
+        "attempt_count": 744,
+        "total_iterations": 2393,
+        "selected_iterations": 872,
+        "converged_attempt_count": 744,
+        "first_attempt_converged_count": 186,
+        "selected_first_attempt_count": 15,
+    }
+    assert report["exact_reuse_analysis"] == {
+        "solver_input_observation_count": 186,
+        "unique_solver_input_count": 48,
+        "repeated_observation_count": 138,
+        "reused_identity_count": 35,
+        "maximum_identity_occurrences": 11,
+        "first_convergence_early_exit_equivalent": False,
+        "cache_authorized": False,
+    }
+    assert report["telemetry_used_for_admission"] is False
+    assert report["controller_commands"] == []
+    assert report["hardware_writes"] == report["physical_movements"] == 0
     assert report["physical_authority"] is False
 
 
