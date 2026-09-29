@@ -5254,3 +5254,33 @@ rewriting history. New entries must use a unique evidence ID.
 - Next dependency: implement domain-specific receipt emitters beside each
   existing offline consumer, then exercise them against actual arrival
   originals after the camera-dependent hold can be satisfied.
+
+### E-20260929-ARM-102 — Explicit camera consumer receipt emitters
+
+- Stage: post-PC10 camera commissioning preparation.
+- Lane: arm/runtime domain-consumer integration.
+- Implementation commit: `8043971a763fe27788a626aaeb65e81cd2d5304f`.
+- Change: added adapters for the existing camera/support epoch assessment,
+  physical-camera campaign preflight, and held-out localization evaluator. The
+  adapters cover eight of the 15 arrival routes and bind validator version to
+  the exact mapped consumer-source hash.
+- Result: PASS. Tests exercise eight exact route-local pass receipts,
+  localization and support blockers with retained native-output hashes,
+  wrong-consumer route rejection, altered native output rejection, and blocked
+  handoff rejection. Thirteen focused ARM-101/ARM-102 tests passed; the governed
+  offline matrix passed 540 tests. All 115 repository-policy tests and
+  maintained documentation, public-record, evidence-scope,
+  repository-artifact, repository-health, and release-integrity checks passed.
+- Camera opens: 0.
+- Controller starts: 0.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: no native consumer was run against actual arrival originals.
+  Planner calibration supplies five remaining routes and installed collision
+  geometry/cable supplies two; all seven remain pending. Eight receipts cannot
+  complete the 15-route aggregate, install qualification, or authorize
+  physical use.
+- Supersedes: ARM-101's absence of any domain-specific receipt producer.
+- Next dependency: add typed planner-snapshot and installed-collision/cable
+  receipt emitters while preserving their existing measured-evidence and
+  geometry-completeness semantics.

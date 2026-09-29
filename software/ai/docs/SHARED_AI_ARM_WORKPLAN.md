@@ -576,6 +576,12 @@ wrong-route, or authority-bearing records. All 15 routes must pass before the
 assessment becomes complete for offline review, and even that state cannot
 commission an epoch, install qualification, or authorize hardware. The
 governed offline matrix passes 534 tests.
+ARM-102 adds domain adapters for the existing camera/support assessment,
+physical-camera campaign preflight, and held-out localization evaluator. Their
+eight routes now preserve native output hashes and failures in the shared
+receipt format. The remaining planner-calibration and installed-collision/cable
+routes stay pending, so partial adapter coverage cannot complete the aggregate.
+The governed offline matrix passes 540 tests.
 The AI precision lane now has a mainline-compatible pose-output adapter and v2
 batch producer. It preserves repeated targets and abstains on qualification,
 domain, freshness, identity, confidence, or containment failure. Its retained
