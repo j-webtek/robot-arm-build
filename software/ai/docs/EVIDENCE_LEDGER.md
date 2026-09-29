@@ -4919,3 +4919,79 @@ rewriting history. New entries must use a unique evidence ID.
 - Next dependency: obtain a reviewed STEP joint/mate graph or at least one
   independently identified articulated CAD state, then establish leaf-level
   rigid motion groups before reducing any component to collision geometry.
+
+### E-20260929-INT-438 — official per-link mesh grouping bound to STEP envelope
+
+- Stage: S2/S3 simulation oracle WP2.
+- Lane: INTEGRATION.
+- Commit: `0b222ebdca6c29364f12cdb138ce436a3774d328`.
+- Change: read the official RoArm-M3 Xacro and STL assets as immutable Git blobs
+  at the already governed upstream commit, verified identical visual/collision
+  bindings for seven governed links, transformed the link meshes through the
+  governed home pose and CAD frame, compared their union envelope with the
+  independently converted official STEP assembly, and retained raw and reduced
+  collision admission as false.
+- Inputs/fixtures: probe SHA-256
+  `12427f4ec0d49257e4aac0601c4100ff9ee43fe170bf2018afbf9e23ab404199`;
+  test SHA-256
+  `cd589b2f071e97c31e65c97499f163fcdce650c6e541e68528dbd9e50808555d`;
+  committed receipt file SHA-256
+  `ab8749f813a20cc93e804eddfaccca8d1997a9d6ef86eb6cebf7368e6e368640`;
+  receipt content SHA-256
+  `77b7c16e2d7c7a8ee0579b071d6a911516a8ba6d675188971e0c54e466b30954`;
+  external receipt file SHA-256
+  `976d176d20ccb6e4fac287106aa5eb755bac07b8e579db0b260b102b590401a3`
+  (same canonical JSON content; Windows external output uses CRLF);
+  external status-file SHA-256
+  `b083e36e7d52e713588e57f7f0352251c0aafd71179a2ebde87d2dfdbcc35066`;
+  upstream commit `40dbd84b553695212fab713e8465f817ba95454d`, tree
+  `3a1d24388e15b318ba0c5305a94b5140b5b239bd`, and Xacro SHA-256
+  `b6333849d0e377008eee0a87a5b8cdcf44f7a73edf3d7600e95506a023a234b6`;
+  STEP receipt content SHA-256
+  `b51c20e34c3b3edfa4ba40b88d04299aa346803b43b12909dade7c41c44cf967`;
+  pose receipt content SHA-256
+  `3817f28d9171ee3cb33d024f3f31e57495b02fb383ba60277953f6148ba00f3f`;
+  governed URDF SHA-256
+  `a565718e7d74b07702802cf41eb9549a6e38e50b5e80aa9b887ab1ae3d0d8190`.
+- Command: `git clone --filter=blob:none --no-checkout https://github.com/waveshareteam/roarm_ws.git C:\IsaacSim\sources\roarm_ws-40dbd84`;
+  `git -C C:\IsaacSim\sources\roarm_ws-40dbd84 fetch origin 40dbd84b553695212fab713e8465f817ba95454d`;
+  `git -C C:\IsaacSim\sources\roarm_ws-40dbd84 checkout --detach 40dbd84b553695212fab713e8465f817ba95454d`;
+  `$env:PYTHONUTF8='1'; C:\IsaacSim\env_6_1_0\Scripts\python.exe software\integrations\isaac_sim\upstream_link_mesh_probe.py --workspace . --upstream-repo C:\IsaacSim\sources\roarm_ws-40dbd84 --step-receipt software\integrations\isaac_sim\evidence\roarm_m3_step_inspection_20260929.json --pose-receipt software\integrations\isaac_sim\evidence\roarm_m3_step_pose_binding_20260929.json --output C:\IsaacSim\evidence\upstream_link_meshes_001.json --status-output C:\IsaacSim\evidence\upstream_link_meshes_001.status.json`;
+  `python -m py_compile software/integrations/isaac_sim/upstream_link_mesh_probe.py software/tests/unit/test_isaac_sim_upstream_link_mesh_evidence.py`;
+  `python -m pytest software/tests/unit/test_isaac_sim_upstream_link_mesh_evidence.py software/tests/unit/test_isaac_sim_step_link_membership_evidence.py software/tests/unit/test_isaac_sim_step_pose_binding_evidence.py software/tests/unit/test_isaac_sim_step_inspection_evidence.py software/tests/unit/test_isaac_sim_rc03_scene_evidence.py software/tests/unit/test_isaac_sim_urdf_import_evidence.py software/tests/unit/test_isaac_sim_fk_parity_evidence.py software/tests/unit/test_isaac_sim_first_launch_evidence.py software/tests/unit/test_isaac_sim_host_probe.py software/tests/unit/test_isaac_sim_contracts.py -q`;
+  `python scripts/ci/check_docs.py`; `python scripts/ci/check_evidence_scope.py`;
+  `python scripts/ci/check_public_records.py`;
+  `python scripts/ci/check_repository_artifacts.py`; `git diff --check`.
+- Result: PASS_WITH_BLOCKERS for authoritative upstream link grouping. Seven
+  referenced meshes contain 19,030 processed vertices, 38,344 triangles, and
+  19 connected bodies. Five meshes are watertight; `link1` and `link5` are not.
+  The governed home-pose mesh union spans
+  `[-48.994999,-40.799999,-0.999998]` to
+  `[355.130799,40.799999,387.543710]` mm in the CAD frame and differs from the
+  STEP assembly envelope by at most 1.910001 mm, below the declared 2 mm
+  diagnostic threshold. `gripper_left_link.stl` exists upstream but is not
+  referenced by the Xacro. The focused suite passed 53 tests in 2.45 seconds
+  and all four repository audits passed.
+- Artifacts:
+  `software/integrations/isaac_sim/evidence/roarm_m3_upstream_link_meshes_20260929.json`;
+  `software/integrations/isaac_sim/upstream_link_mesh_probe.py`;
+  `software/tests/unit/test_isaac_sim_upstream_link_mesh_evidence.py`;
+  pinned external upstream checkout under `C:\IsaacSim\sources` and generated
+  receipt/status under `C:\IsaacSim\evidence`.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: global envelope agreement supports the official per-link
+  grouping but does not prove surface-level or link-local equivalence with the
+  STEP assembly. The Xacro reuses high-detail visual triangle meshes directly
+  as collision meshes; two referenced meshes are non-watertight, the extra
+  left-gripper asset is unreferenced, and no convex reduction or self-collision
+  pair policy has been reviewed. Tool geometry, camera-support geometry,
+  measured placement, dynamics, trajectory, clearance, contact, controller,
+  hardware, and physical qualification remain absent. The Isaac toolchain lock
+  remains `UNSELECTED`. No AI, arm, or integration gate status changed.
+- Supersedes: none. INT-437 remains the fixed-STEP product-candidate evidence;
+  this row establishes a stronger independent per-link geometry source.
+- Next dependency: derive deterministic conservative reduced shapes from the
+  seven pinned link meshes, quantify enclosure error against each source mesh,
+  and review the self-collision pair policy before any collision query can be
+  admissible.
