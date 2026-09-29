@@ -4200,3 +4200,51 @@ rewriting history. New entries must use a unique evidence ID.
 - Next dependency: implement and freeze the image/model/preprocessing-bound
   physical-camera inference producer, then collect the four ARM-070 originals
   and external 300/300 campaign before running this evaluator on real evidence.
+
+### E-20260928-AI-423 — FREEZE-013 static simulation bundle reconciliation
+
+- Stage: S1/S2/S3 simulation and evidence governance.
+- Lane: AI with repository review.
+- Commit: `869d6f7ed7d1013a8003457a819ccaee3a03a1e7`.
+- Change: compared the stale static bundle boundary to the active governed
+  FREEZE-013 state, minted immutable bundle identity
+  `ROCELL-STATIC-B0477-SIM-BUNDLE-002`, rebound the two changed artifacts, and
+  retained a machine-readable reconciliation record for issue #167.
+- Inputs/fixtures: prior bundle-001 lock SHA-256
+  `e825dd29cf856cea44d9ce40ca3bfb5fc305d3493cd129d6b6bea9f04c800f7c`;
+  prior FREEZE-011 manifest SHA-256
+  `e85120de64b2128a2f5ab0f4e9f8868f6070e485f747234f89c813d910b5b0f1`;
+  active FREEZE-013 manifest SHA-256
+  `0cfb19c0972d4fe5cc526ca78d44422b2ef9c52354a8da637ec608b8dec7f55d`;
+  refreeze transaction SHA-256
+  `d1c9175a71b7e6c7a5dcbf5c43eaea70c300c3f7df15f67313355812944e571b`.
+- Determination: FREEZE-013 is the intended source state. The manifest changed
+  only its identity/date and the Step 00 `INDEX.json` and
+  `PACKAGE_VALIDATION.json` provenance hashes. The simulation hardware profile
+  changed only `binding.system_manifest_id`. Robot numerics, targets, optics,
+  support design, kinematic model, arm frame contract, semantic bindings, and
+  all physical-authority flags remained unchanged.
+- Command: clean Python 3.10.10 `.venv-ai`; install `.[test]` and
+  `software/ai/requirements-test.txt`; `pip check`; run
+  `python -m pytest software/ai/tests -q`; run the AI registry, docs,
+  evidence-scope, public-records, repository-artifact, and release-integrity
+  audits; create maintained `.venv-ci` and run `offline_checks.py install-base`,
+  `smoke`, `install-tests`, and `test`.
+- Result: PASS. `pip check` reported no broken requirements; the focused static
+  context suite passed 33 tests; the full AI suite passed 174 tests and 47
+  subtests; all six repository audits passed; the portable repository suite
+  passed 507 tests.
+- Artifacts:
+  `software/ai/eval/static_simulation_bundle_002_reconciliation.json`;
+  `software/config/static_simulation_bundle_lock.json`;
+  `software/tests/unit/test_static_simulation_context.py`.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: this proves exact source reconciliation, fail-closed loading,
+  and software-suite health only. It does not promote a model, release a
+  physical freeze, establish camera calibration or localization accuracy,
+  authorize controller execution, prove contact, or demonstrate device input.
+- Supersedes: none. Bundle 001 remains an immutable prior evidence boundary in
+  Git history; bundle 002 is a new identity rather than a silent rewrite.
+- Next dependency: merge the reviewed reconciliation, close issue #167, and
+  retain issue #88 as the remaining source-preview blocker.
