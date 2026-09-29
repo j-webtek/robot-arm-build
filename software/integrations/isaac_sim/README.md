@@ -200,6 +200,16 @@ the nearest alternative misses by 133.238 mm. This supports the assembly-pose
 hypothesis only. Axis-exact correspondence, CAD-product membership per moving
 link, and reduced collision shapes remain unreviewed and blocked.
 
+[`step_link_membership_probe.py`](step_link_membership_probe.py) then covers
+every direct component of the fixed-pose STEP assembly and ranks two candidate
+governed links from each component envelope's distance to the home-pose link
+skeleton. The retained
+[`candidate receipt`](evidence/roarm_m3_step_link_membership_candidates_20260929.json)
+covers all 770 meshes through 162 direct component instances. It finds 114
+ambiguous instances and 19 groups whose bounds cross a governed joint origin.
+All reviewed assignments remain null: the fixed STEP has no reviewed joint or
+mate graph, and one static pose cannot separate coincident rigid groups.
+
 Reproduce it on the designated runner from the repository root:
 
 ```powershell
@@ -221,6 +231,18 @@ C:\IsaacSim\env_6_1_0\Scripts\python.exe software\integrations\isaac_sim\step_po
   --step-receipt software\integrations\isaac_sim\evidence\roarm_m3_step_inspection_20260929.json `
   --output C:\IsaacSim\evidence\step_pose_binding_001.json `
   --status-output C:\IsaacSim\evidence\step_pose_binding_001.status.json
+```
+
+Reproduce the complete candidate inventory without promoting any assignment:
+
+```powershell
+$env:PYTHONUTF8='1'
+C:\IsaacSim\env_6_1_0\Scripts\python.exe software\integrations\isaac_sim\step_link_membership_probe.py `
+  --workspace . `
+  --cad-usd C:\IsaacSim\artifacts\issue190\wp2-cad-004\roarm_m3_official.usda `
+  --pose-receipt software\integrations\isaac_sim\evidence\roarm_m3_step_pose_binding_20260929.json `
+  --output C:\IsaacSim\evidence\step_link_membership_001.json `
+  --status-output C:\IsaacSim\evidence\step_link_membership_001.status.json
 ```
 
 ## Verify WP0
