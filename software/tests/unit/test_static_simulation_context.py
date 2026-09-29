@@ -17,12 +17,16 @@ from rocell.simulation._validation import SimulationSourceError
 from rocell.simulation.scenario import load_simulation_scenario
 from rocell.simulation.static_bundle import (
     STATIC_ARTIFACT_PATHS,
+    STATIC_BUNDLE_ID,
     STATIC_BUNDLE_PATH,
     load_static_simulation_bundle,
 )
 
 
 WORKSPACE = Path(__file__).resolve().parents[3]
+RECONCILIATION_PATH = (
+    "software/ai/eval/static_simulation_bundle_002_reconciliation.json"
+)
 
 
 @pytest.fixture(autouse=True)
@@ -90,6 +94,53 @@ def test_static_route_preserves_all_robot_numerics_and_uses_existing_optics(work
         len(context.targets.phone_targets),
     ) == (46, 29)
     module.revalidate_static_simulation_context(context)
+
+
+def test_static_bundle_002_retains_auditable_reconciliation_boundary():
+    lock_path = WORKSPACE / STATIC_BUNDLE_PATH
+    lock = json.loads(lock_path.read_text("utf-8"))
+    record = json.loads((WORKSPACE / RECONCILIATION_PATH).read_text("utf-8"))
+
+    assert STATIC_BUNDLE_ID == lock["bundle_id"] == record["active_boundary"][
+        "bundle_id"
+    ]
+    assert hashlib.sha256(lock_path.read_bytes()).hexdigest() == record[
+        "active_boundary"
+    ]["lock_sha256"]
+    manifest_path = WORKSPACE / lock["artifacts"]["system_manifest"]["path"]
+    manifest_sha256 = hashlib.sha256(manifest_path.read_bytes()).hexdigest()
+    assert manifest_sha256 == lock["artifacts"]["system_manifest"]["sha256"]
+    assert manifest_sha256 == record["active_boundary"]["system_manifest_sha256"]
+    assert record["unchanged_bundle_artifacts"] == {
+        key: row["sha256"]
+        for key, row in lock["artifacts"].items()
+        if key not in record["bundle_artifact_delta"]
+    }
+    assert [row["json_path"] for row in record["manifest_delta_from_prior_boundary"]] == [
+        "freeze_date",
+        "manifest_id",
+        "rc03.source_snapshot[14].sha256",
+        "rc03.source_snapshot[15].sha256",
+    ]
+    assert record["classification"] == {
+        "manifest_change": "FREEZE_IDENTITY_AND_STEP_00_PACKAGE_PROVENANCE_ONLY",
+        "simulation_hardware_profile_change": "SYSTEM_MANIFEST_ID_BINDING_ONLY",
+        "robot_numerical_geometry_changed": False,
+        "target_catalog_changed": False,
+        "camera_or_optical_contract_changed": False,
+        "support_design_changed": False,
+        "kinematic_model_changed": False,
+        "arm_frame_contract_changed": False,
+        "semantic_bindings_changed": False,
+    }
+    assert record["authority"] == {
+        "simulation_only": True,
+        "physical_authority": False,
+        "physical_freeze_promoted": False,
+        "model_promotion": False,
+        "hardware_writes": 0,
+        "physical_movements": 0,
+    }
 
 
 def test_static_graph_hashes_use_static_semantics_and_exact_context_roster(workspace):

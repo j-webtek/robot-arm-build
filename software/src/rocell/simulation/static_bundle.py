@@ -24,7 +24,7 @@ from .bundle import SimulationBundleArtifact
 
 STATIC_BUNDLE_PATH = "software/config/static_simulation_bundle_lock.json"
 STATIC_BUNDLE_SCHEMA = "rocell.static_simulation_bundle_lock.v1"
-STATIC_BUNDLE_ID = "ROCELL-STATIC-B0477-SIM-BUNDLE-001"
+STATIC_BUNDLE_ID = "ROCELL-STATIC-B0477-SIM-BUNDLE-002"
 STATIC_ARTIFACT_PATHS: Mapping[str, str] = MappingProxyType(
     {
         "system_manifest": "software/config/system_manifest.json",
@@ -39,7 +39,7 @@ STATIC_ARTIFACT_PATHS: Mapping[str, str] = MappingProxyType(
     }
 )
 ROBOT_NUMERICAL_SEED_SHA256 = (
-    "b79ca2653fe0c95ecd328412a44b160d2d0beae1a0dc5c3e2fd09bb94a487990"
+    "6c24745f8330d0aa77c423d9376adb7bb6c1a090426ed1a38814eb32f6dcd190"
 )
 
 
