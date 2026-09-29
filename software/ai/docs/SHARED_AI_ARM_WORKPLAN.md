@@ -1070,6 +1070,14 @@ Each worker follows this process for every increment:
 
 ## Immediate coordinated work order
 
+The arm lane's current offline sequence is PC11 through PC18 in the
+[pre-camera arm integration completion plan](../../docs/PRE_CAMERA_ARM_INTEGRATION_COMPLETION_PLAN.md).
+It begins with one-command arrival orchestration, then proceeds through a
+synthetic fault campaign, domain wrappers, resumable session state,
+geometry/cable rehearsal, immutable capture replay, observability, and an
+actual AI-producer compatibility corpus. These stages do not replace the
+camera-dependent S2/S3 and S4 gates and cannot create physical authority.
+
 1. **S1 software boundary — complete for zero authority:** v2 producer bytes,
    strict decoding, trusted registry, freshness, mutation rejection, and ordered
    `H,H,I` ingress are covered by the shared conformance profile.

@@ -3,8 +3,8 @@
 - **Document status:** Active implementation plan; no hardware authority
 - **Owners:** Arm/runtime lane, with shared AI/arm contract review
 - **Audience:** Runtime, planning, controller, test, and AI-integration contributors
-- **Reviewed:** 2026-09-28 against the merged T1, T2A, T2B-IK, and
-  collision-evidence intake boundaries
+- **Reviewed:** 2026-09-29 against the PC10 closure and ARM-100 through
+  ARM-103 camera-arrival consumer boundaries
 - **Authority:** Normative for pre-camera implementation order and evidence;
   explanatory only for later physical qualification
 
@@ -35,11 +35,13 @@ The repository already provides:
   durable no-replay receipts; and
 - zero-write controller contract tests.
 
-The remaining pre-camera gap is composition. Exact IK results are not yet a
-joint-dynamics-qualified typing schedule; the optimized typing path is not yet
-connected end to end to the controller preview and lifecycle boundaries; and
-fault, replay, caching, and performance behavior need one common qualification
-campaign.
+PC0 through PC10 are complete. ARM-100 through ARM-103 additionally provide a
+hash-bound 15-slot arrival preflight, consumer handoff, exact validation receipt
+contract, and typed offline receipt emitters. The remaining pre-camera work is
+operational composition: make those tools runnable as one zero-authority
+workflow, rehearse failures, standardize operator-facing wrappers and session
+state, exercise geometry/cable intake, replay immutable captures, expose timing,
+and prove compatibility with actual AI-produced batches.
 
 ## Required end state
 
@@ -106,6 +108,14 @@ and its evidence gate pass.
 | PC8 | Performance benchmark and readiness report | PC1-PC7 | No | None | COMPLETE |
 | PC9 | Camera-arrival evidence tooling and dry run | PC6 | No for tooling | None before arrival | COMPLETE |
 | PC10 | Pre-camera integration closure | PC0-PC9 | No | None | COMPLETE |
+| PC11 | One-command zero-authority commissioning orchestrator | PC9-PC10, ARM-100-103 | No | None | IN PROGRESS |
+| PC12 | Full synthetic arrival and fault campaign | PC11 | No | None | PLANNED |
+| PC13 | Domain-consumer operator wrappers | PC11, ARM-103 | No | None | PLANNED |
+| PC14 | Arrival-session manifest and state machine | PC11-PC13 | No | None | PLANNED |
+| PC15 | Installed-geometry and cable-envelope intake rehearsal | PC13-PC14 | No | None | PLANNED |
+| PC16 | Immutable camera-replay runner | PC11-PC14 | No live camera | None | PLANNED |
+| PC17 | Timing and observability report | PC11-PC16 | No | None | PLANNED |
+| PC18 | Actual AI-output compatibility corpus and gate | PC11, shared AI producer | No | None | PLANNED |
 
 ## PC0 — Freeze the qualification basis
 
@@ -573,9 +583,205 @@ It does **not** mean the camera, workcell, installed controller, collision
 profile, contact behavior, outcome verification, physical typing speed, or
 autonomous typing capability is qualified.
 
+## Post-closure pre-camera continuation
+
+PC11 through PC18 improve commissioning readiness without weakening the PC10
+closure or consuming physical authority. They remain offline, fail closed, and
+cannot advance a measured configuration epoch, install a collision profile,
+open a camera or transport, issue a controller command, or authorize movement.
+
+## PC11 — One-command zero-authority commissioning orchestrator
+
+### Objective
+
+Compose the existing 15-slot evidence preflight, hash-bound consumer handoff,
+strict receipt loading, and validation aggregation behind one deterministic
+operator command. The command reports the earliest blocker and all exact stage
+hashes without invoking hardware or manufacturing a pass.
+
+### Deliverables
+
+- One library entry point and one thin CLI wrapper.
+- A strict canonical report schema and parser binding the preflight, handoff,
+  receipt assessment, evidence root, and optional receipt root.
+- Bounded receipt discovery using canonical artifact filenames only, with
+  symlink, traversal, duplicate, oversized, malformed, and unexpected input
+  rejection.
+- Stable outcomes for missing originals, awaiting validation receipts,
+  blocked consumer results, and complete offline review.
+- Explicit zero-authority fields proving no epoch advance, registry update,
+  camera/transport access, controller command, or movement.
+
+### Gate
+
+An empty arrival root blocks deterministically; a structurally complete
+synthetic root with no receipts reports `AWAITING_CONSUMER_VALIDATION`; and the
+same root with all 15 exact synthetic receipts reaches only
+`COMPLETE_FOR_OFFLINE_REVIEW`. Repeated runs reproduce identical bytes and
+hashes. Every mutation fails at its owning boundary.
+
+## PC12 — Full synthetic arrival and fault campaign
+
+### Objective
+
+Exercise the complete PC11 workflow under normal, partial, adversarial, and
+resource-bound arrival conditions before the physical camera exists.
+
+### Deliverables
+
+- A frozen matrix covering absent files, wrong hashes, duplicate JSON members,
+  mixed epochs, stale records, rejected review fields, crossed consumer routes,
+  missing/duplicate receipts, blocked receipts, symlinks, unexpected files,
+  truncation, oversize, and depth/resource ceilings.
+- Deterministic campaign observations with stable reason codes and no escaped
+  exception, fallback, retry, authority promotion, or unbounded allocation.
+- Retained synthetic pass, pending, and blocked examples clearly labeled
+  `SYNTHETIC_OFFLINE`.
+
+### Gate
+
+Every declared fault is rejected or blocked by the intended owner, and the
+campaign report reconstructs to identical bytes and hashes in a clean checkout.
+
+## PC13 — Domain-consumer operator wrappers
+
+### Objective
+
+Give operators one consistent offline interface for the five native consumer
+families: camera/support, planner calibration, campaign preflight, localization
+evaluation, and installed collision geometry.
+
+### Deliverables
+
+- Thin wrappers that consume exact handoff routes and write canonical consumer
+  artifacts plus ARM-101 receipts into a caller-selected contained output root.
+- Consistent exit codes, diagnostics, overwrite protection, input/output hash
+  display, resource limits, and zero-authority declarations.
+- No alternate consumer logic: wrappers call the existing typed boundaries.
+
+### Gate
+
+All 15 routes can be invoked through the common wrapper contract with exact
+artifact identity preserved. Crossed route, consumer, schema, input hash, or
+output hash rejects without partial promotion.
+
+## PC14 — Arrival-session manifest and state machine
+
+### Objective
+
+Make one camera-arrival session resumable, auditable, and resistant to mixed
+configuration evidence.
+
+### Deliverables
+
+- A canonical session manifest binding expected slots, consumer routes,
+  receipt paths, configuration-epoch candidate, tool/profile identities, and
+  immutable source hashes.
+- Explicit states for collection, structurally complete, validation pending,
+  validation blocked, offline-review complete, and measured commissioning held.
+- Restart-safe reconstruction from retained artifacts with no silent replay or
+  overwriting of originals.
+
+### Gate
+
+Restart reconstructs the same state and hashes. Any changed original, route,
+receipt, epoch, or profile invalidates the dependent state and cannot retain a
+previous pass.
+
+## PC15 — Installed-geometry and cable-envelope intake rehearsal
+
+### Objective
+
+Remove avoidable friction from the two currently blocked collision consumers
+without pretending that measured installed geometry already exists.
+
+### Deliverables
+
+- Completed synthetic templates for rigid geometry, attachment evidence, cable
+  swept envelope, uncertainty, provenance, review, and containment assumptions.
+- Positive, negative, boundary, and crossed-lineage fixtures through the real
+  typed collision-profile consumer and receipt emitter.
+- Operator diagnostics that identify the precise missing or unsafe measurement.
+
+### Gate
+
+Complete synthetic inputs exercise the consumer to a synthetic-only pass;
+incomplete or crossed inputs retain exact blockers. No synthetic profile can be
+installed or used as physical collision qualification.
+
+## PC16 — Immutable camera-replay runner
+
+### Objective
+
+Prepare the vision-facing arm workflow to rerun frozen image bytes and metadata
+without requiring a live camera or allowing a replay to masquerade as a new
+capture.
+
+### Deliverables
+
+- A bounded replay manifest binding original image bytes, capture metadata,
+  camera/support profile, model identity, calibration identity, and expected
+  consumer outputs.
+- Deterministic replay into the existing campaign and localization consumers.
+- Explicit distinction among original capture, immutable replay, and synthetic
+  fixture evidence.
+
+### Gate
+
+Identical frozen inputs reproduce identical decisions; modified image bytes,
+metadata, model/profile identities, or expected outputs reject. Replay grants no
+live-camera, measured-epoch, or movement authority.
+
+## PC17 — Timing and observability report
+
+### Objective
+
+Measure software latency and expose bottlenecks across commissioning and future
+typing intake while keeping safety decisions independent of performance goals.
+
+### Deliverables
+
+- Per-stage monotonic timing, bounded counts, artifact sizes, cache outcomes,
+  and stable blocker/decision codes for PC11-PC16.
+- Correlation identifiers linking AI batch, target, plan, consumer, receipt,
+  and session without recording credentials or private absolute paths.
+- Retained cold/warm and pass/block/pending benchmarks with p50/p95/p99 where
+  sample counts support them.
+
+### Gate
+
+Instrumentation does not change canonical safety decisions or hashes, exceed
+declared resource ceilings, or turn predicted/replayed duration into a physical
+speed claim.
+
+## PC18 — Actual AI-output compatibility corpus and gate
+
+### Objective
+
+Continuously prove that the real AI producer and the arm runtime agree on the
+same strict contract, including order, repetition, punctuation, abstention,
+identity, confidence, uncertainty, and freshness behavior.
+
+### Deliverables
+
+- A retained corpus produced by the actual AI adapter, including ordinary
+  strings, repeated keys, digits, punctuation, unsupported requests,
+  localization abstention, stale observations, and crossed identities.
+- Exact decode, admission, compilation, planning, and expected-blocker results
+  against the arm-owned runtime.
+- A shared compatibility report usable by both workstreams without giving the
+  AI controller JSON, joint commands, port selection, retries, or authority.
+
+### Gate
+
+Every supported AI fixture reaches the expected arm-owned stage with exact
+order preserved; every unsupported, stale, uncertain, or crossed fixture fails
+closed at the declared owner. The corpus and report reproduce in a clean
+checkout.
+
 ## Camera-dependent continuation
 
-After camera arrival, work resumes at the existing shared gates:
+After PC11-PC18 and camera arrival, work resumes at the existing shared gates:
 
 1. collect and retain the final-camera originals;
 2. run the read-only 15-slot arrival-evidence preflight and resolve every
@@ -618,6 +824,14 @@ For every PC increment:
 - [x] PC8 performance report complete
 - [x] PC9 camera-arrival tools dry-run complete
 - [x] PC10 clean-checkout pre-camera closure recorded
+- [ ] PC11 one-command zero-authority commissioning orchestrator complete
+- [ ] PC12 full synthetic arrival and fault campaign complete
+- [ ] PC13 domain-consumer operator wrappers complete
+- [ ] PC14 arrival-session manifest and state machine complete
+- [ ] PC15 installed-geometry and cable-envelope rehearsal complete
+- [ ] PC16 immutable camera-replay runner complete
+- [ ] PC17 timing and observability report complete
+- [ ] PC18 actual AI-output compatibility corpus and gate complete
 
 ## Related documents
 

@@ -108,6 +108,26 @@ Route coverage alone is not completion: incomplete installed geometry or a
 configuration-sampled cable envelope remains `BLOCKED` even when every route
 has emitted a receipt.
 
+The same three stages can be composed into one read-only command. Before any
+consumer receipts exist, omit `--receipt-root`; after consumers have written
+their exact canonical receipts, point it at that separate directory:
+
+```powershell
+python -m rocell.application.camera_arrival_commissioning_orchestrator_v1 `
+  --workspace . `
+  --evidence-root <external-root> `
+  --receipt-root <external-receipt-root>
+```
+
+The source wrapper is
+`software/scripts/run_camera_arrival_commissioning_v1.py`. Its possible normal
+states are structural evidence blocked, consumer validation pending, consumer
+validation blocked, and complete for offline review. Even its strongest state
+keeps epoch advance, registry update, qualification installation, camera and
+transport opens, controller startup, commands, writes, movements, and physical
+authority at zero. Receipt filenames are exactly `<artifact_id>.json`; extra,
+symlinked, oversized, malformed, crossed, or authority-bearing entries reject.
+
 ## Collect the four camera/support originals
 
 Use the existing explicitly authorized camera onboarding workflow to collect
