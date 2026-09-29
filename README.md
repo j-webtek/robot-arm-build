@@ -3,167 +3,216 @@
 ![Tactevra — the nervous system for embodied AI](assets/brand/tactevra-banner.svg)
 
 [![Offline verification](https://github.com/j-webtek/tactevra/actions/workflows/offline-checks.yml/badge.svg?branch=main)](https://github.com/j-webtek/tactevra/actions/workflows/offline-checks.yml)
+[![Repository health](https://github.com/j-webtek/tactevra/actions/workflows/repository-health.yml/badge.svg?branch=main)](https://github.com/j-webtek/tactevra/actions/workflows/repository-health.yml)
+[![License: Apache-2.0](https://img.shields.io/badge/License-Apache--2.0-007F78.svg)](LICENSE)
 
-The CI badge covers [scoped hardware-free checks](docs/CI.md), not physical robot qualification.
+**A governed interface between AI and the physical world.**
 
-**The experimental, local-first nervous system for embodied AI: connecting
-language and vision to checked robot-arm actions in the physical world.**
+Tactevra connects language, visual evidence, and specialized AI models to
+checked robot-arm actions. Models describe *what* should happen; deterministic
+software decides *whether and how* movement may proceed, records the result,
+and keeps unverified proposals away from the motors.
 
-[Get started](docs/GETTING_STARTED.md) · [How the system works](docs/SYSTEM_OVERVIEW.md) · [Current capabilities](PROJECT_STATUS.md) · [Roadmap](ROADMAP.md) · [Documentation](docs/README.md) · [Contribute](CONTRIBUTING.md) · [Governance](GOVERNANCE.md)
+[Get started](docs/GETTING_STARTED.md) ·
+[System overview](docs/SYSTEM_OVERVIEW.md) ·
+[Project status](PROJECT_STATUS.md) ·
+[Documentation](docs/README.md) ·
+[Roadmap](ROADMAP.md) ·
+[Contribute](CONTRIBUTING.md)
 
-[Get help](SUPPORT.md) · [Report a vulnerability privately](SECURITY.md)
+## Why Tactevra
 
-## See how Tactevra checks a physical action
+Giving an AI model a physical appendage introduces a boundary that ordinary
+software agents do not have: a plausible answer can become real motion.
+Tactevra makes that boundary explicit and inspectable.
 
-[![Watch the Tactevra system explainer](assets/media/tactevra-overview-poster.jpg)](https://j-webtek.github.io/tactevra/)
+| Principle | What it means in Tactevra |
+| --- | --- |
+| **Semantic, not servo-level input** | AI components propose named actions and evidence-bound targets rather than writing raw motor commands. |
+| **Deterministic admission** | Runtime checks own calibration, coordinate transforms, freshness, reachability, motion policy, and execution authority. |
+| **Observable outcomes** | Proposed, accepted, transmitted, reported, and independently verified states remain distinct. |
+| **Fail-closed behavior** | Missing, stale, incompatible, or uncertain evidence blocks progress instead of being silently guessed. |
+| **Local-first development** | Core rehearsal, parsing, simulation, and validation paths can be inspected without a cloud control plane. |
 
-[▶ Watch the explainer with mobile-friendly controls and selectable English captions](https://j-webtek.github.io/tactevra/)
-· [English captions (WebVTT)](assets/media/tactevra-overview.en.vtt)
+The first workcell uses a Waveshare RoArm-M3 to research interaction with tools
+designed for people—initially keyboards and phone interfaces. The architecture
+is intended to remain useful beyond one arm, model, or device.
 
-The narrated film follows “Press the H key” through Tactevra's five-stage
-architecture: **perceive, propose, check, execute, and verify**. It shows a bad
-proposal being rejected before a valid plan is admitted. The rendered keypress
-is explicitly labeled as a simulation; the film presents the current system
-design and measured workcell geometry, not autonomous-operation or physical-
-qualification evidence.
-
-Formerly **RoCell**. Existing `rocell` commands, package names, and hardware release
-paths remain unchanged for compatibility. The canonical source repository is now
-`j-webtek/tactevra`; GitHub redirects the former repository URL.
-
-Tactevra is a semantic and operational bridge between AI models and physical
-tools. It is designed so specialized or task-trained models can interpret a
-request, inspect a scene, and propose what should happen without directly
-driving a motor. A deterministic runtime then decides whether the proposal is
-current, reachable, and permitted before translating it into bounded robot-arm
-motion.
-
-Think of the platform as a nervous system for embodied AI. Language supplies
-the objective. Vision supplies the senses. Typed contracts carry the signal.
-The runtime provides reflexes and guardrails. The arm is the appendage, and
-independent observation closes the feedback loop. That separation lets models
-reason about *what* to do while accountable software controls *how* physical
-movement is admitted and performed.
-
-The first workcell uses a Waveshare RoArm-M3 to research interaction with
-ordinary human interfaces: positioning over keyboard keys and phone controls,
-then eventually pressing or tapping them and confirming the observed result.
-This repository brings the AI interface, motion runtime, simulations, evidence,
-and printable workcell designs into one inspectable system.
-
-## From meaning to movement
+## How it works
 
 ```mermaid
 flowchart LR
-    A[Language request] --> B[Understand intent]
-    C[Camera evidence] --> D[Locate devices and targets]
-    B --> E[Semantic action proposal]
+    A[User request] --> B[Understand intent]
+    C[Camera evidence] --> D[Locate scene targets]
+    B --> E[Typed action proposal]
     D --> E
-    E --> F[Deterministic checks]
-    F --> G[Bounded arm motion]
-    G --> H[Observe the result]
-    H -->|verified feedback| B
-    F -->|reject or hold| I[No motion]
+    E --> F{Deterministic admission}
+    F -->|reject or hold| G[No motion]
+    F -->|admit| H[Plan and execute]
+    H --> I[Observe outcome]
+    I --> J[Verification record]
 ```
 
-The AI-facing boundary uses named actions, coordinate frames, confidence,
-uncertainty, and evidence identity—not raw servo commands. Tactevra Runtime owns
-calibration, transforms, reachability, collision screening, motion policy,
-single-use authority, controller communication, and outcome records. This is
-the central product idea: a model can participate in physical work without
-being given unchecked control of the hardware.
+The system follows five stages:
 
-Today's movement, interface, and feedback tests build the foundation for that
-future system. Reliable camera-guided typing, phone interaction, and
-AI-directed task execution are development goals, not completed capabilities.
+1. **Perceive** — collect image and system-state evidence.
+2. **Propose** — translate intent into typed, coordinate-aware actions.
+3. **Check** — validate identity, calibration, freshness, geometry, and policy.
+4. **Execute** — convert an admitted plan into bounded controller work.
+5. **Verify** — compare the observed result with the requested outcome.
 
-## Where we are
+This separation is the core design: model reasoning remains useful without
+making model output the final authority over physical movement.
 
-As of September 27, 2026, you can explore a local rehearsal interface, interpret
-supported text requests offline, and inspect simulated coordinate and movement
-results. The AI v2 command assembler and arm validation interface have passed a
-shared test using synthetic evidence. Supervised noncontact arm movements are
-also documented in the lab records.
+## Explore it today
 
-The repository now also carries a shared model/arm conformance profile and an
-operational-readiness gate. A merged precision adapter can now turn pinned pose
-output into the same V2 batch consumed by the arm lane while preserving repeated
-targets and abstaining on invalid evidence. Its current 14.400834977 mm
-synthetic uncertainty bound is too large for ordinary key safe regions, so it is
-not deployment-qualified. These are software control boundaries, not permission
-to move hardware and not evidence of physical typing.
+The repository includes a hardware-free path that demonstrates the software
+boundary without moving an arm or downloading a model.
 
-Read [project status](PROJECT_STATUS.md) for the checkpoint, evidence, and
-next steps. Simulation results, servo feedback, and measured tip accuracy
-are tracked separately.
+### 1. Install
 
-## Start here
-
-| I want to… | Read this |
-| --- | --- |
-| Try the project for the first time | [Getting started](docs/GETTING_STARTED.md) |
-| Understand the end-to-end system | [System overview](docs/SYSTEM_OVERVIEW.md) |
-| Understand what works and what comes next | [Project status](PROJECT_STATUS.md) |
-| Follow the evidence-based delivery stages | [Roadmap](ROADMAP.md) |
-| Set up the code and contribute | [Developer setup](CONTRIBUTING.md) |
-| Explore the local interface | [Wizard workbench guide](software/docs/WIZARD_WORKBENCH.md) |
-| Build the physical workcell | [Hardware build guide](docs/HARDWARE_BUILD_GUIDE.md) |
-| Find architecture, test results, or procedures | [Documentation guide](docs/README.md) |
-| Decode project terminology | [Glossary](docs/GLOSSARY.md) |
-
-After completing the [base installation](docs/GETTING_STARTED.md#install-the-software),
-you can optionally launch the local rehearsal interface from
-the repository root:
+Windows PowerShell and Python 3.10 or newer are sufficient for this abbreviated
+path. See the documented [base installation](docs/GETTING_STARTED.md#install-the-software)
+for supported context and verification details.
 
 ```powershell
-.\start-rocell-wizard.ps1
+git clone https://github.com/j-webtek/tactevra.git
+cd tactevra
+python -m venv .venv
+.\.venv\Scripts\python -m pip install -e './software'
 ```
 
-Rehearsal is the default; launching it does not open hardware connections.
-The [workbench guide](software/docs/WIZARD_WORKBENCH.md) covers the available
-actions and terminal interface.
+### 2. Interpret a request
 
-## Repository layout
+```powershell
+.\.venv\Scripts\python software/ai/run_offline.py ground --request 'Type "hi" on the keyboard'
+```
 
-| Folder | Contents |
+The output contains an ordered proposal for H followed by I. It is a structured
+plan, not a keystroke and not permission to move hardware.
+
+### 3. Preview nominal targets
+
+```powershell
+.\.venv\Scripts\python software/ai/run_offline.py coordinate-preview --request 'Type "hi" on the keyboard'
+```
+
+This exposes candidate coordinates and the prerequisites still missing before
+execution. The preview deliberately produces no controller commands.
+
+For expected results, troubleshooting, and the optional local interface, follow
+the complete [getting-started guide](docs/GETTING_STARTED.md).
+
+## Current project surface
+
+| Area | Available in the repository |
 | --- | --- |
-| [software/](software/README.md) | Python runtime, firmware, models, tests, and technical documentation |
-| [software/ai/](software/ai/README.md) | Intent parsing, vision research, and the AI-to-arm command interface |
-| [active-project/RoCell_v0_3/](active-project/RoCell_v0_3/README_FIRST.md) | Active RC03 hardware design, print files, and assembly instructions |
-| [hardware/static_overhead_camera/](hardware/static_overhead_camera/README.md) | Static overhead camera design and mounting work |
-| [scripts/](scripts/) | Project tools and experiment runners |
-| [docs/](docs/README.md) | Reading guide and historical workspace reference |
-| [active-project/RoCell_v0_2/](active-project/RoCell_v0_2/README_FIRST.md) | Frozen earlier hardware release, retained for reference |
+| Intent | Grounded parsing and deterministic compilation for supported requests |
+| Perception | Scene-quality adapters, saved-image workflows, and experimental keyboard localization |
+| AI-to-arm boundary | Versioned schemas, proposal validation, freshness checks, and compatibility profiles |
+| Motion runtime | Coordinate transforms, IK and route screening, controller-command previews, and lifecycle rehearsal |
+| Evidence | Append-only engineering records, identity-bound manifests, and explicit evidence levels |
+| Workcell | RC03 printable hardware, assembly resources, and static-camera integration designs |
+| Developer operations | Cross-platform tests, repository governance, release gates, and automated health reporting |
 
-RC03 and RC02 parts and coordinates belong to separate releases. Hardware
-packages retain their own print-readiness and measurement requirements.
+For the precise, dated distinction between implemented software, simulation,
+controller feedback, physical measurement, and verified device input, use
+[project status](PROJECT_STATUS.md). Detailed test counts and workstream stages
+belong in the linked evidence records rather than this overview.
 
-## Working with this project
+## Architecture and workstreams
 
-This is an experimental physical system. Follow the current procedure for
-the exact controller and test; a passing simulation or source update does
-not establish physical clearance or authorize a deployment.
+```text
+User / application
+        │
+        ▼
+Tactevra AI ── typed proposal + evidence ──► Tactevra Runtime
+                                                   │
+                                      admission, planning, execution
+                                                   │
+                                                   ▼
+                                         Tactevra Workcell
+                                                   │
+                                                   ▼
+                                      observation and verification
+```
 
-Credentials, device backups, raw run exports, and local toolchains stay
-outside Git. A clone contains the shared development baseline, not the
-entire lab workstation. See [contributing](CONTRIBUTING.md) for setup,
-verification, and sharing evidence.
+- **Tactevra AI** interprets requests, evaluates scenes, and proposes targets.
+- **Tactevra Runtime** owns validation, planning, authority, communication, and
+  result records.
+- **Tactevra Workcell** combines the arm, camera, tools, fixtures, and measured
+  environment.
+- **Tactevra Studio** is the local interface for setup, rehearsal, task review,
+  and diagnostics.
 
-Detailed simulation results, command examples, and hardware history formerly
-on this page are preserved in the
-[historical workspace reference](docs/history/WORKSPACE_REFERENCE.md).
+Shared contracts keep these workstreams compatible without collapsing their
+responsibilities. See the [system overview](docs/SYSTEM_OVERVIEW.md) for the
+full request-to-result flow and the
+[shared AI/arm workplan](software/ai/docs/SHARED_AI_ARM_WORKPLAN.md) for current
+integration ownership.
 
-## License
+## Watch the architecture
 
-Copyright 2026 Tactevra contributors. Historical copyright and attribution notices
-remain unchanged during the Tactevra brand transition.
+[![Watch the Tactevra system explainer](assets/media/tactevra-overview-poster.jpg)](https://j-webtek.github.io/tactevra/)
 
-Original contributions in this repository are licensed under the
-[Apache License, Version 2.0](LICENSE).
-Third-party code, models, drawings, and other vendor assets retain their
-respective licenses and attribution notices; this license does not relicense
-those materials. Review the maintained [third-party notices](THIRD_PARTY_NOTICES.md)
-and linked provenance records for applicable terms and unresolved clearance.
+[Watch the narrated explainer](https://j-webtek.github.io/tactevra/) to follow a
+request through perceive, propose, check, execute, and verify. The rendered
+keypress is labeled as a simulation and illustrates the system design rather
+than physical-qualification evidence.
 
-For repository history and citation metadata, see the [changelog](CHANGELOG.md),
-[versioning policy](docs/VERSIONING.md), and [citation file](CITATION.cff).
+## Choose your path
+
+| If you want to… | Start here |
+| --- | --- |
+| Run the hardware-free walkthrough | [Getting started](docs/GETTING_STARTED.md) |
+| Understand the architecture | [System overview](docs/SYSTEM_OVERVIEW.md) |
+| Review current evidence and limitations | [Project status](PROJECT_STATUS.md) |
+| Explore the local interface | [Tactevra Studio workbench](software/docs/WIZARD_WORKBENCH.md) |
+| Integrate AI output with arm software | [Shared AI/arm workplan](software/ai/docs/SHARED_AI_ARM_WORKPLAN.md) |
+| Develop the runtime | [Software reference](software/README.md) |
+| Build the workcell | [Hardware build guide](docs/HARDWARE_BUILD_GUIDE.md) |
+| Contribute or maintain the repository | [Contributing](CONTRIBUTING.md) · [Repository operations](docs/REPOSITORY_OPERATIONS.md) |
+| Find a specific technical document | [Documentation index](docs/README.md) · [Glossary](docs/GLOSSARY.md) |
+
+## Repository map
+
+| Path | Purpose |
+| --- | --- |
+| [`software/`](software/README.md) | Runtime, interfaces, simulations, firmware sources, and tests |
+| [`software/ai/`](software/ai/README.md) | Language, vision, evaluation, and proposal-generation research |
+| [`active-project/RoCell_v0_3/`](active-project/RoCell_v0_3/README_FIRST.md) | Current RC03 mechanical design and assembly package |
+| [`hardware/static_overhead_camera/`](hardware/static_overhead_camera/README.md) | Fixed-camera structure and integration resources |
+| [`docs/`](docs/README.md) | User, architecture, governance, evidence, and operations documentation |
+| [`scripts/`](scripts/) | Repository maintenance and development tools |
+
+`rocell` remains the package, command, and historical hardware identifier for
+compatibility. New public product language uses **Tactevra**.
+
+## Development and governance
+
+```powershell
+.\.venv\Scripts\python -m pip install -e './software[test]'
+.\maintain-repository.ps1 verify
+```
+
+Changes are reviewed through protected `main`, scoped offline verification,
+shared-contract routing, and evidence-retention rules. These controls improve
+traceability; they do not themselves qualify a physical setup or authorize a
+release. Start with [contributing](CONTRIBUTING.md), then use
+[governance](GOVERNANCE.md) and the [roadmap](ROADMAP.md) for decision and
+delivery boundaries.
+
+For help, use [support](SUPPORT.md). Report vulnerabilities through the
+[private security process](SECURITY.md).
+
+## License and attribution
+
+Original contributions are licensed under the
+[Apache License, Version 2.0](LICENSE). Third-party code, models, drawings, and
+vendor assets retain their respective terms. Review
+[third-party notices](THIRD_PARTY_NOTICES.md) and the linked provenance records
+before redistribution.
+
+Copyright 2026 Tactevra contributors. See [CHANGELOG.md](CHANGELOG.md),
+[versioning](docs/VERSIONING.md), and [CITATION.cff](CITATION.cff) for project
+history and citation metadata.
