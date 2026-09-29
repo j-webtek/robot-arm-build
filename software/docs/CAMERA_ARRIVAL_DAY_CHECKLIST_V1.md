@@ -253,3 +253,46 @@ arrival-kit slots has a separately retained physical original, valid sidecar,
 accepted review, immutable hash, and downstream-consumer receipt. Completion
 means the evidence is ready for offline qualification review. It does not mean
 the arm may move or type.
+
+## Retain and resume one arrival session
+
+Create the manifest once with caller-selected candidate identities and a new
+output path:
+
+```powershell
+python software/scripts/build_camera_arrival_session_manifest_v1.py `
+  --workspace . `
+  --evidence-root <external-root> `
+  --receipt-root <external-receipt-root> `
+  --session-id <safe-session-id> `
+  --configuration-epoch-candidate <candidate-id> `
+  --camera-profile-id <camera-profile-id> `
+  --camera-profile-sha256 <64-lowercase-hex> `
+  --tool-profile-id <tool-profile-id> `
+  --tool-profile-sha256 <64-lowercase-hex> `
+  --output <new-session-manifest.json>
+```
+
+The create command uses exclusive creation and never overwrites an earlier
+manifest. A nonzero exit while collection is incomplete or validation remains
+blocked is expected; retain its manifest and blockers.
+
+After a restart, verify the retained session against the same evidence and
+receipt roots:
+
+```powershell
+python software/scripts/verify_camera_arrival_session_manifest_v1.py `
+  --workspace . `
+  --evidence-root <external-root> `
+  --receipt-root <external-receipt-root> `
+  --manifest <retained-session-manifest.json>
+```
+
+Verification re-runs the PC11 boundary and requires the complete rebuilt
+manifest to equal the retained manifest. Any source, route, receipt, state, or
+profile/epoch binding difference stops the resume. Selecting a different epoch
+or profile intentionally creates a different manifest and therefore a new
+session; it cannot replace the retained session during verification. Even the
+offline-review-complete state keeps measured commissioning held and grants no
+camera, controller, transport, command, write, movement, or installation
+authority.
