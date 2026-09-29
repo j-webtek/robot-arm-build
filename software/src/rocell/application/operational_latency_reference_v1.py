@@ -231,6 +231,7 @@ def measure_operational_planning_trace_v1(
 
 def capture_operational_benchmark_environment_v1(
     workspace: Path, *, captured_at_utc: str,
+    benchmark_entrypoint: str = "software/scripts/run_operational_latency_reference_v1.py",
 ) -> dict[str, Any]:
     """Capture bounded host identity without paths, credentials, or raw environment."""
 
@@ -260,12 +261,16 @@ def capture_operational_benchmark_environment_v1(
         "platform_machine": platform.machine() or "UNKNOWN",
         "logical_cpu_count": os.cpu_count() or 1,
         "perf_counter_resolution_ns": max(1, round(clock.resolution * 1_000_000_000)),
-        "benchmark_entrypoint": "software/scripts/run_operational_latency_reference_v1.py",
+        "benchmark_entrypoint": _identifier(
+            benchmark_entrypoint, "benchmark_entrypoint"
+        ),
     }
     return {**core, "environment_sha256": _sha(core)}
 
 
-def _validate_environment(value: Mapping[str, Any]) -> dict[str, Any]:
+def validate_operational_benchmark_environment_v1(
+    value: Mapping[str, Any],
+) -> dict[str, Any]:
     if not isinstance(value, Mapping) or set(value) != _ENVIRONMENT_FIELDS:
         raise OperationalLatencyReferenceV1Error("environment fields differ")
     unsigned = dict(value)
@@ -354,7 +359,7 @@ def build_operational_latency_reference_v1(
     }
     if any(len(values) < MINIMUM_RUNS_PER_CLASS for values in grouped.values()):
         raise OperationalLatencyReferenceV1Error("cold and warm coverage is incomplete")
-    normalized_environment = _validate_environment(environment)
+    normalized_environment = validate_operational_benchmark_environment_v1(environment)
     core = {
         "schema": SCHEMA,
         "report_id": _identifier(report_id, "report_id"),
@@ -411,4 +416,5 @@ __all__ = [
     "capture_operational_benchmark_environment_v1",
     "measure_operational_planning_trace_v1",
     "parse_operational_latency_reference_v1",
+    "validate_operational_benchmark_environment_v1",
 ]

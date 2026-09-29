@@ -64,6 +64,7 @@ TESTS = (
     "software/tests/unit/test_operational_latency_trace_v1.py",
     "software/tests/unit/test_operational_latency_reference_v1.py",
     "software/tests/unit/test_context_validation_lease_v1.py",
+    "software/tests/unit/test_context_validation_lease_benchmark_v1.py",
     "software/tests/unit/test_pre_camera_host_benchmark_v1.py",
     "software/tests/unit/test_assess_r97_external_review_decision.py",
     "software/tests/unit/test_model_motion_sequence_coordinator.py",
