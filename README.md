@@ -151,15 +151,6 @@ full request-to-result flow and the
 [shared AI/arm workplan](software/ai/docs/SHARED_AI_ARM_WORKPLAN.md) for current
 integration ownership.
 
-## Watch the architecture
-
-[![Watch the Tactevra system explainer](assets/media/tactevra-overview-poster.jpg)](https://j-webtek.github.io/tactevra/)
-
-[Watch the narrated explainer](https://j-webtek.github.io/tactevra/) to follow a
-request through perceive, propose, check, execute, and verify. The rendered
-keypress is labeled as a simulation and illustrates the system design rather
-than physical-qualification evidence.
-
 ## Choose your path
 
 | If you want to… | Start here |
