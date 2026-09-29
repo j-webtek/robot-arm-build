@@ -1,6 +1,6 @@
 # Tactevra project status
 
-Reviewed September 29, 2026 through the ARM-100 arrival consumer handoff,
+Reviewed September 29, 2026 through the ARM-101 consumer receipt gate,
 ARM-077 PC0 pre-camera qualification basis, ARM-076 typing collision-evidence
 intake, ARM-075 exact-sample offline IK screen, AI-403 precision-adapter
 integration, and merged physical-camera
@@ -437,6 +437,15 @@ consumer-validation, qualification, physical-admission, device-access, write,
 and movement flag remains false. Source corruption, altered maps, rehashed
 authority claims, and route-admission mutations fail closed. The governed
 offline matrix now passes 527 tests.
+
+ARM-101 adds the matching downstream receipt and aggregate-assessment
+contracts. Each consumer result must bind the exact handoff, original hashes,
+consumer source/schema hashes, validator identity/version, and output hash.
+Missing results remain `PENDING`, failures remain `BLOCKED`, duplicates and
+cross-route substitutions reject, and only 15 exact passes produce
+`CONSUMER_VALIDATION_COMPLETE_FOR_OFFLINE_REVIEW`. That status still installs
+nothing and grants no physical admission or execution authority. The governed
+offline matrix now passes 534 tests.
 
 AI-403 then integrates the pose-output precision adapter and actual V2 batch
 producer on current `main`. The retained contract fixture deterministically

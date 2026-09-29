@@ -5221,3 +5221,36 @@ rewriting history. New entries must use a unique evidence ID.
 - Next dependency: after actual originals arrive and preflight passes, run each
   route's named offline consumer and retain its independent validation receipt
   before considering any epoch or deployment transition.
+
+### E-20260929-ARM-101 — Camera consumer validation receipt gate
+
+- Stage: post-PC10 camera commissioning preparation.
+- Lane: arm/runtime downstream validation intake.
+- Implementation commit: `2228523aadd96c3e6b19731e445e31e6470331ce`.
+- Change: added strict consumer-validation receipt and aggregate-assessment
+  schemas plus hash- and semantics-verifying parsers. Every receipt binds the
+  exact ARM-100 handoff, preflight, consumer map, original sidecar/source,
+  consumer source/schema, field binding, validator version, and output.
+- Result: PASS. Tests cover blocked handoff, ready handoff with no receipts,
+  fifteen exact passes, one retained blocked result, wrong-route binding,
+  duplicate receipt, and rehashed physical-authority mutation. Sixteen focused
+  ARM-100/ARM-101 tests passed; the governed offline matrix passed 534 tests.
+  All 115 repository-policy tests and maintained documentation, public-record,
+  evidence-scope, repository-artifact, repository-health, and
+  release-integrity checks passed.
+- Completion semantics: missing receipts remain `PENDING`, consumer failures
+  remain `BLOCKED`, and only 15 exact passes produce
+  `CONSUMER_VALIDATION_COMPLETE_FOR_OFFLINE_REVIEW`.
+- Camera opens: 0.
+- Controller starts: 0.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: the generic gate verifies receipt identity and consistency, not
+  each consumer's domain-specific measurement algorithm. It invokes no
+  consumer, commissions no epoch, updates no registry, installs no
+  qualification, and grants no physical admission or authority. Actual
+  originals and real consumer outputs remain unavailable.
+- Supersedes: ARM-100's undefined downstream receipt format.
+- Next dependency: implement domain-specific receipt emitters beside each
+  existing offline consumer, then exercise them against actual arrival
+  originals after the camera-dependent hold can be satisfied.

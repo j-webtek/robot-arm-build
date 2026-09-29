@@ -570,6 +570,12 @@ consumer source/schema hashes, and exact consumer binding. A complete set is
 ready only for offline consumer validation: no consumer has run, no
 qualification is installed, and no physical-admission or execution authority
 is created. The governed offline matrix passes 527 tests.
+ARM-101 defines the return path from those consumers. Exact hash-bound PASS or
+BLOCKED receipts now aggregate without losing failures or accepting duplicate,
+wrong-route, or authority-bearing records. All 15 routes must pass before the
+assessment becomes complete for offline review, and even that state cannot
+commission an epoch, install qualification, or authorize hardware. The
+governed offline matrix passes 534 tests.
 The AI precision lane now has a mainline-compatible pose-output adapter and v2
 batch producer. It preserves repeated targets and abstains on qualification,
 domain, freshness, identity, confidence, or containment failure. Its retained
