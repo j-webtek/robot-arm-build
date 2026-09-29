@@ -174,6 +174,34 @@ C:\IsaacSim\env_6_1_0\Scripts\python.exe software\integrations\isaac_sim\rc03_sc
   --status-output C:\IsaacSim\evidence\rc03_scene_002.status.json
 ```
 
+## Official STEP inspection
+
+[`step_inspection_probe.py`](step_inspection_probe.py) verifies the pinned
+official Waveshare assembly archive and its sole STEP member byte for byte,
+converts it with the installed Isaac HOOPS backend, and retains a compact
+[`inspection receipt`](evidence/roarm_m3_step_inspection_20260929.json). The
+generated 26.9 MB USD remains external because the upstream redistribution
+scope is unconfirmed. Two separate conversions produced the same USD SHA-256.
+
+The inspection establishes millimetre units, Z-up orientation, the whole
+assembly bound, 770 meshes, and exact bounds for four named upstream aluminum
+components. Those components remain collision *seeds*: the STEP assembly pose
+is not bound to a governed URDF joint state, and the components have no
+reviewed dynamic-link assignments or reduced shapes. The receipt therefore
+denies dynamic-link assignment, collision geometry, and clearance replay.
+
+Reproduce it on the designated runner from the repository root:
+
+```powershell
+$env:OMNI_KIT_ACCEPT_EULA = 'YES'
+C:\IsaacSim\env_6_1_0\Scripts\python.exe software\integrations\isaac_sim\step_inspection_probe.py `
+  --archive C:\IsaacSim\sources\roarm-m3-step-260310\RoArm-M3_STEP_260310.zip `
+  --step C:\IsaacSim\sources\roarm-m3-step-260310\extracted\RoArm-M3_STEP\RoArm-M3.step `
+  --output-dir C:\IsaacSim\artifacts\issue190\wp2-cad-004 `
+  --receipt C:\IsaacSim\evidence\step_inspection_004.json `
+  --status-output C:\IsaacSim\evidence\step_inspection_004.status.json
+```
+
 ## Verify WP0
 
 From `software/`:
