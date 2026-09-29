@@ -403,14 +403,32 @@ Deliver:
 Gate: instrumentation reproduces all reference decisions and hashes and adds no
 camera, transport, command, or physical authority.
 
-Implementation checkpoint (2026-09-29): the strict
+Implementation checkpoint (2026-09-29): E0 is complete. The strict
 `rocell.operational_latency_trace.v1` contract now freezes the T0-T10 milestone
 catalog, requires an exact ordered prefix for blocked traces, derives all stage
 durations, binds request/session/batch/plan/configuration/controller/result
 correlations, and rejects rehashed attempts to change decisions or grant timing,
 performance, or physical authority. Its schema and mutation suite are included in
-the governed offline checks. Retained cold/warm end-to-end reference runs and their
-environment identity remain the next E0 deliverable.
+the governed offline checks.
+
+The retained host reference is
+`software/ai/eval/operational_latency_reference_v1.json`, report SHA-256
+`0c9e960bd00a8336ff32d7b099be7e21835e9c559e5a47894805a5b1157d9416`.
+It binds clean source commit `c633c04fb17d42de5d7466319307db4e536b1120`,
+CPython 3.10.10 on Windows/AMD64, a 100 ns performance-counter resolution, and
+20 cold plus 20 warm traces. Here `COLD` means fresh logical input and registry
+objects in an already-running Python process; `WARM` means reuse of those immutable
+objects. Inputs are presealed synthetic fixtures, so T0-T3 do not measure language
+or vision inference.
+
+The real arm-side planning reference stops honestly at T5: no IK solve, permit
+request, controller open, transport open, command, write, or movement occurred.
+Cold batch-admission latency was 33.987 ms p50 / 35.578 ms p95 and warm was
+32.875 ms p50 / 33.545 ms p95. Cold admission-to-first-plan latency was
+0.530 ms p50 / 0.666 ms p95 and warm was 0.517 ms p50 / 0.619 ms p95. P99 is
+intentionally unavailable because exact nearest-rank rules require at least 100
+observations. These values are reference observations, never admission thresholds
+or physical-speed claims.
 
 ### E1 — Remove avoidable software setup from the hot path
 

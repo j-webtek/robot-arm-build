@@ -15,6 +15,7 @@ from rocell.application.operational_latency_trace_v1 import (
 
 
 ROOT = Path(__file__).resolve().parents[3]
+RETAINED = ROOT / "software/ai/eval/operational_latency_reference_v1.json"
 VALIDATOR = Draft202012Validator(json.loads((
     ROOT / "software/ai/schemas/operational_latency_reference_v1.schema.json"
 ).read_text(encoding="utf-8")))
@@ -103,6 +104,28 @@ def test_reference_is_schema_valid_complete_and_zero_authority():
     assert report["controller_commands"] == []
     assert report["hardware_writes"] == report["physical_movements"] == 0
     assert report["physical_authority"] is False
+
+
+def test_retained_reference_binds_clean_source_and_real_host_measurements():
+    report = json.loads(RETAINED.read_text(encoding="utf-8"))
+    assert list(VALIDATOR.iter_errors(report)) == []
+    assert dict(reference.parse_operational_latency_reference_v1(report)) == report
+    assert report["report_sha256"] == (
+        "0c9e960bd00a8336ff32d7b099be7e21835e9c559e5a47894805a5b1157d9416"
+    )
+    assert report["environment"]["repository_commit"] == (
+        "c633c04fb17d42de5d7466319307db4e536b1120"
+    )
+    assert report["environment"]["repository_dirty"] is False
+    assert report["trace_count"] == 40
+    assert all(
+        trace["terminal_milestone"] == "T5_FIRST_PLAN_READY"
+        and trace["resource_counts"]["ik_solve_count"] == 0
+        and trace["resource_counts"]["controller_command_count"] == 0
+        and trace["resource_counts"]["hardware_write_count"] == 0
+        and trace["resource_counts"]["physical_movement_count"] == 0
+        for trace in report["traces"]
+    )
 
 
 @pytest.mark.parametrize("mutation,match", (
