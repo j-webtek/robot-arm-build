@@ -17,6 +17,12 @@ from rocell.application.camera_arrival_consumer_emitters_v1 import (
 from rocell.application.camera_arrival_consumer_handoff_v1 import (
     build_camera_arrival_consumer_handoff_v1,
 )
+from rocell.application.camera_arrival_consumer_operator_v1 import (
+    CameraArrivalConsumerOperatorV1Error,
+    emit_camera_arrival_consumer_operator_receipt_v1,
+    main as operator_main,
+    write_camera_arrival_consumer_operator_receipt_v1,
+)
 from rocell.application.camera_arrival_consumer_validation_v1 import (
     assess_camera_arrival_consumer_validation_v1,
     parse_camera_arrival_consumer_validation_receipt_v1,
@@ -315,6 +321,96 @@ def test_domain_emitters_account_for_all_fifteen_routes(tmp_path: Path):
     assert assessment["blocked_count"] == 2
     assert assessment["pending_count"] == 0
     assert assessment["complete_for_offline_review"] is False
+
+
+def test_common_operator_writes_all_fifteen_canonical_receipts(tmp_path: Path):
+    evidence = tmp_path / "evidence"
+    outputs = tmp_path / "receipts"
+    evidence.mkdir()
+    outputs.mkdir()
+    _populate(evidence)
+    handoff = build_camera_arrival_consumer_handoff_v1(ROOT, evidence)
+    native_by_id = {
+        **{artifact_id: _support() for artifact_id in (
+            "camera_receipt", "camera_identity", "camera_mode_controls",
+            "support_witnesses",
+        )},
+        **{artifact_id: _campaign() for artifact_id in (
+            "camera_intrinsics", "localization_campaign",
+        )},
+        **{artifact_id: _evaluation() for artifact_id in (
+            "camera_to_board_transform", "localization_evaluation",
+        )},
+        **{artifact_id: _planner_snapshot() for artifact_id in (
+            "board_to_robot_transform", "keyboard_to_board_transform",
+            "tool_to_joint_transform", "keyboard_profile", "tool_profile",
+        )},
+        **{artifact_id: _incomplete_collision_profile() for artifact_id in (
+            "installed_geometry", "cable_envelope",
+        )},
+    }
+    receipts = []
+    for route in handoff["routes"]:
+        receipt, destination = write_camera_arrival_consumer_operator_receipt_v1(
+            handoff, route["artifact_id"], native_by_id[route["artifact_id"]],
+            validated_at_utc=WHEN, output_root=outputs,
+        )
+        assert destination.name == f"{route['artifact_id']}.json"
+        assert json.loads(destination.read_text(encoding="utf-8")) == receipt
+        receipts.append(receipt)
+    assessment = assess_camera_arrival_consumer_validation_v1(handoff, receipts)
+    assert assessment["pass_count"] == 13
+    assert assessment["blocked_count"] == 2
+    assert assessment["pending_count"] == 0
+    assert sorted(path.name for path in outputs.iterdir()) == sorted(
+        f"{artifact_id}.json" for artifact_id in native_by_id
+    )
+    with pytest.raises(CameraArrivalConsumerOperatorV1Error, match="not be overwritten"):
+        write_camera_arrival_consumer_operator_receipt_v1(
+            handoff, "camera_receipt", _support(), validated_at_utc=WHEN,
+            output_root=outputs,
+        )
+
+
+def test_operator_cli_supports_mapping_consumer_and_rejects_typed_json(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str],
+):
+    evidence = tmp_path / "evidence"
+    outputs = tmp_path / "receipts"
+    evidence.mkdir()
+    outputs.mkdir()
+    _populate(evidence)
+    handoff = build_camera_arrival_consumer_handoff_v1(ROOT, evidence)
+    handoff_path = tmp_path / "handoff.json"
+    native_path = tmp_path / "native.json"
+    handoff_path.write_text(json.dumps(handoff), encoding="utf-8")
+    native_path.write_text(json.dumps(_campaign()), encoding="utf-8")
+    result = operator_main([
+        "--handoff", str(handoff_path), "--artifact-id", "camera_intrinsics",
+        "--native-output", str(native_path), "--validated-at-utc", WHEN,
+        "--output-root", str(outputs),
+    ])
+    assert result == 0
+    summary = json.loads(capsys.readouterr().out)
+    assert summary["validation_status"] == "PASS"
+    assert summary["camera_opened"] is summary["transport_opened"] is False
+    assert summary["hardware_writes"] == summary["physical_movements"] == 0
+    assert summary["physical_authority"] is False
+    with pytest.raises(SystemExit):
+        operator_main([
+            "--handoff", str(handoff_path), "--artifact-id", "keyboard_profile",
+            "--native-output", str(native_path), "--validated-at-utc", WHEN,
+            "--output-root", str(outputs),
+        ])
+
+
+def test_operator_dispatch_rejects_wrong_native_type(tmp_path: Path):
+    _populate(tmp_path)
+    handoff = build_camera_arrival_consumer_handoff_v1(ROOT, tmp_path)
+    with pytest.raises(CameraArrivalConsumerOperatorV1Error, match="typed"):
+        emit_camera_arrival_consumer_operator_receipt_v1(
+            handoff, "installed_geometry", _campaign(), validated_at_utc=WHEN
+        )
 
 
 @pytest.mark.parametrize("failure", ("wrong_route", "tampered", "blocked_handoff"))

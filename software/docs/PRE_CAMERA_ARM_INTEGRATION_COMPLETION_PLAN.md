@@ -680,8 +680,9 @@ evaluation, and installed collision geometry.
 
 ### Deliverables
 
-- Thin wrappers that consume exact handoff routes and write canonical consumer
-  artifacts plus ARM-101 receipts into a caller-selected contained output root.
+- Thin wrappers that consume exact handoff routes and already-produced native
+  consumer outputs, then write canonical ARM-101 receipts into a caller-selected
+  contained output root while retaining the native output hash.
 - Consistent exit codes, diagnostics, overwrite protection, input/output hash
   display, resource limits, and zero-authority declarations.
 - No alternate consumer logic: wrappers call the existing typed boundaries.

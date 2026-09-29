@@ -140,6 +140,25 @@ cases pass, with zero camera or transport opens, controller starts, commands,
 writes, movements, or authority. A fault-campaign pass qualifies the offline
 intake behavior only; it says nothing about the future camera or measurements.
 
+After a mapping-based native consumer has produced and retained its own output,
+emit its common receipt with:
+
+```powershell
+python -m rocell.application.camera_arrival_consumer_operator_v1 `
+  --handoff <handoff.json> `
+  --artifact-id <artifact-id> `
+  --native-output <native-output.json> `
+  --validated-at-utc <UTC-timestamp> `
+  --output-root <external-receipt-root>
+```
+
+The wrapper never overwrites `<artifact-id>.json`. Planner snapshots and
+installed collision profiles stay typed objects and use
+`write_camera_arrival_consumer_operator_receipt_v1` from their native Python
+consumer; they are intentionally not reconstructed through the generic JSON
+CLI. Both paths call the same existing domain emitters and preserve native
+blockers, output hashes, and zero-authority semantics.
+
 ## Collect the four camera/support originals
 
 Use the existing explicitly authorized camera onboarding workflow to collect

@@ -73,6 +73,7 @@ TESTS = (
     "software/tests/integration/test_camera_arrival_consumer_handoff_cli_v1.py",
     "software/tests/integration/test_camera_arrival_commissioning_cli_v1.py",
     "software/tests/integration/test_camera_arrival_fault_campaign_cli_v1.py",
+    "software/tests/integration/test_camera_arrival_consumer_operator_cli_v1.py",
     "software/tests/integration/test_synthetic_epoch_model_arm_rehearsal_v1.py",
     "software/tests/integration/test_ai_emitted_epoch_model_arm_rehearsal_v1.py",
     "software/ai/tests/test_batch_emitter_v2.py",
