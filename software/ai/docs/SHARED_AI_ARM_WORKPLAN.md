@@ -522,6 +522,14 @@ changing the ordinary receipt. Preview and encoding remain measured as zero
 when the honest collision-evidence blocker prevents those stages. Ten focused
 and 160 affected tests pass. PC8 still needs the retained multi-scenario run and
 readiness interpretation.
+ARM-094 completes PC8 with the retained 450-observation campaign and readiness
+interpretation. All nine required scenarios contain 50 samples, every PC0
+resource ceiling passes, and 50/50 malformed batches reject. IK is the dominant
+measured CPU bottleneck at 8.953 seconds p95. The same synthetic `ROBOT` route
+predicts an 8.98 percent shorter direct-hover duration than park-between-keys;
+this is not measured physical speed. Exact retained hashes, 12 focused tests,
+and 162 affected tests pass with zero hardware access or physical authority.
+PC9 camera-arrival evidence tooling is now the next pre-camera plan stage.
 The AI precision lane now has a mainline-compatible pose-output adapter and v2
 batch producer. It preserves repeated targets and abstains on qualification,
 domain, freshness, identity, confidence, or containment failure. Its retained

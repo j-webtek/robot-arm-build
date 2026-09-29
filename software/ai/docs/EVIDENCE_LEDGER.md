@@ -4902,3 +4902,56 @@ rewriting history. New entries must use a unique evidence ID.
   retained 50-iteration scenario campaign has not yet run.
 - Next dependency: run the bounded scenario campaign in an isolated process,
   retain its report, and publish the bottleneck/readiness interpretation.
+
+### E-20260928-ARM-094 — PC8 retained performance campaign and readiness
+
+- Stage: S1/S4/S7 pre-camera arm integration; PC8 complete.
+- Lane: Arm/runtime shared boundary.
+- Commit: `1407de5`.
+- Change: added the reproducible bounded campaign generator, canonical forced
+  decode-rejection measurement, correct matched direct-hover versus park-route
+  prediction, retained 450-observation report, and exact retained-evidence
+  regression binding.
+- Inputs/fixtures: 50 iterations each for cold cache, warm cache, long string,
+  repeated key, punctuation, keyboard extreme, forced rejection, direct hover,
+  and park baseline using the existing synthetic PC2 fixtures.
+- Commands: `python software/scripts/run_typing_performance_campaign_v1.py
+  --iterations 50`; `python -m pytest
+  tests/integration/test_retained_typing_performance_report_v1.py
+  tests/integration/test_typing_performance_runner_v1.py
+  tests/unit/test_typing_performance_report_v1.py
+  tests/unit/test_typing_transition_cache_v1.py
+  tests/integration/test_typing_transition_cache_equivalence_v1.py
+  tests/integration/test_typing_trace_golden_v1.py
+  tests/unit/test_typing_trace_package_v1.py
+  tests/integration/test_typing_trace_cli.py
+  tests/unit/test_typing_trace_journal_v1.py
+  tests/integration/test_typing_trace_adapter_v1.py
+  tests/integration/test_typing_shadow_pipeline_v1.py
+  tests/unit/test_typing_rolling_horizon_v1.py
+  tests/unit/test_typing_controller_bridge_v1.py
+  tests/unit/test_model_motion_sequence_journal.py
+  tests/unit/test_typing_fault_campaign_v1.py
+  tests/unit/test_typing_fault_owner_boundaries_v1.py -q`.
+- Result: PASS; report content SHA-256
+  `34273dcb73ba13295cd55a8b1dfafe7ac4aea06b06c7068c141868426ae084a8`;
+  retained file SHA-256
+  `8f8203e60d3e9a6a5f2e4380343c92284bf77498d47d5d04f362eec5ba460b1c`.
+  All 450 observations and all ceilings pass. IK p95 is 8.953 seconds CPU.
+  Direct-hover predicted p50 is 11.657399955 seconds versus 12.807750444
+  seconds for park baseline, an 8.98 percent predicted reduction. Twelve
+  focused tests and the 162-test affected PC2-PC8 suite pass.
+- Artifacts: `software/ai/eval/typing_performance_report_v1.json`,
+  `software/scripts/run_typing_performance_campaign_v1.py`,
+  `software/tests/integration/test_retained_typing_performance_report_v1.py`,
+  and `software/docs/TYPING_PERFORMANCE_READINESS_REPORT_V1.md`.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: evidence is synthetic and offline. Preview and encoding remain
+  zero because the installed-collision-evidence boundary blocks those stages.
+  No physical typing speed, installed-workcell safety, tracking, contact, or
+  outcome-verification claim is made.
+- Supersedes: ARM-092/093 outstanding retained-campaign dependency; their
+  historical limitations remain accurate for their respective checkpoints.
+- Next dependency: PC9 camera-arrival evidence tooling and dry run, without
+  weakening installed geometry, calibration, observed-state, or contact gates.

@@ -1,6 +1,6 @@
 # Tactevra project status
 
-Reviewed September 28, 2026 through the ARM-093 PC8 instrumented runner,
+Reviewed September 28, 2026 through the ARM-094 PC8 performance completion,
 ARM-077 PC0 pre-camera qualification basis, ARM-076 typing collision-evidence
 intake, ARM-075 exact-sample offline IK screen, AI-403 precision-adapter
 integration, and merged physical-camera
@@ -370,6 +370,17 @@ It preserves the ordinary receipt exactly and records zero for preview and
 encoding because the honest collision-evidence blocker precedes those stages.
 Ten focused tests and the 160-test affected suite pass. The bounded retained
 campaign and bottleneck/readiness report remain outstanding.
+
+ARM-094 completes PC8 with a retained 450-observation campaign. Every one of
+the nine required scenarios has 50 iterations; all configured CPU/resource
+ceilings pass, 50/50 malformed inputs reject, and the exact evidence file and
+embedded content hashes are regression-bound. IK is the dominant measured
+software bottleneck at 8.953 seconds p95 CPU. The matched synthetic `ROBOT`
+comparison predicts an 8.98 percent shorter direct-hover route than the park
+baseline, but explicitly makes no physical speed claim. Twelve focused and 162
+affected tests pass with zero hardware access, commands, or physical authority.
+PC9 camera-arrival evidence tooling is next; installed geometry, calibration,
+observed state, tracking, contact, and outcome verification remain blocked.
 
 AI-403 then integrates the pose-output precision adapter and actual V2 batch
 producer on current `main`. The retained contract fixture deterministically

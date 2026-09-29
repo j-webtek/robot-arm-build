@@ -103,7 +103,7 @@ and its evidence gate pass.
 | PC5 | Fault injection and property testing | PC1-PC4 | No | None | COMPLETE |
 | PC6 | Unified trace journal and deterministic replay | PC2-PC5 | No | None | COMPLETE |
 | PC7 | Safe transition cache in shadow mode | PC3, PC6 | No | None | COMPLETE |
-| PC8 | Performance benchmark and readiness report | PC1-PC7 | No | None | IN_PROGRESS |
+| PC8 | Performance benchmark and readiness report | PC1-PC7 | No | None | COMPLETE |
 | PC9 | Camera-arrival evidence tooling and dry run | PC6 | No for tooling | None before arrival | NOT_STARTED |
 | PC10 | Pre-camera integration closure | PC0-PC9 | No | None | NOT_STARTED |
 
@@ -436,6 +436,20 @@ the route. Profiled and ordinary receipts are byte-equivalent. Ten focused
 runner/report tests and the 160-test affected suite pass. A retained 50-sample-
 per-scenario campaign and readiness analysis remain.
 
+**Completion 2026-09-28:** ARM-094 retains the complete 450-observation
+campaign: 50 iterations for every required scenario, including 50/50 forced
+rejections. All PC0 resource ceilings pass; peak working set is 72.99 MiB,
+maximum action count is 16, maximum collision sampling is 178, and maximum
+serialized receipt size is 1,522 bytes. IK is the dominant measured software
+bottleneck at 8.953 seconds p95 process CPU. For the identical synthetic
+`ROBOT` route, direct-hover predicted duration is 8.98 percent shorter than the
+park-between-keys baseline. This comparison remains a simulation prediction,
+not physical typing speed. The exact retained file and embedded content hashes
+are regression-tested, and the expanded affected suite passes 162 tests with
+zero hardware access, controller commands, or physical authority. The
+[readiness report](TYPING_PERFORMANCE_READINESS_REPORT_V1.md) records the
+bottleneck, optimization order, and unchanged operational blockers.
+
 ### Deliverables
 
 - Benchmark p50, p95, and p99 where sample counts support them for decode,
@@ -546,13 +560,14 @@ For every PC increment:
 - [x] PC5 fault and property campaigns complete
 - [x] PC6 trace journal and replay complete
 - [x] PC7 transition cache shadow qualification complete
-- [ ] PC8 performance report complete
+- [x] PC8 performance report complete
 - [ ] PC9 camera-arrival tools dry-run complete
 - [ ] PC10 clean-checkout pre-camera closure recorded
 
 ## Related documents
 
 - [Optimized typing execution plan](OPTIMIZED_TYPING_EXECUTION_PLAN.md)
+- [Typing performance readiness report](TYPING_PERFORMANCE_READINESS_REPORT_V1.md)
 - [Shared AI/arm workplan](../ai/docs/SHARED_AI_ARM_WORKPLAN.md)
 - [Model command runtime implementation plan](../ai/docs/MODEL_COMMAND_RUNTIME_IMPLEMENTATION_PLAN.md)
 - [Camera integration hold](../../docs/CAMERA_INTEGRATION_HOLD.md)
