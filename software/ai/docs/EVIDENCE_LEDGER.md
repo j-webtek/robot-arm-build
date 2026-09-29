@@ -5392,3 +5392,37 @@ rewriting history. New entries must use a unique evidence ID.
   orchestrator contract remains the operator boundary.
 - Next dependency: PC13 must provide uniform wrappers for the five native
   consumer families while retaining their native schemas and blockers.
+
+### E-20260929-ARM-106 — Common camera-consumer operator boundary
+
+- Stage: PC13 post-closure pre-camera continuation.
+- Lane: arm/runtime consumer operations.
+- Implementation commit: `0543b421104ae479c7a1f3ce56bd6f098e84a927`.
+- Change: added one dispatch and exclusive receipt-write interface across the
+  support, campaign, localization, typed planner, and typed installed-collision
+  consumer families. Mapping outputs are available through a uniform CLI;
+  planner and collision outputs remain typed objects through the same Python
+  boundary rather than being reconstructed from generic JSON.
+- Result: PASS. All 15 route identities produced canonical receipt files with
+  exact native output hashes. Thirteen fixture routes passed and the incomplete
+  installed geometry and cable routes preserved their two native blockers.
+  Overwrite, wrong native type, typed-through-generic-CLI, and zero-authority
+  behavior were exercised. The detached clean-checkout governed matrix passed
+  564 tests, policy tests passed 115, and all maintained audits passed.
+- Artifacts: `software/src/rocell/application/camera_arrival_consumer_operator_v1.py`,
+  `software/scripts/emit_camera_arrival_consumer_receipt_v1.py`, focused
+  integration coverage, and expanded domain-emitter tests.
+- Camera opens: 0.
+- Transport opens: 0.
+- Controller starts: 0.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: the wrapper receives an already-produced native consumer output;
+  it does not perform camera capture, measurement, calibration, localization,
+  geometry collection, epoch commissioning, or physical admission. The current
+  full-route fixture still cannot complete offline review because installed
+  geometry and cable evidence are intentionally incomplete.
+- Supersedes: ARM-103 only for uniform operator invocation and receipt storage;
+  ARM-103's domain emitter semantics remain unchanged.
+- Next dependency: PC14 must bind originals, routes, receipt paths, epoch/profile
+  candidates, and derived session state into a restart-safe manifest.

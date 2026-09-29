@@ -110,8 +110,8 @@ and its evidence gate pass.
 | PC10 | Pre-camera integration closure | PC0-PC9 | No | None | COMPLETE |
 | PC11 | One-command zero-authority commissioning orchestrator | PC9-PC10, ARM-100-103 | No | None | COMPLETE |
 | PC12 | Full synthetic arrival and fault campaign | PC11 | No | None | COMPLETE |
-| PC13 | Domain-consumer operator wrappers | PC11, ARM-103 | No | None | IN PROGRESS |
-| PC14 | Arrival-session manifest and state machine | PC11-PC13 | No | None | PLANNED |
+| PC13 | Domain-consumer operator wrappers | PC11, ARM-103 | No | None | COMPLETE |
+| PC14 | Arrival-session manifest and state machine | PC11-PC13 | No | None | IN PROGRESS |
 | PC15 | Installed-geometry and cable-envelope intake rehearsal | PC13-PC14 | No | None | PLANNED |
 | PC16 | Immutable camera-replay runner | PC11-PC14 | No live camera | None | PLANNED |
 | PC17 | Timing and observability report | PC11-PC16 | No | None | PLANNED |
@@ -672,6 +672,18 @@ campaign report reconstructs to identical bytes and hashes in a clean checkout.
 
 ## PC13 — Domain-consumer operator wrappers
 
+**Completed 2026-09-29:** ARM-106 provides one uniform dispatch and exclusive
+receipt-write boundary for all 15 routes across the five native consumer
+families. Mapping-based support, campaign, and localization outputs use the CLI;
+typed planner snapshots and installed collision profiles use the same Python
+operator without unsafe JSON reconstruction. The wrapper preserves every native
+output hash and blocker, writes exactly `<artifact_id>.json`, rejects overwrite,
+and never changes domain semantics. The full synthetic assembly remains 13
+passes and two honest geometry/cable blockers. Commit
+`0543b421104ae479c7a1f3ce56bd6f098e84a927` passed 564 governed tests, 115
+repository-policy tests, and all maintained audits from a detached clean
+checkout. It invokes no camera, transport, controller, command, or movement.
+
 ### Objective
 
 Give operators one consistent offline interface for the five native consumer
@@ -854,7 +866,7 @@ For every PC increment:
 - [x] PC10 clean-checkout pre-camera closure recorded
 - [x] PC11 one-command zero-authority commissioning orchestrator complete
 - [x] PC12 full synthetic arrival and fault campaign complete
-- [ ] PC13 domain-consumer operator wrappers complete
+- [x] PC13 domain-consumer operator wrappers complete
 - [ ] PC14 arrival-session manifest and state machine complete
 - [ ] PC15 installed-geometry and cable-envelope rehearsal complete
 - [ ] PC16 immutable camera-replay runner complete

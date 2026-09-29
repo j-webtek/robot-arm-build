@@ -1,7 +1,7 @@
 # Tactevra project status
 
-Reviewed September 29, 2026 through the ARM-105 synthetic camera-arrival fault
-campaign,
+Reviewed September 29, 2026 through the ARM-106 common camera-consumer operator
+boundary,
 ARM-077 PC0 pre-camera qualification basis, ARM-076 typing collision-evidence
 intake, ARM-075 exact-sample offline IK screen, AI-403 precision-adapter
 integration, and merged physical-camera
@@ -479,6 +479,13 @@ inputs. All cases reached their expected owning boundary. The campaign also
 fixed strict duplicate/size handling for external sidecars and a mixed-epoch
 handoff-parser inconsistency. It remains synthetic and zero-authority. The
 governed offline matrix now passes 560 tests.
+
+ARM-106 gives all five native consumer families one operator-facing dispatch
+and exclusive receipt-write boundary. Mapping consumers use a uniform CLI;
+planner and collision consumers preserve their typed objects through the same
+Python API. All 15 route filenames and hashes are covered, overwrites reject,
+and the two installed geometry/cable blockers remain intact. The governed
+offline matrix now passes 564 tests.
 
 AI-403 then integrates the pose-output precision adapter and actual V2 batch
 producer on current `main`. The retained contract fixture deterministically
