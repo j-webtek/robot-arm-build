@@ -60,6 +60,7 @@ TESTS = (
     "software/tests/unit/test_camera_arrival_session_manifest_v1.py",
     "software/tests/unit/test_installed_geometry_cable_rehearsal_v1.py",
     "software/tests/unit/test_immutable_camera_replay_v1.py",
+    "software/tests/unit/test_pre_camera_observability_v1.py",
     "software/tests/unit/test_assess_r97_external_review_decision.py",
     "software/tests/unit/test_model_motion_sequence_coordinator.py",
     "software/tests/unit/test_zero_write_waveshare_adapter_v1.py",

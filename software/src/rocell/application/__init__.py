@@ -238,6 +238,12 @@ from .immutable_camera_replay_v1 import (
     parse_immutable_camera_replay_report_v1,
     run_immutable_camera_replay_v1,
 )
+from .pre_camera_observability_v1 import (
+    SCHEMA as PRE_CAMERA_OBSERVABILITY_REPORT_V1_SCHEMA,
+    PreCameraObservabilityV1Error,
+    build_pre_camera_observability_report_v1,
+    parse_pre_camera_observability_report_v1,
+)
 from .measured_waypoint_collision_sequence import (
     MAX_WAYPOINT_COLLISION_SAMPLES,
     SCHEMA as MEASURED_WAYPOINT_COLLISION_SEQUENCE_SCHEMA,
@@ -1418,6 +1424,10 @@ __all__ = [
     "parse_immutable_camera_replay_manifest_v1",
     "parse_immutable_camera_replay_report_v1",
     "run_immutable_camera_replay_v1",
+    "PRE_CAMERA_OBSERVABILITY_REPORT_V1_SCHEMA",
+    "PreCameraObservabilityV1Error",
+    "build_pre_camera_observability_report_v1",
+    "parse_pre_camera_observability_report_v1",
     "MAX_WAYPOINT_COLLISION_SAMPLES",
     "MEASURED_WAYPOINT_COLLISION_SEQUENCE_SCHEMA",
     "MeasuredWaypointCollisionSample",
