@@ -190,6 +190,16 @@ is not bound to a governed URDF joint state, and the components have no
 reviewed dynamic-link assignments or reduced shapes. The receipt therefore
 denies dynamic-link assignment, collision geometry, and clearance replay.
 
+[`step_pose_binding_probe.py`](step_pose_binding_probe.py) performs the next
+bounded classification. It derives the CAD-to-URDF world translation from the
+paired shoulder-servo envelopes and assembly floor, then tests the governed
+zero, home, and ready states against six named CAD component envelopes. The
+retained [`pose receipt`](evidence/roarm_m3_step_pose_binding_20260929.json)
+selects the `home` hypothesis: all six witnesses lie within 2.216 mm, while
+the nearest alternative misses by 133.238 mm. This supports the assembly-pose
+hypothesis only. Axis-exact correspondence, CAD-product membership per moving
+link, and reduced collision shapes remain unreviewed and blocked.
+
 Reproduce it on the designated runner from the repository root:
 
 ```powershell
@@ -200,6 +210,17 @@ C:\IsaacSim\env_6_1_0\Scripts\python.exe software\integrations\isaac_sim\step_in
   --output-dir C:\IsaacSim\artifacts\issue190\wp2-cad-004 `
   --receipt C:\IsaacSim\evidence\step_inspection_004.json `
   --status-output C:\IsaacSim\evidence\step_inspection_004.status.json
+```
+
+Reproduce the pose classification with the generated USD still external:
+
+```powershell
+C:\IsaacSim\env_6_1_0\Scripts\python.exe software\integrations\isaac_sim\step_pose_binding_probe.py `
+  --workspace . `
+  --cad-usd C:\IsaacSim\artifacts\issue190\wp2-cad-004\roarm_m3_official.usda `
+  --step-receipt software\integrations\isaac_sim\evidence\roarm_m3_step_inspection_20260929.json `
+  --output C:\IsaacSim\evidence\step_pose_binding_001.json `
+  --status-output C:\IsaacSim\evidence\step_pose_binding_001.status.json
 ```
 
 ## Verify WP0
