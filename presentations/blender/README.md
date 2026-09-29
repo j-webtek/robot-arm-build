@@ -112,9 +112,9 @@ production scaffold rather than only a prose storyboard:
   scenes, stage names, camera-rig assignments, and the seven-phase first
   contact benchmark;
 - `build_storyboard_v21_benchmark.py` reuses the measured workcell scene,
-  organizes reference assets in a locked collection, creates four native
+  organizes reference assets in a locked collection, creates seven native
   Blender camera rigs (`macro`, `dolly`, `arm_follow`, `hero`, `overhead`, and
-  `low_three_quarter`), and adds
+  `low_three_quarter`, `contact_three_quarter`), and adds
   the green permit, blue uncertainty, and dotted no-authority preview;
 - `validate_storyboard_v21.py` fails when timings drift, a shot is missing, a
   camera rig is unused, or the first-contact phase order changes.

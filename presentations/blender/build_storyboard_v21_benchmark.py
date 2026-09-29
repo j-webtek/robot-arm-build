@@ -1103,6 +1103,9 @@ def build() -> bpy.types.Scene:
         "low_three_quarter": camera_rig(
             "low_three_quarter", Vector((0.50, -0.92, 0.30)), r_target, 58, cameras
         ),
+        "contact_three_quarter": camera_rig(
+            "contact_three_quarter", Vector((0.32, -0.76, 0.38)), r_target, 62, cameras
+        ),
     }
     toolhead_target = base.board_point(*r_xy_mm, 110)
     animate_camera(*rigs["macro"], 97, 216,
@@ -1134,11 +1137,14 @@ def build() -> bpy.types.Scene:
                    Vector(overhead_contract["start_position_m"]),
                    Vector(overhead_contract["end_position_m"]),
                    Vector(overhead_contract["target_m"]))
-    animate_camera(*rigs["low_three_quarter"], 793, 1152,
-                   Vector((0.50, -0.92, 0.30)), Vector((0.44, -0.82, 0.33)), r_target)
+    animate_camera(*rigs["low_three_quarter"], 793, 960,
+                   Vector((0.50, -0.92, 0.30)), Vector((0.46, -0.84, 0.32)), r_target)
+    animate_camera(*rigs["contact_three_quarter"], 961, 1152,
+                   Vector((0.32, -0.76, 0.38)), Vector((0.27, -0.65, 0.35)), r_target)
     # Scene 7 holds the composition while focus moves from the physical
     # toolhead to the off-board operator display. Scene 8 begins with a
-    # deliberate edit back to the arm plane rather than an accidental drift.
+    # deliberate cut to a separately positioned contact camera rather than a
+    # one-frame aim snap that could read as a render glitch.
     low_camera = rigs["low_three_quarter"][0]
     low_camera.data.dof.focus_object = None
     low_camera.data.dof.aperture_fstop = 3.2
@@ -1148,7 +1154,6 @@ def build() -> bpy.types.Scene:
     # then use the scene-8 cut to restore the arm target.
     key_pose(low_aim, 912, r_target)
     key_pose(low_aim, 960, operator_display_focus)
-    key_pose(low_aim, 961, r_target)
     scene.frame_set(900)
     bpy.context.view_layer.update()
     toolhead_distance = (low_camera.matrix_world.translation - toolhead_target).length
@@ -1158,8 +1163,7 @@ def build() -> bpy.types.Scene:
         low_camera.matrix_world.translation - operator_display_focus
     ).length
     for frame, distance in ((841, toolhead_distance), (912, toolhead_distance),
-                            (960, operator_display_distance), (961, toolhead_distance),
-                            (1152, toolhead_distance)):
+                            (960, operator_display_distance)):
         low_camera.data.dof.focus_distance = distance
         low_camera.data.dof.keyframe_insert("focus_distance", frame=frame)
     low_camera["scene_7_focus_destination"] = tuple(operator_display_focus)
@@ -1176,6 +1180,22 @@ def build() -> bpy.types.Scene:
         )
     scene["scene_7_display_frame_validation"] = "PASS_VISIBLE_AT_FRAME_960"
     scene["scene_7_display_ndc"] = tuple(display_ndc)
+    scene.frame_set(960)
+    scene_7_camera_position = low_camera.matrix_world.translation.copy()
+    scene.frame_set(961)
+    scene_8_camera = rigs["contact_three_quarter"][0]
+    scene_8_camera_position = scene_8_camera.matrix_world.translation.copy()
+    cut_displacement = (scene_8_camera_position - scene_7_camera_position).length
+    minimum_cut_displacement = manifest["camera_contract"]["scene_7_to_8"][
+        "minimum_camera_displacement_m"
+    ]
+    if cut_displacement < minimum_cut_displacement:
+        raise RuntimeError(
+            "scene 7-to-8 camera change is too small to read as a deliberate cut: "
+            f"{cut_displacement:.3f} m"
+        )
+    scene["scene_7_to_8_edit"] = "PASS_DELIBERATE_CAMERA_CUT"
+    scene["scene_7_to_8_camera_displacement_m"] = cut_displacement
 
     scene.timeline_markers.clear()
     for shot in manifest["shots"]:

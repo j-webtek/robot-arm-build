@@ -88,8 +88,9 @@ without asking the viewer to relearn it ten times.
 - Hero wide or crane for architecture and payoff.
 - Cumulative use of any reusable camera setup stays at or below 25 percent of
   runtime: macro 16.8%, hero 22%, dolly 21%, arm-follow 21%, overhead 7%, and
-  low three-quarter 12.2%. This includes the bounded scene-7 toolhead and
-  scene-8 contact inserts and is validated from the canonical shot list.
+  low three-quarter 5.0%, and contact three-quarter 7.2%. This includes the
+  bounded scene-7 toolhead and scene-8 contact inserts and is validated from
+  the canonical shot list.
 - Cuts preserve identical joint pose, gripper, bare stylus pose,
   cable state, and device placement. No teleporting, snap zooms, or decorative
   spins.
@@ -102,12 +103,12 @@ without asking the viewer to relearn it ten times.
 |---:|---:|---|---|---|
 | 1 | 0:00–0:04 | — | **Cold open.** Macro: the capacitive disc hovers over the `r` key while the bare stylus barrel remains visibly captured directly between both jaw pads. The blue uncertainty disk is still wider than the key. Pull focus from disc to the jaw grip and stationary wrist. No text appears yet. | One held mechanical tone; no narration. |
 | 2 | 0:04–0:09 | — | Operator-display request console: `Type ready locally, then send on my way from the phone.` Phone and physical keyboard remain visibly separate. | Quiet input ticks. |
-| 3 | 0:09–0:15 | — | Hero wide reveals the exact workcell, detailed RoArm, printed contact cartridge and stylus, off-board operator display, black RC03 keyboard, and indexed phone. The display remains entirely beside the board. No keyboard cord is shown and the film makes no claim about the keyboard's electrical connection. | Music establishes restrained forward pulse. |
+| 3 | 0:09–0:15 | — | Hero wide reveals the exact workcell, detailed RoArm, bare stylus barrel, off-board operator display, black RC03 keyboard, and indexed phone. The display remains entirely beside the board. No keyboard cord is shown and the film makes no claim about the keyboard's electrical connection. | Music establishes restrained forward pulse. |
 | 4 | 0:15–0:21 | `UNDERSTAND` | Amber model card: ordered semantic actions, named targets, board-frame points, confidence, and error bounds. `speed`, `contact depth`, `retry`, and `timing` are greyed and locked: `runtime owned`. | Amber data ticks. |
 | 5 | 0:21–0:28 | `LOCATE` | Crane to the actual fixed camera, pass through its lens, then use its squared overhead view. Exact tags and device bounds lock; blue uncertainty disks contract. | Registration pings. |
 | 6 | 0:28–0:33 | `CHECK` | Red card in empty space: `scene capture 41 s old · limit 2 s → REJECTED · NO MOTION`. Arm and stylus remain unobscured and still. | Music drops out; one low reject thud. |
 | 7 | 0:33–0:40 | `CHECK` | Fresh capture. Immutable batch facts pass. Text reads `BATCH ADMITTED → PERMIT · 1 ACTION`. In a low three-quarter push, establish the bare barrel captured directly between the opposing jaw pads and the articulated disc while the green permit travels toward the stylus. End with a visible tilt and rack focus to the lowered off-board operator display as its screen changes from request console to local test pad. | Music returns; restrained gate ticks. |
-| 8 | 0:40–0:48 | `ACT` | **Teach the first key slowly with the complete arm readable in low three-quarter.** Label the seven phases: `transit → align → settle → approach → contact → retract → verify`. At contact only, cut briefly to a macro insert of `r` depressing, then return to low three-quarter. A cause/effect insert shows the operator-display test pad add `r`, and the permit fades. The stage bar remains on `ACT`; a small three-dot loop indicator pulses through check/contact/verify. | One precise click and one verify tick. |
+| 8 | 0:40–0:48 | `ACT` | **Cut deliberately to a displaced contact three-quarter camera and teach the first key slowly with the complete arm readable.** Label the seven phases: `transit → align → settle → approach → contact → retract → verify`. At contact only, cut briefly to a macro insert of `r` depressing, then return to contact three-quarter. A cause/effect insert shows the operator-display test pad add `r`, and the permit fades. The stage bar remains on `ACT`; a small three-dot loop indicator pulses through check/contact/verify. | One precise click and one verify tick. |
 | 9 | 0:48–0:55 | `ACT` | Lateral track across `e`, `a`, `d`, `y`. The contract is now visual shorthand: one permit arrives, one contact occurs, and one verification tick appears. Do not repeat uncertainty and dotted-preview graphics. The stage bar remains stable on `ACT`. | Four increasingly rhythmic clicks, never rushed. |
 | 10 | 0:55–1:01 | `ACT` | Hold above keyboard. Operator-display test pad reads `ready`; receipt shows `EXPECTED ready · OBSERVED ready ✓`. Phone is unchanged. The stable `ACT` bar remains while the compact loop indicator resolves on verify. | Local verification tone. |
 | 11 | 1:01–1:07 | `ACT` | Arm-follow dolly: full retract and high-clearance move from keyboard to phone, with continuous joint and attached servo-harness motion. | Light transit mechanism texture. |
