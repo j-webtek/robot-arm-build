@@ -104,7 +104,7 @@ and its evidence gate pass.
 | PC6 | Unified trace journal and deterministic replay | PC2-PC5 | No | None | COMPLETE |
 | PC7 | Safe transition cache in shadow mode | PC3, PC6 | No | None | COMPLETE |
 | PC8 | Performance benchmark and readiness report | PC1-PC7 | No | None | COMPLETE |
-| PC9 | Camera-arrival evidence tooling and dry run | PC6 | No for tooling | None before arrival | IN_PROGRESS |
+| PC9 | Camera-arrival evidence tooling and dry run | PC6 | No for tooling | None before arrival | COMPLETE |
 | PC10 | Pre-camera integration closure | PC0-PC9 | No | None | NOT_STARTED |
 
 ## PC0 — Freeze the qualification basis
@@ -487,6 +487,17 @@ tests pass. The arrival-day checklist records collection order and stop
 conditions. PC9 remains in progress pending consolidated dry runs for the
 remaining installed-geometry and calibration intake consumers.
 
+**Completion 2026-09-28:** ARM-096 binds all 15 arrival slots to their actual
+camera-support, planner-calibration, installed-collision, campaign-preflight,
+or localization-evaluator consumer source and aggregate schema. Every dependency
+is resolved and SHA-256-bound in the retained consumer map. The consolidated
+225-test PC9 matrix covers arrival templates, schema mutations, exact retained
+files, capture datasets/checksums, receipts, camera profiles, calibration
+decoding, installed geometry, support/optics epoch intake, campaign preflight,
+and evaluation. No measured original is consumed; every physical-admission
+flag remains false. PC9 is complete as tooling and dry-run evidence only. The
+physical-camera hold and all measured commissioning gates remain active.
+
 ### Deliverables
 
 - Prepare bounded commands and templates for original image capture, file
@@ -575,7 +586,7 @@ For every PC increment:
 - [x] PC6 trace journal and replay complete
 - [x] PC7 transition cache shadow qualification complete
 - [x] PC8 performance report complete
-- [ ] PC9 camera-arrival tools dry-run complete
+- [x] PC9 camera-arrival tools dry-run complete
 - [ ] PC10 clean-checkout pre-camera closure recorded
 
 ## Related documents

@@ -4990,3 +4990,45 @@ rewriting history. New entries must use a unique evidence ID.
   calibration, installed-geometry, localization, or deployment evidence.
 - Next dependency: consolidate dry-run validation for the calibration and
   installed-geometry consumers while preserving blank physical slots.
+
+### E-20260928-ARM-096 — camera-arrival consumer binding and PC9 completion
+
+- Stage: S1/S2/S3/S7 pre-camera integration; PC9 complete.
+- Lane: Shared AI/arm evidence boundary.
+- Commit: `665cc95`.
+- Change: added a repository-bound consumer map for all 15 arrival slots. Each
+  map row binds the current consumer source, aggregate schema, consumer field,
+  and exact source/schema hashes. The retained generator refuses overwrite.
+- Inputs/fixtures: the canonical ARM-095 arrival kit plus existing synthetic
+  capture, camera receipt/profile, calibration, installed-geometry,
+  camera-support, campaign-preflight, and localization-evaluation fixtures.
+- Commands: `python -m pytest
+  tests/unit/test_camera_arrival_kit_v1.py
+  tests/unit/test_camera_arrival_original_schema_v1.py
+  tests/integration/test_retained_camera_arrival_kit_v1.py
+  tests/integration/test_camera_arrival_consumer_map_v1.py
+  tests/unit/test_camera_capture_dataset.py
+  tests/unit/test_camera_capture_checksum.py
+  tests/unit/test_camera_receipt.py
+  tests/unit/test_camera_profile.py
+  tests/unit/test_planner_calibration_snapshot.py
+  tests/unit/test_installed_collision_geometry.py
+  tests/unit/test_camera_support_optics_epoch_intake_v1.py
+  ai/tests/test_physical_camera_localization_campaign.py
+  ai/tests/test_physical_camera_localization_evaluator.py -q`.
+- Result: PASS; 225 tests. Consumer-map content SHA-256
+  `9e42435dfbe5f64eb02eefa7a459e597d46fa72a3acf799c60e0b50a273c223b`;
+  retained file SHA-256
+  `d234aa3e54f33e840b90ea88922ea7a111728257b3bbff3a350a4db5a9e2ca6b`.
+  All 15 dependencies resolve and remain hash-bound to the tested checkout.
+- Artifacts: `software/src/rocell/application/camera_arrival_consumer_map_v1.py`,
+  `software/ai/eval/camera_arrival_consumer_map_dry_run_v1.json`, and
+  `software/tests/integration/test_camera_arrival_consumer_map_v1.py`.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: no received camera, measured transform, installed geometry,
+  localization qualification, epoch advancement, deployment update, or
+  physical admission is established.
+- Supersedes: ARM-095's outstanding calibration/geometry consumer dry-run
+  dependency; ARM-095's physical-evidence limitations remain unchanged.
+- Next dependency: PC10 clean-checkout pre-camera integration closure.

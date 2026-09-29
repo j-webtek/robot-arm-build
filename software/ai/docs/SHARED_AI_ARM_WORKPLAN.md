@@ -538,6 +538,12 @@ epoch advancement, registry update, qualification, camera access, controller
 access, writes, movement, or authority. Thirty-three combined cross-lane tests
 pass. The arrival-day checklist is ready; remaining calibration and installed-
 geometry consumer dry runs keep PC9 in progress.
+ARM-096 completes PC9 by resolving and hash-binding every arrival slot to its
+actual downstream consumer and aggregate schema. The consolidated 225-test
+matrix covers capture originals through localization evaluation. Zero measured
+originals are consumed, no physical-admission flag becomes true, and the
+camera hold remains active. PC10 clean-checkout closure is the next pre-camera
+stage.
 The AI precision lane now has a mainline-compatible pose-output adapter and v2
 batch producer. It preserves repeated targets and abstains on qualification,
 domain, freshness, identity, confidence, or containment failure. Its retained
