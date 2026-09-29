@@ -5122,3 +5122,36 @@ rewriting history. New entries must use a unique evidence ID.
   reconciliation record.
 - Next dependency: receive and commission the final camera, then execute the
   camera-dependent continuation under separate physical authorization.
+
+### E-20260928-ARM-098 — Read-only camera-arrival evidence preflight
+
+- Stage: post-PC10 camera commissioning preparation.
+- Lane: arm/runtime evidence intake.
+- Implementation commit: `115ee6299ce23d0ff6f1711de9805977e3431d8e`.
+- Change: added one deterministic command and application service that inventory
+  the canonical 15-slot external camera-evidence root. It validates strict
+  sidecar fields, artifact identity/class/units, safe contained source paths,
+  source byte counts and SHA-256 hashes, accepted reviews, required uncertainty,
+  and one shared configuration epoch.
+- Command:
+  `python software/scripts/preflight_camera_arrival_evidence_v1.py --workspace . --evidence-root <external-root>`.
+- Result: PASS. Six focused preflight tests and 20 retained PC9 regressions
+  passed together; the governed offline matrix passed 514 tests. Repository
+  policy tests and documentation, public-record, evidence-scope,
+  repository-artifact, repository-health, and release-integrity checks passed.
+- Admission semantics: incomplete or invalid evidence returns
+  `BLOCKED_ARRIVAL_EVIDENCE_INCOMPLETE`; a complete structural set returns only
+  `READY_FOR_OFFLINE_QUALIFICATION_REVIEW`.
+- Camera opens: 0.
+- Controller starts: 0.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: structural completeness is not calibration acceptance,
+  localization qualification, collision clearance, epoch commissioning,
+  deployment installation, or physical authority. The external evidence root
+  still requires actual camera-arrival originals and independent review.
+- Supersedes: ARM-097's informal first arrival-day inventory step only; PC10
+  remains complete and the physical-camera hold remains active.
+- Next dependency: run this preflight against the owner-selected external root
+  as physical originals are collected, then commission the measured epoch only
+  after all downstream reviews pass.

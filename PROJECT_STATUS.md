@@ -1,6 +1,6 @@
 # Tactevra project status
 
-Reviewed September 28, 2026 through the ARM-097 PC10 clean-checkout closure,
+Reviewed September 28, 2026 through the ARM-098 camera-arrival preflight,
 ARM-077 PC0 pre-camera qualification basis, ARM-076 typing collision-evidence
 intake, ARM-075 exact-sample offline IK screen, AI-403 precision-adapter
 integration, and merged physical-camera
@@ -411,6 +411,15 @@ tests, 115 repository-policy tests, and all maintained policy audits. No
 camera, controller, transport, torque, or movement authority was exercised.
 The pre-camera software backbone is therefore ready for separately authorized
 camera commissioning; the physical-camera hold remains active.
+
+ARM-098 adds the first post-PC10 operational handoff: a read-only preflight for
+the external camera-arrival evidence root. It inventories all 15 canonical
+slots, verifies strict sidecar structure, exact artifact identity/class/units,
+source-file containment, byte count, SHA-256, accepted review, and one shared
+configuration epoch. Complete input becomes only
+`READY_FOR_OFFLINE_QUALIFICATION_REVIEW`; the tool cannot open the camera or
+controller, promote evidence, advance an epoch, install qualification, write
+hardware, or move the arm. The governed offline matrix now passes 514 tests.
 
 AI-403 then integrates the pose-output precision adapter and actual V2 batch
 producer on current `main`. The retained contract fixture deterministically

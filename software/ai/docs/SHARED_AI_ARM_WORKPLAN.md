@@ -552,6 +552,13 @@ checkout passes 507 governed portable tests, 194 explicit PC0-PC9 tests, 115
 repository-policy tests, and all maintained policy audits. No camera,
 controller, transport, torque, or movement authority was used. The next shared
 dependency is final-camera commissioning under the existing physical hold.
+ARM-098 adds a deterministic read-only inventory between physical collection
+and offline qualification. It validates all 15 canonical sidecars and their
+source bytes, rejected reviews, and configuration-epoch consistency without
+opening either device or mutating any registry. A structurally complete result
+is only ready for offline qualification review; it grants no perception,
+controller, contact, or movement authority. The governed offline matrix passes
+514 tests.
 The AI precision lane now has a mainline-compatible pose-output adapter and v2
 batch producer. It preserves repeated targets and abstains on qualification,
 domain, freshness, identity, confidence, or containment failure. Its retained

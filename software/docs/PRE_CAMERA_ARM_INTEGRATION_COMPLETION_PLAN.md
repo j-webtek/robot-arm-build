@@ -578,13 +578,15 @@ autonomous typing capability is qualified.
 After camera arrival, work resumes at the existing shared gates:
 
 1. collect and retain the final-camera originals;
-2. commission the measured configuration epoch;
-3. evaluate localization and uncertainty on disjoint real captures;
-4. populate and screen the installed geometry and cable profile;
-5. obtain a fresh observed arm state;
-6. qualify one non-contact hover at the lowest speed class;
-7. qualify one independently verified key action; and
-8. expand to held-out short strings before performance tuning.
+2. run the read-only 15-slot arrival-evidence preflight and resolve every
+   missing, malformed, hash-mismatched, rejected, or mixed-epoch record;
+3. commission the measured configuration epoch;
+4. evaluate localization and uncertainty on disjoint real captures;
+5. populate and screen the installed geometry and cable profile;
+6. obtain a fresh observed arm state;
+7. qualify one non-contact hover at the lowest speed class;
+8. qualify one independently verified key action; and
+9. expand to held-out short strings before performance tuning.
 
 The [camera integration hold](../../docs/CAMERA_INTEGRATION_HOLD.md) remains in
 force until its physical prerequisites are satisfied.
