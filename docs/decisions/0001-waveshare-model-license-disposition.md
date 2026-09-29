@@ -8,7 +8,7 @@
 
 **Issue:** [#88](https://github.com/j-webtek/tactevra/issues/88)
 
-**Pull request:** Pending
+**Pull request:** [#185](https://github.com/j-webtek/tactevra/pull/185)
 
 ## Context
 
