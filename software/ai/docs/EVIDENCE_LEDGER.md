@@ -5426,3 +5426,47 @@ rewriting history. New entries must use a unique evidence ID.
   ARM-103's domain emitter semantics remain unchanged.
 - Next dependency: PC14 must bind originals, routes, receipt paths, epoch/profile
   candidates, and derived session state into a restart-safe manifest.
+
+### E-20260929-ARM-107 — Restart-safe camera-arrival session manifest
+
+- Stage: PC14 post-closure pre-camera continuation.
+- Lane: arm/runtime commissioning session state.
+- Implementation commit: `0327035e2e77b37301f0fc9568146b37f14f55f9`.
+- Change: added a canonical manifest and JSON Schema binding the exact PC11
+  report, all 15 original/route/receipt summaries, candidate configuration
+  epoch, camera profile, and tool profile. Added exclusive-create and
+  bounded, duplicate-safe verify CLIs. Restart verification reruns PC11 and
+  requires complete manifest equality rather than inheriting a prior pass.
+- Command: `$env:PYTHONPATH='software/src;software'; $tests = @(python -c
+  "import importlib.util; s=importlib.util.spec_from_file_location('offline_checks','scripts/ci/offline_checks.py');
+  m=importlib.util.module_from_spec(s); s.loader.exec_module(m);
+  print(chr(10).join(m.TESTS))"); python -m pytest -q $tests`; repository-policy
+  tests and maintained documentation/evidence/repository/release audits.
+- Result: PASS in detached clean checkout. The governed matrix passed 575
+  tests; repository-policy tests passed 115; all maintained audits passed.
+  Focused coverage distinguishes collection incomplete, structurally complete,
+  validation pending, validation blocked, and offline-review complete/held;
+  checks exact reconstruction, changed-original refusal, distinct candidate
+  identities, exclusive output, duplicate JSON, size limits, JSON Schema, and
+  zero-authority semantics.
+- Artifacts: `software/src/rocell/application/camera_arrival_session_manifest_v1.py`,
+  `software/ai/schemas/camera_arrival_session_manifest_v1.schema.json`,
+  `software/scripts/build_camera_arrival_session_manifest_v1.py`,
+  `software/scripts/verify_camera_arrival_session_manifest_v1.py`, and focused
+  unit/integration tests.
+- Camera opens: 0.
+- Transport opens: 0.
+- Controller starts: 0.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: candidate epoch/profile hashes are caller-selected metadata, not
+  measured or installed identities. A deliberate metadata change creates a new
+  manifest identity; authenticity still depends on retaining the intended
+  original manifest. No physical original, calibration, installed geometry,
+  cable envelope, camera validation, epoch commissioning, qualification, or
+  movement authority is established.
+- Supersedes: ARM-104 only for resumable session composition; PC11-PC13 native
+  contracts and blockers remain authoritative.
+- Next dependency: PC15 must exercise complete, incomplete, boundary, and
+  crossed synthetic installed-geometry and cable-envelope inputs through the
+  real typed collision consumer without promoting synthetic qualification.

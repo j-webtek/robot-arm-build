@@ -1,7 +1,7 @@
 # Tactevra project status
 
-Reviewed September 29, 2026 through the ARM-106 common camera-consumer operator
-boundary,
+Reviewed September 29, 2026 through the ARM-107 restart-safe camera-arrival
+session boundary,
 ARM-077 PC0 pre-camera qualification basis, ARM-076 typing collision-evidence
 intake, ARM-075 exact-sample offline IK screen, AI-403 precision-adapter
 integration, and merged physical-camera
@@ -486,6 +486,15 @@ planner and collision consumers preserve their typed objects through the same
 Python API. All 15 route filenames and hashes are covered, overwrites reject,
 and the two installed geometry/cable blockers remain intact. The governed
 offline matrix now passes 564 tests.
+
+ARM-107 makes a camera-arrival evidence session resumable without weakening the
+hold. One hash-sealed manifest binds the 15 originals, routes, receipts,
+candidate epoch, camera profile, tool profile, and derived state. Exclusive
+creation prevents overwrite; bounded duplicate-safe restart verification
+reruns the commissioning orchestrator and requires an exact rebuilt manifest.
+The five states keep structural completion separate from validation progress,
+and even the strongest state leaves measured commissioning held. The governed
+offline matrix now passes 575 tests.
 
 AI-403 then integrates the pose-output precision adapter and actual V2 batch
 producer on current `main`. The retained contract fixture deterministically

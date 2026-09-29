@@ -1077,6 +1077,9 @@ synthetic fault campaign, domain wrappers, resumable session state,
 geometry/cable rehearsal, immutable capture replay, observability, and an
 actual AI-producer compatibility corpus. These stages do not replace the
 camera-dependent S2/S3 and S4 gates and cannot create physical authority.
+PC14 is complete at ARM-107: retained arrival sessions now reconstruct exactly
+or stop. PC15's synthetic installed-geometry and cable-envelope intake
+rehearsal is the next arm-owned increment.
 
 1. **S1 software boundary — complete for zero authority:** v2 producer bytes,
    strict decoding, trusted registry, freshness, mutation rejection, and ordered

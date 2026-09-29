@@ -111,8 +111,8 @@ and its evidence gate pass.
 | PC11 | One-command zero-authority commissioning orchestrator | PC9-PC10, ARM-100-103 | No | None | COMPLETE |
 | PC12 | Full synthetic arrival and fault campaign | PC11 | No | None | COMPLETE |
 | PC13 | Domain-consumer operator wrappers | PC11, ARM-103 | No | None | COMPLETE |
-| PC14 | Arrival-session manifest and state machine | PC11-PC13 | No | None | IN PROGRESS |
-| PC15 | Installed-geometry and cable-envelope intake rehearsal | PC13-PC14 | No | None | PLANNED |
+| PC14 | Arrival-session manifest and state machine | PC11-PC13 | No | None | COMPLETE |
+| PC15 | Installed-geometry and cable-envelope intake rehearsal | PC13-PC14 | No | None | IN PROGRESS |
 | PC16 | Immutable camera-replay runner | PC11-PC14 | No live camera | None | PLANNED |
 | PC17 | Timing and observability report | PC11-PC16 | No | None | PLANNED |
 | PC18 | Actual AI-output compatibility corpus and gate | PC11, shared AI producer | No | None | PLANNED |
@@ -707,6 +707,20 @@ output hash rejects without partial promotion.
 
 ## PC14 — Arrival-session manifest and state machine
 
+**Completed 2026-09-29:** ARM-107 binds all 15 original summaries, handoff
+routes, receipt summaries, candidate epoch, camera profile, tool profile, and
+the complete PC11 report into one canonical hash-sealed manifest. The state
+machine distinguishes collection incomplete, structurally complete, validation
+pending, validation blocked, and offline-review complete while measured
+commissioning remains held. Creation is exclusive; restart verification loads
+a bounded duplicate-safe regular file, reruns PC11, and requires the entire
+rebuilt manifest to equal the retained manifest. Changed evidence invalidates
+resume; deliberately changing a candidate identity creates a distinct session
+rather than corrupting or silently modifying the retained one. Commit
+`0327035e2e77b37301f0fc9568146b37f14f55f9` passed 575 governed tests, 115
+repository-policy tests, and all maintained audits from a detached clean
+checkout. It invokes no camera, transport, controller, command, or movement.
+
 ### Objective
 
 Make one camera-arrival session resumable, auditable, and resistant to mixed
@@ -867,7 +881,7 @@ For every PC increment:
 - [x] PC11 one-command zero-authority commissioning orchestrator complete
 - [x] PC12 full synthetic arrival and fault campaign complete
 - [x] PC13 domain-consumer operator wrappers complete
-- [ ] PC14 arrival-session manifest and state machine complete
+- [x] PC14 arrival-session manifest and state machine complete
 - [ ] PC15 installed-geometry and cable-envelope rehearsal complete
 - [ ] PC16 immutable camera-replay runner complete
 - [ ] PC17 timing and observability report complete
