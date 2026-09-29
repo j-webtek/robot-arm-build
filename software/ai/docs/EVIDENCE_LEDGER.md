@@ -5603,7 +5603,7 @@ rewriting history. New entries must use a unique evidence ID.
   scripts.ci.offline_checks import TESTS; raise
   SystemExit(pytest.main(['-q', *TESTS]))"`; followed by
   `.\\.venv\\Scripts\\python.exe scripts/maintain_repository.py verify`.
-- Result: PASS in the working checkout. The governed matrix passed 608 tests;
+- Result: PASS in a detached clean checkout. The governed matrix passed 608 tests;
   repository-policy tests passed 115; all maintained audits passed. Focused
   observability coverage passed 11 tests. Per-stage p95 is emitted at 20
   samples, per-stage p99 is withheld below 100, and overall p99 is emitted at
