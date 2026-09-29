@@ -12,8 +12,10 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 import hashlib
+import inspect
 import json
 import math
+from pathlib import Path
 from types import MappingProxyType
 from typing import Any, Mapping
 
@@ -345,6 +347,21 @@ def screen_typing_trajectory_ik_v1(
             ),
             joint_bounds_rad=bounds,
         )
+        solver_source_sha256 = None
+        if effort_recorder is not None:
+            solver_source = inspect.getsourcefile(type(solver))
+            if solver_source is None:
+                raise TypingTrajectoryIkScreenV1Error(
+                    "IK telemetry cannot bind the active solver source"
+                )
+            solver_source_path = Path(solver_source).resolve()
+            if solver_source_path.stat().st_size > 2_000_000:
+                raise TypingTrajectoryIkScreenV1Error(
+                    "IK solver source exceeds its telemetry hash bound"
+                )
+            solver_source_sha256 = hashlib.sha256(
+                solver_source_path.read_bytes()
+            ).hexdigest()
         ik_executed = True
         for index in range(len(samples)):
             waypoint = _waypoint(plan, index)
@@ -375,6 +392,10 @@ def screen_typing_trajectory_ik_v1(
                     ),
                 },
                 "algorithm": "DETERMINISTIC_BOUNDED_DLS_V1",
+                "solver_implementation": (
+                    f"{type(solver).__module__}.{type(solver).__qualname__}"
+                ),
+                "solver_source_sha256": solver_source_sha256,
             })
             solved = solver.solve(
                 BoardToolTipTarget(waypoint.point_board),
