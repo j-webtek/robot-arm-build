@@ -277,3 +277,7 @@ and [aggregate assessment](camera_arrival_consumer_validation_assessment_v1.sche
 retain each consumer pass or blocker against those exact hashes. Completion is
 only readiness for offline review; all epoch, registry, qualification, device,
 write, movement, admission, and physical-authority fields remain false.
+Domain adapters currently cover the camera/support assessment, localization
+campaign preflight, and held-out localization evaluation. They preserve native
+blocked outcomes and do not make the generic receipt gate responsible for
+domain-specific pass criteria.

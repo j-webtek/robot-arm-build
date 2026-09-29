@@ -81,7 +81,7 @@ def _receipt(handoff: dict, route: dict, *, status: str = "PASS") -> dict:
         "validated_at_utc": "2026-09-29T14:00:00Z",
         "validation_status": status,
         "blockers": [] if status == "PASS" else ["FIXTURE_REJECTED"],
-        "output_sha256": H if status == "PASS" else None,
+        "output_sha256": H,
         "consumer_invoked": True,
         "camera_opened": False, "controller_started": False,
         "hardware_writes": 0, "physical_movements": 0,

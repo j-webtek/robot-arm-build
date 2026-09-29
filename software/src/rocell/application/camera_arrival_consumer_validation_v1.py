@@ -110,7 +110,7 @@ def parse_camera_arrival_consumer_validation_receipt_v1(
         or not all(isinstance(item, str) and item for item in blockers)
         or len(blockers) != len(set(blockers))
         or (status == "PASS" and (blockers or not _is_hash(output)))
-        or (status == "BLOCKED" and (not blockers or output is not None))
+        or (status == "BLOCKED" and (not blockers or not _is_hash(output)))
         or value.get("consumer_invoked") is not True
         or any(value.get(field) is not False for field in (
             "camera_opened", "controller_started", "qualification_installed",
@@ -267,7 +267,7 @@ def parse_camera_arrival_consumer_validation_assessment_v1(
             ))
             or (status == "BLOCKED" and (
                 not _is_hash(row.get("receipt_sha256"))
-                or row.get("output_sha256") is not None or not blockers
+                or not _is_hash(row.get("output_sha256")) or not blockers
             ))
             or (status in {"PENDING", "BLOCKED_HANDOFF"} and (
                 row.get("receipt_sha256") is not None

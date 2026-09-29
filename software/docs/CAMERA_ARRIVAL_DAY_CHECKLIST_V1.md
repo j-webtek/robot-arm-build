@@ -96,6 +96,16 @@ receipts only when they match the handoff exactly. Its strongest result,
 epoch, update the deployment registry, install qualification, or authorize
 physical execution.
 
+The first domain adapters live in
+`rocell.application.camera_arrival_consumer_emitters_v1`. They translate the
+existing camera/support assessment (four routes), campaign preflight (two
+routes), and held-out localization evaluation (two routes) into the common
+receipt without weakening their native pass/block semantics. They accept only
+a ready, matching handoff, preserve native failure blockers and output hashes,
+and bind the validator version to the mapped consumer-source hash. Planner
+snapshot and installed collision/cable emitters remain a separate required
+step; eight receipts cannot complete the 15-route aggregate.
+
 ## Collect the four camera/support originals
 
 Use the existing explicitly authorized camera onboarding workflow to collect

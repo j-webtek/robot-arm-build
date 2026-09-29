@@ -54,6 +54,7 @@ TESTS = (
     "software/tests/unit/test_camera_arrival_evidence_preflight_v1.py",
     "software/tests/unit/test_camera_arrival_consumer_handoff_v1.py",
     "software/tests/unit/test_camera_arrival_consumer_validation_v1.py",
+    "software/tests/unit/test_camera_arrival_consumer_emitters_v1.py",
     "software/tests/unit/test_assess_r97_external_review_decision.py",
     "software/tests/unit/test_model_motion_sequence_coordinator.py",
     "software/tests/unit/test_zero_write_waveshare_adapter_v1.py",
