@@ -1,7 +1,6 @@
 # Tactevra project status
 
-Reviewed September 29, 2026 through the ARM-109 installed-geometry and
-cable-envelope rehearsal campaign,
+Reviewed September 29, 2026 through the ARM-110 immutable camera-replay runner,
 ARM-077 PC0 pre-camera qualification basis, ARM-076 typing collision-evidence
 intake, ARM-075 exact-sample offline IK screen, AI-403 precision-adapter
 integration, and merged physical-camera
@@ -510,6 +509,16 @@ body-specific diagnostics. The 64-posture resource boundary passes, and broken
 sweeps, crossed lineage, unknown source bindings, and route misuse reject. The
 campaign parser and schema preserve zero physical authority. The governed
 offline matrix now passes 586 tests.
+
+ARM-110 completes PC16 with an immutable camera replay boundary. It binds frozen
+image and metadata bytes, camera/support profiles, model and calibration
+identities, the PC11 handoff, retained campaign/localization outputs, and exact
+consumer receipt decisions. Identical inputs reproduce identical decisions;
+byte, identity, expectation, handoff, or authority drift rejects. Original and
+synthetic source provenance remain distinct from `IMMUTABLE_REPLAY`, and no
+replay is presented as a fresh capture. The governed offline matrix now passes
+597 tests. The arm-side runner revalidates retained outputs through the real
+consumers; it does not execute the AI vision model.
 
 AI-403 then integrates the pose-output precision adapter and actual V2 batch
 producer on current `main`. The retained contract fixture deterministically

@@ -1081,9 +1081,12 @@ PC14 is complete at ARM-107: retained arrival sessions now reconstruct exactly
 or stop. PC15 is complete at ARM-109: the typed sampled-cable contract,
 rigid/attachment templates, exact missing-measurement diagnostics, boundary
 fixtures, and retained zero-authority campaign now pass the real collision
-consumer boundary. PC16's immutable camera-replay runner is the next arm-owned
-increment; it must preserve original/replay/synthetic provenance and cannot
-grant live-camera or movement authority.
+consumer boundary. PC16 is complete at ARM-110: frozen image/metadata bytes,
+camera/support/model/calibration identities, retained AI outputs, and expected
+consumer decisions now replay identically or reject, while original,
+synthetic, and replay provenance remain distinct. The runner deliberately does
+not execute the vision model; AI-lane inference produces the retained outputs.
+PC17's timing and observability report is the next arm-owned increment.
 
 1. **S1 software boundary — complete for zero authority:** v2 producer bytes,
    strict decoding, trusted registry, freshness, mutation rejection, and ordered

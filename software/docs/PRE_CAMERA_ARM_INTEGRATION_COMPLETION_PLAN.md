@@ -113,7 +113,7 @@ and its evidence gate pass.
 | PC13 | Domain-consumer operator wrappers | PC11, ARM-103 | No | None | COMPLETE |
 | PC14 | Arrival-session manifest and state machine | PC11-PC13 | No | None | COMPLETE |
 | PC15 | Installed-geometry and cable-envelope intake rehearsal | PC13-PC14 | No | None | COMPLETE |
-| PC16 | Immutable camera-replay runner | PC11-PC14 | No live camera | None | PLANNED |
+| PC16 | Immutable camera-replay runner | PC11-PC14 | No live camera | None | COMPLETE |
 | PC17 | Timing and observability report | PC11-PC16 | No | None | PLANNED |
 | PC18 | Actual AI-output compatibility corpus and gate | PC11, shared AI producer | No | None | PLANNED |
 
@@ -789,6 +789,21 @@ installed or used as physical collision qualification.
 
 ## PC16 — Immutable camera-replay runner
 
+**Completed 2026-09-29:** ARM-110 adds a bounded immutable replay manifest,
+strict parser, replay runner, report, two JSON Schemas, and a command-line
+entry point. Each manifest binds one to 64 frozen images and metadata records,
+the camera and support profiles, model, calibration, PC11 handoff, retained
+campaign/localization outputs, and the exact receipt decisions expected from
+the existing consumers. Identical files reproduce identical decisions. Changed
+image, metadata, campaign output, localization output, model, calibration,
+receipt, handoff, or authority fields reject. Source provenance is retained as
+`ORIGINAL_CAPTURE` or `SYNTHETIC_FIXTURE`, while every execution is separately
+labeled `IMMUTABLE_REPLAY`, so replay cannot masquerade as a fresh capture.
+Commit `22715d3ff6d4eebf9782175f93d73b3cc2dfa36b` passed 597 governed tests,
+115 repository-policy tests, and all maintained audits in a detached clean
+checkout. No camera, model runtime, transport, controller, hardware write, or
+physical movement occurred.
+
 ### Objective
 
 Prepare the vision-facing arm workflow to rerun frozen image bytes and metadata
@@ -809,6 +824,10 @@ capture.
 Identical frozen inputs reproduce identical decisions; modified image bytes,
 metadata, model/profile identities, or expected outputs reject. Replay grants no
 live-camera, measured-epoch, or movement authority.
+
+The runner revalidates retained campaign and localization outputs through the
+real consumer receipt emitters; model inference remains AI-lane work and is not
+performed by this arm-owned replay boundary.
 
 ## PC17 — Timing and observability report
 
@@ -907,7 +926,7 @@ For every PC increment:
 - [x] PC13 domain-consumer operator wrappers complete
 - [x] PC14 arrival-session manifest and state machine complete
 - [x] PC15 installed-geometry and cable-envelope rehearsal complete
-- [ ] PC16 immutable camera-replay runner complete
+- [x] PC16 immutable camera-replay runner complete
 - [ ] PC17 timing and observability report complete
 - [ ] PC18 actual AI-output compatibility corpus and gate complete
 

@@ -5546,3 +5546,42 @@ rewriting history. New entries must use a unique evidence ID.
 - Next dependency: PC16 must replay immutable captured bytes and metadata while
   rejecting changed image, profile, model, calibration, or expected-output
   identity and preserving zero live-camera and movement authority.
+
+### E-20260929-ARM-110 — Immutable camera replay runner
+
+- Stage: PC16 post-closure pre-camera continuation, completion.
+- Lane: arm/runtime immutable vision evidence replay.
+- Implementation commit: `22715d3ff6d4eebf9782175f93d73b3cc2dfa36b`.
+- Change: added a bounded replay manifest and runner binding one to 64 frozen
+  images and metadata records, camera/support profiles, model, calibration,
+  PC11 handoff, retained campaign/localization outputs, and the exact receipt
+  decisions produced by the existing camera consumers. Added strict parsers,
+  manifest/report JSON Schemas, CLI, and governed mutation coverage.
+- Command: `$env:PYTHONPATH='software/src;software'; $tests = @(python -c
+  "import importlib.util; s=importlib.util.spec_from_file_location('offline_checks','scripts/ci/offline_checks.py');
+  m=importlib.util.module_from_spec(s); s.loader.exec_module(m);
+  print(chr(10).join(m.TESTS))"); python -m pytest -q $tests`; followed by
+  `python scripts/maintain_repository.py verify`.
+- Result: PASS in detached clean checkout. The governed matrix passed 597
+  tests; repository-policy tests passed 115; all maintained audits passed.
+  Two identical runs produced the same report and consumer receipt identities.
+  Changed image, metadata, campaign output, localization output, model,
+  calibration, expected receipt, handoff, and authority paths reject.
+- Artifacts: `software/src/rocell/application/immutable_camera_replay_v1.py`,
+  `software/scripts/run_immutable_camera_replay_v1.py`, both replay JSON
+  Schemas, and focused governed tests.
+- Camera opens: 0.
+- Model runtime loads: 0.
+- Transport opens: 0.
+- Controller starts: 0.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: tests use synthetic frozen bytes. The runner verifies and
+  replays retained AI outputs through existing consumers; it does not execute
+  the vision model, prove the correctness of those outputs, establish source
+  authenticity merely from an origin label, install a measured epoch, or grant
+  movement authority. Physical originals remain required later.
+- Supersedes: none. PC11-PC14 handoff/session contracts and AI-owned inference
+  remain authoritative.
+- Next dependency: PC17 must add deterministic timing and observability without
+  making performance thresholds capable of overriding safety decisions.
