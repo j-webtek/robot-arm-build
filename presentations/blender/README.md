@@ -88,6 +88,41 @@ Render the complete 77-second, 24 fps, 1920×1080 film with:
   --python presentations/blender/build_workcell_explainer.py -- --render-video
 ```
 
+### Build the canonical storyboard v2.1 film
+
+The 100-second storyboard has its own source-driven production path. First
+prepare the pinned official arm asset, validate the shared manifest, and render
+the complete camera edit:
+
+```powershell
+python presentations/blender/prepare_official_arm_asset.py
+python presentations/blender/validate_storyboard_v21.py
+
+& "C:\Program Files\Blender Foundation\Blender 4.3\blender.exe" `
+  --background --factory-startup `
+  --python presentations/blender/build_storyboard_v21_benchmark.py -- `
+  --render-video
+```
+
+Then assemble narration, sound design, captions, chapters, and the review
+poster:
+
+```powershell
+python presentations/blender/produce_storyboard_v21_video.py `
+  --silent-video tmp/blender-storyboard-v21/tactevra_storyboard_v21_review_silent.mp4
+```
+
+Without `--voice-dir`, the assembler generates a local Windows review voice.
+For the final branded delivery, provide the fourteen ElevenLabs clips described
+in `ELEVENLABS_NARRATION.md` and add `--voice-dir <folder>`. The earlier eleven
+clips belong to the superseded 77-second film and are intentionally rejected by
+the fourteen-clip contract.
+
+The review command renders at 960×540 with 32 EEVEE samples. After editorial
+approval, replace `--render-video` with `--render-video-1080p` for the
+1920×1080, 64-sample master; both variants retain the same 2,400 frames and
+camera edit.
+
 To replace the fallback voice without rerendering the 3D picture, generate the
 eleven clips in `ELEVENLABS_NARRATION.md`, then run:
 

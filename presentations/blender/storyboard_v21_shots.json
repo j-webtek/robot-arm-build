@@ -20,6 +20,30 @@
     }
   },
   "stage_vocabulary": ["UNDERSTAND", "LOCATE", "CHECK", "ACT", "VERIFY"],
+  "narration": [
+    {"id": 1, "start": 4, "end": 9, "text": "Ask for an outcome, and Tactevra turns language into named physical targets."},
+    {"id": 2, "start": 9, "end": 15, "text": "When AI acts in the physical world, a guess becomes motion. But a proposal is not permission to move."},
+    {"id": 3, "start": 15, "end": 21, "text": "The model says what to touch and how sure it is. Speed, force, and timing stay locked to the runtime."},
+    {"id": 4, "start": 21, "end": 28, "text": "A fixed camera locates each device in the measured workcell."},
+    {"id": 5, "start": 28, "end": 33, "text": "Stale evidence fails closed. Nothing moves."},
+    {"id": 6, "start": 33, "end": 40, "text": "Fresh evidence can admit the plan, but authority stays narrow: one permit, one contact."},
+    {"id": 7, "start": 40, "end": 48, "text": "Transit. Align. Settle. Approach. Contact. Retract. Verify."},
+    {"id": 8, "start": 55, "end": 61, "text": "The local result is observed before the workflow continues."},
+    {"id": 9, "start": 61, "end": 67, "text": "The arm clears the keyboard and crosses to a separate phone interface."},
+    {"id": 10, "start": 67, "end": 74, "text": "Before every tap, Tactevra checks the expected screen. After change, it checks again."},
+    {"id": 11, "start": 82, "end": 87, "text": "Send receives its own final permit."},
+    {"id": 12, "start": 87, "end": 93, "text": "Two interfaces. Two independent receipts."},
+    {"id": 13, "start": 93, "end": 96, "text": "Every contact permitted. Every effect verified."},
+    {"id": 14, "start": 96, "end": 100, "text": "Tactevra. Physical intelligence, checked."}
+  ],
+  "chapters": [
+    {"start": 0, "end": 15, "label": "Request"},
+    {"start": 15, "end": 21, "label": "Understand"},
+    {"start": 21, "end": 28, "label": "Locate"},
+    {"start": 28, "end": 40, "label": "Check"},
+    {"start": 40, "end": 87, "label": "Act"},
+    {"start": 87, "end": 100, "label": "Verify"}
+  ],
   "authority_graphics": {
     "permit": "green one-contact token",
     "uncertainty": "blue bounded-error disk",

@@ -1334,6 +1334,23 @@ def main() -> None:
             bpy.context.view_layer.update()
             scene.render.filepath = str(OUT / f"arm_joints_{frame:04d}.png")
             bpy.ops.render.render(write_still=True)
+    if "--render-video" in args or "--render-video-1080p" in args:
+        full_hd = "--render-video-1080p" in args
+        scene.render.resolution_percentage = 100 if full_hd else 50
+        scene.eevee.taa_render_samples = 64 if full_hd else 32
+        scene.render.image_settings.file_format = "FFMPEG"
+        scene.render.ffmpeg.format = "MPEG4"
+        scene.render.ffmpeg.codec = "H264"
+        scene.render.ffmpeg.constant_rate_factor = "HIGH"
+        scene.render.ffmpeg.ffmpeg_preset = "GOOD"
+        scene.render.use_file_extension = False
+        suffix = "1080p" if full_hd else "review"
+        silent_video = OUT / f"tactevra_storyboard_v21_{suffix}_silent.mp4"
+        scene.render.filepath = str(silent_video)
+        scene.frame_start = manifest["frame_start"]
+        scene.frame_end = manifest["frame_end"]
+        bpy.ops.render.render(animation=True)
+        print(f"TACTEVRA_STORYBOARD_SILENT_VIDEO={silent_video}")
     print(f"TACTEVRA_STORYBOARD_V21={blend_path}")
 
 
