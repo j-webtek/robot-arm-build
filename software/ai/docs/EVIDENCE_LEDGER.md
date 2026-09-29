@@ -5757,3 +5757,43 @@ rewriting history. New entries must use a unique evidence ID.
 - Next dependency: final-camera physical originals and a qualified localization
   bound that fits applicable key-safe regions, followed by one measured
   non-contact target qualification.
+
+### E-20260929-ARM-115 — retained epoch-bound context-validation benchmark
+
+- Stage: operational efficiency E1, retained context-validation slice.
+- Lane: arm/runtime ingress and registry admission.
+- Implementation commit: `95d4385f6c68f07daa49dcb5d88c5221e5535a0c`.
+- Change: added a strict, clean-commit benchmark comparing complete locked
+  simulation-context source revalidation with an immutable epoch-bound lease.
+  Both paths pass through the same trusted registry ingress and must emit the
+  exact same accepted ingress hash. The lease binds the context object,
+  content-derived epoch, service instance, generation, and zero-authority
+  fields; mutation or lifecycle invalidation fails closed.
+- Command: `.\.venv\Scripts\python.exe
+  software\scripts\run_context_validation_lease_benchmark_v1.py`; focused
+  contract tests; governed offline test manifest; repository verification.
+- Result: PASS. Forty accepted samples (20 per path) produced one identical
+  ingress SHA-256. Full validation measured 37.185 ms p50 / 42.842 ms p95;
+  leased validation measured 0.115 ms p50 / 0.132 ms p95. All five invalidation
+  cases blocked. The retained file SHA-256 is
+  `9ecab492ee448327f16a7d234aedf041462377f5a7fca1f18deb5c278fc917de`;
+  its embedded report SHA-256 is
+  `859de0b38638c5f6e03dc3e78404c3776d713da6699862cb9597ebd86d915b1a`.
+- Artifact: `software/ai/eval/context_validation_lease_benchmark_v1.json`.
+- Camera opens: 0.
+- Model runtime loads: 0.
+- Transport opens: 0.
+- Controller starts: 0.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: host timing is an observation, never an admission threshold or
+  physical-speed claim. The caller must provide the authoritative active epoch,
+  service instance, and generation; filesystem watching and complete service
+  lifecycle integration remain future E1 work. This result does not exercise
+  IK, collision, permits, controller transport, feedback, contact, or outcome
+  verification.
+- Supersedes: the provisional local context-lease timings in the operational
+  efficiency plan only; no safety, model, camera, or physical gate.
+- Next dependency: implement and test the authoritative epoch lifecycle and
+  extend the retained cold/warm method to planner, geometry, camera, model, and
+  controller-service startup boundaries.

@@ -1,6 +1,6 @@
 # Tactevra project status
 
-Reviewed September 29, 2026 through the ARM-114 PC18.1 compatibility refinement,
+Reviewed September 29, 2026 through the ARM-115 context-validation efficiency evidence,
 ARM-077 PC0 pre-camera qualification basis, ARM-076 typing collision-evidence
 intake, ARM-075 exact-sample offline IK screen, AI-403 precision-adapter
 integration, and merged physical-camera
@@ -562,6 +562,16 @@ decoder outcomes. The report also records the existing 64-proposal and 1 MiB
 input ceilings; its largest retained batch is 46 proposals and 15,022 bytes.
 The governed offline matrix now passes 619 tests. This remains structural
 coverage and does not make the 46 routes physically qualified.
+
+ARM-115 begins the operational-efficiency implementation without weakening
+admission. A retained clean-commit benchmark compares full locked-context
+source revalidation with an immutable epoch-bound validation lease. Across 20
+samples per path, both produced the exact same accepted ingress hash; median
+host validation fell from 37.185 ms to 0.115 ms. Changed context epoch,
+restarted service identity, changed generation, replaced context object, and
+mutated lease all blocked. This is bounded offline host evidence, not a runtime
+service, admission threshold, controller benchmark, or physical-speed claim.
+The governed offline matrix now passes 655 tests.
 
 AI-403 then integrates the pose-output precision adapter and actual V2 batch
 producer on current `main`. The retained contract fixture deterministically

@@ -1,6 +1,6 @@
 # AI-to-arm operational efficiency optimization plan
 
-- **Document status:** Active plan; implementation has not started
+- **Document status:** Active plan; implementation in progress through E1
 - **Owners:** Shared AI/model, arm/runtime, perception, controller, and
   qualification workstreams
 - **Audience:** Contributors optimizing request-to-verified-effect latency
@@ -388,7 +388,8 @@ and observer have measured evidence.
 
 ## Implementation stages
 
-No stage below has begun merely because this plan exists.
+Only an explicit implementation checkpoint below establishes progress. A stage
+is not complete merely because this plan exists.
 
 ### E0 — Freeze the baseline and trace contract
 
@@ -452,12 +453,24 @@ content-derived context epoch, service instance, and generation, and it rechecks
 the lease hash and zero-authority fields. Any epoch advance, service restart,
 generation invalidation, context replacement, or lease mutation fails closed.
 
-Focused tests prove byte-for-byte and hash-for-hash equivalence between full and
-leased admission. A provisional 20/20 local comparison reduced admission from
-33.349 ms p50 / 34.715 ms p95 to 0.116 ms p50 / 0.150 ms p95. These numbers are
-not retained evidence or performance authority yet; a clean-commit benchmark is
-the next E1 deliverable. Model/camera/planner/controller lifecycle design, broader
-static/dynamic validation separation, warm-up campaigns, and restart matrices
+The retained clean-source comparison is
+`software/ai/eval/context_validation_lease_benchmark_v1.json`, file SHA-256
+`9ecab492ee448327f16a7d234aedf041462377f5a7fca1f18deb5c278fc917de`
+and embedded report SHA-256
+`859de0b38638c5f6e03dc3e78404c3776d713da6699862cb9597ebd86d915b1a`.
+It binds source commit `95d4385f6c68f07daa49dcb5d88c5221e5535a0c` and contains 20 full-source plus
+20 leased admissions. Every accepted ingress result had the same SHA-256. Full
+source revalidation measured 37.185 ms p50 / 42.842 ms p95; leased validation
+measured 0.115 ms p50 / 0.132 ms p95, reductions of 37.071 ms and 42.710 ms.
+P99 is intentionally unavailable with fewer than 100 samples.
+
+The retained invalidation matrix blocked changed context epoch, restarted
+service identity, changed generation, replaced context object, and mutated lease
+content. Timing never participates in admission, and the report contains zero
+controller commands, transport access, writes, movement, or physical authority.
+This closes only the retained context-validation benchmark slice of E1.
+Model/camera/planner/controller lifecycle design, broader static/dynamic
+validation separation, component warm-up campaigns, and their restart matrices
 remain open.
 
 ### E2 — Accelerate IK and collision preparation
