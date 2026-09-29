@@ -88,6 +88,7 @@ TESTS = (
     "software/ai/tests/test_precision_binding_v2.py",
     "software/ai/tests/test_precision_adapter_v2.py",
     "software/ai/tests/test_precision_adapter_evaluation_bundle_v1.py",
+    "software/ai/tests/test_actual_output_compatibility_v1.py",
     "software/ai/tests/test_confidence_metrics.py",
 )
 
