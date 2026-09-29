@@ -123,8 +123,40 @@ approval, replace `--render-video` with `--render-video-1080p` for the
 1920×1080, 64-sample master; both variants retain the same 2,400 frames and
 camera edit.
 
+### Generate the editorial shot library
+
+The master edit is not the only available coverage. Generate the shot-library
+manifest to create primary and alternate angles for every scene plus dedicated
+toolhead and contact inserts:
+
+```powershell
+python presentations/blender/create_storyboard_v21_shot_library.py
+```
+
+Each of the 36 assets records its scene, action, stage, camera rig, framing,
+lens, motion, frame range, exact duration, recommended edit range, continuity
+requirement, intended purpose, review status, and output paths in
+`storyboard_v21_shot_library.json`.
+
+After building the canonical `.blend`, render the complete draft library:
+
+```powershell
+& "C:\Program Files\Blender Foundation\Blender 4.3\blender.exe" `
+  --background tmp/blender-storyboard-v21/tactevra_storyboard_v21_benchmark.blend `
+  --python presentations/blender/render_storyboard_v21_shot_library.py -- `
+  --profile draft --render-all
+```
+
+The renderer writes individually playable MP4 clips, midpoint posters, a copy
+of the metadata, a measured build receipt, and an `index.html` comparison
+gallery under `tmp/blender-storyboard-v21-shot-library/`. Use repeated
+`--asset <asset_id>` options to render selected coverage, or change `draft` to
+`review` or `master` after an angle is approved. Every alternative uses the
+same animated robot, device state, permit state, and timeline; only the camera
+coverage changes.
+
 To replace the fallback voice without rerendering the 3D picture, generate the
-eleven clips in `ELEVENLABS_NARRATION.md`, then run:
+fourteen clips in `ELEVENLABS_NARRATION.md`, then run:
 
 ```powershell
 & "C:\Program Files\Blender Foundation\Blender 4.3\blender.exe" `
