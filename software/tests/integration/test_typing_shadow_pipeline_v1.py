@@ -14,6 +14,7 @@ sys.path.insert(0, str(ROOT / "software/tests/unit"))
 import test_model_motion_ingress_v2 as ingress_fixture  # noqa: E402
 import test_typing_trajectory_ik_screen_v1 as ik_fixture  # noqa: E402
 from rocell.application.model_motion_ingress_v2 import MeasuredTargetRegionV2  # noqa: E402
+from rocell.application.context_lifecycle_v1 import SimulationContextLifecycleV1  # noqa: E402
 from rocell.application.pre_camera_typing_qualification_basis_v1 import (  # noqa: E402
     load_pre_camera_typing_qualification_basis_v1,
 )
@@ -27,6 +28,9 @@ from rocell.application.typing_shadow_pipeline_v1 import (  # noqa: E402
     parse_typing_shadow_pipeline_v1,
     run_typing_shadow_pipeline_v1,
 )
+from rocell.application.typing_planner_preparation_v1 import (  # noqa: E402
+    prepare_typing_planner_v1,
+)
 from rocell.application.typing_trajectory_plan_v1 import TypingTrajectoryPolicyV1  # noqa: E402
 from rocell.models import (  # noqa: E402
     ActionPlan,
@@ -38,10 +42,13 @@ from rocell.models import (  # noqa: E402
 )
 
 
-def _inputs(targets: tuple[str, ...] = ("H", "I"), text: str = "hi"):
-    context = ingress_fixture.load_simulation_context(
-        ingress_fixture.WORKSPACE, ingress_fixture.MANIFEST
-    )
+def _inputs(
+    targets: tuple[str, ...] = ("H", "I"), text: str = "hi", *, context=None,
+):
+    if context is None:
+        context = ingress_fixture.load_simulation_context(
+            ingress_fixture.WORKSPACE, ingress_fixture.MANIFEST
+        )
     snapshot = ik_fixture._snapshot(context)
     tip = ik_fixture._ready_tip(context, snapshot)
     plan = ActionPlan.from_text(
@@ -166,6 +173,26 @@ def test_real_boundaries_produce_one_deterministic_honest_blocker_receipt():
     jsonschema.Draft202012Validator(schema).validate(first)
     parsed = parse_typing_shadow_pipeline_v1(first)
     assert tuple(parsed["ordered_target_ids"]) == ("H", "I")
+
+
+def test_epoch_prepared_pipeline_is_exactly_equivalent_to_full_source_path():
+    lifecycle = SimulationContextLifecycleV1.start(
+        ingress_fixture.WORKSPACE,
+        ingress_fixture.MANIFEST,
+        service_instance_id="typing-shadow-e1-integration",
+        issued_monotonic_ns=100,
+    )
+    context = lifecycle.binding().context
+    inputs = _inputs(context=context)
+    reference = run_typing_shadow_pipeline_v1(**inputs)
+    prepared = prepare_typing_planner_v1(context, lifecycle)
+    optimized = run_typing_shadow_pipeline_v1(
+        **inputs,
+        context_lifecycle=lifecycle,
+        prepared_planner=prepared,
+    )
+    assert optimized == reference
+    assert optimized["hardware_access"] is optimized["physical_authority"] is False
 
 
 @pytest.mark.parametrize(

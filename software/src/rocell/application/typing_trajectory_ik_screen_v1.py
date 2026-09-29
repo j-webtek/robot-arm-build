@@ -28,6 +28,10 @@ from rocell.kinematics import (
 
 from ._pinned_model import load_pinned_urdf
 from .context import SimulationContext, revalidate_simulation_context
+from .context_lifecycle_v1 import (
+    SimulationContextLifecycleBindingV1,
+    SimulationContextLifecycleV1,
+)
 from .measured_trajectory_screening import _compatibility_blockers, _planner_bounds
 from .trajectory_simulation import (
     CartesianRouteWaypoint,
@@ -37,6 +41,10 @@ from .trajectory_simulation import (
 from .typing_execution_plan_v1 import TypingExecutionPlanV1
 from .typing_trajectory_plan_v1 import TypingTrajectoryPlanV1
 from .typing_trajectory_plan_v1 import compile_typing_trajectory_plan_v1
+from .typing_planner_preparation_v1 import (
+    PreparedTypingPlannerV1,
+    validate_prepared_typing_planner_v1,
+)
 
 
 SCHEMA = "rocell.typing_trajectory_ik_screen.v1"
@@ -181,6 +189,9 @@ def screen_typing_trajectory_ik_v1(
     seed: TypingTrajectoryIkSeedV1,
     *,
     policy: TrajectorySimulationPolicy | None = None,
+    prepared_planner: PreparedTypingPlannerV1 | None = None,
+    context_lifecycle: SimulationContextLifecycleV1 | None = None,
+    _lifecycle_binding: SimulationContextLifecycleBindingV1 | None = None,
 ) -> dict[str, Any]:
     """Run the canonical deterministic IK gates over every exact T2A sample."""
 
@@ -194,7 +205,41 @@ def screen_typing_trajectory_ik_v1(
         raise TypeError("snapshot must be a PlannerCalibrationSnapshot")
     if not isinstance(seed, TypingTrajectoryIkSeedV1):
         raise TypeError("seed must be a TypingTrajectoryIkSeedV1")
-    revalidate_simulation_context(context)
+    if context_lifecycle is not None:
+        if _lifecycle_binding is not None:
+            raise TypingTrajectoryIkScreenV1Error(
+                "nested context lifecycle binding is invalid"
+            )
+        if not isinstance(context_lifecycle, SimulationContextLifecycleV1):
+            raise TypeError("context_lifecycle must be SimulationContextLifecycleV1")
+        if not isinstance(prepared_planner, PreparedTypingPlannerV1):
+            raise TypingTrajectoryIkScreenV1Error(
+                "lifecycle-managed IK requires prepared planner resources"
+            )
+        with context_lifecycle.validation_scope(context) as binding:
+            validate_prepared_typing_planner_v1(prepared_planner, binding)
+            return screen_typing_trajectory_ik_v1(
+                source_plan,
+                plan,
+                context,
+                snapshot,
+                seed,
+                policy=policy,
+                prepared_planner=prepared_planner,
+                _lifecycle_binding=binding,
+            )
+    if _lifecycle_binding is None:
+        if prepared_planner is not None:
+            raise TypingTrajectoryIkScreenV1Error(
+                "prepared planner requires lifecycle-managed admission"
+            )
+        revalidate_simulation_context(context)
+    else:
+        if not isinstance(prepared_planner, PreparedTypingPlannerV1):
+            raise TypingTrajectoryIkScreenV1Error(
+                "lifecycle binding requires prepared planner resources"
+            )
+        validate_prepared_typing_planner_v1(prepared_planner, _lifecycle_binding)
     if (
         source_plan.plan_sha256 != plan.source_plan_sha256
         or source_plan.config.calibration_snapshot_sha256 != snapshot.snapshot_sha256
@@ -262,10 +307,14 @@ def screen_typing_trajectory_ik_v1(
     results: list[dict[str, Any]] = []
     ik_executed = False
     if not blockers:
-        model = load_pinned_urdf(
-            context.scenario.model_path,
-            context.scenario.model_sha256,
-        ).model
+        model = (
+            prepared_planner.loaded_model.model
+            if prepared_planner is not None
+            else load_pinned_urdf(
+                context.scenario.model_path,
+                context.scenario.model_sha256,
+            ).model
+        )
         solver = RoArmM3NumericalIk(
             model=model,
             board_T_world=RigidTransform(

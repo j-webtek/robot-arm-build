@@ -487,6 +487,22 @@ lifecycle design beyond this simulation-context boundary, broader
 static/dynamic validation separation, component warm-up campaigns, and their
 restart matrices remain open.
 
+The next E1 increment adds `PreparedTypingPlannerV1` beneath that lifecycle.
+It parses and validates the exact hash-pinned URDF once per context generation,
+then reuses only that immutable model and topology through trusted ingress, the
+typing IK screen, and collision-evidence intake. The preparation is bound to
+the context object, epoch, service identity, generation, model hash, byte count,
+and a canonical preparation hash. Reload or restart makes it stale; mutation
+and use outside lifecycle-managed scope fail closed.
+
+The numerical solver itself is deliberately reconstructed for each request
+from the current calibration, tool transform, joint bounds, policy, and start
+seed. IK solves, trajectory continuity, installed collision evidence, and
+dynamic admission remain uncached. Full-source and prepared end-to-end shadow
+receipts are exactly identical in governed tests. A retained warm-up benchmark
+is still required before claiming a latency reduction; the retained PC8
+evidence shows numerical IK—not URDF parsing—is the dominant software cost.
+
 ### E2 — Accelerate IK and collision preparation
 
 Deliver:

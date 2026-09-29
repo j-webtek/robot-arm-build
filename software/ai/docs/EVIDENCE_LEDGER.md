@@ -5831,3 +5831,40 @@ rewriting history. New entries must use a unique evidence ID.
 - Next dependency: move the next dominant immutable startup products—planner
   model/solver structures and installed collision acceleration data—behind
   equivalent measured lifecycle boundaries without weakening dynamic checks.
+
+### E-20260929-ARM-117 — epoch-bound immutable typing planner preparation
+
+- Stage: operational efficiency E1, planner preparation slice.
+- Lane: arm/runtime typing shadow pipeline.
+- Change: added `PreparedTypingPlannerV1`, which loads and parses the exact
+  pinned URDF once inside the active context lifecycle, verifies the root-frame
+  topology, and binds the immutable result to context object, epoch, service,
+  generation, model hash, byte count, and canonical preparation hash. Trusted
+  ingress, typing IK, and collision-evidence intake accept the preparation only
+  while the lifecycle lock holds. Reload, restart, mutation, crossed context,
+  and unmanaged reuse reject.
+- Command: focused prepared-planner, IK, collision-intake, shadow-pipeline, and
+  performance-runner tests; governed offline test manifest; repository
+  verification.
+- Result: PASS. Full-source and prepared paths produce the exact same IK
+  report, collision-intake report, and end-to-end shadow receipt. The optimized
+  path remains blocked at the same honest installed-geometry boundary.
+- Artifacts: typing planner preparation service, lifecycle-aware IK and
+  collision consumers, shadow/performance-runner integration, and governed
+  unit/integration tests.
+- Camera opens: 0.
+- Model runtime loads: 0.
+- Transport opens: 0.
+- Controller starts: 0.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: the numerical IK solver is intentionally rebuilt from each
+  request's calibration, tool, limits, policy, and seed. No latency reduction
+  is claimed until a clean retained benchmark exists. No installed collision
+  acceleration structure has been introduced, and no physical capability is
+  qualified.
+- Supersedes: ARM-116's next dependency only for immutable pinned-model
+  preparation; ARM-116 remains authoritative for context lifecycle behavior.
+- Next dependency: retain a clean full-source versus prepared-pipeline
+  benchmark, then profile solver iteration behavior before considering bounded
+  warm-start or endpoint-atlas work under E2.

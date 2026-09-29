@@ -1,6 +1,6 @@
 # Tactevra project status
 
-Reviewed September 29, 2026 through the ARM-116 context epoch lifecycle,
+Reviewed September 29, 2026 through the ARM-117 typing planner preparation,
 ARM-077 PC0 pre-camera qualification basis, ARM-076 typing collision-evidence
 intake, ARM-075 exact-sample offline IK screen, AI-403 precision-adapter
 integration, and merged physical-camera
@@ -580,6 +580,13 @@ invalidation. Successful reload advances the generation atomically; failed
 reload preserves the prior valid state; restart and invalidation revoke stale
 bindings. This remains hardware-free application scaffolding rather than a
 deployed daemon or physical-performance qualification.
+
+ARM-117 places immutable pinned-model parsing behind that lifecycle for the
+typing shadow path. Reload, restart, crossed context, mutation, or unmanaged
+reuse rejects, while the full-source and prepared paths emit identical IK,
+collision-intake, and end-to-end receipts. Request-specific solver creation,
+IK work, dynamic collision evidence, and every physical gate remain uncached.
+No latency improvement is claimed until a clean retained benchmark is added.
 
 AI-403 then integrates the pose-output precision adapter and actual V2 batch
 producer on current `main`. The retained contract fixture deterministically

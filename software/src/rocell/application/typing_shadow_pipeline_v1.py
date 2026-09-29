@@ -13,6 +13,7 @@ from rocell.models import ActionPlan, decode_model_motion_batch_v2_json
 
 from .bounded_segment_collision_qualification import BoundedSegmentSamplingPolicy
 from .context import SimulationContext
+from .context_lifecycle_v1 import SimulationContextLifecycleV1
 from .installed_collision_geometry import InstalledCollisionGeometryProfile
 from .model_motion_registry_v2 import (
     TrustedMotionRegistryV2,
@@ -28,6 +29,7 @@ from .typing_joint_schedule_v1 import (
     TypingJointDynamicsProfileV1,
     compile_typing_joint_schedule_v1,
 )
+from .typing_planner_preparation_v1 import PreparedTypingPlannerV1
 from .typing_trajectory_ik_screen_v1 import (
     READY_STATUS as IK_READY_STATUS,
     TypingTrajectoryIkSeedV1,
@@ -192,6 +194,8 @@ def run_typing_shadow_pipeline_v1(
     ik_policy: TrajectorySimulationPolicy | None = None,
     installed_collision_profile: InstalledCollisionGeometryProfile | None = None,
     collision_sampling_policy: BoundedSegmentSamplingPolicy | None = None,
+    context_lifecycle: SimulationContextLifecycleV1 | None = None,
+    prepared_planner: PreparedTypingPlannerV1 | None = None,
 ) -> dict[str, Any]:
     """Run exact production boundaries through their honest offline blocker.
 
@@ -200,6 +204,10 @@ def run_typing_shadow_pipeline_v1(
     does not mean collision evidence, fresh state, or physical authority exists.
     """
 
+    if (context_lifecycle is None) != (prepared_planner is None):
+        raise TypingShadowPipelineV1Error(
+            "context lifecycle and prepared planner must be supplied together"
+        )
     batch = decode_model_motion_batch_v2_json(payload)
     ingress = ingest_with_trusted_registry_v2(
         batch,
@@ -208,6 +216,7 @@ def run_typing_shadow_pipeline_v1(
         registry=registry,
         current_time_epoch_ms=current_time_epoch_ms,
         current_monotonic_ns=ingress_monotonic_ns,
+        context_lifecycle=context_lifecycle,
     )
     freshness = revalidate_with_trusted_registry_v2(
         ingress,
@@ -230,6 +239,8 @@ def run_typing_shadow_pipeline_v1(
         calibration_snapshot,
         ik_seed,
         policy=ik_policy,
+        prepared_planner=prepared_planner,
+        context_lifecycle=context_lifecycle,
     )
     if ik.get("status") != IK_READY_STATUS:
         raise TypingShadowPipelineV1Error(
@@ -248,6 +259,8 @@ def run_typing_shadow_pipeline_v1(
         calibration_snapshot,
         installed_collision_profile,
         sampling_policy=collision_sampling_policy,
+        prepared_planner=prepared_planner,
+        context_lifecycle=context_lifecycle,
     )
     ordered_targets = [action.target_id for action in execution.actions]
     if ordered_targets != [proposal.target_id for proposal in batch.proposals]:
