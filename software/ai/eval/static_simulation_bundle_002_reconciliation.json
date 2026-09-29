@@ -94,9 +94,28 @@
     "physical_movements": 0
   },
   "validation": {
-    "status": "PENDING_CLEAN_ENVIRONMENT_VERIFICATION",
-    "full_ai_suite": null,
-    "portable_repository_suite": null,
-    "repository_audits": null
+    "status": "PASS",
+    "verified_source_commit": "869d6f7ed7d1013a8003457a819ccaee3a03a1e7",
+    "python": "3.10.10",
+    "pip_check": "NO_BROKEN_REQUIREMENTS",
+    "focused_static_context_suite": {
+      "passed": 33,
+      "failed": 0
+    },
+    "full_ai_suite": {
+      "passed": 174,
+      "subtests_passed": 47,
+      "failed": 0
+    },
+    "portable_repository_suite": {
+      "passed": 507,
+      "failed": 0
+    },
+    "repository_audits": {
+      "status": "PASS",
+      "passed": 6,
+      "ai_registry_test_modules_owned": "35/35",
+      "release_integrity_blockers_before_this_resolution": 2
+    }
   }
 }

@@ -52,8 +52,15 @@
       "issue": "https://github.com/j-webtek/tactevra/issues/167",
       "owner": "AI workstream with repository review",
       "requirement": "Reconcile the static simulation bundle with the current system manifest and restore a passing maintained full AI test suite without weakening the freeze or evidence boundary.",
-      "status": "open",
-      "resolution": null
+      "status": "cleared",
+      "resolution": {
+        "summary": "Bundle 002 binds the intended FREEZE-013 manifest and its manifest-ID-only simulation profile update while preserving the prior bundle boundary, exact validation, zero physical authority, and a passing clean full AI suite.",
+        "evidence": [
+          "https://github.com/j-webtek/tactevra/issues/167",
+          "software/ai/eval/static_simulation_bundle_002_reconciliation.json",
+          "software/ai/docs/EVIDENCE_LEDGER.md"
+        ]
+      }
     }
   ]
 }
