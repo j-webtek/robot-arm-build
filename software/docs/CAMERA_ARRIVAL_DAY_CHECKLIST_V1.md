@@ -99,12 +99,14 @@ physical execution.
 The first domain adapters live in
 `rocell.application.camera_arrival_consumer_emitters_v1`. They translate the
 existing camera/support assessment (four routes), campaign preflight (two
-routes), and held-out localization evaluation (two routes) into the common
-receipt without weakening their native pass/block semantics. They accept only
-a ready, matching handoff, preserve native failure blockers and output hashes,
-and bind the validator version to the mapped consumer-source hash. Planner
-snapshot and installed collision/cable emitters remain a separate required
-step; eight receipts cannot complete the 15-route aggregate.
+routes), held-out localization evaluation (two routes), typed planner snapshot
+(five routes), and typed installed collision profile (two routes) into the
+common receipt without weakening their native pass/block semantics. They accept
+only a ready, matching handoff, preserve native failure blockers and output
+hashes, and bind the validator version to the mapped consumer-source hash.
+Route coverage alone is not completion: incomplete installed geometry or a
+configuration-sampled cable envelope remains `BLOCKED` even when every route
+has emitted a receipt.
 
 ## Collect the four camera/support originals
 

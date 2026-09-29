@@ -6,6 +6,8 @@ import hashlib
 import json
 from typing import Any, Mapping
 
+from rocell.calibration.planner_snapshot import PlannerCalibrationSnapshot
+
 from .camera_arrival_consumer_handoff_v1 import (
     parse_camera_arrival_consumer_handoff_v1,
 )
@@ -14,6 +16,7 @@ from .camera_arrival_consumer_validation_v1 import (
     CameraArrivalConsumerValidationV1Error,
     parse_camera_arrival_consumer_validation_receipt_v1,
 )
+from .installed_collision_geometry import InstalledCollisionGeometryProfile
 
 
 _SUPPORT_SOURCE = (
@@ -21,11 +24,20 @@ _SUPPORT_SOURCE = (
 )
 _CAMPAIGN_SOURCE = "software/ai/eval/preflight_physical_camera_campaign.py"
 _EVALUATION_SOURCE = "software/ai/eval/evaluate_physical_camera_localization.py"
+_PLANNER_SOURCE = "software/src/rocell/calibration/planner_snapshot.py"
+_COLLISION_SOURCE = (
+    "software/src/rocell/application/installed_collision_geometry.py"
+)
 _SUPPORT_IDS = {
     "camera_receipt", "camera_identity", "camera_mode_controls", "support_witnesses",
 }
 _CAMPAIGN_IDS = {"camera_intrinsics", "localization_campaign"}
 _EVALUATION_IDS = {"camera_to_board_transform", "localization_evaluation"}
+_PLANNER_IDS = {
+    "board_to_robot_transform", "keyboard_to_board_transform",
+    "tool_to_joint_transform", "keyboard_profile", "tool_profile",
+}
+_COLLISION_IDS = {"installed_geometry", "cable_envelope"}
 
 
 class CameraArrivalConsumerEmitterV1Error(ValueError):
@@ -248,9 +260,104 @@ def emit_camera_localization_consumer_receipt_v1(
     )
 
 
+def emit_planner_snapshot_consumer_receipt_v1(
+    handoff: Mapping[str, Any], artifact_id: str,
+    snapshot: PlannerCalibrationSnapshot, *, validated_at_utc: str,
+) -> dict[str, Any]:
+    """Emit one route receipt from an already decoded typed planner snapshot."""
+
+    if artifact_id not in _PLANNER_IDS:
+        raise CameraArrivalConsumerEmitterV1Error("artifact is not planner-owned")
+    if not isinstance(snapshot, PlannerCalibrationSnapshot):
+        raise CameraArrivalConsumerEmitterV1Error(
+            "planner output must be a typed PlannerCalibrationSnapshot"
+        )
+    verified, route = _route(handoff, artifact_id)
+    if route["consumer_source"] != _PLANNER_SOURCE:
+        raise CameraArrivalConsumerEmitterV1Error("planner consumer source differs")
+    document = snapshot.to_dict()
+    required_artifacts = {"arm_board", "keyboard_pose", "keyboard_tcp"}
+    if (
+        snapshot.device != "keyboard"
+        or document.get("schema") != "rocell.planner_calibration_snapshot.v1"
+        or document.get("physical_authority") is not False
+        or not required_artifacts.issubset(snapshot.artifact_hashes)
+        or route["consumer_binding"] not in {
+            "arm_board:B_T_Wv", "keyboard_pose:B_T_keyboard",
+            "keyboard_tcp:G_T_T", "target_map_sha256",
+            "keyboard_tcp.tool_identity_hash",
+        }
+    ):
+        raise CameraArrivalConsumerEmitterV1Error(
+            "planner snapshot cannot satisfy the keyboard route"
+        )
+    return _receipt(
+        verified, route, validator_id="planner-calibration-snapshot-v1",
+        validated_at_utc=validated_at_utc, status="PASS", blockers=[],
+        output_sha256=snapshot.snapshot_sha256,
+    )
+
+
+def emit_installed_collision_consumer_receipt_v1(
+    handoff: Mapping[str, Any], artifact_id: str,
+    profile: InstalledCollisionGeometryProfile, *, validated_at_utc: str,
+) -> dict[str, Any]:
+    """Emit installed-geometry or cable-envelope status from a typed profile."""
+
+    if artifact_id not in _COLLISION_IDS:
+        raise CameraArrivalConsumerEmitterV1Error("artifact is not collision-owned")
+    if not isinstance(profile, InstalledCollisionGeometryProfile):
+        raise CameraArrivalConsumerEmitterV1Error(
+            "collision output must be a typed InstalledCollisionGeometryProfile"
+        )
+    verified, route = _route(handoff, artifact_id)
+    if route["consumer_source"] != _COLLISION_SOURCE:
+        raise CameraArrivalConsumerEmitterV1Error("collision consumer source differs")
+    document = profile.to_dict()
+    audit = document.get("geometry_audit")
+    if (
+        document.get("schema") != "rocell.installed_collision_geometry_profile.v1"
+        or document.get("hardware_commands_generated") != 0
+        or document.get("hardware_access") is not False
+        or document.get("physical_authority") is not False
+        or not isinstance(audit, Mapping)
+    ):
+        raise CameraArrivalConsumerEmitterV1Error(
+            "installed collision profile semantics differ"
+        )
+    blockers = [
+        f"GEOMETRY_{row['code']}:{row['body_id']}"
+        for row in audit.get("diagnostic_blockers", [])
+        if isinstance(row, Mapping) and row.get("code") and row.get("body_id")
+    ]
+    if artifact_id == "installed_geometry":
+        passed = audit.get("diagnostic_ready") is True
+        if not passed and not blockers:
+            blockers = ["INSTALLED_GEOMETRY_NOT_DIAGNOSTIC_READY"]
+    else:
+        sampled = audit.get("configuration_sampled_body_ids")
+        if not isinstance(sampled, list):
+            raise CameraArrivalConsumerEmitterV1Error(
+                "collision audit lacks sampled cable identities"
+            )
+        passed = audit.get("physical_geometry_complete") is True and not sampled
+        if not passed:
+            blockers.extend(f"CONFIGURATION_SAMPLED_BODY:{item}" for item in sampled)
+            if not blockers:
+                blockers = ["CABLE_ENVELOPE_NOT_PHYSICALLY_COMPLETE"]
+    blockers = list(dict.fromkeys(blockers))
+    return _receipt(
+        verified, route, validator_id="installed-collision-geometry-v1",
+        validated_at_utc=validated_at_utc, status="PASS" if passed else "BLOCKED",
+        blockers=blockers, output_sha256=_hash(document),
+    )
+
+
 __all__ = [
     "CameraArrivalConsumerEmitterV1Error",
     "emit_camera_campaign_consumer_receipt_v1",
     "emit_camera_localization_consumer_receipt_v1",
     "emit_camera_support_consumer_receipt_v1",
+    "emit_installed_collision_consumer_receipt_v1",
+    "emit_planner_snapshot_consumer_receipt_v1",
 ]

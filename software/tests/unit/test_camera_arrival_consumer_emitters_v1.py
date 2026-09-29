@@ -11,6 +11,8 @@ from rocell.application.camera_arrival_consumer_emitters_v1 import (
     emit_camera_campaign_consumer_receipt_v1,
     emit_camera_localization_consumer_receipt_v1,
     emit_camera_support_consumer_receipt_v1,
+    emit_installed_collision_consumer_receipt_v1,
+    emit_planner_snapshot_consumer_receipt_v1,
 )
 from rocell.application.camera_arrival_consumer_handoff_v1 import (
     build_camera_arrival_consumer_handoff_v1,
@@ -20,6 +22,17 @@ from rocell.application.camera_arrival_consumer_validation_v1 import (
     parse_camera_arrival_consumer_validation_receipt_v1,
 )
 from rocell.application.camera_arrival_kit_v1 import build_camera_arrival_kit_v1
+from rocell.application.collision_readiness import assess_current_collision_readiness
+from rocell.application.context import load_simulation_context
+from rocell.application.installed_collision_geometry import (
+    InstalledCollisionGeometryProfile,
+)
+from rocell.calibration.planner_snapshot import PlannerCalibrationSnapshot
+from rocell.geometry import RigidTransform, Rotation3, Vec3
+from rocell.simulation.collision import (
+    CollisionClearanceEvidenceState,
+    CollisionClearancePolicy,
+)
 
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -113,6 +126,59 @@ def _evaluation(*, passed: bool = True) -> dict:
     return {**core, "result_sha256": _hash(core)}
 
 
+def _planner_snapshot() -> PlannerCalibrationSnapshot:
+    return PlannerCalibrationSnapshot(
+        device="keyboard", manifest_id="manifest", active_build_id="build",
+        artifact_hashes={
+            "robot_reference": "1" * 64, "arm_board": "2" * 64,
+            "controller_correlation": "3" * 64, "keyboard_pose": "4" * 64,
+            "keyboard_tcp": "5" * 64,
+        },
+        board_T_vendor_world=RigidTransform(
+            "B", "Wv", Rotation3.identity(), Vec3.zero()
+        ),
+        board_T_device=RigidTransform(
+            "B", "keyboard", Rotation3.identity(), Vec3.zero()
+        ),
+        hand_T_tool=RigidTransform(
+            "G", "T", Rotation3.identity(), Vec3.zero()
+        ),
+        robot_reference_identity={
+            "arm_identity_hash": "6" * 64,
+            "controller_identity_hash": "7" * 64,
+            "firmware_identity_hash": "8" * 64,
+        },
+        joint_zero_offsets_rad=(0.0,) * 6,
+        joint_lower_rad=(-2.0,) * 6,
+        joint_upper_rad=(2.0,) * 6,
+        joint_signs=(1, -1, 1, 1, -1, 1),
+        controller_correlation={"qualified": True},
+        target_map_sha256="9" * 64,
+    )
+
+
+def _incomplete_collision_profile() -> InstalledCollisionGeometryProfile:
+    context = load_simulation_context(ROOT, ROOT / "software/config/system_manifest.json")
+    readiness = assess_current_collision_readiness(context)
+    policy = CollisionClearancePolicy(
+        minimum_separation_mm=2.0,
+        geometry_uncertainty_mm_per_body=0.5,
+        pose_uncertainty_mm_per_body=0.5,
+        evidence_state=CollisionClearanceEvidenceState.ACCEPTED_MEASURED,
+        source_reference="fixture",
+    )
+    return InstalledCollisionGeometryProfile(
+        profile_id="fixture", manifest_id=readiness.manifest_id,
+        manifest_sha256=readiness.manifest_sha256,
+        active_build_id=readiness.active_build_id,
+        build_snapshot_sha256=readiness.build_snapshot_hash,
+        robot_model_sha256=readiness.urdf_sha256,
+        base_contract_sha256=readiness.contract.content_hash,
+        source_bindings={"fixture": H}, contract=readiness.contract,
+        clearance_policy=policy, content_sha256=H, file_sha256=H,
+    )
+
+
 def test_existing_explicit_consumers_emit_eight_exact_pass_receipts(tmp_path: Path):
     _populate(tmp_path)
     handoff = build_camera_arrival_consumer_handoff_v1(ROOT, tmp_path)
@@ -163,6 +229,92 @@ def test_support_emitter_preserves_route_local_blocker(tmp_path: Path):
     )
     assert receipt["validation_status"] == "BLOCKED"
     assert receipt["blockers"] == ["EVIDENCE_STALE"]
+
+
+def test_typed_planner_snapshot_emits_all_five_planner_receipts(tmp_path: Path):
+    _populate(tmp_path)
+    handoff = build_camera_arrival_consumer_handoff_v1(ROOT, tmp_path)
+    snapshot = _planner_snapshot()
+    artifact_ids = (
+        "board_to_robot_transform", "keyboard_to_board_transform",
+        "tool_to_joint_transform", "keyboard_profile", "tool_profile",
+    )
+    receipts = [
+        emit_planner_snapshot_consumer_receipt_v1(
+            handoff, artifact_id, snapshot, validated_at_utc=WHEN
+        )
+        for artifact_id in artifact_ids
+    ]
+    assert [row["artifact_id"] for row in receipts] == list(artifact_ids)
+    assert all(row["validation_status"] == "PASS" for row in receipts)
+    assert len({row["output_sha256"] for row in receipts}) == 1
+
+
+def test_typed_collision_profile_preserves_geometry_and_cable_gaps(tmp_path: Path):
+    _populate(tmp_path)
+    handoff = build_camera_arrival_consumer_handoff_v1(ROOT, tmp_path)
+    profile = _incomplete_collision_profile()
+    geometry = emit_installed_collision_consumer_receipt_v1(
+        handoff, "installed_geometry", profile, validated_at_utc=WHEN
+    )
+    cable = emit_installed_collision_consumer_receipt_v1(
+        handoff, "cable_envelope", profile, validated_at_utc=WHEN
+    )
+    assert geometry["validation_status"] == "BLOCKED"
+    assert any(item.startswith("GEOMETRY_") for item in geometry["blockers"])
+    assert cable["validation_status"] == "BLOCKED"
+    assert "CONFIGURATION_SAMPLED_BODY:attachment:moving_camera_cable" in cable["blockers"]
+    assert geometry["output_sha256"] == cable["output_sha256"]
+
+
+def test_domain_emitters_account_for_all_fifteen_routes(tmp_path: Path):
+    _populate(tmp_path)
+    handoff = build_camera_arrival_consumer_handoff_v1(ROOT, tmp_path)
+    receipts = [
+        emit_camera_support_consumer_receipt_v1(
+            handoff, artifact_id, _support(), validated_at_utc=WHEN
+        )
+        for artifact_id in (
+            "camera_receipt", "camera_identity", "camera_mode_controls",
+            "support_witnesses",
+        )
+    ]
+    receipts += [
+        emit_camera_campaign_consumer_receipt_v1(
+            handoff, artifact_id, _campaign(), validated_at_utc=WHEN
+        )
+        for artifact_id in ("camera_intrinsics", "localization_campaign")
+    ]
+    receipts += [
+        emit_camera_localization_consumer_receipt_v1(
+            handoff, artifact_id, _evaluation(), validated_at_utc=WHEN
+        )
+        for artifact_id in ("camera_to_board_transform", "localization_evaluation")
+    ]
+    receipts += [
+        emit_planner_snapshot_consumer_receipt_v1(
+            handoff, artifact_id, _planner_snapshot(), validated_at_utc=WHEN
+        )
+        for artifact_id in (
+            "board_to_robot_transform", "keyboard_to_board_transform",
+            "tool_to_joint_transform", "keyboard_profile", "tool_profile",
+        )
+    ]
+    receipts += [
+        emit_installed_collision_consumer_receipt_v1(
+            handoff, artifact_id, _incomplete_collision_profile(),
+            validated_at_utc=WHEN,
+        )
+        for artifact_id in ("installed_geometry", "cable_envelope")
+    ]
+    assert {row["artifact_id"] for row in receipts} == {
+        row["artifact_id"] for row in handoff["routes"]
+    }
+    assessment = assess_camera_arrival_consumer_validation_v1(handoff, receipts)
+    assert assessment["pass_count"] == 13
+    assert assessment["blocked_count"] == 2
+    assert assessment["pending_count"] == 0
+    assert assessment["complete_for_offline_review"] is False
 
 
 @pytest.mark.parametrize("failure", ("wrong_route", "tampered", "blocked_handoff"))
