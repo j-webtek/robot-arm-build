@@ -5357,3 +5357,38 @@ rewriting history. New entries must use a unique evidence ID.
 - Next dependency: PC12 must freeze and run the full synthetic arrival fault
   matrix, including partial, mixed, stale, crossed, malformed, and
   resource-bound sessions, before operator wrappers are added in PC13.
+
+### E-20260929-ARM-105 — Synthetic camera-arrival fault campaign
+
+- Stage: PC12 post-closure pre-camera continuation.
+- Lane: arm/runtime commissioning fault qualification.
+- Implementation commit: `f98ad366c19a960a07aea43e2612d21a304afe79`.
+- Change: added a frozen 18-case synthetic campaign and CLI that exercise the
+  actual PC11 orchestrator. Hardened external sidecar intake with strict
+  duplicate-member parsing and a 1 MiB ceiling, and corrected handoff parsing
+  so a global mixed-epoch blocker keeps every route blocked rather than making
+  the report reject itself.
+- Command: `python -m rocell.application.camera_arrival_fault_campaign_v1
+  --workspace .`; the governed offline matrix; repository-policy tests; and
+  maintained documentation/evidence/repository/release audits.
+- Result: PASS. 18/18 declared campaign cases matched the exact expected
+  outcome and owning detail; the retained report hash is
+  `98896d36a33807109f74143e56933386ef0a26f5761edb89ff9c8d6f6c74c2ca`.
+  The detached clean-checkout governed matrix passed 560 tests, policy tests
+  passed 115, and all maintained audits passed.
+- Artifacts: `software/src/rocell/application/camera_arrival_fault_campaign_v1.py`,
+  `software/ai/eval/camera_arrival_fault_campaign_v1.json`,
+  `software/ai/schemas/camera_arrival_fault_campaign_v1.schema.json`, and the
+  source wrapper plus focused unit/integration tests.
+- Camera opens: 0.
+- Transport opens: 0.
+- Controller starts: 0.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: this is synthetic intake and orchestration evidence. It does not
+  validate a real camera, measured calibration, installed geometry, model
+  localization, epoch commissioning, or physical execution.
+- Supersedes: ARM-104 only for declared synthetic fault coverage; ARM-104's
+  orchestrator contract remains the operator boundary.
+- Next dependency: PC13 must provide uniform wrappers for the five native
+  consumer families while retaining their native schemas and blockers.

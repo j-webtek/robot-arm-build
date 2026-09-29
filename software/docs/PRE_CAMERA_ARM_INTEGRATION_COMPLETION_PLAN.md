@@ -109,8 +109,8 @@ and its evidence gate pass.
 | PC9 | Camera-arrival evidence tooling and dry run | PC6 | No for tooling | None before arrival | COMPLETE |
 | PC10 | Pre-camera integration closure | PC0-PC9 | No | None | COMPLETE |
 | PC11 | One-command zero-authority commissioning orchestrator | PC9-PC10, ARM-100-103 | No | None | COMPLETE |
-| PC12 | Full synthetic arrival and fault campaign | PC11 | No | None | IN PROGRESS |
-| PC13 | Domain-consumer operator wrappers | PC11, ARM-103 | No | None | PLANNED |
+| PC12 | Full synthetic arrival and fault campaign | PC11 | No | None | COMPLETE |
+| PC13 | Domain-consumer operator wrappers | PC11, ARM-103 | No | None | IN PROGRESS |
 | PC14 | Arrival-session manifest and state machine | PC11-PC13 | No | None | PLANNED |
 | PC15 | Installed-geometry and cable-envelope intake rehearsal | PC13-PC14 | No | None | PLANNED |
 | PC16 | Immutable camera-replay runner | PC11-PC14 | No live camera | None | PLANNED |
@@ -635,6 +635,20 @@ hashes. Every mutation fails at its owning boundary.
 
 ## PC12 — Full synthetic arrival and fault campaign
 
+**Completed 2026-09-29:** ARM-105 freezes and reproduces 18 synthetic cases
+through the actual PC11 boundary. They cover empty, pending, all-pass,
+consumer-blocked, and one-missing-receipt sessions; corrupted sources, rejected
+review, mixed epochs, missing/duplicate/oversized sidecars; and unexpected,
+unsafe, duplicate-member, crossed-name, authority-bearing, oversized, and
+truncated receipts. All 18 reach the exact expected owner and disposition. The
+campaign exposed and fixed two real defects: external sidecars previously lacked
+duplicate-member and byte-size enforcement, and the handoff parser omitted the
+global epoch-ready state when validating blocked routes. Commit
+`f98ad366c19a960a07aea43e2612d21a304afe79` passed 560 governed tests, 115
+repository-policy tests, and all maintained audits from a detached clean
+checkout. The retained campaign is synthetic, opens no device or transport,
+and grants no authority.
+
 ### Objective
 
 Exercise the complete PC11 workflow under normal, partial, adversarial, and
@@ -838,7 +852,7 @@ For every PC increment:
 - [x] PC9 camera-arrival tools dry-run complete
 - [x] PC10 clean-checkout pre-camera closure recorded
 - [x] PC11 one-command zero-authority commissioning orchestrator complete
-- [ ] PC12 full synthetic arrival and fault campaign complete
+- [x] PC12 full synthetic arrival and fault campaign complete
 - [ ] PC13 domain-consumer operator wrappers complete
 - [ ] PC14 arrival-session manifest and state machine complete
 - [ ] PC15 installed-geometry and cable-envelope rehearsal complete

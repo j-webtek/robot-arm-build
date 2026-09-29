@@ -1,7 +1,7 @@
 # Tactevra project status
 
-Reviewed September 29, 2026 through the ARM-104 zero-authority arrival
-commissioning orchestrator,
+Reviewed September 29, 2026 through the ARM-105 synthetic camera-arrival fault
+campaign,
 ARM-077 PC0 pre-camera qualification basis, ARM-076 typing collision-evidence
 intake, ARM-075 exact-sample offline IK screen, AI-403 precision-adapter
 integration, and merged physical-camera
@@ -472,6 +472,13 @@ oversized, malformed, crossed, or authority-bearing inputs. Its strongest
 result is only `COMPLETE_FOR_OFFLINE_REVIEW`; it opens no camera or transport,
 starts no controller, emits no command, and grants no physical authority. The
 governed offline matrix now passes 554 tests.
+
+ARM-105 freezes 18 synthetic camera-arrival cases spanning normal, partial,
+blocked, corrupted, mixed-epoch, malformed, crossed, unsafe, and bounded-size
+inputs. All cases reached their expected owning boundary. The campaign also
+fixed strict duplicate/size handling for external sidecars and a mixed-epoch
+handoff-parser inconsistency. It remains synthetic and zero-authority. The
+governed offline matrix now passes 560 tests.
 
 AI-403 then integrates the pose-output precision adapter and actual V2 batch
 producer on current `main`. The retained contract fixture deterministically
