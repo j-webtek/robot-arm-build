@@ -32,6 +32,10 @@ def classify_paths(paths: Iterable[str], policy: dict) -> dict[str, object]:
         if any(_matches(path, patterns) for path in changed)
     )
     contract = any(_matches(path, policy["contracts"]) for path in changed)
+    if contract:
+        # Shared contracts affect both producers and consumers even when the
+        # file physically lives in only one workstream's directory.
+        lanes = sorted(set(lanes) | {"area:ai", "area:arm"})
     labels = list(lanes)
     if any(_matches(path, policy["documentation"]) for path in changed):
         labels.append("documentation")

@@ -48,12 +48,37 @@ jobs:
           fi
           python scripts/ci/change_classifier.py "${args[@]}" | tee -a "$GITHUB_STEP_SUMMARY"
 
+  policy:
+    name: Repository policy and documentation
+    needs: classify
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 2
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.12'
+      - name: Check maintained repository policy once
+        run: |
+          python scripts/ci/check_docs.py
+          python scripts/ci/check_public_records.py
+          python scripts/ci/check_evidence_scope.py
+          python scripts/ci/check_repository_artifacts.py
+          python scripts/ci/check_repository_health.py --policy-only
+          python scripts/ci/check_source_archive_footprint.py
+          python scripts/ci/check_release_integrity.py --mode policy
+          python scripts/ci/check_release_readiness_sync.py
+
   offline:
     # Keep the established check labels while pinning the actual Linux image.
     # Branch protection keys off these names; the runner identity is reported
     # separately in the environment summary.
     name: Offline / ${{ matrix.check_os }} / Python ${{ matrix.python }}
-    needs: classify
+    needs: [classify, policy]
+    if: ${{ always() }}
     runs-on: ${{ matrix.runner }}
     timeout-minutes: 15
     strategy:
@@ -73,46 +98,46 @@ jobs:
             check_os: windows-latest
             python: '3.12'
     steps:
+      - name: Require repository policy verification
+        if: needs.policy.result != 'success'
+        run: |
+          echo 'Repository policy verification did not pass.'
+          exit 1
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        if: needs.policy.result == 'success'
         with:
           persist-credentials: false
           fetch-depth: 2
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        if: needs.policy.result == 'success'
         with:
           python-version: ${{ matrix.python }}
           cache: pip
           cache-dependency-path: software/pyproject.toml
       - name: Install base package in isolated environment
-        if: needs.classify.outputs.portable_full == 'true'
+        if: needs.policy.result == 'success' && needs.classify.outputs.portable_full == 'true'
         run: |
           python -m venv .venv-ci
           python scripts/ci/offline_checks.py install-base
       - name: Verify installed package and documented offline demo
-        if: needs.classify.outputs.portable_full == 'true'
+        if: needs.policy.result == 'success' && needs.classify.outputs.portable_full == 'true'
         run: python scripts/ci/offline_checks.py smoke
-      - name: Check maintained documentation links and branding assets
+      - name: Run portable CI-unit checks
+        if: needs.policy.result == 'success'
         run: |
           python -m compileall -q scripts/ci
           python -m unittest discover -s scripts/ci -p "test_*.py"
-          python scripts/ci/check_docs.py
-          python scripts/ci/check_public_records.py
-          python scripts/ci/check_evidence_scope.py
-          python scripts/ci/check_repository_artifacts.py
-          python scripts/ci/check_repository_health.py --policy-only
-          python scripts/ci/check_source_archive_footprint.py
-          python scripts/ci/check_release_integrity.py --mode policy
-          python scripts/ci/check_release_readiness_sync.py
       - name: Install test extra
-        if: needs.classify.outputs.portable_full == 'true'
+        if: needs.policy.result == 'success' && needs.classify.outputs.portable_full == 'true'
         run: python scripts/ci/offline_checks.py install-tests
       - name: Summarize resolved verification environment
-        if: needs.classify.outputs.portable_full == 'true'
+        if: needs.policy.result == 'success' && needs.classify.outputs.portable_full == 'true'
         run: python scripts/ci/offline_checks.py environment
       - name: Run bounded AI and arm contract tests
-        if: needs.classify.outputs.portable_full == 'true'
+        if: needs.policy.result == 'success' && needs.classify.outputs.portable_full == 'true'
         run: python scripts/ci/offline_checks.py test
       - name: Record lightweight verification
-        if: needs.classify.outputs.portable_full != 'true'
+        if: needs.policy.result == 'success' && needs.classify.outputs.portable_full != 'true'
         shell: bash
         run: echo 'Path classification selected policy, documentation, and CI-unit checks without package installation.' >> "$GITHUB_STEP_SUMMARY"
 

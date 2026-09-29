@@ -2,7 +2,7 @@
 
 **Document status:** Current release-readiness dashboard  
 **Authority:** Status and routing only; this page does not select a candidate, approve publication, or authorize hardware operation  
-**Last reconciled:** September 28, 2026, against protected `main` at `cac46b9`
+**Status source:** `.github/release-readiness.json`; generated status below is checked on every PR
 
 Tactevra has not published a GitHub release. No source commit, tag, release notes,
 or downloadable asset set is currently approved. This dashboard is the concise
@@ -13,9 +13,20 @@ The reviewed [machine-readable readiness registry](../../.github/release-readine
 is the offline enforcement source. It retains cleared entries for audit history
 and currently has one open blocker.
 
-`main` may advance after the reconciliation commit above. A later merge does not
-silently become the candidate and does not inherit earlier evidence. The exact
-candidate SHA will be selected only after the blocking owner evidence closes.
+An ordinary merge does not silently become the candidate and does not inherit
+earlier evidence. The exact candidate SHA will be selected only after the
+blocking owner evidence closes.
+
+<!-- BEGIN GENERATED READINESS STATUS -->
+**Registry status:** 1 open blocker.
+
+| Blocker | Owner | State |
+| --- | --- | --- |
+| [#56](https://github.com/j-webtek/tactevra/issues/56) — ai-artifact-reproducibility | AI workstream | **Cleared** |
+| [#61](https://github.com/j-webtek/tactevra/issues/61) — ai-evidence-retention | AI workstream with repository review | **Cleared** |
+| [#88](https://github.com/j-webtek/tactevra/issues/88) — waveshare-urdf-redistribution | Repository maintainer with arm-owner and rights review | **Open** |
+| [#167](https://github.com/j-webtek/tactevra/issues/167) — static-simulation-bundle | AI workstream with repository review | **Cleared** |
+<!-- END GENERATED READINESS STATUS -->
 
 ## Current gate summary
 

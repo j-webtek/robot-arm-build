@@ -20,8 +20,25 @@ class ChangeClassifierTests(unittest.TestCase):
         )
         self.assertTrue(result["contract"])
         self.assertIn("area:ai", result["labels"])
+        self.assertIn("area:arm", result["labels"])
         self.assertIn("cross-workstream", result["labels"])
         self.assertTrue(result["portable_full"])
+
+    def test_arm_hosted_shared_contract_routes_ai_and_arm(self):
+        result = classify_paths(
+            ["software/src/rocell/application/model_motion_ingress_v2.py"], self.policy
+        )
+        self.assertTrue(result["contract"])
+        self.assertEqual(result["lanes"], ["area:ai", "area:arm"])
+        self.assertIn("cross-workstream", result["labels"])
+
+    def test_shared_geometry_lock_routes_ai_and_arm(self):
+        result = classify_paths(
+            ["software/config/static_simulation_bundle_lock.json"], self.policy
+        )
+        self.assertTrue(result["contract"])
+        self.assertIn("area:ai", result["labels"])
+        self.assertIn("area:arm", result["labels"])
 
     def test_ci_change_exercises_every_qualification(self):
         result = classify_paths([".github/workflows/offline-checks.yml"], self.policy)
