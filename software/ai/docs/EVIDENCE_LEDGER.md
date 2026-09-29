@@ -5868,3 +5868,44 @@ rewriting history. New entries must use a unique evidence ID.
 - Next dependency: retain a clean full-source versus prepared-pipeline
   benchmark, then profile solver iteration behavior before considering bounded
   warm-start or endpoint-atlas work under E2.
+
+### E-20260929-ARM-118 — retained full-source versus prepared typing benchmark
+
+- Stage: operational efficiency E1, planner preparation measurement.
+- Lane: arm/runtime typing shadow pipeline.
+- Change: added a strict retained benchmark contract and clean-commit runner
+  for the complete deterministic shadow pipeline. Cold preparation is timed
+  separately; full-source and epoch-prepared request samples cover the same
+  real ingress, execution planning, trajectory planning, IK, schedule, and
+  collision-intake composition.
+- Command: `python
+  software/scripts/run_typing_planner_preparation_benchmark_v1.py` from clean
+  source commit `781cb1d34697d93476f7944b55b04c024003dbf4`.
+- Result: PASS. Twenty samples per path produced identical terminal receipt
+  SHA-256 `ff88c9404b29a8a3a24b01b0f4b7b54a87081dff3f39dae2a1bac461085c0057`
+  and identical aggregate stage-hash SHA-256
+  `b32894df93732db1452b3cb8305f2cfe447dccc5b76ca167ade7e3affc1ad27c`.
+  Full-source measured 1.667267 s p50 / 1.705646 s p95; epoch-prepared
+  measured 1.590753 s p50 / 1.604661 s p95. Reductions were 76.514 ms p50
+  and 100.985 ms p95. Separate cold preparation measured 1.190 ms.
+- Artifact: `typing_planner_preparation_benchmark_v1.json`; file SHA-256
+  `1dc24c0232422e1693f6165cc10e57e1422a4de599e189307e8e641f09039318`;
+  embedded report SHA-256
+  `b9650cc66a0171b2d8902e8568d17ae84df3d7276f9d9c853debd7bf0cf4fca2`.
+- Invalidation: context reload, service restart, forged preparation content,
+  and preparation use outside lifecycle management all blocked.
+- Camera opens: 0.
+- Model runtime loads: 0.
+- Transport opens: 0.
+- Controller starts: 0.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: host timing is descriptive, not an admission rule or physical
+  throughput claim. The modest reduction confirms numerical IK remains the
+  dominant cost. Installed collision acceleration and physical qualification
+  remain open.
+- Supersedes: ARM-117 only for its pending retained-measurement dependency;
+  ARM-117 remains authoritative for preparation semantics and lifecycle rules.
+- Next dependency: instrument solver iterations and evaluate bounded warm-start
+  or endpoint-atlas candidates under E2 without changing accepted or rejected
+  decisions.

@@ -4,7 +4,7 @@
 - **Owners:** Shared AI/model, arm/runtime, perception, controller, and
   qualification workstreams
 - **Audience:** Contributors optimizing request-to-verified-effect latency
-- **Reviewed:** 2026-09-29 against `ModelMotionBatchV2`, ARM-114, and the
+- **Reviewed:** 2026-09-29 against `ModelMotionBatchV2`, ARM-118, and the
   FREEZE-013-bound PC8 performance report
 - **Authority:** Normative planning guidance only; it grants no camera,
   controller, movement, contact, deployment, or release authority
@@ -499,9 +499,14 @@ The numerical solver itself is deliberately reconstructed for each request
 from the current calibration, tool transform, joint bounds, policy, and start
 seed. IK solves, trajectory continuity, installed collision evidence, and
 dynamic admission remain uncached. Full-source and prepared end-to-end shadow
-receipts are exactly identical in governed tests. A retained warm-up benchmark
-is still required before claiming a latency reduction; the retained PC8
-evidence shows numerical IK—not URDF parsing—is the dominant software cost.
+receipts are exactly identical in governed tests and in retained ARM-118 host
+evidence. Across 20 runs per path, the full-source pipeline measured 1.667267 s
+p50 / 1.705646 s p95 and the prepared pipeline measured 1.590753 s p50 /
+1.604661 s p95. That is a measured 76.514 ms p50 / 100.985 ms p95 reduction,
+with the separate cold preparation cost measured at 1.190 ms. These host
+results are not physical-speed authority and are not admission thresholds.
+They confirm that reuse helps modestly while numerical IK—not URDF parsing—
+remains the dominant software cost.
 
 ### E2 — Accelerate IK and collision preparation
 

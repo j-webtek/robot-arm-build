@@ -1,6 +1,7 @@
 # Tactevra project status
 
-Reviewed September 29, 2026 through the ARM-117 typing planner preparation,
+Reviewed September 29, 2026 through the ARM-118 retained typing preparation
+benchmark and ARM-117 typing planner preparation,
 ARM-077 PC0 pre-camera qualification basis, ARM-076 typing collision-evidence
 intake, ARM-075 exact-sample offline IK screen, AI-403 precision-adapter
 integration, and merged physical-camera
@@ -586,7 +587,13 @@ typing shadow path. Reload, restart, crossed context, mutation, or unmanaged
 reuse rejects, while the full-source and prepared paths emit identical IK,
 collision-intake, and end-to-end receipts. Request-specific solver creation,
 IK work, dynamic collision evidence, and every physical gate remain uncached.
-No latency improvement is claimed until a clean retained benchmark is added.
+ARM-118 supplies that clean retained benchmark. Across 20 complete offline
+shadow runs per path, immutable preparation reduced p50 from 1.667267 s to
+1.590753 s and p95 from 1.705646 s to 1.604661 s; cold preparation itself was
+1.190 ms. Every terminal receipt and every stage hash remained identical, and
+reload, restart, forged preparation, and unmanaged preparation all rejected.
+The result is host-measured optimization evidence only: it does not set an
+admission threshold or grant controller, transport, or physical authority.
 
 AI-403 then integrates the pose-output precision adapter and actual V2 batch
 producer on current `main`. The retained contract fixture deterministically
