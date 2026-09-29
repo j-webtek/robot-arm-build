@@ -6048,3 +6048,38 @@ rewriting history. New entries must use a unique evidence ID.
   ARM-121 remains authoritative for cache mechanics and integrity semantics.
 - Next dependency: design bounded cache ownership and observability for runtime
   integration while retaining complete miss behavior and all dynamic gates.
+
+### E-20260929-ARM-123 — single-owner exact IK cache runtime integration
+
+- Stage: operational efficiency E2, bounded owner integration.
+- Lane: arm/runtime typing shadow pipeline.
+- Change: added `TypingExactIkCacheOwnerV1` as the sole pairing point for one
+  simulation-context lifecycle, one prepared planner, and one exact-result
+  cache. Owner-managed pipeline arguments cannot be overridden by callers.
+- Lifecycle: the owner serializes a complete shadow run against resource
+  transitions. Successful reload and restart retire the previous cache and
+  create an empty replacement bound to the new epoch/service generation.
+  Explicit invalidation retires both cache and lifecycle. Replacement failure
+  leaves the owner unready and fail-closed.
+- Observability: a hashed diagnostic snapshot reports run/failure, reload,
+  restart, retirement, invalidation, refresh-failure, and nested cache counters.
+  Diagnostics are not decision inputs and report zero controller commands,
+  hardware access, and physical authority.
+- Result: PASS. Focused governed coverage preserves canonical cold/warm output,
+  proves old-cache retirement on reload and restart, rejects old-context input,
+  blocks owner-resource overrides and post-invalidation execution, and rejects
+  mutated owner diagnostics.
+- Camera opens: 0.
+- Model runtime loads: 0.
+- Transport opens: 0.
+- Controller starts: 0.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: this is an offline owner boundary around the shadow pipeline. It
+  is not wired to a physical executor, does not measure new timing, and grants
+  no deployment or physical authority.
+- Supersedes: ARM-122 only for its bounded-integration dependency; ARM-122
+  remains authoritative for retained performance and invalidation evidence.
+- Next dependency: retain an owner lifecycle/fault campaign including forced
+  replacement failure, then define service wiring without relaxing any dynamic
+  gate or sole-writer boundary.

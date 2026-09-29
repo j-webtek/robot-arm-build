@@ -1,7 +1,8 @@
 # Tactevra project status
 
-Reviewed September 29, 2026 through the ARM-122 retained exact-result cache
-benchmark and invalidation matrix, ARM-121 lifecycle-bound cache experiment,
+Reviewed September 29, 2026 through the ARM-123 single-owner cache integration,
+the ARM-122 retained exact-result cache benchmark and invalidation matrix,
+ARM-121 lifecycle-bound cache experiment,
 ARM-120 retained multi-sequence IK effort campaign, ARM-119
 decision-neutral IK effort telemetry, ARM-118 retained
 typing preparation benchmark, and ARM-117 typing planner preparation,
@@ -634,6 +635,16 @@ restart, crossed context, corruption, and unmanaged use all blocked. This is
 strong host-side evidence for bounded integration, but it is not physical
 typing throughput, a deployment qualification, or authority to skip safety,
 freshness, collision, or verification gates.
+
+ARM-123 adds one explicit owner for the lifecycle, prepared planner, and exact
+IK cache. Shadow callers can no longer substitute owner-managed resources.
+Reload and restart automatically retire the previous cache and provision an
+empty generation-bound replacement; explicit invalidation retires both cache
+and lifecycle. A replacement preparation failure leaves the owner unready and
+closed. Hashed diagnostics expose only lifecycle and cache counters and remain
+outside admission. Governed tests preserve cold/warm canonical equivalence,
+prove old-cache retirement, reject old-context inputs and caller overrides,
+and verify zero controller, hardware, and physical authority.
 
 AI-403 then integrates the pose-output precision adapter and actual V2 batch
 producer on current `main`. The retained contract fixture deterministically

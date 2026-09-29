@@ -510,8 +510,7 @@ remains the dominant software cost.
 
 ### E2 — Accelerate IK and collision preparation
 
-**Status:** in progress through ARM-122 retained exact-result cache benchmark
-and invalidation matrix.
+**Status:** in progress through ARM-123 single-owner runtime integration.
 
 ARM-119 adds an opt-in, bounded `TypingIkEffortRecorderV1` side channel. It
 records attempt and iteration counts only after each deterministic solve. The
@@ -565,10 +564,22 @@ reload, service restart, crossed context, result corruption, and unmanaged use
 all blocked. These are host/offline results, not physical throughput evidence
 or permission to bypass any dynamic check.
 
+ARM-123 converts the opt-in cache arguments into one explicit zero-authority
+owner for the offline typing runtime. The owner alone pairs a context lifecycle,
+prepared planner, and exact-result cache; callers cannot override any of those
+three resources. It holds one lock across each shadow admission and owns reload,
+restart, and explicit invalidation. A successful reload or restart retires the
+old cache before the replacement becomes usable. A preparation failure leaves
+the owner unready and fail-closed. Reloaded and restarted generations begin
+with an empty cache, so no result crosses a context epoch or service instance.
+Its hashed diagnostic snapshot exposes run/failure, generation-transition,
+retirement, and nested cache counters, while remaining excluded from admission
+and permanently reporting zero controller and physical authority.
+
 Deliver:
 
-- bounded runtime integration design for the now-supported exact-result cache;
-- cache ownership, lifecycle invalidation, and observability integration;
+- retained owner lifecycle/fault campaign, including forced refresh failure;
+- service wiring that uses the owner without broadening physical authority;
 - endpoint-atlas and warm-start experiments;
 - solver iteration telemetry;
 - analytical/hybrid feasibility study;
