@@ -1,6 +1,6 @@
 # Tactevra project status
 
-Reviewed September 28, 2026 through the ARM-096 PC9 tooling completion,
+Reviewed September 28, 2026 through the ARM-097 PC10 clean-checkout closure,
 ARM-077 PC0 pre-camera qualification basis, ARM-076 typing collision-evidence
 intake, ARM-075 exact-sample offline IK screen, AI-403 precision-adapter
 integration, and merged physical-camera
@@ -401,6 +401,16 @@ passes across capture files, checksums, receipts, profiles, calibration,
 geometry, support intake, campaign preflight, and evaluation. It consumes zero
 measured originals and grants no physical admission or authority. PC10 clean-
 checkout pre-camera closure is next; the physical-camera hold remains active.
+
+ARM-097 completes PC10 against detached clean-checkout implementation commit
+`baa5745a966284bb94204307f1d37994e4e5bf3c`. The FREEZE-013 lineage rebind
+preserves robot numerics and physical-authority flags while regenerating the
+dependent shadow, trace, and performance evidence. The clean Windows/Python
+3.10.10 checkout passes 507 governed portable tests, 194 explicit PC0-PC9
+tests, 115 repository-policy tests, and all maintained policy audits. No
+camera, controller, transport, torque, or movement authority was exercised.
+The pre-camera software backbone is therefore ready for separately authorized
+camera commissioning; the physical-camera hold remains active.
 
 AI-403 then integrates the pose-output precision adapter and actual V2 batch
 producer on current `main`. The retained contract fixture deterministically

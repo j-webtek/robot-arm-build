@@ -105,7 +105,7 @@ and its evidence gate pass.
 | PC7 | Safe transition cache in shadow mode | PC3, PC6 | No | None | COMPLETE |
 | PC8 | Performance benchmark and readiness report | PC1-PC7 | No | None | COMPLETE |
 | PC9 | Camera-arrival evidence tooling and dry run | PC6 | No for tooling | None before arrival | COMPLETE |
-| PC10 | Pre-camera integration closure | PC0-PC9 | No | None | NOT_STARTED |
+| PC10 | Pre-camera integration closure | PC0-PC9 | No | None | COMPLETE |
 
 ## PC0 — Freeze the qualification basis
 
@@ -520,6 +520,34 @@ measured configuration epoch or deployment registry.
 
 ## PC10 — Pre-camera integration closure
 
+### Completion record — 2026-09-28
+
+PC10 is complete against clean-checkout implementation commit
+`baa5745a966284bb94204307f1d37994e4e5bf3c`. The controlled rebind advanced
+the PC0 source pin from FREEZE-012 to FREEZE-013 without changing robot
+numerics, targets, optics, kinematics, semantic bindings, or physical-authority
+flags. Deterministic downstream shadow, trace, and retained performance
+evidence was regenerated under the new lineage.
+
+The exact detached clean checkout passed:
+
+- the governed portable offline matrix: 507 tests;
+- the explicit PC0-PC9 gate matrix: 194 tests;
+- repository-policy unit tests: 115 tests; and
+- documentation, public-record, evidence-scope, repository-artifact,
+  repository-health, source-archive-footprint, and release-integrity policy
+  checks.
+
+The repository-wide raw `pytest` discovery command is not the clean-checkout
+boundary because it intentionally includes tests for ignored retained/private
+evidence that is absent from a fresh clone. The maintained portable test list
+and the explicit PC0-PC9 matrix are the governed reproducible boundaries.
+GitHub CI remains the cross-platform confirmation path; the recorded local
+clean-checkout execution used Windows and Python 3.10.10.
+
+No controller was started, no transport was opened, no command was written,
+and no torque or movement authority was exercised during this closure.
+
 ### Closure evidence
 
 - All PC0-PC9 gates pass on a clean checkout.
@@ -587,7 +615,7 @@ For every PC increment:
 - [x] PC7 transition cache shadow qualification complete
 - [x] PC8 performance report complete
 - [x] PC9 camera-arrival tools dry-run complete
-- [ ] PC10 clean-checkout pre-camera closure recorded
+- [x] PC10 clean-checkout pre-camera closure recorded
 
 ## Related documents
 

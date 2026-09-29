@@ -5079,3 +5079,46 @@ rewriting history. New entries must use a unique evidence ID.
   Git history; bundle 002 is a new identity rather than a silent rewrite.
 - Next dependency: merge the reviewed reconciliation, close issue #167, and
   retain issue #88 as the remaining source-preview blocker.
+
+### E-20260928-ARM-097 — PC10 clean-checkout pre-camera closure
+
+- Stage: PC10 pre-camera integration closure.
+- Lane: arm/runtime integration with shared AI boundary reconciliation.
+- Tested implementation commit:
+  `baa5745a966284bb94204307f1d37994e4e5bf3c`.
+- Change: merged the reviewed FREEZE-013 backbone, rebound the PC0
+  qualification basis to system-manifest SHA-256
+  `0cfb19c0972d4fe5cc526ca78d44422b2ef9c52354a8da637ec608b8dec7f55d`,
+  and regenerated deterministic shadow, trace-package, and retained
+  performance evidence. The new PC0 basis SHA-256 is
+  `ce26486caf16e2e4df8c5b313e6aa4e8e4ceb02923c706079dc6e4fb332aff28`;
+  the retained trace identity is
+  `typing-trace-0eaf0771e5baf2f53105b16e`.
+- Reconciliation: AI-423 established that FREEZE-013 changed only governed
+  manifest/build-package provenance identity. Robot numerics, target geometry,
+  optics, kinematics, semantic bindings, and physical-authority flags were
+  unchanged, so PC0 was advanced as a controlled lineage rebind rather than a
+  new physical qualification.
+- Commands: detached clean checkout; maintained portable selection from
+  `scripts/ci/offline_checks.py`; explicit PC0-PC9 unit/integration selection;
+  repository-policy unit discovery; documentation, public-record,
+  evidence-scope, repository-artifact, repository-health,
+  source-archive-footprint, and release-integrity policy checks.
+- Result: PASS. The detached Windows/Python 3.10.10 checkout passed 507
+  governed portable tests, 194 explicit PC0-PC9 tests, and 115 repository-policy
+  tests. All listed policy checks passed.
+- Boundary note: raw repository-wide `pytest` discovery also selects tests for
+  ignored retained/private evidence unavailable in a fresh clone and is not the
+  governed clean-checkout boundary. Cross-platform confirmation remains owned
+  by GitHub CI.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: this establishes reproducible pre-camera software closure only.
+  It does not establish camera calibration, real localization accuracy,
+  installed collision/cable geometry, fresh observed arm state, controller
+  execution, contact behavior, key registration, physical typing speed, or
+  autonomous typing authority.
+- Supersedes: ARM-096's PC10 dependency. AI-423 remains the source-lineage
+  reconciliation record.
+- Next dependency: receive and commission the final camera, then execute the
+  camera-dependent continuation under separate physical authorization.

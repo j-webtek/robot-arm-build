@@ -544,6 +544,14 @@ matrix covers capture originals through localization evaluation. Zero measured
 originals are consumed, no physical-admission flag becomes true, and the
 camera hold remains active. PC10 clean-checkout closure is the next pre-camera
 stage.
+ARM-097 completes PC10 against detached clean-checkout implementation commit
+`baa5745a966284bb94204307f1d37994e4e5bf3c`. The controlled FREEZE-013 rebind
+preserves the reconciled AI/arm geometry and authority boundary while updating
+the dependent deterministic evidence lineage. The clean Windows/Python 3.10.10
+checkout passes 507 governed portable tests, 194 explicit PC0-PC9 tests, 115
+repository-policy tests, and all maintained policy audits. No camera,
+controller, transport, torque, or movement authority was used. The next shared
+dependency is final-camera commissioning under the existing physical hold.
 The AI precision lane now has a mainline-compatible pose-output adapter and v2
 batch producer. It preserves repeated targets and abstains on qualification,
 domain, freshness, identity, confidence, or containment failure. Its retained
