@@ -50,6 +50,21 @@ The retained dry run must report zero measured slots, camera opens, controller
 starts, writes, movements, and physical authority. A synthetic result never
 advances the measured configuration epoch or deployment registry.
 
+Before and after each collection block, inventory the external evidence root
+with the read-only structural preflight:
+
+```powershell
+$env:PYTHONPATH = "$PWD\software\src;$PWD\software"
+python software/scripts/preflight_camera_arrival_evidence_v1.py `
+  --workspace . `
+  --evidence-root <external-root>
+```
+
+An incomplete root exits nonzero and names each missing or invalid slot. A
+complete result says only `READY_FOR_OFFLINE_QUALIFICATION_REVIEW`; it does not
+accept calibration, advance an epoch, update a registry, open either device, or
+authorize movement.
+
 ## Collect the four camera/support originals
 
 Use the existing explicitly authorized camera onboarding workflow to collect
