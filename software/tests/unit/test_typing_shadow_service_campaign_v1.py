@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import copy
+import hashlib
 import json
 from pathlib import Path
 import sys
@@ -19,6 +20,14 @@ import rocell.application.typing_shadow_service_campaign_v1 as campaign  # noqa:
 VALIDATOR = Draft202012Validator(json.loads((
     ROOT / "software/ai/schemas/typing_shadow_service_campaign_v1.schema.json"
 ).read_text(encoding="utf-8")))
+RETAINED = ROOT / "software/ai/eval/typing_shadow_service_campaign_v1.json"
+RETAINED_FILE_SHA256 = (
+    "c7ccec25ebd9c27e18c7a006b8a77da3477d317865e1d30a178abf300ea7c807"
+)
+RETAINED_CAMPAIGN_SHA256 = (
+    "75a2d03dc6b6c9c34e382062b24e1fdb5307a272b84e443d3b3887c31018620f"
+)
+RETAINED_SOURCE_COMMIT = "4c2ae9db9e27079c93b26e34330248f2f8537b47"
 
 
 def _environment() -> dict:
@@ -94,6 +103,29 @@ def test_service_campaign_covers_bounds_lifecycle_failure_and_race(report):
     assert indexed["ADMISSION_RELOAD_SERIALIZATION"][
         "transition_waited"
     ] is True
+
+
+def test_retained_service_campaign_is_exact_complete_and_fail_closed():
+    raw = RETAINED.read_bytes()
+    assert hashlib.sha256(raw).hexdigest() == RETAINED_FILE_SHA256
+    retained = json.loads(raw)
+    assert list(VALIDATOR.iter_errors(retained)) == []
+    assert dict(
+        campaign.parse_typing_shadow_service_campaign_v1(retained)
+    ) == retained
+    assert retained["campaign_sha256"] == RETAINED_CAMPAIGN_SHA256
+    assert retained["environment"]["repository_commit"] == RETAINED_SOURCE_COMMIT
+    assert retained["environment"]["repository_dirty"] is False
+    assert [item["case"] for item in retained["cases"]] == list(campaign.CASES)
+    assert all(item["status"] == "PASS" for item in retained["cases"])
+    assert retained["all_expected_outcomes"] is True
+    assert retained["decision_hashes_unchanged"] is True
+    assert retained["diagnostics_used_for_admission"] is False
+    assert retained["controller_opened"] is False
+    assert retained["transport_opened"] is False
+    assert retained["controller_commands"] == []
+    assert retained["hardware_writes"] == retained["physical_movements"] == 0
+    assert retained["physical_authority"] is False
 
 
 @pytest.mark.parametrize("mutation,match", (

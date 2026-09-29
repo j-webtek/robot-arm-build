@@ -1,6 +1,7 @@
 # Tactevra project status
 
-Reviewed September 29, 2026 through the ARM-125 bounded shadow service,
+Reviewed September 29, 2026 through the ARM-126 retained service fault campaign,
+ARM-125 bounded shadow service,
 ARM-124 retained owner fault campaign,
 ARM-123 single-owner cache integration, the ARM-122 retained exact-result cache
 benchmark and invalidation matrix,
@@ -669,6 +670,17 @@ accounts for every discarded queued request. Hashed receipts and snapshots
 remain diagnostic and report zero controller commands, hardware access, and
 physical authority. This closes the planned service-wiring and generation-race
 dependency; endpoint-atlas and warm-start experiments remain next.
+
+ARM-126 retains the corresponding clean-commit eight-case fault campaign.
+Normal FIFO completion, pre-admission cancellation, reload and restart stale
+rejection, queue saturation, explicit invalidation, unexpected shadow failure,
+and admitted-request/reload serialization all passed. The two completed cases
+preserved the same shadow decision hash. Cancellation, stale rejection, queue
+saturation, invalidation, and forced failure performed zero owner runs. The
+race transition demonstrably waited for the admitted request. The retained
+artifact reports zero controller, transport, hardware, movement, and physical
+authority. Service wiring is now evidenced rather than only unit-tested; the
+next E2 dependency is endpoint-atlas analysis before any warm-start proposal.
 
 AI-403 then integrates the pose-output precision adapter and actual V2 batch
 producer on current `main`. The retained contract fixture deterministically

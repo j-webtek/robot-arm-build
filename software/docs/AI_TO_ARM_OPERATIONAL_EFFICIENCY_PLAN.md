@@ -510,7 +510,7 @@ remains the dominant software cost.
 
 ### E2 — Accelerate IK and collision preparation
 
-**Status:** in progress through ARM-125 bounded shadow service integration.
+**Status:** in progress through ARM-126 retained service fault campaign.
 
 ARM-119 adds an opt-in, bounded `TypingIkEffortRecorderV1` side channel. It
 records attempt and iteration counts only after each deterministic solve. The
@@ -600,9 +600,19 @@ entries. Strictly parsed, hashed terminal receipts and service snapshots expose
 only diagnostic counters and retain zero controller, transport, sole-writer,
 hardware, and physical authority.
 
+ARM-126 retains the service boundary on clean source commit
+`4c2ae9db9e27079c93b26e34330248f2f8537b47`. Its eight cases cover normal FIFO
+completion, cancellation before admission, reload-stale and restart-stale
+rejection, queue saturation, explicit invalidation, unexpected shadow failure,
+and an admitted-request/reload race. Every expected outcome passed. The race
+proved the reload remained blocked until the admitted request completed, while
+the completed reference and race cases preserved one identical shadow decision
+hash. All other bounded or rejected paths performed zero owner runs. The
+campaign grants no performance, controller, transport, movement, or physical
+authority.
+
 Deliver:
 
-- retained service-boundary fault evidence and resource ceilings;
 - endpoint-atlas and warm-start experiments;
 - solver iteration telemetry;
 - analytical/hybrid feasibility study;

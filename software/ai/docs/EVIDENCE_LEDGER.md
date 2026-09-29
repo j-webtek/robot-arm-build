@@ -6151,3 +6151,38 @@ rewriting history. New entries must use a unique evidence ID.
 - Next dependency: retain a clean-commit service-boundary fault campaign, then
   evaluate endpoint-atlas and safe warm-start opportunities without changing
   reference decisions.
+
+### E-20260929-ARM-126 — retained typing shadow service fault campaign
+
+- Stage: operational efficiency E2, retained service-boundary evidence.
+- Lane: arm/runtime typing shadow pipeline.
+- Source commit: `4c2ae9db9e27079c93b26e34330248f2f8537b47`.
+- Cases: normal FIFO completion, cancellation before admission, reload-stale
+  rejection, restart-stale rejection, queue-bound rejection, explicit
+  invalidation, unexpected shadow failure, and admitted-request/reload
+  serialization.
+- Result: PASS. All eight cases reached their exact expected outcomes. Both
+  completed cases preserved one identical shadow decision hash. Cancellation,
+  both stale-generation cases, queue saturation, invalidation, and forced
+  failure performed zero owner runs. The race transition waited until the
+  admitted request completed and then reloaded exactly once.
+- Artifact: `typing_shadow_service_campaign_v1.json`; file SHA-256
+  `c7ccec25ebd9c27e18c7a006b8a77da3477d317865e1d30a178abf300ea7c807`;
+  embedded campaign SHA-256
+  `75a2d03dc6b6c9c34e382062b24e1fdb5307a272b84e443d3b3887c31018620f`.
+- Diagnostics used for admission: false.
+- Camera opens: 0.
+- Model runtime loads: 0.
+- Transport opens: 0.
+- Controller starts: 0.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Physical authority: false.
+- Limitations: this is host-measured offline service evidence. It does not
+  attach an executor or sole writer, measure physical throughput, or qualify a
+  deployed model/camera/controller configuration.
+- Supersedes: ARM-125 only for its retained campaign dependency; ARM-125 remains
+  authoritative for service mechanics and receipt semantics.
+- Next dependency: measure the repeated endpoint/state structure of the
+  representative typing corpus, then assess exact endpoint-atlas and safe
+  warm-start candidates without weakening reference selection.
