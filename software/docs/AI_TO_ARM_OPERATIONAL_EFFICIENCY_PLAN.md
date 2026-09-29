@@ -403,6 +403,15 @@ Deliver:
 Gate: instrumentation reproduces all reference decisions and hashes and adds no
 camera, transport, command, or physical authority.
 
+Implementation checkpoint (2026-09-29): the strict
+`rocell.operational_latency_trace.v1` contract now freezes the T0-T10 milestone
+catalog, requires an exact ordered prefix for blocked traces, derives all stage
+durations, binds request/session/batch/plan/configuration/controller/result
+correlations, and rejects rehashed attempts to change decisions or grant timing,
+performance, or physical authority. Its schema and mutation suite are included in
+the governed offline checks. Retained cold/warm end-to-end reference runs and their
+environment identity remain the next E0 deliverable.
+
 ### E1 — Remove avoidable software setup from the hot path
 
 Deliver:
