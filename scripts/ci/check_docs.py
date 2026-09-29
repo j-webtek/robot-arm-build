@@ -42,6 +42,7 @@ DOCS = (
     'software/ai/docs/EVIDENCE_LEDGER.md',
     'software/docs/ARCHITECTURE.md',
     'software/docs/ISAAC_SIM_INTEGRATION_PLAN.md',
+    'software/integrations/isaac_sim/README.md',
     'docs/brand/BRAND_GUIDE.md', 'docs/brand/NAMING_REVIEW.md',
     'docs/brand/MIGRATION_PLAN.md',
     'assets/media/README.md', 'assets/media/VERIFICATION_RECEIPT.md',
@@ -76,6 +77,7 @@ PUBLIC_TITLES = {
     'software/ai/docs/EVIDENCE_LEDGER.md': 'Tactevra AI/arm evidence ledger',
     'software/docs/ARCHITECTURE.md': 'Tactevra Runtime software architecture',
     'software/docs/ISAAC_SIM_INTEGRATION_PLAN.md': 'Tactevra Isaac Sim integration plan',
+    'software/integrations/isaac_sim/README.md': 'Isaac Sim integration boundary',
     'assets/media/VERIFICATION_RECEIPT.md': 'Tactevra overview-media verification receipt',
 }
 
@@ -170,6 +172,12 @@ REQUIRED_PHRASES = {
         'hardware_access=false',
         'physical_authority=false',
         'no simulator result can promote a physical hardware gate',
+    ),
+    'software/integrations/isaac_sim/README.md': (
+        '**Document status:** Active implementation reference',
+        '**Authority:** Software-test guidance only;',
+        'CONTRACT_TEST_ONLY',
+        'UNSELECTED',
     ),
     'assets/media/VERIFICATION_RECEIPT.md': (
         '**Document status:** Current published-media verification',

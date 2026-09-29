@@ -1,0 +1,6 @@
+{
+  "fixture": "valid_request_v1.json",
+  "mutation": {"hardware_access": true},
+  "expected_error": "request.hardware_access must be false"
+}
+
