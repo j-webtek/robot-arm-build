@@ -133,20 +133,20 @@ path.
 
 ## Planned repository boundary
 
-The implementation should converge on this layout. Files are added only when
-their work package begins; this plan does not imply they already exist.
+WP0 established the simulator-neutral contract package, schemas, placeholder
+lock, and fixtures. Simulator-dependent modules remain planned and are added
+only when their work package begins.
 
 ```text
 software/
+  src/rocell/
+    integrations/isaac_sim/
+      contracts.py             # canonical request/receipt validation
+      fake_adapter.py          # hardware-free lifecycle double
+      toolchain_lock.py        # exact external-runner selection gate
   integrations/
     isaac_sim/
-      README.md                 # setup, exact supported build, local commands
-      bootstrap.py              # start and validate the pinned application
-      asset_import.py           # governed URDF/USD import and manifest checks
-      trajectory_adapter.py     # canonical plan -> articulation targets
-      observations.py           # collision/contact/tracking extraction
-      receipt_writer.py         # canonical result and digest generation
-      validators/               # frame, asset, settings, and result validators
+      README.md                 # setup, status, and contributor commands
   config/
     isaac_sim_toolchain_lock.json
   schemas/
@@ -158,6 +158,10 @@ software/
   tests/
     fixtures/isaac_sim/         # compact requests, receipts, and invalid cases
 ```
+
+Planned NVIDIA-dependent modules (`bootstrap.py`, `asset_import.py`,
+`trajectory_adapter.py`, and `observations.py`) belong beside the contract
+package only after the exact external toolchain is selected.
 
 Generated USD, textures, rendered datasets, shader caches, application data,
 and simulator logs remain outside source control unless the artifact policy
@@ -260,6 +264,10 @@ and seed.
 ## Work packages and acceptance gates
 
 ### WP0 — decision and toolchain lock
+
+**Current status:** Contract and fake-adapter foundation implemented. Exact
+Isaac Sim installation selection, extension/settings export, and applicable
+license review remain open on the designated compute runner.
 
 **Deliverables**
 

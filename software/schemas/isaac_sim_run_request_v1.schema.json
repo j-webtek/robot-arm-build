@@ -1,0 +1,123 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tactevra.local/schemas/isaac_sim_run_request_v1.schema.json",
+  "title": "Tactevra Isaac Sim run request v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "request_id", "created_by", "toolchain", "system", "scene",
+    "frames", "articulation", "trajectory", "observation", "wire_commands",
+    "hardware_access", "physical_authority", "request_sha256"
+  ],
+  "properties": {
+    "schema": {"const": "rocell.isaac_sim_run_request.v1"},
+    "request_id": {"$ref": "#/$defs/identifier"},
+    "created_by": {"$ref": "#/$defs/identifier"},
+    "toolchain": {
+      "type": "object", "additionalProperties": false,
+      "required": ["isaac_sim_version", "installation_sha256", "extension_lock_sha256", "settings_profile_sha256"],
+      "properties": {
+        "isaac_sim_version": {"type": "string", "minLength": 1},
+        "installation_sha256": {"$ref": "#/$defs/sha256"},
+        "extension_lock_sha256": {"$ref": "#/$defs/sha256"},
+        "settings_profile_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "system": {
+      "type": "object", "additionalProperties": false,
+      "required": ["system_manifest_id", "system_manifest_sha256", "source_revision"],
+      "properties": {
+        "system_manifest_id": {"$ref": "#/$defs/identifier"},
+        "system_manifest_sha256": {"$ref": "#/$defs/sha256"},
+        "source_revision": {"type": "string", "minLength": 1}
+      }
+    },
+    "scene": {
+      "type": "object", "additionalProperties": false,
+      "required": ["scene_usd_sha256", "arm_asset_sha256", "meters_per_unit", "up_axis", "physics", "random_seed"],
+      "properties": {
+        "scene_usd_sha256": {"$ref": "#/$defs/sha256"},
+        "arm_asset_sha256": {"$ref": "#/$defs/sha256"},
+        "meters_per_unit": {"type": "number", "exclusiveMinimum": 0},
+        "up_axis": {"enum": ["Y", "Z"]},
+        "random_seed": {"type": "integer", "minimum": 0},
+        "physics": {
+          "type": "object", "additionalProperties": false,
+          "required": ["time_step_s", "substeps", "solver", "gravity_m_s2"],
+          "properties": {
+            "time_step_s": {"type": "number", "exclusiveMinimum": 0},
+            "substeps": {"type": "integer", "minimum": 1},
+            "solver": {"type": "string", "minLength": 1},
+            "gravity_m_s2": {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "number"}}
+          }
+        }
+      }
+    },
+    "frames": {
+      "type": "object", "additionalProperties": false,
+      "required": ["frame_graph_sha256", "world_frame", "robot_base_frame"],
+      "properties": {
+        "frame_graph_sha256": {"$ref": "#/$defs/sha256"},
+        "world_frame": {"$ref": "#/$defs/identifier"},
+        "robot_base_frame": {"$ref": "#/$defs/identifier"}
+      }
+    },
+    "articulation": {
+      "type": "object", "additionalProperties": false,
+      "required": ["joint_names", "initial_positions_rad", "drive_configuration_sha256", "joint_limits"],
+      "properties": {
+        "joint_names": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "initial_positions_rad": {"type": "array", "minItems": 1, "items": {"type": "number"}},
+        "drive_configuration_sha256": {"$ref": "#/$defs/sha256"},
+        "joint_limits": {"type": "object", "minProperties": 1, "additionalProperties": {"$ref": "#/$defs/jointLimit"}}
+      }
+    },
+    "trajectory": {
+      "type": "object", "additionalProperties": false,
+      "required": ["trajectory_sha256", "samples"],
+      "properties": {
+        "trajectory_sha256": {"$ref": "#/$defs/sha256"},
+        "samples": {"type": "array", "minItems": 2, "items": {"$ref": "#/$defs/sample"}}
+      }
+    },
+    "observation": {
+      "type": "object", "additionalProperties": false,
+      "required": ["required_link_transforms", "clearance_pairs", "camera_ids", "capture_collisions", "capture_contacts", "capture_joint_tracking"],
+      "properties": {
+        "required_link_transforms": {"$ref": "#/$defs/uniqueStrings"},
+        "clearance_pairs": {"$ref": "#/$defs/uniqueStrings"},
+        "camera_ids": {"$ref": "#/$defs/uniqueStrings"},
+        "capture_collisions": {"type": "boolean"},
+        "capture_contacts": {"type": "boolean"},
+        "capture_joint_tracking": {"type": "boolean"}
+      }
+    },
+    "wire_commands": {"type": "array", "maxItems": 0},
+    "hardware_access": {"const": false},
+    "physical_authority": {"const": false},
+    "request_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "identifier": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"},
+    "uniqueStrings": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "jointLimit": {
+      "type": "object", "additionalProperties": false,
+      "required": ["lower_rad", "upper_rad", "maximum_velocity_rad_s", "maximum_effort"],
+      "properties": {
+        "lower_rad": {"type": "number"}, "upper_rad": {"type": "number"},
+        "maximum_velocity_rad_s": {"type": "number", "exclusiveMinimum": 0},
+        "maximum_effort": {"type": "number", "exclusiveMinimum": 0}
+      }
+    },
+    "sample": {
+      "type": "object", "additionalProperties": false,
+      "required": ["time_from_start_ns", "joint_positions_rad"],
+      "properties": {
+        "time_from_start_ns": {"type": "integer", "minimum": 0},
+        "joint_positions_rad": {"type": "array", "minItems": 1, "items": {"type": "number"}}
+      }
+    }
+  }
+}
+

@@ -123,6 +123,9 @@ distinguishes these kinds of evidence.
 - [Isaac Sim integration plan](../software/docs/ISAAC_SIM_INTEGRATION_PLAN.md):
   active plan for a pinned, zero-authority, higher-fidelity simulation oracle,
   synthetic-camera campaigns, and external GPU-runner evidence.
+- [Isaac Sim integration boundary](../software/integrations/isaac_sim/README.md):
+  implemented WP0 contracts, verification command, and exact runner-selection
+  handoff.
 - [Virtual commissioning](../software/docs/VIRTUAL_COMMISSIONING.md): simulated
   keyboard/phone sessions and replay.
 - [Trajectory simulation](../software/docs/TRAJECTORY_SIMULATION.md) and
