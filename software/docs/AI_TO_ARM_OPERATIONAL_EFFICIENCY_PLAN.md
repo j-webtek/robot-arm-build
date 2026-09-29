@@ -510,7 +510,7 @@ remains the dominant software cost.
 
 ### E2 — Accelerate IK and collision preparation
 
-**Status:** in progress through ARM-124 retained owner lifecycle/fault campaign.
+**Status:** in progress through ARM-125 bounded shadow service integration.
 
 ARM-119 adds an opt-in, bounded `TypingIkEffortRecorderV1` side channel. It
 records attempt and iteration counts only after each deterministic solve. The
@@ -586,10 +586,23 @@ blocked; neither failure path silently reused stale resources. The campaign
 and nested owner/cache diagnostics remained outside admission with zero
 controller, transport, hardware-write, movement, and physical authority.
 
+ARM-125 wires that owner into a bounded, in-process shadow service without
+adding an executor or physical capability. Submission freezes a content hash
+over the canonical model payload, intent-plan identity, context epoch, service
+instance, and lifecycle generation. A bounded FIFO and lifetime request limit
+prevent unbounded work; request IDs cannot be reused; automatic retry is
+forbidden. Cancellation is allowed only while queued and never runs the owner.
+Reload and restart preserve queued evidence but cause the old generation to be
+rejected before admission. Once admitted, the service lock holds the complete
+shadow run, so a concurrent lifecycle transition waits and cannot create a
+mixed-generation result. Explicit invalidation accounts for discarded queue
+entries. Strictly parsed, hashed terminal receipts and service snapshots expose
+only diagnostic counters and retain zero controller, transport, sole-writer,
+hardware, and physical authority.
+
 Deliver:
 
-- service wiring that uses the owner without broadening physical authority;
-- bounded service-level cancellation and generation-race tests;
+- retained service-boundary fault evidence and resource ceilings;
 - endpoint-atlas and warm-start experiments;
 - solver iteration telemetry;
 - analytical/hybrid feasibility study;

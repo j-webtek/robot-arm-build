@@ -6117,3 +6117,37 @@ rewriting history. New entries must use a unique evidence ID.
 - Next dependency: wire the owner into a bounded service boundary and retain
   cancellation/generation-race tests without weakening sole-writer or dynamic
   admission gates.
+
+### E-20260929-ARM-125 — bounded generation-bound typing shadow service
+
+- Stage: operational efficiency E2, bounded service integration.
+- Lane: arm/runtime typing shadow pipeline.
+- Change: added `TypingShadowServiceV1`, a bounded FIFO around the ARM-123
+  owner. Submission binds the canonical payload, intent-plan hash, context
+  epoch, service instance, and generation into one request hash. Request IDs
+  cannot be reused and the service has explicit queue and lifetime ceilings.
+- Cancellation: queued requests can be canceled exactly once before admission;
+  cancellation never invokes the owner. There is no automatic retry.
+- Lifecycle: reload and restart make older queued work stale and reject it
+  without an owner run. A threaded race test proves a transition waits for an
+  already admitted request, preventing mixed-generation execution. Explicit
+  invalidation accounts for every queued request it discards.
+- Evidence: 16 service tests and 31 focused owner/service tests pass. Strict
+  parsers reject altered hashes, counters, bounds, lifecycle claims, blockers,
+  and authority fields.
+- Diagnostics used for admission: false.
+- Camera opens: 0.
+- Model runtime loads: 0.
+- Transport opens: 0.
+- Controller starts: 0.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Physical authority: false.
+- Limitations: this is an in-process offline shadow service. It has no executor,
+  transport, sole-writer attachment, deployment qualification, or physical
+  throughput claim.
+- Supersedes: ARM-124 only for its service-wiring dependency; ARM-124 remains
+  authoritative for retained owner lifecycle/fault evidence.
+- Next dependency: retain a clean-commit service-boundary fault campaign, then
+  evaluate endpoint-atlas and safe warm-start opportunities without changing
+  reference decisions.

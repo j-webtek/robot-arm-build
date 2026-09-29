@@ -1,6 +1,7 @@
 # Tactevra project status
 
-Reviewed September 29, 2026 through the ARM-124 retained owner fault campaign,
+Reviewed September 29, 2026 through the ARM-125 bounded shadow service,
+ARM-124 retained owner fault campaign,
 ARM-123 single-owner cache integration, the ARM-122 retained exact-result cache
 benchmark and invalidation matrix,
 ARM-121 lifecycle-bound cache experiment,
@@ -655,6 +656,19 @@ cases preserved one identical terminal receipt. The retained evidence grants
 no controller, transport, hardware, movement, or physical authority. The next
 dependency is service wiring plus bounded cancellation and generation-race
 coverage without weakening the sole-writer boundary.
+
+ARM-125 supplies that zero-authority service boundary. Each request is bound at
+submission to its canonical payload, intent plan, context epoch, service
+instance, and lifecycle generation. The bounded FIFO admits only one shadow
+request at a time, never permits request-ID reuse or automatic retry, and has no
+executor, transport, or sole-writer capability. Cancellation is terminal only
+before admission. Reload and restart make older queued work stale; it is
+rejected without running the owner. A concurrency test proves a transition
+cannot split an admitted request across generations. Explicit invalidation
+accounts for every discarded queued request. Hashed receipts and snapshots
+remain diagnostic and report zero controller commands, hardware access, and
+physical authority. This closes the planned service-wiring and generation-race
+dependency; endpoint-atlas and warm-start experiments remain next.
 
 AI-403 then integrates the pose-output precision adapter and actual V2 batch
 producer on current `main`. The retained contract fixture deterministically
