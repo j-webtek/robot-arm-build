@@ -5155,3 +5155,35 @@ rewriting history. New entries must use a unique evidence ID.
 - Next dependency: run this preflight against the owner-selected external root
   as physical originals are collected, then commission the measured epoch only
   after all downstream reviews pass.
+
+### E-20260928-ARM-099 — Packaged camera-arrival preflight contract
+
+- Stage: post-PC10 camera commissioning preparation.
+- Lane: arm/runtime evidence intake and downstream contract packaging.
+- Implementation commit: `45fafe04a6394d4f23a1e32474fa6dc4fc93e587`.
+- Change: added a strict Draft 2020-12 output schema, a canonical-hash and
+  semantics-verifying parser, an installed-module entry point, and mutation
+  tests. The source wrapper and installed module share the same application
+  `main` function.
+- Installed invocation:
+  `python -m rocell.application.camera_arrival_evidence_preflight_v1 --workspace . --evidence-root <external-root>`.
+- Result: PASS. The installed package returned exit 2 with the expected
+  `BLOCKED_ARRIVAL_EVIDENCE_INCOMPLETE` report for an empty 15-slot root,
+  `valid_slot_count=0`, and `physical_authority=false`. Thirty focused and PC9
+  regression tests passed; the governed offline matrix passed 518 tests.
+  Repository-policy and maintained documentation/artifact audits passed.
+- Build-governance decision: no new `pyproject.toml` console alias was retained,
+  because changing package metadata invalidated the frozen software-build
+  evidence. Python's standard installed-module execution provides the same
+  capability without changing the governed package identity.
+- Camera opens: 0.
+- Controller starts: 0.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: the schema and parser make structural evidence portable and
+  tamper-evident; they do not accept measurement quality, commission an epoch,
+  install calibration, or authorize physical execution.
+- Supersedes: ARM-098's source-checkout-only invocation limitation.
+- Next dependency: bind a structurally complete preflight report to the existing
+  per-slot consumer map for offline qualification routing after real originals
+  exist.

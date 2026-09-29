@@ -1,6 +1,6 @@
 # Tactevra project status
 
-Reviewed September 28, 2026 through the ARM-098 camera-arrival preflight,
+Reviewed September 28, 2026 through the ARM-099 packaged arrival contract,
 ARM-077 PC0 pre-camera qualification basis, ARM-076 typing collision-evidence
 intake, ARM-075 exact-sample offline IK screen, AI-403 precision-adapter
 integration, and merged physical-camera
@@ -420,6 +420,14 @@ configuration epoch. Complete input becomes only
 `READY_FOR_OFFLINE_QUALIFICATION_REVIEW`; the tool cannot open the camera or
 controller, promote evidence, advance an epoch, install qualification, write
 hardware, or move the arm. The governed offline matrix now passes 514 tests.
+
+ARM-099 makes that handoff consumable by the installed base package through
+`python -m rocell.application.camera_arrival_evidence_preflight_v1`, freezes a
+strict JSON output schema, and adds a hash-verifying parser for downstream
+offline consumers. Rehashed authority or slot mutations fail closed. An actual
+installed-package smoke test returned the expected blocked 15-slot report with
+zero authority, and the governed offline matrix now passes 518 tests. Package
+metadata remained unchanged, preserving the frozen software-build evidence.
 
 AI-403 then integrates the pose-output precision adapter and actual V2 batch
 producer on current `main`. The retained contract fixture deterministically

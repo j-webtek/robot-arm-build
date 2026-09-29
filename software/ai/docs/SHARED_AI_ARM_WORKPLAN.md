@@ -559,6 +559,11 @@ opening either device or mutating any registry. A structurally complete result
 is only ready for offline qualification review; it grants no perception,
 controller, contact, or movement authority. The governed offline matrix passes
 514 tests.
+ARM-099 freezes the preflight output schema and a hash-verifying downstream
+parser, and exposes the same implementation as an installed Python module. The
+installed-package smoke test produced the expected blocked 15-slot report with
+zero authority. Rehashed semantic mutations reject, package metadata remains
+unchanged, and the governed offline matrix passes 518 tests.
 The AI precision lane now has a mainline-compatible pose-output adapter and v2
 batch producer. It preserves repeated targets and abstains on qualification,
 domain, freshness, identity, confidence, or containment failure. Its retained
