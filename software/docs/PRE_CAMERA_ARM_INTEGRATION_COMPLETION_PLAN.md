@@ -114,7 +114,7 @@ and its evidence gate pass.
 | PC14 | Arrival-session manifest and state machine | PC11-PC13 | No | None | COMPLETE |
 | PC15 | Installed-geometry and cable-envelope intake rehearsal | PC13-PC14 | No | None | COMPLETE |
 | PC16 | Immutable camera-replay runner | PC11-PC14 | No live camera | None | COMPLETE |
-| PC17 | Timing and observability report | PC11-PC16 | No | None | PLANNED |
+| PC17 | Timing and observability report | PC11-PC16 | No | None | IN PROGRESS |
 | PC18 | Actual AI-output compatibility corpus and gate | PC11, shared AI producer | No | None | PLANNED |
 
 ## PC0 — Freeze the qualification basis
@@ -830,6 +830,20 @@ real consumer receipt emitters; model inference remains AI-lane work and is not
 performed by this arm-owned replay boundary.
 
 ## PC17 — Timing and observability report
+
+**Increment 1 completed 2026-09-29:** ARM-111 adds the strict
+`rocell.pre_camera_observability_report.v1` contract, parser, schema, CLI, and
+governed mutation tests. It accepts only bounded PC11-PC16 samples with exact
+monotonic durations, stable decision/blocker codes, cold/warm and
+pass/block/pending coverage, cache outcomes, artifact/count ceilings, and
+non-path correlation identifiers. Every sample binds identical pre/post
+decision hashes; a changed decision rejects rather than becoming telemetry.
+Percentiles are emitted only at supported sample counts (p50 at two, p95 at
+20, and p99 at 100 observations). Reports explicitly carry zero performance,
+physical-speed, camera, transport, controller, write, movement, or physical
+authority. This increment defines and validates the reporting boundary; PC17
+remains in progress until retained host-measured cold/warm observations are
+captured through the PC11-PC16 workflows.
 
 ### Objective
 

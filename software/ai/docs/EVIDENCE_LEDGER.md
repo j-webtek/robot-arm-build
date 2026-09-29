@@ -5585,3 +5585,42 @@ rewriting history. New entries must use a unique evidence ID.
   remain authoritative.
 - Next dependency: PC17 must add deterministic timing and observability without
   making performance thresholds capable of overriding safety decisions.
+
+### E-20260929-ARM-111 — Decision-neutral pre-camera observability contract
+
+- Stage: PC17 post-closure pre-camera continuation, increment 1.
+- Lane: arm/runtime workflow timing and observability.
+- Implementation commit: `9930c4cd60c3dc6803538f17323834ebaedd70c9`.
+- Change: added the strict `rocell.pre_camera_observability_report.v1`
+  aggregator, parser, JSON Schema, CLI, and governed tests for PC11-PC16.
+  Samples carry bounded monotonic timing, item and artifact counts, cache
+  outcome, stable decision/blocker codes, cold/warm class, pass/block/pending
+  outcome, and safe AI-batch/target/plan/consumer/receipt/session correlation.
+  Each observation requires identical decision hashes before and after
+  instrumentation. Private absolute paths, duplicate JSON fields, non-finite
+  values, unsupported percentile claims, and authority mutation reject.
+- Command: `.\\.venv\\Scripts\\python.exe -c "import pytest; from
+  scripts.ci.offline_checks import TESTS; raise
+  SystemExit(pytest.main(['-q', *TESTS]))"`; followed by
+  `.\\.venv\\Scripts\\python.exe scripts/maintain_repository.py verify`.
+- Result: PASS in the working checkout. The governed matrix passed 608 tests;
+  repository-policy tests passed 115; all maintained audits passed. Focused
+  observability coverage passed 11 tests. Per-stage p95 is emitted at 20
+  samples, per-stage p99 is withheld below 100, and overall p99 is emitted at
+  120 samples in the deterministic fixture.
+- Artifacts: `software/src/rocell/application/pre_camera_observability_v1.py`,
+  `software/scripts/build_pre_camera_observability_report_v1.py`, the report
+  JSON Schema, and focused governed tests.
+- Camera opens: 0.
+- Model runtime loads: 0.
+- Transport opens: 0.
+- Controller starts: 0.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: current timing evidence is a synthetic deterministic fixture;
+  it establishes contract and aggregation behavior, not host latency or
+  physical typing speed. No performance threshold influences admission.
+- Supersedes: none. PC11-PC16 decisions and artifacts remain authoritative.
+- Next dependency: collect retained host-measured cold/warm pass, blocked, and
+  pending observations through PC11-PC16 without changing their canonical
+  decisions, then publish the bounded report as PC17 increment 2.

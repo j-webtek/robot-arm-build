@@ -1086,7 +1086,13 @@ camera/support/model/calibration identities, retained AI outputs, and expected
 consumer decisions now replay identically or reject, while original,
 synthetic, and replay provenance remain distinct. The runner deliberately does
 not execute the vision model; AI-lane inference produces the retained outputs.
-PC17's timing and observability report is the next arm-owned increment.
+PC17 is in progress at ARM-111. Its first increment freezes the decision-neutral
+observation contract: bounded PC11-PC16 monotonic timings, counts, artifact
+sizes, cache outcomes, stable decisions/blockers, and non-path correlations,
+with exact pre/post decision-hash equality. It cannot influence admission or
+claim physical performance. The next arm-owned increment is the retained
+host-measured cold/warm pass/block/pending benchmark; AI model training remains
+independent and is not required to collect arm-side workflow timings.
 
 1. **S1 software boundary — complete for zero authority:** v2 producer bytes,
    strict decoding, trusted registry, freshness, mutation rejection, and ordered

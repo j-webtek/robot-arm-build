@@ -1,6 +1,6 @@
 # Tactevra project status
 
-Reviewed September 29, 2026 through the ARM-110 immutable camera-replay runner,
+Reviewed September 29, 2026 through the ARM-111 PC17 decision-neutral observability,
 ARM-077 PC0 pre-camera qualification basis, ARM-076 typing collision-evidence
 intake, ARM-075 exact-sample offline IK screen, AI-403 precision-adapter
 integration, and merged physical-camera
@@ -519,6 +519,16 @@ synthetic source provenance remain distinct from `IMMUTABLE_REPLAY`, and no
 replay is presented as a fresh capture. The governed offline matrix now passes
 597 tests. The arm-side runner revalidates retained outputs through the real
 consumers; it does not execute the AI vision model.
+
+ARM-111 starts PC17 with a strict observability contract for PC11-PC16. It
+requires bounded monotonic samples, cold/warm and pass/block/pending coverage,
+stable codes, safe correlations, and unchanged decision hashes before and
+after instrumentation. p50/p95/p99 are withheld until their declared sample
+counts are met. Timing cannot feed admission or claim physical performance,
+and the report carries zero camera, transport, controller, write, movement,
+and physical authority. The governed offline matrix now passes 608 tests.
+PC17 remains in progress pending a retained host-measured benchmark through
+the existing stage workflows.
 
 AI-403 then integrates the pose-output precision adapter and actual V2 batch
 producer on current `main`. The retained contract fixture deterministically
