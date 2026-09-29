@@ -25,7 +25,7 @@ from rocell.application.typing_trace_package_v1 import (  # noqa: E402
 
 CORRELATION = "pc6-golden-h-001"
 REQUEST = "request-001"
-PACKAGE_ID = "typing-trace-58dba551903390ad42a42184"
+PACKAGE_ID = "typing-trace-0eaf0771e5baf2f53105b16e"
 GOLDEN_ROOT = ROOT / "software/tests/fixtures/typing_trace_packages"
 
 

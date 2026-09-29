@@ -30,7 +30,7 @@
     {
       "role": "frozen_system_manifest",
       "path": "software/config/system_manifest.json",
-      "sha256": "334f46eb36606589d51d251bf3129d41a6661f54ef9daa0baee442f955403a8c"
+      "sha256": "0cfb19c0972d4fe5cc526ca78d44422b2ef9c52354a8da637ec608b8dec7f55d"
     },
     {
       "role": "zero_write_controller_profile_schema",

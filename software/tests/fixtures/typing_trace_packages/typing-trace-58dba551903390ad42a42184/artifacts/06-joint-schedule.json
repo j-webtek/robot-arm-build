@@ -1,1 +1,0 @@
-{"bindings":{"artifact_sha256":"3568b07884ba2c0cc672efc5755067f5443e6584d56b75b9aace2304db2feab8","source_receipt_sha256":"cc7903364bbf87aaa4ea5c808938f072dbdd89ced1451b81e0eeef5873143bde"},"controller_commands":[],"hardware_access":false,"physical_authority":false,"schema":"rocell.typing_trace_stage_reference.v1","source":"PC2_SHADOW_RECEIPT","stage":"JOINT_SCHEDULE"}

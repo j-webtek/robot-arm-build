@@ -14,10 +14,10 @@ from rocell.application.typing_performance_report_v1 import (
 ROOT = Path(__file__).resolve().parents[3]
 REPORT = ROOT / "software/ai/eval/typing_performance_report_v1.json"
 REPORT_FILE_SHA256 = (
-    "8f8203e60d3e9a6a5f2e4380343c92284bf77498d47d5d04f362eec5ba460b1c"
+    "024c5111810e9d0a5b67ea78389d2c7e5d19041ba31960fb3fcb495be98f74f6"
 )
 REPORT_CONTENT_SHA256 = (
-    "34273dcb73ba13295cd55a8b1dfafe7ac4aea06b06c7068c141868426ae084a8"
+    "a43a25056cff135d8756fbe7b15160b7a9ad0b49964e21e0c16a6c5eb2df291c"
 )
 
 
@@ -72,4 +72,3 @@ def test_retained_pc8_report_is_hash_bound_complete_and_zero_authority():
     assert report["physical_authority"] is False
     assert report["simulation_timing_is_physical_claim"] is False
     assert report["measured_typing_speed_claimed"] is False
-
