@@ -5504,3 +5504,45 @@ rewriting history. New entries must use a unique evidence ID.
 - Next dependency: complete PC15's rigid-body, attachment, uncertainty,
   provenance, review, boundary, and crossed-lineage campaign around this cable
   contract, retaining exact missing-measurement diagnostics.
+
+### E-20260929-ARM-109 — Installed-geometry and cable rehearsal campaign
+
+- Stage: PC15 post-closure pre-camera continuation, completion.
+- Lane: arm/runtime installed collision evidence.
+- Implementation commit: `e11f99394fea2c17aa28d37b6f659890e64edf98`.
+- Change: added a deterministic eight-case campaign, strict content-addressed
+  parser, JSON Schema, retained report, CLI, and governed tests around the real
+  installed-geometry and cable-envelope receipt emitter. The synthetic profile
+  covers every current rigid, attachment, and configuration-sampled body plus
+  uncertainty and source bindings without claiming measurement.
+- Command: `$env:PYTHONPATH='software/src;software'; $tests = @(python -c
+  "import importlib.util; s=importlib.util.spec_from_file_location('offline_checks','scripts/ci/offline_checks.py');
+  m=importlib.util.module_from_spec(s); s.loader.exec_module(m);
+  print(chr(10).join(m.TESTS))"); python -m pytest -q $tests`; followed by
+  `python scripts/maintain_repository.py verify`.
+- Result: PASS in detached clean checkout. The governed matrix passed 586
+  tests; repository-policy tests passed 115; all maintained documentation,
+  public-record, evidence-scope, repository-artifact, repository-health,
+  source-archive, release-integrity, and readiness-sync checks passed. All
+  eight declared cases matched: complete templates and the 64-posture boundary
+  passed; missing/unknown attachment geometry blocked with exact body-specific
+  codes; missing sweeps, crossed lineage, unknown source, and route misuse
+  rejected.
+- Artifacts: `software/src/rocell/application/installed_geometry_cable_rehearsal_v1.py`,
+  `software/ai/eval/installed_geometry_cable_rehearsal_v1.json`, its JSON
+  Schema, CLI, and focused unit/integration tests.
+- Camera opens: 0.
+- Transport opens: 0.
+- Controller starts: 0.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: every campaign dimension and source is synthetic far-field test
+  data labeled `SYNTHETIC_OFFLINE_ONLY`. The pass establishes consumer and
+  diagnostic behavior only. It installs no measured geometry, cable clearance,
+  collision qualification, camera epoch, controller permit, or physical
+  authority.
+- Supersedes: ARM-108 only for PC15 stage completeness; its cable contract
+  remains the authoritative intake type.
+- Next dependency: PC16 must replay immutable captured bytes and metadata while
+  rejecting changed image, profile, model, calibration, or expected-output
+  identity and preserving zero live-camera and movement authority.

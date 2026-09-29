@@ -112,7 +112,7 @@ and its evidence gate pass.
 | PC12 | Full synthetic arrival and fault campaign | PC11 | No | None | COMPLETE |
 | PC13 | Domain-consumer operator wrappers | PC11, ARM-103 | No | None | COMPLETE |
 | PC14 | Arrival-session manifest and state machine | PC11-PC13 | No | None | COMPLETE |
-| PC15 | Installed-geometry and cable-envelope intake rehearsal | PC13-PC14 | No | None | IN PROGRESS |
+| PC15 | Installed-geometry and cable-envelope intake rehearsal | PC13-PC14 | No | None | COMPLETE |
 | PC16 | Immutable camera-replay runner | PC11-PC14 | No live camera | None | PLANNED |
 | PC17 | Timing and observability report | PC11-PC16 | No | None | PLANNED |
 | PC18 | Actual AI-output compatibility corpus and gate | PC11, shared AI producer | No | None | PLANNED |
@@ -744,7 +744,7 @@ previous pass.
 
 ## PC15 — Installed-geometry and cable-envelope intake rehearsal
 
-**In progress 2026-09-29:** ARM-108 adds the first typed cable-envelope intake
+**Completed 2026-09-29:** ARM-108 added the first typed cable-envelope intake
 boundary. It binds a bounded ordered posture set and every adjacent swept
 envelope to the exact installed-collision profile and one accepted profile
 source hash. The deterministic template is explicitly
@@ -754,8 +754,19 @@ only for `cable_envelope`; it cannot satisfy `installed_geometry`. Missing
 sweeps, crossed posture lineage, unknown source hashes, and route misuse reject.
 Commit `4f23b638b4dd126caea7397d633502acec21c1b9` passed 579 governed tests,
 115 repository-policy tests, and all maintained audits in a detached clean
-checkout. PC15 remains in progress pending full rigid/attachment templates,
-boundary fixtures, retained campaign output, and operator diagnostics.
+checkout.
+
+ARM-109 completes the stage with a hash-sealed eight-case campaign using the
+real typed collision consumers. Complete rigid/attachment and sampled-cable
+templates pass only the synthetic route rehearsal; a missing camera-holder
+binding and unknown attachment evidence block with exact body-specific
+diagnostics. The 64-posture boundary passes, while missing sweeps, crossed
+posture lineage, unknown source hashes, and cable/rigid route misuse reject.
+The retained report, strict parser, and schema all preserve zero authority.
+Commit `e11f99394fea2c17aa28d37b6f659890e64edf98` passed 586 governed tests,
+115 repository-policy tests, and all maintained audits in a detached clean
+checkout. No camera, transport, controller, hardware write, or physical
+movement occurred.
 
 ### Objective
 
@@ -895,7 +906,7 @@ For every PC increment:
 - [x] PC12 full synthetic arrival and fault campaign complete
 - [x] PC13 domain-consumer operator wrappers complete
 - [x] PC14 arrival-session manifest and state machine complete
-- [ ] PC15 installed-geometry and cable-envelope rehearsal complete
+- [x] PC15 installed-geometry and cable-envelope rehearsal complete
 - [ ] PC16 immutable camera-replay runner complete
 - [ ] PC17 timing and observability report complete
 - [ ] PC18 actual AI-output compatibility corpus and gate complete

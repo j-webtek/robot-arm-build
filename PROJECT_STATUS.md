@@ -1,7 +1,7 @@
 # Tactevra project status
 
-Reviewed September 29, 2026 through the ARM-108 synthetic cable-envelope intake
-boundary,
+Reviewed September 29, 2026 through the ARM-109 installed-geometry and
+cable-envelope rehearsal campaign,
 ARM-077 PC0 pre-camera qualification basis, ARM-076 typing collision-evidence
 intake, ARM-075 exact-sample offline IK screen, AI-403 precision-adapter
 integration, and merged physical-camera
@@ -502,6 +502,14 @@ installed-collision profile and retained source hash. Its evidence is labeled
 `SYNTHETIC_OFFLINE_ONLY`; missing or crossed evidence rejects, and the type can
 satisfy only the cable receipt route. It cannot install physical collision
 qualification. The governed offline matrix now passes 579 tests.
+
+ARM-109 completes PC15 with a retained, hash-sealed eight-case campaign through
+the real collision receipt boundary. Complete synthetic templates pass only as
+offline rehearsal; missing or unknown camera-holder geometry blocks with exact
+body-specific diagnostics. The 64-posture resource boundary passes, and broken
+sweeps, crossed lineage, unknown source bindings, and route misuse reject. The
+campaign parser and schema preserve zero physical authority. The governed
+offline matrix now passes 586 tests.
 
 AI-403 then integrates the pose-output precision adapter and actual V2 batch
 producer on current `main`. The retained contract fixture deterministically
