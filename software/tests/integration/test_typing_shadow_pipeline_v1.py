@@ -14,6 +14,7 @@ sys.path.insert(0, str(ROOT / "software/tests/unit"))
 import test_model_motion_ingress_v2 as ingress_fixture  # noqa: E402
 import test_typing_trajectory_ik_screen_v1 as ik_fixture  # noqa: E402
 from rocell.application.model_motion_ingress_v2 import MeasuredTargetRegionV2  # noqa: E402
+from rocell.application.context import SimulationContextError  # noqa: E402
 from rocell.application.context_lifecycle_v1 import SimulationContextLifecycleV1  # noqa: E402
 from rocell.application.pre_camera_typing_qualification_basis_v1 import (  # noqa: E402
     load_pre_camera_typing_qualification_basis_v1,
@@ -35,6 +36,14 @@ from rocell.application.typing_ik_effort_telemetry_v1 import (  # noqa: E402
     TypingIkEffortRecorderV1,
     TypingIkEffortTelemetryV1Error,
     parse_typing_ik_effort_telemetry_v1,
+)
+from rocell.application.typing_exact_ik_result_cache_v1 import (  # noqa: E402
+    ExactTypingIkResultCacheV1,
+    TypingExactIkResultCacheV1Error,
+    parse_typing_exact_ik_result_cache_snapshot_v1,
+)
+from rocell.application.typing_trajectory_ik_screen_v1 import (  # noqa: E402
+    TypingTrajectoryIkScreenV1Error,
 )
 from rocell.application.typing_trajectory_plan_v1 import TypingTrajectoryPolicyV1  # noqa: E402
 from rocell.models import (  # noqa: E402
@@ -259,6 +268,137 @@ def test_ik_effort_recorder_is_bounded_and_append_only():
     recorder = TypingIkEffortRecorderV1(maximum_samples=1)
     with pytest.raises(TypingIkEffortTelemetryV1Error, match="bound exceeded"):
         run_typing_shadow_pipeline_v1(**inputs, ik_effort_recorder=recorder)
+
+
+def test_exact_ik_cache_cold_warm_and_disabled_receipts_are_identical():
+    lifecycle = SimulationContextLifecycleV1.start(
+        ingress_fixture.WORKSPACE,
+        ingress_fixture.MANIFEST,
+        service_instance_id="typing-exact-cache-integration",
+        issued_monotonic_ns=100,
+    )
+    context = lifecycle.binding().context
+    inputs = _inputs(("R", "O", "B", "O", "T"), "robot", context=context)
+    reference = run_typing_shadow_pipeline_v1(**inputs)
+    prepared = prepare_typing_planner_v1(context, lifecycle)
+    cache = ExactTypingIkResultCacheV1.create(
+        context, lifecycle, maximum_entries=256
+    )
+    common = {
+        "context_lifecycle": lifecycle,
+        "prepared_planner": prepared,
+        "exact_ik_result_cache": cache,
+    }
+    cold = run_typing_shadow_pipeline_v1(**inputs, **common)
+    cold_snapshot = cache.snapshot()
+    warm = run_typing_shadow_pipeline_v1(**inputs, **common)
+    warm_snapshot = cache.snapshot()
+
+    assert cold == warm == reference
+    assert dict(
+        parse_typing_exact_ik_result_cache_snapshot_v1(warm_snapshot)
+    ) == warm_snapshot
+    assert cold_snapshot["misses"] > 0
+    assert cold_snapshot["stores"] == cold_snapshot["entry_count"]
+    assert warm_snapshot["hits"] - cold_snapshot["hits"] == (
+        warm_snapshot["lookups"] - cold_snapshot["lookups"]
+    )
+    assert warm_snapshot["misses"] == cold_snapshot["misses"]
+    assert warm_snapshot["decision_input"] is False
+    assert warm_snapshot["controller_commands"] == []
+    assert warm_snapshot["hardware_access"] is False
+    assert warm_snapshot["physical_authority"] is False
+
+
+def test_exact_ik_cache_capacity_and_invalidation_never_change_receipt():
+    lifecycle = SimulationContextLifecycleV1.start(
+        ingress_fixture.WORKSPACE,
+        ingress_fixture.MANIFEST,
+        service_instance_id="typing-exact-cache-bounded",
+        issued_monotonic_ns=200,
+    )
+    context = lifecycle.binding().context
+    inputs = _inputs(context=context)
+    reference = run_typing_shadow_pipeline_v1(**inputs)
+    prepared = prepare_typing_planner_v1(context, lifecycle)
+    cache = ExactTypingIkResultCacheV1.create(
+        context, lifecycle, maximum_entries=1
+    )
+    bounded = run_typing_shadow_pipeline_v1(
+        **inputs,
+        context_lifecycle=lifecycle,
+        prepared_planner=prepared,
+        exact_ik_result_cache=cache,
+    )
+    assert bounded == reference
+    snapshot = cache.snapshot()
+    assert snapshot["entry_count"] == 1
+    assert snapshot["capacity_skips"] > 0
+
+    cache.invalidate()
+    invalidated = cache.snapshot()
+    assert invalidated["active"] is False
+    assert invalidated["entry_count"] == 0
+    assert dict(
+        parse_typing_exact_ik_result_cache_snapshot_v1(invalidated)
+    ) == invalidated
+    with pytest.raises(TypingExactIkResultCacheV1Error, match="invalidated"):
+        run_typing_shadow_pipeline_v1(
+            **inputs,
+            context_lifecycle=lifecycle,
+            prepared_planner=prepared,
+            exact_ik_result_cache=cache,
+        )
+
+
+def test_exact_ik_cache_integrity_and_lifecycle_binding_fail_closed():
+    lifecycle = SimulationContextLifecycleV1.start(
+        ingress_fixture.WORKSPACE,
+        ingress_fixture.MANIFEST,
+        service_instance_id="typing-exact-cache-integrity",
+        issued_monotonic_ns=300,
+    )
+    context = lifecycle.binding().context
+    inputs = _inputs(context=context)
+    prepared = prepare_typing_planner_v1(context, lifecycle)
+    cache = ExactTypingIkResultCacheV1.create(context, lifecycle)
+    common = {
+        "context_lifecycle": lifecycle,
+        "prepared_planner": prepared,
+        "exact_ik_result_cache": cache,
+    }
+    run_typing_shadow_pipeline_v1(**inputs, **common)
+
+    from dataclasses import replace as dataclass_replace
+
+    key = next(iter(cache._entries))
+    cache._entries[key] = dataclass_replace(
+        cache._entries[key], result_sha256="f" * 64
+    )
+    with pytest.raises(TypingExactIkResultCacheV1Error, match="integrity"):
+        run_typing_shadow_pipeline_v1(**inputs, **common)
+
+    lifecycle.reload_sources(issued_monotonic_ns=301)
+    with pytest.raises(SimulationContextError):
+        run_typing_shadow_pipeline_v1(**inputs, **common)
+
+
+def test_exact_ik_cache_requires_managed_prepared_pipeline():
+    inputs = _inputs()
+    lifecycle = SimulationContextLifecycleV1.start(
+        ingress_fixture.WORKSPACE,
+        ingress_fixture.MANIFEST,
+        service_instance_id="typing-exact-cache-unmanaged",
+        issued_monotonic_ns=400,
+    )
+    cache = ExactTypingIkResultCacheV1.create(
+        lifecycle.binding().context, lifecycle
+    )
+    with pytest.raises(TypingTrajectoryIkScreenV1Error, match="lifecycle"):
+        run_typing_shadow_pipeline_v1(
+            **inputs,
+            exact_ik_result_cache=cache,
+        )
 
 
 @pytest.mark.parametrize(

@@ -48,6 +48,7 @@ from .typing_planner_preparation_v1 import (
     validate_prepared_typing_planner_v1,
 )
 from .typing_ik_effort_telemetry_v1 import TypingIkEffortRecorderV1
+from .typing_exact_ik_result_cache_v1 import ExactTypingIkResultCacheV1
 
 
 SCHEMA = "rocell.typing_trajectory_ik_screen.v1"
@@ -195,6 +196,7 @@ def screen_typing_trajectory_ik_v1(
     prepared_planner: PreparedTypingPlannerV1 | None = None,
     context_lifecycle: SimulationContextLifecycleV1 | None = None,
     effort_recorder: TypingIkEffortRecorderV1 | None = None,
+    exact_result_cache: ExactTypingIkResultCacheV1 | None = None,
     _lifecycle_binding: SimulationContextLifecycleBindingV1 | None = None,
 ) -> dict[str, Any]:
     """Run the canonical deterministic IK gates over every exact T2A sample."""
@@ -213,6 +215,18 @@ def screen_typing_trajectory_ik_v1(
         effort_recorder, TypingIkEffortRecorderV1
     ):
         raise TypeError("effort_recorder must be a TypingIkEffortRecorderV1")
+    if exact_result_cache is not None and not isinstance(
+        exact_result_cache, ExactTypingIkResultCacheV1
+    ):
+        raise TypeError("exact_result_cache must be an ExactTypingIkResultCacheV1")
+    if (
+        exact_result_cache is not None
+        and context_lifecycle is None
+        and _lifecycle_binding is None
+    ):
+        raise TypingTrajectoryIkScreenV1Error(
+            "exact IK cache requires lifecycle-managed admission"
+        )
     if context_lifecycle is not None:
         if _lifecycle_binding is not None:
             raise TypingTrajectoryIkScreenV1Error(
@@ -235,6 +249,7 @@ def screen_typing_trajectory_ik_v1(
                 policy=policy,
                 prepared_planner=prepared_planner,
                 effort_recorder=effort_recorder,
+                exact_result_cache=exact_result_cache,
                 _lifecycle_binding=binding,
             )
     if _lifecycle_binding is None:
@@ -348,7 +363,7 @@ def screen_typing_trajectory_ik_v1(
             joint_bounds_rad=bounds,
         )
         solver_source_sha256 = None
-        if effort_recorder is not None:
+        if effort_recorder is not None or exact_result_cache is not None:
             solver_source = inspect.getsourcefile(type(solver))
             if solver_source is None:
                 raise TypingTrajectoryIkScreenV1Error(
@@ -397,15 +412,29 @@ def screen_typing_trajectory_ik_v1(
                 ),
                 "solver_source_sha256": solver_source_sha256,
             })
-            solved = solver.solve(
-                BoardToolTipTarget(waypoint.point_board),
-                seed_joint_positions=(
-                    {
-                        name: JointPosition.radians(value)
-                        for name, value in previous.items()
-                    },
-                ),
-            )
+            solved = None
+            if exact_result_cache is not None:
+                if _lifecycle_binding is None:
+                    raise TypingTrajectoryIkScreenV1Error(
+                        "exact IK cache lost its lifecycle binding"
+                    )
+                solved = exact_result_cache.lookup(
+                    solver_input_sha256, _lifecycle_binding
+                )
+            if solved is None:
+                solved = solver.solve(
+                    BoardToolTipTarget(waypoint.point_board),
+                    seed_joint_positions=(
+                        {
+                            name: JointPosition.radians(value)
+                            for name, value in previous.items()
+                        },
+                    ),
+                )
+                if exact_result_cache is not None:
+                    exact_result_cache.remember(
+                        solver_input_sha256, solved, _lifecycle_binding
+                    )
             if effort_recorder is not None:
                 effort_recorder.observe(
                     index,

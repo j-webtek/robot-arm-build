@@ -1,7 +1,8 @@
 # Tactevra project status
 
-Reviewed September 29, 2026 through the ARM-120 retained multi-sequence IK
-effort campaign, ARM-119 decision-neutral IK effort telemetry, ARM-118 retained
+Reviewed September 29, 2026 through the ARM-121 lifecycle-bound exact-result
+cache experiment, ARM-120 retained multi-sequence IK effort campaign, ARM-119
+decision-neutral IK effort telemetry, ARM-118 retained
 typing preparation benchmark, and ARM-117 typing planner preparation,
 ARM-077 PC0 pre-camera qualification basis, ARM-076 typing collision-evidence
 intake, ARM-075 exact-sample offline IK screen, AI-403 precision-adapter
@@ -611,6 +612,16 @@ configuration identity: only 48 were unique, leaving 138 repeat observations
 across 35 identities and a maximum recurrence of 11. This establishes a strong
 candidate for an exact content-addressed result-cache experiment. It does not
 authorize caching, relaxed checking, controller access, or physical motion.
+
+ARM-121 adds the resulting exact-result cache as an opt-in offline experiment.
+It is bounded in memory, tied to one precise context lifecycle generation, and
+uses the complete reference solver on every miss. Each hit revalidates cached
+result integrity. Cold, warm, capacity-limited, and cache-disabled governed
+tests preserve identical canonical receipts; stale, invalidated, unmanaged,
+cross-context, or corrupt reuse rejects. Its counters are non-authoritative and
+it creates no controller commands or hardware access. No retained performance
+claim has been made yet; the next dependency is a clean cold/warm/capacity
+benchmark plus an explicit lifecycle invalidation matrix.
 
 AI-403 then integrates the pose-output precision adapter and actual V2 batch
 producer on current `main`. The retained contract fixture deterministically

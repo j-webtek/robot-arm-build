@@ -5976,3 +5976,36 @@ rewriting history. New entries must use a unique evidence ID.
 - Next dependency: implement a bounded offline exact-result cache experiment
   behind the full reference solver, prove hit/miss equivalence and invalidation,
   and measure end-to-end benefit before considering runtime integration.
+
+### E-20260929-ARM-121 — lifecycle-bound exact IK result cache experiment
+
+- Stage: operational efficiency E2, bounded offline reuse experiment.
+- Lane: arm/runtime typing shadow pipeline.
+- Change: added an optional in-memory cache keyed by the exact ARM-120 solver
+  input identity. Cache hits verify the retained `IkResult` hash; misses invoke
+  the complete deterministic solver and may store only while fixed capacity
+  remains. The cache never changes canonical report or receipt schemas.
+- Lifecycle: each cache is bound to one context object, context epoch, service
+  instance, and lifecycle generation. Invalidated, stale, restarted,
+  cross-context, unmanaged, or integrity-corrupt use rejects closed.
+- Result: governed integration coverage proves byte-identical terminal receipts
+  with the cache disabled, cold, warm, or capacity-limited. It also proves
+  bounded capacity behavior, explicit invalidation, corruption rejection, and
+  lifecycle reload rejection.
+- Cache authority: counters are diagnostic only; `decision_input=false`,
+  `timing_used_for_admission=false`, controller command list empty, hardware
+  commands zero, hardware access false, and physical authority false.
+- Camera opens: 0.
+- Model runtime loads: 0.
+- Transport opens: 0.
+- Controller starts: 0.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: this increment establishes cache mechanics and equivalence only.
+  It contains no retained timing campaign, does not authorize runtime rollout,
+  and says nothing about controller or physical speed.
+- Supersedes: ARM-120 only for its cache-experiment dependency; ARM-120 remains
+  authoritative for measured reuse frequency and solver effort.
+- Next dependency: retain a cold/warm/capacity benchmark and lifecycle
+  invalidation matrix before deciding whether exact-result caching provides
+  enough end-to-end value for further integration.

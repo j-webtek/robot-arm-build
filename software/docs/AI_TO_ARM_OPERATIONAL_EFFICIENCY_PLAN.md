@@ -510,7 +510,8 @@ remains the dominant software cost.
 
 ### E2 — Accelerate IK and collision preparation
 
-**Status:** in progress through ARM-120 retained solver-effort campaign.
+**Status:** in progress through ARM-121 lifecycle-bound exact-result cache
+experiment.
 
 ARM-119 adds an opt-in, bounded `TypingIkEffortRecorderV1` side channel. It
 records attempt and iteration counts only after each deterministic solve. The
@@ -539,9 +540,23 @@ observations across 35 reusable identities, and a maximum recurrence of 11.
 This justifies designing an exact-result cache experiment, but authorizes no
 cache, decision change, controller operation, or physical execution.
 
+ARM-121 implements that experiment as an opt-in, in-memory cache behind the
+complete reference solver. A cache identity is the ARM-120 exact solver-input
+hash, including the active solver source. Hits re-hash and integrity-check the
+stored `IkResult`; misses always run the complete solver. The cache is bounded,
+never evicts a result to make room, and stops storing when full. It is bound to
+one exact simulation-context object, epoch, service instance, and lifecycle
+generation; invalidation, reload, restart, crossed context, unmanaged use, or
+integrity mismatch rejects closed. Governed integration tests prove that cold,
+warm, capacity-limited, and disabled paths emit identical canonical shadow
+receipts. Cache counters remain a zero-authority diagnostic side channel and
+are never admission inputs. This establishes safe experimental mechanics, not
+measured speed benefit, deployment qualification, or physical authority.
+
 Deliver:
 
-- actual transition-cache integration;
+- retained cold/warm/capacity timing and invalidation campaign;
+- actual transition-cache integration only if retained evidence supports it;
 - endpoint-atlas and warm-start experiments;
 - solver iteration telemetry;
 - analytical/hybrid feasibility study;
