@@ -1,6 +1,7 @@
 # Tactevra project status
 
-Reviewed September 29, 2026 through the ARM-103 complete typed emitter set,
+Reviewed September 29, 2026 through the ARM-104 zero-authority arrival
+commissioning orchestrator,
 ARM-077 PC0 pre-camera qualification basis, ARM-076 typing collision-evidence
 intake, ARM-075 exact-sample offline IK screen, AI-403 precision-adapter
 integration, and merged physical-camera
@@ -462,6 +463,15 @@ configuration-sampled moving cable correctly remain blocked: 13 passes, 2
 blockers, and 0 pending is not completion. This makes route coverage distinct
 from qualification readiness. The governed offline matrix now passes 543
 tests.
+
+ARM-104 composes the 15-slot structural preflight, repository-bound consumer
+handoff, strict canonical receipt loading, and aggregate assessment behind one
+offline command. Empty, pending, blocked-consumer, and all-pass states remain
+distinct, and canonical receipt-directory rules reject extra, symlinked,
+oversized, malformed, crossed, or authority-bearing inputs. Its strongest
+result is only `COMPLETE_FOR_OFFLINE_REVIEW`; it opens no camera or transport,
+starts no controller, emits no command, and grants no physical authority. The
+governed offline matrix now passes 554 tests.
 
 AI-403 then integrates the pose-output precision adapter and actual V2 batch
 producer on current `main`. The retained contract fixture deterministically

@@ -108,8 +108,8 @@ and its evidence gate pass.
 | PC8 | Performance benchmark and readiness report | PC1-PC7 | No | None | COMPLETE |
 | PC9 | Camera-arrival evidence tooling and dry run | PC6 | No for tooling | None before arrival | COMPLETE |
 | PC10 | Pre-camera integration closure | PC0-PC9 | No | None | COMPLETE |
-| PC11 | One-command zero-authority commissioning orchestrator | PC9-PC10, ARM-100-103 | No | None | IN PROGRESS |
-| PC12 | Full synthetic arrival and fault campaign | PC11 | No | None | PLANNED |
+| PC11 | One-command zero-authority commissioning orchestrator | PC9-PC10, ARM-100-103 | No | None | COMPLETE |
+| PC12 | Full synthetic arrival and fault campaign | PC11 | No | None | IN PROGRESS |
 | PC13 | Domain-consumer operator wrappers | PC11, ARM-103 | No | None | PLANNED |
 | PC14 | Arrival-session manifest and state machine | PC11-PC13 | No | None | PLANNED |
 | PC15 | Installed-geometry and cable-envelope intake rehearsal | PC13-PC14 | No | None | PLANNED |
@@ -592,6 +592,19 @@ open a camera or transport, issue a controller command, or authorize movement.
 
 ## PC11 — One-command zero-authority commissioning orchestrator
 
+**Completed 2026-09-29:** ARM-104 composes the real 15-slot structural
+preflight, repository-bound consumer handoff, strict canonical receipt loader,
+and aggregate validation assessment behind one library/CLI boundary. Empty,
+pending, blocked-consumer, and all-pass states remain distinct. The receipt
+root accepts only the 15 canonical filenames and rejects extra entries,
+symlinks, oversize, duplicate JSON members, crossed filenames, malformed
+contracts, and authority-bearing receipts. The strongest result is only
+`COMPLETE_FOR_OFFLINE_REVIEW`; every epoch, registry, qualification, camera,
+transport, controller, command, write, movement, and authority field remains
+false or zero. Commit `80502168aeac035e016d2872e462503ec1160619`
+passed 554 governed tests, 115 repository-policy tests, and all maintained
+audits from a detached clean checkout using the current Python environment.
+
 ### Objective
 
 Compose the existing 15-slot evidence preflight, hash-bound consumer handoff,
@@ -824,7 +837,7 @@ For every PC increment:
 - [x] PC8 performance report complete
 - [x] PC9 camera-arrival tools dry-run complete
 - [x] PC10 clean-checkout pre-camera closure recorded
-- [ ] PC11 one-command zero-authority commissioning orchestrator complete
+- [x] PC11 one-command zero-authority commissioning orchestrator complete
 - [ ] PC12 full synthetic arrival and fault campaign complete
 - [ ] PC13 domain-consumer operator wrappers complete
 - [ ] PC14 arrival-session manifest and state machine complete

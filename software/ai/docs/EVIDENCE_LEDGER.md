@@ -5316,3 +5316,44 @@ rewriting history. New entries must use a unique evidence ID.
   consumers and use their typed/hash-bound outputs to produce the 15 real
   receipts. Installed geometry and the moving cable envelope must independently
   satisfy their native completeness criteria before aggregate offline review.
+
+### E-20260929-ARM-104 — One-command zero-authority arrival commissioning
+
+- Stage: PC11 post-closure pre-camera continuation.
+- Lane: arm/runtime commissioning composition.
+- Implementation commit: `80502168aeac035e016d2872e462503ec1160619`.
+- Change: composed the existing structural preflight, hash-bound consumer
+  handoff, strict canonical receipt loading, and aggregate receipt assessment
+  into one deterministic library/CLI report. Added the strict outer parser,
+  JSON Schema, source wrapper, operator checklist instructions, and governed
+  test registration.
+- Command: `$env:PYTHONPATH='software/src;software'; $tests = @(python -c
+  "import importlib.util; s=importlib.util.spec_from_file_location('offline_checks','scripts/ci/offline_checks.py');
+  m=importlib.util.module_from_spec(s); s.loader.exec_module(m);
+  print(chr(10).join(m.TESTS))"); python -m pytest -q $tests`; repository policy
+  tests and maintained documentation/evidence/repository/release audits.
+- Result: PASS in detached clean checkout. The governed offline matrix passed
+  554 tests; repository-policy tests passed 115 tests; all maintained audits
+  passed. Focused commissioning tests cover empty evidence, complete evidence
+  without receipts, 15 exact receipts, one blocked receipt, unexpected files,
+  symlinks, duplicate JSON members, crossed filename identity, deterministic
+  reconstruction, CLI behavior, and rehashed authority mutation.
+- Artifacts: `software/src/rocell/application/camera_arrival_commissioning_orchestrator_v1.py`,
+  `software/ai/schemas/camera_arrival_commissioning_orchestrator_v1.schema.json`,
+  `software/scripts/run_camera_arrival_commissioning_v1.py`, and focused unit
+  and integration tests.
+- Camera opens: 0.
+- Transport opens: 0.
+- Controller starts: 0.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: the workflow composes evidence and receipts only. It does not
+  invoke physical consumers, commission an epoch, update a registry, install
+  qualification, validate a real camera, prove installed collision geometry,
+  or authorize physical action. Current tests use synthetic originals and
+  fixture receipts.
+- Supersedes: ARM-100 through ARM-103 only for operator-level composition;
+  their domain contracts and limitations remain authoritative.
+- Next dependency: PC12 must freeze and run the full synthetic arrival fault
+  matrix, including partial, mixed, stale, crossed, malformed, and
+  resource-bound sessions, before operator wrappers are added in PC13.
