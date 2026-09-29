@@ -22,6 +22,7 @@ from .camera_arrival_kit_v1 import build_camera_arrival_kit_v1
 SCHEMA = "rocell.camera_arrival_evidence_preflight.v1"
 READY_STATUS = "READY_FOR_OFFLINE_QUALIFICATION_REVIEW"
 BLOCKED_STATUS = "BLOCKED_ARRIVAL_EVIDENCE_INCOMPLETE"
+MAX_SIDECAR_BYTES = 1_048_576
 _SIDECAR_FIELDS = {
     "schema",
     "artifact_id",
@@ -84,6 +85,7 @@ _SLOT_BLOCKERS = {
     "SIDECAR_MISSING",
     "SIDECAR_UNSAFE",
     "SIDECAR_INVALID_JSON",
+    "SIDECAR_TOO_LARGE",
     "SIDECAR_SCHEMA_INVALID",
     "ARTIFACT_ID_MISMATCH",
     "ARTIFACT_CLASS_MISMATCH",
@@ -100,6 +102,17 @@ _SLOT_BLOCKERS = {
 
 class CameraArrivalEvidencePreflightV1Error(ValueError):
     """The requested evidence root or repository schema is unsafe."""
+
+
+def _strict_object(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
+    result: dict[str, Any] = {}
+    for key, value in pairs:
+        if key in result:
+            raise CameraArrivalEvidencePreflightV1Error(
+                f"duplicate JSON member in sidecar: {key}"
+            )
+        result[key] = value
+    return result
 
 
 def _canonical(value: object) -> bytes:
@@ -234,9 +247,18 @@ def _slot_result(slot: Mapping[str, Any], evidence_root: Path) -> dict[str, Any]
     if sidecar.is_symlink() or not sidecar.is_file():
         return {**result, "status": "INVALID", "blockers": ["SIDECAR_UNSAFE"]}
     try:
+        if not 1 <= sidecar.stat().st_size <= MAX_SIDECAR_BYTES:
+            return {
+                **result, "status": "INVALID", "blockers": ["SIDECAR_TOO_LARGE"]
+            }
         sidecar_bytes = sidecar.read_bytes()
-        document = json.loads(sidecar_bytes.decode("utf-8"))
-    except (OSError, UnicodeDecodeError, json.JSONDecodeError):
+        document = json.loads(
+            sidecar_bytes.decode("utf-8"), object_pairs_hook=_strict_object
+        )
+    except (
+        OSError, UnicodeDecodeError, json.JSONDecodeError, RecursionError,
+        CameraArrivalEvidencePreflightV1Error,
+    ):
         return {**result, "status": "INVALID", "blockers": ["SIDECAR_INVALID_JSON"]}
 
     blockers: list[str] = []
@@ -481,6 +503,7 @@ def main(argv: Sequence[str] | None = None) -> int:
 
 __all__ = [
     "BLOCKED_STATUS",
+    "MAX_SIDECAR_BYTES",
     "READY_STATUS",
     "SCHEMA",
     "CameraArrivalEvidencePreflightV1Error",

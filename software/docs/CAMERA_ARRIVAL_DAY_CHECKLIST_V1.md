@@ -128,6 +128,18 @@ transport opens, controller startup, commands, writes, movements, and physical
 authority at zero. Receipt filenames are exactly `<artifact_id>.json`; extra,
 symlinked, oversized, malformed, crossed, or authority-bearing entries reject.
 
+Before arrival day, reproduce the frozen PC12 fault campaign:
+
+```powershell
+python -m rocell.application.camera_arrival_fault_campaign_v1 --workspace .
+```
+
+The result must match
+`software/ai/eval/camera_arrival_fault_campaign_v1.json`: 18 of 18 synthetic
+cases pass, with zero camera or transport opens, controller starts, commands,
+writes, movements, or authority. A fault-campaign pass qualifies the offline
+intake behavior only; it says nothing about the future camera or measurements.
+
 ## Collect the four camera/support originals
 
 Use the existing explicitly authorized camera onboarding workflow to collect

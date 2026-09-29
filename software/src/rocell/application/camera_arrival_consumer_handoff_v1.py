@@ -168,7 +168,8 @@ def parse_camera_arrival_consumer_handoff_v1(
         for route in routes
     ) != REQUIRED_SLOT_IDS:
         raise CameraArrivalConsumerHandoffV1Error("handoff route identity differs")
-    all_routes_eligible = all(
+    declared_ready = value.get("ready_for_offline_consumer_validation") is True
+    all_routes_eligible = declared_ready and all(
         isinstance(route, Mapping)
         and route.get("preflight_status") == "VALID"
         and route.get("consumer_dependency_resolved") is True
@@ -202,7 +203,7 @@ def parse_camera_arrival_consumer_handoff_v1(
     ready_count = sum(
         route["ready_for_offline_consumer_validation"] for route in routes
     )
-    ready = value.get("ready_for_offline_consumer_validation") is True
+    ready = declared_ready
     if (
         value.get("schema") != SCHEMA
         or not _is_hash(value.get("preflight_sha256"))
