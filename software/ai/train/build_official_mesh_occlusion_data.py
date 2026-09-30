@@ -18,10 +18,12 @@ SCHEMA_V1 = "rocell.ai_official_mesh_occlusion_data.v1"
 SCHEMA_V2 = "rocell.ai_official_mesh_occlusion_data.v2"
 SCHEMA_V3 = "rocell.ai_official_mesh_occlusion_data.v3"
 SCHEMA_V4 = "rocell.ai_official_mesh_occlusion_data.v4"
+SCHEMA_V5 = "rocell.ai_official_mesh_occlusion_data.v5"
 SOURCE_SCHEMA_V1 = "tactevra.isaac_fixed_overview_mesh_render.v1"
 SOURCE_SCHEMA_V2 = "tactevra.isaac_fixed_overview_mesh_render.v2"
 SOURCE_SCHEMA_V3 = "tactevra.isaac_fixed_overview_mesh_render.v3"
 SOURCE_SCHEMA_V4 = "tactevra.isaac_fixed_overview_mesh_render.v4"
+SOURCE_SCHEMA_V5 = "tactevra.isaac_fixed_overview_mesh_render.v5"
 MAXIMUM_SAFE_REGION_OVERLAP = 0.20
 BASELINE_SEED = 190
 BASELINE_CROP_SIZE = 16
@@ -65,6 +67,16 @@ SPECIFICITY_LIGHTING = {
     "development": ("soft_neutral", "gamma_mid", "left_shadow"),
     "evaluation": ("cool_flat", "top_shadow", "vertical_motion_blur"),
 }
+TARGET_AWARE_LIGHTING = {
+    "train": tuple(
+        dict.fromkeys(
+            (*SPECIFICITY_LIGHTING["train"], *SPECIFICITY_LIGHTING["development"],
+             *SPECIFICITY_LIGHTING["evaluation"])
+        )
+    ),
+    "development": ("neutral_low", "bottom_shadow", "diagonal_motion_blur"),
+    "evaluation": ("green_cast", "corner_glare", "horizontal_motion_blur"),
+}
 
 
 def _sha256(payload: bytes) -> str:
@@ -80,7 +92,8 @@ def _canonical(value: object) -> bytes:
 def _verify_source(path: Path) -> dict[str, Any]:
     source = json.loads(path.read_text(encoding="utf-8"))
     if source.get("schema") not in {
-        SOURCE_SCHEMA_V1, SOURCE_SCHEMA_V2, SOURCE_SCHEMA_V3, SOURCE_SCHEMA_V4
+        SOURCE_SCHEMA_V1, SOURCE_SCHEMA_V2, SOURCE_SCHEMA_V3, SOURCE_SCHEMA_V4,
+        SOURCE_SCHEMA_V5,
     }:
         raise ValueError("official-mesh manifest schema mismatch")
     claimed = source.pop("receipt_sha256", None)
@@ -119,7 +132,10 @@ def _split_policy(source: dict[str, Any]) -> tuple[str, dict[str, dict[str, tupl
         expected = next(name for name, poses in normalized.items() if row["pose_id"] in poses)
         if row.get("pose_group") != expected:
             raise ValueError(f"pose group mismatch: {row['pose_id']}")
-    if source["schema"] == SOURCE_SCHEMA_V4:
+    if source["schema"] == SOURCE_SCHEMA_V5:
+        lighting = TARGET_AWARE_LIGHTING
+        schema = SCHEMA_V5
+    elif source["schema"] == SOURCE_SCHEMA_V4:
         lighting = SPECIFICITY_LIGHTING
         schema = SCHEMA_V4
     elif source["schema"] == SOURCE_SCHEMA_V3:
@@ -240,6 +256,38 @@ def _lighting(image: Image.Image, variant: str) -> Image.Image:
         weights = [0.0] * 25
         for index in (2, 7, 12, 17, 22):
             weights[index] = 1.0
+        return rgb.filter(ImageFilter.Kernel((5, 5), weights, scale=5.0))
+    if variant == "neutral_low":
+        return ImageEnhance.Contrast(ImageEnhance.Brightness(rgb).enhance(0.90)).enhance(0.66)
+    if variant == "bottom_shadow":
+        overlay = Image.new("RGB", rgb.size, "black")
+        alpha = Image.new("L", rgb.size, 0)
+        ImageDraw.Draw(alpha).polygon(
+            ((0, round(rgb.height * 0.56)), (rgb.width, round(rgb.height * 0.42)),
+             (rgb.width, rgb.height), (0, rgb.height)),
+            fill=96,
+        )
+        return Image.composite(overlay, rgb, alpha)
+    if variant == "diagonal_motion_blur":
+        weights = [0.0] * 25
+        for index in (0, 6, 12, 18, 24):
+            weights[index] = 1.0
+        return rgb.filter(ImageFilter.Kernel((5, 5), weights, scale=5.0))
+    if variant == "green_cast":
+        red, green, blue = rgb.split()
+        return Image.merge("RGB", (
+            red.point(lambda value: round(value * 0.92)),
+            green.point(lambda value: min(255, round(value * 1.08))),
+            blue.point(lambda value: round(value * 0.94)),
+        ))
+    if variant == "corner_glare":
+        overlay = Image.new("RGB", rgb.size, "white")
+        alpha = Image.new("L", rgb.size, 0)
+        ImageDraw.Draw(alpha).ellipse((-180, -120, 760, 680), fill=118)
+        return Image.composite(overlay, rgb, alpha)
+    if variant == "horizontal_motion_blur":
+        weights = [0.0] * 25
+        weights[10:15] = [1.0] * 5
         return rgb.filter(ImageFilter.Kernel((5, 5), weights, scale=5.0))
     raise ValueError(f"unknown lighting variant: {variant}")
 
@@ -438,6 +486,37 @@ def _spatial_crops(
         crops.append(np.asarray(crop, dtype=np.float32).transpose(2, 0, 1) / 255.0)
         labels.append(row["decision"] == "abstain")
     return np.stack(crops), np.asarray(labels, dtype=np.float32)
+
+
+def _target_aware_crops(
+    dataset_dir: Path, rows: list[dict[str, Any]]
+) -> tuple[np.ndarray, np.ndarray]:
+    """Return RGB crops plus a catalog-derived safe-region channel."""
+    rgb, labels = _spatial_crops(dataset_dir, rows)
+    masks = []
+    for row in rows:
+        polygon = row["safe_polygon_px"]
+        x_values = [point[0] for point in polygon]
+        y_values = [point[1] for point in polygon]
+        image_path = dataset_dir / row["image_path"]
+        with Image.open(image_path) as image:
+            width, height = image.size
+        box = (
+            max(0, int(min(x_values)) - SPATIAL_PADDING),
+            max(0, int(min(y_values)) - SPATIAL_PADDING),
+            min(width, int(max(x_values)) + SPATIAL_PADDING + 1),
+            min(height, int(max(y_values)) + SPATIAL_PADDING + 1),
+        )
+        mask = Image.new("L", (box[2] - box[0], box[3] - box[1]), 0)
+        ImageDraw.Draw(mask).polygon(
+            [(point[0] - box[0], point[1] - box[1]) for point in polygon],
+            fill=255,
+        )
+        resized = mask.resize(
+            (SPATIAL_CROP_SIZE, SPATIAL_CROP_SIZE), Image.Resampling.NEAREST
+        )
+        masks.append(np.asarray(resized, dtype=np.float32)[None, :, :] / 255.0)
+    return np.concatenate((rgb, np.stack(masks)), axis=1), labels
 
 
 def _metrics(rows: list[dict[str, Any]], labels: np.ndarray,
@@ -871,6 +950,167 @@ def train_spatial_candidate(dataset_dir: Path, output_dir: Path) -> dict[str, An
     return scorecard
 
 
+def train_target_aware_candidate(dataset_dir: Path, output_dir: Path) -> dict[str, Any]:
+    """Fit an RGB plus known-safe-region CNN, then score held-out data once."""
+    import torch
+
+    dataset_dir = dataset_dir.resolve(strict=True)
+    output_dir = output_dir.resolve()
+    if output_dir.exists() and any(output_dir.iterdir()):
+        raise ValueError("target-aware output directory must be empty")
+    output_dir.mkdir(parents=True, exist_ok=True)
+    manifest_path = dataset_dir / "manifest.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    claimed_dataset_sha = manifest.pop("dataset_sha256", None)
+    if not isinstance(claimed_dataset_sha, str) \
+            or _sha256(_canonical(manifest)) != claimed_dataset_sha:
+        raise ValueError("dataset manifest hash mismatch")
+    manifest["dataset_sha256"] = claimed_dataset_sha
+    if manifest.get("schema") != SCHEMA_V5:
+        raise ValueError("target-aware selection requires a fresh v5 dataset")
+    if manifest.get("scope") != "SYNTHETIC_ONLY_NO_DEPLOYMENT_QUALIFICATION":
+        raise ValueError("dataset scope mismatch")
+
+    torch.manual_seed(BASELINE_SEED)
+    torch.use_deterministic_algorithms(True)
+    torch.set_num_threads(1)
+
+    class TinyTargetAware(torch.nn.Module):
+        def __init__(self) -> None:
+            super().__init__()
+            self.features = torch.nn.Sequential(
+                torch.nn.Conv2d(4, 8, 3, padding=1),
+                torch.nn.ReLU(),
+                torch.nn.MaxPool2d(2),
+                torch.nn.Conv2d(8, 16, 3, padding=1),
+                torch.nn.ReLU(),
+                torch.nn.AdaptiveAvgPool2d((4, 4)),
+            )
+            self.classifier = torch.nn.Linear(16 * 4 * 4, 1)
+
+        def forward(self, values):  # type: ignore[no-untyped-def]
+            return self.classifier(self.features(values).flatten(1)).squeeze(1)
+
+    train_rows = _load_rows(dataset_dir, "train", manifest)
+    development_rows = _load_rows(dataset_dir, "development", manifest)
+    train_x, train_y = _target_aware_crops(dataset_dir, train_rows)
+    development_x, development_y = _target_aware_crops(dataset_dir, development_rows)
+    train_tensor = torch.from_numpy(train_x)
+    train_labels = torch.from_numpy(train_y)
+    development_tensor = torch.from_numpy(development_x)
+    model = TinyTargetAware().cpu()
+    positives = float(train_y.sum())
+    negatives = float(len(train_y) - positives)
+    loss_fn = torch.nn.BCEWithLogitsLoss(
+        pos_weight=torch.tensor(negatives / positives, dtype=torch.float32)
+    )
+    optimizer = torch.optim.Adam(model.parameters(), lr=SPATIAL_LEARNING_RATE)
+    epoch_losses = []
+    for epoch in range(SPATIAL_EPOCHS):
+        generator = torch.Generator().manual_seed(BASELINE_SEED + epoch)
+        order = torch.randperm(len(train_tensor), generator=generator)
+        total_loss = 0.0
+        for start in range(0, len(order), SPATIAL_BATCH_SIZE):
+            indices = order[start:start + SPATIAL_BATCH_SIZE]
+            optimizer.zero_grad(set_to_none=True)
+            loss = loss_fn(model(train_tensor[indices]), train_labels[indices])
+            loss.backward()
+            optimizer.step()
+            total_loss += float(loss.detach()) * len(indices)
+        epoch_losses.append(total_loss / len(order))
+
+    model.eval()
+    with torch.no_grad():
+        development_probabilities = torch.sigmoid(model(development_tensor)).numpy()
+    threshold = _select_threshold(
+        development_y.astype(np.float64), development_probabilities
+    )
+    development_metrics = _metrics(
+        development_rows, development_y.astype(np.float64),
+        development_probabilities, threshold,
+    )
+    development_missed_rate = (
+        development_metrics["confusion"]["missed_abstain"] / int(development_y.sum())
+    )
+    state = {
+        name: {
+            "shape": list(value.shape),
+            "values": value.detach().cpu().numpy().astype(np.float64).reshape(-1).tolist(),
+        }
+        for name, value in sorted(model.state_dict().items())
+    }
+    checkpoint = {
+        "schema": "rocell.ai_target_crop_safe_region_spatial.v1",
+        "architecture": {
+            "input": [4, SPATIAL_CROP_SIZE, SPATIAL_CROP_SIZE],
+            "input_channels": [
+                "red", "green", "blue", "known_target_safe_region_mask",
+            ],
+            "simulator_robot_mask_input": False,
+            "layers": [
+                "conv_4_8_k3_pad1", "relu", "maxpool_2",
+                "conv_8_16_k3_pad1", "relu", "adaptive_avgpool_4x4",
+                "linear_256_1",
+            ],
+            "parameter_count": sum(value.numel() for value in model.parameters()),
+        },
+        "training": {
+            "seed": BASELINE_SEED,
+            "device": "cpu",
+            "epochs": SPATIAL_EPOCHS,
+            "batch_size": SPATIAL_BATCH_SIZE,
+            "learning_rate": SPATIAL_LEARNING_RATE,
+            "optimizer": "adam",
+            "class_weighting": "negative_to_positive_ratio",
+            "epoch_losses": epoch_losses,
+        },
+        "crop": {"size": SPATIAL_CROP_SIZE, "padding_px": SPATIAL_PADDING},
+        "threshold": threshold,
+        "selection_dataset_sha256": claimed_dataset_sha,
+        "selection_split": "development",
+        "development_missed_abstain_rate": development_missed_rate,
+        "state_dict": state,
+    }
+    checkpoint_path = output_dir / "model.json"
+    checkpoint_path.write_bytes(_canonical(checkpoint) + b"\n")
+
+    # Evaluation is loaded only after architecture, state, and threshold freeze.
+    evaluation_rows = _load_rows(dataset_dir, "evaluation", manifest)
+    evaluation_x, evaluation_y = _target_aware_crops(dataset_dir, evaluation_rows)
+    with torch.no_grad():
+        evaluation_probabilities = torch.sigmoid(
+            model(torch.from_numpy(evaluation_x))
+        ).numpy()
+    scorecard: dict[str, Any] = {
+        "schema": "rocell.ai_official_mesh_occlusion_target_aware_candidate.v1",
+        "algorithm": "tiny_target_safe_region_deterministic_cpu_cnn",
+        "selection_policy": {
+            "fit_split": "train",
+            "selection_split": "development",
+            "evaluation_split": "evaluation_loaded_after_checkpoint_freeze",
+            "maximum_development_missed_abstain_rate": 0.05,
+        },
+        "dataset_manifest_sha256": _sha256(manifest_path.read_bytes()),
+        "dataset_sha256": claimed_dataset_sha,
+        "model_sha256": _sha256(checkpoint_path.read_bytes()),
+        "selected_threshold": threshold,
+        "development_missed_abstain_rate": development_missed_rate,
+        "development_gate_met": development_missed_rate <= 0.05,
+        "development": development_metrics,
+        "evaluation": _metrics(
+            evaluation_rows, evaluation_y.astype(np.float64),
+            evaluation_probabilities, threshold,
+        ),
+        "promotion_status": "BLOCKED_SYNTHETIC_ONLY",
+        "hardware_writes": 0,
+        "physical_movements": 0,
+        "limitations": manifest["limitations"],
+    }
+    scorecard["scorecard_sha256"] = _sha256(_canonical(scorecard))
+    (output_dir / "scorecard.json").write_bytes(_canonical(scorecard) + b"\n")
+    return scorecard
+
+
 def _load_spatial_checkpoint(candidate_dir: Path):  # type: ignore[no-untyped-def]
     import torch
 
@@ -1113,6 +1353,7 @@ def main() -> int:
     parser.add_argument("--baseline-output", type=Path)
     parser.add_argument("--candidate-output", type=Path)
     parser.add_argument("--spatial-output", type=Path)
+    parser.add_argument("--target-aware-output", type=Path)
     parser.add_argument(
         "--record-existing", type=Path, nargs=3,
         metavar=("DATASET_DIR", "CANDIDATE_DIR", "VIDEO_OUTPUT_DIR"),
@@ -1121,7 +1362,10 @@ def main() -> int:
     if args.record_existing is not None:
         if args.output_dir is not None or any(
             value is not None
-            for value in (args.baseline_output, args.candidate_output, args.spatial_output)
+            for value in (
+                args.baseline_output, args.candidate_output, args.spatial_output,
+                args.target_aware_output,
+            )
         ):
             parser.error("--record-existing cannot be combined with build or training outputs")
         manifest = export_progression_videos(
@@ -1144,6 +1388,10 @@ def main() -> int:
         spatial_scorecard = (
             train_spatial_candidate(args.output_dir, args.spatial_output)
             if args.spatial_output is not None else None
+        )
+        target_aware_scorecard = (
+            train_target_aware_candidate(args.output_dir, args.target_aware_output)
+            if args.target_aware_output is not None else None
         )
     except BaseException:
         if args.output_dir.exists():
@@ -1189,6 +1437,21 @@ def main() -> int:
             "promotion_status": spatial_scorecard["promotion_status"],
             "selected_threshold": spatial_scorecard["selected_threshold"],
             "development_gate_met": spatial_scorecard["development_gate_met"],
+            "evaluation": {
+                key: evaluation[key]
+                for key in (
+                    "count", "confusion", "accuracy", "balanced_accuracy",
+                    "brier_score", "expected_calibration_error_10_bin",
+                )
+            },
+        }
+    if target_aware_scorecard is not None:
+        evaluation = target_aware_scorecard["evaluation"]
+        result["target_aware_candidate"] = {
+            "scorecard_sha256": target_aware_scorecard["scorecard_sha256"],
+            "promotion_status": target_aware_scorecard["promotion_status"],
+            "selected_threshold": target_aware_scorecard["selected_threshold"],
+            "development_gate_met": target_aware_scorecard["development_gate_met"],
             "evaluation": {
                 key: evaluation[key]
                 for key in (

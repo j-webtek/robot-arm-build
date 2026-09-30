@@ -59,6 +59,18 @@ SCHEDULE_POSE_SEQUENCES = {
     "specificity_eval_return_114": 114,
     "specificity_eval_return_118": 118,
     "specificity_eval_return_122": 122,
+    "targetaware_dev_outbound_11": 11,
+    "targetaware_dev_outbound_15": 15,
+    "targetaware_dev_outbound_19": 19,
+    "targetaware_dev_return_113": 113,
+    "targetaware_dev_return_117": 117,
+    "targetaware_dev_return_121": 121,
+    "targetaware_eval_outbound_23": 23,
+    "targetaware_eval_outbound_27": 27,
+    "targetaware_eval_outbound_31": 31,
+    "targetaware_eval_return_115": 115,
+    "targetaware_eval_return_119": 119,
+    "targetaware_eval_return_123": 123,
 }
 POSE_GROUPS = {
     "training": (
@@ -69,16 +81,22 @@ POSE_GROUPS = {
         "transit_h_to_1_44", "transit_h_to_1_52", "transit_h_to_1_60",
         "transit_1_to_period_72", "transit_1_to_period_84",
         "transit_1_to_period_96",
-    ),
-    "development": (
         "specificity_outbound_02", "specificity_outbound_04",
         "specificity_outbound_06", "specificity_return_124",
         "specificity_return_126", "specificity_return_130",
-    ),
-    "evaluation": (
         "specificity_eval_outbound_10", "specificity_eval_outbound_13",
         "specificity_eval_outbound_20", "specificity_eval_return_114",
         "specificity_eval_return_118", "specificity_eval_return_122",
+    ),
+    "development": (
+        "targetaware_dev_outbound_11", "targetaware_dev_outbound_15",
+        "targetaware_dev_outbound_19", "targetaware_dev_return_113",
+        "targetaware_dev_return_117", "targetaware_dev_return_121",
+    ),
+    "evaluation": (
+        "targetaware_eval_outbound_23", "targetaware_eval_outbound_27",
+        "targetaware_eval_outbound_31", "targetaware_eval_return_115",
+        "targetaware_eval_return_119", "targetaware_eval_return_123",
     ),
 }
 EXPECTED_SCHEDULE_FILE_SHA256 = "6a59ce143f5527c7a9ced09b08d5515644ea4fb859dd69691e08483eb020ee42"
@@ -512,7 +530,7 @@ def main() -> int:
                 path.unlink()
 
         receipt: dict[str, object] = {
-            "schema": "tactevra.isaac_fixed_overview_mesh_render.v4",
+            "schema": "tactevra.isaac_fixed_overview_mesh_render.v5",
             "evidence_class": "OFFICIAL_VISUAL_MESH_PERCEPTION_COMPARISON_ONLY",
             "upstream_commit": UPSTREAM_COMMIT,
             "governed_urdf_sha256": EXPECTED_URDF_SHA256,
