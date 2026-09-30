@@ -282,11 +282,22 @@ def test_transit_pose_groups_are_predeclared_disjoint_and_schedule_bound() -> No
     flattened = [pose for poses in groups.values() for pose in poses]
 
     assert set(groups) == {"training", "development", "evaluation"}
-    assert len(flattened) == len(set(flattened)) == 21
+    assert len(flattened) == len(set(flattened)) == 33
     assert set(module.REFERENCE_POSES) == {"ready", "hover_t", "hover_e"}
     assert set(module.SCHEDULE_POSE_SEQUENCES) == set(flattened) - set(module.REFERENCE_POSES)
     assert set(module.SCHEDULE_POSE_SEQUENCES.values()) == {
-        8, 17, 26, 34, 35, 44, 52, 60, 63, 64, 72, 84, 96, 103, 104, 112, 120, 128,
+        2, 4, 6, 8, 10, 13, 17, 20, 26, 34, 35, 44, 52, 60, 63, 64, 72,
+        84, 96, 103, 104, 112, 114, 118, 120, 122, 124, 126, 128, 130,
+    }
+    assert set(groups["development"]) == {
+        "specificity_outbound_02", "specificity_outbound_04",
+        "specificity_outbound_06", "specificity_return_124",
+        "specificity_return_126", "specificity_return_130",
+    }
+    assert set(groups["evaluation"]) == {
+        "specificity_eval_outbound_10", "specificity_eval_outbound_13",
+        "specificity_eval_outbound_20", "specificity_eval_return_114",
+        "specificity_eval_return_118", "specificity_eval_return_122",
     }
     assert not (set(groups["development"]) & set(groups["evaluation"]))
 
@@ -330,6 +341,54 @@ def test_transit_lighting_families_are_deterministic_and_distinct() -> None:
     pixels = np.arange(48 * 48 * 3, dtype=np.uint8).reshape(48, 48, 3)
     source = Image.fromarray(pixels, mode="RGB")
     variants = (*module.TRANSIT_LIGHTING["development"], *module.TRANSIT_LIGHTING["evaluation"])
+
+    first = [np.asarray(module._lighting(source, name)) for name in variants]
+    second = [np.asarray(module._lighting(source, name)) for name in variants]
+
+    assert all(np.array_equal(left, right) for left, right in zip(first, second, strict=True))
+    assert len({_sha256(value.tobytes()) for value in first}) == len(variants)
+
+
+def test_specificity_dataset_policy_uses_fresh_disjoint_lighting() -> None:
+    builder = _builder()
+    renderer = _renderer()
+    source = {
+        "schema": "tactevra.isaac_fixed_overview_mesh_render.v4",
+        "pose_groups": {name: list(poses) for name, poses in renderer.POSE_GROUPS.items()},
+        "pose_results": [
+            {"pose_id": pose_id, "pose_group": group}
+            for group, pose_ids in renderer.POSE_GROUPS.items()
+            for pose_id in pose_ids
+        ],
+    }
+
+    schema, policy = builder._split_policy(source)
+
+    assert schema == "rocell.ai_official_mesh_occlusion_data.v4"
+    assert policy["development"]["lighting"] == (
+        "soft_neutral", "gamma_mid", "left_shadow",
+    )
+    assert policy["evaluation"]["lighting"] == (
+        "cool_flat", "top_shadow", "vertical_motion_blur",
+    )
+    pose_groups = [set(split["poses"]) for split in policy.values()]
+    lighting_groups = [set(split["lighting"]) for split in policy.values()]
+    assert all(
+        not (left & right)
+        for groups in (pose_groups, lighting_groups)
+        for index, left in enumerate(groups)
+        for right in groups[index + 1:]
+    )
+
+
+def test_specificity_lighting_families_are_deterministic_and_distinct() -> None:
+    module = _builder()
+    pixels = np.arange(48 * 48 * 3, dtype=np.uint8).reshape(48, 48, 3)
+    source = Image.fromarray(pixels, mode="RGB")
+    variants = (
+        *module.SPECIFICITY_LIGHTING["development"],
+        *module.SPECIFICITY_LIGHTING["evaluation"],
+    )
 
     first = [np.asarray(module._lighting(source, name)) for name in variants]
     second = [np.asarray(module._lighting(source, name)) for name in variants]

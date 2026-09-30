@@ -16,9 +16,11 @@ from PIL import Image, ImageDraw, ImageEnhance, ImageFilter
 SCHEMA_V1 = "rocell.ai_official_mesh_occlusion_data.v1"
 SCHEMA_V2 = "rocell.ai_official_mesh_occlusion_data.v2"
 SCHEMA_V3 = "rocell.ai_official_mesh_occlusion_data.v3"
+SCHEMA_V4 = "rocell.ai_official_mesh_occlusion_data.v4"
 SOURCE_SCHEMA_V1 = "tactevra.isaac_fixed_overview_mesh_render.v1"
 SOURCE_SCHEMA_V2 = "tactevra.isaac_fixed_overview_mesh_render.v2"
 SOURCE_SCHEMA_V3 = "tactevra.isaac_fixed_overview_mesh_render.v3"
+SOURCE_SCHEMA_V4 = "tactevra.isaac_fixed_overview_mesh_render.v4"
 MAXIMUM_SAFE_REGION_OVERLAP = 0.20
 BASELINE_SEED = 190
 BASELINE_CROP_SIZE = 16
@@ -53,6 +55,15 @@ TRANSIT_LIGHTING = {
     "development": ("desaturated", "gamma_dark", "vignette"),
     "evaluation": ("low_contrast", "right_shadow", "motion_blur"),
 }
+SPECIFICITY_LIGHTING = {
+    "train": (
+        "nominal", "dim", "bright", "warm", "glare", "blur", "cool",
+        "side_shadow", "defocus", "desaturated", "gamma_dark", "vignette",
+        "low_contrast", "right_shadow", "motion_blur",
+    ),
+    "development": ("soft_neutral", "gamma_mid", "left_shadow"),
+    "evaluation": ("cool_flat", "top_shadow", "vertical_motion_blur"),
+}
 
 
 def _sha256(payload: bytes) -> str:
@@ -68,7 +79,7 @@ def _canonical(value: object) -> bytes:
 def _verify_source(path: Path) -> dict[str, Any]:
     source = json.loads(path.read_text(encoding="utf-8"))
     if source.get("schema") not in {
-        SOURCE_SCHEMA_V1, SOURCE_SCHEMA_V2, SOURCE_SCHEMA_V3
+        SOURCE_SCHEMA_V1, SOURCE_SCHEMA_V2, SOURCE_SCHEMA_V3, SOURCE_SCHEMA_V4
     }:
         raise ValueError("official-mesh manifest schema mismatch")
     claimed = source.pop("receipt_sha256", None)
@@ -107,8 +118,15 @@ def _split_policy(source: dict[str, Any]) -> tuple[str, dict[str, dict[str, tupl
         expected = next(name for name, poses in normalized.items() if row["pose_id"] in poses)
         if row.get("pose_group") != expected:
             raise ValueError(f"pose group mismatch: {row['pose_id']}")
-    lighting = TRANSIT_LIGHTING if source["schema"] == SOURCE_SCHEMA_V3 else EXPANDED_LIGHTING
-    schema = SCHEMA_V3 if source["schema"] == SOURCE_SCHEMA_V3 else SCHEMA_V2
+    if source["schema"] == SOURCE_SCHEMA_V4:
+        lighting = SPECIFICITY_LIGHTING
+        schema = SCHEMA_V4
+    elif source["schema"] == SOURCE_SCHEMA_V3:
+        lighting = TRANSIT_LIGHTING
+        schema = SCHEMA_V3
+    else:
+        lighting = EXPANDED_LIGHTING
+        schema = SCHEMA_V2
     return schema, {
         "train": {"poses": normalized["training"], "lighting": lighting["train"]},
         "development": {
@@ -186,6 +204,41 @@ def _lighting(image: Image.Image, variant: str) -> Image.Image:
     if variant == "motion_blur":
         weights = [0.0] * 25
         weights[10:15] = [1.0] * 5
+        return rgb.filter(ImageFilter.Kernel((5, 5), weights, scale=5.0))
+    if variant == "soft_neutral":
+        return ImageEnhance.Contrast(ImageEnhance.Brightness(rgb).enhance(0.96)).enhance(0.84)
+    if variant == "gamma_mid":
+        return rgb.point(lambda value: round(255 * (value / 255) ** 0.82))
+    if variant == "left_shadow":
+        overlay = Image.new("RGB", rgb.size, "black")
+        alpha = Image.new("L", rgb.size, 0)
+        ImageDraw.Draw(alpha).polygon(
+            ((0, 0), (round(rgb.width * 0.50), 0),
+             (round(rgb.width * 0.34), rgb.height), (0, rgb.height)),
+            fill=82,
+        )
+        return Image.composite(overlay, rgb, alpha)
+    if variant == "cool_flat":
+        red, green, blue = rgb.split()
+        cooled = Image.merge("RGB", (
+            red.point(lambda value: round(value * 0.91)),
+            green,
+            blue.point(lambda value: min(255, round(value * 1.07))),
+        ))
+        return ImageEnhance.Contrast(cooled).enhance(0.72)
+    if variant == "top_shadow":
+        overlay = Image.new("RGB", rgb.size, "black")
+        alpha = Image.new("L", rgb.size, 0)
+        ImageDraw.Draw(alpha).polygon(
+            ((0, 0), (rgb.width, 0), (rgb.width, round(rgb.height * 0.42)),
+             (0, round(rgb.height * 0.58))),
+            fill=92,
+        )
+        return Image.composite(overlay, rgb, alpha)
+    if variant == "vertical_motion_blur":
+        weights = [0.0] * 25
+        for index in (2, 7, 12, 17, 22):
+            weights[index] = 1.0
         return rgb.filter(ImageFilter.Kernel((5, 5), weights, scale=5.0))
     raise ValueError(f"unknown lighting variant: {variant}")
 
@@ -678,8 +731,8 @@ def train_spatial_candidate(dataset_dir: Path, output_dir: Path) -> dict[str, An
     if not isinstance(claimed_dataset_sha, str) or _sha256(_canonical(manifest)) != claimed_dataset_sha:
         raise ValueError("dataset manifest hash mismatch")
     manifest["dataset_sha256"] = claimed_dataset_sha
-    if manifest.get("schema") != SCHEMA_V3:
-        raise ValueError("spatial selection requires three-way v3 dataset")
+    if manifest.get("schema") not in {SCHEMA_V3, SCHEMA_V4}:
+        raise ValueError("spatial selection requires a three-way v3 or v4 dataset")
     if manifest.get("scope") != "SYNTHETIC_ONLY_NO_DEPLOYMENT_QUALIFICATION":
         raise ValueError("dataset scope mismatch")
 
