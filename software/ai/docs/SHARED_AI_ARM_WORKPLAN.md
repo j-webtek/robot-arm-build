@@ -909,9 +909,18 @@ governed ceiling. The link shapes remain capsule proxies rather than CAD meshes,
 so this increment advances data-pipeline and abstention rehearsal only and does
 not change any lane or integration status.
 
+The official-mesh comparison in `E-20260930-INT-455` replaces the capsule
+shape only for a bounded perception experiment. Seven visual meshes from the
+pinned Waveshare source are placed by the governed URDF FK and rasterized in
+Isaac from the identical fixed camera at `ready`, `hover_t`, and `hover_e`.
+Capsule-to-mesh mask IoU is only `0.596819` to `0.709856`, and the capsule
+misses `9,908` to `30,058` mesh pixels. The capsule corpus remains useful for
+obstruction rehearsal, but this result rejects treating it as a conservative
+robot silhouette. The official meshes are visual geometry only; no collision,
+clearance, localization, lane, or integration status changes.
+
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| SIM/INTEGRATION | S2/S3 | Isaac fixed-overview robot-geometry render and quantitative comparison against FK capsule masks, with retained unsupported-CAD evidence, focused tests, and zero authority | `issue/190-isaac-sim-host` | IN_PROGRESS |
 | Unclaimed | S2/S3 | physical-camera deployment qualification and safe-region-fit precision evidence | — | AVAILABLE |
 | ARM | S4 | collect four physical-original `camera_support_optics` bindings through onboarding, then run the ARM-070 intake; no synthetic promotion | ARM-071 | WAITING_FOR_ORIGINALS |
 

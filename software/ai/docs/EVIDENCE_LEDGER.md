@@ -6117,3 +6117,84 @@ rewriting history. New entries must use a unique evidence ID.
   governed Isaac scene and export triangle-level RGB, semantic segmentation,
   and depth from the identical fixed camera. Compare CAD and capsule masks per
   pose before deciding whether the lighter-weight generator is conservative.
+
+### E-20260930-INT-455 — official visual-mesh fixed-overview comparison
+
+- Stage: S2/S3 synthetic perception and obstruction-abstention rehearsal.
+- Lane: INTEGRATION supporting the AI/model lane; no lane status changed.
+- Implementation commit: `8562cab663e4e389ce7815be4db1172f1c519abf`.
+- Change: added an Isaac probe that pins the upstream Waveshare commit and
+  seven per-link visual-mesh hashes, applies the governed URDF forward
+  kinematics for `ready`, `hover_t`, and `hover_e`, and renders each pose from
+  the same fixed overview. The retained package contains crop-addressed RGB,
+  binary robot-mask, and uint16 millimetre-depth atlases plus a hash-bound
+  receipt and zero-authority status. Each mesh mask is compared pixel for pixel
+  with the corresponding INT-454 capsule proxy.
+- Inputs/fixtures: upstream commit
+  `40dbd84b553695212fab713e8465f817ba95454d`; governed URDF SHA-256
+  `a565718e7d74b07702802cf41eb9549a6e38e50b5e80aa9b887ab1ae3d0d8190`;
+  upstream mesh receipt SHA-256
+  `77b7c16e2d7c7a8ee0579b071d6a911516a8ba6d675188971e0c54e466b30954`;
+  capsule corpus SHA-256
+  `7b0f6be41f75464fae4a6fc75facfd0f7a62d90bc2eee62c64b5c5c7ef5353f6`;
+  final probe SHA-256
+  `91b610c6834b4306da8dad2605f5ca882161c1a629836722f3f0b5ad06bdc934`;
+  focused test SHA-256
+  `01a9d6b8442a17da65778f425617fa78f772fbac0ea4705fae1134d63c005ad3`;
+  retained manifest file SHA-256
+  `729554a4716e571e0db0735a9896af700c1eb9767923c32f7c53cff6a404d79c`;
+  canonical receipt SHA-256
+  `0abf73eaf3e58f9d7df5f1f2ac2a39dcc666f729f8c7bd34631eb535e9302055`.
+- Commands: `$env:OMNI_KIT_ACCEPT_EULA='YES'; $env:PYTHONPATH=(Resolve-Path 'software/src').Path; C:\IsaacSim\env_6_1_0\Scripts\python.exe software\integrations\isaac_sim\isaac_fixed_overview_mesh_render_probe.py --workspace . --upstream-repo C:\IsaacSim\sources\roarm_ws-40dbd84 --mesh-receipt software\integrations\isaac_sim\evidence\roarm_m3_upstream_link_meshes_20260929.json --capsule-manifest software\integrations\isaac_sim\evidence\fixed_overview_segmentation_v1\manifest.json --output-dir C:\IsaacSim\artifacts\issue190\fixed-overview-official-mesh-v6 --receipt C:\IsaacSim\evidence\fixed_overview_official_mesh_v6.json --status-output C:\IsaacSim\evidence\fixed_overview_official_mesh_v6.status.json`;
+  `$env:PYTHONPATH=(Resolve-Path 'software/src').Path; python -m pytest software/tests/unit/test_isaac_fixed_overview_mesh_render_evidence.py software/tests/unit/test_fixed_overview_segmentation_corpus.py software/tests/unit/test_fixed_fixture_practice_corpus.py software/tests/unit/test_virtual_pixel_vision.py software/tests/unit/test_virtual_arm_camera.py -q`;
+  `$env:PYTHONPATH=(Resolve-Path 'software/src').Path; python -c "from scripts.ci.offline_checks import TESTS; import pytest; raise SystemExit(pytest.main(['-q', *TESTS]))"`;
+  documentation, public-record, evidence-scope, artifact, repository-health,
+  source-footprint, release-integrity, readiness-synchronization, Ruff, and
+  `git diff --check` checks.
+- Preserved failed evidence: the first render exited zero but used every
+  nonbackground semantic ID, thereby including `UNLABELLED` board/device
+  geometry; its receipt/status file SHA-256 values are
+  `4b531c2b140913e56bfc09e99286e2ce4617c10755e3056e87d6c01d20dcc1b1`
+  and `06c7e4ec73f57e54a4bfde34e36edf349186a0f4a6180b9153c7555c5c72bbb9`.
+  The first correction failed closed because all three inherited-visibility
+  masks remained identical; status SHA-256
+  `7e09cfc4626774afd78ae160eed61ea30be1c91fe58ac7fcdcde09579231a3ec`.
+  Explicit per-mesh visibility then correctly exposed that the ready view has
+  only six visible link IDs; the overly strict seven-ID assertion failed with
+  status SHA-256
+  `54c596fec1ff6ba5becb7475bde134c0f6b6cf6ec7def2ca18d24780d3e9df71`.
+  The first evidence test also exposed uint16-versus-Pillow-int32 depth hash
+  normalization, while Ruff rejected one unused import; both were corrected
+  before the retained run. None of these failures was relabeled as passing.
+- Result: PASS_WITH_BLOCKERS. At `ready`, the official mesh has 88,567 pixels,
+  capsule IoU is `0.5968193509715699`, 9,908 mesh pixels lie outside the
+  capsule, and 43,230 capsule pixels lie outside the mesh. At `hover_t`, those
+  values are 173,242, `0.7098557113660929`, 22,847, and 38,625. At `hover_e`,
+  they are 190,210, `0.6980977455407738`, 30,058, and 39,202. Robot-only depth
+  spans 180 to 501 mm across the poses. Therefore the capsule proxy is not a
+  conservative official-mesh silhouette. Twenty focused tests passed in 12.52
+  seconds. The declared shared suite passed 503 tests with 4 Windows platform
+  skips in 45.22 seconds. All applicable repository policy checks passed. The
+  committed tree is exactly at the 6,100-file ceiling without raising it.
+- Artifacts:
+  `software/integrations/isaac_sim/isaac_fixed_overview_mesh_render_probe.py`;
+  `software/integrations/isaac_sim/evidence/fixed_overview_official_mesh_v1/`;
+  `software/tests/unit/test_isaac_fixed_overview_mesh_render_evidence.py`;
+  reproduction documentation in `software/integrations/isaac_sim/README.md`.
+- Hardware-write count: 0.
+- Physical-movement count: 0.
+- Limitations: the official upstream meshes are high-detail visual/perception
+  geometry, not reviewed reduced collision geometry. Link1 and link5 are not
+  watertight. The renderer uses synthetic materials and lighting, nominal and
+  unmeasured camera/robot placement, no tool geometry, and no camera-support
+  geometry. The run performs zero physics steps and establishes no collision
+  clearance, safe-region localization, physical-camera qualification,
+  controller behavior, permit, transport, or physical authority.
+- Supersedes: INT-454 only for assessing whether its capsules conservatively
+  approximate official visual-mesh silhouettes; INT-454 remains a valid cheap
+  synthetic obstruction and perturbation corpus.
+- Next dependency: replace the capsule labels in future synthetic training
+  renders with the retained official visual-mesh mask/depth path, then add the
+  missing tool and camera-support visual geometry. Separately collect a small
+  measured physical fixed-camera validation set before assigning any
+  synthetic-to-physical qualification or safe-region error bound.
