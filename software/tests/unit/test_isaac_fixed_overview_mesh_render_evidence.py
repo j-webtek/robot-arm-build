@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 
 import numpy as np
+import pytest
 from PIL import Image
 
 
@@ -395,6 +396,23 @@ def test_specificity_lighting_families_are_deterministic_and_distinct() -> None:
 
     assert all(np.array_equal(left, right) for left, right in zip(first, second, strict=True))
     assert len({_sha256(value.tobytes()) for value in first}) == len(variants)
+
+
+def test_progression_video_encoder_is_deterministic(tmp_path: Path) -> None:
+    pytest.importorskip("av")
+    module = _builder()
+    first_path = tmp_path / "first.mp4"
+    second_path = tmp_path / "second.mp4"
+    frames = [
+        Image.new("RGB", (960, 540), color=(index * 40, 20, 80))
+        for index in range(3)
+    ]
+
+    module._encode_mp4(first_path, frames)
+    module._encode_mp4(second_path, frames)
+
+    assert first_path.read_bytes() == second_path.read_bytes()
+    assert first_path.stat().st_size > 0
 
 
 def test_spatial_crops_are_deterministic_channel_first_and_labeled(tmp_path: Path) -> None:

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+from fractions import Fraction
 import hashlib
 import json
 from pathlib import Path
@@ -10,7 +11,7 @@ import shutil
 from typing import Any
 
 import numpy as np
-from PIL import Image, ImageDraw, ImageEnhance, ImageFilter
+from PIL import Image, ImageDraw, ImageEnhance, ImageFilter, ImageFont
 
 
 SCHEMA_V1 = "rocell.ai_official_mesh_occlusion_data.v1"
@@ -870,14 +871,266 @@ def train_spatial_candidate(dataset_dir: Path, output_dir: Path) -> dict[str, An
     return scorecard
 
 
+def _load_spatial_checkpoint(candidate_dir: Path):  # type: ignore[no-untyped-def]
+    import torch
+
+    checkpoint_path = candidate_dir / "model.json"
+    checkpoint = json.loads(checkpoint_path.read_text(encoding="utf-8"))
+    if checkpoint.get("schema") != "rocell.ai_target_crop_tiny_spatial.v1":
+        raise ValueError("spatial checkpoint schema mismatch")
+
+    class TinySpatial(torch.nn.Module):
+        def __init__(self) -> None:
+            super().__init__()
+            self.features = torch.nn.Sequential(
+                torch.nn.Conv2d(3, 8, 3, padding=1),
+                torch.nn.ReLU(),
+                torch.nn.MaxPool2d(2),
+                torch.nn.Conv2d(8, 16, 3, padding=1),
+                torch.nn.ReLU(),
+                torch.nn.AdaptiveAvgPool2d((4, 4)),
+            )
+            self.classifier = torch.nn.Linear(16 * 4 * 4, 1)
+
+        def forward(self, values):  # type: ignore[no-untyped-def]
+            return self.classifier(self.features(values).flatten(1)).squeeze(1)
+
+    model = TinySpatial().cpu()
+    state = {
+        name: torch.tensor(item["values"], dtype=torch.float32).reshape(item["shape"])
+        for name, item in checkpoint["state_dict"].items()
+    }
+    model.load_state_dict(state, strict=True)
+    model.eval()
+    return checkpoint, model
+
+
+def _video_frame(image: Image.Image, title: str, subtitle: str) -> Image.Image:
+    frame = image.convert("RGB").resize((960, 540), Image.Resampling.LANCZOS)
+    draw = ImageDraw.Draw(frame)
+    draw.rectangle((0, 0, 960, 58), fill=(8, 12, 18))
+    font = ImageFont.load_default()
+    draw.text((14, 10), title, fill=(245, 248, 252), font=font)
+    draw.text((14, 32), subtitle, fill=(188, 205, 222), font=font)
+    return frame
+
+
+def _scaled_polygon(points: list[list[float]]) -> list[tuple[int, int]]:
+    return [(round(point[0] * 0.5), round(point[1] * 0.5)) for point in points]
+
+
+def _encode_mp4(path: Path, frames: list[Image.Image], fps: int = 2) -> None:
+    try:
+        import av
+    except ImportError as exc:
+        raise RuntimeError("PyAV is required to encode progression MP4 files") from exc
+    if not frames:
+        raise ValueError("progression video requires at least one frame")
+    container = av.open(str(path), mode="w")
+    container.metadata.clear()
+    stream = container.add_stream("libx264", rate=fps)
+    stream.width = 960
+    stream.height = 540
+    stream.pix_fmt = "yuv420p"
+    stream.options = {"crf": "20", "preset": "medium", "threads": "1"}
+    for index, image in enumerate(frames):
+        frame = av.VideoFrame.from_ndarray(np.asarray(image, dtype=np.uint8), format="rgb24")
+        frame.pts = index
+        frame.time_base = Fraction(1, fps)
+        for packet in stream.encode(frame):
+            container.mux(packet)
+    for packet in stream.encode():
+        container.mux(packet)
+    container.close()
+
+
+def export_progression_videos(
+    source_manifest: Path, dataset_dir: Path, candidate_dir: Path, output_dir: Path,
+) -> dict[str, Any]:
+    """Export deterministic synthetic progression videos with zero authority."""
+    import torch
+
+    source_manifest = source_manifest.resolve(strict=True)
+    dataset_dir = dataset_dir.resolve(strict=True)
+    candidate_dir = candidate_dir.resolve(strict=True)
+    output_dir = output_dir.resolve()
+    if output_dir.exists() and any(output_dir.iterdir()):
+        raise ValueError("video output directory must be empty")
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    source = _verify_source(source_manifest)
+    dataset_manifest_path = dataset_dir / "manifest.json"
+    dataset = json.loads(dataset_manifest_path.read_text(encoding="utf-8"))
+    claimed_dataset_sha = dataset.pop("dataset_sha256", None)
+    if not isinstance(claimed_dataset_sha, str) or _sha256(_canonical(dataset)) != claimed_dataset_sha:
+        raise ValueError("video dataset manifest hash mismatch")
+    dataset["dataset_sha256"] = claimed_dataset_sha
+    if dataset.get("source_manifest_sha256") != _sha256(source_manifest.read_bytes()) \
+            or dataset.get("source_receipt_sha256") != source["receipt_sha256"]:
+        raise ValueError("video dataset differs from source render")
+    if dataset.get("scope") != "SYNTHETIC_ONLY_NO_DEPLOYMENT_QUALIFICATION":
+        raise ValueError("video dataset scope mismatch")
+
+    scorecard_path = candidate_dir / "scorecard.json"
+    scorecard = json.loads(scorecard_path.read_text(encoding="utf-8"))
+    claimed_scorecard_sha = scorecard.pop("scorecard_sha256", None)
+    if not isinstance(claimed_scorecard_sha, str) \
+            or _sha256(_canonical(scorecard)) != claimed_scorecard_sha:
+        raise ValueError("video scorecard hash mismatch")
+    scorecard["scorecard_sha256"] = claimed_scorecard_sha
+    checkpoint, model = _load_spatial_checkpoint(candidate_dir)
+    model_path = candidate_dir / "model.json"
+    if scorecard.get("model_sha256") != _sha256(model_path.read_bytes()) \
+            or scorecard.get("dataset_sha256") != claimed_dataset_sha \
+            or checkpoint.get("selection_dataset_sha256") != claimed_dataset_sha:
+        raise ValueError("video candidate differs from dataset")
+    if scorecard.get("hardware_writes") != 0 or scorecard.get("physical_movements") != 0:
+        raise ValueError("video candidate claims authority")
+
+    atlas_path = source_manifest.parent / source["artifact_atlases"]["rgb"]["path"]
+    atlas = Image.open(atlas_path).convert("RGB")
+    geometry_frames = []
+    for index, pose in enumerate(source["pose_results"]):
+        image = atlas.crop(tuple(pose["atlas_crop_px"]))
+        frame = _video_frame(
+            image,
+            f"Synthetic official-mesh pose {index + 1}/{len(source['pose_results'])}",
+            f"{pose['pose_group']} | {pose['pose_id']} | ground-truth occlusion overlay",
+        )
+        draw = ImageDraw.Draw(frame)
+        for target in pose["targets"]:
+            blocked = target["center_occluded_by_official_mesh"] or (
+                target["safe_region_official_mesh_overlap_fraction"]
+                > MAXIMUM_SAFE_REGION_OVERLAP
+            )
+            color = (240, 72, 72) if blocked else (55, 205, 115)
+            draw.line(_scaled_polygon(target["safe_polygon_px"] + [target["safe_polygon_px"][0]]),
+                      fill=color, width=2)
+        geometry_frames.append(frame)
+
+    evaluation_rows = _load_rows(dataset_dir, "evaluation", dataset)
+    evaluation_x, _ = _spatial_crops(dataset_dir, evaluation_rows)
+    with torch.no_grad():
+        probabilities = torch.sigmoid(model(torch.from_numpy(evaluation_x))).numpy()
+    rows_by_image: dict[str, list[tuple[dict[str, Any], float]]] = {}
+    for row, probability in zip(evaluation_rows, probabilities, strict=True):
+        rows_by_image.setdefault(row["image_path"], []).append((row, float(probability)))
+    evaluation_images = [item for item in dataset["images"] if item["split"] == "evaluation"]
+    diagnostic_frames = []
+    threshold = float(checkpoint["threshold"])
+    aggregate = {"true_visible": 0, "true_abstain": 0, "false_abstain": 0, "missed_abstain": 0}
+    category_colors = {
+        "true_visible": (55, 205, 115),
+        "true_abstain": (75, 155, 245),
+        "false_abstain": (255, 170, 45),
+        "missed_abstain": (245, 55, 190),
+    }
+    for index, image_record in enumerate(evaluation_images):
+        image_path = dataset_dir / image_record["path"]
+        if _sha256(image_path.read_bytes()) != image_record["sha256"]:
+            raise ValueError("video image hash mismatch")
+        rows = rows_by_image[image_record["path"]]
+        counts = {key: 0 for key in aggregate}
+        categorized = []
+        for row, probability in rows:
+            expected = row["decision"] == "abstain"
+            predicted = probability >= threshold
+            category = (
+                "true_abstain" if expected and predicted else
+                "missed_abstain" if expected else
+                "false_abstain" if predicted else "true_visible"
+            )
+            counts[category] += 1
+            aggregate[category] += 1
+            categorized.append((row, probability, category))
+        frame = _video_frame(
+            Image.open(image_path),
+            f"Frozen evaluation {index + 1}/{len(evaluation_images)}",
+            (f"{image_record['pose_id']} | {image_record['lighting_variant']} | "
+             f"missed={counts['missed_abstain']} false-stop={counts['false_abstain']} "
+             f"threshold={threshold:.2f}"),
+        )
+        draw = ImageDraw.Draw(frame)
+        for row, probability, category in categorized:
+            center = (round(row["center_px"][0] * 0.5), round(row["center_px"][1] * 0.5))
+            radius = 5 if category in {"false_abstain", "missed_abstain"} else 2
+            color = category_colors[category]
+            draw.ellipse((center[0] - radius, center[1] - radius,
+                          center[0] + radius, center[1] + radius),
+                         outline=color, width=2)
+            if category in {"false_abstain", "missed_abstain"}:
+                draw.line(_scaled_polygon(row["safe_polygon_px"] + [row["safe_polygon_px"][0]]),
+                          fill=color, width=3)
+                draw.text((center[0] + 7, center[1] - 6),
+                          f"{row['target_id']} {probability:.2f}", fill=color,
+                          font=ImageFont.load_default())
+        diagnostic_frames.append(frame)
+
+    geometry_path = output_dir / "official_mesh_pose_progression.mp4"
+    diagnostic_path = output_dir / "occlusion_candidate_evaluation.mp4"
+    _encode_mp4(geometry_path, geometry_frames)
+    _encode_mp4(diagnostic_path, diagnostic_frames)
+    manifest: dict[str, Any] = {
+        "schema": "rocell.ai_sim_progression_video_bundle.v1",
+        "scope": "SYNTHETIC_ONLY_NO_DEPLOYMENT_QUALIFICATION",
+        "source_manifest_sha256": _sha256(source_manifest.read_bytes()),
+        "source_receipt_sha256": source["receipt_sha256"],
+        "dataset_manifest_sha256": _sha256(dataset_manifest_path.read_bytes()),
+        "dataset_sha256": claimed_dataset_sha,
+        "model_sha256": _sha256(model_path.read_bytes()),
+        "scorecard_sha256": claimed_scorecard_sha,
+        "threshold": threshold,
+        "evaluation_confusion": aggregate,
+        "videos": {
+            "pose_progression": {
+                "path": geometry_path.name,
+                "sha256": _sha256(geometry_path.read_bytes()),
+                "frame_count": len(geometry_frames),
+                "fps": 2,
+                "resolution_px": [960, 540],
+            },
+            "candidate_evaluation": {
+                "path": diagnostic_path.name,
+                "sha256": _sha256(diagnostic_path.read_bytes()),
+                "frame_count": len(diagnostic_frames),
+                "fps": 2,
+                "resolution_px": [960, 540],
+            },
+        },
+        "hardware_writes": 0,
+        "physical_movements": 0,
+        "physical_authority": False,
+    }
+    manifest["bundle_sha256"] = _sha256(_canonical(manifest))
+    (output_dir / "manifest.json").write_bytes(_canonical(manifest) + b"\n")
+    return manifest
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--source-manifest", type=Path, required=True)
-    parser.add_argument("--output-dir", type=Path, required=True)
+    parser.add_argument("--output-dir", type=Path)
     parser.add_argument("--baseline-output", type=Path)
     parser.add_argument("--candidate-output", type=Path)
     parser.add_argument("--spatial-output", type=Path)
+    parser.add_argument(
+        "--record-existing", type=Path, nargs=3,
+        metavar=("DATASET_DIR", "CANDIDATE_DIR", "VIDEO_OUTPUT_DIR"),
+    )
     args = parser.parse_args()
+    if args.record_existing is not None:
+        if args.output_dir is not None or any(
+            value is not None
+            for value in (args.baseline_output, args.candidate_output, args.spatial_output)
+        ):
+            parser.error("--record-existing cannot be combined with build or training outputs")
+        manifest = export_progression_videos(
+            args.source_manifest, *args.record_existing,
+        )
+        print(json.dumps(manifest, sort_keys=True))
+        return 0
+    if args.output_dir is None:
+        parser.error("--output-dir is required unless --record-existing is used")
     try:
         manifest = build(args.source_manifest, args.output_dir)
         scorecard = (
