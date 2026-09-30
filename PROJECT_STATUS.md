@@ -1,6 +1,7 @@
 # Tactevra project status
 
-Reviewed September 29, 2026 through the ARM-128 retained endpoint-atlas campaign,
+Reviewed September 29, 2026 through the ARM-129 endpoint-reuse verifier,
+the ARM-128 retained endpoint-atlas campaign,
 the ARM-126 retained service fault campaign,
 ARM-125 bounded shadow service,
 ARM-124 retained owner fault campaign,
@@ -706,6 +707,18 @@ bounded corpus, with zero variable-solution endpoint observations. This is a
 useful exact-reuse candidate map, not a general proof of path independence:
 atlas use and warm starts remain explicitly unauthorized until a separate
 equivalence-preserving experiment covers invalidation and hostile contexts.
+
+ARM-129 adds the next decision-neutral experiment rather than enabling endpoint
+reuse. A lifecycle-bound verifier stores a bounded candidate solved state for
+each exact semantic endpoint, then compares every recurrence with the complete
+canonical solver result. Its decision context binds build, model, calibration,
+joint bounds, gripper configuration, IK options, algorithm, implementation,
+and solver-source identity. In the repeated `ROBOT` test, two complete runs
+preserve the reference receipt while 21 candidate hits match the canonical
+solution and zero conflict. Capacity, lifetime sample bounds, entry corruption,
+deliberate solution conflict, decision-context mismatch, reload, restart,
+crossed context, and unmanaged use all reject or remain bounded. Candidates
+remain excluded from decisions and admission; warm starts remain unauthorized.
 
 AI-403 then integrates the pose-output precision adapter and actual V2 batch
 producer on current `main`. The retained contract fixture deterministically

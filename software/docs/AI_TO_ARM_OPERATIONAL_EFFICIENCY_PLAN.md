@@ -510,7 +510,7 @@ remains the dominant software cost.
 
 ### E2 — Accelerate IK and collision preparation
 
-**Status:** in progress through ARM-128 retained endpoint-atlas evidence.
+**Status:** in progress through ARM-129 endpoint-reuse verification.
 
 ARM-119 adds an opt-in, bounded `TypingIkEffortRecorderV1` side channel. It
 records attempt and iteration counts only after each deterministic solve. The
@@ -633,6 +633,21 @@ experiment to exact endpoint-result reuse, but it does not establish stability
 for unobserved incoming states. Both atlas use and warm starts remain
 unauthorized, and the retained artifact has zero controller, transport,
 hardware-write, movement, or physical authority.
+
+ARM-129 implements a bounded endpoint-result verifier alongside the reference
+solver. It does not return cached candidates to planning. Instead, it binds one
+candidate map to the active context object, epoch, service instance,
+generation, build, model, calibration, joint bounds, fixed gripper, IK options,
+algorithm, solver implementation, and solver-source digest. Each repeated
+semantic endpoint is integrity-checked and compared with the newly computed
+canonical solution. Two `ROBOT` passes retain byte-identical reference receipts
+while observing 34 endpoints: 13 stores and 21 matching candidate hits, with
+zero conflicts. Tests cover bounded capacity and sample lifetime, corruption,
+deliberate solution conflict, altered decision context, reload, restart,
+crossed context, invalidation, and unmanaged use. Candidate use for decisions,
+admission, and warm starts remains false. This verifies the comparison
+mechanics; a clean-commit multi-sequence/fault campaign is still required
+before proposing substitution or measuring any speed benefit.
 
 Deliver:
 

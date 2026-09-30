@@ -33,6 +33,7 @@ from .typing_planner_preparation_v1 import PreparedTypingPlannerV1
 from .typing_ik_effort_telemetry_v1 import TypingIkEffortRecorderV1
 from .typing_exact_ik_result_cache_v1 import ExactTypingIkResultCacheV1
 from .typing_endpoint_atlas_observer_v1 import TypingEndpointAtlasRecorderV1
+from .typing_endpoint_reuse_verifier_v1 import TypingEndpointReuseVerifierV1
 from .typing_trajectory_ik_screen_v1 import (
     READY_STATUS as IK_READY_STATUS,
     TypingTrajectoryIkSeedV1,
@@ -201,6 +202,7 @@ def run_typing_shadow_pipeline_v1(
     prepared_planner: PreparedTypingPlannerV1 | None = None,
     ik_effort_recorder: TypingIkEffortRecorderV1 | None = None,
     endpoint_atlas_recorder: TypingEndpointAtlasRecorderV1 | None = None,
+    endpoint_reuse_verifier: TypingEndpointReuseVerifierV1 | None = None,
     exact_ik_result_cache: ExactTypingIkResultCacheV1 | None = None,
 ) -> dict[str, Any]:
     """Run exact production boundaries through their honest offline blocker.
@@ -249,6 +251,7 @@ def run_typing_shadow_pipeline_v1(
         context_lifecycle=context_lifecycle,
         effort_recorder=ik_effort_recorder,
         endpoint_atlas_recorder=endpoint_atlas_recorder,
+        endpoint_reuse_verifier=endpoint_reuse_verifier,
         exact_result_cache=exact_ik_result_cache,
     )
     if ik.get("status") != IK_READY_STATUS:

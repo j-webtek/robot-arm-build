@@ -50,6 +50,7 @@ from .typing_planner_preparation_v1 import (
 from .typing_ik_effort_telemetry_v1 import TypingIkEffortRecorderV1
 from .typing_exact_ik_result_cache_v1 import ExactTypingIkResultCacheV1
 from .typing_endpoint_atlas_observer_v1 import TypingEndpointAtlasRecorderV1
+from .typing_endpoint_reuse_verifier_v1 import TypingEndpointReuseVerifierV1
 
 
 SCHEMA = "rocell.typing_trajectory_ik_screen.v1"
@@ -198,6 +199,7 @@ def screen_typing_trajectory_ik_v1(
     context_lifecycle: SimulationContextLifecycleV1 | None = None,
     effort_recorder: TypingIkEffortRecorderV1 | None = None,
     endpoint_atlas_recorder: TypingEndpointAtlasRecorderV1 | None = None,
+    endpoint_reuse_verifier: TypingEndpointReuseVerifierV1 | None = None,
     exact_result_cache: ExactTypingIkResultCacheV1 | None = None,
     _lifecycle_binding: SimulationContextLifecycleBindingV1 | None = None,
 ) -> dict[str, Any]:
@@ -223,17 +225,23 @@ def screen_typing_trajectory_ik_v1(
         raise TypeError(
             "endpoint_atlas_recorder must be a TypingEndpointAtlasRecorderV1"
         )
+    if endpoint_reuse_verifier is not None and not isinstance(
+        endpoint_reuse_verifier, TypingEndpointReuseVerifierV1
+    ):
+        raise TypeError(
+            "endpoint_reuse_verifier must be a TypingEndpointReuseVerifierV1"
+        )
     if exact_result_cache is not None and not isinstance(
         exact_result_cache, ExactTypingIkResultCacheV1
     ):
         raise TypeError("exact_result_cache must be an ExactTypingIkResultCacheV1")
     if (
-        exact_result_cache is not None
+        (exact_result_cache is not None or endpoint_reuse_verifier is not None)
         and context_lifecycle is None
         and _lifecycle_binding is None
     ):
         raise TypingTrajectoryIkScreenV1Error(
-            "exact IK cache requires lifecycle-managed admission"
+            "IK reuse experiments require lifecycle-managed admission"
         )
     if context_lifecycle is not None:
         if _lifecycle_binding is not None:
@@ -258,6 +266,7 @@ def screen_typing_trajectory_ik_v1(
                 prepared_planner=prepared_planner,
                 effort_recorder=effort_recorder,
                 endpoint_atlas_recorder=endpoint_atlas_recorder,
+                endpoint_reuse_verifier=endpoint_reuse_verifier,
                 exact_result_cache=exact_result_cache,
                 _lifecycle_binding=binding,
             )
@@ -372,7 +381,11 @@ def screen_typing_trajectory_ik_v1(
             joint_bounds_rad=bounds,
         )
         solver_source_sha256 = None
-        if effort_recorder is not None or exact_result_cache is not None:
+        if (
+            effort_recorder is not None
+            or exact_result_cache is not None
+            or endpoint_reuse_verifier is not None
+        ):
             solver_source = inspect.getsourcefile(type(solver))
             if solver_source is None:
                 raise TypingTrajectoryIkScreenV1Error(
@@ -386,6 +399,29 @@ def screen_typing_trajectory_ik_v1(
             solver_source_sha256 = hashlib.sha256(
                 solver_source_path.read_bytes()
             ).hexdigest()
+        endpoint_reuse_context_sha256 = _sha256({
+            "schema": "rocell.typing_endpoint_reuse_context.v1",
+            "build_snapshot_sha256": context.snapshot.snapshot_hash,
+            "kinematic_model_sha256": context.scenario.model_sha256,
+            "calibration_snapshot_sha256": snapshot.snapshot_sha256,
+            "joint_bounds_rad": {
+                name: list(bounds[name]) for name in ARM_JOINT_NAMES
+            },
+            "fixed_gripper_position_rad": (
+                context.scenario.fixed_gripper_position.value
+            ),
+            "ik_options": {
+                "max_attempts": context.scenario.ik_policy.max_attempts,
+                "max_iterations_per_attempt": (
+                    context.scenario.ik_policy.max_iterations_per_attempt
+                ),
+            },
+            "algorithm": "DETERMINISTIC_BOUNDED_DLS_V1",
+            "solver_implementation": (
+                f"{type(solver).__module__}.{type(solver).__qualname__}"
+            ),
+            "solver_source_sha256": solver_source_sha256,
+        })
         ik_executed = True
         for index in range(len(samples)):
             waypoint = _waypoint(plan, index)
@@ -465,6 +501,17 @@ def screen_typing_trajectory_ik_v1(
                     evaluated,
                     incoming_joint_positions_rad=previous,
                     solver_input_sha256=solver_input_sha256,
+                )
+            if endpoint_reuse_verifier is not None:
+                if _lifecycle_binding is None:
+                    raise TypingTrajectoryIkScreenV1Error(
+                        "endpoint reuse verifier lost its lifecycle binding"
+                    )
+                endpoint_reuse_verifier.observe(
+                    plan.screening_samples[index],
+                    evaluated,
+                    decision_context_sha256=endpoint_reuse_context_sha256,
+                    binding=_lifecycle_binding,
                 )
             results.append(evaluated.to_dict())
             if not evaluated.accepted:

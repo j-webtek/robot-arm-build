@@ -6257,3 +6257,41 @@ rewriting history. New entries must use a unique evidence ID.
 - Next dependency: implement a bounded exact endpoint-result reuse experiment
   with full context identity, integrity verification, invalidation, and
   reference-decision equivalence before proposing any runtime optimization.
+
+### E-20260929-ARM-129 — decision-neutral endpoint-result reuse verifier
+
+- Stage: operational efficiency E2, endpoint-result equivalence experiment.
+- Lane: arm/runtime typing IK screen.
+- Change: added a lifecycle-bound verifier beside the canonical solver. It
+  retains bounded endpoint candidates and compares recurrences with newly
+  computed canonical solutions; candidates cannot replace solver output or
+  affect admission.
+- Context binding: active context object, context epoch, service instance,
+  generation, build, model, calibration, joint bounds, fixed gripper, IK
+  options, algorithm, solver implementation, and solver-source digest.
+- Result: PASS. Two complete `ROBOT` runs preserve the uninstrumented canonical
+  receipt. Across 114 screened samples and 34 semantic endpoint observations,
+  the verifier records 13 bounded stores and 21 candidate hits; all 21 match
+  the canonical solved joint state and zero conflict.
+- Fault coverage: capacity exhaustion, lifetime sample bound, invalidation,
+  corrupted entry, deliberate alternate solved state, altered decision
+  context, lifecycle reload, lifecycle restart, crossed context, snapshot
+  mutation, and unmanaged use reject or remain bounded as specified.
+- Candidate used for decision: false.
+- Warm start authorized: false.
+- Diagnostics used for admission: false.
+- Camera opens: 0.
+- Model runtime loads: 0.
+- Transport opens: 0.
+- Controller starts: 0.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Physical authority: false.
+- Limitations: this is governed offline comparison coverage, not retained
+  clean-commit campaign evidence. It intentionally recomputes every canonical
+  solve and therefore provides no runtime speed benefit or substitution proof.
+- Supersedes: ARM-128 only for its verifier-mechanics dependency; ARM-128
+  remains authoritative for the retained endpoint atlas.
+- Next dependency: retain a clean-commit five-sequence equivalence and fault
+  campaign before considering a separately gated candidate-substitution
+  experiment.
