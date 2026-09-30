@@ -988,9 +988,16 @@ on its own fresh test but too conservative for useful typing cadence. The
 checkpoint remains synthetic-only and blocked; its evaluation split is now
 consumed and cannot be used to tune the false-abstention rate.
 
+The fresh specificity campaign in `E-20260930-AI-465` freezes twelve unused
+actual-emitter schedule poses and six new lighting families before rendering.
+Its tiny spatial candidate reduces held-out false abstentions to 28 of 1,239
+visible targets, but misses 15 of 111 required abstentions. The result is
+reproducible and substantially more usable, while the higher dangerous miss
+rate blocks promotion. Its evaluation is consumed and cannot be used for
+threshold or architecture tuning.
+
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI | S2/S3 | fresh disjoint transit-pose reservation, synthetic visible-target specificity corpus, focused simulator tests, and retained evidence; no runtime or authority changes | `issue/190-isaac-sim-host` | IN_PROGRESS |
 | Unclaimed | S2/S3 | physical-camera deployment qualification and safe-region-fit precision evidence | — | AVAILABLE |
 | ARM | S4 | collect four physical-original `camera_support_optics` bindings through onboarding, then run the ARM-070 intake; no synthetic promotion | ARM-071 | WAITING_FOR_ORIGINALS |
 

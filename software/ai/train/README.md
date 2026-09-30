@@ -176,3 +176,12 @@ parameters. It uses CPU-only deterministic training and selects its threshold
 on development. Its evaluation result is evidence `E-20260930-AI-464`. The
 model greatly reduces missed synthetic occlusions but rejects too many visible
 targets, so it remains blocked and is not a runtime default.
+
+The v4 specificity experiment is evidence `E-20260930-AI-465`. It moves all 21
+consumed poses and lighting families into training, reserves six unused
+near-park transit poses for development, and freezes six different unused poses
+for one evaluation. The same tiny architecture reduces the held-out visible-
+target false-abstention rate from 40.3% to 2.3%, but its missed-abstention rate
+rises from 0.7% to 13.5%. This exposes a safety-versus-cadence tradeoff rather
+than a promotable model. The evaluation is consumed, the candidate remains
+blocked and synthetic-only, and another fresh split is required before tuning.

@@ -6812,3 +6812,119 @@ rewriting history. New entries must use a unique evidence ID.
   transit negatives and measured tool/camera-support geometry when available.
   Physical promotion remains dependent on measured fixed-camera evidence under
   a registered configuration epoch.
+
+### E-20260930-AI-465 — fresh visible-transit specificity candidate
+
+- Stage: S2/S3 synthetic perception and abstention development.
+- Lane: AI/model with inert Isaac rendering; no arm or integration status
+  changed.
+- Implementation commit: `f0dbbeec1490a1373bf29b70489f356c3163326f`.
+- Change: before rendering or model selection, reserved twelve previously
+  unused states from the exact 133-sample actual-emitter schedule. All 21
+  previously consumed poses and fifteen previously consumed lighting families
+  became training input. Schedule samples 2/4/6 and 124/126/130, crossed with
+  soft-neutral, mid-gamma, and left-shadow lighting, formed visible-heavy
+  development. Samples 10/13/20 and 114/118/122, crossed with cool-flat,
+  top-shadow, and vertical-motion-blur lighting, remained untouched evaluation.
+  Pose and lighting groups are pairwise disjoint. The 1,649-parameter spatial
+  architecture, eight-epoch training policy, and development-only threshold
+  selection remained fixed. Evaluation bytes loaded once after checkpoint and
+  threshold freeze.
+- Inputs/fixtures: renderer SHA-256
+  `35883bccc1814d5ecde06f43602af7a4ec01fd10f6513e6956067d4305a9366d`;
+  dataset/model implementation SHA-256
+  `f738b0290fac7d7cecef76ecbfc8c6624fd378cbd223a35a157c4848ff15eb24`;
+  focused test SHA-256
+  `a3249d1ebb6817a8046b7164b4ed2aaf211cfddfc07c64e03099e9a4aa5d48a3`;
+  actual-emitter schedule file SHA-256
+  `6a59ce143f5527c7a9ced09b08d5515644ea4fb859dd69691e08483eb020ee42`;
+  target-catalog SHA-256
+  `6779213e832ab27eeda1e7fb245f57ff8cb0d56707b5aa73a8f31ec483a620f2`.
+- Commands: `$env:OMNI_KIT_ACCEPT_EULA='YES'; $env:PYTHONPATH=(Resolve-Path
+  'software/src').Path; C:\IsaacSim\env_6_1_0\Scripts\python.exe
+  software\integrations\isaac_sim\isaac_fixed_overview_mesh_render_probe.py
+  --workspace . --upstream-repo C:\IsaacSim\sources\roarm_ws-40dbd84
+  --mesh-receipt software\integrations\isaac_sim\evidence\roarm_m3_upstream_link_meshes_20260929.json
+  --capsule-manifest software\integrations\isaac_sim\evidence\fixed_overview_segmentation_v1\manifest.json
+  --schedule-bundle software\integrations\isaac_sim\evidence\actual_emitter_joint_schedule_bundle_9e5c878_20260929.json
+  --output-dir C:\IsaacSim\artifacts\issue190\fixed-overview-official-mesh-v4-run1
+  --receipt C:\IsaacSim\evidence\fixed_overview_official_mesh_v4_run1.json
+  --status-output C:\IsaacSim\evidence\fixed_overview_official_mesh_v4_run1.status.json`;
+  `python software/ai/train/build_official_mesh_occlusion_data.py
+  --source-manifest C:\IsaacSim\artifacts\issue190\fixed-overview-official-mesh-v4-run1\manifest.json
+  --output-dir C:\IsaacSim\artifacts\issue190\official-mesh-specificity-data-v1
+  --spatial-output C:\IsaacSim\artifacts\issue190\official-mesh-specificity-candidate-v1`;
+  the same builder command with `v2` output directories for deterministic byte
+  comparison; focused pytest, shared boundary pytest, Ruff, documentation,
+  repository audit, source-footprint, and `git diff --check` checks.
+- Render result: PASS_WITH_BLOCKERS. All 33 official-mesh masks are distinct.
+  The 21 training poses contain 196 center occlusions and 242 safe-overlap
+  crossings. The visible-heavy six-pose development group contains 13 center
+  occlusions and 15 crossings. The six-pose evaluation group contains 32
+  center occlusions and 37 crossings. Canonical render receipt SHA-256 is
+  `def37772c86853319b27be21f6133fa7750619cb3d8d80d8a3578227d772af35`;
+  receipt file SHA-256 is
+  `1c734f4cdff14c7cdf07528c80a10e415f43dbcb8fcbbb86bc67400553839c2c`;
+  status file SHA-256 is
+  `4ea62dcee8013e6fc0d3e4ef56ea5a223887db4ef7254970ec2ee3e3b39e65da`.
+  RGB/mask/depth atlas SHA-256 values are respectively
+  `c7a2215e42739ba80f0592067e15eb6152eccca4bc5d85f4cf7100fbf9955953`,
+  `a5018b9f5edefb4125a1b4a00c126487c0e9f39f23de52b8005da2d851b8f8e6`,
+  and `2955540537bf1f447c7b894eca166f511f8f271871d539cde0503dbac6323508`.
+- Dataset result: two independent 355-file builds are byte-identical. Each is
+  54,200,927 bytes. Dataset SHA-256 is
+  `e913da3a300019e1e5b21817e99b5c4319fc13479ef33eaf3df7b9c022e1f444`;
+  manifest file SHA-256 is
+  `01b35301729bd9718284e638787feed84709daecbf702dbbb71fccdd3061ae6c`.
+  Training has 23,625 rows with 3,630 abstentions; development has 1,350
+  rows with 45 abstentions; evaluation has 1,350 rows with 111 abstentions.
+  Their JSONL SHA-256 values are respectively
+  `5b021e2a58e709074dcafa85f9414fd39c1799f076f5d5c15805219e0f5cfc10`,
+  `e4acd5f6afec07ac45d1213429de00b5f212a8be699691fdd9eb7defa29a777e`,
+  and `0468943b5ee38ebd5ee521e07e9f15828f77cb1811d7bab5530697024e18ec77`.
+- Candidate result: BLOCKED_SYNTHETIC_ONLY. Both independent checkpoint and
+  scorecard builds are byte-identical. Selected threshold is `0.30`.
+  Development records 45 true abstentions, 1,277 true-visible labels, 28 false
+  abstentions, and zero missed abstentions: accuracy `0.9792592592592593`,
+  balanced accuracy `0.989272030651341`, Brier score
+  `0.011989938053770022`, and calibration error `0.02784303200189714`.
+  Untouched evaluation records 96 true abstentions, 1,211 true-visible labels,
+  28 false abstentions, and 15 missed abstentions: missed-abstention rate
+  `15/111 = 0.13513513513513514`, visible-target false-abstention rate
+  `28/1239 = 0.022598870056497176`, accuracy `0.9681481481481482`, balanced
+  accuracy `0.9211329974041839`, Brier score `0.027426143289465753`, and
+  calibration error `0.028454788347913162`. Model SHA-256 is
+  `aee2e2136768ea3fb80bf7978902d9013e73c32b7fed31b8285a002f5ea1afdd`;
+  canonical scorecard SHA-256 is
+  `40887e2162e06cd28cdd1a7fdd7973630ca56be2abdfe84ae6be42311ded038c`;
+  scorecard file SHA-256 is
+  `e4db3849a5641b6a76b9e5f690ec7e9f9095a6ec49e474d22b03c52e4ce884d1`.
+- Validation: 59 focused simulator/perception tests passed in 22.43 seconds;
+  70 shared v2 precision, producer, strict-ingress, and conformance tests passed
+  in 5.51 seconds. Ruff and maintained-document checks passed. The repository
+  audit inspected 6,100 paths and 622.5 MiB with zero unresolved findings and
+  14 exact reviewed synthetic fixtures. `git diff --check` passed.
+- Artifact location: external only under
+  `C:\IsaacSim\artifacts\issue190\fixed-overview-official-mesh-v4-run1`,
+  `official-mesh-specificity-data-v1`, `...data-v2`,
+  `official-mesh-specificity-candidate-v1`, and `...candidate-v2`; hashes bind
+  exact local bytes but do not make them clean-clone available.
+- Hardware-write count: 0.
+- Physical-movement count: 0.
+- Physics-step count: 0.
+- Limitations: all geometry, camera, lighting, pixels, and labels remain
+  synthetic. Tool and camera-support geometry, physical frames, temporal
+  evidence, and deployment-calibrated uncertainty remain absent. The safer
+  AI-464 result and more usable AI-465 result are from different consumed
+  evaluation domains and do not form an authorized ensemble or threshold.
+  This evidence qualifies no localization, collision clearance, controller,
+  execution, transport, permit, or physical authority.
+- Supersedes: none. AI-464 remains the retained low-miss candidate; AI-465
+  demonstrates a reproducible specificity improvement and a safety-recall
+  regression on a fresh domain.
+- Next dependency: reserve another unused schedule-pose evaluation group before
+  any tuning. Use new development only to investigate calibrated two-stage or
+  overlap-aware abstention that preserves AI-464-level miss behavior while
+  approaching AI-465 specificity. Add measured tool/camera-support geometry
+  when available; physical promotion remains dependent on final fixed-camera
+  evidence under a registered configuration epoch.
