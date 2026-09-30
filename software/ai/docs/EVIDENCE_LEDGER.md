@@ -7158,3 +7158,81 @@ rewriting history. New entries must use a unique evidence ID.
   offsets on new development data before reserving another untouched evaluation
   group. Physical promotion still requires final fixed-camera qualification and
   measured installed support/tool geometry.
+
+### E-20260930-AI-469 — target-aware progression video bundle
+
+- Stage: S2/S3 synthetic perception review evidence.
+- Lane: AI/model with offline presentation encoding; no arm or integration
+  status changed.
+- Implementation commit:
+  `2eda502f65b2fd38e4d3f8ac8ef34c94e5a02ba4`.
+- Change: the deterministic video exporter now loads either the existing
+  three-channel spatial checkpoint or the four-channel target-aware checkpoint.
+  For the latter it reconstructs the exact RGB plus known-target-safe-region
+  input, replays the already consumed evaluation without model selection, and
+  emits a v2 bundle manifest that names all four channels and explicitly records
+  `simulator_robot_mask_input: false`. The previous v1 path remains supported.
+- Inputs/fixtures: source manifest file SHA-256
+  `a3583b4c9582efa2e4285845892b16dfa4e18cec97231a9d1b7d57de0647d576`;
+  canonical source receipt SHA-256
+  `dece049dd226781a7a7d53f5c29056bfc47e83134e6f05da1b5e9d4c59d67c5a`;
+  dataset manifest file SHA-256
+  `a1010e1a7c7599f60241ffd83610e7c19f52cd67fca102d6f39165d605a6debe`;
+  canonical dataset SHA-256
+  `393a6cfdad649efe99d27e62f952d81dbf2d34428ff0c80eeba6f51ab0980767`;
+  model SHA-256
+  `a986eb4cdd654905893029c54e11d2175910810f3f87dfe029580b97dc385bcb`;
+  canonical scorecard SHA-256
+  `c6edaf88eaef98dfab60470b3b4d97c6c80b429f117a7f39aa927361c1cbd66a`;
+  exporter source SHA-256
+  `e81d42f7bf6b83c3501750ff488b3a123a04ecc338395f4e31e95ac7165cfc5a`;
+  focused test SHA-256
+  `303816eece6d9f17ba67be21c0bacf36540a7f4eec8af92bbb5acd6c38d930a9`.
+- Exact command: `python software/ai/train/build_official_mesh_occlusion_data.py
+  --source-manifest C:\IsaacSim\artifacts\issue190\fixed-overview-official-mesh-v5-run1\manifest.json
+  --record-existing C:\IsaacSim\artifacts\issue190\official-mesh-target-aware-data-v1-retry1
+  C:\IsaacSim\artifacts\issue190\official-mesh-target-aware-candidate-v1-retry1
+  C:\IsaacSim\artifacts\issue190\target-aware-progression-videos-v1`;
+  repeated with final output `target-aware-progression-videos-v2`, followed by
+  byte comparison, PyAV decode, representative-frame inspection, focused and
+  shared pytest, Ruff, maintained-document, AI work-registry,
+  repository-health, source-footprint, and `git diff --check` gates.
+- Result: PASS_WITH_BLOCKERS. Both exports are byte-identical. Canonical bundle
+  SHA-256 is
+  `b1b7847072792eaf519d47ee34a22bd3eeb8ee3430d859e03b7761732c885979`;
+  manifest file SHA-256 is
+  `d7df9ec26f6ab96f1041c9ddac605f5e92ff6d3aa4bf905f70d6f1bfc84b6f07`.
+  `official_mesh_pose_progression.mp4` is H.264, 960-by-540, 45 frames,
+  2 fps, 22.5 seconds, 341,457 bytes, SHA-256
+  `50bff986386c86436bf047ea009bd2a0f289d3aa4836e2eca74e391e24524d02`.
+  `occlusion_candidate_evaluation.mp4` is H.264, 960-by-540, 18 frames,
+  2 fps, 9.0 seconds, 167,922 bytes, SHA-256
+  `ae52e2b560a7681c2f672edc92d0e093cc82d64b1c6ccbb53436c70aced5535f`.
+  Its overlays exactly reproduce AI-468 at threshold `0.10`: 160 true
+  abstentions, 1,158 true-visible decisions, 27 false abstentions, and 5 missed
+  abstentions.
+- Validation: 64 focused simulator/perception tests passed in 24.84 seconds;
+  101 shared v2 precision, adapter, producer, strict-ingress, shadow-runner,
+  trajectory, and conformance tests passed in 11.47 seconds. Ruff,
+  maintained-document, AI work-registry, repository-health, source-footprint,
+  and `git diff --check` gates passed. Repository health matched policy and the
+  source archive remained at 6,100 files and 652,778,946 logical bytes.
+- Artifact location: external only at
+  `C:\IsaacSim\artifacts\issue190\target-aware-progression-videos-v1`, with
+  byte-identical repeat `...videos-v2`. Hashes identify exact local bytes but
+  do not make the MP4 files clean-clone available.
+- Hardware-write count: 0.
+- Physical-movement count: 0.
+- Physics-step count: 0; encoding uses retained static images.
+- Limitations: these are lossy presentation videos from static synthetic
+  frames, not continuous trajectories, new examples, or physical-camera
+  evidence. The evaluation was already consumed by AI-468 and cannot be used
+  for tuning. The fourth channel assumes exact catalog target alignment and
+  has not been perturbed by localization error. Measured camera, support, and
+  tool geometry remain absent. The bundle grants no localization, collision,
+  controller, execution, transport, permit, or physical authority; AI-468
+  remains blocked.
+- Supersedes: none; adds a deterministic review medium for AI-468.
+- Next dependency: predeclare target-mask offset families on new development
+  poses, measure degradation without consuming a new evaluation group, and
+  reserve fresh evaluation only after the perturbation policy is frozen.

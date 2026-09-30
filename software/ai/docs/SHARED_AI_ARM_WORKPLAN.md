@@ -1016,9 +1016,17 @@ It remains blocked because exact target alignment is assumed and neither final-
 camera localization uncertainty nor physical support/tool geometry is present.
 The consumed evaluation may not tune another candidate.
 
+The deterministic v2 video bundle in `E-20260930-AI-469` binds the exact
+four-channel AI-468 checkpoint to 45 official-mesh pose frames and all 18
+consumed evaluation images. Two independent exports are byte-identical and the
+evaluation overlays reproduce the frozen 160/1,158/27/5 confusion counts. The
+manifest explicitly identifies the known-target safe-region channel and the
+absence of simulator robot-mask input. This adds reviewable evidence only; it
+does not qualify target alignment, add temporal physics, or change the model's
+blocked status.
+
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI | S2/S3 | extend the deterministic progression-video exporter to the frozen four-channel target-aware checkpoint; generate external byte-repeated MP4 evidence; focused tests and retained hashes; no runtime or authority changes | `issue/190-isaac-sim-host` | IN_PROGRESS |
 | Unclaimed | S2/S3 | physical-camera deployment qualification and safe-region-fit precision evidence | — | AVAILABLE |
 | ARM | S4 | collect four physical-original `camera_support_optics` bindings through onboarding, then run the ARM-070 intake; no synthetic promotion | ARM-071 | WAITING_FOR_ORIGINALS |
 

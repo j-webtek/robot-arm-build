@@ -237,3 +237,20 @@ the first candidate in this sequence to keep both synthetic rates below 5% on
 its own fresh split. It remains blocked: exact catalog alignment is assumed,
 the split is now consumed, and no physical camera, installed support/tool
 geometry, or deployment-calibrated localization uncertainty is represented.
+
+The same `--record-existing` mode also accepts this four-channel checkpoint:
+
+```powershell
+python software/ai/train/build_official_mesh_occlusion_data.py `
+  --source-manifest C:\IsaacSim\artifacts\issue190\fixed-overview-official-mesh-v5-run1\manifest.json `
+  --record-existing `
+    C:\IsaacSim\artifacts\issue190\official-mesh-target-aware-data-v1-retry1 `
+    C:\IsaacSim\artifacts\issue190\official-mesh-target-aware-candidate-v1-retry1 `
+    C:\IsaacSim\artifacts\issue190\target-aware-progression-videos-v1
+```
+
+Its v2 video manifest identifies the fourth channel as the known target safe
+region and records that the simulator robot mask is absent from model input.
+The videos replay the consumed frozen evaluation for review; they remain lossy
+presentation artifacts and add no training, deployment qualification, or
+physical authority.
