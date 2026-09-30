@@ -210,6 +210,49 @@ C:\IsaacSim\env_6_1_0\Scripts\python.exe software\integrations\isaac_sim\model_m
   --status-output C:\IsaacSim\evidence\model_motion_overlay_001.status.json
 ```
 
+## Source-bound joint-schedule replay
+
+[`joint_schedule_replay_bundle.py`](joint_schedule_replay_bundle.py) converts a
+full arm-lane shadow-pipeline report into a bounded replay bundle. It requires
+accepted IK at every sample, a dynamics-screened joint schedule, exact semantic
+agreement between the Cartesian and joint samples, preserved contact order and
+repetitions, and zero controller or physical authority. The retained
+[`bundle`](evidence/representative_joint_schedule_bundle_5072_20260929.json)
+contains 133 samples for `H, H, 1, PERIOD` from arm commit
+`5072c163152848bd8d78fa3fbc024e32177ac98d`.
+
+[`joint_schedule_isaac_replay_probe.py`](joint_schedule_isaac_replay_probe.py)
+teleports that exact schedule through the governed Isaac articulation and
+independently recomputes the 120 mm tool-tip pose at every sample. The retained
+[`replay receipt`](evidence/joint_schedule_isaac_replay_5072_20260929.json)
+passes all 133 samples with maximum full-route tool-tip disagreement
+`0.07684842940066568` mm and maximum joint readback disagreement
+`5.923525581152944e-08` rad. Contact endpoints preserve `H, H, 1, PERIOD`;
+their individual tool-tip disagreements are all below `0.00019` mm.
+
+This result uses the repository's `UNMEASURED_SENSITIVITY_OVERLAY`, a synthetic
+park-state seed, and a representative synthetic batch. It takes zero physics
+steps. It does not execute collision geometry, dynamics, controller tracking,
+key travel, contact force, camera localization, or physical qualification.
+
+Reproduce the retained bundle and Isaac replay from the repository root:
+
+```powershell
+python software\integrations\isaac_sim\joint_schedule_replay_bundle.py `
+  --arm-report C:\IsaacSim\evidence\representative_schedule_promoted_5072.json `
+  --arm-commit 5072c163152848bd8d78fa3fbc024e32177ac98d `
+  --output C:\IsaacSim\evidence\representative_joint_schedule_bundle_5072.json
+
+$env:OMNI_KIT_ACCEPT_EULA = 'YES'
+C:\IsaacSim\env_6_1_0\Scripts\python.exe software\integrations\isaac_sim\joint_schedule_isaac_replay_probe.py `
+  --usd C:\IsaacSim\artifacts\issue190\wp1-import-003\roarm_m3_kinematic_40dbd84\roarm_m3_kinematic_40dbd84.usda `
+  --import-receipt software\integrations\isaac_sim\evidence\roarm_m3_urdf_import_20260929.json `
+  --bundle C:\IsaacSim\evidence\representative_joint_schedule_bundle_5072.json `
+  --virtual-profile software\config\virtual_commissioning_profile.json `
+  --output C:\IsaacSim\evidence\joint_schedule_isaac_replay_5072.json `
+  --status-output C:\IsaacSim\evidence\joint_schedule_isaac_replay_5072.status.json
+```
+
 ## Official STEP inspection
 
 [`step_inspection_probe.py`](step_inspection_probe.py) verifies the pinned

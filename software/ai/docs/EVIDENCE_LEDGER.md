@@ -5789,3 +5789,105 @@ rewriting history. New entries must use a unique evidence ID.
   the schedule only in Isaac, compare simulated TCP contact to ordered targets,
   and retain misses, collisions, and ordering failures without hardware or
   physical authority.
+
+### E-20260929-INT-451 — source-bound arm schedule replay in Isaac
+
+- Stage: S2/S3 simulation process alignment, WP2.
+- Lane: INTEGRATION.
+- Implementation commit: `ff395ff5900f99be3958857c659feccbde31092d`.
+  Arm source commit: `5072c163152848bd8d78fa3fbc024e32177ac98d`.
+- Change: added a strict extractor for a complete arm-lane shadow-pipeline
+  report and a zero-authority in-memory Isaac replay. The extractor requires
+  accepted IK at every sample, exact Cartesian/joint semantic agreement,
+  canonical joint order, preserved requested order and repetitions, accepted
+  synthetic joint dynamics, and no controller commands. The Isaac probe binds
+  the bundle, robot USD/import receipt, and simulation-only virtual profile,
+  then teleports all scheduled joint states and independently reconstructs the
+  120 mm tool-tip pose from the live articulation. It takes zero physics steps.
+- Inputs/fixtures: implementation SHA-256
+  `f32ea136c8661f9ac93287e766f4911b42c22e534a887efb1c2deadff20d49a2` /
+  `fed7abe930bc3bf8e373de7fa017caa012dd89d13326b94e27c0b99eb4152ead`;
+  integration/evidence test SHA-256
+  `c872ce832a3482fb3cb89ca23bde0cf2b9f370d709a9c4600fb9e6f7f20ab86a` /
+  `7c22343eaad6cdc6915ac5c6076b806b82429d49c7c43d183801d0590e20728a`;
+  arm export helper SHA-256
+  `7314ad8f409c7a3fea32b6dfe06201fa7754881da2fc0881ab0588dd0762f92a`;
+  successful full arm report SHA-256
+  `681455f0b734e924f0074ccfb7228ecb94c04ba62f5657f9d66b27af438c618b`;
+  committed replay bundle file/content SHA-256
+  `4aece6ef7c7194aea59af2263caff6d4a3be65273a5df92348bf796b7103bb8c` /
+  `b890df278560724de964b374b4d4cc46e0e9c51b430051319034a1d259fdfdc0`;
+  committed replay receipt file/content SHA-256
+  `3780fd590f912835c85b69d3265291572eca767ab63ab3b859b9dcbbe18b6078` /
+  `ea6cc125388ac4b71c2a73374604a2ca672c21889d016cb17af1faebf6fe01cc`;
+  status SHA-256
+  `7539b48bcc4439d98695050024fd4e90c35d6cce8737fca535fd17199727b431`;
+  virtual-profile SHA-256
+  `38b348ace299140e5908cf367fc15f32b33bebe9b064d5efffe5dcf95f7b4634`;
+  robot USD SHA-256
+  `a0ec437fb4d647f354007dc352a3af8b13576eaf4931d69d60a510bf235ebea2`.
+- Commands: `$env:PYTHONPATH='software/src;software/tests/unit;software/tests/integration'; python C:\IsaacSim\tools\export_representative_schedule_5072.py`;
+  `$env:PYTHONPATH='software/src;software/tests/unit;software/tests/integration'; python C:\IsaacSim\tools\export_representative_schedule_promoted_5072.py`;
+  `python software/integrations/isaac_sim/joint_schedule_replay_bundle.py --arm-report C:\IsaacSim\evidence\representative_schedule_promoted_5072.json --arm-commit 5072c163152848bd8d78fa3fbc024e32177ac98d --output C:\IsaacSim\evidence\representative_joint_schedule_bundle_5072.json`;
+  `$env:OMNI_KIT_ACCEPT_EULA='YES'; C:\IsaacSim\env_6_1_0\Scripts\python.exe software\integrations\isaac_sim\joint_schedule_isaac_replay_probe.py --usd C:\IsaacSim\artifacts\issue190\wp1-import-003\roarm_m3_kinematic_40dbd84\roarm_m3_kinematic_40dbd84.usda --import-receipt software\integrations\isaac_sim\evidence\roarm_m3_urdf_import_20260929.json --bundle C:\IsaacSim\evidence\representative_joint_schedule_bundle_5072.json --virtual-profile software\config\virtual_commissioning_profile.json --output C:\IsaacSim\evidence\joint_schedule_isaac_replay_5072.json --status-output C:\IsaacSim\evidence\joint_schedule_isaac_replay_5072.status.json`;
+  `python -m pytest software/tests/integration/test_joint_schedule_replay_bundle.py software/tests/unit/test_isaac_sim_joint_schedule_replay_evidence.py -q`;
+  repository verification and `git diff --check`.
+- Preserved failed evidence: the nominal RC03 transform and 100 mm tool report
+  is retained externally at SHA-256
+  `5f4c4b9c68cafc591f4d8040ea7630b58e008be4133422cfb16c7b62c9a8aec2`.
+  It stops after 16 of 121 samples with
+  `MINIMUM_NORMALIZED_ARM_JOINT_MARGIN_REJECTED`; the first rejected sample has
+  `0.0029863366428572314` normalized margin and `0.001590271049715872` mm
+  position error. The simulation overlay with the nominal ready seed is
+  retained externally at SHA-256
+  `3061f8363858a7019ce11b9a0a4392dfe196397e5eac465f045b15fde0457775`.
+  Its first park sample converges but exceeds adjacent-joint continuity with a
+  `1.9655926496107192` rad maximum delta. These failures were not relaxed;
+  the successful report uses a separately identified synthetic seed at the
+  overlay's declared park pose. The first Isaac launch stopped before startup
+  because `OMNI_KIT_ACCEPT_EULA` was absent from that shell; the existing
+  accepted installation was then exposed with the exact successful command.
+- Result: PASS_WITH_BLOCKERS. All 133 IK samples pass with maximum arm-solver
+  position error `0.07691098332647842` mm, minimum normalized arm-joint margin
+  `0.154335044383209`, and maximum adjacent joint delta
+  `0.09243468166349966` rad. Synthetic joint dynamics accepts every sample.
+  Isaac preserves four ordered contacts `H, H, 1, PERIOD`, reports maximum
+  full-route tool-tip disagreement `0.07684842940066568` mm and maximum joint
+  readback disagreement `5.923525581152944e-08` rad. Contact disagreements are
+  `0.00007682018682808492`, `0.00007682018682808492`,
+  `0.0001850485047460475`, and `0.00014589261019436637` mm. Fifty-eight focused
+  boundary, producer, scene, replay, and retained-evidence tests passed in 3.50
+  seconds. Repository verification passed 123 CI unit tests plus documentation,
+  public-record, evidence-scope, artifact, repository-health, source-footprint,
+  release-integrity, and readiness-synchronization checks.
+- Artifacts:
+  `software/integrations/isaac_sim/joint_schedule_replay_bundle.py`;
+  `software/integrations/isaac_sim/joint_schedule_isaac_replay_probe.py`;
+  `software/integrations/isaac_sim/evidence/representative_joint_schedule_bundle_5072_20260929.json`;
+  `software/integrations/isaac_sim/evidence/joint_schedule_isaac_replay_5072_20260929.json`;
+  `software/integrations/isaac_sim/evidence/joint_schedule_isaac_replay_5072_20260929.status.json`;
+  `software/tests/integration/test_joint_schedule_replay_bundle.py`;
+  `software/tests/unit/test_isaac_sim_joint_schedule_replay_evidence.py`;
+  full and failed reports under `C:\IsaacSim\evidence`.
+- Hardware-write count: 0.
+- Physical-movement count: 0.
+- Limitations: the source batch, localization qualification, layout, 120 mm
+  tool, and park seed are synthetic or unmeasured simulation inputs. The
+  earlier AI batch's `14.400834977163141` mm uncertainty still does not fit the
+  7 mm key-edge margin and was not promoted. Replay uses joint teleportation
+  with zero physics steps. Installed collision geometry, collision clearance,
+  valid inertial properties, dynamics, controller tracking, measured start
+  state, key travel, contact force, camera localization, hardware, and physical
+  qualification remain absent. After this replay completed, the arm branch
+  advanced to `7f22378613bc9866b14912e667882af9201fd52c`, adding shared-emitter
+  routing through the profiled shadow service. That later source was reviewed
+  but is not retroactively claimed by this commit-bound replay. No lane or
+  integration-gate status changed.
+- Supersedes: INT-450 only for its joint-schedule replay dependency. INT-450's
+  uncertainty blocker remains active and retained.
+- Next dependency: feed an actual precision-adapter batch whose qualified
+  uncertainty fits the observed key safe regions through this same schedule
+  path, starting from the current profiled-service arm source, then run
+  installed-geometry collision screening before any dynamics or contact
+  simulation. Separately replace the virtual layout, tool length, and synthetic
+  park seed with measured calibration and fresh observed state.

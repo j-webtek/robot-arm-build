@@ -858,9 +858,25 @@ is the exact zero-write schedule from the arm typing pipeline, after its source
 batch uses this same representative target geometry and passes the safe-region
 uncertainty gate.
 
+The source-bound schedule replay in `E-20260929-INT-451` consumes arm commit
+`5072c163152848bd8d78fa3fbc024e32177ac98d` through the strict v2 ingress,
+trajectory, IK, and joint-dynamics stages for representative ordered targets
+`H, H, 1, PERIOD`. The nominal geometry fails the arm-margin gate, and the
+simulation overlay with the nominal ready seed fails continuity; both failures
+remain retained. With the existing simulation-only layout, 120 mm keyboard
+tool, and a synthetic seed at the declared park pose, all 133 samples reach the
+installed-geometry collision gate and replay in Isaac with maximum tool-tip
+disagreement `0.07684842940066568` mm. This validates the offline coordinate,
+ordering, IK, scheduling, and independent-FK seam only. It does not replace the
+blocked safe-region AI evidence, execute collision screening, or change any
+lane or integration-gate status. The arm branch subsequently advanced to
+`7f22378613bc9866b14912e667882af9201fd52c` with profiled-service routing for
+the shared emitter; the retained replay remains honestly bound to its exact
+`5072c163152848bd8d78fa3fbc024e32177ac98d` source and should be repeated from
+the newer service path when safe-region-qualified producer output exists.
+
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| SIM/INTEGRATION | S2/S3 | source-bound arm joint-schedule export and in-memory Isaac replay against representative RC03 keyboard targets under `software/integrations/isaac_sim/`, focused tests, and retained evidence; no arm-lane status changes | `issue/190-isaac-sim-host` | IN_PROGRESS |
 | Unclaimed | S2/S3 | physical-camera deployment qualification and safe-region-fit precision evidence | — | AVAILABLE |
 | ARM | S4 | collect four physical-original `camera_support_optics` bindings through onboarding, then run the ARM-070 intake; no synthetic promotion | ARM-071 | WAITING_FOR_ORIGINALS |
 
