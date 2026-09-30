@@ -860,6 +860,7 @@ uncertainty gate.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
+| SIM/INTEGRATION | S2/S3 | source-bound arm joint-schedule export and in-memory Isaac replay against representative RC03 keyboard targets under `software/integrations/isaac_sim/`, focused tests, and retained evidence; no arm-lane status changes | `issue/190-isaac-sim-host` | IN_PROGRESS |
 | Unclaimed | S2/S3 | physical-camera deployment qualification and safe-region-fit precision evidence | — | AVAILABLE |
 | ARM | S4 | collect four physical-original `camera_support_optics` bindings through onboarding, then run the ARM-070 intake; no synthetic promotion | ARM-071 | WAITING_FOR_ORIGINALS |
 
