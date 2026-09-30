@@ -624,6 +624,27 @@ python software/integrations/isaac_sim/fixed_fixture_practice_corpus.py `
 The retained reproducible output is under
 `software/integrations/isaac_sim/evidence/fixed_fixture_practice_v1/`.
 
+### Fixed-overview robot masks and depth
+
+The next corpus keeps the synthetic overview camera and board transform fixed
+while changing only the robot joint state. URDF forward kinematics projects a
+declared capsule proxy for each link into the camera. Each of three poses emits
+a semantic link-label PNG, a uint16 robot-depth PNG in millimetres, and five RGB
+lighting variants. The manifest records per-target safe-region overlap with the
+robot mask so an AI pipeline can learn or test abstention under obstruction.
+
+```powershell
+New-Item -ItemType Directory -Force software/runs | Out-Null
+$env:PYTHONPATH = (Resolve-Path 'software/src').Path
+python software/integrations/isaac_sim/fixed_overview_segmentation_corpus.py `
+  --output-dir C:\IsaacSim\artifacts\issue190\fixed-overview-segmentation-v1
+```
+
+The retained output is under
+`software/integrations/isaac_sim/evidence/fixed_overview_segmentation_v1/`.
+The capsules are pose-bound kinematic proxies. They are not robot CAD, a
+triangle-level depth render, or installed collision evidence.
+
 ## Verify WP0
 
 From `software/`:
