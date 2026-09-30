@@ -10,6 +10,10 @@ import pytest
 import rocell.application.typing_profiled_shadow_service_campaign_v1 as campaign
 
 ROOT = Path(__file__).resolve().parents[3]
+RETAINED = ROOT / "software/ai/eval/typing_profiled_shadow_service_campaign_v1.json"
+RETAINED_FILE_SHA256 = "814c03d7811f6a626b72606e5198ac5226c35992a541dc3b541e35fd71e61058"
+RETAINED_CAMPAIGN_SHA256 = "7632c5f19d0a64a3fa3ccb718437d0e67a8f3b3b85e271cf360863599a9086e4"
+RETAINED_SOURCE_COMMIT = "5072c163152848bd8d78fa3fbc024e32177ac98d"
 VALIDATOR = Draft202012Validator(json.loads((ROOT / "software/ai/schemas/typing_profiled_shadow_service_campaign_v1.schema.json").read_text()))
 
 
@@ -48,3 +52,15 @@ def test_campaign_rejects_cache_use_on_fallback_and_tampering():
     changed = copy.deepcopy(value); changed["campaign_sha256"] = "f" * 64
     with pytest.raises(campaign.TypingProfiledShadowServiceCampaignV1Error, match="hash"):
         campaign.parse_typing_profiled_shadow_service_campaign_v1(changed)
+
+
+def test_retained_campaign_is_pinned_to_clean_framework_commit():
+    import hashlib
+    raw = RETAINED.read_bytes()
+    assert hashlib.sha256(raw).hexdigest() == RETAINED_FILE_SHA256
+    value = json.loads(raw)
+    VALIDATOR.validate(value)
+    assert campaign.parse_typing_profiled_shadow_service_campaign_v1(value) == value
+    assert value["campaign_sha256"] == RETAINED_CAMPAIGN_SHA256
+    assert value["environment"]["repository_commit"] == RETAINED_SOURCE_COMMIT
+    assert value["environment"]["repository_dirty"] is False

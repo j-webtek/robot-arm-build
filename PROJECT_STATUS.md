@@ -817,6 +817,12 @@ requires the qualified 256-entry bound, complete-solve fallback, and no retry.
 Mismatches cannot silently use cached results: they fall back to the complete
 solver or reject stale/unsafe configuration. This improves readiness for a
 warm command service but does not enable execution or claim physical speed.
+ARM-134 now applies that profile at the shadow-service composition boundary.
+The qualified path uses the existing exact-input cache, while calibration or
+evidence mismatch and lifecycle transitions use the unchanged complete solver.
+The five retained cases preserve the reference result and show zero cache
+activity on every fallback. This is operational scaffolding only: no executor,
+controller transport, retry, or physical authority is attached.
 
 ## How to interpret results
 

@@ -1143,6 +1143,15 @@ complete-solve fallback, and no-retry policy match exactly. Evidence or
 calibration drift falls back to the complete solver; unsafe settings and stale
 reload/restart objects are rejected. The retained six-case campaign passes and
 still grants no admission, controller, transport, or physical authority.
+ARM-134 integrates that decision at a new shadow-service composition boundary.
+An eligible generation passes the existing exact cache to the unchanged
+pipeline; calibration or evidence drift passes no cache and therefore performs
+the complete solve. Reload and restart retire the frozen profile and keep the
+replacement generation on complete solves until a new composition is
+explicitly qualified. Its retained five-case campaign preserves the same
+reference receipt across qualified and fallback paths, records 24 qualified
+lookups with 1 hit and 23 full-solve misses, and records zero cache activity on
+all four fallback paths. It adds no executor, retry, controller, or motion path.
 
 1. **S1 software boundary — complete for zero authority:** v2 producer bytes,
    strict decoding, trusted registry, freshness, mutation rejection, and ordered

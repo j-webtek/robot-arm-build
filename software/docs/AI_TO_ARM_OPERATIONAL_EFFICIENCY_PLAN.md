@@ -807,6 +807,13 @@ objects are rejected. Endpoint-only substitution remains prohibited, and the
 gate cannot admit motion or access the controller. The retained campaign is
 [`typing_ik_reuse_profile_campaign_v1.json`](../ai/eval/typing_ik_reuse_profile_campaign_v1.json).
 
+ARM-134 composes this gate with the FIFO shadow service. The runtime choice is
+made once at the service boundary: eligible work receives the exact-input cache;
+fallback work receives no cache and runs the same complete solver. Reload and
+restart retire eligibility rather than silently requalifying changed state.
+The retained [service-composition campaign](../ai/eval/typing_profiled_shadow_service_campaign_v1.json)
+proves receipt equivalence and zero cache access on every fallback path.
+
 ## Completion definition
 
 This plan is complete only when the supported AI path can produce an exact
