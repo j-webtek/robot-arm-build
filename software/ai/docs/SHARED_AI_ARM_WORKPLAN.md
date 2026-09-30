@@ -961,6 +961,7 @@ using training and development only before that group is evaluated once.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
+| AI | S2/S3 compact occlusion candidate selection | `software/ai/train/build_official_mesh_occlusion_data.py`, focused tests and AI evidence docs; fit compact candidates on AI-460 training, select feature family and threshold on development only, freeze, then score reserved evaluation once; synthetic-only and zero model-to-arm authority | `issue/190-isaac-sim-host` at `85d10777ead167b28146903661417384233bfa8f` | ACTIVE |
 | Unclaimed | S2/S3 | physical-camera deployment qualification and safe-region-fit precision evidence | — | AVAILABLE |
 | ARM | S4 | collect four physical-original `camera_support_optics` bindings through onboarding, then run the ARM-070 intake; no synthetic promotion | ARM-071 | WAITING_FOR_ORIGINALS |
 
