@@ -952,9 +952,15 @@ emitter schedule. All masks are pose-distinct. These external synthetic bytes
 still omit measured tool and camera-support geometry and cannot qualify physical
 visibility, localization, collision clearance, or execution.
 
+The three-way dataset in `E-20260930-AI-460` materializes 675 training, 450
+development, and 900 reserved evaluation target crops across 27 distinct
+images. Pose groups and lighting families are pairwise disjoint, and two
+independent builds are byte-identical. The evaluation bytes exist for identity
+and leakage checks but remain unscored; the next candidate must be selected
+using training and development only before that group is evaluated once.
+
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI | S2/S3 synthetic occlusion development | `software/integrations/isaac_sim/isaac_fixed_overview_mesh_render_probe.py`, retained fixed-overview mesh evidence, `software/ai/train/build_official_mesh_occlusion_data.py`, focused tests and AI evidence docs; predeclare additional official-mesh pose groups and fresh development/evaluation roles before rendering, with zero model-to-arm authority | `issue/190-isaac-sim-host` at `ed12295c6d59de6497ade40fc1f20fd360162edf` | ACTIVE |
 | Unclaimed | S2/S3 | physical-camera deployment qualification and safe-region-fit precision evidence | — | AVAILABLE |
 | ARM | S4 | collect four physical-original `camera_support_optics` bindings through onboarding, then run the ARM-070 intake; no synthetic promotion | ARM-071 | WAITING_FOR_ORIGINALS |
 
