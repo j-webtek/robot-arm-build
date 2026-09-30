@@ -6928,3 +6928,82 @@ rewriting history. New entries must use a unique evidence ID.
   approaching AI-465 specificity. Add measured tool/camera-support geometry
   when available; physical promotion remains dependent on final fixed-camera
   evidence under a registered configuration epoch.
+
+### E-20260930-AI-466 — deterministic simulator progression videos
+
+- Stage: S2/S3 synthetic perception review evidence.
+- Lane: AI/model; no arm or integration status changed.
+- Implementation commit: `89b8a9cf588bd18d2a5318b25d9d5258c651e4c5`.
+- Change: added a deterministic PyAV/libx264 exporter for retained simulator
+  evidence. The first H.264 video presents all 33 exact official-mesh source
+  poses at two frames per second with green visible and red blocked safe-region
+  polygons. The second reconstructs the exact frozen 1,649-parameter AI-465
+  checkpoint and presents all 18 held-out pose/lighting images with per-target
+  true-visible, true-abstain, false-abstain, and missed-abstain overlays. The
+  exporter verifies source, atlas, dataset, image, model, scorecard, and scope
+  hashes before encoding and writes a canonical bundle manifest.
+- Inputs/fixtures: source manifest file SHA-256
+  `1c734f4cdff14c7cdf07528c80a10e415f43dbcb8fcbbb86bc67400553839c2c`;
+  canonical source receipt SHA-256
+  `def37772c86853319b27be21f6133fa7750619cb3d8d80d8a3578227d772af35`;
+  dataset manifest file SHA-256
+  `01b35301729bd9718284e638787feed84709daecbf702dbbb71fccdd3061ae6c`;
+  canonical dataset SHA-256
+  `e913da3a300019e1e5b21817e99b5c4319fc13479ef33eaf3df7b9c022e1f444`;
+  model SHA-256
+  `aee2e2136768ea3fb80bf7978902d9013e73c32b7fed31b8285a002f5ea1afdd`;
+  canonical scorecard SHA-256
+  `40887e2162e06cd28cdd1a7fdd7973630ca56be2abdfe84ae6be42311ded038c`;
+  exporter source SHA-256
+  `ce29399a237313b677cb513c59cd30bae48794594bd6b7cfaa8f467ab8d6fb31`;
+  focused test SHA-256
+  `bfa8843db7b6a1b63948340de428035c657f77d6d51b7296e3ef0eccae541daa`.
+- Exact command: `python software/ai/train/build_official_mesh_occlusion_data.py
+  --source-manifest C:\IsaacSim\artifacts\issue190\fixed-overview-official-mesh-v4-run1\manifest.json
+  --record-existing C:\IsaacSim\artifacts\issue190\official-mesh-specificity-data-v1
+  C:\IsaacSim\artifacts\issue190\official-mesh-specificity-candidate-v1
+  C:\IsaacSim\artifacts\issue190\sim-progression-videos-v1`; repeated with
+  final output `sim-progression-videos-v2`, followed by SHA-256 comparison,
+  PyAV decode inspection, focused pytest, shared boundary pytest, Ruff,
+  maintained-document checks, repository audit, source-footprint check, and
+  `git diff --check`.
+- Result: PASS_WITH_BLOCKERS. Both final exports are byte-identical. Canonical
+  bundle SHA-256 is
+  `9463f52c80f32bbdcdc2ca6a00a48392fe0d5e3b5c1cb78977efa9bbc6088d7a`;
+  manifest file SHA-256 is
+  `faa1640e69d60add772d2bb05533d43b7945a26d55e135f6dc132581fce36adb`.
+  `official_mesh_pose_progression.mp4` is H.264, 960-by-540, 33 frames,
+  2 fps, 16.5 seconds, 263,269 bytes, SHA-256
+  `3bb24d91f4145f9eb8fea18062207e9a254d55f694faefa664701f226f1830fe`.
+  `occlusion_candidate_evaluation.mp4` is H.264, 960-by-540, 18 frames,
+  2 fps, 9.0 seconds, 167,067 bytes, SHA-256
+  `0d0ab2f8413f8633fd85342d71dda979a0a2ad66c92e82ea8c825d6a39eacfab`.
+  Its outcomes exactly reproduce AI-465: 1,211 true visible, 96 true abstain,
+  28 false abstain, and 15 missed abstain at threshold `0.30`.
+- Validation: 60 focused simulator/perception tests passed in 22.26 seconds;
+  96 shared v2 precision, producer, strict-ingress, shadow-runner, trajectory,
+  and conformance tests passed in 6.91 seconds. Ruff, maintained-document,
+  AI work-registry, repository-audit, source-footprint, and `git diff --check`
+  gates passed. The repository audit inspected 6,100 paths and 622.5 MiB with
+  zero unresolved findings and 14 exact reviewed synthetic fixtures.
+- Artifact location: external only at
+  `C:\IsaacSim\artifacts\issue190\sim-progression-videos-v1`, with byte-
+  identical repeat `...videos-v2`. Hashes identify exact local bytes but do not
+  make the MP4 files clean-clone available.
+- Hardware-write count: 0.
+- Physical-movement count: 0.
+- Physics-step count: 0; encoding reuses exact retained static frames.
+- Limitations: these are presentation videos derived from static synthetic
+  renders, not continuous simulator trajectories or screen recordings. H.264
+  is lossy; the hash-bound source images, dataset rows, and scorecard remain the
+  authoritative numeric evidence. No new evaluation examples were created and
+  the recordings should not be admitted to training merely because they are
+  videos. Measured camera, tool, support, and physical-domain evidence remain
+  absent. The bundle grants no localization, collision, controller, execution,
+  transport, permit, or physical authority, and AI-465 remains blocked.
+- Supersedes: none; adds a review medium for the retained AI-465 evidence.
+- Next dependency: produce the same bundle type for future frozen simulator
+  milestones. Add a continuous trajectory recording only after its simulation
+  timestep, camera cadence, state binding, and frame-retention rules are
+  declared. Physical promotion still requires final fixed-camera evidence
+  under a registered configuration epoch.

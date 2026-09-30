@@ -185,3 +185,27 @@ target false-abstention rate from 40.3% to 2.3%, but its missed-abstention rate
 rises from 0.7% to 13.5%. This exposes a safety-versus-cadence tradeoff rather
 than a promotable model. The evaluation is consumed, the candidate remains
 blocked and synthetic-only, and another fresh split is required before tuning.
+
+## Simulator progression videos
+
+Retained official-mesh frames and a frozen spatial candidate can be exported
+as deterministic H.264 review videos without rerunning Isaac or loading an
+evaluation split for model selection:
+
+```powershell
+python software/ai/train/build_official_mesh_occlusion_data.py `
+  --source-manifest C:\IsaacSim\artifacts\issue190\fixed-overview-official-mesh-v4-run1\manifest.json `
+  --record-existing `
+    C:\IsaacSim\artifacts\issue190\official-mesh-specificity-data-v1 `
+    C:\IsaacSim\artifacts\issue190\official-mesh-specificity-candidate-v1 `
+    C:\IsaacSim\artifacts\issue190\sim-progression-videos-v1
+```
+
+The pose progression video overlays ground-truth safe-region visibility on all
+33 source poses. The candidate evaluation video overlays the frozen decision
+for all targets in the 18 held-out pose/lighting images. The bundle manifest
+binds the source receipt, dataset, checkpoint, scorecard, MP4 hashes, frame
+counts, and zero authority. These videos visualize existing static synthetic
+frames. They are diagnostic progression evidence, not continuous physics
+captures, new training samples, physical-camera qualification, or deployment
+evidence.

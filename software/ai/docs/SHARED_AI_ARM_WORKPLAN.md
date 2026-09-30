@@ -996,9 +996,17 @@ reproducible and substantially more usable, while the higher dangerous miss
 rate blocks promotion. Its evaluation is consumed and cannot be used for
 threshold or architecture tuning.
 
+The deterministic video bundle in `E-20260930-AI-466` turns the exact AI-465
+source frames and frozen predictions into two hash-bound H.264 review artifacts.
+One records all 33 official-mesh poses with ground-truth safe-region overlays;
+the other records all 18 held-out pose/lighting images with per-target model
+outcomes, including every false stop and missed abstention. Independent exports
+are byte-identical. The videos add reviewable progression evidence only: they
+do not add temporal physics, new evaluation data, runtime authority, or physical
+qualification, and the AI-465 candidate remains blocked.
+
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI | S2/S3 | deterministic simulator progression-video exporter, external MP4 evidence, focused tests, and retained hashes; no runtime or authority changes | `issue/190-isaac-sim-host` | IN_PROGRESS |
 | Unclaimed | S2/S3 | physical-camera deployment qualification and safe-region-fit precision evidence | — | AVAILABLE |
 | ARM | S4 | collect four physical-original `camera_support_optics` bindings through onboarding, then run the ARM-070 intake; no synthetic promotion | ARM-071 | WAITING_FOR_ORIGINALS |
 
