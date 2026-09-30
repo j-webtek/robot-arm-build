@@ -897,9 +897,20 @@ camera are synthetic approximations, so the corpus does not change S2/S3 lane
 status, install localization qualification, or reduce the physical-camera and
 installed-collision dependencies.
 
+The fixed-overview segmentation corpus in `E-20260930-INT-454` aligns the
+synthetic data flow more closely with the intended installation: one camera and
+board transform remain fixed while three URDF joint states move a pose-bound
+robot obstruction. It retains 15 RGB practice samples in three deterministic
+atlases, plus per-pose semantic link masks, approximate millimetre depth maps,
+and per-target obstruction overlap for all 75 targets. A repository-footprint
+failure from the initial separate-image layout is retained; packing the RGB
+samples into crop-addressed atlases brought the tracked archive back within its
+governed ceiling. The link shapes remain capsule proxies rather than CAD meshes,
+so this increment advances data-pipeline and abstention rehearsal only and does
+not change any lane or integration status.
+
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| SIM/INTEGRATION | S2/S3 | fixed-overview synthetic corpus with FK-bound robot obstruction geometry, semantic masks, depth maps, exact labels, focused tests, and retained evidence; synthetic-only with no lane-status changes | `issue/190-isaac-sim-host` | IN_PROGRESS |
 | Unclaimed | S2/S3 | physical-camera deployment qualification and safe-region-fit precision evidence | — | AVAILABLE |
 | ARM | S4 | collect four physical-original `camera_support_optics` bindings through onboarding, then run the ARM-070 intake; no synthetic promotion | ARM-071 | WAITING_FOR_ORIGINALS |
 

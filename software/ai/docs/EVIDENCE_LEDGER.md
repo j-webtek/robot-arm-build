@@ -6044,3 +6044,76 @@ rewriting history. New entries must use a unique evidence ID.
   synthetic-to-physical gap and qualify or reject synthetic augmentation per
   perturbation. In parallel, replace the image-space obstruction proxy with a
   rendered, pose-bound robot geometry mask and retain depth/segmentation labels.
+
+### E-20260930-INT-454 — fixed-overview FK obstruction masks and depth
+
+- Stage: S2/S3 synthetic perception and obstruction-abstention rehearsal.
+- Lane: INTEGRATION supporting the AI/model lane; no lane status changed.
+- Implementation commits: `e786bade481fd8d7723e8e4daf94edddf30664dd`
+  and corrective packaging commit
+  `53ca5ce4ccd44b15b81a1537aa3db3f7affc9fb5`.
+- Change: added a fixed-overview corpus generator that holds the synthetic
+  camera and board registration constant while deriving three robot poses from
+  the pinned URDF and exact joint states. Each URDF parent/child span becomes a
+  declared projected capsule with a stable link label and conservative
+  per-link depth. The output includes one semantic label PNG and uint16
+  millimetre-depth PNG per pose, 15 RGB lighting samples packed into three
+  deterministic atlases with exact crop rectangles, and board/pixel target
+  labels carrying robot-center occlusion and safe-region overlap fraction.
+- Inputs/fixtures: final generator SHA-256
+  `87b0d43dbf78122785db9163d2bae928b3db14ed2bc65f681f4b965026bc4b35`;
+  focused test SHA-256
+  `fa04ec5109e67bcacf5a50f6c806130add37f820433084c570d6389a125ab12d`;
+  retained manifest file SHA-256
+  `fcd43eae86aeefaa5d4309dfc874f6d56adb673f539e39fb33c59df18cebff46`;
+  canonical corpus SHA-256
+  `7b0f6be41f75464fae4a6fc75facfd0f7a62d90bc2eee62c64b5c5c7ef5353f6`;
+  frozen target-catalog SHA-256
+  `6779213e832ab27eeda1e7fb245f57ff8cb0d56707b5aa73a8f31ec483a620f2`;
+  pinned kinematic-model SHA-256
+  `a565718e7d74b07702802cf41eb9549a6e38e50b5e80aa9b887ab1ae3d0d8190`;
+  base synthetic frame SHA-256
+  `854ba1e893be26dc849a15ac6665710efcab19340c807dd6707ce2743b9b3487`.
+- Commands: `$env:PYTHONPATH=(Resolve-Path 'software/src').Path; python software/integrations/isaac_sim/fixed_overview_segmentation_corpus.py --output-dir C:\IsaacSim\artifacts\issue190\fixed-overview-segmentation-v1-atlas`;
+  `$env:PYTHONPATH=(Resolve-Path 'software/src').Path; python -m pytest software/tests/unit/test_fixed_overview_segmentation_corpus.py software/tests/unit/test_fixed_fixture_practice_corpus.py software/tests/unit/test_virtual_pixel_vision.py software/tests/unit/test_virtual_arm_camera.py -q`;
+  the declared offline `TESTS` tuple through the active Python environment;
+  all repository policy scripts and `git diff --check`.
+- Preserved failed evidence: the initial implementation retained 15 separate
+  RGB JPEGs, producing 6,105 tracked files against the governed 6,100-file
+  ceiling. `check_source_archive_footprint.py` failed with that exact count.
+  The individual images were then replaced by three pose atlases whose manifest
+  records exact crop rectangles and independently hashed crop JPEG encodings.
+  The corrected archive contains 6,093 tracked files. No ceiling was raised and
+  no test or image case was removed.
+- Result: PASS_WITH_BLOCKERS. Three poses and five lighting cases produce 15
+  addressable RGB samples, three semantic masks, and three depth maps. The RGB
+  atlases total 2,025,452 bytes, masks/depth total 37,595 bytes, and the manifest
+  is 125,241 bytes. The ready pose obscures 4 target centers and overlaps 6
+  target safe regions; `hover_t` obscures 14 centers and overlaps 19 regions;
+  `hover_e` obscures 14 centers and overlaps 21 regions. Nineteen focused
+  corpus, fixed-camera, and arm-camera tests passed in 11.86 seconds. The
+  declared repository suite passed 503 tests with 4 Windows platform skips in
+  42.67 seconds. Documentation, public-record, evidence-scope, artifact,
+  repository-health, corrected source-footprint, release-integrity, and
+  readiness-synchronization checks passed.
+- Artifacts:
+  `software/integrations/isaac_sim/fixed_overview_segmentation_corpus.py`;
+  `software/integrations/isaac_sim/evidence/fixed_overview_segmentation_v1/manifest.json`;
+  three RGB atlases, three link-label masks, and three robot-depth maps in that
+  directory; `software/tests/unit/test_fixed_overview_segmentation_corpus.py`;
+  reproduction documentation in `software/integrations/isaac_sim/README.md`.
+- Hardware-write count: 0.
+- Physical-movement count: 0.
+- Limitations: robot bodies are radius-declared capsules around URDF link
+  origins, not CAD meshes. Depth is one conservative value per rendered link,
+  not a per-triangle z-buffer. The fixed overview camera, board registration,
+  device surfaces, lighting response, fixture state, and link radii are
+  synthetic or unmeasured. The overlap labels support abstention rehearsal but
+  cannot establish visibility performance, localization coverage, an error
+  bound, installed collision clearance, physical qualification, or authority.
+- Supersedes: INT-453 only for the fixed-camera obstruction approximation;
+  INT-453 remains the arm-camera perturbation corpus and retained evidence.
+- Next dependency: replace capsule proxies with the pinned robot CAD in the
+  governed Isaac scene and export triangle-level RGB, semantic segmentation,
+  and depth from the identical fixed camera. Compare CAD and capsule masks per
+  pose before deciding whether the lighter-weight generator is conservative.
