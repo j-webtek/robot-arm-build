@@ -5969,3 +5969,78 @@ rewriting history. New entries must use a unique evidence ID.
   physical-camera qualification, then feed those actual observations through
   this now-verified emitter-to-schedule boundary. In parallel, the arm lane must
   install accepted collision geometry before any dynamic or contact replay.
+
+### E-20260929-INT-453 — fixed-fixture synthetic camera practice corpus
+
+- Stage: S2/S3 synthetic perception and data-pipeline rehearsal.
+- Lane: INTEGRATION supporting the AI/model lane; no lane status changed.
+- Implementation commit: `3fa068b8b4630105f0743843afdc59ef1bbeee73`.
+- Change: added a deterministic corpus generator around the existing plan-blind
+  virtual arm-camera JPEG path. It captures two achieved arm/camera poses,
+  projects the frozen nominal target map, renders simplified keyboard and phone
+  target surfaces, and emits eight declared pixel cases per pose: nominal,
+  55-percent dim, 145-percent bright, warm cast, elliptical glare, foreground
+  arm/tool proxy, the same proxy under dim light, and defocus blur. Each sample
+  includes its image digest, achieved joint state, base capture identities,
+  target board coordinates, pixel centers and safe polygons, in-frame state,
+  exact pixel transform, and synthetic occlusion labels. The generator and
+  manifest explicitly deny physical-camera and deployment qualification.
+- Inputs/fixtures: generator SHA-256
+  `b364906e0798c4f032bf2e329041a775a008e5ee7aa7a23ee0b1c83e0cb90163`;
+  focused test SHA-256
+  `06899eecfdc5d2e3e652782d94e13dd7c4b0013827b5a9d36ca9865a77a1225f`;
+  retained manifest file SHA-256
+  `a529ffbdc39aff5450d0378f2e3020c83b398a3e7f853b0ef4e957748e34c7fd`;
+  canonical corpus SHA-256
+  `03e2d3d7ac2d3a0026b2c24cb0a9d709190794e1adb5b69e038374fa46f152e4`;
+  frozen target-catalog SHA-256
+  `6779213e832ab27eeda1e7fb245f57ff8cb0d56707b5aa73a8f31ec483a620f2`;
+  virtual camera service-definition SHA-256
+  `8c6f6df05a8f4e88e933cddb2237bbc9a17b9a8b96602b60638756c3c3119831`.
+  The manifest carries the exact SHA-256 of every retained JPEG.
+- Commands: `New-Item -ItemType Directory -Force software/runs | Out-Null; $env:PYTHONPATH=(Resolve-Path 'software/src').Path; python software/integrations/isaac_sim/fixed_fixture_practice_corpus.py --output-dir C:\IsaacSim\artifacts\issue190\fixed-fixture-practice-v1`;
+  `$env:PYTHONPATH=(Resolve-Path 'software/src').Path; python -m pytest software/tests/unit/test_fixed_fixture_practice_corpus.py software/tests/unit/test_virtual_arm_camera.py -q`;
+  `$env:PYTHONPATH=(Resolve-Path 'software/src').Path; python -c "from scripts.ci.offline_checks import TESTS; import pytest; raise SystemExit(pytest.main(['-q', *TESTS]))"`;
+  repository policy scripts and `git diff --check`.
+- Preserved failed evidence: the first generator invocation stopped before any
+  capture because the ignored `software/runs` bootstrap directory was absent.
+  The exact error was `BootstrapConfigurationError: evidence_root directory is
+  missing: software/runs`. The directory was created and the identical command
+  then completed. A later `python scripts/ci/offline_checks.py test` invocation
+  stopped because this worktree has no `.venv-ci`; the equivalent declared
+  `TESTS` tuple was then run with the active Python environment. Neither failed
+  invocation accessed hardware, wrote a controller command, or moved the arm.
+- Result: PASS_WITH_BLOCKERS. Sixteen JPEGs totaling 1,265,525 bytes plus a
+  532,000-byte manifest were retained. Every sample contains 75 targets and all
+  75 projected centers are in frame. The obstruction proxy covers 26 targets
+  at `hover_t` and 29 at `hover_e`; both poses also have a combined dim and
+  obstructed case. Deterministic regeneration produced identical corpus and
+  per-image hashes. Eleven focused corpus and virtual-camera tests passed in
+  5.28 seconds. The declared repository offline suite passed 503 tests with 4
+  platform skips in 44.49 seconds, and all documentation, evidence-scope,
+  artifact, repository-health, source-footprint, release-integrity, and
+  readiness-synchronization policy checks passed.
+- Artifacts:
+  `software/integrations/isaac_sim/fixed_fixture_practice_corpus.py`;
+  `software/integrations/isaac_sim/evidence/fixed_fixture_practice_v1/manifest.json`;
+  the 16 JPEGs in that directory;
+  `software/tests/unit/test_fixed_fixture_practice_corpus.py`;
+  reproduction documentation in `software/integrations/isaac_sim/README.md`.
+- Hardware-write count: 0.
+- Physical-movement count: 0.
+- Limitations: the virtual camera intrinsics and mount are unmeasured. The
+  rendered key and phone surfaces use nominal safe rectangles rather than
+  photoreal device assets. Lighting is a deterministic pixel transformation,
+  and obstruction is an image-space proxy rather than rendered robot CAD or a
+  depth-aware mask. The fixed-fixture assumption has not been physically
+  verified or bound to a measured configuration epoch. These images may train
+  invariance and validate data plumbing, but they cannot measure sim-to-real
+  error, establish localization coverage, fit an uncertainty bound, release a
+  safe-region gate, prove installed collision clearance, or authorize motion.
+- Supersedes: none.
+- Next dependency: register the real fixed camera, keyboard, phone, board, and
+  lighting as one measured configuration epoch; capture a small, disjoint
+  physical validation set from that exact installation; then measure the
+  synthetic-to-physical gap and qualify or reject synthetic augmentation per
+  perturbation. In parallel, replace the image-space obstruction proxy with a
+  rendered, pose-bound robot geometry mask and retain depth/segmentation labels.

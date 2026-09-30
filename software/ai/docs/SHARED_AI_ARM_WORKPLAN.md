@@ -885,9 +885,20 @@ as synthetic and claims no deployment qualification. The remaining priority is
 therefore qualified physical-camera localization and installed collision
 geometry, not another synthetic producer substitution.
 
+The fixed-fixture practice corpus in `E-20260929-INT-453` adds 16 deterministic
+JPEGs from the existing plan-blind virtual arm-camera boundary: two achieved
+camera poses crossed with nominal, dim, bright, warm, glare, blur, and two
+foreground arm/tool-obstruction cases. Every sample binds the frozen 46-key and
+29-phone target catalog in board millimetres and projected pixels, the exact
+pixel transformation, source image identities, and zero authority. This is a
+repeatable pretraining and data-pipeline fixture for a keyboard and phone that
+remain fixed on the board. The device surfaces, lighting, obstruction, and
+camera are synthetic approximations, so the corpus does not change S2/S3 lane
+status, install localization qualification, or reduce the physical-camera and
+installed-collision dependencies.
+
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| SIM/INTEGRATION | S2/S3 | deterministic fixed-fixture synthetic camera practice-image corpus, lighting and arm-occlusion cases, exact capture/label manifests, focused tests, and retained evidence under `software/integrations/isaac_sim/`; synthetic-only with no lane-status changes | `issue/190-isaac-sim-host` | IN_PROGRESS |
 | Unclaimed | S2/S3 | physical-camera deployment qualification and safe-region-fit precision evidence | — | AVAILABLE |
 | ARM | S4 | collect four physical-original `camera_support_optics` bindings through onboarding, then run the ARM-070 intake; no synthetic promotion | ARM-071 | WAITING_FOR_ORIGINALS |
 
