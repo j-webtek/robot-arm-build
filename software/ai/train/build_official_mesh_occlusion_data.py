@@ -13,15 +13,17 @@ import numpy as np
 from PIL import Image, ImageDraw, ImageEnhance, ImageFilter
 
 
-SCHEMA = "rocell.ai_official_mesh_occlusion_data.v1"
-SOURCE_SCHEMA = "tactevra.isaac_fixed_overview_mesh_render.v1"
+SCHEMA_V1 = "rocell.ai_official_mesh_occlusion_data.v1"
+SCHEMA_V2 = "rocell.ai_official_mesh_occlusion_data.v2"
+SOURCE_SCHEMA_V1 = "tactevra.isaac_fixed_overview_mesh_render.v1"
+SOURCE_SCHEMA_V2 = "tactevra.isaac_fixed_overview_mesh_render.v2"
 MAXIMUM_SAFE_REGION_OVERLAP = 0.20
 BASELINE_SEED = 190
 BASELINE_CROP_SIZE = 16
 BASELINE_ITERATIONS = 800
 BASELINE_LEARNING_RATE = 0.08
 BASELINE_L2 = 0.001
-SPLITS = {
+LEGACY_SPLITS = {
     "train": {
         "poses": ("ready", "hover_t"),
         "lighting": ("nominal", "dim", "bright"),
@@ -30,6 +32,11 @@ SPLITS = {
         "poses": ("hover_e",),
         "lighting": ("warm", "glare", "blur"),
     },
+}
+EXPANDED_LIGHTING = {
+    "train": ("nominal", "dim", "bright"),
+    "development": ("warm", "glare", "blur"),
+    "evaluation": ("cool", "side_shadow", "defocus"),
 }
 
 
@@ -45,7 +52,7 @@ def _canonical(value: object) -> bytes:
 
 def _verify_source(path: Path) -> dict[str, Any]:
     source = json.loads(path.read_text(encoding="utf-8"))
-    if source.get("schema") != SOURCE_SCHEMA:
+    if source.get("schema") not in {SOURCE_SCHEMA_V1, SOURCE_SCHEMA_V2}:
         raise ValueError("official-mesh manifest schema mismatch")
     claimed = source.pop("receipt_sha256", None)
     if not isinstance(claimed, str) or _sha256(_canonical(source)) != claimed:
@@ -61,6 +68,39 @@ def _verify_source(path: Path) -> dict[str, Any]:
         if _sha256(artifact_path.read_bytes()) != artifact["sha256"]:
             raise ValueError(f"artifact hash mismatch: {artifact_path.name}")
     return source
+
+
+def _split_policy(source: dict[str, Any]) -> tuple[str, dict[str, dict[str, tuple[str, ...]]]]:
+    if source["schema"] == SOURCE_SCHEMA_V1:
+        return SCHEMA_V1, LEGACY_SPLITS
+    pose_groups = source.get("pose_groups")
+    if not isinstance(pose_groups, dict) or set(pose_groups) != {
+        "training", "development", "evaluation"
+    }:
+        raise ValueError("expanded source must declare training/development/evaluation poses")
+    normalized = {
+        name: tuple(pose_groups[name])
+        for name in ("training", "development", "evaluation")
+    }
+    flattened = [pose_id for pose_ids in normalized.values() for pose_id in pose_ids]
+    rendered = [row["pose_id"] for row in source["pose_results"]]
+    if len(set(flattened)) != len(flattened) or set(flattened) != set(rendered):
+        raise ValueError("expanded pose groups must partition rendered poses")
+    for row in source["pose_results"]:
+        expected = next(name for name, poses in normalized.items() if row["pose_id"] in poses)
+        if row.get("pose_group") != expected:
+            raise ValueError(f"pose group mismatch: {row['pose_id']}")
+    return SCHEMA_V2, {
+        "train": {"poses": normalized["training"], "lighting": EXPANDED_LIGHTING["train"]},
+        "development": {
+            "poses": normalized["development"],
+            "lighting": EXPANDED_LIGHTING["development"],
+        },
+        "evaluation": {
+            "poses": normalized["evaluation"],
+            "lighting": EXPANDED_LIGHTING["evaluation"],
+        },
+    }
 
 
 def _lighting(image: Image.Image, variant: str) -> Image.Image:
@@ -85,6 +125,24 @@ def _lighting(image: Image.Image, variant: str) -> Image.Image:
         return Image.composite(overlay, rgb, alpha)
     if variant == "blur":
         return rgb.filter(ImageFilter.GaussianBlur(radius=1.4))
+    if variant == "cool":
+        red, green, blue = rgb.split()
+        return Image.merge("RGB", (
+            red.point(lambda value: round(value * 0.84)),
+            green.point(lambda value: min(255, round(value * 1.01))),
+            blue.point(lambda value: min(255, round(value * 1.12))),
+        ))
+    if variant == "side_shadow":
+        overlay = Image.new("RGB", rgb.size, "black")
+        alpha = Image.new("L", rgb.size, 0)
+        ImageDraw.Draw(alpha).polygon(
+            ((0, 0), (round(rgb.width * 0.58), 0),
+             (round(rgb.width * 0.38), rgb.height), (0, rgb.height)),
+            fill=105,
+        )
+        return Image.composite(overlay, rgb, alpha)
+    if variant == "defocus":
+        return rgb.filter(ImageFilter.GaussianBlur(radius=2.6))
     raise ValueError(f"unknown lighting variant: {variant}")
 
 
@@ -97,13 +155,14 @@ def build(source_manifest: Path, output_dir: Path) -> dict[str, Any]:
     image_dir = output_dir / "images"
     image_dir.mkdir()
     source = _verify_source(source_manifest)
+    schema, split_policy = _split_policy(source)
     rgb_path = source_manifest.parent / source["artifact_atlases"]["rgb"]["path"]
     rgb_atlas = Image.open(rgb_path).convert("RGB")
     pose_by_id = {row["pose_id"]: row for row in source["pose_results"]}
 
     image_records = []
     split_rows: dict[str, list[dict[str, Any]]] = {}
-    for split, policy in SPLITS.items():
+    for split, policy in split_policy.items():
         rows = []
         for pose_id in policy["poses"]:
             pose = pose_by_id[pose_id]
@@ -148,21 +207,27 @@ def build(source_manifest: Path, output_dir: Path) -> dict[str, Any]:
         (output_dir / f"{split}.jsonl").write_bytes(raw)
         split_rows[split] = rows
 
-    train_poses = set(SPLITS["train"]["poses"])
-    evaluation_poses = set(SPLITS["evaluation"]["poses"])
-    train_lighting = set(SPLITS["train"]["lighting"])
-    evaluation_lighting = set(SPLITS["evaluation"]["lighting"])
-    if train_poses & evaluation_poses or train_lighting & evaluation_lighting:
-        raise RuntimeError("train/evaluation group leakage")
+    pose_groups = [set(policy["poses"]) for policy in split_policy.values()]
+    lighting_groups = [set(policy["lighting"]) for policy in split_policy.values()]
+    if any(
+        left & right
+        for index, left in enumerate(pose_groups)
+        for right in pose_groups[index + 1:]
+    ) or any(
+        left & right
+        for index, left in enumerate(lighting_groups)
+        for right in lighting_groups[index + 1:]
+    ):
+        raise RuntimeError("pose or lighting group leakage")
 
     manifest: dict[str, Any] = {
-        "schema": SCHEMA,
+        "schema": schema,
         "scope": "SYNTHETIC_ONLY_NO_DEPLOYMENT_QUALIFICATION",
         "source_manifest_sha256": _sha256(source_manifest.read_bytes()),
         "source_receipt_sha256": source["receipt_sha256"],
         "target_catalog_sha256": source["target_catalog_sha256"],
         "maximum_safe_region_overlap": MAXIMUM_SAFE_REGION_OVERLAP,
-        "split_policy": SPLITS,
+        "split_policy": split_policy,
         "pose_groups_disjoint": True,
         "lighting_groups_disjoint": True,
         "images": image_records,

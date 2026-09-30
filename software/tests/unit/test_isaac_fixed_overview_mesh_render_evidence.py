@@ -170,3 +170,53 @@ def test_official_mesh_occlusion_builder_rejects_altered_source(tmp_path: Path) 
         assert "receipt hash mismatch" in str(exc)
     else:
         raise AssertionError("altered source was accepted")
+
+
+def test_expanded_occlusion_policy_preserves_reserved_evaluation_groups() -> None:
+    module = _builder()
+    pose_groups = {
+        "training": ["ready", "hover_t", "hover_e"],
+        "development": ["hover_h", "contact_h"],
+        "evaluation": ["hover_1", "contact_1", "hover_period", "contact_period"],
+    }
+    source = {
+        "schema": "tactevra.isaac_fixed_overview_mesh_render.v2",
+        "pose_groups": pose_groups,
+        "pose_results": [
+            {"pose_id": pose_id, "pose_group": group}
+            for group, pose_ids in pose_groups.items()
+            for pose_id in pose_ids
+        ],
+    }
+
+    schema, policy = module._split_policy(source)
+
+    assert schema == "rocell.ai_official_mesh_occlusion_data.v2"
+    assert policy == {
+        "train": {
+            "poses": ("ready", "hover_t", "hover_e"),
+            "lighting": ("nominal", "dim", "bright"),
+        },
+        "development": {
+            "poses": ("hover_h", "contact_h"),
+            "lighting": ("warm", "glare", "blur"),
+        },
+        "evaluation": {
+            "poses": ("hover_1", "contact_1", "hover_period", "contact_period"),
+            "lighting": ("cool", "side_shadow", "defocus"),
+        },
+    }
+    assert not (set(policy["train"]["poses"]) & set(policy["development"]["poses"]))
+    assert not (set(policy["train"]["lighting"]) & set(policy["evaluation"]["lighting"]))
+
+
+def test_expanded_lighting_families_are_deterministic_and_distinct() -> None:
+    module = _builder()
+    pixels = np.arange(32 * 32 * 3, dtype=np.uint8).reshape(32, 32, 3)
+    source = Image.fromarray(pixels, mode="RGB")
+
+    first = [np.asarray(module._lighting(source, name)) for name in module.EXPANDED_LIGHTING["evaluation"]]
+    second = [np.asarray(module._lighting(source, name)) for name in module.EXPANDED_LIGHTING["evaluation"]]
+
+    assert all(np.array_equal(left, right) for left, right in zip(first, second, strict=True))
+    assert len({_sha256(value.tobytes()) for value in first}) == 3
