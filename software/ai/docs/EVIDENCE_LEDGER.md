@@ -5169,3 +5169,67 @@ rewriting history. New entries must use a unique evidence ID.
 - Next dependency: review the four adjacent-pair relationships against the
   kinematic design, expand the corpus beyond three poses, and refine the high-
   inflation shapes before proposing any pair exclusions or installed profile.
+
+### E-20260929-INT-442 — governed-limit joint-space collision expansion
+
+- Stage: S2/S3 simulation oracle WP2.
+- Lane: INTEGRATION.
+- Commit: `95d8f812e458aa47a739b8e596f482f4348601a8`.
+- Change: expanded INT-441 from three poses to 49 deterministic joint-space
+  poses derived only from the governed URDF limits. The corpus contains the
+  three governed anchors, all-limit and midpoint anchors, every single-joint
+  lower and upper limit, and 32 six-dimensional Halton samples. It compares
+  all 21 unordered link pairs and separates adjacent from nonadjacent results.
+- Inputs/fixtures: probe SHA-256
+  `b0f2f399bc1f944e8a74f50d8e0dc0e5726edca4c594da34a2d7748576e2b33b`;
+  test SHA-256
+  `f62ee829695515dd6fdd0656fcdfd9fb516531cfbdca98184f2e1c2e1dc6a3b4`;
+  committed compact receipt file SHA-256
+  `6da0540ce8e668ec28d35f1f949932dacbcbb1419fa07c4445ab65df33def636`;
+  compact receipt content SHA-256
+  `6161d29a6ce36a3ca9ac54755a7b3f69393af2e3afe49f9f26ee4496da861844`;
+  external detailed receipt file SHA-256
+  `f1226994510a3489820494021445ba50f4b17bbafaacb5605114b77ef8988f50`
+  and content SHA-256
+  `0e5908b601b7184312343c9c610ecb9bf0754ad716ff1a59e35b4e8411c4c734`;
+  external status SHA-256
+  `6c552b622574581b65b8f27ac73d7bffac1eb67686e1b9ff09126326b4388112`;
+  governed URDF SHA-256
+  `a565718e7d74b07702802cf41eb9549a6e38e50b5e80aa9b887ab1ae3d0d8190`;
+  corrected reduction receipt content SHA-256
+  `e714a88c01b567f54b2e8c91b8f1144fcc35db38d2953dfe2c6f31e1d576adab`;
+  python-fcl wheel SHA-256
+  `63c662c8ff30eeb78913624a4ac56209a6061248ed97066c3b744255d943299f`.
+- Command: `$env:PYTHONUTF8='1'; C:\IsaacSim\env_6_1_0\Scripts\python.exe software\integrations\isaac_sim\collision_joint_space_probe.py --workspace . --upstream-repo C:\IsaacSim\sources\roarm_ws-40dbd84 --mesh-receipt software\integrations\isaac_sim\evidence\roarm_m3_upstream_link_meshes_20260929.json --reduction-receipt software\integrations\isaac_sim\evidence\roarm_m3_link_mesh_reduction_20260929.json --fcl-wheel C:\IsaacSim\sources\python-fcl-0.7.0.11\python_fcl-0.7.0.11-cp312-cp312-win_amd64.whl --output C:\IsaacSim\evidence\collision_joint_space_003.detailed.json --summary-output C:\IsaacSim\evidence\collision_joint_space_003.summary.json --status-output C:\IsaacSim\evidence\collision_joint_space_003.status.json`;
+  `python -m py_compile software/integrations/isaac_sim/collision_joint_space_probe.py software/tests/unit/test_isaac_sim_collision_joint_space_evidence.py`;
+  `python -m pytest software/tests/unit/test_isaac_sim_collision_joint_space_evidence.py software/tests/unit/test_isaac_sim_collision_differential_evidence.py software/tests/unit/test_isaac_sim_link_mesh_reduction_evidence.py software/tests/unit/test_isaac_sim_upstream_link_mesh_evidence.py software/tests/unit/test_isaac_sim_step_link_membership_evidence.py software/tests/unit/test_isaac_sim_step_pose_binding_evidence.py software/tests/unit/test_isaac_sim_step_inspection_evidence.py software/tests/unit/test_isaac_sim_rc03_scene_evidence.py software/tests/unit/test_isaac_sim_urdf_import_evidence.py software/tests/unit/test_isaac_sim_fk_parity_evidence.py software/tests/unit/test_isaac_sim_first_launch_evidence.py software/tests/unit/test_isaac_sim_host_probe.py software/tests/unit/test_isaac_sim_contracts.py -q`;
+  `python scripts/ci/check_docs.py`; `python scripts/ci/check_evidence_scope.py`;
+  `python scripts/ci/check_public_records.py`;
+  `python scripts/ci/check_repository_artifacts.py`; `git diff --check`.
+- Result: PASS_WITH_BLOCKERS across 1,029 pair-pose cases: 780 free-space
+  agreements, 57 collision agreements, 192 candidate false positives, and
+  zero candidate false negatives. Adjacent pairs account for 191 false
+  positives. One nonadjacent false positive occurs between `link2` and
+  `gripper_link` at `halton_019`, where the raw meshes remain 13.607432 mm
+  apart while candidate boxes report -13.915923 mm signed separation. The
+  focused suite passed 68 tests in 3.23 seconds and all four audits passed.
+- Artifacts:
+  `software/integrations/isaac_sim/evidence/roarm_m3_collision_joint_space_20260929.json`;
+  `software/integrations/isaac_sim/collision_joint_space_probe.py`;
+  `software/tests/unit/test_isaac_sim_collision_joint_space_evidence.py`;
+  external detailed receipt and status under `C:\IsaacSim\evidence`.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: 49 deterministic poses are substantially broader than three
+  anchors but do not cover continuous joint space. The one nonadjacent false
+  positive shows that adjacent-pair policy alone cannot make these candidates
+  suitable. Two raw meshes remain non-watertight. Tool, camera-support,
+  environment, measured placement, clearance, contact dynamics, controller,
+  hardware, and physical qualification remain absent. No pair exclusion was
+  selected; profile installation and collision-query admission remain false.
+  No AI, arm, or integration gate status changed.
+- Supersedes: INT-441 only for corpus breadth. INT-441 remains the retained
+  exact three-pose differential.
+- Next dependency: refine the `link2` and gripper candidate shapes against the
+  `halton_019` witness, then rerun this exact corpus. Separately review adjacent
+  joint pairs against mechanical design evidence before any exclusion proposal.
