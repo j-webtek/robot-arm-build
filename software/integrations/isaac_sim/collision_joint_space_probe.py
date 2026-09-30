@@ -93,6 +93,10 @@ def main() -> int:
     parser.add_argument("--upstream-repo", type=Path, required=True)
     parser.add_argument("--mesh-receipt", type=Path, required=True)
     parser.add_argument("--reduction-receipt", type=Path, required=True)
+    parser.add_argument(
+        "--expected-reduction-sha256",
+        default=EXPECTED_REDUCTION_RECEIPT_SHA256,
+    )
     parser.add_argument("--fcl-wheel", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--summary-output", type=Path, required=True)
@@ -118,7 +122,7 @@ def main() -> int:
         reduction = json.loads(reduction_path.read_text(encoding="utf-8"))
         if mesh_receipt["receipt_sha256"] != EXPECTED_MESH_RECEIPT_SHA256:
             raise ValueError("mesh receipt identity mismatch")
-        if reduction["receipt_sha256"] != EXPECTED_REDUCTION_RECEIPT_SHA256:
+        if reduction["receipt_sha256"] != args.expected_reduction_sha256:
             raise ValueError("reduction receipt identity mismatch")
         urdf_path = workspace / "software/models/roarm_m3/roarm_m3_kinematic_40dbd84.urdf"
         if digest_bytes(urdf_path.read_bytes()) != EXPECTED_URDF_SHA256:

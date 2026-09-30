@@ -253,6 +253,16 @@ records zero false negatives, 191 adjacent false positives, and one
 nonadjacent `link2`/`gripper_link` false positive at Halton sample 19. Finite
 sampling remains diagnostic and no pair exclusion is selected.
 
+[`targeted_obb_refinement_probe.py`](targeted_obb_refinement_probe.py) isolates
+oriented-box alternatives for the `link2` and gripper candidates implicated by
+the nonadjacent witness. Exact 1,029-case replays reject the gripper-only and
+combined variants: they introduce a second nonadjacent false positive. The
+retained [`link2-only candidate`](evidence/roarm_m3_targeted_obb_link2_20260929.json)
+reduces total false positives from 192 to 143 and preserves zero false
+negatives, as recorded by its
+[`replay summary`](evidence/roarm_m3_collision_joint_space_link2_20260929.json).
+It still retains the `link2`/gripper false positive, so it is not installed.
+
 Reproduce it on the designated runner from the repository root:
 
 ```powershell
@@ -340,6 +350,20 @@ C:\IsaacSim\env_6_1_0\Scripts\python.exe software\integrations\isaac_sim\collisi
   --output C:\IsaacSim\evidence\collision_joint_space_003.detailed.json `
   --summary-output C:\IsaacSim\evidence\collision_joint_space_003.summary.json `
   --status-output C:\IsaacSim\evidence\collision_joint_space_003.status.json
+```
+
+Reproduce the preferred diagnostic `link2`-only refinement, then pass its exact
+receipt hash to the same joint-space probe:
+
+```powershell
+$env:PYTHONUTF8='1'
+C:\IsaacSim\env_6_1_0\Scripts\python.exe software\integrations\isaac_sim\targeted_obb_refinement_probe.py `
+  --upstream-repo C:\IsaacSim\sources\roarm_ws-40dbd84 `
+  --mesh-receipt software\integrations\isaac_sim\evidence\roarm_m3_upstream_link_meshes_20260929.json `
+  --base-reduction software\integrations\isaac_sim\evidence\roarm_m3_link_mesh_reduction_20260929.json `
+  --target-links link2 `
+  --output C:\IsaacSim\evidence\targeted_obb_refinement_002_link2.json `
+  --status-output C:\IsaacSim\evidence\targeted_obb_refinement_002_link2.status.json
 ```
 
 ## Verify WP0
