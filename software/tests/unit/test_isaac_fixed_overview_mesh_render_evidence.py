@@ -586,6 +586,16 @@ def test_target_aware_candidate_is_deterministic_and_has_no_robot_mask_input(
     assert checkpoint["architecture"]["input"] == [4, 32, 32]
     assert checkpoint["architecture"]["simulator_robot_mask_input"] is False
     assert checkpoint["architecture"]["parameter_count"] == 1721
+    loaded_checkpoint, loaded_model = module._load_spatial_checkpoint(tmp_path / "first")
+    crops, _ = module._target_aware_crops(dataset, [
+        json.loads((dataset / "evaluation.jsonl").read_text().splitlines()[0])
+    ])
+    torch = pytest.importorskip("torch")
+    with torch.no_grad():
+        probability = torch.sigmoid(loaded_model(torch.from_numpy(crops))).item()
+    assert loaded_checkpoint["schema"] == "rocell.ai_target_crop_safe_region_spatial.v1"
+    assert loaded_model.features[0].in_channels == 4
+    assert 0.0 <= probability <= 1.0
     assert first["promotion_status"] == "BLOCKED_SYNTHETIC_ONLY"
     assert first["hardware_writes"] == 0
     assert first["physical_movements"] == 0

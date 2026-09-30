@@ -1119,14 +1119,19 @@ def _load_spatial_checkpoint(candidate_dir: Path):  # type: ignore[no-untyped-de
 
     checkpoint_path = candidate_dir / "model.json"
     checkpoint = json.loads(checkpoint_path.read_text(encoding="utf-8"))
-    if checkpoint.get("schema") != "rocell.ai_target_crop_tiny_spatial.v1":
+    schemas = {
+        "rocell.ai_target_crop_tiny_spatial.v1": 3,
+        "rocell.ai_target_crop_safe_region_spatial.v1": 4,
+    }
+    input_channels = schemas.get(checkpoint.get("schema"))
+    if input_channels is None:
         raise ValueError("spatial checkpoint schema mismatch")
 
     class TinySpatial(torch.nn.Module):
         def __init__(self) -> None:
             super().__init__()
             self.features = torch.nn.Sequential(
-                torch.nn.Conv2d(3, 8, 3, padding=1),
+                torch.nn.Conv2d(input_channels, 8, 3, padding=1),
                 torch.nn.ReLU(),
                 torch.nn.MaxPool2d(2),
                 torch.nn.Conv2d(8, 16, 3, padding=1),
@@ -1252,7 +1257,12 @@ def export_progression_videos(
         geometry_frames.append(frame)
 
     evaluation_rows = _load_rows(dataset_dir, "evaluation", dataset)
-    evaluation_x, _ = _spatial_crops(dataset_dir, evaluation_rows)
+    crop_loader = (
+        _target_aware_crops
+        if checkpoint["schema"] == "rocell.ai_target_crop_safe_region_spatial.v1"
+        else _spatial_crops
+    )
+    evaluation_x, _ = crop_loader(dataset_dir, evaluation_rows)
     with torch.no_grad():
         probabilities = torch.sigmoid(model(torch.from_numpy(evaluation_x))).numpy()
     rows_by_image: dict[str, list[tuple[dict[str, Any], float]]] = {}
@@ -1313,8 +1323,12 @@ def export_progression_videos(
     diagnostic_path = output_dir / "occlusion_candidate_evaluation.mp4"
     _encode_mp4(geometry_path, geometry_frames)
     _encode_mp4(diagnostic_path, diagnostic_frames)
+    target_aware = checkpoint["schema"] == "rocell.ai_target_crop_safe_region_spatial.v1"
     manifest: dict[str, Any] = {
-        "schema": "rocell.ai_sim_progression_video_bundle.v1",
+        "schema": (
+            "rocell.ai_sim_progression_video_bundle.v2"
+            if target_aware else "rocell.ai_sim_progression_video_bundle.v1"
+        ),
         "scope": "SYNTHETIC_ONLY_NO_DEPLOYMENT_QUALIFICATION",
         "source_manifest_sha256": _sha256(source_manifest.read_bytes()),
         "source_receipt_sha256": source["receipt_sha256"],
@@ -1344,6 +1358,12 @@ def export_progression_videos(
         "physical_movements": 0,
         "physical_authority": False,
     }
+    if target_aware:
+        manifest["model_input"] = {
+            "checkpoint_schema": checkpoint["schema"],
+            "channels": checkpoint["architecture"]["input_channels"],
+            "simulator_robot_mask_input": False,
+        }
     manifest["bundle_sha256"] = _sha256(_canonical(manifest))
     (output_dir / "manifest.json").write_bytes(_canonical(manifest) + b"\n")
     return manifest
