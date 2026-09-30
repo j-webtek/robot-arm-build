@@ -598,6 +598,32 @@ python software\integrations\isaac_sim\collision_policy_stress_probe.py `
   --status-output C:\IsaacSim\evidence\collision_policy_stress_002.assessment.status.json
 ```
 
+## Generate the fixed-fixture practice-image corpus
+
+The synthetic practice corpus exercises the existing plan-blind virtual
+arm-camera JPEG path at two achieved arm poses. It projects all 46 keyboard and
+29 phone target regions into each view, renders simplified target surfaces, and
+applies eight deterministic lighting, blur, glare, and foreground-obstruction
+cases. Every image is accompanied by metric board coordinates, pixel polygons,
+the exact pixel transformation, source hashes, and zero-authority declarations.
+
+The committed corpus is deliberately synthetic. Its unmeasured camera model,
+pixel-domain lighting, simplified device appearance, and image-space arm proxy
+do not qualify the physical camera, placement, localization error, or collision
+geometry.
+
+From the repository root:
+
+```powershell
+New-Item -ItemType Directory -Force software/runs | Out-Null
+$env:PYTHONPATH = (Resolve-Path 'software/src').Path
+python software/integrations/isaac_sim/fixed_fixture_practice_corpus.py `
+  --output-dir C:\IsaacSim\artifacts\issue190\fixed-fixture-practice-v1
+```
+
+The retained reproducible output is under
+`software/integrations/isaac_sim/evidence/fixed_fixture_practice_v1/`.
+
 ## Verify WP0
 
 From `software/`:
