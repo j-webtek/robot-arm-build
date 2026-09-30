@@ -5233,3 +5233,76 @@ rewriting history. New entries must use a unique evidence ID.
 - Next dependency: refine the `link2` and gripper candidate shapes against the
   `halton_019` witness, then rerun this exact corpus. Separately review adjacent
   joint pairs against mechanical design evidence before any exclusion proposal.
+
+### E-20260929-INT-443 — targeted OBB variants and exact corpus replay
+
+- Stage: S2/S3 simulation oracle WP2.
+- Lane: INTEGRATION.
+- Commit: `6fba9a80826415336a89d27f7a3c8704f223a284`.
+- Change: derived deterministic oriented-box alternatives for the two `link2`
+  components and the gripper component implicated by INT-442, then replayed
+  the exact 49-pose, 1,029-case corpus for combined, `link2`-only, and gripper-
+  only variants. The `link2`-only result is retained as the preferred
+  diagnostic candidate; it is not installed or admitted.
+- Inputs/fixtures: refinement probe SHA-256
+  `6a26872df78ce6969417f90fcb9fa9cf47d36fccc2d15fc275cfd8dd9f09fe82`;
+  replay probe SHA-256
+  `2fc3bacc136377441c9bcf5e34891fdfa08b64c0217b9882b22bd060aec66abf`;
+  test SHA-256
+  `b738bef3011dede889a4cb344b00ae92430cba7de10172cf0b6aa0e833c39feb`;
+  committed `link2` candidate file/content SHA-256
+  `0eb782c71b1ab72c4bbbc7a22abea16f4aead33ce32e435288c9c8a2413b3b41` /
+  `68f0aa41c4f46e12b563285f5a48b65f3d0457a7939a1bf537dec93b11740bcb`;
+  committed `link2` replay file/content SHA-256
+  `c22c6f4db52c9c97634097fab7647b81421148adad3afcae6c24a78ec9ef6e29` /
+  `c256eed4869005fa312eaa3371a7b5483f4a4e5e3bcd0fa5128a6ccc053d1fa1`;
+  external detailed replay file/content SHA-256
+  `7fa6cabff51f8166efc227b013dc6fa54f825c3a3f978405981acf38017fe107` /
+  `c7af3fc8caea53bf8440326c5a26622b71c68ced2ceceb42509d0d9a8038a1d0`;
+  selected replay status SHA-256
+  `85bf4c26994d0533dcc62f3ca9acc8f328f40b51acf9fd6347cd28a7fb8e5c2b`.
+- Rejected evidence retained: combined candidate content SHA-256
+  `0e412308371d801f6d185617e9e73258cc7f13d35a9d2c6e954795ab150ca605`
+  and replay content SHA-256
+  `99054875ee0dc0e95f5b58311ec630922aed0166f02dc4895421666ab219862d`;
+  gripper-only candidate content SHA-256
+  `40458bb4bb82fbe75642ce793b7d561c17928d9e49649c6a1bc5c6da3690905f`
+  and replay content SHA-256
+  `483e58dbc5954c92931c2c0f8becae555731f17db53e0552075684831fc9c0ad`.
+  Combined replay had 144 false positives including two nonadjacent cases;
+  gripper-only had 193 false positives including two nonadjacent cases.
+- Command: `$env:PYTHONUTF8='1'; C:\IsaacSim\env_6_1_0\Scripts\python.exe software\integrations\isaac_sim\targeted_obb_refinement_probe.py --upstream-repo C:\IsaacSim\sources\roarm_ws-40dbd84 --mesh-receipt software\integrations\isaac_sim\evidence\roarm_m3_upstream_link_meshes_20260929.json --base-reduction software\integrations\isaac_sim\evidence\roarm_m3_link_mesh_reduction_20260929.json --target-links link2 --output C:\IsaacSim\evidence\targeted_obb_refinement_002_link2.json --status-output C:\IsaacSim\evidence\targeted_obb_refinement_002_link2.status.json`;
+  `$env:PYTHONUTF8='1'; C:\IsaacSim\env_6_1_0\Scripts\python.exe software\integrations\isaac_sim\collision_joint_space_probe.py --workspace . --upstream-repo C:\IsaacSim\sources\roarm_ws-40dbd84 --mesh-receipt software\integrations\isaac_sim\evidence\roarm_m3_upstream_link_meshes_20260929.json --reduction-receipt C:\IsaacSim\evidence\targeted_obb_refinement_002_link2.json --expected-reduction-sha256 68f0aa41c4f46e12b563285f5a48b65f3d0457a7939a1bf537dec93b11740bcb --fcl-wheel C:\IsaacSim\sources\python-fcl-0.7.0.11\python_fcl-0.7.0.11-cp312-cp312-win_amd64.whl --output C:\IsaacSim\evidence\collision_joint_space_link2_001.detailed.json --summary-output C:\IsaacSim\evidence\collision_joint_space_link2_001.summary.json --status-output C:\IsaacSim\evidence\collision_joint_space_link2_001.status.json`;
+  the same two commands were run with target sets `link2,gripper_link` and
+  `gripper_link`, each bound to its exact receipt SHA-256 above;
+  `python -m pytest software/tests/unit/test_isaac_sim_targeted_obb_refinement_evidence.py software/tests/unit/test_isaac_sim_collision_joint_space_evidence.py software/tests/unit/test_isaac_sim_collision_differential_evidence.py software/tests/unit/test_isaac_sim_link_mesh_reduction_evidence.py software/tests/unit/test_isaac_sim_upstream_link_mesh_evidence.py software/tests/unit/test_isaac_sim_step_link_membership_evidence.py software/tests/unit/test_isaac_sim_step_pose_binding_evidence.py software/tests/unit/test_isaac_sim_step_inspection_evidence.py software/tests/unit/test_isaac_sim_rc03_scene_evidence.py software/tests/unit/test_isaac_sim_urdf_import_evidence.py software/tests/unit/test_isaac_sim_fk_parity_evidence.py software/tests/unit/test_isaac_sim_first_launch_evidence.py software/tests/unit/test_isaac_sim_host_probe.py software/tests/unit/test_isaac_sim_contracts.py -q`;
+  four repository audits; `git diff --check`.
+- Result: PASS_WITH_BLOCKERS for the `link2`-only diagnostic candidate. Its
+  second component volume falls to 94.1967% of the original axis-aligned box;
+  serialized vertex overflow remains 0.0 mm. Exact replay reduces false
+  positives from 192 to 143: 142 adjacent and one nonadjacent. It preserves
+  zero false negatives and all 57 collision agreements. The original
+  `halton_019` witness clears, but one `link2`/gripper false positive remains at
+  `all_upper`: 21.640035 mm raw separation and -6.752044 mm box signed
+  separation. The focused suite passed 73 tests in 3.51 seconds and all
+  four audits passed.
+- Artifacts:
+  `software/integrations/isaac_sim/evidence/roarm_m3_targeted_obb_link2_20260929.json`;
+  `software/integrations/isaac_sim/evidence/roarm_m3_collision_joint_space_link2_20260929.json`;
+  `software/integrations/isaac_sim/targeted_obb_refinement_probe.py`;
+  `software/tests/unit/test_isaac_sim_targeted_obb_refinement_evidence.py`;
+  all variant and detailed replay receipts under `C:\IsaacSim\evidence`.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: oriented boxes materially reduce adjacent false positives but
+  do not remove the nonadjacent witness. Gripper orientation introduces a new
+  base/gripper false positive and is rejected. The finite corpus, nonwatertight
+  source meshes, missing tool/camera/environment geometry, placement, dynamics,
+  controller, hardware, and physical blockers remain. No exclusion was
+  selected; profile installation and collision-query admission remain false.
+  No AI, arm, or integration gate status changed.
+- Supersedes: none. INT-442 remains the baseline corpus. This row retains a
+  preferred diagnostic variant plus the rejected alternatives.
+- Next dependency: partition or otherwise tighten the gripper and remaining
+  `link2` geometry without increasing nonadjacent false positives, then replay
+  the same corpus. Review adjacent exclusions only after mechanical evidence.
