@@ -5559,3 +5559,77 @@ rewriting history. New entries must use a unique evidence ID.
 - Next dependency: jointly define a strict, hash-bound runtime exclusion-policy
   contract that defaults to no exclusions and cannot grant controller or
   physical authority; keep installation blocked until reviewed separately.
+
+### E-20260929-INT-448 — inert hash-bound exclusion-policy candidate
+
+- Stage: S2/S3 simulation oracle WP2.
+- Lane: INTEGRATION.
+- Commit: `3cdd25c75d2272310423733aa84b3056ba969c56`.
+- Change: added a strict shared schema, immutable loader, and deterministic
+  probe for a collision-exclusion policy candidate. The retained candidate
+  binds the exact base collision contract, governed robot model, selected
+  geometry and replay, pinned upstream SRDF, adjacent review, and `Never`
+  review. It proposes all twelve upstream pairs while requiring an empty
+  effective-exclusion set, collision checking by default, an explicitly
+  uninstalled state, and false values for every authority flag. The loader has
+  no installation or application method.
+- Inputs/fixtures: loader SHA-256
+  `38770b54b3a1d5c0e0e2df9d2b0ce6c60618643e140fac2b75add8359577a08b`;
+  schema SHA-256
+  `136d5d804271fdee42f43495fcd5a7bcbc6a832f952c188b546520ef55a70b2d`;
+  probe SHA-256
+  `5f1bcc14e0ebf494974e4c8d55e8aca16b73f32f56ba16eb0b014903d9ef49ef`;
+  loader-test SHA-256
+  `77fca91ec847c81506718040f42df207ecd34e462a1c8e07bdd381a58cebb6ec`;
+  evidence-test SHA-256
+  `bfe6c6956d911ca8161d8e88712275711d2facb9796d61c0153f73a66fe66dad`;
+  committed candidate file/content SHA-256
+  `88e31c4b525ded8ca48d4bae7cf70faff396e2d9f92249296f2b2f3a9c1d3c3f` /
+  `651adee0ee18c4d11233e3ed37389a4811236e08b54c0f91a32fd6dfa436e75a`;
+  external status SHA-256
+  `412d38041194682b54285d9e4423517f68ea7f64c2a4168f5f7290557d7541b9`;
+  base collision contract SHA-256
+  `d3238c0c95a1d2e7ff74fcb8dccc3eb0aadb0f897b2ea041319bbcd6442af5c3`;
+  governed robot model SHA-256
+  `a565718e7d74b07702802cf41eb9549a6e38e50b5e80aa9b887ab1ae3d0d8190`;
+  selected geometry/replay content SHA-256
+  `0568f7ba269cf190ca4b9d6bc41ac17c90c72c3489fad433bb064ca2239e5fc6` /
+  `1cad314d6901c0f639c4771f7be79b235eeadf844eba600129d4f8bb45991b87`;
+  adjacent/`Never` review content SHA-256
+  `c6c1df0b304f7f8b36bd6b8e1015244d1b5e427b24476a85f84b846de5001423` /
+  `a2210f019e0dae09274be1e30b36dbaf69ffe3064b54030bb699568c9230c0e8`;
+  upstream SRDF SHA-256
+  `29f1daaeea91a490b85581a9a62dd07be9ab959d7817fad89836c466e8288499`.
+- Command: `python software\integrations\isaac_sim\exclusion_policy_candidate_probe.py --workspace . --geometry-candidate software\integrations\isaac_sim\evidence\roarm_m3_triangle_partition_link2_20260929.json --replay-summary software\integrations\isaac_sim\evidence\roarm_m3_collision_joint_space_triangle_partition_20260929.json --policy-review software\integrations\isaac_sim\evidence\roarm_m3_self_collision_policy_review_20260929.json --never-review software\integrations\isaac_sim\evidence\roarm_m3_srdf_never_pair_review_20260929.json --output C:\IsaacSim\evidence\collision_exclusion_policy_candidate_001.json --status-output C:\IsaacSim\evidence\collision_exclusion_policy_candidate_001.status.json`;
+  `python -m pytest software/tests/unit/test_collision_exclusion_policy_candidate.py software/tests/unit/test_isaac_sim_exclusion_policy_candidate_evidence.py software/tests/unit/test_isaac_sim_srdf_never_pair_review_evidence.py software/tests/unit/test_isaac_sim_self_collision_policy_review_evidence.py software/tests/unit/test_isaac_sim_triangle_partition_refinement_evidence.py software/tests/unit/test_isaac_sim_targeted_obb_refinement_evidence.py software/tests/unit/test_isaac_sim_collision_joint_space_evidence.py software/tests/unit/test_isaac_sim_collision_differential_evidence.py software/tests/unit/test_isaac_sim_link_mesh_reduction_evidence.py software/tests/unit/test_isaac_sim_upstream_link_mesh_evidence.py software/tests/unit/test_isaac_sim_step_link_membership_evidence.py software/tests/unit/test_isaac_sim_step_pose_binding_evidence.py software/tests/unit/test_isaac_sim_step_inspection_evidence.py software/tests/unit/test_isaac_sim_rc03_scene_evidence.py software/tests/unit/test_isaac_sim_urdf_import_evidence.py software/tests/unit/test_isaac_sim_fk_parity_evidence.py software/tests/unit/test_isaac_sim_first_launch_evidence.py software/tests/unit/test_isaac_sim_host_probe.py software/tests/unit/test_isaac_sim_contracts.py -q`;
+  four repository audits; `git diff --check`.
+- Result: PASS_WITH_BLOCKERS. The candidate contains twelve proposed
+  exclusions, zero effective exclusions, `CHECK_COLLISION` as the default pair
+  disposition, and false collision-query, clearance-replay, controller,
+  execution-permit, transport, and physical authority. Strict parsing rejects
+  duplicate fields, content tampering, wrong file or source hashes, unknown,
+  duplicate, or noncanonical pairs, a nonempty effective set, and any true
+  authority flag. One hundred two focused tests passed in 4.68 seconds and all
+  four repository audits passed.
+- Artifacts:
+  `software/src/rocell/simulation/exclusion_policy.py`;
+  `software/ai/schemas/collision_exclusion_policy_candidate_v1.schema.json`;
+  `software/integrations/isaac_sim/exclusion_policy_candidate_probe.py`;
+  `software/integrations/isaac_sim/evidence/roarm_m3_collision_exclusion_policy_candidate_20260929.json`;
+  `software/tests/unit/test_collision_exclusion_policy_candidate.py`;
+  `software/tests/unit/test_isaac_sim_exclusion_policy_candidate_evidence.py`;
+  external status under `C:\IsaacSim\evidence`.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: the document is a review candidate only. Installed measured
+  geometry and engineering acceptance are absent. Finite-corpus, geometry,
+  tool, camera-support, environment, placement, dynamics, controller,
+  hardware, and physical qualification blockers remain. There is no runtime
+  installation path and no collision-query, clearance, controller, permit,
+  transport, or physical authority. No lane or integration gate changed.
+- Supersedes: INT-447 only for its shared candidate-contract next dependency.
+  INT-445 through INT-447 remain the retained geometry and policy evidence.
+- Next dependency: arm/runtime lane review of the shared candidate schema and
+  a separate promotion/install contract that requires accepted measured
+  geometry and explicit engineering acceptance before any effective exclusion
+  can exist.

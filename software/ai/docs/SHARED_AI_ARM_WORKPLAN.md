@@ -830,16 +830,18 @@ Workers add a short row before beginning a potentially overlapping change and
 remove it only in the same commit that appends the resulting evidence row.
 
 The latest completed SIM/WP2 increments are evidence `E-20260929-INT-445`
-through `E-20260929-INT-447`. They retain a bounded triangle-preserving
+through `E-20260929-INT-448`. They retain a bounded triangle-preserving
 `link2` partition candidate, bind all 165 remaining false positives to pinned
-upstream `Adjacent` policy evidence, and verify that all six separate SRDF
-`Never` pairs remain free in the exact 49-pose corpus while preserving three
-nonexcluded nonadjacent collision witnesses. These reviews are finite and
-counterfactual; they grant no collision or clearance authority.
+upstream `Adjacent` policy evidence, verify that all six separate SRDF `Never`
+pairs remain free in the exact 49-pose corpus while preserving three
+nonexcluded nonadjacent collision witnesses, and encode all twelve upstream
+pairs in a strict hash-bound candidate document. The candidate is explicitly
+uninstalled, defaults every pair to collision checking, has zero effective
+exclusions, and grants no collision, clearance, controller, permit, transport,
+or physical authority.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| SIM/WP2 | S2/S3 | define strict hash-bound uninstalled exclusion-policy candidate schema and loader under shared schema/simulation paths; default effective exclusions empty; no controller or physical authority | `issue/190-isaac-sim-host` | IN_PROGRESS |
 | Unclaimed | S2/S3 | physical-camera deployment qualification and safe-region-fit precision evidence | — | AVAILABLE |
 | ARM | S4 | collect four physical-original `camera_support_optics` bindings through onboarding, then run the ARM-070 intake; no synthetic promotion | ARM-071 | WAITING_FOR_ORIGINALS |
 

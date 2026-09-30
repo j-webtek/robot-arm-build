@@ -303,6 +303,19 @@ three nonexcluded nonadjacent pairs that each collide once in the finite corpus.
 This supports the upstream labels only within the 49 sampled poses; it is not
 a continuous-workspace proof and does not make the exclusions installable.
 
+[`exclusion_policy_candidate_probe.py`](exclusion_policy_candidate_probe.py)
+turns those reviews into the strict shared candidate boundary described by
+[`collision_exclusion_policy_candidate_v1.schema.json`](../../ai/schemas/collision_exclusion_policy_candidate_v1.schema.json).
+The retained
+[`candidate document`](evidence/roarm_m3_collision_exclusion_policy_candidate_20260929.json)
+binds the exact base collision contract, governed robot model, selected
+geometry, replay, upstream SRDF, adjacent review, and `Never` review. It lists
+all twelve SRDF pairs as proposals while requiring an empty
+`effective_exclusions` array, defaulting every pair to `CHECK_COLLISION`, and
+setting collision, clearance, controller, execution-permit, transport, and
+physical authority to false. The strict loader has no method that applies a
+proposal to a collision contract.
+
 Reproduce it on the designated runner from the repository root:
 
 ```powershell
@@ -443,6 +456,20 @@ C:\IsaacSim\env_6_1_0\Scripts\python.exe software\integrations\isaac_sim\srdf_ne
   --replay-summary software\integrations\isaac_sim\evidence\roarm_m3_collision_joint_space_triangle_partition_20260929.json `
   --output C:\IsaacSim\evidence\srdf_never_pair_review_001.json `
   --status-output C:\IsaacSim\evidence\srdf_never_pair_review_001.status.json
+```
+
+Reproduce the inert, hash-bound exclusion candidate:
+
+```powershell
+$env:PYTHONUTF8='1'
+python software\integrations\isaac_sim\exclusion_policy_candidate_probe.py `
+  --workspace . `
+  --geometry-candidate software\integrations\isaac_sim\evidence\roarm_m3_triangle_partition_link2_20260929.json `
+  --replay-summary software\integrations\isaac_sim\evidence\roarm_m3_collision_joint_space_triangle_partition_20260929.json `
+  --policy-review software\integrations\isaac_sim\evidence\roarm_m3_self_collision_policy_review_20260929.json `
+  --never-review software\integrations\isaac_sim\evidence\roarm_m3_srdf_never_pair_review_20260929.json `
+  --output C:\IsaacSim\evidence\collision_exclusion_policy_candidate_001.json `
+  --status-output C:\IsaacSim\evidence\collision_exclusion_policy_candidate_001.status.json
 ```
 
 ## Verify WP0
