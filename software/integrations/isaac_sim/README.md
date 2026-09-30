@@ -293,6 +293,16 @@ review does not install exclusions: the six separate SRDF `Never` pairs need
 their own evidence review, and a local runtime policy contract has not been
 selected.
 
+[`srdf_never_pair_review_probe.py`](srdf_never_pair_review_probe.py) reviews
+the SRDF's six separate `Never` pairs without promoting them into a local
+policy. The retained
+[`Never-pair review`](evidence/roarm_m3_srdf_never_pair_review_20260929.json)
+records raw/candidate free-space agreement for all 294 tested pair-pose cases,
+with positive recorded minima for both representations. It also preserves the
+three nonexcluded nonadjacent pairs that each collide once in the finite corpus.
+This supports the upstream labels only within the 49 sampled poses; it is not
+a continuous-workspace proof and does not make the exclusions installable.
+
 Reproduce it on the designated runner from the repository root:
 
 ```powershell
@@ -422,6 +432,17 @@ C:\IsaacSim\env_6_1_0\Scripts\python.exe software\integrations\isaac_sim\self_co
   --replay-summary software\integrations\isaac_sim\evidence\roarm_m3_collision_joint_space_triangle_partition_20260929.json `
   --output C:\IsaacSim\evidence\self_collision_policy_review_001.json `
   --status-output C:\IsaacSim\evidence\self_collision_policy_review_001.status.json
+```
+
+Reproduce the bounded review of the six SRDF `Never` pairs:
+
+```powershell
+$env:PYTHONUTF8='1'
+C:\IsaacSim\env_6_1_0\Scripts\python.exe software\integrations\isaac_sim\srdf_never_pair_review_probe.py `
+  --policy-review software\integrations\isaac_sim\evidence\roarm_m3_self_collision_policy_review_20260929.json `
+  --replay-summary software\integrations\isaac_sim\evidence\roarm_m3_collision_joint_space_triangle_partition_20260929.json `
+  --output C:\IsaacSim\evidence\srdf_never_pair_review_001.json `
+  --status-output C:\IsaacSim\evidence\srdf_never_pair_review_001.status.json
 ```
 
 ## Verify WP0

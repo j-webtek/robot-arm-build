@@ -5505,3 +5505,57 @@ rewriting history. New entries must use a unique evidence ID.
 - Next dependency: review the six SRDF `Never` pairs against the selected
   replay and source geometry, then define a shared runtime exclusion-policy
   contract before any candidate can be installed.
+
+### E-20260929-INT-447 — finite replay review of SRDF `Never` pairs
+
+- Stage: S2/S3 simulation oracle WP2.
+- Lane: INTEGRATION.
+- Commit: `0ad69c7d05cec46ea56ea0c5a160394e1ff8dd66`.
+- Change: reviewed all six pinned upstream SRDF pairs labeled `Never` against
+  the committed 49-pose selected-candidate replay. Retained positive minimum
+  raw and candidate separation for each pair and separately retained every
+  nonexcluded nonadjacent collision witness. No exclusion is installed.
+- Inputs/fixtures: probe SHA-256
+  `e6636880f10728b9445fa2814bf7997cfff7ebf9ae695d450e7f26c421dce23b`;
+  test SHA-256
+  `211add37d11e9646a12ca1ece96a6a5b3dd1934b9f303f90838922bb42080459`;
+  committed review file/content SHA-256
+  `75ae1fe48c2b9e287f076d1465ebfdb59913a9ca0b253b12c20ad6e6f44e7490` /
+  `a2210f019e0dae09274be1e30b36dbaf69ffe3064b54030bb699568c9230c0e8`;
+  external status SHA-256
+  `82fe018131df2a2a635ed6bc08f8d2d1b9b2a8b6b404785a46c0d4825c8e7963`;
+  policy-review content SHA-256
+  `c6c1df0b304f7f8b36bd6b8e1015244d1b5e427b24476a85f84b846de5001423`;
+  replay content SHA-256
+  `1cad314d6901c0f639c4771f7be79b235eeadf844eba600129d4f8bb45991b87`.
+- Command: `$env:PYTHONUTF8='1'; C:\IsaacSim\env_6_1_0\Scripts\python.exe software\integrations\isaac_sim\srdf_never_pair_review_probe.py --policy-review software\integrations\isaac_sim\evidence\roarm_m3_self_collision_policy_review_20260929.json --replay-summary software\integrations\isaac_sim\evidence\roarm_m3_collision_joint_space_triangle_partition_20260929.json --output C:\IsaacSim\evidence\srdf_never_pair_review_001.json --status-output C:\IsaacSim\evidence\srdf_never_pair_review_001.status.json`;
+  `python -m pytest software/tests/unit/test_isaac_sim_srdf_never_pair_review_evidence.py software/tests/unit/test_isaac_sim_self_collision_policy_review_evidence.py software/tests/unit/test_isaac_sim_triangle_partition_refinement_evidence.py software/tests/unit/test_isaac_sim_targeted_obb_refinement_evidence.py software/tests/unit/test_isaac_sim_collision_joint_space_evidence.py software/tests/unit/test_isaac_sim_collision_differential_evidence.py software/tests/unit/test_isaac_sim_link_mesh_reduction_evidence.py software/tests/unit/test_isaac_sim_upstream_link_mesh_evidence.py software/tests/unit/test_isaac_sim_step_link_membership_evidence.py software/tests/unit/test_isaac_sim_step_pose_binding_evidence.py software/tests/unit/test_isaac_sim_step_inspection_evidence.py software/tests/unit/test_isaac_sim_rc03_scene_evidence.py software/tests/unit/test_isaac_sim_urdf_import_evidence.py software/tests/unit/test_isaac_sim_fk_parity_evidence.py software/tests/unit/test_isaac_sim_first_launch_evidence.py software/tests/unit/test_isaac_sim_host_probe.py software/tests/unit/test_isaac_sim_contracts.py -q`;
+  four repository audits; `git diff --check`.
+- Result: PASS_WITH_BLOCKERS. All 294 cases across the six `Never` pairs are
+  raw/candidate free-space agreements, with zero collisions, false positives,
+  or false negatives. Every pair retains positive recorded raw and candidate
+  minima; the lowest raw minimum is 34.870661 mm and the lowest candidate
+  minimum is 26.995907 mm. Three nonexcluded nonadjacent pairs remain visible:
+  `link1`/gripper, `link2`/`link4`, and `link2`/`link5` each record one
+  raw/candidate collision agreement. Eighty-eight focused tests passed in
+  4.22 seconds and all four repository audits passed.
+- Artifacts:
+  `software/integrations/isaac_sim/srdf_never_pair_review_probe.py`;
+  `software/integrations/isaac_sim/evidence/roarm_m3_srdf_never_pair_review_20260929.json`;
+  `software/tests/unit/test_isaac_sim_srdf_never_pair_review_evidence.py`;
+  external status under `C:\IsaacSim\evidence`.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: agreement across 49 poses supports but cannot prove the SRDF's
+  continuous-workspace `Never` semantics. Pair-summary minima are not a
+  continuous clearance certificate. The three retained collision witnesses
+  require trajectory and policy handling rather than exclusion. Existing
+  geometry, tool, camera-support, environment, placement, dynamics,
+  controller, hardware, and physical blockers remain. No exclusion profile,
+  collision query, clearance replay, lane gate, or integration gate is
+  admitted or completed.
+- Supersedes: INT-446 only for its `Never`-pair next dependency. INT-446
+  remains the upstream SRDF and adjacent-policy binding evidence.
+- Next dependency: jointly define a strict, hash-bound runtime exclusion-policy
+  contract that defaults to no exclusions and cannot grant controller or
+  physical authority; keep installation blocked until reviewed separately.
