@@ -1007,6 +1007,7 @@ qualification, and the AI-465 candidate remains blocked.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
+| AI | S2/S3 | predeclare fresh unused schedule-pose and lighting splits; evaluate a target-safe-region-aware RGB occlusion candidate on external synthetic artifacts; focused tests and retained hashes; no runtime or authority changes | `issue/190-isaac-sim-host` | IN_PROGRESS |
 | Unclaimed | S2/S3 | physical-camera deployment qualification and safe-region-fit precision evidence | — | AVAILABLE |
 | ARM | S4 | collect four physical-original `camera_support_optics` bindings through onboarding, then run the ARM-070 intake; no synthetic promotion | ARM-071 | WAITING_FOR_ORIGINALS |
 
