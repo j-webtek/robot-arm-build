@@ -19,11 +19,13 @@ SCHEMA_V2 = "rocell.ai_official_mesh_occlusion_data.v2"
 SCHEMA_V3 = "rocell.ai_official_mesh_occlusion_data.v3"
 SCHEMA_V4 = "rocell.ai_official_mesh_occlusion_data.v4"
 SCHEMA_V5 = "rocell.ai_official_mesh_occlusion_data.v5"
+SCHEMA_V6 = "rocell.ai_official_mesh_occlusion_data.v6"
 SOURCE_SCHEMA_V1 = "tactevra.isaac_fixed_overview_mesh_render.v1"
 SOURCE_SCHEMA_V2 = "tactevra.isaac_fixed_overview_mesh_render.v2"
 SOURCE_SCHEMA_V3 = "tactevra.isaac_fixed_overview_mesh_render.v3"
 SOURCE_SCHEMA_V4 = "tactevra.isaac_fixed_overview_mesh_render.v4"
 SOURCE_SCHEMA_V5 = "tactevra.isaac_fixed_overview_mesh_render.v5"
+SOURCE_SCHEMA_V6 = "tactevra.isaac_fixed_overview_mesh_render.v6"
 MAXIMUM_SAFE_REGION_OVERLAP = 0.20
 BASELINE_SEED = 190
 BASELINE_CROP_SIZE = 16
@@ -77,6 +79,18 @@ TARGET_AWARE_LIGHTING = {
     "development": ("neutral_low", "bottom_shadow", "diagonal_motion_blur"),
     "evaluation": ("green_cast", "corner_glare", "horizontal_motion_blur"),
 }
+PERTURBATION_LIGHTING = {
+    "train": (),
+    "development": TARGET_AWARE_LIGHTING["development"],
+    "evaluation": (),
+}
+NOMINAL_PIXELS_PER_MM = 2.0
+MASK_OFFSET_RADII_MM = (1.0, 2.0, 4.0, 8.0)
+MASK_OFFSET_DIRECTIONS = (
+    (-1, -1), (0, -1), (1, -1),
+    (-1, 0), (1, 0),
+    (-1, 1), (0, 1), (1, 1),
+)
 
 
 def _sha256(payload: bytes) -> str:
@@ -93,7 +107,7 @@ def _verify_source(path: Path) -> dict[str, Any]:
     source = json.loads(path.read_text(encoding="utf-8"))
     if source.get("schema") not in {
         SOURCE_SCHEMA_V1, SOURCE_SCHEMA_V2, SOURCE_SCHEMA_V3, SOURCE_SCHEMA_V4,
-        SOURCE_SCHEMA_V5,
+        SOURCE_SCHEMA_V5, SOURCE_SCHEMA_V6,
     }:
         raise ValueError("official-mesh manifest schema mismatch")
     claimed = source.pop("receipt_sha256", None)
@@ -132,7 +146,10 @@ def _split_policy(source: dict[str, Any]) -> tuple[str, dict[str, dict[str, tupl
         expected = next(name for name, poses in normalized.items() if row["pose_id"] in poses)
         if row.get("pose_group") != expected:
             raise ValueError(f"pose group mismatch: {row['pose_id']}")
-    if source["schema"] == SOURCE_SCHEMA_V5:
+    if source["schema"] == SOURCE_SCHEMA_V6:
+        lighting = PERTURBATION_LIGHTING
+        schema = SCHEMA_V6
+    elif source["schema"] == SOURCE_SCHEMA_V5:
         lighting = TARGET_AWARE_LIGHTING
         schema = SCHEMA_V5
     elif source["schema"] == SOURCE_SCHEMA_V4:
@@ -489,13 +506,24 @@ def _spatial_crops(
 
 
 def _target_aware_crops(
-    dataset_dir: Path, rows: list[dict[str, Any]]
+    dataset_dir: Path,
+    rows: list[dict[str, Any]],
+    localization_offset_px: tuple[float, float] = (0.0, 0.0),
 ) -> tuple[np.ndarray, np.ndarray]:
-    """Return RGB crops plus a catalog-derived safe-region channel."""
-    rgb, labels = _spatial_crops(dataset_dir, rows)
+    """Return RGB crops plus a possibly displaced catalog safe-region channel."""
+    offset_x, offset_y = localization_offset_px
+    displaced_rows = []
+    for row in rows:
+        displaced = dict(row)
+        displaced["safe_polygon_px"] = [
+            [point[0] + offset_x, point[1] + offset_y]
+            for point in row["safe_polygon_px"]
+        ]
+        displaced_rows.append(displaced)
+    rgb, labels = _spatial_crops(dataset_dir, displaced_rows)
     masks = []
     image_sizes: dict[str, tuple[int, int]] = {}
-    for row in rows:
+    for row in displaced_rows:
         polygon = row["safe_polygon_px"]
         x_values = [point[0] for point in polygon]
         y_values = [point[1] for point in polygon]
@@ -520,6 +548,21 @@ def _target_aware_crops(
         )
         masks.append(np.asarray(resized, dtype=np.float32)[None, :, :] / 255.0)
     return np.concatenate((rgb, np.stack(masks)), axis=1), labels
+
+
+def _declared_mask_offsets() -> list[dict[str, float]]:
+    offsets = [{"x_mm": 0.0, "y_mm": 0.0, "x_px": 0.0, "y_px": 0.0}]
+    for radius in MASK_OFFSET_RADII_MM:
+        for direction_x, direction_y in MASK_OFFSET_DIRECTIONS:
+            x_mm = radius * direction_x
+            y_mm = radius * direction_y
+            offsets.append({
+                "x_mm": x_mm,
+                "y_mm": y_mm,
+                "x_px": x_mm * NOMINAL_PIXELS_PER_MM,
+                "y_px": y_mm * NOMINAL_PIXELS_PER_MM,
+            })
+    return offsets
 
 
 def _metrics(rows: list[dict[str, Any]], labels: np.ndarray,
@@ -1153,6 +1196,121 @@ def _load_spatial_checkpoint(candidate_dir: Path):  # type: ignore[no-untyped-de
     return checkpoint, model
 
 
+def evaluate_target_mask_perturbations(
+    source_manifest: Path,
+    dataset_dir: Path,
+    candidate_dir: Path,
+    output_dir: Path,
+) -> dict[str, Any]:
+    """Measure frozen target-aware inference under predeclared mask offsets."""
+    import torch
+
+    source_manifest = source_manifest.resolve(strict=True)
+    dataset_dir = dataset_dir.resolve(strict=True)
+    candidate_dir = candidate_dir.resolve(strict=True)
+    output_dir = output_dir.resolve()
+    if output_dir.exists() and any(output_dir.iterdir()):
+        raise ValueError("perturbation output directory must be empty")
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    source = _verify_source(source_manifest)
+    if source.get("schema") != SOURCE_SCHEMA_V6:
+        raise ValueError("perturbation source must use v6 development-only schema")
+    dataset_path = dataset_dir / "manifest.json"
+    dataset = json.loads(dataset_path.read_text(encoding="utf-8"))
+    claimed_dataset_sha = dataset.pop("dataset_sha256", None)
+    if not isinstance(claimed_dataset_sha, str) \
+            or _sha256(_canonical(dataset)) != claimed_dataset_sha:
+        raise ValueError("perturbation dataset manifest hash mismatch")
+    dataset["dataset_sha256"] = claimed_dataset_sha
+    if dataset.get("schema") != SCHEMA_V6 \
+            or dataset.get("scope") != "SYNTHETIC_ONLY_NO_DEPLOYMENT_QUALIFICATION":
+        raise ValueError("perturbation dataset scope or schema mismatch")
+    if dataset.get("source_manifest_sha256") != _sha256(source_manifest.read_bytes()) \
+            or dataset.get("source_receipt_sha256") != source["receipt_sha256"]:
+        raise ValueError("perturbation dataset differs from source render")
+    if dataset["splits"]["train"]["count"] != 0 \
+            or dataset["splits"]["evaluation"]["count"] != 0:
+        raise ValueError("perturbation study must not contain train or evaluation rows")
+
+    checkpoint, model = _load_spatial_checkpoint(candidate_dir)
+    if checkpoint.get("schema") != "rocell.ai_target_crop_safe_region_spatial.v1":
+        raise ValueError("perturbation study requires target-aware checkpoint")
+    model_path = candidate_dir / "model.json"
+    scorecard_path = candidate_dir / "scorecard.json"
+    scorecard = json.loads(scorecard_path.read_text(encoding="utf-8"))
+    claimed_scorecard_sha = scorecard.pop("scorecard_sha256", None)
+    if not isinstance(claimed_scorecard_sha, str) \
+            or _sha256(_canonical(scorecard)) != claimed_scorecard_sha:
+        raise ValueError("perturbation candidate scorecard hash mismatch")
+    scorecard["scorecard_sha256"] = claimed_scorecard_sha
+    if scorecard.get("model_sha256") != _sha256(model_path.read_bytes()) \
+            or scorecard.get("hardware_writes") != 0 \
+            or scorecard.get("physical_movements") != 0:
+        raise ValueError("perturbation candidate identity or authority mismatch")
+
+    rows = _load_rows(dataset_dir, "development", dataset)
+    threshold = float(checkpoint["threshold"])
+    measurements = []
+    target_failures: dict[str, dict[str, int]] = {}
+    rows_by_id = {row["id"]: row for row in rows}
+    for offset in _declared_mask_offsets():
+        crops, labels = _target_aware_crops(
+            dataset_dir, rows, (offset["x_px"], offset["y_px"]),
+        )
+        with torch.no_grad():
+            probabilities = torch.sigmoid(model(torch.from_numpy(crops))).numpy()
+        metrics = _metrics(rows, labels.astype(np.float64), probabilities, threshold)
+        for failure in metrics["failures"]:
+            row = rows_by_id[failure["id"]]
+            key = f"{row['device']}:{row['target_id']}"
+            counts = target_failures.setdefault(
+                key, {"false_abstain": 0, "missed_abstain": 0},
+            )
+            counts[
+                "missed_abstain"
+                if failure["expected"] == "abstain" else "false_abstain"
+            ] += 1
+        measurements.append({"offset": offset, "metrics": metrics})
+
+    report: dict[str, Any] = {
+        "schema": "rocell.ai_target_mask_perturbation_study.v1",
+        "scope": "SYNTHETIC_ONLY_NO_DEPLOYMENT_QUALIFICATION",
+        "source_manifest_sha256": _sha256(source_manifest.read_bytes()),
+        "source_receipt_sha256": source["receipt_sha256"],
+        "dataset_manifest_sha256": _sha256(dataset_path.read_bytes()),
+        "dataset_sha256": claimed_dataset_sha,
+        "model_sha256": _sha256(model_path.read_bytes()),
+        "scorecard_sha256": claimed_scorecard_sha,
+        "selection_split": "development_only",
+        "evaluation_group_present": False,
+        "threshold": threshold,
+        "offset_model": {
+            "kind": "joint_rgb_crop_and_known_target_safe_region_translation",
+            "nominal_pixels_per_mm": NOMINAL_PIXELS_PER_MM,
+            "derivation": "nominal_fx_1000_px / nominal_target_depth_500_mm",
+            "radii_mm": list(MASK_OFFSET_RADII_MM),
+            "direction_count_per_radius": len(MASK_OFFSET_DIRECTIONS),
+        },
+        "measurements": measurements,
+        "per_target_failure_counts_across_offsets": target_failures,
+        "promotion_status": "BLOCKED_SYNTHETIC_ONLY",
+        "hardware_writes": 0,
+        "physical_movements": 0,
+        "physical_authority": False,
+        "limitations": [
+            "all images, labels, target geometry, and offsets are synthetic",
+            "pixel-to-millimetre conversion uses nominal camera geometry",
+            "offsets translate the RGB crop and known-target mask together",
+            "development-only results are diagnostic and cannot qualify deployment",
+            "no evaluation group was created or opened",
+        ],
+    }
+    report["report_sha256"] = _sha256(_canonical(report))
+    (output_dir / "report.json").write_bytes(_canonical(report) + b"\n")
+    return report
+
+
 def _video_frame(image: Image.Image, title: str, subtitle: str) -> Image.Image:
     frame = image.convert("RGB").resize((960, 540), Image.Resampling.LANCZOS)
     draw = ImageDraw.Draw(frame)
@@ -1381,9 +1539,13 @@ def main() -> int:
         "--record-existing", type=Path, nargs=3,
         metavar=("DATASET_DIR", "CANDIDATE_DIR", "VIDEO_OUTPUT_DIR"),
     )
+    parser.add_argument(
+        "--perturb-existing", type=Path, nargs=3,
+        metavar=("DATASET_DIR", "CANDIDATE_DIR", "STUDY_OUTPUT_DIR"),
+    )
     args = parser.parse_args()
     if args.record_existing is not None:
-        if args.output_dir is not None or any(
+        if args.perturb_existing is not None or args.output_dir is not None or any(
             value is not None
             for value in (
                 args.baseline_output, args.candidate_output, args.spatial_output,
@@ -1396,8 +1558,24 @@ def main() -> int:
         )
         print(json.dumps(manifest, sort_keys=True))
         return 0
+    if args.perturb_existing is not None:
+        if args.output_dir is not None or any(
+            value is not None
+            for value in (
+                args.baseline_output, args.candidate_output, args.spatial_output,
+                args.target_aware_output,
+            )
+        ):
+            parser.error("--perturb-existing cannot be combined with build or training outputs")
+        report = evaluate_target_mask_perturbations(
+            args.source_manifest, *args.perturb_existing,
+        )
+        print(json.dumps(report, sort_keys=True))
+        return 0
     if args.output_dir is None:
-        parser.error("--output-dir is required unless --record-existing is used")
+        parser.error(
+            "--output-dir is required unless --record-existing or --perturb-existing is used"
+        )
     try:
         manifest = build(args.source_manifest, args.output_dir)
         scorecard = (

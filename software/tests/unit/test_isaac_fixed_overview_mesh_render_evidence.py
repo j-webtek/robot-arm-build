@@ -304,6 +304,18 @@ def test_transit_pose_groups_are_predeclared_disjoint_and_schedule_bound() -> No
     assert not (set(groups["development"]) & set(groups["evaluation"]))
 
 
+def test_mask_perturbation_poses_are_fresh_development_only() -> None:
+    module = _renderer()
+    groups = module.PERTURBATION_POSE_GROUPS
+    sequences = module.PERTURBATION_SCHEDULE_POSE_SEQUENCES
+
+    assert set(groups) == {"training", "development", "evaluation"}
+    assert groups["training"] == groups["evaluation"] == ()
+    assert set(groups["development"]) == set(sequences)
+    assert len(sequences) == len(set(sequences.values())) == 6
+    assert not (set(sequences.values()) & set(module.SCHEDULE_POSE_SEQUENCES.values()))
+
+
 def test_transit_dataset_policy_uses_fresh_disjoint_lighting() -> None:
     builder = _builder()
     renderer = _renderer()
@@ -435,6 +447,34 @@ def test_target_aware_dataset_policy_uses_fresh_disjoint_lighting() -> None:
     )
 
 
+def test_mask_perturbation_policy_has_no_evaluation_group() -> None:
+    builder = _builder()
+    renderer = _renderer()
+    source = {
+        "schema": "tactevra.isaac_fixed_overview_mesh_render.v6",
+        "pose_groups": {
+            name: list(poses)
+            for name, poses in renderer.PERTURBATION_POSE_GROUPS.items()
+        },
+        "pose_results": [
+            {"pose_id": pose_id, "pose_group": group}
+            for group, pose_ids in renderer.PERTURBATION_POSE_GROUPS.items()
+            for pose_id in pose_ids
+        ],
+    }
+
+    schema, policy = builder._split_policy(source)
+
+    assert schema == "rocell.ai_official_mesh_occlusion_data.v6"
+    assert policy["train"]["poses"] == policy["evaluation"]["poses"] == ()
+    assert policy["development"]["poses"] == tuple(
+        renderer.PERTURBATION_POSE_GROUPS["development"]
+    )
+    assert policy["development"]["lighting"] == (
+        "neutral_low", "bottom_shadow", "diagonal_motion_blur",
+    )
+
+
 def test_target_aware_lighting_families_are_deterministic_and_distinct() -> None:
     module = _builder()
     pixels = np.arange(48 * 48 * 3, dtype=np.uint8).reshape(48, 48, 3)
@@ -518,6 +558,34 @@ def test_target_aware_crops_add_only_known_safe_region_mask(tmp_path: Path) -> N
     assert np.array_equal(first, second)
     assert np.array_equal(labels, first_labels)
     assert np.array_equal(first_labels, second_labels)
+
+
+def test_target_aware_crops_translate_rgb_and_mask_together(tmp_path: Path) -> None:
+    module = _builder()
+    image_dir = tmp_path / "images"
+    image_dir.mkdir()
+    x = np.arange(128, dtype=np.uint8)[None, :]
+    pixels = np.repeat(x, 128, axis=0)
+    rgb = np.stack((pixels, np.flip(pixels, axis=1), pixels), axis=2)
+    image_path = image_dir / "gradient.png"
+    Image.fromarray(rgb, mode="RGB").save(image_path)
+    row = {
+        "image_path": "images/gradient.png",
+        "image_sha256": _sha256(image_path.read_bytes()),
+        "safe_polygon_px": [[56, 58], [72, 58], [72, 70], [56, 70]],
+        "decision": "abstain",
+    }
+
+    nominal, labels = module._target_aware_crops(tmp_path, [row])
+    shifted, shifted_labels = module._target_aware_crops(tmp_path, [row], (8.0, -4.0))
+    repeated, _ = module._target_aware_crops(tmp_path, [row], (8.0, -4.0))
+
+    assert nominal.shape == shifted.shape == (1, 4, 32, 32)
+    assert not np.array_equal(nominal[:, :3], shifted[:, :3])
+    assert np.array_equal(nominal[:, 3], shifted[:, 3])
+    assert np.array_equal(shifted, repeated)
+    assert np.array_equal(labels, shifted_labels)
+    assert len(module._declared_mask_offsets()) == 33
 
 
 def test_target_aware_candidate_is_deterministic_and_has_no_robot_mask_input(

@@ -99,6 +99,19 @@ POSE_GROUPS = {
         "targetaware_eval_return_119", "targetaware_eval_return_123",
     ),
 }
+PERTURBATION_SCHEDULE_POSE_SEQUENCES = {
+    "maskoffset_dev_outbound_12": 12,
+    "maskoffset_dev_outbound_16": 16,
+    "maskoffset_dev_outbound_21": 21,
+    "maskoffset_dev_return_116": 116,
+    "maskoffset_dev_return_125": 125,
+    "maskoffset_dev_return_129": 129,
+}
+PERTURBATION_POSE_GROUPS = {
+    "training": (),
+    "development": tuple(PERTURBATION_SCHEDULE_POSE_SEQUENCES),
+    "evaluation": (),
+}
 EXPECTED_SCHEDULE_FILE_SHA256 = "6a59ce143f5527c7a9ced09b08d5515644ea4fb859dd69691e08483eb020ee42"
 WIDTH = 1920
 HEIGHT = 1080
@@ -250,6 +263,11 @@ def main() -> int:
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--receipt", type=Path, required=True)
     parser.add_argument("--status-output", type=Path, required=True)
+    parser.add_argument(
+        "--campaign",
+        choices=("target-aware-v5", "mask-perturbation-v6"),
+        default="target-aware-v5",
+    )
     args = parser.parse_args()
     args.receipt.parent.mkdir(parents=True, exist_ok=True)
     args.status_output.parent.mkdir(parents=True, exist_ok=True)
@@ -290,15 +308,24 @@ def main() -> int:
         bootstrap = bootstrap_virtual_workcell(workspace)
         context = bootstrap.context
         schedule_by_sequence = {row["sequence"]: row for row in schedule_bundle["samples"]}
-        poses = dict(REFERENCE_POSES)
-        for pose_id, sequence in SCHEDULE_POSE_SEQUENCES.items():
+        if args.campaign == "mask-perturbation-v6":
+            poses: dict[str, tuple[float, ...] | None] = {}
+            schedule_pose_sequences = PERTURBATION_SCHEDULE_POSE_SEQUENCES
+            pose_groups = PERTURBATION_POSE_GROUPS
+            receipt_schema = "tactevra.isaac_fixed_overview_mesh_render.v6"
+        else:
+            poses = dict(REFERENCE_POSES)
+            schedule_pose_sequences = SCHEDULE_POSE_SEQUENCES
+            pose_groups = POSE_GROUPS
+            receipt_schema = "tactevra.isaac_fixed_overview_mesh_render.v5"
+        for pose_id, sequence in schedule_pose_sequences.items():
             sample = schedule_by_sequence[sequence]
             poses[pose_id] = tuple(
                 sample["joint_positions_rad"][name]
                 for name in ARM_CAMERA_JOINT_ORDER[:-1]
             )
-        declared_pose_ids = {pose_id for group in POSE_GROUPS.values() for pose_id in group}
-        if declared_pose_ids != set(poses) or sum(map(len, POSE_GROUPS.values())) != len(poses):
+        declared_pose_ids = {pose_id for group in pose_groups.values() for pose_id in group}
+        if declared_pose_ids != set(poses) or sum(map(len, pose_groups.values())) != len(poses):
             raise ValueError("pose groups must partition every rendered pose exactly once")
         model_path = context.scenario.model_path
         if _sha256(model_path.read_bytes()) != EXPECTED_URDF_SHA256:
@@ -467,7 +494,7 @@ def main() -> int:
                 pose_results.append({
                     "pose_id": pose_id,
                     "pose_group": next(
-                        group for group, pose_ids in POSE_GROUPS.items() if pose_id in pose_ids
+                        group for group, pose_ids in pose_groups.items() if pose_id in pose_ids
                     ),
                     "joint_positions_rad": pose_joint_positions[pose_id],
                     "rgb_path": rgb_path.name,
@@ -529,8 +556,10 @@ def main() -> int:
             if path not in (rgb_atlas_path, mask_atlas_path, depth_atlas_path):
                 path.unlink()
 
+        comparable = [row for row in pose_results if row["capsule_comparison_available"]]
         receipt: dict[str, object] = {
-            "schema": "tactevra.isaac_fixed_overview_mesh_render.v5",
+            "schema": receipt_schema,
+            "campaign": args.campaign,
             "evidence_class": "OFFICIAL_VISUAL_MESH_PERCEPTION_COMPARISON_ONLY",
             "upstream_commit": UPSTREAM_COMMIT,
             "governed_urdf_sha256": EXPECTED_URDF_SHA256,
@@ -540,7 +569,7 @@ def main() -> int:
             "capsule_corpus_sha256": capsule_manifest["corpus_sha256"],
             "schedule_bundle_file_sha256": EXPECTED_SCHEDULE_FILE_SHA256,
             "schedule_bundle_sha256": schedule_bundle["bundle_sha256"],
-            "pose_groups": {name: list(pose_ids) for name, pose_ids in POSE_GROUPS.items()},
+            "pose_groups": {name: list(pose_ids) for name, pose_ids in pose_groups.items()},
             "target_catalog_sha256": context.targets.content_sha256,
             "camera": {
                 "resolution_px": [WIDTH, HEIGHT],
@@ -560,12 +589,11 @@ def main() -> int:
             "result_status": "PASS_WITH_BLOCKERS",
             "result_summary": {
                 "minimum_mask_iou": min(
-                    row["mask_iou"] for row in pose_results
-                    if row["capsule_comparison_available"]
+                    (row["mask_iou"] for row in comparable), default=None,
                 ),
                 "maximum_official_mesh_outside_capsule_pixels": max(
-                    row["official_mesh_outside_capsule_pixels"] for row in pose_results
-                    if row["capsule_comparison_available"]
+                    (row["official_mesh_outside_capsule_pixels"] for row in comparable),
+                    default=None,
                 ),
             },
             "visual_meshes_used_for_collision": False,
@@ -588,12 +616,12 @@ def main() -> int:
             "status": "PASS_WITH_BLOCKERS",
             "receipt_sha256": receipt["receipt_sha256"],
             "minimum_mask_iou": min(
-                row["mask_iou"] for row in pose_results
-                if row["capsule_comparison_available"]
+                (row["mask_iou"] for row in comparable), default=None,
             ),
             "maximum_official_mesh_outside_capsule_pixels": max(
-                row["official_mesh_outside_capsule_pixels"] for row in pose_results
-                if row["capsule_comparison_available"]),
+                (row["official_mesh_outside_capsule_pixels"] for row in comparable),
+                default=None,
+            ),
             "hardware_writes": 0,
             "physical_movements": 0,
         }, sort_keys=True) + "\n", encoding="utf-8")
