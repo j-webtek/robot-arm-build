@@ -935,9 +935,16 @@ into 450 training and 225 held-out evaluation rows. Training uses `ready` and
 threshold. This is a reproducible synthetic development dataset, with no
 deployment qualification or change to the `ModelMotionBatchV2` boundary.
 
+The first small occlusion baseline in `E-20260930-AI-458` demonstrates why the
+held-out grouping matters. A class-weighted logistic model reaches 99.3%
+training accuracy but only 66.7% on the held-out pose and lighting families,
+with 13 missed abstentions, 62 false abstentions, Brier score `0.3274`, and
+ten-bin calibration error `0.3329`. It remains blocked. The consumed synthetic
+evaluation split cannot now be used to tune a replacement; new pose groups
+must be declared before the next model experiment.
+
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI | S2/S3 | Train and score a deterministic small target-crop occlusion/abstention baseline on the synthetic-only disjoint splits, retaining confusion, calibration, and failure evidence | `issue/190-isaac-sim-host` | IN_PROGRESS |
 | Unclaimed | S2/S3 | physical-camera deployment qualification and safe-region-fit precision evidence | — | AVAILABLE |
 | ARM | S4 | collect four physical-original `camera_support_optics` bindings through onboarding, then run the ARM-070 intake; no synthetic promotion | ARM-071 | WAITING_FOR_ORIGINALS |
 

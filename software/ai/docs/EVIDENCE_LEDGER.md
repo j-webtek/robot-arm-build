@@ -6301,3 +6301,56 @@ rewriting history. New entries must use a unique evidence ID.
   reporting class balance, confusion matrix, calibration, and failure cases.
   Keep any resulting model blocked from deployment until measured physical
   camera data is collected under a registered configuration epoch.
+
+### E-20260930-AI-458 — held-out synthetic occlusion baseline
+
+- Stage: S2/S3 synthetic perception and abstention development.
+- Lane: AI/model; no arm or integration status changed.
+- Implementation commit: `0134496ab25e28fbf1085d1565174535993bc8b9`.
+- Change: trained a deterministic class-weighted logistic baseline on
+  standardized 16-by-16 RGB crops around each requested target. Training uses
+  only the INT-457 training split. The 0.5 threshold, 800 iterations, 0.08
+  learning rate, and 0.001 L2 term are fixed in source. The scorecard retains
+  the training and held-out confusion matrices, Brier scores, ten-bin
+  calibration errors, calibration bins, and every misclassified case.
+- Inputs/fixtures: implementation SHA-256
+  `7223eda0881632c2bd8f402c9ada78be1f60b83d92a7107f027b2e5d637fc3d0`;
+  test SHA-256
+  `a767b7efa189e2b5514ef2c5757b3d6c267fd937c2ccd7e5ca3c66015d0f5ad1`;
+  dataset SHA-256
+  `d18f398e2aa7cf9e4297780158e91946d0c03f44afec97830311daf1a614a546`.
+- Commands: `python software/ai/train/build_official_mesh_occlusion_data.py --source-manifest software/integrations/isaac_sim/evidence/fixed_overview_official_mesh_v1/manifest.json --output-dir C:\IsaacSim\artifacts\issue190\official-mesh-occlusion-data-v3 --baseline-output C:\IsaacSim\artifacts\issue190\official-mesh-occlusion-baseline-v2`;
+  `$env:PYTHONPATH=(Resolve-Path 'software/src').Path; python -m pytest software/tests/unit/test_isaac_fixed_overview_mesh_render_evidence.py software/tests/unit/test_fixed_overview_segmentation_corpus.py software/tests/unit/test_fixed_fixture_practice_corpus.py software/tests/unit/test_virtual_pixel_vision.py software/tests/unit/test_virtual_arm_camera.py software/ai/tests/test_offline.py -q`;
+  Ruff, documentation, source-footprint, and `git diff --check` checks.
+- Result: BLOCKED_SYNTHETIC_ONLY. Training confusion is 49 true abstentions,
+  398 true-visible labels, 1 false abstention, and 2 missed abstentions:
+  accuracy `0.9933333333333333`, balanced accuracy `0.9791390240306649`,
+  Brier score `0.008785044955760532`, and calibration error
+  `0.03074390236995543`. Held-out evaluation confusion is 32 true
+  abstentions, 118 true-visible labels, 62 false abstentions, and 13 missed
+  abstentions: accuracy `0.6666666666666666`, balanced accuracy
+  `0.6833333333333333`, Brier score `0.3273629285787362`, and calibration
+  error `0.3328667785273153`. The large train/evaluation gap rejects promotion.
+  Model SHA-256 is
+  `79504ae753d6e0baf82575cd14aae89a9b98eac8e77d9a99ab2398e07204dee1`;
+  canonical scorecard SHA-256 is
+  `37ce4ecc808c0c906cb81e7a84fd830daa031cb42e00df1ef742fb0c676a541d`;
+  scorecard file SHA-256 is
+  `c88dc43181e705eb31b83deaa14da626f1519111da05b09e45cf99d41bcc178d`.
+  Forty-nine focused tests passed in 21.97 seconds, including deterministic
+  retraining and exact retained confusion checks.
+- Hardware-write count: 0.
+- Physical-movement count: 0.
+- Limitations: the baseline sees only synthetic target crops from three robot
+  poses and six deterministic lighting families. It has no temporal context,
+  no physical frames, no tool or support geometry, and no deployment-calibrated
+  uncertainty. Its evaluation split is now consumed and cannot be used as fresh
+  selection or tuning evidence. It produces an offline visibility decision,
+  not coordinates, motion, controller commands, permits, or authority.
+- Supersedes: none; first measured baseline on INT-457.
+- Next dependency: predeclare and render additional official-mesh robot pose
+  groups. Reserve separate development and untouched evaluation pose/lighting
+  families before testing a lighting-normalized or convolutional model. The
+  consumed `hover_e` results may diagnose failure modes but may not select the
+  next candidate. Physical promotion remains dependent on measured fixed-camera
+  data under a registered configuration epoch.
