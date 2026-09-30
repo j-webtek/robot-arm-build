@@ -943,6 +943,15 @@ ten-bin calibration error `0.3329`. It remains blocked. The consumed synthetic
 evaluation split cannot now be used to tune a replacement; new pose groups
 must be declared before the next model experiment.
 
+The predeclared pose expansion in `E-20260930-AI-459` now provides that new
+geometry without consuming its final evaluation role. Nine official-mesh poses
+are partitioned as three previously observed training poses, two new `H`
+development poses, and four untouched `1`/`PERIOD` evaluation poses. The six
+new states are selected by sequence from the hash-bound zero-authority actual-
+emitter schedule. All masks are pose-distinct. These external synthetic bytes
+still omit measured tool and camera-support geometry and cannot qualify physical
+visibility, localization, collision clearance, or execution.
+
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
 | AI | S2/S3 synthetic occlusion development | `software/integrations/isaac_sim/isaac_fixed_overview_mesh_render_probe.py`, retained fixed-overview mesh evidence, `software/ai/train/build_official_mesh_occlusion_data.py`, focused tests and AI evidence docs; predeclare additional official-mesh pose groups and fresh development/evaluation roles before rendering, with zero model-to-arm authority | `issue/190-isaac-sim-host` at `ed12295c6d59de6497ade40fc1f20fd360162edf` | ACTIVE |

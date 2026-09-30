@@ -6354,3 +6354,79 @@ rewriting history. New entries must use a unique evidence ID.
   consumed `hover_e` results may diagnose failure modes but may not select the
   next candidate. Physical promotion remains dependent on measured fixed-camera
   data under a registered configuration epoch.
+
+### E-20260930-AI-459 — predeclared official-mesh pose expansion
+
+- Stage: S2/S3 synthetic perception and abstention development.
+- Lane: AI/model with an inert Isaac rendering fixture; no arm or integration
+  status changed.
+- Implementation commit: `33dca133ff53d6d27cff4b746d6b56d40c9e5acc`.
+- Change: expanded the fixed-overview official visual-mesh renderer from three
+  to nine poses and declared all split roles before rendering. Previously seen
+  `ready`, `hover_t`, and consumed `hover_e` form the training geometry;
+  schedule sequences 34/35 (`hover_h`/`contact_h`) form development geometry;
+  and sequences 63/64/103/104 (`hover_1`/`contact_1`/`hover_period`/
+  `contact_period`) are reserved for untouched evaluation. The six new states
+  are read from the retained actual-emitter schedule by exact sequence and the
+  schedule must retain zero authority. Only the original three poses carry a
+  capsule comparison because the capsule corpus has no labels for new poses.
+- Inputs/fixtures: renderer SHA-256
+  `2070df6e087f54ac924a2d5a81ecf4cf5c49f90dbf98c15472dfa3bc892e300f`;
+  schedule file SHA-256
+  `6a59ce143f5527c7a9ced09b08d5515644ea4fb859dd69691e08483eb020ee42`;
+  schedule bundle SHA-256
+  `52e8e1977cc88bc4d80b1664ccaaec5b4a2d4286c744bf74655f3d683577d71a`;
+  target-catalog SHA-256
+  `6779213e832ab27eeda1e7fb245f57ff8cb0d56707b5aa73a8f31ec483a620f2`;
+  source upstream commit `40dbd84b553695212fab713e8465f817ba95454d`.
+- Commands: `$env:OMNI_KIT_ACCEPT_EULA='YES'; $env:PYTHONPATH=(Resolve-Path
+  'software/src').Path; C:\IsaacSim\env_6_1_0\Scripts\python.exe
+  software/integrations/isaac_sim/isaac_fixed_overview_mesh_render_probe.py
+  --workspace . --upstream-repo C:\IsaacSim\sources\roarm_ws-40dbd84
+  --mesh-receipt software/integrations/isaac_sim/evidence/roarm_m3_upstream_link_meshes_20260929.json
+  --capsule-manifest software/integrations/isaac_sim/evidence/fixed_overview_segmentation_v1/manifest.json
+  --schedule-bundle software/integrations/isaac_sim/evidence/actual_emitter_joint_schedule_bundle_9e5c878_20260929.json
+  --output-dir C:\IsaacSim\artifacts\issue190\fixed-overview-official-mesh-v2-run2
+  --receipt C:\IsaacSim\evidence\fixed_overview_official_mesh_v2_run2.json
+  --status-output C:\IsaacSim\evidence\fixed_overview_official_mesh_v2_run2.status.json`;
+  `python -m ruff check software/integrations/isaac_sim/isaac_fixed_overview_mesh_render_probe.py`;
+  `python -m pytest software/tests/unit/test_isaac_fixed_overview_mesh_render_evidence.py -q`.
+- Failed evidence preserved: the same render command first named the nonempty
+  pre-existing external directory `fixed-overview-official-mesh-v2` and stopped
+  before Isaac initialization with `ValueError: output directory must be
+  empty`. Its status SHA-256 is
+  `4db7c8a1d90df84431d85b444cb740002859148e3aff03cdaa1b6659792fb931`.
+  Hardware writes and physical movements were zero.
+- Result: PASS_WITH_BLOCKERS. All nine semantic masks are distinct. Center-
+  occluded target counts for `ready`, `hover_t`, `hover_e`, `hover_h`,
+  `contact_h`, `hover_1`, `contact_1`, `hover_period`, and `contact_period`
+  are respectively `1,14,14,12,12,9,9,7,7`; counts exceeding the predeclared
+  0.20 safe-region-overlap threshold are `2,15,15,17,15,13,12,9,9`.
+  Canonical receipt SHA-256 is
+  `47fb8d389d956b877e444f4c9221c08a9b2d73fa6b4f6898eaf3d401a7e79ca0`;
+  receipt file SHA-256 is
+  `f5072ea7884c080837d1bd5945b00a82ddd14b8c08bda0a4a058e6f5c4dbe375`.
+  RGB/mask/depth atlas SHA-256 values are respectively
+  `e26789c36a7cfc121b943ad2874912e7971e22a48161cae75fc27443383ca942`,
+  `513e66280b51f7da76bf5ec7b1d4a799b0f0723de0713c58651109f45b729641`,
+  and `7e77446b1ce5eb3adb0cc2b21e47e43e6bb78c1e8d55c16b1c29d469b4e49012`.
+  Three focused retained-evidence tests passed in 9.82 seconds and Ruff passed.
+- Artifact location: external only at
+  `C:\IsaacSim\artifacts\issue190\fixed-overview-official-mesh-v2-run2` and
+  `C:\IsaacSim\evidence\fixed_overview_official_mesh_v2_run2.json`; repository
+  retention would exceed the governed 6,100-file ceiling. The hashes above
+  identify the exact local bytes but do not make them clean-clone available.
+- Hardware-write count: 0.
+- Physical-movement count: 0.
+- Physics-step count: 0.
+- Limitations: official visual meshes, camera, board placement, lighting, and
+  occlusion labels remain synthetic. Tool and camera-support geometry are
+  absent. The reserved evaluation poses have not been used for model selection
+  or scoring. This evidence establishes no physical visibility coverage,
+  localization accuracy, collision clearance, controller behavior, execution
+  permission, or physical authority.
+- Supersedes: none; expands INT-455/INT-456 while preserving AI-458 as the
+  consumed first baseline.
+- Next dependency: materialize training/development/evaluation datasets with
+  disjoint predeclared lighting families, select a compact candidate using only
+  training and development, then score the reserved evaluation group once.
