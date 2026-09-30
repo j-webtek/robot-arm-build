@@ -125,6 +125,49 @@ def _robot_semantic_ids(info: dict[str, Any]) -> set[int]:
     return robot_ids
 
 
+def _project_targets(context: Any, Point3Mm: Any) -> list[dict[str, object]]:
+    camera = context.scenario.overview.camera
+    camera_T_board = context.scenario.overview.camera_T_board
+    targets = [*context.targets.keyboard_targets.values(), *context.targets.phone_targets.values()]
+    result = []
+    for target in sorted(targets, key=lambda value: (value.device, value.target_id)):
+        left, front, right, rear = target.safe_rectangle_board_mm
+        polygon = []
+        for x, y in ((left, rear), (right, rear), (right, front), (left, front)):
+            pixel = camera.project(camera_T_board.transform_point(
+                Point3Mm("board", x, y, target.center.z)
+            ))
+            polygon.append([pixel.u_px, pixel.v_px])
+        center = camera.project(camera_T_board.transform_point(target.center))
+        result.append({
+            "device": target.device,
+            "target_id": target.target_id,
+            "center_board_mm": [target.center.x, target.center.y, target.center.z],
+            "safe_rectangle_board_mm": [left, front, right, rear],
+            "center_px": [center.u_px, center.v_px],
+            "safe_polygon_px": polygon,
+            "depth_mm": center.depth_mm,
+            "in_frame": center.in_bounds,
+        })
+    return result
+
+
+def _target_occlusion(target: dict[str, object], robot_mask: Any, Image: Any,
+                      ImageDraw: Any, np: Any) -> tuple[bool, float]:
+    polygon = [(round(x), round(y)) for x, y in target["safe_polygon_px"]]  # type: ignore[index]
+    region = Image.new("1", (WIDTH, HEIGHT), 0)
+    ImageDraw.Draw(region).polygon(polygon, fill=1)
+    region_mask = np.asarray(region, dtype=bool)
+    area = int(np.count_nonzero(region_mask))
+    overlap = int(np.count_nonzero(region_mask & robot_mask))
+    center = tuple(round(value) for value in target["center_px"])  # type: ignore[arg-type]
+    center_occluded = (
+        0 <= center[0] < WIDTH and 0 <= center[1] < HEIGHT
+        and bool(robot_mask[center[1], center[0]])
+    )
+    return center_occluded, 0.0 if area == 0 else overlap / area
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--workspace", type=Path, required=True)
@@ -160,7 +203,7 @@ def main() -> int:
         sys.path.insert(0, str(workspace / "software/src"))
         from rocell.application.arm_camera_pose import ARM_CAMERA_JOINT_ORDER
         from rocell.application.bootstrap import bootstrap_virtual_workcell
-        from rocell.geometry import UrdfModel
+        from rocell.geometry import Point3Mm, UrdfModel
 
         bootstrap = bootstrap_virtual_workcell(workspace)
         context = bootstrap.context
@@ -181,7 +224,7 @@ def main() -> int:
         import omni.usd
         import trimesh
         from isaacsim.core.experimental.utils.semantics import add_labels
-        from PIL import Image
+        from PIL import Image, ImageDraw
         from pxr import Gf, UsdGeom, UsdLux
 
         rep.orchestrator.set_capture_on_play(False)
@@ -268,6 +311,7 @@ def main() -> int:
             annotator.attach(render_product)
 
         capsule_layers = {layer["pose_id"]: layer for layer in capsule_manifest["pose_layers"]}
+        targets = _project_targets(context, Point3Mm)
         pose_results = []
         mask_hashes: set[str] = set()
         try:
@@ -303,6 +347,16 @@ def main() -> int:
                 capsule_pixels = int(np.count_nonzero(capsule_mask))
                 mask_hash = _sha256(label_path.read_bytes())
                 mask_hashes.add(mask_hash)
+                labeled_targets = []
+                for target in targets:
+                    center_occluded, overlap = _target_occlusion(
+                        target, robot_mask, Image, ImageDraw, np
+                    )
+                    labeled_targets.append({
+                        **target,
+                        "center_occluded_by_official_mesh": center_occluded,
+                        "safe_region_official_mesh_overlap_fraction": overlap,
+                    })
                 pose_results.append({
                     "pose_id": pose_id,
                     "rgb_path": rgb_path.name,
@@ -321,6 +375,7 @@ def main() -> int:
                     "capsule_outside_official_mesh_pixels": int(np.count_nonzero(capsule_mask & ~robot_mask)),
                     "robot_depth_min_mm": int(robot_depth_mm[robot_depth_mm > 0].min()),
                     "robot_depth_max_mm": int(robot_depth_mm.max()),
+                    "targets": labeled_targets,
                 })
             if len(mask_hashes) != len(POSES):
                 raise RuntimeError("official mesh semantic masks are not pose-distinct")
@@ -377,6 +432,7 @@ def main() -> int:
             "mesh_receipt_sha256": mesh_receipt["receipt_sha256"],
             "capsule_manifest_file_sha256": _sha256(capsule_manifest_path.read_bytes()),
             "capsule_corpus_sha256": capsule_manifest["corpus_sha256"],
+            "target_catalog_sha256": context.targets.content_sha256,
             "camera": {
                 "resolution_px": [WIDTH, HEIGHT],
                 "position_board_m": [0.305, 0.2285, 0.5],
@@ -407,7 +463,7 @@ def main() -> int:
             ],
         }
         receipt["receipt_sha256"] = _sha256(_canonical(receipt))
-        args.receipt.write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+        args.receipt.write_bytes(_canonical(receipt) + b"\n")
         args.status_output.write_text(json.dumps({
             "status": "PASS_WITH_BLOCKERS",
             "receipt_sha256": receipt["receipt_sha256"],

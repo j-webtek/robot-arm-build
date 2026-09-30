@@ -50,6 +50,12 @@ def test_official_mesh_render_receipt_is_bound_and_zero_authority() -> None:
     results = manifest["pose_results"]
     assert [row["pose_id"] for row in results] == ["ready", "hover_t", "hover_e"]
     assert len({row["robot_mask_crop_pixel_sha256"] for row in results}) == 3
+    expected_occlusion_counts = {
+        "ready": (1, 5),
+        "hover_t": (14, 17),
+        "hover_e": (14, 18),
+    }
+    target_order = None
     for row in results:
         left, top, right, bottom = row["atlas_crop_px"]
         assert [left, right - left, bottom - top] == [0, 1920, 1080]
@@ -64,3 +70,15 @@ def test_official_mesh_render_receipt_is_bound_and_zero_authority() -> None:
         assert 0.0 < row["mask_iou"] < 1.0
         assert row["official_mesh_outside_capsule_pixels"] > 0
         assert row["capsule_outside_official_mesh_pixels"] > 0
+        targets = row["targets"]
+        assert len(targets) == 75
+        current_order = [(target["device"], target["target_id"]) for target in targets]
+        target_order = current_order if target_order is None else target_order
+        assert current_order == target_order
+        assert all(target["in_frame"] is True for target in targets)
+        center_count = sum(target["center_occluded_by_official_mesh"] for target in targets)
+        overlap_count = sum(
+            target["safe_region_official_mesh_overlap_fraction"] > 0.0
+            for target in targets
+        )
+        assert (center_count, overlap_count) == expected_occlusion_counts[row["pose_id"]]
