@@ -1,6 +1,6 @@
 # Tactevra project status
 
-Reviewed September 29, 2026 through the ARM-129 endpoint-reuse verifier,
+Reviewed September 29, 2026 through the ARM-130 retained endpoint-reuse campaign,
 the ARM-128 retained endpoint-atlas campaign,
 the ARM-126 retained service fault campaign,
 ARM-125 bounded shadow service,
@@ -719,6 +719,17 @@ solution and zero conflict. Capacity, lifetime sample bounds, entry corruption,
 deliberate solution conflict, decision-context mismatch, reload, restart,
 crossed context, and unmanaged use all reject or remain bounded. Candidates
 remain excluded from decisions and admission; warm starts remain unauthorized.
+
+ARM-130 retains that verifier's clean-commit qualification across the same five
+representative sequence families used by the atlas. Every instrumented receipt
+is byte-identical to its reference. The cumulative verifier records 186
+samples, 58 endpoint observations, 40 stores, 18 repeat matches, and zero
+conflicts, exactly reconciling with ARM-128. A ten-case fault matrix bounds
+capacity and rejects sample exhaustion, invalidation, corruption, deliberate
+solution conflict, changed decision context, reload, restart, crossed context,
+and unmanaged use. This closes the evidence prerequisite for considering a
+separate substitution experiment; it does not authorize substitution, warm
+starts, controller access, or physical motion.
 
 AI-403 then integrates the pose-output precision adapter and actual V2 batch
 producer on current `main`. The retained contract fixture deterministically

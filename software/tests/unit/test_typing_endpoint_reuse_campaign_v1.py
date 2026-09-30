@@ -15,9 +15,9 @@ from rocell.application.operational_latency_reference_v1 import _sha as environm
 
 ROOT = Path(__file__).resolve().parents[3]
 RETAINED = ROOT / "software/ai/eval/typing_endpoint_reuse_campaign_v1.json"
-RETAINED_FILE_SHA256 = None
-RETAINED_CAMPAIGN_SHA256 = None
-RETAINED_SOURCE_COMMIT = None
+RETAINED_FILE_SHA256 = "34bbc8fc3882c0057f43332b5f365241aa12ed58bc6dab4453c13edffc05d913"
+RETAINED_CAMPAIGN_SHA256 = "4f662d46cd09bcf69552f23cf63c7b1ecfc54ca65447076d9dbf8b8e756bb2fc"
+RETAINED_SOURCE_COMMIT = "9833ed964fb889bb0e8bd5ef00e2e85fd475e89d"
 VALIDATOR = Draft202012Validator(json.loads((
     ROOT / "software/ai/schemas/typing_endpoint_reuse_campaign_v1.schema.json"
 ).read_text(encoding="utf-8")))
@@ -71,8 +71,6 @@ def test_campaign_is_complete_exact_and_zero_authority(report):
 
 
 def test_retained_campaign_is_exact_when_installed():
-    if RETAINED_FILE_SHA256 is None:
-        pytest.skip("retained ARM-130 artifact is installed after clean-source execution")
     raw = RETAINED.read_bytes()
     assert hashlib.sha256(raw).hexdigest() == RETAINED_FILE_SHA256
     report = json.loads(raw)

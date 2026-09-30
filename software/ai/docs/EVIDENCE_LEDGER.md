@@ -6295,3 +6295,43 @@ rewriting history. New entries must use a unique evidence ID.
 - Next dependency: retain a clean-commit five-sequence equivalence and fault
   campaign before considering a separately gated candidate-substitution
   experiment.
+
+### E-20260929-ARM-130 — retained endpoint-reuse equivalence and fault campaign
+
+- Stage: operational efficiency E2, retained endpoint-result qualification.
+- Lane: arm/runtime typing IK screen.
+- Source commit: `9833ed964fb889bb0e8bd5ef00e2e85fd475e89d`.
+- Result: PASS. The clean-commit campaign replayed home transition, `ROBOT`,
+  repeated letter/number/punctuation, alphabetic extremes, and
+  number/space/enter through one lifecycle-bound verifier. Every observed
+  shadow receipt is byte-identical to its uninstrumented canonical reference.
+- Totals: 186 screened samples, 58 semantic endpoint observations, 40 bounded
+  stores, 18 candidate hits, 18 canonical matches, and zero canonical
+  conflicts. These totals independently agree with the ARM-128 atlas.
+- Fault coverage: capacity remains bounded while preserving the canonical
+  receipt. Lifetime sample exhaustion, explicit invalidation, entry
+  corruption, deliberate solution conflict, decision-context change, reload,
+  restart, crossed context, and unmanaged use all reject as required.
+- Artifact: `typing_endpoint_reuse_campaign_v1.json`; file SHA-256
+  `34bbc8fc3882c0057f43332b5f365241aa12ed58bc6dab4453c13edffc05d913`;
+  embedded campaign SHA-256
+  `4f662d46cd09bcf69552f23cf63c7b1ecfc54ca65447076d9dbf8b8e756bb2fc`.
+- Candidate used for decision: false.
+- Warm start authorized: false.
+- Diagnostics used for admission: false.
+- Camera opens: 0.
+- Model runtime loads: 0.
+- Transport opens: 0.
+- Controller starts: 0.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Physical authority: false.
+- Limitations: the verifier deliberately recomputes every canonical solve, so
+  this qualifies equivalence and failure containment but provides no speed
+  gain. The corpus is bounded and synthetic; it does not prove arbitrary-state
+  path independence or physical typing performance.
+- Supersedes: ARM-129 only for its retained-campaign dependency; ARM-129 remains
+  authoritative for verifier mechanics.
+- Next dependency: design a separately gated candidate-substitution experiment
+  that preserves canonical decisions and fails back to a complete solve; do
+  not enable substitution in the operational path from this evidence alone.

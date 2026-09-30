@@ -1107,19 +1107,23 @@ preserved through offline trajectory compilation for both new accepted cases.
 The refinement remains zero-authority and does not turn catalog coverage into
 IK, collision, calibration, contact, or physical typing evidence.
 
-The arm-owned operational-efficiency lane is current through ARM-129. ARM-128's
+The arm-owned operational-efficiency lane is current through ARM-130. ARM-128's
 clean-commit representative endpoint atlas covers the five established typing
 patterns and preserves every reference shadow receipt. The corpus contains 40
 unique endpoint identities; seven recur and all seven have one observed solved
 joint-state hash. That supports a bounded exact-reuse experiment but does not
 authorize atlas use, warm starts, controller access, or physical motion.
-ARM-129 now supplies a decision-neutral, lifecycle-bound verifier that compares
+ARM-129 supplies a decision-neutral, lifecycle-bound verifier that compares
 endpoint candidates against complete canonical solves. Its focused tests cover
 equivalence, integrity, capacity, reload, restart, crossed context, decision
 context, and deliberate conflicts, while candidates remain excluded from the
-decision path. The next arm increment is a clean-commit representative-corpus
-and fault campaign for that verifier. No performance behavior changes before
-that evidence is retained and reviewed.
+decision path. ARM-130 retains the clean-commit qualification: all five
+representative patterns preserve their canonical receipts across 186 samples,
+40 unique endpoints, and 18 exact recurrence matches, with zero conflicts. Its
+ten-case fault matrix bounds capacity and rejects sample exhaustion,
+invalidation, corruption, conflict, changed decision context, reload, restart,
+crossed context, and unmanaged use. This evidence still authorizes neither
+candidate substitution nor a performance behavior change.
 
 1. **S1 software boundary — complete for zero authority:** v2 producer bytes,
    strict decoding, trusted registry, freshness, mutation rejection, and ordered

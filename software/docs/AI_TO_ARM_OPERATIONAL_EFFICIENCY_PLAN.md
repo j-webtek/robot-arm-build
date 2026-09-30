@@ -510,7 +510,7 @@ remains the dominant software cost.
 
 ### E2 — Accelerate IK and collision preparation
 
-**Status:** in progress through ARM-129 endpoint-reuse verification.
+**Status:** in progress through ARM-130 retained endpoint-reuse qualification.
 
 ARM-119 adds an opt-in, bounded `TypingIkEffortRecorderV1` side channel. It
 records attempt and iteration counts only after each deterministic solve. The
@@ -648,6 +648,18 @@ crossed context, invalidation, and unmanaged use. Candidate use for decisions,
 admission, and warm starts remains false. This verifies the comparison
 mechanics; a clean-commit multi-sequence/fault campaign is still required
 before proposing substitution or measuring any speed benefit.
+
+ARM-130 completes that clean-commit qualification. The five representative
+routes preserve byte-identical canonical receipts while the shared verifier
+records 186 samples, 58 endpoint observations, 40 stores, 18 exact recurrence
+matches, and zero conflicts. Capacity remains bounded with the reference
+receipt preserved; nine reject-path cases cover sample exhaustion,
+invalidation, corruption, deliberate conflict, changed decision context,
+reload, restart, crossed context, and unmanaged use. The campaign authorizes no
+candidate decision, admission input, warm start, controller action, or physical
+movement. The next E2 increment must therefore be a separately gated
+candidate-substitution design with complete-solve fallback and its own
+equivalence proof, not silent activation of this verifier.
 
 Deliver:
 
