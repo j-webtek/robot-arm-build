@@ -1135,6 +1135,14 @@ mixed requests complete in FIFO order with 138 exact hits and 48 full-solve
 misses. Cancellation causes no cache work; reload and restart reject stale
 queued work and begin the replacement generation cold. Automatic retry,
 executor attachment, controller access, and physical authority remain absent.
+ARM-133 converts that evidence into a frozen, zero-authority runtime profile
+gate rather than enabling reuse by default. Exact-input reuse is shadow-eligible
+only when the active lifecycle generation, build snapshot, kinematic model,
+calibration snapshot, four retained evidence files, 256-entry bound,
+complete-solve fallback, and no-retry policy match exactly. Evidence or
+calibration drift falls back to the complete solver; unsafe settings and stale
+reload/restart objects are rejected. The retained six-case campaign passes and
+still grants no admission, controller, transport, or physical authority.
 
 1. **S1 software boundary — complete for zero authority:** v2 producer bytes,
    strict decoding, trusted registry, freshness, mutation rejection, and ordered

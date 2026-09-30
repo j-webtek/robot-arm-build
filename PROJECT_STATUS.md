@@ -810,6 +810,14 @@ promotion. Further physical qualification is tracked separately. Stylus loading
 and additional ghost routines are retained as specific lab procedures, rather
 than the general next step for every reader.
 
+On the arm-efficiency lane, ARM-133 now freezes exact-input IK reuse behind an
+explicit shadow-only eligibility profile. It matches the active lifecycle,
+build/model/calibration identities and four retained qualification files, and
+requires the qualified 256-entry bound, complete-solve fallback, and no retry.
+Mismatches cannot silently use cached results: they fall back to the complete
+solver or reject stale/unsafe configuration. This improves readiness for a
+warm command service but does not enable execution or claim physical speed.
+
 ## How to interpret results
 
 - **Simulation:** a result under modeled geometry and assumptions.

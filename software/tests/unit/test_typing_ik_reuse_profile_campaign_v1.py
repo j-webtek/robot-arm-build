@@ -10,6 +10,10 @@ import pytest
 import rocell.application.typing_ik_reuse_profile_campaign_v1 as campaign
 
 ROOT = Path(__file__).resolve().parents[3]
+RETAINED = ROOT / "software/ai/eval/typing_ik_reuse_profile_campaign_v1.json"
+RETAINED_FILE_SHA256 = "994ae13d3e0ebf2331972c142ed2aa473eecab4063a71eec6d3315498ac87aa3"
+RETAINED_CAMPAIGN_SHA256 = "b8309defb43d62b5ebe2f0f63e432e1ff83e5af3cb900d273bf60a434a73d020"
+RETAINED_SOURCE_COMMIT = "7c92709501f723a0e9e3ecec1e7db0e722076973"
 VALIDATOR = Draft202012Validator(json.loads((ROOT / "software/ai/schemas/typing_ik_reuse_profile_campaign_v1.schema.json").read_text()))
 
 
@@ -42,3 +46,15 @@ def test_campaign_rejects_changed_disposition_and_hash():
     changed = copy.deepcopy(value); changed["campaign_sha256"] = "f" * 64
     with pytest.raises(campaign.TypingIkReuseProfileCampaignV1Error, match="hash"):
         campaign.parse_typing_ik_reuse_profile_campaign_v1(changed)
+
+
+def test_retained_campaign_is_pinned_to_clean_framework_commit():
+    import hashlib
+    raw = RETAINED.read_bytes()
+    assert hashlib.sha256(raw).hexdigest() == RETAINED_FILE_SHA256
+    value = json.loads(raw)
+    VALIDATOR.validate(value)
+    assert campaign.parse_typing_ik_reuse_profile_campaign_v1(value) == value
+    assert value["campaign_sha256"] == RETAINED_CAMPAIGN_SHA256
+    assert value["environment"]["repository_commit"] == RETAINED_SOURCE_COMMIT
+    assert value["environment"]["repository_dirty"] is False

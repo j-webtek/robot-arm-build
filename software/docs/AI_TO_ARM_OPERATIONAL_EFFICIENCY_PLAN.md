@@ -797,6 +797,16 @@ An optimization is rejected if it is faster only because it omits a required
 check, changes an unexplained decision, widens a bound without qualification,
 uses stale state, hides an ambiguous outcome, or makes evidence nonreproducible.
 
+### Current exact-input reuse status (ARM-133)
+
+The exact-input IK cache is now guarded by a frozen shadow-eligibility profile.
+Eligibility requires exact active lifecycle, build, model, calibration, evidence,
+capacity, fallback, and retry-policy identities. A benign qualification mismatch
+selects the complete solver; structurally unsafe settings or stale lifecycle
+objects are rejected. Endpoint-only substitution remains prohibited, and the
+gate cannot admit motion or access the controller. The retained campaign is
+[`typing_ik_reuse_profile_campaign_v1.json`](../ai/eval/typing_ik_reuse_profile_campaign_v1.json).
+
 ## Completion definition
 
 This plan is complete only when the supported AI path can produce an exact
