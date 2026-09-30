@@ -629,8 +629,8 @@ The retained reproducible output is under
 The next corpus keeps the synthetic overview camera and board transform fixed
 while changing only the robot joint state. URDF forward kinematics projects a
 declared capsule proxy for each link into the camera. Each of three poses emits
-a semantic link-label PNG, a uint16 robot-depth PNG in millimetres, and five RGB
-lighting variants. The manifest records per-target safe-region overlap with the
+a semantic link-label PNG, a uint16 robot-depth PNG in millimetres, and one RGB
+atlas containing five lighting variants with exact crop rectangles. The manifest records per-target safe-region overlap with the
 robot mask so an AI pipeline can learn or test abstention under obstruction.
 
 ```powershell

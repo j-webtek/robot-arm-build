@@ -41,10 +41,11 @@ def test_fixed_overview_corpus_is_deterministic_pose_bound_and_zero_authority(tm
         "can_release_physical_gates": False,
     }
 
-    assert [sample["image_sha256"] for sample in first["samples"]] == [
-        sample["image_sha256"] for sample in second["samples"]
+    assert [sample["crop_jpeg_sha256"] for sample in first["samples"]] == [
+        sample["crop_jpeg_sha256"] for sample in second["samples"]
     ]
-    assert len({sample["image_sha256"] for sample in first["samples"]}) == 15
+    assert len({sample["crop_jpeg_sha256"] for sample in first["samples"]}) == 15
+    assert len({sample["image_atlas_sha256"] for sample in first["samples"]}) == 3
     layers = first["pose_layers"]
     assert len(layers) == 3
     assert len({layer["robot_label_sha256"] for layer in layers}) == 3
@@ -65,6 +66,14 @@ def test_fixed_overview_corpus_is_deterministic_pose_bound_and_zero_authority(tm
         assert depth.getbbox() is not None
         assert max(label.getdata()) == max(layer["link_label_id_by_name"].values())
         assert min(value for value in depth.getdata() if value) > 0
+
+    for pose_id in module.POSES:
+        pose_samples = [sample for sample in first["samples"] if sample["pose_id"] == pose_id]
+        assert len({sample["image_atlas_path"] for sample in pose_samples}) == 1
+        atlas = Image.open(tmp_path / "first" / pose_samples[0]["image_atlas_path"])
+        assert atlas.size == (1920 * 3, 1080 * 2)
+        for sample in pose_samples:
+            assert atlas.crop(sample["atlas_crop_box_px"]).size == (1920, 1080)
 
     disk = json.loads((tmp_path / "first" / "manifest.json").read_text())
     assert disk == first

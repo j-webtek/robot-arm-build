@@ -276,20 +276,49 @@ def generate(workspace: Path, output_dir: Path) -> dict[str, object]:
             "link_label_id_by_name": link_ids,
             "targets": labeled_targets,
         })
-        for variant in VARIANTS:
+        atlas_columns = 3
+        atlas_rows = math.ceil(len(VARIANTS) / atlas_columns)
+        atlas = Image.new(
+            "RGB",
+            (base.width * atlas_columns, base.height * atlas_rows),
+            (0, 0, 0),
+        )
+        pending_samples: list[dict[str, object]] = []
+        for variant_index, variant in enumerate(VARIANTS):
             transformed, transform = apply_lighting(composite, variant)
-            payload = _jpeg(transformed)
-            name = f"{pose_id}__{variant}.jpg"
-            (output_dir / name).write_bytes(payload)
-            samples.append({
+            column = variant_index % atlas_columns
+            row = variant_index // atlas_columns
+            left = column * base.width
+            top = row * base.height
+            crop_box = [left, top, left + base.width, top + base.height]
+            atlas.paste(transformed, (left, top))
+            crop_payload = _jpeg(transformed)
+            pending_samples.append({
                 "sample_id": f"{pose_id}__{variant}",
                 "pose_id": pose_id,
-                "image_path": name,
-                "image_sha256": _sha256(payload),
-                "image_bytes": len(payload),
+                "atlas_crop_box_px": crop_box,
+                "crop_jpeg_sha256": _sha256(crop_payload),
+                "crop_jpeg_bytes": len(crop_payload),
                 "pixel_transform": transform,
                 "robot_label_sha256": _sha256(label_payload),
                 "robot_depth_sha256": _sha256(depth_payload),
+            })
+        atlas_payload = _jpeg(atlas)
+        atlas_name = f"{pose_id}__rgb_atlas.jpg"
+        (output_dir / atlas_name).write_bytes(atlas_payload)
+        for sample in pending_samples:
+            samples.append({
+                **sample,
+                "image_atlas_path": atlas_name,
+                "image_atlas_sha256": _sha256(atlas_payload),
+                "image_atlas_bytes": len(atlas_payload),
+                "atlas_layout": {
+                    "columns": atlas_columns,
+                    "rows": atlas_rows,
+                    "cell_width_px": base.width,
+                    "cell_height_px": base.height,
+                    "unused_cells_are_black": True,
+                },
             })
     manifest: dict[str, object] = {
         "schema": SCHEMA,
