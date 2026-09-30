@@ -509,11 +509,15 @@ def _target_aware_crops(
     dataset_dir: Path,
     rows: list[dict[str, Any]],
     localization_offset_px: tuple[float, float] = (0.0, 0.0),
+    *,
+    row_offsets_px: list[tuple[float, float]] | None = None,
 ) -> tuple[np.ndarray, np.ndarray]:
     """Return RGB crops plus a possibly displaced catalog safe-region channel."""
-    offset_x, offset_y = localization_offset_px
+    offsets = row_offsets_px or [localization_offset_px] * len(rows)
+    if len(offsets) != len(rows):
+        raise ValueError("row offset count must match crop row count")
     displaced_rows = []
-    for row in rows:
+    for row, (offset_x, offset_y) in zip(rows, offsets, strict=True):
         displaced = dict(row)
         displaced["safe_polygon_px"] = [
             [point[0] + offset_x, point[1] + offset_y]
@@ -1157,6 +1161,259 @@ def train_target_aware_candidate(dataset_dir: Path, output_dir: Path) -> dict[st
     return scorecard
 
 
+def _training_augmentation_offsets() -> list[dict[str, float]]:
+    return [
+        offset for offset in _declared_mask_offsets()
+        if max(abs(offset["x_mm"]), abs(offset["y_mm"])) <= 2.0
+    ]
+
+
+def _select_localization_policy(
+    rows: list[dict[str, Any]],
+    labels: np.ndarray,
+    probabilities_by_offset: list[tuple[dict[str, float], np.ndarray]],
+) -> tuple[float, float, bool, list[dict[str, Any]]]:
+    if [item[0] for item in probabilities_by_offset] != _declared_mask_offsets():
+        raise ValueError("localization policy requires every predeclared offset in order")
+    admissible = []
+    thresholds = [float(round(value, 2)) for value in np.linspace(0.05, 0.95, 19)]
+    for threshold in thresholds:
+        measurements = [
+            {"offset": offset, "metrics": _metrics(rows, labels, probabilities, threshold)}
+            for offset, probabilities in probabilities_by_offset
+        ]
+        for bound in (0.0, 1.0, 2.0, 4.0):
+            covered = [
+                item for item in measurements
+                if max(abs(item["offset"]["x_mm"]), abs(item["offset"]["y_mm"])) <= bound
+            ]
+            missed_rates = [
+                item["metrics"]["confusion"]["missed_abstain"] / int(labels.sum())
+                for item in covered
+            ]
+            visible_count = len(labels) - int(labels.sum())
+            false_rates = [
+                item["metrics"]["confusion"]["false_abstain"] / visible_count
+                for item in covered
+            ]
+            if max(missed_rates) <= 0.05 and max(false_rates) <= 0.05:
+                admissible.append((
+                    bound,
+                    min(item["metrics"]["balanced_accuracy"] for item in covered),
+                    -max(false_rates),
+                    -max(missed_rates),
+                    -threshold,
+                    threshold,
+                    measurements,
+                ))
+    if admissible:
+        selected = max(admissible)
+        return selected[5], selected[0], True, selected[6]
+    nominal_offset, nominal_probabilities = probabilities_by_offset[0]
+    if nominal_offset != {"x_mm": 0.0, "y_mm": 0.0, "x_px": 0.0, "y_px": 0.0}:
+        raise ValueError("nominal offset must be first")
+    threshold = _select_threshold(labels, nominal_probabilities)
+    measurements = [
+        {"offset": offset, "metrics": _metrics(rows, labels, probabilities, threshold)}
+        for offset, probabilities in probabilities_by_offset
+    ]
+    return threshold, 0.0, False, measurements
+
+
+def train_localization_robust_candidate(
+    training_dataset_dir: Path,
+    development_dataset_dir: Path,
+    output_dir: Path,
+) -> dict[str, Any]:
+    """Train with bounded offsets and freeze an uncertainty abstention policy."""
+    import torch
+
+    training_dataset_dir = training_dataset_dir.resolve(strict=True)
+    development_dataset_dir = development_dataset_dir.resolve(strict=True)
+    output_dir = output_dir.resolve()
+    if output_dir.exists() and any(output_dir.iterdir()):
+        raise ValueError("localization-robust output directory must be empty")
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    def verified_manifest(directory: Path, expected_schema: str) -> tuple[dict[str, Any], str]:
+        path = directory / "manifest.json"
+        manifest = json.loads(path.read_text(encoding="utf-8"))
+        claimed = manifest.pop("dataset_sha256", None)
+        if not isinstance(claimed, str) or _sha256(_canonical(manifest)) != claimed:
+            raise ValueError("localization-robust dataset manifest hash mismatch")
+        manifest["dataset_sha256"] = claimed
+        if manifest.get("schema") != expected_schema \
+                or manifest.get("scope") != "SYNTHETIC_ONLY_NO_DEPLOYMENT_QUALIFICATION":
+            raise ValueError("localization-robust dataset scope or schema mismatch")
+        return manifest, claimed
+
+    training_manifest, training_sha = verified_manifest(training_dataset_dir, SCHEMA_V5)
+    development_manifest, development_sha = verified_manifest(
+        development_dataset_dir, SCHEMA_V6,
+    )
+    if development_manifest["splits"]["train"]["count"] != 0 \
+            or development_manifest["splits"]["evaluation"]["count"] != 0:
+        raise ValueError("localization policy dataset must be development-only")
+
+    torch.manual_seed(BASELINE_SEED)
+    torch.use_deterministic_algorithms(True)
+    torch.set_num_threads(1)
+
+    class TinyLocalizationRobust(torch.nn.Module):
+        def __init__(self) -> None:
+            super().__init__()
+            self.features = torch.nn.Sequential(
+                torch.nn.Conv2d(4, 8, 3, padding=1),
+                torch.nn.ReLU(),
+                torch.nn.MaxPool2d(2),
+                torch.nn.Conv2d(8, 16, 3, padding=1),
+                torch.nn.ReLU(),
+                torch.nn.AdaptiveAvgPool2d((4, 4)),
+            )
+            self.classifier = torch.nn.Linear(16 * 4 * 4, 1)
+
+        def forward(self, values):  # type: ignore[no-untyped-def]
+            return self.classifier(self.features(values).flatten(1)).squeeze(1)
+
+    train_rows = _load_rows(training_dataset_dir, "train", training_manifest)
+    augmentation = _training_augmentation_offsets()
+    row_offsets = []
+    augmentation_counts: dict[str, int] = {}
+    for row in train_rows:
+        index = int(_sha256(row["id"].encode("utf-8"))[:8], 16) % len(augmentation)
+        offset = augmentation[index]
+        row_offsets.append((offset["x_px"], offset["y_px"]))
+        key = f"{offset['x_mm']:g},{offset['y_mm']:g}"
+        augmentation_counts[key] = augmentation_counts.get(key, 0) + 1
+    train_x, train_y = _target_aware_crops(
+        training_dataset_dir, train_rows, row_offsets_px=row_offsets,
+    )
+    train_tensor = torch.from_numpy(train_x)
+    train_labels = torch.from_numpy(train_y)
+    model = TinyLocalizationRobust().cpu()
+    positives = float(train_y.sum())
+    negatives = float(len(train_y) - positives)
+    loss_fn = torch.nn.BCEWithLogitsLoss(
+        pos_weight=torch.tensor(negatives / positives, dtype=torch.float32)
+    )
+    optimizer = torch.optim.Adam(model.parameters(), lr=SPATIAL_LEARNING_RATE)
+    epoch_losses = []
+    for epoch in range(SPATIAL_EPOCHS):
+        generator = torch.Generator().manual_seed(BASELINE_SEED + epoch)
+        order = torch.randperm(len(train_tensor), generator=generator)
+        total_loss = 0.0
+        for start in range(0, len(order), SPATIAL_BATCH_SIZE):
+            indices = order[start:start + SPATIAL_BATCH_SIZE]
+            optimizer.zero_grad(set_to_none=True)
+            loss = loss_fn(model(train_tensor[indices]), train_labels[indices])
+            loss.backward()
+            optimizer.step()
+            total_loss += float(loss.detach()) * len(indices)
+        epoch_losses.append(total_loss / len(order))
+
+    model.eval()
+    development_rows = _load_rows(
+        development_dataset_dir, "development", development_manifest,
+    )
+    development_labels: np.ndarray | None = None
+    probabilities_by_offset = []
+    for offset in _declared_mask_offsets():
+        crops, labels = _target_aware_crops(
+            development_dataset_dir,
+            development_rows,
+            (offset["x_px"], offset["y_px"]),
+        )
+        if development_labels is None:
+            development_labels = labels.astype(np.float64)
+        elif not np.array_equal(development_labels, labels):
+            raise RuntimeError("development labels changed across offsets")
+        with torch.no_grad():
+            probabilities = torch.sigmoid(model(torch.from_numpy(crops))).numpy()
+        probabilities_by_offset.append((offset, probabilities))
+    assert development_labels is not None
+    threshold, uncertainty_bound, gate_met, measurements = _select_localization_policy(
+        development_rows, development_labels, probabilities_by_offset,
+    )
+
+    state = {
+        name: {
+            "shape": list(value.shape),
+            "values": value.detach().cpu().numpy().astype(np.float64).reshape(-1).tolist(),
+        }
+        for name, value in sorted(model.state_dict().items())
+    }
+    checkpoint = {
+        "schema": "rocell.ai_target_crop_localization_robust_spatial.v1",
+        "architecture": {
+            "input": [4, SPATIAL_CROP_SIZE, SPATIAL_CROP_SIZE],
+            "input_channels": [
+                "red", "green", "blue", "known_target_safe_region_mask",
+            ],
+            "simulator_robot_mask_input": False,
+            "parameter_count": sum(value.numel() for value in model.parameters()),
+        },
+        "training": {
+            "seed": BASELINE_SEED,
+            "device": "cpu",
+            "epochs": SPATIAL_EPOCHS,
+            "batch_size": SPATIAL_BATCH_SIZE,
+            "learning_rate": SPATIAL_LEARNING_RATE,
+            "optimizer": "adam",
+            "class_weighting": "negative_to_positive_ratio",
+            "augmentation": "one_deterministic_offset_per_training_row",
+            "augmentation_offsets_mm": augmentation,
+            "augmentation_counts": augmentation_counts,
+            "epoch_losses": epoch_losses,
+        },
+        "crop": {"size": SPATIAL_CROP_SIZE, "padding_px": SPATIAL_PADDING},
+        "threshold": threshold,
+        "localization_uncertainty_policy": {
+            "maximum_supported_planar_error_mm": uncertainty_bound,
+            "above_bound_decision": "abstain_localization_uncertain",
+            "development_gate_met": gate_met,
+            "maximum_missed_abstain_rate": 0.05,
+            "maximum_visible_false_abstain_rate": 0.05,
+        },
+        "training_dataset_sha256": training_sha,
+        "selection_dataset_sha256": development_sha,
+        "selection_split": "development_only",
+        "evaluation_opened": False,
+        "state_dict": state,
+    }
+    checkpoint_path = output_dir / "model.json"
+    checkpoint_path.write_bytes(_canonical(checkpoint) + b"\n")
+    scorecard: dict[str, Any] = {
+        "schema": "rocell.ai_localization_robust_candidate.v1",
+        "algorithm": "tiny_target_safe_region_offset_augmented_deterministic_cpu_cnn",
+        "training_dataset_manifest_sha256": _sha256(
+            (training_dataset_dir / "manifest.json").read_bytes()
+        ),
+        "training_dataset_sha256": training_sha,
+        "development_dataset_manifest_sha256": _sha256(
+            (development_dataset_dir / "manifest.json").read_bytes()
+        ),
+        "development_dataset_sha256": development_sha,
+        "model_sha256": _sha256(checkpoint_path.read_bytes()),
+        "selected_threshold": threshold,
+        "maximum_supported_planar_error_mm": uncertainty_bound,
+        "development_gate_met": gate_met,
+        "development_measurements": measurements,
+        "evaluation_group_present": False,
+        "promotion_status": "BLOCKED_AWAITING_FRESH_EVALUATION",
+        "hardware_writes": 0,
+        "physical_movements": 0,
+        "limitations": [
+            "training and policy selection use synthetic data only",
+            "the uncertainty bound is synthetic and not a physical calibration",
+            "no evaluation group was created or opened",
+            "tool and camera-support geometry remain absent",
+        ],
+    }
+    scorecard["scorecard_sha256"] = _sha256(_canonical(scorecard))
+    (output_dir / "scorecard.json").write_bytes(_canonical(scorecard) + b"\n")
+    return scorecard
+
+
 def _load_spatial_checkpoint(candidate_dir: Path):  # type: ignore[no-untyped-def]
     import torch
 
@@ -1165,6 +1422,7 @@ def _load_spatial_checkpoint(candidate_dir: Path):  # type: ignore[no-untyped-de
     schemas = {
         "rocell.ai_target_crop_tiny_spatial.v1": 3,
         "rocell.ai_target_crop_safe_region_spatial.v1": 4,
+        "rocell.ai_target_crop_localization_robust_spatial.v1": 4,
     }
     input_channels = schemas.get(checkpoint.get("schema"))
     if input_channels is None:
@@ -1543,9 +1801,15 @@ def main() -> int:
         "--perturb-existing", type=Path, nargs=3,
         metavar=("DATASET_DIR", "CANDIDATE_DIR", "STUDY_OUTPUT_DIR"),
     )
+    parser.add_argument(
+        "--train-localization-robust", type=Path, nargs=3,
+        metavar=("TRAINING_DATASET_DIR", "DEVELOPMENT_DATASET_DIR", "OUTPUT_DIR"),
+    )
     args = parser.parse_args()
     if args.record_existing is not None:
-        if args.perturb_existing is not None or args.output_dir is not None or any(
+        if args.perturb_existing is not None \
+                or args.train_localization_robust is not None \
+                or args.output_dir is not None or any(
             value is not None
             for value in (
                 args.baseline_output, args.candidate_output, args.spatial_output,
@@ -1559,7 +1823,7 @@ def main() -> int:
         print(json.dumps(manifest, sort_keys=True))
         return 0
     if args.perturb_existing is not None:
-        if args.output_dir is not None or any(
+        if args.train_localization_robust is not None or args.output_dir is not None or any(
             value is not None
             for value in (
                 args.baseline_output, args.candidate_output, args.spatial_output,
@@ -1572,9 +1836,25 @@ def main() -> int:
         )
         print(json.dumps(report, sort_keys=True))
         return 0
+    if args.train_localization_robust is not None:
+        if args.output_dir is not None or any(
+            value is not None
+            for value in (
+                args.baseline_output, args.candidate_output, args.spatial_output,
+                args.target_aware_output,
+            )
+        ):
+            parser.error(
+                "--train-localization-robust cannot be combined with other outputs"
+            )
+        scorecard = train_localization_robust_candidate(
+            *args.train_localization_robust,
+        )
+        print(json.dumps(scorecard, sort_keys=True))
+        return 0
     if args.output_dir is None:
         parser.error(
-            "--output-dir is required unless --record-existing or --perturb-existing is used"
+            "--output-dir is required unless an existing-artifact mode is used"
         )
     try:
         manifest = build(args.source_manifest, args.output_dir)

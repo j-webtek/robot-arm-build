@@ -586,6 +586,39 @@ def test_target_aware_crops_translate_rgb_and_mask_together(tmp_path: Path) -> N
     assert np.array_equal(shifted, repeated)
     assert np.array_equal(labels, shifted_labels)
     assert len(module._declared_mask_offsets()) == 33
+    assert len(module._training_augmentation_offsets()) == 17
+
+
+def test_localization_policy_selects_largest_supported_development_bound() -> None:
+    module = _builder()
+    rows = [
+        {"id": "visible"},
+        {"id": "blocked"},
+    ]
+    labels = np.asarray([0.0, 1.0])
+    probabilities = np.asarray([0.01, 0.99])
+    by_offset = [
+        (offset, probabilities.copy())
+        for offset in module._declared_mask_offsets()
+    ]
+
+    threshold, bound, gate_met, measurements = module._select_localization_policy(
+        rows, labels, by_offset,
+    )
+
+    assert threshold == 0.05
+    assert bound == 4.0
+    assert gate_met is True
+    assert len(measurements) == 33
+    assert all(
+        item["metrics"]["confusion"] == {
+            "true_abstain": 1,
+            "true_visible": 1,
+            "false_abstain": 0,
+            "missed_abstain": 0,
+        }
+        for item in measurements
+    )
 
 
 def test_target_aware_candidate_is_deterministic_and_has_no_robot_mask_input(
