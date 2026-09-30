@@ -35,11 +35,33 @@ SCHEDULE_POSE_SEQUENCES = {
     "contact_1": 64,
     "hover_period": 103,
     "contact_period": 104,
+    "transit_outbound_08": 8,
+    "transit_outbound_17": 17,
+    "transit_outbound_26": 26,
+    "transit_return_112": 112,
+    "transit_return_120": 120,
+    "transit_return_128": 128,
+    "transit_h_to_1_44": 44,
+    "transit_h_to_1_52": 52,
+    "transit_h_to_1_60": 60,
+    "transit_1_to_period_72": 72,
+    "transit_1_to_period_84": 84,
+    "transit_1_to_period_96": 96,
 }
 POSE_GROUPS = {
-    "training": ("ready", "hover_t", "hover_e"),
-    "development": ("hover_h", "contact_h"),
-    "evaluation": ("hover_1", "contact_1", "hover_period", "contact_period"),
+    "training": (
+        "ready", "hover_t", "hover_e", "hover_h", "contact_h", "hover_1",
+        "contact_1", "hover_period", "contact_period",
+    ),
+    "development": (
+        "transit_outbound_08", "transit_outbound_17", "transit_outbound_26",
+        "transit_return_112", "transit_return_120", "transit_return_128",
+    ),
+    "evaluation": (
+        "transit_h_to_1_44", "transit_h_to_1_52", "transit_h_to_1_60",
+        "transit_1_to_period_72", "transit_1_to_period_84",
+        "transit_1_to_period_96",
+    ),
 }
 EXPECTED_SCHEDULE_FILE_SHA256 = "6a59ce143f5527c7a9ced09b08d5515644ea4fb859dd69691e08483eb020ee42"
 WIDTH = 1920
@@ -472,7 +494,7 @@ def main() -> int:
                 path.unlink()
 
         receipt: dict[str, object] = {
-            "schema": "tactevra.isaac_fixed_overview_mesh_render.v2",
+            "schema": "tactevra.isaac_fixed_overview_mesh_render.v3",
             "evidence_class": "OFFICIAL_VISUAL_MESH_PERCEPTION_COMPARISON_ONLY",
             "upstream_commit": UPSTREAM_COMMIT,
             "governed_urdf_sha256": EXPECTED_URDF_SHA256,

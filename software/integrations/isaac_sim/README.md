@@ -648,10 +648,12 @@ triangle-level depth render, or installed collision evidence.
 ### Compare capsules with official visual meshes
 
 The installed Isaac runner can render the seven official upstream visual
-meshes at nine predeclared fixed-camera poses. The original three poses retain
-their capsule comparison. Six additional poses are selected by sequence from
-the retained zero-authority actual-emitter schedule and are partitioned before
-rendering into development and untouched evaluation groups. The probe pins the
+meshes at 21 predeclared fixed-camera poses. The original three poses retain
+their capsule comparison. Eighteen additional poses are selected by sequence
+from the retained zero-authority actual-emitter schedule. All nine previously
+consumed endpoint poses form training geometry, six unused outbound/return
+transit poses form development geometry, and six unused inter-key transit poses
+form untouched evaluation geometry. The probe pins the
 upstream Git commit, schedule, and mesh hashes, bakes the governed URDF forward
 kinematics into the USD scene, and emits RGB, binary robot-mask, and uint16
 metric-depth atlases. It performs no physics steps and has no hardware or

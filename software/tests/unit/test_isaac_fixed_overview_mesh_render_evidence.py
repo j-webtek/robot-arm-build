@@ -17,6 +17,10 @@ EVIDENCE = (
 BUILDER_PATH = (
     WORKSPACE / "software" / "ai" / "train" / "build_official_mesh_occlusion_data.py"
 )
+RENDERER_PATH = (
+    WORKSPACE / "software" / "integrations" / "isaac_sim"
+    / "isaac_fixed_overview_mesh_render_probe.py"
+)
 
 
 def _sha256(payload: bytes) -> str:
@@ -25,6 +29,14 @@ def _sha256(payload: bytes) -> str:
 
 def _builder():  # type: ignore[no-untyped-def]
     spec = importlib.util.spec_from_file_location("build_official_mesh_occlusion_data", BUILDER_PATH)
+    assert spec is not None and spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def _renderer():  # type: ignore[no-untyped-def]
+    spec = importlib.util.spec_from_file_location("isaac_fixed_overview_mesh_render_probe", RENDERER_PATH)
     assert spec is not None and spec.loader is not None
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
@@ -262,3 +274,18 @@ def test_chromatic_edge_features_are_deterministic_and_brightness_stable(tmp_pat
     assert np.array_equal(first, second)
     assert first.shape == (2, 1536)
     assert np.mean(np.abs(first[0] - first[1])) < 0.08
+
+
+def test_transit_pose_groups_are_predeclared_disjoint_and_schedule_bound() -> None:
+    module = _renderer()
+    groups = module.POSE_GROUPS
+    flattened = [pose for poses in groups.values() for pose in poses]
+
+    assert set(groups) == {"training", "development", "evaluation"}
+    assert len(flattened) == len(set(flattened)) == 21
+    assert set(module.REFERENCE_POSES) == {"ready", "hover_t", "hover_e"}
+    assert set(module.SCHEDULE_POSE_SEQUENCES) == set(flattened) - set(module.REFERENCE_POSES)
+    assert set(module.SCHEDULE_POSE_SEQUENCES.values()) == {
+        8, 17, 26, 34, 35, 44, 52, 60, 63, 64, 72, 84, 96, 103, 104, 112, 120, 128,
+    }
+    assert not (set(groups["development"]) & set(groups["evaluation"]))
