@@ -5306,3 +5306,53 @@ rewriting history. New entries must use a unique evidence ID.
 - Next dependency: partition or otherwise tighten the gripper and remaining
   `link2` geometry without increasing nonadjacent false positives, then replay
   the same corpus. Review adjacent exclusions only after mechanical evidence.
+
+### E-20260929-INT-444 — OBB replay rotation correction
+
+- Stage: S2/S3 simulation oracle WP2.
+- Lane: INTEGRATION.
+- Commit: `14f26c1b0ed8e85f5000e83c851cb174b23b7f79`.
+- Change: primitive-level witness inspection found that the joint-space replay
+  applied box centers but omitted each candidate's `rotation_row_major`.
+  Added the serialized rotation to the local box transform and reran baseline,
+  `link2`-only, gripper-only, and combined candidates across all 1,029 cases.
+- Inputs/fixtures: corrected replay probe SHA-256
+  `9c49195eb41c812e1efe7af9fcc981fc80d197423344051410fad3aff61dd180`;
+  corrected test SHA-256
+  `6e917043f237e0b84617dc74d680a037807a14d2ae61382cd732838a49a4cdb5`;
+  corrected committed `link2` replay file/content SHA-256
+  `76582476094243a66374e098b8197d97a8048029d3c9dac936cef8ea64ff655f` /
+  `72635bbb2712676cf33973d50efc4394d642b81077822f1188140f9503a957fd`;
+  corrected external detailed replay file/content SHA-256
+  `9a33d753335f4156cd25fcee21eeecd71fd8c684ec8585bb7ab066f21be7bc05` /
+  `04aaee95e298cca7b09d9873197dddc669f07beec92bcf5f6f093019fb10e746`;
+  corrected status SHA-256
+  `6308f530d4395f5ea100c17eae16922672dad4849b3c125a02e89cf90a0fc616`;
+  gripper-only corrected summary file SHA-256
+  `4eb9d384d62b56e951f9f5e2d05da097f577af5e8371b8db728819d246c43f3f`;
+  combined corrected summary file SHA-256
+  `863be7f1f0a4f8882838de1f27bafafc00a6ff4086f6a371c886a053eb3b48c0`.
+- Command: reran the exact INT-443 replay command for each variant after adding
+  `local[:3, :3] = rotation_row_major`; baseline replay was also rerun as a
+  control with receipt SHA-256
+  `e714a88c01b567f54b2e8c91b8f1144fcc35db38d2953dfe2c6f31e1d576adab`;
+  `python -m pytest software/tests/unit/test_isaac_sim_targeted_obb_refinement_evidence.py software/tests/unit/test_isaac_sim_collision_joint_space_evidence.py software/tests/unit/test_isaac_sim_collision_differential_evidence.py software/tests/unit/test_isaac_sim_link_mesh_reduction_evidence.py software/tests/unit/test_isaac_sim_upstream_link_mesh_evidence.py software/tests/unit/test_isaac_sim_step_link_membership_evidence.py software/tests/unit/test_isaac_sim_step_pose_binding_evidence.py software/tests/unit/test_isaac_sim_step_inspection_evidence.py software/tests/unit/test_isaac_sim_rc03_scene_evidence.py software/tests/unit/test_isaac_sim_urdf_import_evidence.py software/tests/unit/test_isaac_sim_fk_parity_evidence.py software/tests/unit/test_isaac_sim_first_launch_evidence.py software/tests/unit/test_isaac_sim_host_probe.py software/tests/unit/test_isaac_sim_contracts.py -q`;
+  `git diff --check`.
+- Result: CORRECTED_PASS_WITH_BLOCKERS. Baseline control remains byte-identical
+  at 192 false positives, zero false negatives, 57 collision agreements, and
+  780 free agreements. Correctly rotated `link2`-only, gripper-only, and
+  combined OBB candidates each produce the same classification counts. No OBB
+  variant demonstrates the improvement claimed by INT-443. Seventy-three
+  focused tests passed in 3.49 seconds.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: this correction invalidates INT-443's comparative collision
+  conclusion, while its candidate containment and volume measurements remain
+  valid. The original 192 false positives and nonadjacent `halton_019` witness
+  remain. All finite-corpus, geometry, policy, installation, controller,
+  hardware, and physical limitations remain. No gate status changed.
+- Supersedes: INT-443 for every replay classification and preferred-variant
+  conclusion. INT-443 remains preserved as the original erroneous evidence.
+- Next dependency: identify the exact baseline primitive pair at `halton_019`
+  and evaluate a triangle-preserving partition rather than a whole-component
+  orientation change.
