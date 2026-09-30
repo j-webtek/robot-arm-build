@@ -5633,3 +5633,82 @@ rewriting history. New entries must use a unique evidence ID.
   a separate promotion/install contract that requires accepted measured
   geometry and explicit engineering acceptance before any effective exclusion
   can exist.
+
+### E-20260929-INT-449 — held-out collision-policy stress campaign
+
+- Stage: S2/S3 simulation oracle WP2.
+- Lane: INTEGRATION.
+- Commits: `5f839803605139487998531d9603f1ad52c4dbec` and
+  `d6a5e48fccb420e9a565d9c9fb5e55e3d7c1efb7`.
+- Change: extended the existing joint-space differential probe with bounded,
+  configurable Halton ranges while preserving its default 49-pose reproduction
+  behavior. Added a strict assessment that binds the inert exclusion candidate
+  to a 256-pose held-out replay, separates proposed from retained pairs, and
+  preserves pair-level contradictions. The held-out indices 1001 through 1256
+  are disjoint from the original indices 1 through 32. No proposal is applied.
+- Inputs/fixtures: joint-space probe SHA-256
+  `c9bc0fb6d61bdd9ab248a55591dd8043d20396e576202c99d30d7f41249094b1`;
+  stress-assessment probe SHA-256
+  `5addf69009f92aa1e5e819bde9b6dbb123b4a917aafb766ab494df303e38d68a`;
+  unit-test SHA-256
+  `9823aa0ad6e8fb095e027df2b9a887a319b2dac5c56aa1c1fb2b84b4c4e3eb5e`;
+  evidence-test SHA-256
+  `eb2b3cc22feddbf21cdb998e6fd6fcd5d6cf634d1cc792baebf44a8f823a3cf5`;
+  committed replay file/receipt SHA-256
+  `8b598c5b582f063a5989cd434ef2f4d2a842445c69aa8706becd7948681dc31b` /
+  `199a8f77e6cdbc00154ae0f01aca490b4a074c56b6b28dcf0ace641390b8ffe8`;
+  committed assessment file/receipt SHA-256
+  `d4872389634bbb712de08507088b0bdbe2902d89780f449cf8f709d77d26365f` /
+  `8b2662fb183022d93600d4dd72be815e2b0f3a0b0d77722bcd52f478e411bc9a`;
+  external detailed replay SHA-256
+  `ba6038334744845264987fbf020846eda490c2065a2ecca407c5245d8805273b`;
+  replay-status SHA-256
+  `79f15e7bdd5a3672246a68dbbff79cf5d11c9fbbe13324953ab5619434ff2648`;
+  selected geometry/candidate content SHA-256
+  `0568f7ba269cf190ca4b9d6bc41ac17c90c72c3489fad433bb064ca2239e5fc6` /
+  `651adee0ee18c4d11233e3ed37389a4811236e08b54c0f91a32fd6dfa436e75a`;
+  python-fcl wheel SHA-256
+  `63c662c8ff30eeb78913624a4ac56209a6061248ed97066c3b744255d943299f`.
+- Preserved intermediate evidence: the first aggregate-only assessment remains
+  under `C:\IsaacSim\evidence` with file/status SHA-256
+  `65c0253a9c4ff36a956e3ccc7fec666e5c29bcc2419b229b2680d527d9138863` /
+  `763f9166287a67254d66a41ae1745681e6258caa4b8031e1d9c21b18d9a7187d`.
+  It was not rewritten after the pair-level assessment was added.
+- Command: `$env:PYTHONUTF8='1'; C:\IsaacSim\env_6_1_0\Scripts\python.exe software\integrations\isaac_sim\collision_joint_space_probe.py --workspace . --upstream-repo C:\IsaacSim\sources\roarm_ws-40dbd84 --mesh-receipt software\integrations\isaac_sim\evidence\roarm_m3_upstream_link_meshes_20260929.json --reduction-receipt software\integrations\isaac_sim\evidence\roarm_m3_triangle_partition_link2_20260929.json --expected-reduction-sha256 0568f7ba269cf190ca4b9d6bc41ac17c90c72c3489fad433bb064ca2239e5fc6 --fcl-wheel C:\IsaacSim\sources\python-fcl-0.7.0.11\python_fcl-0.7.0.11-cp312-cp312-win_amd64.whl --halton-start 1001 --halton-count 256 --halton-only --output C:\IsaacSim\evidence\collision_policy_stress_001.detailed.json --summary-output C:\IsaacSim\evidence\collision_policy_stress_001.summary.json --status-output C:\IsaacSim\evidence\collision_policy_stress_001.replay.status.json`;
+  `python software\integrations\isaac_sim\collision_policy_stress_probe.py --workspace . --candidate software\integrations\isaac_sim\evidence\roarm_m3_collision_exclusion_policy_candidate_20260929.json --stress-replay C:\IsaacSim\evidence\collision_policy_stress_001.summary.json --output C:\IsaacSim\evidence\collision_policy_stress_002.assessment.json --status-output C:\IsaacSim\evidence\collision_policy_stress_002.assessment.status.json`;
+  `python -m pytest software/tests/unit/test_isaac_sim_collision_policy_stress.py software/tests/unit/test_isaac_sim_collision_policy_stress_evidence.py software/tests/unit/test_collision_exclusion_policy_candidate.py software/tests/unit/test_isaac_sim_exclusion_policy_candidate_evidence.py software/tests/unit/test_isaac_sim_srdf_never_pair_review_evidence.py software/tests/unit/test_isaac_sim_self_collision_policy_review_evidence.py software/tests/unit/test_isaac_sim_triangle_partition_refinement_evidence.py software/tests/unit/test_isaac_sim_targeted_obb_refinement_evidence.py software/tests/unit/test_isaac_sim_collision_joint_space_evidence.py software/tests/unit/test_isaac_sim_collision_differential_evidence.py software/tests/unit/test_isaac_sim_link_mesh_reduction_evidence.py software/tests/unit/test_isaac_sim_upstream_link_mesh_evidence.py software/tests/unit/test_isaac_sim_step_link_membership_evidence.py software/tests/unit/test_isaac_sim_step_pose_binding_evidence.py software/tests/unit/test_isaac_sim_step_inspection_evidence.py software/tests/unit/test_isaac_sim_rc03_scene_evidence.py software/tests/unit/test_isaac_sim_urdf_import_evidence.py software/tests/unit/test_isaac_sim_fk_parity_evidence.py software/tests/unit/test_isaac_sim_first_launch_evidence.py software/tests/unit/test_isaac_sim_host_probe.py software/tests/unit/test_isaac_sim_contracts.py -q`;
+  four repository audits; `git diff --check`.
+- Result: PASS_WITH_BLOCKERS across 256 held-out poses and 5,376 pair
+  cases: 334 collision agreements, 4,147 free agreements, 895 candidate false
+  positives, and zero false negatives. All six proposed `Never` pairs remain
+  free in all 1,536 cases with positive recorded minima. The nine nonproposed
+  pairs retain 36 collision agreements, 2,255 free agreements, 13 false
+  positives across six pairs, and zero false negatives. Those false-positive
+  pairs are base/`link4` (1), base/`link5` (2), base/gripper (1),
+  `link1`/`link5` (3), `link1`/gripper (5), and `link2`/gripper (1).
+  One hundred fourteen focused tests passed in 5.16 seconds and all four
+  repository audits passed.
+- Artifacts:
+  `software/integrations/isaac_sim/collision_joint_space_probe.py`;
+  `software/integrations/isaac_sim/collision_policy_stress_probe.py`;
+  `software/integrations/isaac_sim/evidence/roarm_m3_collision_policy_stress_replay_20260929.json`;
+  `software/integrations/isaac_sim/evidence/roarm_m3_collision_policy_stress_assessment_20260929.json`;
+  `software/tests/unit/test_isaac_sim_collision_policy_stress.py`;
+  `software/tests/unit/test_isaac_sim_collision_policy_stress_evidence.py`;
+  detailed replay and both assessment versions under `C:\IsaacSim\evidence`.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: the held-out corpus is finite and does not prove continuous
+  workspace behavior. Reappearing nonproposed false positives show that the
+  49-pose zero-nonadjacent-false-positive result does not generalize to this
+  corpus. Source meshes remain nonwatertight, `link5` remains a whole-link
+  fallback, and tool, camera-support, environment, measured placement,
+  dynamics, controller, hardware, and physical qualification are absent. The
+  candidate remains uninstalled with zero effective exclusions and grants no
+  collision-query, clearance, controller, permit, transport, or physical
+  authority. No lane or integration gate changed.
+- Supersedes: INT-448 only for the next geometry dependency. INT-445 through
+  INT-448 remain the retained candidate derivation and finite review evidence.
+- Next dependency: inspect exact primitive witnesses for the 13 retained-pair
+  false positives, prioritizing the whole-link `link5` fallback and gripper
+  envelope, then refine geometry without introducing any false negative.

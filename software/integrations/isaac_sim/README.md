@@ -289,9 +289,9 @@ direct-joint pairs. Every one of the remaining 165 false-positive cases belongs
 to four of those explicitly supported pairs. An adjacent-only counterfactual
 removes 294 pair-pose cases and leaves 735 nonadjacent cases with three
 collision agreements, 732 free agreements, and no false classifications. The
-review does not install exclusions: the six separate SRDF `Never` pairs need
-their own evidence review, and a local runtime policy contract has not been
-selected.
+review does not install exclusions. The six separate SRDF `Never` pairs are
+reviewed below, and the resulting local document remains an inert candidate
+with zero effective exclusions.
 
 [`srdf_never_pair_review_probe.py`](srdf_never_pair_review_probe.py) reviews
 the SRDF's six separate `Never` pairs without promoting them into a local
@@ -315,6 +315,13 @@ all twelve SRDF pairs as proposals while requiring an empty
 setting collision, clearance, controller, execution-permit, transport, and
 physical authority to false. The strict loader has no method that applies a
 proposal to a collision contract.
+
+The retained held-out stress replay and policy assessment use 256 Halton poses
+at indices 1001 through 1256, disjoint from the original 1-through-32 Halton
+corpus. All six proposed `Never` pairs remain free and the selected geometry
+again records zero false negatives. The broader corpus also restores 13 false
+positives across six nonproposed pairs. That result is retained as a blocker:
+the candidate remains uninstalled and cannot admit collision queries.
 
 Reproduce it on the designated runner from the repository root:
 
@@ -470,6 +477,30 @@ python software\integrations\isaac_sim\exclusion_policy_candidate_probe.py `
   --never-review software\integrations\isaac_sim\evidence\roarm_m3_srdf_never_pair_review_20260929.json `
   --output C:\IsaacSim\evidence\collision_exclusion_policy_candidate_001.json `
   --status-output C:\IsaacSim\evidence\collision_exclusion_policy_candidate_001.status.json
+```
+
+Reproduce the held-out stress replay and inert candidate assessment:
+
+```powershell
+$env:PYTHONUTF8='1'
+C:\IsaacSim\env_6_1_0\Scripts\python.exe software\integrations\isaac_sim\collision_joint_space_probe.py `
+  --workspace . `
+  --upstream-repo C:\IsaacSim\sources\roarm_ws-40dbd84 `
+  --mesh-receipt software\integrations\isaac_sim\evidence\roarm_m3_upstream_link_meshes_20260929.json `
+  --reduction-receipt software\integrations\isaac_sim\evidence\roarm_m3_triangle_partition_link2_20260929.json `
+  --expected-reduction-sha256 0568f7ba269cf190ca4b9d6bc41ac17c90c72c3489fad433bb064ca2239e5fc6 `
+  --fcl-wheel C:\IsaacSim\sources\python-fcl-0.7.0.11\python_fcl-0.7.0.11-cp312-cp312-win_amd64.whl `
+  --halton-start 1001 --halton-count 256 --halton-only `
+  --output C:\IsaacSim\evidence\collision_policy_stress_001.detailed.json `
+  --summary-output C:\IsaacSim\evidence\collision_policy_stress_001.summary.json `
+  --status-output C:\IsaacSim\evidence\collision_policy_stress_001.replay.status.json
+
+python software\integrations\isaac_sim\collision_policy_stress_probe.py `
+  --workspace . `
+  --candidate software\integrations\isaac_sim\evidence\roarm_m3_collision_exclusion_policy_candidate_20260929.json `
+  --stress-replay C:\IsaacSim\evidence\collision_policy_stress_001.summary.json `
+  --output C:\IsaacSim\evidence\collision_policy_stress_002.assessment.json `
+  --status-output C:\IsaacSim\evidence\collision_policy_stress_002.assessment.status.json
 ```
 
 ## Verify WP0

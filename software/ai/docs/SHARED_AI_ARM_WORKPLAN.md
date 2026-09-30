@@ -830,7 +830,7 @@ Workers add a short row before beginning a potentially overlapping change and
 remove it only in the same commit that appends the resulting evidence row.
 
 The latest completed SIM/WP2 increments are evidence `E-20260929-INT-445`
-through `E-20260929-INT-448`. They retain a bounded triangle-preserving
+through `E-20260929-INT-449`. They retain a bounded triangle-preserving
 `link2` partition candidate, bind all 165 remaining false positives to pinned
 upstream `Adjacent` policy evidence, verify that all six separate SRDF `Never`
 pairs remain free in the exact 49-pose corpus while preserving three
@@ -840,9 +840,15 @@ uninstalled, defaults every pair to collision checking, has zero effective
 exclusions, and grants no collision, clearance, controller, permit, transport,
 or physical authority.
 
+The held-out stress campaign in `E-20260929-INT-449` expands the selected
+geometry and inert candidate to 256 disjoint Halton poses and 5,376 pair cases.
+All six proposed `Never` pairs remain free and no false negative appears, but
+13 false positives reappear across six nonproposed pairs. This prevents any
+collision-query or exclusion-policy promotion and directs the next geometry
+work toward those exact retained-pair witnesses.
+
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| SIM/WP2 | S2/S3 | run a held-out deterministic joint-space stress campaign against the selected geometry and inert exclusion-policy candidate; preserve contradictions and grant no installation, collision-query, controller, or physical authority | `issue/190-isaac-sim-host` | IN_PROGRESS |
 | Unclaimed | S2/S3 | physical-camera deployment qualification and safe-region-fit precision evidence | — | AVAILABLE |
 | ARM | S4 | collect four physical-original `camera_support_optics` bindings through onboarding, then run the ARM-070 intake; no synthetic promotion | ARM-071 | WAITING_FOR_ORIGINALS |
 
