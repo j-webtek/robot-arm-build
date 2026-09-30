@@ -220,3 +220,45 @@ def test_expanded_lighting_families_are_deterministic_and_distinct() -> None:
 
     assert all(np.array_equal(left, right) for left, right in zip(first, second, strict=True))
     assert len({_sha256(value.tobytes()) for value in first}) == 3
+
+
+def test_candidate_threshold_selection_prioritizes_missed_abstention_bound() -> None:
+    module = _builder()
+    labels = np.asarray([1.0] * 20 + [0.0] * 20)
+    probabilities = np.asarray(
+        [0.90] * 18 + [0.20, 0.10] + [0.40] * 5 + [0.15] * 15
+    )
+
+    threshold = module._select_threshold(labels, probabilities)
+
+    predicted = probabilities >= threshold
+    missed = int(np.count_nonzero(~predicted & labels.astype(bool)))
+    assert threshold == 0.2
+    assert missed / int(labels.sum()) <= 0.05
+
+
+def test_chromatic_edge_features_are_deterministic_and_brightness_stable(tmp_path: Path) -> None:
+    module = _builder()
+    image_dir = tmp_path / "images"
+    image_dir.mkdir()
+    base = np.tile(np.arange(64, 192, 8, dtype=np.uint8), (16, 1))
+    rgb = np.stack((base, np.flip(base, axis=1), base), axis=2)
+    bright = np.clip(rgb.astype(np.int16) + 40, 0, 255).astype(np.uint8)
+    Image.fromarray(rgb).save(image_dir / "base.png")
+    Image.fromarray(bright).save(image_dir / "bright.png")
+    rows = [
+        {
+            "image_path": f"images/{name}.png",
+            "image_sha256": _sha256((image_dir / f"{name}.png").read_bytes()),
+            "safe_polygon_px": [[0, 0], [15, 0], [15, 15], [0, 15]],
+            "decision": "target_visible",
+        }
+        for name in ("base", "bright")
+    ]
+
+    first, _ = module._features(tmp_path, rows, "chromatic_gray_edges")
+    second, _ = module._features(tmp_path, rows, "chromatic_gray_edges")
+
+    assert np.array_equal(first, second)
+    assert first.shape == (2, 1536)
+    assert np.mean(np.abs(first[0] - first[1])) < 0.08

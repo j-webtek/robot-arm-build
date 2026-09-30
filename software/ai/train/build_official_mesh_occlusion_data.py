@@ -267,7 +267,9 @@ def _load_rows(dataset_dir: Path, split: str, manifest: dict[str, Any]) -> list[
     return [json.loads(line) for line in payload.decode("utf-8").splitlines() if line]
 
 
-def _features(dataset_dir: Path, rows: list[dict[str, Any]]) -> tuple[np.ndarray, np.ndarray]:
+def _features(
+    dataset_dir: Path, rows: list[dict[str, Any]], family: str = "rgb_raw"
+) -> tuple[np.ndarray, np.ndarray]:
     cache: dict[str, Image.Image] = {}
     vectors = []
     labels = []
@@ -289,14 +291,29 @@ def _features(dataset_dir: Path, rows: list[dict[str, Any]]) -> tuple[np.ndarray
         crop = image.crop(box).resize(
             (BASELINE_CROP_SIZE, BASELINE_CROP_SIZE), Image.Resampling.BILINEAR
         )
-        vectors.append(np.asarray(crop, dtype=np.float64).reshape(-1) / 255.0)
+        array = np.asarray(crop, dtype=np.float64) / 255.0
+        if family == "rgb_raw":
+            vector = array.reshape(-1)
+        elif family == "chromatic_gray_edges":
+            chromatic = array / np.maximum(array.sum(axis=2, keepdims=True), 1e-8)
+            gray = array @ np.asarray((0.299, 0.587, 0.114))
+            normalized = (gray - gray.mean()) / max(float(gray.std()), 1e-6)
+            horizontal = np.diff(normalized, axis=1, prepend=normalized[:, :1])
+            vertical = np.diff(normalized, axis=0, prepend=normalized[:1, :])
+            vector = np.concatenate((
+                chromatic.reshape(-1), normalized.reshape(-1),
+                horizontal.reshape(-1), vertical.reshape(-1),
+            ))
+        else:
+            raise ValueError(f"unknown feature family: {family}")
+        vectors.append(vector)
         labels.append(row["decision"] == "abstain")
     return np.stack(vectors), np.asarray(labels, dtype=np.float64)
 
 
 def _metrics(rows: list[dict[str, Any]], labels: np.ndarray,
-             probabilities: np.ndarray) -> dict[str, Any]:
-    predicted = probabilities >= 0.5
+             probabilities: np.ndarray, threshold: float = 0.5) -> dict[str, Any]:
+    predicted = probabilities >= threshold
     expected = labels.astype(bool)
     tp = int(np.count_nonzero(predicted & expected))
     tn = int(np.count_nonzero(~predicted & ~expected))
@@ -345,6 +362,50 @@ def _metrics(rows: list[dict[str, Any]], labels: np.ndarray,
         "calibration_bins": bins,
         "failures": failures,
     }
+
+
+def _fit_logistic(features: np.ndarray, labels: np.ndarray) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    mean = features.mean(axis=0)
+    scale = features.std(axis=0)
+    scale[scale < 1e-8] = 1.0
+    standardized = (features - mean) / scale
+    design = np.column_stack((np.ones(len(standardized)), standardized))
+    weights = np.zeros(design.shape[1], dtype=np.float64)
+    positives = int(labels.sum())
+    negatives = len(labels) - positives
+    sample_weights = np.where(
+        labels == 1.0, len(labels) / (2 * positives), len(labels) / (2 * negatives)
+    )
+    for _ in range(BASELINE_ITERATIONS):
+        logits = np.clip(design @ weights, -30.0, 30.0)
+        probabilities = 1.0 / (1.0 + np.exp(-logits))
+        gradient = design.T @ ((probabilities - labels) * sample_weights) / len(labels)
+        gradient[1:] += BASELINE_L2 * weights[1:]
+        weights -= BASELINE_LEARNING_RATE * gradient
+    return weights, mean, scale
+
+
+def _probabilities(
+    features: np.ndarray, weights: np.ndarray, mean: np.ndarray, scale: np.ndarray
+) -> np.ndarray:
+    design = np.column_stack((np.ones(len(features)), (features - mean) / scale))
+    return 1.0 / (1.0 + np.exp(-np.clip(design @ weights, -30.0, 30.0)))
+
+
+def _select_threshold(labels: np.ndarray, probabilities: np.ndarray) -> float:
+    candidates = []
+    expected = labels.astype(bool)
+    positives = int(expected.sum())
+    for threshold in (round(value, 2) for value in np.linspace(0.05, 0.95, 19)):
+        predicted = probabilities >= threshold
+        tp = int(np.count_nonzero(predicted & expected))
+        tn = int(np.count_nonzero(~predicted & ~expected))
+        fp = int(np.count_nonzero(predicted & ~expected))
+        fn = int(np.count_nonzero(~predicted & expected))
+        missed_rate = fn / positives
+        balanced = 0.5 * (tp / (tp + fn) + tn / (tn + fp))
+        candidates.append(((missed_rate <= 0.05, balanced, -fp, -fn), float(threshold)))
+    return max(candidates)[1]
 
 
 def train_baseline(dataset_dir: Path, output_dir: Path) -> dict[str, Any]:
@@ -422,17 +483,127 @@ def train_baseline(dataset_dir: Path, output_dir: Path) -> dict[str, Any]:
     return scorecard
 
 
+def train_selected_candidate(dataset_dir: Path, output_dir: Path) -> dict[str, Any]:
+    """Select on development only, freeze, then score reserved evaluation once."""
+    dataset_dir = dataset_dir.resolve(strict=True)
+    output_dir = output_dir.resolve()
+    if output_dir.exists() and any(output_dir.iterdir()):
+        raise ValueError("candidate output directory must be empty")
+    output_dir.mkdir(parents=True, exist_ok=True)
+    manifest_path = dataset_dir / "manifest.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    claimed_dataset_sha = manifest.pop("dataset_sha256", None)
+    if not isinstance(claimed_dataset_sha, str) or _sha256(_canonical(manifest)) != claimed_dataset_sha:
+        raise ValueError("dataset manifest hash mismatch")
+    manifest["dataset_sha256"] = claimed_dataset_sha
+    if manifest.get("schema") != SCHEMA_V2:
+        raise ValueError("candidate selection requires three-way v2 dataset")
+    if manifest.get("scope") != "SYNTHETIC_ONLY_NO_DEPLOYMENT_QUALIFICATION":
+        raise ValueError("dataset scope mismatch")
+
+    train_rows = _load_rows(dataset_dir, "train", manifest)
+    development_rows = _load_rows(dataset_dir, "development", manifest)
+    candidates: list[dict[str, Any]] = []
+    fitted: dict[str, tuple[np.ndarray, np.ndarray, np.ndarray]] = {}
+    for family in ("rgb_raw", "chromatic_gray_edges"):
+        train_x, train_y = _features(dataset_dir, train_rows, family)
+        development_x, development_y = _features(dataset_dir, development_rows, family)
+        weights, mean, scale = _fit_logistic(train_x, train_y)
+        probabilities = _probabilities(development_x, weights, mean, scale)
+        threshold = _select_threshold(development_y, probabilities)
+        metrics = _metrics(development_rows, development_y, probabilities, threshold)
+        missed = metrics["confusion"]["missed_abstain"]
+        candidates.append({
+            "feature_family": family,
+            "threshold": threshold,
+            "development": metrics,
+            "development_missed_abstain_rate": missed / int(development_y.sum()),
+        })
+        fitted[family] = (weights, mean, scale)
+
+    def rank(row: dict[str, Any]) -> tuple[bool, float, int, int]:
+        confusion = row["development"]["confusion"]
+        return (
+            row["development_missed_abstain_rate"] <= 0.05,
+            row["development"]["balanced_accuracy"],
+            -confusion["false_abstain"],
+            -confusion["missed_abstain"],
+        )
+
+    selected = max(candidates, key=rank)
+    family = selected["feature_family"]
+    threshold = selected["threshold"]
+    weights, mean, scale = fitted[family]
+    checkpoint = {
+        "schema": "rocell.ai_target_crop_logistic.v2",
+        "feature": {
+            "family": family,
+            "crop_size": BASELINE_CROP_SIZE,
+            "padding_px": 12,
+        },
+        "threshold": threshold,
+        "weights": weights.tolist(),
+        "standardization_mean": mean.tolist(),
+        "standardization_scale": scale.tolist(),
+        "selection_dataset_sha256": claimed_dataset_sha,
+        "selection_split": "development",
+    }
+    checkpoint_path = output_dir / "model.json"
+    checkpoint_path.write_bytes(_canonical(checkpoint) + b"\n")
+
+    # Evaluation is loaded only after the family, threshold, and checkpoint are frozen.
+    evaluation_rows = _load_rows(dataset_dir, "evaluation", manifest)
+    evaluation_x, evaluation_y = _features(dataset_dir, evaluation_rows, family)
+    evaluation_probabilities = _probabilities(evaluation_x, weights, mean, scale)
+    scorecard: dict[str, Any] = {
+        "schema": "rocell.ai_official_mesh_occlusion_candidate.v2",
+        "seed": BASELINE_SEED,
+        "algorithm": "deterministic_class_weighted_logistic_regression",
+        "selection_policy": {
+            "fit_split": "train",
+            "selection_split": "development",
+            "evaluation_split": "evaluation_loaded_after_checkpoint_freeze",
+            "maximum_development_missed_abstain_rate": 0.05,
+            "ranking": [
+                "meets_missed_abstain_rate", "balanced_accuracy",
+                "fewest_false_abstentions", "fewest_missed_abstentions",
+            ],
+        },
+        "dataset_manifest_sha256": _sha256(manifest_path.read_bytes()),
+        "dataset_sha256": claimed_dataset_sha,
+        "candidate_development_results": candidates,
+        "selected_feature_family": family,
+        "selected_threshold": threshold,
+        "model_sha256": _sha256(checkpoint_path.read_bytes()),
+        "evaluation": _metrics(
+            evaluation_rows, evaluation_y, evaluation_probabilities, threshold
+        ),
+        "promotion_status": "BLOCKED_SYNTHETIC_ONLY",
+        "hardware_writes": 0,
+        "physical_movements": 0,
+        "limitations": manifest["limitations"],
+    }
+    scorecard["scorecard_sha256"] = _sha256(_canonical(scorecard))
+    (output_dir / "scorecard.json").write_bytes(_canonical(scorecard) + b"\n")
+    return scorecard
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--source-manifest", type=Path, required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--baseline-output", type=Path)
+    parser.add_argument("--candidate-output", type=Path)
     args = parser.parse_args()
     try:
         manifest = build(args.source_manifest, args.output_dir)
         scorecard = (
             train_baseline(args.output_dir, args.baseline_output)
             if args.baseline_output is not None else None
+        )
+        candidate_scorecard = (
+            train_selected_candidate(args.output_dir, args.candidate_output)
+            if args.candidate_output is not None else None
         )
     except BaseException:
         if args.output_dir.exists():
@@ -448,6 +619,21 @@ def main() -> int:
         result["baseline"] = {
             "scorecard_sha256": scorecard["scorecard_sha256"],
             "promotion_status": scorecard["promotion_status"],
+            "evaluation": {
+                key: evaluation[key]
+                for key in (
+                    "count", "confusion", "accuracy", "balanced_accuracy",
+                    "brier_score", "expected_calibration_error_10_bin",
+                )
+            },
+        }
+    if candidate_scorecard is not None:
+        evaluation = candidate_scorecard["evaluation"]
+        result["candidate"] = {
+            "scorecard_sha256": candidate_scorecard["scorecard_sha256"],
+            "promotion_status": candidate_scorecard["promotion_status"],
+            "selected_feature_family": candidate_scorecard["selected_feature_family"],
+            "selected_threshold": candidate_scorecard["selected_threshold"],
             "evaluation": {
                 key: evaluation[key]
                 for key in (
