@@ -289,3 +289,50 @@ def test_transit_pose_groups_are_predeclared_disjoint_and_schedule_bound() -> No
         8, 17, 26, 34, 35, 44, 52, 60, 63, 64, 72, 84, 96, 103, 104, 112, 120, 128,
     }
     assert not (set(groups["development"]) & set(groups["evaluation"]))
+
+
+def test_transit_dataset_policy_uses_fresh_disjoint_lighting() -> None:
+    builder = _builder()
+    renderer = _renderer()
+    source = {
+        "schema": "tactevra.isaac_fixed_overview_mesh_render.v3",
+        "pose_groups": {name: list(poses) for name, poses in renderer.POSE_GROUPS.items()},
+        "pose_results": [
+            {"pose_id": pose_id, "pose_group": group}
+            for group, pose_ids in renderer.POSE_GROUPS.items()
+            for pose_id in pose_ids
+        ],
+    }
+
+    schema, policy = builder._split_policy(source)
+
+    assert schema == "rocell.ai_official_mesh_occlusion_data.v3"
+    assert policy["train"]["lighting"] == (
+        "nominal", "dim", "bright", "warm", "glare", "blur",
+        "cool", "side_shadow", "defocus",
+    )
+    assert policy["development"]["lighting"] == (
+        "desaturated", "gamma_dark", "vignette",
+    )
+    assert policy["evaluation"]["lighting"] == (
+        "low_contrast", "right_shadow", "motion_blur",
+    )
+    lighting = [set(split["lighting"]) for split in policy.values()]
+    assert all(
+        not (left & right)
+        for index, left in enumerate(lighting)
+        for right in lighting[index + 1:]
+    )
+
+
+def test_transit_lighting_families_are_deterministic_and_distinct() -> None:
+    module = _builder()
+    pixels = np.arange(48 * 48 * 3, dtype=np.uint8).reshape(48, 48, 3)
+    source = Image.fromarray(pixels, mode="RGB")
+    variants = (*module.TRANSIT_LIGHTING["development"], *module.TRANSIT_LIGHTING["evaluation"])
+
+    first = [np.asarray(module._lighting(source, name)) for name in variants]
+    second = [np.asarray(module._lighting(source, name)) for name in variants]
+
+    assert all(np.array_equal(left, right) for left, right in zip(first, second, strict=True))
+    assert len({_sha256(value.tobytes()) for value in first}) == len(variants)

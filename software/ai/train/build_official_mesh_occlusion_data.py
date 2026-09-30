@@ -15,8 +15,10 @@ from PIL import Image, ImageDraw, ImageEnhance, ImageFilter
 
 SCHEMA_V1 = "rocell.ai_official_mesh_occlusion_data.v1"
 SCHEMA_V2 = "rocell.ai_official_mesh_occlusion_data.v2"
+SCHEMA_V3 = "rocell.ai_official_mesh_occlusion_data.v3"
 SOURCE_SCHEMA_V1 = "tactevra.isaac_fixed_overview_mesh_render.v1"
 SOURCE_SCHEMA_V2 = "tactevra.isaac_fixed_overview_mesh_render.v2"
+SOURCE_SCHEMA_V3 = "tactevra.isaac_fixed_overview_mesh_render.v3"
 MAXIMUM_SAFE_REGION_OVERLAP = 0.20
 BASELINE_SEED = 190
 BASELINE_CROP_SIZE = 16
@@ -38,6 +40,14 @@ EXPANDED_LIGHTING = {
     "development": ("warm", "glare", "blur"),
     "evaluation": ("cool", "side_shadow", "defocus"),
 }
+TRANSIT_LIGHTING = {
+    "train": (
+        "nominal", "dim", "bright", "warm", "glare", "blur",
+        "cool", "side_shadow", "defocus",
+    ),
+    "development": ("desaturated", "gamma_dark", "vignette"),
+    "evaluation": ("low_contrast", "right_shadow", "motion_blur"),
+}
 
 
 def _sha256(payload: bytes) -> str:
@@ -52,7 +62,9 @@ def _canonical(value: object) -> bytes:
 
 def _verify_source(path: Path) -> dict[str, Any]:
     source = json.loads(path.read_text(encoding="utf-8"))
-    if source.get("schema") not in {SOURCE_SCHEMA_V1, SOURCE_SCHEMA_V2}:
+    if source.get("schema") not in {
+        SOURCE_SCHEMA_V1, SOURCE_SCHEMA_V2, SOURCE_SCHEMA_V3
+    }:
         raise ValueError("official-mesh manifest schema mismatch")
     claimed = source.pop("receipt_sha256", None)
     if not isinstance(claimed, str) or _sha256(_canonical(source)) != claimed:
@@ -90,15 +102,17 @@ def _split_policy(source: dict[str, Any]) -> tuple[str, dict[str, dict[str, tupl
         expected = next(name for name, poses in normalized.items() if row["pose_id"] in poses)
         if row.get("pose_group") != expected:
             raise ValueError(f"pose group mismatch: {row['pose_id']}")
-    return SCHEMA_V2, {
-        "train": {"poses": normalized["training"], "lighting": EXPANDED_LIGHTING["train"]},
+    lighting = TRANSIT_LIGHTING if source["schema"] == SOURCE_SCHEMA_V3 else EXPANDED_LIGHTING
+    schema = SCHEMA_V3 if source["schema"] == SOURCE_SCHEMA_V3 else SCHEMA_V2
+    return schema, {
+        "train": {"poses": normalized["training"], "lighting": lighting["train"]},
         "development": {
             "poses": normalized["development"],
-            "lighting": EXPANDED_LIGHTING["development"],
+            "lighting": lighting["development"],
         },
         "evaluation": {
             "poses": normalized["evaluation"],
-            "lighting": EXPANDED_LIGHTING["evaluation"],
+            "lighting": lighting["evaluation"],
         },
     }
 
@@ -143,6 +157,31 @@ def _lighting(image: Image.Image, variant: str) -> Image.Image:
         return Image.composite(overlay, rgb, alpha)
     if variant == "defocus":
         return rgb.filter(ImageFilter.GaussianBlur(radius=2.6))
+    if variant == "desaturated":
+        return ImageEnhance.Color(rgb).enhance(0.22)
+    if variant == "gamma_dark":
+        return rgb.point(lambda value: round(255 * (value / 255) ** 1.45))
+    if variant == "vignette":
+        y, x = np.ogrid[:rgb.height, :rgb.width]
+        dx = (x - (rgb.width - 1) / 2) / (rgb.width / 2)
+        dy = (y - (rgb.height - 1) / 2) / (rgb.height / 2)
+        alpha = np.clip((dx * dx + dy * dy) * 105, 0, 105).astype(np.uint8)
+        return Image.composite(Image.new("RGB", rgb.size, "black"), rgb, Image.fromarray(alpha))
+    if variant == "low_contrast":
+        return ImageEnhance.Contrast(rgb).enhance(0.48)
+    if variant == "right_shadow":
+        overlay = Image.new("RGB", rgb.size, "black")
+        alpha = Image.new("L", rgb.size, 0)
+        ImageDraw.Draw(alpha).polygon(
+            ((round(rgb.width * 0.44), 0), (rgb.width, 0),
+             (rgb.width, rgb.height), (round(rgb.width * 0.62), rgb.height)),
+            fill=115,
+        )
+        return Image.composite(overlay, rgb, alpha)
+    if variant == "motion_blur":
+        weights = [0.0] * 25
+        weights[10:15] = [1.0] * 5
+        return rgb.filter(ImageFilter.Kernel((5, 5), weights, scale=5.0))
     raise ValueError(f"unknown lighting variant: {variant}")
 
 
