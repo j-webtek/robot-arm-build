@@ -6502,3 +6502,85 @@ rewriting history. New entries must use a unique evidence ID.
   development only, freeze its checkpoint and decision threshold, then score
   the reserved evaluation group once. Keep every result synthetic-only and
   blocked from deployment pending measured fixed-camera evidence.
+
+### E-20260930-AI-461 — compact occlusion candidate selection and reserved evaluation
+
+- Stage: S2/S3 synthetic perception and abstention development.
+- Lane: AI/model; no arm or integration status changed.
+- Implementation commit: `c16893093045bfe93756b4ad0966783223775404`.
+- Change: fit two deterministic class-weighted logistic candidates using only
+  AI-460 training rows: raw RGB crops and brightness-normalized chromatic,
+  grayscale, and first-difference edge features. Each threshold was selected
+  on development only from explicit 0.05 increments. Ranking first preferred a
+  development missed-abstention rate at or below 0.05, then balanced accuracy,
+  false abstentions, and missed abstentions. Neither candidate met the 0.05
+  bound, so the deterministic ranking fallback selected the higher-balanced-accuracy
+  chromatic/edge candidate. Its feature family, threshold, weights, and
+  standardization were frozen before the reserved evaluation JSONL was loaded.
+  That evaluation was then scored exactly once.
+- Inputs/fixtures: implementation SHA-256
+  `673709ec4aaba36dcf6eb79235533669a99bd900155ff03d7769e8c14542c401`;
+  focused evidence-test SHA-256
+  `fb0a2825dfaa9b34700734c162a09bb82eb954970bb79ad5a0bea79891790ae8`;
+  dataset SHA-256
+  `e672b3a1fe9d23376b91c07ce56f85005443cf521645373110de24791712607d`;
+  training/development/evaluation JSONL identities remain exactly those in
+  AI-460.
+- Command: `python software/ai/train/build_official_mesh_occlusion_data.py
+  --source-manifest C:\IsaacSim\artifacts\issue190\fixed-overview-official-mesh-v2-run2\manifest.json
+  --output-dir C:\IsaacSim\artifacts\issue190\official-mesh-occlusion-expanded-v3
+  --candidate-output C:\IsaacSim\artifacts\issue190\official-mesh-occlusion-candidate-v1`;
+  `$env:PYTHONPATH=(Resolve-Path 'software/src').Path; python -m pytest
+  software/tests/unit/test_isaac_fixed_overview_mesh_render_evidence.py
+  software/tests/unit/test_fixed_overview_segmentation_corpus.py
+  software/tests/unit/test_fixed_fixture_practice_corpus.py
+  software/tests/unit/test_virtual_pixel_vision.py
+  software/tests/unit/test_virtual_arm_camera.py software/ai/tests/test_offline.py
+  -q`; Ruff, documentation, and `git diff --check` checks.
+- Failed evidence preserved: two focused pre-run test attempts returned one
+  failure because the threshold unit fixture expected `0.20` while its negative
+  examples gave `0.10` the same false-positive count and better recall. Rounding
+  the threshold grid did not change that correct `0.10` selection. The fixture
+  was corrected to distinguish the thresholds; the selection implementation
+  retained explicit two-decimal thresholds. Both failures involved no model
+  evaluation, hardware write, or physical movement.
+- Development results: raw RGB selected threshold `0.90` and produced 73 true
+  abstentions, 234 true-visible labels, 120 false abstentions, and 23 missed
+  abstentions; balanced accuracy `0.7107168079096045`, Brier score
+  `0.32920465840558444`, and calibration error `0.3401623490847901`.
+  Chromatic/edge features selected threshold `0.25` and produced 86 true
+  abstentions, 236 true-visible labels, 118 false abstentions, and 10 missed
+  abstentions; balanced accuracy `0.78125`, Brier score
+  `0.28322995445080373`, calibration error `0.2813957820375068`, and missed-
+  abstention rate `0.10416666666666667`. Neither met the declared 0.05 bound.
+- Reserved evaluation result: BLOCKED_SYNTHETIC_ONLY. The frozen chromatic/edge
+  checkpoint at threshold `0.25` produced 77 true abstentions, 769 true-visible
+  labels, 2 false abstentions, and 52 missed abstentions: accuracy `0.94`,
+  balanced accuracy `0.7971525955418816`, Brier score
+  `0.05842087208017514`, and calibration error `0.05288915202213142`. The
+  missed-abstention rate is `52/129 = 0.40310077519379844`; the high overall
+  accuracy therefore does not support admission. Model SHA-256 is
+  `c016363ef67aaac110c4c1743f6bd5a3f47f24f1f83f342842d7d5984d7e3d3d`;
+  canonical scorecard SHA-256 is
+  `209b9ff2801f2f05783c7f42d47dcee43aedad399d9c976468d20b37ec6cd1c3`;
+  scorecard file SHA-256 is
+  `176041bf12154d5f040dc1392819c5419ebdcf9b23fb17878d4db8579f7eba14`.
+  Fifty-three focused tests passed in 21.91 seconds and Ruff passed. The tracked
+  repository remains at exactly 6,100 files.
+- Artifact location: external only at
+  `C:\IsaacSim\artifacts\issue190\official-mesh-occlusion-candidate-v1`;
+  hashes identify the local bytes but do not make them clean-clone available.
+- Hardware-write count: 0.
+- Physical-movement count: 0.
+- Limitations: all data and labels are synthetic and omit measured tool and
+  camera-support geometry, physical frames, temporal evidence, and deployment-
+  calibrated uncertainty. The evaluation group is now consumed and cannot be
+  used to tune another candidate. The checkpoint emits only an offline
+  occlusion probability and has no coordinate, motion, controller, permit,
+  transport, or physical authority.
+- Supersedes: none; rejects promotion of the AI-460 compact candidate.
+- Next dependency: add predeclared geometry diversity that covers the observed
+  evaluation failure modes, including tool/camera-support meshes when measured,
+  and reserve another untouched pose group before evaluating a spatial model.
+  Physical promotion still requires measured fixed-camera evidence under a
+  registered configuration epoch.

@@ -959,9 +959,15 @@ independent builds are byte-identical. The evaluation bytes exist for identity
 and leakage checks but remain unscored; the next candidate must be selected
 using training and development only before that group is evaluated once.
 
+The compact selection experiment in `E-20260930-AI-461` selected brightness-
+normalized chromatic/edge features at threshold `0.25` using development only,
+then consumed the reserved evaluation once. Although evaluation accuracy is
+94.0%, the model misses 52 of 129 required abstentions. That 40.3% miss rate is
+unsafe for occlusion admission, so the checkpoint remains blocked and this
+evaluation group is unavailable for further selection or tuning.
+
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI | S2/S3 compact occlusion candidate selection | `software/ai/train/build_official_mesh_occlusion_data.py`, focused tests and AI evidence docs; fit compact candidates on AI-460 training, select feature family and threshold on development only, freeze, then score reserved evaluation once; synthetic-only and zero model-to-arm authority | `issue/190-isaac-sim-host` at `85d107708d54d54a1fed06750d388b1fa3058018` | ACTIVE |
 | Unclaimed | S2/S3 | physical-camera deployment qualification and safe-region-fit precision evidence | — | AVAILABLE |
 | ARM | S4 | collect four physical-original `camera_support_optics` bindings through onboarding, then run the ARM-070 intake; no synthetic promotion | ARM-071 | WAITING_FOR_ORIGINALS |
 
