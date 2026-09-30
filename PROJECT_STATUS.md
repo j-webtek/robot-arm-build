@@ -1,6 +1,6 @@
 # Tactevra project status
 
-Reviewed September 29, 2026 through the ARM-131 exact-input reuse campaign,
+Reviewed September 29, 2026 through the ARM-132 shadow-service reuse campaign,
 the ARM-128 retained endpoint-atlas campaign,
 the ARM-126 retained service fault campaign,
 ARM-125 bounded shadow service,
@@ -740,6 +740,15 @@ receipt and stage hash across 186 lookups. Cold per-route caches safely reused
 26 exact inputs; warm caches served all 186. Aggregate host time was 10.645 s
 without reuse, 8.835 s cold, and 1.040 s warm. This is experimental shadow
 timing, not physical throughput or permission to relax safety gates.
+
+ARM-132 qualifies that exact-input cache at the bounded shadow-service request
+boundary. Five mixed requests executed in FIFO order through one owner and
+produced 186 lookups, 48 full-solve misses, and 138 exact hits. Cancellation
+performed zero owner runs and zero cache work. Reload and restart rejected the
+queued stale request, retired the previous cache, and completed one new
+current-generation request from a cold cache with 23 misses and one safe
+within-route hit. No automatic retry occurred. Request-level timing remains
+diagnostic, and the service remains detached from any executor or sole writer.
 
 AI-403 then integrates the pose-output precision adapter and actual V2 batch
 producer on current `main`. The retained contract fixture deterministically

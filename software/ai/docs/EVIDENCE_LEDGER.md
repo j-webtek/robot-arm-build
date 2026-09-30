@@ -6372,3 +6372,36 @@ rewriting history. New entries must use a unique evidence ID.
 - Next dependency: qualify the exact cache inside the bounded shadow-service
   request lifecycle with mixed requests, cancellation, reload, restart, and
   latency accounting before considering any production runtime profile.
+
+### E-20260929-ARM-132 — retained shadow-service exact-reuse lifecycle campaign
+
+- Stage: operational efficiency E2/E3 boundary, request-lifecycle reuse.
+- Lane: arm/runtime bounded typing shadow service.
+- Source commit: `ba9930ea248cec85f043a182a9b047d443aa377a`.
+- Result: PASS. Five mixed representative requests completed in FIFO order
+  through one generation-bound owner. Their 186 solver lookups produced 48
+  complete-solve misses/stores and 138 exact-input hits, matching the ARM-120
+  unique/repeated input counts.
+- Cancellation: one pre-admission cancellation produced zero owner runs and
+  zero cache operations.
+- Lifecycle: reload and restart each rejected one queued stale request without
+  executing it, retired the old cache, and completed a new current-generation
+  H/I request from a cold cache (24 lookups, 23 misses/stores, one hit).
+- Automatic retry allowed: false.
+- Artifact: `typing_shadow_service_reuse_campaign_v1.json`; file SHA-256
+  `da0277885671a24de19a94b6b627759c3ce80726cf4eb530a5718ce16597c4a0`;
+  embedded campaign SHA-256
+  `62aa3c107cdf2c432001bc7566a9643bf5050255e3b7310432d00d69f3c32cfe`.
+- Endpoint-only substitution authorized: false; complete-solve fallback
+  required: true; timing used for admission: false.
+- Controller opens: 0; transport opens: 0; hardware writes: 0; physical
+  movements: 0; physical authority: false.
+- Limitations: request durations are one-host observations and include no
+  controller, settling, camera, effect-verification, or physical timing. The
+  service has no executor or sole-writer attachment.
+- Supersedes: ARM-131 only for its service-lifecycle integration dependency;
+  ARM-131 remains authoritative for multi-sequence direct-cache equivalence.
+- Next dependency: define the frozen production-profile selection gate that
+  can choose exact-input reuse only for qualified lifecycle/build/calibration
+  identities while preserving complete-solve fallback and zero automatic
+  retry. Do not attach physical authority at that gate.

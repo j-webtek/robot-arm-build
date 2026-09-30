@@ -14,9 +14,9 @@ from rocell.application.operational_latency_reference_v1 import _sha as environm
 
 ROOT = Path(__file__).resolve().parents[3]
 RETAINED = ROOT / "software/ai/eval/typing_shadow_service_reuse_campaign_v1.json"
-RETAINED_FILE_SHA256 = None
-RETAINED_CAMPAIGN_SHA256 = None
-RETAINED_SOURCE_COMMIT = None
+RETAINED_FILE_SHA256 = "da0277885671a24de19a94b6b627759c3ce80726cf4eb530a5718ce16597c4a0"
+RETAINED_CAMPAIGN_SHA256 = "62aa3c107cdf2c432001bc7566a9643bf5050255e3b7310432d00d69f3c32cfe"
+RETAINED_SOURCE_COMMIT = "ba9930ea248cec85f043a182a9b047d443aa377a"
 VALIDATOR = Draft202012Validator(json.loads((ROOT / "software/ai/schemas/typing_shadow_service_reuse_campaign_v1.schema.json").read_text(encoding="utf-8")))
 
 
@@ -61,8 +61,6 @@ def test_service_reuse_campaign_is_ordered_bounded_and_zero_authority(report):
 
 
 def test_retained_service_reuse_campaign_is_exact_when_installed():
-    if RETAINED_FILE_SHA256 is None:
-        pytest.skip("retained ARM-132 artifact is installed after clean-source execution")
     raw = RETAINED.read_bytes(); assert hashlib.sha256(raw).hexdigest() == RETAINED_FILE_SHA256
     report = json.loads(raw); assert list(VALIDATOR.iter_errors(report)) == []
     assert dict(campaign.parse_typing_shadow_service_reuse_campaign_v1(report)) == report

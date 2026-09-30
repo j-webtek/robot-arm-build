@@ -510,7 +510,7 @@ remains the dominant software cost.
 
 ### E2 — Accelerate IK and collision preparation
 
-**Status:** in progress through ARM-131 exact-input reuse qualification.
+**Status:** in progress through ARM-132 shadow-service reuse qualification.
 
 ARM-119 adds an opt-in, bounded `TypingIkEffortRecorderV1` side channel. It
 records attempt and iteration counts only after each deterministic solve. The
@@ -672,6 +672,16 @@ warm caches recorded 186/186 hits. Aggregate host duration changed from
 10.6446605 s reference to 8.8345029 s cold and 1.0399843 s warm. Misses still
 require complete solves. Endpoint-only substitution remains unauthorized and
 the timing remains offline, non-admissive, and non-physical.
+
+ARM-132 carries exact-input reuse through the bounded shadow-service request
+lifecycle. Five mixed requests retain FIFO completion and share one
+generation-bound cache: 186 lookups resolve as 48 complete solves and 138 exact
+hits. A canceled request performs no owner run or cache lookup. Reload and
+restart reject previously queued work as stale, retire the former cache, and
+force the first current-generation request through a cold cache. There is no
+automatic retry and timing remains non-admissive. This closes the shadow
+service integration prerequisite; it does not connect an executor or sole
+writer and therefore creates no physical authority.
 
 Deliver:
 
