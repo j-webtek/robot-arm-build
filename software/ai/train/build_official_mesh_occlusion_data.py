@@ -494,13 +494,16 @@ def _target_aware_crops(
     """Return RGB crops plus a catalog-derived safe-region channel."""
     rgb, labels = _spatial_crops(dataset_dir, rows)
     masks = []
+    image_sizes: dict[str, tuple[int, int]] = {}
     for row in rows:
         polygon = row["safe_polygon_px"]
         x_values = [point[0] for point in polygon]
         y_values = [point[1] for point in polygon]
         image_path = dataset_dir / row["image_path"]
-        with Image.open(image_path) as image:
-            width, height = image.size
+        if row["image_path"] not in image_sizes:
+            with Image.open(image_path) as image:
+                image_sizes[row["image_path"]] = image.size
+        width, height = image_sizes[row["image_path"]]
         box = (
             max(0, int(min(x_values)) - SPATIAL_PADDING),
             max(0, int(min(y_values)) - SPATIAL_PADDING),
