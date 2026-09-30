@@ -6584,3 +6584,85 @@ rewriting history. New entries must use a unique evidence ID.
   and reserve another untouched pose group before evaluating a spatial model.
   Physical promotion still requires measured fixed-camera evidence under a
   registered configuration epoch.
+
+### E-20260930-AI-462 — fresh transit-geometry official-mesh expansion
+
+- Stage: S2/S3 synthetic perception and abstention development.
+- Lane: AI/model with an inert Isaac rendering fixture; no arm or integration
+  status changed.
+- Implementation commit: `b3c095ab327a827a77ca2a0fc71255f5abe09927`.
+- Change: expanded the fixed-camera official-mesh source from nine endpoint
+  poses to 21 predeclared poses. All nine geometries consumed through AI-461
+  now form training. Previously unused actual-emitter schedule sequences
+  8/17/26 and 112/120/128 form outbound/return development geometry. Unused
+  sequences 44/52/60 and 72/84/96 form untouched H-to-1 and 1-to-PERIOD
+  evaluation geometry. Split roles and exact sequence bindings were committed
+  before rendering. The evaluation group has not been supplied to a model.
+- Diagnostic input: the consumed AI-461 evaluation scorecard was read only to
+  group its 54 failures. It contained 52 missed occlusions and two false
+  abstentions; 36 failures used the cool transformation and failures occurred
+  across all four endpoint poses. This diagnosis did not select, label, score,
+  or inspect the new transit evaluation group.
+- Inputs/fixtures: renderer SHA-256
+  `89bcc878f11b7cf675a9b986479363afcd1048ddd2f8994e6c75a08731b1d815`;
+  focused evidence-test SHA-256
+  `128e3b2da941f46ce53a165c0b7691c06070848c3fddab9323b42f48ac49f435`;
+  schedule file SHA-256
+  `6a59ce143f5527c7a9ced09b08d5515644ea4fb859dd69691e08483eb020ee42`;
+  schedule bundle SHA-256
+  `52e8e1977cc88bc4d80b1664ccaaec5b4a2d4286c744bf74655f3d683577d71a`;
+  target-catalog SHA-256
+  `6779213e832ab27eeda1e7fb245f57ff8cb0d56707b5aa73a8f31ec483a620f2`.
+- Command: `$env:OMNI_KIT_ACCEPT_EULA='YES'; $env:PYTHONPATH=(Resolve-Path
+  'software/src').Path; C:\IsaacSim\env_6_1_0\Scripts\python.exe
+  software/integrations/isaac_sim/isaac_fixed_overview_mesh_render_probe.py
+  --workspace . --upstream-repo C:\IsaacSim\sources\roarm_ws-40dbd84
+  --mesh-receipt software/integrations/isaac_sim/evidence/roarm_m3_upstream_link_meshes_20260929.json
+  --capsule-manifest software/integrations/isaac_sim/evidence/fixed_overview_segmentation_v1/manifest.json
+  --schedule-bundle software/integrations/isaac_sim/evidence/actual_emitter_joint_schedule_bundle_9e5c878_20260929.json
+  --output-dir C:\IsaacSim\artifacts\issue190\fixed-overview-official-mesh-v3-run1
+  --receipt C:\IsaacSim\evidence\fixed_overview_official_mesh_v3_run1.json
+  --status-output C:\IsaacSim\evidence\fixed_overview_official_mesh_v3_run1.status.json`;
+  `$env:PYTHONPATH=(Resolve-Path 'software/src').Path; python -m pytest
+  software/tests/unit/test_isaac_fixed_overview_mesh_render_evidence.py
+  software/tests/unit/test_fixed_overview_segmentation_corpus.py
+  software/tests/unit/test_fixed_fixture_practice_corpus.py
+  software/tests/unit/test_virtual_pixel_vision.py
+  software/tests/unit/test_virtual_arm_camera.py software/ai/tests/test_offline.py
+  -q`; Ruff, documentation, and `git diff --check` checks.
+- Result: PASS_WITH_BLOCKERS. All 21 semantic masks are distinct. Across the
+  nine training poses there are 85 center occlusions and 107 target regions
+  above the predeclared 0.20 safe-overlap threshold. Across six development
+  poses there are 34 center occlusions and 43 threshold crossings. Across six
+  untouched evaluation poses there are 77 center occlusions and 92 crossings.
+  Per-evaluation-pose center/crossing counts are respectively `13/17`, `14/16`,
+  `12/13`, `14/15`, `13/17`, and `11/14`, demonstrating materially varied and
+  harder inter-key obstruction geometry.
+- Artifact identities: canonical receipt SHA-256
+  `ce72cbdd921f3cbcdf81ffe15a1b90eaf8b5749e6df4c8764783fa07a0c89766`;
+  receipt file SHA-256
+  `1bc26ad7cabf59587f5606e7c834526e76bbaa1b3e2a0a2321af0bbaff167ecc`;
+  RGB/mask/depth atlas SHA-256 values respectively
+  `07c91a0bb2332801042e10ed290fa794ca3aea64caca3fb33507ee3c03b57d3a`,
+  `2e752cfce9c36c4ed659bdf193c9b9eb6f5bada9016e987cfdcb471b86899052`,
+  and `75df29523ea008572f69b8cff284e5b140fba2cb4bf6785e99224d49d474a032`.
+  Fifty-four focused tests passed in 21.72 seconds; Ruff and documentation
+  checks passed.
+- Artifact location: external only at
+  `C:\IsaacSim\artifacts\issue190\fixed-overview-official-mesh-v3-run1` and
+  `C:\IsaacSim\evidence\fixed_overview_official_mesh_v3_run1.json`; hashes
+  identify exact local bytes but do not make them clean-clone available.
+- Hardware-write count: 0.
+- Physical-movement count: 0.
+- Physics-step count: 0.
+- Limitations: visual meshes, camera, board placement, lighting, and labels are
+  synthetic. Measured tool and camera-support geometry, physical frames,
+  temporal evidence, and deployment-calibrated uncertainty remain absent.
+  This evidence qualifies no localization, collision clearance, controller,
+  execution, transport, permit, or physical authority.
+- Supersedes: none; preserves AI-459 through AI-461 and provides fresh geometry
+  for a subsequent three-way dataset.
+- Next dependency: predeclare new disjoint lighting families, materialize the
+  21-pose training/development/evaluation dataset, select a spatial candidate
+  using training/development only, and score the new evaluation once. Physical
+  promotion still requires measured fixed-camera evidence.

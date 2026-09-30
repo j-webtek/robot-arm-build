@@ -966,9 +966,15 @@ then consumed the reserved evaluation once. Although evaluation accuracy is
 unsafe for occlusion admission, so the checkpoint remains blocked and this
 evaluation group is unavailable for further selection or tuning.
 
+The transit-geometry expansion in `E-20260930-AI-462` adds twelve unused
+actual-emitter schedule states while folding all consumed endpoint poses into
+training. Six outbound/return states form development and six inter-key states
+remain untouched evaluation geometry. All 21 official-mesh masks are distinct;
+the reserved inter-key group contains materially more occlusion than the
+development group. No model has consumed or scored the new evaluation group.
+
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI | S2/S3 transit-geometry occlusion expansion | `software/integrations/isaac_sim/isaac_fixed_overview_mesh_render_probe.py`, external render evidence, focused tests and AI evidence docs; fold all consumed endpoint poses into training, add six unused outbound/return transit poses for development, and reserve six unused inter-key transit poses for untouched evaluation before rendering; synthetic-only and zero model-to-arm authority | `issue/190-isaac-sim-host` at `30baaad31d7d4810c30835c4f734dd1e3d79c21e` | ACTIVE |
 | Unclaimed | S2/S3 | physical-camera deployment qualification and safe-region-fit precision evidence | — | AVAILABLE |
 | ARM | S4 | collect four physical-original `camera_support_optics` bindings through onboarding, then run the ARM-070 intake; no synthetic promotion | ARM-071 | WAITING_FOR_ORIGINALS |
 
