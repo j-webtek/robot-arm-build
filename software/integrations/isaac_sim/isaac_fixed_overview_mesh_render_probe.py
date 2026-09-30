@@ -21,13 +21,27 @@ from typing import Any
 UPSTREAM_COMMIT = "40dbd84b553695212fab713e8465f817ba95454d"
 EXPECTED_URDF_SHA256 = "a565718e7d74b07702802cf41eb9549a6e38e50b5e80aa9b887ab1ae3d0d8190"
 LINKS = ("base_link", "link1", "link2", "link3", "link4", "link5", "gripper_link")
-POSES = {
+REFERENCE_POSES = {
     "ready": None,
     "hover_t": (-0.23228866404719983, 0.63981053780154, 1.9887938075201332,
                 -1.0578043436893252, 4.987262088921639e-10),
     "hover_e": (-0.31131621748840294, 0.6841707277884785, 1.8469265148292362,
                 -0.9602972424740397, 4.2194931944696405e-10),
 }
+SCHEDULE_POSE_SEQUENCES = {
+    "hover_h": 34,
+    "contact_h": 35,
+    "hover_1": 63,
+    "contact_1": 64,
+    "hover_period": 103,
+    "contact_period": 104,
+}
+POSE_GROUPS = {
+    "training": ("ready", "hover_t", "hover_e"),
+    "development": ("hover_h", "contact_h"),
+    "evaluation": ("hover_1", "contact_1", "hover_period", "contact_period"),
+}
+EXPECTED_SCHEDULE_FILE_SHA256 = "6a59ce143f5527c7a9ced09b08d5515644ea4fb859dd69691e08483eb020ee42"
 WIDTH = 1920
 HEIGHT = 1080
 
@@ -174,6 +188,7 @@ def main() -> int:
     parser.add_argument("--upstream-repo", type=Path, required=True)
     parser.add_argument("--mesh-receipt", type=Path, required=True)
     parser.add_argument("--capsule-manifest", type=Path, required=True)
+    parser.add_argument("--schedule-bundle", type=Path, required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--receipt", type=Path, required=True)
     parser.add_argument("--status-output", type=Path, required=True)
@@ -186,6 +201,7 @@ def main() -> int:
         upstream = args.upstream_repo.resolve(strict=True)
         mesh_receipt_path = args.mesh_receipt.resolve(strict=True)
         capsule_manifest_path = args.capsule_manifest.resolve(strict=True)
+        schedule_bundle_path = args.schedule_bundle.resolve(strict=True)
         output_dir = args.output_dir.resolve()
         if output_dir.exists() and any(output_dir.iterdir()):
             raise ValueError("output directory must be empty")
@@ -195,6 +211,14 @@ def main() -> int:
             raise ValueError("upstream checkout identity mismatch")
         mesh_receipt = _load(mesh_receipt_path)
         capsule_manifest = _load(capsule_manifest_path)
+        if _sha256(schedule_bundle_path.read_bytes()) != EXPECTED_SCHEDULE_FILE_SHA256:
+            raise ValueError("schedule bundle identity mismatch")
+        schedule_bundle = _load(schedule_bundle_path)
+        if (schedule_bundle.get("physical_authority") is not False
+                or schedule_bundle.get("hardware_access") is not False
+                or schedule_bundle.get("hardware_writes") != 0
+                or schedule_bundle.get("physical_movements") != 0):
+            raise ValueError("schedule bundle claims authority")
         if mesh_receipt["evidence_class"] != "UPSTREAM_LINK_MESH_GROUPING_ONLY":
             raise ValueError("mesh receipt has wrong evidence class")
         if capsule_manifest["schema"] != "rocell.fixed_overview_segmentation_corpus.v1":
@@ -207,6 +231,17 @@ def main() -> int:
 
         bootstrap = bootstrap_virtual_workcell(workspace)
         context = bootstrap.context
+        schedule_by_sequence = {row["sequence"]: row for row in schedule_bundle["samples"]}
+        poses = dict(REFERENCE_POSES)
+        for pose_id, sequence in SCHEDULE_POSE_SEQUENCES.items():
+            sample = schedule_by_sequence[sequence]
+            poses[pose_id] = tuple(
+                sample["joint_positions_rad"][name]
+                for name in ARM_CAMERA_JOINT_ORDER[:-1]
+            )
+        declared_pose_ids = {pose_id for group in POSE_GROUPS.values() for pose_id in group}
+        if declared_pose_ids != set(poses) or sum(map(len, POSE_GROUPS.values())) != len(poses):
+            raise ValueError("pose groups must partition every rendered pose exactly once")
         model_path = context.scenario.model_path
         if _sha256(model_path.read_bytes()) != EXPECTED_URDF_SHA256:
             raise ValueError("governed URDF identity mismatch")
@@ -264,8 +299,12 @@ def main() -> int:
             mesh_bytes_by_link[link] = payload
 
         pose_prim_paths: dict[str, list[str]] = {}
-        for pose_id, values in POSES.items():
+        pose_joint_positions: dict[str, dict[str, float]] = {}
+        for pose_id, values in poses.items():
             joints = _joint_positions(context, ARM_CAMERA_JOINT_ORDER, values)
+            pose_joint_positions[pose_id] = {
+                name: value.value for name, value in sorted(joints.items())
+            }
             transforms = model.forward_kinematics(joints)
             paths = []
             for link_index, link in enumerate(LINKS):
@@ -315,8 +354,8 @@ def main() -> int:
         pose_results = []
         mask_hashes: set[str] = set()
         try:
-            for pose_id in POSES:
-                for other in POSES:
+            for pose_id in poses:
+                for other in poses:
                     for path in pose_prim_paths[other]:
                         imageable = UsdGeom.Imageable(stage.GetPrimAtPath(path))
                         imageable.MakeVisible() if other == pose_id else imageable.MakeInvisible()
@@ -339,12 +378,22 @@ def main() -> int:
                 Image.fromarray(rgb[..., :3].astype(np.uint8), mode="RGB").save(
                     rgb_path, "JPEG", quality=92, optimize=False, progressive=False, subsampling=0)
 
-                capsule_path = capsule_manifest_path.parent / capsule_layers[pose_id]["robot_label_path"]
-                capsule_mask = np.asarray(Image.open(capsule_path).convert("L")) != 0
-                intersection = int(np.count_nonzero(robot_mask & capsule_mask))
-                union = int(np.count_nonzero(robot_mask | capsule_mask))
                 cad_pixels = int(np.count_nonzero(robot_mask))
-                capsule_pixels = int(np.count_nonzero(capsule_mask))
+                comparison: dict[str, object] = {"capsule_comparison_available": False}
+                if pose_id in capsule_layers:
+                    capsule_path = capsule_manifest_path.parent / capsule_layers[pose_id]["robot_label_path"]
+                    capsule_mask = np.asarray(Image.open(capsule_path).convert("L")) != 0
+                    intersection = int(np.count_nonzero(robot_mask & capsule_mask))
+                    union = int(np.count_nonzero(robot_mask | capsule_mask))
+                    comparison = {
+                        "capsule_comparison_available": True,
+                        "capsule_pixels": int(np.count_nonzero(capsule_mask)),
+                        "intersection_pixels": intersection,
+                        "union_pixels": union,
+                        "mask_iou": intersection / union,
+                        "official_mesh_outside_capsule_pixels": int(np.count_nonzero(robot_mask & ~capsule_mask)),
+                        "capsule_outside_official_mesh_pixels": int(np.count_nonzero(capsule_mask & ~robot_mask)),
+                    }
                 mask_hash = _sha256(label_path.read_bytes())
                 mask_hashes.add(mask_hash)
                 labeled_targets = []
@@ -359,6 +408,10 @@ def main() -> int:
                     })
                 pose_results.append({
                     "pose_id": pose_id,
+                    "pose_group": next(
+                        group for group, pose_ids in POSE_GROUPS.items() if pose_id in pose_ids
+                    ),
+                    "joint_positions_rad": pose_joint_positions[pose_id],
                     "rgb_path": rgb_path.name,
                     "rgb_sha256": _sha256(rgb_path.read_bytes()),
                     "robot_mask_path": label_path.name,
@@ -367,17 +420,12 @@ def main() -> int:
                     "robot_depth_sha256": _sha256(depth_path.read_bytes()),
                     "semantic_info": semantic_info,
                     "official_mesh_pixels": cad_pixels,
-                    "capsule_pixels": capsule_pixels,
-                    "intersection_pixels": intersection,
-                    "union_pixels": union,
-                    "mask_iou": intersection / union,
-                    "official_mesh_outside_capsule_pixels": int(np.count_nonzero(robot_mask & ~capsule_mask)),
-                    "capsule_outside_official_mesh_pixels": int(np.count_nonzero(capsule_mask & ~robot_mask)),
+                    **comparison,
                     "robot_depth_min_mm": int(robot_depth_mm[robot_depth_mm > 0].min()),
                     "robot_depth_max_mm": int(robot_depth_mm.max()),
                     "targets": labeled_targets,
                 })
-            if len(mask_hashes) != len(POSES):
+            if len(mask_hashes) != len(poses):
                 raise RuntimeError("official mesh semantic masks are not pose-distinct")
         finally:
             for annotator in (rgb_annotator, semantic_annotator, depth_annotator):
@@ -424,7 +472,7 @@ def main() -> int:
                 path.unlink()
 
         receipt: dict[str, object] = {
-            "schema": "tactevra.isaac_fixed_overview_mesh_render.v1",
+            "schema": "tactevra.isaac_fixed_overview_mesh_render.v2",
             "evidence_class": "OFFICIAL_VISUAL_MESH_PERCEPTION_COMPARISON_ONLY",
             "upstream_commit": UPSTREAM_COMMIT,
             "governed_urdf_sha256": EXPECTED_URDF_SHA256,
@@ -432,6 +480,9 @@ def main() -> int:
             "mesh_receipt_sha256": mesh_receipt["receipt_sha256"],
             "capsule_manifest_file_sha256": _sha256(capsule_manifest_path.read_bytes()),
             "capsule_corpus_sha256": capsule_manifest["corpus_sha256"],
+            "schedule_bundle_file_sha256": EXPECTED_SCHEDULE_FILE_SHA256,
+            "schedule_bundle_sha256": schedule_bundle["bundle_sha256"],
+            "pose_groups": {name: list(pose_ids) for name, pose_ids in POSE_GROUPS.items()},
             "target_catalog_sha256": context.targets.content_sha256,
             "camera": {
                 "resolution_px": [WIDTH, HEIGHT],
@@ -450,9 +501,13 @@ def main() -> int:
             "pose_results": pose_results,
             "result_status": "PASS_WITH_BLOCKERS",
             "result_summary": {
-                "minimum_mask_iou": min(row["mask_iou"] for row in pose_results),
+                "minimum_mask_iou": min(
+                    row["mask_iou"] for row in pose_results
+                    if row["capsule_comparison_available"]
+                ),
                 "maximum_official_mesh_outside_capsule_pixels": max(
                     row["official_mesh_outside_capsule_pixels"] for row in pose_results
+                    if row["capsule_comparison_available"]
                 ),
             },
             "visual_meshes_used_for_collision": False,
@@ -474,9 +529,13 @@ def main() -> int:
         args.status_output.write_text(json.dumps({
             "status": "PASS_WITH_BLOCKERS",
             "receipt_sha256": receipt["receipt_sha256"],
-            "minimum_mask_iou": min(row["mask_iou"] for row in pose_results),
+            "minimum_mask_iou": min(
+                row["mask_iou"] for row in pose_results
+                if row["capsule_comparison_available"]
+            ),
             "maximum_official_mesh_outside_capsule_pixels": max(
-                row["official_mesh_outside_capsule_pixels"] for row in pose_results),
+                row["official_mesh_outside_capsule_pixels"] for row in pose_results
+                if row["capsule_comparison_available"]),
             "hardware_writes": 0,
             "physical_movements": 0,
         }, sort_keys=True) + "\n", encoding="utf-8")

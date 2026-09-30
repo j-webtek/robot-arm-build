@@ -648,11 +648,14 @@ triangle-level depth render, or installed collision evidence.
 ### Compare capsules with official visual meshes
 
 The installed Isaac runner can render the seven official upstream visual
-meshes at the same three fixed-camera poses and compare each semantic mask to
-the capsule proxy. The probe pins the upstream Git commit and mesh hashes,
-bakes the governed URDF forward kinematics into the USD scene, and emits RGB,
-binary robot-mask, and uint16 metric-depth atlases. It performs no physics
-steps and has no hardware or physical authority.
+meshes at nine predeclared fixed-camera poses. The original three poses retain
+their capsule comparison. Six additional poses are selected by sequence from
+the retained zero-authority actual-emitter schedule and are partitioned before
+rendering into development and untouched evaluation groups. The probe pins the
+upstream Git commit, schedule, and mesh hashes, bakes the governed URDF forward
+kinematics into the USD scene, and emits RGB, binary robot-mask, and uint16
+metric-depth atlases. It performs no physics steps and has no hardware or
+physical authority.
 
 ```powershell
 $env:OMNI_KIT_ACCEPT_EULA = 'YES'
@@ -663,6 +666,7 @@ C:\IsaacSim\env_6_1_0\Scripts\python.exe `
   --upstream-repo C:\IsaacSim\sources\roarm_ws-40dbd84 `
   --mesh-receipt software/integrations/isaac_sim/evidence/roarm_m3_upstream_link_meshes_20260929.json `
   --capsule-manifest software/integrations/isaac_sim/evidence/fixed_overview_segmentation_v1/manifest.json `
+  --schedule-bundle software/integrations/isaac_sim/evidence/actual_emitter_joint_schedule_bundle_9e5c878_20260929.json `
   --output-dir C:\IsaacSim\artifacts\issue190\fixed-overview-official-mesh `
   --receipt C:\IsaacSim\evidence\fixed_overview_official_mesh.json `
   --status-output C:\IsaacSim\evidence\fixed_overview_official_mesh.status.json
