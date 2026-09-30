@@ -838,6 +838,7 @@ review is counterfactual only and grants no collision or clearance authority.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
+| SIM/WP2 | S2/S3 | review six pinned SRDF `Never` pairs against raw and selected-candidate results across the exact 49-pose replay; retain contradictions and do not select a runtime policy | `issue/190-isaac-sim-host` | IN_PROGRESS |
 | Unclaimed | S2/S3 | physical-camera deployment qualification and safe-region-fit precision evidence | — | AVAILABLE |
 | ARM | S4 | collect four physical-original `camera_support_optics` bindings through onboarding, then run the ARM-070 intake; no synthetic promotion | ARM-071 | WAITING_FOR_ORIGINALS |
 
