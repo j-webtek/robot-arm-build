@@ -510,7 +510,7 @@ remains the dominant software cost.
 
 ### E2 — Accelerate IK and collision preparation
 
-**Status:** in progress through ARM-130 retained endpoint-reuse qualification.
+**Status:** in progress through ARM-131 exact-input reuse qualification.
 
 ARM-119 adds an opt-in, bounded `TypingIkEffortRecorderV1` side channel. It
 records attempt and iteration counts only after each deterministic solve. The
@@ -660,6 +660,18 @@ candidate decision, admission input, warm start, controller action, or physical
 movement. The next E2 increment must therefore be a separately gated
 candidate-substitution design with complete-solve fallback and its own
 equivalence proof, not silent activation of this verifier.
+
+ARM-131 selects and qualifies the safer substitution boundary. It does not use
+the 40-key endpoint map as a decision cache because an endpoint identity omits
+the incoming joint state. Instead it reuses the existing exact solver-input
+cache, whose key binds target, incoming seed, build, model, calibration, bounds,
+gripper, IK options, algorithm, implementation, and solver source. Across all
+five representative patterns, reference, cold-cache, and warm-cache receipts
+and stage hashes were identical. Cold caches recorded 26 hits in 186 lookups;
+warm caches recorded 186/186 hits. Aggregate host duration changed from
+10.6446605 s reference to 8.8345029 s cold and 1.0399843 s warm. Misses still
+require complete solves. Endpoint-only substitution remains unauthorized and
+the timing remains offline, non-admissive, and non-physical.
 
 Deliver:
 

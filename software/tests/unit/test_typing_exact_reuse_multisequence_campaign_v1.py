@@ -14,9 +14,9 @@ from rocell.application.operational_latency_reference_v1 import _sha as environm
 
 ROOT = Path(__file__).resolve().parents[3]
 RETAINED = ROOT / "software/ai/eval/typing_exact_reuse_multisequence_campaign_v1.json"
-RETAINED_FILE_SHA256 = None
-RETAINED_CAMPAIGN_SHA256 = None
-RETAINED_SOURCE_COMMIT = None
+RETAINED_FILE_SHA256 = "692b621a6910928507cb5a5f5b3dcfae92d7279a66c7537d3fe0a10752746f22"
+RETAINED_CAMPAIGN_SHA256 = "b9caa7e7c2f75ef43de26b19d848ad71ceb6bd96d7d1666d42bce1904883bd14"
+RETAINED_SOURCE_COMMIT = "0e3982335717974fe3dafe58faf8805ebd83022c"
 VALIDATOR = Draft202012Validator(json.loads((ROOT / "software/ai/schemas/typing_exact_reuse_multisequence_campaign_v1.schema.json").read_text(encoding="utf-8")))
 
 
@@ -61,8 +61,6 @@ def test_multisequence_exact_reuse_is_equivalent_bounded_and_zero_authority(repo
 
 
 def test_retained_multisequence_campaign_is_exact_when_installed():
-    if RETAINED_FILE_SHA256 is None:
-        pytest.skip("retained ARM-131 artifact is installed after clean-source execution")
     raw = RETAINED.read_bytes(); assert hashlib.sha256(raw).hexdigest() == RETAINED_FILE_SHA256
     report = json.loads(raw); assert list(VALIDATOR.iter_errors(report)) == []
     assert dict(campaign.parse_typing_exact_reuse_multisequence_campaign_v1(report)) == report

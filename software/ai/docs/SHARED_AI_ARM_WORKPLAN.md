@@ -1107,7 +1107,7 @@ preserved through offline trajectory compilation for both new accepted cases.
 The refinement remains zero-authority and does not turn catalog coverage into
 IK, collision, calibration, contact, or physical typing evidence.
 
-The arm-owned operational-efficiency lane is current through ARM-130. ARM-128's
+The arm-owned operational-efficiency lane is current through ARM-131. ARM-128's
 clean-commit representative endpoint atlas covers the five established typing
 patterns and preserves every reference shadow receipt. The corpus contains 40
 unique endpoint identities; seven recur and all seven have one observed solved
@@ -1124,6 +1124,12 @@ ten-case fault matrix bounds capacity and rejects sample exhaustion,
 invalidation, corruption, conflict, changed decision context, reload, restart,
 crossed context, and unmanaged use. This evidence still authorizes neither
 candidate substitution nor a performance behavior change.
+ARM-131 then qualifies the existing exact solver-input cache across the same
+five patterns rather than creating an unsafe endpoint-only decision cache.
+Reference, cold, and warm receipts and stage hashes remain identical over 186
+lookups; cold runs reuse 26 exact inputs and warm runs reuse all 186. Every miss
+still falls back to the complete solve. The retained timing is host-only and
+grants no controller or physical authority.
 
 1. **S1 software boundary — complete for zero authority:** v2 producer bytes,
    strict decoding, trusted registry, freshness, mutation rejection, and ordered

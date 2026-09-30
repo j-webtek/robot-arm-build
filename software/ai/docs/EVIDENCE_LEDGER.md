@@ -6335,3 +6335,40 @@ rewriting history. New entries must use a unique evidence ID.
 - Next dependency: design a separately gated candidate-substitution experiment
   that preserves canonical decisions and fails back to a complete solve; do
   not enable substitution in the operational path from this evidence alone.
+
+### E-20260929-ARM-131 — retained multi-sequence exact-input substitution campaign
+
+- Stage: operational efficiency E2, exact-result substitution qualification.
+- Lane: arm/runtime typing IK screen.
+- Source commit: `0e3982335717974fe3dafe58faf8805ebd83022c`.
+- Design decision: endpoint-only substitution remains unauthorized because the
+  endpoint key omits incoming joint state. The selected experiment uses the
+  existing exact solver-input cache, binding target, incoming seed, build,
+  model, calibration, bounds, gripper, IK options, algorithm, implementation,
+  and solver-source identity. Every miss performs the complete solve.
+- Result: PASS. Home transition, `ROBOT`, repeated letter/number/punctuation,
+  alphabetic extremes, and number/space/enter produced identical canonical
+  receipts and stage hashes with reuse disabled, cold, and warm.
+- Coverage: 186 total samples. Independent cold caches recorded 26 hits and 160
+  complete-solve misses. Warm caches recorded 186 hits and zero misses.
+- Timing: aggregate reference 10,644,660,500 ns; cold 8,834,502,900 ns; warm
+  1,039,984,300 ns. Timing is descriptive host evidence and is not used for
+  admission or claimed as physical typing throughput.
+- Artifact: `typing_exact_reuse_multisequence_campaign_v1.json`; file SHA-256
+  `692b621a6910928507cb5a5f5b3dcfae92d7279a66c7537d3fe0a10752746f22`;
+  embedded campaign SHA-256
+  `b9caa7e7c2f75ef43de26b19d848ad71ceb6bd96d7d1666d42bce1904883bd14`.
+- Complete-solve fallback required: true.
+- Endpoint-only substitution authorized: false.
+- Exact-input substitution mode: `EXPERIMENTAL_SHADOW_ONLY`.
+- Controller opens: 0; transport opens: 0; hardware writes: 0; physical
+  movements: 0; physical authority: false.
+- Limitations: this is one clean host run over bounded synthetic geometry.
+  Warm performance depends on an unchanged lifecycle generation and exact input
+  recurrence. It does not measure controller, settling, verification, camera,
+  or physical typing latency.
+- Supersedes: ARM-130 only for its candidate-substitution dependency; ARM-130
+  remains authoritative for endpoint-verifier equivalence and hostile faults.
+- Next dependency: qualify the exact cache inside the bounded shadow-service
+  request lifecycle with mixed requests, cancellation, reload, restart, and
+  latency accounting before considering any production runtime profile.

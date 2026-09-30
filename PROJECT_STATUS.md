@@ -1,6 +1,6 @@
 # Tactevra project status
 
-Reviewed September 29, 2026 through the ARM-130 retained endpoint-reuse campaign,
+Reviewed September 29, 2026 through the ARM-131 exact-input reuse campaign,
 the ARM-128 retained endpoint-atlas campaign,
 the ARM-126 retained service fault campaign,
 ARM-125 bounded shadow service,
@@ -730,6 +730,16 @@ solution conflict, changed decision context, reload, restart, crossed context,
 and unmanaged use. This closes the evidence prerequisite for considering a
 separate substitution experiment; it does not authorize substitution, warm
 starts, controller access, or physical motion.
+
+ARM-131 resolves the substitution choice without introducing a second cache.
+Endpoint-only substitution remains forbidden because it omits the incoming
+joint state. The existing exact-input cache includes that state and every other
+solver identity, rechecks entry integrity, and performs a complete solve on
+each miss. A clean-commit five-pattern campaign preserved every canonical
+receipt and stage hash across 186 lookups. Cold per-route caches safely reused
+26 exact inputs; warm caches served all 186. Aggregate host time was 10.645 s
+without reuse, 8.835 s cold, and 1.040 s warm. This is experimental shadow
+timing, not physical throughput or permission to relax safety gates.
 
 AI-403 then integrates the pose-output precision adapter and actual V2 batch
 producer on current `main`. The retained contract fixture deterministically
