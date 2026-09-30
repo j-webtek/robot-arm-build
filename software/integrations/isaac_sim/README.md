@@ -645,6 +645,34 @@ The retained output is under
 The capsules are pose-bound kinematic proxies. They are not robot CAD, a
 triangle-level depth render, or installed collision evidence.
 
+### Compare capsules with official visual meshes
+
+The installed Isaac runner can render the seven official upstream visual
+meshes at the same three fixed-camera poses and compare each semantic mask to
+the capsule proxy. The probe pins the upstream Git commit and mesh hashes,
+bakes the governed URDF forward kinematics into the USD scene, and emits RGB,
+binary robot-mask, and uint16 metric-depth atlases. It performs no physics
+steps and has no hardware or physical authority.
+
+```powershell
+$env:OMNI_KIT_ACCEPT_EULA = 'YES'
+$env:PYTHONPATH = (Resolve-Path 'software/src').Path
+C:\IsaacSim\env_6_1_0\Scripts\python.exe `
+  software/integrations/isaac_sim/isaac_fixed_overview_mesh_render_probe.py `
+  --workspace . `
+  --upstream-repo C:\IsaacSim\sources\roarm_ws-40dbd84 `
+  --mesh-receipt software/integrations/isaac_sim/evidence/roarm_m3_upstream_link_meshes_20260929.json `
+  --capsule-manifest software/integrations/isaac_sim/evidence/fixed_overview_segmentation_v1/manifest.json `
+  --output-dir C:\IsaacSim\artifacts\issue190\fixed-overview-official-mesh `
+  --receipt C:\IsaacSim\evidence\fixed_overview_official_mesh.json `
+  --status-output C:\IsaacSim\evidence\fixed_overview_official_mesh.status.json
+```
+
+The retained compact output is under
+`software/integrations/isaac_sim/evidence/fixed_overview_official_mesh_v1/`.
+These high-detail meshes are perception geometry. The comparison does not
+qualify them as collision geometry or establish physical clearance.
+
 ## Verify WP0
 
 From `software/`:
