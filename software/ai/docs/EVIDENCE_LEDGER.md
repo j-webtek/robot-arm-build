@@ -5356,3 +5356,92 @@ rewriting history. New entries must use a unique evidence ID.
 - Next dependency: identify the exact baseline primitive pair at `halton_019`
   and evaluate a triangle-preserving partition rather than a whole-component
   orientation change.
+
+### E-20260929-INT-445 — bounded triangle-preserving link2 partition replay
+
+- Stage: S2/S3 simulation oracle WP2.
+- Lane: INTEGRATION.
+- Commit: `da55752a55460698463dc86c28121eb421bfada3`.
+- Change: identified the exact baseline `halton_019` witness as `link2`
+  component 0 against gripper component 0, then evaluated deterministic
+  triangle-centroid partitions of the implicated `link2` component. Every
+  source triangle is assigned exactly once and every candidate box encloses
+  every vertex of its assigned triangles. Retained the first bounded variant
+  that removes the nonadjacent witness without a false negative: 16 recursive
+  groups. The candidate remains uninstalled and has no collision authority.
+- Inputs/fixtures: partition probe SHA-256
+  `fe678dcef544a3dc17ee719ed00c0f2aa6602fad85fd545da167c2bd7e86af8a`;
+  corrected replay probe SHA-256
+  `9c49195eb41c812e1efe7af9fcc981fc80d197423344051410fad3aff61dd180`;
+  test SHA-256
+  `ee464b8fbb59a64ce92c1331dfda69f22b8b96ba090ea542d668def8dc814922`;
+  selected candidate file/content SHA-256
+  `5628fac4ac9d27caf138002831e0eb1ebf2d90dfc0c96a34817c0495fb874a4b` /
+  `0568f7ba269cf190ca4b9d6bc41ac17c90c72c3489fad433bb064ca2239e5fc6`;
+  selected replay file/content SHA-256
+  `986cf17c52e4394ab19999a41625ac94cb73840397314f0877c2578739ef9b66` /
+  `1cad314d6901c0f639c4771f7be79b235eeadf844eba600129d4f8bb45991b87`;
+  external selected detailed file/content SHA-256
+  `e2beac0e5a054b8a992adb46b5debe6d1f3285d0409d8e442a79fe2da43bf954` /
+  `6543cb63293897458d06dba6f3420699de67c9f1549f7cc12302c9f75b0e4550`;
+  selected candidate/replay status SHA-256
+  `5ac3e455b62f786321af785ab82abb1a05b5e88feaadf681108d2b2e3ca585e7` /
+  `93a60d70a8c939274de41e666318c825752b7a350e0a87fb961446afa0842f63`;
+  upstream commit `40dbd84b553695212fab713e8465f817ba95454d`;
+  base-reduction content SHA-256
+  `e714a88c01b567f54b2e8c91b8f1144fcc35db38d2953dfe2c6f31e1d576adab`;
+  python-fcl wheel SHA-256
+  `63c662c8ff30eeb78913624a4ac56209a6061248ed97066c3b744255d943299f`.
+- Rejected and failed evidence retained: 2, 4, and 8 recursive groups each
+  preserve the baseline 192 false positives and one nonadjacent false
+  positive. Their candidate content SHA-256 values are respectively
+  `ed7aaf21a1a87306d07fe17a1c7e6705b36d86761bd1739210d4cf2231d75fa3`,
+  `18e9834a66908130cdcdc9df8695b0895fa7fc5be89449a01a68daba4a9adfe9`,
+  and `ef16d2f1477ed7351c1f8798c7c9f18b77d6eead6114bc8e1fea413a93df7292`;
+  replay content SHA-256 values are
+  `26eb856865c3a9be1f72adcd501d19d2c466aa34e7c834436f1d24fd37269059`,
+  `b762c53cb8d39b624e9410ef5d60888ef802749589332a0b92152f223d3519ab`,
+  and `1a6f4fcf8f07d757c46d1e730183e06e96013811d8613dec3fe9aabe86f384c6`.
+  The 32-group candidate content SHA-256 is
+  `c31e24862bc14deb86c939a3b7c61572bbb53c9e429223a49ee828302e0a0804`;
+  its replay content SHA-256 is
+  `4b1c4ab823c3a2961c2197f076025af00dcdd3efe521ee902c0ce828a7156124`;
+  it matches the 16-group classification and provides no further benefit.
+  An exploratory 63-group request was rejected by the declared 2-to-32 input
+  bound; its retained error status SHA-256 is
+  `cfabcd9f977334cd19160274c620770ef61bbca4a50cfb7574a342a7db23ce6a`.
+- Command: `$env:PYTHONUTF8='1'; $py='C:\IsaacSim\env_6_1_0\Scripts\python.exe'; foreach ($bands in 2,4,8,16,32) { $stem="C:\IsaacSim\evidence\triangle_partition_final_${bands}"; & $py software\integrations\isaac_sim\triangle_partition_refinement_probe.py --upstream-repo C:\IsaacSim\sources\roarm_ws-40dbd84 --mesh-receipt software\integrations\isaac_sim\evidence\roarm_m3_upstream_link_meshes_20260929.json --base-reduction software\integrations\isaac_sim\evidence\roarm_m3_link_mesh_reduction_20260929.json --band-count $bands --strategy recursive-longest-centroid-axis --output "$stem.candidate.json" --status-output "$stem.candidate.status.json"; $receipt=(Get-Content -Raw "$stem.candidate.json" | ConvertFrom-Json).receipt_sha256; & $py software\integrations\isaac_sim\collision_joint_space_probe.py --workspace . --upstream-repo C:\IsaacSim\sources\roarm_ws-40dbd84 --mesh-receipt software\integrations\isaac_sim\evidence\roarm_m3_upstream_link_meshes_20260929.json --reduction-receipt "$stem.candidate.json" --expected-reduction-sha256 $receipt --fcl-wheel C:\IsaacSim\sources\python-fcl-0.7.0.11\python_fcl-0.7.0.11-cp312-cp312-win_amd64.whl --output "$stem.detailed.json" --summary-output "$stem.summary.json" --status-output "$stem.replay.status.json" }`;
+  `python -m pytest software/tests/unit/test_isaac_sim_triangle_partition_refinement_evidence.py software/tests/unit/test_isaac_sim_targeted_obb_refinement_evidence.py software/tests/unit/test_isaac_sim_collision_joint_space_evidence.py software/tests/unit/test_isaac_sim_collision_differential_evidence.py software/tests/unit/test_isaac_sim_link_mesh_reduction_evidence.py software/tests/unit/test_isaac_sim_upstream_link_mesh_evidence.py software/tests/unit/test_isaac_sim_step_link_membership_evidence.py software/tests/unit/test_isaac_sim_step_pose_binding_evidence.py software/tests/unit/test_isaac_sim_step_inspection_evidence.py software/tests/unit/test_isaac_sim_rc03_scene_evidence.py software/tests/unit/test_isaac_sim_urdf_import_evidence.py software/tests/unit/test_isaac_sim_fk_parity_evidence.py software/tests/unit/test_isaac_sim_first_launch_evidence.py software/tests/unit/test_isaac_sim_host_probe.py software/tests/unit/test_isaac_sim_contracts.py -q`;
+  four repository audits; `git diff --check`.
+- Result: PASS_WITH_BLOCKERS. The selected candidate partitions all 9,216
+  source triangles exactly once, records 0.0 mm serialized vertex overflow,
+  uses 17 primitives for `link2` and 29 across all links, and stays below the
+  64-primitives-per-body bound. Exact replay across 49 poses and 1,029 cases
+  records 807 free agreements, 57 collision agreements, 165 adjacent false
+  positives, zero nonadjacent false positives, and zero false negatives. The
+  `link2`/gripper minimum candidate separation becomes 13.421512 mm versus
+  13.607432 mm for the raw meshes. Seventy-eight focused tests passed in
+  3.70 seconds and all four repository audits passed.
+- Artifacts:
+  `software/integrations/isaac_sim/triangle_partition_refinement_probe.py`;
+  `software/integrations/isaac_sim/evidence/roarm_m3_triangle_partition_link2_20260929.json`;
+  `software/integrations/isaac_sim/evidence/roarm_m3_collision_joint_space_triangle_partition_20260929.json`;
+  `software/tests/unit/test_isaac_sim_triangle_partition_refinement_evidence.py`;
+  all variant and detailed receipts under `C:\IsaacSim\evidence`.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: the retained result covers a finite deterministic corpus, not
+  continuous joint space. The 165 remaining false positives are adjacent-link
+  cases whose policy has not been reviewed. Partition groups are open surface
+  subsets, so no per-group volume ratio is asserted. Existing nonwatertight
+  source meshes, whole-link `link5` fallback, missing tool, camera-support and
+  environment geometry, nominal placement, dynamics, controller, hardware,
+  and physical qualification blockers remain. No profile, pair exclusion,
+  collision query, clearance replay, lane gate, or integration gate is
+  admitted or completed.
+- Supersedes: INT-444 only for the next dependency. INT-444 remains the
+  correction record, and INT-442 remains the governed baseline.
+- Next dependency: review the 165 adjacent witnesses against mechanical design
+  evidence before proposing any exclusion policy, and broaden deterministic
+  replay only after tool, camera-support, and measured environment geometry
+  are bound.

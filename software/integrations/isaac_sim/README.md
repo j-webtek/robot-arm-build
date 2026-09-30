@@ -264,6 +264,22 @@ three variants retain the baseline's 192 false positives, as recorded by its
 No OBB variant demonstrates collision-classification improvement, so none is
 installed or preferred for runtime use.
 
+[`triangle_partition_refinement_probe.py`](triangle_partition_refinement_probe.py)
+targets the exact baseline witness: `link2` component 0 against the sole
+gripper component at Halton sample 19. It recursively assigns every source
+triangle to one of 16 groups by centroid and bounds every group's complete
+triangle vertices. The retained
+[`partition candidate`](evidence/roarm_m3_triangle_partition_link2_20260929.json)
+contains all 9,216 source triangles exactly once with zero serialized vertex
+overflow and keeps `link2` at 17 primitives, below the 64-primitive body
+limit. Its exact 1,029-case
+[`replay summary`](evidence/roarm_m3_collision_joint_space_triangle_partition_20260929.json)
+removes the only nonadjacent false positive, reduces total false positives
+from 192 to 165, preserves all 57 collision agreements, and introduces zero
+false negatives. Requests for 2, 4, and 8 groups do not improve the baseline;
+32 groups do not improve on 16. This finite diagnostic remains uninstalled
+and does not admit collision or clearance queries.
+
 Reproduce it on the designated runner from the repository root:
 
 ```powershell
@@ -353,8 +369,8 @@ C:\IsaacSim\env_6_1_0\Scripts\python.exe software\integrations\isaac_sim\collisi
   --status-output C:\IsaacSim\evidence\collision_joint_space_003.status.json
 ```
 
-Reproduce the preferred diagnostic `link2`-only refinement, then pass its exact
-receipt hash to the same joint-space probe:
+Reproduce the retained diagnostic `link2`-only OBB refinement, then pass its
+exact receipt hash to the same joint-space probe:
 
 ```powershell
 $env:PYTHONUTF8='1'
@@ -365,6 +381,22 @@ C:\IsaacSim\env_6_1_0\Scripts\python.exe software\integrations\isaac_sim\targete
   --target-links link2 `
   --output C:\IsaacSim\evidence\targeted_obb_refinement_002_link2.json `
   --status-output C:\IsaacSim\evidence\targeted_obb_refinement_002_link2.status.json
+```
+
+Reproduce the bounded 16-group triangle partition candidate. Pass the emitted
+`receipt_sha256` to `collision_joint_space_probe.py` with
+`--expected-reduction-sha256` for its exact replay:
+
+```powershell
+$env:PYTHONUTF8='1'
+C:\IsaacSim\env_6_1_0\Scripts\python.exe software\integrations\isaac_sim\triangle_partition_refinement_probe.py `
+  --upstream-repo C:\IsaacSim\sources\roarm_ws-40dbd84 `
+  --mesh-receipt software\integrations\isaac_sim\evidence\roarm_m3_upstream_link_meshes_20260929.json `
+  --base-reduction software\integrations\isaac_sim\evidence\roarm_m3_link_mesh_reduction_20260929.json `
+  --band-count 16 `
+  --strategy recursive-longest-centroid-axis `
+  --output C:\IsaacSim\evidence\triangle_partition_final_16.candidate.json `
+  --status-output C:\IsaacSim\evidence\triangle_partition_final_16.candidate.status.json
 ```
 
 ## Verify WP0
