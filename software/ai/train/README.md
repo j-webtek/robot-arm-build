@@ -169,3 +169,10 @@ contrast, right-side shadow, and motion blur remain reserved evaluation. The
 three pose and lighting groups are pairwise disjoint. Materializing and hashing
 the evaluation JSONL does not authorize reading it during candidate selection;
 the selected checkpoint and decision threshold must be frozen first.
+
+The first v3 spatial candidate is intentionally tiny: two convolution layers
+(3→8→16), adaptive 4-by-4 pooling, and one linear head, totaling 1,649
+parameters. It uses CPU-only deterministic training and selects its threshold
+on development. Its evaluation result is evidence `E-20260930-AI-464`. The
+model greatly reduces missed synthetic occlusions but rejects too many visible
+targets, so it remains blocked and is not a runtime default.

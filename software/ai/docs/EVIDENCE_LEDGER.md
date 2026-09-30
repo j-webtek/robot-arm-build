@@ -6737,3 +6737,78 @@ rewriting history. New entries must use a unique evidence ID.
   threshold on development only, freeze the checkpoint, and score the reserved
   evaluation once. Physical promotion remains dependent on measured fixed-
   camera evidence under a registered configuration epoch.
+
+### E-20260930-AI-464 — tiny spatial occlusion candidate
+
+- Stage: S2/S3 synthetic perception and abstention development.
+- Lane: AI/model; no arm or integration status changed.
+- Implementation commit: `fe1d1f28029870f7c264b6313ecbd80b7bb5d51e`.
+- Change: added a deterministic CPU-only 1,649-parameter convolutional model
+  over 32-by-32 RGB crops with 24-pixel source padding. Its fixed architecture
+  is 3→8 convolution/ReLU/max-pool, 8→16 convolution/ReLU, adaptive 4-by-4
+  pooling, and a 256→1 linear head. Training uses eight epochs, 128-row batches,
+  Adam at 0.002, seed 190, deterministic Torch algorithms, and positive-class
+  weighting. The threshold was selected only on AI-463 development with the
+  existing preference for at most 0.05 missed abstentions. Architecture,
+  weights, and threshold were serialized canonically before evaluation bytes
+  were loaded. The reserved evaluation was scored exactly once.
+- Inputs/fixtures: implementation SHA-256
+  `2ef61da6fe22e03d4b87637a0e421d9e8c0928b42bb149db3f2c0f41fa360cc7`;
+  focused evidence-test SHA-256
+  `a95cd6e1fead66bea4e16636be2fe645c91e24a26e2af9f608acba5c01df5ea4`;
+  dataset SHA-256
+  `21dfc1a685d2abd322c63bc9eecff6361f9aa39b5c339bde0f3b99bfe7a7e27c`;
+  training/development/evaluation JSONL identities remain exactly those in
+  AI-463.
+- Command: `python software/ai/train/build_official_mesh_occlusion_data.py
+  --source-manifest C:\IsaacSim\artifacts\issue190\fixed-overview-official-mesh-v3-run1\manifest.json
+  --output-dir C:\IsaacSim\artifacts\issue190\official-mesh-transit-occlusion-data-v3
+  --spatial-output C:\IsaacSim\artifacts\issue190\official-mesh-spatial-candidate-v1`;
+  `$env:PYTHONPATH=(Resolve-Path 'software/src').Path; python -m pytest
+  software/tests/unit/test_isaac_fixed_overview_mesh_render_evidence.py
+  software/tests/unit/test_fixed_overview_segmentation_corpus.py
+  software/tests/unit/test_fixed_fixture_practice_corpus.py
+  software/tests/unit/test_virtual_pixel_vision.py
+  software/tests/unit/test_virtual_arm_camera.py software/ai/tests/test_offline.py
+  -q`; Ruff, documentation, source-footprint, and `git diff --check` checks.
+- Training result: weighted loss decreased monotonically over eight epochs from
+  `1.1415249223277402` to `0.4837107294969598`. Development selected threshold
+  `0.35` and produced 124 true abstentions, 1,096 true-visible labels, 125 false
+  abstentions, and 5 missed abstentions: missed-abstention rate
+  `0.03875968992248062`, accuracy `0.9037037037037037`, balanced accuracy
+  `0.9294326038512085`, Brier score `0.08806267391690031`, and calibration
+  error `0.2052697585799076`. The declared development safety preference passed.
+- Reserved evaluation result: BLOCKED_SYNTHETIC_ONLY. The frozen model produced
+  274 true abstentions, 641 true-visible labels, 433 false abstentions, and 2
+  missed abstentions: missed-abstention rate `2/276 = 0.007246376811594203`,
+  visible-target false-abstention rate `433/1074 = 0.4031657355679702`, accuracy
+  `0.6777777777777778`, balanced accuracy `0.7947939438102178`, Brier score
+  `0.14953791361640184`, and calibration error `0.24486421483534357`. The low
+  miss rate is meaningful safety progress, while the high false-abstention rate
+  blocks useful cadence and any promotion.
+- Artifact identities: model SHA-256
+  `42adeaf6e89f53c868512e51e2d4e288d79ebe9f2a28f52895f4f122dbff8af6`;
+  canonical scorecard SHA-256
+  `fb1cb5e49334d39976d7154fc55c7007330b350bdbb3a1124f9cf09c1bff6d60`;
+  scorecard file SHA-256
+  `41195473b27846e9cdfc5d6798662fc679efb2f273dd081cf1e6b79b53e01cdc`.
+  Fifty-seven focused tests passed in 21.80 seconds; Ruff, documentation, and
+  source-footprint checks passed. The repository remains at 6,100 files.
+- Artifact location: external only at
+  `C:\IsaacSim\artifacts\issue190\official-mesh-spatial-candidate-v1`; hashes
+  identify exact local bytes but do not make them clean-clone available.
+- Hardware-write count: 0.
+- Physical-movement count: 0.
+- Limitations: all data and labels remain synthetic and omit measured tool and
+  camera-support geometry, physical frames, temporal evidence, and deployment-
+  calibrated uncertainty. Evaluation is consumed and cannot tune the model or
+  threshold. The checkpoint emits an offline occlusion probability only and
+  has no coordinate, motion, controller, permit, transport, or physical
+  authority.
+- Supersedes: none; rejects promotion while improving the dangerous error class
+  relative to the prior synthetic candidate on a fresh, harder split.
+- Next dependency: reserve another unused schedule-pose evaluation group before
+  tuning specificity on new development data. Add representative visible
+  transit negatives and measured tool/camera-support geometry when available.
+  Physical promotion remains dependent on measured fixed-camera evidence under
+  a registered configuration epoch.
