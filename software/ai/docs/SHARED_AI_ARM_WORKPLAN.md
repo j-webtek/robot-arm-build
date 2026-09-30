@@ -975,6 +975,7 @@ development group. No model has consumed or scored the new evaluation group.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
+| AI | S2/S3 transit occlusion dataset | `software/ai/train/build_official_mesh_occlusion_data.py`, focused tests and AI evidence docs; accept the hash-bound AI-462 v3 source, use all previously consumed lighting in training, predeclare new disjoint development/evaluation lighting, build twice for determinism, and do not score the fresh evaluation group | `issue/190-isaac-sim-host` at `7f777b71d226f739bbf853e330d65a486d746f77` | ACTIVE |
 | Unclaimed | S2/S3 | physical-camera deployment qualification and safe-region-fit precision evidence | — | AVAILABLE |
 | ARM | S4 | collect four physical-original `camera_support_optics` bindings through onboarding, then run the ARM-070 intake; no synthetic promotion | ARM-071 | WAITING_FOR_ORIGINALS |
 
