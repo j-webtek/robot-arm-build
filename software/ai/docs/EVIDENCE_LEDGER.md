@@ -6666,3 +6666,74 @@ rewriting history. New entries must use a unique evidence ID.
   21-pose training/development/evaluation dataset, select a spatial candidate
   using training/development only, and score the new evaluation once. Physical
   promotion still requires measured fixed-camera evidence.
+
+### E-20260930-AI-463 — deterministic transit-occlusion dataset
+
+- Stage: S2/S3 synthetic perception and abstention development.
+- Lane: AI/model; no arm or integration status changed.
+- Implementation commit: `0deb40d7ff208cf2f00086518479df7487b90db6`.
+- Change: added a v3 dataset policy for the hash-bound AI-462 source. Training
+  uses all nine consumed endpoint poses crossed with all nine consumed lighting
+  families. Development uses six fresh outbound/return poses crossed with
+  desaturation, dark gamma, and vignette. Evaluation uses six untouched
+  inter-key poses crossed with low contrast, right-side shadow, and horizontal
+  motion blur. Pose and lighting groups are pairwise disjoint and were committed
+  before generation. The evaluation bytes were materialized only for immutable
+  identity and leakage checks; no model loaded or scored them.
+- Inputs/fixtures: builder SHA-256
+  `69e7f2803af2de26ad1f22725f76ecf7643e599b555c2c38c3e4a12c5f804e0c`;
+  focused evidence-test SHA-256
+  `5cda332b3891814e3c34fc677912890f8ce1958b6e61453c2692084f040ea492`;
+  source receipt file SHA-256
+  `1bc26ad7cabf59587f5606e7c834526e76bbaa1b3e2a0a2321af0bbaff167ecc`;
+  source receipt SHA-256
+  `ce72cbdd921f3cbcdf81ffe15a1b90eaf8b5749e6df4c8764783fa07a0c89766`;
+  target-catalog SHA-256
+  `6779213e832ab27eeda1e7fb245f57ff8cb0d56707b5aa73a8f31ec483a620f2`.
+- Commands: `Copy-Item C:\IsaacSim\evidence\fixed_overview_official_mesh_v3_run1.json
+  C:\IsaacSim\artifacts\issue190\fixed-overview-official-mesh-v3-run1\manifest.json`;
+  `python software/ai/train/build_official_mesh_occlusion_data.py
+  --source-manifest C:\IsaacSim\artifacts\issue190\fixed-overview-official-mesh-v3-run1\manifest.json
+  --output-dir C:\IsaacSim\artifacts\issue190\official-mesh-transit-occlusion-data-v1`;
+  repeated with output `official-mesh-transit-occlusion-data-v2` for byte
+  comparison; `$env:PYTHONPATH=(Resolve-Path 'software/src').Path; python -m
+  pytest software/tests/unit/test_isaac_fixed_overview_mesh_render_evidence.py
+  software/tests/unit/test_fixed_overview_segmentation_corpus.py
+  software/tests/unit/test_fixed_fixture_practice_corpus.py
+  software/tests/unit/test_virtual_pixel_vision.py
+  software/tests/unit/test_virtual_arm_camera.py software/ai/tests/test_offline.py
+  -q`; Ruff and `git diff --check`.
+- Result: PASS_WITH_BLOCKERS. Two independent builds are byte-identical.
+  Dataset SHA-256 is
+  `21dfc1a685d2abd322c63bc9eecff6361f9aa39b5c339bde0f3b99bfe7a7e27c`;
+  manifest file SHA-256 is
+  `bf713aeb6d5bc17afa953024828b6b2da42ba0de8a8cbca154d19e7306a79222`.
+  Training contains 6,075 rows with 963 abstentions and 5,112 visible labels,
+  JSONL SHA-256
+  `384da017be3933682e7f56892a997849c28a9e595a0f3a8d96a42fd4982ab7a3`.
+  Development contains 1,350 rows with 129 abstentions and 1,221 visible labels,
+  JSONL SHA-256
+  `458d94706dbf85b865d019d2f5a6bc4807b807fde512c9443bbc7207d94dd1a9`.
+  Reserved evaluation contains 1,350 rows with 276 abstentions and 1,074
+  visible labels, JSONL SHA-256
+  `22e5392399a082fe7200ce9cb00870afef07b6e8a481c1626ae946ce193561f7`.
+  All 117 images have distinct SHA-256 values and total 12,554,138 bytes.
+  Fifty-six focused tests passed in 22.32 seconds and Ruff passed. The tracked
+  repository remains at exactly 6,100 files.
+- Artifact location: external only at
+  `C:\IsaacSim\artifacts\issue190\official-mesh-transit-occlusion-data-v1`
+  with deterministic repeat `...data-v2`; hashes identify exact local bytes
+  but do not make them clean-clone available.
+- Hardware-write count: 0.
+- Physical-movement count: 0.
+- Limitations: every render, transformation, geometry value, and label remains
+  synthetic. The dataset lacks measured tool/camera-support geometry, physical
+  frames, temporal evidence, and deployment-calibrated uncertainty. Merely
+  materializing the evaluation bytes is not model evaluation. This artifact
+  establishes no localization, collision clearance, controller, execution,
+  transport, permit, or physical authority.
+- Supersedes: none; preserves all AI-457 through AI-462 evidence.
+- Next dependency: fit spatial candidates on training, select architecture and
+  threshold on development only, freeze the checkpoint, and score the reserved
+  evaluation once. Physical promotion remains dependent on measured fixed-
+  camera evidence under a registered configuration epoch.

@@ -160,3 +160,12 @@ The optional baseline is a class-weighted logistic model over standardized
 ten-bin calibration error, and every misclassified case are retained in the
 external scorecard. A good training score cannot promote it; the held-out
 synthetic score and physical-data dependency govern that decision.
+
+The v3 builder path accepts the 21-pose transit source recorded by
+`E-20260930-AI-462`. All previously consumed endpoint poses and lighting
+families become training input. Six outbound/return poses with desaturation,
+dark gamma, and vignette form development. Six inter-key poses with low
+contrast, right-side shadow, and motion blur remain reserved evaluation. The
+three pose and lighting groups are pairwise disjoint. Materializing and hashing
+the evaluation JSONL does not authorize reading it during candidate selection;
+the selected checkpoint and decision threshold must be frozen first.
