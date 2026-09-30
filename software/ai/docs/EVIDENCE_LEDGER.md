@@ -6198,3 +6198,47 @@ rewriting history. New entries must use a unique evidence ID.
   missing tool and camera-support visual geometry. Separately collect a small
   measured physical fixed-camera validation set before assigning any
   synthetic-to-physical qualification or safe-region error bound.
+
+### E-20260930-INT-456 — target-bound official-mesh occlusion labels
+
+- Stage: S2/S3 synthetic perception and obstruction-abstention rehearsal.
+- Lane: INTEGRATION supporting the AI/model lane; no lane status changed.
+- Implementation commit: `822bb2c99833476ac953c6e916527b467ea53384`.
+- Change: extended the retained official-mesh probe and receipt to project the
+  frozen 75-target catalog through the exact fixed-overview camera. Every pose
+  now carries ordered board-millimetre and pixel geometry, target depth,
+  in-frame state, center occlusion, and official-mesh safe-region overlap.
+  Receipt serialization is canonical and compact; no tracked artifact was
+  added and the repository remains at its 6,100-file ceiling.
+- Inputs/fixtures: target-catalog SHA-256
+  `6779213e832ab27eeda1e7fb245f57ff8cb0d56707b5aa73a8f31ec483a620f2`;
+  upstream commit `40dbd84b553695212fab713e8465f817ba95454d`;
+  implementation SHA-256
+  `1ee458a4e1565bddd14e40b25934934f8ee73444e4da1e86ce8eef51e12e3e1e`;
+  test SHA-256
+  `6af1e17858fb434bcd887e0bfc0585e172efc4268e4318acfdc5889230503a77`;
+  retained manifest file SHA-256
+  `97c8a211e8e0ab9ca5d0e16ae97127d794a0b42aeae74a74bd258ad3888c0b88`;
+  canonical receipt SHA-256
+  `3b8229d210f8353062009c4f6650ce9bd0a1575a0af09aa85fee20d56db89967`.
+- Commands: `$env:OMNI_KIT_ACCEPT_EULA='YES'; $env:PYTHONPATH=(Resolve-Path 'software/src').Path; C:\IsaacSim\env_6_1_0\Scripts\python.exe software\integrations\isaac_sim\isaac_fixed_overview_mesh_render_probe.py --workspace . --upstream-repo C:\IsaacSim\sources\roarm_ws-40dbd84 --mesh-receipt software\integrations\isaac_sim\evidence\roarm_m3_upstream_link_meshes_20260929.json --capsule-manifest software\integrations\isaac_sim\evidence\fixed_overview_segmentation_v1\manifest.json --output-dir C:\IsaacSim\artifacts\issue190\fixed-overview-official-mesh-v7 --receipt C:\IsaacSim\evidence\fixed_overview_official_mesh_v7.json --status-output C:\IsaacSim\evidence\fixed_overview_official_mesh_v7.status.json`;
+  `$env:PYTHONPATH=(Resolve-Path 'software/src').Path; python -m pytest software/tests/unit/test_isaac_fixed_overview_mesh_render_evidence.py software/tests/unit/test_fixed_overview_segmentation_corpus.py software/tests/unit/test_fixed_fixture_practice_corpus.py software/tests/unit/test_virtual_pixel_vision.py software/tests/unit/test_virtual_arm_camera.py -q`;
+  Ruff, source-footprint, and `git diff --check` checks.
+- Result: PASS_WITH_BLOCKERS. All three poses retain the same ordered 46-key
+  and 29-phone catalog. `ready` obscures 1 target center and overlaps 5 safe
+  regions; `hover_t` obscures 14 centers and overlaps 17 regions; `hover_e`
+  obscures 14 centers and overlaps 18 regions. The largest safe-region overlap
+  is 0.91 at ready and 1.00 at each hover. Twenty focused tests passed in 12.30
+  seconds. The source archive remains within policy at exactly 6,100 files.
+- Hardware-write count: 0.
+- Physical-movement count: 0.
+- Limitations: labels inherit INT-455's synthetic lighting, nominal unmeasured
+  camera and placement, missing tool/camera-support geometry, and visual-only
+  mesh scope. They support offline training and abstention evaluation only;
+  they do not establish localization accuracy, physical visibility coverage,
+  collision clearance, execution permission, or physical authority.
+- Supersedes: none; augments INT-455 with target-level labels.
+- Next dependency: expose this retained receipt through the AI data-building
+  path as a synthetic-only occlusion dataset, then train/evaluate abstention on
+  disjoint pose/lighting splits without treating those scores as deployment
+  qualification. Add measured tool and camera-support geometry when available.

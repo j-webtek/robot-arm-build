@@ -919,9 +919,16 @@ obstruction rehearsal, but this result rejects treating it as a conservative
 robot silhouette. The official meshes are visual geometry only; no collision,
 clearance, localization, lane, or integration status changes.
 
+The target-bound extension in `E-20260930-INT-456` projects the frozen catalog
+of 46 keyboard and 29 phone targets into each official-mesh render and records
+center occlusion plus safe-region overlap. The official geometry obscures
+`1/14/14` centers and overlaps `5/17/18` safe regions at
+`ready/hover_t/hover_e`. These labels are now suitable for offline abstention
+training and evaluation fixtures. Their camera and placement remain nominal,
+so they install no physical qualification or authority.
+
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| SIM/INTEGRATION | S2/S3 | Bind all 75 fixed target regions to retained official-mesh masks and depth, producing AI-ready occlusion labels without adding authority or new artifacts | `issue/190-isaac-sim-host` | IN_PROGRESS |
 | Unclaimed | S2/S3 | physical-camera deployment qualification and safe-region-fit precision evidence | — | AVAILABLE |
 | ARM | S4 | collect four physical-original `camera_support_optics` bindings through onboarding, then run the ARM-070 intake; no synthetic promotion | ARM-071 | WAITING_FOR_ORIGINALS |
 
