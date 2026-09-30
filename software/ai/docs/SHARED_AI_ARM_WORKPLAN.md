@@ -847,9 +847,19 @@ All six proposed `Never` pairs remain free and no false negative appears, but
 collision-query or exclusion-policy promotion and directs the next geometry
 work toward those exact retained-pair witnesses.
 
+The process-alignment overlay in `E-20260929-INT-450` returns WP2 to the actual
+AI-to-arm seam. It binds an AI-produced `ModelMotionBatchV2` carrying ordered
+`H, H, 1, PERIOD` proposals to the governed RC03 Isaac scene and authors the
+proposal centers, inferred synthetic placement, key regions, and uncertainty
+disks. The target centers share one rigid placement within numerical precision,
+but the 14.400834977 mm localization disk exceeds each 7 mm key-edge margin.
+The replay therefore stops before a joint schedule. The next simulation input
+is the exact zero-write schedule from the arm typing pipeline, after its source
+batch uses this same representative target geometry and passes the safe-region
+uncertainty gate.
+
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| SIM/INTEGRATION | S2/S3 | RC03 measured/design-source audit plus zero-write command-to-Isaac process rehearsal under `software/integrations/isaac_sim/`, focused tests, and retained evidence; no arm-lane status changes | `issue/190-isaac-sim-host` | IN_PROGRESS |
 | Unclaimed | S2/S3 | physical-camera deployment qualification and safe-region-fit precision evidence | — | AVAILABLE |
 | ARM | S4 | collect four physical-original `camera_support_optics` bindings through onboarding, then run the ARM-070 intake; no synthetic promotion | ARM-071 | WAITING_FOR_ORIGINALS |
 
