@@ -277,3 +277,26 @@ while retaining the ground-truth occlusion label. The nominal conversion of
 500 mm target depth. This study measures sensitivity under nominal simulator
 geometry. It is not a camera calibration, uncertainty bound, evaluation split,
 or deployment qualification.
+
+## Localization-robust candidate
+
+The v5 training corpus can be combined with the v6 development-only corpus to
+fit a deterministic offset-augmented checkpoint and freeze an uncertainty
+abstention policy without opening evaluation:
+
+```powershell
+python software/ai/train/build_official_mesh_occlusion_data.py `
+  --source-manifest C:\IsaacSim\artifacts\issue190\fixed-overview-mask-perturbation-v6-run1\manifest.json `
+  --train-localization-robust `
+    C:\IsaacSim\artifacts\issue190\official-mesh-target-aware-data-v1-retry1 `
+    C:\IsaacSim\artifacts\issue190\mask-perturbation-development-data-v1 `
+    C:\IsaacSim\artifacts\issue190\localization-robust-candidate-v1
+```
+
+Each training row receives one hash-selected nominal, 1 mm, or 2 mm offset.
+Policy selection requires every development direction inside a candidate bound
+to keep both missed abstentions and visible-target false stops at or below 5%.
+Evidence `E-20260930-AI-471` selected a 0 mm bound: nominal development passes,
+but the worst 1 mm direction misses 6 of 108 abstentions. The checkpoint must
+therefore abstain on any nonzero localization uncertainty and remains blocked
+without a fresh evaluation.

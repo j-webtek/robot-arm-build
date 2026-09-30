@@ -1036,9 +1036,18 @@ Future inference must bind calibrated localization uncertainty and abstain when
 the safe-region fit is not supported; these synthetic offsets do not establish
 a deployable millimetre bound.
 
+The offset-augmented candidate in `E-20260930-AI-471` assigns one deterministic
+nominal, 1 mm, or 2 mm translation to every v5 training row, then freezes its
+threshold and uncertainty policy on the v6 development-only corpus. Nominal
+misses improve from 9 to 3 of 108 while false stops rise from 35 to 44 of 1,242.
+The worst 1 mm direction still misses 6 abstentions, so no nonzero bound meets
+both 5% limits. The policy consequently supports only 0 mm and must abstain on
+any nonzero localization uncertainty. Evaluation remains unopened. This is a
+real safety improvement and an explicit fail-closed policy, but the zero bound
+is operationally too strict and blocks a fresh evaluation campaign.
+
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI | S2/S3 | train a deterministic offset-augmented four-channel candidate; select a localization-uncertainty abstention bound on development only; do not create or open evaluation evidence | `issue/190-isaac-sim-host` | IN_PROGRESS |
 | Unclaimed | S2/S3 | physical-camera deployment qualification and safe-region-fit precision evidence | — | AVAILABLE |
 | ARM | S4 | collect four physical-original `camera_support_optics` bindings through onboarding, then run the ARM-070 intake; no synthetic promotion | ARM-071 | WAITING_FOR_ORIGINALS |
 

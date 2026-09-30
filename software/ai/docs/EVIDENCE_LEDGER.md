@@ -7347,3 +7347,87 @@ rewriting history. New entries must use a unique evidence ID.
 - Next dependency: add localization-offset augmentation and an explicit
   uncertainty-to-abstention rule using development data only. Freeze that
   policy before rendering and opening a new untouched evaluation group.
+
+### E-20260930-AI-471 — offset-augmented candidate and uncertainty policy
+
+- Stage: S2/S3 synthetic localization-robustness development.
+- Lane: AI/model offline training and development-only policy selection; no
+  arm or integration status changed.
+- Implementation commit:
+  `038f64c1f6d7178c958f42ebfed91a466b457302`.
+- Change: each of the 51,975 v5 training rows receives one deterministic
+  hash-selected offset from nominal plus every 1 mm and 2 mm direction. The
+  same 1,721-parameter four-channel CNN is trained for eight deterministic CPU
+  epochs. The frozen model is then scored on all 33 v6 development offsets.
+  Policy selection accepts the largest 0, 1, 2, or 4 mm bound only when every
+  direction inside it keeps both missed-abstention and visible false-stop rates
+  at or below 5%. Uncertainty above the selected bound produces
+  `abstain_localization_uncertain`. No evaluation group exists or is opened.
+- Inputs/fixtures: implementation SHA-256
+  `64ddf1af83a4c259747841a7131c6d7de60ea539b7e518a180c74e3660c853a7`;
+  focused test SHA-256
+  `8cb4742124008320fc55d86ebd2f1dab13c8708d772bf75749edabc301df3b10`;
+  training dataset SHA-256
+  `393a6cfdad649efe99d27e62f952d81dbf2d34428ff0c80eeba6f51ab0980767`;
+  training manifest file SHA-256
+  `a1010e1a7c7599f60241ffd83610e7c19f52cd67fca102d6f39165d605a6debe`;
+  development dataset SHA-256
+  `35011f05e5ecbc39d2768dcccfdee052ff90674f5f378c7e18ba3cf0715138b0`;
+  development manifest file SHA-256
+  `15d26c3f9ee6b992f00d470985b86d158e19c7eddc0d242e9e9adcd6e939d276`.
+- Exact command: `python
+  software/ai/train/build_official_mesh_occlusion_data.py --source-manifest
+  C:\IsaacSim\artifacts\issue190\fixed-overview-mask-perturbation-v6-run1\manifest.json
+  --train-localization-robust
+  C:\IsaacSim\artifacts\issue190\official-mesh-target-aware-data-v1-retry1
+  C:\IsaacSim\artifacts\issue190\mask-perturbation-development-data-v1
+  C:\IsaacSim\artifacts\issue190\localization-robust-candidate-v1`;
+  repeated with final `...candidate-v2`, with stdout redirected to separate
+  external receipts.
+- Training result: weighted loss falls monotonically from
+  `0.8715942066010516` to `0.2215171820912985`. All 17 augmentation offsets
+  receive 2,955–3,137 rows. Two independent checkpoints and scorecards are
+  byte-identical. Model file SHA-256 is
+  `16f1810ee5ad51b8414ea524ad54399a85fcce56a45aa76512c2b81ed56d22e6`;
+  canonical scorecard SHA-256 is
+  `c61cb0d9bcc59b93337aa1f83a7465814842dfec25e74f824a6231435da766ea`;
+  scorecard file SHA-256 is
+  `69e9ba90dbc82771add2ee4ba9579b4b32adc1b953d9ffd1bf60858683e11f4d`.
+- Development result: BLOCKED_AWAITING_FRESH_EVALUATION, with evaluation still
+  unopened. Threshold `0.10` is selected. At nominal alignment the candidate
+  records 105 true abstentions, 1,198 true-visible labels, 44 false
+  abstentions, and 3 missed abstentions. Missed rate is `3/108 =
+  0.027777777777777776`; visible false-stop rate is `44/1242 =
+  0.03542673107890499`. Across 1 mm directions, misses range 1–6 and false
+  stops 44–61. The +1 mm x/+1 mm y direction has 6 misses, or
+  `0.05555555555555555`, so 1 mm fails the safety limit by one case. At 2 mm
+  the ranges are 0–6 and 43–187; at 4 mm, 0–5 and 44–720; at 8 mm, 0–9 and
+  42–1,053. The largest supported synthetic bound is therefore 0 mm. Any
+  nonzero localization uncertainty must abstain.
+- Comparison with AI-470: nominal misses improve from 9 to 3 while false stops
+  increase from 35 to 44. Offset augmentation creates a valid nominal policy
+  and materially improves safety, but does not yet establish useful nonzero
+  tolerance.
+- Validation: 68 focused simulator/perception tests passed in 24.97 seconds;
+  101 shared v2 precision, adapter, producer, strict-ingress, shadow-runner,
+  trajectory, and conformance tests passed in 11.47 seconds. Final validation
+  also includes Ruff, maintained-document, AI work-registry,
+  repository-health, source-footprint, and `git diff --check` gates.
+- Artifact location: external only under
+  `C:\IsaacSim\artifacts\issue190\localization-robust-candidate-v1`, with
+  byte-identical repeat `...candidate-v2`. Hashes identify exact local bytes
+  but do not make the checkpoint clean-clone available.
+- Hardware-write count: 0.
+- Physical-movement count: 0.
+- Physics-step count: 0.
+- Limitations: training, target geometry, offsets, and development evidence are
+  synthetic. The selected 0 mm bound is not a physical calibration and cannot
+  support deployment. No fresh evaluation has been rendered or scored. Tool
+  and camera-support geometry remain absent. The checkpoint and uncertainty
+  policy grant no localization, collision, controller, execution, transport,
+  permit, or physical authority.
+- Supersedes: none; improves nominal safety relative to AI-470 and adds an
+  explicit fail-closed uncertainty policy while preserving all prior evidence.
+- Next dependency: improve the worst 1 mm development direction without
+  exceeding the 5% false-stop limit, then freeze a nonzero uncertainty bound
+  before allocating a fresh untouched evaluation campaign.
