@@ -84,6 +84,7 @@ TESTS = (
     "software/tests/unit/test_typing_ik_reuse_profile_campaign_v1.py",
     "software/tests/unit/test_typing_profiled_shadow_service_v1.py",
     "software/tests/unit/test_typing_profiled_shadow_service_campaign_v1.py",
+    "software/tests/unit/test_actual_emitter_profiled_service_campaign_v1.py",
     "software/tests/unit/test_pre_camera_host_benchmark_v1.py",
     "software/tests/unit/test_assess_r97_external_review_decision.py",
     "software/tests/unit/test_model_motion_sequence_coordinator.py",
@@ -113,6 +114,7 @@ TESTS = (
     "software/ai/tests/test_precision_adapter_v2.py",
     "software/ai/tests/test_precision_adapter_evaluation_bundle_v1.py",
     "software/ai/tests/test_actual_output_compatibility_v1.py",
+    "software/ai/tests/test_profiled_service_ingress_v2.py",
     "software/ai/tests/test_confidence_metrics.py",
 )
 
