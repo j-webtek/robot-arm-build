@@ -27,6 +27,7 @@ from collision_differential_probe import (
 
 HALTON_BASES = (2, 3, 5, 7, 11, 13)
 HALTON_SAMPLE_COUNT = 32
+MAX_HALTON_SAMPLE_COUNT = 1024
 EXPECTED_URDF_SHA256 = "a565718e7d74b07702802cf41eb9549a6e38e50b5e80aa9b887ab1ae3d0d8190"
 OUTCOMES = (
     "AGREEMENT_COLLISION", "AGREEMENT_FREE",
@@ -44,7 +45,19 @@ def _halton(index: int, base: int) -> float:
     return result
 
 
-def _pose_corpus(urdf_path: Path) -> tuple[list[dict], list[dict]]:
+def _pose_corpus(
+    urdf_path: Path,
+    *,
+    halton_start: int = 1,
+    halton_count: int = HALTON_SAMPLE_COUNT,
+    include_anchors: bool = True,
+) -> tuple[list[dict], list[dict]]:
+    if halton_start < 1:
+        raise ValueError("halton_start must be positive")
+    if not 1 <= halton_count <= MAX_HALTON_SAMPLE_COUNT:
+        raise ValueError(
+            f"halton_count must be between 1 and {MAX_HALTON_SAMPLE_COUNT}"
+        )
     root = ET.fromstring(urdf_path.read_bytes())
     limits = []
     for name in JOINT_ORDER:
@@ -62,19 +75,20 @@ def _pose_corpus(urdf_path: Path) -> tuple[list[dict], list[dict]]:
             seen.add(key)
             rows.append({"pose_name": name, "family": family, "joint_positions_rad": list(key)})
 
-    for name, values in POSES.items():
-        add(name, values, "GOVERNED_ANCHOR")
-    add("all_lower", [item[0] for item in limits], "LIMIT_ANCHOR")
-    add("all_upper", [item[1] for item in limits], "LIMIT_ANCHOR")
-    add("all_midpoint", [(item[0] + item[1]) / 2.0 for item in limits], "LIMIT_ANCHOR")
-    for index, (lower, upper) in enumerate(limits):
-        lower_values = [0.0] * len(limits)
-        upper_values = [0.0] * len(limits)
-        lower_values[index] = lower
-        upper_values[index] = upper
-        add(f"joint_{index + 1}_lower", lower_values, "SINGLE_JOINT_LIMIT")
-        add(f"joint_{index + 1}_upper", upper_values, "SINGLE_JOINT_LIMIT")
-    for sample in range(1, HALTON_SAMPLE_COUNT + 1):
+    if include_anchors:
+        for name, values in POSES.items():
+            add(name, values, "GOVERNED_ANCHOR")
+        add("all_lower", [item[0] for item in limits], "LIMIT_ANCHOR")
+        add("all_upper", [item[1] for item in limits], "LIMIT_ANCHOR")
+        add("all_midpoint", [(item[0] + item[1]) / 2.0 for item in limits], "LIMIT_ANCHOR")
+        for index, (lower, upper) in enumerate(limits):
+            lower_values = [0.0] * len(limits)
+            upper_values = [0.0] * len(limits)
+            lower_values[index] = lower
+            upper_values[index] = upper
+            add(f"joint_{index + 1}_lower", lower_values, "SINGLE_JOINT_LIMIT")
+            add(f"joint_{index + 1}_upper", upper_values, "SINGLE_JOINT_LIMIT")
+    for sample in range(halton_start, halton_start + halton_count):
         values = [
             lower + _halton(sample, base) * (upper - lower)
             for base, (lower, upper) in zip(HALTON_BASES, limits)
@@ -97,6 +111,9 @@ def main() -> int:
         "--expected-reduction-sha256",
         default=EXPECTED_REDUCTION_RECEIPT_SHA256,
     )
+    parser.add_argument("--halton-start", type=int, default=1)
+    parser.add_argument("--halton-count", type=int, default=HALTON_SAMPLE_COUNT)
+    parser.add_argument("--halton-only", action="store_true")
     parser.add_argument("--fcl-wheel", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--summary-output", type=Path, required=True)
@@ -127,7 +144,12 @@ def main() -> int:
         urdf_path = workspace / "software/models/roarm_m3/roarm_m3_kinematic_40dbd84.urdf"
         if digest_bytes(urdf_path.read_bytes()) != EXPECTED_URDF_SHA256:
             raise ValueError("governed URDF hash mismatch")
-        corpus, limits = _pose_corpus(urdf_path)
+        corpus, limits = _pose_corpus(
+            urdf_path,
+            halton_start=args.halton_start,
+            halton_count=args.halton_count,
+            include_anchors=not args.halton_only,
+        )
 
         sys.path.insert(0, str(workspace / "software/src"))
         from rocell.geometry.urdf import JointPosition, UrdfModel
@@ -254,6 +276,19 @@ def main() -> int:
             "halton_sample_count": HALTON_SAMPLE_COUNT,
             "adjacent_pairs_are_measured_not_excluded": True,
         }
+        if (
+            args.halton_start != 1
+            or args.halton_count != HALTON_SAMPLE_COUNT
+            or args.halton_only
+        ):
+            method["halton_start_index"] = args.halton_start
+            method["halton_sample_count"] = args.halton_count
+            method["anchors_included"] = not args.halton_only
+            method["pose_families"] = (
+                ["HALTON_INTERIOR"]
+                if args.halton_only
+                else method["pose_families"]
+            )
         detailed: dict[str, object] = {
             "schema": "tactevra.isaac_sim_collision_joint_space_detailed.v1",
             "source_bindings": source_bindings,
