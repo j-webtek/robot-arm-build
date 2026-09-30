@@ -7007,3 +7007,154 @@ rewriting history. New entries must use a unique evidence ID.
   timestep, camera cadence, state binding, and frame-retention rules are
   declared. Physical promotion still requires final fixed-camera evidence
   under a registered configuration epoch.
+
+### E-20260930-AI-467 — interrupted target-aware crop materialization
+
+- Stage: S2/S3 synthetic perception development.
+- Lane: AI/model; no arm or integration status changed.
+- Implementation commit: `bd59785f06c0714e363dafa7568d68b9ec1b5efb`.
+- Change attempted: predeclared twelve unused actual-emitter schedule poses and
+  six new lighting families, rendered a 45-pose v5 source, materialized the
+  three-way dataset, and began deterministic training of a four-channel RGB
+  plus known-safe-region candidate.
+- Exact command: `python software/ai/train/build_official_mesh_occlusion_data.py
+  --source-manifest C:\IsaacSim\artifacts\issue190\fixed-overview-official-mesh-v5-run1\manifest.json
+  --output-dir C:\IsaacSim\artifacts\issue190\official-mesh-target-aware-data-v1
+  --target-aware-output C:\IsaacSim\artifacts\issue190\official-mesh-target-aware-candidate-v1`.
+- Result: FAILED_INTERRUPTED. Dataset materialization completed with 733 files,
+  112,366,840 bytes, and manifest file SHA-256
+  `a1010e1a7c7599f60241ffd83610e7c19f52cd67fca102d6f39165d605a6debe`.
+  Candidate construction repeatedly reopened one image for every target while
+  building the safe-region channel. The run was manually stopped before model
+  fitting completed; the candidate directory contains zero files. No metric or
+  promotion claim is made from this attempt.
+- Hardware-write count: 0.
+- Physical-movement count: 0.
+- Physics-step count: 0 during dataset/model work; the separately completed
+  retained source render also declares zero physics steps.
+- Limitations: this is retained failed process evidence. The completed dataset
+  bytes are not treated as a completed model result. No controller, permit,
+  transport, collision, localization, or physical authority was created.
+- Corrective dependency: cache image dimensions per materialized image rather
+  than reopening the image for each of its 75 target rows. The correction is
+  commit `a40c8b4bcc0502360594910dd2e641ae119656aa` and the failed output remains
+  retained rather than overwritten.
+
+### E-20260930-AI-468 — fresh target-aware occlusion candidate
+
+- Stage: S2/S3 synthetic perception and abstention development.
+- Lane: AI/model with inert Isaac rendering; no arm or integration status
+  changed.
+- Implementation commits: predeclared split and model
+  `bd59785f06c0714e363dafa7568d68b9ec1b5efb`; image-dimension cache correction
+  `a40c8b4bcc0502360594910dd2e641ae119656aa`.
+- Change: all 33 previously consumed official-mesh poses and all 21 previously
+  consumed lighting families became training-only. Schedule samples
+  11/15/19 and 113/117/121 with neutral-low, bottom-shadow, and diagonal-blur
+  lighting formed development. Samples 23/27/31 and 115/119/123 with green-
+  cast, corner-glare, and horizontal-blur lighting remained untouched
+  evaluation. The 1,721-parameter candidate consumes 32-by-32 RGB crops plus a
+  fourth binary channel derived from the catalog target safe region. The
+  simulator robot mask supplies labels only and is explicitly absent from
+  inference input. Eight deterministic CPU epochs and development-only
+  threshold selection remain fixed; evaluation loaded once after checkpoint
+  serialization.
+- Inputs/fixtures: renderer SHA-256
+  `e50b6978c2aa2c88169375458a82315c8a6c5698d99c5cc7947c03103bec435b`;
+  dataset/model builder SHA-256
+  `2e06b8d9d82e2aff8fb55347d6d13523093f958976e8f528ae995475d52d3b3b`;
+  focused test SHA-256
+  `e27d0782a02e9c3afafbb1f20b4c07823b4d0d6635fda7889cd428e5fc2fe508`;
+  schedule file SHA-256
+  `6a59ce143f5527c7a9ced09b08d5515644ea4fb859dd69691e08483eb020ee42`;
+  target-catalog SHA-256
+  `6779213e832ab27eeda1e7fb245f57ff8cb0d56707b5aa73a8f31ec483a620f2`.
+- Render command: `$env:OMNI_KIT_ACCEPT_EULA='YES'; $env:PYTHONPATH=(Resolve-Path
+  'software/src').Path; C:\IsaacSim\env_6_1_0\Scripts\python.exe
+  software\integrations\isaac_sim\isaac_fixed_overview_mesh_render_probe.py
+  --workspace . --upstream-repo C:\IsaacSim\sources\roarm_ws-40dbd84
+  --mesh-receipt software\integrations\isaac_sim\evidence\roarm_m3_upstream_link_meshes_20260929.json
+  --capsule-manifest software\integrations\isaac_sim\evidence\fixed_overview_segmentation_v1\manifest.json
+  --schedule-bundle software\integrations\isaac_sim\evidence\actual_emitter_joint_schedule_bundle_9e5c878_20260929.json
+  --output-dir C:\IsaacSim\artifacts\issue190\fixed-overview-official-mesh-v5-run1
+  --receipt C:\IsaacSim\evidence\fixed_overview_official_mesh_v5_run1.json
+  --status-output C:\IsaacSim\evidence\fixed_overview_official_mesh_v5_run1.status.json`.
+- Dataset/model command: `python
+  software/ai/train/build_official_mesh_occlusion_data.py --source-manifest
+  C:\IsaacSim\artifacts\issue190\fixed-overview-official-mesh-v5-run1\manifest.json
+  --output-dir C:\IsaacSim\artifacts\issue190\official-mesh-target-aware-data-v1-retry1
+  --target-aware-output C:\IsaacSim\artifacts\issue190\official-mesh-target-aware-candidate-v1-retry1`;
+  repeated with final `...data-v2` and `...candidate-v2` directories for exact
+  byte comparison.
+- Render result: PASS_WITH_BLOCKERS. All 45 official-mesh masks are distinct.
+  Training contains 241 center occlusions and 294 abstention labels across 33
+  poses; development contains 33 center occlusions and 40 abstention labels;
+  evaluation contains 44 center occlusions and 55 abstention labels. Canonical
+  render receipt SHA-256 is
+  `dece049dd226781a7a7d53f5c29056bfc47e83134e6f05da1b5e9d4c59d67c5a`;
+  receipt file SHA-256 is
+  `a3583b4c9582efa2e4285845892b16dfa4e18cec97231a9d1b7d57de0647d576`;
+  status file SHA-256 is
+  `48f49d1e410042402969af379433c974970f21bec5e0953c2ede00fc8de0e213`.
+  RGB/mask/depth atlas SHA-256 values are respectively
+  `40d1db4d30fdb513fa1aa0fa94a5515e874e22d3e689f48ed7831cb361f3ea47`,
+  `b041300f649edeaaaf0beff7b5ebfaa3cf71e90b1828c03773549dcfbaf8a911`,
+  and `4e3ab545b58d400000041fd7963ff2b0b06bb4a1c4d127bd34a6dbc76d143891`.
+- Dataset result: two independent 733-file builds are byte-identical. Each is
+  112,366,840 bytes. Dataset SHA-256 is
+  `393a6cfdad649efe99d27e62f952d81dbf2d34428ff0c80eeba6f51ab0980767`;
+  manifest file SHA-256 is
+  `a1010e1a7c7599f60241ffd83610e7c19f52cd67fca102d6f39165d605a6debe`.
+  Training has 51,975 rows with 6,174 abstentions; development has 1,350 rows
+  with 120 abstentions; evaluation has 1,350 rows with 165 abstentions. Their
+  JSONL SHA-256 values are respectively
+  `0238f0c36ae66a84bcc79121a04a5297f73c50af55ab5baeaf49b9aab05053fa`,
+  `737363083324b6ca5e246153df6a7b7d08cf86ac519c9715c4eedc847bd626e0`,
+  and `a44da607ed72ed1dcebdf162b851d15b80775840a3e1f2c4cd0609ad023a6676`.
+- Candidate result: BLOCKED_SYNTHETIC_ONLY. Both independent checkpoints and
+  scorecards are byte-identical. Weighted loss falls monotonically from
+  `0.8524029298348172` to `0.1863514108285702`; development selects threshold
+  `0.10`, with 120 true abstentions, 1,196 true-visible labels, 34 false
+  abstentions, and zero missed abstentions. Fresh evaluation records 160 true
+  abstentions, 1,158 true-visible labels, 27 false abstentions, and 5 missed
+  abstentions. Missed-abstention rate is `5/165 = 0.030303030303030304`;
+  visible-target false-abstention rate is `27/1185 = 0.02278481012658228`;
+  accuracy is `0.9762962962962963`, balanced accuracy
+  `0.9734560797851937`, Brier score `0.01932606178893815`, and calibration
+  error `0.02123716483410034`. The remaining misses are `APOSTROPHE` and
+  `SEMICOLON` at return sample 115 and `SLASH` at return sample 119. Model
+  SHA-256 is
+  `a986eb4cdd654905893029c54e11d2175910810f3f87dfe029580b97dc385bcb`;
+  canonical scorecard SHA-256 is
+  `c6edaf88eaef98dfab60470b3b4d97c6c80b429f117a7f39aa927361c1cbd66a`;
+  scorecard file SHA-256 is
+  `1bfbe3959e89e5825d7eceb028d76ea29e78362e5f6dccb67f0032fa07b53e6d`.
+- Validation: 64 focused simulator/perception tests passed in 25.14 seconds;
+  96 shared v2 boundary tests passed in 6.84 seconds. The final audit commands
+  also include Ruff, maintained-document, AI work-registry, repository-audit,
+  source-footprint, and `git diff --check` gates.
+- Artifact location: external only under
+  `C:\IsaacSim\artifacts\issue190\fixed-overview-official-mesh-v5-run1`,
+  `official-mesh-target-aware-data-v1-retry1`,
+  `official-mesh-target-aware-candidate-v1-retry1`, and byte-identical
+  `...data-v2`/`...candidate-v2`; hashes identify local bytes but do not make
+  them clean-clone available.
+- Hardware-write count: 0.
+- Physical-movement count: 0.
+- Physics-step count: 0.
+- Limitations: all geometry, pixels, target masks, transformations, and labels
+  remain synthetic. The known safe-region channel assumes exact target-map
+  alignment; this experiment does not measure behavior under localization or
+  placement error. The evaluation is consumed and cannot tune another model.
+  Results from different held-out domains provide directional evidence but are
+  not a paired proof that every AI-465 failure is corrected. Measured tool,
+  camera-support, and physical-camera evidence remain absent. The checkpoint
+  emits only an offline occlusion probability and grants no localization,
+  collision, controller, execution, transport, permit, or physical authority.
+- Supersedes: none. It improves the combined synthetic safety/cadence result on
+  a fresh domain while preserving AI-464, AI-465, and failed AI-467 evidence.
+- Next dependency: bind a progression-video bundle to this exact four-channel
+  checkpoint, then test target-mask perturbation from predeclared localization
+  offsets on new development data before reserving another untouched evaluation
+  group. Physical promotion still requires final fixed-camera qualification and
+  measured installed support/tool geometry.

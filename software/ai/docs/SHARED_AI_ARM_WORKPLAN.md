@@ -1005,9 +1005,19 @@ are byte-identical. The videos add reviewable progression evidence only: they
 do not add temporal physics, new evaluation data, runtime authority, or physical
 qualification, and the AI-465 candidate remains blocked.
 
+The target-aware experiment in `E-20260930-AI-468` predeclares twelve unused
+actual-emitter schedule poses and six new lighting families, then gives the
+tiny RGB crop model one additional catalog-derived safe-region channel. The
+simulator robot mask remains label-only. On a fresh held-out synthetic group,
+missed abstentions fall to 5 of 165 and false abstentions remain 27 of 1,185;
+two complete builds are byte-identical. This is the first candidate in this
+sequence to hold both synthetic error rates below 5% on its own fresh split.
+It remains blocked because exact target alignment is assumed and neither final-
+camera localization uncertainty nor physical support/tool geometry is present.
+The consumed evaluation may not tune another candidate.
+
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI | S2/S3 | predeclare fresh unused schedule-pose and lighting splits; evaluate a target-safe-region-aware RGB occlusion candidate on external synthetic artifacts; focused tests and retained hashes; no runtime or authority changes | `issue/190-isaac-sim-host` | IN_PROGRESS |
 | Unclaimed | S2/S3 | physical-camera deployment qualification and safe-region-fit precision evidence | — | AVAILABLE |
 | ARM | S4 | collect four physical-original `camera_support_optics` bindings through onboarding, then run the ARM-070 intake; no synthetic promotion | ARM-071 | WAITING_FOR_ORIGINALS |
 

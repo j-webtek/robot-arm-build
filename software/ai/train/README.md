@@ -209,3 +209,31 @@ counts, and zero authority. These videos visualize existing static synthetic
 frames. They are diagnostic progression evidence, not continuous physics
 captures, new training samples, physical-camera qualification, or deployment
 evidence.
+
+## Target-aware occlusion candidate
+
+The v5 experiment freezes twelve unused actual-emitter schedule poses before
+rendering. Six poses and three lighting families are development-only; six
+different poses and three different lighting families are loaded once for
+evaluation after checkpoint and threshold freeze. All previously consumed pose
+and lighting groups are training-only.
+
+The candidate adds one catalog-derived channel to the RGB target crop: a binary
+mask of the named target's known safe region. The simulator robot mask remains
+label-only and is explicitly excluded from model input. This keeps the model
+small at 1,721 parameters while telling it which pixels matter for the proposed
+target.
+
+```powershell
+python software/ai/train/build_official_mesh_occlusion_data.py `
+  --source-manifest C:\IsaacSim\artifacts\issue190\fixed-overview-official-mesh-v5-run1\manifest.json `
+  --output-dir C:\IsaacSim\artifacts\issue190\official-mesh-target-aware-data-v1-retry1 `
+  --target-aware-output C:\IsaacSim\artifacts\issue190\official-mesh-target-aware-candidate-v1-retry1
+```
+
+On the fresh synthetic evaluation, the frozen candidate misses 5 of 165
+required abstentions and falsely stops on 27 of 1,185 visible targets. This is
+the first candidate in this sequence to keep both synthetic rates below 5% on
+its own fresh split. It remains blocked: exact catalog alignment is assumed,
+the split is now consumed, and no physical camera, installed support/tool
+geometry, or deployment-calibrated localization uncertainty is represented.
