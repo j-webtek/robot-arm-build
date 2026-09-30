@@ -7236,3 +7236,114 @@ rewriting history. New entries must use a unique evidence ID.
 - Next dependency: predeclare target-mask offset families on new development
   poses, measure degradation without consuming a new evaluation group, and
   reserve fresh evaluation only after the perturbation policy is frozen.
+
+### E-20260930-AI-470 — development-only target-mask perturbation study
+
+- Stage: S2/S3 synthetic localization-sensitivity evidence.
+- Lane: AI/model with inert Isaac rendering and frozen offline inference; no
+  arm or integration status changed.
+- Implementation commit:
+  `c5098efd68dd9a20a83ec9b263b60c370f415960`.
+- Change: a v6 renderer campaign predeclares schedule samples 12, 16, 21, 116,
+  125, and 129 as fresh development-only arm states. Training and evaluation
+  groups are empty. The frozen AI-468 checkpoint is measured at nominal
+  alignment and 1, 2, 4, and 8 mm offsets in eight directions. Each offset
+  translates the RGB crop and catalog safe-region mask together while keeping
+  ground-truth occlusion labels fixed. The nominal 2 px/mm conversion is
+  derived from the synthetic 1,000 px focal length and 500 mm target depth.
+- Inputs/fixtures: renderer SHA-256
+  `ec1ee85d9adbde21324993981fdbacc37b9adb14e99fc9457c50d0b6b01d676f`;
+  dataset/study builder SHA-256
+  `cbe6d97e3bb6b384fd5e865f63153e7ae95a0304ba2fde552f2887646c7defc5`;
+  focused test SHA-256
+  `2ffd99d35576c18921d6f2ed1dfa95cd8fd6208ae9be4ad9d97fd45d11312b58`;
+  schedule file SHA-256
+  `6a59ce143f5527c7a9ced09b08d5515644ea4fb859dd69691e08483eb020ee42`;
+  target catalog SHA-256
+  `6779213e832ab27eeda1e7fb245f57ff8cb0d56707b5aa73a8f31ec483a620f2`;
+  frozen model SHA-256
+  `a986eb4cdd654905893029c54e11d2175910810f3f87dfe029580b97dc385bcb`.
+- Render command: `$env:OMNI_KIT_ACCEPT_EULA='YES'; $env:PYTHONPATH=(Resolve-Path
+  'software/src').Path; C:\IsaacSim\env_6_1_0\Scripts\python.exe
+  software\integrations\isaac_sim\isaac_fixed_overview_mesh_render_probe.py
+  --workspace . --upstream-repo C:\IsaacSim\sources\roarm_ws-40dbd84
+  --mesh-receipt software\integrations\isaac_sim\evidence\roarm_m3_upstream_link_meshes_20260929.json
+  --capsule-manifest software\integrations\isaac_sim\evidence\fixed_overview_segmentation_v1\manifest.json
+  --schedule-bundle software\integrations\isaac_sim\evidence\actual_emitter_joint_schedule_bundle_9e5c878_20260929.json
+  --campaign mask-perturbation-v6
+  --output-dir C:\IsaacSim\artifacts\issue190\fixed-overview-mask-perturbation-v6-run1
+  --receipt C:\IsaacSim\evidence\fixed_overview_mask_perturbation_v6_run1.json
+  --status-output C:\IsaacSim\evidence\fixed_overview_mask_perturbation_v6_run1.status.json`.
+- Dataset command: `python
+  software/ai/train/build_official_mesh_occlusion_data.py --source-manifest
+  C:\IsaacSim\artifacts\issue190\fixed-overview-mask-perturbation-v6-run1\manifest.json
+  --output-dir C:\IsaacSim\artifacts\issue190\mask-perturbation-development-data-v1`;
+  repeated with final `...data-v2` for byte comparison.
+- Study command: `python
+  software/ai/train/build_official_mesh_occlusion_data.py --source-manifest
+  C:\IsaacSim\artifacts\issue190\fixed-overview-mask-perturbation-v6-run1\manifest.json
+  --perturb-existing C:\IsaacSim\artifacts\issue190\mask-perturbation-development-data-v1
+  C:\IsaacSim\artifacts\issue190\official-mesh-target-aware-candidate-v1-retry1
+  C:\IsaacSim\artifacts\issue190\target-mask-perturbation-study-v1`;
+  repeated into `...study-v2` and `...study-v2-retry1`. All three report files
+  are byte-identical.
+- Render result: PASS_WITH_BLOCKERS. Six pose-distinct official-mesh masks
+  contain 32 center occlusions and 36 safe-region overlap crossings. Canonical
+  receipt SHA-256 is
+  `52d3958341f1d8f8ca610598d10717fcd1188ce0295bbe0a0a5697a8c3505005`;
+  manifest file SHA-256 is
+  `b9943488381ded4395a01f78980de86f1b7cee1e8a3421902398d198514c78bc`;
+  status file SHA-256 is
+  `7eacc56b9e4882c8cae1c8f62b650efbbe516f7c671a4b5ad951564975fa566a`.
+  RGB/mask/depth atlas SHA-256 values are respectively
+  `936da8acdf3da0dbec609cda338d98aae4d3dd235bf1c732c573aa4b628acf2f`,
+  `c397f55f75d2c835b831012db337e917e1f84155bc18a14bcaaf0c5771606fc1`,
+  and `f6eaf59c33ef3eb6b64457de3d7427d5af7178034b60a8ea5f4d61aca93a8e04`.
+- Dataset result: two independent 22-file, 2,711,888-byte builds are
+  byte-identical. Dataset SHA-256 is
+  `35011f05e5ecbc39d2768dcccfdee052ff90674f5f378c7e18ba3cf0715138b0`;
+  manifest file SHA-256 is
+  `15d26c3f9ee6b992f00d470985b86d158e19c7eddc0d242e9e9adcd6e939d276`.
+  Development has 1,350 rows with 108 abstentions and 1,242 visible labels.
+  Train and evaluation each contain zero rows and the canonical empty-file
+  SHA-256 `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`.
+- Study result: BLOCKED_SYNTHETIC_ONLY. All three 2,486,710-byte reports are
+  byte-identical. Canonical report SHA-256 is
+  `58c72ac60e6f8d26f980ad6e9b41ac2ad24c5f9236fd6a534271a77980ff8956`;
+  report file SHA-256 is
+  `bf6044c26841ba1818545aed15ed858ccedd4d89745501a28d5ef507f0430fee`.
+  Nominal alignment records 99 true abstentions, 1,207 true-visible labels,
+  35 false abstentions, and 9 missed abstentions: missed rate `9/108 =
+  0.08333333333333333` and visible false-stop rate `35/1242 =
+  0.02818035426731079`. Across the eight 1 mm directions, missed abstentions
+  range from 4 to 9 and false stops from 35 to 62. At 2 mm the ranges are 4–9
+  and 32–272; at 4 mm, 0–8 and 44–950; at 8 mm, 0–13 and 56–1,230. The worst
+  missed-abstention direction is -8 mm x with 13 misses. The worst false-stop
+  direction is +8 mm y with 1,230 false stops and only 12 true-visible
+  decisions. Some offsets reducing misses do so by stopping broadly and do not
+  establish robustness.
+- Validation: 67 focused simulator/perception tests passed in 25.34 seconds;
+  101 shared v2 precision, adapter, producer, strict-ingress, shadow-runner,
+  trajectory, and conformance tests passed in 11.43 seconds. Final validation
+  also includes Ruff, maintained-document, AI work-registry,
+  repository-health, source-footprint, and `git diff --check` gates.
+- Artifact location: external only under
+  `C:\IsaacSim\artifacts\issue190\fixed-overview-mask-perturbation-v6-run1`,
+  `mask-perturbation-development-data-v1`, byte-identical `...data-v2`, and
+  the three byte-identical `target-mask-perturbation-study-*` directories.
+  Hashes identify exact local bytes but do not make them clean-clone available.
+- Hardware-write count: 0.
+- Physical-movement count: 0.
+- Physics-step count: 0.
+- Limitations: all camera geometry, images, labels, and offsets are synthetic.
+  The px/mm mapping uses nominal geometry and is not a measured physical error
+  bound. Development-only rows diagnose sensitivity but cannot qualify or
+  compare a tuned successor. There is no evaluation group. Tool and camera-
+  support geometry remain absent. The checkpoint and study grant no
+  localization, collision, controller, execution, transport, permit, or
+  physical authority.
+- Supersedes: none; converts AI-468's exact-alignment limitation into measured
+  directional synthetic evidence.
+- Next dependency: add localization-offset augmentation and an explicit
+  uncertainty-to-abstention rule using development data only. Freeze that
+  policy before rendering and opening a new untouched evaluation group.

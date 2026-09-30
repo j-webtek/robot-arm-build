@@ -254,3 +254,26 @@ region and records that the simulator robot mask is absent from model input.
 The videos replay the consumed frozen evaluation for review; they remain lossy
 presentation artifacts and add no training, deployment qualification, or
 physical authority.
+
+## Target-mask localization perturbation
+
+The v6 diagnostic campaign renders six previously unused schedule states into
+a development-only corpus. Its training and evaluation splits are explicitly
+empty. A frozen four-channel checkpoint can then be measured at predeclared
+1, 2, 4, and 8 mm target-estimate offsets in eight directions:
+
+```powershell
+python software/ai/train/build_official_mesh_occlusion_data.py `
+  --source-manifest C:\IsaacSim\artifacts\issue190\fixed-overview-mask-perturbation-v6-run1\manifest.json `
+  --perturb-existing `
+    C:\IsaacSim\artifacts\issue190\mask-perturbation-development-data-v1 `
+    C:\IsaacSim\artifacts\issue190\official-mesh-target-aware-candidate-v1-retry1 `
+    C:\IsaacSim\artifacts\issue190\target-mask-perturbation-study-v1
+```
+
+Each offset translates the RGB crop and known-target safe-region mask together
+while retaining the ground-truth occlusion label. The nominal conversion of
+2 pixels per millimetre comes from the synthetic 1,000-pixel focal length and
+500 mm target depth. This study measures sensitivity under nominal simulator
+geometry. It is not a camera calibration, uncertainty bound, evaluation split,
+or deployment qualification.

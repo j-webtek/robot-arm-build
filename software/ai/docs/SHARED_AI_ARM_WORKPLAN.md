@@ -1025,9 +1025,19 @@ absence of simulator robot-mask input. This adds reviewable evidence only; it
 does not qualify target alignment, add temporal physics, or change the model's
 blocked status.
 
+The development-only perturbation study in `E-20260930-AI-470` renders six
+previously unused arm states and measures the frozen AI-468 checkpoint under
+33 predeclared joint crop/mask offsets. No training or evaluation group is
+present. The nominal fresh-pose result already misses 9 of 108 abstentions.
+At 1 mm, false stops range from 35 to 62 of 1,242 visible targets; at 2 mm the
+worst direction reaches 272; and selected 4–8 mm directions cause near-total
+stopping. This confirms that exact target alignment was a material assumption.
+Future inference must bind calibrated localization uncertainty and abstain when
+the safe-region fit is not supported; these synthetic offsets do not establish
+a deployable millimetre bound.
+
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI | S2/S3 | predeclare fresh synthetic development poses and target-mask offset families; evaluate the frozen four-channel checkpoint without opening a new evaluation group; preserve synthetic-only/no-authority scope | `issue/190-isaac-sim-host` | IN_PROGRESS |
 | Unclaimed | S2/S3 | physical-camera deployment qualification and safe-region-fit precision evidence | — | AVAILABLE |
 | ARM | S4 | collect four physical-original `camera_support_optics` bindings through onboarding, then run the ARM-070 intake; no synthetic promotion | ARM-071 | WAITING_FOR_ORIGINALS |
 
