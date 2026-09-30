@@ -1152,6 +1152,16 @@ explicitly qualified. Its retained five-case campaign preserves the same
 reference receipt across qualified and fallback paths, records 24 qualified
 lookups with 1 hit and 23 full-solve misses, and records zero cache activity on
 all four fallback paths. It adds no executor, retry, controller, or motion path.
+ARM-135 connects the actual shared AI `assemble()` emitter to that profiled
+service using consumer-owned synthetic integration fixtures. The retained
+`R,O,B,O,T` campaign preserves exact order. Its cold request records 57 IK
+lookups, 11 within-request exact hits, and 46 complete solves; the next request
+records 57/57 warm hits. On the measured host, that single warm observation was
+0.3004444 s versus 2.3158146 s cold. Calibration/evidence fallback and
+reload/restart complete through the full solver with zero cache activity, while
+pre-admission cancellation performs no solver work. Timing is diagnostic only,
+and the synthetic fixture grants no camera, deployment, controller, or motion
+qualification.
 
 1. **S1 software boundary — complete for zero authority:** v2 producer bytes,
    strict decoding, trusted registry, freshness, mutation rejection, and ordered

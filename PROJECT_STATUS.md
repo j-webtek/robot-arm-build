@@ -823,6 +823,13 @@ evidence mismatch and lifecycle transitions use the unchanged complete solver.
 The five retained cases preserve the reference result and show zero cache
 activity on every fallback. This is operational scaffolding only: no executor,
 controller transport, retry, or physical authority is attached.
+ARM-135 now sends canonical bytes from the actual shared AI batch assembler
+through that composition using a declared synthetic integration fixture. The
+retained `robot` sequence preserves `R,O,B,O,T`; its second request is a 57/57
+exact-cache hit, while calibration/evidence mismatch and lifecycle transitions
+remain complete-solve-only. One host observation improved from 2.3158146 s cold
+to 0.3004444 s warm, but this is diagnostic software timing—not final-camera,
+controller, device-effect, or physical typing evidence.
 
 ## How to interpret results
 

@@ -10,6 +10,10 @@ import pytest
 import rocell.application.actual_emitter_profiled_service_campaign_v1 as campaign
 
 ROOT = Path(__file__).resolve().parents[3]
+RETAINED = ROOT / "software/ai/eval/actual_emitter_profiled_service_campaign_v1.json"
+RETAINED_FILE_SHA256 = "8eadfd45f1ed01738a195cae78e95c371aa3f1dff0191081c7dd4a0a99157d74"
+RETAINED_CAMPAIGN_SHA256 = "8937f354ce8573c09c66fa1a1abe8757df95292e730665818cc5ad2b816f800b"
+RETAINED_SOURCE_COMMIT = "7f22378613bc9866b14912e667882af9201fd52c"
 VALIDATOR = Draft202012Validator(json.loads((ROOT / "software/ai/schemas/actual_emitter_profiled_service_campaign_v1.schema.json").read_text()))
 
 
@@ -55,3 +59,15 @@ def test_campaign_rejects_warm_miss_fallback_cache_and_hash_changes():
     changed = copy.deepcopy(value); changed["campaign_sha256"] = "f" * 64
     with pytest.raises(campaign.ActualEmitterProfiledServiceCampaignV1Error, match="hash"):
         campaign.parse_actual_emitter_profiled_service_campaign_v1(changed)
+
+
+def test_retained_campaign_is_pinned_to_clean_framework_commit():
+    import hashlib
+    raw = RETAINED.read_bytes()
+    assert hashlib.sha256(raw).hexdigest() == RETAINED_FILE_SHA256
+    value = json.loads(raw)
+    VALIDATOR.validate(value)
+    assert campaign.parse_actual_emitter_profiled_service_campaign_v1(value) == value
+    assert value["campaign_sha256"] == RETAINED_CAMPAIGN_SHA256
+    assert value["environment"]["repository_commit"] == RETAINED_SOURCE_COMMIT
+    assert value["environment"]["repository_dirty"] is False

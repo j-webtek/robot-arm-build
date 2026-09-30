@@ -814,6 +814,14 @@ restart retire eligibility rather than silently requalifying changed state.
 The retained [service-composition campaign](../ai/eval/typing_profiled_shadow_service_campaign_v1.json)
 proves receipt equivalence and zero cache access on every fallback path.
 
+ARM-135 closes the next software seam by regenerating canonical V2 bytes with
+the actual shared AI assembler and submitting them to the profiled service.
+The retained [`R,O,B,O,T` campaign](../ai/eval/actual_emitter_profiled_service_campaign_v1.json)
+observed a 57/57-hit warm request after one cold population, while calibration
+and evidence mismatch, reload, restart, and cancellation preserved their safe
+fallback semantics. The measured durations are single-host diagnostics and are
+not admission thresholds or physical typing-speed evidence.
+
 ## Completion definition
 
 This plan is complete only when the supported AI path can produce an exact
