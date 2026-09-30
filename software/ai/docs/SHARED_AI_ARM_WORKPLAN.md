@@ -982,6 +982,7 @@ unscored and unavailable during the next candidate-selection step.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
+| AI | S2/S3 tiny spatial occlusion candidate | `software/ai/train/build_official_mesh_occlusion_data.py`, focused tests and AI evidence docs; train a deterministic CPU-only 3→8→16 tiny CNN with 32 px target crops for eight epochs, select its threshold on AI-463 development under the existing 0.05 missed-abstention preference, freeze canonical weights, then score reserved evaluation once; synthetic-only and zero model-to-arm authority | `issue/190-isaac-sim-host` at `42d76eb4ebfe14cc62b449217f5e61561d43fa21` | ACTIVE |
 | Unclaimed | S2/S3 | physical-camera deployment qualification and safe-region-fit precision evidence | — | AVAILABLE |
 | ARM | S4 | collect four physical-original `camera_support_optics` bindings through onboarding, then run the ARM-070 intake; no synthetic promotion | ARM-071 | WAITING_FOR_ORIGINALS |
 
