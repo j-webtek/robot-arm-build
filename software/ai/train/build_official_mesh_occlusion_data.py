@@ -25,6 +25,11 @@ BASELINE_CROP_SIZE = 16
 BASELINE_ITERATIONS = 800
 BASELINE_LEARNING_RATE = 0.08
 BASELINE_L2 = 0.001
+SPATIAL_CROP_SIZE = 32
+SPATIAL_PADDING = 24
+SPATIAL_EPOCHS = 8
+SPATIAL_BATCH_SIZE = 128
+SPATIAL_LEARNING_RATE = 0.002
 LEGACY_SPLITS = {
     "train": {
         "poses": ("ready", "hover_t"),
@@ -350,6 +355,37 @@ def _features(
     return np.stack(vectors), np.asarray(labels, dtype=np.float64)
 
 
+def _spatial_crops(
+    dataset_dir: Path, rows: list[dict[str, Any]]
+) -> tuple[np.ndarray, np.ndarray]:
+    cache: dict[str, Image.Image] = {}
+    verified: set[str] = set()
+    crops = []
+    labels = []
+    for row in rows:
+        image_path = dataset_dir / row["image_path"]
+        if row["image_path"] not in verified:
+            if _sha256(image_path.read_bytes()) != row["image_sha256"]:
+                raise ValueError(f"image hash mismatch: {row['image_path']}")
+            verified.add(row["image_path"])
+        image = cache.setdefault(row["image_path"], Image.open(image_path).convert("RGB"))
+        polygon = row["safe_polygon_px"]
+        x_values = [point[0] for point in polygon]
+        y_values = [point[1] for point in polygon]
+        box = (
+            max(0, int(min(x_values)) - SPATIAL_PADDING),
+            max(0, int(min(y_values)) - SPATIAL_PADDING),
+            min(image.width, int(max(x_values)) + SPATIAL_PADDING + 1),
+            min(image.height, int(max(y_values)) + SPATIAL_PADDING + 1),
+        )
+        crop = image.crop(box).resize(
+            (SPATIAL_CROP_SIZE, SPATIAL_CROP_SIZE), Image.Resampling.BILINEAR
+        )
+        crops.append(np.asarray(crop, dtype=np.float32).transpose(2, 0, 1) / 255.0)
+        labels.append(row["decision"] == "abstain")
+    return np.stack(crops), np.asarray(labels, dtype=np.float32)
+
+
 def _metrics(rows: list[dict[str, Any]], labels: np.ndarray,
              probabilities: np.ndarray, threshold: float = 0.5) -> dict[str, Any]:
     predicted = probabilities >= threshold
@@ -627,12 +663,167 @@ def train_selected_candidate(dataset_dir: Path, output_dir: Path) -> dict[str, A
     return scorecard
 
 
+def train_spatial_candidate(dataset_dir: Path, output_dir: Path) -> dict[str, Any]:
+    """Fit a tiny CNN, freeze on development, then score evaluation once."""
+    import torch
+
+    dataset_dir = dataset_dir.resolve(strict=True)
+    output_dir = output_dir.resolve()
+    if output_dir.exists() and any(output_dir.iterdir()):
+        raise ValueError("spatial output directory must be empty")
+    output_dir.mkdir(parents=True, exist_ok=True)
+    manifest_path = dataset_dir / "manifest.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    claimed_dataset_sha = manifest.pop("dataset_sha256", None)
+    if not isinstance(claimed_dataset_sha, str) or _sha256(_canonical(manifest)) != claimed_dataset_sha:
+        raise ValueError("dataset manifest hash mismatch")
+    manifest["dataset_sha256"] = claimed_dataset_sha
+    if manifest.get("schema") != SCHEMA_V3:
+        raise ValueError("spatial selection requires three-way v3 dataset")
+    if manifest.get("scope") != "SYNTHETIC_ONLY_NO_DEPLOYMENT_QUALIFICATION":
+        raise ValueError("dataset scope mismatch")
+
+    torch.manual_seed(BASELINE_SEED)
+    torch.use_deterministic_algorithms(True)
+    torch.set_num_threads(1)
+
+    class TinySpatial(torch.nn.Module):
+        def __init__(self) -> None:
+            super().__init__()
+            self.features = torch.nn.Sequential(
+                torch.nn.Conv2d(3, 8, 3, padding=1),
+                torch.nn.ReLU(),
+                torch.nn.MaxPool2d(2),
+                torch.nn.Conv2d(8, 16, 3, padding=1),
+                torch.nn.ReLU(),
+                torch.nn.AdaptiveAvgPool2d((4, 4)),
+            )
+            self.classifier = torch.nn.Linear(16 * 4 * 4, 1)
+
+        def forward(self, values):  # type: ignore[no-untyped-def]
+            return self.classifier(self.features(values).flatten(1)).squeeze(1)
+
+    train_rows = _load_rows(dataset_dir, "train", manifest)
+    development_rows = _load_rows(dataset_dir, "development", manifest)
+    train_x, train_y = _spatial_crops(dataset_dir, train_rows)
+    development_x, development_y = _spatial_crops(dataset_dir, development_rows)
+    train_tensor = torch.from_numpy(train_x)
+    train_labels = torch.from_numpy(train_y)
+    development_tensor = torch.from_numpy(development_x)
+    model = TinySpatial().cpu()
+    positives = float(train_y.sum())
+    negatives = float(len(train_y) - positives)
+    loss_fn = torch.nn.BCEWithLogitsLoss(
+        pos_weight=torch.tensor(negatives / positives, dtype=torch.float32)
+    )
+    optimizer = torch.optim.Adam(model.parameters(), lr=SPATIAL_LEARNING_RATE)
+    epoch_losses = []
+    for epoch in range(SPATIAL_EPOCHS):
+        generator = torch.Generator().manual_seed(BASELINE_SEED + epoch)
+        order = torch.randperm(len(train_tensor), generator=generator)
+        total_loss = 0.0
+        for start in range(0, len(order), SPATIAL_BATCH_SIZE):
+            indices = order[start:start + SPATIAL_BATCH_SIZE]
+            optimizer.zero_grad(set_to_none=True)
+            loss = loss_fn(model(train_tensor[indices]), train_labels[indices])
+            loss.backward()
+            optimizer.step()
+            total_loss += float(loss.detach()) * len(indices)
+        epoch_losses.append(total_loss / len(order))
+
+    model.eval()
+    with torch.no_grad():
+        development_probabilities = torch.sigmoid(model(development_tensor)).numpy()
+    threshold = _select_threshold(development_y.astype(np.float64), development_probabilities)
+    development_metrics = _metrics(
+        development_rows, development_y.astype(np.float64),
+        development_probabilities, threshold,
+    )
+    development_missed_rate = (
+        development_metrics["confusion"]["missed_abstain"] / int(development_y.sum())
+    )
+    state = {
+        name: {
+            "shape": list(value.shape),
+            "values": value.detach().cpu().numpy().astype(np.float64).reshape(-1).tolist(),
+        }
+        for name, value in sorted(model.state_dict().items())
+    }
+    checkpoint = {
+        "schema": "rocell.ai_target_crop_tiny_spatial.v1",
+        "architecture": {
+            "input": [3, SPATIAL_CROP_SIZE, SPATIAL_CROP_SIZE],
+            "layers": [
+                "conv_3_8_k3_pad1", "relu", "maxpool_2",
+                "conv_8_16_k3_pad1", "relu", "adaptive_avgpool_4x4",
+                "linear_256_1",
+            ],
+            "parameter_count": sum(value.numel() for value in model.parameters()),
+        },
+        "training": {
+            "seed": BASELINE_SEED,
+            "device": "cpu",
+            "epochs": SPATIAL_EPOCHS,
+            "batch_size": SPATIAL_BATCH_SIZE,
+            "learning_rate": SPATIAL_LEARNING_RATE,
+            "optimizer": "adam",
+            "class_weighting": "negative_to_positive_ratio",
+            "epoch_losses": epoch_losses,
+        },
+        "crop": {"size": SPATIAL_CROP_SIZE, "padding_px": SPATIAL_PADDING},
+        "threshold": threshold,
+        "selection_dataset_sha256": claimed_dataset_sha,
+        "selection_split": "development",
+        "development_missed_abstain_rate": development_missed_rate,
+        "state_dict": state,
+    }
+    checkpoint_path = output_dir / "model.json"
+    checkpoint_path.write_bytes(_canonical(checkpoint) + b"\n")
+
+    # Evaluation bytes are loaded only after architecture, state, and threshold freeze.
+    evaluation_rows = _load_rows(dataset_dir, "evaluation", manifest)
+    evaluation_x, evaluation_y = _spatial_crops(dataset_dir, evaluation_rows)
+    with torch.no_grad():
+        evaluation_probabilities = torch.sigmoid(
+            model(torch.from_numpy(evaluation_x))
+        ).numpy()
+    scorecard: dict[str, Any] = {
+        "schema": "rocell.ai_official_mesh_occlusion_spatial_candidate.v1",
+        "algorithm": "tiny_deterministic_cpu_cnn",
+        "selection_policy": {
+            "fit_split": "train",
+            "selection_split": "development",
+            "evaluation_split": "evaluation_loaded_after_checkpoint_freeze",
+            "maximum_development_missed_abstain_rate": 0.05,
+        },
+        "dataset_manifest_sha256": _sha256(manifest_path.read_bytes()),
+        "dataset_sha256": claimed_dataset_sha,
+        "model_sha256": _sha256(checkpoint_path.read_bytes()),
+        "selected_threshold": threshold,
+        "development_missed_abstain_rate": development_missed_rate,
+        "development_gate_met": development_missed_rate <= 0.05,
+        "development": development_metrics,
+        "evaluation": _metrics(
+            evaluation_rows, evaluation_y.astype(np.float64),
+            evaluation_probabilities, threshold,
+        ),
+        "promotion_status": "BLOCKED_SYNTHETIC_ONLY",
+        "hardware_writes": 0,
+        "physical_movements": 0,
+        "limitations": manifest["limitations"],
+    }
+    scorecard["scorecard_sha256"] = _sha256(_canonical(scorecard))
+    (output_dir / "scorecard.json").write_bytes(_canonical(scorecard) + b"\n")
+    return scorecard
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--source-manifest", type=Path, required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--baseline-output", type=Path)
     parser.add_argument("--candidate-output", type=Path)
+    parser.add_argument("--spatial-output", type=Path)
     args = parser.parse_args()
     try:
         manifest = build(args.source_manifest, args.output_dir)
@@ -643,6 +834,10 @@ def main() -> int:
         candidate_scorecard = (
             train_selected_candidate(args.output_dir, args.candidate_output)
             if args.candidate_output is not None else None
+        )
+        spatial_scorecard = (
+            train_spatial_candidate(args.output_dir, args.spatial_output)
+            if args.spatial_output is not None else None
         )
     except BaseException:
         if args.output_dir.exists():
@@ -673,6 +868,21 @@ def main() -> int:
             "promotion_status": candidate_scorecard["promotion_status"],
             "selected_feature_family": candidate_scorecard["selected_feature_family"],
             "selected_threshold": candidate_scorecard["selected_threshold"],
+            "evaluation": {
+                key: evaluation[key]
+                for key in (
+                    "count", "confusion", "accuracy", "balanced_accuracy",
+                    "brier_score", "expected_calibration_error_10_bin",
+                )
+            },
+        }
+    if spatial_scorecard is not None:
+        evaluation = spatial_scorecard["evaluation"]
+        result["spatial_candidate"] = {
+            "scorecard_sha256": spatial_scorecard["scorecard_sha256"],
+            "promotion_status": spatial_scorecard["promotion_status"],
+            "selected_threshold": spatial_scorecard["selected_threshold"],
+            "development_gate_met": spatial_scorecard["development_gate_met"],
             "evaluation": {
                 key: evaluation[key]
                 for key in (

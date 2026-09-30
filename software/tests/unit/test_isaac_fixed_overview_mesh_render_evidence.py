@@ -336,3 +336,28 @@ def test_transit_lighting_families_are_deterministic_and_distinct() -> None:
 
     assert all(np.array_equal(left, right) for left, right in zip(first, second, strict=True))
     assert len({_sha256(value.tobytes()) for value in first}) == len(variants)
+
+
+def test_spatial_crops_are_deterministic_channel_first_and_labeled(tmp_path: Path) -> None:
+    module = _builder()
+    image_dir = tmp_path / "images"
+    image_dir.mkdir()
+    pixels = np.arange(64 * 64 * 3, dtype=np.uint8).reshape(64, 64, 3)
+    image_path = image_dir / "sample.png"
+    Image.fromarray(pixels, mode="RGB").save(image_path)
+    row = {
+        "image_path": "images/sample.png",
+        "image_sha256": _sha256(image_path.read_bytes()),
+        "safe_polygon_px": [[20, 20], [44, 20], [44, 44], [20, 44]],
+        "decision": "abstain",
+    }
+
+    first_x, first_y = module._spatial_crops(tmp_path, [row])
+    second_x, second_y = module._spatial_crops(tmp_path, [row])
+
+    assert first_x.shape == (1, 3, 32, 32)
+    assert first_x.dtype == np.float32
+    assert np.array_equal(first_x, second_x)
+    assert np.array_equal(first_y, second_y)
+    assert first_y.tolist() == [1.0]
+    assert 0.0 <= float(first_x.min()) <= float(first_x.max()) <= 1.0
