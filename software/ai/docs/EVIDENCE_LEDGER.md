@@ -6242,3 +6242,62 @@ rewriting history. New entries must use a unique evidence ID.
   path as a synthetic-only occlusion dataset, then train/evaluate abstention on
   disjoint pose/lighting splits without treating those scores as deployment
   qualification. Add measured tool and camera-support geometry when available.
+
+### E-20260930-AI-457 — official-mesh occlusion data builder
+
+- Stage: S2/S3 synthetic perception and abstention development.
+- Lane: AI/model; no arm or integration status changed.
+- Implementation commit: `35495d0d79c231490149bd22ad1cdbd51a4d815f`.
+- Change: added a hash-verifying builder that consumes the retained INT-456
+  receipt and official-mesh RGB atlas, materializes nine deterministic images,
+  and emits target-specific `target_visible`/`abstain` JSONL. Training uses
+  `ready` and `hover_t` crossed with nominal, dim, and bright lighting.
+  Evaluation holds out `hover_e` and warm, glare, and blur transformations.
+  Both pose and lighting groups are therefore disjoint. The 0.20 maximum
+  safe-region overlap is declared before label generation; center occlusion
+  always abstains.
+- Inputs/fixtures: implementation SHA-256
+  `275857499ca39ff0398cadc6f0ddda5e3883606fbcd668de69fbf14dc1f77d60`;
+  test SHA-256
+  `de552ce13c6935b65a8307a7a06fafd355517118af50ab7b976d4aa12caef480`;
+  source manifest file SHA-256
+  `9ae31bfc21a6ec522fa8fd0d91ab0d37f789ea1717a371ec4750855308839d5c`;
+  source receipt SHA-256
+  `b09559c54a5bd65715f5a34003b15c4dd20abd05e860e3cc6d1d4089ffe7e99b`;
+  target-catalog SHA-256
+  `6779213e832ab27eeda1e7fb245f57ff8cb0d56707b5aa73a8f31ec483a620f2`.
+- Commands: `python software/ai/train/build_official_mesh_occlusion_data.py --source-manifest software/integrations/isaac_sim/evidence/fixed_overview_official_mesh_v1/manifest.json --output-dir C:\IsaacSim\artifacts\issue190\official-mesh-occlusion-data-v1`;
+  `$env:PYTHONPATH=(Resolve-Path 'software/src').Path; python -m pytest software/tests/unit/test_isaac_fixed_overview_mesh_render_evidence.py software/tests/unit/test_fixed_overview_segmentation_corpus.py software/tests/unit/test_fixed_fixture_practice_corpus.py software/tests/unit/test_virtual_pixel_vision.py software/tests/unit/test_virtual_arm_camera.py software/ai/tests/test_offline.py -q`;
+  Ruff, documentation, evidence-scope, artifact, source-footprint,
+  release-integrity, and `git diff --check` checks.
+- Result: PASS_WITH_BLOCKERS. The deterministic dataset SHA-256 is
+  `d18f398e2aa7cf9e4297780158e91946d0c03f44afec97830311daf1a614a546`.
+  Training contains 450 rows: 51 abstentions and 399 visible labels, JSONL
+  SHA-256 `140636df91e1884ca28d5f8cb9fb3662946a0ab8633f452098de4e87c3f8f107`.
+  Evaluation contains 225 rows: 45 abstentions and 180 visible labels, JSONL
+  SHA-256 `c00b3c3ded761af0c57e4211441d253bfa9848623b658be02dd114a2b40d70ca`.
+  Nine images total 910,461 bytes. The external generated manifest SHA-256 is
+  `ff6c9f5523d4334309d685e975a58bb33f57af678b7d8b4792d0b78a4dcf85ea`.
+  Forty-nine focused AI, evidence, corpus, and virtual-camera tests passed in
+  13.48 seconds. Tampered receipt identity, nondeterministic output, and group
+  leakage are rejected.
+- Evidence consolidation: the redundant retained `status.json` was removed
+  and its `PASS_WITH_BLOCKERS`, minimum-IoU, and maximum-missed-pixel content
+  moved inside the canonical receipt before its new hash was calculated. The
+  prior file and hashes remain preserved in INT-455 and INT-456. This one-path
+  consolidation freed the path used by the builder and kept the repository at
+  the unchanged 6,100-file ceiling.
+- Hardware-write count: 0.
+- Physical-movement count: 0.
+- Limitations: all images, pose geometry, transformations, and labels are
+  synthetic. The evaluation split is a development fixture rather than a
+  physical or deployment qualification set. Tool and camera-support geometry
+  remain absent. No localization error, physical visibility coverage,
+  collision clearance, model promotion, controller behavior, execution
+  permission, or physical authority is established.
+- Supersedes: none; consumes and preserves INT-456 source evidence.
+- Next dependency: train a small offline occlusion/abstention baseline on the
+  generated training split and score the untouched synthetic evaluation split,
+  reporting class balance, confusion matrix, calibration, and failure cases.
+  Keep any resulting model blocked from deployment until measured physical
+  camera data is collected under a registered configuration epoch.

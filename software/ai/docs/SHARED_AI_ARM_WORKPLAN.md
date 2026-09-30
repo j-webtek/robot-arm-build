@@ -927,9 +927,16 @@ center occlusion plus safe-region overlap. The official geometry obscures
 training and evaluation fixtures. Their camera and placement remain nominal,
 so they install no physical qualification or authority.
 
+The AI data builder in `E-20260930-AI-457` converts those target-bound renders
+into 450 training and 225 held-out evaluation rows. Training uses `ready` and
+`hover_t` with nominal, dim, and bright images; evaluation holds out both the
+`hover_e` pose and warm, glare, and blur transformations. It labels only
+`target_visible` or `abstain` under a predeclared 0.20 safe-region-overlap
+threshold. This is a reproducible synthetic development dataset, with no
+deployment qualification or change to the `ModelMotionBatchV2` boundary.
+
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI | S2/S3 | Build hash-bound synthetic-only official-mesh occlusion train/evaluation splits; consolidate redundant status evidence to stay within the 6,100-file ceiling | `issue/190-isaac-sim-host` | IN_PROGRESS |
 | Unclaimed | S2/S3 | physical-camera deployment qualification and safe-region-fit precision evidence | — | AVAILABLE |
 | ARM | S4 | collect four physical-original `camera_support_optics` bindings through onboarding, then run the ARM-070 intake; no synthetic promotion | ARM-071 | WAITING_FOR_ORIGINALS |
 
