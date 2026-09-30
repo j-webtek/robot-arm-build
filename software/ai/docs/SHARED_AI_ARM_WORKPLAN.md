@@ -875,9 +875,18 @@ the shared emitter; the retained replay remains honestly bound to its exact
 `5072c163152848bd8d78fa3fbc024e32177ac98d` source and should be repeated from
 the newer service path when safe-region-qualified producer output exists.
 
+The actual-emitter replay in `E-20260929-INT-452` closes that producer
+substitution question for the synthetic representative case. It binds arm
+commit `9e5c878852da6a6e8509598bce9ce43f218efc70`, the actual shared emitter's
+canonical batch bytes, strict v2 admission, 133-sample schedule, and independent
+Isaac FK replay. `H, H, 1, PERIOD` and every replay metric remain identical to
+the fixture-origin run. The evidence explicitly marks the supplied observations
+as synthetic and claims no deployment qualification. The remaining priority is
+therefore qualified physical-camera localization and installed collision
+geometry, not another synthetic producer substitution.
+
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| SIM/INTEGRATION | S2/S3 | current profiled-service actual-emitter output intake, schedule-replay readiness assessment, focused tests, and retained evidence under `software/integrations/isaac_sim/`; no arm-lane status changes | `issue/190-isaac-sim-host` | IN_PROGRESS |
 | Unclaimed | S2/S3 | physical-camera deployment qualification and safe-region-fit precision evidence | — | AVAILABLE |
 | ARM | S4 | collect four physical-original `camera_support_optics` bindings through onboarding, then run the ARM-070 intake; no synthetic promotion | ARM-071 | WAITING_FOR_ORIGINALS |
 

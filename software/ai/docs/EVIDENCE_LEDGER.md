@@ -5891,3 +5891,81 @@ rewriting history. New entries must use a unique evidence ID.
   installed-geometry collision screening before any dynamics or contact
   simulation. Separately replace the virtual layout, tool length, and synthetic
   park seed with measured calibration and fresh observed state.
+
+### E-20260929-INT-452 — actual-emitter schedule lineage and Isaac replay
+
+- Stage: S2/S3 simulation process alignment, WP2.
+- Lane: INTEGRATION.
+- Implementation commit: `c764259a94cd0c1d9726257f2ce4f8d1ed1ddc49`.
+  Arm source commit: `9e5c878852da6a6e8509598bce9ce43f218efc70`.
+- Change: extended the simulation-local replay bundle to v2 so it can require
+  and bind actual shared-emitter lineage. The extractor verifies that the
+  producer payload SHA-256 equals the canonical retained batch SHA-256, marks
+  the supplied observations synthetic, denies deployment qualification, and
+  preserves the existing strict schedule, order, zero-authority, and digest
+  checks. The latest arm source's actual emitter produced nominal RC03 centers
+  for `H, H, 1, PERIOD`; the same production ingress, trajectory, IK, and
+  synthetic joint-dynamics boundaries emitted 133 samples, which were replayed
+  through the independent Isaac articulation.
+- Inputs/fixtures: bundle builder/probe SHA-256
+  `e4daf07db09a0c003e35ce913e1bde17ce2c22c12fdbb77822880000d42381f5` /
+  `67a3d628c85f9bdbe5a1bdc88a3756916df9fda1f336a13c1631061357490540`;
+  integration/evidence test SHA-256
+  `ded1c39d84c01c52fd301309d65a14f6d257aac1512d83b51da94d8652eafc99` /
+  `4e4b78a0180edd9079c399e591d21f7ba8e2a69b0d40d633e499c0ad9161386a`;
+  external export helper/full-report SHA-256
+  `0fc75ad67990721a57ea4a48c43111f24267c070632a4e6e26b026e7ce3aa8dd` /
+  `8e997fe024e465f29cc583ccb23bceda7f236844ceaabca4b1609db2fca58d41`;
+  actual-emitter input/payload SHA-256
+  `b5dc580825819a27a5aba3e58275453aa4c7c0a6b365d24a80a9b2c095f06c6d` /
+  `d4bad540537d48bee7227aab089f247216a3a88343cb16bd728d41e9ac623f7a`;
+  committed bundle file/content SHA-256
+  `6a59ce143f5527c7a9ced09b08d5515644ea4fb859dd69691e08483eb020ee42` /
+  `52e8e1977cc88bc4d80b1664ccaaec5b4a2d4286c744bf74655f3d683577d71a`;
+  committed replay receipt file/content SHA-256
+  `b66993bab6aba1a5ab592f2fabb85bf4bca98658fe1bec4e997ea8b5a31b3fc6` /
+  `5ac28fd35d62f0cf27d1c9c86c092ecfb74fa9cd36e93eb99dcc0f47dcf90e8c`;
+  status SHA-256
+  `d3a573a4c60455c554366775f9d32592a618f4dfcdb9b9ecfce55fe901b38ee8`.
+- Commands: `$env:PYTHONPATH='software/src;software/ai;software/tests/unit;software/tests/integration'; python C:\IsaacSim\tools\export_actual_emitter_representative_schedule_9e5c878.py`;
+  `python software/integrations/isaac_sim/joint_schedule_replay_bundle.py --arm-report C:\IsaacSim\evidence\actual_emitter_representative_schedule_9e5c878.json --arm-commit 9e5c878852da6a6e8509598bce9ce43f218efc70 --require-actual-emitter --output C:\IsaacSim\evidence\actual_emitter_joint_schedule_bundle_9e5c878.json`;
+  `$env:OMNI_KIT_ACCEPT_EULA='YES'; C:\IsaacSim\env_6_1_0\Scripts\python.exe software\integrations\isaac_sim\joint_schedule_isaac_replay_probe.py --usd C:\IsaacSim\artifacts\issue190\wp1-import-003\roarm_m3_kinematic_40dbd84\roarm_m3_kinematic_40dbd84.usda --import-receipt software\integrations\isaac_sim\evidence\roarm_m3_urdf_import_20260929.json --bundle C:\IsaacSim\evidence\actual_emitter_joint_schedule_bundle_9e5c878.json --virtual-profile software\config\virtual_commissioning_profile.json --output C:\IsaacSim\evidence\actual_emitter_joint_schedule_isaac_replay_9e5c878.json --status-output C:\IsaacSim\evidence\actual_emitter_joint_schedule_isaac_replay_9e5c878.status.json`;
+  `python -m pytest software/tests/integration/test_joint_schedule_replay_bundle.py software/tests/unit/test_isaac_sim_joint_schedule_replay_evidence.py -q`;
+  shared focused suite, repository verification, and `git diff --check`.
+- Result: PASS_WITH_BLOCKERS. The actual emitter preserves `H, H, 1, PERIOD`,
+  including the repeated key, and its canonical output is byte-bound to the
+  retained batch. All 133 arm samples pass exactly as in INT-451. Isaac reports
+  the identical maximum full-route tool-tip disagreement
+  `0.07684842940066568` mm and maximum joint readback disagreement
+  `5.923525581152944e-08` rad. This equality isolates producer substitution:
+  replacing fixture-origin batch construction with the actual shared emitter
+  changes no downstream motion for the same observations. Sixty-two focused
+  boundary, producer, scene, replay, and retained-evidence tests passed in 3.57
+  seconds. Repository verification passed 123 CI unit tests plus documentation,
+  public-record, evidence-scope, artifact, repository-health, source-footprint,
+  release-integrity, and readiness-synchronization checks.
+- Artifacts:
+  `software/integrations/isaac_sim/evidence/actual_emitter_joint_schedule_bundle_9e5c878_20260929.json`;
+  `software/integrations/isaac_sim/evidence/actual_emitter_joint_schedule_isaac_replay_9e5c878_20260929.json`;
+  `software/integrations/isaac_sim/evidence/actual_emitter_joint_schedule_isaac_replay_9e5c878_20260929.status.json`;
+  updated bundle builder, replay probe, integration tests, and evidence tests;
+  full source report under `C:\IsaacSim\evidence`.
+- Hardware-write count: 0.
+- Physical-movement count: 0.
+- Limitations: the observations supplied to the actual emitter are synthetic
+  nominal target centers with fixture qualification evidence. The v2 bundle
+  explicitly sets `synthetic_observations=true` and
+  `deployment_qualification_claimed=false`. The simulation-only layout, 120 mm
+  tool, and synthetic park seed remain unmeasured. Isaac uses joint teleport
+  with zero physics steps. The `14.400834977163141` mm localization uncertainty
+  from the actual precision-adapter fixture still exceeds the 7 mm key-edge
+  margin. Installed collision geometry, collision clearance, valid inertia,
+  dynamics, controller tracking, fresh observed state, contact force, key
+  travel, hardware, and physical qualification remain absent. No lane or
+  integration-gate status changed.
+- Supersedes: INT-451 only for the synthetic producer-substitution dependency.
+  INT-451's failed geometry/seed evidence and all physical blockers remain.
+- Next dependency: obtain safe-region-fitting output from a deployment-scoped
+  physical-camera qualification, then feed those actual observations through
+  this now-verified emitter-to-schedule boundary. In parallel, the arm lane must
+  install accepted collision geometry before any dynamic or contact replay.

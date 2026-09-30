@@ -235,6 +235,16 @@ park-state seed, and a representative synthetic batch. It takes zero physics
 steps. It does not execute collision geometry, dynamics, controller tracking,
 key travel, contact force, camera localization, or physical qualification.
 
+The follow-up v2
+[`actual-emitter bundle`](evidence/actual_emitter_joint_schedule_bundle_9e5c878_20260929.json)
+binds the retained batch bytes to the actual shared emitter on arm commit
+`9e5c878852da6a6e8509598bce9ce43f218efc70`. The bundle marks its observations
+as synthetic and denies deployment qualification. Its independent
+[`Isaac receipt`](evidence/actual_emitter_joint_schedule_isaac_replay_9e5c878_20260929.json)
+preserves the same 133 samples, contact order, and error metrics as the earlier
+fixture-origin replay. This isolates producer substitution: routing the same
+observations through the actual emitter does not change the downstream motion.
+
 Reproduce the retained bundle and Isaac replay from the repository root:
 
 ```powershell
@@ -242,6 +252,12 @@ python software\integrations\isaac_sim\joint_schedule_replay_bundle.py `
   --arm-report C:\IsaacSim\evidence\representative_schedule_promoted_5072.json `
   --arm-commit 5072c163152848bd8d78fa3fbc024e32177ac98d `
   --output C:\IsaacSim\evidence\representative_joint_schedule_bundle_5072.json
+
+python software\integrations\isaac_sim\joint_schedule_replay_bundle.py `
+  --arm-report C:\IsaacSim\evidence\actual_emitter_representative_schedule_9e5c878.json `
+  --arm-commit 9e5c878852da6a6e8509598bce9ce43f218efc70 `
+  --require-actual-emitter `
+  --output C:\IsaacSim\evidence\actual_emitter_joint_schedule_bundle_9e5c878.json
 
 $env:OMNI_KIT_ACCEPT_EULA = 'YES'
 C:\IsaacSim\env_6_1_0\Scripts\python.exe software\integrations\isaac_sim\joint_schedule_isaac_replay_probe.py `
