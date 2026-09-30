@@ -104,6 +104,12 @@ The [installed collision-geometry profile schema](installed_collision_geometry_p
 defines the measured, content-addressed body envelopes, source bindings,
 engineering exclusions, and clearance policy required before route screening may
 rely on the installed arm rather than diagnostic placeholders.
+The [collision exclusion-policy candidate schema](collision_exclusion_policy_candidate_v1.schema.json)
+defines the inert bridge between finite simulation evidence and a future
+reviewed installed profile. It binds the base contract, robot model, selected
+geometry, replay, upstream SRDF, and pair-review hashes. Proposed pairs never
+become effective in this document: `effective_exclusions` must be empty, the
+default remains `CHECK_COLLISION`, and every authority flag is false.
 
 The S4 zero-write controller boundary publishes five strict, closed schemas:
 the [T=102 encoding profile](zero_write_waveshare_t102_profile_v1.schema.json),
