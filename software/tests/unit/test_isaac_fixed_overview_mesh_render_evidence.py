@@ -135,6 +135,26 @@ def test_official_mesh_occlusion_builder_has_disjoint_groups_and_zero_authority(
         (tmp_path / "first" / record["path"]).is_file()
         for record in first["images"]
     )
+    first_score = module.train_baseline(tmp_path / "first", tmp_path / "run-first")
+    second_score = module.train_baseline(tmp_path / "second", tmp_path / "run-second")
+    assert first_score == second_score
+    assert first_score["promotion_status"] == "BLOCKED_SYNTHETIC_ONLY"
+    assert first_score["train"]["confusion"] == {
+        "true_abstain": 49,
+        "true_visible": 398,
+        "false_abstain": 1,
+        "missed_abstain": 2,
+    }
+    assert first_score["evaluation"]["confusion"] == {
+        "true_abstain": 32,
+        "true_visible": 118,
+        "false_abstain": 62,
+        "missed_abstain": 13,
+    }
+    assert first_score["evaluation"]["balanced_accuracy"] < 0.70
+    assert first_score["evaluation"]["expected_calibration_error_10_bin"] > 0.30
+    assert first_score["hardware_writes"] == 0
+    assert first_score["physical_movements"] == 0
 
 
 def test_official_mesh_occlusion_builder_rejects_altered_source(tmp_path: Path) -> None:

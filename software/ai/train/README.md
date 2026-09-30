@@ -148,9 +148,15 @@ are disjoint.
 ```powershell
 python software/ai/train/build_official_mesh_occlusion_data.py `
   --source-manifest software/integrations/isaac_sim/evidence/fixed_overview_official_mesh_v1/manifest.json `
-  --output-dir software/runs/official-mesh-occlusion-v1
+  --output-dir software/runs/official-mesh-occlusion-v1 `
+  --baseline-output software/runs/official-mesh-occlusion-baseline-v1
 ```
 
 This dataset teaches only `target_visible` versus `abstain` for synthetic robot
 occlusion. Its evaluation split is a development fixture. It does not qualify
 the physical camera, localization accuracy, collision clearance, or execution.
+The optional baseline is a class-weighted logistic model over standardized
+16-by-16 RGB target crops. Its fixed threshold, confusion matrix, Brier score,
+ten-bin calibration error, and every misclassified case are retained in the
+external scorecard. A good training score cannot promote it; the held-out
+synthetic score and physical-data dependency govern that decision.
