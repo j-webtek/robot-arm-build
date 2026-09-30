@@ -115,12 +115,29 @@ def _assess(candidate, replay: dict) -> dict:
 
     retained_counts = {name: 0 for name in OUTCOMES}
     retained_pair_count = 0
+    retained_pair_reviews = []
     for pair, row in rows.items():
         if pair in proposed_pairs:
             continue
         retained_pair_count += 1
+        counts = {name: int(row["counts"][name]) for name in OUTCOMES}
         for outcome in OUTCOMES:
-            retained_counts[outcome] += int(row["counts"][outcome])
+            retained_counts[outcome] += counts[outcome]
+        if (
+            counts["AGREEMENT_COLLISION"]
+            or counts["CANDIDATE_FALSE_POSITIVE"]
+            or counts["CANDIDATE_FALSE_NEGATIVE"]
+        ):
+            retained_pair_reviews.append({
+                "body_pair": list(pair),
+                "counts": counts,
+                "minimum_raw_mesh_signed_distance_mm": (
+                    row["minimum_raw_mesh_signed_distance_mm"]
+                ),
+                "minimum_candidate_box_signed_distance_mm": (
+                    row["minimum_candidate_box_signed_distance_mm"]
+                ),
+            })
 
     never_reviews = [
         row for row in proposed_reviews
@@ -132,6 +149,7 @@ def _assess(candidate, replay: dict) -> dict:
     ]
     return {
         "proposed_pair_reviews": proposed_reviews,
+        "retained_nonzero_pair_reviews": retained_pair_reviews,
         "summary": {
             "stress_pose_count": replay["pose_count"],
             "stress_pair_case_count": replay["summary"]["PAIR_CASES"],
@@ -145,6 +163,18 @@ def _assess(candidate, replay: dict) -> dict:
                 row["held_out_supports_never_reason"] is False for row in never_reviews
             ),
             "retained_pair_count": retained_pair_count,
+            "retained_collision_pair_count": sum(
+                row["counts"]["AGREEMENT_COLLISION"] > 0
+                for row in retained_pair_reviews
+            ),
+            "retained_false_positive_pair_count": sum(
+                row["counts"]["CANDIDATE_FALSE_POSITIVE"] > 0
+                for row in retained_pair_reviews
+            ),
+            "retained_false_negative_pair_count": sum(
+                row["counts"]["CANDIDATE_FALSE_NEGATIVE"] > 0
+                for row in retained_pair_reviews
+            ),
             "retained_pair_counts": retained_counts,
         },
     }

@@ -105,6 +105,9 @@ def test_assessment_separates_proposed_and_retained_pair_behavior() -> None:
         "supported_never_pair_count": 1,
         "contradicted_never_pair_count": 0,
         "retained_pair_count": 1,
+        "retained_collision_pair_count": 0,
+        "retained_false_positive_pair_count": 0,
+        "retained_false_negative_pair_count": 1,
         "retained_pair_counts": {
             "AGREEMENT_COLLISION": 0,
             "AGREEMENT_FREE": 255,
@@ -112,6 +115,17 @@ def test_assessment_separates_proposed_and_retained_pair_behavior() -> None:
             "CANDIDATE_FALSE_NEGATIVE": 1,
         },
     }
+    assert result["retained_nonzero_pair_reviews"] == [{
+        "body_pair": ["link1", "link2"],
+        "counts": {
+            "AGREEMENT_COLLISION": 0,
+            "AGREEMENT_FREE": 255,
+            "CANDIDATE_FALSE_POSITIVE": 0,
+            "CANDIDATE_FALSE_NEGATIVE": 1,
+        },
+        "minimum_raw_mesh_signed_distance_mm": 4.0,
+        "minimum_candidate_box_signed_distance_mm": 3.0,
+    }]
 
 
 def test_assessment_preserves_never_pair_contradiction() -> None:
