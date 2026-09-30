@@ -829,15 +829,15 @@ emits only an offline review recommendation and installs no qualification.
 Workers add a short row before beginning a potentially overlapping change and
 remove it only in the same commit that appends the resulting evidence row.
 
-The latest completed SIM/WP2 increment is evidence `E-20260929-INT-445`.
-It identifies the exact `halton_019` baseline witness, retains a bounded
-triangle-preserving `link2` partition candidate, and removes the one observed
-nonadjacent false positive in the finite replay without granting collision or
-clearance authority.
+The latest completed SIM/WP2 increments are evidence `E-20260929-INT-445` and
+`E-20260929-INT-446`. They retain a bounded triangle-preserving `link2`
+partition candidate, remove the one observed nonadjacent false positive in the
+finite replay, and bind all 165 remaining false positives to direct-joint
+`Adjacent` exclusions in the pinned upstream RoArm-M3 SRDF. The exclusion
+review is counterfactual only and grants no collision or clearance authority.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| SIM/WP2 | S2/S3 | classify 165 adjacent-pair witnesses; inspect governed joint topology and pinned upstream sources for explicit self-collision policy evidence; retain no-exclusion default unless supported | `issue/190-isaac-sim-host` | IN_PROGRESS |
 | Unclaimed | S2/S3 | physical-camera deployment qualification and safe-region-fit precision evidence | — | AVAILABLE |
 | ARM | S4 | collect four physical-original `camera_support_optics` bindings through onboarding, then run the ARM-070 intake; no synthetic promotion | ARM-071 | WAITING_FOR_ORIGINALS |
 

@@ -5445,3 +5445,63 @@ rewriting history. New entries must use a unique evidence ID.
   evidence before proposing any exclusion policy, and broaden deterministic
   replay only after tool, camera-support, and measured environment geometry
   are bound.
+
+### E-20260929-INT-446 — pinned RoArm-M3 self-collision policy review
+
+- Stage: S2/S3 simulation oracle WP2.
+- Lane: INTEGRATION.
+- Commit: `36414de12edbc7e46d2d0fbf87dc1d9496ef5be6`.
+- Change: bound the retained triangle-partition replay to the exact upstream
+  RoArm-M3 SRDF at the pinned source commit and to direct parent-child pairs in
+  the governed URDF. Classified every remaining false-positive pair against
+  both sources and computed adjacent-only and full-SRDF counterfactual summary
+  counts. No exclusion profile is installed or admitted.
+- Inputs/fixtures: review probe SHA-256
+  `429f7473c9ca5c46054f9dfee7d53299c1f2393f47ea75b611f6820e629473bf`;
+  test SHA-256
+  `84191f336a0acf3af82fb5a63f3d2a5028963831882b0b4f5402d3b45a124b2d`;
+  committed review file/content SHA-256
+  `91365b63c7e1fc032d4d94fcd098dfb233079f7777326c89d2c5b7ddeec7e04d` /
+  `c6c1df0b304f7f8b36bd6b8e1015244d1b5e427b24476a85f84b846de5001423`;
+  external status SHA-256
+  `b226629109f45ab60137c4cf84620eea19031bf806d5615e356e87c5a7aae380`;
+  upstream commit `40dbd84b553695212fab713e8465f817ba95454d`;
+  upstream SRDF path
+  `src/roarm_main/roarm_moveit/config/roarm_m3/roarm_m3.srdf` and SHA-256
+  `29f1daaeea91a490b85581a9a62dd07be9ab959d7817fad89836c466e8288499`;
+  selected replay content SHA-256
+  `1cad314d6901c0f639c4771f7be79b235eeadf844eba600129d4f8bb45991b87`.
+- Command: `$env:PYTHONUTF8='1'; C:\IsaacSim\env_6_1_0\Scripts\python.exe software\integrations\isaac_sim\self_collision_policy_review_probe.py --workspace . --upstream-repo C:\IsaacSim\sources\roarm_ws-40dbd84 --replay-summary software\integrations\isaac_sim\evidence\roarm_m3_collision_joint_space_triangle_partition_20260929.json --output C:\IsaacSim\evidence\self_collision_policy_review_001.json --status-output C:\IsaacSim\evidence\self_collision_policy_review_001.status.json`;
+  `python -m pytest software/tests/unit/test_isaac_sim_self_collision_policy_review_evidence.py software/tests/unit/test_isaac_sim_triangle_partition_refinement_evidence.py software/tests/unit/test_isaac_sim_targeted_obb_refinement_evidence.py software/tests/unit/test_isaac_sim_collision_joint_space_evidence.py software/tests/unit/test_isaac_sim_collision_differential_evidence.py software/tests/unit/test_isaac_sim_link_mesh_reduction_evidence.py software/tests/unit/test_isaac_sim_upstream_link_mesh_evidence.py software/tests/unit/test_isaac_sim_step_link_membership_evidence.py software/tests/unit/test_isaac_sim_step_pose_binding_evidence.py software/tests/unit/test_isaac_sim_step_inspection_evidence.py software/tests/unit/test_isaac_sim_rc03_scene_evidence.py software/tests/unit/test_isaac_sim_urdf_import_evidence.py software/tests/unit/test_isaac_sim_fk_parity_evidence.py software/tests/unit/test_isaac_sim_first_launch_evidence.py software/tests/unit/test_isaac_sim_host_probe.py software/tests/unit/test_isaac_sim_contracts.py -q`;
+  four repository audits; `git diff --check`.
+- Result: PASS_WITH_BLOCKERS. The SRDF contains 12 exclusions: six `Adjacent`
+  and six `Never`. Its six `Adjacent` pairs exactly equal the six direct-joint
+  pairs in the governed URDF. All 165 remaining false-positive cases belong to
+  four of those direct-joint pairs, leaving zero unsupported false-positive
+  pairs. The adjacent-only counterfactual excludes 294 pair-pose cases,
+  including 54 raw/candidate collision agreements and 165 candidate false
+  positives. Its retained 735 nonadjacent cases contain three collision
+  agreements, 732 free agreements, zero false positives, and zero false
+  negatives. The full-SRDF counterfactual would exclude 588 cases and is
+  recorded without selection. Eighty-three focused tests passed in 3.97
+  seconds and all four repository audits passed.
+- Artifacts:
+  `software/integrations/isaac_sim/self_collision_policy_review_probe.py`;
+  `software/integrations/isaac_sim/evidence/roarm_m3_self_collision_policy_review_20260929.json`;
+  `software/tests/unit/test_isaac_sim_self_collision_policy_review_evidence.py`;
+  external status under `C:\IsaacSim\evidence`.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Limitations: this is a pair-summary counterfactual, not a geometry requery or
+  an installed runtime policy. Excluding direct-joint pairs also removes 54
+  raw-mesh collision agreements at their mechanical interfaces. The upstream
+  SRDF's six `Never` exclusions have not been independently justified and are
+  not selected. Finite-corpus, nonwatertight source, whole-link `link5`, tool,
+  camera-support, environment, placement, dynamics, controller, hardware, and
+  physical blockers remain. No pair exclusion, collision query, clearance
+  replay, lane gate, or integration gate is admitted or completed.
+- Supersedes: INT-445 only for its adjacent-policy next dependency. INT-445
+  remains the selected finite replay and geometry evidence.
+- Next dependency: review the six SRDF `Never` pairs against the selected
+  replay and source geometry, then define a shared runtime exclusion-policy
+  contract before any candidate can be installed.

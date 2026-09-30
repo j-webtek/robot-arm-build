@@ -280,6 +280,19 @@ false negatives. Requests for 2, 4, and 8 groups do not improve the baseline;
 32 groups do not improve on 16. This finite diagnostic remains uninstalled
 and does not admit collision or clearance queries.
 
+[`self_collision_policy_review_probe.py`](self_collision_policy_review_probe.py)
+binds the selected replay to the pinned upstream RoArm-M3 SRDF and the governed
+URDF topology. The retained
+[`policy review`](evidence/roarm_m3_self_collision_policy_review_20260929.json)
+shows that the SRDF's six `Adjacent` exclusions exactly match all six governed
+direct-joint pairs. Every one of the remaining 165 false-positive cases belongs
+to four of those explicitly supported pairs. An adjacent-only counterfactual
+removes 294 pair-pose cases and leaves 735 nonadjacent cases with three
+collision agreements, 732 free agreements, and no false classifications. The
+review does not install exclusions: the six separate SRDF `Never` pairs need
+their own evidence review, and a local runtime policy contract has not been
+selected.
+
 Reproduce it on the designated runner from the repository root:
 
 ```powershell
@@ -397,6 +410,18 @@ C:\IsaacSim\env_6_1_0\Scripts\python.exe software\integrations\isaac_sim\triangl
   --strategy recursive-longest-centroid-axis `
   --output C:\IsaacSim\evidence\triangle_partition_final_16.candidate.json `
   --status-output C:\IsaacSim\evidence\triangle_partition_final_16.candidate.status.json
+```
+
+Reproduce the pinned SRDF policy review against that selected replay:
+
+```powershell
+$env:PYTHONUTF8='1'
+C:\IsaacSim\env_6_1_0\Scripts\python.exe software\integrations\isaac_sim\self_collision_policy_review_probe.py `
+  --workspace . `
+  --upstream-repo C:\IsaacSim\sources\roarm_ws-40dbd84 `
+  --replay-summary software\integrations\isaac_sim\evidence\roarm_m3_collision_joint_space_triangle_partition_20260929.json `
+  --output C:\IsaacSim\evidence\self_collision_policy_review_001.json `
+  --status-output C:\IsaacSim\evidence\self_collision_policy_review_001.status.json
 ```
 
 ## Verify WP0
