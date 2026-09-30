@@ -80,6 +80,8 @@ TESTS = (
     "software/tests/unit/test_typing_endpoint_reuse_campaign_v1.py",
     "software/tests/unit/test_typing_exact_reuse_multisequence_campaign_v1.py",
     "software/tests/unit/test_typing_shadow_service_reuse_campaign_v1.py",
+    "software/tests/unit/test_typing_ik_reuse_profile_gate_v1.py",
+    "software/tests/unit/test_typing_ik_reuse_profile_campaign_v1.py",
     "software/tests/unit/test_pre_camera_host_benchmark_v1.py",
     "software/tests/unit/test_assess_r97_external_review_decision.py",
     "software/tests/unit/test_model_motion_sequence_coordinator.py",
