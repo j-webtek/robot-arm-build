@@ -1107,6 +1107,15 @@ preserved through offline trajectory compilation for both new accepted cases.
 The refinement remains zero-authority and does not turn catalog coverage into
 IK, collision, calibration, contact, or physical typing evidence.
 
+The arm-owned operational-efficiency lane is current through ARM-128. Its
+clean-commit representative endpoint atlas covers the five established typing
+patterns and preserves every reference shadow receipt. The corpus contains 40
+unique endpoint identities; seven recur and all seven have one observed solved
+joint-state hash. That supports a bounded exact-reuse experiment but does not
+authorize atlas use, warm starts, controller access, or physical motion. The
+next arm increment must prove exact-result equivalence and lifecycle
+invalidation under crossed contexts before any performance behavior changes.
+
 1. **S1 software boundary — complete for zero authority:** v2 producer bytes,
    strict decoding, trusted registry, freshness, mutation rejection, and ordered
    `H,H,I` ingress are covered by the shared conformance profile.

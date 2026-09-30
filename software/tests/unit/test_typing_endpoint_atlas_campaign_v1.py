@@ -14,9 +14,13 @@ import rocell.application.typing_endpoint_atlas_campaign_v1 as campaign
 
 ROOT = Path(__file__).resolve().parents[3]
 RETAINED = ROOT / "software/ai/eval/typing_endpoint_atlas_campaign_v1.json"
-RETAINED_FILE_SHA256 = None
-RETAINED_CAMPAIGN_SHA256 = None
-RETAINED_SOURCE_COMMIT = None
+RETAINED_FILE_SHA256 = (
+    "af8702f0e4b8470fb4957a567baba596028f3ea6c9f084d75ca56b65ef5cce77"
+)
+RETAINED_CAMPAIGN_SHA256 = (
+    "ac623147c7bf7e257f7c6892919ec21d632ab18b9455caa32cd039d86f9450a4"
+)
+RETAINED_SOURCE_COMMIT = "9b9bd0a71f72d2a61fc2e607843383c8657cf944"
 VALIDATOR = Draft202012Validator(json.loads((
     ROOT / "software/ai/schemas/typing_endpoint_atlas_campaign_v1.schema.json"
 ).read_text(encoding="utf-8")))
@@ -142,8 +146,6 @@ def test_rehashed_campaign_mutations_fail_closed(
 
 
 def test_retained_campaign_identity_when_installed() -> None:
-    if RETAINED_FILE_SHA256 is None:
-        pytest.skip("retained campaign is created only from the clean framework")
     raw = RETAINED.read_bytes()
     assert hashlib.sha256(raw).hexdigest() == RETAINED_FILE_SHA256
     value = json.loads(raw)

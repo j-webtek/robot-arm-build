@@ -510,7 +510,7 @@ remains the dominant software cost.
 
 ### E2 — Accelerate IK and collision preparation
 
-**Status:** in progress through ARM-127 endpoint-atlas observation.
+**Status:** in progress through ARM-128 retained endpoint-atlas evidence.
 
 ARM-119 adds an opt-in, bounded `TypingIkEffortRecorderV1` side channel. It
 records attempt and iteration counts only after each deterministic solve. The
@@ -620,6 +620,19 @@ were observed with one or multiple solved joint states. Enabling the observer
 leaves the complete shadow receipt byte-identical. The report is strictly
 parsed, bounded to 4,096 samples, excluded from admission, and marks atlas use
 unauthorized. It creates no controller commands or physical authority.
+
+ARM-128 retains the clean-commit representative-corpus atlas. Five routes
+preserved byte-identical reference shadow receipts while producing 186 sample
+observations, 58 semantic endpoint observations, and 53 transition
+observations. The aggregate contains 40 unique endpoint identities and 46
+unique transition identities. Seven endpoint identities recur and five
+transition identities recur. Every endpoint in this bounded corpus has exactly
+one observed solved joint-state hash, so the seven repeated endpoints are
+stable reuse candidates and none are observed variable. This narrows the next
+experiment to exact endpoint-result reuse, but it does not establish stability
+for unobserved incoming states. Both atlas use and warm starts remain
+unauthorized, and the retained artifact has zero controller, transport,
+hardware-write, movement, or physical authority.
 
 Deliver:
 

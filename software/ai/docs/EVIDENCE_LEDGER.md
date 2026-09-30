@@ -6218,3 +6218,42 @@ rewriting history. New entries must use a unique evidence ID.
 - Next dependency: retain a multi-sequence endpoint/transition atlas and
   quantify stable versus variable solved joint states before evaluating any
   warm-start proposal.
+
+### E-20260929-ARM-128 — retained representative typing endpoint atlas
+
+- Stage: operational efficiency E2, retained endpoint/state evidence.
+- Lane: arm/runtime typing IK screen.
+- Source commit: `9b9bd0a71f72d2a61fc2e607843383c8657cf944`.
+- Cases: home transition, `ROBOT`, repeated letter/number/punctuation,
+  alphabetic extremes, and number/space/enter.
+- Result: PASS. All five observed runs produced byte-identical canonical
+  shadow receipts to their unobserved references. The campaign records 186
+  screened samples, 58 semantic endpoints, 40 unique endpoint identities, 18
+  repeated endpoint observations across seven recurring identities, 53
+  transitions, 46 unique transitions, and five recurring transition
+  identities. All 40 endpoints have one observed solved joint-state variant;
+  the seven recurring endpoints are stable reuse candidates in this corpus,
+  with zero observed variable reuse candidates.
+- Artifact: `typing_endpoint_atlas_campaign_v1.json`; file SHA-256
+  `af8702f0e4b8470fb4957a567baba596028f3ea6c9f084d75ca56b65ef5cce77`;
+  embedded campaign SHA-256
+  `ac623147c7bf7e257f7c6892919ec21d632ab18b9455caa32cd039d86f9450a4`.
+- Atlas use authorized: false.
+- Warm start authorized: false.
+- Diagnostics used for admission: false.
+- Camera opens: 0.
+- Model runtime loads: 0.
+- Transport opens: 0.
+- Controller starts: 0.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Physical authority: false.
+- Limitations: stability is observed only for the exact incoming states and
+  fixed synthetic geometry in this bounded corpus. It does not prove that an
+  endpoint is path-independent under arbitrary incoming state, context,
+  calibration, build, solver, or lifecycle changes.
+- Supersedes: ARM-127 only for its retained representative-corpus dependency;
+  ARM-127 remains authoritative for observer mechanics and report semantics.
+- Next dependency: implement a bounded exact endpoint-result reuse experiment
+  with full context identity, integrity verification, invalidation, and
+  reference-decision equivalence before proposing any runtime optimization.

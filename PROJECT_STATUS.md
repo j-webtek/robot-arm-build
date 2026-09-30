@@ -1,6 +1,6 @@
 # Tactevra project status
 
-Reviewed September 29, 2026 through the ARM-127 endpoint-atlas observation,
+Reviewed September 29, 2026 through the ARM-128 retained endpoint-atlas campaign,
 the ARM-126 retained service fault campaign,
 ARM-125 bounded shadow service,
 ARM-124 retained owner fault campaign,
@@ -694,6 +694,18 @@ canonical shadow receipt remains byte-identical with observation enabled and
 that capacity, integrity, aggregate, transition, and authority mutations fail
 closed. A retained representative-corpus atlas study is still required before
 proposing any warm-start behavior.
+
+ARM-128 runs that observer from clean source across the five established
+representative sequences: home transition, `ROBOT`, repeated
+letter/number/punctuation, alphabetic extremes, and number/space/enter. The
+retained campaign preserves the reference shadow receipt for every route and
+records 186 screened samples, 58 semantic endpoints, and 53 transitions. It
+finds 40 unique endpoint identities; seven recur, and every recurring identity
+has one observed solved joint-state hash. All 40 endpoints are stable in this
+bounded corpus, with zero variable-solution endpoint observations. This is a
+useful exact-reuse candidate map, not a general proof of path independence:
+atlas use and warm starts remain explicitly unauthorized until a separate
+equivalence-preserving experiment covers invalidation and hostile contexts.
 
 AI-403 then integrates the pose-output precision adapter and actual V2 batch
 producer on current `main`. The retained contract fixture deterministically
