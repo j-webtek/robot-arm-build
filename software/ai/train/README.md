@@ -134,3 +134,23 @@ These evaluation groups are consumed. Next investigate uncertainty/rejection
 on new development data and calibrate with larger fresh splits and a
 predeclared conservative coverage rule. Do not increase this bound using the
 observed evaluation errors or count this split as fresh evidence afterward.
+
+## Official-mesh synthetic occlusion data
+
+The fixed-overview Isaac evidence can be expanded into a target-specific
+occlusion dataset without rerunning Isaac. The builder verifies the source
+receipt and atlas hashes, materializes deterministic lighting variants, and
+emits one label per target and image. Training uses `ready` and `hover_t` with
+nominal, dim, and bright lighting. Evaluation holds out `hover_e` together
+with warm, glare, and blur transformations, so both pose and lighting groups
+are disjoint.
+
+```powershell
+python software/ai/train/build_official_mesh_occlusion_data.py `
+  --source-manifest software/integrations/isaac_sim/evidence/fixed_overview_official_mesh_v1/manifest.json `
+  --output-dir software/runs/official-mesh-occlusion-v1
+```
+
+This dataset teaches only `target_visible` versus `abstain` for synthetic robot
+occlusion. Its evaluation split is a development fixture. It does not qualify
+the physical camera, localization accuracy, collision clearance, or execution.

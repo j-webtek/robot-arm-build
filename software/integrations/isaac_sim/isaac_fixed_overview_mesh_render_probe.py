@@ -448,6 +448,13 @@ def main() -> int:
                 "robot_depth_mm": {"path": depth_atlas_path.name, "sha256": _sha256(depth_atlas_path.read_bytes())},
             },
             "pose_results": pose_results,
+            "result_status": "PASS_WITH_BLOCKERS",
+            "result_summary": {
+                "minimum_mask_iou": min(row["mask_iou"] for row in pose_results),
+                "maximum_official_mesh_outside_capsule_pixels": max(
+                    row["official_mesh_outside_capsule_pixels"] for row in pose_results
+                ),
+            },
             "visual_meshes_used_for_collision": False,
             "physics_steps": 0,
             "hardware_access": False,

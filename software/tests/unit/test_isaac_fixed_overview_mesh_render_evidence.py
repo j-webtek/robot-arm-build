@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import hashlib
+import importlib.util
 import json
 from pathlib import Path
 
@@ -13,22 +14,32 @@ EVIDENCE = (
     WORKSPACE / "software" / "integrations" / "isaac_sim" / "evidence"
     / "fixed_overview_official_mesh_v1"
 )
+BUILDER_PATH = (
+    WORKSPACE / "software" / "ai" / "train" / "build_official_mesh_occlusion_data.py"
+)
 
 
 def _sha256(payload: bytes) -> str:
     return hashlib.sha256(payload).hexdigest()
 
 
+def _builder():  # type: ignore[no-untyped-def]
+    spec = importlib.util.spec_from_file_location("build_official_mesh_occlusion_data", BUILDER_PATH)
+    assert spec is not None and spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
 def test_official_mesh_render_receipt_is_bound_and_zero_authority() -> None:
     manifest_path = EVIDENCE / "manifest.json"
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-    status = json.loads((EVIDENCE / "status.json").read_text(encoding="utf-8"))
 
     claimed_receipt_sha = manifest.pop("receipt_sha256")
     canonical = json.dumps(
         manifest, sort_keys=True, separators=(",", ":"), ensure_ascii=True, allow_nan=False
     ).encode("utf-8")
-    assert _sha256(canonical) == claimed_receipt_sha == status["receipt_sha256"]
+    assert _sha256(canonical) == claimed_receipt_sha
     assert manifest["schema"] == "tactevra.isaac_fixed_overview_mesh_render.v1"
     assert manifest["evidence_class"] == "OFFICIAL_VISUAL_MESH_PERCEPTION_COMPARISON_ONLY"
     assert manifest["visual_meshes_used_for_collision"] is False
@@ -37,7 +48,10 @@ def test_official_mesh_render_receipt_is_bound_and_zero_authority() -> None:
     assert manifest["hardware_writes"] == 0
     assert manifest["physical_movements"] == 0
     assert manifest["physical_authority"] is False
-    assert status["status"] == "PASS_WITH_BLOCKERS"
+    assert manifest["result_status"] == "PASS_WITH_BLOCKERS"
+    assert manifest["result_summary"]["minimum_mask_iou"] == min(
+        row["mask_iou"] for row in manifest["pose_results"]
+    )
 
     arrays = {}
     for name, artifact in manifest["artifact_atlases"].items():
@@ -82,3 +96,57 @@ def test_official_mesh_render_receipt_is_bound_and_zero_authority() -> None:
             for target in targets
         )
         assert (center_count, overlap_count) == expected_occlusion_counts[row["pose_id"]]
+
+
+def test_official_mesh_occlusion_builder_has_disjoint_groups_and_zero_authority(
+    tmp_path: Path,
+) -> None:
+    module = _builder()
+    first = module.build(EVIDENCE / "manifest.json", tmp_path / "first")
+    second = module.build(EVIDENCE / "manifest.json", tmp_path / "second")
+
+    assert first == second
+    assert first["scope"] == "SYNTHETIC_ONLY_NO_DEPLOYMENT_QUALIFICATION"
+    assert first["pose_groups_disjoint"] is True
+    assert first["lighting_groups_disjoint"] is True
+    assert first["splits"]["train"] == {
+        "path": "train.jsonl",
+        "sha256": "140636df91e1884ca28d5f8cb9fb3662946a0ab8633f452098de4e87c3f8f107",
+        "count": 450,
+        "abstain_count": 51,
+        "visible_count": 399,
+    }
+    assert first["splits"]["evaluation"] == {
+        "path": "evaluation.jsonl",
+        "sha256": "c00b3c3ded761af0c57e4211441d253bfa9848623b658be02dd114a2b40d70ca",
+        "count": 225,
+        "abstain_count": 45,
+        "visible_count": 180,
+    }
+    assert first["authority"] == {
+        "hardware_accessed": False,
+        "hardware_write_count": 0,
+        "physical_movement_count": 0,
+        "can_release_physical_gates": False,
+    }
+    assert len(first["images"]) == 9
+    assert len({record["sha256"] for record in first["images"]}) == 9
+    assert all(
+        (tmp_path / "first" / record["path"]).is_file()
+        for record in first["images"]
+    )
+
+
+def test_official_mesh_occlusion_builder_rejects_altered_source(tmp_path: Path) -> None:
+    module = _builder()
+    altered_dir = tmp_path / "altered"
+    altered_dir.mkdir()
+    source = json.loads((EVIDENCE / "manifest.json").read_text(encoding="utf-8"))
+    source["target_catalog_sha256"] = "0" * 64
+    (altered_dir / "manifest.json").write_text(json.dumps(source), encoding="utf-8")
+    try:
+        module.build(altered_dir / "manifest.json", tmp_path / "output")
+    except ValueError as exc:
+        assert "receipt hash mismatch" in str(exc)
+    else:
+        raise AssertionError("altered source was accepted")
