@@ -6186,3 +6186,35 @@ rewriting history. New entries must use a unique evidence ID.
 - Next dependency: measure the repeated endpoint/state structure of the
   representative typing corpus, then assess exact endpoint-atlas and safe
   warm-start candidates without weakening reference selection.
+
+### E-20260929-ARM-127 — decision-neutral typing endpoint-atlas observer
+
+- Stage: operational efficiency E2, endpoint/state instrumentation.
+- Lane: arm/runtime typing IK screen.
+- Change: added a bounded observer for accepted semantic phase endpoints. Each
+  observation binds phase, target, exact board point, canonical solver input,
+  incoming joint state, and solved joint state by content hash. Per-route
+  reports aggregate repeated endpoint and transition identities and count
+  observed solution variants.
+- Result: PASS. Governed tests prove the complete canonical shadow receipt is
+  byte-identical with observation disabled or enabled. Repeated target phases
+  and the start/end PARK endpoint are counted without authorizing reuse.
+  Capacity, endpoint identity, atlas aggregate, transition, hash, and authority
+  mutations reject closed.
+- Atlas use authorized: false.
+- Diagnostics used for admission: false.
+- Camera opens: 0.
+- Model runtime loads: 0.
+- Transport opens: 0.
+- Controller starts: 0.
+- Hardware writes: 0.
+- Physical movements: 0.
+- Physical authority: false.
+- Limitations: current evidence is governed unit/integration coverage, not a
+  retained representative-corpus atlas. A repeated Cartesian endpoint may
+  still have multiple joint-state solutions depending on its incoming state.
+- Supersedes: ARM-126 only for its endpoint-atlas instrumentation dependency;
+  ARM-126 remains authoritative for retained service faults.
+- Next dependency: retain a multi-sequence endpoint/transition atlas and
+  quantify stable versus variable solved joint states before evaluating any
+  warm-start proposal.

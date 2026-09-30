@@ -49,6 +49,7 @@ from .typing_planner_preparation_v1 import (
 )
 from .typing_ik_effort_telemetry_v1 import TypingIkEffortRecorderV1
 from .typing_exact_ik_result_cache_v1 import ExactTypingIkResultCacheV1
+from .typing_endpoint_atlas_observer_v1 import TypingEndpointAtlasRecorderV1
 
 
 SCHEMA = "rocell.typing_trajectory_ik_screen.v1"
@@ -196,6 +197,7 @@ def screen_typing_trajectory_ik_v1(
     prepared_planner: PreparedTypingPlannerV1 | None = None,
     context_lifecycle: SimulationContextLifecycleV1 | None = None,
     effort_recorder: TypingIkEffortRecorderV1 | None = None,
+    endpoint_atlas_recorder: TypingEndpointAtlasRecorderV1 | None = None,
     exact_result_cache: ExactTypingIkResultCacheV1 | None = None,
     _lifecycle_binding: SimulationContextLifecycleBindingV1 | None = None,
 ) -> dict[str, Any]:
@@ -215,6 +217,12 @@ def screen_typing_trajectory_ik_v1(
         effort_recorder, TypingIkEffortRecorderV1
     ):
         raise TypeError("effort_recorder must be a TypingIkEffortRecorderV1")
+    if endpoint_atlas_recorder is not None and not isinstance(
+        endpoint_atlas_recorder, TypingEndpointAtlasRecorderV1
+    ):
+        raise TypeError(
+            "endpoint_atlas_recorder must be a TypingEndpointAtlasRecorderV1"
+        )
     if exact_result_cache is not None and not isinstance(
         exact_result_cache, ExactTypingIkResultCacheV1
     ):
@@ -249,6 +257,7 @@ def screen_typing_trajectory_ik_v1(
                 policy=policy,
                 prepared_planner=prepared_planner,
                 effort_recorder=effort_recorder,
+                endpoint_atlas_recorder=endpoint_atlas_recorder,
                 exact_result_cache=exact_result_cache,
                 _lifecycle_binding=binding,
             )
@@ -450,6 +459,13 @@ def screen_typing_trajectory_ik_v1(
                 previous,
                 selected_policy,
             )
+            if endpoint_atlas_recorder is not None:
+                endpoint_atlas_recorder.observe(
+                    plan.screening_samples[index],
+                    evaluated,
+                    incoming_joint_positions_rad=previous,
+                    solver_input_sha256=solver_input_sha256,
+                )
             results.append(evaluated.to_dict())
             if not evaluated.accepted:
                 blockers.append(f"IK_ROUTE_REJECTED:{evaluated.failure_reason}")

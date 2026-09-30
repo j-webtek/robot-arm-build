@@ -510,7 +510,7 @@ remains the dominant software cost.
 
 ### E2 — Accelerate IK and collision preparation
 
-**Status:** in progress through ARM-126 retained service fault campaign.
+**Status:** in progress through ARM-127 endpoint-atlas observation.
 
 ARM-119 adds an opt-in, bounded `TypingIkEffortRecorderV1` side channel. It
 records attempt and iteration counts only after each deterministic solve. The
@@ -610,6 +610,16 @@ the completed reference and race cases preserved one identical shadow decision
 hash. All other bounded or rejected paths performed zero owner runs. The
 campaign grants no performance, controller, transport, movement, or physical
 authority.
+
+ARM-127 introduces a bounded observer at the canonical IK screen rather than a
+cache or alternate solver path. After each accepted semantic phase endpoint,
+it records hashes of the exact phase/target/board point, incoming joint state,
+solved joint state, and solver input. Per-route aggregation reports repeated
+endpoint identities, transition identities, and whether repeated endpoints
+were observed with one or multiple solved joint states. Enabling the observer
+leaves the complete shadow receipt byte-identical. The report is strictly
+parsed, bounded to 4,096 samples, excluded from admission, and marks atlas use
+unauthorized. It creates no controller commands or physical authority.
 
 Deliver:
 

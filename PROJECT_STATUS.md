@@ -1,6 +1,7 @@
 # Tactevra project status
 
-Reviewed September 29, 2026 through the ARM-126 retained service fault campaign,
+Reviewed September 29, 2026 through the ARM-127 endpoint-atlas observation,
+the ARM-126 retained service fault campaign,
 ARM-125 bounded shadow service,
 ARM-124 retained owner fault campaign,
 ARM-123 single-owner cache integration, the ARM-122 retained exact-result cache
@@ -681,6 +682,18 @@ race transition demonstrably waited for the admitted request. The retained
 artifact reports zero controller, transport, hardware, movement, and physical
 authority. Service wiring is now evidenced rather than only unit-tested; the
 next E2 dependency is endpoint-atlas analysis before any warm-start proposal.
+
+ARM-127 adds a bounded, decision-neutral endpoint-atlas observer to the exact
+typing IK screen. It records accepted semantic PARK, HOVER, CONTACT, and
+RETRACT endpoints only after the canonical solver and continuity decision. An
+endpoint identity binds phase, target, and exact board point; separate hashes
+bind incoming and solved joint states. Per-route reports expose repeated
+endpoint and transition counts plus observed joint-solution stability, but
+explicitly forbid atlas use in planning or admission. Governed tests prove the
+canonical shadow receipt remains byte-identical with observation enabled and
+that capacity, integrity, aggregate, transition, and authority mutations fail
+closed. A retained representative-corpus atlas study is still required before
+proposing any warm-start behavior.
 
 AI-403 then integrates the pose-output precision adapter and actual V2 batch
 producer on current `main`. The retained contract fixture deterministically
