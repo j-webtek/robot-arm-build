@@ -255,13 +255,14 @@ sampling remains diagnostic and no pair exclusion is selected.
 
 [`targeted_obb_refinement_probe.py`](targeted_obb_refinement_probe.py) isolates
 oriented-box alternatives for the `link2` and gripper candidates implicated by
-the nonadjacent witness. Exact 1,029-case replays reject the gripper-only and
-combined variants: they introduce a second nonadjacent false positive. The
+the nonadjacent witness. Exact 1,029-case replays apply each serialized box
+rotation. The
 retained [`link2-only candidate`](evidence/roarm_m3_targeted_obb_link2_20260929.json)
-reduces total false positives from 192 to 143 and preserves zero false
-negatives, as recorded by its
+reduces one component's volume and preserves zero false negatives, but all
+three variants retain the baseline's 192 false positives, as recorded by its
 [`replay summary`](evidence/roarm_m3_collision_joint_space_link2_20260929.json).
-It still retains the `link2`/gripper false positive, so it is not installed.
+No OBB variant demonstrates collision-classification improvement, so none is
+installed or preferred for runtime use.
 
 Reproduce it on the designated runner from the repository root:
 

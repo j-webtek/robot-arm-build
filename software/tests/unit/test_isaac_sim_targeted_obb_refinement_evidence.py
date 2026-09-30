@@ -37,11 +37,11 @@ def test_link2_variant_refines_only_two_link2_components() -> None:
     assert metrics[1]["new_to_old_volume_ratio"] == 0.941967
 
 
-def test_link2_replay_improves_total_false_positives_without_false_negatives() -> None:
+def test_link2_replay_preserves_baseline_classifications_without_false_negatives() -> None:
     baseline = _load(EVIDENCE / "roarm_m3_collision_joint_space_20260929.json")
     replay = _load(REPLAY)
     assert baseline["summary"]["CANDIDATE_FALSE_POSITIVE"] == 192
-    assert replay["summary"]["CANDIDATE_FALSE_POSITIVE"] == 143
+    assert replay["summary"]["CANDIDATE_FALSE_POSITIVE"] == 192
     assert replay["summary"]["CANDIDATE_FALSE_NEGATIVE"] == 0
     assert replay["summary"]["PAIR_CASES"] == 1029
 
@@ -49,7 +49,7 @@ def test_link2_replay_improves_total_false_positives_without_false_negatives() -
 def test_link2_replay_retains_one_nonadjacent_false_positive() -> None:
     replay = _load(REPLAY)
     scopes = replay["adjacency_scope_summary"]
-    assert scopes["ADJACENT"]["CANDIDATE_FALSE_POSITIVE"] == 142
+    assert scopes["ADJACENT"]["CANDIDATE_FALSE_POSITIVE"] == 191
     assert scopes["NONADJACENT"]["CANDIDATE_FALSE_POSITIVE"] == 1
     pairs = {tuple(row["body_pair"]): row for row in replay["pair_summary"]}
     witness = pairs[("link2", "gripper_link")]

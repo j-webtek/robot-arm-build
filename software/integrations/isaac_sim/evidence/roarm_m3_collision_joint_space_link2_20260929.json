@@ -2,9 +2,9 @@
   "adjacency_scope_summary": {
     "ADJACENT": {
       "AGREEMENT_COLLISION": 54,
-      "AGREEMENT_FREE": 98,
+      "AGREEMENT_FREE": 49,
       "CANDIDATE_FALSE_NEGATIVE": 0,
-      "CANDIDATE_FALSE_POSITIVE": 142
+      "CANDIDATE_FALSE_POSITIVE": 191
     },
     "NONADJACENT": {
       "AGREEMENT_COLLISION": 3,
@@ -115,7 +115,7 @@
         "CANDIDATE_FALSE_POSITIVE": 0
       },
       "kinematically_adjacent": false,
-      "minimum_candidate_box_signed_distance_mm": 36.921674,
+      "minimum_candidate_box_signed_distance_mm": 32.005638,
       "minimum_raw_mesh_signed_distance_mm": 34.948688
     },
     {
@@ -185,12 +185,12 @@
       ],
       "counts": {
         "AGREEMENT_COLLISION": 0,
-        "AGREEMENT_FREE": 49,
+        "AGREEMENT_FREE": 0,
         "CANDIDATE_FALSE_NEGATIVE": 0,
-        "CANDIDATE_FALSE_POSITIVE": 0
+        "CANDIDATE_FALSE_POSITIVE": 49
       },
       "kinematically_adjacent": true,
-      "minimum_candidate_box_signed_distance_mm": 63.202394,
+      "minimum_candidate_box_signed_distance_mm": -28.641044,
       "minimum_raw_mesh_signed_distance_mm": 0.135834
     },
     {
@@ -265,7 +265,7 @@
         "CANDIDATE_FALSE_POSITIVE": 49
       },
       "kinematically_adjacent": true,
-      "minimum_candidate_box_signed_distance_mm": -22.665593,
+      "minimum_candidate_box_signed_distance_mm": -24.513627,
       "minimum_raw_mesh_signed_distance_mm": 0.610001
     },
     {
@@ -280,7 +280,7 @@
         "CANDIDATE_FALSE_POSITIVE": 0
       },
       "kinematically_adjacent": false,
-      "minimum_candidate_box_signed_distance_mm": -24.087299,
+      "minimum_candidate_box_signed_distance_mm": -10.196232,
       "minimum_raw_mesh_signed_distance_mm": 0.0
     },
     {
@@ -295,7 +295,7 @@
         "CANDIDATE_FALSE_POSITIVE": 0
       },
       "kinematically_adjacent": false,
-      "minimum_candidate_box_signed_distance_mm": -24.668432,
+      "minimum_candidate_box_signed_distance_mm": -21.608616,
       "minimum_raw_mesh_signed_distance_mm": 0.0
     },
     {
@@ -310,7 +310,7 @@
         "CANDIDATE_FALSE_POSITIVE": 1
       },
       "kinematically_adjacent": false,
-      "minimum_candidate_box_signed_distance_mm": -6.752044,
+      "minimum_candidate_box_signed_distance_mm": -13.915923,
       "minimum_raw_mesh_signed_distance_mm": 13.607432
     },
     {
@@ -411,9 +411,9 @@
     {
       "counts": {
         "AGREEMENT_COLLISION": 1,
-        "AGREEMENT_FREE": 17,
+        "AGREEMENT_FREE": 16,
         "CANDIDATE_FALSE_NEGATIVE": 0,
-        "CANDIDATE_FALSE_POSITIVE": 3
+        "CANDIDATE_FALSE_POSITIVE": 4
       },
       "family": "GOVERNED_ANCHOR",
       "joint_positions_rad": [
@@ -429,9 +429,9 @@
     {
       "counts": {
         "AGREEMENT_COLLISION": 1,
-        "AGREEMENT_FREE": 17,
+        "AGREEMENT_FREE": 16,
         "CANDIDATE_FALSE_NEGATIVE": 0,
-        "CANDIDATE_FALSE_POSITIVE": 3
+        "CANDIDATE_FALSE_POSITIVE": 4
       },
       "family": "GOVERNED_ANCHOR",
       "joint_positions_rad": [
@@ -447,9 +447,9 @@
     {
       "counts": {
         "AGREEMENT_COLLISION": 1,
-        "AGREEMENT_FREE": 17,
+        "AGREEMENT_FREE": 16,
         "CANDIDATE_FALSE_NEGATIVE": 0,
-        "CANDIDATE_FALSE_POSITIVE": 3
+        "CANDIDATE_FALSE_POSITIVE": 4
       },
       "family": "GOVERNED_ANCHOR",
       "joint_positions_rad": [
@@ -465,9 +465,9 @@
     {
       "counts": {
         "AGREEMENT_COLLISION": 1,
-        "AGREEMENT_FREE": 17,
+        "AGREEMENT_FREE": 16,
         "CANDIDATE_FALSE_NEGATIVE": 0,
-        "CANDIDATE_FALSE_POSITIVE": 3
+        "CANDIDATE_FALSE_POSITIVE": 4
       },
       "family": "LIMIT_ANCHOR",
       "joint_positions_rad": [
@@ -501,9 +501,9 @@
     {
       "counts": {
         "AGREEMENT_COLLISION": 1,
-        "AGREEMENT_FREE": 17,
+        "AGREEMENT_FREE": 16,
         "CANDIDATE_FALSE_NEGATIVE": 0,
-        "CANDIDATE_FALSE_POSITIVE": 3
+        "CANDIDATE_FALSE_POSITIVE": 4
       },
       "family": "LIMIT_ANCHOR",
       "joint_positions_rad": [
@@ -519,9 +519,9 @@
     {
       "counts": {
         "AGREEMENT_COLLISION": 1,
-        "AGREEMENT_FREE": 17,
+        "AGREEMENT_FREE": 16,
         "CANDIDATE_FALSE_NEGATIVE": 0,
-        "CANDIDATE_FALSE_POSITIVE": 3
+        "CANDIDATE_FALSE_POSITIVE": 4
       },
       "family": "SINGLE_JOINT_LIMIT",
       "joint_positions_rad": [
@@ -537,9 +537,9 @@
     {
       "counts": {
         "AGREEMENT_COLLISION": 1,
-        "AGREEMENT_FREE": 17,
+        "AGREEMENT_FREE": 16,
         "CANDIDATE_FALSE_NEGATIVE": 0,
-        "CANDIDATE_FALSE_POSITIVE": 3
+        "CANDIDATE_FALSE_POSITIVE": 4
       },
       "family": "SINGLE_JOINT_LIMIT",
       "joint_positions_rad": [
@@ -555,9 +555,9 @@
     {
       "counts": {
         "AGREEMENT_COLLISION": 1,
-        "AGREEMENT_FREE": 17,
+        "AGREEMENT_FREE": 16,
         "CANDIDATE_FALSE_NEGATIVE": 0,
-        "CANDIDATE_FALSE_POSITIVE": 3
+        "CANDIDATE_FALSE_POSITIVE": 4
       },
       "family": "SINGLE_JOINT_LIMIT",
       "joint_positions_rad": [
@@ -573,9 +573,9 @@
     {
       "counts": {
         "AGREEMENT_COLLISION": 1,
-        "AGREEMENT_FREE": 17,
+        "AGREEMENT_FREE": 16,
         "CANDIDATE_FALSE_NEGATIVE": 0,
-        "CANDIDATE_FALSE_POSITIVE": 3
+        "CANDIDATE_FALSE_POSITIVE": 4
       },
       "family": "SINGLE_JOINT_LIMIT",
       "joint_positions_rad": [
@@ -591,9 +591,9 @@
     {
       "counts": {
         "AGREEMENT_COLLISION": 1,
-        "AGREEMENT_FREE": 17,
+        "AGREEMENT_FREE": 16,
         "CANDIDATE_FALSE_NEGATIVE": 0,
-        "CANDIDATE_FALSE_POSITIVE": 3
+        "CANDIDATE_FALSE_POSITIVE": 4
       },
       "family": "SINGLE_JOINT_LIMIT",
       "joint_positions_rad": [
@@ -609,9 +609,9 @@
     {
       "counts": {
         "AGREEMENT_COLLISION": 1,
-        "AGREEMENT_FREE": 17,
+        "AGREEMENT_FREE": 16,
         "CANDIDATE_FALSE_NEGATIVE": 0,
-        "CANDIDATE_FALSE_POSITIVE": 3
+        "CANDIDATE_FALSE_POSITIVE": 4
       },
       "family": "SINGLE_JOINT_LIMIT",
       "joint_positions_rad": [
@@ -627,9 +627,9 @@
     {
       "counts": {
         "AGREEMENT_COLLISION": 1,
-        "AGREEMENT_FREE": 17,
+        "AGREEMENT_FREE": 16,
         "CANDIDATE_FALSE_NEGATIVE": 0,
-        "CANDIDATE_FALSE_POSITIVE": 3
+        "CANDIDATE_FALSE_POSITIVE": 4
       },
       "family": "SINGLE_JOINT_LIMIT",
       "joint_positions_rad": [
@@ -645,9 +645,9 @@
     {
       "counts": {
         "AGREEMENT_COLLISION": 1,
-        "AGREEMENT_FREE": 17,
+        "AGREEMENT_FREE": 16,
         "CANDIDATE_FALSE_NEGATIVE": 0,
-        "CANDIDATE_FALSE_POSITIVE": 3
+        "CANDIDATE_FALSE_POSITIVE": 4
       },
       "family": "SINGLE_JOINT_LIMIT",
       "joint_positions_rad": [
@@ -663,9 +663,9 @@
     {
       "counts": {
         "AGREEMENT_COLLISION": 1,
-        "AGREEMENT_FREE": 17,
+        "AGREEMENT_FREE": 16,
         "CANDIDATE_FALSE_NEGATIVE": 0,
-        "CANDIDATE_FALSE_POSITIVE": 3
+        "CANDIDATE_FALSE_POSITIVE": 4
       },
       "family": "SINGLE_JOINT_LIMIT",
       "joint_positions_rad": [
@@ -681,9 +681,9 @@
     {
       "counts": {
         "AGREEMENT_COLLISION": 1,
-        "AGREEMENT_FREE": 17,
+        "AGREEMENT_FREE": 16,
         "CANDIDATE_FALSE_NEGATIVE": 0,
-        "CANDIDATE_FALSE_POSITIVE": 3
+        "CANDIDATE_FALSE_POSITIVE": 4
       },
       "family": "SINGLE_JOINT_LIMIT",
       "joint_positions_rad": [
@@ -699,9 +699,9 @@
     {
       "counts": {
         "AGREEMENT_COLLISION": 1,
-        "AGREEMENT_FREE": 17,
+        "AGREEMENT_FREE": 16,
         "CANDIDATE_FALSE_NEGATIVE": 0,
-        "CANDIDATE_FALSE_POSITIVE": 3
+        "CANDIDATE_FALSE_POSITIVE": 4
       },
       "family": "SINGLE_JOINT_LIMIT",
       "joint_positions_rad": [
@@ -717,9 +717,9 @@
     {
       "counts": {
         "AGREEMENT_COLLISION": 1,
-        "AGREEMENT_FREE": 17,
+        "AGREEMENT_FREE": 16,
         "CANDIDATE_FALSE_NEGATIVE": 0,
-        "CANDIDATE_FALSE_POSITIVE": 3
+        "CANDIDATE_FALSE_POSITIVE": 4
       },
       "family": "HALTON_INTERIOR",
       "joint_positions_rad": [
@@ -735,9 +735,9 @@
     {
       "counts": {
         "AGREEMENT_COLLISION": 1,
-        "AGREEMENT_FREE": 17,
+        "AGREEMENT_FREE": 16,
         "CANDIDATE_FALSE_NEGATIVE": 0,
-        "CANDIDATE_FALSE_POSITIVE": 3
+        "CANDIDATE_FALSE_POSITIVE": 4
       },
       "family": "HALTON_INTERIOR",
       "joint_positions_rad": [
@@ -753,9 +753,9 @@
     {
       "counts": {
         "AGREEMENT_COLLISION": 1,
-        "AGREEMENT_FREE": 17,
+        "AGREEMENT_FREE": 16,
         "CANDIDATE_FALSE_NEGATIVE": 0,
-        "CANDIDATE_FALSE_POSITIVE": 3
+        "CANDIDATE_FALSE_POSITIVE": 4
       },
       "family": "HALTON_INTERIOR",
       "joint_positions_rad": [
@@ -771,9 +771,9 @@
     {
       "counts": {
         "AGREEMENT_COLLISION": 1,
-        "AGREEMENT_FREE": 17,
+        "AGREEMENT_FREE": 16,
         "CANDIDATE_FALSE_NEGATIVE": 0,
-        "CANDIDATE_FALSE_POSITIVE": 3
+        "CANDIDATE_FALSE_POSITIVE": 4
       },
       "family": "HALTON_INTERIOR",
       "joint_positions_rad": [
@@ -789,9 +789,9 @@
     {
       "counts": {
         "AGREEMENT_COLLISION": 1,
-        "AGREEMENT_FREE": 17,
+        "AGREEMENT_FREE": 16,
         "CANDIDATE_FALSE_NEGATIVE": 0,
-        "CANDIDATE_FALSE_POSITIVE": 3
+        "CANDIDATE_FALSE_POSITIVE": 4
       },
       "family": "HALTON_INTERIOR",
       "joint_positions_rad": [
@@ -807,9 +807,9 @@
     {
       "counts": {
         "AGREEMENT_COLLISION": 1,
-        "AGREEMENT_FREE": 17,
+        "AGREEMENT_FREE": 16,
         "CANDIDATE_FALSE_NEGATIVE": 0,
-        "CANDIDATE_FALSE_POSITIVE": 3
+        "CANDIDATE_FALSE_POSITIVE": 4
       },
       "family": "HALTON_INTERIOR",
       "joint_positions_rad": [
@@ -825,9 +825,9 @@
     {
       "counts": {
         "AGREEMENT_COLLISION": 1,
-        "AGREEMENT_FREE": 17,
+        "AGREEMENT_FREE": 16,
         "CANDIDATE_FALSE_NEGATIVE": 0,
-        "CANDIDATE_FALSE_POSITIVE": 3
+        "CANDIDATE_FALSE_POSITIVE": 4
       },
       "family": "HALTON_INTERIOR",
       "joint_positions_rad": [
@@ -843,9 +843,9 @@
     {
       "counts": {
         "AGREEMENT_COLLISION": 1,
-        "AGREEMENT_FREE": 17,
+        "AGREEMENT_FREE": 16,
         "CANDIDATE_FALSE_NEGATIVE": 0,
-        "CANDIDATE_FALSE_POSITIVE": 3
+        "CANDIDATE_FALSE_POSITIVE": 4
       },
       "family": "HALTON_INTERIOR",
       "joint_positions_rad": [
@@ -861,9 +861,9 @@
     {
       "counts": {
         "AGREEMENT_COLLISION": 1,
-        "AGREEMENT_FREE": 17,
+        "AGREEMENT_FREE": 16,
         "CANDIDATE_FALSE_NEGATIVE": 0,
-        "CANDIDATE_FALSE_POSITIVE": 3
+        "CANDIDATE_FALSE_POSITIVE": 4
       },
       "family": "HALTON_INTERIOR",
       "joint_positions_rad": [
@@ -879,9 +879,9 @@
     {
       "counts": {
         "AGREEMENT_COLLISION": 1,
-        "AGREEMENT_FREE": 17,
+        "AGREEMENT_FREE": 16,
         "CANDIDATE_FALSE_NEGATIVE": 0,
-        "CANDIDATE_FALSE_POSITIVE": 3
+        "CANDIDATE_FALSE_POSITIVE": 4
       },
       "family": "HALTON_INTERIOR",
       "joint_positions_rad": [
@@ -897,9 +897,9 @@
     {
       "counts": {
         "AGREEMENT_COLLISION": 1,
-        "AGREEMENT_FREE": 17,
+        "AGREEMENT_FREE": 16,
         "CANDIDATE_FALSE_NEGATIVE": 0,
-        "CANDIDATE_FALSE_POSITIVE": 3
+        "CANDIDATE_FALSE_POSITIVE": 4
       },
       "family": "HALTON_INTERIOR",
       "joint_positions_rad": [
@@ -915,9 +915,9 @@
     {
       "counts": {
         "AGREEMENT_COLLISION": 1,
-        "AGREEMENT_FREE": 17,
+        "AGREEMENT_FREE": 16,
         "CANDIDATE_FALSE_NEGATIVE": 0,
-        "CANDIDATE_FALSE_POSITIVE": 3
+        "CANDIDATE_FALSE_POSITIVE": 4
       },
       "family": "HALTON_INTERIOR",
       "joint_positions_rad": [
@@ -933,9 +933,9 @@
     {
       "counts": {
         "AGREEMENT_COLLISION": 1,
-        "AGREEMENT_FREE": 17,
+        "AGREEMENT_FREE": 16,
         "CANDIDATE_FALSE_NEGATIVE": 0,
-        "CANDIDATE_FALSE_POSITIVE": 3
+        "CANDIDATE_FALSE_POSITIVE": 4
       },
       "family": "HALTON_INTERIOR",
       "joint_positions_rad": [
@@ -951,9 +951,9 @@
     {
       "counts": {
         "AGREEMENT_COLLISION": 1,
-        "AGREEMENT_FREE": 17,
+        "AGREEMENT_FREE": 16,
         "CANDIDATE_FALSE_NEGATIVE": 0,
-        "CANDIDATE_FALSE_POSITIVE": 3
+        "CANDIDATE_FALSE_POSITIVE": 4
       },
       "family": "HALTON_INTERIOR",
       "joint_positions_rad": [
@@ -969,9 +969,9 @@
     {
       "counts": {
         "AGREEMENT_COLLISION": 2,
-        "AGREEMENT_FREE": 17,
+        "AGREEMENT_FREE": 16,
         "CANDIDATE_FALSE_NEGATIVE": 0,
-        "CANDIDATE_FALSE_POSITIVE": 2
+        "CANDIDATE_FALSE_POSITIVE": 3
       },
       "family": "HALTON_INTERIOR",
       "joint_positions_rad": [
@@ -987,9 +987,9 @@
     {
       "counts": {
         "AGREEMENT_COLLISION": 1,
-        "AGREEMENT_FREE": 17,
+        "AGREEMENT_FREE": 16,
         "CANDIDATE_FALSE_NEGATIVE": 0,
-        "CANDIDATE_FALSE_POSITIVE": 3
+        "CANDIDATE_FALSE_POSITIVE": 4
       },
       "family": "HALTON_INTERIOR",
       "joint_positions_rad": [
@@ -1005,9 +1005,9 @@
     {
       "counts": {
         "AGREEMENT_COLLISION": 1,
-        "AGREEMENT_FREE": 17,
+        "AGREEMENT_FREE": 16,
         "CANDIDATE_FALSE_NEGATIVE": 0,
-        "CANDIDATE_FALSE_POSITIVE": 3
+        "CANDIDATE_FALSE_POSITIVE": 4
       },
       "family": "HALTON_INTERIOR",
       "joint_positions_rad": [
@@ -1023,9 +1023,9 @@
     {
       "counts": {
         "AGREEMENT_COLLISION": 1,
-        "AGREEMENT_FREE": 17,
+        "AGREEMENT_FREE": 16,
         "CANDIDATE_FALSE_NEGATIVE": 0,
-        "CANDIDATE_FALSE_POSITIVE": 3
+        "CANDIDATE_FALSE_POSITIVE": 4
       },
       "family": "HALTON_INTERIOR",
       "joint_positions_rad": [
@@ -1041,9 +1041,9 @@
     {
       "counts": {
         "AGREEMENT_COLLISION": 3,
-        "AGREEMENT_FREE": 16,
+        "AGREEMENT_FREE": 14,
         "CANDIDATE_FALSE_NEGATIVE": 0,
-        "CANDIDATE_FALSE_POSITIVE": 2
+        "CANDIDATE_FALSE_POSITIVE": 4
       },
       "family": "HALTON_INTERIOR",
       "joint_positions_rad": [
@@ -1059,9 +1059,9 @@
     {
       "counts": {
         "AGREEMENT_COLLISION": 1,
-        "AGREEMENT_FREE": 17,
+        "AGREEMENT_FREE": 16,
         "CANDIDATE_FALSE_NEGATIVE": 0,
-        "CANDIDATE_FALSE_POSITIVE": 3
+        "CANDIDATE_FALSE_POSITIVE": 4
       },
       "family": "HALTON_INTERIOR",
       "joint_positions_rad": [
@@ -1077,9 +1077,9 @@
     {
       "counts": {
         "AGREEMENT_COLLISION": 1,
-        "AGREEMENT_FREE": 17,
+        "AGREEMENT_FREE": 16,
         "CANDIDATE_FALSE_NEGATIVE": 0,
-        "CANDIDATE_FALSE_POSITIVE": 3
+        "CANDIDATE_FALSE_POSITIVE": 4
       },
       "family": "HALTON_INTERIOR",
       "joint_positions_rad": [
@@ -1095,9 +1095,9 @@
     {
       "counts": {
         "AGREEMENT_COLLISION": 2,
-        "AGREEMENT_FREE": 17,
+        "AGREEMENT_FREE": 16,
         "CANDIDATE_FALSE_NEGATIVE": 0,
-        "CANDIDATE_FALSE_POSITIVE": 2
+        "CANDIDATE_FALSE_POSITIVE": 3
       },
       "family": "HALTON_INTERIOR",
       "joint_positions_rad": [
@@ -1113,9 +1113,9 @@
     {
       "counts": {
         "AGREEMENT_COLLISION": 1,
-        "AGREEMENT_FREE": 17,
+        "AGREEMENT_FREE": 16,
         "CANDIDATE_FALSE_NEGATIVE": 0,
-        "CANDIDATE_FALSE_POSITIVE": 3
+        "CANDIDATE_FALSE_POSITIVE": 4
       },
       "family": "HALTON_INTERIOR",
       "joint_positions_rad": [
@@ -1131,9 +1131,9 @@
     {
       "counts": {
         "AGREEMENT_COLLISION": 1,
-        "AGREEMENT_FREE": 17,
+        "AGREEMENT_FREE": 16,
         "CANDIDATE_FALSE_NEGATIVE": 0,
-        "CANDIDATE_FALSE_POSITIVE": 3
+        "CANDIDATE_FALSE_POSITIVE": 4
       },
       "family": "HALTON_INTERIOR",
       "joint_positions_rad": [
@@ -1149,9 +1149,9 @@
     {
       "counts": {
         "AGREEMENT_COLLISION": 1,
-        "AGREEMENT_FREE": 17,
+        "AGREEMENT_FREE": 16,
         "CANDIDATE_FALSE_NEGATIVE": 0,
-        "CANDIDATE_FALSE_POSITIVE": 3
+        "CANDIDATE_FALSE_POSITIVE": 4
       },
       "family": "HALTON_INTERIOR",
       "joint_positions_rad": [
@@ -1167,9 +1167,9 @@
     {
       "counts": {
         "AGREEMENT_COLLISION": 2,
-        "AGREEMENT_FREE": 17,
+        "AGREEMENT_FREE": 16,
         "CANDIDATE_FALSE_NEGATIVE": 0,
-        "CANDIDATE_FALSE_POSITIVE": 2
+        "CANDIDATE_FALSE_POSITIVE": 3
       },
       "family": "HALTON_INTERIOR",
       "joint_positions_rad": [
@@ -1185,9 +1185,9 @@
     {
       "counts": {
         "AGREEMENT_COLLISION": 1,
-        "AGREEMENT_FREE": 17,
+        "AGREEMENT_FREE": 16,
         "CANDIDATE_FALSE_NEGATIVE": 0,
-        "CANDIDATE_FALSE_POSITIVE": 3
+        "CANDIDATE_FALSE_POSITIVE": 4
       },
       "family": "HALTON_INTERIOR",
       "joint_positions_rad": [
@@ -1203,9 +1203,9 @@
     {
       "counts": {
         "AGREEMENT_COLLISION": 1,
-        "AGREEMENT_FREE": 17,
+        "AGREEMENT_FREE": 16,
         "CANDIDATE_FALSE_NEGATIVE": 0,
-        "CANDIDATE_FALSE_POSITIVE": 3
+        "CANDIDATE_FALSE_POSITIVE": 4
       },
       "family": "HALTON_INTERIOR",
       "joint_positions_rad": [
@@ -1221,9 +1221,9 @@
     {
       "counts": {
         "AGREEMENT_COLLISION": 2,
-        "AGREEMENT_FREE": 17,
+        "AGREEMENT_FREE": 16,
         "CANDIDATE_FALSE_NEGATIVE": 0,
-        "CANDIDATE_FALSE_POSITIVE": 2
+        "CANDIDATE_FALSE_POSITIVE": 3
       },
       "family": "HALTON_INTERIOR",
       "joint_positions_rad": [
@@ -1239,9 +1239,9 @@
     {
       "counts": {
         "AGREEMENT_COLLISION": 1,
-        "AGREEMENT_FREE": 17,
+        "AGREEMENT_FREE": 16,
         "CANDIDATE_FALSE_NEGATIVE": 0,
-        "CANDIDATE_FALSE_POSITIVE": 3
+        "CANDIDATE_FALSE_POSITIVE": 4
       },
       "family": "HALTON_INTERIOR",
       "joint_positions_rad": [
@@ -1257,9 +1257,9 @@
     {
       "counts": {
         "AGREEMENT_COLLISION": 1,
-        "AGREEMENT_FREE": 17,
+        "AGREEMENT_FREE": 16,
         "CANDIDATE_FALSE_NEGATIVE": 0,
-        "CANDIDATE_FALSE_POSITIVE": 3
+        "CANDIDATE_FALSE_POSITIVE": 4
       },
       "family": "HALTON_INTERIOR",
       "joint_positions_rad": [
@@ -1275,9 +1275,9 @@
     {
       "counts": {
         "AGREEMENT_COLLISION": 1,
-        "AGREEMENT_FREE": 17,
+        "AGREEMENT_FREE": 16,
         "CANDIDATE_FALSE_NEGATIVE": 0,
-        "CANDIDATE_FALSE_POSITIVE": 3
+        "CANDIDATE_FALSE_POSITIVE": 4
       },
       "family": "HALTON_INTERIOR",
       "joint_positions_rad": [
@@ -1291,11 +1291,11 @@
       "pose_name": "halton_032"
     }
   ],
-  "receipt_sha256": "c256eed4869005fa312eaa3371a7b5483f4a4e5e3bcd0fa5128a6ccc053d1fa1",
+  "receipt_sha256": "72635bbb2712676cf33973d50efc4394d642b81077822f1188140f9503a957fd",
   "schema": "tactevra.isaac_sim_collision_joint_space_summary.v1",
   "source_bindings": {
-    "detailed_receipt_file_sha256": "7fa6cabff51f8166efc227b013dc6fa54f825c3a3f978405981acf38017fe107",
-    "detailed_receipt_sha256": "c7af3fc8caea53bf8440326c5a26622b71c68ced2ceceb42509d0d9a8038a1d0",
+    "detailed_receipt_file_sha256": "9a33d753335f4156cd25fcee21eeecd71fd8c684ec8585bb7ab066f21be7bc05",
+    "detailed_receipt_sha256": "04aaee95e298cca7b09d9873197dddc669f07beec92bcf5f6f093019fb10e746",
     "governed_urdf_sha256": "a565718e7d74b07702802cf41eb9549a6e38e50b5e80aa9b887ab1ae3d0d8190",
     "mesh_receipt_sha256": "77b7c16e2d7c7a8ee0579b071d6a911516a8ba6d675188971e0c54e466b30954",
     "python_fcl_version": "0.7.0.11",
@@ -1306,9 +1306,9 @@
   },
   "summary": {
     "AGREEMENT_COLLISION": 57,
-    "AGREEMENT_FREE": 829,
+    "AGREEMENT_FREE": 780,
     "CANDIDATE_FALSE_NEGATIVE": 0,
-    "CANDIDATE_FALSE_POSITIVE": 143,
+    "CANDIDATE_FALSE_POSITIVE": 192,
     "PAIR_CASES": 1029
   },
   "wire_commands": []

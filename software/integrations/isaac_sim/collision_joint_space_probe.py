@@ -169,6 +169,9 @@ def main() -> int:
                 for index, component in enumerate(box_rows[link_name]):
                     primitive = component["candidate_primitive"]
                     local = np.eye(4)
+                    local[:3, :3] = np.asarray(
+                        primitive["rotation_row_major"], dtype=float
+                    ).reshape(3, 3)
                     local[:3, 3] = primitive["center_mm"]
                     box = trimesh.creation.box(
                         extents=2.0 * np.asarray(primitive["half_extents_mm"]),
