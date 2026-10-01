@@ -1327,7 +1327,7 @@ the separate parked-pose synthetic and physical qualification.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI/model | S2/S3 correlation-aware evaluation power tool | grouped v13/v14 intra-pose-correlation estimation; empirical upper-bound and pessimistic-correlation scenarios; deterministic pose-cluster simulation and sample-size recommendation; synthetic planning receipt, tests, registry, shared workplan, and evidence ledger | `issue/190-isaac-sim-host` / implementation pending | IMPLEMENTED, VALIDATION PENDING — aggregate synthetic planning only; 2,048-pose broad-campaign recommendation; no candidate selection, new render compute, arm-lane status, or integration-gate change |
+| AI/model | S2/S3 correlation-aware evaluation power tool | grouped v13/v14 intra-pose-correlation estimation; empirical upper-bound and pessimistic-correlation scenarios; deterministic pose-cluster simulation and sample-size recommendation; synthetic planning receipt, tests, registry, shared workplan, and evidence ledger | `issue/190-isaac-sim-host` / `3fe8e57eca77dcd369be79e188d6ae2b0724d39a` | COMPLETE — aggregate synthetic planning only; 2,048-pose broad-campaign recommendation; no candidate selection, new render compute, arm-lane status, or integration-gate change |
 | Unclaimed | S2/S3 | physical-camera deployment qualification and safe-region-fit precision evidence | — | AVAILABLE |
 | ARM | S4 | collect four physical-original `camera_support_optics` bindings through onboarding, then run the ARM-070 intake; no synthetic promotion | ARM-071 | WAITING_FOR_ORIGINALS |
 
