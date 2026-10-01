@@ -1238,6 +1238,28 @@ residual obstructions and image failures. Localization remains separately
 blocked by its retained `14.400834977 mm` synthetic bound. Arm-lane status and
 all integration gates remain unchanged.
 
+### V15 pose-cluster development diagnostic
+
+Evidence `E-20261001-AI-490` attributes the failed clustered gate using only the
+consumed v15 development rows and scorecard. Across the nine offsets inside the
+selected 1 mm ring, the scorecard contains 58 missed abstentions. Seven of 24
+pose clusters contain any miss, across eight pose-target pairs. One pair,
+`pose_diverse_development_016` and `MINUS`, contributes 27 misses (`46.55%`)
+and repeats under all three development lighting transforms. The two highest
+miss poses contribute `70.69%` of all in-bound misses. The worst clustered
+offset remains `(-1,+1) mm`, with missed-abstention UCB `3.2491%`.
+
+This concentration explains why row-level results looked good while the
+whole-pose bound failed. It does not prove that repairing those two poses will
+generalize. V15 development is consumed design evidence and cannot select or
+evaluate v16. A successor must use fresh train/development identities, group
+nearby source intervals into the same split, cover fresh neighborhoods around
+the failed intervals, balance the observed failed target identities, and
+freeze its architecture, split, training, bootstrap seed, and gates before
+rendering. The v15 threshold and checkpoint remain unchanged and rejected. No
+evaluation source was opened, no render was started, and deterministic geometry
+projection remains the primary known-self-occlusion path.
+
 ### Geometry-first occlusion revision after v14
 
 The next campaign treats known robot self-occlusion as a deterministic
@@ -1389,7 +1411,7 @@ authenticity remain external owner responsibilities.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI/model | S2/S3 v15 pose-cluster development diagnostic | development-only failure attribution by pose, target, lighting, and offset; frozen diagnostic schema and deterministic report; v16 design recommendation without evaluation access or candidate promotion; tests, registry, shared workplan, and evidence ledger | `issue/190-isaac-sim-host` / claim pending | ACTIVE — analyze only the consumed v15 development scorecard and retained fixture; preserve v14 and all untouched evaluation sources; no render campaign, threshold change, model promotion, arm-lane status, integration-gate change, hardware write, or physical movement |
+| AI/model | S2/S3 v15 pose-cluster development diagnostic | development-only failure attribution by pose, target, lighting, and offset; frozen diagnostic schema and deterministic report; v16 design recommendation without evaluation access or candidate promotion; tests, registry, shared workplan, and evidence ledger | `issue/190-isaac-sim-host` / `048bb41acd2cbe6350672e82f402bc54d096cc12` | COMPLETE — 58 in-bound misses occur in seven poses/eight pose-target pairs; one pose/MINUS pair contributes 46.55% and the top two poses 70.69%; v15 remains rejected and consumed; no evaluation access, render, threshold change, promotion, arm-lane status, integration-gate change, hardware write, or physical movement |
 | AI/model | S2/S3 pose-diverse Isaac successor | frozen zero-authority static training/development pose fixture derived from the governed schedule; new v15 Isaac campaign and lighting identities excluding v14; deterministic dataset build; target-conditioned successor training and development-only selection; tests, registry, shared workplan, and evidence ledger | `issue/190-isaac-sim-host` / `ba1ea9bf43098eb37e6d17c4785d428023cc1aab` | COMPLETE — reproducible `FAILED_DEVELOPMENT_GATE`; point estimates pass at 1 mm but missed-abstention pose-cluster UCB is 3.2491% above the frozen 2% ceiling; no evaluation opening, localization qualification, arm-lane status, integration-gate change, hardware write, or physical movement |
 | AI/model | S2/S3 deterministic retained-package index builder | read-only custody-declaration schema and builder; exact regular-file inventory; campaign/digest/path/custody binding; deterministic evidence-index output; missing/extra/duplicate/symlink/changed-file rejection; tests, registry, shared workplan, and evidence ledger | `issue/190-isaac-sim-host` / `e7b16c2de470a1c01040fab0be17e22b44cdfcdc` | COMPLETE — inventories only already retained files and externally declared custody; no evidence generation, collection, qualification, arm-lane status, integration-gate change, hardware write, or physical movement |
 | AI/model | S2/S3 parked-pose file-backed preflight | strict evidence index and preflight receipt schemas; contained regular-file/hash/size/type/custody reconciliation for every campaign binding; missing/altered/duplicate/symlink/extra-artifact rejection; explicit no-campaign blocked receipt, tests, registry, shared workplan, and evidence ledger | `issue/190-isaac-sim-host` / `ad2c8ce9aeee11e0b6fcfddcda1e0c5a6afa72ed` | COMPLETE — retained preflight is blocked because no campaign package exists; custody labels remain claims pending owner review; no collection, qualification, arm-lane status, integration-gate change, hardware write, or physical movement |

@@ -68,6 +68,11 @@ its focused test. The tracked-file ceiling is therefore 6,103. This adjustment
 does not relax the byte, single-blob, or duplicate-byte ceilings and does not
 change either reduction target.
 
+The issue 190 v15 pose-cluster diagnostic adds four reviewed, small text files:
+the read-only analyzer, strict schema, retained aggregate report, and focused
+test. The current tracked-file ceiling is therefore 6,131. This adjustment does
+not relax any byte or duplicate-byte ceiling and adds no model or image blob.
+
 The preferred order is:
 
 1. replace repeated instructional STL copies with one canonical tracked object

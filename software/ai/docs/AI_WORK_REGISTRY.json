@@ -64,6 +64,7 @@
         "software/ai/rocell_ai/vision_fusion.py",
         "software/ai/rocell_ai/vision_runtime.py",
         "software/ai/rocell_ai/visual_observation.py",
+        "software/ai/eval/diagnose_pose_cluster_development.py",
         "software/ai/eval/plan_clustered_occlusion_power.py",
         "software/ai/schemas/clustered_occlusion_power_plan_v1.schema.json",
         "software/ai/sim/build_pose_diverse_training_fixture.py"
@@ -78,7 +79,8 @@
         "software/ai/tests/test_vision_fusion.py",
         "software/ai/tests/test_vision_runtime.py",
         "software/ai/tests/test_visual_coordinates.py",
-        "software/ai/tests/test_clustered_occlusion_power.py"
+        "software/ai/tests/test_clustered_occlusion_power.py",
+        "software/ai/tests/test_pose_cluster_development_diagnostic.py"
       ],
       "documentation_paths": [
         "software/ai/docs/MODEL_TO_ARM_TRANSLATION_ASSURANCE.md",
@@ -91,16 +93,17 @@
         "software/ai/eval/gemma3_4b_real_photo_seed_v0.json",
         "software/ai/eval/gemma3_4b_scene_stress_v0.json",
         "software/ai/eval/clustered_occlusion_power_plan_v1.json",
+        "software/ai/eval/pose_cluster_development_diagnostic_v1.json",
         "software/ai/sim/evidence/pose_diverse_training_development_v1.json"
       ],
-      "current_result": "The v15 pose-diverse target-visibility successor is byte reproducible and improves raw development misses, but fails the frozen pose-cluster missed-abstention UCB gate (3.2491% > 2%); deterministic geometry projection remains the primary self-occlusion path.",
+      "current_result": "The rejected v15 candidate's 58 in-bound development misses are concentrated: one pose/MINUS pair contributes 46.55% and the top two poses contribute 70.69%; the frozen pose-cluster missed-abstention UCB remains 3.2491% > 2%, and deterministic geometry projection remains the primary self-occlusion path.",
       "limitations": [
         "No commissioned projection renderer, measured dilation artifact, or physical deployment qualification is installed.",
         "The failed v15 learned checkpoint has no installable uncertainty bound and cannot be evaluated or promoted.",
         "Scene and projection evidence cannot substitute for localization uncertainty, collision screening, or arm-runtime admission.",
         "The v15 corpus contains 96 correlated static states from one governed path and does not qualify arbitrary poses, the camera, or deployment."
       ],
-      "next_gate": "Commission synchronized measured-feedback geometry projection and measured dilation; any learned residual successor must use a separately predeclared train/development design and pass the clustered gate before an untouched evaluation is opened.",
+      "next_gate": "Predeclare a fresh v16 train/development design with source-interval group isolation and fresh neighborhoods around the diagnosed failures while commissioning synchronized measured-feedback geometry projection and measured dilation; pass the clustered development gate before opening any untouched evaluation.",
       "model_motion_batch_boundary": true,
       "controller_authority": false,
       "hardware_writes": 0,
@@ -350,5 +353,5 @@
   "controller_authority": false,
   "hardware_writes": 0,
   "physical_movements": 0,
-  "registry_sha256": "890da79538c844bf4a3bf961c263e404f9999dd5e4b9447d30071989c13568c9"
+  "registry_sha256": "3e472b161db46c78826ef09386d940fb4cbe72dcdb26c792f946d92bd4bc9f8c"
 }
