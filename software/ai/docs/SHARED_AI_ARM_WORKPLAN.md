@@ -1058,9 +1058,21 @@ fails, and this result remains synthetic development evidence rather than
 physical-camera calibration or deployment qualification. A fresh untouched
 evaluation campaign may now be predeclared against the frozen policy.
 
+The one-time fresh synthetic evaluation in `E-20260930-AI-473` interleaves six
+previously unused actual-emitter schedule poses between earlier transit
+samples and holds out three new lighting families. Its 1,350 rows contain 270
+required abstentions and 1,080 visible targets. The frozen E-472 checkpoint
+keeps the worst missed-abstention rate to `3/270 = 1.11%`, but nominal false
+stops are already `83/1080 = 7.69%` and the worst 1 mm direction reaches
+`96/1080 = 8.89%`. The synthetic evaluation gate therefore fails and the
+checkpoint remains blocked. The consumed v7 group cannot tune a successor.
+Failure concentration on persistent keyboard hard negatives, especially
+`ENTER`, `EQUAL`, `MINUS`, and `0`, directs the next work toward a separately
+predeclared development corpus and improved target-specific specificity while
+preserving the low missed-occlusion rate.
+
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI | S2/S3 | predeclared fresh synthetic evaluation for frozen E-472 checkpoint; new pose/lighting identities, one-time scoring | `issue/190-isaac-sim-host` / pending | ACTIVE |
 | Unclaimed | S2/S3 | physical-camera deployment qualification and safe-region-fit precision evidence | — | AVAILABLE |
 | ARM | S4 | collect four physical-original `camera_support_optics` bindings through onboarding, then run the ARM-070 intake; no synthetic promotion | ARM-071 | WAITING_FOR_ORIGINALS |
 

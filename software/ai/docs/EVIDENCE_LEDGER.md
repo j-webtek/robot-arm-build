@@ -7520,3 +7520,127 @@ rewriting history. New entries must use a unique evidence ID.
   campaign with new arm poses and lighting, freeze its identity before opening
   it, then score this exact checkpoint once. Physical deployment remains
   separately blocked on final-camera calibration and installed geometry.
+
+### E-20260930-AI-473 — one-time fresh 1 mm policy evaluation
+
+- Stage: S2/S3 synthetic localization-policy evaluation.
+- Lane: AI/model with inert Isaac rendering and frozen offline inference; no
+  arm or integration status changed.
+- Claim commit:
+  `fa39a666e752557604057eba6302a8d538f2056a`.
+- Implementation commit:
+  `657974574191a53583db13cfea1dea79dd6a1a5a`.
+- Change: a v7 campaign predeclares actual-emitter schedule samples 40, 48,
+  56, 76, 88, and 100 as evaluation-only poses. They are disjoint from all
+  prior training, development, and evaluation samples and interleave the
+  previously observed H-to-1 and 1-to-period transit poses. Three new
+  deterministic lighting families—amber cast, center glare, and anti-diagonal
+  motion blur—are evaluation-only. The evaluator accepts only an evaluation-
+  only v7 dataset and the exact frozen E-472 1 mm checkpoint, then scores
+  nominal plus every 1 mm direction once. It emits a synthetic blocked report
+  with no execution authority regardless of the metric result.
+- Inputs/fixtures: renderer SHA-256
+  `0dff477d8f091926512d52130c6503e92d98bd29c2e0db09190f44ca3fa702c5`;
+  dataset/evaluator SHA-256
+  `036e076be8979ee9b9d58f84a41234af518de5fb461f5342cb681afb9dcbd802`;
+  focused test SHA-256
+  `fd777f8b94bd27506f4e4b0bb17a29833257a0deca04959c892025a60392500e`;
+  schedule file SHA-256
+  `6a59ce143f5527c7a9ced09b08d5515644ea4fb859dd69691e08483eb020ee42`;
+  target catalog SHA-256
+  `6779213e832ab27eeda1e7fb245f57ff8cb0d56707b5aa73a8f31ec483a620f2`;
+  frozen model file SHA-256
+  `e7b57b6e06edfb2b26972565c02149762c6e9a25ec67718f9d28b1c62dc6af3d`;
+  frozen canonical scorecard SHA-256
+  `224f7677f395192f80f9ecbeea816bed232cafb8d5e05cc2855123be044b7b20`.
+- Render command: `$env:OMNI_KIT_ACCEPT_EULA='YES'; $env:PYTHONPATH=(Resolve-Path
+  'software/src').Path; C:\IsaacSim\env_6_1_0\Scripts\python.exe
+  software\integrations\isaac_sim\isaac_fixed_overview_mesh_render_probe.py
+  --workspace . --upstream-repo C:\IsaacSim\sources\roarm_ws-40dbd84
+  --mesh-receipt software\integrations\isaac_sim\evidence\roarm_m3_upstream_link_meshes_20260929.json
+  --capsule-manifest software\integrations\isaac_sim\evidence\fixed_overview_segmentation_v1\manifest.json
+  --schedule-bundle software\integrations\isaac_sim\evidence\actual_emitter_joint_schedule_bundle_9e5c878_20260929.json
+  --campaign policy-evaluation-v7
+  --output-dir C:\IsaacSim\artifacts\issue190\fixed-overview-policy-evaluation-v7-run1
+  --receipt C:\IsaacSim\evidence\fixed_overview_policy_evaluation_v7_run1.json
+  --status-output C:\IsaacSim\evidence\fixed_overview_policy_evaluation_v7_run1.status.json`.
+- Dataset command: `python
+  software/ai/train/build_official_mesh_occlusion_data.py --source-manifest
+  C:\IsaacSim\artifacts\issue190\fixed-overview-policy-evaluation-v7-run1\manifest.json
+  --output-dir
+  C:\IsaacSim\artifacts\issue190\localization-policy-evaluation-data-v1`;
+  repeated with final `...data-v2` before inference.
+- Evaluation command, run once: `python
+  software/ai/train/build_official_mesh_occlusion_data.py --source-manifest
+  C:\IsaacSim\artifacts\issue190\fixed-overview-policy-evaluation-v7-run1\manifest.json
+  --evaluate-localization-policy
+  C:\IsaacSim\artifacts\issue190\localization-policy-evaluation-data-v1
+  C:\IsaacSim\artifacts\issue190\localization-policy-refreeze-v1
+  C:\IsaacSim\artifacts\issue190\localization-policy-evaluation-report-v1`.
+- Render result: PASS_WITH_BLOCKERS. Six pose-distinct official-mesh renders
+  provide 90 safe-region-overlap abstention labels before lighting expansion.
+  Canonical receipt SHA-256 is
+  `c8e8a7e152b0c763867ac488838c918a7e073c75c225c3503b92a8f9fc1dd3bf`;
+  manifest file SHA-256 is
+  `d3cf5f5928d84d3226b7872322716e78590218e7f52ae617c6d66a135ee86095`;
+  status file SHA-256 is
+  `b90f34b85a8a02304a7fd62aace847e886352f50611019f8059b7573bb0093f1`.
+  RGB, mask, and depth atlas SHA-256 values are respectively
+  `6fb715b004f96ef3cfe02297edd3e9ff74f662d8e8efb89d0e3c9a5b150ff88b`,
+  `bac8ace8bc39ae910732eab386a851a8769774bc4b23cb1d67386a048fc8fc1b`,
+  and `72eba5ebf287ecdf7365299f147a67e34734417d30cc582c606367b0c7861433`.
+- Dataset result: both independent 22-file, 2,898,387-byte builds are
+  byte-identical. Dataset SHA-256 is
+  `cc9665f58629ad311cf5d9913bf7ca3f993caf708302182905c78108d300556a`;
+  manifest file SHA-256 is
+  `b1cc90d3aa415faf822f98860fbc310af0a987b823fb86c04fed4474b166c68f`.
+  Training and development each contain zero rows. Evaluation contains 1,350
+  rows: 270 abstentions and 1,080 visible labels across 18 distinct images.
+- Evaluation result: BLOCKED_SYNTHETIC_ONLY. At frozen threshold `0.093`,
+  nominal alignment records 267 true abstentions, 997 true-visible decisions,
+  83 false abstentions, and 3 missed abstentions. Across all 1 mm directions,
+  misses range from 0 to 3 and false stops range from 82 to 96. The worst
+  missed rate is `3/270 = 0.011111111111111112`, within the 5% safety limit;
+  the worst visible false-stop rate is `96/1080 = 0.08888888888888889`, above
+  the 5% cadence limit. The synthetic gate fails. Nominal false stops are
+  already `83/1080 = 0.07685185185185185`. The -1 mm x/-1 mm y direction is
+  worst at 96 false stops and one miss.
+- Failure concentration: nominal false stops contain 36 center-glare, 29
+  amber-cast, and 18 anti-diagonal-blur rows. `ENTER`, `EQUAL`, `MINUS`, and
+  `0` account for 57 of 83 nominal false stops. These are observations from a
+  consumed split and may define a separate future development campaign but
+  may not tune this checkpoint or be reused as evaluation.
+- Report identity: canonical report SHA-256 is
+  `05a4ccb746ee97f5b55b1aba4d53a83924ec98477bdeb34759ae5589ac8a03c2`;
+  the 145,274-byte report file SHA-256 is
+  `bd436b5b2554eebfa1b56d8e4f4106b6663501fc796bd520ebad44d35f55c222`.
+- Validation: 72 focused simulator/perception tests passed in 25.82 seconds;
+  101 shared v2 precision, adapter, producer, strict-ingress, shadow-runner,
+  trajectory, and conformance tests passed in 11.49 seconds. Ruff,
+  maintained-document, AI work-registry, repository-health, source-footprint,
+  and `git diff --check` gates passed. At arm commit
+  `a842e71863dc4c0c8bcf8198567ea25bfc1fb5cf`, the precision-observation v2,
+  motion-batch v2, conformance-profile schema, and installed conformance
+  profile blobs remain identical to this AI branch.
+- Artifact location: external only under
+  `C:\IsaacSim\artifacts\issue190\fixed-overview-policy-evaluation-v7-run1`,
+  `localization-policy-evaluation-data-v1`, byte-identical `...data-v2`, and
+  `localization-policy-evaluation-report-v1`. Hashes identify exact local
+  bytes but do not make them clean-clone available.
+- Hardware-write count: 0.
+- Physical-movement count: 0.
+- Physics-step count: 0; retained schedule states are rendered statically.
+- Limitations: all camera geometry, images, labels, and offsets are synthetic.
+  The evaluated 1 mm ring uses nominal 2 px/mm geometry and is not physical
+  calibration. The v7 evaluation group is consumed and cannot tune a
+  successor. Tool and camera-support geometry remain absent. The failed report
+  grants no localization, collision, controller, execution, transport, permit,
+  or physical authority.
+- Supersedes: none; preserves E-472's development pass and records that its
+  visible-target specificity does not generalize to the fresh v7 campaign.
+- Next dependency: predeclare a new development-only hard-negative corpus that
+  represents the persistent keyboard targets and new lighting families, then
+  improve specificity without exceeding the 5% missed-abstention limit. A
+  later successor requires another untouched evaluation group; physical
+  deployment remains separately blocked on final-camera calibration and
+  installed geometry.

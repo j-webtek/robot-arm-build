@@ -321,3 +321,22 @@ synthetic ring while keeping both directional error rates below 5%. The model
 state values are unchanged. Uncertainty above 1 mm still produces
 `abstain_localization_uncertain`; the bound is synthetic development evidence,
 not physical-camera calibration or deployment qualification.
+
+After the v7 pose and lighting identities are predeclared and rendered, the
+frozen policy can be evaluated exactly once with:
+
+```powershell
+python software/ai/train/build_official_mesh_occlusion_data.py `
+  --source-manifest C:\IsaacSim\artifacts\issue190\fixed-overview-policy-evaluation-v7-run1\manifest.json `
+  --evaluate-localization-policy `
+    C:\IsaacSim\artifacts\issue190\localization-policy-evaluation-data-v1 `
+    C:\IsaacSim\artifacts\issue190\localization-policy-refreeze-v1 `
+    C:\IsaacSim\artifacts\issue190\localization-policy-evaluation-report-v1
+```
+
+The evaluator requires an evaluation-only v7 dataset and the exact frozen
+1 mm policy. It scores nominal alignment and all eight 1 mm directions, records
+every failure, and always remains synthetic-only. Evidence
+`E-20260930-AI-473` retains the first result: missed abstentions stay below 2%,
+but visible-target false stops reach 8.89%, so the synthetic gate fails. This
+evaluation group is consumed and cannot be used to tune a successor.
