@@ -511,3 +511,12 @@ identities are excluded from training and selection. This synthetic campaign
 cannot establish physical calibration, deployment qualification, or execution
 authority. A candidate that passes development still requires a newly
 predeclared and untouched evaluation source.
+
+Evidence `E-20261001-AI-480` records deterministic v13 dataset and training
+repeats. The selected threshold is `0.406`. Nominal development records
+`9/204 = 4.41%` missed abstentions and `11/921 = 1.19%` false stops. Every 1 mm
+and 2 mm direction remains below both fixed 5% ceilings; the worst 2 mm false
+stop rate is `36/921 = 3.91%`. The 4 mm ring fails, so the selected synthetic
+uncertainty bound is 2 mm. The candidate remains
+`BLOCKED_AWAITING_FRESH_EVALUATION` and has no deployment or execution
+authority.

@@ -1164,9 +1164,19 @@ The campaign identities and objective are independent of the identities inside
 the consumed v12 evaluation; no v12 byte, label, pose, or lighting transform is
 admissible for training or selection.
 
+Evidence `E-20261001-AI-480` records byte-identical dataset and training
+repeats. Threshold `0.406` passes fresh synthetic development at nominal
+alignment with `9/204 = 4.41%` missed abstentions and `11/921 = 1.19%` false
+stops. All eight directions at 1 mm and 2 mm remain below both fixed 5%
+ceilings; the worst 2 mm rates are `9/204 = 4.41%` missed abstentions and
+`36/921 = 3.91%` false stops. The 4 mm ring fails, so the selected synthetic
+bound is 2 mm. The result remains `BLOCKED_AWAITING_FRESH_EVALUATION`, carries
+no physical calibration or authority, and does not change arm or integration
+status.
+
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI/model | S2/S3 specificity-balanced successor | fresh v13 train/development fixed-overview campaign; conditioner-only successor seeded from exact E-478 checkpoint; focused simulator/perception tests; AI workplan, training README, and evidence ledger | `issue/190-isaac-sim-host` / `978b4ea184023c987b74db4f94c72172aad406a7` | ACTIVE — predeclared identities and objective frozen; exclude every v12 byte and identity from training and selection; create no evaluation group |
+| AI/model | S2/S3 specificity-balanced successor | fresh v13 train/development fixed-overview campaign; conditioner-only successor seeded from exact E-478 checkpoint; focused simulator/perception tests; AI workplan, training README, and evidence ledger | `issue/190-isaac-sim-host` / `978b4ea184023c987b74db4f94c72172aad406a7` | COMPLETE — E-480 passes fresh development through a 2 mm synthetic ring; candidate remains blocked pending untouched evaluation |
 | Unclaimed | S2/S3 | physical-camera deployment qualification and safe-region-fit precision evidence | — | AVAILABLE |
 | ARM | S4 | collect four physical-original `camera_support_optics` bindings through onboarding, then run the ARM-070 intake; no synthetic promotion | ARM-071 | WAITING_FOR_ORIGINALS |
 
