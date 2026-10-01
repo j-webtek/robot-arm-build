@@ -1136,9 +1136,18 @@ dataset. The corrected campaign replaces duplicate development samples 37 and
 sample now carries a distinct joint state. The failed evidence remains part of
 the ledger and is not rewritten by the correction.
 
+The corrected v11 campaign and conditioner-only recall successor are recorded
+in `E-20261001-AI-478`. Independent dataset and training builds are byte
+identical. The frozen successor selects threshold `0.162`; nominal development
+records `31/1104 = 2.81%` false stops and `11/246 = 4.47%` missed abstentions.
+At +1 mm x/0 mm y, misses reach `13/246 = 5.28%`, so the candidate earns only a
+0 mm synthetic uncertainty bound. It remains
+`BLOCKED_AWAITING_FRESH_EVALUATION`; v10 was not reused, no evaluation group was
+created or opened, and no arm or integration status changes.
+
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI/model | S2/S3 occlusion-recall successor | fixed-overview campaign renderer; offline dataset/trainer; focused simulator/perception tests; AI workplan, training README, and evidence ledger | `issue/190-isaac-sim-host` / `f25ca76bf31eb2effdf951e821e05dbe39a40d7a` | ACTIVE — freeze v11 training/development identities, retain pre-pool target conditioning, select only on v11 development, exclude consumed v10 evaluation bytes |
+| AI/model | S2/S3 occlusion-recall successor | fixed-overview campaign renderer; offline dataset/trainer; focused simulator/perception tests; AI workplan, training README, and evidence ledger | `issue/190-isaac-sim-host` / `f25ca76bf31eb2effdf951e821e05dbe39a40d7a` | COMPLETE — E-478 passes nominal development, retains a 0 mm synthetic bound, and remains blocked for a separately frozen fresh evaluation |
 | Unclaimed | S2/S3 | physical-camera deployment qualification and safe-region-fit precision evidence | — | AVAILABLE |
 | ARM | S4 | collect four physical-original `camera_support_optics` bindings through onboarding, then run the ARM-070 intake; no synthetic promotion | ARM-071 | WAITING_FOR_ORIGINALS |
 

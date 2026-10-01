@@ -440,3 +440,28 @@ rate remains below 5%, but the worst missed-abstention rate is `15/249 = 6.02%`.
 The v10 evaluation group is consumed and cannot be used for threshold, weight,
 architecture, or label selection. Future recall work needs new training and
 development bytes, followed by another separately frozen evaluation campaign.
+
+## Occlusion-recall successor
+
+The v11 campaign contains twelve training poses and six development poses that
+are absent from v1-v10, plus six new deterministic lighting transforms. It has
+no evaluation group. The successor starts from the exact E-476 checkpoint,
+freezes both visual convolutions and the classifier, and updates only the FiLM
+conditioner with a fixed positive abstention weight of `1.5`:
+
+```powershell
+python software/ai/train/build_official_mesh_occlusion_data.py `
+  --source-manifest C:\IsaacSim\artifacts\issue190\fixed-overview-occlusion-recall-v11-run2\manifest.json `
+  --train-occlusion-recall `
+    C:\IsaacSim\artifacts\issue190\occlusion-recall-data-v1 `
+    C:\IsaacSim\artifacts\issue190\target-conditioned-fusion-v1 `
+    C:\IsaacSim\artifacts\issue190\occlusion-recall-candidate-v1
+```
+
+Evidence `E-20261001-AI-478` records byte-identical repeat builds. Threshold
+`0.162` passes nominal development with `31/1104 = 2.81%` false stops and
+`11/246 = 4.47%` missed abstentions. One 1 mm direction narrowly misses the
+recall ceiling at `13/246 = 5.28%`, so the supported synthetic uncertainty
+bound remains 0 mm. The candidate remains
+`BLOCKED_AWAITING_FRESH_EVALUATION`; it has no physical calibration or
+execution authority, and the consumed v10 evaluation was not reused.

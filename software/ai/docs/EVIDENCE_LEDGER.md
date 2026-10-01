@@ -8132,3 +8132,146 @@ rewriting history. New entries must use a unique evidence ID.
   an occlusion-recall candidate, retaining the target-conditioned pre-pool
   specificity mechanism. Do not reuse v10 images, labels, probabilities, or
   failures for selection. A successor requires another untouched evaluation.
+
+### E-20261001-AI-478 — occlusion-recall successor passes nominal development
+
+- Stage: S2/S3 synthetic recall training and development selection.
+- Lane: AI/model with inert Isaac rendering and offline training; no arm or
+  integration status changed.
+- Claim commit:
+  `f25ca76bf31eb2effdf951e821e05dbe39a40d7a`.
+- Implementation and predeclaration commit:
+  `1545b0b9af65b06ee0c2b77c66ccbf1305d3a9a8`.
+- Corrected pose declaration commit:
+  `b5ec2d687d3e626d63e56ff313229609b6d64fcd`.
+- Change: v11 reserves twelve training and six development schedule states
+  absent from v1-v10, and contains no evaluation group. Three train-only and
+  three development-only deterministic lighting transforms are absent from all
+  previous campaigns. The exact E-476 checkpoint seeds the successor. Both
+  visual convolutions and the classifier remain frozen; only the pre-pool FiLM
+  conditioner trains for 12 epochs with Adam, learning rate `0.0005`, weight
+  decay `0.0001`, and a fixed positive abstention weight of `1.5`. Threshold
+  and uncertainty selection use v11 development only. Consumed v10 evaluation
+  bytes are excluded and `consumed_evaluation_dataset_sha256` remains null.
+- Preserved failed evidence: the first frozen render used schedule samples 36,
+  37, and 39, whose joint states are identical. It failed closed with
+  `official mesh semantic masks are not pose-distinct`, wrote no receipt or
+  admissible dataset, and recorded status-file SHA-256
+  `7e09cfc4626774afd78ae160eed61ea30be1c91fe58ac7fcdcde09579231a3ec`.
+  The correction replaced only duplicate development samples 37 and 39 with
+  previously unused H-transit samples 30 and 32 and rendered to a new output
+  directory. The failed output remains preserved.
+- Inputs/fixtures: renderer SHA-256
+  `c468e323dd2b230d7728c4479ef8edd4b79d0620eeb728a5b13e9afdc838e3cd`;
+  builder/trainer SHA-256
+  `53fef0738be57c08726db02f5765336248de5a2ea07869d12d786f6198a80f8d`;
+  focused test SHA-256
+  `b8d858f56187e883fda89344b42ff9f6c1d766294a738b4e0b9fb8b36b319aac`;
+  schedule file SHA-256
+  `6a59ce143f5527c7a9ced09b08d5515644ea4fb859dd69691e08483eb020ee42`;
+  target catalog SHA-256
+  `6779213e832ab27eeda1e7fb245f57ff8cb0d56707b5aa73a8f31ec483a620f2`;
+  E-476 seed model SHA-256
+  `55da91e5a2c14e2c6fb6ebab7c1302e9c1fd5a8cc41644e8f6467ffdcb3c5c74`.
+- Corrected render command: `$env:OMNI_KIT_ACCEPT_EULA='YES';
+  $env:PYTHONPATH=(Resolve-Path 'software/src').Path;
+  C:\IsaacSim\env_6_1_0\Scripts\python.exe
+  software\integrations\isaac_sim\isaac_fixed_overview_mesh_render_probe.py
+  --workspace . --upstream-repo C:\IsaacSim\sources\roarm_ws-40dbd84
+  --mesh-receipt software\integrations\isaac_sim\evidence\roarm_m3_upstream_link_meshes_20260929.json
+  --capsule-manifest software\integrations\isaac_sim\evidence\fixed_overview_segmentation_v1\manifest.json
+  --schedule-bundle software\integrations\isaac_sim\evidence\actual_emitter_joint_schedule_bundle_9e5c878_20260929.json
+  --campaign occlusion-recall-v11 --output-dir
+  C:\IsaacSim\artifacts\issue190\fixed-overview-occlusion-recall-v11-run2
+  --receipt C:\IsaacSim\evidence\fixed_overview_occlusion_recall_v11_run2.json
+  --status-output
+  C:\IsaacSim\evidence\fixed_overview_occlusion_recall_v11_run2.status.json`.
+- Dataset command: `Copy-Item -LiteralPath
+  C:\IsaacSim\evidence\fixed_overview_occlusion_recall_v11_run2.json
+  -Destination
+  C:\IsaacSim\artifacts\issue190\fixed-overview-occlusion-recall-v11-run2\manifest.json;
+  python software\ai\train\build_official_mesh_occlusion_data.py
+  --source-manifest
+  C:\IsaacSim\artifacts\issue190\fixed-overview-occlusion-recall-v11-run2\manifest.json
+  --output-dir C:\IsaacSim\artifacts\issue190\occlusion-recall-data-v1`;
+  repeated with final output `...data-v2`.
+- Training command: `python
+  software\ai\train\build_official_mesh_occlusion_data.py --source-manifest
+  C:\IsaacSim\artifacts\issue190\fixed-overview-occlusion-recall-v11-run2\manifest.json
+  --train-occlusion-recall
+  C:\IsaacSim\artifacts\issue190\occlusion-recall-data-v1
+  C:\IsaacSim\artifacts\issue190\target-conditioned-fusion-v1
+  C:\IsaacSim\artifacts\issue190\occlusion-recall-candidate-v1`;
+  repeated with dataset and candidate suffix `v2`.
+- Render result: `PASS_WITH_BLOCKERS`. The 18 distinct states comprise 12
+  training and six development poses; evaluation has zero. Canonical receipt
+  SHA-256 is
+  `4ebac2b69bdb03121359ff9cf592ca86be15adb57c14a0041a75c3ce61bc4fdf`;
+  receipt file SHA-256 is
+  `7716c76895ec9d9a0719beabf1fa1565af0cc372339d4847e8ca2883dfea4aaf`;
+  status file SHA-256 is
+  `42e067ea3050b10a24f01424ef61e83fa6aa3dc93ce945d909f575cafaea15a8`.
+  RGB, mask, and depth atlas SHA-256 values are respectively
+  `e73ebbad9158222e43c2f7ab523c67cae4ddc674770ef02a530c8054de5290b2`,
+  `886e2b658e310ef14166402b2e8ad4a00e29a12cd2b941f92f14a6ce84c651c4`,
+  and `e12b4c7594870b7fb3f948294bbeabf9f0a14538f36c5a41be8c1638baaad819`.
+- Dataset result: both independent 58-file builds are byte-identical. Dataset
+  SHA-256 is
+  `5c99f7638b87eadc359e267de7a5d2e5a37dd43598b39fe415c46a4219eb817f`;
+  manifest file SHA-256 is
+  `1aaee7460e968eb72baa08f5ef9b7f5b5b9d6b2014bb0b779ac6befc573dc0fd`;
+  directory-content SHA-256 is
+  `0612376e48636ba605b07944a69c3e3b6a0eb923cf6f02b68348c35e763c64bd`.
+  Training contains 2,700 rows: 501 abstentions and 2,199 visible targets.
+  Development contains 1,350 rows: 246 abstentions and 1,104 visible targets.
+  Evaluation contains zero rows.
+- Training result: `BLOCKED_AWAITING_FRESH_EVALUATION` after passing nominal
+  development. Both runs produce byte-identical 95,658-byte models and
+  1,524,008-byte scorecards. Model/file SHA-256 is
+  `27c7be58e11f8bf3341cb4eb56abdf7786d984e2664b6eb07d6349243730e09c`;
+  canonical scorecard SHA-256 is
+  `807928f2559d14fa8b0b9da1781d379650deeadb40ec8690e41484be16eaa0d4`;
+  scorecard file SHA-256 is
+  `5aa9aa4f7bf826b54d1337bdcb1d00601ea76c3333469354062740ce238cbbc2`.
+  All frozen convolution and classifier values match E-476 exactly.
+- Metrics: selected threshold is `0.162`. Nominal alignment records 235 true
+  abstentions, 1,073 true-visible decisions, 31 false abstentions, and 11
+  missed abstentions: false-stop rate `31/1104 = 2.81%` and missed-abstention
+  rate `11/246 = 4.47%`. Seven of eight 1 mm directions keep both rates below
+  5%; +1 mm x/0 mm y records `13/246 = 5.28%` misses. Worst 1 mm false-stop
+  rate is `48/1104 = 4.35%` at +1 mm x/-1 mm y. The selector therefore returns
+  a 0 mm synthetic planar bound with `development_gate_met: true`.
+- Validation: 39 focused simulator/perception tests passed in 16.02 seconds.
+  The shared AI-to-arm boundary selection passed 59 tests in 3.82 seconds.
+  Ruff passed. Maintained-document validation passed across 48 docs, 28 public
+  titles, and two SVG assets. Public-record, evidence-scope, repository-artifact,
+  repository-health, release-integrity, and release-readiness checks passed.
+  Source footprint is 6,100 tracked files, 653,007,891 logical bytes, 4,890,152
+  duplicate bytes, and remains within policy. The AI work-registry audit passed
+  with 35 tracked and documented tests, 110 referenced paths, and zero unowned
+  or multiply owned tests. `git diff --check` passed. At `origin/main`
+  `0c6bea062bcf2baebe232efcf1063a392192fb9d`, precision-observation v2,
+  motion-batch v2, conformance-profile schema, and installed profile blobs are
+  byte-identical to this AI branch.
+- Artifact location: external only under
+  `C:\IsaacSim\artifacts\issue190\fixed-overview-occlusion-recall-v11-run2`,
+  byte-identical `occlusion-recall-data-v1` and `...data-v2`, and byte-identical
+  `occlusion-recall-candidate-v1` and `...candidate-v2`. Hashes identify exact
+  local bytes but do not make them clean-clone available.
+- Hardware-write count: 0.
+- Physical-movement count: 0.
+- Physics-step count: 0; schedule states are rendered statically and training
+  uses retained images offline.
+- Limitations: all camera geometry, images, labels, target descriptors, and
+  offsets are synthetic. The 0 mm bound is synthetic development evidence and
+  is not physical calibration. V11 has selected this checkpoint and cannot
+  evaluate it. V10 remains consumed and was not reused. Tool and camera-support
+  geometry, physical frames, temporal evidence, and deployment calibration
+  remain absent. Passing nominal development grants no localization,
+  collision, controller, execution, transport, permit, or physical authority.
+- Supersedes: none; preserves E-476 and the failed E-477 evaluation, and adds a
+  separately trained recall successor without rewriting either result.
+- Next dependency: predeclare a new pose- and lighting-disjoint evaluation-only
+  campaign, freeze its identities before rendering, and evaluate this exact
+  checkpoint once. Preserve the outcome whether it passes or fails. Physical
+  deployment qualification remains a separate later requirement.
