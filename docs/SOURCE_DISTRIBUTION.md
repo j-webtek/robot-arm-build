@@ -73,6 +73,12 @@ the read-only analyzer, strict schema, retained aggregate report, and focused
 test. The current tracked-file ceiling is therefore 6,131. This adjustment does
 not relax any byte or duplicate-byte ceiling and adds no model or image blob.
 
+The issue 190 v16 grouped-neighborhood campaign adds three reviewed source
+files: the deterministic grouped fixture builder, its retained JSON fixture,
+and its focused test. The current tracked-file ceiling is therefore 6,134.
+This adjustment does not relax any byte, single-blob, or duplicate-byte ceiling
+and adds no model or image blob.
+
 The preferred order is:
 
 1. replace repeated instructional STL copies with one canonical tracked object
