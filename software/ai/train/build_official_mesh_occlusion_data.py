@@ -1176,39 +1176,54 @@ def _select_localization_policy(
     if [item[0] for item in probabilities_by_offset] != _declared_mask_offsets():
         raise ValueError("localization policy requires every predeclared offset in order")
     admissible = []
-    thresholds = [float(round(value, 2)) for value in np.linspace(0.05, 0.95, 19)]
+    # Millithreshold resolution is predeclared rather than derived from the
+    # development predictions.  This keeps selection deterministic while
+    # avoiding the 0.05-wide blind spots of the original research grid.
+    thresholds = [value / 1000.0 for value in range(50, 951)]
+    positive_count = int(labels.sum())
+    visible_count = len(labels) - positive_count
+    if positive_count == 0 or visible_count == 0:
+        raise ValueError("localization policy requires both abstain and visible rows")
     for threshold in thresholds:
-        measurements = [
-            {"offset": offset, "metrics": _metrics(rows, labels, probabilities, threshold)}
-            for offset, probabilities in probabilities_by_offset
-        ]
+        summaries = []
+        for offset, probabilities in probabilities_by_offset:
+            predicted = probabilities >= threshold
+            true_abstain = int(np.logical_and(labels == 1, predicted).sum())
+            true_visible = int(np.logical_and(labels == 0, ~predicted).sum())
+            missed_abstain = positive_count - true_abstain
+            false_abstain = visible_count - true_visible
+            summaries.append({
+                "offset": offset,
+                "missed_rate": missed_abstain / positive_count,
+                "false_rate": false_abstain / visible_count,
+                "balanced_accuracy": 0.5 * (
+                    true_abstain / positive_count + true_visible / visible_count
+                ),
+            })
         for bound in (0.0, 1.0, 2.0, 4.0):
             covered = [
-                item for item in measurements
+                item for item in summaries
                 if max(abs(item["offset"]["x_mm"]), abs(item["offset"]["y_mm"])) <= bound
             ]
-            missed_rates = [
-                item["metrics"]["confusion"]["missed_abstain"] / int(labels.sum())
-                for item in covered
-            ]
-            visible_count = len(labels) - int(labels.sum())
-            false_rates = [
-                item["metrics"]["confusion"]["false_abstain"] / visible_count
-                for item in covered
-            ]
+            missed_rates = [item["missed_rate"] for item in covered]
+            false_rates = [item["false_rate"] for item in covered]
             if max(missed_rates) <= 0.05 and max(false_rates) <= 0.05:
                 admissible.append((
                     bound,
-                    min(item["metrics"]["balanced_accuracy"] for item in covered),
+                    min(item["balanced_accuracy"] for item in covered),
                     -max(false_rates),
                     -max(missed_rates),
                     -threshold,
                     threshold,
-                    measurements,
                 ))
     if admissible:
         selected = max(admissible)
-        return selected[5], selected[0], True, selected[6]
+        threshold = selected[5]
+        measurements = [
+            {"offset": offset, "metrics": _metrics(rows, labels, probabilities, threshold)}
+            for offset, probabilities in probabilities_by_offset
+        ]
+        return threshold, selected[0], True, measurements
     nominal_offset, nominal_probabilities = probabilities_by_offset[0]
     if nominal_offset != {"x_mm": 0.0, "y_mm": 0.0, "x_px": 0.0, "y_px": 0.0}:
         raise ValueError("nominal offset must be first")
@@ -1452,6 +1467,129 @@ def _load_spatial_checkpoint(candidate_dir: Path):  # type: ignore[no-untyped-de
     model.load_state_dict(state, strict=True)
     model.eval()
     return checkpoint, model
+
+
+def refreeze_localization_policy(
+    development_dataset_dir: Path,
+    candidate_dir: Path,
+    output_dir: Path,
+) -> dict[str, Any]:
+    """Refreeze only the threshold and uncertainty bound of a frozen candidate."""
+    import torch
+
+    development_dataset_dir = development_dataset_dir.resolve(strict=True)
+    candidate_dir = candidate_dir.resolve(strict=True)
+    output_dir = output_dir.resolve()
+    if output_dir.exists() and any(output_dir.iterdir()):
+        raise ValueError("localization policy refreeze output directory must be empty")
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    dataset_path = development_dataset_dir / "manifest.json"
+    dataset = json.loads(dataset_path.read_text(encoding="utf-8"))
+    claimed_dataset_sha = dataset.pop("dataset_sha256", None)
+    if not isinstance(claimed_dataset_sha, str) \
+            or _sha256(_canonical(dataset)) != claimed_dataset_sha:
+        raise ValueError("localization policy dataset manifest hash mismatch")
+    dataset["dataset_sha256"] = claimed_dataset_sha
+    if dataset.get("schema") != SCHEMA_V6 \
+            or dataset.get("scope") != "SYNTHETIC_ONLY_NO_DEPLOYMENT_QUALIFICATION":
+        raise ValueError("localization policy dataset scope or schema mismatch")
+    if dataset["splits"]["train"]["count"] != 0 \
+            or dataset["splits"]["evaluation"]["count"] != 0:
+        raise ValueError("localization policy dataset must be development-only")
+
+    model_path = candidate_dir / "model.json"
+    scorecard_path = candidate_dir / "scorecard.json"
+    checkpoint, model = _load_spatial_checkpoint(candidate_dir)
+    if checkpoint.get("schema") \
+            != "rocell.ai_target_crop_localization_robust_spatial.v1":
+        raise ValueError("policy refreeze requires localization-robust checkpoint")
+    if checkpoint.get("evaluation_opened") is not False \
+            or checkpoint.get("selection_dataset_sha256") != claimed_dataset_sha:
+        raise ValueError("policy refreeze checkpoint opened evaluation or changed selection data")
+    source_scorecard = json.loads(scorecard_path.read_text(encoding="utf-8"))
+    claimed_scorecard_sha = source_scorecard.pop("scorecard_sha256", None)
+    if not isinstance(claimed_scorecard_sha, str) \
+            or _sha256(_canonical(source_scorecard)) != claimed_scorecard_sha:
+        raise ValueError("localization policy source scorecard hash mismatch")
+    source_scorecard["scorecard_sha256"] = claimed_scorecard_sha
+    source_model_sha = _sha256(model_path.read_bytes())
+    if source_scorecard.get("model_sha256") != source_model_sha \
+            or source_scorecard.get("development_dataset_sha256") != claimed_dataset_sha \
+            or source_scorecard.get("hardware_writes") != 0 \
+            or source_scorecard.get("physical_movements") != 0:
+        raise ValueError("localization policy source identity or authority mismatch")
+
+    rows = _load_rows(development_dataset_dir, "development", dataset)
+    labels_ref: np.ndarray | None = None
+    probabilities_by_offset = []
+    for offset in _declared_mask_offsets():
+        crops, labels = _target_aware_crops(
+            development_dataset_dir, rows, (offset["x_px"], offset["y_px"]),
+        )
+        labels = labels.astype(np.float64)
+        if labels_ref is None:
+            labels_ref = labels
+        elif not np.array_equal(labels_ref, labels):
+            raise RuntimeError("development labels changed across offsets")
+        with torch.no_grad():
+            probabilities = torch.sigmoid(model(torch.from_numpy(crops))).numpy()
+        probabilities_by_offset.append((offset, probabilities))
+    assert labels_ref is not None
+    threshold, uncertainty_bound, gate_met, measurements = _select_localization_policy(
+        rows, labels_ref, probabilities_by_offset,
+    )
+
+    refrozen_checkpoint = json.loads(json.dumps(checkpoint))
+    refrozen_checkpoint["threshold"] = threshold
+    refrozen_checkpoint["localization_uncertainty_policy"] = {
+        "maximum_supported_planar_error_mm": uncertainty_bound,
+        "above_bound_decision": "abstain_localization_uncertain",
+        "development_gate_met": gate_met,
+        "maximum_missed_abstain_rate": 0.05,
+        "maximum_visible_false_abstain_rate": 0.05,
+    }
+    refrozen_checkpoint["policy_selection"] = {
+        "method": "fixed_millithreshold_grid_v1",
+        "threshold_minimum": 0.05,
+        "threshold_maximum": 0.95,
+        "threshold_step": 0.001,
+        "source_model_sha256": source_model_sha,
+        "source_scorecard_sha256": claimed_scorecard_sha,
+        "weights_changed": False,
+    }
+    checkpoint_path = output_dir / "model.json"
+    checkpoint_path.write_bytes(_canonical(refrozen_checkpoint) + b"\n")
+    scorecard: dict[str, Any] = {
+        "schema": "rocell.ai_localization_policy_refreeze.v1",
+        "algorithm": "frozen_weights_fixed_millithreshold_grid_v1",
+        "source_model_sha256": source_model_sha,
+        "source_scorecard_sha256": claimed_scorecard_sha,
+        "development_dataset_manifest_sha256": _sha256(dataset_path.read_bytes()),
+        "development_dataset_sha256": claimed_dataset_sha,
+        "model_sha256": _sha256(checkpoint_path.read_bytes()),
+        "weights_changed": False,
+        "selected_threshold": threshold,
+        "maximum_supported_planar_error_mm": uncertainty_bound,
+        "development_gate_met": gate_met,
+        "development_measurements": measurements,
+        "evaluation_group_present": False,
+        "evaluation_opened": False,
+        "promotion_status": "BLOCKED_AWAITING_FRESH_EVALUATION",
+        "hardware_writes": 0,
+        "physical_movements": 0,
+        "physical_authority": False,
+        "limitations": [
+            "policy selection uses synthetic development data only",
+            "the uncertainty bound is synthetic and not a physical calibration",
+            "model weights are unchanged from the source checkpoint",
+            "no evaluation group was created or opened",
+            "tool and camera-support geometry remain absent",
+        ],
+    }
+    scorecard["scorecard_sha256"] = _sha256(_canonical(scorecard))
+    (output_dir / "scorecard.json").write_bytes(_canonical(scorecard) + b"\n")
+    return scorecard
 
 
 def evaluate_target_mask_perturbations(
@@ -1805,10 +1943,15 @@ def main() -> int:
         "--train-localization-robust", type=Path, nargs=3,
         metavar=("TRAINING_DATASET_DIR", "DEVELOPMENT_DATASET_DIR", "OUTPUT_DIR"),
     )
+    parser.add_argument(
+        "--refreeze-localization-policy", type=Path, nargs=3,
+        metavar=("DEVELOPMENT_DATASET_DIR", "CANDIDATE_DIR", "OUTPUT_DIR"),
+    )
     args = parser.parse_args()
     if args.record_existing is not None:
         if args.perturb_existing is not None \
                 or args.train_localization_robust is not None \
+                or args.refreeze_localization_policy is not None \
                 or args.output_dir is not None or any(
             value is not None
             for value in (
@@ -1823,7 +1966,9 @@ def main() -> int:
         print(json.dumps(manifest, sort_keys=True))
         return 0
     if args.perturb_existing is not None:
-        if args.train_localization_robust is not None or args.output_dir is not None or any(
+        if args.train_localization_robust is not None \
+                or args.refreeze_localization_policy is not None \
+                or args.output_dir is not None or any(
             value is not None
             for value in (
                 args.baseline_output, args.candidate_output, args.spatial_output,
@@ -1837,7 +1982,8 @@ def main() -> int:
         print(json.dumps(report, sort_keys=True))
         return 0
     if args.train_localization_robust is not None:
-        if args.output_dir is not None or any(
+        if args.refreeze_localization_policy is not None \
+                or args.output_dir is not None or any(
             value is not None
             for value in (
                 args.baseline_output, args.candidate_output, args.spatial_output,
@@ -1849,6 +1995,22 @@ def main() -> int:
             )
         scorecard = train_localization_robust_candidate(
             *args.train_localization_robust,
+        )
+        print(json.dumps(scorecard, sort_keys=True))
+        return 0
+    if args.refreeze_localization_policy is not None:
+        if args.output_dir is not None or any(
+            value is not None
+            for value in (
+                args.baseline_output, args.candidate_output, args.spatial_output,
+                args.target_aware_output,
+            )
+        ):
+            parser.error(
+                "--refreeze-localization-policy cannot be combined with other outputs"
+            )
+        scorecard = refreeze_localization_policy(
+            *args.refreeze_localization_policy,
         )
         print(json.dumps(scorecard, sort_keys=True))
         return 0

@@ -621,6 +621,34 @@ def test_localization_policy_selects_largest_supported_development_bound() -> No
     )
 
 
+def test_localization_policy_resolves_feasible_sub_centithreshold_interval() -> None:
+    module = _builder()
+    rows = [{"id": f"row-{index}"} for index in range(40)]
+    labels = np.asarray([0.0] * 20 + [1.0] * 20)
+    probabilities = np.asarray(
+        [0.01] * 18 + [0.0945, 0.0945] + [0.094, 0.096] + [0.99] * 18,
+        dtype=np.float64,
+    )
+    by_offset = [
+        (offset, probabilities.copy())
+        for offset in module._declared_mask_offsets()
+    ]
+
+    threshold, bound, gate_met, measurements = module._select_localization_policy(
+        rows, labels, by_offset,
+    )
+
+    assert threshold == 0.095
+    assert bound == 4.0
+    assert gate_met is True
+    assert len(measurements) == 33
+    assert all(
+        item["metrics"]["confusion"]["missed_abstain"] == 1
+        and item["metrics"]["confusion"]["false_abstain"] == 0
+        for item in measurements
+    )
+
+
 def test_target_aware_candidate_is_deterministic_and_has_no_robot_mask_input(
     tmp_path: Path,
 ) -> None:
