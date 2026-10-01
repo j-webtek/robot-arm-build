@@ -300,3 +300,24 @@ Evidence `E-20260930-AI-471` selected a 0 mm bound: nominal development passes,
 but the worst 1 mm direction misses 6 of 108 abstentions. The checkpoint must
 therefore abstain on any nonzero localization uncertainty and remains blocked
 without a fresh evaluation.
+
+The weights do not need to be retrained when only the predeclared threshold
+resolution is being corrected. The policy-refreeze mode verifies the source
+checkpoint, scorecard, development manifest, unopened evaluation state, and
+zero-authority fields, then rescans the same 33 development offsets on a fixed
+0.001 threshold grid:
+
+```powershell
+python software/ai/train/build_official_mesh_occlusion_data.py `
+  --source-manifest C:\IsaacSim\artifacts\issue190\fixed-overview-mask-perturbation-v6-run1\manifest.json `
+  --refreeze-localization-policy `
+    C:\IsaacSim\artifacts\issue190\mask-perturbation-development-data-v1 `
+    C:\IsaacSim\artifacts\issue190\localization-robust-candidate-v1 `
+    C:\IsaacSim\artifacts\issue190\localization-policy-refreeze-v1
+```
+
+Evidence `E-20260930-AI-472` selects threshold `0.093` and supports the 1 mm
+synthetic ring while keeping both directional error rates below 5%. The model
+state values are unchanged. Uncertainty above 1 mm still produces
+`abstain_localization_uncertain`; the bound is synthetic development evidence,
+not physical-camera calibration or deployment qualification.

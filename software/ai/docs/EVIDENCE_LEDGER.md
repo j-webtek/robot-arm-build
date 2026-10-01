@@ -7431,3 +7431,92 @@ rewriting history. New entries must use a unique evidence ID.
 - Next dependency: improve the worst 1 mm development direction without
   exceeding the 5% false-stop limit, then freeze a nonzero uncertainty bound
   before allocating a fresh untouched evaluation campaign.
+
+### E-20260930-AI-472 — frozen-weight millithreshold policy refreeze
+
+- Stage: S2/S3 synthetic localization-uncertainty policy selection.
+- Lane: AI/model offline development-only policy selection; no arm or
+  integration status changed.
+- Claim commit:
+  `d8e6fad5debb16c8dde71ea5d8665f326b28213e`.
+- Implementation commit:
+  `34aea6d53f980bbf1049f3a22564bf78a89d0241`.
+- Change: the frozen E-471 model is rescored on the existing 33 predeclared v6
+  offsets using a fixed threshold grid from `0.050` through `0.950` in `0.001`
+  increments. The refreeze path verifies the source model and scorecard,
+  development-manifest identity, synthetic-only scope, empty training and
+  evaluation splits, unopened evaluation state, and zero hardware authority.
+  It changes only the decision threshold and uncertainty policy; model state
+  values remain identical to E-471. Detailed metrics are materialized only for
+  the selected threshold to keep the finer search bounded.
+- Inputs/fixtures: implementation SHA-256
+  `66d5079f8ed442097f16a44d5113a5319d82c5b448eba8d42b5a71bfc77b2357`;
+  focused test SHA-256
+  `f40655963f9d424502ae1d3df76503813a955595bdeca733e0b83dcd9e854181`;
+  source render manifest file SHA-256
+  `b9943488381ded4395a01f78980de86f1b7cee1e8a3421902398d198514c78bc`;
+  target catalog SHA-256
+  `6779213e832ab27eeda1e7fb245f57ff8cb0d56707b5aa73a8f31ec483a620f2`;
+  development dataset SHA-256
+  `35011f05e5ecbc39d2768dcccfdee052ff90674f5f378c7e18ba3cf0715138b0`;
+  development manifest file SHA-256
+  `15d26c3f9ee6b992f00d470985b86d158e19c7eddc0d242e9e9adcd6e939d276`;
+  source model file SHA-256
+  `16f1810ee5ad51b8414ea524ad54399a85fcce56a45aa76512c2b81ed56d22e6`;
+  source canonical scorecard SHA-256
+  `c61cb0d9bcc59b93337aa1f83a7465814842dfec25e74f824a6231435da766ea`.
+- Exact command: `python
+  software/ai/train/build_official_mesh_occlusion_data.py --source-manifest
+  C:\IsaacSim\artifacts\issue190\fixed-overview-mask-perturbation-v6-run1\manifest.json
+  --refreeze-localization-policy
+  C:\IsaacSim\artifacts\issue190\mask-perturbation-development-data-v1
+  C:\IsaacSim\artifacts\issue190\localization-robust-candidate-v1
+  C:\IsaacSim\artifacts\issue190\localization-policy-refreeze-v1`;
+  repeated with final output `...refreeze-v2` and stdout redirected to
+  `C:\IsaacSim\artifacts\issue190\localization-policy-refreeze-v2.stdout.json`.
+- Result: PASS_WITH_BLOCKERS. The selected threshold is `0.093` and the largest
+  supported synthetic planar-error bound is 1 mm. Nominal alignment records
+  105 true abstentions, 1,194 true-visible decisions, 48 false abstentions,
+  and 3 missed abstentions. Across all eight 1 mm directions, missed
+  abstentions range from 1 to 4 and false stops range from 47 to 62. The worst
+  missed rate is `4/108 = 0.037037037037037035`; the worst visible false-stop
+  rate is `62/1242 = 0.0499194847020934`. The +1 mm x/+1 mm y direction reaches
+  the 62-false-stop edge. The 2 mm ring fails with 0–6 misses and 45–207 false
+  stops, so uncertainty above 1 mm must produce
+  `abstain_localization_uncertain`.
+- Reproducibility: both 37,660-byte model files are byte-identical at SHA-256
+  `e7b57b6e06edfb2b26972565c02149762c6e9a25ec67718f9d28b1c62dc6af3d`;
+  both 2,081,052-byte scorecard files are byte-identical at SHA-256
+  `de381870fd0e7d541aa32fd154069c897bb2fc99f9d5c7c8d7b1dd04646d3ae3`;
+  canonical scorecard SHA-256 is
+  `224f7677f395192f80f9ecbeea816bed232cafb8d5e05cc2855123be044b7b20`.
+  The refrozen and source `state_dict` objects compare equal. Evaluation is
+  absent and unopened.
+- Validation: 69 focused simulator/perception tests passed in 25.30 seconds;
+  101 shared v2 precision, adapter, producer, strict-ingress, shadow-runner,
+  trajectory, and conformance tests passed in 11.41 seconds. Ruff,
+  maintained-document, AI work-registry, repository-health, source-footprint,
+  and `git diff --check` gates passed. At arm commit
+  `a842e71863dc4c0c8bcf8198567ea25bfc1fb5cf`, the precision-observation v2,
+  motion-batch v2, conformance-profile schema, and installed conformance
+  profile blobs remain identical to this AI branch.
+- Artifact location: external only under
+  `C:\IsaacSim\artifacts\issue190\localization-policy-refreeze-v1`, with
+  byte-identical repeat `...refreeze-v2`. Hashes identify exact local bytes but
+  do not make the checkpoint clean-clone available.
+- Hardware-write count: 0.
+- Physical-movement count: 0.
+- Physics-step count: 0; this increment replays retained synthetic images.
+- Limitations: the camera, target geometry, labels, and offsets are synthetic.
+  The 1 mm bound is a development result under nominal 2 px/mm geometry, not a
+  measured physical-camera calibration or deployment qualification. The
+  threshold is selected on the existing v6 development corpus, so that corpus
+  cannot evaluate this policy. The 2 mm ring fails. Tool and camera-support
+  geometry remain absent. The artifact grants no localization, collision,
+  controller, execution, transport, permit, or physical authority.
+- Supersedes: none; preserves E-471's coarse-grid failure while correcting the
+  policy resolution with unchanged weights.
+- Next dependency: predeclare and render a fresh untouched synthetic evaluation
+  campaign with new arm poses and lighting, freeze its identity before opening
+  it, then score this exact checkpoint once. Physical deployment remains
+  separately blocked on final-camera calibration and installed geometry.

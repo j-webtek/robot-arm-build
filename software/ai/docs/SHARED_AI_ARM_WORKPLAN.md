@@ -1046,9 +1046,20 @@ any nonzero localization uncertainty. Evaluation remains unopened. This is a
 real safety improvement and an explicit fail-closed policy, but the zero bound
 is operationally too strict and blocks a fresh evaluation campaign.
 
+The frozen-weight policy refreeze in `E-20260930-AI-472` corrects the original
+0.05 threshold-grid blind spot without retraining or opening evaluation. A
+predeclared 0.001 grid selects threshold `0.093`. Across nominal and all eight
+1 mm directions, the worst missed-abstention count is `4/108` and the worst
+visible false-stop count is `62/1242`, both below 5%. The source and repeated
+checkpoint state dictionaries are identical, and two complete policy outputs
+are byte-identical. The resulting synthetic uncertainty bound is 1 mm;
+anything larger must return `abstain_localization_uncertain`. The 2 mm ring
+fails, and this result remains synthetic development evidence rather than
+physical-camera calibration or deployment qualification. A fresh untouched
+evaluation campaign may now be predeclared against the frozen policy.
+
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI | S2/S3 | frozen E-471 checkpoint threshold-feasibility analysis on v6 development data; no evaluation access | `issue/190-isaac-sim-host` / pending | ACTIVE |
 | Unclaimed | S2/S3 | physical-camera deployment qualification and safe-region-fit precision evidence | — | AVAILABLE |
 | ARM | S4 | collect four physical-original `camera_support_optics` bindings through onboarding, then run the ARM-070 intake; no synthetic promotion | ARM-071 | WAITING_FOR_ORIGINALS |
 
