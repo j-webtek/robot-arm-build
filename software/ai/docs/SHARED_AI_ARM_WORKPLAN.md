@@ -1276,7 +1276,7 @@ Statistical claims require the clustered uncertainty analysis above.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI/model | S2/S3 geometry-first occlusion revision | deterministic self-occlusion contract; residual learned-obstacle role; clustered statistical gate and eval budget; visibility-label definition; parked-observation and early-calibration plan; AI workplan, assurance doc, training README, and evidence ledger | `issue/190-isaac-sim-host` / `f55f3a4b9947fb61e89ce02a1b374bc969804518` | ACTIVE — claim committed; freeze revised design and evidence before any successor data generation or compute |
+| AI/model | S2/S3 geometry-first occlusion revision | deterministic self-occlusion contract; residual learned-obstacle role; clustered statistical gate and eval budget; visibility-label definition; parked-observation and early-calibration plan; AI workplan, assurance doc, training README, and evidence ledger | `issue/190-isaac-sim-host` / `b84420c493bdf91498e01686873fc22ba4096d85` | COMPLETE — E-482 freezes the revised architecture and qualification design; implementation and physical calibration increments remain unclaimed |
 | Unclaimed | S2/S3 | physical-camera deployment qualification and safe-region-fit precision evidence | — | AVAILABLE |
 | ARM | S4 | collect four physical-original `camera_support_optics` bindings through onboarding, then run the ARM-070 intake; no synthetic promotion | ARM-071 | WAITING_FOR_ORIGINALS |
 
