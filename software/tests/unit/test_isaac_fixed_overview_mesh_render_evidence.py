@@ -489,6 +489,8 @@ def test_rebalance_evaluation_policy_and_lighting_are_fresh() -> None:
 
     schema, policy = builder._split_policy(source)
     assert schema == "rocell.ai_official_mesh_occlusion_data.v14"
+
+
     assert policy["train"]["poses"] == policy["development"]["poses"] == ()
     assert policy["evaluation"]["poses"] == tuple(
         renderer.REBALANCE_EVALUATION_POSE_GROUPS["evaluation"]
@@ -521,6 +523,81 @@ def test_rebalance_evaluation_policy_and_lighting_are_fresh() -> None:
         for left, right in zip(first, second, strict=True)
     )
     assert len({_sha256(value.tobytes()) for value in first}) == 3
+
+
+def test_pose_diverse_campaign_is_frozen_train_development_only() -> None:
+    module = _renderer()
+    fixture_path = (
+        WORKSPACE / "software" / "ai" / "sim" / "evidence"
+        / "pose_diverse_training_development_v1.json"
+    )
+    fixture = json.loads(fixture_path.read_text(encoding="utf-8"))
+    assert _sha256(fixture_path.read_bytes()) \
+        == module.EXPECTED_POSE_DIVERSE_TRAINING_FILE_SHA256
+    assert fixture["schema"] == "tactevra.ai_pose_diverse_training_fixture.v1"
+    assert fixture["sample_count"] == 96
+    assert fixture["split_counts"] == {"training": 72, "development": 24}
+    assert fixture["controller_commands"] == []
+    assert fixture["hardware_writes"] == fixture["physical_movements"] == 0
+    assert fixture["physical_authority"] is False
+    assert len({row["pose_id"] for row in fixture["samples"]}) == 96
+    assert {row["split"] for row in fixture["samples"]} == {
+        "training", "development",
+    }
+    source = RENDERER_PATH.read_text(encoding="utf-8")
+    assert '"pose-diverse-training-v15"' in source
+    assert '"tactevra.isaac_fixed_overview_mesh_render.v15"' in source
+
+
+def test_pose_diverse_split_lighting_and_cluster_bootstrap_are_deterministic() -> None:
+    module = _builder()
+    source = {
+        "schema": module.SOURCE_SCHEMA_V15,
+        "pose_groups": {
+            "training": ["train-a"],
+            "development": ["dev-a"],
+            "evaluation": [],
+        },
+        "pose_results": [
+            {"pose_id": "train-a", "pose_group": "training"},
+            {"pose_id": "dev-a", "pose_group": "development"},
+        ],
+    }
+    schema, policy = module._split_policy(source)
+    assert schema == module.SCHEMA_V15
+    assert policy["train"]["lighting"] == module.POSE_DIVERSE_LIGHTING["train"]
+    assert policy["development"]["lighting"] \
+        == module.POSE_DIVERSE_LIGHTING["development"]
+    assert set(policy["train"]["lighting"]).isdisjoint(
+        module.REBALANCE_EVALUATION_LIGHTING["evaluation"]
+    )
+    image = Image.new("RGB", (64, 48), (120, 100, 80))
+    transformed = [
+        module._lighting(image, variant)
+        for variants in module.POSE_DIVERSE_LIGHTING.values()
+        for variant in variants
+    ]
+    assert all(value.size == image.size for value in transformed)
+
+    rows = [
+        {"pose_id": f"pose-{pose}", "id": f"{pose}-{index}"}
+        for pose in range(4) for index in range(4)
+    ]
+    labels = np.asarray([0.0, 0.0, 1.0, 1.0] * 4)
+    probabilities = np.asarray([0.1, 0.2, 0.8, 0.9] * 4)
+    offsets = [
+        ({"x_mm": 0.0, "y_mm": 0.0, "x_px": 0.0, "y_px": 0.0}, probabilities),
+    ]
+    first = module._pose_cluster_bootstrap_bounds(
+        rows, labels, offsets, threshold=0.5, bound_mm=0.0,
+    )
+    second = module._pose_cluster_bootstrap_bounds(
+        rows, labels, offsets, threshold=0.5, bound_mm=0.0,
+    )
+    assert first == second
+    assert first["pose_count"] == 4
+    assert first["maximum_missed_abstain_upper_95"] == 0.0
+    assert first["maximum_visible_false_abstain_upper_95"] == 0.0
 
 
 def test_transit_dataset_policy_uses_fresh_disjoint_lighting() -> None:

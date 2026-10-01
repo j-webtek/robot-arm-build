@@ -563,6 +563,76 @@ fails. The two complete evaluation runs are byte identical. The consumed v14
 data cannot tune a successor, and the checkpoint remains blocked from
 synthetic promotion, deployment qualification, and physical authority.
 
+## Pose-diverse target-visibility successor
+
+The v15 campaign is a synthetic training/development increment for the
+target-conditioned visibility model. It does not retrain KeyboardPoseNet or
+open a new evaluation set. The retained fixture contains 96 fresh static
+visual states interpolated from the governed zero-authority schedule: 72 are
+training poses and every fourth accepted state forms the 24-pose development
+split. The fixture file SHA-256 is
+`38e169e1b8b59d77785470b44e5feca8dad78fce18bc6dab8459ffa3f867ae0e`;
+its canonical bundle SHA-256 is
+`df7ccb80e12121497a48f886f6d9c1aa29f82a91f5be9f73990914e682109061`.
+Consumed v14 fractions and bytes remain excluded.
+
+Regenerate and verify the fixture before rendering:
+
+```powershell
+python software/ai/sim/build_pose_diverse_training_fixture.py `
+  --source software/integrations/isaac_sim/evidence/zero_authority_motion_schedule_v1.json `
+  --output software/ai/sim/evidence/pose_diverse_training_development_v1.json
+```
+
+Render the frozen v15 campaign with Isaac Sim:
+
+```powershell
+$env:OMNI_KIT_ACCEPT_EULA='YES'
+$env:PYTHONPATH=(Resolve-Path 'software/src').Path
+C:\IsaacSim\env_6_1_0\Scripts\python.exe `
+  software/integrations/isaac_sim/isaac_fixed_overview_mesh_render_probe.py `
+  --workspace . `
+  --upstream-repo C:\IsaacSim\sources\roarm_ws-40dbd84 `
+  --mesh-receipt software/integrations/isaac_sim/evidence/roarm_m3_upstream_link_meshes_20260929.json `
+  --capsule-manifest software/integrations/isaac_sim/evidence/fixed_overview_segmentation_v1/manifest.json `
+  --schedule-bundle software/ai/sim/evidence/pose_diverse_training_development_v1.json `
+  --campaign pose-diverse-training-v15 `
+  --output-dir C:\IsaacSim\artifacts\issue190\fixed-overview-pose-diverse-v15-run1 `
+  --receipt C:\IsaacSim\evidence\fixed_overview_pose_diverse_v15_run1.json `
+  --status-output C:\IsaacSim\evidence\fixed_overview_pose_diverse_v15_run1.status.json
+```
+
+Copy the successful receipt to the render directory as `manifest.json`, then
+build the dataset and train the candidate twice into separate empty output
+directories:
+
+```powershell
+python software/ai/train/build_official_mesh_occlusion_data.py `
+  --source-manifest C:\IsaacSim\artifacts\issue190\fixed-overview-pose-diverse-v15-run1\manifest.json `
+  --output-dir C:\IsaacSim\artifacts\issue190\pose-diverse-data-v1
+
+python software/ai/train/build_official_mesh_occlusion_data.py `
+  --source-manifest C:\IsaacSim\artifacts\issue190\fixed-overview-pose-diverse-v15-run1\manifest.json `
+  --train-pose-diverse-successor `
+    C:\IsaacSim\artifacts\issue190\pose-diverse-data-v1 `
+    C:\IsaacSim\artifacts\issue190\specificity-rebalance-candidate-v1 `
+    C:\IsaacSim\artifacts\issue190\pose-diverse-candidate-v1
+```
+
+Training starts from the exact v13 checkpoint, freezes both visual
+convolutions and the classifier, and updates only the target FiLM conditioner
+for 16 epochs with learning rate `0.00035` and positive-abstention weight
+`1.5`. Selection uses only the v15 development split. The point gates are at
+most 2% missed abstentions and 10% false abstentions. A separate one-sided 95%
+whole-pose bootstrap upper-bound gate applies the same ceilings across every
+tested coordinate offset. Thresholds and training parameters are frozen
+before renders or predictions are observed.
+
+Passing development would create only a candidate awaiting a separately
+predeclared untouched evaluation. Static interpolation does not prove motion,
+dynamics, collision clearance, reachability, localization, physical camera
+performance, deployment readiness, or execution authority.
+
 ## Geometry-first successor policy
 
 The next campaign does not train a model to rediscover known robot geometry.
