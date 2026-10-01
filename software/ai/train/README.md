@@ -562,3 +562,39 @@ miss rate is `31/219 = 14.16%` and the worst false-stop rate is
 fails. The two complete evaluation runs are byte identical. The consumed v14
 data cannot tune a successor, and the checkpoint remains blocked from
 synthetic promotion, deployment qualification, and physical authority.
+
+## Geometry-first successor policy
+
+The next campaign does not train a model to rediscover known robot geometry.
+Primary self-occlusion evidence comes from projecting pinned official visual
+meshes from fresh measured joint state through commissioned camera and board
+calibration. The learned component detects residual obstructions and image
+failures not represented by that geometry. Fusion abstains if either source
+abstains or if either source is missing, stale, or outside qualification.
+
+Ground-truth Isaac masks remain label and scoring artifacts. They are forbidden
+as runtime-like model inputs. Predicted silhouette inputs must instead come from
+the same projection route intended for runtime and must include predeclared
+joint, intrinsic, distortion, and extrinsic perturbations.
+
+For E-457 through E-481, `target_visible` means the official robot mask does not
+cover the target center and its safe-region overlap fraction is at most `0.20`.
+The successor must inspect failures by overlap fraction and freeze either an
+ambiguity margin or a continuous overlap-regression label before data
+generation.
+
+The previous symmetric 5% point-estimate gate is historical. The successor
+uses one-sided 95% pose-cluster-bootstrap upper bounds: at most 2% missed
+abstentions and at most 10% false abstentions. Each bootstrap replicate samples
+complete pose clusters and takes the worst rate across all offsets inside the
+declared error envelope. The minimum untouched evaluation budget is 64 poses,
+800 abstention labels, and 3,200 visible labels. Power simulation, pose and
+lighting identities, the random seed, perturbation ranges, and one separately
+identified unrendered escrow family are frozen before rendering.
+
+Physical calibration proceeds in parallel using ChArUco captures for camera
+intrinsics, distortion, and camera-to-board pose, plus measured lighting and
+parked-arm images. The first physical protocol retracts to the parked pose,
+waits for settling, captures one fresh observation for one action, then
+retracts and recaptures. Keyboard host logs and development phone ADB state can
+verify outcomes independently; they never create movement authority.

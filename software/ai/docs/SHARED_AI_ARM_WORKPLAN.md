@@ -1208,9 +1208,75 @@ next AI dependency is a newly predeclared train/development campaign designed
 for pose generalization; it must exclude all v14 images, labels, probabilities,
 threshold outcomes, pose identities, and lighting identities from selection.
 
+### Geometry-first occlusion revision after v14
+
+The next campaign treats known robot self-occlusion as a deterministic
+projection problem. Fresh measured joint state, a commissioned camera model,
+the camera-to-board transform, and pinned official visual meshes produce a
+conservative image-space robot silhouette. The projection is evaluated against
+the requested target's safe region across the installed joint and calibration
+uncertainty envelope. This output is perception evidence only and cannot claim
+collision clearance, reachability, a trajectory, a permit, or physical
+authority.
+
+The learned model becomes a residual obstruction detector for evidence that
+the robot geometry cannot predict, including cables, hands, glare, foreign
+objects, and image degradation. The fusion rule is conservative OR: abstain if
+the deterministic projection or learned detector says abstain, if they
+disagree, or if either input is stale or unqualified. Simulator truth masks are
+labels only. Runtime-like model features must be projected from telemetry and
+estimated calibration while training and evaluation perturb joint angles,
+intrinsics, distortion, and extrinsics within predeclared ranges.
+
+For existing synthetic evidence, `sufficiently visible` means the official
+rendered robot does not cover the target center and covers no more than `0.20`
+of the target safe-region area. Coverage above `0.20` or center coverage is an
+abstention label. This historical boundary remains attached to E-457 through
+E-481. Before a successor campaign, the label policy must add a frozen margin
+band around the boundary or define a continuous occlusion-fraction target;
+ambiguous margin rows cannot silently count as ordinary binary examples.
+
+Future qualification gates use pose clusters rather than treating target and
+lighting rows from one pose as independent. The predeclared synthetic research
+gate is asymmetric:
+
+- the one-sided 95% upper confidence bound for missed abstentions must be at
+  most `0.02`;
+- the one-sided 95% upper confidence bound for visible-target false abstentions
+  must be at most `0.10`;
+- a deterministic, seeded pose-level cluster bootstrap resamples complete poses
+  and computes the maximum rate across every tested offset inside the declared
+  error envelope on each replicate, providing simultaneous worst-offset
+  coverage rather than separate uncorrected tests; and
+- point estimates remain reported but cannot pass the gate by themselves.
+
+The next evaluation budget is frozen before generation: at least 64 independent
+evaluation pose clusters, at least 800 abstention-labeled observations, and at
+least 3,200 visible observations, with pose and lighting identities disjoint
+from training and development. One primary evaluation set is opened once for
+one frozen candidate. One separately identified escrow evaluation family stays
+unrendered until a later candidate exists. A failed primary set is consumed;
+it cannot tune that candidate or a successor. Exact power and cluster-bootstrap
+simulations must be attached before rendering to show that the planned set can
+meet both upper-bound gates.
+
+Physical calibration begins in parallel rather than after synthetic model
+selection. Initial work captures ChArUco observations for intrinsics,
+distortion, and camera-to-board pose, plus a small measured lighting survey and
+parked-pose image set. These artifacts inform perturbation ranges and lighting
+augmentation but do not install deployment qualification by themselves. The
+first physical interaction protocol parks and settles the arm before each
+capture, admits at most one action from that evidence, then retracts and
+recaptures. Keyboard host events and development-mode phone ADB state are
+independent outcome labels when available, not movement authority.
+
+Byte-identical builds and reports demonstrate deterministic pipeline behavior.
+They do not establish that an observed failure rate is statistically stable.
+Statistical claims require the clustered uncertainty analysis above.
+
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI/model | S2/S3 geometry-first occlusion revision | deterministic self-occlusion contract; residual learned-obstacle role; clustered statistical gate and eval budget; visibility-label definition; parked-observation and early-calibration plan; AI workplan, assurance doc, training README, and evidence ledger | `issue/190-isaac-sim-host` / pending | ACTIVE — revise the next-campaign design from learned primary occlusion to deterministic projection plus a conservative learned residual; documentation and policy only |
+| AI/model | S2/S3 geometry-first occlusion revision | deterministic self-occlusion contract; residual learned-obstacle role; clustered statistical gate and eval budget; visibility-label definition; parked-observation and early-calibration plan; AI workplan, assurance doc, training README, and evidence ledger | `issue/190-isaac-sim-host` / `f55f3a4b9947fb61e89ce02a1b374bc969804518` | ACTIVE — claim committed; freeze revised design and evidence before any successor data generation or compute |
 | Unclaimed | S2/S3 | physical-camera deployment qualification and safe-region-fit precision evidence | — | AVAILABLE |
 | ARM | S4 | collect four physical-original `camera_support_optics` bindings through onboarding, then run the ARM-070 intake; no synthetic promotion | ARM-071 | WAITING_FOR_ORIGINALS |
 
