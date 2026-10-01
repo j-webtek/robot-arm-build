@@ -170,6 +170,37 @@ FUSION_EVALUATION_POSE_GROUPS = {
     "development": (),
     "evaluation": tuple(FUSION_EVALUATION_SCHEDULE_POSE_SEQUENCES),
 }
+OCCLUSION_RECALL_SCHEDULE_POSE_SEQUENCES = {
+    "recall_train_h_retract_36": 36,
+    "recall_train_h_contact_38": 38,
+    "recall_train_h_to_1_53": 53,
+    "recall_train_h_to_1_55": 55,
+    "recall_train_h_to_1_57": 57,
+    "recall_train_h_to_1_59": 59,
+    "recall_train_h_to_1_61": 61,
+    "recall_train_1_to_period_66": 66,
+    "recall_train_1_to_period_68": 68,
+    "recall_train_1_to_period_70": 70,
+    "recall_train_return_106": 106,
+    "recall_train_return_108": 108,
+    "recall_dev_h_hover_37": 37,
+    "recall_dev_h_retract_39": 39,
+    "recall_dev_1_to_period_67": 67,
+    "recall_dev_1_to_period_69": 69,
+    "recall_dev_1_to_period_71": 71,
+    "recall_dev_return_107": 107,
+}
+OCCLUSION_RECALL_POSE_GROUPS = {
+    "training": tuple(
+        pose_id for pose_id in OCCLUSION_RECALL_SCHEDULE_POSE_SEQUENCES
+        if pose_id.startswith("recall_train_")
+    ),
+    "development": tuple(
+        pose_id for pose_id in OCCLUSION_RECALL_SCHEDULE_POSE_SEQUENCES
+        if pose_id.startswith("recall_dev_")
+    ),
+    "evaluation": (),
+}
 EXPECTED_SCHEDULE_FILE_SHA256 = "6a59ce143f5527c7a9ced09b08d5515644ea4fb859dd69691e08483eb020ee42"
 WIDTH = 1920
 HEIGHT = 1080
@@ -327,6 +358,7 @@ def main() -> int:
             "target-aware-v5", "mask-perturbation-v6",
             "policy-evaluation-v7", "hard-negative-v8",
             "target-identity-training-v9", "fusion-evaluation-v10",
+            "occlusion-recall-v11",
         ),
         default="target-aware-v5",
     )
@@ -370,7 +402,12 @@ def main() -> int:
         bootstrap = bootstrap_virtual_workcell(workspace)
         context = bootstrap.context
         schedule_by_sequence = {row["sequence"]: row for row in schedule_bundle["samples"]}
-        if args.campaign == "fusion-evaluation-v10":
+        if args.campaign == "occlusion-recall-v11":
+            poses = {}
+            schedule_pose_sequences = OCCLUSION_RECALL_SCHEDULE_POSE_SEQUENCES
+            pose_groups = OCCLUSION_RECALL_POSE_GROUPS
+            receipt_schema = "tactevra.isaac_fixed_overview_mesh_render.v11"
+        elif args.campaign == "fusion-evaluation-v10":
             poses = {}
             schedule_pose_sequences = FUSION_EVALUATION_SCHEDULE_POSE_SEQUENCES
             pose_groups = FUSION_EVALUATION_POSE_GROUPS

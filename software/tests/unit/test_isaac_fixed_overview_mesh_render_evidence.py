@@ -387,6 +387,31 @@ def test_fusion_evaluation_poses_are_fresh_evaluation_only() -> None:
     assert not (set(sequences.values()) & prior)
 
 
+def test_occlusion_recall_poses_are_fresh_train_and_development_only() -> None:
+    module = _renderer()
+    groups = module.OCCLUSION_RECALL_POSE_GROUPS
+    sequences = module.OCCLUSION_RECALL_SCHEDULE_POSE_SEQUENCES
+
+    assert set(groups) == {"training", "development", "evaluation"}
+    assert groups["evaluation"] == ()
+    assert len(groups["training"]) == 12
+    assert len(groups["development"]) == 6
+    assert set(groups["training"]).isdisjoint(groups["development"])
+    assert set(sequences.values()) == {
+        36, 37, 38, 39, 53, 55, 57, 59, 61,
+        66, 67, 68, 69, 70, 71, 106, 107, 108,
+    }
+    prior = (
+        set(module.SCHEDULE_POSE_SEQUENCES.values())
+        | set(module.PERTURBATION_SCHEDULE_POSE_SEQUENCES.values())
+        | set(module.POLICY_EVALUATION_SCHEDULE_POSE_SEQUENCES.values())
+        | set(module.HARD_NEGATIVE_SCHEDULE_POSE_SEQUENCES.values())
+        | set(module.TARGET_IDENTITY_TRAINING_SCHEDULE_POSE_SEQUENCES.values())
+        | set(module.FUSION_EVALUATION_SCHEDULE_POSE_SEQUENCES.values())
+    )
+    assert not (set(sequences.values()) & prior)
+
+
 def test_transit_dataset_policy_uses_fresh_disjoint_lighting() -> None:
     builder = _builder()
     renderer = _renderer()
@@ -750,6 +775,57 @@ def test_fusion_evaluation_policy_and_lighting_are_fresh() -> None:
     )
     assert len({_sha256(value.tobytes()) for value in first}) == len(variants)
     assert not (set(variants) & prior)
+
+
+def test_occlusion_recall_policy_and_lighting_are_fresh_and_disjoint() -> None:
+    builder = _builder()
+    renderer = _renderer()
+    source = {
+        "schema": "tactevra.isaac_fixed_overview_mesh_render.v11",
+        "pose_groups": {
+            name: list(poses)
+            for name, poses in renderer.OCCLUSION_RECALL_POSE_GROUPS.items()
+        },
+        "pose_results": [
+            {"pose_id": pose_id, "pose_group": group}
+            for group, pose_ids in renderer.OCCLUSION_RECALL_POSE_GROUPS.items()
+            for pose_id in pose_ids
+        ],
+    }
+
+    schema, policy = builder._split_policy(source)
+    train_variants = builder.OCCLUSION_RECALL_LIGHTING["train"]
+    development_variants = builder.OCCLUSION_RECALL_LIGHTING["development"]
+    variants = (*train_variants, *development_variants)
+    pixels = np.arange(48 * 48 * 3, dtype=np.uint8).reshape(48, 48, 3)
+    image = Image.fromarray(pixels, mode="RGB")
+    first = [np.asarray(builder._lighting(image, name)) for name in variants]
+    second = [np.asarray(builder._lighting(image, name)) for name in variants]
+    prior = {
+        name
+        for lighting in (
+            builder.LEGACY_SPLITS, builder.EXPANDED_LIGHTING,
+            builder.TRANSIT_LIGHTING, builder.SPECIFICITY_LIGHTING,
+            builder.TARGET_AWARE_LIGHTING, builder.PERTURBATION_LIGHTING,
+            builder.POLICY_EVALUATION_LIGHTING, builder.HARD_NEGATIVE_LIGHTING,
+            builder.TARGET_IDENTITY_TRAINING_LIGHTING,
+            builder.FUSION_EVALUATION_LIGHTING,
+        )
+        for split in lighting.values()
+        for name in (split["lighting"] if isinstance(split, dict) else split)
+    }
+
+    assert schema == "rocell.ai_official_mesh_occlusion_data.v11"
+    assert policy["evaluation"]["poses"] == policy["evaluation"]["lighting"] == ()
+    assert policy["train"]["lighting"] == train_variants
+    assert policy["development"]["lighting"] == development_variants
+    assert set(train_variants).isdisjoint(development_variants)
+    assert not (set(variants) & prior)
+    assert all(
+        np.array_equal(left, right)
+        for left, right in zip(first, second, strict=True)
+    )
+    assert len({_sha256(value.tobytes()) for value in first}) == len(variants)
 
 
 def test_target_aware_lighting_families_are_deterministic_and_distinct() -> None:
@@ -1285,6 +1361,62 @@ def test_target_conditioned_fusion_is_deterministic_and_freezes_seed(
     })
     scorecard["scorecard_sha256"] = _sha256(module._canonical(scorecard))
     scorecard_path.write_bytes(module._canonical(scorecard) + b"\n")
+
+    recall = make_dataset(
+        "occlusion-recall", "rocell.ai_official_mesh_occlusion_data.v11", "train",
+    )
+    recall_development = make_dataset(
+        "occlusion-recall-development",
+        "rocell.ai_official_mesh_occlusion_data.v11",
+        "development",
+    )
+    recall_manifest_path = recall / "manifest.json"
+    recall_manifest = json.loads(recall_manifest_path.read_text())
+    recall_development_manifest = json.loads(
+        (recall_development / "manifest.json").read_text()
+    )
+    for image_path in (recall_development / "images").glob("*.png"):
+        (recall / "images" / image_path.name).write_bytes(image_path.read_bytes())
+    (recall / "development.jsonl").write_bytes(
+        (recall_development / "development.jsonl").read_bytes()
+    )
+    recall_manifest["splits"]["development"] = (
+        recall_development_manifest["splits"]["development"]
+    )
+    recall_manifest.pop("dataset_sha256")
+    recall_manifest["dataset_sha256"] = _sha256(module._canonical(recall_manifest))
+    recall_manifest_path.write_bytes(module._canonical(recall_manifest) + b"\n")
+
+    recall_first = module.train_occlusion_recall_candidate(
+        recall, candidate_dir, tmp_path / "recall-first",
+    )
+    recall_second = module.train_occlusion_recall_candidate(
+        recall, candidate_dir, tmp_path / "recall-second",
+    )
+    recall_checkpoint = json.loads(
+        (tmp_path / "recall-first" / "model.json").read_text()
+    )
+
+    assert recall_first == recall_second
+    assert (tmp_path / "recall-first" / "model.json").read_bytes() == (
+        tmp_path / "recall-second" / "model.json"
+    ).read_bytes()
+    assert recall_checkpoint["schema"] \
+        == "rocell.ai_target_conditioned_occlusion_recall.v1"
+    assert recall_checkpoint["training"]["positive_abstention_weight"] == 1.5
+    assert recall_checkpoint["training"]["trained_parameters"] == "conditioner_only"
+    assert recall_checkpoint["state_dict"]["conv1.weight"] \
+        == checkpoint["state_dict"]["conv1.weight"]
+    assert recall_checkpoint["state_dict"]["conv2.weight"] \
+        == checkpoint["state_dict"]["conv2.weight"]
+    assert recall_checkpoint["state_dict"]["classifier.weight"] \
+        == checkpoint["state_dict"]["classifier.weight"]
+    assert recall_checkpoint["consumed_evaluation_dataset_sha256"] is None
+    assert recall_checkpoint["evaluation_opened"] is False
+    assert recall_first["evaluation_group_present"] is False
+    assert recall_first["hardware_writes"] == 0
+    assert recall_first["physical_movements"] == 0
+    assert recall_first["physical_authority"] is False
 
     evaluation_first = module.evaluate_target_conditioned_fusion(
         evaluation, candidate_dir, tmp_path / "evaluation-first",
