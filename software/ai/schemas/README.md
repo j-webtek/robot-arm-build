@@ -300,3 +300,9 @@ and declared custody. The preflight rejects missing, altered, extra, duplicate,
 traversing, or symlinked paths. A pass establishes file integrity only; custody
 labels, physical originality, measurement truth, and deployment readiness still
 require independent owner authentication.
+The [parked-pose custody declarations](parked_pose_custody_declarations_v1.schema.json)
+are an external input to the deterministic retained-package index builder. The
+builder verifies the declaration self-hash and campaign binding, inventories
+only existing regular files, and emits the evidence index consumed by the
+preflight. It does not create evidence bytes or infer custody. Declaration and
+custody-review authenticity remain owner-review responsibilities.
