@@ -1313,7 +1313,7 @@ Statistical claims require the clustered uncertainty analysis above.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI/model | S2/S3 read-only self-occlusion projection contract | strict synthetic-only schema and validator for exposure-time frame binding, measured-feedback brackets, qualified interpolation, calibrated dilation provenance, named-target projection decisions, and zero authority; AI source/tests/schema registry, shared workplan, and evidence ledger | `issue/190-isaac-sim-host` / `d88364022d48d58ee7d1b61b1ddcf9fc40338447` | COMPLETE — E-484 validates the contract offline; no projection renderer, calibration installation, arm-lane status, or integration-gate change |
+| AI/model | S2/S3 correlation-aware evaluation power tool | grouped v13/v14 intra-pose-correlation estimation; empirical upper-bound and pessimistic-correlation scenarios; deterministic pose-cluster simulation and sample-size recommendation; synthetic planning receipt, tests, registry, shared workplan, and evidence ledger | `issue/190-isaac-sim-host` / pending | ACTIVE — statistical planning only; no candidate selection, new render compute, arm-lane status, or integration-gate change |
 | Unclaimed | S2/S3 | physical-camera deployment qualification and safe-region-fit precision evidence | — | AVAILABLE |
 | ARM | S4 | collect four physical-original `camera_support_optics` bindings through onboarding, then run the ARM-070 intake; no synthetic promotion | ARM-071 | WAITING_FOR_ORIGINALS |
 
