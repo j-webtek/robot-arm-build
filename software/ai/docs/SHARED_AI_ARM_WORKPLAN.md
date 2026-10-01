@@ -1128,7 +1128,7 @@ successor requires another untouched evaluation group.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| Unclaimed | S2/S3 | declare new training and development identities for an occlusion-recall candidate without reusing consumed v10 evaluation bytes | — | AVAILABLE |
+| AI/model | S2/S3 occlusion-recall successor | fixed-overview campaign renderer; offline dataset/trainer; focused simulator/perception tests; AI workplan, training README, and evidence ledger | `issue/190-isaac-sim-host` / claim pending | ACTIVE — freeze v11 training/development identities, retain pre-pool target conditioning, select only on v11 development, exclude consumed v10 evaluation bytes |
 | Unclaimed | S2/S3 | physical-camera deployment qualification and safe-region-fit precision evidence | — | AVAILABLE |
 | ARM | S4 | collect four physical-original `camera_support_optics` bindings through onboarding, then run the ARM-070 intake; no synthetic promotion | ARM-071 | WAITING_FOR_ORIGINALS |
 
