@@ -3398,7 +3398,7 @@ def train_grouped_neighborhood_successor_candidate(
             or seed_model_sha != EXPECTED_POSE_DIVERSE_MODEL_SHA256 \
             or seed_checkpoint.get("evaluation_opened") is not False \
             or seed_policy.get("development_gate_met") is not False \
-            or seed_policy.get("maximum_supported_planar_error_mm") != 2.0 \
+            or seed_policy.get("maximum_supported_planar_error_mm") != 1.0 \
             or dataset.get("target_catalog_sha256") \
             != seed_checkpoint.get("target_catalog_sha256"):
         raise ValueError("grouped-neighborhood seed identity or policy mismatch")
@@ -3414,7 +3414,7 @@ def train_grouped_neighborhood_successor_candidate(
             or seed_scorecard.get("model_sha256") != seed_model_sha \
             or seed_scorecard.get("evaluation_group_present") is not False \
             or seed_scorecard.get("development_gate_met") is not False \
-            or seed_scorecard.get("maximum_supported_planar_error_mm") != 2.0 \
+            or seed_scorecard.get("maximum_supported_planar_error_mm") != 1.0 \
             or seed_scorecard.get("hardware_writes") != 0 \
             or seed_scorecard.get("physical_movements") != 0 \
             or seed_scorecard.get("physical_authority") is not False:
