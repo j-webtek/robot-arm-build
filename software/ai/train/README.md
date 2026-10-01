@@ -391,3 +391,29 @@ missed abstentions below 5% but raises nominal visible-target false stops to
 group remains uncreated and unopened. The result is useful as a rejected
 architecture: target identity must condition the local visual representation
 more directly instead of acting only as a final classifier bias.
+
+## Target-conditioned spatial fusion
+
+The bounded successor keeps the E-472 four-channel visual backbone and
+classifier frozen, but uses the 79-value target descriptor to modulate the
+second convolution feature map before spatial pooling. Only the 2,560-parameter
+FiLM conditioner trains:
+
+```powershell
+python software/ai/train/build_official_mesh_occlusion_data.py `
+  --source-manifest C:\IsaacSim\artifacts\issue190\fixed-overview-target-identity-training-v9-run1\manifest.json `
+  --train-target-conditioned-fusion `
+    C:\IsaacSim\artifacts\issue190\target-identity-training-data-v1 `
+    C:\IsaacSim\artifacts\issue190\hard-negative-development-data-v1 `
+    C:\IsaacSim\artifacts\issue190\localization-policy-refreeze-v1 `
+    C:\IsaacSim\artifacts\issue190\target-conditioned-fusion-v1
+```
+
+Evidence `E-20260930-AI-476` records byte-identical repeat runs. Threshold
+`0.107` keeps nominal and every predeclared 1 mm development direction below
+the 5% false-stop and missed-abstention ceilings, producing a 1 mm synthetic
+development bound. The result shows that target identity becomes useful when
+it conditions local spatial features. It does not provide physical-camera
+calibration or deployment qualification. The development set has now selected
+this architecture and threshold; a fresh evaluation campaign must remain
+untouched until the checkpoint and evaluation identities are predeclared.

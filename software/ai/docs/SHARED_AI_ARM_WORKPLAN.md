@@ -1097,9 +1097,25 @@ representation is sufficient. The next candidate should preserve local spatial
 detail through target-conditioned feature fusion or attention and must continue
 using v8 only for development before any new evaluation group is declared.
 
+The target-conditioned spatial-fusion experiment in `E-20260930-AI-476`
+implements that next architecture while keeping the next evaluation group
+uncreated and unopened. It freezes the E-472 four-channel visual backbone and
+classifier, then applies a 2,560-parameter FiLM conditioner to the local feature
+map before spatial pooling. The conditioner receives the same frozen 75-target
+identity and four catalog-geometry values used by E-475. Training uses only v9
+and policy selection uses only v8. Two independent runs are byte-identical. At
+threshold `0.107`, nominal development records `44/1089 = 4.04%` false stops
+and `3/261 = 1.15%` missed abstentions; every predeclared 1 mm direction remains
+below 5%, with worst rates `52/1089 = 4.78%` and `6/261 = 2.30%`. The synthetic
+development gate therefore passes with a 1 mm bound. This is a model improvement
+over E-475, but it is not evaluation, physical calibration, or deployment
+qualification. The frozen candidate remains
+`BLOCKED_AWAITING_FRESH_EVALUATION` until a new untouched synthetic campaign is
+predeclared and consumed once.
+
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI/model | S2/S3 target-conditioned spatial-fusion candidate | `software/ai/train/build_official_mesh_occlusion_data.py`; focused simulator/perception tests; AI workplan, training README, and evidence ledger | `issue/190-isaac-sim-host` / `6df5bbc5d6bf560b6c8469f87f8fcca93bf1394f` | ACTIVE — condition local feature maps before pooling, train on v9, select only on v8, leave evaluation unopened |
+| Unclaimed | S2/S3 | predeclare one fresh synthetic evaluation campaign for the frozen E-476 target-conditioned checkpoint; do not tune on or relabel the resulting rows | — | AVAILABLE |
 | Unclaimed | S2/S3 | physical-camera deployment qualification and safe-region-fit precision evidence | — | AVAILABLE |
 | ARM | S4 | collect four physical-original `camera_support_optics` bindings through onboarding, then run the ARM-070 intake; no synthetic promotion | ARM-071 | WAITING_FOR_ORIGINALS |
 

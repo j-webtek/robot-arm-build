@@ -7896,3 +7896,106 @@ rewriting history. New entries must use a unique evidence ID.
   before spatial pooling while preserving the 5% missed-abstention ceiling.
   Only after a candidate passes development may a new untouched evaluation
   campaign be predeclared.
+
+### E-20260930-AI-476 — target-conditioned spatial fusion passes development
+
+- Stage: S2/S3 synthetic target-specificity training and development selection.
+- Lane: AI/model with offline inference over retained synthetic images; no arm
+  or integration status changed.
+- Claim commit:
+  `6df5bbc5d6bf560b6c8469f87f8fcca93bf1394f`.
+- Implementation commit:
+  `e3b06692ec342e8209a1e28b845ac680772909c8`.
+- Change: the exact E-472 four-channel visual backbone and classifier are
+  frozen. A 79-value descriptor containing 75 device-qualified target entries
+  and normalized catalog center x/y and safe-region width/height drives a
+  2,560-parameter FiLM conditioner after the second convolution and before
+  adaptive spatial pooling. Modulation scale is `0.25`. Only the conditioner
+  trains for 20 epochs with Adam, learning rate `0.001`, weight decay `0.0001`,
+  and unweighted binary cross entropy. Training uses only v9; threshold and
+  uncertainty selection use only v8. No evaluation group was created or opened.
+- Inputs/fixtures: implementation SHA-256
+  `2d102186278d01dd88720128f7e5fbdb5d67b7e12ace9d8fc86443d89834231a`;
+  focused test SHA-256
+  `553a95b29ee18ed4697715d1082c66f13ad2ebaa3315cb6e805666f76bed4953`;
+  frozen E-472 seed model SHA-256
+  `e7b57b6e06edfb2b26972565c02149762c6e9a25ec67718f9d28b1c62dc6af3d`;
+  target catalog SHA-256
+  `6779213e832ab27eeda1e7fb245f57ff8cb0d56707b5aa73a8f31ec483a620f2`;
+  v9 training dataset SHA-256
+  `ac424019f83fe6f46fa3e95e93e5c435dc7fd6fb8e794127bf435eb3c1b2d29d`;
+  v9 manifest SHA-256
+  `b4872968fdb7f33ee0c610175818d94a5d6a924a8cb1543b39bf39956b0a1023`;
+  v8 development dataset SHA-256
+  `21f5643fa556214f34a1ddc20e3f768c74ee68c9af42db9dbcd62ec182597b2d`;
+  v8 manifest SHA-256
+  `f07dee0da2a755e5db497da69a76b365cc52543d1b5913ed858023ff829389e8`.
+- Exact command: `$train='C:\IsaacSim\artifacts\issue190\target-identity-training-data-v1';
+  $dev='C:\IsaacSim\artifacts\issue190\hard-negative-development-data-v1';
+  $seed='C:\IsaacSim\artifacts\issue190\localization-policy-refreeze-v1';
+  $run1='C:\IsaacSim\artifacts\issue190\target-conditioned-fusion-v1';
+  $run2='C:\IsaacSim\artifacts\issue190\target-conditioned-fusion-v2';
+  Write-Output "run1_exists=$(Test-Path -LiteralPath $run1) run2_exists=$(Test-Path -LiteralPath $run2)";
+  python software\ai\train\build_official_mesh_occlusion_data.py
+  --source-manifest C:\IsaacSim\artifacts\issue190\fixed-overview-target-identity-training-v9-run1\manifest.json
+  --train-target-conditioned-fusion $train $dev $seed $run1 >
+  C:\IsaacSim\artifacts\issue190\target-conditioned-fusion-v1.stdout.json;
+  python software\ai\train\build_official_mesh_occlusion_data.py
+  --source-manifest C:\IsaacSim\artifacts\issue190\fixed-overview-target-identity-training-v9-run1\manifest.json
+  --train-target-conditioned-fusion $train $dev $seed $run2 >
+  C:\IsaacSim\artifacts\issue190\target-conditioned-fusion-v2.stdout.json`.
+- Result: `BLOCKED_AWAITING_FRESH_EVALUATION` after passing the preregistered
+  development gate. Both runs produce byte-identical 95,659-byte models and
+  1,416,993-byte scorecards. Model/file SHA-256 is
+  `55da91e5a2c14e2c6fb6ebab7c1302e9c1fd5a8cc41644e8f6467ffdcb3c5c74`;
+  canonical scorecard SHA-256 is
+  `c7cd205140f014673a367591ab18d2b342a2af4ad7f633eec234cae5c0277537`;
+  scorecard file SHA-256 is
+  `704d5dcd82951867c887a0d0295decf2ca8bdd5da1751bbdcca8ad0fd0ad7ac1`;
+  byte-identical stdout SHA-256 is
+  `3216b246638eb2ee8655bc56c01f84234cfe1d31c5d3c62c703c92f30fdaa13a`.
+  All frozen seed convolution and classifier values match exactly.
+- Metrics: selected threshold is `0.107`. Nominal alignment records 258 true
+  abstentions, 1,045 true-visible decisions, 44 false abstentions, and 3 missed
+  abstentions: false-stop rate `44/1089 = 4.04%`; missed-abstention rate
+  `3/261 = 1.15%`. Across all eight 1 mm directions, false stops range from 39
+  to 52 and misses range from 3 to 6. Worst rates are
+  `52/1089 = 4.78%` at +1 mm x/-1 mm y and `6/261 = 2.30%`. The selector
+  returns a 1 mm synthetic planar bound with `development_gate_met: true`.
+  At nominal alignment, false stops concentrate in amber low contrast (23),
+  right-center glare (11), and offset anti-diagonal blur (10); target `8`
+  contributes 8, and `S`, `U`, and `X` contribute 6 each. All three nominal
+  misses are target `Q`, one per lighting family.
+- Validation: 35 focused simulator/perception tests passed in 15.33 seconds.
+  The shared boundary suite passed 83 tests in 7.24 seconds. Ruff passed.
+  Maintained-document validation passed across 48 docs, 28 public titles, and
+  two SVG assets. The AI work-registry audit passed with 35 tracked and
+  documented AI tests, 110 referenced paths, and zero unowned or multiply
+  owned tests. Repository-health policy, source-footprint, and
+  `git diff --check` gates passed. Source footprint is 6,100 tracked files, 652,946,878
+  logical bytes, 4,890,152 duplicate bytes, and a 55,939,877-byte largest blob.
+  At arm commit `f8a2c1980a19d890f3d368f5fb9e88978823d9cd`, the
+  precision-observation v2, motion-batch v2, conformance-profile schema, and
+  installed conformance-profile blobs remain identical to this AI branch.
+- Artifact location: external only under
+  `C:\IsaacSim\artifacts\issue190\target-conditioned-fusion-v1` and
+  byte-identical `...fusion-v2`, plus their byte-identical stdout captures.
+  Hashes identify exact local bytes but do not make them clean-clone available.
+- Hardware-write count: 0.
+- Physical-movement count: 0.
+- Physics-step count: 0; this increment trains over retained static renders.
+- Limitations: all camera geometry, images, labels, target descriptors, and
+  offsets are synthetic. The frozen identity vocabulary assumes the exact
+  catalog. The 1 mm ring uses nominal 2 px/mm simulator geometry and is not
+  physical calibration. V8 is consumed development/selection data and cannot
+  evaluate this candidate. Tool and camera-support geometry, physical frames,
+  temporal evidence, and deployment calibration remain absent. Passing this
+  development gate grants no localization, collision, controller, execution,
+  transport, permit, or physical authority.
+- Supersedes: none; preserves the failed E-475 result and demonstrates that
+  pre-pool target conditioning succeeds on retained development where late
+  descriptor concatenation failed.
+- Next dependency: predeclare a new pose- and lighting-disjoint synthetic
+  evaluation campaign, freeze its identities before rendering, evaluate this
+  exact checkpoint once, and preserve the result whether it passes or fails.
+  Physical deployment qualification remains a later, separate requirement.
