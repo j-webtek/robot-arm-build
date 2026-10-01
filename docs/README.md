@@ -58,6 +58,7 @@ still being developed.
 | [Optimized typing execution plan](../software/docs/OPTIMIZED_TYPING_EXECUTION_PLAN.md) | Arm and integration contributors: rolling-horizon planning, smooth transitions, one-action authority, verification, and speed qualification |
 | [AI-to-arm operational efficiency plan](../software/docs/AI_TO_ARM_OPERATIONAL_EFFICIENCY_PLAN.md) | All workstreams: shared latency vocabulary, cross-stack critical-path optimization, invariants, benchmark gates, and staged performance qualification |
 | [Pre-camera arm integration completion plan](../software/docs/PRE_CAMERA_ARM_INTEGRATION_COMPLETION_PLAN.md) | Arm and integration contributors: ordered PC0-PC18 delivery plan covering the completed motion-runtime foundation plus zero-authority arrival orchestration, fault rehearsal, operator wrappers, session state, immutable replay, observability, and actual AI-output compatibility |
+| [Camera-to-first-key commissioning runbook](../software/docs/CAMERA_TO_FIRST_KEY_COMMISSIONING_RUNBOOK_V1.md) | Camera, AI, and arm owners: ordered physical-evidence replacement path from final-camera arrival through ARM-149-ARM-155 and one independently verified key |
 | [AI system baseline](../software/ai/docs/AI_SYSTEM_BASELINE_AND_IMPLEMENTATION_PLAN.md) | Research context and dated model-evaluation results |
 
 ## Arm experiments and procedures
