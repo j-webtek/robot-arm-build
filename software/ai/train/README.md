@@ -567,10 +567,19 @@ synthetic promotion, deployment qualification, and physical authority.
 
 The next campaign does not train a model to rediscover known robot geometry.
 Primary self-occlusion evidence comes from projecting pinned official visual
-meshes from fresh measured joint state through commissioned camera and board
-calibration. The learned component detects residual obstructions and image
-failures not represented by that geometry. Fusion abstains if either source
+meshes from measured joint feedback synchronized to the frame exposure through
+commissioned camera and board calibration. The exposure timestamp and clock,
+bracketing measured-feedback samples, and qualified interpolation rule are
+bound to the observation. Latest or commanded positions are forbidden
+substitutes. The learned component detects residual obstructions and image
+failures not represented by that geometry. OR fusion abstains if either source
 abstains or if either source is missing, stale, or outside qualification.
+
+Projection dilation is derived by propagating ChArUco reprojection residuals,
+measured feedback resolution and noise, and observed directional backlash and
+park repeatability through the mesh projection. The resulting conservative
+image-space bound is frozen with its source artifacts and domain; an arbitrary
+pixel margin is not admissible.
 
 Ground-truth Isaac masks remain label and scoring artifacts. They are forbidden
 as runtime-like model inputs. Predicted silhouette inputs must instead come from
@@ -579,18 +588,36 @@ joint, intrinsic, distortion, and extrinsic perturbations.
 
 For E-457 through E-481, `target_visible` means the official robot mask does not
 cover the target center and its safe-region overlap fraction is at most `0.20`.
-The successor must inspect failures by overlap fraction and freeze either an
-ambiguity margin or a continuous overlap-regression label before data
-generation.
+The successor freezes the narrow overlap ambiguity band `[0.18, 0.22]` before
+data generation. Center coverage always requires abstention. For an uncovered
+center inside the band, either binary decision is acceptable for classification
+scoring, but the row remains in all dataset totals, pose-cluster resampling, and
+reports. Reports list every band row's pose, target, lighting identity, overlap,
+label, and decision, plus the band count and fraction. The band never removes a
+row from an error denominator outside the band and cannot be widened after data
+is observed.
 
-The previous symmetric 5% point-estimate gate is historical. The successor
+The previous symmetric 5% point-estimate gate is historical. The fused system
 uses one-sided 95% pose-cluster-bootstrap upper bounds: at most 2% missed
-abstentions and at most 10% false abstentions. Each bootstrap replicate samples
-complete pose clusters and takes the worst rate across all offsets inside the
-declared error envelope. The minimum untouched evaluation budget is 64 poses,
-800 abstention labels, and 3,200 visible labels. Power simulation, pose and
-lighting identities, the random seed, perturbation ranges, and one separately
-identified unrendered escrow family are frozen before rendering.
+abstentions and at most 10% false abstentions. The same clustered set allocates
+no more than 4% false-abstention UCB to the geometric path and no more than 6%
+to the residual path. Because the paths can stop the same row, those shares are
+diagnostic constraints rather than additive proof; the fused 10% gate is
+authoritative. Each bootstrap replicate samples complete pose clusters and
+takes the worst rate across all offsets inside the declared error envelope.
+
+The former 64-pose number is a planning floor, not proof of sufficient power.
+Before rendering, estimate intra-pose correlation from grouped v13/v14
+diagnostics without using target, pose, lighting, probability, or failure
+identities for candidate selection. Power simulation uses both the empirical
+one-sided 95% upper bound for that correlation and a pessimistic value equal to
+the larger of that bound and `0.30`. Increase the pose count above 64 until the
+frozen design has at least 90% simulated probability of passing both fused
+upper-bound gates at predeclared design rates of 1% misses and 6% false stops.
+The evaluation still contains at least 800 abstention labels and 3,200 visible
+labels. Power code, assumptions, sample-size curve, pose and lighting
+identities, random seed, perturbation ranges, and one separately identified
+unrendered escrow family are frozen before rendering.
 
 Physical calibration proceeds in parallel using ChArUco captures for camera
 intrinsics, distortion, and camera-to-board pose, plus measured lighting and
@@ -598,3 +625,13 @@ parked-arm images. The first physical protocol retracts to the parked pose,
 waits for settling, captures one fresh observation for one action, then
 retracts and recaptures. Keyboard host logs and development phone ADB state can
 verify outcomes independently; they never create movement authority.
+
+That first milestone uses a separate parked-pose qualification set: synthetic
+variants across the measured calibration and lighting envelopes, and at least
+30 independent physical park cycles across at least three sessions. It reports
+park repeatability, ChArUco drift, residual tool/cable obstructions, every fused
+decision, exact binomial bounds, and false stops. Zero known self-occlusion may
+be accepted and every labeled residual obstruction must cause abstention. The
+small set supports only supervised parked observation. The correlation-sized
+broad-pose campaign is retained for later mid-motion observation and cannot be
+replaced by the parked set.

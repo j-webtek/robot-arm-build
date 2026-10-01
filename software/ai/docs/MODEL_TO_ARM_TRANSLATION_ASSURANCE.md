@@ -64,14 +64,28 @@ bridge must verify the named target, frame, surface plane, safe region,
 confidence, image provenance, and catalog identity before calibrated planning.
 
 Robot self-occlusion is geometry first. The deterministic projection service
-projects pinned official visual meshes from fresh measured joint state through
-the commissioned camera model. It evaluates the requested target's safe-region
-overlap under the installed joint and extrinsic uncertainty envelope. Its mask
-is a perception artifact only: it provides no collision-clear claim, trajectory,
-permit, or execution authority. A learned obstruction detector covers residual
-conditions absent from the robot model, including cables, hands, glare, and
-unexpected objects. Admission abstains when either source says abstain, when
-they disagree, or when either source is stale, unqualified, or unavailable.
+projects pinned official visual meshes from measured joint feedback synchronized
+to the image exposure through the commissioned camera model. Commanded joint
+positions and the latest value received after exposure are not substitutes for
+measured feedback at capture time. The frame binds the exposure timestamp,
+clock identity, feedback samples bracketing exposure, and the qualified
+interpolation method; a missing bracket, excessive sample gap, unsynchronized
+clock, or feedback without measured-position provenance requires abstention.
+The service evaluates the requested target's safe-region overlap under the
+installed joint and extrinsic uncertainty envelope. Its mask is a perception
+artifact only: it provides no collision-clear claim, trajectory, permit, or
+execution authority. A learned obstruction detector covers residual conditions
+absent from the robot model, including cables, hands, glare, and unexpected
+objects. Conservative OR fusion abstains when either source says abstain or
+when either source is stale, unqualified, or unavailable.
+
+Projection dilation is calibrated rather than selected as a convenient pixel
+constant. The installed bound propagates ChArUco reprojection residuals,
+measured joint-feedback resolution and noise, and observed directional backlash
+and parked-pose repeatability through the same mesh projection. Qualification
+freezes the conservative image-space quantile or bound, its source artifacts,
+and its applicable camera and robot domain. A guessed dilation cannot qualify
+the projection.
 
 Simulator ground-truth masks may provide labels and scoring references. They
 must not be supplied as model features or represented as runtime masks. Model
@@ -147,6 +161,17 @@ only. After the action, the system retracts and obtains new evidence. Keyboard
 host event logging and development-mode phone ADB state may provide independent
 outcome observations when available; neither source authorizes a movement or
 replaces fresh perception and arm-runtime admission.
+
+The parked-pose milestone has its own narrow qualification set. Synthetic data
+must vary measured calibration and lighting envelopes around the exact park
+state. Physical data must contain at least 30 independently completed park and
+settle cycles across at least three capture sessions, recording measured pose
+repeatability, ChArUco drift, residual tool/cable obstruction, and every fusion
+decision. It must have no accepted known self-occlusion and must abstain for
+every labeled residual obstruction; exact binomial confidence bounds and all
+false stops are reported. This is evidence for a supervised, parked-observation
+milestone only. It does not satisfy the broad-pose statistical gate or qualify
+mid-motion observation, unattended deployment, or physical authority.
 
 Shadow and simulation work must report all four counts as zero. A physical
 test must bind each nonzero count to an approved permit and reviewed receipt.

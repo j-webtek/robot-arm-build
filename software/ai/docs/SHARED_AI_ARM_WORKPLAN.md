@@ -1211,54 +1211,79 @@ threshold outcomes, pose identities, and lighting identities from selection.
 ### Geometry-first occlusion revision after v14
 
 The next campaign treats known robot self-occlusion as a deterministic
-projection problem. Fresh measured joint state, a commissioned camera model,
-the camera-to-board transform, and pinned official visual meshes produce a
-conservative image-space robot silhouette. The projection is evaluated against
-the requested target's safe region across the installed joint and calibration
-uncertainty envelope. This output is perception evidence only and cannot claim
-collision clearance, reachability, a trajectory, a permit, or physical
-authority.
+projection problem. Measured joint feedback synchronized to the frame exposure,
+a commissioned camera model, the camera-to-board transform, and pinned official
+visual meshes produce a conservative image-space robot silhouette. The frame
+binds its exposure timestamp and clock identity to measured-feedback samples
+that bracket exposure and to a qualified interpolation rule. Latest telemetry,
+commanded positions, an unsynchronized clock, or a sample gap outside the
+qualified limit cannot substitute and requires abstention. The projection is
+evaluated against the requested target's safe region across the installed joint
+and calibration uncertainty envelope. This output is perception evidence only
+and cannot claim collision clearance, reachability, a trajectory, a permit, or
+physical authority.
 
 The learned model becomes a residual obstruction detector for evidence that
 the robot geometry cannot predict, including cables, hands, glare, foreign
 objects, and image degradation. The fusion rule is conservative OR: abstain if
-the deterministic projection or learned detector says abstain, if they
-disagree, or if either input is stale or unqualified. Simulator truth masks are
-labels only. Runtime-like model features must be projected from telemetry and
-estimated calibration while training and evaluation perturb joint angles,
-intrinsics, distortion, and extrinsics within predeclared ranges.
+the deterministic projection or learned detector says abstain, or if either
+input is stale or unqualified. Simulator truth masks are labels only.
+Runtime-like model features must be projected from telemetry and estimated
+calibration while training and evaluation perturb joint feedback, intrinsics,
+distortion, and extrinsics within predeclared ranges.
+
+Projection dilation is measured rather than guessed. Qualification propagates
+ChArUco reprojection residuals, measured joint-feedback resolution and noise,
+and observed directional backlash and parked-pose repeatability through the
+same mesh projection. It freezes the resulting conservative image-space bound,
+source-artifact hashes, and applicable camera/robot domain. A hand-selected
+pixel margin is not qualifying evidence.
 
 For existing synthetic evidence, `sufficiently visible` means the official
 rendered robot does not cover the target center and covers no more than `0.20`
 of the target safe-region area. Coverage above `0.20` or center coverage is an
 abstention label. This historical boundary remains attached to E-457 through
-E-481. Before a successor campaign, the label policy must add a frozen margin
-band around the boundary or define a continuous occlusion-fraction target;
-ambiguous margin rows cannot silently count as ordinary binary examples.
+E-481. The successor freezes `[0.18, 0.22]` as a narrow overlap ambiguity band
+before generation. Center coverage always requires abstention. For an uncovered
+center inside the band, either decision is accepted for binary classification
+scoring, but the row remains in dataset totals, pose-cluster resampling, and
+reports. Every band row is reported with pose, target, lighting identity,
+overlap, label, and decision, together with the band count and fraction. The
+band cannot be widened after data is observed or remove any outside-band error.
 
 Future qualification gates use pose clusters rather than treating target and
-lighting rows from one pose as independent. The predeclared synthetic research
+lighting rows from one pose as independent. The fused-system synthetic research
 gate is asymmetric:
 
 - the one-sided 95% upper confidence bound for missed abstentions must be at
   most `0.02`;
 - the one-sided 95% upper confidence bound for visible-target false abstentions
   must be at most `0.10`;
+- on that same set, the geometric path's false-abstention upper bound must be at
+  most `0.04` and the residual path's must be at most `0.06`; because both may
+  stop the same row, these shares constrain contributors but do not replace or
+  arithmetically prove the authoritative fused `0.10` gate;
 - a deterministic, seeded pose-level cluster bootstrap resamples complete poses
   and computes the maximum rate across every tested offset inside the declared
   error envelope on each replicate, providing simultaneous worst-offset
   coverage rather than separate uncorrected tests; and
 - point estimates remain reported but cannot pass the gate by themselves.
 
-The next evaluation budget is frozen before generation: at least 64 independent
-evaluation pose clusters, at least 800 abstention-labeled observations, and at
-least 3,200 visible observations, with pose and lighting identities disjoint
-from training and development. One primary evaluation set is opened once for
-one frozen candidate. One separately identified escrow evaluation family stays
-unrendered until a later candidate exists. A failed primary set is consumed;
-it cannot tune that candidate or a successor. Exact power and cluster-bootstrap
-simulations must be attached before rendering to show that the planned set can
-meet both upper-bound gates.
+The next broad-pose evaluation budget is frozen before generation. Sixty-four
+independent pose clusters is a planning floor, not an assertion of adequate
+power. The power tool first estimates intra-pose correlation from grouped
+v13/v14 diagnostics without exposing their target, pose, lighting, probability,
+or failure identities to candidate selection. It runs both the empirical
+one-sided 95% upper correlation bound and a pessimistic correlation equal to the
+larger of that bound and `0.30`. Pose count increases above 64 until a frozen
+design has at least 90% simulated probability of passing both fused upper-bound
+gates at predeclared design rates of 1% misses and 6% false stops. The set also
+contains at least 800 abstention-labeled observations and 3,200 visible
+observations, with pose and lighting identities disjoint from training and
+development. The exact power code, assumptions, sample-size curve, random seed,
+perturbation ranges, and one unrendered escrow family are frozen before
+rendering. One primary set is opened once for one frozen candidate. A failed
+primary set is consumed and cannot tune that candidate or a successor.
 
 Physical calibration begins in parallel rather than after synthetic model
 selection. Initial work captures ChArUco observations for intrinsics,
@@ -1269,6 +1294,18 @@ first physical interaction protocol parks and settles the arm before each
 capture, admits at most one action from that evidence, then retracts and
 recaptures. Keyboard host events and development-mode phone ADB state are
 independent outcome labels when available, not movement authority.
+
+The first milestone has a separate parked-pose qualification set. Synthetic
+variants span the measured calibration and lighting envelopes around the exact
+park state. Physical evidence contains at least 30 independent completed park
+and settle cycles across at least three sessions, with measured repeatability,
+per-session ChArUco drift, residual tool/cable obstruction, every fused decision,
+exact binomial confidence bounds, and false stops reported. It accepts no known
+self-occlusion and abstains on every labeled residual obstruction. This small
+set supports only a supervised parked-observation milestone. It neither passes
+the broad-pose research gate nor qualifies mid-motion observation, unattended
+deployment, or physical authority. The correlation-sized broad-pose campaign
+is retained as the later mid-motion gate.
 
 Byte-identical builds and reports demonstrate deterministic pipeline behavior.
 They do not establish that an observed failure rate is statistically stable.
