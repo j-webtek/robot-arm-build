@@ -633,6 +633,17 @@ predeclared untouched evaluation. Static interpolation does not prove motion,
 dynamics, collision clearance, reachability, localization, physical camera
 performance, deployment readiness, or execution authority.
 
+Evidence `E-20261001-AI-489` records the completed v15 result. Two independent
+dataset builds and two independent training runs are byte identical. The
+selected threshold is `0.141`; nominal development records `5/786 = 0.64%`
+missed abstentions and `146/4614 = 3.16%` false abstentions. Point estimates
+remain inside the 2%/10% limits through the 1 mm ring, but the authoritative
+whole-pose bootstrap gate fails: the worst missed-abstention one-sided 95% UCB
+is `3.25%`, above the fixed 2% ceiling. The false-abstention UCB is `7.13%`.
+Status is `FAILED_DEVELOPMENT_GATE`. The candidate has no supported installed
+uncertainty bound, no evaluation was opened, and no promotion or physical
+authority was granted.
+
 ## Geometry-first successor policy
 
 The next campaign does not train a model to rediscover known robot geometry.

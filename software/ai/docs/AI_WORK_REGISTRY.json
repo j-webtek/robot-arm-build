@@ -93,13 +93,14 @@
         "software/ai/eval/clustered_occlusion_power_plan_v1.json",
         "software/ai/sim/evidence/pose_diverse_training_development_v1.json"
       ],
-      "current_result": "Synthetic scene and projection contracts fail closed, and a deterministic aggregate-only clustered power planner sizes the later broad-pose evaluation at 2,048 poses under empirical and pessimistic correlation scenarios.",
+      "current_result": "The v15 pose-diverse target-visibility successor is byte reproducible and improves raw development misses, but fails the frozen pose-cluster missed-abstention UCB gate (3.2491% > 2%); deterministic geometry projection remains the primary self-occlusion path.",
       "limitations": [
-        "No projection renderer, measured dilation artifact, or physical deployment qualification is installed.",
+        "No commissioned projection renderer, measured dilation artifact, or physical deployment qualification is installed.",
+        "The failed v15 learned checkpoint has no installable uncertainty bound and cannot be evaluated or promoted.",
         "Scene and projection evidence cannot substitute for localization uncertainty, collision screening, or arm-runtime admission.",
-        "The 2,048-pose result is a synthetic planning approximation and does not qualify the model, projection geometry, parked-pose workflow, camera, or deployment."
+        "The v15 corpus contains 96 correlated static states from one governed path and does not qualify arbitrary poses, the camera, or deployment."
       ],
-      "next_gate": "Collect commissioned projection inputs and a separate parked-pose qualification; do not spend broad-pose render compute until a new candidate and frozen 2,048-pose design are independently predeclared.",
+      "next_gate": "Commission synchronized measured-feedback geometry projection and measured dilation; any learned residual successor must use a separately predeclared train/development design and pass the clustered gate before an untouched evaluation is opened.",
       "model_motion_batch_boundary": true,
       "controller_authority": false,
       "hardware_writes": 0,
@@ -349,5 +350,5 @@
   "controller_authority": false,
   "hardware_writes": 0,
   "physical_movements": 0,
-  "registry_sha256": "4c68852c7fd35af2772c644acfb9c9a94642869282ad134366ec22318dc4ec6b"
+  "registry_sha256": "890da79538c844bf4a3bf961c263e404f9999dd5e4b9447d30071989c13568c9"
 }

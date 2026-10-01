@@ -1208,6 +1208,36 @@ next AI dependency is a newly predeclared train/development campaign designed
 for pose generalization; it must exclude all v14 images, labels, probabilities,
 threshold outcomes, pose identities, and lighting identities from selection.
 
+### Pose-diverse v15 successor result
+
+Evidence `E-20261001-AI-489` records the frozen v15 training/development
+campaign. Ninety-six fresh static visual states were generated from the
+governed zero-authority schedule, partitioned into 72 training poses and 24
+development poses. Six new lighting identities were used, v14 bytes and pose
+fractions remained excluded, and the evaluation split remained empty. Two
+independent 292-file dataset trees and two independent model/scorecard builds
+are byte identical.
+
+The learned target-visibility candidate improved nominal development behavior:
+at threshold `0.141`, missed abstentions are `5/786 = 0.64%` and visible false
+abstentions are `146/4614 = 3.16%`. Point estimates pass the predeclared 2% miss
+and 10% false-stop limits through the 1 mm synthetic offset ring. The
+authoritative seeded whole-pose bootstrap does not pass: worst missed-abstention
+one-sided 95% UCB is `3.2491%`, above the 2% ceiling; worst false-abstention UCB
+is `7.1350%`, below 10%. Status is `FAILED_DEVELOPMENT_GATE`. The internal
+point selector's 1 mm result is not an installable uncertainty qualification
+because the cluster gate failed. No evaluation set was opened or consumed.
+
+This result improves the evidence base. Raw misses are lower on v15 development
+than on the differently constructed v14 evaluation, but that is not a
+controlled head-to-head improvement claim. The learned model remains
+unreliable across pose clusters. The geometry-first architecture is unchanged:
+deterministic synchronized self-occlusion
+projection remains the primary path, with learned perception reserved for
+residual obstructions and image failures. Localization remains separately
+blocked by its retained `14.400834977 mm` synthetic bound. Arm-lane status and
+all integration gates remain unchanged.
+
 ### Geometry-first occlusion revision after v14
 
 The next campaign treats known robot self-occlusion as a deterministic
@@ -1359,7 +1389,7 @@ authenticity remain external owner responsibilities.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI/model | S2/S3 pose-diverse Isaac successor | frozen zero-authority static training/development pose fixture derived from the governed schedule; new v15 Isaac campaign and lighting identities excluding v14; deterministic dataset build; target-conditioned successor training and development-only selection; tests, registry, shared workplan, and evidence ledger | `issue/190-isaac-sim-host` / claim pending | CLAIMED — synthetic training/development only; v14 remains consumed and excluded; no evaluation opening, localization qualification, arm-lane status, integration-gate change, hardware write, or physical movement |
+| AI/model | S2/S3 pose-diverse Isaac successor | frozen zero-authority static training/development pose fixture derived from the governed schedule; new v15 Isaac campaign and lighting identities excluding v14; deterministic dataset build; target-conditioned successor training and development-only selection; tests, registry, shared workplan, and evidence ledger | `issue/190-isaac-sim-host` / `ba1ea9bf43098eb37e6d17c4785d428023cc1aab` | COMPLETE — reproducible `FAILED_DEVELOPMENT_GATE`; point estimates pass at 1 mm but missed-abstention pose-cluster UCB is 3.2491% above the frozen 2% ceiling; no evaluation opening, localization qualification, arm-lane status, integration-gate change, hardware write, or physical movement |
 | AI/model | S2/S3 deterministic retained-package index builder | read-only custody-declaration schema and builder; exact regular-file inventory; campaign/digest/path/custody binding; deterministic evidence-index output; missing/extra/duplicate/symlink/changed-file rejection; tests, registry, shared workplan, and evidence ledger | `issue/190-isaac-sim-host` / `e7b16c2de470a1c01040fab0be17e22b44cdfcdc` | COMPLETE — inventories only already retained files and externally declared custody; no evidence generation, collection, qualification, arm-lane status, integration-gate change, hardware write, or physical movement |
 | AI/model | S2/S3 parked-pose file-backed preflight | strict evidence index and preflight receipt schemas; contained regular-file/hash/size/type/custody reconciliation for every campaign binding; missing/altered/duplicate/symlink/extra-artifact rejection; explicit no-campaign blocked receipt, tests, registry, shared workplan, and evidence ledger | `issue/190-isaac-sim-host` / `ad2c8ce9aeee11e0b6fcfddcda1e0c5a6afa72ed` | COMPLETE — retained preflight is blocked because no campaign package exists; custody labels remain claims pending owner review; no collection, qualification, arm-lane status, integration-gate change, hardware write, or physical movement |
 | AI/model | S2/S3 parked-pose qualification protocol | strict synthetic/physical campaign manifests and observation records; completed-park/session independence checks; ChArUco drift and repeatability bindings; residual obstruction and fused-decision scoring; exact binomial bounds; explicit incomplete receipt, tests, registry, shared workplan, and evidence ledger | `issue/190-isaac-sim-host` / `9dc1f7fa6642b6468bb5df85d0a6bed33e0fa592` | COMPLETE — retained receipt is explicitly incomplete because no campaign was collected; no model qualification, deployment claim, arm-lane status, integration-gate change, hardware write, or physical movement |
