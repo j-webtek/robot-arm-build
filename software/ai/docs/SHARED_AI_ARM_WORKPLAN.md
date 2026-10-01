@@ -1115,7 +1115,7 @@ predeclared and consumed once.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI/model | S2/S3 frozen target-conditioned evaluation | fixed-overview campaign renderer; offline dataset/evaluator; focused simulator/perception tests; AI workplan, training README, and evidence ledger | `issue/190-isaac-sim-host` / claim pending | ACTIVE — predeclare pose- and lighting-disjoint evaluation identities, evaluate frozen E-476 exactly once, preserve pass or fail without tuning |
+| AI/model | S2/S3 frozen target-conditioned evaluation | fixed-overview campaign renderer; offline dataset/evaluator; focused simulator/perception tests; AI workplan, training README, and evidence ledger | `issue/190-isaac-sim-host` / `1b3d5629d3d7461b067c225595ba69c916f30bc1` | ACTIVE — predeclare pose- and lighting-disjoint evaluation identities, evaluate frozen E-476 exactly once, preserve pass or fail without tuning |
 | Unclaimed | S2/S3 | physical-camera deployment qualification and safe-region-fit precision evidence | — | AVAILABLE |
 | ARM | S4 | collect four physical-original `camera_support_optics` bindings through onboarding, then run the ARM-070 intake; no synthetic promotion | ARM-071 | WAITING_FOR_ORIGINALS |
 

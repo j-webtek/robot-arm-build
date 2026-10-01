@@ -157,6 +157,19 @@ TARGET_IDENTITY_TRAINING_POSE_GROUPS = {
     "development": (),
     "evaluation": (),
 }
+FUSION_EVALUATION_SCHEDULE_POSE_SEQUENCES = {
+    "fusion_eval_h_to_1_46": 46,
+    "fusion_eval_h_to_1_54": 54,
+    "fusion_eval_h_to_1_62": 62,
+    "fusion_eval_1_to_period_80": 80,
+    "fusion_eval_1_to_period_92": 92,
+    "fusion_eval_1_to_period_102": 102,
+}
+FUSION_EVALUATION_POSE_GROUPS = {
+    "training": (),
+    "development": (),
+    "evaluation": tuple(FUSION_EVALUATION_SCHEDULE_POSE_SEQUENCES),
+}
 EXPECTED_SCHEDULE_FILE_SHA256 = "6a59ce143f5527c7a9ced09b08d5515644ea4fb859dd69691e08483eb020ee42"
 WIDTH = 1920
 HEIGHT = 1080
@@ -313,7 +326,7 @@ def main() -> int:
         choices=(
             "target-aware-v5", "mask-perturbation-v6",
             "policy-evaluation-v7", "hard-negative-v8",
-            "target-identity-training-v9",
+            "target-identity-training-v9", "fusion-evaluation-v10",
         ),
         default="target-aware-v5",
     )
@@ -357,7 +370,12 @@ def main() -> int:
         bootstrap = bootstrap_virtual_workcell(workspace)
         context = bootstrap.context
         schedule_by_sequence = {row["sequence"]: row for row in schedule_bundle["samples"]}
-        if args.campaign == "target-identity-training-v9":
+        if args.campaign == "fusion-evaluation-v10":
+            poses = {}
+            schedule_pose_sequences = FUSION_EVALUATION_SCHEDULE_POSE_SEQUENCES
+            pose_groups = FUSION_EVALUATION_POSE_GROUPS
+            receipt_schema = "tactevra.isaac_fixed_overview_mesh_render.v10"
+        elif args.campaign == "target-identity-training-v9":
             poses = {}
             schedule_pose_sequences = TARGET_IDENTITY_TRAINING_SCHEDULE_POSE_SEQUENCES
             pose_groups = TARGET_IDENTITY_TRAINING_POSE_GROUPS

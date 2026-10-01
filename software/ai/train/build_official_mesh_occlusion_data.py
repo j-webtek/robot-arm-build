@@ -23,6 +23,7 @@ SCHEMA_V6 = "rocell.ai_official_mesh_occlusion_data.v6"
 SCHEMA_V7 = "rocell.ai_official_mesh_occlusion_data.v7"
 SCHEMA_V8 = "rocell.ai_official_mesh_occlusion_data.v8"
 SCHEMA_V9 = "rocell.ai_official_mesh_occlusion_data.v9"
+SCHEMA_V10 = "rocell.ai_official_mesh_occlusion_data.v10"
 SOURCE_SCHEMA_V1 = "tactevra.isaac_fixed_overview_mesh_render.v1"
 SOURCE_SCHEMA_V2 = "tactevra.isaac_fixed_overview_mesh_render.v2"
 SOURCE_SCHEMA_V3 = "tactevra.isaac_fixed_overview_mesh_render.v3"
@@ -32,6 +33,7 @@ SOURCE_SCHEMA_V6 = "tactevra.isaac_fixed_overview_mesh_render.v6"
 SOURCE_SCHEMA_V7 = "tactevra.isaac_fixed_overview_mesh_render.v7"
 SOURCE_SCHEMA_V8 = "tactevra.isaac_fixed_overview_mesh_render.v8"
 SOURCE_SCHEMA_V9 = "tactevra.isaac_fixed_overview_mesh_render.v9"
+SOURCE_SCHEMA_V10 = "tactevra.isaac_fixed_overview_mesh_render.v10"
 MAXIMUM_SAFE_REGION_OVERLAP = 0.20
 BASELINE_SEED = 190
 BASELINE_CROP_SIZE = 16
@@ -113,6 +115,13 @@ TARGET_IDENTITY_TRAINING_LIGHTING = {
     "development": (),
     "evaluation": (),
 }
+FUSION_EVALUATION_LIGHTING = {
+    "train": (),
+    "development": (),
+    "evaluation": (
+        "blue_edge_shadow", "lower_left_glare", "vertical_blur_dim",
+    ),
+}
 NOMINAL_PIXELS_PER_MM = 2.0
 MASK_OFFSET_RADII_MM = (1.0, 2.0, 4.0, 8.0)
 MASK_OFFSET_DIRECTIONS = (
@@ -140,6 +149,7 @@ def _verify_source(path: Path) -> dict[str, Any]:
         SOURCE_SCHEMA_V7,
         SOURCE_SCHEMA_V8,
         SOURCE_SCHEMA_V9,
+        SOURCE_SCHEMA_V10,
     }:
         raise ValueError("official-mesh manifest schema mismatch")
     claimed = source.pop("receipt_sha256", None)
@@ -178,7 +188,10 @@ def _split_policy(source: dict[str, Any]) -> tuple[str, dict[str, dict[str, tupl
         expected = next(name for name, poses in normalized.items() if row["pose_id"] in poses)
         if row.get("pose_group") != expected:
             raise ValueError(f"pose group mismatch: {row['pose_id']}")
-    if source["schema"] == SOURCE_SCHEMA_V9:
+    if source["schema"] == SOURCE_SCHEMA_V10:
+        lighting = FUSION_EVALUATION_LIGHTING
+        schema = SCHEMA_V10
+    elif source["schema"] == SOURCE_SCHEMA_V9:
         lighting = TARGET_IDENTITY_TRAINING_LIGHTING
         schema = SCHEMA_V9
     elif source["schema"] == SOURCE_SCHEMA_V8:
@@ -414,6 +427,36 @@ def _lighting(image: Image.Image, variant: str) -> Image.Image:
             weights[index] = 1.0
         blurred = rgb.filter(ImageFilter.Kernel((5, 5), weights, scale=5.0))
         return ImageEnhance.Contrast(blurred).enhance(0.82)
+    if variant == "blue_edge_shadow":
+        red, green, blue = rgb.split()
+        cooled = Image.merge("RGB", (
+            red.point(lambda value: round(value * 0.88)),
+            green.point(lambda value: round(value * 0.97)),
+            blue.point(lambda value: min(255, round(value * 1.10))),
+        ))
+        overlay = Image.new("RGB", rgb.size, "black")
+        alpha = Image.new("L", rgb.size, 0)
+        ImageDraw.Draw(alpha).polygon(
+            ((0, 0), (round(rgb.width * 0.36), 0),
+             (round(rgb.width * 0.20), rgb.height), (0, rgb.height)),
+            fill=74,
+        )
+        return Image.composite(overlay, cooled, alpha)
+    if variant == "lower_left_glare":
+        overlay = Image.new("RGB", rgb.size, "white")
+        alpha = Image.new("L", rgb.size, 0)
+        ImageDraw.Draw(alpha).ellipse(
+            (-round(rgb.width * 0.08), round(rgb.height * 0.38),
+             round(rgb.width * 0.52), round(rgb.height * 1.08)),
+            fill=91,
+        )
+        return Image.composite(overlay, rgb, alpha)
+    if variant == "vertical_blur_dim":
+        weights = [0.0] * 25
+        for index in (2, 7, 12, 17, 22):
+            weights[index] = 1.0
+        blurred = rgb.filter(ImageFilter.Kernel((5, 5), weights, scale=5.0))
+        return ImageEnhance.Brightness(blurred).enhance(0.91)
     raise ValueError(f"unknown lighting variant: {variant}")
 
 
@@ -2099,6 +2142,52 @@ def train_target_conditioned_fusion_candidate(
     return scorecard
 
 
+def _load_target_conditioned_checkpoint(candidate_dir: Path):  # type: ignore[no-untyped-def]
+    import torch
+
+    checkpoint_path = candidate_dir / "model.json"
+    checkpoint = json.loads(checkpoint_path.read_text(encoding="utf-8"))
+    if checkpoint.get("schema") != "rocell.ai_target_conditioned_spatial_fusion.v1":
+        raise ValueError("target-conditioned checkpoint schema mismatch")
+    architecture = checkpoint.get("architecture", {})
+    descriptor_size = architecture.get("descriptor_size")
+    catalog = architecture.get("target_catalog")
+    if not isinstance(descriptor_size, int) or descriptor_size < 5 \
+            or not isinstance(catalog, list) or len(catalog) + 4 != descriptor_size:
+        raise ValueError("target-conditioned checkpoint descriptor mismatch")
+
+    class TinyTargetConditionedFusion(torch.nn.Module):
+        def __init__(self) -> None:
+            super().__init__()
+            self.conv1 = torch.nn.Conv2d(4, 8, 3, padding=1)
+            self.pool1 = torch.nn.MaxPool2d(2)
+            self.conv2 = torch.nn.Conv2d(8, 16, 3, padding=1)
+            self.pool2 = torch.nn.AdaptiveAvgPool2d((4, 4))
+            self.classifier = torch.nn.Linear(16 * 4 * 4, 1)
+            self.conditioner = torch.nn.Linear(descriptor_size, 32)
+
+        def forward(self, values, descriptors):  # type: ignore[no-untyped-def]
+            features = torch.relu(self.conv1(values))
+            features = self.pool1(features)
+            features = torch.relu(self.conv2(features))
+            gamma, beta = self.conditioner(descriptors).chunk(2, dim=1)
+            scale = float(architecture["modulation_scale"])
+            features = torch.relu(
+                features * (1.0 + scale * torch.tanh(gamma)[:, :, None, None])
+                + scale * beta[:, :, None, None]
+            )
+            return self.classifier(self.pool2(features).flatten(1)).squeeze(1)
+
+    model = TinyTargetConditionedFusion().cpu()
+    state = {
+        name: torch.tensor(item["values"], dtype=torch.float32).reshape(item["shape"])
+        for name, item in checkpoint["state_dict"].items()
+    }
+    model.load_state_dict(state, strict=True)
+    model.eval()
+    return checkpoint, model
+
+
 def _load_spatial_checkpoint(candidate_dir: Path):  # type: ignore[no-untyped-def]
     import torch
 
@@ -2373,6 +2462,156 @@ def evaluate_localization_policy(
         "dataset_sha256": claimed_dataset_sha,
         "model_sha256": model_sha,
         "source_scorecard_sha256": claimed_scorecard_sha,
+        "threshold": threshold,
+        "evaluated_planar_error_bound_mm": 1.0,
+        "evaluation_opened": True,
+        "evaluation_row_count": len(rows),
+        "abstain_row_count": abstain_count,
+        "visible_row_count": visible_count,
+        "maximum_missed_abstain_rate": max(missed_rates),
+        "maximum_visible_false_abstain_rate": max(false_rates),
+        "synthetic_gate_met": gate_met,
+        "measurements": measurements,
+        "per_target_failure_counts_across_offsets": target_failures,
+        "promotion_status": "BLOCKED_SYNTHETIC_ONLY",
+        "hardware_writes": 0,
+        "physical_movements": 0,
+        "physical_authority": False,
+        "limitations": [
+            "the evaluation camera, geometry, images, labels, and offsets are synthetic",
+            "the 1 mm offset uses nominal camera geometry, not physical calibration",
+            "this evaluation group is consumed and cannot tune a successor",
+            "tool and camera-support geometry remain absent",
+            "a passing synthetic gate cannot qualify deployment",
+        ],
+    }
+    report["report_sha256"] = _sha256(_canonical(report))
+    (output_dir / "report.json").write_bytes(_canonical(report) + b"\n")
+    return report
+
+
+def evaluate_target_conditioned_fusion(
+    evaluation_dataset_dir: Path,
+    candidate_dir: Path,
+    output_dir: Path,
+) -> dict[str, Any]:
+    """Evaluate one frozen fusion checkpoint on one fresh synthetic group."""
+    import torch
+
+    evaluation_dataset_dir = evaluation_dataset_dir.resolve(strict=True)
+    candidate_dir = candidate_dir.resolve(strict=True)
+    output_dir = output_dir.resolve()
+    if output_dir.exists() and any(output_dir.iterdir()):
+        raise ValueError("target-conditioned evaluation output directory must be empty")
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    dataset_path = evaluation_dataset_dir / "manifest.json"
+    dataset = json.loads(dataset_path.read_text(encoding="utf-8"))
+    claimed_dataset_sha = dataset.pop("dataset_sha256", None)
+    if not isinstance(claimed_dataset_sha, str) \
+            or _sha256(_canonical(dataset)) != claimed_dataset_sha:
+        raise ValueError("target-conditioned evaluation dataset manifest hash mismatch")
+    dataset["dataset_sha256"] = claimed_dataset_sha
+    if dataset.get("schema") != SCHEMA_V10 \
+            or dataset.get("scope") != "SYNTHETIC_ONLY_NO_DEPLOYMENT_QUALIFICATION":
+        raise ValueError("target-conditioned evaluation dataset scope or schema mismatch")
+    if dataset["splits"]["train"]["count"] != 0 \
+            or dataset["splits"]["development"]["count"] != 0 \
+            or dataset["splits"]["evaluation"]["count"] == 0:
+        raise ValueError("target-conditioned evaluation dataset must be evaluation-only")
+
+    model_path = candidate_dir / "model.json"
+    scorecard_path = candidate_dir / "scorecard.json"
+    checkpoint, model = _load_target_conditioned_checkpoint(candidate_dir)
+    policy = checkpoint.get("localization_uncertainty_policy", {})
+    if checkpoint.get("evaluation_opened") is not False \
+            or policy.get("development_gate_met") is not True \
+            or policy.get("maximum_supported_planar_error_mm") != 1.0 \
+            or policy.get("above_bound_decision") != "abstain_localization_uncertain":
+        raise ValueError("target-conditioned candidate is not the frozen 1 mm policy")
+    if dataset.get("target_catalog_sha256") != checkpoint.get("target_catalog_sha256"):
+        raise ValueError("target-conditioned evaluation target catalog mismatch")
+
+    source_scorecard = json.loads(scorecard_path.read_text(encoding="utf-8"))
+    claimed_scorecard_sha = source_scorecard.pop("scorecard_sha256", None)
+    if not isinstance(claimed_scorecard_sha, str) \
+            or _sha256(_canonical(source_scorecard)) != claimed_scorecard_sha:
+        raise ValueError("target-conditioned candidate scorecard hash mismatch")
+    source_scorecard["scorecard_sha256"] = claimed_scorecard_sha
+    model_sha = _sha256(model_path.read_bytes())
+    if source_scorecard.get("schema") \
+            != "rocell.ai_target_conditioned_fusion_candidate.v1" \
+            or source_scorecard.get("model_sha256") != model_sha \
+            or source_scorecard.get("evaluation_group_present") is not False \
+            or source_scorecard.get("development_gate_met") is not True \
+            or source_scorecard.get("maximum_supported_planar_error_mm") != 1.0 \
+            or source_scorecard.get("hardware_writes") != 0 \
+            or source_scorecard.get("physical_movements") != 0 \
+            or source_scorecard.get("physical_authority") is not False:
+        raise ValueError("target-conditioned candidate identity or authority mismatch")
+
+    rows = _load_rows(evaluation_dataset_dir, "evaluation", dataset)
+    catalog = tuple(checkpoint["architecture"]["target_catalog"])
+    descriptors = torch.from_numpy(_target_identity_descriptors(
+        evaluation_dataset_dir, rows, catalog,
+    ))
+    offsets = [
+        offset for offset in _declared_mask_offsets()
+        if max(abs(offset["x_mm"]), abs(offset["y_mm"])) <= 1.0
+    ]
+    labels_ref: np.ndarray | None = None
+    measurements = []
+    target_failures: dict[str, dict[str, int]] = {}
+    rows_by_id = {row["id"]: row for row in rows}
+    threshold = float(checkpoint["threshold"])
+    for offset in offsets:
+        crops, labels = _target_aware_crops(
+            evaluation_dataset_dir, rows, (offset["x_px"], offset["y_px"]),
+        )
+        labels = labels.astype(np.float64)
+        if labels_ref is None:
+            labels_ref = labels
+        elif not np.array_equal(labels_ref, labels):
+            raise RuntimeError("target-conditioned evaluation labels changed across offsets")
+        with torch.no_grad():
+            probabilities = torch.sigmoid(model(
+                torch.from_numpy(crops), descriptors,
+            )).numpy()
+        metrics = _metrics(rows, labels, probabilities, threshold)
+        for failure in metrics["failures"]:
+            row = rows_by_id[failure["id"]]
+            key = f"{row['device']}:{row['target_id']}"
+            counts = target_failures.setdefault(
+                key, {"false_abstain": 0, "missed_abstain": 0},
+            )
+            counts[
+                "missed_abstain"
+                if failure["expected"] == "abstain" else "false_abstain"
+            ] += 1
+        measurements.append({"offset": offset, "metrics": metrics})
+    assert labels_ref is not None
+    abstain_count = int(labels_ref.sum())
+    visible_count = len(labels_ref) - abstain_count
+    if abstain_count == 0 or visible_count == 0:
+        raise ValueError("target-conditioned evaluation requires abstain and visible rows")
+    missed_rates = [
+        item["metrics"]["confusion"]["missed_abstain"] / abstain_count
+        for item in measurements
+    ]
+    false_rates = [
+        item["metrics"]["confusion"]["false_abstain"] / visible_count
+        for item in measurements
+    ]
+    gate_met = max(missed_rates) <= 0.05 and max(false_rates) <= 0.05
+    report: dict[str, Any] = {
+        "schema": "rocell.ai_target_conditioned_fusion_evaluation.v1",
+        "scope": "SYNTHETIC_ONLY_NO_DEPLOYMENT_QUALIFICATION",
+        "algorithm": "frozen_target_conditioned_prepool_film_evaluation_v1",
+        "dataset_manifest_sha256": _sha256(dataset_path.read_bytes()),
+        "dataset_sha256": claimed_dataset_sha,
+        "model_sha256": model_sha,
+        "source_scorecard_sha256": claimed_scorecard_sha,
+        "target_catalog_sha256": checkpoint["target_catalog_sha256"],
         "threshold": threshold,
         "evaluated_planar_error_bound_mm": 1.0,
         "evaluation_opened": True,
@@ -2906,6 +3145,10 @@ def main() -> int:
         metavar=("EVALUATION_DATASET_DIR", "CANDIDATE_DIR", "OUTPUT_DIR"),
     )
     parser.add_argument(
+        "--evaluate-target-conditioned-fusion", type=Path, nargs=3,
+        metavar=("EVALUATION_DATASET_DIR", "CANDIDATE_DIR", "OUTPUT_DIR"),
+    )
+    parser.add_argument(
         "--diagnose-localization-hard-negatives", type=Path, nargs=3,
         metavar=("DEVELOPMENT_DATASET_DIR", "CANDIDATE_DIR", "OUTPUT_DIR"),
     )
@@ -2917,6 +3160,7 @@ def main() -> int:
                 or args.train_target_conditioned_fusion is not None \
                 or args.refreeze_localization_policy is not None \
                 or args.evaluate_localization_policy is not None \
+                or args.evaluate_target_conditioned_fusion is not None \
                 or args.diagnose_localization_hard_negatives is not None \
                 or args.output_dir is not None or any(
             value is not None
@@ -2937,6 +3181,7 @@ def main() -> int:
                 or args.train_target_conditioned_fusion is not None \
                 or args.refreeze_localization_policy is not None \
                 or args.evaluate_localization_policy is not None \
+                or args.evaluate_target_conditioned_fusion is not None \
                 or args.diagnose_localization_hard_negatives is not None \
                 or args.output_dir is not None or any(
             value is not None
@@ -2956,6 +3201,7 @@ def main() -> int:
                 or args.train_target_conditioned_fusion is not None \
                 or args.refreeze_localization_policy is not None \
                 or args.evaluate_localization_policy is not None \
+                or args.evaluate_target_conditioned_fusion is not None \
                 or args.diagnose_localization_hard_negatives is not None \
                 or args.output_dir is not None or any(
             value is not None
@@ -2976,6 +3222,7 @@ def main() -> int:
         if args.train_target_conditioned_fusion is not None \
                 or args.refreeze_localization_policy is not None \
                 or args.evaluate_localization_policy is not None \
+                or args.evaluate_target_conditioned_fusion is not None \
                 or args.diagnose_localization_hard_negatives is not None \
                 or args.output_dir is not None or any(
             value is not None
@@ -2993,6 +3240,7 @@ def main() -> int:
     if args.train_target_conditioned_fusion is not None:
         if args.refreeze_localization_policy is not None \
                 or args.evaluate_localization_policy is not None \
+                or args.evaluate_target_conditioned_fusion is not None \
                 or args.diagnose_localization_hard_negatives is not None \
                 or args.output_dir is not None or any(
             value is not None
@@ -3011,6 +3259,7 @@ def main() -> int:
         return 0
     if args.refreeze_localization_policy is not None:
         if args.evaluate_localization_policy is not None \
+                or args.evaluate_target_conditioned_fusion is not None \
                 or args.diagnose_localization_hard_negatives is not None \
                 or args.output_dir is not None or any(
             value is not None
@@ -3028,7 +3277,8 @@ def main() -> int:
         print(json.dumps(scorecard, sort_keys=True))
         return 0
     if args.evaluate_localization_policy is not None:
-        if args.diagnose_localization_hard_negatives is not None \
+        if args.evaluate_target_conditioned_fusion is not None \
+                or args.diagnose_localization_hard_negatives is not None \
                 or args.output_dir is not None or any(
             value is not None
             for value in (
@@ -3041,6 +3291,24 @@ def main() -> int:
             )
         report = evaluate_localization_policy(
             *args.evaluate_localization_policy,
+        )
+        print(json.dumps(report, sort_keys=True))
+        return 0
+    if args.evaluate_target_conditioned_fusion is not None:
+        if args.diagnose_localization_hard_negatives is not None \
+                or args.output_dir is not None or any(
+            value is not None
+            for value in (
+                args.baseline_output, args.candidate_output, args.spatial_output,
+                args.target_aware_output,
+            )
+        ):
+            parser.error(
+                "--evaluate-target-conditioned-fusion cannot be combined "
+                "with other outputs"
+            )
+        report = evaluate_target_conditioned_fusion(
+            *args.evaluate_target_conditioned_fusion,
         )
         print(json.dumps(report, sort_keys=True))
         return 0

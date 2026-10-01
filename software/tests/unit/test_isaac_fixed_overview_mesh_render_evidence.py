@@ -368,6 +368,25 @@ def test_target_identity_training_poses_are_fresh_training_only() -> None:
     assert not (set(sequences.values()) & prior)
 
 
+def test_fusion_evaluation_poses_are_fresh_evaluation_only() -> None:
+    module = _renderer()
+    groups = module.FUSION_EVALUATION_POSE_GROUPS
+    sequences = module.FUSION_EVALUATION_SCHEDULE_POSE_SEQUENCES
+
+    assert set(groups) == {"training", "development", "evaluation"}
+    assert groups["training"] == groups["development"] == ()
+    assert groups["evaluation"] == tuple(sequences)
+    assert set(sequences.values()) == {46, 54, 62, 80, 92, 102}
+    prior = (
+        set(module.SCHEDULE_POSE_SEQUENCES.values())
+        | set(module.PERTURBATION_SCHEDULE_POSE_SEQUENCES.values())
+        | set(module.POLICY_EVALUATION_SCHEDULE_POSE_SEQUENCES.values())
+        | set(module.HARD_NEGATIVE_SCHEDULE_POSE_SEQUENCES.values())
+        | set(module.TARGET_IDENTITY_TRAINING_SCHEDULE_POSE_SEQUENCES.values())
+    )
+    assert not (set(sequences.values()) & prior)
+
+
 def test_transit_dataset_policy_uses_fresh_disjoint_lighting() -> None:
     builder = _builder()
     renderer = _renderer()
@@ -681,6 +700,55 @@ def test_target_identity_training_lighting_is_deterministic_and_fresh() -> None:
         for split in policy.values()
         for name in (split["lighting"] if isinstance(split, dict) else split)
     }
+    assert not (set(variants) & prior)
+
+
+def test_fusion_evaluation_policy_and_lighting_are_fresh() -> None:
+    builder = _builder()
+    renderer = _renderer()
+    source = {
+        "schema": "tactevra.isaac_fixed_overview_mesh_render.v10",
+        "pose_groups": {
+            name: list(poses)
+            for name, poses in renderer.FUSION_EVALUATION_POSE_GROUPS.items()
+        },
+        "pose_results": [
+            {"pose_id": pose_id, "pose_group": group}
+            for group, pose_ids in renderer.FUSION_EVALUATION_POSE_GROUPS.items()
+            for pose_id in pose_ids
+        ],
+    }
+
+    schema, policy = builder._split_policy(source)
+    variants = builder.FUSION_EVALUATION_LIGHTING["evaluation"]
+    pixels = np.arange(48 * 48 * 3, dtype=np.uint8).reshape(48, 48, 3)
+    image = Image.fromarray(pixels, mode="RGB")
+    first = [np.asarray(builder._lighting(image, name)) for name in variants]
+    second = [np.asarray(builder._lighting(image, name)) for name in variants]
+    prior = {
+        name
+        for lighting in (
+            builder.LEGACY_SPLITS, builder.EXPANDED_LIGHTING,
+            builder.TRANSIT_LIGHTING, builder.SPECIFICITY_LIGHTING,
+            builder.TARGET_AWARE_LIGHTING, builder.PERTURBATION_LIGHTING,
+            builder.POLICY_EVALUATION_LIGHTING, builder.HARD_NEGATIVE_LIGHTING,
+            builder.TARGET_IDENTITY_TRAINING_LIGHTING,
+        )
+        for split in lighting.values()
+        for name in (split["lighting"] if isinstance(split, dict) else split)
+    }
+
+    assert schema == "rocell.ai_official_mesh_occlusion_data.v10"
+    assert policy["train"]["poses"] == policy["development"]["poses"] == ()
+    assert policy["evaluation"]["poses"] == tuple(
+        renderer.FUSION_EVALUATION_POSE_GROUPS["evaluation"]
+    )
+    assert policy["evaluation"]["lighting"] == variants
+    assert all(
+        np.array_equal(left, right)
+        for left, right in zip(first, second, strict=True)
+    )
+    assert len({_sha256(value.tobytes()) for value in first}) == len(variants)
     assert not (set(variants) & prior)
 
 
@@ -1058,6 +1126,7 @@ def test_target_identity_candidate_is_deterministic_and_keeps_evaluation_closed(
     assert first["physical_authority"] is False
 
 
+
 def test_target_conditioned_fusion_is_deterministic_and_freezes_seed(
     tmp_path: Path,
 ) -> None:
@@ -1193,3 +1262,54 @@ def test_target_conditioned_fusion_is_deterministic_and_freezes_seed(
     assert first["hardware_writes"] == 0
     assert first["physical_movements"] == 0
     assert first["physical_authority"] is False
+
+    evaluation = make_dataset(
+        "fusion-evaluation", "rocell.ai_official_mesh_occlusion_data.v10", "evaluation",
+    )
+    candidate_dir = tmp_path / "fusion-first"
+    checkpoint["localization_uncertainty_policy"].update({
+        "maximum_supported_planar_error_mm": 1.0,
+        "development_gate_met": True,
+        "above_bound_decision": "abstain_localization_uncertain",
+    })
+    model_path = candidate_dir / "model.json"
+    model_path.write_bytes(module._canonical(checkpoint) + b"\n")
+    scorecard_path = candidate_dir / "scorecard.json"
+    scorecard = json.loads(scorecard_path.read_text())
+    scorecard.pop("scorecard_sha256")
+    scorecard.update({
+        "model_sha256": _sha256(model_path.read_bytes()),
+        "maximum_supported_planar_error_mm": 1.0,
+        "development_gate_met": True,
+        "evaluation_group_present": False,
+    })
+    scorecard["scorecard_sha256"] = _sha256(module._canonical(scorecard))
+    scorecard_path.write_bytes(module._canonical(scorecard) + b"\n")
+
+    evaluation_first = module.evaluate_target_conditioned_fusion(
+        evaluation, candidate_dir, tmp_path / "evaluation-first",
+    )
+    evaluation_second = module.evaluate_target_conditioned_fusion(
+        evaluation, candidate_dir, tmp_path / "evaluation-second",
+    )
+
+    assert evaluation_first == evaluation_second
+    assert (tmp_path / "evaluation-first" / "report.json").read_bytes() == (
+        tmp_path / "evaluation-second" / "report.json"
+    ).read_bytes()
+    assert evaluation_first["schema"] \
+        == "rocell.ai_target_conditioned_fusion_evaluation.v1"
+    assert evaluation_first["evaluation_opened"] is True
+    assert evaluation_first["evaluation_row_count"] == 12
+    assert evaluation_first["hardware_writes"] == 0
+    assert evaluation_first["physical_movements"] == 0
+    assert evaluation_first["physical_authority"] is False
+
+    manifest_path = evaluation / "manifest.json"
+    tampered = json.loads(manifest_path.read_text())
+    tampered["dataset_sha256"] = "0" * 64
+    manifest_path.write_bytes(module._canonical(tampered) + b"\n")
+    with pytest.raises(ValueError, match="manifest hash mismatch"):
+        module.evaluate_target_conditioned_fusion(
+            evaluation, candidate_dir, tmp_path / "tampered-evaluation",
+        )
