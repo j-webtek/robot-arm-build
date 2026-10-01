@@ -1155,7 +1155,7 @@ successor. No arm or integration status changes.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI/model | S2/S3 frozen recall evaluation | evaluation-only fixed-overview campaign; frozen E-478 evaluator; focused simulator/perception tests; AI workplan, training README, and evidence ledger | `issue/190-isaac-sim-host` / `8f82376cc9176db99c0f8cd8a1dba3757ee7df0e` | COMPLETE — E-479 fails specificity by one nominal false stop; v12 is consumed and the checkpoint remains blocked |
+| AI/model | S2/S3 specificity-balanced successor | fresh v13 train/development fixed-overview campaign; conditioner-only successor seeded from exact E-478 checkpoint; focused simulator/perception tests; AI workplan, training README, and evidence ledger | `issue/190-isaac-sim-host` / pending | ACTIVE — freeze unused pose and lighting identities plus objective before rendering; exclude every v12 byte and identity from training and selection; create no evaluation group |
 | Unclaimed | S2/S3 | physical-camera deployment qualification and safe-region-fit precision evidence | — | AVAILABLE |
 | ARM | S4 | collect four physical-original `camera_support_optics` bindings through onboarding, then run the ARM-070 intake; no synthetic promotion | ARM-071 | WAITING_FOR_ORIGINALS |
 
