@@ -1210,7 +1210,7 @@ threshold outcomes, pose identities, and lighting identities from selection.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI/model | S2/S3 untouched rebalance evaluation | static interpolated-pose fixture; evaluation-only v14 fixed-overview campaign; exact E-480 evaluator; deterministic repeat; AI workplan, training README, and evidence ledger | `issue/190-isaac-sim-host` / `123557c28e356b03dd3d58aed84c290a24d3bb0e` | COMPLETE — E-481 preserves a failed untouched synthetic gate; v14 is consumed; next successor campaign remains unclaimed |
+| AI/model | S2/S3 geometry-first occlusion revision | deterministic self-occlusion contract; residual learned-obstacle role; clustered statistical gate and eval budget; visibility-label definition; parked-observation and early-calibration plan; AI workplan, assurance doc, training README, and evidence ledger | `issue/190-isaac-sim-host` / pending | ACTIVE — revise the next-campaign design from learned primary occlusion to deterministic projection plus a conservative learned residual; documentation and policy only |
 | Unclaimed | S2/S3 | physical-camera deployment qualification and safe-region-fit precision evidence | — | AVAILABLE |
 | ARM | S4 | collect four physical-original `camera_support_optics` bindings through onboarding, then run the ARM-070 intake; no synthetic promotion | ARM-071 | WAITING_FOR_ORIGINALS |
 
