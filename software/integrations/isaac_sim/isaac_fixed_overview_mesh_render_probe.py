@@ -262,6 +262,30 @@ EXPECTED_STATIC_EVALUATION_POSE_FILE_SHA256 = (
 )
 WIDTH = 1920
 HEIGHT = 1080
+MAX_IMAGE_DIMENSION = 65_500
+
+
+def _atlas_layout(item_count: int) -> tuple[int, int, tuple[tuple[int, int, int, int], ...]]:
+    """Tile fixed-size renders without crossing Pillow's image dimension limit."""
+    if item_count <= 0:
+        raise ValueError("atlas requires at least one item")
+    minimum_columns = max(1, (item_count * HEIGHT + MAX_IMAGE_DIMENSION - 1)
+                          // MAX_IMAGE_DIMENSION)
+    for columns in range(minimum_columns, item_count + 1):
+        rows = (item_count + columns - 1) // columns
+        if columns * WIDTH <= MAX_IMAGE_DIMENSION \
+                and rows * HEIGHT <= MAX_IMAGE_DIMENSION:
+            boxes = tuple(
+                (
+                    (index % columns) * WIDTH,
+                    (index // columns) * HEIGHT,
+                    (index % columns + 1) * WIDTH,
+                    (index // columns + 1) * HEIGHT,
+                )
+                for index in range(item_count)
+            )
+            return columns, rows, boxes
+    raise ValueError("atlas cannot fit within the image dimension limit")
 
 
 def _sha256(payload: bytes) -> str:
@@ -744,18 +768,27 @@ def main() -> int:
         rgb_atlas_path = output_dir / "official_mesh_rgb_atlas.jpg"
         mask_atlas_path = output_dir / "official_mesh_mask_atlas.png"
         depth_atlas_path = output_dir / "official_mesh_depth_mm_atlas.png"
-        rgb_atlas = np.concatenate([
-            np.asarray(Image.open(output_dir / row["rgb_path"]).convert("RGB"))
-            for row in pose_results
-        ], axis=0)
-        mask_atlas = np.concatenate([
-            np.asarray(Image.open(output_dir / row["robot_mask_path"]).convert("L"))
-            for row in pose_results
-        ], axis=0)
-        depth_atlas = np.concatenate([
-            np.asarray(Image.open(output_dir / row["robot_depth_path"]), dtype=np.uint16)
-            for row in pose_results
-        ], axis=0)
+        atlas_columns, atlas_rows, atlas_boxes = _atlas_layout(len(pose_results))
+        rgb_atlas = np.zeros(
+            (atlas_rows * HEIGHT, atlas_columns * WIDTH, 3), dtype=np.uint8,
+        )
+        mask_atlas = np.zeros(
+            (atlas_rows * HEIGHT, atlas_columns * WIDTH), dtype=np.uint8,
+        )
+        depth_atlas = np.zeros(
+            (atlas_rows * HEIGHT, atlas_columns * WIDTH), dtype=np.uint16,
+        )
+        for row, (left, top, right, bottom) in zip(
+                pose_results, atlas_boxes, strict=True):
+            rgb_atlas[top:bottom, left:right] = np.asarray(
+                Image.open(output_dir / row["rgb_path"]).convert("RGB")
+            )
+            mask_atlas[top:bottom, left:right] = np.asarray(
+                Image.open(output_dir / row["robot_mask_path"]).convert("L")
+            )
+            depth_atlas[top:bottom, left:right] = np.asarray(
+                Image.open(output_dir / row["robot_depth_path"]), dtype=np.uint16,
+            )
         Image.fromarray(rgb_atlas).save(
             rgb_atlas_path, "JPEG", quality=92, optimize=False, progressive=False, subsampling=0
         )
@@ -763,17 +796,20 @@ def main() -> int:
         Image.fromarray(depth_atlas).save(depth_atlas_path, "PNG")
         decoded_rgb_atlas = np.asarray(Image.open(rgb_atlas_path).convert("RGB"))
         decoded_depth_atlas = np.asarray(Image.open(depth_atlas_path), dtype=np.uint16)
-        for index, row in enumerate(pose_results):
-            top = index * HEIGHT
-            bottom = top + HEIGHT
+        for row, (left, top, right, bottom) in zip(
+                pose_results, atlas_boxes, strict=True):
             for field in ("rgb_path", "rgb_sha256", "robot_mask_path", "robot_mask_sha256",
                           "robot_depth_path", "robot_depth_sha256"):
                 del row[field]
-            row["atlas_crop_px"] = [0, top, WIDTH, bottom]
-            row["rgb_crop_pixel_sha256"] = _sha256(decoded_rgb_atlas[top:bottom].tobytes())
-            row["robot_mask_crop_pixel_sha256"] = _sha256(mask_atlas[top:bottom].tobytes())
+            row["atlas_crop_px"] = [left, top, right, bottom]
+            row["rgb_crop_pixel_sha256"] = _sha256(
+                decoded_rgb_atlas[top:bottom, left:right].tobytes()
+            )
+            row["robot_mask_crop_pixel_sha256"] = _sha256(
+                mask_atlas[top:bottom, left:right].tobytes()
+            )
             row["robot_depth_crop_pixel_sha256"] = _sha256(
-                decoded_depth_atlas[top:bottom].tobytes()
+                decoded_depth_atlas[top:bottom, left:right].tobytes()
             )
         for path in output_dir.iterdir():
             if path not in (rgb_atlas_path, mask_atlas_path, depth_atlas_path):

@@ -549,6 +549,21 @@ def test_pose_diverse_campaign_is_frozen_train_development_only() -> None:
     assert '"tactevra.isaac_fixed_overview_mesh_render.v15"' in source
 
 
+def test_large_render_campaign_uses_bounded_tiled_atlas() -> None:
+    module = _renderer()
+    columns, rows, boxes = module._atlas_layout(96)
+    assert (columns, rows) == (2, 48)
+    assert len(boxes) == 96
+    assert boxes[0] == (0, 0, module.WIDTH, module.HEIGHT)
+    assert boxes[1] == (module.WIDTH, 0, 2 * module.WIDTH, module.HEIGHT)
+    assert boxes[2] == (0, module.HEIGHT, module.WIDTH, 2 * module.HEIGHT)
+    assert columns * module.WIDTH <= module.MAX_IMAGE_DIMENSION
+    assert rows * module.HEIGHT <= module.MAX_IMAGE_DIMENSION
+    assert module._atlas_layout(3)[:2] == (1, 3)
+    with pytest.raises(ValueError, match="at least one"):
+        module._atlas_layout(0)
+
+
 def test_pose_diverse_split_lighting_and_cluster_bootstrap_are_deterministic() -> None:
     module = _builder()
     source = {
