@@ -1337,9 +1337,20 @@ than trusted. The evaluator reports exact two-sided 95% Clopper-Pearson bounds.
 The retained receipt remains `INCOMPLETE` with `campaign_not_collected`; it has
 no campaign identity, writes, movements, authority, or deployment claim.
 
+The file-backed parked-pose preflight is also implemented. It derives the exact
+artifact set from the campaign instead of trusting an index-provided list, then
+requires one unique contained regular file for every configuration, policy,
+model, image, projection, truth label, exposure binding, measured-feedback
+bracket, residual observation, ChArUco capture, repeatability record, drift
+record, collection authorization, and custody review. SHA-256, size, artifact
+type, and declared custody must all match. Extra, missing, duplicate, altered,
+traversing, or symlinked artifacts fail closed, including nested symlinks. The
+retained preflight remains `BLOCKED` by `campaign_package_not_retained` and
+contains no invented campaign or custody identity.
+
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI/model | S2/S3 parked-pose file-backed preflight | strict evidence index and preflight receipt schemas; contained regular-file/hash/size/type/custody reconciliation for every campaign binding; missing/altered/duplicate/symlink/extra-artifact rejection; explicit no-campaign blocked receipt, tests, registry, shared workplan, and evidence ledger | `issue/190-isaac-sim-host` / pending | ACTIVE — read-only artifact authentication only; custody labels remain claims pending owner review; no collection, qualification, arm-lane status, integration-gate change, hardware write, or physical movement |
+| AI/model | S2/S3 parked-pose file-backed preflight | strict evidence index and preflight receipt schemas; contained regular-file/hash/size/type/custody reconciliation for every campaign binding; missing/altered/duplicate/symlink/extra-artifact rejection; explicit no-campaign blocked receipt, tests, registry, shared workplan, and evidence ledger | `issue/190-isaac-sim-host` / implementation pending | IMPLEMENTED, VALIDATION PENDING — retained preflight is blocked because no campaign package exists; custody labels remain claims pending owner review; no collection, qualification, arm-lane status, integration-gate change, hardware write, or physical movement |
 | AI/model | S2/S3 parked-pose qualification protocol | strict synthetic/physical campaign manifests and observation records; completed-park/session independence checks; ChArUco drift and repeatability bindings; residual obstruction and fused-decision scoring; exact binomial bounds; explicit incomplete receipt, tests, registry, shared workplan, and evidence ledger | `issue/190-isaac-sim-host` / `9dc1f7fa6642b6468bb5df85d0a6bed33e0fa592` | COMPLETE — retained receipt is explicitly incomplete because no campaign was collected; no model qualification, deployment claim, arm-lane status, integration-gate change, hardware write, or physical movement |
 | AI/model | S2/S3 correlation-aware evaluation power tool | grouped v13/v14 intra-pose-correlation estimation; empirical upper-bound and pessimistic-correlation scenarios; deterministic pose-cluster simulation and sample-size recommendation; synthetic planning receipt, tests, registry, shared workplan, and evidence ledger | `issue/190-isaac-sim-host` / `3fe8e57eca77dcd369be79e188d6ae2b0724d39a` | COMPLETE — aggregate synthetic planning only; 2,048-pose broad-campaign recommendation; no candidate selection, new render compute, arm-lane status, or integration-gate change |
 | Unclaimed | S2/S3 | physical-camera deployment qualification and safe-region-fit precision evidence | — | AVAILABLE |

@@ -293,3 +293,10 @@ They bind exposure, measured-feedback, projection, residual-observer, ChArUco,
 repeatability, and collection-effect evidence without carrying joint values or
 commands. Even complete evidence advances only to owner review of a supervised
 parked-observation workflow; physical deployment qualification remains false.
+The [parked-pose evidence index](parked_pose_evidence_index_v1.schema.json)
+and [preflight receipt](parked_pose_preflight_receipt_v1.schema.json) bind every
+campaign hash to one contained retained file, its byte count, artifact type,
+and declared custody. The preflight rejects missing, altered, extra, duplicate,
+traversing, or symlinked paths. A pass establishes file integrity only; custody
+labels, physical originality, measurement truth, and deployment readiness still
+require independent owner authentication.

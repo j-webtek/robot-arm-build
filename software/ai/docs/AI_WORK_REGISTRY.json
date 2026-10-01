@@ -262,14 +262,18 @@
         "software/ai/schemas/physical_camera_localization_preflight_receipt_v1.schema.json",
         "software/ai/eval/evaluate_parked_pose_qualification.py",
         "software/ai/schemas/parked_pose_qualification_campaign_v1.schema.json",
-        "software/ai/schemas/parked_pose_qualification_result_v1.schema.json"
+        "software/ai/schemas/parked_pose_qualification_result_v1.schema.json",
+        "software/ai/eval/preflight_parked_pose_campaign.py",
+        "software/ai/schemas/parked_pose_evidence_index_v1.schema.json",
+        "software/ai/schemas/parked_pose_preflight_receipt_v1.schema.json"
       ],
       "test_paths": [
         "software/ai/tests/test_physical_camera_localization_campaign.py",
         "software/ai/tests/test_physical_camera_localization_evaluator.py",
         "software/ai/tests/test_pose_checkpoint_external_artifact_result.py",
         "software/ai/tests/test_pose_checkpoint_external_artifact_source.py",
-        "software/ai/tests/test_parked_pose_qualification.py"
+        "software/ai/tests/test_parked_pose_qualification.py",
+        "software/ai/tests/test_parked_pose_preflight.py"
       ],
       "documentation_paths": [
         "software/ai/docs/PHYSICAL_CAMERA_LOCALIZATION_CAMPAIGN.md",
@@ -279,15 +283,17 @@
         "software/ai/eval/arm070_camera_support_optics_readiness.json",
         "software/ai/eval/pose_keyloss_external_artifact_unavailable_receipt.json",
         "software/ai/eval/pose_keyloss_external_artifact_verified_receipt.json",
-        "software/ai/eval/parked_pose_qualification_pending_v1.json"
+        "software/ai/eval/parked_pose_qualification_pending_v1.json",
+        "software/ai/eval/parked_pose_preflight_pending_v1.json"
       ],
-      "current_result": "Physical-camera localization and parked-pose protocols are structurally implemented; the retained parked-pose receipt is explicitly incomplete because no synthetic/physical campaign has been collected.",
+      "current_result": "Physical-camera and parked-pose protocols plus strict file-backed preflight are implemented; retained qualification and preflight receipts remain explicitly incomplete/blocked because no campaign package exists.",
       "limitations": [
         "Artifact identity is not model qualification.",
         "The four retained camera/support originals and commissioned transforms are still required.",
-        "Parked-pose evidence remains absent; the evaluator authenticates record structure and bindings but does not establish custody of the evidence behind supplied hashes."
+        "Parked-pose evidence remains absent; the evaluator authenticates record structure and bindings but does not establish custody of the evidence behind supplied hashes.",
+        "File-backed preflight proves retained-byte integrity and declared bindings only; custody labels, physical originality, and measurement truth still require owner authentication."
       ],
-      "next_gate": "Collect commissioned ChArUco, measured-feedback, repeatability, lighting, cable, tool, and settled park-cycle evidence through an authorized physical-data workflow, then evaluate without changing the frozen protocol.",
+      "next_gate": "Retain the ARM-071 physical originals and an authorized parked-pose campaign package, run file preflight, then evaluate the unchanged campaign without treating either receipt as deployment authority.",
       "model_motion_batch_boundary": true,
       "controller_authority": false,
       "hardware_writes": 0,
@@ -337,5 +343,5 @@
   "controller_authority": false,
   "hardware_writes": 0,
   "physical_movements": 0,
-  "registry_sha256": "c4af885c40c13c8305733059074c56541aaa6d2384a4d98dc2be61285af7fe01"
+  "registry_sha256": "83df449bbed55cfcb25a96850ba11bdd2036576db195d12eddc21ea1db155f33"
 }
