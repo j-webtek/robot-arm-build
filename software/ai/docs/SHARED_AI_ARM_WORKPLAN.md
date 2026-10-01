@@ -1126,6 +1126,16 @@ future work toward a separately declared training/development campaign that
 improves occlusion recall while retaining the demonstrated specificity; any
 successor requires another untouched evaluation group.
 
+The first frozen v11 render attempt failed closed before a receipt was created:
+schedule samples 36, 37, and 39 carry identical joint states, so their official
+mesh masks were not pose-distinct. The preserved status artifact has SHA-256
+`7e09cfc4626774afd78ae160eed61ea30be1c91fe58ac7fcdcde09579231a3ec`, reports
+zero hardware writes and zero physical movements, and is not admissible as a
+dataset. The corrected campaign replaces duplicate development samples 37 and
+39 with previously unused H-transit samples 30 and 32; every selected schedule
+sample now carries a distinct joint state. The failed evidence remains part of
+the ledger and is not rewritten by the correction.
+
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
 | AI/model | S2/S3 occlusion-recall successor | fixed-overview campaign renderer; offline dataset/trainer; focused simulator/perception tests; AI workplan, training README, and evidence ledger | `issue/190-isaac-sim-host` / `f25ca76bf31eb2effdf951e821e05dbe39a40d7a` | ACTIVE — freeze v11 training/development identities, retain pre-pool target conditioning, select only on v11 development, exclude consumed v10 evaluation bytes |

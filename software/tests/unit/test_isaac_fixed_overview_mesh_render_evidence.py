@@ -398,7 +398,7 @@ def test_occlusion_recall_poses_are_fresh_train_and_development_only() -> None:
     assert len(groups["development"]) == 6
     assert set(groups["training"]).isdisjoint(groups["development"])
     assert set(sequences.values()) == {
-        36, 37, 38, 39, 53, 55, 57, 59, 61,
+        30, 32, 36, 38, 53, 55, 57, 59, 61,
         66, 67, 68, 69, 70, 71, 106, 107, 108,
     }
     prior = (
