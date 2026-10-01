@@ -520,3 +520,36 @@ stop rate is `36/921 = 3.91%`. The 4 mm ring fails, so the selected synthetic
 uncertainty bound is 2 mm. The candidate remains
 `BLOCKED_AWAITING_FRESH_EVALUATION` and has no deployment or execution
 authority.
+
+## Untouched specificity-rebalance evaluation
+
+The v14 campaign freezes six evaluation-only static visual poses at rational
+fractions `2/19`, `5/19`, `8/19`, `11/19`, `14/19`, and `17/19` of the exact
+zero-authority schedule used by the prior render campaigns. The retained
+fixture has file SHA-256
+`638e17a18feb79aa15864078ff80df37e69ebe6889710de08d98ed709013fb69`
+and canonical bundle SHA-256
+`93b77619af1bb90a3261b36cdbd7a209c3ac5bddf3b8a26b05fa2ae2b4625985`.
+Interpolation places a visual mesh at static states only. It does not assert a
+trajectory, dynamics, reachability, clearance, collision safety, or physical
+motion.
+
+The evaluation admits only the exact E-480 model SHA-256
+`b20a02990d47ee87d97383d130052c4517391442d517ea94b5b5e78749a7525d`
+and canonical scorecard SHA-256
+`d11a71c67e2f7072e52a4a28d9c2bdbf5f6da308c5704bfe47a379c79cad9f00`.
+It uses three new fixed lighting transforms: `neutral_edge_soft`,
+`amber_lower_falloff`, and `cross_smear_cool`. The frozen threshold is `0.406`;
+the declared synthetic error bound is 2 mm, and the 4 mm ring is stress
+evidence only. This campaign performs no training, selection, threshold
+change, model mutation, or policy expansion. Its data is consumed after the
+single evaluation and cannot establish physical or deployment qualification.
+
+```powershell
+python software/ai/train/build_official_mesh_occlusion_data.py `
+  --source-manifest C:\IsaacSim\artifacts\issue190\fixed-overview-rebalance-evaluation-v14-run1\manifest.json `
+  --evaluate-specificity-rebalance `
+    C:\IsaacSim\artifacts\issue190\specificity-rebalance-evaluation-data-v1 `
+    C:\IsaacSim\artifacts\issue190\specificity-rebalance-candidate-v1 `
+    C:\IsaacSim\artifacts\issue190\specificity-rebalance-evaluation-report-v1
+```

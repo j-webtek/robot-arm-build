@@ -214,6 +214,19 @@ RECALL_EVALUATION_POSE_GROUPS = {
     "development": (),
     "evaluation": tuple(RECALL_EVALUATION_SCHEDULE_POSE_SEQUENCES),
 }
+REBALANCE_EVALUATION_SCHEDULE_POSE_SEQUENCES = {
+    "rebalance_eval_static_01": 1001,
+    "rebalance_eval_static_02": 1002,
+    "rebalance_eval_static_03": 1003,
+    "rebalance_eval_static_04": 1004,
+    "rebalance_eval_static_05": 1005,
+    "rebalance_eval_static_06": 1006,
+}
+REBALANCE_EVALUATION_POSE_GROUPS = {
+    "training": (),
+    "development": (),
+    "evaluation": tuple(REBALANCE_EVALUATION_SCHEDULE_POSE_SEQUENCES),
+}
 SPECIFICITY_REBALANCE_SCHEDULE_POSE_SEQUENCES = {
     "rebalance_train_h_transit_33": 33,
     "rebalance_train_h_to_1_65": 65,
@@ -241,6 +254,9 @@ SPECIFICITY_REBALANCE_POSE_GROUPS = {
     "evaluation": (),
 }
 EXPECTED_SCHEDULE_FILE_SHA256 = "6a59ce143f5527c7a9ced09b08d5515644ea4fb859dd69691e08483eb020ee42"
+EXPECTED_STATIC_EVALUATION_POSE_FILE_SHA256 = (
+    "638e17a18feb79aa15864078ff80df37e69ebe6889710de08d98ed709013fb69"
+)
 WIDTH = 1920
 HEIGHT = 1080
 
@@ -400,6 +416,7 @@ def main() -> int:
             "occlusion-recall-v11",
             "recall-evaluation-v12",
             "specificity-rebalance-v13",
+            "rebalance-evaluation-v14",
         ),
         default="target-aware-v5",
     )
@@ -422,7 +439,12 @@ def main() -> int:
             raise ValueError("upstream checkout identity mismatch")
         mesh_receipt = _load(mesh_receipt_path)
         capsule_manifest = _load(capsule_manifest_path)
-        if _sha256(schedule_bundle_path.read_bytes()) != EXPECTED_SCHEDULE_FILE_SHA256:
+        expected_schedule_file_sha256 = (
+            EXPECTED_STATIC_EVALUATION_POSE_FILE_SHA256
+            if args.campaign == "rebalance-evaluation-v14"
+            else EXPECTED_SCHEDULE_FILE_SHA256
+        )
+        if _sha256(schedule_bundle_path.read_bytes()) != expected_schedule_file_sha256:
             raise ValueError("schedule bundle identity mismatch")
         schedule_bundle = _load(schedule_bundle_path)
         if (schedule_bundle.get("physical_authority") is not False
@@ -443,7 +465,12 @@ def main() -> int:
         bootstrap = bootstrap_virtual_workcell(workspace)
         context = bootstrap.context
         schedule_by_sequence = {row["sequence"]: row for row in schedule_bundle["samples"]}
-        if args.campaign == "specificity-rebalance-v13":
+        if args.campaign == "rebalance-evaluation-v14":
+            poses = {}
+            schedule_pose_sequences = REBALANCE_EVALUATION_SCHEDULE_POSE_SEQUENCES
+            pose_groups = REBALANCE_EVALUATION_POSE_GROUPS
+            receipt_schema = "tactevra.isaac_fixed_overview_mesh_render.v14"
+        elif args.campaign == "specificity-rebalance-v13":
             poses = {}
             schedule_pose_sequences = SPECIFICITY_REBALANCE_SCHEDULE_POSE_SEQUENCES
             pose_groups = SPECIFICITY_REBALANCE_POSE_GROUPS
@@ -737,7 +764,7 @@ def main() -> int:
             "mesh_receipt_sha256": mesh_receipt["receipt_sha256"],
             "capsule_manifest_file_sha256": _sha256(capsule_manifest_path.read_bytes()),
             "capsule_corpus_sha256": capsule_manifest["corpus_sha256"],
-            "schedule_bundle_file_sha256": EXPECTED_SCHEDULE_FILE_SHA256,
+            "schedule_bundle_file_sha256": expected_schedule_file_sha256,
             "schedule_bundle_sha256": schedule_bundle["bundle_sha256"],
             "pose_groups": {name: list(pose_ids) for name, pose_ids in pose_groups.items()},
             "target_catalog_sha256": context.targets.content_sha256,

@@ -1174,9 +1174,29 @@ bound is 2 mm. The result remains `BLOCKED_AWAITING_FRESH_EVALUATION`, carries
 no physical calibration or authority, and does not change arm or integration
 status.
 
+The AI lane predeclares v14 under claim commit
+`1c8e31c334dac2983d039301fe1703bb658c1077`. Six evaluation-only static visual
+poses are frozen at rational fractions `2/19`, `5/19`, `8/19`, `11/19`,
+`14/19`, and `17/19` of the exact zero-authority source schedule. The retained
+fixture file SHA-256 is
+`638e17a18feb79aa15864078ff80df37e69ebe6889710de08d98ed709013fb69` and
+its canonical bundle SHA-256 is
+`93b77619af1bb90a3261b36cdbd7a209c3ac5bddf3b8a26b05fa2ae2b4625985`.
+The three evaluation lighting identities are `neutral_edge_soft`,
+`amber_lower_falloff`, and `cross_smear_cool`. Evaluation is bound to the exact
+E-480 model SHA-256
+`b20a02990d47ee87d97383d130052c4517391442d517ea94b5b5e78749a7525d`,
+canonical scorecard SHA-256
+`d11a71c67e2f7072e52a4a28d9c2bdbf5f6da308c5704bfe47a379c79cad9f00`,
+threshold `0.406`, and declared synthetic 2 mm bound. The 4 mm ring is stress
+evidence only. Rendering cannot begin until this policy is committed. V14
+allows no training, selection, threshold change, model mutation, bound
+expansion, arm authority, or physical qualification; its data is consumed by
+the single evaluation.
+
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI/model | S2/S3 untouched rebalance evaluation | predeclared static interpolated-pose fixture; evaluation-only v14 fixed-overview campaign; exact E-480 evaluator; focused simulator/perception tests; AI workplan, training README, and evidence ledger | `issue/190-isaac-sim-host` / pending | ACTIVE — freeze a new zero-authority pose source and evaluation policy before rendering; evaluate exact v13 checkpoint once; no training or selection |
+| AI/model | S2/S3 untouched rebalance evaluation | predeclared static interpolated-pose fixture; evaluation-only v14 fixed-overview campaign; exact E-480 evaluator; focused simulator/perception tests; AI workplan, training README, and evidence ledger | `issue/190-isaac-sim-host` / `1c8e31c334dac2983d039301fe1703bb658c1077` | ACTIVE — frozen six-pose fixture and evaluation policy await implementation commit, then exact v13 checkpoint is evaluated once; no training or selection |
 | Unclaimed | S2/S3 | physical-camera deployment qualification and safe-region-fit precision evidence | — | AVAILABLE |
 | ARM | S4 | collect four physical-original `camera_support_optics` bindings through onboarding, then run the ARM-070 intake; no synthetic promotion | ARM-071 | WAITING_FOR_ORIGINALS |
 

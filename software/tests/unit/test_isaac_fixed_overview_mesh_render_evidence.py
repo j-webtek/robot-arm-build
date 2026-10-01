@@ -457,6 +457,72 @@ def test_specificity_rebalance_poses_are_fresh_train_and_development_only() -> N
     assert not (set(sequences.values()) & prior)
 
 
+def test_rebalance_evaluation_poses_are_static_fresh_and_evaluation_only() -> None:
+    module = _renderer()
+    groups = module.REBALANCE_EVALUATION_POSE_GROUPS
+    sequences = module.REBALANCE_EVALUATION_SCHEDULE_POSE_SEQUENCES
+
+    assert groups["training"] == groups["development"] == ()
+    assert tuple(sequences) == groups["evaluation"]
+    assert set(sequences.values()) == {1001, 1002, 1003, 1004, 1005, 1006}
+    assert min(sequences.values()) > 132
+    assert module.EXPECTED_STATIC_EVALUATION_POSE_FILE_SHA256 == (
+        "638e17a18feb79aa15864078ff80df37e69ebe6889710de08d98ed709013fb69"
+    )
+
+
+def test_rebalance_evaluation_policy_and_lighting_are_fresh() -> None:
+    builder = _builder()
+    renderer = _renderer()
+    source = {
+        "schema": "tactevra.isaac_fixed_overview_mesh_render.v14",
+        "pose_groups": {
+            name: list(poses)
+            for name, poses in renderer.REBALANCE_EVALUATION_POSE_GROUPS.items()
+        },
+        "pose_results": [
+            {"pose_id": pose_id, "pose_group": group}
+            for group, pose_ids in renderer.REBALANCE_EVALUATION_POSE_GROUPS.items()
+            for pose_id in pose_ids
+        ],
+    }
+
+    schema, policy = builder._split_policy(source)
+    assert schema == "rocell.ai_official_mesh_occlusion_data.v14"
+    assert policy["train"]["poses"] == policy["development"]["poses"] == ()
+    assert policy["evaluation"]["poses"] == tuple(
+        renderer.REBALANCE_EVALUATION_POSE_GROUPS["evaluation"]
+    )
+    assert policy["evaluation"]["lighting"] == (
+        "neutral_edge_soft", "amber_lower_falloff", "cross_smear_cool",
+    )
+    all_prior = {
+        name
+        for value in vars(builder).values()
+        if isinstance(value, dict) and value is not builder.REBALANCE_EVALUATION_LIGHTING
+        for split in value.values()
+        if isinstance(split, tuple)
+        for name in split
+    }
+    assert not (set(policy["evaluation"]["lighting"]) & all_prior)
+
+    pixels = np.arange(48 * 48 * 3, dtype=np.uint8).reshape(48, 48, 3)
+    image = Image.fromarray(pixels, mode="RGB")
+    first = [
+        np.asarray(builder._lighting(image, name))
+        for name in policy["evaluation"]["lighting"]
+    ]
+    second = [
+        np.asarray(builder._lighting(image, name))
+        for name in policy["evaluation"]["lighting"]
+    ]
+    assert all(
+        np.array_equal(left, right)
+        for left, right in zip(first, second, strict=True)
+    )
+    assert len({_sha256(value.tobytes()) for value in first}) == 3
+
+
 def test_transit_dataset_policy_uses_fresh_disjoint_lighting() -> None:
     builder = _builder()
     renderer = _renderer()
@@ -1660,6 +1726,73 @@ def test_target_conditioned_fusion_is_deterministic_and_freezes_seed(
     assert rebalance_first["hardware_writes"] == 0
     assert rebalance_first["physical_movements"] == 0
     assert rebalance_first["physical_authority"] is False
+
+    rebalance_checkpoint["localization_uncertainty_policy"].update({
+        "maximum_supported_planar_error_mm": 2.0,
+        "development_gate_met": True,
+        "above_bound_decision": "abstain_localization_uncertain",
+    })
+    rebalance_model_path = tmp_path / "rebalance-first" / "model.json"
+    rebalance_model_path.write_bytes(module._canonical(rebalance_checkpoint) + b"\n")
+    rebalance_scorecard_path = tmp_path / "rebalance-first" / "scorecard.json"
+    rebalance_scorecard = json.loads(rebalance_scorecard_path.read_text())
+    rebalance_scorecard.pop("scorecard_sha256")
+    rebalance_scorecard.update({
+        "model_sha256": _sha256(rebalance_model_path.read_bytes()),
+        "maximum_supported_planar_error_mm": 2.0,
+        "development_gate_met": True,
+        "evaluation_group_present": False,
+    })
+    rebalance_scorecard["scorecard_sha256"] = _sha256(
+        module._canonical(rebalance_scorecard)
+    )
+    rebalance_scorecard_path.write_bytes(
+        module._canonical(rebalance_scorecard) + b"\n"
+    )
+    monkeypatch.setattr(
+        module, "EXPECTED_SPECIFICITY_REBALANCE_MODEL_SHA256",
+        _sha256(rebalance_model_path.read_bytes()),
+    )
+    monkeypatch.setattr(
+        module, "EXPECTED_SPECIFICITY_REBALANCE_SCORECARD_SHA256",
+        rebalance_scorecard["scorecard_sha256"],
+    )
+    rebalance_evaluation = make_dataset(
+        "rebalance-evaluation", "rocell.ai_official_mesh_occlusion_data.v14",
+        "evaluation",
+    )
+    rebalance_eval_first = module.evaluate_specificity_rebalance_candidate(
+        rebalance_evaluation, tmp_path / "rebalance-first",
+        tmp_path / "rebalance-evaluation-first",
+    )
+    rebalance_eval_second = module.evaluate_specificity_rebalance_candidate(
+        rebalance_evaluation, tmp_path / "rebalance-first",
+        tmp_path / "rebalance-evaluation-second",
+    )
+    assert rebalance_eval_first == rebalance_eval_second
+    assert (tmp_path / "rebalance-evaluation-first" / "report.json").read_bytes() \
+        == (tmp_path / "rebalance-evaluation-second" / "report.json").read_bytes()
+    assert rebalance_eval_first["schema"] \
+        == "rocell.ai_specificity_rebalance_evaluation.v1"
+    assert rebalance_eval_first["evaluated_planar_error_bound_mm"] == 2.0
+    assert rebalance_eval_first["stress_tested_planar_error_mm"] == 4.0
+    assert rebalance_eval_first["hardware_writes"] == 0
+    assert rebalance_eval_first["physical_movements"] == 0
+    assert rebalance_eval_first["physical_authority"] is False
+
+    rebalance_evaluation_manifest_path = rebalance_evaluation / "manifest.json"
+    rebalance_evaluation_manifest = json.loads(
+        rebalance_evaluation_manifest_path.read_text()
+    )
+    rebalance_evaluation_manifest["dataset_sha256"] = "0" * 64
+    rebalance_evaluation_manifest_path.write_bytes(
+        module._canonical(rebalance_evaluation_manifest) + b"\n"
+    )
+    with pytest.raises(ValueError, match="manifest hash mismatch"):
+        module.evaluate_specificity_rebalance_candidate(
+            rebalance_evaluation, tmp_path / "rebalance-first",
+            tmp_path / "rebalance-evaluation-tampered",
+        )
 
     altered_seed = tmp_path / "altered-recall-seed"
     altered_seed.mkdir()

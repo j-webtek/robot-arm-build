@@ -27,6 +27,7 @@ SCHEMA_V10 = "rocell.ai_official_mesh_occlusion_data.v10"
 SCHEMA_V11 = "rocell.ai_official_mesh_occlusion_data.v11"
 SCHEMA_V12 = "rocell.ai_official_mesh_occlusion_data.v12"
 SCHEMA_V13 = "rocell.ai_official_mesh_occlusion_data.v13"
+SCHEMA_V14 = "rocell.ai_official_mesh_occlusion_data.v14"
 SOURCE_SCHEMA_V1 = "tactevra.isaac_fixed_overview_mesh_render.v1"
 SOURCE_SCHEMA_V2 = "tactevra.isaac_fixed_overview_mesh_render.v2"
 SOURCE_SCHEMA_V3 = "tactevra.isaac_fixed_overview_mesh_render.v3"
@@ -40,6 +41,7 @@ SOURCE_SCHEMA_V10 = "tactevra.isaac_fixed_overview_mesh_render.v10"
 SOURCE_SCHEMA_V11 = "tactevra.isaac_fixed_overview_mesh_render.v11"
 SOURCE_SCHEMA_V12 = "tactevra.isaac_fixed_overview_mesh_render.v12"
 SOURCE_SCHEMA_V13 = "tactevra.isaac_fixed_overview_mesh_render.v13"
+SOURCE_SCHEMA_V14 = "tactevra.isaac_fixed_overview_mesh_render.v14"
 MAXIMUM_SAFE_REGION_OVERLAP = 0.20
 BASELINE_SEED = 190
 BASELINE_CROP_SIZE = 16
@@ -64,6 +66,12 @@ EXPECTED_OCCLUSION_RECALL_MODEL_SHA256 = (
 )
 EXPECTED_OCCLUSION_RECALL_SCORECARD_SHA256 = (
     "807928f2559d14fa8b0b9da1781d379650deeadb40ec8690e41484be16eaa0d4"
+)
+EXPECTED_SPECIFICITY_REBALANCE_MODEL_SHA256 = (
+    "b20a02990d47ee87d97383d130052c4517391442d517ea94b5b5e78749a7525d"
+)
+EXPECTED_SPECIFICITY_REBALANCE_SCORECARD_SHA256 = (
+    "d11a71c67e2f7072e52a4a28d9c2bdbf5f6da308c5704bfe47a379c79cad9f00"
 )
 SPATIAL_BATCH_SIZE = 128
 SPATIAL_LEARNING_RATE = 0.002
@@ -169,6 +177,13 @@ SPECIFICITY_REBALANCE_LIGHTING = {
     ),
     "evaluation": (),
 }
+REBALANCE_EVALUATION_LIGHTING = {
+    "train": (),
+    "development": (),
+    "evaluation": (
+        "neutral_edge_soft", "amber_lower_falloff", "cross_smear_cool",
+    ),
+}
 NOMINAL_PIXELS_PER_MM = 2.0
 MASK_OFFSET_RADII_MM = (1.0, 2.0, 4.0, 8.0)
 MASK_OFFSET_DIRECTIONS = (
@@ -200,6 +215,7 @@ def _verify_source(path: Path) -> dict[str, Any]:
         SOURCE_SCHEMA_V11,
         SOURCE_SCHEMA_V12,
         SOURCE_SCHEMA_V13,
+        SOURCE_SCHEMA_V14,
     }:
         raise ValueError("official-mesh manifest schema mismatch")
     claimed = source.pop("receipt_sha256", None)
@@ -238,7 +254,10 @@ def _split_policy(source: dict[str, Any]) -> tuple[str, dict[str, dict[str, tupl
         expected = next(name for name, poses in normalized.items() if row["pose_id"] in poses)
         if row.get("pose_group") != expected:
             raise ValueError(f"pose group mismatch: {row['pose_id']}")
-    if source["schema"] == SOURCE_SCHEMA_V13:
+    if source["schema"] == SOURCE_SCHEMA_V14:
+        lighting = REBALANCE_EVALUATION_LIGHTING
+        schema = SCHEMA_V14
+    elif source["schema"] == SOURCE_SCHEMA_V13:
         lighting = SPECIFICITY_REBALANCE_LIGHTING
         schema = SCHEMA_V13
     elif source["schema"] == SOURCE_SCHEMA_V12:
@@ -626,6 +645,37 @@ def _lighting(image: Image.Image, variant: str) -> Image.Image:
         for index in (1, 4, 7):
             weights[index] = 1.0
         return rgb.filter(ImageFilter.Kernel((3, 3), weights, scale=3.0))
+    if variant == "neutral_edge_soft":
+        return ImageEnhance.Sharpness(
+            ImageEnhance.Contrast(rgb).enhance(0.92)
+        ).enhance(0.82)
+    if variant == "amber_lower_falloff":
+        red, green, blue = rgb.split()
+        amber = Image.merge("RGB", (
+            red.point(lambda value: min(255, round(value * 1.05))),
+            green.point(lambda value: min(255, round(value * 1.01))),
+            blue.point(lambda value: round(value * 0.90)),
+        ))
+        overlay = Image.new("RGB", rgb.size, "black")
+        alpha = Image.new("L", rgb.size, 0)
+        ImageDraw.Draw(alpha).polygon(
+            ((0, round(rgb.height * 0.68)),
+             (rgb.width, round(rgb.height * 0.54)),
+             (rgb.width, rgb.height), (0, rgb.height)),
+            fill=48,
+        )
+        return Image.composite(overlay, amber, alpha)
+    if variant == "cross_smear_cool":
+        weights = [0.0] * 9
+        for index in (1, 3, 4, 5, 7):
+            weights[index] = 1.0
+        blurred = rgb.filter(ImageFilter.Kernel((3, 3), weights, scale=5.0))
+        red, green, blue = blurred.split()
+        return Image.merge("RGB", (
+            red.point(lambda value: round(value * 0.96)),
+            green,
+            blue.point(lambda value: min(255, round(value * 1.03))),
+        ))
     raise ValueError(f"unknown lighting variant: {variant}")
 
 
@@ -3426,6 +3476,206 @@ def evaluate_occlusion_recall_candidate(
     (output_dir / "report.json").write_bytes(_canonical(report) + b"\n")
     return report
 
+def evaluate_specificity_rebalance_candidate(
+    evaluation_dataset_dir: Path,
+    candidate_dir: Path,
+    output_dir: Path,
+) -> dict[str, Any]:
+    """Evaluate the exact frozen specificity checkpoint on fresh synthetic data."""
+    import torch
+
+    evaluation_dataset_dir = evaluation_dataset_dir.resolve(strict=True)
+    candidate_dir = candidate_dir.resolve(strict=True)
+    output_dir = output_dir.resolve()
+    if output_dir.exists() and any(output_dir.iterdir()):
+        raise ValueError("rebalance evaluation output directory must be empty")
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    dataset_path = evaluation_dataset_dir / "manifest.json"
+    dataset = json.loads(dataset_path.read_text(encoding="utf-8"))
+    claimed_dataset_sha = dataset.pop("dataset_sha256", None)
+    if not isinstance(claimed_dataset_sha, str) \
+            or _sha256(_canonical(dataset)) != claimed_dataset_sha:
+        raise ValueError("rebalance evaluation dataset manifest hash mismatch")
+    dataset["dataset_sha256"] = claimed_dataset_sha
+    if dataset.get("schema") != SCHEMA_V14 \
+            or dataset.get("scope") != "SYNTHETIC_ONLY_NO_DEPLOYMENT_QUALIFICATION":
+        raise ValueError("rebalance evaluation dataset scope or schema mismatch")
+    if dataset["splits"]["train"]["count"] != 0 \
+            or dataset["splits"]["development"]["count"] != 0 \
+            or dataset["splits"]["evaluation"]["count"] == 0:
+        raise ValueError("rebalance evaluation dataset must be evaluation-only")
+
+    model_path = candidate_dir / "model.json"
+    scorecard_path = candidate_dir / "scorecard.json"
+    checkpoint, model = _load_target_conditioned_checkpoint(candidate_dir)
+    model_sha = _sha256(model_path.read_bytes())
+    policy = checkpoint.get("localization_uncertainty_policy", {})
+    if checkpoint.get("schema") \
+            != "rocell.ai_target_conditioned_specificity_rebalance.v1" \
+            or model_sha != EXPECTED_SPECIFICITY_REBALANCE_MODEL_SHA256 \
+            or checkpoint.get("evaluation_opened") is not False \
+            or checkpoint.get("consumed_evaluation_dataset_sha256") is not None \
+            or policy.get("development_gate_met") is not True \
+            or policy.get("maximum_supported_planar_error_mm") != 2.0 \
+            or policy.get("above_bound_decision") != "abstain_localization_uncertain":
+        raise ValueError("rebalance candidate is not the exact frozen 2 mm policy")
+    if dataset.get("target_catalog_sha256") != checkpoint.get("target_catalog_sha256"):
+        raise ValueError("rebalance evaluation target catalog mismatch")
+    if claimed_dataset_sha in {
+        checkpoint.get("training_dataset_sha256"),
+        checkpoint.get("selection_dataset_sha256"),
+    }:
+        raise ValueError("rebalance evaluation dataset reuses selection bytes")
+
+    source_scorecard = json.loads(scorecard_path.read_text(encoding="utf-8"))
+    claimed_scorecard_sha = source_scorecard.pop("scorecard_sha256", None)
+    if not isinstance(claimed_scorecard_sha, str) \
+            or _sha256(_canonical(source_scorecard)) != claimed_scorecard_sha:
+        raise ValueError("rebalance candidate scorecard hash mismatch")
+    source_scorecard["scorecard_sha256"] = claimed_scorecard_sha
+    if claimed_scorecard_sha != EXPECTED_SPECIFICITY_REBALANCE_SCORECARD_SHA256 \
+            or source_scorecard.get("schema") \
+            != "rocell.ai_specificity_rebalance_candidate.v1" \
+            or source_scorecard.get("model_sha256") != model_sha \
+            or source_scorecard.get("evaluation_group_present") is not False \
+            or source_scorecard.get("development_gate_met") is not True \
+            or source_scorecard.get("maximum_supported_planar_error_mm") != 2.0 \
+            or source_scorecard.get("hardware_writes") != 0 \
+            or source_scorecard.get("physical_movements") != 0 \
+            or source_scorecard.get("physical_authority") is not False:
+        raise ValueError("rebalance candidate identity or authority mismatch")
+
+    rows = _load_rows(evaluation_dataset_dir, "evaluation", dataset)
+    catalog = tuple(checkpoint["architecture"]["target_catalog"])
+    descriptors = torch.from_numpy(_target_identity_descriptors(
+        evaluation_dataset_dir, rows, catalog,
+    ))
+    offsets = [
+        offset for offset in _declared_mask_offsets()
+        if max(abs(offset["x_mm"]), abs(offset["y_mm"])) <= 4.0
+    ]
+    labels_ref: np.ndarray | None = None
+    measurements = []
+    target_failures: dict[str, dict[str, int]] = {}
+    rows_by_id = {row["id"]: row for row in rows}
+    threshold = float(checkpoint["threshold"])
+    for offset in offsets:
+        crops, labels = _target_aware_crops(
+            evaluation_dataset_dir, rows, (offset["x_px"], offset["y_px"]),
+        )
+        labels = labels.astype(np.float64)
+        if labels_ref is None:
+            labels_ref = labels
+        elif not np.array_equal(labels_ref, labels):
+            raise RuntimeError("rebalance evaluation labels changed across offsets")
+        with torch.no_grad():
+            probabilities = torch.sigmoid(model(
+                torch.from_numpy(crops), descriptors,
+            )).numpy()
+        metrics = _metrics(rows, labels, probabilities, threshold)
+        for failure in metrics["failures"]:
+            row = rows_by_id[failure["id"]]
+            key = f"{row['device']}:{row['target_id']}"
+            counts = target_failures.setdefault(
+                key, {"false_abstain": 0, "missed_abstain": 0},
+            )
+            counts[
+                "missed_abstain"
+                if failure["expected"] == "abstain" else "false_abstain"
+            ] += 1
+        measurements.append({"offset": offset, "metrics": metrics})
+    assert labels_ref is not None
+    abstain_count = int(labels_ref.sum())
+    visible_count = len(labels_ref) - abstain_count
+    if abstain_count == 0 or visible_count == 0:
+        raise ValueError("rebalance evaluation requires abstain and visible rows")
+    nominal = next(
+        item for item in measurements
+        if item["offset"]["x_mm"] == 0.0 and item["offset"]["y_mm"] == 0.0
+    )
+    nominal_confusion = nominal["metrics"]["confusion"]
+    nominal_missed_rate = nominal_confusion["missed_abstain"] / abstain_count
+    nominal_false_rate = nominal_confusion["false_abstain"] / visible_count
+    declared_bound = 2.0
+    declared_bound_measurements = [
+        item for item in measurements
+        if max(abs(item["offset"]["x_mm"]), abs(item["offset"]["y_mm"]))
+        <= declared_bound
+    ]
+    four_mm_measurements = [
+        item for item in measurements
+        if max(abs(item["offset"]["x_mm"]), abs(item["offset"]["y_mm"])) == 4.0
+    ]
+    declared_bound_missed_rates = [
+        item["metrics"]["confusion"]["missed_abstain"] / abstain_count
+        for item in declared_bound_measurements
+    ]
+    declared_bound_false_rates = [
+        item["metrics"]["confusion"]["false_abstain"] / visible_count
+        for item in declared_bound_measurements
+    ]
+    four_mm_missed_rates = [
+        item["metrics"]["confusion"]["missed_abstain"] / abstain_count
+        for item in four_mm_measurements
+    ]
+    four_mm_false_rates = [
+        item["metrics"]["confusion"]["false_abstain"] / visible_count
+        for item in four_mm_measurements
+    ]
+    gate_met = max(declared_bound_missed_rates) <= 0.05 \
+        and max(declared_bound_false_rates) <= 0.05
+    four_mm_stress_gate_met = max(four_mm_missed_rates) <= 0.05 \
+        and max(four_mm_false_rates) <= 0.05
+    report: dict[str, Any] = {
+        "schema": "rocell.ai_specificity_rebalance_evaluation.v1",
+        "scope": "SYNTHETIC_ONLY_NO_DEPLOYMENT_QUALIFICATION",
+        "algorithm": "exact_frozen_specificity_rebalance_evaluation_v1",
+        "dataset_manifest_sha256": _sha256(dataset_path.read_bytes()),
+        "dataset_sha256": claimed_dataset_sha,
+        "model_sha256": model_sha,
+        "source_scorecard_sha256": claimed_scorecard_sha,
+        "target_catalog_sha256": checkpoint["target_catalog_sha256"],
+        "threshold": threshold,
+        "evaluated_planar_error_bound_mm": declared_bound,
+        "stress_tested_planar_error_mm": 4.0,
+        "evaluation_opened": True,
+        "evaluation_row_count": len(rows),
+        "abstain_row_count": abstain_count,
+        "visible_row_count": visible_count,
+        "nominal_missed_abstain_rate": nominal_missed_rate,
+        "nominal_visible_false_abstain_rate": nominal_false_rate,
+        "maximum_declared_bound_missed_abstain_rate": max(
+            declared_bound_missed_rates
+        ),
+        "maximum_declared_bound_visible_false_abstain_rate": max(
+            declared_bound_false_rates
+        ),
+        "maximum_four_mm_missed_abstain_rate": max(four_mm_missed_rates),
+        "maximum_four_mm_visible_false_abstain_rate": max(four_mm_false_rates),
+        "synthetic_gate_met": gate_met,
+        "four_mm_stress_gate_met": four_mm_stress_gate_met,
+        "measurements": measurements,
+        "per_target_failure_counts_across_offsets": target_failures,
+        "promotion_status": "BLOCKED_SYNTHETIC_ONLY"
+        if gate_met else "FAILED_SYNTHETIC_GATE",
+        "hardware_writes": 0,
+        "physical_movements": 0,
+        "physical_authority": False,
+        "limitations": [
+            "the evaluation camera, geometry, images, labels, and offsets are synthetic",
+            "the declared 2 mm bound is synthetic and cannot establish calibration",
+            "the 4 mm ring is stress evidence and cannot expand the frozen policy",
+            "static interpolated poses are visual fixtures, not motion evidence",
+            "this evaluation group is consumed and cannot tune a successor",
+            "tool and camera-support geometry remain absent",
+            "a passing synthetic gate cannot qualify deployment",
+        ],
+    }
+    report["report_sha256"] = _sha256(_canonical(report))
+    (output_dir / "report.json").write_bytes(_canonical(report) + b"\n")
+    return report
+
 
 def diagnose_localization_hard_negatives(
     development_dataset_dir: Path,
@@ -3948,10 +4198,36 @@ def main() -> int:
         metavar=("EVALUATION_DATASET_DIR", "CANDIDATE_DIR", "OUTPUT_DIR"),
     )
     parser.add_argument(
+        "--evaluate-specificity-rebalance", type=Path, nargs=3,
+        metavar=("EVALUATION_DATASET_DIR", "CANDIDATE_DIR", "OUTPUT_DIR"),
+    )
+    parser.add_argument(
         "--diagnose-localization-hard-negatives", type=Path, nargs=3,
         metavar=("DEVELOPMENT_DATASET_DIR", "CANDIDATE_DIR", "OUTPUT_DIR"),
     )
     args = parser.parse_args()
+    if args.evaluate_specificity_rebalance is not None:
+        incompatible = (
+            args.record_existing, args.perturb_existing,
+            args.train_localization_robust, args.train_target_identity,
+            args.train_target_conditioned_fusion, args.train_occlusion_recall,
+            args.train_specificity_rebalance, args.refreeze_localization_policy,
+            args.evaluate_localization_policy,
+            args.evaluate_target_conditioned_fusion,
+            args.evaluate_occlusion_recall,
+            args.diagnose_localization_hard_negatives, args.output_dir,
+            args.baseline_output, args.candidate_output, args.spatial_output,
+            args.target_aware_output,
+        )
+        if any(value is not None for value in incompatible):
+            parser.error(
+                "--evaluate-specificity-rebalance cannot be combined with other outputs"
+            )
+        report = evaluate_specificity_rebalance_candidate(
+            *args.evaluate_specificity_rebalance,
+        )
+        print(json.dumps(report, sort_keys=True))
+        return 0
     if args.record_existing is not None:
         if args.perturb_existing is not None \
                 or args.train_localization_robust is not None \
