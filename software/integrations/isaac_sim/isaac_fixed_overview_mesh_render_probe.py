@@ -263,6 +263,7 @@ EXPECTED_STATIC_EVALUATION_POSE_FILE_SHA256 = (
 WIDTH = 1920
 HEIGHT = 1080
 MAX_IMAGE_DIMENSION = 65_500
+ATLAS_CHUNK_SIZE = 16
 
 
 def _atlas_layout(item_count: int) -> tuple[int, int, tuple[tuple[int, int, int, int], ...]]:
@@ -765,54 +766,81 @@ def main() -> int:
             render_product.destroy()
             rep.orchestrator.wait_until_complete()
 
-        rgb_atlas_path = output_dir / "official_mesh_rgb_atlas.jpg"
-        mask_atlas_path = output_dir / "official_mesh_mask_atlas.png"
-        depth_atlas_path = output_dir / "official_mesh_depth_mm_atlas.png"
-        atlas_columns, atlas_rows, atlas_boxes = _atlas_layout(len(pose_results))
-        rgb_atlas = np.zeros(
-            (atlas_rows * HEIGHT, atlas_columns * WIDTH, 3), dtype=np.uint8,
-        )
-        mask_atlas = np.zeros(
-            (atlas_rows * HEIGHT, atlas_columns * WIDTH), dtype=np.uint8,
-        )
-        depth_atlas = np.zeros(
-            (atlas_rows * HEIGHT, atlas_columns * WIDTH), dtype=np.uint16,
-        )
-        for row, (left, top, right, bottom) in zip(
-                pose_results, atlas_boxes, strict=True):
-            rgb_atlas[top:bottom, left:right] = np.asarray(
-                Image.open(output_dir / row["rgb_path"]).convert("RGB")
+        artifact_atlases: dict[str, dict[str, str]] = {}
+        retained_atlas_paths: set[Path] = set()
+        chunks = [
+            pose_results[start:start + ATLAS_CHUNK_SIZE]
+            for start in range(0, len(pose_results), ATLAS_CHUNK_SIZE)
+        ]
+        for chunk_index, chunk in enumerate(chunks):
+            suffix = "" if len(chunks) == 1 else f"_{chunk_index:03d}"
+            keys = {
+                "rgb": f"rgb{suffix}",
+                "robot_mask": f"robot_mask{suffix}",
+                "robot_depth_mm": f"robot_depth_mm{suffix}",
+            }
+            paths = {
+                "rgb": output_dir / f"official_mesh_rgb_atlas{suffix}.jpg",
+                "robot_mask": output_dir / f"official_mesh_mask_atlas{suffix}.png",
+                "robot_depth_mm": output_dir / f"official_mesh_depth_mm_atlas{suffix}.png",
+            }
+            atlas_columns, atlas_rows, atlas_boxes = _atlas_layout(len(chunk))
+            rgb_atlas = np.zeros(
+                (atlas_rows * HEIGHT, atlas_columns * WIDTH, 3), dtype=np.uint8,
             )
-            mask_atlas[top:bottom, left:right] = np.asarray(
-                Image.open(output_dir / row["robot_mask_path"]).convert("L")
+            mask_atlas = np.zeros(
+                (atlas_rows * HEIGHT, atlas_columns * WIDTH), dtype=np.uint8,
             )
-            depth_atlas[top:bottom, left:right] = np.asarray(
-                Image.open(output_dir / row["robot_depth_path"]), dtype=np.uint16,
+            depth_atlas = np.zeros(
+                (atlas_rows * HEIGHT, atlas_columns * WIDTH), dtype=np.uint16,
             )
-        Image.fromarray(rgb_atlas).save(
-            rgb_atlas_path, "JPEG", quality=92, optimize=False, progressive=False, subsampling=0
-        )
-        Image.fromarray(mask_atlas).save(mask_atlas_path, "PNG")
-        Image.fromarray(depth_atlas).save(depth_atlas_path, "PNG")
-        decoded_rgb_atlas = np.asarray(Image.open(rgb_atlas_path).convert("RGB"))
-        decoded_depth_atlas = np.asarray(Image.open(depth_atlas_path), dtype=np.uint16)
-        for row, (left, top, right, bottom) in zip(
-                pose_results, atlas_boxes, strict=True):
-            for field in ("rgb_path", "rgb_sha256", "robot_mask_path", "robot_mask_sha256",
-                          "robot_depth_path", "robot_depth_sha256"):
-                del row[field]
-            row["atlas_crop_px"] = [left, top, right, bottom]
-            row["rgb_crop_pixel_sha256"] = _sha256(
-                decoded_rgb_atlas[top:bottom, left:right].tobytes()
+            for row, (left, top, right, bottom) in zip(
+                    chunk, atlas_boxes, strict=True):
+                rgb_atlas[top:bottom, left:right] = np.asarray(
+                    Image.open(output_dir / row["rgb_path"]).convert("RGB")
+                )
+                mask_atlas[top:bottom, left:right] = np.asarray(
+                    Image.open(output_dir / row["robot_mask_path"]).convert("L")
+                )
+                depth_atlas[top:bottom, left:right] = np.asarray(
+                    Image.open(output_dir / row["robot_depth_path"]), dtype=np.uint16,
+                )
+            Image.fromarray(rgb_atlas).save(
+                paths["rgb"], "JPEG", quality=92, optimize=False,
+                progressive=False, subsampling=0,
             )
-            row["robot_mask_crop_pixel_sha256"] = _sha256(
-                mask_atlas[top:bottom, left:right].tobytes()
+            Image.fromarray(mask_atlas).save(paths["robot_mask"], "PNG")
+            Image.fromarray(depth_atlas).save(paths["robot_depth_mm"], "PNG")
+            decoded_rgb = np.asarray(Image.open(paths["rgb"]).convert("RGB"))
+            decoded_depth = np.asarray(
+                Image.open(paths["robot_depth_mm"]), dtype=np.uint16,
             )
-            row["robot_depth_crop_pixel_sha256"] = _sha256(
-                decoded_depth_atlas[top:bottom, left:right].tobytes()
-            )
+            for row, (left, top, right, bottom) in zip(
+                    chunk, atlas_boxes, strict=True):
+                for field in (
+                    "rgb_path", "rgb_sha256", "robot_mask_path", "robot_mask_sha256",
+                    "robot_depth_path", "robot_depth_sha256",
+                ):
+                    del row[field]
+                row["rgb_atlas_key"] = keys["rgb"]
+                row["atlas_crop_px"] = [left, top, right, bottom]
+                row["rgb_crop_pixel_sha256"] = _sha256(
+                    decoded_rgb[top:bottom, left:right].tobytes()
+                )
+                row["robot_mask_crop_pixel_sha256"] = _sha256(
+                    mask_atlas[top:bottom, left:right].tobytes()
+                )
+                row["robot_depth_crop_pixel_sha256"] = _sha256(
+                    decoded_depth[top:bottom, left:right].tobytes()
+                )
+            for kind, key in keys.items():
+                artifact_atlases[key] = {
+                    "path": paths[kind].name,
+                    "sha256": _sha256(paths[kind].read_bytes()),
+                }
+                retained_atlas_paths.add(paths[kind])
         for path in output_dir.iterdir():
-            if path not in (rgb_atlas_path, mask_atlas_path, depth_atlas_path):
+            if path not in retained_atlas_paths:
                 path.unlink()
 
         comparable = [row for row in pose_results if row["capsule_comparison_available"]]
@@ -839,11 +867,7 @@ def main() -> int:
                 "nominal_fx_px": 1000.0,
                 "fixed_across_poses": True,
             },
-            "artifact_atlases": {
-                "rgb": {"path": rgb_atlas_path.name, "sha256": _sha256(rgb_atlas_path.read_bytes())},
-                "robot_mask": {"path": mask_atlas_path.name, "sha256": _sha256(mask_atlas_path.read_bytes())},
-                "robot_depth_mm": {"path": depth_atlas_path.name, "sha256": _sha256(depth_atlas_path.read_bytes())},
-            },
+            "artifact_atlases": artifact_atlases,
             "pose_results": pose_results,
             "result_status": "PASS_WITH_BLOCKERS",
             "result_summary": {

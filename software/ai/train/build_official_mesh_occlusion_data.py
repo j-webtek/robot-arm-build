@@ -756,8 +756,7 @@ def build(source_manifest: Path, output_dir: Path) -> dict[str, Any]:
     image_dir.mkdir()
     source = _verify_source(source_manifest)
     schema, split_policy = _split_policy(source)
-    rgb_path = source_manifest.parent / source["artifact_atlases"]["rgb"]["path"]
-    rgb_atlas = Image.open(rgb_path).convert("RGB")
+    rgb_atlases: dict[str, Any] = {}
     pose_by_id = {row["pose_id"]: row for row in source["pose_results"]}
 
     image_records = []
@@ -766,7 +765,14 @@ def build(source_manifest: Path, output_dir: Path) -> dict[str, Any]:
         rows = []
         for pose_id in policy["poses"]:
             pose = pose_by_id[pose_id]
-            crop = rgb_atlas.crop(tuple(pose["atlas_crop_px"]))
+            atlas_key = pose.get("rgb_atlas_key", "rgb")
+            if atlas_key not in rgb_atlases:
+                rgb_path = (
+                    source_manifest.parent
+                    / source["artifact_atlases"][atlas_key]["path"]
+                )
+                rgb_atlases[atlas_key] = Image.open(rgb_path).convert("RGB")
+            crop = rgb_atlases[atlas_key].crop(tuple(pose["atlas_crop_px"]))
             for variant in policy["lighting"]:
                 transformed = _lighting(crop, variant)
                 image_name = f"{split}__{pose_id}__{variant}.jpg"
