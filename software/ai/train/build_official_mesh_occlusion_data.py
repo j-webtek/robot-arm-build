@@ -90,6 +90,12 @@ EXPECTED_SPECIFICITY_REBALANCE_MODEL_SHA256 = (
 EXPECTED_SPECIFICITY_REBALANCE_SCORECARD_SHA256 = (
     "d11a71c67e2f7072e52a4a28d9c2bdbf5f6da308c5704bfe47a379c79cad9f00"
 )
+EXPECTED_POSE_DIVERSE_MODEL_SHA256 = (
+    "9e09a13fae22cbbc75d2b15d9fe2e9cfbf76638d61220d635dd31272e298cfbb"
+)
+EXPECTED_POSE_DIVERSE_SCORECARD_SHA256 = (
+    "0079e0d7f3b7b4f77d191b7258cafbbe8a53e88441767059f6d4a63858edf490"
+)
 SPATIAL_BATCH_SIZE = 128
 SPATIAL_LEARNING_RATE = 0.002
 LEGACY_SPLITS = {
@@ -2518,6 +2524,7 @@ def _load_target_conditioned_checkpoint(candidate_dir: Path):  # type: ignore[no
         "rocell.ai_target_conditioned_spatial_fusion.v1",
         "rocell.ai_target_conditioned_occlusion_recall.v1",
         "rocell.ai_target_conditioned_specificity_rebalance.v1",
+        "rocell.ai_target_conditioned_pose_diverse.v1",
     }:
         raise ValueError("target-conditioned checkpoint schema mismatch")
     architecture = checkpoint.get("architecture", {})
@@ -3040,6 +3047,8 @@ def _pose_cluster_bootstrap_bounds(
     probabilities_by_offset: list[tuple[dict[str, float], np.ndarray]],
     threshold: float,
     bound_mm: float,
+    *,
+    seed: int = POSE_CLUSTER_BOOTSTRAP_SEED,
 ) -> dict[str, Any]:
     """Return one-sided 95% whole-pose bootstrap bounds for a frozen policy."""
     pose_ids = tuple(sorted({str(row["pose_id"]) for row in rows}))
@@ -3047,7 +3056,7 @@ def _pose_cluster_bootstrap_bounds(
         raise ValueError("pose-cluster bootstrap requires at least two poses")
     pose_lookup = {pose_id: index for index, pose_id in enumerate(pose_ids)}
     row_pose = np.asarray([pose_lookup[str(row["pose_id"])] for row in rows])
-    generator = np.random.default_rng(POSE_CLUSTER_BOOTSTRAP_SEED)
+    generator = np.random.default_rng(seed)
     sampled = generator.integers(
         0, len(pose_ids), size=(POSE_CLUSTER_BOOTSTRAP_SAMPLES, len(pose_ids)),
     )
@@ -3085,7 +3094,7 @@ def _pose_cluster_bootstrap_bounds(
         raise ValueError("pose bootstrap bound contains no offsets")
     return {
         "method": "seeded_whole_pose_nonparametric_bootstrap_one_sided_95",
-        "seed": POSE_CLUSTER_BOOTSTRAP_SEED,
+        "seed": seed,
         "resamples": POSE_CLUSTER_BOOTSTRAP_SAMPLES,
         "pose_count": len(pose_ids),
         "bound_mm": bound_mm,
@@ -3339,6 +3348,271 @@ def train_pose_diverse_successor_candidate(
         "limitations": [
             "training and policy selection use new synthetic v15 data only",
             "consumed v14 images, labels, probabilities, failures, poses, lighting, and threshold outcomes are excluded",
+            "whole-pose bootstrap bounds describe this synthetic development corpus only",
+            "dense samples cover one governed path rather than arbitrary arm configurations",
+            "the uncertainty bound is synthetic and not physical calibration",
+            "no new evaluation group was created or opened",
+            "tool and camera-support geometry remain absent",
+        ],
+    }
+    scorecard["scorecard_sha256"] = _sha256(_canonical(scorecard))
+    (output_dir / "scorecard.json").write_bytes(_canonical(scorecard) + b"\n")
+    return scorecard
+
+def train_grouped_neighborhood_successor_candidate(
+    dataset_dir: Path,
+    seed_candidate_dir: Path,
+    output_dir: Path,
+) -> dict[str, Any]:
+    """Train a grouped-neighborhood successor without opening any evaluation group."""
+    import torch
+
+    dataset_dir = dataset_dir.resolve(strict=True)
+    seed_candidate_dir = seed_candidate_dir.resolve(strict=True)
+    output_dir = output_dir.resolve()
+    if output_dir.exists() and any(output_dir.iterdir()):
+        raise ValueError("grouped-neighborhood output directory must be empty")
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    dataset_path = dataset_dir / "manifest.json"
+    dataset = json.loads(dataset_path.read_text(encoding="utf-8"))
+    claimed_dataset_sha = dataset.pop("dataset_sha256", None)
+    if not isinstance(claimed_dataset_sha, str) \
+            or _sha256(_canonical(dataset)) != claimed_dataset_sha:
+        raise ValueError("grouped-neighborhood dataset manifest hash mismatch")
+    dataset["dataset_sha256"] = claimed_dataset_sha
+    if dataset.get("schema") != SCHEMA_V16 \
+            or dataset.get("scope") != "SYNTHETIC_ONLY_NO_DEPLOYMENT_QUALIFICATION":
+        raise ValueError("grouped-neighborhood dataset scope or schema mismatch")
+    if dataset["splits"]["train"]["count"] == 0 \
+            or dataset["splits"]["development"]["count"] == 0 \
+            or dataset["splits"]["evaluation"]["count"] != 0:
+        raise ValueError("grouped-neighborhood dataset must contain train and development only")
+    seed_model_path = seed_candidate_dir / "model.json"
+    seed_scorecard_path = seed_candidate_dir / "scorecard.json"
+    seed_checkpoint, model = _load_target_conditioned_checkpoint(seed_candidate_dir)
+    seed_model_sha = _sha256(seed_model_path.read_bytes())
+    seed_policy = seed_checkpoint.get("localization_uncertainty_policy", {})
+    if seed_checkpoint.get("schema") \
+            != "rocell.ai_target_conditioned_pose_diverse.v1" \
+            or seed_model_sha != EXPECTED_POSE_DIVERSE_MODEL_SHA256 \
+            or seed_checkpoint.get("evaluation_opened") is not False \
+            or seed_policy.get("development_gate_met") is not False \
+            or seed_policy.get("maximum_supported_planar_error_mm") != 2.0 \
+            or dataset.get("target_catalog_sha256") \
+            != seed_checkpoint.get("target_catalog_sha256"):
+        raise ValueError("grouped-neighborhood seed identity or policy mismatch")
+    seed_scorecard = json.loads(seed_scorecard_path.read_text(encoding="utf-8"))
+    claimed_seed_scorecard_sha = seed_scorecard.pop("scorecard_sha256", None)
+    if not isinstance(claimed_seed_scorecard_sha, str) \
+            or _sha256(_canonical(seed_scorecard)) != claimed_seed_scorecard_sha:
+        raise ValueError("grouped-neighborhood seed scorecard hash mismatch")
+    seed_scorecard["scorecard_sha256"] = claimed_seed_scorecard_sha
+    if claimed_seed_scorecard_sha != EXPECTED_POSE_DIVERSE_SCORECARD_SHA256 \
+            or seed_scorecard.get("schema") \
+            != "rocell.ai_pose_diverse_candidate.v1" \
+            or seed_scorecard.get("model_sha256") != seed_model_sha \
+            or seed_scorecard.get("evaluation_group_present") is not False \
+            or seed_scorecard.get("development_gate_met") is not False \
+            or seed_scorecard.get("maximum_supported_planar_error_mm") != 2.0 \
+            or seed_scorecard.get("hardware_writes") != 0 \
+            or seed_scorecard.get("physical_movements") != 0 \
+            or seed_scorecard.get("physical_authority") is not False:
+        raise ValueError("grouped-neighborhood seed scorecard identity or authority mismatch")
+
+    torch.manual_seed(BASELINE_SEED)
+    torch.use_deterministic_algorithms(True)
+    torch.set_num_threads(1)
+    training_rows = _load_rows(dataset_dir, "train", dataset)
+    development_rows = _load_rows(dataset_dir, "development", dataset)
+    if len({row["pose_id"] for row in training_rows}) != 256 \
+            or len({row["pose_id"] for row in development_rows}) != 64:
+        raise ValueError("grouped-neighborhood dataset has wrong pose partition")
+    catalog = tuple(seed_checkpoint["architecture"]["target_catalog"])
+    if set(_target_identity_catalog(training_rows)) != set(catalog) \
+            or set(_target_identity_catalog(development_rows)) != set(catalog):
+        raise ValueError("grouped-neighborhood target vocabulary mismatch")
+    for name, parameter in model.named_parameters():
+        parameter.requires_grad_(
+            name.startswith(("conv2.", "conditioner.", "classifier."))
+        )
+
+    augmentation = _training_augmentation_offsets()
+    row_offsets = []
+    augmentation_counts: dict[str, int] = {}
+    for row in training_rows:
+        index = int(_sha256(row["id"].encode("utf-8"))[:8], 16) % len(augmentation)
+        offset = augmentation[index]
+        row_offsets.append((offset["x_px"], offset["y_px"]))
+        key = f"{offset['x_mm']:g},{offset['y_mm']:g}"
+        augmentation_counts[key] = augmentation_counts.get(key, 0) + 1
+    training_crops, training_labels = _target_aware_crops(
+        dataset_dir, training_rows, row_offsets_px=row_offsets,
+    )
+    training_descriptors = _target_identity_descriptors(
+        dataset_dir, training_rows, catalog,
+    )
+    crop_tensor = torch.from_numpy(training_crops)
+    descriptor_tensor = torch.from_numpy(training_descriptors)
+    label_tensor = torch.from_numpy(training_labels)
+    emphasis_tensor = torch.tensor([
+        GROUPED_NEIGHBORHOOD_TARGET_EMPHASIS
+        if row["target_id"] in GROUPED_NEIGHBORHOOD_EMPHASIZED_TARGETS else 1.0
+        for row in training_rows
+    ], dtype=torch.float32)
+    loss_fn = torch.nn.BCEWithLogitsLoss(
+        pos_weight=torch.tensor([GROUPED_NEIGHBORHOOD_POSITIVE_WEIGHT]),
+        reduction="none",
+    )
+    optimizer = torch.optim.Adam(
+        (parameter for parameter in model.parameters() if parameter.requires_grad),
+        lr=GROUPED_NEIGHBORHOOD_LEARNING_RATE,
+        weight_decay=0.0001,
+    )
+    epoch_losses = []
+    model.train()
+    for epoch in range(GROUPED_NEIGHBORHOOD_EPOCHS):
+        generator = torch.Generator().manual_seed(BASELINE_SEED + epoch)
+        order = torch.randperm(len(crop_tensor), generator=generator)
+        total_loss = 0.0
+        for start in range(0, len(order), SPATIAL_BATCH_SIZE):
+            indices = order[start:start + SPATIAL_BATCH_SIZE]
+            optimizer.zero_grad(set_to_none=True)
+            row_loss = loss_fn(
+                model(crop_tensor[indices], descriptor_tensor[indices]),
+                label_tensor[indices],
+            )
+            loss = (row_loss * emphasis_tensor[indices]).sum() \
+                / emphasis_tensor[indices].sum()
+            loss.backward()
+            optimizer.step()
+            total_loss += float(loss.detach()) * len(indices)
+        epoch_losses.append(total_loss / len(order))
+
+    model.eval()
+    development_descriptors = torch.from_numpy(_target_identity_descriptors(
+        dataset_dir, development_rows, catalog,
+    ))
+    development_labels: np.ndarray | None = None
+    probabilities_by_offset = []
+    for offset in _declared_mask_offsets():
+        crops, labels = _target_aware_crops(
+            dataset_dir, development_rows, (offset["x_px"], offset["y_px"]),
+        )
+        if development_labels is None:
+            development_labels = labels.astype(np.float64)
+        elif not np.array_equal(development_labels, labels):
+            raise RuntimeError("grouped-neighborhood labels changed across offsets")
+        with torch.no_grad():
+            probabilities = torch.sigmoid(model(
+                torch.from_numpy(crops), development_descriptors,
+            )).numpy()
+        probabilities_by_offset.append((offset, probabilities))
+    assert development_labels is not None
+    threshold, uncertainty_bound, point_gate_met, measurements = (
+        _select_localization_policy(
+            development_rows,
+            development_labels,
+            probabilities_by_offset,
+            maximum_missed_rate=0.02,
+            maximum_false_rate=0.10,
+        )
+    )
+    bootstrap = _pose_cluster_bootstrap_bounds(
+        development_rows,
+        development_labels,
+        probabilities_by_offset,
+        threshold,
+        uncertainty_bound, seed=GROUPED_NEIGHBORHOOD_BOOTSTRAP_SEED,
+    )
+    clustered_gate_met = (
+        bootstrap["maximum_missed_abstain_upper_95"] <= 0.02
+        and bootstrap["maximum_visible_false_abstain_upper_95"] <= 0.10
+    )
+    gate_met = point_gate_met and clustered_gate_met
+
+    state = {
+        name: {
+            "shape": list(value.shape),
+            "values": value.detach().cpu().numpy().astype(np.float64).reshape(-1).tolist(),
+        }
+        for name, value in sorted(model.state_dict().items())
+    }
+    checkpoint = {
+        "schema": "rocell.ai_target_conditioned_grouped_neighborhood.v1",
+        "architecture": dict(seed_checkpoint["architecture"]),
+        "seed": {
+            "model_sha256": seed_model_sha,
+            "scorecard_sha256": claimed_seed_scorecard_sha,
+        },
+        "training": {
+            "seed": BASELINE_SEED,
+            "device": "cpu",
+            "epochs": GROUPED_NEIGHBORHOOD_EPOCHS,
+            "batch_size": SPATIAL_BATCH_SIZE,
+            "learning_rate": GROUPED_NEIGHBORHOOD_LEARNING_RATE,
+            "optimizer": "adam",
+            "weight_decay": 0.0001,
+            "loss": "positive_weighted_binary_cross_entropy",
+            "positive_abstention_weight": GROUPED_NEIGHBORHOOD_POSITIVE_WEIGHT,
+            "trained_parameters": "conv2_conditioner_classifier",
+            "target_emphasis": {
+                "weight": GROUPED_NEIGHBORHOOD_TARGET_EMPHASIS,
+                "target_ids": list(GROUPED_NEIGHBORHOOD_EMPHASIZED_TARGETS),
+            },
+            "augmentation": "one_deterministic_offset_per_training_row",
+            "augmentation_offsets_mm": augmentation,
+            "augmentation_counts": augmentation_counts,
+            "epoch_losses": epoch_losses,
+        },
+        "crop": dict(seed_checkpoint["crop"]),
+        "threshold": threshold,
+        "localization_uncertainty_policy": {
+            "maximum_supported_planar_error_mm": uncertainty_bound,
+            "above_bound_decision": "abstain_localization_uncertain",
+            "point_gate_met": point_gate_met,
+            "pose_cluster_upper_bound_gate_met": clustered_gate_met,
+            "development_gate_met": gate_met,
+            "maximum_missed_abstain_rate": 0.02,
+            "maximum_visible_false_abstain_rate": 0.10,
+        },
+        "target_catalog_sha256": dataset["target_catalog_sha256"],
+        "training_dataset_sha256": claimed_dataset_sha,
+        "selection_dataset_sha256": claimed_dataset_sha,
+        "selection_split": "development_only",
+        "consumed_evaluation_dataset_sha256": None,
+        "evaluation_opened": False,
+        "state_dict": state,
+    }
+    checkpoint_path = output_dir / "model.json"
+    checkpoint_path.write_bytes(_canonical(checkpoint) + b"\n")
+    scorecard: dict[str, Any] = {
+        "schema": "rocell.ai_grouped_neighborhood_candidate.v1",
+        "algorithm": "seeded_target_conditioned_grouped_neighborhood_v1",
+        "seed_model_sha256": seed_model_sha,
+        "seed_scorecard_sha256": claimed_seed_scorecard_sha,
+        "dataset_manifest_sha256": _sha256(dataset_path.read_bytes()),
+        "dataset_sha256": claimed_dataset_sha,
+        "target_catalog_sha256": dataset["target_catalog_sha256"],
+        "model_sha256": _sha256(checkpoint_path.read_bytes()),
+        "selected_threshold": threshold,
+        "maximum_supported_planar_error_mm": uncertainty_bound,
+        "point_gate_met": point_gate_met,
+        "pose_cluster_upper_bound_gate_met": clustered_gate_met,
+        "development_gate_met": gate_met,
+        "development_measurements": measurements,
+        "pose_cluster_bootstrap": bootstrap,
+        "evaluation_group_present": False,
+        "promotion_status": (
+            "BLOCKED_AWAITING_FRESH_EVALUATION"
+            if gate_met else "FAILED_DEVELOPMENT_GATE"
+        ),
+        "hardware_writes": 0,
+        "physical_movements": 0,
+        "physical_authority": False,
+        "limitations": [
+            "training and policy selection use new synthetic v16 data only",
+            "consumed v14 evaluation and v15 development evidence are excluded from selection and evaluation",
             "whole-pose bootstrap bounds describe this synthetic development corpus only",
             "dense samples cover one governed path rather than arbitrary arm configurations",
             "the uncertainty bound is synthetic and not physical calibration",
@@ -4651,6 +4925,10 @@ def main() -> int:
         metavar=("DATASET_DIR", "SEED_CANDIDATE_DIR", "OUTPUT_DIR"),
     )
     parser.add_argument(
+        "--train-grouped-neighborhood-successor", type=Path, nargs=3,
+        metavar=("DATASET_DIR", "SEED_CANDIDATE_DIR", "OUTPUT_DIR"),
+    )
+    parser.add_argument(
         "--refreeze-localization-policy", type=Path, nargs=3,
         metavar=("DEVELOPMENT_DATASET_DIR", "CANDIDATE_DIR", "OUTPUT_DIR"),
     )
@@ -4675,6 +4953,27 @@ def main() -> int:
         metavar=("DEVELOPMENT_DATASET_DIR", "CANDIDATE_DIR", "OUTPUT_DIR"),
     )
     args = parser.parse_args()
+    if args.train_grouped_neighborhood_successor is not None:
+        incompatible = (
+            args.train_pose_diverse_successor, args.record_existing,
+            args.perturb_existing, args.train_localization_robust,
+            args.train_target_identity, args.train_target_conditioned_fusion,
+            args.train_occlusion_recall, args.train_specificity_rebalance,
+            args.refreeze_localization_policy, args.evaluate_localization_policy,
+            args.evaluate_target_conditioned_fusion, args.evaluate_occlusion_recall,
+            args.evaluate_specificity_rebalance, args.diagnose_localization_hard_negatives,
+            args.output_dir, args.baseline_output, args.candidate_output,
+            args.spatial_output, args.target_aware_output,
+        )
+        if any(value is not None for value in incompatible):
+            parser.error(
+                "--train-grouped-neighborhood-successor cannot be combined with other outputs"
+            )
+        scorecard = train_grouped_neighborhood_successor_candidate(
+            *args.train_grouped_neighborhood_successor,
+        )
+        print(json.dumps(scorecard, sort_keys=True))
+        return 0
     if args.train_pose_diverse_successor is not None:
         incompatible = (
             args.record_existing, args.perturb_existing,
@@ -4687,6 +4986,7 @@ def main() -> int:
             args.diagnose_localization_hard_negatives, args.output_dir,
             args.baseline_output, args.candidate_output, args.spatial_output,
             args.target_aware_output,
+            args.train_grouped_neighborhood_successor,
         )
         if any(value is not None for value in incompatible):
             parser.error(

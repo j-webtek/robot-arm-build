@@ -660,6 +660,17 @@ def test_grouped_neighborhood_split_and_lighting_are_fresh_and_deterministic() -
         module.GROUPED_NEIGHBORHOOD_LIGHTING.values(), ()
     )]
     assert all(np.array_equal(np.asarray(a), np.asarray(b)) for a, b in zip(first, second))
+    assert module.GROUPED_NEIGHBORHOOD_EPOCHS == 12
+    assert module.GROUPED_NEIGHBORHOOD_LEARNING_RATE == 0.00015
+    assert module.GROUPED_NEIGHBORHOOD_POSITIVE_WEIGHT == 1.75
+    assert module.GROUPED_NEIGHBORHOOD_TARGET_EMPHASIS == 2.0
+    assert module.GROUPED_NEIGHBORHOOD_BOOTSTRAP_SEED == 19016
+    assert set(module.GROUPED_NEIGHBORHOOD_EMPHASIZED_TARGETS) == {
+        "MINUS", "U", "7", "1", "0", "PERIOD", "6",
+    }
+    source_text = (WORKSPACE / "software/ai/train/build_official_mesh_occlusion_data.py").read_text()
+    assert "--train-grouped-neighborhood-successor" in source_text
+    assert '"trained_parameters": "conv2_conditioner_classifier"' in source_text
 
 
 def test_transit_dataset_policy_uses_fresh_disjoint_lighting() -> None:
