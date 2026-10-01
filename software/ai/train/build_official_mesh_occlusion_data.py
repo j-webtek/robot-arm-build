@@ -25,6 +25,7 @@ SCHEMA_V8 = "rocell.ai_official_mesh_occlusion_data.v8"
 SCHEMA_V9 = "rocell.ai_official_mesh_occlusion_data.v9"
 SCHEMA_V10 = "rocell.ai_official_mesh_occlusion_data.v10"
 SCHEMA_V11 = "rocell.ai_official_mesh_occlusion_data.v11"
+SCHEMA_V12 = "rocell.ai_official_mesh_occlusion_data.v12"
 SOURCE_SCHEMA_V1 = "tactevra.isaac_fixed_overview_mesh_render.v1"
 SOURCE_SCHEMA_V2 = "tactevra.isaac_fixed_overview_mesh_render.v2"
 SOURCE_SCHEMA_V3 = "tactevra.isaac_fixed_overview_mesh_render.v3"
@@ -36,6 +37,7 @@ SOURCE_SCHEMA_V8 = "tactevra.isaac_fixed_overview_mesh_render.v8"
 SOURCE_SCHEMA_V9 = "tactevra.isaac_fixed_overview_mesh_render.v9"
 SOURCE_SCHEMA_V10 = "tactevra.isaac_fixed_overview_mesh_render.v10"
 SOURCE_SCHEMA_V11 = "tactevra.isaac_fixed_overview_mesh_render.v11"
+SOURCE_SCHEMA_V12 = "tactevra.isaac_fixed_overview_mesh_render.v12"
 MAXIMUM_SAFE_REGION_OVERLAP = 0.20
 BASELINE_SEED = 190
 BASELINE_CROP_SIZE = 16
@@ -52,6 +54,12 @@ TARGET_CONDITIONED_MODULATION_SCALE = 0.25
 OCCLUSION_RECALL_EPOCHS = 12
 OCCLUSION_RECALL_LEARNING_RATE = 0.0005
 OCCLUSION_RECALL_POSITIVE_WEIGHT = 1.5
+EXPECTED_OCCLUSION_RECALL_MODEL_SHA256 = (
+    "27c7be58e11f8bf3341cb4eb56abdf7786d984e2664b6eb07d6349243730e09c"
+)
+EXPECTED_OCCLUSION_RECALL_SCORECARD_SHA256 = (
+    "807928f2559d14fa8b0b9da1781d379650deeadb40ec8690e41484be16eaa0d4"
+)
 SPATIAL_BATCH_SIZE = 128
 SPATIAL_LEARNING_RATE = 0.002
 LEGACY_SPLITS = {
@@ -138,6 +146,15 @@ OCCLUSION_RECALL_LIGHTING = {
     ),
     "evaluation": (),
 }
+RECALL_EVALUATION_LIGHTING = {
+    "train": (),
+    "development": (),
+    "evaluation": (
+        "upper_left_soft_vignette",
+        "warm_center_bloom",
+        "diagonal_smear_cool",
+    ),
+}
 NOMINAL_PIXELS_PER_MM = 2.0
 MASK_OFFSET_RADII_MM = (1.0, 2.0, 4.0, 8.0)
 MASK_OFFSET_DIRECTIONS = (
@@ -167,6 +184,7 @@ def _verify_source(path: Path) -> dict[str, Any]:
         SOURCE_SCHEMA_V9,
         SOURCE_SCHEMA_V10,
         SOURCE_SCHEMA_V11,
+        SOURCE_SCHEMA_V12,
     }:
         raise ValueError("official-mesh manifest schema mismatch")
     claimed = source.pop("receipt_sha256", None)
@@ -205,7 +223,10 @@ def _split_policy(source: dict[str, Any]) -> tuple[str, dict[str, dict[str, tupl
         expected = next(name for name, poses in normalized.items() if row["pose_id"] in poses)
         if row.get("pose_group") != expected:
             raise ValueError(f"pose group mismatch: {row['pose_id']}")
-    if source["schema"] == SOURCE_SCHEMA_V11:
+    if source["schema"] == SOURCE_SCHEMA_V12:
+        lighting = RECALL_EVALUATION_LIGHTING
+        schema = SCHEMA_V12
+    elif source["schema"] == SOURCE_SCHEMA_V11:
         lighting = OCCLUSION_RECALL_LIGHTING
         schema = SCHEMA_V11
     elif source["schema"] == SOURCE_SCHEMA_V10:
@@ -518,6 +539,36 @@ def _lighting(image: Image.Image, variant: str) -> Image.Image:
             weights[index] = 1.0
         blurred = rgb.filter(ImageFilter.Kernel((5, 5), weights, scale=5.0))
         return ImageEnhance.Brightness(blurred).enhance(1.08)
+    if variant == "upper_left_soft_vignette":
+        overlay = Image.new("RGB", rgb.size, "black")
+        alpha = Image.new("L", rgb.size, 0)
+        ImageDraw.Draw(alpha).ellipse(
+            (round(rgb.width * -0.18), round(rgb.height * -0.22),
+             round(rgb.width * 0.58), round(rgb.height * 0.64)),
+            fill=58,
+        )
+        return Image.composite(overlay, rgb, alpha)
+    if variant == "warm_center_bloom":
+        overlay = Image.new("RGB", rgb.size, (255, 236, 210))
+        alpha = Image.new("L", rgb.size, 0)
+        ImageDraw.Draw(alpha).ellipse(
+            (round(rgb.width * 0.22), round(rgb.height * 0.18),
+             round(rgb.width * 0.82), round(rgb.height * 0.84)),
+            fill=66,
+        )
+        bloomed = Image.composite(overlay, rgb, alpha)
+        return ImageEnhance.Contrast(bloomed).enhance(0.91)
+    if variant == "diagonal_smear_cool":
+        weights = [0.0] * 25
+        for index in (0, 6, 12, 18, 24):
+            weights[index] = 1.0
+        blurred = rgb.filter(ImageFilter.Kernel((5, 5), weights, scale=5.0))
+        red, green, blue = blurred.split()
+        return Image.merge("RGB", (
+            red.point(lambda value: round(value * 0.92)),
+            green.point(lambda value: round(value * 0.98)),
+            blue.point(lambda value: min(255, round(value * 1.06))),
+        ))
     raise ValueError(f"unknown lighting variant: {variant}")
 
 
@@ -2208,7 +2259,10 @@ def _load_target_conditioned_checkpoint(candidate_dir: Path):  # type: ignore[no
 
     checkpoint_path = candidate_dir / "model.json"
     checkpoint = json.loads(checkpoint_path.read_text(encoding="utf-8"))
-    if checkpoint.get("schema") != "rocell.ai_target_conditioned_spatial_fusion.v1":
+    if checkpoint.get("schema") not in {
+        "rocell.ai_target_conditioned_spatial_fusion.v1",
+        "rocell.ai_target_conditioned_occlusion_recall.v1",
+    }:
         raise ValueError("target-conditioned checkpoint schema mismatch")
     architecture = checkpoint.get("architecture", {})
     descriptor_size = architecture.get("descriptor_size")
@@ -2918,6 +2972,185 @@ def evaluate_target_conditioned_fusion(
     return report
 
 
+def evaluate_occlusion_recall_candidate(
+    evaluation_dataset_dir: Path,
+    candidate_dir: Path,
+    output_dir: Path,
+) -> dict[str, Any]:
+    """Evaluate the exact frozen recall checkpoint once on fresh synthetic data."""
+    import torch
+
+    evaluation_dataset_dir = evaluation_dataset_dir.resolve(strict=True)
+    candidate_dir = candidate_dir.resolve(strict=True)
+    output_dir = output_dir.resolve()
+    if output_dir.exists() and any(output_dir.iterdir()):
+        raise ValueError("recall evaluation output directory must be empty")
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    dataset_path = evaluation_dataset_dir / "manifest.json"
+    dataset = json.loads(dataset_path.read_text(encoding="utf-8"))
+    claimed_dataset_sha = dataset.pop("dataset_sha256", None)
+    if not isinstance(claimed_dataset_sha, str) \
+            or _sha256(_canonical(dataset)) != claimed_dataset_sha:
+        raise ValueError("recall evaluation dataset manifest hash mismatch")
+    dataset["dataset_sha256"] = claimed_dataset_sha
+    if dataset.get("schema") != SCHEMA_V12 \
+            or dataset.get("scope") != "SYNTHETIC_ONLY_NO_DEPLOYMENT_QUALIFICATION":
+        raise ValueError("recall evaluation dataset scope or schema mismatch")
+    if dataset["splits"]["train"]["count"] != 0 \
+            or dataset["splits"]["development"]["count"] != 0 \
+            or dataset["splits"]["evaluation"]["count"] == 0:
+        raise ValueError("recall evaluation dataset must be evaluation-only")
+
+    model_path = candidate_dir / "model.json"
+    scorecard_path = candidate_dir / "scorecard.json"
+    checkpoint, model = _load_target_conditioned_checkpoint(candidate_dir)
+    model_sha = _sha256(model_path.read_bytes())
+    policy = checkpoint.get("localization_uncertainty_policy", {})
+    if checkpoint.get("schema") \
+            != "rocell.ai_target_conditioned_occlusion_recall.v1" \
+            or model_sha != EXPECTED_OCCLUSION_RECALL_MODEL_SHA256 \
+            or checkpoint.get("evaluation_opened") is not False \
+            or checkpoint.get("consumed_evaluation_dataset_sha256") is not None \
+            or policy.get("development_gate_met") is not True \
+            or policy.get("maximum_supported_planar_error_mm") != 0.0 \
+            or policy.get("above_bound_decision") != "abstain_localization_uncertain":
+        raise ValueError("recall candidate is not the exact frozen 0 mm policy")
+    if dataset.get("target_catalog_sha256") != checkpoint.get("target_catalog_sha256"):
+        raise ValueError("recall evaluation target catalog mismatch")
+    if claimed_dataset_sha in {
+        checkpoint.get("training_dataset_sha256"),
+        checkpoint.get("selection_dataset_sha256"),
+    }:
+        raise ValueError("recall evaluation dataset reuses selection bytes")
+
+    source_scorecard = json.loads(scorecard_path.read_text(encoding="utf-8"))
+    claimed_scorecard_sha = source_scorecard.pop("scorecard_sha256", None)
+    if not isinstance(claimed_scorecard_sha, str) \
+            or _sha256(_canonical(source_scorecard)) != claimed_scorecard_sha:
+        raise ValueError("recall candidate scorecard hash mismatch")
+    source_scorecard["scorecard_sha256"] = claimed_scorecard_sha
+    if claimed_scorecard_sha != EXPECTED_OCCLUSION_RECALL_SCORECARD_SHA256 \
+            or source_scorecard.get("schema") \
+            != "rocell.ai_occlusion_recall_candidate.v1" \
+            or source_scorecard.get("model_sha256") != model_sha \
+            or source_scorecard.get("evaluation_group_present") is not False \
+            or source_scorecard.get("development_gate_met") is not True \
+            or source_scorecard.get("maximum_supported_planar_error_mm") != 0.0 \
+            or source_scorecard.get("hardware_writes") != 0 \
+            or source_scorecard.get("physical_movements") != 0 \
+            or source_scorecard.get("physical_authority") is not False:
+        raise ValueError("recall candidate identity or authority mismatch")
+
+    rows = _load_rows(evaluation_dataset_dir, "evaluation", dataset)
+    catalog = tuple(checkpoint["architecture"]["target_catalog"])
+    descriptors = torch.from_numpy(_target_identity_descriptors(
+        evaluation_dataset_dir, rows, catalog,
+    ))
+    offsets = [
+        offset for offset in _declared_mask_offsets()
+        if max(abs(offset["x_mm"]), abs(offset["y_mm"])) <= 1.0
+    ]
+    labels_ref: np.ndarray | None = None
+    measurements = []
+    target_failures: dict[str, dict[str, int]] = {}
+    rows_by_id = {row["id"]: row for row in rows}
+    threshold = float(checkpoint["threshold"])
+    for offset in offsets:
+        crops, labels = _target_aware_crops(
+            evaluation_dataset_dir, rows, (offset["x_px"], offset["y_px"]),
+        )
+        labels = labels.astype(np.float64)
+        if labels_ref is None:
+            labels_ref = labels
+        elif not np.array_equal(labels_ref, labels):
+            raise RuntimeError("recall evaluation labels changed across offsets")
+        with torch.no_grad():
+            probabilities = torch.sigmoid(model(
+                torch.from_numpy(crops), descriptors,
+            )).numpy()
+        metrics = _metrics(rows, labels, probabilities, threshold)
+        for failure in metrics["failures"]:
+            row = rows_by_id[failure["id"]]
+            key = f"{row['device']}:{row['target_id']}"
+            counts = target_failures.setdefault(
+                key, {"false_abstain": 0, "missed_abstain": 0},
+            )
+            counts[
+                "missed_abstain"
+                if failure["expected"] == "abstain" else "false_abstain"
+            ] += 1
+        measurements.append({"offset": offset, "metrics": metrics})
+    assert labels_ref is not None
+    abstain_count = int(labels_ref.sum())
+    visible_count = len(labels_ref) - abstain_count
+    if abstain_count == 0 or visible_count == 0:
+        raise ValueError("recall evaluation requires abstain and visible rows")
+    nominal = next(
+        item for item in measurements
+        if item["offset"]["x_mm"] == 0.0 and item["offset"]["y_mm"] == 0.0
+    )
+    nominal_confusion = nominal["metrics"]["confusion"]
+    nominal_missed_rate = nominal_confusion["missed_abstain"] / abstain_count
+    nominal_false_rate = nominal_confusion["false_abstain"] / visible_count
+    stress = [
+        item for item in measurements
+        if item["offset"]["x_mm"] != 0.0 or item["offset"]["y_mm"] != 0.0
+    ]
+    stress_missed_rates = [
+        item["metrics"]["confusion"]["missed_abstain"] / abstain_count
+        for item in stress
+    ]
+    stress_false_rates = [
+        item["metrics"]["confusion"]["false_abstain"] / visible_count
+        for item in stress
+    ]
+    gate_met = nominal_missed_rate <= 0.05 and nominal_false_rate <= 0.05
+    stress_gate_met = max(stress_missed_rates) <= 0.05 \
+        and max(stress_false_rates) <= 0.05
+    report: dict[str, Any] = {
+        "schema": "rocell.ai_occlusion_recall_evaluation.v1",
+        "scope": "SYNTHETIC_ONLY_NO_DEPLOYMENT_QUALIFICATION",
+        "algorithm": "exact_frozen_occlusion_recall_evaluation_v1",
+        "dataset_manifest_sha256": _sha256(dataset_path.read_bytes()),
+        "dataset_sha256": claimed_dataset_sha,
+        "model_sha256": model_sha,
+        "source_scorecard_sha256": claimed_scorecard_sha,
+        "target_catalog_sha256": checkpoint["target_catalog_sha256"],
+        "threshold": threshold,
+        "evaluated_planar_error_bound_mm": 0.0,
+        "stress_tested_planar_error_mm": 1.0,
+        "evaluation_opened": True,
+        "evaluation_row_count": len(rows),
+        "abstain_row_count": abstain_count,
+        "visible_row_count": visible_count,
+        "nominal_missed_abstain_rate": nominal_missed_rate,
+        "nominal_visible_false_abstain_rate": nominal_false_rate,
+        "maximum_one_mm_missed_abstain_rate": max(stress_missed_rates),
+        "maximum_one_mm_visible_false_abstain_rate": max(stress_false_rates),
+        "synthetic_gate_met": gate_met,
+        "one_mm_stress_gate_met": stress_gate_met,
+        "measurements": measurements,
+        "per_target_failure_counts_across_offsets": target_failures,
+        "promotion_status": "BLOCKED_SYNTHETIC_ONLY"
+        if gate_met else "FAILED_SYNTHETIC_GATE",
+        "hardware_writes": 0,
+        "physical_movements": 0,
+        "physical_authority": False,
+        "limitations": [
+            "the evaluation camera, geometry, images, labels, and offsets are synthetic",
+            "the frozen checkpoint supports only nominal zero-error localization",
+            "the 1 mm ring is reported as stress evidence and cannot alter the policy",
+            "this evaluation group is consumed and cannot tune a successor",
+            "tool and camera-support geometry remain absent",
+            "a passing synthetic gate cannot qualify deployment",
+        ],
+    }
+    report["report_sha256"] = _sha256(_canonical(report))
+    (output_dir / "report.json").write_bytes(_canonical(report) + b"\n")
+    return report
+
+
 def diagnose_localization_hard_negatives(
     development_dataset_dir: Path,
     candidate_dir: Path,
@@ -3431,6 +3664,10 @@ def main() -> int:
         metavar=("EVALUATION_DATASET_DIR", "CANDIDATE_DIR", "OUTPUT_DIR"),
     )
     parser.add_argument(
+        "--evaluate-occlusion-recall", type=Path, nargs=3,
+        metavar=("EVALUATION_DATASET_DIR", "CANDIDATE_DIR", "OUTPUT_DIR"),
+    )
+    parser.add_argument(
         "--diagnose-localization-hard-negatives", type=Path, nargs=3,
         metavar=("DEVELOPMENT_DATASET_DIR", "CANDIDATE_DIR", "OUTPUT_DIR"),
     )
@@ -3444,6 +3681,7 @@ def main() -> int:
                 or args.refreeze_localization_policy is not None \
                 or args.evaluate_localization_policy is not None \
                 or args.evaluate_target_conditioned_fusion is not None \
+                or args.evaluate_occlusion_recall is not None \
                 or args.diagnose_localization_hard_negatives is not None \
                 or args.output_dir is not None or any(
             value is not None
@@ -3466,6 +3704,7 @@ def main() -> int:
                 or args.refreeze_localization_policy is not None \
                 or args.evaluate_localization_policy is not None \
                 or args.evaluate_target_conditioned_fusion is not None \
+                or args.evaluate_occlusion_recall is not None \
                 or args.diagnose_localization_hard_negatives is not None \
                 or args.output_dir is not None or any(
             value is not None
@@ -3487,6 +3726,7 @@ def main() -> int:
                 or args.refreeze_localization_policy is not None \
                 or args.evaluate_localization_policy is not None \
                 or args.evaluate_target_conditioned_fusion is not None \
+                or args.evaluate_occlusion_recall is not None \
                 or args.diagnose_localization_hard_negatives is not None \
                 or args.output_dir is not None or any(
             value is not None
@@ -3509,6 +3749,7 @@ def main() -> int:
                 or args.refreeze_localization_policy is not None \
                 or args.evaluate_localization_policy is not None \
                 or args.evaluate_target_conditioned_fusion is not None \
+                or args.evaluate_occlusion_recall is not None \
                 or args.diagnose_localization_hard_negatives is not None \
                 or args.output_dir is not None or any(
             value is not None
@@ -3528,6 +3769,7 @@ def main() -> int:
                 or args.refreeze_localization_policy is not None \
                 or args.evaluate_localization_policy is not None \
                 or args.evaluate_target_conditioned_fusion is not None \
+                or args.evaluate_occlusion_recall is not None \
                 or args.diagnose_localization_hard_negatives is not None \
                 or args.output_dir is not None or any(
             value is not None
@@ -3548,6 +3790,7 @@ def main() -> int:
         if args.refreeze_localization_policy is not None \
                 or args.evaluate_localization_policy is not None \
                 or args.evaluate_target_conditioned_fusion is not None \
+                or args.evaluate_occlusion_recall is not None \
                 or args.diagnose_localization_hard_negatives is not None \
                 or args.output_dir is not None or any(
             value is not None
@@ -3563,6 +3806,7 @@ def main() -> int:
     if args.refreeze_localization_policy is not None:
         if args.evaluate_localization_policy is not None \
                 or args.evaluate_target_conditioned_fusion is not None \
+                or args.evaluate_occlusion_recall is not None \
                 or args.diagnose_localization_hard_negatives is not None \
                 or args.output_dir is not None or any(
             value is not None
@@ -3581,6 +3825,7 @@ def main() -> int:
         return 0
     if args.evaluate_localization_policy is not None:
         if args.evaluate_target_conditioned_fusion is not None \
+                or args.evaluate_occlusion_recall is not None \
                 or args.diagnose_localization_hard_negatives is not None \
                 or args.output_dir is not None or any(
             value is not None
@@ -3598,7 +3843,8 @@ def main() -> int:
         print(json.dumps(report, sort_keys=True))
         return 0
     if args.evaluate_target_conditioned_fusion is not None:
-        if args.diagnose_localization_hard_negatives is not None \
+        if args.evaluate_occlusion_recall is not None \
+                or args.diagnose_localization_hard_negatives is not None \
                 or args.output_dir is not None or any(
             value is not None
             for value in (
@@ -3612,6 +3858,23 @@ def main() -> int:
             )
         report = evaluate_target_conditioned_fusion(
             *args.evaluate_target_conditioned_fusion,
+        )
+        print(json.dumps(report, sort_keys=True))
+        return 0
+    if args.evaluate_occlusion_recall is not None:
+        if args.diagnose_localization_hard_negatives is not None \
+                or args.output_dir is not None or any(
+            value is not None
+            for value in (
+                args.baseline_output, args.candidate_output, args.spatial_output,
+                args.target_aware_output,
+            )
+        ):
+            parser.error(
+                "--evaluate-occlusion-recall cannot be combined with other outputs"
+            )
+        report = evaluate_occlusion_recall_candidate(
+            *args.evaluate_occlusion_recall,
         )
         print(json.dumps(report, sort_keys=True))
         return 0

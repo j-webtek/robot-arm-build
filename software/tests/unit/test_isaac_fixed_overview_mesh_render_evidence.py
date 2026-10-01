@@ -412,6 +412,26 @@ def test_occlusion_recall_poses_are_fresh_train_and_development_only() -> None:
     assert not (set(sequences.values()) & prior)
 
 
+def test_recall_evaluation_poses_are_fresh_evaluation_only() -> None:
+    module = _renderer()
+    groups = module.RECALL_EVALUATION_POSE_GROUPS
+    sequences = module.RECALL_EVALUATION_SCHEDULE_POSE_SEQUENCES
+
+    assert groups["training"] == groups["development"] == ()
+    assert len(groups["evaluation"]) == 6
+    assert set(sequences.values()) == {73, 82, 91, 99, 105, 110}
+    prior = (
+        set(module.SCHEDULE_POSE_SEQUENCES.values())
+        | set(module.PERTURBATION_SCHEDULE_POSE_SEQUENCES.values())
+        | set(module.POLICY_EVALUATION_SCHEDULE_POSE_SEQUENCES.values())
+        | set(module.HARD_NEGATIVE_SCHEDULE_POSE_SEQUENCES.values())
+        | set(module.TARGET_IDENTITY_TRAINING_SCHEDULE_POSE_SEQUENCES.values())
+        | set(module.FUSION_EVALUATION_SCHEDULE_POSE_SEQUENCES.values())
+        | set(module.OCCLUSION_RECALL_SCHEDULE_POSE_SEQUENCES.values())
+    )
+    assert not (set(sequences.values()) & prior)
+
+
 def test_transit_dataset_policy_uses_fresh_disjoint_lighting() -> None:
     builder = _builder()
     renderer = _renderer()
@@ -828,6 +848,56 @@ def test_occlusion_recall_policy_and_lighting_are_fresh_and_disjoint() -> None:
     assert len({_sha256(value.tobytes()) for value in first}) == len(variants)
 
 
+def test_recall_evaluation_policy_and_lighting_are_fresh() -> None:
+    builder = _builder()
+    renderer = _renderer()
+    source = {
+        "schema": "tactevra.isaac_fixed_overview_mesh_render.v12",
+        "pose_groups": {
+            name: list(poses)
+            for name, poses in renderer.RECALL_EVALUATION_POSE_GROUPS.items()
+        },
+        "pose_results": [
+            {"pose_id": pose_id, "pose_group": group}
+            for group, pose_ids in renderer.RECALL_EVALUATION_POSE_GROUPS.items()
+            for pose_id in pose_ids
+        ],
+    }
+
+    schema, policy = builder._split_policy(source)
+    variants = builder.RECALL_EVALUATION_LIGHTING["evaluation"]
+    pixels = np.arange(48 * 48 * 3, dtype=np.uint8).reshape(48, 48, 3)
+    image = Image.fromarray(pixels, mode="RGB")
+    first = [np.asarray(builder._lighting(image, name)) for name in variants]
+    second = [np.asarray(builder._lighting(image, name)) for name in variants]
+    prior = {
+        name
+        for lighting in (
+            builder.LEGACY_SPLITS, builder.EXPANDED_LIGHTING,
+            builder.TRANSIT_LIGHTING, builder.SPECIFICITY_LIGHTING,
+            builder.TARGET_AWARE_LIGHTING, builder.PERTURBATION_LIGHTING,
+            builder.POLICY_EVALUATION_LIGHTING, builder.HARD_NEGATIVE_LIGHTING,
+            builder.TARGET_IDENTITY_TRAINING_LIGHTING,
+            builder.FUSION_EVALUATION_LIGHTING,
+            builder.OCCLUSION_RECALL_LIGHTING,
+        )
+        for split in lighting.values()
+        for name in (split["lighting"] if isinstance(split, dict) else split)
+    }
+
+    assert schema == "rocell.ai_official_mesh_occlusion_data.v12"
+    assert policy["train"]["poses"] == policy["train"]["lighting"] == ()
+    assert policy["development"]["poses"] \
+        == policy["development"]["lighting"] == ()
+    assert policy["evaluation"]["lighting"] == variants
+    assert not (set(variants) & prior)
+    assert all(
+        np.array_equal(left, right)
+        for left, right in zip(first, second, strict=True)
+    )
+    assert len({_sha256(value.tobytes()) for value in first}) == len(variants)
+
+
 def test_target_aware_lighting_families_are_deterministic_and_distinct() -> None:
     module = _builder()
     pixels = np.arange(48 * 48 * 3, dtype=np.uint8).reshape(48, 48, 3)
@@ -1205,6 +1275,7 @@ def test_target_identity_candidate_is_deterministic_and_keeps_evaluation_closed(
 
 def test_target_conditioned_fusion_is_deterministic_and_freezes_seed(
     tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     module = _builder()
     torch = pytest.importorskip("torch")
@@ -1417,6 +1488,73 @@ def test_target_conditioned_fusion_is_deterministic_and_freezes_seed(
     assert recall_first["hardware_writes"] == 0
     assert recall_first["physical_movements"] == 0
     assert recall_first["physical_authority"] is False
+
+    recall_evaluation = make_dataset(
+        "recall-evaluation", "rocell.ai_official_mesh_occlusion_data.v12",
+        "evaluation",
+    )
+    recall_checkpoint["localization_uncertainty_policy"].update({
+        "maximum_supported_planar_error_mm": 0.0,
+        "development_gate_met": True,
+        "above_bound_decision": "abstain_localization_uncertain",
+    })
+    recall_model_path = tmp_path / "recall-first" / "model.json"
+    recall_model_path.write_bytes(module._canonical(recall_checkpoint) + b"\n")
+    recall_scorecard_path = tmp_path / "recall-first" / "scorecard.json"
+    recall_scorecard = json.loads(recall_scorecard_path.read_text())
+    recall_scorecard.pop("scorecard_sha256")
+    recall_scorecard.update({
+        "model_sha256": _sha256(recall_model_path.read_bytes()),
+        "maximum_supported_planar_error_mm": 0.0,
+        "development_gate_met": True,
+        "evaluation_group_present": False,
+    })
+    recall_scorecard["scorecard_sha256"] = _sha256(
+        module._canonical(recall_scorecard)
+    )
+    recall_scorecard_path.write_bytes(module._canonical(recall_scorecard) + b"\n")
+    monkeypatch.setattr(
+        module, "EXPECTED_OCCLUSION_RECALL_MODEL_SHA256",
+        _sha256(recall_model_path.read_bytes()),
+    )
+    monkeypatch.setattr(
+        module, "EXPECTED_OCCLUSION_RECALL_SCORECARD_SHA256",
+        recall_scorecard["scorecard_sha256"],
+    )
+    recall_evaluation_first = module.evaluate_occlusion_recall_candidate(
+        recall_evaluation, tmp_path / "recall-first",
+        tmp_path / "recall-evaluation-first",
+    )
+    recall_evaluation_second = module.evaluate_occlusion_recall_candidate(
+        recall_evaluation, tmp_path / "recall-first",
+        tmp_path / "recall-evaluation-second",
+    )
+
+    assert recall_evaluation_first == recall_evaluation_second
+    assert (tmp_path / "recall-evaluation-first" / "report.json").read_bytes() \
+        == (tmp_path / "recall-evaluation-second" / "report.json").read_bytes()
+    assert recall_evaluation_first["schema"] \
+        == "rocell.ai_occlusion_recall_evaluation.v1"
+    assert recall_evaluation_first["evaluated_planar_error_bound_mm"] == 0.0
+    assert recall_evaluation_first["stress_tested_planar_error_mm"] == 1.0
+    assert recall_evaluation_first["evaluation_opened"] is True
+    assert recall_evaluation_first["evaluation_row_count"] == 12
+    assert recall_evaluation_first["hardware_writes"] == 0
+    assert recall_evaluation_first["physical_movements"] == 0
+    assert recall_evaluation_first["physical_authority"] is False
+    recall_evaluation_manifest_path = recall_evaluation / "manifest.json"
+    recall_evaluation_manifest = json.loads(
+        recall_evaluation_manifest_path.read_text()
+    )
+    recall_evaluation_manifest["dataset_sha256"] = "0" * 64
+    recall_evaluation_manifest_path.write_bytes(
+        module._canonical(recall_evaluation_manifest) + b"\n"
+    )
+    with pytest.raises(ValueError, match="manifest hash mismatch"):
+        module.evaluate_occlusion_recall_candidate(
+            recall_evaluation, tmp_path / "recall-first",
+            tmp_path / "recall-evaluation-tampered",
+        )
 
     evaluation_first = module.evaluate_target_conditioned_fusion(
         evaluation, candidate_dir, tmp_path / "evaluation-first",
