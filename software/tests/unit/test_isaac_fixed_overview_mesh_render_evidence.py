@@ -1056,3 +1056,140 @@ def test_target_identity_candidate_is_deterministic_and_keeps_evaluation_closed(
     assert first["hardware_writes"] == 0
     assert first["physical_movements"] == 0
     assert first["physical_authority"] is False
+
+
+def test_target_conditioned_fusion_is_deterministic_and_freezes_seed(
+    tmp_path: Path,
+) -> None:
+    module = _builder()
+    torch = pytest.importorskip("torch")
+
+    def make_dataset(name: str, schema: str, populated_split: str) -> Path:
+        dataset = tmp_path / name
+        image_dir = dataset / "images"
+        image_dir.mkdir(parents=True)
+        rows = []
+        for index in range(12):
+            expected_abstain = index % 3 == 0
+            target_id = "ENTER" if index % 2 == 0 else "EQUAL"
+            image = Image.new("RGB", (64, 64), (205, 205, 205))
+            draw = ImageDraw.Draw(image)
+            if expected_abstain:
+                draw.rectangle((26, 20, 38, 44), fill=(20, 20, 20))
+            else:
+                draw.rectangle((4, 4, 14, 14), fill=(20, 20, 20))
+            image_path = image_dir / f"{populated_split}-{index}.png"
+            image.save(image_path)
+            rows.append({
+                "id": f"{populated_split}-{index}",
+                "image_path": f"images/{image_path.name}",
+                "image_sha256": _sha256(image_path.read_bytes()),
+                "pose_id": f"pose-{index}",
+                "lighting_variant": "unit-light",
+                "device": "keyboard",
+                "target_id": target_id,
+                "center_px": [32, 32],
+                "safe_polygon_px": [[24, 24], [40, 24], [40, 40], [24, 40]],
+                "center_occluded": expected_abstain,
+                "safe_region_overlap_fraction": 0.5 if expected_abstain else 0.0,
+                "decision": "abstain" if expected_abstain else "target_visible",
+                "reason": "robot_occlusion" if expected_abstain else None,
+                "synthetic_only": True,
+            })
+        splits = {}
+        for split in ("train", "development", "evaluation"):
+            split_rows = rows if split == populated_split else []
+            payload = b"".join(module._canonical(row) + b"\n" for row in split_rows)
+            path = dataset / f"{split}.jsonl"
+            path.write_bytes(payload)
+            splits[split] = {
+                "path": path.name, "sha256": _sha256(payload),
+                "count": len(split_rows),
+                "abstain_count": sum(row["decision"] == "abstain" for row in split_rows),
+                "visible_count": sum(
+                    row["decision"] == "target_visible" for row in split_rows
+                ),
+            }
+        manifest = {
+            "schema": schema,
+            "scope": "SYNTHETIC_ONLY_NO_DEPLOYMENT_QUALIFICATION",
+            "target_catalog_sha256": "a" * 64,
+            "splits": splits,
+            "limitations": ["unit-test synthetic fixture"],
+        }
+        manifest["dataset_sha256"] = _sha256(module._canonical(manifest))
+        (dataset / "manifest.json").write_bytes(module._canonical(manifest) + b"\n")
+        return dataset
+
+    seed_dir = tmp_path / "seed"
+    seed_dir.mkdir()
+    generator = torch.Generator().manual_seed(190)
+    shapes = {
+        "features.0.weight": (8, 4, 3, 3), "features.0.bias": (8,),
+        "features.3.weight": (16, 8, 3, 3), "features.3.bias": (16,),
+        "classifier.weight": (1, 256), "classifier.bias": (1,),
+    }
+    state = {
+        name: {
+            "shape": list(shape),
+            "values": (
+                torch.randn(shape, generator=generator) * 0.02
+            ).reshape(-1).tolist(),
+        }
+        for name, shape in shapes.items()
+    }
+    seed_checkpoint = {
+        "schema": "rocell.ai_target_crop_localization_robust_spatial.v1",
+        "architecture": {"input": [4, 32, 32]},
+        "threshold": 0.1,
+        "localization_uncertainty_policy": {
+            "maximum_supported_planar_error_mm": 1.0,
+            "development_gate_met": True,
+        },
+        "evaluation_opened": False,
+        "state_dict": state,
+    }
+    seed_model_path = seed_dir / "model.json"
+    seed_model_path.write_bytes(module._canonical(seed_checkpoint) + b"\n")
+    seed_scorecard = {
+        "schema": "rocell.ai_localization_policy_refreeze.v1",
+        "model_sha256": _sha256(seed_model_path.read_bytes()),
+        "maximum_supported_planar_error_mm": 1.0,
+        "development_gate_met": True,
+        "hardware_writes": 0,
+        "physical_movements": 0,
+    }
+    seed_scorecard["scorecard_sha256"] = _sha256(module._canonical(seed_scorecard))
+    (seed_dir / "scorecard.json").write_bytes(module._canonical(seed_scorecard) + b"\n")
+    training = make_dataset(
+        "fusion-training", "rocell.ai_official_mesh_occlusion_data.v9", "train",
+    )
+    development = make_dataset(
+        "fusion-development", "rocell.ai_official_mesh_occlusion_data.v8", "development",
+    )
+
+    first = module.train_target_conditioned_fusion_candidate(
+        training, development, seed_dir, tmp_path / "fusion-first",
+    )
+    second = module.train_target_conditioned_fusion_candidate(
+        training, development, seed_dir, tmp_path / "fusion-second",
+    )
+    checkpoint = json.loads((tmp_path / "fusion-first" / "model.json").read_text())
+
+    assert first == second
+    assert (tmp_path / "fusion-first" / "model.json").read_bytes() == (
+        tmp_path / "fusion-second" / "model.json"
+    ).read_bytes()
+    assert checkpoint["schema"] == "rocell.ai_target_conditioned_spatial_fusion.v1"
+    assert checkpoint["architecture"]["fusion"].endswith("before_spatial_pooling")
+    assert checkpoint["architecture"]["frozen_visual_backbone"] is True
+    assert checkpoint["architecture"]["frozen_classifier"] is True
+    assert checkpoint["architecture"]["trainable_parameter_count"] == 224
+    assert checkpoint["state_dict"]["conv1.weight"] == state["features.0.weight"]
+    assert checkpoint["state_dict"]["conv2.weight"] == state["features.3.weight"]
+    assert checkpoint["state_dict"]["classifier.weight"] == state["classifier.weight"]
+    assert checkpoint["evaluation_opened"] is False
+    assert first["evaluation_group_present"] is False
+    assert first["hardware_writes"] == 0
+    assert first["physical_movements"] == 0
+    assert first["physical_authority"] is False

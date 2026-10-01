@@ -1099,7 +1099,7 @@ using v8 only for development before any new evaluation group is declared.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI/model | S2/S3 target-conditioned spatial-fusion candidate | `software/ai/train/build_official_mesh_occlusion_data.py`; focused simulator/perception tests; AI workplan, training README, and evidence ledger | `issue/190-isaac-sim-host` / claim pending | ACTIVE — condition local feature maps before pooling, train on v9, select only on v8, leave evaluation unopened |
+| AI/model | S2/S3 target-conditioned spatial-fusion candidate | `software/ai/train/build_official_mesh_occlusion_data.py`; focused simulator/perception tests; AI workplan, training README, and evidence ledger | `issue/190-isaac-sim-host` / `6df5bbc5d6bf560b6c8469f87f8fcca93bf1394f` | ACTIVE — condition local feature maps before pooling, train on v9, select only on v8, leave evaluation unopened |
 | Unclaimed | S2/S3 | physical-camera deployment qualification and safe-region-fit precision evidence | — | AVAILABLE |
 | ARM | S4 | collect four physical-original `camera_support_optics` bindings through onboarding, then run the ARM-070 intake; no synthetic promotion | ARM-071 | WAITING_FOR_ORIGINALS |
 

@@ -42,6 +42,9 @@ SPATIAL_CROP_SIZE = 32
 SPATIAL_PADDING = 24
 SPATIAL_EPOCHS = 8
 TARGET_IDENTITY_EPOCHS = 12
+TARGET_CONDITIONED_EPOCHS = 20
+TARGET_CONDITIONED_LEARNING_RATE = 0.001
+TARGET_CONDITIONED_MODULATION_SCALE = 0.25
 SPATIAL_BATCH_SIZE = 128
 SPATIAL_LEARNING_RATE = 0.002
 LEGACY_SPLITS = {
@@ -1811,6 +1814,291 @@ def train_target_identity_candidate(
     return scorecard
 
 
+def train_target_conditioned_fusion_candidate(
+    training_dataset_dir: Path,
+    development_dataset_dir: Path,
+    seed_candidate_dir: Path,
+    output_dir: Path,
+) -> dict[str, Any]:
+    """Learn target-conditioned feature modulation over a frozen safe baseline."""
+    import torch
+
+    training_dataset_dir = training_dataset_dir.resolve(strict=True)
+    development_dataset_dir = development_dataset_dir.resolve(strict=True)
+    seed_candidate_dir = seed_candidate_dir.resolve(strict=True)
+    output_dir = output_dir.resolve()
+    if output_dir.exists() and any(output_dir.iterdir()):
+        raise ValueError("target-conditioned output directory must be empty")
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    def verified_manifest(
+        directory: Path, expected_schema: str, expected_nonempty_split: str,
+    ) -> tuple[dict[str, Any], str]:
+        path = directory / "manifest.json"
+        manifest = json.loads(path.read_text(encoding="utf-8"))
+        claimed = manifest.pop("dataset_sha256", None)
+        if not isinstance(claimed, str) or _sha256(_canonical(manifest)) != claimed:
+            raise ValueError("target-conditioned dataset manifest hash mismatch")
+        manifest["dataset_sha256"] = claimed
+        if manifest.get("schema") != expected_schema \
+                or manifest.get("scope") != "SYNTHETIC_ONLY_NO_DEPLOYMENT_QUALIFICATION":
+            raise ValueError("target-conditioned dataset scope or schema mismatch")
+        for split in ("train", "development", "evaluation"):
+            count = manifest["splits"][split]["count"]
+            if (split == expected_nonempty_split) != (count > 0):
+                raise ValueError(
+                    f"target-conditioned dataset must be {expected_nonempty_split}-only"
+                )
+        return manifest, claimed
+
+    training_manifest, training_sha = verified_manifest(
+        training_dataset_dir, SCHEMA_V9, "train",
+    )
+    development_manifest, development_sha = verified_manifest(
+        development_dataset_dir, SCHEMA_V8, "development",
+    )
+    if training_manifest.get("target_catalog_sha256") \
+            != development_manifest.get("target_catalog_sha256"):
+        raise ValueError("target-conditioned datasets bind different target catalogs")
+
+    seed_model_path = seed_candidate_dir / "model.json"
+    seed_scorecard_path = seed_candidate_dir / "scorecard.json"
+    seed_checkpoint, seed_model = _load_spatial_checkpoint(seed_candidate_dir)
+    seed_policy = seed_checkpoint.get("localization_uncertainty_policy", {})
+    if seed_checkpoint.get("schema") \
+            != "rocell.ai_target_crop_localization_robust_spatial.v1" \
+            or seed_checkpoint.get("evaluation_opened") is not False \
+            or seed_policy.get("maximum_supported_planar_error_mm") != 1.0 \
+            or seed_policy.get("development_gate_met") is not True:
+        raise ValueError("target-conditioned seed must be the frozen 1 mm baseline")
+    seed_scorecard = json.loads(seed_scorecard_path.read_text(encoding="utf-8"))
+    claimed_seed_scorecard_sha = seed_scorecard.pop("scorecard_sha256", None)
+    if not isinstance(claimed_seed_scorecard_sha, str) \
+            or _sha256(_canonical(seed_scorecard)) != claimed_seed_scorecard_sha:
+        raise ValueError("target-conditioned seed scorecard hash mismatch")
+    seed_scorecard["scorecard_sha256"] = claimed_seed_scorecard_sha
+    seed_model_sha = _sha256(seed_model_path.read_bytes())
+    if seed_scorecard.get("schema") != "rocell.ai_localization_policy_refreeze.v1" \
+            or seed_scorecard.get("model_sha256") != seed_model_sha \
+            or seed_scorecard.get("maximum_supported_planar_error_mm") != 1.0 \
+            or seed_scorecard.get("development_gate_met") is not True \
+            or seed_scorecard.get("hardware_writes") != 0 \
+            or seed_scorecard.get("physical_movements") != 0:
+        raise ValueError("target-conditioned seed identity or authority mismatch")
+
+    torch.manual_seed(BASELINE_SEED)
+    torch.use_deterministic_algorithms(True)
+    torch.set_num_threads(1)
+    training_rows = _load_rows(training_dataset_dir, "train", training_manifest)
+    development_rows = _load_rows(
+        development_dataset_dir, "development", development_manifest,
+    )
+    catalog = _target_identity_catalog(training_rows)
+    if set(catalog) != set(_target_identity_catalog(development_rows)):
+        raise ValueError("target-conditioned training and development vocabularies differ")
+    descriptor_size = len(catalog) + 4
+
+    class TinyTargetConditionedFusion(torch.nn.Module):
+        def __init__(self) -> None:
+            super().__init__()
+            self.conv1 = seed_model.features[0]
+            self.pool1 = seed_model.features[2]
+            self.conv2 = seed_model.features[3]
+            self.pool2 = seed_model.features[5]
+            self.classifier = seed_model.classifier
+            self.conditioner = torch.nn.Linear(descriptor_size, 32)
+            torch.nn.init.zeros_(self.conditioner.weight)
+            torch.nn.init.zeros_(self.conditioner.bias)
+            for component in (self.conv1, self.conv2, self.classifier):
+                for parameter in component.parameters():
+                    parameter.requires_grad_(False)
+
+        def forward(self, values, descriptors):  # type: ignore[no-untyped-def]
+            features = torch.relu(self.conv1(values))
+            features = self.pool1(features)
+            features = torch.relu(self.conv2(features))
+            gamma, beta = self.conditioner(descriptors).chunk(2, dim=1)
+            scale = TARGET_CONDITIONED_MODULATION_SCALE
+            features = torch.relu(
+                features * (1.0 + scale * torch.tanh(gamma)[:, :, None, None])
+                + scale * beta[:, :, None, None]
+            )
+            return self.classifier(self.pool2(features).flatten(1)).squeeze(1)
+
+    augmentation = _training_augmentation_offsets()
+    row_offsets = []
+    augmentation_counts: dict[str, int] = {}
+    for row in training_rows:
+        index = int(_sha256(row["id"].encode("utf-8"))[:8], 16) % len(augmentation)
+        offset = augmentation[index]
+        row_offsets.append((offset["x_px"], offset["y_px"]))
+        key = f"{offset['x_mm']:g},{offset['y_mm']:g}"
+        augmentation_counts[key] = augmentation_counts.get(key, 0) + 1
+    training_crops, training_labels = _target_aware_crops(
+        training_dataset_dir, training_rows, row_offsets_px=row_offsets,
+    )
+    training_descriptors = _target_identity_descriptors(
+        training_dataset_dir, training_rows, catalog,
+    )
+    crop_tensor = torch.from_numpy(training_crops)
+    descriptor_tensor = torch.from_numpy(training_descriptors)
+    label_tensor = torch.from_numpy(training_labels)
+    model = TinyTargetConditionedFusion().cpu()
+    loss_fn = torch.nn.BCEWithLogitsLoss()
+    optimizer = torch.optim.Adam(
+        model.conditioner.parameters(),
+        lr=TARGET_CONDITIONED_LEARNING_RATE,
+        weight_decay=0.0001,
+    )
+    epoch_losses = []
+    for epoch in range(TARGET_CONDITIONED_EPOCHS):
+        generator = torch.Generator().manual_seed(BASELINE_SEED + epoch)
+        order = torch.randperm(len(crop_tensor), generator=generator)
+        total_loss = 0.0
+        for start in range(0, len(order), SPATIAL_BATCH_SIZE):
+            indices = order[start:start + SPATIAL_BATCH_SIZE]
+            optimizer.zero_grad(set_to_none=True)
+            loss = loss_fn(model(
+                crop_tensor[indices], descriptor_tensor[indices],
+            ), label_tensor[indices])
+            loss.backward()
+            optimizer.step()
+            total_loss += float(loss.detach()) * len(indices)
+        epoch_losses.append(total_loss / len(order))
+
+    model.eval()
+    development_descriptors = torch.from_numpy(_target_identity_descriptors(
+        development_dataset_dir, development_rows, catalog,
+    ))
+    development_labels: np.ndarray | None = None
+    probabilities_by_offset = []
+    for offset in _declared_mask_offsets():
+        crops, labels = _target_aware_crops(
+            development_dataset_dir,
+            development_rows,
+            (offset["x_px"], offset["y_px"]),
+        )
+        if development_labels is None:
+            development_labels = labels.astype(np.float64)
+        elif not np.array_equal(development_labels, labels):
+            raise RuntimeError("target-conditioned labels changed across offsets")
+        with torch.no_grad():
+            probabilities = torch.sigmoid(model(
+                torch.from_numpy(crops), development_descriptors,
+            )).numpy()
+        probabilities_by_offset.append((offset, probabilities))
+    assert development_labels is not None
+    threshold, uncertainty_bound, gate_met, measurements = _select_localization_policy(
+        development_rows, development_labels, probabilities_by_offset,
+    )
+
+    state = {
+        name: {
+            "shape": list(value.shape),
+            "values": value.detach().cpu().numpy().astype(np.float64).reshape(-1).tolist(),
+        }
+        for name, value in sorted(model.state_dict().items())
+    }
+    checkpoint = {
+        "schema": "rocell.ai_target_conditioned_spatial_fusion.v1",
+        "architecture": {
+            "image_input": [4, SPATIAL_CROP_SIZE, SPATIAL_CROP_SIZE],
+            "image_channels": [
+                "red", "green", "blue", "known_target_safe_region_mask",
+            ],
+            "descriptor_size": descriptor_size,
+            "descriptor_fields": [
+                f"one_hot:{target}" for target in catalog
+            ] + [
+                "center_x_fraction", "center_y_fraction",
+                "safe_width_fraction", "safe_height_fraction",
+            ],
+            "target_catalog": list(catalog),
+            "fusion": "descriptor_film_after_second_convolution_before_spatial_pooling",
+            "modulation_scale": TARGET_CONDITIONED_MODULATION_SCALE,
+            "frozen_visual_backbone": True,
+            "frozen_classifier": True,
+            "simulator_robot_mask_input": False,
+            "parameter_count": sum(value.numel() for value in model.parameters()),
+            "trainable_parameter_count": sum(
+                value.numel() for value in model.parameters() if value.requires_grad
+            ),
+        },
+        "seed": {
+            "model_sha256": seed_model_sha,
+            "scorecard_sha256": claimed_seed_scorecard_sha,
+            "maximum_supported_planar_error_mm": 1.0,
+        },
+        "training": {
+            "seed": BASELINE_SEED,
+            "device": "cpu",
+            "epochs": TARGET_CONDITIONED_EPOCHS,
+            "batch_size": SPATIAL_BATCH_SIZE,
+            "learning_rate": TARGET_CONDITIONED_LEARNING_RATE,
+            "optimizer": "adam",
+            "weight_decay": 0.0001,
+            "loss": "unweighted_binary_cross_entropy",
+            "augmentation": "one_deterministic_offset_per_training_row",
+            "augmentation_offsets_mm": augmentation,
+            "augmentation_counts": augmentation_counts,
+            "epoch_losses": epoch_losses,
+        },
+        "crop": {"size": SPATIAL_CROP_SIZE, "padding_px": SPATIAL_PADDING},
+        "threshold": threshold,
+        "localization_uncertainty_policy": {
+            "maximum_supported_planar_error_mm": uncertainty_bound,
+            "above_bound_decision": "abstain_localization_uncertain",
+            "development_gate_met": gate_met,
+            "maximum_missed_abstain_rate": 0.05,
+            "maximum_visible_false_abstain_rate": 0.05,
+        },
+        "target_catalog_sha256": training_manifest["target_catalog_sha256"],
+        "training_dataset_sha256": training_sha,
+        "selection_dataset_sha256": development_sha,
+        "selection_split": "development_only",
+        "evaluation_opened": False,
+        "state_dict": state,
+    }
+    checkpoint_path = output_dir / "model.json"
+    checkpoint_path.write_bytes(_canonical(checkpoint) + b"\n")
+    scorecard: dict[str, Any] = {
+        "schema": "rocell.ai_target_conditioned_fusion_candidate.v1",
+        "algorithm": "frozen_backbone_target_conditioned_prepool_film_v1",
+        "seed_model_sha256": seed_model_sha,
+        "seed_scorecard_sha256": claimed_seed_scorecard_sha,
+        "training_dataset_manifest_sha256": _sha256(
+            (training_dataset_dir / "manifest.json").read_bytes()
+        ),
+        "training_dataset_sha256": training_sha,
+        "development_dataset_manifest_sha256": _sha256(
+            (development_dataset_dir / "manifest.json").read_bytes()
+        ),
+        "development_dataset_sha256": development_sha,
+        "target_catalog_sha256": training_manifest["target_catalog_sha256"],
+        "model_sha256": _sha256(checkpoint_path.read_bytes()),
+        "selected_threshold": threshold,
+        "maximum_supported_planar_error_mm": uncertainty_bound,
+        "development_gate_met": gate_met,
+        "development_measurements": measurements,
+        "evaluation_group_present": False,
+        "promotion_status": "BLOCKED_AWAITING_FRESH_EVALUATION",
+        "hardware_writes": 0,
+        "physical_movements": 0,
+        "physical_authority": False,
+        "limitations": [
+            "training and policy selection use synthetic data only",
+            "target conditioning assumes the exact frozen target catalog",
+            "the visual backbone and classifier are frozen from synthetic development evidence",
+            "the uncertainty bound is synthetic and not a physical calibration",
+            "no evaluation group was created or opened",
+            "tool and camera-support geometry remain absent",
+        ],
+    }
+    scorecard["scorecard_sha256"] = _sha256(_canonical(scorecard))
+    (output_dir / "scorecard.json").write_bytes(_canonical(scorecard) + b"\n")
+    return scorecard
+
+
 def _load_spatial_checkpoint(candidate_dir: Path):  # type: ignore[no-untyped-def]
     import torch
 
@@ -2603,6 +2891,13 @@ def main() -> int:
         metavar=("TRAINING_DATASET_DIR", "DEVELOPMENT_DATASET_DIR", "OUTPUT_DIR"),
     )
     parser.add_argument(
+        "--train-target-conditioned-fusion", type=Path, nargs=4,
+        metavar=(
+            "TRAINING_DATASET_DIR", "DEVELOPMENT_DATASET_DIR",
+            "SEED_CANDIDATE_DIR", "OUTPUT_DIR",
+        ),
+    )
+    parser.add_argument(
         "--refreeze-localization-policy", type=Path, nargs=3,
         metavar=("DEVELOPMENT_DATASET_DIR", "CANDIDATE_DIR", "OUTPUT_DIR"),
     )
@@ -2619,6 +2914,7 @@ def main() -> int:
         if args.perturb_existing is not None \
                 or args.train_localization_robust is not None \
                 or args.train_target_identity is not None \
+                or args.train_target_conditioned_fusion is not None \
                 or args.refreeze_localization_policy is not None \
                 or args.evaluate_localization_policy is not None \
                 or args.diagnose_localization_hard_negatives is not None \
@@ -2638,6 +2934,7 @@ def main() -> int:
     if args.perturb_existing is not None:
         if args.train_localization_robust is not None \
                 or args.train_target_identity is not None \
+                or args.train_target_conditioned_fusion is not None \
                 or args.refreeze_localization_policy is not None \
                 or args.evaluate_localization_policy is not None \
                 or args.diagnose_localization_hard_negatives is not None \
@@ -2656,6 +2953,7 @@ def main() -> int:
         return 0
     if args.train_localization_robust is not None:
         if args.train_target_identity is not None \
+                or args.train_target_conditioned_fusion is not None \
                 or args.refreeze_localization_policy is not None \
                 or args.evaluate_localization_policy is not None \
                 or args.diagnose_localization_hard_negatives is not None \
@@ -2675,7 +2973,8 @@ def main() -> int:
         print(json.dumps(scorecard, sort_keys=True))
         return 0
     if args.train_target_identity is not None:
-        if args.refreeze_localization_policy is not None \
+        if args.train_target_conditioned_fusion is not None \
+                or args.refreeze_localization_policy is not None \
                 or args.evaluate_localization_policy is not None \
                 or args.diagnose_localization_hard_negatives is not None \
                 or args.output_dir is not None or any(
@@ -2689,6 +2988,25 @@ def main() -> int:
                 "--train-target-identity cannot be combined with other outputs"
             )
         scorecard = train_target_identity_candidate(*args.train_target_identity)
+        print(json.dumps(scorecard, sort_keys=True))
+        return 0
+    if args.train_target_conditioned_fusion is not None:
+        if args.refreeze_localization_policy is not None \
+                or args.evaluate_localization_policy is not None \
+                or args.diagnose_localization_hard_negatives is not None \
+                or args.output_dir is not None or any(
+            value is not None
+            for value in (
+                args.baseline_output, args.candidate_output, args.spatial_output,
+                args.target_aware_output,
+            )
+        ):
+            parser.error(
+                "--train-target-conditioned-fusion cannot be combined with other outputs"
+            )
+        scorecard = train_target_conditioned_fusion_candidate(
+            *args.train_target_conditioned_fusion,
+        )
         print(json.dumps(scorecard, sort_keys=True))
         return 0
     if args.refreeze_localization_policy is not None:
