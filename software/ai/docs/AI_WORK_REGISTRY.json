@@ -59,6 +59,7 @@
         "software/ai/rocell_ai/pixel_quality.py",
         "software/ai/rocell_ai/scene_evaluation.py",
         "software/ai/rocell_ai/scene_observation.py",
+        "software/ai/rocell_ai/self_occlusion_projection.py",
         "software/ai/rocell_ai/shadow_preview.py",
         "software/ai/rocell_ai/vision_fusion.py",
         "software/ai/rocell_ai/vision_runtime.py",
@@ -69,25 +70,28 @@
         "software/ai/tests/test_frozen_vision_manifest.py",
         "software/ai/tests/test_pixel_quality.py",
         "software/ai/tests/test_scene_evaluation.py",
+        "software/ai/tests/test_self_occlusion_projection.py",
         "software/ai/tests/test_shadow_preview.py",
         "software/ai/tests/test_vision_fusion.py",
         "software/ai/tests/test_vision_runtime.py",
         "software/ai/tests/test_visual_coordinates.py"
       ],
       "documentation_paths": [
+        "software/ai/docs/MODEL_TO_ARM_TRANSLATION_ASSURANCE.md",
         "software/ai/docs/REAL_PHOTO_SEED_ASSESSMENT.md",
         "software/ai/docs/VISION_MOTION_INTEGRATION.md"
       ],
       "evidence_paths": [
+        "software/ai/docs/EVIDENCE_LEDGER.md",
         "software/ai/eval/gemma3_4b_real_photo_seed_v0.json",
         "software/ai/eval/gemma3_4b_scene_stress_v0.json"
       ],
-      "current_result": "The provisional offline Gemma observer and deterministic pixel gate support image-bound shadow decisions; the real-photo seed is correlated setup evidence rather than deployment qualification.",
+      "current_result": "The image-bound scene path now includes a strict synthetic-only self-occlusion projection contract with exposure-time measured-feedback brackets, calibrated-dilation provenance, deterministic overlap decisions, and zero authority.",
       "limitations": [
-        "No final static-camera dataset or authenticated live capture service is qualified.",
-        "Scene confidence cannot substitute for coordinate uncertainty."
+        "No projection renderer, measured dilation artifact, or physical deployment qualification is installed.",
+        "Scene and projection evidence cannot substitute for localization uncertainty, collision screening, or arm-runtime admission."
       ],
-      "next_gate": "Collect final-camera physical originals and measure held-out scene and abstention behavior across the declared domain.",
+      "next_gate": "Implement and freeze the correlation-aware power tool, then produce projection evidence only from independently reviewed synthetic inputs before another render campaign.",
       "model_motion_batch_boundary": true,
       "controller_authority": false,
       "hardware_writes": 0,
@@ -322,5 +326,5 @@
   "controller_authority": false,
   "hardware_writes": 0,
   "physical_movements": 0,
-  "registry_sha256": "05f4b615b1ae1d9182d199b1e13ce66200f99b459996b113a3da0e58197961b9"
+  "registry_sha256": "786d845d58c62c68a0a458b21b03ee0ac56b59e5fd43c3c571d3dbc92e4705f6"
 }

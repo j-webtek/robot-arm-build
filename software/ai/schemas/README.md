@@ -27,6 +27,14 @@ still uninstalled. This schema is not a deployment-qualification schema.
 The [scene-observation schema](scene_observation_v0.schema.json) binds a strict
 multimodal scene assessment to exact image bytes. It describes visibility and
 image quality and cannot contain coordinates or controller commands.
+The synthetic [self-occlusion projection qualification](self_occlusion_projection_qualification_v1.schema.json)
+and [projection evidence](self_occlusion_projection_evidence_v1.schema.json)
+schemas bind a frame's device-exposure clock to bracketing measured-position
+receipt hashes, a qualified interpolation policy, commissioned camera/mesh
+identities, calibrated dilation provenance, and named-target overlap decisions.
+They deliberately carry no joint values, commands, transport fields, collision
+claims, or physical authority. Their only scope is `SYNTHETIC_OFFLINE_ONLY`;
+physical deployment requires a separately reviewed shared schema and evidence.
 The [shadow-preview schema](shadow_preview_v0.schema.json) binds one request,
 image, scene observation, precision observation, and guarded preview into a
 replayable offline record with zero hardware writes and no permit.
