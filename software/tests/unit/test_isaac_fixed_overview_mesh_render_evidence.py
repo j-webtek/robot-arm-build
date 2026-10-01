@@ -549,6 +549,24 @@ def test_pose_diverse_campaign_is_frozen_train_development_only() -> None:
     assert '"tactevra.isaac_fixed_overview_mesh_render.v15"' in source
 
 
+def test_grouped_neighborhood_campaign_is_frozen_train_development_only() -> None:
+    module = _renderer()
+    fixture_path = (
+        WORKSPACE / "software" / "ai" / "sim" / "evidence"
+        / "grouped_neighborhood_training_development_v1.json"
+    )
+    fixture = json.loads(fixture_path.read_text(encoding="utf-8"))
+    assert _sha256(fixture_path.read_bytes()) \
+        == module.EXPECTED_GROUPED_NEIGHBORHOOD_TRAINING_FILE_SHA256
+    assert fixture["sample_count"] == 320
+    assert fixture["split_counts"] == {"training": 256, "development": 64}
+    assert fixture["controller_commands"] == []
+    assert fixture["hardware_writes"] == fixture["physical_movements"] == 0
+    source = RENDERER_PATH.read_text(encoding="utf-8")
+    assert '"grouped-neighborhood-training-v16"' in source
+    assert '"tactevra.isaac_fixed_overview_mesh_render.v16"' in source
+
+
 def test_large_render_campaign_uses_bounded_tiled_atlas() -> None:
     module = _renderer()
     columns, rows, boxes = module._atlas_layout(module.ATLAS_CHUNK_SIZE)
@@ -612,6 +630,36 @@ def test_pose_diverse_split_lighting_and_cluster_bootstrap_are_deterministic() -
     assert first["pose_count"] == 4
     assert first["maximum_missed_abstain_upper_95"] == 0.0
     assert first["maximum_visible_false_abstain_upper_95"] == 0.0
+
+
+def test_grouped_neighborhood_split_and_lighting_are_fresh_and_deterministic() -> None:
+    module = _builder()
+    source = {
+        "schema": module.SOURCE_SCHEMA_V16,
+        "pose_groups": {
+            "training": ["train-a"], "development": ["dev-a"], "evaluation": [],
+        },
+        "pose_results": [
+            {"pose_id": "train-a", "pose_group": "training"},
+            {"pose_id": "dev-a", "pose_group": "development"},
+        ],
+    }
+    schema, policy = module._split_policy(source)
+    assert schema == module.SCHEMA_V16
+    assert policy["train"]["lighting"] == module.GROUPED_NEIGHBORHOOD_LIGHTING["train"]
+    assert policy["development"]["lighting"] \
+        == module.GROUPED_NEIGHBORHOOD_LIGHTING["development"]
+    assert not set(sum(module.GROUPED_NEIGHBORHOOD_LIGHTING.values(), ())).intersection(
+        sum(module.POSE_DIVERSE_LIGHTING.values(), ())
+    )
+    image = Image.new("RGB", (64, 48), (120, 100, 80))
+    first = [module._lighting(image, name) for name in sum(
+        module.GROUPED_NEIGHBORHOOD_LIGHTING.values(), ()
+    )]
+    second = [module._lighting(image, name) for name in sum(
+        module.GROUPED_NEIGHBORHOOD_LIGHTING.values(), ()
+    )]
+    assert all(np.array_equal(np.asarray(a), np.asarray(b)) for a, b in zip(first, second))
 
 
 def test_transit_dataset_policy_uses_fresh_disjoint_lighting() -> None:

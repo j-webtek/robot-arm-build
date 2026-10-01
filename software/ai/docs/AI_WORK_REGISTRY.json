@@ -67,7 +67,8 @@
         "software/ai/eval/diagnose_pose_cluster_development.py",
         "software/ai/eval/plan_clustered_occlusion_power.py",
         "software/ai/schemas/clustered_occlusion_power_plan_v1.schema.json",
-        "software/ai/sim/build_pose_diverse_training_fixture.py"
+        "software/ai/sim/build_pose_diverse_training_fixture.py",
+        "software/ai/sim/build_grouped_neighborhood_training_fixture.py"
       ],
       "test_paths": [
         "software/ai/tests/test_capture_binding.py",
@@ -353,5 +354,5 @@
   "controller_authority": false,
   "hardware_writes": 0,
   "physical_movements": 0,
-  "registry_sha256": "3e472b161db46c78826ef09386d940fb4cbe72dcdb26c792f946d92bd4bc9f8c"
+  "registry_sha256": "f3bce6d96363e870e18cb64fd05d417d120bb69e910c589e2ae5e0f1fa9e8b9a"
 }

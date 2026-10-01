@@ -29,6 +29,7 @@ SCHEMA_V12 = "rocell.ai_official_mesh_occlusion_data.v12"
 SCHEMA_V13 = "rocell.ai_official_mesh_occlusion_data.v13"
 SCHEMA_V14 = "rocell.ai_official_mesh_occlusion_data.v14"
 SCHEMA_V15 = "rocell.ai_official_mesh_occlusion_data.v15"
+SCHEMA_V16 = "rocell.ai_official_mesh_occlusion_data.v16"
 SOURCE_SCHEMA_V1 = "tactevra.isaac_fixed_overview_mesh_render.v1"
 SOURCE_SCHEMA_V2 = "tactevra.isaac_fixed_overview_mesh_render.v2"
 SOURCE_SCHEMA_V3 = "tactevra.isaac_fixed_overview_mesh_render.v3"
@@ -44,6 +45,7 @@ SOURCE_SCHEMA_V12 = "tactevra.isaac_fixed_overview_mesh_render.v12"
 SOURCE_SCHEMA_V13 = "tactevra.isaac_fixed_overview_mesh_render.v13"
 SOURCE_SCHEMA_V14 = "tactevra.isaac_fixed_overview_mesh_render.v14"
 SOURCE_SCHEMA_V15 = "tactevra.isaac_fixed_overview_mesh_render.v15"
+SOURCE_SCHEMA_V16 = "tactevra.isaac_fixed_overview_mesh_render.v16"
 MAXIMUM_SAFE_REGION_OVERLAP = 0.20
 BASELINE_SEED = 190
 BASELINE_CROP_SIZE = 16
@@ -66,6 +68,14 @@ SPECIFICITY_REBALANCE_POSITIVE_WEIGHT = 1.0
 POSE_DIVERSE_EPOCHS = 16
 POSE_DIVERSE_LEARNING_RATE = 0.00035
 POSE_DIVERSE_POSITIVE_WEIGHT = 1.5
+GROUPED_NEIGHBORHOOD_EPOCHS = 12
+GROUPED_NEIGHBORHOOD_LEARNING_RATE = 0.00015
+GROUPED_NEIGHBORHOOD_POSITIVE_WEIGHT = 1.75
+GROUPED_NEIGHBORHOOD_TARGET_EMPHASIS = 2.0
+GROUPED_NEIGHBORHOOD_EMPHASIZED_TARGETS = (
+    "MINUS", "U", "7", "1", "0", "PERIOD", "6",
+)
+GROUPED_NEIGHBORHOOD_BOOTSTRAP_SEED = 19016
 POSE_CLUSTER_BOOTSTRAP_SEED = 19015
 POSE_CLUSTER_BOOTSTRAP_SAMPLES = 2000
 EXPECTED_OCCLUSION_RECALL_MODEL_SHA256 = (
@@ -200,6 +210,16 @@ POSE_DIVERSE_LIGHTING = {
     ),
     "evaluation": (),
 }
+GROUPED_NEIGHBORHOOD_LIGHTING = {
+    "train": (
+        "grouped_neutral_drift", "grouped_left_warm_falloff",
+        "grouped_right_cool_occluder",
+    ),
+    "development": (
+        "grouped_overhead_low", "grouped_side_glare", "grouped_soft_focus",
+    ),
+    "evaluation": (),
+}
 NOMINAL_PIXELS_PER_MM = 2.0
 MASK_OFFSET_RADII_MM = (1.0, 2.0, 4.0, 8.0)
 MASK_OFFSET_DIRECTIONS = (
@@ -233,6 +253,7 @@ def _verify_source(path: Path) -> dict[str, Any]:
         SOURCE_SCHEMA_V13,
         SOURCE_SCHEMA_V14,
         SOURCE_SCHEMA_V15,
+        SOURCE_SCHEMA_V16,
     }:
         raise ValueError("official-mesh manifest schema mismatch")
     claimed = source.pop("receipt_sha256", None)
@@ -271,7 +292,10 @@ def _split_policy(source: dict[str, Any]) -> tuple[str, dict[str, dict[str, tupl
         expected = next(name for name, poses in normalized.items() if row["pose_id"] in poses)
         if row.get("pose_group") != expected:
             raise ValueError(f"pose group mismatch: {row['pose_id']}")
-    if source["schema"] == SOURCE_SCHEMA_V15:
+    if source["schema"] == SOURCE_SCHEMA_V16:
+        lighting = GROUPED_NEIGHBORHOOD_LIGHTING
+        schema = SCHEMA_V16
+    elif source["schema"] == SOURCE_SCHEMA_V15:
         lighting = POSE_DIVERSE_LIGHTING
         schema = SCHEMA_V15
     elif source["schema"] == SOURCE_SCHEMA_V14:
@@ -743,6 +767,54 @@ def _lighting(image: Image.Image, variant: str) -> Image.Image:
             weights[index] = 1.0
         blurred = rgb.filter(ImageFilter.Kernel((3, 3), weights, scale=3.0))
         return ImageEnhance.Brightness(blurred).enhance(1.03)
+    if variant == "grouped_neutral_drift":
+        return ImageEnhance.Contrast(
+            ImageEnhance.Brightness(rgb).enhance(0.95)
+        ).enhance(1.06)
+    if variant == "grouped_left_warm_falloff":
+        red, green, blue = rgb.split()
+        warmed = Image.merge("RGB", (
+            red.point(lambda value: min(255, round(value * 1.05))),
+            green,
+            blue.point(lambda value: round(value * 0.92)),
+        ))
+        alpha = Image.new("L", rgb.size, 0)
+        ImageDraw.Draw(alpha).polygon(
+            ((0, 0), (round(rgb.width * 0.32), 0),
+             (round(rgb.width * 0.45), rgb.height), (0, rgb.height)), fill=48,
+        )
+        return Image.composite(Image.new("RGB", rgb.size, "black"), warmed, alpha)
+    if variant == "grouped_right_cool_occluder":
+        red, green, blue = rgb.split()
+        cooled = Image.merge("RGB", (
+            red.point(lambda value: round(value * 0.93)), green,
+            blue.point(lambda value: min(255, round(value * 1.05))),
+        ))
+        alpha = Image.new("L", rgb.size, 0)
+        ImageDraw.Draw(alpha).polygon(
+            ((round(rgb.width * 0.72), 0), (rgb.width, 0),
+             (rgb.width, rgb.height), (round(rgb.width * 0.82), rgb.height)), fill=56,
+        )
+        return Image.composite(Image.new("RGB", rgb.size, "black"), cooled, alpha)
+    if variant == "grouped_overhead_low":
+        dimmed = ImageEnhance.Brightness(rgb).enhance(0.84)
+        alpha = Image.new("L", rgb.size, 0)
+        ImageDraw.Draw(alpha).polygon(
+            ((0, 0), (rgb.width, 0), (rgb.width, round(rgb.height * 0.34)),
+             (0, round(rgb.height * 0.48))), fill=50,
+        )
+        return Image.composite(Image.new("RGB", rgb.size, "black"), dimmed, alpha)
+    if variant == "grouped_side_glare":
+        alpha = Image.new("L", rgb.size, 0)
+        ImageDraw.Draw(alpha).ellipse(
+            (round(rgb.width * 0.52), round(rgb.height * 0.08),
+             round(rgb.width * 1.02), round(rgb.height * 0.92)), fill=70,
+        )
+        return Image.composite(Image.new("RGB", rgb.size, "white"), rgb, alpha)
+    if variant == "grouped_soft_focus":
+        return ImageEnhance.Contrast(
+            rgb.filter(ImageFilter.GaussianBlur(radius=1.1))
+        ).enhance(0.92)
     raise ValueError(f"unknown lighting variant: {variant}")
 
 

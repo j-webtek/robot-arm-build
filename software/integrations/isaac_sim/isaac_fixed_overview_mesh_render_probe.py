@@ -230,6 +230,9 @@ REBALANCE_EVALUATION_POSE_GROUPS = {
 EXPECTED_POSE_DIVERSE_TRAINING_FILE_SHA256 = (
     "38e169e1b8b59d77785470b44e5feca8dad78fce18bc6dab8459ffa3f867ae0e"
 )
+EXPECTED_GROUPED_NEIGHBORHOOD_TRAINING_FILE_SHA256 = (
+    "0e0f30a801a38720f0dc6ddc5b769c8447dda09a67a8577ddf37fd7fffb5abae"
+)
 SPECIFICITY_REBALANCE_SCHEDULE_POSE_SEQUENCES = {
     "rebalance_train_h_transit_33": 33,
     "rebalance_train_h_to_1_65": 65,
@@ -446,6 +449,7 @@ def main() -> int:
             "specificity-rebalance-v13",
             "rebalance-evaluation-v14",
             "pose-diverse-training-v15",
+            "grouped-neighborhood-training-v16",
         ),
         default="target-aware-v5",
     )
@@ -471,6 +475,7 @@ def main() -> int:
         expected_schedule_file_sha256 = {
             "rebalance-evaluation-v14": EXPECTED_STATIC_EVALUATION_POSE_FILE_SHA256,
             "pose-diverse-training-v15": EXPECTED_POSE_DIVERSE_TRAINING_FILE_SHA256,
+            "grouped-neighborhood-training-v16": EXPECTED_GROUPED_NEIGHBORHOOD_TRAINING_FILE_SHA256,
         }.get(args.campaign, EXPECTED_SCHEDULE_FILE_SHA256)
         if _sha256(schedule_bundle_path.read_bytes()) != expected_schedule_file_sha256:
             raise ValueError("schedule bundle identity mismatch")
@@ -493,7 +498,29 @@ def main() -> int:
         bootstrap = bootstrap_virtual_workcell(workspace)
         context = bootstrap.context
         schedule_by_sequence = {row["sequence"]: row for row in schedule_bundle["samples"]}
-        if args.campaign == "pose-diverse-training-v15":
+        if args.campaign == "grouped-neighborhood-training-v16":
+            if schedule_bundle.get("schema") \
+                    != "tactevra.ai_grouped_neighborhood_training_fixture.v1" \
+                    or schedule_bundle.get("scope") \
+                    != "SYNTHETIC_STATIC_PERCEPTION_TRAIN_DEVELOPMENT_ONLY" \
+                    or schedule_bundle.get("sample_count") != 320 \
+                    or schedule_bundle.get("split_counts") \
+                    != {"training": 256, "development": 64}:
+                raise ValueError("grouped-neighborhood fixture contract mismatch")
+            schedule_pose_sequences = {
+                row["pose_id"]: row["sequence"] for row in schedule_bundle["samples"]
+            }
+            pose_groups = {
+                split: tuple(
+                    row["pose_id"] for row in schedule_bundle["samples"]
+                    if row["split"] == split
+                )
+                for split in ("training", "development")
+            }
+            pose_groups["evaluation"] = ()
+            poses = {}
+            receipt_schema = "tactevra.isaac_fixed_overview_mesh_render.v16"
+        elif args.campaign == "pose-diverse-training-v15":
             if schedule_bundle.get("schema") \
                     != "tactevra.ai_pose_diverse_training_fixture.v1" \
                     or schedule_bundle.get("scope") \

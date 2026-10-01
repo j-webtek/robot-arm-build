@@ -1260,6 +1260,38 @@ rendering. The v15 threshold and checkpoint remain unchanged and rejected. No
 evaluation source was opened, no render was started, and deterministic geometry
 projection remains the primary known-self-occlusion path.
 
+### V16 grouped-neighborhood successor predeclaration
+
+The v16 design is frozen before Isaac rendering. Fixture file SHA-256
+`0e0f30a801a38720f0dc6ddc5b769c8447dda09a67a8577ddf37fd7fffb5abae`
+and canonical bundle SHA-256
+`21af4a14ed154d2cecd07cc995ea6c497fd356ef85d9181cf012885f924b2fa5`
+bind 256 training and 64 development poses. Three-interval source blocks are
+kept wholly within one split, and a one-block buffer separates every training
+block from every development block. The seven blocks implicated by the
+consumed v15 diagnostic are training-only. Exact v15 pose fractions are
+excluded. There is no evaluation split.
+
+The fresh training lighting identities are `grouped_neutral_drift`,
+`grouped_left_warm_falloff`, and `grouped_right_cool_occluder`. Development
+uses `grouped_overhead_low`, `grouped_side_glare`, and `grouped_soft_focus`.
+They are deterministic and disjoint from v15. The successor will seed exact
+v15 model SHA-256
+`9e09a13fae22cbbc75d2b15d9fe2e9cfbf76638d61220d635dd31272e298cfbb`,
+train `conv2`, `conditioner`, and `classifier` for 12 CPU epochs at learning
+rate `0.00015`, positive abstention weight `1.75`, and weight decay `0.0001`,
+and retain `conv1` frozen. Rows for `MINUS`, `U`, `7`, `1`, `0`, `PERIOD`, and
+`6` receive a fixed `2.0` target emphasis. These choices cannot be revised
+after render evidence is observed.
+
+Development policy selection retains the 2% missed-abstention and 10%
+visible-target false-abstention ceilings, nine declared offsets through the
+selected synthetic uncertainty ring, and a 2,000-resample whole-pose
+one-sided 95% bootstrap with seed `19016`. Both point and clustered gates must
+pass. V14 evaluation and v15 development remain consumed design evidence and
+cannot select or evaluate v16. A pass would remain synthetic research, with
+zero controller authority, zero hardware writes, and zero physical movement.
+
 ### Geometry-first occlusion revision after v14
 
 The next campaign treats known robot self-occlusion as a deterministic
@@ -1411,7 +1443,7 @@ authenticity remain external owner responsibilities.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI/model | S2/S3 v16 grouped-neighborhood successor | frozen fresh pose generator with source-interval group isolation, failed-neighborhood coverage, fresh lighting identities, separately frozen train/development split, target-aware training revision, clustered development gate, Isaac campaign, tests, registry, shared workplan, and evidence ledger | `issue/190-isaac-sim-host` / claim pending | ACTIVE — predeclare and commit all identities, splits, parameters, and gates before rendering; v14 evaluation and v15 development remain consumed and excluded from selection/evaluation; no arm-lane status, integration-gate change, hardware write, physical movement, or execution authority |
+| AI/model | S2/S3 v16 grouped-neighborhood successor | frozen fresh pose generator with source-interval group isolation, failed-neighborhood coverage, fresh lighting identities, separately frozen train/development split, target-aware training revision, clustered development gate, Isaac campaign, tests, registry, shared workplan, and evidence ledger | `issue/190-isaac-sim-host` / `83a2fbaed74900cdc0dc2bce6993e2b3b024806a` | ACTIVE — fixture, render contract, lighting identities, training parameters, target emphasis, bootstrap seed, and gates are predeclared before rendering; v14 evaluation and v15 development remain consumed and excluded from selection/evaluation; no arm-lane status, integration-gate change, hardware write, physical movement, or execution authority |
 | AI/model | S2/S3 v15 pose-cluster development diagnostic | development-only failure attribution by pose, target, lighting, and offset; frozen diagnostic schema and deterministic report; v16 design recommendation without evaluation access or candidate promotion; tests, registry, shared workplan, and evidence ledger | `issue/190-isaac-sim-host` / `048bb41acd2cbe6350672e82f402bc54d096cc12` | COMPLETE — 58 in-bound misses occur in seven poses/eight pose-target pairs; one pose/MINUS pair contributes 46.55% and the top two poses 70.69%; v15 remains rejected and consumed; no evaluation access, render, threshold change, promotion, arm-lane status, integration-gate change, hardware write, or physical movement |
 | AI/model | S2/S3 pose-diverse Isaac successor | frozen zero-authority static training/development pose fixture derived from the governed schedule; new v15 Isaac campaign and lighting identities excluding v14; deterministic dataset build; target-conditioned successor training and development-only selection; tests, registry, shared workplan, and evidence ledger | `issue/190-isaac-sim-host` / `ba1ea9bf43098eb37e6d17c4785d428023cc1aab` | COMPLETE — reproducible `FAILED_DEVELOPMENT_GATE`; point estimates pass at 1 mm but missed-abstention pose-cluster UCB is 3.2491% above the frozen 2% ceiling; no evaluation opening, localization qualification, arm-lane status, integration-gate change, hardware write, or physical movement |
 | AI/model | S2/S3 deterministic retained-package index builder | read-only custody-declaration schema and builder; exact regular-file inventory; campaign/digest/path/custody binding; deterministic evidence-index output; missing/extra/duplicate/symlink/changed-file rejection; tests, registry, shared workplan, and evidence ledger | `issue/190-isaac-sim-host` / `e7b16c2de470a1c01040fab0be17e22b44cdfcdc` | COMPLETE — inventories only already retained files and externally declared custody; no evidence generation, collection, qualification, arm-lane status, integration-gate change, hardware write, or physical movement |
