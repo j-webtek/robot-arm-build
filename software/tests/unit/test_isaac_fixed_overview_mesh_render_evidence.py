@@ -316,6 +316,21 @@ def test_mask_perturbation_poses_are_fresh_development_only() -> None:
     assert not (set(sequences.values()) & set(module.SCHEDULE_POSE_SEQUENCES.values()))
 
 
+def test_policy_evaluation_poses_are_fresh_evaluation_only() -> None:
+    module = _renderer()
+    groups = module.POLICY_EVALUATION_POSE_GROUPS
+    sequences = module.POLICY_EVALUATION_SCHEDULE_POSE_SEQUENCES
+
+    assert set(groups) == {"training", "development", "evaluation"}
+    assert groups["training"] == groups["development"] == ()
+    assert groups["evaluation"] == tuple(sequences)
+    assert set(sequences.values()) == {40, 48, 56, 76, 88, 100}
+    prior = set(module.SCHEDULE_POSE_SEQUENCES.values()) | set(
+        module.PERTURBATION_SCHEDULE_POSE_SEQUENCES.values()
+    )
+    assert not (set(sequences.values()) & prior)
+
+
 def test_transit_dataset_policy_uses_fresh_disjoint_lighting() -> None:
     builder = _builder()
     renderer = _renderer()
@@ -473,6 +488,58 @@ def test_mask_perturbation_policy_has_no_evaluation_group() -> None:
     assert policy["development"]["lighting"] == (
         "neutral_low", "bottom_shadow", "diagonal_motion_blur",
     )
+
+
+def test_policy_evaluation_dataset_policy_is_evaluation_only() -> None:
+    builder = _builder()
+    renderer = _renderer()
+    source = {
+        "schema": "tactevra.isaac_fixed_overview_mesh_render.v7",
+        "pose_groups": {
+            name: list(poses)
+            for name, poses in renderer.POLICY_EVALUATION_POSE_GROUPS.items()
+        },
+        "pose_results": [
+            {"pose_id": pose_id, "pose_group": group}
+            for group, pose_ids in renderer.POLICY_EVALUATION_POSE_GROUPS.items()
+            for pose_id in pose_ids
+        ],
+    }
+
+    schema, policy = builder._split_policy(source)
+
+    assert schema == "rocell.ai_official_mesh_occlusion_data.v7"
+    assert policy["train"]["poses"] == policy["development"]["poses"] == ()
+    assert policy["evaluation"]["poses"] == tuple(
+        renderer.POLICY_EVALUATION_POSE_GROUPS["evaluation"]
+    )
+    assert policy["evaluation"]["lighting"] == (
+        "amber_cast", "center_glare", "anti_diagonal_motion_blur",
+    )
+
+
+def test_policy_evaluation_lighting_is_deterministic_and_fresh() -> None:
+    module = _builder()
+    pixels = np.arange(48 * 48 * 3, dtype=np.uint8).reshape(48, 48, 3)
+    source = Image.fromarray(pixels, mode="RGB")
+    variants = module.POLICY_EVALUATION_LIGHTING["evaluation"]
+
+    first = [np.asarray(module._lighting(source, name)) for name in variants]
+    second = [np.asarray(module._lighting(source, name)) for name in variants]
+
+    assert all(np.array_equal(left, right) for left, right in zip(first, second, strict=True))
+    assert len({_sha256(value.tobytes()) for value in first}) == len(variants)
+    prior = {
+        name
+        for policy in (
+            module.LEGACY_SPLITS, module.EXPANDED_LIGHTING, module.TRANSIT_LIGHTING,
+            module.SPECIFICITY_LIGHTING, module.TARGET_AWARE_LIGHTING,
+            module.PERTURBATION_LIGHTING,
+        )
+        for split in policy.values()
+        for name in (split["lighting"] if isinstance(split, dict) else split)
+    }
+    assert not (set(variants) & prior)
 
 
 def test_target_aware_lighting_families_are_deterministic_and_distinct() -> None:

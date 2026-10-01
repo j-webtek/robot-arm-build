@@ -112,6 +112,19 @@ PERTURBATION_POSE_GROUPS = {
     "development": tuple(PERTURBATION_SCHEDULE_POSE_SEQUENCES),
     "evaluation": (),
 }
+POLICY_EVALUATION_SCHEDULE_POSE_SEQUENCES = {
+    "policy_eval_h_to_1_40": 40,
+    "policy_eval_h_to_1_48": 48,
+    "policy_eval_h_to_1_56": 56,
+    "policy_eval_1_to_period_76": 76,
+    "policy_eval_1_to_period_88": 88,
+    "policy_eval_1_to_period_100": 100,
+}
+POLICY_EVALUATION_POSE_GROUPS = {
+    "training": (),
+    "development": (),
+    "evaluation": tuple(POLICY_EVALUATION_SCHEDULE_POSE_SEQUENCES),
+}
 EXPECTED_SCHEDULE_FILE_SHA256 = "6a59ce143f5527c7a9ced09b08d5515644ea4fb859dd69691e08483eb020ee42"
 WIDTH = 1920
 HEIGHT = 1080
@@ -265,7 +278,10 @@ def main() -> int:
     parser.add_argument("--status-output", type=Path, required=True)
     parser.add_argument(
         "--campaign",
-        choices=("target-aware-v5", "mask-perturbation-v6"),
+        choices=(
+            "target-aware-v5", "mask-perturbation-v6",
+            "policy-evaluation-v7",
+        ),
         default="target-aware-v5",
     )
     args = parser.parse_args()
@@ -308,7 +324,12 @@ def main() -> int:
         bootstrap = bootstrap_virtual_workcell(workspace)
         context = bootstrap.context
         schedule_by_sequence = {row["sequence"]: row for row in schedule_bundle["samples"]}
-        if args.campaign == "mask-perturbation-v6":
+        if args.campaign == "policy-evaluation-v7":
+            poses = {}
+            schedule_pose_sequences = POLICY_EVALUATION_SCHEDULE_POSE_SEQUENCES
+            pose_groups = POLICY_EVALUATION_POSE_GROUPS
+            receipt_schema = "tactevra.isaac_fixed_overview_mesh_render.v7"
+        elif args.campaign == "mask-perturbation-v6":
             poses: dict[str, tuple[float, ...] | None] = {}
             schedule_pose_sequences = PERTURBATION_SCHEDULE_POSE_SEQUENCES
             pose_groups = PERTURBATION_POSE_GROUPS
