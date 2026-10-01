@@ -125,6 +125,19 @@ POLICY_EVALUATION_POSE_GROUPS = {
     "development": (),
     "evaluation": tuple(POLICY_EVALUATION_SCHEDULE_POSE_SEQUENCES),
 }
+HARD_NEGATIVE_SCHEDULE_POSE_SEQUENCES = {
+    "hardneg_h_to_1_42": 42,
+    "hardneg_h_to_1_50": 50,
+    "hardneg_h_to_1_58": 58,
+    "hardneg_1_to_period_78": 78,
+    "hardneg_1_to_period_90": 90,
+    "hardneg_1_to_period_98": 98,
+}
+HARD_NEGATIVE_POSE_GROUPS = {
+    "training": (),
+    "development": tuple(HARD_NEGATIVE_SCHEDULE_POSE_SEQUENCES),
+    "evaluation": (),
+}
 EXPECTED_SCHEDULE_FILE_SHA256 = "6a59ce143f5527c7a9ced09b08d5515644ea4fb859dd69691e08483eb020ee42"
 WIDTH = 1920
 HEIGHT = 1080
@@ -280,7 +293,7 @@ def main() -> int:
         "--campaign",
         choices=(
             "target-aware-v5", "mask-perturbation-v6",
-            "policy-evaluation-v7",
+            "policy-evaluation-v7", "hard-negative-v8",
         ),
         default="target-aware-v5",
     )
@@ -324,7 +337,12 @@ def main() -> int:
         bootstrap = bootstrap_virtual_workcell(workspace)
         context = bootstrap.context
         schedule_by_sequence = {row["sequence"]: row for row in schedule_bundle["samples"]}
-        if args.campaign == "policy-evaluation-v7":
+        if args.campaign == "hard-negative-v8":
+            poses = {}
+            schedule_pose_sequences = HARD_NEGATIVE_SCHEDULE_POSE_SEQUENCES
+            pose_groups = HARD_NEGATIVE_POSE_GROUPS
+            receipt_schema = "tactevra.isaac_fixed_overview_mesh_render.v8"
+        elif args.campaign == "policy-evaluation-v7":
             poses = {}
             schedule_pose_sequences = POLICY_EVALUATION_SCHEDULE_POSE_SEQUENCES
             pose_groups = POLICY_EVALUATION_POSE_GROUPS

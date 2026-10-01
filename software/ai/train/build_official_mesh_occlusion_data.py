@@ -21,6 +21,7 @@ SCHEMA_V4 = "rocell.ai_official_mesh_occlusion_data.v4"
 SCHEMA_V5 = "rocell.ai_official_mesh_occlusion_data.v5"
 SCHEMA_V6 = "rocell.ai_official_mesh_occlusion_data.v6"
 SCHEMA_V7 = "rocell.ai_official_mesh_occlusion_data.v7"
+SCHEMA_V8 = "rocell.ai_official_mesh_occlusion_data.v8"
 SOURCE_SCHEMA_V1 = "tactevra.isaac_fixed_overview_mesh_render.v1"
 SOURCE_SCHEMA_V2 = "tactevra.isaac_fixed_overview_mesh_render.v2"
 SOURCE_SCHEMA_V3 = "tactevra.isaac_fixed_overview_mesh_render.v3"
@@ -28,6 +29,7 @@ SOURCE_SCHEMA_V4 = "tactevra.isaac_fixed_overview_mesh_render.v4"
 SOURCE_SCHEMA_V5 = "tactevra.isaac_fixed_overview_mesh_render.v5"
 SOURCE_SCHEMA_V6 = "tactevra.isaac_fixed_overview_mesh_render.v6"
 SOURCE_SCHEMA_V7 = "tactevra.isaac_fixed_overview_mesh_render.v7"
+SOURCE_SCHEMA_V8 = "tactevra.isaac_fixed_overview_mesh_render.v8"
 MAXIMUM_SAFE_REGION_OVERLAP = 0.20
 BASELINE_SEED = 190
 BASELINE_CROP_SIZE = 16
@@ -91,6 +93,13 @@ POLICY_EVALUATION_LIGHTING = {
     "development": (),
     "evaluation": ("amber_cast", "center_glare", "anti_diagonal_motion_blur"),
 }
+HARD_NEGATIVE_LIGHTING = {
+    "train": (),
+    "development": (
+        "amber_low_contrast", "right_center_glare", "offset_anti_diagonal_blur",
+    ),
+    "evaluation": (),
+}
 NOMINAL_PIXELS_PER_MM = 2.0
 MASK_OFFSET_RADII_MM = (1.0, 2.0, 4.0, 8.0)
 MASK_OFFSET_DIRECTIONS = (
@@ -116,6 +125,7 @@ def _verify_source(path: Path) -> dict[str, Any]:
         SOURCE_SCHEMA_V1, SOURCE_SCHEMA_V2, SOURCE_SCHEMA_V3, SOURCE_SCHEMA_V4,
         SOURCE_SCHEMA_V5, SOURCE_SCHEMA_V6,
         SOURCE_SCHEMA_V7,
+        SOURCE_SCHEMA_V8,
     }:
         raise ValueError("official-mesh manifest schema mismatch")
     claimed = source.pop("receipt_sha256", None)
@@ -154,7 +164,10 @@ def _split_policy(source: dict[str, Any]) -> tuple[str, dict[str, dict[str, tupl
         expected = next(name for name, poses in normalized.items() if row["pose_id"] in poses)
         if row.get("pose_group") != expected:
             raise ValueError(f"pose group mismatch: {row['pose_id']}")
-    if source["schema"] == SOURCE_SCHEMA_V7:
+    if source["schema"] == SOURCE_SCHEMA_V8:
+        lighting = HARD_NEGATIVE_LIGHTING
+        schema = SCHEMA_V8
+    elif source["schema"] == SOURCE_SCHEMA_V7:
         lighting = POLICY_EVALUATION_LIGHTING
         schema = SCHEMA_V7
     elif source["schema"] == SOURCE_SCHEMA_V6:
@@ -336,6 +349,28 @@ def _lighting(image: Image.Image, variant: str) -> Image.Image:
     if variant == "anti_diagonal_motion_blur":
         weights = [0.0] * 25
         for index in (4, 8, 12, 16, 20):
+            weights[index] = 1.0
+        return rgb.filter(ImageFilter.Kernel((5, 5), weights, scale=5.0))
+    if variant == "amber_low_contrast":
+        red, green, blue = rgb.split()
+        amber = Image.merge("RGB", (
+            red.point(lambda value: min(255, round(value * 1.06))),
+            green.point(lambda value: min(255, round(value * 1.01))),
+            blue.point(lambda value: round(value * 0.86)),
+        ))
+        return ImageEnhance.Contrast(amber).enhance(0.74)
+    if variant == "right_center_glare":
+        overlay = Image.new("RGB", rgb.size, "white")
+        alpha = Image.new("L", rgb.size, 0)
+        ImageDraw.Draw(alpha).ellipse(
+            (round(rgb.width * 0.43), round(rgb.height * 0.12),
+             round(rgb.width * 0.92), round(rgb.height * 0.78)),
+            fill=96,
+        )
+        return Image.composite(overlay, rgb, alpha)
+    if variant == "offset_anti_diagonal_blur":
+        weights = [0.0] * 25
+        for index in (3, 7, 11, 15, 19):
             weights[index] = 1.0
         return rgb.filter(ImageFilter.Kernel((5, 5), weights, scale=5.0))
     raise ValueError(f"unknown lighting variant: {variant}")
@@ -1763,6 +1798,140 @@ def evaluate_localization_policy(
     return report
 
 
+def diagnose_localization_hard_negatives(
+    development_dataset_dir: Path,
+    candidate_dir: Path,
+    output_dir: Path,
+) -> dict[str, Any]:
+    """Measure a frozen policy on fresh development hard negatives without selection."""
+    import torch
+
+    development_dataset_dir = development_dataset_dir.resolve(strict=True)
+    candidate_dir = candidate_dir.resolve(strict=True)
+    output_dir = output_dir.resolve()
+    if output_dir.exists() and any(output_dir.iterdir()):
+        raise ValueError("hard-negative diagnostic output directory must be empty")
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    dataset_path = development_dataset_dir / "manifest.json"
+    dataset = json.loads(dataset_path.read_text(encoding="utf-8"))
+    claimed_dataset_sha = dataset.pop("dataset_sha256", None)
+    if not isinstance(claimed_dataset_sha, str) \
+            or _sha256(_canonical(dataset)) != claimed_dataset_sha:
+        raise ValueError("hard-negative dataset manifest hash mismatch")
+    dataset["dataset_sha256"] = claimed_dataset_sha
+    if dataset.get("schema") != SCHEMA_V8 \
+            or dataset.get("scope") != "SYNTHETIC_ONLY_NO_DEPLOYMENT_QUALIFICATION":
+        raise ValueError("hard-negative dataset scope or schema mismatch")
+    if dataset["splits"]["train"]["count"] != 0 \
+            or dataset["splits"]["evaluation"]["count"] != 0 \
+            or dataset["splits"]["development"]["count"] == 0:
+        raise ValueError("hard-negative dataset must be development-only")
+
+    model_path = candidate_dir / "model.json"
+    scorecard_path = candidate_dir / "scorecard.json"
+    checkpoint, model = _load_spatial_checkpoint(candidate_dir)
+    policy = checkpoint.get("localization_uncertainty_policy", {})
+    if checkpoint.get("schema") \
+            != "rocell.ai_target_crop_localization_robust_spatial.v1" \
+            or checkpoint.get("evaluation_opened") is not False \
+            or policy.get("maximum_supported_planar_error_mm") != 1.0:
+        raise ValueError("hard-negative diagnostic requires frozen 1 mm checkpoint")
+    source_scorecard = json.loads(scorecard_path.read_text(encoding="utf-8"))
+    claimed_scorecard_sha = source_scorecard.pop("scorecard_sha256", None)
+    if not isinstance(claimed_scorecard_sha, str) \
+            or _sha256(_canonical(source_scorecard)) != claimed_scorecard_sha:
+        raise ValueError("hard-negative candidate scorecard hash mismatch")
+    source_scorecard["scorecard_sha256"] = claimed_scorecard_sha
+    model_sha = _sha256(model_path.read_bytes())
+    if source_scorecard.get("schema") != "rocell.ai_localization_policy_refreeze.v1" \
+            or source_scorecard.get("model_sha256") != model_sha \
+            or source_scorecard.get("hardware_writes") != 0 \
+            or source_scorecard.get("physical_movements") != 0:
+        raise ValueError("hard-negative candidate identity or authority mismatch")
+
+    rows = _load_rows(development_dataset_dir, "development", dataset)
+    offsets = [
+        offset for offset in _declared_mask_offsets()
+        if max(abs(offset["x_mm"]), abs(offset["y_mm"])) <= 1.0
+    ]
+    labels_ref: np.ndarray | None = None
+    measurements = []
+    target_failures: dict[str, dict[str, int]] = {}
+    rows_by_id = {row["id"]: row for row in rows}
+    threshold = float(checkpoint["threshold"])
+    for offset in offsets:
+        crops, labels = _target_aware_crops(
+            development_dataset_dir, rows, (offset["x_px"], offset["y_px"]),
+        )
+        labels = labels.astype(np.float64)
+        if labels_ref is None:
+            labels_ref = labels
+        elif not np.array_equal(labels_ref, labels):
+            raise RuntimeError("hard-negative labels changed across offsets")
+        with torch.no_grad():
+            probabilities = torch.sigmoid(model(torch.from_numpy(crops))).numpy()
+        metrics = _metrics(rows, labels, probabilities, threshold)
+        for failure in metrics["failures"]:
+            row = rows_by_id[failure["id"]]
+            key = f"{row['device']}:{row['target_id']}"
+            counts = target_failures.setdefault(
+                key, {"false_abstain": 0, "missed_abstain": 0},
+            )
+            counts[
+                "missed_abstain"
+                if failure["expected"] == "abstain" else "false_abstain"
+            ] += 1
+        measurements.append({"offset": offset, "metrics": metrics})
+    assert labels_ref is not None
+    abstain_count = int(labels_ref.sum())
+    visible_count = len(labels_ref) - abstain_count
+    if abstain_count == 0 or visible_count == 0:
+        raise ValueError("hard-negative diagnostic requires abstain and visible rows")
+    missed_rates = [
+        item["metrics"]["confusion"]["missed_abstain"] / abstain_count
+        for item in measurements
+    ]
+    false_rates = [
+        item["metrics"]["confusion"]["false_abstain"] / visible_count
+        for item in measurements
+    ]
+    report: dict[str, Any] = {
+        "schema": "rocell.ai_localization_hard_negative_diagnostic.v1",
+        "scope": "SYNTHETIC_DEVELOPMENT_ONLY_NO_DEPLOYMENT_QUALIFICATION",
+        "dataset_manifest_sha256": _sha256(dataset_path.read_bytes()),
+        "dataset_sha256": claimed_dataset_sha,
+        "model_sha256": model_sha,
+        "source_scorecard_sha256": claimed_scorecard_sha,
+        "threshold": threshold,
+        "measured_planar_error_bound_mm": 1.0,
+        "selection_performed": False,
+        "training_performed": False,
+        "evaluation_group_present": False,
+        "development_row_count": len(rows),
+        "abstain_row_count": abstain_count,
+        "visible_row_count": visible_count,
+        "maximum_missed_abstain_rate": max(missed_rates),
+        "maximum_visible_false_abstain_rate": max(false_rates),
+        "measurements": measurements,
+        "per_target_failure_counts_across_offsets": target_failures,
+        "promotion_status": "BLOCKED_DEVELOPMENT_ONLY",
+        "hardware_writes": 0,
+        "physical_movements": 0,
+        "physical_authority": False,
+        "limitations": [
+            "all diagnostic images, labels, geometry, and offsets are synthetic",
+            "the consumed v7 evaluation informed this separate development campaign",
+            "this report performs no threshold selection or training",
+            "no evaluation group was created or opened",
+            "tool and camera-support geometry remain absent",
+        ],
+    }
+    report["report_sha256"] = _sha256(_canonical(report))
+    (output_dir / "report.json").write_bytes(_canonical(report) + b"\n")
+    return report
+
+
 def evaluate_target_mask_perturbations(
     source_manifest: Path,
     dataset_dir: Path,
@@ -2122,12 +2291,17 @@ def main() -> int:
         "--evaluate-localization-policy", type=Path, nargs=3,
         metavar=("EVALUATION_DATASET_DIR", "CANDIDATE_DIR", "OUTPUT_DIR"),
     )
+    parser.add_argument(
+        "--diagnose-localization-hard-negatives", type=Path, nargs=3,
+        metavar=("DEVELOPMENT_DATASET_DIR", "CANDIDATE_DIR", "OUTPUT_DIR"),
+    )
     args = parser.parse_args()
     if args.record_existing is not None:
         if args.perturb_existing is not None \
                 or args.train_localization_robust is not None \
                 or args.refreeze_localization_policy is not None \
                 or args.evaluate_localization_policy is not None \
+                or args.diagnose_localization_hard_negatives is not None \
                 or args.output_dir is not None or any(
             value is not None
             for value in (
@@ -2145,6 +2319,7 @@ def main() -> int:
         if args.train_localization_robust is not None \
                 or args.refreeze_localization_policy is not None \
                 or args.evaluate_localization_policy is not None \
+                or args.diagnose_localization_hard_negatives is not None \
                 or args.output_dir is not None or any(
             value is not None
             for value in (
@@ -2161,6 +2336,7 @@ def main() -> int:
     if args.train_localization_robust is not None:
         if args.refreeze_localization_policy is not None \
                 or args.evaluate_localization_policy is not None \
+                or args.diagnose_localization_hard_negatives is not None \
                 or args.output_dir is not None or any(
             value is not None
             for value in (
@@ -2178,6 +2354,7 @@ def main() -> int:
         return 0
     if args.refreeze_localization_policy is not None:
         if args.evaluate_localization_policy is not None \
+                or args.diagnose_localization_hard_negatives is not None \
                 or args.output_dir is not None or any(
             value is not None
             for value in (
@@ -2194,7 +2371,8 @@ def main() -> int:
         print(json.dumps(scorecard, sort_keys=True))
         return 0
     if args.evaluate_localization_policy is not None:
-        if args.output_dir is not None or any(
+        if args.diagnose_localization_hard_negatives is not None \
+                or args.output_dir is not None or any(
             value is not None
             for value in (
                 args.baseline_output, args.candidate_output, args.spatial_output,
@@ -2206,6 +2384,23 @@ def main() -> int:
             )
         report = evaluate_localization_policy(
             *args.evaluate_localization_policy,
+        )
+        print(json.dumps(report, sort_keys=True))
+        return 0
+    if args.diagnose_localization_hard_negatives is not None:
+        if args.output_dir is not None or any(
+            value is not None
+            for value in (
+                args.baseline_output, args.candidate_output, args.spatial_output,
+                args.target_aware_output,
+            )
+        ):
+            parser.error(
+                "--diagnose-localization-hard-negatives cannot be combined "
+                "with other outputs"
+            )
+        report = diagnose_localization_hard_negatives(
+            *args.diagnose_localization_hard_negatives,
         )
         print(json.dumps(report, sort_keys=True))
         return 0
