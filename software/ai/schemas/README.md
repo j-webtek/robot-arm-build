@@ -286,3 +286,10 @@ The [clustered occlusion power plan](clustered_occlusion_power_plan_v1.schema.js
 records a synthetic-only, aggregate correlation and sample-size calculation.
 It discloses no pose, target, row, image, or failure identities; it cannot tune
 a model, open an evaluation set, qualify deployment, or grant physical authority.
+The [parked-pose campaign](parked_pose_qualification_campaign_v1.schema.json)
+and [result](parked_pose_qualification_result_v1.schema.json) keep synthetic
+perturbation evidence separate from authorized physical park-and-settle cycles.
+They bind exposure, measured-feedback, projection, residual-observer, ChArUco,
+repeatability, and collection-effect evidence without carrying joint values or
+commands. Even complete evidence advances only to owner review of a supervised
+parked-observation workflow; physical deployment qualification remains false.

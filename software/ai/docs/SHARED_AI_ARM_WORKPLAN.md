@@ -1325,9 +1325,21 @@ poses (`0.936` empirical and `0.927` pessimistic). This is a broad synthetic
 mid-motion planning result; it neither opens a new evaluation set nor replaces
 the separate parked-pose synthetic and physical qualification.
 
+The parked-pose protocol is now structurally implemented without fabricating a
+campaign. Its strict campaign binds the commissioned park identity, camera and
+board geometry, projection qualification, residual model, fusion policy,
+repeatability and ChArUco qualifications, runtime-like synthetic projections,
+and authorized physical collection effects. Physical completion requires at
+least 30 settled park cycles across at least three sessions plus visible, known
+self-occlusion, cable, and tool cases. Both geometric and residual paths must
+detect their assigned hazards, and conservative OR fusion is rederived rather
+than trusted. The evaluator reports exact two-sided 95% Clopper-Pearson bounds.
+The retained receipt remains `INCOMPLETE` with `campaign_not_collected`; it has
+no campaign identity, writes, movements, authority, or deployment claim.
+
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI/model | S2/S3 parked-pose qualification protocol | strict synthetic/physical campaign manifests and observation records; completed-park/session independence checks; ChArUco drift and repeatability bindings; residual obstruction and fused-decision scoring; exact binomial bounds; explicit incomplete receipt, tests, registry, shared workplan, and evidence ledger | `issue/190-isaac-sim-host` / pending | ACTIVE — protocol and offline evaluator only; no capture fabrication, model qualification, deployment claim, arm-lane status, integration-gate change, hardware write, or physical movement |
+| AI/model | S2/S3 parked-pose qualification protocol | strict synthetic/physical campaign manifests and observation records; completed-park/session independence checks; ChArUco drift and repeatability bindings; residual obstruction and fused-decision scoring; exact binomial bounds; explicit incomplete receipt, tests, registry, shared workplan, and evidence ledger | `issue/190-isaac-sim-host` / implementation pending | IMPLEMENTED, VALIDATION PENDING — retained receipt is explicitly incomplete because no campaign was collected; no model qualification, deployment claim, arm-lane status, integration-gate change, hardware write, or physical movement |
 | AI/model | S2/S3 correlation-aware evaluation power tool | grouped v13/v14 intra-pose-correlation estimation; empirical upper-bound and pessimistic-correlation scenarios; deterministic pose-cluster simulation and sample-size recommendation; synthetic planning receipt, tests, registry, shared workplan, and evidence ledger | `issue/190-isaac-sim-host` / `3fe8e57eca77dcd369be79e188d6ae2b0724d39a` | COMPLETE — aggregate synthetic planning only; 2,048-pose broad-campaign recommendation; no candidate selection, new render compute, arm-lane status, or integration-gate change |
 | Unclaimed | S2/S3 | physical-camera deployment qualification and safe-region-fit precision evidence | — | AVAILABLE |
 | ARM | S4 | collect four physical-original `camera_support_optics` bindings through onboarding, then run the ARM-070 intake; no synthetic promotion | ARM-071 | WAITING_FOR_ORIGINALS |

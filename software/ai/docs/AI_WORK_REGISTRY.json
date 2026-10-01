@@ -259,13 +259,17 @@
         "software/ai/schemas/physical_camera_localization_evaluation_result_v1.schema.json",
         "software/ai/schemas/physical_camera_localization_campaign_v1.schema.json",
         "software/ai/schemas/physical_camera_localization_ground_truth_v1.schema.json",
-        "software/ai/schemas/physical_camera_localization_preflight_receipt_v1.schema.json"
+        "software/ai/schemas/physical_camera_localization_preflight_receipt_v1.schema.json",
+        "software/ai/eval/evaluate_parked_pose_qualification.py",
+        "software/ai/schemas/parked_pose_qualification_campaign_v1.schema.json",
+        "software/ai/schemas/parked_pose_qualification_result_v1.schema.json"
       ],
       "test_paths": [
         "software/ai/tests/test_physical_camera_localization_campaign.py",
         "software/ai/tests/test_physical_camera_localization_evaluator.py",
         "software/ai/tests/test_pose_checkpoint_external_artifact_result.py",
-        "software/ai/tests/test_pose_checkpoint_external_artifact_source.py"
+        "software/ai/tests/test_pose_checkpoint_external_artifact_source.py",
+        "software/ai/tests/test_parked_pose_qualification.py"
       ],
       "documentation_paths": [
         "software/ai/docs/PHYSICAL_CAMERA_LOCALIZATION_CAMPAIGN.md",
@@ -274,14 +278,16 @@
       "evidence_paths": [
         "software/ai/eval/arm070_camera_support_optics_readiness.json",
         "software/ai/eval/pose_keyloss_external_artifact_unavailable_receipt.json",
-        "software/ai/eval/pose_keyloss_external_artifact_verified_receipt.json"
+        "software/ai/eval/pose_keyloss_external_artifact_verified_receipt.json",
+        "software/ai/eval/parked_pose_qualification_pending_v1.json"
       ],
-      "current_result": "Checkpoint bytes are externally identity-verified, and strict final-camera preflight and held-out evaluation contracts are implemented; no physical campaign has been collected.",
+      "current_result": "Physical-camera localization and parked-pose protocols are structurally implemented; the retained parked-pose receipt is explicitly incomplete because no synthetic/physical campaign has been collected.",
       "limitations": [
         "Artifact identity is not model qualification.",
-        "The four retained camera/support originals and commissioned transforms are still required."
+        "The four retained camera/support originals and commissioned transforms are still required.",
+        "Parked-pose evidence remains absent; the evaluator authenticates record structure and bindings but does not establish custody of the evidence behind supplied hashes."
       ],
-      "next_gate": "Retain the ARM-070 originals, freeze the measured configuration, collect the external 300/300 campaign, run frozen inference, and pass preflight plus held-out evaluation.",
+      "next_gate": "Collect commissioned ChArUco, measured-feedback, repeatability, lighting, cable, tool, and settled park-cycle evidence through an authorized physical-data workflow, then evaluate without changing the frozen protocol.",
       "model_motion_batch_boundary": true,
       "controller_authority": false,
       "hardware_writes": 0,
@@ -331,5 +337,5 @@
   "controller_authority": false,
   "hardware_writes": 0,
   "physical_movements": 0,
-  "registry_sha256": "2711ed7a27e01f9f6b0e7b87b8b094f51b1f90efaa4c0e16bd4887db635adb41"
+  "registry_sha256": "c4af885c40c13c8305733059074c56541aaa6d2384a4d98dc2be61285af7fe01"
 }
