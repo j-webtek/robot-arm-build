@@ -62,6 +62,12 @@ policy baseline now points to this merged commit so future checks have a stable,
 post-reduction reference. Containment ceilings remain deliberately above the
 baseline to detect material growth without making normal small changes brittle.
 
+The issue 190 v14 synthetic evaluation adds three small, reviewed source files:
+the deterministic static-pose fixture builder, its retained JSON fixture, and
+its focused test. The tracked-file ceiling is therefore 6,103. This adjustment
+does not relax the byte, single-blob, or duplicate-byte ceilings and does not
+change either reduction target.
+
 The preferred order is:
 
 1. replace repeated instructional STL copies with one canonical tracked object
