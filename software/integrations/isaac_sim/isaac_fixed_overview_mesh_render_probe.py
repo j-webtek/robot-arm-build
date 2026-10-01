@@ -138,6 +138,25 @@ HARD_NEGATIVE_POSE_GROUPS = {
     "development": tuple(HARD_NEGATIVE_SCHEDULE_POSE_SEQUENCES),
     "evaluation": (),
 }
+TARGET_IDENTITY_TRAINING_SCHEDULE_POSE_SEQUENCES = {
+    "targetid_h_to_1_41": 41,
+    "targetid_h_to_1_43": 43,
+    "targetid_h_to_1_45": 45,
+    "targetid_h_to_1_47": 47,
+    "targetid_h_to_1_49": 49,
+    "targetid_h_to_1_51": 51,
+    "targetid_1_to_period_77": 77,
+    "targetid_1_to_period_79": 79,
+    "targetid_1_to_period_81": 81,
+    "targetid_1_to_period_83": 83,
+    "targetid_1_to_period_85": 85,
+    "targetid_1_to_period_87": 87,
+}
+TARGET_IDENTITY_TRAINING_POSE_GROUPS = {
+    "training": tuple(TARGET_IDENTITY_TRAINING_SCHEDULE_POSE_SEQUENCES),
+    "development": (),
+    "evaluation": (),
+}
 EXPECTED_SCHEDULE_FILE_SHA256 = "6a59ce143f5527c7a9ced09b08d5515644ea4fb859dd69691e08483eb020ee42"
 WIDTH = 1920
 HEIGHT = 1080
@@ -294,6 +313,7 @@ def main() -> int:
         choices=(
             "target-aware-v5", "mask-perturbation-v6",
             "policy-evaluation-v7", "hard-negative-v8",
+            "target-identity-training-v9",
         ),
         default="target-aware-v5",
     )
@@ -337,7 +357,12 @@ def main() -> int:
         bootstrap = bootstrap_virtual_workcell(workspace)
         context = bootstrap.context
         schedule_by_sequence = {row["sequence"]: row for row in schedule_bundle["samples"]}
-        if args.campaign == "hard-negative-v8":
+        if args.campaign == "target-identity-training-v9":
+            poses = {}
+            schedule_pose_sequences = TARGET_IDENTITY_TRAINING_SCHEDULE_POSE_SEQUENCES
+            pose_groups = TARGET_IDENTITY_TRAINING_POSE_GROUPS
+            receipt_schema = "tactevra.isaac_fixed_overview_mesh_render.v9"
+        elif args.campaign == "hard-negative-v8":
             poses = {}
             schedule_pose_sequences = HARD_NEGATIVE_SCHEDULE_POSE_SEQUENCES
             pose_groups = HARD_NEGATIVE_POSE_GROUPS

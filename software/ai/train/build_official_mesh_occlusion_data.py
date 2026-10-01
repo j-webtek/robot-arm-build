@@ -22,6 +22,7 @@ SCHEMA_V5 = "rocell.ai_official_mesh_occlusion_data.v5"
 SCHEMA_V6 = "rocell.ai_official_mesh_occlusion_data.v6"
 SCHEMA_V7 = "rocell.ai_official_mesh_occlusion_data.v7"
 SCHEMA_V8 = "rocell.ai_official_mesh_occlusion_data.v8"
+SCHEMA_V9 = "rocell.ai_official_mesh_occlusion_data.v9"
 SOURCE_SCHEMA_V1 = "tactevra.isaac_fixed_overview_mesh_render.v1"
 SOURCE_SCHEMA_V2 = "tactevra.isaac_fixed_overview_mesh_render.v2"
 SOURCE_SCHEMA_V3 = "tactevra.isaac_fixed_overview_mesh_render.v3"
@@ -30,6 +31,7 @@ SOURCE_SCHEMA_V5 = "tactevra.isaac_fixed_overview_mesh_render.v5"
 SOURCE_SCHEMA_V6 = "tactevra.isaac_fixed_overview_mesh_render.v6"
 SOURCE_SCHEMA_V7 = "tactevra.isaac_fixed_overview_mesh_render.v7"
 SOURCE_SCHEMA_V8 = "tactevra.isaac_fixed_overview_mesh_render.v8"
+SOURCE_SCHEMA_V9 = "tactevra.isaac_fixed_overview_mesh_render.v9"
 MAXIMUM_SAFE_REGION_OVERLAP = 0.20
 BASELINE_SEED = 190
 BASELINE_CROP_SIZE = 16
@@ -39,6 +41,7 @@ BASELINE_L2 = 0.001
 SPATIAL_CROP_SIZE = 32
 SPATIAL_PADDING = 24
 SPATIAL_EPOCHS = 8
+TARGET_IDENTITY_EPOCHS = 12
 SPATIAL_BATCH_SIZE = 128
 SPATIAL_LEARNING_RATE = 0.002
 LEGACY_SPLITS = {
@@ -100,6 +103,13 @@ HARD_NEGATIVE_LIGHTING = {
     ),
     "evaluation": (),
 }
+TARGET_IDENTITY_TRAINING_LIGHTING = {
+    "train": (
+        "amber_edge_boost", "right_glare_dim", "anti_diagonal_blur_contrast",
+    ),
+    "development": (),
+    "evaluation": (),
+}
 NOMINAL_PIXELS_PER_MM = 2.0
 MASK_OFFSET_RADII_MM = (1.0, 2.0, 4.0, 8.0)
 MASK_OFFSET_DIRECTIONS = (
@@ -126,6 +136,7 @@ def _verify_source(path: Path) -> dict[str, Any]:
         SOURCE_SCHEMA_V5, SOURCE_SCHEMA_V6,
         SOURCE_SCHEMA_V7,
         SOURCE_SCHEMA_V8,
+        SOURCE_SCHEMA_V9,
     }:
         raise ValueError("official-mesh manifest schema mismatch")
     claimed = source.pop("receipt_sha256", None)
@@ -164,7 +175,10 @@ def _split_policy(source: dict[str, Any]) -> tuple[str, dict[str, dict[str, tupl
         expected = next(name for name, poses in normalized.items() if row["pose_id"] in poses)
         if row.get("pose_group") != expected:
             raise ValueError(f"pose group mismatch: {row['pose_id']}")
-    if source["schema"] == SOURCE_SCHEMA_V8:
+    if source["schema"] == SOURCE_SCHEMA_V9:
+        lighting = TARGET_IDENTITY_TRAINING_LIGHTING
+        schema = SCHEMA_V9
+    elif source["schema"] == SOURCE_SCHEMA_V8:
         lighting = HARD_NEGATIVE_LIGHTING
         schema = SCHEMA_V8
     elif source["schema"] == SOURCE_SCHEMA_V7:
@@ -373,6 +387,30 @@ def _lighting(image: Image.Image, variant: str) -> Image.Image:
         for index in (3, 7, 11, 15, 19):
             weights[index] = 1.0
         return rgb.filter(ImageFilter.Kernel((5, 5), weights, scale=5.0))
+    if variant == "amber_edge_boost":
+        red, green, blue = rgb.split()
+        amber = Image.merge("RGB", (
+            red.point(lambda value: min(255, round(value * 1.08))),
+            green.point(lambda value: min(255, round(value * 1.02))),
+            blue.point(lambda value: round(value * 0.84)),
+        ))
+        return ImageEnhance.Sharpness(ImageEnhance.Contrast(amber).enhance(0.80)).enhance(1.35)
+    if variant == "right_glare_dim":
+        dimmed = ImageEnhance.Brightness(rgb).enhance(0.88)
+        overlay = Image.new("RGB", rgb.size, "white")
+        alpha = Image.new("L", rgb.size, 0)
+        ImageDraw.Draw(alpha).ellipse(
+            (round(rgb.width * 0.48), round(rgb.height * 0.16),
+             round(rgb.width * 0.96), round(rgb.height * 0.80)),
+            fill=86,
+        )
+        return Image.composite(overlay, dimmed, alpha)
+    if variant == "anti_diagonal_blur_contrast":
+        weights = [0.0] * 25
+        for index in (4, 8, 12, 16, 20):
+            weights[index] = 1.0
+        blurred = rgb.filter(ImageFilter.Kernel((5, 5), weights, scale=5.0))
+        return ImageEnhance.Contrast(blurred).enhance(0.82)
     raise ValueError(f"unknown lighting variant: {variant}")
 
 
@@ -619,6 +657,48 @@ def _target_aware_crops(
         )
         masks.append(np.asarray(resized, dtype=np.float32)[None, :, :] / 255.0)
     return np.concatenate((rgb, np.stack(masks)), axis=1), labels
+
+
+def _target_identity_catalog(*row_groups: list[dict[str, Any]]) -> tuple[str, ...]:
+    """Return the stable device-qualified target vocabulary used by the descriptor."""
+    return tuple(sorted({
+        f"{row['device']}:{row['target_id']}"
+        for rows in row_groups
+        for row in rows
+    }))
+
+
+def _target_identity_descriptors(
+    dataset_dir: Path,
+    rows: list[dict[str, Any]],
+    catalog: tuple[str, ...],
+) -> np.ndarray:
+    """Encode exact target identity and nominal full-frame target geometry."""
+    index_by_target = {target: index for index, target in enumerate(catalog)}
+    if len(index_by_target) != len(catalog):
+        raise ValueError("target identity catalog contains duplicates")
+    image_sizes: dict[str, tuple[int, int]] = {}
+    descriptors = np.zeros((len(rows), len(catalog) + 4), dtype=np.float32)
+    for row_index, row in enumerate(rows):
+        target = f"{row['device']}:{row['target_id']}"
+        target_index = index_by_target.get(target)
+        if target_index is None:
+            raise ValueError(f"target identity missing from catalog: {target}")
+        descriptors[row_index, target_index] = 1.0
+        if row["image_path"] not in image_sizes:
+            with Image.open(dataset_dir / row["image_path"]) as image:
+                image_sizes[row["image_path"]] = image.size
+        image_width, image_height = image_sizes[row["image_path"]]
+        x_values = [float(point[0]) for point in row["safe_polygon_px"]]
+        y_values = [float(point[1]) for point in row["safe_polygon_px"]]
+        center_x, center_y = (float(value) for value in row["center_px"])
+        descriptors[row_index, len(catalog):] = (
+            center_x / image_width,
+            center_y / image_height,
+            (max(x_values) - min(x_values)) / image_width,
+            (max(y_values) - min(y_values)) / image_height,
+        )
+    return descriptors
 
 
 def _declared_mask_offsets() -> list[dict[str, float]]:
@@ -1496,6 +1576,241 @@ def train_localization_robust_candidate(
     return scorecard
 
 
+def train_target_identity_candidate(
+    training_dataset_dir: Path,
+    development_dataset_dir: Path,
+    output_dir: Path,
+) -> dict[str, Any]:
+    """Fit a target-identity-aware model and select only on v8 development data."""
+    import torch
+
+    training_dataset_dir = training_dataset_dir.resolve(strict=True)
+    development_dataset_dir = development_dataset_dir.resolve(strict=True)
+    output_dir = output_dir.resolve()
+    if output_dir.exists() and any(output_dir.iterdir()):
+        raise ValueError("target-identity output directory must be empty")
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    def verified_manifest(
+        directory: Path, expected_schema: str, expected_nonempty_split: str,
+    ) -> tuple[dict[str, Any], str]:
+        path = directory / "manifest.json"
+        manifest = json.loads(path.read_text(encoding="utf-8"))
+        claimed = manifest.pop("dataset_sha256", None)
+        if not isinstance(claimed, str) or _sha256(_canonical(manifest)) != claimed:
+            raise ValueError("target-identity dataset manifest hash mismatch")
+        manifest["dataset_sha256"] = claimed
+        if manifest.get("schema") != expected_schema \
+                or manifest.get("scope") != "SYNTHETIC_ONLY_NO_DEPLOYMENT_QUALIFICATION":
+            raise ValueError("target-identity dataset scope or schema mismatch")
+        for split in ("train", "development", "evaluation"):
+            count = manifest["splits"][split]["count"]
+            if (split == expected_nonempty_split) != (count > 0):
+                raise ValueError(
+                    f"target-identity dataset must be {expected_nonempty_split}-only"
+                )
+        return manifest, claimed
+
+    training_manifest, training_sha = verified_manifest(
+        training_dataset_dir, SCHEMA_V9, "train",
+    )
+    development_manifest, development_sha = verified_manifest(
+        development_dataset_dir, SCHEMA_V8, "development",
+    )
+    if training_manifest.get("target_catalog_sha256") \
+            != development_manifest.get("target_catalog_sha256"):
+        raise ValueError("target-identity datasets bind different target catalogs")
+
+    torch.manual_seed(BASELINE_SEED)
+    torch.use_deterministic_algorithms(True)
+    torch.set_num_threads(1)
+
+    training_rows = _load_rows(training_dataset_dir, "train", training_manifest)
+    development_rows = _load_rows(
+        development_dataset_dir, "development", development_manifest,
+    )
+    catalog = _target_identity_catalog(training_rows)
+    if set(catalog) != set(_target_identity_catalog(development_rows)):
+        raise ValueError("target-identity training and development vocabularies differ")
+    descriptor_size = len(catalog) + 4
+
+    class TinyTargetIdentity(torch.nn.Module):
+        def __init__(self) -> None:
+            super().__init__()
+            self.features = torch.nn.Sequential(
+                torch.nn.Conv2d(4, 8, 3, padding=1),
+                torch.nn.ReLU(),
+                torch.nn.MaxPool2d(2),
+                torch.nn.Conv2d(8, 16, 3, padding=1),
+                torch.nn.ReLU(),
+                torch.nn.AdaptiveAvgPool2d((4, 4)),
+            )
+            self.classifier = torch.nn.Linear(16 * 4 * 4 + descriptor_size, 1)
+
+        def forward(self, values, descriptors):  # type: ignore[no-untyped-def]
+            visual = self.features(values).flatten(1)
+            return self.classifier(torch.cat((visual, descriptors), dim=1)).squeeze(1)
+
+    augmentation = _training_augmentation_offsets()
+    row_offsets = []
+    augmentation_counts: dict[str, int] = {}
+    for row in training_rows:
+        index = int(_sha256(row["id"].encode("utf-8"))[:8], 16) % len(augmentation)
+        offset = augmentation[index]
+        row_offsets.append((offset["x_px"], offset["y_px"]))
+        key = f"{offset['x_mm']:g},{offset['y_mm']:g}"
+        augmentation_counts[key] = augmentation_counts.get(key, 0) + 1
+    training_crops, training_labels = _target_aware_crops(
+        training_dataset_dir, training_rows, row_offsets_px=row_offsets,
+    )
+    training_descriptors = _target_identity_descriptors(
+        training_dataset_dir, training_rows, catalog,
+    )
+    crop_tensor = torch.from_numpy(training_crops)
+    descriptor_tensor = torch.from_numpy(training_descriptors)
+    label_tensor = torch.from_numpy(training_labels)
+    model = TinyTargetIdentity().cpu()
+    positives = float(training_labels.sum())
+    negatives = float(len(training_labels) - positives)
+    if positives == 0.0 or negatives == 0.0:
+        raise ValueError("target-identity training requires both decision classes")
+    loss_fn = torch.nn.BCEWithLogitsLoss(
+        pos_weight=torch.tensor(negatives / positives, dtype=torch.float32)
+    )
+    optimizer = torch.optim.Adam(model.parameters(), lr=SPATIAL_LEARNING_RATE)
+    epoch_losses = []
+    for epoch in range(TARGET_IDENTITY_EPOCHS):
+        generator = torch.Generator().manual_seed(BASELINE_SEED + epoch)
+        order = torch.randperm(len(crop_tensor), generator=generator)
+        total_loss = 0.0
+        for start in range(0, len(order), SPATIAL_BATCH_SIZE):
+            indices = order[start:start + SPATIAL_BATCH_SIZE]
+            optimizer.zero_grad(set_to_none=True)
+            loss = loss_fn(model(
+                crop_tensor[indices], descriptor_tensor[indices],
+            ), label_tensor[indices])
+            loss.backward()
+            optimizer.step()
+            total_loss += float(loss.detach()) * len(indices)
+        epoch_losses.append(total_loss / len(order))
+
+    model.eval()
+    development_descriptors = torch.from_numpy(_target_identity_descriptors(
+        development_dataset_dir, development_rows, catalog,
+    ))
+    development_labels: np.ndarray | None = None
+    probabilities_by_offset = []
+    for offset in _declared_mask_offsets():
+        crops, labels = _target_aware_crops(
+            development_dataset_dir,
+            development_rows,
+            (offset["x_px"], offset["y_px"]),
+        )
+        if development_labels is None:
+            development_labels = labels.astype(np.float64)
+        elif not np.array_equal(development_labels, labels):
+            raise RuntimeError("target-identity labels changed across offsets")
+        with torch.no_grad():
+            probabilities = torch.sigmoid(model(
+                torch.from_numpy(crops), development_descriptors,
+            )).numpy()
+        probabilities_by_offset.append((offset, probabilities))
+    assert development_labels is not None
+    threshold, uncertainty_bound, gate_met, measurements = _select_localization_policy(
+        development_rows, development_labels, probabilities_by_offset,
+    )
+
+    state = {
+        name: {
+            "shape": list(value.shape),
+            "values": value.detach().cpu().numpy().astype(np.float64).reshape(-1).tolist(),
+        }
+        for name, value in sorted(model.state_dict().items())
+    }
+    checkpoint = {
+        "schema": "rocell.ai_target_identity_geometry_spatial.v1",
+        "architecture": {
+            "image_input": [4, SPATIAL_CROP_SIZE, SPATIAL_CROP_SIZE],
+            "image_channels": [
+                "red", "green", "blue", "known_target_safe_region_mask",
+            ],
+            "descriptor_size": descriptor_size,
+            "descriptor_fields": [
+                f"one_hot:{target}" for target in catalog
+            ] + [
+                "center_x_fraction", "center_y_fraction",
+                "safe_width_fraction", "safe_height_fraction",
+            ],
+            "target_catalog": list(catalog),
+            "simulator_robot_mask_input": False,
+            "parameter_count": sum(value.numel() for value in model.parameters()),
+        },
+        "training": {
+            "seed": BASELINE_SEED,
+            "device": "cpu",
+            "epochs": TARGET_IDENTITY_EPOCHS,
+            "batch_size": SPATIAL_BATCH_SIZE,
+            "learning_rate": SPATIAL_LEARNING_RATE,
+            "optimizer": "adam",
+            "class_weighting": "negative_to_positive_ratio",
+            "augmentation": "one_deterministic_offset_per_training_row",
+            "augmentation_offsets_mm": augmentation,
+            "augmentation_counts": augmentation_counts,
+            "epoch_losses": epoch_losses,
+        },
+        "crop": {"size": SPATIAL_CROP_SIZE, "padding_px": SPATIAL_PADDING},
+        "threshold": threshold,
+        "localization_uncertainty_policy": {
+            "maximum_supported_planar_error_mm": uncertainty_bound,
+            "above_bound_decision": "abstain_localization_uncertain",
+            "development_gate_met": gate_met,
+            "maximum_missed_abstain_rate": 0.05,
+            "maximum_visible_false_abstain_rate": 0.05,
+        },
+        "target_catalog_sha256": training_manifest["target_catalog_sha256"],
+        "training_dataset_sha256": training_sha,
+        "selection_dataset_sha256": development_sha,
+        "selection_split": "development_only",
+        "evaluation_opened": False,
+        "state_dict": state,
+    }
+    checkpoint_path = output_dir / "model.json"
+    checkpoint_path.write_bytes(_canonical(checkpoint) + b"\n")
+    scorecard: dict[str, Any] = {
+        "schema": "rocell.ai_target_identity_candidate.v1",
+        "algorithm": "tiny_target_identity_geometry_offset_augmented_cpu_cnn",
+        "training_dataset_manifest_sha256": _sha256(
+            (training_dataset_dir / "manifest.json").read_bytes()
+        ),
+        "training_dataset_sha256": training_sha,
+        "development_dataset_manifest_sha256": _sha256(
+            (development_dataset_dir / "manifest.json").read_bytes()
+        ),
+        "development_dataset_sha256": development_sha,
+        "target_catalog_sha256": training_manifest["target_catalog_sha256"],
+        "model_sha256": _sha256(checkpoint_path.read_bytes()),
+        "selected_threshold": threshold,
+        "maximum_supported_planar_error_mm": uncertainty_bound,
+        "development_gate_met": gate_met,
+        "development_measurements": measurements,
+        "evaluation_group_present": False,
+        "promotion_status": "BLOCKED_AWAITING_FRESH_EVALUATION",
+        "hardware_writes": 0,
+        "physical_movements": 0,
+        "physical_authority": False,
+        "limitations": [
+            "training and policy selection use synthetic data only",
+            "target identity and geometry assume the exact frozen target catalog",
+            "the uncertainty bound is synthetic and not a physical calibration",
+            "no evaluation group was created or opened",
+            "tool and camera-support geometry remain absent",
+        ],
+    }
+    scorecard["scorecard_sha256"] = _sha256(_canonical(scorecard))
+    (output_dir / "scorecard.json").write_bytes(_canonical(scorecard) + b"\n")
+    return scorecard
+
+
 def _load_spatial_checkpoint(candidate_dir: Path):  # type: ignore[no-untyped-def]
     import torch
 
@@ -2284,6 +2599,10 @@ def main() -> int:
         metavar=("TRAINING_DATASET_DIR", "DEVELOPMENT_DATASET_DIR", "OUTPUT_DIR"),
     )
     parser.add_argument(
+        "--train-target-identity", type=Path, nargs=3,
+        metavar=("TRAINING_DATASET_DIR", "DEVELOPMENT_DATASET_DIR", "OUTPUT_DIR"),
+    )
+    parser.add_argument(
         "--refreeze-localization-policy", type=Path, nargs=3,
         metavar=("DEVELOPMENT_DATASET_DIR", "CANDIDATE_DIR", "OUTPUT_DIR"),
     )
@@ -2299,6 +2618,7 @@ def main() -> int:
     if args.record_existing is not None:
         if args.perturb_existing is not None \
                 or args.train_localization_robust is not None \
+                or args.train_target_identity is not None \
                 or args.refreeze_localization_policy is not None \
                 or args.evaluate_localization_policy is not None \
                 or args.diagnose_localization_hard_negatives is not None \
@@ -2317,6 +2637,7 @@ def main() -> int:
         return 0
     if args.perturb_existing is not None:
         if args.train_localization_robust is not None \
+                or args.train_target_identity is not None \
                 or args.refreeze_localization_policy is not None \
                 or args.evaluate_localization_policy is not None \
                 or args.diagnose_localization_hard_negatives is not None \
@@ -2334,7 +2655,8 @@ def main() -> int:
         print(json.dumps(report, sort_keys=True))
         return 0
     if args.train_localization_robust is not None:
-        if args.refreeze_localization_policy is not None \
+        if args.train_target_identity is not None \
+                or args.refreeze_localization_policy is not None \
                 or args.evaluate_localization_policy is not None \
                 or args.diagnose_localization_hard_negatives is not None \
                 or args.output_dir is not None or any(
@@ -2350,6 +2672,23 @@ def main() -> int:
         scorecard = train_localization_robust_candidate(
             *args.train_localization_robust,
         )
+        print(json.dumps(scorecard, sort_keys=True))
+        return 0
+    if args.train_target_identity is not None:
+        if args.refreeze_localization_policy is not None \
+                or args.evaluate_localization_policy is not None \
+                or args.diagnose_localization_hard_negatives is not None \
+                or args.output_dir is not None or any(
+            value is not None
+            for value in (
+                args.baseline_output, args.candidate_output, args.spatial_output,
+                args.target_aware_output,
+            )
+        ):
+            parser.error(
+                "--train-target-identity cannot be combined with other outputs"
+            )
+        scorecard = train_target_identity_candidate(*args.train_target_identity)
         print(json.dumps(scorecard, sort_keys=True))
         return 0
     if args.refreeze_localization_policy is not None:

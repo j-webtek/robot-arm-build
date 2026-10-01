@@ -1085,7 +1085,7 @@ occlusion ceiling. Any successor still needs a new untouched evaluation group.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI/model | S2/S3 target-identity specificity candidate | `software/integrations/isaac_sim/isaac_fixed_overview_mesh_render_probe.py`; `software/ai/train/build_official_mesh_occlusion_data.py`; focused simulator/perception tests; AI workplan, training README, and evidence ledger | `issue/190-isaac-sim-host` / claim pending | ACTIVE — predeclare separate synthetic training poses, add explicit target identity/geometry input, select only on v8 development, leave evaluation unopened |
+| AI/model | S2/S3 target-identity specificity candidate | `software/integrations/isaac_sim/isaac_fixed_overview_mesh_render_probe.py`; `software/ai/train/build_official_mesh_occlusion_data.py`; focused simulator/perception tests; AI workplan, training README, and evidence ledger | `issue/190-isaac-sim-host` / `7b03a45709bf08e53508ff4bba2269075a368c69` | ACTIVE — predeclare separate synthetic training poses, add explicit target identity/geometry input, select only on v8 development, leave evaluation unopened |
 | Unclaimed | S2/S3 | physical-camera deployment qualification and safe-region-fit precision evidence | — | AVAILABLE |
 | ARM | S4 | collect four physical-original `camera_support_optics` bindings through onboarding, then run the ARM-070 intake; no synthetic promotion | ARM-071 | WAITING_FOR_ORIGINALS |
 

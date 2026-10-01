@@ -348,6 +348,26 @@ def test_hard_negative_poses_are_fresh_development_only() -> None:
     assert not (set(sequences.values()) & prior)
 
 
+def test_target_identity_training_poses_are_fresh_training_only() -> None:
+    module = _renderer()
+    groups = module.TARGET_IDENTITY_TRAINING_POSE_GROUPS
+    sequences = module.TARGET_IDENTITY_TRAINING_SCHEDULE_POSE_SEQUENCES
+
+    assert set(groups) == {"training", "development", "evaluation"}
+    assert groups["development"] == groups["evaluation"] == ()
+    assert groups["training"] == tuple(sequences)
+    assert set(sequences.values()) == {
+        41, 43, 45, 47, 49, 51, 77, 79, 81, 83, 85, 87,
+    }
+    prior = (
+        set(module.SCHEDULE_POSE_SEQUENCES.values())
+        | set(module.PERTURBATION_SCHEDULE_POSE_SEQUENCES.values())
+        | set(module.POLICY_EVALUATION_SCHEDULE_POSE_SEQUENCES.values())
+        | set(module.HARD_NEGATIVE_SCHEDULE_POSE_SEQUENCES.values())
+    )
+    assert not (set(sequences.values()) & prior)
+
+
 def test_transit_dataset_policy_uses_fresh_disjoint_lighting() -> None:
     builder = _builder()
     renderer = _renderer()
@@ -611,6 +631,59 @@ def test_hard_negative_lighting_is_deterministic_and_distinct() -> None:
     assert not (set(variants) & prior)
 
 
+def test_target_identity_training_policy_has_no_selection_or_evaluation_group() -> None:
+    builder = _builder()
+    renderer = _renderer()
+    source = {
+        "schema": "tactevra.isaac_fixed_overview_mesh_render.v9",
+        "pose_groups": {
+            name: list(poses)
+            for name, poses in renderer.TARGET_IDENTITY_TRAINING_POSE_GROUPS.items()
+        },
+        "pose_results": [
+            {"pose_id": pose_id, "pose_group": group}
+            for group, pose_ids in renderer.TARGET_IDENTITY_TRAINING_POSE_GROUPS.items()
+            for pose_id in pose_ids
+        ],
+    }
+
+    schema, policy = builder._split_policy(source)
+
+    assert schema == "rocell.ai_official_mesh_occlusion_data.v9"
+    assert policy["development"]["poses"] == policy["evaluation"]["poses"] == ()
+    assert policy["train"]["poses"] == tuple(
+        renderer.TARGET_IDENTITY_TRAINING_POSE_GROUPS["training"]
+    )
+    assert policy["train"]["lighting"] == (
+        "amber_edge_boost", "right_glare_dim", "anti_diagonal_blur_contrast",
+    )
+
+
+def test_target_identity_training_lighting_is_deterministic_and_fresh() -> None:
+    module = _builder()
+    pixels = np.arange(48 * 48 * 3, dtype=np.uint8).reshape(48, 48, 3)
+    source = Image.fromarray(pixels, mode="RGB")
+    variants = module.TARGET_IDENTITY_TRAINING_LIGHTING["train"]
+
+    first = [np.asarray(module._lighting(source, name)) for name in variants]
+    second = [np.asarray(module._lighting(source, name)) for name in variants]
+
+    assert all(np.array_equal(left, right) for left, right in zip(first, second, strict=True))
+    assert len({_sha256(value.tobytes()) for value in first}) == len(variants)
+    prior = {
+        name
+        for policy in (
+            module.LEGACY_SPLITS, module.EXPANDED_LIGHTING, module.TRANSIT_LIGHTING,
+            module.SPECIFICITY_LIGHTING, module.TARGET_AWARE_LIGHTING,
+            module.PERTURBATION_LIGHTING, module.POLICY_EVALUATION_LIGHTING,
+            module.HARD_NEGATIVE_LIGHTING,
+        )
+        for split in policy.values()
+        for name in (split["lighting"] if isinstance(split, dict) else split)
+    }
+    assert not (set(variants) & prior)
+
+
 def test_target_aware_lighting_families_are_deterministic_and_distinct() -> None:
     module = _builder()
     pixels = np.arange(48 * 48 * 3, dtype=np.uint8).reshape(48, 48, 3)
@@ -723,6 +796,35 @@ def test_target_aware_crops_translate_rgb_and_mask_together(tmp_path: Path) -> N
     assert np.array_equal(labels, shifted_labels)
     assert len(module._declared_mask_offsets()) == 33
     assert len(module._training_augmentation_offsets()) == 17
+
+
+def test_target_identity_descriptor_binds_identity_and_nominal_geometry(
+    tmp_path: Path,
+) -> None:
+    module = _builder()
+    image_dir = tmp_path / "images"
+    image_dir.mkdir()
+    image_path = image_dir / "sample.png"
+    Image.new("RGB", (100, 50), (200, 200, 200)).save(image_path)
+    rows = [
+        {
+            "device": "keyboard", "target_id": target,
+            "image_path": "images/sample.png", "center_px": [50, 25],
+            "safe_polygon_px": [[40, 20], [60, 20], [60, 30], [40, 30]],
+        }
+        for target in ("ENTER", "EQUAL")
+    ]
+    catalog = module._target_identity_catalog(rows)
+
+    first = module._target_identity_descriptors(tmp_path, rows, catalog)
+    second = module._target_identity_descriptors(tmp_path, rows, catalog)
+
+    assert catalog == ("keyboard:ENTER", "keyboard:EQUAL")
+    assert first.shape == (2, 6)
+    assert np.array_equal(first, second)
+    assert first[0, :2].tolist() == [1.0, 0.0]
+    assert first[1, :2].tolist() == [0.0, 1.0]
+    assert np.allclose(first[:, 2:], [[0.5, 0.5, 0.2, 0.2]] * 2)
 
 
 def test_localization_policy_selects_largest_supported_development_bound() -> None:
@@ -864,3 +966,93 @@ def test_target_aware_candidate_is_deterministic_and_has_no_robot_mask_input(
     assert first["promotion_status"] == "BLOCKED_SYNTHETIC_ONLY"
     assert first["hardware_writes"] == 0
     assert first["physical_movements"] == 0
+
+
+def test_target_identity_candidate_is_deterministic_and_keeps_evaluation_closed(
+    tmp_path: Path,
+) -> None:
+    module = _builder()
+
+    def make_dataset(name: str, schema: str, populated_split: str) -> Path:
+        dataset = tmp_path / name
+        image_dir = dataset / "images"
+        image_dir.mkdir(parents=True)
+        rows = []
+        for index in range(16):
+            expected_abstain = index % 2 == 0
+            target_id = "ENTER" if index % 4 < 2 else "EQUAL"
+            image = Image.new("RGB", (64, 64), (205, 205, 205))
+            draw = ImageDraw.Draw(image)
+            if expected_abstain:
+                draw.rectangle((26, 20, 38, 44), fill=(20, 20, 20))
+            else:
+                draw.rectangle((4, 4, 14, 14), fill=(20, 20, 20))
+            image_path = image_dir / f"{populated_split}-{index}.png"
+            image.save(image_path)
+            rows.append({
+                "id": f"{populated_split}-{index}",
+                "image_path": f"images/{image_path.name}",
+                "image_sha256": _sha256(image_path.read_bytes()),
+                "pose_id": f"pose-{index}",
+                "lighting_variant": "unit-light",
+                "device": "keyboard",
+                "target_id": target_id,
+                "center_px": [32, 32],
+                "safe_polygon_px": [[24, 24], [40, 24], [40, 40], [24, 40]],
+                "center_occluded": expected_abstain,
+                "safe_region_overlap_fraction": 0.5 if expected_abstain else 0.0,
+                "decision": "abstain" if expected_abstain else "target_visible",
+                "reason": "robot_occlusion" if expected_abstain else None,
+                "synthetic_only": True,
+            })
+        splits = {}
+        for split in ("train", "development", "evaluation"):
+            split_rows = rows if split == populated_split else []
+            payload = b"".join(module._canonical(row) + b"\n" for row in split_rows)
+            path = dataset / f"{split}.jsonl"
+            path.write_bytes(payload)
+            splits[split] = {
+                "path": path.name,
+                "sha256": _sha256(payload),
+                "count": len(split_rows),
+                "abstain_count": sum(row["decision"] == "abstain" for row in split_rows),
+                "visible_count": sum(
+                    row["decision"] == "target_visible" for row in split_rows
+                ),
+            }
+        manifest = {
+            "schema": schema,
+            "scope": "SYNTHETIC_ONLY_NO_DEPLOYMENT_QUALIFICATION",
+            "target_catalog_sha256": "a" * 64,
+            "splits": splits,
+            "limitations": ["unit-test synthetic fixture"],
+        }
+        manifest["dataset_sha256"] = _sha256(module._canonical(manifest))
+        (dataset / "manifest.json").write_bytes(module._canonical(manifest) + b"\n")
+        return dataset
+
+    training = make_dataset(
+        "training", "rocell.ai_official_mesh_occlusion_data.v9", "train",
+    )
+    development = make_dataset(
+        "development", "rocell.ai_official_mesh_occlusion_data.v8", "development",
+    )
+
+    first = module.train_target_identity_candidate(training, development, tmp_path / "first")
+    second = module.train_target_identity_candidate(training, development, tmp_path / "second")
+    checkpoint = json.loads((tmp_path / "first" / "model.json").read_text())
+
+    assert first == second
+    assert (tmp_path / "first" / "model.json").read_bytes() == (
+        tmp_path / "second" / "model.json"
+    ).read_bytes()
+    assert checkpoint["schema"] == "rocell.ai_target_identity_geometry_spatial.v1"
+    assert checkpoint["architecture"]["target_catalog"] == [
+        "keyboard:ENTER", "keyboard:EQUAL",
+    ]
+    assert checkpoint["architecture"]["descriptor_size"] == 6
+    assert checkpoint["evaluation_opened"] is False
+    assert first["evaluation_group_present"] is False
+    assert first["hardware_writes"] == 0
+    assert first["physical_movements"] == 0
+    assert first["physical_authority"] is False
