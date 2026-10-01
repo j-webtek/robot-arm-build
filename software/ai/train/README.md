@@ -340,3 +340,23 @@ every failure, and always remains synthetic-only. Evidence
 `E-20260930-AI-473` retains the first result: missed abstentions stay below 2%,
 but visible-target false stops reach 8.89%, so the synthetic gate fails. This
 evaluation group is consumed and cannot be used to tune a successor.
+
+The v8 hard-negative campaign uses new development-only poses and lighting to
+reproduce the visible-target failures without reusing v7 evaluation bytes. The
+frozen policy can be diagnosed without training or threshold selection:
+
+```powershell
+python software/ai/train/build_official_mesh_occlusion_data.py `
+  --source-manifest C:\IsaacSim\artifacts\issue190\fixed-overview-hard-negative-v8-run1\manifest.json `
+  --diagnose-localization-hard-negatives `
+    C:\IsaacSim\artifacts\issue190\hard-negative-development-data-v1 `
+    C:\IsaacSim\artifacts\issue190\localization-policy-refreeze-v1 `
+    C:\IsaacSim\artifacts\issue190\hard-negative-diagnostic-v1
+```
+
+Evidence `E-20260930-AI-474` confirms low missed-occlusion rates but reproduces
+false-stop rates above 10%. `ENTER`, `EQUAL`, and `MINUS` are persistent hard
+negatives. The diagnostic performs no selection and contains no evaluation
+group. A successor should add explicit target identity or geometry features
+and use separately declared training data while keeping this v8 corpus for
+development selection only.

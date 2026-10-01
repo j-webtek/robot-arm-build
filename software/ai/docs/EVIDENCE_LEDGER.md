@@ -7644,3 +7644,124 @@ rewriting history. New entries must use a unique evidence ID.
   later successor requires another untouched evaluation group; physical
   deployment remains separately blocked on final-camera calibration and
   installed geometry.
+
+### E-20260930-AI-474 — development-only hard-negative diagnostic
+
+- Stage: S2/S3 synthetic target-specificity diagnosis.
+- Lane: AI/model with inert Isaac rendering and frozen offline inference; no
+  arm or integration status changed.
+- Claim commit:
+  `39274887d71b3aeb18f62dcb9e50b826cc097366`.
+- Implementation commit:
+  `9a6f364824ad9cecf1c50a716299f3b85f4acb23`.
+- Change: a v8 campaign predeclares unused actual-emitter schedule samples 42,
+  50, 58, 78, 90, and 98 as development-only poses. They interleave but do not
+  reuse the consumed v7 evaluation samples. Amber low contrast, right-center
+  glare, and offset anti-diagonal blur are new deterministic development-only
+  transforms related to the consumed failure categories but byte-distinct from
+  v7. The diagnostic holds the E-472 model and threshold fixed, scores nominal
+  plus every 1 mm direction, and records `selection_performed: false`,
+  `training_performed: false`, and `evaluation_group_present: false`.
+- Inputs/fixtures: renderer SHA-256
+  `2eb9083e4621a373ecbc7129c8af63242304520ef881a3e1f43eb0682b9db918`;
+  dataset/diagnostic SHA-256
+  `a14260988411d9a82b95175062a390313508792951b88e4b7f27f115cc49b3ac`;
+  focused test SHA-256
+  `a03d34a65ec58561eff7763c0cea3b7726d767221f24d88ce7cc5d7242c890c5`;
+  schedule file SHA-256
+  `6a59ce143f5527c7a9ced09b08d5515644ea4fb859dd69691e08483eb020ee42`;
+  target catalog SHA-256
+  `6779213e832ab27eeda1e7fb245f57ff8cb0d56707b5aa73a8f31ec483a620f2`;
+  frozen model file SHA-256
+  `e7b57b6e06edfb2b26972565c02149762c6e9a25ec67718f9d28b1c62dc6af3d`.
+- Render command: `$env:OMNI_KIT_ACCEPT_EULA='YES'; $env:PYTHONPATH=(Resolve-Path
+  'software/src').Path; C:\IsaacSim\env_6_1_0\Scripts\python.exe
+  software\integrations\isaac_sim\isaac_fixed_overview_mesh_render_probe.py
+  --workspace . --upstream-repo C:\IsaacSim\sources\roarm_ws-40dbd84
+  --mesh-receipt software\integrations\isaac_sim\evidence\roarm_m3_upstream_link_meshes_20260929.json
+  --capsule-manifest software\integrations\isaac_sim\evidence\fixed_overview_segmentation_v1\manifest.json
+  --schedule-bundle software\integrations\isaac_sim\evidence\actual_emitter_joint_schedule_bundle_9e5c878_20260929.json
+  --campaign hard-negative-v8
+  --output-dir C:\IsaacSim\artifacts\issue190\fixed-overview-hard-negative-v8-run1
+  --receipt C:\IsaacSim\evidence\fixed_overview_hard_negative_v8_run1.json
+  --status-output C:\IsaacSim\evidence\fixed_overview_hard_negative_v8_run1.status.json`.
+- Dataset command: `python
+  software/ai/train/build_official_mesh_occlusion_data.py --source-manifest
+  C:\IsaacSim\artifacts\issue190\fixed-overview-hard-negative-v8-run1\manifest.json
+  --output-dir C:\IsaacSim\artifacts\issue190\hard-negative-development-data-v1`;
+  repeated with final `...data-v2` before diagnosis.
+- Diagnostic command: `python
+  software/ai/train/build_official_mesh_occlusion_data.py --source-manifest
+  C:\IsaacSim\artifacts\issue190\fixed-overview-hard-negative-v8-run1\manifest.json
+  --diagnose-localization-hard-negatives
+  C:\IsaacSim\artifacts\issue190\hard-negative-development-data-v1
+  C:\IsaacSim\artifacts\issue190\localization-policy-refreeze-v1
+  C:\IsaacSim\artifacts\issue190\hard-negative-diagnostic-v1`;
+  repeated with final output `...diagnostic-v2`.
+- Render result: PASS_WITH_BLOCKERS. Six official-mesh renders provide 87
+  safe-region-overlap abstention labels before lighting expansion. Canonical
+  receipt SHA-256 is
+  `358979bb9ee62d1a56b4a5bad4f0a5d420ff4e22c1da8667f6c67c49674ef0a2`;
+  manifest file SHA-256 is
+  `c9a846c31dce4bd5a55281e9e069558eae314906c2bdbda6607d1f94decf89e8`;
+  status file SHA-256 is
+  `fce7d2382dfb11670b958f1ac15d0b4aad9738d4716bbcb69704f3f9f7ff3798`.
+  RGB, mask, and depth atlas SHA-256 values are respectively
+  `c1d31ec860d9e358a850b2494e7223dd58f768667245a09246ff115311220fe7`,
+  `0270659110006ad77c83fc960326a53a7d2f2b0cb020071083febd20cee55a6f`,
+  and `683346da184dd266e44cb4a37b7b4940115c51993d76c0beb55342cf1bdb4bef`.
+- Dataset result: both independent 22-file, 2,920,254-byte builds are
+  byte-identical. Dataset SHA-256 is
+  `21f5643fa556214f34a1ddc20e3f768c74ee68c9af42db9dbcd62ec182597b2d`;
+  manifest file SHA-256 is
+  `f07dee0da2a755e5db497da69a76b365cc52543d1b5913ed858023ff829389e8`.
+  Development contains 1,350 rows: 261 abstentions and 1,089 visible labels.
+  Training and evaluation each contain zero rows.
+- Diagnostic result: BLOCKED_DEVELOPMENT_ONLY. At frozen threshold `0.093`,
+  nominal alignment records 257 true abstentions, 990 true-visible decisions,
+  99 false abstentions, and 4 missed abstentions. Across all 1 mm directions,
+  misses range from 1 to 5 and false stops range from 93 to 110. The worst
+  missed rate is `5/261 = 0.019157088122605363`; the worst false-stop rate is
+  `110/1089 = 0.10101010101010101`. The -1 mm x/-1 mm y direction is worst for
+  false stops. Low missed-occlusion error reproduces, but specificity remains
+  substantially outside the 5% limit.
+- Failure concentration: at nominal alignment, amber low contrast contributes
+  41 false stops, right-center glare 34, and offset anti-diagonal blur 24.
+  `ENTER`, `EQUAL`, and `MINUS` each fail in all 18 development images and
+  contribute 48 of 99 false stops. The repeated target pattern supports adding
+  explicit target identity or target-geometry features rather than selecting a
+  new threshold on these rows.
+- Reproducibility: both 172,451-byte diagnostic reports are byte-identical.
+  Canonical report SHA-256 is
+  `af07d0b289d008b13611cea4eb2d737a77085474546367ad2afe64ec01a1f6da`;
+  report file SHA-256 is
+  `43db5d20493d0cadff91befaa24bfeebcaed6c74659b6dea30d4be6175c05c57`.
+- Validation: 75 focused simulator/perception tests passed in 25.57 seconds;
+  101 shared v2 precision, adapter, producer, strict-ingress, shadow-runner,
+  trajectory, and conformance tests passed in 11.46 seconds. Ruff,
+  maintained-document, AI work-registry, repository-health, source-footprint,
+  and `git diff --check` gates passed. At arm commit
+  `e34547d76b3ec5fab3b5ca5004bb29c36ef195ab`, the precision-observation v2,
+  motion-batch v2, conformance-profile schema, and installed conformance
+  profile blobs remain identical to this AI branch.
+- Artifact location: external only under
+  `C:\IsaacSim\artifacts\issue190\fixed-overview-hard-negative-v8-run1`,
+  `hard-negative-development-data-v1`, byte-identical `...data-v2`, and the
+  byte-identical `hard-negative-diagnostic-v1` and `...v2` reports. Hashes
+  identify exact local bytes but do not make them clean-clone available.
+- Hardware-write count: 0.
+- Physical-movement count: 0.
+- Physics-step count: 0; retained schedule states are rendered statically.
+- Limitations: the consumed v7 evaluation informed the class of new
+  development transforms, so v8 is selection data and cannot evaluate a
+  successor. All camera geometry, images, labels, and offsets are synthetic.
+  The 1 mm ring uses nominal 2 px/mm geometry and is not physical calibration.
+  Tool and camera-support geometry remain absent. This diagnostic grants no
+  localization, collision, controller, execution, transport, permit, or
+  physical authority.
+- Supersedes: none; preserves the failed v7 evaluation and reproduces its
+  specificity problem on new development-only bytes without model changes.
+- Next dependency: predeclare separate target-aware training data, add a small
+  explicit target identity or geometry representation to the offline model,
+  and select the successor against v8 while keeping missed abstentions at or
+  below 5%. A later successor requires another untouched evaluation group.

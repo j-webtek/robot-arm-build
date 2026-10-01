@@ -1071,9 +1071,20 @@ Failure concentration on persistent keyboard hard negatives, especially
 predeclared development corpus and improved target-specific specificity while
 preserving the low missed-occlusion rate.
 
+The fresh development-only hard-negative campaign in `E-20260930-AI-474`
+reproduces the v7 specificity failure without reusing evaluation images or
+performing selection. Six new interleaved schedule poses and three related but
+distinct lighting transforms produce 1,350 rows with 261 abstentions and 1,089
+visible targets. At the frozen `0.093` threshold, the worst missed-abstention
+rate remains `5/261 = 1.92%`, while the worst false-stop rate reaches
+`110/1089 = 10.10%`. `ENTER`, `EQUAL`, and `MINUS` are false stops in every
+nominal development image. This supports a specific next model change: add
+explicit target identity or target-geometry features using separately declared
+training data, select against v8 development only, and preserve the 5% missed-
+occlusion ceiling. Any successor still needs a new untouched evaluation group.
+
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI | S2/S3 | fresh development-only hard-negative campaign for frozen E-472; no training or evaluation rows | `issue/190-isaac-sim-host` / pending | ACTIVE |
 | Unclaimed | S2/S3 | physical-camera deployment qualification and safe-region-fit precision evidence | — | AVAILABLE |
 | ARM | S4 | collect four physical-original `camera_support_optics` bindings through onboarding, then run the ARM-070 intake; no synthetic promotion | ARM-071 | WAITING_FOR_ORIGINALS |
 
