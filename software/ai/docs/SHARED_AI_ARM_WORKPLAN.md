@@ -1083,9 +1083,22 @@ explicit target identity or target-geometry features using separately declared
 training data, select against v8 development only, and preserve the 5% missed-
 occlusion ceiling. Any successor still needs a new untouched evaluation group.
 
+The explicit target-identity experiment in `E-20260930-AI-475` retains that
+next evaluation group unopened and records a failed architecture rather than
+promoting it. Twelve fresh training-only arm poses crossed with three new
+lighting transforms produce 2,700 rows. A 1,800-parameter model combines the
+four-channel target crop with a 75-target one-hot identity and four normalized
+catalog-geometry values, then selects only against v8 development. At threshold
+`0.25`, nominal missed abstentions remain below 5% at `9/261`, but false stops
+rise to `407/1089`; the worst 1 mm direction reaches `425/1089`. The selector
+therefore returns a 0 mm bound and the candidate is blocked. This disproves the
+idea that appending a fixed target descriptor to the current pooled visual
+representation is sufficient. The next candidate should preserve local spatial
+detail through target-conditioned feature fusion or attention and must continue
+using v8 only for development before any new evaluation group is declared.
+
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI/model | S2/S3 target-identity specificity candidate | `software/integrations/isaac_sim/isaac_fixed_overview_mesh_render_probe.py`; `software/ai/train/build_official_mesh_occlusion_data.py`; focused simulator/perception tests; AI workplan, training README, and evidence ledger | `issue/190-isaac-sim-host` / `7b03a45709bf08e53508ff4bba2269075a368c69` | ACTIVE — predeclare separate synthetic training poses, add explicit target identity/geometry input, select only on v8 development, leave evaluation unopened |
 | Unclaimed | S2/S3 | physical-camera deployment qualification and safe-region-fit precision evidence | — | AVAILABLE |
 | ARM | S4 | collect four physical-original `camera_support_optics` bindings through onboarding, then run the ARM-070 intake; no synthetic promotion | ARM-071 | WAITING_FOR_ORIGINALS |
 

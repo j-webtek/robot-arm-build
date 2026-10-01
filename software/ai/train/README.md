@@ -360,3 +360,34 @@ negatives. The diagnostic performs no selection and contains no evaluation
 group. A successor should add explicit target identity or geometry features
 and use separately declared training data while keeping this v8 corpus for
 development selection only.
+
+## Explicit target-identity candidate
+
+The v9 campaign reserves twelve previously unused schedule poses for training
+only. Its development and evaluation groups are empty. Three deterministic
+lighting transforms approximate the v8 failure families without copying their
+pixels. Build the training corpus, then combine it with the v8 development-only
+corpus without opening any evaluation group:
+
+```powershell
+python software/ai/train/build_official_mesh_occlusion_data.py `
+  --source-manifest C:\IsaacSim\artifacts\issue190\fixed-overview-target-identity-training-v9-run1\manifest.json `
+  --output-dir C:\IsaacSim\artifacts\issue190\target-identity-training-data-v1
+
+python software/ai/train/build_official_mesh_occlusion_data.py `
+  --source-manifest C:\IsaacSim\artifacts\issue190\fixed-overview-target-identity-training-v9-run1\manifest.json `
+  --train-target-identity `
+    C:\IsaacSim\artifacts\issue190\target-identity-training-data-v1 `
+    C:\IsaacSim\artifacts\issue190\hard-negative-development-data-v1 `
+    C:\IsaacSim\artifacts\issue190\target-identity-candidate-v1
+```
+
+The 1,800-parameter model retains the four RGB plus safe-region channels and
+adds a 79-value descriptor: one entry for each of 75 device-qualified targets,
+plus normalized target center, width, and height. Evidence
+`E-20260930-AI-475` records that this simple late concatenation fails. It keeps
+missed abstentions below 5% but raises nominal visible-target false stops to
+`407/1089`, so its supported uncertainty bound is 0 mm. The fresh evaluation
+group remains uncreated and unopened. The result is useful as a rejected
+architecture: target identity must condition the local visual representation
+more directly instead of acting only as a final classifier bias.

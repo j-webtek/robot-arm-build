@@ -7765,3 +7765,134 @@ rewriting history. New entries must use a unique evidence ID.
   explicit target identity or geometry representation to the offline model,
   and select the successor against v8 while keeping missed abstentions at or
   below 5%. A later successor requires another untouched evaluation group.
+
+### E-20260930-AI-475 — explicit target-identity candidate fails specificity gate
+
+- Stage: S2/S3 synthetic target-specificity training and development selection.
+- Lane: AI/model with inert Isaac rendering and offline inference; no arm or
+  integration status changed.
+- Claim commit:
+  `81b114e5d8cd21b39b9591657e70896c9d487d45`.
+- Implementation commit:
+  `becab5594cdea1ba8c2f3c88656436f11b297d53`.
+- Change: a v9 campaign predeclares actual-emitter schedule samples 41, 43,
+  45, 47, 49, 51, 77, 79, 81, 83, 85, and 87 as training-only poses. They are
+  disjoint from every prior declared pose. Amber edge boost, right glare dim,
+  and anti-diagonal blur contrast are new deterministic training-only lighting
+  transforms. The 1,800-parameter candidate retains RGB plus the known target
+  safe-region mask and concatenates 75 device-qualified one-hot target values
+  plus normalized catalog center x/y and safe-region width/height immediately
+  before its classifier. Training uses only v9; threshold and uncertainty
+  selection use only the retained v8 development corpus. No evaluation group
+  was created or opened.
+- Inputs/fixtures: renderer SHA-256
+  `6f22fc9e5e5b8fa34481064d9cf7057242be90a9a9487d67d6887813d49c2771`;
+  dataset/training implementation SHA-256
+  `4113baf38d5aa2eda4ff0a485c901a6f2ea68f8664c0665fdf0d04b383378fc8`;
+  focused test SHA-256
+  `845cfe6296b78ed66072bdca2e379131a35758c10a75b675709b60e5edf475f0`;
+  schedule file SHA-256
+  `6a59ce143f5527c7a9ced09b08d5515644ea4fb859dd69691e08483eb020ee42`;
+  target catalog SHA-256
+  `6779213e832ab27eeda1e7fb245f57ff8cb0d56707b5aa73a8f31ec483a620f2`;
+  v8 selection dataset SHA-256
+  `21f5643fa556214f34a1ddc20e3f768c74ee68c9af42db9dbcd62ec182597b2d`.
+- Render command: `$env:OMNI_KIT_ACCEPT_EULA='YES'; $env:PYTHONPATH=(Resolve-Path
+  'software/src').Path; C:\IsaacSim\env_6_1_0\Scripts\python.exe
+  software\integrations\isaac_sim\isaac_fixed_overview_mesh_render_probe.py
+  --workspace . --upstream-repo C:\IsaacSim\sources\roarm_ws-40dbd84
+  --mesh-receipt software\integrations\isaac_sim\evidence\roarm_m3_upstream_link_meshes_20260929.json
+  --capsule-manifest software\integrations\isaac_sim\evidence\fixed_overview_segmentation_v1\manifest.json
+  --schedule-bundle software\integrations\isaac_sim\evidence\actual_emitter_joint_schedule_bundle_9e5c878_20260929.json
+  --campaign target-identity-training-v9 --output-dir
+  C:\IsaacSim\artifacts\issue190\fixed-overview-target-identity-training-v9-run1
+  --receipt C:\IsaacSim\evidence\fixed_overview_target_identity_training_v9_run1.json
+  --status-output
+  C:\IsaacSim\evidence\fixed_overview_target_identity_training_v9_run1.status.json`.
+- Dataset command: `python
+  software/ai/train/build_official_mesh_occlusion_data.py --source-manifest
+  C:\IsaacSim\artifacts\issue190\fixed-overview-target-identity-training-v9-run1\manifest.json
+  --output-dir C:\IsaacSim\artifacts\issue190\target-identity-training-data-v1`;
+  repeated with final `...data-v2`.
+- Training command: `python
+  software/ai/train/build_official_mesh_occlusion_data.py --source-manifest
+  C:\IsaacSim\artifacts\issue190\fixed-overview-target-identity-training-v9-run1\manifest.json
+  --train-target-identity
+  C:\IsaacSim\artifacts\issue190\target-identity-training-data-v1
+  C:\IsaacSim\artifacts\issue190\hard-negative-development-data-v1
+  C:\IsaacSim\artifacts\issue190\target-identity-candidate-v1`;
+  repeated with final output `...candidate-v2`.
+- Render result: PASS_WITH_BLOCKERS. Twelve pose-distinct official-mesh renders
+  provide 191 safe-region-overlap abstention labels before lighting expansion.
+  Canonical receipt SHA-256 is
+  `bb034c897fc4e2042d89d99ff33787c713d6430b29f858d852fe36b796ca68b4`;
+  manifest file SHA-256 is
+  `448c5012d469b22ce7a051995d73adba48a560b3441cb30803db20d8113fcaaa`;
+  status file SHA-256 is
+  `2da9fc001126c747b0be1d8e0da67a2a7d973c5968c9a56b35ec4151bf516a70`.
+  RGB, mask, and depth atlas SHA-256 values are respectively
+  `0527b3f6c24e81c64f4210e439b6c2628477f0eb2c7f5d2db4449ce4786f4cc6`,
+  `0f1096e3d7446dcbb689ffc34e235560e0be306ba75374774b287e93278de4c3`,
+  and `74d22c36838a00ae61869cdc9e33e2845cb0fa8e3970f4b86e73bc4108da4b04`.
+- Dataset result: both independent 40-file, 5,774,498-byte builds are
+  byte-identical. Dataset SHA-256 is
+  `ac424019f83fe6f46fa3e95e93e5c435dc7fd6fb8e794127bf435eb3c1b2d29d`;
+  manifest file SHA-256 is
+  `b4872968fdb7f33ee0c610175818d94a5d6a924a8cb1543b39bf39956b0a1023`;
+  deterministic directory-content SHA-256 is
+  `e8e3fab6320ef22a0e6211906a0f37dcb72f2a811e01e9354bec3b905e34b221`.
+  Training contains 2,700 rows: 573 abstentions and 2,127 visible labels.
+  Development and evaluation each contain zero rows.
+- Candidate result: FAILED_DEVELOPMENT_GATE. Both independent checkpoints and
+  scorecards are byte-identical. The 42,507-byte model SHA-256 is
+  `276a2caf5c7b678cc484f51eda58587579ece1c264c481b4a2e2c57073a6d26e`.
+  Canonical scorecard SHA-256 is
+  `01e1a2ff6586f92a25d27ad27cb4c4765570342eea76b8eed14c14f119e6f202`;
+  the 2,604,591-byte scorecard file SHA-256 is
+  `34dfa8ebb8bc39ea3f53728bd9db84b450ec31e8270b0dcc8ea660f22a7f6e93`.
+  At selected threshold `0.25`, nominal alignment records 252 true
+  abstentions, 682 true-visible decisions, 407 false abstentions, and 9 missed
+  abstentions. Across the 1 mm ring, misses range from 7 to 10 and false stops
+  range from 405 to 425. Worst missed rate is `10/261 = 3.83%`; worst false-
+  stop rate is `425/1089 = 39.03%`. The selector returns a 0 mm bound and
+  `development_gate_met: false`. Nominal false stops concentrate in amber low
+  contrast (195), offset anti-diagonal blur (113), and right-center glare (99).
+  `ENTER` and `TAB` each false-stop in all 18 nominal images. This is worse
+  than the retained E-474 architecture and is not a model improvement.
+- Interpretation: the exact target identity is now present, but late
+  concatenation after global adaptive pooling acts mainly as a classifier
+  bias and loses the local spatial relationship needed to distinguish target
+  overlap from visually similar key regions. This rejects this architecture;
+  it does not reject target conditioning generally.
+- Validation: 34 focused simulator/perception tests passed in 14.37 seconds;
+  83 shared v2 precision, adapter, producer, strict-ingress, shadow,
+  coordinator, journal, and trajectory-envelope tests passed in 7.44 seconds.
+  Ruff, maintained-document, AI work-registry, repository-health,
+  source-footprint, and `git diff --check` gates passed. Source footprint is
+  6,100 files and 652,914,544 logical bytes. At arm commit
+  `9fa8fabf7076623ca17cb855050201739efc9596`, the precision-observation v2,
+  motion-batch v2, conformance-profile schema, and installed conformance
+  profile blobs remain identical to this AI branch.
+- Artifact location: external only under
+  `C:\IsaacSim\artifacts\issue190\fixed-overview-target-identity-training-v9-run1`,
+  byte-identical `target-identity-training-data-v1` and `...data-v2`, and
+  byte-identical `target-identity-candidate-v1` and `...candidate-v2`. Hashes
+  identify exact local bytes but do not make them clean-clone available.
+- Hardware-write count: 0.
+- Physical-movement count: 0.
+- Physics-step count: 0; retained schedule states are rendered statically.
+- Limitations: all camera geometry, images, labels, target descriptors, and
+  offsets are synthetic. The fixed identity vocabulary assumes the exact
+  frozen catalog. The 1 mm ring uses nominal 2 px/mm geometry and is not
+  physical calibration. V8 remains development/selection data and cannot
+  evaluate this or a successor. Tool and camera-support geometry, physical
+  frames, temporal evidence, and deployment calibration remain absent. The
+  failed candidate grants no localization, collision, controller, execution,
+  transport, permit, or physical authority.
+- Supersedes: none; preserves E-474 and adds failed evidence for one explicit
+  target-identity architecture without consuming a new evaluation group.
+- Next dependency: retain v9 for training and v8 for development, then test a
+  bounded target-conditioned spatial fusion that applies the target descriptor
+  before spatial pooling while preserving the 5% missed-abstention ceiling.
+  Only after a candidate passes development may a new untouched evaluation
+  campaign be predeclared.
