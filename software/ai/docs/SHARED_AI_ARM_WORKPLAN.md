@@ -1048,6 +1048,7 @@ is operationally too strict and blocks a fresh evaluation campaign.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
+| AI | S2/S3 | frozen E-471 checkpoint threshold-feasibility analysis on v6 development data; no evaluation access | `issue/190-isaac-sim-host` / pending | ACTIVE |
 | Unclaimed | S2/S3 | physical-camera deployment qualification and safe-region-fit precision evidence | — | AVAILABLE |
 | ARM | S4 | collect four physical-original `camera_support_optics` bindings through onboarding, then run the ARM-070 intake; no synthetic promotion | ARM-071 | WAITING_FOR_ORIGINALS |
 
