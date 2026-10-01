@@ -417,3 +417,26 @@ it conditions local spatial features. It does not provide physical-camera
 calibration or deployment qualification. The development set has now selected
 this architecture and threshold; a fresh evaluation campaign must remain
 untouched until the checkpoint and evaluation identities are predeclared.
+
+The v10 evaluation freezes six previously unused schedule poses and three new
+lighting transforms. Build its evaluation-only dataset and open it once against
+the exact frozen checkpoint:
+
+```powershell
+python software/ai/train/build_official_mesh_occlusion_data.py `
+  --source-manifest C:\IsaacSim\artifacts\issue190\fixed-overview-fusion-evaluation-v10-run1\manifest.json `
+  --output-dir C:\IsaacSim\artifacts\issue190\fusion-evaluation-data-v1
+
+python software/ai/train/build_official_mesh_occlusion_data.py `
+  --source-manifest C:\IsaacSim\artifacts\issue190\fixed-overview-fusion-evaluation-v10-run1\manifest.json `
+  --evaluate-target-conditioned-fusion `
+    C:\IsaacSim\artifacts\issue190\fusion-evaluation-data-v1 `
+    C:\IsaacSim\artifacts\issue190\target-conditioned-fusion-v1 `
+    C:\IsaacSim\artifacts\issue190\fusion-evaluation-report-v1
+```
+
+Evidence `E-20260930-AI-477` preserves the failed result. The worst false-stop
+rate remains below 5%, but the worst missed-abstention rate is `15/249 = 6.02%`.
+The v10 evaluation group is consumed and cannot be used for threshold, weight,
+architecture, or label selection. Future recall work needs new training and
+development bytes, followed by another separately frozen evaluation campaign.

@@ -1113,9 +1113,22 @@ qualification. The frozen candidate remains
 `BLOCKED_AWAITING_FRESH_EVALUATION` until a new untouched synthetic campaign is
 predeclared and consumed once.
 
+The frozen one-time v10 evaluation in `E-20260930-AI-477` uses six schedule
+poses and three lighting transforms absent from every v1-v9 campaign. Its
+1,350 rows contain 249 required abstentions and 1,101 visible targets. The
+exact E-476 checkpoint and threshold preserve the improved specificity: the
+worst visible-target false-stop rate is `50/1101 = 4.54%`. Occlusion recall
+narrowly fails the fixed ceiling: nominal misses are `12/249 = 4.82%`, while
+the -1 mm x/0 mm y direction reaches `15/249 = 6.02%`. The synthetic gate
+therefore fails and the candidate remains blocked. These v10 bytes are now
+consumed evaluation evidence and cannot tune a successor. The result directs
+future work toward a separately declared training/development campaign that
+improves occlusion recall while retaining the demonstrated specificity; any
+successor requires another untouched evaluation group.
+
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI/model | S2/S3 frozen target-conditioned evaluation | fixed-overview campaign renderer; offline dataset/evaluator; focused simulator/perception tests; AI workplan, training README, and evidence ledger | `issue/190-isaac-sim-host` / `1b3d5629d3d7461b067c225595ba69c916f30bc1` | ACTIVE — predeclare pose- and lighting-disjoint evaluation identities, evaluate frozen E-476 exactly once, preserve pass or fail without tuning |
+| Unclaimed | S2/S3 | declare new training and development identities for an occlusion-recall candidate without reusing consumed v10 evaluation bytes | — | AVAILABLE |
 | Unclaimed | S2/S3 | physical-camera deployment qualification and safe-region-fit precision evidence | — | AVAILABLE |
 | ARM | S4 | collect four physical-original `camera_support_optics` bindings through onboarding, then run the ARM-070 intake; no synthetic promotion | ARM-071 | WAITING_FOR_ORIGINALS |
 
