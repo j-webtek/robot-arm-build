@@ -553,3 +553,12 @@ python software/ai/train/build_official_mesh_occlusion_data.py `
     C:\IsaacSim\artifacts\issue190\specificity-rebalance-candidate-v1 `
     C:\IsaacSim\artifacts\issue190\specificity-rebalance-evaluation-report-v1
 ```
+
+Evidence `E-20261001-AI-481` preserves the failed untouched result. At nominal
+alignment, the model misses `24/219 = 10.96%` occlusions and falsely stops on
+`21/1131 = 1.86%` visible targets. Across the declared 2 mm envelope, the worst
+miss rate is `31/219 = 14.16%` and the worst false-stop rate is
+`62/1131 = 5.48%`; both exceed the fixed 5% ceilings. The 4 mm stress ring also
+fails. The two complete evaluation runs are byte identical. The consumed v14
+data cannot tune a successor, and the checkpoint remains blocked from
+synthetic promotion, deployment qualification, and physical authority.

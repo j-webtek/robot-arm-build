@@ -1194,9 +1194,23 @@ allows no training, selection, threshold change, model mutation, bound
 expansion, arm authority, or physical qualification; its data is consumed by
 the single evaluation.
 
+Evidence `E-20261001-AI-481` records the untouched v14 failure. The render
+contains six poses and the evaluation contains 1,350 rows: 219 expected
+abstentions and 1,131 visible targets. Nominal missed abstentions are
+`24/219 = 10.96%`, while nominal visible false abstentions are
+`21/1131 = 1.86%`. Within the declared 2 mm envelope, the maxima are
+`31/219 = 14.16%` missed abstentions and `62/1131 = 5.48%` false abstentions,
+so the fixed 5% synthetic gate fails. The 4 mm stress ring also fails. Both
+dataset builds and both evaluation reports are byte identical. V14 is now
+consumed and cannot tune a successor. The result grants no deployment,
+integration, or physical authority and leaves arm-lane status unchanged. The
+next AI dependency is a newly predeclared train/development campaign designed
+for pose generalization; it must exclude all v14 images, labels, probabilities,
+threshold outcomes, pose identities, and lighting identities from selection.
+
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI/model | S2/S3 untouched rebalance evaluation | predeclared static interpolated-pose fixture; evaluation-only v14 fixed-overview campaign; exact E-480 evaluator; focused simulator/perception tests; AI workplan, training README, and evidence ledger | `issue/190-isaac-sim-host` / `1c8e31c334dac2983d039301fe1703bb658c1077` | ACTIVE — frozen six-pose fixture and evaluation policy await implementation commit, then exact v13 checkpoint is evaluated once; no training or selection |
+| AI/model | S2/S3 untouched rebalance evaluation | static interpolated-pose fixture; evaluation-only v14 fixed-overview campaign; exact E-480 evaluator; deterministic repeat; AI workplan, training README, and evidence ledger | `issue/190-isaac-sim-host` / `123557c28e356b03dd3d58aed84c290a24d3bb0e` | COMPLETE — E-481 preserves a failed untouched synthetic gate; v14 is consumed; next successor campaign remains unclaimed |
 | Unclaimed | S2/S3 | physical-camera deployment qualification and safe-region-fit precision evidence | — | AVAILABLE |
 | ARM | S4 | collect four physical-original `camera_support_optics` bindings through onboarding, then run the ARM-070 intake; no synthetic promotion | ARM-071 | WAITING_FOR_ORIGINALS |
 
