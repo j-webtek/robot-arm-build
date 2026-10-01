@@ -486,3 +486,28 @@ perfect at `0/219` misses, but visible-target false stops are
 `57/1131 = 5.04%`, one case above the fixed 5% ceiling. The evaluation group is
 consumed and cannot be used for threshold, weight, architecture, or lighting
 selection. The successor remains blocked and grants no physical authority.
+
+## Specificity-balanced successor
+
+The v13 campaign reserves all thirteen remaining unused, pose-distinct
+schedule states before rendering: eight for training and five for development.
+It creates no evaluation group. The six lighting transforms are new. Training
+starts from the exact E-478 checkpoint, freezes both visual convolutions and
+the classifier, and updates only the FiLM conditioner for twelve epochs with
+learning rate `0.00025` and ordinary binary cross entropy. Threshold and
+synthetic uncertainty selection use only the v13 development split:
+
+```powershell
+python software/ai/train/build_official_mesh_occlusion_data.py `
+  --source-manifest C:\IsaacSim\artifacts\issue190\fixed-overview-specificity-rebalance-v13-run1\manifest.json `
+  --train-specificity-rebalance `
+    C:\IsaacSim\artifacts\issue190\specificity-rebalance-data-v1 `
+    C:\IsaacSim\artifacts\issue190\occlusion-recall-candidate-v1 `
+    C:\IsaacSim\artifacts\issue190\specificity-rebalance-candidate-v1
+```
+
+The consumed v12 evaluation bytes, labels, pose identities, and lighting
+identities are excluded from training and selection. This synthetic campaign
+cannot establish physical calibration, deployment qualification, or execution
+authority. A candidate that passes development still requires a newly
+predeclared and untouched evaluation source.

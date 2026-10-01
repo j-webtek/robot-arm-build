@@ -26,6 +26,7 @@ SCHEMA_V9 = "rocell.ai_official_mesh_occlusion_data.v9"
 SCHEMA_V10 = "rocell.ai_official_mesh_occlusion_data.v10"
 SCHEMA_V11 = "rocell.ai_official_mesh_occlusion_data.v11"
 SCHEMA_V12 = "rocell.ai_official_mesh_occlusion_data.v12"
+SCHEMA_V13 = "rocell.ai_official_mesh_occlusion_data.v13"
 SOURCE_SCHEMA_V1 = "tactevra.isaac_fixed_overview_mesh_render.v1"
 SOURCE_SCHEMA_V2 = "tactevra.isaac_fixed_overview_mesh_render.v2"
 SOURCE_SCHEMA_V3 = "tactevra.isaac_fixed_overview_mesh_render.v3"
@@ -38,6 +39,7 @@ SOURCE_SCHEMA_V9 = "tactevra.isaac_fixed_overview_mesh_render.v9"
 SOURCE_SCHEMA_V10 = "tactevra.isaac_fixed_overview_mesh_render.v10"
 SOURCE_SCHEMA_V11 = "tactevra.isaac_fixed_overview_mesh_render.v11"
 SOURCE_SCHEMA_V12 = "tactevra.isaac_fixed_overview_mesh_render.v12"
+SOURCE_SCHEMA_V13 = "tactevra.isaac_fixed_overview_mesh_render.v13"
 MAXIMUM_SAFE_REGION_OVERLAP = 0.20
 BASELINE_SEED = 190
 BASELINE_CROP_SIZE = 16
@@ -54,6 +56,9 @@ TARGET_CONDITIONED_MODULATION_SCALE = 0.25
 OCCLUSION_RECALL_EPOCHS = 12
 OCCLUSION_RECALL_LEARNING_RATE = 0.0005
 OCCLUSION_RECALL_POSITIVE_WEIGHT = 1.5
+SPECIFICITY_REBALANCE_EPOCHS = 12
+SPECIFICITY_REBALANCE_LEARNING_RATE = 0.00025
+SPECIFICITY_REBALANCE_POSITIVE_WEIGHT = 1.0
 EXPECTED_OCCLUSION_RECALL_MODEL_SHA256 = (
     "27c7be58e11f8bf3341cb4eb56abdf7786d984e2664b6eb07d6349243730e09c"
 )
@@ -155,6 +160,15 @@ RECALL_EVALUATION_LIGHTING = {
         "diagonal_smear_cool",
     ),
 }
+SPECIFICITY_REBALANCE_LIGHTING = {
+    "train": (
+        "neutral_microcontrast", "left_soft_falloff", "short_diagonal_smear",
+    ),
+    "development": (
+        "cool_microcontrast", "right_soft_falloff", "short_vertical_smear",
+    ),
+    "evaluation": (),
+}
 NOMINAL_PIXELS_PER_MM = 2.0
 MASK_OFFSET_RADII_MM = (1.0, 2.0, 4.0, 8.0)
 MASK_OFFSET_DIRECTIONS = (
@@ -185,6 +199,7 @@ def _verify_source(path: Path) -> dict[str, Any]:
         SOURCE_SCHEMA_V10,
         SOURCE_SCHEMA_V11,
         SOURCE_SCHEMA_V12,
+        SOURCE_SCHEMA_V13,
     }:
         raise ValueError("official-mesh manifest schema mismatch")
     claimed = source.pop("receipt_sha256", None)
@@ -223,7 +238,10 @@ def _split_policy(source: dict[str, Any]) -> tuple[str, dict[str, dict[str, tupl
         expected = next(name for name, poses in normalized.items() if row["pose_id"] in poses)
         if row.get("pose_group") != expected:
             raise ValueError(f"pose group mismatch: {row['pose_id']}")
-    if source["schema"] == SOURCE_SCHEMA_V12:
+    if source["schema"] == SOURCE_SCHEMA_V13:
+        lighting = SPECIFICITY_REBALANCE_LIGHTING
+        schema = SCHEMA_V13
+    elif source["schema"] == SOURCE_SCHEMA_V12:
         lighting = RECALL_EVALUATION_LIGHTING
         schema = SCHEMA_V12
     elif source["schema"] == SOURCE_SCHEMA_V11:
@@ -569,6 +587,45 @@ def _lighting(image: Image.Image, variant: str) -> Image.Image:
             green.point(lambda value: round(value * 0.98)),
             blue.point(lambda value: min(255, round(value * 1.06))),
         ))
+    if variant == "neutral_microcontrast":
+        adjusted = ImageEnhance.Brightness(rgb).enhance(0.96)
+        return ImageEnhance.Contrast(adjusted).enhance(1.08)
+    if variant == "left_soft_falloff":
+        overlay = Image.new("RGB", rgb.size, "black")
+        alpha = Image.new("L", rgb.size, 0)
+        ImageDraw.Draw(alpha).polygon(
+            ((0, 0), (round(rgb.width * 0.34), 0),
+             (round(rgb.width * 0.22), rgb.height), (0, rgb.height)),
+            fill=52,
+        )
+        return Image.composite(overlay, rgb, alpha)
+    if variant == "short_diagonal_smear":
+        weights = [0.0] * 9
+        for index in (0, 4, 8):
+            weights[index] = 1.0
+        return rgb.filter(ImageFilter.Kernel((3, 3), weights, scale=3.0))
+    if variant == "cool_microcontrast":
+        red, green, blue = rgb.split()
+        cooled = Image.merge("RGB", (
+            red.point(lambda value: round(value * 0.95)),
+            green,
+            blue.point(lambda value: min(255, round(value * 1.04))),
+        ))
+        return ImageEnhance.Contrast(cooled).enhance(1.05)
+    if variant == "right_soft_falloff":
+        overlay = Image.new("RGB", rgb.size, "black")
+        alpha = Image.new("L", rgb.size, 0)
+        ImageDraw.Draw(alpha).polygon(
+            ((round(rgb.width * 0.66), 0), (rgb.width, 0),
+             (rgb.width, rgb.height), (round(rgb.width * 0.78), rgb.height)),
+            fill=52,
+        )
+        return Image.composite(overlay, rgb, alpha)
+    if variant == "short_vertical_smear":
+        weights = [0.0] * 9
+        for index in (1, 4, 7):
+            weights[index] = 1.0
+        return rgb.filter(ImageFilter.Kernel((3, 3), weights, scale=3.0))
     raise ValueError(f"unknown lighting variant: {variant}")
 
 
@@ -2262,6 +2319,7 @@ def _load_target_conditioned_checkpoint(candidate_dir: Path):  # type: ignore[no
     if checkpoint.get("schema") not in {
         "rocell.ai_target_conditioned_spatial_fusion.v1",
         "rocell.ai_target_conditioned_occlusion_recall.v1",
+        "rocell.ai_target_conditioned_specificity_rebalance.v1",
     }:
         raise ValueError("target-conditioned checkpoint schema mismatch")
     architecture = checkpoint.get("architecture", {})
@@ -2550,6 +2608,224 @@ def train_occlusion_recall_candidate(
         "limitations": [
             "training and policy selection use new synthetic v11 data only",
             "consumed v10 evaluation bytes are excluded from training and selection",
+            "the uncertainty bound is synthetic and not a physical calibration",
+            "no new evaluation group was created or opened",
+            "tool and camera-support geometry remain absent",
+        ],
+    }
+    scorecard["scorecard_sha256"] = _sha256(_canonical(scorecard))
+    (output_dir / "scorecard.json").write_bytes(_canonical(scorecard) + b"\n")
+    return scorecard
+
+def train_specificity_rebalance_candidate(
+    dataset_dir: Path,
+    seed_candidate_dir: Path,
+    output_dir: Path,
+) -> dict[str, Any]:
+    """Rebalance only the frozen E-478 conditioner's synthetic specificity."""
+    import torch
+
+    dataset_dir = dataset_dir.resolve(strict=True)
+    seed_candidate_dir = seed_candidate_dir.resolve(strict=True)
+    output_dir = output_dir.resolve()
+    if output_dir.exists() and any(output_dir.iterdir()):
+        raise ValueError("specificity-rebalance output directory must be empty")
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    dataset_path = dataset_dir / "manifest.json"
+    dataset = json.loads(dataset_path.read_text(encoding="utf-8"))
+    claimed_dataset_sha = dataset.pop("dataset_sha256", None)
+    if not isinstance(claimed_dataset_sha, str) \
+            or _sha256(_canonical(dataset)) != claimed_dataset_sha:
+        raise ValueError("specificity-rebalance dataset manifest hash mismatch")
+    dataset["dataset_sha256"] = claimed_dataset_sha
+    if dataset.get("schema") != SCHEMA_V13 \
+            or dataset.get("scope") != "SYNTHETIC_ONLY_NO_DEPLOYMENT_QUALIFICATION":
+        raise ValueError("specificity-rebalance dataset scope or schema mismatch")
+    if dataset["splits"]["train"]["count"] == 0 \
+            or dataset["splits"]["development"]["count"] == 0 \
+            or dataset["splits"]["evaluation"]["count"] != 0:
+        raise ValueError("specificity-rebalance dataset must contain train and development only")
+
+    seed_model_path = seed_candidate_dir / "model.json"
+    seed_scorecard_path = seed_candidate_dir / "scorecard.json"
+    seed_checkpoint, model = _load_target_conditioned_checkpoint(seed_candidate_dir)
+    seed_policy = seed_checkpoint.get("localization_uncertainty_policy", {})
+    seed_model_sha = _sha256(seed_model_path.read_bytes())
+    if seed_checkpoint.get("schema") \
+            != "rocell.ai_target_conditioned_occlusion_recall.v1" \
+            or seed_model_sha != EXPECTED_OCCLUSION_RECALL_MODEL_SHA256 \
+            or seed_checkpoint.get("evaluation_opened") is not False \
+            or seed_policy.get("development_gate_met") is not True \
+            or seed_policy.get("maximum_supported_planar_error_mm") != 0.0 \
+            or dataset.get("target_catalog_sha256") \
+            != seed_checkpoint.get("target_catalog_sha256"):
+        raise ValueError("specificity-rebalance seed identity or policy mismatch")
+    seed_scorecard = json.loads(seed_scorecard_path.read_text(encoding="utf-8"))
+    claimed_seed_scorecard_sha = seed_scorecard.pop("scorecard_sha256", None)
+    if not isinstance(claimed_seed_scorecard_sha, str) \
+            or _sha256(_canonical(seed_scorecard)) != claimed_seed_scorecard_sha:
+        raise ValueError("specificity-rebalance seed scorecard hash mismatch")
+    seed_scorecard["scorecard_sha256"] = claimed_seed_scorecard_sha
+    if claimed_seed_scorecard_sha != EXPECTED_OCCLUSION_RECALL_SCORECARD_SHA256 \
+            or seed_scorecard.get("schema") \
+            != "rocell.ai_occlusion_recall_candidate.v1" \
+            or seed_scorecard.get("model_sha256") != seed_model_sha \
+            or seed_scorecard.get("development_gate_met") is not True \
+            or seed_scorecard.get("maximum_supported_planar_error_mm") != 0.0 \
+            or seed_scorecard.get("hardware_writes") != 0 \
+            or seed_scorecard.get("physical_movements") != 0 \
+            or seed_scorecard.get("physical_authority") is not False:
+        raise ValueError("specificity-rebalance seed scorecard identity or authority mismatch")
+
+    torch.manual_seed(BASELINE_SEED)
+    torch.use_deterministic_algorithms(True)
+    torch.set_num_threads(1)
+    training_rows = _load_rows(dataset_dir, "train", dataset)
+    development_rows = _load_rows(dataset_dir, "development", dataset)
+    catalog = tuple(seed_checkpoint["architecture"]["target_catalog"])
+    if set(_target_identity_catalog(training_rows)) != set(catalog) \
+            or set(_target_identity_catalog(development_rows)) != set(catalog):
+        raise ValueError("specificity-rebalance target vocabulary mismatch")
+    for name, parameter in model.named_parameters():
+        parameter.requires_grad_(name.startswith("conditioner."))
+
+    augmentation = _training_augmentation_offsets()
+    row_offsets = []
+    augmentation_counts: dict[str, int] = {}
+    for row in training_rows:
+        index = int(_sha256(row["id"].encode("utf-8"))[:8], 16) % len(augmentation)
+        offset = augmentation[index]
+        row_offsets.append((offset["x_px"], offset["y_px"]))
+        key = f"{offset['x_mm']:g},{offset['y_mm']:g}"
+        augmentation_counts[key] = augmentation_counts.get(key, 0) + 1
+    training_crops, training_labels = _target_aware_crops(
+        dataset_dir, training_rows, row_offsets_px=row_offsets,
+    )
+    training_descriptors = _target_identity_descriptors(
+        dataset_dir, training_rows, catalog,
+    )
+    crop_tensor = torch.from_numpy(training_crops)
+    descriptor_tensor = torch.from_numpy(training_descriptors)
+    label_tensor = torch.from_numpy(training_labels)
+    loss_fn = torch.nn.BCEWithLogitsLoss()
+    optimizer = torch.optim.Adam(
+        model.conditioner.parameters(),
+        lr=SPECIFICITY_REBALANCE_LEARNING_RATE,
+        weight_decay=0.0001,
+    )
+    epoch_losses = []
+    model.train()
+    for epoch in range(SPECIFICITY_REBALANCE_EPOCHS):
+        generator = torch.Generator().manual_seed(BASELINE_SEED + epoch)
+        order = torch.randperm(len(crop_tensor), generator=generator)
+        total_loss = 0.0
+        for start in range(0, len(order), SPATIAL_BATCH_SIZE):
+            indices = order[start:start + SPATIAL_BATCH_SIZE]
+            optimizer.zero_grad(set_to_none=True)
+            loss = loss_fn(model(
+                crop_tensor[indices], descriptor_tensor[indices],
+            ), label_tensor[indices])
+            loss.backward()
+            optimizer.step()
+            total_loss += float(loss.detach()) * len(indices)
+        epoch_losses.append(total_loss / len(order))
+
+    model.eval()
+    development_descriptors = torch.from_numpy(_target_identity_descriptors(
+        dataset_dir, development_rows, catalog,
+    ))
+    development_labels: np.ndarray | None = None
+    probabilities_by_offset = []
+    for offset in _declared_mask_offsets():
+        crops, labels = _target_aware_crops(
+            dataset_dir, development_rows, (offset["x_px"], offset["y_px"]),
+        )
+        if development_labels is None:
+            development_labels = labels.astype(np.float64)
+        elif not np.array_equal(development_labels, labels):
+            raise RuntimeError("specificity-rebalance labels changed across offsets")
+        with torch.no_grad():
+            probabilities = torch.sigmoid(model(
+                torch.from_numpy(crops), development_descriptors,
+            )).numpy()
+        probabilities_by_offset.append((offset, probabilities))
+    assert development_labels is not None
+    threshold, uncertainty_bound, gate_met, measurements = _select_localization_policy(
+        development_rows, development_labels, probabilities_by_offset,
+    )
+
+    state = {
+        name: {
+            "shape": list(value.shape),
+            "values": value.detach().cpu().numpy().astype(np.float64).reshape(-1).tolist(),
+        }
+        for name, value in sorted(model.state_dict().items())
+    }
+    checkpoint = {
+        "schema": "rocell.ai_target_conditioned_specificity_rebalance.v1",
+        "architecture": dict(seed_checkpoint["architecture"]),
+        "seed": {
+            "model_sha256": seed_model_sha,
+            "scorecard_sha256": claimed_seed_scorecard_sha,
+        },
+        "training": {
+            "seed": BASELINE_SEED,
+            "device": "cpu",
+            "epochs": SPECIFICITY_REBALANCE_EPOCHS,
+            "batch_size": SPATIAL_BATCH_SIZE,
+            "learning_rate": SPECIFICITY_REBALANCE_LEARNING_RATE,
+            "optimizer": "adam",
+            "weight_decay": 0.0001,
+            "loss": "binary_cross_entropy",
+            "positive_abstention_weight": SPECIFICITY_REBALANCE_POSITIVE_WEIGHT,
+            "trained_parameters": "conditioner_only",
+            "augmentation": "one_deterministic_offset_per_training_row",
+            "augmentation_offsets_mm": augmentation,
+            "augmentation_counts": augmentation_counts,
+            "epoch_losses": epoch_losses,
+        },
+        "crop": dict(seed_checkpoint["crop"]),
+        "threshold": threshold,
+        "localization_uncertainty_policy": {
+            "maximum_supported_planar_error_mm": uncertainty_bound,
+            "above_bound_decision": "abstain_localization_uncertain",
+            "development_gate_met": gate_met,
+            "maximum_missed_abstain_rate": 0.05,
+            "maximum_visible_false_abstain_rate": 0.05,
+        },
+        "target_catalog_sha256": dataset["target_catalog_sha256"],
+        "training_dataset_sha256": claimed_dataset_sha,
+        "selection_dataset_sha256": claimed_dataset_sha,
+        "selection_split": "development_only",
+        "consumed_evaluation_dataset_sha256": None,
+        "evaluation_opened": False,
+        "state_dict": state,
+    }
+    checkpoint_path = output_dir / "model.json"
+    checkpoint_path.write_bytes(_canonical(checkpoint) + b"\n")
+    scorecard: dict[str, Any] = {
+        "schema": "rocell.ai_specificity_rebalance_candidate.v1",
+        "algorithm": "seeded_target_conditioned_prepool_film_specificity_rebalance_v1",
+        "seed_model_sha256": seed_model_sha,
+        "seed_scorecard_sha256": claimed_seed_scorecard_sha,
+        "dataset_manifest_sha256": _sha256(dataset_path.read_bytes()),
+        "dataset_sha256": claimed_dataset_sha,
+        "target_catalog_sha256": dataset["target_catalog_sha256"],
+        "model_sha256": _sha256(checkpoint_path.read_bytes()),
+        "selected_threshold": threshold,
+        "maximum_supported_planar_error_mm": uncertainty_bound,
+        "development_gate_met": gate_met,
+        "development_measurements": measurements,
+        "evaluation_group_present": False,
+        "promotion_status": "BLOCKED_AWAITING_FRESH_EVALUATION"
+        if gate_met else "FAILED_DEVELOPMENT_GATE",
+        "hardware_writes": 0,
+        "physical_movements": 0,
+        "physical_authority": False,
+        "limitations": [
+            "training and policy selection use new synthetic v13 data only",
+            "consumed v12 evaluation bytes and identities are excluded from training and selection",
             "the uncertainty bound is synthetic and not a physical calibration",
             "no new evaluation group was created or opened",
             "tool and camera-support geometry remain absent",
@@ -3652,6 +3928,10 @@ def main() -> int:
         metavar=("DATASET_DIR", "SEED_CANDIDATE_DIR", "OUTPUT_DIR"),
     )
     parser.add_argument(
+        "--train-specificity-rebalance", type=Path, nargs=3,
+        metavar=("DATASET_DIR", "SEED_CANDIDATE_DIR", "OUTPUT_DIR"),
+    )
+    parser.add_argument(
         "--refreeze-localization-policy", type=Path, nargs=3,
         metavar=("DEVELOPMENT_DATASET_DIR", "CANDIDATE_DIR", "OUTPUT_DIR"),
     )
@@ -3678,6 +3958,7 @@ def main() -> int:
                 or args.train_target_identity is not None \
                 or args.train_target_conditioned_fusion is not None \
                 or args.train_occlusion_recall is not None \
+                or args.train_specificity_rebalance is not None \
                 or args.refreeze_localization_policy is not None \
                 or args.evaluate_localization_policy is not None \
                 or args.evaluate_target_conditioned_fusion is not None \
@@ -3701,6 +3982,7 @@ def main() -> int:
                 or args.train_target_identity is not None \
                 or args.train_target_conditioned_fusion is not None \
                 or args.train_occlusion_recall is not None \
+                or args.train_specificity_rebalance is not None \
                 or args.refreeze_localization_policy is not None \
                 or args.evaluate_localization_policy is not None \
                 or args.evaluate_target_conditioned_fusion is not None \
@@ -3723,6 +4005,7 @@ def main() -> int:
         if args.train_target_identity is not None \
                 or args.train_target_conditioned_fusion is not None \
                 or args.train_occlusion_recall is not None \
+                or args.train_specificity_rebalance is not None \
                 or args.refreeze_localization_policy is not None \
                 or args.evaluate_localization_policy is not None \
                 or args.evaluate_target_conditioned_fusion is not None \
@@ -3746,6 +4029,7 @@ def main() -> int:
     if args.train_target_identity is not None:
         if args.train_target_conditioned_fusion is not None \
                 or args.train_occlusion_recall is not None \
+                or args.train_specificity_rebalance is not None \
                 or args.refreeze_localization_policy is not None \
                 or args.evaluate_localization_policy is not None \
                 or args.evaluate_target_conditioned_fusion is not None \
@@ -3766,6 +4050,7 @@ def main() -> int:
         return 0
     if args.train_target_conditioned_fusion is not None:
         if args.train_occlusion_recall is not None \
+                or args.train_specificity_rebalance is not None \
                 or args.refreeze_localization_policy is not None \
                 or args.evaluate_localization_policy is not None \
                 or args.evaluate_target_conditioned_fusion is not None \
@@ -3787,7 +4072,8 @@ def main() -> int:
         print(json.dumps(scorecard, sort_keys=True))
         return 0
     if args.train_occlusion_recall is not None:
-        if args.refreeze_localization_policy is not None \
+        if args.train_specificity_rebalance is not None \
+                or args.refreeze_localization_policy is not None \
                 or args.evaluate_localization_policy is not None \
                 or args.evaluate_target_conditioned_fusion is not None \
                 or args.evaluate_occlusion_recall is not None \
@@ -3801,6 +4087,27 @@ def main() -> int:
         ):
             parser.error("--train-occlusion-recall cannot be combined with other outputs")
         scorecard = train_occlusion_recall_candidate(*args.train_occlusion_recall)
+        print(json.dumps(scorecard, sort_keys=True))
+        return 0
+    if args.train_specificity_rebalance is not None:
+        if args.refreeze_localization_policy is not None \
+                or args.evaluate_localization_policy is not None \
+                or args.evaluate_target_conditioned_fusion is not None \
+                or args.evaluate_occlusion_recall is not None \
+                or args.diagnose_localization_hard_negatives is not None \
+                or args.output_dir is not None or any(
+            value is not None
+            for value in (
+                args.baseline_output, args.candidate_output, args.spatial_output,
+                args.target_aware_output,
+            )
+        ):
+            parser.error(
+                "--train-specificity-rebalance cannot be combined with other outputs"
+            )
+        scorecard = train_specificity_rebalance_candidate(
+            *args.train_specificity_rebalance,
+        )
         print(json.dumps(scorecard, sort_keys=True))
         return 0
     if args.refreeze_localization_policy is not None:

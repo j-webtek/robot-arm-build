@@ -432,6 +432,31 @@ def test_recall_evaluation_poses_are_fresh_evaluation_only() -> None:
     assert not (set(sequences.values()) & prior)
 
 
+def test_specificity_rebalance_poses_are_fresh_train_and_development_only() -> None:
+    module = _renderer()
+    groups = module.SPECIFICITY_REBALANCE_POSE_GROUPS
+    sequences = module.SPECIFICITY_REBALANCE_SCHEDULE_POSE_SEQUENCES
+
+    assert groups["evaluation"] == ()
+    assert len(groups["training"]) == 8
+    assert len(groups["development"]) == 5
+    assert set(groups["training"]).isdisjoint(groups["development"])
+    assert set(sequences.values()) == {
+        33, 65, 74, 75, 86, 89, 93, 94, 95, 97, 101, 109, 111,
+    }
+    prior = (
+        set(module.SCHEDULE_POSE_SEQUENCES.values())
+        | set(module.PERTURBATION_SCHEDULE_POSE_SEQUENCES.values())
+        | set(module.POLICY_EVALUATION_SCHEDULE_POSE_SEQUENCES.values())
+        | set(module.HARD_NEGATIVE_SCHEDULE_POSE_SEQUENCES.values())
+        | set(module.TARGET_IDENTITY_TRAINING_SCHEDULE_POSE_SEQUENCES.values())
+        | set(module.FUSION_EVALUATION_SCHEDULE_POSE_SEQUENCES.values())
+        | set(module.OCCLUSION_RECALL_SCHEDULE_POSE_SEQUENCES.values())
+        | set(module.RECALL_EVALUATION_SCHEDULE_POSE_SEQUENCES.values())
+    )
+    assert not (set(sequences.values()) & prior)
+
+
 def test_transit_dataset_policy_uses_fresh_disjoint_lighting() -> None:
     builder = _builder()
     renderer = _renderer()
@@ -890,6 +915,59 @@ def test_recall_evaluation_policy_and_lighting_are_fresh() -> None:
     assert policy["development"]["poses"] \
         == policy["development"]["lighting"] == ()
     assert policy["evaluation"]["lighting"] == variants
+    assert not (set(variants) & prior)
+    assert all(
+        np.array_equal(left, right)
+        for left, right in zip(first, second, strict=True)
+    )
+    assert len({_sha256(value.tobytes()) for value in first}) == len(variants)
+
+
+def test_specificity_rebalance_policy_and_lighting_are_fresh() -> None:
+    builder = _builder()
+    renderer = _renderer()
+    source = {
+        "schema": "tactevra.isaac_fixed_overview_mesh_render.v13",
+        "pose_groups": {
+            name: list(poses)
+            for name, poses in renderer.SPECIFICITY_REBALANCE_POSE_GROUPS.items()
+        },
+        "pose_results": [
+            {"pose_id": pose_id, "pose_group": group}
+            for group, pose_ids in renderer.SPECIFICITY_REBALANCE_POSE_GROUPS.items()
+            for pose_id in pose_ids
+        ],
+    }
+
+    schema, policy = builder._split_policy(source)
+    train_variants = builder.SPECIFICITY_REBALANCE_LIGHTING["train"]
+    development_variants = builder.SPECIFICITY_REBALANCE_LIGHTING["development"]
+    variants = (*train_variants, *development_variants)
+    pixels = np.arange(48 * 48 * 3, dtype=np.uint8).reshape(48, 48, 3)
+    image = Image.fromarray(pixels, mode="RGB")
+    first = [np.asarray(builder._lighting(image, name)) for name in variants]
+    second = [np.asarray(builder._lighting(image, name)) for name in variants]
+    prior = {
+        name
+        for lighting in (
+            builder.LEGACY_SPLITS, builder.EXPANDED_LIGHTING,
+            builder.TRANSIT_LIGHTING, builder.SPECIFICITY_LIGHTING,
+            builder.TARGET_AWARE_LIGHTING, builder.PERTURBATION_LIGHTING,
+            builder.POLICY_EVALUATION_LIGHTING, builder.HARD_NEGATIVE_LIGHTING,
+            builder.TARGET_IDENTITY_TRAINING_LIGHTING,
+            builder.FUSION_EVALUATION_LIGHTING,
+            builder.OCCLUSION_RECALL_LIGHTING,
+            builder.RECALL_EVALUATION_LIGHTING,
+        )
+        for split in lighting.values()
+        for name in (split["lighting"] if isinstance(split, dict) else split)
+    }
+
+    assert schema == "rocell.ai_official_mesh_occlusion_data.v13"
+    assert policy["evaluation"]["poses"] == policy["evaluation"]["lighting"] == ()
+    assert policy["train"]["lighting"] == train_variants
+    assert policy["development"]["lighting"] == development_variants
+    assert set(train_variants).isdisjoint(development_variants)
     assert not (set(variants) & prior)
     assert all(
         np.array_equal(left, right)
@@ -1521,6 +1599,81 @@ def test_target_conditioned_fusion_is_deterministic_and_freezes_seed(
         module, "EXPECTED_OCCLUSION_RECALL_SCORECARD_SHA256",
         recall_scorecard["scorecard_sha256"],
     )
+    rebalance = make_dataset(
+        "specificity-rebalance", "rocell.ai_official_mesh_occlusion_data.v13",
+        "train",
+    )
+    rebalance_development = make_dataset(
+        "specificity-rebalance-development",
+        "rocell.ai_official_mesh_occlusion_data.v13", "development",
+    )
+    rebalance_manifest_path = rebalance / "manifest.json"
+    rebalance_manifest = json.loads(rebalance_manifest_path.read_text())
+    rebalance_development_manifest = json.loads(
+        (rebalance_development / "manifest.json").read_text()
+    )
+    for image_path in (rebalance_development / "images").glob("*.png"):
+        (rebalance / "images" / image_path.name).write_bytes(image_path.read_bytes())
+    (rebalance / "development.jsonl").write_bytes(
+        (rebalance_development / "development.jsonl").read_bytes()
+    )
+    rebalance_manifest["splits"]["development"] = (
+        rebalance_development_manifest["splits"]["development"]
+    )
+    rebalance_manifest.pop("dataset_sha256")
+    rebalance_manifest["dataset_sha256"] = _sha256(
+        module._canonical(rebalance_manifest)
+    )
+    rebalance_manifest_path.write_bytes(
+        module._canonical(rebalance_manifest) + b"\n"
+    )
+
+    rebalance_first = module.train_specificity_rebalance_candidate(
+        rebalance, tmp_path / "recall-first", tmp_path / "rebalance-first",
+    )
+    rebalance_second = module.train_specificity_rebalance_candidate(
+        rebalance, tmp_path / "recall-first", tmp_path / "rebalance-second",
+    )
+    rebalance_checkpoint = json.loads(
+        (tmp_path / "rebalance-first" / "model.json").read_text()
+    )
+
+    assert rebalance_first == rebalance_second
+    assert (tmp_path / "rebalance-first" / "model.json").read_bytes() == (
+        tmp_path / "rebalance-second" / "model.json"
+    ).read_bytes()
+    assert rebalance_checkpoint["schema"] \
+        == "rocell.ai_target_conditioned_specificity_rebalance.v1"
+    assert rebalance_checkpoint["training"]["loss"] == "binary_cross_entropy"
+    assert rebalance_checkpoint["training"]["positive_abstention_weight"] == 1.0
+    assert rebalance_checkpoint["training"]["trained_parameters"] \
+        == "conditioner_only"
+    assert rebalance_checkpoint["state_dict"]["conv1.weight"] \
+        == recall_checkpoint["state_dict"]["conv1.weight"]
+    assert rebalance_checkpoint["state_dict"]["conv2.weight"] \
+        == recall_checkpoint["state_dict"]["conv2.weight"]
+    assert rebalance_checkpoint["state_dict"]["classifier.weight"] \
+        == recall_checkpoint["state_dict"]["classifier.weight"]
+    assert rebalance_checkpoint["consumed_evaluation_dataset_sha256"] is None
+    assert rebalance_checkpoint["evaluation_opened"] is False
+    assert rebalance_first["evaluation_group_present"] is False
+    assert rebalance_first["hardware_writes"] == 0
+    assert rebalance_first["physical_movements"] == 0
+    assert rebalance_first["physical_authority"] is False
+
+    altered_seed = tmp_path / "altered-recall-seed"
+    altered_seed.mkdir()
+    (altered_seed / "model.json").write_bytes(recall_model_path.read_bytes())
+    altered_scorecard = dict(recall_scorecard)
+    altered_scorecard["scorecard_sha256"] = "0" * 64
+    (altered_seed / "scorecard.json").write_bytes(
+        module._canonical(altered_scorecard) + b"\n"
+    )
+    with pytest.raises(ValueError, match="seed scorecard hash mismatch"):
+        module.train_specificity_rebalance_candidate(
+            rebalance, altered_seed, tmp_path / "rebalance-altered-seed",
+        )
+
     recall_evaluation_first = module.evaluate_occlusion_recall_candidate(
         recall_evaluation, tmp_path / "recall-first",
         tmp_path / "recall-evaluation-first",

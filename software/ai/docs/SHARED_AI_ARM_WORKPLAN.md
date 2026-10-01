@@ -1153,9 +1153,20 @@ ring, missed-abstention rates remain at or below 2.28%, while false stops range
 from 5.13% to 6.54%. V12 is now consumed evaluation evidence and cannot tune a
 successor. No arm or integration status changes.
 
+The v13 specificity-balanced successor was claimed in
+`978b4ea184023c987b74db4f94c72172aad406a7` before implementation or rendering.
+It reserves all thirteen remaining unused, pose-distinct schedule states: eight
+for training and five for development. It creates no evaluation group. Six new
+lighting transforms, exact E-478 seeding, conditioner-only optimization, twelve
+epochs, learning rate `0.00025`, ordinary binary cross entropy, and development
+only threshold and uncertainty selection are frozen before image generation.
+The campaign identities and objective are independent of the identities inside
+the consumed v12 evaluation; no v12 byte, label, pose, or lighting transform is
+admissible for training or selection.
+
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI/model | S2/S3 specificity-balanced successor | fresh v13 train/development fixed-overview campaign; conditioner-only successor seeded from exact E-478 checkpoint; focused simulator/perception tests; AI workplan, training README, and evidence ledger | `issue/190-isaac-sim-host` / pending | ACTIVE — freeze unused pose and lighting identities plus objective before rendering; exclude every v12 byte and identity from training and selection; create no evaluation group |
+| AI/model | S2/S3 specificity-balanced successor | fresh v13 train/development fixed-overview campaign; conditioner-only successor seeded from exact E-478 checkpoint; focused simulator/perception tests; AI workplan, training README, and evidence ledger | `issue/190-isaac-sim-host` / `978b4ea184023c987b74db4f94c72172aad406a7` | ACTIVE — predeclared identities and objective frozen; exclude every v12 byte and identity from training and selection; create no evaluation group |
 | Unclaimed | S2/S3 | physical-camera deployment qualification and safe-region-fit precision evidence | — | AVAILABLE |
 | ARM | S4 | collect four physical-original `camera_support_optics` bindings through onboarding, then run the ARM-070 intake; no synthetic promotion | ARM-071 | WAITING_FOR_ORIGINALS |
 

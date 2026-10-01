@@ -214,6 +214,32 @@ RECALL_EVALUATION_POSE_GROUPS = {
     "development": (),
     "evaluation": tuple(RECALL_EVALUATION_SCHEDULE_POSE_SEQUENCES),
 }
+SPECIFICITY_REBALANCE_SCHEDULE_POSE_SEQUENCES = {
+    "rebalance_train_h_transit_33": 33,
+    "rebalance_train_h_to_1_65": 65,
+    "rebalance_train_period_transit_74": 74,
+    "rebalance_train_period_transit_86": 86,
+    "rebalance_train_period_transit_94": 94,
+    "rebalance_train_period_transit_97": 97,
+    "rebalance_train_return_transit_109": 109,
+    "rebalance_train_return_transit_111": 111,
+    "rebalance_dev_period_transit_75": 75,
+    "rebalance_dev_period_transit_89": 89,
+    "rebalance_dev_period_transit_93": 93,
+    "rebalance_dev_period_transit_95": 95,
+    "rebalance_dev_period_transit_101": 101,
+}
+SPECIFICITY_REBALANCE_POSE_GROUPS = {
+    "training": tuple(
+        pose_id for pose_id in SPECIFICITY_REBALANCE_SCHEDULE_POSE_SEQUENCES
+        if pose_id.startswith("rebalance_train_")
+    ),
+    "development": tuple(
+        pose_id for pose_id in SPECIFICITY_REBALANCE_SCHEDULE_POSE_SEQUENCES
+        if pose_id.startswith("rebalance_dev_")
+    ),
+    "evaluation": (),
+}
 EXPECTED_SCHEDULE_FILE_SHA256 = "6a59ce143f5527c7a9ced09b08d5515644ea4fb859dd69691e08483eb020ee42"
 WIDTH = 1920
 HEIGHT = 1080
@@ -373,6 +399,7 @@ def main() -> int:
             "target-identity-training-v9", "fusion-evaluation-v10",
             "occlusion-recall-v11",
             "recall-evaluation-v12",
+            "specificity-rebalance-v13",
         ),
         default="target-aware-v5",
     )
@@ -416,7 +443,12 @@ def main() -> int:
         bootstrap = bootstrap_virtual_workcell(workspace)
         context = bootstrap.context
         schedule_by_sequence = {row["sequence"]: row for row in schedule_bundle["samples"]}
-        if args.campaign == "recall-evaluation-v12":
+        if args.campaign == "specificity-rebalance-v13":
+            poses = {}
+            schedule_pose_sequences = SPECIFICITY_REBALANCE_SCHEDULE_POSE_SEQUENCES
+            pose_groups = SPECIFICITY_REBALANCE_POSE_GROUPS
+            receipt_schema = "tactevra.isaac_fixed_overview_mesh_render.v13"
+        elif args.campaign == "recall-evaluation-v12":
             poses = {}
             schedule_pose_sequences = RECALL_EVALUATION_SCHEDULE_POSE_SEQUENCES
             pose_groups = RECALL_EVALUATION_POSE_GROUPS
