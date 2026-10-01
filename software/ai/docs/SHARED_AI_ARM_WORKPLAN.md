@@ -1311,9 +1311,23 @@ Byte-identical builds and reports demonstrate deterministic pipeline behavior.
 They do not establish that an observed failure rate is statistically stable.
 Statistical claims require the clustered uncertainty analysis above.
 
+The claimed correlation-aware planning tool is now implemented against the
+retained v13 development and frozen v14 evaluation artifacts. It reconciles
+their exact dataset, manifest, report, target-catalog, confusion, and failure
+identities internally, then emits only aggregate hashes and statistics. Across
+the 17 offsets inside the component-wise 2 mm envelope, the maximum seeded
+pose-bootstrap 95th-percentile ICC is `0.767574770` for missed abstentions and
+`0.024507274` for visible false stops. The pessimistic scenario therefore uses
+`0.767574770` and `0.30`. At the frozen 1%/6% design rates and fused 2%/10%
+limits, the 64-pose floor has zero joint planning power in both scenarios. The
+first tested size reaching at least 90% joint planning power in both is 2,048
+poses (`0.936` empirical and `0.927` pessimistic). This is a broad synthetic
+mid-motion planning result; it neither opens a new evaluation set nor replaces
+the separate parked-pose synthetic and physical qualification.
+
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI/model | S2/S3 correlation-aware evaluation power tool | grouped v13/v14 intra-pose-correlation estimation; empirical upper-bound and pessimistic-correlation scenarios; deterministic pose-cluster simulation and sample-size recommendation; synthetic planning receipt, tests, registry, shared workplan, and evidence ledger | `issue/190-isaac-sim-host` / pending | ACTIVE — statistical planning only; no candidate selection, new render compute, arm-lane status, or integration-gate change |
+| AI/model | S2/S3 correlation-aware evaluation power tool | grouped v13/v14 intra-pose-correlation estimation; empirical upper-bound and pessimistic-correlation scenarios; deterministic pose-cluster simulation and sample-size recommendation; synthetic planning receipt, tests, registry, shared workplan, and evidence ledger | `issue/190-isaac-sim-host` / implementation pending | IMPLEMENTED, VALIDATION PENDING — aggregate synthetic planning only; 2,048-pose broad-campaign recommendation; no candidate selection, new render compute, arm-lane status, or integration-gate change |
 | Unclaimed | S2/S3 | physical-camera deployment qualification and safe-region-fit precision evidence | — | AVAILABLE |
 | ARM | S4 | collect four physical-original `camera_support_optics` bindings through onboarding, then run the ARM-070 intake; no synthetic promotion | ARM-071 | WAITING_FOR_ORIGINALS |
 

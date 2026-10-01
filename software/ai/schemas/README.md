@@ -282,3 +282,7 @@ binds an offline synthetic error bound to a checkpoint, domain, target set,
 and distinct calibration/evaluation datasets. No qualification is installed.
 The producer constructs the existing shared ModelMotionBatch only after
 precision and scene checks; scene confidence cannot fill a localization gap.
+The [clustered occlusion power plan](clustered_occlusion_power_plan_v1.schema.json)
+records a synthetic-only, aggregate correlation and sample-size calculation.
+It discloses no pose, target, row, image, or failure identities; it cannot tune
+a model, open an evaluation set, qualify deployment, or grant physical authority.

@@ -63,7 +63,9 @@
         "software/ai/rocell_ai/shadow_preview.py",
         "software/ai/rocell_ai/vision_fusion.py",
         "software/ai/rocell_ai/vision_runtime.py",
-        "software/ai/rocell_ai/visual_observation.py"
+        "software/ai/rocell_ai/visual_observation.py",
+        "software/ai/eval/plan_clustered_occlusion_power.py",
+        "software/ai/schemas/clustered_occlusion_power_plan_v1.schema.json"
       ],
       "test_paths": [
         "software/ai/tests/test_capture_binding.py",
@@ -74,7 +76,8 @@
         "software/ai/tests/test_shadow_preview.py",
         "software/ai/tests/test_vision_fusion.py",
         "software/ai/tests/test_vision_runtime.py",
-        "software/ai/tests/test_visual_coordinates.py"
+        "software/ai/tests/test_visual_coordinates.py",
+        "software/ai/tests/test_clustered_occlusion_power.py"
       ],
       "documentation_paths": [
         "software/ai/docs/MODEL_TO_ARM_TRANSLATION_ASSURANCE.md",
@@ -84,14 +87,16 @@
       "evidence_paths": [
         "software/ai/docs/EVIDENCE_LEDGER.md",
         "software/ai/eval/gemma3_4b_real_photo_seed_v0.json",
-        "software/ai/eval/gemma3_4b_scene_stress_v0.json"
+        "software/ai/eval/gemma3_4b_scene_stress_v0.json",
+        "software/ai/eval/clustered_occlusion_power_plan_v1.json"
       ],
-      "current_result": "The image-bound scene path now includes a strict synthetic-only self-occlusion projection contract with exposure-time measured-feedback brackets, calibrated-dilation provenance, deterministic overlap decisions, and zero authority.",
+      "current_result": "Synthetic scene and projection contracts fail closed, and a deterministic aggregate-only clustered power planner sizes the later broad-pose evaluation at 2,048 poses under empirical and pessimistic correlation scenarios.",
       "limitations": [
         "No projection renderer, measured dilation artifact, or physical deployment qualification is installed.",
-        "Scene and projection evidence cannot substitute for localization uncertainty, collision screening, or arm-runtime admission."
+        "Scene and projection evidence cannot substitute for localization uncertainty, collision screening, or arm-runtime admission.",
+        "The 2,048-pose result is a synthetic planning approximation and does not qualify the model, projection geometry, parked-pose workflow, camera, or deployment."
       ],
-      "next_gate": "Implement and freeze the correlation-aware power tool, then produce projection evidence only from independently reviewed synthetic inputs before another render campaign.",
+      "next_gate": "Collect commissioned projection inputs and a separate parked-pose qualification; do not spend broad-pose render compute until a new candidate and frozen 2,048-pose design are independently predeclared.",
       "model_motion_batch_boundary": true,
       "controller_authority": false,
       "hardware_writes": 0,
@@ -326,5 +331,5 @@
   "controller_authority": false,
   "hardware_writes": 0,
   "physical_movements": 0,
-  "registry_sha256": "786d845d58c62c68a0a458b21b03ee0ac56b59e5fd43c3c571d3dbc92e4705f6"
+  "registry_sha256": "2711ed7a27e01f9f6b0e7b87b8b094f51b1f90efaa4c0e16bd4887db635adb41"
 }
