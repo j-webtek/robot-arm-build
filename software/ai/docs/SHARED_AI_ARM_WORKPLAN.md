@@ -1176,7 +1176,7 @@ status.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI/model | S2/S3 specificity-balanced successor | fresh v13 train/development fixed-overview campaign; conditioner-only successor seeded from exact E-478 checkpoint; focused simulator/perception tests; AI workplan, training README, and evidence ledger | `issue/190-isaac-sim-host` / `978b4ea184023c987b74db4f94c72172aad406a7` | COMPLETE — E-480 passes fresh development through a 2 mm synthetic ring; candidate remains blocked pending untouched evaluation |
+| AI/model | S2/S3 untouched rebalance evaluation | predeclared static interpolated-pose fixture; evaluation-only v14 fixed-overview campaign; exact E-480 evaluator; focused simulator/perception tests; AI workplan, training README, and evidence ledger | `issue/190-isaac-sim-host` / pending | ACTIVE — freeze a new zero-authority pose source and evaluation policy before rendering; evaluate exact v13 checkpoint once; no training or selection |
 | Unclaimed | S2/S3 | physical-camera deployment qualification and safe-region-fit precision evidence | — | AVAILABLE |
 | ARM | S4 | collect four physical-original `camera_support_optics` bindings through onboarding, then run the ARM-070 intake; no synthetic promotion | ARM-071 | WAITING_FOR_ORIGINALS |
 
