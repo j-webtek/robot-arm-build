@@ -1060,6 +1060,7 @@ evaluation campaign may now be predeclared against the frozen policy.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
+| AI | S2/S3 | predeclared fresh synthetic evaluation for frozen E-472 checkpoint; new pose/lighting identities, one-time scoring | `issue/190-isaac-sim-host` / pending | ACTIVE |
 | Unclaimed | S2/S3 | physical-camera deployment qualification and safe-region-fit precision evidence | — | AVAILABLE |
 | ARM | S4 | collect four physical-original `camera_support_optics` bindings through onboarding, then run the ARM-070 intake; no synthetic promotion | ARM-071 | WAITING_FOR_ORIGINALS |
 
