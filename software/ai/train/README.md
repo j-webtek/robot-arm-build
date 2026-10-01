@@ -465,3 +465,24 @@ recall ceiling at `13/246 = 5.28%`, so the supported synthetic uncertainty
 bound remains 0 mm. The candidate remains
 `BLOCKED_AWAITING_FRESH_EVALUATION`; it has no physical calibration or
 execution authority, and the consumed v10 evaluation was not reused.
+
+The v12 evaluation freezes six evaluation-only poses and three new lighting
+transforms before rendering. It admits only the exact E-478 model and scorecard
+hashes, applies threshold `0.162` without mutation, gates the declared 0 mm
+bound at nominal alignment, and reports the 1 mm ring as non-selecting stress
+evidence:
+
+```powershell
+python software/ai/train/build_official_mesh_occlusion_data.py `
+  --source-manifest C:\IsaacSim\artifacts\issue190\fixed-overview-recall-evaluation-v12-run1\manifest.json `
+  --evaluate-occlusion-recall `
+    C:\IsaacSim\artifacts\issue190\recall-evaluation-data-v1 `
+    C:\IsaacSim\artifacts\issue190\occlusion-recall-candidate-v1 `
+    C:\IsaacSim\artifacts\issue190\recall-evaluation-report-v1
+```
+
+Evidence `E-20261001-AI-479` preserves the failed result. Nominal recall is
+perfect at `0/219` misses, but visible-target false stops are
+`57/1131 = 5.04%`, one case above the fixed 5% ceiling. The evaluation group is
+consumed and cannot be used for threshold, weight, architecture, or lighting
+selection. The successor remains blocked and grants no physical authority.

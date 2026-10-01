@@ -1145,9 +1145,17 @@ At +1 mm x/0 mm y, misses reach `13/246 = 5.28%`, so the candidate earns only a
 `BLOCKED_AWAITING_FRESH_EVALUATION`; v10 was not reused, no evaluation group was
 created or opened, and no arm or integration status changes.
 
+The one-time v12 evaluation in `E-20261001-AI-479` preserves a narrow failed
+specificity result for the exact E-478 checkpoint. Nominal alignment has zero
+missed abstentions across 219 occluded targets, but false stops are
+`57/1131 = 5.04%`, one case above the fixed 5% ceiling. Across the 1 mm stress
+ring, missed-abstention rates remain at or below 2.28%, while false stops range
+from 5.13% to 6.54%. V12 is now consumed evaluation evidence and cannot tune a
+successor. No arm or integration status changes.
+
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI/model | S2/S3 frozen recall evaluation | evaluation-only fixed-overview campaign; frozen E-478 evaluator; focused simulator/perception tests; AI workplan, training README, and evidence ledger | `issue/190-isaac-sim-host` / `8f82376cc9176db99c0f8cd8a1dba3757ee7df0e` | ACTIVE — reserve fresh v12 poses and lighting before rendering, evaluate the exact E-478 checkpoint once, and preserve the result without tuning |
+| AI/model | S2/S3 frozen recall evaluation | evaluation-only fixed-overview campaign; frozen E-478 evaluator; focused simulator/perception tests; AI workplan, training README, and evidence ledger | `issue/190-isaac-sim-host` / `8f82376cc9176db99c0f8cd8a1dba3757ee7df0e` | COMPLETE — E-479 fails specificity by one nominal false stop; v12 is consumed and the checkpoint remains blocked |
 | Unclaimed | S2/S3 | physical-camera deployment qualification and safe-region-fit precision evidence | — | AVAILABLE |
 | ARM | S4 | collect four physical-original `camera_support_optics` bindings through onboarding, then run the ARM-070 intake; no synthetic promotion | ARM-071 | WAITING_FOR_ORIGINALS |
 

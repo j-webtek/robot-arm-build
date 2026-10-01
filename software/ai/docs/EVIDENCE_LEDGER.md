@@ -8275,3 +8275,137 @@ rewriting history. New entries must use a unique evidence ID.
   campaign, freeze its identities before rendering, and evaluate this exact
   checkpoint once. Preserve the outcome whether it passes or fails. Physical
   deployment qualification remains a separate later requirement.
+
+### E-20261001-AI-479 — frozen recall checkpoint narrowly fails specificity
+
+- Stage: S2/S3 one-time synthetic evaluation of the frozen E-478 checkpoint.
+- Lane: AI/model with inert Isaac rendering and offline inference; no arm or
+  integration status changed.
+- Claim commit:
+  `8f82376cc9176db99c0f8cd8a1dba3757ee7df0e`.
+- Implementation and predeclaration commit:
+  `838b165eea0ebf36d3681f0b875e134d3b448d51`.
+- Change: v12 freezes six evaluation-only actual-emitter schedule poses at
+  sequences 73, 82, 91, 99, 105, and 110, all absent from v1-v11.
+  `upper_left_soft_vignette`, `warm_center_bloom`, and `diagonal_smear_cool`
+  are deterministic evaluation-only transforms absent from every earlier
+  lighting group. The evaluator admits only the exact E-478 model and
+  scorecard hashes, preserves threshold `0.162`, gates nominal alignment at
+  the checkpoint's declared 0 mm bound, and reports the eight 1 mm directions
+  only as non-selecting stress evidence. It performs no training, threshold
+  selection, relabeling, policy expansion, or model mutation.
+- Inputs/fixtures: renderer SHA-256
+  `f8fa72b4a8a13c64e0b5589753e615870f9a5e80c0e1b8f21db08165e4cf3325`;
+  builder/evaluator SHA-256
+  `e8dcc1c5c3256974a4ddfdb65704a61b9bc6d83da8cdf1191b135e3e90a1d861`;
+  focused test SHA-256
+  `7c4776169c00bffbba6fbc3ef9d8c62336435428a1f97fe3a7c75c9fe6ab719a`;
+  schedule file SHA-256
+  `6a59ce143f5527c7a9ced09b08d5515644ea4fb859dd69691e08483eb020ee42`;
+  target catalog SHA-256
+  `6779213e832ab27eeda1e7fb245f57ff8cb0d56707b5aa73a8f31ec483a620f2`;
+  frozen E-478 model SHA-256
+  `27c7be58e11f8bf3341cb4eb56abdf7786d984e2664b6eb07d6349243730e09c`;
+  frozen E-478 canonical scorecard SHA-256
+  `807928f2559d14fa8b0b9da1781d379650deeadb40ec8690e41484be16eaa0d4`.
+- Render command: `$env:OMNI_KIT_ACCEPT_EULA='YES';
+  $env:PYTHONPATH=(Resolve-Path 'software/src').Path;
+  C:\IsaacSim\env_6_1_0\Scripts\python.exe
+  software\integrations\isaac_sim\isaac_fixed_overview_mesh_render_probe.py
+  --workspace . --upstream-repo C:\IsaacSim\sources\roarm_ws-40dbd84
+  --mesh-receipt software\integrations\isaac_sim\evidence\roarm_m3_upstream_link_meshes_20260929.json
+  --capsule-manifest software\integrations\isaac_sim\evidence\fixed_overview_segmentation_v1\manifest.json
+  --schedule-bundle software\integrations\isaac_sim\evidence\actual_emitter_joint_schedule_bundle_9e5c878_20260929.json
+  --campaign recall-evaluation-v12 --output-dir
+  C:\IsaacSim\artifacts\issue190\fixed-overview-recall-evaluation-v12-run1
+  --receipt C:\IsaacSim\evidence\fixed_overview_recall_evaluation_v12_run1.json
+  --status-output
+  C:\IsaacSim\evidence\fixed_overview_recall_evaluation_v12_run1.status.json`.
+- Dataset command: `Copy-Item -LiteralPath
+  C:\IsaacSim\evidence\fixed_overview_recall_evaluation_v12_run1.json
+  -Destination
+  C:\IsaacSim\artifacts\issue190\fixed-overview-recall-evaluation-v12-run1\manifest.json;
+  python software\ai\train\build_official_mesh_occlusion_data.py
+  --source-manifest
+  C:\IsaacSim\artifacts\issue190\fixed-overview-recall-evaluation-v12-run1\manifest.json
+  --output-dir C:\IsaacSim\artifacts\issue190\recall-evaluation-data-v1`;
+  repeated with final output `...data-v2`.
+- Evaluation command: `python
+  software\ai\train\build_official_mesh_occlusion_data.py --source-manifest
+  C:\IsaacSim\artifacts\issue190\fixed-overview-recall-evaluation-v12-run1\manifest.json
+  --evaluate-occlusion-recall
+  C:\IsaacSim\artifacts\issue190\recall-evaluation-data-v1
+  C:\IsaacSim\artifacts\issue190\occlusion-recall-candidate-v1
+  C:\IsaacSim\artifacts\issue190\recall-evaluation-report-v1 >
+  C:\IsaacSim\artifacts\issue190\recall-evaluation-report-v1.stdout.json`;
+  repeated with dataset, report, and stdout suffix `v2`.
+- Render result: `PASS_WITH_BLOCKERS`. Canonical receipt SHA-256 is
+  `df4d320b58efaea287b88ef5af563b4181dfd37c4589eece5a93b4f6b468144e`;
+  receipt file SHA-256 is
+  `5ee827b556603d512aab3830e702b61461ae452d6b435e6dd6d693a2d40ac79b`;
+  status file SHA-256 is
+  `40cf85b4e2931e01c2855e8f03742e5ceb188d36dba6b420218e05dbb08245a2`.
+  RGB, mask, and depth atlas SHA-256 values are respectively
+  `fc6403c546fe2ca154e7fe2c6cc19dcdeea8ca27e17596f565169c548e614328`,
+  `1d3575abc92b12c2a3f48b7419dde99a7477120d53465e136babcb318dfeb6c9`,
+  and `fe01bac42cc958e937ee75925846fad447dc9fa5799c22a3206c5056f33f7780`.
+- Dataset result: both independent 22-file builds are byte-identical. Dataset
+  SHA-256 is
+  `9fc5c0947005bc8a2443072370df8b0df16ca1201acb8b3adbf9fd24ae6fd825`;
+  manifest file SHA-256 is
+  `ff8ff6bbf4d00c341976d773ef28f02dc132acd43d989658b13877cb5dc4439d`;
+  directory-content SHA-256 is
+  `b88f25029836d26d903f445a7e7182239053fa1474fbb1d25f222955ec173d07`.
+  Evaluation contains 1,350 rows: 219 abstentions and 1,131 visible targets.
+  Training and development each contain zero rows.
+- Evaluation result: `FAILED_SYNTHETIC_GATE`. Both independent 122,483-byte
+  reports are byte-identical. Canonical report SHA-256 is
+  `49612bbce8bb7e293a39acb857f85bf6e15a237b625c241fa0011bdea7189b15`;
+  report file SHA-256 is
+  `e2ddcc64ddacb88c86cdd877b589d3004df78e68fa02b808c2efa75b4a0cd453`;
+  byte-identical stdout SHA-256 is
+  `86db2ce8a41b32258698c8987440f09e18848328c9d1c26968e057b026bfd229`.
+  Nominal alignment records 219 true abstentions, 1,074 true-visible
+  decisions, 57 false abstentions, and zero missed abstentions. Recall is
+  perfect at `0/219 = 0%`, but false stops are `57/1131 = 5.04%`, one case
+  above the fixed 5% ceiling. The nominal synthetic gate therefore fails.
+  Across the 1 mm stress ring, misses range from 0 to 5
+  (`0%` to `5/219 = 2.28%`) while false stops range from 58 to 74
+  (`5.13%` to `74/1131 = 6.54%`). The stress gate also fails specificity.
+- Failure concentration: the 57 nominal false stops span 13 targets. Target
+  `7` contributes 9; `SPACE` and `5` contribute 7 each; `E` and `W` contribute
+  5 each. By lighting, upper-left soft vignette contributes 29, warm center
+  bloom 19, and diagonal cool smear 9. Pose counts range from 7 to 12, led by
+  period-transit sample 82 with 12. This is consumed evaluation diagnosis and
+  cannot select successor weights, thresholds, architecture, or data.
+- Validation: 41 focused simulator/perception tests passed in 16.46 seconds.
+  The shared AI-to-arm boundary selection passed 59 tests in 3.76 seconds.
+  Ruff passed. Maintained-document validation passed across 48 docs, 28 public
+  titles, and two SVG assets. Public-record, evidence-scope, repository-artifact,
+  repository-health, release-integrity, and release-readiness checks passed.
+  Source footprint is 6,100 tracked files, 653,038,199 logical bytes, 4,890,152
+  duplicate bytes, and remains within policy. The AI work-registry audit passed
+  with 35 tracked and documented tests, 110 referenced paths, and zero unowned
+  or multiply owned tests. `git diff --check` passed.
+- Artifact location: external only under
+  `C:\IsaacSim\artifacts\issue190\fixed-overview-recall-evaluation-v12-run1`,
+  byte-identical `recall-evaluation-data-v1` and `...data-v2`, and byte-identical
+  `recall-evaluation-report-v1` and `...report-v2`. Hashes identify exact local
+  bytes but do not make them clean-clone available.
+- Hardware-write count: 0.
+- Physical-movement count: 0.
+- Physics-step count: 0; schedule states are rendered statically and inference
+  uses retained images offline.
+- Limitations: all camera geometry, images, labels, target descriptors, and
+  offsets are synthetic. The 1 mm ring uses nominal 2 px/mm simulator geometry
+  and is not physical calibration. V12 is now consumed evaluation evidence and
+  cannot tune a successor. Tool and camera-support geometry, physical frames,
+  temporal evidence, and deployment calibration remain absent. This failed
+  evaluation grants no localization, collision, controller, execution,
+  transport, permit, or physical authority.
+- Supersedes: none; preserves E-478's passing development result and adds the
+  required fresh failed evaluation without rewriting or tuning either result.
+- Next dependency: diagnose the 57 nominal false stops by target, pose, and
+  lighting using the frozen report only. Any successor training and development
+  data must be separately declared and cannot reuse v12 images, labels,
+  probabilities, or failure identities for selection.
