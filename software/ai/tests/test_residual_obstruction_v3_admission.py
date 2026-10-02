@@ -25,6 +25,9 @@ FIXTURE = AI_ROOT / "sim" / "evidence" / "residual_obstruction_successor_v3.json
 SCHEMA = AI_ROOT / "schemas" / "residual_obstruction_v3_admission_v1.schema.json"
 RECEIPT = AI_ROOT / "eval" / "residual_obstruction_v3_partial_admission_v1.json"
 FULL_SHARD_RECEIPT = AI_ROOT / "eval" / "residual_obstruction_v3_first_full_shard_admission_v1.json"
+COMPLETE_RECEIPT = AI_ROOT / "eval" / "residual_obstruction_v3_complete_admission_v1.json"
+LINEAGE = AI_ROOT / "eval" / "residual_obstruction_v3_renderer_lineage_v1.json"
+LINEAGE_SCHEMA = AI_ROOT / "schemas" / "residual_obstruction_v3_renderer_lineage_v1.schema.json"
 
 
 def _write_shard(tmp_path: Path, rows: list[dict], **updates) -> Path:
@@ -130,6 +133,58 @@ def test_retained_first_full_shard_is_bound_and_not_admitted():
     assert receipt["campaign_admitted"] is False
     assert receipt["verified_observation_count"] == 2304
     assert receipt["missing_observation_count"] == 40896
+
+
+def test_retained_complete_receipt_is_bound_and_admitted():
+    receipt = json.loads(COMPLETE_RECEIPT.read_text())
+    schema = json.loads(SCHEMA.read_text())
+    Draft202012Validator(schema).validate(receipt)
+    core = {key: value for key, value in receipt.items() if key != "receipt_sha256"}
+    assert receipt["receipt_sha256"] == sha256_bytes(canonical(core))
+    assert receipt["status"] == "PASS"
+    assert receipt["campaign_admitted"] is True
+    assert receipt["manifest_count"] == 19
+    assert receipt["verified_observation_count"] == 43200
+    assert receipt["missing_observation_count"] == 0
+    assert receipt["unique_rgb_sha256_count"] == 43200
+    assert receipt["split_counts"] == {"training": 28800, "development": 14400}
+    assert receipt["evaluation_observation_count"] == 0
+    assert receipt["training_started"] is False
+    assert receipt["hardware_writes"] == receipt["physical_movements"] == 0
+    assert receipt["physical_authority"] is False
+
+
+def test_retained_renderer_lineage_covers_complete_receipt():
+    receipt = json.loads(COMPLETE_RECEIPT.read_text())
+    lineage = json.loads(LINEAGE.read_text())
+    schema = json.loads(LINEAGE_SCHEMA.read_text())
+    Draft202012Validator.check_schema(schema)
+    Draft202012Validator(schema).validate(lineage)
+    core = {key: value for key, value in lineage.items() if key != "lineage_sha256"}
+    assert lineage["lineage_sha256"] == sha256_bytes(canonical(core))
+    assert lineage["admission_receipt_sha256"] == receipt["receipt_sha256"]
+    assert lineage["admission_file_sha256"] == sha256_bytes(COMPLETE_RECEIPT.read_bytes())
+    assert [
+        {
+            key: shard[key]
+            for key in (
+                "manifest_file_sha256",
+                "dataset_sha256",
+                "target_start",
+                "target_count",
+                "observation_count",
+            )
+        }
+        for shard in lineage["shards"]
+    ] == receipt["manifests"]
+    covered_targets = [
+        target
+        for shard in lineage["shards"]
+        for target in range(shard["target_start"], shard["target_start"] + shard["target_count"])
+    ]
+    assert covered_targets == list(range(75))
+    assert lineage["hardware_writes"] == lineage["physical_movements"] == 0
+    assert lineage["physical_authority"] is False
 
 
 def test_complete_gate_rejects_partial_shard(tmp_path):

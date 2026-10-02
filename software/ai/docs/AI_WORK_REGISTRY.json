@@ -93,7 +93,8 @@
         "software/ai/schemas/residual_obstruction_successor_fixture_v3.schema.json",
         "software/ai/schemas/residual_obstruction_v3_renderer_smoke_v1.schema.json",
         "software/ai/eval/admit_residual_obstruction_v3_shards.py",
-        "software/ai/schemas/residual_obstruction_v3_admission_v1.schema.json"
+        "software/ai/schemas/residual_obstruction_v3_admission_v1.schema.json",
+        "software/ai/schemas/residual_obstruction_v3_renderer_lineage_v1.schema.json"
       ],
       "test_paths": [
         "software/ai/tests/test_capture_binding.py",
@@ -147,9 +148,11 @@
         "software/ai/sim/evidence/residual_obstruction_successor_v3.json",
         "software/ai/eval/residual_obstruction_v3_renderer_smoke_v1.json",
         "software/ai/eval/residual_obstruction_v3_partial_admission_v1.json",
-        "software/ai/eval/residual_obstruction_v3_first_full_shard_admission_v1.json"
+        "software/ai/eval/residual_obstruction_v3_first_full_shard_admission_v1.json",
+        "software/ai/eval/residual_obstruction_v3_complete_admission_v1.json",
+        "software/ai/eval/residual_obstruction_v3_renderer_lineage_v1.json"
       ],
-      "current_result": "The repaired renderer completed one full 12-scene, four-target shard: 2,304 observations independently verify as PARTIAL, with 40,896 combinations remaining. Full admission remains required before training.",
+      "current_result": "The full residual v3 Isaac corpus independently passed exact admission: 43,200 of 43,200 observations, 43,200 unique RGB hashes, 28,800 training and 14,400 development records, zero evaluation records, and no model training yet.",
       "limitations": [
         "No commissioned projection renderer, measured dilation artifact, or physical deployment qualification is installed.",
         "The geometry-first replay uses the same Isaac semantic mask that generated the synthetic label and therefore cannot estimate real projection error.",
@@ -163,10 +166,10 @@
         "Residual successor v2 is rendered from one simplified base scene through deterministic pixel-domain transforms; its measured result is synthetic development failure, not physical realism or qualification.",
         "Residual v2 training reduced loss but failed the 2% missed-obstruction and 6% residual-false-stop point, whole-view cluster, and worst-appearance gates; its model is rejected.",
         "The v2 diagnostic reuses consumed synthetic development evidence and may guide a fresh design but cannot evaluate or select its successor.",
-        "Residual v3 is a synthetic predeclaration only; its independent Isaac base scenes and 3D obstruction observations have not yet been rendered or admitted.",
-        "Residual v3 renderer smoke covers one of twelve scenes and four of seventy-five targets; it is not a complete admitted corpus or model evidence."
+        "Residual v3 is synthetic Isaac evidence with simplified, unmeasured camera, materials, and obstruction geometry; admission is not physical or deployment qualification.",
+        "The admitted shards were produced across documented renderer corrections; exact per-shard renderer lineage must remain explicit when the corpus is consumed."
       ],
-      "next_gate": "Render the remaining contiguous v3 target shards, then run independent admission without --allow-partial and require campaign_admitted=true before training.",
+      "next_gate": "Bind every admitted shard to its exact renderer revision, then run only the frozen v3 training plan against the admitted training split; select thresholds on development without opening an evaluation split or claiming physical qualification.",
       "model_motion_batch_boundary": true,
       "controller_authority": false,
       "hardware_writes": 0,
@@ -416,5 +419,5 @@
   "controller_authority": false,
   "hardware_writes": 0,
   "physical_movements": 0,
-  "registry_sha256": "7234c79cc77439e62ee16719fed479aebee59585b2aaff0915876beaa59a24b7"
+  "registry_sha256": "d588f759716d4cdd7edb5f1f305b539bc002642e3792f726741e282405d09919"
 }
