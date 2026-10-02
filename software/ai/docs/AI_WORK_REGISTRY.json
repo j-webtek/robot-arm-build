@@ -94,7 +94,8 @@
         "software/ai/schemas/residual_obstruction_v3_renderer_smoke_v1.schema.json",
         "software/ai/eval/admit_residual_obstruction_v3_shards.py",
         "software/ai/schemas/residual_obstruction_v3_admission_v1.schema.json",
-        "software/ai/schemas/residual_obstruction_v3_renderer_lineage_v1.schema.json"
+        "software/ai/schemas/residual_obstruction_v3_renderer_lineage_v1.schema.json",
+        "software/ai/train/train_residual_obstruction_v3.py"
       ],
       "test_paths": [
         "software/ai/tests/test_capture_binding.py",
@@ -120,7 +121,8 @@
         "software/ai/tests/test_residual_obstruction_v2_diagnostic.py",
         "software/ai/tests/test_residual_obstruction_successor_v3.py",
         "software/ai/tests/test_residual_obstruction_v3_renderer_smoke.py",
-        "software/ai/tests/test_residual_obstruction_v3_admission.py"
+        "software/ai/tests/test_residual_obstruction_v3_admission.py",
+        "software/ai/tests/test_residual_obstruction_v3_training.py"
       ],
       "documentation_paths": [
         "software/ai/docs/MODEL_TO_ARM_TRANSLATION_ASSURANCE.md",
@@ -152,7 +154,7 @@
         "software/ai/eval/residual_obstruction_v3_complete_admission_v1.json",
         "software/ai/eval/residual_obstruction_v3_renderer_lineage_v1.json"
       ],
-      "current_result": "The full residual v3 Isaac corpus independently passed exact admission: 43,200 of 43,200 observations, 43,200 unique RGB hashes, 28,800 training and 14,400 development records, zero evaluation records, and no model training yet.",
+      "current_result": "The complete residual v3 corpus is admitted, and its strict loader plus frozen paired-appearance training and development gates are implemented; the 24-epoch run has not started.",
       "limitations": [
         "No commissioned projection renderer, measured dilation artifact, or physical deployment qualification is installed.",
         "The geometry-first replay uses the same Isaac semantic mask that generated the synthetic label and therefore cannot estimate real projection error.",
@@ -169,7 +171,7 @@
         "Residual v3 is synthetic Isaac evidence with simplified, unmeasured camera, materials, and obstruction geometry; admission is not physical or deployment qualification.",
         "The admitted shards were produced across documented renderer corrections; exact per-shard renderer lineage must remain explicit when the corpus is consumed."
       ],
-      "next_gate": "Bind every admitted shard to its exact renderer revision, then run only the frozen v3 training plan against the admitted training split; select thresholds on development without opening an evaluation split or claiming physical qualification.",
+      "next_gate": "Run the unchanged frozen v3 training plan once, retain the model and scorecard externally, and accept or reject only from the predeclared development gates without evaluation access.",
       "model_motion_batch_boundary": true,
       "controller_authority": false,
       "hardware_writes": 0,
@@ -419,5 +421,5 @@
   "controller_authority": false,
   "hardware_writes": 0,
   "physical_movements": 0,
-  "registry_sha256": "d588f759716d4cdd7edb5f1f305b539bc002642e3792f726741e282405d09919"
+  "registry_sha256": "93a1bbea1636d767bdbe61dc3d607b0aab348509552ee13e838ed0d190527b0c"
 }
