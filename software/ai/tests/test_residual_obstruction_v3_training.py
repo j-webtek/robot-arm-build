@@ -1,19 +1,29 @@
 from __future__ import annotations
 
+import json
 from pathlib import Path
 import sys
 
 import numpy as np
+from jsonschema import Draft202012Validator
 
 
 AI_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(AI_ROOT))
 
 from train.train_residual_obstruction_v3 import (  # noqa: E402
+    RESULT_SCHEMA,
+    canonical,
     group_epoch_order,
+    load_bound,
     paired_groups,
     score_thresholds,
+    sha256_bytes,
 )
+
+
+REPORT = AI_ROOT / "eval" / "residual_obstruction_development_v3.json"
+SCHEMA = AI_ROOT / "schemas" / "residual_obstruction_development_v3.schema.json"
 
 
 def _gate() -> dict:
@@ -138,3 +148,21 @@ def test_worst_family_failure_is_not_hidden_by_aggregate_rate():
     assert measurements[0]["maximum_family_missed_obstruction_rate"] == 1.0
     assert measurements[0]["worst_family_gate_met"] is False
     assert measurements[0]["gate_met"] is False
+
+
+def test_retained_rejected_result_is_strict_bound_and_zero_authority():
+    schema = json.loads(SCHEMA.read_text(encoding="utf-8"))
+    Draft202012Validator.check_schema(schema)
+    report, _ = load_bound(REPORT, RESULT_SCHEMA, "result_sha256")
+    Draft202012Validator(schema).validate(report)
+    core = {key: value for key, value in report.items() if key != "result_sha256"}
+    assert report["result_sha256"] == sha256_bytes(canonical(core))
+    assert report["status"] == "FAILED_DEVELOPMENT_GATE"
+    assert report["selected_threshold"] is None
+    assert report["selected_measurement"] is None
+    assert not any(row["gate_met"] for row in report["threshold_measurements"])
+    assert not any(row["locally_separable"] for row in report["target_separation"])
+    assert report["evaluation_count"] == 0
+    assert report["evaluation_opened"] is False
+    assert report["hardware_writes"] == report["physical_movements"] == 0
+    assert report["physical_authority"] is False

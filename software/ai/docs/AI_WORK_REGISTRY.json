@@ -95,7 +95,8 @@
         "software/ai/eval/admit_residual_obstruction_v3_shards.py",
         "software/ai/schemas/residual_obstruction_v3_admission_v1.schema.json",
         "software/ai/schemas/residual_obstruction_v3_renderer_lineage_v1.schema.json",
-        "software/ai/train/train_residual_obstruction_v3.py"
+        "software/ai/train/train_residual_obstruction_v3.py",
+        "software/ai/schemas/residual_obstruction_development_v3.schema.json"
       ],
       "test_paths": [
         "software/ai/tests/test_capture_binding.py",
@@ -152,9 +153,10 @@
         "software/ai/eval/residual_obstruction_v3_partial_admission_v1.json",
         "software/ai/eval/residual_obstruction_v3_first_full_shard_admission_v1.json",
         "software/ai/eval/residual_obstruction_v3_complete_admission_v1.json",
-        "software/ai/eval/residual_obstruction_v3_renderer_lineage_v1.json"
+        "software/ai/eval/residual_obstruction_v3_renderer_lineage_v1.json",
+        "software/ai/eval/residual_obstruction_development_v3.json"
       ],
-      "current_result": "The complete residual v3 corpus is admitted, and its strict loader plus frozen paired-appearance training and development gates are implemented; the 24-epoch run has not started.",
+      "current_result": "Two byte-identical frozen residual v3 runs reduced combined loss from 0.5640 to 0.3170 but failed every development threshold; zero of 75 targets are locally separable and the worst target margin is -0.8240, so the model is rejected and evaluation remains absent.",
       "limitations": [
         "No commissioned projection renderer, measured dilation artifact, or physical deployment qualification is installed.",
         "The geometry-first replay uses the same Isaac semantic mask that generated the synthetic label and therefore cannot estimate real projection error.",
@@ -169,9 +171,10 @@
         "Residual v2 training reduced loss but failed the 2% missed-obstruction and 6% residual-false-stop point, whole-view cluster, and worst-appearance gates; its model is rejected.",
         "The v2 diagnostic reuses consumed synthetic development evidence and may guide a fresh design but cannot evaluate or select its successor.",
         "Residual v3 is synthetic Isaac evidence with simplified, unmeasured camera, materials, and obstruction geometry; admission is not physical or deployment qualification.",
-        "The admitted shards were produced across documented renderer corrections; exact per-shard renderer lineage must remain explicit when the corpus is consumed."
+        "The admitted shards were produced across documented renderer corrections; exact per-shard renderer lineage must remain explicit when the corpus is consumed.",
+        "The frozen residual v3 model failed its 2% missed-obstruction, 6% visible-false-stop, scene-cluster, family, appearance, and target-local separation gates; no threshold is installable."
       ],
-      "next_gate": "Run the unchanged frozen v3 training plan once, retain the model and scorecard externally, and accept or reject only from the predeclared development gates without evaluation access.",
+      "next_gate": "Diagnose the consumed v3 development probabilities by target, variant family, scene, and appearance without changing the rejected model or opening evaluation; use that diagnosis only to predeclare a fresh successor.",
       "model_motion_batch_boundary": true,
       "controller_authority": false,
       "hardware_writes": 0,
@@ -421,5 +424,5 @@
   "controller_authority": false,
   "hardware_writes": 0,
   "physical_movements": 0,
-  "registry_sha256": "93a1bbea1636d767bdbe61dc3d607b0aab348509552ee13e838ed0d190527b0c"
+  "registry_sha256": "ec0a1eef49f594919a8c17321421bd3f8a532771c0d38aef0674afb8c1fe2820"
 }
