@@ -9101,3 +9101,23 @@ rewriting history. New entries must use a unique evidence ID.
 - Limitations: the successful correction is a one-scene mixed-device smoke. It does not complete the corpus and provides no model, camera qualification, localization qualification, measured projection/dilation, collision, contact, deployment, or physical qualification. It contains no controller command, joint/PWM/serial/Waveshare field, motion policy, permit, transport field, or physical authority.
 - Supersedes: small-target framing and tool geometry implementation only. Frozen scenes, variants, model plan, and admission gates remain unchanged.
 - Next dependency: render targets 44–74 in fresh full-scene shards, independently admit all 43,200 observations, and require `campaign_admitted=true` before training.
+
+
+### E-20261002-AI-509 — centered-tool margin passes the smallest punctuation key
+
+- Stage: S2/S3 fresh synthetic residual-obstruction rendering, final small-target quantization correction before corpus admission.
+- Lane: AI/model Isaac renderer only; no arm-lane or integration-gate status changed.
+- Claim commit: `14c3d2ff0cffd6bad1a7bb96194f6efa98c9348c`.
+- Implementation/evidence commit: `a2de66b02eec84eccf305893716b367975b6aac3`.
+- Change: reduced centered-tool width from 65% to 55% of target width while retaining 100% target height. This leaves nominal and measured overlap inside the unchanged frozen 0.50–0.80 centered-tool band with pixel margin for 6×10 mm phone punctuation targets.
+- Exact successful smoke command: `$out='C:\IsaacSim\artifacts\issue190\residual-v3-shard-060-063-phone-smoke'; $env:OMNI_KIT_ACCEPT_EULA='YES'; $env:CUDA_VISIBLE_DEVICES='0'; C:\IsaacSim\env_6_1_0\Scripts\python.exe software\integrations\isaac_sim\residual_obstruction_v3_isaac_probe.py --workspace . --fixture software\ai\sim\evidence\residual_obstruction_successor_v3.json --output-dir $out --scene-limit 1 --target-start 60 --target-count 4 --status-output C:\IsaacSim\evidence\residual-v3-shard-060-063-phone-smoke.status.json`.
+- Result: the preceding full shard failed closed because `key_period` centered-tool overlap was `0.8333333333`. The corrected 192-observation smoke passed. Centered overlap is `0.5833333333`–`0.6363636364`, matte-edge overlap `0.3333333333`–`0.4545454545`, and foreign-object overlap `0.55`–`0.5727272727` for `key_n`, `key_o`, `key_p`, and `key_period`.
+- Artifact SHA-256 values: corrected renderer `6566f851402932b787a35e7758781b57fec3f3bd7b3c5491da7b332ba86bc2a8`; focused tests `a439c6eda6206afe06e14a8b78968e811f60e4cc4cd52b92c181749c6d3a95bc`; failed shard `failure.json` `297d0317ff8ce9abcef7ed9921045e90fa96d7c1ac54477cb62c081bd9ff8459`; successful smoke manifest file `c3615308d89f01bba8bbf3933061e084799bbd2574329ccb2e1f169bb2093b7b`; successful smoke canonical dataset `6e4059c76791db1e8daf3a0a40ad062a53e5a9140d21c66b72af7eda936a5af7`.
+- Validation result: all 283 AI tests passed with two expected Windows symlink skips; all 34 shared ingress/conformance tests passed; Ruff and repository governance checks passed. The implementation commit footprint remains 6,187 tracked files with no hardware artifact added.
+- Preserved failed evidence: the target 60–63 failed full-shard directory and FAIL status remain external and excluded. The queue stopped after targets 52–59 completed PASS; the just-started target 64–67 directory is incomplete, has no manifest, and is excluded. The correction changed generator geometry and did not widen a gate.
+- Hardware-write count: 0.
+- Physical-movement count: 0.
+- Physics-step count: 0; only zero-delta synthetic render captures ran.
+- Limitations: this is a one-scene four-target smoke. It provides no trained model, physical camera or localization qualification, measured projection/dilation, collision, contact, deployment, or physical qualification, and contains no controller command or physical authority.
+- Supersedes: centered-tool width implementation only; frozen campaign semantics and admission policy remain unchanged.
+- Next dependency: render targets 60–74 in fresh full-scene shards and require complete independent admission before training.
