@@ -29,6 +29,12 @@ def sha256_bytes(value: bytes) -> str:
     return hashlib.sha256(value).hexdigest()
 
 
+def dynamic_root(scene_index: int) -> str:
+    if scene_index < 0:
+        raise ValueError("scene index must be nonnegative")
+    return f"/World/SceneDynamic{scene_index:02d}"
+
+
 def load_fixture(path: Path) -> tuple[dict[str, Any], bytes]:
     payload_bytes = path.resolve(strict=True).read_bytes()
     payload = json.loads(payload_bytes)
@@ -129,7 +135,7 @@ def _apply_sensor_effect(rgb: Any, variant_id: str, appearance_id: str,
     return _encode_jpeg(np.asarray(image), Image, quality=quality)
 
 
-def render(workspace: Path, fixture_path: Path, output_dir: Path,
+def render(workspace: Path, fixture_path: Path, output_dir: Path, status_output: Path,
            scene_limit: int | None = None, target_start: int = 0,
            target_count: int = 75) -> dict[str, Any]:
     fixture, fixture_bytes = load_fixture(fixture_path)
@@ -201,6 +207,7 @@ def render(workspace: Path, fixture_path: Path, output_dir: Path,
         rows: list[dict[str, Any]] = []
         image_hashes: set[str] = set()
         for scene_index, scene in enumerate(scenes):
+            scene_dynamic_root = dynamic_root(scene_index)
             rng = random.Random(scene["isaac_seed"])
             board_prim.GetDisplayColorAttr().Set([Gf.Vec3f(
                 0.48 + rng.random() * 0.12,
@@ -246,20 +253,20 @@ def render(workspace: Path, fixture_path: Path, output_dir: Path,
                 left, front, right, rear = target.safe_rectangle_board_mm
                 width, height = right - left, rear - front
                 z = target.center.z + 4.0
-                adjacent_left_prims.append(_cube(stage, f"/World/AdjacentLeft/A{target_index:03d}",
+                adjacent_left_prims.append(_cube(stage, f"{scene_dynamic_root}/AdjacentLeft/A{target_index:03d}",
                     (left - width * 0.42, target.center.y, z), (width * 0.45, height * 0.7, 5.0),
                     (0.52, 0.18, 0.12), "adjacent_distractor", Gf, UsdGeom, add_labels).GetPrim())
-                adjacent_right_prims.append(_cube(stage, f"/World/AdjacentRight/A{target_index:03d}",
+                adjacent_right_prims.append(_cube(stage, f"{scene_dynamic_root}/AdjacentRight/A{target_index:03d}",
                     (right + width * 0.42, target.center.y, z), (width * 0.45, height * 0.7, 5.0),
                     (0.12, 0.22, 0.54), "adjacent_distractor", Gf, UsdGeom, add_labels).GetPrim())
                 obstruction_prims.extend([
-                    _cube(stage, f"/World/Obstructions/C{target_index:03d}", (target.center.x, target.center.y, z),
+                    _cube(stage, f"{scene_dynamic_root}/Obstructions/C{target_index:03d}", (target.center.x, target.center.y, z),
                           (width * 1.25, height * 0.55, 5.0), (0.03, 0.03, 0.035), "residual_obstruction", Gf, UsdGeom, add_labels).GetPrim(),
-                    _cube(stage, f"/World/Obstructions/TE{target_index:03d}", (left + width * 0.18, target.center.y, z),
+                    _cube(stage, f"{scene_dynamic_root}/Obstructions/TE{target_index:03d}", (left + width * 0.18, target.center.y, z),
                           (width * 0.55, height * 1.1, 6.0), (0.22, 0.24, 0.27), "residual_obstruction", Gf, UsdGeom, add_labels).GetPrim(),
-                    _cube(stage, f"/World/Obstructions/TC{target_index:03d}", (target.center.x, target.center.y, z),
+                    _cube(stage, f"{scene_dynamic_root}/Obstructions/TC{target_index:03d}", (target.center.x, target.center.y, z),
                           (width * 0.70, height * 1.1, 6.0), (0.48, 0.5, 0.54), "residual_obstruction", Gf, UsdGeom, add_labels).GetPrim(),
-                    _sphere(stage, f"/World/Obstructions/F{target_index:03d}", (target.center.x, target.center.y, z),
+                    _sphere(stage, f"{scene_dynamic_root}/Obstructions/F{target_index:03d}", (target.center.x, target.center.y, z),
                             min(width, height) * 0.43, (0.14, 0.35, 0.18), "residual_obstruction", Gf, UsdGeom, add_labels).GetPrim(),
                 ])
             adjacent_prims = adjacent_left_prims + adjacent_right_prims
@@ -362,6 +369,7 @@ def render(workspace: Path, fixture_path: Path, output_dir: Path,
                 annotator.detach()
             for product in products:
                 product.destroy()
+            stage.RemovePrim(scene_dynamic_root)
 
         split_counts = {split: sum(row["split"] == split for row in rows) for split in ("training", "development")}
         core = {
@@ -383,12 +391,22 @@ def render(workspace: Path, fixture_path: Path, output_dir: Path,
         }
         result = {**core, "dataset_sha256": sha256_bytes(canonical(core))}
         (output_dir / "manifest.json").write_bytes(canonical(result) + b"\n")
+        status_output.parent.mkdir(parents=True, exist_ok=True)
+        status_output.write_text(json.dumps({
+            "status": "PASS", "manifest_schema": result["schema"],
+            "dataset_sha256": result["dataset_sha256"],
+            "observation_count": result["observation_count"],
+        }, indent=2) + "\n", encoding="utf-8")
         return result
     except Exception as exc:
         (output_dir / "failure.json").write_text(
             json.dumps({"error_type": type(exc).__name__, "error": str(exc)}, indent=2) + "\n",
             encoding="utf-8",
         )
+        status_output.parent.mkdir(parents=True, exist_ok=True)
+        status_output.write_text(json.dumps({
+            "status": "FAIL", "error_type": type(exc).__name__, "error": str(exc),
+        }, indent=2) + "\n", encoding="utf-8")
         raise
     finally:
         app.close()
@@ -406,7 +424,7 @@ def main() -> int:
     args = parser.parse_args()
     try:
         result = render(
-            args.workspace, args.fixture, args.output_dir,
+            args.workspace, args.fixture, args.output_dir, args.status_output,
             args.scene_limit, args.target_start, args.target_count,
         )
         status = {"status": "PASS", "manifest_schema": result["schema"], "dataset_sha256": result["dataset_sha256"], "observation_count": result["observation_count"]}

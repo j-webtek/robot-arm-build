@@ -24,6 +24,7 @@ from rocell.application.bootstrap import bootstrap_virtual_workcell  # noqa: E40
 FIXTURE = AI_ROOT / "sim" / "evidence" / "residual_obstruction_successor_v3.json"
 SCHEMA = AI_ROOT / "schemas" / "residual_obstruction_v3_admission_v1.schema.json"
 RECEIPT = AI_ROOT / "eval" / "residual_obstruction_v3_partial_admission_v1.json"
+FULL_SHARD_RECEIPT = AI_ROOT / "eval" / "residual_obstruction_v3_first_full_shard_admission_v1.json"
 
 
 def _write_shard(tmp_path: Path, rows: list[dict], **updates) -> Path:
@@ -117,6 +118,18 @@ def test_retained_partial_receipt_is_bound_and_not_admitted():
     assert receipt["campaign_admitted"] is False
     assert receipt["verified_observation_count"] == 192
     assert receipt["missing_observation_count"] == 43008
+
+
+def test_retained_first_full_shard_is_bound_and_not_admitted():
+    receipt = json.loads(FULL_SHARD_RECEIPT.read_text())
+    schema = json.loads(SCHEMA.read_text())
+    Draft202012Validator(schema).validate(receipt)
+    core = {key: value for key, value in receipt.items() if key != "receipt_sha256"}
+    assert receipt["receipt_sha256"] == sha256_bytes(canonical(core))
+    assert receipt["status"] == "PARTIAL"
+    assert receipt["campaign_admitted"] is False
+    assert receipt["verified_observation_count"] == 2304
+    assert receipt["missing_observation_count"] == 40896
 
 
 def test_complete_gate_rejects_partial_shard(tmp_path):

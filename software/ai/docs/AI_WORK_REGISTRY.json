@@ -146,9 +146,10 @@
         "software/ai/eval/residual_obstruction_v2_diagnostic_v1.json",
         "software/ai/sim/evidence/residual_obstruction_successor_v3.json",
         "software/ai/eval/residual_obstruction_v3_renderer_smoke_v1.json",
-        "software/ai/eval/residual_obstruction_v3_partial_admission_v1.json"
+        "software/ai/eval/residual_obstruction_v3_partial_admission_v1.json",
+        "software/ai/eval/residual_obstruction_v3_first_full_shard_admission_v1.json"
       ],
-      "current_result": "Independent admission verifies all 192 smoke RGB files and contract bindings but returns PARTIAL with 43,008 combinations missing. Full rendering and admission remain required before training.",
+      "current_result": "The repaired renderer completed one full 12-scene, four-target shard: 2,304 observations independently verify as PARTIAL, with 40,896 combinations remaining. Full admission remains required before training.",
       "limitations": [
         "No commissioned projection renderer, measured dilation artifact, or physical deployment qualification is installed.",
         "The geometry-first replay uses the same Isaac semantic mask that generated the synthetic label and therefore cannot estimate real projection error.",
@@ -165,7 +166,7 @@
         "Residual v3 is a synthetic predeclaration only; its independent Isaac base scenes and 3D obstruction observations have not yet been rendered or admitted.",
         "Residual v3 renderer smoke covers one of twelve scenes and four of seventy-five targets; it is not a complete admitted corpus or model evidence."
       ],
-      "next_gate": "Render all frozen v3 scene-target shards, then run the independent verifier without --allow-partial and require campaign_admitted=true before training.",
+      "next_gate": "Render the remaining contiguous v3 target shards, then run independent admission without --allow-partial and require campaign_admitted=true before training.",
       "model_motion_batch_boundary": true,
       "controller_authority": false,
       "hardware_writes": 0,
@@ -415,5 +416,5 @@
   "controller_authority": false,
   "hardware_writes": 0,
   "physical_movements": 0,
-  "registry_sha256": "7ae3601dd4161d65234146827aa891e11e85c5e98ab7499ec18158ef66ca7925"
+  "registry_sha256": "7234c79cc77439e62ee16719fed479aebee59585b2aaff0915876beaa59a24b7"
 }

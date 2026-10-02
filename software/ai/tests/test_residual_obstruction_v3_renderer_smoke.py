@@ -12,7 +12,12 @@ ROOT = Path(__file__).resolve().parents[3]
 AI_ROOT = ROOT / "software" / "ai"
 sys.path.insert(0, str(ROOT / "software" / "integrations" / "isaac_sim"))
 
-from residual_obstruction_v3_isaac_probe import canonical, load_fixture, sha256_bytes  # noqa: E402
+from residual_obstruction_v3_isaac_probe import (  # noqa: E402
+    canonical,
+    dynamic_root,
+    load_fixture,
+    sha256_bytes,
+)
 
 
 FIXTURE = AI_ROOT / "sim" / "evidence" / "residual_obstruction_successor_v3.json"
@@ -33,6 +38,13 @@ def test_fixture_loader_rejects_tampering(tmp_path):
     path.write_text(json.dumps(payload), encoding="utf-8")
     with pytest.raises(ValueError, match="canonical hash mismatch"):
         load_fixture(path)
+
+
+def test_dynamic_prims_are_namespaced_per_scene():
+    assert dynamic_root(0) == "/World/SceneDynamic00"
+    assert dynamic_root(11) == "/World/SceneDynamic11"
+    with pytest.raises(ValueError, match="nonnegative"):
+        dynamic_root(-1)
 
 
 def test_retained_smoke_report_is_bound_and_incomplete():
