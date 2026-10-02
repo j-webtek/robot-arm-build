@@ -250,6 +250,27 @@ def model_training_diagnostics(
             "maximum_visible_probability": float(np.max(visible)),
             "minimum_obstruction_probability": float(np.min(obstruction)),
             "separation_margin": float(np.min(obstruction) - np.max(visible)),
+            "maximum_visible_observation_id": entries[
+                int(selected[np.flatnonzero(local_labels == 0)[int(np.argmax(visible))]])
+            ]["observation_id"],
+            "minimum_obstruction_observation_id": entries[
+                int(selected[np.flatnonzero(local_labels == 1)[int(np.argmin(obstruction))]])
+            ]["observation_id"],
+        })
+    family_diagnostics = []
+    families = [row["variant_id"] for row in entries]
+    for family in sorted(set(families)):
+        selected = np.asarray([i for i, value in enumerate(families) if value == family])
+        local_labels = labels[selected]
+        local_probabilities = probabilities[selected]
+        family_diagnostics.append({
+            "variant_id": family,
+            "training_count": int(len(selected)),
+            "visible_count": int(np.sum(local_labels == 0)),
+            "obstruction_count": int(np.sum(local_labels == 1)),
+            "mean_probability": float(np.mean(local_probabilities)),
+            "minimum_probability": float(np.min(local_probabilities)),
+            "maximum_probability": float(np.max(local_probabilities)),
         })
     return {
         "pooled_training_auc": pairwise_auc(labels, probabilities),
@@ -261,6 +282,7 @@ def model_training_diagnostics(
         "worst_target_margin": min(row["separation_margin"] for row in diagnostics),
         "best_target_margin": max(row["separation_margin"] for row in diagnostics),
         "target_diagnostics": diagnostics,
+        "variant_diagnostics": family_diagnostics,
         "training_probability_sha256": sha256_bytes(probabilities.astype("<f4").tobytes()),
     }, arrays
 
