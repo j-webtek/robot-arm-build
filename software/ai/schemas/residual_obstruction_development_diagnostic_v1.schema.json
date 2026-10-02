@@ -8,7 +8,7 @@
     "schema", "scope", "fixture_file_sha256", "fixture_bundle_sha256",
     "dataset_manifest_file_sha256", "dataset_sha256", "dataset_inventory_sha256",
     "model_file_sha256", "scorecard_file_sha256", "scorecard_result_sha256",
-    "development_probability_sha256", "development_count", "variant_diagnostics",
+    "development_probability_sha256", "development_count", "dataset_identity_diagnostics", "variant_diagnostics",
     "target_diagnostics", "global_probability", "target_separation",
     "highest_visible_variant", "lowest_obstruction_variant", "checkpoint_changed",
     "threshold_changed", "evaluation_opened", "hardware_writes",
@@ -27,6 +27,14 @@
     "scorecard_result_sha256": {"$ref": "#/$defs/sha256"},
     "development_probability_sha256": {"$ref": "#/$defs/sha256"},
     "development_count": {"const": 600},
+    "dataset_identity_diagnostics": {
+      "type": "object", "additionalProperties": false,
+      "required": ["clear_adjacent_pair_count", "byte_identical_clear_adjacent_pair_count"],
+      "properties": {
+        "clear_adjacent_pair_count": {"const": 75},
+        "byte_identical_clear_adjacent_pair_count": {"type": "integer", "minimum": 0, "maximum": 75}
+      }
+    },
     "variant_diagnostics": {
       "type": "array", "minItems": 8, "maxItems": 8,
       "items": {"$ref": "#/$defs/variant"}

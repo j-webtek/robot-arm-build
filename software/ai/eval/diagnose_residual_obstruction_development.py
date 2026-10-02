@@ -200,6 +200,13 @@ def diagnose(fixture_path: Path, dataset_dir: Path, model_path: Path, scorecard_
     fixture_rows = {row["observation_id"]: row for row in fixture["observations"]}
     rows = [fixture_rows[identity] for identity in development_identities]
     diagnostic = analyze(rows, probabilities)
+    development_files = [entry for entry in dataset["files"] if entry["split"] == "development"]
+    file_hashes = {(entry["target_id"], entry["variant_id"]): entry["sha256"] for entry in development_files}
+    target_ids = sorted({entry["target_id"] for entry in development_files})
+    identical_clear_distractor = sum(
+        file_hashes[(target_id, "none_clear")] == file_hashes[(target_id, "none_adjacent_distractor")]
+        for target_id in target_ids
+    )
     core = {
         "schema": OUTPUT_SCHEMA,
         "scope": "CONSUMED_SYNTHETIC_DEVELOPMENT_DIAGNOSTIC_NO_QUALIFICATION",
@@ -213,6 +220,10 @@ def diagnose(fixture_path: Path, dataset_dir: Path, model_path: Path, scorecard_
         "scorecard_result_sha256": scorecard["result_sha256"],
         "development_probability_sha256": scorecard["development_probability_sha256"],
         "development_count": len(rows),
+        "dataset_identity_diagnostics": {
+            "clear_adjacent_pair_count": len(target_ids),
+            "byte_identical_clear_adjacent_pair_count": identical_clear_distractor,
+        },
         **diagnostic,
         "checkpoint_changed": False,
         "threshold_changed": False,

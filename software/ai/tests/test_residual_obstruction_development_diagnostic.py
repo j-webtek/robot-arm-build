@@ -31,6 +31,7 @@ def test_retained_diagnostic_is_strict_and_bound():
     Draft202012Validator(schema).validate(report)
     assert report["development_count"] == 600
     assert report["target_separation"]["nonseparable_count"] == 75
+    assert report["dataset_identity_diagnostics"]["byte_identical_clear_adjacent_pair_count"] == 75
     assert report["global_probability"]["pairwise_auc"] == pytest.approx(0.7585185185185185)
     assert report["highest_visible_variant"] == "none_adjacent_distractor"
     assert report["lowest_obstruction_variant"] == "image_degraded"
