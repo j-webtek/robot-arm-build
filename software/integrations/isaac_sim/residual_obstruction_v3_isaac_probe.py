@@ -41,6 +41,12 @@ def foreign_object_radii(width_mm: float, height_mm: float) -> tuple[float, floa
     return width_mm * 0.42, height_mm * 0.42
 
 
+def camera_height_mm(width_mm: float, height_mm: float) -> float:
+    if width_mm <= 0 or height_mm <= 0:
+        raise ValueError("target dimensions must be positive")
+    return max(82.0, 1.5 * max(width_mm, height_mm))
+
+
 def load_fixture(path: Path) -> tuple[dict[str, Any], bytes]:
     payload_bytes = path.resolve(strict=True).read_bytes()
     payload = json.loads(payload_bytes)
@@ -230,12 +236,14 @@ def render(workspace: Path, fixture_path: Path, output_dir: Path, status_output:
             semantic_annotators = []
             depth_annotators = []
             for target_index, target in selected_targets:
+                left, front, right, rear = target.safe_rectangle_board_mm
+                camera_height = camera_height_mm(right - left, rear - front)
                 jitter_x = rng.uniform(-6.0, 6.0)
                 jitter_y = rng.uniform(-6.0, 6.0)
                 camera = rep.functional.create.camera(
                     position=((target.center.x + jitter_x) / 1000.0,
                               (target.center.y + jitter_y) / 1000.0,
-                              (target.center.z + 82.0) / 1000.0),
+                              (target.center.z + camera_height) / 1000.0),
                     look_at=(target.center.x / 1000.0, target.center.y / 1000.0,
                              target.center.z / 1000.0),
                     look_at_up_axis=(0.0, 1.0, 0.0),

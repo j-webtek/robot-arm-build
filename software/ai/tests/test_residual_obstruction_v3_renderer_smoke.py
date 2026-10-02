@@ -14,6 +14,7 @@ sys.path.insert(0, str(ROOT / "software" / "integrations" / "isaac_sim"))
 
 from residual_obstruction_v3_isaac_probe import (  # noqa: E402
     canonical,
+    camera_height_mm,
     dynamic_root,
     foreign_object_radii,
     load_fixture,
@@ -52,6 +53,13 @@ def test_foreign_object_geometry_scales_with_target_aspect_ratio():
     assert foreign_object_radii(10.0, 20.0) == (4.2, 8.4)
     with pytest.raises(ValueError, match="positive"):
         foreign_object_radii(0.0, 20.0)
+
+
+def test_camera_height_fits_wide_targets_with_margin():
+    assert camera_height_mm(14.0, 14.0) == 82.0
+    assert camera_height_mm(96.0, 14.0) == 144.0
+    with pytest.raises(ValueError, match="positive"):
+        camera_height_mm(96.0, 0.0)
 
 
 def test_retained_smoke_report_is_bound_and_incomplete():
