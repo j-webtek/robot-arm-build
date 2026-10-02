@@ -1737,6 +1737,15 @@ age, camera-calibration, fixture-pose, target-map, or lighting mismatch, and the
 first real clear/cable/hand reference-pair collection is documented. No model
 training or evaluation access occurred.
 
+Residual v4.2 now freezes the campaign decision before development rendering.
+Both self-crop P05/P95 and reference-context white-point normalization retain a
+zero-parameter mean-absolute-difference baseline. The higher linear q05 target
+AUC selects normalization; differences within 0.005 choose self-crop by a fixed
+simpler-runtime tie break. Two otherwise identical CNNs must first pass the
+500-row memorization gate. The selected CNN must improve both pooled AUC and
+q05 target AUC by at least 0.02 over its corresponding baseline, in addition to
+all existing development safety gates. Evaluation remains unrendered.
+
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
 | AI/model | S2/S3 residual v4.2 dual-normalization campaign | freeze a training-free difference baseline, fifth-percentile target-AUC normalization selector with deterministic tie break, and required CNN uplift before rendering; then render and independently admit disjoint training/development reference pairs while evaluation remains absent | `issue/190-isaac-sim-host` / baseline `120e08e231d059d04a1af1776f24c595676555a5` | ACTIVE — contract revision, campaign render, admission, memorization, and development evidence are not yet complete; no evaluation access, arm-lane status, integration gate, hardware write, physical movement, or execution authority change |
