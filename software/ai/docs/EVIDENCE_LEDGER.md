@@ -9081,3 +9081,23 @@ rewriting history. New entries must use a unique evidence ID.
 - Limitations: the corrected smoke covers one scene and four targets. It does not complete or admit the campaign and provides no trained model, camera qualification, localization qualification, measured projection/dilation, collision, contact, deployment, or physical qualification. It contains no controller command, joint/PWM/serial/Waveshare field, motion policy, permit, transport field, or physical authority.
 - Supersedes: only fixed-height target framing in prior renderer increments. Frozen model and admission policy remain unchanged.
 - Next dependency: resume the remaining target shards in fresh directories, independently verify the complete 43,200 observations, and require `campaign_admitted=true` before training.
+
+
+### E-20261002-AI-508 — normalized phone crops and tool geometry pass mixed-device smoke
+
+- Stage: S2/S3 fresh synthetic residual-obstruction rendering, small-target geometry correction before corpus admission.
+- Lane: AI/model Isaac renderer only; no arm-lane or integration-gate status changed.
+- Claim commit: `14c3d2ff0cffd6bad1a7bb96194f6efa98c9348c`.
+- Implementation/evidence commit: `e0be81c8186682172e55005e3fbdc9bd028d4da6`.
+- Change: for targets no larger than 14 mm, camera height now scales from the standard 82 mm reference with a 45 mm floor. The centered tool uses 65% target width and 100% height. The edge tool is placed 15% of target width from the left with 45% target width and 100% height, yielding a nominal 37.5% safe-region intersection. Frozen tool families and overlap bands remain unchanged.
+- Exact successful smoke command: `$out='C:\IsaacSim\artifacts\issue190\residual-v3-shard-044-047-phone-smoke02'; $env:OMNI_KIT_ACCEPT_EULA='YES'; $env:CUDA_VISIBLE_DEVICES='0'; C:\IsaacSim\env_6_1_0\Scripts\python.exe software\integrations\isaac_sim\residual_obstruction_v3_isaac_probe.py --workspace . --fixture software\ai\sim\evidence\residual_obstruction_successor_v3.json --output-dir $out --scene-limit 1 --target-start 44 --target-count 4 --status-output C:\IsaacSim\evidence\residual-v3-shard-044-047-phone-smoke02.status.json`.
+- Result: the prior target 44–47 shard failed closed because `key_a` matte-edge overlap was `0.5454545455`, above the frozen `0.50` maximum. A first correction smoke preserved that failure and exposed the same edge case. The final 192-observation smoke passed: matte-edge overlap is `0.4` for `Y`/`Z`, `0.4545454545` for `key_a`, and `0.3818181818` for `key_b`; centered-tool overlap is `0.7` for `Y`/`Z` and `0.7272727273` for both phone keys; foreign-object overlap is `0.54`–`0.5681818182`.
+- Artifact SHA-256 values: corrected renderer `c5782cf80f42364432e1df7dfe91e895972d74570e166cca58e618e1e663e36f`; focused tests `ba84d866bd8630aac1d3e1488da25b71c0340bd69badce4dd0ff19c924915dc8`; failed shard `failure.json` `39a383b821171eb3f43b937baa8c587335eba41214820cb98d897e2fc3ec2a46`; successful mixed-device smoke manifest file `ed3290fc08043296d43debd0fcd862d2f790b038911a3461a5d83ec39737ee47`; successful smoke canonical dataset `22d495f547be8f62a1b2edc28155e7f26d5d0e5228e4c5028b3c959199cf30b4`.
+- Validation result: all 283 AI tests passed with two expected Windows symlink skips; all 34 shared ingress/conformance tests passed; Ruff and repository governance checks passed. The implementation commit footprint remains 6,187 tracked files, 655,631,067 logical bytes, 4,890,152 governed duplicate bytes, and a 55,939,877-byte largest blob.
+- Preserved failed evidence: the target 44–47 failed full-shard directory, its FAIL status, and the first failed phone smoke remain external and excluded. The queue was stopped after targets 36–43 completed PASS; the just-started target 48–51 directory is incomplete, has no manifest, and is excluded. Neither correction widened a frozen acceptance band.
+- Hardware-write count: 0.
+- Physical-movement count: 0.
+- Physics-step count: 0; only zero-delta synthetic render captures ran.
+- Limitations: the successful correction is a one-scene mixed-device smoke. It does not complete the corpus and provides no model, camera qualification, localization qualification, measured projection/dilation, collision, contact, deployment, or physical qualification. It contains no controller command, joint/PWM/serial/Waveshare field, motion policy, permit, transport field, or physical authority.
+- Supersedes: small-target framing and tool geometry implementation only. Frozen scenes, variants, model plan, and admission gates remain unchanged.
+- Next dependency: render targets 44–74 in fresh full-scene shards, independently admit all 43,200 observations, and require `campaign_admitted=true` before training.
