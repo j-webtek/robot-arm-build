@@ -1355,6 +1355,37 @@ learned checkpoint. The next meaningful evidence must use commissioned camera
 geometry, exposure-time measured feedback, measured dilation, and residual
 obstruction cases that are independent of the geometry label.
 
+### Frozen parked residual-obstruction pretraining campaign
+
+The residual learned path now has a deterministic pretraining contract before
+any crop generation or training. It binds the exact retained fixed-camera
+practice manifest, corpus, target catalog, and source image hashes, then defines
+1,200 target-centered 96 by 96 crop specifications over all 75 keyboard targets.
+Training uses only `hover_t`; development uses only `hover_e`; evaluation is
+empty. Each split has 600 specifications: two visible cases per target (clear
+and adjacent distractor) and six abstention cases per target (cable, tool, hand,
+foreign object, localized glare, and image degradation). The retained fixture
+contains procedural render specifications, not generated crops.
+
+The frozen offline model is `target_crop_residual_cnn_v1` with convolution
+channels `[16, 32, 64]`, 12 epochs, batch size 64, learning rate `0.0005`,
+weight decay `0.0001`, and seed `19017`. Development selection must use the
+predeclared threshold grid from `0.05` through `0.95` and pass both point and
+2,000-resample target-cluster bounds: missed-abstention upper bound at most 2%
+and visible-target false-stop upper bound at most 10%. Truth masks and runtime
+geometry masks are prohibited as model inputs. A second build was byte
+identical; canonical fixture SHA-256 is
+`06f3972c71fa4132083cd963285824d49577eaf933cab4e411da84224a2ebfef`.
+
+This is a frozen synthetic design, not evidence that the residual detector
+works. The two source views are correlated, surfaces are simplified, and the
+camera remains synthetic and unmeasured. No images, model, training,
+development result, evaluation source, qualification, controller field,
+hardware write, physical movement, or execution authority was produced. The
+next increment must generate the exact declared crops, independently inventory
+them, train the declared model, and apply the target-cluster development gate
+without opening evaluation.
+
 ### Geometry-first occlusion revision after v14
 
 The next campaign treats known robot self-occlusion as a deterministic
@@ -1506,7 +1537,7 @@ authenticity remain external owner responsibilities.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI/model | S2/S3 parked residual-obstruction pretraining freeze | deterministic synthetic crop-campaign fixture from retained fixed-camera practice bytes; target-balanced clear/distractor/cable/tool/hand/foreign-object/glare/degradation cases; pose-separated train/development identities; frozen small offline model plan and asymmetric development gates; no evaluation source, training, render, or authority | `issue/190-isaac-sim-host` / claim pending | ACTIVE — predeclare the residual path before generating new crops or training; truth masks remain labels only, the two synthetic source poses cannot qualify deployment, and no arm-lane status, integration gate, hardware write, physical movement, or execution authority changes |
+| AI/model | S2/S3 parked residual-obstruction pretraining freeze | deterministic synthetic crop-campaign fixture from retained fixed-camera practice bytes; target-balanced clear/distractor/cable/tool/hand/foreign-object/glare/degradation cases; pose-separated train/development identities; frozen small offline model plan and asymmetric development gates; no evaluation source, training, render, or authority | `issue/190-isaac-sim-host` / `7e0509d0828a557c04a38aef47fc51c49dea70c8` | COMPLETE — 1,200 procedural crop specifications cover 75 targets with pose-separated train/development identities and a frozen offline model/gate plan; no crop images, model, training, development metric, evaluation access, qualification, arm-lane status, integration gate, hardware write, physical movement, or execution authority changed |
 | AI/model | S2/S3 v16 geometry-first fusion replay | independently recompute development target overlap from retained Isaac robot-mask atlases, reconcile frozen labels and learned decisions, conservatively replay geometry/learned OR fusion with explicit ambiguity accounting, strict report/schema/tests, registry, shared workplan, and evidence ledger | `issue/190-isaac-sim-host` / `a576f6658acf7ccab6da067fcce4f6ee152ac962` | COMPLETE — all 4,800 pose-target overlaps and 14,400 rows reconcile; fused misses are zero at all 17 offsets and worst strict false stops are 881, but the mask also generated the label, no measured dilation or projection qualification exists, v16 remains rejected, and no evaluation access, arm-lane status, integration gate, hardware write, physical movement, or execution authority changed |
 | AI/model | S2/S3 v16 grouped-neighborhood development diagnostic | read-only attribution of the consumed v16 development failures by source block, pose, target, lighting, and offset; strict schema, deterministic aggregate report, tests, registry, shared workplan, and evidence ledger | `issue/190-isaac-sim-host` / `bc880ad9087d18b99becf7c4db765d8b77edb026` | COMPLETE — 348 misses span 28 poses, 46 pose-target pairs, eight source blocks, 13 targets, and all three lighting identities; the dominant pose-target contributes only 11.78%, so v16 remains rejected and no threshold, evaluation access, promotion, arm-lane status, integration gate, hardware write, physical movement, or execution authority changed |
 | AI/model | S2/S3 v16 grouped-neighborhood successor | frozen fresh pose generator with source-interval group isolation, failed-neighborhood coverage, fresh lighting identities, separately frozen train/development split, target-aware training revision, clustered development gate, Isaac campaign, tests, registry, shared workplan, and evidence ledger | `issue/190-isaac-sim-host` / `ce6172b8b43a22613d3eaf128cc80873423e076a` | COMPLETE — point gate passed through 2 mm, but the 64-pose missed-abstention UCB is 2.8216% against the frozen 2% ceiling, so v16 is rejected; v14 evaluation and v15 development remain consumed, no evaluation source opened, and no arm-lane status, integration-gate, hardware write, physical movement, or execution authority changed |
