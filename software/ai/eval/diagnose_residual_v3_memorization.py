@@ -46,7 +46,7 @@ def _spatial_control(torch: Any, channels: list[int]) -> Any:
         torch.nn.Conv2d(channels[0], channels[1], 3, padding=1), torch.nn.GroupNorm(8, channels[1]),
         torch.nn.ReLU(), torch.nn.MaxPool2d(2),
         torch.nn.Conv2d(channels[1], channels[2], 3, padding=1), torch.nn.GroupNorm(8, channels[2]),
-        torch.nn.ReLU(), torch.nn.AdaptiveAvgPool2d((6, 6)), torch.nn.Flatten(),
+        torch.nn.ReLU(), torch.nn.AvgPool2d(4), torch.nn.Flatten(),
         torch.nn.Linear(channels[2] * 36, 1),
     )
 
