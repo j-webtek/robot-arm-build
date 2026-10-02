@@ -96,6 +96,12 @@ focused test. The current tracked-file ceiling is therefore 6,146. This
 adjustment does not relax any byte, single-blob, or duplicate-byte ceiling and
 adds no image, model, or simulator blob.
 
+The issue 190 residual-obstruction development run adds four reviewed text
+files: the deterministic materializer/trainer, strict result schema, retained
+scorecard, and focused test. Generated crops and model weights remain external
+hashed artifacts. The current tracked-file ceiling is therefore 6,150. This
+adjustment does not relax any byte, single-blob, or duplicate-byte ceiling.
+
 The preferred order is:
 
 1. replace repeated instructional STL copies with one canonical tracked object
