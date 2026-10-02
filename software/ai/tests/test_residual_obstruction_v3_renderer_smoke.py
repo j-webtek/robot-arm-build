@@ -66,8 +66,8 @@ def test_camera_height_fits_wide_targets_with_margin():
 
 
 def test_centered_tool_stays_inside_frozen_overlap_band_by_design():
-    assert centered_tool_size(14.0, 14.0) == (9.1, 14.0)
-    assert centered_tool_size(6.0, 11.0) == pytest.approx((3.9, 11.0))
+    assert centered_tool_size(14.0, 14.0) == pytest.approx((7.7, 14.0))
+    assert centered_tool_size(6.0, 11.0) == pytest.approx((3.3, 11.0))
     with pytest.raises(ValueError, match="positive"):
         centered_tool_size(-1.0, 11.0)
 

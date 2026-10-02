@@ -53,7 +53,7 @@ def camera_height_mm(width_mm: float, height_mm: float) -> float:
 def centered_tool_size(width_mm: float, height_mm: float) -> tuple[float, float]:
     if width_mm <= 0 or height_mm <= 0:
         raise ValueError("target dimensions must be positive")
-    return width_mm * 0.65, height_mm
+    return width_mm * 0.55, height_mm
 
 
 def edge_tool_geometry(width_mm: float, height_mm: float) -> tuple[float, float, float]:
