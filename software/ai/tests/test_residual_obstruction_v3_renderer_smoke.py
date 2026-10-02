@@ -15,6 +15,7 @@ sys.path.insert(0, str(ROOT / "software" / "integrations" / "isaac_sim"))
 from residual_obstruction_v3_isaac_probe import (  # noqa: E402
     canonical,
     dynamic_root,
+    foreign_object_radii,
     load_fixture,
     sha256_bytes,
 )
@@ -45,6 +46,12 @@ def test_dynamic_prims_are_namespaced_per_scene():
     assert dynamic_root(11) == "/World/SceneDynamic11"
     with pytest.raises(ValueError, match="nonnegative"):
         dynamic_root(-1)
+
+
+def test_foreign_object_geometry_scales_with_target_aspect_ratio():
+    assert foreign_object_radii(10.0, 20.0) == (4.2, 8.4)
+    with pytest.raises(ValueError, match="positive"):
+        foreign_object_radii(0.0, 20.0)
 
 
 def test_retained_smoke_report_is_bound_and_incomplete():

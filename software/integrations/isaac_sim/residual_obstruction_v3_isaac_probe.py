@@ -35,6 +35,12 @@ def dynamic_root(scene_index: int) -> str:
     return f"/World/SceneDynamic{scene_index:02d}"
 
 
+def foreign_object_radii(width_mm: float, height_mm: float) -> tuple[float, float]:
+    if width_mm <= 0 or height_mm <= 0:
+        raise ValueError("target dimensions must be positive")
+    return width_mm * 0.42, height_mm * 0.42
+
+
 def load_fixture(path: Path) -> tuple[dict[str, Any], bytes]:
     payload_bytes = path.resolve(strict=True).read_bytes()
     payload = json.loads(payload_bytes)
@@ -67,14 +73,18 @@ def _cube(stage: Any, path: str, center_mm: tuple[float, float, float],
     return cube
 
 
-def _sphere(stage: Any, path: str, center_mm: tuple[float, float, float],
-            radius_mm: float, color: tuple[float, float, float], label: str,
-            Gf: Any, UsdGeom: Any, add_labels: Any) -> Any:
+def _ellipsoid(stage: Any, path: str, center_mm: tuple[float, float, float],
+               radii_mm: tuple[float, float], color: tuple[float, float, float],
+               label: str, Gf: Any, UsdGeom: Any, add_labels: Any) -> Any:
     sphere = UsdGeom.Sphere.Define(stage, path)
-    sphere.GetRadiusAttr().Set(radius_mm / 1000.0)
-    UsdGeom.Xformable(sphere).AddTranslateOp().Set(
+    sphere.GetRadiusAttr().Set(1.0)
+    xform = UsdGeom.Xformable(sphere)
+    xform.AddTranslateOp().Set(
         Gf.Vec3d(*(value / 1000.0 for value in center_mm))
     )
+    xform.AddScaleOp().Set(Gf.Vec3d(
+        radii_mm[0] / 1000.0, radii_mm[1] / 1000.0, 0.004,
+    ))
     sphere.GetDisplayColorAttr().Set([Gf.Vec3f(*color)])
     add_labels(sphere.GetPrim(), labels=[label], taxonomy="class")
     return sphere
@@ -266,8 +276,8 @@ def render(workspace: Path, fixture_path: Path, output_dir: Path, status_output:
                           (width * 0.55, height * 1.1, 6.0), (0.22, 0.24, 0.27), "residual_obstruction", Gf, UsdGeom, add_labels).GetPrim(),
                     _cube(stage, f"{scene_dynamic_root}/Obstructions/TC{target_index:03d}", (target.center.x, target.center.y, z),
                           (width * 0.70, height * 1.1, 6.0), (0.48, 0.5, 0.54), "residual_obstruction", Gf, UsdGeom, add_labels).GetPrim(),
-                    _sphere(stage, f"{scene_dynamic_root}/Obstructions/F{target_index:03d}", (target.center.x, target.center.y, z),
-                            min(width, height) * 0.43, (0.14, 0.35, 0.18), "residual_obstruction", Gf, UsdGeom, add_labels).GetPrim(),
+                    _ellipsoid(stage, f"{scene_dynamic_root}/Obstructions/F{target_index:03d}", (target.center.x, target.center.y, z),
+                               foreign_object_radii(width, height), (0.14, 0.35, 0.18), "residual_obstruction", Gf, UsdGeom, add_labels).GetPrim(),
                 ])
             adjacent_prims = adjacent_left_prims + adjacent_right_prims
             all_dynamic = adjacent_prims + obstruction_prims
