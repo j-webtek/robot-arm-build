@@ -86,7 +86,9 @@
         "software/ai/schemas/residual_obstruction_render_receipt_v1.schema.json",
         "software/ai/sim/render_residual_obstruction_v2.py",
         "software/ai/schemas/residual_obstruction_development_v2.schema.json",
-        "software/ai/train/train_residual_obstruction_v2.py"
+        "software/ai/train/train_residual_obstruction_v2.py",
+        "software/ai/eval/diagnose_residual_obstruction_v2.py",
+        "software/ai/schemas/residual_obstruction_v2_diagnostic_v1.schema.json"
       ],
       "test_paths": [
         "software/ai/tests/test_capture_binding.py",
@@ -108,7 +110,8 @@
         "software/ai/tests/test_residual_obstruction_renderer_contract.py",
         "software/ai/tests/test_residual_obstruction_successor_fixture.py",
         "software/ai/tests/test_residual_obstruction_v2_renderer.py",
-        "software/ai/tests/test_residual_obstruction_v2_training.py"
+        "software/ai/tests/test_residual_obstruction_v2_training.py",
+        "software/ai/tests/test_residual_obstruction_v2_diagnostic.py"
       ],
       "documentation_paths": [
         "software/ai/docs/MODEL_TO_ARM_TRANSLATION_ASSURANCE.md",
@@ -131,9 +134,10 @@
         "software/ai/sim/evidence/residual_obstruction_renderer_contract_v1.json",
         "software/ai/sim/evidence/residual_obstruction_successor_v2.json",
         "software/ai/sim/evidence/residual_obstruction_v2_render_receipt.json",
-        "software/ai/eval/residual_obstruction_development_v2.json"
+        "software/ai/eval/residual_obstruction_development_v2.json",
+        "software/ai/eval/residual_obstruction_v2_diagnostic_v1.json"
       ],
-      "current_result": "Geometry-first fusion remains primary for known self-occlusion. Residual v2 rendering is reproducible, but its frozen RGB CNN failed every predeclared development threshold; no threshold, model promotion, or evaluation opening occurred.",
+      "current_result": "Geometry-first fusion remains primary for known self-occlusion. Residual v2 is rejected: consumed-development diagnosis yields AUC 0.8975 but zero of 75 targets are locally separable, with appearance transfer and cable/tool/compression weaknesses.",
       "limitations": [
         "No commissioned projection renderer, measured dilation artifact, or physical deployment qualification is installed.",
         "The geometry-first replay uses the same Isaac semantic mask that generated the synthetic label and therefore cannot estimate real projection error.",
@@ -145,9 +149,10 @@
         "Scene and projection evidence cannot substitute for localization uncertainty, collision screening, or arm-runtime admission.",
         "The v16 corpus contains 320 correlated static states from one governed path and does not qualify arbitrary poses, the camera, or deployment.",
         "Residual successor v2 is rendered from one simplified base scene through deterministic pixel-domain transforms; its measured result is synthetic development failure, not physical realism or qualification.",
-        "Residual v2 training reduced loss but failed the 2% missed-obstruction and 6% residual-false-stop point, whole-view cluster, and worst-appearance gates; its model is rejected."
+        "Residual v2 training reduced loss but failed the 2% missed-obstruction and 6% residual-false-stop point, whole-view cluster, and worst-appearance gates; its model is rejected.",
+        "The v2 diagnostic reuses consumed synthetic development evidence and may guide a fresh design but cannot evaluate or select its successor."
       ],
-      "next_gate": "Diagnose the consumed v2 development probabilities by variant, appearance, view, and target without changing the model or threshold. Use that diagnosis only to predeclare a fresh successor; keep evaluation closed.",
+      "next_gate": "Predeclare a fresh residual successor using independent base scenes, appearance-invariance training, and physically shaped obstruction variation before generation. Keep v2 consumed and evaluation closed.",
       "model_motion_batch_boundary": true,
       "controller_authority": false,
       "hardware_writes": 0,
@@ -397,5 +402,5 @@
   "controller_authority": false,
   "hardware_writes": 0,
   "physical_movements": 0,
-  "registry_sha256": "78b90029ce33e2cea4e297531a55a467eb2bf715cfb5c563ffeb59e2bd6256c4"
+  "registry_sha256": "bf98ae8c9d91e353d5103b60711a3eb465a8dca30f51f48619e9c4475a1ca324"
 }
