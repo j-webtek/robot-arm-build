@@ -88,7 +88,9 @@
         "software/ai/schemas/residual_obstruction_development_v2.schema.json",
         "software/ai/train/train_residual_obstruction_v2.py",
         "software/ai/eval/diagnose_residual_obstruction_v2.py",
-        "software/ai/schemas/residual_obstruction_v2_diagnostic_v1.schema.json"
+        "software/ai/schemas/residual_obstruction_v2_diagnostic_v1.schema.json",
+        "software/ai/sim/build_residual_obstruction_successor_v3.py",
+        "software/ai/schemas/residual_obstruction_successor_fixture_v3.schema.json"
       ],
       "test_paths": [
         "software/ai/tests/test_capture_binding.py",
@@ -111,7 +113,8 @@
         "software/ai/tests/test_residual_obstruction_successor_fixture.py",
         "software/ai/tests/test_residual_obstruction_v2_renderer.py",
         "software/ai/tests/test_residual_obstruction_v2_training.py",
-        "software/ai/tests/test_residual_obstruction_v2_diagnostic.py"
+        "software/ai/tests/test_residual_obstruction_v2_diagnostic.py",
+        "software/ai/tests/test_residual_obstruction_successor_v3.py"
       ],
       "documentation_paths": [
         "software/ai/docs/MODEL_TO_ARM_TRANSLATION_ASSURANCE.md",
@@ -135,9 +138,10 @@
         "software/ai/sim/evidence/residual_obstruction_successor_v2.json",
         "software/ai/sim/evidence/residual_obstruction_v2_render_receipt.json",
         "software/ai/eval/residual_obstruction_development_v2.json",
-        "software/ai/eval/residual_obstruction_v2_diagnostic_v1.json"
+        "software/ai/eval/residual_obstruction_v2_diagnostic_v1.json",
+        "software/ai/sim/evidence/residual_obstruction_successor_v3.json"
       ],
-      "current_result": "Geometry-first fusion remains primary for known self-occlusion. Residual v2 is rejected: consumed-development diagnosis yields AUC 0.8975 but zero of 75 targets are locally separable, with appearance transfer and cable/tool/compression weaknesses.",
+      "current_result": "Geometry-first fusion remains primary for known self-occlusion. Residual v2 is rejected. Residual v3 is predeclared with disjoint fresh Isaac base scenes, 3D obstruction variation, paired appearance consistency, and positive per-target development margins; no v3 image exists yet.",
       "limitations": [
         "No commissioned projection renderer, measured dilation artifact, or physical deployment qualification is installed.",
         "The geometry-first replay uses the same Isaac semantic mask that generated the synthetic label and therefore cannot estimate real projection error.",
@@ -150,9 +154,10 @@
         "The v16 corpus contains 320 correlated static states from one governed path and does not qualify arbitrary poses, the camera, or deployment.",
         "Residual successor v2 is rendered from one simplified base scene through deterministic pixel-domain transforms; its measured result is synthetic development failure, not physical realism or qualification.",
         "Residual v2 training reduced loss but failed the 2% missed-obstruction and 6% residual-false-stop point, whole-view cluster, and worst-appearance gates; its model is rejected.",
-        "The v2 diagnostic reuses consumed synthetic development evidence and may guide a fresh design but cannot evaluate or select its successor."
+        "The v2 diagnostic reuses consumed synthetic development evidence and may guide a fresh design but cannot evaluate or select its successor.",
+        "Residual v3 is a synthetic predeclaration only; its independent Isaac base scenes and 3D obstruction observations have not yet been rendered or admitted."
       ],
-      "next_gate": "Predeclare a fresh residual successor using independent base scenes, appearance-invariance training, and physically shaped obstruction variation before generation. Keep v2 consumed and evaluation closed.",
+      "next_gate": "Implement the exact residual v3 Isaac renderer and admission receipt. Generate fresh 3D full frames for all frozen base scenes; reject source-image reuse, split leakage, duplicate bytes, or geometry/material/depth/overlap drift before training.",
       "model_motion_batch_boundary": true,
       "controller_authority": false,
       "hardware_writes": 0,
@@ -402,5 +407,5 @@
   "controller_authority": false,
   "hardware_writes": 0,
   "physical_movements": 0,
-  "registry_sha256": "bf98ae8c9d91e353d5103b60711a3eb465a8dca30f51f48619e9c4475a1ca324"
+  "registry_sha256": "acf2259447c5093b1987309025428727f447a3ae97686cc5919fcd3257972591"
 }
