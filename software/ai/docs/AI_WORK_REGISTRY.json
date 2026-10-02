@@ -109,7 +109,9 @@
         "software/ai/sim/build_residual_obstruction_successor_v4_1.py",
         "software/ai/schemas/residual_obstruction_successor_fixture_v4_1.schema.json",
         "software/ai/rocell_ai/reference_validity.py",
-        "software/ai/schemas/reference_validity_v1.schema.json"
+        "software/ai/schemas/reference_validity_v1.schema.json",
+        "software/ai/eval/admit_residual_obstruction_v4_1_smoke.py",
+        "software/ai/schemas/residual_obstruction_v4_1_smoke_admission_v1.schema.json"
       ],
       "test_paths": [
         "software/ai/tests/test_capture_binding.py",
@@ -143,13 +145,15 @@
         "software/ai/tests/test_residual_v3_memorization_diagnostic.py",
         "software/ai/tests/test_residual_obstruction_successor_v4_1.py",
         "software/ai/tests/test_reference_validity.py",
-        "software/ai/tests/test_residual_obstruction_v4_1_smoke.py"
+        "software/ai/tests/test_residual_obstruction_v4_1_smoke.py",
+        "software/ai/tests/test_residual_obstruction_v4_1_smoke_admission.py"
       ],
       "documentation_paths": [
         "software/ai/docs/MODEL_TO_ARM_TRANSLATION_ASSURANCE.md",
         "software/ai/docs/REAL_PHOTO_SEED_ASSESSMENT.md",
         "software/ai/docs/VISION_MOTION_INTEGRATION.md",
-        "software/ai/train/README.md"
+        "software/ai/train/README.md",
+        "software/ai/docs/REFERENCE_PAIR_COMMISSIONING.md"
       ],
       "evidence_paths": [
         "software/ai/docs/EVIDENCE_LEDGER.md",
@@ -181,7 +185,8 @@
         "software/ai/sim/evidence/residual_obstruction_successor_v4.json",
         "software/ai/eval/residual_v3_memorization_diagnostic_v1.json",
         "software/ai/eval/residual_v4_gate_power_v1.json",
-        "software/ai/sim/evidence/residual_obstruction_successor_v4_1.json"
+        "software/ai/sim/evidence/residual_obstruction_successor_v4_1.json",
+        "software/ai/eval/residual_obstruction_v4_1_smoke_admission_v1.json"
       ],
       "current_result": "V4.1 smoke implementation is frozen: it retains paired references, compares unsafe independent self-crop normalization with reference-context normalization, and fail-closes stale or mismatched commissioned references.",
       "limitations": [
@@ -454,5 +459,5 @@
   "controller_authority": false,
   "hardware_writes": 0,
   "physical_movements": 0,
-  "registry_sha256": "f3da1468ae800036a7be5e4827ef3f9d640020933acf06b924951eaee799e0f6"
+  "registry_sha256": "dbf45a95529866636f9a0062c63fdf48efffc3d989a562ea867c379fe1a5e2e9"
 }

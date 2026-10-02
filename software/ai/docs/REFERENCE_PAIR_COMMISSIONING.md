@@ -1,0 +1,62 @@
+# Reference-pair commissioning and validity
+
+The residual-obstruction model compares a current parked-pose target crop with
+a retained clear reference from the same physical camera, fixture, target map,
+and camera pose. A reference is evidence, not a model output. Missing or invalid
+reference evidence yields `ABSTAIN` before a residual score is used.
+
+## Freshness binding
+
+Every commissioned reference records:
+
+- reference and target identity;
+- capture timestamp and an owner-approved maximum age;
+- camera calibration SHA-256;
+- fixture-pose SHA-256, covering keyboard and phone placement;
+- target-map SHA-256;
+- luminance, red/green ratio, and blue/green ratio at capture;
+- an owner-approved maximum relative lighting drift.
+
+`rocell_ai.reference_validity.evaluate_reference_validity` compares those fields
+with the current frame. It returns `ABSTAIN` if the camera calibration, fixture
+pose, or target map changed; the reference is older than its configured limit;
+or measured lighting drift exceeds its configured limit. Camera bumps and device
+movement are represented by new calibration or fixture-pose evidence, rather
+than inferred by the residual model.
+
+The age and lighting limits are commissioning-profile inputs. The smoke does
+not choose deployment values. Reference validity joins frame and telemetry
+freshness as a prerequisite for perception admission; it creates no command,
+motion, permit, transport, or physical authority.
+
+## First physical reference-pair collection
+
+Collect this bounded set when the final camera and ChArUco procedure are ready:
+
+1. Park the arm at the commissioned observation pose and record measured pose
+   telemetry synchronized to each frame.
+2. Capture the ChArUco board, camera calibration identity, fixture pose, target
+   map identity, and lighting descriptor.
+3. Capture at least one clear reference for every target intended for the first
+   milestone. Retain original images and hashes.
+4. Without changing the camera or fixture, capture paired observations with a
+   dark cable, translucent cable, and hand crossing each selected safe region,
+   plus clear repeats.
+5. Repeat clear captures under the measured low, nominal, and high lighting
+   envelope. Do not synthesize physical-original evidence.
+6. Run the same reference-validity check and the frozen residual preprocessing
+   variants. Report results as a sim-to-real diagnostic until a separately
+   reviewed physical qualification passes.
+
+The first collection should prioritize one keyboard cluster including `G` and
+one phone-key cluster. It must retain failures and original bytes. A successful
+small collection does not qualify all 75 targets or authorize execution.
+
+## Current synthetic smoke finding
+
+The bounded `F/G/H/I` Isaac smoke retained both independent self-crop and
+reference-context normalization channels. Independent self-crop normalization
+had the higher pooled label-ranking AUC (`0.8038194444` versus `0.7743055556`)
+on 192 training observations. This is too small to select preprocessing. Both
+channels remain candidates for the fresh v4.1 development campaign, and
+evaluation pixels remain absent.
