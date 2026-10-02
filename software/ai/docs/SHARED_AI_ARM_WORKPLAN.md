@@ -311,7 +311,7 @@ so the result is consistent with the known diagnostic surface but does not
 attest installed firmware identity. The generic feedback seam and observed
 planner start state remain blocked. The next dependency is resolving the
 installed-runtime mismatch under a separate reviewed installation/startup
-plan—not repeating this request.
+planâ€”not repeating this request.
 ARM-065 now reconciles that terminal result with the sealed r97 candidate. The
 assessment binds the ARM-064 receipt and response digests to the exact r97
 packet, manifest, and app hashes and remains `BLOCKED`. The installed surface
@@ -398,7 +398,7 @@ and the operational-readiness perception gate remains blocked.
 
 ## Stage definitions
 
-### S0 — Freeze the shared v1 seam
+### S0 â€” Freeze the shared v1 seam
 
 **Goal:** prove both lanes use one ordered, hash-bound model-to-planner contract.
 
@@ -426,7 +426,7 @@ Integration evidence:
 **Status:** complete at baseline. Future schema changes must preserve a v1
 compatibility fixture or record an explicit migration.
 
-### S1 — Contract v2: freshness, uncertainty, and capability
+### S1 â€” Contract v2: freshness, uncertainty, and capability
 
 **Goal:** remove semantic ambiguity before either lane approaches live execution.
 
@@ -451,7 +451,7 @@ Arm lane objectives:
   acceptance decision.
 - Enforce expiry at ingress and again immediately before planning.
 - Validate qualification/domain/capability registries independently.
-- Require the entire uncertainty region—not only its center—to fit the measured
+- Require the entire uncertainty regionâ€”not only its centerâ€”to fit the measured
   target safe region.
 - Treat model speed and clearance as non-authoritative hints, or remove them and
   derive policy entirely from the arm configuration.
@@ -473,7 +473,7 @@ Completion evidence:
 - Migration behavior for v1.
 - Limitations and explicit non-authority statement.
 
-### S2 — Full zero-hardware text-to-envelope shadow path
+### S2 â€” Full zero-hardware text-to-envelope shadow path
 
 **Goal:** exercise the real components in order without writing to hardware.
 
@@ -511,7 +511,7 @@ Completion evidence:
 - Cross-lane negative test matrix.
 - Confirmation of zero hardware access and zero generated wire commands.
 
-### S3 — Measured localization and planning readiness
+### S3 â€” Measured localization and planning readiness
 
 **Goal:** replace synthetic assumptions with measured deployment evidence.
 
@@ -552,7 +552,7 @@ Completion evidence:
 - Planner-ready trace with zero hardware writes.
 - Failure evidence for every required negative case.
 
-### S4 — Zero-write controller adapter and correlated receipts
+### S4 â€” Zero-write controller adapter and correlated receipts
 
 **Goal:** prove exact protocol encoding and execution lifecycle without sending.
 
@@ -589,7 +589,7 @@ Completion evidence:
 - Receipt and permit schemas.
 - Fault-injection results with zero physical writes.
 
-### S5 — One independently verified physical key action
+### S5 â€” One independently verified physical key action
 
 **Goal:** demonstrate one admitted model-originated key interaction end to end.
 
@@ -623,7 +623,7 @@ Completion evidence:
 - Tracking/settling metrics and discrepancies.
 - Explicit count of physical writes and movements.
 
-### S6 — Ordered multi-action keyboard missions
+### S6 â€” Ordered multi-action keyboard missions
 
 **Goal:** execute supported strings smoothly while preserving per-action safety.
 
@@ -659,7 +659,7 @@ Completion evidence:
 - Per-action lineage and latency breakdown.
 - Restart and fault-injection reports.
 
-### S7 — Performance and operational qualification
+### S7 â€” Performance and operational qualification
 
 **Goal:** improve speed only after correctness and recovery are demonstrated.
 
@@ -696,7 +696,7 @@ Completion evidence:
 - Regression thresholds enforced in CI.
 - Remaining limitations and unsupported capabilities.
 
-### P1 — Separate phone capability track
+### P1 â€” Separate phone capability track
 
 Phone work does not inherit keyboard readiness automatically. It requires:
 
@@ -772,7 +772,7 @@ Every contract or runtime change must preserve tests for:
 Copy this row and fill every field:
 
 ```markdown
-#### E-YYYYMMDD-AI|ARM|INT-NNN — short title
+#### E-YYYYMMDD-AI|ARM|INT-NNN â€” short title
 
 - Stage: S#
 - Lane: AI | ARM | INTEGRATION
@@ -1030,7 +1030,7 @@ previously unused arm states and measures the frozen AI-468 checkpoint under
 33 predeclared joint crop/mask offsets. No training or evaluation group is
 present. The nominal fresh-pose result already misses 9 of 108 abstentions.
 At 1 mm, false stops range from 35 to 62 of 1,242 visible targets; at 2 mm the
-worst direction reaches 272; and selected 4–8 mm directions cause near-total
+worst direction reaches 272; and selected 4â€“8 mm directions cause near-total
 stopping. This confirms that exact target alignment was a material assumption.
 Future inference must bind calibrated localization uncertainty and abstain when
 the safe-region fit is not supported; these synthetic offsets do not establish
@@ -1688,7 +1688,7 @@ rejects that same input, so partial render evidence cannot unlock training.
 The first attempt to extend the renderer across all 12 scenes exposed and
 preserved a duplicate USD transform failure at the scene boundary. Dynamic
 obstruction prims are now scoped and removed per scene, and the status receipt
-is flushed before Isaac shutdown. The repaired target 0–3 shard completed all
+is flushed before Isaac shutdown. The repaired target 0â€“3 shard completed all
 12 scenes and independently verified 2,304 unique observations. This advances
 the corpus to one complete target shard while the overall campaign remains
 `PARTIAL` with 40,896 combinations missing.
@@ -1697,7 +1697,7 @@ The next shard exposed a target-aspect-ratio defect before admission: the round
 foreign object covered only 0.3092 of the wide `ENTER` safe region, below the
 frozen 0.35 minimum. The renderer now scales a rounded ellipsoid to both target
 dimensions. A fresh four-target smoke measured `ENTER` at 0.5342 and the other
-targets at 0.5425–0.545, all inside the unchanged 0.35–0.70 band. The failed
+targets at 0.5425â€“0.545, all inside the unchanged 0.35â€“0.70 band. The failed
 shard remains preserved and is excluded from admission.
 
 Wide-target rendering then failed closed on `SPACE`: the fixed 82 mm camera
@@ -1707,17 +1707,17 @@ dimension while retaining the original height for standard keys. A fresh
 four-target smoke measured `SPACE` tool overlap at 0.7179 and foreign-object
 overlap at 0.5192, both inside the unchanged contract bands.
 
-The first phone-key shard then failed closed because the 6×11 mm `key_a`
+The first phone-key shard then failed closed because the 6Ã—11 mm `key_a`
 quantized a matte edge tool to 0.5455 overlap. Small-target camera height and
 both tool footprints now normalize to target dimensions with margin inside the
 original bands. A fresh mixed keyboard/phone smoke measured matte-edge overlap
-at 0.38–0.455, centered-tool overlap at 0.70–0.727, and rounded-object overlap
-at 0.54–0.568. No admission limit was widened.
+at 0.38â€“0.455, centered-tool overlap at 0.70â€“0.727, and rounded-object overlap
+at 0.54â€“0.568. No admission limit was widened.
 
-The 6×10 mm `key_period` then exposed the remaining centered-tool pixel margin:
+The 6Ã—10 mm `key_period` then exposed the remaining centered-tool pixel margin:
 0.8333 against the frozen 0.80 maximum. Reducing centered-tool width from 65%
-to 55% produced 0.583–0.636 centered overlap, 0.333–0.455 edge overlap, and
-0.55–0.573 rounded-object overlap across a fresh four-phone-key smoke. The
+to 55% produced 0.583â€“0.636 centered overlap, 0.333â€“0.455 edge overlap, and
+0.55â€“0.573 rounded-object overlap across a fresh four-phone-key smoke. The
 failed shard remains excluded and the original acceptance bands remain fixed.
 
 The complete residual v3 corpus now passes independent exact-set admission. All
@@ -1729,28 +1729,28 @@ has not started and no physical or deployment qualification follows from it.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI/model | S2/S3 residual v3 training-only causal audit | verify identity-plus-geometry baseline, training per-target AUC and margins, 500-example memorization, target-G crop/label visual audit, and split identity isolation using only admitted training bytes plus read-only fixture metadata; preserve rejected checkpoint and gates; no successor predeclaration yet | `issue/190-isaac-sim-host` / baseline `8c0de231a60aa9e6f6806513a02546f9230588eb` | ACTIVE — diagnostics are not yet implemented or run; consumed development and absent evaluation remain unopened, and no arm-lane status, integration gate, hardware write, physical movement, or execution authority change |
-| AI/model | S2/S3 rejected residual v3 development diagnostic | reconstruct unchanged rejected-model probabilities from exact external bytes; bind model, scorecard, admission, lineage, fixture, and target catalog; attribute consumed development failure by scene, appearance, variant, family, and target; recommend only a fresh successor; no threshold change or evaluation access | `issue/190-isaac-sim-host` / claim `9598c58a1d11224f0d46a4cc32347241852faba3`, implementation `b535cf7297acba80845f7b7b98ef086a31b95555`, inference fix `ba63176d3e84084149629914d6a1b9245f825280`, evidence `7147e51bf5a37c1eb89e4fa16dfd6ca181e9116e` | COMPLETE — exact development probabilities reproduce; AUC is 0.946, but zero scenes, appearances, or targets are locally separable, clear observations overlap obstruction families, and keyboard G has the worst -0.8240 margin; checkpoint and threshold remain unchanged, evaluation is absent, and no arm-lane status, integration gate, hardware write, physical movement, or execution authority changed |
-| AI/model | S2/S3 residual v3 frozen training and development gate | consume only the exact admitted 43,200-observation corpus and renderer lineage; implement the frozen RGB target-crop CNN, target/label/variant/base-scene balanced sampling, paired-appearance consistency loss, scene-cluster bootstrap, worst-appearance and worst-family gates, and target-local separation; retain model and scorecard externally; evaluation remains absent | `issue/190-isaac-sim-host` / claim `7080f9ef1c65714d1fa45d67b3052376f3cfb765`, implementation `164f4c35e11dd831995975cc9767b453dabb3f1a`, evidence `c670f2c90319a3b9ae396e7c37ad518e92f39ad4` | COMPLETE — two byte-identical frozen runs reduced combined loss from 0.5640 to 0.3170 but all 19 thresholds failed; zero of 75 targets are locally separable and worst margin is -0.8240, so the model is rejected, evaluation remains absent, and no arm-lane status, integration gate, hardware write, physical movement, or execution authority changed |
-| AI/model | S2/S3 residual v3 Isaac renderer and admission | implement the exact fresh-scene 3D renderer plus independent verifier/receipt; render all frozen training/development scenes, paired appearances, targets, and variants externally; reject split leakage, source reuse, duplicate bytes, and geometry/material/depth/overlap drift; no training or evaluation | `issue/190-isaac-sim-host` / `14c3d2ff0cffd6bad1a7bb96194f6efa98c9348c`, `04d333b7db120d10e6e5b818128fcbfd04cdd90c`, `8300b4a639ca9542c74a6e8d0baf04322bd4f4c9`, `20616baf8bc258ceb0247f6938009c66d0727375`, `6ba49ffaaf99d7782f3f1527482a63eb9094fdc7`, `7361d84e45e9e4fb8af66ba0cdf87ff2761c111d`, `e0be81c8186682172e55005e3fbdc9bd028d4da6`, `a2de66b02eec84eccf305893716b367975b6aac3`, `57a9ce498ba24850a666ea2d0fe0e09ff743cd88` | COMPLETE — all 43,200 frozen observations across 75 targets pass exact independent admission with 43,200 unique RGB hashes, 28,800 training and 14,400 development rows, zero evaluation rows, explicit per-shard renderer lineage, and no training, arm-lane status, integration gate, hardware write, physical movement, or execution authority change |
-| AI/model | S2/S3 residual v3 independent-scene predeclaration | freeze disjoint Isaac base-scene identities, 3D obstruction geometry/material/depth/transparency ranges, paired appearance-invariance training, target-local positive-margin development gates, and empty evaluation before rendering; no authority fields | `issue/190-isaac-sim-host` / `a0aec0a58ccc1f939f4ca48945397d8b550d5d1b`, `29025a142f6d2eca0e67d95d85663e029dc3dc0d` | COMPLETE — 8 training and 4 development base scenes, four paired appearances, 12 variants, exact RGB-only training plan, and clustered/local-margin gates are frozen before rendering; images, training, and evaluation remain absent, with no arm-lane status, integration gate, hardware write, physical movement, or execution authority change |
-| AI/model | S2/S3 rejected residual v2 development diagnostic | verify the exact fixture, renderer contract, admitted dataset, rejected model, and scorecard; reconstruct development probabilities; attribute separation and errors by variant, appearance, view, and target; recommend only a fresh successor design; no retraining, threshold change, or evaluation opening | `issue/190-isaac-sim-host` / `6419340feaf3abb0050a93bffa54482aff5dc608`, `cc2d6b0ddea32359e8fc6c3cd957b14e336450c5` | COMPLETE — exact probabilities reproduce; AUC is 0.8975, all 75 targets are locally nonseparable, and appearance plus cable/tool/compression weaknesses explain the failed gate; checkpoint and threshold are unchanged, evaluation is closed, and no arm-lane status, integration gate, hardware write, physical movement, or execution authority changed |
-| AI/model | S2/S3 residual v2 loader, frozen training, and development gate | verify the admitted external manifest and every crop; materialize exact train/development rows with view and appearance identities; implement only the frozen RGB CNN v2, balanced sampling, threshold grid, and whole-view bootstrap; retain model/scorecard externally and an aggregate repository receipt; evaluation remains absent | `issue/190-isaac-sim-host` / `454d5e76b816c271561d8a77d1b89f6692e295c0`, `e6de99167656734f86d60abfd76593a1f156f4bc` | COMPLETE — two runs are byte identical, loss decreased, but all 19 thresholds fail the frozen point, whole-view, or worst-appearance limits; the model is rejected, evaluation remains absent, and no arm-lane status, integration gate, hardware write, physical movement, or execution authority changed |
-| AI/model | S2/S3 residual v2 renderer contract and admitted crop campaign | preserve the v2 fixture; bind the exact base scene and deterministic camera-warp rule in a separately frozen renderer contract before generation; implement external crop rendering and fail-closed admission for split/identity/pixel/overlap/duplicate rules; exact inventory; no training or evaluation | `issue/190-isaac-sim-host` / `4dcadad59c64195d09986782dbee2793b89c3c2e`, `0a307a2f51f3ce82db240312542e5cb02cd8ca0c` | COMPLETE — the contract preceded image generation; two independent 37,125-crop builds are byte identical and globally unique, all admission rules pass, evaluation remains empty, and no model metric, arm-lane status, integration gate, hardware write, physical movement, or execution authority changed |
-| AI/model | S2/S3 residual successor v2 predeclaration | freeze fresh group-isolated source-pose and appearance identities; prove adjacent distractors change retained pixels while preserving zero target overlap; broaden cable/tool/degradation severity; freeze model, threshold, clustered development gates, and empty evaluation before generation | `issue/190-isaac-sim-host` / `d754434045bac59b177be107925ac2a27aba7bda` | COMPLETE — 27,000 training and 10,125 development observations are frozen across disjoint parked views/appearances and 15 variants; renderer admission prevents the v1 duplicate-distractor defect; no image, model, training, evaluation access, qualification, arm-lane status, integration gate, hardware write, physical movement, or execution authority changed |
-| AI/model | S2/S3 rejected residual-candidate diagnostic | read-only reconstruction of the retained candidate's consumed development probabilities; per-variant and per-target attribution; exact source/model/dataset binding; successor-design recommendation without checkpoint, threshold, evaluation, or authority changes | `issue/190-isaac-sim-host` / `343b4b548bb9b92745af71bd6d7cf4cd50c607cd`, `60fcebe9513f449f6c93c8e3dd44b96e12506312` | COMPLETE — exact probabilities reproduce; AUC is 0.7585, all 75 targets are nonseparable, all adjacent-distractor crops duplicate clear crops, and degradation/cable/tool cases overlap; checkpoint and threshold are unchanged, evaluation is closed, and no arm-lane status, integration gate, hardware write, physical movement, or execution authority changed |
-| AI/model | S2/S3 residual-obstruction crop materialization and development gate | materialize only the frozen 1,200 crop specifications; exact independent inventory; train only `target_crop_residual_cnn_v1` with the frozen seed and hyperparameters; target-cluster development scoring; preserve failures; evaluation remains empty and no authority is created | `issue/190-isaac-sim-host` / `cf7aa8613876ae1b4c70f73b8322cf8007b4367e` | COMPLETE — two crop builds, inventories, models, and scorecards are byte identical; no threshold passes both frozen development limits, so the candidate is rejected and no evaluation access, qualification, arm-lane status, integration gate, hardware write, physical movement, or execution authority changed |
-| AI/model | S2/S3 parked residual-obstruction pretraining freeze | deterministic synthetic crop-campaign fixture from retained fixed-camera practice bytes; target-balanced clear/distractor/cable/tool/hand/foreign-object/glare/degradation cases; pose-separated train/development identities; frozen small offline model plan and asymmetric development gates; no evaluation source, training, render, or authority | `issue/190-isaac-sim-host` / `7e0509d0828a557c04a38aef47fc51c49dea70c8` | COMPLETE — 1,200 procedural crop specifications cover 75 targets with pose-separated train/development identities and a frozen offline model/gate plan; no crop images, model, training, development metric, evaluation access, qualification, arm-lane status, integration gate, hardware write, physical movement, or execution authority changed |
-| AI/model | S2/S3 v16 geometry-first fusion replay | independently recompute development target overlap from retained Isaac robot-mask atlases, reconcile frozen labels and learned decisions, conservatively replay geometry/learned OR fusion with explicit ambiguity accounting, strict report/schema/tests, registry, shared workplan, and evidence ledger | `issue/190-isaac-sim-host` / `a576f6658acf7ccab6da067fcce4f6ee152ac962` | COMPLETE — all 4,800 pose-target overlaps and 14,400 rows reconcile; fused misses are zero at all 17 offsets and worst strict false stops are 881, but the mask also generated the label, no measured dilation or projection qualification exists, v16 remains rejected, and no evaluation access, arm-lane status, integration gate, hardware write, physical movement, or execution authority changed |
-| AI/model | S2/S3 v16 grouped-neighborhood development diagnostic | read-only attribution of the consumed v16 development failures by source block, pose, target, lighting, and offset; strict schema, deterministic aggregate report, tests, registry, shared workplan, and evidence ledger | `issue/190-isaac-sim-host` / `bc880ad9087d18b99becf7c4db765d8b77edb026` | COMPLETE — 348 misses span 28 poses, 46 pose-target pairs, eight source blocks, 13 targets, and all three lighting identities; the dominant pose-target contributes only 11.78%, so v16 remains rejected and no threshold, evaluation access, promotion, arm-lane status, integration gate, hardware write, physical movement, or execution authority changed |
-| AI/model | S2/S3 v16 grouped-neighborhood successor | frozen fresh pose generator with source-interval group isolation, failed-neighborhood coverage, fresh lighting identities, separately frozen train/development split, target-aware training revision, clustered development gate, Isaac campaign, tests, registry, shared workplan, and evidence ledger | `issue/190-isaac-sim-host` / `ce6172b8b43a22613d3eaf128cc80873423e076a` | COMPLETE — point gate passed through 2 mm, but the 64-pose missed-abstention UCB is 2.8216% against the frozen 2% ceiling, so v16 is rejected; v14 evaluation and v15 development remain consumed, no evaluation source opened, and no arm-lane status, integration-gate, hardware write, physical movement, or execution authority changed |
-| AI/model | S2/S3 v15 pose-cluster development diagnostic | development-only failure attribution by pose, target, lighting, and offset; frozen diagnostic schema and deterministic report; v16 design recommendation without evaluation access or candidate promotion; tests, registry, shared workplan, and evidence ledger | `issue/190-isaac-sim-host` / `048bb41acd2cbe6350672e82f402bc54d096cc12` | COMPLETE — 58 in-bound misses occur in seven poses/eight pose-target pairs; one pose/MINUS pair contributes 46.55% and the top two poses 70.69%; v15 remains rejected and consumed; no evaluation access, render, threshold change, promotion, arm-lane status, integration-gate change, hardware write, or physical movement |
-| AI/model | S2/S3 pose-diverse Isaac successor | frozen zero-authority static training/development pose fixture derived from the governed schedule; new v15 Isaac campaign and lighting identities excluding v14; deterministic dataset build; target-conditioned successor training and development-only selection; tests, registry, shared workplan, and evidence ledger | `issue/190-isaac-sim-host` / `ba1ea9bf43098eb37e6d17c4785d428023cc1aab` | COMPLETE — reproducible `FAILED_DEVELOPMENT_GATE`; point estimates pass at 1 mm but missed-abstention pose-cluster UCB is 3.2491% above the frozen 2% ceiling; no evaluation opening, localization qualification, arm-lane status, integration-gate change, hardware write, or physical movement |
-| AI/model | S2/S3 deterministic retained-package index builder | read-only custody-declaration schema and builder; exact regular-file inventory; campaign/digest/path/custody binding; deterministic evidence-index output; missing/extra/duplicate/symlink/changed-file rejection; tests, registry, shared workplan, and evidence ledger | `issue/190-isaac-sim-host` / `e7b16c2de470a1c01040fab0be17e22b44cdfcdc` | COMPLETE — inventories only already retained files and externally declared custody; no evidence generation, collection, qualification, arm-lane status, integration-gate change, hardware write, or physical movement |
-| AI/model | S2/S3 parked-pose file-backed preflight | strict evidence index and preflight receipt schemas; contained regular-file/hash/size/type/custody reconciliation for every campaign binding; missing/altered/duplicate/symlink/extra-artifact rejection; explicit no-campaign blocked receipt, tests, registry, shared workplan, and evidence ledger | `issue/190-isaac-sim-host` / `ad2c8ce9aeee11e0b6fcfddcda1e0c5a6afa72ed` | COMPLETE — retained preflight is blocked because no campaign package exists; custody labels remain claims pending owner review; no collection, qualification, arm-lane status, integration-gate change, hardware write, or physical movement |
-| AI/model | S2/S3 parked-pose qualification protocol | strict synthetic/physical campaign manifests and observation records; completed-park/session independence checks; ChArUco drift and repeatability bindings; residual obstruction and fused-decision scoring; exact binomial bounds; explicit incomplete receipt, tests, registry, shared workplan, and evidence ledger | `issue/190-isaac-sim-host` / `9dc1f7fa6642b6468bb5df85d0a6bed33e0fa592` | COMPLETE — retained receipt is explicitly incomplete because no campaign was collected; no model qualification, deployment claim, arm-lane status, integration-gate change, hardware write, or physical movement |
-| AI/model | S2/S3 correlation-aware evaluation power tool | grouped v13/v14 intra-pose-correlation estimation; empirical upper-bound and pessimistic-correlation scenarios; deterministic pose-cluster simulation and sample-size recommendation; synthetic planning receipt, tests, registry, shared workplan, and evidence ledger | `issue/190-isaac-sim-host` / `3fe8e57eca77dcd369be79e188d6ae2b0724d39a` | COMPLETE — aggregate synthetic planning only; 2,048-pose broad-campaign recommendation; no candidate selection, new render compute, arm-lane status, or integration-gate change |
-| Unclaimed | S2/S3 | physical-camera deployment qualification and safe-region-fit precision evidence | — | AVAILABLE |
+| AI/model | S2/S3 residual v3 training-only causal audit | identity-plus-geometry baseline, training per-target AUC/margins, 500-example memorization, target-G crop/label review, variant attribution, and split identity isolation using only admitted training bytes plus read-only development metadata | `issue/190-isaac-sim-host` / claim `81f7d7a17fb5816a7bf4642eaa9176f636334a21`, implementation `3c3681e95c5bee2bc7eab9666e61b54093179723`, outlier revision/evidence `ad1b9bed6ba46560ac51e4628dcbdb9b496e108a` | COMPLETE — identity plus geometry is exactly chance at 0.500 AUC; the CNN ranks within every training target (AUC 0.841–0.991, median 0.960) but has zero strict positive margins, fails to memorize the balanced 500-row control (0.834 accuracy, 0.4417 loss), and shows lighting/scene outliers for G; scene identities are disjoint but all four appearance identities overlap; development pixels and evaluation remain unopened, and no arm-lane status, integration gate, hardware write, physical movement, or execution authority changed |
+| AI/model | S2/S3 rejected residual v3 development diagnostic | reconstruct unchanged rejected-model probabilities from exact external bytes; bind model, scorecard, admission, lineage, fixture, and target catalog; attribute consumed development failure by scene, appearance, variant, family, and target; recommend only a fresh successor; no threshold change or evaluation access | `issue/190-isaac-sim-host` / claim `9598c58a1d11224f0d46a4cc32347241852faba3`, implementation `b535cf7297acba80845f7b7b98ef086a31b95555`, inference fix `ba63176d3e84084149629914d6a1b9245f825280`, evidence `7147e51bf5a37c1eb89e4fa16dfd6ca181e9116e` | COMPLETE â€” exact development probabilities reproduce; AUC is 0.946, but zero scenes, appearances, or targets are locally separable, clear observations overlap obstruction families, and keyboard G has the worst -0.8240 margin; checkpoint and threshold remain unchanged, evaluation is absent, and no arm-lane status, integration gate, hardware write, physical movement, or execution authority changed |
+| AI/model | S2/S3 residual v3 frozen training and development gate | consume only the exact admitted 43,200-observation corpus and renderer lineage; implement the frozen RGB target-crop CNN, target/label/variant/base-scene balanced sampling, paired-appearance consistency loss, scene-cluster bootstrap, worst-appearance and worst-family gates, and target-local separation; retain model and scorecard externally; evaluation remains absent | `issue/190-isaac-sim-host` / claim `7080f9ef1c65714d1fa45d67b3052376f3cfb765`, implementation `164f4c35e11dd831995975cc9767b453dabb3f1a`, evidence `c670f2c90319a3b9ae396e7c37ad518e92f39ad4` | COMPLETE â€” two byte-identical frozen runs reduced combined loss from 0.5640 to 0.3170 but all 19 thresholds failed; zero of 75 targets are locally separable and worst margin is -0.8240, so the model is rejected, evaluation remains absent, and no arm-lane status, integration gate, hardware write, physical movement, or execution authority changed |
+| AI/model | S2/S3 residual v3 Isaac renderer and admission | implement the exact fresh-scene 3D renderer plus independent verifier/receipt; render all frozen training/development scenes, paired appearances, targets, and variants externally; reject split leakage, source reuse, duplicate bytes, and geometry/material/depth/overlap drift; no training or evaluation | `issue/190-isaac-sim-host` / `14c3d2ff0cffd6bad1a7bb96194f6efa98c9348c`, `04d333b7db120d10e6e5b818128fcbfd04cdd90c`, `8300b4a639ca9542c74a6e8d0baf04322bd4f4c9`, `20616baf8bc258ceb0247f6938009c66d0727375`, `6ba49ffaaf99d7782f3f1527482a63eb9094fdc7`, `7361d84e45e9e4fb8af66ba0cdf87ff2761c111d`, `e0be81c8186682172e55005e3fbdc9bd028d4da6`, `a2de66b02eec84eccf305893716b367975b6aac3`, `57a9ce498ba24850a666ea2d0fe0e09ff743cd88` | COMPLETE â€” all 43,200 frozen observations across 75 targets pass exact independent admission with 43,200 unique RGB hashes, 28,800 training and 14,400 development rows, zero evaluation rows, explicit per-shard renderer lineage, and no training, arm-lane status, integration gate, hardware write, physical movement, or execution authority change |
+| AI/model | S2/S3 residual v3 independent-scene predeclaration | freeze disjoint Isaac base-scene identities, 3D obstruction geometry/material/depth/transparency ranges, paired appearance-invariance training, target-local positive-margin development gates, and empty evaluation before rendering; no authority fields | `issue/190-isaac-sim-host` / `a0aec0a58ccc1f939f4ca48945397d8b550d5d1b`, `29025a142f6d2eca0e67d95d85663e029dc3dc0d` | COMPLETE â€” 8 training and 4 development base scenes, four paired appearances, 12 variants, exact RGB-only training plan, and clustered/local-margin gates are frozen before rendering; images, training, and evaluation remain absent, with no arm-lane status, integration gate, hardware write, physical movement, or execution authority change |
+| AI/model | S2/S3 rejected residual v2 development diagnostic | verify the exact fixture, renderer contract, admitted dataset, rejected model, and scorecard; reconstruct development probabilities; attribute separation and errors by variant, appearance, view, and target; recommend only a fresh successor design; no retraining, threshold change, or evaluation opening | `issue/190-isaac-sim-host` / `6419340feaf3abb0050a93bffa54482aff5dc608`, `cc2d6b0ddea32359e8fc6c3cd957b14e336450c5` | COMPLETE â€” exact probabilities reproduce; AUC is 0.8975, all 75 targets are locally nonseparable, and appearance plus cable/tool/compression weaknesses explain the failed gate; checkpoint and threshold are unchanged, evaluation is closed, and no arm-lane status, integration gate, hardware write, physical movement, or execution authority changed |
+| AI/model | S2/S3 residual v2 loader, frozen training, and development gate | verify the admitted external manifest and every crop; materialize exact train/development rows with view and appearance identities; implement only the frozen RGB CNN v2, balanced sampling, threshold grid, and whole-view bootstrap; retain model/scorecard externally and an aggregate repository receipt; evaluation remains absent | `issue/190-isaac-sim-host` / `454d5e76b816c271561d8a77d1b89f6692e295c0`, `e6de99167656734f86d60abfd76593a1f156f4bc` | COMPLETE â€” two runs are byte identical, loss decreased, but all 19 thresholds fail the frozen point, whole-view, or worst-appearance limits; the model is rejected, evaluation remains absent, and no arm-lane status, integration gate, hardware write, physical movement, or execution authority changed |
+| AI/model | S2/S3 residual v2 renderer contract and admitted crop campaign | preserve the v2 fixture; bind the exact base scene and deterministic camera-warp rule in a separately frozen renderer contract before generation; implement external crop rendering and fail-closed admission for split/identity/pixel/overlap/duplicate rules; exact inventory; no training or evaluation | `issue/190-isaac-sim-host` / `4dcadad59c64195d09986782dbee2793b89c3c2e`, `0a307a2f51f3ce82db240312542e5cb02cd8ca0c` | COMPLETE â€” the contract preceded image generation; two independent 37,125-crop builds are byte identical and globally unique, all admission rules pass, evaluation remains empty, and no model metric, arm-lane status, integration gate, hardware write, physical movement, or execution authority changed |
+| AI/model | S2/S3 residual successor v2 predeclaration | freeze fresh group-isolated source-pose and appearance identities; prove adjacent distractors change retained pixels while preserving zero target overlap; broaden cable/tool/degradation severity; freeze model, threshold, clustered development gates, and empty evaluation before generation | `issue/190-isaac-sim-host` / `d754434045bac59b177be107925ac2a27aba7bda` | COMPLETE â€” 27,000 training and 10,125 development observations are frozen across disjoint parked views/appearances and 15 variants; renderer admission prevents the v1 duplicate-distractor defect; no image, model, training, evaluation access, qualification, arm-lane status, integration gate, hardware write, physical movement, or execution authority changed |
+| AI/model | S2/S3 rejected residual-candidate diagnostic | read-only reconstruction of the retained candidate's consumed development probabilities; per-variant and per-target attribution; exact source/model/dataset binding; successor-design recommendation without checkpoint, threshold, evaluation, or authority changes | `issue/190-isaac-sim-host` / `343b4b548bb9b92745af71bd6d7cf4cd50c607cd`, `60fcebe9513f449f6c93c8e3dd44b96e12506312` | COMPLETE â€” exact probabilities reproduce; AUC is 0.7585, all 75 targets are nonseparable, all adjacent-distractor crops duplicate clear crops, and degradation/cable/tool cases overlap; checkpoint and threshold are unchanged, evaluation is closed, and no arm-lane status, integration gate, hardware write, physical movement, or execution authority changed |
+| AI/model | S2/S3 residual-obstruction crop materialization and development gate | materialize only the frozen 1,200 crop specifications; exact independent inventory; train only `target_crop_residual_cnn_v1` with the frozen seed and hyperparameters; target-cluster development scoring; preserve failures; evaluation remains empty and no authority is created | `issue/190-isaac-sim-host` / `cf7aa8613876ae1b4c70f73b8322cf8007b4367e` | COMPLETE â€” two crop builds, inventories, models, and scorecards are byte identical; no threshold passes both frozen development limits, so the candidate is rejected and no evaluation access, qualification, arm-lane status, integration gate, hardware write, physical movement, or execution authority changed |
+| AI/model | S2/S3 parked residual-obstruction pretraining freeze | deterministic synthetic crop-campaign fixture from retained fixed-camera practice bytes; target-balanced clear/distractor/cable/tool/hand/foreign-object/glare/degradation cases; pose-separated train/development identities; frozen small offline model plan and asymmetric development gates; no evaluation source, training, render, or authority | `issue/190-isaac-sim-host` / `7e0509d0828a557c04a38aef47fc51c49dea70c8` | COMPLETE â€” 1,200 procedural crop specifications cover 75 targets with pose-separated train/development identities and a frozen offline model/gate plan; no crop images, model, training, development metric, evaluation access, qualification, arm-lane status, integration gate, hardware write, physical movement, or execution authority changed |
+| AI/model | S2/S3 v16 geometry-first fusion replay | independently recompute development target overlap from retained Isaac robot-mask atlases, reconcile frozen labels and learned decisions, conservatively replay geometry/learned OR fusion with explicit ambiguity accounting, strict report/schema/tests, registry, shared workplan, and evidence ledger | `issue/190-isaac-sim-host` / `a576f6658acf7ccab6da067fcce4f6ee152ac962` | COMPLETE â€” all 4,800 pose-target overlaps and 14,400 rows reconcile; fused misses are zero at all 17 offsets and worst strict false stops are 881, but the mask also generated the label, no measured dilation or projection qualification exists, v16 remains rejected, and no evaluation access, arm-lane status, integration gate, hardware write, physical movement, or execution authority changed |
+| AI/model | S2/S3 v16 grouped-neighborhood development diagnostic | read-only attribution of the consumed v16 development failures by source block, pose, target, lighting, and offset; strict schema, deterministic aggregate report, tests, registry, shared workplan, and evidence ledger | `issue/190-isaac-sim-host` / `bc880ad9087d18b99becf7c4db765d8b77edb026` | COMPLETE â€” 348 misses span 28 poses, 46 pose-target pairs, eight source blocks, 13 targets, and all three lighting identities; the dominant pose-target contributes only 11.78%, so v16 remains rejected and no threshold, evaluation access, promotion, arm-lane status, integration gate, hardware write, physical movement, or execution authority changed |
+| AI/model | S2/S3 v16 grouped-neighborhood successor | frozen fresh pose generator with source-interval group isolation, failed-neighborhood coverage, fresh lighting identities, separately frozen train/development split, target-aware training revision, clustered development gate, Isaac campaign, tests, registry, shared workplan, and evidence ledger | `issue/190-isaac-sim-host` / `ce6172b8b43a22613d3eaf128cc80873423e076a` | COMPLETE â€” point gate passed through 2 mm, but the 64-pose missed-abstention UCB is 2.8216% against the frozen 2% ceiling, so v16 is rejected; v14 evaluation and v15 development remain consumed, no evaluation source opened, and no arm-lane status, integration-gate, hardware write, physical movement, or execution authority changed |
+| AI/model | S2/S3 v15 pose-cluster development diagnostic | development-only failure attribution by pose, target, lighting, and offset; frozen diagnostic schema and deterministic report; v16 design recommendation without evaluation access or candidate promotion; tests, registry, shared workplan, and evidence ledger | `issue/190-isaac-sim-host` / `048bb41acd2cbe6350672e82f402bc54d096cc12` | COMPLETE â€” 58 in-bound misses occur in seven poses/eight pose-target pairs; one pose/MINUS pair contributes 46.55% and the top two poses 70.69%; v15 remains rejected and consumed; no evaluation access, render, threshold change, promotion, arm-lane status, integration-gate change, hardware write, or physical movement |
+| AI/model | S2/S3 pose-diverse Isaac successor | frozen zero-authority static training/development pose fixture derived from the governed schedule; new v15 Isaac campaign and lighting identities excluding v14; deterministic dataset build; target-conditioned successor training and development-only selection; tests, registry, shared workplan, and evidence ledger | `issue/190-isaac-sim-host` / `ba1ea9bf43098eb37e6d17c4785d428023cc1aab` | COMPLETE â€” reproducible `FAILED_DEVELOPMENT_GATE`; point estimates pass at 1 mm but missed-abstention pose-cluster UCB is 3.2491% above the frozen 2% ceiling; no evaluation opening, localization qualification, arm-lane status, integration-gate change, hardware write, or physical movement |
+| AI/model | S2/S3 deterministic retained-package index builder | read-only custody-declaration schema and builder; exact regular-file inventory; campaign/digest/path/custody binding; deterministic evidence-index output; missing/extra/duplicate/symlink/changed-file rejection; tests, registry, shared workplan, and evidence ledger | `issue/190-isaac-sim-host` / `e7b16c2de470a1c01040fab0be17e22b44cdfcdc` | COMPLETE â€” inventories only already retained files and externally declared custody; no evidence generation, collection, qualification, arm-lane status, integration-gate change, hardware write, or physical movement |
+| AI/model | S2/S3 parked-pose file-backed preflight | strict evidence index and preflight receipt schemas; contained regular-file/hash/size/type/custody reconciliation for every campaign binding; missing/altered/duplicate/symlink/extra-artifact rejection; explicit no-campaign blocked receipt, tests, registry, shared workplan, and evidence ledger | `issue/190-isaac-sim-host` / `ad2c8ce9aeee11e0b6fcfddcda1e0c5a6afa72ed` | COMPLETE â€” retained preflight is blocked because no campaign package exists; custody labels remain claims pending owner review; no collection, qualification, arm-lane status, integration-gate change, hardware write, or physical movement |
+| AI/model | S2/S3 parked-pose qualification protocol | strict synthetic/physical campaign manifests and observation records; completed-park/session independence checks; ChArUco drift and repeatability bindings; residual obstruction and fused-decision scoring; exact binomial bounds; explicit incomplete receipt, tests, registry, shared workplan, and evidence ledger | `issue/190-isaac-sim-host` / `9dc1f7fa6642b6468bb5df85d0a6bed33e0fa592` | COMPLETE â€” retained receipt is explicitly incomplete because no campaign was collected; no model qualification, deployment claim, arm-lane status, integration-gate change, hardware write, or physical movement |
+| AI/model | S2/S3 correlation-aware evaluation power tool | grouped v13/v14 intra-pose-correlation estimation; empirical upper-bound and pessimistic-correlation scenarios; deterministic pose-cluster simulation and sample-size recommendation; synthetic planning receipt, tests, registry, shared workplan, and evidence ledger | `issue/190-isaac-sim-host` / `3fe8e57eca77dcd369be79e188d6ae2b0724d39a` | COMPLETE â€” aggregate synthetic planning only; 2,048-pose broad-campaign recommendation; no candidate selection, new render compute, arm-lane status, or integration-gate change |
+| Unclaimed | S2/S3 | physical-camera deployment qualification and safe-region-fit precision evidence | â€” | AVAILABLE |
 | ARM | S4 | collect four physical-original `camera_support_optics` bindings through onboarding, then run the ARM-070 intake; no synthetic promotion | ARM-071 | WAITING_FOR_ORIGINALS |
 
 ## Worker update procedure
@@ -1768,7 +1768,7 @@ Each worker follows this process for every increment:
 6. Run lane tests plus the shared boundary suite affected by the change.
 7. Append an evidence row. Update only the worker's owned lane status.
 8. If both lanes are ready, run the shared integration gate using actual producer
-   output—not a hand-authored substitute—and append an `INT` evidence row.
+   outputâ€”not a hand-authored substituteâ€”and append an `INT` evidence row.
 9. Review diff, run the repository audit, commit, and push or open a pull request
    according to the repository contribution process.
 10. Leave failed evidence visible and name the precise next dependency.
@@ -1789,7 +1789,7 @@ Each worker follows this process for every increment:
 
 ## Immediate coordinated work order
 
-1. **S1 software boundary — complete for zero authority:** v2 producer bytes,
+1. **S1 software boundary â€” complete for zero authority:** v2 producer bytes,
    strict decoding, trusted registry, freshness, mutation rejection, and ordered
    `H,H,I` ingress are covered by the shared conformance profile.
 2. **AI S2/S3:** qualify the implemented precision adapter from final-camera

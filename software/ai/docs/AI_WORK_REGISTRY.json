@@ -99,7 +99,9 @@
         "software/ai/schemas/residual_obstruction_development_v3.schema.json",
         "software/ai/eval/diagnose_residual_obstruction_v3.py",
         "software/ai/schemas/residual_obstruction_v3_diagnostic_v1.schema.json",
-        "software/ai/eval/audit_residual_obstruction_v3_training.py"
+        "software/ai/eval/audit_residual_obstruction_v3_training.py",
+        "software/ai/schemas/residual_obstruction_v3_training_audit_v1.schema.json",
+        "software/ai/schemas/residual_obstruction_v3_training_visual_review_v1.schema.json"
       ],
       "test_paths": [
         "software/ai/tests/test_capture_binding.py",
@@ -160,9 +162,11 @@
         "software/ai/eval/residual_obstruction_v3_complete_admission_v1.json",
         "software/ai/eval/residual_obstruction_v3_renderer_lineage_v1.json",
         "software/ai/eval/residual_obstruction_development_v3.json",
-        "software/ai/eval/residual_obstruction_v3_diagnostic_v1.json"
+        "software/ai/eval/residual_obstruction_v3_diagnostic_v1.json",
+        "software/ai/eval/residual_obstruction_v3_training_audit_v1.json",
+        "software/ai/eval/residual_obstruction_v3_training_visual_review_v1.json"
       ],
-      "current_result": "The rejected residual v3 model is under a training-only causal audit: target identity plus geometry, training-local discrimination, finite-sample memorization, split identity, and keyboard-G crop/label evidence. No successor has been selected.",
+      "current_result": "Training-only causal audit disproves target-base-rate leakage: identity plus geometry is exactly 0.500 AUC. The rejected CNN ranks locally on every training target (AUC 0.841–0.991) but has no strict positive target margin and cannot memorize the balanced 500-row control.",
       "limitations": [
         "No commissioned projection renderer, measured dilation artifact, or physical deployment qualification is installed.",
         "The geometry-first replay uses the same Isaac semantic mask that generated the synthetic label and therefore cannot estimate real projection error.",
@@ -179,9 +183,11 @@
         "Residual v3 is synthetic Isaac evidence with simplified, unmeasured camera, materials, and obstruction geometry; admission is not physical or deployment qualification.",
         "The admitted shards were produced across documented renderer corrections; exact per-shard renderer lineage must remain explicit when the corpus is consumed.",
         "The frozen residual v3 model failed its 2% missed-obstruction, 6% visible-false-stop, scene-cluster, family, appearance, and target-local separation gates; no threshold is installable.",
-        "The consumed residual v3 diagnostic may guide a fresh design but cannot evaluate or select a successor."
+        "The consumed residual v3 diagnostic may guide a fresh design but cannot evaluate or select a successor.",
+        "Residual v3 training and development reuse the same four appearance identities; only base-scene and observation identities are disjoint.",
+        "The same CNN architecture reached only 0.834 accuracy and 0.4417 loss on a balanced 500-row memorization control, so its representation or capacity is inadequate for exact example separation."
       ],
-      "next_gate": "Complete and retain the training-only causal audit, then predeclare a fresh reference-comparison successor using new development and evaluation scene identities; do not tune or reevaluate the rejected checkpoint.",
+      "next_gate": "Predeclare a fresh reference-comparison successor with spatial difference features, new scene and appearance identities for development and evaluation, and per-target local ranking plus margin gates; do not tune or reevaluate the rejected checkpoint.",
       "model_motion_batch_boundary": true,
       "controller_authority": false,
       "hardware_writes": 0,
@@ -431,5 +437,5 @@
   "controller_authority": false,
   "hardware_writes": 0,
   "physical_movements": 0,
-  "registry_sha256": "e9ce40ee66d2f2646c9cbf49c47272e6b6a464f4cb553a1ac70f62a99aef5377"
+  "registry_sha256": "966e1928695971ac5bfb6a9c8e2e5b7a651e2245d973b1f96a83ead2f1f3299d"
 }

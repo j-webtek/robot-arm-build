@@ -1,9 +1,12 @@
 from __future__ import annotations
 
+import hashlib
+import json
 from pathlib import Path
 import sys
 
 import numpy as np
+from jsonschema import Draft202012Validator
 
 
 AI_ROOT = Path(__file__).resolve().parents[1]
@@ -53,3 +56,36 @@ def test_memorization_subset_is_deterministic_and_label_balanced():
     selected = [entries[index] for index in first]
     assert sum(row["expected_decision"] == "VISIBLE" for row in selected) == 250
     assert sum(row["expected_decision"] == "ABSTAIN" for row in selected) == 250
+
+
+def test_retained_training_audit_and_visual_review_are_bound_and_zero_authority():
+    audit_path = AI_ROOT / "eval" / "residual_obstruction_v3_training_audit_v1.json"
+    audit = json.loads(audit_path.read_text(encoding="utf-8"))
+    audit_schema = json.loads(
+        (AI_ROOT / "schemas" / "residual_obstruction_v3_training_audit_v1.schema.json").read_text()
+    )
+    Draft202012Validator(audit_schema).validate(audit)
+    audit_core = {key: value for key, value in audit.items() if key != "report_sha256"}
+    assert hashlib.sha256(
+        json.dumps(audit_core, sort_keys=True, separators=(",", ":")).encode()
+    ).hexdigest() == audit["report_sha256"]
+
+    review = json.loads(
+        (AI_ROOT / "eval" / "residual_obstruction_v3_training_visual_review_v1.json").read_text()
+    )
+    review_schema = json.loads(
+        (
+            AI_ROOT
+            / "schemas"
+            / "residual_obstruction_v3_training_visual_review_v1.schema.json"
+        ).read_text()
+    )
+    Draft202012Validator(review_schema).validate(review)
+    review_core = {key: value for key, value in review.items() if key != "review_sha256"}
+    assert hashlib.sha256(
+        json.dumps(review_core, sort_keys=True, separators=(",", ":")).encode()
+    ).hexdigest() == review["review_sha256"]
+    assert review["source_report_file_sha256"] == hashlib.sha256(audit_path.read_bytes()).hexdigest()
+    assert audit["development_pixels_opened"] is False
+    assert audit["evaluation_opened"] is False
+    assert review["hardware_writes"] == review["physical_movements"] == 0
