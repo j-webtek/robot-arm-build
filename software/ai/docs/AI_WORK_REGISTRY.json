@@ -108,7 +108,6 @@
         "software/ai/eval/plan_residual_v4_gate_power.py",
         "software/ai/sim/build_residual_obstruction_successor_v4_1.py",
         "software/ai/schemas/residual_obstruction_successor_fixture_v4_1.schema.json",
-        "software/integrations/isaac_sim/residual_obstruction_v4_1_smoke_probe.py",
         "software/ai/rocell_ai/reference_validity.py",
         "software/ai/schemas/reference_validity_v1.schema.json"
       ],
@@ -455,5 +454,5 @@
   "controller_authority": false,
   "hardware_writes": 0,
   "physical_movements": 0,
-  "registry_sha256": "bb3d7980526b7463f0793aa104ef4dd5f58f825a4589d8b6f20da47331e9cb0d"
+  "registry_sha256": "f3da1468ae800036a7be5e4827ef3f9d640020933acf06b924951eaee799e0f6"
 }
