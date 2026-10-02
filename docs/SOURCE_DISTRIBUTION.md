@@ -113,6 +113,12 @@ test. The current tracked-file ceiling is therefore 6,158. This adjustment does
 not relax any byte, single-blob, or duplicate-byte ceiling and adds no image,
 model, or simulator blob.
 
+The issue 190 residual v2 renderer binding adds four reviewed text files: the
+deterministic contract builder, strict schema, retained contract, and focused
+test. The current tracked-file ceiling is therefore 6,162. This adjustment does
+not relax any byte, single-blob, or duplicate-byte ceiling and adds no generated
+image or model blob.
+
 The preferred order is:
 
 1. replace repeated instructional STL copies with one canonical tracked object
