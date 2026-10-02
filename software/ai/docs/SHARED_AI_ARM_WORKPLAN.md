@@ -1331,6 +1331,30 @@ path. The diagnostic used only the consumed development rows and scorecard: it
 loaded no images, ran no inference or training, opened no evaluation source,
 and grants no qualification, controller authority, or physical authority.
 
+### V16 geometry-first fusion replay
+
+The consumed v16 development set now has a deterministic geometry-first replay.
+It independently reloads and hashes all four development robot-mask atlases,
+recomputes center coverage and safe-region overlap for 4,800 pose-target pairs,
+reconciles all 14,400 lighting rows, reconstructs the frozen learned decisions,
+and applies conservative geometry OR learned abstention across all 17 offsets in
+the selected 2 mm ring. The replay contains 54 ambiguity-band rows. At nominal
+offset the learned path's 12 misses become zero after fusion, with 233 strict
+false stops (`1.8971%`) and 218 when either ambiguity-band answer is accepted
+(`1.7750%`). Across the ring the worst fused result is zero misses and 881
+strict false stops (`7.1731%`), or 866 (`7.0510%`) with the frozen ambiguity
+scoring rule.
+
+This result validates the intended architecture seam: deterministic known-robot
+geometry can conservatively cover self-occlusion misses while the learned path
+remains a second abstention source. It is not an independent accuracy result.
+The same Isaac semantic mask produced both the replay geometry and the synthetic
+label, no measured dilation was applied, and no synchronized measured-feedback
+projector or projection qualification is installed. V16 remains rejected as a
+learned checkpoint. The next meaningful evidence must use commissioned camera
+geometry, exposure-time measured feedback, measured dilation, and residual
+obstruction cases that are independent of the geometry label.
+
 ### Geometry-first occlusion revision after v14
 
 The next campaign treats known robot self-occlusion as a deterministic
@@ -1482,7 +1506,7 @@ authenticity remain external owner responsibilities.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI/model | S2/S3 v16 geometry-first fusion replay | independently recompute development target overlap from retained Isaac robot-mask atlases, reconcile frozen labels and learned decisions, conservatively replay geometry/learned OR fusion with explicit ambiguity accounting, strict report/schema/tests, registry, shared workplan, and evidence ledger | `issue/190-isaac-sim-host` / claim pending | ACTIVE — synthetic development-only replay on consumed v16 artifacts; no new render, training, threshold change, evaluation access, projection qualification, calibration installation, arm-lane status, integration-gate change, hardware write, physical movement, or execution authority |
+| AI/model | S2/S3 v16 geometry-first fusion replay | independently recompute development target overlap from retained Isaac robot-mask atlases, reconcile frozen labels and learned decisions, conservatively replay geometry/learned OR fusion with explicit ambiguity accounting, strict report/schema/tests, registry, shared workplan, and evidence ledger | `issue/190-isaac-sim-host` / `a576f6658acf7ccab6da067fcce4f6ee152ac962` | COMPLETE — all 4,800 pose-target overlaps and 14,400 rows reconcile; fused misses are zero at all 17 offsets and worst strict false stops are 881, but the mask also generated the label, no measured dilation or projection qualification exists, v16 remains rejected, and no evaluation access, arm-lane status, integration gate, hardware write, physical movement, or execution authority changed |
 | AI/model | S2/S3 v16 grouped-neighborhood development diagnostic | read-only attribution of the consumed v16 development failures by source block, pose, target, lighting, and offset; strict schema, deterministic aggregate report, tests, registry, shared workplan, and evidence ledger | `issue/190-isaac-sim-host` / `bc880ad9087d18b99becf7c4db765d8b77edb026` | COMPLETE — 348 misses span 28 poses, 46 pose-target pairs, eight source blocks, 13 targets, and all three lighting identities; the dominant pose-target contributes only 11.78%, so v16 remains rejected and no threshold, evaluation access, promotion, arm-lane status, integration gate, hardware write, physical movement, or execution authority changed |
 | AI/model | S2/S3 v16 grouped-neighborhood successor | frozen fresh pose generator with source-interval group isolation, failed-neighborhood coverage, fresh lighting identities, separately frozen train/development split, target-aware training revision, clustered development gate, Isaac campaign, tests, registry, shared workplan, and evidence ledger | `issue/190-isaac-sim-host` / `ce6172b8b43a22613d3eaf128cc80873423e076a` | COMPLETE — point gate passed through 2 mm, but the 64-pose missed-abstention UCB is 2.8216% against the frozen 2% ceiling, so v16 is rejected; v14 evaluation and v15 development remain consumed, no evaluation source opened, and no arm-lane status, integration-gate, hardware write, physical movement, or execution authority changed |
 | AI/model | S2/S3 v15 pose-cluster development diagnostic | development-only failure attribution by pose, target, lighting, and offset; frozen diagnostic schema and deterministic report; v16 design recommendation without evaluation access or candidate promotion; tests, registry, shared workplan, and evidence ledger | `issue/190-isaac-sim-host` / `048bb41acd2cbe6350672e82f402bc54d096cc12` | COMPLETE — 58 in-bound misses occur in seven poses/eight pose-target pairs; one pose/MINUS pair contributes 46.55% and the top two poses 70.69%; v15 remains rejected and consumed; no evaluation access, render, threshold change, promotion, arm-lane status, integration-gate change, hardware write, or physical movement |
