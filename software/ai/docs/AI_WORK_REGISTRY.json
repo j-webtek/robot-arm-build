@@ -96,7 +96,8 @@
         "software/ai/schemas/residual_obstruction_v3_admission_v1.schema.json",
         "software/ai/schemas/residual_obstruction_v3_renderer_lineage_v1.schema.json",
         "software/ai/train/train_residual_obstruction_v3.py",
-        "software/ai/schemas/residual_obstruction_development_v3.schema.json"
+        "software/ai/schemas/residual_obstruction_development_v3.schema.json",
+        "software/ai/eval/diagnose_residual_obstruction_v3.py"
       ],
       "test_paths": [
         "software/ai/tests/test_capture_binding.py",
@@ -123,7 +124,8 @@
         "software/ai/tests/test_residual_obstruction_successor_v3.py",
         "software/ai/tests/test_residual_obstruction_v3_renderer_smoke.py",
         "software/ai/tests/test_residual_obstruction_v3_admission.py",
-        "software/ai/tests/test_residual_obstruction_v3_training.py"
+        "software/ai/tests/test_residual_obstruction_v3_training.py",
+        "software/ai/tests/test_residual_obstruction_v3_diagnostic.py"
       ],
       "documentation_paths": [
         "software/ai/docs/MODEL_TO_ARM_TRANSLATION_ASSURANCE.md",
@@ -156,7 +158,7 @@
         "software/ai/eval/residual_obstruction_v3_renderer_lineage_v1.json",
         "software/ai/eval/residual_obstruction_development_v3.json"
       ],
-      "current_result": "Two byte-identical frozen residual v3 runs reduced combined loss from 0.5640 to 0.3170 but failed every development threshold; zero of 75 targets are locally separable and the worst target margin is -0.8240, so the model is rejected and evaluation remains absent.",
+      "current_result": "The rejected residual v3 model and its exact development result are retained; a read-only probability reconstruction and attribution diagnostic is implemented but has not yet run.",
       "limitations": [
         "No commissioned projection renderer, measured dilation artifact, or physical deployment qualification is installed.",
         "The geometry-first replay uses the same Isaac semantic mask that generated the synthetic label and therefore cannot estimate real projection error.",
@@ -174,7 +176,7 @@
         "The admitted shards were produced across documented renderer corrections; exact per-shard renderer lineage must remain explicit when the corpus is consumed.",
         "The frozen residual v3 model failed its 2% missed-obstruction, 6% visible-false-stop, scene-cluster, family, appearance, and target-local separation gates; no threshold is installable."
       ],
-      "next_gate": "Diagnose the consumed v3 development probabilities by target, variant family, scene, and appearance without changing the rejected model or opening evaluation; use that diagnosis only to predeclare a fresh successor.",
+      "next_gate": "Run the diagnostic against the exact external rejected model and admitted corpus, require probability-hash reproduction, then use the report only to predeclare a fresh successor.",
       "model_motion_batch_boundary": true,
       "controller_authority": false,
       "hardware_writes": 0,
@@ -424,5 +426,5 @@
   "controller_authority": false,
   "hardware_writes": 0,
   "physical_movements": 0,
-  "registry_sha256": "ec0a1eef49f594919a8c17321421bd3f8a532771c0d38aef0674afb8c1fe2820"
+  "registry_sha256": "7902eb302fecdbe35d047e88c83f1a155ad5265b1c06e6917ff8fa8cb32bb4ba"
 }
