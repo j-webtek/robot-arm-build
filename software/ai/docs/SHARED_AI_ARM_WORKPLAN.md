@@ -1781,6 +1781,16 @@ shard, renderer receipt, dataset SHA-256, and manifest file SHA-256 before the
 ordinary row/image hash admission runs. Preserved `camera02` and failed
 `camera03` paths are absent from that allowlist.
 
+Post-admission gate tooling is now frozen while rendering continues. Complete
+admission must reproduce the exact manifest inventory before a deterministic
+500-row, label-balanced, target-round-robin training subset can be emitted.
+The same 6x6 spatial CNN is then memorized separately for both frozen
+normalizations. Development baseline scoring refuses to open its rows unless
+both memorization gates pass and bind to that exact preparation receipt. The
+training-free baseline uses the renderer-bound difference metrics, linear
+fifth-percentile per-target AUC, the frozen 0.005 tie band, and the frozen
+self-crop tie break. Evaluation remains inaccessible.
+
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
 | AI/model | S2/S3 residual v4.2 dual-normalization campaign | freeze a training-free difference baseline, fifth-percentile target-AUC normalization selector with deterministic tie break, and required CNN uplift before rendering; then render and independently admit disjoint training/development reference pairs while evaluation remains absent | `issue/190-isaac-sim-host` / baseline `120e08e231d059d04a1af1776f24c595676555a5` | ACTIVE — contract revision, campaign render, admission, memorization, and development evidence are not yet complete; no evaluation access, arm-lane status, integration gate, hardware write, physical movement, or execution authority change |

@@ -115,7 +115,10 @@
         "software/ai/sim/build_residual_obstruction_successor_v4_2.py",
         "software/ai/schemas/residual_obstruction_successor_fixture_v4_2.schema.json",
         "software/ai/eval/admit_residual_obstruction_v4_2_shards.py",
-        "software/ai/schemas/residual_obstruction_v4_2_admission_v1.schema.json"
+        "software/ai/schemas/residual_obstruction_v4_2_admission_v1.schema.json",
+        "software/ai/train/prepare_residual_obstruction_v4_2_gates.py",
+        "software/ai/train/run_residual_obstruction_v4_2_memorization.py",
+        "software/ai/eval/score_residual_obstruction_v4_2_baseline.py"
       ],
       "test_paths": [
         "software/ai/tests/test_capture_binding.py",
@@ -153,7 +156,8 @@
         "software/ai/tests/test_residual_obstruction_v4_1_smoke_admission.py",
         "software/ai/tests/test_residual_obstruction_successor_v4_2.py",
         "software/ai/tests/test_residual_obstruction_v4_2_renderer.py",
-        "software/ai/tests/test_residual_obstruction_v4_2_admission.py"
+        "software/ai/tests/test_residual_obstruction_v4_2_admission.py",
+        "software/ai/tests/test_residual_obstruction_v4_2_gates.py"
       ],
       "documentation_paths": [
         "software/ai/docs/MODEL_TO_ARM_TRANSLATION_ASSURANCE.md",
@@ -198,7 +202,7 @@
         "software/ai/eval/residual_obstruction_v4_2_renderer_smoke_v1.json",
         "software/ai/eval/residual_obstruction_v4_2_camera_contract_smoke_v1.json"
       ],
-      "current_result": "V4.1 smoke implementation is frozen: it retains paired references, compares unsafe independent self-crop normalization with reference-context normalization, and fail-closes stale or mismatched commissioned references.",
+      "current_result": "The v4.2 renderer campaign is active under exact shard admission; deterministic training-only subset preparation, dual-normalization memorization, and post-memorization training-free development baseline tooling are implemented with evaluation closed.",
       "limitations": [
         "No commissioned projection renderer, measured dilation artifact, or physical deployment qualification is installed.",
         "The geometry-first replay uses the same Isaac semantic mask that generated the synthetic label and therefore cannot estimate real projection error.",
@@ -219,7 +223,7 @@
         "Residual v3 training and development reuse the same four appearance identities; only base-scene and observation identities are disjoint.",
         "The same CNN architecture reached only 0.834 accuracy and 0.4417 loss on a balanced 500-row memorization control, so its representation or capacity is inadequate for exact example separation."
       ],
-      "next_gate": "Run the bounded one-scene/four-target Isaac smoke, retain normalization evidence, and correct the v4.1 normalization contract before any development render if self-crop statistics suppress heavy obstruction signal.",
+      "next_gate": "Require complete exact v4.2 campaign admission, run both 500-row memorization gates, then open development once for the frozen training-free normalization selector and CNN uplift comparison.",
       "model_motion_batch_boundary": true,
       "controller_authority": false,
       "hardware_writes": 0,
@@ -469,5 +473,5 @@
   "controller_authority": false,
   "hardware_writes": 0,
   "physical_movements": 0,
-  "registry_sha256": "6c35379bc4f7d77fc810565d1d5e1a00d9dd688756a98e99d0efe367b18aa25c"
+  "registry_sha256": "f982b1af78364bffd37a0b4c56348f383538cbd789b32f073c17819cf8e3a031"
 }
