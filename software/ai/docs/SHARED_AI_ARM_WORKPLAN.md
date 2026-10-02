@@ -1415,6 +1415,33 @@ next increment should diagnose the consumed development probabilities by
 variant and target, then predeclare a fresh pose- and appearance-diverse
 successor rather than modifying this candidate after observing its result.
 
+### First residual-obstruction failure diagnostic
+
+The exact rejected model was decoded from its deterministic binary artifact and
+rerun against the consumed development crops. Reconstructed probability and
+identity hashes match the retained scorecard. The aggregate pairwise AUC is
+`0.7585185`. Visible probabilities span `0.7144125` to `0.8022025`; obstruction
+probabilities span `0.6787802` to `0.9071497`. All 75 targets are locally
+nonseparable: each target's lowest obstruction probability is below its highest
+visible probability. Separation margins range from `-0.0380050` to
+`-0.0008761`, so this is not one bad target or keyboard region.
+
+The diagnostic also exposed a dataset construction defect. All 75 development
+`none_adjacent_distractor` PNGs are byte identical to their corresponding
+`none_clear` PNGs; their probabilities are consequently identical. The planned
+distractor fell outside the generated crop and provided no negative example.
+Among obstruction variants, `image_degraded` has the lowest mean probability
+(`0.7340675`) and only 17 of 75 rows abstain at threshold `0.75`; none abstain at
+`0.80`. Cable and tool cases also overlap substantially, while localized glare
+is the only obstruction family with all 75 rows abstaining at `0.75`.
+
+This diagnosis uses consumed development evidence and cannot select or evaluate
+a successor. It does show what the next predeclaration must fix: prove every
+adjacent distractor changes pixels while preserving zero target overlap; add
+multiple group-separated source poses and appearances; and broaden degradation,
+cable, and tool severity. The rejected checkpoint and threshold grid remain
+unchanged, and evaluation remains closed.
+
 ### Geometry-first occlusion revision after v14
 
 The next campaign treats known robot self-occlusion as a deterministic
@@ -1566,7 +1593,7 @@ authenticity remain external owner responsibilities.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI/model | S2/S3 rejected residual-candidate diagnostic | read-only reconstruction of the retained candidate's consumed development probabilities; per-variant and per-target attribution; exact source/model/dataset binding; successor-design recommendation without checkpoint, threshold, evaluation, or authority changes | `issue/190-isaac-sim-host` / claim pending | ACTIVE — diagnose why E-496 failed before defining a successor; development is consumed, evaluation remains closed, and no arm-lane status, integration gate, hardware write, physical movement, or execution authority changes |
+| AI/model | S2/S3 rejected residual-candidate diagnostic | read-only reconstruction of the retained candidate's consumed development probabilities; per-variant and per-target attribution; exact source/model/dataset binding; successor-design recommendation without checkpoint, threshold, evaluation, or authority changes | `issue/190-isaac-sim-host` / `343b4b548bb9b92745af71bd6d7cf4cd50c607cd`, `60fcebe9513f449f6c93c8e3dd44b96e12506312` | COMPLETE — exact probabilities reproduce; AUC is 0.7585, all 75 targets are nonseparable, all adjacent-distractor crops duplicate clear crops, and degradation/cable/tool cases overlap; checkpoint and threshold are unchanged, evaluation is closed, and no arm-lane status, integration gate, hardware write, physical movement, or execution authority changed |
 | AI/model | S2/S3 residual-obstruction crop materialization and development gate | materialize only the frozen 1,200 crop specifications; exact independent inventory; train only `target_crop_residual_cnn_v1` with the frozen seed and hyperparameters; target-cluster development scoring; preserve failures; evaluation remains empty and no authority is created | `issue/190-isaac-sim-host` / `cf7aa8613876ae1b4c70f73b8322cf8007b4367e` | COMPLETE — two crop builds, inventories, models, and scorecards are byte identical; no threshold passes both frozen development limits, so the candidate is rejected and no evaluation access, qualification, arm-lane status, integration gate, hardware write, physical movement, or execution authority changed |
 | AI/model | S2/S3 parked residual-obstruction pretraining freeze | deterministic synthetic crop-campaign fixture from retained fixed-camera practice bytes; target-balanced clear/distractor/cable/tool/hand/foreign-object/glare/degradation cases; pose-separated train/development identities; frozen small offline model plan and asymmetric development gates; no evaluation source, training, render, or authority | `issue/190-isaac-sim-host` / `7e0509d0828a557c04a38aef47fc51c49dea70c8` | COMPLETE — 1,200 procedural crop specifications cover 75 targets with pose-separated train/development identities and a frozen offline model/gate plan; no crop images, model, training, development metric, evaluation access, qualification, arm-lane status, integration gate, hardware write, physical movement, or execution authority changed |
 | AI/model | S2/S3 v16 geometry-first fusion replay | independently recompute development target overlap from retained Isaac robot-mask atlases, reconcile frozen labels and learned decisions, conservatively replay geometry/learned OR fusion with explicit ambiguity accounting, strict report/schema/tests, registry, shared workplan, and evidence ledger | `issue/190-isaac-sim-host` / `a576f6658acf7ccab6da067fcce4f6ee152ac962` | COMPLETE — all 4,800 pose-target overlaps and 14,400 rows reconcile; fused misses are zero at all 17 offsets and worst strict false stops are 881, but the mask also generated the label, no measured dilation or projection qualification exists, v16 remains rejected, and no evaluation access, arm-lane status, integration gate, hardware write, physical movement, or execution authority changed |
