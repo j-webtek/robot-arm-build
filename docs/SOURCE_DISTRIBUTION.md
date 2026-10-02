@@ -84,6 +84,12 @@ files: the read-only analyzer, strict schema, retained aggregate report, and
 focused test. The current tracked-file ceiling is therefore 6,138. This
 adjustment does not relax any byte, single-blob, or duplicate-byte ceiling.
 
+The issue 190 v16 geometry-first fusion replay adds four reviewed text files:
+the mask replay analyzer, strict schema, retained aggregate report, and focused
+test. The current tracked-file ceiling is therefore 6,142. This adjustment does
+not relax any byte, single-blob, or duplicate-byte ceiling and adds no image,
+model, or simulator blob.
+
 The preferred order is:
 
 1. replace repeated instructional STL copies with one canonical tracked object
