@@ -102,6 +102,11 @@ scorecard, and focused test. Generated crops and model weights remain external
 hashed artifacts. The current tracked-file ceiling is therefore 6,150. This
 adjustment does not relax any byte, single-blob, or duplicate-byte ceiling.
 
+The issue 190 rejected residual-candidate diagnostic adds four reviewed text
+files: the read-only analyzer, strict schema, retained aggregate report, and
+focused test. The current tracked-file ceiling is therefore 6,154. This
+adjustment does not relax any byte, single-blob, or duplicate-byte ceiling.
+
 The preferred order is:
 
 1. replace repeated instructional STL copies with one canonical tracked object
