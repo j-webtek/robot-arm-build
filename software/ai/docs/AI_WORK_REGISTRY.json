@@ -71,8 +71,10 @@
         "software/ai/schemas/clustered_occlusion_power_plan_v1.schema.json",
         "software/ai/schemas/geometry_first_fusion_replay_v1.schema.json",
         "software/ai/schemas/grouped_neighborhood_development_diagnostic_v1.schema.json",
+        "software/ai/schemas/residual_obstruction_campaign_fixture_v1.schema.json",
         "software/ai/sim/build_pose_diverse_training_fixture.py",
-        "software/ai/sim/build_grouped_neighborhood_training_fixture.py"
+        "software/ai/sim/build_grouped_neighborhood_training_fixture.py",
+        "software/ai/sim/build_residual_obstruction_campaign_fixture.py"
       ],
       "test_paths": [
         "software/ai/tests/test_capture_binding.py",
@@ -87,7 +89,8 @@
         "software/ai/tests/test_clustered_occlusion_power.py",
         "software/ai/tests/test_geometry_first_fusion_replay.py",
         "software/ai/tests/test_grouped_neighborhood_development_diagnostic.py",
-        "software/ai/tests/test_pose_cluster_development_diagnostic.py"
+        "software/ai/tests/test_pose_cluster_development_diagnostic.py",
+        "software/ai/tests/test_residual_obstruction_campaign_fixture.py"
       ],
       "documentation_paths": [
         "software/ai/docs/MODEL_TO_ARM_TRANSLATION_ASSURANCE.md",
@@ -103,17 +106,19 @@
         "software/ai/eval/geometry_first_fusion_replay_v1.json",
         "software/ai/eval/grouped_neighborhood_development_diagnostic_v1.json",
         "software/ai/eval/pose_cluster_development_diagnostic_v1.json",
-        "software/ai/sim/evidence/pose_diverse_training_development_v1.json"
+        "software/ai/sim/evidence/pose_diverse_training_development_v1.json",
+        "software/ai/sim/evidence/residual_obstruction_pretraining_v1.json"
       ],
-      "current_result": "The rejected v16 candidate has 348 learned misses across 17 in-bound offsets. A development-only replay independently recomputes all 4,800 pose-target overlaps from four retained Isaac mask atlases; conservative geometry OR learned fusion removes every replayed miss and retains a worst strict 881 false stops, but the shared mask/label source makes this architecture agreement rather than independent accuracy or qualification.",
+      "current_result": "Geometry-first fusion removes every v16 replayed self-occlusion miss by construction. The separately frozen residual pretraining design now defines 1,200 target crops across cable, tool, hand, foreign-object, glare, degradation, clear, and adjacent-distractor cases with pose-separated synthetic train/development identities; no crops or model have been generated yet.",
       "limitations": [
         "No commissioned projection renderer, measured dilation artifact, or physical deployment qualification is installed.",
         "The geometry-first replay uses the same Isaac semantic mask that generated the synthetic label and therefore cannot estimate real projection error.",
+        "Residual campaign sources are two correlated synthetic practice views with simplified surfaces and an unmeasured camera.",
         "The failed v16 learned checkpoint has no installable uncertainty bound and cannot be evaluated or promoted.",
         "Scene and projection evidence cannot substitute for localization uncertainty, collision screening, or arm-runtime admission.",
         "The v16 corpus contains 320 correlated static states from one governed path and does not qualify arbitrary poses, the camera, or deployment."
       ],
-      "next_gate": "Keep v16 rejected; commission a synchronized measured-feedback projector with independently measured dilation and physical camera evidence, then train a residual-obstruction model on cable, tool, hand, glare, and degradation cases rather than reusing the v16 self-occlusion checkpoint as qualification.",
+      "next_gate": "Generate the exact frozen residual crops, verify them independently, train the declared small offline model, and apply the target-cluster development gate without opening evaluation; commission synchronized measured-feedback projection and physical parked-pose evidence in parallel.",
       "model_motion_batch_boundary": true,
       "controller_authority": false,
       "hardware_writes": 0,
@@ -363,5 +368,5 @@
   "controller_authority": false,
   "hardware_writes": 0,
   "physical_movements": 0,
-  "registry_sha256": "98b372fa10e1b00114ba093426cbf83dcbc6fd46d615251623d843e2c2a16718"
+  "registry_sha256": "5197d76e8e66f3f19c347953574b334989adf48475802ffa12f4850788966c72"
 }

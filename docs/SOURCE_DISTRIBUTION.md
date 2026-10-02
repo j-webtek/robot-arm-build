@@ -90,6 +90,12 @@ test. The current tracked-file ceiling is therefore 6,142. This adjustment does
 not relax any byte, single-blob, or duplicate-byte ceiling and adds no image,
 model, or simulator blob.
 
+The issue 190 residual-obstruction pretraining freeze adds four reviewed text
+files: the deterministic campaign builder, strict schema, retained fixture, and
+focused test. The current tracked-file ceiling is therefore 6,146. This
+adjustment does not relax any byte, single-blob, or duplicate-byte ceiling and
+adds no image, model, or simulator blob.
+
 The preferred order is:
 
 1. replace repeated instructional STL copies with one canonical tracked object
