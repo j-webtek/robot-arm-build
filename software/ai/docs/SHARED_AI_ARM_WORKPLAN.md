@@ -1442,6 +1442,34 @@ multiple group-separated source poses and appearances; and broaden degradation,
 cable, and tool severity. The rejected checkpoint and threshold grid remain
 unchanged, and evaluation remains closed.
 
+### Residual-obstruction successor v2 freeze
+
+Successor v2 is frozen before rendering. It defines six training and three
+development parked-camera perturbation groups with disjoint identities, crossed
+with four training and three development appearance groups whose identities are
+also disjoint. Fifteen variants cover clear, left/right adjacent distractors,
+three cable widths, two tool placements, hand, foreign object, glare, two blur
+levels, compression, and motion degradation. Across the retained 75-target
+catalog this yields 27,000 training and 10,125 development observations;
+evaluation remains empty.
+
+The renderer must reject a campaign unless every adjacent distractor differs
+from its paired clear crop by at least 64 pixels while retaining exactly zero
+safe-region overlap. Declared obstruction masks must satisfy their frozen
+overlap bands, every variant must appear in every view, and duplicate
+observation bytes fail admission. Truth and geometry masks are retained only
+for labels and cannot enter the model. The crop margin increases from 1.5 to
+2.5 so an adjacent distractor can remain visible without touching the target.
+
+The successor remains small and offline: RGB-only
+`target_crop_residual_cnn_v2`, channels `[16, 32, 64]`, 18 epochs, batch size
+128, deterministic label/variant balancing, learning rate `0.0003`, weight
+decay `0.0001`, and seed `19018`. Development must pass both point and
+2,000-resample whole-view clustered upper bounds, including the maximum across
+development appearances: at most 2% misses and 6% residual-path false stops.
+This unrendered synthetic design has no measured performance, camera
+qualification, deployment status, or physical authority.
+
 ### Geometry-first occlusion revision after v14
 
 The next campaign treats known robot self-occlusion as a deterministic
@@ -1593,7 +1621,7 @@ authenticity remain external owner responsibilities.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI/model | S2/S3 residual successor v2 predeclaration | freeze fresh group-isolated source-pose and appearance identities; prove adjacent distractors change retained pixels while preserving zero target overlap; broaden cable/tool/degradation severity; freeze model, threshold, clustered development gates, and empty evaluation before generation | `issue/190-isaac-sim-host` / claim pending | ACTIVE — define the successor from E-497 without rendering or training; consumed v1 development cannot select v2, evaluation remains closed, and no arm-lane status, integration gate, hardware write, physical movement, or execution authority changes |
+| AI/model | S2/S3 residual successor v2 predeclaration | freeze fresh group-isolated source-pose and appearance identities; prove adjacent distractors change retained pixels while preserving zero target overlap; broaden cable/tool/degradation severity; freeze model, threshold, clustered development gates, and empty evaluation before generation | `issue/190-isaac-sim-host` / `d754434045bac59b177be107925ac2a27aba7bda` | COMPLETE — 27,000 training and 10,125 development observations are frozen across disjoint parked views/appearances and 15 variants; renderer admission prevents the v1 duplicate-distractor defect; no image, model, training, evaluation access, qualification, arm-lane status, integration gate, hardware write, physical movement, or execution authority changed |
 | AI/model | S2/S3 rejected residual-candidate diagnostic | read-only reconstruction of the retained candidate's consumed development probabilities; per-variant and per-target attribution; exact source/model/dataset binding; successor-design recommendation without checkpoint, threshold, evaluation, or authority changes | `issue/190-isaac-sim-host` / `343b4b548bb9b92745af71bd6d7cf4cd50c607cd`, `60fcebe9513f449f6c93c8e3dd44b96e12506312` | COMPLETE — exact probabilities reproduce; AUC is 0.7585, all 75 targets are nonseparable, all adjacent-distractor crops duplicate clear crops, and degradation/cable/tool cases overlap; checkpoint and threshold are unchanged, evaluation is closed, and no arm-lane status, integration gate, hardware write, physical movement, or execution authority changed |
 | AI/model | S2/S3 residual-obstruction crop materialization and development gate | materialize only the frozen 1,200 crop specifications; exact independent inventory; train only `target_crop_residual_cnn_v1` with the frozen seed and hyperparameters; target-cluster development scoring; preserve failures; evaluation remains empty and no authority is created | `issue/190-isaac-sim-host` / `cf7aa8613876ae1b4c70f73b8322cf8007b4367e` | COMPLETE — two crop builds, inventories, models, and scorecards are byte identical; no threshold passes both frozen development limits, so the candidate is rejected and no evaluation access, qualification, arm-lane status, integration gate, hardware write, physical movement, or execution authority changed |
 | AI/model | S2/S3 parked residual-obstruction pretraining freeze | deterministic synthetic crop-campaign fixture from retained fixed-camera practice bytes; target-balanced clear/distractor/cable/tool/hand/foreign-object/glare/degradation cases; pose-separated train/development identities; frozen small offline model plan and asymmetric development gates; no evaluation source, training, render, or authority | `issue/190-isaac-sim-host` / `7e0509d0828a557c04a38aef47fc51c49dea70c8` | COMPLETE — 1,200 procedural crop specifications cover 75 targets with pose-separated train/development identities and a frozen offline model/gate plan; no crop images, model, training, development metric, evaluation access, qualification, arm-lane status, integration gate, hardware write, physical movement, or execution authority changed |
