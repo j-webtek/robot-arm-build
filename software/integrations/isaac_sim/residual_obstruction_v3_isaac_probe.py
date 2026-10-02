@@ -44,7 +44,22 @@ def foreign_object_radii(width_mm: float, height_mm: float) -> tuple[float, floa
 def camera_height_mm(width_mm: float, height_mm: float) -> float:
     if width_mm <= 0 or height_mm <= 0:
         raise ValueError("target dimensions must be positive")
-    return max(82.0, 1.5 * max(width_mm, height_mm))
+    largest = max(width_mm, height_mm)
+    if largest <= 14.0:
+        return max(45.0, 82.0 * largest / 14.0)
+    return max(82.0, 1.5 * largest)
+
+
+def centered_tool_size(width_mm: float, height_mm: float) -> tuple[float, float]:
+    if width_mm <= 0 or height_mm <= 0:
+        raise ValueError("target dimensions must be positive")
+    return width_mm * 0.65, height_mm
+
+
+def edge_tool_geometry(width_mm: float, height_mm: float) -> tuple[float, float, float]:
+    if width_mm <= 0 or height_mm <= 0:
+        raise ValueError("target dimensions must be positive")
+    return width_mm * 0.15, width_mm * 0.45, height_mm
 
 
 def load_fixture(path: Path) -> tuple[dict[str, Any], bytes]:
@@ -271,6 +286,7 @@ def render(workspace: Path, fixture_path: Path, output_dir: Path, status_output:
                 left, front, right, rear = target.safe_rectangle_board_mm
                 width, height = right - left, rear - front
                 z = target.center.z + 4.0
+                edge_offset, edge_width, edge_height = edge_tool_geometry(width, height)
                 adjacent_left_prims.append(_cube(stage, f"{scene_dynamic_root}/AdjacentLeft/A{target_index:03d}",
                     (left - width * 0.42, target.center.y, z), (width * 0.45, height * 0.7, 5.0),
                     (0.52, 0.18, 0.12), "adjacent_distractor", Gf, UsdGeom, add_labels).GetPrim())
@@ -280,10 +296,10 @@ def render(workspace: Path, fixture_path: Path, output_dir: Path, status_output:
                 obstruction_prims.extend([
                     _cube(stage, f"{scene_dynamic_root}/Obstructions/C{target_index:03d}", (target.center.x, target.center.y, z),
                           (width * 1.25, height * 0.55, 5.0), (0.03, 0.03, 0.035), "residual_obstruction", Gf, UsdGeom, add_labels).GetPrim(),
-                    _cube(stage, f"{scene_dynamic_root}/Obstructions/TE{target_index:03d}", (left + width * 0.18, target.center.y, z),
-                          (width * 0.55, height * 1.1, 6.0), (0.22, 0.24, 0.27), "residual_obstruction", Gf, UsdGeom, add_labels).GetPrim(),
+                    _cube(stage, f"{scene_dynamic_root}/Obstructions/TE{target_index:03d}", (left + edge_offset, target.center.y, z),
+                          (edge_width, edge_height, 6.0), (0.22, 0.24, 0.27), "residual_obstruction", Gf, UsdGeom, add_labels).GetPrim(),
                     _cube(stage, f"{scene_dynamic_root}/Obstructions/TC{target_index:03d}", (target.center.x, target.center.y, z),
-                          (width * 0.70, height * 1.1, 6.0), (0.48, 0.5, 0.54), "residual_obstruction", Gf, UsdGeom, add_labels).GetPrim(),
+                          (*centered_tool_size(width, height), 6.0), (0.48, 0.5, 0.54), "residual_obstruction", Gf, UsdGeom, add_labels).GetPrim(),
                     _ellipsoid(stage, f"{scene_dynamic_root}/Obstructions/F{target_index:03d}", (target.center.x, target.center.y, z),
                                foreign_object_radii(width, height), (0.14, 0.35, 0.18), "residual_obstruction", Gf, UsdGeom, add_labels).GetPrim(),
                 ])

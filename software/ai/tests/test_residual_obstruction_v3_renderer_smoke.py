@@ -15,7 +15,9 @@ sys.path.insert(0, str(ROOT / "software" / "integrations" / "isaac_sim"))
 from residual_obstruction_v3_isaac_probe import (  # noqa: E402
     canonical,
     camera_height_mm,
+    centered_tool_size,
     dynamic_root,
+    edge_tool_geometry,
     foreign_object_radii,
     load_fixture,
     sha256_bytes,
@@ -57,9 +59,24 @@ def test_foreign_object_geometry_scales_with_target_aspect_ratio():
 
 def test_camera_height_fits_wide_targets_with_margin():
     assert camera_height_mm(14.0, 14.0) == 82.0
+    assert camera_height_mm(6.0, 11.0) == pytest.approx(64.4285714286)
     assert camera_height_mm(96.0, 14.0) == 144.0
     with pytest.raises(ValueError, match="positive"):
         camera_height_mm(96.0, 0.0)
+
+
+def test_centered_tool_stays_inside_frozen_overlap_band_by_design():
+    assert centered_tool_size(14.0, 14.0) == (9.1, 14.0)
+    assert centered_tool_size(6.0, 11.0) == pytest.approx((3.9, 11.0))
+    with pytest.raises(ValueError, match="positive"):
+        centered_tool_size(-1.0, 11.0)
+
+
+def test_edge_tool_has_margin_inside_frozen_overlap_band():
+    assert edge_tool_geometry(14.0, 14.0) == pytest.approx((2.1, 6.3, 14.0))
+    assert edge_tool_geometry(6.0, 11.0) == pytest.approx((0.9, 2.7, 11.0))
+    with pytest.raises(ValueError, match="positive"):
+        edge_tool_geometry(6.0, -1.0)
 
 
 def test_retained_smoke_report_is_bound_and_incomplete():
