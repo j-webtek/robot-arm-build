@@ -9343,3 +9343,19 @@ rewriting history. New entries must use a unique evidence ID.
 - Physics-step count: 0; only zero-delta synthetic captures ran.
 - Limitations: two early target shards from each split do not establish full-campaign integrity, model quality, sim-to-real transfer, physical calibration, or deployment qualification. The automatic finalizer still must admit all 38 intended shard manifests exactly before training can start. Evaluation images remain absent and unopened.
 - Next dependency: allow the repaired queues to finish, require complete exact admission, then run both 500-row memorization gates before any development normalization selection or CNN uplift comparison.
+
+
+### E-20261002-AI-521 — dated pre-result camera-conformance amendment and exact shard allowlist
+
+- Amendment date: 2026-10-02, before complete campaign admission, training, development metrics, normalization selection, or model results.
+- Stage/lane: S2/S3 AI/model synthetic render governance; no arm-lane or integration-gate status changed.
+- Governing frozen fixture: `software/ai/sim/evidence/residual_obstruction_successor_v4_2.json`, file SHA-256 `26eb0de03e7865711273802abd1ddc518f066e5fc0aa0f0d81a6c71f683d34e5`, canonical bundle SHA-256 `e7c6b614a00e4f6b550e0fe00419758e40a6d779d825b92933f425342eda38c2`.
+- Amendment scope: the frozen fixture and camera bounds did **not** change. Commit `3eff71ec2162edd56f9d3998fc043f60f6b75c5a` corrected the renderer implementation to conform to the already-frozen per-axis position `[3,3,1.5]` mm and rotation `[0.8,0.8,1.0]` degree bounds. This correction occurred before any development score or model result was observed. E-519 preserves the invalid pre-correction output and the corrected smoke; E-520 preserves the early complete-shard review.
+- Exact final-admission identity contract: the hardened finalizer constructs exactly 38 paths from the frozen 75-target grid. Only training target shards 0–3 and 4–7 use their independently admitted `camera03` paths; all remaining training shards and all development shards use fresh `camera04` paths. No directory scan or glob is used. `camera02` and failed development `camera03` paths cannot enter the list.
+- Hash binding: before invoking admission, every exact path must have a `PASS` renderer receipt whose `dataset_sha256` equals the manifest's canonical `dataset_sha256`; the manifest split, scene start/count, and target start/count must equal its expected identity. The finalizer records the manifest-file SHA-256 and renderer-receipt SHA-256 for all 38 identities in `exact-shard-allowlist-camera04.json`. Ordinary admission then independently validates the fixture binding, canonical manifest hash, observation IDs, duplicate exclusion, reference/camera consistency, every observation/reference image byte count and SHA-256, frozen overlap bounds, and frozen camera bounds.
+- Running finalizer launch: external PID `58804`, bound to queue PIDs `37696` and `62640`; launch receipt `C:\IsaacSim\evidence\v4-2-campaign\finalizer-camera04-hardened-launch.json`. The finalizer cannot emit `PASS` unless both queue receipts pass, all exact bindings pass, and complete admission succeeds.
+- Hardware-write count: 0.
+- Physical-movement count: 0.
+- Physics-step count: 0; only zero-delta synthetic captures run.
+- Limitations: the allowlist hashes are generated only after all shards finish, so this entry documents the enforced procedure rather than claiming campaign admission. Synthetic admission cannot establish sim-to-real transfer, physical calibration, or deployment qualification. Evaluation remains absent and unopened.
+- Next dependency: wait for both render queues, preserve the exact allowlist and complete-admission receipts, and require campaign-admitted `PASS` before either memorization gate starts.
