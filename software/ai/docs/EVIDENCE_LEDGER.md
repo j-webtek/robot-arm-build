@@ -9061,3 +9061,23 @@ rewriting history. New entries must use a unique evidence ID.
 - Limitations: this smoke validates one scene and four key shapes, not every target or all scenes. It is synthetic geometry evidence and provides no model, camera, localization, projection/dilation, collision, contact, deployment, or physical qualification. It contains no controller command, joint/PWM/serial/Waveshare field, motion policy, permit, transport field, or physical authority.
 - Supersedes: only the foreign-object geometry implementation in E-503/E-505. Frozen campaign semantics, overlap ranges, model plan, and prior evidence remain unchanged.
 - Next dependency: resume bounded shards in new output directories with an orchestrator that treats the JSON status as authoritative, then require complete independent admission before training.
+
+
+### E-20261002-AI-507 — dimension-aware framing keeps wide targets inside the crop
+
+- Stage: S2/S3 fresh synthetic residual-obstruction rendering, camera-framing correction before corpus admission.
+- Lane: AI/model Isaac renderer only; no arm-lane or integration-gate status changed.
+- Claim commit: `14c3d2ff0cffd6bad1a7bb96194f6efa98c9348c`.
+- Implementation/evidence commit: `7361d84e45e9e4fb8af66ba0cdf87ff2761c111d`.
+- Change: target-local camera height is now `max(82 mm, 1.5 * max(safe width, safe height))`. Standard 14 mm keys retain the original 82 mm view; the 96 mm `SPACE` safe region uses 144 mm so the full region and margin fit the crop. The frozen focal length, aperture, target geometry, variants, and overlap bands are unchanged.
+- Exact corrected smoke command: `$out='C:\IsaacSim\artifacts\issue190\residual-v3-shard-036-039-camera-smoke'; $env:OMNI_KIT_ACCEPT_EULA='YES'; $env:CUDA_VISIBLE_DEVICES='0'; C:\IsaacSim\env_6_1_0\Scripts\python.exe software\integrations\isaac_sim\residual_obstruction_v3_isaac_probe.py --workspace . --fixture software\ai\sim\evidence\residual_obstruction_successor_v3.json --output-dir $out --scene-limit 1 --target-start 36 --target-count 4 --status-output C:\IsaacSim\evidence\residual-v3-shard-036-039-camera-smoke.status.json`.
+- Result: the preceding target 36–39 shard failed closed because `SPACE` centered-tool overlap was `1.0`, above the frozen `0.80` maximum. The camera smoke then produced all 192 observations with `SPACE` centered-tool overlap `0.7179487179` and foreign-object overlap `0.5192307692`. Standard targets remained at `0.75` tool overlap and `0.5425`–`0.5535714286` foreign-object overlap.
+- Artifact SHA-256 values: corrected renderer `89955c7da267a0bbe79c6ad3bebb4a760a4ced42443deff740314b094ced7220`; focused tests `1113cd9edf7a7c17b1bcb9b6f49d8ff328ed5791313581719f8df37d8d24cca1`; failed shard `failure.json` `36e50f4e30333e82bae1374253d62551019f9c0012459be320338a1e6f1a46bd`; corrected smoke manifest file `c57dccb1aa9927b776cc47426672afd2196504c58ad98a8005ebb3dfb8a72b48`; corrected smoke canonical dataset `8dc0ab8542b1f6de392d7b63952d967f6db8c8e38a3227fdece9df51e826b3ea`.
+- Validation result: all 281 AI tests passed with two expected Windows symlink skips; all 34 shared ingress/conformance tests passed; Ruff and repository governance checks passed. The implementation commit footprint remains 6,187 tracked files, 655,626,193 logical bytes, 4,890,152 governed duplicate bytes, and a 55,939,877-byte largest blob.
+- Preserved failed evidence: the target 36–39 failed directory and FAIL status remain external and are excluded. The queue was stopped after target 32–35 completed PASS; its just-started target 40–43 directory is incomplete, has no manifest, and is excluded. The failure was corrected through framing geometry, without widening a threshold or overlap range.
+- Hardware-write count: 0.
+- Physical-movement count: 0.
+- Physics-step count: 0; only zero-delta synthetic render captures ran.
+- Limitations: the corrected smoke covers one scene and four targets. It does not complete or admit the campaign and provides no trained model, camera qualification, localization qualification, measured projection/dilation, collision, contact, deployment, or physical qualification. It contains no controller command, joint/PWM/serial/Waveshare field, motion policy, permit, transport field, or physical authority.
+- Supersedes: only fixed-height target framing in prior renderer increments. Frozen model and admission policy remain unchanged.
+- Next dependency: resume the remaining target shards in fresh directories, independently verify the complete 43,200 observations, and require `campaign_admitted=true` before training.
