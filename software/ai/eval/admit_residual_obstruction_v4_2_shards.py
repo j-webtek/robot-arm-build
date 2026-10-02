@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import math
 from pathlib import Path
 import sys
 from typing import Any
@@ -57,6 +58,34 @@ def _validate_overlap(fixture: dict[str, Any], row: dict[str, Any]) -> None:
         raise ValueError(f"{variant} overlaps the safe region")
 
 
+def _validate_camera_contract(scene: dict[str, Any], row: dict[str, Any]) -> None:
+    for field in (
+        "camera_position_mm",
+        "camera_look_at_mm",
+        "camera_up_axis",
+        "camera_position_jitter_mm",
+        "camera_rotation_jitter_deg",
+    ):
+        values = row.get(field)
+        if not isinstance(values, list) or len(values) != 3 or not all(
+            isinstance(value, (int, float)) and math.isfinite(value) for value in values
+        ):
+            raise ValueError(f"invalid camera contract field: {field}")
+    for actual, limit in zip(
+        row["camera_position_jitter_mm"], scene["camera_pose_jitter_mm"], strict=True
+    ):
+        if abs(actual) > limit:
+            raise ValueError("camera position jitter exceeds frozen bound")
+    for actual, limit in zip(
+        row["camera_rotation_jitter_deg"], scene["camera_rotation_jitter_deg"], strict=True
+    ):
+        if abs(actual) > limit:
+            raise ValueError("camera rotation jitter exceeds frozen bound")
+    up_norm = math.sqrt(sum(value * value for value in row["camera_up_axis"]))
+    if not math.isclose(up_norm, 1.0, rel_tol=0.0, abs_tol=1e-9):
+        raise ValueError("camera up axis is not normalized")
+
+
 def admit(
     workspace: Path,
     fixture_path: Path,
@@ -84,7 +113,7 @@ def admit(
 
     observation_ids: set[str] = set()
     observation_hashes: set[str] = set()
-    reference_bindings: dict[str, tuple[str, int]] = {}
+    reference_bindings: dict[str, tuple[Any, ...]] = {}
     verified_by_split = {"training": 0, "development": 0}
     manifests: list[dict[str, Any]] = []
     for shard_path in shard_paths:
@@ -130,11 +159,22 @@ def admit(
             expected_reference = f"{row['scene_id']}:{row['device']}:{row['target_id']}"
             if row["reference_id"] != expected_reference:
                 raise ValueError("reference identity mismatch")
-            binding = (row["reference_rgb_sha256"], row["reference_rgb_bytes"])
+            camera_binding = tuple(
+                tuple(row[field])
+                for field in (
+                    "camera_position_mm",
+                    "camera_look_at_mm",
+                    "camera_up_axis",
+                    "camera_position_jitter_mm",
+                    "camera_rotation_jitter_deg",
+                )
+            )
+            binding = (row["reference_rgb_sha256"], row["reference_rgb_bytes"], camera_binding)
             previous = reference_bindings.setdefault(expected_reference, binding)
             if previous != binding:
                 raise ValueError("reference identity maps to inconsistent bytes")
             _validate_overlap(fixture, row)
+            _validate_camera_contract(scene, row)
         if len(local_ids) != manifest["observation_count"]:
             raise ValueError("shard observation count mismatch")
         observation_ids.update(local_ids)

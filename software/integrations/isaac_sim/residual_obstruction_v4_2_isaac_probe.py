@@ -10,6 +10,7 @@ import argparse
 from io import BytesIO
 import hashlib
 import json
+import math
 from pathlib import Path
 import random
 import sys
@@ -60,6 +61,46 @@ def edge_tool_geometry(width_mm: float, height_mm: float) -> tuple[float, float,
     if width_mm <= 0 or height_mm <= 0:
         raise ValueError("target dimensions must be positive")
     return width_mm * 0.15, width_mm * 0.45, height_mm
+
+
+def _rotate_vector(
+    vector: tuple[float, float, float], euler_deg: tuple[float, float, float]
+) -> tuple[float, float, float]:
+    x, y, z = vector
+    rx, ry, rz = (math.radians(value) for value in euler_deg)
+    cy, sy = math.cos(rx), math.sin(rx)
+    y, z = y * cy - z * sy, y * sy + z * cy
+    cx, sx = math.cos(ry), math.sin(ry)
+    x, z = x * cx + z * sx, -x * sx + z * cx
+    cx, sx = math.cos(rz), math.sin(rz)
+    x, y = x * cx - y * sx, x * sx + y * cx
+    return x, y, z
+
+
+def sample_camera_contract(
+    scene: dict[str, Any], target: Any, height_mm: float, rng: random.Random
+) -> dict[str, list[float]]:
+    position_limits = scene["camera_pose_jitter_mm"]
+    rotation_limits = scene["camera_rotation_jitter_deg"]
+    position_jitter = [rng.uniform(-limit, limit) for limit in position_limits]
+    rotation_jitter = [rng.uniform(-limit, limit) for limit in rotation_limits]
+    position = [
+        target.center.x + position_jitter[0],
+        target.center.y + position_jitter[1],
+        target.center.z + height_mm + position_jitter[2],
+    ]
+    nominal = [target.center.x - position[0], target.center.y - position[1], target.center.z - position[2]]
+    length = math.sqrt(sum(value * value for value in nominal))
+    forward = _rotate_vector(tuple(value / length for value in nominal), tuple(rotation_jitter))
+    up = _rotate_vector((0.0, 1.0, 0.0), tuple(rotation_jitter))
+    look_at = [position[index] + forward[index] * height_mm for index in range(3)]
+    return {
+        "camera_position_mm": position,
+        "camera_look_at_mm": look_at,
+        "camera_up_axis": list(up),
+        "camera_position_jitter_mm": position_jitter,
+        "camera_rotation_jitter_deg": rotation_jitter,
+    }
 
 
 def load_fixture(path: Path) -> tuple[dict[str, Any], bytes]:
@@ -312,18 +353,15 @@ def render(workspace: Path, fixture_path: Path, output_dir: Path, status_output:
             rgb_annotators = []
             semantic_annotators = []
             depth_annotators = []
+            camera_contracts = []
             for target_index, target in selected_targets:
                 left, front, right, rear = target.safe_rectangle_board_mm
                 camera_height = camera_height_mm(right - left, rear - front)
-                jitter_x = rng.uniform(-6.0, 6.0)
-                jitter_y = rng.uniform(-6.0, 6.0)
+                camera_contract = sample_camera_contract(scene, target, camera_height, rng)
                 camera = rep.functional.create.camera(
-                    position=((target.center.x + jitter_x) / 1000.0,
-                              (target.center.y + jitter_y) / 1000.0,
-                              (target.center.z + camera_height) / 1000.0),
-                    look_at=(target.center.x / 1000.0, target.center.y / 1000.0,
-                             target.center.z / 1000.0),
-                    look_at_up_axis=(0.0, 1.0, 0.0),
+                    position=tuple(value / 1000.0 for value in camera_contract["camera_position_mm"]),
+                    look_at=tuple(value / 1000.0 for value in camera_contract["camera_look_at_mm"]),
+                    look_at_up_axis=tuple(camera_contract["camera_up_axis"]),
                     focal_length=24.0, horizontal_aperture=20.0,
                     clipping_range=(0.01, 1.0),
                     name=f"Camera_{scene_index:02d}_{target_index:03d}",
@@ -340,6 +378,7 @@ def render(workspace: Path, fixture_path: Path, output_dir: Path, status_output:
                 rgb_annotators.append(rgb)
                 semantic_annotators.append(semantic)
                 depth_annotators.append(depth)
+                camera_contracts.append(camera_contract)
 
             obstruction_prims: list[Any] = []
             adjacent_left_prims: list[Any] = []
@@ -400,6 +439,7 @@ def render(workspace: Path, fixture_path: Path, output_dir: Path, status_output:
                     "reference_rgb_bytes": len(reference_jpeg),
                     "reference_light_intensity": reference_intensity,
                     "reference_light_color": list(reference_color),
+                    **camera_contracts[local_index],
                 }
 
             for appearance_index, appearance in enumerate(row for row in fixture["appearances"] if row["split"] == split):

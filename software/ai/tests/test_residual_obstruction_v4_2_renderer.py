@@ -35,3 +35,34 @@ def test_variant_overlap_admission_is_fail_closed() -> None:
         MODULE.admit_variant_measurement(fixture, "clear", 0.01, 0.0)
     with pytest.raises(RuntimeError, match="distractor overlaps"):
         MODULE.admit_variant_measurement(fixture, "adjacent_right", 0.0, 0.01)
+
+
+def test_camera_contract_samples_every_declared_axis_deterministically() -> None:
+    fixture, _ = MODULE.load_fixture(FIXTURE)
+    scene = next(row for row in fixture["base_scenes"] if row["split"] == "training")
+
+    class Center:
+        x = 10.0
+        y = 20.0
+        z = 30.0
+
+    class Target:
+        center = Center()
+
+    first = MODULE.sample_camera_contract(scene, Target(), 82.0, MODULE.random.Random(91))
+    second = MODULE.sample_camera_contract(scene, Target(), 82.0, MODULE.random.Random(91))
+    assert first == second
+    assert any(value != 0.0 for value in first["camera_position_jitter_mm"])
+    assert any(value != 0.0 for value in first["camera_rotation_jitter_deg"])
+    assert all(
+        abs(value) <= limit
+        for value, limit in zip(
+            first["camera_position_jitter_mm"], scene["camera_pose_jitter_mm"], strict=True
+        )
+    )
+    assert all(
+        abs(value) <= limit
+        for value, limit in zip(
+            first["camera_rotation_jitter_deg"], scene["camera_rotation_jitter_deg"], strict=True
+        )
+    )

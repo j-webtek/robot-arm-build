@@ -195,7 +195,8 @@
         "software/ai/sim/evidence/residual_obstruction_successor_v4_1.json",
         "software/ai/eval/residual_obstruction_v4_1_smoke_admission_v1.json",
         "software/ai/sim/evidence/residual_obstruction_successor_v4_2.json",
-        "software/ai/eval/residual_obstruction_v4_2_renderer_smoke_v1.json"
+        "software/ai/eval/residual_obstruction_v4_2_renderer_smoke_v1.json",
+        "software/ai/eval/residual_obstruction_v4_2_camera_contract_smoke_v1.json"
       ],
       "current_result": "V4.1 smoke implementation is frozen: it retains paired references, compares unsafe independent self-crop normalization with reference-context normalization, and fail-closes stale or mismatched commissioned references.",
       "limitations": [
@@ -468,5 +469,5 @@
   "controller_authority": false,
   "hardware_writes": 0,
   "physical_movements": 0,
-  "registry_sha256": "71586b863312b39fb1896ea75299dea5fece19dcc40fc59bfcd30e5bae9c9acf"
+  "registry_sha256": "6c35379bc4f7d77fc810565d1d5e1a00d9dd688756a98e99d0efe367b18aa25c"
 }

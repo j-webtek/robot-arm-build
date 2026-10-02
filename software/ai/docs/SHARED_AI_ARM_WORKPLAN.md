@@ -1752,6 +1752,15 @@ references reconcile with the frozen fixture and overlap bounds. Admission is
 correctly `PARTIAL`, with 43,008 training and 28,800 development observations
 missing, so it cannot unlock training. Evaluation remains absent.
 
+An early visual and contract audit stopped the first full render attempt before
+development admission: the renderer used ±6 mm X/Y camera jitter while the
+fixture freezes ±3 mm and omitted explicit Z/rotation sampling. The completed
+2,304-row shard and two partial directories are retained but excluded. Visual
+review confirmed all reference/observation lighting pairs differ and cables,
+edge/center tools, foreign objects, glare, defocus, motion blur, and compression
+affect the intended pixels. The corrected renderer samples and records all three
+position and rotation axes; a fresh 192-row smoke passes independent admission.
+
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
 | AI/model | S2/S3 residual v4.2 dual-normalization campaign | freeze a training-free difference baseline, fifth-percentile target-AUC normalization selector with deterministic tie break, and required CNN uplift before rendering; then render and independently admit disjoint training/development reference pairs while evaluation remains absent | `issue/190-isaac-sim-host` / baseline `120e08e231d059d04a1af1776f24c595676555a5` | ACTIVE — contract revision, campaign render, admission, memorization, and development evidence are not yet complete; no evaluation access, arm-lane status, integration gate, hardware write, physical movement, or execution authority change |
