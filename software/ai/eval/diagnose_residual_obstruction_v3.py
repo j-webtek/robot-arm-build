@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 from pathlib import Path
 import struct
 import sys
@@ -49,7 +50,13 @@ def _build_model(torch: Any, channels: list[int]) -> Any:
 
 
 def load_model(path: Path, expected_sha256: str) -> tuple[Any, dict[str, Any]]:
+    os.environ.setdefault("CUBLAS_WORKSPACE_CONFIG", ":4096:8")
     import torch
+
+    torch.use_deterministic_algorithms(True)
+    torch.backends.cudnn.benchmark = False
+    torch.backends.cuda.matmul.allow_tf32 = False
+    torch.backends.cudnn.allow_tf32 = False
 
     payload = path.resolve(strict=True).read_bytes()
     if sha256_bytes(payload) != expected_sha256:
