@@ -103,7 +103,8 @@
         "software/ai/schemas/residual_obstruction_v3_training_audit_v1.schema.json",
         "software/ai/schemas/residual_obstruction_v3_training_visual_review_v1.schema.json",
         "software/ai/sim/build_residual_obstruction_successor_v4.py",
-        "software/ai/schemas/residual_obstruction_successor_fixture_v4.schema.json"
+        "software/ai/schemas/residual_obstruction_successor_fixture_v4.schema.json",
+        "software/ai/eval/diagnose_residual_v3_memorization.py"
       ],
       "test_paths": [
         "software/ai/tests/test_capture_binding.py",
@@ -133,7 +134,8 @@
         "software/ai/tests/test_residual_obstruction_v3_training.py",
         "software/ai/tests/test_residual_obstruction_v3_diagnostic.py",
         "software/ai/tests/test_residual_obstruction_v3_training_audit.py",
-        "software/ai/tests/test_residual_obstruction_successor_v4.py"
+        "software/ai/tests/test_residual_obstruction_successor_v4.py",
+        "software/ai/tests/test_residual_v3_memorization_diagnostic.py"
       ],
       "documentation_paths": [
         "software/ai/docs/MODEL_TO_ARM_TRANSLATION_ASSURANCE.md",
@@ -170,7 +172,7 @@
         "software/ai/eval/residual_obstruction_v3_training_visual_review_v1.json",
         "software/ai/sim/evidence/residual_obstruction_successor_v4.json"
       ],
-      "current_result": "Residual v4 reference-comparison design is frozen before rendering: clear commissioned-pose references, spatial RGB differences, training-only per-target normalization, disjoint scene and lighting identities, and memorization plus per-target development gates.",
+      "current_result": "Residual v4.1 correction is active. A training-only diagnostic now compares the legacy global-pooling memorization control with a spatial 6x6 control and checks opposite-label pixel similarity before any renderer work.",
       "limitations": [
         "No commissioned projection renderer, measured dilation artifact, or physical deployment qualification is installed.",
         "The geometry-first replay uses the same Isaac semantic mask that generated the synthetic label and therefore cannot estimate real projection error.",
@@ -191,7 +193,7 @@
         "Residual v3 training and development reuse the same four appearance identities; only base-scene and observation identities are disjoint.",
         "The same CNN architecture reached only 0.834 accuracy and 0.4417 loss on a balanced 500-row memorization control, so its representation or capacity is inadequate for exact example separation."
       ],
-      "next_gate": "Implement a v4 Isaac smoke renderer and independent pair admission; render only training and development identities, pass the frozen memorization gate before full training, and keep evaluation pixels unrendered.",
+      "next_gate": "Run and retain the frozen memorization diagnostic, then use its result with an explicit gate-power receipt to freeze v4.1 before rendering.",
       "model_motion_batch_boundary": true,
       "controller_authority": false,
       "hardware_writes": 0,
@@ -441,5 +443,5 @@
   "controller_authority": false,
   "hardware_writes": 0,
   "physical_movements": 0,
-  "registry_sha256": "c16e35f8c7586879d3d6cdc27bb97301be3948d52291f24704956d9fbdb52930"
+  "registry_sha256": "a44ddbd5aaa4b1a2630646180aea2d8be0971d5e9682fa3d78d6a8c16276e8f1"
 }
