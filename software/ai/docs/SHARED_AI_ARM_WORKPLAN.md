@@ -1386,6 +1386,35 @@ next increment must generate the exact declared crops, independently inventory
 them, train the declared model, and apply the target-cluster development gate
 without opening evaluation.
 
+### First residual-obstruction development result
+
+The frozen campaign was executed without changing its variants, splits, model,
+training parameters, threshold grid, or gates. Two independent materializations
+produced the same 1,200-file inventory and dataset SHA-256
+`a6188e5ae191e2bfc71dae37ee26f174d5a056d3d4958ae7c2f472ef9bff2830`.
+Independent verification reopened every declared file, checked its hash, size,
+metadata, dimensions, containment, and exact no-extra-file inventory. The crop
+trees and model weights remain external artifacts; the strict development
+scorecard is retained in the repository.
+
+Two deterministic CPU training runs produced identical 95,797-byte model
+artifacts with SHA-256
+`90d32245902a20653e829627772d78604bd8c11880bc5be1c54bf14343831946`.
+The candidate failed the frozen development gate, so no threshold was selected.
+At threshold `0.75`, it misses 126 of 450 obstruction rows (`28.0%`) and falsely
+stops 40 of 150 visible rows (`26.67%`); target-cluster upper bounds are
+`32.67%` and `36.0%`. At `0.80`, false stops fall to 2 of 150 (`1.33%`, 4.0%
+upper bound), while misses rise to 363 of 450 (`80.67%`, 85.56% upper bound).
+No threshold in the declared grid satisfies both the 2% missed-obstruction and
+10% visible-false-stop limits.
+
+This is useful failed evidence: the first model does not transfer obstruction
+separation from `hover_t` to `hover_e`, and threshold adjustment cannot repair
+the overlap. The checkpoint remains rejected; evaluation stays unopened. The
+next increment should diagnose the consumed development probabilities by
+variant and target, then predeclare a fresh pose- and appearance-diverse
+successor rather than modifying this candidate after observing its result.
+
 ### Geometry-first occlusion revision after v14
 
 The next campaign treats known robot self-occlusion as a deterministic
@@ -1537,7 +1566,7 @@ authenticity remain external owner responsibilities.
 
 | Worker/lane | Stage | Paths expected to change | Branch/commit | State |
 |---|---|---|---|---|
-| AI/model | S2/S3 residual-obstruction crop materialization and development gate | materialize only the frozen 1,200 crop specifications; exact independent inventory; train only `target_crop_residual_cnn_v1` with the frozen seed and hyperparameters; target-cluster development scoring; preserve failures; evaluation remains empty and no authority is created | `issue/190-isaac-sim-host` / claim pending | ACTIVE — execute the predeclared E-495 design without changing variants, splits, model, threshold grid, or gates after observing results; no arm-lane status, integration gate, hardware write, physical movement, or execution authority changes |
+| AI/model | S2/S3 residual-obstruction crop materialization and development gate | materialize only the frozen 1,200 crop specifications; exact independent inventory; train only `target_crop_residual_cnn_v1` with the frozen seed and hyperparameters; target-cluster development scoring; preserve failures; evaluation remains empty and no authority is created | `issue/190-isaac-sim-host` / `cf7aa8613876ae1b4c70f73b8322cf8007b4367e` | COMPLETE — two crop builds, inventories, models, and scorecards are byte identical; no threshold passes both frozen development limits, so the candidate is rejected and no evaluation access, qualification, arm-lane status, integration gate, hardware write, physical movement, or execution authority changed |
 | AI/model | S2/S3 parked residual-obstruction pretraining freeze | deterministic synthetic crop-campaign fixture from retained fixed-camera practice bytes; target-balanced clear/distractor/cable/tool/hand/foreign-object/glare/degradation cases; pose-separated train/development identities; frozen small offline model plan and asymmetric development gates; no evaluation source, training, render, or authority | `issue/190-isaac-sim-host` / `7e0509d0828a557c04a38aef47fc51c49dea70c8` | COMPLETE — 1,200 procedural crop specifications cover 75 targets with pose-separated train/development identities and a frozen offline model/gate plan; no crop images, model, training, development metric, evaluation access, qualification, arm-lane status, integration gate, hardware write, physical movement, or execution authority changed |
 | AI/model | S2/S3 v16 geometry-first fusion replay | independently recompute development target overlap from retained Isaac robot-mask atlases, reconcile frozen labels and learned decisions, conservatively replay geometry/learned OR fusion with explicit ambiguity accounting, strict report/schema/tests, registry, shared workplan, and evidence ledger | `issue/190-isaac-sim-host` / `a576f6658acf7ccab6da067fcce4f6ee152ac962` | COMPLETE — all 4,800 pose-target overlaps and 14,400 rows reconcile; fused misses are zero at all 17 offsets and worst strict false stops are 881, but the mask also generated the label, no measured dilation or projection qualification exists, v16 remains rejected, and no evaluation access, arm-lane status, integration gate, hardware write, physical movement, or execution authority changed |
 | AI/model | S2/S3 v16 grouped-neighborhood development diagnostic | read-only attribution of the consumed v16 development failures by source block, pose, target, lighting, and offset; strict schema, deterministic aggregate report, tests, registry, shared workplan, and evidence ledger | `issue/190-isaac-sim-host` / `bc880ad9087d18b99becf7c4db765d8b77edb026` | COMPLETE — 348 misses span 28 poses, 46 pose-target pairs, eight source blocks, 13 targets, and all three lighting identities; the dominant pose-target contributes only 11.78%, so v16 remains rejected and no threshold, evaluation access, promotion, arm-lane status, integration gate, hardware write, physical movement, or execution authority changed |
