@@ -90,7 +90,8 @@
         "software/ai/eval/diagnose_residual_obstruction_v2.py",
         "software/ai/schemas/residual_obstruction_v2_diagnostic_v1.schema.json",
         "software/ai/sim/build_residual_obstruction_successor_v3.py",
-        "software/ai/schemas/residual_obstruction_successor_fixture_v3.schema.json"
+        "software/ai/schemas/residual_obstruction_successor_fixture_v3.schema.json",
+        "software/ai/schemas/residual_obstruction_v3_renderer_smoke_v1.schema.json"
       ],
       "test_paths": [
         "software/ai/tests/test_capture_binding.py",
@@ -114,7 +115,8 @@
         "software/ai/tests/test_residual_obstruction_v2_renderer.py",
         "software/ai/tests/test_residual_obstruction_v2_training.py",
         "software/ai/tests/test_residual_obstruction_v2_diagnostic.py",
-        "software/ai/tests/test_residual_obstruction_successor_v3.py"
+        "software/ai/tests/test_residual_obstruction_successor_v3.py",
+        "software/ai/tests/test_residual_obstruction_v3_renderer_smoke.py"
       ],
       "documentation_paths": [
         "software/ai/docs/MODEL_TO_ARM_TRANSLATION_ASSURANCE.md",
@@ -139,9 +141,10 @@
         "software/ai/sim/evidence/residual_obstruction_v2_render_receipt.json",
         "software/ai/eval/residual_obstruction_development_v2.json",
         "software/ai/eval/residual_obstruction_v2_diagnostic_v1.json",
-        "software/ai/sim/evidence/residual_obstruction_successor_v3.json"
+        "software/ai/sim/evidence/residual_obstruction_successor_v3.json",
+        "software/ai/eval/residual_obstruction_v3_renderer_smoke_v1.json"
       ],
-      "current_result": "Geometry-first fusion remains primary for known self-occlusion. Residual v2 is rejected. Residual v3 is predeclared with disjoint fresh Isaac base scenes, 3D obstruction variation, paired appearance consistency, and positive per-target development margins; no v3 image exists yet.",
+      "current_result": "Residual v3 renderer smoke passes 192 unique target-local Isaac observations after bounded target sharding and measured-overlap admission. The 43,200-observation campaign remains incomplete and training remains prohibited.",
       "limitations": [
         "No commissioned projection renderer, measured dilation artifact, or physical deployment qualification is installed.",
         "The geometry-first replay uses the same Isaac semantic mask that generated the synthetic label and therefore cannot estimate real projection error.",
@@ -155,9 +158,10 @@
         "Residual successor v2 is rendered from one simplified base scene through deterministic pixel-domain transforms; its measured result is synthetic development failure, not physical realism or qualification.",
         "Residual v2 training reduced loss but failed the 2% missed-obstruction and 6% residual-false-stop point, whole-view cluster, and worst-appearance gates; its model is rejected.",
         "The v2 diagnostic reuses consumed synthetic development evidence and may guide a fresh design but cannot evaluate or select its successor.",
-        "Residual v3 is a synthetic predeclaration only; its independent Isaac base scenes and 3D obstruction observations have not yet been rendered or admitted."
+        "Residual v3 is a synthetic predeclaration only; its independent Isaac base scenes and 3D obstruction observations have not yet been rendered or admitted.",
+        "Residual v3 renderer smoke covers one of twelve scenes and four of seventy-five targets; it is not a complete admitted corpus or model evidence."
       ],
-      "next_gate": "Implement the exact residual v3 Isaac renderer and admission receipt. Generate fresh 3D full frames for all frozen base scenes; reject source-image reuse, split leakage, duplicate bytes, or geometry/material/depth/overlap drift before training.",
+      "next_gate": "Render all frozen v3 scenes in bounded target shards, then independently merge and verify exact coverage, uniqueness, overlap, depth, split, and fixture bindings before training.",
       "model_motion_batch_boundary": true,
       "controller_authority": false,
       "hardware_writes": 0,
@@ -407,5 +411,5 @@
   "controller_authority": false,
   "hardware_writes": 0,
   "physical_movements": 0,
-  "registry_sha256": "acf2259447c5093b1987309025428727f447a3ae97686cc5919fcd3257972591"
+  "registry_sha256": "f00c7c3e9cb1391b2c083e726a5906d2b32c18bc2ac23f5dd7acd2e2515fd0de"
 }
