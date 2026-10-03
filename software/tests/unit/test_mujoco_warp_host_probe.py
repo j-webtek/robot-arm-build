@@ -74,6 +74,51 @@ GAP_SPEC = importlib.util.spec_from_file_location(
 GAP_PROBE = importlib.util.module_from_spec(GAP_SPEC)
 assert GAP_SPEC.loader is not None
 GAP_SPEC.loader.exec_module(GAP_PROBE)
+UNCERTAINTY_SPEC = importlib.util.spec_from_file_location(
+    "mujoco_warp_nominal_target_uncertainty_probe",
+    ROOT / "software/integrations/mujoco_warp/nominal_target_uncertainty_probe.py",
+)
+UNCERTAINTY_PROBE = importlib.util.module_from_spec(UNCERTAINTY_SPEC)
+assert UNCERTAINTY_SPEC.loader is not None
+UNCERTAINTY_SPEC.loader.exec_module(UNCERTAINTY_PROBE)
+
+
+def test_nominal_target_uncertainty_requires_exact_zero_authority_pose_bundle():
+    poses = [
+        {"target_id": f"T{index:02d}"}
+        for index in range(UNCERTAINTY_PROBE.TARGET_COUNT)
+    ]
+    bundle = {
+        "schema": "rocell.mujoco_warp_nominal_target_pose_bundle.v1",
+        "status": "PASS_EXPLORATORY_POSE_SOURCE",
+        "scope": "SYNTHETIC_UNMEASURED_RANK1_KEYBOARD_CONTACTS_ONLY",
+        "target_count": UNCERTAINTY_PROBE.TARGET_COUNT,
+        "poses": poses,
+        "hardware_access": False,
+        "hardware_write_count": 0,
+        "physical_movement_count": 0,
+        "physical_authority": False,
+    }
+    bundle["receipt_sha256"] = UNCERTAINTY_PROBE.hashlib.sha256(
+        UNCERTAINTY_PROBE.canonical_bytes(bundle)
+    ).hexdigest()
+    UNCERTAINTY_PROBE._validate_pose_bundle(bundle)
+    bundle["physical_authority"] = True
+    unsigned = {key: value for key, value in bundle.items() if key != "receipt_sha256"}
+    bundle["receipt_sha256"] = UNCERTAINTY_PROBE.hashlib.sha256(
+        UNCERTAINTY_PROBE.canonical_bytes(unsigned)
+    ).hexdigest()
+    try:
+        UNCERTAINTY_PROBE._validate_pose_bundle(bundle)
+    except ValueError as exc:
+        assert "authority" in str(exc)
+    else:
+        raise AssertionError("authority-bearing pose bundle was accepted")
+
+
+def test_nominal_target_uncertainty_zero_miss_bound_requires_large_sample():
+    assert UNCERTAINTY_PROBE._wilson_upper(0, 4096) < 0.001
+    assert UNCERTAINTY_PROBE._wilson_upper(0, 2048) > 0.001
 
 
 def fake_schedule_gap_inputs():

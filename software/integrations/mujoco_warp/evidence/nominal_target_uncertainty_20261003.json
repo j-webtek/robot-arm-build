@@ -1,0 +1,48 @@
+{
+  "cross_device_numerical_content_equal": true,
+  "cross_device_numerical_content_sha256": "f2de32761971946a155e8f347918309f43def4b175b639df5d16dcffea0fcc10",
+  "decision": "PASS_EXPLORATORY_SENSITIVITY",
+  "external_artifact_sha256": {
+    "cuda0": "24f3c5f1b5a4d6560811ae31abe26837840c94b400c8d028a718636f1e25f768",
+    "cuda1": "b33f01e85ce2dee4deb9ac2dd94d32e27da0e86d8acd55b68d2ae91bc4198132",
+    "default_placement_100mm_tool_blocked_6_of_46": "07e6ff43c6b1d2b7a17994180eb181d7c67880ba8d7073afb241cae8ea6bf167",
+    "initial_cuda0_censored_semantics": "c668bccdafcd5944b68807cb0f2bfb7817132fa69bcdf958f01500302998d7b3",
+    "rank1_target_pose_bundle": "388ca38f7d86569381c1e1c4abd25b129a571310f8fc9712529a61006a2f7385"
+  },
+  "hardware_write_count": 0,
+  "jacobian_sanity": {
+    "empirical_to_linear_rms_ratio_maximum": 1.0162211860317691,
+    "empirical_to_linear_rms_ratio_minimum": 0.9833707400406609,
+    "frozen_acceptance_range": [0.8, 1.2],
+    "passed_all_46_targets": true,
+    "xy_jacobian_condition_number_maximum": 1.6884256767747878,
+    "xy_jacobian_condition_number_minimum": 1.1128608088722547
+  },
+  "physical_authority": false,
+  "physical_movement_count": 0,
+  "provisional_synthetic_threshold_search": {
+    "approach_direction_backlash": {
+      "largest_tested_passing_level_rad": 0.008,
+      "threshold_identified_within_grid": false
+    },
+    "random_joint_noise": {
+      "first_tested_failing_level_rad": 0.004,
+      "largest_tested_passing_level_rad": 0.002,
+      "threshold_identified_within_grid": true
+    },
+    "systematic_calibration_offset": {
+      "largest_tested_passing_level_rad": 0.008,
+      "threshold_identified_within_grid": false
+    }
+  },
+  "sample_design": {
+    "error_sources": 3,
+    "levels_rad": [0.00025, 0.0005, 0.001, 0.002, 0.004, 0.008],
+    "target_count": 46,
+    "total_forward_kinematic_worlds": 3391488,
+    "worlds_per_target_per_level": 4096
+  },
+  "schema": "rocell.mujoco_warp_nominal_target_uncertainty_summary.v1",
+  "scope": "SYNTHETIC_UNMEASURED_NOMINAL_KEYCAP_POINT_TOOL_ONLY",
+  "status": "PASS"
+}
