@@ -134,7 +134,9 @@
         "software/ai/sim/build_residual_obstruction_successor_v5.py",
         "software/ai/schemas/residual_obstruction_successor_fixture_v5.schema.json",
         "software/ai/eval/amend_residual_v5_pre_render.py",
-        "software/ai/schemas/residual_obstruction_v5_1_pre_render_v1.schema.json"
+        "software/ai/schemas/residual_obstruction_v5_1_pre_render_v1.schema.json",
+        "software/ai/eval/analyze_residual_v5_power_attribution.py",
+        "software/ai/schemas/residual_obstruction_v5_2_power_attribution_v1.schema.json"
       ],
       "test_paths": [
         "software/ai/tests/test_capture_binding.py",
@@ -180,7 +182,8 @@
         "software/ai/tests/test_physical_charuco_probe.py",
         "software/ai/tests/test_b0477_commissioning_amendment.py",
         "software/ai/tests/test_residual_obstruction_successor_v5.py",
-        "software/ai/tests/test_residual_obstruction_v5_1_pre_render.py"
+        "software/ai/tests/test_residual_obstruction_v5_1_pre_render.py",
+        "software/ai/tests/test_residual_obstruction_v5_2_power_attribution.py"
       ],
       "documentation_paths": [
         "software/ai/docs/MODEL_TO_ARM_TRANSLATION_ASSURANCE.md",
@@ -234,9 +237,10 @@
         "software/ai/eval/physical_charuco_probe_blocked_v1.json",
         "software/ai/eval/b0477_commissioning_amendment_v1.json",
         "software/ai/sim/evidence/residual_obstruction_successor_v5.json",
-        "software/ai/eval/residual_obstruction_v5_1_pre_render_v1.json"
+        "software/ai/eval/residual_obstruction_v5_1_pre_render_v1.json",
+        "software/ai/eval/residual_obstruction_v5_2_power_attribution_v1.json"
       ],
-      "current_result": "Residual v5.1 preserves v5, restores the 6% visible false-stop ceiling, retains the 2% pooled all-obstruction miss ceiling, marks synthetic lighting provisional, and blocks the eight-scene/21,600-row development render as underpowered.",
+      "current_result": "Residual v5.2 shows that the eight-scene plan is limited by every-target AUC under moderate correlation, all three modeled gates under pessimistic correlation, and four additional unpowered family/q05 gates; a 24-target balanced rotation cuts modeled observations 68% but remains blocked.",
       "limitations": [
         "No commissioned projection renderer, measured dilation artifact, or physical deployment qualification is installed.",
         "The geometry-first replay uses the same Isaac semantic mask that generated the synthetic label and therefore cannot estimate real projection error.",
@@ -265,9 +269,10 @@
         "No camera is connected, no physical image was captured, and the retained 5x7 tooling board does not satisfy the production 12x9 ChArUco contract.",
         "The preserved blocked probe incorrectly recorded 4 fps; the corrective amendment binds 9 fps from three repository sources, but received-unit mode and all physical settings remain unverified.",
         "V5 is a synthetic research predeclaration created while physical inputs are blocked; it contains no images, checkpoint, threshold, runtime lighting envelope, real-camera transfer evidence, or deployment selection.",
-        "The v5.1 power result is a planning approximation; its 256-scene/691,200-row worst-case tested size is not render authorization, physical qualification, or a hardware-remedy selection."
+        "The v5.1 power result is a planning approximation; its 256-scene/691,200-row worst-case tested size is not render authorization, physical qualification, or a hardware-remedy selection.",
+        "V5.2 powers only pooled miss, visible false-stop, and every-target AUC; cable-family, dark-cable, q05 AUC, and q05 margin effect sizes remain undeclared, so no complete render design exists."
       ],
-      "next_gate": "Revise the v5 campaign fixture with a predeclared, compute-bounded scene-diversity and power design before any render; keep evaluation unrendered and require the physical pilot before hardware remedy selection.",
+      "next_gate": "Declare realistic alternative effect sizes for every unmodeled gate, choose development-selection versus evaluation-proof responsibilities, and freeze an exact balanced rotation only after complete power analysis; render nothing before then.",
       "model_motion_batch_boundary": true,
       "controller_authority": false,
       "hardware_writes": 0,
@@ -517,5 +522,5 @@
   "controller_authority": false,
   "hardware_writes": 0,
   "physical_movements": 0,
-  "registry_sha256": "ecf378cd8bb1b934b70f788630b3d1a3c2ac2fdbb36a5f1148c8e509953ed047"
+  "registry_sha256": "83642f47a30890b56815a835efefccd71f89d48db51195c2e567972118cdcdcc"
 }
