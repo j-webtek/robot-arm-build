@@ -189,6 +189,7 @@ def fake_four_backend_receipts():
 
 
 def test_four_backend_admission_accepts_exact_full_sample_receipts():
+    assert len(FOUR_PROBE.EXPECTED_MW2F_FILE_SHA256) == 64
     isaac, mw2f = fake_four_backend_receipts()
     result = FOUR_PROBE.admit(isaac, mw2f)
     assert result["status"] == "PASS_KINEMATIC_ONLY"
