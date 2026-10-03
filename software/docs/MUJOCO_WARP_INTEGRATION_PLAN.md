@@ -224,6 +224,17 @@ RoCell, Isaac, standard MuJoCo, and MuJoCo Warp.
   tolerance;
 - any unknown property blocks its associated dynamic or contact claim.
 
+**MW1 result (2026-10-03): `PASS_KINEMATIC_ONLY`.** Direct URDF load failed
+because the governed projection intentionally omits inertia. A hash-bound
+conversion therefore adds explicit placeholder inertia solely to compile FK;
+dynamics and contact remain blocked. All six movable joints and eight non-world
+links map exactly once. Across `zero`, `home`, and `ready`, standard MuJoCo
+matches the governed RoCell hand point within `1.17e-13` mm and `2.96e-6`
+degrees; MuJoCo Warp matches standard MuJoCo within `4.24e-5` mm and
+`2.42e-6` degrees. The retained Isaac comparison also remains inside its frozen
+limits. Evidence is `E-20261003-AI-562`. MW2 may test batch throughput, but MW1
+does not authorize dynamics, collision, contact, rendering, or training use.
+
 ### MW2 — batch throughput, overflow, and repeatability
 
 **Objective:** determine whether MuJoCo Warp provides enough acceleration to
