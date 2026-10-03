@@ -29,7 +29,7 @@ the [evidence ledger](software/ai/docs/EVIDENCE_LEDGER.md) for detailed records.
 
 | Stage | Objective | Completion evidence |
 | --- | --- | --- |
-| 1. Governed source preview | Make the research source understandable, reviewable, and reproducible without implying physical qualification | Cleared AI evidence gates [#56](https://github.com/j-webtek/tactevra/issues/56) and [#61](https://github.com/j-webtek/tactevra/issues/61) remain preserved; active blockers [#88](https://github.com/j-webtek/tactevra/issues/88) and [#167](https://github.com/j-webtek/tactevra/issues/167) are resolved; an exact candidate is separately reviewed and approved |
+| 1. Governed source preview | Make the research source understandable, reviewable, and reproducible without implying physical qualification | Cleared gates [#56](https://github.com/j-webtek/tactevra/issues/56), [#61](https://github.com/j-webtek/tactevra/issues/61), [#88](https://github.com/j-webtek/tactevra/issues/88), and [#167](https://github.com/j-webtek/tactevra/issues/167) remain preserved; an exact candidate is separately reviewed and approved |
 | 2. Measured workcell | Freeze the final camera and physical layout, then replace nominal camera, board, robot, device, and tool assumptions with bound measurements | Four retained camera/support originals, calibrated transform identities, real-camera held-out uncertainty, installed collision evidence, and fresh observation receipts pass the operational-readiness gate; combined error fits inside each applicable target safe region |
 | 3. One verified physical action | Execute one bounded keyboard action and independently confirm its result | Intended target, admitted plan, controller receipts, observed motion, and device-level outcome are linked in one reviewable record |
 | 4. Reliable bounded sequences | Extend one verified action to short keyboard sequences without weakening rejection or recovery rules | Held-out sequences report target accuracy, abstention, timing, recovery, and independently verified outcomes |
@@ -41,6 +41,7 @@ the [evidence ledger](software/ai/docs/EVIDENCE_LEDGER.md) for detailed records.
 | --- | --- | --- |
 | AI and perception | Produce typed intent, scene-quality evidence, and candidate targets with declared frames and confidence | [AI-to-runtime contract](software/ai/docs/CONTRACT.md) |
 | Arm runtime | Validate proposals, calibration, geometry, permissions, lifecycle, and feedback before any dispatch | [Runtime architecture](software/docs/ARCHITECTURE.md) |
+| Higher-fidelity simulation | Replay already-admitted trajectories in a pinned external simulator; compare collision, tracking, contact, and camera evidence without gaining hardware authority | [Isaac Sim integration plan](software/docs/ISAAC_SIM_INTEGRATION_PLAN.md) |
 | Physical workcell | Establish measured installation, tool geometry, clearance, and repeatable observation | [Hardware build guide](docs/HARDWARE_BUILD_GUIDE.md) |
 | Repository and release | Preserve reviewable evidence, compatibility, security controls, and honest public claims | [Repository operations](docs/REPOSITORY_OPERATIONS.md) and [release readiness](docs/releases/READINESS.md) |
 

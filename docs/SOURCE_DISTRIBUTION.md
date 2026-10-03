@@ -62,6 +62,11 @@ policy baseline now points to this merged commit so future checks have a stable,
 post-reduction reference. Containment ceilings remain deliberately above the
 baseline to detect material growth without making normal small changes brittle.
 
+The pre-camera integration and Isaac Sim merge brings the tracked tree to 6,316
+files and 650,694,068 logical bytes. The file-count containment ceiling is
+updated to that measured merged tree; the byte, single-blob, and duplication
+ceilings remain unchanged.
+
 The preferred order is:
 
 1. replace repeated instructional STL copies with one canonical tracked object
@@ -114,9 +119,9 @@ enforces the reviewed offline blocker registry in
 `open` fails even if its linked issue was administratively closed. A receipt
 therefore does not itself satisfy the AI checkpoint evidence in issues
 [#56](https://github.com/j-webtek/tactevra/issues/56) and
-[#61](https://github.com/j-webtek/tactevra/issues/61), establish the Waveshare
-redistribution decision in
-[#88](https://github.com/j-webtek/tactevra/issues/88), satisfy the static-bundle
+[#61](https://github.com/j-webtek/tactevra/issues/61), replace the recorded
+Waveshare disposition in
+[decision 0001](decisions/0001-waveshare-model-license-disposition.md), satisfy the static-bundle
 integration gate in [#167](https://github.com/j-webtek/tactevra/issues/167),
 select a candidate, or approve publication.
 

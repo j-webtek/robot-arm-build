@@ -1,0 +1,5 @@
+{
+  "fixture": "valid_request_v1.json",
+  "mutation": {"direct_hardware_dispatch": true},
+  "expected_error": "request has unknown fields"
+}

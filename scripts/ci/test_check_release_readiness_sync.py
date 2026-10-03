@@ -13,6 +13,7 @@ from check_release_readiness_sync import (
     render_milestone_description,
     render_tracker_body,
     replace_generated_status,
+    write_dashboard,
 )
 
 
@@ -37,11 +38,28 @@ class ReleaseReadinessSyncTests(unittest.TestCase):
         tracker = render_tracker_body(registry)
         milestone = render_milestone_description(registry)
         dashboard = render_dashboard_status(registry)
-        self.assertIn("**1 open blocker**", tracker)
-        self.assertIn("- [ ] #88", tracker)
+        self.assertIn("**0 open blockers**", tracker)
+        self.assertIn("- [x] #88", tracker)
         self.assertIn("- [x] #167", tracker)
-        self.assertIn("open blockers: #88", milestone)
-        self.assertIn("1 open blocker", dashboard)
+        self.assertIn("**Phase:** Candidate qualification is ready to begin.", tracker)
+        self.assertIn("**Decision owner:** @j-webtek", tracker)
+        self.assertIn("**AI owner:** record the AI compatibility disposition", tracker)
+        self.assertIn("**Arm owner:** record the runtime/controller compatibility disposition", tracker)
+        self.assertIn("**Not planned:** explicitly abandon the milestone", tracker)
+        self.assertIn("open blockers: none", milestone)
+        self.assertIn("candidate qualification ready; candidate unselected", milestone)
+        self.assertIn("0 open blockers", dashboard)
+
+    def test_open_blocker_state_keeps_candidate_selection_held(self):
+        registry = load_registry()
+        blocked = copy.deepcopy(registry)
+        blocked["blockers"][0]["status"] = "open"
+        blocked["blockers"][0]["resolution"] = None
+        tracker = render_tracker_body(blocked)
+        milestone = render_milestone_description(blocked)
+        self.assertIn("**Phase:** Readiness-blocker resolution.", tracker)
+        self.assertNotIn("## Next accountable decision", tracker)
+        self.assertIn("Phase: blocker resolution", milestone)
 
     def test_dashboard_drift_is_detected_and_repairable(self):
         registry = load_registry()
@@ -51,10 +69,19 @@ class ReleaseReadinessSyncTests(unittest.TestCase):
             repaired = replace_generated_status(path.read_text(encoding="utf-8"), render_dashboard_status(registry))
             path.write_text(repaired, encoding="utf-8")
             self.assertEqual(check_dashboard(registry, path), [])
-            path.write_text(repaired.replace("1 open blocker", "2 open blockers"), encoding="utf-8")
+            path.write_text(repaired.replace("0 open blockers", "2 open blockers"), encoding="utf-8")
             self.assertTrue(check_dashboard(registry, path))
             self.assertIn(BEGIN, repaired)
             self.assertIn(END, repaired)
+
+    def test_write_dashboard_reads_before_truncating(self):
+        registry = load_registry()
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "READINESS.md"
+            path.write_text("# Readiness\n\n## Current gate summary\n\nPreserved tail.\n", encoding="utf-8")
+            write_dashboard(registry, path)
+            self.assertIn("Preserved tail.", path.read_text(encoding="utf-8"))
+            self.assertIn("0 open blockers", path.read_text(encoding="utf-8"))
 
 
 if __name__ == "__main__":

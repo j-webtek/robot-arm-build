@@ -42,6 +42,8 @@ DOCS = (
     'software/ai/docs/EVIDENCE_LEDGER.md',
     'software/docs/ARCHITECTURE.md',
     'software/docs/AI_TO_ARM_OPERATIONAL_EFFICIENCY_PLAN.md',
+    'software/docs/ISAAC_SIM_INTEGRATION_PLAN.md',
+    'software/integrations/isaac_sim/README.md',
     'docs/brand/BRAND_GUIDE.md', 'docs/brand/NAMING_REVIEW.md',
     'docs/brand/MIGRATION_PLAN.md',
     'assets/media/README.md', 'assets/media/VERIFICATION_RECEIPT.md',
@@ -75,6 +77,8 @@ PUBLIC_TITLES = {
     'software/ai/docs/SHARED_AI_ARM_WORKPLAN.md': 'Shared AI-to-arm workplan',
     'software/ai/docs/EVIDENCE_LEDGER.md': 'Tactevra AI/arm evidence ledger',
     'software/docs/ARCHITECTURE.md': 'Tactevra Runtime software architecture',
+    'software/docs/ISAAC_SIM_INTEGRATION_PLAN.md': 'Tactevra Isaac Sim integration plan',
+    'software/integrations/isaac_sim/README.md': 'Isaac Sim integration boundary',
     'assets/media/VERIFICATION_RECEIPT.md': 'Tactevra overview-media verification receipt',
 }
 
@@ -88,7 +92,7 @@ REQUIRED_PHRASES = {
         '**Document status:** Current decision-process index',
         '**Authority:** Documentation and traceability only;',
         '[the template](TEMPLATE.md)',
-        'No durable decisions have been recorded under this process yet.',
+        '[0001 — Waveshare model license disposition](0001-waveshare-model-license-disposition.md)',
     ),
     'ROADMAP.md': (
         '**Document status:** Current public roadmap',
@@ -120,13 +124,13 @@ REQUIRED_PHRASES = {
         'inventory_source_archive_duplicates.py',
         'https://github.com/j-webtek/tactevra/issues/56',
         'https://github.com/j-webtek/tactevra/issues/61',
-        'https://github.com/j-webtek/tactevra/issues/88',
+        'decisions/0001-waveshare-model-license-disposition.md',
         'https://github.com/j-webtek/tactevra/issues/167',
     ),
     'THIRD_PARTY_NOTICES.md': (
         '**Document status:** Current attribution index',
         '**Authority:** Informational inventory only.',
-        'redistribution is therefore **unresolved**',
+        '**upstream-declared MIT; complete notice and scope unconfirmed**',
     ),
     'docs/releases/README.md': (
         '**Document status:** Current release index',
@@ -163,10 +167,23 @@ REQUIRED_PHRASES = {
         '**Document status:** Append-only evidence record',
         'duplicate `E-20260926-INT-001` identifier',
     ),
+    'software/docs/ISAAC_SIM_INTEGRATION_PLAN.md': (
+        '**Document status:** Active integration plan',
+        '**Authority:** Planning and software-test guidance only.',
+        'hardware_access=false',
+        'physical_authority=false',
+        'no simulator result can promote a physical hardware gate',
+    ),
+    'software/integrations/isaac_sim/README.md': (
+        '**Document status:** Active implementation reference',
+        '**Authority:** Software-test guidance only;',
+        'CONTRACT_TEST_ONLY',
+        'UNSELECTED',
+    ),
     'assets/media/VERIFICATION_RECEIPT.md': (
         '**Document status:** Current published-media verification',
         '**Authority:** Byte identity and post-merge inspection only;',
-        'https://github.com/j-webtek/tactevra/issues/88',
+        'decision 0001',
         'not a Blender rerender',
         'does not qualify robot motion',
     ),

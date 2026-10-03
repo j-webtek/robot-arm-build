@@ -79,7 +79,7 @@
     "The recorded visual review covers the exterior camera fixture and lens, the centered optical board view and tag lock, rejected and accepted admission states with the gripper unobstructed, a consistent detailed black keyboard, a squared nominal H resolve, explicitly simulated tool contact by the complete servo-style presentation rig, a sharp modeled host-screen observation, closed-loop payoff, and end card.",
     "Keyboard and phone dimensions and target origins follow the measured RC03 configuration; their photo-informed surface details and host interface are presentation geometry, not manufacturer CAD or fabrication authority. The direct-tag images, however, use the exact released tag36h11 ID 0-5 codebook patterns.",
     "Static hardware-appearance shots use the hash-verified official RoArm-M3 STEP-derived surface; animated execution uses a hardware-shaped articulated presentation rig aligned to the official base and dimension contract. The rig remains presentation geometry rather than manufacturer CAD.",
-    "The unresolved Waveshare URDF redistribution disposition remains tracked at https://github.com/j-webtek/tactevra/issues/88.",
+    "The Waveshare model provenance and license caveat remains governed by docs/decisions/0001-waveshare-model-license-disposition.md.",
     "The GitHub delivery is intentionally encoded below the repository's 10 MiB ordinary-review ceiling; the documented build emits a separate higher-bitrate 1920x1080 upload master.",
     "The film is an architectural visualization, not physical-operation, collision, fabrication, or autonomous-task qualification."
   ]

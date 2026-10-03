@@ -1,7 +1,8 @@
 # Tactevra overview film — storyboard v2.1
 
-- **Status:** production plan with Blender framework and first-contact benchmark;
-  full sequence not yet rendered
+- **Status:** reproducible full-sequence review pipeline implemented and rendered;
+  final 1080p publishing awaits picture approval and the fourteen approved
+  narration clips
 - **Runtime:** exactly 100 seconds
 - **Format:** 16:9 master, 24 fps
 - **Audience:** technical buyers, collaborators, and first-time GitHub visitors

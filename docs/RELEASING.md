@@ -64,8 +64,11 @@ are a starting point, not a completed qualification record.
   artifacts. This heuristic scan is not a full-history or security certification.
 - [ ] Review [`THIRD_PARTY_NOTICES.md`](../THIRD_PARTY_NOTICES.md) against the
   exact candidate contents and resolved dependency set. Resolve every unknown
-  or incompatible redistribution term; in particular, do not publish the
-  derived Waveshare kinematic URDF until its redistribution basis is established.
+  or incompatible redistribution term. For the derived Waveshare kinematic
+  projection, preserve the exact provenance, upstream-declared-MIT status, and
+  incomplete-notice caveat recorded in
+  [decision 0001](decisions/0001-waveshare-model-license-disposition.md); do not
+  present vendor material as an Apache-2.0 Tactevra contribution.
 - [ ] Run `python scripts/ci/check_release_integrity.py --mode candidate` at the
   candidate revision. Candidate mode must pass without removing a blocker merely
   to silence the check; resolve the linked review issue or record an approved

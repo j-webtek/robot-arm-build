@@ -38,7 +38,7 @@ class PublicRecordTests(unittest.TestCase):
             "authority": authority,
             "outputs": records,
             "limitations": [
-                "Tracked at https://github.com/j-webtek/tactevra/issues/88.",
+                "Governed by docs/decisions/0001-waveshare-model-license-disposition.md.",
                 "This is not physical qualification.",
             ],
         }
