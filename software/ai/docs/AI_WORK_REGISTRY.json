@@ -263,7 +263,7 @@
         "software/ai/eval/residual_obstruction_v5_4_renderer_smoke_v1.json",
         "software/ai/eval/residual_obstruction_v4_2_scene_icc_v1.json"
       ],
-      "current_result": "Residual v5.4 remains pre-render: the exact rejected v4.2 development probabilities reproduce and yield transfer-prior scene ICC estimates of 0.000338 pooled miss, 0.001362 cable miss, 0.001751 dark-rubber-cable miss, and 0.000895 visible false stop across eight scenes. Smoke A remains preserved; the smoke B geometry correction is recorded as a dated pre-results amendment. Evaluation remains unopened.",
+      "current_result": "Residual v5.4 training/development rendering is authorized by smoke C: exact procedural geometry/material/texture descriptors are hash-bound, 144 observations carry verified analytic FK capsule arm masks derived from perturbed ready-state telemetry without simulator truth, all fixture coverage bands pass, and evaluation remains unopened. The rejected v4.2 scene ICC estimates remain transfer priors pending v5 development re-estimation.",
       "limitations": [
         "No commissioned projection renderer, measured dilation artifact, or physical deployment qualification is installed.",
         "The geometry-first replay uses the same Isaac semantic mask that generated the synthetic label and therefore cannot estimate real projection error.",
@@ -296,9 +296,10 @@
         "V5.2 powers only pooled miss, visible false-stop, and every-target AUC; cable-family, dark-cable, q05 AUC, and q05 margin effect sizes remain undeclared, so no complete render design exists.",
         "V5.3 recommends but does not freeze the exact 224-scene balanced rotation or new evaluation identities; its design rates are planning alternatives and physical lighting/obstruction transfer remains unmeasured.",
         "V5.4 validates fixture identities and diagnostic counts only; no renderer, image, candidate result, threshold, physical transfer evidence, or evaluation opening exists.",
-        "The v4.2 scene ICC estimates use only eight consumed synthetic scenes and the rejected 0.55 threshold; they are transfer priors and must be replaced by v5 development estimates before evaluation rendering."
+        "The v4.2 scene ICC estimates use only eight consumed synthetic scenes and the rejected 0.55 threshold; they are transfer priors and must be replaced by v5 development estimates before evaluation rendering.",
+        "Smoke C has empty analytic arm masks for all four parked-pose target views; this is consistent with a retracted observation pose but does not test positive robot-overlap mask behavior."
       ],
-      "next_gate": "Hash-bind actual procedural geometry/material/texture descriptors and emit an audited perturbed-state-derived arm projection mask, then rerun a training-only smoke. After v5 development, re-estimate scene ICC and reconfirm evaluation size before rendering any evaluation pixel without changing the frozen safety gates.",
+      "next_gate": "Render exact training/development shards only, admit them by exact shard identity and hash, run the frozen baseline/memorization/development gates, then re-estimate scene ICC and reconfirm evaluation size before opening any evaluation pixel.",
       "model_motion_batch_boundary": true,
       "controller_authority": false,
       "hardware_writes": 0,
@@ -548,5 +549,5 @@
   "controller_authority": false,
   "hardware_writes": 0,
   "physical_movements": 0,
-  "registry_sha256": "54834cc69643db84d9f3e673768dd0aa0bce6e28b10f7b50be6caae7b817a9af"
+  "registry_sha256": "186547f8128609e33b3c6c450cdbf523cb2c726b832db5720d3ca638c3a9da8a"
 }

@@ -22,6 +22,10 @@ V5_SCHEMA = "tactevra.ai_residual_obstruction_successor_fixture.v5"
 MANIFEST_SCHEMA = "tactevra.ai_residual_obstruction_v5_4_shard_manifest.v1"
 RESOLUTION = (192, 192)
 LOCAL_SLICE = (slice(48, 144), slice(48, 144))
+LINK_RADIUS_MM = {
+    "base_link": 32.0, "link1": 27.0, "link2": 25.0, "link3": 23.0,
+    "link4": 21.0, "link5": 19.0, "gripper_link": 24.0, "hand_tcp": 10.0,
+}
 
 
 def canonical(value: object) -> bytes:
@@ -218,6 +222,144 @@ def _family_assets(fixture: dict[str, Any], split: str, variant_id: str) -> list
     return selected
 
 
+def obstruction_render_descriptor(
+    asset_id: str, variant_id: str, width_mm: float, height_mm: float, coverage: float
+) -> dict[str, Any]:
+    """Return the exact values used to author one procedural obstruction prim."""
+    if not asset_id or width_mm <= 0 or height_mm <= 0 or not 0 < coverage <= 1:
+        raise ValueError("invalid procedural obstruction inputs")
+    asset_seed = int(sha256_bytes(asset_id.encode())[:8], 16)
+    width_scale = 1.03 + (asset_seed % 17) / 100.0
+    color = [0.025, 0.025, 0.03]
+    opacity = 1.0
+    if variant_id.startswith("translucent"):
+        color, opacity = [0.38, 0.52, 0.62], 0.62
+    elif variant_id.startswith("hand"):
+        color = [0.52, 0.25, 0.16]
+    elif variant_id.startswith("tool"):
+        color = [0.28, 0.3, 0.34]
+    elif variant_id.startswith("foreign"):
+        color = [0.15, 0.37, 0.19]
+    if "cable" in variant_id:
+        geometry = {
+            "primitive": "UsdGeom.Cylinder", "length_mm": width_mm * width_scale,
+            "radius_mm": height_mm * coverage / 2.0, "rotate_y_deg": 90.0,
+        }
+    elif variant_id.startswith(("hand", "foreign")):
+        scale = 0.54 + (asset_seed % 7) / 100.0 if variant_id.startswith("hand") else 0.45 + (asset_seed % 9) / 100.0
+        x_radius = width_mm * scale
+        geometry = {
+            "primitive": "UsdGeom.SphereEllipsoid", "x_radius_mm": x_radius,
+            "y_radius_mm": height_mm * coverage / (math.pi * (x_radius / width_mm)),
+            "z_radius_mm": 4.0,
+        }
+    else:
+        geometry = {
+            "primitive": "UsdGeom.Cube", "size_mm": [width_mm * width_scale, height_mm * coverage, 6.0],
+        }
+    return {
+        "schema": "tactevra.synthetic_obstruction_render_descriptor.v1",
+        "asset_id": asset_id, "variant_id": variant_id, "geometry": geometry,
+        "material": {"display_color_rgb": color, "display_opacity": opacity},
+        "texture": {"kind": "NONE_PROCEDURAL_SOLID_DISPLAY_COLOR"},
+    }
+
+
+def project_capsule_mask(
+    camera_contract: dict[str, list[float]], segments: list[dict[str, Any]],
+    Image: Any, ImageDraw: Any,
+) -> tuple[bytes, dict[str, Any]]:
+    """Project FK capsule proxies analytically, without simulator segmentation truth."""
+    import numpy as np
+
+    position = np.asarray(camera_contract["camera_position_mm"], dtype=np.float64)
+    look_at = np.asarray(camera_contract["camera_look_at_mm"], dtype=np.float64)
+    up_hint = np.asarray(camera_contract["camera_up_axis"], dtype=np.float64)
+    forward = look_at - position
+    forward /= np.linalg.norm(forward)
+    right = np.cross(forward, up_hint)
+    right /= np.linalg.norm(right)
+    up = np.cross(right, forward)
+    focal_px = 24.0 / 20.0 * RESOLUTION[0]
+
+    def project(point: list[float]) -> tuple[float, float, float] | None:
+        relative = np.asarray(point, dtype=np.float64) - position
+        depth = float(np.dot(relative, forward))
+        if depth <= 1.0:
+            return None
+        return (
+            RESOLUTION[0] / 2.0 + focal_px * float(np.dot(relative, right)) / depth,
+            RESOLUTION[1] / 2.0 - focal_px * float(np.dot(relative, up)) / depth,
+            depth,
+        )
+
+    image = Image.new("L", RESOLUTION, 0)
+    draw = ImageDraw.Draw(image)
+    projected = []
+    for segment in segments:
+        start, end = project(segment["start_board_mm"]), project(segment["end_board_mm"])
+        if start is None or end is None:
+            continue
+        radius_px = max(1, round(focal_px * segment["radius_mm"] / min(start[2], end[2])))
+        width = radius_px * 2
+        points = ((round(start[0]), round(start[1])), (round(end[0]), round(end[1])))
+        draw.line((*points[0], *points[1]), fill=255, width=width)
+        for x, y in points:
+            draw.ellipse((x - radius_px, y - radius_px, x + radius_px, y + radius_px), fill=255)
+        projected.append({
+            "link": segment["link"], "start_px": [start[0], start[1]],
+            "end_px": [end[0], end[1]], "radius_px": radius_px,
+        })
+    output = BytesIO()
+    image.save(output, "PNG", optimize=False, compress_level=9)
+    payload = output.getvalue()
+    return payload, {
+        "projection_model": "ANALYTIC_PINHOLE_FK_CAPSULES_NO_SIMULATOR_MASK",
+        "focal_length_mm": 24.0, "horizontal_aperture_mm": 20.0,
+        "resolution_px": list(RESOLUTION), "projected_segments": projected,
+        "projected_segment_count": len(projected),
+    }
+
+
+def perturbed_fk_capsules(
+    context: Any, model: Any, joint_noise_deg: float, backlash_deg: float,
+    capture_offset_ms: float, JointPosition: Any,
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    """Derive board-frame capsule proxies from a perturbed measured-state surrogate."""
+    joints = {}
+    perturbations = {}
+    settled_drift_deg = max(-0.05, min(0.05, capture_offset_ms / 3000.0))
+    for index, (name, position) in enumerate(sorted(context.scenario.ready_arm_joint_positions_rad.items())):
+        sign = -1.0 if index % 2 else 1.0
+        perturbation_deg = sign * (joint_noise_deg + backlash_deg + settled_drift_deg)
+        joints[name] = JointPosition.radians(position.value + math.radians(perturbation_deg))
+        perturbations[name] = perturbation_deg
+    joints["link5_to_gripper_link"] = context.scenario.fixed_gripper_position
+    transforms = model.forward_kinematics(joints)
+    board_points = {
+        link: context.scenario.board_T_world.compose(transform).translation_mm
+        for link, transform in transforms.items()
+    }
+    segments = []
+    for joint in model.joints:
+        start, end = board_points[joint.parent_link], board_points[joint.child_link]
+        segments.append({
+            "link": joint.child_link,
+            "start_board_mm": [start.x, start.y, start.z],
+            "end_board_mm": [end.x, end.y, end.z],
+            "radius_mm": LINK_RADIUS_MM.get(joint.child_link, 18.0),
+        })
+    return segments, {
+        "source": "PERTURBED_READY_MEASURED_STATE_SURROGATE_NOT_SIMULATOR_TRUTH",
+        "joint_measurement_noise_deg": joint_noise_deg,
+        "backlash_deg": backlash_deg,
+        "capture_timestamp_offset_ms": capture_offset_ms,
+        "settled_capture_drift_proxy_deg": settled_drift_deg,
+        "per_joint_perturbation_deg": perturbations,
+        "joint_values_emitted_to_model": False,
+    }
+
+
 def _semantic_array(raw: Any, np: Any) -> tuple[Any, dict[str, Any]]:
     data = np.asarray(raw["data"] if isinstance(raw, dict) else raw)
     info = raw.get("info", {}) if isinstance(raw, dict) else {}
@@ -340,8 +482,10 @@ def render(workspace: Path, fixture_path: Path, output_dir: Path, status_output:
     output_dir.mkdir(parents=True, exist_ok=True)
     sys.path.insert(0, str(workspace.resolve(strict=True) / "software/src"))
     from rocell.application.bootstrap import bootstrap_virtual_workcell
+    from rocell.geometry import JointPosition, UrdfModel
 
     context = bootstrap_virtual_workcell(workspace).context
+    arm_model = UrdfModel.from_file(context.scenario.model_path)
     targets = sorted(
         [*context.targets.keyboard_targets.values(), *context.targets.phone_targets.values()],
         key=lambda item: (item.device, item.target_id),
@@ -360,7 +504,7 @@ def render(workspace: Path, fixture_path: Path, output_dir: Path, status_output:
         import omni.replicator.core as rep
         import omni.usd
         from isaacsim.core.experimental.utils.semantics import add_labels
-        from PIL import Image, ImageFilter
+        from PIL import Image, ImageDraw, ImageFilter
         from pxr import Gf, UsdGeom, UsdLux
 
         rep.orchestrator.set_capture_on_play(False)
@@ -450,6 +594,7 @@ def render(workspace: Path, fixture_path: Path, output_dir: Path, status_output:
                 camera_contracts.append(camera_contract)
 
             obstruction_prims: list[dict[str, Any]] = []
+            obstruction_descriptors: list[dict[str, dict[str, Any]]] = []
             adjacent_left_prims: list[Any] = []
             adjacent_right_prims: list[Any] = []
             for target_index, target in selected_targets:
@@ -463,56 +608,45 @@ def render(workspace: Path, fixture_path: Path, output_dir: Path, status_output:
                     (right + width * 0.42, target.center.y, z), (width * 0.45, height * 0.7, 5.0),
                     (0.12, 0.22, 0.54), "adjacent_distractor", Gf, UsdGeom, add_labels).GetPrim())
                 per_variant: dict[str, Any] = {}
+                per_variant_descriptors: dict[str, dict[str, Any]] = {}
                 for variant in fixture["variants"]:
                     variant_id = variant["variant_id"]
                     coverage = variant.get("coverage")
                     if coverage is None:
                         continue
-                    color = (0.025, 0.025, 0.03)
-                    if variant_id.startswith("translucent"):
-                        color = (0.38, 0.52, 0.62)
-                    elif variant_id.startswith("hand"):
-                        color = (0.52, 0.25, 0.16)
-                    elif variant_id.startswith("tool"):
-                        color = (0.28, 0.3, 0.34)
-                    elif variant_id.startswith("foreign"):
-                        color = (0.15, 0.37, 0.19)
                     asset_ids = _family_assets(fixture, split, variant_id)
                     asset_id = asset_ids[(target_index + len(per_variant)) % len(asset_ids)]
-                    asset_seed = int(sha256_bytes(asset_id.encode())[:8], 16)
+                    descriptor = obstruction_render_descriptor(
+                        asset_id, variant_id, width, height, coverage
+                    )
+                    geometry = descriptor["geometry"]
+                    material = descriptor["material"]
+                    color = tuple(material["display_color_rgb"])
                     geometry_path = f"{scene_dynamic_root}/Obstructions/T{target_index:03d}_{variant_id}"
-                    width_scale = 1.03 + (asset_seed % 17) / 100.0
-                    if "cable" in variant_id:
+                    if geometry["primitive"] == "UsdGeom.Cylinder":
                         prim = _cylinder(
                             stage, geometry_path, (target.center.x, target.center.y, z),
-                            width * width_scale, height * coverage / 2.0, color,
-                            0.62 if variant_id.startswith("translucent") else 1.0,
+                            geometry["length_mm"], geometry["radius_mm"], color,
+                            material["display_opacity"],
                             "residual_obstruction", Gf, UsdGeom, add_labels,
                         ).GetPrim()
-                    elif variant_id.startswith("hand"):
-                        x_radius = width * (0.54 + (asset_seed % 7) / 100.0)
-                        y_radius = height * coverage / (math.pi * (x_radius / width))
+                    elif geometry["primitive"] == "UsdGeom.SphereEllipsoid":
                         prim = _ellipsoid(
                             stage, geometry_path, (target.center.x, target.center.y, z),
-                            (x_radius, y_radius), color, "residual_obstruction",
-                            Gf, UsdGeom, add_labels,
-                        ).GetPrim()
-                    elif variant_id.startswith("foreign"):
-                        x_radius = width * (0.45 + (asset_seed % 9) / 100.0)
-                        y_radius = height * coverage / (math.pi * (x_radius / width))
-                        prim = _ellipsoid(
-                            stage, geometry_path, (target.center.x, target.center.y, z),
-                            (x_radius, y_radius), color, "residual_obstruction",
+                            (geometry["x_radius_mm"], geometry["y_radius_mm"]), color,
+                            "residual_obstruction",
                             Gf, UsdGeom, add_labels,
                         ).GetPrim()
                     else:
                         prim = _cube(
                             stage, geometry_path, (target.center.x, target.center.y, z),
-                            (width * width_scale, height * coverage, 6.0), color,
+                            tuple(geometry["size_mm"]), color,
                             "residual_obstruction", Gf, UsdGeom, add_labels,
                         ).GetPrim()
                     per_variant[variant_id] = prim
+                    per_variant_descriptors[variant_id] = descriptor
                 obstruction_prims.append(per_variant)
+                obstruction_descriptors.append(per_variant_descriptors)
             adjacent_prims = adjacent_left_prims + adjacent_right_prims
             all_dynamic = adjacent_prims + [
                 prim for mapping in obstruction_prims for prim in mapping.values()
@@ -627,15 +761,22 @@ def render(workspace: Path, fixture_path: Path, output_dir: Path, status_output:
                         depth = np.asarray(depth_raw["data"] if isinstance(depth_raw, dict) else depth_raw)
                         finite = depth[np.isfinite(depth)]
                         asset_id = None
+                        render_descriptor = None
                         if variant.get("coverage") is not None:
-                            asset_ids = _family_assets(fixture, split, variant_id)
-                            asset_id = asset_ids[(target_index + sum(
-                                item.get("coverage") is not None
-                                for item in fixture["variants"][:variant_index]
-                            )) % len(asset_ids)]
+                            render_descriptor = obstruction_descriptors[local_index][variant_id]
+                            asset_id = render_descriptor["asset_id"]
                         joint_noise_deg = round(rng.uniform(-0.35, 0.35), 6)
                         backlash_deg = round(rng.uniform(-0.55, 0.55), 6)
                         capture_offset_ms = round(rng.uniform(-150.0, 150.0), 6)
+                        capsules, arm_projection_input = perturbed_fk_capsules(
+                            context, arm_model, joint_noise_deg, backlash_deg,
+                            capture_offset_ms, JointPosition,
+                        )
+                        arm_mask_bytes, arm_projection = project_capsule_mask(
+                            camera_contracts[local_index], capsules, Image, ImageDraw,
+                        )
+                        arm_mask_relative = Path(scene["split"]) / scene["scene_id"] / appearance_id / variant_id / f"{target_index:03d}_arm_projection.png"
+                        (output_dir / arm_mask_relative).write_bytes(arm_mask_bytes)
                         rows.append({
                             **reference_records[local_index],
                             "observation_id": f"{scene['scene_id']}:{appearance_id}:{variant_id}:{target.device}:{target.target_id}",
@@ -652,14 +793,14 @@ def render(workspace: Path, fixture_path: Path, output_dir: Path, status_output:
                             "safe_region_mask_sha256": sha256_bytes(mask_bytes),
                             "obstruction_asset_id": asset_id,
                             "obstruction_asset_signature_sha256": (
-                                sha256_bytes(f"{split}:{asset_id}".encode()) if asset_id else None
+                                sha256_bytes(canonical(render_descriptor)) if render_descriptor else None
                             ),
-                            "arm_projection_input": {
-                                "source": "PERTURBED_MEASURED_STATE_SURROGATE_NOT_SIMULATOR_TRUTH",
-                                "joint_measurement_noise_deg": joint_noise_deg,
-                                "backlash_deg": backlash_deg,
-                                "capture_timestamp_offset_ms": capture_offset_ms,
-                            },
+                            "obstruction_render_descriptor": render_descriptor,
+                            "arm_projection_input": arm_projection_input,
+                            "arm_projection": arm_projection,
+                            "arm_projection_mask_path": arm_mask_relative.as_posix(),
+                            "arm_projection_mask_sha256": sha256_bytes(arm_mask_bytes),
+                            "arm_projection_mask_bytes": len(arm_mask_bytes),
                             "adjacent_overlap_fraction": adjacent_overlap,
                             "depth_min_mm": float(finite.min() * 1000.0) if finite.size else None,
                             "depth_max_mm": float(finite.max() * 1000.0) if finite.size else None,
@@ -709,7 +850,9 @@ def render(workspace: Path, fixture_path: Path, output_dir: Path, status_output:
                 "context_resolution": [192, 192],
                 "rgb_truth_masks_excluded_from_model_inputs": True,
                 "safe_region_mask_is_calibrated_target_geometry_projection": True,
-                "arm_projection_source": "PERTURBED_MEASURED_STATE_SURROGATE_NOT_SIMULATOR_TRUTH",
+                "arm_projection_source": "PERTURBED_READY_MEASURED_STATE_SURROGATE_NOT_SIMULATOR_TRUTH",
+                "arm_projection_masks_are_analytic_fk_capsules": True,
+                "simulator_truth_arm_masks_excluded": True,
             },
             "evaluation_observation_count": 0,
             "hardware_writes": 0, "physical_movements": 0, "physical_authority": False,
@@ -718,6 +861,7 @@ def render(workspace: Path, fixture_path: Path, output_dir: Path, status_output:
                 "Image-quality sensor effects are deterministic render postprocesses over fresh Isaac frames",
                 "This shard is incomplete until exact independent campaign admission",
                 "No model was trained and evaluation remains absent",
+                "Arm masks are analytic FK capsule projections from perturbed synthetic ready-state telemetry, not simulator segmentation truth or physical calibration",
             ],
         }
         result = {**core, "dataset_sha256": sha256_bytes(canonical(core))}
