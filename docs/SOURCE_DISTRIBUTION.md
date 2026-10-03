@@ -86,6 +86,11 @@ of being hidden inside unrelated modules. The governed tracked-file ceiling is
 therefore 6,311. No image, checkpoint, simulator output, or physical artifact is
 added, and every byte and duplicate ceiling remains unchanged.
 
+The MuJoCo Warp secondary-oracle architecture adds one reviewed Markdown plan.
+It installs no dependency, cache, converted asset, simulation output, image, or
+model. The governed tracked-file ceiling is therefore 6,312; all byte, blob,
+duplicate, and reduction limits remain unchanged.
+
 The issue 190 v14 synthetic evaluation adds three small, reviewed source files:
 the deterministic static-pose fixture builder, its retained JSON fixture, and
 its focused test. The tracked-file ceiling is therefore 6,103. This adjustment
