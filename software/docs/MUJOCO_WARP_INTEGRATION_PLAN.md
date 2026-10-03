@@ -351,7 +351,7 @@ Evidence is `E-20261003-AI-566`.
 
 ### MW2P — provenanced kinematic scenario profiles
 
-**Status (2026-10-03): claimed; results not observed.** A strict versioned
+**Result (2026-10-03): `ADMIT_EXPLORATORY_PROFILE_PIPELINE`.** A strict versioned
 profile will describe only independent uniform joint-position and velocity
 ranges, the exact governed MJCF, campaign cardinality, and a source artifact
 identity. The compiler will derive every shard seed from the canonical profile
@@ -367,6 +367,15 @@ sixteen unique shard seeds, strict tamper rejection, successful exact assembly
 through the MW2Q queue, and a clean all-skip resume. This does not supply or
 infer physical uncertainty, dynamics, contacts, camera properties, catalog
 geometry, planner output, permits, transport, or execution authority.
+
+An explicitly synthetic source and profile compiled byte identically twice,
+produced sixteen unique derived seeds, and remained stamped
+`EXPLORATORY_ONLY`. The resumable queue executed and assembled all sixteen
+profile-bound receipts, then skipped all sixteen on an unchanged rerun with
+zero model loads or allocations. Synthetic qualifying mode failed closed. A
+seed-altered manifest failed both derivation and manifest-hash validation before
+GPU initialization. No physical profile was created or claimed. Evidence is
+`E-20261003-AI-567`.
 
 ### MW3 — camera and geometry parity
 
