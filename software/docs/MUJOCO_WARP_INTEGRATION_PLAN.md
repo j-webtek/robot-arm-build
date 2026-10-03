@@ -318,6 +318,27 @@ gate is retained. The deterministic manifest and receipt machinery remain
 useful for replayable offline research but do not constitute backend adoption.
 Evidence is `E-20261003-AI-565`.
 
+### MW2Q — resumable independent GPU queues
+
+**Status (2026-10-03): claimed; results not observed.** This increment will
+retain the exact MW2S manifest and execute each device's eight shards as an
+independent resumable queue. A completed shard is reusable only after strict
+schema, manifest, MJCF, device, identity, seed, cardinality, safety,
+repeatability, state-hash, authority, and canonical-receipt validation. New
+receipts are written to a same-directory temporary file, flushed, and promoted
+with atomic replacement. Invalid receipts are preserved under a quarantine
+identity derived from their byte hash and the affected shard returns to the
+pending queue.
+
+Frozen gates are: exactly sixteen admitted shard receipts and no unallowlisted
+files; atomic writes leave no temporary files; a clean second invocation skips
+all sixteen shards without model load or allocation; and a copied recovery
+rehearsal with one deliberately altered receipt quarantines that exact file,
+reruns exactly one shard, and retains the other seven device receipts byte for
+byte. Failure remains evidence. This provides restartability only and grants no
+rendering, training, contact, hardware, transport, permit, or execution
+authority.
+
 ### MW3 — camera and geometry parity
 
 **Objective:** decide which rendered outputs can supplement the Isaac corpus.
