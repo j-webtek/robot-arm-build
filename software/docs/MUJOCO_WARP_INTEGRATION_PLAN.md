@@ -262,6 +262,17 @@ justify maintaining the backend.
 
 Failure closes the acceleration path without affecting Isaac or RoCell.
 
+**MW2 result (2026-10-03): `RESEARCH_ONLY`.** All 45 GPU runs across both
+devices, five batch sizes, and three repeats preserved every world, remained
+finite, reported zero overflow, and repeated numerically exactly within the
+frozen summary. At 4,096 worlds, `cuda:0` reached 1,322,545 world-steps/s
+(4.07x standard MuJoCo) and `cuda:1` reached 1,239,597 world-steps/s (3.81x).
+At 1,024 worlds, speedup was only 0.64x and 0.60x, below the frozen 3x gate on
+both devices. The gate was not changed after results. This closes the declared
+acceleration-adoption path while retaining the backend for bounded research;
+Isaac, RoCell, current training, and physical priorities are unchanged.
+Evidence is `E-20261003-AI-563`.
+
 ### MW3 — camera and geometry parity
 
 **Objective:** decide which rendered outputs can supplement the Isaac corpus.
