@@ -39,6 +39,13 @@ PERSISTENT_SPEC = importlib.util.spec_from_file_location(
 PERSISTENT_PROBE = importlib.util.module_from_spec(PERSISTENT_SPEC)
 assert PERSISTENT_SPEC.loader is not None
 PERSISTENT_SPEC.loader.exec_module(PERSISTENT_PROBE)
+QUEUE_SPEC = importlib.util.spec_from_file_location(
+    "mujoco_warp_resumable_queue_probe",
+    ROOT / "software/integrations/mujoco_warp/resumable_queue_probe.py",
+)
+QUEUE_PROBE = importlib.util.module_from_spec(QUEUE_SPEC)
+assert QUEUE_SPEC.loader is not None
+QUEUE_SPEC.loader.exec_module(QUEUE_PROBE)
 
 
 def fixture_pair():
@@ -272,3 +279,119 @@ def test_persistent_admission_rejects_tampering_safety_and_slow_scaling():
     assert any("receipt hash mismatch" in error for error in result["errors"])
     assert "sequential/concurrent state identity mismatch" in result["errors"]
     assert "persistent concurrent scaling gate failed" in result["errors"]
+
+
+def fake_atomic_shard_receipt(manifest, shard):
+    result = {
+        "shard_id": shard["shard_id"],
+        "seed": shard["seed"],
+        "world_count": shard["world_count"],
+        "unique_initial_poses": shard["world_count"],
+        "initial_qpos_sha256": "1" * 64,
+        "initial_qvel_sha256": (f"{shard['seed']:064x}")[-64:],
+        "replays": [
+            {
+                "replay": index,
+                "finite": True,
+                "world_count_preserved": True,
+                "overflow_zero": True,
+                "elapsed_seconds": 1.0,
+                "world_steps_per_second": 2_000_000.0,
+                "final_qpos_sha256": "2" * 64,
+                "final_qvel_sha256": "3" * 64,
+            }
+            for index in range(PERSISTENT_PROBE.REPLAYS)
+        ],
+        "maximum_qpos_delta": 0.0,
+        "maximum_qvel_delta": 0.0,
+        "pass": True,
+    }
+    return QUEUE_PROBE.build_shard_receipt(manifest, shard, result)
+
+
+def populate_atomic_receipts(root, manifest, device):
+    root.mkdir(parents=True, exist_ok=True)
+    for shard in manifest["shards"]:
+        if shard["device"] != device:
+            continue
+        QUEUE_PROBE.atomic_write(
+            root / f"{shard['shard_id']}.json",
+            fake_atomic_shard_receipt(manifest, shard),
+        )
+
+
+def test_atomic_receipt_write_leaves_no_temporary_file(tmp_path):
+    destination = tmp_path / "receipt.json"
+    QUEUE_PROBE.atomic_write(destination, {"value": 7})
+    assert json.loads(destination.read_text(encoding="utf-8")) == {"value": 7}
+    assert list(tmp_path.glob("*.tmp")) == []
+    assert list(tmp_path.glob(".*.tmp")) == []
+
+
+def test_resumable_queue_skips_every_valid_shard_without_model_load(
+    tmp_path, monkeypatch
+):
+    manifest = PERSISTENT_PROBE.build_manifest()
+    receipt_dir = tmp_path / "cuda0"
+    populate_atomic_receipts(receipt_dir, manifest, "cuda:0")
+    monkeypatch.setattr(
+        QUEUE_PROBE.BASE,
+        "sha256",
+        lambda _path: QUEUE_PROBE.BASE.EXPECTED_MJCF_SHA256,
+    )
+    result = QUEUE_PROBE.run_queue(
+        manifest, tmp_path / "unused.mjcf", "cuda:0", receipt_dir
+    )
+    assert result["complete"] is True
+    assert result["model_load_count"] == 0
+    assert result["world_allocation_count"] == 0
+    assert len(result["skipped_shard_ids"]) == 8
+    assert result["executed_shard_ids"] == []
+
+
+def test_invalid_shard_is_preserved_in_quarantine_and_returns_pending(tmp_path):
+    manifest = PERSISTENT_PROBE.build_manifest()
+    receipt_dir = tmp_path / "cuda0"
+    populate_atomic_receipts(receipt_dir, manifest, "cuda:0")
+    first = manifest["shards"][0]
+    path = receipt_dir / f"{first['shard_id']}.json"
+    altered = json.loads(path.read_text(encoding="utf-8"))
+    altered["result"]["seed"] += 1
+    path.write_text(json.dumps(altered), encoding="utf-8")
+    result = QUEUE_PROBE.inspect_queue(
+        manifest, receipt_dir, "cuda:0", quarantine=True
+    )
+    assert [item["shard_id"] for item in result["pending"]] == [first["shard_id"]]
+    assert len(result["valid"]) == 7
+    assert len(result["quarantined"]) == 1
+    assert not path.exists()
+    quarantined = list((receipt_dir / "_quarantine").glob("*.invalid.json"))
+    assert len(quarantined) == 1
+    assert json.loads(quarantined[0].read_text())["result"]["seed"] == first["seed"] + 1
+
+
+def test_nonfinite_or_wrong_type_evidence_is_rejected_without_exception():
+    manifest = PERSISTENT_PROBE.build_manifest()
+    shard = manifest["shards"][0]
+    receipt = fake_atomic_shard_receipt(manifest, shard)
+    receipt["result"]["maximum_qpos_delta"] = "zero"
+    receipt["result"]["replays"][0]["elapsed_seconds"] = float("nan")
+    errors = QUEUE_PROBE.validate_shard_receipt(receipt, manifest, shard)
+    assert "qpos repeatability failed" in errors
+    assert "replay 0: timing evidence invalid" in errors
+    assert "canonical receipt hash mismatch" in errors
+
+
+def test_resumable_assembly_requires_exact_allowlist_and_disjoint_states(tmp_path):
+    manifest = PERSISTENT_PROBE.build_manifest()
+    cuda0 = tmp_path / "cuda0"
+    cuda1 = tmp_path / "cuda1"
+    populate_atomic_receipts(cuda0, manifest, "cuda:0")
+    populate_atomic_receipts(cuda1, manifest, "cuda:1")
+    admitted = QUEUE_PROBE.assemble(manifest, cuda0, cuda1)
+    assert admitted["status"] == "ADMIT_RESUMABLE_RESEARCH_QUEUE"
+    assert len(admitted["receipts"]) == 16
+    (cuda1 / "unexpected.json").write_text("{}", encoding="utf-8")
+    rejected = QUEUE_PROBE.assemble(manifest, cuda0, cuda1)
+    assert rejected["status"] == "REJECTED"
+    assert "cuda:1: root receipt allowlist mismatch" in rejected["errors"]

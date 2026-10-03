@@ -41,6 +41,12 @@ hash, making a failed or interesting population replayable without storing a
 large state tensor in Git. This remains an offline research facility and grants
 no contact, rendering, planner, controller, transport, or execution authority.
 
+`resumable_queue_probe.py` keeps one atomically promoted receipt per shard. It
+validates existing receipts before reuse, quarantines invalid bytes, executes
+only missing work, and admits a campaign only with the exact manifest allowlist.
+This permits long independent GPU research queues to resume after interruption
+without treating partial or altered output as completed evidence.
+
 ## Removal
 
 Delete `C:\MuJoCoWarp\env_3_13_0`, `C:\MuJoCoWarp\wheels\3.13.0`, and the
