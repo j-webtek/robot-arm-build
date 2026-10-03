@@ -130,7 +130,9 @@
         "software/ai/eval/probe_physical_charuco_readiness.py",
         "software/ai/schemas/physical_charuco_probe_v1.schema.json",
         "software/ai/eval/build_b0477_commissioning_amendment.py",
-        "software/ai/schemas/b0477_commissioning_amendment_v1.schema.json"
+        "software/ai/schemas/b0477_commissioning_amendment_v1.schema.json",
+        "software/ai/sim/build_residual_obstruction_successor_v5.py",
+        "software/ai/schemas/residual_obstruction_successor_fixture_v5.schema.json"
       ],
       "test_paths": [
         "software/ai/tests/test_capture_binding.py",
@@ -174,7 +176,8 @@
         "software/ai/tests/test_residual_obstruction_physical_pilot.py",
         "software/ai/tests/test_residual_obstruction_physical_pilot_v1_1.py",
         "software/ai/tests/test_physical_charuco_probe.py",
-        "software/ai/tests/test_b0477_commissioning_amendment.py"
+        "software/ai/tests/test_b0477_commissioning_amendment.py",
+        "software/ai/tests/test_residual_obstruction_successor_v5.py"
       ],
       "documentation_paths": [
         "software/ai/docs/MODEL_TO_ARM_TRANSLATION_ASSURANCE.md",
@@ -226,9 +229,10 @@
         "software/ai/eval/residual_obstruction_physical_pilot_v1.json",
         "software/ai/eval/residual_obstruction_physical_pilot_v1_1.json",
         "software/ai/eval/physical_charuco_probe_blocked_v1.json",
-        "software/ai/eval/b0477_commissioning_amendment_v1.json"
+        "software/ai/eval/b0477_commissioning_amendment_v1.json",
+        "software/ai/sim/evidence/residual_obstruction_successor_v5.json"
       ],
-      "current_result": "The physical ChArUco probe remains blocked. A corrective amendment now binds the repository-authoritative B0477 full-native 5472x3648 YUY2 9 fps mode, locked optics/image controls, mode-specific intrinsics, and distributed X/Y caliper measurements while preserving the earlier 4 fps receipt as failed evidence.",
+      "current_result": "Residual v5 synthetic research is frozen before rendering: two small edge/texture candidates, split-disjoint obstruction identities, perturbed geometry inputs, unchanged baselines, strict development gates, unopened evaluation, and a required ModelMotionBatchV2 simulated-mission follow-on.",
       "limitations": [
         "No commissioned projection renderer, measured dilation artifact, or physical deployment qualification is installed.",
         "The geometry-first replay uses the same Isaac semantic mask that generated the synthetic label and therefore cannot estimate real projection error.",
@@ -255,9 +259,10 @@
         "The physical pilot predeclaration contains no physical pixels; its 20% boundary rows are separately reported, and no pilot row is authorized for model training.",
         "No post-isolation silhouette evidence exists yet, its tolerance remains unset pending the commissioned park profile, and the one-session escrow has no statistical power claim.",
         "No camera is connected, no physical image was captured, and the retained 5x7 tooling board does not satisfy the production 12x9 ChArUco contract.",
-        "The preserved blocked probe incorrectly recorded 4 fps; the corrective amendment binds 9 fps from three repository sources, but received-unit mode and all physical settings remain unverified."
+        "The preserved blocked probe incorrectly recorded 4 fps; the corrective amendment binds 9 fps from three repository sources, but received-unit mode and all physical settings remain unverified.",
+        "V5 is a synthetic research predeclaration created while physical inputs are blocked; it contains no images, checkpoint, threshold, runtime lighting envelope, real-camera transfer evidence, or deployment selection."
       ],
-      "next_gate": "Connect the B0477; verify persistent identity and full-native 5472x3648 YUY2 9 fps; lock and hash-bind focus, aperture, exposure, gain, and white balance; measure the rigid 12x9 board with at least four distributed X and four distributed Y caliper checks; then review scale tolerance before capture.",
+      "next_gate": "Implement the v5 renderer and independent admission against the exact frozen identities; run a small training-only smoke and visual review before scheduling the full 43,200/21,600-row training/development campaign. Keep evaluation unrendered.",
       "model_motion_batch_boundary": true,
       "controller_authority": false,
       "hardware_writes": 0,
@@ -507,5 +512,5 @@
   "controller_authority": false,
   "hardware_writes": 0,
   "physical_movements": 0,
-  "registry_sha256": "a1e06d07b4dcc43176a33f525e3a2bbea35c1b6f9fbecb702b57fe14f498583b"
+  "registry_sha256": "17964516ab6c9c8e254256785ec79857fb4fbd6bcb764015f9f1966149fb5e4d"
 }

@@ -291,6 +291,12 @@ binds the rejected development result to a measurement-first physical pilot.
 It keeps cable detection in scope, leaves the runtime lighting limit unset until
 real-camera measurement, ranks candidate remedies without selecting v5, and
 creates no qualification or physical authority.
+The [residual v5 synthetic fixture](residual_obstruction_successor_fixture_v5.schema.json)
+records the owner's later direction to continue simulation robustness research
+while physical inputs are blocked. It preserves the v4.2 rejection and physical
+pilot dependency while freezing two small edge/texture candidates, split-disjoint
+obstruction identities, perturbed geometry inputs, development gates, and an
+unrendered evaluation family. It is not a deployment-model selection.
 The [residual physical pilot predeclaration](residual_obstruction_physical_pilot_v1.schema.json)
 separates clear, boundary, and obstructed cable coverage; requires placement
 and mask labels; assigns measurement and unopened escrow sessions before
