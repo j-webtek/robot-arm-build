@@ -113,6 +113,13 @@ ceiling is therefore 6,333; no simulator cache, image, model, or physical
 artifact is tracked, and all byte, blob, duplicate, and reduction limits remain
 unchanged.
 
+The measured-catalog MW2UC extension adds one reviewed zero-authority source
+file. It consolidates five-target pose generation and the unchanged frozen
+calibrated-residual application in one tool; all full simulation results remain
+external and hash-bound. The governed tracked-file ceiling is therefore 6,334;
+no simulator cache, image, model, or physical artifact is tracked, and all byte,
+blob, duplicate, and reduction limits remain unchanged.
+
 The issue 190 v14 synthetic evaluation adds three small, reviewed source files:
 the deterministic static-pose fixture builder, its retained JSON fixture, and
 its focused test. The tracked-file ceiling is therefore 6,103. This adjustment
