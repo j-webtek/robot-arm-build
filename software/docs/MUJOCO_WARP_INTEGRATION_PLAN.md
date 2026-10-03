@@ -285,6 +285,26 @@ the smallest large batch as the next optimization target; it does not erase
 the demonstrated 16,384-world capacity or alter the general MW2 rejection.
 Evidence is `E-20261003-AI-564`.
 
+### MW2S — persistent deterministic campaign sharding
+
+**Status (2026-10-03): claimed; results not observed.** This successor is
+separate from MW2 and MW2R. It will freeze a compact, hash-bound manifest for
+two disjoint eight-shard campaigns. Every shard contains 16,384 distinct joint
+states generated from its recorded seed under the MW2R joint-limit contract.
+Each GPU worker will load the exact MW1 model and allocate its world batch once,
+then replay all eight shards in the same process. Sequential runs on each GPU
+will establish the baseline before the unchanged manifest is run concurrently.
+
+Frozen gates are: exact manifest and MJCF identity; disjoint shard identities,
+seeds, and initial-state hashes; 16,384 unique initial poses per shard; finite
+state; exact world count; zero overflow; deterministic replay within `1e-6`;
+complete receipt coverage; and concurrent campaign wall-time scaling of at
+least `1.70x` relative to the sum of the two sequential campaign wall times.
+The wall-time metric includes child launch and receipt writing. Failure remains
+evidence and cannot rewrite either earlier result. The scope remains kinematic
+research only with zero rendering, training, contact, hardware writes, physical
+movement, or execution authority.
+
 ### MW3 — camera and geometry parity
 
 **Objective:** decide which rendered outputs can supplement the Isaac corpus.
