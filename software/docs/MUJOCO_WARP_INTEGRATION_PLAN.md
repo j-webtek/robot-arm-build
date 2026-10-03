@@ -273,6 +273,18 @@ acceleration-adoption path while retaining the backend for bounded research;
 Isaac, RoCell, current training, and physical priorities are unchanged.
 Evidence is `E-20261003-AI-563`.
 
+**MW2R large-batch specialization (2026-10-03): `RESEARCH_ONLY`, capacity
+confirmed.** Separate deterministic pose populations of 4,096, 8,192, and
+16,384 worlds passed finite-state, world-preservation, zero-overflow, exact
+repeatability, and timing gates on both GPUs. GPU 0 reached 5.225 million and
+GPU 1 reached 4.773 million world-steps/s at 16,384 distinct poses. Concurrent
+4,096-world shards were safe and delivered 2.189 million aggregate
+world-steps/s, but scaled 1.665x against the separately frozen 1.70x gate. The
+near miss is retained unchanged. It identifies concurrent host orchestration at
+the smallest large batch as the next optimization target; it does not erase
+the demonstrated 16,384-world capacity or alter the general MW2 rejection.
+Evidence is `E-20261003-AI-564`.
+
 ### MW3 — camera and geometry parity
 
 **Objective:** decide which rendered outputs can supplement the Isaac corpus.
