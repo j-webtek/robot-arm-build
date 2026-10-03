@@ -349,6 +349,25 @@ remained byte identical. This admits restart and recovery mechanics only. It
 does not alter the MW2/MW2R/MW2S performance decisions or qualify new physics.
 Evidence is `E-20261003-AI-566`.
 
+### MW2P — provenanced kinematic scenario profiles
+
+**Status (2026-10-03): claimed; results not observed.** A strict versioned
+profile will describe only independent uniform joint-position and velocity
+ranges, the exact governed MJCF, campaign cardinality, and a source artifact
+identity. The compiler will derive every shard seed from the canonical profile
+hash. Bounds must use the exact six-joint order, remain within governed joint
+limits, and contain finite ordered values. Compiled manifests will carry their
+profile and source identities into every resumable shard receipt.
+
+An exploratory rehearsal may use an explicitly synthetic source artifact and
+must remain `EXPLORATORY_ONLY`. Qualifying mode must reject synthetic sources,
+missing artifacts, altered artifact bytes, assumed ranges, manifest changes,
+and authority fields. Frozen gates are deterministic byte-identical compilation,
+sixteen unique shard seeds, strict tamper rejection, successful exact assembly
+through the MW2Q queue, and a clean all-skip resume. This does not supply or
+infer physical uncertainty, dynamics, contacts, camera properties, catalog
+geometry, planner output, permits, transport, or execution authority.
+
 ### MW3 — camera and geometry parity
 
 **Objective:** decide which rendered outputs can supplement the Isaac corpus.
