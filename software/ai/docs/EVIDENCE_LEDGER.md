@@ -9998,3 +9998,12 @@ rewriting history. New entries must use a unique evidence ID.
 - Hardware-write count: 0. Physical arm-movement count: 0. Camera-capture count by this repository: 0. Training-run count: 0. Evaluation-image count: 0. Physical authority: false.
 - Limitations: no operator response, device identity, caliper identity, image, reading, hash, or derived geometry has been received. This session-open entry cannot change the target catalog or authorize rendering or hardware use.
 - Next dependency: operator confirms the arm is electrically isolated and mechanically supported away from the measurement area, with the keyboard still fixed in its workcell joints.
+
+### E-20261003-AI-560 — operator setup confirmation for Grave measurement
+
+- Stage/lane: S1 AI/model operator-guided physical measurement intake. Session-opening evidence is E-559 at commit `4e2562fad1d3a413abe3d46163a6dd42ef0c39f1`.
+- Operator response: the user answered `Yes to all` after being asked to confirm five explicit statements. Recorded confirmations are: arm power disconnected; arm mechanically stable; tool clear of keyboard; keyboard still fixed; and digital caliper available.
+- Admission decision: `SETUP_CONFIRMATION_ACCEPTED_AWAITING_KEYBOARD_IDENTITY`. This is operator-reported evidence. No independent electrical, mechanical, photographic, or sensor verification is claimed.
+- Measurement-reading count: 0. Photograph count received in this session: 0. Derived-coordinate count: 0. Repository hardware-write count: 0. Repository-commanded physical-movement count: 0. Any manual setup manipulation by the operator is not quantified and is not represented as a repository action. Physical authority: false.
+- Limitations: keyboard model/SKU/layout and caliper identity/resolution remain unverified. No measurement may be admitted until those identities and the required zero checks are recorded.
+- Next dependency: capture a readable underside keyboard label and a current directly overhead full-keyboard image while keeping the keyboard fixed.
