@@ -140,6 +140,23 @@ def test_target_occlusion_diagnostic_detects_overlap_and_reports_clearance() -> 
     assert blocked["nominal_clearance_px"] == 0.0
 
 
+def test_candidate_search_projection_and_capsule_clearance_are_deterministic() -> None:
+    renderer = _renderer()
+    center = renderer._project_board_point(
+        (0.0, 0.0, 0.0), (0.0, 0.0, 500.0),
+        (0.0, 0.0, 0.0), (0.0, 1.0, 0.0),
+    )
+    assert center == pytest.approx((960.0, 540.0, 500.0))
+    polygon = [[100.0, 100.0], [110.0, 100.0],
+               [110.0, 110.0], [100.0, 110.0]]
+    assert renderer._capsule_polygon_clearance_px(
+        (80.0, 105.0), (90.0, 105.0), 2.0, polygon,
+    ) == pytest.approx(8.0)
+    assert renderer._capsule_polygon_clearance_px(
+        (90.0, 105.0), (120.0, 105.0), 2.0, polygon,
+    ) == pytest.approx(-2.0)
+
+
 def test_official_mesh_occlusion_builder_has_disjoint_groups_and_zero_authority(
     tmp_path: Path,
 ) -> None:

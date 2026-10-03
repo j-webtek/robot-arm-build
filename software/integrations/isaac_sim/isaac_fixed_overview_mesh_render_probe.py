@@ -12,6 +12,7 @@ import argparse
 from io import BytesIO
 import hashlib
 import json
+import math
 from pathlib import Path
 import subprocess
 import sys
@@ -462,6 +463,85 @@ def _target_occlusion_diagnostic(
         "safe_region_overlap_fraction": overlap / area,
         "nominal_clearance_px": clearance_px,
     }
+
+
+def _project_board_point(
+    point_mm: list[float] | tuple[float, float, float],
+    camera_position_mm: list[float] | tuple[float, float, float],
+    camera_look_at_mm: list[float] | tuple[float, float, float],
+    camera_up_axis: list[float] | tuple[float, float, float],
+    *,
+    width_px: int = WIDTH,
+    height_px: int = HEIGHT,
+    focal_length_mm: float = 24.0,
+    horizontal_aperture_mm: float = 46.08,
+) -> tuple[float, float, float] | None:
+    """Project one board-frame point through a declared pinhole camera."""
+    import numpy as np
+
+    position = np.asarray(camera_position_mm, dtype=np.float64)
+    look_at = np.asarray(camera_look_at_mm, dtype=np.float64)
+    up_hint = np.asarray(camera_up_axis, dtype=np.float64)
+    forward = look_at - position
+    forward /= np.linalg.norm(forward)
+    right = np.cross(forward, up_hint)
+    right_norm = np.linalg.norm(right)
+    if right_norm <= 1e-12:
+        raise ValueError("camera up axis is parallel to viewing direction")
+    right /= right_norm
+    up = np.cross(right, forward)
+    relative = np.asarray(point_mm, dtype=np.float64) - position
+    depth = float(np.dot(relative, forward))
+    if depth <= 1.0:
+        return None
+    focal_px = focal_length_mm / horizontal_aperture_mm * width_px
+    return (
+        width_px / 2.0 + focal_px * float(np.dot(relative, right)) / depth,
+        height_px / 2.0 - focal_px * float(np.dot(relative, up)) / depth,
+        depth,
+    )
+
+
+def _capsule_polygon_clearance_px(
+    start_px: tuple[float, float], end_px: tuple[float, float],
+    radius_px: float, polygon_px: list[list[float]],
+) -> float:
+    """Signed 2-D clearance from a projected capsule to a target polygon."""
+    def point_segment_distance(
+        point: tuple[float, float], a: tuple[float, float], b: tuple[float, float]
+    ) -> float:
+        dx, dy = b[0] - a[0], b[1] - a[1]
+        denominator = dx * dx + dy * dy
+        if denominator <= 1e-18:
+            return math.hypot(point[0] - a[0], point[1] - a[1])
+        t = max(0.0, min(1.0, (
+            (point[0] - a[0]) * dx + (point[1] - a[1]) * dy
+        ) / denominator))
+        return math.hypot(point[0] - (a[0] + t * dx), point[1] - (a[1] + t * dy))
+
+    def orientation(a: tuple[float, float], b: tuple[float, float],
+                    c: tuple[float, float]) -> float:
+        return (b[0] - a[0]) * (c[1] - a[1]) - (b[1] - a[1]) * (c[0] - a[0])
+
+    def intersects(a: tuple[float, float], b: tuple[float, float],
+                   c: tuple[float, float], d: tuple[float, float]) -> bool:
+        o1, o2 = orientation(a, b, c), orientation(a, b, d)
+        o3, o4 = orientation(c, d, a), orientation(c, d, b)
+        return o1 * o2 <= 0.0 and o3 * o4 <= 0.0
+
+    polygon = [tuple(point) for point in polygon_px]
+    distances = []
+    for index, edge_start in enumerate(polygon):
+        edge_end = polygon[(index + 1) % len(polygon)]
+        if intersects(start_px, end_px, edge_start, edge_end):
+            return -float(radius_px)
+        distances.extend((
+            point_segment_distance(start_px, edge_start, edge_end),
+            point_segment_distance(end_px, edge_start, edge_end),
+            point_segment_distance(edge_start, start_px, end_px),
+            point_segment_distance(edge_end, start_px, end_px),
+        ))
+    return min(distances) - float(radius_px)
 
 
 def main() -> int:
