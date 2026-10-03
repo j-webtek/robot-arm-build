@@ -1,0 +1,39 @@
+# MuJoCo Warp external integration
+
+This optional integration is a zero-authority secondary simulation oracle. It
+does not replace RoCell planning, Isaac visual evidence, physical qualification,
+or the `ModelMotionBatch` boundary.
+
+## MW0 rebuild
+
+Use Python 3.12 and keep all packages, wheels, kernels, and run evidence outside
+the repository:
+
+```powershell
+py -3.12 -m venv C:\MuJoCoWarp\env_3_13_0
+C:\MuJoCoWarp\env_3_13_0\Scripts\python.exe -m pip download --dest C:\MuJoCoWarp\wheels\3.13.0 mujoco-warp==3.13.0
+C:\MuJoCoWarp\env_3_13_0\Scripts\python.exe -m pip install --no-index --find-links C:\MuJoCoWarp\wheels\3.13.0 mujoco-warp==3.13.0
+```
+
+Verify every wheel against
+[`mujoco_warp_toolchain_lock.json`](../../config/mujoco_warp_toolchain_lock.json),
+then run the pre-import host gate:
+
+```powershell
+C:\MuJoCoWarp\env_3_13_0\Scripts\python.exe software\integrations\mujoco_warp\host_probe.py `
+  --lock software\config\mujoco_warp_toolchain_lock.json `
+  --output C:\MuJoCoWarp\evidence\mw0\host_probe.json
+```
+
+The probe uses package metadata and `nvidia-smi`; it deliberately does not
+import MuJoCo, MuJoCo Warp, or Warp. Any mismatch returns exit code 2 before a
+model load can be attempted. The selected candidate resolves MuJoCo Warp 3.13.0
+with MuJoCo 3.14.0, as allowed by the package's `mujoco>=3.12.0` dependency.
+Later parity gates must still validate that exact pair.
+
+## Removal
+
+Delete `C:\MuJoCoWarp\env_3_13_0`, `C:\MuJoCoWarp\wheels\3.13.0`, and the
+external Warp cache. No project environment or repository file is installed by
+the external setup. Preserve `C:\MuJoCoWarp\evidence\mw0` according to the
+project evidence-retention policy before removal.
