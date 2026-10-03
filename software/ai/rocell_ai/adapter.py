@@ -414,6 +414,8 @@ def build_keyboard_target_extension_proposal(
     *,
     photo_geometry_study_path: Path | None = None,
     photo_source_path: Path | None = None,
+    measurement_session_path: Path | None = None,
+    rejected_photo_candidate_path: Path | None = None,
 ) -> dict[str, Any]:
     """Propose missing keyboard targets without installing unqualified geometry."""
 
@@ -486,10 +488,204 @@ def build_keyboard_target_extension_proposal(
             "physical_release_effect": "NONE",
         }
 
+    measurement_session: dict[str, Any] | None = None
+    measurement_binding: dict[str, Any] | None = None
+    measured_targets: dict[str, dict[str, Any]] = {}
+    measured_existing: dict[str, list[float]] = {}
+    rejection_binding: dict[str, Any] | None = None
+    if measurement_session_path is not None:
+        if photo_study is not None:
+            raise ValueError("photo study and physical measurement session cannot be combined")
+        measurement_session = json.loads(
+            measurement_session_path.read_text(encoding="utf-8")
+        )
+        if measurement_session.get("schema") != "rocell.keyboard_physical_measurement_session.v1":
+            raise ValueError("unexpected keyboard measurement session schema")
+        if measurement_session.get("status") != "SUFFICIENT_FOR_SIMULATION_GEOMETRY_FIT":
+            raise ValueError("keyboard measurement session is not sufficient for simulation fit")
+        if measurement_session.get("coordinate_surface") != "KEYCAP_TOP_PRESS_SURFACE":
+            raise ValueError("keyboard measurement session uses the wrong surface")
+        if measurement_session.get("physical_authority") is not False:
+            raise ValueError("keyboard measurement session claims physical authority")
+        for count_field in ("hardware_write_count", "physical_movement_count"):
+            if measurement_session.get(count_field) != 0:
+                raise ValueError(f"keyboard measurement session has nonzero {count_field}")
+        rows = measurement_session.get("measurements")
+        if not isinstance(rows, list):
+            raise ValueError("keyboard measurement session measurements must be an array")
+        by_id: dict[str, dict[str, Any]] = {}
+        for row in rows:
+            if not isinstance(row, dict) or not isinstance(row.get("measurement_id"), str):
+                raise ValueError("invalid keyboard measurement row")
+            measurement_id = row["measurement_id"]
+            if measurement_id in by_id:
+                raise ValueError(f"duplicate keyboard measurement {measurement_id}")
+            value = row.get("value_mm")
+            if isinstance(value, bool) or not isinstance(value, (int, float)):
+                raise ValueError(f"invalid keyboard measurement value {measurement_id}")
+            if not math.isfinite(float(value)) or float(value) < 0:
+                raise ValueError(f"invalid keyboard measurement value {measurement_id}")
+            if row.get("admission_status") == "REJECTED_FOR_HORIZONTAL_OFFSET":
+                continue
+            photo_path = row.get("photo_path")
+            if photo_path is not None:
+                bound_photo = Path(photo_path)
+                if not bound_photo.is_file():
+                    raise ValueError(f"keyboard measurement photo missing for {measurement_id}")
+                photo_bytes = bound_photo.read_bytes()
+                if hashlib.sha256(photo_bytes).hexdigest() != row.get("photo_sha256"):
+                    raise ValueError(f"keyboard measurement photo hash mismatch for {measurement_id}")
+                if len(photo_bytes) != row.get("photo_bytes"):
+                    raise ValueError(f"keyboard measurement photo size mismatch for {measurement_id}")
+            by_id[measurement_id] = row
+
+        required_measurements = {
+            "grave_top_width_x", "grave_top_height_y",
+            "reference_1_top_width_x", "reference_1_top_height_y",
+            "grave_left_edge_to_1_left_edge_x",
+            "grave_front_edge_minus_1_front_edge_y",
+            "1_left_edge_to_6_left_edge_x", "6_left_edge_to_equal_left_edge_x",
+            "housing_left_to_q_left_top_edge_x",
+            "housing_left_to_1_left_top_edge_x",
+            "housing_left_to_grave_left_top_edge_x",
+            "housing_front_to_1_front_top_edge_y",
+            "housing_front_to_q_front_top_edge_y",
+            "shift_top_width_x", "shift_top_height_y",
+            "housing_left_to_shift_left_top_edge_x",
+            "housing_front_to_shift_front_top_edge_y",
+            "left_bracket_top_width_x", "left_bracket_top_height_y",
+            "right_bracket_top_width_x", "right_bracket_top_height_y",
+            "backslash_top_width_x", "backslash_top_height_y",
+        }
+        missing_measurements = required_measurements - set(by_id)
+        if missing_measurements:
+            raise ValueError(
+                "keyboard measurement session missing required rows: "
+                + ", ".join(sorted(missing_measurements))
+            )
+
+        def mm(measurement_id: str) -> float:
+            return float(by_id[measurement_id]["value_mm"])
+
+        def point(x: float, y: float) -> list[float]:
+            return [round(x, 6), round(y, 6)]
+
+        pitch = (
+            mm("1_left_edge_to_6_left_edge_x")
+            + mm("6_left_edge_to_equal_left_edge_x")
+        ) / 11.0
+        standard_width = mm("grave_top_width_x")
+        standard_height = mm("grave_top_height_y")
+        if any(
+            not math.isclose(mm(measurement_id), expected, abs_tol=1e-9)
+            for measurement_id, expected in (
+                ("reference_1_top_width_x", standard_width),
+                ("reference_1_top_height_y", standard_height),
+                ("left_bracket_top_width_x", standard_width),
+                ("left_bracket_top_height_y", standard_height),
+                ("right_bracket_top_width_x", standard_width),
+                ("right_bracket_top_height_y", standard_height),
+                ("backslash_top_width_x", standard_width),
+                ("backslash_top_height_y", standard_height),
+            )
+        ):
+            raise ValueError("operator-confirmed standard key dimensions disagree")
+        one_center = point(
+            mm("housing_left_to_1_left_top_edge_x") + standard_width / 2.0,
+            mm("housing_front_to_1_front_top_edge_y") + standard_height / 2.0,
+        )
+        q_center = point(
+            mm("housing_left_to_q_left_top_edge_x") + standard_width / 2.0,
+            mm("housing_front_to_q_front_top_edge_y") + standard_height / 2.0,
+        )
+        grave_center = point(
+            mm("housing_left_to_grave_left_top_edge_x") + standard_width / 2.0,
+            one_center[1] + mm("grave_front_edge_minus_1_front_edge_y"),
+        )
+        shift_center = point(
+            mm("housing_left_to_shift_left_top_edge_x")
+            + mm("shift_top_width_x") / 2.0,
+            mm("housing_front_to_shift_front_top_edge_y")
+            + mm("shift_top_height_y") / 2.0,
+        )
+        standard_half_extent = [
+            min(7.0, standard_width / 2.0 - 1.0),
+            min(7.0, standard_height / 2.0 - 1.0),
+        ]
+        shift_half_extent = [
+            min(7.0, mm("shift_top_width_x") / 2.0 - 1.0),
+            min(7.0, mm("shift_top_height_y") / 2.0 - 1.0),
+        ]
+        measured_targets = {
+            "SHIFT": {"center": shift_center, "half_extent": shift_half_extent,
+                      "derivation": "DIRECT_HOUSING_ANCHORS_AND_MEASURED_TOP_SIZE"},
+            "GRAVE": {"center": grave_center, "half_extent": standard_half_extent,
+                      "derivation": "DIRECT_HOUSING_ANCHOR_AND_MEASURED_TOP_SIZE"},
+            "LEFT_BRACKET": {
+                "center": point(q_center[0] + 10.0 * pitch, q_center[1]),
+                "half_extent": standard_half_extent,
+                "derivation": "Q_HOUSING_ANCHOR_PLUS_TEN_MEASURED_PITCHES",
+            },
+            "RIGHT_BRACKET": {
+                "center": point(q_center[0] + 11.0 * pitch, q_center[1]),
+                "half_extent": standard_half_extent,
+                "derivation": "Q_HOUSING_ANCHOR_PLUS_ELEVEN_MEASURED_PITCHES",
+            },
+            "BACKSLASH": {
+                "center": point(q_center[0] + 12.0 * pitch, q_center[1]),
+                "half_extent": standard_half_extent,
+                "derivation": "Q_HOUSING_ANCHOR_PLUS_TWELVE_MEASURED_PITCHES",
+            },
+        }
+        measured_existing = {"1": one_center, "Q": q_center}
+        for index, target_id in enumerate(
+            ("2", "3", "4", "5", "6", "7", "8", "9", "0", "MINUS", "EQUAL"),
+            start=1,
+        ):
+            measured_existing[target_id] = point(
+                one_center[0] + index * pitch,
+                one_center[1],
+            )
+        for index, target_id in enumerate(
+            ("W", "E", "R", "T", "Y", "U", "I", "O", "P"), start=1
+        ):
+            measured_existing[target_id] = point(
+                q_center[0] + index * pitch,
+                q_center[1],
+            )
+
+        if rejected_photo_candidate_path is None:
+            raise ValueError("rejected photo candidate receipt is required")
+        rejected = json.loads(rejected_photo_candidate_path.read_text(encoding="utf-8"))
+        if rejected.get("schema") != "rocell.photo_catalog_candidate_rejection.v1":
+            raise ValueError("unexpected rejected photo candidate receipt schema")
+        if rejected.get("status") != "REJECTED_BY_PHYSICAL_MEASUREMENT":
+            raise ValueError("photo candidate receipt does not preserve rejection")
+        if rejected.get("active_repository_catalog_changed") is not False:
+            raise ValueError("rejected photo candidate receipt claims catalog change")
+        rejection_binding = {
+            "path": rejected_photo_candidate_path.as_posix(),
+            "file_sha256": hashlib.sha256(
+                rejected_photo_candidate_path.read_bytes()
+            ).hexdigest(),
+            "candidate_file_sha256": rejected["candidate_file_sha256"],
+            "status": rejected["status"],
+        }
+        measurement_binding = {
+            "path": measurement_session_path.as_posix(),
+            "file_sha256": hashlib.sha256(measurement_session_path.read_bytes()).hexdigest(),
+            "keyboard_identity": measurement_session["keyboard_identity"],
+            "measurement_count": len(rows),
+            "pitch_mm": pitch,
+            "standard_key_top_mm": [standard_width, standard_height],
+            "single_reading_limit_applies": True,
+            "scope": "SIMULATION_GEOMETRY_FIT_NOT_PHYSICAL_COMMISSIONING",
+        }
+
     targets: list[dict[str, Any]] = []
     for target_id in required:
         seed = _TARGET_EXTENSION_SEEDS.get(target_id)
-        if seed is None and photo_study is None:
+        if seed is None and photo_study is None and measurement_session is None:
             targets.append({
                 "target_id": target_id,
                 "proposal_status": "BLOCKED_AWAITING_DIRECT_CALIPER_MEASUREMENT",
@@ -509,6 +705,7 @@ def build_keyboard_target_extension_proposal(
                 "physical_parked_arm_self_occlusion": "COMMISSIONING_ONLY_NOT_RENDER_GATE",
             })
             continue
+        measured = measured_targets.get(target_id)
         photo_point = (
             photo_study["inferred_targets"][target_id]["inferred_local_xy_mm"]
             if photo_study is not None
@@ -517,15 +714,25 @@ def build_keyboard_target_extension_proposal(
         targets.append({
             "target_id": target_id,
             "proposal_status": (
+                "MEASUREMENT_DERIVED_SIMULATION_ONLY_PENDING_SHARED_REVIEW"
+                if measured is not None
+                else
                 "PHOTO_DERIVED_SIMULATION_ONLY_PENDING_SHARED_REVIEW"
                 if photo_study is not None
                 else "PROVISIONAL_SIMULATION_ONLY_PENDING_SHARED_REVIEW"
             ),
-            "press_point_xy_mm": photo_point or seed["proposed_press_point_xy_mm"],
+            "press_point_xy_mm": (
+                measured["center"] if measured is not None
+                else photo_point or seed["proposed_press_point_xy_mm"]
+            ),
             "safe_half_extent_mm": (
-                [7.0, 7.0] if seed is None else seed["proposed_safe_half_extent_mm"]
+                measured["half_extent"] if measured is not None
+                else [7.0, 7.0] if seed is None
+                else seed["proposed_safe_half_extent_mm"]
             ),
             "press_point_rule": (
+                measured["derivation"] if measured is not None
+                else
                 "MANUALLY_ANNOTATED_KEY_CENTER_PROJECTED_INTO_NOMINAL_KEYBOARD_FRAME"
                 if photo_study is not None
                 else seed["press_point_rule"]
@@ -541,11 +748,16 @@ def build_keyboard_target_extension_proposal(
                 "file_sha256": hashlib.sha256(geometry_source_path.read_bytes()).hexdigest(),
                 "source_state": "PRESENTATION_ONLY_NOT_CONTROL_OR_COMMISSIONING_AUTHORITY",
                 "photo_study": photo_study_binding,
+                "physical_measurement_session": measurement_binding,
             },
             "geometry_limitation": (
-                "The source is a visual presentation model and, when present, a single manually "
-                "annotated angled photograph. Neither is a product drawing or measurement. The "
-                "proposed region may seed synthetic/shared review only."
+                "The measurements use single readings; bracket and backslash centers are inferred "
+                "from the measured pitch and existing topology. The proposed region may seed "
+                "synthetic/shared review only."
+                if measured is not None
+                else "The source is a visual presentation model and, when present, a single "
+                "manually annotated angled photograph. Neither is a product drawing or "
+                "measurement. The proposed region may seed synthetic/shared review only."
             ),
             "simulated_camera_visibility": "PENDING_SIMULATED_PARKED_CAMERA_CHECK",
             "arm_runtime_ik": "PENDING_ARM_LANE_READ_ONLY_IK_CHECK",
@@ -555,8 +767,11 @@ def build_keyboard_target_extension_proposal(
         })
 
     render_blockers = [
-        *([] if photo_study is not None else ["GRAVE_DIRECT_CALIPER_MEASUREMENT_PENDING"]),
+        *([] if photo_study is not None or measurement_session is not None
+          else ["GRAVE_DIRECT_CALIPER_MEASUREMENT_PENDING"]),
         *(["PHOTO_DERIVED_GEOMETRY_NOT_INSTALLED_IN_SHARED_CATALOG"] if photo_study is not None else []),
+        *(["MEASUREMENT_DERIVED_GEOMETRY_NOT_INSTALLED_IN_SHARED_CATALOG"]
+          if measurement_session is not None else []),
         "FIVE_TARGETS_NOT_INSTALLED_IN_SHARED_CATALOG",
         "SIMULATED_PARKED_CAMERA_VISIBILITY_NOT_PROVEN",
         "SIMULATED_PARKED_ARM_NON_OCCLUSION_NOT_PROVEN",
@@ -575,6 +790,29 @@ def build_keyboard_target_extension_proposal(
                 "current_press_point_xy_mm": row["current_local_xy_mm"],
                 "photo_derived_press_point_xy_mm": row["photo_inferred_local_xy_mm"],
                 "delta_mm": row["delta_mm"],
+                "status": "SIMULATION_ONLY_CORRECTION_PENDING_SHARED_REVIEW",
+            })
+    elif measurement_session is not None:
+        current_centers = {
+            target_id: [22.0 + index * 19.05, 111.0]
+            for index, target_id in enumerate(
+                ("1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "MINUS", "EQUAL")
+            )
+        }
+        current_centers.update({
+            target_id: [31.5 + index * 19.05, 90.0]
+            for index, target_id in enumerate(("Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"))
+        })
+        for target_id, measured_center in measured_existing.items():
+            current = current_centers[target_id]
+            existing_target_corrections.append({
+                "target_id": target_id,
+                "current_press_point_xy_mm": current,
+                "measurement_derived_press_point_xy_mm": measured_center,
+                "delta_mm": [
+                    measured_center[0] - current[0],
+                    measured_center[1] - current[1],
+                ],
                 "status": "SIMULATION_ONLY_CORRECTION_PENDING_SHARED_REVIEW",
             })
     measurement_encoded = json.dumps(
@@ -597,13 +835,19 @@ def build_keyboard_target_extension_proposal(
         "targets": targets,
         "existing_target_corrections": existing_target_corrections,
         "photo_geometry_study": photo_study_binding,
+        "physical_measurement_session": measurement_binding,
+        "rejected_photo_candidate": rejection_binding,
         "shared_catalog_install_authorized": False,
         "compiler_expansion_authorized": False,
         "grave_measurement": {
-            "status": "AWAITING_DIRECT_PHYSICAL_READINGS",
+            "status": (
+                "MEASURED_SINGLE_READING_SIMULATION_FIT_ONLY"
+                if measurement_session is not None
+                else "AWAITING_DIRECT_PHYSICAL_READINGS"
+            ),
             "method": _GRAVE_MEASUREMENT_METHOD,
             "method_sha256": hashlib.sha256(measurement_encoded).hexdigest(),
-            "derived_geometry": None,
+            "derived_geometry": measured_targets.get("GRAVE"),
             "simulation_photo_nominal": (
                 None if photo_study is None else photo_study["inferred_targets"]["GRAVE"]
             ),
@@ -711,6 +955,8 @@ def main() -> int:
     parser.add_argument("--target-extension-geometry-source", type=Path)
     parser.add_argument("--photo-geometry-study", type=Path)
     parser.add_argument("--photo-source", type=Path)
+    parser.add_argument("--measurement-session", type=Path)
+    parser.add_argument("--rejected-photo-candidate", type=Path)
     args = parser.parse_args()
     if args.target_extension_geometry_source is None:
         result = build_planner_capability_audit(args.target_catalog, args.source_commit)
@@ -721,6 +967,8 @@ def main() -> int:
             args.source_commit,
             photo_geometry_study_path=args.photo_geometry_study,
             photo_source_path=args.photo_source,
+            measurement_session_path=args.measurement_session,
+            rejected_photo_candidate_path=args.rejected_photo_candidate,
         )
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8", newline="\n")
