@@ -121,6 +121,24 @@ def test_nominal_target_uncertainty_zero_miss_bound_requires_large_sample():
     assert UNCERTAINTY_PROBE._wilson_upper(0, 2048) > 0.001
 
 
+def test_nominal_target_uncertainty_constant_translation_is_not_recentered():
+    import numpy as np
+
+    centers = np.asarray([[0.0, 0.0]])
+    half_extents = np.asarray([[1.0, 1.0]])
+    translated_tips = np.asarray([[[2.0, 0.0], [2.0, 0.0], [2.0, 0.0]]])
+
+    delta_center, margins, misses = (
+        UNCERTAINTY_PROBE._score_absolute_target_rectangles(
+            translated_tips, centers, half_extents, np
+        )
+    )
+
+    assert np.all(delta_center[:, :, 0] == 2.0)
+    assert np.all(margins == -1.0)
+    assert np.all(misses)
+
+
 def fake_schedule_gap_inputs():
     arm_rows = []
     mw2f_rows = []

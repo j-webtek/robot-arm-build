@@ -20,6 +20,40 @@ EXPECTED = {
     "mjcf": "448b711ae30ed3df8a5f5eff66ecb53034f6540eade7264388d86e3911a7a8a0",
 }
 LEVELS_RAD = [0.00025, 0.0005, 0.001, 0.002, 0.004, 0.008]
+REFINEMENT_LEVELS_RAD = {
+    "random_joint_noise": [
+        0.00025,
+        0.002,
+        0.00225,
+        0.0025,
+        0.00275,
+        0.003,
+        0.00325,
+        0.0035,
+        0.00375,
+        0.004,
+    ],
+    "approach_direction_backlash": [
+        0.008,
+        0.01,
+        0.012,
+        0.014,
+        0.016,
+        0.02,
+        0.024,
+        0.032,
+    ],
+    "systematic_calibration_offset": [
+        0.008,
+        0.01,
+        0.012,
+        0.014,
+        0.016,
+        0.02,
+        0.024,
+        0.032,
+    ],
+}
 WORLDS_PER_TARGET = 4096
 TARGET_COUNT = 46
 SEED = 2_026_100_301
@@ -47,6 +81,16 @@ def _wilson_upper(successes: int, total: int) -> float:
         proportion * (1.0 - proportion) / total + z2 / (4.0 * total * total)
     )
     return (center + spread) / (1.0 + z2 / total)
+
+
+def _score_absolute_target_rectangles(tips_xy, centers_xy, half_extents_xy, np):
+    """Score absolute board-frame landings without per-source recentering."""
+    delta_center = tips_xy - centers_xy[:, None, :]
+    margins = np.minimum(
+        half_extents_xy[:, None, 0] - np.abs(delta_center[:, :, 0]),
+        half_extents_xy[:, None, 1] - np.abs(delta_center[:, :, 1]),
+    )
+    return delta_center, margins, margins < 0.0
 
 
 def _stack(device: str) -> dict[str, Any]:
@@ -193,7 +237,18 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
     nominal_tips = np.asarray(nominal_tips)
     jacobians = np.asarray(jacobians)
 
-    rng = np.random.Generator(np.random.PCG64(SEED))
+    refinement = args.mode == "refinement"
+    seed = SEED + (1 if refinement else 0)
+    levels_by_source = (
+        REFINEMENT_LEVELS_RAD
+        if refinement
+        else {source: LEVELS_RAD for source in (
+            "random_joint_noise",
+            "approach_direction_backlash",
+            "systematic_calibration_offset",
+        )}
+    )
+    rng = np.random.Generator(np.random.PCG64(seed))
     source_results: dict[str, list[dict[str, Any]]] = {
         "random_joint_noise": [],
         "approach_direction_backlash": [],
@@ -201,7 +256,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
     }
     random_small_empirical_rms = None
     for source_name in source_results:
-        for level in LEVELS_RAD:
+        for level in levels_by_source[source_name]:
             if source_name == "random_joint_noise":
                 offsets = rng.normal(
                     0.0, level, size=(TARGET_COUNT, WORLDS_PER_TARGET, 5)
@@ -232,17 +287,15 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
             tips = _board_tips(
                 warp_data, hand_id, board_t_world, tool_length_mm, np
             ).reshape(TARGET_COUNT, WORLDS_PER_TARGET, 3)
-            delta_center = tips[:, :, :2] - centers[:, None, :2]
-            delta_nominal = tips[:, :, :2] - nominal_tips[:, None, :2]
-            margins = np.minimum(
-                extents[:, None, 0] - np.abs(delta_center[:, :, 0]),
-                extents[:, None, 1] - np.abs(delta_center[:, :, 1]),
+            delta_center, margins, misses = _score_absolute_target_rectangles(
+                tips[:, :, :2], centers[:, :2], extents, np
             )
-            misses = margins < 0.0
+            delta_nominal = tips[:, :, :2] - nominal_tips[:, None, :2]
             target_rows = []
             for index, pose in enumerate(poses):
                 miss_count = int(misses[index].sum())
-                radial = np.linalg.norm(delta_nominal[index], axis=1)
+                radial_nominal = np.linalg.norm(delta_nominal[index], axis=1)
+                radial_center = np.linalg.norm(delta_center[index], axis=1)
                 target_rows.append(
                     {
                         "target_id": pose["target_id"],
@@ -255,7 +308,25 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
                         "p01_margin_mm": float(np.quantile(margins[index], 0.01)),
                         "median_margin_mm": float(np.median(margins[index])),
                         "p99_radial_displacement_from_nominal_mm": float(
-                            np.quantile(radial, 0.99)
+                            np.quantile(radial_nominal, 0.99)
+                        ),
+                        "minimum_radial_distance_from_target_center_mm": float(
+                            radial_center.min()
+                        ),
+                        "median_radial_distance_from_target_center_mm": float(
+                            np.median(radial_center)
+                        ),
+                        "p99_radial_distance_from_target_center_mm": float(
+                            np.quantile(radial_center, 0.99)
+                        ),
+                        "maximum_radial_distance_from_target_center_mm": float(
+                            radial_center.max()
+                        ),
+                        "maximum_absolute_x_from_target_center_mm": float(
+                            np.abs(delta_center[index, :, 0]).max()
+                        ),
+                        "maximum_absolute_y_from_target_center_mm": float(
+                            np.abs(delta_center[index, :, 1]).max()
                         ),
                     }
                 )
@@ -277,12 +348,12 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
                     "targets": target_rows,
                 }
             )
-            if source_name == "random_joint_noise" and level == LEVELS_RAD[0]:
+            if source_name == "random_joint_noise" and level == 0.00025:
                 random_small_empirical_rms = np.sqrt(
                     np.mean(np.sum(delta_nominal * delta_nominal, axis=2), axis=1)
                 )
 
-    predicted_rms = LEVELS_RAD[0] * np.sqrt(
+    predicted_rms = 0.00025 * np.sqrt(
         np.sum(jacobians * jacobians, axis=(1, 2))
     )
     ratios = random_small_empirical_rms / predicted_rms
@@ -307,7 +378,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
             and row["all_target_p01_margins_nonnegative"]
         ]
         largest = max(admitted) if admitted else None
-        top_passed = largest == LEVELS_RAD[-1]
+        top_passed = largest == levels_by_source[source_name][-1]
         first_failed = next(
             (row["level_rad"] for row in levels if row["level_rad"] > (largest or -1.0)
              and not (
@@ -327,28 +398,35 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         and np.all(ratios <= JACOBIAN_RATIO_RANGE[1])
     )
     result: dict[str, Any] = {
-        "schema": "rocell.mujoco_warp_nominal_target_uncertainty.v1",
+        "schema": (
+            "rocell.mujoco_warp_nominal_target_uncertainty_refinement.v2"
+            if refinement
+            else "rocell.mujoco_warp_nominal_target_uncertainty.v1"
+        ),
         "status": "PASS_EXPLORATORY_SENSITIVITY" if jacobian_gate else "FAIL_LINEAR_SANITY",
         "scope": "SYNTHETIC_UNMEASURED_NOMINAL_KEYCAP_POINT_TOOL_ONLY",
         "source_sha256": dict(EXPECTED),
         "stack": _stack(args.device),
         "device": args.device,
-        "seed": SEED,
+        "seed": seed,
         "target_count": TARGET_COUNT,
         "worlds_per_target_per_level": WORLDS_PER_TARGET,
-        "levels_rad": LEVELS_RAD,
+        "levels_rad": levels_by_source if refinement else LEVELS_RAD,
         "scoring": {
             "region": "nominal keycap rectangle from current 46-target catalog",
             "tool": "zero-radius point tool",
             "miss": "tool-tip board XY lies outside target rectangle",
             "margin_mm": "minimum signed distance to rectangle X/Y edge",
+            "absolute_target_center_scoring": True,
+            "per_source_recentering": False,
+            "diagnostic_only": "displacement from the unperturbed nominal landing",
             "candidate_rule": "largest tested level with every target one-sided 95% miss UCB <= 0.001 and p01 margin >= 0",
         },
         "error_sources": source_results,
         "provisional_synthetic_threshold_search": candidate_levels,
         "jacobian_sanity": {
             "finite_difference_step_rad": FINITE_DIFFERENCE_STEP_RAD,
-            "random_noise_level_rad": LEVELS_RAD[0],
+            "random_noise_level_rad": 0.00025,
             "accepted_ratio_range": list(JACOBIAN_RATIO_RANGE),
             "all_targets_pass": jacobian_gate,
             "minimum_ratio": float(ratios.min()),
@@ -389,6 +467,7 @@ def main() -> int:
     parser.add_argument("--virtual-profile", type=Path, required=True)
     parser.add_argument("--mjcf", type=Path, required=True)
     parser.add_argument("--device", choices=("cuda:0", "cuda:1"), required=True)
+    parser.add_argument("--mode", choices=("original", "refinement"), default="original")
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     result = run(args)
