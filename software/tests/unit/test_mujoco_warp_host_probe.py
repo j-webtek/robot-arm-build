@@ -413,6 +413,35 @@ def test_profiled_initial_states_are_deterministic_and_within_source_ranges(tmp_
         assert first_qvel[:, index].max() <= bounds["qvel_max"]
 
 
+def test_profile_validate_cli_declares_and_writes_its_output(tmp_path, monkeypatch):
+    artifact = tmp_path / "synthetic-source.json"
+    profile = exploratory_profile("0" * 64)
+    write_profile_source(artifact, profile)
+    manifest = PROFILE_PROBE.compile_manifest(profile, artifact)
+    manifest_path = tmp_path / "manifest.json"
+    output = tmp_path / "validated.json"
+    manifest_path.write_text(
+        json.dumps(manifest, sort_keys=True) + "\n", encoding="utf-8"
+    )
+    monkeypatch.setattr(
+        "sys.argv",
+        [
+            str(PROFILE_PROBE.__file__),
+            "validate",
+            "--manifest",
+            str(manifest_path),
+            "--source-artifact",
+            str(artifact),
+            "--output",
+            str(output),
+        ],
+    )
+    assert PROFILE_PROBE.main() == 0
+    assert json.loads(output.read_text(encoding="utf-8"))["manifest_sha256"] == manifest[
+        "manifest_sha256"
+    ]
+
+
 def test_profile_qualifying_mode_rejects_synthetic_or_altered_source(tmp_path):
     artifact = tmp_path / "source.json"
     profile = exploratory_profile("0" * 64)

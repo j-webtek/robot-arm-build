@@ -382,6 +382,7 @@ def main() -> int:
     validate_parser = subparsers.add_parser("validate")
     validate_parser.add_argument("--manifest", type=Path, required=True)
     validate_parser.add_argument("--source-artifact", type=Path, required=True)
+    validate_parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     if args.command == "compile":
         result = compile_manifest(_load(args.profile), args.source_artifact)
