@@ -395,8 +395,8 @@ def _encode_mask_png(mask: Any, Image: Any, np: Any) -> bytes:
     return output.getvalue()
 
 
-def _apply_sensor_effect(rgb: Any, variant_id: str, appearance_id: str,
-                         seed: int, np: Any, Image: Any, ImageFilter: Any) -> bytes:
+def _apply_sensor_effect_array(rgb: Any, variant_id: str, appearance_id: str,
+                               seed: int, np: Any, Image: Any, ImageFilter: Any) -> Any:
     image = Image.fromarray(rgb, mode="RGB")
     if variant_id == "defocus":
         image = image.filter(ImageFilter.GaussianBlur(radius=2.2))
@@ -417,8 +417,16 @@ def _apply_sensor_effect(rgb: Any, variant_id: str, appearance_id: str,
         noise = np.random.default_rng(seed).normal(0.0, 3.0, source.shape).astype(np.int16)
         source = np.clip(source + noise, 0, 255).astype(np.uint8)
         image = Image.fromarray(source, mode="RGB")
+    return np.asarray(image)
+
+
+def _apply_sensor_effect(rgb: Any, variant_id: str, appearance_id: str,
+                         seed: int, np: Any, Image: Any, ImageFilter: Any) -> bytes:
+    array = _apply_sensor_effect_array(
+        rgb, variant_id, appearance_id, seed, np, Image, ImageFilter
+    )
     quality = 30 if variant_id == "compression" else 92
-    return _encode_jpeg(np.asarray(image), Image, quality=quality)
+    return _encode_jpeg(array, Image, quality=quality)
 
 
 def normalization_difference_metrics(reference: Any, observation: Any, np: Any) -> dict[str, float]:
@@ -472,7 +480,11 @@ def admit_variant_measurement(
 
 def render(workspace: Path, fixture_path: Path, output_dir: Path, status_output: Path,
            split: str, scene_start: int = 0, scene_count: int | None = None,
-           target_start: int = 0, target_count: int = 75) -> dict[str, Any]:
+           target_start: int = 0, target_count: int = 75,
+           *, scene_indices: list[int] | None = None,
+           target_indices: list[int] | None = None,
+           variant_ids: list[str] | None = None,
+           retain_raw_rgb: bool = False) -> dict[str, Any]:
     fixture, fixture_bytes = load_fixture(fixture_path)
     if split not in {"training", "development"}:
         raise ValueError("only training and development rendering is permitted")
@@ -492,9 +504,24 @@ def render(workspace: Path, fixture_path: Path, output_dir: Path, status_output:
     )
     if len(targets) != 75 or context.targets.content_sha256 != fixture["source"]["target_catalog_sha256"]:
         raise ValueError("target catalog mismatch")
-    if target_start < 0 or target_count < 1 or target_start + target_count > len(targets):
-        raise ValueError("target shard is outside the catalog")
-    selected_targets = list(enumerate(targets))[target_start:target_start + target_count]
+    if target_indices is None:
+        if target_start < 0 or target_count < 1 or target_start + target_count > len(targets):
+            raise ValueError("target shard is outside the catalog")
+        selected_targets = list(enumerate(targets))[target_start:target_start + target_count]
+    else:
+        if len(target_indices) != len(set(target_indices)) or not target_indices:
+            raise ValueError("target indices must be nonempty and unique")
+        if any(index < 0 or index >= len(targets) for index in target_indices):
+            raise ValueError("target index is outside the catalog")
+        selected_targets = [(index, targets[index]) for index in target_indices]
+    selected_variants = [
+        row for row in fixture["variants"]
+        if variant_ids is None or row["variant_id"] in set(variant_ids)
+    ]
+    if variant_ids is not None and {
+        row["variant_id"] for row in selected_variants
+    } != set(variant_ids):
+        raise ValueError("unknown or duplicate variant selection")
 
     from isaacsim import SimulationApp
     app = SimulationApp({"headless": True, "multi_gpu": False})
@@ -543,14 +570,21 @@ def render(workspace: Path, fixture_path: Path, output_dir: Path, status_output:
         distant.CreateColorAttr(Gf.Vec3f(1.0, 1.0, 1.0))
 
         split_scenes = [row for row in fixture["base_scenes"] if row["split"] == split]
-        if scene_start < 0 or scene_start >= len(split_scenes):
-            raise ValueError("scene start is outside the selected split")
-        end = len(split_scenes) if scene_count is None else scene_start + scene_count
-        if scene_count is not None and scene_count < 1:
-            raise ValueError("scene count must be positive")
-        if end > len(split_scenes):
-            raise ValueError("scene shard is outside the selected split")
-        scenes = split_scenes[scene_start:end]
+        if scene_indices is None:
+            if scene_start < 0 or scene_start >= len(split_scenes):
+                raise ValueError("scene start is outside the selected split")
+            end = len(split_scenes) if scene_count is None else scene_start + scene_count
+            if scene_count is not None and scene_count < 1:
+                raise ValueError("scene count must be positive")
+            if end > len(split_scenes):
+                raise ValueError("scene shard is outside the selected split")
+            scenes = split_scenes[scene_start:end]
+        else:
+            if len(scene_indices) != len(set(scene_indices)) or not scene_indices:
+                raise ValueError("scene indices must be nonempty and unique")
+            if any(index < 0 or index >= len(split_scenes) for index in scene_indices):
+                raise ValueError("scene index is outside the selected split")
+            scenes = [split_scenes[index] for index in scene_indices]
         rows: list[dict[str, Any]] = []
         image_hashes: set[str] = set()
         for scene_index, scene in enumerate(scenes):
@@ -609,7 +643,7 @@ def render(workspace: Path, fixture_path: Path, output_dir: Path, status_output:
                     (0.12, 0.22, 0.54), "adjacent_distractor", Gf, UsdGeom, add_labels).GetPrim())
                 per_variant: dict[str, Any] = {}
                 per_variant_descriptors: dict[str, dict[str, Any]] = {}
-                for variant in fixture["variants"]:
+                for variant in selected_variants:
                     variant_id = variant["variant_id"]
                     coverage = variant.get("coverage")
                     if coverage is None:
@@ -686,6 +720,12 @@ def render(workspace: Path, fixture_path: Path, output_dir: Path, status_output:
                         path = output_dir / relative
                         path.parent.mkdir(parents=True, exist_ok=True)
                         path.write_bytes(content)
+                    reference_raw_relative = None
+                    if retain_raw_rgb:
+                        reference_raw_relative = Path("raw") / "reference" / scene["scene_id"] / appearance_id / f"{target_index:03d}_local.png"
+                        raw_path = output_dir / reference_raw_relative
+                        raw_path.parent.mkdir(parents=True, exist_ok=True)
+                        Image.fromarray(reference_local, mode="RGB").save(raw_path, "PNG")
                     semantic, info = _semantic_array(
                         semantic_annotators[local_index].get_data(), np
                     )
@@ -702,11 +742,14 @@ def render(workspace: Path, fixture_path: Path, output_dir: Path, status_output:
                         "reference_rgb_bytes": len(reference_jpeg),
                         "reference_context_rgb_path": reference_context_relative.as_posix(),
                         "reference_context_rgb_sha256": sha256_bytes(reference_context_jpeg),
+                        "reference_raw_rgb_path": (
+                            reference_raw_relative.as_posix() if reference_raw_relative else None
+                        ),
                         "reference_light_intensity": light[0],
                         "reference_light_color": list(light[1]),
                         **camera_contracts[local_index],
                     }
-                for variant_index, variant in enumerate(fixture["variants"]):
+                for variant_index, variant in enumerate(selected_variants):
                     variant_id = variant["variant_id"]
                     for local_index, (target_index, target) in enumerate(selected_targets):
                         for prim in all_dynamic:
@@ -733,13 +776,18 @@ def render(workspace: Path, fixture_path: Path, output_dir: Path, status_output:
                         adjacent_overlap = int(np.count_nonzero(adjacent_mask & safe_mask)) / safe_area
                         admit_variant_measurement(fixture, variant_id, overlap, adjacent_overlap)
                         seed = scene["isaac_seed"] * 100000 + appearance_index * 10000 + variant_index * 100 + target_index
-                        context_jpeg = _apply_sensor_effect(
+                        raw_observation_context = _apply_sensor_effect_array(
                             rgb, variant_id, appearance_id, seed, np, Image, ImageFilter
+                        )
+                        quality = 30 if variant_id == "compression" else 92
+                        context_jpeg = _encode_jpeg(
+                            raw_observation_context, Image, quality=quality
                         )
                         observation_context = np.asarray(
                             Image.open(BytesIO(context_jpeg)).convert("RGB"), dtype=np.uint8
                         )
                         observation_image = observation_context[LOCAL_SLICE]
+                        raw_observation_image = raw_observation_context[LOCAL_SLICE]
                         jpeg = _encode_jpeg(observation_image, Image, quality=92)
                         difference_metrics = normalization_difference_metrics(
                             reference_images[local_index], observation_image, np
@@ -751,6 +799,14 @@ def render(workspace: Path, fixture_path: Path, output_dir: Path, status_output:
                         path.parent.mkdir(parents=True, exist_ok=True)
                         path.write_bytes(jpeg)
                         (output_dir / context_relative).write_bytes(context_jpeg)
+                        raw_relative = None
+                        if retain_raw_rgb:
+                            raw_relative = Path("raw") / scene["scene_id"] / appearance_id / variant_id / f"{target_index:03d}_local.png"
+                            raw_path = output_dir / raw_relative
+                            raw_path.parent.mkdir(parents=True, exist_ok=True)
+                            Image.fromarray(raw_observation_image, mode="RGB").save(
+                                raw_path, "PNG"
+                            )
                         mask_bytes = _encode_mask_png(safe_mask[LOCAL_SLICE], Image, np)
                         (output_dir / mask_relative).write_bytes(mask_bytes)
                         digest = sha256_bytes(jpeg)
@@ -787,6 +843,7 @@ def render(workspace: Path, fixture_path: Path, output_dir: Path, status_output:
                             "expected_decision": variant["decision"],
                             "rgb_path": relative.as_posix(), "rgb_sha256": digest,
                             "rgb_bytes": len(jpeg), "safe_overlap_fraction": overlap,
+                            "raw_rgb_path": raw_relative.as_posix() if raw_relative else None,
                             "context_rgb_path": context_relative.as_posix(),
                             "context_rgb_sha256": sha256_bytes(context_jpeg),
                             "safe_region_mask_path": mask_relative.as_posix(),
@@ -813,7 +870,7 @@ def render(workspace: Path, fixture_path: Path, output_dir: Path, status_output:
             stage.RemovePrim(scene_dynamic_root)
 
         split_counts = {split: sum(row["split"] == split for row in rows) for split in ("training", "development")}
-        expected_observation_count = len(scenes) * len(selected_targets) * 3 * len(fixture["variants"])
+        expected_observation_count = len(scenes) * len(selected_targets) * 3 * len(selected_variants)
         if len(rows) != expected_observation_count:
             raise RuntimeError("shard observation inventory mismatch")
         normalization_summary = {}
@@ -842,7 +899,11 @@ def render(workspace: Path, fixture_path: Path, output_dir: Path, status_output:
             "scene_count": len(scenes), "observation_count": len(rows),
             "reference_count": len(scenes) * len(selected_targets) * 3,
             "scene_shard": {"start": scene_start, "count": len(scenes)},
-            "target_shard": {"start": target_start, "count": target_count},
+            "target_shard": {"start": target_start, "count": len(selected_targets)},
+            "selected_scene_indices": scene_indices,
+            "selected_target_indices": target_indices,
+            "selected_variant_ids": variant_ids,
+            "raw_rgb_retained": retain_raw_rgb,
             "split_counts": split_counts, "observations": rows,
             "normalization_summary": normalization_summary,
             "candidate_input_contract": {
@@ -897,12 +958,18 @@ def main() -> int:
     parser.add_argument("--scene-count", type=int)
     parser.add_argument("--target-start", type=int, default=0)
     parser.add_argument("--target-count", type=int, default=75)
+    parser.add_argument("--scene-index", type=int, action="append")
+    parser.add_argument("--target-index", type=int, action="append")
+    parser.add_argument("--variant-id", action="append")
+    parser.add_argument("--retain-raw-rgb", action="store_true")
     parser.add_argument("--status-output", type=Path, required=True)
     args = parser.parse_args()
     try:
         result = render(
             args.workspace, args.fixture, args.output_dir, args.status_output,
             args.split, args.scene_start, args.scene_count, args.target_start, args.target_count,
+            scene_indices=args.scene_index, target_indices=args.target_index,
+            variant_ids=args.variant_id, retain_raw_rgb=args.retain_raw_rgb,
         )
         status = {"status": "PASS", "manifest_schema": result["schema"], "dataset_sha256": result["dataset_sha256"], "observation_count": result["observation_count"]}
     except Exception as exc:
