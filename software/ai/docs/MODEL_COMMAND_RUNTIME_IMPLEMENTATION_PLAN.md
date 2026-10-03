@@ -171,6 +171,21 @@ Shift presses because two presses enter modifier-lock state. A host keystroke
 and modifier-state log must show `LATCHED` after every Shift and `OFF` after the
 following base key. Missing or mismatched evidence blocks the action sequence.
 
+Printable US ASCII requires 48 distinct base-key targets plus `SHIFT`. The
+current 46-target keyboard catalog contains 44 of those base keys; `GRAVE`,
+`LEFT_BRACKET`, `RIGHT_BRACKET`, and `BACKSLASH` are absent, while `TAB`,
+and `ENTER` do not close that printable-character gap.
+The deterministic compiler now receives the commissioned target-ID set and
+rejects a character before producing a plan if any required base or modifier
+key is absent. A complete virtual layout may be used only for replay evidence,
+not to claim commissioned capability.
+
+The frozen seeded replay uses seed `190055`, five edge cases (`AA`, `!!`, `aA`,
+`A`, and ` A`), and 5,000 random printable-ASCII strings of length 1–64. It
+replays 160,925 requested characters through 240,468 virtual presses, including
+79,543 one-shot Shift presses, with zero failures. The exact case population is
+hash-bound so later compiler changes must replay the same strings.
+
 The phone strategy is a verified layer state machine. Lowercase, uppercase,
 and symbol layers are distinct observed states. Every future transition and
 character tap requires ADB confirmation of the currently visible layer before

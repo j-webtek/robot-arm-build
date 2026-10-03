@@ -6,6 +6,7 @@ import argparse
 import hashlib
 import json
 from pathlib import Path
+import random
 import string
 from typing import Any
 
@@ -57,31 +58,47 @@ _US_UNSHIFTED_TO_KEY = {
     "/": "SLASH",
     " ": "SPACE",
 }
+US_PRINTABLE_BASE_KEY_IDS = tuple(sorted(
+    set(string.ascii_uppercase)
+    | set(string.digits)
+    | set(_US_SHIFTED_TO_BASE.values())
+    | set(_US_UNSHIFTED_TO_KEY.values())
+))
 
 
 class StickyKeysReplayError(ValueError):
     """A sequence violates the commissioned one-shot modifier contract."""
 
 
-def compile_virtual_us_sticky_keys(text: str) -> tuple[str, ...]:
-    """Compile printable ASCII to one-shot Shift plus named base-key presses."""
+def compile_virtual_us_sticky_keys(
+    text: str, *, commissioned_key_ids: tuple[str, ...]
+) -> tuple[str, ...]:
+    """Compile printable ASCII only when every emitted key is commissioned."""
 
+    commissioned = frozenset(commissioned_key_ids)
     sequence: list[str] = []
     for index, character in enumerate(text):
+        keys: tuple[str, ...]
         if "a" <= character <= "z":
-            sequence.append(character.upper())
+            keys = (character.upper(),)
         elif "A" <= character <= "Z":
-            sequence.extend(("SHIFT", character))
+            keys = ("SHIFT", character)
         elif character in string.digits:
-            sequence.append(character)
+            keys = (character,)
         elif character in _US_SHIFTED_TO_BASE:
-            sequence.extend(("SHIFT", _US_SHIFTED_TO_BASE[character]))
+            keys = ("SHIFT", _US_SHIFTED_TO_BASE[character])
         elif character in _US_UNSHIFTED_TO_KEY:
-            sequence.append(_US_UNSHIFTED_TO_KEY[character])
+            keys = (_US_UNSHIFTED_TO_KEY[character],)
         else:
             raise StickyKeysReplayError(
                 f"unsupported virtual US character {character!r} at index {index}"
             )
+        missing = tuple(key_id for key_id in keys if key_id not in commissioned)
+        if missing:
+            raise StickyKeysReplayError(
+                f"uncommissioned key(s) {missing!r} for character {character!r} at index {index}"
+            )
+        sequence.extend(keys)
     if any(left == right == "SHIFT" for left, right in zip(sequence, sequence[1:])):
         raise StickyKeysReplayError("compiler emitted consecutive Shift presses")
     return tuple(sequence)
@@ -142,6 +159,56 @@ def replay_virtual_us_sticky_keys(
     }
 
 
+def run_seeded_sticky_keys_replay(
+    *, seed: int, string_count: int, maximum_length: int
+) -> dict[str, Any]:
+    """Replay fixed edge cases and seeded printable-ASCII strings deterministically."""
+
+    if type(seed) is not int or type(string_count) is not int or string_count < 1:
+        raise ValueError("seed must be an integer and string_count must be positive")
+    if type(maximum_length) is not int or maximum_length < 1:
+        raise ValueError("maximum_length must be positive")
+    alphabet = "".join(chr(value) for value in range(32, 127))
+    fixed_cases = ("AA", "!!", "aA", "A", " A")
+    generator = random.Random(seed)
+    random_cases = tuple(
+        "".join(generator.choice(alphabet) for _ in range(generator.randint(1, maximum_length)))
+        for _ in range(string_count)
+    )
+    cases = fixed_cases + random_cases
+    commissioned = tuple((*US_PRINTABLE_BASE_KEY_IDS, "SHIFT"))
+    total_characters = 0
+    total_actions = 0
+    total_shift_presses = 0
+    for text in cases:
+        sequence = compile_virtual_us_sticky_keys(
+            text, commissioned_key_ids=commissioned
+        )
+        replay = replay_virtual_us_sticky_keys(
+            sequence,
+            five_shift_shortcut_disabled=True,
+            turn_off_on_two_keys_disabled=True,
+        )
+        if replay["text"] != text:
+            raise StickyKeysReplayError("seeded replay changed requested text")
+        total_characters += len(text)
+        total_actions += len(sequence)
+        total_shift_presses += sequence.count("SHIFT")
+    case_bytes = json.dumps(cases, ensure_ascii=True, separators=(",", ":")).encode("utf-8")
+    return {
+        "seed": seed,
+        "fixed_cases": list(fixed_cases),
+        "random_string_count": string_count,
+        "total_string_count": len(cases),
+        "maximum_length": maximum_length,
+        "total_characters": total_characters,
+        "total_actions": total_actions,
+        "total_shift_presses": total_shift_presses,
+        "failures": 0,
+        "cases_sha256": hashlib.sha256(case_bytes).hexdigest(),
+    }
+
+
 def planner_capability_contract(
     *,
     keyboard_target_ids: tuple[str, ...] = (),
@@ -157,7 +224,13 @@ def planner_capability_contract(
 
     keyboard_targets = frozenset(keyboard_target_ids)
     phone_targets = frozenset(phone_target_ids)
-    keyboard_ready = "SHIFT" in keyboard_targets and sticky_keys_verified is True
+    missing_base_keys = tuple(sorted(set(US_PRINTABLE_BASE_KEY_IDS) - keyboard_targets))
+    missing_modifier_keys = () if "SHIFT" in keyboard_targets else ("SHIFT",)
+    keyboard_ready = (
+        not missing_base_keys
+        and not missing_modifier_keys
+        and sticky_keys_verified is True
+    )
     required_phone_targets = frozenset({"key_shift", "key_symbols", "key_letters"})
     phone_ready = required_phone_targets <= phone_targets and adb_layer_verification is True
     core: dict[str, Any] = {
@@ -167,6 +240,10 @@ def planner_capability_contract(
             "simultaneous_chord_supported": False,
             "caps_lock_optimization_enabled": False,
             "required_target_ids": ["SHIFT"],
+            "required_base_key_ids": list(US_PRINTABLE_BASE_KEY_IDS),
+            "required_base_key_count": len(US_PRINTABLE_BASE_KEY_IDS),
+            "missing_base_key_ids": list(missing_base_keys),
+            "missing_modifier_key_ids": list(missing_modifier_keys),
             "sticky_keys_commissioning_evidence_required": True,
             "required_configuration": {
                 "sticky_keys_enabled": True,
@@ -228,6 +305,9 @@ def build_planner_capability_audit(
         ),
         "keyboard_target_count": len(keyboard_ids),
         "phone_target_count": len(phone_ids),
+        "seeded_replay": run_seeded_sticky_keys_replay(
+            seed=190055, string_count=5000, maximum_length=64
+        ),
         "hardware_writes": 0,
         "physical_movements": 0,
         "physical_authority": False,

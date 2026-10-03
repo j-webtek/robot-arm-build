@@ -23,6 +23,8 @@ from rocell_ai.adapter import (  # noqa: E402
     inspect,
     planner_capability_contract,
     replay_virtual_us_sticky_keys,
+    run_seeded_sticky_keys_replay,
+    US_PRINTABLE_BASE_KEY_IDS,
 )
 from rocell_ai.admission import admit  # noqa: E402
 from rocell_ai.admission_eval import evaluate_admission  # noqa: E402
@@ -124,7 +126,7 @@ class OfflineContractTests(unittest.TestCase):
         self.assertEqual(blocked["hardware_commands_generated"], 0)
 
         ready = planner_capability_contract(
-            keyboard_target_ids=("SHIFT",),
+            keyboard_target_ids=(*US_PRINTABLE_BASE_KEY_IDS, "SHIFT"),
             sticky_keys_verified=True,
             phone_target_ids=("key_shift", "key_symbols", "key_letters"),
             adb_layer_verification=True,
@@ -163,7 +165,10 @@ class OfflineContractTests(unittest.TestCase):
 
     def test_sticky_keys_virtual_replay_covers_printable_ascii(self) -> None:
         printable_ascii = "".join(chr(value) for value in range(32, 127))
-        sequence = compile_virtual_us_sticky_keys(printable_ascii)
+        sequence = compile_virtual_us_sticky_keys(
+            printable_ascii,
+            commissioned_key_ids=(*US_PRINTABLE_BASE_KEY_IDS, "SHIFT"),
+        )
         replay = replay_virtual_us_sticky_keys(
             sequence,
             five_shift_shortcut_disabled=True,
@@ -179,6 +184,46 @@ class OfflineContractTests(unittest.TestCase):
         shifted_count = sum(character.isupper() or character in '~!@#$%^&*()_+{}|:"<>?'
                             for character in printable_ascii)
         self.assertEqual(sequence.count("SHIFT"), shifted_count)
+
+    def test_sticky_keys_compiler_rejects_uncommissioned_catalog_keys(self) -> None:
+        catalog = json.loads(
+            (AI_DIR.parent / "config" / "nominal_target_profiles.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        keyboard = catalog["keyboard"]
+        commissioned = tuple(
+            key_id
+            for row in keyboard["rows"]
+            for key_id in row["key_ids"]
+        ) + tuple(keyboard["explicit_targets"])
+        contract = planner_capability_contract(keyboard_target_ids=commissioned)
+        self.assertEqual(contract["keyboard"]["required_base_key_count"], 48)
+        self.assertEqual(
+            contract["keyboard"]["missing_base_key_ids"],
+            ["BACKSLASH", "GRAVE", "LEFT_BRACKET", "RIGHT_BRACKET"],
+        )
+        self.assertEqual(contract["keyboard"]["missing_modifier_key_ids"], ["SHIFT"])
+        self.assertEqual(
+            compile_virtual_us_sticky_keys("a", commissioned_key_ids=commissioned),
+            ("A",),
+        )
+        with self.assertRaisesRegex(StickyKeysReplayError, "GRAVE"):
+            compile_virtual_us_sticky_keys("`", commissioned_key_ids=commissioned)
+        with self.assertRaisesRegex(StickyKeysReplayError, "SHIFT"):
+            compile_virtual_us_sticky_keys("A", commissioned_key_ids=commissioned)
+
+    def test_seeded_sticky_keys_random_string_replay_is_reproducible(self) -> None:
+        first = run_seeded_sticky_keys_replay(
+            seed=190055, string_count=5000, maximum_length=64
+        )
+        second = run_seeded_sticky_keys_replay(
+            seed=190055, string_count=5000, maximum_length=64
+        )
+        self.assertEqual(first, second)
+        self.assertEqual(first["fixed_cases"], ["AA", "!!", "aA", "A", " A"])
+        self.assertEqual(first["total_string_count"], 5005)
+        self.assertEqual(first["failures"], 0)
 
     def test_sticky_keys_replay_rejects_lock_dialog_and_disable_risks(self) -> None:
         with self.assertRaisesRegex(StickyKeysReplayError, "locked state"):
