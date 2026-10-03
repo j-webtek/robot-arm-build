@@ -78,6 +78,14 @@ files: the exact-probability analyzer, strict schema, retained aggregate report,
 and focused test. The governed tracked-file ceiling is therefore 6,307. It adds
 no pixel, checkpoint, simulator output, or physical artifact.
 
+The issue 190 v5.4 admission and codec analysis adds four reviewed source and
+test files: the exact-shard allowlist admitter, frozen codec evaluator, retained
+failure diagnostic, and their focused test. These are independent executable
+evidence tools rather than generated outputs, so they remain separate instead
+of being hidden inside unrelated modules. The governed tracked-file ceiling is
+therefore 6,311. No image, checkpoint, simulator output, or physical artifact is
+added, and every byte and duplicate ceiling remains unchanged.
+
 The issue 190 v14 synthetic evaluation adds three small, reviewed source files:
 the deterministic static-pose fixture builder, its retained JSON fixture, and
 its focused test. The tracked-file ceiling is therefore 6,103. This adjustment

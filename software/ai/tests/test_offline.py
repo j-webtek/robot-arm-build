@@ -174,15 +174,20 @@ class OfflineContractTests(unittest.TestCase):
         self.assertEqual(first["active_catalog"]["total_target_count"], 75)
         self.assertFalse(first["shared_catalog_install_authorized"])
         self.assertFalse(first["compiler_expansion_authorized"])
-        self.assertFalse(first["v5_5"]["render_authorized"])
-        self.assertEqual(first["v5_5"]["required_total_target_count_after_admission"], 80)
+        self.assertFalse(first["v5_5_render_gate"]["render_authorized"])
+        self.assertEqual(
+            first["v5_5_render_gate"]["required_total_target_count_after_admission"], 80
+        )
+        self.assertFalse(first["v5_5_render_gate"]["physical_camera_evidence_required"])
+        self.assertFalse(first["physical_commissioning_gate"]["blocks_synthetic_render"])
+        self.assertFalse(first["physical_commissioning_gate"]["hardware_use_authorized"])
         targets = {row["target_id"]: row for row in first["targets"]}
         self.assertEqual(set(targets), {
             "SHIFT", "BACKSLASH", "GRAVE", "LEFT_BRACKET", "RIGHT_BRACKET"
         })
         self.assertEqual(
             targets["GRAVE"]["proposal_status"],
-            "BLOCKED_GEOMETRY_SOURCE_INSUFFICIENT",
+            "BLOCKED_AWAITING_DIRECT_CALIPER_MEASUREMENT",
         )
         self.assertIsNone(targets["GRAVE"]["press_point_xy_mm"])
         self.assertEqual(
@@ -192,8 +197,23 @@ class OfflineContractTests(unittest.TestCase):
         self.assertEqual(targets["SHIFT"]["press_point_xy_mm"], [20.0, 48.0])
         self.assertEqual(targets["SHIFT"]["safe_half_extent_mm"], [7.0, 7.0])
         self.assertIn(
-            "GRAVE_GEOMETRY_SOURCE_MISSING", first["v5_5"]["blockers"]
+            "GRAVE_DIRECT_CALIPER_MEASUREMENT_PENDING",
+            first["v5_5_render_gate"]["blockers"],
         )
+        self.assertIn(
+            "ARM_RUNTIME_REACH_OPTIMIZER_CURRENTLY_LOCKED_TO_75_TARGETS",
+            first["v5_5_render_gate"]["blockers"],
+        )
+        self.assertNotIn(
+            "COMMISSIONED_CAMERA_VISIBILITY_NOT_PROVEN",
+            first["v5_5_render_gate"]["blockers"],
+        )
+        self.assertEqual(
+            first["grave_measurement"]["status"],
+            "AWAITING_DIRECT_PHYSICAL_READINGS",
+        )
+        self.assertEqual(len(first["grave_measurement"]["method_sha256"]), 64)
+        self.assertIsNone(first["grave_measurement"]["derived_geometry"])
         self.assertEqual(first["hardware_writes"], 0)
         self.assertEqual(first["physical_movements"], 0)
         self.assertFalse(first["physical_authority"])

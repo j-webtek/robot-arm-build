@@ -103,6 +103,50 @@ _TARGET_EXTENSION_SEEDS = {
     },
 }
 
+_GRAVE_MEASUREMENT_METHOD = {
+    "schema": "rocell.keyboard_relative_key_measurement_method.v1",
+    "instrument": "DIGITAL_CALIPER_RESOLUTION_AT_MOST_0_1_MM",
+    "keyboard_condition": "POWER_ISOLATED_ARM_CLEAR_KEYBOARD_FIXED_IN_WORKCELL_JOINTS",
+    "reference_target_id": "1",
+    "reference_catalog_center_xy_mm": [22.0, 111.0],
+    "coordinate_signs": "POSITIVE_X_RIGHT_POSITIVE_Y_AWAY_FROM_DEVICE_FRONT",
+    "required_signed_measurements_mm": {
+        "grave_left_edge_minus_reference_left_edge_x": 3,
+        "grave_front_edge_minus_reference_front_edge_y": 3,
+        "grave_cap_width_x": 3,
+        "grave_cap_height_y": 3,
+        "reference_cap_width_x": 3,
+        "reference_cap_height_y": 3,
+    },
+    "caliper_checks": {
+        "zero_before_mm_absolute_max": 0.1,
+        "zero_after_mm_absolute_max": 0.1,
+        "maximum_repeat_range_mm": 0.3,
+    },
+    "center_derivation": {
+        "x": "reference_center_x + mean(left_edge_delta_x) + (mean(grave_width) - mean(reference_width)) / 2",
+        "y": "reference_center_y + mean(front_edge_delta_y) + (mean(grave_height) - mean(reference_height)) / 2",
+    },
+    "safe_region_derivation": {
+        "center": "derived_key_center",
+        "edge_inset_mm": 1.0,
+        "maximum_half_extent_mm": [7.0, 7.0],
+        "half_extent_x": "min(7.0, mean(grave_width) / 2 - 1.0)",
+        "half_extent_y": "min(7.0, mean(grave_height) / 2 - 1.0)",
+    },
+    "required_record_bindings": [
+        "operator",
+        "utc_timestamp",
+        "keyboard_serial_or_stable_identity",
+        "instrument_make_model",
+        "instrument_serial",
+        "instrument_resolution_mm",
+        "raw_readings",
+        "source_catalog_sha256",
+    ],
+    "decision": "FAIL_CLOSED_IF_ANY_BINDING_CHECK_OR_REPEATABILITY_LIMIT_FAILS",
+}
+
 
 class StickyKeysReplayError(ValueError):
     """A sequence violates the commissioned one-shot modifier contract."""
@@ -384,18 +428,21 @@ def build_keyboard_target_extension_proposal(
         if seed is None:
             targets.append({
                 "target_id": target_id,
-                "proposal_status": "BLOCKED_GEOMETRY_SOURCE_INSUFFICIENT",
+                "proposal_status": "BLOCKED_AWAITING_DIRECT_CALIPER_MEASUREMENT",
                 "press_point_xy_mm": None,
                 "safe_half_extent_mm": None,
                 "geometry_source": None,
                 "geometry_limitation": (
-                    "No repository source defines the Grave key. Pitch extrapolation is rejected: "
+                    "No repository source defines the Grave key. Direct relative-key measurement "
+                    "is required by the bound method. Pitch extrapolation is rejected: "
                     "one 19.05 mm pitch left of key 1 gives x=2.95 mm, which cannot contain the "
                     "ordinary 7 mm half-width inside the 315 mm device boundary."
                 ),
-                "camera_visibility": "NOT_TESTABLE_WITHOUT_GEOMETRY_AND_COMMISSIONED_CAMERA",
+                "simulated_camera_visibility": "NOT_TESTABLE_WITHOUT_GEOMETRY",
                 "arm_runtime_ik": "NOT_TESTABLE_WITHOUT_GEOMETRY_SHARED_WITH_ARM_RUNTIME",
-                "parked_arm_self_occlusion": "NOT_TESTABLE_WITHOUT_GEOMETRY_AND_COMMISSIONED_CAMERA",
+                "simulated_parked_arm_self_occlusion": "NOT_TESTABLE_WITHOUT_GEOMETRY",
+                "physical_camera_visibility": "COMMISSIONING_ONLY_NOT_RENDER_GATE",
+                "physical_parked_arm_self_occlusion": "COMMISSIONING_ONLY_NOT_RENDER_GATE",
             })
             continue
         targets.append({
@@ -415,21 +462,30 @@ def build_keyboard_target_extension_proposal(
                 "The source is a visual presentation model, not a product drawing or measurement. "
                 "The proposed region may seed synthetic/shared review only."
             ),
-            "camera_visibility": "PENDING_COMMISSIONED_PARKED_CAMERA_CHECK",
+            "simulated_camera_visibility": "PENDING_SIMULATED_PARKED_CAMERA_CHECK",
             "arm_runtime_ik": "PENDING_ARM_LANE_READ_ONLY_IK_CHECK",
-            "parked_arm_self_occlusion": "PENDING_COMMISSIONED_PARKED_ARM_PROJECTION_CHECK",
+            "simulated_parked_arm_self_occlusion": "PENDING_SIMULATED_PARKED_ARM_PROJECTION_CHECK",
+            "physical_camera_visibility": "COMMISSIONING_ONLY_NOT_RENDER_GATE",
+            "physical_parked_arm_self_occlusion": "COMMISSIONING_ONLY_NOT_RENDER_GATE",
         })
 
-    blockers = [
-        "GRAVE_GEOMETRY_SOURCE_MISSING",
+    render_blockers = [
+        "GRAVE_DIRECT_CALIPER_MEASUREMENT_PENDING",
         "FIVE_TARGETS_NOT_INSTALLED_IN_SHARED_CATALOG",
-        "COMMISSIONED_CAMERA_VISIBILITY_NOT_PROVEN",
-        "PARKED_ARM_NON_OCCLUSION_NOT_PROVEN",
+        "SIMULATED_PARKED_CAMERA_VISIBILITY_NOT_PROVEN",
+        "SIMULATED_PARKED_ARM_NON_OCCLUSION_NOT_PROVEN",
         "ARM_RUNTIME_IK_REACHABILITY_NOT_PROVEN",
+        "ARM_RUNTIME_REACH_OPTIMIZER_CURRENTLY_LOCKED_TO_75_TARGETS",
         "TARGET_CATALOG_HASH_NOT_REFROZEN",
         "V5_5_IDENTITIES_NOT_AMENDED_TO_80_TARGETS",
         "V5_5_POWER_CHECK_NOT_RERUN",
     ]
+    measurement_encoded = json.dumps(
+        _GRAVE_MEASUREMENT_METHOD,
+        sort_keys=True,
+        separators=(",", ":"),
+        ensure_ascii=True,
+    ).encode("utf-8")
     core: dict[str, Any] = {
         "schema": "rocell.ai_keyboard_target_extension_proposal.v1",
         "scope": "SYNTHETIC_SHARED_CATALOG_PROPOSAL_NO_COMMISSIONING_OR_PHYSICAL_AUTHORITY",
@@ -444,16 +500,33 @@ def build_keyboard_target_extension_proposal(
         "targets": targets,
         "shared_catalog_install_authorized": False,
         "compiler_expansion_authorized": False,
-        "v5_5": {
+        "grave_measurement": {
+            "status": "AWAITING_DIRECT_PHYSICAL_READINGS",
+            "method": _GRAVE_MEASUREMENT_METHOD,
+            "method_sha256": hashlib.sha256(measurement_encoded).hexdigest(),
+            "derived_geometry": None,
+        },
+        "v5_5_render_gate": {
+            "evidence_scope": "SIMULATION_AND_OFFLINE_ARM_RUNTIME_ONLY",
             "required_total_target_count_after_admission": 80,
             "render_authorized": False,
             "evaluation_remains_unrendered": True,
-            "blockers": blockers,
+            "blockers": render_blockers,
+            "physical_camera_evidence_required": False,
+        },
+        "physical_commissioning_gate": {
+            "hardware_use_authorized": False,
+            "required_checks": [
+                "COMMISSIONED_CAMERA_VISIBILITY_FOR_ALL_FIVE_TARGETS",
+                "COMMISSIONED_PARKED_ARM_NON_OCCLUSION_FOR_ALL_FIVE_TARGETS",
+                "MEASURED_TARGET_GEOMETRY_BOUND_TO_ACTIVE_CATALOG",
+            ],
+            "blocks_synthetic_render": False,
         },
         "ownership": {
             "ai_lane": "PROPOSAL_SOURCE_BINDING_AND_SYNTHETIC_CORPUS_ADMISSION",
             "arm_lane": "READ_ONLY_IK_REACHABILITY_DECISION",
-            "shared_commissioning": "CAMERA_VISIBILITY_AND_PARKED_ARM_OCCLUSION",
+            "shared_commissioning": "PHYSICAL_CAMERA_VISIBILITY_AND_PARKED_ARM_OCCLUSION_BEFORE_HARDWARE_USE",
         },
         "hardware_writes": 0,
         "physical_movements": 0,
