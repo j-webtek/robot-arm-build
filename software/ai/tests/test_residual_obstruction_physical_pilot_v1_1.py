@@ -13,7 +13,9 @@ MODULE = importlib.util.module_from_spec(SPEC)
 assert SPEC and SPEC.loader
 SPEC.loader.exec_module(MODULE)
 PILOT = ROOT / "software" / "ai" / "eval" / "residual_obstruction_physical_pilot_v1.json"
+PILOT_V1_1 = ROOT / "software" / "ai" / "eval" / "residual_obstruction_physical_pilot_v1_1.json"
 COMMIT = "09303487afcf6abe840d727efdcb245971e2010a"
+SENSOR_NOISE_COMMIT = "6d0f43061edec0e0b8141b2f7e05176de20e8c93"
 
 
 def test_amendment_requires_post_isolation_pose_and_limits_escrow_claims():
@@ -48,3 +50,39 @@ def test_amendment_rejects_physical_effect_claim(tmp_path):
     path.write_text(json.dumps(changed), encoding="utf-8")
     with pytest.raises(ValueError, match="physical effects"):
         MODULE.build(path, COMMIT)
+
+
+def test_amendment_measures_delivered_noise_without_guessing_signal_floor():
+    result = MODULE.build_sensor_noise_amendment(PILOT_V1_1, SENSOR_NOISE_COMMIT)
+    mode = result["camera_mode_binding"]
+    assert (mode["width_px"], mode["height_px"], mode["pixel_format"], mode["nominal_fps"]) == (
+        5472, 3648, "YUY2", 9,
+    )
+    capture = result["sensor_noise_capture"]
+    assert capture["lighting_levels"] == ["MEASURED_LOW", "MEASURED_NOMINAL", "MEASURED_HIGH"]
+    assert capture["settling_frames_discarded_per_level"] == 8
+    assert capture["retained_frames_per_level"] == 32
+    assert result["sensor_noise_analysis"]["channels"] == ["Y", "U", "V"]
+    assert result["simulation_binding"]["jpeg_intermediate_prohibited"] is True
+    assert result["signal_floor"]["selected"] is False
+    assert result["signal_floor"]["intensity_levels"] is None
+    assert result["signal_floor"]["noise_multiplier"] is None
+    assert result["hardware_writes"] == result["physical_movements"] == 0
+
+
+def test_sensor_noise_amendment_rejects_opened_escrow(tmp_path):
+    changed = copy.deepcopy(json.loads(PILOT_V1_1.read_text(encoding="utf-8")))
+    changed["escrow_scope"]["pixels_opened"] = True
+    path = tmp_path / "changed.json"
+    path.write_text(json.dumps(changed), encoding="utf-8")
+    with pytest.raises(ValueError, match="escrow was opened"):
+        MODULE.build_sensor_noise_amendment(path, SENSOR_NOISE_COMMIT)
+
+
+def test_sensor_noise_amendment_rejects_source_without_pose_check(tmp_path):
+    changed = copy.deepcopy(json.loads(PILOT_V1_1.read_text(encoding="utf-8")))
+    changed["status"] = "READY_FOR_DEENERGIZED_CAPTURE"
+    path = tmp_path / "changed.json"
+    path.write_text(json.dumps(changed), encoding="utf-8")
+    with pytest.raises(ValueError, match="post-isolation pose"):
+        MODULE.build_sensor_noise_amendment(path, SENSOR_NOISE_COMMIT)

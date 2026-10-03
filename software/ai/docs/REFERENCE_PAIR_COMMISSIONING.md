@@ -156,6 +156,39 @@ test lighting mismatch must fit the same measured envelope admitted by runtime
 reference validity. Values outside that envelope remain an upstream abstention
 condition and cannot be used to relax the detector's frozen gates.
 
+### Delivered-frame sensor-noise measurement
+
+The B0477 pilot also measures the noise floor of the frames the model will
+actually receive. At each measured low, nominal, and high lighting condition,
+hold the clear scene, camera, fixture, device, settled parked pose, focus,
+exposure, gain, and white balance fixed. Discard eight settling frames, then
+retain one continuous burst of 32 full-native 5472 by 3648 YUY2 frames. Preserve
+the original delivered bytes, hashes, monotonic timestamps, available driver
+sequence or timestamps, dropped-frame counts, duplicate-byte counts, locked
+control snapshot, lighting descriptor, and applicable pose-evidence hash.
+
+Compute per-pixel temporal mean, sample standard deviation, median, and robust
+sigma (`1.4826 × MAD`) separately for delivered Y, U, and V. Retain spatial
+noise maps, empirical temporal residuals, adjacent-frame-difference summaries,
+and median/q95/q99/maximum aggregates. Report clipped and saturated pixels
+separately. Do not assume Gaussian, independent, or spatially uniform noise
+before the measurements exist.
+
+The next synthetic camera pipeline starts from a lossless render, has no JPEG
+intermediate, and produces simulated delivered YUY2 4:2:2 input using the
+measured profile. Empirical residual resampling is preferred because it can
+retain spatial and chroma dependence; a fitted distribution requires a held-out
+goodness-of-fit check. The profile is bound to the exact camera mode, controls,
+lighting condition, port, and cable and expires when any of those bindings
+change.
+
+No numerical signal floor or noise multiplier is selected now. After capture,
+obstruction signal is compared with the matching-lighting measured noise, and
+any minimum-detectable-signal rule must be frozen in a new pre-results
+amendment. A synthetic pass using measured noise remains simulation evidence,
+not physical qualification. This amendment does not turn raw pilot pixels into
+training data or alter the escrow rules.
+
 ## Current synthetic smoke finding
 
 The bounded `F/G/H/I` Isaac smoke retained both independent self-crop and
