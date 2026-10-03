@@ -2,6 +2,7 @@ import importlib.util
 import json
 from copy import deepcopy
 from pathlib import Path
+import sys
 
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -81,6 +82,90 @@ UNCERTAINTY_SPEC = importlib.util.spec_from_file_location(
 UNCERTAINTY_PROBE = importlib.util.module_from_spec(UNCERTAINTY_SPEC)
 assert UNCERTAINTY_SPEC.loader is not None
 UNCERTAINTY_SPEC.loader.exec_module(UNCERTAINTY_PROBE)
+sys.modules["nominal_target_uncertainty_probe"] = UNCERTAINTY_PROBE
+MEASURED_RESIDUAL_SPEC = importlib.util.spec_from_file_location(
+    "mujoco_warp_measured_target_calibrated_residual_probe",
+    ROOT
+    / "software/integrations/mujoco_warp/measured_target_calibrated_residual_probe.py",
+)
+MEASURED_RESIDUAL = importlib.util.module_from_spec(MEASURED_RESIDUAL_SPEC)
+assert MEASURED_RESIDUAL_SPEC.loader is not None
+MEASURED_RESIDUAL_SPEC.loader.exec_module(MEASURED_RESIDUAL)
+
+
+def _measured_pose_bundle():
+    bundle = {
+        "schema": "rocell.mujoco_warp_measured_target_pose_bundle.v1",
+        "status": "PASS_EXPLORATORY_EXTENSION_POSE_SOURCE",
+        "scope": "FIVE_TARGET_MEASURED_CANDIDATE_RANK1_SIMULATION_ONLY",
+        "source_sha256": {
+            "target_catalog": MEASURED_RESIDUAL.EXPECTED["target_catalog"]
+        },
+        "target_count": len(MEASURED_RESIDUAL.TARGET_IDS),
+        "target_ids": list(MEASURED_RESIDUAL.TARGET_IDS),
+        "poses": [
+            {"target_id": target_id}
+            for target_id in MEASURED_RESIDUAL.TARGET_IDS
+        ],
+        "hardware_access": False,
+        "hardware_write_count": 0,
+        "physical_movement_count": 0,
+        "physical_authority": False,
+    }
+    bundle["receipt_sha256"] = MEASURED_RESIDUAL.hashlib.sha256(
+        UNCERTAINTY_PROBE.canonical_bytes(bundle)
+    ).hexdigest()
+    return bundle
+
+
+def test_measured_target_extension_binds_catalog_and_has_no_authority():
+    bundle = _measured_pose_bundle()
+    MEASURED_RESIDUAL._validate_pose_bundle(bundle)
+
+    altered = deepcopy(bundle)
+    altered["poses"][0]["target_id"] = "ALTERED"
+    unsigned = {key: value for key, value in altered.items() if key != "receipt_sha256"}
+    altered["receipt_sha256"] = MEASURED_RESIDUAL.hashlib.sha256(
+        UNCERTAINTY_PROBE.canonical_bytes(unsigned)
+    ).hexdigest()
+    try:
+        MEASURED_RESIDUAL._validate_pose_bundle(altered)
+    except ValueError as exc:
+        assert "identity/order" in str(exc)
+    else:
+        raise AssertionError("altered measured target order was accepted")
+
+
+def test_measured_target_extension_keeps_frozen_calibrated_grid():
+    assert MEASURED_RESIDUAL.WORLDS_PER_TARGET == UNCERTAINTY_PROBE.WORLDS_PER_TARGET
+    assert MEASURED_RESIDUAL.HALF_WIDTH_MM == 4.0
+    assert MEASURED_RESIDUAL.SEED == UNCERTAINTY_PROBE.SEED + 3
+    assert len(MEASURED_RESIDUAL.TARGET_IDS) == 5
+
+
+def test_measured_target_extension_scores_absolute_four_mm_region():
+    import numpy as np
+
+    centers = np.zeros((MEASURED_RESIDUAL.TARGET_COUNT, 3))
+    tips = np.zeros(
+        (
+            MEASURED_RESIDUAL.TARGET_COUNT,
+            MEASURED_RESIDUAL.WORLDS_PER_TARGET,
+            3,
+        )
+    )
+    tips[:, :, 0] = 4.1
+    poses = [
+        {"target_id": target_id} for target_id in MEASURED_RESIDUAL.TARGET_IDS
+    ]
+
+    cell = MEASURED_RESIDUAL._score_cells(tips, centers, poses, np)
+
+    assert cell["effective_safe_half_width_mm"] == 4.0
+    assert cell["feasible"] is False
+    assert cell["total_misses"] == (
+        MEASURED_RESIDUAL.TARGET_COUNT * MEASURED_RESIDUAL.WORLDS_PER_TARGET
+    )
 
 
 def test_nominal_target_uncertainty_requires_exact_zero_authority_pose_bundle():

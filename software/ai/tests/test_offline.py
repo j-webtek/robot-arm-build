@@ -397,6 +397,12 @@ class OfflineContractTests(unittest.TestCase):
             self.assertEqual(targets["GRAVE"]["press_point_xy_mm"], [17.12, 108.87])
             self.assertEqual(targets["SHIFT"]["press_point_xy_mm"], [29.3, 51.97])
             self.assertEqual(targets["SHIFT"]["safe_half_extent_mm"], [7.0, 6.4])
+            self.assertEqual(targets["SHIFT"]["coordinate_class"], "MEASURED")
+            self.assertEqual(targets["GRAVE"]["coordinate_class"], "MEASURED")
+            self.assertIn(
+                "MEASURED_HOUSING_LEFT",
+                targets["GRAVE"]["coordinate_provenance"]["x"],
+            )
             self.assertEqual(
                 targets["LEFT_BRACKET"]["press_point_xy_mm"][0], 235.936364
             )
@@ -407,6 +413,10 @@ class OfflineContractTests(unittest.TestCase):
                 targets["BACKSLASH"]["press_point_xy_mm"][0], 274.203636
             )
             self.assertEqual(targets["LEFT_BRACKET"]["safe_half_extent_mm"], [6.0, 6.0])
+            self.assertEqual(
+                targets["BACKSLASH"]["coordinate_class"],
+                "MIXED_MEASURED_ANCHOR_TOPOLOGY_INFERRED",
+            )
             self.assertTrue(all(
                 row["proposal_status"]
                 == "MEASUREMENT_DERIVED_SIMULATION_ONLY_PENDING_SHARED_REVIEW"

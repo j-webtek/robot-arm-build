@@ -617,24 +617,60 @@ def build_keyboard_target_extension_proposal(
             min(7.0, mm("shift_top_height_y") / 2.0 - 1.0),
         ]
         measured_targets = {
-            "SHIFT": {"center": shift_center, "half_extent": shift_half_extent,
-                      "derivation": "DIRECT_HOUSING_ANCHORS_AND_MEASURED_TOP_SIZE"},
-            "GRAVE": {"center": grave_center, "half_extent": standard_half_extent,
-                      "derivation": "DIRECT_HOUSING_ANCHOR_AND_MEASURED_TOP_SIZE"},
+            "SHIFT": {
+                "center": shift_center,
+                "half_extent": shift_half_extent,
+                "derivation": "DIRECT_HOUSING_ANCHORS_AND_MEASURED_TOP_SIZE",
+                "coordinate_class": "MEASURED",
+                "coordinate_provenance": {
+                    "x": "MEASURED_HOUSING_LEFT_TO_KEY_LEFT_EDGE_PLUS_MEASURED_HALF_WIDTH",
+                    "y": "MEASURED_HOUSING_FRONT_TO_KEY_FRONT_EDGE_PLUS_MEASURED_HALF_HEIGHT",
+                    "size": "MEASURED_KEYCAP_TOP_WIDTH_AND_HEIGHT",
+                },
+            },
+            "GRAVE": {
+                "center": grave_center,
+                "half_extent": standard_half_extent,
+                "derivation": "DIRECT_HOUSING_ANCHOR_AND_MEASURED_TOP_SIZE",
+                "coordinate_class": "MEASURED",
+                "coordinate_provenance": {
+                    "x": "MEASURED_HOUSING_LEFT_TO_KEY_LEFT_EDGE_PLUS_MEASURED_HALF_WIDTH",
+                    "y": "MEASURED_1_ROW_ANCHOR_PLUS_OPERATOR_CONFIRMED_ZERO_ROW_OFFSET",
+                    "size": "MEASURED_KEYCAP_TOP_WIDTH_AND_HEIGHT",
+                },
+            },
             "LEFT_BRACKET": {
                 "center": point(q_center[0] + 10.0 * pitch, q_center[1]),
                 "half_extent": standard_half_extent,
                 "derivation": "Q_HOUSING_ANCHOR_PLUS_TEN_MEASURED_PITCHES",
+                "coordinate_class": "MIXED_MEASURED_ANCHOR_TOPOLOGY_INFERRED",
+                "coordinate_provenance": {
+                    "x": "INFERRED_FROM_MEASURED_Q_ANCHOR_PLUS_TEN_MEASURED_PITCHES",
+                    "y": "MEASURED_Q_ROW_HOUSING_FRONT_ANCHOR",
+                    "size": "OPERATOR_CONFIRMED_EQUAL_TO_MEASURED_STANDARD_KEY_TOP",
+                },
             },
             "RIGHT_BRACKET": {
                 "center": point(q_center[0] + 11.0 * pitch, q_center[1]),
                 "half_extent": standard_half_extent,
                 "derivation": "Q_HOUSING_ANCHOR_PLUS_ELEVEN_MEASURED_PITCHES",
+                "coordinate_class": "MIXED_MEASURED_ANCHOR_TOPOLOGY_INFERRED",
+                "coordinate_provenance": {
+                    "x": "INFERRED_FROM_MEASURED_Q_ANCHOR_PLUS_ELEVEN_MEASURED_PITCHES",
+                    "y": "MEASURED_Q_ROW_HOUSING_FRONT_ANCHOR",
+                    "size": "OPERATOR_CONFIRMED_EQUAL_TO_MEASURED_STANDARD_KEY_TOP",
+                },
             },
             "BACKSLASH": {
                 "center": point(q_center[0] + 12.0 * pitch, q_center[1]),
                 "half_extent": standard_half_extent,
                 "derivation": "Q_HOUSING_ANCHOR_PLUS_TWELVE_MEASURED_PITCHES",
+                "coordinate_class": "MIXED_MEASURED_ANCHOR_TOPOLOGY_INFERRED",
+                "coordinate_provenance": {
+                    "x": "INFERRED_FROM_MEASURED_Q_ANCHOR_PLUS_TWELVE_MEASURED_PITCHES",
+                    "y": "MEASURED_Q_ROW_HOUSING_FRONT_ANCHOR",
+                    "size": "OPERATOR_CONFIRMED_EQUAL_TO_MEASURED_STANDARD_KEY_TOP",
+                },
             },
         }
         measured_existing = {"1": one_center, "Q": q_center}
@@ -736,6 +772,12 @@ def build_keyboard_target_extension_proposal(
                 "MANUALLY_ANNOTATED_KEY_CENTER_PROJECTED_INTO_NOMINAL_KEYBOARD_FRAME"
                 if photo_study is not None
                 else seed["press_point_rule"]
+            ),
+            "coordinate_class": (
+                measured["coordinate_class"] if measured is not None else None
+            ),
+            "coordinate_provenance": (
+                measured["coordinate_provenance"] if measured is not None else None
             ),
             "presentation_key_center_xy_mm": (
                 None if seed is None else seed["presentation_center_xy_mm"]
