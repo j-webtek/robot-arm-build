@@ -152,7 +152,8 @@
         "software/ai/eval/estimate_residual_v4_2_error_dependence.py",
         "software/ai/schemas/residual_obstruction_v4_2_error_dependence_v1.schema.json",
         "software/ai/eval/admit_residual_obstruction_v5_4_shards.py",
-        "software/ai/eval/evaluate_residual_v5_4_codec_fidelity.py"
+        "software/ai/eval/evaluate_residual_v5_4_codec_fidelity.py",
+        "software/ai/eval/diagnose_residual_v5_4_codec_failure.py"
       ],
       "test_paths": [
         "software/ai/tests/test_capture_binding.py",
@@ -557,5 +558,5 @@
   "controller_authority": false,
   "hardware_writes": 0,
   "physical_movements": 0,
-  "registry_sha256": "e361d3e7617e8ef918136362bea6da0a567d52d66e7ce950e0242c64c04f5765"
+  "registry_sha256": "aca6c5c0c08f7b17c314dd299ad3f7c6529562595473fe955de72541f59eef13"
 }

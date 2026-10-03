@@ -13,6 +13,12 @@ assert SPEC and SPEC.loader
 MODULE = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(MODULE)
 
+DIAGNOSTIC_PATH = ROOT / "eval" / "diagnose_residual_v5_4_codec_failure.py"
+DIAGNOSTIC_SPEC = importlib.util.spec_from_file_location("codec_diagnostic", DIAGNOSTIC_PATH)
+assert DIAGNOSTIC_SPEC and DIAGNOSTIC_SPEC.loader
+DIAGNOSTIC = importlib.util.module_from_spec(DIAGNOSTIC_SPEC)
+DIAGNOSTIC_SPEC.loader.exec_module(DIAGNOSTIC)
+
 
 def test_yuy2_round_trip_preserves_shape_type_and_neutral_luma() -> None:
     source = np.full((8, 10, 3), 96, dtype=np.uint8)
@@ -50,3 +56,27 @@ def test_gate_requires_every_frozen_limit() -> None:
     result = MODULE._gate(summary, limits)
     assert result["status"] == "FAIL"
     assert result["checks"]["every_edge"] is False
+
+
+def test_diagnostic_counts_near_zero_signals_without_selecting_a_gate() -> None:
+    rows = [
+        {
+            "raw_rgb_signal": 0.5,
+            "yuy2_rgb_signal": 0.6,
+            "raw_edge_signal": 2.0,
+            "yuy2_edge_signal": 2.1,
+            "distortion_to_signal": 0.4,
+        },
+        {
+            "raw_rgb_signal": 2.5,
+            "yuy2_rgb_signal": 2.4,
+            "raw_edge_signal": 4.0,
+            "yuy2_edge_signal": 3.9,
+            "distortion_to_signal": 0.1,
+        },
+    ]
+    result = DIAGNOSTIC.summarize(rows)
+    assert result["raw_rgb_below_2_levels"] == 1
+    assert result["raw_rgb_below_3_levels"] == 2
+    assert result["yuy2_rgb_below_2_levels"] == 1
+    assert result["row_count"] == 2
