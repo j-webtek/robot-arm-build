@@ -287,7 +287,8 @@ Evidence is `E-20261003-AI-564`.
 
 ### MW2S — persistent deterministic campaign sharding
 
-**Status (2026-10-03): claimed; results not observed.** This successor is
+**Result (2026-10-03): `RESEARCH_ONLY`; deterministic campaign sharding
+validated, saturation gate failed.** This successor is
 separate from MW2 and MW2R. It will freeze a compact, hash-bound manifest for
 two disjoint eight-shard campaigns. Every shard contains 16,384 distinct joint
 states generated from its recorded seed under the MW2R joint-limit contract.
@@ -304,6 +305,18 @@ The wall-time metric includes child launch and receipt writing. Failure remains
 evidence and cannot rewrite either earlier result. The scope remains kinematic
 research only with zero rendering, training, contact, hardware writes, physical
 movement, or execution authority.
+
+The exact sixteen-shard manifest passed identity, disjoint-seed, unique-pose,
+finite-state, world-count, zero-overflow, replay, receipt, and cross-mode state
+parity checks. Each worker loaded the model once and reused one allocation for
+all eight shards. Complete sequential wall time was 19.283 seconds; concurrent
+wall time was 12.550 seconds, or 1.537x scaling against the frozen 1.70x gate.
+The concurrent workers slowed to 10.54 and 10.26 seconds from sequential worker
+times of 7.95 and 7.76 seconds, locating the remaining limit in shared host,
+memory-transfer, or device-orchestration contention. The failed performance
+gate is retained. The deterministic manifest and receipt machinery remain
+useful for replayable offline research but do not constitute backend adoption.
+Evidence is `E-20261003-AI-565`.
 
 ### MW3 — camera and geometry parity
 
