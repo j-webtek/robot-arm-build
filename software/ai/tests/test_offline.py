@@ -251,6 +251,89 @@ class OfflineContractTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "LEFT_BRACKET seed"):
                 build_keyboard_target_extension_proposal(catalog, changed, "b" * 40)
 
+    def test_photo_geometry_study_proposes_simulation_only_correction(self) -> None:
+        catalog = AI_DIR.parent / "config" / "nominal_target_profiles.json"
+        geometry = AI_DIR.parents[1] / "presentations" / "blender" / "build_workcell_explainer.py"
+        required = (
+            "SHIFT", "BACKSLASH", "GRAVE", "LEFT_BRACKET", "RIGHT_BRACKET"
+        )
+        number_row = (
+            "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "MINUS", "EQUAL"
+        )
+        with tempfile.TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            photo = root / "photo.jpg"
+            photo.write_bytes(b"synthetic-test-photo")
+            source_sha256 = hashlib.sha256(photo.read_bytes()).hexdigest()
+            inferred = {
+                target_id: {"inferred_local_xy_mm": [20.0 + index, 90.0]}
+                for index, target_id in enumerate((*required, *number_row))
+            }
+            comparison = {
+                target_id: {
+                    "current_local_xy_mm": [22.0 + index * 19.05, 111.0],
+                    "photo_inferred_local_xy_mm": inferred[target_id]["inferred_local_xy_mm"],
+                    "delta_mm": [1.0, -7.0],
+                }
+                for index, target_id in enumerate(number_row)
+            }
+            study = root / "study.json"
+            study.write_text(json.dumps({
+                "schema": "rocell.keyboard_photo_geometry_study.v1",
+                "status": "PHOTO_DERIVED_SIMULATION_ONLY_NOMINAL",
+                "physical_release_effect": "NONE",
+                "source": {"sha256": source_sha256},
+                "fit": {
+                    "median_reprojection_error_px": 0.5,
+                    "max_reprojection_error_px": 1.5,
+                    "mean_reprojection_error_px": 0.7,
+                },
+                "inferred_targets": inferred,
+                "current_number_row_comparison": comparison,
+                "hardware_write_count": 0,
+                "physical_movement_count": 0,
+                "measurement_reading_count": 0,
+            }), encoding="utf-8")
+            result = build_keyboard_target_extension_proposal(
+                catalog,
+                geometry,
+                "c" * 40,
+                photo_geometry_study_path=study,
+                photo_source_path=photo,
+            )
+            targets = {row["target_id"]: row for row in result["targets"]}
+            self.assertEqual(
+                targets["GRAVE"]["proposal_status"],
+                "PHOTO_DERIVED_SIMULATION_ONLY_PENDING_SHARED_REVIEW",
+            )
+            self.assertEqual(targets["GRAVE"]["press_point_xy_mm"], [22.0, 90.0])
+            self.assertEqual(len(result["existing_target_corrections"]), 12)
+            self.assertEqual(
+                result["grave_measurement"]["status"],
+                "AWAITING_DIRECT_PHYSICAL_READINGS",
+            )
+            self.assertNotIn(
+                "GRAVE_DIRECT_CALIPER_MEASUREMENT_PENDING",
+                result["v5_5_render_gate"]["blockers"],
+            )
+            self.assertIn(
+                "PHOTO_DERIVED_GEOMETRY_NOT_INSTALLED_IN_SHARED_CATALOG",
+                result["v5_5_render_gate"]["blockers"],
+            )
+            self.assertFalse(result["shared_catalog_install_authorized"])
+            self.assertFalse(result["physical_commissioning_gate"]["hardware_use_authorized"])
+            study_data = json.loads(study.read_text(encoding="utf-8"))
+            study_data["source"]["sha256"] = "0" * 64
+            study.write_text(json.dumps(study_data), encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "source hash mismatch"):
+                build_keyboard_target_extension_proposal(
+                    catalog,
+                    geometry,
+                    "d" * 40,
+                    photo_geometry_study_path=study,
+                    photo_source_path=photo,
+                )
+
     def test_sticky_keys_virtual_replay_covers_printable_ascii(self) -> None:
         printable_ascii = "".join(chr(value) for value in range(32, 127))
         sequence = compile_virtual_us_sticky_keys(

@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import math
 from pathlib import Path
 import random
 import string
@@ -407,7 +408,12 @@ def build_planner_capability_audit(
 
 
 def build_keyboard_target_extension_proposal(
-    target_catalog_path: Path, geometry_source_path: Path, source_commit: str
+    target_catalog_path: Path,
+    geometry_source_path: Path,
+    source_commit: str,
+    *,
+    photo_geometry_study_path: Path | None = None,
+    photo_source_path: Path | None = None,
 ) -> dict[str, Any]:
     """Propose missing keyboard targets without installing unqualified geometry."""
 
@@ -428,10 +434,62 @@ def build_keyboard_target_extension_proposal(
     if existing_ids.intersection(required):
         raise ValueError("proposal target already exists in active keyboard catalog")
 
+    photo_study: dict[str, Any] | None = None
+    photo_study_binding: dict[str, Any] | None = None
+    if photo_geometry_study_path is not None or photo_source_path is not None:
+        if photo_geometry_study_path is None or photo_source_path is None:
+            raise ValueError("photo study and source image must be supplied together")
+        photo_study = json.loads(photo_geometry_study_path.read_text(encoding="utf-8"))
+        if photo_study.get("schema") != "rocell.keyboard_photo_geometry_study.v1":
+            raise ValueError("unexpected photo geometry study schema")
+        if photo_study.get("status") != "PHOTO_DERIVED_SIMULATION_ONLY_NOMINAL":
+            raise ValueError("photo geometry study is not simulation-only nominal")
+        if photo_study.get("physical_release_effect") != "NONE":
+            raise ValueError("photo geometry study claims physical release effect")
+        for count_field in (
+            "hardware_write_count", "physical_movement_count", "measurement_reading_count"
+        ):
+            if photo_study.get(count_field) != 0:
+                raise ValueError(f"photo geometry study has nonzero {count_field}")
+        source_sha256 = hashlib.sha256(photo_source_path.read_bytes()).hexdigest()
+        if photo_study.get("source", {}).get("sha256") != source_sha256:
+            raise ValueError("photo geometry study source hash mismatch")
+        fit = photo_study.get("fit", {})
+        for field in (
+            "median_reprojection_error_px", "max_reprojection_error_px",
+            "mean_reprojection_error_px",
+        ):
+            value = fit.get(field)
+            if not isinstance(value, (int, float)) or not math.isfinite(value) or value < 0:
+                raise ValueError(f"invalid photo geometry fit metric {field}")
+        inferred = photo_study.get("inferred_targets")
+        needed_photo_ids = set(required) | {
+            "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "MINUS", "EQUAL"
+        }
+        if not isinstance(inferred, dict) or set(inferred) != needed_photo_ids:
+            raise ValueError("photo geometry study target coverage mismatch")
+        for target_id, row in inferred.items():
+            point = row.get("inferred_local_xy_mm") if isinstance(row, dict) else None
+            if (
+                not isinstance(point, list)
+                or len(point) != 2
+                or any(not isinstance(value, (int, float)) or not math.isfinite(value) for value in point)
+            ):
+                raise ValueError(f"invalid photo geometry point for {target_id}")
+        photo_study_binding = {
+            "path": photo_geometry_study_path.as_posix(),
+            "file_sha256": hashlib.sha256(photo_geometry_study_path.read_bytes()).hexdigest(),
+            "source_image_path": photo_source_path.as_posix(),
+            "source_image_sha256": source_sha256,
+            "status": photo_study["status"],
+            "fit_diagnostics_only": fit,
+            "physical_release_effect": "NONE",
+        }
+
     targets: list[dict[str, Any]] = []
     for target_id in required:
         seed = _TARGET_EXTENSION_SEEDS.get(target_id)
-        if seed is None:
+        if seed is None and photo_study is None:
             targets.append({
                 "target_id": target_id,
                 "proposal_status": "BLOCKED_AWAITING_DIRECT_CALIPER_MEASUREMENT",
@@ -451,22 +509,43 @@ def build_keyboard_target_extension_proposal(
                 "physical_parked_arm_self_occlusion": "COMMISSIONING_ONLY_NOT_RENDER_GATE",
             })
             continue
+        photo_point = (
+            photo_study["inferred_targets"][target_id]["inferred_local_xy_mm"]
+            if photo_study is not None
+            else None
+        )
         targets.append({
             "target_id": target_id,
-            "proposal_status": "PROVISIONAL_SIMULATION_ONLY_PENDING_SHARED_REVIEW",
-            "press_point_xy_mm": seed["proposed_press_point_xy_mm"],
-            "safe_half_extent_mm": seed["proposed_safe_half_extent_mm"],
-            "press_point_rule": seed["press_point_rule"],
-            "presentation_key_center_xy_mm": seed["presentation_center_xy_mm"],
-            "presentation_key_width_mm": seed["presentation_width_mm"],
+            "proposal_status": (
+                "PHOTO_DERIVED_SIMULATION_ONLY_PENDING_SHARED_REVIEW"
+                if photo_study is not None
+                else "PROVISIONAL_SIMULATION_ONLY_PENDING_SHARED_REVIEW"
+            ),
+            "press_point_xy_mm": photo_point or seed["proposed_press_point_xy_mm"],
+            "safe_half_extent_mm": (
+                [7.0, 7.0] if seed is None else seed["proposed_safe_half_extent_mm"]
+            ),
+            "press_point_rule": (
+                "MANUALLY_ANNOTATED_KEY_CENTER_PROJECTED_INTO_NOMINAL_KEYBOARD_FRAME"
+                if photo_study is not None
+                else seed["press_point_rule"]
+            ),
+            "presentation_key_center_xy_mm": (
+                None if seed is None else seed["presentation_center_xy_mm"]
+            ),
+            "presentation_key_width_mm": (
+                None if seed is None else seed["presentation_width_mm"]
+            ),
             "geometry_source": {
                 "path": geometry_source_path.as_posix(),
                 "file_sha256": hashlib.sha256(geometry_source_path.read_bytes()).hexdigest(),
                 "source_state": "PRESENTATION_ONLY_NOT_CONTROL_OR_COMMISSIONING_AUTHORITY",
+                "photo_study": photo_study_binding,
             },
             "geometry_limitation": (
-                "The source is a visual presentation model, not a product drawing or measurement. "
-                "The proposed region may seed synthetic/shared review only."
+                "The source is a visual presentation model and, when present, a single manually "
+                "annotated angled photograph. Neither is a product drawing or measurement. The "
+                "proposed region may seed synthetic/shared review only."
             ),
             "simulated_camera_visibility": "PENDING_SIMULATED_PARKED_CAMERA_CHECK",
             "arm_runtime_ik": "PENDING_ARM_LANE_READ_ONLY_IK_CHECK",
@@ -476,7 +555,8 @@ def build_keyboard_target_extension_proposal(
         })
 
     render_blockers = [
-        "GRAVE_DIRECT_CALIPER_MEASUREMENT_PENDING",
+        *([] if photo_study is not None else ["GRAVE_DIRECT_CALIPER_MEASUREMENT_PENDING"]),
+        *(["PHOTO_DERIVED_GEOMETRY_NOT_INSTALLED_IN_SHARED_CATALOG"] if photo_study is not None else []),
         "FIVE_TARGETS_NOT_INSTALLED_IN_SHARED_CATALOG",
         "SIMULATED_PARKED_CAMERA_VISIBILITY_NOT_PROVEN",
         "SIMULATED_PARKED_ARM_NON_OCCLUSION_NOT_PROVEN",
@@ -486,6 +566,17 @@ def build_keyboard_target_extension_proposal(
         "V5_5_IDENTITIES_NOT_AMENDED_TO_80_TARGETS",
         "V5_5_POWER_CHECK_NOT_RERUN",
     ]
+    existing_target_corrections: list[dict[str, Any]] = []
+    if photo_study is not None:
+        for target_id in ("1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "MINUS", "EQUAL"):
+            row = photo_study["current_number_row_comparison"][target_id]
+            existing_target_corrections.append({
+                "target_id": target_id,
+                "current_press_point_xy_mm": row["current_local_xy_mm"],
+                "photo_derived_press_point_xy_mm": row["photo_inferred_local_xy_mm"],
+                "delta_mm": row["delta_mm"],
+                "status": "SIMULATION_ONLY_CORRECTION_PENDING_SHARED_REVIEW",
+            })
     measurement_encoded = json.dumps(
         _GRAVE_MEASUREMENT_METHOD,
         sort_keys=True,
@@ -504,6 +595,8 @@ def build_keyboard_target_extension_proposal(
             "unchanged": True,
         },
         "targets": targets,
+        "existing_target_corrections": existing_target_corrections,
+        "photo_geometry_study": photo_study_binding,
         "shared_catalog_install_authorized": False,
         "compiler_expansion_authorized": False,
         "grave_measurement": {
@@ -511,6 +604,9 @@ def build_keyboard_target_extension_proposal(
             "method": _GRAVE_MEASUREMENT_METHOD,
             "method_sha256": hashlib.sha256(measurement_encoded).hexdigest(),
             "derived_geometry": None,
+            "simulation_photo_nominal": (
+                None if photo_study is None else photo_study["inferred_targets"]["GRAVE"]
+            ),
         },
         "v5_5_render_gate": {
             "evidence_scope": "SIMULATION_AND_OFFLINE_ARM_RUNTIME_ONLY",
@@ -613,12 +709,18 @@ def main() -> int:
     parser.add_argument("--source-commit", required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--target-extension-geometry-source", type=Path)
+    parser.add_argument("--photo-geometry-study", type=Path)
+    parser.add_argument("--photo-source", type=Path)
     args = parser.parse_args()
     if args.target_extension_geometry_source is None:
         result = build_planner_capability_audit(args.target_catalog, args.source_commit)
     else:
         result = build_keyboard_target_extension_proposal(
-            args.target_catalog, args.target_extension_geometry_source, args.source_commit
+            args.target_catalog,
+            args.target_extension_geometry_source,
+            args.source_commit,
+            photo_geometry_study_path=args.photo_geometry_study,
+            photo_source_path=args.photo_source,
         )
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8", newline="\n")
