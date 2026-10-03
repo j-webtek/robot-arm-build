@@ -124,7 +124,9 @@
         "software/ai/eval/classify_residual_obstruction_v4_2_remedies.py",
         "software/ai/schemas/residual_obstruction_v4_2_remedy_classification_v1.schema.json",
         "software/ai/eval/build_residual_obstruction_physical_pilot_predeclaration.py",
-        "software/ai/schemas/residual_obstruction_physical_pilot_v1.schema.json"
+        "software/ai/schemas/residual_obstruction_physical_pilot_v1.schema.json",
+        "software/ai/eval/build_residual_obstruction_physical_pilot_v1_1.py",
+        "software/ai/schemas/residual_obstruction_physical_pilot_v1_1.schema.json"
       ],
       "test_paths": [
         "software/ai/tests/test_capture_binding.py",
@@ -165,7 +167,8 @@
         "software/ai/tests/test_residual_obstruction_v4_2_admission.py",
         "software/ai/tests/test_residual_obstruction_v4_2_gates.py",
         "software/ai/tests/test_residual_obstruction_v4_2_remedy_classification.py",
-        "software/ai/tests/test_residual_obstruction_physical_pilot.py"
+        "software/ai/tests/test_residual_obstruction_physical_pilot.py",
+        "software/ai/tests/test_residual_obstruction_physical_pilot_v1_1.py"
       ],
       "documentation_paths": [
         "software/ai/docs/MODEL_TO_ARM_TRANSLATION_ASSURANCE.md",
@@ -213,9 +216,10 @@
         "software/ai/eval/residual_obstruction_v4_2_hard_case_audit_v1.json",
         "software/ai/eval/residual_obstruction_v4_2_robustness_v1.json",
         "software/ai/eval/residual_obstruction_v4_2_remedy_classification_v1.json",
-        "software/ai/eval/residual_obstruction_physical_pilot_v1.json"
+        "software/ai/eval/residual_obstruction_physical_pilot_v1.json",
+        "software/ai/eval/residual_obstruction_physical_pilot_v1_1.json"
       ],
-      "current_result": "The real-camera remedy pilot is ready for de-energized capture under frozen labels, dual coverage measurement, two measurement-only sessions, and one unopened escrow session. V4.2 remains rejected and v5 remains unselected.",
+      "current_result": "The de-energized physical pilot now requires post-isolation settled-pose evidence to detect servo sag. Its one-session escrow is explicitly a real-world sanity check, not a 2% miss-rate or deployment gate.",
       "limitations": [
         "No commissioned projection renderer, measured dilation artifact, or physical deployment qualification is installed.",
         "The geometry-first replay uses the same Isaac semantic mask that generated the synthetic label and therefore cannot estimate real projection error.",
@@ -239,9 +243,10 @@
         "V4.2 evaluation reuses training obstruction families, primitive geometry formulas, and materials; it cannot measure unseen-obstruction identity generalization and contains no articulated hand asset.",
         "A candidate commissioning rule should prohibit cable routing across keyboard and phone interaction surfaces; this physical mitigation cannot override model gate failures.",
         "The residual v4.2 remedy classification contains no physical pilot images or measured runtime-admitted lighting envelope and selects no successor.",
-        "The physical pilot predeclaration contains no physical pixels; its 20% boundary rows are separately reported, and no pilot row is authorized for model training."
+        "The physical pilot predeclaration contains no physical pixels; its 20% boundary rows are separately reported, and no pilot row is authorized for model training.",
+        "No post-isolation silhouette evidence exists yet, its tolerance remains unset pending the commissioned park profile, and the one-session escrow has no statistical power claim."
       ],
-      "next_gate": "Capture measurement sessions physical_pilot_measurement_01 and physical_pilot_measurement_02 with the arm de-energized, retain all label artifacts and lighting descriptors, and hash but do not open physical_pilot_escrow_01.",
+      "next_gate": "Establish the commissioned park silhouette tolerance, then capture physical_pilot_measurement_01 with post-isolation pose evidence before each group and an end-of-session bracket; retain invalid and unresolved rows.",
       "model_motion_batch_boundary": true,
       "controller_authority": false,
       "hardware_writes": 0,
@@ -491,5 +496,5 @@
   "controller_authority": false,
   "hardware_writes": 0,
   "physical_movements": 0,
-  "registry_sha256": "a86221ee03e474d2b55ba658ae7aa59b146ad4a5aa5996572dc806d5fb0feaee"
+  "registry_sha256": "0ed5a2e58a31402d8a8e8e0af6ac132d1643ea1a6be4bd6373bba8a3c834bc4e"
 }

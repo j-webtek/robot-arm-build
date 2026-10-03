@@ -93,6 +93,22 @@ park pose is established before the capture phase, which performs zero robot
 movements and zero hardware writes. An energized row is retained as invalid and
 cannot be used, with the hand cases requiring explicit energy-isolation proof.
 
+Because an unpowered arm can sag, pre-isolation pose evidence is insufficient.
+After power isolation, bind the actual settled capture pose by comparing at
+least two stable frames with the commissioned park silhouette. The allowed
+silhouette deviation comes from the commissioned park profile and remains unset
+until that profile exists. Passive measured joint feedback may be retained as a
+secondary check; commanded joint state is prohibited. Refresh this evidence
+before each capture group, bracket it at session end, and bind every image to
+the applicable pose-evidence SHA-256. A failed check or manual reposition during
+the capture phase makes the row invalid, retained, and unusable.
+
+The single `physical_pilot_escrow_01` session is a real-world sanity check only.
+It is not a statistical gate and cannot support a 2% miss-rate or deployment
+claim. A future powered real evaluation requires a separately authorized,
+statistically planned, and newly captured campaign; the pilot escrow cannot be
+reused as that evaluation.
+
 The physical observations determine which remedy is tested first. Edge or
 texture difference channels are first because they directly address the
 low-contrast cable boundary. Higher target-context resolution is second because

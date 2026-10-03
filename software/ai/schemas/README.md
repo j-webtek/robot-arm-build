@@ -296,6 +296,10 @@ separates clear, boundary, and obstructed cable coverage; requires placement
 and mask labels; assigns measurement and unopened escrow sessions before
 capture; and requires an isolated, de-energized arm with zero capture-phase
 movement or hardware writes.
+Its [v1.1 amendment](residual_obstruction_physical_pilot_v1_1.schema.json)
+binds the settled pose after isolation so servo sag cannot silently invalidate
+the camera geometry, and limits the one-session escrow to a non-statistical
+real-world sanity check. A powered real evaluation remains a separate campaign.
 The [parked-pose campaign](parked_pose_qualification_campaign_v1.schema.json)
 and [result](parked_pose_qualification_result_v1.schema.json) keep synthetic
 perturbation evidence separate from authorized physical park-and-settle cycles.
