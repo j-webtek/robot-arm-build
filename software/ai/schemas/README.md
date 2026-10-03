@@ -300,6 +300,11 @@ Its [v1.1 amendment](residual_obstruction_physical_pilot_v1_1.schema.json)
 binds the settled pose after isolation so servo sag cannot silently invalidate
 the camera geometry, and limits the one-session escrow to a non-statistical
 real-world sanity check. A powered real evaluation remains a separate campaign.
+The [physical ChArUco readiness probe](physical_charuco_probe_v1.schema.json)
+records a read-only Windows device inventory and an OpenCV ArUco tooling smoke.
+It explicitly separates the retained 5x7 smoke board from the production 12x9
+camera-calibration contract. A blocked receipt has zero captures, calibration,
+hardware writes, movements, or physical authority and cannot install intrinsics.
 The [parked-pose campaign](parked_pose_qualification_campaign_v1.schema.json)
 and [result](parked_pose_qualification_result_v1.schema.json) keep synthetic
 perturbation evidence separate from authorized physical park-and-settle cycles.

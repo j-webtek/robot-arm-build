@@ -52,6 +52,27 @@ The first collection should prioritize one keyboard cluster including `G` and
 one phone-key cluster. It must retain failures and original bytes. A successful
 small collection does not qualify all 75 targets or authorize execution.
 
+### Camera-calibration readiness
+
+The production calibration contract currently requires the intended Arducam
+B0477 at its native 5472 by 3648 YUY2 mode at 4 fps and a rigidly backed 12 by
+9 ChArUco board using `DICT_5X5_1000`, 30 mm squares, and 22 mm markers. The
+older retained 5 by 7, 25/17.5 mm `DICT_5X5_100` board is useful for an OpenCV
+tooling smoke only and must not be used to create production calibration.
+
+Before physical capture, verify the camera's persistent identity and exact mode,
+retain the production board asset, measure its printed square and marker scale,
+and verify rigid backing. Capture 24 training views and 8 held-out views across
+angles and positions, including image corners and edges where distortion is
+strongest. Report training and held-out reprojection separately. Approximately
+0.5 pixel reprojection error is a diagnostic target for this setup, not a
+deployment threshold or automatic qualification decision.
+
+The current read-only probe is retained in
+`physical_charuco_probe_blocked_v1.json`. It found no connected Windows Camera
+or Image-class device. Its zero-capture result is a blocked readiness receipt,
+not camera calibration evidence.
+
 ## Residual v4.2 remedy pilot
 
 Residual v4.2 remains rejected. Its cable rows remain part of the required
