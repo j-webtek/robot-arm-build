@@ -1,6 +1,7 @@
 # MuJoCo Warp secondary-oracle integration plan
 
-- **Document status:** Active architecture plan; implementation not started
+- **Document status:** Active architecture plan; MW0 through MW2P completed,
+  MW2F schedule-scale FK parity active
 - **Audience:** Runtime, simulation, AI, workcell, and repository contributors
 - **Owner:** Simulation workstream with AI and arm-runtime review
 - **Reviewed:** 2026-10-03
@@ -92,6 +93,33 @@ output directly.
 | Segmentation, depth, and occlusion masks | Isaac/analytic geometry | Batched secondary source after parity |
 | Contact sensitivity | Measured mechanics plus differential simulation | Provisional sweeps after MW4 |
 | Hardware qualification | Physical arm, camera, host outcome evidence | No role |
+
+### Explicit simulator job descriptions
+
+Isaac Sim is the perception simulator. It owns rendered camera evidence,
+lighting, obstruction appearance, camera-format studies, and visual scene
+variation. MuJoCo Warp does not duplicate that qualification path.
+
+MuJoCo Warp is the batched kinematics and provisional physics simulator. Its
+near-term job is to evaluate many admitted joint states and answer how joint
+position uncertainty propagates to tool-tip landing error. Once its kinematic
+model passes differential parity, those exploratory distributions may inform
+tool-tip error budgets, analytic arm-silhouette dilation studies, and offline
+stress screening of runtime IK/collision results. They do not install a
+physical bound or replace the deterministic runtime.
+
+Kinematics and dynamics are separate claims. The governed model can support
+kinematic forward projection because its joint frames and limits are bound.
+Servo tracking, backlash, friction, overshoot, contact force, and key travel
+remain unknown. Dynamic or contact results remain exploratory until measured
+servo step responses and installed mechanics are bound to the model.
+
+The first powered repeatability capture is a future physical transition. It
+requires a separately predeclared plan with the workcell cleared of the
+keyboard, phone, and hands; reduced speed and torque; an accessible emergency
+stop; poses well inside joint limits; and a deterministic script with no model
+in the loop. This integration stage performs zero hardware writes and zero
+physical movements.
 
 ## Simulator-neutral contract
 
@@ -376,6 +404,30 @@ zero model loads or allocations. Synthetic qualifying mode failed closed. A
 seed-altered manifest failed both derivation and manifest-hash validation before
 GPU initialization. No physical profile was created or claimed. Evidence is
 `E-20261003-AI-567`.
+
+### MW2F — schedule-scale forward-kinematics differential
+
+**Status: active, frozen before results.** Reuse the exact 133-state schedule
+bundle from `E-20260929-INT-451`, its retained Isaac replay receipt, the
+governed URDF, and the MW1 generated MJCF. Replay every ordered joint vector
+through the arm-runtime reference, standard MuJoCo, and MuJoCo Warp. Compare
+the retained Isaac result against the same runtime reference and, when a new
+full-sample Isaac receipt is available, perform direct pairwise comparisons.
+
+Frozen gates reuse established limits rather than thresholds selected from the
+new result: standard MuJoCo versus runtime at most 0.1 mm; MuJoCo Warp versus
+standard MuJoCo at most 0.01 mm; and retained Isaac versus runtime at most
+0.25 mm. Every source and generated model must match its exact SHA-256, all 133
+samples must preserve order and remain finite, and all authority fields must
+remain empty/false.
+
+Same-stack replay must be byte identical after excluding measured wall time.
+Receipts record the operating system, Python, MuJoCo, MuJoCo Warp, Warp,
+driver, and GPU identity. A future different driver/GPU/toolchain is expected
+to reproduce within the frozen numerical tolerances rather than byte for byte.
+This increment claims kinematic differential evidence only: no uncertainty
+qualification, silhouette margin, collision validity, dynamics, contact,
+rendering, hardware access, or physical authority.
 
 ### MW3 — camera and geometry parity
 
