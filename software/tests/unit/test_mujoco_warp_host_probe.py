@@ -67,6 +67,106 @@ FOUR_SPEC = importlib.util.spec_from_file_location(
 FOUR_PROBE = importlib.util.module_from_spec(FOUR_SPEC)
 assert FOUR_SPEC.loader is not None
 FOUR_SPEC.loader.exec_module(FOUR_PROBE)
+GAP_SPEC = importlib.util.spec_from_file_location(
+    "mujoco_warp_schedule_gap_diagnostic",
+    ROOT / "software/integrations/mujoco_warp/schedule_gap_diagnostic.py",
+)
+GAP_PROBE = importlib.util.module_from_spec(GAP_SPEC)
+assert GAP_SPEC.loader is not None
+GAP_SPEC.loader.exec_module(GAP_PROBE)
+
+
+def fake_schedule_gap_inputs():
+    arm_rows = []
+    mw2f_rows = []
+    for sequence in range(GAP_PROBE.SAMPLE_COUNT):
+        desired = [float(sequence), 2.0, 3.0]
+        achieved = [float(sequence) + 0.01, 2.0, 3.0]
+        arm_rows.append(
+            {
+                "waypoint_sequence": sequence,
+                "phase": "CONTACT",
+                "semantic_target": "A",
+                "accepted": True,
+                "ik_status": "CONVERGED",
+                "hardware_commands_generated": 0,
+                "achieved_tip_position_board_mm": achieved,
+                "position_error_mm": 0.01,
+                "attempt_count": 1,
+                "selected_attempt_index": 0,
+                "solver_weighted_task_jacobian": {
+                    "target_tip_position_board_mm": {
+                        "frame": "board",
+                        "x": desired[0],
+                        "y": desired[1],
+                        "z": desired[2],
+                    },
+                    "condition_number": 10.0 + sequence,
+                    "full_column_rank": True,
+                },
+            }
+        )
+        mw2f_rows.append(
+            {
+                "sequence": sequence,
+                "phase": "CONTACT",
+                "target_id": "A",
+                "schedule_reference_tip_board_mm": desired,
+                "rocell_tip_board_mm": achieved,
+            }
+        )
+    arm = {
+        "arm_source_commit": GAP_PROBE.EXPECTED_ARM_SOURCE_COMMIT,
+        "ik": {
+            "schema": "rocell.typing_trajectory_ik_screen.v1",
+            "sample_count": GAP_PROBE.SAMPLE_COUNT,
+            "joint_results": arm_rows,
+            "hardware_access": False,
+            "hardware_commands_generated": 0,
+            "physical_authority": False,
+            "controller_commands": [],
+        },
+    }
+    mw2f = {
+        "schema": "rocell.mujoco_warp_schedule_fk_differential.v1",
+        "sample_count": GAP_PROBE.SAMPLE_COUNT,
+        "rows": mw2f_rows,
+        "hardware_access": False,
+        "physical_authority": False,
+        "hardware_write_count": 0,
+        "physical_movement_count": 0,
+    }
+    return arm, mw2f
+
+
+def test_schedule_gap_diagnostic_attributes_exact_ik_residual_without_authority():
+    arm, mw2f = fake_schedule_gap_inputs()
+    result = GAP_PROBE.diagnose(arm, mw2f)
+    assert result["status"] == "CONFIRMED_ACCEPTED_IK_RESIDUAL"
+    assert all(result["gates"].values())
+    assert result["interpretation"]["serialization_rounding_supported"] is False
+    assert result["interpretation"]["physical_arm_accuracy_claim"].startswith("NOT_TESTED")
+    assert result["hardware_write_count"] == 0
+    assert result["physical_movement_count"] == 0
+
+
+def test_schedule_gap_diagnostic_rejects_semantic_and_authority_tampering():
+    arm, mw2f = fake_schedule_gap_inputs()
+    mw2f["rows"][0]["target_id"] = "B"
+    try:
+        GAP_PROBE.diagnose(arm, mw2f)
+    except ValueError as exc:
+        assert "semantics" in str(exc)
+    else:
+        raise AssertionError("semantic mismatch was accepted")
+    arm, mw2f = fake_schedule_gap_inputs()
+    arm["ik"]["physical_authority"] = True
+    try:
+        GAP_PROBE.diagnose(arm, mw2f)
+    except ValueError as exc:
+        assert "authority" in str(exc)
+    else:
+        raise AssertionError("authority-bearing report was accepted")
 
 
 def frozen_schedule_inputs():
