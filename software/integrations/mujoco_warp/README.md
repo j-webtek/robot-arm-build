@@ -31,6 +31,16 @@ model load can be attempted. The selected candidate resolves MuJoCo Warp 3.13.0
 with MuJoCo 3.14.0, as allowed by the package's `mujoco>=3.12.0` dependency.
 Later parity gates must still validate that exact pair.
 
+## Persistent research campaigns
+
+`persistent_campaign_probe.py` creates a compact, deterministic scenario
+manifest and executes its two device shards either sequentially or concurrently.
+Each worker loads the kinematic research model once and reuses one 16,384-world
+allocation across every shard. Receipts bind every seed and initial/final state
+hash, making a failed or interesting population replayable without storing a
+large state tensor in Git. This remains an offline research facility and grants
+no contact, rendering, planner, controller, transport, or execution authority.
+
 ## Removal
 
 Delete `C:\MuJoCoWarp\env_3_13_0`, `C:\MuJoCoWarp\wheels\3.13.0`, and the
