@@ -1,4 +1,4 @@
-"""Apply the frozen MW2UC calibrated-residual grid to five new keyboard targets."""
+"""Apply the frozen MW2UC calibrated-residual grid to measured catalog targets."""
 
 from __future__ import annotations
 
@@ -14,14 +14,18 @@ import nominal_target_uncertainty_probe as frozen
 
 
 EXPECTED = {
-    "pose_bundle": "0b4d3da8a8299387558b1373f8d5433d3d1063c2e1bff68ff32ec678c85f1665",
     "target_catalog": "0fe3c013a30c42e5b0bb663571f6a5b2996e353b0130c1a6905cb34101b011d8",
     "virtual_profile": "38b348ace299140e5908cf367fc15f32b33bebe9b064d5efffe5dcf95f7b4634",
     "mjcf": "448b711ae30ed3df8a5f5eff66ecb53034f6540eade7264388d86e3911a7a8a0",
     "frozen_mw2uc_probe": "5570a43c39c15e2c7edac2c4526430228f6a8921de5f9944cf475fb9eeaa3c63",
 }
-TARGET_IDS = ("BACKSLASH", "GRAVE", "LEFT_BRACKET", "RIGHT_BRACKET", "SHIFT")
-TARGET_COUNT = len(TARGET_IDS)
+EXPECTED_POSE_BUNDLE_SHA256 = {
+    "five": "0b4d3da8a8299387558b1373f8d5433d3d1063c2e1bff68ff32ec678c85f1665",
+    "candidate51": "267534d7247b43732be15d54e4036738e179829ba0f4bf1ba8b3807b71f7861f",
+}
+FIVE_TARGET_IDS = ("BACKSLASH", "GRAVE", "LEFT_BRACKET", "RIGHT_BRACKET", "SHIFT")
+TARGET_IDS = FIVE_TARGET_IDS
+TARGET_COUNT = len(FIVE_TARGET_IDS)
 JOINT_ORDER = (
     "base_link_to_link1",
     "link1_to_link2",
@@ -38,7 +42,9 @@ def sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def build_pose_bundle(workspace: Path, target_catalog: Path) -> dict[str, Any]:
+def build_pose_bundle(
+    workspace: Path, target_catalog: Path, target_scope: str = "five"
+) -> dict[str, Any]:
     ai_dir = workspace / "software/ai"
     source_dir = workspace / "software/src"
     sys.path[:0] = [str(ai_dir), str(source_dir)]
@@ -65,8 +71,17 @@ def build_pose_bundle(workspace: Path, target_catalog: Path) -> dict[str, Any]:
     candidate = load_nominal_target_catalog(workspace, target_catalog)
     if len(candidate.keyboard_targets) != 51 or len(candidate.phone_targets) != 29:
         raise ValueError("measured target candidate coverage mismatch")
-    if not set(TARGET_IDS) <= set(candidate.keyboard_targets):
+    if not set(FIVE_TARGET_IDS) <= set(candidate.keyboard_targets):
         raise ValueError("measured target candidate lacks extension targets")
+    target_ids = (
+        FIVE_TARGET_IDS
+        if target_scope == "five"
+        else tuple(candidate.keyboard_targets)
+    )
+    if target_scope not in EXPECTED_POSE_BUNDLE_SHA256:
+        raise ValueError("unsupported measured target scope")
+    if target_scope == "candidate51" and len(target_ids) != 51:
+        raise ValueError("measured candidate keyboard target count changed")
     hardware_profile = _simulation_profile(base_context)
     context = replace(base_context, targets=candidate)
     scenario, layout = promoted_rank1_robot_layout(context, profile_path)
@@ -84,11 +99,11 @@ def build_pose_bundle(workspace: Path, target_catalog: Path) -> dict[str, Any]:
     validate_scene_park_xy(context.scene, settings.park_xy_board_mm)
     typing_profile = development_keyboard_profile()
     poses = []
-    for target_id in TARGET_IDS:
+    for target_id in target_ids:
         plan = ActionPlan.from_text(
             device=Device.KEYBOARD,
             profile_id=typing_profile.profile_id,
-            text=f"mw2uc-extension-pose:{target_id}",
+            text=f"mw2uc-{target_scope}-pose:{target_id}",
             actions=(PressKey(target_id),),
             required_calibrations=typing_profile.required_calibrations,
         )
@@ -139,8 +154,17 @@ def build_pose_bundle(workspace: Path, target_catalog: Path) -> dict[str, Any]:
         })
     result = {
         "schema": "rocell.mujoco_warp_measured_target_pose_bundle.v1",
-        "status": "PASS_EXPLORATORY_EXTENSION_POSE_SOURCE",
-        "scope": "FIVE_TARGET_MEASURED_CANDIDATE_RANK1_SIMULATION_ONLY",
+        "status": (
+            "PASS_EXPLORATORY_EXTENSION_POSE_SOURCE"
+            if target_scope == "five"
+            else "PASS_EXPLORATORY_CANDIDATE51_POSE_SOURCE"
+        ),
+        "scope": (
+            "FIVE_TARGET_MEASURED_CANDIDATE_RANK1_SIMULATION_ONLY"
+            if target_scope == "five"
+            else "EXACT_51_KEY_MEASURED_CANDIDATE_RANK1_SIMULATION_ONLY"
+        ),
+        "target_scope": target_scope,
         "source_sha256": {
             "target_catalog": sha256(target_catalog),
             "virtual_profile": sha256(profile_path),
@@ -148,7 +172,7 @@ def build_pose_bundle(workspace: Path, target_catalog: Path) -> dict[str, Any]:
         "base_catalog_sha256": base_context.targets.content_sha256,
         "layout_overlay": layout,
         "target_count": len(poses),
-        "target_ids": list(TARGET_IDS),
+        "target_ids": list(target_ids),
         "joint_order": list(JOINT_ORDER),
         "poses": poses,
         "hardware_access": False,
@@ -169,21 +193,37 @@ def build_pose_bundle(workspace: Path, target_catalog: Path) -> dict[str, Any]:
     return result
 
 
-def _validate_pose_bundle(bundle: dict[str, Any]) -> None:
+def _validate_pose_bundle(
+    bundle: dict[str, Any], target_scope: str = "five"
+) -> tuple[str, ...]:
+    target_ids = tuple(bundle.get("target_ids", []))
+    expected_status = (
+        "PASS_EXPLORATORY_EXTENSION_POSE_SOURCE"
+        if target_scope == "five"
+        else "PASS_EXPLORATORY_CANDIDATE51_POSE_SOURCE"
+    )
+    expected_scope = (
+        "FIVE_TARGET_MEASURED_CANDIDATE_RANK1_SIMULATION_ONLY"
+        if target_scope == "five"
+        else "EXACT_51_KEY_MEASURED_CANDIDATE_RANK1_SIMULATION_ONLY"
+    )
     if (
         bundle.get("schema") != "rocell.mujoco_warp_measured_target_pose_bundle.v1"
-        or bundle.get("status") != "PASS_EXPLORATORY_EXTENSION_POSE_SOURCE"
-        or bundle.get("scope") != "FIVE_TARGET_MEASURED_CANDIDATE_RANK1_SIMULATION_ONLY"
-        or bundle.get("target_count") != TARGET_COUNT
-        or bundle.get("target_ids") != list(TARGET_IDS)
-        or len(bundle.get("poses", [])) != TARGET_COUNT
+        or bundle.get("status") != expected_status
+        or bundle.get("scope") != expected_scope
+        or bundle.get("target_scope") != target_scope
+        or bundle.get("target_count") != len(target_ids)
+        or len(bundle.get("poses", [])) != len(target_ids)
+        or (target_scope == "five" and target_ids != FIVE_TARGET_IDS)
+        or (target_scope == "candidate51" and len(target_ids) != 51)
+        or len(set(target_ids)) != len(target_ids)
     ):
         raise ValueError("unsupported measured-target pose bundle")
     unsigned = dict(bundle)
     claimed = unsigned.pop("receipt_sha256", None)
     if claimed != hashlib.sha256(frozen.canonical_bytes(unsigned)).hexdigest():
         raise ValueError("measured-target pose bundle canonical receipt mismatch")
-    if [row.get("target_id") for row in bundle["poses"]] != list(TARGET_IDS):
+    if [row.get("target_id") for row in bundle["poses"]] != list(target_ids):
         raise ValueError("measured-target pose identity/order changed")
     if bundle.get("source_sha256", {}).get("target_catalog") != EXPECTED["target_catalog"]:
         raise ValueError("measured-target pose catalog binding mismatch")
@@ -191,10 +231,12 @@ def _validate_pose_bundle(bundle: dict[str, Any]) -> None:
         raise ValueError("measured-target pose bundle carries authority")
     if bundle.get("hardware_write_count") != 0 or bundle.get("physical_movement_count") != 0:
         raise ValueError("measured-target pose bundle records physical activity")
+    return target_ids
 
 
 def _score_cells(tips, centers, poses, np) -> dict[str, Any]:
-    extents = np.full((TARGET_COUNT, 2), HALF_WIDTH_MM, dtype=np.float64)
+    target_count = len(poses)
+    extents = np.full((target_count, 2), HALF_WIDTH_MM, dtype=np.float64)
     _, margins, misses = frozen._score_absolute_target_rectangles(
         tips[:, :, :2], centers[:, :2], extents, np
     )
@@ -226,7 +268,6 @@ def _score_cells(tips, centers, poses, np) -> dict[str, Any]:
 
 def run(args: argparse.Namespace) -> dict[str, Any]:
     paths = {
-        "pose_bundle": args.pose_bundle,
         "target_catalog": args.target_catalog,
         "virtual_profile": args.virtual_profile,
         "mjcf": args.mjcf,
@@ -236,6 +277,12 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         actual = sha256(paths[name])
         if actual != expected:
             raise ValueError(f"{name} SHA-256 mismatch: {actual}")
+    expected_pose_sha256 = EXPECTED_POSE_BUNDLE_SHA256[args.target_scope]
+    if expected_pose_sha256 == "PENDING_GENERATION":
+        raise ValueError("candidate51 pose bundle SHA-256 is not frozen")
+    actual_pose_sha256 = sha256(args.pose_bundle)
+    if actual_pose_sha256 != expected_pose_sha256:
+        raise ValueError(f"pose_bundle SHA-256 mismatch: {actual_pose_sha256}")
 
     import mujoco
     import mujoco_warp as mjw
@@ -244,7 +291,8 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
 
     bundle = json.loads(args.pose_bundle.read_text(encoding="utf-8"))
     profile = json.loads(args.virtual_profile.read_text(encoding="utf-8"))
-    _validate_pose_bundle(bundle)
+    target_ids = _validate_pose_bundle(bundle, args.target_scope)
+    target_count = len(target_ids)
     if profile.get("status") != "UNMEASURED_SENSITIVITY_OVERLAY":
         raise ValueError("virtual profile is no longer an unmeasured overlay")
     poses = bundle["poses"]
@@ -266,18 +314,18 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
     wp.init()
     wp.set_device(args.device)
     warp_model = mjw.put_model(model)
-    total_worlds = TARGET_COUNT * WORLDS_PER_TARGET
+    total_worlds = target_count * WORLDS_PER_TARGET
     warp_data = mjw.put_data(model, data, nworld=total_worlds)
 
     rng = np.random.Generator(np.random.PCG64(SEED))
     fixed_signs = (
-        rng.integers(0, 2, size=(TARGET_COUNT, 5), dtype=np.int8).astype(np.float64)
+        rng.integers(0, 2, size=(target_count, 5), dtype=np.int8).astype(np.float64)
         * 2.0
         - 1.0
     )
     systematic_unit = rng.uniform(-1.0, 1.0, size=5)
     random_unit = rng.normal(
-        0.0, 1.0, size=(TARGET_COUNT, WORLDS_PER_TARGET, 5)
+        0.0, 1.0, size=(target_count, WORLDS_PER_TARGET, 5)
     )
     scenarios = []
     for fixed_magnitude in frozen.CALIBRATED_FIXED_SOURCE_MAGNITUDES_RAD:
@@ -289,11 +337,11 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         wp.synchronize_device(wp.get_device())
         fixed_tips = frozen._board_tips(
             warp_data, hand_id, board_t_world, tool_length_mm, np
-        ).reshape(TARGET_COUNT, WORLDS_PER_TARGET, 3)[:, 0, :]
+        ).reshape(target_count, WORLDS_PER_TARGET, 3)[:, 0, :]
         fixed_cartesian_delta = fixed_tips - centers
         for noise_level in frozen.CALIBRATED_RANDOM_LEVELS_RAD:
             qpos = np.broadcast_to(
-                fixed_q[:, None, :], (TARGET_COUNT, WORLDS_PER_TARGET, 6)
+                fixed_q[:, None, :], (target_count, WORLDS_PER_TARGET, 6)
             ).copy()
             qpos[:, :, :5] += random_unit * noise_level
             warp_data.qpos.assign(qpos.reshape(total_worlds, 6))
@@ -301,7 +349,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
             wp.synchronize_device(wp.get_device())
             raw_tips = frozen._board_tips(
                 warp_data, hand_id, board_t_world, tool_length_mm, np
-            ).reshape(TARGET_COUNT, WORLDS_PER_TARGET, 3)
+            ).reshape(target_count, WORLDS_PER_TARGET, 3)
             for residual_fraction in frozen.CALIBRATED_RESIDUAL_FRACTIONS:
                 corrected = frozen._apply_cartesian_calibration(
                     raw_tips, fixed_cartesian_delta, residual_fraction
@@ -314,14 +362,25 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
                 })
     result = {
         "schema": "rocell.mujoco_warp_measured_target_calibrated_residual.v1",
-        "status": "PASS_EXPLORATORY_FROZEN_MW2UC_EXTENSION",
-        "scope": "FIVE_TARGET_FROZEN_CALIBRATED_RESIDUAL_APPLICATION_ONLY",
-        "source_sha256": dict(EXPECTED),
+        "status": (
+            "PASS_EXPLORATORY_FROZEN_MW2UC_EXTENSION"
+            if args.target_scope == "five"
+            else "PASS_EXPLORATORY_EXACT_CANDIDATE51_MW2UC"
+        ),
+        "scope": (
+            "FIVE_TARGET_FROZEN_CALIBRATED_RESIDUAL_APPLICATION_ONLY"
+            if args.target_scope == "five"
+            else "EXACT_51_KEY_MEASURED_CANDIDATE_FROZEN_MW2UC_ONLY"
+        ),
+        "source_sha256": {
+            **EXPECTED,
+            "pose_bundle": expected_pose_sha256,
+        },
         "stack": frozen._stack(args.device),
         "device": args.device,
         "seed": SEED,
-        "target_count": TARGET_COUNT,
-        "target_ids": list(TARGET_IDS),
+        "target_count": target_count,
+        "target_ids": list(target_ids),
         "worlds_per_target_per_fk_scenario": WORLDS_PER_TARGET,
         "grids": {
             "effective_safe_half_width_mm": [HALF_WIDTH_MM],
@@ -341,7 +400,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         "physical_authority": False,
         "controller_commands": [],
         "limitations": [
-            "applies the frozen MW2UC grid to five targets without reopening thresholds",
+            "applies the frozen MW2UC grid without reopening thresholds",
             "fixed approach signs and source magnitudes remain synthetic",
             "per-key Cartesian correction is a local equivalent, not corrected IK",
             "4 mm is a sensitivity width, not a measured physical safe region",
@@ -360,6 +419,9 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--mode", choices=("pose", "residual"), required=True)
+    parser.add_argument(
+        "--target-scope", choices=("five", "candidate51"), default="five"
+    )
     parser.add_argument("--workspace", type=Path)
     parser.add_argument("--pose-bundle", type=Path)
     parser.add_argument("--target-catalog", type=Path, required=True)
@@ -377,6 +439,7 @@ def main() -> int:
         result = build_pose_bundle(
             args.workspace.resolve(strict=True),
             args.target_catalog.resolve(strict=True),
+            args.target_scope,
         )
         args.output.parent.mkdir(parents=True, exist_ok=True)
         args.output.write_text(

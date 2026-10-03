@@ -98,6 +98,7 @@ def _measured_pose_bundle():
         "schema": "rocell.mujoco_warp_measured_target_pose_bundle.v1",
         "status": "PASS_EXPLORATORY_EXTENSION_POSE_SOURCE",
         "scope": "FIVE_TARGET_MEASURED_CANDIDATE_RANK1_SIMULATION_ONLY",
+        "target_scope": "five",
         "source_sha256": {
             "target_catalog": MEASURED_RESIDUAL.EXPECTED["target_catalog"]
         },
@@ -141,6 +142,35 @@ def test_measured_target_extension_keeps_frozen_calibrated_grid():
     assert MEASURED_RESIDUAL.HALF_WIDTH_MM == 4.0
     assert MEASURED_RESIDUAL.SEED == UNCERTAINTY_PROBE.SEED + 3
     assert len(MEASURED_RESIDUAL.TARGET_IDS) == 5
+
+
+def test_exact_candidate_scope_requires_51_unique_ordered_targets():
+    bundle = _measured_pose_bundle()
+    bundle.update({
+        "status": "PASS_EXPLORATORY_CANDIDATE51_POSE_SOURCE",
+        "scope": "EXACT_51_KEY_MEASURED_CANDIDATE_RANK1_SIMULATION_ONLY",
+        "target_scope": "candidate51",
+        "target_count": 51,
+        "target_ids": [f"T{index:02d}" for index in range(51)],
+        "poses": [{"target_id": f"T{index:02d}"} for index in range(51)],
+    })
+    unsigned = {key: value for key, value in bundle.items() if key != "receipt_sha256"}
+    bundle["receipt_sha256"] = MEASURED_RESIDUAL.hashlib.sha256(
+        UNCERTAINTY_PROBE.canonical_bytes(unsigned)
+    ).hexdigest()
+    assert len(MEASURED_RESIDUAL._validate_pose_bundle(bundle, "candidate51")) == 51
+
+    bundle["target_ids"][-1] = bundle["target_ids"][0]
+    unsigned = {key: value for key, value in bundle.items() if key != "receipt_sha256"}
+    bundle["receipt_sha256"] = MEASURED_RESIDUAL.hashlib.sha256(
+        UNCERTAINTY_PROBE.canonical_bytes(unsigned)
+    ).hexdigest()
+    try:
+        MEASURED_RESIDUAL._validate_pose_bundle(bundle, "candidate51")
+    except ValueError as exc:
+        assert "unsupported" in str(exc)
+    else:
+        raise AssertionError("duplicate candidate target identity was accepted")
 
 
 def test_measured_target_extension_scores_absolute_four_mm_region():
