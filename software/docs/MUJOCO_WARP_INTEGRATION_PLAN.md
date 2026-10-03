@@ -440,6 +440,22 @@ stores per-sample coordinates only for contact endpoints, so a new full-sample
 Isaac receipt remains necessary for direct pairwise four-backend rows. Evidence
 is `E-20261003-AI-568`.
 
+### MW2FI — full-sample Isaac closure
+
+**Status: active, frozen before results.** Preserve the retained Isaac v1
+receipt and add an opt-in v2 output that retains all 133 ordered sample tips.
+The v2 receipt must bind the same schedule, imported USD, import receipt,
+virtual profile, joint order, tool length, and zero-authority fields. A strict
+admission step will compare every Isaac tip against the exact RoCell, standard
+MuJoCo, and MuJoCo Warp rows from MW2F.
+
+Frozen thresholds remain unchanged: Isaac versus the schedule reference at
+most `0.25 mm`, MuJoCo versus RoCell at most `0.1 mm`, and MuJoCo Warp versus
+MuJoCo at most `0.01 mm`. The new direct pairwise Isaac comparisons are
+reported without adding a post-result threshold. Same-stack Isaac repeats must
+produce byte-identical canonical receipts. This remains teleport-only
+kinematic evidence with zero physics steps, hardware writes, or movement.
+
 ### MW3 — camera and geometry parity
 
 **Objective:** decide which rendered outputs can supplement the Isaac corpus.
