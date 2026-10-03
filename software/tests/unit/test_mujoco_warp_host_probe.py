@@ -18,6 +18,13 @@ ASSET_SPEC = importlib.util.spec_from_file_location(
 ASSET_PROBE = importlib.util.module_from_spec(ASSET_SPEC)
 assert ASSET_SPEC.loader is not None
 ASSET_SPEC.loader.exec_module(ASSET_PROBE)
+BATCH_SPEC = importlib.util.spec_from_file_location(
+    "mujoco_warp_batch_probe",
+    ROOT / "software/integrations/mujoco_warp/batch_probe.py",
+)
+BATCH_PROBE = importlib.util.module_from_spec(BATCH_SPEC)
+assert BATCH_SPEC.loader is not None
+BATCH_SPEC.loader.exec_module(BATCH_PROBE)
 
 
 def fixture_pair():
@@ -77,3 +84,42 @@ def test_kinematic_converter_maps_every_joint_and_blocks_dynamic_claims():
     assert provenance["compiled_inertia"] == "EXPLICIT_KINEMATIC_ONLY_PLACEHOLDER"
     assert provenance["dynamics_claim"] == "BLOCKED"
     assert provenance["contact_claim"] == "BLOCKED"
+
+
+def fake_batch_receipt(device, rate, safety=True):
+    results = []
+    for nworld in BATCH_PROBE.WORLD_COUNTS:
+        results.append(
+            {
+                "nworld": nworld,
+                "pass": safety,
+                "timing": {"median_world_steps_per_second": rate * nworld},
+            }
+        )
+    return {
+        "device_requested": device,
+        "mjcf_sha256": BATCH_PROBE.EXPECTED_MJCF_SHA256,
+        "safety_pass": safety,
+        "results": results,
+        "receipt_sha256": f"fixture-{device}",
+    }
+
+
+def test_batch_admission_preserves_device_shards_and_applies_speed_gate():
+    standard = fake_batch_receipt("cpu", 10)
+    gpu0 = fake_batch_receipt("cuda:0", 40)
+    gpu1 = fake_batch_receipt("cuda:1", 35)
+    result = BATCH_PROBE.admit(standard, gpu0, gpu1)
+    assert result["status"] == "ADOPT_FOR_DECLARED_SCOPE"
+    assert result["dual_gpu_aggregation_performed"] is False
+    assert result["speedups_vs_standard_mujoco"]["cuda:0"]["4096"] == 4
+
+
+def test_batch_admission_rejects_overflow_or_underperforming_shard():
+    standard = fake_batch_receipt("cpu", 10)
+    gpu0 = fake_batch_receipt("cuda:0", 40)
+    gpu1 = fake_batch_receipt("cuda:1", 20, safety=False)
+    result = BATCH_PROBE.admit(standard, gpu0, gpu1)
+    assert result["status"] == "RESEARCH_ONLY"
+    assert any("safety/repeatability" in error for error in result["errors"])
+    assert any("speedup below gate" in error for error in result["errors"])
