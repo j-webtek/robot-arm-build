@@ -297,6 +297,13 @@ while physical inputs are blocked. It preserves the v4.2 rejection and physical
 pilot dependency while freezing two small edge/texture candidates, split-disjoint
 obstruction identities, perturbed geometry inputs, development gates, and an
 unrendered evaluation family. It is not a deployment-model selection.
+The [residual v5.1 pre-render amendment](residual_obstruction_v5_1_pre_render_v1.schema.json)
+preserves v5 while restoring the frozen 6% visible false-stop ceiling, retaining
+the 2% pooled all-obstruction miss ceiling, and marking all synthetic lighting
+as provisional. Its correlation-aware planning calculation blocks the original
+eight-scene development render as underpowered. The larger tested size is a
+planning result, not render authorization, physical qualification, or hardware
+remedy selection.
 The [residual physical pilot predeclaration](residual_obstruction_physical_pilot_v1.schema.json)
 separates clear, boundary, and obstructed cable coverage; requires placement
 and mask labels; assigns measurement and unopened escrow sessions before
