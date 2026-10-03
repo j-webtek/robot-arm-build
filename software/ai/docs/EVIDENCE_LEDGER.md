@@ -9989,3 +9989,12 @@ rewriting history. New entries must use a unique evidence ID.
 - Hardware-write count: 0. Physical-movement count: 0. Camera-capture count: 0. Measurement-reading count: 0. Training-run count: 0. Evaluation-image count: 0. Physical authority: false.
 - Limitations: this clarifies method and software ownership only. It does not supply Grave measurements, change the active catalog, run IK, prove simulated or physical visibility, or qualify hardware.
 - Next dependency: collect the repeated Grave/reference top-surface readings, derive and review the Grave safe region, freeze the 80-target catalog, then let the arm lane implement this catalog-driven validation and run the offline reach screen before v5.5 rendering.
+
+### E-20261003-AI-559 — guided Grave measurement session opened
+
+- Stage/lane: S1 AI/model operator-guided physical measurement intake. Source commit and active-work claim base: `15cf1846402347df47181bc1d4cc7f07d2689e04`. This entry records session initialization only; it does not record or infer a measurement.
+- Frozen sequence: confirm arm power isolation and mechanical stability; retain the keyboard in its fixed joints; capture keyboard identity and overhead layout; capture caliper identity/resolution and pre-measurement zero; collect three top-press-surface repeats for Grave/reference widths, heights, X edge offset, and Y edge offset; capture post-measurement zero; validate repeat ranges; then derive geometry and review it before any catalog change.
+- Current state: `AWAITING_OPERATOR_SETUP_CONFIRMATION`. Measurement surface remains `KEYCAP_TOP_PRESS_SURFACE`; tapered sidewall, base, and switch housing remain excluded. Measurement-reading count: 0. Photograph count: 0. Derived-coordinate count: 0.
+- Hardware-write count: 0. Physical arm-movement count: 0. Camera-capture count by this repository: 0. Training-run count: 0. Evaluation-image count: 0. Physical authority: false.
+- Limitations: no operator response, device identity, caliper identity, image, reading, hash, or derived geometry has been received. This session-open entry cannot change the target catalog or authorize rendering or hardware use.
+- Next dependency: operator confirms the arm is electrically isolated and mechanically supported away from the measurement area, with the keyboard still fixed in its workcell joints.
