@@ -9,6 +9,110 @@
     "initial_cuda0_censored_semantics": "c668bccdafcd5944b68807cb0f2bfb7817132fa69bcdf958f01500302998d7b3",
     "rank1_target_pose_bundle": "388ca38f7d86569381c1e1c4abd25b129a571310f8fc9712529a61006a2f7385"
   },
+  "feasibility_map": {
+    "absolute_target_center_scoring": true,
+    "claim_commit": "9a4b959ab498d4470cea07a83fd3745e5018a899",
+    "cross_device_numerical_content_equal": true,
+    "cross_device_numerical_content_sha256": "f527ef9714b70a919e586b81f679ff8e9d02cdb98f72d08626c8546af7a0cfe5",
+    "effective_safe_half_widths_mm": [
+      1.0,
+      2.0,
+      3.0,
+      4.0,
+      5.0,
+      6.0,
+      7.0
+    ],
+    "external_artifact_sha256": {
+      "cuda0": "6cbc26104095b1cb6ec7f344bed3439c8d45487ba0ffd996605914d4ac72c423",
+      "cuda1": "9a9bc77908e2626aa1f2bd32c3e239325882f3d79c57b02867be798304974f56"
+    },
+    "feasible_scenario_counts_by_half_width_out_of_350": {
+      "1": 3,
+      "2": 9,
+      "3": 17,
+      "4": 28,
+      "5": 48,
+      "6": 80,
+      "7": 118
+    },
+    "grids": {
+      "campaign_systematic_uniform_half_width_rad": [
+        0.0,
+        0.002,
+        0.004,
+        0.006,
+        0.008
+      ],
+      "random_joint_noise_sigma_rad": [
+        0.0,
+        0.00025,
+        0.0005,
+        0.001,
+        0.0015,
+        0.002,
+        0.00225,
+        0.0025,
+        0.00275,
+        0.003,
+        0.00325,
+        0.0035,
+        0.00375,
+        0.004
+      ],
+      "sampled_sign_backlash_magnitude_rad": [
+        0.0,
+        0.002,
+        0.004,
+        0.006,
+        0.008
+      ]
+    },
+    "hardware_write_count": 0,
+    "limitations": [
+      "safe width is a sensitivity axis, not a measured keycap/fingertip region",
+      "point tool remains optimistic",
+      "rank-1 placement and 120 mm tool are unmeasured",
+      "backlash signs are sampled surrogates",
+      "synthetic additive joint-space sources are not measured probabilities",
+      "scenario counts are grid coverage and must not be read as success probabilities",
+      "no visual correction, collision, dynamics, contact, servo, or physical qualification claim"
+    ],
+    "per_scenario_recentering": false,
+    "physical_authority": false,
+    "physical_movement_count": 0,
+    "preserved_failed_design": {
+      "cuda0_sha256": "436a56901d2a9ff71bedfd91a275f7d1700996f0bc9e8b187a9233e62b6e1f39",
+      "cuda1_sha256": "608fb6eb0fe7e1dcef780e79bb7aa36e0577e9447ab37c63793c1d898985a4a2",
+      "reason": "initial feasibility noise axis omitted zero, 0.0005, 0.001, and 0.0015 rad, preventing isolated constant-source and encoder-neighborhood interpretation"
+    },
+    "random_only_largest_feasible_sigma_by_half_width_rad": {
+      "1": 0.0005,
+      "2": 0.001,
+      "3": 0.0015,
+      "4": 0.002,
+      "5": 0.0025,
+      "6": 0.003,
+      "7": 0.0035
+    },
+    "representative_minimum_feasible_half_width_mm": {
+      "noise_0.0015_backlash_0.002_systematic_0.002": 5.0,
+      "noise_0.0015_backlash_0.004_systematic_0.004": 7.0,
+      "noise_0.0015_backlash_0_systematic_0": 3.0,
+      "noise_0.002_backlash_0.002_systematic_0.002": 6.0,
+      "noise_0.002_backlash_0.004_systematic_0.004": null,
+      "noise_0_backlash_0.004_systematic_0.004": 6.0,
+      "noise_0_backlash_0.008_systematic_0.008": null
+    },
+    "sample_design": {
+      "safe_width_cells": 2450,
+      "scenario_count": 350,
+      "target_count": 46,
+      "total_forward_kinematic_worlds_per_gpu": 65945600,
+      "worlds_per_target_per_scenario": 4096
+    },
+    "status": "PASS_EXPLORATORY_FEASIBILITY_MAP"
+  },
   "hardware_write_count": 0,
   "jacobian_sanity": {
     "empirical_to_linear_rms_ratio_maximum": 1.0162211860317691,
@@ -147,7 +251,7 @@
     "total_forward_kinematic_worlds": 3391488,
     "worlds_per_target_per_level": 4096
   },
-  "schema": "rocell.mujoco_warp_nominal_target_uncertainty_summary.v2",
+  "schema": "rocell.mujoco_warp_nominal_target_uncertainty_summary.v3",
   "scope": "SYNTHETIC_UNMEASURED_NOMINAL_KEYCAP_POINT_TOOL_ONLY",
   "status": "PASS"
 }

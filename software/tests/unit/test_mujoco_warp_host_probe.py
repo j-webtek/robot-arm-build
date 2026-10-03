@@ -139,6 +139,38 @@ def test_nominal_target_uncertainty_constant_translation_is_not_recentered():
     assert np.all(misses)
 
 
+def test_safe_width_map_changes_only_at_absolute_region_boundary():
+    import numpy as np
+
+    assert UNCERTAINTY_PROBE.FEASIBILITY_NOISE_LEVELS_RAD[0] == 0.0
+    assert 0.0015 in UNCERTAINTY_PROBE.FEASIBILITY_NOISE_LEVELS_RAD
+
+    centers = np.zeros((UNCERTAINTY_PROBE.TARGET_COUNT, 3))
+    tips = np.zeros(
+        (
+            UNCERTAINTY_PROBE.TARGET_COUNT,
+            UNCERTAINTY_PROBE.WORLDS_PER_TARGET,
+            3,
+        )
+    )
+    tips[:, :, 0] = 1.5
+    poses = [
+        {"target_id": f"T{index:02d}"}
+        for index in range(UNCERTAINTY_PROBE.TARGET_COUNT)
+    ]
+
+    cells = UNCERTAINTY_PROBE._safe_width_cells(tips, centers, poses, np)
+
+    assert cells[0]["effective_safe_half_width_mm"] == 1.0
+    assert cells[0]["feasible"] is False
+    assert cells[0]["total_misses"] == (
+        UNCERTAINTY_PROBE.TARGET_COUNT * UNCERTAINTY_PROBE.WORLDS_PER_TARGET
+    )
+    assert cells[1]["effective_safe_half_width_mm"] == 2.0
+    assert cells[1]["feasible"] is True
+    assert cells[1]["total_misses"] == 0
+
+
 def fake_schedule_gap_inputs():
     arm_rows = []
     mw2f_rows = []

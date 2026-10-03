@@ -54,6 +54,25 @@ REFINEMENT_LEVELS_RAD = {
         0.032,
     ],
 }
+FEASIBILITY_HALF_WIDTHS_MM = [1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0]
+FEASIBILITY_NOISE_LEVELS_RAD = [
+    0.0,
+    0.00025,
+    0.0005,
+    0.001,
+    0.0015,
+    0.002,
+    0.00225,
+    0.0025,
+    0.00275,
+    0.003,
+    0.00325,
+    0.0035,
+    0.00375,
+    0.004,
+]
+FEASIBILITY_BACKLASH_LEVELS_RAD = [0.0, 0.002, 0.004, 0.006, 0.008]
+FEASIBILITY_SYSTEMATIC_LEVELS_RAD = [0.0, 0.002, 0.004, 0.006, 0.008]
 WORLDS_PER_TARGET = 4096
 TARGET_COUNT = 46
 SEED = 2_026_100_301
@@ -162,6 +181,166 @@ def _board_tips(data, hand_id: int, board_t_world, tool_length_mm: float, np):
     return (board_t_world @ homogeneous.T).T[:, :3]
 
 
+def _safe_width_cells(tips, centers, poses, np):
+    cells = []
+    for half_width_mm in FEASIBILITY_HALF_WIDTHS_MM:
+        extents = np.full((TARGET_COUNT, 2), half_width_mm, dtype=np.float64)
+        _, margins, misses = _score_absolute_target_rectangles(
+            tips[:, :, :2], centers[:, :2], extents, np
+        )
+        target_rows = []
+        for index, pose in enumerate(poses):
+            miss_count = int(misses[index].sum())
+            target_rows.append(
+                {
+                    "target_id": pose["target_id"],
+                    "miss_count": miss_count,
+                    "miss_rate_one_sided_95_wilson_upper": _wilson_upper(
+                        miss_count, WORLDS_PER_TARGET
+                    ),
+                    "p01_margin_mm": float(np.quantile(margins[index], 0.01)),
+                    "minimum_margin_mm": float(margins[index].min()),
+                }
+            )
+        worst_ucb = max(
+            target_rows, key=lambda row: row["miss_rate_one_sided_95_wilson_upper"]
+        )
+        worst_p01 = min(target_rows, key=lambda row: row["p01_margin_mm"])
+        cells.append(
+            {
+                "effective_safe_half_width_mm": half_width_mm,
+                "feasible": all(
+                    row["miss_rate_one_sided_95_wilson_upper"] <= MISS_UCB_LIMIT
+                    and row["p01_margin_mm"] >= 0.0
+                    for row in target_rows
+                ),
+                "total_misses": sum(row["miss_count"] for row in target_rows),
+                "maximum_target_miss_ucb": worst_ucb[
+                    "miss_rate_one_sided_95_wilson_upper"
+                ],
+                "maximum_target_miss_ucb_target_id": worst_ucb["target_id"],
+                "minimum_target_p01_margin_mm": worst_p01["p01_margin_mm"],
+                "minimum_target_p01_margin_target_id": worst_p01["target_id"],
+                "minimum_margin_mm": min(
+                    row["minimum_margin_mm"] for row in target_rows
+                ),
+            }
+        )
+    return cells
+
+
+def _run_feasibility(
+    args,
+    poses,
+    nominal_q,
+    centers,
+    board_t_world,
+    tool_length_mm,
+    warp_model,
+    warp_data,
+    hand_id,
+    np,
+    mjw,
+    wp,
+):
+    seed = SEED + 2
+    rng = np.random.Generator(np.random.PCG64(seed))
+    random_unit = rng.normal(
+        0.0, 1.0, size=(TARGET_COUNT, WORLDS_PER_TARGET, 5)
+    )
+    signs = rng.integers(
+        0, 2, size=(TARGET_COUNT, WORLDS_PER_TARGET, 5), dtype=np.int8
+    )
+    backlash_unit = signs.astype(np.float64) * 2.0 - 1.0
+    systematic_unit = rng.uniform(-1.0, 1.0, size=(WORLDS_PER_TARGET, 5))
+    total_worlds = TARGET_COUNT * WORLDS_PER_TARGET
+    scenario_rows = []
+    for noise_level in FEASIBILITY_NOISE_LEVELS_RAD:
+        for backlash_level in FEASIBILITY_BACKLASH_LEVELS_RAD:
+            for systematic_level in FEASIBILITY_SYSTEMATIC_LEVELS_RAD:
+                offsets = (
+                    random_unit * noise_level
+                    + backlash_unit * backlash_level
+                    + systematic_unit[None, :, :] * systematic_level
+                )
+                qpos = np.broadcast_to(
+                    nominal_q[:, None, :], (TARGET_COUNT, WORLDS_PER_TARGET, 6)
+                ).copy()
+                qpos[:, :, :5] += offsets
+                if not np.isfinite(qpos).all():
+                    raise ValueError("nonfinite combined perturbed joint state")
+                warp_data.qpos.assign(qpos.reshape(total_worlds, 6))
+                mjw.forward(warp_model, warp_data)
+                wp.synchronize_device(wp.get_device())
+                tips = _board_tips(
+                    warp_data, hand_id, board_t_world, tool_length_mm, np
+                ).reshape(TARGET_COUNT, WORLDS_PER_TARGET, 3)
+                scenario_rows.append(
+                    {
+                        "random_joint_noise_sigma_rad": noise_level,
+                        "sampled_sign_backlash_magnitude_rad": backlash_level,
+                        "campaign_systematic_uniform_half_width_rad": systematic_level,
+                        "safe_width_cells": _safe_width_cells(
+                            tips, centers, poses, np
+                        ),
+                    }
+                )
+    result = {
+        "schema": "rocell.mujoco_warp_safe_region_combined_feasibility.v1",
+        "status": "PASS_EXPLORATORY_FEASIBILITY_MAP",
+        "scope": "SYNTHETIC_UNMEASURED_SYMMETRIC_SAFE_REGION_POINT_TOOL_ONLY",
+        "source_sha256": dict(EXPECTED),
+        "stack": _stack(args.device),
+        "device": args.device,
+        "seed": seed,
+        "target_count": TARGET_COUNT,
+        "worlds_per_target_per_scenario": WORLDS_PER_TARGET,
+        "scenario_count": len(scenario_rows),
+        "total_forward_kinematic_worlds": len(scenario_rows) * total_worlds,
+        "grids": {
+            "effective_safe_half_widths_mm": FEASIBILITY_HALF_WIDTHS_MM,
+            "random_joint_noise_sigma_rad": FEASIBILITY_NOISE_LEVELS_RAD,
+            "sampled_sign_backlash_magnitude_rad": FEASIBILITY_BACKLASH_LEVELS_RAD,
+            "campaign_systematic_uniform_half_width_rad": (
+                FEASIBILITY_SYSTEMATIC_LEVELS_RAD
+            ),
+        },
+        "scoring": {
+            "absolute_target_center_scoring": True,
+            "per_scenario_recentering": False,
+            "region": "symmetric effective square centered on each catalog target",
+            "tool": "zero-radius point tool",
+            "candidate_rule": "every target one-sided 95% miss UCB <= 0.001 and p01 margin >= 0",
+        },
+        "paired_sampling": {
+            "random_unit_draws_reused_across_scenarios": True,
+            "backlash_signs_reused_across_scenarios": True,
+            "systematic_unit_draws_reused_across_scenarios": True,
+        },
+        "scenarios": scenario_rows,
+        "hardware_access": False,
+        "hardware_write_count": 0,
+        "physical_movement_count": 0,
+        "physics_step_count": 0,
+        "physical_authority": False,
+        "controller_commands": [],
+        "limitations": [
+            "safe half-widths are a sensitivity axis and are not physical measurements",
+            "the point tool omits fingertip radius and deformation",
+            "the rank-1 placement and 120 mm tool length are unmeasured",
+            "backlash signs are sampled rather than taken from commissioned approach directions",
+            "source magnitudes are synthetic and the additive joint-space model is exploratory",
+            "no collision, dynamics, servo tracking, contact force, key travel, vision correction, or hardware is modeled",
+        ],
+    }
+    result["receipt_sha256"] = hashlib.sha256(canonical_bytes(result)).hexdigest()
+    args.output.parent.mkdir(parents=True, exist_ok=True)
+    args.output.write_text(
+        json.dumps(result, sort_keys=True, indent=2) + "\n", encoding="utf-8"
+    )
+    return result
+
+
 def run(args: argparse.Namespace) -> dict[str, Any]:
     for name, expected in EXPECTED.items():
         actual = sha256(getattr(args, name))
@@ -236,6 +415,22 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         jacobian_conditions.append(float(singular[0] / singular[-1]))
     nominal_tips = np.asarray(nominal_tips)
     jacobians = np.asarray(jacobians)
+
+    if args.mode == "feasibility":
+        return _run_feasibility(
+            args,
+            poses,
+            nominal_q,
+            centers,
+            board_t_world,
+            tool_length_mm,
+            warp_model,
+            warp_data,
+            hand_id,
+            np,
+            mjw,
+            wp,
+        )
 
     refinement = args.mode == "refinement"
     seed = SEED + (1 if refinement else 0)
@@ -467,7 +662,9 @@ def main() -> int:
     parser.add_argument("--virtual-profile", type=Path, required=True)
     parser.add_argument("--mjcf", type=Path, required=True)
     parser.add_argument("--device", choices=("cuda:0", "cuda:1"), required=True)
-    parser.add_argument("--mode", choices=("original", "refinement"), default="original")
+    parser.add_argument(
+        "--mode", choices=("original", "refinement", "feasibility"), default="original"
+    )
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     result = run(args)
@@ -475,16 +672,21 @@ def main() -> int:
         json.dumps(
             {
                 "status": result["status"],
-                "threshold_search": result["provisional_synthetic_threshold_search"],
-                "jacobian_ratio_range": [
-                    result["jacobian_sanity"]["minimum_ratio"],
-                    result["jacobian_sanity"]["maximum_ratio"],
-                ],
+                "threshold_search": result.get("provisional_synthetic_threshold_search"),
+                "jacobian_ratio_range": (
+                    [
+                        result["jacobian_sanity"]["minimum_ratio"],
+                        result["jacobian_sanity"]["maximum_ratio"],
+                    ]
+                    if "jacobian_sanity" in result
+                    else None
+                ),
+                "scenario_count": result.get("scenario_count"),
             },
             sort_keys=True,
         )
     )
-    return 0 if result["status"] == "PASS_EXPLORATORY_SENSITIVITY" else 1
+    return 0 if result["status"].startswith("PASS_EXPLORATORY_") else 1
 
 
 if __name__ == "__main__":
