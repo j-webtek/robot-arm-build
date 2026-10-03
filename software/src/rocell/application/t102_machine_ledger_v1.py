@@ -150,7 +150,8 @@ def spend_execution(
         "authority_sha256": signed,
         "claim_sha256": claim,
     }
-    # An interrupted first marker is intentionally terminal: the second
-    # marker is never used to grant a retry.
-    _write_new(root / f"execution-{consumption}.json", core)
+    # Spend the global authority identity first. A crash before the review's
+    # execution marker must not leave the same signed authority available to
+    # a newly constructed consumption receipt for the same review.
     _write_new(root / f"authority-{authority_key}.json", core)
+    _write_new(root / f"execution-{consumption}.json", core)
