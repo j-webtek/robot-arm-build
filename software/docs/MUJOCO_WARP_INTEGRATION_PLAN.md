@@ -191,6 +191,15 @@ changing the existing Isaac or project Python environments.
 - no package, cache, or large generated file enters the repository;
 - hardware writes and physical movements remain zero.
 
+**MW0 result (2026-10-03): `PASS`.** The isolated candidate is MuJoCo Warp
+3.13.0, MuJoCo 3.14.0, Warp 1.17.0, NumPy 2.5.3, and Python 3.12.0. One
+16-step pendulum world passed on CPU, `cuda:0`, and `cuda:1`; every result had
+finite state, changed state, and `overflow=[0]`. The exact lock and a
+standard-library-only pre-import host validator are now repository controlled.
+This advances only to MW1 asset/FK work. It does not validate RoArm import,
+rendering, contact, throughput, training value, or physical transfer. Evidence
+is `E-20261003-AI-561`.
+
 ### MW1 — asset import and kinematic parity
 
 **Objective:** prove that the governed robot projection means the same thing in
@@ -380,4 +389,3 @@ Isaac path unless a separate pre-render amendment is reviewed.
 - [MuJoCo Warp documentation](https://mujoco.readthedocs.io/en/latest/mjwarp/)
 - [MuJoCo Warp API](https://mujoco.readthedocs.io/en/3.13.0/mjwarp/api.html)
 - [Existing Isaac Sim integration plan](ISAAC_SIM_INTEGRATION_PLAN.md)
-
