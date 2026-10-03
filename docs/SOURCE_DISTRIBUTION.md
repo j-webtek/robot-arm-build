@@ -67,6 +67,12 @@ small reviewed source, schema, test, and retained-evidence files. The governed
 tracked-file ceiling is therefore 6,299. Pixel output remains in the external
 Isaac artifact directory and is not included in Git source archives.
 
+The issue 190 v4.2 scene-correlation estimate adds four small reviewed text
+files: the exact-probability reconstruction tool, strict schema, retained
+aggregate report, and focused test. The governed tracked-file ceiling is
+therefore 6,303. No image, checkpoint, simulator output, or physical artifact
+is added to the source archive.
+
 The issue 190 v14 synthetic evaluation adds three small, reviewed source files:
 the deterministic static-pose fixture builder, its retained JSON fixture, and
 its focused test. The tracked-file ceiling is therefore 6,103. This adjustment
