@@ -39,6 +39,13 @@ PERSISTENT_SPEC = importlib.util.spec_from_file_location(
 PERSISTENT_PROBE = importlib.util.module_from_spec(PERSISTENT_SPEC)
 assert PERSISTENT_SPEC.loader is not None
 PERSISTENT_SPEC.loader.exec_module(PERSISTENT_PROBE)
+PROFILE_SPEC = importlib.util.spec_from_file_location(
+    "mujoco_warp_scenario_profile_probe",
+    ROOT / "software/integrations/mujoco_warp/scenario_profile_probe.py",
+)
+PROFILE_PROBE = importlib.util.module_from_spec(PROFILE_SPEC)
+assert PROFILE_SPEC.loader is not None
+PROFILE_SPEC.loader.exec_module(PROFILE_PROBE)
 QUEUE_SPEC = importlib.util.spec_from_file_location(
     "mujoco_warp_resumable_queue_probe",
     ROOT / "software/integrations/mujoco_warp/resumable_queue_probe.py",
@@ -318,6 +325,165 @@ def populate_atomic_receipts(root, manifest, device):
             root / f"{shard['shard_id']}.json",
             fake_atomic_shard_receipt(manifest, shard),
         )
+
+
+def exploratory_profile(artifact_sha256):
+    ranges = []
+    for joint_id, (lower, upper) in zip(
+        PROFILE_PROBE.JOINT_ORDER, PERSISTENT_PROBE.JOINT_LIMITS, strict=True
+    ):
+        margin = (upper - lower) * 0.25
+        ranges.append(
+            {
+                "joint_id": joint_id,
+                "qpos_min": lower + margin,
+                "qpos_max": upper - margin,
+                "qvel_min": -0.01,
+                "qvel_max": 0.01,
+                "units": "radians",
+                "source_field": f"rehearsal.{joint_id}",
+            }
+        )
+    return {
+        "schema": PROFILE_PROBE.PROFILE_SCHEMA,
+        "profile_id": "synthetic-rehearsal-v1",
+        "admission_mode": "exploratory",
+        "mjcf_sha256": PERSISTENT_PROBE.EXPECTED_MJCF_SHA256,
+        "provenance": {
+            "source_type": "synthetic_rehearsal",
+            "artifact_sha256": artifact_sha256,
+            "domain_id": "offline-synthetic-contract-rehearsal",
+            "collected_at": "2026-10-03T00:00:00Z",
+        },
+        "assumptions": ["ranges exercise the contract and are not physical measurements"],
+        "joint_ranges": ranges,
+        "campaign": deepcopy(PROFILE_PROBE.CAMPAIGN),
+        "hardware_write_count": 0,
+        "physical_movement_count": 0,
+        "physical_authority": False,
+    }
+
+
+def write_profile_source(path, profile, *, method="deterministic synthetic rehearsal"):
+    source = {
+        "schema": PROFILE_PROBE.SOURCE_SCHEMA,
+        "source_type": profile["provenance"]["source_type"],
+        "domain_id": profile["provenance"]["domain_id"],
+        "collected_at": profile["provenance"]["collected_at"],
+        "method": method,
+        "sample_count": 0 if profile["provenance"]["source_type"] == "synthetic_rehearsal" else 1,
+        "joint_ranges": profile["joint_ranges"],
+        "assumptions": profile["assumptions"],
+    }
+    path.write_text(json.dumps(source, sort_keys=True) + "\n", encoding="utf-8")
+    profile["provenance"]["artifact_sha256"] = PROFILE_PROBE.file_sha256(path)
+
+
+def test_profile_compilation_is_deterministic_and_exploratory(tmp_path):
+    artifact = tmp_path / "synthetic-source.json"
+    profile = exploratory_profile("0" * 64)
+    write_profile_source(artifact, profile)
+    first = PROFILE_PROBE.compile_manifest(profile, artifact)
+    second = PROFILE_PROBE.compile_manifest(deepcopy(profile), artifact)
+    assert first == second
+    assert first["admission_scope"] == "EXPLORATORY_ONLY"
+    assert len(first["shards"]) == 16
+    assert len({item["seed"] for item in first["shards"]}) == 16
+    assert PROFILE_PROBE.validate_compiled_manifest(first, artifact) == []
+
+
+def test_profiled_initial_states_are_deterministic_and_within_source_ranges(tmp_path):
+    artifact = tmp_path / "synthetic-source.json"
+    profile = exploratory_profile("0" * 64)
+    write_profile_source(artifact, profile)
+    manifest = PROFILE_PROBE.compile_manifest(profile, artifact)
+    shard = manifest["shards"][0]
+    first_qpos, first_qvel = PROFILE_PROBE.initial_states(
+        manifest, shard["seed"], shard["world_count"]
+    )
+    second_qpos, second_qvel = PROFILE_PROBE.initial_states(
+        manifest, shard["seed"], shard["world_count"]
+    )
+    assert (first_qpos == second_qpos).all()
+    assert (first_qvel == second_qvel).all()
+    for index, bounds in enumerate(profile["joint_ranges"]):
+        assert first_qpos[:, index].min() >= bounds["qpos_min"]
+        assert first_qpos[:, index].max() <= bounds["qpos_max"]
+        assert first_qvel[:, index].min() >= bounds["qvel_min"]
+        assert first_qvel[:, index].max() <= bounds["qvel_max"]
+
+
+def test_profile_qualifying_mode_rejects_synthetic_or_altered_source(tmp_path):
+    artifact = tmp_path / "source.json"
+    profile = exploratory_profile("0" * 64)
+    write_profile_source(artifact, profile)
+    profile["admission_mode"] = "qualifying"
+    errors = PROFILE_PROBE.validate_profile(profile, artifact)
+    assert "qualifying mode requires physical measurement provenance" in errors
+    assert "qualifying mode forbids assumed ranges" in errors
+    profile["admission_mode"] = "exploratory"
+    artifact.write_text('{"scope":"altered"}\n', encoding="utf-8")
+    assert "source artifact hash mismatch" in PROFILE_PROBE.validate_profile(
+        profile, artifact
+    )
+
+
+def test_profile_qualifying_candidate_requires_matching_physical_samples(tmp_path):
+    artifact = tmp_path / "physical-source.json"
+    profile = exploratory_profile("0" * 64)
+    profile["admission_mode"] = "qualifying"
+    profile["provenance"]["source_type"] = "physical_measurement"
+    profile["provenance"]["domain_id"] = "commissioned-workcell-example"
+    profile["assumptions"] = []
+    write_profile_source(artifact, profile, method="measured joint-state envelope")
+    manifest = PROFILE_PROBE.compile_manifest(profile, artifact)
+    assert manifest["admission_scope"] == "QUALIFYING_CANDIDATE"
+    source = json.loads(artifact.read_text(encoding="utf-8"))
+    source["sample_count"] = 0
+    artifact.write_text(json.dumps(source, sort_keys=True) + "\n", encoding="utf-8")
+    profile["provenance"]["artifact_sha256"] = PROFILE_PROBE.file_sha256(artifact)
+    assert "physical source requires positive sample_count" in PROFILE_PROBE.validate_profile(
+        profile, artifact
+    )
+
+
+def test_profile_rejects_extra_authority_nonfinite_and_out_of_limit_fields(tmp_path):
+    artifact = tmp_path / "source.json"
+    profile = exploratory_profile("0" * 64)
+    write_profile_source(artifact, profile)
+    profile["unexpected"] = True
+    profile["physical_authority"] = True
+    profile["joint_ranges"][0]["qpos_min"] = float("nan")
+    profile["joint_ranges"][1]["qpos_min"] = -99.0
+    errors = PROFILE_PROBE.validate_profile(profile, artifact)
+    assert "profile fields mismatch" in errors
+    assert "authority fields mismatch" in errors
+    assert "joint 0: bounds must be finite numbers" in errors
+    assert "joint 1: position bounds outside governed limits" in errors
+
+
+def test_profiled_manifest_uses_existing_resumable_queue_without_model_load(
+    tmp_path, monkeypatch
+):
+    artifact = tmp_path / "source.json"
+    profile = exploratory_profile("0" * 64)
+    write_profile_source(artifact, profile)
+    manifest = PROFILE_PROBE.compile_manifest(
+        profile, artifact
+    )
+    receipt_dir = tmp_path / "cuda0"
+    populate_atomic_receipts(receipt_dir, manifest, "cuda:0")
+    monkeypatch.setattr(
+        QUEUE_PROBE.BASE,
+        "sha256",
+        lambda _path: QUEUE_PROBE.BASE.EXPECTED_MJCF_SHA256,
+    )
+    result = QUEUE_PROBE.run_queue(
+        manifest, tmp_path / "unused.mjcf", "cuda:0", receipt_dir
+    )
+    assert result["complete"] is True
+    assert result["model_load_count"] == 0
+    assert len(result["skipped_shard_ids"]) == 8
 
 
 def test_atomic_receipt_write_leaves_no_temporary_file(tmp_path):

@@ -47,6 +47,13 @@ only missing work, and admits a campaign only with the exact manifest allowlist.
 This permits long independent GPU research queues to resume after interruption
 without treating partial or altered output as completed evidence.
 
+`scenario_profile_probe.py` compiles a strict six-joint uncertainty profile
+into deterministic resumable shards. The profile and every generated seed are
+bound to an external source artifact carrying the exact ranges. Synthetic or
+assumed sources remain exploratory; qualifying candidates require matching
+physical-measurement content with a positive sample count. The compiler does
+not infer missing ranges or physical properties.
+
 ## Removal
 
 Delete `C:\MuJoCoWarp\env_3_13_0`, `C:\MuJoCoWarp\wheels\3.13.0`, and the

@@ -22,6 +22,12 @@ if BASE_SPEC is None or BASE_SPEC.loader is None:
     raise RuntimeError("cannot load frozen MW2S campaign module")
 BASE = importlib.util.module_from_spec(BASE_SPEC)
 BASE_SPEC.loader.exec_module(BASE)
+PROFILE_PATH = Path(__file__).with_name("scenario_profile_probe.py")
+PROFILE_SPEC = importlib.util.spec_from_file_location("mw2p_scenario_profile", PROFILE_PATH)
+if PROFILE_SPEC is None or PROFILE_SPEC.loader is None:
+    raise RuntimeError("cannot load MW2P scenario profile module")
+PROFILE = importlib.util.module_from_spec(PROFILE_SPEC)
+PROFILE_SPEC.loader.exec_module(PROFILE)
 
 SHARD_SCHEMA = "rocell.mujoco_warp_atomic_shard_receipt.v1"
 QUEUE_SCHEMA = "rocell.mujoco_warp_resumable_queue.v1"
@@ -43,6 +49,26 @@ def _finite_number(value: object) -> bool:
         and not isinstance(value, bool)
         and math.isfinite(value)
     )
+
+
+def validate_campaign_manifest(manifest: dict[str, Any]) -> None:
+    if manifest.get("schema") == "rocell.mujoco_warp_campaign_manifest.v1":
+        BASE.validate_manifest(manifest)
+        return
+    if manifest.get("schema") == PROFILE.MANIFEST_SCHEMA:
+        errors = PROFILE.validate_compiled_manifest(manifest)
+        if errors:
+            raise ValueError("; ".join(errors))
+        return
+    raise ValueError("unsupported campaign manifest schema")
+
+
+def _initial_states(manifest: dict[str, Any], seed: int, nworld: int):
+    if manifest["schema"] == PROFILE.MANIFEST_SCHEMA:
+        return PROFILE.initial_states(manifest, seed, nworld)
+    if nworld != BASE.WORLD_COUNT:
+        raise ValueError("world count outside frozen MW2S campaign")
+    return BASE._initial_states(seed, nworld)
 
 
 def _canonical_sha256(value: object) -> str:
@@ -158,7 +184,8 @@ def validate_shard_receipt(
     if result.get("pass") is not True:
         errors.append("shard safety gate failed")
     replays = result.get("replays")
-    if not isinstance(replays, list) or len(replays) != BASE.REPLAYS:
+    expected_replays = manifest["worker_contract"]["replays"]
+    if not isinstance(replays, list) or len(replays) != expected_replays:
         errors.append("replay count mismatch")
     else:
         for index, replay in enumerate(replays):
@@ -226,23 +253,31 @@ def inspect_queue(
     return {"valid": valid, "pending": pending, "quarantined": quarantined}
 
 
-def _run_shard(data, warp_model, device, shard: dict[str, Any]) -> dict[str, Any]:
+def _run_shard(
+    data,
+    warp_model,
+    device,
+    manifest: dict[str, Any],
+    shard: dict[str, Any],
+) -> dict[str, Any]:
     import mujoco_warp as mjw
     import numpy as np
     import warp as wp
 
-    initial_qpos, initial_qvel = BASE._initial_states(shard["seed"], BASE.WORLD_COUNT)
+    world_count = shard["world_count"]
+    contract = manifest["worker_contract"]
+    initial_qpos, initial_qvel = _initial_states(manifest, shard["seed"], world_count)
     replay_states = []
     replay_checks = []
-    for replay in range(BASE.REPLAYS):
+    for replay in range(contract["replays"]):
         data.qpos.assign(initial_qpos)
         data.qvel.assign(initial_qvel)
         mjw.forward(warp_model, data)
-        for _ in range(BASE.WARMUP_STEPS):
+        for _ in range(contract["warmup_steps"]):
             mjw.step(warp_model, data)
         wp.synchronize_device(device)
         started = time.perf_counter()
-        for _ in range(BASE.TIMED_STEPS):
+        for _ in range(contract["timed_steps"]):
             mjw.step(warp_model, data)
         wp.synchronize_device(device)
         elapsed = time.perf_counter() - started
@@ -254,10 +289,10 @@ def _run_shard(data, warp_model, device, shard: dict[str, Any]) -> dict[str, Any
             {
                 "replay": replay,
                 "finite": bool(np.isfinite(qpos).all() and np.isfinite(qvel).all()),
-                "world_count_preserved": qpos.shape[0] == BASE.WORLD_COUNT,
+                "world_count_preserved": qpos.shape[0] == world_count,
                 "overflow_zero": bool((overflow == 0).all()),
                 "elapsed_seconds": elapsed,
-                "world_steps_per_second": BASE.WORLD_COUNT * BASE.TIMED_STEPS / elapsed,
+                "world_steps_per_second": world_count * contract["timed_steps"] / elapsed,
                 "final_qpos_sha256": BASE._array_hash(qpos),
                 "final_qvel_sha256": BASE._array_hash(qvel),
             }
@@ -274,7 +309,7 @@ def _run_shard(data, warp_model, device, shard: dict[str, Any]) -> dict[str, Any
     result = {
         "shard_id": shard["shard_id"],
         "seed": shard["seed"],
-        "world_count": BASE.WORLD_COUNT,
+        "world_count": world_count,
         "unique_initial_poses": int(np.unique(initial_qpos, axis=0).shape[0]),
         "initial_qpos_sha256": hashlib.sha256(initial_qpos.tobytes()).hexdigest(),
         "initial_qvel_sha256": hashlib.sha256(initial_qvel.tobytes()).hexdigest(),
@@ -283,7 +318,7 @@ def _run_shard(data, warp_model, device, shard: dict[str, Any]) -> dict[str, Any
         "maximum_qvel_delta": qvel_delta,
     }
     result["pass"] = (
-        result["unique_initial_poses"] == BASE.WORLD_COUNT
+        result["unique_initial_poses"] == world_count
         and all(
             item["finite"]
             and item["world_count_preserved"]
@@ -299,7 +334,7 @@ def _run_shard(data, warp_model, device, shard: dict[str, Any]) -> dict[str, Any
 def run_queue(
     manifest: dict[str, Any], mjcf: Path, device_name: str, receipt_dir: Path
 ) -> dict[str, Any]:
-    BASE.validate_manifest(manifest)
+    validate_campaign_manifest(manifest)
     if device_name not in BASE.DEVICES:
         raise ValueError("device outside frozen MW2S manifest")
     if BASE.sha256(mjcf) != BASE.EXPECTED_MJCF_SHA256:
@@ -320,11 +355,14 @@ def run_queue(
         model = mujoco.MjModel.from_xml_path(str(mjcf))
         seed_data = mujoco.MjData(model)
         warp_model = mjw.put_model(model)
-        data = mjw.put_data(model, seed_data, nworld=BASE.WORLD_COUNT)
+        world_counts = {item["world_count"] for item in initial["pending"]}
+        if len(world_counts) != 1:
+            raise ValueError("pending queue mixes world counts")
+        data = mjw.put_data(model, seed_data, nworld=world_counts.pop())
         model_load_count = 1
         allocation_count = 1
         for shard in initial["pending"]:
-            result = _run_shard(data, warp_model, device, shard)
+            result = _run_shard(data, warp_model, device, manifest, shard)
             receipt = build_shard_receipt(manifest, shard, result)
             errors = validate_shard_receipt(receipt, manifest, shard)
             if errors:
@@ -355,7 +393,8 @@ def run_queue(
         "quarantined": initial["quarantined"],
         "valid_receipts": valid_files,
         "elapsed_seconds": time.perf_counter() - started,
-        "complete": len(valid_files) == BASE.SHARDS_PER_DEVICE,
+        "complete": len(valid_files)
+        == len([item for item in manifest["shards"] if item["device"] == device_name]),
         "temporary_file_count": len(list(receipt_dir.glob("*.tmp"))),
         "hardware_write_count": 0,
         "physical_movement_count": 0,
@@ -368,7 +407,7 @@ def run_queue(
 def assemble(
     manifest: dict[str, Any], cuda0_dir: Path, cuda1_dir: Path
 ) -> dict[str, Any]:
-    BASE.validate_manifest(manifest)
+    validate_campaign_manifest(manifest)
     directories = {"cuda:0": cuda0_dir, "cuda:1": cuda1_dir}
     receipts = []
     errors = []
