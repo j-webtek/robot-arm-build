@@ -50,6 +50,14 @@ durable `started.json` is exclusively created and flushed before the abstract
 transport may open. A crash after a ledger reservation is always
 `RETRY_FORBIDDEN_EXECUTION_UNCERTAIN`.
 
+The ledger writes the global authority-ID marker before the review execution
+marker. If the process crashes between those writes, an alternate consumption
+receipt still cannot use that authority ID. Offline subprocess tests exercise
+that interrupted ordering. The current file ledger remains a code-level
+fail-closed gate; deployment still needs a separately owned ledger service or
+equivalent OS-enforced writer boundary so the execution account cannot edit or
+delete its own markers.
+
 Review creation also requires an independently approved physical T=102
 command profile that fixes the hand target, firmware speed and acceleration,
 and reviewed single-command path evidence. The command's five arm targets are
