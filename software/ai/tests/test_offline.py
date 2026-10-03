@@ -213,7 +213,25 @@ class OfflineContractTests(unittest.TestCase):
             "AWAITING_DIRECT_PHYSICAL_READINGS",
         )
         self.assertEqual(len(first["grave_measurement"]["method_sha256"]), 64)
+        self.assertEqual(
+            first["grave_measurement"]["method"]["measurement_surface"]["surface"],
+            "KEYCAP_TOP_PRESS_SURFACE",
+        )
+        self.assertIn(
+            "KEYCAP_BASE",
+            first["grave_measurement"]["method"]["measurement_surface"]["exclude"],
+        )
         self.assertIsNone(first["grave_measurement"]["derived_geometry"])
+        arm_contract = first["arm_lane_catalog_contract"]
+        self.assertEqual(
+            arm_contract["required_behavior"],
+            "VALIDATE_LOADED_FROZEN_CATALOG_HASH_THEN_ENUMERATE_ITS_CONTENTS",
+        )
+        self.assertEqual(
+            arm_contract["prohibited_behavior"],
+            "HARDCODE_EXPECTED_TOTAL_OR_PER_DEVICE_TARGET_COUNTS",
+        )
+        self.assertFalse(arm_contract["arm_lane_status_changed"])
         self.assertEqual(first["hardware_writes"], 0)
         self.assertEqual(first["physical_movements"], 0)
         self.assertFalse(first["physical_authority"])

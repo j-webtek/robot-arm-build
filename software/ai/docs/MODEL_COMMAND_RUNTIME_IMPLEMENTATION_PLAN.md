@@ -186,6 +186,21 @@ replays 160,925 requested characters through 240,468 virtual presses, including
 79,543 one-shot Shift presses, with zero failures. The exact case population is
 hash-bound so later compiler changes must replay the same strings.
 
+Arm-side reachability screening must be catalog driven. The runtime validates
+the loaded target catalog against the active frozen catalog SHA-256, validates
+each target's device, identity, center, safe region, and source state, then
+screens every ordered catalog target exactly once and binds that ordered
+identity list into its report. It must not encode an expected total or
+per-device target count in source code. Catalog mutation, duplicate target IDs,
+hash mismatch, or a missing screening result fails closed. This requirement
+lets future reviewed catalog additions remain data changes while preserving an
+exact runtime binding.
+
+The `GRAVE` measurement uses the keycap top press surface, excluding the
+tapered sidewall, base, and switch housing. All width, height, and reference
+edge offsets use that same top surface because it is both visible to the camera
+and contacted by the tool.
+
 The phone strategy is a verified layer state machine. Lowercase, uppercase,
 and symbol layers are distinct observed states. Every future transition and
 character tap requires ADB confirmation of the currently visible layer before
