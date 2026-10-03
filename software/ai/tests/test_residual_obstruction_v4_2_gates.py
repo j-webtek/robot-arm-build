@@ -27,6 +27,10 @@ from score_residual_obstruction_v4_2_baseline import (  # noqa: E402
     score_rows,
     select_normalization,
 )
+from train_residual_obstruction_v4_2_cnn import (  # noqa: E402
+    score_probabilities,
+    uplift_result,
+)
 from residual_obstruction_v4_2_isaac_probe import normalization_difference_metrics  # noqa: E402
 
 
@@ -142,3 +146,34 @@ def test_report_loader_rejects_tampering(tmp_path: Path) -> None:
     path.write_text(json.dumps({"schema": "x", "value": 1, "report_sha256": "bad"}))
     with pytest.raises(ValueError, match="report hash mismatch"):
         _load_report(path, "x")
+
+
+def test_cnn_scoring_and_uplift_require_both_frozen_improvements() -> None:
+    development = []
+    probabilities = []
+    for target in ("A", "B"):
+        for label, probability in (
+            ("VISIBLE", 0.1),
+            ("VISIBLE", 0.2),
+            ("ABSTAIN", 0.8),
+            ("ABSTAIN", 0.9),
+        ):
+            development.append({
+                "device": "keyboard",
+                "target_id": target,
+                "expected_decision": label,
+            })
+            probabilities.append(probability)
+    cnn = score_probabilities(development, np.asarray(probabilities))
+    assert cnn["pooled_auc"] == cnn["q05_per_target_auc"] == 1.0
+    result = uplift_result(
+        {"pooled_auc": 0.97, "q05_per_target_auc": 0.99},
+        cnn,
+        {
+            "minimum_pooled_auc_improvement": 0.02,
+            "minimum_q05_per_target_auc_improvement": 0.02,
+        },
+    )
+    assert result["pooled_gate_met"] is True
+    assert result["q05_gate_met"] is False
+    assert result["gate_met"] is False

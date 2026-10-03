@@ -1,6 +1,6 @@
 {
   "controller_authority": false,
-  "documented_ai_test_count": 66,
+  "documented_ai_test_count": 67,
   "hardware_writes": 0,
   "limitations": [
     "The registry proves documentation coverage and path integrity, not model correctness.",
@@ -8,12 +8,12 @@
   ],
   "multiply_owned_test_paths": [],
   "physical_movements": 0,
-  "receipt_sha256": "4df3f7ba7ab0c08909532f4576e2df57baccd3dfb7c5aa855dba852ef303d60e",
-  "referenced_path_count": 236,
-  "registry_sha256": "6c35379bc4f7d77fc810565d1d5e1a00d9dd688756a98e99d0efe367b18aa25c",
+  "receipt_sha256": "970a95acbe66fe2e9ec1beeeee037539138b63064b4e808477915df938e5c8b2",
+  "referenced_path_count": 241,
+  "registry_sha256": "7880868d33f764b1fdd910014123f5ce949312104cfb77cced251158dbac317e",
   "schema": "tactevra.ai_work_registry_audit.v1",
   "status": "PASS",
-  "tracked_ai_test_count": 66,
+  "tracked_ai_test_count": 67,
   "unowned_test_paths": [],
   "workstream_count": 7
 }
