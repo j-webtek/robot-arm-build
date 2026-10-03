@@ -128,7 +128,9 @@
         "software/ai/eval/build_residual_obstruction_physical_pilot_v1_1.py",
         "software/ai/schemas/residual_obstruction_physical_pilot_v1_1.schema.json",
         "software/ai/eval/probe_physical_charuco_readiness.py",
-        "software/ai/schemas/physical_charuco_probe_v1.schema.json"
+        "software/ai/schemas/physical_charuco_probe_v1.schema.json",
+        "software/ai/eval/build_b0477_commissioning_amendment.py",
+        "software/ai/schemas/b0477_commissioning_amendment_v1.schema.json"
       ],
       "test_paths": [
         "software/ai/tests/test_capture_binding.py",
@@ -171,14 +173,16 @@
         "software/ai/tests/test_residual_obstruction_v4_2_remedy_classification.py",
         "software/ai/tests/test_residual_obstruction_physical_pilot.py",
         "software/ai/tests/test_residual_obstruction_physical_pilot_v1_1.py",
-        "software/ai/tests/test_physical_charuco_probe.py"
+        "software/ai/tests/test_physical_charuco_probe.py",
+        "software/ai/tests/test_b0477_commissioning_amendment.py"
       ],
       "documentation_paths": [
         "software/ai/docs/MODEL_TO_ARM_TRANSLATION_ASSURANCE.md",
         "software/ai/docs/REAL_PHOTO_SEED_ASSESSMENT.md",
         "software/ai/docs/VISION_MOTION_INTEGRATION.md",
         "software/ai/train/README.md",
-        "software/ai/docs/REFERENCE_PAIR_COMMISSIONING.md"
+        "software/ai/docs/REFERENCE_PAIR_COMMISSIONING.md",
+        "software/ai/docs/PHYSICAL_CAMERA_LOCALIZATION_CAMPAIGN.md"
       ],
       "evidence_paths": [
         "software/ai/docs/EVIDENCE_LEDGER.md",
@@ -221,9 +225,10 @@
         "software/ai/eval/residual_obstruction_v4_2_remedy_classification_v1.json",
         "software/ai/eval/residual_obstruction_physical_pilot_v1.json",
         "software/ai/eval/residual_obstruction_physical_pilot_v1_1.json",
-        "software/ai/eval/physical_charuco_probe_blocked_v1.json"
+        "software/ai/eval/physical_charuco_probe_blocked_v1.json",
+        "software/ai/eval/b0477_commissioning_amendment_v1.json"
       ],
-      "current_result": "The read-only physical ChArUco readiness probe is BLOCKED: Windows enumerates no Camera/Image-class device. OpenCV 5.0 detects the retained 5x7 tooling board, but production still requires the B0477 and a retained, print-scale-verified, rigid 12x9 board.",
+      "current_result": "The physical ChArUco probe remains blocked. A corrective amendment now binds the repository-authoritative B0477 full-native 5472x3648 YUY2 9 fps mode, locked optics/image controls, mode-specific intrinsics, and distributed X/Y caliper measurements while preserving the earlier 4 fps receipt as failed evidence.",
       "limitations": [
         "No commissioned projection renderer, measured dilation artifact, or physical deployment qualification is installed.",
         "The geometry-first replay uses the same Isaac semantic mask that generated the synthetic label and therefore cannot estimate real projection error.",
@@ -249,9 +254,10 @@
         "The residual v4.2 remedy classification contains no physical pilot images or measured runtime-admitted lighting envelope and selects no successor.",
         "The physical pilot predeclaration contains no physical pixels; its 20% boundary rows are separately reported, and no pilot row is authorized for model training.",
         "No post-isolation silhouette evidence exists yet, its tolerance remains unset pending the commissioned park profile, and the one-session escrow has no statistical power claim.",
-        "No camera is connected, no physical image was captured, and the retained 5x7 tooling board does not satisfy the production 12x9 ChArUco contract."
+        "No camera is connected, no physical image was captured, and the retained 5x7 tooling board does not satisfy the production 12x9 ChArUco contract.",
+        "The preserved blocked probe incorrectly recorded 4 fps; the corrective amendment binds 9 fps from three repository sources, but received-unit mode and all physical settings remain unverified."
       ],
-      "next_gate": "Connect and identify the intended B0477 at 5472x3648 YUY2 4 fps; retain, print, measure, and rigidly back the required 12x9 DICT_5X5_1000 board; then capture 24 training and 8 held-out broad-coverage views before the physical pilot.",
+      "next_gate": "Connect the B0477; verify persistent identity and full-native 5472x3648 YUY2 9 fps; lock and hash-bind focus, aperture, exposure, gain, and white balance; measure the rigid 12x9 board with at least four distributed X and four distributed Y caliper checks; then review scale tolerance before capture.",
       "model_motion_batch_boundary": true,
       "controller_authority": false,
       "hardware_writes": 0,
@@ -501,5 +507,5 @@
   "controller_authority": false,
   "hardware_writes": 0,
   "physical_movements": 0,
-  "registry_sha256": "824a71bfaf42973aafd90f5d690092296e435b70e408ba934f3890c08d5cc3e0"
+  "registry_sha256": "a1e06d07b4dcc43176a33f525e3a2bbea35c1b6f9fbecb702b57fe14f498583b"
 }

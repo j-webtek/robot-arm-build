@@ -305,6 +305,12 @@ records a read-only Windows device inventory and an OpenCV ArUco tooling smoke.
 It explicitly separates the retained 5x7 smoke board from the production 12x9
 camera-calibration contract. A blocked receipt has zero captures, calibration,
 hardware writes, movements, or physical authority and cannot install intrinsics.
+The preserved probe incorrectly recorded 4 fps. The
+[B0477 commissioning amendment](b0477_commissioning_amendment_v1.schema.json)
+binds the repository-authoritative full-native 5472x3648 YUY2 9 fps mode,
+mode-specific calibration, locked optics and image controls, and distributed
+X/Y caliper measurements. It leaves all physical measurements and tolerances
+unset and grants no capture, calibration, deployment, or physical authority.
 The [parked-pose campaign](parked_pose_qualification_campaign_v1.schema.json)
 and [result](parked_pose_qualification_result_v1.schema.json) keep synthetic
 perturbation evidence separate from authorized physical park-and-settle cycles.
