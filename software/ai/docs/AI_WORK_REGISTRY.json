@@ -142,7 +142,9 @@
         "software/ai/sim/build_residual_obstruction_successor_v5_4.py",
         "software/ai/schemas/residual_obstruction_successor_fixture_v5_4.schema.json",
         "software/ai/eval/audit_residual_obstruction_v5_4_fixture.py",
-        "software/ai/schemas/residual_obstruction_v5_4_fixture_audit_v1.schema.json"
+        "software/ai/schemas/residual_obstruction_v5_4_fixture_audit_v1.schema.json",
+        "software/ai/eval/analyze_residual_v5_4_power_sensitivity.py",
+        "software/ai/schemas/residual_obstruction_v5_4_power_sensitivity_v1.schema.json"
       ],
       "test_paths": [
         "software/ai/tests/test_capture_binding.py",
@@ -191,7 +193,8 @@
         "software/ai/tests/test_residual_obstruction_v5_1_pre_render.py",
         "software/ai/tests/test_residual_obstruction_v5_2_power_attribution.py",
         "software/ai/tests/test_residual_obstruction_v5_3_safety_gate_amendment.py",
-        "software/ai/tests/test_residual_obstruction_successor_v5_4.py"
+        "software/ai/tests/test_residual_obstruction_successor_v5_4.py",
+        "software/ai/tests/test_residual_obstruction_v5_4_power_sensitivity.py"
       ],
       "documentation_paths": [
         "software/ai/docs/MODEL_TO_ARM_TRANSLATION_ASSURANCE.md",
@@ -249,7 +252,8 @@
         "software/ai/eval/residual_obstruction_v5_2_power_attribution_v1.json",
         "software/ai/eval/residual_obstruction_v5_3_safety_gate_amendment_v1.json",
         "software/ai/sim/evidence/residual_obstruction_successor_v5_4.json",
-        "software/ai/eval/residual_obstruction_v5_4_fixture_audit_v1.json"
+        "software/ai/eval/residual_obstruction_v5_4_fixture_audit_v1.json",
+        "software/ai/eval/residual_obstruction_v5_4_power_sensitivity_v1.json"
       ],
       "current_result": "Residual v5.4 freezes and independently audits 224 split-isolated evaluation scenes with deterministic 12-target assignments, 96,768 unopened identities, and 35/36 scene exposures per target; development has explicit paired cable/dark-cable support for both candidates.",
       "limitations": [
@@ -535,5 +539,5 @@
   "controller_authority": false,
   "hardware_writes": 0,
   "physical_movements": 0,
-  "registry_sha256": "0fae6872ce25f32c766728cdd6869fd457911413aed0c3b872ed6d0d70ed2ac0"
+  "registry_sha256": "28b1236b3d9ccaf9d2e778d7aa9e7339e87d1661b2f2c1f05046f37ada3df353"
 }
