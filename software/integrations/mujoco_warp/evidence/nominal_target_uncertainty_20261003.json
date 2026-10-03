@@ -1,4 +1,90 @@
 {
+  "calibrated_residual_study": {
+    "claim_commit": "d5582108808d8cdd87df3fab4e716baa49e53bbe",
+    "cross_device_numerical_content_equal": true,
+    "cross_device_numerical_content_sha256": "ce13808a089a453ab7eb30c21d2c94889fd1096b40260b64751c65890222627c",
+    "design": {
+      "cartesian_correction_model": "local equivalent subtraction",
+      "correction_reference": "absolute target center",
+      "effective_safe_half_widths_mm": [
+        3.0,
+        4.0
+      ],
+      "fixed_approach_sign_per_target": true,
+      "fixed_backlash_and_systematic_magnitude_rad_each": [
+        0.002,
+        0.004,
+        0.008
+      ],
+      "per_key_calibration_residual_fraction": [
+        0.0,
+        0.1,
+        0.25,
+        0.5,
+        1.0
+      ],
+      "random_joint_noise_sigma_rad": [
+        0.001,
+        0.0015,
+        0.002
+      ]
+    },
+    "external_artifact_sha256": {
+      "cuda0": "78574e805961769d69579f63d3b7e9027173a219680dda12327134596363437f",
+      "cuda1": "aa90e5ace60b01faf51d4f6f270f4a4f3fae8fd0a22898e2efb4b0e7a5d98afc"
+    },
+    "hardware_write_count": 0,
+    "interpretation": {
+      "residual_grid_not_a_monotonic_threshold": "directional residual can sometimes offset tail direction, so entries are observed passing grid values rather than qualification limits",
+      "synthetic_design_path": "consistent approach plus per-key correction can reduce the problem primarily to random noise; physical measurements must set all values",
+      "width_3_mm": "marginal; single tail misses occur even at zero residual for some fixed-pose sensitivities",
+      "width_4_mm": "feasible across the focused grid when fixed-source residual is reduced to 10\u201325% in the harder cases"
+    },
+    "largest_passing_residual_grid_value": {
+      "fixed_0.002_noise_0.0015_width_3": 0.25,
+      "fixed_0.002_noise_0.0015_width_4": 0.5,
+      "fixed_0.002_noise_0.001_width_3": 0.5,
+      "fixed_0.002_noise_0.001_width_4": 1.0,
+      "fixed_0.002_noise_0.002_width_3": null,
+      "fixed_0.002_noise_0.002_width_4": 0.25,
+      "fixed_0.004_noise_0.0015_width_3": 0.1,
+      "fixed_0.004_noise_0.0015_width_4": 0.25,
+      "fixed_0.004_noise_0.001_width_3": 0.25,
+      "fixed_0.004_noise_0.001_width_4": 0.5,
+      "fixed_0.004_noise_0.002_width_3": null,
+      "fixed_0.004_noise_0.002_width_4": 0.1,
+      "fixed_0.008_noise_0.0015_width_3": null,
+      "fixed_0.008_noise_0.0015_width_4": 0.1,
+      "fixed_0.008_noise_0.001_width_3": 0.1,
+      "fixed_0.008_noise_0.001_width_4": 0.25,
+      "fixed_0.008_noise_0.002_width_3": null,
+      "fixed_0.008_noise_0.002_width_4": 0.1
+    },
+    "limitations": [
+      "approach signs and residual fractions are synthetic",
+      "Cartesian subtraction approximates replanning to a corrected aim point",
+      "3 mm results are tail-sensitive under the zero-miss rule",
+      "safe regions, fingertip, source magnitudes, placement, and tool length are unmeasured",
+      "no more synthetic sensitivity expansion is authorized by this result",
+      "no visual correction, collision, dynamics, contact, servo, or physical qualification claim"
+    ],
+    "physical_authority": false,
+    "physical_movement_count": 0,
+    "preserved_failed_design": {
+      "cuda0_sha256": "bfb6a20d06b4eb0684a82f2416e6e08aca1db9432619ada091ea7f5e53b86f92",
+      "cuda1_sha256": "78f3cfab60ee2fb7c5d8d221b0e64cf3009ecce7f99257073a33460abd87326c",
+      "reason": "first correction referenced the unperturbed nominal landing instead of the absolute target center"
+    },
+    "sample_design": {
+      "fk_scenario_count": 12,
+      "safe_width_cells": 90,
+      "scored_scenario_count": 45,
+      "target_count": 46,
+      "total_forward_kinematic_worlds_per_gpu": 2260992,
+      "worlds_per_target_per_fk_scenario": 4096
+    },
+    "status": "PASS_EXPLORATORY_CALIBRATED_RESIDUAL"
+  },
   "cross_device_numerical_content_equal": true,
   "cross_device_numerical_content_sha256": "f2de32761971946a155e8f347918309f43def4b175b639df5d16dcffea0fcc10",
   "decision": "PASS_EXPLORATORY_SENSITIVITY",
@@ -251,7 +337,7 @@
     "total_forward_kinematic_worlds": 3391488,
     "worlds_per_target_per_level": 4096
   },
-  "schema": "rocell.mujoco_warp_nominal_target_uncertainty_summary.v3",
+  "schema": "rocell.mujoco_warp_nominal_target_uncertainty_summary.v4",
   "scope": "SYNTHETIC_UNMEASURED_NOMINAL_KEYCAP_POINT_TOOL_ONLY",
   "status": "PASS"
 }

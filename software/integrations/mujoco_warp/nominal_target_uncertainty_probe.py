@@ -73,6 +73,10 @@ FEASIBILITY_NOISE_LEVELS_RAD = [
 ]
 FEASIBILITY_BACKLASH_LEVELS_RAD = [0.0, 0.002, 0.004, 0.006, 0.008]
 FEASIBILITY_SYSTEMATIC_LEVELS_RAD = [0.0, 0.002, 0.004, 0.006, 0.008]
+CALIBRATED_HALF_WIDTHS_MM = [3.0, 4.0]
+CALIBRATED_RANDOM_LEVELS_RAD = [0.001, 0.0015, 0.002]
+CALIBRATED_FIXED_SOURCE_MAGNITUDES_RAD = [0.002, 0.004, 0.008]
+CALIBRATED_RESIDUAL_FRACTIONS = [0.0, 0.1, 0.25, 0.5, 1.0]
 WORLDS_PER_TARGET = 4096
 TARGET_COUNT = 46
 SEED = 2_026_100_301
@@ -181,9 +185,9 @@ def _board_tips(data, hand_id: int, board_t_world, tool_length_mm: float, np):
     return (board_t_world @ homogeneous.T).T[:, :3]
 
 
-def _safe_width_cells(tips, centers, poses, np):
+def _safe_width_cells(tips, centers, poses, np, half_widths=None):
     cells = []
-    for half_width_mm in FEASIBILITY_HALF_WIDTHS_MM:
+    for half_width_mm in half_widths or FEASIBILITY_HALF_WIDTHS_MM:
         extents = np.full((TARGET_COUNT, 2), half_width_mm, dtype=np.float64)
         _, margins, misses = _score_absolute_target_rectangles(
             tips[:, :, :2], centers[:, :2], extents, np
@@ -227,6 +231,13 @@ def _safe_width_cells(tips, centers, poses, np):
             }
         )
     return cells
+
+
+def _apply_cartesian_calibration(
+    raw_tips, fixed_cartesian_delta, residual_fraction: float
+):
+    """Apply a local per-target correction, leaving the declared residual bias."""
+    return raw_tips - (1.0 - residual_fraction) * fixed_cartesian_delta[:, None, :]
 
 
 def _run_feasibility(
@@ -341,6 +352,135 @@ def _run_feasibility(
     return result
 
 
+def _run_calibrated_residual(
+    args,
+    poses,
+    nominal_q,
+    centers,
+    board_t_world,
+    tool_length_mm,
+    warp_model,
+    warp_data,
+    hand_id,
+    np,
+    mjw,
+    wp,
+):
+    seed = SEED + 3
+    rng = np.random.Generator(np.random.PCG64(seed))
+    fixed_signs = (
+        rng.integers(0, 2, size=(TARGET_COUNT, 5), dtype=np.int8).astype(np.float64)
+        * 2.0
+        - 1.0
+    )
+    systematic_unit = rng.uniform(-1.0, 1.0, size=5)
+    random_unit = rng.normal(
+        0.0, 1.0, size=(TARGET_COUNT, WORLDS_PER_TARGET, 5)
+    )
+    total_worlds = TARGET_COUNT * WORLDS_PER_TARGET
+    scenario_rows = []
+    for fixed_magnitude in CALIBRATED_FIXED_SOURCE_MAGNITUDES_RAD:
+        fixed_offsets = fixed_signs * fixed_magnitude + systematic_unit * fixed_magnitude
+        fixed_q = nominal_q.copy()
+        fixed_q[:, :5] += fixed_offsets
+        repeated_fixed_q = np.repeat(fixed_q, WORLDS_PER_TARGET, axis=0)
+        warp_data.qpos.assign(repeated_fixed_q)
+        mjw.forward(warp_model, warp_data)
+        wp.synchronize_device(wp.get_device())
+        fixed_tips = _board_tips(
+            warp_data, hand_id, board_t_world, tool_length_mm, np
+        ).reshape(TARGET_COUNT, WORLDS_PER_TARGET, 3)[:, 0, :]
+        fixed_cartesian_delta = fixed_tips - centers
+        for noise_level in CALIBRATED_RANDOM_LEVELS_RAD:
+            qpos = np.broadcast_to(
+                fixed_q[:, None, :], (TARGET_COUNT, WORLDS_PER_TARGET, 6)
+            ).copy()
+            qpos[:, :, :5] += random_unit * noise_level
+            warp_data.qpos.assign(qpos.reshape(total_worlds, 6))
+            mjw.forward(warp_model, warp_data)
+            wp.synchronize_device(wp.get_device())
+            raw_tips = _board_tips(
+                warp_data, hand_id, board_t_world, tool_length_mm, np
+            ).reshape(TARGET_COUNT, WORLDS_PER_TARGET, 3)
+            for residual_fraction in CALIBRATED_RESIDUAL_FRACTIONS:
+                corrected_tips = _apply_cartesian_calibration(
+                    raw_tips, fixed_cartesian_delta, residual_fraction
+                )
+                scenario_rows.append(
+                    {
+                        "fixed_backlash_and_systematic_magnitude_rad_each": (
+                            fixed_magnitude
+                        ),
+                        "random_joint_noise_sigma_rad": noise_level,
+                        "per_key_calibration_residual_fraction": residual_fraction,
+                        "safe_width_cells": _safe_width_cells(
+                            corrected_tips,
+                            centers,
+                            poses,
+                            np,
+                            CALIBRATED_HALF_WIDTHS_MM,
+                        ),
+                    }
+                )
+    result = {
+        "schema": "rocell.mujoco_warp_fixed_approach_calibrated_residual.v1",
+        "status": "PASS_EXPLORATORY_CALIBRATED_RESIDUAL",
+        "scope": "SYNTHETIC_FIXED_APPROACH_LOCAL_CARTESIAN_CORRECTION_POINT_TOOL_ONLY",
+        "source_sha256": dict(EXPECTED),
+        "stack": _stack(args.device),
+        "device": args.device,
+        "seed": seed,
+        "target_count": TARGET_COUNT,
+        "worlds_per_target_per_fk_scenario": WORLDS_PER_TARGET,
+        "fk_scenario_count": (
+            len(CALIBRATED_FIXED_SOURCE_MAGNITUDES_RAD)
+            * (1 + len(CALIBRATED_RANDOM_LEVELS_RAD))
+        ),
+        "scored_scenario_count": len(scenario_rows),
+        "total_forward_kinematic_worlds": (
+            len(CALIBRATED_FIXED_SOURCE_MAGNITUDES_RAD)
+            * (1 + len(CALIBRATED_RANDOM_LEVELS_RAD))
+            * total_worlds
+        ),
+        "grids": {
+            "effective_safe_half_widths_mm": CALIBRATED_HALF_WIDTHS_MM,
+            "random_joint_noise_sigma_rad": CALIBRATED_RANDOM_LEVELS_RAD,
+            "fixed_backlash_and_systematic_magnitude_rad_each": (
+                CALIBRATED_FIXED_SOURCE_MAGNITUDES_RAD
+            ),
+            "per_key_calibration_residual_fraction": CALIBRATED_RESIDUAL_FRACTIONS,
+        },
+        "model": {
+            "approach_direction": "one deterministic five-joint sign vector per target, fixed across presses",
+            "systematic_offset": "one deterministic five-joint vector shared across targets",
+            "calibration": "subtract declared fraction of each target's fixed Cartesian tip displacement",
+            "random_noise": "zero-mean Gaussian joint perturbation, paired across scenarios",
+            "absolute_target_center_scoring": True,
+            "per_scenario_recentering": False,
+        },
+        "scenarios": scenario_rows,
+        "hardware_access": False,
+        "hardware_write_count": 0,
+        "physical_movement_count": 0,
+        "physics_step_count": 0,
+        "physical_authority": False,
+        "controller_commands": [],
+        "limitations": [
+            "fixed approach signs are synthetic and are not derived from commissioned routes",
+            "Cartesian subtraction is a local-equivalent correction, not a rerun of inverse kinematics to a corrected aim point",
+            "calibration residual fractions are sensitivity values rather than measured accuracy",
+            "safe widths, source magnitudes, rank-1 placement, 120 mm tool, and point footprint are unmeasured",
+            "no visual correction, collision, dynamics, contact, servo, or physical qualification is claimed",
+        ],
+    }
+    result["receipt_sha256"] = hashlib.sha256(canonical_bytes(result)).hexdigest()
+    args.output.parent.mkdir(parents=True, exist_ok=True)
+    args.output.write_text(
+        json.dumps(result, sort_keys=True, indent=2) + "\n", encoding="utf-8"
+    )
+    return result
+
+
 def run(args: argparse.Namespace) -> dict[str, Any]:
     for name, expected in EXPECTED.items():
         actual = sha256(getattr(args, name))
@@ -418,6 +558,22 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
 
     if args.mode == "feasibility":
         return _run_feasibility(
+            args,
+            poses,
+            nominal_q,
+            centers,
+            board_t_world,
+            tool_length_mm,
+            warp_model,
+            warp_data,
+            hand_id,
+            np,
+            mjw,
+            wp,
+        )
+
+    if args.mode == "calibrated":
+        return _run_calibrated_residual(
             args,
             poses,
             nominal_q,
@@ -663,7 +819,9 @@ def main() -> int:
     parser.add_argument("--mjcf", type=Path, required=True)
     parser.add_argument("--device", choices=("cuda:0", "cuda:1"), required=True)
     parser.add_argument(
-        "--mode", choices=("original", "refinement", "feasibility"), default="original"
+        "--mode",
+        choices=("original", "refinement", "feasibility", "calibrated"),
+        default="original",
     )
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()

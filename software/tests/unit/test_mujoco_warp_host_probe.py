@@ -171,6 +171,29 @@ def test_safe_width_map_changes_only_at_absolute_region_boundary():
     assert cells[1]["total_misses"] == 0
 
 
+def test_per_key_cartesian_calibration_leaves_declared_residual_fraction():
+    import numpy as np
+
+    fixed_delta = np.asarray([[2.0, -4.0, 1.0]])
+    raw_tips = np.asarray([[[12.0, 16.0, 6.0], [13.0, 17.0, 7.0]]])
+
+    fully_corrected = UNCERTAINTY_PROBE._apply_cartesian_calibration(
+        raw_tips, fixed_delta, 0.0
+    )
+    quarter_residual = UNCERTAINTY_PROBE._apply_cartesian_calibration(
+        raw_tips, fixed_delta, 0.25
+    )
+    uncorrected = UNCERTAINTY_PROBE._apply_cartesian_calibration(
+        raw_tips, fixed_delta, 1.0
+    )
+
+    assert np.array_equal(fully_corrected, raw_tips - fixed_delta[:, None, :])
+    assert np.array_equal(
+        quarter_residual, raw_tips - 0.75 * fixed_delta[:, None, :]
+    )
+    assert np.array_equal(uncorrected, raw_tips)
+
+
 def fake_schedule_gap_inputs():
     arm_rows = []
     mw2f_rows = []
