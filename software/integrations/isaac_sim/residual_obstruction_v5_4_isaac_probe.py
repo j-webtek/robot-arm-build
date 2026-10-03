@@ -186,6 +186,38 @@ def _ellipsoid(stage: Any, path: str, center_mm: tuple[float, float, float],
     return sphere
 
 
+def _cylinder(stage: Any, path: str, center_mm: tuple[float, float, float],
+              length_mm: float, radius_mm: float, color: tuple[float, float, float],
+              opacity: float, label: str, Gf: Any, UsdGeom: Any, add_labels: Any) -> Any:
+    cylinder = UsdGeom.Cylinder.Define(stage, path)
+    cylinder.GetRadiusAttr().Set(1.0)
+    cylinder.GetHeightAttr().Set(2.0)
+    xform = UsdGeom.Xformable(cylinder)
+    xform.AddTranslateOp().Set(Gf.Vec3d(*(value / 1000.0 for value in center_mm)))
+    xform.AddRotateYOp().Set(90.0)
+    xform.AddScaleOp().Set(Gf.Vec3d(
+        radius_mm / 1000.0, radius_mm / 1000.0, length_mm / 2000.0,
+    ))
+    cylinder.GetDisplayColorAttr().Set([Gf.Vec3f(*color)])
+    cylinder.CreateDisplayOpacityAttr([opacity])
+    add_labels(cylinder.GetPrim(), labels=[label], taxonomy="class")
+    return cylinder
+
+
+def _family_assets(fixture: dict[str, Any], split: str, variant_id: str) -> list[str]:
+    assets = fixture["obstruction_assets"][split]
+    token = (
+        "dark_cable" if variant_id.startswith("dark_cable")
+        else "translucent_cable" if variant_id.startswith("translucent_cable")
+        else "hand" if variant_id.startswith("hand")
+        else "tool_foreign"
+    )
+    selected = [asset_id for asset_id in assets if token in asset_id]
+    if not selected:
+        raise ValueError(f"no {split} assets for {variant_id}")
+    return selected
+
+
 def _semantic_array(raw: Any, np: Any) -> tuple[Any, dict[str, Any]]:
     data = np.asarray(raw["data"] if isinstance(raw, dict) else raw)
     info = raw.get("info", {}) if isinstance(raw, dict) else {}
@@ -445,19 +477,40 @@ def render(workspace: Path, fixture_path: Path, output_dir: Path, status_output:
                         color = (0.28, 0.3, 0.34)
                     elif variant_id.startswith("foreign"):
                         color = (0.15, 0.37, 0.19)
-                    asset_ids = fixture["obstruction_assets"][split]
+                    asset_ids = _family_assets(fixture, split, variant_id)
                     asset_id = asset_ids[(target_index + len(per_variant)) % len(asset_ids)]
                     asset_seed = int(sha256_bytes(asset_id.encode())[:8], 16)
-                    width_scale = 1.05 + (asset_seed % 13) / 100.0
-                    prim = _cube(
-                        stage,
-                        f"{scene_dynamic_root}/Obstructions/T{target_index:03d}_{variant_id}",
-                        (target.center.x, target.center.y, z),
-                        (width * width_scale, height * coverage, 5.0),
-                        color, "residual_obstruction", Gf, UsdGeom, add_labels,
-                    ).GetPrim()
-                    if variant_id.startswith("translucent"):
-                        UsdGeom.Cube(prim).GetDisplayOpacityAttr().Set([0.62])
+                    geometry_path = f"{scene_dynamic_root}/Obstructions/T{target_index:03d}_{variant_id}"
+                    width_scale = 1.03 + (asset_seed % 17) / 100.0
+                    if "cable" in variant_id:
+                        prim = _cylinder(
+                            stage, geometry_path, (target.center.x, target.center.y, z),
+                            width * width_scale, height * coverage / 2.0, color,
+                            0.62 if variant_id.startswith("translucent") else 1.0,
+                            "residual_obstruction", Gf, UsdGeom, add_labels,
+                        ).GetPrim()
+                    elif variant_id.startswith("hand"):
+                        x_radius = width * (0.54 + (asset_seed % 7) / 100.0)
+                        y_radius = height * coverage / (math.pi * (x_radius / width))
+                        prim = _ellipsoid(
+                            stage, geometry_path, (target.center.x, target.center.y, z),
+                            (x_radius, y_radius), color, "residual_obstruction",
+                            Gf, UsdGeom, add_labels,
+                        ).GetPrim()
+                    elif variant_id.startswith("foreign"):
+                        x_radius = width * (0.45 + (asset_seed % 9) / 100.0)
+                        y_radius = height * coverage / (math.pi * (x_radius / width))
+                        prim = _ellipsoid(
+                            stage, geometry_path, (target.center.x, target.center.y, z),
+                            (x_radius, y_radius), color, "residual_obstruction",
+                            Gf, UsdGeom, add_labels,
+                        ).GetPrim()
+                    else:
+                        prim = _cube(
+                            stage, geometry_path, (target.center.x, target.center.y, z),
+                            (width * width_scale, height * coverage, 6.0), color,
+                            "residual_obstruction", Gf, UsdGeom, add_labels,
+                        ).GetPrim()
                     per_variant[variant_id] = prim
                 obstruction_prims.append(per_variant)
             adjacent_prims = adjacent_left_prims + adjacent_right_prims
@@ -573,9 +626,9 @@ def render(workspace: Path, fixture_path: Path, output_dir: Path, status_output:
                         depth_raw = depth_annotators[local_index].get_data()
                         depth = np.asarray(depth_raw["data"] if isinstance(depth_raw, dict) else depth_raw)
                         finite = depth[np.isfinite(depth)]
-                        asset_ids = fixture["obstruction_assets"][split]
                         asset_id = None
                         if variant.get("coverage") is not None:
+                            asset_ids = _family_assets(fixture, split, variant_id)
                             asset_id = asset_ids[(target_index + sum(
                                 item.get("coverage") is not None
                                 for item in fixture["variants"][:variant_index]
