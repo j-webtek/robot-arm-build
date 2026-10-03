@@ -105,6 +105,14 @@ records a distinct frozen computation and result. The governed tracked-file
 ceiling is therefore 6,330; all byte, blob, duplicate, and reduction limits
 remain unchanged.
 
+The nominal-target uncertainty increment adds three reviewed files: a
+catalog-bound target-pose bundle builder, a deterministic uncertainty probe,
+and its compact retained result. The existing focused MuJoCo Warp test file and
+shared coordination documents were extended in place. The governed tracked-file
+ceiling is therefore 6,333; no simulator cache, image, model, or physical
+artifact is tracked, and all byte, blob, duplicate, and reduction limits remain
+unchanged.
+
 The issue 190 v14 synthetic evaluation adds three small, reviewed source files:
 the deterministic static-pose fixture builder, its retained JSON fixture, and
 its focused test. The tracked-file ceiling is therefore 6,103. This adjustment
