@@ -63,7 +63,7 @@ post-reduction reference. Containment ceilings remain deliberately above the
 baseline to detect material growth without making normal small changes brittle.
 
 The pre-camera integration and Isaac Sim merge brings the tracked tree to 6,316
-files and 650,694,068 logical bytes. The file-count containment ceiling is
+files and about 650.7 million logical bytes. The file-count containment ceiling is
 updated to that measured merged tree; the byte, single-blob, and duplication
 ceilings remain unchanged.
 
