@@ -407,7 +407,7 @@ GPU initialization. No physical profile was created or claimed. Evidence is
 
 ### MW2F — schedule-scale forward-kinematics differential
 
-**Status: active, frozen before results.** Reuse the exact 133-state schedule
+**Result (2026-10-03): `PASS_KINEMATIC_ONLY`.** The frozen increment reused the exact 133-state schedule
 bundle from `E-20260929-INT-451`, its retained Isaac replay receipt, the
 governed URDF, and the MW1 generated MJCF. Replay every ordered joint vector
 through the arm-runtime reference, standard MuJoCo, and MuJoCo Warp. Compare
@@ -428,6 +428,17 @@ to reproduce within the frozen numerical tolerances rather than byte for byte.
 This increment claims kinematic differential evidence only: no uncertainty
 qualification, silhouette margin, collision validity, dynamics, contact,
 rendering, hardware access, or physical authority.
+
+All 133 ordered states passed. Standard MuJoCo agrees with RoCell's current
+forward kinematics to `3.1776437161565096e-13 mm`; MuJoCo Warp agrees with
+standard MuJoCo to `0.000151675112855002 mm`; and the retained Isaac replay
+remains within `0.07684842940066568 mm` of the schedule reference. Two CUDA 0
+receipts are byte identical, and CUDA 0 versus CUDA 1 tool-tip outputs are
+identical. This expands MW1 from three fixed poses to a representative motion
+schedule. The retained Isaac v1 receipt reports the all-sample maximum but
+stores per-sample coordinates only for contact endpoints, so a new full-sample
+Isaac receipt remains necessary for direct pairwise four-backend rows. Evidence
+is `E-20261003-AI-568`.
 
 ### MW3 — camera and geometry parity
 

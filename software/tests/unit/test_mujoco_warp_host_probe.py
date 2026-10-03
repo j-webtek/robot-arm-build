@@ -53,6 +53,69 @@ QUEUE_SPEC = importlib.util.spec_from_file_location(
 QUEUE_PROBE = importlib.util.module_from_spec(QUEUE_SPEC)
 assert QUEUE_SPEC.loader is not None
 QUEUE_SPEC.loader.exec_module(QUEUE_PROBE)
+FK_SPEC = importlib.util.spec_from_file_location(
+    "mujoco_warp_schedule_fk_differential_probe",
+    ROOT / "software/integrations/mujoco_warp/schedule_fk_differential_probe.py",
+)
+FK_PROBE = importlib.util.module_from_spec(FK_SPEC)
+assert FK_SPEC.loader is not None
+FK_SPEC.loader.exec_module(FK_PROBE)
+
+
+def frozen_schedule_inputs():
+    evidence = ROOT / "software/integrations/isaac_sim/evidence"
+    return (
+        json.loads(
+            (evidence / "representative_joint_schedule_bundle_5072_20260929.json").read_text(
+                encoding="utf-8"
+            )
+        ),
+        json.loads(
+            (evidence / "joint_schedule_isaac_replay_5072_20260929.json").read_text(
+                encoding="utf-8"
+            )
+        ),
+        json.loads(
+            (ROOT / "software/config/virtual_commissioning_profile.json").read_text(
+                encoding="utf-8"
+            )
+        ),
+    )
+
+
+def test_schedule_fk_differential_accepts_only_exact_zero_authority_inputs():
+    bundle, isaac, profile = frozen_schedule_inputs()
+    FK_PROBE._validate_inputs(bundle, isaac, profile)
+
+
+def test_schedule_fk_differential_rejects_authority_tampering():
+    bundle, isaac, profile = frozen_schedule_inputs()
+    bundle["physical_authority"] = True
+    try:
+        FK_PROBE._validate_inputs(bundle, isaac, profile)
+    except ValueError as exc:
+        assert "authority" in str(exc)
+    else:
+        raise AssertionError("authority-bearing schedule was accepted")
+
+
+def test_schedule_fk_differential_rejects_reordered_or_nonfinite_samples():
+    bundle, isaac, profile = frozen_schedule_inputs()
+    bundle["samples"][0]["sequence"] = 1
+    try:
+        FK_PROBE._validate_inputs(bundle, isaac, profile)
+    except ValueError as exc:
+        assert "order" in str(exc)
+    else:
+        raise AssertionError("reordered schedule was accepted")
+    bundle, isaac, profile = frozen_schedule_inputs()
+    bundle["samples"][0]["expected_tool_tip_board_mm"][0] = float("nan")
+    try:
+        FK_PROBE._validate_inputs(bundle, isaac, profile)
+    except ValueError as exc:
+        assert "nonfinite" in str(exc)
+    else:
+        raise AssertionError("nonfinite schedule was accepted")
 
 
 def fixture_pair():
