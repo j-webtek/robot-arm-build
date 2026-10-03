@@ -16,6 +16,7 @@ from typing import Any
 
 
 SCHEMA = "tactevra.isaac_joint_schedule_replay.v1"
+FULL_SAMPLE_SCHEMA = "tactevra.isaac_joint_schedule_replay.v2"
 EXPECTED_DOFS = [
     "base_link_to_link1",
     "link1_to_link2",
@@ -123,6 +124,11 @@ def main() -> int:
     parser.add_argument("--virtual-profile", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--status-output", type=Path, required=True)
+    parser.add_argument(
+        "--retain-all-samples",
+        action="store_true",
+        help="emit a v2 receipt containing every ordered Isaac tool-tip row",
+    )
     args = parser.parse_args()
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.status_output.parent.mkdir(parents=True, exist_ok=True)
@@ -223,7 +229,7 @@ def main() -> int:
         replay_pass = max_tip_error <= TIP_ERROR_LIMIT_MM \
             and max_joint_error <= JOINT_TRACKING_LIMIT_RAD
         result: dict[str, Any] = {
-            "schema": SCHEMA,
+            "schema": FULL_SAMPLE_SCHEMA if args.retain_all_samples else SCHEMA,
             "evidence_class": "KINEMATIC_SCHEDULE_REPLAY_DIAGNOSTIC_ONLY",
             "driver_version": _driver_version(),
             "source_bindings": {
@@ -260,6 +266,8 @@ def main() -> int:
                 "no_contact_force_key_travel_or_physical_qualification",
             ],
         }
+        if args.retain_all_samples:
+            result["samples"] = replay_samples
         result["receipt_sha256"] = _digest(_canonical(result))
         args.output.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8")
         args.status_output.write_text(json.dumps({

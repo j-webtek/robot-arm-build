@@ -60,6 +60,13 @@ FK_SPEC = importlib.util.spec_from_file_location(
 FK_PROBE = importlib.util.module_from_spec(FK_SPEC)
 assert FK_SPEC.loader is not None
 FK_SPEC.loader.exec_module(FK_PROBE)
+FOUR_SPEC = importlib.util.spec_from_file_location(
+    "mujoco_warp_four_backend_fk_admission",
+    ROOT / "software/integrations/mujoco_warp/four_backend_fk_admission.py",
+)
+FOUR_PROBE = importlib.util.module_from_spec(FOUR_SPEC)
+assert FOUR_SPEC.loader is not None
+FOUR_SPEC.loader.exec_module(FOUR_PROBE)
 
 
 def frozen_schedule_inputs():
@@ -116,6 +123,103 @@ def test_schedule_fk_differential_rejects_reordered_or_nonfinite_samples():
         assert "nonfinite" in str(exc)
     else:
         raise AssertionError("nonfinite schedule was accepted")
+
+
+def fake_four_backend_receipts():
+    isaac_rows = []
+    mw2f_rows = []
+    for sequence in range(FOUR_PROBE.SAMPLE_COUNT):
+        reference = [float(sequence), 2.0, 3.0]
+        isaac_rows.append(
+            {
+                "sequence": sequence,
+                "phase": "PARK",
+                "target_id": None,
+                "expected_tool_tip_board_mm": reference,
+                "isaac_tool_tip_board_mm": reference,
+            }
+        )
+        mw2f_rows.append(
+            {
+                "sequence": sequence,
+                "phase": "PARK",
+                "target_id": None,
+                "schedule_reference_tip_board_mm": reference,
+                "rocell_tip_board_mm": reference,
+                "mujoco_tip_board_mm": reference,
+                "mujoco_warp_tip_board_mm": reference,
+            }
+        )
+    isaac = {
+        "schema": "tactevra.isaac_joint_schedule_replay.v2",
+        "sample_count": FOUR_PROBE.SAMPLE_COUNT,
+        "samples": isaac_rows,
+        "source_bindings": {
+            "bundle_file_sha256": FOUR_PROBE.EXPECTED_BUNDLE_FILE_SHA256,
+            "virtual_profile_sha256": FOUR_PROBE.EXPECTED_PROFILE_SHA256,
+            "robot_usd_sha256": FOUR_PROBE.EXPECTED_USD_SHA256,
+        },
+        "hardware_access": False,
+        "physical_authority": False,
+        "hardware_writes": 0,
+        "physical_movements": 0,
+        "physics_steps": 0,
+        "controller_commands": [],
+    }
+    isaac["receipt_sha256"] = FOUR_PROBE.hashlib.sha256(
+        FOUR_PROBE.canonical_bytes(isaac)
+    ).hexdigest()
+    mw2f = {
+        "schema": "rocell.mujoco_warp_schedule_fk_differential.v1",
+        "sample_count": FOUR_PROBE.SAMPLE_COUNT,
+        "rows": mw2f_rows,
+        "metrics": {
+            "maximum_mujoco_vs_rocell_mm": 0.0,
+            "maximum_mujoco_warp_vs_mujoco_mm": 0.0,
+        },
+        "hardware_access": False,
+        "physical_authority": False,
+        "hardware_write_count": 0,
+        "physical_movement_count": 0,
+    }
+    mw2f["receipt_sha256"] = FOUR_PROBE.hashlib.sha256(
+        FOUR_PROBE.canonical_bytes(mw2f)
+    ).hexdigest()
+    return isaac, mw2f
+
+
+def test_four_backend_admission_accepts_exact_full_sample_receipts():
+    isaac, mw2f = fake_four_backend_receipts()
+    result = FOUR_PROBE.admit(isaac, mw2f)
+    assert result["status"] == "PASS_KINEMATIC_ONLY"
+    assert result["sample_count"] == 133
+    assert max(result["metrics"].values()) == 0.0
+    assert result["physical_authority"] is False
+
+
+def test_four_backend_admission_rejects_changed_order_or_authority():
+    isaac, mw2f = fake_four_backend_receipts()
+    isaac["samples"][0]["sequence"] = 1
+    isaac["receipt_sha256"] = FOUR_PROBE.hashlib.sha256(
+        FOUR_PROBE.canonical_bytes({k: v for k, v in isaac.items() if k != "receipt_sha256"})
+    ).hexdigest()
+    try:
+        FOUR_PROBE.validate_receipts(isaac, mw2f)
+    except ValueError as exc:
+        assert "order" in str(exc)
+    else:
+        raise AssertionError("reordered Isaac receipt was accepted")
+    isaac, mw2f = fake_four_backend_receipts()
+    mw2f["physical_authority"] = True
+    mw2f["receipt_sha256"] = FOUR_PROBE.hashlib.sha256(
+        FOUR_PROBE.canonical_bytes({k: v for k, v in mw2f.items() if k != "receipt_sha256"})
+    ).hexdigest()
+    try:
+        FOUR_PROBE.validate_receipts(isaac, mw2f)
+    except ValueError as exc:
+        assert "authority" in str(exc)
+    else:
+        raise AssertionError("authority-bearing MW2F receipt was accepted")
 
 
 def fixture_pair():
