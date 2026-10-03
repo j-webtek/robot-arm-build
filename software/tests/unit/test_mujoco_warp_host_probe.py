@@ -25,6 +25,13 @@ BATCH_SPEC = importlib.util.spec_from_file_location(
 BATCH_PROBE = importlib.util.module_from_spec(BATCH_SPEC)
 assert BATCH_SPEC.loader is not None
 BATCH_SPEC.loader.exec_module(BATCH_PROBE)
+LARGE_SPEC = importlib.util.spec_from_file_location(
+    "mujoco_warp_large_batch_probe",
+    ROOT / "software/integrations/mujoco_warp/large_batch_probe.py",
+)
+LARGE_PROBE = importlib.util.module_from_spec(LARGE_SPEC)
+assert LARGE_SPEC.loader is not None
+LARGE_SPEC.loader.exec_module(LARGE_PROBE)
 
 
 def fixture_pair():
@@ -123,3 +130,45 @@ def test_batch_admission_rejects_overflow_or_underperforming_shard():
     assert result["status"] == "RESEARCH_ONLY"
     assert any("safety/repeatability" in error for error in result["errors"])
     assert any("speedup below gate" in error for error in result["errors"])
+
+
+def fake_large_shard(device, rate, safety=True):
+    return {
+        "device_requested": device,
+        "mjcf_sha256": LARGE_PROBE.EXPECTED_MJCF_SHA256,
+        "world_counts": LARGE_PROBE.WORLD_COUNTS,
+        "safety_pass": safety,
+        "results": [
+            {"nworld": count, "median_world_steps_per_second": rate}
+            for count in LARGE_PROBE.WORLD_COUNTS
+        ],
+        "receipt_sha256": f"large-{device}",
+    }
+
+
+def test_large_batch_admission_is_separate_from_general_mw2_scope():
+    gpu0 = fake_large_shard("cuda:0", 1_300_000)
+    gpu1 = fake_large_shard("cuda:1", 1_250_000)
+    concurrent = {
+        "aggregate_median_world_steps_per_second": 2_400_000,
+        "safety_pass": True,
+        "receipt_sha256": "concurrent",
+    }
+    result = LARGE_PROBE.admit(gpu0, gpu1, concurrent)
+    assert result["status"] == "ADOPT_LARGE_BATCH_RESEARCH"
+    assert result["dual_gpu_state_aggregation"] is False
+    assert "MW2 general-purpose rejection remains unchanged" in result["limitations"]
+
+
+def test_large_batch_admission_fails_closed_on_scaling_or_safety():
+    gpu0 = fake_large_shard("cuda:0", 1_300_000)
+    gpu1 = fake_large_shard("cuda:1", 900_000, safety=False)
+    concurrent = {
+        "aggregate_median_world_steps_per_second": 1_500_000,
+        "safety_pass": False,
+        "receipt_sha256": "concurrent",
+    }
+    result = LARGE_PROBE.admit(gpu0, gpu1, concurrent)
+    assert result["status"] == "RESEARCH_ONLY"
+    assert any("safety gate failed" in error for error in result["errors"])
+    assert "concurrent shard safety gate failed" in result["errors"]
