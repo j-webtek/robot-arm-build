@@ -204,9 +204,10 @@
         "software/ai/eval/residual_obstruction_v4_2_renderer_smoke_v1.json",
         "software/ai/eval/residual_obstruction_v4_2_camera_contract_smoke_v1.json",
         "software/ai/eval/residual_obstruction_v4_2_cnn_development_v1.json",
-        "software/ai/eval/residual_obstruction_v4_2_hard_case_audit_v1.json"
+        "software/ai/eval/residual_obstruction_v4_2_hard_case_audit_v1.json",
+        "software/ai/eval/residual_obstruction_v4_2_robustness_v1.json"
       ],
-      "current_result": "The v4.2 compact CNN passes synthetic AUC uplift, but the pre-evaluation audit confirms shared procedural obstruction identities across all splits and exposes extreme rubber-cable misses plus clear/adjacent false stops under development lighting.",
+      "current_result": "Residual v4.2 is rejected on consumed synthetic development: all 19 frozen thresholds fail, the least-bad 0.55 threshold exceeds cable-miss and warm-side false-stop limits, and the target quantile-margin gate fails. Evaluation remains unopened.",
       "limitations": [
         "No commissioned projection renderer, measured dilation artifact, or physical deployment qualification is installed.",
         "The geometry-first replay uses the same Isaac semantic mask that generated the synthetic label and therefore cannot estimate real projection error.",
@@ -230,7 +231,7 @@
         "V4.2 evaluation reuses training obstruction families, primitive geometry formulas, and materials; it cannot measure unseen-obstruction identity generalization and contains no articulated hand asset.",
         "A candidate commissioning rule should prohibit cable routing across keyboard and phone interaction surfaces; this physical mitigation cannot override model gate failures."
       ],
-      "next_gate": "Run the committed unchanged v4.2 threshold and robustness scorer; reject the candidate and keep evaluation closed if no threshold passes. Preserve the driving family and appearance.",
+      "next_gate": "Classify the preserved v4.2 failure evidence into model-input, data, and workcell-rule remedies before predeclaring any successor; collect commissioned real clear, cable, and hand pairs without opening synthetic evaluation.",
       "model_motion_batch_boundary": true,
       "controller_authority": false,
       "hardware_writes": 0,
@@ -480,5 +481,5 @@
   "controller_authority": false,
   "hardware_writes": 0,
   "physical_movements": 0,
-  "registry_sha256": "ee6931482a22e2fb88690eb9b620926300f097e34e8202e9b3a9f9ac0970ba16"
+  "registry_sha256": "a1d932162fc37f8d6bd2446cc286f8dfe5f1ae157dcad8e73bb90765d2e61eb5"
 }
