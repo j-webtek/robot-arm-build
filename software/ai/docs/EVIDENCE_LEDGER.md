@@ -10023,6 +10023,18 @@ rewriting history. New entries must use a unique evidence ID.
 - Limitations: keyboard model/SKU/layout and caliper identity/resolution remain unverified. No measurement may be admitted until those identities and the required zero checks are recorded.
 - Next dependency: capture a readable underside keyboard label and a current directly overhead full-keyboard image while keeping the keyboard fixed.
 
+### E-20261003-AI-561 — keyboard identity photographs admitted for Grave measurement
+
+- Stage/lane: S1 AI/model operator-guided physical measurement intake. Parent session evidence: E-559 and E-560. Two original user-provided JPEGs were inspected and hash-bound; they are not copied into the repository.
+- Identity result: label image reads brand `perixx`, product `Mini USB Keyboard`, model `PERIBOARD-409`, power `5V 30mA`, and serial suffix `0103`. The overview shows a US QWERTY legend arrangement, horizontal Enter, bracket/backslash keys, and a visible Grave/tilde key immediately left of `1`. Decision: `KEYBOARD_IDENTITY_ACCEPTED_FOR_LOCAL_KEYCAP_MEASUREMENT`.
+- Artifact bindings: `1-Photo-1.jpg`, 960x1280 RGB JPEG, 273,598 bytes, SHA-256 `3ba4fca9e5751b260aaa0f68fadf3e86dfd0be39f95f6e18893d3474c158c85b`; `2-Photo-2.jpg`, 960x1280 RGB JPEG, 232,952 bytes, SHA-256 `1de3414e81cac2f47e27b73168e29e7830bc765657a2e910897614f865cba6b1`.
+- Scope: the overview is angled and supplies identity/layout evidence only. It is prohibited as dimensional evidence. The keyboard is not visibly in the workcell fixture in this overview, so current board placement is `UNVERIFIED`; this does not prevent local Grave-to-`1` top-surface measurement, but placement must be restored and reverified before camera/arm qualification.
+- Preserved failed evidence: the first PowerShell hash command failed with `An empty pipe element is not allowed`; it produced no hash result. The corrected collection command produced the bindings above.
+- Privacy: the repository records only serial suffix `0103`; it does not transcribe the full serial. The external original label photograph itself contains the full label and remains outside Git.
+- Measurement-reading count: 0. Derived-coordinate count: 0. Repository hardware-write count: 0. Repository-commanded physical-movement count: 0. Physical authority: false.
+- Limitations: identity photographs do not measure key size, center, safe region, placement, visibility, reachability, or occlusion. USB electrical operation was not tested.
+- Next dependency: record caliper make/model, resolution, stable identity if present, and initial closed-jaw zero before any keycap reading.
+
 ### E-20261003-AI-561 — MuJoCo Warp MW0 isolated toolchain and three-device smoke
 
 - Stage/lane: S1/S2 AI/model and simulation. Active-claim commit: `f8ba211f8c9231bc4886f4ec887730f19596405c`; implementation commit: `e8acf8eda331a3ceaaa03db44d577098f1f8d2fa`. Scope is the isolated MW0 toolchain, pre-import lock, and one minimal synthetic world only. No RoArm asset, target catalog, current model, Isaac campaign, arm lane, or integration gate changed.
