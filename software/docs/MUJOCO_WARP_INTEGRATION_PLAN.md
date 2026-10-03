@@ -320,8 +320,8 @@ Evidence is `E-20261003-AI-565`.
 
 ### MW2Q — resumable independent GPU queues
 
-**Status (2026-10-03): claimed; results not observed.** This increment will
-retain the exact MW2S manifest and execute each device's eight shards as an
+**Result (2026-10-03): `ADMIT_RESUMABLE_RESEARCH_QUEUE`.** This increment
+retains the exact MW2S manifest and executes each device's eight shards as an
 independent resumable queue. A completed shard is reusable only after strict
 schema, manifest, MJCF, device, identity, seed, cardinality, safety,
 repeatability, state-hash, authority, and canonical-receipt validation. New
@@ -338,6 +338,16 @@ reruns exactly one shard, and retains the other seven device receipts byte for
 byte. Failure remains evidence. This provides restartability only and grants no
 rendering, training, contact, hardware, transport, permit, or execution
 authority.
+
+The first run atomically produced and admitted all sixteen receipts in 14.881
+seconds, with no temporary files left behind. An unchanged second invocation
+finished in 0.106 seconds, skipped all sixteen shards, and performed zero model
+loads or allocations. In a copied CUDA 0 queue, one deliberately altered `s03`
+receipt failed both seed and canonical-hash validation, was retained under its
+byte hash, and caused exactly one shard execution; the other seven receipts
+remained byte identical. This admits restart and recovery mechanics only. It
+does not alter the MW2/MW2R/MW2S performance decisions or qualify new physics.
+Evidence is `E-20261003-AI-566`.
 
 ### MW3 — camera and geometry parity
 
