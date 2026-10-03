@@ -201,9 +201,10 @@
         "software/ai/eval/residual_obstruction_v4_1_smoke_admission_v1.json",
         "software/ai/sim/evidence/residual_obstruction_successor_v4_2.json",
         "software/ai/eval/residual_obstruction_v4_2_renderer_smoke_v1.json",
-        "software/ai/eval/residual_obstruction_v4_2_camera_contract_smoke_v1.json"
+        "software/ai/eval/residual_obstruction_v4_2_camera_contract_smoke_v1.json",
+        "software/ai/eval/residual_obstruction_v4_2_cnn_development_v1.json"
       ],
-      "current_result": "The complete 72,000-observation v4.2 synthetic campaign passed exact admission; both selected-architecture memorization controls passed, and the frozen training-free baseline selected SELF_CROP_P05_P95 for the pending full CNN uplift comparison.",
+      "current_result": "All 72,000 v4.2 synthetic observations passed exact admission; both memorization controls passed; the frozen baseline selected SELF_CROP_P05_P95; and its compact CNN passed both synthetic development uplift gates with pooled AUC 0.99708 and fifth-percentile target AUC 0.98381.",
       "limitations": [
         "No commissioned projection renderer, measured dilation artifact, or physical deployment qualification is installed.",
         "The geometry-first replay uses the same Isaac semantic mask that generated the synthetic label and therefore cannot estimate real projection error.",
@@ -225,7 +226,7 @@
         "The same CNN architecture reached only 0.834 accuracy and 0.4417 loss on a balanced 500-row memorization control, so its representation or capacity is inadequate for exact example separation.",
         "Synthetic development success cannot establish real-camera transfer; commissioned clear references and bounded real cable/hand captures remain required."
       ],
-      "next_gate": "Train the selected-normalization CNN on all 43,200 admitted training rows, require both frozen 0.02 development uplift gates on the same 28,800 rows, and keep evaluation closed; separately collect commissioned real-camera clear and cable/hand reference pairs.",
+      "next_gate": "Apply the frozen threshold, scene-cluster, worst-appearance/family, and robust target-margin gates to the consumed synthetic development rows before any evaluation render; collect commissioned real-camera clear and cable/hand pairs independently.",
       "model_motion_batch_boundary": true,
       "controller_authority": false,
       "hardware_writes": 0,
@@ -475,5 +476,5 @@
   "controller_authority": false,
   "hardware_writes": 0,
   "physical_movements": 0,
-  "registry_sha256": "7880868d33f764b1fdd910014123f5ce949312104cfb77cced251158dbac317e"
+  "registry_sha256": "f7fd884bd8e2d84c167c7384369529a71b45a24b97ef57a626cc919c78c88537"
 }
