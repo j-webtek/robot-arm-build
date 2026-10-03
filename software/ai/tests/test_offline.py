@@ -19,6 +19,7 @@ sys.path.insert(0, str(AI_DIR / "train"))
 from rocell_ai.baseline import propose  # noqa: E402
 from rocell_ai.adapter import (  # noqa: E402
     StickyKeysReplayError,
+    build_keyboard_target_extension_proposal,
     compile_virtual_us_sticky_keys,
     inspect,
     planner_capability_contract,
@@ -162,6 +163,55 @@ class OfflineContractTests(unittest.TestCase):
             )
         self.assertEqual(inspect(proposal("keyboard", "a"), observation)["status"], "accepted")
         self.assertEqual(inspect(proposal("phone", "a"), observation)["status"], "accepted")
+
+    def test_five_key_catalog_proposal_blocks_unqualified_install_and_render(self) -> None:
+        catalog = AI_DIR.parent / "config" / "nominal_target_profiles.json"
+        geometry = AI_DIR.parents[1] / "presentations" / "blender" / "build_workcell_explainer.py"
+        first = build_keyboard_target_extension_proposal(catalog, geometry, "a" * 40)
+        second = build_keyboard_target_extension_proposal(catalog, geometry, "a" * 40)
+        self.assertEqual(first, second)
+        self.assertEqual(first["active_catalog"]["keyboard_target_count"], 46)
+        self.assertEqual(first["active_catalog"]["total_target_count"], 75)
+        self.assertFalse(first["shared_catalog_install_authorized"])
+        self.assertFalse(first["compiler_expansion_authorized"])
+        self.assertFalse(first["v5_5"]["render_authorized"])
+        self.assertEqual(first["v5_5"]["required_total_target_count_after_admission"], 80)
+        targets = {row["target_id"]: row for row in first["targets"]}
+        self.assertEqual(set(targets), {
+            "SHIFT", "BACKSLASH", "GRAVE", "LEFT_BRACKET", "RIGHT_BRACKET"
+        })
+        self.assertEqual(
+            targets["GRAVE"]["proposal_status"],
+            "BLOCKED_GEOMETRY_SOURCE_INSUFFICIENT",
+        )
+        self.assertIsNone(targets["GRAVE"]["press_point_xy_mm"])
+        self.assertEqual(
+            targets["SHIFT"]["proposal_status"],
+            "PROVISIONAL_SIMULATION_ONLY_PENDING_SHARED_REVIEW",
+        )
+        self.assertEqual(targets["SHIFT"]["press_point_xy_mm"], [20.0, 48.0])
+        self.assertEqual(targets["SHIFT"]["safe_half_extent_mm"], [7.0, 7.0])
+        self.assertIn(
+            "GRAVE_GEOMETRY_SOURCE_MISSING", first["v5_5"]["blockers"]
+        )
+        self.assertEqual(first["hardware_writes"], 0)
+        self.assertEqual(first["physical_movements"], 0)
+        self.assertFalse(first["physical_authority"])
+
+    def test_five_key_catalog_proposal_rejects_changed_geometry_source(self) -> None:
+        catalog = AI_DIR.parent / "config" / "nominal_target_profiles.json"
+        source = AI_DIR.parents[1] / "presentations" / "blender" / "build_workcell_explainer.py"
+        with tempfile.TemporaryDirectory() as temp_dir:
+            changed = Path(temp_dir) / "geometry.py"
+            changed.write_text(
+                source.read_text(encoding="utf-8").replace(
+                    '("[", ox + 231.5, oy + 90.0, 15.6)',
+                    '("[", ox + 232.0, oy + 90.0, 15.6)',
+                ),
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(ValueError, "LEFT_BRACKET seed"):
+                build_keyboard_target_extension_proposal(catalog, changed, "b" * 40)
 
     def test_sticky_keys_virtual_replay_covers_printable_ascii(self) -> None:
         printable_ascii = "".join(chr(value) for value in range(32, 127))

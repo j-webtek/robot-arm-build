@@ -65,6 +65,44 @@ US_PRINTABLE_BASE_KEY_IDS = tuple(sorted(
     | set(_US_UNSHIFTED_TO_KEY.values())
 ))
 
+_TARGET_EXTENSION_SEEDS = {
+    "SHIFT": {
+        "presentation_center_xy_mm": [20.0, 48.0],
+        "presentation_width_mm": 37.0,
+        "proposed_press_point_xy_mm": [20.0, 48.0],
+        "proposed_safe_half_extent_mm": [7.0, 7.0],
+        "source_literal": '("SHIFT", ox + 20.0, oy + 48.0, 37.0)',
+        "press_point_rule": (
+            "EXPLICIT_MAXIMUM_EDGE_CLEARANCE_POINT_WITH_CONSERVATIVE_14_BY_14_MM_PATCH_"
+            "NOT_FULL_WIDE_KEY_CENTER_DEFAULT"
+        ),
+    },
+    "LEFT_BRACKET": {
+        "presentation_center_xy_mm": [231.5, 90.0],
+        "presentation_width_mm": 15.6,
+        "proposed_press_point_xy_mm": [231.5, 90.0],
+        "proposed_safe_half_extent_mm": [7.0, 7.0],
+        "source_literal": '("[", ox + 231.5, oy + 90.0, 15.6)',
+        "press_point_rule": "EXPLICIT_MAXIMUM_EDGE_CLEARANCE_POINT",
+    },
+    "RIGHT_BRACKET": {
+        "presentation_center_xy_mm": [250.5, 90.0],
+        "presentation_width_mm": 15.6,
+        "proposed_press_point_xy_mm": [250.5, 90.0],
+        "proposed_safe_half_extent_mm": [7.0, 7.0],
+        "source_literal": '("]", ox + 250.5, oy + 90.0, 15.6)',
+        "press_point_rule": "EXPLICIT_MAXIMUM_EDGE_CLEARANCE_POINT",
+    },
+    "BACKSLASH": {
+        "presentation_center_xy_mm": [269.5, 90.0],
+        "presentation_width_mm": 15.6,
+        "proposed_press_point_xy_mm": [269.5, 90.0],
+        "proposed_safe_half_extent_mm": [7.0, 7.0],
+        "source_literal": '("\\\\", ox + 269.5, oy + 90.0, 15.6)',
+        "press_point_rule": "EXPLICIT_MAXIMUM_EDGE_CLEARANCE_POINT",
+    },
+}
+
 
 class StickyKeysReplayError(ValueError):
     """A sequence violates the commissioned one-shot modifier contract."""
@@ -318,6 +356,115 @@ def build_planner_capability_audit(
     return {**core, "audit_sha256": hashlib.sha256(encoded).hexdigest()}
 
 
+def build_keyboard_target_extension_proposal(
+    target_catalog_path: Path, geometry_source_path: Path, source_commit: str
+) -> dict[str, Any]:
+    """Propose missing keyboard targets without installing unqualified geometry."""
+
+    catalog = json.loads(target_catalog_path.read_text(encoding="utf-8"))
+    geometry_source = geometry_source_path.read_text(encoding="utf-8")
+    if "Presentation-only outer modifiers" not in geometry_source:
+        raise ValueError("geometry source is not explicitly presentation-only")
+    for target_id, seed in _TARGET_EXTENSION_SEEDS.items():
+        if seed["source_literal"] not in geometry_source:
+            raise ValueError(f"geometry source no longer contains exact {target_id} seed")
+
+    existing_ids = {
+        key_id
+        for row in catalog["keyboard"]["rows"]
+        for key_id in row["key_ids"]
+    } | set(catalog["keyboard"]["explicit_targets"])
+    required = ("SHIFT", "BACKSLASH", "GRAVE", "LEFT_BRACKET", "RIGHT_BRACKET")
+    if existing_ids.intersection(required):
+        raise ValueError("proposal target already exists in active keyboard catalog")
+
+    targets: list[dict[str, Any]] = []
+    for target_id in required:
+        seed = _TARGET_EXTENSION_SEEDS.get(target_id)
+        if seed is None:
+            targets.append({
+                "target_id": target_id,
+                "proposal_status": "BLOCKED_GEOMETRY_SOURCE_INSUFFICIENT",
+                "press_point_xy_mm": None,
+                "safe_half_extent_mm": None,
+                "geometry_source": None,
+                "geometry_limitation": (
+                    "No repository source defines the Grave key. Pitch extrapolation is rejected: "
+                    "one 19.05 mm pitch left of key 1 gives x=2.95 mm, which cannot contain the "
+                    "ordinary 7 mm half-width inside the 315 mm device boundary."
+                ),
+                "camera_visibility": "NOT_TESTABLE_WITHOUT_GEOMETRY_AND_COMMISSIONED_CAMERA",
+                "arm_runtime_ik": "NOT_TESTABLE_WITHOUT_GEOMETRY_SHARED_WITH_ARM_RUNTIME",
+                "parked_arm_self_occlusion": "NOT_TESTABLE_WITHOUT_GEOMETRY_AND_COMMISSIONED_CAMERA",
+            })
+            continue
+        targets.append({
+            "target_id": target_id,
+            "proposal_status": "PROVISIONAL_SIMULATION_ONLY_PENDING_SHARED_REVIEW",
+            "press_point_xy_mm": seed["proposed_press_point_xy_mm"],
+            "safe_half_extent_mm": seed["proposed_safe_half_extent_mm"],
+            "press_point_rule": seed["press_point_rule"],
+            "presentation_key_center_xy_mm": seed["presentation_center_xy_mm"],
+            "presentation_key_width_mm": seed["presentation_width_mm"],
+            "geometry_source": {
+                "path": geometry_source_path.as_posix(),
+                "file_sha256": hashlib.sha256(geometry_source_path.read_bytes()).hexdigest(),
+                "source_state": "PRESENTATION_ONLY_NOT_CONTROL_OR_COMMISSIONING_AUTHORITY",
+            },
+            "geometry_limitation": (
+                "The source is a visual presentation model, not a product drawing or measurement. "
+                "The proposed region may seed synthetic/shared review only."
+            ),
+            "camera_visibility": "PENDING_COMMISSIONED_PARKED_CAMERA_CHECK",
+            "arm_runtime_ik": "PENDING_ARM_LANE_READ_ONLY_IK_CHECK",
+            "parked_arm_self_occlusion": "PENDING_COMMISSIONED_PARKED_ARM_PROJECTION_CHECK",
+        })
+
+    blockers = [
+        "GRAVE_GEOMETRY_SOURCE_MISSING",
+        "FIVE_TARGETS_NOT_INSTALLED_IN_SHARED_CATALOG",
+        "COMMISSIONED_CAMERA_VISIBILITY_NOT_PROVEN",
+        "PARKED_ARM_NON_OCCLUSION_NOT_PROVEN",
+        "ARM_RUNTIME_IK_REACHABILITY_NOT_PROVEN",
+        "TARGET_CATALOG_HASH_NOT_REFROZEN",
+        "V5_5_IDENTITIES_NOT_AMENDED_TO_80_TARGETS",
+        "V5_5_POWER_CHECK_NOT_RERUN",
+    ]
+    core: dict[str, Any] = {
+        "schema": "rocell.ai_keyboard_target_extension_proposal.v1",
+        "scope": "SYNTHETIC_SHARED_CATALOG_PROPOSAL_NO_COMMISSIONING_OR_PHYSICAL_AUTHORITY",
+        "source_commit": source_commit,
+        "active_catalog": {
+            "path": target_catalog_path.as_posix(),
+            "file_sha256": hashlib.sha256(target_catalog_path.read_bytes()).hexdigest(),
+            "keyboard_target_count": len(existing_ids),
+            "total_target_count": len(existing_ids) + 29,
+            "unchanged": True,
+        },
+        "targets": targets,
+        "shared_catalog_install_authorized": False,
+        "compiler_expansion_authorized": False,
+        "v5_5": {
+            "required_total_target_count_after_admission": 80,
+            "render_authorized": False,
+            "evaluation_remains_unrendered": True,
+            "blockers": blockers,
+        },
+        "ownership": {
+            "ai_lane": "PROPOSAL_SOURCE_BINDING_AND_SYNTHETIC_CORPUS_ADMISSION",
+            "arm_lane": "READ_ONLY_IK_REACHABILITY_DECISION",
+            "shared_commissioning": "CAMERA_VISIBILITY_AND_PARKED_ARM_OCCLUSION",
+        },
+        "hardware_writes": 0,
+        "physical_movements": 0,
+        "physical_authority": False,
+    }
+    encoded = json.dumps(
+        core, sort_keys=True, separators=(",", ":"), ensure_ascii=True
+    ).encode("utf-8")
+    return {**core, "proposal_sha256": hashlib.sha256(encoded).hexdigest()}
+
+
 def inspect(proposal: dict[str, str], observation: dict[str, Any]) -> dict[str, Any]:
     """Compile a supported proposal without camera, controller, or arm access."""
 
@@ -374,8 +521,14 @@ def main() -> int:
     parser.add_argument("--target-catalog", type=Path, required=True)
     parser.add_argument("--source-commit", required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--target-extension-geometry-source", type=Path)
     args = parser.parse_args()
-    result = build_planner_capability_audit(args.target_catalog, args.source_commit)
+    if args.target_extension_geometry_source is None:
+        result = build_planner_capability_audit(args.target_catalog, args.source_commit)
+    else:
+        result = build_keyboard_target_extension_proposal(
+            args.target_catalog, args.target_extension_geometry_source, args.source_commit
+        )
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8", newline="\n")
     print(json.dumps(result, indent=2))
