@@ -11,6 +11,13 @@ SPEC = importlib.util.spec_from_file_location("mujoco_warp_host_probe", PROBE_PA
 PROBE = importlib.util.module_from_spec(SPEC)
 assert SPEC.loader is not None
 SPEC.loader.exec_module(PROBE)
+ASSET_SPEC = importlib.util.spec_from_file_location(
+    "mujoco_warp_asset_parity_probe",
+    ROOT / "software/integrations/mujoco_warp/asset_parity_probe.py",
+)
+ASSET_PROBE = importlib.util.module_from_spec(ASSET_SPEC)
+assert ASSET_SPEC.loader is not None
+ASSET_SPEC.loader.exec_module(ASSET_PROBE)
 
 
 def fixture_pair():
@@ -58,3 +65,15 @@ def test_gpu_identity_mismatch_rejects_fail_closed():
     assert result["status"] == "REJECTED_LOCK_MISMATCH"
     assert "GPU identity or order mismatch" in result["errors"]
     assert result["physical_authority"] is False
+
+
+def test_kinematic_converter_maps_every_joint_and_blocks_dynamic_claims():
+    urdf = ROOT / "software/models/roarm_m3/roarm_m3_kinematic_40dbd84.urdf"
+    asset = ASSET_PROBE.parse_urdf(urdf)
+    xml, provenance = ASSET_PROBE.build_kinematic_mjcf(asset)
+    assert [joint["name"] for joint in asset["joints"] if joint["type"] == "revolute"] == ASSET_PROBE.JOINT_ORDER
+    assert xml.count("<joint ") == 6
+    assert xml.count("<inertial ") == 6
+    assert provenance["compiled_inertia"] == "EXPLICIT_KINEMATIC_ONLY_PLACEHOLDER"
+    assert provenance["dynamics_claim"] == "BLOCKED"
+    assert provenance["contact_claim"] == "BLOCKED"
