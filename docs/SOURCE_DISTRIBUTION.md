@@ -91,6 +91,20 @@ It installs no dependency, cache, converted asset, simulation output, image, or
 model. The governed tracked-file ceiling is therefore 6,312; all byte, blob,
 duplicate, and reduction limits remain unchanged.
 
+The reviewed MuJoCo Warp host, parity, batch, campaign, queue, and scenario
+increments add twelve small source, configuration, fixture, schema, and test
+files through the frozen provenanced-profile stage. No installed environment,
+cache, converted asset, rendered image, or model is tracked. The governed
+tracked-file ceiling is therefore 6,324; all byte, blob, duplicate, and
+reduction limits remain unchanged.
+
+The schedule-scale differential, full-sample four-backend admission, and
+schedule-gap attribution increments each add one reviewed probe and one compact
+JSON evidence record. These six files are retained separately because each
+records a distinct frozen computation and result. The governed tracked-file
+ceiling is therefore 6,330; all byte, blob, duplicate, and reduction limits
+remain unchanged.
+
 The issue 190 v14 synthetic evaluation adds three small, reviewed source files:
 the deterministic static-pose fixture builder, its retained JSON fixture, and
 its focused test. The tracked-file ceiling is therefore 6,103. This adjustment

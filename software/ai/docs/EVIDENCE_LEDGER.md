@@ -10035,6 +10035,15 @@ rewriting history. New entries must use a unique evidence ID.
 - Limitations: identity photographs do not measure key size, center, safe region, placement, visibility, reachability, or occlusion. USB electrical operation was not tested.
 - Next dependency: record caliper make/model, resolution, stable identity if present, and initial closed-jaw zero before any keycap reading.
 
+### E-20261003-AI-562 — concurrent source-archive ceiling reconciliation
+
+- Stage/lane: shared repository governance observed during the active S1 AI/model measurement session. This changes no arm result, AI result, target, measurement, integration gate, or authority.
+- Finding: after E-560, concurrent MuJoCo Warp work advanced the shared branch and the direct source-archive check reported 6,330 tracked files against a 6,324 ceiling. The six unaccounted reviewed files are the schedule-scale differential probe/evidence, full-sample four-backend admission probe/evidence, and schedule-gap diagnostic probe/evidence.
+- Decision: retain the six independent frozen tools/records and deliberately raise only the tracked-file ceiling from 6,324 to 6,330. `docs/SOURCE_DISTRIBUTION.md` now also records the preceding twelve-file path from 6,312 to 6,324 and this six-file path to 6,330. Logical-byte, single-blob, duplicate-byte, and reduction limits remain unchanged.
+- Grave-session effect: none. E-561 remains the current identity evidence; measurement-reading count remains 0 and derived-coordinate count remains 0.
+- Hardware-write count: 0. Repository-commanded physical-movement count: 0. Physical authority: false.
+- Next dependency: pass the direct archive check, then continue E-561 with caliper identity and initial closed-jaw zero.
+
 ### E-20261003-AI-561 — MuJoCo Warp MW0 isolated toolchain and three-device smoke
 
 - Stage/lane: S1/S2 AI/model and simulation. Active-claim commit: `f8ba211f8c9231bc4886f4ec887730f19596405c`; implementation commit: `e8acf8eda331a3ceaaa03db44d577098f1f8d2fa`. Scope is the isolated MW0 toolchain, pre-import lock, and one minimal synthetic world only. No RoArm asset, target catalog, current model, Isaac campaign, arm lane, or integration gate changed.
