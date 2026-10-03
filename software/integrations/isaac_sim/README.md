@@ -269,6 +269,13 @@ C:\IsaacSim\env_6_1_0\Scripts\python.exe software\integrations\isaac_sim\joint_s
   --status-output C:\IsaacSim\evidence\joint_schedule_isaac_replay_5072.status.json
 ```
 
+Add `--retain-all-samples` to emit the opt-in v2 receipt used by the MW2FI
+four-backend differential. It preserves every ordered Isaac tool-tip row while
+leaving the default v1 output and retained evidence unchanged. Compare it with
+the exact MW2F CUDA receipt using
+`software/integrations/mujoco_warp/four_backend_fk_admission.py`. This remains
+teleport-only kinematic evidence and takes zero physics steps.
+
 ## Official STEP inspection
 
 [`step_inspection_probe.py`](step_inspection_probe.py) verifies the pinned

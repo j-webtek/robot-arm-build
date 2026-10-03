@@ -442,7 +442,7 @@ is `E-20261003-AI-568`.
 
 ### MW2FI — full-sample Isaac closure
 
-**Status: active, frozen before results.** Preserve the retained Isaac v1
+**Result (2026-10-03): `PASS_KINEMATIC_ONLY`.** The retained Isaac v1
 receipt and add an opt-in v2 output that retains all 133 ordered sample tips.
 The v2 receipt must bind the same schedule, imported USD, import receipt,
 virtual profile, joint order, tool length, and zero-authority fields. A strict
@@ -455,6 +455,12 @@ MuJoCo at most `0.01 mm`. The new direct pairwise Isaac comparisons are
 reported without adding a post-result threshold. Same-stack Isaac repeats must
 produce byte-identical canonical receipts. This remains teleport-only
 kinematic evidence with zero physics steps, hardware writes, or movement.
+
+Two independent v2 replays retain every ordered row and are byte identical.
+Direct maxima across all 133 poses are `0.0002710608315793465 mm` for Isaac
+versus RoCell, `0.00027106083166082413 mm` for Isaac versus standard MuJoCo,
+and `0.0002801399314244456 mm` for Isaac versus MuJoCo Warp. All preexisting
+backend gates pass. Evidence is `E-20261003-AI-569`.
 
 ### MW3 — camera and geometry parity
 
