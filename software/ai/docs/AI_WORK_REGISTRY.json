@@ -138,7 +138,11 @@
         "software/ai/eval/analyze_residual_v5_power_attribution.py",
         "software/ai/schemas/residual_obstruction_v5_2_power_attribution_v1.schema.json",
         "software/ai/eval/build_residual_v5_safety_gate_amendment.py",
-        "software/ai/schemas/residual_obstruction_v5_3_safety_gate_amendment_v1.schema.json"
+        "software/ai/schemas/residual_obstruction_v5_3_safety_gate_amendment_v1.schema.json",
+        "software/ai/sim/build_residual_obstruction_successor_v5_4.py",
+        "software/ai/schemas/residual_obstruction_successor_fixture_v5_4.schema.json",
+        "software/ai/eval/audit_residual_obstruction_v5_4_fixture.py",
+        "software/ai/schemas/residual_obstruction_v5_4_fixture_audit_v1.schema.json"
       ],
       "test_paths": [
         "software/ai/tests/test_capture_binding.py",
@@ -186,7 +190,8 @@
         "software/ai/tests/test_residual_obstruction_successor_v5.py",
         "software/ai/tests/test_residual_obstruction_v5_1_pre_render.py",
         "software/ai/tests/test_residual_obstruction_v5_2_power_attribution.py",
-        "software/ai/tests/test_residual_obstruction_v5_3_safety_gate_amendment.py"
+        "software/ai/tests/test_residual_obstruction_v5_3_safety_gate_amendment.py",
+        "software/ai/tests/test_residual_obstruction_successor_v5_4.py"
       ],
       "documentation_paths": [
         "software/ai/docs/MODEL_TO_ARM_TRANSLATION_ASSURANCE.md",
@@ -242,9 +247,11 @@
         "software/ai/sim/evidence/residual_obstruction_successor_v5.json",
         "software/ai/eval/residual_obstruction_v5_1_pre_render_v1.json",
         "software/ai/eval/residual_obstruction_v5_2_power_attribution_v1.json",
-        "software/ai/eval/residual_obstruction_v5_3_safety_gate_amendment_v1.json"
+        "software/ai/eval/residual_obstruction_v5_3_safety_gate_amendment_v1.json",
+        "software/ai/sim/evidence/residual_obstruction_successor_v5_4.json",
+        "software/ai/eval/residual_obstruction_v5_4_fixture_audit_v1.json"
       ],
-      "current_result": "Residual v5.3 assigns powered evaluation claims to pooled, cable-family, dark-cable, and visible false-stop bounds; a 224-scene/12-target balanced evaluation reaches a pessimistic Bonferroni power lower bound of 0.93055, while AUC and margins remain development diagnostics.",
+      "current_result": "Residual v5.4 freezes and independently audits 224 split-isolated evaluation scenes with deterministic 12-target assignments, 96,768 unopened identities, and 35/36 scene exposures per target; development has explicit paired cable/dark-cable support for both candidates.",
       "limitations": [
         "No commissioned projection renderer, measured dilation artifact, or physical deployment qualification is installed.",
         "The geometry-first replay uses the same Isaac semantic mask that generated the synthetic label and therefore cannot estimate real projection error.",
@@ -275,9 +282,10 @@
         "V5 is a synthetic research predeclaration created while physical inputs are blocked; it contains no images, checkpoint, threshold, runtime lighting envelope, real-camera transfer evidence, or deployment selection.",
         "The v5.1 power result is a planning approximation; its 256-scene/691,200-row worst-case tested size is not render authorization, physical qualification, or a hardware-remedy selection.",
         "V5.2 powers only pooled miss, visible false-stop, and every-target AUC; cable-family, dark-cable, q05 AUC, and q05 margin effect sizes remain undeclared, so no complete render design exists.",
-        "V5.3 recommends but does not freeze the exact 224-scene balanced rotation or new evaluation identities; its design rates are planning alternatives and physical lighting/obstruction transfer remains unmeasured."
+        "V5.3 recommends but does not freeze the exact 224-scene balanced rotation or new evaluation identities; its design rates are planning alternatives and physical lighting/obstruction transfer remains unmeasured.",
+        "V5.4 validates fixture identities and diagnostic counts only; no renderer, image, candidate result, threshold, physical transfer evidence, or evaluation opening exists."
       ],
-      "next_gate": "Revise the v5 fixture to freeze exact split-disjoint evaluation scenes and a deterministic 12-target balanced rotation, re-audit all counts and hashes, and keep rendering blocked until that fixture passes review.",
+      "next_gate": "Implement and smoke the v5.4 training/development renderer against the exact audited fixture, visually inspect the first shards, and keep all evaluation identities unrendered until development freezes one candidate and threshold.",
       "model_motion_batch_boundary": true,
       "controller_authority": false,
       "hardware_writes": 0,
@@ -527,5 +535,5 @@
   "controller_authority": false,
   "hardware_writes": 0,
   "physical_movements": 0,
-  "registry_sha256": "1707b19a35333ab9ef930300d24169324b5555b5ec8499469f18ec2290529ad2"
+  "registry_sha256": "0fae6872ce25f32c766728cdd6869fd457911413aed0c3b872ed6d0d70ed2ac0"
 }

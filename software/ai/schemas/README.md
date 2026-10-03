@@ -314,6 +314,12 @@ assigns powered evaluation claims to pooled, cable-family, dark-cable, and
 visible false-stop bounds. Per-target AUC and margin statistics remain
 development diagnostics. Its balanced evaluation recommendation retains a
 planning cushion, but the exact rotation and revised fixture remain unfrozen.
+The [residual v5.4 fixture](residual_obstruction_successor_fixture_v5_4.schema.json)
+freezes 224 evaluation scene identities and a deterministic 12-target balanced
+rotation while retaining evaluation as identity-only. Its independent
+[audit](residual_obstruction_v5_4_fixture_audit_v1.schema.json) verifies hashes,
+split isolation, target balance, development diagnostic support, and gate roles
+before training or development renderer implementation begins.
 The [residual physical pilot predeclaration](residual_obstruction_physical_pilot_v1.schema.json)
 separates clear, boundary, and obstructed cable coverage; requires placement
 and mask labels; assigns measurement and unopened escrow sessions before
