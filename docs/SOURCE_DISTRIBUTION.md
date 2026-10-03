@@ -73,6 +73,11 @@ aggregate report, and focused test. The governed tracked-file ceiling is
 therefore 6,303. No image, checkpoint, simulator output, or physical artifact
 is added to the source archive.
 
+The issue 190 multi-axis error-dependence increment adds four reviewed text
+files: the exact-probability analyzer, strict schema, retained aggregate report,
+and focused test. The governed tracked-file ceiling is therefore 6,307. It adds
+no pixel, checkpoint, simulator output, or physical artifact.
+
 The issue 190 v14 synthetic evaluation adds three small, reviewed source files:
 the deterministic static-pose fixture builder, its retained JSON fixture, and
 its focused test. The tracked-file ceiling is therefore 6,103. This adjustment

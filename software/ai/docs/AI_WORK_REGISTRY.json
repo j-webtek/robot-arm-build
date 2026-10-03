@@ -148,7 +148,9 @@
         "software/ai/eval/audit_residual_v5_4_renderer_smoke.py",
         "software/ai/schemas/residual_obstruction_v5_4_renderer_smoke_v1.schema.json",
         "software/ai/eval/estimate_residual_v4_2_scene_icc.py",
-        "software/ai/schemas/residual_obstruction_v4_2_scene_icc_v1.schema.json"
+        "software/ai/schemas/residual_obstruction_v4_2_scene_icc_v1.schema.json",
+        "software/ai/eval/estimate_residual_v4_2_error_dependence.py",
+        "software/ai/schemas/residual_obstruction_v4_2_error_dependence_v1.schema.json"
       ],
       "test_paths": [
         "software/ai/tests/test_capture_binding.py",
@@ -200,7 +202,8 @@
         "software/ai/tests/test_residual_obstruction_successor_v5_4.py",
         "software/ai/tests/test_residual_obstruction_v5_4_power_sensitivity.py",
         "software/ai/tests/test_residual_obstruction_v5_4_renderer.py",
-        "software/ai/tests/test_residual_obstruction_v4_2_scene_icc.py"
+        "software/ai/tests/test_residual_obstruction_v4_2_scene_icc.py",
+        "software/ai/tests/test_residual_obstruction_v4_2_error_dependence.py"
       ],
       "documentation_paths": [
         "software/ai/docs/MODEL_TO_ARM_TRANSLATION_ASSURANCE.md",
@@ -261,9 +264,10 @@
         "software/ai/eval/residual_obstruction_v5_4_fixture_audit_v1.json",
         "software/ai/eval/residual_obstruction_v5_4_power_sensitivity_v1.json",
         "software/ai/eval/residual_obstruction_v5_4_renderer_smoke_v1.json",
-        "software/ai/eval/residual_obstruction_v4_2_scene_icc_v1.json"
+        "software/ai/eval/residual_obstruction_v4_2_scene_icc_v1.json",
+        "software/ai/eval/residual_obstruction_v4_2_error_dependence_v1.json"
       ],
-      "current_result": "Residual v5.4 training/development rendering is authorized by smoke C: exact procedural geometry/material/texture descriptors are hash-bound, 144 observations carry verified analytic FK capsule arm masks derived from perturbed ready-state telemetry without simulator truth, all fixture coverage bands pass, and evaluation remains unopened. The rejected v4.2 scene ICC estimates remain transfer priors pending v5 development re-estimation.",
+      "current_result": "V4.2 exact rejected-model reconstruction now measures error dependence across scene, target, lighting appearance, and obstruction-variant proxy. The strongest transfer-prior ICC is 0.0350 by obstruction variant for pooled misses, 0.0264 by target for cable misses, 0.0481 by target for dark-rubber-cable misses, and 0.0558 by target for visible false stops; scene-only correlation therefore understates uncertainty. V5 must repeat this analysis using actual descriptor signatures before evaluation rendering.",
       "limitations": [
         "No commissioned projection renderer, measured dilation artifact, or physical deployment qualification is installed.",
         "The geometry-first replay uses the same Isaac semantic mask that generated the synthetic label and therefore cannot estimate real projection error.",
@@ -297,9 +301,10 @@
         "V5.3 recommends but does not freeze the exact 224-scene balanced rotation or new evaluation identities; its design rates are planning alternatives and physical lighting/obstruction transfer remains unmeasured.",
         "V5.4 validates fixture identities and diagnostic counts only; no renderer, image, candidate result, threshold, physical transfer evidence, or evaluation opening exists.",
         "The v4.2 scene ICC estimates use only eight consumed synthetic scenes and the rejected 0.55 threshold; they are transfer priors and must be replaced by v5 development estimates before evaluation rendering.",
-        "Smoke C has empty analytic arm masks for all four parked-pose target views; this is consistent with a retracted observation pose but does not test positive robot-overlap mask behavior."
+        "Smoke C has empty analytic arm masks for all four parked-pose target views; this is consistent with a retracted observation pose but does not test positive robot-overlap mask behavior.",
+        "V4.2 did not retain per-asset identities, so obstruction variant is only a dependence proxy; cable and dark-cable identity ICC are unestimable from two and one proxy groups respectively."
       ],
-      "next_gate": "Render exact training/development shards only, admit them by exact shard identity and hash, run the frozen baseline/memorization/development gates, then re-estimate scene ICC and reconfirm evaluation size before opening any evaluation pixel.",
+      "next_gate": "Complete and admit exact v5 training/development shards, run the frozen development sequence, compute per-gate clustered uncertainty by scene, target, actual obstruction descriptor signature, and lighting appearance, then size unopened evaluation using the maximum applicable axis result without changing safety gates.",
       "model_motion_batch_boundary": true,
       "controller_authority": false,
       "hardware_writes": 0,
@@ -549,5 +554,5 @@
   "controller_authority": false,
   "hardware_writes": 0,
   "physical_movements": 0,
-  "registry_sha256": "186547f8128609e33b3c6c450cdbf523cb2c726b832db5720d3ca638c3a9da8a"
+  "registry_sha256": "032a490f06de49f1f6c825be5ea39278f3801783c026132e0cda47ffce5696ac"
 }
