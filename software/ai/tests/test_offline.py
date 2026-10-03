@@ -17,7 +17,7 @@ sys.path.insert(0, str(AI_DIR.parent / "src"))
 sys.path.insert(0, str(AI_DIR / "train"))
 
 from rocell_ai.baseline import propose  # noqa: E402
-from rocell_ai.adapter import inspect  # noqa: E402
+from rocell_ai.adapter import inspect, planner_capability_contract  # noqa: E402
 from rocell_ai.admission import admit  # noqa: E402
 from rocell_ai.admission_eval import evaluate_admission  # noqa: E402
 from rocell_ai.grounded import propose as grounded_propose  # noqa: E402
@@ -106,6 +106,54 @@ class OfflineContractTests(unittest.TestCase):
         self.assertEqual(stale["reason"], "stale_observation")
         with self.assertRaisesRegex(ValueError, "reference mismatch"):
             inspect(proposal, {"ref": "other", "fresh": True})
+
+    def test_planner_shift_and_phone_layers_fail_closed_until_commissioned(self) -> None:
+        blocked = planner_capability_contract()
+        self.assertEqual(blocked["keyboard"]["strategy"], "STICKY_KEYS_SEQUENTIAL_MODIFIER")
+        self.assertFalse(blocked["keyboard"]["simultaneous_chord_supported"])
+        self.assertEqual(blocked["keyboard"]["blocked_reason"], "keyboard_modifier_uncommissioned")
+        self.assertTrue(blocked["phone"]["adb_verification_before_every_press"])
+        self.assertEqual(blocked["phone"]["blocked_reason"], "phone_layer_uncommissioned")
+        self.assertFalse(blocked["language_model_may_emit_target_ids"])
+        self.assertEqual(blocked["hardware_commands_generated"], 0)
+
+        ready = planner_capability_contract(
+            keyboard_target_ids=("SHIFT",),
+            sticky_keys_verified=True,
+            phone_target_ids=("key_shift", "key_symbols", "key_letters"),
+            adb_layer_verification=True,
+        )
+        self.assertTrue(ready["keyboard"]["ready"])
+        self.assertTrue(ready["phone"]["ready"])
+        self.assertNotEqual(ready["contract_sha256"], blocked["contract_sha256"])
+
+        def proposal(device: str, text: str) -> dict[str, str]:
+            return {
+                "schema": "rocell.ai_task_proposal.v0",
+                "request_id": f"{device}-{ord(text[0])}",
+                "observation_ref": "capability-observation",
+                "decision": "type_text",
+                "device": device,
+                "text": text,
+            }
+
+        observation = {
+            "ref": "capability-observation",
+            "fresh": True,
+            "phone_state": "KEYBOARD_LOWER",
+        }
+        for text in ("A", "!"):
+            self.assertEqual(
+                inspect(proposal("keyboard", text), observation)["reason"],
+                "keyboard_modifier_uncommissioned",
+            )
+        for text in ("A", "1", "!"):
+            self.assertEqual(
+                inspect(proposal("phone", text), observation)["reason"],
+                "phone_layer_uncommissioned",
+            )
+        self.assertEqual(inspect(proposal("keyboard", "a"), observation)["status"], "accepted")
+        self.assertEqual(inspect(proposal("phone", "a"), observation)["status"], "accepted")
 
     def test_simulated_review_and_held_out_failure_are_explicit(self) -> None:
         folder = AI_DIR / "eval"

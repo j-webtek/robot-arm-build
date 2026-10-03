@@ -153,3 +153,24 @@ A model-driven command path is operational only when it demonstrates:
 4. Place that encoder behind a sole-writer transport with a separate
    single-use execution permit and correlated receipts.
 5. Connect independent outcome verification and qualify one key before strings.
+# Planner capability decision: shifted and layered characters
+
+The first desktop strategy is commissioned Sticky Keys with sequential
+`SHIFT`, then base-key presses. The arm never attempts a simultaneous chord.
+Caps Lock optimization is deferred because it does not cover shifted symbols
+and adds state that must be observed and recovered. Until the target catalog
+contains a commissioned `SHIFT` target and the host supplies hash-bound Sticky
+Keys commissioning evidence, uppercase and shifted-symbol requests fail closed
+as `keyboard_modifier_uncommissioned`.
+
+The phone strategy is a verified layer state machine. Lowercase, uppercase,
+and symbol layers are distinct observed states. Every future transition and
+character tap requires ADB confirmation of the currently visible layer before
+the press. Until `key_shift`, `key_symbols`, and `key_letters` transition
+targets and ADB layer verification are commissioned, layered phone characters
+fail closed as `phone_layer_uncommissioned`.
+
+These capability facts are deterministic commissioning inputs. The language
+model emits only intent and exact text; it cannot emit key IDs, layer claims,
+coordinates, commands, or authority. The current lowercase profiles and target
+catalogs remain unchanged.
