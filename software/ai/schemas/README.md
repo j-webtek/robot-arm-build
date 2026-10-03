@@ -286,6 +286,11 @@ The [clustered occlusion power plan](clustered_occlusion_power_plan_v1.schema.js
 records a synthetic-only, aggregate correlation and sample-size calculation.
 It discloses no pose, target, row, image, or failure identities; it cannot tune
 a model, open an evaluation set, qualify deployment, or grant physical authority.
+The [residual v4.2 remedy classification](residual_obstruction_v4_2_remedy_classification_v1.schema.json)
+binds the rejected development result to a measurement-first physical pilot.
+It keeps cable detection in scope, leaves the runtime lighting limit unset until
+real-camera measurement, ranks candidate remedies without selecting v5, and
+creates no qualification or physical authority.
 The [parked-pose campaign](parked_pose_qualification_campaign_v1.schema.json)
 and [result](parked_pose_qualification_result_v1.schema.json) keep synthetic
 perturbation evidence separate from authorized physical park-and-settle cycles.

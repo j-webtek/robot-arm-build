@@ -52,6 +52,36 @@ The first collection should prioritize one keyboard cluster including `G` and
 one phone-key cluster. It must retain failures and original bytes. A successful
 small collection does not qualify all 75 targets or authorize execution.
 
+## Residual v4.2 remedy pilot
+
+Residual v4.2 remains rejected. Its cable rows remain part of the required
+detection scope. The commissioning rule that prohibits cable routing across an
+interaction surface reduces the expected frequency of a cable obstruction; it
+does not allow scoring without cables and does not replace the detector as the
+backstop for a cable that slips, is dropped, or is routed incorrectly.
+
+Before a v5 design is selected, collect the bounded pilot frozen in
+`residual_obstruction_v4_2_remedy_classification_v1.json`. It covers the
+keyboard `EQUAL/F/G/H/I` region and phone `key_a/key_b/key_c/key_period`, across
+at least three sessions. Each session retains clear reference and repeat images,
+dark and translucent cable images, and a hand image. Dark cable coverage spans
+20%, 40%, and 60% of the target safe region. Every image retains its original
+bytes, reference and observation hashes, ChArUco/fixture identities, settled
+park evidence, and luminance, red/green, and blue/green descriptors.
+
+The physical observations determine which remedy is tested first. Edge or
+texture difference channels are first because they directly address the
+low-contrast cable boundary. Higher target-context resolution is second because
+it tests whether thin cables occupy too few pixels at 96 by 96. Dark-obstructor
+weighting is third because it can exchange fewer misses for more false stops.
+Each option must be compared with the unchanged RGB-difference baseline.
+
+The maximum admitted relative lighting drift remains unset until the low,
+nominal, and high real-camera samples are measured. A successor's training and
+test lighting mismatch must fit the same measured envelope admitted by runtime
+reference validity. Values outside that envelope remain an upstream abstention
+condition and cannot be used to relax the detector's frozen gates.
+
 ## Current synthetic smoke finding
 
 The bounded `F/G/H/I` Isaac smoke retained both independent self-crop and

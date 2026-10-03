@@ -120,7 +120,9 @@
         "software/ai/train/run_residual_obstruction_v4_2_memorization.py",
         "software/ai/eval/score_residual_obstruction_v4_2_baseline.py",
         "software/ai/train/train_residual_obstruction_v4_2_cnn.py",
-        "software/ai/eval/score_residual_obstruction_v4_2_robustness.py"
+        "software/ai/eval/score_residual_obstruction_v4_2_robustness.py",
+        "software/ai/eval/classify_residual_obstruction_v4_2_remedies.py",
+        "software/ai/schemas/residual_obstruction_v4_2_remedy_classification_v1.schema.json"
       ],
       "test_paths": [
         "software/ai/tests/test_capture_binding.py",
@@ -159,7 +161,8 @@
         "software/ai/tests/test_residual_obstruction_successor_v4_2.py",
         "software/ai/tests/test_residual_obstruction_v4_2_renderer.py",
         "software/ai/tests/test_residual_obstruction_v4_2_admission.py",
-        "software/ai/tests/test_residual_obstruction_v4_2_gates.py"
+        "software/ai/tests/test_residual_obstruction_v4_2_gates.py",
+        "software/ai/tests/test_residual_obstruction_v4_2_remedy_classification.py"
       ],
       "documentation_paths": [
         "software/ai/docs/MODEL_TO_ARM_TRANSLATION_ASSURANCE.md",
@@ -205,9 +208,10 @@
         "software/ai/eval/residual_obstruction_v4_2_camera_contract_smoke_v1.json",
         "software/ai/eval/residual_obstruction_v4_2_cnn_development_v1.json",
         "software/ai/eval/residual_obstruction_v4_2_hard_case_audit_v1.json",
-        "software/ai/eval/residual_obstruction_v4_2_robustness_v1.json"
+        "software/ai/eval/residual_obstruction_v4_2_robustness_v1.json",
+        "software/ai/eval/residual_obstruction_v4_2_remedy_classification_v1.json"
       ],
-      "current_result": "Residual v4.2 is rejected on consumed synthetic development: all 19 frozen thresholds fail, the least-bad 0.55 threshold exceeds cable-miss and warm-side false-stop limits, and the target quantile-margin gate fails. Evaluation remains unopened.",
+      "current_result": "Residual v4.2 remains rejected. A strict remedy classification now requires a measured three-session real-camera pilot before v5 selection, keeps cable detection in scope, ranks edge/texture input before resolution and weighting, and leaves the lighting limit unset.",
       "limitations": [
         "No commissioned projection renderer, measured dilation artifact, or physical deployment qualification is installed.",
         "The geometry-first replay uses the same Isaac semantic mask that generated the synthetic label and therefore cannot estimate real projection error.",
@@ -229,9 +233,10 @@
         "The same CNN architecture reached only 0.834 accuracy and 0.4417 loss on a balanced 500-row memorization control, so its representation or capacity is inadequate for exact example separation.",
         "Synthetic development success cannot establish real-camera transfer; commissioned clear references and bounded real cable/hand captures remain required.",
         "V4.2 evaluation reuses training obstruction families, primitive geometry formulas, and materials; it cannot measure unseen-obstruction identity generalization and contains no articulated hand asset.",
-        "A candidate commissioning rule should prohibit cable routing across keyboard and phone interaction surfaces; this physical mitigation cannot override model gate failures."
+        "A candidate commissioning rule should prohibit cable routing across keyboard and phone interaction surfaces; this physical mitigation cannot override model gate failures.",
+        "The residual v4.2 remedy classification contains no physical pilot images or measured runtime-admitted lighting envelope and selects no successor."
       ],
-      "next_gate": "Classify the preserved v4.2 failure evidence into model-input, data, and workcell-rule remedies before predeclaring any successor; collect commissioned real clear, cable, and hand pairs without opening synthetic evaluation.",
+      "next_gate": "Collect and retain the bounded parked-pose real-camera pilot with exact ChArUco, fixture, reference, image, obstruction, coverage, session, and lighting-descriptor bindings; then compare candidate input representations without opening synthetic evaluation.",
       "model_motion_batch_boundary": true,
       "controller_authority": false,
       "hardware_writes": 0,
@@ -481,5 +486,5 @@
   "controller_authority": false,
   "hardware_writes": 0,
   "physical_movements": 0,
-  "registry_sha256": "a1d932162fc37f8d6bd2446cc286f8dfe5f1ae157dcad8e73bb90765d2e61eb5"
+  "registry_sha256": "c2d56d8a8f38ae9904d5a3f0a51d5b287aef8935c0c9f50a9e57cff36125dc1b"
 }
