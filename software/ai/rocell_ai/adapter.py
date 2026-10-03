@@ -20,6 +20,126 @@ _DESKTOP_SHIFTED_CHARACTERS = frozenset(
 _PHONE_LAYERED_CHARACTERS = frozenset(
     string.ascii_uppercase + string.digits + string.punctuation
 )
+_US_SHIFTED_TO_BASE = {
+    "~": "GRAVE",
+    "!": "1",
+    "@": "2",
+    "#": "3",
+    "$": "4",
+    "%": "5",
+    "^": "6",
+    "&": "7",
+    "*": "8",
+    "(": "9",
+    ")": "0",
+    "_": "MINUS",
+    "+": "EQUAL",
+    "{": "LEFT_BRACKET",
+    "}": "RIGHT_BRACKET",
+    "|": "BACKSLASH",
+    ":": "SEMICOLON",
+    '"': "APOSTROPHE",
+    "<": "COMMA",
+    ">": "PERIOD",
+    "?": "SLASH",
+}
+_US_UNSHIFTED_TO_KEY = {
+    "`": "GRAVE",
+    "-": "MINUS",
+    "=": "EQUAL",
+    "[": "LEFT_BRACKET",
+    "]": "RIGHT_BRACKET",
+    "\\": "BACKSLASH",
+    ";": "SEMICOLON",
+    "'": "APOSTROPHE",
+    ",": "COMMA",
+    ".": "PERIOD",
+    "/": "SLASH",
+    " ": "SPACE",
+}
+
+
+class StickyKeysReplayError(ValueError):
+    """A sequence violates the commissioned one-shot modifier contract."""
+
+
+def compile_virtual_us_sticky_keys(text: str) -> tuple[str, ...]:
+    """Compile printable ASCII to one-shot Shift plus named base-key presses."""
+
+    sequence: list[str] = []
+    for index, character in enumerate(text):
+        if "a" <= character <= "z":
+            sequence.append(character.upper())
+        elif "A" <= character <= "Z":
+            sequence.extend(("SHIFT", character))
+        elif character in string.digits:
+            sequence.append(character)
+        elif character in _US_SHIFTED_TO_BASE:
+            sequence.extend(("SHIFT", _US_SHIFTED_TO_BASE[character]))
+        elif character in _US_UNSHIFTED_TO_KEY:
+            sequence.append(_US_UNSHIFTED_TO_KEY[character])
+        else:
+            raise StickyKeysReplayError(
+                f"unsupported virtual US character {character!r} at index {index}"
+            )
+    if any(left == right == "SHIFT" for left, right in zip(sequence, sequence[1:])):
+        raise StickyKeysReplayError("compiler emitted consecutive Shift presses")
+    return tuple(sequence)
+
+
+def replay_virtual_us_sticky_keys(
+    sequence: tuple[str, ...],
+    *,
+    five_shift_shortcut_disabled: bool,
+    turn_off_on_two_keys_disabled: bool,
+) -> dict[str, Any]:
+    """Replay the Windows one-shot latch semantics without OS or device access."""
+
+    if not five_shift_shortcut_disabled:
+        raise StickyKeysReplayError("five-Shift shortcut is not disabled")
+    if not turn_off_on_two_keys_disabled:
+        raise StickyKeysReplayError("two-key disable behavior is not disabled")
+    reverse_unshifted = {key: value for value, key in _US_UNSHIFTED_TO_KEY.items()}
+    reverse_shifted = {key: value for value, key in _US_SHIFTED_TO_BASE.items()}
+    state = "OFF"
+    consecutive_shifts = 0
+    output: list[str] = []
+    verification: list[dict[str, str]] = []
+    for index, key_id in enumerate(sequence):
+        if key_id == "SHIFT":
+            consecutive_shifts += 1
+            if consecutive_shifts >= 2:
+                raise StickyKeysReplayError(
+                    f"consecutive Shift at action {index} would enter locked state"
+                )
+            state = "LATCHED"
+            verification.append({"key": "SHIFT", "expected_modifier_state": "LATCHED"})
+            continue
+        consecutive_shifts = 0
+        if len(key_id) == 1 and "A" <= key_id <= "Z":
+            character = key_id if state == "LATCHED" else key_id.lower()
+        elif key_id in string.digits:
+            character = reverse_shifted[key_id] if state == "LATCHED" else key_id
+        elif state == "LATCHED" and key_id in reverse_shifted:
+            character = reverse_shifted[key_id]
+        elif state == "OFF" and key_id in reverse_unshifted:
+            character = reverse_unshifted[key_id]
+        else:
+            raise StickyKeysReplayError(
+                f"key {key_id!r} is invalid in modifier state {state} at action {index}"
+            )
+        output.append(character)
+        state = "OFF"
+        verification.append({"key": key_id, "expected_modifier_state": "OFF"})
+    if state != "OFF":
+        raise StickyKeysReplayError("sequence ends with a latched modifier")
+    return {
+        "text": "".join(output),
+        "final_modifier_state": state,
+        "keystroke_log_expectations": verification,
+        "dialog_triggered": False,
+        "sticky_keys_disabled": False,
+    }
 
 
 def planner_capability_contract(
@@ -48,6 +168,13 @@ def planner_capability_contract(
             "caps_lock_optimization_enabled": False,
             "required_target_ids": ["SHIFT"],
             "sticky_keys_commissioning_evidence_required": True,
+            "required_configuration": {
+                "sticky_keys_enabled": True,
+                "one_shot_shift_latch": True,
+                "five_shift_shortcut_disabled": True,
+                "turn_off_when_two_keys_pressed_disabled": True,
+            },
+            "verification_source": "HOST_KEYSTROKE_AND_MODIFIER_STATE_LOG",
             "ready": keyboard_ready,
             "blocked_reason": None if keyboard_ready else "keyboard_modifier_uncommissioned",
         },

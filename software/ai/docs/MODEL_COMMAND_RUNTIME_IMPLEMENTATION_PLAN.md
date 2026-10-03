@@ -163,6 +163,14 @@ contains a commissioned `SHIFT` target and the host supplies hash-bound Sticky
 Keys commissioning evidence, uppercase and shifted-symbol requests fail closed
 as `keyboard_modifier_uncommissioned`.
 
+The commissioning checklist must prove all four host settings: Sticky Keys is
+enabled; one Shift press latches exactly the next key; the five-Shift shortcut
+and its focus-stealing dialog are disabled; and “turn off Sticky Keys when two
+keys are pressed at once” is disabled. The compiler may never emit consecutive
+Shift presses because two presses enter modifier-lock state. A host keystroke
+and modifier-state log must show `LATCHED` after every Shift and `OFF` after the
+following base key. Missing or mismatched evidence blocks the action sequence.
+
 The phone strategy is a verified layer state machine. Lowercase, uppercase,
 and symbol layers are distinct observed states. Every future transition and
 character tap requires ADB confirmation of the currently visible layer before

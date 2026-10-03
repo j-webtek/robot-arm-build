@@ -17,7 +17,13 @@ sys.path.insert(0, str(AI_DIR.parent / "src"))
 sys.path.insert(0, str(AI_DIR / "train"))
 
 from rocell_ai.baseline import propose  # noqa: E402
-from rocell_ai.adapter import inspect, planner_capability_contract  # noqa: E402
+from rocell_ai.adapter import (  # noqa: E402
+    StickyKeysReplayError,
+    compile_virtual_us_sticky_keys,
+    inspect,
+    planner_capability_contract,
+    replay_virtual_us_sticky_keys,
+)
 from rocell_ai.admission import admit  # noqa: E402
 from rocell_ai.admission_eval import evaluate_admission  # noqa: E402
 from rocell_ai.grounded import propose as grounded_propose  # noqa: E402
@@ -154,6 +160,45 @@ class OfflineContractTests(unittest.TestCase):
             )
         self.assertEqual(inspect(proposal("keyboard", "a"), observation)["status"], "accepted")
         self.assertEqual(inspect(proposal("phone", "a"), observation)["status"], "accepted")
+
+    def test_sticky_keys_virtual_replay_covers_printable_ascii(self) -> None:
+        printable_ascii = "".join(chr(value) for value in range(32, 127))
+        sequence = compile_virtual_us_sticky_keys(printable_ascii)
+        replay = replay_virtual_us_sticky_keys(
+            sequence,
+            five_shift_shortcut_disabled=True,
+            turn_off_on_two_keys_disabled=True,
+        )
+        self.assertEqual(replay["text"], printable_ascii)
+        self.assertEqual(replay["final_modifier_state"], "OFF")
+        self.assertFalse(replay["dialog_triggered"])
+        self.assertFalse(replay["sticky_keys_disabled"])
+        self.assertFalse(any(
+            left == right == "SHIFT" for left, right in zip(sequence, sequence[1:])
+        ))
+        shifted_count = sum(character.isupper() or character in '~!@#$%^&*()_+{}|:"<>?'
+                            for character in printable_ascii)
+        self.assertEqual(sequence.count("SHIFT"), shifted_count)
+
+    def test_sticky_keys_replay_rejects_lock_dialog_and_disable_risks(self) -> None:
+        with self.assertRaisesRegex(StickyKeysReplayError, "locked state"):
+            replay_virtual_us_sticky_keys(
+                ("SHIFT", "SHIFT", "A"),
+                five_shift_shortcut_disabled=True,
+                turn_off_on_two_keys_disabled=True,
+            )
+        with self.assertRaisesRegex(StickyKeysReplayError, "five-Shift shortcut"):
+            replay_virtual_us_sticky_keys(
+                ("A",),
+                five_shift_shortcut_disabled=False,
+                turn_off_on_two_keys_disabled=True,
+            )
+        with self.assertRaisesRegex(StickyKeysReplayError, "two-key disable"):
+            replay_virtual_us_sticky_keys(
+                ("A",),
+                five_shift_shortcut_disabled=True,
+                turn_off_on_two_keys_disabled=False,
+            )
 
     def test_simulated_review_and_held_out_failure_are_explicit(self) -> None:
         folder = AI_DIR / "eval"
