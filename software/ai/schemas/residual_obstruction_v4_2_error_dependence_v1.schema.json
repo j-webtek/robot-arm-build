@@ -57,7 +57,9 @@
       "type": "object",
       "required": [
         "required_axes",
+        "required_multiway_interactions",
         "per_gate_rule",
+        "multiway_rule",
         "evaluation_sizing_rule",
         "unestimable_axis_fallback_icc",
         "safety_gates_may_change",

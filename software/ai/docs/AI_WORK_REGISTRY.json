@@ -267,7 +267,7 @@
         "software/ai/eval/residual_obstruction_v4_2_scene_icc_v1.json",
         "software/ai/eval/residual_obstruction_v4_2_error_dependence_v1.json"
       ],
-      "current_result": "V4.2 exact rejected-model reconstruction now measures error dependence across scene, target, lighting appearance, and obstruction-variant proxy. The strongest transfer-prior ICC is 0.0350 by obstruction variant for pooled misses, 0.0264 by target for cable misses, 0.0481 by target for dark-rubber-cable misses, and 0.0558 by target for visible false stops; scene-only correlation therefore understates uncertainty. V5 must repeat this analysis using actual descriptor signatures before evaluation rendering.",
+      "current_result": "V4.2 exact rejected-model reconstruction measures error dependence across scene, target, lighting appearance, and obstruction-variant proxy. The strongest transfer-prior ICC is 0.0350 by obstruction variant for pooled misses, 0.0264 by target for cable misses, 0.0481 by target for dark-rubber-cable misses, and 0.0558 by target for visible false stops; scene-only correlation therefore understates uncertainty. Before evaluation, v5 must repeat the one-way analysis using actual descriptor signatures and also compute a two-way target-by-asset multiway clustered bound whenever both axes apply.",
       "limitations": [
         "No commissioned projection renderer, measured dilation artifact, or physical deployment qualification is installed.",
         "The geometry-first replay uses the same Isaac semantic mask that generated the synthetic label and therefore cannot estimate real projection error.",
@@ -304,7 +304,7 @@
         "Smoke C has empty analytic arm masks for all four parked-pose target views; this is consistent with a retracted observation pose but does not test positive robot-overlap mask behavior.",
         "V4.2 did not retain per-asset identities, so obstruction variant is only a dependence proxy; cable and dark-cable identity ICC are unestimable from two and one proxy groups respectively."
       ],
-      "next_gate": "Complete and admit exact v5 training/development shards, run the frozen development sequence, compute per-gate clustered uncertainty by scene, target, actual obstruction descriptor signature, and lighting appearance, then size unopened evaluation using the maximum applicable axis result without changing safety gates.",
+      "next_gate": "Complete and admit exact v5 training/development shards, run the frozen development sequence, compute per-gate one-way clustered uncertainty by scene, target, actual obstruction descriptor signature, and lighting appearance, compute the target-by-asset two-way multiway clustered bound when applicable, then size unopened evaluation using the maximum result without changing safety gates.",
       "model_motion_batch_boundary": true,
       "controller_authority": false,
       "hardware_writes": 0,
@@ -554,5 +554,5 @@
   "controller_authority": false,
   "hardware_writes": 0,
   "physical_movements": 0,
-  "registry_sha256": "032a490f06de49f1f6c825be5ea39278f3801783c026132e0cda47ffce5696ac"
+  "registry_sha256": "8bbba5afef900f73f1ee073cf0abc4ac7fe83d2a31cfc16691445d31eb55a037"
 }

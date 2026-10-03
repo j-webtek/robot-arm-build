@@ -2,7 +2,7 @@
   "schema": "tactevra.ai_residual_obstruction_v4_2_error_dependence.v1",
   "scope": "CONSUMED_V4_2_MULTI_AXIS_DEPENDENCE_AND_V5_PRE_EVALUATION_RULE",
   "status": "COMPLETE_TRANSFER_PRIOR_V5_MULTI_AXIS_REESTIMATE_REQUIRED",
-  "source_commit": "5ef009bdf2efb5a91df3e301fa827ec47d1714c7",
+  "source_commit": "32b647d62e16405432695c5d703a2d959a33b9ba",
   "source": {
     "fixture_file_sha256": "26eb0de03e7865711273802abd1ddc518f066e5fc0aa0f0d81a6c71f683d34e5",
     "fixture_bundle_sha256": "e7c6b614a00e4f6b550e0fe00419758e40a6d779d825b92933f425342eda38c2",
@@ -1011,7 +1011,11 @@
       "obstruction_asset_signature_sha256",
       "appearance_id"
     ],
+    "required_multiway_interactions": [
+      "device_and_target_id_x_obstruction_asset_signature_sha256"
+    ],
     "per_gate_rule": "COMPUTE_ONE_WAY_CLUSTER_BOOTSTRAP_UCB_FOR_EVERY_APPLICABLE_AXIS_AND_USE_THE_MAXIMUM",
+    "multiway_rule": "WHEN_TARGET_AND_ASSET_AXES_ARE_APPLICABLE_AND_ESTIMABLE_COMPUTE_A_TWO_WAY_MULTIWAY_CLUSTER_BOOTSTRAP_UCB_RESAMPLING_TARGET_AND_ASSET_SEPARATELY_AND_INCLUDE_IT_IN_THE_MAXIMUM",
     "evaluation_sizing_rule": "RECONFIRM_POWER_AT_MAXIMUM_APPLICABLE_AXIS_DEPENDENCE_BEFORE_RENDERING_EVALUATION",
     "unestimable_axis_fallback_icc": 0.3,
     "safety_gates_may_change": false,
@@ -1036,5 +1040,5 @@
     "Binary-error ICC depends on the retained rejected threshold and endpoint definition.",
     "No evaluation image, physical image, qualification, or execution authority is introduced."
   ],
-  "report_sha256": "fad3e7948009fbfb797e6c2006243b23d6a3ce81eaa7c267be821cc545f3e90f"
+  "report_sha256": "87cb27af5ace3bc9054b68870acf741bead31e60e7bac009a957666eaaf24d51"
 }

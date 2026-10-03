@@ -221,7 +221,11 @@ def run(
                 "obstruction_asset_signature_sha256",
                 "appearance_id",
             ],
+            "required_multiway_interactions": [
+                "device_and_target_id_x_obstruction_asset_signature_sha256"
+            ],
             "per_gate_rule": "COMPUTE_ONE_WAY_CLUSTER_BOOTSTRAP_UCB_FOR_EVERY_APPLICABLE_AXIS_AND_USE_THE_MAXIMUM",
+            "multiway_rule": "WHEN_TARGET_AND_ASSET_AXES_ARE_APPLICABLE_AND_ESTIMABLE_COMPUTE_A_TWO_WAY_MULTIWAY_CLUSTER_BOOTSTRAP_UCB_RESAMPLING_TARGET_AND_ASSET_SEPARATELY_AND_INCLUDE_IT_IN_THE_MAXIMUM",
             "evaluation_sizing_rule": "RECONFIRM_POWER_AT_MAXIMUM_APPLICABLE_AXIS_DEPENDENCE_BEFORE_RENDERING_EVALUATION",
             "unestimable_axis_fallback_icc": 0.30,
             "safety_gates_may_change": False,

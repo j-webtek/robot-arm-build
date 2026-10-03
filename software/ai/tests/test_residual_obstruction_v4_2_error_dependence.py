@@ -43,6 +43,10 @@ def test_retained_dependence_report_is_bound_and_fail_closed():
         "obstruction_asset_signature_sha256",
         "appearance_id",
     ]
+    assert rule["required_multiway_interactions"] == [
+        "device_and_target_id_x_obstruction_asset_signature_sha256"
+    ]
+    assert "TWO_WAY_MULTIWAY_CLUSTER_BOOTSTRAP_UCB" in rule["multiway_rule"]
     assert rule["safety_gates_may_change"] is False
     assert (
         report["mid_motion_arm_mask_gate"]["mid_motion_observation_authorized"] is False
