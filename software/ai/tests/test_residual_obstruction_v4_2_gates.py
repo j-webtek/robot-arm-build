@@ -31,6 +31,9 @@ from train_residual_obstruction_v4_2_cnn import (  # noqa: E402
     score_probabilities,
     uplift_result,
 )
+from score_residual_obstruction_v4_2_robustness import (  # noqa: E402
+    score_thresholds as score_robustness_thresholds,
+)
 from residual_obstruction_v4_2_isaac_probe import normalization_difference_metrics  # noqa: E402
 
 
@@ -177,3 +180,50 @@ def test_cnn_scoring_and_uplift_require_both_frozen_improvements() -> None:
     assert result["pooled_gate_met"] is True
     assert result["q05_gate_met"] is False
     assert result["gate_met"] is False
+
+
+def test_robustness_gate_requires_cluster_group_and_target_metrics() -> None:
+    development = []
+    probabilities = []
+    for scene in ("s1", "s2"):
+        for target in ("A", "B"):
+            for appearance in ("neutral", "warm"):
+                development.extend([
+                    {
+                        "scene_id": scene,
+                        "device": "keyboard",
+                        "target_id": target,
+                        "appearance_id": appearance,
+                        "variant_family": "NONE",
+                        "expected_decision": "VISIBLE",
+                    },
+                    {
+                        "scene_id": scene,
+                        "device": "keyboard",
+                        "target_id": target,
+                        "appearance_id": appearance,
+                        "variant_family": "CABLE",
+                        "expected_decision": "ABSTAIN",
+                    },
+                ])
+                probabilities.extend([0.1, 0.9])
+    fixture = {
+        "training_plan": {"threshold_candidates": [0.5]},
+        "development_gate": {
+            "base_scene_cluster_bootstrap_seed": 1,
+            "base_scene_cluster_bootstrap_resamples": 100,
+            "confidence_level": 0.95,
+            "per_target_quantile_margin_quantile": 0.05,
+            "minimum_per_target_auc": 0.9,
+            "per_target_auc_q05_minimum": 0.95,
+            "per_target_quantile_margin_q05_minimum": 0.05,
+            "pooled_cluster_missed_obstruction_rate_upper": 0.02,
+            "pooled_cluster_visible_false_stop_rate_upper": 0.06,
+        },
+    }
+    result = score_robustness_thresholds(
+        development, np.asarray(probabilities), fixture
+    )
+    assert result["selected_threshold"] == 0.5
+    assert result["development_gate_met"] is True
+    assert result["target_metrics"]["q05_quantile_margin"] == pytest.approx(0.8)

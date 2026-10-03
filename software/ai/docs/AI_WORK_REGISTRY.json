@@ -119,7 +119,8 @@
         "software/ai/train/prepare_residual_obstruction_v4_2_gates.py",
         "software/ai/train/run_residual_obstruction_v4_2_memorization.py",
         "software/ai/eval/score_residual_obstruction_v4_2_baseline.py",
-        "software/ai/train/train_residual_obstruction_v4_2_cnn.py"
+        "software/ai/train/train_residual_obstruction_v4_2_cnn.py",
+        "software/ai/eval/score_residual_obstruction_v4_2_robustness.py"
       ],
       "test_paths": [
         "software/ai/tests/test_capture_binding.py",
@@ -226,9 +227,10 @@
         "Residual v3 training and development reuse the same four appearance identities; only base-scene and observation identities are disjoint.",
         "The same CNN architecture reached only 0.834 accuracy and 0.4417 loss on a balanced 500-row memorization control, so its representation or capacity is inadequate for exact example separation.",
         "Synthetic development success cannot establish real-camera transfer; commissioned clear references and bounded real cable/hand captures remain required.",
-        "V4.2 evaluation reuses training obstruction families, primitive geometry formulas, and materials; it cannot measure unseen-obstruction identity generalization and contains no articulated hand asset."
+        "V4.2 evaluation reuses training obstruction families, primitive geometry formulas, and materials; it cannot measure unseen-obstruction identity generalization and contains no articulated hand asset.",
+        "A candidate commissioning rule should prohibit cable routing across keyboard and phone interaction surfaces; this physical mitigation cannot override model gate failures."
       ],
-      "next_gate": "Apply every unchanged frozen threshold and robustness gate; do not render evaluation unless one threshold passes. Separately plan asset-disjoint synthetic evidence and commissioned real clear/cable/hand pairs.",
+      "next_gate": "Run the committed unchanged v4.2 threshold and robustness scorer; reject the candidate and keep evaluation closed if no threshold passes. Preserve the driving family and appearance.",
       "model_motion_batch_boundary": true,
       "controller_authority": false,
       "hardware_writes": 0,
@@ -478,5 +480,5 @@
   "controller_authority": false,
   "hardware_writes": 0,
   "physical_movements": 0,
-  "registry_sha256": "1b4bae2870e6935ba92d4795b45f0cb5b09c26e815198f389f6fa1b4488d057e"
+  "registry_sha256": "ee6931482a22e2fb88690eb9b620926300f097e34e8202e9b3a9f9ac0970ba16"
 }
