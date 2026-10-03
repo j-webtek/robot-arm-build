@@ -111,6 +111,35 @@ def test_official_mesh_render_receipt_is_bound_and_zero_authority() -> None:
         assert (center_count, overlap_count) == expected_occlusion_counts[row["pose_id"]]
 
 
+def test_target_occlusion_diagnostic_detects_overlap_and_reports_clearance() -> None:
+    renderer = _renderer()
+    target = {
+        "center_px": [105.0, 105.0],
+        "safe_polygon_px": [
+            [100.0, 100.0], [110.0, 100.0],
+            [110.0, 110.0], [100.0, 110.0],
+        ],
+    }
+    clear_mask = np.zeros((1080, 1920), dtype=bool)
+    clear_mask[100:111, 120] = True
+    clear = renderer._target_occlusion_diagnostic(
+        target, clear_mask, Image, ImageDraw, np,
+    )
+    assert clear["center_occluded"] is False
+    assert clear["safe_region_overlap_px"] == 0
+    assert clear["safe_region_overlap_fraction"] == 0.0
+    assert clear["nominal_clearance_px"] == 10.0
+
+    positive_control = clear_mask.copy()
+    positive_control[100:111, 100:111] = True
+    blocked = renderer._target_occlusion_diagnostic(
+        target, positive_control, Image, ImageDraw, np,
+    )
+    assert blocked["center_occluded"] is True
+    assert blocked["safe_region_overlap_fraction"] == 1.0
+    assert blocked["nominal_clearance_px"] == 0.0
+
+
 def test_official_mesh_occlusion_builder_has_disjoint_groups_and_zero_authority(
     tmp_path: Path,
 ) -> None:

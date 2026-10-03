@@ -414,18 +414,54 @@ def _project_targets(context: Any, Point3Mm: Any) -> list[dict[str, object]]:
 
 def _target_occlusion(target: dict[str, object], robot_mask: Any, Image: Any,
                       ImageDraw: Any, np: Any) -> tuple[bool, float]:
+    diagnostic = _target_occlusion_diagnostic(
+        target, robot_mask, Image, ImageDraw, np, measure_clearance=False,
+    )
+    return (
+        bool(diagnostic["center_occluded"]),
+        float(diagnostic["safe_region_overlap_fraction"]),
+    )
+
+
+def _target_occlusion_diagnostic(
+    target: dict[str, object], robot_mask: Any, Image: Any,
+    ImageDraw: Any, np: Any, *, measure_clearance: bool = True,
+) -> dict[str, object]:
+    """Measure nominal mask overlap and pixel clearance for one safe region.
+
+    Pixel clearance is a simulation diagnostic, not a calibrated dilation
+    bound.  A physical qualification must derive dilation from measured camera,
+    feedback, and backlash evidence before using it for an admission decision.
+    """
     polygon = [(round(x), round(y)) for x, y in target["safe_polygon_px"]]  # type: ignore[index]
     region = Image.new("1", (WIDTH, HEIGHT), 0)
     ImageDraw.Draw(region).polygon(polygon, fill=1)
     region_mask = np.asarray(region, dtype=bool)
+    robot_mask = np.asarray(robot_mask, dtype=bool)
+    if robot_mask.shape != region_mask.shape:
+        raise ValueError("robot mask shape does not match overview camera")
     area = int(np.count_nonzero(region_mask))
+    if area == 0:
+        raise ValueError("target safe region rasterized to zero pixels")
     overlap = int(np.count_nonzero(region_mask & robot_mask))
     center = tuple(round(value) for value in target["center_px"])  # type: ignore[arg-type]
     center_occluded = (
         0 <= center[0] < WIDTH and 0 <= center[1] < HEIGHT
         and bool(robot_mask[center[1], center[0]])
     )
-    return center_occluded, 0.0 if area == 0 else overlap / area
+    clearance_px = 0.0
+    if measure_clearance and overlap == 0 and bool(np.any(robot_mask)):
+        from scipy.ndimage import distance_transform_edt
+
+        distance_to_robot = distance_transform_edt(~robot_mask)
+        clearance_px = float(np.min(distance_to_robot[region_mask]))
+    return {
+        "center_occluded": center_occluded,
+        "safe_region_area_px": area,
+        "safe_region_overlap_px": overlap,
+        "safe_region_overlap_fraction": overlap / area,
+        "nominal_clearance_px": clearance_px,
+    }
 
 
 def main() -> int:
