@@ -122,7 +122,9 @@
         "software/ai/train/train_residual_obstruction_v4_2_cnn.py",
         "software/ai/eval/score_residual_obstruction_v4_2_robustness.py",
         "software/ai/eval/classify_residual_obstruction_v4_2_remedies.py",
-        "software/ai/schemas/residual_obstruction_v4_2_remedy_classification_v1.schema.json"
+        "software/ai/schemas/residual_obstruction_v4_2_remedy_classification_v1.schema.json",
+        "software/ai/eval/build_residual_obstruction_physical_pilot_predeclaration.py",
+        "software/ai/schemas/residual_obstruction_physical_pilot_v1.schema.json"
       ],
       "test_paths": [
         "software/ai/tests/test_capture_binding.py",
@@ -162,7 +164,8 @@
         "software/ai/tests/test_residual_obstruction_v4_2_renderer.py",
         "software/ai/tests/test_residual_obstruction_v4_2_admission.py",
         "software/ai/tests/test_residual_obstruction_v4_2_gates.py",
-        "software/ai/tests/test_residual_obstruction_v4_2_remedy_classification.py"
+        "software/ai/tests/test_residual_obstruction_v4_2_remedy_classification.py",
+        "software/ai/tests/test_residual_obstruction_physical_pilot.py"
       ],
       "documentation_paths": [
         "software/ai/docs/MODEL_TO_ARM_TRANSLATION_ASSURANCE.md",
@@ -209,9 +212,10 @@
         "software/ai/eval/residual_obstruction_v4_2_cnn_development_v1.json",
         "software/ai/eval/residual_obstruction_v4_2_hard_case_audit_v1.json",
         "software/ai/eval/residual_obstruction_v4_2_robustness_v1.json",
-        "software/ai/eval/residual_obstruction_v4_2_remedy_classification_v1.json"
+        "software/ai/eval/residual_obstruction_v4_2_remedy_classification_v1.json",
+        "software/ai/eval/residual_obstruction_physical_pilot_v1.json"
       ],
-      "current_result": "Residual v4.2 remains rejected. A strict remedy classification now requires a measured three-session real-camera pilot before v5 selection, keeps cable detection in scope, ranks edge/texture input before resolution and weighting, and leaves the lighting limit unset.",
+      "current_result": "The real-camera remedy pilot is ready for de-energized capture under frozen labels, dual coverage measurement, two measurement-only sessions, and one unopened escrow session. V4.2 remains rejected and v5 remains unselected.",
       "limitations": [
         "No commissioned projection renderer, measured dilation artifact, or physical deployment qualification is installed.",
         "The geometry-first replay uses the same Isaac semantic mask that generated the synthetic label and therefore cannot estimate real projection error.",
@@ -234,9 +238,10 @@
         "Synthetic development success cannot establish real-camera transfer; commissioned clear references and bounded real cable/hand captures remain required.",
         "V4.2 evaluation reuses training obstruction families, primitive geometry formulas, and materials; it cannot measure unseen-obstruction identity generalization and contains no articulated hand asset.",
         "A candidate commissioning rule should prohibit cable routing across keyboard and phone interaction surfaces; this physical mitigation cannot override model gate failures.",
-        "The residual v4.2 remedy classification contains no physical pilot images or measured runtime-admitted lighting envelope and selects no successor."
+        "The residual v4.2 remedy classification contains no physical pilot images or measured runtime-admitted lighting envelope and selects no successor.",
+        "The physical pilot predeclaration contains no physical pixels; its 20% boundary rows are separately reported, and no pilot row is authorized for model training."
       ],
-      "next_gate": "Collect and retain the bounded parked-pose real-camera pilot with exact ChArUco, fixture, reference, image, obstruction, coverage, session, and lighting-descriptor bindings; then compare candidate input representations without opening synthetic evaluation.",
+      "next_gate": "Capture measurement sessions physical_pilot_measurement_01 and physical_pilot_measurement_02 with the arm de-energized, retain all label artifacts and lighting descriptors, and hash but do not open physical_pilot_escrow_01.",
       "model_motion_batch_boundary": true,
       "controller_authority": false,
       "hardware_writes": 0,
@@ -486,5 +491,5 @@
   "controller_authority": false,
   "hardware_writes": 0,
   "physical_movements": 0,
-  "registry_sha256": "c2d56d8a8f38ae9904d5a3f0a51d5b287aef8935c0c9f50a9e57cff36125dc1b"
+  "registry_sha256": "a86221ee03e474d2b55ba658ae7aa59b146ad4a5aa5996572dc806d5fb0feaee"
 }

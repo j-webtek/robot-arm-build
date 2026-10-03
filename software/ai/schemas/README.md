@@ -291,6 +291,11 @@ binds the rejected development result to a measurement-first physical pilot.
 It keeps cable detection in scope, leaves the runtime lighting limit unset until
 real-camera measurement, ranks candidate remedies without selecting v5, and
 creates no qualification or physical authority.
+The [residual physical pilot predeclaration](residual_obstruction_physical_pilot_v1.schema.json)
+separates clear, boundary, and obstructed cable coverage; requires placement
+and mask labels; assigns measurement and unopened escrow sessions before
+capture; and requires an isolated, de-energized arm with zero capture-phase
+movement or hardware writes.
 The [parked-pose campaign](parked_pose_qualification_campaign_v1.schema.json)
 and [result](parked_pose_qualification_result_v1.schema.json) keep synthetic
 perturbation evidence separate from authorized physical park-and-settle cycles.

@@ -64,10 +64,34 @@ Before a v5 design is selected, collect the bounded pilot frozen in
 `residual_obstruction_v4_2_remedy_classification_v1.json`. It covers the
 keyboard `EQUAL/F/G/H/I` region and phone `key_a/key_b/key_c/key_period`, across
 at least three sessions. Each session retains clear reference and repeat images,
-dark and translucent cable images, and a hand image. Dark cable coverage spans
-20%, 40%, and 60% of the target safe region. Every image retains its original
-bytes, reference and observation hashes, ChArUco/fixture identities, settled
-park evidence, and luminance, red/green, and blue/green descriptors.
+dark and translucent cable images, and a hand image. E-529 amends the pending
+coverage schedule before capture: 10% is clearly visible, 20% is an explicit
+boundary probe, and 30% and 60% are clearly obstructed. The 20% rows accept
+either decision in the primary pilot metric but remain retained, separately
+reported, and scored under strict visible and strict abstain counterfactuals.
+Every image retains its original bytes, reference and observation hashes,
+ChArUco/fixture identities, settled park evidence, and luminance, red/green,
+and blue/green descriptors.
+
+Real coverage requires both a measured placement template and an independently
+hand-annotated obstruction mask against the hash-bound target safe region. The
+annotator remains blind to the model score. More than 5 percentage points of
+absolute disagreement yields `LABEL_UNRESOLVED`; that row is retained and
+reported but cannot enter a model metric. Target-center coverage forces an
+abstain label.
+
+Sessions `physical_pilot_measurement_01` and
+`physical_pilot_measurement_02` may inform remedy selection but may not train a
+model. `physical_pilot_escrow_01` is fixed before capture and its pixels remain
+unopened until a candidate representation, checkpoint, and threshold are
+frozen. It cannot select a remedy or train a model. Any real training data
+requires a separate later collection.
+
+The arm is de-energized for every capture. Servo power isolation and controller
+channel disconnection are verified before entry into the work envelope. The
+park pose is established before the capture phase, which performs zero robot
+movements and zero hardware writes. An energized row is retained as invalid and
+cannot be used, with the hand cases requiring explicit energy-isolation proof.
 
 The physical observations determine which remedy is tested first. Edge or
 texture difference channels are first because they directly address the
