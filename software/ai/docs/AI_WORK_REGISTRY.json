@@ -136,7 +136,9 @@
         "software/ai/eval/amend_residual_v5_pre_render.py",
         "software/ai/schemas/residual_obstruction_v5_1_pre_render_v1.schema.json",
         "software/ai/eval/analyze_residual_v5_power_attribution.py",
-        "software/ai/schemas/residual_obstruction_v5_2_power_attribution_v1.schema.json"
+        "software/ai/schemas/residual_obstruction_v5_2_power_attribution_v1.schema.json",
+        "software/ai/eval/build_residual_v5_safety_gate_amendment.py",
+        "software/ai/schemas/residual_obstruction_v5_3_safety_gate_amendment_v1.schema.json"
       ],
       "test_paths": [
         "software/ai/tests/test_capture_binding.py",
@@ -183,7 +185,8 @@
         "software/ai/tests/test_b0477_commissioning_amendment.py",
         "software/ai/tests/test_residual_obstruction_successor_v5.py",
         "software/ai/tests/test_residual_obstruction_v5_1_pre_render.py",
-        "software/ai/tests/test_residual_obstruction_v5_2_power_attribution.py"
+        "software/ai/tests/test_residual_obstruction_v5_2_power_attribution.py",
+        "software/ai/tests/test_residual_obstruction_v5_3_safety_gate_amendment.py"
       ],
       "documentation_paths": [
         "software/ai/docs/MODEL_TO_ARM_TRANSLATION_ASSURANCE.md",
@@ -238,9 +241,10 @@
         "software/ai/eval/b0477_commissioning_amendment_v1.json",
         "software/ai/sim/evidence/residual_obstruction_successor_v5.json",
         "software/ai/eval/residual_obstruction_v5_1_pre_render_v1.json",
-        "software/ai/eval/residual_obstruction_v5_2_power_attribution_v1.json"
+        "software/ai/eval/residual_obstruction_v5_2_power_attribution_v1.json",
+        "software/ai/eval/residual_obstruction_v5_3_safety_gate_amendment_v1.json"
       ],
-      "current_result": "Residual v5.2 shows that the eight-scene plan is limited by every-target AUC under moderate correlation, all three modeled gates under pessimistic correlation, and four additional unpowered family/q05 gates; a 24-target balanced rotation cuts modeled observations 68% but remains blocked.",
+      "current_result": "Residual v5.3 assigns powered evaluation claims to pooled, cable-family, dark-cable, and visible false-stop bounds; a 224-scene/12-target balanced evaluation reaches a pessimistic Bonferroni power lower bound of 0.93055, while AUC and margins remain development diagnostics.",
       "limitations": [
         "No commissioned projection renderer, measured dilation artifact, or physical deployment qualification is installed.",
         "The geometry-first replay uses the same Isaac semantic mask that generated the synthetic label and therefore cannot estimate real projection error.",
@@ -270,9 +274,10 @@
         "The preserved blocked probe incorrectly recorded 4 fps; the corrective amendment binds 9 fps from three repository sources, but received-unit mode and all physical settings remain unverified.",
         "V5 is a synthetic research predeclaration created while physical inputs are blocked; it contains no images, checkpoint, threshold, runtime lighting envelope, real-camera transfer evidence, or deployment selection.",
         "The v5.1 power result is a planning approximation; its 256-scene/691,200-row worst-case tested size is not render authorization, physical qualification, or a hardware-remedy selection.",
-        "V5.2 powers only pooled miss, visible false-stop, and every-target AUC; cable-family, dark-cable, q05 AUC, and q05 margin effect sizes remain undeclared, so no complete render design exists."
+        "V5.2 powers only pooled miss, visible false-stop, and every-target AUC; cable-family, dark-cable, q05 AUC, and q05 margin effect sizes remain undeclared, so no complete render design exists.",
+        "V5.3 recommends but does not freeze the exact 224-scene balanced rotation or new evaluation identities; its design rates are planning alternatives and physical lighting/obstruction transfer remains unmeasured."
       ],
-      "next_gate": "Declare realistic alternative effect sizes for every unmodeled gate, choose development-selection versus evaluation-proof responsibilities, and freeze an exact balanced rotation only after complete power analysis; render nothing before then.",
+      "next_gate": "Revise the v5 fixture to freeze exact split-disjoint evaluation scenes and a deterministic 12-target balanced rotation, re-audit all counts and hashes, and keep rendering blocked until that fixture passes review.",
       "model_motion_batch_boundary": true,
       "controller_authority": false,
       "hardware_writes": 0,
@@ -522,5 +527,5 @@
   "controller_authority": false,
   "hardware_writes": 0,
   "physical_movements": 0,
-  "registry_sha256": "83642f47a30890b56815a835efefccd71f89d48db51195c2e567972118cdcdcc"
+  "registry_sha256": "1707b19a35333ab9ef930300d24169324b5555b5ec8499469f18ec2290529ad2"
 }

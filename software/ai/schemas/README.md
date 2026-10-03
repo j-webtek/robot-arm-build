@@ -309,6 +309,11 @@ audits which gates v5.1 actually modeled, identifies unpowered family and q05
 requirements, and compares a full grid with balanced target rotation. It leaves
 the fixture and gates unchanged. Its sparse design is a partial-gate planning
 candidate and cannot authorize rendering or substitute for the physical pilot.
+The [residual v5.3 safety-gate amendment](residual_obstruction_v5_3_safety_gate_amendment_v1.schema.json)
+assigns powered evaluation claims to pooled, cable-family, dark-cable, and
+visible false-stop bounds. Per-target AUC and margin statistics remain
+development diagnostics. Its balanced evaluation recommendation retains a
+planning cushion, but the exact rotation and revised fixture remain unfrozen.
 The [residual physical pilot predeclaration](residual_obstruction_physical_pilot_v1.schema.json)
 separates clear, boundary, and obstructed cable coverage; requires placement
 and mask labels; assigns measurement and unopened escrow sessions before
