@@ -14,8 +14,8 @@ from pathlib import Path
 from typing import Any, Iterator
 
 
-FIXTURE_SCHEMA = "tactevra.ai_residual_obstruction_paired_height_fixture.v1_2"
-SHARD_SCHEMA = "tactevra.ai_residual_obstruction_paired_height_shard.v1_2"
+FIXTURE_SCHEMA = "tactevra.ai_residual_obstruction_paired_height_fixture.v1_3"
+SHARD_SCHEMA = "tactevra.ai_residual_obstruction_paired_height_shard.v1_3"
 PNG_SIGNATURE = b"\x89PNG\r\n\x1a\n"
 
 
@@ -53,7 +53,7 @@ def load_fixture(path: Path) -> tuple[dict[str, Any], bytes]:
         "LINEAR_BRIGHTNESS_DEPENDENT_SENSOR_NOISE",
         "LINEAR_SENSOR_QUANTIZATION",
         "WHITE_BALANCE",
-        "SRGB_TONE_ENCODING",
+        "MEASURED_B0477_TONE_ENCODING",
         "BT601_FULL_RANGE_YUY2_422_COSITED_LEFT",
         "FLOATING_CROP_ALIGNMENT",
         "RESAMPLE_MODEL_INPUT",
@@ -172,13 +172,17 @@ def _validate_camera_profile(profile: dict[str, Any], *, qualifying: bool) -> No
         "profile_id",
         "measurement_scope",
         "source_burst_sha256",
+        "source_tone_sweep_sha256",
         "brightness_domain",
         "brightness_knots_linear",
         "noise_stddev_knots_linear",
         "channel_noise_scale_rgb",
         "sensor_quantization_bits",
         "white_balance_rgb",
-        "tone_curve",
+        "tone_curve_linear_knots",
+        "tone_curve_output_knots",
+        "spatial_noise_kernel",
+        "processing_controls",
     }
     if set(profile) != required:
         raise ValueError("camera profile fields differ from the frozen schema")
@@ -196,8 +200,23 @@ def _validate_camera_profile(profile: dict[str, Any], *, qualifying: bool) -> No
         or any(float(item) < 0.0 for item in noise)
     ):
         raise ValueError("camera noise curve is malformed")
-    if profile["brightness_domain"] != "LINEAR_0_1" or profile["tone_curve"] != "SRGB":
-        raise ValueError("camera profile brightness or tone domain is unsupported")
+    if profile["brightness_domain"] != "LINEAR_0_1":
+        raise ValueError("camera profile brightness domain is unsupported")
+    tone_linear = profile["tone_curve_linear_knots"]
+    tone_output = profile["tone_curve_output_knots"]
+    if (
+        not isinstance(tone_linear, list)
+        or not isinstance(tone_output, list)
+        or len(tone_linear) < 2
+        or len(tone_linear) != len(tone_output)
+        or tone_linear[0] != 0.0
+        or tone_linear[-1] != 1.0
+        or tone_output[0] != 0.0
+        or tone_output[-1] != 1.0
+        or any(float(right) <= float(left) for left, right in zip(tone_linear, tone_linear[1:]))
+        or any(float(right) <= float(left) for left, right in zip(tone_output, tone_output[1:]))
+    ):
+        raise ValueError("camera tone curve is malformed")
     for field in ("channel_noise_scale_rgb", "white_balance_rgb"):
         values = profile[field]
         if not isinstance(values, list) or len(values) != 3 or any(float(item) <= 0 for item in values):
@@ -205,9 +224,36 @@ def _validate_camera_profile(profile: dict[str, Any], *, qualifying: bool) -> No
     bits = profile["sensor_quantization_bits"]
     if isinstance(bits, bool) or not isinstance(bits, int) or not 8 <= bits <= 16:
         raise ValueError("sensor quantization bits must be an integer from 8 through 16")
-    digest = profile["source_burst_sha256"]
-    if not isinstance(digest, str) or len(digest) != 64:
-        raise ValueError("camera profile source burst hash is malformed")
+    for field in ("source_burst_sha256", "source_tone_sweep_sha256"):
+        digest = profile[field]
+        if not isinstance(digest, str) or len(digest) != 64:
+            raise ValueError(f"camera profile {field} is malformed")
+    kernel = profile["spatial_noise_kernel"]
+    if (
+        not isinstance(kernel, list)
+        or not kernel
+        or len(kernel) % 2 != 1
+        or len(kernel) > 7
+        or any(not isinstance(row, list) or len(row) != len(kernel) for row in kernel)
+        or sum(float(item) ** 2 for row in kernel for item in row) <= 0.0
+    ):
+        raise ValueError("camera spatial noise kernel is malformed")
+    controls = profile["processing_controls"]
+    if not isinstance(controls, dict) or set(controls) != {
+        "denoise_disabled",
+        "sharpening_disabled",
+        "disable_attempted",
+        "settings_receipt_sha256",
+    }:
+        raise ValueError("camera processing controls are malformed")
+    if any(not isinstance(controls[field], bool) for field in (
+        "denoise_disabled", "sharpening_disabled", "disable_attempted"
+    )):
+        raise ValueError("camera processing control flags must be boolean")
+    if not isinstance(controls["settings_receipt_sha256"], str) or len(
+        controls["settings_receipt_sha256"]
+    ) != 64:
+        raise ValueError("camera processing settings receipt hash is malformed")
     if qualifying and profile["measurement_scope"] != "MEASURED_B0477_LOCKED_SETTINGS":
         raise ValueError("qualifying load requires a measured B0477 profile")
 
@@ -227,6 +273,44 @@ def noise_stddev_for_linear_brightness(
             np.asarray(profile["brightness_knots_linear"], dtype=np.float32),
             np.asarray(profile["noise_stddev_knots_linear"], dtype=np.float32),
         )
+    )
+
+
+def spatially_correlate_noise(noise: Any, kernel: list[list[float]]) -> Any:
+    """Apply a small measured spatial kernel while preserving noise RMS."""
+    import numpy as np
+
+    value = np.asarray(noise, dtype=np.float32)
+    weights = np.asarray(kernel, dtype=np.float32)
+    if value.ndim != 3:
+        raise ValueError("noise must be HxWxC")
+    if (
+        weights.ndim != 2
+        or weights.shape[0] != weights.shape[1]
+        or weights.shape[0] % 2 != 1
+        or weights.shape[0] > 7
+    ):
+        raise ValueError("spatial noise kernel must be odd, square, and at most 7x7")
+    norm = float(np.sqrt(np.sum(weights * weights)))
+    if norm <= 0.0:
+        raise ValueError("spatial noise kernel must have positive energy")
+    weights = weights / norm
+    radius = weights.shape[0] // 2
+    padded = np.pad(value, ((radius, radius), (radius, radius), (0, 0)), mode="reflect")
+    result = np.zeros_like(value)
+    for row in range(weights.shape[0]):
+        for column in range(weights.shape[1]):
+            result += weights[row, column] * padded[
+                row : row + value.shape[0], column : column + value.shape[1]
+            ]
+    return result
+
+
+def _measured_tone_encode(value: Any, profile: dict[str, Any], np: Any) -> Any:
+    return np.interp(
+        np.clip(value, 0.0, 1.0),
+        np.asarray(profile["tone_curve_linear_knots"], dtype=np.float32),
+        np.asarray(profile["tone_curve_output_knots"], dtype=np.float32),
     )
 
 
@@ -283,7 +367,11 @@ def derive_model_input(
         channel_std = base_std[..., None] * np.asarray(
             profile["channel_noise_scale_rgb"], dtype=np.float32
         )
-        noise = np.random.default_rng(seed).normal(0.0, 1.0, value.shape) * channel_std
+        white_noise = np.random.default_rng(seed).normal(0.0, 1.0, value.shape)
+        correlated_noise = spatially_correlate_noise(
+            white_noise, profile["spatial_noise_kernel"]
+        )
+        noise = correlated_noise * channel_std
         noisy = np.clip(exposed + noise, 0.0, 1.0)
     levels = float((1 << int(profile["sensor_quantization_bits"])) - 1)
     quantized = np.rint(noisy * levels) / levels
@@ -292,7 +380,11 @@ def derive_model_input(
         0.0,
         1.0,
     )
-    tone_encoded = _linear_to_srgb(balanced, np)
+    tone_encoded = (
+        _linear_to_srgb(balanced, np)
+        if camera_profile is None
+        else _measured_tone_encode(balanced, profile, np)
+    )
     delivered_rgb8 = np.rint(tone_encoded * 255.0).astype(np.uint8)
     delivered = _yuy2_roundtrip(delivered_rgb8, np)
     left, top, right, bottom = (float(item) for item in aligned_crop_box_px)

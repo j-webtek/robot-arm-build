@@ -19,12 +19,13 @@ from train.paired_height_corpus_contract import (  # noqa: E402
     iter_row_identities,
     load_fixture,
     noise_stddev_for_linear_brightness,
+    spatially_correlate_noise,
     sha256_bytes,
 )
 
 
 ROOT = AI_ROOT
-FIXTURE = ROOT / "sim/evidence/residual_obstruction_paired_height_v1_2.json"
+FIXTURE = ROOT / "sim/evidence/residual_obstruction_paired_height_v1_3.json"
 
 
 def test_frozen_fixture_counts_and_balances_heights() -> None:
@@ -143,13 +144,22 @@ def _camera_profile(*, measured: bool = False) -> dict:
             "MEASURED_B0477_LOCKED_SETTINGS" if measured else "EXPLORATORY_ASSUMED"
         ),
         "source_burst_sha256": "1" * 64,
+        "source_tone_sweep_sha256": "2" * 64,
         "brightness_domain": "LINEAR_0_1",
         "brightness_knots_linear": [0.0, 0.25, 0.5, 0.75, 1.0],
         "noise_stddev_knots_linear": [0.002, 0.004, 0.006, 0.008, 0.01],
         "channel_noise_scale_rgb": [1.0, 1.0, 1.0],
         "sensor_quantization_bits": 12,
         "white_balance_rgb": [1.0, 1.0, 1.0],
-        "tone_curve": "SRGB",
+        "tone_curve_linear_knots": [0.0, 0.1, 0.25, 0.5, 0.75, 1.0],
+        "tone_curve_output_knots": [0.0, 0.32, 0.53, 0.74, 0.9, 1.0],
+        "spatial_noise_kernel": [[0.15, 0.35, 0.15], [0.35, 1.0, 0.35], [0.15, 0.35, 0.15]],
+        "processing_controls": {
+            "denoise_disabled": False,
+            "sharpening_disabled": False,
+            "disable_attempted": True,
+            "settings_receipt_sha256": "3" * 64,
+        },
     }
 
 
@@ -211,6 +221,17 @@ def test_qualifying_profile_requires_measured_brightness_curve() -> None:
         qualifying=True,
     )
     assert output.shape == (192, 192, 3)
+    linear_tone = _camera_profile(measured=True)
+    linear_tone["tone_curve_output_knots"] = list(linear_tone["tone_curve_linear_knots"])
+    linear_output = derive_model_input(
+        np.full((400, 400, 3), 128, dtype=np.uint8),
+        aligned_crop_box_px=[0.0, 0.0, 400.0, 400.0],
+        output_size_px=192,
+        seed=9,
+        camera_profile=linear_tone,
+        qualifying=True,
+    )
+    assert not np.array_equal(output, linear_output)
     assert noise_stddev_for_linear_brightness(_camera_profile(), 0.8) > (
         noise_stddev_for_linear_brightness(_camera_profile(), 0.1)
     )
@@ -218,3 +239,17 @@ def test_qualifying_profile_requires_measured_brightness_curve() -> None:
     malformed["brightness_knots_linear"] = [0.0, 0.5, 0.5, 0.75, 1.0]
     with pytest.raises(ValueError, match="noise curve is malformed"):
         noise_stddev_for_linear_brightness(malformed, 0.5)
+
+
+def test_spatial_noise_kernel_creates_neighbor_correlation() -> None:
+    import numpy as np
+
+    impulse = np.zeros((9, 9, 1), dtype=np.float32)
+    impulse[4, 4, 0] = 1.0
+    independent = spatially_correlate_noise(impulse, [[1.0]])
+    correlated = spatially_correlate_noise(
+        impulse, [[0.0, 0.25, 0.0], [0.25, 1.0, 0.25], [0.0, 0.25, 0.0]]
+    )
+    assert independent[4, 5, 0] == 0.0
+    assert correlated[4, 5, 0] > 0.0
+    assert np.isclose(float(np.sqrt(np.sum(correlated**2))), 1.0)

@@ -43,6 +43,7 @@ def build(v5_path: Path, candidate_path: Path, output: Path, source_commit: str)
         "status": "FROZEN_BEFORE_RENDER",
         "source_commit": source_commit,
         "bindings": {
+            "superseded_v1_2_fixture_file_sha256": "2ab9382feb524c9787653f06eedb38684caae37ef57ef541e6582bf9a6241b3a",
             "superseded_v1_1_fixture_file_sha256": "2376dd8f1e38c5f479311f1054837ca3d1f76e133d80329d9242424a968b6476",
             "superseded_pre_render_fixture_file_sha256": "c90f8cdbc6835e01a099265da6c238d01d982b343d667f0e57484d2c5a49fbe9",
             "v5_source_file_sha256": sha256_bytes(v5_raw),
@@ -80,7 +81,7 @@ def build(v5_path: Path, candidate_path: Path, output: Path, source_commit: str)
                 "LINEAR_BRIGHTNESS_DEPENDENT_SENSOR_NOISE",
                 "LINEAR_SENSOR_QUANTIZATION",
                 "WHITE_BALANCE",
-                "SRGB_TONE_ENCODING",
+                "MEASURED_B0477_TONE_ENCODING",
                 "BT601_FULL_RANGE_YUY2_422_COSITED_LEFT",
                 "FLOATING_CROP_ALIGNMENT",
                 "RESAMPLE_MODEL_INPUT"
@@ -90,18 +91,22 @@ def build(v5_path: Path, candidate_path: Path, output: Path, source_commit: str)
             "required_for_qualifying_loader": True,
             "brightness_domain": "LINEAR_0_1",
             "noise_model": "PIECEWISE_LINEAR_STDDEV_VERSUS_MEAN_BRIGHTNESS",
-            "measurement_method": "LOCKED_SETTINGS_STATIC_YUY2_BURSTS_DECODE_AND_SRGB_LINEARIZE_THEN_VARIANCE_AGAINST_PER_PIXEL_MEAN",
+            "measurement_method": "LOCKED_SETTINGS_EXPOSURE_SWEEP_FOR_RESPONSE_CURVE_THEN_STATIC_YUY2_BURSTS_INVERSE_MEASURED_TONE_AND_VARIANCE_CORRELATION_AGAINST_PER_PIXEL_MEAN",
             "required_fields": [
                 "profile_id",
                 "measurement_scope",
                 "source_burst_sha256",
+                "source_tone_sweep_sha256",
                 "brightness_domain",
                 "brightness_knots_linear",
                 "noise_stddev_knots_linear",
                 "channel_noise_scale_rgb",
                 "sensor_quantization_bits",
                 "white_balance_rgb",
-                "tone_curve"
+                "tone_curve_linear_knots",
+                "tone_curve_output_knots",
+                "spatial_noise_kernel",
+                "processing_controls"
             ],
             "installed_profile": None,
         },
