@@ -14,8 +14,8 @@ from pathlib import Path
 from typing import Any, Iterator
 
 
-FIXTURE_SCHEMA = "tactevra.ai_residual_obstruction_paired_height_fixture.v1_1"
-SHARD_SCHEMA = "tactevra.ai_residual_obstruction_paired_height_shard.v1_1"
+FIXTURE_SCHEMA = "tactevra.ai_residual_obstruction_paired_height_fixture.v1_2"
+SHARD_SCHEMA = "tactevra.ai_residual_obstruction_paired_height_shard.v1_2"
 PNG_SIGNATURE = b"\x89PNG\r\n\x1a\n"
 
 
@@ -48,9 +48,12 @@ def load_fixture(path: Path) -> tuple[dict[str, Any], bytes]:
     if output.get("stored_artifact") != "SENSOR_ALIGNED_NATIVE_RGB8_PNG":
         raise ValueError("fixture must store native sensor-aligned crops")
     if output.get("camera_model_order") != [
-        "EXPOSURE_GAIN",
-        "SENSOR_NOISE",
-        "UINT8_QUANTIZATION_EXISTING_SRGB_GAMMA",
+        "DECODE_STORED_SRGB_TO_LINEAR",
+        "LINEAR_EXPOSURE_GAIN",
+        "LINEAR_BRIGHTNESS_DEPENDENT_SENSOR_NOISE",
+        "LINEAR_SENSOR_QUANTIZATION",
+        "WHITE_BALANCE",
+        "SRGB_TONE_ENCODING",
         "BT601_FULL_RANGE_YUY2_422_COSITED_LEFT",
         "FLOATING_CROP_ALIGNMENT",
         "RESAMPLE_MODEL_INPUT",
@@ -146,21 +149,101 @@ def _yuy2_roundtrip(rgb: Any, np: Any) -> Any:
     return np.clip(restored, 0, 255).astype(np.uint8)
 
 
+def _srgb_to_linear(value: Any, np: Any) -> Any:
+    value = np.clip(value, 0.0, 1.0)
+    return np.where(
+        value <= 0.04045,
+        value / 12.92,
+        np.power((value + 0.055) / 1.055, 2.4),
+    )
+
+
+def _linear_to_srgb(value: Any, np: Any) -> Any:
+    value = np.clip(value, 0.0, 1.0)
+    return np.where(
+        value <= 0.0031308,
+        12.92 * value,
+        1.055 * np.power(value, 1.0 / 2.4) - 0.055,
+    )
+
+
+def _validate_camera_profile(profile: dict[str, Any], *, qualifying: bool) -> None:
+    required = {
+        "profile_id",
+        "measurement_scope",
+        "source_burst_sha256",
+        "brightness_domain",
+        "brightness_knots_linear",
+        "noise_stddev_knots_linear",
+        "channel_noise_scale_rgb",
+        "sensor_quantization_bits",
+        "white_balance_rgb",
+        "tone_curve",
+    }
+    if set(profile) != required:
+        raise ValueError("camera profile fields differ from the frozen schema")
+    knots = profile["brightness_knots_linear"]
+    noise = profile["noise_stddev_knots_linear"]
+    if (
+        not isinstance(knots, list)
+        or not isinstance(noise, list)
+        or len(knots) < 2
+        or len(knots) != len(noise)
+        or knots[0] != 0.0
+        or knots[-1] != 1.0
+        or any(not 0.0 <= float(item) <= 1.0 for item in knots)
+        or any(float(right) <= float(left) for left, right in zip(knots, knots[1:]))
+        or any(float(item) < 0.0 for item in noise)
+    ):
+        raise ValueError("camera noise curve is malformed")
+    if profile["brightness_domain"] != "LINEAR_0_1" or profile["tone_curve"] != "SRGB":
+        raise ValueError("camera profile brightness or tone domain is unsupported")
+    for field in ("channel_noise_scale_rgb", "white_balance_rgb"):
+        values = profile[field]
+        if not isinstance(values, list) or len(values) != 3 or any(float(item) <= 0 for item in values):
+            raise ValueError(f"camera profile {field} is malformed")
+    bits = profile["sensor_quantization_bits"]
+    if isinstance(bits, bool) or not isinstance(bits, int) or not 8 <= bits <= 16:
+        raise ValueError("sensor quantization bits must be an integer from 8 through 16")
+    digest = profile["source_burst_sha256"]
+    if not isinstance(digest, str) or len(digest) != 64:
+        raise ValueError("camera profile source burst hash is malformed")
+    if qualifying and profile["measurement_scope"] != "MEASURED_B0477_LOCKED_SETTINGS":
+        raise ValueError("qualifying load requires a measured B0477 profile")
+
+
+def noise_stddev_for_linear_brightness(
+    profile: dict[str, Any], brightness: float
+) -> float:
+    """Interpolate the measured linear-light noise curve at one brightness."""
+    import numpy as np
+
+    _validate_camera_profile(profile, qualifying=False)
+    if not 0.0 <= float(brightness) <= 1.0:
+        raise ValueError("linear brightness must be in [0, 1]")
+    return float(
+        np.interp(
+            float(brightness),
+            np.asarray(profile["brightness_knots_linear"], dtype=np.float32),
+            np.asarray(profile["noise_stddev_knots_linear"], dtype=np.float32),
+        )
+    )
+
+
 def derive_model_input(
     native_rgb: Any,
     *,
     aligned_crop_box_px: list[float],
     output_size_px: int,
     seed: int,
-    noise_std_rgb: list[float] | None,
+    camera_profile: dict[str, Any] | None,
     qualifying: bool,
     exposure_gain: float = 1.0,
 ) -> Any:
     """Apply the camera model at native pixels, then align and resize.
 
-    RGB8 storage is a documented synthetic limitation.  Qualification refuses
-    an absent measured noise profile.  Noise is intentionally sampled before
-    YUY2 and before resizing so downsampling averages it like the real path.
+    Stored RGB8 is decoded to linear light first.  Brightness-dependent noise
+    is then sampled before sensor quantization, tone encoding, YUY2, and resize.
     """
     import numpy as np
     from PIL import Image
@@ -174,19 +257,44 @@ def derive_model_input(
         raise ValueError("native crop must start and end on YUY2 pair boundaries")
     if not 0.0 < float(exposure_gain) <= 16.0:
         raise ValueError("exposure_gain must be in (0, 16]")
-    exposed = np.clip(value.astype(np.float32) * float(exposure_gain), 0, 255)
-    if noise_std_rgb is None:
+    linear = _srgb_to_linear(value.astype(np.float32) / 255.0, np)
+    exposed = np.clip(linear * float(exposure_gain), 0.0, 1.0)
+    if camera_profile is None:
         if qualifying:
-            raise ValueError("qualifying load requires measured B0477 noise")
-        noisy = exposed.astype(np.uint8)
+            raise ValueError("qualifying load requires measured B0477 noise curve")
+        profile = {
+            "sensor_quantization_bits": 12,
+            "white_balance_rgb": [1.0, 1.0, 1.0],
+        }
+        noisy = exposed
     else:
-        if len(noise_std_rgb) != 3 or any(float(item) < 0 for item in noise_std_rgb):
-            raise ValueError("noise_std_rgb must contain three nonnegative values")
-        noise = np.random.default_rng(seed).normal(
-            0.0, np.asarray(noise_std_rgb, dtype=np.float32), value.shape
+        _validate_camera_profile(camera_profile, qualifying=qualifying)
+        profile = camera_profile
+        luminance = (
+            0.2126 * exposed[..., 0]
+            + 0.7152 * exposed[..., 1]
+            + 0.0722 * exposed[..., 2]
         )
-        noisy = np.clip(exposed + noise, 0, 255).astype(np.uint8)
-    delivered = _yuy2_roundtrip(noisy, np)
+        base_std = np.interp(
+            luminance,
+            np.asarray(profile["brightness_knots_linear"], dtype=np.float32),
+            np.asarray(profile["noise_stddev_knots_linear"], dtype=np.float32),
+        )
+        channel_std = base_std[..., None] * np.asarray(
+            profile["channel_noise_scale_rgb"], dtype=np.float32
+        )
+        noise = np.random.default_rng(seed).normal(0.0, 1.0, value.shape) * channel_std
+        noisy = np.clip(exposed + noise, 0.0, 1.0)
+    levels = float((1 << int(profile["sensor_quantization_bits"])) - 1)
+    quantized = np.rint(noisy * levels) / levels
+    balanced = np.clip(
+        quantized * np.asarray(profile["white_balance_rgb"], dtype=np.float32),
+        0.0,
+        1.0,
+    )
+    tone_encoded = _linear_to_srgb(balanced, np)
+    delivered_rgb8 = np.rint(tone_encoded * 255.0).astype(np.uint8)
+    delivered = _yuy2_roundtrip(delivered_rgb8, np)
     left, top, right, bottom = (float(item) for item in aligned_crop_box_px)
     if not (0 <= left < right <= value.shape[1] and 0 <= top < bottom <= value.shape[0]):
         raise ValueError("aligned crop box is outside the stored native crop")

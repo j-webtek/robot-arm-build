@@ -43,6 +43,7 @@ def build(v5_path: Path, candidate_path: Path, output: Path, source_commit: str)
         "status": "FROZEN_BEFORE_RENDER",
         "source_commit": source_commit,
         "bindings": {
+            "superseded_v1_1_fixture_file_sha256": "2376dd8f1e38c5f479311f1054837ca3d1f76e133d80329d9242424a968b6476",
             "superseded_pre_render_fixture_file_sha256": "c90f8cdbc6835e01a099265da6c238d01d982b343d667f0e57484d2c5a49fbe9",
             "v5_source_file_sha256": sha256_bytes(v5_raw),
             "measured_80_target_candidate_file_sha256": sha256_bytes(candidate_raw),
@@ -64,6 +65,7 @@ def build(v5_path: Path, candidate_path: Path, output: Path, source_commit: str)
         "output_contract": {
             "stored_artifact": "SENSOR_ALIGNED_NATIVE_RGB8_PNG",
             "lossless_source_format": "PNG_RGB8",
+            "stored_encoding": "UINT8_SRGB_GAMMA_ENCODED_RGB",
             "local_physical_extent_xy_mm": [48.0, 48.0],
             "context_physical_extent_xy_mm": [72.0, 72.0],
             "stored_native_crop_support_range_px": [320, 480],
@@ -73,13 +75,35 @@ def build(v5_path: Path, candidate_path: Path, output: Path, source_commit: str)
             "resampler": "PIL_BICUBIC_FLOATING_EXTENT",
             "jpeg_forbidden": True,
             "camera_model_order": [
-                "EXPOSURE_GAIN",
-                "SENSOR_NOISE",
-                "UINT8_QUANTIZATION_EXISTING_SRGB_GAMMA",
+                "DECODE_STORED_SRGB_TO_LINEAR",
+                "LINEAR_EXPOSURE_GAIN",
+                "LINEAR_BRIGHTNESS_DEPENDENT_SENSOR_NOISE",
+                "LINEAR_SENSOR_QUANTIZATION",
+                "WHITE_BALANCE",
+                "SRGB_TONE_ENCODING",
                 "BT601_FULL_RANGE_YUY2_422_COSITED_LEFT",
                 "FLOATING_CROP_ALIGNMENT",
                 "RESAMPLE_MODEL_INPUT"
             ],
+        },
+        "measured_camera_profile_contract": {
+            "required_for_qualifying_loader": True,
+            "brightness_domain": "LINEAR_0_1",
+            "noise_model": "PIECEWISE_LINEAR_STDDEV_VERSUS_MEAN_BRIGHTNESS",
+            "measurement_method": "LOCKED_SETTINGS_STATIC_YUY2_BURSTS_DECODE_AND_SRGB_LINEARIZE_THEN_VARIANCE_AGAINST_PER_PIXEL_MEAN",
+            "required_fields": [
+                "profile_id",
+                "measurement_scope",
+                "source_burst_sha256",
+                "brightness_domain",
+                "brightness_knots_linear",
+                "noise_stddev_knots_linear",
+                "channel_noise_scale_rgb",
+                "sensor_quantization_bits",
+                "white_balance_rgb",
+                "tone_curve"
+            ],
+            "installed_profile": None,
         },
         "seed_contract": {
             "algorithm": "SHA256_FIRST_64_BITS_BIG_ENDIAN",
@@ -128,6 +152,7 @@ def build(v5_path: Path, candidate_path: Path, output: Path, source_commit: str)
         "physical_authority": False,
         "limitations": [
             "The corpus is synthetic and cannot qualify the B0477 camera or hardware deployment.",
+            "Stored RGB8 sRGB cannot recover information discarded before storage; linear decoding is an approximation until high-bit-depth linear rendering is available.",
             "The loader remains exploratory until a hash-bound measured B0477 noise profile exists.",
             "The 80-target measured candidate is external and uninstalled.",
             "Training distributes heights across scenes; development repeats every identity at all heights and must cluster statistics by identity.",

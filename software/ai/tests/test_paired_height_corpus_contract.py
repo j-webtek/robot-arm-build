@@ -18,12 +18,13 @@ from train.paired_height_corpus_contract import (  # noqa: E402
     expected_counts,
     iter_row_identities,
     load_fixture,
+    noise_stddev_for_linear_brightness,
     sha256_bytes,
 )
 
 
 ROOT = AI_ROOT
-FIXTURE = ROOT / "sim/evidence/residual_obstruction_paired_height_v1_1.json"
+FIXTURE = ROOT / "sim/evidence/residual_obstruction_paired_height_v1_2.json"
 
 
 def test_frozen_fixture_counts_and_balances_heights() -> None:
@@ -135,6 +136,23 @@ def test_evaluation_split_is_rejected(tmp_path: Path) -> None:
         admit_shard_manifest(FIXTURE, manifest)
 
 
+def _camera_profile(*, measured: bool = False) -> dict:
+    return {
+        "profile_id": "brightness-curve",
+        "measurement_scope": (
+            "MEASURED_B0477_LOCKED_SETTINGS" if measured else "EXPLORATORY_ASSUMED"
+        ),
+        "source_burst_sha256": "1" * 64,
+        "brightness_domain": "LINEAR_0_1",
+        "brightness_knots_linear": [0.0, 0.25, 0.5, 0.75, 1.0],
+        "noise_stddev_knots_linear": [0.002, 0.004, 0.006, 0.008, 0.01],
+        "channel_noise_scale_rgb": [1.0, 1.0, 1.0],
+        "sensor_quantization_bits": 12,
+        "white_balance_rgb": [1.0, 1.0, 1.0],
+        "tone_curve": "SRGB",
+    }
+
+
 def test_camera_model_runs_before_resampling_and_requires_noise_for_qualification() -> None:
     import numpy as np
 
@@ -146,7 +164,7 @@ def test_camera_model_runs_before_resampling_and_requires_noise_for_qualificatio
             aligned_crop_box_px=[0.0, 0.0, 400.0, 400.0],
             output_size_px=96,
             seed=7,
-            noise_std_rgb=None,
+            camera_profile=None,
             qualifying=True,
         )
     output_96 = derive_model_input(
@@ -154,7 +172,7 @@ def test_camera_model_runs_before_resampling_and_requires_noise_for_qualificatio
         aligned_crop_box_px=[0.0, 0.0, 400.0, 400.0],
         output_size_px=96,
         seed=7,
-        noise_std_rgb=[4.0, 4.0, 4.0],
+        camera_profile=_camera_profile(),
         qualifying=False,
     )
     output_192 = derive_model_input(
@@ -162,7 +180,7 @@ def test_camera_model_runs_before_resampling_and_requires_noise_for_qualificatio
         aligned_crop_box_px=[0.0, 0.0, 400.0, 400.0],
         output_size_px=192,
         seed=7,
-        noise_std_rgb=[4.0, 4.0, 4.0],
+        camera_profile=_camera_profile(),
         qualifying=False,
     )
     assert output_96.shape == (96, 96, 3)
@@ -170,3 +188,29 @@ def test_camera_model_runs_before_resampling_and_requires_noise_for_qualificatio
     clear_96 = np.concatenate((output_96[:, :40], output_96[:, 56:]), axis=1)
     clear_192 = np.concatenate((output_192[:, :80], output_192[:, 112:]), axis=1)
     assert float(clear_96.std()) < float(clear_192.std())
+
+
+def test_qualifying_profile_requires_measured_brightness_curve() -> None:
+    import numpy as np
+
+    with pytest.raises(ValueError, match="measured B0477 profile"):
+        derive_model_input(
+            np.full((400, 400, 3), 128, dtype=np.uint8),
+            aligned_crop_box_px=[0.0, 0.0, 400.0, 400.0],
+            output_size_px=192,
+            seed=9,
+            camera_profile=_camera_profile(),
+            qualifying=True,
+        )
+    output = derive_model_input(
+        np.full((400, 400, 3), 128, dtype=np.uint8),
+        aligned_crop_box_px=[0.0, 0.0, 400.0, 400.0],
+        output_size_px=192,
+        seed=9,
+        camera_profile=_camera_profile(measured=True),
+        qualifying=True,
+    )
+    assert output.shape == (192, 192, 3)
+    assert noise_stddev_for_linear_brightness(_camera_profile(), 0.8) > (
+        noise_stddev_for_linear_brightness(_camera_profile(), 0.1)
+    )
