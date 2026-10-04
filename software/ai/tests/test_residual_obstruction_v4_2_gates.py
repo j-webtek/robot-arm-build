@@ -20,6 +20,7 @@ from prepare_residual_obstruction_v4_2_gates import (  # noqa: E402
 )
 from run_residual_obstruction_v4_2_memorization import (  # noqa: E402
     normalize_pair,
+    paired_resolution_spatial_model,
     spatial_model,
 )
 from score_residual_obstruction_v4_2_baseline import (  # noqa: E402
@@ -111,6 +112,37 @@ def test_spatial_model_preserves_six_by_six_map() -> None:
     assert model(torch.zeros(2, 9, 96, 96)).shape == (2, 1)
     assert any(isinstance(module, torch.nn.AvgPool2d) for module in model.modules())
     assert not any(isinstance(module, torch.nn.AdaptiveAvgPool2d) for module in model.modules())
+
+
+def test_paired_resolution_model_holds_capacity_and_output_shape_constant() -> None:
+    torch = pytest.importorskip("torch")
+    model_96 = paired_resolution_spatial_model(torch, 96)
+    model_192 = paired_resolution_spatial_model(torch, 192)
+    assert model_96(torch.zeros(2, 9, 96, 96)).shape == (2, 1)
+    assert model_192(torch.zeros(2, 9, 192, 192)).shape == (2, 1)
+    assert sum(parameter.numel() for parameter in model_96.parameters()) == sum(
+        parameter.numel() for parameter in model_192.parameters()
+    )
+    assert any(isinstance(module, torch.nn.AdaptiveAvgPool2d) for module in model_96.modules())
+
+
+def test_pair_normalization_scales_context_ring_to_192_pixels() -> None:
+    reference = np.full((192, 192, 3), 255, dtype=np.uint8)
+    reference[48:144, 48:144] = 64
+    observation = reference.copy()
+    observation[48:144, 48:144] = 128
+
+    pair = normalize_pair(reference, observation, "REFERENCE_CONTEXT_WHITEPOINT")
+
+    assert pair.shape == (9, 192, 192)
+    assert float(pair[6:, 48:144, 48:144].mean()) > 0.24
+    assert float(pair[6:, :48, :48].mean()) == 0.0
+
+
+def test_paired_resolution_model_rejects_unfrozen_size() -> None:
+    torch = pytest.importorskip("torch")
+    with pytest.raises(ValueError, match="96 or 192"):
+        paired_resolution_spatial_model(torch, 128)
 
 
 def test_baseline_scoring_and_frozen_tie_break() -> None:

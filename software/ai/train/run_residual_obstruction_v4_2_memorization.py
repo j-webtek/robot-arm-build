@@ -52,7 +52,8 @@ def normalize_pair(
         observation = normalize(observation)
     elif normalization_id == "REFERENCE_CONTEXT_WHITEPOINT":
         context = np.ones(reference.shape[:2], dtype=bool)
-        context[24:72, 24:72] = False
+        height, width = reference.shape[:2]
+        context[height // 4 : height - height // 4, width // 4 : width - width // 4] = False
         white = np.quantile(reference[context], 0.95, axis=0)
         reference = np.clip(reference / np.maximum(white, 0.05), 0.0, 1.0)
         observation = np.clip(observation / np.maximum(white, 0.05), 0.0, 1.0)
@@ -90,6 +91,35 @@ def spatial_model(torch: Any) -> Any:
         torch.nn.GroupNorm(8, 64),
         torch.nn.ReLU(),
         torch.nn.AvgPool2d(4),
+        torch.nn.Flatten(),
+        torch.nn.Linear(64 * 36, 1),
+    )
+
+
+def paired_resolution_spatial_model(torch: Any, input_size_px: int) -> Any:
+    """Build the parameter-matched 96/192 comparison model.
+
+    The released v4.2 function above stays byte-for-byte architectural evidence.
+    This successor preserves its 6 by 6 spatial head while allowing only the two
+    predeclared square input sizes.  Adaptive pooling keeps parameter count
+    identical, so the comparison changes input sampling rather than capacity.
+    """
+
+    if isinstance(input_size_px, bool) or input_size_px not in {96, 192}:
+        raise ValueError("paired input_size_px must be 96 or 192")
+    return torch.nn.Sequential(
+        torch.nn.Conv2d(9, 24, 3, padding=1),
+        torch.nn.GroupNorm(6, 24),
+        torch.nn.ReLU(),
+        torch.nn.MaxPool2d(2),
+        torch.nn.Conv2d(24, 48, 3, padding=1),
+        torch.nn.GroupNorm(8, 48),
+        torch.nn.ReLU(),
+        torch.nn.MaxPool2d(2),
+        torch.nn.Conv2d(48, 64, 3, padding=1),
+        torch.nn.GroupNorm(8, 64),
+        torch.nn.ReLU(),
+        torch.nn.AdaptiveAvgPool2d((6, 6)),
         torch.nn.Flatten(),
         torch.nn.Linear(64 * 36, 1),
     )
