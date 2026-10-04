@@ -214,3 +214,7 @@ def test_qualifying_profile_requires_measured_brightness_curve() -> None:
     assert noise_stddev_for_linear_brightness(_camera_profile(), 0.8) > (
         noise_stddev_for_linear_brightness(_camera_profile(), 0.1)
     )
+    malformed = _camera_profile(measured=True)
+    malformed["brightness_knots_linear"] = [0.0, 0.5, 0.5, 0.75, 1.0]
+    with pytest.raises(ValueError, match="noise curve is malformed"):
+        noise_stddev_for_linear_brightness(malformed, 0.5)
