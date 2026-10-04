@@ -202,6 +202,74 @@ def test_nadir_projection_applies_brown_conrady_and_thin_lens_is_bounded() -> No
     ) == pytest.approx(0.0)
 
 
+def test_fixed_physical_crop_preserves_extent_and_reports_height_support() -> None:
+    renderer = _renderer()
+    intrinsics = renderer._native_sensor_intrinsics(5472, 3648, 2.4, 16.0)
+    near = renderer._fixed_physical_crop_box(
+        (305.0, 228.5, 21.0), (48.0, 48.0), (305.0, 228.5),
+        700.0, intrinsics,
+    )
+    far = renderer._fixed_physical_crop_box(
+        (305.0, 228.5, 21.0), (48.0, 48.0), (305.0, 228.5),
+        1000.0, intrinsics,
+    )
+    assert near["in_frame"] is far["in_frame"] is True
+    assert near["physical_extent_xy_mm"] == far["physical_extent_xy_mm"] == [48.0, 48.0]
+    assert near["native_support_width_px"] == pytest.approx(471.281296023564)
+    assert far["native_support_width_px"] == pytest.approx(326.864147769153)
+    assert near["native_support_width_px"] > far["native_support_width_px"]
+
+    source = Image.fromarray(np.tile(np.arange(256, dtype=np.uint8), (256, 1)))
+    synthetic_crop = {
+        "in_frame": True,
+        "native_box_ltrb_px": [32.5, 40.5, 224.5, 232.5],
+    }
+    resized = renderer._resample_fixed_physical_crop(
+        source, synthetic_crop, (96, 96), Image,
+    )
+    assert resized.size == (96, 96)
+
+
+def test_fixed_physical_crop_rejects_invalid_or_clipped_requests() -> None:
+    renderer = _renderer()
+    intrinsics = renderer._native_sensor_intrinsics(5472, 3648, 2.4, 16.0)
+    with pytest.raises(ValueError, match="extents"):
+        renderer._fixed_physical_crop_box(
+            (305.0, 228.5, 21.0), (0.0, 48.0), (305.0, 228.5),
+            700.0, intrinsics,
+        )
+    clipped = renderer._fixed_physical_crop_box(
+        (0.0, 0.0, 21.0), (200.0, 200.0), (305.0, 228.5),
+        700.0, intrinsics,
+    )
+    assert clipped["in_frame"] is False
+    with pytest.raises(ValueError, match="not fully in frame"):
+        renderer._resample_fixed_physical_crop(
+            Image.new("RGB", (5472, 3648)), clipped, (96, 96), Image,
+        )
+
+
+def test_nadir_projection_explicitly_binds_isaac_vertical_orientation() -> None:
+    renderer = _renderer()
+    intrinsics = renderer._native_sensor_intrinsics(5472, 3648, 2.4, 16.0)
+    analytic = renderer._project_nadir_board_point(
+        (305.0, 248.5, 0.0), (305.0, 228.5), 800.0, intrinsics,
+    )
+    isaac = renderer._project_nadir_board_point(
+        (305.0, 248.5, 0.0), (305.0, 228.5), 800.0, intrinsics,
+        board_y_to_image_v_sign=-1,
+    )
+    assert analytic is not None and isaac is not None
+    assert analytic[0] == pytest.approx(isaac[0])
+    assert analytic[1] > intrinsics["cy_px"]
+    assert isaac[1] < intrinsics["cy_px"]
+    with pytest.raises(ValueError, match="sign"):
+        renderer._project_nadir_board_point(
+            (305.0, 248.5, 0.0), (305.0, 228.5), 800.0, intrinsics,
+            board_y_to_image_v_sign=0,
+        )
+
+
 @pytest.mark.parametrize(
     ("arguments", "message"),
     [

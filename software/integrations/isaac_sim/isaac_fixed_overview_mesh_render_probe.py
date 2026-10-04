@@ -538,6 +538,7 @@ def _project_nadir_board_point(
     *,
     width_px: int = 5472,
     height_px: int = 3648,
+    board_y_to_image_v_sign: int = 1,
 ) -> tuple[float, float, float] | None:
     """Project a board point through a centered, straight-down camera.
 
@@ -545,6 +546,8 @@ def _project_nadir_board_point(
     measured from the board plane to the optical center.  This intentionally
     excludes tilt, yaw, and XY variation for the fixed-nadir height family.
     """
+    if board_y_to_image_v_sign not in {-1, 1}:
+        raise ValueError("board-Y image-v sign must be -1 or 1")
     x_mm, y_mm, z_mm = (float(value) for value in point_mm)
     depth_mm = float(camera_height_board_mm) - z_mm
     if depth_mm <= 1.0:
@@ -571,7 +574,10 @@ def _project_nadir_board_point(
         + 2.0 * p2 * normalized_x * normalized_y
     )
     u_px = float(intrinsics["fx_px"]) * distorted_x + float(intrinsics["cx_px"])
-    v_px = float(intrinsics["fy_px"]) * distorted_y + float(intrinsics["cy_px"])
+    v_px = (
+        board_y_to_image_v_sign * float(intrinsics["fy_px"]) * distorted_y
+        + float(intrinsics["cy_px"])
+    )
     if not math.isfinite(u_px) or not math.isfinite(v_px):
         raise ValueError("nadir projection produced a non-finite image point")
     return (u_px, v_px, depth_mm)
@@ -584,6 +590,74 @@ def _ground_sample_distance_mm_per_px(
     if depth_mm <= 0.0 or pixel_pitch_um <= 0.0 or focal_length_mm <= 0.0:
         raise ValueError("depth, pixel pitch, and focal length must be positive")
     return depth_mm * (pixel_pitch_um / 1000.0) / focal_length_mm
+
+
+def _fixed_physical_crop_box(
+    center_board_mm: list[float] | tuple[float, float, float],
+    extent_xy_mm: list[float] | tuple[float, float],
+    camera_center_xy_mm: list[float] | tuple[float, float],
+    camera_height_board_mm: float,
+    intrinsics: dict[str, float],
+    distortion: dict[str, float] | None = None,
+    *,
+    width_px: int = 5472,
+    height_px: int = 3648,
+    board_y_to_image_v_sign: int = 1,
+) -> dict[str, Any]:
+    """Project a fixed board-plane rectangle and retain native pixel support.
+
+    The returned floating-point box is suitable for subpixel resampling.  Its
+    physical extent does not change with camera height; only native sampling
+    density changes.  This keeps height augmentation from silently changing
+    the amount of physical context presented to a model.
+    """
+    if len(extent_xy_mm) != 2 or any(float(value) <= 0.0 for value in extent_xy_mm):
+        raise ValueError("physical crop extents must be two positive values")
+    center_x, center_y, center_z = (float(value) for value in center_board_mm)
+    half_x, half_y = float(extent_xy_mm[0]) / 2.0, float(extent_xy_mm[1]) / 2.0
+    corners = [
+        _project_nadir_board_point(
+            (center_x + dx, center_y + dy, center_z),
+            camera_center_xy_mm, camera_height_board_mm, intrinsics, distortion,
+            width_px=width_px, height_px=height_px,
+            board_y_to_image_v_sign=board_y_to_image_v_sign,
+        )
+        for dx, dy in ((-half_x, -half_y), (half_x, -half_y),
+                       (half_x, half_y), (-half_x, half_y))
+    ]
+    if any(point is None for point in corners):
+        raise ValueError("physical crop lies behind the camera")
+    projected = [point for point in corners if point is not None]
+    left = min(point[0] for point in projected)
+    top = min(point[1] for point in projected)
+    right = max(point[0] for point in projected)
+    bottom = max(point[1] for point in projected)
+    in_frame = left >= 0.0 and top >= 0.0 and right <= width_px and bottom <= height_px
+    return {
+        "physical_extent_xy_mm": [float(extent_xy_mm[0]), float(extent_xy_mm[1])],
+        "native_box_ltrb_px": [left, top, right, bottom],
+        "native_support_width_px": right - left,
+        "native_support_height_px": bottom - top,
+        "in_frame": in_frame,
+        "depth_mm": projected[0][2],
+        "board_y_to_image_v_sign": board_y_to_image_v_sign,
+    }
+
+
+def _resample_fixed_physical_crop(
+    image: Any, crop: dict[str, Any], output_size_px: tuple[int, int], Image: Any,
+) -> Any:
+    """Resample a validated floating-point physical crop to a fixed tensor size."""
+    if not crop.get("in_frame"):
+        raise ValueError("fixed physical crop is not fully in frame")
+    if len(output_size_px) != 2 or any(int(value) <= 0 for value in output_size_px):
+        raise ValueError("output dimensions must be positive")
+    return image.transform(
+        tuple(int(value) for value in output_size_px),
+        Image.Transform.EXTENT,
+        tuple(float(value) for value in crop["native_box_ltrb_px"]),
+        resample=Image.Resampling.BICUBIC,
+    )
 
 
 def _thin_lens_blur_diameter_px(
