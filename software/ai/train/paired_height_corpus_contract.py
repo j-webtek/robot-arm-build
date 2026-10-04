@@ -50,7 +50,7 @@ def load_fixture(path: Path) -> tuple[dict[str, Any], bytes]:
     if output.get("camera_model_order") != [
         "EXPOSURE_GAIN",
         "SENSOR_NOISE",
-        "QUANTIZATION_GAMMA",
+        "UINT8_QUANTIZATION_EXISTING_SRGB_GAMMA",
         "BT601_FULL_RANGE_YUY2_422_COSITED_LEFT",
         "FLOATING_CROP_ALIGNMENT",
         "RESAMPLE_MODEL_INPUT",
@@ -154,6 +154,7 @@ def derive_model_input(
     seed: int,
     noise_std_rgb: list[float] | None,
     qualifying: bool,
+    exposure_gain: float = 1.0,
 ) -> Any:
     """Apply the camera model at native pixels, then align and resize.
 
@@ -171,17 +172,20 @@ def derive_model_input(
         raise ValueError("native_rgb must be uint8 HxWx3")
     if value.shape[1] % 2:
         raise ValueError("native crop must start and end on YUY2 pair boundaries")
+    if not 0.0 < float(exposure_gain) <= 16.0:
+        raise ValueError("exposure_gain must be in (0, 16]")
+    exposed = np.clip(value.astype(np.float32) * float(exposure_gain), 0, 255)
     if noise_std_rgb is None:
         if qualifying:
             raise ValueError("qualifying load requires measured B0477 noise")
-        noisy = value
+        noisy = exposed.astype(np.uint8)
     else:
         if len(noise_std_rgb) != 3 or any(float(item) < 0 for item in noise_std_rgb):
             raise ValueError("noise_std_rgb must contain three nonnegative values")
         noise = np.random.default_rng(seed).normal(
             0.0, np.asarray(noise_std_rgb, dtype=np.float32), value.shape
         )
-        noisy = np.clip(value.astype(np.float32) + noise, 0, 255).astype(np.uint8)
+        noisy = np.clip(exposed + noise, 0, 255).astype(np.uint8)
     delivered = _yuy2_roundtrip(noisy, np)
     left, top, right, bottom = (float(item) for item in aligned_crop_box_px)
     if not (0 <= left < right <= value.shape[1] and 0 <= top < bottom <= value.shape[0]):

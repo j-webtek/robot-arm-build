@@ -75,7 +75,7 @@ def build(v5_path: Path, candidate_path: Path, output: Path, source_commit: str)
             "camera_model_order": [
                 "EXPOSURE_GAIN",
                 "SENSOR_NOISE",
-                "QUANTIZATION_GAMMA",
+                "UINT8_QUANTIZATION_EXISTING_SRGB_GAMMA",
                 "BT601_FULL_RANGE_YUY2_422_COSITED_LEFT",
                 "FLOATING_CROP_ALIGNMENT",
                 "RESAMPLE_MODEL_INPUT"
