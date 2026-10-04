@@ -57,6 +57,7 @@ SCHEMA = "rocell.typing_trajectory_ik_screen.v1"
 SEED_SCHEMA = "rocell.typing_trajectory_ik_seed.v1"
 READY_STATUS = "READY_FOR_INSTALLED_GEOMETRY_COLLISION_SCREENING"
 BLOCKED_STATUS = "BLOCKED_DETERMINISTIC_IK_OR_CONTINUITY"
+EVIDENCE_FLOAT_DECIMAL_PLACES = 6
 
 
 class TypingTrajectoryIkScreenV1Error(ValueError):
@@ -75,6 +76,38 @@ def _canonical(value: object) -> bytes:
 
 def _sha256(value: object) -> str:
     return hashlib.sha256(_canonical(value)).hexdigest()
+
+
+def canonicalize_typing_ik_evidence_v1(value: Any) -> Any:
+    """Quantize numerical IK evidence at a platform-independent boundary.
+
+    The bounded numerical solver can produce sub-micrometre or sub-microradian
+    differences across otherwise equivalent Python/BLAS platforms.  Those
+    differences are irrelevant to the safety decisions, but hashing the raw
+    floats would give equivalent command plans different evidence identities.
+    Six decimal places remains far finer than the installed arm can resolve
+    while providing one stable representation for retained evidence.
+    """
+
+    if value is None or isinstance(value, (bool, str, int)):
+        return value
+    if isinstance(value, float):
+        if not math.isfinite(value):
+            raise TypingTrajectoryIkScreenV1Error(
+                "IK evidence must contain only finite numbers"
+            )
+        quantized = round(value, EVIDENCE_FLOAT_DECIMAL_PLACES)
+        return 0.0 if quantized == 0.0 else quantized
+    if isinstance(value, Mapping):
+        return {
+            key: canonicalize_typing_ik_evidence_v1(item)
+            for key, item in value.items()
+        }
+    if isinstance(value, (list, tuple)):
+        return [canonicalize_typing_ik_evidence_v1(item) for item in value]
+    raise TypingTrajectoryIkScreenV1Error(
+        f"unsupported IK evidence value type: {type(value).__name__}"
+    )
 
 
 def _digest(value: object, label: str) -> str:
@@ -513,10 +546,16 @@ def screen_typing_trajectory_ik_v1(
                     decision_context_sha256=endpoint_reuse_context_sha256,
                     binding=_lifecycle_binding,
                 )
-            results.append(evaluated.to_dict())
+            canonical_result = canonicalize_typing_ik_evidence_v1(
+                evaluated.to_dict()
+            )
+            results.append(canonical_result)
             if not evaluated.accepted:
                 blockers.append(f"IK_ROUTE_REJECTED:{evaluated.failure_reason}")
                 break
+            # Keep full solver precision inside the current screening run.  The
+            # canonicalized representation is an evidence boundary, not a new
+            # numerical input or a change to endpoint-reuse behavior.
             previous = dict(evaluated.solution_arm_joint_positions_rad)
 
     all_accepted = (
@@ -569,7 +608,9 @@ __all__ = [
     "SEED_SCHEMA",
     "READY_STATUS",
     "BLOCKED_STATUS",
+    "EVIDENCE_FLOAT_DECIMAL_PLACES",
     "TypingTrajectoryIkScreenV1Error",
     "TypingTrajectoryIkSeedV1",
+    "canonicalize_typing_ik_evidence_v1",
     "screen_typing_trajectory_ik_v1",
 ]
