@@ -157,6 +157,66 @@ def test_candidate_search_projection_and_capsule_clearance_are_deterministic() -
     ) == pytest.approx(-2.0)
 
 
+def test_native_nadir_height_projection_and_physical_resolution_are_explicit() -> None:
+    renderer = _renderer()
+    intrinsics = renderer._native_sensor_intrinsics(5472, 3648, 2.4, 16.0)
+    assert intrinsics == pytest.approx({
+        "fx_px": 6666.666666666667,
+        "fy_px": 6666.666666666667,
+        "cx_px": 2736.0,
+        "cy_px": 1824.0,
+        "sensor_mode_width_mm": 13.1328,
+        "sensor_mode_height_mm": 8.7552,
+    })
+    center = renderer._project_nadir_board_point(
+        (305.0, 228.5, 0.0), (305.0, 228.5), 800.0, intrinsics,
+    )
+    assert center == pytest.approx((2736.0, 1824.0, 800.0))
+    right = renderer._project_nadir_board_point(
+        (385.0, 228.5, 0.0), (305.0, 228.5), 800.0, intrinsics,
+    )
+    assert right == pytest.approx((3402.666666666667, 1824.0, 800.0))
+    assert renderer._ground_sample_distance_mm_per_px(800.0, 2.4, 16.0) \
+        == pytest.approx(0.12)
+
+
+def test_nadir_projection_applies_brown_conrady_and_thin_lens_is_bounded() -> None:
+    renderer = _renderer()
+    intrinsics = renderer._native_sensor_intrinsics(5472, 3648, 2.4, 16.0)
+    ideal = renderer._project_nadir_board_point(
+        (505.0, 328.5, 21.0), (305.0, 228.5), 800.0, intrinsics,
+    )
+    stressed = renderer._project_nadir_board_point(
+        (505.0, 328.5, 21.0), (305.0, 228.5), 800.0, intrinsics,
+        {"k1": -0.04, "k2": 0.006, "p1": 0.0003,
+         "p2": -0.0002, "k3": -0.0005},
+    )
+    assert ideal is not None and stressed is not None
+    assert stressed[:2] != pytest.approx(ideal[:2])
+    phone_blur = renderer._thin_lens_blur_diameter_px(
+        800.0 - 11.9, 800.0 - 21.0, 16.0, 4.0, 2.4,
+    )
+    assert phone_blur > 0.0
+    assert renderer._thin_lens_blur_diameter_px(
+        779.0, 779.0, 16.0, 4.0, 2.4,
+    ) == pytest.approx(0.0)
+
+
+@pytest.mark.parametrize(
+    ("arguments", "message"),
+    [
+        ((0, 3648, 2.4, 16.0), "dimensions"),
+        ((5472, 3648, 0.0, 16.0), "pixel pitch"),
+    ],
+)
+def test_native_nadir_helpers_reject_invalid_geometry(
+    arguments: tuple[int, int, float, float], message: str,
+) -> None:
+    renderer = _renderer()
+    with pytest.raises(ValueError, match=message):
+        renderer._native_sensor_intrinsics(*arguments)
+
+
 def test_official_mesh_occlusion_builder_has_disjoint_groups_and_zero_authority(
     tmp_path: Path,
 ) -> None:

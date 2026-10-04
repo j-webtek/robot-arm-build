@@ -502,6 +502,117 @@ def _project_board_point(
     )
 
 
+def _native_sensor_intrinsics(
+    width_px: int,
+    height_px: int,
+    pixel_pitch_um: float,
+    focal_length_mm: float,
+) -> dict[str, float]:
+    """Derive centered native-mode pinhole intrinsics from physical sampling.
+
+    The focal length and pixel pitch may be published rather than measured.
+    Callers must retain that provenance; this helper creates no calibration.
+    """
+    if width_px <= 0 or height_px <= 0:
+        raise ValueError("native sensor dimensions must be positive")
+    if pixel_pitch_um <= 0.0 or focal_length_mm <= 0.0:
+        raise ValueError("pixel pitch and focal length must be positive")
+    pitch_mm = pixel_pitch_um / 1000.0
+    focal_px = focal_length_mm / pitch_mm
+    return {
+        "fx_px": focal_px,
+        "fy_px": focal_px,
+        "cx_px": width_px / 2.0,
+        "cy_px": height_px / 2.0,
+        "sensor_mode_width_mm": width_px * pitch_mm,
+        "sensor_mode_height_mm": height_px * pitch_mm,
+    }
+
+
+def _project_nadir_board_point(
+    point_mm: list[float] | tuple[float, float, float],
+    camera_center_xy_mm: list[float] | tuple[float, float],
+    camera_height_board_mm: float,
+    intrinsics: dict[str, float],
+    distortion: dict[str, float] | None = None,
+    *,
+    width_px: int = 5472,
+    height_px: int = 3648,
+) -> tuple[float, float, float] | None:
+    """Project a board point through a centered, straight-down camera.
+
+    Board +X maps to image +u and board +Y maps to image +v.  Height is
+    measured from the board plane to the optical center.  This intentionally
+    excludes tilt, yaw, and XY variation for the fixed-nadir height family.
+    """
+    x_mm, y_mm, z_mm = (float(value) for value in point_mm)
+    depth_mm = float(camera_height_board_mm) - z_mm
+    if depth_mm <= 1.0:
+        return None
+    normalized_x = (x_mm - float(camera_center_xy_mm[0])) / depth_mm
+    normalized_y = (y_mm - float(camera_center_xy_mm[1])) / depth_mm
+    coefficients = distortion or {}
+    k1 = float(coefficients.get("k1", 0.0))
+    k2 = float(coefficients.get("k2", 0.0))
+    p1 = float(coefficients.get("p1", 0.0))
+    p2 = float(coefficients.get("p2", 0.0))
+    k3 = float(coefficients.get("k3", 0.0))
+    radius_squared = normalized_x * normalized_x + normalized_y * normalized_y
+    radial = (
+        1.0 + k1 * radius_squared + k2 * radius_squared**2
+        + k3 * radius_squared**3
+    )
+    distorted_x = (
+        normalized_x * radial + 2.0 * p1 * normalized_x * normalized_y
+        + p2 * (radius_squared + 2.0 * normalized_x * normalized_x)
+    )
+    distorted_y = (
+        normalized_y * radial + p1 * (radius_squared + 2.0 * normalized_y * normalized_y)
+        + 2.0 * p2 * normalized_x * normalized_y
+    )
+    u_px = float(intrinsics["fx_px"]) * distorted_x + float(intrinsics["cx_px"])
+    v_px = float(intrinsics["fy_px"]) * distorted_y + float(intrinsics["cy_px"])
+    if not math.isfinite(u_px) or not math.isfinite(v_px):
+        raise ValueError("nadir projection produced a non-finite image point")
+    return (u_px, v_px, depth_mm)
+
+
+def _ground_sample_distance_mm_per_px(
+    depth_mm: float, pixel_pitch_um: float, focal_length_mm: float,
+) -> float:
+    """Return paraxial object-plane millimetres represented by one pixel."""
+    if depth_mm <= 0.0 or pixel_pitch_um <= 0.0 or focal_length_mm <= 0.0:
+        raise ValueError("depth, pixel pitch, and focal length must be positive")
+    return depth_mm * (pixel_pitch_um / 1000.0) / focal_length_mm
+
+
+def _thin_lens_blur_diameter_px(
+    object_distance_mm: float,
+    focus_distance_mm: float,
+    focal_length_mm: float,
+    aperture_f_number: float,
+    pixel_pitch_um: float,
+) -> float:
+    """Exploratory defocus diameter at a sensor focused at another plane."""
+    values = (
+        object_distance_mm, focus_distance_mm, focal_length_mm,
+        aperture_f_number, pixel_pitch_um,
+    )
+    if any(value <= 0.0 for value in values):
+        raise ValueError("thin-lens inputs must be positive")
+    if object_distance_mm <= focal_length_mm or focus_distance_mm <= focal_length_mm:
+        raise ValueError("object and focus distances must exceed focal length")
+    image_distance = focal_length_mm * object_distance_mm / (
+        object_distance_mm - focal_length_mm
+    )
+    focus_image_distance = focal_length_mm * focus_distance_mm / (
+        focus_distance_mm - focal_length_mm
+    )
+    aperture_diameter_mm = focal_length_mm / aperture_f_number
+    blur_mm = aperture_diameter_mm * abs(focus_image_distance - image_distance) / image_distance
+    return blur_mm / (pixel_pitch_um / 1000.0)
+
+
 def _capsule_polygon_clearance_px(
     start_px: tuple[float, float], end_px: tuple[float, float],
     radius_px: float, polygon_px: list[list[float]],
