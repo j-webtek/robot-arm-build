@@ -14,6 +14,7 @@ from train.paired_height_corpus_contract import (  # noqa: E402
     SHARD_SCHEMA,
     admit_shard_manifest,
     canonical,
+    derive_model_input,
     expected_counts,
     iter_row_identities,
     load_fixture,
@@ -22,7 +23,7 @@ from train.paired_height_corpus_contract import (  # noqa: E402
 
 
 ROOT = AI_ROOT
-FIXTURE = ROOT / "sim/evidence/residual_obstruction_paired_height_v1.json"
+FIXTURE = ROOT / "sim/evidence/residual_obstruction_paired_height_v1_1.json"
 
 
 def test_frozen_fixture_counts_and_balances_heights() -> None:
@@ -32,7 +33,8 @@ def test_frozen_fixture_counts_and_balances_heights() -> None:
         "training_source_rows": 46080,
         "development_source_rows": 69120,
         "total_source_rows": 115200,
-        "total_model_input_pngs": 230400,
+        "stored_native_crop_pngs": 115200,
+        "derived_model_tensors_per_loader_epoch": 230400,
     }
     training_heights = list(fixture["split_identities"]["training_scene_height_mm"].values())
     assert {height: training_heights.count(height) for height in set(training_heights)} == {
@@ -80,18 +82,20 @@ def _write_manifest(tmp_path: Path, fixture: dict, fixture_raw: bytes) -> Path:
     rows = []
     allowlist = []
     for row in identities:
-        source = hashlib.sha256((row["row_id"] + ":source").encode()).hexdigest()
-        outputs = {}
-        for size in (96, 192):
-            path = f"{row['row_id'].replace(':', '_')}_{size}.png"
-            allowlist.append(path)
-            outputs[str(size)] = {
-                "path": path,
-                "sha256": hashlib.sha256(path.encode()).hexdigest(),
-                "size_px": [size, size],
-                "source_rgb_sha256": source,
+        path = f"{row['row_id'].replace(':', '_')}_native.png"
+        allowlist.append(path)
+        rows.append(
+            {
+                **row,
+                "native_crop": {
+                    "path": path,
+                    "sha256": hashlib.sha256(path.encode()).hexdigest(),
+                    "size_px": [400, 400],
+                    "full_frame_integer_bounds_px": [100, 200, 500, 600],
+                    "aligned_model_crop_box_px": [0.25, 0.5, 399.25, 399.5],
+                },
             }
-        rows.append({**row, "lossless_source_rgb_sha256": source, "model_inputs": outputs})
+        )
     assert identity in identities
     payload = {
         "schema": SHARD_SCHEMA,
@@ -112,12 +116,12 @@ def test_exact_shard_admission_and_tampering_rejection(tmp_path: Path) -> None:
     manifest = _write_manifest(tmp_path, fixture, fixture_raw)
     receipt = admit_shard_manifest(FIXTURE, manifest)
     assert receipt["source_row_count"] == 36
-    assert receipt["model_input_png_count"] == 72
+    assert receipt["stored_native_crop_png_count"] == 36
 
     payload = json.loads(manifest.read_text())
-    payload["observations"][0]["model_inputs"]["192"]["source_rgb_sha256"] = "0" * 64
+    payload["observations"][0]["native_crop"]["full_frame_integer_bounds_px"][0] = 101
     manifest.write_bytes(canonical(payload) + b"\n")
-    with pytest.raises(ValueError, match="same source pixels"):
+    with pytest.raises(ValueError, match="YUY2 pairs"):
         admit_shard_manifest(FIXTURE, manifest)
 
 
@@ -129,3 +133,40 @@ def test_evaluation_split_is_rejected(tmp_path: Path) -> None:
     manifest.write_bytes(canonical(payload) + b"\n")
     with pytest.raises(ValueError, match="evaluation or unknown split"):
         admit_shard_manifest(FIXTURE, manifest)
+
+
+def test_camera_model_runs_before_resampling_and_requires_noise_for_qualification() -> None:
+    import numpy as np
+
+    native = np.full((400, 400, 3), 80, dtype=np.uint8)
+    native[:, 198:202] = [12, 12, 12]
+    with pytest.raises(ValueError, match="requires measured B0477 noise"):
+        derive_model_input(
+            native,
+            aligned_crop_box_px=[0.0, 0.0, 400.0, 400.0],
+            output_size_px=96,
+            seed=7,
+            noise_std_rgb=None,
+            qualifying=True,
+        )
+    output_96 = derive_model_input(
+        native,
+        aligned_crop_box_px=[0.0, 0.0, 400.0, 400.0],
+        output_size_px=96,
+        seed=7,
+        noise_std_rgb=[4.0, 4.0, 4.0],
+        qualifying=False,
+    )
+    output_192 = derive_model_input(
+        native,
+        aligned_crop_box_px=[0.0, 0.0, 400.0, 400.0],
+        output_size_px=192,
+        seed=7,
+        noise_std_rgb=[4.0, 4.0, 4.0],
+        qualifying=False,
+    )
+    assert output_96.shape == (96, 96, 3)
+    assert output_192.shape == (192, 192, 3)
+    clear_96 = np.concatenate((output_96[:, :40], output_96[:, 56:]), axis=1)
+    clear_192 = np.concatenate((output_192[:, :80], output_192[:, 112:]), axis=1)
+    assert float(clear_96.std()) < float(clear_192.std())
