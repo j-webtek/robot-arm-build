@@ -6,7 +6,7 @@
 [![Repository health](https://github.com/j-webtek/tactevra/actions/workflows/repository-health.yml/badge.svg?branch=main)](https://github.com/j-webtek/tactevra/actions/workflows/repository-health.yml)
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache--2.0-007F78.svg)](LICENSE)
 
-**A governed interface between AI and the physical world.**
+**The enabling fabric between AI intent and physical interaction.**
 
 Tactevra connects language, visual evidence, and specialized AI models to
 checked robot-arm actions. Models describe *what* should happen; deterministic
@@ -19,6 +19,49 @@ and keeps unverified proposals away from the motors.
 [Documentation](docs/README.md) ·
 [Roadmap](ROADMAP.md) ·
 [Contribute](CONTRIBUTING.md)
+
+## Mind, nervous system, and body
+
+An AI command is like a thought: it expresses intent about what should happen.
+It is not yet a motor command, permission to move, or proof that the world is
+in the expected state.
+
+Tactevra is the nervous system between that intent and a robotic body. It
+carries observations inward, binds a proposed action to current evidence,
+checks whether the action is permitted, translates admitted intent into
+bounded movement, and carries results back for verification. The model does
+not directly twitch a motor any more than a passing thought directly defines
+every muscle signal.
+
+| Role in the metaphor | Tactevra component | Responsibility |
+| --- | --- | --- |
+| **Mind** | User intent and specialized AI models | Interpret a goal, recognize a relevant event or object, and propose what action should occur |
+| **Senses** | Cameras, device state, and controller feedback | Describe what is present now, with freshness, identity, and uncertainty |
+| **Nervous system** | Contracts, admission, transforms, planning, execution, and evidence records | Decide whether a proposal may become action and coordinate how it safely reaches the body |
+| **Body** | Robot arm, tool, fixtures, and workcell | Perform the admitted physical movement within measured limits |
+| **World** | Keyboards, phones, controls, and other physical targets | Supply the objects, conditions, and independently observable effects of action |
+
+For example, a model may be asked to watch for an object and act when it
+appears. The model identifies the condition and proposes the intended target;
+Tactevra then requires fresh scene evidence, validates the target and current
+configuration, plans an allowed movement, gives the controller one bounded
+piece of work, and checks what actually happened. This closed loop is the
+connection from AI ideation to physical interaction:
+
+```text
+observe the world
+    → understand intent and context
+    → propose an evidence-bound action
+    → check and translate it
+    → move through one controlled path
+    → verify the physical effect
+    → return new evidence to the system
+```
+
+The metaphor describes system responsibilities, not consciousness. Tactevra
+is neither the AI model nor the arm; it is the governed connective layer that
+lets independently developed intelligence and hardware work together without
+confusing a plausible idea with an authorized physical act.
 
 ## Current readiness
 
@@ -53,6 +96,7 @@ evidence and exact limitations.
 | Explore the local setup and diagnostic interface | [Tactevra Studio workbench](software/docs/WIZARD_WORKBENCH.md) |
 | Integrate AI output with the arm runtime | [Shared AI/arm workplan](software/ai/docs/SHARED_AI_ARM_WORKPLAN.md) |
 | Develop the runtime | [Software reference](software/README.md) |
+| Plan or source a workcell | [Workcell replication guide](docs/WORKCELL_REPLICATION.md) |
 | Build the workcell | [Hardware build guide](docs/HARDWARE_BUILD_GUIDE.md) |
 | Contribute or maintain the repository | [Contributing](CONTRIBUTING.md) · [Repository operations](docs/REPOSITORY_OPERATIONS.md) |
 | Find a specific technical document | [Documentation index](docs/README.md) · [Glossary](docs/GLOSSARY.md) |
@@ -104,6 +148,28 @@ transport, and grants no physical authority.
 
 For expected results, troubleshooting, and the optional local interface, follow
 the complete [getting-started guide](docs/GETTING_STARTED.md).
+
+## Replicating the workcell
+
+The physical system combines a robot arm, a registered work surface, printed
+fixtures, input devices, camera hardware, fasteners, and calibrated tooling.
+Because several selections still depend on measured fit, the project does not
+present a single-click shopping cart as if every component were fully qualified.
+
+Start with the [workcell replication guide](docs/WORKCELL_REPLICATION.md). It
+collects the currently specified parts and materials, distinguishes confirmed
+requirements from candidates and measurement-dependent selections, and points
+to the authoritative BOMs:
+
+- [`active-project/RoCell_v0_3/BOM.csv`](active-project/RoCell_v0_3/BOM.csv)
+  for the RC03 workcell;
+- [`hardware/static_overhead_camera/BOM_PRINTABLE_FRAME.csv`](hardware/static_overhead_camera/BOM_PRINTABLE_FRAME.csv)
+  for the printed camera portal; and
+- the [hardware build guide](docs/HARDWARE_BUILD_GUIDE.md) for readiness,
+  fabrication, and assembly controls.
+
+The replication guide is a maintained procurement index. Controlled BOMs,
+revisioned build records, and physical acceptance checks remain authoritative.
 
 ## How the system works
 

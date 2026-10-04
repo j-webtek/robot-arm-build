@@ -1,0 +1,14 @@
+{
+  "schema": "rocell.isaac_sim_toolchain_lock.v1",
+  "selection_status": "UNSELECTED",
+  "isaac_sim_version": null,
+  "installation_sha256": null,
+  "extension_lock_sha256": null,
+  "settings_profile_sha256": null,
+  "runner_platform": "dual-rtx-3090-candidate",
+  "launch_method": null,
+  "license_review_status": "PENDING_EXACT_VERSION_SELECTION",
+  "hardware_access": false,
+  "physical_authority": false,
+  "wire_commands": []
+}

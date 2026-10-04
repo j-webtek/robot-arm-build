@@ -10,6 +10,7 @@ implementation details or evidence for a specific part of the system.
 | Your goal | Start here |
 | --- | --- |
 | Try it without hardware or downloaded models | [Getting started](GETTING_STARTED.md) |
+| Plan the parts and materials needed to replicate the workcell | [Workcell replication guide](WORKCELL_REPLICATION.md) |
 | Understand the complete request-to-result flow | [System overview](SYSTEM_OVERVIEW.md) |
 | Understand capabilities and limitations | [Project status](../PROJECT_STATUS.md) |
 | Follow delivery stages and completion evidence | [Roadmap](../ROADMAP.md) |
@@ -58,6 +59,7 @@ still being developed.
 | [Optimized typing execution plan](../software/docs/OPTIMIZED_TYPING_EXECUTION_PLAN.md) | Arm and integration contributors: rolling-horizon planning, smooth transitions, one-action authority, verification, and speed qualification |
 | [AI-to-arm operational efficiency plan](../software/docs/AI_TO_ARM_OPERATIONAL_EFFICIENCY_PLAN.md) | All workstreams: shared latency vocabulary, cross-stack critical-path optimization, invariants, benchmark gates, and staged performance qualification |
 | [Pre-camera arm integration completion plan](../software/docs/PRE_CAMERA_ARM_INTEGRATION_COMPLETION_PLAN.md) | Arm and integration contributors: ordered PC0-PC18 delivery plan covering the completed motion-runtime foundation plus zero-authority arrival orchestration, fault rehearsal, operator wrappers, session state, immutable replay, observability, and actual AI-output compatibility |
+| [Isaac Sim integration plan](../software/docs/ISAAC_SIM_INTEGRATION_PLAN.md) | Simulation and runtime contributors: pinned NVIDIA adapter, asset, evidence, and GPU-runner work packages |
 | [AI system baseline](../software/ai/docs/AI_SYSTEM_BASELINE_AND_IMPLEMENTATION_PLAN.md) | Research context and dated model-evaluation results |
 
 ## Arm experiments and procedures
@@ -104,6 +106,9 @@ distinguishes these kinds of evidence.
 
 ## Hardware and camera
 
+- [Workcell replication guide](WORKCELL_REPLICATION.md): consolidated
+  procurement categories, known requirements, unresolved selections, and links
+  to the controlled BOMs.
 - [Hardware build guide](HARDWARE_BUILD_GUIDE.md): current release position,
   status vocabulary, and the controlled path for builders.
 - [RC03 package introduction](../active-project/RoCell_v0_3/README_FIRST.md)
@@ -117,6 +122,12 @@ distinguishes these kinds of evidence.
 
 ## Simulation, provenance, and deeper history
 
+- [Isaac Sim integration plan](../software/docs/ISAAC_SIM_INTEGRATION_PLAN.md):
+  active plan for a pinned, zero-authority, higher-fidelity simulation oracle,
+  synthetic-camera campaigns, and external GPU-runner evidence.
+- [Isaac Sim integration boundary](../software/integrations/isaac_sim/README.md):
+  implemented WP0 contracts, verification command, and exact runner-selection
+  handoff.
 - [Virtual commissioning](../software/docs/VIRTUAL_COMMISSIONING.md): simulated
   keyboard/phone sessions and replay.
 - [Trajectory simulation](../software/docs/TRAJECTORY_SIMULATION.md) and
@@ -167,7 +178,7 @@ documents may exist only on the lab workstation; sharing them is covered in
 - [Hardware provenance](HARDWARE_PROVENANCE.md): the owner's CAD/print-design
   authorship confirmation and its limits, including separate vendor rights.
 - [Third-party notices](../THIRD_PARTY_NOTICES.md): direct dependency sources,
-  external model/vendor boundaries, and unresolved redistribution clearance.
+  external model/vendor boundaries, and recorded redistribution dispositions.
 - [Brand foundation](brand/BRAND_GUIDE.md): Tactevra naming and staged migration;
   commercial clearance remains pending.
 - [Private security reporting](../SECURITY.md) and [code of conduct](../CODE_OF_CONDUCT.md):

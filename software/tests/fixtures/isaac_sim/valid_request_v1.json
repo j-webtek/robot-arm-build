@@ -1,0 +1,57 @@
+{
+  "schema": "rocell.isaac_sim_run_request.v1",
+  "request_id": "isaac-contract-fixture-001",
+  "created_by": "tactevra-test-suite",
+  "toolchain": {
+    "isaac_sim_version": "TEST-UNSELECTED",
+    "installation_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+    "extension_lock_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+    "settings_profile_sha256": "3333333333333333333333333333333333333333333333333333333333333333"
+  },
+  "system": {
+    "system_manifest_id": "ROCELL-PHASE0-RC03-INT-R1-FREEZE-012",
+    "system_manifest_sha256": "4444444444444444444444444444444444444444444444444444444444444444",
+    "source_revision": "fixture-only"
+  },
+  "scene": {
+    "scene_usd_sha256": "5555555555555555555555555555555555555555555555555555555555555555",
+    "arm_asset_sha256": "6666666666666666666666666666666666666666666666666666666666666666",
+    "meters_per_unit": 1.0,
+    "up_axis": "Z",
+    "physics": {"time_step_s": 0.016666666666666666, "substeps": 2, "solver": "TEST", "gravity_m_s2": [0.0, 0.0, -9.81]},
+    "random_seed": 42
+  },
+  "frames": {
+    "frame_graph_sha256": "7777777777777777777777777777777777777777777777777777777777777777",
+    "world_frame": "W",
+    "robot_base_frame": "B"
+  },
+  "articulation": {
+    "joint_names": ["joint_1", "joint_2"],
+    "initial_positions_rad": [0.0, 0.0],
+    "drive_configuration_sha256": "8888888888888888888888888888888888888888888888888888888888888888",
+    "joint_limits": {
+      "joint_1": {"lower_rad": -2.0, "upper_rad": 2.0, "maximum_velocity_rad_s": 1.0, "maximum_effort": 10.0},
+      "joint_2": {"lower_rad": -2.0, "upper_rad": 2.0, "maximum_velocity_rad_s": 1.0, "maximum_effort": 10.0}
+    }
+  },
+  "trajectory": {
+    "trajectory_sha256": "3f39a5aaa4403b3d8a8b7384ab03fa4d473e50b28f97a98b891e9537a629e1e5",
+    "samples": [
+      {"time_from_start_ns": 0, "joint_positions_rad": [0.0, 0.0]},
+      {"time_from_start_ns": 1000000000, "joint_positions_rad": [0.1, -0.1]}
+    ]
+  },
+  "observation": {
+    "required_link_transforms": ["tool0"],
+    "clearance_pairs": ["tool0:keyboard"],
+    "camera_ids": [],
+    "capture_collisions": true,
+    "capture_contacts": true,
+    "capture_joint_tracking": true
+  },
+  "wire_commands": [],
+  "hardware_access": false,
+  "physical_authority": false,
+  "request_sha256": "829e9d0e1580930d1554a16544c71e367f0ada01beb38c4561ad94bcc454859c"
+}

@@ -30,6 +30,7 @@ are authoritative for their respective gates.
 
 | If you want to… | Use this record |
 | --- | --- |
+| Identify parts, materials, and purchasing dependencies | [Workcell replication guide](WORKCELL_REPLICATION.md) |
 | Understand the package and revision | [RC03 introduction](../active-project/RoCell_v0_3/README_FIRST.md) |
 | Find out what may be printed | [Print readiness](../active-project/RoCell_v0_3/PRINT_READINESS.md) |
 | See the blocking evidence and safety gates | [Pre-hardware readiness](../active-project/RoCell_v0_3/PREHARDWARE_READINESS.md) |

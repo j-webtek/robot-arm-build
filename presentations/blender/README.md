@@ -88,8 +88,75 @@ Render the complete 77-second, 24 fps, 1920×1080 film with:
   --python presentations/blender/build_workcell_explainer.py -- --render-video
 ```
 
+### Build the canonical storyboard v2.1 film
+
+The 100-second storyboard has its own source-driven production path. First
+prepare the pinned official arm asset, validate the shared manifest, and render
+the complete camera edit:
+
+```powershell
+python presentations/blender/prepare_official_arm_asset.py
+python presentations/blender/validate_storyboard_v21.py
+
+& "C:\Program Files\Blender Foundation\Blender 4.3\blender.exe" `
+  --background --factory-startup `
+  --python presentations/blender/build_storyboard_v21_benchmark.py -- `
+  --render-video
+```
+
+Then assemble narration, sound design, captions, chapters, and the review
+poster:
+
+```powershell
+python presentations/blender/produce_storyboard_v21_video.py `
+  --silent-video tmp/blender-storyboard-v21/tactevra_storyboard_v21_review_silent.mp4
+```
+
+Without `--voice-dir`, the assembler generates a local Windows review voice.
+For the final branded delivery, provide the fourteen ElevenLabs clips described
+in `ELEVENLABS_NARRATION.md` and add `--voice-dir <folder>`. The earlier eleven
+clips belong to the superseded 77-second film and are intentionally rejected by
+the fourteen-clip contract.
+
+The review command renders at 960×540 with 32 EEVEE samples. After editorial
+approval, replace `--render-video` with `--render-video-1080p` for the
+1920×1080, 64-sample master; both variants retain the same 2,400 frames and
+camera edit.
+
+### Generate the editorial shot library
+
+The master edit is not the only available coverage. Generate the shot-library
+manifest to create primary and alternate angles for every scene plus dedicated
+toolhead and contact inserts:
+
+```powershell
+python presentations/blender/create_storyboard_v21_shot_library.py
+```
+
+Each of the 36 assets records its scene, action, stage, camera rig, framing,
+lens, motion, frame range, exact duration, recommended edit range, continuity
+requirement, intended purpose, review status, and output paths in
+`storyboard_v21_shot_library.json`.
+
+After building the canonical `.blend`, render the complete draft library:
+
+```powershell
+& "C:\Program Files\Blender Foundation\Blender 4.3\blender.exe" `
+  --background tmp/blender-storyboard-v21/tactevra_storyboard_v21_benchmark.blend `
+  --python presentations/blender/render_storyboard_v21_shot_library.py -- `
+  --profile draft --render-all
+```
+
+The renderer writes individually playable MP4 clips, midpoint posters, a copy
+of the metadata, a measured build receipt, and an `index.html` comparison
+gallery under `tmp/blender-storyboard-v21-shot-library/`. Use repeated
+`--asset <asset_id>` options to render selected coverage, or change `draft` to
+`review` or `master` after an angle is approved. Every alternative uses the
+same animated robot, device state, permit state, and timeline; only the camera
+coverage changes.
+
 To replace the fallback voice without rerendering the 3D picture, generate the
-eleven clips in `ELEVENLABS_NARRATION.md`, then run:
+fourteen clips in `ELEVENLABS_NARRATION.md`, then run:
 
 ```powershell
 & "C:\Program Files\Blender Foundation\Blender 4.3\blender.exe" `

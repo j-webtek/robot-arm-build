@@ -107,8 +107,9 @@ def media_errors(root: Path) -> list[str]:
 
     limitations = receipt.get("limitations")
     limitation_text = "\n".join(limitations) if isinstance(limitations, list) else ""
-    if "https://github.com/j-webtek/tactevra/issues/88" not in limitation_text:
-        errors.append(f"{RECEIPT}: limitations must retain the issue #88 disposition")
+    decision = "docs/decisions/0001-waveshare-model-license-disposition.md"
+    if decision not in limitation_text:
+        errors.append(f"{RECEIPT}: limitations must retain the Waveshare decision record")
     if "not physical" not in limitation_text.lower():
         errors.append(f"{RECEIPT}: limitations must deny physical qualification")
     return errors

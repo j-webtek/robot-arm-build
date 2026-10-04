@@ -73,7 +73,7 @@ review, selectable-caption check, and final audio-QA validation.
 - The GitHub delivery is intentionally compressed below the repository's
   10 MiB ordinary-review ceiling; the documented build emits a separate
   higher-bitrate 1920×1080 upload master.
-- The wider Waveshare URDF redistribution question remains tracked in
-  [issue #88](https://github.com/j-webtek/tactevra/issues/88).
+- The wider Waveshare model provenance and license caveat remains governed by
+  [decision 0001](../../docs/decisions/0001-waveshare-model-license-disposition.md).
 - Any later change to a published media byte or its authority manifest must
   update the machine-readable receipt. CI and the Pages build reject drift.

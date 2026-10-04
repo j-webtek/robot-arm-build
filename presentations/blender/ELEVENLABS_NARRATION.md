@@ -1,66 +1,34 @@
-# Tactevra overview narration — ElevenLabs handoff
+# Tactevra storyboard v2.1 narration handoff
 
-This is the approved 77-second narration for the Tactevra overview film. It is
-written for a calm, precise, confident technical delivery—not a trailer voice.
-The Liam voice can work, but reduce the social-media energy: speak deliberately,
-avoid exaggerated emphasis, and leave the punctuation pauses intact.
+This is the narration contract for the canonical 100-second film. The timings
+come from `storyboard_v21_shots.json`; do not reuse the earlier 77-second
+"press H" recordings because they describe a different story and workflow.
 
-## Preferred delivery: eleven separate clips
+Use a calm, precise technical voice. Generate each row as a separate file with
+the same voice and settings. WAV is preferred; MP3 or M4A is accepted. Do not
+add music, effects, clip numbers, or spoken stage directions.
 
-Generate each row as its own audio file. Use the same voice and settings for all
-eleven clips, disable music and sound effects, and download lossless WAV when
-available. MP3 is acceptable if WAV is unavailable.
-
-| File | Film window | ElevenLabs text |
+| File | Film window | Narration |
 | --- | --- | --- |
-| `voice_01.wav` | 0:04–0:10 | When AI moves real hardware, a wrong guess becomes real motion. |
-| `voice_02.wav` | 0:10–0:14 | Tactevra turns one request into one checked physical action. |
-| `voice_03.wav` | 0:14–0:22 | A fixed camera reads four board markers, placing every target in one shared frame. |
-| `voice_04.wav` | 0:22–0:30 | The model proposes the action, named target, coordinate frame, and confidence—never motor commands. |
-| `voice_05.wav` | 0:30–0:37 | Deterministic gates stop stale or malformed plans before the arm can move. |
-| `voice_06.wav` | 0:37–0:44 | Units. Frame. Reach. Clearance. Freshness. Every gate must pass. |
-| `voice_07.wav` | 0:44–0:51 | Measured geometry resolves the H key into exact board coordinates. |
-| `voice_08.wav` | 0:51–0:58 | The arm carries the stylus and sends one bounded press. |
-| `voice_09.wav` | 0:58–1:05 | Telemetry confirms the target, while the host confirms the character H. |
-| `voice_10.wav` | 1:05–1:12 | That closes one shared contract, from intent to verified physical action. |
-| `voice_11.wav` | 1:12–1:17 | Tactevra. Physical intelligence, checked. |
+| `voice_01.wav` | 0:04–0:09 | Ask for an outcome, and Tactevra turns language into named physical targets. |
+| `voice_02.wav` | 0:09–0:15 | When AI acts in the physical world, a guess becomes motion. But a proposal is not permission to move. |
+| `voice_03.wav` | 0:15–0:21 | The model says what to touch and how sure it is. Speed, force, and timing stay locked to the runtime. |
+| `voice_04.wav` | 0:21–0:28 | A fixed camera locates each device in the measured workcell. |
+| `voice_05.wav` | 0:28–0:33 | Stale evidence fails closed. Nothing moves. |
+| `voice_06.wav` | 0:33–0:40 | Fresh evidence can admit the plan, but authority stays narrow: one permit, one contact. |
+| `voice_07.wav` | 0:40–0:48 | Transit. Align. Settle. Approach. Contact. Retract. Verify. |
+| `voice_08.wav` | 0:55–1:01 | The local result is observed before the workflow continues. |
+| `voice_09.wav` | 1:01–1:07 | The arm clears the keyboard and crosses to a separate phone interface. |
+| `voice_10.wav` | 1:07–1:14 | Before every tap, Tactevra checks the expected screen. After change, it checks again. |
+| `voice_11.wav` | 1:22–1:27 | Send receives its own final permit. |
+| `voice_12.wav` | 1:27–1:33 | Two interfaces. Two independent receipts. |
+| `voice_13.wav` | 1:33–1:36 | Every contact permitted. Every effect verified. |
+| `voice_14.wav` | 1:36–1:40 | Tactevra. Physical intelligence, checked. |
 
-Do not add spoken clip numbers or audio tags. Leave a short natural breath at
-the end of each file. The build trims each clip to its scene window, applies a
-short fade, and places it at the exact start time.
+The deliberate silent windows at 0:00–0:04, 0:48–0:55, and 1:14–1:22 expose
+the cold-open mechanism tone, keyboard rhythm, and phone-entry rhythm.
 
-## Single-paste version
-
-Use this only if ElevenLabs must produce one recording. The separate-clip route
-is preferred because it preserves exact editorial timing.
-
-```text
-When AI moves real hardware, a wrong guess becomes real motion.
-
-Tactevra turns one request into one checked physical action.
-
-A fixed camera reads four board markers, placing every target in one shared frame.
-
-The model proposes the action, named target, coordinate frame, and confidence—never motor commands.
-
-Deterministic gates stop stale or malformed plans before the arm can move.
-
-Units. Frame. Reach. Clearance. Freshness. Every gate must pass.
-
-Measured geometry resolves the H key into exact board coordinates.
-
-The arm carries the stylus and sends one bounded press.
-
-Telemetry confirms the target, while the host confirms the character H.
-
-That closes one shared contract, from intent to verified physical action.
-
-Tactevra. Physical intelligence, checked.
-```
-
-## Return package
-
-Put all eleven files in one folder and send that folder or a ZIP. The video
-builder accepts WAV, MP3, or M4A files named `voice_01` through `voice_11`. It
-will align them, keep the music bed 15–18 dB below speech, and preserve the four
-semantic effects: reject thud, gate ticks, contact click, and verified chord.
+Place the fourteen files in one folder. The production script aligns them to
+the manifest, gently time-fits a clip only when necessary, ducks the generated
+music bed beneath speech, adds the semantic reject/permit/contact/verify
+effects, and packages selectable English captions and chapters.
